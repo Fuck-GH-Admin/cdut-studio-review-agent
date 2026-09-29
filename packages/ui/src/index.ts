@@ -3,6 +3,8 @@
  */
 
 export { Toaster } from './primitives/sonner.tsx'
+export { MarkdownPreview, MARKDOWN_PREVIEW_LIGHT_COMPONENTS } from './markdown-preview.tsx'
+export type { MarkdownPreviewProps } from './markdown-preview.tsx'
 export { CodeBlock } from './code-block/index.ts'
 export { MermaidBlock } from './mermaid-block/index.ts'
 export { useSmoothStream } from './hooks/index.ts'

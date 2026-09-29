@@ -65,7 +65,7 @@ export function WelcomeEmptyState(): React.ReactElement {
   }, [mode, setMode])
 
   return (
-    <div className="welcome-empty-state flex h-full translate-y-5 flex-col items-center justify-center gap-6 px-4">
+    <div className="welcome-empty-state flex h-full translate-y-[90px] flex-col items-center justify-center gap-6 px-4 [@media(max-height:820px)]:translate-y-0 [@media(max-height:700px)]:gap-4">
       {/* 问候语 */}
       <h1 className="text-[26px] font-semibold tracking-tight text-foreground">
         {displayName}，{greeting}
@@ -108,8 +108,12 @@ export function WelcomeEmptyState(): React.ReactElement {
         })}
       </div>
 
-      {/* 编码活跃热力图（仅 Agent 模式 + 普通工作区） */}
-      {showHeatmap && <UsageHeatmap />}
+      {/* 编码活跃热力图（仅 Agent 模式 + 普通工作区；窗口过矮时隐藏避免与输入框重叠） */}
+      {showHeatmap && (
+        <div className="[@media(max-height:640px)]:hidden">
+          <UsageHeatmap />
+        </div>
+      )}
     </div>
   )
 }

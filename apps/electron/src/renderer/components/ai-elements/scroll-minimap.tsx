@@ -9,8 +9,7 @@
 
 import * as React from 'react'
 import { useAtomValue } from 'jotai'
-import Markdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import { MarkdownPreview, MARKDOWN_PREVIEW_LIGHT_COMPONENTS } from '@profer/ui'
 import { AlertTriangle, Search } from 'lucide-react'
 import { useStickToBottomContext } from 'use-stick-to-bottom'
 import { Input } from '@profer/ui/primitives/input'
@@ -37,18 +36,6 @@ const MIN_ITEMS = 1
 /** 迷你地图最多渲染的横杠数 */
 const MAX_BARS = 20
 
-// ── Markdown 预览配置（轻量级，禁用重量级渲染） ──
-
-const PREVIEW_REMARK_PLUGINS = [remarkGfm]
-
-/* eslint-disable @typescript-eslint/no-explicit-any -- react-markdown components 类型复杂，使用内联对象即可 */
-const PREVIEW_MD_COMPONENTS = {
-  pre: ({ children }: { children?: React.ReactNode }) => <pre className="text-[11px] opacity-70 truncate">{children}</pre>,
-  code: ({ children }: { children?: React.ReactNode }) => <code className="text-[11px] bg-muted/50 px-0.5 rounded">{children}</code>,
-  img: () => null as unknown as React.ReactElement,
-  a: ({ children }: { children?: React.ReactNode }) => <span>{children}</span>,
-} as const
-/* eslint-enable @typescript-eslint/no-explicit-any */
 
 // ── 辅助函数 ──
 
@@ -526,9 +513,9 @@ function HighlightedPreview({ text, query }: { text: string; query: string }): R
 
   return (
     <div className="prose prose-sm dark:prose-invert max-w-none text-xs text-popover-foreground/80 prose-p:my-0 prose-headings:my-0.5 prose-headings:text-xs prose-li:my-0 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 line-clamp-3 overflow-hidden">
-      <Markdown remarkPlugins={PREVIEW_REMARK_PLUGINS} components={PREVIEW_MD_COMPONENTS}>
+      <MarkdownPreview components={MARKDOWN_PREVIEW_LIGHT_COMPONENTS}>
         {text}
-      </Markdown>
+      </MarkdownPreview>
     </div>
   )
 }
