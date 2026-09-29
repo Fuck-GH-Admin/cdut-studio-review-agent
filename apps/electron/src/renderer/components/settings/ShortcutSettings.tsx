@@ -12,13 +12,13 @@ import * as React from 'react'
 import { useAtom } from 'jotai'
 import { RotateCcw } from 'lucide-react'
 import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
-import { Switch } from '@/components/ui/switch'
+import { Button } from '@profer/ui/primitives/button'
+import { Switch } from '@profer/ui/primitives/switch'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/tooltip'
+} from '@profer/ui/primitives/tooltip'
 import { shortcutOverridesAtom, sendWithCmdEnterAtom } from '@/atoms/shortcut-atoms'
 import {
   DEFAULT_SHORTCUTS,

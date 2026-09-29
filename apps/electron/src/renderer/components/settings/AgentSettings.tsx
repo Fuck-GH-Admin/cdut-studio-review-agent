@@ -11,7 +11,7 @@
 import * as React from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Pencil, ImagePlus, Search } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 import { cn } from '@/lib/utils'
 import { settingsTabAtom } from '@/atoms/settings-tab'
 import { chatToolsAtom } from '@/atoms/chat-tool-atoms'

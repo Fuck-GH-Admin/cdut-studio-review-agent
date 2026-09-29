@@ -9,7 +9,7 @@ import * as React from 'react'
 import { useAtomValue } from 'jotai'
 import { toast } from 'sonner'
 import { Loader2, ExternalLink, Power, PowerOff, Plus, Trash2, CheckCircle2, XCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 import { SettingsSection } from './primitives/SettingsSection'
 import { SettingsCard } from './primitives/SettingsCard'
 import { SettingsInput } from './primitives/SettingsInput'
@@ -25,7 +25,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
+} from '@profer/ui/primitives/alert-dialog'
 import { cn } from '@/lib/utils'
 import type { DingTalkBotConfig, DingTalkBotBridgeState, DingTalkBridgeStatus, DingTalkTestResult } from '@profer/shared'
 

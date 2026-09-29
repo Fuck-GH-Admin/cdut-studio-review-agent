@@ -16,7 +16,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+} from '@profer/ui/primitives/alert-dialog'
 import type { SidebarModel } from './use-left-sidebar'
 
 export function SidebarDialogs({ s }: { s: SidebarModel }): React.ReactElement {

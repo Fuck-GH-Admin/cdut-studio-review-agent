@@ -28,16 +28,16 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select'
+} from '@profer/ui/primitives/select'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '../ui/dialog'
-import { Input } from '../ui/input'
-import { Label } from '../ui/label'
+} from '@profer/ui/primitives/dialog'
+import { Input } from '@profer/ui/primitives/input'
+import { Label } from '@profer/ui/primitives/label'
 import {
   notificationsEnabledAtom,
   notificationSoundEnabledAtom,
@@ -82,7 +82,7 @@ import { useWindowInnerHeight } from '@/hooks/use-window-inner-height'
 import { agentProcessGroupsKeepExpandedAtom } from '@/atoms/agent-atoms'
 import { autoPreviewEnabledAtom } from '@/atoms/preview-atoms'
 import { VoiceInputSettings } from './VoiceInputSettings'
-import { Button } from '../ui/button'
+import { Button } from '@profer/ui/primitives/button'
 import type { NotificationSoundId, NotificationSoundType, NotificationSoundSettings } from '@/types/settings'
 
 export function UsageSettings(): React.ReactElement {

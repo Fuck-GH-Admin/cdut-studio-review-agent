@@ -17,16 +17,16 @@ import {
   XCircle,
   Trash2,
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Switch } from '@/components/ui/switch'
-import { Input } from '@/components/ui/input'
+import { Button } from '@profer/ui/primitives/button'
+import { Switch } from '@profer/ui/primitives/switch'
+import { Input } from '@profer/ui/primitives/input'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@profer/ui/primitives/select'
 import { SettingsSection, SettingsCard } from './primitives'
 import { chatToolsAtom } from '@/atoms/chat-tool-atoms'
 

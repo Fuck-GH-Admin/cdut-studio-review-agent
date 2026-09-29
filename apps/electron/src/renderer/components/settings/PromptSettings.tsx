@@ -9,9 +9,9 @@
 import * as React from 'react'
 import { useAtom, useAtomValue } from 'jotai'
 import { Plus, Trash2, Star } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@profer/ui/primitives/button'
+import { Input } from '@profer/ui/primitives/input'
+import { Textarea } from '@profer/ui/primitives/textarea'
 import { cn } from '@/lib/utils'
 import {
   SettingsSection,

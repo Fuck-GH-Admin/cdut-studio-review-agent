@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useAtom, useSetAtom } from 'jotai'
 import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 import { developerModeEnabledAtom, openEpistemicModeEnabledAtom } from '@/atoms/developer-mode'
 import { settingsTabAtom } from '@/atoms/settings-tab'
 import { SettingsCard, SettingsSection, SettingsToggle } from './primitives'

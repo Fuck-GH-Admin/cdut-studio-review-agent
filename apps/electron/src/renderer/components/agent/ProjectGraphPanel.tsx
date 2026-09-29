@@ -61,7 +61,6 @@ const CANVAS_PAD = TASK_GRAPH_CANVAS_PADDING
 
 const MIN_SCALE = 0.25
 const MAX_SCALE = 2.5
-const ZOOM_STEP = 0.1
 
 // 连线端点圆点半径
 const DOT_R = 5
@@ -546,8 +545,10 @@ export function ProjectGraphPanel({ refreshVersion = 0 }: { refreshVersion?: num
       const mx = e.clientX - rect.left
       const my = e.clientY - rect.top
       const prev = scaleRef.current
-      const delta = e.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP
-      const next = Math.max(MIN_SCALE, Math.min(MAX_SCALE, prev + delta))
+      // 触控板是一串小增量事件，加法步进 ±0.1 会瞬间顶到 MIN/MAX；改为乘法连续缩放。
+      // 鼠标滚轮一格（约 ±100px）在 scale 1 附近 ≈ 原来的一步 ±0.1。
+      const delta = e.deltaMode === WheelEvent.DOM_DELTA_LINE ? e.deltaY * 33 : e.deltaY
+      const next = Math.max(MIN_SCALE, Math.min(MAX_SCALE, prev * Math.exp(-delta * 0.001)))
       const ratio = next / prev
       setScale(next)
       setTx(txRef.current = mx + ratio * (txRef.current - mx))

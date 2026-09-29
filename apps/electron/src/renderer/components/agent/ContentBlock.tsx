@@ -22,7 +22,7 @@ import {
 import { useAtomValue } from 'jotai'
 import { thinkingExpandedAtom } from '@/atoms/chat-atoms'
 import { cn } from '@/lib/utils'
-import { ImageLightbox } from '@/components/ui/image-lightbox'
+import { ImageLightbox } from '@profer/ui/primitives/image-lightbox'
 import { MessageResponse } from '@/components/ai-elements/message'
 import { getToolIcon, extractFilePath } from './tool-utils'
 import { getToolPhrase } from './tool-phrase'

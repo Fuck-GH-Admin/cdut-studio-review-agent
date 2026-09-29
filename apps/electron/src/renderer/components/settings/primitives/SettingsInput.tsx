@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react'
-import { Input } from '@/components/ui/input'
+import { Input } from '@profer/ui/primitives/input'
 import { LABEL_CLASS, DESCRIPTION_CLASS } from './SettingsUIConstants'
 import { cn } from '@/lib/utils'
 

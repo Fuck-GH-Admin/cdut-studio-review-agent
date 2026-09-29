@@ -13,9 +13,9 @@ import {
   SettingsCard,
   SettingsRow,
 } from '@/components/settings/primitives'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import { Input } from '@profer/ui/primitives/input'
+import { Button } from '@profer/ui/primitives/button'
+import { Badge } from '@profer/ui/primitives/badge'
 import { teamWorkspacesAtom } from '@/atoms/team-atoms'
 import { agentWorkspacesAtom } from '@/atoms/agent-atoms'
 import type { WorkspaceRole } from '@profer/shared'

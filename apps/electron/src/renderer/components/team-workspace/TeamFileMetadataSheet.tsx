@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Heart, Loader2, Save, Tag } from 'lucide-react'
 import { toast } from 'sonner'
 import type { FileEntry } from '@profer/shared'
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@profer/ui/primitives/sheet'
 
 type TagItem = { id: string; name: string; color: string }
 type StatusItem = { id: string; name: string; color: string; position?: number }

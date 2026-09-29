@@ -30,19 +30,19 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@profer/ui/primitives/tooltip";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+} from "@profer/ui/primitives/popover";
+import { ConfirmDialog } from "@profer/ui/primitives/confirm-dialog";
 import { activeViewAtom } from "@/atoms/active-view";
 import { workspaceCapabilitiesVersionAtom } from "@/atoms/agent-atoms";
 import { workspacePresetsAtom } from "@/atoms/agent-preset-atoms";
 import { useProjectActions } from "@/hooks/useProjectActions";
 import { WindowControlsHost } from "@/components/WindowControlsTemplate";
-import { detectIsWindows } from "@/lib/platform";
+import { detectIsWindows } from "@profer/ui";
 import { resolveWindowControlsRightInset } from "@/lib/window-controls-layout";
 import type { McpServerEntry, SkillMeta } from "@profer/shared";
 import { useAgentSkillsData } from "./useAgentSkillsData";

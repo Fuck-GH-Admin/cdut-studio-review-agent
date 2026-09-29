@@ -12,19 +12,19 @@ import * as React from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { toast } from 'sonner'
 import { AlertTriangle, ArrowLeft, Bell, Check, Clock, Loader2, Pencil, Play, Settings, X } from 'lucide-react'
-import { detectIsWindows } from '@/lib/platform'
+import { detectIsWindows } from '@profer/ui'
 import { cn } from '@/lib/utils'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
+import { Label } from '@profer/ui/primitives/label'
+import { Switch } from '@profer/ui/primitives/switch'
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from '@/components/ui/select'
-import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover'
+} from '@profer/ui/primitives/select'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/tooltip'
+import { Popover, PopoverTrigger, PopoverContent } from '@profer/ui/primitives/popover'
 import { ModelSelector } from '@/components/chat/ModelSelector'
 import {
   automationFormAtom,

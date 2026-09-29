@@ -12,12 +12,12 @@ import {
   ArrowDownToLine,
   Upload,
 } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+import { Switch } from "@profer/ui/primitives/switch";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@profer/ui/primitives/tooltip";
 import { cn } from "@/lib/utils";
 import type { SkillMeta } from "@profer/shared";
 

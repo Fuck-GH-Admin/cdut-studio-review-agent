@@ -3,7 +3,7 @@
  */
 
 import * as React from 'react'
-import { Textarea } from '@/components/ui/textarea'
+import { Textarea } from '@profer/ui/primitives/textarea'
 import { cn } from '@/lib/utils'
 import { LABEL_CLASS, DESCRIPTION_CLASS } from './SettingsUIConstants'
 

@@ -39,10 +39,10 @@ import { TeamFileMetadataSheet } from '@/components/team-workspace/TeamFileMetad
 import { TeamFileTrashSheet } from '@/components/team-workspace/TeamFileTrashSheet'
 import { TeamMemoryPanel } from '@/components/team-workspace/TeamMemoryPanel'
 import { TeamMemoryEditor } from '@/components/team-workspace/TeamMemoryEditor'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea } from '@profer/ui/primitives/scroll-area'
 import { WindowControlsHost } from '@/components/WindowControlsTemplate'
 import { cn } from '@/lib/utils'
-import { detectIsWindows } from '@/lib/platform'
+import { detectIsWindows } from '@profer/ui'
 import type { AgentPendingFile, FileEntry } from '@profer/shared'
 
 function getMediaTypeFromFilename(filename: string): string {

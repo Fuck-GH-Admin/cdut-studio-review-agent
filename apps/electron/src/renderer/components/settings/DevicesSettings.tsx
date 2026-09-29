@@ -6,9 +6,9 @@
  */
 import * as React from 'react'
 import { Monitor, Loader2, LogOut, RefreshCw, AlertCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 import { SettingsSection, SettingsCard } from './primitives'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Alert, AlertDescription } from '@profer/ui/primitives/alert'
 
 type DeviceRow = {
   id: string

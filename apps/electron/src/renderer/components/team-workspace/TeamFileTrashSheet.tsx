@@ -2,9 +2,9 @@ import * as React from 'react'
 import { File, Folder, Loader2, RotateCcw, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import type { TeamTrashEntry } from '@profer/shared'
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@profer/ui/primitives/sheet'
+import { ScrollArea } from '@profer/ui/primitives/scroll-area'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@profer/ui/primitives/alert-dialog'
 import { getFileBaseName } from '@/lib/file-utils'
 
 function resourceName(path: string) { return getFileBaseName(path) }

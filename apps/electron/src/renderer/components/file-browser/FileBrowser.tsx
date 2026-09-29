@@ -28,8 +28,8 @@ import {
   LayoutList,
   LayoutGrid,
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { Button } from '@profer/ui/primitives/button'
+import { ScrollArea } from '@profer/ui/primitives/scroll-area'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -39,14 +39,14 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+} from '@profer/ui/primitives/alert-dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@profer/ui/primitives/dropdown-menu'
 import { cn } from '@/lib/utils'
 import { getLastPathSegments } from '@/lib/file-utils'
 import { toast } from 'sonner'

@@ -30,7 +30,7 @@ import {
   FlaskConical,
   SlidersHorizontal,
 } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@profer/ui/primitives/scroll-area";
 import { settingsTabAtom, channelFormDirtyAtom, settingsCloseRequestedAtom, settingsOpenAtom } from "@/atoms/settings-tab";
 import type { SettingsTab } from "@/atoms/settings-tab";
 import { appModeAtom } from "@/atoms/app-mode";
@@ -48,7 +48,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "@profer/ui/primitives/alert-dialog";
 import { ChannelSettings } from "./ChannelSettings";
 import { GeneralSettings } from "./GeneralSettings";
 import { UsageSettings } from "./UsageSettings";

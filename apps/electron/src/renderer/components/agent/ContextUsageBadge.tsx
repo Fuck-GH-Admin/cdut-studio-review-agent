@@ -12,8 +12,8 @@
 
 import * as React from 'react'
 import { Loader2, Minimize2, RefreshCw } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Button } from '@profer/ui/primitives/button'
+import { Popover, PopoverContent, PopoverTrigger } from '@profer/ui/primitives/popover'
 import { cn } from '@/lib/utils'
 import { AgentComposerToolTrigger } from '@/components/ai-elements/composer/ComposerTool'
 import type { ChannelPlanQuotaResult, ChannelPlanQuotaWindow } from '@profer/shared'

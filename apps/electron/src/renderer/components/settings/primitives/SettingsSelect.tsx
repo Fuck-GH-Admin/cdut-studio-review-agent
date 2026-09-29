@@ -12,7 +12,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@profer/ui/primitives/select'
 import { LABEL_CLASS, DESCRIPTION_CLASS } from './SettingsUIConstants'
 import { cn } from '@/lib/utils'
 

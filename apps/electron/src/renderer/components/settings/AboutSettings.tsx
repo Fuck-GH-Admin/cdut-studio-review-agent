@@ -15,25 +15,25 @@ import {
   SettingsCard,
   SettingsRow,
 } from './primitives'
-import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Button } from '@profer/ui/primitives/button'
+import { Textarea } from '@profer/ui/primitives/textarea'
+import { Input } from '@profer/ui/primitives/input'
+import { Label } from '@profer/ui/primitives/label'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+} from '@profer/ui/primitives/select'
+import { Alert, AlertDescription } from '@profer/ui/primitives/alert'
 import { updateStatusAtom, updaterAvailableAtom, checkForUpdates } from '@/atoms/updater'
 import {
   environmentCheckResultAtom,
   hasEnvironmentIssuesAtom,
 } from '@/atoms/environment'
 import { EnvironmentCheckCard } from '@/components/environment/EnvironmentCheckCard'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@profer/ui/primitives/badge'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { VersionHistory } from './VersionHistory'

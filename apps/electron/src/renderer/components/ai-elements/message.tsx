@@ -24,20 +24,19 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import { ChevronDown, ChevronUp, Paperclip, FileText, Sparkles, Server, Download, MessageSquareText, Link2, Copy, Check, ListChecks, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { shouldInspectMermaidCodeBlock, shouldRenderMermaidCodeBlock } from '@/lib/mermaid-detection'
 import { normalizeLatexDelimiters } from '@/lib/normalize-latex'
 import { normalizeMarkdownEmphasisWhitespace } from '@/lib/normalize-markdown-emphasis'
 import { getFileBaseName } from '@/lib/file-utils'
-import { Button } from '@/components/ui/button'
-import { ImageLightbox } from '@/components/ui/image-lightbox'
+import { Button } from '@profer/ui/primitives/button'
+import { ImageLightbox } from '@profer/ui/primitives/image-lightbox'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { LoadingIndicator } from '@/components/ui/loading-indicator'
-import { CodeBlock, MermaidBlock } from '@profer/ui'
+} from '@profer/ui/primitives/tooltip'
+import { LoadingIndicator } from '@profer/ui/primitives/loading-indicator'
+import { CodeBlock, MermaidBlock, shouldInspectMermaidCodeBlock, shouldRenderMermaidCodeBlock } from '@profer/ui'
 import { detectLanguage } from '@profer/core'
 import { FilePathChip, isAbsoluteFilePath, isRelativeFilePath } from './file-path-chip'
 import { useFileAccessSessionId } from './file-access-context'

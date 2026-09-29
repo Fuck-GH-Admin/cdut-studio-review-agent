@@ -101,7 +101,13 @@ import { dingtalkBotStatesAtom } from './atoms/dingtalk-atoms'
 import { currentConversationIdAtom, channelsAtom, channelsLoadedAtom, selectedModelAtom } from './atoms/chat-atoms'
 import { appModeAtom } from './atoms/app-mode'
 import type { FeishuBotBridgeState, FeishuBridgeState, DingTalkBotBridgeState, DingTalkBridgeState } from '@profer/shared'
-import { Toaster } from './components/ui/sonner'
+import { Toaster } from '@profer/ui'
+
+/** 桌面壳 Toaster：把皮肤系统解析出的主题注入通用基元（基元本身已不含 jotai 依赖） */
+function ProferToaster(props: Omit<React.ComponentProps<typeof Toaster>, 'theme'>) {
+  const theme = useAtomValue(resolvedThemeAtom)
+  return <Toaster theme={theme} {...props} />
+}
 import { toast } from 'sonner'
 import { diffCapabilities, isVisibleAgentSession } from '@profer/shared'
 import type { WorkspaceCapabilities } from '@profer/shared'
@@ -1171,7 +1177,7 @@ if (isQuickTaskWindow) {
       <React.StrictMode>
         <ThemeInitializer />
         <VoiceDictationApp />
-        <Toaster position="top-right" offset={96} />
+        <ProferToaster position="top-right" offset={96} />
       </React.StrictMode>
     )
   })
@@ -1183,7 +1189,7 @@ if (isQuickTaskWindow) {
         <MarkdownFontSizeInitializer />
         <UiScaleInitializer />
         <DetachedPreviewApp />
-        <Toaster position="top-right" offset={96} />
+        <ProferToaster position="top-right" offset={96} />
       </React.StrictMode>
     )
   })
@@ -1198,7 +1204,7 @@ if (isQuickTaskWindow) {
         <ThemeInitializer />
         <PlanningInitializer />
         <PlanningWindowApp />
-        <Toaster position="top-right" offset={96} />
+        <ProferToaster position="top-right" offset={96} />
       </React.StrictMode>
     )
   })
@@ -1230,7 +1236,7 @@ if (isQuickTaskWindow) {
       <TabSwitcher />
       <App />
       <UpdateDialog />
-      <Toaster position="top-right" offset={96} />
+      <ProferToaster position="top-right" offset={96} />
     </React.StrictMode>
   )
 }

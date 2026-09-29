@@ -8,12 +8,12 @@
 import * as React from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Plus, Trash2, Star, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Separator } from '@/components/ui/separator'
-import { Switch } from '@/components/ui/switch'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { Button } from '@profer/ui/primitives/button'
+import { Input } from '@profer/ui/primitives/input'
+import { Textarea } from '@profer/ui/primitives/textarea'
+import { Separator } from '@profer/ui/primitives/separator'
+import { Switch } from '@profer/ui/primitives/switch'
+import { ScrollArea } from '@profer/ui/primitives/scroll-area'
 import { cn } from '@/lib/utils'
 import {
   promptConfigAtom,

@@ -18,7 +18,7 @@ import { Clock, Pause, Play, Power, Plus, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { AutomationRecommendations } from './AutomationRecommendations'
 import type { Recommendation } from '@profer/shared'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@profer/ui/primitives/tooltip'
 import { agentWorkspacesAtom } from '@/atoms/agent-atoms'
 import {
   automationsAtom,

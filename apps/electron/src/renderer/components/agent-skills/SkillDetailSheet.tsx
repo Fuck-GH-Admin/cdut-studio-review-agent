@@ -12,14 +12,14 @@ import { toast } from "sonner";
 import { Pencil, Save, X, FolderOpen, RefreshCw, Trash2 } from "lucide-react";
 import { SkillDetailSheetFrame } from "./SkillDetailSheetFrame";
 import { SkillDetailLayout } from "./SkillDetailLayout";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@profer/ui/primitives/button";
+import { Switch } from "@profer/ui/primitives/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@profer/ui/primitives/tabs";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@profer/ui/primitives/tooltip";
 import { SettingsCard } from "@/components/settings/primitives";
 import { SkillFilesPanel } from "@/components/settings/SkillFilesPanel";
 import { cn } from "@/lib/utils";

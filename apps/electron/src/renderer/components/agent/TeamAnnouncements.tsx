@@ -10,7 +10,7 @@ import { toast } from 'sonner'
 import { Loader2, Pin, Plus, Trash2, X } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import { cn } from '@/lib/utils'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea } from '@profer/ui/primitives/scroll-area'
 
 // ===== 类型 =====
 

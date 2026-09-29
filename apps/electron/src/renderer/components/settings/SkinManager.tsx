@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { BookOpen, Check, Copy, FolderOpen, PackagePlus, RefreshCw, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@profer/ui/primitives/button'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@profer/ui/primitives/dialog'
 import { SettingsSection, SettingsCard } from './primitives'
 import type { SkinInfo, ThemeMode, ThemeStyle } from '../../../types'
 // 官方磁盘模板是唯一真源：设置页复制的内容与“打开官方模板目录”完全一致。

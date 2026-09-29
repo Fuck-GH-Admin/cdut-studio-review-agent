@@ -13,11 +13,11 @@
 
 import * as React from 'react'
 import { X, Download, ExternalLink, FolderOpen, Loader2 } from 'lucide-react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@profer/ui/primitives/dialog'
+import { Button } from '@profer/ui/primitives/button'
 import { cn } from '@/lib/utils'
 import { OfficePreview } from './office-preview/OfficePreview'
-import { useSmoothZoom } from '@/hooks/useSmoothZoom'
+import { useSmoothZoom } from '@profer/ui'
 import type { FileAccessOptions } from '@profer/shared'
 
 interface FilePreviewDialogProps {

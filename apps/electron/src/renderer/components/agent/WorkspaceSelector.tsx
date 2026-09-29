@@ -19,7 +19,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+} from '@profer/ui/primitives/alert-dialog'
 import { projectListHeightAtom } from '@/atoms/sidebar-atoms'
 import { useProjectActions } from '@/hooks/useProjectActions'
 import { agentSessionsAtom, agentWorkspacesAtom } from '@/atoms/agent-atoms'

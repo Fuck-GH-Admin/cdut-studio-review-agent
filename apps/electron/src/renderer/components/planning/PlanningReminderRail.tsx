@@ -7,7 +7,7 @@ import { activePlanningRemindersAtom, planningSelectedTodoIdAtom, planningTabAto
 import { activeViewAtom } from '@/atoms/active-view'
 import { agentWorkspacesAtom, currentAgentWorkspaceIdAtom } from '@/atoms/agent-atoms'
 import { notificationsEnabledAtom, notificationSoundEnabledAtom, notificationSoundsAtom, playNotificationSoundForType } from '@/atoms/notifications'
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 
 function formatTriggerTime(timestamp: number): string {
   return new Intl.DateTimeFormat('zh-CN', {

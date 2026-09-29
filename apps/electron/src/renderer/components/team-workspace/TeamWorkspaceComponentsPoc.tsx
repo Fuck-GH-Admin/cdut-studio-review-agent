@@ -8,7 +8,7 @@ import * as React from 'react'
 import { flexRender, getCoreRowModel, getSortedRowModel, type ColumnDef, type SortingState, useReactTable } from '@tanstack/react-table'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { Tree, type NodeApi } from 'react-arborist'
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@profer/ui/primitives/sheet'
 import { cn } from '@/lib/utils'
 
 type ResourceStatus = '收件箱' | '进行中' | '待审阅' | '已完成' | '已归档'

@@ -10,7 +10,7 @@
 import * as React from 'react'
 import { useAtom, useSetAtom } from 'jotai'
 import { GraduationCap, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 import { tabsAtom, activeTabIdAtom, openTab, TUTORIAL_TAB_ID } from '@/atoms/tab-atoms'
 
 export function TutorialBanner(): React.ReactElement | null {

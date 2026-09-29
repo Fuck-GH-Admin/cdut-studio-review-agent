@@ -47,7 +47,7 @@ import {
   AgentComposerToolPopover,
   AgentComposerToolTrigger,
 } from '@/components/ai-elements/composer/ComposerTool'
-import { Switch } from '@/components/ui/switch'
+import { Switch } from '@profer/ui/primitives/switch'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -57,8 +57,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+} from '@profer/ui/primitives/alert-dialog'
+import { Dialog, DialogContent, DialogTitle } from '@profer/ui/primitives/dialog'
 import { ProjectGraphPanel } from './ProjectGraphPanel'
 import { cn } from '@/lib/utils'
 import { evaluateAutoSendTurn } from '@/lib/agent-autosend-turn'

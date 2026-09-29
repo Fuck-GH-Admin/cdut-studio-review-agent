@@ -8,7 +8,7 @@ import * as React from 'react'
 import { useAtom, useAtomValue } from 'jotai'
 import { toast } from 'sonner'
 import { RefreshCw, Zap, BarChart3, Gift, Clock } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 import { cn } from '@/lib/utils'
 import { SettingsSection, SettingsCard } from './primitives'
 import {

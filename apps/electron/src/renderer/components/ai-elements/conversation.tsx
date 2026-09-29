@@ -11,7 +11,7 @@
  * - ConversationScrollButton — 滚动到底部按钮
  */
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 import { cn } from '@/lib/utils'
 import { ArrowDownIcon } from 'lucide-react'
 import type { ComponentProps } from 'react'

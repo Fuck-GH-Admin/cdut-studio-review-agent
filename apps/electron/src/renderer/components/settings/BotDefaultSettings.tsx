@@ -12,7 +12,7 @@ import { getVisibleAgentWorkspaces } from '@/lib/product-feature-flags'
 import { SettingsSection } from './primitives/SettingsSection'
 import { SettingsCard } from './primitives/SettingsCard'
 import { SettingsSelect } from './primitives/SettingsSelect'
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 
 export function BotDefaultSettings(): React.ReactElement {
   const allWorkspaces = useAtomValue(agentWorkspacesAtom)

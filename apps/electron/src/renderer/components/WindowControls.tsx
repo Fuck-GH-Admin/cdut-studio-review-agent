@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { Copy, Minus, Square, X } from 'lucide-react'
-import { detectIsWindows } from '@/lib/platform'
+import { detectIsWindows } from '@profer/ui'
 import { cn } from '@/lib/utils'
 
 interface WindowControlsProps {

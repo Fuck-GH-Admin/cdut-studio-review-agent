@@ -8,8 +8,8 @@
 import * as React from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Plus, Pencil, Trash2, Server, RefreshCw, ChevronDown } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Switch } from '@/components/ui/switch'
+import { Button } from '@profer/ui/primitives/button'
+import { Switch } from '@profer/ui/primitives/switch'
 import { PROVIDER_LABELS, isAgentCompatibleProvider, isAgentEnabledForChannel } from '@profer/shared'
 import type { Channel, OfficialChannelHealth, ProviderType } from '@profer/shared'
 import { getChannelLogo } from '@/lib/model-logo'
@@ -27,7 +27,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+} from '@profer/ui/primitives/alert-dialog'
 import { ChannelForm } from './ChannelForm'
 import { ModelAvailabilityBar } from './ModelAvailabilityBar'
 import { getOfficialChannelDisplayName, isOfficialChannel, isModelFamilyChannel } from '@/lib/channel-model-groups'

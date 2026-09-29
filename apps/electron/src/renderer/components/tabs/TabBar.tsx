@@ -60,17 +60,17 @@ import {
 } from "@/atoms/tab-group-atoms";
 import { panelVisibilityAtom } from "@/atoms/panel-layout-atoms";
 import { automationFormAtom } from "@/atoms/automation-atoms";
-import { Button } from "@/components/ui/button";
+import { Button } from "@profer/ui/primitives/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@profer/ui/primitives/tooltip";
 import { WindowControlsHost } from "@/components/WindowControlsTemplate";
 import { TabBarItem } from "./TabBarItem";
 import { TabGroupItem } from "./TabGroupItem";
 import { useCloseTab } from "@/hooks/useCloseTab";
-import { detectIsWindows } from "@/lib/platform";
+import { detectIsWindows } from "@profer/ui";
 import { registerShortcut } from "@/lib/shortcut-registry";
 import { cn } from "@/lib/utils";
 import { replaceAgentSessionInFreshnessOrder } from "@/lib/agent-session-list";
@@ -1040,14 +1040,21 @@ function TabBarInner({
     [tabs, onDragStart, handleGroupTabDrag],
   );
 
-  // 鼠标滚轮横向滚动（使用原生事件监听器以支持 preventDefault）
+  // 滚轮 / 触控板横向滚动：按主轴方向分流。
+  // deltaX 占优（触控板双指横滑）→ 交给原生横向滚动，保留 macOS 惯性与橡皮筋手感；
+  // deltaY 占优（鼠标滚轮 / 触控板竖滑）→ preventDefault 后换算成横向滚动。
+  // 旧实现 `deltaY || deltaX` 在触控板斜滑时会吃到接近 0 的 deltaY，看起来"卡住不顺"，
+  // 且恒 preventDefault 让原生惯性完全失效。
   React.useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
 
     const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
       e.preventDefault();
-      el.scrollLeft += e.deltaY || e.deltaX;
+      const lineFactor =
+        e.deltaMode === WheelEvent.DOM_DELTA_LINE ? 33 : 1;
+      el.scrollLeft += e.deltaY * lineFactor;
     };
 
     el.addEventListener("wheel", handleWheel, { passive: false });

@@ -8,7 +8,7 @@
 import * as React from 'react'
 import { useAtom, useAtomValue } from 'jotai'
 import { Check } from 'lucide-react'
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@profer/ui/primitives/alert-dialog'
 import { toast } from 'sonner'
 import {
   SettingsSection,
@@ -37,7 +37,7 @@ import {
 } from '@/atoms/ui-scale'
 import { cn } from '@/lib/utils'
 import { SkinManager } from './SkinManager'
-import { detectIsWindows } from '@/lib/platform'
+import { detectIsWindows } from '@profer/ui'
 import type { ThemeMode, ThemeStyle, MarkdownFontSize, UiScale, SkinInfo } from '../../../types'
 
 // ===== Logo 资源导入（用于图标选择器） =====

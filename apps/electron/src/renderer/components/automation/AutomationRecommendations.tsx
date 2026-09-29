@@ -3,7 +3,7 @@ import { BellRing, Check, Eye, X } from 'lucide-react'
 import { toast } from 'sonner'
 import { useSetAtom } from 'jotai'
 import type { Recommendation } from '@profer/shared'
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 import { automationFormAtom, automationToDraft } from '@/atoms/automation-atoms'
 
 export function AutomationRecommendations({ recommendations, onRefresh }: { recommendations: Recommendation[]; onRefresh: () => Promise<void> }): React.ReactElement | null {

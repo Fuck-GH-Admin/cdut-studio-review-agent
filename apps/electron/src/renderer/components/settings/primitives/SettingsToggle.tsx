@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react'
-import { Switch } from '@/components/ui/switch'
+import { Switch } from '@profer/ui/primitives/switch'
 import { LABEL_CLASS, DESCRIPTION_CLASS, ROW_CLASS } from './SettingsUIConstants'
 import { cn } from '@/lib/utils'
 

@@ -18,22 +18,22 @@ import { cn } from '@/lib/utils'
 import { useShortcut } from '@/hooks/useShortcut'
 import { clearSessionReferenceDragState, setSessionReferenceDragData } from '@/lib/session-reference-drag'
 import { interfaceVariantAtom } from '@/atoms/theme'
-import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/tooltip'
 import {
   ContextMenu,
   ContextMenuTrigger,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
-} from '@/components/ui/context-menu'
+} from '@profer/ui/primitives/context-menu'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+} from '@profer/ui/primitives/dropdown-menu'
+import { Popover, PopoverContent, PopoverTrigger } from '@profer/ui/primitives/popover'
 import {
   SessionMiniMapPopover,
   useSessionMiniMapHover,

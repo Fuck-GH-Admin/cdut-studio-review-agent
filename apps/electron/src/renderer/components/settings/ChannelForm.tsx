@@ -27,8 +27,8 @@ import { toast } from 'sonner'
 import { useSetAtom } from 'jotai'
 import { channelFormDirtyAtom } from '@/atoms/settings-tab'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button } from '@profer/ui/primitives/button'
+import { Input } from '@profer/ui/primitives/input'
 import {
   PROVIDER_DEFAULT_AGENT_URLS,
   PROVIDER_DEFAULT_URLS,
@@ -50,7 +50,7 @@ import { getProviderLogo } from '@/lib/model-logo'
 import { applyModelDiscoveryResult, buildModelDiscoveryAttemptKey, shouldAutoDiscoverModels } from '@/lib/channel-model-discovery'
 import { addManualModel } from '@/lib/channel-manual-model'
 import { resolveModel1MToggleState } from '@/lib/model-1m-toggle'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea } from '@profer/ui/primitives/scroll-area'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -60,7 +60,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+} from '@profer/ui/primitives/alert-dialog'
 import {
   SettingsSection,
   SettingsCard,

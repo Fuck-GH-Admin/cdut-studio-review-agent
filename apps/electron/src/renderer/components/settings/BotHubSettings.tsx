@@ -7,7 +7,7 @@
 
 import * as React from 'react'
 import { useAtomValue } from 'jotai'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea } from '@profer/ui/primitives/scroll-area'
 import { cn } from '@/lib/utils'
 import { feishuBotStatesAtom } from '@/atoms/feishu-atoms'
 import { dingtalkBotStatesAtom } from '@/atoms/dingtalk-atoms'

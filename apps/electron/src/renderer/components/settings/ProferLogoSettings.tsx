@@ -10,7 +10,7 @@ import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { SettingsSection } from './primitives/SettingsSection'
 import { SettingsCard } from './primitives/SettingsCard'
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 
 // ===== Logo 资源导入 =====
 

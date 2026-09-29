@@ -6,7 +6,7 @@ import * as React from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ExternalLink, Loader2, TestTube2, Mic, MicOff } from 'lucide-react'
 import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 import {
   SettingsCard,
   SettingsInput,

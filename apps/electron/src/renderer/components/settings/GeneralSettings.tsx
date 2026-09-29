@@ -17,13 +17,13 @@ import {
   SettingsInput,
   SettingsSelect,
 } from './primitives'
-import { detectIsWindows } from '@/lib/platform'
+import { detectIsWindows } from '@profer/ui'
 import { shortcutOverridesAtom } from '@/atoms/shortcut-atoms'
 import { settingsOpenAtom } from '@/atoms/settings-tab'
 import { coachTourOpenAtom } from '@/atoms/coach-tour-atoms'
 import { SHORTCUT_MAP } from '@/lib/shortcut-defaults'
 import { getAcceleratorDisplay, isMac } from '@/lib/shortcut-registry'
-import { Button } from '../ui/button'
+import { Button } from '@profer/ui/primitives/button'
 import type { RuntimeStatus } from '@profer/shared'
 
 export function GeneralSettings(): React.ReactElement {

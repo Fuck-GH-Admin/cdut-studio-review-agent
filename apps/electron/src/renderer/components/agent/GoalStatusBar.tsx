@@ -3,7 +3,7 @@ import { AlertTriangle, Check, ChevronDown, ChevronRight, CircleX, Pause, Play, 
 import { useAtomValue } from 'jotai'
 import type { AgentGoalState } from '@profer/shared'
 import { agentGoalAtomFamily } from '@/atoms/goal-atoms'
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 import { cn } from '@/lib/utils'
 
 type Props = { sessionId: string }

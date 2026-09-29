@@ -23,14 +23,14 @@ import {
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { SettingsSection, SettingsCard, SettingsRow, SettingsToggle } from './primitives'
-import { Button } from '@/components/ui/button'
+import { Button } from '@profer/ui/primitives/button'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@profer/ui/primitives/select'
 import {
   agentWorkspacesAtom,
   agentMessageRefreshAtom,

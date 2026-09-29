@@ -93,7 +93,7 @@ import { promptConfigAtom, selectedPromptIdAtom, conversationPromptIdAtom } from
 import { useOpenSession } from '@/hooks/useOpenSession'
 import { openExplorationBranchTab } from '@/lib/exploration-tab'
 import { useSyncActiveTabSideEffects } from '@/hooks/useSyncActiveTabSideEffects'
-import { detectIsMac } from '@/lib/platform'
+import { detectIsMac } from '@profer/ui'
 import { navigationController } from '@/lib/navigation-controller'
 import type { NavigationAction } from '@/lib/navigation-actions'
 import {
