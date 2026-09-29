@@ -3,6 +3,9 @@ export default {
   darkMode: 'class',
   content: [
     './src/renderer/**/*.{js,ts,jsx,tsx}',
+    // @profer/ui 的基元/组件源码也参与类名扫描（source-as-entry，无构建产物），
+    // 否则 animate-in、data-[state] 等仅基元使用的类不会生成 CSS。
+    '../../packages/ui/src/**/*.{js,ts,jsx,tsx}',
     // 排除构建期生成的 vendored 静态资源：public/vendor/ooxml 由 scripts/build-ooxml.mjs
     // 每次 dev/build 启动时清空重写，内容是第三方 OOXML 解析器与 .d.ts（约 6.3MB），
     // 既不参与模块图也不含 Tailwind 类名。
