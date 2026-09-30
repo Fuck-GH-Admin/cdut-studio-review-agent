@@ -81,7 +81,7 @@ import {
 import { DEFAULT_CONTEXT_WINDOW, buildModel, normalizePiApi } from './pi-model-registry'
 import { createPartialMessageCoalescer, type PartialMessageCoalescer } from './pi-streaming-control'
 import { runPiPromptChain, type PiInterruptReservation } from './pi-prompt-chain'
-import { createPiRetryTerminalGate, mapPiNativeRetryEvent } from './pi-retry-control'
+import { createPiRetryTerminalGate, getPiNativeRetryOutcome, mapPiNativeRetryEvent } from './pi-retry-control'
 import { mapPiHarnessLifecycleEvent, type PiHarnessLifecycleObserver } from './pi-harness-lifecycle'
 import { createWindowsPowerShellToolDefinition } from './pi-powershell-tool'
 import {
@@ -162,6 +162,7 @@ export interface PiAgentQueryOptions extends AgentQueryInput {
   onModelResolved?: (model: string) => void
   onContextWindow?: (contextWindow: number) => void
   onRetry?: (update: import('./pi-retry-control').PiRetryUpdate) => void
+  onNativeRetryOutcome?: (outcome: import('./pi-retry-control').PiNativeRetryOutcome) => void
   /** Structured local command evidence, keyed by the exact Pi tool call id. */
   onToolExecutionResult?: (toolCallId: string, result: CommandExecutionResult) => void
   /** Passive lifecycle feed for Pi Host Harness; observers cannot control Session or queue prompts. */
@@ -2569,7 +2570,15 @@ export class PiAgentAdapter implements AgentProviderAdapter {
       // Pi 在 agent_end 之后可能才触发 overflow 自动压缩：在这些情况下延迟上报终态，
       // 等 compaction 生命周期到终态（compaction_end / agent_settled）再 settle。
       let pendingNativeOverflowRecovery = false
+      let pendingTerminalRetryError: { assistantMessage: AssistantMessage; sdkMessage: SDKMessage } | undefined
       let pendingTerminalResult: SDKMessage | undefined
+
+      const flushPendingTerminalRetryError = (): void => {
+        if (!pendingTerminalRetryError) return
+        runtimeGuard.recordMessage(pendingTerminalRetryError.assistantMessage)
+        queue.push(pendingTerminalRetryError.sdkMessage)
+        pendingTerminalRetryError = undefined
+      }
 
       // message_end 发生在 Pi 落盘前；保留对象身份，待 prompt 完成后从
       // SessionManager entries 精确取得 Pi entry ID，绝不按文本猜测。
@@ -2669,6 +2678,7 @@ export class PiAgentAdapter implements AgentProviderAdapter {
                 // 用户停止或插入新 prompt 时，当前 loop 的错误与 result 都不得泄漏到下一轮。
                 retryTerminalGate.settle(true)
                 pendingNativeOverflowRecovery = false
+                pendingTerminalRetryError = undefined
                 pendingTerminalResult = undefined
                 break
               }
@@ -2690,8 +2700,7 @@ export class PiAgentAdapter implements AgentProviderAdapter {
                 break
               }
               if (terminalRetryError) {
-                runtimeGuard.recordMessage(terminalRetryError.assistantMessage)
-                queue.push(terminalRetryError.sdkMessage)
+                pendingTerminalRetryError = terminalRetryError
               }
               // Pi can start auto-compaction after agent_end but before session.prompt()
               // resolves. Defer the terminal result until then, otherwise the orchestrator's
@@ -2706,9 +2715,15 @@ export class PiAgentAdapter implements AgentProviderAdapter {
               )
               break
             }
+            case 'auto_retry_end': {
+              const outcome = getPiNativeRetryOutcome(event)
+              if (outcome) input.onNativeRetryOutcome?.(outcome)
+              if (outcome === 'exhausted') flushPendingTerminalRetryError()
+              for (const retry of mapPiNativeRetryEvent(event)) input.onRetry?.(retry)
+              break
+            }
             case 'auto_retry_start':
             case 'auto_retry_attempt_start':
-            case 'auto_retry_end':
               for (const retry of mapPiNativeRetryEvent(event)) input.onRetry?.(retry)
               break
             case 'summarization_retry_scheduled':
@@ -2754,8 +2769,8 @@ export class PiAgentAdapter implements AgentProviderAdapter {
                   recovered || active.abortRequested || active.interrupting,
                 )
                 if (terminalRetryError) {
-                  runtimeGuard.recordMessage(terminalRetryError.assistantMessage)
-                  queue.push(terminalRetryError.sdkMessage)
+                  pendingTerminalRetryError = terminalRetryError
+                  flushPendingTerminalRetryError()
                 }
               }
               // 压缩结束：成功则发 compact_boundary 分界线（前端持久化显示「上下文已压缩」），
@@ -2792,10 +2807,11 @@ export class PiAgentAdapter implements AgentProviderAdapter {
                 pendingNativeOverflowRecovery = false
                 const terminalRetryError = retryTerminalGate.settle(active.abortRequested || active.interrupting)
                 if (terminalRetryError) {
-                  runtimeGuard.recordMessage(terminalRetryError.assistantMessage)
-                  queue.push(terminalRetryError.sdkMessage)
+                  pendingTerminalRetryError = terminalRetryError
+                  flushPendingTerminalRetryError()
                 }
               }
+              flushPendingTerminalRetryError()
               break
           }
         } catch (error) {

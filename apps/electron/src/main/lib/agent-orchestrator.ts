@@ -2062,6 +2062,7 @@ ${enrichedMessage}`
       const sdkAllowedTools = sdkPermissionModeForProferMode(initialPermissionMode) === 'auto'
         ? { allowedTools: autoAllowedTools }
         : {}
+      const piNativeRetryState = { exhausted: false }
       const queryOptions: AgentQueryInput & Record<string, unknown> = {
         sessionId,
         agentRuntime,
@@ -2285,6 +2286,9 @@ ${enrichedMessage}`
             event: { type: 'retry', ...normalizedRetry },
           })
         },
+        onNativeRetryOutcome: (outcome: import('./adapters/pi-retry-control').PiNativeRetryOutcome) => {
+          piNativeRetryState.exhausted = outcome === 'exhausted'
+        },
       }
 
       console.log(`[Agent 编排] 开始通过 Adapter 遍历事件流...`)
@@ -2304,6 +2308,7 @@ ${enrichedMessage}`
       /** 前 N 次自动重试静默执行，不向 UI 发送事件，减少网络瞬断时的界面噪音 */
       const RETRY_VISIBILITY_THRESHOLD = 0
       const canAutoRetry = (attempt: number, ...errorMessages: Array<string | undefined>): boolean => {
+        if (piNativeRetryState.exhausted) return false
         retryMaxAttempts = Math.min(retryMaxAttempts, getMaxAutoRetries(channel.provider, ...errorMessages))
         return attempt <= retryMaxAttempts && retryDelayElapsedMs < MAX_AUTO_RETRY_WAIT_MS
       }
@@ -2447,6 +2452,7 @@ ${enrichedMessage}`
         let stopResolved = false
 
         try {
+          piNativeRetryState.exhausted = false
           // 获取异步迭代器（手动 .next() 以支持 Promise.race 中断）
           const queryIterable = this.adapter.query(queryOptions)
           const queryIterator = queryIterable[Symbol.asyncIterator]()

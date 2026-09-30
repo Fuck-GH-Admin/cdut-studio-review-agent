@@ -914,11 +914,12 @@ export function applyAgentEvent(
       return { ...prev, retrying: undefined }
 
     case 'retry_failed': {
-      // 新增：重试失败，标记为 failed 但保留历史
+      // 重试失败只更新重试展示，不提前结束运行态。
+      // Pi 的 auto_retry_end 可能早于 session.prompt() / adapter queue 收尾；
+      // 主进程 activeSessions 仍然持有运行所有权，真正结束必须由 STREAM_COMPLETE 收口。
       const finalHistory = prev.retrying?.history ?? []
       return {
         ...prev,
-        running: false,
         retrying: {
           currentAttempt: event.finalAttempt.attempt,
           maxAttempts: prev.retrying?.maxAttempts ?? 3,

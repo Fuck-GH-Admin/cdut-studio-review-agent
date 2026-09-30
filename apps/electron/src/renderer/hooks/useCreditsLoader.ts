@@ -24,6 +24,63 @@ import {
   inviteCodeAtom,
   subscriptionAtom,
 } from '@/atoms/credits-atoms'
+import type { CreditCycleSummary, SubscriptionStatus } from '@/atoms/credits-atoms'
+
+type CreditsResponse = {
+  balance?: number | null
+  lifetimeConsumed?: number
+  balancePackage?: number
+  balanceReferral?: number
+  balancePurchased?: number
+  cycleSummary?: CreditCycleSummary | null
+  membershipTier?: string
+  isVip?: boolean
+  multiplier?: number
+  inviteCode?: string | null
+  subscription?: SubscriptionStatus | null
+}
+
+type CreditsRequestResult =
+  | { kind: 'success'; data: CreditsResponse }
+  | { kind: 'unauthenticated' }
+  | { kind: 'unauthorized' }
+  | { kind: 'failed' }
+
+let creditsRequest: Promise<CreditsRequestResult> | null = null
+
+function isNetworkAvailable(): boolean {
+  // navigator.onLine is only a connectivity hint. The request still handles
+  // server/DNS failures, but this avoids predictable fetch noise while offline.
+  return typeof navigator === 'undefined' || navigator.onLine !== false
+}
+
+async function requestCredits(): Promise<CreditsRequestResult> {
+  if (!isNetworkAvailable()) return { kind: 'failed' }
+  if (creditsRequest) return creditsRequest
+
+  creditsRequest = (async () => {
+    try {
+      const auth = await window.electronAPI.auth.getTeamAuth()
+      if (!auth) return { kind: 'unauthenticated' as const }
+      if (!isNetworkAvailable()) return { kind: 'failed' as const }
+      const resp = await fetch(`${auth.baseUrl}/v1/account/credits`, {
+        headers: { Authorization: `Bearer ${auth.token}` },
+      })
+      if (!resp.ok) {
+        return resp.status === 401 || resp.status === 403
+          ? { kind: 'unauthorized' as const }
+          : { kind: 'failed' as const }
+      }
+      return { kind: 'success' as const, data: await resp.json() as CreditsResponse }
+    } catch {
+      return { kind: 'failed' as const }
+    } finally {
+      creditsRequest = null
+    }
+  })()
+
+  return creditsRequest
+}
 
 /** jotai store（useStore() / createStore() 的返回类型） */
 type JotaiStore = ReturnType<typeof useStore>
@@ -50,20 +107,14 @@ export async function refreshCreditsInto(store: JotaiStore): Promise<void> {
       clearCreditsState(store)
       return
     }
-    const auth = await window.electronAPI.auth.getTeamAuth()
-    if (!auth) {
+    const result = await requestCredits()
+    if (result.kind === 'unauthenticated' || result.kind === 'unauthorized') {
+      // 认证已失效时不能保留上一个账号的余额或订阅状态；普通服务异常和断网仍保留旧快照。
       clearCreditsState(store)
       return
     }
-    const resp = await fetch(`${auth.baseUrl}/v1/account/credits`, {
-      headers: { Authorization: `Bearer ${auth.token}` },
-    })
-    if (!resp.ok) {
-      // 认证已失效时不能保留上一个账号的余额或订阅状态；普通服务异常仍保留旧快照。
-      if (resp.status === 401 || resp.status === 403) clearCreditsState(store)
-      return
-    }
-    const d = await resp.json()
+    if (result.kind !== 'success') return
+    const d = result.data
     // 当前用户本地账本余额：balance 可能为 null（非代管或查询失败）
     store.set(creditsBalanceAtom, d.balance ?? null)
     store.set(creditsLifetimeConsumedAtom, d.lifetimeConsumed ?? 0)
@@ -104,8 +155,14 @@ export function useCreditsLoader(pollMs = 60_000): { reload: () => Promise<void>
   React.useEffect(() => {
     void reload()
     if (pollMs <= 0) return
+
     const timer = setInterval(() => { void reload() }, pollMs)
-    return () => clearInterval(timer)
+    const handleOnline = (): void => { void reload() }
+    window.addEventListener('online', handleOnline)
+    return () => {
+      clearInterval(timer)
+      window.removeEventListener('online', handleOnline)
+    }
   }, [reload, pollMs])
 
   return { reload }
