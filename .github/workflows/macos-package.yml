@@ -63,6 +63,8 @@ jobs:
           bun test --isolate --max-concurrency=1 --timeout 30000
           apps/electron/scripts/package-closure.test.ts
           apps/electron/scripts/build-cli-runtime.test.ts
+          apps/electron/scripts/ui-workspace-contract.test.ts
+          packages/ui/src/markdown-preview.test.tsx
           packages/session-core/src/session-core.test.ts
           packages/project-core/src/project-core.test.ts
 

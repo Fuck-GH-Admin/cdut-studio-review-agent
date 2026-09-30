@@ -25,7 +25,7 @@ export const MARKDOWN_PREVIEW_LIGHT_COMPONENTS = {
 export interface MarkdownPreviewProps {
   /** Markdown 源文本 */
   children: string
-  /** 外层容器 className */
+  /** 显式传入时才添加外层容器，默认保持 Markdown 原有 DOM 层级 */
   className?: string
   /** 禁用图片渲染（预览/迷你地图场景，避免加载远程图） */
   disableImages?: boolean
@@ -77,16 +77,15 @@ export function MarkdownPreview({
     ...components,
   } as MarkdownComponentProps['components']
 
-  return (
-    <div className={className}>
-      <Markdown
-        remarkPlugins={remark}
-        rehypePlugins={rehype.length > 0 ? rehype : undefined}
-        urlTransform={urlTransform}
-        components={mergedComponents}
-      >
-        {children}
-      </Markdown>
-    </div>
+  const content = (
+    <Markdown
+      remarkPlugins={remark}
+      rehypePlugins={rehype.length > 0 ? rehype : undefined}
+      urlTransform={urlTransform}
+      components={mergedComponents}
+    >
+      {children}
+    </Markdown>
   )
+  return className === undefined ? content : <div className={className}>{content}</div>
 }

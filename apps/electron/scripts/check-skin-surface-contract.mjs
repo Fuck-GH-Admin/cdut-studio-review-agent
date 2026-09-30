@@ -14,7 +14,10 @@ import { join, relative } from 'node:path'
 const ROOT = fileURLToPath(new URL('..', import.meta.url))
 const SKINS_DIR = join(ROOT, 'resources', 'skins')
 const TEMPLATE_DIR = join(ROOT, 'resources', 'skin-template')
-const RENDERER_COMPONENTS_DIR = join(ROOT, 'src', 'renderer', 'components')
+const COMPONENT_DIRS = [
+  join(ROOT, 'src', 'renderer', 'components'),
+  join(ROOT, '..', '..', 'packages', 'ui', 'src'),
+]
 const REQUIRED_TOKENS = [
   'shell-surface', 'raised-surface', 'sunken-surface',
   'surface-border', 'surface-border-strong',
@@ -149,10 +152,10 @@ function collectTsxFiles(dir) {
 
 const hardcodedSurfaceRe = /(?:bg|border|text|from|to|via)-(?:slate|zinc|neutral|gray|white|black)(?:-|['"`\s])/g
 const hardcodedSurfaceHits = []
-for (const file of collectTsxFiles(RENDERER_COMPONENTS_DIR)) {
+for (const file of COMPONENT_DIRS.flatMap(collectTsxFiles)) {
   const source = readFileSync(file, 'utf8')
   const matches = source.match(hardcodedSurfaceRe)
-  if (matches?.length) hardcodedSurfaceHits.push(`${relative(join(ROOT, 'src', 'renderer'), file)} (${matches.length})`)
+  if (matches?.length) hardcodedSurfaceHits.push(`${relative(join(ROOT, '..', '..'), file)} (${matches.length})`)
 }
 if (hardcodedSurfaceHits.length) {
   console.log(`\nℹ 普通中性色审计（非阻断，品牌/媒体/代码高亮等需按域复核）：${hardcodedSurfaceHits.length} 个文件`)
