@@ -17,8 +17,10 @@
 
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs'
 import { join, resolve, dirname, relative } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { isPathWithin, workspaceRootOf } from './check-boundaries-paths'
 
-const ROOT = resolve(dirname(new URL(import.meta.url).pathname), '..')
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
 // ---------- 工具 ----------
 
@@ -95,14 +97,8 @@ function report(file: string, line: number, rule: string, detail: string): void 
   violations.push({ file: relative(ROOT, file), line, rule, detail })
 }
 
-function workspaceRootOf(file: string): string {
-  const rel = relative(ROOT, file)
-  const m = rel.match(/^(packages|apps)\/[^/]+/)
-  return m ? join(ROOT, m[0]) : ROOT
-}
-
 function checkFile(file: string, scope: 'package' | 'renderer' | 'electron-non-renderer' | 'cli'): void {
-  const wsRoot = workspaceRootOf(file)
+  const wsRoot = workspaceRootOf(ROOT, file)
   const pkg = loadPkg(wsRoot)
   // 测试文件跑在 bun/node 环境而非 renderer bundle，豁免 R6
   const effectiveScope = scope === 'renderer' && /\.(?:test|spec)\.(?:ts|tsx)$/.test(file) ? 'electron-non-renderer' : scope
@@ -112,7 +108,7 @@ function checkFile(file: string, scope: 'package' | 'renderer' | 'electron-non-r
       if (effectiveScope === 'package') report(file, line, 'R1', `packages 不得 import '${spec}'`)
       if (effectiveScope === 'renderer') report(file, line, 'R6', `renderer 不得 import '${spec}'`)
     }
-    const bare = spec.replace(/^node:/, '').split('/')[0]
+    const bare = spec.replace(/^node:/, '').split('/')[0] ?? ''
     if (effectiveScope === 'renderer' && (spec.startsWith('node:') || NODE_BUILTINS.has(bare))) {
       report(file, line, 'R6', `renderer 不得 import node 内置模块 '${spec}'`)
     }
@@ -126,7 +122,7 @@ function checkFile(file: string, scope: 'package' | 'renderer' | 'electron-non-r
         report(file, line, effectiveScope === 'cli' ? 'R7' : 'R3', `${pkg.name} 未在 dependencies 声明 '${targetName}'`)
       }
       // 规则 4：子路径必须命中目标包 exports（支持尾通配 `./x/*`）
-      const targetDir = join(ROOT, 'packages', parts[1])
+      const targetDir = join(ROOT, 'packages', parts[1]!)
       if (existsSync(join(targetDir, 'package.json'))) {
         const target = loadPkg(targetDir)
         const matched = [...target.exportsKeys].some(
@@ -142,11 +138,11 @@ function checkFile(file: string, scope: 'package' | 'renderer' | 'electron-non-r
     // 相对路径：不得逃逸出所属 workspace
     if (spec.startsWith('.')) {
       const resolved = resolve(dirname(file), spec)
-      if (!resolved.startsWith(wsRoot + '/')) {
+      if (!isPathWithin(wsRoot, resolved)) {
         report(file, line, 'R5', `相对引用 '${spec}' 逃逸出 ${relative(ROOT, wsRoot)}`)
       }
       // 规则 2：packages 内相对引用不得指向 apps
-      if (scope === 'package' && resolved.startsWith(join(ROOT, 'apps'))) {
+      if (scope === 'package' && isPathWithin(join(ROOT, 'apps'), resolved)) {
         report(file, line, 'R2', `packages 不得引用 apps：'${spec}'`)
       }
     }
