@@ -179,15 +179,6 @@ export const DEFAULT_SHORTCUTS: ShortcutDefinition[] = [
 
   // 全局快捷键（由主进程 globalShortcut 注册，应用外也生效）
   {
-    id: 'quick-task',
-    name: '快速任务',
-    description: '唤起浮动快速任务输入窗口',
-    defaultMac: 'Cmd+Shift+Space',
-    defaultWin: 'Alt+Space',
-    category: 'global',
-    global: true,
-  },
-  {
     id: 'show-main-window',
     name: '显示主窗口',
     description: '显示并聚焦 CDUT Studio 主窗口',

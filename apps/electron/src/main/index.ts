@@ -174,7 +174,6 @@ import { dingtalkBridgeManager } from './lib/dingtalk-bridge-manager'
 import { getDingTalkMultiBotConfig } from './lib/dingtalk-config'
 import { wechatBridge } from './lib/wechat-bridge'
 import { getWeChatConfig } from './lib/wechat-config'
-import { createQuickTaskWindow, toggleQuickTaskWindow, destroyQuickTaskWindow } from './lib/quick-task-window'
 import { registerGlobalShortcut, unregisterAllGlobalShortcuts } from './lib/global-shortcut-service'
 import { maintainDevShellShortcut } from './lib/dev-shell-shortcut'
 import { setProferVersion } from '@profer/core'
@@ -941,20 +940,11 @@ async function bootstrap(): Promise<void> {
   }
 
   // 预创建快速任务窗口（隐藏状态，首次唤起秒开）——默认关闭，仅在设置开启时预创建
-  if (getSettings().quickTaskEnabled === true) {
-    safeRun('createQuickTaskWindow', createQuickTaskWindow)
-  }
 
   // 飞书实时同步开启时，默认阻止系统自动休眠
   safeRun('syncFeishuSyncSleepBlocker', () => syncFeishuSyncSleepBlocker(getSettings()))
 
   // 注册全局快捷键（快速任务仅在设置开启时注册）
-  safeRun('registerGlobalShortcut:quick-task', () =>
-    registerGlobalShortcut('quick-task', () => {
-      if (getSettings().quickTaskEnabled !== true) return
-      toggleQuickTaskWindow()
-    }),
-  )
   safeRun('registerGlobalShortcut:show-main-window', () =>
     registerGlobalShortcut('show-main-window', showAndFocusMainWindow),
   )
@@ -1171,8 +1161,6 @@ app.on('before-quit', () => {
   stopFeishuSyncSleepBlocker()
   // 注销全局快捷键
   unregisterAllGlobalShortcuts()
-  // 销毁快速任务窗口
-  destroyQuickTaskWindow()
   // Clean up system tray before quitting
   destroyTray()
 })

@@ -112,6 +112,6 @@ export function updateWindowFrameAppearance(win: BrowserWindow): void {
   try {
     win.setTitleBarOverlay({ color, symbolColor, height })
   } catch {
-    // frameless 窗口（如 quick-task）不支持 setTitleBarOverlay，背景色仍需更新。
+    // frameless 窗口不支持 setTitleBarOverlay，背景色仍需更新。
   }
 }

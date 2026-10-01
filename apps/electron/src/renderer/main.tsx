@@ -131,7 +131,6 @@ function hasEnabledModel(
 }
 
 // ===== 窗口类型检测 =====
-const isQuickTaskWindow = new URLSearchParams(window.location.search).get('window') === 'quick-task'
 const isDetachedPreviewWindow = new URLSearchParams(window.location.search).get('window') === 'detached-preview'
 const isAgentPreviewWindow = new URLSearchParams(window.location.search).get('window') === 'agent-preview'
 const isPlanningWindow = new URLSearchParams(window.location.search).get('window') === 'planning'
@@ -1109,17 +1108,7 @@ function ScratchPadPersistence(): null {
   return null
 }
 
-// ===== 快速任务窗口：轻量渲染 =====
-if (isQuickTaskWindow) {
-  import('./components/quick-task/QuickTaskApp').then(({ QuickTaskApp }) => {
-    ReactDOM.createRoot(document.getElementById('root')!).render(
-      <React.StrictMode>
-        <ThemeInitializer />
-        <QuickTaskApp />
-      </React.StrictMode>
-    )
-  })
-} else if (isDetachedPreviewWindow) {
+if (isDetachedPreviewWindow) {
   import('./components/diff/DetachedPreviewApp').then(({ DetachedPreviewApp }) => {
     ReactDOM.createRoot(document.getElementById('root')!).render(
       <React.StrictMode>
