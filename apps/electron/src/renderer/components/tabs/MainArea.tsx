@@ -23,7 +23,6 @@ import { AutomationFormView } from '@/components/automation/AutomationFormView'
 import { PlanningView } from '@/components/planning/PlanningView'
 import { AgentSkillsView } from '@/components/agent-skills/AgentSkillsView'
 import { automationFormAtom } from '@/atoms/automation-atoms'
-import { agentSidePanelOpenAtom } from '@/atoms/agent-atoms'
 import { activeViewAtom } from '@/atoms/active-view'
 import { appModeAtom } from '@/atoms/app-mode'
 import { cn } from '@/lib/utils'
@@ -66,8 +65,6 @@ export function MainArea(): React.ReactElement {
   // 内容必须跟随同步 activeTabId 渲染。useDeferredValue 会让 TabBar 已高亮新会话时，
   // 主区域仍长期保留旧会话；昂贵子树应自行优化，不能以旧会话内容作为过渡态。
   const contentTabId = resolveContentTabId(tabs, activeTabId)
-
-  const [agentSidePanelOpen, setAgentSidePanelOpen] = useAtom(agentSidePanelOpenAtom)
 
   // ===== 受管浏览器（Tab 化）=====
   const setBrowserStateMap = useSetAtom(browserStateMapAtom)
@@ -154,12 +151,8 @@ export function MainArea(): React.ReactElement {
     return () => { cancelled = true }
   }, [browserDismissed, browserSessionId, publishBrowserState])
 
-  // 组合视图已经明确占用主区两栏；右侧文件面板不能以"展开意图"留在后台，
-  // 否则解散组合或切回会话时会把三栏状态再次拉回来。
-  React.useEffect(() => {
-    if (!tabGroup) return
-    if (agentSidePanelOpen) setAgentSidePanelOpen(false)
-  }, [agentSidePanelOpen, setAgentSidePanelOpen, tabGroup])
+  // 文件面板可见性由 usePanelAutoLayout 按主区栏数和窗口宽度统一计算；
+  // 组合视图不能回写用户的展开意图，否则会与顶栏打开动作冲突。
 
   // ===== 组合 tab（两个标签左右并排）=====
   // 组合是一个叠加态：两个成员标签仍在 tabsAtom 里，只是顶栏渲染时折叠成一个条目。
