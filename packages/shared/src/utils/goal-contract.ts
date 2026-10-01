@@ -1,4 +1,44 @@
-import type { AgentGoalCommand, AgentGoalContract } from '../types/agent'
+import type { AgentGoalCommand, AgentGoalContract, AgentGoalLimits, AgentGoalState } from '../types/agent'
+
+export interface GoalLimitsInput {
+  maxIterations: string
+  maxDurationMinutes: string
+  maxConsecutiveFailures: string
+  maxTokens: string
+}
+
+/** 表单预算采用严格十进制，拒绝截断、溢出及将非法值静默当作无限额。 */
+export function parseGoalLimitsInput(input: GoalLimitsInput): Partial<AgentGoalLimits> {
+  const positiveInteger = (value: string, label: string): number => {
+    const text = value.trim()
+    const number = Number(text)
+    if (!/^\d+$/.test(text) || !Number.isSafeInteger(number) || number <= 0) {
+      throw new Error(`${label}必须是正整数`)
+    }
+    return number
+  }
+  const minutes = input.maxDurationMinutes.trim()
+  const durationMs = Number(minutes) * 60000
+  if (!/^\d+(?:\.\d+)?$/.test(minutes) || !Number.isSafeInteger(durationMs) || durationMs <= 0) {
+    throw new Error('运行时长必须是有效正数，精确到毫秒且不能超出安全范围')
+  }
+  return {
+    maxIterations: positiveInteger(input.maxIterations, '轮次上限'),
+    maxDurationMs: durationMs,
+    maxConsecutiveFailures: positiveInteger(input.maxConsecutiveFailures, '连续失败上限'),
+    // 留空表示保留已有 token 上限，避免把删除表单文字误当作取消预算授权。
+    ...(input.maxTokens.trim() ? { maxTokens: positiveInteger(input.maxTokens, 'Token 上限') } : {}),
+  }
+}
+
+/** 展示与恢复前检查；运行准入的最终裁决仍由主进程 Controller 负责。 */
+export function getGoalBudgetExhaustedReasons(goal: AgentGoalState): string[] {
+  const reasons: string[] = []
+  if (goal.iteration >= goal.limits.maxIterations) reasons.push('已达到轮次上限')
+  if ((goal.elapsedMs ?? 0) >= goal.limits.maxDurationMs) reasons.push('已达到净运行时长上限')
+  if (goal.limits.maxTokens !== undefined && (goal.usage?.totalTokens ?? 0) >= goal.limits.maxTokens) reasons.push('已达到 Token 上限')
+  return reasons
+}
 
 const GOAL_SUBCOMMANDS = ['status', 'pause', 'resume', 'stop', 'clear'] as const
 
@@ -57,8 +97,8 @@ export function parseGoalContractInput(text: string): { goal: string; contract?:
 
 /**
  * 从展示文本中剥离 <goal_result> 机器协议块。
- * Goal 迭代的结构化结果是控制器与模型的内部协议（main 侧从持久化原文解析），
- * 不应原文显示在对话里。未闭合的尾部块（流式中途）一并剥离。
+ * 仅兼容旧消息展示；main 不再把文本块视为可信控制报告。
+ * 未闭合的尾部块（流式中途）一并剥离。
  */
 export function stripGoalResultBlocks(text: string): string {
   return text.replace(/<goal_result>[\s\S]*?(<\/goal_result>|$)/gi, '').replace(/\n{3,}/g, '\n\n').trimEnd()

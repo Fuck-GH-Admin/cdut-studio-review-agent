@@ -21,6 +21,7 @@ import { Bot, CornerDownLeft, Square, Settings, Paperclip, FolderPlus, X, Copy, 
 import { AgentMessages } from './AgentMessages'
 import { AgentHeader } from './AgentHeader'
 import { GoalStatusBar } from './GoalStatusBar'
+import { agentGoalAtomFamily, getGoalActions, GOAL_STATUS_LABELS, goalEditorAtomFamily, goalReplacementAtomFamily, startGoalWithReplacement } from '@/atoms/goal-atoms'
 import { ContextUsageBadge } from './ContextUsageBadge'
 import { resolvePlanQuotaChannelId } from './context-usage-badge-channel'
 import { supportsChannelPlanQuota } from '@/lib/channel-plan-quota'
@@ -165,11 +166,6 @@ import { resolveForkActionAvailability } from '@/lib/exploration-session'
 /** 稳定的空 SDKMessage 数组引用，避免 ?? [] 每次创建新引用 */
 const EMPTY_SDK_MESSAGES: SDKMessage[] = []
 const LONG_TEXT_ATTACHMENT_THRESHOLD = 2000
-
-/** /goal 状态命令展示用标签（与 GoalStatusBar 保持一致语义） */
-const GOAL_STATUS_LABELS: Record<import('@profer/shared').AgentGoalStatus, string> = {
-  active: '执行中', paused: '已暂停', completed: '已完成', blocked: '等待处理', failed: '执行失败', stopped: '已停止',
-}
 
 /** 构造乐观用户 SDKMessage（用于运行中追加消息立即上屏） */
 function createUserSDKMessage(text: string, uuid?: string, createdAt = Date.now()): SDKMessage {
@@ -527,6 +523,10 @@ export interface AgentViewProps {
 }
 
 export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
+  const [pendingGoalReplacement, setPendingGoalReplacement] = useAtom(goalReplacementAtomFamily(sessionId))
+  const [replacingGoal, setReplacingGoal] = React.useState(false)
+  const setCurrentGoal = useSetAtom(agentGoalAtomFamily(sessionId))
+  const setGoalEditor = useSetAtom(goalEditorAtomFamily(sessionId))
   const [persistedSDKMessages, setPersistedSDKMessages] = React.useState<SDKMessage[]>([])
   const persistedSDKMessagesRef = React.useRef<SDKMessage[]>([])
   persistedSDKMessagesRef.current = persistedSDKMessages
@@ -2140,8 +2140,14 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
           await window.electronAPI.pauseGoal(sessionId)
           toast.info('Goal 已暂停')
         } else if (goalCommand.type === 'resume') {
-          await window.electronAPI.resumeGoal(sessionId)
-          toast.info('Goal 已恢复')
+          const current = await window.electronAPI.getGoal(sessionId)
+          if (current && getGoalActions(current).budgetEditRequired) {
+            setGoalEditor(current)
+            toast.info('请先增加 Goal 预算，再保存并恢复')
+          } else {
+            setCurrentGoal(await window.electronAPI.resumeGoal(sessionId))
+            toast.info('Goal 已恢复')
+          }
         } else if (goalCommand.type === 'stop') {
           await window.electronAPI.stopGoal(sessionId)
           toast.info('Goal 已停止')
@@ -2149,12 +2155,13 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
           await window.electronAPI.clearGoal(sessionId)
           toast.info('Goal 状态已清除')
         } else if (goalCommand.type === 'start') {
-          await window.electronAPI.startGoal(sessionId, goalCommand.goal, goalCommand.contract)
-          toast.success('Goal 已启动', {
-            description: goalCommand.contract?.verification
-              ? `${goalCommand.goal} · 验收：${goalCommand.contract.verification}`
-              : `${goalCommand.goal}（可用 @verify:/@constraint:/@stop: 行补充契约）`,
-          })
+          const result = await startGoalWithReplacement(window.electronAPI, sessionId, goalCommand)
+          if (result.confirmation) {
+            setPendingGoalReplacement({ previous: result.confirmation, goal: goalCommand.goal, contract: goalCommand.contract })
+            return
+          }
+          if (result.state) setCurrentGoal(result.state)
+          toast.success('Goal 已启动', { description: `${goalCommand.goal} · 沿用当前会话上下文与工作历史` })
         }
         setInputContent('')
         setInputHtmlContent('')
@@ -2504,7 +2511,7 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
         return map
       })
     })
-  }, [attachedDirs, attachedFileDirectories, sessionId, agentChannelId, agentModelId, currentWorkspaceId, sessionAgentRuntime, workspaces, streaming, backgroundWaiting, suggestion, hasAvailableModel, streamState?.stopping, store, setStreamingStates, setPendingFiles, setAgentStreamErrors, setPromptSuggestions, setInputContent, setLiveMessagesMap, revealRendererDraft, permissionMode, messagesLoaded, consumeAgentInterruptionBlock, queuedMessages, enqueueCurrentInput, removeOptimisticPersistedMessage])
+  }, [attachedDirs, attachedFileDirectories, sessionId, agentChannelId, agentModelId, currentWorkspaceId, sessionAgentRuntime, workspaces, streaming, backgroundWaiting, suggestion, hasAvailableModel, streamState?.stopping, store, setStreamingStates, setPendingFiles, setAgentStreamErrors, setPromptSuggestions, setInputContent, setLiveMessagesMap, revealRendererDraft, permissionMode, messagesLoaded, consumeAgentInterruptionBlock, queuedMessages, enqueueCurrentInput, removeOptimisticPersistedMessage, setCurrentGoal, setGoalEditor, setPendingGoalReplacement])
 
   // ===== 运行中追加消息队列：控制与自动发送 =====
   const allPermissionRequestsForQueue = useAtomValue(allPendingPermissionRequestsAtom)
@@ -3248,6 +3255,34 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
         <div className="shrink-0">
           <GoalStatusBar sessionId={sessionId} />
         </div>
+        <AlertDialog open={Boolean(pendingGoalReplacement)} onOpenChange={(open) => { if (!open && !replacingGoal) setPendingGoalReplacement(null) }}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>归档当前 Goal 并开始新目标？</AlertDialogTitle>
+              <AlertDialogDescription>
+                当前目标「{pendingGoalReplacement?.previous.goal}」尚未完成（{pendingGoalReplacement ? GOAL_STATUS_LABELS[pendingGoalReplacement.previous.status] : ''}）。确认后会先停止并归档当前目标与轮次历史，再沿用此会话上下文执行「{pendingGoalReplacement?.goal}」。
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={replacingGoal}>保留当前目标</AlertDialogCancel>
+              <AlertDialogAction disabled={replacingGoal || pendingGoalReplacement?.previous.status === 'stopping'} onClick={(event) => {
+                event.preventDefault()
+                if (!pendingGoalReplacement || replacingGoal) return
+                const pending = pendingGoalReplacement
+                setReplacingGoal(true)
+                void startGoalWithReplacement(window.electronAPI, sessionId, pending, pending.previous.id).then((result) => {
+                  if (result.state) setCurrentGoal(result.state)
+                  setPendingGoalReplacement(null)
+                  setInputContent('')
+                  setInputHtmlContent('')
+                  toast.success('旧 Goal 已归档，新 Goal 已启动')
+                }).catch((error) => {
+                  toast.error('Goal 替换失败', { description: error instanceof Error ? error.message : String(error) })
+                }).finally(() => setReplacingGoal(false))
+              }}>{replacingGoal ? '正在归档并启动…' : '归档并开始新目标'}</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
         {/* 消息区域 */}
         <AgentMessages

@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'bun:test'
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { loadGoalStates, saveGoalStates } from './goal-store'
+import { archiveGoalState, loadGoalHistory, loadGoalStates, saveGoalStates } from './goal-store'
 import { createGoalState, DEFAULT_GOAL_LIMITS } from './goal-loop'
 
 describe('goal store', () => {
@@ -33,6 +33,90 @@ describe('goal store', () => {
     } finally {
       rmSync(dir, { recursive: true, force: true })
     }
+  })
+
+  test('strictly validates schema and version while accepting old v1', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'goal-store-'))
+    try {
+      const file = join(dir, 'goals.json')
+      const goal = createGoalState('s', '目标', 1000)
+      writeFileSync(file, JSON.stringify({ version: 1, goals: [goal, { ...goal, id: 'bad', limits: { ...goal.limits, maxIterations: -1 } }, { ...goal, id: 'bad2', status: 'arbitrary' }, { ...goal, id: 'bad3', iteration: '20' }, { ...goal, id: 'bad4', usage: { inputTokens: -1, outputTokens: 0, totalTokens: 0 } }] }))
+      expect(loadGoalStates(file).map((state) => state.id)).toEqual([goal.id])
+      writeFileSync(file, JSON.stringify({ version: 99, goals: [goal] }))
+      expect(loadGoalStates(file)).toEqual([])
+      writeFileSync(file, JSON.stringify({ goals: [goal] }))
+      expect(loadGoalStates(file)).toEqual([])
+    } finally { rmSync(dir, { recursive: true, force: true }) }
+  })
+
+  test('archives by goalId idempotently and live save preserves archives', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'goal-store-'))
+    try {
+      const file = join(dir, 'goals.json')
+      const old = { ...createGoalState('s', '旧目标', 1000), status: 'blocked' as const }
+      saveGoalStates(file, [old])
+      archiveGoalState(file, old)
+      archiveGoalState(file, old)
+      const next = createGoalState('s', '新目标', 2000)
+      saveGoalStates(file, [next])
+      expect(loadGoalStates(file).map((state) => state.id)).toEqual([next.id])
+      expect(loadGoalHistory(file, 's').map((state) => state.id)).toEqual([old.id])
+      expect(loadGoalHistory(file, 'other')).toEqual([])
+    } finally { rmSync(dir, { recursive: true, force: true }) }
+  })
+
+  test('严格拒绝坏 history、contract、owner 和非有限预算', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'goal-store-'))
+    try {
+      const file = join(dir, 'goals.json')
+      const goal = createGoalState('s', '目标', 1000)
+      const bad = [
+        { ...goal, id: '', },
+        { ...goal, contract: { verification: 123 } },
+        { ...goal, activeRunId: {} },
+        { ...goal, history: [{ iteration: 1 }] },
+        { ...goal, history: [{ iteration: 1, startedAt: 1, finishedAt: 2, status: 'wrong', summary: 'x', evidence: [] }] },
+        { ...goal, lastEvidence: [123] },
+      ]
+      writeFileSync(file, JSON.stringify({ version: 2, goals: bad }))
+      expect(loadGoalStates(file)).toEqual([])
+    } finally { rmSync(dir, { recursive: true, force: true }) }
+  })
+
+  test('v1 elapsedMs 从已存执行记录迁移，不能包括暂停时间', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'goal-store-'))
+    try {
+      const file = join(dir, 'goals.json')
+      const { elapsedMs: _elapsed, revision: _revision, ...goal } = createGoalState('s', '目标', 1000)
+      writeFileSync(file, JSON.stringify({ version: 1, goals: [{ ...goal, history: [{ iteration: 1, startedAt: 1000, finishedAt: 1050, status: 'continue', summary: '进展', evidence: ['证据'] }], updatedAt: 10000000 }] }))
+      expect(loadGoalStates(file)[0]?.elapsedMs).toBe(50)
+    } finally { rmSync(dir, { recursive: true, force: true }) }
+  })
+
+  test('save 非法状态不覆盖原子文件', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'goal-store-'))
+    try {
+      const file = join(dir, 'goals.json')
+      const goal = createGoalState('s', '目标', 1000)
+      saveGoalStates(file, [goal])
+      expect(() => saveGoalStates(file, [{ ...goal, limits: { ...goal.limits, maxDurationMs: NaN } }])).toThrow()
+      expect(loadGoalStates(file)[0]?.id).toBe(goal.id)
+    } finally { rmSync(dir, { recursive: true, force: true }) }
+  })
+
+  test('损坏或未知版本文件不能被恢复保存覆盖，归档不按全局20条丢历史', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'goal-store-'))
+    try {
+      const file = join(dir, 'goals.json')
+      writeFileSync(file, '{broken')
+      expect(() => saveGoalStates(file, [])).toThrow('已保留原文件')
+      expect(readFileSync(file, 'utf8')).toBe('{broken')
+      writeFileSync(file, JSON.stringify({ version: 999, goals: [] }))
+      expect(() => archiveGoalState(file, createGoalState('s', '目标'))).toThrow()
+      writeFileSync(file, JSON.stringify({ version: 2, goals: [], history: [] }))
+      for (let i = 0; i < 25; i++) archiveGoalState(file, createGoalState('s', `目标${i}`))
+      expect(loadGoalHistory(file, 's')).toHaveLength(25)
+    } finally { rmSync(dir, { recursive: true, force: true }) }
   })
 
   test('caps persisted history to the limit', () => {

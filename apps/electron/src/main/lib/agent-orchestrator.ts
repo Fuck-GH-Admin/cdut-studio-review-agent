@@ -237,6 +237,8 @@ export interface SessionCallbacks {
   ) => void
   /** 发送标题更新 */
   onTitleUpdated: (title: string) => void
+  /** 已获得本轮运行权；并发拒绝不会调用。 */
+  onRunOwned?: () => void
   /** 用户消息已持久化，外部入口可据此通知前端切到实时会话 */
   onRunStarted?: (opts: { startedAt: number }) => void | Promise<void>
 }
@@ -288,6 +290,9 @@ export class AgentOrchestrator {
   private eventBus: AgentEventBus
   /** sessionId → 本轮不可复用的运行令牌；直到 owner finally 才释放。 */
   private activeSessions = new Map<string, string>()
+
+  /** 每个会话至多一个 Goal owner；用于拒绝迟到的停止和清理。 */
+  private goalRunOwners = new Map<string, string>()
 
   /** 队列消息本地记录（sessionId → UUID 集合，用于防重） */
   private queuedMessageUuids = new Map<string, Set<string>>()
@@ -957,7 +962,7 @@ export class AgentOrchestrator {
       // 因 startedAt 不匹配而丢弃终态。交给调用入口作为普通 IPC 拒绝处理。
       throw new AgentRunAlreadyActiveError(stopping)
     }
-    input = routePluginModel(`agent:${sessionId}`, input, agentRuntime)
+    if (input.goalRunId) this.goalRunOwners.set(sessionId, input.goalRunId)
     if (goalIsolated) this.nonPersistingGoalSessions.add(sessionId)
     ;({ channelId, modelId } = input)
     let resolveCompletion!: () => void
@@ -969,6 +974,7 @@ export class AgentOrchestrator {
       promise: completion,
       resolve: resolveCompletion,
     })
+    callbacks.onRunOwned?.()
     let resolveSkillRouting!: (snapshot: SkillRoutingSnapshot | undefined) => void
     this.activeSkillRoutings.set(sessionId, new Promise(resolve => { resolveSkillRouting = resolve }))
     let resolveRuntimeRegistered!: (ready: boolean) => void
@@ -996,6 +1002,8 @@ export class AgentOrchestrator {
 
     try {
     // 0.5 清除上一轮中断标记
+      input = routePluginModel(`agent:${sessionId}`, input, agentRuntime)
+      ;({ channelId, modelId } = input)
       try {
         updateAgentSessionMeta(sessionId, { stoppedByUser: false })
       } catch {
@@ -2168,10 +2176,10 @@ ${enrichedMessage}`
           agentRuntime === 'pi' ? piSystemPrompt : systemPromptAppend,
         ),
         resumeSessionId: existingSdkSessionId,
+        onRuntimeMessage: input.onRuntimeMessage,
         ...(input.isolatedRuntimeSession && {
           isolatedRuntimeSession: true,
           onRuntimeSessionId: input.onRuntimeSessionId,
-          onRuntimeMessage: input.onRuntimeMessage,
         }),
         // 回退后 resume：从指定消息处继续（SDK 在同一 JSONL 内创建分支）
         ...(rewindResumeAt && { resumeSessionAt: rewindResumeAt }),
@@ -2403,7 +2411,20 @@ ${enrichedMessage}`
 
       const queryStartedAt = Date.now()
 
+      const stoppedBeforeQuery = this.consumeStoppedByUser(sessionId)
+      if (stoppedBeforeQuery) {
+        completeRun(getAgentSessionMessages(sessionId), { stoppedByUser: true, startedAt: streamStartedAt })
+        return
+      }
       for (let attempt = 1; attempt <= MAX_AUTO_RETRIES + 1; attempt++) {
+        if (this.stoppedBySessions.has(sessionId) || this.activeSessions.get(sessionId) !== runGeneration) {
+          const wasStoppedByUser = this.consumeStoppedByUser(sessionId)
+          completeRun(getAgentSessionMessages(sessionId), {
+            stoppedByUser: wasStoppedByUser,
+            startedAt: streamStartedAt,
+          })
+          return
+        }
         // 非首次尝试：等待 + 发送重试事件到 UI
         if (attempt > 1) {
           if (skipNextRetryDelay) {
@@ -3012,7 +3033,7 @@ ${enrichedMessage}`
               }
             }
 
-            // Goal 内部消息走独立回调，供本轮结果解析；普通消息仍按原逻辑进入持久化累积。
+            // 调用方可观察完整 runtime 消息；普通 Goal 使用当前会话上下文并正常持久化。
             input.onRuntimeMessage?.(msg)
             // 累积 assistant 和 user 消息用于持久化
             // - 跳过 replay 消息，避免 resume 时重复写入
@@ -3131,6 +3152,11 @@ ${enrichedMessage}`
           }
 
           const wasStoppedByUser = this.consumeStoppedByUser(sessionId)
+          if (input.goalRunId && wasStoppedByUser) {
+            callbacks.onError('Goal 运行已停止')
+            completeRun(getAgentSessionMessages(sessionId), { stoppedByUser: true, startedAt: streamStartedAt })
+            return
+          }
 
           // 正常完成 — 如果之前有重试，发送 retry_cleared
           if (!wasStoppedByUser && retryAttemptsScheduled > 0) {
@@ -3452,6 +3478,9 @@ ${enrichedMessage}`
       // 只在 generation 匹配时才清理，防止旧流的 finally 误删新流的注册
       // 只有仍持有本 generation 的 finally 能释放并清理 session scoped state。
       if (releaseActiveRun()) {
+        if (input.goalRunId && this.goalRunOwners.get(sessionId) === input.goalRunId) {
+          this.goalRunOwners.delete(sessionId)
+        }
         this.nonPersistingGoalSessions.delete(sessionId)
         resolveSkillRouting(undefined)
         resolveRuntimeRegistered(false)
@@ -3472,6 +3501,7 @@ ${enrichedMessage}`
         // ownership 已释放，renderer 此时收到 STREAM_COMPLETE 后可安全开始下一轮。
         // 若 Stop 发生在 query/setup 尚未进入统一终态处理前，清掉残留标记，
         // 防止下一轮被误判为“启动前已停止”。
+        const stoppedDuringRun = this.stoppedBySessions.has(sessionId)
         this.stoppedBySessions.delete(sessionId)
         if (pendingTerminalCompletion) {
           const completion = pendingTerminalCompletion
@@ -3479,7 +3509,8 @@ ${enrichedMessage}`
           // 后台任务续轮（backgroundTasksPending 的 idleComplete）走 onComplete 直达、不经此路径，
           // 因此不写 meta、不追加记录、不透传 endReason ——「假结束」不误判。
           const opts: CompleteOptions = completion.opts ?? {}
-          const stopped = opts.stoppedByUser === true
+          const stopped = opts.stoppedByUser === true || stoppedDuringRun
+          if (stopped) opts.stoppedByUser = true
           const hasError = runEndedWithError
           const rawSubtype = opts.resultSubtype
           // D3 防御：干净结束（无 subtype、无错误、未停止）视为 success，避免被误判为 unknown/中断
@@ -3596,6 +3627,18 @@ ${enrichedMessage}`
       console.error(`[Agent 编排] 级联停止子会话失败: sessionId=${sessionId}`, err)
     }
     console.log(`[Agent 编排] 已请求中止会话: ${sessionId}`)
+  }
+
+  /** Goal runId 归属检查；不带 runId 时只检查是否存在 Goal owner。 */
+  isGoalRunActive(sessionId: string, runId?: string): boolean {
+    const owner = this.goalRunOwners.get(sessionId)
+    return owner !== undefined && this.activeSessions.has(sessionId) && (runId === undefined || owner === runId)
+  }
+
+  /** 只停止匹配 runId 的 Goal owner，并等待 owner finally 释放运行锁。 */
+  async stopGoalRunAndWait(sessionId: string, runId: string, timeoutMs = 15_000): Promise<void> {
+    if (!this.isGoalRunActive(sessionId, runId)) return
+    await this.stopAndWait(sessionId, timeoutMs)
   }
 
   /** 检查指定会话是否正在处理或停止中。 */

@@ -271,16 +271,16 @@ import {
   countArchivedAgentSessions,
 } from './lib/agent-session-manager'
 import { listAgentPresets, listGlobalAgentPresets, getDefaultPresetId, setDefaultPresetId, setDefaultPresetReference, enableGlobalPresetInWorkspace, disableGlobalPresetInWorkspace, rebindAndDisableGlobalPresetScope, setWorkspacePresetEnabled, rebindAgentSessionPreset, rebindAutomationPreset, createAgentPreset, createGlobalAgentPreset, promoteWorkspacePresetToGlobal, copyAgentPreset, copyPresetToWorkspace, updateAgentPreset, updateGlobalAgentPreset, deleteAgentPreset, deleteGlobalAgentPreset, getAgentPreset, getPresetReferenceReport, serializeAgentPresetsForExport, importAgentPresets } from './lib/agent-preset-manager'
-import { runAgent, stopAgent, stopAgentAndWait, beginAgentSessionDeletion, endAgentSessionDeletion, generateAgentTitle, regenerateAgentTitle, saveFilesToAgentSession, saveFilesToWorkspaceFiles, isAgentSessionActive, queueAgentMessage, updateAgentPermissionMode, rewindAgentSession, restoreActiveAgentStreams, getAgentRuntimeCapabilities, getAgentTaskOutput, stopAgentTask, emitSessionStreamEvent, agentCatalogInvalidationPublisher } from './lib/agent-service'
+import { runAgent, stopAgent, stopAgentAndWait, stopGoalRunAndWait, isGoalRunActive, beginAgentSessionDeletion, endAgentSessionDeletion, generateAgentTitle, regenerateAgentTitle, saveFilesToAgentSession, saveFilesToWorkspaceFiles, isAgentSessionActive, queueAgentMessage, updateAgentPermissionMode, rewindAgentSession, restoreActiveAgentStreams, getAgentRuntimeCapabilities, getAgentTaskOutput, stopAgentTask, emitSessionStreamEvent, agentCatalogInvalidationPublisher } from './lib/agent-service'
 import { publishAgentSessionProjection, updateAgentSessionUiMeta } from './lib/agent-session-ui-projection-publisher'
 import { mapSdkShellTasks, isSameProcess, terminateProcessTreeGracefully, type MonitoredProcess } from './lib/process-monitor'
 import { listOwnedRuntimeProcesses, markOwnedRuntimeProcessExited, onRuntimeProcessRegistryChanged } from './lib/runtime-process-registry'
 import { isProcessHandleOwnedBySession, processHandleFromRuntimeRecord } from './lib/process-handle'
 import { coordinateAgentSend } from './lib/agent-send-coordinator'
-import { GoalController } from './lib/goal-controller'
-import { buildGoalIterationPrompt, parseGoalIterationResult } from './lib/goal-loop'
-import { loadGoalStates, saveGoalStates } from './lib/goal-store'
-import type { AgentGoalContract, AgentGoalIterationResult, AgentGoalState, AgentGoalUsage } from '@profer/shared'
+import { GoalSessionService } from './lib/goal-session-service'
+import { loadGoalStates, saveGoalStates, archiveGoalState, loadGoalHistory } from './lib/goal-store'
+import { resolveEffectivePermissionMode } from '@profer/shared'
+import type { AgentGoalContract, AgentGoalLimits, AgentGoalState } from '@profer/shared'
 import { getAgentPresetByReference, presetReferenceForId } from './lib/agent-preset-manager'
 import { AgentSessionDeletionCoordinator } from './lib/agent-session-deletion'
 import { permissionService } from './lib/agent-permission-service'
@@ -416,173 +416,52 @@ const HIDDEN_FS_ENTRIES = new Set(['.DS_Store', 'Thumbs.db'])
 /** 同一会话的并发删除合并为一条 stop-and-wait 生命周期。 */
 const agentSessionDeletionCoordinator = new AgentSessionDeletionCoordinator()
 
-function collectGoalText(value: unknown, output: string[] = []): string[] {
-  if (typeof value === 'string') {
-    if (value.includes('<goal_result>')) output.push(value)
-    return output
-  }
-  if (Array.isArray(value)) {
-    for (const item of value) collectGoalText(item, output)
-    return output
-  }
-  if (value && typeof value === 'object') {
-    for (const item of Object.values(value as Record<string, unknown>)) collectGoalText(item, output)
-  }
-  return output
-}
-
 const GOAL_STORE_PATH = () => join(app.getPath('userData'), 'goals.json')
 
-/** Goal 每次状态变化时的完整快照持久化（渲染层事件不受影响）。 */
-function persistGoalStates(): void {
-  try {
-    saveGoalStates(GOAL_STORE_PATH(), goalController.list())
-  } catch (error) {
-    console.error('[goal] 状态持久化失败', error)
-  }
-}
-
-/**
- * Goal 进入受阻/完成时与规划中心联动（Profer 原生集成）：
- * - blocked：创建（或更新）一条规划中心 Todo，让用户在规划中心看到待处理项；
- * - completed：自动完成之前创建的受阻 Todo。
- * 只在状态跃迁时触发，blocked 状态下重复 emit 不会重复建 Todo。
- */
-const goalTerminalHandled = new Map<string, string>()
-const goalVisibleResultHandled = new Map<string, string>()
-function persistGoalVisibleResult(state: AgentGoalState): void {
-  if (state.status === 'active' || state.status === 'paused' || state.status === 'stopped') return
-  const record = state.history?.[state.history.length - 1]
-  const summary = record?.summary || state.lastSummary
-  if (!summary) return
-  const evidence = (record?.evidence ?? state.lastEvidence ?? []).length > 0
-    ? `\n\n证据：\n${(record?.evidence ?? state.lastEvidence ?? []).map((item) => `- ${item}`).join('\n')}`
-    : ''
-  const iteration = record?.iteration ?? state.iteration
-  const key = `${state.id}:${iteration}:${state.status}`
-  if (goalVisibleResultHandled.get(state.id) === key) return
-  appendSDKMessages(state.sessionId, [{
-    type: 'assistant',
-    message: { content: [{ type: 'text', text: `Goal ${state.status === 'completed' ? '已完成' : state.status === 'blocked' ? '已阻塞' : '执行失败'}\n\n${summary}${evidence}` }] },
-    parent_tool_use_id: null,
-    uuid: randomUUID(),
-    _createdAt: Date.now(),
-    _goalVisibleResult: true,
-  } as unknown as import('@profer/shared').SDKMessage])
-  goalVisibleResultHandled.set(state.id, key)
-}
-function syncGoalPlanningTodo(state: AgentGoalState): void {
-  const key = `${state.id}:${state.iteration}`
-  try {
-    persistGoalVisibleResult(state)
-  } catch (error) {
-    console.error('[goal] 可见结果持久化失败', error)
-  }
-  try {
-    if (state.status === 'blocked') {
-      if (goalTerminalHandled.get(state.id) === key) return
-      goalTerminalHandled.set(state.id, key)
-      if (state.blockedTodoId) {
-        // 复阻时重开已有 Todo 并刷新原因，避免重复建项。
-        updateTodo({ id: state.blockedTodoId, status: 'open', notes: `最新阻塞原因：${state.stopReason || state.lastSummary || '未说明'}` })
-        return
-      }
-      const session = getAgentSessionMeta(state.sessionId)
-      const todo = createTodo({
-        title: `[Goal 受阻] ${state.goal.slice(0, 60)}`,
-        notes: [
-          `会话：${session?.title || state.sessionId}`,
-          `阻塞原因：${state.stopReason || state.lastSummary || '未说明'}`,
-          `处理后可回到该会话执行 /goal resume 继续。`,
-        ].join('\n'),
-        priority: 'high',
-        workspaceId: session?.workspaceId,
-      })
-      goalController.patch(state.sessionId, { blockedTodoId: todo.id })
-      return
-    }
-    if (state.status === 'completed' && state.blockedTodoId) {
-      if (goalTerminalHandled.get(state.id) === key) return
-      goalTerminalHandled.set(state.id, key)
-      updateTodo({ id: state.blockedTodoId, status: 'completed' })
-    }
-  } catch (error) {
-    console.error('[goal] 规划中心联动失败', error)
-  }
-}
-
-function collectGoalUsage(messages: unknown[]): AgentGoalUsage | undefined {
-  for (let index = messages.length - 1; index >= 0; index--) {
-    const message = messages[index] as { type?: string; usage?: { input_tokens?: unknown; output_tokens?: unknown; cache_read_input_tokens?: unknown; cache_creation_input_tokens?: unknown } } | undefined
-    if (message?.type !== 'result' || !message.usage) continue
-    const inputTokens = Number(message.usage.input_tokens ?? 0) + Number(message.usage.cache_read_input_tokens ?? 0) + Number(message.usage.cache_creation_input_tokens ?? 0)
-    const outputTokens = Number(message.usage.output_tokens ?? 0)
-    return { inputTokens, outputTokens, totalTokens: inputTokens + outputTokens }
-  }
-  return undefined
-}
-
-const goalController = new GoalController({
-  runTurn: async ({ sessionId, state, previousSummary, runtimeSessionId, onRuntimeSessionId }) => {
+const goalSessionService = new GoalSessionService({
+  getSession: (sessionId) => getAgentSessionMeta(sessionId),
+  isSessionActive: isAgentSessionActive,
+  permissionError: (sessionId) => {
     const session = getAgentSessionMeta(sessionId)
-    if (!session?.channelId) throw new Error('Goal 会话缺少渠道配置')
-    const prompt = buildGoalIterationPrompt(state, { previousSummary })
-    let structuredResult: AgentGoalIterationResult | undefined
-    const runtimeMessages: import('@profer/shared').SDKMessage[] = []
+    const workspaceSlug = session?.workspaceId ? getAgentWorkspace(session.workspaceId)?.slug : undefined
+    const reference = session?.presetReference ?? presetReferenceForId(workspaceSlug, session?.presetId)
+    const preset = getAgentPresetByReference(reference, workspaceSlug)
+    return resolveEffectivePermissionMode(preset.permissionMode, session?.permissionMode) === 'plan'
+      ? '当前预设为计划模式，请先切换为可执行模式再启动或恢复 Goal'
+      : undefined
+  },
+  run: async (input) => {
     const mainWindow = getMainWindow()
     if (!mainWindow || mainWindow.isDestroyed()) throw new Error('Profer 主窗口不可用，Goal 已停止')
-    await runAgent({
-      sessionId,
-      userMessage: state.goal,
-      internalPrompt: prompt,
-      suppressUserMessagePersistence: true,
-      channelId: session.channelId,
-      modelId: session.modelId,
-      workspaceId: session.workspaceId,
-      agentRuntime: session.agentRuntime,
-      permissionModeOverride: 'bypassPermissions',
-      triggeredBy: 'goal',
-      goalIteration: state.iteration,
-      titleSourceText: state.goal,
-      isolatedRuntimeSession: true,
-      runtimeSessionId,
-      onRuntimeSessionId,
-      onRuntimeMessage: (message) => {
-        if (!(message as { isReplay?: boolean }).isReplay) runtimeMessages.push(message)
-      },
-      reportGoalResult: (result) => { structuredResult = result },
-    }, mainWindow.webContents)
-    const currentTurnMessages = runtimeMessages
-    const usage = collectGoalUsage(currentTurnMessages)
-    if (structuredResult) return usage ? { ...structuredResult, usage } : structuredResult
-    const goalText = collectGoalText(currentTurnMessages).join('\n')
-    const fallback = parseGoalIterationResult(goalText)
-    return usage ? { ...fallback, usage } : fallback
+    await runAgent(input, mainWindow.webContents)
   },
-  stopTurn: (sessionId) => stopAgentAndWait(sessionId),
-  onStateChange: (state) => {
-    syncGoalPlanningTodo(state)
-    persistGoalStates()
-    const event = { sessionId: state.sessionId, state }
-    getMainWindow()?.webContents.send(AGENT_IPC_CHANNELS.GOAL_EVENT, event)
+  stopRun: stopGoalRunAndWait,
+  readStates: () => loadGoalStates(GOAL_STORE_PATH()),
+  saveStates: (states) => saveGoalStates(GOAL_STORE_PATH(), states),
+  archive: (state) => archiveGoalState(GOAL_STORE_PATH(), state),
+  history: (sessionId) => loadGoalHistory(GOAL_STORE_PATH(), sessionId),
+  readMessages: getAgentSessionSDKMessages,
+  appendMessages: appendSDKMessages,
+  createBlockedTodo: (state, session) => createTodo({
+    title: `[Goal 受阻] ${state.goal.slice(0, 60)}`,
+    notes: `会话：${session?.title || state.sessionId}\n阻塞原因：${state.stopReason || state.lastSummary || '需要输入'}\n处理后可回到该会话执行 /goal resume 继续。`,
+    priority: 'high',
+    workspaceId: session?.workspaceId,
+  }).id,
+  updateBlockedTodo: (id, status, notes) => { updateTodo({ id, status, notes }) },
+  publish: (state) => {
+    getMainWindow()?.webContents.send(AGENT_IPC_CHANNELS.GOAL_EVENT, { sessionId: state.sessionId, state })
   },
+  logError: (error) => { console.error('[goal] 会话状态同步失败', error) },
 })
 
-// 启动时恢复上次会话遗留的 Goal（active 已在退出时降级为 paused，由用户显式 resume）。
-let goalStatesRestored = false
 function restoreGoalStatesOnce(): void {
-  if (goalStatesRestored) return
-  goalStatesRestored = true
-  try {
-    goalController.restore(loadGoalStates(GOAL_STORE_PATH()))
-  } catch (error) {
-    console.error('[goal] 状态恢复失败', error)
-  }
+  try { goalSessionService.restore() } catch (error) { console.error('[goal] 状态恢复失败', error) }
 }
 
-/** 应用进程退出前暂停所有 Goal 并持久化，下次启动可恢复。 */
+/** 应用进程退出前暂停所有 Goal，并保存完整状态供下次恢复。 */
 export function stopAllGoalsForProcessExit(): void {
-  goalController.stopAll()
+  goalSessionService.stopAll()
 }
 
 /** 已知编辑器应用名称白名单（macOS） */
@@ -3938,45 +3817,41 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(AGENT_IPC_CHANNELS.START_GOAL, async (event, sessionId: string, goal: string, contract?: AgentGoalContract): Promise<AgentGoalState> => {
     assertSensitiveAgentIpcSender(event)
     if (typeof sessionId !== 'string' || typeof goal !== 'string' || !goal.trim()) throw new Error('Goal 不能为空')
-    const state = await goalController.start(sessionId, goal, contract)
-    const contractLines = [
-      contract?.verification ? `\n@verify: ${contract.verification}` : '',
-      contract?.constraints ? `\n@constraint: ${contract.constraints}` : '',
-      contract?.stopWhen ? `\n@stop: ${contract.stopWhen}` : '',
-    ].join('')
-    appendSDKMessages(sessionId, [{
-      type: 'user',
-      message: { content: [{ type: 'text', text: `/goal ${goal}${contractLines}` }] },
-      parent_tool_use_id: null,
-      uuid: randomUUID(),
-      _createdAt: Date.now(),
-    } as unknown as import('@profer/shared').SDKMessage])
-    getMainWindow()?.webContents.send(AGENT_IPC_CHANNELS.GOAL_EVENT, { sessionId, state })
-    return state
+    return goalSessionService.start(sessionId, goal, contract)
   })
   ipcMain.handle(AGENT_IPC_CHANNELS.GET_GOAL, async (event, sessionId: string): Promise<AgentGoalState | null> => {
     assertSensitiveAgentIpcSender(event)
-    return goalController.get(sessionId) ?? null
+    return goalSessionService.get(sessionId) ?? null
   })
   ipcMain.handle(AGENT_IPC_CHANNELS.LIST_GOALS, async (event): Promise<AgentGoalState[]> => {
     assertSensitiveAgentIpcSender(event)
-    return goalController.list()
+    return goalSessionService.list()
   })
   ipcMain.handle(AGENT_IPC_CHANNELS.PAUSE_GOAL, async (event, sessionId: string): Promise<AgentGoalState> => {
     assertSensitiveAgentIpcSender(event)
-    return goalController.pause(sessionId)
+    return goalSessionService.pause(sessionId)
   })
   ipcMain.handle(AGENT_IPC_CHANNELS.RESUME_GOAL, async (event, sessionId: string): Promise<AgentGoalState> => {
     assertSensitiveAgentIpcSender(event)
-    return goalController.resume(sessionId)
+    return goalSessionService.resume(sessionId)
   })
   ipcMain.handle(AGENT_IPC_CHANNELS.STOP_GOAL, async (event, sessionId: string): Promise<AgentGoalState> => {
     assertSensitiveAgentIpcSender(event)
-    return goalController.stop(sessionId)
+    return goalSessionService.stop(sessionId)
   })
   ipcMain.handle(AGENT_IPC_CHANNELS.CLEAR_GOAL, async (event, sessionId: string): Promise<void> => {
     assertSensitiveAgentIpcSender(event)
-    goalController.clear(sessionId)
+    goalSessionService.clear(sessionId)
+  })
+  ipcMain.handle(AGENT_IPC_CHANNELS.UPDATE_GOAL, async (event, sessionId: string, patch: { goal?: string; contract?: AgentGoalContract; limits?: Partial<AgentGoalLimits> }): Promise<AgentGoalState> => {
+    assertSensitiveAgentIpcSender(event)
+    if (typeof sessionId !== 'string' || !patch || typeof patch !== 'object' || Array.isArray(patch)) throw new Error('无效的 Goal 更新参数')
+    return goalSessionService.update(sessionId, patch)
+  })
+  ipcMain.handle(AGENT_IPC_CHANNELS.GET_GOAL_HISTORY, async (event, sessionId: string): Promise<AgentGoalState[]> => {
+    assertSensitiveAgentIpcSender(event)
+    if (typeof sessionId !== 'string') throw new Error('无效的 Goal 会话标识')
+    return goalSessionService.history(sessionId)
   })
 
   ipcMain.handle(
@@ -3984,7 +3859,14 @@ export function registerIpcHandlers(): void {
     async (event, sessionId: string): Promise<void> => {
       assertSensitiveAgentIpcSender(event)
       feishuBridgeManager.stopSessionMirrorRun(sessionId)
-      await stopAgentAndWait(sessionId)
+      const goal = goalSessionService.get(sessionId)
+      const ownedByGoal = isGoalRunActive(sessionId, goal?.activeRunId)
+      const ordinaryStop = ownedByGoal ? Promise.resolve() : stopAgentAndWait(sessionId)
+      const goalStop = goal?.status === 'active' || goal?.status === 'stopping'
+        ? goalSessionService.stop(sessionId)
+        : Promise.resolve()
+      // 点击当刻就请求停止普通 owner；不在另一个 await 后按 sessionId 停掉新运行。
+      await Promise.all([ordinaryStop, goalStop])
     }
   )
 

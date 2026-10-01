@@ -169,3 +169,297 @@ describe('GoalController', () => {
     expect(controller.get('session-1')?.stopReason).toBe('app_restart')
   })
 })
+
+// 审计边界：用可控时钟/调度器验证控制器，不调用真实 runtime。
+function controlledGoalHarness(overrides: Partial<ConstructorParameters<typeof GoalController>[0]> = {}) {
+  let clock = 1000
+  let nextHandle = 0
+  const scheduled = new Map<number, { callback: () => void; delay: number }>()
+  const deadlines = new Map<number, { callback: () => void; delay: number }>()
+  const events: import('@profer/shared').AgentGoalState[] = []
+  const controller = new GoalController({
+    runTurn: async () => ({ status: 'continue', summary: '已执行', evidence: ['修改文件'] }),
+    stopTurn: async () => {},
+    now: () => clock,
+    onStateChange: (state) => events.push(state),
+    schedule: (callback, delay = 0) => { const id = ++nextHandle; scheduled.set(id, { callback, delay }); return id },
+    cancelSchedule: (handle) => { scheduled.delete(handle as number) },
+    setTimer: (callback, delay) => { const id = ++nextHandle; deadlines.set(id, { callback, delay }); return id },
+    clearTimer: (handle) => { deadlines.delete(handle as number) },
+    ...overrides,
+  })
+  const flush = async () => { for (let index = 0; index < 10; index++) await Promise.resolve() }
+  const dispatch = async () => {
+    const entry = scheduled.entries().next().value
+    if (entry) { scheduled.delete(entry[0]); entry[1].callback() }
+    await flush()
+  }
+  return { controller, events, scheduled, deadlines, dispatch, flush, advance: (ms: number) => { clock += ms } }
+}
+
+describe('GoalController 审计边界', () => {
+  test('整体恢复不 emit，stopping 也降级 paused', () => {
+    const h = controlledGoalHarness()
+    h.controller.restore([createGoalState('a', '目标A'), { ...createGoalState('b', '目标B'), status: 'stopping' }])
+    expect(h.events).toEqual([])
+    expect(h.controller.list()).toHaveLength(2)
+    expect(h.controller.get('b')?.status).toBe('paused')
+  })
+
+  test.each(['blocked', 'failed', 'stopped'] as const)('%s 保留目标，需要显式 resume 或 clear', async (status) => {
+    const h = controlledGoalHarness()
+    h.controller.restore([{ ...createGoalState('s', '原目标'), status }])
+    await expect(h.controller.start('s', '替换')).rejects.toThrow()
+    await h.controller.resume('s')
+    await h.dispatch()
+    expect(h.controller.get('s')?.iteration).toBe(1)
+  })
+
+  test('dispatch 前检查预算；耗尽后加预算才能恢复', async () => {
+    let runs = 0
+    const h = controlledGoalHarness({ runTurn: async () => { runs++; return { status: 'continue', summary: '推进', evidence: ['证据'] } } })
+    h.controller.restore([{ ...createGoalState('s', '目标'), status: 'paused', iteration: 20 }])
+    await expect(h.controller.resume('s')).rejects.toThrow('预算')
+    expect(h.controller.get('s')?.status).toBe('budget_limited')
+    expect(runs).toBe(0)
+    h.controller.update('s', { limits: { maxIterations: 21 } })
+    await h.controller.resume('s')
+    await h.dispatch()
+    expect(runs).toBe(1)
+    expect(h.controller.get('s')?.status).toBe('budget_limited')
+  })
+
+  test('最后完整轮 complete 优先，暂停时间不计预算', async () => {
+    const h = controlledGoalHarness({ runTurn: async () => ({ status: 'complete', summary: '完成', evidence: ['测试通过'] }) })
+    h.controller.restore([{ ...createGoalState('s', '目标', 0), status: 'paused', iteration: 19, elapsedMs: 5 }])
+    h.advance(10_000_000)
+    await h.controller.resume('s')
+    await h.dispatch()
+    expect(h.controller.get('s')?.status).toBe('completed')
+    expect(h.controller.get('s')?.elapsedMs).toBe(5)
+  })
+
+  test('canRun 忙时延迟，不消耗轮次或失败次数', async () => {
+    let busy = true
+    const h = controlledGoalHarness({ canRun: () => !busy })
+    await h.controller.start('s', '目标')
+    await h.dispatch()
+    expect(h.controller.get('s')?.iteration).toBe(0)
+    expect([...h.scheduled.values()][0]?.delay).toBeGreaterThan(0)
+    busy = false
+    await h.dispatch()
+    expect(h.controller.get('s')?.iteration).toBe(1)
+  })
+
+  test('deferred 不计成功、iteration、history 或 execution time', async () => {
+    const h = controlledGoalHarness({ runTurn: async () => ({ status: 'continue', outcome: 'deferred', summary: 'busy', evidence: [] }) })
+    await h.controller.start('s', '目标')
+    await h.dispatch()
+    expect(h.controller.get('s')).toMatchObject({ iteration: 0, consecutiveFailures: 0, history: [], elapsedMs: 0 })
+  })
+
+  test('真实失败累计三次并保留 history，stopped 不续跑', async () => {
+    const h = controlledGoalHarness({ runTurn: async () => { throw new Error('runtime error') } })
+    await h.controller.start('s', '目标')
+    await h.dispatch(); await h.dispatch(); await h.dispatch()
+    expect(h.controller.get('s')).toMatchObject({ status: 'failed', iteration: 3, consecutiveFailures: 3 })
+    expect(h.controller.get('s')?.history).toHaveLength(3)
+    const stopped = controlledGoalHarness({ runTurn: async () => ({ status: 'continue', outcome: 'stopped', summary: '用户停止', evidence: [] }) })
+    await stopped.controller.start('s', '目标')
+    await stopped.dispatch()
+    expect(stopped.controller.get('s')?.status).toBe('stopped')
+    expect(stopped.scheduled.size).toBe(0)
+  })
+
+  test('stop 超时后状态收敛但 owner 未释放禁止恢复、clear、update', async () => {
+    const turn = deferred<import('@profer/shared').AgentGoalIterationResult>()
+    const stop = deferred<void>()
+    const h = controlledGoalHarness({ runTurn: () => turn.promise, stopTurn: () => stop.promise })
+    await h.controller.start('s', '目标')
+    await h.dispatch()
+    const stopping = h.controller.stop('s')
+    expect(h.controller.get('s')?.status).toBe('stopping')
+    for (const timer of [...h.deadlines.values()]) if (timer.delay === 5000) timer.callback()
+    await stopping
+    expect(h.controller.get('s')?.status).toBe('stopped')
+    await expect(h.controller.resume('s')).rejects.toThrow()
+    expect(() => h.controller.clear('s')).toThrow()
+    expect(() => h.controller.update('s', { goal: '另一个目标' })).toThrow()
+    turn.resolve({ status: 'complete', summary: '迟到', evidence: ['证据'] })
+    await h.flush()
+    expect(h.controller.get('s')?.status).toBe('stopped')
+    h.controller.clear('s')
+    const replacement = await h.controller.start('s', '新目标')
+    const revision = replacement.revision
+    stop.resolve()
+    await h.flush()
+    expect(h.controller.get('s')?.id).toBe(replacement.id)
+    expect(h.controller.get('s')?.revision).toBe(revision)
+  })
+
+  test('stop rejection 仍收敛，暂停运行消息回调无效', async () => {
+    const turn = deferred<import('@profer/shared').AgentGoalIterationResult>()
+    let report!: (id: string) => void
+    const h = controlledGoalHarness({ runTurn: ({ onRuntimeSessionId }) => { report = onRuntimeSessionId; return turn.promise }, stopTurn: async () => { throw new Error('stop failed') } })
+    await h.controller.start('s', '目标')
+    await h.dispatch()
+    await h.controller.pause('s')
+    const revision = h.controller.get('s')?.revision
+    report('late')
+    expect(h.controller.get('s')?.revision).toBe(revision)
+    expect(h.controller.get('s')?.status).toBe('paused')
+    await expect(h.controller.resume('s')).rejects.toThrow()
+    turn.resolve({ status: 'continue', summary: '迟到', evidence: ['证据'] })
+    await h.flush()
+    await h.controller.resume('s')
+    expect(h.controller.get('s')?.status).toBe('active')
+  })
+
+  test('旧 pause await 晚返回不能把已resume 的 Goal重新暂停', async () => {
+    const turn = deferred<import('@profer/shared').AgentGoalIterationResult>()
+    const stop = deferred<void>()
+    const h = controlledGoalHarness({ runTurn: () => turn.promise, stopTurn: () => stop.promise })
+    await h.controller.start('s', '目标')
+    await h.dispatch()
+    const pause = h.controller.pause('s')
+    turn.resolve({ status: 'continue', summary: '迟到', evidence: ['证据'] })
+    await h.flush()
+    // runtime 已释放但控制操作仍 await；不允许恢复 stopping。
+    await expect(h.controller.resume('s')).rejects.toThrow()
+    stop.resolve()
+    await pause
+    await h.controller.resume('s')
+    expect(h.controller.get('s')?.status).toBe('active')
+  })
+
+  test('failed 的显式resume 给新的失败重试窗口，更新预算严格校验', async () => {
+    const h = controlledGoalHarness()
+    h.controller.restore([{ ...createGoalState('s', '目标', 1000), status: 'failed', consecutiveFailures: 3 }])
+    expect(() => h.controller.update('s', { limits: { maxIterations: NaN } })).toThrow()
+    expect(() => h.controller.update('s', { limits: { maxIterations: 1.5 } })).toThrow()
+    expect(() => h.controller.update('s', { goal: ' ' })).toThrow()
+    await h.controller.resume('s')
+    expect(h.controller.get('s')?.consecutiveFailures).toBe(0)
+  })
+
+  test('restore 不能丢弃仍活跃 owner', async () => {
+    const turn = deferred<import('@profer/shared').AgentGoalIterationResult>()
+    const h = controlledGoalHarness({ runTurn: () => turn.promise })
+    await h.controller.start('s', '目标')
+    await h.dispatch()
+    expect(() => h.controller.restore([])).toThrow()
+    turn.resolve({ status: 'complete', summary: '完成', evidence: ['证据'] })
+    await h.flush()
+  })
+
+  test('同会话revision 跨完成后替换单调，旧 scheduler 重复触发无效', async () => {
+    const h = controlledGoalHarness({ runTurn: async () => ({ status: 'complete', summary: '完成', evidence: ['证据'] }) })
+    await h.controller.start('s', '旧目标')
+    const callback = [...h.scheduled.values()][0]!.callback
+    await h.dispatch()
+    callback()
+    await h.flush()
+    expect(h.controller.get('s')?.iteration).toBe(1)
+    const previousRevision = h.controller.get('s')?.revision ?? 0
+    const next = await h.controller.start('s', '新目标')
+    expect(next.revision).toBeGreaterThan(previousRevision)
+  })
+
+  test('同一 scheduler callback 重复触发不启动并发 owner', async () => {
+    const turn = deferred<import('@profer/shared').AgentGoalIterationResult>()
+    let count = 0
+    const h = controlledGoalHarness({ runTurn: () => { count++; return turn.promise } })
+    await h.controller.start('s', '目标')
+    const callback = [...h.scheduled.values()][0]!.callback
+    await h.dispatch()
+    callback()
+    await h.flush()
+    expect(count).toBe(1)
+    expect(h.controller.get('s')?.iteration).toBe(1)
+    turn.resolve({ status: 'complete', summary: '完成', evidence: ['证据'] })
+    await h.flush()
+  })
+
+  test('hydrate 清除残留owner，迟到 deadline 不能停止恢复后的运行', async () => {
+    const h = controlledGoalHarness()
+    h.controller.restore([{ ...createGoalState('s', '目标'), status: 'stopped', activeRunId: 'crashed-owner' }])
+    expect(h.controller.get('s')?.activeRunId).toBeUndefined()
+    await h.controller.resume('s')
+    await h.dispatch()
+    const deadline = [...h.deadlines.values()][0]?.callback
+    await h.controller.pause('s')
+    await h.controller.resume('s')
+    deadline?.()
+    await h.flush()
+    expect(h.controller.get('s')?.status).toBe('active')
+  })
+
+  test('token 预算轮结算耗尽，扩充后恢复与最后轮完成优先', async () => {
+    const usage = { inputTokens: 8, outputTokens: 2, totalTokens: 10 }
+    let complete = false
+    const h = controlledGoalHarness({ runTurn: async () => ({ status: complete ? 'complete' : 'continue', summary: '完成本轮检查', evidence: ['测试结果'], usage }) })
+    h.controller.restore([{ ...createGoalState('s', '目标'), status: 'paused', limits: { ...createGoalState('s', '目标').limits, maxTokens: 10 } }])
+    await h.controller.resume('s')
+    await h.dispatch()
+    expect(h.controller.get('s')).toMatchObject({ status: 'budget_limited', usage })
+    await expect(h.controller.resume('s')).rejects.toThrow('预算')
+    h.controller.update('s', { limits: { maxTokens: 20 } })
+    complete = true
+    await h.controller.resume('s')
+    await h.dispatch()
+    expect(h.controller.get('s')).toMatchObject({ status: 'completed', usage: { totalTokens: 20 } })
+  })
+
+  test('stop迟到返回在clear/新start后不发布旧状态', async () => {
+    const turn = deferred<import('@profer/shared').AgentGoalIterationResult>()
+    const stop = deferred<void>()
+    const h = controlledGoalHarness({ runTurn: () => turn.promise, stopTurn: () => stop.promise })
+    await h.controller.start('s', '旧目标')
+    await h.dispatch()
+    const stopping = h.controller.stop('s')
+    for (const timer of [...h.deadlines.values()]) if (timer.delay === 5000) timer.callback()
+    await stopping
+    turn.resolve({ status: 'continue', summary: '迟到', evidence: [] })
+    await h.flush()
+    h.controller.clear('s')
+    const replacement = await h.controller.start('s', '新目标')
+    const count = h.events.length
+    stop.resolve()
+    await h.flush()
+    expect(h.events).toHaveLength(count)
+    expect(h.controller.get('s')?.id).toBe(replacement.id)
+  })
+
+  test('执行 deadline 调用带 runId 的取消，净执行时间落盘', async () => {
+    const turn = deferred<import('@profer/shared').AgentGoalIterationResult>()
+    const stopped: Array<string | undefined> = []
+    const h = controlledGoalHarness({ runTurn: () => turn.promise, stopTurn: async (_sessionId, runId) => { stopped.push(runId) } })
+    await h.controller.start('s', '目标')
+    await h.dispatch()
+    const runId = h.controller.get('s')?.activeRunId
+    expect(runId).toBeString()
+    h.advance(2 * 60 * 60 * 1000)
+    for (const timer of [...h.deadlines.values()]) if (timer.delay === 2 * 60 * 60 * 1000) timer.callback()
+    await h.flush()
+    expect(stopped).toEqual([runId])
+    expect(h.controller.get('s')?.status).toBe('budget_limited')
+    expect(h.controller.get('s')?.elapsedMs).toBe(2 * 60 * 60 * 1000)
+    turn.resolve({ status: 'continue', summary: '迟到', evidence: [] })
+    await h.flush()
+  })
+
+  test('旧 runtime callback 和旧 scheduler callback 不能污染替换后的 Goal', async () => {
+    let report!: (id: string) => void
+    const h = controlledGoalHarness({ runTurn: async ({ onRuntimeSessionId }) => { report = onRuntimeSessionId; return { status: 'complete', summary: '完成', evidence: ['证据'] } } })
+    await h.controller.start('s', '旧目标')
+    const oldCallback = [...h.scheduled.values()][0]!.callback
+    await h.dispatch()
+    const replacement = await h.controller.start('s', '新目标')
+    report('stale-runtime')
+    oldCallback()
+    await h.flush()
+    expect(h.controller.get('s')?.id).toBe(replacement.id)
+    expect(h.controller.get('s')?.iteration).toBe(0)
+    expect(h.controller.get('s')?.runtimeSessionId).toBeUndefined()
+  })
+})

@@ -786,6 +786,8 @@ export interface ElectronAPI {
   stopAgent: (sessionId: string) => Promise<void>
   startGoal: (sessionId: string, goal: string, contract?: import('@profer/shared').AgentGoalContract) => Promise<import('@profer/shared').AgentGoalState>
   getGoal: (sessionId: string) => Promise<import('@profer/shared').AgentGoalState | null>
+  updateGoal: (sessionId: string, patch: { goal?: string; contract?: import('@profer/shared').AgentGoalContract; limits?: Partial<import('@profer/shared').AgentGoalLimits> }) => Promise<import('@profer/shared').AgentGoalState>
+  getGoalHistory: (sessionId: string) => Promise<import('@profer/shared').AgentGoalState[]>
   listGoals: () => Promise<import('@profer/shared').AgentGoalState[]>
   pauseGoal: (sessionId: string) => Promise<import('@profer/shared').AgentGoalState>
   resumeGoal: (sessionId: string) => Promise<import('@profer/shared').AgentGoalState>
@@ -2486,6 +2488,8 @@ const electronAPI: ElectronAPI = {
   },
   startGoal: (sessionId: string, goal: string, contract?: import('@profer/shared').AgentGoalContract) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.START_GOAL, sessionId, goal, contract),
   getGoal: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_GOAL, sessionId),
+  updateGoal: (sessionId, patch) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_GOAL, sessionId, patch),
+  getGoalHistory: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_GOAL_HISTORY, sessionId),
   listGoals: () => ipcRenderer.invoke(AGENT_IPC_CHANNELS.LIST_GOALS),
   pauseGoal: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.PAUSE_GOAL, sessionId),
   resumeGoal: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.RESUME_GOAL, sessionId),

@@ -36,6 +36,7 @@ import { fanoutSessionEvent } from './agent-event-fanout'
 import { AgentCatalogInvalidationPublisher } from './agent-catalog-invalidation'
 import { AgentOrchestrator, serializeErrorDetail } from './agent-orchestrator'
 import { AgentRunAlreadyActiveError } from './agent-orchestrator-p0-guards'
+import { createAgentRunOutcomeReporter } from './agent-run-outcome'
 import { forwardHeadlessAgentCompletion, setHeadlessAgentRunner, type HeadlessAgentRunCallbacks } from './agent-headless-runner-registry'
 import { getAgentSessionWorkspacePath, getWorkspaceFilesDir } from './config-paths'
 import { getAgentSessionMeta, setAgentSessionActiveChecker, updateAgentSessionMeta } from './agent-session-manager'
@@ -283,14 +284,19 @@ export async function runAgent(
   try {
     updateAgentSessionMeta(input.sessionId, { completedButUnconfirmed: false })
   } catch { /* 新会话可能尚未写入索引 */ }
+  const outcomeReporter = createAgentRunOutcomeReporter(input.onRunOutcome)
+  let runStarted = false
   try {
     await orchestrator.sendMessage(input, {
+      onRunOwned: () => { runStarted = true },
       onError: (error) => {
+        outcomeReporter.onError(error)
         eventBus.emit(input.sessionId, { kind: 'run_error', error })
         const wc = sessionWebContents.get(input.sessionId)
         if (wc && !wc.isDestroyed()) wc.send(AGENT_IPC_CHANNELS.STREAM_ERROR, { sessionId: input.sessionId, error })
       },
       onComplete: (messages, opts) => {
+        outcomeReporter.onComplete(opts)
         const completion = {
           sessionId: input.sessionId,
           messages,
@@ -319,7 +325,8 @@ export async function runAgent(
           })
         }
       },
-      onRunStarted: async () => {
+      onRunStarted: async ({ startedAt }) => {
+        runStarted = true
         const beforePromotion = getAgentSessionMeta(input.sessionId)
         const session = beforePromotion?.draft
           ? updateAgentSessionMeta(input.sessionId, { draft: false })
@@ -328,18 +335,29 @@ export async function runAgent(
           await onDraftPromoted?.(session)
           publishAgentSessionProjection(session)
         }
+        if (input.triggeredBy === 'goal') {
+          // 仅在真实 run 已启动后建立 UI 流状态，不把恢复/排队的 Goal 伪装为运行中。
+          eventBus.emit(input.sessionId, {
+            kind: 'profer_event',
+            event: { type: 'external_run_started', source: 'goal', sessionId: input.sessionId, startedAt, title: session?.title, workspaceId: session?.workspaceId, modelId: input.modelId, session },
+          })
+        }
       },
     })
   } catch (err) {
     // 请求没有获得 run ownership：不要向同 session 的 owner run 广播假的错误/终态。
     // 让 ipcRenderer.invoke 直接 reject，renderer 会恢复发送前状态和用户草稿。
-    if (err instanceof AgentRunAlreadyActiveError) throw err
+    if (err instanceof AgentRunAlreadyActiveError) {
+      outcomeReporter.rejectBeforeStart()
+      throw err
+    }
     console.error(`[Agent 服务] ══════════ runAgent 未处理异常 ══════════`)
     console.error(`[Agent 服务] sessionId: ${input.sessionId}`)
     console.error(`[Agent 服务] raw error 详细诊断:\n${serializeErrorDetail(err)}`)
     console.error(`[Agent 服务] err instanceof Error: ${err instanceof Error}`)
     console.error(`[Agent 服务] typeof err: ${typeof err}`)
     const errorMessage = err instanceof Error ? err.message : '未知错误'
+    outcomeReporter.onError(errorMessage)
     console.error(`[Agent 服务] errorMessage: ${errorMessage || '(空)'}`)
     console.error(`[Agent 服务] ══════════ runAgent 未处理异常 结束 ══════════`)
     eventBus.emit(input.sessionId, { kind: 'run_error', error: errorMessage })
@@ -359,6 +377,7 @@ export async function runAgent(
       preserveCompletedBacklog(input.sessionId)
       activeStreamEventBacklogs.delete(input.sessionId)
     }
+    if (runStarted) outcomeReporter.finish()
   }
 }
 
@@ -553,6 +572,16 @@ export async function stopAgentTask(sessionId: string, taskId: string, type?: 'a
 /** 删除运行中会话前停止并等待其真实运行生命周期结束。 */
 export async function stopAgentAndWait(sessionId: string): Promise<void> {
   await orchestrator.stopAndWait(sessionId)
+}
+
+/** 检查指定 session 是否由给定 Goal runId 持有运行锁。 */
+export function isGoalRunActive(sessionId: string, runId?: string): boolean {
+  return orchestrator.isGoalRunActive(sessionId, runId)
+}
+
+/** 请求停止指定 Goal owner 并等待其 owner finally 真正释放。 */
+export async function stopGoalRunAndWait(sessionId: string, runId: string): Promise<void> {
+  await orchestrator.stopGoalRunAndWait(sessionId, runId)
 }
 
 /** 标记/解除会话删除锁，覆盖 UI、队列和 headless 等所有编排入口。 */

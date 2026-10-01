@@ -46,7 +46,10 @@ describe('goal loop', () => {
     expect(prompt).toContain('第 3 轮')
     expect(prompt).toContain('上一轮摘要：上一轮完成了表单')
     expect(prompt).toContain('update_goal')
-    expect(prompt).toContain('<goal_result>')
+    expect(prompt).not.toContain('<goal_result>')
+    expect(prompt).toContain('逐项')
+    expect(prompt).toContain('无进展')
+    expect(prompt).not.toContain('预算耗尽前务必收敛')
   })
 
   test('iteration prompt asks for a verification surface when contract is missing', () => {
@@ -133,6 +136,25 @@ describe('goal loop', () => {
       limits: DEFAULT_GOAL_LIMITS,
     })
     expect(timedOut.action).toBe('limit_reached')
+  })
+
+  test('最后一轮验收通过优先 complete，空白证据不能完成', () => {
+    const context = { iteration: 20, consecutiveFailures: 0, startedAt: 0, now: DEFAULT_GOAL_LIMITS.maxDurationMs, elapsedMs: DEFAULT_GOAL_LIMITS.maxDurationMs, limits: DEFAULT_GOAL_LIMITS }
+    expect(evaluateGoalContinuation({ status: 'complete', summary: '完成', evidence: ['测试通过'] }, context).action).toBe('complete')
+    expect(evaluateGoalContinuation({ status: 'complete', summary: '完成', evidence: ['   '] }, context).action).toBe('limit_reached')
+  })
+
+  test('token 耗尽与 typed stopped/deferred 独立于成功', () => {
+    const context = { iteration: 1, consecutiveFailures: 2, startedAt: 0, now: 99999999, elapsedMs: 0, totalTokens: 10, limits: { ...DEFAULT_GOAL_LIMITS, maxTokens: 10 } }
+    expect(evaluateGoalContinuation({ status: 'continue', summary: '继续', evidence: [] }, context).action).toBe('limit_reached')
+    expect(evaluateGoalContinuation({ status: 'complete', outcome: 'stopped', summary: '停止', evidence: ['证据'] }, context).action).toBe('stopped')
+    expect(evaluateGoalContinuation({ status: 'continue', outcome: 'deferred', summary: 'busy', evidence: [] }, context)).toEqual({ action: 'deferred', consecutiveFailures: 2 })
+  })
+
+  test('无进展与无证据 complete 按失败策略记账', () => {
+    const context = { iteration: 1, consecutiveFailures: 2, startedAt: 0, now: 0, elapsedMs: 0, limits: DEFAULT_GOAL_LIMITS }
+    expect(evaluateGoalContinuation({ status: 'continue', summary: '只提供计划', evidence: [] }, context).action).toBe('failed')
+    expect(evaluateGoalContinuation({ status: 'complete', summary: '声称完成', evidence: [''] }, context).action).toBe('failed')
   })
 
   test('process exit stops an active goal without pretending it completed', () => {

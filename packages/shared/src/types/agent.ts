@@ -690,7 +690,7 @@ export type ProferEvent =
   | { type: 'preview_inspection_requested'; request: import('./agent-preview').AgentFilePreviewInspectRequest }
 
 /** 外部入口触发 Agent 运行的来源 */
-export type AgentExternalRunSource = 'feishu' | 'dingtalk' | 'wechat' | 'bridge' | 'delegation' | 'automation'
+export type AgentExternalRunSource = 'feishu' | 'dingtalk' | 'wechat' | 'bridge' | 'delegation' | 'automation' | 'goal'
 
 /** 可失效并重新拉取的目录类型（Pocket 收到失效通知后按 catalog 重新拉取列表）。 */
 export type AgentCatalogKind = 'channels' | 'presets' | 'workspace_capabilities' | 'workspaces'
@@ -1270,12 +1270,14 @@ export interface WorkspaceCapabilities {
 
 // ===== Goal 长时自主执行 =====
 
-export type AgentGoalStatus = 'active' | 'paused' | 'completed' | 'blocked' | 'failed' | 'stopped'
+export type AgentGoalStatus = 'active' | 'paused' | 'completed' | 'blocked' | 'failed' | 'stopped' | 'stopping' | 'budget_limited'
 
 export interface AgentGoalLimits {
   maxIterations: number
   maxConsecutiveFailures: number
   maxDurationMs: number
+  /** 可选 token 预算；在 runtime 用量记账边界核对。 */
+  maxTokens?: number
 }
 
 /**
@@ -1297,6 +1299,8 @@ export interface AgentGoalIterationRecord {
   startedAt: number
   finishedAt: number
   status: AgentGoalIterationResult['status']
+  outcome?: AgentGoalIterationResult['outcome']
+  error?: string
   summary: string
   evidence: string[]
   usage?: AgentGoalUsage
@@ -1318,13 +1322,19 @@ export interface AgentGoalState {
   startedAt: number
   updatedAt: number
   limits: AgentGoalLimits
+  /** 会话内单调增长的版本，用于拒绝迟到事件。 */
+  revision?: number
+  /** 当前执行 owner；停止超时后也保留，直到 runtime 返回。 */
+  activeRunId?: string
+  /** 累计净执行时长，不包含暂停/等待空闲时间。 */
+  elapsedMs?: number
   /** 目标契约；纯文本目标（无 @verify/@constraint/@stop 标记）时为空 */
   contract?: AgentGoalContract
   /** 迭代历史，最多保留最近若干条（见 GOAL_HISTORY_LIMIT） */
   history?: AgentGoalIterationRecord[]
-  /** Goal 独立 runtime 的 SDK/Pi session ID；不写入普通 Agent 会话元数据。 */
+  /** 旧版独立 runtime ID，仅兼容历史文件；同会话 Goal 沿用正常上下文。 */
   runtimeSessionId?: string
-  /** Goal 独立 runtime 的 session file（Pi 使用；仅作恢复诊断与精确绑定）。 */
+  /** 旧版独立 runtime 文件，仅兼容历史状态。 */
   runtimeSessionFile?: string
   /** Goal 累计 token 用量；没有 runtime usage 时保持为空 */
   usage?: AgentGoalUsage
@@ -1345,6 +1355,8 @@ export interface AgentGoalIterationResult {
   status: 'continue' | 'complete' | 'blocked'
   summary: string
   evidence: string[]
+  outcome?: 'success' | 'failed' | 'stopped' | 'deferred'
+  error?: string
   /** 本轮模型 usage（由 runtime result/assistant message 归一化） */
   usage?: AgentGoalUsage
 }
@@ -1352,7 +1364,8 @@ export interface AgentGoalIterationResult {
 export type AgentGoalContinuation =
   | { action: 'continue'; consecutiveFailures: number }
   | { action: 'complete'; consecutiveFailures: number }
-  | { action: 'blocked' | 'failed' | 'limit_reached'; consecutiveFailures: number; reason: string }
+  | { action: 'blocked' | 'failed' | 'limit_reached' | 'stopped'; consecutiveFailures: number; reason: string }
+  | { action: 'deferred'; consecutiveFailures: number }
 
 // ===== Agent 发送输入 =====
 
@@ -1406,6 +1419,13 @@ export interface AgentSendInput {
   reportGoalResult?: (result: import('@profer/shared').AgentGoalIterationResult) => void
   /** Goal turn 是否使用独立的 runtime session，不得复用普通会话 SDK 上下文。 */
   isolatedRuntimeSession?: boolean
+  /** Goal 当前运行 ID；用于把停止和结果绑定到具体 owner。 */
+  goalRunId?: string
+  /** 普通 run 结束时回传结构化结果；busy 拒绝不会调用。 */
+  onRunOutcome?: (outcome: {
+    status: 'completed' | 'failed' | 'stopped'
+    error?: string
+  }) => void
   /** Goal 独立 runtime 要恢复的 SDK/Pi session ID。 */
   runtimeSessionId?: string
   /** Goal 独立 runtime 已创建/恢复后的 session ID 回调，不更新普通会话元数据。 */
@@ -2047,6 +2067,10 @@ export const AGENT_IPC_CHANNELS = {
   START_GOAL: 'agent:goal-start',
   /** 获取当前会话 Goal */
   GET_GOAL: 'agent:goal-get',
+  /** 修改非运行状态的目标、契约或预算 */
+  UPDATE_GOAL: 'agent:goal-update',
+  /** 获取会话归档 Goal 历史 */
+  GET_GOAL_HISTORY: 'agent:goal-history',
   /** 列出全部会话的 Goal（启动时水合渲染层状态） */
   LIST_GOALS: 'agent:goal-list',
   /** 暂停当前 Goal */

@@ -8,7 +8,7 @@
  */
 
 import { useEffect } from 'react'
-import { agentGoalsAtom } from '@/atoms/goal-atoms'
+import { agentGoalsAtom, hydrateAgentGoalsAtom, mergeAgentGoalAtom } from '@/atoms/goal-atoms'
 import { unstable_batchedUpdates } from 'react-dom'
 import { useStore } from 'jotai'
 import { draftSessionIdsAtom } from '@/atoms/draft-session-atoms'
@@ -366,45 +366,31 @@ export function useGlobalAgentListeners(): void {
     // 启动时水合 Goal 状态（含重启后待恢复的 paused Goal）
     void window.electronAPI.listGoals().then((goals) => {
       if (!effectActive) return
-      store.set(agentGoalsAtom, new Map(goals.map((goal) => [goal.sessionId, goal])))
+      store.set(hydrateAgentGoalsAtom, goals)
     }).catch(() => {})
     const cleanupGoal = window.electronAPI.onGoalEvent((event) => {
+      if (!effectActive) return
       const previous = store.get(agentGoalsAtom).get(event.sessionId)
-      const goalRunning = event.state?.status === 'active'
-      store.set(agentMessageRefreshAtom, (previous) => {
-        const next = new Map(previous)
-        next.set(event.sessionId, (previous.get(event.sessionId) ?? 0) + 1)
-        return next
-      })
-      store.set(agentStreamingStatesAtom, (previousStates) => {
-        const current = previousStates.get(event.sessionId)
-        if (!goalRunning && !current) return previousStates
-        const next = new Map(previousStates)
-        next.set(event.sessionId, {
-          running: goalRunning,
-          backgroundWaiting: false,
-          content: current?.content ?? '',
-          toolActivities: current?.toolActivities ?? [],
-          model: current?.model,
-          startedAt: current?.startedAt ?? event.state?.startedAt,
+      if (!store.set(mergeAgentGoalAtom, event)) return
+      // 用户启动/修改记录和终态摘要由主进程持久化；只触发重读，不更改真实流状态。
+      if (event.state && (event.state.iteration === 0 || !['active', 'stopping'].includes(event.state.status))) {
+        store.set(agentMessageRefreshAtom, (prev) => {
+          const next = new Map(prev)
+          next.set(event.sessionId, (prev.get(event.sessionId) ?? 0) + 1)
+          return next
         })
-        return next
-      })
-      store.set(agentGoalsAtom, (previousMap) => {
-        const next = new Map(previousMap)
-        // clear 后主进程发送 stopReason='cleared' 的快照，渲染层直接移除条目
-        if (event.state && event.state.stopReason !== 'cleared') next.set(event.sessionId, event.state)
-        else next.delete(event.sessionId)
-        return next
-      })
-      // 终态跃迁时通知用户（Goal 常在后台长跑，用户可能不在看该会话）
-      if (event.state && previous && previous.status !== event.state.status) {
+      }
+      // Goal 描述目标生命周期，不证明实际 run 已启动/停止。流状态和工作消息只由
+      // run 事件更新；禁止 Goal 状态清空普通流内容或抢先将其标成空闲。
+      if (event.state && event.state.stopReason !== 'cleared' && previous?.id === event.state.id && previous.status !== event.state.status) {
         if (event.state.status === 'completed') {
           toast.success('Goal 已完成', { description: event.state.lastSummary || event.state.goal })
         } else if (event.state.status === 'blocked') {
-          toast.warning('Goal 受阻，已在规划中心创建待办', { description: event.state.stopReason || event.state.lastSummary || event.state.goal })
+          toast.warning('Goal 受阻，补充信息后可恢复', { description: event.state.stopReason || event.state.lastSummary || event.state.goal })
         } else if (event.state.status === 'failed') {
           toast.error('Goal 执行失败', { description: event.state.stopReason || event.state.goal })
+        } else if (event.state.status === 'budget_limited') {
+          toast.warning('Goal 预算已耗尽', { description: '请在 Goal 卡片中增加预算后恢复；预算耗尽不代表目标已完成。' })
         }
       }
     })
