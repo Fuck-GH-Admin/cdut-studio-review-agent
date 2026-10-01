@@ -297,54 +297,6 @@ export function GlobalShortcuts(): null {
     return cleanup
   }, [store])
 
-  // ===== 语音输入 → 写入当前 CDUT Studio 输入框 =====
-
-  useEffect(() => {
-    const cleanup = window.electronAPI.onVoiceDictationInsertText(({ text }) => {
-      const trimmed = text.trim()
-      if (!trimmed) return
-
-      const insertedAtCursor = !window.dispatchEvent(new CustomEvent('profer:insert-voice-dictation-text', {
-        cancelable: true,
-        detail: { text: trimmed },
-      }))
-      if (insertedAtCursor) {
-        window.dispatchEvent(new CustomEvent('profer:focus-input'))
-        return
-      }
-
-      const tabs = store.get(tabsAtom)
-      const activeTabId = store.get(activeTabIdAtom)
-      const activeTab = tabs.find((tab) => tab.id === activeTabId)
-      const fallbackTarget = { type: 'agent' as const, sessionId: store.get(currentAgentSessionIdAtom) }
-      const target = activeTab ?? fallbackTarget
-
-      if (!target.sessionId) return
-
-      store.set(activeViewAtom, 'conversations')
-
-      if (target.type === 'agent' || target.type === 'preview' || target.type === 'browser') {
-        const sessionId = target.sessionId
-        store.set(appModeAtom, 'agent')
-        store.set(currentAgentSessionIdAtom, sessionId)
-        store.set(agentSessionDraftsAtom, (prev) => {
-          const map = new Map(prev)
-          const current = map.get(sessionId) ?? ''
-          map.set(sessionId, current ? `${current}\n${trimmed}` : trimmed)
-          return map
-        })
-        store.set(agentSessionDraftHtmlAtom, (prev) => {
-          const map = new Map(prev)
-          map.delete(sessionId)
-          return map
-        })
-        window.dispatchEvent(new CustomEvent('profer:focus-input'))
-        return
-      }
-    })
-    return cleanup
-  }, [store])
-
   // ===== 菜单栏 → 打开 / 创建会话 =====
 
   useEffect(() => {

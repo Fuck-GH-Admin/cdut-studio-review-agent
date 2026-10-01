@@ -81,7 +81,6 @@ import {
 import { useWindowInnerHeight } from '@/hooks/use-window-inner-height'
 import { agentProcessGroupsKeepExpandedAtom } from '@/atoms/agent-atoms'
 import { autoPreviewEnabledAtom } from '@/atoms/preview-atoms'
-import { VoiceInputSettings } from './VoiceInputSettings'
 import { Button } from '@profer/ui/primitives/button'
 import type { NotificationSoundId, NotificationSoundType, NotificationSoundSettings } from '@/types/settings'
 
@@ -453,7 +452,6 @@ export function UsageSettings(): React.ReactElement {
       </SettingsSection>
 
       {/* 语音输入（豆包流式）：从原 Chat 工具页迁入，属输入体验 */}
-      <VoiceInputSettings />
 
       {/* 添加自定义音效弹窗 */}
       <AddSoundDialog

@@ -132,7 +132,6 @@ function hasEnabledModel(
 
 // ===== 窗口类型检测 =====
 const isQuickTaskWindow = new URLSearchParams(window.location.search).get('window') === 'quick-task'
-const isVoiceDictationWindow = new URLSearchParams(window.location.search).get('window') === 'voice-dictation'
 const isDetachedPreviewWindow = new URLSearchParams(window.location.search).get('window') === 'detached-preview'
 const isAgentPreviewWindow = new URLSearchParams(window.location.search).get('window') === 'agent-preview'
 const isPlanningWindow = new URLSearchParams(window.location.search).get('window') === 'planning'
@@ -1117,16 +1116,6 @@ if (isQuickTaskWindow) {
       <React.StrictMode>
         <ThemeInitializer />
         <QuickTaskApp />
-      </React.StrictMode>
-    )
-  })
-} else if (isVoiceDictationWindow) {
-  import('./components/voice-dictation/VoiceDictationApp').then(({ VoiceDictationApp }) => {
-    ReactDOM.createRoot(document.getElementById('root')!).render(
-      <React.StrictMode>
-        <ThemeInitializer />
-        <VoiceDictationApp />
-        <ProferToaster position="top-right" offset={96} />
       </React.StrictMode>
     )
   })

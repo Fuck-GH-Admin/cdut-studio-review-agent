@@ -40,8 +40,6 @@ import { ModelSelector } from '@/components/shared/ModelSelector'
 import { AttachmentPreviewItem } from '@/components/shared/AttachmentPreviewItem'
 import { QuotedSelectionChip } from '@/components/diff/QuotedSelectionChip'
 import { RichTextInput, type RichTextInputHandle } from '@/components/ai-elements/rich-text-input'
-import { SpeechButton, useLoadVoiceDictationSettings } from '@/components/ai-elements/speech-button'
-import { voiceDictationEnabledAtom } from '@/atoms/voice-dictation-atoms'
 import { InputToolbarOverflow, type ToolbarItem } from '@/components/ai-elements/InputToolbarOverflow'
 import {
   AgentComposerToolMenuItem,
@@ -3072,8 +3070,6 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
   const hasTextInput = hasInputDraft
   const isCompacting = contextStatus.isCompacting
   const canSend = messagesLoaded && !presetSelectionRequired && (hasTextInput || pendingFiles.length > 0 || !!suggestion) && agentChannelId !== null && hasAvailableModel && (!streaming || hasTextInput) && !isCompacting && !streamState?.stopping
-  const voiceDictationEnabled = useAtomValue(voiceDictationEnabledAtom)
-  useLoadVoiceDictationSettings()
 
   const taskGraphEnabled = Boolean(
     !isExplorationBranch
@@ -3144,7 +3140,6 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
         />
       ),
     },
-    ...(voiceDictationEnabled ? [{ key: 'speech', node: <SpeechButton composerTool /> }] : []),
     {
       key: 'attach',
       node: (
@@ -3210,7 +3205,6 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
     openWorkspacePresets,
     sessionBoundPreset,
     taskGraphEnabled,
-    voiceDictationEnabled,
   ])
 
   const inputTrailingNode = (streaming || streamState?.stopping) ? (

@@ -2,7 +2,7 @@
  * 全局快捷键服务测试（重点覆盖 2026-08-08 快速任务开关化改造）
  *
  * 验证：quick-task 仅在 quickTaskEnabled === true 时注册；
- * voice-dictation 行为回归不变；show-main-window 始终注册。
+ * show-main-window 始终注册（voice-dictation 已随语音功能移除）。
  */
 
 import { beforeAll, beforeEach, describe, expect, mock, test } from 'bun:test'
@@ -75,22 +75,6 @@ describe('快速任务开关化（2026-08-08）', () => {
     mockSettings = { quickTaskEnabled: false }
     reregisterAllGlobalShortcuts()
     expect(registeredAccelerators).not.toContain(quickTaskDefault)
-  })
-})
-
-describe('voice-dictation 回归', () => {
-  test('voiceDictation.enabled=true 时注册', async () => {
-    mockSettings = { voiceDictation: { enabled: true } }
-    const { registerGlobalShortcut } = await import('./global-shortcut-service')
-    const ok = registerGlobalShortcut('voice-dictation', () => {})
-    expect(ok).toBe(true)
-  })
-
-  test('voiceDictation 未启用时不注册', async () => {
-    mockSettings = { voiceDictation: { enabled: false } }
-    const { registerGlobalShortcut } = await import('./global-shortcut-service')
-    const ok = registerGlobalShortcut('voice-dictation', () => {})
-    expect(ok).toBe(false)
   })
 })
 

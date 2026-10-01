@@ -22,17 +22,12 @@ const registeredAccelerators = new Map<string, string>()
 const GLOBAL_SHORTCUT_DEFAULTS: Record<string, { mac: string; win: string }> = {
   'quick-task': { mac: 'Cmd+Shift+Space', win: 'Alt+Space' },
   'show-main-window': { mac: 'CommandOrControl+Shift+P', win: 'CommandOrControl+Shift+P' },
-  'voice-dictation': { mac: 'Ctrl+`', win: 'Ctrl+`' },
 }
 
 const isMac = process.platform === 'darwin'
-const VOICE_DICTATION_SHORTCUT_ID = 'voice-dictation'
 const QUICK_TASK_SHORTCUT_ID = 'quick-task'
 
 function shouldRegisterGlobalShortcut(id: string): boolean {
-  if (id === VOICE_DICTATION_SHORTCUT_ID) {
-    return getSettings().voiceDictation?.enabled === true
-  }
   if (id === QUICK_TASK_SHORTCUT_ID) {
     return getSettings().quickTaskEnabled === true
   }

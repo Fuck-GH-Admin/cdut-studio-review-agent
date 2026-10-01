@@ -175,12 +175,6 @@ import { getDingTalkMultiBotConfig } from './lib/dingtalk-config'
 import { wechatBridge } from './lib/wechat-bridge'
 import { getWeChatConfig } from './lib/wechat-config'
 import { createQuickTaskWindow, toggleQuickTaskWindow, destroyQuickTaskWindow } from './lib/quick-task-window'
-import {
-  createVoiceDictationWindow,
-  toggleVoiceDictationWindow,
-  destroyVoiceDictationWindow,
-  shouldSuppressVoiceDictationActivate,
-} from './lib/voice-dictation-window'
 import { registerGlobalShortcut, unregisterAllGlobalShortcuts } from './lib/global-shortcut-service'
 import { maintainDevShellShortcut } from './lib/dev-shell-shortcut'
 import { setProferVersion } from '@profer/core'
@@ -950,9 +944,6 @@ async function bootstrap(): Promise<void> {
   if (getSettings().quickTaskEnabled === true) {
     safeRun('createQuickTaskWindow', createQuickTaskWindow)
   }
-  if (getSettings().voiceDictation?.enabled === true) {
-    safeRun('createVoiceDictationWindow', createVoiceDictationWindow)
-  }
 
   // 飞书实时同步开启时，默认阻止系统自动休眠
   safeRun('syncFeishuSyncSleepBlocker', () => syncFeishuSyncSleepBlocker(getSettings()))
@@ -966,11 +957,6 @@ async function bootstrap(): Promise<void> {
   )
   safeRun('registerGlobalShortcut:show-main-window', () =>
     registerGlobalShortcut('show-main-window', showAndFocusMainWindow),
-  )
-  safeRun('registerGlobalShortcut:voice-dictation', () =>
-    registerGlobalShortcut('voice-dictation', () => {
-      toggleVoiceDictationWindow({ targetIsProfer: mainWindow?.isFocused() === true })
-    }),
   )
 
   // Bridge 启动延后到下一个事件循环，让窗口先完成渲染
@@ -1036,9 +1022,6 @@ async function bootstrap(): Promise<void> {
   })
 
   app.on('activate', () => {
-    if (shouldSuppressVoiceDictationActivate()) {
-      return
-    }
 
     // 直接检查 mainWindow 引用，避免 getAllWindows() 包含 DevTools 等其他窗口导致误判
     if (!mainWindow || mainWindow.isDestroyed()) {
@@ -1190,7 +1173,6 @@ app.on('before-quit', () => {
   unregisterAllGlobalShortcuts()
   // 销毁快速任务窗口
   destroyQuickTaskWindow()
-  destroyVoiceDictationWindow()
   // Clean up system tray before quitting
   destroyTray()
 })
