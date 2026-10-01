@@ -22,7 +22,7 @@ import { Dialog, DialogContent, DialogPortal, DialogTitle } from '@profer/ui/pri
 import { cn } from '@/lib/utils'
 import { navigationController } from '@/lib/navigation-controller'
 import { searchDialogOpenAtom } from '@/atoms/search-atoms'
-import { channelsAtom } from '@/atoms/chat-atoms'
+import { channelsAtom } from '@/atoms/conversation-atoms'
 import {
   agentSessionsAtom,
   agentWorkspacesAtom,

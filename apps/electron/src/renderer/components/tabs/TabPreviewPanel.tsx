@@ -13,7 +13,7 @@ import { MarkdownPreview, MARKDOWN_PREVIEW_LIGHT_COMPONENTS } from '@profer/ui'
 import { AlertTriangle } from 'lucide-react'
 import { UserAvatar } from '@/components/shared/UserAvatar'
 import { getModelLogo, resolveModelProvider } from '@/lib/model-logo'
-import { channelsAtom } from '@/atoms/chat-atoms'
+import { channelsAtom } from '@/atoms/conversation-atoms'
 import { cn } from '@/lib/utils'
 import type { TabMinimapItem } from '@/atoms/tab-atoms'
 

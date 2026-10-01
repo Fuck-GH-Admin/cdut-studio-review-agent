@@ -96,7 +96,7 @@ import {
 import type { TabItem } from './atoms/tab-atoms'
 import { feishuBotStatesAtom } from './atoms/feishu-atoms'
 import { dingtalkBotStatesAtom } from './atoms/dingtalk-atoms'
-import { currentConversationIdAtom, channelsAtom, channelsLoadedAtom, selectedModelAtom } from './atoms/chat-atoms'
+import { currentConversationIdAtom, channelsAtom, channelsLoadedAtom, selectedModelAtom } from '@/atoms/conversation-atoms'
 import { appModeAtom } from './atoms/app-mode'
 import type { FeishuBotBridgeState, FeishuBridgeState, DingTalkBotBridgeState, DingTalkBridgeState } from '@profer/shared'
 import { Toaster } from '@profer/ui'

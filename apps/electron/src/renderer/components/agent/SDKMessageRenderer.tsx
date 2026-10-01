@@ -47,7 +47,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@profer/ui/primitives/t
 import { formatMessageTime } from '@/lib/format-time'
 import { getModelLogo, resolveModelDisplayName, resolveModelProvider } from '@/lib/model-logo'
 import { userProfileAtom } from '@/atoms/user-profile'
-import { channelsAtom, requestModelSelectorOpen } from '@/atoms/chat-atoms'
+import { channelsAtom, requestModelSelectorOpen } from '@/atoms/conversation-atoms'
 import { agentProcessGroupsKeepExpandedAtom, agentSessionsAtom, currentAgentSessionIdAtom, resolvedBlobMessagesAtom } from '@/atoms/agent-atoms'
 import { agentInterruptionMapAtom } from '@/atoms/preview-atoms'
 import { activeSessionIdAtom } from '@/atoms/tab-atoms'

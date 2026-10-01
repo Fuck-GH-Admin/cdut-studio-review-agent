@@ -18,7 +18,7 @@ import {
 import { appModeAtom } from '@/atoms/app-mode'
 import { activeViewAtom } from '@/atoms/active-view'
 import { automationFormAtom } from '@/atoms/automation-atoms'
-import { currentConversationIdAtom } from '@/atoms/chat-atoms'
+import { currentConversationIdAtom } from '@/atoms/conversation-atoms'
 import {
   currentAgentSessionIdAtom,
   agentSessionsAtom,

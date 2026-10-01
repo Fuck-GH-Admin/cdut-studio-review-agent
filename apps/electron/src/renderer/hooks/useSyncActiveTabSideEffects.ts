@@ -12,7 +12,7 @@
 import { useCallback } from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { appModeAtom } from '@/atoms/app-mode'
-import { currentConversationIdAtom } from '@/atoms/chat-atoms'
+import { currentConversationIdAtom } from '@/atoms/conversation-atoms'
 import {
   agentSessionsAtom,
   agentWorkspacesAtom,

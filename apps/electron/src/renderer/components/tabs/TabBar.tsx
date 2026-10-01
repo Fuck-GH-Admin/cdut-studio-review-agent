@@ -27,7 +27,7 @@ import {
 } from "@/atoms/tab-atoms";
 import type { TabItem } from "@/atoms/tab-atoms";
 import type { SessionIndicatorStatus } from "@/atoms/agent-atoms";
-import { currentConversationIdAtom } from "@/atoms/chat-atoms";
+import { currentConversationIdAtom } from "@/atoms/conversation-atoms";
 import {
   agentSessionsAtom,
   agentSessionDraftsAtom,

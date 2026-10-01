@@ -24,7 +24,7 @@ import {
   conversationThinkingEnabledAtom,
   conversationParallelModeAtom,
   conversationDraftsAtom,
-} from '@/atoms/chat-atoms'
+} from '@/atoms/conversation-atoms'
 import {
   agentSessionsAtom,
   agentSDKMessagesCacheAtom,

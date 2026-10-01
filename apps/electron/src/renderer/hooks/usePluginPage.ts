@@ -3,7 +3,7 @@ import type { ProferPluginPagePlacement, ProferPluginTaskReference } from '@prof
 import { openPluginTab, tabsAtom, activeTabIdAtom } from '@/atoms/tab-atoms'
 import { settingsOpenAtom } from '@/atoms/settings-tab'
 import { appModeAtom } from '@/atoms/app-mode'
-import { currentConversationIdAtom } from '@/atoms/chat-atoms'
+import { currentConversationIdAtom } from '@/atoms/conversation-atoms'
 import { currentAgentSessionIdAtom, currentAgentWorkspaceIdAtom } from '@/atoms/agent-atoms'
 
 export function usePluginPage(): (pluginId: string, pageId: string, title: string, reference?: ProferPluginTaskReference, placement?: ProferPluginPagePlacement) => Promise<void> {

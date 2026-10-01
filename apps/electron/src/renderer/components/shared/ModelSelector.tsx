@@ -23,7 +23,7 @@ import {
   channelsAtom,
   channelsLoadedAtom,
   modelSelectorRequestAtom,
-} from '@/atoms/chat-atoms'
+} from '@/atoms/conversation-atoms'
 import { authStatusAtom } from '@/atoms/identity-atoms'
 import { useConversationModelOptional } from '@/hooks/useConversationSettings'
 import { useConversationIdOptional } from '@/contexts/session-context'

@@ -10,7 +10,7 @@ import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import {
   streamingConversationIdsAtom,
-} from './chat-atoms'
+} from './conversation-atoms'
 import {
   agentRunningSessionIdsAtom,
   agentSessionIndicatorMapAtom,
