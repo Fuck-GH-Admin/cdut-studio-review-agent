@@ -620,6 +620,8 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
   const setAutoSendMap = useSetAtom(agentQueueAutoSendMapAtom)
   const autoSendingQueuedRef = React.useRef(false)
   const queuedSendInFlightRef = React.useRef(false)
+  // ref 锁释放本身不会触发渲染；成功收尾后唤醒队列，补上完成事件先于 Promise settle 的窗口。
+  const [queueSendSettledVersion, setQueueSendSettledVersion] = React.useState(0)
   // Stop 会递增 epoch，使此前已取出但尚未 settle 的队列消息失去回队资格。
   const queueStopEpochRef = React.useRef(0)
   const stopInFlightRef = React.useRef(false)
@@ -2512,7 +2514,9 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
     (allAskUserRequestsForQueue.get(sessionId)?.length ?? 0) > 0 ||
     (allExitPlanRequestsForQueue.get(sessionId)?.length ?? 0) > 0 ||
     (allPermissionRequestsForQueue.get(sessionId)?.length ?? 0) > 0
-  const canSendQueuedNow = messagesLoaded && !presetSelectionRequired && !!agentChannelId && hasAvailableModel && !hasBlockingRequests
+  const canSendQueuedNow = messagesLoaded && !presetSelectionRequired && !!agentChannelId &&
+    hasAvailableModel && !hasBlockingRequests && !streamState?.stopping &&
+    !streamState?.compactInFlight && !streamState?.isCompacting
 
   const handleSendQueuedNow = React.useCallback((messageId: string): void => {
     if (!canSendQueuedNow) return
@@ -2523,7 +2527,9 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
     sendingQueuedMessageIdsRef.current.add(messageId)
     const sendEpoch = queueStopEpochRef.current
     setQueuedMessages((prev) => removeQueuedMessage(prev, messageId))
+    let sentSuccessfully = false
     sendPlainTextAgentMessage(message)
+      .then(() => { sentSuccessfully = true })
       .catch((error) => {
         console.error('[AgentView] 队列消息发送失败:', error)
         toast.error('队列消息发送失败', { description: String(error) })
@@ -2534,6 +2540,7 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
       .finally(() => {
         sendingQueuedMessageIdsRef.current.delete(messageId)
         queuedSendInFlightRef.current = false
+        if (sentSuccessfully) setQueueSendSettledVersion((version) => version + 1)
       })
   }, [canSendQueuedNow, queuedMessages, sendPlainTextAgentMessage, setQueuedMessages, stoppedByUser, streamState?.stopping])
 
@@ -2574,10 +2581,9 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
     setQueuedMessages((prev) => moveQueuedMessage(prev, sourceId, targetId, placement))
   }, [setQueuedMessages])
 
-  // turn 结束后自动发送队首消息（FIFO，三把 ref 防重入；轮结束信号用版本号可消费决策）
+  // turn 结束或队列恢复为空闲可发送时自动发送队首（FIFO，ref 防重入）。
   React.useEffect(() => {
-    // 防重入：已有队列发送在飞行中，本次 effect 直接退出（不消费版本，
-    // 飞行中的发送启动的新一轮结束会再 +1 版本）
+    // 防重入：发送锁释放后由 queueSendSettledVersion 唤醒，不消费本次轮结束版本。
     if (autoSendingQueuedRef.current || queuedSendInFlightRef.current) return
 
     const decision = evaluateAutoSendTurn({
@@ -2605,7 +2611,9 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
     sendingQueuedMessageIdsRef.current.add(message.id)
     const sendEpoch = queueStopEpochRef.current
     setQueuedMessages((prev) => removeQueuedMessage(prev, message.id))
+    let sentSuccessfully = false
     sendPlainTextAgentMessage(message)
+      .then(() => { sentSuccessfully = true })
       .catch((error) => {
         console.error('[AgentView] 自动发送队列消息失败:', error)
         toast.error('自动发送队列消息失败', { description: String(error) })
@@ -2617,8 +2625,10 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
         sendingQueuedMessageIdsRef.current.delete(message.id)
         queuedSendInFlightRef.current = false
         autoSendingQueuedRef.current = false
+        // 失败时保留回队消息，但不因释放锁而立即无限重试。
+        if (sentSuccessfully) setQueueSendSettledVersion((version) => version + 1)
       })
-  }, [autoSendEnabled, canSendQueuedNow, queuedMessages, sendPlainTextAgentMessage, setQueuedMessages, stoppedByUser, streaming, streamState?.stopping, liveMessages.length])
+  }, [autoSendEnabled, canSendQueuedNow, queuedMessages, sendPlainTextAgentMessage, setQueuedMessages, stoppedByUser, streaming, streamState?.stopping, liveMessages.length, queueSendSettledVersion])
 
   /** 经唯一入口请求停止；只有主进程 STREAM_COMPLETE 才能将 UI 收敛为空闲。 */
   const handleStop = React.useCallback((): void => {
