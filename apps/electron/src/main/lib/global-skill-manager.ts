@@ -1498,6 +1498,7 @@ export function prepareRuntimeSkills(workspaceSlug: string): RuntimeSkillsProjec
     const temporary = `${projection}.${randomUUID()}.tmp`
     mkdirSync(temporary, { recursive: true })
     try {
+      mkdirSync(join(temporary, 'skills'), { recursive: true })
       for (const skill of resolved) {
         assertSafeSkillSegment(skill.slug, 'runtime Skill slug')
         const temporarySkills = safeSkillPath(temporary, 'skills', 'runtime skills directory')
@@ -1587,6 +1588,43 @@ function cleanupStaleRuntimeProjections(workspaceSlug: string, currentFingerprin
       console.warn(`[全局 Skill] 清理过期 runtime projection 失败: ${candidate}`, error)
     }
   }
+}
+
+/**
+ * 为一次 policy 快照提供独立目录：先过滤再交给 SDK 发现，两个 runtime 同时受约束。
+ * 仅重写投影副本的 name 为唯一 slug，保留用户源正文和资源，避免 SDK 按 display name 吞项。
+ * 子投影随父 fingerprint 一起回收；不修改 workspace 扁平兼容链接。
+ */
+export function preparePolicyRuntimeSkills(source: RuntimeSkillsProjection, allowedSlugs: readonly string[]): RuntimeSkillsProjection {
+  const allowed = new Set(allowedSlugs)
+  const selected = source.skills.filter(skill => allowed.has(skill.slug))
+  const fingerprint = createHash('sha256').update(`policy-v1:${source.path}:${selected.map(skill => skill.slug).sort().join('\n')}`).digest('hex').slice(0, 16)
+  const path = join(source.path, '.policies', fingerprint)
+  if (!existsSync(path)) {
+    const temporary = `${path}.${randomUUID()}.tmp`
+    mkdirSync(join(temporary, 'skills'), { recursive: true })
+    try {
+      for (const skill of selected) {
+        assertSafeSkillSegment(skill.slug, 'policy Skill slug')
+        const target = join(temporary, 'skills', skill.slug)
+        copySkillDirectorySafely(join(source.path, 'skills', skill.slug), target)
+        const mdPath = join(target, 'SKILL.md')
+        const content = readFileSync(mdPath, 'utf8').replace(/^\uFEFF/, '')
+        const fm = content.match(/^---\r?\n([\s\S]*?)\r?\n(?:---|\.\.\.)[^\S\r\n]*(?:\r?\n|$)/)
+        if (!fm) throw new Error(`Skill 缺少有效 frontmatter: ${skill.slug}`)
+        const header = fm[1]!.replace(/^name\s*:[^\r\n]*(?:\r?\n[ \t]+[^\r\n]*)*/m, '').trim()
+        writeFileSync(mdPath, `---\nname: ${JSON.stringify(skill.slug)}\n${header}\n---\n${content.slice(fm[0].length)}`, 'utf8')
+      }
+      mkdirSync(join(temporary, '.claude-plugin'), { recursive: true })
+      writeJsonFileAtomic(join(temporary, '.claude-plugin', 'plugin.json'), { name: `profer-skills-${fingerprint}`, version: '1.0.0' })
+      writeJsonFileAtomic(join(temporary, 'runtime-manifest.json'), { schemaVersion: 1, source: source.path, slugs: selected.map(skill => skill.slug) })
+      renameSync(temporary, path)
+    } catch (error) {
+      if (existsSync(temporary)) rmSync(temporary, { recursive: true, force: true })
+      throw error
+    }
+  }
+  return { path, skills: selected.map(skill => ({ ...skill, path: join(path, 'skills', skill.slug) })), diagnostics: source.diagnostics }
 }
 
 export function getRuntimeSkillsPath(projection: RuntimeSkillsProjection): string {

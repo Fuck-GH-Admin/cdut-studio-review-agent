@@ -124,8 +124,10 @@ import {
   ensurePluginManifest,
 } from './agent-workspace-manager'
 import { getAgentWorkspacePath, getAgentSessionWorkspacePath, getPiCheckpointsDir, getSdkConfigDir, getBundledCliPath } from './config-paths'
-import { getRuntimeSkillsPath, prepareRuntimeSkills } from './global-skill-manager'
-import { normalizeDefaultSkillSlug } from './default-skill-slugs'
+import { prepareRuntimeSkills } from './global-skill-manager'
+import { routeSkillsForTask, type SkillRoutingSnapshot } from './skill-routing'
+import { buildSkillRuntimeOptions, prepareAgentSkillRouting } from './skill-runtime-routing'
+import { captureSkillToolInventory } from './skill-tool-inventory'
 import { getRuntimeStatus } from './runtime-init'
 import { shouldStartPiHarness } from './pi-harness/feature-gate'
 import { pauseActivePiHarnessRun, settlePiHarnessRun, startPiHarnessRun } from './pi-harness/orchestrator-bridge'
@@ -192,7 +194,6 @@ import { injectPptDeliveryMcpServer } from './ppt-delivery-agent-tools'
 import { browserController } from './browser-controller'
 import {
   applySdkCredentials,
-  buildPiSkillMentionOptions,
   AgentRunAlreadyActiveError,
   isBrowserToolName,
   isPartialSDKMessage,
@@ -305,6 +306,11 @@ export class AgentOrchestrator {
 
   /** 删除期间禁止同一会话从 UI、队列或 headless 路径重新进入。 */
   private deletingSessions = new Set<string>()
+  /** Goal 内部 turn 不写入普通会话 transcript。 */
+  private nonPersistingGoalSessions = new Set<string>()
+
+  /** 队列复用当前 run 的 Skill 快照；初始化失败 resolve(undefined)，不得悬挂或放宽策略。 */
+  private activeSkillRoutings = new Map<string, Promise<SkillRoutingSnapshot | undefined>>()
 
   constructor(adapter: AgentProviderAdapter, eventBus: AgentEventBus) {
     this.adapter = adapter
@@ -805,6 +811,14 @@ export class AgentOrchestrator {
     retryReason: string,
   ): string {
     console.log(`[Agent 编排] ${logMessage}`)
+    if (queryOptions.isolatedRuntimeSession) {
+      // Goal runtime 的 resume 关系只属于 Goal 状态；恢复时不能清除普通 Agent 会话 metadata，
+      // 也不能把普通 transcript 作为新 Goal 的上下文来源。
+      queryOptions.resumeSessionId = undefined
+      queryOptions.resumeSessionAt = undefined
+      queryOptions.prompt = contextualMessage
+      return retryReason
+    }
     // 先持久化当前已累积的消息，确保 JSONL 文件包含最新内容
     this.persistSDKMessages(sessionId, accumulatedMessages, Date.now() - queryStartedAt)
     accumulatedMessages.length = 0
@@ -841,6 +855,7 @@ export class AgentOrchestrator {
    * （跳过 tool_progress、compacting 等临时消息）。
    */
   private persistSDKMessages(sessionId: string, accumulatedMessages: SDKMessage[], durationMs?: number): void {
+    if (this.nonPersistingGoalSessions.has(sessionId)) return
     if (accumulatedMessages.length === 0) return
 
     const toPersist = accumulatedMessages
@@ -905,6 +920,7 @@ export class AgentOrchestrator {
       mentionedSessionIds,
       automationContext,
     } = input
+    const goalIsolated = input.isolatedRuntimeSession === true
     const runtimeUserMessage = input.internalPrompt ?? userMessage
     let { channelId, modelId } = input
     // Pi/Claude 的错误结构和可恢复语义不同；Router 必须按本次请求 runtime 提供 helper。
@@ -941,6 +957,7 @@ export class AgentOrchestrator {
       throw new AgentRunAlreadyActiveError(stopping)
     }
     input = routePluginModel(`agent:${sessionId}`, input, agentRuntime)
+    if (goalIsolated) this.nonPersistingGoalSessions.add(sessionId)
     ;({ channelId, modelId } = input)
     let resolveCompletion!: () => void
     const completion = new Promise<void>((resolve) => {
@@ -951,6 +968,8 @@ export class AgentOrchestrator {
       promise: completion,
       resolve: resolveCompletion,
     })
+    let resolveSkillRouting!: (snapshot: SkillRoutingSnapshot | undefined) => void
+    this.activeSkillRoutings.set(sessionId, new Promise(resolve => { resolveSkillRouting = resolve }))
     const releaseActiveRun = (): boolean => releaseActiveSession(this.activeSessions, sessionId, runGeneration)
     type CompleteOptions = {
       stoppedByUser?: boolean
@@ -1186,7 +1205,8 @@ export class AgentOrchestrator {
 
     // 4. 读取已有的 SDK session ID（用于 resume）
     const sessionMeta = getAgentSessionMeta(sessionId)
-    let existingSdkSessionId = sessionMeta?.sdkSessionId
+    // Goal 只使用自己的 runtime session；普通会话的 SDK session 不得作为 resume 来源。
+    let existingSdkSessionId = input.isolatedRuntimeSession ? input.runtimeSessionId : sessionMeta?.sdkSessionId
 
     // 4.1 检测回退后的 resume 截断点（快照回退功能）
     let rewindResumeAt: string | undefined
@@ -1208,7 +1228,8 @@ export class AgentOrchestrator {
     let workspace: import('@profer/shared').AgentWorkspace | undefined
 
       // 8. Claude runtime 才需要验证其 bundled CLI；Pi 是 in-process runtime。
-      const sdk = await import('@anthropic-ai/claude-agent-sdk')
+      const skillToolInventory = captureSkillToolInventory(await import('@anthropic-ai/claude-agent-sdk'))
+      const sdk = skillToolInventory.sdk
       const cliPath = agentRuntime === 'claude' ? resolveSDKCliPath() : undefined
 
       if (agentRuntime === 'claude' && (!cliPath || !existsSync(cliPath))) {
@@ -1568,18 +1589,10 @@ export class AgentOrchestrator {
         enrichedMessage = `${referencedSessionsBlock}\n\n${enrichedMessage}`
         console.log(`[Agent 编排] 注入 referenced_sessions: ${mentionedSessionIds?.length ?? 0} sessions`)
       }
-      const allowedSkillSlugs = presetPolicy.allowedSkillSlugs?.map(normalizeDefaultSkillSlug)
-      const allowedMentionedSkills = mentionedSkills?.filter((slug) =>
-        allowedSkillSlugs === undefined || allowedSkillSlugs.includes(normalizeDefaultSkillSlug(slug)),
-      ) ?? []
       const allowedMentionedMcpServers = mentionedMcpServers?.filter((name) =>
         Object.prototype.hasOwnProperty.call(mcpServers, name),
       ) ?? []
       const toolLines: string[] = []
-      for (const slug of allowedMentionedSkills) {
-        const qualifiedName = workspaceSlug ? `profer-workspace-${workspaceSlug}:${slug}` : slug
-        toolLines.push(`- Skill: ${qualifiedName}（请立即调用此 Skill）`)
-      }
       for (const name of allowedMentionedMcpServers) {
         toolLines.push(`- MCP 服务器: ${name}（请使用此 MCP 服务器的工具来完成任务）`)
       }
@@ -1588,7 +1601,7 @@ export class AgentOrchestrator {
         console.log(`[Agent 编排] 注入 mentioned_tools: ${toolLines.length} 条（原始 ${mentionedSkills?.length ?? 0} skills, ${mentionedMcpServers?.length ?? 0} MCP）`)
       }
 
-      const contextualMessage = `${dynamicCtx}
+      let contextualMessage = `${dynamicCtx}
 
 ${enrichedMessage}`
 
@@ -1597,7 +1610,9 @@ ${enrichedMessage}`
         ? '/compact'
         : existingSdkSessionId
           ? contextualMessage
-          : buildContextPrompt(sessionId, contextualMessage, { agentCwd })
+          : goalIsolated
+            ? contextualMessage
+            : buildContextPrompt(sessionId, contextualMessage, { agentCwd })
 
       if (existingSdkSessionId) {
         console.log(`[Agent 编排] 使用 resume 模式，SDK session ID: ${existingSdkSessionId}`)
@@ -1968,6 +1983,22 @@ ${enrichedMessage}`
         workspaceSlug,
       })
       const runtimeSkills = workspaceSlug ? prepareRuntimeSkills(workspaceSlug) : undefined
+      const skillRouting = await prepareAgentSkillRouting({
+        projection: runtimeSkills,
+        policy: this.activePresetPolicies.get(sessionId) ?? presetPolicy,
+        toolNames: agentRuntime === 'pi'
+          ? ['Read', 'Write', 'Edit', 'Glob', 'Grep', 'Bash', ...(piCustomTools?.map(tool => tool.name) ?? [])]
+          : skillToolInventory.getToolNames(Object.keys(mcpServers), presetPolicy),
+      })
+      resolveSkillRouting(skillRouting.snapshot)
+      const routedSkills = routeSkillsForTask(skillRouting.snapshot, { userMessage, mentionedSkills })
+      // 不污染用户持久化文本；仅本轮与 recovery prompt 携带已审查的路由结果。
+      if (!isCompactCommand && routedSkills.prompt) {
+        finalPrompt = `${routedSkills.prompt}\n\n${finalPrompt}`
+        contextualMessage = `${routedSkills.prompt}\n\n${contextualMessage}`
+      }
+      console.log('[Skill 路由]', JSON.stringify({ sessionId, allowed: skillRouting.snapshot.allowedSlugs, selected: routedSkills.selected, diagnostics: routedSkills.diagnostics }))
+      const skillRuntimeOptions = buildSkillRuntimeOptions(skillRouting)
       const projectCandidates = detectAttachedDirectoryProjects(allAdditionalDirectories)
       const attachedDirectoriesPrompt = buildPiAdditionalDirectoriesPrompt(allAdditionalDirectories, projectCandidates)
       const runtimeStatus = getRuntimeStatus()
@@ -2106,14 +2137,9 @@ ${enrichedMessage}`
             channel.provider,
           ),
           deepSeekV4ThinkingEnabled: appSettings.agentThinking?.type !== 'disabled',
-          ...(runtimeSkills && {
-            additionalSkillPaths: [getRuntimeSkillsPath(runtimeSkills)],
-          }),
-          ...(presetPolicy.allowedSkillSlugs !== undefined && {
-            skillSlugs: [...presetPolicy.allowedSkillSlugs],
-          }),
-          // 用户显式 /skill: 引用：Pi adapter 会把对应 Skill 正文内联进本轮 prompt。
-          ...buildPiSkillMentionOptions(allowedMentionedSkills),
+          additionalSkillPaths: skillRuntimeOptions.additionalSkillPaths,
+          skillSlugs: skillRuntimeOptions.skillSlugs,
+          skillMentions: skillRuntimeOptions.skillMentions,
           ...(piCustomTools && { customTools: piCustomTools }),
           ...(sessionMeta?.codexFastMode && { codexFastMode: true }),
           ...(userMessage.trim() === '/compact' && { compactRequest: true }),
@@ -2138,21 +2164,16 @@ ${enrichedMessage}`
           agentRuntime === 'pi' ? piSystemPrompt : systemPromptAppend,
         ),
         resumeSessionId: existingSdkSessionId,
+        ...(input.isolatedRuntimeSession && {
+          isolatedRuntimeSession: true,
+          onRuntimeSessionId: input.onRuntimeSessionId,
+          onRuntimeMessage: input.onRuntimeMessage,
+        }),
         // 回退后 resume：从指定消息处继续（SDK 在同一 JSONL 内创建分支）
         ...(rewindResumeAt && { resumeSessionAt: rewindResumeAt }),
         ...(Object.keys(mcpServers).length > 0 && { mcpServers }),
-        ...(runtimeSkills && {
-          plugins: [
-            {
-              type: 'local' as const,
-              path: runtimeSkills.path,
-            },
-          ],
-        }),
-        // 预设 Skill 白名单（Claude SDK 原生 skills 过滤：未列出的 skill 对模型隐藏且 Skill 工具拒绝；[] = 0 skill）
-        ...(presetPolicy.allowedSkillSlugs !== undefined && {
-          skills: [...presetPolicy.allowedSkillSlugs],
-        }),
+        plugins: skillRuntimeOptions.plugins,
+        skills: skillRuntimeOptions.skills,
         // 合并附加目录：用户当次输入 + 会话级 + 工作区级（详见 collectAttachedDirectories）
         ...(allAdditionalDirectories.length > 0 && {
           additionalDirectories: allAdditionalDirectories,
@@ -2190,7 +2211,10 @@ ${enrichedMessage}`
           // 视为替换，此时旧 entry bindings 属于另一棵 Pi tree，必须原子替换而非合并。
           const artifactReplaced = !!piSessionFile && latestSessionMeta?.piSessionFile !== piSessionFile
           capturedSdkSessionId = sdkSessionId
-          if (isNewSessionId || artifactReplaced) {
+          if (input.isolatedRuntimeSession && isNewSessionId) {
+            input.onRuntimeSessionId?.(sdkSessionId, piSessionFile)
+          }
+          if (!input.isolatedRuntimeSession && (isNewSessionId || artifactReplaced)) {
             try {
               updateAgentSessionMeta(sessionId, {
                 sdkSessionId,
@@ -2984,6 +3008,8 @@ ${enrichedMessage}`
               }
             }
 
+            // Goal 内部消息走独立回调，供本轮结果解析；普通消息仍按原逻辑进入持久化累积。
+            input.onRuntimeMessage?.(msg)
             // 累积 assistant 和 user 消息用于持久化
             // - 跳过 replay 消息，避免 resume 时重复写入
             // - 对 user 消息，仅累积含 tool_result 的（初始用户消息已在步骤 5 手动持久化）
@@ -3422,6 +3448,9 @@ ${enrichedMessage}`
       // 只在 generation 匹配时才清理，防止旧流的 finally 误删新流的注册
       // 只有仍持有本 generation 的 finally 能释放并清理 session scoped state。
       if (releaseActiveRun()) {
+        this.nonPersistingGoalSessions.delete(sessionId)
+        resolveSkillRouting(undefined)
+        this.activeSkillRoutings.delete(sessionId)
         this.activePresetPolicies.delete(sessionId)
         this.sessionPermissionModes.delete(sessionId)
         this.queuedMessageUuids.delete(sessionId)
@@ -3765,6 +3794,11 @@ ${enrichedMessage}`
     const workspaceSlug = workspaceId ? getAgentWorkspace(workspaceId)?.slug : undefined
     // 运行中的 Agent 收到队列消息时也必须看到用户刚刚主动打开的页面。
     // 未打开浏览器时保持既有消息形态，避免给每条插队消息重复注入无关环境块。
+    const skillSnapshot = await this.activeSkillRoutings.get(sessionId)
+    if (!skillSnapshot || this.activeSessions.get(sessionId) !== queueRunId || this.stoppedBySessions.has(sessionId)) {
+      uuids.delete(uuid)
+      throw new Error('当前 Skill 能力快照未就绪或所属运行已结束，请在下一轮重试')
+    }
     const activePolicy = this.activePresetPolicies.get(sessionId)
     const userBrowserContext = browserController.getUserContext(sessionId)
     let enrichedText = userBrowserContext
@@ -3774,17 +3808,13 @@ ${enrichedMessage}`
     if (referencedSessionsBlock) {
       enrichedText = `${referencedSessionsBlock}\n\n${enrichedText}`
     }
-    const allowedMentionedSkills = mentionedSkills?.filter((slug) =>
-      activePolicy?.allowedSkillSlugs === undefined || activePolicy.allowedSkillSlugs.map(normalizeDefaultSkillSlug).includes(normalizeDefaultSkillSlug(slug)),
-    ) ?? []
+    const routedSkills = routeSkillsForTask(skillSnapshot, { userMessage: rawText ?? text, mentionedSkills })
+    if (routedSkills.prompt) enrichedText = `${routedSkills.prompt}\n\n${enrichedText}`
+    console.log('[Skill 路由 队列]', JSON.stringify({ sessionId, selected: routedSkills.selected, diagnostics: routedSkills.diagnostics }))
     const allowedMentionedMcpServers = mentionedMcpServers?.filter((name) =>
       activePolicy?.loadedMcpServerNames?.includes(name) === true,
     ) ?? []
     const toolLines: string[] = []
-    for (const slug of allowedMentionedSkills) {
-      const qualifiedName = workspaceSlug ? `profer-workspace-${workspaceSlug}:${slug}` : slug
-      toolLines.push(`- Skill: ${qualifiedName}（请立即调用此 Skill）`)
-    }
     for (const name of allowedMentionedMcpServers) {
       toolLines.push(`- MCP 服务器: ${name}（请使用此 MCP 服务器的工具来完成任务）`)
     }
@@ -3816,8 +3846,8 @@ ${enrichedMessage}`
 
       await this.adapter.sendQueuedMessage(sessionId, sdkMessage, {
         interrupt: opts?.interrupt,
-        // 队列消息复用同一轮已按预设 policy 过滤的 skill mentions，保持与主轮一致的正文展开能力。
-        ...buildPiSkillMentionOptions(allowedMentionedSkills),
+        // 已按冻结快照处理引用/推荐，禁止 adapter 再扫描 enrichedText 中的历史示例。
+        skillMentions: [],
       })
       // 消息已注入 Agent 会话（Pi interrupt 路径 reservation 已消费）。
       // 即使 run 在 await 期间已停止/被替换，本条消息仍必须持久化到同一会话文件，

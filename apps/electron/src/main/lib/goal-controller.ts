@@ -10,7 +10,13 @@ import type { AgentGoalContract, AgentGoalIterationRecord, AgentGoalIterationRes
 type TimerHandle = unknown
 
 type GoalControllerDependencies = {
-  runTurn: (input: { sessionId: string; state: AgentGoalState; previousSummary?: string }) => Promise<AgentGoalIterationResult>
+  runTurn: (input: {
+    sessionId: string
+    state: AgentGoalState
+    previousSummary?: string
+    runtimeSessionId?: string
+    onRuntimeSessionId: (sdkSessionId: string, sessionFile?: string) => void
+  }) => Promise<AgentGoalIterationResult>
   stopTurn: (sessionId: string) => Promise<void>
   onStateChange?: (state: AgentGoalState) => void
   schedule?: (callback: () => void) => TimerHandle
@@ -57,7 +63,14 @@ export class GoalController {
   }
 
   async start(sessionId: string, goal: string, contract?: AgentGoalContract, now = Date.now()): Promise<AgentGoalState> {
-    if (this.runtimes.has(sessionId)) throw new Error('该会话已有正在运行的 Goal')
+    const existing = this.runtimes.get(sessionId)
+    if (existing?.state.status === 'active') throw new Error('该会话已有正在运行的 Goal')
+    if (existing?.state.status === 'paused') throw new Error('该会话已有暂停中的 Goal，请先恢复或清除它')
+    if (existing) {
+      // 终态 Goal 只占用状态槽位；启动新 Goal 前释放旧 runtime，但不删除其 transcript 结果。
+      this.cancelPending(existing)
+      this.runtimes.delete(sessionId)
+    }
     const runtime: Runtime = { state: createGoalState(sessionId, goal, now, DEFAULT_GOAL_LIMITS, contract), stopping: false }
     this.runtimes.set(sessionId, runtime)
     this.emit(runtime.state)
@@ -157,7 +170,22 @@ export class GoalController {
     this.emit(runtime.state)
     const turnStartedAt = Date.now()
     try {
-      const result = await this.deps.runTurn({ sessionId, state: runtime.state, previousSummary: runtime.state.lastSummary })
+      const result = await this.deps.runTurn({
+        sessionId,
+        state: runtime.state,
+        previousSummary: runtime.state.lastSummary,
+        runtimeSessionId: runtime.state.runtimeSessionId,
+        onRuntimeSessionId: (runtimeSessionId, runtimeSessionFile) => {
+          if (runtime.stopping || runtime.state.status !== 'active') return
+          runtime.state = {
+            ...runtime.state,
+            runtimeSessionId,
+            runtimeSessionFile,
+            updatedAt: Date.now(),
+          }
+          this.emit(runtime.state)
+        },
+      })
       if (runtime.stopping || runtime.state.status !== 'active') return
       const decision = evaluateGoalContinuation(result, {
         iteration,

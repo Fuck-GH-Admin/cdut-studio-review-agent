@@ -29,19 +29,10 @@ import {
   isInOverdraftAtom,
   isVipAtom,
   membershipTierAtom,
-} from '@/atoms/credits-atoms'
+} from '@/domains/credits/credits-state'
+import type { CreditsModelUsage, CreditsUsageLog } from '@/domains/credits/credits-types'
+import { claimCreditsDrip, requestCreditsUsage } from '@/domains/credits/credits-api'
 import { useCreditsLoader } from '@/hooks/useCreditsLoader'
-
-interface RequestLog {
-  id: string; model: string; prompt_tokens: number; completion_tokens: number
-  total_tokens: number; cost_credits: number; duration_ms: number
-  success: number; stream: number; created_at: number
-}
-
-interface ModelUsage {
-  model: string; requests: number; total_tokens: number
-  prompt_tokens: number; completion_tokens: number; total_cost: number
-}
 
 /** 格式化积分（保留最多 1 位小数，用于单次消耗等小数值；小于 0.001 时显示 <0.001） */
 function fmtPointsDecimal(n: number): string {
@@ -62,8 +53,8 @@ export function CreditsSettings(): React.ReactElement {
   const [loading, setLoading] = useAtom(creditsLoadingAtom)
   const isLow = useAtomValue(creditsLowAtom)
   const isExhausted = useAtomValue(creditsExhaustedAtom)
-  const [requestLogs, setRequestLogs] = React.useState<RequestLog[]>([])
-  const [modelUsage, setModelUsage] = React.useState<ModelUsage[]>([])
+  const [requestLogs, setRequestLogs] = React.useState<CreditsUsageLog[]>([])
+  const [modelUsage, setModelUsage] = React.useState<CreditsModelUsage[]>([])
   // 订阅 + Drip + 分桶
   const subscription = useAtomValue(subscriptionAtom)
   const dripAvailable = useAtomValue(dripAvailablePointsAtom)
@@ -77,36 +68,15 @@ export function CreditsSettings(): React.ReactElement {
   const isVip = useAtomValue(isVipAtom)
   const tier = useAtomValue(membershipTierAtom)
 
-  const fetchAuth = React.useCallback(async () => {
-    return window.electronAPI.auth.getTeamAuth()
-  }, [])
-
   const loadAll = React.useCallback(async () => {
     setLoading(true)
     try {
-      const auth = await fetchAuth()
-      if (!auth) return
-
-      // 请求日志（最近30条）
-      const rl = await fetch(`${auth.baseUrl}/v1/account/credits/usage?limit=30`, {
-        headers: { Authorization: `Bearer ${auth.token}` },
-      })
-      if (rl.ok) {
-        const d = await rl.json()
-        setRequestLogs(d.logs ?? [])
-      }
-
-      // 按模型用量统计（近30天）
-      const mu = await fetch(`${auth.baseUrl}/v1/account/credits/usage-by-model?days=30`, {
-        headers: { Authorization: `Bearer ${auth.token}` },
-      })
-      if (mu.ok) {
-        const d = await mu.json()
-        setModelUsage(d ?? [])
-      }
+      const usage = await requestCreditsUsage()
+      if (usage.logs !== undefined) setRequestLogs(usage.logs)
+      if (usage.modelUsage !== undefined) setModelUsage(usage.modelUsage)
     } catch { /* 静默 */ }
     finally { setLoading(false) }
-  }, [fetchAuth])
+  }, [setLoading])
 
   React.useEffect(() => { loadAll() }, [loadAll])
 
@@ -138,22 +108,16 @@ export function CreditsSettings(): React.ReactElement {
   const handleClaimDrip = React.useCallback(async () => {
     if (dripAvailable <= 0) return
     try {
-      const auth = await window.electronAPI.auth.getTeamAuth()
-      if (!auth) {
+      const result = await claimCreditsDrip()
+      if (!result) {
         toast.info('请先登录团队工作区')
         return
       }
-      const resp = await fetch(`${auth.baseUrl}/v1/account/subscription/claim-drip`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${auth.token}` },
-      })
-      if (!resp.ok) throw new Error(`claim-drip failed: ${resp.status}`)
-      const d = await resp.json()
-      if (d.claimed) {
-        toast.success(d.message)
+      if (result.claimed) {
+        toast.success(result.message)
         await reloadCredits()
       } else {
-        toast.info(d.message || '暂无待领取的 drip')
+        toast.info(result.message || '暂无待领取的 drip')
       }
     } catch {
       toast.error('领取失败，请重试')

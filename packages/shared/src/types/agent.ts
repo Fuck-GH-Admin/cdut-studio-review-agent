@@ -1322,6 +1322,10 @@ export interface AgentGoalState {
   contract?: AgentGoalContract
   /** 迭代历史，最多保留最近若干条（见 GOAL_HISTORY_LIMIT） */
   history?: AgentGoalIterationRecord[]
+  /** Goal 独立 runtime 的 SDK/Pi session ID；不写入普通 Agent 会话元数据。 */
+  runtimeSessionId?: string
+  /** Goal 独立 runtime 的 session file（Pi 使用；仅作恢复诊断与精确绑定）。 */
+  runtimeSessionFile?: string
   /** Goal 累计 token 用量；没有 runtime usage 时保持为空 */
   usage?: AgentGoalUsage
   /** Goal 受阻时自动创建/更新的规划中心 Todo ID */
@@ -1400,6 +1404,14 @@ export interface AgentSendInput {
   suppressUserMessagePersistence?: boolean
   /** Goal 专用结构化结果回调；由内置 update_goal 工具调用，不写入普通对话。 */
   reportGoalResult?: (result: import('@profer/shared').AgentGoalIterationResult) => void
+  /** Goal turn 是否使用独立的 runtime session，不得复用普通会话 SDK 上下文。 */
+  isolatedRuntimeSession?: boolean
+  /** Goal 独立 runtime 要恢复的 SDK/Pi session ID。 */
+  runtimeSessionId?: string
+  /** Goal 独立 runtime 已创建/恢复后的 session ID 回调，不更新普通会话元数据。 */
+  onRuntimeSessionId?: (sdkSessionId: string, sessionFile?: string) => void
+  /** Goal runtime 当前轮消息回调，不写入普通会话 transcript。 */
+  onRuntimeMessage?: (message: import('@profer/shared').SDKMessage) => void
   /** 定时任务执行上下文（注入到系统提示词，用户不可见） */
   automationContext?: string
   /** Main-process one-shot ticket for a user-confirmed Pi Harness candidate. Not renderer-generated. */

@@ -11,18 +11,14 @@ import * as React from 'react'
 import { toast } from 'sonner'
 import { Zap, Copy, ExternalLink, Loader2, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import {
+  createRechargeOrder,
+  createRechargeStatusReader,
+  openCreditsPaymentPage,
+  requestRechargeConfig,
+} from '@/domains/credits/credits-api'
+import type { RechargeConfig } from '@/domains/credits/credits-types'
 import { useCreditsLoader } from '@/hooks/useCreditsLoader'
-
-interface RechargeConfig {
-  enabled: boolean
-  manualFallback: boolean
-  rate: number
-  presetsRmb: number[]
-  customMinRmb: number
-  customMaxRmb: number
-  currency: string
-  adminWechat: string
-}
 
 const DEFAULT_CONFIG: RechargeConfig = {
   enabled: false,
@@ -33,20 +29,6 @@ const DEFAULT_CONFIG: RechargeConfig = {
   customMaxRmb: 1000,
   currency: 'rmb',
   adminWechat: '',
-}
-
-async function fetchRechargeConfig(): Promise<RechargeConfig | null> {
-  try {
-    const auth = await window.electronAPI.auth.getTeamAuth()
-    if (!auth) return null
-    const resp = await fetch(`${auth.baseUrl}/v1/account/credits/recharge-config`, {
-      headers: { Authorization: `Bearer ${auth.token}` },
-    })
-    if (!resp.ok) return null
-    return await resp.json()
-  } catch {
-    return null
-  }
 }
 
 export function RechargeSection(): React.ReactElement {
@@ -64,7 +46,7 @@ export function RechargeSection(): React.ReactElement {
   // 加载充值配置
   React.useEffect(() => {
     let cancelled = false
-    fetchRechargeConfig().then((data) => {
+    requestRechargeConfig().then((data) => {
       if (cancelled) return
       if (data) setConfig({ ...DEFAULT_CONFIG, ...data })
       setConfigLoaded(true)
@@ -112,25 +94,20 @@ export function RechargeSection(): React.ReactElement {
       // 展示二维码并同时打开支付页（若可用）
       setPendingQrcode(qrcode)
     }
-    if (payUrl && /^https?:\/\//i.test(payUrl)) {
-      await window.electronAPI.openExternal(payUrl).catch(() => toast.info('请在浏览器中完成支付'))
+    if (payUrl) {
+      await openCreditsPaymentPage(payUrl).catch(() => toast.info('请在浏览器中完成支付'))
     }
   }, [])
 
   const pollStatus = React.useCallback(async (orderId: string): Promise<boolean> => {
     try {
-      const auth = await window.electronAPI.auth.getTeamAuth()
-      if (!auth) return false
+      const readStatus = await createRechargeStatusReader(orderId)
+      if (!readStatus) return false
       for (let i = 0; i < 30; i++) {
         await new Promise((r) => setTimeout(r, 5000))
-        const resp = await fetch(
-          `${auth.baseUrl}/v1/account/credits/recharge/status?orderId=${orderId}`,
-          { headers: { Authorization: `Bearer ${auth.token}` } },
-        ).catch(() => null)
-        if (!resp) continue
-        const d = await resp.json().catch(() => null)
+        const d = await readStatus()
         if (d?.status === 'paid') {
-          toast.success(`充值成功，已到账 ${Math.round((d.amountRmb / 100) * config.rate)} 积分`)
+          toast.success(`充值成功，已到账 ${Math.round(((d.amountRmb ?? 0) / 100) * config.rate)} 积分`)
           await reloadCredits()
           setPendingOrderId(null)
           setPendingQrcode('')
@@ -153,23 +130,21 @@ export function RechargeSection(): React.ReactElement {
     }
     setSubmitting(true)
     try {
-      const auth = await window.electronAPI.auth.getTeamAuth()
-      if (!auth) {
+      const result = await createRechargeOrder(amount * 100, payType)
+      if (result.kind === 'unauthenticated') {
         toast.error('未登录，请先登录团队工作区')
         return
       }
-      const amountRmb = amount * 100 // 元 → 分
-      const resp = await fetch(`${auth.baseUrl}/v1/account/credits/recharge`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${auth.token}` },
-        body: JSON.stringify({ amountRmb, payType }),
-      })
-      const d = await resp.json().catch(() => ({}))
-      if (!resp.ok) {
-        toast.error(d.error || '充值下单失败，请重试')
+      if (result.kind === 'failed') {
+        toast.error(result.message || '充值下单失败，请重试')
         return
       }
+      const d = result.data
       if (d.payInfo?.method === 'online') {
+        if (!d.orderId) {
+          toast.error('充值订单响应无效，请重试')
+          return
+        }
         setPendingOrderId(d.orderId)
         await openPay(d.payInfo.payUrl || '', d.payInfo.qrcode || '')
         // 打开支付页后轮询到账

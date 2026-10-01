@@ -370,6 +370,26 @@ export function useGlobalAgentListeners(): void {
     }).catch(() => {})
     const cleanupGoal = window.electronAPI.onGoalEvent((event) => {
       const previous = store.get(agentGoalsAtom).get(event.sessionId)
+      const goalRunning = event.state?.status === 'active'
+      store.set(agentMessageRefreshAtom, (previous) => {
+        const next = new Map(previous)
+        next.set(event.sessionId, (previous.get(event.sessionId) ?? 0) + 1)
+        return next
+      })
+      store.set(agentStreamingStatesAtom, (previousStates) => {
+        const current = previousStates.get(event.sessionId)
+        if (!goalRunning && !current) return previousStates
+        const next = new Map(previousStates)
+        next.set(event.sessionId, {
+          running: goalRunning,
+          backgroundWaiting: false,
+          content: current?.content ?? '',
+          toolActivities: current?.toolActivities ?? [],
+          model: current?.model,
+          startedAt: current?.startedAt ?? event.state?.startedAt,
+        })
+        return next
+      })
       store.set(agentGoalsAtom, (previousMap) => {
         const next = new Map(previousMap)
         // clear 后主进程发送 stopReason='cleared' 的快照，渲染层直接移除条目

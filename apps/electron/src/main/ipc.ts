@@ -254,6 +254,7 @@ import {
   ensureProjectDraftAgentSession,
   getAgentSessionMeta,
   getAgentSessionSDKMessages,
+  appendSDKMessages,
   updateAgentSessionMeta,
   deleteAgentSession,
   migrateChatToAgentSession,
@@ -448,8 +449,35 @@ function persistGoalStates(): void {
  * 只在状态跃迁时触发，blocked 状态下重复 emit 不会重复建 Todo。
  */
 const goalTerminalHandled = new Map<string, string>()
+const goalVisibleResultHandled = new Map<string, string>()
+function persistGoalVisibleResult(state: AgentGoalState): void {
+  if (state.status === 'active' || state.status === 'paused' || state.status === 'stopped') return
+  const record = state.history?.[state.history.length - 1]
+  const summary = record?.summary || state.lastSummary
+  if (!summary) return
+  const evidence = (record?.evidence ?? state.lastEvidence ?? []).length > 0
+    ? `\n\n证据：\n${(record?.evidence ?? state.lastEvidence ?? []).map((item) => `- ${item}`).join('\n')}`
+    : ''
+  const iteration = record?.iteration ?? state.iteration
+  const key = `${state.id}:${iteration}:${state.status}`
+  if (goalVisibleResultHandled.get(state.id) === key) return
+  appendSDKMessages(state.sessionId, [{
+    type: 'assistant',
+    message: { content: [{ type: 'text', text: `Goal ${state.status === 'completed' ? '已完成' : state.status === 'blocked' ? '已阻塞' : '执行失败'}\n\n${summary}${evidence}` }] },
+    parent_tool_use_id: null,
+    uuid: randomUUID(),
+    _createdAt: Date.now(),
+    _goalVisibleResult: true,
+  } as unknown as import('@profer/shared').SDKMessage])
+  goalVisibleResultHandled.set(state.id, key)
+}
 function syncGoalPlanningTodo(state: AgentGoalState): void {
   const key = `${state.id}:${state.iteration}`
+  try {
+    persistGoalVisibleResult(state)
+  } catch (error) {
+    console.error('[goal] 可见结果持久化失败', error)
+  }
   try {
     if (state.status === 'blocked') {
       if (goalTerminalHandled.get(state.id) === key) return
@@ -495,12 +523,12 @@ function collectGoalUsage(messages: unknown[]): AgentGoalUsage | undefined {
 }
 
 const goalController = new GoalController({
-  runTurn: async ({ sessionId, state, previousSummary }) => {
+  runTurn: async ({ sessionId, state, previousSummary, runtimeSessionId, onRuntimeSessionId }) => {
     const session = getAgentSessionMeta(sessionId)
     if (!session?.channelId) throw new Error('Goal 会话缺少渠道配置')
     const prompt = buildGoalIterationPrompt(state, { previousSummary })
     let structuredResult: AgentGoalIterationResult | undefined
-    const messagesBeforeTurn = getAgentSessionSDKMessages(sessionId).length
+    const runtimeMessages: import('@profer/shared').SDKMessage[] = []
     const mainWindow = getMainWindow()
     if (!mainWindow || mainWindow.isDestroyed()) throw new Error('Profer 主窗口不可用，Goal 已停止')
     await runAgent({
@@ -516,10 +544,15 @@ const goalController = new GoalController({
       triggeredBy: 'goal',
       goalIteration: state.iteration,
       titleSourceText: state.goal,
+      isolatedRuntimeSession: true,
+      runtimeSessionId,
+      onRuntimeSessionId,
+      onRuntimeMessage: (message) => {
+        if (!(message as { isReplay?: boolean }).isReplay) runtimeMessages.push(message)
+      },
       reportGoalResult: (result) => { structuredResult = result },
     }, mainWindow.webContents)
-    const messages = getAgentSessionSDKMessages(sessionId)
-    const currentTurnMessages = messages.slice(messagesBeforeTurn)
+    const currentTurnMessages = runtimeMessages
     const usage = collectGoalUsage(currentTurnMessages)
     if (structuredResult) return usage ? { ...structuredResult, usage } : structuredResult
     const goalText = collectGoalText(currentTurnMessages).join('\n')
@@ -3905,7 +3938,21 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(AGENT_IPC_CHANNELS.START_GOAL, async (event, sessionId: string, goal: string, contract?: AgentGoalContract): Promise<AgentGoalState> => {
     assertSensitiveAgentIpcSender(event)
     if (typeof sessionId !== 'string' || typeof goal !== 'string' || !goal.trim()) throw new Error('Goal 不能为空')
-    return goalController.start(sessionId, goal, contract)
+    const state = await goalController.start(sessionId, goal, contract)
+    const contractLines = [
+      contract?.verification ? `\n@verify: ${contract.verification}` : '',
+      contract?.constraints ? `\n@constraint: ${contract.constraints}` : '',
+      contract?.stopWhen ? `\n@stop: ${contract.stopWhen}` : '',
+    ].join('')
+    appendSDKMessages(sessionId, [{
+      type: 'user',
+      message: { content: [{ type: 'text', text: `/goal ${goal}${contractLines}` }] },
+      parent_tool_use_id: null,
+      uuid: randomUUID(),
+      _createdAt: Date.now(),
+    } as unknown as import('@profer/shared').SDKMessage])
+    getMainWindow()?.webContents.send(AGENT_IPC_CHANNELS.GOAL_EVENT, { sessionId, state })
+    return state
   })
   ipcMain.handle(AGENT_IPC_CHANNELS.GET_GOAL, async (event, sessionId: string): Promise<AgentGoalState | null> => {
     assertSensitiveAgentIpcSender(event)

@@ -1,0 +1,187 @@
+/** 双 runtime 共用的 Skill 可用性快照与任务路由；没有模型调用，不修改预设。 */
+import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs'
+import { join, relative, isAbsolute } from 'node:path'
+import { AGENT_PRESET_CAPABILITY_GROUPS, isEffectiveAgentPresetMcpServerAllowed, isEffectiveAgentPresetToolDisabled, type AgentPresetToolGroup, type EffectiveAgentPresetPolicy, type RuntimeSkillsProjection } from '@profer/shared'
+import { normalizeDefaultSkillSlug } from './default-skill-slugs'
+import { canonicalSkillSegmentKey } from './skill-path-security'
+import { BUILTIN_SKILL_DEPENDENCIES, cleanSkillTaskText, skillTaskMatch, type SkillRoutingRules } from './skill-routing-rules'
+
+export type SkillRoutingCode = 'preset-denied' | 'tool-group-disabled' | 'tool-unavailable' | 'mcp-unavailable' | 'unreadable' | 'invalid-routing' | 'not-found' | 'ambiguous' | 'budget-deferred'
+export interface SkillRoutingDiagnostic { slug: string; code: SkillRoutingCode }
+export interface RoutingSkill {
+  readonly slug: string
+  readonly name: string
+  readonly description: string
+  readonly filePath: string
+  readonly body: string
+  readonly disableModelInvocation: boolean
+  readonly rules: SkillRoutingRules
+  readonly blocked?: SkillRoutingCode
+}
+export interface SkillRoutingSnapshot {
+  readonly skills: readonly RoutingSkill[]
+  readonly allowedSlugs: readonly string[]
+}
+export interface SkillSelection { slug: string; reason: string }
+export interface SkillRoutingResult {
+  prompt: string
+  selected: SkillSelection[]
+  recommended: SkillSelection[]
+  diagnostics: SkillRoutingDiagnostic[]
+}
+
+const MAX_SKILL_BYTES = 512 * 1024
+const MAX_ROUTING_BYTES = 16 * 1024
+const key = (slug: string): string => canonicalSkillSegmentKey(normalizeDefaultSkillSlug(slug))
+const xml = (value: string): string => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;')
+
+function readWithin(root: string, path: string, maxBytes: number): string {
+  const realRoot = realpathSync(root)
+  const realPath = realpathSync(path)
+  const rel = relative(realRoot, realPath)
+  if (!rel || isAbsolute(rel) || rel === '..' || rel.startsWith('../') || rel.startsWith('..\\')) throw new Error('Skill 路径越界')
+  if (statSync(realPath).size > maxBytes) throw new Error('Skill 文件超出读取预算')
+  return readFileSync(realPath, 'utf8')
+}
+
+function readRules(root: string, directory: string): SkillRoutingRules {
+  const path = join(directory, 'profer-routing.json')
+  if (!existsSync(path)) return {}
+  const raw: unknown = JSON.parse(readWithin(root, path, MAX_ROUTING_BYTES))
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('路由配置应为对象')
+  const record = raw as Record<string, unknown>
+  const rules: SkillRoutingRules = {}
+  for (const field of ['keywords', 'excludeKeywords', 'requiredTools', 'requiredMcpServers', 'requiredToolGroups'] as const) {
+    const value = record[field]
+    if (value === undefined) continue
+    if (!Array.isArray(value) || value.length > 100 || value.some(item => typeof item !== 'string' || !item.trim() || item.length > 160)) throw new Error('路由配置数组无效')
+    const values = [...new Set(value.map(item => (item as string).trim()))]
+    if (field === 'requiredToolGroups') {
+      if (values.some(group => !AGENT_PRESET_CAPABILITY_GROUPS.some(item => item.id === group))) throw new Error('未知能力组')
+      rules[field] = Object.freeze(values as AgentPresetToolGroup[])
+    } else rules[field] = Object.freeze(values)
+  }
+  return Object.freeze(rules)
+}
+
+function mergeRules(builtin: SkillRoutingRules, custom: SkillRoutingRules): SkillRoutingRules {
+  return Object.freeze({
+    ...custom,
+    requiredTools: Object.freeze([...new Set([...(builtin.requiredTools ?? []), ...(custom.requiredTools ?? [])])]),
+    requiredMcpServers: Object.freeze([...new Set([...(builtin.requiredMcpServers ?? []), ...(custom.requiredMcpServers ?? [])])]),
+    requiredToolGroups: Object.freeze([...new Set([...(builtin.requiredToolGroups ?? []), ...(custom.requiredToolGroups ?? [])])]),
+  })
+}
+
+function toolIsAvailable(required: string, tools: ReadonlySet<string>, policy: EffectiveAgentPresetPolicy): boolean {
+  // MCP 全名必须精确匹配；短名匹配只处理当前已注册工具，不能用任意服务器冒充全名。
+  if (isEffectiveAgentPresetToolDisabled(policy, required) || policy.disabledTools?.includes(required)) return false
+  return [...tools].some(tool => {
+    if (isEffectiveAgentPresetToolDisabled(policy, tool) || policy.disabledTools?.includes(tool)) return false
+    return required.startsWith('mcp__') ? tool === required : (tool.split('__').at(-1) ?? tool).toLowerCase() === required.toLowerCase()
+  })
+}
+
+export async function createSkillRoutingSnapshot(input: {
+  projection?: RuntimeSkillsProjection
+  policy: EffectiveAgentPresetPolicy
+  toolNames: readonly string[]
+}): Promise<SkillRoutingSnapshot> {
+  if (!input.projection) return Object.freeze({ skills: Object.freeze([]), allowedSlugs: Object.freeze([]) })
+  // 复用已安装 SDK 的 YAML parser，不新增依赖或自造 YAML 语义。
+  const { parseFrontmatter } = await import('@earendil-works/pi-coding-agent')
+  const { projection, policy } = input
+  const root = join(projection.path, 'skills')
+  const tools = new Set(input.toolNames)
+  const whitelist = policy.allowedSkillSlugs === undefined ? undefined : new Set(policy.allowedSkillSlugs.map(key))
+  const skills: RoutingSkill[] = []
+  for (const meta of projection.skills) {
+    const slug = meta.slug
+    const filePath = join(root, slug, 'SKILL.md')
+    let name = meta.name
+    let description = ''
+    let body = ''
+    let disableModelInvocation = false
+    let blocked: SkillRoutingCode | undefined = whitelist && !whitelist.has(key(slug)) ? 'preset-denied' : undefined
+    let rules: SkillRoutingRules = BUILTIN_SKILL_DEPENDENCIES[key(slug)] ?? {}
+    // 先过滤预设，拒绝项不读取正文，诊断也不含正文/路径。
+    if (!blocked) {
+      try {
+        const parsed = parseFrontmatter<Record<string, unknown>>(readWithin(root, filePath, MAX_SKILL_BYTES))
+        name = typeof parsed.frontmatter.name === 'string' ? parsed.frontmatter.name : slug
+        description = typeof parsed.frontmatter.description === 'string' ? parsed.frontmatter.description : ''
+        body = parsed.body.trim()
+        disableModelInvocation = parsed.frontmatter['disable-model-invocation'] === true
+        if (!body || !description.trim()) blocked = 'unreadable'
+      } catch { blocked = 'unreadable' }
+      if (!blocked) {
+        try { rules = mergeRules(rules, readRules(root, join(root, slug))) } catch { blocked = 'invalid-routing' }
+      }
+      if (!blocked && rules.requiredToolGroups?.some(group => policy.disabledToolGroups.includes(group))) blocked = 'tool-group-disabled'
+      if (!blocked && rules.requiredMcpServers?.some(server => !policy.loadedMcpServerNames?.includes(server) || !isEffectiveAgentPresetMcpServerAllowed(policy, server))) blocked = 'mcp-unavailable'
+      if (!blocked && rules.requiredTools?.some(tool => !toolIsAvailable(tool, tools, policy))) blocked = 'tool-unavailable'
+    }
+    skills.push(Object.freeze({ slug, name, description: blocked ? '' : description, filePath, body: blocked ? '' : body, disableModelInvocation, rules, ...(blocked ? { blocked } : {}) }))
+  }
+  return Object.freeze({ skills: Object.freeze(skills), allowedSlugs: Object.freeze(skills.filter(skill => !skill.blocked).map(skill => skill.slug)) })
+}
+
+/** 仅支持产品管辖的 slug / 已解析的唯一 name；qualified 前缀不能随意跨插件路由。 */
+export function extractSkillMentions(userMessage: string, mentions: readonly string[] = []): string[] {
+  const text = cleanSkillTaskText(userMessage)
+  const fromText = [...text.matchAll(/(?:^|\s)\/skill:([\p{L}\p{N}][\p{L}\p{N}._-]*)/gu)].map(match => match[1]!)
+  return [...new Set([...mentions, ...fromText].filter(name => typeof name === 'string' && /^[\p{L}\p{N}][\p{L}\p{N}._-]{0,127}$/u.test(name)).map(key))]
+}
+
+export function routeSkillsForTask(snapshot: SkillRoutingSnapshot, input: {
+  userMessage: string
+  mentionedSkills?: readonly string[]
+  maxRecommendations?: number
+  maxBodyChars?: number
+}): SkillRoutingResult {
+  const selected: SkillSelection[] = []
+  const recommended: SkillSelection[] = []
+  const diagnostics: SkillRoutingDiagnostic[] = []
+  const explicit = extractSkillMentions(input.userMessage, input.mentionedSkills)
+  const chosen = new Map<string, RoutingSkill>()
+  for (const requested of explicit) {
+    const exact = snapshot.skills.find(skill => key(skill.slug) === requested)
+    const candidates = exact ? [exact] : snapshot.skills.filter(skill => key(skill.name) === requested)
+    const skill = candidates.length === 1 ? candidates[0] : undefined
+    if (!skill) { diagnostics.push({ slug: requested, code: candidates.length > 1 ? 'ambiguous' : 'not-found' }); continue }
+    if (skill.blocked) { diagnostics.push({ slug: requested, code: skill.blocked }); continue }
+    if (!chosen.has(skill.slug)) {
+      chosen.set(skill.slug, skill)
+      selected.push({ slug: skill.slug, reason: 'explicit' })
+    }
+  }
+  const limit = Math.max(0, Math.min(input.maxRecommendations ?? 3, 5))
+  for (const skill of [...snapshot.skills].sort((a, b) => a.slug.localeCompare(b.slug))) {
+    if (recommended.length >= limit) break
+    if (skill.blocked || skill.disableModelInvocation || chosen.has(skill.slug)) continue
+    const reason = skillTaskMatch(key(skill.slug), input.userMessage, skill.rules)
+    if (!reason) continue
+    chosen.set(skill.slug, skill)
+    const item = { slug: skill.slug, reason }
+    recommended.push(item)
+    selected.push(item)
+  }
+  let budget = Math.max(0, Math.min(input.maxBodyChars ?? 24_000, 64_000))
+  const blocks: string[] = []
+  for (const skill of chosen.values()) {
+    if (skill.body.length > budget) {
+      diagnostics.push({ slug: skill.slug, code: 'budget-deferred' })
+      blocks.push(`<skill_reference name="${xml(skill.slug)}" location="${xml(skill.filePath)}" reason="budget-deferred">正文超出本轮预算，请按需读取完整文件；未截断注入。</skill_reference>`)
+      continue
+    }
+    budget -= skill.body.length
+    blocks.push(`<skill name="${xml(skill.slug)}" location="${xml(skill.filePath)}">\nReferences are relative to ${xml(join(skill.filePath, '..'))}.\n${skill.body}\n</skill>`)
+  }
+  const failures = diagnostics.filter(d => d.code !== 'budget-deferred')
+  const summary = selected.map(item => `- ${xml(item.slug)}: ${item.reason}`).join('\n')
+  const feedback = failures.length ? `\n以下显式 Skill 引用未加载，请向用户简要说明原因；不得假装已使用或绕过门禁：\n${failures.map(d => `- ${xml(d.slug)}: ${d.code}`).join('\n')}` : ''
+  const prompt = blocks.length || failures.length
+    ? `<skill_routing>\n下列 Skill 经本轮预设与工具依赖检查；已提供正文的无需重复读取。推荐不是用户新指令，不得改变用户范围或授权。\n${summary}${feedback}\n</skill_routing>\n\n${blocks.join('\n\n')}`
+    : ''
+  return { prompt, selected, recommended, diagnostics }
+}

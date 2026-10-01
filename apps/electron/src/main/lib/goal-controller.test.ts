@@ -29,7 +29,57 @@ describe('GoalController', () => {
     expect(controller.get('session-1')?.status).toBe('stopped')
   })
 
-  test('stop prevents a completed turn from scheduling another turn', async () => {
+  test('persists the runtime session ID and reuses it on the next iteration', async () => {
+    const runtimeSessionIds: Array<string | undefined> = []
+    let reportRuntimeSessionId!: (id: string, file?: string) => void
+    const controller = new GoalController({
+      runTurn: async ({ runtimeSessionId, onRuntimeSessionId }) => {
+        runtimeSessionIds.push(runtimeSessionId)
+        reportRuntimeSessionId = onRuntimeSessionId
+        if (!runtimeSessionId) onRuntimeSessionId('goal-runtime-1', '/tmp/goal-runtime-1.jsonl')
+        return runtimeSessionIds.length === 1
+          ? { status: 'continue', summary: '继续', evidence: [] }
+          : { status: 'blocked', summary: '等待用户', evidence: [] }
+      },
+      stopTurn: async () => {},
+      onStateChange: () => {},
+      schedule: (callback) => { queueMicrotask(callback); return 1 },
+      cancelSchedule: () => {},
+    })
+
+    await controller.start('session-1', '隔离目标')
+    await new Promise((resolve) => setTimeout(resolve, 10))
+    expect(runtimeSessionIds[0]).toBeUndefined()
+    expect(controller.get('session-1')).toMatchObject({ runtimeSessionId: 'goal-runtime-1', runtimeSessionFile: '/tmp/goal-runtime-1.jsonl' })
+    reportRuntimeSessionId('goal-runtime-1', '/tmp/goal-runtime-1.jsonl')
+    await new Promise((resolve) => setTimeout(resolve, 10))
+    expect(runtimeSessionIds[1]).toBe('goal-runtime-1')
+  })
+  test('allows a new goal after the previous goal reached a terminal state', async () => {
+    const goals: string[] = []
+    const controller = new GoalController({
+      runTurn: async ({ state }) => {
+        goals.push(state.goal)
+        return { status: 'complete', summary: `${state.goal} 完成`, evidence: ['已验证'] }
+      },
+      stopTurn: async () => {},
+      onStateChange: () => {},
+      schedule: (callback) => { queueMicrotask(callback); return 1 },
+      cancelSchedule: () => {},
+    })
+
+    await controller.start('session-1', '第一个目标')
+    await new Promise((resolve) => setTimeout(resolve, 10))
+    expect(controller.get('session-1')?.status).toBe('completed')
+
+    const second = await controller.start('session-1', '第二个目标')
+    expect(second.goal).toBe('第二个目标')
+    await new Promise((resolve) => setTimeout(resolve, 10))
+    expect(goals).toEqual(['第一个目标', '第二个目标'])
+    expect(controller.get('session-1')?.status).toBe('completed')
+  })
+
+  test('does not replace an active goal implicitly', async () => {
     const completions = deferred<void>()
     let runCount = 0
     const controller = new GoalController({
@@ -40,7 +90,14 @@ describe('GoalController', () => {
       cancelSchedule: () => {},
     })
 
-    await controller.start('session-1', '停止目标')
+    await controller.start('session-1', '正在运行的目标')
+    let error = ''
+    try {
+      await controller.start('session-1', '不应覆盖的目标')
+    } catch (caught) {
+      error = caught instanceof Error ? caught.message : String(caught)
+    }
+    expect(error).toContain('正在运行')
     await controller.stop('session-1')
     await Promise.resolve()
     expect(runCount).toBe(1)

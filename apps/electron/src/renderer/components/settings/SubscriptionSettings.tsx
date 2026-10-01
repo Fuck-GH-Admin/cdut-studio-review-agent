@@ -4,17 +4,25 @@
  * 定价从服务端 /v1/account/config/plans 动态获取，Admin 操控面板可实时调整。
  * 加载失败时回退到硬编码默认值。
  *
- * 手动收款期：订阅按钮 = 复制微信号联系管理员开通。在线支付后续接入（充值积分见 RechargeSection）。
+ * 支持在线订单和管理员手动收款，支付完成后刷新套餐权益。
  */
 import * as React from 'react'
 import { useAtomValue } from 'jotai'
 import { toast } from 'sonner'
-import { Check, Copy, Users, Zap, Gift, Crown } from 'lucide-react'
+import { Check, Copy, Users, Zap, Gift, Crown, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { RechargeSection } from './RechargeSection'
 import {
   inviteCodeAtom,
 } from '@/atoms/credits-atoms'
+import {
+  createSubscriptionPurchase,
+  createSubscriptionStatusReader,
+  openCreditsPaymentPage,
+  redeemCredits,
+  requestSubscriptionPricing,
+} from '@/domains/credits/credits-api'
+import type { PricingData, SubscriptionPurchaseInput } from '@/domains/credits/credits-types'
 import { useCreditsLoader } from '@/hooks/useCreditsLoader'
 
 /** 联系管理员微信号（默认值，从 API 动态获取） */
@@ -62,25 +70,10 @@ const VIP_PRICE_DEFAULT = 698
 const VIP_DISCOUNT_DEFAULT = 0.9
 const VIP_EXTRA_DRIP_DEFAULT = 20
 
-interface PricingData {
-  plans: Record<'standard' | 'plus' | 'pro', { id: string; name: string; monthlyRmb: number; yearlyRmb: number; welcomeBonus: number; dailyDrip: number }>
-  vip: { price: number; discount: number; extraDrip: number }
-  adminWechat: string
-}
-
-/** 从 API 获取定价数据，失败时返回 null（由调用方回退默认值） */
-async function fetchPricing(): Promise<PricingData | null> {
-  try {
-    const auth = await window.electronAPI.auth.getTeamAuth()
-    if (!auth) return null
-    const resp = await fetch(`${auth.baseUrl}/v1/account/config/plans`, {
-      headers: { Authorization: `Bearer ${auth.token}` },
-    })
-    if (!resp.ok) return null
-    return await resp.json()
-  } catch {
-    return null
-  }
+interface PurchaseState {
+  orderId: string
+  label: string
+  qrcode: string
 }
 
 /** 将 API 返回的分值价格转换为元（API 返回人民币分） */
@@ -141,26 +134,17 @@ function RedeemInput({ onRedeemed }: { onRedeemed: () => Promise<void> }): React
     }
     setLoading(true)
     try {
-      const auth = await window.electronAPI.auth.getTeamAuth()
-      if (!auth) {
+      const result = await redeemCredits(trimmed)
+      if (result.kind === 'unauthenticated') {
         toast.error('未登录，请先登录')
         return
       }
-      const resp = await fetch(`${auth.baseUrl}/v1/account/redeem`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${auth.token}`,
-        },
-        body: JSON.stringify({ code: trimmed }),
-      })
-      const d = await resp.json()
-      if (!resp.ok) {
-        toast.error(d.error || '兑换失败')
+      if (result.kind === 'failed') {
+        toast.error(result.message || '兑换失败')
         return
       }
       await onRedeemed()
-      toast.success(d.description || '兑换成功！套餐与积分已刷新')
+      toast.success(result.data.description || '兑换成功！套餐与积分已刷新')
       setCode('')
     } catch {
       toast.error('兑换失败，请检查网络后重试')
@@ -201,11 +185,12 @@ export function SubscriptionSettings(): React.ReactElement {
   const [vipExtraDrip, setVipExtraDrip] = React.useState(VIP_EXTRA_DRIP_DEFAULT)
   const [adminWechat, setAdminWechat] = React.useState(ADMIN_WECHAT_DEFAULT)
   const [pricingLoaded, setPricingLoaded] = React.useState(false)
+  const [purchaseState, setPurchaseState] = React.useState<PurchaseState | null>(null)
 
   // 加载服务端定价
   React.useEffect(() => {
     let cancelled = false
-    fetchPricing().then((data) => {
+    requestSubscriptionPricing().then((data) => {
       if (cancelled || !data) return
       setPlans(buildPlans(data))
       setVipPrice(rmbToYuan(data.vip.price))
@@ -236,14 +221,71 @@ export function SubscriptionSettings(): React.ReactElement {
     }
   }, [adminWechat])
 
-  const handleSubscribe = React.useCallback((plan: PlanDef, cycle: 'monthly' | 'yearly') => {
-    const price = cycle === 'yearly' ? plan.yearlyRmb : plan.monthlyRmb
-    void copyWechat(`${plan.name} ${cycle === 'yearly' ? '年付' : '月付'} ¥${price}`)
-  }, [copyWechat])
+  const startPurchase = React.useCallback(async (input: Omit<SubscriptionPurchaseInput, 'payType'> & { label: string }) => {
+    try {
+      const result = await createSubscriptionPurchase({
+        product: input.product, plan: input.plan, cycle: input.cycle, payType: 'wxpay',
+      })
+      if (result.kind === 'unauthenticated') {
+        toast.error('未登录，请先登录')
+        return
+      }
+      if (result.kind === 'failed') {
+        toast.error(result.message || '创建订单失败，请稍后重试')
+        return
+      }
+      const data = result.data
 
-  const handleBuyVip = React.useCallback(() => {
-    void copyWechat(`VIP 终身 ¥${vipPrice}`)
-  }, [copyWechat, vipPrice])
+      if (data.payInfo?.method === 'manual') {
+        if (data.payInfo.adminWechat) {
+          await navigator.clipboard.writeText(data.payInfo.adminWechat).catch(() => {})
+          toast.success(`订单已创建，请联系管理员微信 ${data.payInfo.adminWechat} 完成支付`)
+        } else {
+          toast.info('订单已创建，请联系管理员完成支付')
+        }
+        return
+      }
+
+      if (!data.orderId) {
+        toast.error('创建订单失败，请稍后重试')
+        return
+      }
+      setPurchaseState({ orderId: data.orderId, label: input.label, qrcode: data.payInfo?.qrcode || '' })
+      if (data.payInfo?.payUrl) {
+        await openCreditsPaymentPage(data.payInfo.payUrl).catch(() => {
+          toast.info('支付页已生成，请在浏览器中完成支付')
+        })
+      }
+
+      const readStatus = await createSubscriptionStatusReader(data.orderId)
+      for (let i = 0; i < 30; i++) {
+        await new Promise((resolve) => setTimeout(resolve, 5000))
+        const status = await readStatus?.()
+        if (status?.status === 'paid') {
+          await reloadCredits()
+          setPurchaseState(null)
+          toast.success(`${input.label} 已开通`)
+          return
+        }
+        if (status?.status === 'cancelled' || status?.status === 'expired') {
+          setPurchaseState(null)
+          toast.error('订单未完成支付')
+          return
+        }
+      }
+      toast.info('仍在等待支付结果，可稍后刷新额度查看')
+    } catch {
+      toast.error('购买失败，请检查网络后重试')
+    }
+  }, [reloadCredits])
+
+  const handleSubscribe = React.useCallback(async (plan: PlanDef, cycle: 'monthly' | 'yearly') => {
+    await startPurchase({ product: 'subscription', plan: plan.id, cycle, label: `${plan.name} ${cycle === 'yearly' ? '年付' : '月付'}` })
+  }, [startPurchase])
+
+  const handleBuyVip = React.useCallback(async () => {
+    await startPurchase({ product: 'vip', label: 'VIP 终身会员' })
+  }, [startPurchase])
 
   return (
     <div className="space-y-5">
@@ -328,6 +370,21 @@ export function SubscriptionSettings(): React.ReactElement {
           ))}
         </div>
       </div>
+
+      {/* ---- 待支付订单 ---- */}
+      {purchaseState && (
+        <div className="rounded-xl border border-primary/30 bg-primary/[0.04] p-4 flex items-center gap-4">
+          {purchaseState.qrcode ? (
+            <img src={purchaseState.qrcode} alt="支付二维码" className="size-28 rounded bg-white object-contain" />
+          ) : (
+            <Loader2 size={22} className="animate-spin text-primary" />
+          )}
+          <div className="min-w-0">
+            <div className="text-sm font-semibold">等待支付：{purchaseState.label}</div>
+            <div className="mt-1 text-xs text-muted-foreground">完成支付后，权益会自动刷新。订单号：{purchaseState.orderId.slice(0, 8)}…</div>
+          </div>
+        </div>
+      )}
 
       {/* ---- 充值积分块（用户自助充值） ---- */}
       <RechargeSection />

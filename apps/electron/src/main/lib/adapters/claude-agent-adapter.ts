@@ -140,6 +140,8 @@ export interface ClaudeAgentQueryOptions extends AgentQueryInput {
   ) => Promise<PermissionResult>
   /** 只读工具白名单 */
   allowedTools?: string[]
+  /** SDK Skill 白名单；undefined 表示不覆盖 SDK 默认行为，空数组表示显式禁用 */
+  skills?: string[]
   /** 系统提示词（字符串为自定义提示词，对象为 claude_code preset） */
   systemPrompt: string | { type: 'preset'; preset: 'claude_code'; append?: string }
   /** SDK session ID（用于 resume） */
@@ -952,6 +954,7 @@ export class ClaudeAgentAdapter implements AgentProviderAdapter {
         // 条件字段
         ...(options.canUseTool && { canUseTool: options.canUseTool }),
         ...(options.allowedTools && { allowedTools: options.allowedTools }),
+        ...(options.skills !== undefined && { skills: [...options.skills] }),
         ...(options.resumeSessionId ? { resume: options.resumeSessionId } : {}),
         ...(options.resumeSessionAt && { resumeSessionAt: options.resumeSessionAt }),
         ...(options.mcpServers && Object.keys(options.mcpServers).length > 0 && {

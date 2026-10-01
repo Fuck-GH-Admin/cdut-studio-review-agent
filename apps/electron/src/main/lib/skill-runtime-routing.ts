@@ -1,0 +1,42 @@
+import type { EffectiveAgentPresetPolicy, RuntimeSkillsProjection } from '@profer/shared'
+import { getRuntimeSkillsPath, preparePolicyRuntimeSkills } from './global-skill-manager'
+import { createSkillRoutingSnapshot, type SkillRoutingSnapshot } from './skill-routing'
+import { join } from 'node:path'
+
+export interface PreparedSkillRouting {
+  snapshot: SkillRoutingSnapshot
+  projection?: RuntimeSkillsProjection
+}
+
+/** 两端使用同一份策略投影；catalog 保留合法非推荐项，推荐不影响权限。 */
+export async function prepareAgentSkillRouting(input: {
+  projection?: RuntimeSkillsProjection
+  policy: EffectiveAgentPresetPolicy
+  toolNames: readonly string[]
+}): Promise<PreparedSkillRouting> {
+  const source = await createSkillRoutingSnapshot(input)
+  if (!input.projection) return { snapshot: source }
+  const projection = preparePolicyRuntimeSkills(input.projection, source.allowedSlugs)
+  return {
+    projection,
+    snapshot: Object.freeze({
+      allowedSlugs: source.allowedSlugs,
+      skills: Object.freeze(source.skills.map(skill => Object.freeze({
+        ...skill,
+        filePath: join(projection.path, 'skills', skill.slug, 'SKILL.md'),
+      }))),
+    }),
+  }
+}
+
+/** 必须用于实际 adapter query，避免两端字段重新各自拼装而漂移。 */
+export function buildSkillRuntimeOptions(routing: PreparedSkillRouting) {
+  return {
+    skills: [...routing.snapshot.allowedSlugs],
+    skillSlugs: [...routing.snapshot.allowedSlugs],
+    // 共享路由已处理原始用户引用，不允许 adapter 从历史/内部上下文再次扫描。
+    skillMentions: [] as string[],
+    additionalSkillPaths: routing.projection ? [getRuntimeSkillsPath(routing.projection)] : [],
+    plugins: routing.projection ? [{ type: 'local' as const, path: routing.projection.path }] : [],
+  }
+}
