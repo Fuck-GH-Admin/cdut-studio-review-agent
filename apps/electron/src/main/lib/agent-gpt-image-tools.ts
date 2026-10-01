@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
-import { getToolState } from './chat-tool-config'
-import { isGptImageAvailable, } from './chat-tools/gpt-image-tool'
+import { getToolState, getGptImageCredentials } from './chat-tool-config'
+import { getTeamAuth } from './auth-service'
 import { generateAgentGptImage, type AgentGptImageContext } from './agent-gpt-image-service'
 import { GPT_IMAGE_QUALITIES, GPT_IMAGE_SIZES, type GptImageQuality, type GptImageSize } from './gpt-image-service'
 
@@ -11,7 +11,10 @@ const DESCRIPTION = 'Generate one image from a prompt, edit 1–4 authorized loc
 type ToolResult = { content: Array<{ type: 'text'; text: string }>; details?: unknown; isError?: boolean }
 
 export function isAgentGptImageAvailable(): boolean {
-  return getToolState('gpt-image').enabled && isGptImageAvailable()
+  // Official 模式需要团队登录态；BYOK 需要主进程可解密的 key（与 Chat 时代同一判据）
+  const credentials = getGptImageCredentials()
+  const available = credentials.mode === 'official' ? !!getTeamAuth() : !!credentials.apiKey
+  return getToolState('gpt-image').enabled && available
 }
 
 function claudeToolCallId(extra: unknown): string {

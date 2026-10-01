@@ -96,7 +96,15 @@ import {
   updateContextDividers,
   searchConversationMessages,
 } from './conversation-manager'
-import { sendMessage, stopGeneration, generateTitle } from './chat-service'
+// TODO(第3刀): remote-service 随移动端接入整模块物理删除。
+// Chat 引擎（chat-service）已删除；以下三个函数是 Chat 发送/命名链路入口，
+// 此处保留最小占位签名以保证 typecheck，运行时调用会拒绝。
+const removedChatEngine = (name: string) => async (): Promise<never> => {
+  throw new Error(`Chat 引擎已移除，远程 Chat 指令不再可用（待 remote-service 随第3刀删除）: ${name}`)
+}
+const sendMessage = removedChatEngine('sendMessage') as unknown as (input: unknown, sender: unknown) => Promise<void>
+const stopGeneration = (_conversationId: string): void => {}
+const generateTitle = removedChatEngine('generateTitle') as unknown as (input: unknown) => Promise<string | null>
 import { saveAttachment, readAttachmentAsBase64, deleteAttachment } from './attachment-service'
 import { chatEventBus } from './chat-stream-bus'
 import { resolveAndReadFile, readFileAsDataUrl } from './file-preview-service'

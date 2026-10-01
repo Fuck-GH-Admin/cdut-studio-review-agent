@@ -153,10 +153,8 @@ import { disposePiMcpConnections } from './lib/adapters/pi-mcp-tools'
 import { disposeLarkCliService } from './lib/lark-cli-service'
 import { disposeLarkMcpService } from './lib/lark-mcp-service'
 import { browserController } from './lib/browser-controller'
-import { stopAllGenerations } from './lib/chat-service'
 import { initAutoUpdater, cleanupUpdater } from './lib/updater/auto-updater'
 import { startWorkspaceWatcher, stopWorkspaceWatcher } from './lib/workspace-watcher'
-import { startChatToolsWatcher, stopChatToolsWatcher } from './lib/chat-tools-watcher'
 import { getIsQuitting, setQuitting } from './lib/app-lifecycle'
 import {
   registerBridge,
@@ -948,9 +946,6 @@ async function bootstrap(): Promise<void> {
     safeRun('startWorkspaceWatcher', () => startWorkspaceWatcher(mainWindow!))
   }
 
-  // 启动 Chat 工具配置文件监听
-  safeRun('startChatToolsWatcher', startChatToolsWatcher)
-
   // 预创建快速任务窗口（隐藏状态，首次唤起秒开）——默认关闭，仅在设置开启时预创建
   if (getSettings().quickTaskEnabled === true) {
     safeRun('createQuickTaskWindow', createQuickTaskWindow)
@@ -1166,7 +1161,6 @@ app.on('before-quit', () => {
   pluginViewManager.dispose()
   pluginFloatingWindowManager.dispose()
   disposeAgentPreviewRenderer()
-  stopAllGenerations()
   // 最后兜底：扫描并强杀所有孤儿 claude-agent-sdk 子进程（Issue #357）
   // 针对 pidMap 未覆盖、dispose 漏杀等极端场景，确保不遗留残留进程
   killOrphanedClaudeSubprocesses()
@@ -1174,8 +1168,6 @@ app.on('before-quit', () => {
   cleanupUpdater()
   // 停止工作区文件监听
   stopWorkspaceWatcher()
-  // 停止 Chat 工具配置文件监听
-  stopChatToolsWatcher()
   // 停止所有 Bridge
   stopBridgeSelfHealing()
   stopAllBridges()

@@ -190,7 +190,6 @@ import {
   searchConversationMessages,
   countArchivedConversations,
 } from './lib/conversation-manager'
-import { sendMessage, stopGeneration, generateTitle, autoTitleConversation, regenerateConversationTitle, type AutoTitleConversationInput } from './lib/chat-service'
 import {
   saveAttachment,
   readAttachmentAsBase64,
@@ -377,8 +376,6 @@ import { createMemoryArchiveSearcher } from './lib/memory-archive-search'
 import { cancelLarkLogin, detectLarkCli, installLarkCli, startLarkLogin, __setLarkLoginEventHandler } from './lib/lark-cli-service'
 import { cancelLarkMcpLogin, disableLarkMcpForWorkspace, enableLarkMcpForWorkspace, getLarkMcpStatus, saveLarkMcpCredentials, startLarkMcpLogin, testLarkMcpConnection, __setLarkMcpLoginEventHandler } from './lib/lark-mcp-service'
 import type { MemoryWikilinkTarget, MemoryBacklink } from '@profer/shared'
-import { getAllToolInfos } from './lib/chat-tool-registry'
-import { updateToolState, updateToolCredentials, getToolCredentials, addCustomTool, deleteCustomTool } from './lib/chat-tool-config'
 import {
   getSystemPromptConfig,
   createSystemPrompt,
@@ -1772,19 +1769,11 @@ export function registerIpcHandlers(): void {
     }
   )
 
-  // 自动命名窗口（Chat）：流结束后由主进程按前几轮有效用户消息生成/精修标题
-  ipcMain.handle(
-    CHAT_IPC_CHANNELS.AUTO_TITLE,
-    async (_, input: AutoTitleConversationInput): Promise<ConversationMeta | null> => {
-      if (!input || typeof input.conversationId !== 'string' || !input.conversationId.trim()) return null
-      return autoTitleConversation(input)
-    }
-  )
-
   // 手动重新生成对话标题：绕过定稿锁定，用前几轮有效消息重命名并重新锁定
   ipcMain.handle(
     CHAT_IPC_CHANNELS.REGENERATE_TITLE,
     async (_, id: string, channelId?: string, modelId?: string): Promise<ConversationMeta | null> => {
+      const { regenerateConversationTitle } = await import('./lib/conversation-title-service')
       return regenerateConversationTitle(id, channelId, modelId)
     }
   )
@@ -1860,37 +1849,6 @@ export function registerIpcHandlers(): void {
     CHAT_IPC_CHANNELS.CREATE_WELCOME_CONVERSATION,
     async (): Promise<ConversationMeta | null> => {
       return createWelcomeConversation()
-    }
-  )
-
-  // 发送消息（触发 AI 流式响应）
-  // 注意：通过 event.sender 获取 webContents 用于推送流式事件
-  ipcMain.handle(
-    CHAT_IPC_CHANNELS.SEND_MESSAGE,
-    async (event, input: ChatSendInput): Promise<void> => {
-      await sendMessage(input, event.sender)
-    }
-  )
-
-  // 资料引用是独立消息，不能伪装为附件，否则删除/截断会误删资料实体。
-  ipcMain.handle(
-    CHAT_IPC_CHANNELS.ADD_KNOWLEDGE_REFERENCES,
-    async (_, conversationId: string, itemIds: string[]): Promise<ChatMessage> => {
-      if (typeof conversationId !== 'string' || !conversationId.trim()) throw new Error('对话标识无效')
-      if (!Array.isArray(itemIds) || itemIds.length < 1 || itemIds.length > 10 || itemIds.some((id) => typeof id !== 'string' || id.length > 160)) throw new Error('资料引用数量或标识无效')
-      const { resolveKnowledgeReferences } = require('./lib/knowledge-item-service')
-      const references = resolveKnowledgeReferences(itemIds)
-      const message: ChatMessage = { id: randomUUID(), parentId: null, role: 'user', content: '', createdAt: Date.now(), knowledgeReferences: references }
-      appendMessage(conversationId, message)
-      return message
-    },
-  )
-
-  // 中止生成
-  ipcMain.handle(
-    CHAT_IPC_CHANNELS.STOP_GENERATION,
-    async (_, conversationId: string): Promise<void> => {
-      stopGeneration(conversationId)
     }
   )
 
@@ -1971,14 +1929,6 @@ export function registerIpcHandlers(): void {
     CHAT_IPC_CHANNELS.UPDATE_CONTEXT_DIVIDERS,
     async (_, conversationId: string, dividers: string[]): Promise<ConversationMeta> => {
       return updateContextDividers(conversationId, dividers)
-    }
-  )
-
-  // 生成对话标题
-  ipcMain.handle(
-    CHAT_IPC_CHANNELS.GENERATE_TITLE,
-    async (_, input: GenerateTitleInput): Promise<string | null> => {
-      return generateTitle(input)
     }
   )
 
@@ -4168,105 +4118,6 @@ export function registerIpcHandlers(): void {
       const archiveDir = getWorkspaceMemoryArchivePath(workspaceSlug)
       const autoDir = getWorkspaceAutoMemoryDir(workspaceSlug)
       return findMemoryBacklinks(archiveDir, autoDir, currentAbsolutePath, currentLinkName)
-    }
-  )
-
-  // ===== Chat 工具管理 =====
-
-  // 获取所有工具信息
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.GET_ALL_TOOLS,
-    async (): Promise<ChatToolInfo[]> => {
-      return getAllToolInfos()
-    }
-  )
-
-  // 获取工具凭据
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.GET_TOOL_CREDENTIALS,
-    async (_, toolId: string, provider?: string): Promise<Record<string, string>> => {
-      return getToolCredentials(toolId, provider)
-    }
-  )
-
-  // 更新工具开关状态
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.UPDATE_TOOL_STATE,
-    async (_, toolId: string, state: ChatToolState): Promise<void> => {
-      updateToolState(toolId, state)
-    }
-  )
-
-  // 更新工具凭据
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.UPDATE_TOOL_CREDENTIALS,
-    async (_, toolId: string, credentials: Record<string, string>): Promise<void> => {
-      updateToolCredentials(toolId, credentials)
-    }
-  )
-
-  // 创建自定义工具
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.CREATE_CUSTOM_TOOL,
-    async (_, meta: ChatToolMeta): Promise<void> => {
-      addCustomTool(meta)
-    }
-  )
-
-  // 删除自定义工具
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.DELETE_CUSTOM_TOOL,
-    async (_, toolId: string): Promise<void> => {
-      deleteCustomTool(toolId)
-    }
-  )
-
-  // 测试工具连接
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.TEST_TOOL,
-    async (_, toolId: string): Promise<{ success: boolean; message: string }> => {
-      // 记忆工具：本地文件记忆，无需测试连接
-      if (toolId === 'memory') {
-        return { success: true, message: '本地文件记忆已就绪' }
-      }
-      // 联网搜索工具测试
-      if (toolId === 'web-search') {
-        const { getToolCredentials: getCredentials } = await import('./lib/chat-tool-config')
-        const credentials = getCredentials('web-search')
-        if (!credentials.apiKey) {
-          return { success: false, message: '请先填写 Tavily API Key' }
-        }
-        try {
-          const response = await fetch('https://api.tavily.com/search', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              api_key: credentials.apiKey,
-              query: 'test connection',
-              search_depth: 'basic',
-              max_results: 1,
-            }),
-          })
-          if (!response.ok) {
-            const errorText = await response.text()
-            return { success: false, message: `API 请求失败 (${response.status}): ${errorText}` }
-          }
-          return { success: true, message: '连接成功，Tavily 搜索 API 可用' }
-        } catch (error) {
-          const msg = error instanceof Error ? error.message : String(error)
-          return { success: false, message: `连接失败: ${msg}` }
-        }
-      }
-      // AI 图片生成工具测试：官方模式走 Profer 登录态，自带 Key 模式按所选 provider 测试。
-      if (toolId === 'gpt-image') {
-        const { testGptImageConnection } = await import('./lib/gpt-image-connection')
-        return testGptImageConnection()
-      }
-      if (toolId === 'nano-banana') {
-        const { testLegacyImageToolConnection } = await import('./lib/gpt-image-connection')
-        return testLegacyImageToolConnection(toolId)
-      }
-      return { success: false, message: `工具 ${toolId} 不支持测试` }
     }
   )
 

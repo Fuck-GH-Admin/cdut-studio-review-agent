@@ -347,9 +347,6 @@ export interface ElectronAPI {
   /** 更新对话标题 */
   updateConversationTitle: (id: string, title: string) => Promise<ConversationMeta>
 
-  /** 自动命名窗口：流结束后按前几轮有效用户消息生成/精修标题（未改名时返回 null） */
-  autoTitleConversation: (input: { conversationId: string; channelId: string; modelId: string }) => Promise<ConversationMeta | null>
-
   /** 手动重新生成对话标题（绕过定稿锁定） */
   regenerateConversationTitle: (id: string, channelId?: string, modelId?: string) => Promise<ConversationMeta | null>
 
@@ -379,14 +376,9 @@ export interface ElectronAPI {
   // ===== 消息发送 =====
 
   /** 发送消息（触发 AI 流式响应） */
-  sendMessage: (input: ChatSendInput) => Promise<void>
-
   /** 向当前对话写入一条可见的资料引用记录。 */
-  addKnowledgeReferences: (conversationId: string, itemIds: string[]) => Promise<ChatMessage>
 
   /** 中止生成 */
-  stopGeneration: (conversationId: string) => Promise<void>
-
   /** 删除指定消息 */
   deleteMessage: (conversationId: string, messageId: string) => Promise<ChatMessage[]>
 
@@ -428,8 +420,6 @@ export interface ElectronAPI {
   updateContextDividers: (conversationId: string, dividers: string[]) => Promise<ConversationMeta>
 
   /** 生成对话标题 */
-  generateTitle: (input: GenerateTitleInput) => Promise<string | null>
-
   // ===== 附件管理相关 =====
 
   /** 保存附件到本地 */
@@ -1907,10 +1897,6 @@ const electronAPI: ElectronAPI = {
     return ipcRenderer.invoke(CHAT_IPC_CHANNELS.UPDATE_TITLE, id, title)
   },
 
-  autoTitleConversation: (input: { conversationId: string; channelId: string; modelId: string }) => {
-    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.AUTO_TITLE, input)
-  },
-
   regenerateConversationTitle: (id: string, channelId?: string, modelId?: string) => {
     return ipcRenderer.invoke(CHAT_IPC_CHANNELS.REGENERATE_TITLE, id, channelId, modelId)
   },
@@ -1942,19 +1928,6 @@ const electronAPI: ElectronAPI = {
 
   createWelcomeConversation: () => {
     return ipcRenderer.invoke(CHAT_IPC_CHANNELS.CREATE_WELCOME_CONVERSATION)
-  },
-
-  // 消息发送
-  sendMessage: (input: ChatSendInput) => {
-    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.SEND_MESSAGE, input)
-  },
-
-  addKnowledgeReferences: (conversationId: string, itemIds: string[]) => {
-    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.ADD_KNOWLEDGE_REFERENCES, conversationId, itemIds)
-  },
-
-  stopGeneration: (conversationId: string) => {
-    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.STOP_GENERATION, conversationId)
   },
 
   deleteMessage: (conversationId: string, messageId: string) => {
@@ -2005,10 +1978,6 @@ const electronAPI: ElectronAPI = {
 
   updateContextDividers: (conversationId: string, dividers: string[]) => {
     return ipcRenderer.invoke(CHAT_IPC_CHANNELS.UPDATE_CONTEXT_DIVIDERS, conversationId, dividers)
-  },
-
-  generateTitle: (input: GenerateTitleInput) => {
-    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.GENERATE_TITLE, input)
   },
 
   // 附件管理
