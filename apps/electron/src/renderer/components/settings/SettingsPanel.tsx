@@ -57,12 +57,10 @@ import { PromptSettings } from "./PromptSettings";
 import { BotHubSettings } from "./BotHubSettings";
 import { ShortcutSettings } from "./ShortcutSettings";
 import { DataManagementSettings } from "./DataManagementSettings";
-import { TeamWorkspaceSettings } from "./TeamWorkspaceSettings";
 import { OpenApiSettings } from "./OpenApiSettings";
 import { ProxySettings } from "./ProxySettings";
 import { PluginSettings } from "./PluginSettings";
 import { DeveloperSettings } from "./DeveloperSettings";
-import { TEAM_WORKSPACE_UI_ENABLED } from "@/lib/product-feature-flags";
 
 /** 设置 Tab 定义 */
 export interface SettingsTabItem {
@@ -81,9 +79,6 @@ export interface SettingsTabGroup {
 /** 账户：身份、额度、订阅和团队能力。开放 API 暂不开放入口。 */
 const ACCOUNT_GROUP_ITEMS: SettingsTabItem[] = [
   { id: "account", label: "账户与资料", icon: <UserRound size={16} /> },
-  ...(TEAM_WORKSPACE_UI_ENABLED
-    ? [{ id: "team" as const, label: "团队管理", icon: <Users size={16} /> }]
-    : []),
 ];
 
 /** 模型与能力：渠道 / Agent / 提示词 / Chat 工具 */
@@ -129,7 +124,6 @@ const PLUGIN_SYSTEM_ITEM: SettingsTabItem = {
 };
 
 /** 依赖团队账号登录的 Tab（未登录时不展示） */
-const AUTH_REQUIRED_TABS: ReadonlySet<SettingsTab> = new Set(["team"]);
 
 /** 根据标签页 id 渲染对应内容 */
 function renderTabContent(tab: SettingsTab): React.ReactElement {
@@ -160,8 +154,6 @@ function renderTabContent(tab: SettingsTab): React.ReactElement {
       return <DeveloperSettings />;
     case "plugins":
       return <PluginSettings />;
-    case "team":
-      return <TeamWorkspaceSettings />;
     // 开放 API 暂无导航入口；保留渲染分支以兼容既有内部跳转和后续恢复。
     case "openapi":
       return <OpenApiSettings />;
@@ -257,7 +249,6 @@ export function SettingsPanel({
 
     // 未登录：过滤需要鉴权的页面，并清理空分组
     return allGroups
-      .map((g) => ({ ...g, items: g.items.filter((t) => !AUTH_REQUIRED_TABS.has(t.id)) }))
       .filter((g) => g.items.length > 0)
   }, [appMode, tabsOverride, authStatus.isLoggedIn, developerModeEnabled]);
 
