@@ -112,12 +112,31 @@ async function makeLoader(slugs?: string[], sdkLoadsRoot = true) {
     settingsManager: SettingsManager.inMemory(),
     noExtensions: true, noSkills: true, noContextFiles: true,
     noPromptTemplates: true, noThemes: true, appendSystemPrompt: [],
-    additionalSkillPaths: sdkLoadsRoot ? [realSkillsRoot] : [],
+    additionalSkillPaths: sdkLoadsRoot
+      ? ['same-a', 'same-b', 'ambiguous', 'ambiguous-copy'].map((slug) => join(realSkillsRoot, slug))
+      : [],
     skillsOverride: createPromaSkillsOverride([realSkillsRoot], slugs, loadSkillsFromDir),
   })
 }
 
 describe('真实 DefaultResourceLoader Skill 门禁', () => {
+  test('SDK 基线按 name 吞掉后加载目录，受管 override 恢复仅允许项', async () => {
+    const { DefaultResourceLoader, SettingsManager } = await import('@earendil-works/pi-coding-agent')
+    const raw = new DefaultResourceLoader({
+      cwd: realSkillsRoot, agentDir: join(realSkillsRoot, '.agent'),
+      settingsManager: SettingsManager.inMemory(), noExtensions: true, noSkills: true,
+      noContextFiles: true, noThemes: true, noPromptTemplates: true, appendSystemPrompt: [],
+      additionalSkillPaths: ['same-a', 'same-b'].map((slug) => join(realSkillsRoot, slug)),
+    })
+    await raw.reload()
+    expect(raw.getSkills().skills.map((skill) => skill.name)).toEqual(['shared'])
+    expect(raw.getSkills().skills[0]?.filePath).toBe(join(realSkillsRoot, 'same-a', 'SKILL.md'))
+    expect(raw.getSkills().diagnostics.some((item) => item.type === 'collision')).toBe(true)
+    const filtered = await makeLoader(['same-b'])
+    await filtered.reload()
+    expect(filtered.getSkills().skills.map((skill) => skill.name)).toEqual(['same-b'])
+  })
+
   test('同 name 的允许目录从 SDK 去重结果恢复', async () => {
     const loader = await makeLoader(['same-b'])
     await loader.reload()

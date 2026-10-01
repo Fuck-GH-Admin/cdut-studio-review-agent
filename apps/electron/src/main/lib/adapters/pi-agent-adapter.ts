@@ -39,8 +39,8 @@ import {
 } from '@profer/shared'
 import type { CanUseToolOptions, PermissionResult } from '../agent-permission-service'
 import { TRANSIENT_NETWORK_PATTERN, isMalformedResponseError, isTransientUpstreamText } from '../error-patterns'
-import { createPromaSkillsOverride, preparePromptWithPromaSkills } from './pi-skill-resources'
-export { createPromaSkillsOverride, preparePromptWithPromaSkills } from './pi-skill-resources'
+import { createPromaSkillsOverride, preparePromptForPiSkillQueue, preparePromptWithPromaSkills } from './pi-skill-resources'
+export { createPromaSkillsOverride, preparePromptForPiSkillQueue, preparePromptWithPromaSkills } from './pi-skill-resources'
 
 import type {
   AgentSession,
@@ -2821,10 +2821,11 @@ export class PiAgentAdapter implements AgentProviderAdapter {
       const stopOverride = active.runtimeGuard.getLimitResultOverride()
       throw new Error(stopOverride?.errors[0] ?? 'Agent 已达到运行限制，无法继续追加消息')
     }
+    const queuedContent = preparePromptForPiSkillQueue(content)
     if (message.priority === 'now') {
-      await session.steer(content)
+      await session.steer(queuedContent)
     } else {
-      await session.followUp(content)
+      await session.followUp(queuedContent)
     }
     options?.onAccepted?.()
   }

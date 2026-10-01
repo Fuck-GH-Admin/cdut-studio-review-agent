@@ -146,6 +146,11 @@ function escapeXml(value: string): string {
   return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
+/** SDK steer/followUp 没有禁用 Skill 展开的参数；保留原文，避开 startsWith 命令分支。 */
+export function preparePromptForPiSkillQueue(prompt: string): string {
+  return prompt.startsWith('/skill:') ? `\n${prompt}` : prompt
+}
+
 /** [] 显式不引用；只有 undefined 才保留 direct adapter 的旧 prompt 扫描行为。 */
 export async function preparePromptWithPromaSkills(resourceLoader: ResourceLoader, prompt: string, explicitSkillNames?: string[]): Promise<string> {
   const names = explicitSkillNames ?? [...prompt.matchAll(SKILL_COMMAND_PATTERN)].map((match) => match[1]!)

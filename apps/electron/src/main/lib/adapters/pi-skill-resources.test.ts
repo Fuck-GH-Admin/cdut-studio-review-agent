@@ -3,7 +3,7 @@ import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, w
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { ResourceLoader, Skill } from '@earendil-works/pi-coding-agent'
-import { createPromaSkillsOverride, preparePromptWithPromaSkills } from './pi-skill-resources'
+import { createPromaSkillsOverride, preparePromptForPiSkillQueue, preparePromptWithPromaSkills } from './pi-skill-resources'
 
 const roots: string[] = []
 function root(): string {
@@ -117,6 +117,40 @@ describe('Pi Skill 安全边界', () => {
     expect(result.skills).toEqual([])
     expect(result.diagnostics.length).toBeGreaterThan(0)
     expect(JSON.stringify(result.diagnostics)).not.toContain(first)
+  })
+
+  test('真实 SDK steer/followUp 原生展开被受管 queue 转换抑制，不请求模型', async () => {
+    const path = root()
+    writeSkill(path, 'alpha')
+    const resource = await loader(path, ['alpha'])
+    await resource.reload()
+    const sdk = await import('@earendil-works/pi-coding-agent')
+    const { Agent } = await import('@earendil-works/pi-agent-core')
+    const modelRuntime = await sdk.ModelRuntime.create({
+      authPath: join(path, 'auth.json'), modelsPath: null,
+      modelsStorePath: join(path, 'models-cache'), refreshOnCreate: false, allowModelNetwork: false,
+    })
+    const session = new sdk.AgentSession({
+      agent: new Agent({ streamFn: () => { throw new Error('本测试禁止模型请求') } }),
+      sessionManager: sdk.SessionManager.inMemory(),
+      settingsManager: sdk.SettingsManager.inMemory(), cwd: path,
+      resourceLoader: resource, modelRuntime, initialActiveToolNames: [],
+    })
+    try {
+      const original = '/skill:alpha 当前用户文本'
+      // 证明 SDK 原始 queue 确实会读取展开，而受管 queue 保留文本。
+      await session.steer(original)
+      expect(session.getSteeringMessages()[0]).toContain('正文 alpha')
+      session.clearQueue()
+      const prepared = await preparePromptWithPromaSkills(resource, original, [])
+      await session.steer(preparePromptForPiSkillQueue(prepared))
+      await session.followUp(preparePromptForPiSkillQueue(prepared))
+      expect(session.getSteeringMessages()[0]).toBe(`\n${original}`)
+      expect(session.getFollowUpMessages()[0]).toBe(`\n${original}`)
+      expect(session.getSteeringMessages()[0]).not.toContain('<skill name=')
+    } finally {
+      session.dispose()
+    }
   })
 
   test('explicitSkillNames=[] 不 reload/扫描，reload 失败也给诊断保留任务', async () => {
