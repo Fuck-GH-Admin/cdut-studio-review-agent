@@ -903,6 +903,7 @@ export class ClaudeAgentAdapter implements AgentProviderAdapter {
 
     // 创建/复用 Query 就绪状态（可能在 sendQueuedMessage 已提前创建）
     ensureSessionReady(options.sessionId)
+    options.onRuntimeRegistered?.()
 
     // 后台任务等待态：本轮结束时若仍有 background_tasks/session_crons 在飞行，
     // 保持消息通道开启（不 close），让 SDK 子进程存活、在任务完成时自动 yield

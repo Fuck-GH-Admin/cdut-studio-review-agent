@@ -1,5 +1,6 @@
 /** 双 runtime 共用的 Skill 可用性快照与任务路由；没有模型调用，不修改预设。 */
-import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs'
+import { existsSync, realpathSync, statSync } from 'node:fs'
+import { open, readFile } from 'node:fs/promises'
 import { join, relative, isAbsolute } from 'node:path'
 import { AGENT_PRESET_CAPABILITY_GROUPS, isEffectiveAgentPresetMcpServerAllowed, isEffectiveAgentPresetToolDisabled, type AgentPresetToolGroup, type EffectiveAgentPresetPolicy, type RuntimeSkillsProjection } from '@profer/shared'
 import { normalizeDefaultSkillSlug } from './default-skill-slugs'
@@ -14,6 +15,7 @@ export interface RoutingSkill {
   readonly description: string
   readonly filePath: string
   readonly body: string
+  readonly bodyDeferred?: boolean
   readonly disableModelInvocation: boolean
   readonly rules: SkillRoutingRules
   readonly blocked?: SkillRoutingCode
@@ -35,19 +37,32 @@ const MAX_ROUTING_BYTES = 16 * 1024
 const key = (slug: string): string => canonicalSkillSegmentKey(normalizeDefaultSkillSlug(slug))
 const xml = (value: string): string => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;')
 
-function readWithin(root: string, path: string, maxBytes: number): string {
+function checkedFile(root: string, path: string, maxBytes: number): { path: string; size: number } {
   const realRoot = realpathSync(root)
   const realPath = realpathSync(path)
   const rel = relative(realRoot, realPath)
   if (!rel || isAbsolute(rel) || rel === '..' || rel.startsWith('../') || rel.startsWith('..\\')) throw new Error('Skill 路径越界')
-  if (statSync(realPath).size > maxBytes) throw new Error('Skill 文件超出读取预算')
-  return readFileSync(realPath, 'utf8')
+  const size = statSync(realPath).size
+  if (size > maxBytes) throw new Error('Skill 文件超出读取预算')
+  return { path: realPath, size }
 }
 
-function readRules(root: string, directory: string): SkillRoutingRules {
+async function readHeader(path: string): Promise<string> {
+  const file = await open(path, 'r')
+  try {
+    const buffer = Buffer.alloc(16 * 1024)
+    const { bytesRead } = await file.read(buffer, 0, buffer.length, 0)
+    const prefix = buffer.subarray(0, bytesRead).toString('utf8').replace(/^\uFEFF/, '')
+    const match = prefix.match(/^---\r?\n[\s\S]*?\r?\n(?:---|\.\.\.)[^\S\r\n]*(?:\r?\n|$)/)
+    if (!match) throw new Error('Skill header 超出预算或缺失')
+    return match[0]
+  } finally { await file.close() }
+}
+
+async function readRules(root: string, directory: string): Promise<SkillRoutingRules> {
   const path = join(directory, 'profer-routing.json')
   if (!existsSync(path)) return {}
-  const raw: unknown = JSON.parse(readWithin(root, path, MAX_ROUTING_BYTES))
+  const raw: unknown = JSON.parse(await readFile(checkedFile(root, path, MAX_ROUTING_BYTES).path, 'utf8'))
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('路由配置应为对象')
   const record = raw as Record<string, unknown>
   const rules: SkillRoutingRules = {}
@@ -76,16 +91,18 @@ function mergeRules(builtin: SkillRoutingRules, custom: SkillRoutingRules): Skil
 function toolIsAvailable(required: string, tools: ReadonlySet<string>, policy: EffectiveAgentPresetPolicy): boolean {
   // MCP 全名必须精确匹配；短名匹配只处理当前已注册工具，不能用任意服务器冒充全名。
   if (isEffectiveAgentPresetToolDisabled(policy, required) || policy.disabledTools?.includes(required)) return false
-  return [...tools].some(tool => {
+  const matches = [...tools].filter(tool => {
     if (isEffectiveAgentPresetToolDisabled(policy, tool) || policy.disabledTools?.includes(tool)) return false
     return required.startsWith('mcp__') ? tool === required : (tool.split('__').at(-1) ?? tool).toLowerCase() === required.toLowerCase()
   })
+  return new Set(matches).size === 1
 }
 
 export async function createSkillRoutingSnapshot(input: {
   projection?: RuntimeSkillsProjection
   policy: EffectiveAgentPresetPolicy
   toolNames: readonly string[]
+  scanBodyBudgetBytes?: number
 }): Promise<SkillRoutingSnapshot> {
   if (!input.projection) return Object.freeze({ skills: Object.freeze([]), allowedSlugs: Object.freeze([]) })
   // 复用已安装 SDK 的 YAML parser，不新增依赖或自造 YAML 语义。
@@ -95,33 +112,39 @@ export async function createSkillRoutingSnapshot(input: {
   const tools = new Set(input.toolNames)
   const whitelist = policy.allowedSkillSlugs === undefined ? undefined : new Set(policy.allowedSkillSlugs.map(key))
   const skills: RoutingSkill[] = []
+  let bodyReadBudget = Math.max(0, Math.min(input.scanBodyBudgetBytes ?? 8 * 1024 * 1024, 8 * 1024 * 1024))
   for (const meta of projection.skills) {
     const slug = meta.slug
     const filePath = join(root, slug, 'SKILL.md')
     let name = meta.name
     let description = ''
     let body = ''
+    let bodyDeferred = false
     let disableModelInvocation = false
     let blocked: SkillRoutingCode | undefined = whitelist && !whitelist.has(key(slug)) ? 'preset-denied' : undefined
     let rules: SkillRoutingRules = BUILTIN_SKILL_DEPENDENCIES[key(slug)] ?? {}
     // 先过滤预设，拒绝项不读取正文，诊断也不含正文/路径。
     if (!blocked) {
       try {
-        const parsed = parseFrontmatter<Record<string, unknown>>(readWithin(root, filePath, MAX_SKILL_BYTES))
+        const file = checkedFile(root, filePath, MAX_SKILL_BYTES)
+        bodyDeferred = file.size > bodyReadBudget
+        const content = bodyDeferred ? await readHeader(file.path) : await readFile(file.path, 'utf8')
+        if (!bodyDeferred) bodyReadBudget -= file.size
+        const parsed = parseFrontmatter<Record<string, unknown>>(content)
         name = typeof parsed.frontmatter.name === 'string' ? parsed.frontmatter.name : slug
         description = typeof parsed.frontmatter.description === 'string' ? parsed.frontmatter.description : ''
         body = parsed.body.trim()
         disableModelInvocation = parsed.frontmatter['disable-model-invocation'] === true
-        if (!body || !description.trim()) blocked = 'unreadable'
+        if ((!body && !bodyDeferred) || !description.trim()) blocked = 'unreadable'
       } catch { blocked = 'unreadable' }
       if (!blocked) {
-        try { rules = mergeRules(rules, readRules(root, join(root, slug))) } catch { blocked = 'invalid-routing' }
+        try { rules = mergeRules(rules, await readRules(root, join(root, slug))) } catch { blocked = 'invalid-routing' }
       }
       if (!blocked && rules.requiredToolGroups?.some(group => policy.disabledToolGroups.includes(group))) blocked = 'tool-group-disabled'
       if (!blocked && rules.requiredMcpServers?.some(server => !policy.loadedMcpServerNames?.includes(server) || !isEffectiveAgentPresetMcpServerAllowed(policy, server))) blocked = 'mcp-unavailable'
       if (!blocked && rules.requiredTools?.some(tool => !toolIsAvailable(tool, tools, policy))) blocked = 'tool-unavailable'
     }
-    skills.push(Object.freeze({ slug, name, description: blocked ? '' : description, filePath, body: blocked ? '' : body, disableModelInvocation, rules, ...(blocked ? { blocked } : {}) }))
+    skills.push(Object.freeze({ slug, name, description: blocked ? '' : description, filePath, body: blocked ? '' : body, bodyDeferred, disableModelInvocation, rules, ...(blocked ? { blocked } : {}) }))
   }
   return Object.freeze({ skills: Object.freeze(skills), allowedSlugs: Object.freeze(skills.filter(skill => !skill.blocked).map(skill => skill.slug)) })
 }
@@ -129,8 +152,10 @@ export async function createSkillRoutingSnapshot(input: {
 /** 仅支持产品管辖的 slug / 已解析的唯一 name；qualified 前缀不能随意跨插件路由。 */
 export function extractSkillMentions(userMessage: string, mentions: readonly string[] = []): string[] {
   const text = cleanSkillTaskText(userMessage)
-  const fromText = [...text.matchAll(/(?:^|\s)\/skill:([\p{L}\p{N}][\p{L}\p{N}._-]*)/gu)].map(match => match[1]!)
-  return [...new Set([...mentions, ...fromText].filter(name => typeof name === 'string' && /^[\p{L}\p{N}][\p{L}\p{N}._-]{0,127}$/u.test(name)).map(key))]
+  // 句读符是边界；冒号和斜杠不是，避免 qualified/路径引用被截为合法 slug。
+  const fromText = [...text.matchAll(/(?:^|\s)\/skill:([^\s<>"'，。；！？、,;!?()\[\]{}“”‘’]+)/gu)].map(match => match[1]!)
+  // 保留不支持的引用以反馈失败；不能截断为另一个合法 slug。
+  return [...new Set([...mentions, ...fromText].filter(name => typeof name === 'string' && name.length > 0 && name.length <= 128).map(key))]
 }
 
 export function routeSkillsForTask(snapshot: SkillRoutingSnapshot, input: {
@@ -169,7 +194,7 @@ export function routeSkillsForTask(snapshot: SkillRoutingSnapshot, input: {
   let budget = Math.max(0, Math.min(input.maxBodyChars ?? 24_000, 64_000))
   const blocks: string[] = []
   for (const skill of chosen.values()) {
-    if (skill.body.length > budget) {
+    if (skill.bodyDeferred || skill.body.length > budget) {
       diagnostics.push({ slug: skill.slug, code: 'budget-deferred' })
       blocks.push(`<skill_reference name="${xml(skill.slug)}" location="${xml(skill.filePath)}" reason="budget-deferred">正文超出本轮预算，请按需读取完整文件；未截断注入。</skill_reference>`)
       continue

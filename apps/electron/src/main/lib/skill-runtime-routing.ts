@@ -16,7 +16,7 @@ export async function prepareAgentSkillRouting(input: {
 }): Promise<PreparedSkillRouting> {
   const source = await createSkillRoutingSnapshot(input)
   if (!input.projection) return { snapshot: source }
-  const projection = preparePolicyRuntimeSkills(input.projection, source.allowedSlugs)
+  const projection = await preparePolicyRuntimeSkills(input.projection, source.allowedSlugs)
   return {
     projection,
     snapshot: Object.freeze({

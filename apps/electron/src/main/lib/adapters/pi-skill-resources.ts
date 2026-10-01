@@ -9,7 +9,8 @@ type SkillDirectoryLoader = (options: LoadSkillsFromDirOptions) => SkillLoadResu
 // SDK 会复制 Skill 对象，symbol 可随 spread 保留，但不会进入 JSON/模型目录。
 const labelAlias = Symbol('proferSkillLabel')
 type ManagedSkill = Skill & { [labelAlias]?: string }
-const SKILL_COMMAND_PATTERN = /\/skill:([A-Za-z0-9][A-Za-z0-9._-]*)/g
+// 与共享路由相同：标点结束引用，保留冒号/斜杠以完整拒绝 qualified/路径误引用。
+const SKILL_COMMAND_PATTERN = /(?:^|\s)\/skill:([^\s<>"'，。；！？、,;!?()\[\]{}“”‘’]+)/g
 
 function guardedRealPath(path: string): string {
   const resolved = resolve(path)

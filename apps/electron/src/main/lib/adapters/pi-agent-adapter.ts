@@ -2108,6 +2108,7 @@ export class PiAgentAdapter implements AgentProviderAdapter {
   async *query(input: PiAgentQueryOptions): AsyncIterable<SDKMessage> {
     const active = createActivePiSession()
     this.activeSessions.set(input.sessionId, active)
+    input.onRuntimeRegistered?.()
     const queue = createAsyncQueue<SDKMessage>()
     const runtimeGuard = createAgentRuntimeGuard(input)
     active.runtimeGuard = runtimeGuard

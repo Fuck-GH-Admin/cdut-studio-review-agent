@@ -181,7 +181,7 @@ import { getOrCreateShellSnapshot } from './shell-snapshot'
 import type { PiAgentQueryOptions } from './adapters/pi-agent-adapter'
 import type { PiRetryUpdate } from './adapters/pi-retry-control'
 import { buildPiBuiltinTools } from './adapters/pi-builtin-tools'
-import { buildPiMcpTools } from './adapters/pi-mcp-tools'
+import { buildPiMcpTools, getMcpPolicyToolName } from './adapters/pi-mcp-tools'
 import { injectClaudeBrowserMcpServer } from './claude-browser-tools'
 import { injectClaudeClipboardMcpServer } from './claude-clipboard-tools'
 import { evaluatePptCapability } from './ppt-capability-gate'
@@ -311,6 +311,7 @@ export class AgentOrchestrator {
 
   /** 队列复用当前 run 的 Skill 快照；初始化失败 resolve(undefined)，不得悬挂或放宽策略。 */
   private activeSkillRoutings = new Map<string, Promise<SkillRoutingSnapshot | undefined>>()
+  private activeRuntimeRegistrations = new Map<string, Promise<boolean>>()
 
   constructor(adapter: AgentProviderAdapter, eventBus: AgentEventBus) {
     this.adapter = adapter
@@ -970,6 +971,8 @@ export class AgentOrchestrator {
     })
     let resolveSkillRouting!: (snapshot: SkillRoutingSnapshot | undefined) => void
     this.activeSkillRoutings.set(sessionId, new Promise(resolve => { resolveSkillRouting = resolve }))
+    let resolveRuntimeRegistered!: (ready: boolean) => void
+    this.activeRuntimeRegistrations.set(sessionId, new Promise(resolve => { resolveRuntimeRegistered = resolve }))
     const releaseActiveRun = (): boolean => releaseActiveSession(this.activeSessions, sessionId, runGeneration)
     type CompleteOptions = {
       stoppedByUser?: boolean
@@ -1696,7 +1699,7 @@ ${enrichedMessage}`
               disabledTools,
               pptCapabilityActive,
             })
-            const mcpTools = await buildPiMcpTools(mcpServers)
+            const mcpTools = await buildPiMcpTools(mcpServers, presetPolicy)
             return [...builtin.tools, ...mcpTools, ...pluginTools]
           })()
         : undefined
@@ -1987,8 +1990,8 @@ ${enrichedMessage}`
         projection: runtimeSkills,
         policy: this.activePresetPolicies.get(sessionId) ?? presetPolicy,
         toolNames: agentRuntime === 'pi'
-          ? ['Read', 'Write', 'Edit', 'Glob', 'Grep', 'Bash', ...(piCustomTools?.map(tool => tool.name) ?? [])]
-          : skillToolInventory.getToolNames(Object.keys(mcpServers), presetPolicy),
+          ? ['Read', 'Write', 'Edit', 'Glob', 'Grep', 'Bash', ...(piCustomTools?.map(getMcpPolicyToolName) ?? [])]
+          : await skillToolInventory.getToolNames(mcpServers, presetPolicy),
       })
       resolveSkillRouting(skillRouting.snapshot)
       const routedSkills = routeSkillsForTask(skillRouting.snapshot, { userMessage, mentionedSkills })
@@ -1997,7 +2000,7 @@ ${enrichedMessage}`
         finalPrompt = `${routedSkills.prompt}\n\n${finalPrompt}`
         contextualMessage = `${routedSkills.prompt}\n\n${contextualMessage}`
       }
-      console.log('[Skill 路由]', JSON.stringify({ sessionId, allowed: skillRouting.snapshot.allowedSlugs, selected: routedSkills.selected, diagnostics: routedSkills.diagnostics }))
+      console.log('[Skill 路由]', JSON.stringify({ sessionId, allowed: skillRouting.snapshot.allowedSlugs, blocked: skillRouting.snapshot.skills.filter(skill => skill.blocked).map(skill => ({ slug: skill.slug, code: skill.blocked })), selected: routedSkills.selected, diagnostics: routedSkills.diagnostics }))
       const skillRuntimeOptions = buildSkillRuntimeOptions(skillRouting)
       const projectCandidates = detectAttachedDirectoryProjects(allAdditionalDirectories)
       const attachedDirectoriesPrompt = buildPiAdditionalDirectoriesPrompt(allAdditionalDirectories, projectCandidates)
@@ -2096,6 +2099,7 @@ ${enrichedMessage}`
       const piNativeRetryState = { exhausted: false }
       const queryOptions: AgentQueryInput & Record<string, unknown> = {
         sessionId,
+        onRuntimeRegistered: () => resolveRuntimeRegistered(true),
         agentRuntime,
         prompt: finalPrompt,
         // Pi must receive the channel model unchanged: Claude's `[1m]` suffix is not a provider model ID.
@@ -3450,6 +3454,8 @@ ${enrichedMessage}`
       if (releaseActiveRun()) {
         this.nonPersistingGoalSessions.delete(sessionId)
         resolveSkillRouting(undefined)
+        resolveRuntimeRegistered(false)
+        this.activeRuntimeRegistrations.delete(sessionId)
         this.activeSkillRoutings.delete(sessionId)
         this.activePresetPolicies.delete(sessionId)
         this.sessionPermissionModes.delete(sessionId)
@@ -3794,8 +3800,10 @@ ${enrichedMessage}`
     const workspaceSlug = workspaceId ? getAgentWorkspace(workspaceId)?.slug : undefined
     // 运行中的 Agent 收到队列消息时也必须看到用户刚刚主动打开的页面。
     // 未打开浏览器时保持既有消息形态，避免给每条插队消息重复注入无关环境块。
-    const skillSnapshot = await this.activeSkillRoutings.get(sessionId)
-    if (!skillSnapshot || this.activeSessions.get(sessionId) !== queueRunId || this.stoppedBySessions.has(sessionId)) {
+    const [skillSnapshot, runtimeRegistered] = await Promise.all([
+      this.activeSkillRoutings.get(sessionId), this.activeRuntimeRegistrations.get(sessionId),
+    ])
+    if (!skillSnapshot || !runtimeRegistered || this.activeSessions.get(sessionId) !== queueRunId || this.stoppedBySessions.has(sessionId)) {
       uuids.delete(uuid)
       throw new Error('当前 Skill 能力快照未就绪或所属运行已结束，请在下一轮重试')
     }

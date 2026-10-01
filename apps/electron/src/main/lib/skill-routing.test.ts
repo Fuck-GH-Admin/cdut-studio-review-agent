@@ -95,6 +95,45 @@ describe('Skill 路由：权限先于相关性', () => {
     expect(result.prompt).not.toContain('CHANGED')
     expect(result.prompt).not.toContain('BODY_alpha')
   })
+  test('qualified 引用不能截断为另一个 slug，完整失败诊断', async () => {
+    const s = await snapshot()
+    const result = routeSkillsForTask(s, { userMessage: '/skill:alpha:daily' })
+    expect(result.selected).toEqual([])
+    expect(result.diagnostics).toContainEqual({ slug: 'alpha:daily', code: 'not-found' })
+    expect(result.prompt).not.toContain('BODY_alpha')
+  })
+  test('引用后的中英文标点结束技能名，但 qualified 和路径不能截断为合法 slug', async () => {
+    const s = await snapshot()
+    for (const punctuation of ['，', '。', '；', '！', '？', '、', ',', ';', '!', '?', ')', ']', '”', '’']) {
+      const result = routeSkillsForTask(s, { userMessage: `/skill:beta${punctuation}继续` })
+      expect(result.selected.map(skill => skill.slug)).toEqual(['beta'])
+      expect(result.diagnostics).toEqual([])
+      expect(result.prompt).toContain('BODY_beta')
+    }
+    for (const invalid of ['beta:daily', 'beta/daily']) {
+      const result = routeSkillsForTask(s, { userMessage: `/skill:${invalid}，继续` })
+      expect(result.selected).toEqual([])
+      expect(result.diagnostics).toContainEqual({ slug: invalid, code: 'not-found' })
+      expect(result.prompt).not.toContain('BODY_beta')
+    }
+  })
+  test('短工具名歧义关闭；明确 MCP 全名可通过', async () => {
+    const f = fixture({}, ['mcp__a__fetch_report', 'mcp__b__fetch_report'])
+    const config = join(f.root, 'skills', 'pdf', 'profer-routing.json')
+    writeFileSync(config, JSON.stringify({ requiredTools: ['fetch_report'] }))
+    expect((await createSkillRoutingSnapshot(f)).allowedSlugs).not.toContain('pdf')
+    writeFileSync(config, JSON.stringify({ requiredTools: ['mcp__a__fetch_report'] }))
+    expect((await createSkillRoutingSnapshot(f)).allowedSlugs).toContain('pdf')
+  })
+  test('聚合正文读取预算不足仍保留合法 catalog，仅延后正文', async () => {
+    const s = await createSkillRoutingSnapshot({ ...fixture({ skillSlugs: ['pdf'] }), scanBodyBudgetBytes: 0 })
+    expect(s.allowedSlugs).toContain('pdf')
+    expect(s.skills.find(skill => skill.slug === 'pdf')?.body).toBe('')
+    expect(s.skills.find(skill => skill.slug === 'pdf')?.bodyDeferred).toBe(true)
+    const routed = routeSkillsForTask(s, { userMessage: '/skill:pdf' })
+    expect(routed.prompt).toContain('budget-deferred')
+    expect(routed.prompt).not.toContain('BODY_pdf')
+  })
   test('正文超预算不截断半份规则，返回读取指引且保留可用目录', async () => {
     const s = await snapshot()
     const result = routeSkillsForTask(s, { userMessage: '/skill:pdf', maxBodyChars: 2 })

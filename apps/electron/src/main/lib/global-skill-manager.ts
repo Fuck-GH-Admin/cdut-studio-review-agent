@@ -1595,10 +1595,11 @@ function cleanupStaleRuntimeProjections(workspaceSlug: string, currentFingerprin
  * 仅重写投影副本的 name 为唯一 slug，保留用户源正文和资源，避免 SDK 按 display name 吞项。
  * 子投影随父 fingerprint 一起回收；不修改 workspace 扁平兼容链接。
  */
-export function preparePolicyRuntimeSkills(source: RuntimeSkillsProjection, allowedSlugs: readonly string[]): RuntimeSkillsProjection {
+export async function preparePolicyRuntimeSkills(source: RuntimeSkillsProjection, allowedSlugs: readonly string[]): Promise<RuntimeSkillsProjection> {
+  const { parseFrontmatter } = await import('@earendil-works/pi-coding-agent')
   const allowed = new Set(allowedSlugs)
   const selected = source.skills.filter(skill => allowed.has(skill.slug))
-  const fingerprint = createHash('sha256').update(`policy-v1:${source.path}:${selected.map(skill => skill.slug).sort().join('\n')}`).digest('hex').slice(0, 16)
+  const fingerprint = createHash('sha256').update(`policy-v2:${source.path}:${selected.map(skill => skill.slug).sort().join('\n')}`).digest('hex').slice(0, 16)
   const path = join(source.path, '.policies', fingerprint)
   if (!existsSync(path)) {
     const temporary = `${path}.${randomUUID()}.tmp`
@@ -1610,10 +1611,9 @@ export function preparePolicyRuntimeSkills(source: RuntimeSkillsProjection, allo
         copySkillDirectorySafely(join(source.path, 'skills', skill.slug), target)
         const mdPath = join(target, 'SKILL.md')
         const content = readFileSync(mdPath, 'utf8').replace(/^\uFEFF/, '')
-        const fm = content.match(/^---\r?\n([\s\S]*?)\r?\n(?:---|\.\.\.)[^\S\r\n]*(?:\r?\n|$)/)
-        if (!fm) throw new Error(`Skill 缺少有效 frontmatter: ${skill.slug}`)
-        const header = fm[1]!.replace(/^name\s*:[^\r\n]*(?:\r?\n[ \t]+[^\r\n]*)*/m, '').trim()
-        writeFileSync(mdPath, `---\nname: ${JSON.stringify(skill.slug)}\n${header}\n---\n${content.slice(fm[0].length)}`, 'utf8')
+        const parsed = parseFrontmatter<Record<string, unknown>>(content)
+        // JSON 是合法 YAML；解析后序列化可正确处理引号键、block scalar、嵌套 metadata。
+        writeFileSync(mdPath, `---\n${JSON.stringify({ ...parsed.frontmatter, name: skill.slug })}\n---\n${parsed.body}`, 'utf8')
       }
       mkdirSync(join(temporary, '.claude-plugin'), { recursive: true })
       writeJsonFileAtomic(join(temporary, '.claude-plugin', 'plugin.json'), { name: `profer-skills-${fingerprint}`, version: '1.0.0' })

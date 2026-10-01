@@ -85,6 +85,8 @@ export interface AgentQueryInput {
   onRuntimeSessionId?: (sdkSessionId: string, sessionFile?: string) => void
   /** Goal runtime 当前轮消息回调，不写入普通会话 transcript。 */
   onRuntimeMessage?: (message: SDKMessage) => void
+  /** 本轮 runtime 路由已注册；队列仍由底层 adapter 等待自身 ready。 */
+  onRuntimeRegistered?: () => void
   /** Agent 工作目录 */
   cwd?: string
   /** 中止信号 */

@@ -153,6 +153,26 @@ describe('Pi Skill 安全边界', () => {
     }
   })
 
+  test('direct adapter 的中英文标点结束引用，不吞入后续文字', async () => {
+    const path = root()
+    writeSkill(path, 'alpha')
+    const resource = await loader(path, ['alpha'])
+    for (const punctuation of ['，', '。', '；', '！', '？', '、', ',', ';', '!', '?', ')', ']', '”', '’']) {
+      const prompt = `/skill:alpha${punctuation}继续`
+      expect(await preparePromptWithPromaSkills(resource, prompt)).toContain('正文 alpha')
+      expect(await preparePromptWithPromaSkills(resource, prompt, [])).toBe(prompt)
+    }
+  })
+
+  test('direct adapter 的 qualified 引用不截断为其他 slug', async () => {
+    const path = root()
+    writeSkill(path, 'alpha')
+    const resource = await loader(path, ['alpha'])
+    const result = await preparePromptWithPromaSkills(resource, '/skill:alpha:daily')
+    expect(result).toContain('Skill 引用诊断')
+    expect(result).not.toContain('正文 alpha')
+  })
+
   test('explicitSkillNames=[] 不 reload/扫描，reload 失败也给诊断保留任务', async () => {
     const sdk = await import('@earendil-works/pi-coding-agent')
     const resource: ResourceLoader = new sdk.DefaultResourceLoader({
