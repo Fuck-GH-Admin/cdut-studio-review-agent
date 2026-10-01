@@ -1,6 +1,6 @@
 import { join, resolve } from 'node:path'
 
-const DEFAULT_DEV_USER_DATA_DIR = '@profer/electron-dev'
+const DEFAULT_DEV_USER_DATA_DIR = '@cdutai/electron-dev'
 const DEV_INSTANCE_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}$/
 
 export interface DevInstanceEnvironment {
@@ -35,14 +35,14 @@ export function resolveDevUserDataPath(
   env: DevInstanceEnvironment = process.env,
   pathOperations: DevPathOperations = hostPathOperations,
 ): string {
-  if (isPackaged) return pathOperations.join(appDataPath, '@profer', 'electron')
+  if (isPackaged) return pathOperations.join(appDataPath, '@cdutai', 'electron')
 
   const explicit = env.PROFER_USER_DATA_DIR?.trim()
   if (explicit) return pathOperations.resolve(explicit)
 
   const instanceId = getDevInstanceId(env)
   return instanceId
-    ? pathOperations.join(appDataPath, '@profer', `electron-dev-${instanceId}`)
+    ? pathOperations.join(appDataPath, '@cdutai', `electron-dev-${instanceId}`)
     : pathOperations.join(appDataPath, DEFAULT_DEV_USER_DATA_DIR)
 }
 
@@ -58,5 +58,5 @@ export function resolveDevVitePort(env: DevInstanceEnvironment = process.env): n
 
 export function resolveDevAppName(env: DevInstanceEnvironment = process.env): string {
   const instanceId = getDevInstanceId(env)
-  return instanceId ? `profer-dev-${instanceId}` : 'profer-dev'
+  return instanceId ? `cdutai-dev-${instanceId}` : 'cdutai-dev'
 }

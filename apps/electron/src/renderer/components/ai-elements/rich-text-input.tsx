@@ -1025,7 +1025,7 @@ export const RichTextInput = forwardRef<RichTextInputHandle, RichTextInputProps>
           mask-repeat: no-repeat;
           flex-shrink: 0;
         }
-        /* 会话引用：Profer 风格的上下文胶囊。使用语义 token，确保深浅色和自定义主题一致。 */
+        /* 会话引用：CDUT Studio 风格的上下文胶囊。使用语义 token，确保深浅色和自定义主题一致。 */
         .session-mention-chip {
           position: relative;
           display: inline-flex;

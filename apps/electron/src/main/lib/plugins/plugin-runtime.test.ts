@@ -21,7 +21,7 @@ const rule = { id: 'peak', title: '峰时', channelId: 'channel', modelId: 'auto
 function source(extra: Record<string, unknown> = {}): string {
   const path = join(root, 'source'); mkdirSync(path, { recursive: true })
   writeFileSync(join(path, 'index.html'), '<!doctype html>')
-  writeFileSync(join(path, 'profer-plugin.json'), JSON.stringify({
+  writeFileSync(join(path, 'cdut-plugin.json'), JSON.stringify({
     schemaVersion: 1, id: pluginId, name: 'Runtime', version: '1.0.0',
     permissions: ['models.read', 'modelRouting.rules.write', 'network.fetch', 'agent.tools'],
     network: { origins: ['https://example.com'] },
@@ -31,7 +31,7 @@ function source(extra: Record<string, unknown> = {}): string {
   return path
 }
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'profer-plugin-runtime-')); process.env.PROFER_CONFIG_DIR = join(root, 'config'); response = 1
+  root = mkdtempSync(join(tmpdir(), 'cdut-plugin-runtime-')); process.env.PROFER_CONFIG_DIR = join(root, 'config'); response = 1
   channels = [{ id: 'channel', name: '渠道', provider: 'anthropic', baseUrl: 'https://api.example.com', apiKey: 'secret', enabled: true, createdAt: 0, updatedAt: 0, models: [{ id: 'auto', name: '自动', enabled: true }] }]
   expect(manager.installPluginPackage(source()).ok).toBe(true)
 })
@@ -107,14 +107,13 @@ test('同一插件不能复用未完成的请求 ID', async () => {
   await expect(requests.run('a', 'same', async () => null)).rejects.toThrow('已在使用')
   requests.cancelPlugin('a'); await expect(first).rejects.toThrow()
 })
-test('Chat 不路由到订阅渠道，Claude 不路由到 Pi 专用渠道', async () => {
+test('Chat 不路由到订阅渠道，Pi 专用渠道按 agentExperimentalEnabled 判定', async () => {
   await permissions.authorizePlugin(pluginId); routing.setPluginRoutingRules(pluginId, [rule])
   routing.setTaskRouting('chat:runtime', pluginId); routing.setTaskRouting('agent:runtime', pluginId)
   const input = { channelId: 'manual', modelId: 'manual' }
   channels[0]!.provider = 'xai'; channels[0]!.credentialMode = 'oauth'; channels[0]!.agentExperimentalEnabled = true
   expect(routing.routePluginModel('chat:runtime', input)).toBe(input)
-  expect(routing.routePluginModel('agent:runtime', input, 'claude')).toBe(input)
-  expect(routing.routePluginModel('agent:runtime', input, 'pi').modelId).toBe('auto')
+  expect(routing.routePluginModel('agent:runtime', input).modelId).toBe('auto')
 })
 test('关闭单个页面只取消该页面调用', async () => {
   const requests = new PluginRequests()

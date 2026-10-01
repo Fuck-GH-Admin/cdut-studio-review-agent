@@ -3,10 +3,10 @@ import { app, shell } from 'electron'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 
-export const DEV_APP_USER_MODEL_ID = 'com.profer.app.dev'
-export const DEV_SHORTCUT_NAME = 'Profer Dev.lnk'
+export const DEV_APP_USER_MODEL_ID = 'com.cdutai.studio.dev'
+export const DEV_SHORTCUT_NAME = 'CDUT Studio Dev.lnk'
 
-/** Windows 开发态的裸 electron.exe 需要独立 AUMID，绝不能复用生产 Profer 身份。 */
+/** Windows 开发态的裸 electron.exe 需要独立 AUMID，绝不能复用生产 CDUT Studio 身份。 */
 export function shouldMaintainDevShellShortcut(
   platform: NodeJS.Platform = process.platform,
   isPackaged = app.isPackaged,
@@ -61,7 +61,7 @@ export function maintainDevShellShortcut(): void {
     target: process.execPath,
     cwd: app.getAppPath(),
     args,
-    description: 'Profer 开发版（仅供本机开发）',
+    description: 'CDUT Studio 开发版（仅供本机开发）',
     icon: process.execPath,
     iconIndex: 0,
     appUserModelId: DEV_APP_USER_MODEL_ID,

@@ -32,7 +32,7 @@ function writeJsonl(path: string, values: unknown[]): void {
   writeFileSync(path, `${values.map((value) => JSON.stringify(value)).join('\n')}\n`, 'utf-8')
 }
 
-function createSession(runtime: 'claude' | 'pi', sdkSessionId: string): { id: string; workspaceId: string; workspaceSlug: string } {
+function createSession(runtime: 'pi', sdkSessionId: string): { id: string; workspaceId: string; workspaceSlug: string } {
   const suffix = sdkSessionId.replace(/[^a-z0-9]/gi, '-')
   const workspace = createAgentWorkspace(`Migration ${runtime} ${suffix}`)
   const session = createAgentSession(`${runtime} session`, undefined, workspace.id, undefined, runtime)
@@ -57,7 +57,7 @@ beforeEach(() => {
 
 describe('migration runtime artifacts', () => {
   test('exports selected Claude and Pi native transcripts and records runtime metadata', async () => {
-    const claude = createSession('claude', 'claude-export-id')
+    const claude = createSession('pi', 'claude-export-id')
     const pi = createSession('pi', 'pi-export-id')
     const skipped = createSession('pi', 'pi-not-exported')
 
@@ -93,7 +93,7 @@ describe('migration runtime artifacts', () => {
     expect(names).toContain('runtime/claude/claude-export-id.jsonl')
     expect(names).toContain('runtime/pi/pi-export-id.jsonl')
     expect(manifest.runtimeArtifacts?.claudeProjects).toEqual([
-      expect.objectContaining({ sessionId: 'claude-export-id', runtime: 'claude' }),
+      expect.objectContaining({ sessionId: 'claude-export-id', runtime: 'pi' }),
     ])
     expect(manifest.runtimeArtifacts?.piSessions).toEqual([
       expect.objectContaining({ sessionId: 'pi-export-id', runtime: 'pi' }),
@@ -102,7 +102,7 @@ describe('migration runtime artifacts', () => {
   })
 
   test('imports Claude/Pi artifacts into the mapped workspace and rebinds Pi metadata', async () => {
-    const claude = createSession('claude', 'claude-import-id')
+    const claude = createSession('pi', 'claude-import-id')
     const pi = createSession('pi', 'pi-import-id')
     const claudeCwd = getAgentSessionWorkspacePath(claude.workspaceSlug, claude.id)
     writeJsonl(join(getSdkConfigDir(), 'projects', __testSdkProjectKey(claudeCwd), 'claude-import-id.jsonl'), [
@@ -145,7 +145,7 @@ describe('migration runtime artifacts', () => {
     expect(existsSync(importedPi?.piSessionFile ?? '')).toBe(true)
     const importedPiTranscript = JSON.parse(readFileSync(importedPi?.piSessionFile ?? '', 'utf-8').trim()) as { cwd?: string }
     expect(importedPiTranscript.cwd).toContain(secondaryRoot)
-    expect(importedClaude?.agentRuntime).toBe('claude')
+    expect(importedClaude?.agentRuntime).toBe('pi')
     expect(importedClaudeWorkspace).toBeDefined()
     expect(importedClaude?.sdkSessionId).toBe('claude-import-id')
     const importedClaudeCwd = getAgentSessionWorkspacePath(importedClaudeWorkspace!.slug, claude.id)

@@ -2,7 +2,7 @@
  * 新标签页起始页数据存储
  *
  * 持久化书签与最近访问历史，数据量小、写入频繁，独立于 settings.json
- * 避免污染应用设置。数据仅保存在本机 ~/.profer/ 下，与其他用户级配置一致，
+ * 避免污染应用设置。数据仅保存在本机 ~/.cdutai/ 下，与其他用户级配置一致，
  * 采用全局单一维度（与浏览器 profile 的全局单一身份对齐），不分工作区隔离。
  *
  * 存储结构：{ bookmarks: BrowserBookmark[], history: BrowserHistoryEntry[] }

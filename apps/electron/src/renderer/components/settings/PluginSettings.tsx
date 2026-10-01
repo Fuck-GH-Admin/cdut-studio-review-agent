@@ -129,7 +129,7 @@ export function PluginSettings(): React.ReactElement {
     <div className="space-y-6">
       <SettingsSection
         title="插件系统"
-        description="通过插件扩展 Profer 的能力；插件管理使用 Profer 原生控件，插件页面在独立标签页和任务入口中运行。"
+        description="通过插件扩展 CDUT Studio 的能力；插件管理使用 CDUT Studio 原生控件，插件页面在独立标签页和任务入口中运行。"
         action={(
           <div className="flex flex-wrap justify-end gap-2">
             <Button type="button" variant="outline" size="sm" onClick={() => void refresh()} disabled={loading}>
@@ -159,7 +159,7 @@ export function PluginSettings(): React.ReactElement {
               {busyKey === 'install-folder' ? <Loader2 className="animate-spin" aria-hidden="true" /> : <FolderOpen aria-hidden="true" />}
               安装目录
             </Button>
-            <span className="text-xs text-muted-foreground">根目录需要包含 profer-plugin.json</span>
+            <span className="text-xs text-muted-foreground">根目录需要包含 cdut-plugin.json</span>
           </div>
         </SettingsCard>
       </SettingsSection>

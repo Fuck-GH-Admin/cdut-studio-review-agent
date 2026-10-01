@@ -43,13 +43,13 @@ function request(requestId: string, operation: string, payload: unknown) {
   return { protocol: 'plugin-host.rpc.v1' as const, requestId, operation, payload }
 }
 function session(id: string, title: string, revision: number): PluginSessionMetadata {
-  return { sessionId: id, workspaceId, title, status: 'idle', runtime: 'claude', presetId: 'research', presetVersion: 1, createdAt: 1, updatedAt: 2, revision }
+  return { sessionId: id, workspaceId, title, status: 'idle', runtime: 'pi', presetId: 'research', presetVersion: 1, createdAt: 1, updatedAt: 2, revision }
 }
 function preset(id: string, displayName: string): PluginPresetMetadata {
   return { presetId: id, displayName, version: 1, enabled: true }
 }
 function runtimeView(references: PluginCapabilityDeclaration['references'], revision: number, outcome: PluginRuntimeCapabilityView['outcome'] = 'committed'): PluginRuntimeCapabilityView {
-  return { snapshotId: `snapshot-${revision}`, fingerprint: `fingerprint-${revision}`, runtime: 'claude', references, revision, effectiveFrom: 'next_turn', outcome }
+  return { snapshotId: `snapshot-${revision}`, fingerprint: `fingerprint-${revision}`, runtime: 'pi', references, revision, effectiveFrom: 'next_turn', outcome }
 }
 
 const presetProvider: PresetProvider = {
@@ -92,7 +92,7 @@ function install(id: string, permissions: string[]): void {
   const source = join(root, id)
   mkdirSync(join(source, 'dist'), { recursive: true })
   writeFileSync(join(source, 'dist', 'index.html'), '<!doctype html>', 'utf8')
-  writeFileSync(join(source, 'profer-plugin.json'), JSON.stringify({
+  writeFileSync(join(source, 'cdut-plugin.json'), JSON.stringify({
     schemaVersion: 1, id, name: id, version: '1.0.0', permissions,
     workspaceScopes: [{ workspaceId, prefixes: ['notes'] }],
     providerScopes: [{ providerId: 'research-api', fields: ['token'] }],
@@ -103,7 +103,7 @@ function install(id: string, permissions: string[]): void {
 function grant(id: string): Promise<boolean> { return authorizePlugin(id) }
 
 beforeEach(async () => {
-  root = mkdtempSync(join(tmpdir(), 'profer-plugin-provider-'))
+  root = mkdtempSync(join(tmpdir(), 'cdut-plugin-provider-'))
   process.env.PROFER_CONFIG_DIR = join(root, 'config')
   install(researchId, ['presets.read', 'presets.switch', 'sessions.read', 'sessions.create', 'sessions.configure', 'sessions.control', 'runtime.capabilities.read', 'runtime.capabilities.inject', 'secrets.readMetadata', 'secrets.configure'])
   install(taskBoardId, ['presets.read', 'sessions.read', 'runtime.capabilities.read', 'secrets.readMetadata'])
@@ -130,7 +130,7 @@ test('research plugin and task-board plugin share opaque session/runtime/secret 
   const boardPresets = await callPluginHost(request('board-presets', 'sessions.presets.list', { workspaceId }), context(taskBoardId, 'board-presets', 'sessions.presets.list'), null)
   expect(researchPresets).toEqual(boardPresets)
 
-  const runtime = await callPluginHost(request('research-runtime', 'runtime.capabilities.resolve', { workspaceId, runtime: 'claude', declaration: { references: [{ kind: 'service', id: 'research-api', version: 1 }] } }), context(researchId, 'research-runtime', 'runtime.capabilities.resolve'), null)
+  const runtime = await callPluginHost(request('research-runtime', 'runtime.capabilities.resolve', { workspaceId, runtime: 'pi', declaration: { references: [{ kind: 'service', id: 'research-api', version: 1 }] } }), context(researchId, 'research-runtime', 'runtime.capabilities.resolve'), null)
   expect(runtime).toMatchObject({ fingerprint: 'fingerprint-2', references: [{ kind: 'service', id: 'research-api', version: 1 }] })
 
   const secrets = await callPluginHost(request('board-secrets', 'secrets.metadata.list', { providerId: 'research-api' }), context(taskBoardId, 'board-secrets', 'secrets.metadata.list'), null)
@@ -151,10 +151,10 @@ test('session mutation requires host confirmation and integer CAS, then applies 
 
 test('runtime injection failure does not replace the old view and provider failure is not a fake success', async () => {
   currentRuntimeView = runtimeView([{ kind: 'service', id: 'old-service', version: 1 }], 2)
-  const before = await callPluginHost(request('runtime-before', 'runtime.capabilities.resolve', { workspaceId, runtime: 'claude', declaration: { references: [{ kind: 'service', id: 'old-service', version: 1 }] } }), context(researchId, 'runtime-before', 'runtime.capabilities.resolve'), null)
+  const before = await callPluginHost(request('runtime-before', 'runtime.capabilities.resolve', { workspaceId, runtime: 'pi', declaration: { references: [{ kind: 'service', id: 'old-service', version: 1 }] } }), context(researchId, 'runtime-before', 'runtime.capabilities.resolve'), null)
   const token = pluginConfirmations.issue({ pluginId: researchId, pageId: 'main', ownerId: 31, requestId: 'inject-1', operation: 'runtime.capabilities.inject', resource: `workspace:${workspaceId}`, revision: 2 })
-  await expect(callPluginHost(request('inject-1', 'runtime.capabilities.inject', { workspaceId, runtime: 'claude', declaration: { references: [{ kind: 'tool', id: 'reject' }] }, expectedRevision: 2, confirmationId: token }), context(researchId, 'inject-1', 'runtime.capabilities.inject'), null)).rejects.toMatchObject({ code: 'PLUGIN_RUNTIME_INJECTION_FAILED' })
-  const after = await callPluginHost(request('runtime-after', 'runtime.capabilities.resolve', { workspaceId, runtime: 'claude', declaration: { references: [{ kind: 'service', id: 'old-service', version: 1 }] } }), context(researchId, 'runtime-after', 'runtime.capabilities.resolve'), null)
+  await expect(callPluginHost(request('inject-1', 'runtime.capabilities.inject', { workspaceId, runtime: 'pi', declaration: { references: [{ kind: 'tool', id: 'reject' }] }, expectedRevision: 2, confirmationId: token }), context(researchId, 'inject-1', 'runtime.capabilities.inject'), null)).rejects.toMatchObject({ code: 'PLUGIN_RUNTIME_INJECTION_FAILED' })
+  const after = await callPluginHost(request('runtime-after', 'runtime.capabilities.resolve', { workspaceId, runtime: 'pi', declaration: { references: [{ kind: 'service', id: 'old-service', version: 1 }] } }), context(researchId, 'runtime-after', 'runtime.capabilities.resolve'), null)
   expect(after).toEqual(before)
   configurePluginCapabilityProviders({ presets: presetProvider, runtime: runtimeProvider, secrets: secretProvider })
   await expect(callPluginHost(request('missing-1', 'sessions.list', { workspaceId }), context(taskBoardId, 'missing-1', 'sessions.list'), null)).rejects.toMatchObject({ code: 'PLUGIN_OPERATION_NOT_SUPPORTED' })
@@ -199,14 +199,14 @@ test('session projection rejects provider metadata from another workspace or ses
 test('runtime projection rejects unknown outcome with stable error mapping', async () => {
   const invalidProvider: RuntimeCapabilityProvider = { ...runtimeProvider, async resolve() { return { ...currentRuntimeView, outcome: 'partial' as never } } }
   configurePluginCapabilityProviders({ ...providers, runtime: invalidProvider })
-  await expect(callPluginHost(request('runtime-invalid-resolve', 'runtime.capabilities.resolve', { workspaceId, runtime: 'claude', declaration: { references: [] } }), context(researchId, 'runtime-invalid-resolve', 'runtime.capabilities.resolve'), null)).rejects.toMatchObject({ code: 'PLUGIN_INVALID_ARGUMENT' })
+  await expect(callPluginHost(request('runtime-invalid-resolve', 'runtime.capabilities.resolve', { workspaceId, runtime: 'pi', declaration: { references: [] } }), context(researchId, 'runtime-invalid-resolve', 'runtime.capabilities.resolve'), null)).rejects.toMatchObject({ code: 'PLUGIN_INVALID_ARGUMENT' })
 
   const invalidInjectionProvider: RuntimeCapabilityProvider = { ...runtimeProvider, async inject() { return { ...currentRuntimeView, outcome: 'partial' as never } } }
   configurePluginCapabilityProviders({ ...providers, runtime: invalidInjectionProvider })
   const token = pluginConfirmations.issue({ pluginId: researchId, pageId: 'main', ownerId: 31, requestId: 'runtime-invalid-inject', operation: 'runtime.capabilities.inject', resource: `workspace:${workspaceId}`, revision: 2 })
-  await expect(callPluginHost(request('runtime-invalid-inject', 'runtime.capabilities.inject', { workspaceId, runtime: 'claude', declaration: { references: [] }, expectedRevision: 2, confirmationId: token }), context(researchId, 'runtime-invalid-inject', 'runtime.capabilities.inject'), null)).rejects.toMatchObject({ code: 'PLUGIN_RUNTIME_INJECTION_FAILED' })
+  await expect(callPluginHost(request('runtime-invalid-inject', 'runtime.capabilities.inject', { workspaceId, runtime: 'pi', declaration: { references: [] }, expectedRevision: 2, confirmationId: token }), context(researchId, 'runtime-invalid-inject', 'runtime.capabilities.inject'), null)).rejects.toMatchObject({ code: 'PLUGIN_RUNTIME_INJECTION_FAILED' })
 
   const missingOutcomeProvider: RuntimeCapabilityProvider = { ...runtimeProvider, async resolve() { const { outcome: _outcome, ...withoutOutcome } = currentRuntimeView; return withoutOutcome } }
   configurePluginCapabilityProviders({ ...providers, runtime: missingOutcomeProvider })
-  await expect(callPluginHost(request('runtime-missing-outcome', 'runtime.capabilities.resolve', { workspaceId, runtime: 'claude', declaration: { references: [] } }), context(researchId, 'runtime-missing-outcome', 'runtime.capabilities.resolve'), null)).rejects.toMatchObject({ code: 'PLUGIN_INVALID_ARGUMENT' })
+  await expect(callPluginHost(request('runtime-missing-outcome', 'runtime.capabilities.resolve', { workspaceId, runtime: 'pi', declaration: { references: [] } }), context(researchId, 'runtime-missing-outcome', 'runtime.capabilities.resolve'), null)).rejects.toMatchObject({ code: 'PLUGIN_INVALID_ARGUMENT' })
 })

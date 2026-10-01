@@ -18,12 +18,12 @@ function channel(id: string, provider: Channel['provider'], models: string[]): C
 
 describe('nextAgentChannelIdsAfterModelSelect', () => {
   test('adds the selected channel for Claude runtime', () => {
-    expect(nextAgentChannelIdsAfterModelSelect(['anthropic'], 'kimi', 'claude')).toEqual(['anthropic', 'kimi'])
+    expect(nextAgentChannelIdsAfterModelSelect(['anthropic'], 'kimi', 'pi')).toEqual(['anthropic', 'kimi'])
   })
 
   test('keeps the list unchanged when Claude channel is already present', () => {
     const channelIds = ['anthropic', 'kimi']
-    expect(nextAgentChannelIdsAfterModelSelect(channelIds, 'kimi', 'claude')).toBe(channelIds)
+    expect(nextAgentChannelIdsAfterModelSelect(channelIds, 'kimi', 'pi')).toBe(channelIds)
   })
 
   test('does not mark Pi-selected channels as Claude-compatible', () => {
@@ -39,55 +39,55 @@ describe('nextAgentChannelIdsAfterModelSelect', () => {
 
 describe('resolveAgentModelSelection', () => {
   const channels = [
-    channel('claude', 'anthropic', ['claude-sonnet-4-6']),
+    channel('pi', 'anthropic', ['claude-sonnet-4-6']),
     channel('openai', 'openai', ['gpt-5.5']),
     channel('ollama', 'ollama', ['qwen3:8b']),
   ]
 
   test('Pi selects an OpenAI protocol model', () => {
-    expect(resolveAgentModelSelection(channels, 'pi', ['claude'])).toEqual({
+    expect(resolveAgentModelSelection(channels, 'pi', ['pi'])).toEqual({
       channelId: 'openai',
       modelId: 'gpt-5.5',
     })
   })
 
   test('Claude can select Ollama through its Anthropic-compatible protocol', () => {
-    expect(resolveAgentModelSelection([channels[2]!], 'claude', ['ollama'])).toEqual({
+    expect(resolveAgentModelSelection([channels[2]!], 'pi', ['ollama'])).toEqual({
       channelId: 'ollama',
       modelId: 'qwen3:8b',
     })
   })
 
   test('Claude selects an Anthropic protocol model from its whitelist', () => {
-    expect(resolveAgentModelSelection(channels, 'claude', ['claude'])).toEqual({
-      channelId: 'claude',
+    expect(resolveAgentModelSelection(channels, 'pi', ['pi'])).toEqual({
+      channelId: 'pi',
       modelId: 'claude-sonnet-4-6',
     })
   })
 
   test('Pi keeps a Claude model as the current selection', () => {
-    expect(resolveAgentModelSelection(channels, 'pi', ['claude'], {
-      channelId: 'claude',
+    expect(resolveAgentModelSelection(channels, 'pi', ['pi'], {
+      channelId: 'pi',
       modelId: 'claude-sonnet-4-6',
     })).toEqual({
-      channelId: 'claude',
+      channelId: 'pi',
       modelId: 'claude-sonnet-4-6',
     })
   })
 
   test('Pi falls back to an Anthropic protocol model when no OpenAI model exists', () => {
     expect(resolveAgentModelSelection([channels[0]!], 'pi', [])).toEqual({
-      channelId: 'claude',
+      channelId: 'pi',
       modelId: 'claude-sonnet-4-6',
     })
   })
 
   test('Pi keeps the current Claude model selection', () => {
     expect(resolveAgentModelSelection(channels, 'pi', [], {
-      channelId: 'claude',
+      channelId: 'pi',
       modelId: 'claude-sonnet-4-6',
     })).toEqual({
-      channelId: 'claude',
+      channelId: 'pi',
       modelId: 'claude-sonnet-4-6',
     })
   })

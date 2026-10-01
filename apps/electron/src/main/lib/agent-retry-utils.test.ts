@@ -24,7 +24,7 @@ import {
   getMaxAutoRetries,
 } from './agent-retry-utils'
 import type { TypedError } from '@profer/shared'
-import { mapSDKErrorToTypedError } from './adapters/claude-agent-adapter'
+import { mapSDKErrorToTypedError } from './adapters/pi-agent-adapter'
 
 function typedError(code: TypedError['code'], message = ''): TypedError {
   return {

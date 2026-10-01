@@ -45,7 +45,7 @@ const dataById = new Map<string, AgentPreviewRenderTask>()
 const pending = new Map<string, PendingRender>()
 
 export function isSafeAgentPreviewSourceUrl(value: string): boolean {
-  return /^profer-file:\/\/[a-z0-9-]+(?:\/[^?#]*)?$/i.test(value)
+  return /^cdut-file:\/\/[a-z0-9-]+(?:\/[^?#]*)?$/i.test(value)
 }
 
 function installPreviewSessionPolicy(): void {
@@ -54,12 +54,12 @@ function installPreviewSessionPolicy(): void {
   const previewSession = session.fromPartition(PREVIEW_PARTITION)
   // Electron 运行时必有这些 API；窄保护仅让不完整 Electron mock 的主进程单测可加载。
   if (!previewSession?.protocol || !previewSession.webRequest) return
-  previewSession.protocol.handle('profer-file', handleProferFileRequest)
+  previewSession.protocol.handle('cdut-file', handleProferFileRequest)
   previewSession.setPermissionRequestHandler((_webContents, _permission, callback) => callback(false))
   previewSession.webRequest.onBeforeRequest((details, callback) => {
     const url = details.url
-    // 开发入口及其 Vite 模块必须可加载；嵌入内容和其资源只能是 opaque profer-file token。
-    const allowed = url.startsWith('profer-file://')
+    // 开发入口及其 Vite 模块必须可加载；嵌入内容和其资源只能是 opaque cdut-file token。
+    const allowed = url.startsWith('cdut-file://')
       || url.startsWith('data:')
       || url.startsWith('blob:')
       || url.startsWith('about:')
@@ -183,7 +183,7 @@ function waitForRenderer(win: BrowserWindow): Promise<void> {
 }
 
 async function renderOne(request: AgentPreviewRenderRequest, sourceUrl: string, text?: string): Promise<AgentPreviewRenderResult> {
-  if (!isSafeAgentPreviewSourceUrl(sourceUrl)) throw new AgentPreviewRendererError('renderer_failed', '预览资源不是受控的 profer-file URL')
+  if (!isSafeAgentPreviewSourceUrl(sourceUrl)) throw new AgentPreviewRendererError('renderer_failed', '预览资源不是受控的 cdut-file URL')
   const win = ensureWindow()
   await waitForRenderer(win)
   const id = randomUUID()

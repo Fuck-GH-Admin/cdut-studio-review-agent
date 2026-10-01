@@ -56,7 +56,7 @@ function ownerFixture() {
   let routingFailure = false
   const Orchestrator = compile<typeof AgentOrchestrator>(orchestratorSource.slice(orchestratorSource.indexOf('export class AgentOrchestrator')), 'AgentOrchestrator', {
     registerCollaborationEventBus() {}, setHeadlessAgentRunner() {}, setAgentStopper() {},
-    normalizeAgentRuntime: (runtime?: string) => runtime ?? 'claude',
+    normalizeAgentRuntime: (runtime?: string) => runtime ?? 'pi',
     getAgentSessionMeta: () => undefined,
     isAgentSessionForking: () => false,
     randomUUID, tryAcquireActiveSession, releaseActiveSession, AgentRunAlreadyActiveError,
@@ -84,7 +84,7 @@ function ownerFixture() {
   return { instance, input, credentials, callbacks, aborted, failRouting: () => { routingFailure = true } }
 }
 
-for (const runtime of ['claude', 'pi'] as const) {
+for (const runtime of ['pi'] as const) {
   describe(`${runtime} Goal bridge`, () => {
     test('正常上下文传递 input，完整 runtime 消息回调不依赖 isolatedRuntimeSession', async () => {
       const messages = [

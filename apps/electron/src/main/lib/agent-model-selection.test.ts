@@ -12,7 +12,7 @@ const configDir = mkdtempSync(join(tmpdir(), 'profer-agent-model-selection-'))
 const channelsPath = join(configDir, 'channels.json')
 const originalConfigDir = process.env.PROFER_CONFIG_DIR
 
-function writeChannels(agentRuntimes: Array<'pi' | 'claude'> = ['pi']): void {
+function writeChannels(agentRuntimes: Array<'pi'> = ['pi']): void {
   const config: ChannelsConfig = {
     version: 1,
     channels: [{
@@ -60,7 +60,7 @@ describe('Agent 模型渠道校验', () => {
     expect(() => assertEnabledModelForChannel({
       channelId: 'pi-only-channel',
       modelId: 'enabled-model',
-      runtime: 'claude',
+      runtime: 'pi',
       purpose: '测试 Claude 委派',
     })).toThrow('未开放 Agent')
   })
@@ -90,11 +90,11 @@ describe('Agent 模型渠道校验', () => {
   })
 
   test('Given 渠道同时开放 Pi 与 Claude When 按 Claude 校验 Then 允许使用', () => {
-    writeChannels(['pi', 'claude'])
+    writeChannels(['pi'])
     expect(assertEnabledModelForChannel({
       channelId: 'pi-only-channel',
       modelId: 'enabled-model',
-      runtime: 'claude',
+      runtime: 'pi',
       purpose: '测试 Claude 委派',
     })).toBe('enabled-model')
   })

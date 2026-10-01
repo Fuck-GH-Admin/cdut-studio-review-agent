@@ -21,7 +21,7 @@ import { ensurePluginSession } from './plugin-session'
  * - 同一 preload（plugin-preload.cjs），插件页面只拿到受控 Plugin Host API；
  * - 不复用插件 session partition（partition 已绑定主窗口 View 的 protocol/guard，
  *   悬浮窗口页面资源经主窗口插件协议由宿主转发，见 plugin-view-manager 的 session 注册）；
- *   为隔离与最小变更，悬浮窗口复用同一 partition，使 profer-plugin:// 协议、CSP、下载/权限拒绝
+ *   为隔离与最小变更，悬浮窗口复用同一 partition，使 cdut-plugin:// 协议、CSP、下载/权限拒绝
  *   与主窗口插件页面保持一致。
  * - 窗口身份由宿主按 webContents 归属绑定，插件不能伪造 pluginId/pageId。
  */
@@ -174,7 +174,7 @@ export class PluginFloatingWindowManager {
 
     const { page } = resolvePluginPage(pluginId, pageId, 'floating')
     // 悬浮窗口可能是该插件的第一个页面：必须先注册协议 handler 与会话守卫，
-    // 否则 loadURL(profer-plugin://) 会被默认拒绝。
+    // 否则 loadURL(cdut-plugin://) 会被默认拒绝。
     ensurePluginSession(pluginId)
     const config = resolveWindowConfig(page)
     const displays = screen.getAllDisplays()
@@ -217,8 +217,8 @@ export class PluginFloatingWindowManager {
       focusable: config.focusable,
       acceptFirstMouse: true,
       webPreferences: {
-        // 与主窗口插件页面共用 partition，复用同一 profer-plugin:// 协议、CSP 与会话守卫。
-        partition: `profer-plugin-${pluginId}`,
+        // 与主窗口插件页面共用 partition，复用同一 cdut-plugin:// 协议、CSP 与会话守卫。
+        partition: `cdut-plugin-${pluginId}`,
         preload: resolve(__dirname, 'plugin-preload.cjs'),
         sandbox: true,
         contextIsolation: true,
@@ -251,7 +251,7 @@ export class PluginFloatingWindowManager {
     const allowPluginNavigation = (event: Electron.Event, url: string): void => {
       try {
         const parsed = new URL(url)
-        if (parsed.protocol === 'profer-plugin:' && parsed.hostname === pluginId) return
+        if (parsed.protocol === 'cdut-plugin:' && parsed.hostname === pluginId) return
       } catch { /* 非法 URL 一律拒绝 */ }
       event.preventDefault()
     }
@@ -281,7 +281,7 @@ export class PluginFloatingWindowManager {
       record.destroyed = true
     })
 
-    void window.webContents.loadURL(`profer-plugin://${pluginId}/${page.entry}`).catch((error) => {
+    void window.webContents.loadURL(`cdut-plugin://${pluginId}/${page.entry}`).catch((error) => {
       console.error(`[插件] 悬浮页面加载失败 ${pluginId}/${pageId}:`, error)
       this.disposeRecord(record)
     })

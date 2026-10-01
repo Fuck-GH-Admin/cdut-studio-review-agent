@@ -17,8 +17,8 @@ import { detectGitRuntime, getGitRepoStatus } from './git-detector'
 import { detectGitBash } from './git-bash-detector'
 import { detectWsl } from './wsl-detector'
 import { join } from 'node:path'
-import { homedir } from 'node:os'
 import { existsSync, readFileSync, writeFileSync, mkdirSync, unlinkSync } from 'node:fs'
+import { resolveConfigDir } from './config-paths'
 
 /** 运行时状态缓存 */
 let runtimeStatusCache: RuntimeStatus | null = null
@@ -29,15 +29,9 @@ let isInitialized = false
 /** 运行时缓存有效期（24 小时），过期后重新检测以捕获环境变化 */
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000
 
-/** 获取缓存文件路径（不能依赖 config-paths.ts 避免循环引用） */
+/** 获取缓存文件路径。与 config-paths 共用同一解析逻辑，PROFER_CONFIG_DIR 覆盖同样生效。 */
 function getRuntimeCachePath(): string {
-  // 复用 getConfigDir 的逻辑：检测是否为打包版本
-  let configDirName = '.profer'
-  try {
-    const { app } = require('electron')
-    configDirName = app.isPackaged ? '.profer' : '.profer-dev'
-  } catch { /* 降级使用默认值 */ }
-  return join(homedir(), configDirName, 'runtime-cache.json')
+  return join(resolveConfigDir(), 'runtime-cache.json')
 }
 
 /** 读取磁盘缓存的运行时状态，如果有效则直接返回；缺失的工具会增量重检 */
@@ -140,8 +134,7 @@ async function loadCachedRuntime(): Promise<RuntimeStatus | null> {
 function saveCachedRuntime(status: RuntimeStatus): void {
   try {
     const cachePath = getRuntimeCachePath()
-    const dir = join(homedir(), '.profer')
-    try { mkdirSync(dir, { recursive: true }) } catch { /* 目录可能已存在 */ }
+    try { mkdirSync(resolveConfigDir(), { recursive: true }) } catch { /* 目录可能已存在 */ }
     const toCache = { ...status, _cachedAt: Date.now() }
     writeFileSync(cachePath, JSON.stringify(toCache, null, 2), 'utf-8')
     console.log('[运行时初始化] 已写入磁盘缓存')

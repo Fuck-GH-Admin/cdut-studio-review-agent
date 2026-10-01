@@ -76,7 +76,6 @@ import { developerModeEnabledAtom, openEpistemicModeEnabledAtom } from './atoms/
 import { useGlobalAgentListeners } from './hooks/useGlobalAgentListeners'
 import { useBrowserLocalFileSelectionQuote } from './hooks/useBrowserLocalFileSelectionQuote'
 import { useBrowserPreviewThemeSync } from './hooks/useBrowserPreviewThemeSync'
-import { useGlobalChatListeners } from './hooks/useGlobalChatListeners'
 import {
   todosAtom,
   calendarEventsAtom,
@@ -95,7 +94,6 @@ import {
   toPersistedTabGroups,
 } from './atoms/tab-group-atoms'
 import type { TabItem } from './atoms/tab-atoms'
-import { chatToolsAtom } from './atoms/chat-tool-atoms'
 import { feishuBotStatesAtom } from './atoms/feishu-atoms'
 import { dingtalkBotStatesAtom } from './atoms/dingtalk-atoms'
 import { currentConversationIdAtom, channelsAtom, channelsLoadedAtom, selectedModelAtom } from './atoms/chat-atoms'
@@ -269,7 +267,7 @@ function AgentSettingsInitializer(): null {
       if (settings.agentModelId && (!settings.agentChannelId || channelIds.has(settings.agentChannelId))) {
         setAgentModelId(settings.agentModelId)
       }
-      setAgentRuntime(settings.agentRuntime ?? 'claude')
+      setAgentRuntime(settings.agentRuntime ?? 'pi')
 
       // 加载 Agent 启用渠道列表，过滤已删除的渠道
       if (settings.agentChannelIds && settings.agentChannelIds.length > 0) {
@@ -676,17 +674,6 @@ function PluginSystemInitializer(): null {
 }
 
 /**
- * Chat IPC 监听器初始化组件
- *
- * 全局挂载，永不销毁。确保 Chat 流式事件
- * 在页面切换时不丢失。
- */
-function ChatListenersInitializer(): null {
-  useGlobalChatListeners()
-  return null
-}
-
-/**
  * Agent IPC 监听器初始化组件
  *
  * 全局挂载，永不销毁。确保 Agent 流式事件、权限请求
@@ -698,35 +685,6 @@ function AgentListenersInitializer(): null {
   useBrowserLocalFileSelectionQuote()
   // 换皮肤时让已打开的文件预览跟上（受管浏览器里的普通网页不跟）
   useBrowserPreviewThemeSync()
-  return null
-}
-
-/**
- * Chat 工具初始化组件
- *
- * 启动时从主进程加载所有工具信息到 atom。
- * 订阅 chat-tools.json 文件变更通知，自动刷新工具列表。
- */
-function ChatToolInitializer(): null {
-  const setChatTools = useSetAtom(chatToolsAtom)
-
-  useEffect(() => {
-    window.electronAPI.getChatTools()
-      .then(setChatTools)
-      .catch((err: unknown) => console.error('[ChatToolInitializer] 加载工具列表失败:', err))
-  }, [setChatTools])
-
-  // 订阅自定义工具配置变更并静默刷新工具列表。
-  // 用户主动操作的反馈由各设置入口提供，避免文件监听产生重复 Toast。
-  useEffect(() => {
-    const cleanup = window.electronAPI.onCustomToolChanged(() => {
-      window.electronAPI.getChatTools()
-        .then(setChatTools)
-        .catch((err: unknown) => console.error('[ChatToolInitializer] 刷新工具列表失败:', err))
-    })
-    return cleanup
-  }, [setChatTools])
-
   return null
 }
 
@@ -888,11 +846,9 @@ function TabStatePersistenceInitializer(): null {
   useEffect(() => {
     Promise.all([
       window.electronAPI.getSettings(),
-      // 启动恢复需要校验所有 tab 的会话有效性（含已归档，否则归档会话 tab 会被误过滤）
-      window.electronAPI.listConversations(true),
       window.electronAPI.listAgentSessions(true),
       window.electronAPI.listAgentWorkspaces(),
-    ]).then(([settings, conversations, agentSessions, agentWorkspaces]) => {
+    ]).then(([settings, agentSessions, agentWorkspaces]) => {
       const tabState = settings.tabState
       if (!tabState?.tabs?.length) {
         restoredRef.current = true
@@ -922,12 +878,11 @@ function TabStatePersistenceInitializer(): null {
           .filter((session) => !session.workspaceId || visibleWorkspaceIds.has(session.workspaceId))
           .map((session) => session.id),
       )
-      const validSessionIds = new Set([
-        ...conversations.map((c) => c.id),
-        ...agentSessions
+      const validSessionIds = new Set(
+        agentSessions
           .filter((session) => isVisibleAgentSession(session) || persistedDraftAgentTabIds.has(session.id))
           .map((session) => session.id),
-      ])
+      )
 
       // 过滤 diff 类型 Tab（不持久化），同时过滤掉已被删除的会话
       const validTabs = tabState.tabs.filter(
@@ -938,9 +893,9 @@ function TabStatePersistenceInitializer(): null {
           'sessionId' in t &&
           'type' in t &&
           'title' in t &&
-          (t.type === 'chat' || t.type === 'agent') &&
+          (t.type === 'agent') &&
           validSessionIds.has(t.sessionId) &&
-          (t.type !== 'agent' || visibleAgentSessionIds.has(t.sessionId)),
+          visibleAgentSessionIds.has(t.sessionId),
       )
       if (validTabs.length === 0) {
         restoredRef.current = true
@@ -975,17 +930,11 @@ function TabStatePersistenceInitializer(): null {
       // 同步 appMode、currentSessionId 和 Agent 所属工作区。
       // 团队 Tab 恢复时必须以会话元数据为准，否则页面会按旧的个人工作区渲染。
       if (activeTab) {
-        if (activeTab.type === 'chat') {
-          store.set(appModeAtom, 'chat')
-          store.set(currentConversationIdAtom, activeTab.sessionId)
-          store.set(currentAgentSessionIdAtom, null)
-        } else {
-          store.set(appModeAtom, 'agent')
-          store.set(currentAgentSessionIdAtom, activeTab.sessionId)
-          const activeSession = agentSessions.find((session) => session.id === activeTab.sessionId)
-          if (activeSession?.workspaceId) {
-            store.set(currentAgentWorkspaceIdAtom, activeSession.workspaceId)
-          }
+        store.set(appModeAtom, 'agent')
+        store.set(currentAgentSessionIdAtom, activeTab.sessionId)
+        const activeSession = agentSessions.find((session) => session.id === activeTab.sessionId)
+        if (activeSession?.workspaceId) {
+          store.set(currentAgentWorkspaceIdAtom, activeSession.workspaceId)
         }
       }
 
@@ -1220,9 +1169,7 @@ if (isQuickTaskWindow) {
       <MarkdownFontSizeInitializer />
       <UiScaleInitializer />
       <PluginSystemInitializer />
-      <ChatListenersInitializer />
       <AgentListenersInitializer />
-      <ChatToolInitializer />
       <UpdaterInitializer />
       <AutomationInitializer />
       <PlanningInitializer />

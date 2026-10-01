@@ -3,8 +3,9 @@
  *
  * 从 agent-orchestrator.ts 提取的纯函数，用于构建上下文注入和恢复 prompt。
  */
+import { join } from 'node:path'
 import { getAgentSessionSDKMessages, getAgentSessionMeta } from './agent-session-manager'
-import { getBundledCliPath, getConfigDirName } from './config-paths'
+import { getBundledCliPath, resolveConfigDir, toDisplayPath } from './config-paths'
 import type { SDKMessage, AgentSessionMeta } from '@profer/shared'
 
 /** 最大回填消息条数 */
@@ -76,11 +77,16 @@ export function buildContextPrompt(sessionId: string, currentUserMessage: string
   if (lines.length === 0) return currentUserMessage
 
   const sessionInfoBlock = sessionHint
-    ? `\n<session_info>\nSession ID: ${sessionId}\nSession CWD: ${sessionHint.agentCwd}\nNote: 上方为近期对话摘要。如需更多上下文，可读取 ~/${getConfigDirName()}/agent-sessions/${sessionId}.jsonl 获取完整历史。\n</session_info>\n`
+    ? `\n<session_info>\nSession ID: ${sessionId}\nSession CWD: ${sessionHint.agentCwd}\nNote: 上方为近期对话摘要。如需更多上下文，可读取 ${sessionHistoryDisplayPath(sessionId)} 获取完整历史。\n</session_info>\n`
     : ''
 
   console.log(`[Agent 编排] buildContextPrompt: 读取 ${allMessages.length} 条消息，注入 ${lines.length} 条历史${sessionHint ? '（含 session 元信息）' : ''}`)
   return `<conversation_history>${sessionInfoBlock}\n${lines.join('\n')}\n</conversation_history>\n\n${currentUserMessage}`
+}
+
+/** 会话历史文件展示路径：默认折叠为 ~/.cdutai[-dev]/...，PROFER_CONFIG_DIR 覆盖时给绝对路径。 */
+function sessionHistoryDisplayPath(sessionId: string): string {
+  return toDisplayPath(join(resolveConfigDir(), 'agent-sessions', `${sessionId}.jsonl`))
 }
 
 /**
@@ -93,7 +99,7 @@ export function buildRecoveryPrompt(
 ): string {
   const meta = getAgentSessionMeta(sessionId)
   const title = meta ? escapeContextAttr(meta.title) : sessionId
-  const historyPath = `~/${getConfigDirName()}/agent-sessions/${sessionId}.jsonl`
+  const historyPath = sessionHistoryDisplayPath(sessionId)
 
   const recoveryBlock =
     `<session_recovery>\n` +
@@ -139,7 +145,7 @@ export function buildReferencedSessionsPrompt(
     if (currentWorkspaceId && meta.workspaceId !== currentWorkspaceId) continue
 
     const title = escapeContextAttr(meta.title)
-    const historyPath = `~/${getConfigDirName()}/agent-sessions/${referencedSessionId}.jsonl`
+    const historyPath = sessionHistoryDisplayPath(referencedSessionId)
     const explorationBoundary = meta.explorationParentSessionId && meta.explorationSourceMessageId
       ? `\n<exploration_delta parentSessionId="${escapeContextAttr(meta.explorationParentSessionId)}" sourceMessageId="${escapeContextAttr(meta.explorationSourceMessageId)}">\n` +
         '此会话是从主线分叉的探索分支；用户引用的仅是 sourceMessageId 之后新增的探索内容。\n' +

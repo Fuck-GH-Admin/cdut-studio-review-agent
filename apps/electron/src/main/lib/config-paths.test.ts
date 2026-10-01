@@ -1,14 +1,16 @@
 import { afterEach, describe, expect, test } from 'bun:test'
 import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { homedir, tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import {
   __setBundledSkillsDirForTest,
   __setLegacyBundledSkillDirectoryHashesForTest,
   getConfigDir,
   getDefaultSkillsDir,
+  resolveConfigDir,
   seedDefaultSkills,
+  toDisplayPath,
 } from './config-paths'
 
 const roots: string[] = []
@@ -58,6 +60,24 @@ describe('getConfigDir', () => {
 
     expect(getConfigDir()).toBe(override)
     expect(existsSync(override)).toBe(true)
+  })
+
+  test('Given PROFER_CONFIG_DIR When resolving without side effects Then resolveConfigDir does not create the directory', () => {
+    const root = makeRoot()
+    const override = join(root, 'not-yet-created')
+    process.env.PROFER_CONFIG_DIR = override
+
+    expect(resolveConfigDir()).toBe(override)
+    expect(existsSync(override)).toBe(false)
+  })
+
+  test('Given paths under home When displaying Then toDisplayPath folds the home prefix', () => {
+    const home = homedir()
+    expect(toDisplayPath(join(home, '.cdutai', 'agent-sessions', 's1.jsonl')))
+      .toBe(`~/.cdutai/agent-sessions/s1.jsonl`)
+    expect(toDisplayPath(join('/tmp', 'profer-isolated', 'x.jsonl')))
+      .toBe(join('/tmp', 'profer-isolated', 'x.jsonl'))
+    expect(toDisplayPath(home)).toBe(home)
   })
 })
 

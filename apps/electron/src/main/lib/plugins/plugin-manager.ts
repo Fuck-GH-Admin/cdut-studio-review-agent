@@ -675,7 +675,7 @@ function installValidatedPackage(validated: ValidatedPluginPackage, replace = fa
 
 export function installPluginPackage(sourcePath: string, replace = false): ProferPluginOperationResult {
   if (!sourcePath || !isAbsolute(sourcePath) || !existsSync(sourcePath)) return fail('插件包路径不存在')
-  const temporary = mkdtempSync(join(tmpdir(), 'profer-plugin-'))
+  const temporary = mkdtempSync(join(tmpdir(), 'cdut-plugin-'))
   try {
     if (lstatSync(sourcePath).isSymbolicLink()) return fail('插件包路径不能是符号链接')
     const sourceStats = statSync(sourcePath)

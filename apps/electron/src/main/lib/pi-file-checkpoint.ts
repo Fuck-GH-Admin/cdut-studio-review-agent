@@ -54,7 +54,7 @@ import {
  */
 
 /** 永不进入的目录：无回退价值，且体积通常巨大或会自我递归。 */
-const NEVER_ENTER_DIRS = new Set(['.git', 'node_modules', '.profer-pi-checkpoints', '.claude'])
+const NEVER_ENTER_DIRS = new Set(['.git', 'node_modules', '.cdutai-pi-checkpoints', '.claude'])
 
 /**
  * 可再生成的构建/缓存目录：快照它们只会让基线体积失控。

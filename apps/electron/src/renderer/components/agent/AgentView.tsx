@@ -400,7 +400,6 @@ function AgentThinkingPopover({ agentThinking, onToggle, openAIConfig, sessionId
 }
 
 const AGENT_RUNTIME_OPTIONS: Array<{ value: AgentRuntime; label: string; description: string }> = [
-  { value: 'claude', label: 'Claude', description: '使用 Claude Agent SDK' },
   { value: 'pi', label: 'Pi', description: '使用 Pi Agent SDK' },
 ]
 
@@ -733,7 +732,7 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
   const runtimeSwitchInFlightRef = React.useRef(false)
   // 已加载会话以 metadata 为唯一真相来源；历史缺省 runtime 仍按 Claude 回退。
   const sessionAgentRuntime: AgentRuntime = sessionMeta
-    ? sessionMeta.agentRuntime ?? 'claude'
+    ? sessionMeta.agentRuntime ?? 'pi'
     : agentRuntime
   // 当前 Pi 模型的推理档位能力（异步桥接，供思考档位菜单动态展示）。
   const [piReasoningCapability, setPiReasoningCapability] = React.useState<import('@profer/shared').ReasoningCapability | undefined>(undefined)

@@ -948,9 +948,9 @@ export interface ElectronAPI {
   getWorkspaceMemorySummary: (workspaceSlug: string) => Promise<WorkspaceMemorySummary>
   /** 获取工作区每日 Token 消耗，用于热力图展示。团队工作区返回空数组 */
   getWorkspaceHeatmapDaily: (workspaceId: string) => Promise<Array<{ date: string; tokens: number }>>
-  /** 读取 Profer 工作区资料 */
+  /** 读取 CDUT Studio 工作区资料 */
   readWorkspaceProfile: (workspaceSlug: string) => Promise<SkillFileContent>
-  /** 写入 Profer 工作区资料 */
+  /** 写入 CDUT Studio 工作区资料 */
   writeWorkspaceProfile: (workspaceSlug: string, content: string) => Promise<void>
   /** 列出工作区 auto memory 文件树 */
   listWorkspaceAutoMemoryFiles: (workspaceSlug: string) => Promise<SkillFileNode[]>
@@ -1124,7 +1124,7 @@ export interface ElectronAPI {
   /** 写入文本文件（供 Markdown 内联编辑使用） */
   writeTextFile: (filePath: string, content: string, access?: import('@profer/shared').FileAccessOptions) => Promise<boolean>
 
-  /** 仅解析文件路径（供 PDF/图片等用 profer-file:// 加载） */
+  /** 仅解析文件路径（供 PDF/图片等用 cdut-file:// 加载） */
   resolveFilePath: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<import('@profer/shared').ResolvedFileUrl | null>
 
   /** 在当前 Agent 会话授权范围内异步搜索一个同名候选。 */
@@ -1135,7 +1135,7 @@ export interface ElectronAPI {
   /** 解析 HTML 预览路径，并授权加载同目录的相对资源 */
   resolveHtmlPreviewPath: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<import('@profer/shared').ResolvedFileUrl | null>
 
-  /** 注册文件路径到 profer-file:// 协议（不做路径校验，供团队文件预览） */
+  /** 注册文件路径到 cdut-file:// 协议（不做路径校验，供团队文件预览） */
   registerPreviewPath: (filePath: string) => Promise<string | null>
 
   /** 为内联 PDF 预览生成临时 HTML 文件，返回文件路径 */

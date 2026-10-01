@@ -69,7 +69,7 @@ describe('AgentOrchestrator P0 guards', () => {
 
   test('Given Pi interrupt queue When deciding pre-interrupt Then reserve-and-abort stays inside Pi adapter', () => {
     expect(shouldPreInterruptQueuedMessage('pi', true)).toBe(false)
-    expect(shouldPreInterruptQueuedMessage('claude', true)).toBe(true)
+    expect(shouldPreInterruptQueuedMessage('pi', true)).toBe(true)
     expect(shouldPreInterruptQueuedMessage('pi', false)).toBe(false)
   })
 
@@ -173,7 +173,7 @@ describe('xAI Agent 预检', () => {
     provider: 'xai' as const,
     enabled: true,
     agentExperimentalEnabled: true,
-    agentRuntimes: ['pi'] as Array<'pi' | 'claude'>,
+    agentRuntimes: ['pi'] as Array<'pi'>,
   }
 
   test('Given xAI 渠道已开启实验开关并勾选 Pi 内核 When Pi 运行时预检 Then 放行', () => {
@@ -192,7 +192,7 @@ describe('xAI Agent 预检', () => {
   })
 
   test('Given xAI 渠道 When Claude 运行时预检 Then 拦截（xAI 无 Anthropic 端点）', () => {
-    expect(isXaiChannelAvailableForRuntime(xaiChannel, 'claude')).toBe(false)
+    expect(isXaiChannelAvailableForRuntime(xaiChannel, 'pi')).toBe(false)
   })
 
   test('Given 非 xAI 渠道 When 预检 Then 交给各自 provider 门禁，不在此拦截', () => {
@@ -202,7 +202,7 @@ describe('xAI Agent 预检', () => {
     )).toBe(true)
     expect(isXaiChannelAvailableForRuntime(
       { provider: 'deepseek', enabled: true, agentExperimentalEnabled: false, agentRuntimes: ['pi'] },
-      'claude',
+      'pi',
     )).toBe(true)
   })
 

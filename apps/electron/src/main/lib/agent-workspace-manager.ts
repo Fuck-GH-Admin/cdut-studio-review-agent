@@ -1012,7 +1012,7 @@ export function writeWorkspaceSkillContent(workspaceSlug: string, skillSlug: str
 const WORKSPACE_PROFILE_FILE = 'workspace-profile.md'
 /** 历史版本曾把 Profer 工作区资料写成 CLAUDE.md，仅用于兼容读取。 */
 const LEGACY_WORKSPACE_PROFILE_FILE = 'CLAUDE.md'
-const PROFER_MEMORY_DIR = '.profer/memory'
+const PROFER_MEMORY_DIR = '.cdutai/memory'
 /** 旧版本使用 Claude 命名空间保存 Profer 工作区记忆，仅用于兼容迁移。 */
 const LEGACY_PROFER_MEMORY_DIR = '.claude/memory'
 const AUTO_MEMORY_INDEX = 'MEMORY.md'
@@ -1055,7 +1055,7 @@ function getLegacyWorkspaceAutoMemoryPath(workspaceSlug: string): string {
 }
 
 /**
- * 将旧 `.claude/memory` 中尚未出现在新目录的文件复制到 `.profer/memory`。
+ * 将旧 `.claude/memory` 中尚未出现在新目录的文件复制到 `.cdutai/memory`。
  * 保留旧目录作为人工回滚/审计副本，不覆盖新目录中已经存在的文件。
  */
 function mergeLegacyMemoryEntries(sourceDir: string, targetDir: string): void {

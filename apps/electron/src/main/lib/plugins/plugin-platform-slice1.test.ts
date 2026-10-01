@@ -36,7 +36,7 @@ function installPriorityPlugin(): void {
   const source = join(fixtureRoot, 'source')
   mkdirSync(join(source, 'dist'), { recursive: true })
   writeFileSync(join(source, 'dist', 'index.html'), '<!doctype html><title>Priority</title>', 'utf8')
-  writeFileSync(join(source, 'profer-plugin.json'), JSON.stringify({
+  writeFileSync(join(source, 'cdut-plugin.json'), JSON.stringify({
     schemaVersion: 1, id: pluginId, name: 'Priority Plugin', version: '1.0.0', permissions: ['workspace.read'],
     contributes: { pages: [{ id: 'main', title: 'Main', entry: 'dist/index.html' }] },
   }), 'utf8')
@@ -51,7 +51,7 @@ function grantPriorityPlugin(): void {
 }
 
 beforeEach(() => {
-  fixtureRoot = mkdtempSync(join(tmpdir(), 'profer-plugin-priority-'))
+  fixtureRoot = mkdtempSync(join(tmpdir(), 'cdut-plugin-priority-'))
   process.env.PROFER_CONFIG_DIR = join(fixtureRoot, 'config')
 })
 
@@ -139,7 +139,7 @@ test('直接 host handler 在 provider 缺失时保持生命周期和权限错�
   const missingPermissionRoot = join(fixtureRoot, 'missing-permission')
   mkdirSync(join(missingPermissionRoot, 'dist'), { recursive: true })
   writeFileSync(join(missingPermissionRoot, 'dist', 'index.html'), '<!doctype html>', 'utf8')
-  writeFileSync(join(missingPermissionRoot, 'profer-plugin.json'), JSON.stringify({
+  writeFileSync(join(missingPermissionRoot, 'cdut-plugin.json'), JSON.stringify({
     schemaVersion: 1, id: 'com.example.missing-permission', name: 'Missing Permission', version: '1.0.0', permissions: ['workspace.read'],
     contributes: { pages: [{ id: 'main', title: 'Main', entry: 'dist/index.html' }] },
   }), 'utf8')

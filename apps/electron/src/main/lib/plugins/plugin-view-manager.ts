@@ -83,7 +83,7 @@ export class PluginViewManager {
     const { page } = resolvePluginPage(pluginId, pageId)
     // 协议 handler 与会话守卫由共享注册保证（悬浮窗口可能先于主窗口页面创建）。
     ensurePluginSession(pluginId)
-    const partition = `profer-plugin-${pluginId}`
+    const partition = `cdut-plugin-${pluginId}`
 
     const hostView = new View()
     const pageView = new WebContentsView({
@@ -124,7 +124,7 @@ export class PluginViewManager {
     const allowPluginNavigation = (event: Electron.Event, url: string): void => {
       try {
         const parsed = new URL(url)
-        if (parsed.protocol === 'profer-plugin:' && parsed.hostname === pluginId) return
+        if (parsed.protocol === 'cdut-plugin:' && parsed.hostname === pluginId) return
       } catch { /* 非法 URL 一律拒绝 */ }
       event.preventDefault()
     }
@@ -148,7 +148,7 @@ export class PluginViewManager {
       this.webContentsOwners.delete(record.webContentsId)
       if (this.views.get(key) === record) this.disposeRecord(record)
     })
-    void pageView.webContents.loadURL(`profer-plugin://${pluginId}/${page.entry}`).catch((error) => {
+    void pageView.webContents.loadURL(`cdut-plugin://${pluginId}/${page.entry}`).catch((error) => {
       console.error(`[插件] 页面加载失败 ${pluginId}/${pageId}:`, error)
     })
     return record

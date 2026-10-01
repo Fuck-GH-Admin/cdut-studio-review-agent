@@ -40,12 +40,12 @@ describe('resolveAgentSystemPromptPolicy', () => {
       openEpistemicModeEnabled: true,
     })
 
-    expect(resolveAgentRuntimeSystemPrompt('claude', grounded, 'PROMPT')).toEqual({
+    expect(resolveAgentRuntimeSystemPrompt('pi', grounded, 'PROMPT')).toEqual({
       type: 'preset',
       preset: 'claude_code',
       append: 'PROMPT',
     })
-    expect(resolveAgentRuntimeSystemPrompt('claude', open, 'PROMPT')).toBe('PROMPT')
+    expect(resolveAgentRuntimeSystemPrompt('pi', open, 'PROMPT')).toBe('PROMPT')
     expect(resolveAgentRuntimeSystemPrompt('pi', grounded, 'PROMPT')).toBe('PROMPT')
     expect(resolveAgentRuntimeSystemPrompt('pi', open, 'PROMPT')).toBe('PROMPT')
   })

@@ -19,7 +19,7 @@ describe('探索分支引用', () => {
   })
 
   test('Given 主线 Claude 会话 When 解析分叉动作可用性 Then 仍可分叉但不提供探索', () => {
-    expect(resolveForkActionAvailability({ isBranch: false, agentRuntime: 'claude' }))
+    expect(resolveForkActionAvailability({ isBranch: false, agentRuntime: 'pi' }))
       .toEqual({ canFork: true, canExplore: false })
   })
 

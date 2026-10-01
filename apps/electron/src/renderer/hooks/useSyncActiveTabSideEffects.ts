@@ -53,8 +53,9 @@ export function useSyncActiveTabSideEffects(): SyncActiveTabSideEffects {
       }
 
       if (newActiveTab.type === 'chat') {
-        setAppMode('chat')
-        setCurrentConversationId(newActiveTab.sessionId)
+        // 兼容旧状态：Chat Tab 不再进入 Chat 页面，直接回到 Scratch Pad。
+        setAppMode('scratch')
+        setCurrentConversationId(null)
         setCurrentAgentSessionId(null)
         return
       }

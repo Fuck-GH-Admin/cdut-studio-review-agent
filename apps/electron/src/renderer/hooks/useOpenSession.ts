@@ -48,6 +48,11 @@ export function useOpenSession(): OpenSessionFn {
 
   return React.useCallback(
     (type: TabType, sessionId: string, title: string, parentSessionId?: string): void => {
+      if (type === 'chat') {
+        // Chat 入口已移除，兼容旧调用但不再创建 Chat Tab。
+        return
+      }
+
       const knownSession = type === 'agent' || type === 'preview'
         ? agentSessions.find((session) => session.id === sessionId)
         : undefined
@@ -69,16 +74,13 @@ export function useOpenSession(): OpenSessionFn {
       })
       setTabs(result.tabs)
       setActiveTabId(result.activeTabId)
-      if (type === 'chat' || type === 'agent' || type === 'preview') {
+      if (type === 'agent' || type === 'preview') {
         setTabMru((previous) => promoteMru(previous, sessionId))
       }
       setAutomationForm({ open: false, draft: null })
       setActiveView('conversations')
 
-      if (type === 'chat') {
-        setAppMode('chat')
-        setCurrentConversationId(sessionId)
-      } else if (type === 'agent' || type === 'preview') {
+      if (type === 'agent' || type === 'preview') {
         setAppMode('agent')
         setCurrentAgentSessionId(sessionId)
 

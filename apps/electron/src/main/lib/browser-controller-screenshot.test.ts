@@ -20,7 +20,7 @@ function harness(capturePage: () => Promise<unknown>) {
       webContents: { capturePage },
       setVisible: () => undefined,
     },
-    state: { url: 'profer-file://plugin/index.html', title: '', trace: [] as unknown[], visible: true },
+    state: { url: 'cdut-file://plugin/index.html', title: '', trace: [] as unknown[], visible: true },
   }
   const browserSession = {
     sessionId: 'session-1',
@@ -68,5 +68,5 @@ test('正常截图仍返回 base64', async () => {
   const result = await controller.screenshot('session-1')
   expect(result.base64).toBe(png.toString('base64'))
   expect(result.mimeType).toBe('image/png')
-  expect(result.url).toBe('profer-file://plugin/index.html')
+  expect(result.url).toBe('cdut-file://plugin/index.html')
 })

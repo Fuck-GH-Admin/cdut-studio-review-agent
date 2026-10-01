@@ -29,7 +29,7 @@ function harness(options: { isLocalPreview: boolean; localFilePath: string | nul
     isLocalPreview: options.isLocalPreview,
     localFilePath: options.localFilePath,
     lastActivityAt: 0,
-    state: { url: 'profer-file://token', trace: [] as unknown[] },
+    state: { url: 'cdut-file://token', trace: [] as unknown[] },
   }
   const browserSession = {
     sessionId: 'session-1',

@@ -31,10 +31,10 @@ function pool(overrides: Partial<Channel> = {}): Pick<Channel, 'id' | 'name' | '
 describe('渠道的 Agent 内核勾选', () => {
   // 迁移必须与升级前行为等价，否则老用户会静默丢能力。
   test('Given 老配置没有勾选字段 When 推导内核 Then 与迁移前的门禁等价', () => {
-    expect(inferAgentRuntimeModes({ provider: 'deepseek' })).toEqual(['pi', 'claude'])
-    expect(inferAgentRuntimeModes({ provider: 'anthropic' })).toEqual(['pi', 'claude'])
-    expect(inferAgentRuntimeModes({ provider: 'anthropic-compatible' })).toEqual(['pi', 'claude'])
-    expect(inferAgentRuntimeModes({ provider: 'ollama' })).toEqual(['pi', 'claude'])
+    expect(inferAgentRuntimeModes({ provider: 'deepseek' })).toEqual(['pi'])
+    expect(inferAgentRuntimeModes({ provider: 'anthropic' })).toEqual(['pi'])
+    expect(inferAgentRuntimeModes({ provider: 'anthropic-compatible' })).toEqual(['pi'])
+    expect(inferAgentRuntimeModes({ provider: 'ollama' })).toEqual(['pi'])
     // 非白名单类型历史上只能用 Pi
     expect(inferAgentRuntimeModes({ provider: 'custom' })).toEqual(['pi'])
     expect(inferAgentRuntimeModes({ provider: 'zhipu' })).toEqual(['pi'])
@@ -44,37 +44,37 @@ describe('渠道的 Agent 内核勾选', () => {
   })
 
   test('Given 用户勾选内核 When 判定可用性 Then 以勾选为准而不是渠道类型', () => {
-    const both = ch({ provider: 'custom', agentRuntimes: ['pi', 'claude'] })
+    const both = ch({ provider: 'custom', agentRuntimes: ['pi'] })
     expect(isChannelEnabledForRuntime(both, 'pi')).toBe(true)
     // 关键回归：custom 勾了 claude 就能用于 Claude，不再被类型门禁拦住
-    expect(isChannelEnabledForRuntime(both, 'claude')).toBe(true)
+    expect(isChannelEnabledForRuntime(both, 'pi')).toBe(true)
 
     const onlyPi = ch({ provider: 'custom', agentRuntimes: ['pi'] })
     expect(isChannelEnabledForRuntime(onlyPi, 'pi')).toBe(true)
-    expect(isChannelEnabledForRuntime(onlyPi, 'claude')).toBe(false)
+    expect(isChannelEnabledForRuntime(onlyPi, 'pi')).toBe(false)
 
     // 反向：Anthropic 类型也可以只勾 Pi
     const anthropicOnlyPi = ch({ provider: 'anthropic', agentRuntimes: ['pi'] })
-    expect(isChannelEnabledForRuntime(anthropicOnlyPi, 'claude')).toBe(false)
+    expect(isChannelEnabledForRuntime(anthropicOnlyPi, 'pi')).toBe(false)
   })
 
   test('Given 渠道未启用 When 判定 Then 两个内核都不可用', () => {
-    const disabled = ch({ provider: 'deepseek', enabled: false, agentRuntimes: ['pi', 'claude'] })
+    const disabled = ch({ provider: 'deepseek', enabled: false, agentRuntimes: ['pi'] })
     expect(isChannelEnabledForRuntime(disabled, 'pi')).toBe(false)
-    expect(isChannelEnabledForRuntime(disabled, 'claude')).toBe(false)
+    expect(isChannelEnabledForRuntime(disabled, 'pi')).toBe(false)
   })
 
   test('Given 老配置无勾选字段 When 判定 Then 回退到 provider 推导', () => {
-    expect(isChannelEnabledForRuntime(ch({ provider: 'custom' }), 'claude')).toBe(false)
+    expect(isChannelEnabledForRuntime(ch({ provider: 'custom' }), 'pi')).toBe(false)
     expect(isChannelEnabledForRuntime(ch({ provider: 'custom' }), 'pi')).toBe(true)
-    expect(isChannelEnabledForRuntime(ch({ provider: 'deepseek' }), 'claude')).toBe(true)
+    expect(isChannelEnabledForRuntime(ch({ provider: 'deepseek' }), 'pi')).toBe(true)
   })
 })
 
 describe('运行时的渠道协议过滤', () => {
   test('Given 勾选了 Claude 的 custom 渠道 When 按 anthropic 过滤 Then 放行', () => {
-    expect(supportsChannelProtocol(ch({ provider: 'custom', agentRuntimes: ['pi', 'claude'] }), 'anthropic')).toBe(true)
-    expect(supportsChannelProtocol(ch({ provider: 'custom', agentRuntimes: ['pi', 'claude'] }), 'openai')).toBe(true)
+    expect(supportsChannelProtocol(ch({ provider: 'custom', agentRuntimes: ['pi'] }), 'anthropic')).toBe(true)
+    expect(supportsChannelProtocol(ch({ provider: 'custom', agentRuntimes: ['pi'] }), 'openai')).toBe(true)
   })
 
   test('Given 只勾了 Pi When 按 anthropic 过滤 Then 拦截', () => {
@@ -164,7 +164,7 @@ describe('渠道列表的 Pi 内核标签', () => {
       provider: 'xai' as const,
       enabled: true,
       agentExperimentalEnabled: true,
-      agentRuntimes: ['pi'] as Array<'pi' | 'claude'>,
+      agentRuntimes: ['pi'] as Array<'pi'>,
     }
     expect(isAgentEnabledForChannel(xai)).toBe(false)
     expect(resolvePiCoreState(xai)).toBe('experimental-active')

@@ -1,5 +1,5 @@
 /**
- * IntroWaterRipple — Profer 开屏遮罩与品牌铭牌。
+ * IntroWaterRipple — CDUT Studio 开屏遮罩与品牌铭牌。
  * 背景 GPU 液态玻璃渲染见 IntroFluidBackground.tsx。
  */
 
@@ -98,9 +98,9 @@ export function IntroWaterRipple({ onDone, durationMs = 5000 }: {
           textRendering: 'geometricPrecision',
           pointerEvents: 'none',
         }}
-        aria-label="Profer"
+        aria-label="CDUT Studio"
       >
-        Profer
+        CDUT Studio
       </h1>
       <span className="absolute bottom-[8%] z-10 font-mono text-[10px] uppercase tracking-[0.32em] text-white/30" aria-hidden="true">
         Click to skip

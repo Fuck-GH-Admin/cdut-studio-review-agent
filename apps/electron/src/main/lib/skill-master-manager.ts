@@ -1,12 +1,12 @@
 /**
  * 全局元 Skill（Master）库管理器 + 工作区同步
  *
- * 把 ~/.profer/default-skills/ 从「随应用版本同步的种子模板」升级为
+ * 把 ~/.cdutai/default-skills/ 从「随应用版本同步的种子模板」升级为
  * 「用户可编辑、带版本历史、可回退」的元 Skill 库。
  *
- * - 当前内容：~/.profer/default-skills/{slug}/（唯一编辑源，用户修改直接落盘）
- * - 历史快照：~/.profer/default-skills-history/{slug}/v{n}/（v1 为出厂基线；或首次保存）
- * - 版本索引：~/.profer/default-skills-history/{slug}/index.json
+ * - 当前内容：~/.cdutai/default-skills/{slug}/（唯一编辑源，用户修改直接落盘）
+ * - 历史快照：~/.cdutai/default-skills-history/{slug}/v{n}/（v1 为出厂基线；或首次保存）
+ * - 版本索引：~/.cdutai/default-skills-history/{slug}/index.json
  *
  * 同步模型：
  * - 元 skill 是「唯一编辑源」，工作区里的是副本。
@@ -23,7 +23,7 @@ import { normalizeDefaultSkillSlug } from './default-skill-slugs'
 import type { MasterSkillMeta, MasterSkillVersion, SyncSkillResult, SkillConflict, SkillImportSource } from '@profer/shared'
 
 // ============================================================
-// 测试替身：允许测试把真实 ~/.profer 路径替换成临时目录
+// 测试替身：允许测试把真实 ~/.cdutai 路径替换成临时目录
 // ============================================================
 
 let testRootOverride: { masterSkillsDir: string; workspacesDir: string } | null = null

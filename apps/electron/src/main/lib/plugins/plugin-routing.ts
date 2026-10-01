@@ -50,7 +50,7 @@ export function matchesRoutingTime(rule: ProferPluginRoutingRule, now: Date): bo
   return start === end || (start < end ? minutes >= start && minutes < end : minutes >= start || minutes < end)
 }
 /** 每轮只调用一次；失败保留用户原先选择，绝不在工具循环中更换模型。 */
-export function routePluginModel<T extends { channelId: string; modelId?: string }>(key: string, input: T, runtime: 'claude' | 'pi' = 'claude'): T {
+export function routePluginModel<T extends { channelId: string; modelId?: string }>(key: string, input: T, runtime: 'pi' = 'pi'): T {
   try {
     const file = read(), state = file.sessions[key]
     if (!state?.pluginId) return input

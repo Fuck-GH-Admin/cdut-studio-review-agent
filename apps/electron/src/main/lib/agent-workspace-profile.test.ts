@@ -50,15 +50,15 @@ describe('Profer workspace profile', () => {
     expect(getWorkspaceMemorySummary(workspace.slug).workspaceProfile.path).toBe(profilePath)
   })
 
-  test('旧版 .claude/memory 会复制到新的 .profer/memory，旧目录保留', () => {
+  test('旧版 .claude/memory 会复制到新的 .cdutai/memory，旧目录保留', () => {
     const workspace = createAgentWorkspace('Memory Compatibility')
     const workspaceRoot = join(configRoot, 'agent-workspaces', workspace.slug)
     const legacyMemoryPath = join(workspaceRoot, '.claude', 'memory', 'MEMORY.md')
-    const newMemoryPath = join(workspaceRoot, '.profer', 'memory', 'MEMORY.md')
+    const newMemoryPath = join(workspaceRoot, '.cdutai', 'memory', 'MEMORY.md')
     mkdirSync(join(workspaceRoot, '.claude', 'memory'), { recursive: true })
     writeFileSync(legacyMemoryPath, '# legacy memory\n', 'utf-8')
 
-    expect(getWorkspaceAutoMemoryDir(workspace.slug)).toBe(join(workspaceRoot, '.profer', 'memory'))
+    expect(getWorkspaceAutoMemoryDir(workspace.slug)).toBe(join(workspaceRoot, '.cdutai', 'memory'))
     expect(readFileSync(newMemoryPath, 'utf-8')).toBe('# legacy memory\n')
     expect(readFileSync(legacyMemoryPath, 'utf-8')).toBe('# legacy memory\n')
   })

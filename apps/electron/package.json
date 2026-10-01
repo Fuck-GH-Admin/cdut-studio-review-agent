@@ -1,7 +1,7 @@
 {
   "name": "@profer/electron",
   "version": "0.15.88",
-  "description": "Profer",
+  "description": "CDUT Studio",
   "main": "dist/main.cjs",
   "author": "Profer Team",
   "private": true,
@@ -13,14 +13,14 @@
     "dev:vite": "bun run build:ooxml && vite dev",
     "dev:kill": "bun run scripts/dev-kill.ts",
     "dev:electron": "bun run dev:kill && bun run build:main && bun run build:preload && bun run build:resources && bun run scripts/sleep.ts 2 && concurrently -k -n main,preload,app -c yellow,magenta,cyan \"bun run watch:main\" \"bun run watch:preload\" \"bunx electron .\"",
-    "build:main": "esbuild src/main/index.ts --bundle --platform=node --format=cjs --outfile=dist/main.cjs --external:electron --external:@anthropic-ai/claude-agent-sdk --external:@earendil-works/pi-coding-agent --external:@earendil-works/pi-agent-core --external:@earendil-works/pi-ai --define:__PROFER_BUILD_TARGET__='\"oss\"' --minify-whitespace --minify-identifiers",
+    "build:main": "esbuild src/main/index.ts --bundle --platform=node --format=cjs --outfile=dist/main.cjs --external:electron --external:@earendil-works/pi-coding-agent --external:@earendil-works/pi-agent-core --external:@earendil-works/pi-ai --define:__PROFER_BUILD_TARGET__='\"oss\"' --minify-whitespace --minify-identifiers",
     "build:main-github": "bun run build:main",
-    "build:main-commercial": "esbuild src/main/index.ts --bundle --platform=node --format=cjs --outfile=dist/main.cjs --external:electron --external:@anthropic-ai/claude-agent-sdk --external:@earendil-works/pi-coding-agent --external:@earendil-works/pi-agent-core --external:@earendil-works/pi-ai --define:__PROFER_BUILD_TARGET__='\"commercial\"' --minify-whitespace --minify-identifiers",
+    "build:main-commercial": "esbuild src/main/index.ts --bundle --platform=node --format=cjs --outfile=dist/main.cjs --external:electron --external:@earendil-works/pi-coding-agent --external:@earendil-works/pi-agent-core --external:@earendil-works/pi-ai --define:__PROFER_BUILD_TARGET__='\"commercial\"' --minify-whitespace --minify-identifiers",
     "build:preload": "bun run build:app-preload && bun run build:plugin-preload",
     "build:app-preload": "esbuild src/preload/index.ts --bundle --platform=node --format=cjs --outfile=dist/preload.cjs --external:electron",
     "build:plugin-preload": "esbuild src/plugin-preload/index.ts --bundle --platform=node --format=cjs --outfile=dist/plugin-preload.cjs --external:electron",
-    "watch:main": "esbuild src/main/index.ts --bundle --platform=node --format=cjs --outfile=dist/main.cjs --external:electron --external:@anthropic-ai/claude-agent-sdk --external:@earendil-works/pi-coding-agent --external:@earendil-works/pi-agent-core --external:@earendil-works/pi-ai --define:__PROFER_BUILD_TARGET__='\"oss\"' --watch=forever",
-    "watch:main-commercial": "esbuild src/main/index.ts --bundle --platform=node --format=cjs --outfile=dist/main.cjs --external:electron --external:@anthropic-ai/claude-agent-sdk --external:@earendil-works/pi-coding-agent --external:@earendil-works/pi-agent-core --external:@earendil-works/pi-ai --define:__PROFER_BUILD_TARGET__='\"commercial\"' --watch=forever",
+    "watch:main": "esbuild src/main/index.ts --bundle --platform=node --format=cjs --outfile=dist/main.cjs --external:electron --external:@earendil-works/pi-coding-agent --external:@earendil-works/pi-agent-core --external:@earendil-works/pi-ai --define:__PROFER_BUILD_TARGET__='\"oss\"' --watch=forever",
+    "watch:main-commercial": "esbuild src/main/index.ts --bundle --platform=node --format=cjs --outfile=dist/main.cjs --external:electron --external:@earendil-works/pi-coding-agent --external:@earendil-works/pi-agent-core --external:@earendil-works/pi-ai --define:__PROFER_BUILD_TARGET__='\"commercial\"' --watch=forever",
     "watch:preload": "concurrently -k -n app-preload,plugin-preload -c magenta,blue \"esbuild src/preload/index.ts --bundle --platform=node --format=cjs --outfile=dist/preload.cjs --external:electron --watch=forever\" \"esbuild src/plugin-preload/index.ts --bundle --platform=node --format=cjs --outfile=dist/plugin-preload.cjs --external:electron --watch=forever\"",
     "build:renderer": "bun run build:ooxml && vite build",
     "build:resources": "bun run scripts/copy-resources.ts",
@@ -66,7 +66,6 @@
     "test:plugins:rpc-smoke": "bun run scripts/run-plugin-rpc-smoke.ts"
   },
   "dependencies": {
-    "@anthropic-ai/claude-agent-sdk": "0.3.201",
     "@anthropic-ai/sdk": "^0.93.0",
     "@earendil-works/pi-agent-core": "0.86.1",
     "@earendil-works/pi-ai": "0.86.1",
@@ -76,12 +75,7 @@
     "pdfjs-dist": "^4.10.38",
     "pptxgenjs": "4.0.1"
   },
-  "optionalDependencies": {
-    "@anthropic-ai/claude-agent-sdk-darwin-arm64": "0.3.201",
-    "@anthropic-ai/claude-agent-sdk-darwin-x64": "0.3.201",
-    "@anthropic-ai/claude-agent-sdk-win32-x64": "0.3.201",
-    "@anthropic-ai/claude-agent-sdk-win32-arm64": "0.3.201"
-  },
+  "optionalDependencies": {},
   "devDependencies": {
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",

@@ -44,12 +44,12 @@ describe('Pi WSL Bash', () => {
   test('Given a deleted session cwd When starting Bash Then recreates the directory before spawn', () => {
     const created: string[] = []
     ensureBashWorkingDirectory(
-      '/Users/alice/.profer/session-1',
+      '/Users/alice/.cdutai/session-1',
       () => false,
       (path) => { created.push(path) },
     )
 
-    expect(created).toEqual(['/Users/alice/.profer/session-1'])
+    expect(created).toEqual(['/Users/alice/.cdutai/session-1'])
   })
 
   test('Given an empty cwd When starting Bash Then fails with a path-specific error', () => {

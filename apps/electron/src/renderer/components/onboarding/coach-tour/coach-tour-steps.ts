@@ -105,7 +105,7 @@ export const COACH_TOUR_STEPS: CoachTourStep[] = [
   {
     key: 'outro',
     title: '开始你的第一个任务',
-    body: '最能感受 Profer 的起点：切到 Agent 模式，让它「分析工作区里的一个文件并给出结论」，观察它如何自己规划和执行。这段引导随时可以从顶栏指南针按钮或设置里重播。',
+    body: '最能感受 CDUT Studio 的起点：切到 Agent 模式，让它「分析工作区里的一个文件并给出结论」，观察它如何自己规划和执行。这段引导随时可以从顶栏指南针按钮或设置里重播。',
     selectors: [],
     placement: 'auto',
   },

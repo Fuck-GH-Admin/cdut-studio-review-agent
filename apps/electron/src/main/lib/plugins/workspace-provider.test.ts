@@ -21,11 +21,11 @@ const permissions = await import('./plugin-permissions')
 
 afterEach(() => { configureWorkspaceProvider(undefined); delete process.env.PROFER_CONFIG_DIR; rmSync(root, { recursive: true, force: true }) })
 beforeEach(async () => {
-  root = mkdtempSync(join(tmpdir(), 'profer-plugin-provider-'))
+  root = mkdtempSync(join(tmpdir(), 'cdut-plugin-provider-'))
   process.env.PROFER_CONFIG_DIR = join(root, 'config')
   const source = join(root, 'plugin'); mkdirSync(join(source, 'dist'), { recursive: true })
   writeFileSync(join(source, 'dist', 'index.html'), '<!doctype html>')
-  writeFileSync(join(source, 'profer-plugin.json'), JSON.stringify({ schemaVersion: 1, id: pluginId, name: 'Workspace editor', version: '1.0.0', permissions: ['workspace.read', 'workspace.files.read', 'workspace.files.write'], workspaceScopes: [{ workspaceId, prefixes: ['notes'] }], contributes: { pages: [{ id: 'main', title: 'Main', entry: 'dist/index.html' }] } }))
+  writeFileSync(join(source, 'cdut-plugin.json'), JSON.stringify({ schemaVersion: 1, id: pluginId, name: 'Workspace editor', version: '1.0.0', permissions: ['workspace.read', 'workspace.files.read', 'workspace.files.write'], workspaceScopes: [{ workspaceId, prefixes: ['notes'] }], contributes: { pages: [{ id: 'main', title: 'Main', entry: 'dist/index.html' }] } }))
   expect(manager.installPluginPackage(source).ok).toBe(true)
   expect(await permissions.authorizePlugin(pluginId)).toBe(true)
   mkdirSync(join(root, 'workspace', 'notes'), { recursive: true })

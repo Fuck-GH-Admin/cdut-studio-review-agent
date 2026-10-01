@@ -2,7 +2,7 @@
  * 配置路径工具
  *
  * 管理 Profer 应用的本地配置文件路径。
- * 所有用户配置存储在 ~/.profer/ 目录下。
+ * 所有用户配置存储在 ~/.cdutai/ 目录下。
  */
 
 import { join, basename, resolve, sep, relative } from 'node:path'
@@ -20,65 +20,66 @@ export const VITE_DEV_SERVER_URL = `http://localhost:${VITE_DEV_SERVER_PORT}`
 /**
  * 获取默认配置目录名称
  *
- * 开发模式下返回 '.profer-dev'，正式版本返回 '.profer'。
+ * 开发模式下返回 '.cdutai-dev'，正式版本返回 '.cdutai'。
  * 受控运行可通过 PROFER_CONFIG_DIR 覆盖实际配置根；该覆盖不改变默认名称。
  *
  * 检测优先级：
  * 1. PROFER_DEV=1 环境变量（显式覆盖）
  * 2. Electron app.isPackaged（未打包 = 开发模式）
- * 3. 兜底 '.profer'
+ * 3. 兜底 '.cdutai'
  */
 let _configDirName: string | undefined
 
 export function getConfigDirName(): string {
   if (_configDirName === undefined) {
     if (process.env.PROFER_DEV === '1') {
-      _configDirName = '.profer-dev'
+      _configDirName = '.cdutai-dev'
     } else {
       try {
         const { app } = require('electron')
-        _configDirName = app.isPackaged ? '.profer' : '.profer-dev'
+        _configDirName = app.isPackaged ? '.cdutai' : '.cdutai-dev'
       } catch {
-        _configDirName = '.profer'
+        _configDirName = '.cdutai'
       }
     }
-    const mode = _configDirName === '.profer-dev' ? '开发模式' : '正式版本'
+    const mode = _configDirName === '.cdutai-dev' ? '开发模式' : '正式版本'
     console.log(`[配置] 默认配置目录名: ~/${_configDirName}/（${mode}）；实际路径可由 PROFER_CONFIG_DIR 覆盖`)
   }
   return _configDirName
 }
 
 /**
- * 从旧 Proma 目录迁移到新 Profer 目录（一次性）
- * 如果 ~/.profer/ 或 ~/.profer-dev/ 不存在但对应的旧目录存在，则重命名迁移
+ * 解析配置目录路径（纯解析，不创建目录、不迁移）
+ *
+ * 所有需要配置根路径的场景统一走这里，保证 PROFER_CONFIG_DIR 覆盖机制贯通；
+ * 展示用途可用 toDisplayPath() 折叠回 ~/ 前缀。
  */
-export function migrateFromProferIfNeeded(): void {
-  try {
-    const name = getConfigDirName()
-    const newDir = join(homedir(), name)
-    const oldName = name.replace('profer', 'proma')
-    const oldDir = join(homedir(), oldName)
-
-    if (!existsSync(newDir) && existsSync(oldDir)) {
-      console.log(`[迁移] 从 ~/${oldName}/ 迁移到 ~/${name}/`)
-      renameSync(oldDir, newDir)
-      console.log('[迁移] 数据迁移完成')
-    }
-  } catch (err) {
-    console.error('[迁移] 数据迁移失败（不影响使用）:', err)
-  }
+export function resolveConfigDir(): string {
+  const override = process.env.PROFER_CONFIG_DIR?.trim()
+  return override ? resolve(override) : join(homedir(), getConfigDirName())
 }
+
+/** 把绝对路径折叠为 ~/ 前缀的展示形式；不在用户主目录下则原样返回。 */
+export function toDisplayPath(absolutePath: string): string {
+  const home = homedir()
+  const prefix = `${home}${sep}`
+  return absolutePath.startsWith(prefix) ? `~/${absolutePath.slice(prefix.length)}` : absolutePath
+}
+
+/**
+ * 从旧 Proma/Profer 目录的迁移已随品牌切换移除。
+ * CDUT Studio 作为新软件从零开始，不读取也不迁移 ~/.proma 或 ~/.profer 数据。
+ */
 
 /**
  * 获取配置目录路径
  *
- * 开发模式返回 ~/.profer-dev/，正式版本返回 ~/.profer/。
+ * 开发模式返回 ~/.cdutai-dev/，正式版本返回 ~/.cdutai/。
  * 如果目录不存在则自动创建。
  */
 export function getConfigDir(): string {
   // 自动化测试和受控诊断可显式隔离配置根目录；常规运行仍使用用户目录。
-  const override = process.env.PROFER_CONFIG_DIR?.trim()
-  const configDir = override ? resolve(override) : join(homedir(), getConfigDirName())
+  const configDir = resolveConfigDir()
 
   if (!existsSync(configDir)) {
     mkdirSync(configDir, { recursive: true })
@@ -91,7 +92,7 @@ export function getConfigDir(): string {
 /**
  * 获取渠道配置文件路径
  *
- * @returns ~/.profer/channels.json
+ * @returns ~/.cdutai/channels.json
  */
 export function getChannelsPath(): string {
   return join(getConfigDir(), 'channels.json')
@@ -100,7 +101,7 @@ export function getChannelsPath(): string {
 /**
  * 获取对话索引文件路径
  *
- * @returns ~/.profer/conversations.json
+ * @returns ~/.cdutai/conversations.json
  */
 export function getConversationsIndexPath(): string {
   return join(getConfigDir(), 'conversations.json')
@@ -111,7 +112,7 @@ export function getConversationsIndexPath(): string {
  *
  * 如果目录不存在则自动创建。
  *
- * @returns ~/.profer/conversations/
+ * @returns ~/.cdutai/conversations/
  */
 export function getConversationsDir(): string {
   const dir = join(getConfigDir(), 'conversations')
@@ -128,7 +129,7 @@ export function getConversationsDir(): string {
  * 获取指定对话的消息文件路径
  *
  * @param id 对话 ID
- * @returns ~/.profer/conversations/{id}.jsonl
+ * @returns ~/.cdutai/conversations/{id}.jsonl
  */
 export function getConversationMessagesPath(id: string): string {
   return join(getConversationsDir(), `${id}.jsonl`)
@@ -141,7 +142,7 @@ export function getConversationMessagesPath(id: string): string {
  * 一个对话一个文件，逐行追加 JSON。
  *
  * @param id 对话 ID
- * @returns ~/.profer/conversations/{id}.discarded.jsonl
+ * @returns ~/.cdutai/conversations/{id}.discarded.jsonl
  */
 export function getConversationDiscardedPath(id: string): string {
   return join(getConversationsDir(), `${id}.discarded.jsonl`)
@@ -152,7 +153,7 @@ export function getConversationDiscardedPath(id: string): string {
  *
  * 如果目录不存在则自动创建。
  *
- * @returns ~/.profer/attachments/
+ * @returns ~/.cdutai/attachments/
  */
 export function getAttachmentsDir(): string {
   const dir = join(getConfigDir(), 'attachments')
@@ -171,7 +172,7 @@ export function getAttachmentsDir(): string {
  * 用户通过设置界面添加的音频文件会复制到此目录。
  * 如果目录不存在则自动创建。
  *
- * @returns ~/.profer/custom-sounds/
+ * @returns ~/.cdutai/custom-sounds/
  */
 export function getCustomSoundsDir(): string {
   const dir = join(getConfigDir(), 'custom-sounds')
@@ -190,7 +191,7 @@ export function getCustomSoundsDir(): string {
  * 如果目录不存在则自动创建。
  *
  * @param conversationId 对话 ID
- * @returns ~/.profer/attachments/{conversationId}/
+ * @returns ~/.cdutai/attachments/{conversationId}/
  */
 export function getConversationAttachmentsDir(conversationId: string): string {
   const dir = join(getAttachmentsDir(), conversationId)
@@ -206,7 +207,7 @@ export function getConversationAttachmentsDir(conversationId: string): string {
  * 解析附件相对路径为完整路径
  *
  * @param localPath 相对路径 {conversationId}/{uuid}.ext
- * @returns 完整路径 ~/.profer/attachments/{conversationId}/{uuid}.ext
+ * @returns 完整路径 ~/.cdutai/attachments/{conversationId}/{uuid}.ext
  */
 export function resolveAttachmentPath(localPath: string): string {
   return join(getAttachmentsDir(), localPath)
@@ -215,7 +216,7 @@ export function resolveAttachmentPath(localPath: string): string {
 /**
  * 获取应用设置文件路径
  *
- * @returns ~/.profer/settings.json
+ * @returns ~/.cdutai/settings.json
  */
 export function getSettingsPath(): string {
   return join(getConfigDir(), 'settings.json')
@@ -224,7 +225,7 @@ export function getSettingsPath(): string {
 /**
  * 获取用户档案文件路径
  *
- * @returns ~/.profer/user-profile.json
+ * @returns ~/.cdutai/user-profile.json
  */
 export function getUserProfilePath(): string {
   return join(getConfigDir(), 'user-profile.json')
@@ -233,7 +234,7 @@ export function getUserProfilePath(): string {
 /**
  * 获取代理配置文件路径
  *
- * @returns ~/.profer/proxy-settings.json
+ * @returns ~/.cdutai/proxy-settings.json
  */
 export function getProxySettingsPath(): string {
   return join(getConfigDir(), 'proxy-settings.json')
@@ -242,7 +243,7 @@ export function getProxySettingsPath(): string {
 /**
  * 获取系统提示词配置文件路径
  *
- * @returns ~/.profer/system-prompts.json
+ * @returns ~/.cdutai/system-prompts.json
  */
 export function getSystemPromptsPath(): string {
   return join(getConfigDir(), 'system-prompts.json')
@@ -251,7 +252,7 @@ export function getSystemPromptsPath(): string {
 /**
  * 获取记忆配置文件路径
  *
- * @returns ~/.profer/memory.json
+ * @returns ~/.cdutai/memory.json
  */
 export function getMemoryConfigPath(): string {
   return join(getConfigDir(), 'memory.json')
@@ -260,7 +261,7 @@ export function getMemoryConfigPath(): string {
 /**
  * 获取 Agent 预设配置文件路径
  *
- * @returns ~/.profer/agent-presets.json
+ * @returns ~/.cdutai/agent-presets.json
  */
 export function getAgentPresetsPath(): string {
   return join(getConfigDir(), 'agent-presets.json')
@@ -279,7 +280,7 @@ export function getAgentPresetMigrationPath(): string {
 /**
  * 获取 Chat 工具配置文件路径
  *
- * @returns ~/.profer/chat-tools.json
+ * @returns ~/.cdutai/chat-tools.json
  */
 export function getChatToolsConfigPath(): string {
   return join(getConfigDir(), 'chat-tools.json')
@@ -307,7 +308,7 @@ export function getPluginDataDir(): string {
 /**
  * 获取 Agent 会话索引文件路径
  *
- * @returns ~/.profer/agent-sessions.json
+ * @returns ~/.cdutai/agent-sessions.json
  */
 export function getAgentSessionsIndexPath(): string {
   return join(getConfigDir(), 'agent-sessions.json')
@@ -323,7 +324,7 @@ export function getRuntimeProcessesPath(): string {
  *
  * 如果目录不存在则自动创建。
  *
- * @returns ~/.profer/agent-sessions/
+ * @returns ~/.cdutai/agent-sessions/
  */
 export function getAgentSessionsDir(): string {
   const dir = join(getConfigDir(), 'agent-sessions')
@@ -340,7 +341,7 @@ export function getAgentSessionsDir(): string {
  * 获取指定 Agent 会话的消息文件路径
  *
  * @param id 会话 ID
- * @returns ~/.profer/agent-sessions/{id}.jsonl
+ * @returns ~/.cdutai/agent-sessions/{id}.jsonl
  */
 export function getAgentSessionMessagesPath(id: string): string {
   return join(getAgentSessionsDir(), `${id}.jsonl`)
@@ -369,7 +370,7 @@ export function getPiHarnessEventsPath(id: string): string {
  * 生命周期由会话删除与 prunePiFileCheckpoints 显式管理，不依赖会话目录被整体删除。
  * 如果目录不存在则自动创建。
  *
- * @returns ~/.profer/agent-checkpoints/
+ * @returns ~/.cdutai/agent-checkpoints/
  */
 export function getPiCheckpointsDir(): string {
   const dir = join(getConfigDir(), 'agent-checkpoints')
@@ -385,7 +386,7 @@ export function getPiCheckpointsDir(): string {
 /**
  * 获取 Agent 工作区索引文件路径
  *
- * @returns ~/.profer/agent-workspaces.json
+ * @returns ~/.cdutai/agent-workspaces.json
  */
 export function getAgentWorkspacesIndexPath(): string {
   return join(getConfigDir(), 'agent-workspaces.json')
@@ -396,7 +397,7 @@ export function getAgentWorkspacesIndexPath(): string {
  *
  * 如果目录不存在则自动创建。
  *
- * @returns ~/.profer/agent-workspaces/
+ * @returns ~/.cdutai/agent-workspaces/
  */
 export function getAgentWorkspacesDir(): string {
   const dir = join(getConfigDir(), 'agent-workspaces')
@@ -415,7 +416,7 @@ export function getAgentWorkspacesDir(): string {
  * 如果目录不存在则自动创建。
  *
  * @param slug 工作区 slug
- * @returns ~/.profer/agent-workspaces/{slug}/
+ * @returns ~/.cdutai/agent-workspaces/{slug}/
  */
 export function getAgentWorkspacePath(slug: string): string {
   const dir = join(getAgentWorkspacesDir(), slug)
@@ -432,7 +433,7 @@ export function getAgentWorkspacePath(slug: string): string {
  * 获取指定工作区的 MCP 配置文件路径
  *
  * @param slug 工作区 slug
- * @returns ~/.profer/agent-workspaces/{slug}/mcp.json
+ * @returns ~/.cdutai/agent-workspaces/{slug}/mcp.json
  */
 export function getWorkspaceMcpPath(slug: string): string {
   return join(getAgentWorkspacePath(slug), 'mcp.json')
@@ -445,7 +446,7 @@ export function getWorkspaceMcpPath(slug: string): string {
  * 自定义预设与默认预设按工作区存储。
  *
  * @param slug 工作区 slug
- * @returns ~/.profer/agent-workspaces/{slug}/agent-presets.json
+ * @returns ~/.cdutai/agent-workspaces/{slug}/agent-presets.json
  */
 export function getWorkspaceAgentPresetsPath(slug: string): string {
   return join(getAgentWorkspacePath(slug), 'agent-presets.json')
@@ -457,7 +458,7 @@ export function getWorkspaceAgentPresetsPath(slug: string): string {
  * 如果目录不存在则自动创建。
  *
  * @param slug 工作区 slug
- * @returns ~/.profer/agent-workspaces/{slug}/skills/
+ * @returns ~/.cdutai/agent-workspaces/{slug}/skills/
  */
 export function getWorkspaceSkillsDir(slug: string): string {
   const dir = join(getAgentWorkspacePath(slug), 'skills')
@@ -476,7 +477,7 @@ export function getWorkspaceSkillsDir(slug: string): string {
  * 如果目录不存在则自动创建。
  *
  * @param slug 工作区 slug
- * @returns ~/.profer/agent-workspaces/{slug}/workspace-files/
+ * @returns ~/.cdutai/agent-workspaces/{slug}/workspace-files/
  */
 export function getWorkspaceFilesDir(slug: string): string {
   const dir = join(getAgentWorkspacePath(slug), 'workspace-files')
@@ -495,7 +496,7 @@ export function getWorkspaceFilesDir(slug: string): string {
  * 适用于 /now 等只读查询场景。
  *
  * @param slug 工作区 slug
- * @returns ~/.profer/agent-workspaces/{slug}/workspace-files/
+ * @returns ~/.cdutai/agent-workspaces/{slug}/workspace-files/
  */
 export function resolveWorkspaceFilesDir(slug: string): string {
   return join(getConfigDir(), 'agent-workspaces', slug, 'workspace-files')
@@ -509,7 +510,7 @@ export function resolveWorkspaceFilesDir(slug: string): string {
  *
  * @param slug 工作区 slug
  * @param sessionId 会话 ID
- * @returns ~/.profer/agent-workspaces/{slug}/{sessionId}/
+ * @returns ~/.cdutai/agent-workspaces/{slug}/{sessionId}/
  */
 export function resolveAgentSessionWorkspacePath(slug: string, sessionId: string): string {
   return join(getConfigDir(), 'agent-workspaces', slug, sessionId)
@@ -522,7 +523,7 @@ export function resolveAgentSessionWorkspacePath(slug: string, sessionId: string
  * 如果目录不存在则自动创建。
  *
  * @param slug 工作区 slug
- * @returns ~/.profer/agent-workspaces/{slug}/skills-inactive/
+ * @returns ~/.cdutai/agent-workspaces/{slug}/skills-inactive/
  */
 export function getInactiveSkillsDir(slug: string): string {
   const dir = join(getAgentWorkspacePath(slug), 'skills-inactive')
@@ -539,7 +540,7 @@ export function getInactiveSkillsDir(slug: string): string {
  *
  * 新建工作区时自动复制此目录的内容到工作区 skills/ 下。
  *
- * @returns ~/.profer/default-skills/
+ * @returns ~/.cdutai/default-skills/
  */
 export function getDefaultSkillsDir(): string {
   const dir = join(getConfigDir(), 'default-skills')
@@ -922,7 +923,7 @@ function isKnownLegacyBundledSkill(slug: string, skillDir: string): boolean {
 }
 
 /**
- * 从 app bundle 同步默认 Skills 到 ~/.profer/default-skills/
+ * 从 app bundle 同步默认 Skills 到 ~/.cdutai/default-skills/
  *
  * 打包模式下从 process.resourcesPath/default-skills 复制。
  * 开发模式下从源码 default-skills/ 目录复制。
@@ -1021,7 +1022,7 @@ export function seedDefaultSkills(): void {
 /**
  * 获取微信配置文件路径
  *
- * @returns ~/.profer/wechat.json
+ * @returns ~/.cdutai/wechat.json
  */
 export function getWeChatConfigPath(): string {
   return join(getConfigDir(), 'wechat.json')
@@ -1030,7 +1031,7 @@ export function getWeChatConfigPath(): string {
 /**
  * 获取微信长轮询同步游标路径
  *
- * @returns ~/.profer/wechat-sync.json
+ * @returns ~/.cdutai/wechat-sync.json
  */
 export function getWeChatSyncPath(): string {
   return join(getConfigDir(), 'wechat-sync.json')
@@ -1039,7 +1040,7 @@ export function getWeChatSyncPath(): string {
 /**
  * 获取钉钉配置文件路径
  *
- * @returns ~/.profer/dingtalk.json
+ * @returns ~/.cdutai/dingtalk.json
  */
 export function getDingTalkConfigPath(): string {
   return join(getConfigDir(), 'dingtalk.json')
@@ -1048,7 +1049,7 @@ export function getDingTalkConfigPath(): string {
 /**
  * 获取飞书配置文件路径
  *
- * @returns ~/.profer/feishu.json
+ * @returns ~/.cdutai/feishu.json
  */
 export function getFeishuConfigPath(): string {
   return join(getConfigDir(), 'feishu.json')
@@ -1057,7 +1058,7 @@ export function getFeishuConfigPath(): string {
 /**
  * 获取飞书聊天绑定持久化路径
  *
- * @returns ~/.profer/feishu-bindings.json
+ * @returns ~/.cdutai/feishu-bindings.json
  */
 export function getFeishuBindingsPath(): string {
   return join(getConfigDir(), 'feishu-bindings.json')
@@ -1066,7 +1067,7 @@ export function getFeishuBindingsPath(): string {
 /**
  * 获取某个飞书 Bot 的聊天绑定持久化路径
  *
- * @returns ~/.profer/feishu-bindings-{botId}.json
+ * @returns ~/.cdutai/feishu-bindings-{botId}.json
  */
 export function getFeishuBotBindingsPath(botId: string): string {
   return join(getConfigDir(), `feishu-bindings-${botId}.json`)
@@ -1077,7 +1078,7 @@ export function getFeishuBotBindingsPath(botId: string): string {
  *
  * 用于保存最近交互用户 open_id 等需要跨进程重启恢复的状态。
  *
- * @returns ~/.profer/feishu-metadata-{botId}.json
+ * @returns ~/.cdutai/feishu-metadata-{botId}.json
  */
 export function getFeishuBotMetadataPath(botId: string): string {
   return join(getConfigDir(), `feishu-metadata-${botId}.json`)
@@ -1091,7 +1092,7 @@ export function getFeishuBotMetadataPath(botId: string): string {
  *
  * @param workspaceSlug 工作区 slug
  * @param sessionId 会话 ID
- * @returns ~/.profer/agent-workspaces/{slug}/{sessionId}/
+ * @returns ~/.cdutai/agent-workspaces/{slug}/{sessionId}/
  */
 export function getAgentSessionWorkspacePath(workspaceSlug: string, sessionId: string): string {
   const dir = join(getAgentWorkspacePath(workspaceSlug), sessionId)
@@ -1112,7 +1113,7 @@ export function getAgentSessionWorkspacePath(workspaceSlug: string, sessionId: s
  *
  * 如果目录不存在则自动创建。
  *
- * @returns ~/.profer/sdk-config/
+ * @returns ~/.cdutai/sdk-config/
  */
 export function getSdkConfigDir(): string {
   const dir = join(getConfigDir(), 'sdk-config')
@@ -1128,7 +1129,7 @@ export function getSdkConfigDir(): string {
 /**
  * 获取 Scratch Pad 文件路径
  *
- * @returns ~/.profer/scratch-pad.md
+ * @returns ~/.cdutai/scratch-pad.md
  */
 export function getScratchPadPath(): string {
   return join(getConfigDir(), 'scratch-pad.md')
@@ -1137,7 +1138,7 @@ export function getScratchPadPath(): string {
 /**
  * 获取定时任务（Automation）配置文件路径
  *
- * @returns ~/.profer/automations.json
+ * @returns ~/.cdutai/automations.json
  */
 export function getAutomationsPath(): string {
   return join(getConfigDir(), 'automations.json')
@@ -1151,7 +1152,7 @@ export function getRecommendationsPath(): string {
 /**
  * 获取新标签页起始页数据文件路径（书签 + 最近访问历史）
  *
- * @returns ~/.profer/browser-start-page.json
+ * @returns ~/.cdutai/browser-start-page.json
  */
 export function getBrowserStartPagePath(): string {
   return join(getConfigDir(), 'browser-start-page.json')
@@ -1167,7 +1168,7 @@ export function getPlanningDatabasePath(): string {
  *
  * 如果目录不存在则自动创建。
  *
- * @returns ~/.profer/knowledge-base/
+ * @returns ~/.cdutai/knowledge-base/
  */
 export function getKnowledgeBaseDir(): string {
   const dir = join(getConfigDir(), 'knowledge-base')
@@ -1216,7 +1217,7 @@ export function getKnowledgeItemDir(itemId: string): string {
 /**
  * 获取设备身份文件路径
  *
- * @returns ~/.profer/device.json
+ * @returns ~/.cdutai/device.json
  */
 export function getDeviceIdentityPath(): string {
   return join(getConfigDir(), 'device.json')
@@ -1225,7 +1226,7 @@ export function getDeviceIdentityPath(): string {
 /**
  * 获取团队服务器配置文件路径
  *
- * @returns ~/.profer/team-servers.json
+ * @returns ~/.cdutai/team-servers.json
  */
 export function getTeamServersConfigPath(): string {
   return join(getConfigDir(), 'team-servers.json')
@@ -1234,7 +1235,7 @@ export function getTeamServersConfigPath(): string {
 /**
  * 获取同步状态文件路径
  *
- * @returns ~/.profer/sync-state.json
+ * @returns ~/.cdutai/sync-state.json
  */
 export function getSyncStatePath(): string {
   return join(getConfigDir(), 'sync-state.json')
@@ -1243,7 +1244,7 @@ export function getSyncStatePath(): string {
 /**
  * 获取团队 Skills 缓存目录路径
  *
- * @returns ~/.profer/team-skills-cache/
+ * @returns ~/.cdutai/team-skills-cache/
  */
 export function getTeamSkillsCacheDir(): string {
   const dir = join(getConfigDir(), 'team-skills-cache')

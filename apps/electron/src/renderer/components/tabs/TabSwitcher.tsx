@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { ReactElement, ReactNode } from 'react'
 import { useAtomValue, useSetAtom, useStore } from 'jotai'
-import type { AgentSessionMeta, ConversationMeta } from '@profer/shared'
+import type { AgentSessionMeta } from '@profer/shared'
 import { cn } from '@/lib/utils'
 import {
   activeTabIdAtom,
@@ -19,11 +19,6 @@ import {
 import { getInitialTabSwitchIndex, promoteTabMru } from '@/lib/tab-switching'
 import { appModeAtom } from '@/atoms/app-mode'
 import {
-  conversationsAtom,
-  currentConversationIdAtom,
-  streamingConversationIdsAtom,
-} from '@/atoms/chat-atoms'
-import {
   agentSessionIndicatorMapAtom,
   agentSessionsAtom,
   agentWorkspacesAtom,
@@ -33,11 +28,11 @@ import {
 } from '@/atoms/agent-atoms'
 import type { SessionIndicatorStatus } from '@/atoms/agent-atoms'
 import { draftSessionIdsAtom } from '@/atoms/draft-session-atoms'
-import { Bot, MessageSquare } from 'lucide-react'
+import { Bot } from 'lucide-react'
 import { getVisibleAgentWorkspaces } from '@/lib/product-feature-flags'
 
 type SwitchSectionId = 'recent'
-type SwitchCandidateType = 'chat' | 'agent'
+type SwitchCandidateType = 'agent'
 
 interface SwitchCandidate {
   id: string
@@ -73,8 +68,6 @@ export function TabSwitcher(): ReactElement | null {
   const tabMru = useAtomValue(tabMruAtom)
   const setTabMru = useSetAtom(tabMruAtom)
 
-  const conversations = useAtomValue(conversationsAtom)
-  const streamingConversationIds = useAtomValue(streamingConversationIdsAtom)
   const agentSessions = useAtomValue(agentSessionsAtom)
   const agentWorkspaces = useAtomValue(agentWorkspacesAtom)
   const agentIndicatorMap = useAtomValue(agentSessionIndicatorMapAtom)
@@ -86,7 +79,6 @@ export function TabSwitcher(): ReactElement | null {
   )
 
   const setAppMode = useSetAtom(appModeAtom)
-  const setCurrentConversationId = useSetAtom(currentConversationIdAtom)
   const setCurrentAgentSessionId = useSetAtom(currentAgentSessionIdAtom)
   const setCurrentAgentWorkspaceId = useSetAtom(currentAgentWorkspaceIdAtom)
   const setUnviewedCompleted = useSetAtom(unviewedCompletedSessionIdsAtom)
@@ -115,16 +107,6 @@ export function TabSwitcher(): ReactElement | null {
       }
     }
 
-    const chatCandidates = conversations
-      .filter((conversation) => !conversation.archived && !draftSessionIds.has(conversation.id))
-      .map((conversation: ConversationMeta): SwitchCandidate => ({
-        id: conversation.id,
-        type: 'chat',
-        title: conversation.title || '新对话',
-        updatedAt: conversation.updatedAt,
-        status: streamingConversationIds.has(conversation.id) ? 'running' : 'idle',
-      }))
-
     const agentCandidates = agentSessions
       .filter((session) => (
         !session.archived
@@ -134,7 +116,7 @@ export function TabSwitcher(): ReactElement | null {
       ))
       .map(buildAgentCandidate)
 
-    const allCandidates = [...chatCandidates, ...agentCandidates]
+    const allCandidates = agentCandidates
 
     // 按 MRU 排序：在 MRU 列表中的按 MRU 顺序，不在的按 updatedAt 追加到末尾
     const mruIndex = new Map(tabMru.map((id, i) => [id, i]))
@@ -165,9 +147,7 @@ export function TabSwitcher(): ReactElement | null {
     agentIndicatorMap,
     agentSessions,
     agentWorkspaces,
-    conversations,
     draftSessionIds,
-    streamingConversationIds,
     tabMru,
     unviewedCompletedIds,
     visibleWorkspaceIds,
@@ -222,16 +202,8 @@ export function TabSwitcher(): ReactElement | null {
         return next
       })
 
-      if (candidate.type === 'chat') {
-        setAppMode('chat')
-        setCurrentConversationId(candidate.id)
-        setCurrentAgentSessionId(null)
-        return
-      }
-
       setAppMode('agent')
       setCurrentAgentSessionId(candidate.id)
-      setCurrentConversationId(null)
 
       setUnviewedCompleted((prev) => {
         if (!prev.has(candidate.id)) return prev
@@ -252,7 +224,6 @@ export function TabSwitcher(): ReactElement | null {
       setAppMode,
       setCurrentAgentSessionId,
       setCurrentAgentWorkspaceId,
-      setCurrentConversationId,
       setTabMru,
       setTabs,
       setUnviewedCompleted,
@@ -474,17 +445,8 @@ function SwitcherCandidateRow({
         />
       )}
       <span className="w-auto px-2 shrink-0 text-[10px] leading-4 rounded-full bg-foreground/[0.06] text-foreground/45 font-medium flex items-center gap-1">
-        {candidate.type === 'agent' ? (
-          <>
-            <Bot className="size-2.5" />
-            Agent
-          </>
-        ) : (
-          <>
-            <MessageSquare className="size-2.5" />
-            Chat
-          </>
-        )}
+        <Bot className="size-2.5" />
+        Agent
       </span>
       <span className="flex-1 min-w-0 truncate">{candidate.title}</span>
       {candidate.workspaceName && (

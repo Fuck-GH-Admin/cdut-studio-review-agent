@@ -9,10 +9,10 @@ import { createLocalWorkspaceProvider, LocalWorkspaceFilePort, StaticWorkspaceRe
 let root = ''
 let workspace: WorkspaceResolution
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'profer-plugin-workspace-'))
+  root = mkdtempSync(join(tmpdir(), 'cdut-plugin-workspace-'))
   mkdirSync(join(root, 'notes'))
   writeFileSync(join(root, 'notes', 'first.txt'), 'hello')
-  mkdirSync(join(root, '.profer'))
+  mkdirSync(join(root, '.cdutai'))
   workspace = { workspaceId: 'editor', displayName: 'Editor workspace', rootPath: root }
 })
 afterEach(() => rmSync(root, { recursive: true, force: true }))
@@ -71,7 +71,7 @@ test('系统临时目录下的 workspace 可用：根祖先允许是链接（mac
 })
 
 test('workspace 根自身是链接时仍拒绝，避免根被重定向到未声明目录', async () => {
-  const linkParent = mkdtempSync(join(tmpdir(), 'profer-plugin-link-root-'))
+  const linkParent = mkdtempSync(join(tmpdir(), 'cdut-plugin-link-root-'))
   try {
     const linkedRoot = join(linkParent, 'workspace-link')
     expect(() => symlinkSync(workspace.rootPath, linkedRoot, 'junction')).not.toThrow()

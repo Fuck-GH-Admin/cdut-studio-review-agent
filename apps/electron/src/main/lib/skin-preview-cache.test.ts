@@ -9,8 +9,8 @@ mock.module('electron', () => ({
   net: {},
 }))
 
-// 隔离配置根目录：预览读取必须落在临时目录，不能读写真实 ~/.profer-dev/skins。
-const configRoot = mkdtempSync(join(tmpdir(), 'profer-skin-preview-config-'))
+// 隔离配置根目录：预览读取必须落在临时目录，不能读写真实 ~/.cdutai-dev/skins。
+const configRoot = mkdtempSync(join(tmpdir(), 'cdut-skin-preview-config-'))
 process.env.PROFER_CONFIG_DIR = configRoot
 
 const { getSkinPreview } = await import('./skin-service')

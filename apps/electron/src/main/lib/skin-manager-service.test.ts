@@ -9,15 +9,15 @@ mock.module('electron', () => ({
   net: {},
 }))
 
-// 隔离配置根目录：安装目标必须落在临时目录，绝不能写真实 ~/.profer-dev/skins。
-const configRoot = mkdtempSync(join(tmpdir(), 'profer-skin-manager-config-'))
+// 隔离配置根目录：安装目标必须落在临时目录，绝不能写真实 ~/.cdutai-dev/skins。
+const configRoot = mkdtempSync(join(tmpdir(), 'cdut-skin-manager-config-'))
 process.env.PROFER_CONFIG_DIR = configRoot
 
 const { installSkinFromFolder } = await import('./skin-manager-service')
 
 /** 写入一个最小可安装皮肤包；返回包根目录。 */
 function writePackage(id: string, options: { css?: string; assetName?: string; previewBytes?: number } = {}): string {
-  const root = mkdtempSync(join(tmpdir(), 'profer-skin-package-'))
+  const root = mkdtempSync(join(tmpdir(), 'cdut-skin-package-'))
   writeFileSync(
     join(root, 'manifest.json'),
     JSON.stringify({ id, name: `Skin ${id}`, tone: 'dark' }, null, 2),

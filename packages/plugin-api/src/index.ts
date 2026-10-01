@@ -5,7 +5,7 @@
  * 不直接依赖 Profer 内部的 @profer/shared。
  */
 
-export const PROFER_PLUGIN_MANIFEST_FILE = 'profer-plugin.json'
+export const PROFER_PLUGIN_MANIFEST_FILE = 'cdut-plugin.json'
 export const PROFER_PLUGIN_SCHEMA_VERSION = 1
 
 /** 插件 ID 使用反向域名形式，避免市场与本地插件命名冲突。 */

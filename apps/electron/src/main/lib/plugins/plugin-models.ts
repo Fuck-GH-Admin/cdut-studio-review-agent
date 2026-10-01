@@ -15,7 +15,7 @@ export function listPluginModels(): ProferPluginModel[] {
     channelId: channel.id, channelName: channel.name, modelId: model.id, name: model.name,
     provider: channel.provider, available: channel.enabled && model.enabled,
     supportsChat: supportsPluginModel(channel, 'chat'),
-    supportsAgent: supportsPluginModel(channel, 'agent', 'pi') || supportsPluginModel(channel, 'agent', 'claude'),
+    supportsAgent: supportsPluginModel(channel, 'agent', 'pi'),
   })))
 }
 export async function generatePluginModel(raw: unknown, signal: AbortSignal): Promise<ProferPluginGenerateResult> {

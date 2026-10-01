@@ -1,7 +1,7 @@
 /**
  * Chat 工具配置服务。
  *
- * 管理 ~/.profer/chat-tools.json 的工具开关和凭据。GPT Image 的 BYOK Key
+ * 管理 ~/.cdutai/chat-tools.json 的工具开关和凭据。GPT Image 的 BYOK Key
  * 只以加密字段保存在主进程配置中，绝不通过 IPC 回传到 renderer。
  */
 

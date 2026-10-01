@@ -31,8 +31,8 @@ describe('isAbsoluteFilePath（R2 统一实现）', () => {
   })
 
   test('用户主目录缩写 ~/ 路径（Agent 输出的皮肤目录等写法）', () => {
-    expect(isAbsoluteFilePath('~/.profer/skins/demo-skin/skin.css')).toBe(true)
-    expect(isAbsoluteFilePath('~\\.profer-dev\\skins\\demo-skin\\skin.css')).toBe(true)
+    expect(isAbsoluteFilePath('~/.cdutai/skins/demo-skin/skin.css')).toBe(true)
+    expect(isAbsoluteFilePath('~\\.cdutai-dev\\skins\\demo-skin\\skin.css')).toBe(true)
   })
 
   test('单独的 ~ 与 ~other 写法不当作绝对路径', () => {

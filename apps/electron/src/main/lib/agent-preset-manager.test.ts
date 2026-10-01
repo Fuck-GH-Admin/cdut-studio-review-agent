@@ -91,7 +91,7 @@ describe('Capability Registry', () => {
     expect(tools.every((tool) => tool.label && tool.hint && tool.runtimes.length > 0)).toBe(true)
     expect(tools.every((tool) => ['read', 'write', 'external', 'destructive'].includes(tool.risk))).toBe(true)
     expect(getAgentPresetCapabilityTool('mcp__collaboration__delegate_agent')?.risk).toBe('write')
-    expect(getAgentPresetCapabilityTools('claude').length).toBe(tools.length)
+    expect(getAgentPresetCapabilityTools('pi').length).toBe(tools.length)
     expect(getAgentPresetCapabilityTools('pi').length).toBe(tools.length)
   })
 })

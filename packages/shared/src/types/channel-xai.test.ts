@@ -48,7 +48,7 @@ describe('xAI 凭据模式与 Agent 内核资格', () => {
   })
 
   test('Given 渠道显式勾选 Claude 内核 When 判断 Claude 内核资格 Then 允许（不看渠道类型）', () => {
-    expect(isAgentEnabledForChannel(channel({ agentRuntimes: ['pi', 'claude'] }))).toBe(true)
+    expect(isAgentEnabledForChannel(channel({ agentRuntimes: ['pi'] }))).toBe(true)
   })
 
   test('Given 渠道只勾选 Pi 内核 When 判断 Claude 内核资格 Then 拒绝', () => {

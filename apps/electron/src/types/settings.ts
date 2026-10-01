@@ -223,8 +223,8 @@ export type UiScale = 'standard' | 'large' | 'xlarge' | 'huge' | 'massive' | 'ma
 /** 默认界面缩放档位 */
 export const DEFAULT_UI_SCALE: UiScale = 'standard'
 
-/** 默认 Agent runtime：Pi 执行链路完成灰度前始终使用 Claude。 */
-export const DEFAULT_AGENT_RUNTIME: AgentRuntime = 'claude'
+/** 默认 Agent runtime：Pi。 */
+export const DEFAULT_AGENT_RUNTIME: AgentRuntime = 'pi'
 
 /** 提升此版本可要求用户重新确认更新后的受管浏览器风险告知。 */
 export const BROWSER_RISK_DISCLAIMER_VERSION = 1

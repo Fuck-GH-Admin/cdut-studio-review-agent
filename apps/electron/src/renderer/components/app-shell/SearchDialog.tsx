@@ -17,12 +17,12 @@
 
 import * as React from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { Search, X, MessageSquare, Bot, Archive, Loader2 } from 'lucide-react'
+import { Search, X, Bot, Archive, Loader2 } from 'lucide-react'
 import { Dialog, DialogContent, DialogPortal, DialogTitle } from '@profer/ui/primitives/dialog'
 import { cn } from '@/lib/utils'
 import { navigationController } from '@/lib/navigation-controller'
 import { searchDialogOpenAtom } from '@/atoms/search-atoms'
-import { conversationsAtom, channelsAtom } from '@/atoms/chat-atoms'
+import { channelsAtom } from '@/atoms/chat-atoms'
 import {
   agentSessionsAtom,
   agentWorkspacesAtom,
@@ -39,7 +39,6 @@ import {
   useSessionMiniMapHover,
 } from '@/components/session-preview/SessionMiniMapPopover'
 import type {
-  MessageSearchResult,
   AgentMessageSearchResult,
 } from '@profer/shared'
 import { isDeepSeekV4Model } from '@profer/shared'
@@ -49,7 +48,7 @@ import { getVisibleAgentWorkspaces } from '@/lib/product-feature-flags'
 interface TitleResult {
   id: string
   title: string
-  type: 'chat' | 'agent'
+  type: 'agent'
   archived?: boolean
   updatedAt: number
 }
@@ -58,7 +57,7 @@ interface TitleResult {
 interface ContentResult {
   id: string
   title: string
-  type: 'chat' | 'agent'
+  type: 'agent'
   messageId: string
   snippet: string
   matchStart: number
@@ -123,12 +122,8 @@ function HighlightSnippet({ snippet, matchStart, matchLength }: {
   )
 }
 
-function SearchResultIcon({ result }: { result: SearchResult }): React.ReactElement {
-  return result.type === 'chat' ? (
-    <MessageSquare size={14} className="flex-shrink-0 text-foreground/40" />
-  ) : (
-    <Bot size={14} className="flex-shrink-0 text-blue-500/70" />
-  )
+function SearchResultIcon(): React.ReactElement {
+  return <Bot size={14} className="flex-shrink-0 text-blue-500/70" />
 }
 
 interface SearchResultRowProps {
@@ -175,7 +170,7 @@ function SearchResultRow({
         )}
       >
         <div className="flex items-center gap-2.5">
-          <SearchResultIcon result={result} />
+          <SearchResultIcon />
           <span className="flex-1 min-w-0 truncate text-[13px] text-foreground/80">
             {isContent ? result.title : <HighlightText text={result.title} query={committedQuery} />}
           </span>
@@ -217,7 +212,6 @@ function SearchResultRow({
 
 export function SearchDialog(): React.ReactElement {
   const [open, setOpen] = useAtom(searchDialogOpenAtom)
-  const conversations = useAtomValue(conversationsAtom)
   const agentSessions = useAtomValue(agentSessionsAtom)
   const draftSessionIds = useAtomValue(draftSessionIdsAtom)
   const agentWorkspaces = useAtomValue(agentWorkspacesAtom)
@@ -314,39 +308,19 @@ export function SearchDialog(): React.ReactElement {
     setSelectedIndex(0)
 
     const qLower = q.toLowerCase()
-    const titles: TitleResult[] = [
-      ...conversations
-        .filter((c) => !draftSessionIds.has(c.id) && c.title.toLowerCase().includes(qLower))
-        .map((c) => ({ id: c.id, title: c.title, type: 'chat' as const, archived: c.archived, updatedAt: c.updatedAt })),
-      ...agentSessions
-        .filter((s) => !hiddenAgentSessionIds.has(s.id) && s.title.toLowerCase().includes(qLower))
-        .map((s) => ({ id: s.id, title: s.title, type: 'agent' as const, archived: s.archived, updatedAt: s.updatedAt })),
-    ]
+    const titles: TitleResult[] = agentSessions
+      .filter((s) => !hiddenAgentSessionIds.has(s.id) && s.title.toLowerCase().includes(qLower))
+      .map((s) => ({ id: s.id, title: s.title, type: 'agent' as const, archived: s.archived, updatedAt: s.updatedAt }))
       .sort((a, b) => b.updatedAt - a.updatedAt)
       .slice(0, 20)
 
     setTitleResults(titles)
 
     try {
-      const [chatResults, agentResults] = await Promise.all([
-        window.electronAPI.searchConversationMessages(q),
-        window.electronAPI.searchAgentSessionMessages(q),
-      ])
+      const agentResults = await window.electronAPI.searchAgentSessionMessages(q)
       if (token !== searchTokenRef.current) return
 
       const titleIds = new Set(titles.map((t) => t.id))
-      const chatContent: ContentResult[] = (chatResults as MessageSearchResult[])
-        .filter((r) => !titleIds.has(r.conversationId) && !draftSessionIds.has(r.conversationId))
-        .map((r) => ({
-          id: r.conversationId,
-          title: r.conversationTitle,
-          type: 'chat' as const,
-          messageId: r.messageId,
-          snippet: r.snippet,
-          matchStart: r.matchStart,
-          matchLength: r.matchLength,
-          archived: r.archived,
-        }))
       const agentContent: ContentResult[] = (agentResults as AgentMessageSearchResult[])
         .filter((r) => !titleIds.has(r.sessionId) && !hiddenAgentSessionIds.has(r.sessionId))
         .map((r) => ({
@@ -360,14 +334,14 @@ export function SearchDialog(): React.ReactElement {
           archived: r.archived,
         }))
 
-      setContentResults([...chatContent, ...agentContent])
+      setContentResults(agentContent)
     } catch (error) {
       console.error('[搜索] 内容搜索失败:', error)
       if (token === searchTokenRef.current) setContentResults([])
     } finally {
       if (token === searchTokenRef.current) setLoading(false)
     }
-  }, [query, conversations, agentSessions, draftSessionIds, hiddenAgentSessionIds])
+  }, [query, agentSessions, draftSessionIds, hiddenAgentSessionIds])
 
   const handleAgentSearch = React.useCallback(async () => {
     const q = query.trim()
@@ -380,19 +354,15 @@ export function SearchDialog(): React.ReactElement {
     )
     const channelId = deepseekChannel?.id ?? currentAgentChannelId ?? undefined
 
-    const configDir = import.meta.env.DEV ? '.profer-dev' : '.proma'
+    const configDir = import.meta.env.DEV ? '.cdutai-dev' : '.proma'
     const visibleAgentSessionIds = agentSessions
       .filter((session) => !hiddenAgentSessionIds.has(session.id))
       .map((session) => session.id)
-    const visibleConversationIds = conversations
-      .filter((conversation) => !draftSessionIds.has(conversation.id))
-      .map((conversation) => conversation.id)
-    const prompt = `请帮我在 Profer 当前可见的会话历史中搜索与以下描述相关的内容：
+    const prompt = `请帮我在 CDUT Studio 当前可见的会话历史中搜索与以下描述相关的内容：
 
 "${q}"
 
 搜索范围：
-- Chat 会话消息文件：~/${configDir}/conversations/ 目录下，仅限这些会话 ID：${visibleConversationIds.join(', ') || '无'}
 - Agent 会话消息文件：~/${configDir}/agent-sessions/ 目录下，仅限这些会话 ID：${visibleAgentSessionIds.join(', ') || '无'}
 
 访问边界：
@@ -410,7 +380,7 @@ export function SearchDialog(): React.ReactElement {
     setAgentPendingPrompt({ sessionId, message: prompt })
     setOpen(false)
     setActiveView('conversations')
-  }, [query, channels, currentAgentChannelId, createAgent, setAgentPendingPrompt, setOpen, setActiveView, agentSessions, conversations, draftSessionIds, hiddenAgentSessionIds])
+  }, [query, channels, currentAgentChannelId, createAgent, setAgentPendingPrompt, setOpen, setActiveView, agentSessions, hiddenAgentSessionIds])
 
   // 全部结果列表（标题在前、内容在后）
   const allResults = React.useMemo<SearchResult[]>(
@@ -423,16 +393,10 @@ export function SearchDialog(): React.ReactElement {
     setOpen(false)
     setActiveView('conversations')
 
-    if (result.type === 'chat') {
-      const conv = conversations.find((c) => c.id === result.id)
-      const title = conv?.title ?? result.title
-      openSession('chat', result.id, title)
-    } else {
-      const session = agentSessions.find((s) => s.id === result.id)
-      const title = session?.title ?? result.title
-      openSession('agent', result.id, title)
-    }
-  }, [setOpen, setActiveView, openSession, conversations, agentSessions])
+    const session = agentSessions.find((s) => s.id === result.id)
+    const title = session?.title ?? result.title
+    openSession('agent', result.id, title)
+  }, [setOpen, setActiveView, openSession, agentSessions])
 
   /**
    * Enter 键语义：
@@ -572,7 +536,7 @@ export function SearchDialog(): React.ReactElement {
           <button
             onClick={() => void handleAgentSearch()}
             disabled={trimmedQuery.length < 2}
-            title="适合在精准搜索找不到的情况下使用，Agent 会帮助你搜索整个 Profer 会话空间"
+            title="适合在精准搜索找不到的情况下使用，Agent 会帮助你搜索整个 CDUT Studio 会话空间"
             className={cn(
               'flex items-center gap-1 px-2 py-1 rounded text-[12px] font-medium transition-colors',
               trimmedQuery.length >= 2

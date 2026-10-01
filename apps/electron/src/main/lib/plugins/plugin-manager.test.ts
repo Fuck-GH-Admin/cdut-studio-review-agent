@@ -31,7 +31,7 @@ function createPlugin(overrides: Record<string, unknown> = {}): string {
   const directory = join(root, 'source')
   mkdirSync(join(directory, 'dist'), { recursive: true })
   writeFileSync(join(directory, 'dist', 'index.html'), '<!doctype html><title>Demo</title>', 'utf8')
-  writeFileSync(join(directory, 'profer-plugin.json'), JSON.stringify({
+  writeFileSync(join(directory, 'cdut-plugin.json'), JSON.stringify({
     schemaVersion: 1,
     id: 'com.example.demo',
     name: 'Demo Plugin',
@@ -44,7 +44,7 @@ function createPlugin(overrides: Record<string, unknown> = {}): string {
 }
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'profer-plugin-manager-'))
+  root = mkdtempSync(join(tmpdir(), 'cdut-plugin-manager-'))
   process.env.PROFER_CONFIG_DIR = join(root, 'config')
 })
 
@@ -84,7 +84,7 @@ describe('插件 manifest 校验', () => {
   })
 
   test('生命周期验收插件清单可解析并包含完整实例入口', () => {
-    const fixture = JSON.parse(readFileSync(join(import.meta.dir, '../../../../../../examples/plugins/plugin-lifecycle-demo/profer-plugin.json'), 'utf8')) as Record<string, unknown>
+    const fixture = JSON.parse(readFileSync(join(import.meta.dir, '../../../../../../examples/plugins/plugin-lifecycle-demo/cdut-plugin.json'), 'utf8')) as Record<string, unknown>
     const manifest = parsePluginManifest(fixture)
     expect(manifest.id).toBe('com.profer.plugin-lifecycle-demo')
     expect(manifest.permissions).toContain('agent.tools')
@@ -205,7 +205,7 @@ describe('插件 manifest 校验', () => {
   })
 
   test('悬浮窗口验收台清单可解析并声明完整悬浮配置', () => {
-    const fixture = JSON.parse(readFileSync(join(import.meta.dir, '../../../../../../examples/plugins/floating-window-demo/profer-plugin.json'), 'utf8')) as Record<string, unknown>
+    const fixture = JSON.parse(readFileSync(join(import.meta.dir, '../../../../../../examples/plugins/floating-window-demo/cdut-plugin.json'), 'utf8')) as Record<string, unknown>
     const manifest = parsePluginManifest(fixture)
     expect(manifest.id).toBe('com.profer.floating-window-demo')
     expect(manifest.permissions).toContain('window.floating')

@@ -185,7 +185,7 @@ describe('Pi runtime 会话持久化隔离', () => {
   test('Given updateSettings fails after runtime switch When restoring snapshot Then SDK/fork/resume metadata survives rollback', () => {
     const meta = sessions.createAgentSession('runtime rollback')
     sessions.updateAgentSessionMeta(meta.id, {
-      agentRuntime: 'claude',
+      agentRuntime: 'pi',
       codexFastMode: true,
       sdkSessionId: 'claude-session',
       forkSourceSdkSessionId: 'claude-source',
@@ -197,7 +197,7 @@ describe('Pi runtime 会话持久化隔离', () => {
     sessions.updateAgentSessionMeta(meta.id, { agentRuntime: 'pi' })
     const restored = sessions.restoreAgentRuntimeMeta(meta.id, snapshot)
 
-    expect(restored.agentRuntime).toBe('claude')
+    expect(restored.agentRuntime).toBe('pi')
     expect(restored.codexFastMode).toBe(true)
     expect(restored.sdkSessionId).toBe('claude-session')
     expect(restored.forkSourceSdkSessionId).toBe('claude-source')
@@ -213,7 +213,7 @@ describe('Pi runtime 会话持久化隔离', () => {
     const checkpoint = createPiFileCheckpoint(meta.id, cwd, configPaths.getPiCheckpointsDir())
     sessions.updateAgentSessionMeta(meta.id, { piFileCheckpoints: { 'entry-1': checkpoint.path } })
 
-    const switched = sessions.updateAgentSessionMeta(meta.id, { agentRuntime: 'claude' })
+    const switched = sessions.updateAgentSessionMeta(meta.id, { agentRuntime: 'pi' })
     expect(switched.piFileCheckpoints).toBeUndefined()
     expect(existsSync(checkpoint.path)).toBe(false)
   })

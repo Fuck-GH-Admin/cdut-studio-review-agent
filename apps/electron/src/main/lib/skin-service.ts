@@ -1,7 +1,7 @@
 /**
  * 皮肤服务
  *
- * 扫描内置皮肤（resources/skins/，随应用打包）与用户皮肤（~/.profer/skins/），
+ * 扫描内置皮肤（resources/skins/，随应用打包）与用户皮肤（~/.cdutai/skins/），
  * 合并为皮肤注册表；提供皮肤 CSS 内容读取（内存缓存，避免重复 IO）。
  *
  * 皮肤包 = 目录（id 即目录名）：
@@ -104,9 +104,9 @@ const PREVIEW_PRIORITY = ['.webp', '.png', '.svg', '.jpg', '.jpeg']
 /** 皮肤 CSS 中 assets 引用匹配：`url(assets/xxx.webp)`。i 标志仅兼容 URL( 函数名大小写；
  * 路径部分由 auditSkinCss 强制为字面量小写 assets/，改写结果必然被协议白名单接受 */
 const SKIN_ASSET_RE = /url\(\s*(['"]?)(assets\/[a-zA-Z0-9][a-zA-Z0-9._-]*\.(?:webp|png|svg|jpe?g))\1\s*\)/gi
-/** profer-skin:// 协议路径白名单：仅允许皮肤目录内 assets/ 下的图片 */
+/** cdut-skin:// 协议路径白名单：仅允许皮肤目录内 assets/ 下的图片 */
 const SKIN_ASSET_PATH_RE = /^assets\/[a-zA-Z0-9][a-zA-Z0-9._-]*\.(?:webp|png|svg|jpe?g)$/
-/** 磁盘缓存格式版本：CSS 引用方式（base64 内联 → profer-skin:// 协议）变化时递增，旧缓存自动失效 */
+/** 磁盘缓存格式版本：CSS 引用方式（base64 内联 → cdut-skin:// 协议）变化时递增，旧缓存自动失效 */
 const SKIN_CSS_CACHE_FORMAT_VERSION = 2
 
 /** 皮肤 id 白名单（kebab-case，与 skin-manager-service 的 ID_RE 一致） */
@@ -273,7 +273,7 @@ function getBuiltinSkinDir(): string {
     : join(__dirname, 'resources', 'skins')
 }
 
-/** 用户皮肤目录：~/.profer/skins/ */
+/** 用户皮肤目录：~/.cdutai/skins/ */
 export function getUserSkinDir(): string {
   return join(getConfigDir(), 'skins')
 }
@@ -507,7 +507,7 @@ export function getSkinCss(skinId: string): string | null {
     try {
       if (existsSync(cachePath) && existsSync(metaPath)) {
         const meta = JSON.parse(readFileSync(metaPath, 'utf-8')) as { sig?: string; v?: number }
-        // 格式版本不一致（如 base64 内联 → profer-skin:// 协议）时旧缓存作废
+        // 格式版本不一致（如 base64 内联 → cdut-skin:// 协议）时旧缓存作废
         if (meta.v === SKIN_CSS_CACHE_FORMAT_VERSION && meta.sig === sig) {
           const css = readFileSync(cachePath, 'utf-8')
           cacheSet(SKIN_CSS_CACHE, skinId, css, SKIN_CSS_CACHE_MAX)
@@ -522,7 +522,7 @@ export function getSkinCss(skinId: string): string | null {
   try {
     const rawCss = readFileSync(cssPath, 'utf-8')
     // 大小上限 + 内容审计：与安装校验共用同一套规则（auditSkinCss），
-    // 手放 ~/.profer/skins 的皮肤和安装后被手工编辑的 skin.css 都在此拦截。
+    // 手放 ~/.cdutai/skins 的皮肤和安装后被手工编辑的 skin.css 都在此拦截。
     if (Buffer.byteLength(rawCss, 'utf-8') > MAX_SKIN_CSS_BYTES) {
       console.warn('[皮肤] skin.css 超过 512 KB 上限，拒绝注入:', skinId)
       cacheSet(SKIN_CSS_CACHE, skinId, '', SKIN_CSS_CACHE_MAX)
@@ -534,11 +534,11 @@ export function getSkinCss(skinId: string): string | null {
       cacheSet(SKIN_CSS_CACHE, skinId, '', SKIN_CSS_CACHE_MAX)
       return null
     }
-    // assets 不再 base64 内联：改为稳定的 profer-skin://<skinId>/assets/... 协议引用，
+    // assets 不再 base64 内联：改为稳定的 cdut-skin://<skinId>/assets/... 协议引用，
     // 图片由主进程协议 handler 按需读取（P2：移除大图 IPC 传输与编码开销）。
     // 审计已保证 url 参数为字面量 assets/ 路径，正则改写不会漏改。
     const css = rawCss.replace(SKIN_ASSET_RE, (_match, quote: string, assetPath: string) => {
-      return `url(${quote}profer-skin://${skinId}/${assetPath}${quote})`
+      return `url(${quote}cdut-skin://${skinId}/${assetPath}${quote})`
     })
     cacheSet(SKIN_CSS_CACHE, skinId, css, SKIN_CSS_CACHE_MAX)
     // 写磁盘缓存（失败静默降级，不影响正常功能）
@@ -560,7 +560,7 @@ export function getSkinCss(skinId: string): string | null {
 }
 
 /**
- * 处理 profer-skin://<skinId>/assets/<file> 请求。
+ * 处理 cdut-skin://<skinId>/assets/<file> 请求。
  * 皮肤 assets 通过稳定协议引用（替代 base64 内联），URL 由 getSkinCss 生成；
  * skinId 走 kebab-case 白名单，路径仅允许皮肤目录内 assets/ 图片，防目录穿越。
  */

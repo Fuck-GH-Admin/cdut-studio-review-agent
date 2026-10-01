@@ -3,7 +3,6 @@ import { getToolState } from './chat-tool-config'
 import { isGptImageAvailable, } from './chat-tools/gpt-image-tool'
 import { generateAgentGptImage, type AgentGptImageContext } from './agent-gpt-image-service'
 import { GPT_IMAGE_QUALITIES, GPT_IMAGE_SIZES, type GptImageQuality, type GptImageSize } from './gpt-image-service'
-import { filterDisabledTools } from '@profer/shared'
 
 export const AGENT_GPT_IMAGE_TOOL_NAME = 'generate_image'
 
@@ -45,38 +44,4 @@ export function formatAgentGptImageToolResult(result: Awaited<ReturnType<typeof 
 }
 
 /** Claude runtime's in-process MCP adapter for the shared Agent image service. */
-export async function injectAgentGptImageMcpServer(
-  sdk: typeof import('@anthropic-ai/claude-agent-sdk'),
-  mcpServers: Record<string, Record<string, unknown>>,
-  context: AgentGptImageContext,
-  disabledTools?: string[],
-): Promise<void> {
-  let z: typeof import('zod').z
-  try { ({ z } = await import('zod')) } catch { z = require('zod').z }
-  const server = sdk.createSdkMcpServer({
-    name: 'agent-gpt-image', version: '1.0.0', tools: filterDisabledTools([
-      sdk.tool(
-        AGENT_GPT_IMAGE_TOOL_NAME,
-        DESCRIPTION,
-        {
-          prompt: z.string().min(1).max(10_000),
-          size: z.enum(GPT_IMAGE_SIZES).optional(),
-          quality: z.enum(GPT_IMAGE_QUALITIES).optional(),
-          referenceImagePaths: z.array(z.string().min(1).max(4096)).min(1).max(4).optional(),
-          useLastGeneratedImage: z.boolean().optional(),
-        },
-        async (args, extra) => formatAgentGptImageToolResult(await generateAgentGptImage({
-          prompt: args.prompt,
-          size: args.size as GptImageSize | undefined,
-          quality: args.quality as GptImageQuality | undefined,
-          referenceImagePaths: args.referenceImagePaths,
-          useLastGeneratedImage: args.useLastGeneratedImage,
-          toolCallId: claudeToolCallId(extra),
-        }, context)),
-      ),
-    ], disabledTools),
-  })
-  mcpServers['agent-gpt-image'] = server as unknown as Record<string, unknown>
-}
-
 export const AGENT_GPT_IMAGE_DESCRIPTION = DESCRIPTION

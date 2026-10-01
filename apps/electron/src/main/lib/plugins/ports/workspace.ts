@@ -33,7 +33,7 @@ export const WORKSPACE_LIMITS = {
   maxEntries: 1000,
 } as const
 
-const CONTROL_SEGMENTS = new Set(['.profer', '.git', 'runtime', 'runtimes', 'sessions', 'agent-sessions', 'messages', 'jsonl', 'mcp', 'skills'])
+const CONTROL_SEGMENTS = new Set(['.cdutai', '.git', 'runtime', 'runtimes', 'sessions', 'agent-sessions', 'messages', 'jsonl', 'mcp', 'skills'])
 const CONTROL_FILES = new Set(['mcp.json', 'settings.json', 'plugin-permissions.json'])
 
 /** 只接受非空 workspace-relative POSIX path；不做“修复”，避免不同输入指向同一资源。 */

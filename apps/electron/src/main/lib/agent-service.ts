@@ -28,9 +28,7 @@ import type {
   ProferPermissionMode,
   AgentExternalRunSource,
 } from '@profer/shared'
-import { ClaudeAgentAdapter, scanAndKillOrphanedClaudeSubprocesses } from './adapters/claude-agent-adapter'
 import { PiAgentAdapter } from './adapters/pi-agent-adapter'
-import { RuntimeRoutingAgentAdapter } from './adapters/runtime-routing-agent-adapter'
 import { AgentEventBus } from './agent-event-bus'
 import { fanoutSessionEvent } from './agent-event-fanout'
 import { AgentCatalogInvalidationPublisher } from './agent-catalog-invalidation'
@@ -53,10 +51,7 @@ configureAgentSessionProjectionPublisher(eventBus)
 // 目录失效发布器单例：ipc.ts / remote-service.ts / workspace-watcher.ts 共享同一 revision 序列，
 // 保证 Pocket 按 (catalog, workspaceSlug) 去重时看到的 revision 单调可信。
 export const agentCatalogInvalidationPublisher = new AgentCatalogInvalidationPublisher(eventBus)
-const claudeAdapter = new ClaudeAgentAdapter()
-const piAdapter = new PiAgentAdapter()
-// Both runtimes remain behind the same orchestrator, credential gate, P0 lifecycle and Plan-mode boundary.
-const adapter = new RuntimeRoutingAgentAdapter({ claude: claudeAdapter, pi: piAdapter })
+const adapter = new PiAgentAdapter()
 const orchestrator = new AgentOrchestrator(adapter, eventBus)
 setAgentSessionActiveChecker((sessionId) => orchestrator.isActive(sessionId))
 const runtimeContextStore = new AgentRuntimeContextStore()
@@ -615,14 +610,9 @@ export function stopAllAgents(): void {
   orchestrator.stopAll()
 }
 
-/**
- * 退出前最后兜底：扫描并强杀所有孤儿 claude-agent-sdk 子进程
- *
- * 必须在 stopAllAgents() 之后调用。针对 pidMap 未覆盖、dispose 漏杀等极端场景。
- * 同步执行，不 await，确保 before-quit 能在 Electron 超时前完成。
- */
+/** 运行时已统一为 Pi；保留旧导出名，避免外部调用方在升级时崩溃。 */
 export function killOrphanedClaudeSubprocesses(): void {
-  scanAndKillOrphanedClaudeSubprocesses()
+  // Pi 为进程内 runtime，不会产生 Claude SDK 孤儿子进程。
 }
 
 /**

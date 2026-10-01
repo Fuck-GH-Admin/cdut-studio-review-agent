@@ -476,7 +476,7 @@ export function DiffTabContent({ filePath, dirPath, sessionId, gitRoot, previewO
 
         if (!cached) {
           if (previewOnly) {
-            // 先分清「文件 / 目录 / 不可预览」：目录链接（如 `~/.profer-dev/skins/<id>`）交给目录视图，
+            // 先分清「文件 / 目录 / 不可预览」：目录链接（如 `~/.cdutai-dev/skins/<id>`）交给目录视图，
             // denied 路径拿到准确提示；否则后面各类型分支只会各自报“加载失败/不存在”。
             const described = await window.electronAPI.describePath(filePath, fileAccess)
             if (cancelled) return

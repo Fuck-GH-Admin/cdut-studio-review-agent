@@ -14,6 +14,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
 import type {
   AgentThinkingLevel,
+  AgentRuntime,
   AgentProviderAdapter,
   AgentQueryInput,
   GetTaskOutputResult,
@@ -2092,6 +2093,9 @@ export class PiAgentAdapter implements AgentProviderAdapter {
       supportsNativeMcp: false,
       runtimeSupportsSubagents: true,
     }
+  }
+  getRuntimeCapabilities(runtime: AgentRuntime) {
+    return { runtime, available: runtime === 'pi', ...this.getCapabilities() }
   }
   private activeSessions = new Map<string, ActivePiSession>()
 

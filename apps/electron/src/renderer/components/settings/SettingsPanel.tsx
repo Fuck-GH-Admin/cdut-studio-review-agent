@@ -15,7 +15,6 @@ import {
   Info,
   Plug,
   BookOpen,
-  Wrench,
   Bot,
   GraduationCap,
   X,
@@ -57,7 +56,6 @@ import { AppearanceSettings } from "./AppearanceSettings";
 import { AboutSettings } from "./AboutSettings";
 import { AgentSettings } from "./AgentSettings";
 import { PromptSettings } from "./PromptSettings";
-import { ToolSettings } from "./ToolSettings";
 import { BotHubSettings } from "./BotHubSettings";
 import { ShortcutSettings } from "./ShortcutSettings";
 import { DataManagementSettings } from "./DataManagementSettings";
@@ -99,7 +97,6 @@ const MODEL_GROUP_ITEMS: SettingsTabItem[] = [
   { id: "channels", label: "模型配置", icon: <Radio size={16} /> },
   { id: "agent", label: "Agent 配置", icon: <Plug size={16} /> },
   { id: "prompts", label: "提示词管理", icon: <BookOpen size={16} /> },
-  { id: "tools", label: "Chat 工具", icon: <Wrench size={16} /> },
 ];
 
 /** 体验：外观 / 快捷键 */
@@ -121,7 +118,7 @@ const SYSTEM_GROUP_ITEMS: SettingsTabItem[] = [
 
 /** 帮助：教程 / 关于与更新 */
 const HELP_GROUP_ITEMS: SettingsTabItem[] = [
-  { id: "tutorial", label: "Profer 教程", icon: <GraduationCap size={16} /> },
+  { id: "tutorial", label: "CDUT Studio 教程", icon: <GraduationCap size={16} /> },
   { id: "about", label: "关于/更新", icon: <Info size={16} /> },
 ];
 
@@ -159,8 +156,6 @@ function renderTabContent(tab: SettingsTab): React.ReactElement {
       return <PromptSettings />;
     case "agent":
       return <AgentSettings />;
-    case "tools":
-      return <ToolSettings />;
     case "appearance":
       return <AppearanceSettings />;
     case "about":
@@ -222,7 +217,7 @@ export function SettingsPanel({
   /** 完成导航（仅在无需确认或用户明确放弃后调用）。 */
   const navigateToTab = (tabId: SettingsTab): void => {
     if (tabId === 'tutorial') {
-      const result = openTab(mainTabs, { type: 'tutorial', sessionId: TUTORIAL_TAB_ID, title: 'Profer 使用教程' })
+      const result = openTab(mainTabs, { type: 'tutorial', sessionId: TUTORIAL_TAB_ID, title: 'CDUT Studio 使用教程' })
       setMainTabs(result.tabs)
       setMainActiveTabId(result.activeTabId)
       setSettingsOpen(false)

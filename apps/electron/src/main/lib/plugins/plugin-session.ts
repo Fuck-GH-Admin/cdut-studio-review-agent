@@ -6,7 +6,7 @@ import { resolveInstalledPluginRoot } from './plugin-manager'
 
 /**
  * 插件 session 共享注册：主窗口 View 与独立悬浮 BrowserWindow 复用同一 partition
- * （profer-plugin-{pluginId}），协议 handler 与会话守卫必须在任一侧首个页面创建前就绪。
+ * （cdut-plugin-{pluginId}），协议 handler 与会话守卫必须在任一侧首个页面创建前就绪。
  * 注册属于 Electron Session 生命周期，注册后与窗口解耦，不可重复 protocol.handle。
  */
 
@@ -92,20 +92,20 @@ function installSessionGuards(pluginSession: Session): void {
     item.cancel()
   })
   pluginSession.webRequest.onBeforeRequest((details, callback) => {
-    callback({ cancel: !details.url.startsWith('profer-plugin://') })
+    callback({ cancel: !details.url.startsWith('cdut-plugin://') })
   })
 }
 
 /** 返回插件专用 session，并确保协议 handler 与守卫已注册（幂等）。 */
 export function ensurePluginSession(pluginId: string): Session {
-  const partition = `profer-plugin-${pluginId}`
+  const partition = `cdut-plugin-${pluginId}`
   const pluginSession = electronSession.fromPartition(partition, { cache: false })
   if (!guardedPartitions.has(partition)) {
     installSessionGuards(pluginSession)
     guardedPartitions.add(partition)
   }
   if (!protocolPartitions.has(partition)) {
-    pluginSession.protocol.handle('profer-plugin', (request) => {
+    pluginSession.protocol.handle('cdut-plugin', (request) => {
       try {
         return pluginResourceResponse(request, pluginId, resolveInstalledPluginRoot(pluginId))
       } catch {

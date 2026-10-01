@@ -2420,7 +2420,7 @@ export function registerIpcHandlers(): void {
     }
   )
 
-  // 获取自定义音效的文件 URL（使用 profer-file:// 协议，renderer 可安全加载）
+  // 获取自定义音效的文件 URL（使用 cdut-file:// 协议，renderer 可安全加载）
   ipcMain.handle(
     NOTIFICATION_SOUND_IPC_CHANNELS.GET_URL,
     async (_, fileName: string): Promise<string> => {
@@ -2688,7 +2688,7 @@ export function registerIpcHandlers(): void {
       // 未显式指定预设时继承该工作区默认预设，保证快捷新建/协作子会话/机器人桥等入口统一行为
       const workspaceSlug = workspaceId ? getAgentWorkspace(workspaceId)?.slug : undefined
       const effectivePresetId = presetId ?? getDefaultPresetId(workspaceSlug)
-      const session = createAgentSession(title, channelId, workspaceId, modelId, getSettings().agentRuntime ?? 'claude', false, effectivePresetId)
+      const session = createAgentSession(title, channelId, workspaceId, modelId, getSettings().agentRuntime ?? 'pi', false, effectivePresetId)
       feishuBridgeManager.ensureSessionMirror(session).catch((error) => {
         console.error('[飞书 Session 镜像] 新会话建群失败:', error)
       })
@@ -2859,7 +2859,7 @@ export function registerIpcHandlers(): void {
     AGENT_IPC_CHANNELS.ENSURE_PROJECT_DRAFT_SESSION,
     async (_, workspaceId: string, channelId?: string, modelId?: string): Promise<AgentSessionMeta> => {
       if (!getAgentWorkspace(workspaceId)) throw new Error('项目不存在')
-      return ensureProjectDraftAgentSession(workspaceId, channelId, modelId, getSettings().agentRuntime ?? 'claude')
+      return ensureProjectDraftAgentSession(workspaceId, channelId, modelId, getSettings().agentRuntime ?? 'pi')
     },
   )
 
@@ -4960,7 +4960,7 @@ export function registerIpcHandlers(): void {
     },
   )
 
-  // 仅解析文件路径（供 PDF/图片等用 profer-file:// 加载）
+  // 仅解析文件路径（供 PDF/图片等用 cdut-file:// 加载）
   ipcMain.handle(
     'file:resolve-path',
     async (_, filePath: string, access?: FileAccessOptions | string[]): Promise<ResolvedFileUrl | null> => {
@@ -5000,7 +5000,7 @@ export function registerIpcHandlers(): void {
   )
 
   // 为 HTML 预览注册所在目录，使相对 CSS、脚本和图片资源保持可加载。
-  // 返回的仍是 token-gated profer-file URL，不向渲染进程泄露本机绝对路径。
+  // 返回的仍是 token-gated cdut-file URL，不向渲染进程泄露本机绝对路径。
   ipcMain.handle(
     'file:resolve-html-preview-path',
     async (_, filePath: string, access?: FileAccessOptions | string[]): Promise<ResolvedFileUrl | null> => {
@@ -5071,7 +5071,7 @@ export function registerIpcHandlers(): void {
     }
   )
 
-  // 注册文件路径到 profer-file:// 协议（只读预览）
+  // 注册文件路径到 cdut-file:// 协议（只读预览）
   // 授权根内直接放行；根外按只读预览策略校验（系统/凭据敏感位置仍拒绝）。
   ipcMain.handle(
     'file:register-preview-path',

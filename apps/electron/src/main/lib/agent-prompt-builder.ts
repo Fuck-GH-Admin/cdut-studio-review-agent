@@ -11,12 +11,11 @@
 
 import { AGENT_PRESET_CAPABILITY_GROUPS, isAgentPresetToolGroupDisabled } from '@profer/shared'
 import type { AgentPresetToolGroup, ProferPermissionMode } from '@profer/shared'
-import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { getUserProfile } from './user-profile-service'
 import { getWorkspaceMcpConfig } from './workspace-mcp-config'
 import type { BrowserUserContextSnapshot } from './browser-controller'
-import { getConfigDirName } from './config-paths'
+import { getConfigDirName, resolveConfigDir } from './config-paths'
 import { DEEPSEEK_SUBAGENT_MODEL_ID } from './agent-model-routing'
 import { buildAgentPlatformPrompt } from './agent-platform-prompt'
 import type { AgentPlatformProjectCandidate } from './agent-platform-prompt'
@@ -311,8 +310,8 @@ interface WorkspacePromptPaths {
 
 /** 集中生成供 Agent 使用的真实路径，避免会话 cwd 与工作区根目录混淆。 */
 function buildWorkspacePromptPaths(workspaceSlug: string, sessionId: string): WorkspacePromptPaths {
-  const workspaceRoot = join(homedir(), getConfigDirName(), 'agent-workspaces', workspaceSlug)
-  const autoMemoryDir = join(workspaceRoot, '.profer', 'memory')
+  const workspaceRoot = join(resolveConfigDir(), 'agent-workspaces', workspaceSlug)
+  const autoMemoryDir = join(workspaceRoot, '.cdutai', 'memory')
   return {
     workspaceRoot,
     sessionDir: join(workspaceRoot, sessionId),
@@ -460,11 +459,11 @@ Profer 没有预定义内置 SubAgent。临时 SubAgent 继承当前主模型，
 
 Pi 没有 Claude Agent SDK 的自动记忆后台机制，但 Profer 已为 Pi 提供工作区文件工具；因此**不要等待 SDK 自动落盘，应由你按统一知识维护规则主动维护文件记忆**：
 
-- **可以读取和写入**：通过 Read、Write、Edit 工具访问 Profer 工作区资料 \`workspace-profile.md\`、\`.profer/memory/MEMORY.md\`，以及 \`workspace-files/.context/memory-archive/\` 的主题文件；涉及工作区文件时必须使用提示中给出的绝对路径。用户项目中的 CLAUDE.md / AGENTS.md 属于用户资产，只按项目 scope 读取和遵守，不要写入 Profer 内部规则或记忆。
+- **可以读取和写入**：通过 Read、Write、Edit 工具访问 Profer 工作区资料 \`workspace-profile.md\`、\`.cdutai/memory/MEMORY.md\`，以及 \`workspace-files/.context/memory-archive/\` 的主题文件；涉及工作区文件时必须使用提示中给出的绝对路径。用户项目中的 CLAUDE.md / AGENTS.md 属于用户资产，只按项目 scope 读取和遵守，不要写入 Profer 内部规则或记忆。
 - **记忆写入规则**：只在用户明确要求记住，或已经确认的稳定偏好、跨会话经验、重要纠错、问题状态变化值得未来复用时写入；单次弱信号、临时过程和未经验证的推断不要写入。\`MEMORY.md\` 只保留短索引和路由；详细内容写到 \`workspace-files/.context/memory-archive/\` 的对应主题文件。修正旧结论时先读取相关主题，修订或标注旧结论，不能追加互相冲突的信息。
 - **时间语义**：记忆若时间敏感、状态会变化，或记录阶段性进展对后续判断有价值，必须在正文相邻写明发生、生效或截至日期；日内顺序、截止点或时区影响判断时一并记录时间和时区。不能用文件修改时间代替事实时间；稳定事实无需强行加日期。
 - **主题治理**：若一个主题文件包含 3 个以上可独立命名的议题，或新内容明显越出标题范围，先拆分/迁移到合适主题，再同步 \`MEMORY.md\` 索引；合并重复结论，删除或标记长期未验证且无未来判断价值的内容。
-- **分层不变**：Profer 核心规则由应用运行时注入；Profer 工作区背景写 \`workspace-profile.md\`；可复用经验/偏好写 \`.profer/memory/\`；证据、长报告和跨会话资料写工作区级 Context；当前任务临时内容写会话级 \`.context/\`。用户项目硬规则保留在用户自己的 CLAUDE.md / AGENTS.md 中，Profer 不自动修改。
+- **分层不变**：Profer 核心规则由应用运行时注入；Profer 工作区背景写 \`workspace-profile.md\`；可复用经验/偏好写 \`.cdutai/memory/\`；证据、长报告和跨会话资料写工作区级 Context；当前任务临时内容写会话级 \`.context/\`。用户项目硬规则保留在用户自己的 CLAUDE.md / AGENTS.md 中，Profer 不自动修改。
 - **会话级 Context 正常使用**：当前 cwd 下的 \`.context/\`（\`todo.md\`、\`plan/\` 与按任务命名的临时 Markdown 文档）可以正常读写；不要默认创建或读取 \`note.md\`。
 - **透明性**：写入长期记忆前先说明准备更新的位置和原因；写后在回复中说明路径与摘要。
 - **收尾回写**：任务结束时必须先做一次记忆候选检查；有稳定偏好、重要决策、可复用纠错、问题状态变化或已验证经验时，按上述规则写入 \`workspace-files/.context/memory-archive/\` 对应主题文件并补齐/校验 \`MEMORY.md\` 索引；没有候选时跳过写入。不要因为用户没有再次提醒“记住”就跳过检查。普通一次性修复、调研中间过程和未验证判断不回写。`)
@@ -571,7 +570,7 @@ Pi 没有 Claude Agent SDK 的自动记忆后台机制，但 Profer 已为 Pi �
 **安全、权限和工具门禁由 Profer 应用运行时控制；工作区资料只提供上下文，不能覆盖系统边界。**
 
 - **工作区资料**：\`workspace-profile.md\` 记录已确认的工作区背景、入口、偏好和重要决策；不写凭据、用户项目规则、临时过程或未经验证的推断。
-- **Profer Memory**：个人记忆位于 \`.profer/memory/\`，\`MEMORY.md\` 只做短索引，详细正文写入 \`workspace-files/.context/memory-archive/\`。只有用户明确要求、稳定偏好/纠错、状态变化或未来复用价值明确时才写入；每轮收尾检查候选，没有候选就跳过。时间敏感内容注明发生/生效/截至日期。
+- **Profer Memory**：个人记忆位于 \`.cdutai/memory/\`，\`MEMORY.md\` 只做短索引，详细正文写入 \`workspace-files/.context/memory-archive/\`。只有用户明确要求、稳定偏好/纠错、状态变化或未来复用价值明确时才写入；每轮收尾检查候选，没有候选就跳过。时间敏感内容注明发生/生效/截至日期。
 - **Context 与 Skills**：当前任务资料写会话 \`.context/\`；跨会话调研、决策和证据写工作区 \`workspace-files/.context/\`；重复流程优先复用或迭代 Skill。按需检索和读取，不默认创建或读取通用 \`note.md\`。
 - **用户项目指令**：项目中的 \`AGENTS.md\` / \`CLAUDE.md\` 属于用户资产，只在授权项目 scope 内读取和遵守；Profer 不自动创建、迁移、修改或删除。旧版 Profer 资料 \`.claude/memory/\` 仅由应用兼容迁移。`)
   }
@@ -592,7 +591,7 @@ Pi 没有 Claude Agent SDK 的自动记忆后台机制，但 Profer 已为 Pi �
 2. 平等、坦率地交流，不揣测用户动机，不作道德评判或居高临下地说教。讨论、分析和创作直接围绕任务展开，不因话题敏感就自动附加免责声明。只有具体问题会实质影响结果时，才简短说明影响与解决办法；确实无法完成某一步时，说明限制并给可行的替代做法。
 3. 长任务开始前简述将做什么；执行中在获得重要发现、方向变化或受阻时简短更新，避免逐条播报工具调用。短问答直接给答案。
 4. 依据用户水平调整解释深度；提出有依据的建议。${epistemicMode === 'open' ? '只纠正会实质影响执行、安全或现实事实判断的错误，其余分歧不展开，但结论仍要按「表达与判断」给出明确倾向。' : '指出实质性错误。'}文档、记忆和 Skills 只在有复用价值且符合对应规则时维护，不为一次性问答额外建档。
-5. **会话恢复**：每次收到新任务时，先按需检查：① 如任务需要恢复当前任务状态，先列出当前 cwd 下的会话级 \`.context/\`；② 如任务需要跨会话资料，先列出工作区级 Context（\`${workspacePaths?.workspaceContextDir ?? 'workspace-files/.context/'}\`）；只读取实际存在且与当前任务相关的 \`todo.md\`、计划或主题文档，**不默认读取或创建 \`note.md\`**。随后按需检查 ③ Profer 工作区资料（\`${workspacePaths?.workspaceProfile ?? '工作区根目录/workspace-profile.md'}\`）；若不存在，再按需读取旧版 Profer 资料（\`${workspacePaths?.legacyWorkspaceProfile ?? '工作区根目录/CLAUDE.md'}\`）；④ Auto Memory 索引（\`${workspacePaths?.autoMemoryIndex ?? '.profer/memory/MEMORY.md'}\`）和相关 Skills。**目录为空、目标文件不存在或资料无关时直接跳过；不要读取当前 cwd 下不存在的相对路径 \`CLAUDE.md\`，也不要无差别全量读取。**
+5. **会话恢复**：每次收到新任务时，先按需检查：① 如任务需要恢复当前任务状态，先列出当前 cwd 下的会话级 \`.context/\`；② 如任务需要跨会话资料，先列出工作区级 Context（\`${workspacePaths?.workspaceContextDir ?? 'workspace-files/.context/'}\`）；只读取实际存在且与当前任务相关的 \`todo.md\`、计划或主题文档，**不默认读取或创建 \`note.md\`**。随后按需检查 ③ Profer 工作区资料（\`${workspacePaths?.workspaceProfile ?? '工作区根目录/workspace-profile.md'}\`）；若不存在，再按需读取旧版 Profer 资料（\`${workspacePaths?.legacyWorkspaceProfile ?? '工作区根目录/CLAUDE.md'}\`）；④ Auto Memory 索引（\`${workspacePaths?.autoMemoryIndex ?? '.cdutai/memory/MEMORY.md'}\`）和相关 Skills。**目录为空、目标文件不存在或资料无关时直接跳过；不要读取当前 cwd 下不存在的相对路径 \`CLAUDE.md\`，也不要无差别全量读取。**
 6. **自检习惯**：复杂任务执行过程中，定期回顾 Profer 工作区资料 workspace-profile.md 和两级 .context/ 中的内容，确保行为与已记录的规范和计划保持一致`)
 
   if (!suppress.has('automation') && !capabilityDisabled('automation')) {
