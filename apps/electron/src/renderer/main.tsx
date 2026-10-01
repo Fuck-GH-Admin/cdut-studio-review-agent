@@ -249,10 +249,10 @@ function AgentSettingsInitializer(): null {
 
       const channelIds = new Set(channels.map((c) => c.id))
 
-      // 验证 Chat 模式的全局默认模型（localStorage 持久化的可能指向已删除渠道）
+      // 验证全局默认模型（localStorage 持久化的可能指向已删除渠道）
       const chatModel = store.get(selectedModelAtom)
       if (chatModel && !hasEnabledModel(channels, chatModel)) {
-        console.warn('[AgentSettings] Chat selectedModel 指向已删除、停用或无效的模型配置，清除')
+        console.warn('[AgentSettings] selectedModel 指向已删除、停用或无效的模型配置，清除')
         store.set(selectedModelAtom, null)
       }
 

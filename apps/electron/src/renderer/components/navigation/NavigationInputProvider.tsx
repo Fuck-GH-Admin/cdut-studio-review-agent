@@ -13,7 +13,7 @@ function keyboardAction(event: KeyboardEvent): NavigationAction | null {
   return null
 }
 
-/** 当前激活输入框的 ProseMirror（Agent 或 Chat） */
+/** 当前激活输入框的 ProseMirror（Agent） */
 function focusInput(): boolean {
   const mirror = document.querySelector<HTMLElement>(
     '[data-input-mode="agent"] .ProseMirror, [data-input-mode="chat"] .ProseMirror',
@@ -33,7 +33,7 @@ function isFocusedInInput(): boolean {
     || Boolean(active.closest('.ProseMirror'))
 }
 
-/** 聚焦当前激活输入框底部工具栏（Agent 或 Chat 的 InputToolbarOverflow） */
+/** 聚焦当前激活输入框底部工具栏（InputToolbarOverflow） */
 function focusToolbar(): boolean {
   const toolbar = document.querySelector<HTMLElement>(
     '[data-input-mode="agent"] [data-profer-navigation-region="toolbar"], [data-input-mode="chat"] [data-profer-navigation-region="toolbar"]',
@@ -220,7 +220,7 @@ export function NavigationInputProvider(): null {
       const direction = action as Extract<NavigationAction, 'previous' | 'next' | 'left' | 'right'>
       const region = origin.closest<HTMLElement>('[data-profer-navigation-region]')
       if (!region) return false
-      // 模式切换器：左右切 Agent/Chat（放行给 ModeSwitcher）；向下离开模式区进下方新建按钮；
+      // 模式切换器（现为静态 Agent 标识）：向下离开模式区进下方新建按钮；
       // 向上到标题栏（用户要求 mode 也能“上得去”）。
       if (region.dataset.proferNavigationRegion === 'mode-switcher') {
         if (action === 'next') {
@@ -286,7 +286,7 @@ export function NavigationInputProvider(): null {
           if (isFocusedInInput()) focusToolbar()
           else focusInput()
         } else if (action === 'left' || action === 'right') {
-          // 在 mode 区：Alt+左右 = 直接切换 Agent↔Chat（交给 ModeSwitcher）；
+          // 在 mode 区：Alt+左右放行（模式切换已移除，仅剩静态 Agent 标识）；
           // 在别处：Alt+←=project、Alt+→=右栏。
           const target = event.target
           const inMode = target instanceof HTMLElement
