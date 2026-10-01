@@ -10,7 +10,6 @@ import { PanelLeftOpen, Bot, Plus, Search, CalendarDays, Blocks } from 'lucide-r
 import { cn } from '@/lib/utils'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/tooltip'
 import { CollapsedWorkspacePopover } from '@/components/agent/CollapsedWorkspacePopover'
-import { SidebarBalanceBar } from '@/components/app-shell/SidebarBalanceBar'
 import { UserAvatar } from '@/components/shared/UserAvatar'
 import { SidebarWindowDragStrip, SIDEBAR_DRAG_STRIP_HEIGHT } from './navigation-items'
 import { RailRecentButton } from './session-items'
@@ -205,10 +204,6 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
 
         {/* 用户头像（点击打开设置） */}
         <div className="pt-3 pb-3">
-          {/* 余额图标（仅代管模式显示） */}
-          <div className="px-1 pb-2">
-            <SidebarBalanceBar collapsed />
-          </div>
           <Tooltip>
             <TooltipTrigger asChild>
               <button

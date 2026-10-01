@@ -1435,7 +1435,8 @@ function ErrorMessage({ message, onRetry, onRetryInNewSession, onCompact }: Erro
         setSettingsOpen(true)
         break
       case 'open_credits':
-        setSettingsTab('credits')
+        // 积分体系已移除，402 类错误引导到渠道设置检查配置
+        setSettingsTab('channels')
         setSettingsOpen(true)
         break
       case 'select_model':

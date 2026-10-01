@@ -20,8 +20,6 @@ import {
   X,
   Keyboard,
   Users,
-  Coins,
-  CreditCard,
   Database,
   Network,
   UserRound,
@@ -60,8 +58,6 @@ import { BotHubSettings } from "./BotHubSettings";
 import { ShortcutSettings } from "./ShortcutSettings";
 import { DataManagementSettings } from "./DataManagementSettings";
 import { TeamWorkspaceSettings } from "./TeamWorkspaceSettings";
-import { CreditsSettings } from "./CreditsSettings";
-import { SubscriptionSettings } from "./SubscriptionSettings";
 import { OpenApiSettings } from "./OpenApiSettings";
 import { ProxySettings } from "./ProxySettings";
 import { PluginSettings } from "./PluginSettings";
@@ -85,8 +81,6 @@ export interface SettingsTabGroup {
 /** 账户：身份、额度、订阅和团队能力。开放 API 暂不开放入口。 */
 const ACCOUNT_GROUP_ITEMS: SettingsTabItem[] = [
   { id: "account", label: "账户与资料", icon: <UserRound size={16} /> },
-  { id: "credits", label: "额度与用量", icon: <Coins size={16} /> },
-  { id: "subscription", label: "订阅方案", icon: <CreditCard size={16} /> },
   ...(TEAM_WORKSPACE_UI_ENABLED
     ? [{ id: "team" as const, label: "团队管理", icon: <Users size={16} /> }]
     : []),
@@ -135,11 +129,7 @@ const PLUGIN_SYSTEM_ITEM: SettingsTabItem = {
 };
 
 /** 依赖团队账号登录的 Tab（未登录时不展示） */
-const AUTH_REQUIRED_TABS: ReadonlySet<SettingsTab> = new Set([
-  "credits",
-  "subscription",
-  "team",
-]);
+const AUTH_REQUIRED_TABS: ReadonlySet<SettingsTab> = new Set(["team"]);
 
 /** 根据标签页 id 渲染对应内容 */
 function renderTabContent(tab: SettingsTab): React.ReactElement {
@@ -172,10 +162,6 @@ function renderTabContent(tab: SettingsTab): React.ReactElement {
       return <PluginSettings />;
     case "team":
       return <TeamWorkspaceSettings />;
-    case "credits":
-      return <CreditsSettings />;
-    case "subscription":
-      return <SubscriptionSettings />;
     // 开放 API 暂无导航入口；保留渲染分支以兼容既有内部跳转和后续恢复。
     case "openapi":
       return <OpenApiSettings />;

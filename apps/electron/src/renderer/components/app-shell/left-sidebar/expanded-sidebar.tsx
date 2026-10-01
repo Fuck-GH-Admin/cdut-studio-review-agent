@@ -11,7 +11,6 @@ import { cn } from '@/lib/utils'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/tooltip'
 import { Popover, PopoverTrigger, PopoverContent } from '@profer/ui/primitives/popover'
 import { ModeSwitcher } from '../ModeSwitcher'
-import { SidebarBalanceBar } from '@/components/app-shell/SidebarBalanceBar'
 import { UserAvatar } from '@/components/shared/UserAvatar'
 import { SidebarWindowDragStrip, SIDEBAR_DRAG_STRIP_HEIGHT, AutomationSidebarEntry, SkillsSidebarEntry, renderWorkspaceSortIcon } from './navigation-items'
 import { ConversationItem, AgentSessionItem, RelatedChildSessionItem, AgentProjectGroupItem, PINNED_SESSION_MAX_HEIGHT, getSessionLeftAccent } from './session-items'
@@ -684,9 +683,6 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
 
       {/* 底部：用户资料 + 设置入口 */}
       <div className="px-3 pb-3 space-y-1.5">
-
-        {/* 余额条（仅代管模式显示） */}
-        <SidebarBalanceBar />
 
         <button
           onClick={() => setSettingsOpen(true)}
