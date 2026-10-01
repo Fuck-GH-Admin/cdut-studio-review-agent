@@ -26,7 +26,7 @@ import {
   teamWorkspaceLayoutModeAtom,
 } from '@/atoms/agent-atoms'
 import { TabContent } from '@/components/tabs/TabContent'
-import { CompactModelSelectorCtx } from '@/components/chat/ModelSelector'
+import { CompactModelSelectorCtx } from '@/components/shared/ModelSelector'
 import { tabsAtom, activeTabIdAtom, openTab } from '@/atoms/tab-atoms'
 import { appModeAtom } from '@/atoms/app-mode'
 import { currentConversationIdAtom } from '@/atoms/chat-atoms'

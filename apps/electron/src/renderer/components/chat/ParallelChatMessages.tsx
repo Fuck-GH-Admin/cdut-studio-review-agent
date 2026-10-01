@@ -12,7 +12,8 @@
 import { Fragment, useMemo, useRef, useEffect } from 'react'
 import { useAtomValue } from 'jotai'
 import { Loader2 } from 'lucide-react'
-import { ChatMessageItem, formatMessageTime } from './ChatMessageItem'
+import { ChatMessageItem } from './ChatMessageItem'
+import { formatMessageTime } from '@/lib/format-time'
 import type { InlineEditSubmitPayload } from './ChatMessageItem'
 import { ContextDivider } from '@/components/ai-elements/context-divider'
 import {

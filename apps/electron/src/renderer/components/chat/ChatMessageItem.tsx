@@ -30,11 +30,11 @@ import {
   ReasoningTrigger,
   ReasoningContent,
 } from '@/components/ai-elements/reasoning'
-import { CopyButton } from './CopyButton'
+import { CopyButton } from '@/components/shared/CopyButton'
 import { MigrateToAgentButton } from './MigrateToAgentButton'
 import { DeleteMessageDialog } from './DeleteMessageDialog'
 import { InlineEditForm } from './InlineEditForm'
-import { UserAvatar } from './UserAvatar'
+import { UserAvatar } from '@/components/shared/UserAvatar'
 import { getModelLogo, resolveModelDisplayName, resolveModelProvider } from '@/lib/model-logo'
 import { userProfileAtom } from '@/atoms/user-profile'
 import { channelsAtom } from '@/atoms/chat-atoms'
@@ -73,27 +73,7 @@ function QuotedContextChip({ quote }: { quote: ParsedQuotedSelectionRef }): Reac
   )
 }
 
-/**
- * 格式化消息时间（简略写法）
- * - 今年：02/12 14:30
- * - 跨年：2025/02/12 14:30
- */
-export function formatMessageTime(timestamp: number): string {
-  const date = new Date(timestamp)
-  const now = new Date()
-
-  const hh = date.getHours().toString().padStart(2, '0')
-  const mm = date.getMinutes().toString().padStart(2, '0')
-  const month = (date.getMonth() + 1).toString().padStart(2, '0')
-  const day = date.getDate().toString().padStart(2, '0')
-  const time = `${hh}:${mm}`
-
-  if (date.getFullYear() === now.getFullYear()) {
-    return `${month}/${day} ${time}`
-  }
-
-  return `${date.getFullYear()}/${month}/${day} ${time}`
-}
+import { formatMessageTime } from '@/lib/format-time'
 
 interface ChatMessageItemProps {
   /** 消息数据 */

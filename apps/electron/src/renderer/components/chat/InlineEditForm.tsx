@@ -11,7 +11,7 @@
 import * as React from 'react'
 import { Paperclip, SendHorizontal, X } from 'lucide-react'
 import { MessageAction } from '@/components/ai-elements/message'
-import { AttachmentPreviewItem } from './AttachmentPreviewItem'
+import { AttachmentPreviewItem } from '@/components/shared/AttachmentPreviewItem'
 import { cn } from '@/lib/utils'
 import type { ChatMessage, FileAttachment } from '@profer/shared'
 import { MAX_ATTACHMENT_SIZE } from '@profer/shared'

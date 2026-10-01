@@ -25,7 +25,7 @@ import {
 } from '@profer/ui/primitives/select'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/tooltip'
 import { Popover, PopoverTrigger, PopoverContent } from '@profer/ui/primitives/popover'
-import { ModelSelector } from '@/components/chat/ModelSelector'
+import { ModelSelector } from '@/components/shared/ModelSelector'
 import {
   automationFormAtom,
   automationsAtom,

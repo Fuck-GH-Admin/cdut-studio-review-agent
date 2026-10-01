@@ -12,7 +12,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/t
 import { Popover, PopoverTrigger, PopoverContent } from '@profer/ui/primitives/popover'
 import { ModeSwitcher } from '../ModeSwitcher'
 import { SidebarBalanceBar } from '@/components/app-shell/SidebarBalanceBar'
-import { UserAvatar } from '@/components/chat/UserAvatar'
+import { UserAvatar } from '@/components/shared/UserAvatar'
 import { SidebarWindowDragStrip, SIDEBAR_DRAG_STRIP_HEIGHT, AutomationSidebarEntry, SkillsSidebarEntry, renderWorkspaceSortIcon } from './navigation-items'
 import { ConversationItem, AgentSessionItem, RelatedChildSessionItem, AgentProjectGroupItem, PINNED_SESSION_MAX_HEIGHT, getSessionLeftAccent } from './session-items'
 import { WORKSPACE_SORT_LABEL } from './sidebar-utils'
