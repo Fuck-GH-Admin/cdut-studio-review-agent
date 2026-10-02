@@ -63,7 +63,7 @@ export function resolveConfigDir(): string {
 export function toDisplayPath(absolutePath: string): string {
   const home = homedir()
   const prefix = `${home}${sep}`
-  return absolutePath.startsWith(prefix) ? `~/${absolutePath.slice(prefix.length)}` : absolutePath
+  return absolutePath.startsWith(prefix) ? `~/${absolutePath.slice(prefix.length).replace(/\\/g, '/')}` : absolutePath
 }
 
 /**

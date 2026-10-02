@@ -3,6 +3,11 @@ import { createBashToolDefinition } from '@earendil-works/pi-coding-agent'
 import { createControlledLocalBashOperations, wrapToolWithPermission } from './adapters/pi-agent-adapter'
 import { createToolFact } from './pi-harness/tool-facts'
 import { createCommandExecutionLedger } from './pi-execution-ledger'
+import { detectGitBashWindows } from './git-detector'
+
+const testShell = process.platform === 'win32'
+  ? detectGitBashWindows()
+  : '/bin/bash'
 
 const executionTemplate = {
   stdout: '',
@@ -12,17 +17,17 @@ const executionTemplate = {
   timedOut: false,
   aborted: false,
   durationMs: 1,
-  shell: '/bin/bash',
+  shell: testShell ?? '/bin/bash',
   cwd: process.cwd(),
   truncated: false,
 } as const
 
 describe('Pi execution correlation integration', () => {
-  test('keeps two wrapped Bash toolCallIds separate through execution ledger and Harness facts', async () => {
+  test.skipIf(!testShell)('keeps two wrapped Bash toolCallIds separate through execution ledger and Harness facts', async () => {
     const ledger = createCommandExecutionLedger()
     const operations = createControlledLocalBashOperations(
       'pi-execution-correlation-test',
-      '/bin/bash',
+      testShell!,
       (toolCallId, result) => ledger.set(toolCallId, result),
     )
     const rawTool = createBashToolDefinition(process.cwd(), { operations })
@@ -43,8 +48,8 @@ describe('Pi execution correlation integration', () => {
 
     const firstExecution = ledger.get('tool-first')
     const secondExecution = ledger.get('tool-second')
-    expect(firstExecution).toMatchObject({ stdout: 'first', exitCode: 3, shell: '/bin/bash' })
-    expect(secondExecution).toMatchObject({ stdout: 'second', exitCode: 0, shell: '/bin/bash' })
+    expect(firstExecution).toMatchObject({ stdout: 'first', exitCode: 3, shell: testShell })
+    expect(secondExecution).toMatchObject({ stdout: 'second', exitCode: 0, shell: testShell })
     expect(ledger.get('tool-missing')).toBeUndefined()
 
     const firstFact = createToolFact(

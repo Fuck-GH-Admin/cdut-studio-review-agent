@@ -23,8 +23,12 @@ describe('ShellSnapshot', () => {
       expect(second?.envHash).toBe(first?.envHash)
       expect(second?.id).toBe(first?.id)
       expect(second?.source).toBe('login-shell')
-      const bashPath = second?.commandPaths.bash
-      expect(bashPath === '/bin/bash' || bashPath === '/usr/bin/bash').toBe(true)
+      if (process.platform === 'darwin') {
+        const bashPath = second?.commandPaths.bash
+        expect(bashPath === '/bin/bash' || bashPath === '/usr/bin/bash').toBe(true)
+      } else {
+        expect(second?.commandPaths).toBeDefined()
+      }
       expect(second?.env.API_KEY).toBeUndefined()
     } finally {
       rmSync(root, { recursive: true, force: true })

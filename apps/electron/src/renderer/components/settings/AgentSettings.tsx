@@ -18,7 +18,6 @@ const EFFORT_OPTIONS: { value: AgentEffort; label: string }[] = [
   { value: 'low', label: '低' },
   { value: 'medium', label: '中' },
   { value: 'high', label: '高' },
-  { value: 'max', label: '最大' },
 ]
 
 export function AgentSettings(): React.ReactElement {
@@ -36,7 +35,7 @@ export function AgentSettings(): React.ReactElement {
         <SettingsCard>
           <SettingsSegmentedControl
             label="思考强度"
-            description="控制 Agent 推理深度。低强度响应更快，高强度更适合复杂任务（仅 Claude Opus 4.6+ 支持 max）"
+            description="控制 Agent 推理深度。低强度响应更快，高强度更适合复杂任务"
             value={effort ?? 'high'}
             onValueChange={handleEffortChange}
             options={EFFORT_OPTIONS}

@@ -52,7 +52,6 @@ import { AccountSettings } from "./AccountSettings";
 import { AppearanceSettings } from "./AppearanceSettings";
 import { AboutSettings } from "./AboutSettings";
 import { AgentSettings } from "./AgentSettings";
-import { PromptSettings } from "./PromptSettings";
 import { BotHubSettings } from "./BotHubSettings";
 import { ShortcutSettings } from "./ShortcutSettings";
 import { DataManagementSettings } from "./DataManagementSettings";
@@ -79,11 +78,10 @@ const ACCOUNT_GROUP_ITEMS: SettingsTabItem[] = [
   { id: "account", label: "账户与资料", icon: <UserRound size={16} /> },
 ];
 
-/** 模型与能力：渠道 / Agent / 提示词 / Chat 工具 */
+/** 模型与能力：渠道 / Agent */
 const MODEL_GROUP_ITEMS: SettingsTabItem[] = [
   { id: "channels", label: "模型配置", icon: <Radio size={16} /> },
   { id: "agent", label: "Agent 配置", icon: <Plug size={16} /> },
-  { id: "prompts", label: "提示词管理", icon: <BookOpen size={16} /> },
 ];
 
 /** 体验：外观 / 快捷键 */
@@ -128,8 +126,6 @@ function renderTabContent(tab: SettingsTab): React.ReactElement {
       return <AccountSettings />;
     case "channels":
       return <ChannelSettings />;
-    case "prompts":
-      return <PromptSettings />;
     case "agent":
       return <AgentSettings />;
     case "appearance":

@@ -6,17 +6,13 @@
 
 import * as React from 'react'
 import { useAtom } from 'jotai'
-import { Camera, ImagePlus, LogIn, LogOut, RefreshCw, Loader2 } from 'lucide-react'
-import { toast } from 'sonner'
+import { Camera, ImagePlus } from 'lucide-react'
 import Picker from '@emoji-mart/react'
 import data from '@emoji-mart/data'
 import { SettingsSection, SettingsCard } from './primitives'
 import { Popover, PopoverTrigger, PopoverContent } from '@profer/ui/primitives/popover'
 import { UserAvatar } from '@/components/shared/UserAvatar'
 import { userProfileAtom } from '@/atoms/user-profile'
-import { authStatusAtom } from '@/atoms/identity-atoms'
-import { LoginDialog } from '@/components/auth/LoginDialog'
-import { DevicesSettings } from './DevicesSettings'
 import { cn } from '@/lib/utils'
 
 interface EmojiMartEmoji {
@@ -30,9 +26,6 @@ interface EmojiMartEmoji {
 
 export function AccountSettings(): React.ReactElement {
   const [userProfile, setUserProfile] = useAtom(userProfileAtom)
-  const [authStatus, setAuthStatus] = useAtom(authStatusAtom)
-  const [loginOpen, setLoginOpen] = React.useState(false)
-  const [refreshing, setRefreshing] = React.useState(false)
   const [isEditingName, setIsEditingName] = React.useState(false)
   const [nameInput, setNameInput] = React.useState(userProfile.userName)
   const [showEmojiPicker, setShowEmojiPicker] = React.useState(false)
@@ -83,36 +76,7 @@ export function AccountSettings(): React.ReactElement {
     }
   }
 
-  const handleRefreshAuth = async (): Promise<void> => {
-    setRefreshing(true)
-    try {
-      const status = await window.electronAPI.auth.getAuthStatus()
-      if (status.isLoggedIn) {
-        setAuthStatus({
-          isLoggedIn: true,
-          teamAccountId: status.teamAccountId,
-          teamEmail: status.teamEmail,
-        })
-        toast.success('登录状态已刷新')
-      } else {
-        toast.error('未检测到有效登录会话')
-      }
-    } catch {
-      toast.error('刷新失败，请检查网络')
-    } finally {
-      setRefreshing(false)
-    }
-  }
 
-  const handleLogout = async (): Promise<void> => {
-    try {
-      const result = await window.electronAPI.auth.logout() as unknown as ({ warning?: string } | void)
-      if (result && result.warning) toast.warning(result.warning)
-    } catch {
-      // 退出登录失败时仍更新本地状态，避免界面卡在已登录状态。
-    }
-    setAuthStatus({ isLoggedIn: false })
-  }
 
   return (
     <div className="space-y-6">
@@ -194,48 +158,6 @@ export function AccountSettings(): React.ReactElement {
           </div>
         </SettingsCard>
       </SettingsSection>
-
-      <SettingsSection title="团队账户" description="登录后可使用服务端渠道、额度和团队协作功能">
-        <SettingsCard>
-          {authStatus.isLoggedIn ? (
-            <div className="flex items-center gap-3 px-4 py-4">
-              <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
-              <span className="text-sm flex-1 truncate">{authStatus.teamEmail}</span>
-              <button
-                onClick={() => void handleRefreshAuth()}
-                disabled={refreshing}
-                className="flex items-center gap-1.5 text-[12px] text-muted-foreground hover:text-foreground transition-colors"
-                title="从服务端刷新登录状态"
-              >
-                {refreshing ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />}
-                刷新
-              </button>
-              <button
-                onClick={() => void handleLogout()}
-                className="flex items-center gap-1.5 text-[12px] text-muted-foreground hover:text-destructive transition-colors"
-              >
-                <LogOut size={13} />
-                退出登录
-              </button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-3 px-4 py-4">
-              <span className="w-2 h-2 rounded-full bg-muted-foreground/30 flex-shrink-0" />
-              <span className="text-sm text-muted-foreground flex-1">未登录</span>
-              <button
-                onClick={() => setLoginOpen(true)}
-                className="flex items-center gap-1.5 text-[12px] text-primary hover:text-primary/80 transition-colors"
-              >
-                <LogIn size={13} />
-                登录
-              </button>
-            </div>
-          )}
-        </SettingsCard>
-      </SettingsSection>
-
-      {authStatus.isLoggedIn && <DevicesSettings />}
-      <LoginDialog open={loginOpen} onOpenChange={setLoginOpen} />
     </div>
   )
 }

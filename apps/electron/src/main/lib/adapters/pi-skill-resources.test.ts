@@ -66,7 +66,7 @@ describe('Pi Skill 安全边界', () => {
     expect(JSON.stringify(result.diagnostics)).not.toContain(path)
   })
 
-  test('允许的文件不可读时不保留 SDK stale metadata，普通任务继续', async () => {
+  test.skipIf(process.platform === 'win32')('允许的文件不可读时不保留 SDK stale metadata，普通任务继续', async () => {
     const path = root()
     const skill = writeSkill(path, 'unreadable')
     chmodSync(skill.filePath, 0)

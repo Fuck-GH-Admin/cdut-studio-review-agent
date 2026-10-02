@@ -21,9 +21,9 @@ function deferred<T>() {
   return { promise, resolve }
 }
 const quietConsole = { log() {}, info() {}, warn() {}, error() {} }
-const serviceSource = readFileSync(new URL('./agent-service.ts', import.meta.url), 'utf8')
+const serviceSource = readFileSync(new URL('./agent-service.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n')
 const runAgentSource = serviceSource.slice(serviceSource.indexOf('export async function runAgent('), serviceSource.indexOf('/**\n * 无渲染进程'))
-const orchestratorSource = readFileSync(new URL('./agent-orchestrator.ts', import.meta.url), 'utf8')
+const orchestratorSource = readFileSync(new URL('./agent-orchestrator.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n')
 
 type RunOutcome = Parameters<NonNullable<AgentSendInput['onRunOutcome']>>[0]
 function serviceFixture(sendMessage: (input: AgentSendInput, callbacks: SessionCallbacks) => Promise<void>, isActive = () => false) {
@@ -68,6 +68,7 @@ function ownerFixture() {
     settlePiHarnessRun() {}, pauseActivePiHarnessRun() {},
     browserController: { cancelSession() {} }, stopDelegationsForParent() {},
     permissionService: { clearSessionPending() {} }, exitPlanService: { clearSessionPending() {} },
+    getRuntimeStatus: () => ({ shell: { gitBash: { available: true } } }),
     normalizeAgentEndReason,
     console: quietConsole,
   })

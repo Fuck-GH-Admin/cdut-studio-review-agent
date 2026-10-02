@@ -85,7 +85,7 @@ for (const engine of ENGINES) {
 
       const checkpoint = createPiFileCheckpoint('session', cwd, checkpointRoot, { mode: engine })
 
-      expect(checkpoint.files).toEqual(['.context/evidence/report.md'])
+      expect(checkpoint.files.map((f) => f.replace(/\\/g, '/'))).toEqual(['.context/evidence/report.md'])
       // 被排除的内容属于「静默排除」，不该以 skipped 形式污染回退提示
       expect(checkpoint.skipped).toEqual([])
 
@@ -98,7 +98,7 @@ for (const engine of ENGINES) {
       expect(restored.changed).not.toContain('dist/bundle.js')
       expect(restored.changed).not.toContain('LOCK')
       // git 引擎按 tree diff 精确报告（无改动即空），copy 引擎会重写全部基线文件
-      expect(restored.changed).toEqual(engine === 'git' ? [] : ['.context/evidence/report.md'])
+      expect(restored.changed.map((f) => f.replace(/\\/g, '/'))).toEqual(engine === 'git' ? [] : ['.context/evidence/report.md'])
     })
 
     test('Given a baseline file is too large to snapshot When the turn runs Then the turn still succeeds and the file survives the rewind', () => {
@@ -142,7 +142,7 @@ for (const engine of ENGINES) {
     })
 
     test('Given a directory cannot be read When snapshotting Then it is recorded as a protected subtree instead of failing the turn', () => {
-      if (typeof process.getuid === 'function' && process.getuid() === 0) return // root 无视权限位，该用例无意义
+      if (process.platform === 'win32' || (typeof process.getuid === 'function' && process.getuid() === 0)) return // root 或 Windows 无法以 0o000 限制目录读取，该用例无意义
       const root = makeTempRoot()
       const cwd = join(root, 'cwd')
       const checkpointRoot = join(root, 'checkpoints')
@@ -522,8 +522,8 @@ describe('分叉会话的基线迁移', () => {
     })
     expect(failed).toEqual([])
     const targetManifest = JSON.parse(readFileSync(adopted[first.path]!, 'utf8')) as { dir: string; commitSha: string }
-    expect(sh(`git --git-dir "${targetManifest.dir}" cat-file -e ${targetManifest.commitSha}^{commit}`, cwd)).toBe('')
-    expect(() => sh(`git --git-dir "${targetManifest.dir}" cat-file -e ${laterManifest.commitSha}^{commit}`, cwd)).toThrow()
+    expect(sh(`git --git-dir "${targetManifest.dir}" cat-file -e "${targetManifest.commitSha}^{commit}"`, cwd)).toBe('')
+    expect(() => sh(`git --git-dir "${targetManifest.dir}" cat-file -e "${laterManifest.commitSha}^{commit}"`, cwd)).toThrow()
   })
 
   test('Given a baseline is already gone When adopting Then it is reported as failed instead of silently dropped', () => {

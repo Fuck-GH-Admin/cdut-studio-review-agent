@@ -61,27 +61,56 @@ function readExeVersionInfo(exePath) {
 module.exports = async function (context) {
   if (context.electronPlatformName !== 'win32') return
 
-  const exePath = join(context.appOutDir, 'Profer.exe')
+  const productFilename = context.packager.appInfo.productFilename || 'CDUT Studio'
+  const candidateExeNames = [`${productFilename}.exe`, 'CDUT Studio.exe', 'Profer.exe']
+  let exePath = ''
+  for (const name of candidateExeNames) {
+    const candidate = join(context.appOutDir, name)
+    if (existsSync(candidate)) {
+      exePath = candidate
+      break
+    }
+  }
   const icoPath = join(context.packager.projectDir, 'resources', 'icon.ico')
-  if (!existsSync(exePath) || !existsSync(icoPath)) {
+  if (!exePath || !existsSync(icoPath)) {
     throw new Error(
-      `[afterPack] 缺少图标目标：exe=${existsSync(exePath)}，ico=${existsSync(icoPath)}。` +
-        '请确认 out 目录已生成 Profer.exe 且 resources/icon.ico 存在。',
+      `[afterPack] 缺少图标目标：exe=${Boolean(exePath)}，ico=${existsSync(icoPath)}。` +
+        `请确认 out 目录已生成 ${productFilename}.exe 且 resources/icon.ico 存在。`,
     )
   }
   if (!isValidIco(icoPath)) {
     throw new Error(`[afterPack] resources/icon.ico 不是合法的 Windows 图标文件（应 00 00 01 00 头）。`)
   }
 
+  const productName = context.packager.appInfo.productName || 'CDUT Studio'
+  const companyName = context.packager.appInfo.companyName || 'CDUT'
+
   try {
     const rcedit = findRcedit()
-    execFileSync(rcedit, [
-      exePath,
-      '--set-icon', icoPath,
-      '--set-version-string', 'ProductName', 'Profer',
-      '--set-version-string', 'FileDescription', 'Profer',
-      '--set-version-string', 'CompanyName', 'Profer Team',
-    ], { stdio: 'ignore' })
+    try {
+      execFileSync(rcedit, [
+        exePath,
+        '--set-icon', icoPath,
+        '--set-version-string', 'ProductName', productName,
+        '--set-version-string', 'FileDescription', productName,
+        '--set-version-string', 'CompanyName', companyName,
+      ], { stdio: 'ignore' })
+    } catch {
+      // 在 Windows 上，若目标 exe 被资源管理器或杀软短暂锁定，rcedit 直接写入可能报 "Unable to commit changes"。
+      // 备用策略：通过同目录临时副本打标后再原子替换回来。
+      const { copyFileSync, unlinkSync } = require('node:fs')
+      const tmpExe = `${exePath}.tmp.exe`
+      copyFileSync(exePath, tmpExe)
+      execFileSync(rcedit, [
+        tmpExe,
+        '--set-icon', icoPath,
+        '--set-version-string', 'ProductName', productName,
+        '--set-version-string', 'FileDescription', productName,
+        '--set-version-string', 'CompanyName', companyName,
+      ], { stdio: 'ignore' })
+      copyFileSync(tmpExe, exePath)
+      try { unlinkSync(tmpExe) } catch {}
+    }
   } catch (err) {
     throw new Error(`[afterPack] rcedit 打图标失败，打包已中断（避免图标回退为 electron 默认）: ${err.message || err}`)
   }
@@ -91,13 +120,13 @@ module.exports = async function (context) {
   // 此时降级为警告而非阻断打包——图标本体已由上方 rcedit 强制打到 exe，不影响主目标。
   try {
     const written = readExeVersionInfo(exePath)
-    const expected = 'Profer|Profer|Profer Team'
+    const expected = `${productName}|${productName}|${companyName}`
     if (written !== expected) {
       throw new Error(
         `exe 版本信息回读校验失败（期望 ${expected}，实际 ${written || '(无法读取)'}）`,
       )
     }
-    console.log('  [afterPack] Profer icon + metadata patched & verified')
+    console.log(`  [afterPack] ${productName} icon + metadata patched & verified`)
   } catch (err) {
     console.warn(`  [afterPack] 版本信息回读校验被跳过（不影响图标）：${err?.message || err}`)
   }

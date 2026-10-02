@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 import { toast } from 'sonner'
 import {
   SettingsSection,
@@ -15,33 +15,22 @@ import {
   SettingsRow,
   SettingsToggle,
   SettingsInput,
-  SettingsSelect,
 } from './primitives'
-import { detectIsWindows } from '@profer/ui'
-import { shortcutOverridesAtom } from '@/atoms/shortcut-atoms'
 import { settingsOpenAtom } from '@/atoms/settings-tab'
 import { coachTourOpenAtom } from '@/atoms/coach-tour-atoms'
-import { SHORTCUT_MAP } from '@/lib/shortcut-defaults'
-import { getAcceleratorDisplay, isMac } from '@/lib/shortcut-registry'
 import { Button } from '@profer/ui/primitives/button'
-import type { RuntimeStatus } from '@profer/shared'
 
 export function GeneralSettings(): React.ReactElement {
   const setSettingsOpen = useSetAtom(settingsOpenAtom)
   const setCoachTourOpen = useSetAtom(coachTourOpenAtom)
   const replayPendingRef = React.useRef(false)
-  const [shellRuntimeStatus, setShellRuntimeStatus] = React.useState<RuntimeStatus | null>(null)
   const [autoLaunch, setAutoLaunch] = React.useState(false)
   const [autoLaunchBusy, setAutoLaunchBusy] = React.useState(true)
-  const isWindows = detectIsWindows()
-  const shortcutOverrides = useAtomValue(shortcutOverridesAtom)
-  const [shellPreference, setShellPreference] = React.useState<'auto' | 'git-bash' | 'wsl'>('auto')
   const [browserHomeUrl, setBrowserHomeUrl] = React.useState('')
 
   // 加载设置
   React.useEffect(() => {
     window.electronAPI.getSettings().then((settings) => {
-      setShellPreference(settings.agentShellPreference ?? 'auto')
       setBrowserHomeUrl(settings.browserHomeUrl ?? '')
     }).catch(console.error)
 
@@ -55,10 +44,6 @@ export function GeneralSettings(): React.ReactElement {
     }).finally(() => {
       if (!cancelled) setAutoLaunchBusy(false)
     })
-
-    window.electronAPI.getRuntimeStatus().then((status) => {
-      if (status) setShellRuntimeStatus(status)
-    }).catch(() => {})
     return () => { cancelled = true }
   }, [])
 
@@ -143,26 +128,6 @@ export function GeneralSettings(): React.ReactElement {
             disabled={autoLaunchBusy}
             onCheckedChange={handleAutoLaunchChange}
           />
-
-          {isWindows && <SettingsSelect
-            label="Agent Shell 环境"
-            description="Windows 上 Agent 执行命令的 Shell。切换后新会话生效，不影响已打开的会话。"
-            value={shellPreference}
-            onValueChange={async (value) => {
-              const pref = value as 'auto' | 'git-bash' | 'wsl'
-              setShellPreference(pref)
-              try {
-                await window.electronAPI.updateSettings({ agentShellPreference: pref })
-              } catch (error) {
-                console.error('[通用设置] 更新 Shell 偏好失败:', error)
-              }
-            }}
-            options={[
-              { value: 'auto', label: '自动检测（优先 Git Bash）' },
-              { value: 'git-bash', label: `Git Bash${!shellRuntimeStatus?.shell?.gitBash?.available ? '（未检测到）' : shellRuntimeStatus?.shell?.gitBash?.version ? ` (v${shellRuntimeStatus.shell.gitBash.version})` : ''}` },
-              { value: 'wsl', label: `WSL${!shellRuntimeStatus?.shell?.wsl?.available ? '（未检测到）' : shellRuntimeStatus?.shell?.wsl?.defaultDistro ? ` (${shellRuntimeStatus.shell.wsl.defaultDistro})` : ''}` },
-            ]}
-          />}
 
           <SettingsInput
             label="新标签页默认首页"

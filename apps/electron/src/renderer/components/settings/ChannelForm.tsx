@@ -82,8 +82,8 @@ interface ChannelFormProps {
 /** 国内供应商（优先推荐） */
 const CN_PROVIDERS: ProviderType[] = ['deepseek', 'qwen', 'zhipu', 'doubao', 'kimi-api', 'kimi-coding', 'zhipu-coding', 'minimax', 'xiaomi', 'xiaomi-token-plan']
 
-/** 境外供应商 */
-const GLOBAL_PROVIDERS: ProviderType[] = ['anthropic', 'openai', 'google', 'xai', 'anthropic-compatible', 'ollama', 'custom']
+/** 境外供应商 / 兼容格式 */
+const GLOBAL_PROVIDERS: ProviderType[] = ['anthropic-compatible', 'ollama', 'custom']
 
 /** 所有可选供应商 */
 const PROVIDER_OPTIONS: ProviderType[] = [...CN_PROVIDERS, ...GLOBAL_PROVIDERS]
@@ -723,7 +723,7 @@ export function ChannelForm({ channel, onSaved, onAgentEligibilityChange, onCanc
             label="供应商名称"
             value={name}
             onChange={setName}
-            placeholder="例如: My Anthropic"
+            placeholder="例如：DeepSeek"
             required
           />
           {provider === 'xai' && (
