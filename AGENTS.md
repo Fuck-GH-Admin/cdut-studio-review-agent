@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
+This file provides guidance to Codex, Antigravity, and other AI pair programmers when working with code in this repository.
 
 **重要提示：**
 - 当功能发生变化时，请保持此文件和 `README.md` 同步更新。请更新文档以反映当前状态，但是需要经过我的允许后再修改。
@@ -8,7 +8,7 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 - 所有的依赖包的安装都要先进行搜索，综合判断依赖采用的版本，而不是默认采用某个版本。
 - 状态管理上我们全部采用 Jotai 来实现。
 - 这是个开源项目，本地存储优先，善用配置文件优于大部分默认采用 localstorage，不采用本地数据库方案。
-- 保证充分的组件化以及人类的可读性，每次完成改动后都要思考这一点，运行@code-simplifier 来简化优化代码，保持简单直接不过渡设计的风格。
+- 保证充分的组件化以及人类的可读性，每次完成改动后都要思考这一点，运行 @code-simplifier 来简化优化代码，保持简单直接不过渡设计的风格。
 - 在 UI 设计上采用更现代的方案，UI 组件推荐采用 ShadcnUI，在合适的情况下，用卡片和阴影取代边框，用符合主题的饱满色彩，设置界面要设置背景，为未来做不同主题留下空间。
 - 采用 BDD 行为驱动开发的方案。
 
@@ -16,79 +16,44 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## 项目概述
 
-Profer 是一个集成通用 AI Agent 的下一代人工智能软件，采用 Electron 桌面应用架构。脱胎于开源项目 Proma (github.com/ErlichLiu/Proma)，经深度改造而来。
+CDUT Studio 是一个集成通用 AI Agent 的下一代桌面人工智能软件，采用 Electron 桌面应用架构。核心运行时由 **Pi Coding Agent (`@earendil-works/pi-*`) 作为唯一内核驱动**。
 
-> **改名记录**：2026-06-21 从 Proma 改名为 Profer。代码包名 `@proma/*` 保持不变。
+> **项目命名**：CDUT Studio（代码内部兼容包名前缀 `@profer/*`）。
 
 ## Monorepo 结构
 
-Bun workspace monorepo：
+基于 Bun workspace 的 monorepo 结构（8 个核心包）：
 
 ```
-proma-v2/
+CDUT-Studio/
 ├── packages/
-│   ├── shared/        # 共享类型、IPC 通道常量、配置、工具函数 (v0.1.31)
-│   ├── core/          # AI Provider 适配器、代码高亮服务 (v0.2.11)
-│   ├── session-core/  # headless session 读取/分组/搜索/渲染 (v0.1.0)
-│   └── ui/            # 共享 UI 组件 (CodeBlock, MermaidBlock) (v0.1.9)
+│   ├── shared/        # 共享类型、IPC 常量、配置与权限规则 (@profer/shared)
+│   ├── agent-fabric/  # Agent 编排抽象与能力装配 (@profer/agent-fabric)
+│   ├── project-core/  # 项目级配置与上下文解析 (@profer/project-core)
+│   ├── session-core/  # headless session 读取/分组/搜索/渲染 (@profer/session-core)
+│   ├── core/          # AI Provider 适配器、代码高亮服务 (@profer/core)
+│   ├── cli/           # 独立命令行脚手架 (@profer/cli)
+│   └── ui/            # 共享 UI 组件库 (@profer/ui)
 └── apps/
-    └── electron/      # Electron 桌面应用 (v0.12.69)
+    └── electron/      # Electron 桌面应用主体 (@profer/electron)
         └── src/
             ├── main/       # 主进程 + 服务层 (main/lib/)
             ├── preload/    # IPC 上下文桥接
             └── renderer/   # React UI (Vite + Tailwind + Radix UI)
 ```
 
-**包命名规范**：`@proma/*` 作用域（`@proma/core`、`@proma/shared`、`@proma/ui`、`@proma/electron`）
-
-**依赖管理**：package.json 中使用 `workspace:*` 引用内部包
-
-### 包职责详解
-
-#### @proma/shared (v0.1.31)
-- **导出模块**：`./types`、`./config`、`./utils`、`./constants/permission-rules`
-- **关键类型**：`AgentMessage`、`ChatMessage`、`Channel`、`PermissionRequest`、`FeishuConfig`
-- **依赖**：无运行时依赖（仅 TypeScript）
-
-#### @proma/core (v0.2.11)
-- **导出模块**：`./providers`、`./highlight`、`./types`、`./utils`
-- **关键功能**：Provider 适配器注册表、代码高亮（Shiki）
-- **依赖**：`@proma/shared`、`shiki`
-- **Peer 依赖**：`@anthropic-ai/claude-agent-sdk`、`@anthropic-ai/sdk`、`@modelcontextprotocol/sdk`
-
-#### @proma/ui (v0.1.9)
-- **关键组件**：共享 React UI 组件库
-- **依赖**：`@proma/core`、`beautiful-mermaid`、`mermaid`、`shiki`
-- **Peer 依赖**：`react@^18.3.0`、`react-dom@^18.3.0`
-
-#### @proma/electron (v0.12.69)
-- **职责**：Electron 桌面应用主体，集成所有包
-- **关键依赖**：
-  - `@anthropic-ai/claude-agent-sdk@0.3.153` - Agent SDK
-  - `@larksuiteoapi/node-sdk` - 飞书集成
-  - Radix UI、TipTap、Tailwind CSS
-  - 文件解析：`pdf-parse`、`officeparser`、`word-extractor`
+**依赖管理**：内部包使用 `workspace:*` 互相引用。
 
 ## 常用命令
 
 ```bash
-# 开发模式（推荐 - Vite HMR；Electron 只启动一次，不因代码变化抢焦点重启）
+# 开发模式（推荐 - Vite HMR；Electron 只启动一次）
 bun run dev
 
-# 手动开发模式（需要分别查看 Vite / Electron 日志时）
-# 终端 1: cd apps/electron && bun run dev:vite
-# 终端 2: cd apps/electron && bun run dev:electron
-
-# 说明：renderer 修改即时由 Vite HMR 生效；main/preload 仍会持续构建到 dist，
-# 但不会自动重启 Electron。修改 main/preload 后需手动重新执行 bun run dev 才加载新代码。
-
-# 构建并运行
-bun run electron:start
-
-# 仅构建
+# 构建全量产物
 bun run electron:build
 
-# 类型检查（所有包）
+# 类型检查（全仓库 8 个包）
 bun run typecheck
 
 # 单包类型检查
@@ -276,131 +241,17 @@ bun run generate:icons    # 生成应用图标
 
 ### 渲染进程初始化组件（`renderer/main.tsx`）
 
-| 组件 | 职责 |
-|------|------|
-| `ThemeInitializer` | 从主进程加载主题设置、监听系统主题变化、同步到 DOM |
-| `AgentSettingsInitializer` | 加载 Agent 渠道/模型/工作区设置、订阅 MCP/文件变化事件 |
-| `AgentListenersInitializer` | 挂载 `useGlobalAgentListeners`，全局 Agent IPC 监听 |
-| `UpdaterInitializer` | 订阅主进程推送的自动更新状态变化事件 |
+# 架构边界检查
+bun run check:boundaries
 
-### 本地文件存储（`~/.profer/`）
+# 打包依赖闭包同步（打包前必须执行）
+bun run sync:runtime-deps
 
-```
-~/.profer/
-├── channels.json           # 渠道配置（API Key 经 safeStorage 加密）
-├── conversations.json      # 对话索引（元数据，轻量）
-├── conversations/          # 消息存储
-│   └── {uuid}.jsonl        # 每对话一个 JSONL 文件，追加写入
-├── agent-sessions.json     # Agent 会话索引
-├── agent-sessions/         # Agent 会话消息存储
-│   └── {uuid}.jsonl        # 每会话一个 JSONL 文件
-├── agent-workspaces/       # Agent 工作区目录
-│   └── {workspace-slug}/
-│       ├── {session-id}/   # 会话工作目录
-│       ├── workspace-files/# 工作区持久文件
-│       ├── mcp.json        # MCP Server 配置
-│       └── skills/         # Skills 配置目录
-├── attachments/            # 附件文件
-│   └── {conversationId}/
-│       └── {uuid}.ext
-├── user-profile.json       # 用户档案 { userName, avatar }
-├── settings.json           # 应用设置 { themeMode }
-└── sdk-config/             # Agent SDK 配置目录
-    └── projects/           # SDK 项目配置
-```
+# 验证离线运行时完整性
+bun run verify:packaged-pi-runtime
 
-**关键设计**：
-- JSON 配置 + JSONL 追加日志，无本地数据库，文件可移植
-- Agent 工作区按 slug 隔离，每个会话独立目录
-- MCP 配置和 Skills 按工作区管理
-
-## 构建工具
-
-- **主进程/Preload**：esbuild (`--bundle --platform=node --format=cjs --external:electron --external:@anthropic-ai/claude-agent-sdk`)
-- **渲染进程**：Vite + React + Tailwind CSS + HMR
-- **开发热重载**：渲染进程通过 Vite HMR 即时生效；主进程/Preload 持续 watch 构建到 dist，但默认不自动重启 Electron，避免窗口反复抢焦点。修改 main/preload 后手动重启开发版。
-- **打包分发**：electron-builder（配置见 `electron-builder.yml`）
-
-### 重要：打包配置注意事项
-
-**Agent SDK 打包要求（必须遵守）：**
-- `@anthropic-ai/claude-agent-sdk` 必须使用 `--external` 参数排除在 esbuild 打包之外
-- **0.2.113+ 架构变化**：SDK 主包已不再携带 JS CLI 入口（`cli.js`）和 `vendor/ripgrep/`，改为按平台分发 native binary（`claude` / `claude.exe`，单文件 214-252 MB），通过 `optionalDependencies` 安装到 `@anthropic-ai/claude-agent-sdk-{platform}-{arch}/` 子包
-- `apps/electron/package.json` 必须显式声明当前 CI 矩阵覆盖的平台子包为 `optionalDependencies`（darwin-arm64 / darwin-x64 / win32-x64），否则 bun workspace 不会把它们链接到 `apps/electron/node_modules/`
-- `electron-builder.yml` 的 `files` 配置要同时包含主包和所有平台子包：
-  ```yaml
-  files:
-    - dist/**/*
-    - package.json
-    - node_modules/@anthropic-ai/claude-agent-sdk/**/*
-    - node_modules/@anthropic-ai/claude-agent-sdk-darwin-arm64/**/*
-    - node_modules/@anthropic-ai/claude-agent-sdk-darwin-x64/**/*
-    - node_modules/@anthropic-ai/claude-agent-sdk-win32-x64/**/*
-    - "!node_modules/@proma/**"
-  ```
-- SDK 主包和同级平台子包会被复制到 `app/node_modules/@anthropic-ai/`，Node.js 的模块解析能从 `app/dist/main.cjs` 找到
-- `agent-orchestrator.ts` 中 `resolveSDKCliPath()` 解析到 SDK 主包入口后，沿 `..` 到 `@anthropic-ai/` 同级目录，再拼 `claude-agent-sdk-${platform}-${arch}/{claude|claude.exe}` 得到 binary 路径
-
-**跨平台打包限制：**
-- optionalDependencies 的平台子包由包管理器按 `os`/`cpu` 字段筛选：Apple Silicon runner 只会装 darwin-arm64，不会装 darwin-x64（cpu 不匹配）
-- 因此当前 CI（macos-latest + windows-latest）**不支持在单个 macOS runner 上同时打 arm64 + x64 DMG**
-- 若要发布 darwin-x64 版本，需要在 macos-13（x64 runner）单独跑一次构建
-- Windows runner 默认 x64，打 win32-x64 正常
-
-**不使用 extraResources 放 binary 的原因：**
-- `extraResources` 会将文件复制到 `Contents/Resources/` 目录，路径与 node_modules 解析不一致
-- 直接使用 `files` 配置让 Node.js 的模块解析能正确找到 SDK
-
-**修改打包配置时的检查清单：**
-1. ✅ 确认 SDK 在 esbuild 中使用 `--external` 参数
-2. ✅ 确认 SDK 主包 + 所有目标平台子包都在 `files` 配置中
-3. ✅ 确认 `apps/electron/package.json` 的 `optionalDependencies` 列出了所有目标平台子包
-4. ✅ `bun install` 后验证 `apps/electron/node_modules/@anthropic-ai/claude-agent-sdk-{platform}-{arch}/` symlink 存在且 binary 可执行
-5. ✅ 本地测试打包后的应用 Agent 功能（`CSC_IDENTITY_AUTO_DISCOVERY=false bun run dist:fast`）
-
-**其他依赖的打包策略：**
-- **原则**：只有 `electron` 和 `@anthropic-ai/claude-agent-sdk` 需要标记为 `--external`
-- `electron`：由 Electron 运行时提供，必须 external
-- `@anthropic-ai/claude-agent-sdk`：有特殊打包要求（含 214 MB native binary），必须 external + 在 files 中包含主包和平台子包
-- **所有其他依赖**（如 `electron-updater`、`undici`、`chokidar` 等）：应该让 esbuild 打包进 `main.cjs`
-  - ✅ 优点：避免遗漏子依赖，简化 electron-builder 配置
-  - ❌ 如果标记为 external：必须在 `electron-builder.yml` 的 `files` 中手动列出所有子依赖
-- **常见错误**：将普通 npm 包标记为 external 但忘记在 `files` 中包含，导致打包后找不到模块（如 `Cannot find module 'universalify'`）
-
-## 代码风格
-
-- 永远不要使用 `any` 类型 — 创建合适的 interface
-- 对象类型优先使用 interface 而不是 type
-- 尽可能使用 `import type` 进行仅类型导入
-- 注释和日志采用中文，保留专业术语
-- **路径别名**：`@/` → `apps/electron/src/renderer/`
-
-## TypeScript 配置
-
-- Module: `"Preserve"` + `"moduleResolution": "bundler"`
-- JSX: `"react-jsx"`，严格模式启用，Target: ESNext
-- 所有包 `"type": "module"`，导入时使用 `.ts` 扩展名
-
-## 版本管理
-
-提交代码时始终递增受影响包的 patch 版本（如 `0.1.18` → `0.1.19`），影响多个包则都要递增。
-
-### 默认 Skills 版本契约（`apps/electron/default-skills/`）
-
-修改任何 `default-skills/<skill>/` 内容时，**必须同步递增该 Skill `SKILL.md` frontmatter 的 `version` 字段**（patch +1）。
-
-**为什么**：`seedDefaultSkills()` 与 `upgradeDefaultSkillsInWorkspaces()` 通过 semver 比较决定是否将 bundle 中的 Skill 同步到老用户的 `~/.profer/default-skills/` 与各工作区。**version 不变 = 老用户拿不到新内容**。
-
-**早期实现曾用"无条件 cpSync"绕开这个约束**，但每次启动同步 4MB+ 文件会阻塞主进程导致启动卡顿，已恢复为 semver 比较（见 `config-paths.ts:seedDefaultSkills`、`agent-workspace-manager.ts:upgradeDefaultSkillsInWorkspaces`）。
-
-**新增 Skill 不需要先注入 default-skills 目录的旧版本**——`upgradeDefaultSkillsInWorkspaces` 会通过"目标缺失即注入"路径让所有老工作区自动获得。
-
-## Agent SDK 集成架构
-
-Agent 主界面只保留 Agent 工作流；Chat 用户模式与第三方插件宿主已移除。Claude Agent SDK 与 Pi Agent adapter 仍并存。
-
-### 核心流程
-
+# 快速本地打包（当前架构）
+cd apps/electron && bun run dist:fast
 ```
 用户输入 → agent-orchestrator.ts (SDK 编排)
   ↓
@@ -522,4 +373,47 @@ React UI 更新
 
 ## 当前裁剪状态
 
-Chat 用户模式、团队工作区 UI、积分计费 UI、远程机器人、移动端远程接入、语音输入、快速任务窗口与第三方插件宿主已从本次产品入口/实现裁剪中移除。团队/同步相关 main 服务仍有规划与数据兼容调用方，后续需单独评估后再删除。
+## 技术栈与运行时
+
+| 层级 | 技术选型 | 说明 |
+|------|----------|------|
+| **运行时** | Bun 1.2.5+ (推荐 1.4.2+) | 统一使用 Bun 代替 Node.js/pnpm 执行脚本与测试 |
+| **开发语言** | TypeScript 5.0.0+ | 严格模式，`"moduleResolution": "bundler"` |
+| **桌面框架** | Electron 43.2.0 | 主进程/Preload 由 esbuild 构建，渲染进程由 Vite 构建 |
+| **前端框架** | React 18.3.1 | 现代化函数式组件 + Hooks |
+| **状态管理** | Jotai 2.17.1 | 全局与局部状态原子化管理 |
+| **核心内核** | Pi Agent (`@earendil-works/pi-*`) | **唯一内核**，驱动代码编写、工具调用与任务执行 |
+| **UI 体系** | Tailwind CSS + Radix UI + TipTap | 现代卡片阴影设计，支持深浅主题无缝切换 |
+
+## 核心架构原则
+
+### 1. IPC 通信规范
+- **通道定义**：在 `@profer/shared` 中集中定义强类型 IPC 通道常量与入参/返回类型。
+- **主进程**：`main/ipc.ts` 集中注册处理器并调度底层服务。
+- **Preload 桥接**：`preload/index.ts` 暴露类型安全的 `window.electronAPI`。
+- **渲染进程**：Jotai atoms 与 Hooks 封装调用逻辑，不在 UI 组件内散落原生通信。
+
+### 2. Pi Agent 运行与执行环境
+- **内核驱动**：以 `@earendil-works/pi-coding-agent` 为唯一执行内核，内部协议通过适配器与界面事件解耦。
+- **Windows 零配置开箱即用**：
+  - Windows 下实行**静默自动降级策略**：`Git Bash（若已装） > 内置 BusyBox Bash > WSL > 原生 PowerShell`。
+  - 用户无感知、界面无繁琐切换开关，确保全新纯净 Win10/Win11 机器无需预装 Git 或配置 WSL 即可直接运行。
+  - 工具层统一提供 `Bash` 工具契约，并在 Windows 下并行提供原生 `PowerShell` 工具支持系统深度操作。
+- **权限安全体系**：`packages/shared/src/constants/permission-rules.ts` 定义只读/安全白名单与危险命令拦截。
+
+### 3. 本地存储规范 (`~/.profer/`)
+- 配置与索引采用轻量 JSON（如 `channels.json`, `agent-sessions.json`）。
+- 会话消息流采用追加写入的 JSONL 格式（`agent-sessions/{sessionId}.jsonl`）。
+- **坚守原则**：优先使用文本配置文件与追加日志，绝不引入复杂重量级的本地数据库（如 SQLite）。
+
+### 4. 产品边界与精简规约
+- 专注纯粹的 **AI Agent 工作流**，保持界面与主进程代码的精简、高效与专注。
+- 历史遗留的 Chat 用户模式、团队多用户协同 UI、语音输入、快速任务小窗及不必要的外部耦合服务均已裁撤或计划下线。
+- 避免过度设计，新功能必须优先保持简洁直接。
+
+## 打包与发布约束
+- **主进程外部化依赖**：`electron` 与 `@earendil-works/pi-*` 原生 native 模块严格通过打包脚本保证完整闭包。
+- **资源目录隔离**：
+  - `resources/bin/` 严格受契约保护，仅允许包含随包 CLI 工具；
+  - 第三方工具与内置可执行程序（如内置 BusyBox）必须放置于 `resources/vendor/` 对应子目录。
+- **版本规范**：任何功能改动必须递增受影响子包的 patch 版本。

@@ -36,8 +36,14 @@ describe('isReadOnlyPreviewPathAllowed', () => {
   })
 
   test('系统敏感位置拒绝', () => {
-    expect(isReadOnlyPreviewPathAllowed('/etc/hosts')).toBe(false)
-    expect(isSystemSensitivePath('/etc')).toBe(true)
+    if (process.platform === 'win32') {
+      const winDir = process.env.SystemRoot || 'C:\\Windows'
+      expect(isReadOnlyPreviewPathAllowed(join(winDir, 'System32', 'drivers', 'etc', 'hosts'))).toBe(false)
+      expect(isSystemSensitivePath(winDir)).toBe(true)
+    } else {
+      expect(isReadOnlyPreviewPathAllowed('/etc/hosts')).toBe(false)
+      expect(isSystemSensitivePath('/etc')).toBe(true)
+    }
   })
 
   test('凭据目录拒绝', () => {

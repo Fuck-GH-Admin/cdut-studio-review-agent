@@ -31,6 +31,7 @@ describe('Agent runtime CLI PATH', () => {
         envLoaded: true,
         initializedAt: Date.now(),
       },
+      pathExists: (path) => path === '/bin/bash',
     })
 
     expect(result.env.PATH).toBe([

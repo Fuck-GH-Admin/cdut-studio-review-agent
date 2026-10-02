@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs'
-import { delimiter, dirname, join, win32 } from 'node:path'
+import { delimiter, dirname, join, posix, win32 } from 'node:path'
 import type { RuntimeStatus } from '@profer/shared'
 import { getBundledCliPath } from './config-paths'
 
@@ -96,7 +96,7 @@ export function resolvePosixShellPath(
 
   for (const directory of (processEnv[pathKey] ?? '').split(pathDelimiter)) {
     const trimmedDirectory = directory.trim()
-    if (trimmedDirectory) candidates.push(join(trimmedDirectory, 'bash'))
+    if (trimmedDirectory) candidates.push(posix.join(trimmedDirectory.replace(/\\/g, '/'), 'bash'))
   }
 
   return candidates.find(pathExists)
