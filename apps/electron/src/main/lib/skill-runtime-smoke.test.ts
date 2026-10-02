@@ -53,7 +53,7 @@ afterEach(() => {
 })
 
 describe('全局 Skill 运行时加载链路冒烟（Claude + Pi）', () => {
-  test('同一个 projection 同时满足 Claude plugin root 与 Pi additionalSkillPaths', () => {
+  test('同一个 projection 同时满足 Claude Skills manifest 与 Pi additionalSkillPaths', () => {
     setup()
     const projection = prepareRuntimeSkills('ws-a')
     const piRoot = getRuntimeSkillsPath(projection)

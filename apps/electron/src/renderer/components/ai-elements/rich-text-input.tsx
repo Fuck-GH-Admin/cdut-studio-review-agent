@@ -40,11 +40,6 @@ import { createSkillMentionSuggestion, createMcpMentionSuggestion, createSession
 import { shouldConvertClipboardTextToAttachment } from '@/lib/clipboard-text-attachment'
 type FilePanelDragItem = { path: string; name: string; isDirectory?: boolean }
 import { getSessionReferenceDragData, type SessionReferenceDragItem } from '@/lib/session-reference-drag'
-import {
-  VOICE_DICTATION_INSERT_EVENT,
-  getLastFocusedVoiceInputId,
-  setLastFocusedVoiceInputId,
-} from '@/lib/voice-input-focus'
 
 /** 将纯文本草稿安全地转换为 TipTap 可解析的 HTML，避免草稿中的 HTML 被执行/解释。 */
 function plainTextToEditorHtml(text: string): string {
@@ -449,7 +444,6 @@ export const RichTextInput = forwardRef<RichTextInputHandle, RichTextInputProps>
         click: handleSessionMentionClick,
         keydown: handleSessionMentionKeyDown,
         focus: () => {
-          setLastFocusedVoiceInputId(inputIdRef.current)
           return false
         },
         compositionstart: () => {
@@ -828,25 +822,6 @@ export const RichTextInput = forwardRef<RichTextInputHandle, RichTextInputProps>
     }
   }, [editor, disabled, autoFocusTrigger])
 
-  // 语音输入回填：优先插入到当前编辑器的光标位置。
-  useEffect(() => {
-    if (!editor || disabled) return
-
-    const handler = (event: Event): void => {
-      if (getLastFocusedVoiceInputId() !== inputIdRef.current) return
-
-      const customEvent = event as CustomEvent<{ text?: string }>
-      const text = customEvent.detail?.text?.trim()
-      if (!text) return
-
-      editor.chain().focus().insertContent(text).run()
-      event.preventDefault()
-    }
-
-    window.addEventListener(VOICE_DICTATION_INSERT_EVENT, handler)
-    return () => window.removeEventListener(VOICE_DICTATION_INSERT_EVENT, handler)
-  }, [editor, disabled])
-
   // 是否显示折叠按钮：启用 collapsible 且内容已自动扩展
   const showCollapseToggle = collapsible && isExpanded
 
@@ -1025,7 +1000,7 @@ export const RichTextInput = forwardRef<RichTextInputHandle, RichTextInputProps>
           mask-repeat: no-repeat;
           flex-shrink: 0;
         }
-        /* 会话引用：Profer 风格的上下文胶囊。使用语义 token，确保深浅色和自定义主题一致。 */
+        /* 会话引用：CDUT Studio 风格的上下文胶囊。使用语义 token，确保深浅色和自定义主题一致。 */
         .session-mention-chip {
           position: relative;
           display: inline-flex;

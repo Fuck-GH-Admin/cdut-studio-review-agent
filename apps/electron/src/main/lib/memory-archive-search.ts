@@ -12,7 +12,7 @@
  * FTS5 默认 unicode61 tokenizer 对连续中文不做字级切分，纯中文 query 会 miss。
  * 因此存储与查询走同一套 `cut()` 切分：
  * - 中文逐字拆成单字 token（保证单字/多字短语都能命中）；
- * - 英文/数字/路径/代码符号保留整块 token（保证 rebase、profer-skin、47.109 等能精确命中）。
+ * - 英文/数字/路径/代码符号保留整块 token（保证 rebase、cdut-skin、47.109 等能精确命中）。
  * 查询侧对切分出的 token 做 AND 聚合，确保结果仍与 query 语义相关。
  *
  * ### 索引策略

@@ -8,7 +8,6 @@ export function nextAgentChannelIdsAfterModelSelect(
   selectedChannelId: string,
   runtime: AgentRuntime,
 ): string[] {
-  if (runtime !== 'claude') return currentChannelIds
   return currentChannelIds.includes(selectedChannelId)
     ? currentChannelIds
     : [...currentChannelIds, selectedChannelId]
@@ -34,8 +33,7 @@ export function resolveAgentModelSelection(
    */
   const isEligibleChannel = (channel: Channel): boolean => {
     if (!channel.enabled) return false
-    if (runtime !== 'pi' && channel.agentRuntimes === undefined) return claudeChannelIds.includes(channel.id)
-    return isChannelEnabledForRuntime(channel, runtime === 'pi' ? 'pi' : 'claude')
+    return isChannelEnabledForRuntime(channel, 'pi')
   }
 
   if (current) {

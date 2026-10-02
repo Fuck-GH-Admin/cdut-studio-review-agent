@@ -2,7 +2,7 @@
  * Agent Preset 管理服务（工作区级）
  *
  * 管理 Agent 预设配置，存储在每个工作区的 agent-presets.json
- * （~/.profer/agent-workspaces/{slug}/agent-presets.json，与 mcp.json 同构）。
+ * （~/.cdutai/agent-workspaces/{slug}/agent-presets.json，与 mcp.json 同构）。
  *
  * 内置预设（standard/code/minimal）以源码为准、不可改删，对所有工作区恒可见；
  * 配置文件存该工作区的 defaultPresetId + 自定义预设数组。
@@ -44,7 +44,7 @@ import { AgentPresetError } from '@profer/shared'
 import type { AgentPresetScope, PresetReference, PresetReferenceReport, PresetScopeRebindResult, PresetWorkspaceReference, GlobalAgentPresetConfig } from '@profer/shared'
 
 // ============================================================
-// 测试替身：允许测试把真实 ~/.profer 路径替换成临时基础目录
+// 测试替身：允许测试把真实 ~/.cdutai 路径替换成临时基础目录
 // ============================================================
 
 let testBaseDirOverride: string | null = null

@@ -1,4 +1,3 @@
-import type { ProferPluginPagePlacement, ProferPluginPagePlacementPreference, ProferPluginTaskReference, ProferPluginRoutingState } from '@profer/plugin-api'
 /**
  * Preload 脚本
  *
@@ -9,7 +8,6 @@ import type { ProferPluginPagePlacement, ProferPluginPagePlacementPreference, Pr
 import { contextBridge, ipcRenderer, webUtils } from 'electron'
 import { IPC_CHANNELS, CHANNEL_IPC_CHANNELS, CHAT_IPC_CHANNELS, AGENT_IPC_CHANNELS, LARK_IPC_CHANNELS, ENVIRONMENT_IPC_CHANNELS, INSTALLER_IPC_CHANNELS, PROXY_IPC_CHANNELS, GITHUB_RELEASE_IPC_CHANNELS, CHANGELOG_IPC_CHANNELS, SYSTEM_PROMPT_IPC_CHANNELS, CHAT_TOOL_IPC_CHANNELS, FEISHU_IPC_CHANNELS, DINGTALK_IPC_CHANNELS, WECHAT_IPC_CHANNELS, AUTOMATION_IPC_CHANNELS, RECOMMENDATION_IPC_CHANNELS, PLANNING_IPC_CHANNELS, AUTH_IPC_CHANNELS, SYNC_IPC_CHANNELS, TEAM_IPC_CHANNELS, SKILL_MARKETPLACE_IPC_CHANNELS, SKILL_MASTER_IPC_CHANNELS, GLOBAL_SKILL_IPC_CHANNELS, TEAM_FILE_IPC_CHANNELS, TEAM_MEMORY_IPC_CHANNELS, SSE_IPC_CHANNELS, KNOWLEDGE_IPC_CHANNELS, AGENT_PRESET_IPC_CHANNELS, type Todo, type CalendarEvent, type TodoListQuery, type CalendarEventListQuery, type PlanningGroup, type PlanningGroupScope, type PlanningTag, type PlanningReminder, type ActivePlanningReminder, type PlanningAgentOperation, type PlanningChange, type CreateTodoInput, type UpdateTodoInput, type CreateCalendarEventInput, type UpdateCalendarEventInput, type CreatePlanningGroupInput, type UpdatePlanningGroupInput, type CreatePlanningTagInput, type UpdatePlanningTagInput, type SnoozePlanningReminderInput, type StartTodoAgentInput, type StartTodoAgentResult, type TodoAgentSessionActivation, type TeamMemoryApiResult, type TeamMemoryDocument, type TeamMemoryRevision, type ChangelogEntry, type AgentPreset, type AgentPresetCreateInput, type AgentPresetUpdateInput, type AgentPresetImportResult } from '@profer/shared'
 import { USER_PROFILE_IPC_CHANNELS, SETTINGS_IPC_CHANNELS, SKIN_IPC_CHANNELS, SCRATCH_PAD_IPC_CHANNELS, APP_ICON_IPC_CHANNELS, DOCK_BADGE_IPC_CHANNELS, STORAGE_IPC_CHANNELS, NOTIFICATION_SOUND_IPC_CHANNELS, DESKTOP_NOTIFICATION_IPC_CHANNELS } from '../types'
-import { PROFER_PLUGIN_IPC_CHANNELS, type ProferInstalledPlugin, type ProferPluginOperationResult, type ProferPluginViewInstance, type ProferPluginViewLayout } from '@profer/plugin-api'
 import type { CustomNotificationSound } from '../types'
 import type { PresetReference, PresetReferenceReport, PresetScopeRebindResult, LarkCliStatus, LarkCliOperationResult, LarkLoginStartResult, LarkLoginEvent, LarkMcpCredentialsInput, LarkMcpSetupResult, LarkMcpStatus } from '@profer/shared'
 import type {
@@ -135,24 +133,10 @@ import type {
   AppSettings,
   DeveloperSettingsSnapshot,
   PocketModeStatus,
-  QuickTaskSubmitInput,
-  QuickTaskOpenSessionData,
-  VoiceDictationAudioChunkInput,
-  VoiceDictationCommitInput,
-  VoiceDictationCommitResult,
-  VoiceDictationResizeInput,
-  VoiceDictationSettings,
-  VoiceDictationSettingsUpdate,
-  VoiceDictationStartInput,
-  VoiceDictationStateEvent,
-  VoiceDictationStopInput,
-  VoiceDictationTestResult,
-  VoiceDictationTranscriptEvent,
-  MicPermissionResult,
   TrayCreateSessionData,
   TrayOpenAgentSessionData,
 } from '../types'
-import { QUICK_TASK_IPC_CHANNELS, TRAY_IPC_CHANNELS, VOICE_DICTATION_IPC_CHANNELS } from '../types'
+import { SHORTCUT_IPC_CHANNELS, TRAY_IPC_CHANNELS } from '../types'
 
 /**
  * 暴露给渲染进程的 API 接口定义
@@ -347,9 +331,6 @@ export interface ElectronAPI {
   /** 更新对话标题 */
   updateConversationTitle: (id: string, title: string) => Promise<ConversationMeta>
 
-  /** 自动命名窗口：流结束后按前几轮有效用户消息生成/精修标题（未改名时返回 null） */
-  autoTitleConversation: (input: { conversationId: string; channelId: string; modelId: string }) => Promise<ConversationMeta | null>
-
   /** 手动重新生成对话标题（绕过定稿锁定） */
   regenerateConversationTitle: (id: string, channelId?: string, modelId?: string) => Promise<ConversationMeta | null>
 
@@ -379,14 +360,9 @@ export interface ElectronAPI {
   // ===== 消息发送 =====
 
   /** 发送消息（触发 AI 流式响应） */
-  sendMessage: (input: ChatSendInput) => Promise<void>
-
   /** 向当前对话写入一条可见的资料引用记录。 */
-  addKnowledgeReferences: (conversationId: string, itemIds: string[]) => Promise<ChatMessage>
 
   /** 中止生成 */
-  stopGeneration: (conversationId: string) => Promise<void>
-
   /** 删除指定消息 */
   deleteMessage: (conversationId: string, messageId: string) => Promise<ChatMessage[]>
 
@@ -428,8 +404,6 @@ export interface ElectronAPI {
   updateContextDividers: (conversationId: string, dividers: string[]) => Promise<ConversationMeta>
 
   /** 生成对话标题 */
-  generateTitle: (input: GenerateTitleInput) => Promise<string | null>
-
   // ===== 附件管理相关 =====
 
   /** 保存附件到本地 */
@@ -488,27 +462,6 @@ export interface ElectronAPI {
   openUserSkinsFolder: () => Promise<void>
   openSkinTemplateFolder: () => Promise<void>
   refreshSkins: () => Promise<import('../types').SkinInfo[]>
-
-  // ===== 第三方插件管理 =====
-  setPluginCredential: (pluginId: string, id: string, secret: string | null) => Promise<void>
-  authorizePlugin: (pluginId: string) => Promise<boolean>
-  revokePluginPermissions: (pluginId: string) => Promise<void>
-  activatePluginPage: (pluginId: string, pageId: string, reference?: ProferPluginTaskReference, placement?: ProferPluginPagePlacement) => Promise<void>
-  getPluginRouting: (key: string) => Promise<ProferPluginRoutingState>
-  setPluginRouting: (key: string, pluginId: string | null) => Promise<void>
-  onPluginRoutingChanged: (callback: (event: { key: string; state: ProferPluginRoutingState }) => void) => () => void
-  listPlugins: () => Promise<ProferInstalledPlugin[]>
-  selectPluginPackage: (kind: 'zip' | 'folder') => Promise<string | null>
-  installPlugin: (sourcePath: string, replace?: boolean) => Promise<ProferPluginOperationResult>
-  setPluginEnabled: (pluginId: string, enabled: boolean) => Promise<ProferPluginOperationResult>
-  removePlugin: (pluginId: string) => Promise<ProferPluginOperationResult>
-  openPluginsFolder: () => Promise<void>
-  setPluginViewLayout: (layout: ProferPluginViewLayout) => Promise<void>
-  getPluginPageIcon: (pluginId: string, pageId: string) => Promise<{ mime: string; dataBase64: string } | null>
-  setPluginPagePlacement: (pluginId: string, pageId: string, preference: ProferPluginPagePlacementPreference | null) => Promise<ProferPluginOperationResult>
-  hidePluginView: (pluginId: string, pageId: string, instance?: ProferPluginViewInstance) => Promise<void>
-  closePluginView: (pluginId: string, pageId: string, instance?: ProferPluginViewInstance) => Promise<void>
-  onPluginsChanged: (callback: () => void) => () => void
 
   /** 通知主进程 renderer 已完成首屏初始化 */
   notifyRendererReady: () => void
@@ -948,9 +901,9 @@ export interface ElectronAPI {
   getWorkspaceMemorySummary: (workspaceSlug: string) => Promise<WorkspaceMemorySummary>
   /** 获取工作区每日 Token 消耗，用于热力图展示。团队工作区返回空数组 */
   getWorkspaceHeatmapDaily: (workspaceId: string) => Promise<Array<{ date: string; tokens: number }>>
-  /** 读取 Profer 工作区资料 */
+  /** 读取 CDUT Studio 工作区资料 */
   readWorkspaceProfile: (workspaceSlug: string) => Promise<SkillFileContent>
-  /** 写入 Profer 工作区资料 */
+  /** 写入 CDUT Studio 工作区资料 */
   writeWorkspaceProfile: (workspaceSlug: string, content: string) => Promise<void>
   /** 列出工作区 auto memory 文件树 */
   listWorkspaceAutoMemoryFiles: (workspaceSlug: string) => Promise<SkillFileNode[]>
@@ -1124,7 +1077,7 @@ export interface ElectronAPI {
   /** 写入文本文件（供 Markdown 内联编辑使用） */
   writeTextFile: (filePath: string, content: string, access?: import('@profer/shared').FileAccessOptions) => Promise<boolean>
 
-  /** 仅解析文件路径（供 PDF/图片等用 profer-file:// 加载） */
+  /** 仅解析文件路径（供 PDF/图片等用 cdut-file:// 加载） */
   resolveFilePath: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<import('@profer/shared').ResolvedFileUrl | null>
 
   /** 在当前 Agent 会话授权范围内异步搜索一个同名候选。 */
@@ -1135,7 +1088,7 @@ export interface ElectronAPI {
   /** 解析 HTML 预览路径，并授权加载同目录的相对资源 */
   resolveHtmlPreviewPath: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<import('@profer/shared').ResolvedFileUrl | null>
 
-  /** 注册文件路径到 profer-file:// 协议（不做路径校验，供团队文件预览） */
+  /** 注册文件路径到 cdut-file:// 协议（不做路径校验，供团队文件预览） */
   registerPreviewPath: (filePath: string) => Promise<string | null>
 
   /** 为内联 PDF 预览生成临时 HTML 文件，返回文件路径 */
@@ -1371,59 +1324,8 @@ export interface ElectronAPI {
   /** 订阅菜单关闭标签页事件（Cmd+W 被菜单拦截后转发） */
   onMenuCloseTab: (callback: () => void) => () => void
 
-  // ===== 快速任务窗口 =====
-
-  /** 提交快速任务 */
-  submitQuickTask: (input: QuickTaskSubmitInput) => Promise<void>
-  /** 隐藏快速任务窗口 */
-  hideQuickTask: () => Promise<void>
   /** 重新注册全局快捷键（设置变更后） */
   reregisterGlobalShortcuts: () => Promise<Record<string, boolean>>
-  /** 订阅快速任务窗口聚焦事件 */
-  onQuickTaskFocus: (callback: () => void) => () => void
-  /** 订阅快速任务打开会话事件（主窗口接收，由渲染进程负责创建会话） */
-  onQuickTaskOpenSession: (callback: (data: QuickTaskOpenSessionData) => void) => () => void
-
-  // ===== 语音输入 =====
-
-  /** 获取语音输入设置 */
-  getVoiceDictationSettings: () => Promise<VoiceDictationSettings>
-  /** 更新语音输入设置 */
-  updateVoiceDictationSettings: (updates: VoiceDictationSettingsUpdate) => Promise<VoiceDictationSettings>
-  /** 测试语音输入连接 */
-  testVoiceDictationConnection: (updates?: VoiceDictationSettingsUpdate) => Promise<VoiceDictationTestResult>
-  /** 唤起或停止语音输入浮窗 */
-  toggleVoiceDictation: () => Promise<void>
-  /** 开始语音输入会话 */
-  startVoiceDictation: (input: VoiceDictationStartInput) => Promise<void>
-  /** 发送语音音频分片 */
-  sendVoiceDictationAudio: (input: VoiceDictationAudioChunkInput) => Promise<void>
-  /** 停止语音输入会话 */
-  stopVoiceDictation: (input: VoiceDictationStopInput) => Promise<void>
-  /** 取消语音输入会话 */
-  cancelVoiceDictation: (input: VoiceDictationStopInput) => Promise<void>
-  /** 输出最终语音文本 */
-  commitVoiceDictation: (input: VoiceDictationCommitInput) => Promise<VoiceDictationCommitResult>
-  /** 隐藏语音输入窗口 */
-  hideVoiceDictation: () => Promise<void>
-  /** 调整语音输入窗口高度 */
-  resizeVoiceDictation: (input: VoiceDictationResizeInput) => Promise<void>
-  /** 订阅语音输入窗口显示事件 */
-  onVoiceDictationShown: (callback: () => void) => () => void
-  /** 订阅语音输入停止请求事件 */
-  onVoiceDictationToggleStop: (callback: () => void) => () => void
-  /** 订阅语音输入转写事件 */
-  onVoiceDictationTranscript: (callback: (event: VoiceDictationTranscriptEvent) => void) => () => void
-  /** 订阅语音输入状态事件 */
-  onVoiceDictationState: (callback: (event: VoiceDictationStateEvent) => void) => () => void
-  /** 订阅主窗口插入语音文本事件 */
-  onVoiceDictationInsertText: (callback: (data: { text: string }) => void) => () => void
-
-  /** 检查麦克风权限状态 */
-  checkMicrophonePermission: () => Promise<MicPermissionResult>
-  /** 请求麦克风权限（仅 macOS 有效） */
-  requestMicrophonePermission: () => Promise<MicPermissionResult>
-
   // ===== 菜单栏 =====
 
   /** 订阅菜单栏打开 Agent 会话事件 */
@@ -1907,10 +1809,6 @@ const electronAPI: ElectronAPI = {
     return ipcRenderer.invoke(CHAT_IPC_CHANNELS.UPDATE_TITLE, id, title)
   },
 
-  autoTitleConversation: (input: { conversationId: string; channelId: string; modelId: string }) => {
-    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.AUTO_TITLE, input)
-  },
-
   regenerateConversationTitle: (id: string, channelId?: string, modelId?: string) => {
     return ipcRenderer.invoke(CHAT_IPC_CHANNELS.REGENERATE_TITLE, id, channelId, modelId)
   },
@@ -1942,19 +1840,6 @@ const electronAPI: ElectronAPI = {
 
   createWelcomeConversation: () => {
     return ipcRenderer.invoke(CHAT_IPC_CHANNELS.CREATE_WELCOME_CONVERSATION)
-  },
-
-  // 消息发送
-  sendMessage: (input: ChatSendInput) => {
-    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.SEND_MESSAGE, input)
-  },
-
-  addKnowledgeReferences: (conversationId: string, itemIds: string[]) => {
-    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.ADD_KNOWLEDGE_REFERENCES, conversationId, itemIds)
-  },
-
-  stopGeneration: (conversationId: string) => {
-    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.STOP_GENERATION, conversationId)
   },
 
   deleteMessage: (conversationId: string, messageId: string) => {
@@ -2005,10 +1890,6 @@ const electronAPI: ElectronAPI = {
 
   updateContextDividers: (conversationId: string, dividers: string[]) => {
     return ipcRenderer.invoke(CHAT_IPC_CHANNELS.UPDATE_CONTEXT_DIVIDERS, conversationId, dividers)
-  },
-
-  generateTitle: (input: GenerateTitleInput) => {
-    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.GENERATE_TITLE, input)
   },
 
   // 附件管理
@@ -2072,35 +1953,6 @@ const electronAPI: ElectronAPI = {
   openUserSkinsFolder: () => ipcRenderer.invoke(SKIN_IPC_CHANNELS.OPEN_USER_FOLDER),
   openSkinTemplateFolder: () => ipcRenderer.invoke(SKIN_IPC_CHANNELS.OPEN_TEMPLATE_FOLDER),
   refreshSkins: () => ipcRenderer.invoke(SKIN_IPC_CHANNELS.REFRESH),
-
-  // 第三方插件管理
-  setPluginCredential: (pluginId, id, secret) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.SET_CREDENTIAL, pluginId, id, secret),
-  authorizePlugin: (pluginId) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.AUTHORIZE, pluginId),
-  revokePluginPermissions: (pluginId) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.REVOKE, pluginId),
-  activatePluginPage: (pluginId, pageId, reference, placement) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.ACTIVATE, pluginId, pageId, reference, placement),
-  getPluginRouting: (key) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.ROUTING_GET, key),
-  setPluginRouting: (key, pluginId) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.ROUTING_SET, key, pluginId),
-  onPluginRoutingChanged: (callback) => {
-    const listener = (_event: Electron.IpcRendererEvent, value: { key: string; state: ProferPluginRoutingState }): void => callback(value)
-    ipcRenderer.on(PROFER_PLUGIN_IPC_CHANNELS.ROUTING_CHANGED, listener)
-    return () => { ipcRenderer.removeListener(PROFER_PLUGIN_IPC_CHANNELS.ROUTING_CHANGED, listener) }
-  },
-  listPlugins: () => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.LIST),
-  selectPluginPackage: (kind: 'zip' | 'folder') => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.SELECT_PACKAGE, kind),
-  installPlugin: (sourcePath: string, replace = false) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.INSTALL, sourcePath, replace),
-  setPluginEnabled: (pluginId: string, enabled: boolean) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.SET_ENABLED, pluginId, enabled),
-  removePlugin: (pluginId: string) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.REMOVE, pluginId),
-  openPluginsFolder: () => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.OPEN_FOLDER),
-  setPluginViewLayout: (layout: ProferPluginViewLayout) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.SET_VIEW_LAYOUT, layout),
-  getPluginPageIcon: (pluginId: string, pageId: string) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.READ_PAGE_ICON, pluginId, pageId),
-  setPluginPagePlacement: (pluginId: string, pageId: string, preference: ProferPluginPagePlacementPreference | null) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.SET_PAGE_PLACEMENT, pluginId, pageId, preference),
-  hidePluginView: (pluginId: string, pageId: string, instance?: ProferPluginViewInstance) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.HIDE_VIEW, pluginId, pageId, instance),
-  closePluginView: (pluginId: string, pageId: string, instance?: ProferPluginViewInstance) => ipcRenderer.invoke(PROFER_PLUGIN_IPC_CHANNELS.CLOSE_VIEW, pluginId, pageId, instance),
-  onPluginsChanged: (callback: () => void) => {
-    const listener = () => callback()
-    ipcRenderer.on(PROFER_PLUGIN_IPC_CHANNELS.CHANGED, listener)
-    return () => ipcRenderer.removeListener(PROFER_PLUGIN_IPC_CHANNELS.CHANGED, listener)
-  },
 
   // 应用设置
   notifyRendererReady: () => { ipcRenderer.send(SETTINGS_IPC_CHANNELS.RENDERER_READY) },
@@ -3355,115 +3207,10 @@ const electronAPI: ElectronAPI = {
     return () => { ipcRenderer.removeListener('menu:close-tab', listener) }
   },
 
-  // ===== 快速任务窗口 =====
-
-  submitQuickTask: (input: QuickTaskSubmitInput) => {
-    return ipcRenderer.invoke(QUICK_TASK_IPC_CHANNELS.SUBMIT, input)
-  },
-
-  hideQuickTask: () => {
-    return ipcRenderer.invoke(QUICK_TASK_IPC_CHANNELS.HIDE)
-  },
-
   reregisterGlobalShortcuts: () => {
-    return ipcRenderer.invoke(QUICK_TASK_IPC_CHANNELS.REREGISTER_GLOBAL_SHORTCUTS)
+    return ipcRenderer.invoke(SHORTCUT_IPC_CHANNELS.REREGISTER_GLOBAL_SHORTCUTS)
   },
 
-  onQuickTaskFocus: (callback: () => void) => {
-    const listener = (): void => callback()
-    ipcRenderer.on(QUICK_TASK_IPC_CHANNELS.FOCUS, listener)
-    return () => { ipcRenderer.removeListener(QUICK_TASK_IPC_CHANNELS.FOCUS, listener) }
-  },
-
-  onQuickTaskOpenSession: (callback: (data: QuickTaskOpenSessionData) => void) => {
-    const listener = (_: unknown, data: QuickTaskOpenSessionData): void => callback(data)
-    ipcRenderer.on('quick-task:open-session', listener)
-    return () => { ipcRenderer.removeListener('quick-task:open-session', listener) }
-  },
-
-  // ===== 语音输入 =====
-
-  getVoiceDictationSettings: () => {
-    return ipcRenderer.invoke(VOICE_DICTATION_IPC_CHANNELS.GET_SETTINGS)
-  },
-
-  updateVoiceDictationSettings: (updates: VoiceDictationSettingsUpdate) => {
-    return ipcRenderer.invoke(VOICE_DICTATION_IPC_CHANNELS.UPDATE_SETTINGS, updates)
-  },
-
-  testVoiceDictationConnection: (updates?: VoiceDictationSettingsUpdate) => {
-    return ipcRenderer.invoke(VOICE_DICTATION_IPC_CHANNELS.TEST_CONNECTION, updates)
-  },
-
-  toggleVoiceDictation: () => {
-    return ipcRenderer.invoke(VOICE_DICTATION_IPC_CHANNELS.TOGGLE)
-  },
-
-  startVoiceDictation: (input: VoiceDictationStartInput) => {
-    return ipcRenderer.invoke(VOICE_DICTATION_IPC_CHANNELS.START, input)
-  },
-
-  sendVoiceDictationAudio: (input: VoiceDictationAudioChunkInput) => {
-    return ipcRenderer.invoke(VOICE_DICTATION_IPC_CHANNELS.SEND_AUDIO, input)
-  },
-
-  stopVoiceDictation: (input: VoiceDictationStopInput) => {
-    return ipcRenderer.invoke(VOICE_DICTATION_IPC_CHANNELS.STOP, input)
-  },
-
-  cancelVoiceDictation: (input: VoiceDictationStopInput) => {
-    return ipcRenderer.invoke(VOICE_DICTATION_IPC_CHANNELS.CANCEL, input)
-  },
-
-  commitVoiceDictation: (input: VoiceDictationCommitInput) => {
-    return ipcRenderer.invoke(VOICE_DICTATION_IPC_CHANNELS.COMMIT, input)
-  },
-
-  hideVoiceDictation: () => {
-    return ipcRenderer.invoke(VOICE_DICTATION_IPC_CHANNELS.HIDE)
-  },
-
-  resizeVoiceDictation: (input: VoiceDictationResizeInput) => {
-    return ipcRenderer.invoke(VOICE_DICTATION_IPC_CHANNELS.RESIZE, input)
-  },
-
-  onVoiceDictationShown: (callback: () => void) => {
-    const listener = (): void => callback()
-    ipcRenderer.on(VOICE_DICTATION_IPC_CHANNELS.SHOWN, listener)
-    return () => { ipcRenderer.removeListener(VOICE_DICTATION_IPC_CHANNELS.SHOWN, listener) }
-  },
-
-  onVoiceDictationToggleStop: (callback: () => void) => {
-    const listener = (): void => callback()
-    ipcRenderer.on(VOICE_DICTATION_IPC_CHANNELS.TOGGLE_STOP, listener)
-    return () => { ipcRenderer.removeListener(VOICE_DICTATION_IPC_CHANNELS.TOGGLE_STOP, listener) }
-  },
-
-  onVoiceDictationTranscript: (callback: (event: VoiceDictationTranscriptEvent) => void) => {
-    const listener = (_: unknown, event: VoiceDictationTranscriptEvent): void => callback(event)
-    ipcRenderer.on(VOICE_DICTATION_IPC_CHANNELS.TRANSCRIPT, listener)
-    return () => { ipcRenderer.removeListener(VOICE_DICTATION_IPC_CHANNELS.TRANSCRIPT, listener) }
-  },
-
-  onVoiceDictationState: (callback: (event: VoiceDictationStateEvent) => void) => {
-    const listener = (_: unknown, event: VoiceDictationStateEvent): void => callback(event)
-    ipcRenderer.on(VOICE_DICTATION_IPC_CHANNELS.STATE, listener)
-    return () => { ipcRenderer.removeListener(VOICE_DICTATION_IPC_CHANNELS.STATE, listener) }
-  },
-
-  onVoiceDictationInsertText: (callback: (data: { text: string }) => void) => {
-    const listener = (_: unknown, data: { text: string }): void => callback(data)
-    ipcRenderer.on(VOICE_DICTATION_IPC_CHANNELS.INSERT_TEXT, listener)
-    return () => { ipcRenderer.removeListener(VOICE_DICTATION_IPC_CHANNELS.INSERT_TEXT, listener) }
-  },
-
-  checkMicrophonePermission: () => {
-    return ipcRenderer.invoke(VOICE_DICTATION_IPC_CHANNELS.CHECK_MIC_PERMISSION)
-  },
-
-  requestMicrophonePermission: () => {
-    return ipcRenderer.invoke(VOICE_DICTATION_IPC_CHANNELS.REQUEST_MIC_PERMISSION)
-  },
 
   onTrayOpenAgentSession: (callback: (data: TrayOpenAgentSessionData) => void) => {
     const listener = (_: unknown, data: TrayOpenAgentSessionData): void => callback(data)

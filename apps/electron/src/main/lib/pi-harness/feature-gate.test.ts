@@ -20,14 +20,14 @@ describe('Pi Host Harness feature gate', () => {
 
   test('does not enter Harness startup for Claude', () => {
     let startCalls = 0
-    const startIfEnabled = (runtime: 'pi' | 'claude', env: NodeJS.ProcessEnv): string | undefined => {
+    const startIfEnabled = (runtime: Parameters<typeof shouldStartPiHarness>[0], env: NodeJS.ProcessEnv): string | undefined => {
       if (!shouldStartPiHarness(runtime, env)) return undefined
       startCalls += 1
       return 'started'
     }
 
-    expect(startIfEnabled('claude', {})).toBeUndefined()
-    expect(startIfEnabled('claude', { [PI_HARNESS_FEATURE_ENV]: '1' })).toBeUndefined()
+    expect(startIfEnabled('claude' as Parameters<typeof shouldStartPiHarness>[0], {})).toBeUndefined()
+    expect(startIfEnabled('claude' as Parameters<typeof shouldStartPiHarness>[0], { [PI_HARNESS_FEATURE_ENV]: '1' })).toBeUndefined()
     expect(startCalls).toBe(0)
   })
 

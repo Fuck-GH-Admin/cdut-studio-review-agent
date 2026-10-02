@@ -21,7 +21,7 @@ function createFixtureFile(...segments: string[]): string {
 
 describe('isReadOnlyPreviewPathAllowed', () => {
   test('会话工作区之外的普通文件放行（皮肤目录场景）', () => {
-    const skinPreview = createFixtureFile('.profer-dev', 'skins', 'profer-lumen-mist-skin', 'preview.png')
+    const skinPreview = createFixtureFile('.cdutai-dev', 'skins', 'profer-lumen-mist-skin', 'preview.png')
     expect(isReadOnlyPreviewPathAllowed(skinPreview)).toBe(true)
   })
 
@@ -31,7 +31,7 @@ describe('isReadOnlyPreviewPathAllowed', () => {
   })
 
   test('目录本身也放行（用于在文件管理器中定位）', () => {
-    const skinDir = dirname(createFixtureFile('.profer-dev', 'skins', 'demo-skin', 'skin.css'))
+    const skinDir = dirname(createFixtureFile('.cdutai-dev', 'skins', 'demo-skin', 'skin.css'))
     expect(isReadOnlyPreviewPathAllowed(skinDir)).toBe(true)
   })
 

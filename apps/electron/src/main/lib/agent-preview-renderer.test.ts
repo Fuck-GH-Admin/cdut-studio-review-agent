@@ -9,8 +9,8 @@ const {
 } = await import('./agent-preview-renderer')
 
 describe('hidden Agent preview renderer', () => {
-  test('accepts only opaque profer-file resource URLs', () => {
-    expect(isSafeAgentPreviewSourceUrl('profer-file://8f32ce7a-06fb-4b08-9b88-90f9f4f3c07c/index.html')).toBe(true)
+  test('accepts only opaque cdut-file resource URLs', () => {
+    expect(isSafeAgentPreviewSourceUrl('cdut-file://8f32ce7a-06fb-4b08-9b88-90f9f4f3c07c/index.html')).toBe(true)
     expect(isSafeAgentPreviewSourceUrl('file:///Users/private/deck.pptx')).toBe(false)
     expect(isSafeAgentPreviewSourceUrl('https://example.test/deck.html')).toBe(false)
   })

@@ -21,7 +21,7 @@ describe('Pi packaged runtime 闭包', () => {
     ]) {
       expect(builder).toContain(`- "${pattern}"`)
     }
-    expect(builder).toContain('appId: com.profer.app')
+    expect(builder).toContain('appId: com.cdutai.studio')
     expect(builder).toContain('afterPack: scripts/after-pack.cjs')
   })
 

@@ -323,7 +323,7 @@ version: 1.0.1
     expect(existsSync(join(second.path, 'skills', 'cache-demo', 'SKILL.md'))).toBe(true)
   })
 
-  test('有效投影同时满足 Claude plugin root 与 Pi skill root，且不重复加载', () => {
+  test('有效投影同时满足 Claude Skills manifest 与 Pi skill root，且不重复加载', () => {
     setup()
     const builtin = listGlobalSkills()[0]!
     const projection = prepareRuntimeSkills('a')

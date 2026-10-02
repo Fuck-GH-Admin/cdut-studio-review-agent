@@ -71,7 +71,7 @@ function collectRuntimeStyles(): string {
 
   // 皮肤 CSS 由 atoms/theme.ts 动态写入 <style id="skin-css">。部分 Chromium
   // 上该 inline sheet 不稳定地出现在 document.styleSheets 中；显式附加其文本，
-  // 确保截图继承主窗口的 skin-* token 与 profer-skin:// 资源引用。
+  // 确保截图继承主窗口的 skin-* token 与 cdut-skin:// 资源引用。
   const skinCss = document.getElementById('skin-css')?.textContent?.trim()
   if (skinCss) chunks.push(skinCss)
 
@@ -229,7 +229,7 @@ function LinkPopover({ editor, active }: { editor: Editor; active: boolean }) {
   const apply = () => {
     if (url) {
       // 仅允许安全协议
-      const safe = /^(https?|mailto|file|profer-file):/.test(url) ? url : `https://${url}`
+      const safe = /^(https?|mailto|file|cdut-file):/.test(url) ? url : `https://${url}`
       editor.chain().focus().setLink({ href: safe }).run()
     } else {
       editor.chain().focus().unsetLink().run()

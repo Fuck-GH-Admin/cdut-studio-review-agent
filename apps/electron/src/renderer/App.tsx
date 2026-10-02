@@ -4,7 +4,7 @@ import { AppShell } from './components/app-shell/AppShell'
 import { PlanningReminderRail } from './components/planning/PlanningReminderRail'
 import { TutorialBanner } from './components/tutorial/TutorialBanner'
 import { TooltipProvider } from '@profer/ui/primitives/tooltip'
-import { conversationsAtom } from './atoms/chat-atoms'
+import { useCreateSession } from './hooks/useCreateSession'
 import { environmentCheckDialogOpenAtom } from './atoms/environment'
 import { tabsAtom, activeTabIdAtom, openTab, TUTORIAL_TAB_ID } from './atoms/tab-atoms'
 import { replayIntroEnvironmentTestAtom, replayIntroOpenAtom } from './atoms/intro-atoms'
@@ -29,6 +29,7 @@ export default function App(): React.ReactElement {
   }
 
   const store = useStore()
+  const { createAgent } = useCreateSession()
   const [isLoading, setIsLoading] = React.useState(true)
   const [showOnboarding, setShowOnboarding] = React.useState(false)
   const [showOnboardingEnvironmentTest, setShowOnboardingEnvironmentTest] = useAtom(replayIntroEnvironmentTestAtom)
@@ -68,34 +69,19 @@ export default function App(): React.ReactElement {
 
     if (openTutorial) {
       const tabs = store.get(tabsAtom)
-      const result = openTab(tabs, { type: 'tutorial', sessionId: TUTORIAL_TAB_ID, title: 'Profer 使用教程' })
+      const result = openTab(tabs, { type: 'tutorial', sessionId: TUTORIAL_TAB_ID, title: 'CDUT Studio 使用教程' })
       store.set(tabsAtom, result.tabs)
       store.set(activeTabIdAtom, result.activeTabId)
       return
     }
 
     try {
-      const meta = await window.electronAPI.createWelcomeConversation()
-      if (meta) {
-        const conversations = store.get(conversationsAtom)
-        store.set(conversationsAtom, [meta, ...conversations])
-
-        const tabs = store.get(tabsAtom)
-        const result = openTab(tabs, {
-          type: 'chat',
-          sessionId: meta.id,
-          title: meta.title,
-        })
-        store.set(tabsAtom, result.tabs)
-        store.set(activeTabIdAtom, result.activeTabId)
-
-        // Onboarding 接力：进入主界面后自动播放一次界面蒙层引导；
-        // 等首帧渲染稳定再启动，保证锚点（输入区/模型选择器）已挂载。
-        window.setTimeout(() => store.set(coachTourOpenAtom, true), 600)
-
-      }
+      await createAgent()
+      // Onboarding 接力：进入主界面后自动播放一次界面蒙层引导；
+      // 等首帧渲染稳定再启动，保证锚点（输入区/模型选择器）已挂载。
+      window.setTimeout(() => store.set(coachTourOpenAtom, true), 600)
     } catch (error) {
-      console.error('[App] 创建欢迎对话失败:', error)
+      console.error('[App] 创建 Agent 会话失败:', error)
     }
   }
 
@@ -177,7 +163,7 @@ function IntroReplayOverlay(): React.ReactElement | null {
       className="fixed inset-0 z-[9999]"
       role="dialog"
       aria-modal="true"
-      aria-label="Profer 开屏动画"
+      aria-label="CDUT Studio 开屏动画"
       data-profer-intro-overlay
     >
       <IntroWaterRipple

@@ -1,14 +1,14 @@
 import { describe, expect, test } from 'bun:test'
 import { parseAgentImageAttachmentDetails, parseAgentImageAttachmentMarkers } from './image-attachment-marker'
 
-const validMarker = '[PROMA_IMAGE_ATTACHMENT:{"localPath":"C:/Users/test/.profer/agent-workspaces/ws/session/.context/agent-output-images/id.png","filename":"chart.png","mediaType":"image/png"}]'
+const validMarker = '[PROMA_IMAGE_ATTACHMENT:{"localPath":"C:/Users/test/.cdutai/agent-workspaces/ws/session/.context/agent-output-images/id.png","filename":"chart.png","mediaType":"image/png"}]'
 
 describe('parseAgentImageAttachmentMarkers', () => {
   test('Given a supported image marker in final text When parsing Then it returns an image and clean text', () => {
     const parsed = parseAgentImageAttachmentMarkers(`图片已准备好。\n${validMarker}\n请查看。`)
 
     expect(parsed.images).toEqual([{
-      localPath: 'C:/Users/test/.profer/agent-workspaces/ws/session/.context/agent-output-images/id.png',
+      localPath: 'C:/Users/test/.cdutai/agent-workspaces/ws/session/.context/agent-output-images/id.png',
       filename: 'chart.png',
       mediaType: 'image/png',
     }])

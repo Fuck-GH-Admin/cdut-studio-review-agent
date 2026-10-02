@@ -40,7 +40,7 @@ export function getFabricConfigFilePath(): string {
 }
 
 export function isDevProfile(): boolean {
-  return getConfigDirName() === '.profer-dev'
+  return getConfigDirName() === '.cdutai-dev'
 }
 
 export function getDefaultFabricPort(): number {

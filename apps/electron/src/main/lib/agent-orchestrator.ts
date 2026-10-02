@@ -1,6 +1,3 @@
-import { routePluginModel } from './plugins/plugin-routing'
-import { buildPluginAgentTools } from './plugins/plugin-agent-tools'
-import { injectGoalMcpServer } from './goal-tools'
 /**
  * AgentOrchestrator — Agent 编排层
  *
@@ -34,7 +31,6 @@ import type {
   SDKAssistantMessage,
   AgentStreamPayload,
   RewindSessionResult,
-  SdkBeta,
   ProviderType,
   AgentThinkingLevel,
   ErrorCode,
@@ -67,11 +63,6 @@ import {
 } from './channel-manager'
 import { getTeamAuthWithRefresh, recoverCommercialProxyAuth } from './auth-service'
 import { resolveRuntimeCredentials } from './agent-runtime-credentials'
-import { injectAutomationMcpServer } from './automation-agent-tools'
-import { injectMemoryArchiveMcpServer } from './memory-archive-agent-tools'
-import { injectTeamMemoryMcpServer } from './team-memory-agent-tools'
-import { injectTaskGraphMcpServer } from './task-graph-agent-tools'
-import { injectAgentPresetMcpServer } from './agent-preset-tools'
 import {
   clearPendingPresetChange,
   evaluateAgentPresetOperationIntents,
@@ -90,8 +81,8 @@ import {
   type TaskToolInvocation,
 } from './task-graph-event-converter'
 import { appendGraphEvent } from './project-graph-service'
-import { injectAgentCollaborationMcpServer, registerCollaborationEventBus, stopDelegationsForParent } from './agent-collaboration-tools'
 import { setHeadlessAgentRunner, setAgentStopper } from './agent-headless-runner-registry'
+import { registerCollaborationEventBus, stopDelegationsForParent } from './agent-collaboration-tools'
 import { getAdapter, fetchTitle } from '@profer/core'
 import { groupIntoTurns, extractUserText, isUserInputMessage } from '@profer/session-core'
 import type { SDKUserMessage } from '@profer/shared'
@@ -119,15 +110,12 @@ import { createPiFileCheckpoint, prunePiFileCheckpoints } from './pi-file-checkp
 import {
   getAgentWorkspace,
   getWorkspaceMcpConfig,
-  getWorkspaceAutoMemoryDir,
-  getWorkspaceMemoryArchivePath,
-  ensurePluginManifest,
+  ensureClaudeSkillManifest,
 } from './agent-workspace-manager'
-import { getAgentWorkspacePath, getAgentSessionWorkspacePath, getPiCheckpointsDir, getSdkConfigDir, getBundledCliPath } from './config-paths'
+import { getAgentSessionWorkspacePath, getPiCheckpointsDir, getSdkConfigDir } from './config-paths'
 import { prepareRuntimeSkills } from './global-skill-manager'
 import { routeSkillsForTask, type SkillRoutingSnapshot } from './skill-routing'
 import { buildSkillRuntimeOptions, prepareAgentSkillRouting } from './skill-runtime-routing'
-import { captureSkillToolInventory } from './skill-tool-inventory'
 import { getRuntimeStatus } from './runtime-init'
 import { shouldStartPiHarness } from './pi-harness/feature-gate'
 import { pauseActivePiHarnessRun, settlePiHarnessRun, startPiHarnessRun } from './pi-harness/orchestrator-bridge'
@@ -135,22 +123,19 @@ import type { CommandExecutionResult } from './command-execution'
 import { createCommandExecutionLedger } from './pi-execution-ledger'
 import { getSettings } from './settings-service'
 import { buildSystemPrompt, buildDynamicContext } from './agent-prompt-builder'
-import { resolveAgentRuntimeSystemPrompt, resolveAgentSystemPromptPolicy } from './agent-system-prompt-policy'
 import { buildPiTaskPrompt } from './pi-task-prompt'
-import { injectPlanningMcpServer } from './planning-agent-tools'
 import { ensurePresetSystemReady, getAgentPresetByReference, presetReferenceForId } from './agent-preset-manager'
 import { permissionService } from './agent-permission-service'
 import type { PermissionResult, CanUseToolOptions } from './agent-permission-service'
 import { askUserService } from './agent-ask-user-service'
 import { exitPlanService, type ExitPlanPermissionResult } from './agent-exit-plan-service'
-import { applyAgentModelRoutingToEnv, resolveAgentModelRouting } from './agent-model-routing'
+import { resolveAgentModelRouting } from './agent-model-routing'
 
 import { validateToolInput } from './agent-tool-input-validator'
 import { estimateTokenCount, WRITE_CONTENT_TOKEN_THRESHOLD } from './agent-tool-token-estimator'
 
 // 已提取的工具模块
 import {
-  sdkPermissionModeForProferMode,
   extractApiError,
   isAutoRetryableTypedError,
   isAutoRetryableCatchError,
@@ -174,7 +159,6 @@ import {
   DEFAULT_MODEL_ID,
   MAX_CONTEXT_MESSAGES,
 } from './agent-prompt-utils'
-import { resolveSDKCliPath } from './agent-sdk-cli-path'
 import { collectAttachedDirectories, collectProductArtifactDirectories } from './agent-directory-utils'
 import { buildAgentRuntimeEnv, mergeRuntimeEnv } from './agent-runtime-env'
 import { getOrCreateShellSnapshot } from './shell-snapshot'
@@ -182,19 +166,10 @@ import type { PiAgentQueryOptions } from './adapters/pi-agent-adapter'
 import type { PiRetryUpdate } from './adapters/pi-retry-control'
 import { buildPiBuiltinTools } from './adapters/pi-builtin-tools'
 import { buildPiMcpTools, getMcpPolicyToolName } from './adapters/pi-mcp-tools'
-import { injectClaudeBrowserMcpServer } from './claude-browser-tools'
-import { injectClaudeClipboardMcpServer } from './claude-clipboard-tools'
 import { evaluatePptCapability } from './ppt-capability-gate'
-import { injectAgentImageOutputMcpServer } from './agent-image-output-tools'
-import { injectAgentGptImageMcpServer, isAgentGptImageAvailable } from './agent-gpt-image-tools'
-import { injectAgentSkinMcpServer } from './agent-skin-tools'
-import { injectAgentPreviewMcpServer } from './agent-preview-tools'
 import { agentFilePreviewSessionManager } from './agent-file-preview-session'
-import { injectPptDeliveryMcpServer } from './ppt-delivery-agent-tools'
 import { browserController } from './browser-controller'
 import {
-  applySdkCredentials,
-  AgentRunAlreadyActiveError,
   isBrowserToolName,
   isPartialSDKMessage,
   isPlanModeMarkdownPath,
@@ -205,6 +180,7 @@ import {
   shouldPreInterruptQueuedMessage,
   tryAcquireActiveSession,
   tryReserveQueuedMessage,
+  AgentRunAlreadyActiveError,
 } from './agent-orchestrator-p0-guards'
 import { EMPTY_OUTPUT_ERROR_MESSAGE, hasTerminalErrorWithContent, stripErrorFromContentMessage } from './adapters/pi-message-adapter'
 import { resolvePiThinkingLevel } from './agent-thinking-level'
@@ -340,106 +316,6 @@ export class AgentOrchestrator {
     const stoppedByUser = this.stoppedBySessions.has(sessionId)
     this.stoppedBySessions.delete(sessionId)
     return stoppedByUser
-  }
-
-  /**
-   * 构建 SDK 环境变量
-   *
-   * 注入 API Key、Base URL、代理、Shell 配置等。
-   * 对 Kimi Coding Plan / MiniMax Coding Plan：使用 Bearer 认证（ANTHROPIC_AUTH_TOKEN）。
-   */
-  private async buildSdkEnv(credentials: {
-    apiKey: string
-    baseUrl: string | undefined
-    provider: ProviderType
-    forceBearerAuth: boolean
-  }): Promise<Record<string, string | undefined>> {
-    const { apiKey, baseUrl, provider, forceBearerAuth } = credentials
-    // 从 process.env 继承系统变量，但清理所有 ANTHROPIC_ 前缀的变量，
-    // 防止本地开发环境（如 ANTHROPIC_AUTH_TOKEN、ANTHROPIC_API_KEY、
-    // ANTHROPIC_BASE_URL 等）干扰 SDK 的认证和请求目标。
-    // 即使 index.ts 启动时已清理过一次，initializeRuntime() 中的
-    // loadShellEnv() 可能从 shell 配置文件（~/.zshrc 等）重新注入这些变量。
-    const cleanEnv: Record<string, string | undefined> = {}
-    for (const [key, value] of Object.entries(process.env)) {
-      if (!key.startsWith('ANTHROPIC_')) {
-        cleanEnv[key] = value
-      }
-    }
-
-    const sdkEnv: Record<string, string | undefined> = {
-      ...cleanEnv,
-      // 提升输出 token 上限，避免 "exceeded 32000 output token maximum" 错误
-      CLAUDE_CODE_MAX_OUTPUT_TOKENS: '64000',
-      // 暴露打包进 App 的 profer CLI 路径，供 session-cleaner 等 skill / Agent 调用
-      // （开发模式无编译二进制，getBundledCliPath 返回 undefined，此处不注入，
-      //   skill 回退到源码运行 bun apps/cli/src/index.ts）。
-      ...(getBundledCliPath() ? { PROFER_CLI: getBundledCliPath() } : {}),
-      // 启用 Tasks 功能
-      CLAUDE_CODE_ENABLE_TASKS: 'true',
-      // 禁用实验性 beta 功能，使用稳定模式
-      CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS: '1',
-      // 配置隔离：让 SDK 使用独立的配置目录，不读取用户的 ~/.claude.json
-      CLAUDE_CONFIG_DIR: getSdkConfigDir(),
-    }
-
-    // 凭证只写入本次 query 的 env，不回写主进程 process.env。
-    applySdkCredentials(sdkEnv, apiKey, baseUrl, provider, forceBearerAuth)
-
-    const proxyUrl = await getEffectiveProxyUrl()
-    if (proxyUrl) {
-      sdkEnv.HTTPS_PROXY = proxyUrl
-      sdkEnv.HTTP_PROXY = proxyUrl
-    }
-
-    // Windows 平台：配置 Shell 环境（支持用户偏好）
-    if (process.platform === 'win32') {
-      const runtimeStatus = getRuntimeStatus()
-      const shellStatus = runtimeStatus?.shell
-      const shellPreference = getSettings().agentShellPreference ?? 'auto'
-
-      if (shellStatus) {
-        let shellSet = false
-
-        // 用户明确偏好 + 该 shell 可用 → 直接使用
-        if (shellPreference === 'git-bash' && shellStatus.gitBash?.available && shellStatus.gitBash.path) {
-          sdkEnv.CLAUDE_CODE_SHELL = shellStatus.gitBash.path
-          console.log(`[Agent 编排] 配置 Shell 环境: Git Bash（用户偏好）(${shellStatus.gitBash.path})`)
-          shellSet = true
-        } else if (shellPreference === 'wsl' && shellStatus.wsl?.available) {
-          sdkEnv.CLAUDE_CODE_SHELL = 'wsl'
-          console.log(`[Agent 编排] 配置 Shell 环境: WSL（用户偏好）${shellStatus.wsl.version} (${shellStatus.wsl.defaultDistro})`)
-          shellSet = true
-        }
-
-        // 自动模式或偏好 shell 不可用 → fallback
-        if (!shellSet) {
-          if (shellStatus.gitBash?.available && shellStatus.gitBash.path) {
-            sdkEnv.CLAUDE_CODE_SHELL = shellStatus.gitBash.path
-            console.log(`[Agent 编排] 配置 Shell 环境: Git Bash (${shellStatus.gitBash.path})`)
-          } else if (shellStatus.wsl?.available) {
-            sdkEnv.CLAUDE_CODE_SHELL = 'wsl'
-            console.log(`[Agent 编排] 配置 Shell 环境: WSL ${shellStatus.wsl.version} (${shellStatus.wsl.defaultDistro})`)
-          } else {
-            console.warn('[Agent 编排] Windows 平台未检测到可用的 Shell 环境（Git Bash / WSL）')
-          }
-        }
-        sdkEnv.CLAUDE_BASH_NO_LOGIN = '1'
-      }
-    }
-
-    // 针对 claude-agent-sdk 0.2.111+ 的 options.env 叠加语义加固：
-    // SDK 将 options.env 叠加到 process.env 之上传递给子进程。
-    // 若 shell 中存在 ANTHROPIC_CUSTOM_HEADERS、ANTHROPIC_MODEL 等变量，
-    // 且 sdkEnv 未显式管理，叠加后会回流到 SDK 子进程。
-    // 对于 sdkEnv 未显式管理的 ANTHROPIC_* 变量，显式置空字符串以覆盖回流。
-    for (const key of Object.keys(process.env)) {
-      if (key.startsWith('ANTHROPIC_') && !(key in sdkEnv)) {
-        sdkEnv[key] = ''
-      }
-    }
-
-    return sdkEnv
   }
 
   /**
@@ -1002,7 +878,6 @@ export class AgentOrchestrator {
 
     try {
     // 0.5 清除上一轮中断标记
-      input = routePluginModel(`agent:${sessionId}`, input, agentRuntime)
       ;({ channelId, modelId } = input)
       try {
         updateAgentSessionMeta(sessionId, { stoppedByUser: false })
@@ -1093,10 +968,8 @@ export class AgentOrchestrator {
     if (!isXaiChannelAvailableForRuntime(channel, agentRuntime)) {
       reportPreflightError({
         code: 'invalid_request',
-        title: agentRuntime !== 'pi' ? 'xAI 仅支持 Pi Agent' : 'xAI Agent 尚未开启',
-        message: agentRuntime !== 'pi'
-          ? 'xAI 当前仅支持 Pi Agent 运行时，请先切换 Agent 内核为 Pi。'
-          : 'xAI Agent 仍处于实验阶段，请先在 xAI 渠道设置中开启“启用实验性 Agent”。',
+        title: 'xAI Agent 尚未开启',
+        message: 'xAI Agent 仍处于实验阶段，请先在 xAI 渠道设置中开启“启用实验性 Agent”。',
         actions: [{ key: 's', label: '打开渠道设置', action: 'open_channel_settings' }],
         canRetry: false,
       })
@@ -1204,15 +1077,13 @@ export class AgentOrchestrator {
     const oneMillionContextEnabled = sdk1MSelection.oneMillionContextEnabled
     const effectiveSdkModelId = sdk1MSelection.modelId
     const initialContextWindow = inferAgentSdkContextWindow(configuredModelId, channel.provider, context1mPreference)
-    if (agentRuntime === 'claude' && initialContextWindow != null) {
+    if (initialContextWindow != null) {
       // 兼容网关可能剥掉 [1m] 后缀或不返回 modelUsage；启动时先同步本轮最终窗口。
       this.eventBus.emit(sessionId, {
         kind: 'profer_event',
         event: { type: 'context_window', contextWindow: initialContextWindow },
       })
     }
-    let sdkEnv = await this.buildSdkEnv(runtimeCredentials)
-    applyAgentModelRoutingToEnv(sdkEnv, modelRouting)
 
     // 4. 读取已有的 SDK session ID（用于 resume）
     const sessionMeta = getAgentSessionMeta(sessionId)
@@ -1238,42 +1109,7 @@ export class AgentOrchestrator {
     let workspaceSlug: string | undefined
     let workspace: import('@profer/shared').AgentWorkspace | undefined
 
-      // 8. Claude runtime 才需要验证其 bundled CLI；Pi 是 in-process runtime。
-      const skillToolInventory = captureSkillToolInventory(await import('@anthropic-ai/claude-agent-sdk'))
-      const sdk = skillToolInventory.sdk
-      const cliPath = agentRuntime === 'claude' ? resolveSDKCliPath() : undefined
-
-      if (agentRuntime === 'claude' && (!cliPath || !existsSync(cliPath))) {
-        const subpkg = `@anthropic-ai/claude-agent-sdk-${process.platform}-${process.arch}`
-        console.error(`[Agent 编排] SDK native binary 不存在: ${cliPath}`)
-        reportPreflightError({
-          code: 'claude_binary_not_found',
-          title: 'Claude 核心未就绪',
-          message:
-            '应用安装包里缺少 Claude Agent SDK 的核心可执行文件（claude.exe）。这通常是打包时未包含当前平台的 SDK 组件导致。请重新下载最新安装包，或提交 issue 告知我们。',
-          details: [`缺失文件: ${cliPath}`, `需要的子包: ${subpkg}`],
-          actions: [
-            {
-              key: 'd',
-              label: '下载最新安装包',
-              action: 'open_external',
-              payload: 'https://proma.cool/download',
-            },
-            {
-              key: 'i',
-              label: '报告问题',
-              action: 'open_external',
-              payload: 'https://github.com/Yuan-lai-ru-ci/Profer/issues/new',
-            },
-          ],
-          canRetry: false,
-        })
-        return
-      }
-
-      console.log(
-        `[Agent 编排] 启动 ${agentRuntime} runtime — ${agentRuntime === 'claude' ? `binary: ${cliPath}` : 'in-process Pi'}，模型: ${modelId || DEFAULT_MODEL_ID}, resume: ${existingSdkSessionId ?? '无'}`,
-      )
+      console.log(`[Agent 编排] 启动 Pi runtime，模型: ${modelId || DEFAULT_MODEL_ID}, resume: ${existingSdkSessionId ?? '无'}`)
 
       // 确定 Agent 工作目录
       agentCwd = homedir()
@@ -1287,7 +1123,7 @@ export class AgentOrchestrator {
           workspace = ws
           console.log(`[Agent 编排] 使用 session 级别 cwd: ${agentCwd} (${ws.name}/${sessionId})`)
 
-          ensurePluginManifest(ws.slug, ws.name)
+          ensureClaudeSkillManifest(ws.slug, ws.name)
 
           if (existingSdkSessionId) {
             console.log(`[Agent 编排] 将尝试 resume: ${existingSdkSessionId}`)
@@ -1300,37 +1136,6 @@ export class AgentOrchestrator {
       // 9.4.1 Fork session JSONL 迁移已在 forkAgentSession 中完成，
       // fork 后的会话直接使用自己的 cwd，无需回退到源目录。
       // forkSourceDir 仅作为备用参考字段保留，不再影响 agentCwd。
-
-      // 9.5 确保 SDK 项目设置（plansDirectory → .context）
-      {
-        const claudeSettingsDir = join(agentCwd, '.claude')
-        if (!existsSync(claudeSettingsDir)) mkdirSync(claudeSettingsDir, { recursive: true })
-        const settingsPath = join(claudeSettingsDir, 'settings.json')
-        let sdkProjectSettings: Record<string, unknown> = {}
-        try {
-          sdkProjectSettings = JSON.parse(readFileSync(settingsPath, 'utf-8'))
-        } catch {
-          /* 文件不存在或解析失败 */
-        }
-        let needsWrite = false
-        if (sdkProjectSettings.plansDirectory !== '.context') {
-          sdkProjectSettings.plansDirectory = '.context'
-          needsWrite = true
-        }
-        if (sdkProjectSettings.skipWebFetchPreflight !== true) {
-          sdkProjectSettings.skipWebFetchPreflight = true
-          needsWrite = true
-        }
-        const autoMemoryDirectory = workspaceSlug ? getWorkspaceAutoMemoryDir(workspaceSlug) : undefined
-        if (sdkProjectSettings.autoMemoryDirectory !== autoMemoryDirectory) {
-          sdkProjectSettings.autoMemoryDirectory = autoMemoryDirectory
-          needsWrite = true
-        }
-        if (needsWrite) {
-          writeFileSync(settingsPath, JSON.stringify(sdkProjectSettings, null, 2))
-          console.log(`[Agent 编排] 已设置 SDK settings (plansDirectory, skipWebFetchPreflight, autoMemoryDirectory, autoCompact)`)
-        }
-      }
 
       // 9.6 直接信任已保存的 sdkSessionId，跳过 listSessions 预验证
       // 原因：listSessions({ dir }) 基于 cwd 路径哈希查找，但 session 级别的 cwd
@@ -1392,176 +1197,8 @@ export class AgentOrchestrator {
       )
       const disabledToolGroups = new Set(presetPolicy.disabledToolGroups)
       const disabledTools = presetPolicy.disabledTools ? [...presetPolicy.disabledTools] : undefined
-      // Claude 原生工具不经过 in-process MCP，必须通过 SDK disallowedTools 同步硬禁用。
-      const disabledClaudeTools = [
-        ...AGENT_PRESET_CAPABILITY_GROUPS
-          .filter((group) => presetPolicy.disabledToolGroups.includes(group.id))
-          .flatMap((group) => group.toolNames),
-        ...(disabledTools ?? []),
-      ].filter((name) => name === 'WebSearch' || name === 'WebFetch')
-        .filter((name, index, names) => names.indexOf(name) === index)
       const mcpServers = this.buildMcpServers(workspaceSlug, presetPolicy.allowedMcpServerNames ? [...presetPolicy.allowedMcpServerNames] : undefined)
-      // 先建立运行策略快照，再执行异步 MCP 注入，避免初始化期间的队列消息失去预设过滤。
       this.activePresetPolicies.set(sessionId, withLoadedMcpServerNames(presetPolicy, Object.keys(mcpServers)))
-      if (!disabledToolGroups.has('automation')) {
-        await injectAutomationMcpServer(
-          sdk,
-          mcpServers,
-          {
-          sessionId,
-          channelId,
-          modelId,
-          workspaceId,
-          triggeredBy: input.triggeredBy as 'user' | 'automation' | undefined,
-          },
-          disabledTools,
-        )
-      }
-      if (!disabledToolGroups.has('memory')) {
-        await injectMemoryArchiveMcpServer(
-          sdk,
-          mcpServers,
-          {
-          memoryArchivePath: workspaceSlug ? getWorkspaceMemoryArchivePath(workspaceSlug) : undefined,
-          workspaceSlug,
-          },
-          disabledTools,
-        )
-        if (workspace?.type === 'team') {
-          await injectTeamMemoryMcpServer(sdk, mcpServers, { workspaceId }, disabledTools)
-        }
-      }
-      if (!disabledToolGroups.has('collaboration')) {
-        await injectAgentCollaborationMcpServer(
-          sdk,
-          mcpServers,
-          {
-          sessionId,
-          channelId,
-          modelId,
-          workspaceId,
-          permissionMode: input.permissionModeOverride,
-          triggeredBy: input.triggeredBy,
-          },
-          disabledTools,
-        )
-      }
-      if (!disabledToolGroups.has('task-graph')) {
-        await injectTaskGraphMcpServer(sdk, mcpServers, { sessionId }, disabledTools)
-      }
-      if (agentRuntime === 'claude' && input.reportGoalResult) {
-        await injectGoalMcpServer(sdk, mcpServers, {
-          iteration: input.goalIteration ?? 0,
-          report: input.reportGoalResult,
-        })
-      }
-      await injectAgentPresetMcpServer(sdk, mcpServers, {
-        sessionId,
-        workspaceSlug,
-        source: presetOperationSource,
-        allowedOperations: allowedPresetOperations,
-        currentPresetReference,
-        userMessage,
-        pendingChange: userConfirmedPresetChange ? pendingPresetChange : undefined,
-      })
-      if (agentRuntime === 'claude' && !disabledToolGroups.has('automation')) {
-        await injectPlanningMcpServer(sdk, mcpServers, {
-          sessionId,
-          workspaceId,
-          isTeamWorkspace: workspace?.type === 'team',
-          disabledTools,
-        })
-      }
-      // 本地图片输出只在受工作区授权的会话注册；没有 workspace 的 cwd 是 homedir，不能默认授权整个用户目录。
-      const attachedPreviewRoots = collectAttachedDirectories({
-        extraDirs: additionalDirectories,
-        sessionMeta,
-        workspaceSlug,
-      })
-      const previewAllowedRoots = [
-        // 产品自有产物目录（皮肤库/插件/Skill/附件）也是 Agent 产物的落地位置：
-        // 不加进来，create_skin 产出的皮肤预览、Agent 自己写的本地页面都过不了授权根。
-        ...(workspaceSlug && agentCwd ? [agentCwd] : []),
-        ...attachedPreviewRoots,
-        ...collectProductArtifactDirectories(),
-      ]
-      const imageOutputAllowedRoots = workspaceSlug && agentCwd ? previewAllowedRoots : []
-      const emitImageGenerationUpdate = (record: import('@profer/shared').AgentImageGenerationCard): void => {
-        this.eventBus.emit(sessionId, {
-          kind: 'profer_event',
-          event: { type: 'image_generation_updated', sessionId, record },
-        })
-      }
-      if (agentRuntime === 'claude' && !disabledToolGroups.has('preview')) {
-        await injectAgentPreviewMcpServer(sdk, mcpServers, {
-          sessionId,
-          agentCwd: workspaceSlug ? agentCwd : '',
-          allowedRoots: previewAllowedRoots,
-          onRequest: (event) => agentFilePreviewSessionManager.waitUntilReady(event, (previewEvent) => {
-            this.eventBus.emit(sessionId, { kind: 'profer_event', event: previewEvent })
-          }),
-          onInspectRequest: (request) => agentFilePreviewSessionManager.inspect(request, (previewEvent) => {
-            this.eventBus.emit(sessionId, { kind: 'profer_event', event: previewEvent })
-          }),
-        }, disabledTools)
-      }
-      if (agentCwd && imageOutputAllowedRoots.length > 0 && !disabledToolGroups.has('image')) {
-        await injectAgentImageOutputMcpServer(sdk, mcpServers, {
-          agentCwd,
-          allowedRoots: imageOutputAllowedRoots,
-        }, disabledTools)
-        if (agentRuntime === 'claude' && isAgentGptImageAvailable()) {
-          await injectAgentGptImageMcpServer(sdk, mcpServers, {
-            sessionId,
-            agentCwd,
-            allowedRoots: imageOutputAllowedRoots,
-            onGenerationUpdate: emitImageGenerationUpdate,
-          }, disabledTools)
-        }
-        if (agentRuntime === 'claude') {
-          await injectAgentSkinMcpServer(sdk, mcpServers, {
-            agentCwd,
-            allowedRoots: imageOutputAllowedRoots,
-            workspaceSlug,
-          }, disabledTools)
-        }
-      }
-      if (pptCapabilityActive) {
-        await injectPptDeliveryMcpServer(sdk, mcpServers, disabledTools)
-      }
-
-      // Claude 通过 in-process MCP 使用与 Pi 相同的受管浏览器 controller；Pi 在后续分支注册 customTools。
-      if (agentRuntime === 'claude' && !disabledToolGroups.has('clipboard')) {
-        await injectClaudeClipboardMcpServer(sdk, mcpServers, disabledTools)
-      }
-      if (agentRuntime === 'claude' && !disabledToolGroups.has('browser')) {
-        await injectClaudeBrowserMcpServer(sdk, mcpServers, {
-          sessionId,
-          workspaceId,
-          agentCwd,
-          allowedRoots: [
-            ...new Set(
-              [
-            workspaceId ? agentCwd : undefined,
-                ...collectAttachedDirectories({
-                  extraDirs: additionalDirectories,
-                  sessionMeta,
-                  workspaceSlug,
-                }),
-                ...collectProductArtifactDirectories(),
-              ].filter((root): root is string => typeof root === 'string' && root.length > 0),
-            ),
-          ],
-          executionSource: input.triggeredBy ?? 'user',
-          disabledTools,
-        })
-      }
-
-      const pluginTools = await buildPluginAgentTools(sdk, mcpServers, (server, tool) =>
-        isEffectiveAgentPresetMcpServerAllowed(presetPolicy, server)
-        && !disabledTools?.includes(tool)
-        && !disabledTools?.includes(`mcp__${server}__${tool}`),
-      )
 
       // 合并外部注入的自定义 MCP 服务器（如飞书群聊工具），同样受当前预设白名单约束。
       if (customMcpServers) {
@@ -1673,7 +1310,7 @@ ${enrichedMessage}`
           ].filter((root): root is string => typeof root === 'string' && root.length > 0),
         ),
       ]
-      // Claude SDK 原生接收 mcpServers；Pi 必须将同一配置连接后转换为 customTools。
+      // Pi 通过 customTools 接收内置与外部 MCP 能力。
       // 在这里复用已完成的 Profer MCP 注入和过滤流程，避免两套配置来源漂移。
       const piCustomTools =
         agentRuntime === 'pi'
@@ -1708,7 +1345,7 @@ ${enrichedMessage}`
               pptCapabilityActive,
             })
             const mcpTools = await buildPiMcpTools(mcpServers, presetPolicy)
-            return [...builtin.tools, ...mcpTools, ...pluginTools]
+            return [...builtin.tools, ...mcpTools]
           })()
         : undefined
       // 注册到 Map，支持运行中动态切换
@@ -1880,12 +1517,7 @@ ${enrichedMessage}`
             this.sessionPermissionModes.set(sessionId, result.targetMode)
             planModeEntered = false
             emitPlanModeChanged(false, 'permission')
-            // 同步通知 SDK 侧切换权限模式
-            if (this.adapter.setPermissionMode) {
-              this.adapter.setPermissionMode(sessionId, sdkPermissionModeForProferMode(result.targetMode)).catch((err: unknown) => {
-                console.warn(`[Agent 编排] SDK 权限模式切换失败:`, err)
-              })
-            }
+                  this.sessionPermissionModes.set(sessionId, result.targetMode)
           }
           return result
         }
@@ -1984,9 +1616,8 @@ ${enrichedMessage}`
 
       // 13. 构建 Adapter 查询选项
       // 检测用户选用的模型是否为 Claude 系列，决定 SubAgent 是否使用独立模型分层
-      const claudeAvailable = (modelId || DEFAULT_MODEL_ID).toLowerCase().includes('claude')
       const maxTurns = appSettings.agentMaxTurns && appSettings.agentMaxTurns > 0 ? appSettings.agentMaxTurns : undefined
-      const promptPolicy = resolveAgentSystemPromptPolicy(appSettings)
+      const promptPolicy = { epistemicMode: (appSettings.developerModeEnabled === true && appSettings.openEpistemicModeEnabled === true ? 'open' : 'grounded') as 'open' | 'grounded' }
       const selectedModelId = modelId || DEFAULT_MODEL_ID
       const allAdditionalDirectories = collectAttachedDirectories({
         extraDirs: additionalDirectories,
@@ -1997,9 +1628,7 @@ ${enrichedMessage}`
       const skillRouting = await prepareAgentSkillRouting({
         projection: runtimeSkills,
         policy: this.activePresetPolicies.get(sessionId) ?? presetPolicy,
-        toolNames: agentRuntime === 'pi'
-          ? ['Read', 'Write', 'Edit', 'Glob', 'Grep', 'Bash', ...(piCustomTools?.map(getMcpPolicyToolName) ?? [])]
-          : await skillToolInventory.getToolNames(mcpServers, presetPolicy),
+        toolNames: ['Read', 'Write', 'Edit', 'Glob', 'Grep', 'Bash', ...(piCustomTools?.map(getMcpPolicyToolName) ?? [])],
       })
       resolveSkillRouting(skillRouting.snapshot)
       const routedSkills = routeSkillsForTask(skillRouting.snapshot, { userMessage, mentionedSkills })
@@ -2014,8 +1643,7 @@ ${enrichedMessage}`
       const attachedDirectoriesPrompt = buildPiAdditionalDirectoriesPrompt(allAdditionalDirectories, projectCandidates)
       const runtimeStatus = getRuntimeStatus()
       const shellPreference = getSettings().agentShellPreference
-      const piShellSnapshot = agentRuntime === 'pi'
-        ? await getOrCreateShellSnapshot({
+      const piShellSnapshot = await getOrCreateShellSnapshot({
             sessionId,
             cwd: agentCwd,
             platform: process.platform,
@@ -2031,17 +1659,13 @@ ${enrichedMessage}`
                     ? { kind: 'wsl', path: 'wsl.exe', login: false, source: 'detected' }
                     : undefined,
           })
-        : undefined
       const piRuntimeEnv = buildAgentRuntimeEnv({
         proxyUrl: await getEffectiveProxyUrl(),
         runtimeStatus,
         processEnv: piShellSnapshot ? mergeRuntimeEnv(process.env, piShellSnapshot.env) : process.env,
         shellPreference,
       })
-      const promptShellPath = agentRuntime === 'pi'
-        ? piRuntimeEnv.shellPath
-        : process.env.SHELL
-          ?? (process.platform === 'win32' ? undefined : process.platform === 'darwin' ? '/bin/zsh' : '/bin/sh')
+      const promptShellPath = piRuntimeEnv.shellPath
       const baseSystemPrompt = buildSystemPrompt({
         workspaceName: workspace?.name,
         workspaceSlug,
@@ -2053,7 +1677,7 @@ ${enrichedMessage}`
         // 方案 3：工具组禁用同步隐藏提示词段落，自动映射来自 shared 唯一事实表
         // （task-graph→task-graph、memory→memory、collaboration→subagents、automation→automation）
         suppressSections: [...presetPolicy.suppressPromptSections],
-        claudeAvailable,
+        claudeAvailable: false,
         deepSeekSubagentModel: modelRouting.subagentModel,
         isPiRuntime: agentRuntime === 'pi',
         isTeamWorkspace: workspace?.type === 'team',
@@ -2068,15 +1692,13 @@ ${enrichedMessage}`
         })
       // Pi 没有 Claude preset；普通任务只携带核心规则，低频 SOP 按任务与实际工具恢复。
       // 必须先压缩纯基础 Prompt，再追加附加目录和 preset 自定义段，避免标题截取误删后置上下文。
-      const compressedSystemPrompt = agentRuntime === 'pi'
-        ? buildPiTaskPrompt({
+      const compressedSystemPrompt = buildPiTaskPrompt({
             basePrompt: baseSystemPrompt,
             userMessage: runtimeUserMessage,
             toolNames: piCustomTools?.map((tool) => tool.name) ?? [],
             forceAutomation: input.triggeredBy === 'automation',
             pptCapabilityActive,
           })
-        : baseSystemPrompt
       const systemPromptAppend = compressedSystemPrompt +
         attachedDirectoriesPrompt +
         (presetPolicy.preset.promptSections?.length ? `\n\n${presetPolicy.preset.promptSections.join('\n\n')}` : '') +
@@ -2101,19 +1723,14 @@ ${enrichedMessage}`
         .filter((toolName) => toolName.startsWith('Browser'))
         .map((toolName) => `mcp__browser__${toolName}`)
       const autoAllowedTools = [...new Set([...SAFE_TOOLS, ...browserAllowedToolAliases])]
-      const sdkAllowedTools = sdkPermissionModeForProferMode(initialPermissionMode) === 'auto'
-        ? { allowedTools: autoAllowedTools }
-        : {}
       const piNativeRetryState = { exhausted: false }
       const queryOptions: AgentQueryInput & Record<string, unknown> = {
         sessionId,
         onRuntimeRegistered: () => resolveRuntimeRegistered(true),
         agentRuntime,
         prompt: finalPrompt,
-        // Pi must receive the channel model unchanged: Claude's `[1m]` suffix is not a provider model ID.
-        model: agentRuntime === 'pi' ? selectedModelId : effectiveSdkModelId,
+        model: selectedModelId,
         cwd: agentCwd,
-        ...(agentRuntime === 'claude' && { sdkCliPath: cliPath, env: sdkEnv }),
         ...(agentRuntime === 'pi' && {
           apiKey: runtimeCredentials.apiKey,
           baseUrl: runtimeCredentials.baseUrl,
@@ -2157,24 +1774,8 @@ ${enrichedMessage}`
           ...(userMessage.trim() === '/compact' && { compactRequest: true }),
         }),
         ...(maxTurns != null && { maxTurns }),
-        sdkPermissionMode: sdkPermissionModeForProferMode(initialPermissionMode),
-        // permissionMode 负责表达 auto/plan/bypassPermissions。
-        // 当提供 canUseTool 回调时这里必须为 false，否则 CLI 同时收到
-        // --allow-dangerously-skip-permissions 和 --permission-prompt-tool stdio
-        // 两个矛盾的指令，导致 ExitPlanMode/AskUserQuestion 等交互式工具失败。
-        // bypassPermissions 下 SDK 可能在 canUseTool 前直接放行工具，因此计划态还会
-        // 从实际 tool_use 流里同步，避免 UI 停留在计划阶段。
-        allowDangerouslySkipPermissions: !canUseTool,
-        canUseTool,
-        ...sdkAllowedTools,
-        ...(disabledClaudeTools.length > 0 && { disallowedTools: disabledClaudeTools }),
-        // 默认继续使用 claude_code preset；开发者开启开放认识论后改用 Profer 完整自管 prompt，
-        // 避免上游本地 preset 稀释该姿态。模型服务端更高优先级规则不受此设置影响。
-        systemPrompt: resolveAgentRuntimeSystemPrompt(
-          agentRuntime,
-          promptPolicy,
-          agentRuntime === 'pi' ? piSystemPrompt : systemPromptAppend,
-        ),
+        // Pi 使用 permissionMode/canUseTool；不再传 Claude SDK 专属权限字段。
+        systemPrompt: piSystemPrompt,
         resumeSessionId: existingSdkSessionId,
         onRuntimeMessage: input.onRuntimeMessage,
         ...(input.isolatedRuntimeSession && {
@@ -2183,7 +1784,7 @@ ${enrichedMessage}`
         }),
         // 回退后 resume：从指定消息处继续（SDK 在同一 JSONL 内创建分支）
         ...(rewindResumeAt && { resumeSessionAt: rewindResumeAt }),
-        ...(Object.keys(mcpServers).length > 0 && { mcpServers }),
+        // Pi SDK local plugin discovery loads workspace Skills; third-party plugin host removed.
         plugins: skillRuntimeOptions.plugins,
         skills: skillRuntimeOptions.skills,
         // 合并附加目录：用户当次输入 + 会话级 + 工作区级（详见 collectAttachedDirectories）
@@ -2200,11 +1801,6 @@ ${enrichedMessage}`
         ...(appSettings.agentMaxBudgetUsd != null &&
           appSettings.agentMaxBudgetUsd > 0 && {
           maxBudgetUsd: appSettings.agentMaxBudgetUsd,
-        }),
-        // 按本轮最终 1M 选择注入 beta；用户显式开启未知模型时同样生效。
-        ...(agentRuntime === 'claude' &&
-          oneMillionContextEnabled && {
-          betas: ['context-1m-2025-08-07'] as SdkBeta[],
         }),
         onStderr: (data: string) => {
           stderrChunks.push(data)
@@ -2367,7 +1963,7 @@ ${enrichedMessage}`
         authMode: runtimeCredentials.forceBearerAuth ? 'bearer' : 'api-key',
         agentUrlOrigin: agentUrlForLog?.origin ?? 'invalid',
         agentUrlPathname: agentUrlForLog?.pathname ?? '',
-        appProxyEnabled: Boolean(sdkEnv.HTTP_PROXY || sdkEnv.HTTPS_PROXY),
+        appProxyEnabled: Boolean(piRuntimeEnv.env.HTTP_PROXY || piRuntimeEnv.env.HTTPS_PROXY),
       })
 
       let relayTokenRecoveryAttempted = false
@@ -2394,8 +1990,6 @@ ${enrichedMessage}`
         if (!nextCredentials.ok) return false
 
         runtimeCredentials = nextCredentials.credentials
-        sdkEnv = await this.buildSdkEnv(runtimeCredentials)
-        if (agentRuntime === 'claude') queryOptions.env = sdkEnv
         if (agentRuntime === 'pi') {
           queryOptions.apiKey = runtimeCredentials.apiKey
           queryOptions.baseUrl = runtimeCredentials.baseUrl
@@ -3664,10 +3258,6 @@ ${enrichedMessage}`
         source: 'permission',
       },
     })
-    // 同步通知 SDK 侧
-    if (this.adapter.setPermissionMode) {
-      await this.adapter.setPermissionMode(sessionId, sdkPermissionModeForProferMode(mode))
-    }
     console.log(`[Agent 编排] 运行中权限模式已切换: sessionId=${sessionId}, mode=${mode}`)
   }
 

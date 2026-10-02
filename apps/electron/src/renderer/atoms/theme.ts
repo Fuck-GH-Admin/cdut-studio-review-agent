@@ -18,7 +18,7 @@ const THEME_CACHE_KEY = 'profer-theme-mode'
 const THEME_STYLE_CACHE_KEY = 'profer-theme-style'
 const INTERFACE_VARIANT_CACHE_KEY = 'profer-interface-variant'
 /** 当前皮肤 tone 缓存：供 index.html 首帧防闪烁脚本推断 dark 类（皮肤注册表需 IPC 才能读取） */
-const SKIN_TONE_CACHE_KEY = 'profer-skin-tone'
+const SKIN_TONE_CACHE_KEY = 'cdut-skin-tone'
 
 /** 读取缓存的皮肤 tone（'dark' | 'light' | null） */
 function getCachedSkinTone(): 'dark' | 'light' | null {

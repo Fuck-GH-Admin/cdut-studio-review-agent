@@ -8,7 +8,7 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import {
   conversationsAtom,
   selectedModelAtom,
-} from '@/atoms/chat-atoms'
+} from '@/atoms/conversation-atoms'
 import {
   agentSessionsAtom,
   agentChannelIdAtom,

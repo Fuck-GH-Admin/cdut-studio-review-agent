@@ -8,8 +8,8 @@
 
 import type { GetTaskOutputResult, SDKMessage, TypedError } from './agent'
 
-/** Agent runtime 实现。未知/旧持久化值一律按 Claude 回退。 */
-export type AgentRuntime = 'claude' | 'pi'
+/** Agent runtime 实现。当前仅保留 Pi。 */
+export type AgentRuntime = 'pi'
 
 /**
  * Runtime 能力快照。能力是只读产品契约，不代表 renderer 可以绕过主进程权限。
@@ -29,15 +29,15 @@ export interface AgentRuntimeCapabilities {
   runtimeSupportsSubagents: boolean
 }
 
-/** 默认 runtime。Pi 完成执行链路与灰度前，产品默认始终保持 Claude。 */
-export const DEFAULT_AGENT_RUNTIME: AgentRuntime = 'claude'
+/** 默认 runtime。Claude runtime 已移除，所有新旧会话统一使用 Pi。 */
+export const DEFAULT_AGENT_RUNTIME: AgentRuntime = 'pi'
 
 /** 严格校验外部输入是否为受支持 runtime。 */
 export function isAgentRuntime(value: unknown): value is AgentRuntime {
-  return value === 'claude' || value === 'pi'
+  return value === 'pi'
 }
 
-/** 将历史缺省或未知持久化值安全归一化为 Claude。 */
+/** 将历史缺省或未知持久化值安全归一化为 Pi。 */
 export function normalizeAgentRuntime(value: unknown): AgentRuntime {
   return isAgentRuntime(value) ? value : DEFAULT_AGENT_RUNTIME
 }

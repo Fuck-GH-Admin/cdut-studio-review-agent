@@ -112,7 +112,7 @@ describe('upsertAgentSessionProjection', () => {
     updatedAt: revision,
     channelId: 'channel',
     modelId: 'model',
-    agentRuntime: 'claude',
+    agentRuntime: 'pi',
     permissionMode: 'auto',
     presetId: null,
     presetReference: null,

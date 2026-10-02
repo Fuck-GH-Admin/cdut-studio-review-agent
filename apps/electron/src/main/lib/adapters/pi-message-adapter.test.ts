@@ -231,7 +231,7 @@ describe('sanitizePiContextMessages', () => {
       toolName: 'BrowserScreenshot',
       isError: false,
       content: [
-        { type: 'text', text: '已截取当前页面：profer-file://x/index.html' },
+        { type: 'text', text: '已截取当前页面：cdut-file://x/index.html' },
         { type: 'image', data: '', mimeType: 'image/png' },
       ],
     } as unknown as AgentMessage
@@ -240,7 +240,7 @@ describe('sanitizePiContextMessages', () => {
     const sanitized = result[0]! as unknown as { content: Array<Record<string, unknown>> }
 
     expect(sanitized.content).toEqual([
-      { type: 'text', text: '已截取当前页面：profer-file://x/index.html' },
+      { type: 'text', text: '已截取当前页面：cdut-file://x/index.html' },
       { type: 'text', text: EMPTY_IMAGE_PLACEHOLDER_TEXT },
     ])
     // 不修改原始消息对象

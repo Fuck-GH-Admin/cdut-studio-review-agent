@@ -4,7 +4,7 @@ import { GoalSessionService } from './goal-session-service'
 
 const tick = () => new Promise<void>((resolve) => setTimeout(resolve, 15))
 
-function harness(runtime: 'claude' | 'pi' = 'pi') {
+function harness(runtime: 'pi' = 'pi') {
   const messages: SDKMessage[] = []
   const events: AgentGoalState[] = []
   const archives: AgentGoalState[] = []
@@ -37,7 +37,7 @@ function harness(runtime: 'claude' | 'pi' = 'pi') {
 }
 
 describe('Goal 会话桥接', () => {
-  test.each(['claude', 'pi'] as const)('%s 使用同会话上下文并隐藏控制输入而不是工作过程', async (runtime) => {
+  test.each(['pi'] as const)('%s 使用同会话上下文并隐藏控制输入而不是工作过程', async (runtime) => {
     const h = harness(runtime)
     let received: AgentSendInput | undefined
     h.setRun(async (input) => {

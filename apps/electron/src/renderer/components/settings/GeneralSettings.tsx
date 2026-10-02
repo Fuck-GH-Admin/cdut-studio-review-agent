@@ -34,22 +34,13 @@ export function GeneralSettings(): React.ReactElement {
   const [autoLaunch, setAutoLaunch] = React.useState(false)
   const [autoLaunchBusy, setAutoLaunchBusy] = React.useState(true)
   const isWindows = detectIsWindows()
-  const [quickTaskEnabled, setQuickTaskEnabled] = React.useState(false)
   const shortcutOverrides = useAtomValue(shortcutOverridesAtom)
-  const quickTaskOverride = shortcutOverrides['quick-task']?.[isMac ? 'mac' : 'win']
-  const quickTaskDefault = SHORTCUT_MAP.get('quick-task')
-  // 尊重用户自定义和显式禁用，不把默认键写死在文案中。
-  const quickTaskAccelerator = quickTaskOverride === null ? null : (
-    quickTaskOverride || (isMac ? quickTaskDefault?.defaultMac : quickTaskDefault?.defaultWin) || ''
-  )
-  const quickTaskShortcut = getAcceleratorDisplay(quickTaskAccelerator)
   const [shellPreference, setShellPreference] = React.useState<'auto' | 'git-bash' | 'wsl'>('auto')
   const [browserHomeUrl, setBrowserHomeUrl] = React.useState('')
 
   // 加载设置
   React.useEffect(() => {
     window.electronAPI.getSettings().then((settings) => {
-      setQuickTaskEnabled(settings.quickTaskEnabled === true)
       setShellPreference(settings.agentShellPreference ?? 'auto')
       setBrowserHomeUrl(settings.browserHomeUrl ?? '')
     }).catch(console.error)
@@ -101,35 +92,6 @@ export function GeneralSettings(): React.ReactElement {
     }
   }
 
-  /** 切换快速任务窗口，提示当前平台实际配置的快捷键。 */
-  const handleQuickTaskToggle = async (enabled: boolean): Promise<void> => {
-    setQuickTaskEnabled(enabled)
-    try {
-      await window.electronAPI.updateSettings({ quickTaskEnabled: enabled })
-      if (enabled) {
-        if (!quickTaskAccelerator) {
-          toast.info('快速任务已开启，但快捷键已禁用，请在快捷键管理中设置')
-        } else {
-          try {
-            const results = await window.electronAPI.reregisterGlobalShortcuts()
-            if (results['quick-task'] === true) {
-              toast.success(`快速任务已开启，按 ${quickTaskShortcut} 唤起`)
-            } else {
-              toast.warning('快速任务已开启，但快捷键注册失败，请在快捷键管理中更换组合键')
-            }
-          } catch (error) {
-            console.error('[通用设置] 检查快速任务快捷键注册失败:', error)
-            toast.warning('快速任务已开启，但无法确认快捷键状态，请在快捷键管理中检查')
-          }
-        }
-      } else {
-        toast.success('快速任务已关闭')
-      }
-    } catch (error) {
-      console.error('[通用设置] 更新快速任务开关失败:', error)
-      setQuickTaskEnabled(!enabled) // 回滚
-    }
-  }
 
   return (
     <div className="space-y-6">
@@ -144,14 +106,6 @@ export function GeneralSettings(): React.ReactElement {
           >
             <span className="text-[13px] text-foreground/40">简体中文</span>
           </SettingsRow>
-          <SettingsToggle
-            label={`快速任务（${quickTaskShortcut || '快捷键已禁用'}）`}
-            description={quickTaskShortcut
-              ? `启用后预创建全局唤起窗口，在任意应用按 ${quickTaskShortcut} 快速向 Profer 发送任务；可在快捷键管理中修改`
-              : '快捷键已禁用，可在快捷键管理中重新设置全局唤起组合键'}
-            checked={quickTaskEnabled}
-            onCheckedChange={handleQuickTaskToggle}
-          />
           <SettingsRow
             label="界面引导"
             description="重新播放首次进入时的界面蒙层引导（Esc 可随时退出）"
@@ -179,12 +133,12 @@ export function GeneralSettings(): React.ReactElement {
 
       <SettingsSection
         title="系统环境"
-        description="配置 Profer 的启动方式、命令执行环境和新标签页"
+        description="配置 CDUT Studio 的启动方式、命令执行环境和新标签页"
       >
         <SettingsCard>
           <SettingsToggle
             label="开机自启动"
-            description="系统启动时自动运行 Profer"
+            description="系统启动时自动运行 CDUT Studio"
             checked={autoLaunch}
             disabled={autoLaunchBusy}
             onCheckedChange={handleAutoLaunchChange}

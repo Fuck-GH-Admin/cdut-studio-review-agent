@@ -25,7 +25,7 @@ import {
 } from '@profer/ui/primitives/select'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/tooltip'
 import { Popover, PopoverTrigger, PopoverContent } from '@profer/ui/primitives/popover'
-import { ModelSelector } from '@/components/chat/ModelSelector'
+import { ModelSelector } from '@/components/shared/ModelSelector'
 import {
   automationFormAtom,
   automationsAtom,
@@ -183,16 +183,16 @@ function AutomationPromptEmptyGuide(): React.ReactElement {
     <div className="rounded-xl bg-foreground/[0.035] p-4 shadow-inner">
       <div className="flex flex-col gap-3">
         <div>
-          <div className="text-[13px] font-semibold text-foreground">推荐：让 Profer Agent 创建</div>
+          <div className="text-[13px] font-semibold text-foreground">推荐：让 CDUT Studio Agent 创建</div>
           <div className="mt-1 text-xs leading-relaxed text-muted-foreground">
-            在左侧会话里说清目标，并明确表示要求创建定时任务，Profer Agent 会生成任务描述，并补全周期、工作区和模型等配置，手动编辑更适合微调任务描述。
+            在左侧会话里说清目标，并明确表示要求创建定时任务，CDUT Studio Agent 会生成任务描述，并补全周期、工作区和模型等配置，手动编辑更适合微调任务描述。
           </div>
         </div>
         <div className="h-px bg-border/50" />
         <div>
           <div className="text-[13px] font-medium text-foreground/85">手动编写时，只写任务本身</div>
           <div className="mt-1 text-xs leading-relaxed text-muted-foreground">
-            例：检查 Profer 仓库新增 issue，主动回复问答类问题，不清楚的部分整理到工作区目录下的 .context/issue-faq.md 文档；真正的 Bug 或请求罗列后发给我，不要记录任何重复的信息。
+            例：检查 CDUT Studio 仓库新增 issue，主动回复问答类问题，不清楚的部分整理到工作区目录下的 .context/issue-faq.md 文档；真正的 Bug 或请求罗列后发给我，不要记录任何重复的信息。
           </div>
         </div>
       </div>
@@ -1054,8 +1054,7 @@ export function AutomationFormView(): React.ReactElement | null {
             >
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="claude">Claude</SelectItem>
-                <SelectItem value="pi">Pi</SelectItem>
+                                <SelectItem value="pi">Pi</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -1063,7 +1062,7 @@ export function AutomationFormView(): React.ReactElement | null {
           {/* 选择模型（Claude 仅显示 Agent 兼容渠道；Pi 使用 OpenAI 协议模型）。 */}
           <div className="flex flex-col gap-2">
             <Label>选择模型</Label>
-            {form.agentRuntime === 'claude' && agentChannelIds.length === 0 ? (
+            {agentChannelIds.length === 0 ? (
               <div className="flex items-center gap-2 rounded-md border border-amber-200 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-950/30 px-3 py-2 text-sm text-amber-700 dark:text-amber-400">
                 <Settings size={14} className="shrink-0" />
                 <span>尚未启用任何 Agent 兼容渠道</span>

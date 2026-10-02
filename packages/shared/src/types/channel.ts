@@ -141,7 +141,7 @@ export function isAgentCompatibleProvider(provider: ProviderType): boolean {
 }
 
 /** Agent 内核标识。 */
-export type AgentRuntimeMode = 'pi' | 'claude'
+export type AgentRuntimeMode = 'pi'
 
 /**
  * 按现有 provider 规则推导渠支持的内核集合（老配置静默迁移用）。
@@ -158,7 +158,7 @@ export function inferAgentRuntimeModes(
   if (channel.provider === 'xai') {
     return channel.agentExperimentalEnabled === true ? ['pi'] : []
   }
-  return isAgentCompatibleProvider(channel.provider) ? ['pi', 'claude'] : ['pi']
+  return ['pi']
 }
 
 /**
@@ -183,11 +183,11 @@ export function resolveXaiCredentialMode(mode: XaiCredentialMode | undefined, se
 }
 
 /** xAI API Key 模式可使用 Pi 原生 provider；订阅 OAuth 仅在显式实验开关开启时进入 Agent。 */
-/** @deprecated 语义上等价于「该渠道是否勾选了 Claude 内核」，保留供旧调用方使用。 */
+/** @deprecated 兼容旧调用方；现在等价于 Pi Agent 是否启用。 */
 export function isAgentEnabledForChannel(
   channel: Pick<Channel, 'provider' | 'enabled' | 'agentExperimentalEnabled' | 'agentRuntimes'>,
 ): boolean {
-  return isChannelEnabledForRuntime(channel, 'claude')
+  return isChannelEnabledForRuntime(channel, 'pi')
 }
 
 

@@ -1,7 +1,7 @@
 /**
- * OfvPreview — Open File Viewer（@open-file-viewer/core）在 Profer 预览面里的宿主。
+ * OfvPreview — Open File Viewer（@open-file-viewer/core）在 CDUT Studio 预览面里的宿主。
  *
- * 本轮范围：承担 Profer 现有链路覆盖不到的格式 ——
+ * 本轮范围：承担 CDUT Studio 现有链路覆盖不到的格式 ——
  * - 老式 Office（.doc / .xls / .ppt）：此前 `DiffTabContent` 直接渲染 `null`，也就是**一片空白**；
  * - 长尾格式（归档 / 设计文件 / 3D / GIS / 电子书 / 邮件 / OFD·XPS / 绘图 / 数据…）：此前归入 `UNSUPPORTED_EXTS`。
  * 现有可用路径（markdown / html / pdf / 图片 / .docx·.xlsx·.pptx 的 WASM 预览）暂不经过本组件，
@@ -13,9 +13,9 @@
  *    （three / mermaid / hls.js / ag-psd / xlsx / pdfjs-dist / leaflet / prismjs 45 种语言…），
  *    Vite 会为它们全部生成异步 chunk —— 白名单同时决定运行期加载与打包体积。
  * 2. **不挂 cadPlugin**：它的 `@mlightcad/*` 是可选 peer 依赖，本仓库未安装，挂上会在打开 dwg 时报错。
- * 3. **源用 profer-file://**：与 OfficePreview 同一条数据源（主进程 token 化的本地 URL），
+ * 3. **源用 cdut-file://**：与 OfficePreview 同一条数据源（主进程 token 化的本地 URL），
  *    不把绝对路径带进渲染进程；OFV 接受 string 源并自行 fetch（该 scheme 已声明 secure + supportFetchAPI）。
- * 4. **必须显式传 fileName**：profer-file URL 没有扩展名，OFV 靠 `fileName` 选插件。
+ * 4. **必须显式传 fileName**：cdut-file URL 没有扩展名，OFV 靠 `fileName` 选插件。
  *
  * 工具栏：与独立 viewer 页共用 `@/lib/ofv-toolbar` 的配置（去打印/搜索、加「用默认应用打开」）。
  * 本组件是**回退路径**（历史预览 tab、拖入组合等），文件面主路径已在浏览器列的 viewer 页。
@@ -75,7 +75,7 @@ export function OfvPreview({ filePath, access, className }: OfvPreviewProps): Re
           theme,
           locale: 'zh-CN',
           toolbar: createOfvToolbarOptions({
-            // 预览面已有 Profer 文件头（默认应用/所在位置），OFV 只保留文档级操作。
+            // 预览面已有 CDUT Studio 文件头（默认应用/所在位置），OFV 只保留文档级操作。
             showDefaultAppAction: false,
             // 这条路径有 preload：保留处理器以兼容未来显式调用，但不在 OFV 工具栏重复展示。
             onOpenInDefaultApp: () => {

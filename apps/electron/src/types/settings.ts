@@ -223,8 +223,8 @@ export type UiScale = 'standard' | 'large' | 'xlarge' | 'huge' | 'massive' | 'ma
 /** 默认界面缩放档位 */
 export const DEFAULT_UI_SCALE: UiScale = 'standard'
 
-/** 默认 Agent runtime：Pi 执行链路完成灰度前始终使用 Claude。 */
-export const DEFAULT_AGENT_RUNTIME: AgentRuntime = 'claude'
+/** 默认 Agent runtime：Pi。 */
+export const DEFAULT_AGENT_RUNTIME: AgentRuntime = 'pi'
 
 /** 提升此版本可要求用户重新确认更新后的受管浏览器风险告知。 */
 export const BROWSER_RISK_DISCLAIMER_VERSION = 1
@@ -327,8 +327,6 @@ export interface AppSettings {
   developerModeEnabled?: boolean
   /** 是否启用 Agent 开放认识论姿态；仅在开发者模式下生效。 */
   openEpistemicModeEnabled?: boolean
-  /** @deprecated 旧版插件入口解锁标记，仅兼容读取，不再写入。 */
-  pluginSystemEnabled?: boolean
   /** 是否启用局域网移动模式（试验版）；启动后自动恢复。 */
   pocketModeEnabled?: boolean
   /** 移动模式服务端口（正式版默认 7788，开发模式默认 7789；0/缺省表示使用默认端口）。 */
@@ -459,83 +457,11 @@ export const DOCK_BADGE_IPC_CHANNELS = {
   SET_COUNT: 'dock-badge:set-count',
 } as const
 
-/** 快速任务窗口 IPC 通道 */
-export const QUICK_TASK_IPC_CHANNELS = {
-  /** 提交快速任务（渲染进程 → 主进程） */
-  SUBMIT: 'quick-task:submit',
-  /** 隐藏快速任务窗口 */
-  HIDE: 'quick-task:hide',
-  /** 通知渲染进程聚焦输入框 */
-  FOCUS: 'quick-task:focus',
+/** 全局快捷键 IPC 通道（快速任务窗口已移除，通道字符串保留以兼容已安装客户端） */
+export const SHORTCUT_IPC_CHANNELS = {
   /** 重新注册全局快捷键（设置变更后） */
   REREGISTER_GLOBAL_SHORTCUTS: 'quick-task:reregister-global-shortcuts',
 } as const
-
-/** 语音输入 IPC 通道 */
-export const VOICE_DICTATION_IPC_CHANNELS = {
-  /** 获取语音输入设置 */
-  GET_SETTINGS: 'voice-dictation:get-settings',
-  /** 更新语音输入设置 */
-  UPDATE_SETTINGS: 'voice-dictation:update-settings',
-  /** 测试豆包 ASR 连接 */
-  TEST_CONNECTION: 'voice-dictation:test-connection',
-  /** 唤起或停止语音输入浮窗 */
-  TOGGLE: 'voice-dictation:toggle',
-  /** 开始语音输入会话 */
-  START: 'voice-dictation:start',
-  /** 发送音频分片 */
-  SEND_AUDIO: 'voice-dictation:send-audio',
-  /** 停止语音输入会话 */
-  STOP: 'voice-dictation:stop',
-  /** 取消语音输入会话 */
-  CANCEL: 'voice-dictation:cancel',
-  /** 输出最终文本 */
-  COMMIT: 'voice-dictation:commit',
-  /** 隐藏语音输入窗口 */
-  HIDE: 'voice-dictation:hide',
-  /** 调整语音输入窗口高度 */
-  RESIZE: 'voice-dictation:resize',
-  /** 窗口显示后通知渲染进程开始 */
-  SHOWN: 'voice-dictation:shown',
-  /** 全局快捷键请求当前录音停止 */
-  TOGGLE_STOP: 'voice-dictation:toggle-stop',
-  /** 转写文本事件 */
-  TRANSCRIPT: 'voice-dictation:transcript',
-  /** 状态事件 */
-  STATE: 'voice-dictation:state',
-  /** 主窗口插入文本 */
-  INSERT_TEXT: 'voice-dictation:insert-text',
-  /** 检查麦克风权限状态 */
-  CHECK_MIC_PERMISSION: 'voice-dictation:check-mic-permission',
-  /** 请求麦克风权限 */
-  REQUEST_MIC_PERMISSION: 'voice-dictation:request-mic-permission',
-} as const
-
-/** 快速任务提交输入 */
-export interface QuickTaskSubmitInput {
-  /** 任务文本内容 */
-  text: string
-  /** 目标模式 */
-  mode: 'chat' | 'agent'
-  /** 附件列表（base64 编码或本地路径引用） */
-  files?: QuickTaskFile[]
-}
-
-/** 快速任务附件 */
-export interface QuickTaskFile {
-  filename: string
-  mediaType: string
-  base64?: string
-  sourcePath?: string
-  size: number
-}
-
-/** 主窗口接收的快速任务打开会话数据 */
-export interface QuickTaskOpenSessionData {
-  mode: 'chat' | 'agent'
-  text: string
-  files?: QuickTaskFile[]
-}
 
 /** 菜单栏打开 Agent 会话事件 */
 export interface TrayOpenAgentSessionData {

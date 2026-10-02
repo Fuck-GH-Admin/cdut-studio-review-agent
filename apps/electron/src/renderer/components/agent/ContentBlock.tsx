@@ -20,7 +20,7 @@ import {
   Check,
 } from 'lucide-react'
 import { useAtomValue } from 'jotai'
-import { thinkingExpandedAtom } from '@/atoms/chat-atoms'
+import { thinkingExpandedAtom } from '@/atoms/conversation-atoms'
 import { cn } from '@/lib/utils'
 import { ImageLightbox } from '@profer/ui/primitives/image-lightbox'
 import { MessageResponse } from '@/components/ai-elements/message'

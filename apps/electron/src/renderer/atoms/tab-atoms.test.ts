@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test'
-import { closeTab, createPluginTabId, getPersistableTabState, openPluginTab, openTab, selectSameModeCloseFallback, tabContextSessionId, type TabItem } from './tab-atoms'
+import { closeTab, getPersistableTabState, openTab, selectSameModeCloseFallback, tabContextSessionId, type TabItem } from './tab-atoms'
 
 const tab = (id: string): TabItem => ({ id, type: 'agent', sessionId: id, title: id })
 
@@ -14,36 +14,6 @@ test('关闭非当前标签不改变活动标签', () => {
   expect(result.activeTabId).toBe('a')
   expect(result.mru).toEqual(['a'])
 })
-
-test('打开插件页时生成稳定 Tab，且插件 Tab 不写入会话持久化', () => {
-  const result = openPluginTab([], { pluginId: 'com.example.demo', pageId: 'dashboard', title: 'Demo' })
-  expect(result.activeTabId).toBe(createPluginTabId('com.example.demo', 'dashboard'))
-  expect(result.tabs.map((item) => item.type)).toEqual(['scratch', 'plugin'])
-  expect(getPersistableTabState(result.tabs, result.activeTabId)).toEqual({ tabs: [], activeTabId: null })
-})
-
-test('重复打开同一个插件页只聚焦已有 Tab', () => {
-  const first = openPluginTab([], { pluginId: 'com.example.demo', pageId: 'dashboard', title: 'Demo' })
-  const second = openPluginTab(first.tabs, { pluginId: 'com.example.demo', pageId: 'dashboard', title: 'Demo' })
-  expect(second.tabs).toHaveLength(2)
-  expect(second.activeTabId).toBe(first.activeTabId)
-})
-
-test('会话插件页绑定宿主会话并插入工作 Tab 簇', () => {
-  const owner = tab('session-a')
-  const result = openPluginTab([owner], { pluginId: 'com.example.demo', pageId: 'dashboard', title: 'Demo', sessionId: 'session-a', scope: 'session' })
-  const plugin = result.tabs.find((item) => item.type === 'plugin')
-  expect(plugin).toMatchObject({ sessionId: 'session-a', pluginScope: 'session' })
-  expect(result.tabs.map((item) => item.id)).toEqual(['__scratch-pad__', 'session-a', plugin!.id])
-})
-
-test('关闭会话时连带移除绑定的插件 Tab', () => {
-  const owner = tab('session-a')
-  const opened = openPluginTab([owner], { pluginId: 'com.example.demo', pageId: 'dashboard', title: 'Demo', sessionId: 'session-a', scope: 'session' })
-  const result = closeTab(opened.tabs, opened.activeTabId, 'session-a', ['session-a'])
-  expect(result.tabs.some((item) => item.type === 'plugin' && item.sessionId === 'session-a')).toBe(false)
-})
-
 
 test('同一会话可同时打开多个文件预览 Tab，重复打开同一文件只聚焦', () => {
   const agent = tab('s1')

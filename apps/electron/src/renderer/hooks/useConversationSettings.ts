@@ -16,8 +16,8 @@ import {
   conversationContextLengthAtom,
   conversationThinkingEnabledAtom,
   conversationParallelModeAtom,
-} from '@/atoms/chat-atoms'
-import type { SelectedModel, ContextLengthValue } from '@/atoms/chat-atoms'
+} from '@/atoms/conversation-atoms'
+import type { SelectedModel, ContextLengthValue } from '@/atoms/conversation-atoms'
 import {
   selectedPromptIdAtom,
   conversationPromptIdAtom,

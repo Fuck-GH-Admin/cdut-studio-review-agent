@@ -200,7 +200,7 @@ function buildPack(packDir: string, expectedId: string, options: PptStylePackSer
 
   const register = options.registerPreviewPath ?? registerProferFilePath
   const previewUrl = register(previewPath)
-  if (!/^profer-file:\/\/[^/]+$/.test(previewUrl)) throw new Error('Style Pack 预览注册必须返回 opaque profer-file URL')
+  if (!/^cdut-file:\/\/[^/]+$/.test(previewUrl)) throw new Error('Style Pack 预览注册必须返回 opaque cdut-file URL')
 
   return {
     id: definition.id,

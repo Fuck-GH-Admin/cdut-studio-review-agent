@@ -1,4 +1,4 @@
-/** 隐藏 Agent 预览窗口的 renderer 入口；只接受主进程签发的受控 profer-file 资源。 */
+/** 隐藏 Agent 预览窗口的 renderer 入口；只接受主进程签发的受控 cdut-file 资源。 */
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { AGENT_PREVIEW_LIMITS, type AgentPreviewImage, type AgentPreviewRenderTask } from '@profer/shared'
@@ -56,7 +56,7 @@ function PreviewCanvas({ task, onRendered, onFailure }: {
             image.addEventListener('error', () => reject(new Error('图片加载失败')), { once: true })
           })
         } else {
-          // HTML/PDF 的 URL 只能是主进程签发的 opaque profer-file URL；iframe 不获得 Electron API。
+          // HTML/PDF 的 URL 只能是主进程签发的 opaque cdut-file URL；iframe 不获得 Electron API。
           const iframe = document.createElement('iframe')
           iframe.src = task.sourceUrl
           iframe.setAttribute('sandbox', 'allow-scripts')

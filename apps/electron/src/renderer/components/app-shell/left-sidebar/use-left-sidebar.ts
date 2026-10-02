@@ -24,7 +24,7 @@ import {
   conversationThinkingEnabledAtom,
   conversationParallelModeAtom,
   conversationDraftsAtom,
-} from '@/atoms/chat-atoms'
+} from '@/atoms/conversation-atoms'
 import {
   agentSessionsAtom,
   agentSDKMessagesCacheAtom,
@@ -257,8 +257,6 @@ export function useLeftSidebar() {
   const [newProjectName, setNewProjectName] = React.useState('')
   const newProjectInputRef = React.useRef<HTMLInputElement>(null)
   const projectSelectionRequestRef = React.useRef(0)
-  const [showJoinDialog, setShowJoinDialog] = React.useState(false)
-  const [inviteCode, setInviteCode] = React.useState('')
   const [relativeTimeNow, setRelativeTimeNow] = React.useState(() => Date.now())
   const [userProfile, setUserProfile] = useAtom(userProfileAtom)
   const selectedModel = useAtomValue(selectedModelAtom)
@@ -1239,31 +1237,6 @@ export function useLeftSidebar() {
     setProjectDropIndicator(null)
   }, [])
 
-  /** 打开加入工作区对话框 */
-  const handleStartJoinWorkspace = React.useCallback((): void => {
-    setInviteCode('')
-    setShowJoinDialog(true)
-  }, [])
-
-  /** 通过邀请码加入团队工作区 */
-  const handleJoinWorkspace = React.useCallback(async (): Promise<void> => {
-    const code = inviteCode.trim()
-    if (!code) {
-      toast.error('请输入邀请码')
-      return
-    }
-    try {
-      const workspace = await window.electronAPI.team.acceptInvitation(code)
-      toast.success(`已加入工作区「${workspace.name}」`)
-      setShowJoinDialog(false)
-      // 刷新工作区列表
-      const workspaces = await window.electronAPI.listAgentWorkspaces()
-      setWorkspaces(workspaces)
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : '加入失败'
-      toast.error(msg)
-    }
-  }, [inviteCode, setWorkspaces])
 
   /** 开始创建新项目 */
   const handleStartCreateProject = React.useCallback((): void => {
@@ -1893,8 +1866,6 @@ export function useLeftSidebar() {
     handleProjectDragEnd,
     dragProjectId,
     projectDropIndicator,
-    handleStartJoinWorkspace,
-    handleJoinWorkspace,
     handleStartCreateProject,
     handleCreateProject,
     handleCreateProjectKeyDown,
@@ -1912,10 +1883,6 @@ export function useLeftSidebar() {
     newProjectName,
     setNewProjectName,
     newProjectInputRef,
-    showJoinDialog,
-    setShowJoinDialog,
-    inviteCode,
-    setInviteCode,
 
     // 删除 dialogs 状态
     pendingDeleteId,

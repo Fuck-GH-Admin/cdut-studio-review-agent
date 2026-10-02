@@ -15,7 +15,7 @@ import type { Channel, OfficialChannelHealth, ProviderType } from '@profer/share
 import { getChannelLogo } from '@/lib/model-logo'
 import { resolvePiCoreState } from '@/lib/channel-model-groups'
 import { agentChannelIdAtom, agentModelIdAtom, agentChannelIdsAtom } from '@/atoms/agent-atoms'
-import { channelsAtom } from '@/atoms/chat-atoms'
+import { channelsAtom } from '@/atoms/conversation-atoms'
 import { authStatusAtom } from '@/atoms/identity-atoms'
 import { SettingsSection, SettingsCard, SettingsRow } from './primitives'
 import {

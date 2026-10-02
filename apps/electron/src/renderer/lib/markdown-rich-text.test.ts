@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 import { markdownToHtml, markdownToSafeDisplayHtml, normalizeClipboardHtml } from './markdown-rich-text'
-import { unescapeMarkdownTextForClipboard } from '@/components/chat/CopyButton'
+import { unescapeMarkdownTextForClipboard } from '@/components/shared/CopyButton'
 
 describe('message copy plain-text normalization', () => {
   test('restores Windows path separators escaped by the rich text editor', () => {

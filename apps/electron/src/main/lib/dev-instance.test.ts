@@ -7,8 +7,8 @@ describe('开发隔离实例', () => {
     const env = { PROFER_DEV_INSTANCE: 'migration-preview-20260902' }
 
     expect(resolveDevUserDataPath('C:\\Users\\tester\\AppData\\Local', false, env, win32))
-      .toBe('C:\\Users\\tester\\AppData\\Local\\@profer\\electron-dev-migration-preview-20260902')
-    expect(resolveDevAppName(env)).toBe('profer-dev-migration-preview-20260902')
+      .toBe('C:\\Users\\tester\\AppData\\Local\\@cdutai\\electron-dev-migration-preview-20260902')
+    expect(resolveDevAppName(env)).toBe('cdutai-dev-migration-preview-20260902')
   })
 
   test('Given explicit userData When resolving Then it wins over generated instance path', () => {
@@ -28,7 +28,7 @@ describe('开发隔离实例', () => {
     }
 
     expect(resolveDevUserDataPath('C:\\Users\\tester\\AppData\\Local', true, env, win32))
-      .toBe('C:\\Users\\tester\\AppData\\Local\\@profer\\electron')
+      .toBe('C:\\Users\\tester\\AppData\\Local\\@cdutai\\electron')
   })
 
   test('Given invalid or absent port When resolving Then default port is retained', () => {

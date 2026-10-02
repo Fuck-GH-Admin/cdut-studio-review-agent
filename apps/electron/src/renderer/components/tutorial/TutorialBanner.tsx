@@ -37,7 +37,7 @@ export function TutorialBanner(): React.ReactElement | null {
   }
 
   const handleLearnNow = async () => {
-    const result = openTab(tabs, { type: 'tutorial', sessionId: TUTORIAL_TAB_ID, title: 'Profer 使用教程' })
+    const result = openTab(tabs, { type: 'tutorial', sessionId: TUTORIAL_TAB_ID, title: 'CDUT Studio 使用教程' })
     setTabs(result.tabs)
     setActiveTabId(result.activeTabId)
     await handleDismiss()
@@ -73,8 +73,8 @@ export function TutorialBanner(): React.ReactElement | null {
             <GraduationCap size={20} className="text-primary" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Profer 使用教程</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">了解 Profer 的全部功能和使用技巧</p>
+            <h3 className="text-sm font-semibold text-foreground">CDUT Studio 使用教程</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">了解 CDUT Studio 的全部功能和使用技巧</p>
           </div>
         </div>
 

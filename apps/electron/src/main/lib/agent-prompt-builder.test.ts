@@ -1,5 +1,6 @@
 import { describe, expect, mock, test } from 'bun:test'
-import { homedir } from 'node:os'
+import { mkdtempSync, rmSync } from 'node:fs'
+import { homedir, tmpdir } from 'node:os'
 import { join } from 'node:path'
 
 // prompt builder 经 config-paths 间接导入 Electron；Bun 单测需提供最小主进程 mock。
@@ -171,8 +172,32 @@ describe('buildSystemPrompt', () => {
     expect(prompt).toContain('不要读取当前 cwd 下不存在的相对路径 `CLAUDE.md`')
     expect(prompt).not.toContain('维护工作区根目录下的 CLAUDE.md')
     expect(prompt).toContain(join(workspaceRoot, 'workspace-files', '.context'))
-    expect(prompt).toContain(join(workspaceRoot, '.profer', 'memory', 'MEMORY.md'))
+    expect(prompt).toContain(join(workspaceRoot, '.cdutai', 'memory', 'MEMORY.md'))
     expect(prompt).not.toContain('Profer 脱胎于开源项目')
+  })
+
+  test('PROFER_CONFIG_DIR 覆盖时，提示中的工作区路径跟随隔离根目录', () => {
+    const isolatedRoot = mkdtempSync(join(tmpdir(), 'profer-prompt-paths-'))
+    const previous = process.env.PROFER_CONFIG_DIR
+    process.env.PROFER_CONFIG_DIR = isolatedRoot
+    try {
+      const slug = 'demo-workspace'
+      const prompt = buildSystemPrompt({
+        workspaceName: 'Demo',
+        workspaceSlug: slug,
+        sessionId: 'session-123',
+        permissionMode: 'bypassPermissions',
+      })
+
+      const workspaceRoot = join(isolatedRoot, 'agent-workspaces', slug)
+      expect(prompt).toContain(`**Profer 工作区资料**: ${join(workspaceRoot, 'workspace-profile.md')}`)
+      expect(prompt).toContain(join(workspaceRoot, 'workspace-files', '.context'))
+      expect(prompt).not.toContain(join(homedir(), '.cdutai-dev', 'agent-workspaces', slug))
+    } finally {
+      if (previous === undefined) delete process.env.PROFER_CONFIG_DIR
+      else process.env.PROFER_CONFIG_DIR = previous
+      rmSync(isolatedRoot, { recursive: true, force: true })
+    }
   })
 
   test('Context 恢复先发现目录内容，不默认读取或创建 note.md', () => {
@@ -223,7 +248,7 @@ describe('buildSystemPrompt', () => {
     expect(claudePrompt).not.toContain('mcp__agent-presets__preset_create')
     expect(piPrompt).toContain('不要等待 SDK 自动落盘')
     expect(piPrompt).toContain('可以读取和写入')
-    expect(piPrompt).toContain('`.profer/memory/MEMORY.md`')
+    expect(piPrompt).toContain('`.cdutai/memory/MEMORY.md`')
     expect(piPrompt).not.toContain('访问工作区根目录的 `CLAUDE.md`')
     expect(piPrompt).toContain('workspace-profile.md')
     expect(piPrompt).toContain('收尾回写')
@@ -611,7 +636,7 @@ describe('buildSystemPrompt', () => {
       permissionMode: 'auto',
       platform: 'darwin',
       shellPath: '/bin/zsh',
-      agentCwd: '/Users/mac/.profer/agent-workspaces/profer/session-123',
+      agentCwd: '/Users/mac/.cdutai/agent-workspaces/profer/session-123',
       projectCandidates: [{ rootPath: '/Users/mac/profer/profer-main', name: 'proma', type: 'git-repository' }],
       isPiRuntime: true,
       disabledToolGroups: ['clipboard'],

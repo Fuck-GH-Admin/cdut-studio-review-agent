@@ -109,7 +109,7 @@ export function FeatureTour({ onNext, onSkip, finishLabel }: FeatureTourProps): 
   }, [next, onSkip, previous])
 
   return (
-    <section className="relative -m-8 flex h-screen w-screen overflow-hidden bg-black text-white" aria-label="Profer 功能导览">
+    <section className="relative -m-8 flex h-screen w-screen overflow-hidden bg-black text-white" aria-label="CDUT Studio 功能导览">
       {/* 背景一次挂载、18 秒一轮循环流动；翻页不再重建/重播，全程保持波纹明显。 */}
       <IntroFluidBackground durationMs={18000} repeat />
       <div className="feature-tour-veil pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(90deg,rgba(0,0,0,.82)_0%,rgba(0,0,0,.52)_42%,rgba(0,0,0,.12)_100%)]" />
