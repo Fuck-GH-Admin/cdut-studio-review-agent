@@ -101,7 +101,7 @@ AGENTS.md/CLAUDE.md 自身规定需经所有者允许才能修改 → 本次不�
 ## 5. 模型通信收敛路线图（全局核心，超出 demo 的部分）
 
 1. ✅ 审核专区网关双出口（本次）。
-2. ⬜ Chat/Agent 渠道 UI 供应商列表收敛为 OpenAI 兼容 + 本地私有两类（需与负责同学同步）。
+2. ⬜ Chat/Agent 渠道 UI 供应商列表收敛为 OpenAI 兼容 + 本地私有两类（需与负责同学同步）。（2026-10-02 合并注记：上游 main 已物理删除 Chat 流式引擎与 Chat 工具 IPC 链路，本项的 Chat 侧随之消解；Agent 侧收敛仍待做。）
 3. ⬜ `packages/core/src/providers/` 移除 anthropic/google 专用适配器，DeepSeek/智谱/豆包/通义等改走 OpenAI 兼容线（保留 `custom`）。
 4. ⬜ Agent 运行时（Claude SDK / Pi）对非 OpenAI 协议的依赖评估与替换方案。
 5. ⬜ 全局验收：攻击面清单 + 合规解释文档。
