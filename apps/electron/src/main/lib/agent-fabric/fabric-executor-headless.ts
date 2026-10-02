@@ -114,7 +114,7 @@ export function createHeadlessTaskExecutor(deps: HeadlessExecutorDeps): TaskExec
             channelId,
             workspaceId,
             modelId,
-            'claude',
+            'pi',
             false,
             execution.task.request.preset,
           )

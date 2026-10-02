@@ -43,7 +43,7 @@ export function collectAttachedDirectories(params: {
 }
 
 /**
- * Profer 产品自有产物目录：皮肤库、插件、Skill 源、附件暂存（仅返回真实存在的目录）。
+ * Profer 产品自有产物目录：皮肤库、Skill 源、附件暂存（仅返回真实存在的目录）。
  *
  * 这些目录由 Profer 自己创建、在设置页里可见，Agent 生成的皮肤壁纸/缩略图等产物就落在这里，
  * 所以 Agent 预览、图片输出与内置浏览器预览都应把它们当作可读根；
@@ -54,7 +54,7 @@ export function collectAttachedDirectories(params: {
  */
 export function collectProductArtifactDirectories(productArtifactConfigDir: string = getConfigDir()): string[] {
   const configDir = productArtifactConfigDir
-  return ['skins', 'plugins', 'plugin-data', 'default-skills', 'global-skills', 'attachments']
+  return ['skins', 'default-skills', 'global-skills', 'attachments']
     .map((name) => join(configDir, name))
     .filter((dir) => {
       try {

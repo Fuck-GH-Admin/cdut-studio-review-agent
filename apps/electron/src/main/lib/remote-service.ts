@@ -96,7 +96,15 @@ import {
   updateContextDividers,
   searchConversationMessages,
 } from './conversation-manager'
-import { sendMessage, stopGeneration, generateTitle } from './chat-service'
+// TODO(第3刀): remote-service 随移动端接入整模块物理删除。
+// Chat 引擎（chat-service）已删除；以下三个函数是 Chat 发送/命名链路入口，
+// 此处保留最小占位签名以保证 typecheck，运行时调用会拒绝。
+const removedChatEngine = (name: string) => async (): Promise<never> => {
+  throw new Error(`Chat 引擎已移除，远程 Chat 指令不再可用（待 remote-service 随第3刀删除）: ${name}`)
+}
+const sendMessage = removedChatEngine('sendMessage') as unknown as (input: unknown, sender: unknown) => Promise<void>
+const stopGeneration = (_conversationId: string): void => {}
+const generateTitle = removedChatEngine('generateTitle') as unknown as (input: unknown) => Promise<string | null>
 import { saveAttachment, readAttachmentAsBase64, deleteAttachment } from './attachment-service'
 import { chatEventBus } from './chat-stream-bus'
 import { resolveAndReadFile, readFileAsDataUrl } from './file-preview-service'
@@ -359,9 +367,9 @@ function loadOrCreateToken(): string {
   } catch {
     /* 忽略，重新生成 */
   }
-  // 迁移：旧版 token 写在 cwd 相对路径（PROFER_CONFIG_DIR 或 .profer-dev/remote-token.json），
+  // 迁移：旧版 token 写在 cwd 相对路径（PROFER_CONFIG_DIR 或 .cdutai-dev/remote-token.json），
   // 与配置目录不一致会导致换目录启动后重新生成 token。此处检测旧位置并原值迁移，避免移动端重新输入。
-  const legacyDir = process.env.PROFER_CONFIG_DIR?.trim() || '.profer-dev'
+  const legacyDir = process.env.PROFER_CONFIG_DIR?.trim() || '.cdutai-dev'
   if (resolve(legacyDir) !== getConfigDir()) {
     try {
       const legacyPath = join(legacyDir, 'remote-token.json')
@@ -974,8 +982,8 @@ export async function handleRemoteCommand(
       if (channelId) {
         const channel = listSwitchableChannels().find((item) => item.id === channelId)
         if (!channel) return { ok: false, error: '渠道不可用或不存在' }
-        if (!isChannelEnabledForRuntime(channel, session.agentRuntime ?? 'claude')) {
-          return { ok: false, error: `当前会话内核不支持该渠道: ${session.agentRuntime ?? 'claude'}` }
+        if (!isChannelEnabledForRuntime(channel, session.agentRuntime ?? 'pi')) {
+          return { ok: false, error: `当前会话内核不支持该渠道: ${session.agentRuntime ?? 'pi'}` }
         }
         if (modelId && !getEnabledModels(channel).some((model) => model.id === modelId)) return { ok: false, error: '模型不属于当前渠道或未启用' }
       }
@@ -985,7 +993,7 @@ export async function handleRemoteCommand(
 
     case 'update_session_runtime': {
       const sessionId = parsed.sessionId as string
-      const runtime = parsed.runtime === 'pi' ? 'pi' : parsed.runtime === 'claude' ? 'claude' : null
+      const runtime = 'pi' as const
       if (!sessionId || !runtime) return { ok: false, error: '缺少有效 sessionId 或 runtime' }
       const runtimeRevisionError = validateExpectedRevision(parsed, sessionId)
       if (runtimeRevisionError) return runtimeRevisionError
@@ -1213,7 +1221,7 @@ export async function handleRemoteCommand(
         workspaceId,
         channelId,
         modelId,
-        getSettings().agentRuntime ?? 'claude',
+        getSettings().agentRuntime ?? 'pi',
       )
       publishSessionUpdated(meta)
       return { ok: true, data: { sessionId: meta.id, title: meta.title, draft: meta.draft ?? true } }

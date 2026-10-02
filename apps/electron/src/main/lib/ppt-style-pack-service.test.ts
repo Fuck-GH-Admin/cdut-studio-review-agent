@@ -18,14 +18,14 @@ describe('ppt style pack service', () => {
       resourceRoot,
       registerPreviewPath: (path) => {
         registeredPaths.push(path)
-        return `profer-file://preview-${registeredPaths.length}`
+        return `cdut-file://preview-${registeredPaths.length}`
       },
     })
 
     expect(packs.map((pack) => pack.id)).toEqual(['academic-editorial', 'profer-cloud-dancer'])
     expect(registeredPaths).toHaveLength(2)
     for (const pack of packs) {
-      expect(pack.preview).toMatch(/^!\[[^\]]+\]\(profer-file:\/\/preview-\d+\)$/)
+      expect(pack.preview).toMatch(/^!\[[^\]]+\]\(cdut-file:\/\/preview-\d+\)$/)
       expect(pack.preview).not.toContain(resourceRoot)
       expect(pack.definition).toHaveProperty('tokens')
       expect(pack.definition).toHaveProperty('layoutGrammar')
@@ -41,7 +41,7 @@ describe('ppt style pack service', () => {
   test('Academic Editorial 使用纸白/墨黑/单强调色和非对称证据网格', () => {
     const pack = getPptStylePack('academic-editorial', {
       resourceRoot,
-      registerPreviewPath: () => 'profer-file://academic-preview',
+      registerPreviewPath: () => 'cdut-file://academic-preview',
     })
 
     expect(pack.definition.tokens.colors).toMatchObject({
@@ -65,7 +65,7 @@ describe('ppt style pack service', () => {
   test('Cloud Dancer 使用指定色板、云朵/拱形/月牙，并限制内容页母题频率', () => {
     const pack = getPptStylePack('profer-cloud-dancer', {
       resourceRoot,
-      registerPreviewPath: () => 'profer-file://cloud-preview',
+      registerPreviewPath: () => 'cdut-file://cloud-preview',
     })
 
     expect(Object.values(pack.definition.tokens.colors)).toEqual(expect.arrayContaining([
@@ -81,7 +81,7 @@ describe('ppt style pack service', () => {
   test('未知 Style Pack id 被拒绝', () => {
     expect(() => getPptStylePack('user-local-pack', {
       resourceRoot,
-      registerPreviewPath: () => 'profer-file://unused',
+      registerPreviewPath: () => 'cdut-file://unused',
     })).toThrow('未知 Style Pack')
   })
 
@@ -96,7 +96,7 @@ describe('ppt style pack service', () => {
 
       expect(() => listPptStylePacks({
         resourceRoot: fixtureRoot,
-        registerPreviewPath: () => 'profer-file://must-not-register',
+        registerPreviewPath: () => 'cdut-file://must-not-register',
       })).toThrow('preview.asset')
     } finally {
       rmSync(fixtureRoot, { recursive: true, force: true })

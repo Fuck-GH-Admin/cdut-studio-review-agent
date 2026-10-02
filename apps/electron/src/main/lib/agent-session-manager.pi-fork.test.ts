@@ -201,7 +201,7 @@ describe('Pi 会话分叉', () => {
         'assistant-2': 'entry-removed',
       },
     }])
-    mkdirSync(join(tempHome, '.profer', 'agent-workspaces', 'workspace-a', 'pi-source-session'), { recursive: true })
+    mkdirSync(join(tempHome, '.cdutai', 'agent-workspaces', 'workspace-a', 'pi-source-session'), { recursive: true })
     // 源 Pi session artifact 必须真实存在，forkPiAgentSession 会 existsSync 校验。
     writeFileSync(join(tempHome, 'pi-session.jsonl'), '', 'utf-8')
 

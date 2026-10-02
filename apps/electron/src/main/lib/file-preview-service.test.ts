@@ -20,8 +20,8 @@ describe('文件预览路径安全解析', () => {
 
   test('Given home 下存在文件 When 解析 ~ 路径 Then 返回展开后的文件路径', () => {
     const home = homedir()
-    const target = join(home, '.profer-preview-test-do-not-create')
-    expect(resolveTargetPath('~/.profer-preview-test-do-not-create')).toBe(target)
+    const target = join(home, '.cdutai-preview-test-do-not-create')
+    expect(resolveTargetPath('~/.cdutai-preview-test-do-not-create')).toBe(target)
   })
 })
 

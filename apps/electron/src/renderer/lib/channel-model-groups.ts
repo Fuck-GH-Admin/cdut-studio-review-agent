@@ -75,7 +75,7 @@ export function supportsChannelProtocol(
   channel: ChannelRuntimeCapability,
   protocol: ChannelProtocol,
 ): boolean {
-  return isChannelEnabledForRuntime(channel, protocol === 'anthropic' ? 'claude' : 'pi')
+  return isChannelEnabledForRuntime(channel, 'pi')
 }
 
 export function groupChannelModels(channels: Channel[]): ChannelModelGroup[] {

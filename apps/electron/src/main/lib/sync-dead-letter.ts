@@ -1,6 +1,6 @@
 /**
  * 同步死信队列：超过重试上限的 envelope 仍落入本队列，而非静默丢弃。
- * 持久化到 ~/.profer/sync-dead-letters.jsonl，供 UI 查看 / 手动重试 / 导出。
+ * 持久化到 ~/.cdutai/sync-dead-letters.jsonl，供 UI 查看 / 手动重试 / 导出。
  */
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'

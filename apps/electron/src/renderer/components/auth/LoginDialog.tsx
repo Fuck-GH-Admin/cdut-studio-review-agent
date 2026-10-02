@@ -174,7 +174,7 @@ export function LoginDialog({ open, onOpenChange }: LoginDialogProps): React.Rea
             <DialogDescription className="text-sm leading-relaxed">
               {mode === 'login'
                 ? '登录账户，使用服务端渠道和协作功能'
-                : openRegistration ? '验证邮箱后即可创建账户；购买套餐码后可在「立即订阅」兑换' : '创建账户，开始使用 Profer AI 助手'}
+                : openRegistration ? '验证邮箱后即可创建账户；购买套餐码后可在「立即订阅」兑换' : '创建账户，开始使用 CDUT Studio AI 助手'}
             </DialogDescription>
           </DialogHeader>
 

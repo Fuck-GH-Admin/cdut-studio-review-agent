@@ -976,7 +976,7 @@ function summarizeAutomation(a: import('@profer/shared').Automation, includeHist
     scheduledAt: a.scheduledAt,
     maxRuns: a.maxRuns,
     runCount: a.runCount ?? 0,
-    agentRuntime: a.agentRuntime ?? 'claude',
+    agentRuntime: a.agentRuntime ?? 'pi',
     completedAt: a.completedAt,
     sessionMode: a.sessionMode,
     presetId: a.presetId,
@@ -1055,7 +1055,7 @@ function validateScheduleFields(input: Partial<CreateAutomationInput | UpdateAut
   if (input.maxRuns !== undefined && (!isFiniteInt(input.maxRuns) || input.maxRuns < 1)) {
     throw new Error(`非法的 maxRuns: ${String(input.maxRuns)}（应为 ≥1 的整数）`)
   }
-  if (input.agentRuntime !== undefined && input.agentRuntime !== 'claude' && input.agentRuntime !== 'pi') {
+  if (input.agentRuntime !== undefined && input.agentRuntime !== 'pi' && input.agentRuntime !== 'pi') {
     throw new Error(`非法的 agentRuntime: ${String(input.agentRuntime)}`)
   }
   if (input.sessionMode !== undefined && input.sessionMode !== 'daily' && input.sessionMode !== 'reuse') {
@@ -1130,7 +1130,7 @@ function buildAutomationTools(sdk: PiSdk, ctx: PiBuiltinToolsContext): ToolDefin
         scheduledAt: Type.Optional(Type.Number({ description: '一次性任务的绝对触发时间（毫秒时间戳）；scheduleType=once 时必填' })),
         maxRuns: Type.Optional(Type.Number({ description: '最大运行次数上限；达到后任务自动停用' })),
         active: Type.Optional(Type.Boolean({ description: '创建后是否启用，默认 true' })),
-        agentRuntime: Type.Optional(Type.Union([Type.Literal('claude'), Type.Literal('pi')], { description: '运行该任务的 Agent runtime；不传则继承当前会话 runtime' })),
+        agentRuntime: Type.Optional(Type.Union([Type.Literal('pi')], { description: '运行该任务的 Agent runtime；不传则继承当前会话 runtime' })),
         sessionMode: Type.Optional(Type.Union([Type.Literal('daily'), Type.Literal('reuse')], { description: '会话模式' })),
         presetId: Type.Optional(Type.String({ minLength: 1, maxLength: 200, description: '运行该任务的 Agent 预设 ID（内置 standard/code/minimal 或任务工作区的自定义预设）。不传则继承当前会话预设；未知 ID 回退 standard' })),
       }),
@@ -1201,7 +1201,7 @@ function buildAutomationTools(sdk: PiSdk, ctx: PiBuiltinToolsContext): ToolDefin
         scheduledAt: Type.Optional(Type.Number({ description: '新的一次性触发时间（毫秒时间戳）' })),
         maxRuns: Type.Optional(Type.Number({ description: '新的最大运行次数上限' })),
         active: Type.Optional(Type.Boolean({ description: '启用或暂停任务' })),
-        agentRuntime: Type.Optional(Type.Union([Type.Literal('claude'), Type.Literal('pi')], { description: '新的 Agent runtime' })),
+        agentRuntime: Type.Optional(Type.Union([Type.Literal('pi')], { description: '新的 Agent runtime' })),
         sessionMode: Type.Optional(Type.Union([Type.Literal('daily'), Type.Literal('reuse')])),
         presetId: Type.Optional(Type.String({ maxLength: 200, description: '新的 Agent 预设 ID（内置或任务工作区的自定义预设）；下次触发生效。传空字符串恢复跟随工作区默认' })),
       }),

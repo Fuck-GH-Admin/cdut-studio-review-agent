@@ -5,7 +5,6 @@ import { BrowserWindow, nativeImage } from 'electron'
 import { Type } from 'typebox'
 import type { ToolDefinition } from '@earendil-works/pi-coding-agent'
 import type { AgentToolResult } from '@earendil-works/pi-agent-core'
-import { filterDisabledTools } from '@profer/shared'
 import { SETTINGS_IPC_CHANNELS, SKIN_IPC_CHANNELS } from '../../types'
 import { getUserSkinDir } from './skin-service'
 import { installSkinFromFolder } from './skin-manager-service'
@@ -347,56 +346,4 @@ export function buildPiAgentSkinTools(
       }
     },
   })] as unknown as ToolDefinition[]
-}
-
-export async function injectAgentSkinMcpServer(
-  sdk: typeof import('@anthropic-ai/claude-agent-sdk'),
-  mcpServers: Record<string, Record<string, unknown>>,
-  context: AgentSkinToolContext,
-  disabledTools?: string[],
-): Promise<void> {
-  if (!context.agentCwd || !context.workspaceSlug) return
-  let z: typeof import('zod').z
-  try { ({ z } = await import('zod')) } catch { z = require('zod').z }
-  const server = sdk.createSdkMcpServer({
-    name: 'agent-skin',
-    version: '1.0.0',
-    tools: filterDisabledTools([
-      sdk.tool(
-        AGENT_SKIN_TOOL_NAME,
-        AGENT_SKIN_TOOL_DESCRIPTION,
-        {
-          id: z.string().trim().min(1).max(80),
-          name: z.string().trim().min(1).max(120),
-          tone: z.enum(['light', 'dark']),
-          skinCss: z.string().min(1).max(MAX_SKIN_CSS_BYTES),
-          wallpaperPath: z.string().max(4096).optional(),
-          wallpaperFilename: z.string().max(120).optional(),
-          previewPath: z.string().max(4096).optional(),
-          previewScale: z.number().positive().optional(),
-          previewPosition: z.string().max(64).optional(),
-          version: z.string().max(40).optional(),
-          author: z.string().max(120).optional(),
-          description: z.string().max(500).optional(),
-          titlebarColor: z.string().max(32).optional(),
-          titlebarSymbolColor: z.string().max(32).optional(),
-          replace: z.boolean().optional(),
-          apply: z.boolean().optional(),
-        },
-        // Claude 路径要与 Pi 路径行为一致：校验失败必须返回结构化错误结果（isError + message），
-        // 让模型能根据错误自愈重试，而不是把异常抛进 SDK。
-        async (args) => {
-          try {
-            return await createSkin(args as CreateSkinInput, {
-              agentCwd: context.agentCwd!,
-              allowedRoots: context.allowedRoots ?? [],
-            })
-          } catch (error) {
-            return jsonError(error)
-          }
-        },
-      ),
-    ], disabledTools),
-  })
-  mcpServers['agent-skin'] = server as unknown as Record<string, unknown>
 }

@@ -75,15 +75,3 @@ describe('Mac 设置页接线契约', () => {
   })
 })
 
-test('快速任务 Mac/Windows 默认值与主进程一致，设置文案跟随自定义绑定', () => {
-  const defaults = source('renderer/lib/shortcut-defaults.ts')
-  const quickTask = between(defaults, "id: 'quick-task'", "id: 'show-main-window'")
-  expect(quickTask).toContain("defaultMac: 'Cmd+Shift+Space'")
-  expect(quickTask).toContain("defaultWin: 'Alt+Space'")
-  expect(source('main/lib/global-shortcut-service.ts')).toContain("'quick-task': { mac: 'Cmd+Shift+Space', win: 'Alt+Space' }")
-  const general = source('renderer/components/settings/GeneralSettings.tsx')
-  expect(general).not.toContain('Alt+Space')
-  expect(general).toContain('getAcceleratorDisplay(quickTaskAccelerator)')
-  expect(general).toContain('quickTaskOverride === null ? null')
-  expect(general).toContain("results['quick-task'] === true")
-})

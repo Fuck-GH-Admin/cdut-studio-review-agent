@@ -319,7 +319,7 @@ function IconCard({
         )}
       >
         {variant.id === 'default' ? (
-          // 默认图标用 CSS 模拟 Profer logo 形状
+          // 默认图标用 CSS 模拟 CDUT Studio logo 形状
           <div className="flex items-end gap-[2px] -rotate-12">
             {[1, 0.85, 0.7, 0.55, 0.4, 0.25].map((opacity, i) => (
               <div

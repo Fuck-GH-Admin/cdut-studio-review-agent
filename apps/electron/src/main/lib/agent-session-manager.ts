@@ -427,7 +427,7 @@ export function createAgentSession(
   channelId?: string,
   workspaceId?: string,
   modelId?: string,
-  agentRuntime: AgentRuntime = 'claude',
+  agentRuntime: AgentRuntime = 'pi',
   draft = false,
   presetId?: string,
 ): AgentSessionMeta {
@@ -507,7 +507,7 @@ export function ensureProjectDraftAgentSession(
   workspaceId: string,
   channelId?: string,
   modelId?: string,
-  agentRuntime: AgentRuntime = 'claude',
+  agentRuntime: AgentRuntime = 'pi',
 ): AgentSessionMeta {
   const existing = listAgentSessions(true).find((session) =>
     session.workspaceId === workspaceId && session.draft && !session.archived,
@@ -1325,7 +1325,7 @@ export function deleteAgentSession(id: string): void {
   const sourceCheckpointRoot = join(getPiCheckpointsDir(), id)
   const legacySourceCheckpointRoot = removed.workspaceId
     ? getAgentWorkspace(removed.workspaceId)
-      ? join(getAgentSessionWorkspacePath(getAgentWorkspace(removed.workspaceId)!.slug, id), '.profer-pi-checkpoints')
+      ? join(getAgentSessionWorkspacePath(getAgentWorkspace(removed.workspaceId)!.slug, id), '.cdutai-pi-checkpoints')
       : undefined
     : undefined
   const isSourceCheckpoint = (checkpointPath: string): boolean =>
@@ -2166,230 +2166,7 @@ export async function forkAgentSession(input: ForkSessionInput): Promise<AgentSe
 }
 
 async function forkAgentSessionUnlocked(sourceMeta: AgentSessionMeta, input: ForkSessionInput): Promise<AgentSessionMeta> {
-  const { sessionId, upToMessageUuid } = input
-
-  // Pi 会话走 Pi 原生分叉（SessionManager branch + forkFrom）；Claude 会话走下方 Claude SDK fork。
-  if (normalizeAgentRuntime(sourceMeta.agentRuntime) === 'pi') {
-    return forkPiAgentSession(sourceMeta, input)
-  }
-
-  if (input.explorationSourceLabel) {
-    throw new Error('探索分支目前仅支持 Pi Agent 会话')
-  }
-  if (!sourceMeta.sdkSessionId) {
-    throw new Error('该会话没有 SDK session，无法分叉')
-  }
-
-  // 2. 确定源会话的工作目录（SDK 需要从此目录的项目空间读取 session 文件）
-  let sourceDir: string | undefined
-  if (sourceMeta.workspaceId) {
-    const ws = getAgentWorkspace(sourceMeta.workspaceId)
-    if (ws) {
-      sourceDir = getAgentSessionWorkspacePath(ws.slug, sessionId)
-    }
-  }
-
-  // 2.5 校验目标消息并确定其所属的 SDK session ID
-  // - 当会话经历过 "session not found" 恢复后，sdkSessionId 会被替换为新的，
-  //   但旧消息仍保留在 Profer JSONL 中，其 session_id 指向旧的 SDK session。
-  // - 若目标消息是 sub-agent 输出（parent_tool_use_id 非空），SDK forkSession
-  //   会过滤掉 sidechain 后再查 upToMessageId，必然报 "not found"，
-  //   这里自动回溯到最近的主线 assistant uuid。
-  let forkSourceSdkSessionId = sourceMeta.sdkSessionId
-  let effectiveUpToMessageUuid = upToMessageUuid
-  if (upToMessageUuid) {
-    const allMessages = getAgentSessionSDKMessages(sessionId)
-    const targetIdx = allMessages.findLastIndex(
-      (m) => 'uuid' in m && (m as { uuid?: string }).uuid === upToMessageUuid,
-    )
-
-    if (targetIdx < 0) {
-      throw new Error('未在会话历史中找到指定的消息，可能消息已被清理或截断')
-    }
-
-    const targetMsg = allMessages[targetIdx]!
-    const isSidechain =
-      targetMsg.type === 'assistant' &&
-      Boolean((targetMsg as { parent_tool_use_id?: string | null }).parent_tool_use_id)
-
-    if (isSidechain) {
-      // 向前回溯，寻找最近的主线 assistant 消息（parent_tool_use_id 为空）
-      let fallbackUuid: string | undefined
-      for (let i = targetIdx - 1; i >= 0; i--) {
-        const m = allMessages[i]!
-        if (m.type !== 'assistant') continue
-        if ((m as { parent_tool_use_id?: string | null }).parent_tool_use_id) continue
-        const u = (m as { uuid?: string }).uuid
-        if (u) {
-          fallbackUuid = u
-          break
-        }
-      }
-      if (!fallbackUuid) {
-        throw new Error('选中的是子代理执行过程中的消息，且向前找不到可分叉的主对话消息')
-      }
-      console.log(
-        `[Agent 会话] fork 目标消息 ${upToMessageUuid} 属于 sub-agent，自动回溯到主线消息 ${fallbackUuid}`,
-      )
-      effectiveUpToMessageUuid = fallbackUuid
-    }
-
-    // 重新定位 effectiveUpToMessageUuid 所在消息，取其 session_id
-    // 与上面的 findLastIndex 保持一致语义（重复 uuid 时取最后一条）
-    const effectiveMsg =
-      effectiveUpToMessageUuid === upToMessageUuid
-        ? targetMsg
-        : allMessages.findLast(
-            (m) => 'uuid' in m && (m as { uuid?: string }).uuid === effectiveUpToMessageUuid,
-          )
-    const msgSessionId = (effectiveMsg as { session_id?: string } | undefined)?.session_id
-    if (msgSessionId && msgSessionId !== sourceMeta.sdkSessionId) {
-      console.log(
-        `[Agent 会话] fork 目标消息属于旧 SDK session ${msgSessionId}（当前为 ${sourceMeta.sdkSessionId}），使用消息所属 session 进行 fork`,
-      )
-      forkSourceSdkSessionId = msgSessionId
-    }
-  }
-
-  // 3. 调用 SDK 原生 forkSession
-  // process.env.CLAUDE_CONFIG_DIR 已在模块加载时设置，SDK 会自动读取
-  const sdk = await import('@anthropic-ai/claude-agent-sdk')
-  let forkResult: Awaited<ReturnType<typeof sdk.forkSession>>
-  try {
-    forkResult = await sdk.forkSession(forkSourceSdkSessionId, {
-      upToMessageId: effectiveUpToMessageUuid,
-      dir: sourceDir,
-    })
-  } catch (err) {
-    // 指定 dir 失败时，让 SDK 自动搜索所有项目目录
-    if (sourceDir) {
-      console.warn(`[Agent 会话] forkSession 指定 dir 失败，改用全局搜索:`, err)
-      forkResult = await sdk.forkSession(forkSourceSdkSessionId, {
-        upToMessageId: effectiveUpToMessageUuid,
-      })
-    } else {
-      throw err
-    }
-  }
-
-  // 3.5 校验 SDK forkSession 是否真的产生了 JSONL 文件
-  // SDK forkSession 在某些边缘场景（如源会话为 collaboration 子会话、project-hash
-  // 不匹配等）可能返回 sessionId 但实际未落盘 JSONL。若不校验，后续步骤会创建
-  // Profer 会话元数据但 SDK 侧无对应文件，导致 "No conversation found" 错误。
-  const forkJsonlPath = findSdkSessionJsonl(forkResult.sessionId)
-  if (!forkJsonlPath) {
-    throw new Error(
-      `SDK forkSession 返回了 sessionId (${forkResult.sessionId}) 但未找到对应的 JSONL 文件。` +
-      `源会话: ${sessionId}, 源 SDK session: ${forkSourceSdkSessionId}。` +
-      `这通常是 SDK 在非标准会话（如协作子会话）上 fork 时的已知问题，建议在原会话中继续工作或新建会话。`,
-    )
-  }
-  console.log(`[Agent 会话] SDK forkSession JSONL 已确认: ${forkJsonlPath}`)
-
-  // 4. 创建 Profer 新会话，立即设置 sdkSessionId
-  const forkTitle = `${sourceMeta.title} (fork)`
-  const newMeta = createAgentSession(
-    forkTitle,
-    sourceMeta.channelId,
-    sourceMeta.workspaceId,
-    undefined,
-    'claude',
-  )
-
-  updateAgentSessionMeta(newMeta.id, {
-    sdkSessionId: forkResult.sessionId,
-    forkSourceDir: sourceDir,
-    forkSourceSdkSessionId: forkSourceSdkSessionId,
-  })
-  // 同步返回值（updateAgentSessionMeta 已写入磁盘，这里让调用方拿到最新值）
-  newMeta.sdkSessionId = forkResult.sessionId
-  newMeta.forkSourceDir = sourceDir
-  newMeta.forkSourceSdkSessionId = forkSourceSdkSessionId
-
-  // 4.4-7 包装在 try-catch 中，关键步骤失败时回滚已创建的 Profer 会话记录，
-  // 避免产生孤儿条目（agent-sessions.json 有记录但无有效 SDK session 数据）。
-  try {
-    // 4.4 计算 fork 目标会话的 cwd（新会话目录），后续多个步骤需要用到
-    let destDir: string | undefined
-    if (sourceDir && sourceMeta.workspaceId) {
-      const ws = getAgentWorkspace(sourceMeta.workspaceId)
-      if (ws) {
-        destDir = getAgentSessionWorkspacePath(ws.slug, newMeta.id)
-      }
-    }
-
-    // 4.5 将 SDK session JSONL 复制到 fork 自己的 project-hash 目录
-    // SDK forkSession() 在源 cwd 的 project-hash 下创建 JSONL（如 projects/<hash-of-sourceDir>/<newId>.jsonl），
-    // 但 fork 会话的 cwd 是新的 session 目录（不同 project-hash），resume 时 SDK 会找不到。
-    // 这里直接将 JSONL 复制到 fork 目标 cwd 的 project-hash 下，让后续每轮 resume 都能直接命中。
-    // 同时把 JSONL 内容中所有源目录路径改写为目标目录路径，避免历史中的绝对路径误导 Claude
-    // 继续在源目录下读写文件。
-    if (sourceDir && destDir) {
-      // 复用 step 3.5 已确认的 JSONL 路径，避免重复扫描
-      const destProjectHash = buildForkProjectKey(destDir)
-      const sdkProjectsDir = join(getSdkConfigDir(), 'projects', destProjectHash)
-      if (!existsSync(sdkProjectsDir)) mkdirSync(sdkProjectsDir, { recursive: true })
-      const destJsonl = join(sdkProjectsDir, `${forkResult.sessionId}.jsonl`)
-      copyForkFile(forkJsonlPath, destJsonl)
-      rewritePathsInJsonlFile(destJsonl, sourceDir, destDir)
-      console.log(`[Agent 会话] 已将 SDK session JSONL 复制到 fork 目标目录并改写路径: ${destJsonl}`)
-    }
-
-    // 5. 复制源会话工作区文件到新会话目录
-    // 仅排除 .claude/（settings.json 启动时会重建）、.DS_Store、.git。
-    // .context/ 必须保留 — Profer 约定 .context/note.md、todo.md、plan/ 等是会话上下文，
-    // 如果不复制，fork 后这些参考资料会丢失或被 Claude 误回源目录读取。
-    if (sourceDir && destDir) {
-      const copyResult = copyForkWorkspaceFiles(sourceDir, destDir)
-      if (copyResult.failedCount > 0) {
-        console.warn(`[Agent 会话] Claude fork 工作区有 ${copyResult.failedCount} 个条目未复制:`, copyResult.failedPaths)
-      }
-    }
-
-    // 6. 复制截断后的 SDKMessages 到新会话的 JSONL（用于 UI 展示历史）
-    // 同时改写消息中所有源目录绝对路径为目标目录路径 — 否则 Claude 在历史里看到的所有
-    // Read/Edit/Bash 工具调用都指向源会话目录，会继续在源目录而非新 cwd 下操作文件。
-    //
-    // 注意：UI 截断点用原始 upToMessageUuid，保留用户实际看到的所有内容（包括 sub-agent
-    // 过程消息），与 SDK forkSession 用 effectiveUpToMessageUuid（主线 uuid）解耦。
-    const sourceMessages = getAgentSessionSDKMessages(sessionId)
-    let messagesToCopy: SDKMessage[]
-
-    if (upToMessageUuid) {
-      const cutIndex = sourceMessages.findIndex(
-        (m) => 'uuid' in m && (m as { uuid?: string }).uuid === upToMessageUuid,
-      )
-      messagesToCopy = cutIndex >= 0 ? sourceMessages.slice(0, cutIndex + 1) : sourceMessages
-    } else {
-      messagesToCopy = sourceMessages
-    }
-
-    if (sourceDir && destDir && messagesToCopy.length > 0) {
-      messagesToCopy = messagesToCopy.map((m) => rewritePathsInSDKMessage(m, sourceDir, destDir!))
-    }
-
-    if (messagesToCopy.length > 0) {
-      appendSDKMessages(newMeta.id, messagesToCopy)
-    }
-
-    // 7. 复制截断后的 Graph JSONL 到新会话
-    // Graph 事件存储为 {sessionId}-graph.jsonl，fork 创建新 sessionId，
-    // 不复制则新会话看不到 fork 点之前的任务图（表现：任务图空白/不跟随）。
-    copyTruncatedGraphJsonl(sessionId, newMeta.id, upToMessageUuid, sourceMessages)
-    copySettledPiHarnessEventsForFork(sessionId, newMeta.id, resolveForkTimestamp(upToMessageUuid, sourceMessages))
-
-    console.log(`[Agent 会话] 分叉会话已创建（SDK 原生 fork）: ${sourceMeta.title} → ${forkTitle} (${messagesToCopy.length} 条消息, sdkSessionId=${forkResult.sessionId})`)
-    return newMeta
-  } catch (err) {
-    // 回滚：删除已创建的 Profer 会话记录，避免孤儿条目
-    console.error(`[Agent 会话] fork 关键步骤失败，回滚会话记录 (${newMeta.id}):`, err)
-    try {
-      deleteAgentSession(newMeta.id)
-    } catch (rollbackErr) {
-      console.error(`[Agent 会话] fork 回滚失败:`, rollbackErr)
-    }
-    throw err
-  }
+  return forkPiAgentSession(sourceMeta, input)
 }
 
 /**

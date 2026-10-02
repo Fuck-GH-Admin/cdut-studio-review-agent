@@ -3,15 +3,15 @@
  *
  * 为什么是独立页面而不是复用 app 渲染进程：受管浏览器的 WebContentsView 是
  * `sandbox: true / contextIsolation / nodeIntegration: false / **无 preload**` 的独立 web contents
- * —— 它拿不到任何 Electron 能力，因此这里引用的文件必须是主进程签发的 `profer-file://<token>` URL。
+ * —— 它拿不到任何 Electron 能力，因此这里引用的文件必须是主进程签发的 `cdut-file://<token>` URL。
  * 这正是 OFV 需要的安全边界：OFV 内部有未过 DOMPurify 的 docx 主路径（其 issue #140），
  * 在这一层即使被注入也够不到 app 的 preload / IPC。
  *
  * 参数（由主进程的 `createViewerPreviewUrl` 拼出）：
- * - `src`    已授权的 profer-file URL（或 dev 下的 http 地址）
- * - `name`   文件名（用于标题与 OFV 的插件分派 —— profer-file URL 没有扩展名）
+ * - `src`    已授权的 cdut-file URL（或 dev 下的 http 地址）
+ * - `name`   文件名（用于标题与 OFV 的插件分派 —— cdut-file URL 没有扩展名）
  * - `theme`  light | dark（跟随 app 皮肤，而不是 OS）
- * - `tokens` app 文档上**实际生效**的 Profer token 值（JSON）。皮肤配色靠它到达这一页：
+ * - `tokens` app 文档上**实际生效**的 CDUT Studio token 值（JSON）。皮肤配色靠它到达这一页：
  *   本页读不到 app 的设置与文档变量（无 preload、且与 app 不同 origin），只能由主进程烘进 URL。
  *   名单与校验在 `@profer/shared` 的 ofv-theme-bridge（与主进程、渲染进程同一份契约）。
  *
@@ -22,7 +22,7 @@
  * `browser-file-sentinels`，主进程按同一份定义放行。
  */
 import { createViewer, type FileViewer } from '@open-file-viewer/core'
-// 字体与 OFV 基础样式先加载，Profer 桥接样式放最后，保证同特异度时由我们决胜
+// 字体与 OFV 基础样式先加载，CDUT Studio 桥接样式放最后，保证同特异度时由我们决胜
 import '@fontsource-variable/inter/index.css'
 import '@open-file-viewer/core/style.css'
 import '@/styles/ofv-profer-theme.css'

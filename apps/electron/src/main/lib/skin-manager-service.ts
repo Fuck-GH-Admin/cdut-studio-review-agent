@@ -171,7 +171,7 @@ export function installSkinFromZip(zipPath: string, replace = false): SkinManage
   } catch {
     return fail('无法读取 ZIP 文件')
   }
-  const temp = mkdtempSync(join(tmpdir(), 'profer-skin-'))
+  const temp = mkdtempSync(join(tmpdir(), 'cdut-skin-'))
   try {
     const zip = new AdmZip(zipPath)
     let uncompressedTotal = 0

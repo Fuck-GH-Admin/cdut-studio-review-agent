@@ -14,7 +14,7 @@ describe('agent platform prompt overlay', () => {
     const prompt = buildAgentPlatformPrompt({
       platform: 'darwin',
       shellPath: '/bin/zsh',
-      agentCwd: '/Users/mac/.profer/agent-workspaces/profer/session-1',
+      agentCwd: '/Users/mac/.cdutai/agent-workspaces/profer/session-1',
       projectCandidates: candidates,
       isPiRuntime: true,
     })

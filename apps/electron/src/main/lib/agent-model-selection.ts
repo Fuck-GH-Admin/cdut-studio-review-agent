@@ -28,7 +28,7 @@ export function assertEnabledModelForChannel(input: {
   purpose: string
 }): string | undefined {
   if (input.modelId == null) return undefined
-  const runtime = input.runtime ?? 'claude'
+  const runtime = input.runtime ?? 'pi'
 
   const modelId = input.modelId.trim()
   if (!modelId) {
@@ -54,7 +54,7 @@ export function assertEnabledModelForChannel(input: {
 export function listEnabledAgentModelsForChannel(
   channelId: string | undefined,
   purpose: string,
-  runtime: AgentRuntime = 'claude',
+  runtime: AgentRuntime = 'pi',
 ): AvailableAgentModelsForChannel {
   if (!channelId) {
     throw new Error(`${purpose}需要可用的 channelId`)

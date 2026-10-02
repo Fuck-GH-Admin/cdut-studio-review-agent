@@ -213,7 +213,7 @@ export function createAgentWorkspace(
 
   try {
     getAgentWorkspacePath(slug)
-    ensurePluginManifest(slug, name)
+    ensureClaudeSkillManifest(slug, name)
   } catch (error) {
     const workspacesRoot = resolve(getAgentWorkspacesDir())
     const workspaceDir = resolve(join(workspacesRoot, slug))
@@ -375,7 +375,7 @@ export function ensureDefaultWorkspace(): AgentWorkspace {
     }
 
     getAgentWorkspacePath('default')
-    ensurePluginManifest('default', '默认工作区')
+    ensureClaudeSkillManifest('default', '默认工作区')
 
     index.workspaces.push(defaultWs)
     writeIndex(index)
@@ -383,7 +383,7 @@ export function ensureDefaultWorkspace(): AgentWorkspace {
     console.log('[Agent 工作区] 已创建默认工作区')
   } else {
     // 迁移兼容：确保已有默认工作区包含 plugin manifest
-    ensurePluginManifest(defaultWs.slug, defaultWs.name)
+    ensureClaudeSkillManifest(defaultWs.slug, defaultWs.name)
   }
 
   return defaultWs
@@ -392,7 +392,7 @@ export function ensureDefaultWorkspace(): AgentWorkspace {
 // ===== Plugin Manifest（SDK 插件发现） =====
 
 /** 确保工作区包含 .claude-plugin/plugin.json，SDK 需要此文件发现 skills */
-export function ensurePluginManifest(workspaceSlug: string, workspaceName: string): void {
+export function ensureClaudeSkillManifest(workspaceSlug: string, workspaceName: string): void {
   const wsPath = getAgentWorkspacePath(workspaceSlug)
   const pluginDir = join(wsPath, '.claude-plugin')
   const manifestPath = join(pluginDir, 'plugin.json')
@@ -1012,7 +1012,7 @@ export function writeWorkspaceSkillContent(workspaceSlug: string, skillSlug: str
 const WORKSPACE_PROFILE_FILE = 'workspace-profile.md'
 /** 历史版本曾把 Profer 工作区资料写成 CLAUDE.md，仅用于兼容读取。 */
 const LEGACY_WORKSPACE_PROFILE_FILE = 'CLAUDE.md'
-const PROFER_MEMORY_DIR = '.profer/memory'
+const PROFER_MEMORY_DIR = '.cdutai/memory'
 /** 旧版本使用 Claude 命名空间保存 Profer 工作区记忆，仅用于兼容迁移。 */
 const LEGACY_PROFER_MEMORY_DIR = '.claude/memory'
 const AUTO_MEMORY_INDEX = 'MEMORY.md'
@@ -1055,7 +1055,7 @@ function getLegacyWorkspaceAutoMemoryPath(workspaceSlug: string): string {
 }
 
 /**
- * 将旧 `.claude/memory` 中尚未出现在新目录的文件复制到 `.profer/memory`。
+ * 将旧 `.claude/memory` 中尚未出现在新目录的文件复制到 `.cdutai/memory`。
  * 保留旧目录作为人工回滚/审计副本，不覆盖新目录中已经存在的文件。
  */
 function mergeLegacyMemoryEntries(sourceDir: string, targetDir: string): void {
@@ -1613,7 +1613,7 @@ export function syncTeamWorkspacesToIndex(teamWorkspaces: AgentWorkspace[]): voi
         type: 'team',
       })
       getAgentWorkspacePath(tw.slug)
-      ensurePluginManifest(tw.slug, tw.name)
+      ensureClaudeSkillManifest(tw.slug, tw.name)
       changed = true
     } else if (existing.type !== 'team') {
       existing.type = 'team'

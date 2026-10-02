@@ -707,7 +707,7 @@ export function resolveAndReadFile(filePath: string, basePaths?: string[]): { re
   }
 }
 
-/** 仅解析文件路径（不读取内容），供图片等用 profer-file:// 协议加载的场景使用 */
+/** 仅解析文件路径（不读取内容），供图片等用 cdut-file:// 协议加载的场景使用 */
 export function resolveFilePath(filePath: string, basePaths?: string[], opts?: { skipGlobalSearch?: boolean }): string | null {
   const safePath = resolveTargetPath(filePath, basePaths, opts)
   return existsSync(safePath) ? safePath : null
@@ -727,7 +727,7 @@ const IMAGE_MIME_MAP: Record<string, string> = {
 
 /**
  * 读取文件为 base64 data URL（供移动端预览图片等二进制文件）。
- * 桌面端图片预览走 profer-file:// 自定义协议 URL，移动端无法加载该协议，
+ * 桌面端图片预览走 cdut-file:// 自定义协议 URL，移动端无法加载该协议，
  * 必须把内容直接以 data URL 形式经 WS 传输给客户端渲染。
  * 复用 resolveTargetPath 的绝对/相对路径解析与 MAX_FILE_SIZE 体积限制。
  */
@@ -746,7 +746,7 @@ export function readFileAsDataUrl(filePath: string, basePaths?: string[]): { res
   }
 }
 
-/** 为内联 PDF 预览生成临时 HTML 文件（使用 profer-file:// 加载 PDF，无体积膨胀） */
+/** 为内联 PDF 预览生成临时 HTML 文件（使用 cdut-file:// 加载 PDF，无体积膨胀） */
 export async function preparePdfPreview(filePath: string, basePaths?: string[]): Promise<{ resolvedPath: string; tmpHtmlUrl: string } | null> {
   const safePath = resolveTargetPath(filePath, basePaths)
   if (!existsSync(safePath)) return null

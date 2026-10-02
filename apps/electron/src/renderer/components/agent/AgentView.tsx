@@ -36,12 +36,10 @@ import { agentPresetCacheKey, agentPresetsAtom, agentPresetsLoadedAtom } from '@
 import { AskUserBanner } from './AskUserBanner'
 import { ExitPlanModeBanner } from './ExitPlanModeBanner'
 import { PlanModeDashedBorder } from './PlanModeDashedBorder'
-import { ModelSelector } from '@/components/chat/ModelSelector'
-import { AttachmentPreviewItem } from '@/components/chat/AttachmentPreviewItem'
+import { ModelSelector } from '@/components/shared/ModelSelector'
+import { AttachmentPreviewItem } from '@/components/shared/AttachmentPreviewItem'
 import { QuotedSelectionChip } from '@/components/diff/QuotedSelectionChip'
 import { RichTextInput, type RichTextInputHandle } from '@/components/ai-elements/rich-text-input'
-import { SpeechButton, useLoadVoiceDictationSettings } from '@/components/ai-elements/speech-button'
-import { voiceDictationEnabledAtom } from '@/atoms/voice-dictation-atoms'
 import { InputToolbarOverflow, type ToolbarItem } from '@/components/ai-elements/InputToolbarOverflow'
 import {
   AgentComposerToolMenuItem,
@@ -123,7 +121,7 @@ import { settingsOpenAtom } from '@/atoms/settings-tab'
 import { activeViewAtom } from '@/atoms/active-view'
 import { activeTabIdAtom } from '@/atoms/tab-atoms'
 import { openExplorationBranchTab } from '@/lib/exploration-tab'
-import { channelsAtom, thinkingExpandedAtom } from '@/atoms/chat-atoms'
+import { channelsAtom, thinkingExpandedAtom } from '@/atoms/conversation-atoms'
 import { draftSessionIdsAtom } from '@/atoms/draft-session-atoms'
 import { useOpenSession } from '@/hooks/useOpenSession'
 import { AgentSessionProvider } from '@/contexts/session-context'
@@ -400,7 +398,6 @@ function AgentThinkingPopover({ agentThinking, onToggle, openAIConfig, sessionId
 }
 
 const AGENT_RUNTIME_OPTIONS: Array<{ value: AgentRuntime; label: string; description: string }> = [
-  { value: 'claude', label: 'Claude', description: '使用 Claude Agent SDK' },
   { value: 'pi', label: 'Pi', description: '使用 Pi Agent SDK' },
 ]
 
@@ -733,7 +730,7 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
   const runtimeSwitchInFlightRef = React.useRef(false)
   // 已加载会话以 metadata 为唯一真相来源；历史缺省 runtime 仍按 Claude 回退。
   const sessionAgentRuntime: AgentRuntime = sessionMeta
-    ? sessionMeta.agentRuntime ?? 'claude'
+    ? sessionMeta.agentRuntime ?? 'pi'
     : agentRuntime
   // 当前 Pi 模型的推理档位能力（异步桥接，供思考档位菜单动态展示）。
   const [piReasoningCapability, setPiReasoningCapability] = React.useState<import('@profer/shared').ReasoningCapability | undefined>(undefined)
@@ -3073,8 +3070,6 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
   const hasTextInput = hasInputDraft
   const isCompacting = contextStatus.isCompacting
   const canSend = messagesLoaded && !presetSelectionRequired && (hasTextInput || pendingFiles.length > 0 || !!suggestion) && agentChannelId !== null && hasAvailableModel && (!streaming || hasTextInput) && !isCompacting && !streamState?.stopping
-  const voiceDictationEnabled = useAtomValue(voiceDictationEnabledAtom)
-  useLoadVoiceDictationSettings()
 
   const taskGraphEnabled = Boolean(
     !isExplorationBranch
@@ -3145,7 +3140,6 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
         />
       ),
     },
-    ...(voiceDictationEnabled ? [{ key: 'speech', node: <SpeechButton composerTool /> }] : []),
     {
       key: 'attach',
       node: (
@@ -3211,7 +3205,6 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
     openWorkspacePresets,
     sessionBoundPreset,
     taskGraphEnabled,
-    voiceDictationEnabled,
   ])
 
   const inputTrailingNode = (streaming || streamState?.stopping) ? (

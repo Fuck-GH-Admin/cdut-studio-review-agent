@@ -125,7 +125,7 @@ export interface AgentPresetCapabilityGroup<Id extends string = string> {
   suppressPromptSection?: AgentPresetSuppressKey;
 }
 
-const ALL_AGENT_RUNTIMES: readonly AgentRuntime[] = ['claude', 'pi'];
+const ALL_AGENT_RUNTIMES: readonly AgentRuntime[] = ['pi'];
 
 function capabilityTool(
   name: string,

@@ -5,14 +5,12 @@
  */
 
 import * as React from 'react'
-import { PluginSidebarEntries } from '@/components/plugins/PluginEntries'
-import { PanelLeftClose, Plus, Search, FolderOpen, LogIn, Archive, ArchiveRestore, ArrowLeft, Settings, ClipboardCheck } from 'lucide-react'
+import { PanelLeftClose, Plus, Search, FolderOpen, Archive, ArchiveRestore, ArrowLeft, Settings, ClipboardCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/tooltip'
 import { Popover, PopoverTrigger, PopoverContent } from '@profer/ui/primitives/popover'
 import { ModeSwitcher } from '../ModeSwitcher'
-import { SidebarBalanceBar } from '@/components/app-shell/SidebarBalanceBar'
-import { UserAvatar } from '@/components/chat/UserAvatar'
+import { UserAvatar } from '@/components/shared/UserAvatar'
 import { SidebarWindowDragStrip, SIDEBAR_DRAG_STRIP_HEIGHT, AutomationSidebarEntry, SkillsSidebarEntry, renderWorkspaceSortIcon } from './navigation-items'
 import { ConversationItem, AgentSessionItem, RelatedChildSessionItem, AgentProjectGroupItem, PINNED_SESSION_MAX_HEIGHT, getSessionLeftAccent } from './session-items'
 import { WORKSPACE_SORT_LABEL } from './sidebar-utils'
@@ -20,7 +18,6 @@ import { getRelatedSessionSummary, getSessionTreeStatus, treeContainsSessionId }
 import { getActiveAccelerator, getAcceleratorDisplay } from '@/lib/shortcut-registry'
 import { useCloseTab } from '@/hooks/useCloseTab'
 import type { SidebarModel } from './use-left-sidebar'
-import { TEAM_WORKSPACE_UI_ENABLED } from '@/lib/product-feature-flags'
 
 export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement {
   const {
@@ -69,7 +66,6 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
     handleCycleWorkspaceSort,
     authStatus,
     accountCaps,
-    handleStartJoinWorkspace,
     handleStartCreateProject,
     creatingProject,
     setCreatingProject,
@@ -221,7 +217,6 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
         </div>
       )}
 
-      <PluginSidebarEntries />
       {/* 当前会话：直接复用现有会话行组件，不另造一套 Tab 行。 */}
       <div className="flex-none px-2 pt-2 pb-1 titlebar-no-drag">
         <div className="mb-1 flex items-center justify-between px-2">
@@ -499,22 +494,6 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
                   当前{WORKSPACE_SORT_LABEL[workspaceSortMode]}排序，点击切换排序方式
                 </TooltipContent>
               </Tooltip>
-              {/* 团队版功能入口（登录且非免费档才展示） */}
-              {TEAM_WORKSPACE_UI_ENABLED && authStatus.isLoggedIn && accountCaps.membershipTier !== 'free' && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      type="button"
-                      onClick={handleStartJoinWorkspace}
-                      className="size-6 flex items-center justify-center rounded-md text-foreground/35 hover:bg-foreground/[0.06] hover:text-foreground/60 transition-colors titlebar-no-drag"
-                      aria-label="加入工作区"
-                    >
-                      <LogIn size={12} />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent side="top">加入团队工作区</TooltipContent>
-                </Tooltip>
-              )}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
@@ -711,9 +690,6 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
 
       {/* 底部：用户资料 + 设置入口 */}
       <div className="px-3 pb-3 space-y-1.5">
-
-        {/* 余额条（仅代管模式显示） */}
-        <SidebarBalanceBar />
 
         <button
           onClick={() => setSettingsOpen(true)}

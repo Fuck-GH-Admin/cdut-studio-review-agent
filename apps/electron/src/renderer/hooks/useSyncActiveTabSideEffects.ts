@@ -12,7 +12,7 @@
 import { useCallback } from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { appModeAtom } from '@/atoms/app-mode'
-import { currentConversationIdAtom } from '@/atoms/chat-atoms'
+import { currentConversationIdAtom } from '@/atoms/conversation-atoms'
 import {
   agentSessionsAtom,
   agentWorkspacesAtom,
@@ -44,17 +44,10 @@ export function useSyncActiveTabSideEffects(): SyncActiveTabSideEffects {
         return
       }
 
-      if (newActiveTab.type === 'plugin') {
+      if (newActiveTab.type === 'chat') {
+        // 兼容旧状态：Chat Tab 不再进入 Chat 页面，直接回到 Scratch Pad。
         setAppMode('scratch')
         setCurrentConversationId(null)
-        setCurrentAgentSessionId(null)
-        setCurrentAgentWorkspaceId(null)
-        return
-      }
-
-      if (newActiveTab.type === 'chat') {
-        setAppMode('chat')
-        setCurrentConversationId(newActiveTab.sessionId)
         setCurrentAgentSessionId(null)
         return
       }

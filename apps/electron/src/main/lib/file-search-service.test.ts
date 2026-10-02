@@ -6,7 +6,7 @@ import { searchFileCandidate } from './file-search-service'
 
 describe('searchFileCandidate', () => {
   test('按深度逐个返回同名候选并跳过 alreadyFound', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'profer-file-search-'))
+    const root = await mkdtemp(join(tmpdir(), 'cdut-file-search-'))
     try {
       await mkdir(join(root, 'nested'), { recursive: true })
       await writeFile(join(root, 'settings.json'), '{}')
@@ -34,7 +34,7 @@ describe('searchFileCandidate', () => {
   })
 
   test('深度搜索一次收集多个未发现候选', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'profer-file-search-'))
+    const root = await mkdtemp(join(tmpdir(), 'cdut-file-search-'))
     try {
       await mkdir(join(root, 'first', 'nested'), { recursive: true })
       await mkdir(join(root, 'second', 'nested'), { recursive: true })
@@ -59,7 +59,7 @@ describe('searchFileCandidate', () => {
   })
 
   test('完整路径命中时只返回该路径', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'profer-file-search-'))
+    const root = await mkdtemp(join(tmpdir(), 'cdut-file-search-'))
     try {
       await mkdir(join(root, 'nested'), { recursive: true })
       await writeFile(join(root, 'target.txt'), 'root')
@@ -81,7 +81,7 @@ describe('searchFileCandidate', () => {
   })
 
   test('完整路径不存在时不回退到同名文件搜索', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'profer-file-search-'))
+    const root = await mkdtemp(join(tmpdir(), 'cdut-file-search-'))
     try {
       await mkdir(join(root, 'other'), { recursive: true })
       await writeFile(join(root, 'other', 'target.txt'), 'other')
@@ -103,8 +103,8 @@ describe('searchFileCandidate', () => {
   })
 
   test('完整路径位于授权根目录外时返回空结果', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'profer-file-search-'))
-    const outside = await mkdtemp(join(tmpdir(), 'profer-file-search-outside-'))
+    const root = await mkdtemp(join(tmpdir(), 'cdut-file-search-'))
+    const outside = await mkdtemp(join(tmpdir(), 'cdut-file-search-outside-'))
     try {
       await writeFile(join(outside, 'target.txt'), 'outside')
 
@@ -125,7 +125,7 @@ describe('searchFileCandidate', () => {
   })
 
   test('深度完整路径查询最多返回该路径', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'profer-file-search-'))
+    const root = await mkdtemp(join(tmpdir(), 'cdut-file-search-'))
     try {
       await mkdir(join(root, 'first'), { recursive: true })
       await mkdir(join(root, 'second'), { recursive: true })
@@ -148,8 +148,8 @@ describe('searchFileCandidate', () => {
   })
 
   test('完整路径不能通过授权根目录内的符号链接访问目录外文件', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'profer-file-search-'))
-    const outside = await mkdtemp(join(tmpdir(), 'profer-file-search-outside-'))
+    const root = await mkdtemp(join(tmpdir(), 'cdut-file-search-'))
+    const outside = await mkdtemp(join(tmpdir(), 'cdut-file-search-outside-'))
     try {
       const outsideFile = join(outside, 'target.txt')
       const linkedFile = join(root, 'linked-target.txt')
@@ -173,7 +173,7 @@ describe('searchFileCandidate', () => {
   })
 
   test('搜索会话隐藏目录中的 .claude 配置文件', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'profer-file-search-'))
+    const root = await mkdtemp(join(tmpdir(), 'cdut-file-search-'))
     try {
       await mkdir(join(root, '.claude'), { recursive: true })
       await writeFile(join(root, '.claude', 'settings.json'), '{}')
@@ -192,7 +192,7 @@ describe('searchFileCandidate', () => {
   })
 
   test('已取消任务不返回候选', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'profer-file-search-'))
+    const root = await mkdtemp(join(tmpdir(), 'cdut-file-search-'))
     try {
       await writeFile(join(root, 'settings.json'), '{}')
       const controller = new AbortController()

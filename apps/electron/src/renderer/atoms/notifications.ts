@@ -5,7 +5,7 @@
  * Windows 上通过主进程弹出 Electron 原生 Notification（点击可靠）；
  * macOS/Linux 使用 Web Notification API。
  * 支持多场景通知音选择（任务完成、权限审批、计划审批）。
- * 支持用户自定义音效（最长 10s，存储到 ~/.profer/custom-sounds/）。
+ * 支持用户自定义音效（最长 10s，存储到 ~/.cdutai/custom-sounds/）。
  */
 
 import { atom } from 'jotai'

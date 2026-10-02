@@ -2,7 +2,7 @@
  * 工作区热力图 Token 聚合服务
  *
  * 扫描会话 JSONL 文件，按天聚合实际 Token 用量（输入、缓存读写与输出）。
- * 结果缓存到 ~/.profer/heatmap-cache/{workspaceId}.json。
+ * 结果缓存到 ~/.cdutai/heatmap-cache/{workspaceId}.json。
  *
  * 缓存策略：按自然日结算（缓存只作「加速层」，不作为权威数据源）。
  *   — 缓存记录 lastFinalizedDate（最后一次已结算的本地日期）。

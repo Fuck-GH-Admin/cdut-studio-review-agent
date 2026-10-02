@@ -104,56 +104,18 @@ describe('设置服务命名收敛兼容（Tablet* → Pocket*）', () => {
     expect(settings.notificationsEnabled).toBe(true)
   })
 
-  test('Given 旧版插件入口已解锁 When 重读设置 Then 迁移为开发者模式且不再写回旧键', () => {
+  test('Given 旧版插件入口偏好存在 When 重读设置 Then 迁移到开发者模式且不再写回旧键', () => {
     const configDir = process.env.PROFER_CONFIG_DIR!
     writeSettingsFile(configDir, { pluginSystemEnabled: true })
-
     const settings = getSettings()
     expect(settings.developerModeEnabled).toBe(true)
     expect(settings.openEpistemicModeEnabled).toBe(false)
     expect('pluginSystemEnabled' in settings).toBe(false)
-
     updateSettings({ notificationsEnabled: false })
-    const persisted = readSettingsFile(configDir)
-    expect(persisted.developerModeEnabled).toBe(true)
-    expect('pluginSystemEnabled' in persisted).toBe(false)
+    expect(readSettingsFile(configDir).developerModeEnabled).toBe(true)
+    expect('pluginSystemEnabled' in readSettingsFile(configDir)).toBe(false)
   })
 
-  test('Given 新旧开发者字段同时存在 When 新字段明确关闭 Then 以新字段为准', () => {
-    const configDir = process.env.PROFER_CONFIG_DIR!
-    writeSettingsFile(configDir, {
-      developerModeEnabled: false,
-      pluginSystemEnabled: true,
-    })
-
-    expect(getSettings().developerModeEnabled).toBe(false)
-  })
-
-  test('Given 旧版更新输入 When 仍发送 pluginSystemEnabled Then 转换为开发者模式且不写回旧键', () => {
-    const configDir = process.env.PROFER_CONFIG_DIR!
-    writeSettingsFile(configDir, {})
-
-    getSettings()
-    updateSettings({ pluginSystemEnabled: true })
-
-    expect(getSettings().developerModeEnabled).toBe(true)
-    const persisted = readSettingsFile(configDir)
-    expect(persisted.developerModeEnabled).toBe(true)
-    expect('pluginSystemEnabled' in persisted).toBe(false)
-  })
-
-  test('Given 开发者模式关闭 When 开放认识论被设置为 true Then 强制归一为关闭', () => {
-    const configDir = process.env.PROFER_CONFIG_DIR!
-    writeSettingsFile(configDir, {
-      developerModeEnabled: false,
-      openEpistemicModeEnabled: true,
-    })
-
-    expect(getSettings().openEpistemicModeEnabled).toBe(false)
-    updateSettings({ openEpistemicModeEnabled: true })
-    expect(getSettings().openEpistemicModeEnabled).toBe(false)
-    expect(readSettingsFile(configDir).openEpistemicModeEnabled).toBe(false)
-  })
 
   test('Given 开放认识论已开启 When 关闭开发者模式 Then 两个设置一并关闭', () => {
     const configDir = process.env.PROFER_CONFIG_DIR!

@@ -53,17 +53,12 @@ function serviceFixture(sendMessage: (input: AgentSendInput, callbacks: SessionC
 function ownerFixture() {
   const credentials = deferred<{ ok: false; code: string }>()
   const aborted: string[] = []
-  let routingFailure = false
   const Orchestrator = compile<typeof AgentOrchestrator>(orchestratorSource.slice(orchestratorSource.indexOf('export class AgentOrchestrator')), 'AgentOrchestrator', {
     registerCollaborationEventBus() {}, setHeadlessAgentRunner() {}, setAgentStopper() {},
-    normalizeAgentRuntime: (runtime?: string) => runtime ?? 'claude',
+    normalizeAgentRuntime: (runtime?: string) => runtime ?? 'pi',
     getAgentSessionMeta: () => undefined,
     isAgentSessionForking: () => false,
     randomUUID, tryAcquireActiveSession, releaseActiveSession, AgentRunAlreadyActiveError,
-    routePluginModel: (_key: string, input: AgentSendInput) => {
-      if (routingFailure) throw new Error('routing failed')
-      return input
-    },
     createCommandExecutionLedger: () => new Map(),
     updateAgentSessionMeta() {}, appendSDKMessages() {},
     getChannelById: () => ({ provider: 'anthropic' }),
@@ -81,10 +76,10 @@ function ownerFixture() {
   const instance = new Orchestrator(adapter as unknown as ConstructorParameters<typeof AgentOrchestrator>[0], { emit() {} } as unknown as ConstructorParameters<typeof AgentOrchestrator>[1])
   const callbacks: SessionCallbacks = { onError() {}, onComplete() {}, onTitleUpdated() {} }
   const input: AgentSendInput = { sessionId: 'session', channelId: 'channel', userMessage: '', triggeredBy: 'goal', goalRunId: 'goal-run-1' }
-  return { instance, input, credentials, callbacks, aborted, failRouting: () => { routingFailure = true } }
+  return { instance, input, credentials, callbacks, aborted }
 }
 
-for (const runtime of ['claude', 'pi'] as const) {
+for (const runtime of ['pi'] as const) {
   describe(`${runtime} Goal bridge`, () => {
     test('正常上下文传递 input，完整 runtime 消息回调不依赖 isolatedRuntimeSession', async () => {
       const messages = [
@@ -194,12 +189,4 @@ test('普通 run 不成为 Goal owner，Goal busy 拒绝不影响普通运行', 
   expect(f.aborted).toEqual([])
   f.credentials.resolve({ ok: false, code: 'token_expired' })
   await ordinary
-})
-
-test('model routing 抛错也进入 owner finally，不能泄漏 active/Goal 锁', async () => {
-  const f = ownerFixture()
-  f.failRouting()
-  await expect(f.instance.sendMessage(f.input, f.callbacks)).rejects.toThrow('routing failed')
-  expect(f.instance.isActive('session')).toBe(false)
-  expect(f.instance.isGoalRunActive('session')).toBe(false)
 })

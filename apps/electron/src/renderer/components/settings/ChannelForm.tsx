@@ -257,10 +257,7 @@ export function ChannelForm({ channel, onSaved, onAgentEligibilityChange, onCanc
   const [agentBaseUrl, setAgentBaseUrl] = React.useState(channel?.agentBaseUrl ?? '')
   /** 用户是否手改过 Anthropic 端点；未改过就不回传，交给主进程按 OpenAI 端点推导。 */
   const agentBaseUrlEditedRef = React.useRef(false)
-  /**
-   * Agent 内核勾选。可用性由用户决定，不再按渠道类型加门禁。
-   * 老配置没有该字段时，按 provider 规则推导出初值（与迁移逻辑一致）。
-   */
+  /** Agent 模式仅保留 Pi 内核。 */
   const [agentRuntimes, setAgentRuntimes] = React.useState<AgentRuntimeMode[]>(() =>
     channel
       ? channel.agentRuntimes ?? inferAgentRuntimeModes(channel)
@@ -271,16 +268,8 @@ export function ChannelForm({ channel, onSaved, onAgentEligibilityChange, onCanc
       ? (prev.includes(mode) ? prev : [...prev, mode])
       : prev.filter((item) => item !== mode))
   }, [])
-  /**
-   * 地址框跟着内核勾选显隐：勾了 Pi 才显示 OpenAI 端点，勾了 Claude 才显示 Anthropic 端点。
-   *
-   * 两者都没勾时不隐藏 OpenAI 端点：它兼作 Chat 的请求地址，
-   * 全隐会让不做 Agent 的纯 Chat 渠道没法配地址。
-   */
   const piEnabled = agentRuntimes.includes('pi')
-  const claudeEnabled = agentRuntimes.includes('claude')
-  const showOpenAIEndpoint = piEnabled || !claudeEnabled
-  const showAnthropicEndpoint = claudeEnabled
+  const showOpenAIEndpoint = true
   const [apiKey, setApiKey] = React.useState('')
   const [showApiKey, setShowApiKey] = React.useState(false)
   const [oauthLoggingIn, setOauthLoggingIn] = React.useState(false)
@@ -749,19 +738,14 @@ export function ChannelForm({ channel, onSaved, onAgentEligibilityChange, onCanc
               description="API Key 由 xAI API 计费；订阅 OAuth 使用 SuperGrok 或 X Premium。"
             />
           )}
-          {/* Agent 内核勾选：能不能用由用户决定，不按渠道类型加门禁 */}
+          {/* Agent 内核：当前产品统一使用 Pi */}
           <SettingsToggle
             label="Pi 模式"
             description="Pi 内核可用"
             checked={agentRuntimes.includes('pi')}
             onCheckedChange={(checked) => toggleAgentRuntime('pi', checked)}
           />
-          <SettingsToggle
-            label="Claude 模式"
-            description="Claude 内核可用"
-            checked={agentRuntimes.includes('claude')}
-            onCheckedChange={(checked) => toggleAgentRuntime('claude', checked)}
-          />
+
           {showOpenAIEndpoint && (
             <SettingsInput
               label="OpenAI 端点"
@@ -782,19 +766,18 @@ export function ChannelForm({ channel, onSaved, onAgentEligibilityChange, onCanc
             - deepseek 按地址形态分：官方地址用官方入口，第三方地址沿用 OpenAI 端点
             文案必须与运行时一致，不写一个不会生效的示例地址。
           */}
-          {showAnthropicEndpoint && (
-            <SettingsInput
-              label="Anthropic 端点"
-              value={agentBaseUrl}
-              onChange={(value) => { agentBaseUrlEditedRef.current = true; setAgentBaseUrl(value) }}
-              placeholder={PROVIDER_DEFAULT_AGENT_URLS[provider]}
-              description={provider === 'deepseek'
-                ? 'Claude 内核使用；留空自动推导：官方地址用官方入口，第三方地址沿用 OpenAI 端点'
-                : PROVIDER_DEFAULT_AGENT_URLS[provider]
-                  ? 'Claude 内核使用；留空用官方默认入口'
-                  : 'Claude 内核使用；留空沿用渠道的 OpenAI 端点'}
-            />
-          )}
+          <SettingsInput
+            label="Agent 端点"
+            value={agentBaseUrl}
+            onChange={(value) => { agentBaseUrlEditedRef.current = true; setAgentBaseUrl(value) }}
+            placeholder={PROVIDER_DEFAULT_AGENT_URLS[provider]}
+            description={provider === 'deepseek'
+              ? 'Pi Agent 使用；留空自动推导：官方地址用官方入口，第三方地址沿用 OpenAI 端点'
+              : PROVIDER_DEFAULT_AGENT_URLS[provider]
+                ? 'Pi Agent 使用；留空用官方默认入口'
+                : 'Pi Agent 使用；留空沿用渠道的 OpenAI 端点'}
+          />
+
           {/* API Key + 测试连接同行 */}
           <div className="px-4 py-3 space-y-2">
             <div className="flex items-center justify-between">

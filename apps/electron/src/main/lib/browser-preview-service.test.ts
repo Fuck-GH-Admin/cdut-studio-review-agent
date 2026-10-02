@@ -19,10 +19,10 @@ function createFixture(): { root: string; outside: string } {
 }
 
 describe('createAuthorizedPreviewUrl', () => {
-  test('授权根内的 HTML 走短期 profer-file 目录 URL', () => {
+  test('授权根内的 HTML 走短期 cdut-file 目录 URL', () => {
     const { root } = createFixture()
     const result = createAuthorizedPreviewUrl(join(root, 'index.html'), [root])
-    expect(result.url.startsWith('profer-file://')).toBe(true)
+    expect(result.url.startsWith('cdut-file://')).toBe(true)
     expect(result.filePath).toBe(join(root, 'index.html'))
   })
 
@@ -35,7 +35,7 @@ describe('createAuthorizedPreviewUrl', () => {
   test('授权根之外的本地 HTML 也放行（只读预览边界）', () => {
     const { root, outside } = createFixture()
     const result = createAuthorizedPreviewUrl(join(outside, 'report.html'), [root])
-    expect(result.url.startsWith('profer-file://')).toBe(true)
+    expect(result.url.startsWith('cdut-file://')).toBe(true)
     expect(result.filePath).toBe(join(outside, 'report.html'))
   })
 

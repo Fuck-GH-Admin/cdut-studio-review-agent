@@ -13,22 +13,12 @@ import { tmpdir, homedir } from 'node:os'
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process'
 
 import { IPC_CHANNELS, CHANNEL_IPC_CHANNELS, CHAT_IPC_CHANNELS, AGENT_IPC_CHANNELS, LARK_IPC_CHANNELS, AGENT_PRESET_IPC_CHANNELS, ENVIRONMENT_IPC_CHANNELS, INSTALLER_IPC_CHANNELS, PROXY_IPC_CHANNELS, GITHUB_RELEASE_IPC_CHANNELS, SYSTEM_PROMPT_IPC_CHANNELS, CHAT_TOOL_IPC_CHANNELS, FEISHU_IPC_CHANNELS, DINGTALK_IPC_CHANNELS, WECHAT_IPC_CHANNELS, AUTOMATION_IPC_CHANNELS, RECOMMENDATION_IPC_CHANNELS, PLANNING_IPC_CHANNELS, AUTH_IPC_CHANNELS, SYNC_IPC_CHANNELS, TEAM_IPC_CHANNELS, SKILL_MARKETPLACE_IPC_CHANNELS, SKILL_MASTER_IPC_CHANNELS, GLOBAL_SKILL_IPC_CHANNELS, TEAM_FILE_IPC_CHANNELS, TEAM_MEMORY_IPC_CHANNELS, isAgentRuntime, isChannelEnabledForRuntime, isProferPermissionMode, normalizePathForCompare, DEFAULT_PRESET_ID, type AgentThinkingLevel, type AgentEffort, PLANNING_CONFLICT_ERROR, type Todo, type TodoListQuery, type CalendarEvent, type CalendarEventListQuery, type CreateTodoInput, type UpdateTodoInput, type CreateCalendarEventInput, type UpdateCalendarEventInput, type StartTodoAgentInput, type StartTodoAgentResult, type CreatePlanningGroupInput, type UpdatePlanningGroupInput, type PlanningGroup, type PlanningGroupScope, type PlanningTag, type PlanningReminder, type ActivePlanningReminder, type SnoozePlanningReminderInput, type TodoAgentSessionActivation, type ProviderType, type ReasoningCapability, type AgentPreset, type AgentPresetCreateInput, type AgentPresetUpdateInput, type AgentPresetImportResult, type OtherWorkspacePresetsGroup, type PresetReference, type PresetReferenceReport, type PresetScopeRebindResult } from '@profer/shared'
-import { USER_PROFILE_IPC_CHANNELS, SETTINGS_IPC_CHANNELS, SKIN_IPC_CHANNELS, SCRATCH_PAD_IPC_CHANNELS, QUICK_TASK_IPC_CHANNELS, VOICE_DICTATION_IPC_CHANNELS, APP_ICON_IPC_CHANNELS, DOCK_BADGE_IPC_CHANNELS, STORAGE_IPC_CHANNELS, NOTIFICATION_SOUND_IPC_CHANNELS, DESKTOP_NOTIFICATION_IPC_CHANNELS } from '../types'
+import { USER_PROFILE_IPC_CHANNELS, SETTINGS_IPC_CHANNELS, SKIN_IPC_CHANNELS, SCRATCH_PAD_IPC_CHANNELS, SHORTCUT_IPC_CHANNELS, APP_ICON_IPC_CHANNELS, DOCK_BADGE_IPC_CHANNELS, STORAGE_IPC_CHANNELS, NOTIFICATION_SOUND_IPC_CHANNELS, DESKTOP_NOTIFICATION_IPC_CHANNELS } from '../types'
 import type { CustomNotificationSound } from '../types'
 import { getBuildTarget } from './lib/build-target'
 import { agentFilePreviewSessionManager } from './lib/agent-file-preview-session'
 import { resolvePiReasoningCapability } from './lib/adapters/pi-model-registry'
 import type {
-  QuickTaskSubmitInput,
-  VoiceDictationAudioChunkInput,
-  VoiceDictationCommitInput,
-  VoiceDictationCommitResult,
-  VoiceDictationResizeInput,
-  VoiceDictationSettings,
-  VoiceDictationSettingsUpdate,
-  VoiceDictationStartInput,
-  VoiceDictationStopInput,
-  VoiceDictationTestResult,
   MicPermissionResult,
 } from '../types'
 import type {
@@ -191,7 +181,6 @@ import {
   searchConversationMessages,
   countArchivedConversations,
 } from './lib/conversation-manager'
-import { sendMessage, stopGeneration, generateTitle, autoTitleConversation, regenerateConversationTitle, type AutoTitleConversationInput } from './lib/chat-service'
 import {
   saveAttachment,
   readAttachmentAsBase64,
@@ -378,8 +367,6 @@ import { createMemoryArchiveSearcher } from './lib/memory-archive-search'
 import { cancelLarkLogin, detectLarkCli, installLarkCli, startLarkLogin, __setLarkLoginEventHandler } from './lib/lark-cli-service'
 import { cancelLarkMcpLogin, disableLarkMcpForWorkspace, enableLarkMcpForWorkspace, getLarkMcpStatus, saveLarkMcpCredentials, startLarkMcpLogin, testLarkMcpConnection, __setLarkMcpLoginEventHandler } from './lib/lark-mcp-service'
 import type { MemoryWikilinkTarget, MemoryBacklink } from '@profer/shared'
-import { getAllToolInfos } from './lib/chat-tool-registry'
-import { updateToolState, updateToolCredentials, getToolCredentials, addCustomTool, deleteCustomTool } from './lib/chat-tool-config'
 import {
   getSystemPromptConfig,
   createSystemPrompt,
@@ -1773,19 +1760,11 @@ export function registerIpcHandlers(): void {
     }
   )
 
-  // 自动命名窗口（Chat）：流结束后由主进程按前几轮有效用户消息生成/精修标题
-  ipcMain.handle(
-    CHAT_IPC_CHANNELS.AUTO_TITLE,
-    async (_, input: AutoTitleConversationInput): Promise<ConversationMeta | null> => {
-      if (!input || typeof input.conversationId !== 'string' || !input.conversationId.trim()) return null
-      return autoTitleConversation(input)
-    }
-  )
-
   // 手动重新生成对话标题：绕过定稿锁定，用前几轮有效消息重命名并重新锁定
   ipcMain.handle(
     CHAT_IPC_CHANNELS.REGENERATE_TITLE,
     async (_, id: string, channelId?: string, modelId?: string): Promise<ConversationMeta | null> => {
+      const { regenerateConversationTitle } = await import('./lib/conversation-title-service')
       return regenerateConversationTitle(id, channelId, modelId)
     }
   )
@@ -1861,37 +1840,6 @@ export function registerIpcHandlers(): void {
     CHAT_IPC_CHANNELS.CREATE_WELCOME_CONVERSATION,
     async (): Promise<ConversationMeta | null> => {
       return createWelcomeConversation()
-    }
-  )
-
-  // 发送消息（触发 AI 流式响应）
-  // 注意：通过 event.sender 获取 webContents 用于推送流式事件
-  ipcMain.handle(
-    CHAT_IPC_CHANNELS.SEND_MESSAGE,
-    async (event, input: ChatSendInput): Promise<void> => {
-      await sendMessage(input, event.sender)
-    }
-  )
-
-  // 资料引用是独立消息，不能伪装为附件，否则删除/截断会误删资料实体。
-  ipcMain.handle(
-    CHAT_IPC_CHANNELS.ADD_KNOWLEDGE_REFERENCES,
-    async (_, conversationId: string, itemIds: string[]): Promise<ChatMessage> => {
-      if (typeof conversationId !== 'string' || !conversationId.trim()) throw new Error('对话标识无效')
-      if (!Array.isArray(itemIds) || itemIds.length < 1 || itemIds.length > 10 || itemIds.some((id) => typeof id !== 'string' || id.length > 160)) throw new Error('资料引用数量或标识无效')
-      const { resolveKnowledgeReferences } = require('./lib/knowledge-item-service')
-      const references = resolveKnowledgeReferences(itemIds)
-      const message: ChatMessage = { id: randomUUID(), parentId: null, role: 'user', content: '', createdAt: Date.now(), knowledgeReferences: references }
-      appendMessage(conversationId, message)
-      return message
-    },
-  )
-
-  // 中止生成
-  ipcMain.handle(
-    CHAT_IPC_CHANNELS.STOP_GENERATION,
-    async (_, conversationId: string): Promise<void> => {
-      stopGeneration(conversationId)
     }
   )
 
@@ -1972,14 +1920,6 @@ export function registerIpcHandlers(): void {
     CHAT_IPC_CHANNELS.UPDATE_CONTEXT_DIVIDERS,
     async (_, conversationId: string, dividers: string[]): Promise<ConversationMeta> => {
       return updateContextDividers(conversationId, dividers)
-    }
-  )
-
-  // 生成对话标题
-  ipcMain.handle(
-    CHAT_IPC_CHANNELS.GENERATE_TITLE,
-    async (_, input: GenerateTitleInput): Promise<string | null> => {
-      return generateTitle(input)
     }
   )
 
@@ -2166,23 +2106,12 @@ export function registerIpcHandlers(): void {
     async (event, updates: Partial<AppSettings>): Promise<AppSettings> => {
       const result = await updateSettings(updates)
 
-      // 快速任务开关变化：实时创建/销毁预创建窗口，并重新注册全局快捷键
-      if (updates.quickTaskEnabled !== undefined) {
-        const { createQuickTaskWindow, destroyQuickTaskWindow } = await import('./lib/quick-task-window')
-        if (updates.quickTaskEnabled === true) {
-          createQuickTaskWindow()
-        } else {
-          destroyQuickTaskWindow()
-        }
-        const { reregisterAllGlobalShortcuts } = await import('./lib/global-shortcut-service')
-        reregisterAllGlobalShortcuts()
-      }
 
       if (updates.feishuSessionMirror !== undefined) {
         syncFeishuSyncSleepBlocker(result)
       }
 
-      if (updates.developerModeEnabled !== undefined || updates.openEpistemicModeEnabled !== undefined || updates.pluginSystemEnabled !== undefined) {
+      if (updates.developerModeEnabled !== undefined || updates.openEpistemicModeEnabled !== undefined) {
         const payload = {
           developerModeEnabled: result.developerModeEnabled === true,
           openEpistemicModeEnabled: result.openEpistemicModeEnabled === true,
@@ -2284,7 +2213,7 @@ export function registerIpcHandlers(): void {
         if (updates.feishuSessionMirror !== undefined) {
           syncFeishuSyncSleepBlocker(result)
         }
-        if (updates.developerModeEnabled !== undefined || updates.openEpistemicModeEnabled !== undefined || updates.pluginSystemEnabled !== undefined) {
+        if (updates.developerModeEnabled !== undefined || updates.openEpistemicModeEnabled !== undefined) {
           const payload = {
             developerModeEnabled: result.developerModeEnabled === true,
             openEpistemicModeEnabled: result.openEpistemicModeEnabled === true,
@@ -2421,7 +2350,7 @@ export function registerIpcHandlers(): void {
     }
   )
 
-  // 获取自定义音效的文件 URL（使用 profer-file:// 协议，renderer 可安全加载）
+  // 获取自定义音效的文件 URL（使用 cdut-file:// 协议，renderer 可安全加载）
   ipcMain.handle(
     NOTIFICATION_SOUND_IPC_CHANNELS.GET_URL,
     async (_, fileName: string): Promise<string> => {
@@ -2689,7 +2618,7 @@ export function registerIpcHandlers(): void {
       // 未显式指定预设时继承该工作区默认预设，保证快捷新建/协作子会话/机器人桥等入口统一行为
       const workspaceSlug = workspaceId ? getAgentWorkspace(workspaceId)?.slug : undefined
       const effectivePresetId = presetId ?? getDefaultPresetId(workspaceSlug)
-      const session = createAgentSession(title, channelId, workspaceId, modelId, getSettings().agentRuntime ?? 'claude', false, effectivePresetId)
+      const session = createAgentSession(title, channelId, workspaceId, modelId, getSettings().agentRuntime ?? 'pi', false, effectivePresetId)
       feishuBridgeManager.ensureSessionMirror(session).catch((error) => {
         console.error('[飞书 Session 镜像] 新会话建群失败:', error)
       })
@@ -2860,7 +2789,7 @@ export function registerIpcHandlers(): void {
     AGENT_IPC_CHANNELS.ENSURE_PROJECT_DRAFT_SESSION,
     async (_, workspaceId: string, channelId?: string, modelId?: string): Promise<AgentSessionMeta> => {
       if (!getAgentWorkspace(workspaceId)) throw new Error('项目不存在')
-      return ensureProjectDraftAgentSession(workspaceId, channelId, modelId, getSettings().agentRuntime ?? 'claude')
+      return ensureProjectDraftAgentSession(workspaceId, channelId, modelId, getSettings().agentRuntime ?? 'pi')
     },
   )
 
@@ -4172,105 +4101,6 @@ export function registerIpcHandlers(): void {
     }
   )
 
-  // ===== Chat 工具管理 =====
-
-  // 获取所有工具信息
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.GET_ALL_TOOLS,
-    async (): Promise<ChatToolInfo[]> => {
-      return getAllToolInfos()
-    }
-  )
-
-  // 获取工具凭据
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.GET_TOOL_CREDENTIALS,
-    async (_, toolId: string, provider?: string): Promise<Record<string, string>> => {
-      return getToolCredentials(toolId, provider)
-    }
-  )
-
-  // 更新工具开关状态
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.UPDATE_TOOL_STATE,
-    async (_, toolId: string, state: ChatToolState): Promise<void> => {
-      updateToolState(toolId, state)
-    }
-  )
-
-  // 更新工具凭据
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.UPDATE_TOOL_CREDENTIALS,
-    async (_, toolId: string, credentials: Record<string, string>): Promise<void> => {
-      updateToolCredentials(toolId, credentials)
-    }
-  )
-
-  // 创建自定义工具
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.CREATE_CUSTOM_TOOL,
-    async (_, meta: ChatToolMeta): Promise<void> => {
-      addCustomTool(meta)
-    }
-  )
-
-  // 删除自定义工具
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.DELETE_CUSTOM_TOOL,
-    async (_, toolId: string): Promise<void> => {
-      deleteCustomTool(toolId)
-    }
-  )
-
-  // 测试工具连接
-  ipcMain.handle(
-    CHAT_TOOL_IPC_CHANNELS.TEST_TOOL,
-    async (_, toolId: string): Promise<{ success: boolean; message: string }> => {
-      // 记忆工具：本地文件记忆，无需测试连接
-      if (toolId === 'memory') {
-        return { success: true, message: '本地文件记忆已就绪' }
-      }
-      // 联网搜索工具测试
-      if (toolId === 'web-search') {
-        const { getToolCredentials: getCredentials } = await import('./lib/chat-tool-config')
-        const credentials = getCredentials('web-search')
-        if (!credentials.apiKey) {
-          return { success: false, message: '请先填写 Tavily API Key' }
-        }
-        try {
-          const response = await fetch('https://api.tavily.com/search', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              api_key: credentials.apiKey,
-              query: 'test connection',
-              search_depth: 'basic',
-              max_results: 1,
-            }),
-          })
-          if (!response.ok) {
-            const errorText = await response.text()
-            return { success: false, message: `API 请求失败 (${response.status}): ${errorText}` }
-          }
-          return { success: true, message: '连接成功，Tavily 搜索 API 可用' }
-        } catch (error) {
-          const msg = error instanceof Error ? error.message : String(error)
-          return { success: false, message: `连接失败: ${msg}` }
-        }
-      }
-      // AI 图片生成工具测试：官方模式走 Profer 登录态，自带 Key 模式按所选 provider 测试。
-      if (toolId === 'gpt-image') {
-        const { testGptImageConnection } = await import('./lib/gpt-image-connection')
-        return testGptImageConnection()
-      }
-      if (toolId === 'nano-banana') {
-        const { testLegacyImageToolConnection } = await import('./lib/gpt-image-connection')
-        return testLegacyImageToolConnection(toolId)
-      }
-      return { success: false, message: `工具 ${toolId} 不支持测试` }
-    }
-  )
-
   // ===== AskUserQuestion 交互式问答 =====
 
   // 响应 AskUser 请求
@@ -4961,7 +4791,7 @@ export function registerIpcHandlers(): void {
     },
   )
 
-  // 仅解析文件路径（供 PDF/图片等用 profer-file:// 加载）
+  // 仅解析文件路径（供 PDF/图片等用 cdut-file:// 加载）
   ipcMain.handle(
     'file:resolve-path',
     async (_, filePath: string, access?: FileAccessOptions | string[]): Promise<ResolvedFileUrl | null> => {
@@ -5001,7 +4831,7 @@ export function registerIpcHandlers(): void {
   )
 
   // 为 HTML 预览注册所在目录，使相对 CSS、脚本和图片资源保持可加载。
-  // 返回的仍是 token-gated profer-file URL，不向渲染进程泄露本机绝对路径。
+  // 返回的仍是 token-gated cdut-file URL，不向渲染进程泄露本机绝对路径。
   ipcMain.handle(
     'file:resolve-html-preview-path',
     async (_, filePath: string, access?: FileAccessOptions | string[]): Promise<ResolvedFileUrl | null> => {
@@ -5072,7 +4902,7 @@ export function registerIpcHandlers(): void {
     }
   )
 
-  // 注册文件路径到 profer-file:// 协议（只读预览）
+  // 注册文件路径到 cdut-file:// 协议（只读预览）
   // 授权根内直接放行；根外按只读预览策略校验（系统/凭据敏感位置仍拒绝）。
   ipcMain.handle(
     'file:register-preview-path',
@@ -6275,158 +6105,14 @@ export function registerIpcHandlers(): void {
   }
   runStartupCleanup()
 
-  // ===== 快速任务窗口 =====
-
-  // 提交快速任务 → 隐藏窗口 + 转发到主窗口（由渲染进程创建会话并发送消息）
-  ipcMain.handle(
-    QUICK_TASK_IPC_CHANNELS.SUBMIT,
-    async (_, input: QuickTaskSubmitInput): Promise<void> => {
-      const { hideQuickTaskWindow } = await import('./lib/quick-task-window')
-      const { getMainWindow } = await import('./index')
-      hideQuickTaskWindow()
-
-      const mainWin = getMainWindow()
-      if (mainWin && !mainWin.isDestroyed()) {
-        // 转发到主窗口渲染进程，由 GlobalShortcuts 创建会话并触发发送
-        mainWin.webContents.send('quick-task:open-session', {
-          mode: input.mode,
-          text: input.text,
-          files: input.files,
-        })
-        mainWin.show()
-        mainWin.focus()
-      }
-    }
-  )
-
-  // 隐藏快速任务窗口
-  ipcMain.handle(
-    QUICK_TASK_IPC_CHANNELS.HIDE,
-    async (): Promise<void> => {
-      const { hideQuickTaskWindow } = await import('./lib/quick-task-window')
-      hideQuickTaskWindow()
-    }
-  )
+  // ===== 全局快捷键 =====
 
   // 重新注册全局快捷键（设置中修改快捷键后调用）
   ipcMain.handle(
-    QUICK_TASK_IPC_CHANNELS.REREGISTER_GLOBAL_SHORTCUTS,
+    SHORTCUT_IPC_CHANNELS.REREGISTER_GLOBAL_SHORTCUTS,
     async (): Promise<Record<string, boolean>> => {
       const { reregisterAllGlobalShortcuts } = await import('./lib/global-shortcut-service')
       return reregisterAllGlobalShortcuts()
-    }
-  )
-
-  // ===== 语音输入 =====
-
-  ipcMain.handle(
-    VOICE_DICTATION_IPC_CHANNELS.GET_SETTINGS,
-    async (): Promise<VoiceDictationSettings> => {
-      const { getVoiceDictationSettings } = await import('./lib/voice-dictation-settings-service')
-      return getVoiceDictationSettings()
-    }
-  )
-
-  ipcMain.handle(
-    VOICE_DICTATION_IPC_CHANNELS.UPDATE_SETTINGS,
-    async (_, updates: VoiceDictationSettingsUpdate): Promise<VoiceDictationSettings> => {
-      const { updateVoiceDictationSettings } = await import('./lib/voice-dictation-settings-service')
-      return updateVoiceDictationSettings(updates)
-    }
-  )
-
-  ipcMain.handle(
-    VOICE_DICTATION_IPC_CHANNELS.TEST_CONNECTION,
-    async (_, updates?: VoiceDictationSettingsUpdate): Promise<VoiceDictationTestResult> => {
-      const { getVoiceDictationSettings } = await import('./lib/voice-dictation-settings-service')
-      const { testDoubaoAsrConnection } = await import('./lib/doubao-asr-service')
-      const settings = { ...getVoiceDictationSettings(), ...(updates ?? {}) }
-      return testDoubaoAsrConnection(settings)
-    }
-  )
-
-  ipcMain.handle(
-    VOICE_DICTATION_IPC_CHANNELS.TOGGLE,
-    async (event): Promise<void> => {
-      const { toggleVoiceDictationWindow } = await import('./lib/voice-dictation-window')
-      const sourceWindow = BrowserWindow.fromWebContents(event.sender)
-      toggleVoiceDictationWindow({ targetIsProfer: !!sourceWindow })
-    }
-  )
-
-  ipcMain.handle(
-    VOICE_DICTATION_IPC_CHANNELS.START,
-    async (event, input: VoiceDictationStartInput): Promise<void> => {
-      const { getVoiceDictationSettings } = await import('./lib/voice-dictation-settings-service')
-      const { startDoubaoAsrSession } = await import('./lib/doubao-asr-service')
-      const win = BrowserWindow.fromWebContents(event.sender)
-      if (!win) throw new Error('语音输入窗口不存在')
-      await startDoubaoAsrSession(input.sessionId, getVoiceDictationSettings(), win)
-    }
-  )
-
-  ipcMain.handle(
-    VOICE_DICTATION_IPC_CHANNELS.SEND_AUDIO,
-    async (_, input: VoiceDictationAudioChunkInput): Promise<void> => {
-      const { sendDoubaoAsrAudio } = await import('./lib/doubao-asr-service')
-      sendDoubaoAsrAudio(input.sessionId, input.data)
-    }
-  )
-
-  ipcMain.handle(
-    VOICE_DICTATION_IPC_CHANNELS.STOP,
-    async (_, input: VoiceDictationStopInput): Promise<void> => {
-      const { stopDoubaoAsrSession } = await import('./lib/doubao-asr-service')
-      await stopDoubaoAsrSession(input.sessionId)
-    }
-  )
-
-  ipcMain.handle(
-    VOICE_DICTATION_IPC_CHANNELS.CANCEL,
-    async (_, input: VoiceDictationStopInput): Promise<void> => {
-      const { cancelDoubaoAsrSession } = await import('./lib/doubao-asr-service')
-      cancelDoubaoAsrSession(input.sessionId)
-    }
-  )
-
-  ipcMain.handle(
-    VOICE_DICTATION_IPC_CHANNELS.COMMIT,
-    async (_, input: VoiceDictationCommitInput): Promise<VoiceDictationCommitResult> => {
-      const { getVoiceDictationSettings } = await import('./lib/voice-dictation-settings-service')
-      const { commitVoiceDictationText } = await import('./lib/text-output-service')
-      return commitVoiceDictationText(input.text, getVoiceDictationSettings())
-    }
-  )
-
-  ipcMain.handle(
-    VOICE_DICTATION_IPC_CHANNELS.HIDE,
-    async (): Promise<void> => {
-      const { hideVoiceDictationWindow } = await import('./lib/voice-dictation-window')
-      hideVoiceDictationWindow()
-    }
-  )
-
-  ipcMain.handle(
-    VOICE_DICTATION_IPC_CHANNELS.RESIZE,
-    async (_, input: VoiceDictationResizeInput): Promise<void> => {
-      const { resizeVoiceDictationWindow } = await import('./lib/voice-dictation-window')
-      resizeVoiceDictationWindow(input.height)
-    }
-  )
-
-  ipcMain.handle(
-    VOICE_DICTATION_IPC_CHANNELS.CHECK_MIC_PERMISSION,
-    async (): Promise<MicPermissionResult> => {
-      const { checkMicrophonePermission } = await import('./lib/microphone-permission-service')
-      return checkMicrophonePermission()
-    }
-  )
-
-  ipcMain.handle(
-    VOICE_DICTATION_IPC_CHANNELS.REQUEST_MIC_PERMISSION,
-    async (): Promise<MicPermissionResult> => {
-      const { requestMicrophonePermission } = await import('./lib/microphone-permission-service')
-      return requestMicrophonePermission()
     }
   )
 

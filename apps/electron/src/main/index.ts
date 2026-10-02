@@ -1,7 +1,7 @@
 import { app, BrowserWindow, dialog, Menu, powerMonitor, protocol, screen, shell } from 'electron'
 import { join } from 'path'
 import { createConnection } from 'net'
-import { existsSync, cpSync, mkdirSync, readdirSync } from 'fs'
+import { existsSync } from 'fs'
 import { getDevInstanceId, resolveDevAppName, resolveDevUserDataPath } from './lib/dev-instance'
 import { appendDevDiagnostic } from './lib/dev-diagnostics-log'
 
@@ -43,60 +43,21 @@ if (devInstanceId) {
   console.log(`[启动] 开发隔离实例: ${devInstanceId}，userData=${app.getPath('userData')}`)
 }
 
-// 一次性迁移：把存量 Profer 用户遗留在 @proma/electron 的浏览器层数据搬到新目录。
-// 登录态/会话/自动任务/device_id 都在 ~/.profer（不涉及），这里只搬 Chromium 层，避免用户升级后
-// 首屏缓存/cookie 凭空清空。copy 而非 move（保住原版 Proma 的目录）；跳过可再生大缓存；静默降级。
-migrateUserDataFromProferIfNeeded()
+// 品牌已切换为 CDUT Studio：userData 迁移逻辑移除，新软件从干净目录开始，不读取 @profer 遗留数据。
 
-function migrateUserDataFromProferIfNeeded(): void {
-  // 仅正式版需要：dev 版一直用独立的 @profer/electron-dev，无 @proma 遗留。
-  if (!app.isPackaged) return
-  try {
-    const newDir = app.getPath('userData') // setPath 后 = %APPDATA%\@profer\electron
-    const oldDir = join(app.getPath('appData'), '@proma', 'electron')
-    // 幂等：新目录已存在（迁过或已在用）或旧目录不存在（全新用户）时跳过。
-    if (existsSync(newDir) || !existsSync(oldDir)) return
-
-    // 可再生的大缓存不迁（省时且避免占用冲突）——Electron 会自动重建。
-    const SKIP = new Set([
-      'Cache',
-      'Code Cache',
-      'GPUCache',
-      'DawnGraphiteCache',
-      'DawnWebGPUCache',
-      'blob_storage',
-      'Dictionaries',
-      'Shared Dictionary',
-    ])
-
-    mkdirSync(newDir, { recursive: true })
-    for (const entry of readdirSync(oldDir, { withFileTypes: true })) {
-      if (SKIP.has(entry.name)) continue
-      try {
-        cpSync(join(oldDir, entry.name), join(newDir, entry.name), { recursive: true })
-      } catch {
-        // 单项失败不阻断其余项（如原版 Proma 正在运行占用某文件）。
-      }
-    }
-    console.log('[userData迁移] 已从 @proma/electron 复制浏览器层数据到 @profer/electron')
-  } catch (err) {
-    console.warn('[userData迁移] 失败（不影响使用，核心数据在 ~/.profer）:', err)
-  }
-}
-
-// 仅正式 Windows 安装版声明 AUMID，使任务栏与 Profer.exe / 开始菜单快捷方式绑定。
+// 仅正式 Windows 安装版声明 AUMID，使任务栏与 CDUT Studio.exe / 开始菜单快捷方式绑定。
 // 开发版由裸 electron.exe 承载，刻意不声明 AUMID：任务栏使用 Electron 默认图标，
-// 避免开发环境向 Windows Shell 注册或污染生产 com.profer.app 身份。
+// 避免开发环境向 Windows Shell 注册或污染生产 com.cdutai.studio 身份。
 if (process.platform === 'win32' && app.isPackaged) {
-  app.setAppUserModelId('com.profer.app')
+  app.setAppUserModelId('com.cdutai.studio')
 }
 
 
 // 单实例锁：防止重复启动同一个版本
 if (!app.requestSingleInstanceLock()) {
   console.warn(
-    '[启动] 已有 Profer 进程持有单实例锁，本次启动将退出。\n' +
-      '  如果窗口未出现，可能旧进程已卡死。请运行 `killall Profer` 后重试。',
+    '[启动] 已有 CDUT Studio 进程持有单实例锁，本次启动将退出。\n' +
+      '  如果窗口未出现，可能旧进程已卡死。请运行 `killall "CDUT Studio"` 后重试。',
   )
   app.quit()
 } else {
@@ -106,14 +67,13 @@ if (!app.requestSingleInstanceLock()) {
 
 function registerProtocolsAndHandlers(): void {
   // 注册自定义协议方案为“特权”（必须在 app ready 之前）
-  // 用于内联预览本地文件（renderer 用 iframe 加载 profer-file:// 资源）
+  // 用于内联预览本地文件（renderer 用 iframe 加载 cdut-file:// 资源）
   protocol.registerSchemesAsPrivileged([
-    { scheme: 'profer-file', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
-    // 皮肤 assets 稳定协议：skin.css 中 url(assets/...) 被替换为 profer-skin://<skinId>/assets/...，
+    { scheme: 'cdut-file', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
+    // 皮肤 assets 稳定协议：skin.css 中 url(assets/...) 被替换为 cdut-skin://<skinId>/assets/...，
     // 由主进程按需读取（P2：替代 base64 内联，移除大图 IPC 传输与编码开销）
-    { scheme: 'profer-skin', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
+    { scheme: 'cdut-skin', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
     // 第三方插件页面资源。具体 handler 注册在每个插件独立 Session 上，主会话不处理该协议。
-    { scheme: 'profer-plugin', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: false, stream: true } },
   ])
 
   // Windows: 禁用 LCD 次像素抗锯齿（ClearType），改用灰度 AA。
@@ -153,9 +113,6 @@ import { createCenteredStartupSplashBounds, createStartupSplashHtml } from './li
 import { handleProferFileRequest } from './lib/local-file-protocol'
 import { handleProferSkinRequest } from './lib/skin-service'
 import { disposeAgentPreviewRenderer } from './lib/agent-preview-renderer'
-import { pluginViewManager } from './lib/plugins/plugin-view-manager'
-import { pluginFloatingWindowManager } from './lib/plugins/plugin-floating-window'
-import { registerPluginIpcHandlers } from './lib/plugins/plugin-ipc'
 
 // 处理 EPIPE 错误：当 stdout/stderr 管道被关闭时（如 electronmon 重启），忽略写入错误
 // 这在开发环境热重载时经常发生，不影响应用功能
@@ -192,10 +149,8 @@ import { disposePiMcpConnections } from './lib/adapters/pi-mcp-tools'
 import { disposeLarkCliService } from './lib/lark-cli-service'
 import { disposeLarkMcpService } from './lib/lark-mcp-service'
 import { browserController } from './lib/browser-controller'
-import { stopAllGenerations } from './lib/chat-service'
 import { initAutoUpdater, cleanupUpdater } from './lib/updater/auto-updater'
 import { startWorkspaceWatcher, stopWorkspaceWatcher } from './lib/workspace-watcher'
-import { startChatToolsWatcher, stopChatToolsWatcher } from './lib/chat-tools-watcher'
 import { getIsQuitting, setQuitting } from './lib/app-lifecycle'
 import {
   registerBridge,
@@ -215,13 +170,6 @@ import { dingtalkBridgeManager } from './lib/dingtalk-bridge-manager'
 import { getDingTalkMultiBotConfig } from './lib/dingtalk-config'
 import { wechatBridge } from './lib/wechat-bridge'
 import { getWeChatConfig } from './lib/wechat-config'
-import { createQuickTaskWindow, toggleQuickTaskWindow, destroyQuickTaskWindow } from './lib/quick-task-window'
-import {
-  createVoiceDictationWindow,
-  toggleVoiceDictationWindow,
-  destroyVoiceDictationWindow,
-  shouldSuppressVoiceDictationActivate,
-} from './lib/voice-dictation-window'
 import { registerGlobalShortcut, unregisterAllGlobalShortcuts } from './lib/global-shortcut-service'
 import { maintainDevShellShortcut } from './lib/dev-shell-shortcut'
 import { setProferVersion } from '@profer/core'
@@ -566,7 +514,7 @@ function createWindow(): void {
     // （微软 RelaunchIconResource 允许 .ico 路径），与 setAppUserModelId 的 AUMID 配合。
     if (app.isPackaged) {
       mainWindow.setAppDetails({
-        appId: 'com.profer.app',
+        appId: 'com.cdutai.studio',
         appIconPath: iconPath,
       })
     }
@@ -714,7 +662,6 @@ function createWindow(): void {
     splashShown = true
     rendererReady = false
     browserController.hideAll()
-    pluginViewManager.hideAll()
     if (startupSplashWindow && !startupSplashWindow.isDestroyed()) startupSplashWindow.close()
     startupSplashWindow = null
     mainWindow.show()
@@ -836,11 +783,9 @@ function createWindow(): void {
     mainWindow = null
     setMainWindow(null)
     browserController.dispose()
-    pluginViewManager.dispose()
   })
 
   setMainWindow(mainWindow)
-  pluginViewManager.setOwnerWindow(mainWindow)
 }
 
 function sendToMainWindow(channel: string, data?: unknown): void {
@@ -877,22 +822,19 @@ async function bootstrap(): Promise<void> {
   // 初始化 Profer 版本号（供 User-Agent 等全局标识使用）
   setProferVersion(app.getVersion())
 
-  // 注册自定义协议 profer-file:// 用于内联预览本地文件。
+  // 注册自定义协议 cdut-file:// 用于内联预览本地文件。
   // 协议只接受主进程签发的 opaque token，不解析 renderer 提供的绝对路径。
-  protocol.handle('profer-file', handleProferFileRequest)
+  protocol.handle('cdut-file', handleProferFileRequest)
 
-  // 注册皮肤 assets 协议 profer-skin://<skinId>/assets/<file>。
+  // 注册皮肤 assets 协议 cdut-skin://<skinId>/assets/<file>。
   // 仅允许皮肤目录内 assets/ 图片，skinId 走 kebab-case 白名单，防目录穿越。
-  protocol.handle('profer-skin', handleProferSkinRequest)
+  protocol.handle('cdut-skin', handleProferSkinRequest)
 
   // 初始化运行时环境（Shell 环境 + Bun + Git 检测）
   // 热启动时从磁盘缓存恢复，耗时 < 10ms
   await safeAwait('initializeRuntime', () => initializeRuntime())
 
-  // 从旧 Proma 数据目录迁移到 Profer（一次性）
-  const { migrateFromProferIfNeeded } = require('./lib/config-paths')
-  safeRun('migrateFromProfer', migrateFromProferIfNeeded)
-
+  // 从旧 Proma/Profer 数据目录的迁移已随品牌切换移除（新软件不迁移旧数据）。
   // Create application menu
   const menu = createApplicationMenu()
   Menu.setApplicationMenu(menu)
@@ -906,7 +848,6 @@ async function bootstrap(): Promise<void> {
 
   // Register IPC handlers
   registerIpcHandlers()
-  registerPluginIpcHandlers()
 
   // 远程服务（remote-service）：显式启动参数 PROFER_REMOTE=1 兼容保留；
   // 设置页开启「启用移动端连接」后，下次启动自动恢复监听（正式版与开发版一致）。
@@ -990,34 +931,14 @@ async function bootstrap(): Promise<void> {
     safeRun('startWorkspaceWatcher', () => startWorkspaceWatcher(mainWindow!))
   }
 
-  // 启动 Chat 工具配置文件监听
-  safeRun('startChatToolsWatcher', startChatToolsWatcher)
-
   // 预创建快速任务窗口（隐藏状态，首次唤起秒开）——默认关闭，仅在设置开启时预创建
-  if (getSettings().quickTaskEnabled === true) {
-    safeRun('createQuickTaskWindow', createQuickTaskWindow)
-  }
-  if (getSettings().voiceDictation?.enabled === true) {
-    safeRun('createVoiceDictationWindow', createVoiceDictationWindow)
-  }
 
   // 飞书实时同步开启时，默认阻止系统自动休眠
   safeRun('syncFeishuSyncSleepBlocker', () => syncFeishuSyncSleepBlocker(getSettings()))
 
   // 注册全局快捷键（快速任务仅在设置开启时注册）
-  safeRun('registerGlobalShortcut:quick-task', () =>
-    registerGlobalShortcut('quick-task', () => {
-      if (getSettings().quickTaskEnabled !== true) return
-      toggleQuickTaskWindow()
-    }),
-  )
   safeRun('registerGlobalShortcut:show-main-window', () =>
     registerGlobalShortcut('show-main-window', showAndFocusMainWindow),
-  )
-  safeRun('registerGlobalShortcut:voice-dictation', () =>
-    registerGlobalShortcut('voice-dictation', () => {
-      toggleVoiceDictationWindow({ targetIsProfer: mainWindow?.isFocused() === true })
-    }),
   )
 
   // Bridge 启动延后到下一个事件循环，让窗口先完成渲染
@@ -1083,9 +1004,6 @@ async function bootstrap(): Promise<void> {
   })
 
   app.on('activate', () => {
-    if (shouldSuppressVoiceDictationActivate()) {
-      return
-    }
 
     // 直接检查 mainWindow 引用，避免 getAllWindows() 包含 DevTools 等其他窗口导致误判
     if (!mainWindow || mainWindow.isDestroyed()) {
@@ -1168,9 +1086,9 @@ function handleBootstrapFailure(err: unknown): void {
       `部分功能可能不可用：\n\n${message}\n\n` +
         `日志位置：${app.getPath('logs')}\n\n` +
         `常见原因与排查：\n` +
-        `1. 旧版 Profer 进程未退出（终端运行 killall Profer 后重试）\n` +
-        `2. ~/.profer/ 配置损坏（重命名 ~/.profer 后重启）\n` +
-        `3. 系统 Keychain 无法解密保存的凭证（删除 ~/.profer/feishu.json 等后重新登录）\n\n` +
+        `1. 旧版 CDUT Studio 进程未退出（终端运行 killall "CDUT Studio" 后重试）\n` +
+        `2. ~/.cdutai/ 配置损坏（重命名 ~/.cdutai 后重启）\n` +
+        `3. 系统 Keychain 无法解密保存的凭证（删除 ~/.cdutai/feishu.json 等后重新登录）\n\n` +
         `如需协助请到 GitHub Issues 反馈。`,
     )
   } catch {
@@ -1179,7 +1097,6 @@ function handleBootstrapFailure(err: unknown): void {
 
   try {
     registerIpcHandlers()
-    registerPluginIpcHandlers()
     createWindow()
   } catch (fallbackErr) {
     console.error('[启动] 降级窗口创建也失败:', fallbackErr)
@@ -1205,10 +1122,7 @@ app.on('before-quit', () => {
   disposeLarkCliService()
   disposeLarkMcpService()
   browserController.dispose()
-  pluginViewManager.dispose()
-  pluginFloatingWindowManager.dispose()
   disposeAgentPreviewRenderer()
-  stopAllGenerations()
   // 最后兜底：扫描并强杀所有孤儿 claude-agent-sdk 子进程（Issue #357）
   // 针对 pidMap 未覆盖、dispose 漏杀等极端场景，确保不遗留残留进程
   killOrphanedClaudeSubprocesses()
@@ -1216,8 +1130,6 @@ app.on('before-quit', () => {
   cleanupUpdater()
   // 停止工作区文件监听
   stopWorkspaceWatcher()
-  // 停止 Chat 工具配置文件监听
-  stopChatToolsWatcher()
   // 停止所有 Bridge
   stopBridgeSelfHealing()
   stopAllBridges()
@@ -1238,9 +1150,6 @@ app.on('before-quit', () => {
   stopFeishuSyncSleepBlocker()
   // 注销全局快捷键
   unregisterAllGlobalShortcuts()
-  // 销毁快速任务窗口
-  destroyQuickTaskWindow()
-  destroyVoiceDictationWindow()
   // Clean up system tray before quitting
   destroyTray()
 })

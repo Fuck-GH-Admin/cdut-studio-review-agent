@@ -147,9 +147,9 @@ function SkillDetailBody({
   };
 
   const sourceLabel = isBuiltin
-    ? "Profer 内置全局源"
+    ? "CDUT Studio 内置全局源"
     : skill.sourceSkillId
-      ? `${skill.sourceSkillType === "builtin-meta" ? "Profer 内置元 Skill" : "用户全局 Skill"}（工作区副本）`
+      ? `${skill.sourceSkillType === "builtin-meta" ? "CDUT Studio 内置元 Skill" : "用户全局 Skill"}（工作区副本）`
       : skill.importSource
         ? `从 ${skill.importSource.sourceWorkspaceName} 导入`
         : "当前工作区";

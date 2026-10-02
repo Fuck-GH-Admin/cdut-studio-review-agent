@@ -190,7 +190,7 @@ export async function runAutomation(automation: Automation, manual = false): Pro
         console.log(`[定时任务] ${automation.name} 已同步预设到复用会话: ${resolvedPresetId}`)
       }
     }
-    const previousAgentRuntime: AgentRuntime = targetSessionMeta?.agentRuntime ?? 'claude'
+    const previousAgentRuntime: AgentRuntime = targetSessionMeta?.agentRuntime ?? 'pi'
     if (targetSessionMeta && previousAgentRuntime !== agentRuntime) {
       updateAgentSessionMeta(targetSessionId, {
         agentRuntime,

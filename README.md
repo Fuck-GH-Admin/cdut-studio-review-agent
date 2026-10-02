@@ -4,15 +4,14 @@
 
 # Profer
 
-**基于 Claude Agent SDK + Pi Agent 双运行时的通用 AI Agent 桌面应用**
+**基于 Claude Agent SDK + Pi Agent 的通用 AI Agent 桌面应用**
 
-多模型接入 · 协作子 Agent · 定时任务自动化 · 移动端远程接入 · 团队工作区
+Agent 工作流 · 协作子 Agent · 定时自动化 · Skills 与 MCP
 
 [![GitHub Release](https://img.shields.io/github/v/release/Yuan-lai-ru-ci/ProferAI?style=flat-square&label=Release)](https://github.com/Yuan-lai-ru-ci/ProferAI/releases)
 [![License](https://img.shields.io/github/license/Yuan-lai-ru-ci/ProferAI?style=flat-square&label=License)](./LICENSE)
 [![Electron](https://img.shields.io/badge/Electron-43-47848F?style=flat-square&logo=electron)](https://www.electronjs.org/)
-[![Claude Agent SDK](https://img.shields.io/badge/Claude%20Agent%20SDK-0.3.201-8B5CF6?style=flat-square)](https://github.com/anthropics/claude-agent-sdk)
-[![Pi Agent SDK](https://img.shields.io/badge/Pi%20Agent%20SDK-0.82.1-6D28D9?style=flat-square)](https://www.npmjs.com/package/@earendil-works/pi-agent-core)
+[![Pi Agent SDK](https://img.shields.io/badge/Pi%20Agent%20SDK-0.86.1-6D28D9?style=flat-square)](https://www.npmjs.com/package/@earendil-works/pi-agent-core)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Stars](https://img.shields.io/github/stars/Yuan-lai-ru-ci/ProferAI?style=flat-square&label=Stars)](https://github.com/Yuan-lai-ru-ci/ProferAI)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/Yuan-lai-ru-ci/ProferAI/pulls)
@@ -21,7 +20,7 @@
 
 ---
 
-Profer 是本地优先（local-first）的 AI 桌面应用：**简单问题用 Chat，复杂任务交给 Agent**。在强大本地 AI Agent 的基础上，叠加了团队协作层——个人工作区 + 团队工作区双模式、Skills 共享市场、文件云端同步、邀请制成员管理。团队知识沉淀在工作区，而不是随对话流失。
+Profer 是本地优先（local-first）的 AI Agent 桌面应用。以 Agent 会话为核心，提供任务编排、计划确认、协作子 Agent、自动化调度、文件预览，以及 Skills 与 MCP 配置。模型渠道由用户自行配置。
 
 ---
 
@@ -29,15 +28,12 @@ Profer 是本地优先（local-first）的 AI 桌面应用：**简单问题用 C
 
 | 特性 | 说明 |
 | --- | --- |
-| 🤖 **通用 Agent** | 基于 `@anthropic-ai/claude-agent-sdk`，任务图拆解、子任务依赖编排、流式输出、计划确认，支持 **Claude / Pi 双运行时**切换 |
-| 🧩 **协作子 Agent** | 复杂任务并行拆分给多个真实子会话独立推进，完成后汇总结果，全程可见可追踪 |
-| ⏰ **定时任务自动化** | 持久化调度（interval / daily / weekly / monthly），运行历史、失败保护、结果复盘，适合日报周报、自动检查等无人值守场景 |
-| 📱 **移动端远程接入** | 移动端客户端（独立仓库 Profer-pocket，Capacitor Android）通过本地 HTTP/WS 远程接入电脑端，移动端 Chat、设置同步、断线重连 |
-| 👥 **团队工作区** | 邀请制团队（Owner / Admin / Member / Viewer 角色权限），Skills 共享市场、文件云端同步、品牌定制 |
-| 💬 **多模型 Chat** | 多供应商对话、附件解析（PDF / Office / 图片）、Markdown / Mermaid / KaTeX / 代码高亮、并排对比、上下文管理 |
-| 🧠 **Skills & MCP** | 每工作区独立配置 Skills 与 MCP Server，全屏技能视图支持搜索、启用、更新、导入、卸载与团队发布 |
-| 🔌 **远程机器人** | 飞书 / Lark / 钉钉 / 微信桥接，手机或群聊即可触发本机 Agent 工作流 |
-| 🎨 **桌面体验** | 自动更新、全局快捷键、快速任务窗口、流式语音输入（豆包）、亮色 / 暗色 / 多款精修主题 |
+| 🤖 **Agent 工作流** | 支持 Claude 与 Pi Agent runtime，任务图拆解、子任务依赖编排、流式输出与计划确认 |
+| 🧩 **协作子 Agent** | 复杂任务拆分为独立子会话并行推进，完成后汇总结果 |
+| ⏰ **定时任务自动化** | interval / daily / weekly / monthly 调度，运行历史与失败保护 |
+| 📁 **文件与预览** | 会话文件浏览、差异预览、浏览器和常见文档预览 |
+| 🧠 **Skills & MCP** | 按工作区配置 Agent Skills 与 MCP Server |
+| 🎨 **桌面体验** | 自动更新、全局快捷键、浅色/深色外观与本地数据管理 |
 
 ---
 
@@ -59,36 +55,22 @@ Profer 是本地优先（local-first）的 AI 桌面应用：**简单问题用 C
 2. **设置 → 模型配置**：添加 AI 渠道（Anthropic、DeepSeek、Kimi、智谱、豆包、通义千问等）
 3. **设置 → Agent 配置**：选择默认渠道、模型和工作区，即可开始使用
 
-### 配置团队服务器（可选）
-
-团队协作功能需要后端服务（轻量级 Hono + SQLite，可一键部署到任意 Linux 服务器）：
-
-```bash
-git clone https://github.com/Yuan-lai-ru-ci/ProferAI.git
-cd ProferAI/server
-npm install
-nohup node index.js > server.log 2>&1 &
-```
-
-然后在 Profer 设置 → **品牌定制** 中配置团队服务器地址，即可邀请成员、共享 Skills、云端同步文件。
 
 ---
 
-## 🤖 支持的模型渠道
+## 🤖 支持的 Agent 渠道
 
-| 供应商 | Chat | Agent | 协议 |
-| --- | --- | --- | --- |
-| Anthropic | ✅ | ✅ | Messages API |
-| DeepSeek | ✅ | ✅ | Anthropic 兼容 |
-| Kimi API | ✅ | ✅ | Anthropic 兼容 |
-| Kimi Coding Plan | ✅ | ✅ | Anthropic 兼容（官方白名单） |
-| OpenAI | ✅ | ❌ | Chat Completions |
-| Google | ✅ | ❌ | Gemini API |
-| 智谱 AI | ✅ | ✅ | Anthropic 兼容 |
-| MiniMax | ✅ | ✅ | Anthropic 兼容 |
-| 豆包 | ✅ | ✅ | Anthropic 兼容 |
-| 通义千问 | ✅ | ✅ | Anthropic 兼容 |
-| 自定义端点 | ✅ | ❌ | OpenAI 兼容 |
+| 供应商 | Agent | 协议 |
+| --- | --- | --- |
+| Anthropic | ✅ | Messages API |
+| DeepSeek | ✅ | Anthropic 兼容 |
+| Kimi API | ✅ | Anthropic 兼容 |
+| Kimi Coding Plan | ✅ | Anthropic 兼容（官方白名单） |
+| 智谱 AI | ✅ | Anthropic 兼容 |
+| MiniMax | ✅ | Anthropic 兼容 |
+| 豆包 | ✅ | Anthropic 兼容 |
+| 通义千问 | ✅ | Anthropic 兼容 |
+| OpenAI / Google / 自定义端点 | 按 Pi provider 支持情况 | 对应原生协议 |
 
 ---
 
@@ -102,9 +84,7 @@ nohup node index.js > server.log 2>&1 &
 | 样式 | Tailwind CSS + Radix UI |
 | 富文本 / 图表 | TipTap · Beautiful Mermaid · KaTeX · Shiki |
 | 构建 | Vite + esbuild + electron-builder |
-| Agent SDK | `@anthropic-ai/claude-agent-sdk@0.3.201`（Claude）+ `@earendil-works/pi-agent@0.82.1`（Pi）双运行时 |
-| 移动端 | Capacitor（Android，客户端在 Profer-pocket 仓库） |
-| 团队后端 | Hono + better-sqlite3 + JWT |
+| Agent SDK | Claude Agent SDK + Pi Agent adapter（当前支持双 runtime） |
 
 ---
 
@@ -123,7 +103,6 @@ profer/
 ├── apps/
 │   ├── electron/       # Electron 桌面应用
 │   └── cli/            # 命令行工具
-├── server/             # 团队同步后端（Hono + SQLite）
 ```
 
 ```bash

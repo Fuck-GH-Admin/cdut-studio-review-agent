@@ -1,9 +1,9 @@
 # electron-builder 配置
 # 文档: https://www.electron.build/configuration/configuration
 
-appId: com.profer.app
-productName: Profer
-copyright: Copyright © 2024-2026 Profer
+appId: com.cdutai.studio
+productName: CDUT Studio
+copyright: Copyright © 2026 CDUT
 
 # Electron 版本（CI 环境 bun workspace 下无法自动检测，需显式指定）
 electronVersion: 43.2.0
@@ -46,10 +46,6 @@ files:
   # 排除 build:resources 脚本拷到 dist/resources 的副本（electron-builder 已通过
   # buildResources 从 resources/ 直接使用 icon/plist，避免产物里重复打包一份）
   - "!dist/resources/**"
-  # 排除 plugin 冒烟测试产物（仅 test:plugins 系列脚本本地构建使用，合计约 39MB，
-  # 不随安装包分发；否则本地跑过测试再打包含把它们带进 app.asar）
-  - "!dist/plugin-smoke/**"
-  - "!dist/plugin-rpc-smoke/**"
   - package.json
   # Claude 与 Pi runtime 都作为主进程 external。打包前 sync:runtime-deps 会将
   # 依赖闭包同步到 appDir 下的 node_modules，避免 Bun workspace hoist 后丢失。
@@ -129,7 +125,7 @@ mac:
   binaries:
     - resources/bin/profer
   extendInfo:
-    NSMicrophoneUsageDescription: "Profer 需要访问麦克风，用于将你的语音实时转写为文本。"
+    NSMicrophoneUsageDescription: "CDUT Studio 需要访问麦克风，用于将你的语音实时转写为文本。"
   target:
     - target: dmg
       arch:
@@ -169,10 +165,10 @@ win:
       to: bin/profer.exe
   fileAssociations:
     - ext: profer-backup
-      name: Profer Personal Backup
+      name: CDUT Studio Personal Backup
       icon: resources/icon.ico
     - ext: profer-share
-      name: Profer Share Package
+      name: CDUT Studio Share Package
       icon: resources/icon.ico
   target:
     - target: nsis
@@ -181,7 +177,7 @@ win:
 
 # NSIS 安装程序配置
 nsis:
-  artifactName: Profer-Setup-${version}.${ext}
+  artifactName: CDUT-Studio-Setup-${version}.${ext}
   oneClick: false
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
@@ -198,5 +194,5 @@ nsis:
 publish:
   provider: github
   owner: Yuan-lai-ru-ci
-  repo: ProferAI
+  repo: CDUT-Studio
   releaseType: release

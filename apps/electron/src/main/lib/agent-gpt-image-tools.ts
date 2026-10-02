@@ -1,9 +1,8 @@
 import { randomUUID } from 'node:crypto'
-import { getToolState } from './chat-tool-config'
-import { isGptImageAvailable, } from './chat-tools/gpt-image-tool'
+import { getToolState, getGptImageCredentials } from './chat-tool-config'
+import { getTeamAuth } from './auth-service'
 import { generateAgentGptImage, type AgentGptImageContext } from './agent-gpt-image-service'
 import { GPT_IMAGE_QUALITIES, GPT_IMAGE_SIZES, type GptImageQuality, type GptImageSize } from './gpt-image-service'
-import { filterDisabledTools } from '@profer/shared'
 
 export const AGENT_GPT_IMAGE_TOOL_NAME = 'generate_image'
 
@@ -12,7 +11,10 @@ const DESCRIPTION = 'Generate one image from a prompt, edit 1–4 authorized loc
 type ToolResult = { content: Array<{ type: 'text'; text: string }>; details?: unknown; isError?: boolean }
 
 export function isAgentGptImageAvailable(): boolean {
-  return getToolState('gpt-image').enabled && isGptImageAvailable()
+  // Official 模式需要团队登录态；BYOK 需要主进程可解密的 key（与 Chat 时代同一判据）
+  const credentials = getGptImageCredentials()
+  const available = credentials.mode === 'official' ? !!getTeamAuth() : !!credentials.apiKey
+  return getToolState('gpt-image').enabled && available
 }
 
 function claudeToolCallId(extra: unknown): string {
@@ -45,38 +47,4 @@ export function formatAgentGptImageToolResult(result: Awaited<ReturnType<typeof 
 }
 
 /** Claude runtime's in-process MCP adapter for the shared Agent image service. */
-export async function injectAgentGptImageMcpServer(
-  sdk: typeof import('@anthropic-ai/claude-agent-sdk'),
-  mcpServers: Record<string, Record<string, unknown>>,
-  context: AgentGptImageContext,
-  disabledTools?: string[],
-): Promise<void> {
-  let z: typeof import('zod').z
-  try { ({ z } = await import('zod')) } catch { z = require('zod').z }
-  const server = sdk.createSdkMcpServer({
-    name: 'agent-gpt-image', version: '1.0.0', tools: filterDisabledTools([
-      sdk.tool(
-        AGENT_GPT_IMAGE_TOOL_NAME,
-        DESCRIPTION,
-        {
-          prompt: z.string().min(1).max(10_000),
-          size: z.enum(GPT_IMAGE_SIZES).optional(),
-          quality: z.enum(GPT_IMAGE_QUALITIES).optional(),
-          referenceImagePaths: z.array(z.string().min(1).max(4096)).min(1).max(4).optional(),
-          useLastGeneratedImage: z.boolean().optional(),
-        },
-        async (args, extra) => formatAgentGptImageToolResult(await generateAgentGptImage({
-          prompt: args.prompt,
-          size: args.size as GptImageSize | undefined,
-          quality: args.quality as GptImageQuality | undefined,
-          referenceImagePaths: args.referenceImagePaths,
-          useLastGeneratedImage: args.useLastGeneratedImage,
-          toolCallId: claudeToolCallId(extra),
-        }, context)),
-      ),
-    ], disabledTools),
-  })
-  mcpServers['agent-gpt-image'] = server as unknown as Record<string, unknown>
-}
-
 export const AGENT_GPT_IMAGE_DESCRIPTION = DESCRIPTION

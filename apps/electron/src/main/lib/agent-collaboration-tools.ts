@@ -16,7 +16,6 @@ import type {
   ProferPermissionMode,
   SDKMessage,
 } from '@profer/shared'
-import { filterDisabledTools } from '@profer/shared'
 import {
   createAgentSession,
   getAgentSessionMeta,
@@ -59,9 +58,12 @@ interface CollaborationToolContext {
   triggeredBy?: 'user' | 'automation' | 'delegation' | 'goal'
 }
 
+type ZodModule = typeof import('zod')
+
 interface CollaborationToolResult extends Record<string, unknown> {
   content: Array<{ type: 'text'; text: string }>
 }
+
 
 interface DelegationRecord {
   delegationId: string
@@ -84,7 +86,6 @@ interface DelegationRecord {
   resolveCompletion: () => void
 }
 
-type ZodModule = typeof import('zod')
 
 const MAX_WAIT_SECONDS = 2 * 60 * 60
 const DEFAULT_WAIT_SECONDS = 30 * 60
@@ -698,7 +699,7 @@ function getAvailableAgentModels(ctx: CollaborationToolContext): Record<string, 
   const summary = listEnabledAgentModelsForChannel(
     ctx.channelId,
     '读取协作子会话可用模型',
-    ctx.agentRuntime ?? 'claude',
+    ctx.agentRuntime ?? 'pi',
   )
   return {
     channelId: summary.channelId,
@@ -785,7 +786,7 @@ function startDelegation(
   const title = normalizeTitle(args.title, `协作：${task}`)
   const goal = truncateText(task, DELEGATION_GOAL_CHAR_LIMIT)
   // 优先从持久化父会话继承，旧会话/无父上下文才安全回退 Claude。
-  const inheritedRuntime = parent?.agentRuntime ?? ctx.agentRuntime ?? 'claude'
+  const inheritedRuntime = parent?.agentRuntime ?? ctx.agentRuntime ?? 'pi'
   const effectiveModelId = args.modelId !== undefined
     ? assertEnabledModelForChannel({
         channelId: ctx.channelId,
@@ -971,302 +972,6 @@ function buildCollaborationSchemas(z: ZodModule['z']) {
   }
 }
 
-export async function injectAgentCollaborationMcpServer(
-  sdk: typeof import('@anthropic-ai/claude-agent-sdk'),
-  mcpServers: Record<string, Record<string, unknown>>,
-  ctx: CollaborationToolContext,
-  disabledTools?: string[],
-): Promise<void> {
-  // Electron ASAR 环境下动态 ESM import 可能间歇性失败（Issue #1108），
-  // 回退到 CommonJS require 兜底，避免 MCP 工具族在会话中途消失。
-  let z: ZodModule['z']
-  try {
-    ({ z } = await import('zod') as ZodModule)
-  } catch {
-    z = require('zod').z
-  }
-  const schemas = buildCollaborationSchemas(z)
-
-  const tools = [
-      sdk.tool(
-        'list_available_agent_models',
-        '列出当前父会话渠道下已启用、可用于协作子 Agent 的模型。需要给 delegate_agent/delegate_agents 指定 modelId 前应先调用此工具。',
-        schemas.availableModels,
-        async () => {
-          return jsonResult(getAvailableAgentModels(ctx))
-        },
-        { annotations: { readOnlyHint: true } },
-      ),
-      sdk.tool(
-        'delegate_agent',
-        '创建一个真实可见的 Profer 协作子 Agent 会话来并行处理独立子任务。支持用 presetReference 指定目标 Agent 预设；不传则继承当前父会话预设。只用于长耗时、可并行、需要追踪的任务；简单搜索优先用内置 Agent/SubAgent。',
-        schemas.delegate,
-        async (args) => {
-          const parent = assertCanCreateDelegation(ctx)
-          const result = startDelegation(ctx, parent, args)
-
-          return jsonResult({
-            delegation: getDelegationSummary(result.record),
-            effectivePermissionMode: result.effectivePermissionMode,
-            effectiveModelId: result.effectiveModelId,
-            effectivePresetReference: result.effectivePresetReference,
-            note: '子会话已启动。需要结果时调用 wait_for_delegations。',
-          })
-        },
-      ),
-      sdk.tool(
-        'delegate_agents',
-        '批量创建多个真实可见的 Profer 协作子 Agent 会话；每个 item 都可用 presetReference 指定目标 Agent 预设，不传则继承当前父会话预设。适合把同一大任务拆成多片并行处理，单个父会话运行中子会话最多 50 个。',
-        schemas.delegateBatch,
-        async (args) => {
-          const parent = assertCanCreateDelegation(ctx, args.items.length)
-          const created: StartDelegationResult[] = []
-          const failures: Array<{ index: number; title?: string; error: string }> = []
-          args.items.forEach((item, index) => {
-            try {
-              created.push(startDelegation(ctx, parent, {
-                ...item,
-                task: buildDelegationTaskWithSharedContext({
-                  sharedContext: args.sharedContext,
-                  task: item.task,
-                }),
-              }))
-            } catch (error) {
-              failures.push({
-                index,
-                title: item.title,
-                error: error instanceof Error ? error.message : '未知错误',
-              })
-            }
-          })
-
-          return jsonResult({
-            delegations: created.map((item) => getDelegationSummary(item.record)),
-            effectivePermissionModes: created.map((item) => ({
-              delegationId: item.record.delegationId,
-              permissionMode: item.effectivePermissionMode,
-            })),
-            effectiveModels: created.map((item) => ({
-              delegationId: item.record.delegationId,
-              modelId: item.effectiveModelId,
-            })),
-            effectivePresets: created.map((item) => ({
-              delegationId: item.record.delegationId,
-              presetReference: item.effectivePresetReference,
-            })),
-            failures,
-            createdCount: created.length,
-            failedCount: failures.length,
-            maxRunningDelegations: MAX_RUNNING_DELEGATIONS_PER_PARENT,
-            note: failures.length > 0
-              ? `批量子会话部分创建成功（成功 ${created.length}，失败 ${failures.length}）。失败项可修正后重试；需要结果时调用 wait_for_delegations。`
-              : '批量子会话已启动。需要结果时调用 wait_for_delegations，可用 mode=any 先收敛部分结果。',
-          })
-        },
-      ),
-      sdk.tool(
-        'wait_for_delegations',
-        '等待一个或多个 Profer 协作子会话完成，并返回结构化结果摘要。支持 all 等全部完成，或 any 等部分完成。',
-        schemas.wait,
-        async (args) => {
-          const ids = args.delegationIds?.length
-            ? args.delegationIds
-            : Array.from(delegations.values())
-              .filter((item) => item.parentSessionId === ctx.sessionId && item.status === 'running')
-              .map((item) => item.delegationId)
-          const { liveRecords, settled } = resolveWaitTargets(ids, ctx.sessionId)
-          const totalTargets = liveRecords.length + settled.length
-          if (totalTargets === 0) {
-            return jsonResult({ delegations: [], note: '没有找到可等待的协作委派' })
-          }
-
-          const mode = args.mode ?? 'all'
-          const minCompleted = args.minCompleted ?? 1
-          const timeoutSeconds = Math.min(args.timeoutSeconds ?? DEFAULT_WAIT_SECONDS, MAX_WAIT_SECONDS)
-          const targetCompleted = mode === 'all'
-            ? totalTargets
-            : Math.max(1, Math.min(minCompleted, totalTargets))
-          const liveTarget = Math.max(0, targetCompleted - settled.length)
-          const waitResult = liveRecords.length > 0
-            ? await waitForLiveRecords(liveRecords, timeoutSeconds, liveTarget)
-            : 'completed'
-
-          const allDelegations = [...liveRecords.map(getDelegationSummary), ...settled]
-          return jsonResult({
-            status: waitResult,
-            mode,
-            completedCount: allDelegations.filter((item) => item.status !== 'running').length,
-            runningCount: allDelegations.filter((item) => item.status === 'running').length,
-            delegations: allDelegations,
-          })
-        },
-        { annotations: { readOnlyHint: true } },
-      ),
-      sdk.tool(
-        'list_delegations',
-        '列出当前父会话创建的 Profer 协作子会话及状态。',
-        schemas.list,
-        async (args) => {
-          const items = listKnownDelegations(ctx.sessionId)
-          const delegationsResult = args.includeCompleted === false
-            ? items.filter((item) => item.status === 'running')
-            : items
-          return jsonResult({
-            maxRunningDelegations: MAX_RUNNING_DELEGATIONS_PER_PARENT,
-            runningCount: delegationsResult.filter((item) => item.status === 'running').length,
-            delegations: delegationsResult,
-          })
-        },
-        { annotations: { readOnlyHint: true } },
-      ),
-      sdk.tool(
-        'get_delegation_results',
-        '按委派 ID 读取一个或多个 Profer 协作子会话的结果摘要。适合先 list 后按需取结果，或父会话恢复后读取已完成子会话。',
-        schemas.results,
-        async (args) => {
-          return jsonResult({
-            delegations: args.delegationIds.map((delegationId) => getDelegationResult(ctx.sessionId, delegationId)),
-          })
-        },
-        { annotations: { readOnlyHint: true } },
-      ),
-      sdk.tool(
-        'stop_delegation',
-        '停止一个正在运行的 Profer 协作子会话。',
-        schemas.stop,
-        async (args) => {
-          return jsonResult(stopDelegation(ctx.sessionId, args.delegationId))
-        },
-      ),
-      sdk.tool(
-        'stop_delegations',
-        '批量停止多个正在运行的 Profer 协作子会话。',
-        schemas.stopBatch,
-        async (args) => {
-          return jsonResult({
-            results: args.delegationIds.map((delegationId) => stopDelegation(ctx.sessionId, delegationId)),
-          })
-        },
-      ),
-      sdk.tool(
-        'answer_delegation_question',
-        '代答协作子会话的阻塞问题（AskUserQuestion）或审批权限请求（Permission）。当子会话被阻塞时，父 Agent 可通过此工具代替用户回答，让子会话继续执行。从 delegation 的 pendingBlockedEvents 获取 blockedEventId。',
-        schemas.answer,
-        async (args) => {
-          const blocked = getBlockedEventById(args.blockedEventId)
-          if (!blocked) throw new Error(`阻塞事件不存在: ${args.blockedEventId}`)
-          if (blocked.resolved) return jsonResult({ answered: false, note: '该阻塞事件已被解决' })
-
-          const record = delegations.get(blocked.delegationId)
-          if (record && record.parentSessionId !== ctx.sessionId) {
-            throw new Error(`委派不属于当前父会话: ${blocked.delegationId}`)
-          }
-
-          if (blocked.type === 'ask_user' && blocked.askUserRequestId) {
-            const { askUserService } = await import('./agent-ask-user-service')
-            const answers = args.answers ?? {}
-            const sessionId = await askUserService.respondToAskUser(blocked.askUserRequestId, answers)
-            blocked.resolved = !!sessionId
-            if (blocked.resolved && _eventBusRef) {
-              _eventBusRef.emit(blocked.childSessionId, {
-                kind: 'profer_event',
-                event: { type: 'ask_user_resolved', requestId: blocked.askUserRequestId },
-              })
-            }
-            return jsonResult({ answered: blocked.resolved, type: 'ask_user' })
-          }
-
-          if (blocked.type === 'permission' && blocked.permissionRequestId) {
-            const { permissionService } = await import('./agent-permission-service')
-            const behavior = args.permissionBehavior ?? 'allow'
-            const sessionId = permissionService.respondToPermission(blocked.permissionRequestId, behavior, false)
-            blocked.resolved = !!sessionId
-            if (blocked.resolved && _eventBusRef) {
-              _eventBusRef.emit(blocked.childSessionId, {
-                kind: 'profer_event',
-                event: { type: 'permission_resolved', requestId: blocked.permissionRequestId, behavior },
-              })
-            }
-            return jsonResult({ answered: blocked.resolved, type: 'permission', behavior })
-          }
-
-          return jsonResult({ answered: false, note: '无法匹配阻塞事件类型' })
-        },
-      ),
-      sdk.tool(
-        'continue_delegation',
-        '向已完成、已失败、已取消或已中断的协作子会话追加后续指令。子会话保留完整上下文继续执行。适合多轮协作场景：先让子 Agent 完成第一步，审查结果后继续下一步。',
-        schemas.continueD,
-        async (args) => {
-          const record = getDelegationRecordForContinuation(ctx, args.delegationId)
-          if (!record) throw new Error(`未找到当前会话下的委派: ${args.delegationId}`)
-          if (record.status === 'running') {
-            throw new Error(`委派正在运行中，无法追加指令。请先等待完成或停止后再继续: ${args.delegationId}`)
-          }
-
-          record.status = 'running'
-          record.error = undefined
-          record.resultSummary = undefined
-          record.completedAt = undefined
-          const completionHandle = createDelegationCompletion()
-          record.completion = completionHandle.completion
-          record.resolveCompletion = completionHandle.resolveCompletion
-
-          const child = updateAgentSessionMeta(record.childSessionId, { delegationStatus: 'running' })
-
-          const startedAt = Date.now()
-          record.startedAt = startedAt
-
-          runRegisteredHeadlessAgent(
-            {
-              sessionId: record.childSessionId,
-              userMessage: args.message,
-              channelId: record.channelId,
-              modelId: record.modelId,
-              workspaceId: child.workspaceId ?? record.workspaceId ?? ctx.workspaceId,
-              permissionModeOverride: record.permissionMode,
-              triggeredBy: 'delegation',
-              startedAt,
-            },
-            {
-              source: 'delegation',
-              onError: (error) => {
-                markDelegationFinished(record, 'failed', { error })
-              },
-              onComplete: (messages) => {
-                if (record.status === 'running') {
-                  const resultSummary = summarizeChildResult(record.childSessionId, messages)
-                  markDelegationFinished(record, 'completed', { resultSummary })
-                }
-              },
-              onTitleUpdated: () => {},
-            },
-          ).catch((error: unknown) => {
-            markDelegationFinished(record, 'failed', {
-              error: error instanceof Error ? error.message : '未知错误',
-            })
-          })
-
-          const timeout = new Promise<'timeout'>((resolve) => setTimeout(() => resolve('timeout'), DEFAULT_WAIT_SECONDS * 1000))
-          await Promise.race([record.completion, timeout])
-
-          return jsonResult({
-            delegation: getDelegationSummary(record),
-            note: record.status === 'running' ? '子会话仍在运行中（等待超时），可稍后用 wait_for_delegations 等待结果。' : undefined,
-          })
-        },
-      ),
-  ]
-
-  const server = sdk.createSdkMcpServer({
-    name: 'collaboration',
-    version: '1.0.0',
-    tools: filterDisabledTools(tools, disabledTools),
-  })
-
-  mcpServers.collaboration = server as unknown as Record<string, unknown>
-  console.log('[Agent 编排] 已注入内置协作会话工具 (collaboration)')
-}
 export function buildPiCollaborationTools(
   sdk: typeof import('@earendil-works/pi-coding-agent'),
   ctx: CollaborationToolContext,

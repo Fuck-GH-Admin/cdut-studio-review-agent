@@ -41,7 +41,7 @@ import { developerModeEnabledAtom, openEpistemicModeEnabledAtom } from '@/atoms/
 import {
   INITIAL_DEVELOPER_MODE_UNLOCK_CLICK_STATE,
   advanceDeveloperModeUnlockClick,
-} from '@/lib/plugin-unlock'
+} from '@/lib/developer-mode-unlock'
 
 /** 从 package.json 构建时由 Vite define 注入 */
 declare const __APP_VERSION__: string
@@ -508,8 +508,8 @@ export function AboutSettings(): React.ReactElement {
   return (
     <div className="space-y-8">
       <SettingsSection
-        title="关于 Profer"
-        description="集成通用 AI Agent 的下一代人工智能软件 — Profer"
+        title="关于 CDUT Studio"
+        description="集成通用 AI Agent 的下一代人工智能软件 — CDUT Studio"
       >
         <SettingsCard>
           <SettingsRow label="版本">
@@ -519,7 +519,7 @@ export function AboutSettings(): React.ReactElement {
               <button
                 type="button"
                 onClick={handleVersionClick}
-                aria-label={`Profer 版本 ${APP_VERSION}`}
+                aria-label={`CDUT Studio 版本 ${APP_VERSION}`}
                 className="select-none rounded-sm font-mono text-sm text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 {APP_VERSION}
@@ -577,7 +577,7 @@ function FeedbackSection(): React.ReactElement {
     try {
       const auth = await getAuth()
       if (!auth?.baseUrl) {
-        setErrorMsg('未连接到 Profer 服务端，请先在通用设置中登录团队账号。')
+        setErrorMsg('未连接到 CDUT Studio 服务端，请先在通用设置中登录团队账号。')
         setSubmitState('error')
         return
       }
@@ -700,7 +700,7 @@ function FeedbackSection(): React.ReactElement {
       <div className="flex items-start gap-2.5 text-xs text-muted-foreground bg-muted/30 rounded-lg p-3 mt-3">
         <MessageSquareText size={14} className="flex-shrink-0 mt-0.5" />
         <span>
-          你的意见将发送到 Profer 服务端。提交内容请勿包含敏感信息（如密码、密钥等）。
+          你的意见将发送到 CDUT Studio 服务端。提交内容请勿包含敏感信息（如密码、密钥等）。
         </span>
       </div>
     </SettingsSection>

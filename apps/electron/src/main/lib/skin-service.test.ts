@@ -12,7 +12,7 @@ mock.module('electron', () => ({
 const { parseSkinManifestText, readManifest } = await import('./skin-service')
 
 function withSkinManifest(manifest: object, run: (dir: string) => void): void {
-  const root = mkdtempSync(join(tmpdir(), 'profer-skin-manifest-'))
+  const root = mkdtempSync(join(tmpdir(), 'cdut-skin-manifest-'))
   const id = (manifest as { id?: unknown }).id
   if (typeof id !== 'string') throw new Error('测试 manifest 必须提供字符串 id')
   const dir = join(root, id)

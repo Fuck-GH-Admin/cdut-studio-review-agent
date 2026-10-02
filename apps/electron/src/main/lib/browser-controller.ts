@@ -679,7 +679,7 @@ export class BrowserController {
 
   private installPreviewProtocol(browserSession: Session): void {
     if (this.previewProtocolSessions.has(browserSession)) return
-    browserSession.protocol.handle('profer-file', handleProferFileRequest)
+    browserSession.protocol.handle('cdut-file', handleProferFileRequest)
     this.previewProtocolSessions.add(browserSession)
   }
 

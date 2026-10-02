@@ -27,7 +27,7 @@ function realDirectoryOrNull(path: string): string | null {
 }
 
 /**
- * 把已授权根目录内的 HTML 文件转换为一次性/短期 profer-file 目录 URL。
+ * 把已授权根目录内的 HTML 文件转换为一次性/短期 cdut-file 目录 URL。
  * 不接受 file://，也不把绝对路径暴露给 renderer 或模型。
  *
  * 授权根之外的本地 HTML 按只读预览策略放行（系统与凭据敏感位置仍拒绝），
@@ -61,7 +61,7 @@ export function createAuthorizedPreviewUrl(inputPath: string, allowedRoots: stri
 }
 
 export function isAuthorizedPreviewProtocol(url: string): boolean {
-  return url.startsWith('profer-file://')
+  return url.startsWith('cdut-file://')
 }
 
 /** 打包后 viewer 页与主进程产物同级的 renderer/ 目录（约定与 agent-preview-renderer 一致） */
@@ -94,7 +94,7 @@ export function viewerPreviewThemeSignature(previewTheme: ViewerPreviewTheme): s
  * 把已授权文件转成「浏览器列里的 viewer 页 URL」。
  *
  * - dev：命中 Vite dev server 的 `/viewer.html`（该页由 vite.config 的多入口构建产出）；
- * - 打包：把 renderer 目录注册成 token，加载 `profer-file://<token>/viewer.html`。
+ * - 打包：把 renderer 目录注册成 token，加载 `cdut-file://<token>/viewer.html`。
  *
  * 文件本身用**另一个** token（`registerProferFilePath`）作为 `?src=`，
  * 因此页面（以及任何在其中渲染的内容）永远拿不到绝对路径 —— 与 HTML 预览同一条边界。

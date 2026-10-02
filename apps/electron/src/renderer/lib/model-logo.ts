@@ -96,7 +96,7 @@ import MiniMaxLogo from '@/assets/models/minimax.png'
 // Xiaomi / MiMo
 import XiaomiLogo from '@/assets/models/xiaomi.png'
 
-// Profer
+// CDUT Studio
 import ProferLogo from '@/assets/models/profer.png'
 
 // Cohere

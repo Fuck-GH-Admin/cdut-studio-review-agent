@@ -5,13 +5,11 @@
  */
 
 import * as React from 'react'
-import { PluginSidebarEntries } from '@/components/plugins/PluginEntries'
-import { PanelLeftOpen, Bot, MessageSquare, Plus, Search, CalendarDays, Blocks, ClipboardCheck } from 'lucide-react'
+import { PanelLeftOpen, Bot, Plus, Search, CalendarDays, Blocks, ClipboardCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/tooltip'
 import { CollapsedWorkspacePopover } from '@/components/agent/CollapsedWorkspacePopover'
-import { SidebarBalanceBar } from '@/components/app-shell/SidebarBalanceBar'
-import { UserAvatar } from '@/components/chat/UserAvatar'
+import { UserAvatar } from '@/components/shared/UserAvatar'
 import { SidebarWindowDragStrip, SIDEBAR_DRAG_STRIP_HEIGHT } from './navigation-items'
 import { RailRecentButton } from './session-items'
 import { formatAutomationCount } from './sidebar-utils'
@@ -24,7 +22,6 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
     handleRailModeSwitch,
     mode,
     handleNewAgentSession,
-    handleNewConversation,
     setSearchDialogOpen,
     automationCount,
     handleOpenAutomations,
@@ -69,12 +66,12 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
 
         <div className="my-3 h-px w-8 bg-border/70" />
 
-        {/* 模式切换 */}
+        {/* 模式切换：CDUTAI 仅保留 Agent 入口 */}
         <div className="flex flex-col items-center gap-1.5" data-tour="mode-switch">
           <CollapsedWorkspacePopover>
             <button
               type="button"
-              aria-label="切换到 Agent 模式（悬停查看项目）"
+              aria-label="Agent 模式（悬停查看项目）"
               onClick={() => handleRailModeSwitch('agent')}
               className={cn(
                 'relative size-10 flex items-center justify-center rounded-[12px] transition-colors titlebar-no-drag',
@@ -86,47 +83,25 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
               <Bot size={18} />
             </button>
           </CollapsedWorkspacePopover>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                type="button"
-                aria-label="切换到 Chat 模式"
-                onClick={() => handleRailModeSwitch('chat')}
-                className={cn(
-                  'relative size-10 flex items-center justify-center rounded-[12px] transition-colors titlebar-no-drag',
-                  mode === 'chat'
-                    ? 'bg-primary/10 text-foreground shadow-[0_1px_2px_0_rgba(0,0,0,0.05)]'
-                    : 'text-foreground/45 hover:bg-foreground/[0.06] hover:text-foreground/75'
-                )}
-              >
-                <MessageSquare size={17} />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="right">Chat 模式</TooltipContent>
-          </Tooltip>
         </div>
 
         <div className="my-3 h-px w-8 bg-border/70" />
 
-        <PluginSidebarEntries collapsed />
         {/* 高频操作 */}
         <div className="flex flex-col items-center gap-1.5">
           <Tooltip>
             <TooltipTrigger asChild>
               <button
                 type="button"
-                aria-label={mode === 'agent' ? '新建 Agent 会话' : '新建 Chat 对话'}
+                aria-label="新建 Agent 会话"
                 data-profer-navigation-item="new-session"
-                onClick={mode === 'agent' ? handleNewAgentSession : handleNewConversation}
+                onClick={handleNewAgentSession}
                 className="size-10 flex items-center justify-center rounded-[12px] text-foreground/70 bg-primary/5 hover:bg-primary/10 hover:text-foreground transition-[background-color,border-color,color] duration-150 titlebar-no-drag border border-border/60 hover:border-border"
               >
                 <Plus size={16} />
               </button>
             </TooltipTrigger>
-            <TooltipContent side="right">
-              {mode === 'agent' ? '新会话' : '新对话'}
-            </TooltipContent>
+            <TooltipContent side="right">新会话</TooltipContent>
           </Tooltip>
 
           <Tooltip>
@@ -249,10 +224,6 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
 
         {/* 用户头像（点击打开设置） */}
         <div className="pt-3 pb-3">
-          {/* 余额图标（仅代管模式显示） */}
-          <div className="px-1 pb-2">
-            <SidebarBalanceBar collapsed />
-          </div>
           <Tooltip>
             <TooltipTrigger asChild>
               <button

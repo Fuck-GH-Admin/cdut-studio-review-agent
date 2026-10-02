@@ -240,7 +240,7 @@ export async function inspectPreview(
 }
 
 /**
- * 将已授权的真实文件转换为 renderer 仅可访问的 opaque profer-file URL。
+ * 将已授权的真实文件转换为 renderer 仅可访问的 opaque cdut-file URL。
  * 这是唯一把路径边界传入视觉 renderer 的位置；模型结果不会含绝对路径。
  */
 export async function renderAuthorizedPreview(input: PreviewRenderInput): Promise<PreviewRenderOutput> {

@@ -27,14 +27,14 @@ describe('runtime process registry classification', () => {
   test('优先使用命令显式 cd 的外部项目目录，而非会话临时 cwd', () => {
     expect(resolveServiceWorkingDirectory(
       'cd "D:/project/astroship-eval" && astro dev --port 5177',
-      'C:/Users/me/.profer-dev/agent-workspaces/profer/session-a',
+      'C:/Users/me/.cdutai-dev/agent-workspaces/profer/session-a',
     )).toBe('D:/project/astroship-eval')
   })
 
   test('识别 Git Bash 的 /盘符/项目目录，避免退回会话临时 cwd', () => {
     expect(resolveServiceWorkingDirectory(
       'cd /d/profer/Profer-main && nohup bun run dev > dev.log 2>&1 &',
-      'C:/Users/me/.profer/agent-workspaces/profer/session-a',
+      'C:/Users/me/.cdutai/agent-workspaces/profer/session-a',
     )).toBe('D:/profer/Profer-main')
   })
 

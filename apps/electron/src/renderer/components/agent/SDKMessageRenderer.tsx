@@ -1,4 +1,3 @@
-import { PluginMessageActions } from '@/components/plugins/PluginEntries'
 /**
  * SDKMessageRenderer — 渲染 SDKMessage 对象
  *
@@ -39,15 +38,15 @@ import {
   UserMessageContent,
   TurnFileMapProvider,
 } from '@/components/ai-elements/message'
-import { UserAvatar } from '@/components/chat/UserAvatar'
-import { CopyButton } from '@/components/chat/CopyButton'
+import { UserAvatar } from '@/components/shared/UserAvatar'
+import { CopyButton } from '@/components/shared/CopyButton'
 import { Button } from '@profer/ui/primitives/button'
 import { Badge } from '@profer/ui/primitives/badge'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@profer/ui/primitives/tooltip'
-import { formatMessageTime } from '@/components/chat/ChatMessageItem'
+import { formatMessageTime } from '@/lib/format-time'
 import { getModelLogo, resolveModelDisplayName, resolveModelProvider } from '@/lib/model-logo'
 import { userProfileAtom } from '@/atoms/user-profile'
-import { channelsAtom, requestModelSelectorOpen } from '@/atoms/chat-atoms'
+import { channelsAtom, requestModelSelectorOpen } from '@/atoms/conversation-atoms'
 import { agentProcessGroupsKeepExpandedAtom, agentSessionsAtom, currentAgentSessionIdAtom, resolvedBlobMessagesAtom } from '@/atoms/agent-atoms'
 import { agentInterruptionMapAtom } from '@/atoms/preview-atoms'
 import { activeSessionIdAtom } from '@/atoms/tab-atoms'
@@ -988,7 +987,6 @@ export function AssistantTurnRenderer({ sessionId: sessionIdProp, turn, allMessa
         return (
           <MessageActions className="agent-turn-actions pl-[46px] mt-0.5 min-h-[28px] justify-start">
             {hasDuration && <DurationBadge durationMs={durationMs!} usage={usage} />}
-            {sessionId && typeof lastUuid === 'string' && <PluginMessageActions reference={{ kind: 'agent', sessionId, messageId: lastUuid }} />}
             {textContent && <CopyButton content={textContent} />}
             {onFork && lastUuid && (
               <div className="group/fork flex items-center">
@@ -1308,10 +1306,10 @@ function ScheduledRunBadge(): React.ReactElement {
       type="button"
       onClick={handleClick}
       className="inline-flex items-center gap-1 text-[10px] text-primary/70 hover:text-primary transition-colors"
-      title="来自 Profer 定时任务，点击查看设置"
+      title="来自 CDUT Studio 定时任务，点击查看设置"
     >
       <Clock className="size-3" />
-      <span>来自 Profer 定时任务</span>
+      <span>来自 CDUT Studio 定时任务</span>
     </button>
   )
 }
@@ -1435,7 +1433,8 @@ function ErrorMessage({ message, onRetry, onRetryInNewSession, onCompact }: Erro
         setSettingsOpen(true)
         break
       case 'open_credits':
-        setSettingsTab('credits')
+        // 积分体系已移除，402 类错误引导到渠道设置检查配置
+        setSettingsTab('channels')
         setSettingsOpen(true)
         break
       case 'select_model':

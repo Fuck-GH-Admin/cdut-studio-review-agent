@@ -71,12 +71,10 @@ import {
   uiScaleAtom,
   initializeUiScale,
 } from './atoms/ui-scale'
-import { installedPluginsAtom } from './atoms/plugin-system'
 import { developerModeEnabledAtom, openEpistemicModeEnabledAtom } from './atoms/developer-mode'
 import { useGlobalAgentListeners } from './hooks/useGlobalAgentListeners'
 import { useBrowserLocalFileSelectionQuote } from './hooks/useBrowserLocalFileSelectionQuote'
 import { useBrowserPreviewThemeSync } from './hooks/useBrowserPreviewThemeSync'
-import { useGlobalChatListeners } from './hooks/useGlobalChatListeners'
 import {
   todosAtom,
   calendarEventsAtom,
@@ -95,10 +93,9 @@ import {
   toPersistedTabGroups,
 } from './atoms/tab-group-atoms'
 import type { TabItem } from './atoms/tab-atoms'
-import { chatToolsAtom } from './atoms/chat-tool-atoms'
 import { feishuBotStatesAtom } from './atoms/feishu-atoms'
 import { dingtalkBotStatesAtom } from './atoms/dingtalk-atoms'
-import { currentConversationIdAtom, channelsAtom, channelsLoadedAtom, selectedModelAtom } from './atoms/chat-atoms'
+import { currentConversationIdAtom, channelsAtom, channelsLoadedAtom, selectedModelAtom } from '@/atoms/conversation-atoms'
 import { appModeAtom } from './atoms/app-mode'
 import type { FeishuBotBridgeState, FeishuBridgeState, DingTalkBotBridgeState, DingTalkBridgeState } from '@profer/shared'
 import { Toaster } from '@profer/ui'
@@ -133,8 +130,6 @@ function hasEnabledModel(
 }
 
 // ===== 窗口类型检测 =====
-const isQuickTaskWindow = new URLSearchParams(window.location.search).get('window') === 'quick-task'
-const isVoiceDictationWindow = new URLSearchParams(window.location.search).get('window') === 'voice-dictation'
 const isDetachedPreviewWindow = new URLSearchParams(window.location.search).get('window') === 'detached-preview'
 const isAgentPreviewWindow = new URLSearchParams(window.location.search).get('window') === 'agent-preview'
 const isPlanningWindow = new URLSearchParams(window.location.search).get('window') === 'planning'
@@ -251,10 +246,10 @@ function AgentSettingsInitializer(): null {
 
       const channelIds = new Set(channels.map((c) => c.id))
 
-      // 验证 Chat 模式的全局默认模型（localStorage 持久化的可能指向已删除渠道）
+      // 验证全局默认模型（localStorage 持久化的可能指向已删除渠道）
       const chatModel = store.get(selectedModelAtom)
       if (chatModel && !hasEnabledModel(channels, chatModel)) {
-        console.warn('[AgentSettings] Chat selectedModel 指向已删除、停用或无效的模型配置，清除')
+        console.warn('[AgentSettings] selectedModel 指向已删除、停用或无效的模型配置，清除')
         store.set(selectedModelAtom, null)
       }
 
@@ -269,7 +264,7 @@ function AgentSettingsInitializer(): null {
       if (settings.agentModelId && (!settings.agentChannelId || channelIds.has(settings.agentChannelId))) {
         setAgentModelId(settings.agentModelId)
       }
-      setAgentRuntime(settings.agentRuntime ?? 'claude')
+      setAgentRuntime(settings.agentRuntime ?? 'pi')
 
       // 加载 Agent 启用渠道列表，过滤已删除的渠道
       if (settings.agentChannelIds && settings.agentChannelIds.length > 0) {
@@ -632,60 +627,6 @@ function UiScaleInitializer(): null {
   return null
 }
 
-/** 恢复插件列表与开发者模式设置。 */
-function PluginSystemInitializer(): null {
-  const store = useStore()
-  useEffect(() => {
-    let revision = 0
-    const refresh = (): void => {
-      const request = ++revision
-      void window.electronAPI.listPlugins().then((plugins) => {
-        if (request !== revision) return
-        store.set(installedPluginsAtom, plugins)
-        const pages = new Set(plugins.filter((plugin) => plugin.enabled).flatMap((plugin) =>
-          (plugin.manifest.contributes.pages ?? []).map((page) => `${plugin.manifest.id}:${page.id}`)))
-        const tabs = store.get(tabsAtom)
-        const next = tabs.filter((tab) => tab.type !== 'plugin' || pages.has(`${tab.pluginId}:${tab.pluginPageId}`))
-        if (next.length === tabs.length) return
-        store.set(tabsAtom, ensureScratchPadTab(next))
-        if (!next.some((tab) => tab.id === store.get(activeTabIdAtom))) {
-          store.set(activeTabIdAtom, SCRATCH_PAD_ID); store.set(appModeAtom, 'scratch')
-          store.set(currentConversationIdAtom, null); store.set(currentAgentSessionIdAtom, null); store.set(currentAgentWorkspaceIdAtom, null)
-        }
-      }).catch(() => undefined)
-    }
-    refresh()
-    const unsubscribe = window.electronAPI.onPluginsChanged(refresh)
-    return () => { revision += 1; unsubscribe() }
-  }, [store])
-  const setDeveloperModeEnabled = useSetAtom(developerModeEnabledAtom)
-  const setOpenEpistemicModeEnabled = useSetAtom(openEpistemicModeEnabledAtom)
-
-  useEffect(() => {
-    const apply = (settings: { developerModeEnabled?: boolean; openEpistemicModeEnabled?: boolean }): void => {
-      setDeveloperModeEnabled(settings.developerModeEnabled === true)
-      setOpenEpistemicModeEnabled(settings.developerModeEnabled === true && settings.openEpistemicModeEnabled === true)
-    }
-    void window.electronAPI.getSettings()
-      .then(apply)
-      .catch((error: unknown) => console.error('[开发者模式] 初始化状态失败:', error))
-    return window.electronAPI.onDeveloperSettingsChanged(apply)
-  }, [setDeveloperModeEnabled, setOpenEpistemicModeEnabled])
-
-  return null
-}
-
-/**
- * Chat IPC 监听器初始化组件
- *
- * 全局挂载，永不销毁。确保 Chat 流式事件
- * 在页面切换时不丢失。
- */
-function ChatListenersInitializer(): null {
-  useGlobalChatListeners()
-  return null
-}
-
 /**
  * Agent IPC 监听器初始化组件
  *
@@ -698,35 +639,6 @@ function AgentListenersInitializer(): null {
   useBrowserLocalFileSelectionQuote()
   // 换皮肤时让已打开的文件预览跟上（受管浏览器里的普通网页不跟）
   useBrowserPreviewThemeSync()
-  return null
-}
-
-/**
- * Chat 工具初始化组件
- *
- * 启动时从主进程加载所有工具信息到 atom。
- * 订阅 chat-tools.json 文件变更通知，自动刷新工具列表。
- */
-function ChatToolInitializer(): null {
-  const setChatTools = useSetAtom(chatToolsAtom)
-
-  useEffect(() => {
-    window.electronAPI.getChatTools()
-      .then(setChatTools)
-      .catch((err: unknown) => console.error('[ChatToolInitializer] 加载工具列表失败:', err))
-  }, [setChatTools])
-
-  // 订阅自定义工具配置变更并静默刷新工具列表。
-  // 用户主动操作的反馈由各设置入口提供，避免文件监听产生重复 Toast。
-  useEffect(() => {
-    const cleanup = window.electronAPI.onCustomToolChanged(() => {
-      window.electronAPI.getChatTools()
-        .then(setChatTools)
-        .catch((err: unknown) => console.error('[ChatToolInitializer] 刷新工具列表失败:', err))
-    })
-    return cleanup
-  }, [setChatTools])
-
   return null
 }
 
@@ -888,11 +800,9 @@ function TabStatePersistenceInitializer(): null {
   useEffect(() => {
     Promise.all([
       window.electronAPI.getSettings(),
-      // 启动恢复需要校验所有 tab 的会话有效性（含已归档，否则归档会话 tab 会被误过滤）
-      window.electronAPI.listConversations(true),
       window.electronAPI.listAgentSessions(true),
       window.electronAPI.listAgentWorkspaces(),
-    ]).then(([settings, conversations, agentSessions, agentWorkspaces]) => {
+    ]).then(([settings, agentSessions, agentWorkspaces]) => {
       const tabState = settings.tabState
       if (!tabState?.tabs?.length) {
         restoredRef.current = true
@@ -922,12 +832,11 @@ function TabStatePersistenceInitializer(): null {
           .filter((session) => !session.workspaceId || visibleWorkspaceIds.has(session.workspaceId))
           .map((session) => session.id),
       )
-      const validSessionIds = new Set([
-        ...conversations.map((c) => c.id),
-        ...agentSessions
+      const validSessionIds = new Set(
+        agentSessions
           .filter((session) => isVisibleAgentSession(session) || persistedDraftAgentTabIds.has(session.id))
           .map((session) => session.id),
-      ])
+      )
 
       // 过滤 diff 类型 Tab（不持久化），同时过滤掉已被删除的会话
       const validTabs = tabState.tabs.filter(
@@ -938,9 +847,9 @@ function TabStatePersistenceInitializer(): null {
           'sessionId' in t &&
           'type' in t &&
           'title' in t &&
-          (t.type === 'chat' || t.type === 'agent') &&
+          (t.type === 'agent') &&
           validSessionIds.has(t.sessionId) &&
-          (t.type !== 'agent' || visibleAgentSessionIds.has(t.sessionId)),
+          visibleAgentSessionIds.has(t.sessionId),
       )
       if (validTabs.length === 0) {
         restoredRef.current = true
@@ -975,17 +884,11 @@ function TabStatePersistenceInitializer(): null {
       // 同步 appMode、currentSessionId 和 Agent 所属工作区。
       // 团队 Tab 恢复时必须以会话元数据为准，否则页面会按旧的个人工作区渲染。
       if (activeTab) {
-        if (activeTab.type === 'chat') {
-          store.set(appModeAtom, 'chat')
-          store.set(currentConversationIdAtom, activeTab.sessionId)
-          store.set(currentAgentSessionIdAtom, null)
-        } else {
-          store.set(appModeAtom, 'agent')
-          store.set(currentAgentSessionIdAtom, activeTab.sessionId)
-          const activeSession = agentSessions.find((session) => session.id === activeTab.sessionId)
-          if (activeSession?.workspaceId) {
-            store.set(currentAgentWorkspaceIdAtom, activeSession.workspaceId)
-          }
+        store.set(appModeAtom, 'agent')
+        store.set(currentAgentSessionIdAtom, activeTab.sessionId)
+        const activeSession = agentSessions.find((session) => session.id === activeTab.sessionId)
+        if (activeSession?.workspaceId) {
+          store.set(currentAgentWorkspaceIdAtom, activeSession.workspaceId)
         }
       }
 
@@ -1161,27 +1064,7 @@ function ScratchPadPersistence(): null {
   return null
 }
 
-// ===== 快速任务窗口：轻量渲染 =====
-if (isQuickTaskWindow) {
-  import('./components/quick-task/QuickTaskApp').then(({ QuickTaskApp }) => {
-    ReactDOM.createRoot(document.getElementById('root')!).render(
-      <React.StrictMode>
-        <ThemeInitializer />
-        <QuickTaskApp />
-      </React.StrictMode>
-    )
-  })
-} else if (isVoiceDictationWindow) {
-  import('./components/voice-dictation/VoiceDictationApp').then(({ VoiceDictationApp }) => {
-    ReactDOM.createRoot(document.getElementById('root')!).render(
-      <React.StrictMode>
-        <ThemeInitializer />
-        <VoiceDictationApp />
-        <ProferToaster position="top-right" offset={96} />
-      </React.StrictMode>
-    )
-  })
-} else if (isDetachedPreviewWindow) {
+if (isDetachedPreviewWindow) {
   import('./components/diff/DetachedPreviewApp').then(({ DetachedPreviewApp }) => {
     ReactDOM.createRoot(document.getElementById('root')!).render(
       <React.StrictMode>
@@ -1219,10 +1102,7 @@ if (isQuickTaskWindow) {
       <UiPreferencesInitializer />
       <MarkdownFontSizeInitializer />
       <UiScaleInitializer />
-      <PluginSystemInitializer />
-      <ChatListenersInitializer />
       <AgentListenersInitializer />
-      <ChatToolInitializer />
       <UpdaterInitializer />
       <AutomationInitializer />
       <PlanningInitializer />
