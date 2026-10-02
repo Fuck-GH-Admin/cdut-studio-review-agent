@@ -31,6 +31,7 @@ import type {
   XaiOAuthCredentials,
 } from '@profer/shared'
 import { isCodexFastModeSupportedModel } from '@profer/shared'
+import { detectInsufficientCredits } from '@profer/core/providers'
 import type { ProjectInstructionSource } from '../project-instruction-resolver'
 import type { ProferProjectInstructionFile } from './pi-resource-loader-overrides'
 import {
@@ -558,6 +559,7 @@ export function extractErrorDetails(error: {
 const ERROR_CODE_META: Partial<Record<ErrorCode, { title: string; canRetry: boolean }>> = {
   invalid_api_key: { title: '认证失败', canRetry: true },
   billing_error: { title: '账单错误', canRetry: false },
+  insufficient_credits: { title: '额度不足', canRetry: false },
   rate_limited: { title: '请求频率限制', canRetry: true },
   prompt_too_long: { title: '上下文过长', canRetry: false },
   invalid_request: { title: '请求无效', canRetry: false },
@@ -625,10 +627,13 @@ export function mapSDKErrorToTypedError(errorCode: string, message: string, orig
 
   let code: ErrorCode = 'unknown_error'
   const httpStatus = extractHttpStatusFromErrorText(message, originalError, errorCode)
+  const insufficientCredits = detectInsufficientCredits(diagnosticText, httpStatus ?? undefined)
   if (isRuntimeNotFoundError(diagnosticText)) {
     // pi runtime 动态 import 失败（打包遗漏依赖 / 安装损坏），产出定向的「核心未就绪」错误码，
     // 让 UI 给出「请重新安装」引导，而非泛化的 unknown_error
     code = 'agent_runtime_not_found'
+  } else if (insufficientCredits) {
+    code = 'insufficient_credits'
   } else if (errorCode === 'empty_output') {
     code = 'empty_output'
   } else if (/api.*key|unauthorized|authentication|invalid.*credential/i.test(diagnosticText)) {

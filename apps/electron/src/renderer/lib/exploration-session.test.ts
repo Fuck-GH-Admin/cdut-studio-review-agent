@@ -18,9 +18,9 @@ describe('探索分支引用', () => {
       .toEqual({ canFork: true, canExplore: true })
   })
 
-  test('Given 主线 Claude 会话 When 解析分叉动作可用性 Then 仍可分叉但不提供探索', () => {
+  test('Given 主线 Pi 会话 When 解析分叉动作可用性 Then 分叉与探索都可用', () => {
     expect(resolveForkActionAvailability({ isBranch: false, agentRuntime: 'pi' }))
-      .toEqual({ canFork: true, canExplore: false })
+      .toEqual({ canFork: true, canExplore: true })
   })
 
   test('Given 探索分支会话 When 解析分叉动作可用性 Then 两个入口都不提供', () => {
@@ -28,7 +28,7 @@ describe('探索分支引用', () => {
       .toEqual({ canFork: false, canExplore: false })
   })
 
-  test('Given 历史会话缺省 runtime When 解析分叉动作可用性 Then 按 claude 处理仍保留分叉', () => {
+  test('Given 历史会话缺省 runtime When 解析分叉动作可用性 Then 保守关闭探索', () => {
     expect(resolveForkActionAvailability({ isBranch: false, agentRuntime: undefined }))
       .toEqual({ canFork: true, canExplore: false })
   })

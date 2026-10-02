@@ -56,17 +56,16 @@ beforeEach(() => {
 })
 
 describe('migration runtime artifacts', () => {
-  test('exports selected Claude and Pi native transcripts and records runtime metadata', async () => {
-    const claude = createSession('pi', 'claude-export-id')
-    const pi = createSession('pi', 'pi-export-id')
+  test('exports selected Pi native transcripts and records runtime metadata', async () => {
+    const first = createSession('pi', 'pi-export-id')
+    const second = createSession('pi', 'pi-export-secondary-id')
     const skipped = createSession('pi', 'pi-not-exported')
 
-    const claudeCwd = getAgentSessionWorkspacePath(claude.workspaceSlug, claude.id)
-    writeJsonl(join(getSdkConfigDir(), 'projects', __testSdkProjectKey(claudeCwd), 'claude-export-id.jsonl'), [
-      { type: 'system', cwd: claudeCwd, session_id: 'claude-export-id' },
-    ])
     writeJsonl(join(getSdkConfigDir(), 'sessions', 'pi', '2026-08-31_pi-export-id.jsonl'), [
       { type: 'session', id: 'pi-export-id', cwd: root },
+    ])
+    writeJsonl(join(getSdkConfigDir(), 'sessions', 'pi', '2026-08-31_pi-export-secondary-id.jsonl'), [
+      { type: 'session', id: 'pi-export-secondary-id', cwd: root },
     ])
     writeJsonl(join(getSdkConfigDir(), 'sessions', 'pi', '2026-08-31_pi-not-exported.jsonl'), [
       { type: 'session', id: 'pi-not-exported', cwd: root },
@@ -77,39 +76,36 @@ describe('migration runtime artifacts', () => {
       mode: 'personal',
       components: ['sessions'],
       workspaceSelections: [
-        { workspaceId: claude.workspaceId },
-        { workspaceId: pi.workspaceId },
+        { workspaceId: first.workspaceId },
+        { workspaceId: second.workspaceId },
       ],
-      sessionIds: [claude.id, pi.id],
+      sessionIds: [first.id, second.id],
       outputPath,
     })
 
     const zip = new AdmZip(outputPath)
     const manifest = JSON.parse(zip.readAsText('manifest.json')) as {
-      runtimeArtifacts?: { claudeProjects: Array<{ sessionId: string; runtime?: string }>; piSessions: Array<{ sessionId: string; runtime?: string }> }
+      runtimeArtifacts?: { piSessions: Array<{ sessionId: string; runtime?: string }> }
     }
     const names = zip.getEntries().map((entry) => entry.entryName)
 
-    expect(names).toContain('runtime/claude/claude-export-id.jsonl')
     expect(names).toContain('runtime/pi/pi-export-id.jsonl')
-    expect(manifest.runtimeArtifacts?.claudeProjects).toEqual([
-      expect.objectContaining({ sessionId: 'claude-export-id', runtime: 'pi' }),
-    ])
+    expect(names).toContain('runtime/pi/pi-export-secondary-id.jsonl')
     expect(manifest.runtimeArtifacts?.piSessions).toEqual([
       expect.objectContaining({ sessionId: 'pi-export-id', runtime: 'pi' }),
+      expect.objectContaining({ sessionId: 'pi-export-secondary-id', runtime: 'pi' }),
     ])
     expect(names).not.toContain(`sessions/agent/${skipped.id}.jsonl`)
   })
 
-  test('imports Claude/Pi artifacts into the mapped workspace and rebinds Pi metadata', async () => {
-    const claude = createSession('pi', 'claude-import-id')
-    const pi = createSession('pi', 'pi-import-id')
-    const claudeCwd = getAgentSessionWorkspacePath(claude.workspaceSlug, claude.id)
-    writeJsonl(join(getSdkConfigDir(), 'projects', __testSdkProjectKey(claudeCwd), 'claude-import-id.jsonl'), [
-      { type: 'system', cwd: claudeCwd, session_id: 'claude-import-id' },
-    ])
+  test('imports Pi artifacts into mapped workspaces and rebinds Pi metadata', async () => {
+    const first = createSession('pi', 'pi-import-id')
+    const second = createSession('pi', 'pi-import-secondary-id')
     writeJsonl(join(getSdkConfigDir(), 'sessions', 'pi', '2026-08-31_pi-import-id.jsonl'), [
       { type: 'session', id: 'pi-import-id', cwd: root },
+    ])
+    writeJsonl(join(getSdkConfigDir(), 'sessions', 'pi', '2026-08-31_pi-import-secondary-id.jsonl'), [
+      { type: 'session', id: 'pi-import-secondary-id', cwd: root },
     ])
 
     const archivePath = join(root, 'round-trip.profer-backup')
@@ -117,8 +113,8 @@ describe('migration runtime artifacts', () => {
       mode: 'personal',
       components: ['sessions'],
       workspaceSelections: [
-        { workspaceId: claude.workspaceId },
-        { workspaceId: pi.workspaceId },
+        { workspaceId: first.workspaceId },
+        { workspaceId: second.workspaceId },
       ],
       outputPath: archivePath,
     })
@@ -135,23 +131,17 @@ describe('migration runtime artifacts', () => {
     const importedIndex = JSON.parse(readFileSync(getAgentSessionsIndexPath(), 'utf-8')) as {
       sessions: Array<{ id: string; agentRuntime?: string; piSessionFile?: string; workspaceId: string; sdkSessionId?: string }>
     }
-    const importedPi = importedIndex.sessions.find((session) => session.id === pi.id)
-    const importedClaude = importedIndex.sessions.find((session) => session.id === claude.id)
-    const importedPiWorkspace = listAgentWorkspaces().find((workspace) => workspace.id === importedPi?.workspaceId)
-    const importedClaudeWorkspace = listAgentWorkspaces().find((workspace) => workspace.id === importedClaude?.workspaceId)
+    const importedFirst = importedIndex.sessions.find((session) => session.id === first.id)
+    const importedSecond = importedIndex.sessions.find((session) => session.id === second.id)
 
-    expect(importedPi?.agentRuntime).toBe('pi')
-    expect(importedPi?.piSessionFile).toBe(join(getSdkConfigDir(), 'sessions', 'pi', 'pi-import-id.jsonl'))
-    expect(existsSync(importedPi?.piSessionFile ?? '')).toBe(true)
-    const importedPiTranscript = JSON.parse(readFileSync(importedPi?.piSessionFile ?? '', 'utf-8').trim()) as { cwd?: string }
-    expect(importedPiTranscript.cwd).toContain(secondaryRoot)
-    expect(importedClaude?.agentRuntime).toBe('pi')
-    expect(importedClaudeWorkspace).toBeDefined()
-    expect(importedClaude?.sdkSessionId).toBe('claude-import-id')
-    const importedClaudeCwd = getAgentSessionWorkspacePath(importedClaudeWorkspace!.slug, claude.id)
-    expect(existsSync(join(getSdkConfigDir(), 'projects', __testSdkProjectKey(importedClaudeCwd), 'claude-import-id.jsonl'))).toBe(true)
-    const importedClaudeTranscript = JSON.parse(readFileSync(join(getSdkConfigDir(), 'projects', __testSdkProjectKey(importedClaudeCwd), 'claude-import-id.jsonl'), 'utf-8').trim()) as { cwd?: string }
-    expect(importedClaudeTranscript.cwd).toBe(importedClaudeCwd)
+    expect(importedFirst?.agentRuntime).toBe('pi')
+    expect(importedFirst?.piSessionFile).toBe(join(getSdkConfigDir(), 'sessions', 'pi', 'pi-import-id.jsonl'))
+    expect(existsSync(importedFirst?.piSessionFile ?? '')).toBe(true)
+    const importedFirstTranscript = JSON.parse(readFileSync(importedFirst?.piSessionFile ?? '', 'utf-8').trim()) as { cwd?: string }
+    expect(importedFirstTranscript.cwd).toContain(secondaryRoot)
+    expect(importedSecond?.agentRuntime).toBe('pi')
+    expect(importedSecond?.piSessionFile).toBe(join(getSdkConfigDir(), 'sessions', 'pi', 'pi-import-secondary-id.jsonl'))
+    expect(existsSync(importedSecond?.piSessionFile ?? '')).toBe(true)
   })
 
   test('rewrites cwd on every valid runtime JSONL record without changing malformed lines', () => {

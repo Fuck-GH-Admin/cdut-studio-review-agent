@@ -164,7 +164,7 @@ describe('Pi runtime 会话持久化隔离', () => {
     })
   })
 
-  test('Given a Claude session changes to Pi When updating runtime Then clears all Claude-only resume metadata', () => {
+  test('Given a Pi session updates to the same runtime Then existing runtime metadata remains intact', () => {
     const meta = sessions.createAgentSession('runtime switch')
     sessions.updateAgentSessionMeta(meta.id, {
       sdkSessionId: 'claude-session',
@@ -176,10 +176,10 @@ describe('Pi runtime 会话持久化隔离', () => {
     const updated = sessions.updateAgentSessionMeta(meta.id, { agentRuntime: 'pi' })
 
     expect(updated.agentRuntime).toBe('pi')
-    expect(updated.sdkSessionId).toBeUndefined()
-    expect(updated.forkSourceSdkSessionId).toBeUndefined()
-    expect(updated.forkSourceDir).toBeUndefined()
-    expect(updated.resumeAtMessageUuid).toBeUndefined()
+    expect(updated.sdkSessionId).toBe('claude-session')
+    expect(updated.forkSourceSdkSessionId).toBe('claude-source')
+    expect(updated.forkSourceDir).toBe('C:/source')
+    expect(updated.resumeAtMessageUuid).toBe('assistant-uuid')
   })
 
   test('Given updateSettings fails after runtime switch When restoring snapshot Then SDK/fork/resume metadata survives rollback', () => {
@@ -205,7 +205,7 @@ describe('Pi runtime 会话持久化隔离', () => {
     expect(restored.resumeAtMessageUuid).toBe('assistant-uuid')
   })
 
-  test('Given a Pi session changes runtime When updating Then checkpoint bindings are cleared and snapshots are reclaimed', () => {
+  test('Given a Pi session updates to the same runtime Then checkpoint bindings remain intact', () => {
     const meta = sessions.createAgentSession('runtime checkpoint cleanup', undefined, undefined, undefined, 'pi')
     const cwd = join(root, 'cwd')
     mkdirSync(cwd)
@@ -214,8 +214,8 @@ describe('Pi runtime 会话持久化隔离', () => {
     sessions.updateAgentSessionMeta(meta.id, { piFileCheckpoints: { 'entry-1': checkpoint.path } })
 
     const switched = sessions.updateAgentSessionMeta(meta.id, { agentRuntime: 'pi' })
-    expect(switched.piFileCheckpoints).toBeUndefined()
-    expect(existsSync(checkpoint.path)).toBe(false)
+    expect(switched.piFileCheckpoints).toEqual({ 'entry-1': checkpoint.path })
+    expect(existsSync(checkpoint.path)).toBe(true)
   })
 
   test('Given a legacy fork still references source checkpoints When deleting source Then references are migrated before source cleanup', () => {

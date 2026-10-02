@@ -17,7 +17,7 @@ function channel(id: string, provider: Channel['provider'], models: string[]): C
 }
 
 describe('nextAgentChannelIdsAfterModelSelect', () => {
-  test('adds the selected channel for Claude runtime', () => {
+  test('adds the selected channel for Pi runtime', () => {
     expect(nextAgentChannelIdsAfterModelSelect(['anthropic'], 'kimi', 'pi')).toEqual(['anthropic', 'kimi'])
   })
 
@@ -26,14 +26,14 @@ describe('nextAgentChannelIdsAfterModelSelect', () => {
     expect(nextAgentChannelIdsAfterModelSelect(channelIds, 'kimi', 'pi')).toBe(channelIds)
   })
 
-  test('does not mark Pi-selected channels as Claude-compatible', () => {
+  test('appends a newly selected Pi channel', () => {
     const channelIds = ['anthropic']
-    expect(nextAgentChannelIdsAfterModelSelect(channelIds, 'openai-responses', 'pi')).toBe(channelIds)
+    expect(nextAgentChannelIdsAfterModelSelect(channelIds, 'openai-responses', 'pi')).toEqual(['anthropic', 'openai-responses'])
   })
 
-  test('does not migrate a Pi default channel into the Claude whitelist', () => {
+  test('adds a Pi default channel to the selectable list', () => {
     const channelIds: string[] = []
-    expect(nextAgentChannelIdsAfterModelSelect(channelIds, 'openai-responses', 'pi')).toBe(channelIds)
+    expect(nextAgentChannelIdsAfterModelSelect(channelIds, 'openai-responses', 'pi')).toEqual(['openai-responses'])
   })
 })
 
@@ -51,21 +51,21 @@ describe('resolveAgentModelSelection', () => {
     })
   })
 
-  test('Claude can select Ollama through its Anthropic-compatible protocol', () => {
+  test('Pi selects an Ollama model from the selectable list', () => {
     expect(resolveAgentModelSelection([channels[2]!], 'pi', ['ollama'])).toEqual({
       channelId: 'ollama',
       modelId: 'qwen3:8b',
     })
   })
 
-  test('Claude selects an Anthropic protocol model from its whitelist', () => {
+  test('Pi prefers an OpenAI protocol model when multiple channels are eligible', () => {
     expect(resolveAgentModelSelection(channels, 'pi', ['pi'])).toEqual({
-      channelId: 'pi',
-      modelId: 'claude-sonnet-4-6',
+      channelId: 'openai',
+      modelId: 'gpt-5.5',
     })
   })
 
-  test('Pi keeps a Claude model as the current selection', () => {
+  test('Pi keeps the current model selection', () => {
     expect(resolveAgentModelSelection(channels, 'pi', ['pi'], {
       channelId: 'pi',
       modelId: 'claude-sonnet-4-6',
@@ -82,7 +82,7 @@ describe('resolveAgentModelSelection', () => {
     })
   })
 
-  test('Pi keeps the current Claude model selection', () => {
+  test('Pi keeps the current model selection when no whitelist exists', () => {
     expect(resolveAgentModelSelection(channels, 'pi', [], {
       channelId: 'pi',
       modelId: 'claude-sonnet-4-6',

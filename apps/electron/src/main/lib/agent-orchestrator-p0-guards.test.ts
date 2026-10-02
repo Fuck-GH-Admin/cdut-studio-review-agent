@@ -69,7 +69,6 @@ describe('AgentOrchestrator P0 guards', () => {
 
   test('Given Pi interrupt queue When deciding pre-interrupt Then reserve-and-abort stays inside Pi adapter', () => {
     expect(shouldPreInterruptQueuedMessage('pi', true)).toBe(false)
-    expect(shouldPreInterruptQueuedMessage('pi', true)).toBe(true)
     expect(shouldPreInterruptQueuedMessage('pi', false)).toBe(false)
   })
 
@@ -191,8 +190,8 @@ describe('xAI Agent 预检', () => {
     expect(isXaiChannelAvailableForRuntime({ ...xaiChannel, enabled: false }, 'pi')).toBe(false)
   })
 
-  test('Given xAI 渠道 When Claude 运行时预检 Then 拦截（xAI 无 Anthropic 端点）', () => {
-    expect(isXaiChannelAvailableForRuntime(xaiChannel, 'pi')).toBe(false)
+  test('Given xAI 渠道 When Pi 运行时预检 Then 按 Pi 资格放行', () => {
+    expect(isXaiChannelAvailableForRuntime(xaiChannel, 'pi')).toBe(true)
   })
 
   test('Given 非 xAI 渠道 When 预检 Then 交给各自 provider 门禁，不在此拦截', () => {
@@ -206,11 +205,8 @@ describe('xAI Agent 预检', () => {
     )).toBe(true)
   })
 
-  test('回归：旧判据对 xAI 恒为 false，预检不得再使用它', () => {
-    // 根因锁：isAgentEnabledForChannel 已是「是否勾选 Claude 内核」的 @deprecated 别名，
-    // xAI 按设计永远拿不到 claude 内核，所以它恒为 false。
-    // 一旦有调用方把它当成「xAI 实验开关是否开启」，xAI + Pi 链路会永久被拦截。
-    expect(isAgentEnabledForChannel(xaiChannel)).toBe(false)
+  test('回归：旧判据对已开启 Pi 的 xAI 不应再误判为 false', () => {
+    expect(isAgentEnabledForChannel(xaiChannel)).toBe(true)
     expect(isXaiChannelAvailableForRuntime(xaiChannel, 'pi')).toBe(true)
   })
 })

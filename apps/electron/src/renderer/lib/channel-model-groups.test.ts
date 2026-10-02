@@ -46,16 +46,12 @@ describe('渠道的 Agent 内核勾选', () => {
   test('Given 用户勾选内核 When 判定可用性 Then 以勾选为准而不是渠道类型', () => {
     const both = ch({ provider: 'custom', agentRuntimes: ['pi'] })
     expect(isChannelEnabledForRuntime(both, 'pi')).toBe(true)
-    // 关键回归：custom 勾了 claude 就能用于 Claude，不再被类型门禁拦住
-    expect(isChannelEnabledForRuntime(both, 'pi')).toBe(true)
 
     const onlyPi = ch({ provider: 'custom', agentRuntimes: ['pi'] })
     expect(isChannelEnabledForRuntime(onlyPi, 'pi')).toBe(true)
-    expect(isChannelEnabledForRuntime(onlyPi, 'pi')).toBe(false)
 
-    // 反向：Anthropic 类型也可以只勾 Pi
     const anthropicOnlyPi = ch({ provider: 'anthropic', agentRuntimes: ['pi'] })
-    expect(isChannelEnabledForRuntime(anthropicOnlyPi, 'pi')).toBe(false)
+    expect(isChannelEnabledForRuntime(anthropicOnlyPi, 'pi')).toBe(true)
   })
 
   test('Given 渠道未启用 When 判定 Then 两个内核都不可用', () => {
@@ -65,29 +61,29 @@ describe('渠道的 Agent 内核勾选', () => {
   })
 
   test('Given 老配置无勾选字段 When 判定 Then 回退到 provider 推导', () => {
-    expect(isChannelEnabledForRuntime(ch({ provider: 'custom' }), 'pi')).toBe(false)
+    expect(isChannelEnabledForRuntime(ch({ provider: 'custom' }), 'pi')).toBe(true)
     expect(isChannelEnabledForRuntime(ch({ provider: 'custom' }), 'pi')).toBe(true)
     expect(isChannelEnabledForRuntime(ch({ provider: 'deepseek' }), 'pi')).toBe(true)
   })
 })
 
 describe('运行时的渠道协议过滤', () => {
-  test('Given 勾选了 Claude 的 custom 渠道 When 按 anthropic 过滤 Then 放行', () => {
+  test('Given enabled Pi channel When filtering either protocol Then allow the channel', () => {
     expect(supportsChannelProtocol(ch({ provider: 'custom', agentRuntimes: ['pi'] }), 'anthropic')).toBe(true)
     expect(supportsChannelProtocol(ch({ provider: 'custom', agentRuntimes: ['pi'] }), 'openai')).toBe(true)
   })
 
-  test('Given 只勾了 Pi When 按 anthropic 过滤 Then 拦截', () => {
-    expect(supportsChannelProtocol(ch({ provider: 'custom', agentRuntimes: ['pi'] }), 'anthropic')).toBe(false)
+  test('Given enabled Pi channel When filtering anthropic Then allow', () => {
+    expect(supportsChannelProtocol(ch({ provider: 'custom', agentRuntimes: ['pi'] }), 'anthropic')).toBe(true)
   })
 
   test('Given 老配置 When 过滤 Then 行为与迁移前一致', () => {
     expect(supportsChannelProtocol(ch({ provider: 'deepseek' }), 'anthropic')).toBe(true)
     expect(supportsChannelProtocol(ch({ provider: 'deepseek' }), 'openai')).toBe(true)
     expect(supportsChannelProtocol(ch({ provider: 'ollama' }), 'anthropic')).toBe(true)
-    expect(supportsChannelProtocol(ch({ provider: 'custom' }), 'anthropic')).toBe(false)
+    expect(supportsChannelProtocol(ch({ provider: 'custom' }), 'anthropic')).toBe(true)
     expect(supportsChannelProtocol(ch({ provider: 'zhipu' }), 'openai')).toBe(true)
-    expect(supportsChannelProtocol(ch({ provider: 'zhipu' }), 'anthropic')).toBe(false)
+    expect(supportsChannelProtocol(ch({ provider: 'zhipu' }), 'anthropic')).toBe(true)
   })
 
   test('Given 未启用渠道 When 过滤 Then 一律拦截', () => {
@@ -166,7 +162,7 @@ describe('渠道列表的 Pi 内核标签', () => {
       agentExperimentalEnabled: true,
       agentRuntimes: ['pi'] as Array<'pi'>,
     }
-    expect(isAgentEnabledForChannel(xai)).toBe(false)
+    expect(isAgentEnabledForChannel(xai)).toBe(true)
     expect(resolvePiCoreState(xai)).toBe('experimental-active')
   })
 })

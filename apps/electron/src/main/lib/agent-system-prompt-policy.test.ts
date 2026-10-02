@@ -33,19 +33,13 @@ describe('resolveAgentSystemPromptPolicy', () => {
     })
   })
 
-  test('Claude grounded 使用 preset，Claude open 与 Pi 使用自管字符串', () => {
+  test('Pi runtime 使用自管 system prompt，不叠加 Claude preset', () => {
     const grounded = resolveAgentSystemPromptPolicy({})
     const open = resolveAgentSystemPromptPolicy({
       developerModeEnabled: true,
       openEpistemicModeEnabled: true,
     })
 
-    expect(resolveAgentRuntimeSystemPrompt('pi', grounded, 'PROMPT')).toEqual({
-      type: 'preset',
-      preset: 'claude_code',
-      append: 'PROMPT',
-    })
-    expect(resolveAgentRuntimeSystemPrompt('pi', open, 'PROMPT')).toBe('PROMPT')
     expect(resolveAgentRuntimeSystemPrompt('pi', grounded, 'PROMPT')).toBe('PROMPT')
     expect(resolveAgentRuntimeSystemPrompt('pi', open, 'PROMPT')).toBe('PROMPT')
   })

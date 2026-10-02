@@ -34,7 +34,8 @@ describe('Agent 消息发送归属校验', () => {
 
   test('Given session runtime 已切换 When 延迟的旧 runtime 请求到达 Then 在启动 SDK 前拒绝', () => {
     const piSession = { ...session, agentRuntime: 'pi' } as AgentSessionMeta
-    expect(validateAgentSendBinding({ ...input, agentRuntime: 'pi' }, piSession, true, channel))
+    const staleClaudeRequest = { ...input, agentRuntime: 'claude' as AgentSendInput['agentRuntime'] }
+    expect(validateAgentSendBinding(staleClaudeRequest, piSession, true, channel))
       .toMatchObject({ ok: false, code: 'AGENT_SESSION_RUNTIME_MISMATCH' })
     expect(validateAgentSendBinding({ ...input, agentRuntime: 'pi' }, piSession, true, channel)).toEqual({ ok: true })
   })

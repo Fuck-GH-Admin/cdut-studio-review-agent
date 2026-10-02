@@ -56,21 +56,21 @@ describe('Agent 模型渠道校验', () => {
     })).toBe('enabled-model')
   })
 
-  test('Given 渠道只开放 Pi When 按 Claude 校验同一模型 Then 拒绝', () => {
-    expect(() => assertEnabledModelForChannel({
+  test('Given 渠道只开放 Pi When 按当前 runtime 校验同一模型 Then 允许使用', () => {
+    expect(assertEnabledModelForChannel({
       channelId: 'pi-only-channel',
       modelId: 'enabled-model',
       runtime: 'pi',
-      purpose: '测试 Claude 委派',
-    })).toThrow('未开放 Agent')
+      purpose: '测试 Pi 委派',
+    })).toBe('enabled-model')
   })
 
-  test('Given 未传 runtime When 校验模型 Then 保持 Claude 兼容默认值', () => {
-    expect(() => assertEnabledModelForChannel({
+  test('Given 未传 runtime When 校验模型 Then 使用当前默认 Pi runtime', () => {
+    expect(assertEnabledModelForChannel({
       channelId: 'pi-only-channel',
       modelId: 'enabled-model',
       purpose: '测试旧调用方',
-    })).toThrow('未开放 Agent')
+    })).toBe('enabled-model')
   })
 
   test('Given 渠道只开放 Pi When 列出 Pi 模型 Then 仅返回启用模型', () => {
@@ -89,13 +89,13 @@ describe('Agent 模型渠道校验', () => {
     })).toThrow('模型不属于当前渠道或未启用')
   })
 
-  test('Given 渠道同时开放 Pi 与 Claude When 按 Claude 校验 Then 允许使用', () => {
+  test('Given 渠道只开放 Pi When 按当前 runtime 校验 Then 允许使用', () => {
     writeChannels(['pi'])
     expect(assertEnabledModelForChannel({
       channelId: 'pi-only-channel',
       modelId: 'enabled-model',
       runtime: 'pi',
-      purpose: '测试 Claude 委派',
+      purpose: '测试 Pi 委派',
     })).toBe('enabled-model')
   })
 })
