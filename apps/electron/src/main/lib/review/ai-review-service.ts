@@ -1,0 +1,823 @@
+/**
+ * AI 审核服务（D6 双路径：真实模型 → 演示降级）
+ *
+ * 四个能力，全部先尝试真实路径（统一网关白名单出口），任何一步失败或无可用渠道时
+ * 降级到确定性/静态路径，并显式标注来源：
+ *
+ * 1. `generateRuleOutline`：真实 → AI 从规则文档提取大纲；降级 → fixture 规则大纲（generatedBy 'fixture'）
+ * 2. `extractItems`：真实 → AI 从申报表识别条目；降级 → case.items 原样返回
+ * 3. `runAiReview`：真实 → AI 产出 findings（generatedBy 'ai'）；降级 → mock 确定性引擎（'mock-engine'）
+ * 4. `reviewAssistantChat`：真实 → 模型回答（引用材料 ID）；降级 → 静态解答 + degraded:true
+ *
+ * 降级是显式可观察的：每处降级都 console.warn('[审核专区] ...降级: ...')，
+ * 返回值的 generatedBy / degraded 字段让 UI 与报告能标注"模拟结果"。
+ *
+ * 不依赖 Electron（纯 Node + FS + 网关），可在 bun test 下直接跑。
+ */
+
+import type {
+  AssistantChatRequest,
+  EvidenceDocument,
+  FindingKind,
+  FindingSeverity,
+  FindingSuggestion,
+  GenerateRuleOutlineRequest,
+  ReviewCase,
+  ReviewContentPart,
+  ReviewDomainPack,
+  ReviewFinding,
+  ReviewItem,
+  ReviewRun,
+  ReviewSourceAnchor,
+  RuleOutlineItem,
+  SourceDocument,
+} from '@profer/shared'
+import {
+  FALLBACK_FINDING_KIND,
+  findingKindSeverity,
+  isKnownFindingKind,
+  resolveDomainPack,
+} from '@profer/shared'
+import { readFileSync, statSync } from 'node:fs'
+import { isAbsolute, join } from 'node:path'
+import { getCase, getReviewCasesDir, listRuns, saveCase } from './case-store'
+import { buildDemoCase } from './demo-fixtures/demo-case-fixture'
+import { runMockReview } from './mock-review-engine'
+import {
+  REVIEW_RUN_TIMEOUT_MS,
+  chatCompletion,
+  chatCompletionWithMeta,
+  extractJson,
+  resolveReviewGatewayChannel,
+  type ReviewChatMessage,
+} from './review-model-gateway'
+
+/** AI 审核引擎产物（与 runMockReview 同形，id/时间/状态由 run-service 补齐） */
+export type AiReviewOutcome = Omit<
+  ReviewRun,
+  'id' | 'startedAt' | 'completedAt' | 'status' | 'inputVersion'
+>
+
+/** 单次模型调用最大 token（demo 场景足够，且防止无界生成） */
+const MAX_TOKENS = 4096
+
+/** 助手上下文注入的最大条目数（防 prompt 过长） */
+const ASSISTANT_CONTEXT_LIMIT = 12
+
+/** 单次送模型的图片数量上限（防止一份案卷几十张图撑爆请求体） */
+const MAX_VISION_IMAGES = 8
+
+/** 单张图片送模型的大小上限（8MB：超过则跳过并记录原因，避免请求体过大被网关拒绝） */
+const MAX_VISION_IMAGE_BYTES = 8 * 1024 * 1024
+
+// ===== 内部工具 =====
+
+/** 从案卷取规则包（找不到 → 抛中文错误，由调用方降级） */
+function requireRulePack(reviewCase: ReviewCase, rulePackId?: string): ReviewCase['rulePacks'][number] {
+  const pack = rulePackId
+    ? reviewCase.rulePacks.find((p) => p.id === rulePackId)
+    : reviewCase.rulePacks[0]
+  if (!pack) {
+    throw new Error(
+      rulePackId ? `规则包不存在: ${rulePackId}` : '案卷中没有规则包',
+    )
+  }
+  return pack
+}
+
+/** 规则文档块文本（供模型阅读，带块 ID 注释便于模型回引锚点） */
+function renderRuleDocument(reviewCase: ReviewCase, documentId: string): string {
+  const doc = reviewCase.documents.find((d) => d.id === documentId)
+  if (!doc) return ''
+  return doc.blocks
+    .map((block) => `[${block.id}] ${block.text}`)
+    .join('\n')
+}
+
+/**
+ * 取待审主体文档列表（P2/D16 多待审文件）。
+ *
+ * 优先用案卷显式声明的 subjectDocumentIds（按声明顺序，过滤已删除的）；
+ * 未声明时回落为全部 role === 'application' 的文档；一份都没有则返回空数组。
+ */
+function subjectDocuments(reviewCase: ReviewCase): SourceDocument[] {
+  const declared = reviewCase.subjectDocumentIds
+  if (declared && declared.length > 0) {
+    const byId = new Map(reviewCase.documents.map((doc) => [doc.id, doc]))
+    const ordered = declared
+      .map((id) => byId.get(id))
+      .filter((doc): doc is SourceDocument => doc !== undefined)
+    if (ordered.length > 0) return ordered
+  }
+  return reviewCase.documents.filter((doc) => doc.role === 'application')
+}
+
+/**
+ * 渲染全部待审文件块文本（多份时逐份加文件标题，供模型识别条目并回引锚点）。
+ *
+ * 每份文档的块 ID 前缀不同（案卷内唯一），因此模型回引的 blockId 天然可区分来源文件。
+ */
+function renderSubjectDocuments(reviewCase: ReviewCase): string {
+  const docs = subjectDocuments(reviewCase)
+  if (docs.length === 0) return ''
+  if (docs.length === 1) {
+    const doc = docs[0]!
+    return doc.blocks.map((block) => `[${block.id}] ${block.text}`).join('\n')
+  }
+  return docs
+    .map((doc) => {
+      const body = doc.blocks.map((block) => `[${block.id}] ${block.text}`).join('\n')
+      return `===== 待审文件：${doc.fileName}（documentId=${doc.id}）=====\n${body}`
+    })
+    .join('\n\n')
+}
+
+/**
+ * 收集待审文件与证明里的图片，转成 Vision 内容部件（D13）。
+ *
+ * 返回空数组表示没有可送模型的图片（无图片材料，或文件缺失/超限）。
+ * 超限与读取失败都带中文原因记入 warnings，由调用方在报告里如实标注。
+ */
+function collectVisionImages(
+  reviewCase: ReviewCase,
+  warnings: string[],
+): ReviewContentPart[] {
+  const caseDir = join(getReviewCasesDir(), reviewCase.id)
+  const parts: ReviewContentPart[] = []
+  let skipped = 0
+
+  for (const doc of reviewCase.documents) {
+    if (parts.length >= MAX_VISION_IMAGES) {
+      skipped += 1
+      continue
+    }
+    for (const block of doc.blocks) {
+      if (block.kind !== 'image' || !block.imageAssetPath) continue
+      if (parts.length >= MAX_VISION_IMAGES) {
+        skipped += 1
+        continue
+      }
+      const assetPath = isAbsolute(block.imageAssetPath)
+        ? block.imageAssetPath
+        : join(caseDir, block.imageAssetPath)
+      try {
+        const size = statSync(assetPath).size
+        if (size > MAX_VISION_IMAGE_BYTES) {
+          warnings.push(
+            `${doc.fileName} 图片过大（${(size / 1024 / 1024).toFixed(1)}MB），未纳入模型识别`,
+          )
+          continue
+        }
+        const base64 = readFileSync(assetPath).toString('base64')
+        const mime = doc.mimeType.startsWith('image/') ? doc.mimeType : 'image/png'
+        parts.push({
+          type: 'image_url',
+          image_url: { url: `data:${mime};base64,${base64}` },
+        })
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error)
+        warnings.push(`${doc.fileName} 图片读取失败，未纳入模型识别: ${message}`)
+      }
+    }
+  }
+
+  if (skipped > 0) {
+    warnings.push(`超出单次 ${MAX_VISION_IMAGES} 张图片上限，${skipped} 张图片未送模型`)
+  }
+  return parts
+}
+
+/**
+ * 组装领域包相关的 system prompt 片段（P1/D14）。
+ *
+ * 结构化指令（JSON 字段、锚点回引规则）由各任务的模板给出；
+ * 此处只注入领域知识：角色、审查视角、建议类别、问题类型表。
+ */
+function domainPromptParts(pack: ReviewDomainPack): {
+  role: string
+  guideline: string
+  categories: string
+  kinds: string
+} {
+  const kinds = pack.findingKinds
+    .map((spec) => `${spec.id}（${spec.label}${spec.hint ? `：${spec.hint}` : ''}）`)
+    .join('；')
+  return {
+    role: pack.prompts.role,
+    guideline: pack.prompts.guideline ? `${pack.prompts.guideline}` : '',
+    categories: pack.ruleCategories.join('/'),
+    kinds,
+  }
+}
+
+/** 待审文件块文本中是否含图片占位（用于把"图片已随请求送出"写进 prompt） */
+function countImageBlocks(reviewCase: ReviewCase): number {
+  return reviewCase.documents.reduce(
+    (total, doc) => total + doc.blocks.filter((block) => block.kind === 'image').length,
+    0,
+  )
+}
+
+/** 取条目锚点指向的申报表块文本（静态问答引用原文用） */
+function findBlockText(reviewCase: ReviewCase, anchor: ReviewSourceAnchor): string | undefined {
+  const doc = reviewCase.documents.find((d) => d.id === anchor.documentId)
+  if (!doc) return undefined
+  if (anchor.blockId) {
+    const block = doc.blocks.find((b) => b.id === anchor.blockId)
+    return block?.text
+  }
+  return doc.blocks[0]?.text
+}
+
+// ===== 1. 规则大纲 =====
+
+/**
+ * fixture 大纲（从演示案卷复制该规则包的大纲，generatedBy 已是 'fixture'）。
+ *
+ * 降级路径必须自身可靠：请求的 packId 不在演示案卷时回落演示案卷首个包，不抛错
+ * （用户自建案卷的 packId 与演示案卷无关，抛错会让降级路径二次失败）。
+ */
+function fallbackOutline(reviewCase: ReviewCase, rulePackId?: string): RuleOutlineItem[] {
+  const fixtureCase = buildDemoCase()
+  const pack =
+    fixtureCase.rulePacks.find((candidate) => candidate.id === rulePackId) ?? fixtureCase.rulePacks[0]
+  if (!pack) return []
+  return pack.outline
+}
+
+/** 校验 AI 返回的大纲数组（类型收窄，不满足契约直接抛 → 调用方降级） */
+function parseOutline(raw: unknown): RuleOutlineItem[] {
+  if (!Array.isArray(raw) || raw.length === 0) {
+    throw new Error('模型输出的规则大纲为空或不是数组')
+  }
+  const items = raw.filter(
+    (entry): entry is RuleOutlineItem =>
+      !!entry &&
+      typeof entry === 'object' &&
+      typeof (entry as RuleOutlineItem).category === 'string' &&
+      typeof (entry as RuleOutlineItem).title === 'string' &&
+      Array.isArray((entry as RuleOutlineItem).anchors),
+  )
+  if (items.length === 0) throw new Error('模型输出的规则大纲缺少合法条目')
+  // AI 产出统一标记来源；锚点已由模型引用真实块 ID（保留原样，非法锚点由 UI 容错）
+  return items.map((item, index) => ({
+    ...item,
+    id: item.id || `outline-ai-${index + 1}`,
+    generatedBy: 'ai',
+  }))
+}
+
+/**
+ * 生成规则大纲（左栏）。
+ *
+ * 真实路径：网关可用 → 模型从规则文档逐条提取类别/标题/摘要/锚点。
+ * 降级：任何失败 → 返回 fixture 大纲（与演示案卷同款，锚点真实）。
+ */
+export async function generateRuleOutline(
+  request: GenerateRuleOutlineRequest,
+): Promise<RuleOutlineItem[]> {
+  const reviewCase = getCase(request.caseId)
+  if (!reviewCase) throw new Error(`案卷不存在: ${request.caseId}`)
+
+  const resolved = resolveReviewGatewayChannel()
+  if (!resolved) {
+    const outline = fallbackOutline(reviewCase, request.rulePackId)
+    console.warn(`[审核专区] 规则大纲降级: 无可用模型出口，返回演示规则大纲（${outline.length} 条）`)
+    return outline
+  }
+
+  try {
+    const pack = requireRulePack(reviewCase, request.rulePackId)
+    const ruleText = renderRuleDocument(reviewCase, pack.documentId)
+    const domain = domainPromptParts(resolveDomainPack(reviewCase.domainPackId))
+    const messages: ReviewChatMessage[] = [
+      {
+        role: 'system',
+        content:
+          `${domain.role}。${domain.guideline}` +
+          '请从给定的依据文件中提取审核规则大纲，' +
+          `每条给出 category（建议取值：${domain.categories}；依据文件确有其他类别的，可自定义简短中文类别）、` +
+          'title、summary、anchors（对象数组，documentId 与 blockId 必须原样引用文中方括号标记的 ID）。' +
+          '只输出 JSON 数组，不要任何解释文字。',
+      },
+      {
+        role: 'user',
+        content: `规则包：${pack.name}（${pack.academicYear}，${pack.version}）\n\n规则文档：\n${ruleText}`,
+      },
+    ]
+    const text = await chatCompletion(resolved.channel, messages, { maxTokens: MAX_TOKENS })
+    const outline = parseOutline(extractJson(text))
+    console.log(`[审核专区] 规则大纲 AI 生成成功: ${outline.length} 条`)
+    // 大纲回写案卷（与 extractItems 对齐：案卷是唯一事实来源，助手/mock 引擎读盘生效）
+    // 同样重读最新案卷合并，规避读改写窗口丢更新
+    const fresh = getCase(request.caseId)
+    if (fresh) {
+      const updatedPacks = fresh.rulePacks.map((pack) =>
+        pack.id === (request.rulePackId ?? fresh.rulePacks[0]?.id)
+          ? { ...pack, outline, confirmed: false }
+          : pack,
+      )
+      saveCase({ ...fresh, rulePacks: updatedPacks, updatedAt: new Date().toISOString() })
+    }
+    return outline
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    const outline = fallbackOutline(reviewCase, request.rulePackId)
+    console.warn(`[审核专区] 规则大纲降级: ${message}；返回演示规则大纲（${outline.length} 条）`)
+    return outline
+  }
+}
+
+// ===== 2. 条目识别 =====
+
+/** 条目锚点（供模型回引）；documentId 缺失时降为"仅定位到文件"占位，不抛错——模型输出锚点本就不可靠，宽进严出 */
+function parseAnchor(raw: unknown): ReviewSourceAnchor {
+  const anchor = raw as ReviewSourceAnchor | undefined
+  if (!anchor || typeof anchor !== 'object' || typeof anchor.documentId !== 'string') {
+    return { documentId: '', precision: 'document' }
+  }
+  const precision = anchor.precision === 'block' || anchor.precision === 'page' ? anchor.precision : 'document'
+  return { ...anchor, precision }
+}
+
+/** 校验 AI 返回的条目数组 */
+function parseItems(raw: unknown): ReviewItem[] {
+  if (!Array.isArray(raw) || raw.length === 0) {
+    throw new Error('模型输出的申报条目为空或不是数组')
+  }
+  const items = raw.filter(
+    (entry): entry is ReviewItem =>
+      !!entry &&
+      typeof entry === 'object' &&
+      typeof (entry as ReviewItem).title === 'string' &&
+      typeof (entry as ReviewItem).declaredScore === 'number',
+  )
+  if (items.length === 0) throw new Error('模型输出的申报条目缺少合法项')
+  return items.map((item, index) => ({
+    ...item,
+    id: item.id || `item-ai-${index + 1}`,
+    anchor: parseAnchor(item.anchor),
+    category: item.category || '其他',
+    evidenceDocumentIds: Array.isArray(item.evidenceDocumentIds) ? item.evidenceDocumentIds : [],
+    status: item.status ?? 'identified',
+    identifiedBy: 'ai',
+  }))
+}
+
+/** 锚点 documentId 为空串时用兜底锚点替换 */
+function withFallback(anchor: ReviewSourceAnchor, fallback: ReviewSourceAnchor | undefined): ReviewSourceAnchor {
+  if (!anchor.documentId && fallback) return fallback
+  return anchor
+}
+
+/** 空 documentId 的锚点兜底：指向 role 对应的第一份文档（宽进严出，AI 路径不因锚点不可靠而丢弃结论） */
+function fallbackAnchor(reviewCase: ReviewCase, role: SourceDocument['role']): ReviewSourceAnchor | undefined {
+  const doc = reviewCase.documents.find((d) => d.role === role && d.parseStatus !== 'failed')
+  if (!doc) return undefined
+  return { documentId: doc.id, precision: 'document' }
+}
+
+/**
+ * 识别可审核条目（中栏）。
+ *
+ * 真实路径：网关可用 → 模型从申报表 CSV 逐行识别条目并回引锚点。
+ * 降级：任何失败 → 返回 case.items 原样（fixture 已是识别好的演示条目）。
+ */
+export async function extractItems(caseId: string): Promise<ReviewItem[]> {
+  const reviewCase = getCase(caseId)
+  if (!reviewCase) throw new Error(`案卷不存在: ${caseId}`)
+
+  const resolved = resolveReviewGatewayChannel()
+  if (!resolved) {
+    console.warn(`[审核专区] 条目识别降级: 无可用模型出口，返回案卷既有条目（${reviewCase.items.length} 条）`)
+    return reviewCase.items
+  }
+
+  try {
+    const appText = renderSubjectDocuments(reviewCase)
+    if (!appText) throw new Error('案卷中没有待审文件（可导入 role 为"待审文件"的材料，或指定 subjectDocumentIds）')
+    const subjectCount = subjectDocuments(reviewCase).length
+    // 条目类别：综测用固定五育类别；其他领域包用其规则类别，并允许自定义
+    const domain = domainPromptParts(resolveDomainPack(reviewCase.domainPackId))
+    const isComprehensive = resolveDomainPack(reviewCase.domainPackId).id === 'comprehensive-assessment'
+    const categoryHint = isComprehensive
+      ? 'category（德育/智育/体育/美育/劳育/其他 之一）'
+      : `category（建议取自 ${domain.categories}；不确定时用"其他"）`
+    const visionWarnings: string[] = []
+    const images = collectVisionImages(reviewCase, visionWarnings)
+    const imageNote = images.length > 0
+      ? `\n\n【随附图片】${images.length} 张证明材料图片已随本条消息提供，请直接阅读图片内容并据实识别。`
+      : ''
+
+    const messages: ReviewChatMessage[] = [
+      {
+        role: 'system',
+        content:
+          `${domain.role}。` +
+          (subjectCount > 1
+            ? `案卷中有 ${subjectCount} 份待审文件，请逐份识别其中的可审核事项（同一份文件内的多条事项分别列出）。`
+            : '请从待审文件中识别每一条可审核事项。') +
+          '每条给出 title、' +
+          `${categoryHint}、level（可缺，原文表述的等级/档位）、declaredScore（数字；无分值概念的领域填 0）、` +
+          'activityDate（可缺，ISO 格式）、organizer（可缺，出具/责任单位）、evidenceDocumentIds（字符串数组，可为空）、' +
+          'anchor（对象：documentId 与 blockId 必须原样引用待审文件方括号中的 ID，precision 固定 "block"）。' +
+          '只输出 JSON 数组，不要任何解释文字。',
+      },
+      { role: 'user', content: images.length > 0 ? [{ type: 'text', text: `待审文件：\n${appText}${imageNote}` }, ...images] : `待审文件：\n${appText}` },
+    ]
+    const result = await chatCompletionWithMeta(resolved.channel, messages, { maxTokens: MAX_TOKENS })
+    if (result.imagesDropped) {
+      console.warn('[审核专区] 条目识别: 模型不支持图片，已剔除图片仅按文本识别')
+    }
+    const items = parseItems(extractJson(result.text))
+    console.log(`[审核专区] 条目识别 AI 成功: ${items.length} 条`)
+    // 识别结果回写案卷（与渲染层"识别条目"动作语义一致：案卷是唯一事实来源）
+    // 写回前重读最新案卷合并，避免 60s 模型调用窗口内其他写入（如导入材料）被旧快照覆盖
+    const fresh = getCase(caseId)
+    if (fresh) saveCase({ ...fresh, items, updatedAt: new Date().toISOString() })
+    return items
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    console.warn(`[审核专区] 条目识别降级: ${message}；返回案卷既有条目（${reviewCase.items.length} 条）`)
+    return reviewCase.items
+  }
+}
+
+// ===== 3. 审核运行（AI 引擎） =====
+
+/**
+ * 严重度收窄：模型给了合法值就用；否则按该领域包中该类型的默认严重度（D15）。
+ *
+ * 未知类型 → findingKindSeverity 回落 yellow，不制造第三种状态。
+ */
+function parseSeverity(raw: unknown, pack: ReviewDomainPack, kind: FindingKind): FindingSeverity {
+  if (raw === 'red' || raw === 'yellow') return raw
+  return findingKindSeverity(pack, kind)
+}
+
+/**
+ * 问题类型收窄（D15 宽进严出）。
+ *
+ * 属于该领域包的类型原样保留；否则收敛到兜底类型 'other'（标签与严重度由包内 other 定义）。
+ */
+function parseKind(raw: unknown, pack: ReviewDomainPack): FindingKind {
+  const kind = typeof raw === 'string' && raw.length > 0 ? raw : FALLBACK_FINDING_KIND
+  return isKnownFindingKind(pack, kind) ? kind : FALLBACK_FINDING_KIND
+}
+
+/** 处理建议收窄（未知建议 → manual-review 兜底） */
+const SUGGESTIONS: FindingSuggestion[] = [
+  'fix-declaration',
+  'supplement-evidence',
+  'manual-review',
+  'modify-score',
+]
+function parseSuggestion(raw: unknown): FindingSuggestion {
+  return SUGGESTIONS.includes(raw as FindingSuggestion) ? (raw as FindingSuggestion) : 'manual-review'
+}
+
+/** 收窄锚点数组（非法项直接过滤：宁缺勿假坐标） */
+function parseAnchors(raw: unknown): ReviewSourceAnchor[] {
+  if (!Array.isArray(raw)) return []
+  return raw
+    .filter((entry): entry is ReviewSourceAnchor =>
+      !!entry && typeof entry === 'object' && typeof (entry as ReviewSourceAnchor).documentId === 'string')
+    .map((entry) => {
+      const precision = entry.precision === 'block' || entry.precision === 'page' ? entry.precision : 'document'
+      return { ...entry, precision }
+    })
+}
+
+/** 校验 AI 返回的 findings 数组（reviewCase 用于锚点兜底，pack 用于类型/严重度回落） */
+function parseFindings(
+  raw: unknown,
+  reviewCase: ReviewCase,
+  pack: ReviewDomainPack,
+  imagesDropped: boolean,
+): ReviewFinding[] {
+  if (!Array.isArray(raw) || raw.length === 0) {
+    throw new Error('模型输出的审核发现为空或不是数组')
+  }
+  const findings = raw.filter(
+    (entry): entry is ReviewFinding =>
+      !!entry &&
+      typeof entry === 'object' &&
+      typeof (entry as ReviewFinding).itemId === 'string' &&
+      typeof (entry as ReviewFinding).title === 'string',
+  )
+  if (findings.length === 0) throw new Error('模型输出的审核发现缺少合法项')
+  const subjectFallback =
+    subjectDocuments(reviewCase)[0]
+      ? { documentId: subjectDocuments(reviewCase)[0]!.id, precision: 'document' as const }
+      : fallbackAnchor(reviewCase, 'application')
+
+  return findings.map((finding, index) => {
+    const kind = parseKind(finding.kind, pack)
+    const ruleAnchors = parseAnchors(finding.ruleAnchors)
+    const ruleFallback = fallbackAnchor(reviewCase, 'rule')
+    const parsed: ReviewFinding = {
+      ...finding,
+      id: finding.id || `find-ai-${index + 1}`,
+      kind,
+      severity: parseSeverity(finding.severity, pack, kind),
+      detail: finding.detail ?? finding.title,
+      suggestion: parseSuggestion(finding.suggestion),
+      suggestionText: finding.suggestionText ?? '请人工复核该项待审内容与证明材料。',
+      subjectAnchor: withFallback(parseAnchor(finding.subjectAnchor), subjectFallback),
+      evidenceAnchor: finding.evidenceAnchor
+        ? withFallback(parseAnchor(finding.evidenceAnchor), fallbackAnchor(reviewCase, 'evidence'))
+        : undefined,
+      counterpartAnchor: finding.counterpartAnchor
+        ? withFallback(parseAnchor(finding.counterpartAnchor), subjectFallback)
+        : undefined,
+      ruleAnchors: ruleAnchors.length > 0 ? ruleAnchors : ruleFallback ? [ruleFallback] : [],
+      ruleItemIds: Array.isArray(finding.ruleItemIds) ? finding.ruleItemIds : [],
+      generatedBy: 'ai',
+    }
+    // 图片被剔除而该结论可能依赖图片内容时，在说明里显式标注，避免误导
+    if (imagesDropped) {
+      parsed.detail = `${parsed.detail}（注：本次模型调用未包含图片内容，如图片为关键依据请人工复核）`
+    }
+    // 可缺字段不落 undefined 键（保持 JSON 干净）
+    if (parsed.evidenceAnchor === undefined) delete parsed.evidenceAnchor
+    if (parsed.counterpartAnchor === undefined) delete parsed.counterpartAnchor
+    return parsed
+  })
+}
+
+/**
+ * 执行 AI 审核（真实路径的引擎）。
+ *
+ * 真实路径：网关可用 → 模型逐条比对申报/证明/规则，输出 findings。
+ * 降级：任何失败 → mock 确定性引擎（runMockReview，engine 标 'mock-engine'）。
+ *
+ * 注意：这里只在"网关可用但调用失败"时兜底；完全无渠道的降级由 run-service
+ * 与本函数共同保证（无渠道同样落到本函数的 mock 分支）。
+ */
+export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutcome> {
+  const resolved = resolveReviewGatewayChannel()
+  if (!resolved) {
+    const outcome = runMockReview(reviewCase)
+    console.warn(
+      `[审核专区] AI 审核降级: 无可用模型出口，启用确定性模拟引擎（发现 ${outcome.findings.length} 条）`,
+    )
+    return outcome
+  }
+
+  try {
+    const pack = requireRulePack(reviewCase)
+    const domainPack = resolveDomainPack(reviewCase.domainPackId)
+    const domain = domainPromptParts(domainPack)
+    const ruleText = renderRuleDocument(reviewCase, pack.documentId)
+    const appText = renderSubjectDocuments(reviewCase)
+    const subjectDocs = subjectDocuments(reviewCase)
+    const evidencesBrief = reviewCase.evidences
+      .map((evidence) => `${evidence.documentId}: ${evidence.recognizedFacts}（状态 ${evidence.parseStatus}）`)
+      .join('\n')
+
+    const visionWarnings: string[] = []
+    const images = collectVisionImages(reviewCase, visionWarnings)
+    for (const warning of visionWarnings) console.warn(`[审核专区] ${warning}`)
+    const imageNote = images.length > 0
+      ? `\n\n【随附图片】${images.length} 张图片已随本条消息提供（证明/扫描件），请直接阅读图片内容，` +
+        '需要引用图片依据时，锚点用该图片所在文档的 documentId + 该 image 块的 blockId。'
+      : ''
+    const crossDocNote = subjectDocs.length > 1
+      ? `\n\n【跨文件比对】本案卷有 ${subjectDocs.length} 份待审文件（${subjectDocs.map((d) => d.fileName).join('、')}）。` +
+        '请额外核对文件之间是否存在互相矛盾之处；一旦发现，kind 用 cross-document-mismatch，' +
+        'subjectAnchor 指向其中一处、counterpartAnchor 指向另一处。'
+      : ''
+
+    const messages: ReviewChatMessage[] = [
+      {
+        role: 'system',
+        content:
+          `${domain.role}。${domain.guideline}` +
+          '请对照依据文件逐条审核待审内容，产出问题清单。' +
+          `每条发现给出：itemId（待审条目 ID，无对应条目时用该文件首个条目 ID 或 "case-level"）、` +
+          `kind（取值：${domain.kinds}）、` +
+          'severity（red/yellow）、title、detail（说明为什么判，必须引用依据条款原文要点）、' +
+          'suggestion（fix-declaration/supplement-evidence/manual-review/modify-score 之一）、suggestionText、' +
+          'subjectAnchor（对象，documentId/blockId 引用待审文件方括号 ID）、' +
+          'evidenceAnchor（可缺，证明/附件侧锚点）、counterpartAnchor（可缺，跨文件比对时的另一处位置）、' +
+          'ruleAnchors（依据侧锚点数组）、ruleItemIds（引用的依据条目 ID）、' +
+          'suggestedScore（可缺，数字；领域无分值概念时省略）。只输出 JSON 数组，不要任何解释文字。',
+      },
+      {
+        role: 'user',
+        content:
+          images.length > 0
+            ? [
+                {
+                  type: 'text',
+                  text:
+                    `【依据文件】\n${ruleText}\n\n【待审文件】\n${appText}\n\n` +
+                    `【证明识别结果】\n${evidencesBrief}\n\n` +
+                    `【待审条目】\n${JSON.stringify(reviewCase.items, null, 2)}` +
+                    crossDocNote +
+                    imageNote,
+                },
+                ...images,
+              ]
+            : `【依据文件】\n${ruleText}\n\n【待审文件】\n${appText}\n\n` +
+              `【证明识别结果】\n${evidencesBrief}\n\n` +
+              `【待审条目】\n${JSON.stringify(reviewCase.items, null, 2)}` +
+              crossDocNote,
+      },
+    ]
+    // 审核运行是长上下文操作：用专用超时，避免推理模型在 60 秒处被误判失败而降级
+    const result = await chatCompletionWithMeta(resolved.channel, messages, {
+      maxTokens: MAX_TOKENS,
+      timeoutMs: REVIEW_RUN_TIMEOUT_MS,
+    })
+    if (result.imagesDropped) {
+      console.warn('[审核专区] AI 审核: 模型不支持图片，已剔除图片仅按文本审核（结论会标注）')
+    }
+    const findings = parseFindings(extractJson(result.text), reviewCase, domainPack, result.imagesDropped)
+    console.log(`[审核专区] AI 审核成功: 发现 ${findings.length} 条`)
+
+    // 覆盖摘要：以案卷条目为全集，AI 未提及的条目仍算"已审阅"（模型逐条过了一遍）
+    const reviewedItemIds = reviewCase.items.map((item) => item.id)
+    const hitItemIds = new Set(findings.map((finding) => finding.itemId))
+    const manualReviewItemIds = findings
+      .filter((finding) => finding.suggestion === 'manual-review')
+      .map((finding) => finding.itemId)
+    return {
+      caseId: reviewCase.id,
+      findings,
+      coverage: {
+        reviewedItemIds,
+        manualReviewItemIds: [...new Set(manualReviewItemIds)],
+        // 未识别 = 解析失败，或"部分解析但一个块都没提取出来"（典型：扫描件 PDF 无文本层）
+        unrecognizedDocumentIds: reviewCase.documents
+          .filter(
+            (doc) =>
+              doc.parseStatus === 'failed' ||
+              (doc.parseStatus === 'partial' && doc.blocks.length === 0),
+          )
+          .map((doc) => doc.id),
+        // 规则未覆盖 = AI 逐条审阅后没有任何发现引用的条目（真实信号，不再恒为空）
+        ruleUncoveredItemIds: reviewedItemIds.filter((id) => !hitItemIds.has(id)),
+      },
+      engine: 'ai',
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    const outcome = runMockReview(reviewCase)
+    console.warn(
+      `[审核专区] AI 审核降级: ${message}；启用确定性模拟引擎（发现 ${outcome.findings.length} 条）`,
+    )
+    return outcome
+  }
+}
+
+// ===== 4. 审核助手对话 =====
+
+/** 助手回答结构（与 preload assistantChat 返回契约一致） */
+export interface ReviewAssistantReply {
+  content: string
+  references: string[]
+  degraded: boolean
+}
+
+/**
+ * 取选中问题卡（可缺）。
+ *
+ * 问题卡存于运行记录：从案卷最近一次运行的 findings 里按 ID 查找；
+ * 找不到（运行被清理 / ID 过期）→ undefined，助手按"无焦点"作答，不伪造。
+ */
+function findFocusFinding(reviewCase: ReviewCase, focusFindingId?: string): ReviewFinding | undefined {
+  if (!focusFindingId) return undefined
+  const latest = listRuns(reviewCase.id).at(-1)
+  return latest?.findings.find((finding) => finding.id === focusFindingId)
+}
+
+/**
+ * 静态降级回答（无渠道 / 调用失败）。
+ *
+ * 基于问题卡元数据与案卷事实组装，绝不编造材料外结论（D9：无依据时明说）。
+ */
+function staticAssistantAnswer(
+  reviewCase: ReviewCase,
+  request: AssistantChatRequest,
+  focusFinding: ReviewFinding | undefined,
+): ReviewAssistantReply {
+  const references: string[] = []
+  const lines: string[] = ['（当前无可用模型出口，以下为基于案卷元数据的静态解答）']
+
+  if (focusFinding) {
+    references.push(focusFinding.id, ...focusFinding.ruleItemIds)
+    lines.push(`选中问题卡：${focusFinding.title}`)
+    lines.push(`判定说明：${focusFinding.detail}`)
+    lines.push(`处理建议：${focusFinding.suggestionText}`)
+    const subjectText = findBlockText(reviewCase, focusFinding.subjectAnchor)
+    if (subjectText) {
+      references.push(focusFinding.subjectAnchor.documentId)
+      lines.push(`申报表原文：${subjectText}`)
+    }
+  } else {
+    // 无选中问题卡 → 用最近一条用户问题 + 案卷概况作答
+    const lastUser = [...request.history].reverse().find((message) => message.role === 'user')
+    lines.push(`你的问题：${lastUser?.content ?? '（未提供）'}`)
+    lines.push(
+      `案卷概况：申请人 ${reviewCase.applicant}，学年 ${reviewCase.academicYear}，` +
+        `申报条目 ${reviewCase.items.length} 条，证明材料 ${reviewCase.evidences.length} 份。`,
+    )
+    const latestRun = listRuns(reviewCase.id).at(-1)
+    if (latestRun) {
+      references.push(latestRun.id)
+      lines.push(
+        `最近一次审核：状态 ${latestRun.status === 'completed' ? '已完成' : latestRun.status === 'failed' ? '失败' : '进行中'}，` +
+          `发现 ${latestRun.findings.length} 条（引擎 ${latestRun.engine === 'ai' ? 'AI' : '模拟'}）。`,
+      )
+    }
+    // 引用规则包与条目 ID，方便 UI 联动
+    for (const pack of reviewCase.rulePacks) references.push(pack.id)
+    for (const item of reviewCase.items.slice(0, ASSISTANT_CONTEXT_LIMIT)) references.push(item.id)
+    lines.push('模型出口恢复后可获得逐条依据引用的完整回答；本条不作材料外推断。')
+  }
+
+  return { content: lines.join('\n'), references: [...new Set(references)], degraded: true }
+}
+
+/**
+ * 审核助手对话（真实 / 静态降级）。
+ *
+ * 真实路径：网关可用 → 模型基于案卷上下文 + 选中问题卡回答，要求引用材料 ID。
+ * 降级：任何失败 → 静态解答（degraded:true）。
+ */
+export async function reviewAssistantChat(
+  request: AssistantChatRequest,
+): Promise<ReviewAssistantReply> {
+  const reviewCase = getCase(request.caseId)
+  if (!reviewCase) throw new Error(`案卷不存在: ${request.caseId}`)
+
+  const focusFinding = findFocusFinding(reviewCase, request.focusFindingId)
+  const resolved = resolveReviewGatewayChannel()
+  if (!resolved) {
+    console.warn('[审核专区] 助手回答降级: 无可用模型出口，返回静态解答')
+    return staticAssistantAnswer(reviewCase, request, focusFinding)
+  }
+
+  try {
+    const domainPack = resolveDomainPack(reviewCase.domainPackId)
+    const contextLines: string[] = [
+      `案卷：${reviewCase.title}`,
+      `审核领域：${domainPack.name}（${domainPack.description}）`,
+      `申请人：${reviewCase.applicant}；学年：${reviewCase.academicYear}`,
+      `待审条目 ${reviewCase.items.length} 条；证明 ${reviewCase.evidences.length} 份；依据包 ${reviewCase.rulePacks.length} 个。`,
+      `问题类型口径：${domainPack.findingKinds.map((k) => `${k.id}=${k.label}`).join('、')}`,
+    ]
+    if (focusFinding) {
+      contextLines.push(
+        `选中问题卡：${focusFinding.title}（${focusFinding.severity === 'red' ? '红' : '黄'}）`,
+        `判定说明：${focusFinding.detail}`,
+        `处理建议：${focusFinding.suggestionText}`,
+      )
+    }
+    const rulesBrief = reviewCase.rulePacks
+      .flatMap((pack) => pack.outline)
+      .slice(0, ASSISTANT_CONTEXT_LIMIT)
+      .map((rule) => `${rule.id}《${rule.title}》：${rule.summary}`)
+      .join('\n')
+    if (rulesBrief) contextLines.push(`已确认规则条目：\n${rulesBrief}`)
+
+    const history: ReviewChatMessage[] = request.history.slice(-8).map((message) => ({
+      role: message.role,
+      content: message.content,
+    }))
+    const messages: ReviewChatMessage[] = [
+      {
+        role: 'system',
+        content:
+          `${domainPack.prompts.role}，负责解答审核员对审核结论的疑问。回答必须引用给定案卷材料（问题卡 ID / 依据条目 ID / 待审条目 ID），` +
+          '没有依据时明确说明无法确定，不作材料外推断；不代替审批决定。' +
+          '用中文简洁回答，直接给结论与依据。',
+      },
+      { role: 'user', content: contextLines.join('\n') },
+      ...history,
+    ]
+    const content = (await chatCompletion(resolved.channel, messages, { maxTokens: 1024 })).trim()
+    if (!content) throw new Error('模型返回空回答')
+
+    const references: string[] = []
+    if (focusFinding) references.push(focusFinding.id, ...focusFinding.ruleItemIds)
+    // 粗引用：回答中出现的案卷实体 ID 直接收进 references（不伪造，只收集真实存在者）
+    const knownIds = new Set<string>([
+      ...reviewCase.items.map((item) => item.id),
+      ...reviewCase.rulePacks.map((pack) => pack.id),
+      ...reviewCase.rulePacks.flatMap((pack) => pack.outline.map((rule) => rule.id)),
+      ...reviewCase.evidences.map((evidence) => evidence.documentId),
+    ])
+    for (const id of knownIds) {
+      if (content.includes(id)) references.push(id)
+    }
+
+    console.log('[审核专区] 助手回答成功（真实模型路径）')
+    return { content, references: [...new Set(references)], degraded: false }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    console.warn(`[审核专区] 助手回答降级: ${message}；返回静态解答`)
+    return staticAssistantAnswer(reviewCase, request, focusFinding)
+  }
+}

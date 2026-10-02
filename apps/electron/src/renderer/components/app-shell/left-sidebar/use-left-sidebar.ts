@@ -686,6 +686,16 @@ export function useLeftSidebar() {
     setActiveView('agent-skills')
   }, [activeView, setActiveView])
 
+  /** 打开内容审核专区（三栏审核工作台） */
+  const handleOpenContentReview = React.useCallback((): void => {
+    // 已激活时再次点击切回对话列表（与 #972 交互约定一致）
+    if (activeView === 'content-review') {
+      setActiveView('conversations')
+      return
+    }
+    setActiveView('content-review')
+  }, [activeView, setActiveView])
+
   // 切换模式时重置归档视图
   React.useEffect(() => {
     setViewMode('active')
@@ -1819,6 +1829,7 @@ export function useLeftSidebar() {
     capabilities,
     handleOpenAutomations,
     handleOpenSkills,
+    handleOpenContentReview,
 
     // tab 状态
     tabs,

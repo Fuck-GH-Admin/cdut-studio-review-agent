@@ -7,7 +7,7 @@ import type { ProferPluginPagePlacement, ProferPluginPagePlacementPreference, Pr
  */
 
 import { contextBridge, ipcRenderer, webUtils } from 'electron'
-import { IPC_CHANNELS, CHANNEL_IPC_CHANNELS, CHAT_IPC_CHANNELS, AGENT_IPC_CHANNELS, LARK_IPC_CHANNELS, ENVIRONMENT_IPC_CHANNELS, INSTALLER_IPC_CHANNELS, PROXY_IPC_CHANNELS, GITHUB_RELEASE_IPC_CHANNELS, CHANGELOG_IPC_CHANNELS, SYSTEM_PROMPT_IPC_CHANNELS, CHAT_TOOL_IPC_CHANNELS, FEISHU_IPC_CHANNELS, DINGTALK_IPC_CHANNELS, WECHAT_IPC_CHANNELS, AUTOMATION_IPC_CHANNELS, RECOMMENDATION_IPC_CHANNELS, PLANNING_IPC_CHANNELS, AUTH_IPC_CHANNELS, SYNC_IPC_CHANNELS, TEAM_IPC_CHANNELS, SKILL_MARKETPLACE_IPC_CHANNELS, SKILL_MASTER_IPC_CHANNELS, GLOBAL_SKILL_IPC_CHANNELS, TEAM_FILE_IPC_CHANNELS, TEAM_MEMORY_IPC_CHANNELS, SSE_IPC_CHANNELS, KNOWLEDGE_IPC_CHANNELS, AGENT_PRESET_IPC_CHANNELS, type Todo, type CalendarEvent, type TodoListQuery, type CalendarEventListQuery, type PlanningGroup, type PlanningGroupScope, type PlanningTag, type PlanningReminder, type ActivePlanningReminder, type PlanningAgentOperation, type PlanningChange, type CreateTodoInput, type UpdateTodoInput, type CreateCalendarEventInput, type UpdateCalendarEventInput, type CreatePlanningGroupInput, type UpdatePlanningGroupInput, type CreatePlanningTagInput, type UpdatePlanningTagInput, type SnoozePlanningReminderInput, type StartTodoAgentInput, type StartTodoAgentResult, type TodoAgentSessionActivation, type TeamMemoryApiResult, type TeamMemoryDocument, type TeamMemoryRevision, type ChangelogEntry, type AgentPreset, type AgentPresetCreateInput, type AgentPresetUpdateInput, type AgentPresetImportResult } from '@profer/shared'
+import { IPC_CHANNELS, REVIEW_IPC_CHANNELS, CHANNEL_IPC_CHANNELS, CHAT_IPC_CHANNELS, AGENT_IPC_CHANNELS, LARK_IPC_CHANNELS, ENVIRONMENT_IPC_CHANNELS, INSTALLER_IPC_CHANNELS, PROXY_IPC_CHANNELS, GITHUB_RELEASE_IPC_CHANNELS, CHANGELOG_IPC_CHANNELS, SYSTEM_PROMPT_IPC_CHANNELS, CHAT_TOOL_IPC_CHANNELS, FEISHU_IPC_CHANNELS, DINGTALK_IPC_CHANNELS, WECHAT_IPC_CHANNELS, AUTOMATION_IPC_CHANNELS, RECOMMENDATION_IPC_CHANNELS, PLANNING_IPC_CHANNELS, AUTH_IPC_CHANNELS, SYNC_IPC_CHANNELS, TEAM_IPC_CHANNELS, SKILL_MARKETPLACE_IPC_CHANNELS, SKILL_MASTER_IPC_CHANNELS, GLOBAL_SKILL_IPC_CHANNELS, TEAM_FILE_IPC_CHANNELS, TEAM_MEMORY_IPC_CHANNELS, SSE_IPC_CHANNELS, KNOWLEDGE_IPC_CHANNELS, AGENT_PRESET_IPC_CHANNELS, type Todo, type CalendarEvent, type TodoListQuery, type CalendarEventListQuery, type PlanningGroup, type PlanningGroupScope, type PlanningTag, type PlanningReminder, type ActivePlanningReminder, type PlanningAgentOperation, type PlanningChange, type CreateTodoInput, type UpdateTodoInput, type CreateCalendarEventInput, type UpdateCalendarEventInput, type CreatePlanningGroupInput, type UpdatePlanningGroupInput, type CreatePlanningTagInput, type UpdatePlanningTagInput, type SnoozePlanningReminderInput, type StartTodoAgentInput, type StartTodoAgentResult, type TodoAgentSessionActivation, type TeamMemoryApiResult, type TeamMemoryDocument, type TeamMemoryRevision, type ChangelogEntry, type AgentPreset, type AgentPresetCreateInput, type AgentPresetUpdateInput, type AgentPresetImportResult } from '@profer/shared'
 import { USER_PROFILE_IPC_CHANNELS, SETTINGS_IPC_CHANNELS, SKIN_IPC_CHANNELS, SCRATCH_PAD_IPC_CHANNELS, APP_ICON_IPC_CHANNELS, DOCK_BADGE_IPC_CHANNELS, STORAGE_IPC_CHANNELS, NOTIFICATION_SOUND_IPC_CHANNELS, DESKTOP_NOTIFICATION_IPC_CHANNELS } from '../types'
 import { PROFER_PLUGIN_IPC_CHANNELS, type ProferInstalledPlugin, type ProferPluginOperationResult, type ProferPluginViewInstance, type ProferPluginViewLayout } from '@profer/plugin-api'
 import type { CustomNotificationSound } from '../types'
@@ -3851,3 +3851,43 @@ const agentPreviewAPI = {
 
 // iframe 内容（HTML/PDF）不需要也不能获得主进程预览控制能力。
 if (process.isMainFrame) contextBridge.exposeInMainWorld('agentPreviewAPI', agentPreviewAPI)
+
+// ===== 内容审核专区（review）API =====
+
+/** 渲染进程可用的内容审核 API（三栏工作台数据通道） */
+const reviewAPI = {
+  loadDemoCase: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOAD_DEMO_CASE) as Promise<import('@profer/shared').ReviewCase>,
+  listCases: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_CASES) as Promise<import('@profer/shared').ReviewCaseSummary[]>,
+  getCase: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_CASE, caseId) as Promise<import('@profer/shared').ReviewCase | undefined>,
+  createCase: (input: {
+    title: string
+    type: import('@profer/shared').ReviewCaseType
+    applicant: string
+    academicYear: string
+    /** 审核领域包（可缺省；未知 ID 由主进程 resolveDomainPack 回落缺省包） */
+    domainPackId?: import('@profer/shared').ReviewDomainPackId
+  }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_CASE, input) as Promise<import('@profer/shared').ReviewCase>,
+  importDocument: (input: { caseId: string; fileName: string; role: import('@profer/shared').SourceDocument['role'] }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT, input) as Promise<import('@profer/shared').SourceDocument>,
+  deleteCase: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.DELETE_CASE, caseId) as Promise<void>,
+  updateCaseSettings: (input: import('@profer/shared').UpdateCaseSettingsRequest) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_CASE_SETTINGS, input) as Promise<import('@profer/shared').ReviewCase>,
+  generateRuleOutline: (input: import('@profer/shared').GenerateRuleOutlineRequest) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GENERATE_RULE_OUTLINE, input) as Promise<import('@profer/shared').RuleOutlineItem[]>,
+  extractItems: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.EXTRACT_ITEMS, caseId) as Promise<import('@profer/shared').ReviewItem[]>,
+  runReview: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW, caseId) as Promise<import('@profer/shared').ReviewRun>,
+  getRun: (input: { caseId: string; runId: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_RUN, input) as Promise<import('@profer/shared').ReviewRun | undefined>,
+  assistantChat: (input: import('@profer/shared').AssistantChatRequest) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSISTANT_CHAT, input) as Promise<{ content: string; references: string[]; degraded: boolean }>,
+  exportReport: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.EXPORT_REPORT, caseId) as Promise<import('@profer/shared').ExportReportResult>,
+  getModelGatewayStatus: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_MODEL_GATEWAY_STATUS) as Promise<import('@profer/shared').ReviewModelGatewayStatus>,
+}
+
+if (process.isMainFrame) contextBridge.exposeInMainWorld('reviewAPI', reviewAPI)
+
+declare global {
+  interface Window {
+    reviewAPI: typeof reviewAPI
+  }
+}

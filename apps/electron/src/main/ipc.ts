@@ -152,6 +152,7 @@ import { getUnstagedChanges, getFileDiff, getUntrackedContent, revertFile, getDi
 import { registerProferDirectoryPath, registerProferFilePath } from './lib/local-file-protocol'
 import { isReadOnlyPreviewPathAllowed } from './lib/preview-path-policy'
 import { registerUpdaterIpc } from './lib/updater/updater-ipc'
+import { registerReviewIpc } from './lib/review/review-ipc'
 import {
   listChannels,
   createChannel,
@@ -6154,6 +6155,9 @@ export function registerIpcHandlers(): void {
 
   // 注册更新 IPC 处理器
   registerUpdaterIpc()
+
+  // 注册内容审核专区 IPC 处理器
+  registerReviewIpc()
 
   // 启动时自动归档 + 每 24 小时定期检查
   const runAutoArchive = (): void => {

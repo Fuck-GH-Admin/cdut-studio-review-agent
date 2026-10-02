@@ -6,7 +6,7 @@
 
 import * as React from 'react'
 import { PluginSidebarEntries } from '@/components/plugins/PluginEntries'
-import { PanelLeftClose, Plus, Search, FolderOpen, LogIn, Archive, ArchiveRestore, ArrowLeft, Settings } from 'lucide-react'
+import { PanelLeftClose, Plus, Search, FolderOpen, LogIn, Archive, ArchiveRestore, ArrowLeft, Settings, ClipboardCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/tooltip'
 import { Popover, PopoverTrigger, PopoverContent } from '@profer/ui/primitives/popover'
@@ -39,6 +39,7 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
     activeView,
     capabilities,
     handleOpenSkills,
+    handleOpenContentReview,
     pinnedConversations,
     conversationDraftMap,
     activeSessionId,
@@ -180,6 +181,32 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
           active={activeView === 'planning'}
           onClick={handleOpenAutomations}
         />
+      </div>
+
+      {/* 内容审核专区入口：三栏审核工作台（演示版） */}
+      <div className="px-3 pb-0.5">
+        <button
+          type="button"
+          data-profer-navigation-item="content-review"
+          aria-label="内容审核专区"
+          onClick={handleOpenContentReview}
+          className={cn(
+            'group w-full flex items-center justify-between px-3 py-2 rounded-md text-[13px] transition-colors duration-100 titlebar-no-drag',
+            activeView === 'content-review'
+              ? 'bg-accent-foreground/[0.10] text-foreground shadow-[0_1px_2px_0_rgba(0,0,0,0.05)]'
+              : 'text-foreground/60 hover:bg-accent-foreground/[0.08] hover:text-foreground',
+          )}
+        >
+          <span className="flex items-center gap-3 min-w-0">
+            <span className={cn('flex-shrink-0 w-[18px] h-[18px]', activeView === 'content-review' ? 'text-accent-foreground' : 'text-foreground/45')}>
+              <ClipboardCheck size={16} className="block" />
+            </span>
+            <span className="truncate">内容审核</span>
+          </span>
+          <span className="ml-2 flex h-5 flex-shrink-0 items-center rounded-full bg-primary/10 px-1.5 text-[10px] font-medium text-primary">
+            演示
+          </span>
+        </button>
       </div>
 
       {/* Agent 技能入口：Skills / MCP 能力中心，仅 Agent 模式可见 */}
