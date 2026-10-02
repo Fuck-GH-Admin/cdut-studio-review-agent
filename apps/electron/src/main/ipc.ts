@@ -2110,7 +2110,7 @@ export function registerIpcHandlers(): void {
         syncFeishuSyncSleepBlocker(result)
       }
 
-      if (updates.developerModeEnabled !== undefined || updates.openEpistemicModeEnabled !== undefined || updates.pluginSystemEnabled !== undefined) {
+      if (updates.developerModeEnabled !== undefined || updates.openEpistemicModeEnabled !== undefined) {
         const payload = {
           developerModeEnabled: result.developerModeEnabled === true,
           openEpistemicModeEnabled: result.openEpistemicModeEnabled === true,
@@ -2212,7 +2212,7 @@ export function registerIpcHandlers(): void {
         if (updates.feishuSessionMirror !== undefined) {
           syncFeishuSyncSleepBlocker(result)
         }
-        if (updates.developerModeEnabled !== undefined || updates.openEpistemicModeEnabled !== undefined || updates.pluginSystemEnabled !== undefined) {
+        if (updates.developerModeEnabled !== undefined || updates.openEpistemicModeEnabled !== undefined) {
           const payload = {
             developerModeEnabled: result.developerModeEnabled === true,
             openEpistemicModeEnabled: result.openEpistemicModeEnabled === true,

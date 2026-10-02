@@ -213,7 +213,7 @@ export function createAgentWorkspace(
 
   try {
     getAgentWorkspacePath(slug)
-    ensurePluginManifest(slug, name)
+    ensureClaudeSkillManifest(slug, name)
   } catch (error) {
     const workspacesRoot = resolve(getAgentWorkspacesDir())
     const workspaceDir = resolve(join(workspacesRoot, slug))
@@ -375,7 +375,7 @@ export function ensureDefaultWorkspace(): AgentWorkspace {
     }
 
     getAgentWorkspacePath('default')
-    ensurePluginManifest('default', '默认工作区')
+    ensureClaudeSkillManifest('default', '默认工作区')
 
     index.workspaces.push(defaultWs)
     writeIndex(index)
@@ -383,7 +383,7 @@ export function ensureDefaultWorkspace(): AgentWorkspace {
     console.log('[Agent 工作区] 已创建默认工作区')
   } else {
     // 迁移兼容：确保已有默认工作区包含 plugin manifest
-    ensurePluginManifest(defaultWs.slug, defaultWs.name)
+    ensureClaudeSkillManifest(defaultWs.slug, defaultWs.name)
   }
 
   return defaultWs
@@ -392,7 +392,7 @@ export function ensureDefaultWorkspace(): AgentWorkspace {
 // ===== Plugin Manifest（SDK 插件发现） =====
 
 /** 确保工作区包含 .claude-plugin/plugin.json，SDK 需要此文件发现 skills */
-export function ensurePluginManifest(workspaceSlug: string, workspaceName: string): void {
+export function ensureClaudeSkillManifest(workspaceSlug: string, workspaceName: string): void {
   const wsPath = getAgentWorkspacePath(workspaceSlug)
   const pluginDir = join(wsPath, '.claude-plugin')
   const manifestPath = join(pluginDir, 'plugin.json')
@@ -1613,7 +1613,7 @@ export function syncTeamWorkspacesToIndex(teamWorkspaces: AgentWorkspace[]): voi
         type: 'team',
       })
       getAgentWorkspacePath(tw.slug)
-      ensurePluginManifest(tw.slug, tw.name)
+      ensureClaudeSkillManifest(tw.slug, tw.name)
       changed = true
     } else if (existing.type !== 'team') {
       existing.type = 'team'

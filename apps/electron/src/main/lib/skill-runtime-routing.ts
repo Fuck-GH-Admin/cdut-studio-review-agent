@@ -37,6 +37,7 @@ export function buildSkillRuntimeOptions(routing: PreparedSkillRouting) {
     // 共享路由已处理原始用户引用，不允许 adapter 从历史/内部上下文再次扫描。
     skillMentions: [] as string[],
     additionalSkillPaths: routing.projection ? [getRuntimeSkillsPath(routing.projection)] : [],
+    // Pi Agent 通过 SDK local plugin API 发现工作区 Skills；这不是第三方插件宿主。
     plugins: routing.projection ? [{ type: 'local' as const, path: routing.projection.path }] : [],
   }
 }

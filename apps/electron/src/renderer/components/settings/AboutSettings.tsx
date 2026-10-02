@@ -41,7 +41,7 @@ import { developerModeEnabledAtom, openEpistemicModeEnabledAtom } from '@/atoms/
 import {
   INITIAL_DEVELOPER_MODE_UNLOCK_CLICK_STATE,
   advanceDeveloperModeUnlockClick,
-} from '@/lib/plugin-unlock'
+} from '@/lib/developer-mode-unlock'
 
 /** 从 package.json 构建时由 Vite define 注入 */
 declare const __APP_VERSION__: string

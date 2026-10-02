@@ -26,7 +26,7 @@ export { getFileBaseName }
 // ===== 类型定义 =====
 
 /** 标签页类型（Settings 不作为 Tab，保留独立视图） */
-export type TabType = 'chat' | 'agent' | 'scratch' | 'preview' | 'browser' | 'tutorial' | 'plugin'
+export type TabType = 'chat' | 'agent' | 'scratch' | 'preview' | 'browser' | 'tutorial'
 
 /** Scratch Pad 专用的固定 sessionId */
 export const SCRATCH_PAD_ID = '__scratch-pad__'
@@ -44,8 +44,6 @@ const BROWSER_TAB_PREFIX = '__browser__:'
 /** Scratch Pad 标签默认标题 */
 export const SCRATCH_PAD_TITLE = 'Scratch Pad'
 
-export const PLUGIN_GLOBAL_SESSION_ID = '__plugin-global__'
-
 /** 标签页数据 */
 export interface TabItem {
   /** 唯一标签 ID（直接使用 sessionId） */
@@ -56,11 +54,6 @@ export interface TabItem {
   sessionId: string
   /** 标签页显示标题 */
   title: string
-  /** 插件页归属，仅 type=plugin 时存在。 */
-  pluginId?: string
-  pluginPageId?: string
-  /** 插件页是否绑定宿主会话；global 用于设置页和桌宠等全局例外。 */
-  pluginScope?: 'session' | 'global'
   /** 预览文件路径，仅 type=preview 时存在（每文件一个 Tab 的身份依据） */
   filePath?: string
   /** 浏览器内部标签 id，仅 type=browser 时存在（对应主进程 BrowserViewState.tabs[].tabId） */
@@ -134,7 +127,6 @@ export const activeTabAtom = atom<TabItem | null>((get) => {
 export const activeSessionIdAtom = atom<string | null>((get) => {
   const activeTab = get(activeTabAtom)
   if (!activeTab) return null
-  if (activeTab.type === 'plugin' && activeTab.pluginScope !== 'session') return null
   return activeTab.sessionId
 })
 
@@ -208,20 +200,17 @@ export function isBrowserTab(tab: TabItem): boolean {
 }
 
 /**
- * 会话绑定的工作 Tab：文件预览、浏览器与插件页面。
+ * 会话绑定的工作 Tab：文件预览与浏览器页面。
  * 它们属于某个 Agent 会话，跟随会话上下文展示，不参与持久化。
  */
 export function isSessionWorkTab(tab: TabItem): boolean {
-  return isPreviewTab(tab) || isBrowserTab(tab) || (isPluginTab(tab) && tab.pluginScope === 'session')
+  return isPreviewTab(tab) || isBrowserTab(tab)
 }
 
 function isSessionTab(tab: TabItem): boolean {
   return tab.type === 'chat' || tab.type === 'agent'
 }
 
-export function isPluginTab(tab: TabItem): boolean {
-  return tab.type === 'plugin' && !!tab.pluginId && !!tab.pluginPageId
-}
 
 /**
  * 解析 Tab 在顶栏上下文中的归属会话：沿 parentSessionId 血缘走到根会话。
@@ -241,12 +230,6 @@ export function tabContextSessionId(tabs: readonly TabItem[], tab: TabItem): str
   return current.sessionId
 }
 
-export function createPluginTabId(pluginId: string, pageId: string, sessionId?: string): string {
-  return sessionId
-    ? `__plugin__:${pluginId}:${pageId}:${encodeURIComponent(sessionId)}`
-    : `__plugin__:${pluginId}:${pageId}`
-}
-
 function insertSessionWorkTab(tabs: TabItem[], workTab: TabItem): TabItem[] {
   const scratchTab = tabs.find((tab) => tab.id === SCRATCH_PAD_ID) ?? createScratchPadTab()
   const baseTabs = tabs.some((tab) => tab.id === SCRATCH_PAD_ID) ? [...tabs] : [scratchTab, ...tabs]
@@ -255,31 +238,6 @@ function insertSessionWorkTab(tabs: TabItem[], workTab: TabItem): TabItem[] {
   let insertIndex = ownerIndex + 1
   while (insertIndex < baseTabs.length && isSessionWorkTab(baseTabs[insertIndex]!) && baseTabs[insertIndex]!.sessionId === workTab.sessionId) insertIndex += 1
   return [...baseTabs.slice(0, insertIndex), workTab, ...baseTabs.slice(insertIndex)]
-}
-
-export function openPluginTab(
-  tabs: TabItem[],
-  input: { pluginId: string; pageId: string; title: string; sessionId?: string; scope?: 'session' | 'global' },
-): { tabs: TabItem[]; activeTabId: string } {
-  const scope = input.scope ?? (input.sessionId ? 'session' : 'global')
-  const sessionId = scope === 'session' ? input.sessionId : undefined
-  if (scope === 'session' && !sessionId) return { tabs, activeTabId: tabs.find((tab) => tab.id === SCRATCH_PAD_ID)?.id ?? SCRATCH_PAD_ID }
-  const id = createPluginTabId(input.pluginId, input.pageId, sessionId)
-  const existing = tabs.find((tab) => tab.id === id)
-  if (existing) return { tabs, activeTabId: id }
-  const pluginTab: TabItem = {
-    id,
-    type: 'plugin',
-    sessionId: sessionId ?? PLUGIN_GLOBAL_SESSION_ID,
-    title: input.title,
-    pluginId: input.pluginId,
-    pluginPageId: input.pageId,
-    pluginScope: scope,
-  }
-  return {
-    tabs: scope === 'session' ? insertSessionWorkTab(tabs, pluginTab) : [...(tabs.some((tab) => tab.id === SCRATCH_PAD_ID) ? tabs : [createScratchPadTab(), ...tabs]), pluginTab],
-    activeTabId: id,
-  }
 }
 
 function getPersistentTabs(tabs: TabItem[]): TabItem[] {
@@ -311,8 +269,6 @@ export type OpenTabInput = {
   type: TabType
   sessionId: string
   title: string
-  pluginId?: string
-  pluginPageId?: string
   /** 仅 type=preview 时必须提供 */
   filePath?: string
   /** 仅 type=browser 时必须提供（对应主进程浏览器内部标签） */
@@ -328,10 +284,6 @@ export function openTab(
 ): { tabs: TabItem[]; activeTabId: string } {
   const scratchTab = tabs.find((t) => t.id === SCRATCH_PAD_ID) ?? createScratchPadTab()
 
-  if (item.type === 'plugin') {
-    if (item.pluginId && item.pluginPageId) return openPluginTab(tabs, { pluginId: item.pluginId, pageId: item.pluginPageId, title: item.title })
-    return { tabs, activeTabId: SCRATCH_PAD_ID }
-  }
 
   if (item.type === 'scratch') {
     return {

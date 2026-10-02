@@ -166,13 +166,11 @@ bun run generate:icons    # 生成应用图标
 
 - `IPC_CHANNELS` - 基础通道（运行时、Git、环境）
 - `CHANNEL_IPC_CHANNELS` - 渠道管理
-- `CHAT_IPC_CHANNELS` - Chat 功能
 - `AGENT_IPC_CHANNELS` - Agent 功能
 - `ENVIRONMENT_IPC_CHANNELS` - 环境检查
 - `PROXY_IPC_CHANNELS` - 代理设置
 - `SYSTEM_PROMPT_IPC_CHANNELS` - 系统提示词
 - `MEMORY_IPC_CHANNELS` - 记忆功能
-- `CHAT_TOOL_IPC_CHANNELS` - Chat 工具
 - `FEISHU_IPC_CHANNELS` - 飞书集成
 - `GITHUB_RELEASE_IPC_CHANNELS` - GitHub 发布
 
@@ -184,7 +182,7 @@ bun run generate:icons    # 生成应用图标
 |------|------|
 | `agent-orchestrator.ts` | Agent 核心编排层（107KB）：并发守卫、渠道查找、环境变量构建、SDK 路径解析、消息持久化、事件流处理、错误处理、自动标题生成 |
 | `agent-collaboration-tools.ts` | Agent 协作委派工具（39KB）：10 个 MCP 工具（delegate_agent / delegate_agents / wait_for_delegations / list_delegations / get_delegation_results / stop_delegation / stop_delegations / answer_delegation_question / continue_delegation / list_available_agent_models），子会话创建、等待、管理和恢复 |
-| `adapters/claude-agent-adapter.ts` | Claude Agent SDK 适配器（45KB）：实现 AgentProviderAdapter 接口，长生命周期消息通道，支持 streamInput 持久化、工具权限注入、thinking signature 错误处理 |
+| `adapters/claude-agent-adapter.ts` | Claude Agent SDK runtime adapter；Pi runtime 由 `adapters/pi-agent-adapter.ts` 提供 |
 | `agent-session-manager.ts` | Agent 会话管理（60KB）：SDK 消息持久化、会话元数据 CRUD、JSONL 存储、委派子会话元数据 |
 | `agent-prompt-builder.ts` | Agent 系统提示词构建（19KB）：动态上下文构建、内置 Agent 构建、工作区上下文注入 |
 | `agent-service.ts` | Agent headless 运行服务（18KB）：无界面 Agent 运行、协作子会话执行 |
@@ -193,13 +191,11 @@ bun run generate:icons    # 生成应用图标
 | `agent-permission-service.ts` | Agent 权限管理：工具权限检查、权限模式管理 |
 | `agent-ask-user-service.ts` | Agent 用户交互：AskUser 请求处理 |
 | `agent-exit-plan-service.ts` | Agent 退出计划服务 |
-| `agent-workspace-manager.ts` | 工作区管理（16KB）：MCP Server 配置、Skills 配置、工作区 CRUD |
-| `team-manager.ts` / `team-file-service.ts` | 团队工作区与团队文件：远程 CRUD、邀请成员、文件上传 / 下载 / 删除 / 移动、本地缓存 |
-| `chat-service.ts` | Chat 流式调用编排（20KB）：Provider 适配器集成、消息持久化、AbortController |
-| `conversation-manager.ts` | 对话管理（13KB）：对话 CRUD、JSONL 消息存储、置顶、上下文分割 |
-| `channel-manager.ts` | 渠道管理（28KB）：渠道 CRUD、API Key AES-256-GCM 加密（safeStorage）、连接测试、模型获取、NewAPI 积分渠道同步 |
-| `sync-manager.ts` | 同步引擎（13KB）：团队工作区双向同步、轮询远程变更、冲突检测 |
-| `credits/` | 积分与计费系统：`SidebarBalanceBar`（余额显示）、`CreditsSettings`（积分设置页）、`credits-atoms.ts`、`useCreditsLoader.ts`，服务端 `credits-db.js`、`billing-utils.js` |
+| `agent-workspace-manager.ts` | 工作区管理：MCP Server 配置、Skills 配置、工作区 CRUD |
+| `conversation-title-service.ts` | 对话标题生成与重新生成；Chat 发送引擎已移除 |
+| `conversation-manager.ts` | 会话 JSONL / 元数据存储，供 Agent 目标、教程等兼容服务使用 |
+| `channel-manager.ts` | 渠道管理：渠道 CRUD、API Key AES-256-GCM 加密、连接测试与模型获取 |
+| `sync-manager.ts` | 团队兼容数据同步服务（UI 入口已移除，部分 planning/team 数据路径仍使用） |
 
 #### 集成服务
 
@@ -213,9 +209,7 @@ bun run generate:icons    # 生成应用图标
 
 | 服务 | 职责 |
 |------|------|
-| `chat-tools/` | Chat 工具实现目录：内置工具函数 |
 | `workspace-watcher.ts` | 工作区文件监听：文件系统变化监控 |
-| `chat-tools-watcher.ts` | Chat 工具监听：工具配置变化监控 |
 | `attachment-service.ts` | 附件管理：存储/读取/删除、文件对话框 |
 | `document-parser.ts` | 文档解析：PDF/Office/文本文件提取 |
 
@@ -263,7 +257,7 @@ bun run generate:icons    # 生成应用图标
 | `chat-atoms.ts` | 对话列表、当前消息、流式状态（Map 结构支持多对话并行）、模型选择、上下文设置、并排模式、思考模式、待上传附件 |
 | `agent-atoms.ts` | Agent 会话列表、当前会话、流式状态（`AgentStreamState`）、工作区选择、渠道选择、权限/AskUser 请求队列（按 sessionId Map） |
 | `active-view.ts` | 主面板视图切换（'conversations' / 'automations' / 'agent-skills'） |
-| `app-mode.ts` | 应用模式（'chat' / 'agent' / 'scratch'） |
+| `app-mode.ts` | 应用模式状态（历史 chat 值仅为设置兼容） |
 | `settings-tab.ts` | 设置面板当前标签页（17 个 Tab：general / channels / agent / prompts / tools / appearance / proxy / shortcuts / voice-input / memory / bots / storage / migration / credits / brand / team / tutorial / about） |
 | `automation-atoms.ts` | 定时任务状态（automationsAtom、automationFormAtom） |
 | `credits-atoms.ts` | 积分余额和用量统计 |
@@ -273,19 +267,19 @@ bun run generate:icons    # 生成应用图标
 
 ### 渲染进程组件架构（`renderer/components/`）
 
-- **`app-shell/`**：三面板布局（LeftSidebar | NavigatorPanel | MainContentPanel），侧边栏含模式切换、置顶对话、日期分组列表、流式指示器、余额显示、委派子会话树形折叠
-- **`chat/`**：聊天核心 — ChatView（消息加载/流式订阅）、ChatHeader（模型选择/上下文设置）、ChatInput（Tiptap 富文本编辑器）、ChatMessages（消息列表/自动滚动）、ParallelChatMessages（并排模式）
-- **`agent/`**：Agent 模式 — AgentView（87KB，纯展示 + 交互，IPC 监听已提升到全局）、AgentHeader（渠道/模型选择）、AgentMessages（消息列表 + 工具活动）、SDKMessageRenderer（54KB，SDK 消息渲染，含协作工具 UI）、SidePanel（52KB，右侧面板）、TeamWorkspaceView（77KB，团队工作区文件管理+Agent 侧栏）、WorkspaceSelector（工作区切换）、PermissionBanner/AskUserBanner（权限/问答请求 UI）、MentionList（@ 提及文件/工作区）、ProcessBlockGroup（工具调用分组展示）、TaskProgressCard（任务进度卡片）
-- **`agent-skills/`**：Agent 技能全屏管理视图 — AgentSkillsView（19KB，Skills + MCP 管理）、SkillCard/SkillDetailSheet/McpCard/McpDetailSheet、ImportSkillDialog、useAgentSkillsData
-- **`settings/`**：设置面板（30+ 个组件） — GeneralSettings、AppearanceSettings（含经典/现代风格切换）、ChannelSettings/ChannelForm、AgentSettings、McpServerForm、AboutSettings、FeishuSettings、DingTalkSettings、WeChatSettings、PromptSettings、ToolSettings、MemorySettings、ShortcutSettings、VoiceInputSettings、ProxySettings、MigrationSettings、StorageSettings、CreditsSettings（积分与用量）、BrandManager（Logo/品牌定制）、TeamWorkspaceSettings、BotHubSettings/BotDefaultSettings、UpdateDialog、ReleaseNotesViewer；含 `primitives/` 可复用表单组件
+- **`app-shell/`**：三面板布局，侧边栏提供会话列表、搜索、流式指示与项目导航
+- **`agent/`**：Agent 工作流（AgentView、AgentHeader、AgentMessages、SDKMessageRenderer、权限/问答 UI、@ 提及、任务进度）
+
+- **`agent-skills/`**：Agent Skills 与 MCP 管理视图
+- **`settings/`**：通用、外观、模型渠道、Agent、提示词、快捷键、代理、数据管理与更新设置
+
 - **`file-browser/`**：文件浏览器 — FileBrowser（工作区文件树浏览）
 - **`diff/`**：Diff 与 Markdown 编辑器 — DiffView/DiffTabContent（55KB，并排 diff 展示）、PreviewPanel/PreviewTabContent（Markdown 预览）、MarkdownRichEditor/MarkdownEditorToolbar（富文本编辑）、MarkdownToc（目录导航）、PreviewFindBar（预览内搜索）、WorktreeSelector
 - **`ai-elements/`**：AI 展示组件 — Markdown 渲染、代码块、Mermaid 图、推理折叠、上下文分割线、富文本输入
 - **`automation/`**：定时任务 UI — AutomationsListView（12KB，任务列表）、AutomationFormView（45KB，任务编辑表单）
 - **`auth/`**：认证 — LoginDialog、JoinWorkspaceDialog
 - **`scratch-pad/`**：草稿本 — ScratchPadView（14KB）
-- **`quick-task/`**：快速任务窗口 — QuickTaskApp（17KB）
-- **`onboarding/`**：新手引导 — OnboardingView
+- **`scratch-pad/`**：草稿本 — ScratchPadView- **`onboarding/`**：新手引导 — OnboardingView
 - **`tutorial/`**：教程横幅 — TutorialBanner
 - **`welcome/`**：欢迎页 — WelcomeView、WelcomeEmptyState
 - **`session-preview/`**：会话预览 — SessionMiniMapPopover
@@ -337,13 +331,6 @@ bun run generate:icons    # 生成应用图标
 - JSON 配置 + JSONL 追加日志，无本地数据库，文件可移植
 - Agent 工作区按 slug 隔离，每个会话独立目录
 - MCP 配置和 Skills 按工作区管理
-- 团队文件以服务器清单为唯一数据源，本地 `workspace-files/` 仅作为预览、打开和 Agent 解读的按需缓存
-
-## 团队服务器（`server/`）
-
-> 🔴 **server 服务端已迁移至本地私有 git 仓库**（`D:\profer\server-private.git`），不再随本公开仓库发布，`server/` 仅以未跟踪工作树目录形式保留在本地供开发。
->
-> 在公开仓库中：不要提交、讨论 server 源码结构、服务器 IP、部署路径、凭据等敏感信息。server 开发/发布请到私有仓库 `server-private.git` 中操作，完整架构文档见私有仓库。
 
 ## 默认 Skills（`apps/electron/default-skills/`）
 
@@ -369,7 +356,7 @@ bun run generate:icons    # 生成应用图标
 ## 构建工具
 
 - **主进程/Preload**：esbuild (`--bundle --platform=node --format=cjs --external:electron --external:@anthropic-ai/claude-agent-sdk`)
-- **渲染进程**：Vite + React 插件 + Tailwind CSS + HMR
+- **渲染进程**：Vite + React + Tailwind CSS + HMR
 - **开发热重载**：渲染进程通过 Vite HMR 即时生效；主进程/Preload 持续 watch 构建到 dist，但默认不自动重启 Electron，避免窗口反复抢焦点。修改 main/preload 后手动重启开发版。
 - **打包分发**：electron-builder（配置见 `electron-builder.yml`）
 
@@ -478,7 +465,7 @@ node scripts/push-release.cjs X.Y.Z
 
 ## Agent SDK 集成架构
 
-基于 `@anthropic-ai/claude-agent-sdk@0.3.153` 实现 Agent 模式，与 Chat 模式并行。
+Agent 主界面只保留 Agent 工作流；Chat 用户模式与第三方插件宿主已移除。Claude Agent SDK 与 Pi Agent adapter 仍并存。
 
 ### 核心流程
 
@@ -575,9 +562,9 @@ React UI 更新
 ### 已实现功能
 
 - ✅ **多 Provider 支持**：Anthropic、OpenAI、DeepSeek、Kimi、智谱、MiniMax、豆包、通义千问、Google、自定义端点
-- ✅ **Agent SDK 集成**：基于 Claude Agent SDK 的完整 Agent 模式
+- ✅ **Agent SDK 集成**：Claude Agent SDK 与 Pi Agent adapter 双运行时
 - ✅ **飞书集成**：消息同步、任务通知、OAuth 认证（68KB 核心服务）
-- ✅ **工作区管理**：多工作区隔离、MCP Server 配置、Agent 技能全屏管理、团队文件管理
+- ✅ **工作区管理**：多工作区隔离、MCP Server 配置、Agent Skills 管理
 - ✅ **权限系统**：工具权限检查、用户确认流程
 - ✅ **Automation 定时任务**：持久化调度、运行历史、手动运行、失败保护、飞书通知
 - ✅ **记忆系统**：跨会话记忆存储与检索
@@ -585,67 +572,20 @@ React UI 更新
 - ✅ **代理支持**：系统代理检测与配置
 - ✅ **文档解析**：PDF、Office、文本文件提取
 - ✅ **多模态支持**：图片、文档附件
-- ✅ **Chat 工具**：内置工具系统 + 动态加载
-
+- ✅ **文档解析**：PDF、Office、文本文件提取
 ### 架构亮点
 
 - **并发守卫**：同一会话防止并行请求冲突
 - **全局监听**：Agent IPC 监听器永不销毁，确保后台会话不丢失
 - **权限排队**：按 sessionId 隔离权限请求，支持多会话并行
-- **文件监听**：工作区文件、MCP 配置、Chat 工具实时监控
+- **文件监听**：工作区文件与 MCP 配置实时监控
 - **事件流处理**：SDK 消息流式转换与累积
 - **错误映射**：SDK 错误统一转换为应用错误
 
-## 更新日志
+## 历史维护说明
 
-> 2026-06-20
+下方旧版更新记录曾描述团队文件管理和独立服务端。这些内容不代表当前公开应用功能；团队工作区 UI、Chat 用户模式与第三方插件系统已从应用入口和对应实现中移除。共享工作区/同步底层服务仍有 planning 等调用方，不能将其等同于完整产品能力。
 
-### 安全修复
-- JWT_SECRET 改为强制要求环境变量（`server/src/config.js`），拒绝默认值
-- Admin 密码改为 `ADMIN_PASSWORD` 环境变量，未设置则随机生成（`server/src/db.js`）
-- 文件上传增加 `MAX_FILE_SIZE` 上限（默认 500MB），Content-Length 预检 + buffer 双校验（`server/src/routes/files.js`）
+## 当前裁剪状态
 
-### 服务端模块化
-- `server/index.js` 拆分为 `src/{config,db,utils,middleware,routes/{auth,workspaces,invitations,sync,files,heartbeat}}`
-- 修复 `safePath()` 跨平台路径分隔符 bug（Windows `\` 不兼容 `root + '/'` 前缀检查，改用 `pathSep`）
-
-### Agent 编排层拆分
-- `agent-orchestrator.ts` 提取 `agent-retry-utils.ts`、`agent-prompt-utils.ts`、`agent-sdk-cli-path.ts`、`agent-directory-utils.ts`
-- `feishu-bridge.ts` 补充提取 `feishu/group-utils.ts`
-
-### 团队文件管理体验收尾
-- 团队模式主界面改为文件管理主区 + 可收起 Agent 侧栏，窗口控制按钮嵌入文件管理顶栏，保留可拖动标题栏区域
-- 上传按钮改为稳定的分裂按钮，支持上传文件和上传文件夹，修复窄宽度下顶栏文字换行与展开菜单点击问题
-- 团队文件预览优先使用本地 `workspace-files/` 缓存；自己上传的文件直接使用本地路径，缓存缺失或其他成员文件再下载
-- 拖拽导入遵循目标目录：拖到当前目录空白处进入当前目录，拖到文件夹卡片 / 列表行 / 树节点直接进入该文件夹
-- 团队文件可拖入右侧 Agent 面板解读，并使用专用拖拽类型避免和普通本地文件拖拽冲突
-
-### Bug 修复
-- Hono v4 `*` 通配符 `c.req.param('*')` 返回 undefined，DELETE/DOWNLOAD 改为 `:path{.+}` 命名通配符
-- 删除团队文件时间步清理本地 `workspace-files/` 副本
-- Electron 拖拽兼容：`dataTransfer.items` 为空时回退到 `dataTransfer.files`
-- `<input webkitdirectory>` 在 Electron 不工作，改用 `dialog.showOpenDialog` + `readDirectoryRecursive` 原生方案
-- 服务端上传自动补齐父目录 `is_directory=1` 条目（确保客户端 `buildFileTree` 正确构建树）
-
-### 测试
-- 新增 `agent-retry-utils.test.ts`、`agent-directory-utils.test.ts`、`server/src/utils.test.js`（37 用例）
-
-### 部署
-- 团队服务器部署详情已随 server 迁移至本地私有仓库 `server-private.git`，公开仓库不再记录服务器地址与路径。
-
-## 后续计划
-
-### 高优先级
-- HTTPS + 域名（nginx + Let's Encrypt）
-- 数据库定期备份（SQLite 单文件）
-- 注册限流（防暴力注册）
-- 工作区解散/恢复机制（冷静期 + 到期清理）
-- 邀请列表管理（pending/accepted/expired）
-- 文件搜索功能
-
-### 中优先级
-- ~~PC 客户端自动更新（electron-updater）~~ ✅ 已完成（v0.12.27+，双渠道：国内服务器 + GitHub）
-- 邀请过期自动清理（定时任务）
-- 拖动稳定性优化
-- feishu-bridge 继续拆分（command-handlers、chat-history）
-- 错误监控（服务端日志收集）
+Chat 用户模式、团队工作区 UI、积分计费 UI、远程机器人、移动端远程接入、语音输入、快速任务窗口与第三方插件宿主已从本次产品入口/实现裁剪中移除。团队/同步相关 main 服务仍有规划与数据兼容调用方，后续需单独评估后再删除。

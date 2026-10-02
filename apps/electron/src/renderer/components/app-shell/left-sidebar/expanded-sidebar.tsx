@@ -5,7 +5,6 @@
  */
 
 import * as React from 'react'
-import { PluginSidebarEntries } from '@/components/plugins/PluginEntries'
 import { PanelLeftClose, Plus, Search, FolderOpen, Archive, ArchiveRestore, ArrowLeft, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/tooltip'
@@ -191,7 +190,6 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
         </div>
       )}
 
-      <PluginSidebarEntries />
       {/* 当前会话：直接复用现有会话行组件，不另造一套 Tab 行。 */}
       <div className="flex-none px-2 pt-2 pb-1 titlebar-no-drag">
         <div className="mb-1 flex items-center justify-between px-2">

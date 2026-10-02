@@ -105,11 +105,10 @@ describe('collectAttachedDirectories', () => {
 describe('collectProductArtifactDirectories', () => {
   test('只返回真实存在的产品目录', () => {
     mkdirSync(join(testDir!, 'skins'), { recursive: true })
-    mkdirSync(join(testDir!, 'plugins'), { recursive: true })
 
     const result = collectProductArtifactDirectories()
 
-    expect(result).toEqual([join(testDir!, 'skins'), join(testDir!, 'plugins')])
+    expect(result).toEqual([join(testDir!, 'skins')])
   })
 
   test('不包含配置与凭据文件（凭据目录不在清单内）', () => {

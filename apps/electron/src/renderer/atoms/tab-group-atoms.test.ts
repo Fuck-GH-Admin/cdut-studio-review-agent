@@ -42,7 +42,7 @@ import {
 
 // ===== 白名单 =====
 
-test('agent/chat/preview 可以参与组合，单例与插件视口不行', () => {
+test('agent/chat/preview 可以参与组合，单例 Tab 不行', () => {
   expect(isGroupEligibleTab({ type: 'agent' })).toBe(true)
   expect(isGroupEligibleTab({ type: 'chat' })).toBe(true)
   // preview 有独立内容身份（一个文件），可以当作一栏展示；
@@ -51,7 +51,6 @@ test('agent/chat/preview 可以参与组合，单例与插件视口不行', () =
   expect(isGroupEligibleTab({ type: 'browser' })).toBe(true)
   expect(isGroupEligibleTab({ type: 'scratch' })).toBe(false)
   expect(isGroupEligibleTab({ type: 'tutorial' })).toBe(false)
-  expect(isGroupEligibleTab({ type: 'plugin' })).toBe(false)
   expect(isGroupEligibleTab(null)).toBe(false)
 })
 

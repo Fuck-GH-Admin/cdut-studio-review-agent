@@ -327,8 +327,6 @@ export interface AppSettings {
   developerModeEnabled?: boolean
   /** 是否启用 Agent 开放认识论姿态；仅在开发者模式下生效。 */
   openEpistemicModeEnabled?: boolean
-  /** @deprecated 旧版插件入口解锁标记，仅兼容读取，不再写入。 */
-  pluginSystemEnabled?: boolean
   /** 是否启用局域网移动模式（试验版）；启动后自动恢复。 */
   pocketModeEnabled?: boolean
   /** 移动模式服务端口（正式版默认 7788，开发模式默认 7789；0/缺省表示使用默认端口）。 */

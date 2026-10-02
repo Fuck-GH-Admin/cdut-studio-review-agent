@@ -16,9 +16,6 @@ import { MarkdownRichEditor } from '@/components/diff/MarkdownRichEditor'
 import { MarkdownToc } from '@/components/diff/MarkdownToc'
 import { ScratchPadView } from '@/components/scratch-pad/ScratchPadView'
 import { TabErrorBoundary } from './TabErrorBoundary'
-import { PluginViewport } from './PluginViewport'
-
-const TAB_VIEW_INSTANCE = { kind: 'tab' as const }
 
 export interface TabContentProps {
   tabId: string
@@ -65,10 +62,6 @@ export function TabContent({ tabId }: TabContentProps): React.ReactElement {
         <BrowserTabContent tabId={tab.id} sessionId={tab.sessionId} browserTabId={tab.browserTabId ?? ''} />
       </TabErrorBoundary>
     )
-  }
-
-  if (tab.type === 'plugin' && tab.pluginId && tab.pluginPageId) {
-    return <PluginViewport pluginId={tab.pluginId} pageId={tab.pluginPageId} instance={tab.pluginScope === 'session' ? { kind: 'tab', sessionId: tab.sessionId } : TAB_VIEW_INSTANCE} visible />
   }
 
   return (

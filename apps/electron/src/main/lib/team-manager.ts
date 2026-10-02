@@ -8,7 +8,7 @@
 import { randomUUID } from 'node:crypto'
 import { fetch as undiciFetch } from 'undici'
 import { getTeamAuth, refreshAuthToken } from './auth-service'
-import { readIndex, writeIndex, ensurePluginManifest } from './agent-workspace-manager'
+import { readIndex, writeIndex, ensureClaudeSkillManifest } from './agent-workspace-manager'
 import { getAgentWorkspacePath } from './config-paths'
 import { enqueueChange } from './sync-manager'
 import type { AgentWorkspace, WorkspaceRole } from '@profer/shared'

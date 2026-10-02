@@ -23,7 +23,6 @@ import {
   Database,
   Network,
   UserRound,
-  Blocks,
   FlaskConical,
   SlidersHorizontal,
 } from "lucide-react";
@@ -59,7 +58,6 @@ import { ShortcutSettings } from "./ShortcutSettings";
 import { DataManagementSettings } from "./DataManagementSettings";
 import { OpenApiSettings } from "./OpenApiSettings";
 import { ProxySettings } from "./ProxySettings";
-import { PluginSettings } from "./PluginSettings";
 import { DeveloperSettings } from "./DeveloperSettings";
 
 /** 设置 Tab 定义 */
@@ -117,12 +115,6 @@ const DEVELOPER_MODE_ITEM: SettingsTabItem = {
   icon: <FlaskConical size={16} />,
 };
 
-const PLUGIN_SYSTEM_ITEM: SettingsTabItem = {
-  id: "plugins",
-  label: "插件",
-  icon: <Blocks size={16} />,
-};
-
 /** 依赖团队账号登录的 Tab（未登录时不展示） */
 
 /** 根据标签页 id 渲染对应内容 */
@@ -152,8 +144,6 @@ function renderTabContent(tab: SettingsTab): React.ReactElement {
       return <DataManagementSettings />;
     case "developer":
       return <DeveloperSettings />;
-    case "plugins":
-      return <PluginSettings />;
     // 开放 API 暂无导航入口；保留渲染分支以兼容既有内部跳转和后续恢复。
     case "openapi":
       return <OpenApiSettings />;
@@ -232,7 +222,7 @@ export function SettingsPanel({
       : MODEL_GROUP_ITEMS.filter((item) => item.id !== "agent")
 
     const systemItems = developerModeEnabled
-      ? [SYSTEM_GROUP_ITEMS[0]!, DEVELOPER_MODE_ITEM, PLUGIN_SYSTEM_ITEM, ...SYSTEM_GROUP_ITEMS.slice(1)]
+      ? [SYSTEM_GROUP_ITEMS[0]!, DEVELOPER_MODE_ITEM, ...SYSTEM_GROUP_ITEMS.slice(1)]
       : SYSTEM_GROUP_ITEMS
 
     const allGroups: SettingsTabGroup[] = [

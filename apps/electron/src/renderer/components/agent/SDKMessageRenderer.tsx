@@ -1,4 +1,3 @@
-import { PluginMessageActions } from '@/components/plugins/PluginEntries'
 /**
  * SDKMessageRenderer — 渲染 SDKMessage 对象
  *
@@ -988,7 +987,6 @@ export function AssistantTurnRenderer({ sessionId: sessionIdProp, turn, allMessa
         return (
           <MessageActions className="agent-turn-actions pl-[46px] mt-0.5 min-h-[28px] justify-start">
             {hasDuration && <DurationBadge durationMs={durationMs!} usage={usage} />}
-            {sessionId && typeof lastUuid === 'string' && <PluginMessageActions reference={{ kind: 'agent', sessionId, messageId: lastUuid }} />}
             {textContent && <CopyButton content={textContent} />}
             {onFork && lastUuid && (
               <div className="group/fork flex items-center">

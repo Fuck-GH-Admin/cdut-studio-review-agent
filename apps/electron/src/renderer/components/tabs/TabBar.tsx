@@ -11,10 +11,7 @@
 import * as React from "react";
 import { useLayoutEffect } from "react";
 import { useAtom, useAtomValue, useSetAtom, useStore } from "jotai";
-import { PluginTopBarEntries } from '@/components/plugins/PluginEntries'
-import { resolvePluginPageSurfaceVisibility } from '@profer/plugin-api'
-import { installedPluginsAtom } from '@/atoms/plugin-system'
-import { Globe2, PanelRight, Ungroup, Blocks, Compass } from "lucide-react";
+import { Globe2, PanelRight, Ungroup, Compass } from "lucide-react";
 import { toast } from "sonner";
 import {
   tabsAtom,
@@ -91,15 +88,12 @@ export function TabBar({
   const setTabs = useSetAtom(tabsAtom);
   const [activeTabId, setActiveTabId] = useAtom(activeTabIdAtom);
   const agentSessions = useAtomValue(agentSessionsAtom);
-  const installedPlugins = useAtomValue(installedPluginsAtom)
-  const hasPluginPages = installedPlugins.some((plugin) => plugin.enabled && (plugin.manifest.contributes.pages ?? []).some((page) => resolvePluginPageSurfaceVisibility(page, plugin.pagePlacements?.[page.id], 'tab')))
   const contextTabs = React.useMemo(() => {
     const active = tabs.find((tab) => tab.id === activeTabId) ?? null
     if (!active) return tabs
     if (active.type === 'chat') return tabs.filter((tab) => tab.sessionId === active.sessionId)
 
-    const sessionBoundPlugin = active.type === 'plugin' && active.pluginScope === 'session'
-    if (active.type === 'agent' || active.type === 'preview' || active.type === 'browser' || sessionBoundPlugin) {
+    if (active.type === 'agent' || active.type === 'preview' || active.type === 'browser') {
       const sessionId = active.sessionId
       const activeSession = agentSessions.find((session) => session.id === sessionId)
       const ownerTab = tabs.find((tab) => (tab.type === 'chat' || tab.type === 'agent') && tab.sessionId === sessionId)
@@ -229,22 +223,6 @@ export function TabBar({
         if (!isAgentWorkspaceIdVisible(session?.workspaceId, agentWorkspaces)) return;
       }
 
-      // 原生 WebContentsView 位于 renderer DOM 之上，不能等 React 重渲染后再隐藏：
-      // 顶栏切换标签的瞬间，旧网页可能仍覆盖新 TabBar，甚至继续拦截鼠标命中。
-      // 先同步切换主进程的前台浏览器所有权；新的 BrowserViewport 发布布局后再显示目标网页。
-      const pluginApi = (window.electronAPI as Partial<typeof window.electronAPI>)
-      const activePluginTab = tab.type === "plugin" && tab.pluginId && tab.pluginPageId
-        ? { pluginId: tab.pluginId, pageId: tab.pluginPageId, instance: tab.pluginScope === 'session' ? { kind: 'tab' as const, sessionId: tab.sessionId } : { kind: 'tab' as const } }
-        : null
-      const hidePluginView = pluginApi.hidePluginView
-      if (typeof hidePluginView === 'function') {
-        for (const candidate of tabs) {
-          if (candidate.type === 'plugin' && candidate.pluginId && candidate.pluginPageId
-            && (!activePluginTab || candidate.id !== tab.id)) {
-            void hidePluginView(candidate.pluginId, candidate.pluginPageId, candidate.pluginScope === 'session' ? { kind: 'tab', sessionId: candidate.sessionId } : { kind: 'tab' }).catch(() => undefined)
-          }
-        }
-      }
       const setForeground = (
         window.electronAPI as Partial<typeof window.electronAPI>
       ).setAgentBrowserForeground;
@@ -273,28 +251,7 @@ export function TabBar({
       // 点击任意 tab 都关闭定时任务编辑表单（overlay 否则会盖在内容区上）
       setAutomationForm({ open: false, draft: null });
 
-      if (tab.type === "plugin") {
-        if (tab.pluginScope === 'session') {
-          const ownerTab = tabs.find((candidate) => (candidate.type === 'chat' || candidate.type === 'agent') && candidate.sessionId === tab.sessionId)
-          if (ownerTab?.type === 'chat') {
-            setAppMode("chat")
-            setCurrentConversationId(tab.sessionId)
-            setCurrentAgentSessionId(null)
-            setCurrentAgentWorkspaceId(null)
-          } else {
-            setAppMode("agent")
-            setCurrentConversationId(null)
-            setCurrentAgentSessionId(tab.sessionId)
-            const session = agentSessions.find((candidate) => candidate.id === tab.sessionId)
-            if (session?.workspaceId) setCurrentAgentWorkspaceId(session.workspaceId)
-          }
-        } else {
-          setAppMode("scratch")
-          setCurrentConversationId(null)
-          setCurrentAgentSessionId(null)
-          setCurrentAgentWorkspaceId(null)
-        }
-      } else if (tab.type === "chat") {
+      if (tab.type === "chat") {
         setAppMode("chat");
         setCurrentConversationId(tab.sessionId);
       } else if (tab.type === "agent" || tab.type === "preview") {
@@ -560,7 +517,6 @@ export function TabBar({
         streamingMap={indicatorMap}
         workspaceNameBySessionId={workspaceNameBySessionId}
         automationSessionIds={automationSessionIds}
-        hasPluginPages={hasPluginPages}
         onActivate={handleActivate}
         onClose={requestClose}
         onDragStart={handleDragStart}
@@ -578,7 +534,6 @@ function TabBarInner({
   streamingMap,
   workspaceNameBySessionId,
   automationSessionIds,
-  hasPluginPages,
   onActivate,
   onClose,
   onDragStart,
@@ -590,7 +545,6 @@ function TabBarInner({
   streamingMap: Map<string, SessionIndicatorStatus>;
   workspaceNameBySessionId: Map<string, string>;
   automationSessionIds: Set<string>;
-  hasPluginPages: boolean;
   onActivate: (tabId: string) => void;
   onClose: (tabId: string) => void;
   onDragStart: (tabId: string, e: React.PointerEvent) => void;
@@ -628,7 +582,7 @@ function TabBarInner({
   // 预览/浏览器等工作 Tab 激活时，入口仍归口到其宿主会话，不能凭空消失。
   const activeSessionId = !activeTab
     ? null
-    : (activeTab.type === 'chat' || activeTab.type === 'agent' || activeTab.type === 'preview' || activeTab.type === 'browser' || (activeTab.type === 'plugin' && activeTab.pluginScope === 'session'))
+    : (activeTab.type === 'chat' || activeTab.type === 'agent' || activeTab.type === 'preview' || activeTab.type === 'browser')
       ? activeTab.sessionId
       : null
   const activeAgentSessionId = !activeTab
@@ -782,14 +736,6 @@ function TabBarInner({
       badge: hasFileChanges ? (
         <span className="absolute -top-0.5 -right-0.5 size-2 rounded-full bg-primary animate-pulse" />
       ) : undefined,
-    },
-    {
-      id: "plugin-pages",
-      visible: !teamMode && activeSessionId !== null && hasPluginPages,
-      label: "打开插件页面",
-      tooltip: "打开插件页面",
-      icon: <Blocks className="size-3.5" />,
-      onClick: () => undefined,
     },
     {
       id: "coach-tour",
@@ -1405,9 +1351,7 @@ function TopBarActions({
           role="toolbar"
           aria-label="顶栏工具"
         >
-          {visibleTools.map((tool) => tool.id === "plugin-pages"
-            ? <PluginTopBarEntries key={tool.id} />
-            : (
+          {visibleTools.map((tool) => (
               <Tooltip key={tool.id}>
                 <TooltipTrigger asChild>
                   <Button
@@ -1430,7 +1374,7 @@ function TopBarActions({
                   <p>{tool.tooltip}</p>
                 </TooltipContent>
               </Tooltip>
-            ))}
+          ))}
         </div>
       )}
       {showWindowControls && children}

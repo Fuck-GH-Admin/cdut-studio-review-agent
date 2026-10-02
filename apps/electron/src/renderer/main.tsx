@@ -71,7 +71,6 @@ import {
   uiScaleAtom,
   initializeUiScale,
 } from './atoms/ui-scale'
-import { installedPluginsAtom } from './atoms/plugin-system'
 import { developerModeEnabledAtom, openEpistemicModeEnabledAtom } from './atoms/developer-mode'
 import { useGlobalAgentListeners } from './hooks/useGlobalAgentListeners'
 import { useBrowserLocalFileSelectionQuote } from './hooks/useBrowserLocalFileSelectionQuote'
@@ -628,49 +627,6 @@ function UiScaleInitializer(): null {
   return null
 }
 
-/** 恢复插件列表与开发者模式设置。 */
-function PluginSystemInitializer(): null {
-  const store = useStore()
-  useEffect(() => {
-    let revision = 0
-    const refresh = (): void => {
-      const request = ++revision
-      void window.electronAPI.listPlugins().then((plugins) => {
-        if (request !== revision) return
-        store.set(installedPluginsAtom, plugins)
-        const pages = new Set(plugins.filter((plugin) => plugin.enabled).flatMap((plugin) =>
-          (plugin.manifest.contributes.pages ?? []).map((page) => `${plugin.manifest.id}:${page.id}`)))
-        const tabs = store.get(tabsAtom)
-        const next = tabs.filter((tab) => tab.type !== 'plugin' || pages.has(`${tab.pluginId}:${tab.pluginPageId}`))
-        if (next.length === tabs.length) return
-        store.set(tabsAtom, ensureScratchPadTab(next))
-        if (!next.some((tab) => tab.id === store.get(activeTabIdAtom))) {
-          store.set(activeTabIdAtom, SCRATCH_PAD_ID); store.set(appModeAtom, 'scratch')
-          store.set(currentConversationIdAtom, null); store.set(currentAgentSessionIdAtom, null); store.set(currentAgentWorkspaceIdAtom, null)
-        }
-      }).catch(() => undefined)
-    }
-    refresh()
-    const unsubscribe = window.electronAPI.onPluginsChanged(refresh)
-    return () => { revision += 1; unsubscribe() }
-  }, [store])
-  const setDeveloperModeEnabled = useSetAtom(developerModeEnabledAtom)
-  const setOpenEpistemicModeEnabled = useSetAtom(openEpistemicModeEnabledAtom)
-
-  useEffect(() => {
-    const apply = (settings: { developerModeEnabled?: boolean; openEpistemicModeEnabled?: boolean }): void => {
-      setDeveloperModeEnabled(settings.developerModeEnabled === true)
-      setOpenEpistemicModeEnabled(settings.developerModeEnabled === true && settings.openEpistemicModeEnabled === true)
-    }
-    void window.electronAPI.getSettings()
-      .then(apply)
-      .catch((error: unknown) => console.error('[开发者模式] 初始化状态失败:', error))
-    return window.electronAPI.onDeveloperSettingsChanged(apply)
-  }, [setDeveloperModeEnabled, setOpenEpistemicModeEnabled])
-
-  return null
-}
-
 /**
  * Agent IPC 监听器初始化组件
  *
@@ -1146,7 +1102,6 @@ if (isDetachedPreviewWindow) {
       <UiPreferencesInitializer />
       <MarkdownFontSizeInitializer />
       <UiScaleInitializer />
-      <PluginSystemInitializer />
       <AgentListenersInitializer />
       <UpdaterInitializer />
       <AutomationInitializer />

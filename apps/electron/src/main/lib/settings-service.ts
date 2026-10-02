@@ -94,11 +94,7 @@ export function updateSettings(updates: Partial<AppSettings>): AppSettings {
     ...(updates.agentRuntime !== undefined
       ? { agentRuntime: normalizeAgentRuntime(updates.agentRuntime) }
       : {}),
-    ...(updates.developerModeEnabled === undefined && updates.pluginSystemEnabled !== undefined
-      ? { developerModeEnabled: updates.pluginSystemEnabled }
-      : {}),
   }
-  delete normalizedUpdates.pluginSystemEnabled
   const developerModeEnabled = normalizedUpdates.developerModeEnabled
     ?? _settingsCache!.developerModeEnabled
     ?? false
@@ -109,7 +105,6 @@ export function updateSettings(updates: Partial<AppSettings>): AppSettings {
     ..._settingsCache!,
     ...normalizedUpdates,
   }
-  delete updated.pluginSystemEnabled
 
   const filePath = getSettingsPath()
 
@@ -122,20 +117,10 @@ export function updateSettings(updates: Partial<AppSettings>): AppSettings {
     throw new Error('写入应用设置失败')
   }
 
-  for (const listener of settingsListeners) {
-    try { listener() } catch { /* 监听者错误不影响已保存的设置 */ }
-  }
   return updated
 }
 
 /** 清除内存缓存（测试用） */
 export function clearSettingsCache(): void {
   _settingsCache = null
-}
-
-/** 宿主外观变化同步给隔离的插件页面。 */
-const settingsListeners = new Set<() => void>()
-export function subscribeSettingsChanges(listener: () => void): () => void {
-  settingsListeners.add(listener)
-  return () => { settingsListeners.delete(listener) }
 }

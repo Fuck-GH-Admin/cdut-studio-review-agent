@@ -93,16 +93,6 @@ export function useCloseTab(): UseCloseTabReturn {
       ? result
       : { ...result, activeTabId: nextActiveTabId }
     const wasActive = nextResult.activeTabId !== activeTabId
-    // 原生插件 View 位于 renderer DOM 之上，先收起/销毁再切换 Tab，避免关闭瞬间
-    // 仍有不可见的 native View 覆盖新激活内容。
-    const removedPluginTabs = tabs.filter((tab) => tab.type === 'plugin' && !nextResult.tabs.some((remaining) => remaining.id === tab.id))
-    for (const removed of removedPluginTabs) {
-      if (!removed.pluginId || !removed.pluginPageId) continue
-      void window.electronAPI.closePluginView(removed.pluginId, removed.pluginPageId, removed.pluginScope === 'session' ? { kind: 'tab', sessionId: removed.sessionId } : { kind: 'tab' }).catch(() => undefined)
-    }
-    if (closingTab?.type === 'plugin' && closingTab.pluginId && closingTab.pluginPageId) {
-      void window.electronAPI.closePluginView(closingTab.pluginId, closingTab.pluginPageId, closingTab.pluginScope === 'session' ? { kind: 'tab', sessionId: closingTab.sessionId } : { kind: 'tab' }).catch(() => undefined)
-    }
     setTabs(nextResult.tabs)
     setActiveTabId(nextResult.activeTabId)
     setTabMru(result.mru)

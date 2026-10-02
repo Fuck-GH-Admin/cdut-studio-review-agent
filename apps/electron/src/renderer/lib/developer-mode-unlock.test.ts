@@ -3,7 +3,7 @@ import {
   INITIAL_DEVELOPER_MODE_UNLOCK_CLICK_STATE,
   DEVELOPER_MODE_UNLOCK_MAX_GAP_MS,
   advanceDeveloperModeUnlockClick,
-} from './plugin-unlock'
+} from './developer-mode-unlock'
 
 describe('advanceDeveloperModeUnlockClick 开发者模式解锁', () => {
   test('Given 版本号连续点击五次 When 每次间隔未超时 Then 仅第五次解锁', () => {

@@ -1,4 +1,3 @@
-import { routePluginModel } from './plugins/plugin-routing'
 /**
  * AgentOrchestrator — Agent 编排层
  *
@@ -111,7 +110,7 @@ import { createPiFileCheckpoint, prunePiFileCheckpoints } from './pi-file-checkp
 import {
   getAgentWorkspace,
   getWorkspaceMcpConfig,
-  ensurePluginManifest,
+  ensureClaudeSkillManifest,
 } from './agent-workspace-manager'
 import { getAgentSessionWorkspacePath, getPiCheckpointsDir, getSdkConfigDir } from './config-paths'
 import { prepareRuntimeSkills } from './global-skill-manager'
@@ -879,7 +878,6 @@ export class AgentOrchestrator {
 
     try {
     // 0.5 清除上一轮中断标记
-      input = routePluginModel(`agent:${sessionId}`, input, agentRuntime)
       ;({ channelId, modelId } = input)
       try {
         updateAgentSessionMeta(sessionId, { stoppedByUser: false })
@@ -1125,7 +1123,7 @@ export class AgentOrchestrator {
           workspace = ws
           console.log(`[Agent 编排] 使用 session 级别 cwd: ${agentCwd} (${ws.name}/${sessionId})`)
 
-          ensurePluginManifest(ws.slug, ws.name)
+          ensureClaudeSkillManifest(ws.slug, ws.name)
 
           if (existingSdkSessionId) {
             console.log(`[Agent 编排] 将尝试 resume: ${existingSdkSessionId}`)
@@ -1786,6 +1784,7 @@ ${enrichedMessage}`
         }),
         // 回退后 resume：从指定消息处继续（SDK 在同一 JSONL 内创建分支）
         ...(rewindResumeAt && { resumeSessionAt: rewindResumeAt }),
+        // Pi SDK local plugin discovery loads workspace Skills; third-party plugin host removed.
         plugins: skillRuntimeOptions.plugins,
         skills: skillRuntimeOptions.skills,
         // 合并附加目录：用户当次输入 + 会话级 + 工作区级（详见 collectAttachedDirectories）

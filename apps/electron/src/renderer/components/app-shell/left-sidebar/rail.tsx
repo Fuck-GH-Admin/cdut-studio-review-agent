@@ -5,7 +5,6 @@
  */
 
 import * as React from 'react'
-import { PluginSidebarEntries } from '@/components/plugins/PluginEntries'
 import { PanelLeftOpen, Bot, Plus, Search, CalendarDays, Blocks } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/tooltip'
@@ -87,7 +86,6 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
 
         <div className="my-3 h-px w-8 bg-border/70" />
 
-        <PluginSidebarEntries collapsed />
         {/* 高频操作 */}
         <div className="flex flex-col items-center gap-1.5">
           <Tooltip>
