@@ -170,6 +170,7 @@ bun run generate:icons    # 生成应用图标
 - `MEMORY_IPC_CHANNELS` - 记忆功能
 - `FEISHU_IPC_CHANNELS` - 飞书集成
 - `GITHUB_RELEASE_IPC_CHANNELS` - GitHub 发布
+- `REVIEW_IPC_CHANNELS` - 内容审核专区（14 通道：案卷 CRUD/导入、大纲、条目识别、审核运行、运行查询、助手对话、报告导出、网关自检、案卷设置）
 
 ### 主进程服务层（`main/lib/`）
 
@@ -187,6 +188,7 @@ bun run generate:icons    # 生成应用图标
 | `conversation-title-service.ts` | 对话标题生成与重新生成；Chat 发送引擎已移除 |
 | `conversation-manager.ts` | 会话 JSONL / 元数据存储，供 Agent 目标、教程等兼容服务使用 |
 | `channel-manager.ts` | 渠道管理：渠道 CRUD、API Key AES-256-GCM 加密、连接测试与模型获取 |
+| `review/` | 内容审核专区服务层（17 文件）：case-store 案卷原子存储、document-service 文档解析切块、review-model-gateway 统一模型出口（白名单强制 + 多模态降级）、mock-review-engine 确定性引擎、ai-review-service AI 双路径、run-service 运行编排、report-service 报告导出、review-ipc 14 个入参校验 handler |
 
 #### 集成服务
 
@@ -247,9 +249,10 @@ bun run generate:icons    # 生成应用图标
 |-----------|-----------|
 | `chat-atoms.ts` | 对话列表、当前消息、流式状态（Map 结构支持多对话并行）、模型选择、上下文设置、并排模式、思考模式、待上传附件 |
 | `agent-atoms.ts` | Agent 会话列表、当前会话、流式状态（`AgentStreamState`）、工作区选择、渠道选择、权限/AskUser 请求队列（按 sessionId Map） |
-| `active-view.ts` | 主面板视图切换（'conversations' / 'settings'） |
+| `active-view.ts` | 主面板视图切换（'conversations' / 'planning' / 'agent-skills' / 'content-review'） |
 | `app-mode.ts` | 应用模式状态（历史 chat 值仅用于旧设置兼容） |
-| `settings-tab.ts` | 设置面板当前标签页 |
+| `settings-tab.ts` | 设置面板当前标签页（18 个：general / usage / account / channels / appearance / about / agent / prompts / tools / bots / tutorial / shortcuts / team / openapi / data-management / developer / proxy / devices） |
+| `review-atoms.ts` | 内容审核专区状态：当前案卷/案卷列表、审核运行、问题卡选中态、三栏联动焦点（reviewFocusAtom，nonce 驱动）、规则定位、忙碌/错误态、网关出口自检、助手消息（共 21 个 atoms） |
 | `theme.ts` | 主题模式（light / dark / system） |
 | `user-profile.ts` | 用户档案（姓名 + 头像） |
 | `updater.ts` | 自动更新状态（检查/下载/安装），优雅降级（updater 不可用时保持 idle） |
@@ -257,6 +260,7 @@ bun run generate:icons    # 生成应用图标
 ### 渲染进程组件架构（`renderer/components/`）
 
 - **`app-shell/`**：三面板布局，侧边栏提供会话列表、搜索、流式指示与项目导航
+- **`content-review/`**：内容审核专区三栏工作台 — ContentReviewView（视图根）+ LeftPanel（依据材料 + AI 规则大纲 + 案卷管理条 CaseManagerBar/CreateCaseDialog）+ CenterPanel（待审条目与证明，SourceBlockView 定位高亮块）+ RightPanel（AI 审核员问题卡 FindingCard + 覆盖摘要 + 报告导出）+ AssistantDrawer（快捷键审核助手）+ use-review-actions（IPC 动作层）；三栏联动由 reviewFocusAtom 驱动（点问题卡 → 中栏红/黄高亮 + 左栏蓝高亮，跨文档矛盾双处同色）
 - **`agent/`**：Agent 模式 — AgentView（纯展示 + 交互，IPC 监听已提升到全局）、AgentHeader（渠道/模型选择）、AgentMessages（消息列表 + 工具活动）、ToolActivityItem（工具调用展示）、WorkspaceSelector（工作区切换）、PermissionBanner/AskUserBanner（权限/问答请求 UI）
 - **`settings/`**：设置面板 — GeneralSettings（用户档案）、AppearanceSettings（主题）、ChannelSettings（渠道管理）、ChannelForm（Provider 配置）、AgentSettings（Agent 渠道/工作区/MCP）、McpServerForm（MCP 服务器配置）、AboutSettings（版本/更新）、FeishuSettings（飞书集成）；含 `primitives/` 可复用表单组件
 - **`file-browser/`**：文件浏览器 — FileBrowser（工作区文件树浏览）
@@ -500,6 +504,7 @@ React UI 更新
 - ✅ **代理支持**：系统代理检测与配置
 - ✅ **文档解析**：PDF、Office、文本文件提取
 - ✅ **多模态支持**：图片、文档附件
+- ✅ **内容审核专区**：三栏审核工作台（依据/待审/审核）、领域包可切换（综测/合同/报销/自定义）、问题卡三栏联动定位高亮、跨文档比对、AI/确定性引擎双路径、预审报告导出
 
 
 ### 架构亮点

@@ -1,0 +1,207 @@
+/**
+ * CreateCaseDialog — 新建案卷对话框（左栏「案卷管理」入口）
+ *
+ * 字段：标题 / 申请人 / 适用学年 / 审核类型 / 审核领域包。
+ * - 审核类型取值与主进程 review-ipc.ts 的 CASE_TYPES 白名单一致（ReviewCaseType）
+ * - 领域包来自 BUILTIN_DOMAIN_PACKS，随 CREATE_CASE 一次传入（缺省不写字段，由 resolveDomainPack 回落综测包）
+ */
+
+import * as React from 'react'
+import { toast } from 'sonner'
+import { Check, ChevronDown } from 'lucide-react'
+import { Button } from '@profer/ui/primitives/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@profer/ui/primitives/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@profer/ui/primitives/dropdown-menu'
+import { Input } from '@profer/ui/primitives/input'
+import { Label } from '@profer/ui/primitives/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@profer/ui/primitives/select'
+import { BUILTIN_DOMAIN_PACKS, DEFAULT_DOMAIN_PACK_ID, resolveDomainPack } from '@profer/shared'
+import type { ReviewCase, ReviewCaseType } from '@profer/shared'
+import { cn } from '@/lib/utils'
+import type { CreateCaseInput } from './use-review-actions'
+
+/** 审核类型选项（与主进程 CASE_TYPES 白名单一致） */
+const CASE_TYPE_OPTIONS: ReviewCaseType[] = ['综合测评', '活动申请', '自定义审核']
+
+/** 缺省适用学年：9 月及以后算新学年（如 2026-09 → 2026-2027） */
+function defaultAcademicYear(): string {
+  const now = new Date()
+  const startYear = now.getMonth() + 1 >= 9 ? now.getFullYear() : now.getFullYear() - 1
+  return `${startYear}-${startYear + 1}`
+}
+
+interface CreateCaseDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  /** 提交建卷；返回 null 表示失败（错误已由动作层写入错误条） */
+  onCreate: (input: CreateCaseInput) => Promise<ReviewCase | null>
+}
+
+export function CreateCaseDialog({ open, onOpenChange, onCreate }: CreateCaseDialogProps): React.ReactElement {
+  const [title, setTitle] = React.useState('')
+  const [applicant, setApplicant] = React.useState('')
+  const [academicYear, setAcademicYear] = React.useState(defaultAcademicYear)
+  const [caseType, setCaseType] = React.useState<ReviewCaseType>('综合测评')
+  const [domainPackId, setDomainPackId] = React.useState<string>(DEFAULT_DOMAIN_PACK_ID)
+  const [submitting, setSubmitting] = React.useState(false)
+
+  // 每次打开重置为缺省值，避免带上一次输入
+  React.useEffect(() => {
+    if (!open) return
+    setTitle('')
+    setApplicant('')
+    setAcademicYear(defaultAcademicYear())
+    setCaseType('综合测评')
+    setDomainPackId(DEFAULT_DOMAIN_PACK_ID)
+    setSubmitting(false)
+  }, [open])
+
+  const selectedPack = resolveDomainPack(domainPackId)
+  const canSubmit = title.trim().length > 0 && applicant.trim().length > 0 && !submitting
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault()
+    if (!canSubmit) return
+    setSubmitting(true)
+    try {
+      const created = await onCreate({
+        title: title.trim(),
+        type: caseType,
+        applicant: applicant.trim(),
+        academicYear: academicYear.trim() || defaultAcademicYear(),
+        domainPackId,
+      })
+      if (!created) return
+      toast.success(`已创建案卷：${created.title}`, {
+        description: '接下来可在左栏导入审核依据、待审文件与证明材料。',
+      })
+      onOpenChange(false)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-xl">
+        <DialogHeader>
+          <DialogTitle>新建案卷</DialogTitle>
+          <DialogDescription>
+            创建一个空案卷，随后导入审核依据（规则）、待审文件与证明材料即可开始审核。
+          </DialogDescription>
+        </DialogHeader>
+
+        <form className="space-y-4" onSubmit={(event) => void handleSubmit(event)}>
+          <div className="space-y-1.5">
+            <Label htmlFor="review-case-title">案卷标题</Label>
+            <Input
+              id="review-case-title"
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              placeholder="如：2026 年秋季学期综合素质测评"
+              autoFocus
+            />
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-1.5">
+              <Label htmlFor="review-case-applicant">申请人</Label>
+              <Input
+                id="review-case-applicant"
+                value={applicant}
+                onChange={(event) => setApplicant(event.target.value)}
+                placeholder="如：张三"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="review-case-year">适用学年</Label>
+              <Input
+                id="review-case-year"
+                value={academicYear}
+                onChange={(event) => setAcademicYear(event.target.value)}
+                placeholder="如：2025-2026"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="review-case-type">审核类型</Label>
+            <Select value={caseType} onValueChange={(value) => setCaseType(value as ReviewCaseType)}>
+              <SelectTrigger id="review-case-type">
+                <SelectValue placeholder="选择审核类型" />
+              </SelectTrigger>
+              <SelectContent>
+                {CASE_TYPE_OPTIONS.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>审核领域包</Label>
+            {/* 用下拉菜单而非 Select：需要在选项里同时展示包名与一句话说明 */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="flex h-9 w-full items-center justify-between gap-2 rounded-md border border-surface-border/60 bg-input/40 px-3 text-sm shadow-xs transition-[border-color,box-shadow,background-color] duration-150 hover:border-surface-border-strong hover:bg-input-hover/50 focus:border-focus focus:bg-input focus:outline-none focus:ring-4 focus:ring-focus/15"
+                >
+                  <span className="truncate">{selectedPack.name}</span>
+                  <ChevronDown size={16} className="shrink-0 opacity-60" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-[380px]">
+                <DropdownMenuLabel>审核领域包（决定规则类别与问题类型）</DropdownMenuLabel>
+                {BUILTIN_DOMAIN_PACKS.map((pack) => (
+                  <DropdownMenuItem
+                    key={pack.id}
+                    onSelect={() => setDomainPackId(pack.id)}
+                    className="flex items-start gap-2"
+                  >
+                    <Check
+                      size={14}
+                      className={cn('mt-0.5 shrink-0', pack.id === domainPackId ? 'opacity-100' : 'opacity-0')}
+                    />
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[13px] font-medium text-foreground">{pack.name}</span>
+                      <span className="mt-0.5 block text-[11px] leading-4 text-muted-foreground">{pack.description}</span>
+                    </span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <p className="text-[11px] leading-4 text-muted-foreground">{selectedPack.description}</p>
+          </div>
+
+          <DialogFooter className="gap-2 pt-2">
+            <Button type="button" variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>
+              取消
+            </Button>
+            <Button type="submit" disabled={!canSubmit}>
+              {submitting ? '创建中…' : '创建案卷'}
+            </Button>
+          </DialogFooter>
+          {!canSubmit && !submitting && (
+            <p className="text-right text-[11px] text-muted-foreground">案卷标题与申请人为必填项</p>
+          )}
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}

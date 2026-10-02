@@ -101,3 +101,5 @@ apps/electron/remote-test-*.log
 server/
 
 .workbuddy
+# 审核专区开发中间产物（运行时配置/验证脚本/测试残留，含加密渠道数据不入库）
+work/tmp/
