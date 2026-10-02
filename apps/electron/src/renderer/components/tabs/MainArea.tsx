@@ -22,6 +22,7 @@ import { TabContent } from './TabContent'
 import { AutomationFormView } from '@/components/automation/AutomationFormView'
 import { PlanningView } from '@/components/planning/PlanningView'
 import { AgentSkillsView } from '@/components/agent-skills/AgentSkillsView'
+import { ContentReviewView } from '@/components/content-review/ContentReviewView'
 import { automationFormAtom } from '@/atoms/automation-atoms'
 import { activeViewAtom } from '@/atoms/active-view'
 import { appModeAtom } from '@/atoms/app-mode'
@@ -309,6 +310,9 @@ export function MainArea(): React.ReactElement {
         ) : activeView === 'agent-skills' ? (
           // Agent 技能视图：全屏取代 TabBar + TabContent
           <AgentSkillsView />
+        ) : activeView === 'content-review' ? (
+          // 内容审核专区：全屏取代 TabBar + TabContent（三栏工作台内部自管案卷导航）
+          <ContentReviewView />
         ) : (
           <div className="flex min-h-0 flex-1 flex-col">
             {/* 顶栏横跨整个主区：组合分屏时两侧顶栏共用同一条基线。 */}
