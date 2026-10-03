@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.106",
+      "date": "2026-10-04",
+      "title": "v0.15.106",
+      "notes": "- M3/编排持久化：run-store-v2（runs-v2/{runId}.json 原子整写）+ run-service-v2（输入 manifest 指纹、每节点检查点落盘可续跑、同 hash 跳过已完成、输入变化拒绝旧运行续跑防混版 K06、进程内取消注册表 K18）；M3 服务层完成，IPC/事件转发随 M5 集成接线"
+    },
+    {
       "version": "0.15.105",
       "date": "2026-10-04",
       "title": "v0.15.105",
