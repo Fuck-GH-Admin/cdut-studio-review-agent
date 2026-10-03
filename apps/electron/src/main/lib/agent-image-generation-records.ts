@@ -143,7 +143,8 @@ async function replay(context: AgentImageGenerationRecordContext): Promise<Agent
       if (!existing || record.updatedAt >= existing.updatedAt) latest.set(record.id, record)
     } catch { console.warn('[图片生成记录] 忽略损坏的会话记录行') }
   }
-  return [...latest.values()].sort((a, b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id))
+  // 同一毫秒的记录按 JSONL 首次追加顺序保留，随机 UUID 不能代表生成先后。
+  return [...latest.values()].sort((a, b) => a.createdAt - b.createdAt)
 }
 
 export function toAgentImageGenerationCard(record: AgentImageGenerationRecord): AgentImageGenerationCard {

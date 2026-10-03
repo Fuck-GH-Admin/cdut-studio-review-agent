@@ -174,6 +174,10 @@ export interface WorkflowStageSpec {
   deadlineDays?: number
   requiredApprovers?: number
   skippableReason?: string
+  /** N1a：正常下一阶段/退回目标/流程 owner（stageId 已稳定） */
+  nextStageId?: string
+  returnToStageId?: string
+  workflowOwner?: 'local' | 'school'
 }
 
 /** 评审量表（02 §5.4：维度/N/A 策略/权重） */
@@ -182,6 +186,12 @@ export interface RubricSpec {
   totalPrecision: number
   missingStrategy: 'block' | 'exclude'
   tieBreaker?: 'shared-rank' | 'by-dimension' | 'owner-decides'
+  /** N1a：最低有效人数/N/A 策略/量尺转换/分歧阈值/名额（07 §7.2） */
+  minEffectiveJudges?: number
+  naStrategy?: 'exclude' | 'exclude-renormalize'
+  scaleConversion?: { fromMax: number; toMax: number }
+  divergenceThreshold?: number
+  quota?: number
 }
 
 /** 模板版本（发布版不可变；draft→published→deprecated） */
@@ -404,6 +414,11 @@ export interface BusinessDecision {
   basedOnRunId: string
   basedOnRevision: number
   at: string
+  /** 决定性质与更正关系（N1a：终审/阶段；更正=追加关联） */
+  finality?: 'final' | 'stage'
+  amendsDecisionId?: string
+  taskId?: string
+  round?: number
 }
 
 /** 补件请求（A09：原因/期限/履行/取消；回复≠满足） */
@@ -430,6 +445,9 @@ export interface Appeal {
   statement: string
   newEvidenceDocumentVersionIds: string[]
   status: 'submitted' | 'in-review' | 'upheld' | 'overturned' | 'withdrawn'
+  /** 明确复核结论（N1a：maintain/amend/withdrawn；旧值迁移时人工确认） */
+  resolution?: 'maintain-original' | 'amend-original' | 'withdrawn'
+  reviewTaskId?: string
   reviewDecisionId?: string
   createdAt: string
 }
@@ -481,7 +499,7 @@ export interface SyncReceipt {
   caseId: string
   expectedExternalRevision?: number
   payloadHash: string
-  status: 'pending' | 'accepted' | 'rejected' | 'conflict'
+  status: 'pending' | 'awaiting-receipt' | 'accepted' | 'rejected' | 'conflict'
   externalReceipt?: { receivedAt: string; externalId?: string; message?: string }
 }
 

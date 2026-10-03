@@ -886,17 +886,9 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
 
   // 获取当前 session 的工作路径（文件浏览器需要）
   React.useEffect(() => {
-    if (!currentWorkspaceId) {
-      setSessionPathMap((prev) => {
-        const map = new Map(prev)
-        map.delete(sessionId)
-        return map
-      })
-      return
-    }
-
+    // 独立会话同样有 default 沙箱；主进程按会话元数据解析，不依赖 UI 工作区选择。
     window.electronAPI
-      .getAgentSessionPath(currentWorkspaceId, sessionId)
+      .getAgentSessionPath(currentWorkspaceId ?? '', sessionId)
       .then((path) => {
         if (path) {
           setSessionPathMap((prev) => {

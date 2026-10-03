@@ -6,7 +6,7 @@
  *
  * 1. `generateRuleOutline`：真实 → AI 从规则文档提取大纲；降级 → fixture 规则大纲（generatedBy 'fixture'）
  * 2. `extractItems`：真实 → AI 从申报表识别条目；降级 → case.items 原样返回
- * 3. `runAiReview`：真实 → AI 产出 findings（generatedBy 'ai'）；降级 → mock 确定性引擎（'mock-engine'）
+ * 3. `runAiReview`：AI 产出 findings；仅内置演示案卷允许回退 mock 引擎。
  * 4. `reviewAssistantChat`：真实 → 模型回答（引用材料 ID）；降级 → 静态解答 + degraded:true
  *
  * 降级是显式可观察的：每处降级都 console.warn('[审核专区] ...降级: ...')，
@@ -348,7 +348,7 @@ export async function generateRuleOutline(
       },
       {
         role: 'user',
-        content: `规则包：${pack.name}（${pack.academicYear}，${pack.version}）\n\n规则文档：\n${ruleText}`,
+        content: `规则包：${pack.name}（${pack.academicYear}，${pack.version}）\n\n规则文档：\n${ruleText}\n\n${buildSourceRegistry(reviewCase)}`,
       },
     ]
     const text = await chatCompletion(resolved.channel, messages, { maxTokens: MAX_TOKENS })
@@ -447,6 +447,7 @@ export async function extractItems(caseId: string): Promise<ReviewItem[]> {
 
   const resolved = resolveReviewGatewayChannel()
   if (!resolved) {
+    if (!reviewCase.isDemo) throw new Error('条目识别失败：无可用模型出口，尚未检查待审文件（已有条目保留）')
     console.warn(`[审核专区] 条目识别降级: 无可用模型出口，返回案卷既有条目（${reviewCase.items.length} 条）`)
     return reviewCase.items
   }
@@ -482,7 +483,12 @@ export async function extractItems(caseId: string): Promise<ReviewItem[]> {
           'anchor（对象：documentId 与 blockId 必须原样引用待审文件方括号中的 ID，precision 固定 "block"）。' +
           '只输出 JSON 数组，不要任何解释文字。',
       },
-      { role: 'user', content: images.length > 0 ? [{ type: 'text', text: `待审文件：\n${appText}${imageNote}` }, ...images] : `待审文件：\n${appText}` },
+      {
+        role: 'user',
+        content: images.length > 0
+          ? [{ type: 'text', text: `待审文件：\n${appText}\n\n${renderEvidenceDocuments(reviewCase)}\n\n${buildSourceRegistry(reviewCase)}${imageNote}` }, ...images]
+          : `待审文件：\n${appText}\n\n${renderEvidenceDocuments(reviewCase)}\n\n${buildSourceRegistry(reviewCase)}`,
+      },
     ]
     const result = await chatCompletionWithMeta(resolved.channel, messages, { maxTokens: MAX_TOKENS })
     if (result.imagesDropped) {
@@ -500,6 +506,7 @@ export async function extractItems(caseId: string): Promise<ReviewItem[]> {
     return items
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
+    if (!reviewCase.isDemo) throw new Error(`条目识别失败：${message}（已有条目未改动，请重试）`)
     console.warn(`[审核专区] 条目识别降级: ${message}；返回案卷既有条目（${reviewCase.items.length} 条）`)
     return reviewCase.items
   }
@@ -619,10 +626,10 @@ export function parseFindings(
  * 执行 AI 审核（真实路径的引擎）。
  *
  * 真实路径：网关可用 → 模型逐条比对申报/证明/规则，输出 findings。
- * 降级：任何失败 → mock 确定性引擎（runMockReview，engine 标 'mock-engine'）。
+ * 降级：仅内置演示案卷可使用 mock 引擎；真实案卷失败时明确报错。
  *
  * 注意：这里只在"网关可用但调用失败"时兜底；完全无渠道的降级由 run-service
- * 与本函数共同保证（无渠道同样落到本函数的 mock 分支）。
+ * 与本函数共同保证；真实案卷无渠道时不得产生模拟结论。
  */
 /**
  * 渲染证明材料的原文文本（M0/H01）：文本型证明此前只出现在 EvidenceDocument 摘要里，
@@ -744,6 +751,7 @@ export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutco
   }
   const resolved = resolveReviewGatewayChannel()
   if (!resolved) {
+    if (!reviewCase.isDemo) throw new Error('无可用模型出口，真实案卷不能使用演示模拟审核')
     const outcome = runMockReview(reviewCase)
     console.warn(
       `[审核专区] AI 审核降级: 无可用模型出口，启用确定性模拟引擎（发现 ${outcome.findings.length} 条）`,
@@ -812,6 +820,8 @@ export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutco
                   text:
                     `【依据文件】\n${ruleText}\n\n【待审文件】\n${appText}\n\n` +
                     `【证明识别结果】\n${evidencesBrief}\n\n` +
+                    (evidenceText ? `【证明原文】\n${evidenceText}\n\n` : '') +
+                    sourceRegistry + '\n\n' +
                     `【待审条目】\n${JSON.stringify(reviewCase.items, null, 2)}` +
                     crossDocNote +
                     imageNote,
@@ -841,7 +851,6 @@ export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutco
 
     // 覆盖摘要：以案卷条目为全集，AI 未提及的条目仍算"已审阅"（模型逐条过了一遍）
     const reviewedItemIds = reviewCase.items.map((item) => item.id)
-    const hitItemIds = new Set(findings.map((finding) => finding.itemId))
     const manualReviewItemIds = findings
       .filter((finding) => finding.suggestion === 'manual-review')
       .map((finding) => finding.itemId)
@@ -871,8 +880,8 @@ export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutco
               (doc.parseStatus === 'partial' && doc.blocks.length === 0),
           )
           .map((doc) => doc.id),
-        // 规则未覆盖 = AI 逐条审阅后没有任何发现引用的条目（真实信号，不再恒为空）
-        ruleUncoveredItemIds: reviewedItemIds.filter((id) => !hitItemIds.has(id)),
+        // 没有问题卡不代表没有规则覆盖；仅保留模型明确给出的无适用依据项。
+        ruleUncoveredItemIds: findings.filter((finding) => finding.kind === 'rule-unmatched').map((finding) => finding.itemId),
         // 未处理材料账本（H01）：超限图片/解析失败/扫描未读，UI 可见并阻止"完整符合"
         unprocessedMaterials: computeUnprocessedMaterials(reviewCase, visionDropped),
       },
@@ -880,6 +889,7 @@ export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutco
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
+    if (!reviewCase.isDemo) throw new Error(`模型审核失败：${message}（未生成模拟结论，请检查模型后重试）`)
     const outcome = runMockReview(reviewCase)
     console.warn(
       `[审核专区] AI 审核降级: ${message}；启用确定性模拟引擎（发现 ${outcome.findings.length} 条）`,

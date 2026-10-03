@@ -15,7 +15,6 @@ import { BookOpen, FileText, Sparkles } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
 import { Spinner } from '@profer/ui/primitives/spinner'
 import {
-  currentRuleOutlineAtom,
   documentsByRoleAtom,
   reviewBusyAtom,
   reviewCaseAtom,
@@ -31,12 +30,12 @@ interface LeftPanelProps {
 
 export function LeftPanel({ actions }: LeftPanelProps): React.ReactElement {
   const reviewCase = useAtomValue(reviewCaseAtom)
-  const outline = useAtomValue(currentRuleOutlineAtom)
   const documentsByRole = useAtomValue(documentsByRoleAtom)
   const busy = useAtomValue(reviewBusyAtom)
 
-  const ruleDocument = documentsByRole.rule[0]
-  const rulePack = reviewCase?.rulePacks[0]
+  const ruleDocuments = documentsByRole.rule
+  const rulePacks = reviewCase?.rulePacks ?? []
+  const hasOutline = rulePacks.some((pack) => pack.outline.length > 0)
 
   return (
     <div className="flex h-full min-h-0 flex-col overflow-y-auto scrollbar-thin">
@@ -51,23 +50,24 @@ export function LeftPanel({ actions }: LeftPanelProps): React.ReactElement {
         </div>
         <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
           <FileText size={12} className="shrink-0" />
-          <span className="truncate">{ruleDocument?.fileName ?? '尚未载入依据材料'}</span>
+          <span className="truncate">{ruleDocuments.length ? `${ruleDocuments.length} 份依据材料` : '尚未载入依据材料'}</span>
         </p>
       </header>
 
       {/* 规则文档全文（SourceBlockView 列表，只读；蓝色高亮定位落点） */}
-      {ruleDocument && (
-        <section className="shrink-0 px-3 py-3">
+      {ruleDocuments.map((ruleDocument) => (
+        <section key={ruleDocument.id} className="shrink-0 px-3 py-3">
           <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            依据原文
+            依据原文 · {ruleDocument.fileName}
           </p>
           <div className="space-y-0.5 rounded-lg border border-border/60 bg-card p-1 shadow-sm">
             {ruleDocument.blocks.map((block) => (
               <SourceBlockView key={block.id} document={ruleDocument} block={block} />
             ))}
           </div>
+          {ruleDocument.parseError && <p className="mt-2 text-xs text-amber-600">{ruleDocument.parseError}</p>}
         </section>
-      )}
+      ))}
 
       {/* AI 规则大纲 */}
       <section className="shrink-0 px-3 pb-3">
@@ -79,23 +79,28 @@ export function LeftPanel({ actions }: LeftPanelProps): React.ReactElement {
             type="button"
             variant="outline"
             size="sm"
-            disabled={busy.outline || !rulePack}
+            disabled={busy.outline || rulePacks.length === 0}
             onClick={() => void actions.generateRuleOutline()}
             className="h-7 gap-1.5 px-2 text-[13px]"
           >
             {busy.outline ? <Spinner size="sm" /> : <Sparkles size={13} />}
-            {busy.outline ? '生成中…' : outline.length > 0 ? '重新生成' : '生成大纲'}
+            {busy.outline ? '生成中…' : hasOutline ? '重新生成' : '生成大纲'}
           </Button>
         </div>
-        <RuleOutlineList outline={outline} onLocate={(anchors) => actions.locateRuleAnchor(anchors)} />
+        {rulePacks.length === 0 && <RuleOutlineList outline={[]} onLocate={actions.locateRuleAnchor} />}
+        {rulePacks.map((pack) => (
+          <div key={pack.id} className="mb-3">
+            <p className="mb-2 text-xs font-medium">{pack.name} · {pack.version}</p>
+            <RuleOutlineList outline={pack.outline} onLocate={actions.locateRuleAnchor} />
+          </div>
+        ))}
       </section>
 
       {/* 底部：规则包元数据 */}
-      {rulePack && (
+      {rulePacks.length > 0 && (
         <footer className="mt-auto shrink-0 border-t border-border/60 px-4 py-3 text-xs text-muted-foreground">
-          <p className="truncate">发布单位：{rulePack.publisher}</p>
-          <p className="mt-0.5 truncate">适用学年：{rulePack.academicYear}</p>
-          <p className="mt-0.5 truncate">版本：{rulePack.version}</p>
+          <p>适用学年：{reviewCase?.academicYear}</p>
+          <p className="mt-0.5">共 {rulePacks.length} 份规则包；AI 大纲需人工核对原文。</p>
         </footer>
       )}
     </div>

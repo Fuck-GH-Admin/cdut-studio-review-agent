@@ -40,8 +40,8 @@ export interface CoachTourStep {
 export const COACH_TOUR_STEPS: CoachTourStep[] = [
   {
     key: 'mode-switch',
-    title: '两种工作模式',
-    body: 'Agent 模式让它自主规划并执行多步任务——查资料、改文件、跑命令都能独立完成，适合「帮我做件事」；Chat 模式专注轻量问答。两边会话互相独立，切换后自动恢复各自上次的进度，⌘B 可以随时收起侧栏专注内容。',
+    title: 'Agent 对话与任务',
+    body: '直接向 Agent 提问，也可以让它规划并执行多步任务：查资料、改文件、跑命令。材料审核智能体在侧栏单独进入，用三栏对照依据、材料和审核结果。侧栏可以收起，方便专注查看内容。',
     selectors: ['[data-tour="mode-switch"]', '[data-profer-navigation-region="mode-switcher"]'],
     placement: 'right',
     view: 'conversations',
@@ -57,7 +57,7 @@ export const COACH_TOUR_STEPS: CoachTourStep[] = [
   {
     key: 'chat-input',
     title: '输入区',
-    body: '用自然语言描述目标就好。四个引用让它基于真实上下文回答：@ 引用工作区文件，/ 调用 Skill，# 调用 MCP 工具，& 引用其他会话；支持粘贴图片和语音输入，超长文本自动转为附件。点进输入框感受一下。',
+    body: '用自然语言描述目标就好。四个引用让它基于真实上下文回答：@ 引用工作区文件，/ 调用 Skill，# 调用 MCP 工具，& 引用其他会话；支持粘贴图片，超长文本自动转为附件。点进输入框感受一下。',
     selectors: ['[data-input-mode="chat"]', '[data-input-mode="agent"]'],
     placement: 'top',
     view: 'conversations',
@@ -112,4 +112,4 @@ export const COACH_TOUR_STEPS: CoachTourStep[] = [
 ]
 
 /** 引导内容版本：增删步骤/大改文案时 +1，老用户升级后自动重播一次新指引 */
-export const CURRENT_COACH_TOUR_VERSION = 5
+export const CURRENT_COACH_TOUR_VERSION = 6

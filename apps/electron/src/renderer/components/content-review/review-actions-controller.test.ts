@@ -116,6 +116,50 @@ function makeApi() {
 import type { SourceDocument } from '@profer/shared'
 
 describe('review-actions-controller（M0/H05 并发与按案写入）', () => {
+  test('Given 两份依据 When 生成大纲 Then 两包分别请求并保留各自结果', async () => {
+    const { api } = makeApi()
+    const store = createStore()
+    const source = makeCase('qa-multi')
+    source.rulePacks.push({ ...source.rulePacks[0]!, id: 'qa-pack-2', documentId: 'qa-doc-2', name: '学院细则' })
+    api.getCase = async () => source
+    const requested: string[] = []
+    api.generateRuleOutline = async ({ rulePackId }) => {
+      requested.push(rulePackId!)
+      return [{ id: rulePackId!, category: '其他', title: rulePackId!, summary: '', anchors: [], generatedBy: 'ai' }]
+    }
+    const actions = createReviewActionsController(store, api)
+    await actions.selectCase(source.id)
+    await actions.generateRuleOutline()
+    expect(requested).toEqual(source.rulePacks.map((pack) => pack.id))
+    expect(store.get(reviewCasesByIdAtom)[source.id]!.rulePacks.map((pack) => pack.outline[0]?.id)).toEqual(requested)
+  })
+
+  test('Given 已有审核结果 When 导入或切换领域 Then 不切案且即时核验过期标记', async () => {
+    const { api } = makeApi()
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    await actions.selectCase('qa-stale')
+    store.set(reviewRunsByCaseAtom, { 'qa-stale': makeRun('qa-stale') })
+    api.getLatestRun = async () => ({ run: makeRun('qa-stale'), inputStale: true })
+    await actions.importDocument('rule')
+    expect(store.get(reviewRunStaleByCaseAtom)['qa-stale']).toBe(true)
+    store.set(reviewRunStaleByCaseAtom, { 'qa-stale': false })
+    await actions.setDomainPack('custom')
+    expect(store.get(reviewRunStaleByCaseAtom)['qa-stale']).toBe(true)
+    expect(store.get(selectedCaseIdAtom)).toBe('qa-stale')
+  })
+
+  test('Given 审核过程中输入发生变化 When 旧快照结果返回 Then 仍标为过期', async () => {
+    const { api, shift } = makeApi()
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    await actions.selectCase('qa-during-run')
+    const running = actions.runReview()
+    api.getLatestRun = async () => ({ run: makeRun('qa-during-run'), inputStale: true })
+    shift('run-1').resolve(makeRun('qa-during-run'))
+    await running
+    expect(store.get(reviewRunStaleByCaseAtom)['qa-during-run']).toBe(true)
+  })
   test('K05 主场景：A 审核中切到 B，A 返回只落 A、不污染 B、不切回', async () => {
     const { api, shift } = makeApi()
     const store = createStore()

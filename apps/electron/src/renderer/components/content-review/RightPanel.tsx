@@ -16,7 +16,7 @@ import { Download, Gavel, Play, ShieldAlert } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
 import { Spinner } from '@profer/ui/primitives/spinner'
 import type { ReviewRun } from '@profer/shared'
-import { reviewRunAtom, reviewRunningAtom, selectedFindingIdAtom, sortedFindingsAtom,
+import { reviewCaseAtom, reviewRunAtom, reviewRunningAtom, selectedFindingIdAtom, sortedFindingsAtom,
   reviewRunStaleAtom,
 } from '@/atoms/review-atoms'
 import { cn } from '@/lib/utils'
@@ -33,6 +33,8 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
   const running = useAtomValue(reviewRunningAtom)
   const findings = useAtomValue(sortedFindingsAtom)
   const selectedFindingId = useAtomValue(selectedFindingIdAtom)
+  const reviewCase = useAtomValue(reviewCaseAtom)
+  const canRun = !!reviewCase && reviewCase.rulePacks.length > 0 && reviewCase.items.length > 0 && reviewCase.documents.some((document) => document.role === 'application')
 
   const [exporting, setExporting] = React.useState(false)
   const [exportNotice, setExportNotice] = React.useState<string | null>(null)
@@ -76,12 +78,13 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
         <Button
           type="button"
           className="h-9 w-full gap-2 text-[13px]"
-          disabled={running}
+          disabled={running || !canRun}
           onClick={() => void actions.runReview()}
         >
           {running ? <Spinner size="sm" /> : <Play size={14} />}
           {running ? '审核中…' : run ? '重新审核' : '开始审核'}
         </Button>
+        {!canRun && <p className="mt-2 text-xs leading-5 text-muted-foreground">请先选择案卷、导入依据和待审文件，再识别可审核条目。</p>}
       </section>
 
       {/* 输入过期提示（M0/H09）：材料/规则在审核后被改过，结果仅作历史参考 */}
@@ -113,7 +116,7 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
       )}
 
       {/* 问题卡列表 / 空态 */}
-      <section className="flex min-h-0 flex-1 flex-col px-3 py-3">
+      <section className="flex shrink-0 flex-col px-3 py-3">
         <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
           问题卡
         </p>
@@ -161,7 +164,7 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
           type="button"
           variant="outline"
           className="h-9 w-full gap-2 text-[13px]"
-          disabled={exporting || !run}
+          disabled={exporting || running || !run || run.status !== 'completed' || runStale}
           onClick={() => void handleExport()}
         >
           {exporting ? <Spinner size="sm" /> : <Download size={14} />}

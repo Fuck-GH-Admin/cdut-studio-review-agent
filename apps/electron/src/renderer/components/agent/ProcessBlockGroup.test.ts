@@ -116,19 +116,20 @@ describe('Agent 过程块折叠分组', () => {
     }
   })
 
-  test('given streaming turn with only thinking before trailing text when grouping then keeps the whole turn inside process group', () => {
-    // 仅有 thinking + 尾部 text 时，工具调用可能稍后才出现，
-    // 不应把这段尾部 text 提前外置——避免后续完成瞬间从外部又跳回过程组。
+  test('given streaming turn with thinking and no tools when grouping then displays the text outside the thinking group', () => {
+    // 总文档要求：没有工具时，正文立即显示；思考仍可折叠，不造成假等待。
     const items = buildAssistantTurnRenderItems([
       thinking(),
       text('暂时的回答片段'),
     ], { isStreaming: true, completedToolResultIds: new Set() })
 
-    expect(items).toHaveLength(1)
+    expect(items).toHaveLength(2)
     expect(items[0]?.type).toBe('process-group')
     if (items[0]?.type === 'process-group') {
-      expect(items[0].items.map((item) => item.index)).toEqual([0, 1])
+      expect(items[0].items.map((item) => item.index)).toEqual([0])
     }
+    expect(items[1]?.type).toBe('block')
+    if (items[1]?.type === 'block') expect(items[1].item.block).toEqual(text('暂时的回答片段'))
   })
 
   test('given streaming multi-tool turn with only the last tool result pending when grouping then keeps final text outside process group', () => {

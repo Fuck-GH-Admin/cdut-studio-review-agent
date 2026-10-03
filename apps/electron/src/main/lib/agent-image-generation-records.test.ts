@@ -32,6 +32,17 @@ async function succeeded(f: ReturnType<typeof fixture>) {
 }
 
 describe('agent image generation records', () => {
+  test('Given 同毫秒成功产物且 UUID 逆序 When 重放与取最新 Then 按实际追加顺序选择最后一张', async () => {
+    const f = fixture()
+    const record = await succeeded(f)
+    const path = join(f.session, '.context', 'image-generations.jsonl')
+    const first = { ...record, id: 'z-first', createdAt: 1000, updatedAt: 1000 }
+    const second = { ...record, id: 'a-second', createdAt: 1000, updatedAt: 1000 }
+    writeFileSync(path, [first, second, { ...first, updatedAt: 1001 }].map((value) => JSON.stringify(value)).join('\n'))
+    expect((await listImageGenerationCards(f.context)).map((card) => card.id)).toEqual(['z-first', 'a-second'])
+    expect((await getLatestSuccessfulGeneration(f.context))?.id).toBe('a-second')
+  })
+
   test('Given a lifecycle, when replayed, then it returns one latest chronological safe card', async () => {
     const f = fixture()
     const record = await succeeded(f)

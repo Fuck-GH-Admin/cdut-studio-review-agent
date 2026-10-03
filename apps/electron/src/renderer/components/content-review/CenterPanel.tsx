@@ -30,6 +30,7 @@ import {
   findBlockByAnchor,
   reviewBusyAtom,
   reviewRunAtom,
+  reviewCaseAtom,
 } from '@/atoms/review-atoms'
 import { cn } from '@/lib/utils'
 import type { ReviewActions } from './use-review-actions'
@@ -39,7 +40,7 @@ import { SourceBlockView } from './SourceBlockView'
 const EVIDENCE_STATUS: Record<EvidenceParseStatus, { label: string; className: string }> = {
   recognized: { label: '已识别', className: 'bg-green-500/10 text-green-600 dark:text-green-400' },
   unclear: { label: '看不清', className: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },
-  unrecognized: { label: '未识别', className: 'bg-muted text-muted-foreground' },
+  unrecognized: { label: '未提取事实', className: 'bg-muted text-muted-foreground' },
 }
 
 interface CenterPanelProps {
@@ -52,8 +53,9 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
   const documentsByRole = useAtomValue(documentsByRoleAtom)
   const run = useAtomValue(reviewRunAtom)
   const busy = useAtomValue(reviewBusyAtom)
+  const reviewCase = useAtomValue(reviewCaseAtom)
 
-  const applicationDocument = documentsByRole.application[0]
+  const renderedBlockIds = new Set(items.map((item) => item.anchor.blockId))
 
   /** 按条目聚合 findings（联动圆点 + 最高严重度用） */
   const findingsByItemId = React.useMemo(() => {
@@ -110,7 +112,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
             type="button"
             variant="outline"
             size="sm"
-            disabled={busy.items}
+            disabled={busy.items || !reviewCase || documentsByRole.application.length === 0}
             onClick={() => void actions.extractItems()}
             className="h-7 gap-1.5 px-2 text-[13px]"
           >
@@ -185,22 +187,52 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
         )}
       </section>
 
+      {/* 未被条目卡引用的原文仍可见：识别失败与漏项不能使待审文件从界面消失。 */}
+      {documentsByRole.application.map((document) => {
+        const blocks = document.blocks.filter((block) => !renderedBlockIds.has(block.id))
+        if (blocks.length === 0 && !document.parseError) return null
+        return (
+          <section key={document.id} className="shrink-0 px-3 pb-3">
+            <p className="mb-2 text-xs font-medium">待审原文 · {document.fileName}</p>
+            <div className="rounded-lg bg-muted/40 p-2">
+              {blocks.map((block) => (
+                <SourceBlockView key={block.id} document={document} block={block} dense />
+              ))}
+              {document.parseError && <p className="text-xs text-amber-600">{document.parseError}</p>}
+            </div>
+          </section>
+        )
+      })}
+
       {/* 证明区 */}
       <section className="shrink-0 px-3 pb-4">
         <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
           证明材料
         </p>
         <div className="grid grid-cols-1 gap-2">
-          {evidences.map((evidence) => (
-            <EvidenceCard
-              key={evidence.documentId}
-              evidence={evidence}
-              fileName={documentsByRole.evidence.find((doc) => doc.id === evidence.documentId)?.fileName ?? evidence.documentId}
-              linkedItemTitles={evidence.linkedItemIds.map(
-                (itemId) => items.find((item) => item.id === itemId)?.title ?? itemId,
-              )}
-            />
-          ))}
+          {evidences.map((evidence) => {
+            const document = documentsByRole.evidence.find((doc) => doc.id === evidence.documentId)
+            const linkedItemTitles = items
+              .filter((item) => item.evidenceDocumentIds.includes(evidence.documentId))
+              .map((item) => item.title)
+            return (
+              <div key={evidence.documentId}>
+                <EvidenceCard
+                  evidence={evidence}
+                  fileName={document?.fileName ?? evidence.documentId}
+                  linkedItemTitles={linkedItemTitles}
+                />
+                {document && (
+                  <div className="mt-1 rounded-lg bg-muted/40 p-2">
+                    {document.blocks.map((block) => (
+                      <SourceBlockView key={block.id} document={document} block={block} dense />
+                    ))}
+                    {document.parseError && <p className="text-xs text-amber-600">{document.parseError}</p>}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
       </section>
     </div>
