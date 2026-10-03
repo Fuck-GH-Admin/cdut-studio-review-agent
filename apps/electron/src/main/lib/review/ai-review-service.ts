@@ -539,23 +539,31 @@ function parseAnchors(raw: unknown): ReviewSourceAnchor[] {
 }
 
 /** 校验 AI 返回的 findings 数组（reviewCase 用于锚点兜底，pack 用于类型/严重度回落） */
-function parseFindings(
+export function parseFindings(
   raw: unknown,
   reviewCase: ReviewCase,
   pack: ReviewDomainPack,
   imagesDropped: boolean,
 ): ReviewFinding[] {
-  if (!Array.isArray(raw) || raw.length === 0) {
-    throw new Error('模型输出的审核发现为空或不是数组')
+  // M0/H04：合法空数组是"未发现问题"，不是异常——直接返回，不再触发 mock 降级
+  // （零问题是否可信由覆盖账本与 run.status 表达，不靠造问题）
+  if (Array.isArray(raw) && raw.length === 0) return []
+  if (!Array.isArray(raw)) {
+    throw new Error('模型输出的审核发现不是数组')
   }
-  const findings = raw.filter(
-    (entry): entry is ReviewFinding =>
-      !!entry &&
-      typeof entry === 'object' &&
-      typeof (entry as ReviewFinding).itemId === 'string' &&
-      typeof (entry as ReviewFinding).title === 'string',
-  )
-  if (findings.length === 0) throw new Error('模型输出的审核发现缺少合法项')
+  const knownItemIds = new Set(reviewCase.items.map((item) => item.id))
+  const findings = raw.filter((entry): entry is ReviewFinding => {
+    if (!entry || typeof entry !== 'object') return false
+    const candidate = entry as ReviewFinding
+    if (typeof candidate.itemId !== 'string' || typeof candidate.title !== 'string') return false
+    // M0/H04：外案/不存在的事项 ID 不得进入有效检查（K04 foreign itemId）
+    if (candidate.itemId !== 'case-level' && !knownItemIds.has(candidate.itemId)) {
+      console.warn(`[审核专区] 丢弃引用未知事项的发现: itemId=${candidate.itemId} title=${candidate.title}`)
+      return false
+    }
+    return true
+  })
+  if (findings.length === 0 && raw.length > 0) throw new Error('模型输出的审核发现缺少合法项')
   const subjectFallback =
     subjectDocuments(reviewCase)[0]
       ? { documentId: subjectDocuments(reviewCase)[0]!.id, precision: 'document' as const }
@@ -677,11 +685,16 @@ export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutco
     return outcome
   }
 
+  // M0/H04 输入校验：放在兜底 catch 之前——零依据/零待审文件必须如实失败，
+  // 不能被降级 catch 吞成 mock 结论（K04：零事项要求确认对象或识别状态）
+  if (reviewCase.rulePacks.length === 0) {
+    throw new Error('案卷没有依据规则包，无法审核')
+  }
+  if (subjectDocuments(reviewCase).length === 0) {
+    throw new Error('案卷没有待审文件（未识别到可审核对象），无法审核')
+  }
+
   try {
-    if (reviewCase.rulePacks.length === 0) {
-      // 与 requireRulePack 原语义一致：没有依据包属于调用方配置问题
-      throw new Error('案卷没有依据规则包，无法审核')
-    }
     const domainPack = resolveDomainPack(reviewCase.domainPackId)
     const domain = domainPromptParts(domainPack)
     const ruleText = renderRuleDocuments(reviewCase)
@@ -764,9 +777,21 @@ export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutco
     const manualReviewItemIds = findings
       .filter((finding) => finding.suggestion === 'manual-review')
       .map((finding) => finding.itemId)
+    // M0/H13 分值守门：依据未确认（无确认分值映射/公式）时，模型 suggestedScore
+    // 不得作为规则计算结果输出——相关发现转为待确认语义（保留 detail 说明）
+    const hasConfirmedMapping = reviewCase.rulePacks.some((rulePack) => rulePack.confirmed)
+    const gatedFindings = hasConfirmedMapping
+      ? findings
+      : findings.map((finding) => {
+          if (finding.suggestedScore === undefined) return finding
+          const rest: ReviewFinding = { ...finding }
+          delete rest.suggestedScore
+          console.warn(`[审核专区] 分值守门: 依据未确认，剥离建议分值 — ${finding.title}`)
+          return rest
+        })
     return {
       caseId: reviewCase.id,
-      findings,
+      findings: gatedFindings,
       coverage: {
         reviewedItemIds,
         manualReviewItemIds: [...new Set(manualReviewItemIds)],

@@ -48,7 +48,7 @@ function buildTwoRuleCase(id: string): ReviewCase {
         publisher: '学院',
         academicYear: base.academicYear,
         version: 'v1',
-        outline: [{ id: `${id}-rule-2`, title: '学院专项上限', summary: '', anchors: [], generatedBy: 'fixture' }],
+        outline: [{ id: `${id}-rule-2`, title: '学院专项上限', category: '其他', summary: '', anchors: [], generatedBy: 'fixture' }],
         confirmed: false,
       },
     ],
@@ -74,7 +74,7 @@ describe('generateRuleOutline 演示降级门控（M0/H03）', () => {
     const reviewCase = buildTwoRuleCase('case-k03-real')
     saveCase(reviewCase)
     try {
-      await generateRuleOutline({ caseId: reviewCase.id })
+      await generateRuleOutline({ caseId: reviewCase.id, rulePackId: reviewCase.rulePacks[0]!.id })
       expect.unreachable()
     } catch (error) {
       expect(String(error)).toContain('未回填任何预置规则')
@@ -87,7 +87,7 @@ describe('generateRuleOutline 演示降级门控（M0/H03）', () => {
   test('Given 演示案卷且无模型出口 When 生成大纲 Then 允许回退预置大纲（显式演示语义）', async () => {
     const demo = buildDemoCase()
     saveCase(demo)
-    const outline = await generateRuleOutline({ caseId: demo.id })
+    const outline = await generateRuleOutline({ caseId: demo.id, rulePackId: demo.rulePacks[0]!.id })
     expect(outline.length).toBeGreaterThan(0)
   })
 })

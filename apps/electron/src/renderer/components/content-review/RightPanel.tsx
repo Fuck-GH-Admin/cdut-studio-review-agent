@@ -113,10 +113,22 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
               点击上方「开始审核」，AI 审核员会逐项核对规则、申报与证明，生成可定位的问题卡。
             </p>
           </div>
+        ) : run.status === 'failed' ? (
+          <div className="rounded-lg border border-destructive/40 bg-destructive/[0.06] px-3 py-6 text-center">
+            <p className="text-[13px] font-medium text-destructive">本次审核未能完成</p>
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">
+              {run.error ?? '审核运行失败'}——不存在可用的审核结论，请重试或检查模型出口。
+            </p>
+          </div>
         ) : findings.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-border/60 px-3 py-6 text-center text-xs text-muted-foreground">
-            本次审核未发现问题。
-          </p>
+          <div className="rounded-lg border border-dashed border-border/60 px-3 py-6 text-center">
+            <p className="text-xs text-muted-foreground">本次审核未发现问题。</p>
+            {(run.coverage.unprocessedMaterials?.length ?? 0) > 0 && (
+              <p className="mt-1 text-[11px] leading-4 text-amber-600 dark:text-amber-400">
+                但存在未处理材料，覆盖不完整，"全部符合"结论暂不成立。
+              </p>
+            )}
+          </div>
         ) : (
           <div className="space-y-2">
             {findings.map((finding) => (
