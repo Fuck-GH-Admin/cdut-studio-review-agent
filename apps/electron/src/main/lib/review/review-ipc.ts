@@ -274,6 +274,26 @@ export function registerReviewIpc(): void {
     return resolveAppealV2(input.caseId, input.command as unknown as Parameters<typeof resolveAppealV2>[1])
   })
 
+  // ===== N4b：模板向导（无代码创建：政策先行 → 模板草稿 → 发布走 PUBLISH_TEMPLATE_V2） =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CREATE_POLICY_V2, (_e, input: { policyId: string; title: string; content: string; enteredBy: string }) => {
+    if (!input?.policyId || !input?.content) throw new Error('参数非法')
+    const { canonicalContentHash, publishPolicy, savePolicyDraft } = require('./policy-store') as typeof import('./policy-store')
+    const record = {
+      policyId: input.policyId, version: 1, title: input.title, contentHash: canonicalContentHash(input.content), content: input.content,
+      origin: { kind: 'owner-statement' as const, text: '向导录入', enteredBy: String(input.enteredBy ?? 'local-user'), enteredAt: new Date().toISOString() },
+      status: 'draft' as const,
+      confirmations: [{ actorId: String(input.enteredBy ?? 'local-user'), role: 'template-owner' as const, at: new Date().toISOString(), note: '向导录入确认' }],
+    }
+    savePolicyDraft(record)
+    publishPolicy(input.policyId, 1)
+    return { policyId: input.policyId, version: 1, contentHash: record.contentHash }
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.SAVE_TEMPLATE_DRAFT_V2, (_e, template: import('@profer/shared').TemplateVersion) => {
+    if (!template?.templateId) throw new Error('参数非法')
+    const { saveDraft } = require('./template-store') as typeof import('./template-store')
+    return saveDraft(template)
+  })
+
   /** 删除案卷 */
   ipcMain.handle(REVIEW_IPC_CHANNELS.DELETE_CASE, (_event, caseId: string): void => {
     deleteCase(caseId)

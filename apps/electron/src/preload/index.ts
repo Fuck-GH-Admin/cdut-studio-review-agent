@@ -3659,6 +3659,10 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   resolveAppealV2: (input: { caseId: string; command: Record<string, unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESOLVE_APPEAL_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  createPolicyV2: (input: { policyId: string; title: string; content: string; enteredBy: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_POLICY_V2, input) as Promise<{ policyId: string; version: number; contentHash: string }>,
+  saveTemplateDraftV2: (template: import('@profer/shared').TemplateVersion) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SAVE_TEMPLATE_DRAFT_V2, template) as Promise<import('@profer/shared').TemplateVersion>,
   bootCheckV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BOOT_CHECK_V2) as Promise<{ templatesSeeded: number; templatesPublished: number; migratableCases: string[]; notes: string[] }>,
   getLatestRun: (caseId: string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LATEST_RUN, caseId) as Promise<import('@profer/shared').ReviewLatestRunResult>,

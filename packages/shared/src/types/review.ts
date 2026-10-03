@@ -483,6 +483,9 @@ export const REVIEW_IPC_CHANNELS = {
   RESOLVE_SUPPLEMENT_V2: 'review-v2:resolve-supplement',
   SUBMIT_APPEAL_V2: 'review-v2:submit-appeal',
   RESOLVE_APPEAL_V2: 'review-v2:resolve-appeal',
+  // ===== N4b：模板向导 =====
+  CREATE_POLICY_V2: 'review-v2:create-policy',
+  SAVE_TEMPLATE_DRAFT_V2: 'review-v2:save-template-draft',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */

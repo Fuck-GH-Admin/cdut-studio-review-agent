@@ -49,6 +49,7 @@ import { CenterPanel } from './CenterPanel'
 import { LeftPanel } from './LeftPanel'
 import { RightPanel } from './RightPanel'
 import { V2CasePanel } from './V2CasePanel'
+import { TemplateWizardPanel } from './TemplateWizardPanel'
 import { useReviewActions } from './use-review-actions'
 
 /** 窄屏单栏切换的栏目标识 */
@@ -324,6 +325,7 @@ function PaneWrapper({
     >
       {children}
       <V2CasePanel />
+      <TemplateWizardPanel />
     </div>
   )
 }
