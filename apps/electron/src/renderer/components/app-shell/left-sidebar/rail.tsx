@@ -153,12 +153,12 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
             </TooltipContent>
           </Tooltip>
 
-          {/* 内容审核专区入口 */}
+          {/* 材料审核智能体入口 */}
           <Tooltip>
             <TooltipTrigger asChild>
               <button
                 type="button"
-                aria-label="内容审核专区"
+                aria-label="材料审核智能体"
                 data-profer-navigation-item="content-review"
                 onClick={handleOpenContentReview}
                 className={cn(
@@ -171,7 +171,7 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
                 <ClipboardCheck size={16} />
               </button>
             </TooltipTrigger>
-            <TooltipContent side="right">内容审核专区</TooltipContent>
+            <TooltipContent side="right">材料审核智能体</TooltipContent>
           </Tooltip>
 
           {/* Agent 技能入口 */}

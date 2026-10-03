@@ -881,7 +881,7 @@ export function AgentMessages({ sessionId, sessionModelId, agentRuntime, message
                   isStreaming={isLive || undefined}
                   stoppedByUser={isLastAssistantTurn || undefined}
                   sessionModelId={sessionModelId}
-                  showThinking={agentRuntime !== 'pi'}
+                  showThinking={true}
                 />
               )
             })}
@@ -920,7 +920,7 @@ export function AgentMessages({ sessionId, sessionModelId, agentRuntime, message
                             index={index}
                             dimmed={hasVisibleTextContent && block.type !== 'text'}
                             isStreaming={streaming}
-                            showThinking={agentRuntime !== 'pi'}
+                            showThinking={true}
                           />
                         ))}
                       </div>

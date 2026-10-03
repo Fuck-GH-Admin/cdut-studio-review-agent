@@ -1,4 +1,4 @@
-import { spawnSync } from 'node:child_process'
+import { spawn, spawnSync } from 'node:child_process'
 import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { findGitPath } from './git-detector'
@@ -415,7 +415,36 @@ export function countRepoBytes(repo: ShadowRepo): number {
   return bytes
 }
 
-/** 回收不可达对象：删掉检查点 ref 之后调用，让被裁剪的基线真正释放磁盘。 */
-export function gcShadowRepo(repo: ShadowRepo): void {
-  runGit(['gc', '--prune=now', '--quiet'], { gitDir: repo.dir, workTree: repo.workTree, timeoutMs: GIT_GC_TIMEOUT_MS })
+const activeGcRepos = new Set<string>()
+
+/** 回收不可达对象：删掉检查点 ref 之后调用，让被裁剪的基线真正释放磁盘。默认在后台非阻塞执行，测试环境下同步执行以防清理临时目录时文件锁未释放。 */
+export function gcShadowRepo(repo: ShadowRepo, options?: { sync?: boolean }): void {
+  if (options?.sync || process.env.NODE_ENV === 'test') {
+    runGit(['gc', '--prune=now', '--quiet'], { gitDir: repo.dir, workTree: repo.workTree, timeoutMs: GIT_GC_TIMEOUT_MS })
+    return
+  }
+
+  const gitPath = resolveGitExecutable()
+  if (!gitPath) return
+  const fullArgs: string[] = []
+  if (repo.dir) fullArgs.push('--git-dir', repo.dir)
+  if (repo.workTree) fullArgs.push('--work-tree', repo.workTree)
+  fullArgs.push('gc', '--prune=now', '--quiet')
+  const cwd = repo.workTree && existsSync(repo.workTree) ? repo.workTree : process.cwd()
+
+  activeGcRepos.add(repo.dir)
+  try {
+    const child = spawn(gitPath, fullArgs, {
+      cwd,
+      windowsHide: true,
+      stdio: 'ignore',
+      detached: false,
+    })
+    child.on('close', () => { activeGcRepos.delete(repo.dir) })
+    child.on('error', () => { activeGcRepos.delete(repo.dir) })
+    child.unref()
+  } catch (error) {
+    activeGcRepos.delete(repo.dir)
+    console.warn('[Pi 检查点] 后台执行 git gc 失败:', error)
+  }
 }

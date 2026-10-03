@@ -16,7 +16,7 @@
 
 import { randomUUID } from 'node:crypto'
 import { homedir } from 'node:os'
-import { join } from 'node:path'
+import { join, normalize, resolve, parse } from 'node:path'
 import { existsSync, mkdirSync, readFileSync, writeFileSync, appendFileSync } from 'node:fs'
 import type {
   AgentSendInput,
@@ -111,6 +111,7 @@ import {
   getAgentWorkspace,
   getWorkspaceMcpConfig,
   ensureClaudeSkillManifest,
+  ensureDefaultWorkspace,
 } from './agent-workspace-manager'
 import { getAgentSessionWorkspacePath, getPiCheckpointsDir, getSdkConfigDir } from './config-paths'
 import { prepareRuntimeSkills } from './global-skill-manager'
@@ -713,7 +714,7 @@ export class AgentOrchestrator {
       // 写诊断文件供后续排查
       try {
         const diagDir = join(
-          getAgentSessionWorkspacePath(getAgentWorkspace(getAgentSessionMeta(sessionId)?.workspaceId ?? '')?.slug ?? 'unknown', sessionId),
+          getAgentSessionWorkspacePath(getAgentWorkspace(getAgentSessionMeta(sessionId)?.workspaceId ?? '')?.slug ?? 'default', sessionId),
           '.context',
         )
         if (!existsSync(diagDir)) mkdirSync(diagDir, { recursive: true })
@@ -1112,26 +1113,37 @@ export class AgentOrchestrator {
       console.log(`[Agent 编排] 启动 Pi runtime，模型: ${modelId || DEFAULT_MODEL_ID}, resume: ${existingSdkSessionId ?? '无'}`)
 
       // 确定 Agent 工作目录
-      agentCwd = homedir()
       workspaceSlug = undefined
       workspace = undefined
       if (workspaceId) {
-        const ws = getAgentWorkspace(workspaceId)
-        if (ws) {
-          agentCwd = getAgentSessionWorkspacePath(ws.slug, sessionId)
-          workspaceSlug = ws.slug
-          workspace = ws
-          console.log(`[Agent 编排] 使用 session 级别 cwd: ${agentCwd} (${ws.name}/${sessionId})`)
-
-          ensureClaudeSkillManifest(ws.slug, ws.name)
-
-          if (existingSdkSessionId) {
-            console.log(`[Agent 编排] 将尝试 resume: ${existingSdkSessionId}`)
-          } else {
-            console.log(`[Agent 编排] 无 sdkSessionId，将作为新会话启动（回填历史上下文）`)
-          }
+        workspace = getAgentWorkspace(workspaceId)
+      } else {
+        // 无工作区模式下，统一使用默认工作区提供会话隔离沙箱，严禁在个人主目录运行
+        try {
+          workspace = ensureDefaultWorkspace()
+        } catch (error) {
+          console.warn('[Agent 编排] 自动创建/读取默认工作区失败:', error)
         }
       }
+
+      if (workspace) {
+        agentCwd = getAgentSessionWorkspacePath(workspace.slug, sessionId)
+        workspaceSlug = workspace.slug
+        console.log(`[Agent 编排] 使用 session 级别 cwd: ${agentCwd} (${workspace.name}/${sessionId})`)
+
+        ensureClaudeSkillManifest(workspace.slug, workspace.name)
+
+        if (existingSdkSessionId) {
+          console.log(`[Agent 编排] 将尝试 resume: ${existingSdkSessionId}`)
+        } else {
+          console.log(`[Agent 编排] 无 sdkSessionId，将作为新会话启动（回填历史上下文）`)
+        }
+      } else {
+        agentCwd = homedir()
+      }
+
+      const effectiveWorkspaceId = workspaceId ?? workspace?.id
+      const effectiveWorkspaceSlug = workspaceSlug ?? workspace?.slug
 
       // 9.4.1 Fork session JSONL 迁移已在 forkAgentSession 中完成，
       // fork 后的会话直接使用自己的 cwd，无需回退到源目录。
@@ -1232,7 +1244,7 @@ export class AgentOrchestrator {
 
       // 11.5 注入 mention 引用指令（Skill/MCP/会话）— 仅引用当前预设实际可用的能力。
       let enrichedMessage = runtimeUserMessage
-      const referencedSessionsBlock = buildReferencedSessionsPrompt(sessionId, mentionedSessionIds, workspaceId)
+      const referencedSessionsBlock = buildReferencedSessionsPrompt(sessionId, mentionedSessionIds, effectiveWorkspaceId)
       if (referencedSessionsBlock) {
         enrichedMessage = `${referencedSessionsBlock}\n\n${enrichedMessage}`
         console.log(`[Agent 编排] 注入 referenced_sessions: ${mentionedSessionIds?.length ?? 0} sessions`)
@@ -1300,11 +1312,11 @@ ${enrichedMessage}`
       const browserAllowedRoots = [
         ...new Set(
           [
-        workspaceId ? agentCwd : undefined,
+            effectiveWorkspaceId ? agentCwd : undefined,
             ...collectAttachedDirectories({
               extraDirs: additionalDirectories,
               sessionMeta,
-              workspaceSlug,
+              workspaceSlug: effectiveWorkspaceSlug,
             }),
             ...collectProductArtifactDirectories(),
           ].filter((root): root is string => typeof root === 'string' && root.length > 0),
@@ -1321,9 +1333,9 @@ ${enrichedMessage}`
               channelId,
               modelId,
               agentRuntime,
-              workspaceId,
+              workspaceId: effectiveWorkspaceId,
               isTeamWorkspace: workspace?.type === 'team',
-              workspaceSlug,
+              workspaceSlug: effectiveWorkspaceSlug,
               agentCwd,
               allowedRoots: browserAllowedRoots,
               onPreviewRequest: (event) => agentFilePreviewSessionManager.waitUntilReady(event, (previewEvent) => {
@@ -1710,14 +1722,21 @@ ${enrichedMessage}`
       // 且把快照目录放在被快照的树里本身就是隐患。
       let piCheckpointRoot: string | undefined
       let piTurnCheckpoint: ReturnType<typeof createPiFileCheckpoint> | undefined
-      if (agentRuntime === 'pi') {
+      const isCriticalHostDirectory = (dir?: string) => {
+        if (!dir) return true
+        const norm = normalize(resolve(dir))
+        return norm === normalize(resolve(homedir())) || norm === normalize(resolve(parse(norm).root))
+      }
+      if (agentRuntime === 'pi' && !isCriticalHostDirectory(agentCwd)) {
         // 文件回退是增强能力，绝不能因为权限、磁盘或第三方锁导致本轮模型请求失败。
         try {
           piCheckpointRoot = getPiCheckpointsDir()
-          piTurnCheckpoint = createPiFileCheckpoint(sessionId, agentCwd, piCheckpointRoot)
+          piTurnCheckpoint = createPiFileCheckpoint(sessionId, agentCwd!, piCheckpointRoot)
         } catch (error) {
           console.warn(`[Agent 编排] Pi 文件检查点创建失败，本轮继续但不可文件回退 (${sessionId}):`, error)
         }
+      } else if (agentRuntime === 'pi') {
+        console.warn(`[Agent 编排] 工作目录为宿主敏感/根目录 (${agentCwd})，已安全跳过文件检查点以保护主线程`)
       }
       const browserAllowedToolAliases = SAFE_TOOLS
         .filter((toolName) => toolName.startsWith('Browser'))

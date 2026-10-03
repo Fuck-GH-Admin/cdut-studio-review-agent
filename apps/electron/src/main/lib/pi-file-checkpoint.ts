@@ -12,7 +12,8 @@ import {
   unlinkSync,
   writeFileSync,
 } from 'node:fs'
-import { basename, dirname, isAbsolute, join, relative, resolve } from 'node:path'
+import { homedir } from 'node:os'
+import { basename, dirname, isAbsolute, join, normalize, parse, relative, resolve } from 'node:path'
 import {
   checkpointRef,
   commitTree,
@@ -100,6 +101,9 @@ export const MAX_SNAPSHOT_FILE_BYTES = 50 * 1024 * 1024
 
 /** 单次快照总字节上限：超过即停止收集并标记 partial，回退时退化为「只恢复、不删除」。 */
 export const MAX_SNAPSHOT_TOTAL_BYTES = 1024 * 1024 * 1024
+
+/** 无 Git 降级物理复制时的单次最大文件数量上限，防止几十万文件遍历复制阻塞主线程 */
+export const MAX_SNAPSHOT_FILE_COUNT = 500
 
 /** 单个会话保留的检查点数量/字节上限，超出后从最旧的开始回收。 */
 export const MAX_CHECKPOINTS_PER_SESSION = 40
@@ -429,7 +433,7 @@ function walk(root: string, limits: SnapshotLimits): WalkResult {
         })
         continue
       }
-      if (result.bytes + stat.size > limits.maxTotalBytes) {
+      if (result.bytes + stat.size > limits.maxTotalBytes || result.files.length >= MAX_SNAPSHOT_FILE_COUNT) {
         result.partial = true
         return
       }
@@ -754,6 +758,21 @@ export function createPiFileCheckpoint(
   rootDir: string,
   options: PiCheckpointOptions = {},
 ): PiFileCheckpoint {
+  const normCwd = normalize(resolve(cwd))
+  const normHome = normalize(resolve(homedir()))
+  const isRoot = normCwd === normalize(resolve(parse(normCwd).root))
+  if (normCwd === normHome || isRoot) {
+    console.warn(`[Pi 检查点] 目标路径为系统根目录或用户主目录 (${cwd})，安全跳过快照`)
+    return {
+      path: '',
+      engine: 'copy',
+      files: [],
+      skipped: [{ path: '.', kind: 'dir', reason: '系统敏感目录拒绝快照' }],
+      partial: true,
+      limits: limitsFrom(options),
+    }
+  }
+
   const limits = limitsFrom(options)
   const mode: PiCheckpointMode = options.mode ?? 'auto'
   const sessionDir = join(rootDir, sessionId)

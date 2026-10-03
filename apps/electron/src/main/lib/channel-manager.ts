@@ -540,7 +540,7 @@ export function createChannel(input: ChannelCreateInput): Channel {
     ...(input.provider === 'xai' && input.credentialMode ? { credentialMode: input.credentialMode } : {}),
     ...(input.provider === 'xai' && input.agentExperimentalEnabled ? { agentExperimentalEnabled: true } : {}),
     agentBaseUrl: input.agentBaseUrl,
-    ...(input.agentRuntimes ? { agentRuntimes: input.agentRuntimes } : {}),
+    agentRuntimes: input.agentRuntimes && input.agentRuntimes.length > 0 ? input.agentRuntimes : ['pi'],
     apiKey: encryptApiKey(input.apiKey),
     models: input.models,
     enabled: input.enabled,

@@ -84,6 +84,23 @@ export function findGitPath(): string | null {
         return path
       }
     }
+
+    // 检查应用内置的 MinGit（打包产物位于 resources/bin/git/cmd/git.exe，源码开发位于 resources/bin/git/cmd/git.exe）
+    try {
+      const { app } = require('electron')
+      const bundledGit = app?.isPackaged
+        ? join(process.resourcesPath, 'bin', 'git', 'cmd', 'git.exe')
+        : join(__dirname, '../../resources/bin/git/cmd/git.exe')
+      if (existsSync(bundledGit)) {
+        return bundledGit
+      }
+    } catch {
+      // 外部非 electron 环境下回退
+      const devBundledGit = join(process.cwd(), 'resources', 'bin', 'git', 'cmd', 'git.exe')
+      if (existsSync(devBundledGit)) {
+        return devBundledGit
+      }
+    }
   }
 
   return null

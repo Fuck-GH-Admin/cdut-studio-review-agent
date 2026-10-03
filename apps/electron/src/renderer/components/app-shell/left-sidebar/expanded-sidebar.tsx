@@ -5,11 +5,13 @@
  */
 
 import * as React from 'react'
-import { PanelLeftClose, Plus, Search, FolderOpen, Archive, ArchiveRestore, ArrowLeft, Settings, ClipboardCheck } from 'lucide-react'
+import { PanelLeftClose, Plus, Search, FolderOpen, Archive, ArchiveRestore, ArrowLeft, Settings, ClipboardCheck, Bot, GraduationCap } from 'lucide-react'
+import { useSetAtom } from 'jotai'
 import { cn } from '@/lib/utils'
+import { activeViewAtom } from '@/atoms/active-view'
+import cdutLogo from '@/assets/cdut-logo.svg'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/tooltip'
 import { Popover, PopoverTrigger, PopoverContent } from '@profer/ui/primitives/popover'
-import { ModeSwitcher } from '../ModeSwitcher'
 import { UserAvatar } from '@/components/shared/UserAvatar'
 import { SidebarWindowDragStrip, SIDEBAR_DRAG_STRIP_HEIGHT, AutomationSidebarEntry, SkillsSidebarEntry, renderWorkspaceSortIcon } from './navigation-items'
 import { ConversationItem, AgentSessionItem, RelatedChildSessionItem, AgentProjectGroupItem, PINNED_SESSION_MAX_HEIGHT, getSessionLeftAccent } from './session-items'
@@ -20,6 +22,7 @@ import { useCloseTab } from '@/hooks/useCloseTab'
 import type { SidebarModel } from './use-left-sidebar'
 
 export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement {
+  const setActiveView = useSetAtom(activeViewAtom)
   const {
     isMac,
     setSidebarCollapsed,
@@ -48,6 +51,7 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
     handleTogglePin,
     handleToggleArchive,
     pinnedAgentSessionTrees,
+    agentGlobalSessionTrees,
     agentIndicatorMap,
     expandedRelatedParentIds,
     agentDraftIds,
@@ -107,7 +111,6 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
     hasUpdate,
     hasEnvironmentIssues,
   } = s
-  const [sidebarSection, setSidebarSection] = React.useState<'pinned' | 'projects'>('projects')
   const { requestClose: requestCloseTab } = useCloseTab()
   const openSessionTabs = React.useMemo(() => tabs.filter((tab) => {
     if (mode === 'chat') return tab.type === 'chat'
@@ -124,27 +127,69 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
       {/* macOS 需要避开左上角红绿灯；边栏覆盖全局标题栏拖拽层，因此留白自身也要可拖拽。 */}
       <div className={cn('w-full flex-shrink-0 titlebar-drag-region', isMac ? 'h-[30px]' : 'h-1')} />
 
-      {/* 模式切换器（Agent/Chat，与桌面原版一致）+ 折叠按钮（原版位置；收起为 60px 窄图标条） */}
-      <div className="titlebar-drag-region flex items-start gap-1.5 px-3">
-        <div className="flex-1 min-w-0">
-          <ModeSwitcher />
+      {/* 顶部 Header：最左上角 Logo 图标 + Welcome 字样，右侧协调收起按钮 */}
+      <div className="titlebar-drag-region flex items-center justify-between px-3 pt-1.5 pb-1">
+        <div className="flex items-center gap-2 min-w-0 select-none">
+          <img src={cdutLogo} alt="CDUT Logo" className="size-5 object-contain flex-shrink-0" />
+          <span className="text-[13px] font-semibold text-foreground/85 tracking-tight truncate">Welcome</span>
         </div>
         <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={() => setSidebarCollapsed(true)}
-                className={cn(
-                  'sidebar-collapse-button mt-2 size-10 flex-shrink-0 flex items-center justify-center rounded-[10px] text-foreground/40 titlebar-no-drag',
-                  isClassic
-                    ? 'bg-muted hover:bg-foreground/[0.08] hover:text-foreground/60 transition-colors'
-                    : 'bg-primary/5 hover:bg-primary/10 hover:text-foreground/60 transition-[background-color,border-color,color] duration-150 border border-border/60 hover:border-border'
-                )}
-              >
-                <PanelLeftClose size={14} />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="right">收起侧边栏 ({navigator.platform.includes('Mac') ? '⌘B' : 'Ctrl+B'})</TooltipContent>
-          </Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={() => setSidebarCollapsed(true)}
+              className={cn(
+                'sidebar-collapse-button size-8 flex-shrink-0 flex items-center justify-center rounded-[8px] text-foreground/40 titlebar-no-drag',
+                isClassic
+                  ? 'bg-muted hover:bg-foreground/[0.08] hover:text-foreground/60 transition-colors'
+                  : 'bg-primary/5 hover:bg-primary/10 hover:text-foreground/60 transition-[background-color,border-color,color] duration-150 border border-border/60 hover:border-border'
+              )}
+            >
+              <PanelLeftClose size={14} />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="right">收起侧边栏 ({navigator.platform.includes('Mac') ? '⌘B' : 'Ctrl+B'})</TooltipContent>
+        </Tooltip>
+      </div>
+
+      {/* 顶级开关区：Agent 顶级开关 与 下方同级 CDUT 专区 开关 */}
+      <div className="px-3 pt-1 pb-1 flex flex-col gap-1.5 select-none titlebar-no-drag">
+        <button
+          type="button"
+          data-profer-navigation-region="mode-switcher-agent"
+          onClick={() => {
+            if (activeView !== 'conversations') {
+              setActiveView('conversations')
+            }
+          }}
+          className={cn(
+            'flex h-9 items-center justify-center gap-2 rounded-xl px-3 transition-colors duration-150 titlebar-no-drag',
+            activeView === 'conversations'
+              ? 'bg-primary text-primary-foreground font-medium shadow-sm'
+              : 'bg-primary/5 hover:bg-primary/10 text-foreground/70 hover:text-foreground border border-border/60'
+          )}
+        >
+          <Bot size={15} />
+          <span className="text-[13px]">Agent</span>
+        </button>
+
+        <button
+          type="button"
+          data-profer-navigation-region="mode-switcher-cdut"
+          onClick={() => {
+            if (activeView !== 'cdut-zone') {
+              setActiveView('cdut-zone')
+            }
+          }}
+          className={cn(
+            'flex h-9 items-center justify-center gap-2 rounded-xl px-3 transition-colors duration-150 titlebar-no-drag',
+            activeView === 'cdut-zone'
+              ? 'bg-primary text-primary-foreground font-medium shadow-sm'
+              : 'bg-primary/5 hover:bg-primary/10 text-foreground/70 hover:text-foreground border border-border/60'
+          )}
+        >
+          <GraduationCap size={15} />
+          <span className="text-[13px]">CDUT 专区</span>
+        </button>
       </div>
 
       {/* 新对话/新会话按钮 + 搜索按钮 */}
@@ -179,12 +224,12 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
         />
       </div>
 
-      {/* 内容审核专区入口：三栏审核工作台（演示版） */}
+      {/* 材料审核智能体入口：三栏审核工作台（演示版） */}
       <div className="px-3 pb-0.5">
         <button
           type="button"
           data-profer-navigation-item="content-review"
-          aria-label="内容审核专区"
+          aria-label="材料审核智能体"
           onClick={handleOpenContentReview}
           className={cn(
             'group w-full flex items-center justify-between px-3 py-2 rounded-md text-[13px] transition-colors duration-100 titlebar-no-drag',
@@ -197,7 +242,7 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
             <span className={cn('flex-shrink-0 w-[18px] h-[18px]', activeView === 'content-review' ? 'text-accent-foreground' : 'text-foreground/45')}>
               <ClipboardCheck size={16} className="block" />
             </span>
-            <span className="truncate">内容审核</span>
+            <span className="truncate">材料审核智能体</span>
           </span>
           <span className="ml-2 flex h-5 flex-shrink-0 items-center rounded-full bg-primary/10 px-1.5 text-[10px] font-medium text-primary">
             演示
@@ -345,233 +390,221 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
         </div>
       ) : mode === 'agent' && viewMode === 'active' ? (
         <div className="flex-1 flex flex-col min-h-0">
-          {sidebarSection === 'pinned' && pinnedAgentSessionTrees.length > 0 && (
-            <div className="order-2 pt-2 pb-1 flex-shrink-0 titlebar-no-drag">
-              <div
-                className="sidebar-session-scroll overflow-y-auto scrollbar-thin"
-                style={{ maxHeight: PINNED_SESSION_MAX_HEIGHT }}
-              >
-                <div className="px-2">
-                  <div className="ml-4 flex flex-col gap-0.5">
-                    {pinnedAgentSessionTrees.slice(0, progressiveCount).map((item) => {
-                      const childCount = item.childSessions.length
-                      const rowStatus = getSessionTreeStatus(item, agentIndicatorMap)
-                      const treeActive = treeContainsSessionId(item, activeSessionId)
-                      const activeChildVisible = item.childSessions.some((child) => child.id === activeSessionId)
-                      const expandedChildren = expandedRelatedParentIds.has(item.session.id) || activeChildVisible
-
-                      return (
-                        <div key={`pinned-${item.session.id}`} className="flex flex-col gap-0.5">
-                          <AgentSessionItem
-                            session={item.session}
-                            active={treeActive}
-                            indicatorStatus={rowStatus}
-                            showPinIcon={false}
-                            hasDraft={agentDraftIds.has(item.session.id)}
-                            delegationSummary={childCount > 0
-                              ? {
-                                ...getRelatedSessionSummary(item.childSessions),
-                                expanded: expandedChildren,
-                                onToggle: () => handleToggleRelatedParent(item.session.id),
-                              }
-                              : undefined}
-                            leftAccent={getSessionLeftAccent(rowStatus)}
-                            workspaceName={item.session.workspaceId ? workspaceNameMap.get(item.session.workspaceId) : undefined}
-                            relativeTimeNow={relativeTimeNow}
-                            onSelect={handleSelectAgentSession}
-                            onRequestDelete={handleRequestDelete}
-                            onRequestMove={handleRequestMove}
-                            onRename={handleAgentRename}
-                            onRegenerateTitle={handleAgentRegenerateTitle}
-                            regeneratingTitle={regeneratingTitleIds.has(item.session.id)}
-                            onTogglePin={handleTogglePinAgent}
-                            onToggleArchive={handleToggleArchiveAgent}
-                            onMarkUnread={handleMarkUnread}
-                          />
-
-                          {childCount > 0 && expandedChildren && (
-                            <div className="ml-3 border-l border-foreground/10 pl-2 flex flex-col gap-0.5">
-                              {item.childSessions.map((childSession) => (
-                                <RelatedChildSessionItem
-                                  key={childSession.id}
-                                  session={childSession}
-                                  activeSessionId={activeSessionId}
-                                  agentIndicatorMap={agentIndicatorMap}
-                                  hasDraft={agentDraftIds.has(childSession.id)}
-                                  relativeTimeNow={relativeTimeNow}
-                                  workspaceName={childSession.workspaceId ? workspaceNameMap.get(childSession.workspaceId) : undefined}
-                                  onSelect={handleSelectAgentSession}
-                                  onRequestDelete={handleRequestDelete}
-                                  onRequestMove={handleRequestMove}
-                                  onRename={handleAgentRename}
-                                  onRegenerateTitle={handleAgentRegenerateTitle}
-                                  regeneratingTitle={regeneratingTitleIds.has(childSession.id)}
-                                  onTogglePin={handleTogglePinAgent}
-                                  onToggleArchive={handleToggleArchiveAgent}
-                                  onMarkUnread={handleMarkUnread}
-                                />
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
+          <div className="sidebar-session-scroll flex-1 overflow-y-auto px-2 pb-3 scrollbar-thin min-h-0 titlebar-no-drag">
+            {/* 1. 全局独立会话（不指定工作区） */}
+            <div className="mb-3">
+              <div className="flex items-center justify-between px-2 pt-2 pb-1">
+                <span className="text-[11px] font-medium uppercase tracking-[0.08em] text-foreground/40 select-none">会话</span>
+                <span className="text-[10px] tabular-nums text-foreground/30">{agentGlobalSessionTrees.length}</span>
               </div>
-            </div>
-          )}
+              {agentGlobalSessionTrees.length > 0 ? (
+                <div className="flex flex-col gap-0.5">
+                  {agentGlobalSessionTrees.slice(0, progressiveCount).map((item) => {
+                    const childCount = item.childSessions.length
+                    const rowStatus = getSessionTreeStatus(item, agentIndicatorMap)
+                    const treeActive = treeContainsSessionId(item, activeSessionId)
+                    const activeChildVisible = item.childSessions.some((child) => child.id === activeSessionId)
+                    const expandedChildren = expandedRelatedParentIds.has(item.session.id) || activeChildVisible
 
-          {/* 置顶 / 项目只控制下面这块索引，不影响上面的会话区。 */}
-          <div className="order-1 px-2 pt-2 pb-1 flex items-center justify-between flex-shrink-0 titlebar-no-drag">
-            <div className="flex items-center gap-1 rounded-[8px] bg-foreground/[0.04] p-0.5">
-              {(['pinned', 'projects'] as const).map((value) => (
-                <button
-                  key={value}
-                  type="button"
-                  aria-pressed={sidebarSection === value}
-                  onClick={() => setSidebarSection(value)}
-                  className={cn(
-                    'rounded-[6px] px-2 py-[1.5px] text-[12px] transition-colors',
-                    sidebarSection === value ? 'bg-background text-foreground shadow-sm' : 'text-foreground/40 hover:text-foreground/70',
-                  )}
-                >
-                  {value === 'pinned' ? '置顶' : '项目'}
-                </button>
-              ))}
+                    return (
+                      <div key={item.session.id} className="flex flex-col gap-0.5">
+                        <AgentSessionItem
+                          session={item.session}
+                          active={treeActive}
+                          indicatorStatus={rowStatus}
+                          showPinIcon={!!item.session.pinned}
+                          hasDraft={agentDraftIds.has(item.session.id)}
+                          delegationSummary={childCount > 0
+                            ? {
+                              ...getRelatedSessionSummary(item.childSessions),
+                              expanded: expandedChildren,
+                              onToggle: () => handleToggleRelatedParent(item.session.id),
+                            }
+                            : undefined}
+                          leftAccent={getSessionLeftAccent(rowStatus)}
+                          relativeTimeNow={relativeTimeNow}
+                          onSelect={handleSelectAgentSession}
+                          onRequestDelete={handleRequestDelete}
+                          onRequestMove={handleRequestMove}
+                          onRename={handleAgentRename}
+                          onRegenerateTitle={handleAgentRegenerateTitle}
+                          regeneratingTitle={regeneratingTitleIds.has(item.session.id)}
+                          onTogglePin={handleTogglePinAgent}
+                          onToggleArchive={handleToggleArchiveAgent}
+                          onMarkUnread={handleMarkUnread}
+                        />
+
+                        {childCount > 0 && expandedChildren && (
+                          <div className="ml-3 border-l border-foreground/10 pl-2 flex flex-col gap-0.5">
+                            {item.childSessions.map((childSession) => (
+                              <RelatedChildSessionItem
+                                key={childSession.id}
+                                session={childSession}
+                                activeSessionId={activeSessionId}
+                                agentIndicatorMap={agentIndicatorMap}
+                                hasDraft={agentDraftIds.has(childSession.id)}
+                                relativeTimeNow={relativeTimeNow}
+                                onSelect={handleSelectAgentSession}
+                                onRequestDelete={handleRequestDelete}
+                                onRequestMove={handleRequestMove}
+                                onRename={handleAgentRename}
+                                onRegenerateTitle={handleAgentRegenerateTitle}
+                                regeneratingTitle={regeneratingTitleIds.has(childSession.id)}
+                                onTogglePin={handleTogglePinAgent}
+                                onToggleArchive={handleToggleArchiveAgent}
+                                onMarkUnread={handleMarkUnread}
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="px-2 py-1 text-[11px] text-foreground/30 italic select-none">
+                  暂无独立会话
+                </div>
+              )}
             </div>
-            {sidebarSection === 'projects' && <div className="flex items-center gap-0.5">
-              {/* 已收纳入口：仅在存在收纳项时出现，点击弹出列表可逐个取出 */}
-              {archivedWorkspaces.length > 0 && (
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <button
-                      type="button"
-                      className="size-6 flex items-center justify-center rounded-md text-foreground/35 hover:bg-foreground/[0.06] hover:text-foreground/60 transition-colors titlebar-no-drag"
-                      aria-label={`查看已收纳工作区（${archivedWorkspaces.length}）`}
-                    >
-                      <Archive size={13} />
-                    </button>
-                  </PopoverTrigger>
-                  <PopoverContent align="end" className="w-56 p-1">
-                    <div className="px-2 py-1 text-[11px] font-medium text-foreground/40">
-                      已收纳工作区 ({archivedWorkspaces.length})
-                    </div>
-                    {archivedWorkspaces.map((ws) => (
-                      <div
-                        key={ws.id}
-                        className="group/archived flex items-center gap-1.5 rounded-md px-2 py-1 text-[13px] text-foreground/70 hover:bg-foreground/[0.05]"
-                      >
-                        <FolderOpen size={13} className="flex-shrink-0 text-foreground/35" />
-                        <span className="flex-1 min-w-0 truncate">{ws.name}</span>
+
+            {/* 2. 项目列表（各工作区会话） */}
+            <div>
+              <div className="flex items-center justify-between px-2 pt-1 pb-1">
+                <span className="text-[11px] font-medium uppercase tracking-[0.08em] text-foreground/40 select-none">项目</span>
+                <div className="flex items-center gap-0.5">
+                  {/* 已收纳工作区入口 */}
+                  {archivedWorkspaces.length > 0 && (
+                    <Popover>
+                      <PopoverTrigger asChild>
                         <button
                           type="button"
-                          aria-label={`取出「${ws.name}」`}
-                          title="取出工作区"
-                          onClick={() => { void handleToggleWorkspaceArchive(ws.id) }}
-                          className="flex-shrink-0 rounded p-0.5 text-foreground/35 transition-colors hover:text-foreground/80 titlebar-no-drag"
+                          className="size-6 flex items-center justify-center rounded-md text-foreground/35 hover:bg-foreground/[0.06] hover:text-foreground/60 transition-colors titlebar-no-drag"
+                          aria-label={`查看已收纳工作区（${archivedWorkspaces.length}）`}
                         >
-                          <ArchiveRestore size={13} />
+                          <Archive size={13} />
                         </button>
-                      </div>
-                    ))}
-                  </PopoverContent>
-                </Popover>
-              )}
-              {/* 项目排序切换：默认（创建时间）/ 最近 / 名称 三种方式循环 */}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    onClick={handleCycleWorkspaceSort}
-                    className="size-6 flex items-center justify-center rounded-md text-foreground/35 hover:bg-foreground/[0.06] hover:text-foreground/60 transition-colors titlebar-no-drag"
-                    aria-label={`项目排序：当前${WORKSPACE_SORT_LABEL[workspaceSortMode]}排序，点击切换`}
-                  >
-                    {renderWorkspaceSortIcon(workspaceSortMode)}
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="top">
-                  当前{WORKSPACE_SORT_LABEL[workspaceSortMode]}排序，点击切换排序方式
-                </TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    onClick={handleStartCreateProject}
-                    className="size-6 flex items-center justify-center rounded-md text-foreground/40 hover:bg-foreground/[0.06] hover:text-foreground/60 transition-colors titlebar-no-drag"
-                    aria-label="新建项目"
-                  >
-                    <Plus size={16} />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="top">新建项目</TooltipContent>
-              </Tooltip>
-              </div>}
-          </div>
-
-          <div className={cn('order-3 sidebar-session-scroll flex-1 overflow-y-auto px-2 pb-3 scrollbar-thin min-h-0 titlebar-no-drag', sidebarSection !== 'projects' && 'hidden')}>
-            {creatingProject && (
-              <div className="flex items-center gap-2 px-2 py-1.5 mb-1 rounded-md bg-foreground/[0.04]">
-                <FolderOpen size={14} className="flex-shrink-0 text-foreground/40" />
-                <input
-                  ref={newProjectInputRef}
-                  value={newProjectName}
-                  onChange={(e) => setNewProjectName(e.target.value)}
-                  onKeyDown={handleCreateProjectKeyDown}
-                  onBlur={() => {
-                    setCreatingProject(false)
-                    setNewProjectName('')
-                  }}
-                  placeholder="项目名称..."
-                  className="flex-1 min-w-0 bg-transparent text-[13px] text-foreground border-b border-primary/50 outline-none px-0.5"
-                  maxLength={50}
-                />
+                      </PopoverTrigger>
+                      <PopoverContent align="end" className="w-56 p-1">
+                        <div className="px-2 py-1 text-[11px] font-medium text-foreground/40">
+                          已收纳工作区 ({archivedWorkspaces.length})
+                        </div>
+                        {archivedWorkspaces.map((ws) => (
+                          <div
+                            key={ws.id}
+                            className="group/archived flex items-center gap-1.5 rounded-md px-2 py-1 text-[13px] text-foreground/70 hover:bg-foreground/[0.05]"
+                          >
+                            <FolderOpen size={13} className="flex-shrink-0 text-foreground/35" />
+                            <span className="flex-1 min-w-0 truncate">{ws.name}</span>
+                            <button
+                              type="button"
+                              aria-label={`取出「${ws.name}」`}
+                              title="取出工作区"
+                              onClick={() => { void handleToggleWorkspaceArchive(ws.id) }}
+                              className="flex-shrink-0 rounded p-0.5 text-foreground/35 transition-colors hover:text-foreground/80 titlebar-no-drag"
+                            >
+                              <ArchiveRestore size={13} />
+                            </button>
+                          </div>
+                        ))}
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                  {/* 项目排序切换 */}
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        onClick={handleCycleWorkspaceSort}
+                        className="size-6 flex items-center justify-center rounded-md text-foreground/35 hover:bg-foreground/[0.06] hover:text-foreground/60 transition-colors titlebar-no-drag"
+                        aria-label={`项目排序：当前${WORKSPACE_SORT_LABEL[workspaceSortMode]}排序，点击切换`}
+                      >
+                        {renderWorkspaceSortIcon(workspaceSortMode)}
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">
+                      当前{WORKSPACE_SORT_LABEL[workspaceSortMode]}排序，点击切换排序方式
+                    </TooltipContent>
+                  </Tooltip>
+                  {/* 新建项目 */}
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        onClick={handleStartCreateProject}
+                        className="size-6 flex items-center justify-center rounded-md text-foreground/40 hover:bg-foreground/[0.06] hover:text-foreground/60 transition-colors titlebar-no-drag"
+                        aria-label="新建项目"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">新建项目</TooltipContent>
+                  </Tooltip>
+                </div>
               </div>
-            )}
 
-            <div className="flex flex-col gap-0.5">
-              {agentProjectGroups.slice(0, progressiveCount).map((group) => (
-                <AgentProjectGroupItem
-                  key={group.workspace.id}
-                  group={group}
-                  currentWorkspaceId={currentWorkspaceId}
-                  expanded={(expandedExtraCountMap.get(group.workspace.id) ?? 0) > 0}
-                  extraCount={expandedExtraCountMap.get(group.workspace.id) ?? 0}
-                  collapsed={collapsedWorkspaceIds.has(group.workspace.id)}
-                  activeSessionId={activeSessionId}
-                  agentIndicatorMap={agentIndicatorMap}
-                  agentDraftIds={agentDraftIds}
-                  expandedRelatedParentIds={expandedRelatedParentIds}
-                  relativeTimeNow={relativeTimeNow}
-                  dragging={dragProjectId === group.workspace.id}
-                  dropPosition={projectDropIndicator?.id === group.workspace.id ? projectDropIndicator.position : null}
-                  onShowMore={handleShowMoreSessions}
-                  onCollapseExtra={handleCollapseExtraSessions}
-                  onSelectProject={handleSelectProject}
-                  onToggleProjectCollapse={handleToggleProjectCollapse}
-                  onNewSession={createAgentSessionInWorkspace}
-                  onDragStart={handleProjectDragStart}
-                  onDragOver={handleProjectDragOver}
-                  onDragLeave={handleProjectDragLeave}
-                  onDrop={handleProjectDrop}
-                  onDragEnd={handleProjectDragEnd}
-                  onToggleArchiveWorkspace={(workspaceId) => { void handleToggleWorkspaceArchive(workspaceId) }}
-                  onRenameWorkspace={handleWorkspaceRename}
-                  onRequestDeleteWorkspace={handleRequestDeleteWorkspace}
-                  canDeleteWorkspace={canDeleteWorkspace(group.workspace)}
-                  onSelectSession={handleSelectAgentSession}
-                  onRequestDelete={handleRequestDelete}
-                  onRequestMove={handleRequestMove}
-                  onRename={handleAgentRename}
-                  onRegenerateTitle={handleAgentRegenerateTitle}
-                  onTogglePin={handleTogglePinAgent}
-                  onToggleArchive={handleToggleArchiveAgent}
-                  onToggleRelatedParent={handleToggleRelatedParent}
-                  onMarkUnread={handleMarkUnread}
-                  workspaceSwitchTs={workspaceSwitchTs}
-                />
-              ))}
+              {creatingProject && (
+                <div className="flex items-center gap-2 px-2 py-1.5 mb-1 rounded-md bg-foreground/[0.04]">
+                  <FolderOpen size={14} className="flex-shrink-0 text-foreground/40" />
+                  <input
+                    ref={newProjectInputRef}
+                    value={newProjectName}
+                    onChange={(e) => setNewProjectName(e.target.value)}
+                    onKeyDown={handleCreateProjectKeyDown}
+                    onBlur={() => {
+                      setCreatingProject(false)
+                      setNewProjectName('')
+                    }}
+                    placeholder="项目名称..."
+                    className="flex-1 min-w-0 bg-transparent text-[13px] text-foreground border-b border-primary/50 outline-none px-0.5"
+                    maxLength={50}
+                  />
+                </div>
+              )}
+
+              <div className="flex flex-col gap-0.5">
+                {agentProjectGroups.slice(0, progressiveCount).map((group) => (
+                  <AgentProjectGroupItem
+                    key={group.workspace.id}
+                    group={group}
+                    currentWorkspaceId={currentWorkspaceId}
+                    expanded={(expandedExtraCountMap.get(group.workspace.id) ?? 0) > 0}
+                    extraCount={expandedExtraCountMap.get(group.workspace.id) ?? 0}
+                    collapsed={collapsedWorkspaceIds.has(group.workspace.id)}
+                    activeSessionId={activeSessionId}
+                    agentIndicatorMap={agentIndicatorMap}
+                    agentDraftIds={agentDraftIds}
+                    expandedRelatedParentIds={expandedRelatedParentIds}
+                    relativeTimeNow={relativeTimeNow}
+                    dragging={dragProjectId === group.workspace.id}
+                    dropPosition={projectDropIndicator?.id === group.workspace.id ? projectDropIndicator.position : null}
+                    onShowMore={handleShowMoreSessions}
+                    onCollapseExtra={handleCollapseExtraSessions}
+                    onSelectProject={handleSelectProject}
+                    onToggleProjectCollapse={handleToggleProjectCollapse}
+                    onNewSession={createAgentSessionInWorkspace}
+                    onDragStart={handleProjectDragStart}
+                    onDragOver={handleProjectDragOver}
+                    onDragLeave={handleProjectDragLeave}
+                    onDrop={handleProjectDrop}
+                    onDragEnd={handleProjectDragEnd}
+                    onToggleArchiveWorkspace={(workspaceId) => { void handleToggleWorkspaceArchive(workspaceId) }}
+                    onRenameWorkspace={handleWorkspaceRename}
+                    onRequestDeleteWorkspace={handleRequestDeleteWorkspace}
+                    canDeleteWorkspace={canDeleteWorkspace(group.workspace)}
+                    onSelectSession={handleSelectAgentSession}
+                    onRequestDelete={handleRequestDelete}
+                    onRequestMove={handleRequestMove}
+                    onRename={handleAgentRename}
+                    onRegenerateTitle={handleAgentRegenerateTitle}
+                    onTogglePin={handleTogglePinAgent}
+                    onToggleArchive={handleToggleArchiveAgent}
+                    onToggleRelatedParent={handleToggleRelatedParent}
+                    onMarkUnread={handleMarkUnread}
+                    workspaceSwitchTs={workspaceSwitchTs}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>

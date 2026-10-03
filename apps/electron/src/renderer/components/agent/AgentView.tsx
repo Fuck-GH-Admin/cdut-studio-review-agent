@@ -397,57 +397,6 @@ function AgentThinkingPopover({ agentThinking, onToggle, openAIConfig, sessionId
   )
 }
 
-const AGENT_RUNTIME_OPTIONS: Array<{ value: AgentRuntime; label: string; description: string }> = [
-  { value: 'pi', label: 'Pi', description: '使用 Pi Agent SDK' },
-]
-
-function AgentRuntimeSelector({
-  runtime,
-  disabled,
-  onChange,
-}: {
-  runtime: AgentRuntime
-  disabled: boolean
-  onChange: (runtime: AgentRuntime) => void
-}): React.ReactElement {
-  const [open, setOpen] = React.useState(false)
-  const current = AGENT_RUNTIME_OPTIONS.find((option) => option.value === runtime) ?? AGENT_RUNTIME_OPTIONS[0]!
-
-  return (
-    <AgentComposerToolPopover
-      open={open}
-      onOpenChange={(nextOpen) => setOpen(disabled ? false : nextOpen)}
-      tooltip={disabled ? `Agent 运行中，完成后可切换内核（当前：${current.label}）` : `切换当前会话下一轮使用的 Agent 内核（当前：${current.label}）`}
-      align="start"
-      className="w-48"
-      trigger={
-        <AgentComposerToolTrigger
-          label={`Agent 内核：${current.label}`}
-          disabled={disabled}
-          // 与模型选择器等「带文字工具」共用同一壳层尺寸约定：
-          // 内核是会话级模式指示，必须能一眼分辨 Claude / Pi，不能只留图标。
-          className="flex w-auto items-center gap-1.5 px-2 text-xs"
-        >
-          <Bot className="size-5 shrink-0" />
-          <span className="truncate">{current.label}</span>
-        </AgentComposerToolTrigger>
-      }
-    >
-      {AGENT_RUNTIME_OPTIONS.map((option) => (
-        <AgentComposerToolMenuItem
-          key={option.value}
-          selected={option.value === runtime}
-          className="flex-col items-start px-2.5 py-2"
-          onClick={() => { onChange(option.value); setOpen(false) }}
-        >
-          <span className="text-xs font-medium">{option.label}</span>
-          <span className="mt-0.5 text-[11px] text-muted-foreground">{option.description}</span>
-        </AgentComposerToolMenuItem>
-      ))}
-    </AgentComposerToolPopover>
-  )
-}
-
 // ===== 工具栏附件按钮（添加文件 / 附加文件夹 二级菜单） =====
 
 function AttachMenuButton({ onAttachFile, onAttachFolder }: {
@@ -3092,16 +3041,6 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
         />
       ),
     },
-    {
-      key: 'runtime',
-      node: (
-        <AgentRuntimeSelector
-          runtime={sessionAgentRuntime}
-          disabled={streaming || backgroundWaiting || runtimeSwitchInFlight}
-          onChange={handleAgentRuntimeChange}
-        />
-      ),
-    },
     { key: 'permission-mode', node: <PermissionModeSelector sessionId={sessionId} presetPermissionMode={sessionBoundPreset?.permissionMode} persistedRevision={sessionMeta?.revision} composerTool /> },
     { key: 'preset', node: <PresetSelector sessionId={sessionId} persistedPresetId={sessionMeta?.presetId} persistedPresetReference={sessionMeta?.presetReference} persistedRevision={sessionMeta?.revision} workspaceSlug={workspaceSlug ?? undefined} open={presetMenuOpen} onOpenChange={setPresetMenuOpen} onManagePresets={openWorkspacePresets} /> },
     {
@@ -3331,20 +3270,7 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
               onDrop={handleDrop}
             >
             {(isPlanMode || isPermissionPlanMode) && !isDragOver && <PlanModeDashedBorder />}
-            {/* 无 Agent 渠道或无可用模型提示 */}
-            {(!agentChannelId || !hasAvailableModel) && (
-              <div className="flex items-center gap-2 px-4 py-2 text-sm text-amber-600 dark:text-amber-400">
-                <Settings size={14} />
-                <span>{!agentChannelId ? '请在设置中选择 Agent 供应商' : '暂无可用模型，请在设置中启用 Agent 渠道并配置模型'}</span>
-                <button
-                  type="button"
-                  className="text-xs underline underline-offset-2 hover:text-foreground transition-colors"
-                  onClick={() => setSettingsOpen(true)}
-                >
-                  前往设置
-                </button>
-              </div>
-            )}
+            {/* 无 Agent 渠道或无可用模型时居中大字提示已下移至输入框内 */}
 
             {/* 附件 + 引用选中文本 Chip + 中断说明 Chip（同排并排） */}
             {(pendingFiles.length > 0 || currentQuotedSelection || (currentAgentInterruption && !streaming && !streamState?.stopping)) && (
@@ -3430,42 +3356,64 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
                 {' '}完成选择，再开始对话。
               </div>
             )}
-            <RichTextInput
-              ref={richTextInputRef}
-              value={inputContent}
-              onChange={setInputContent}
-              onDraftPresenceChange={setHasInputDraft}
-              onSubmit={handleSend}
-              onPasteFiles={handlePasteFiles}
-              onPasteLongText={handlePasteLongText}
-              longTextPasteThreshold={longTextPasteAsAttachmentEnabled ? LONG_TEXT_ATTACHMENT_THRESHOLD : undefined}
-              placeholder={
-                showPresetSelectionRequired
-                  ? '请先选择 Agent 预设，然后再开始对话'
-                  : isCompacting
-                    ? '正在压缩上下文，完成后可继续对话...'
-                    : agentChannelId && hasAvailableModel
-                      ? sendWithCmdEnter
-                        ? '输入消息... (⌘/Ctrl+Enter 发送，Enter 换行，@ 引用文件，/ 调用 Skill，# 调用 MCP，& 引用会话)'
-                        : '输入消息... (Enter 发送，Shift+Enter 换行，@ 引用文件，/ 调用 Skill，# 调用 MCP，& 引用会话)'
-                      : !agentChannelId
-                        ? '请先在设置中选择 Agent 供应商'
-                        : '暂无可用模型，请先在设置中启用渠道'
-              }
-              disabled={!agentChannelId || !hasAvailableModel}
-              autoFocusTrigger={sessionId}
-              collapsible
-              enableMentions
-              workspacePath={sessionPath}
-              workspaceId={currentWorkspaceId}
-              workspaceSlug={workspaceSlug}
-              sessionId={sessionId}
-              attachedDirs={workspaceMentionPaths}
-              sessionAttachedDirs={sessionMentionPaths}
-              htmlValue={inputHtmlContent}
-              onHtmlChange={setInputHtmlContent}
-              sendWithCmdEnter={sendWithCmdEnter}
-            />
+            {(!agentChannelId || !hasAvailableModel) ? (
+              <div className="flex flex-col items-center justify-center py-8 px-4 text-center select-none">
+                <div className="flex items-center justify-center size-10 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 mb-2.5">
+                  <Settings className="size-5 animate-[spin_10s_linear_infinite]" />
+                </div>
+                <h3 className="text-base font-semibold text-foreground tracking-tight mb-1">
+                  {!agentChannelId ? '请在设置中选择 Agent 供应商' : '暂无可用模型'}
+                </h3>
+                <p className="text-xs text-muted-foreground max-w-sm mb-3.5">
+                  {!agentChannelId ? '开启 Agent 对话前，请先配置或启用一个支持的 AI 渠道供应商。' : '当前所选渠道暂无启用模型，请在设置中启用模型后再开始对话。'}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setSettingsOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm transition-colors"
+                >
+                  <Settings size={13} />
+                  <span>前往设置</span>
+                </button>
+              </div>
+            ) : (
+              <RichTextInput
+                ref={richTextInputRef}
+                value={inputContent}
+                onChange={setInputContent}
+                onDraftPresenceChange={setHasInputDraft}
+                onSubmit={handleSend}
+                onPasteFiles={handlePasteFiles}
+                onPasteLongText={handlePasteLongText}
+                longTextPasteThreshold={longTextPasteAsAttachmentEnabled ? LONG_TEXT_ATTACHMENT_THRESHOLD : undefined}
+                placeholder={
+                  showPresetSelectionRequired
+                    ? '请先选择 Agent 预设，然后再开始对话'
+                    : isCompacting
+                      ? '正在压缩上下文，完成后可继续对话...'
+                      : agentChannelId && hasAvailableModel
+                        ? sendWithCmdEnter
+                          ? '输入消息... (⌘/Ctrl+Enter 发送，Enter 换行，@ 引用文件，/ 调用 Skill，# 调用 MCP，& 引用会话)'
+                          : '输入消息... (Enter 发送，Shift+Enter 换行，@ 引用文件，/ 调用 Skill，# 调用 MCP，& 引用会话)'
+                        : !agentChannelId
+                          ? '请先在设置中选择 Agent 供应商'
+                          : '暂无可用模型，请先在设置中启用渠道'
+                }
+                disabled={!agentChannelId || !hasAvailableModel}
+                autoFocusTrigger={sessionId}
+                collapsible
+                enableMentions
+                workspacePath={sessionPath}
+                workspaceId={currentWorkspaceId}
+                workspaceSlug={workspaceSlug}
+                sessionId={sessionId}
+                attachedDirs={workspaceMentionPaths}
+                sessionAttachedDirs={sessionMentionPaths}
+                htmlValue={inputHtmlContent}
+                onHtmlChange={setInputHtmlContent}
+                sendWithCmdEnter={sendWithCmdEnter}
+              />
+            )}
 
             {/* Footer 工具栏 — 容器变窄时尾部按钮自动折叠进「更多」Popover */}
               <InputToolbarOverflow items={inputToolbarItems} trailing={inputTrailingNode} />

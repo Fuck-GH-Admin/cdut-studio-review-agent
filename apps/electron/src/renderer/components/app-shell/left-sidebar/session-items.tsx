@@ -1204,7 +1204,12 @@ export const AgentProjectGroupItem = React.memo(function AgentProjectGroupItem({
   // 非活跃部分仍保留原"最近 3 天 + 至多 5 条"预览策略，作为额外补充展示。
   // 用户点击"显示更多"会在折叠基线之上每次再额外展开 PROJECT_SESSION_EXPAND_STEP 条。
   const treeItems = buildAgentSessionTrees(group.sessions)
-  const activeSessions = treeItems
+  // 项目内的置顶会话直接排在最顶部展示
+  const pinnedSessions = treeItems.filter((item) => !!item.session.pinned)
+  const pinnedIds = new Set(pinnedSessions.map((item) => item.session.id))
+  const nonPinnedTreeItems = treeItems.filter((item) => !pinnedIds.has(item.session.id))
+
+  const activeSessions = nonPinnedTreeItems
     .filter((item) => ACTIVE_SESSION_STATUSES.has(getSessionTreeStatus(item, agentIndicatorMap)))
     .slice()
     .sort((a, b) => {
@@ -1214,28 +1219,28 @@ export const AgentProjectGroupItem = React.memo(function AgentProjectGroupItem({
       return b.session.updatedAt - a.session.updatedAt
     })
   const activeIds = collectTreeSessionIds(activeSessions)
-  const fillSessions = treeItems
+  const fillSessions = nonPinnedTreeItems
     .filter((item) =>
       !activeIds.has(item.session.id)
       && item.session.updatedAt >= recentCutoff
     )
     .slice(0, PROJECT_SESSION_PREVIEW_LIMIT)
-  // 先拼不含置顶项的可见列表（含 extraSessions），再判断选中会话是否已可见。
+  // 先拼非置顶可见列表（含 extraSessions），再判断选中会话是否已可见。
   const collapsedSessionsWithoutPinned = [...activeSessions, ...fillSessions]
   const collapsedIdsWithoutPinned = new Set(collapsedSessionsWithoutPinned.map((item) => item.session.id))
-  const remainingSessions = treeItems.filter((item) => !collapsedIdsWithoutPinned.has(item.session.id))
+  const remainingSessions = nonPinnedTreeItems.filter((item) => !collapsedIdsWithoutPinned.has(item.session.id))
   const extraSessions = remainingSessions.slice(0, extraCount)
   const sessionsWithoutPinned = [...collapsedSessionsWithoutPinned, ...extraSessions]
   const visibleIds = collectTreeSessionIds(sessionsWithoutPinned)
-  // 仅当选中会话不在当前完整可见列表（含 extra 区）中时才置顶（如搜索结果打开旧会话），
-  // 已可见则保持原位不强制置顶（#958）。
-  const currentSession = activeSessionId && !visibleIds.has(activeSessionId)
-    ? treeItems.find((item) => treeContainsSessionId(item, activeSessionId)) ?? null
+  // 仅当选中会话不在当前可见列表或置顶列表时临时插入
+  const currentSession = activeSessionId && !visibleIds.has(activeSessionId) && !pinnedIds.has(activeSessionId)
+    ? nonPinnedTreeItems.find((item) => treeContainsSessionId(item, activeSessionId)) ?? null
     : null
   const pinnedCurrent = currentSession ? [currentSession] : []
-  const sessions = pinnedCurrent.length > 0
+  const nonPinnedSessions = pinnedCurrent.length > 0
     ? [...activeSessions, ...pinnedCurrent, ...fillSessions, ...extraSessions]
     : sessionsWithoutPinned
+  const sessions = [...pinnedSessions, ...nonPinnedSessions]
   const hiddenCount = Math.max(0, treeItems.length - sessions.length)
 
   return (
