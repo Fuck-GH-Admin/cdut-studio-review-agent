@@ -13,7 +13,8 @@ import type { Actor, EvidenceLink, FieldValue, Observation, ReviewCaseV2, Templa
 import { buildEvidenceLinks, recordObservation } from './evidence-service'
 import { getTemplate } from './template-store'
 import { validatePolicyRef } from './policy-store'
-import { CommandValidationError, createAggregate, payloadHash, readAggregate, submitCommand, type CaseAggregateV2, type CommandResult } from './case-store-v2'
+import { CommandValidationError, createAggregate, payloadHash, readAggregate, submitCommand } from './case-store-v2'
+import type { CaseAggregateV2, ReviewCommandResult } from '@profer/shared'
 
 // ===== CreateCaseFromTemplate =====
 
@@ -39,7 +40,7 @@ export async function createCaseFromTemplate(
   payload: CreateCasePayload,
   actor: Actor,
   caseId: string,
-): Promise<CommandResult<ReviewCaseV2>> {
+): Promise<ReviewCommandResult<ReviewCaseV2>> {
   const template = getTemplate(templateId, version)
   if (!template) throw new CommandValidationError('NOT_FOUND', `模板不存在: ${templateId}@${version}`)
   if (template.status !== 'published') throw new CommandValidationError('VALIDATION_FAILED', '只有已发布模板可创建真实案卷')
@@ -96,7 +97,7 @@ export interface UpdateFieldsPayload {
   subjectFieldValues?: Array<{ subjectId: string; values: Record<string, unknown> }>
 }
 
-export function updateFields(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: UpdateFieldsPayload }): Promise<CommandResult<undefined>> {
+export function updateFields(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: UpdateFieldsPayload }): Promise<ReviewCommandResult<undefined>> {
   return submitCommand<UpdateFieldsPayload, undefined>(caseId, { ...command, type: 'UpdateFields' }, (aggregate, payload) => {
     if (aggregate.caseV2.stage === 'archived') throw new CommandValidationError('INVALID_TRANSITION', '已归档案卷不可修改')
     return {
@@ -132,7 +133,7 @@ export interface CorrectObservationPayload {
 export function correctObservation(
   caseId: string,
   command: { requestId: string; actor: Actor; expectedRevision: number; payload: CorrectObservationPayload },
-): Promise<CommandResult<Observation>> {
+): Promise<ReviewCommandResult<Observation>> {
   return submitCommand<CorrectObservationPayload, Observation>(caseId, { ...command, type: 'CorrectObservation' }, (aggregate, payload) => {
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '更正必须附理由（保留更正历史）')
     let created: Observation | undefined
@@ -163,7 +164,7 @@ export interface SetEvidenceLinkPayload {
   linkedBy: 'ai' | 'user'
 }
 
-export function setEvidenceLink(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: SetEvidenceLinkPayload }): Promise<CommandResult<EvidenceLink[]>> {
+export function setEvidenceLink(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: SetEvidenceLinkPayload }): Promise<ReviewCommandResult<EvidenceLink[]>> {
   return submitCommand<SetEvidenceLinkPayload, EvidenceLink[]>(caseId, { ...command, type: 'SetEvidenceLink' }, (aggregate, payload) => {
     if (!payload.supportsFact.trim()) throw new CommandValidationError('VALIDATION_FAILED', '绑定必须说明支持的事实')
     let links: EvidenceLink[] = []

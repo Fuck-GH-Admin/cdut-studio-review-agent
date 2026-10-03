@@ -13,35 +13,10 @@
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { join } from 'node:path'
-import type { Actor, Appeal, BusinessDecision, EvidenceLink, Observation, ReviewCaseV2, SupplementRequest, WorkflowTask } from '@profer/shared'
+import type { Actor, Appeal, BusinessDecision, CaseAggregateV2, CommandErrorCode, CommandReceipt, ReviewCommandResult, EvidenceLink, Observation, ReviewCaseV2, SupplementRequest, WorkflowTask } from '@profer/shared'
 import { getConfigDir } from '../config-paths'
 
 // ===== 聚合形态（07 §3.3） =====
-
-export interface CaseAggregateV2 {
-  caseV2: ReviewCaseV2
-  observations: Observation[]
-  evidenceLinks: EvidenceLink[]
-  /** 问题人工处理记录（键=findingKey） */
-  dispositions: Array<{ findingKey: string; disposition: string; actor: string; reason: string; at: string }>
-  tasks: WorkflowTask[]
-  decisions: BusinessDecision[]
-  supplements: SupplementRequest[]
-  appeals: Appeal[]
-  /** 命令回执日志（幂等依据，长期保留） */
-  receiptLog: CommandReceipt[]
-}
-
-export interface CommandReceipt {
-  requestId: string
-  type: string
-  payloadHash: string
-  /** 执行后聚合 revision */
-  revision: number
-  at: string
-  /** 命令产出的实体摘要（供 UI 提示） */
-  summary: string
-}
 
 export function emptyAggregate(caseV2: ReviewCaseV2): CaseAggregateV2 {
   return { caseV2, observations: [], evidenceLinks: [], dispositions: [], tasks: [], decisions: [], supplements: [], appeals: [], receiptLog: [] }
@@ -86,13 +61,6 @@ function enqueueCase<T>(caseId: string, task: () => Promise<T>): Promise<T> {
 
 // ===== 命令事务 =====
 
-export type CommandErrorCode =
-  | 'VERSION_CONFLICT' | 'NOT_FOUND' | 'VALIDATION_FAILED' | 'REQUEST_ID_COLLISION' | 'INVALID_TRANSITION' | 'DEPENDENCY_UNRESOLVED'
-
-export type CommandResult<TEntity = unknown> =
-  | { ok: true; receipt: CommandReceipt; aggregate: CaseAggregateV2; entity?: TEntity }
-  | { ok: false; code: CommandErrorCode; message: string; currentRevision?: number }
-
 export function payloadHash(type: string, payload: unknown): string {
   return createHash('sha256').update(`${type}|${JSON.stringify(payload)}`, 'utf-8').digest('hex')
 }
@@ -105,8 +73,8 @@ export async function submitCommand<TPayload, TEntity = TPayload>(
   caseId: string,
   command: { requestId: string; actor: Actor; expectedRevision: number; type: string; payload: TPayload },
   handler: CommandHandler<TPayload, TEntity>,
-): Promise<CommandResult<TEntity>> {
-  return enqueueCase(caseId, async (): Promise<CommandResult<TEntity>> => {
+): Promise<ReviewCommandResult<TEntity>> {
+  return enqueueCase(caseId, async (): Promise<ReviewCommandResult<TEntity>> => {
     const aggregate = readAggregate(caseId)
     if (!aggregate) return { ok: false, code: 'NOT_FOUND', message: `案卷聚合不存在: ${caseId}` }
 

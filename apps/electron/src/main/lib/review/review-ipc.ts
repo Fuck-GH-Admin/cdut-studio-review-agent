@@ -223,6 +223,40 @@ export function registerReviewIpc(): void {
     return runBootCheckV2()
   })
 
+  // ===== N1d：V2 应用命令（薄委托 application-service / fixture） =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.SEED_FIXTURE_V2, () => {
+    const { seedComprehensiveFixture, publishComprehensiveFixture } = require('./fixtures/comprehensive-fixture') as typeof import('./fixtures/comprehensive-fixture')
+    const { getTemplate, saveDraft, publishTemplate } = require('./template-store') as typeof import('./template-store')
+    seedComprehensiveFixture({ getTemplate, saveDraft })
+    publishComprehensiveFixture({ getTemplate, saveDraft, publish: publishTemplate })
+    return true
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CREATE_CASE_V2, (_e, input: { caseId: string; templateId: string; version: number; payload: unknown; actor: import('@profer/shared').Actor }) => {
+    if (!input?.caseId || !input?.templateId) throw new Error('参数非法')
+    const { createCaseFromTemplate } = require('./application-service') as typeof import('./application-service')
+    return createCaseFromTemplate(input.templateId, input.version, input.payload as never, input.actor, input.caseId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_AGGREGATE_V2, (_e, caseId: string) => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+    return getCaseV2Aggregate(caseId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.UPDATE_FIELDS_V2, (_e, input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) => {
+    const { updateFields } = require('./application-service') as typeof import('./application-service')
+    const command = input.command as unknown as { requestId: string; actor: import('@profer/shared').Actor; expectedRevision: number; payload: unknown }
+    return updateFields(input.caseId, command as unknown as Parameters<typeof updateFields>[1])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CORRECT_OBSERVATION_V2, (_e, input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) => {
+    const { correctObservation } = require('./application-service') as typeof import('./application-service')
+    const command = input.command as unknown as { requestId: string; actor: import('@profer/shared').Actor; expectedRevision: number; payload: unknown }
+    return correctObservation(input.caseId, command as unknown as Parameters<typeof correctObservation>[1])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.SET_EVIDENCE_LINK_V2, (_e, input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) => {
+    const { setEvidenceLink } = require('./application-service') as typeof import('./application-service')
+    const command = input.command as unknown as { requestId: string; actor: import('@profer/shared').Actor; expectedRevision: number; payload: unknown }
+    return setEvidenceLink(input.caseId, command as unknown as Parameters<typeof setEvidenceLink>[1])
+  })
+
   /** 删除案卷 */
   ipcMain.handle(REVIEW_IPC_CHANNELS.DELETE_CASE, (_event, caseId: string): void => {
     deleteCase(caseId)

@@ -3643,6 +3643,16 @@ const reviewAPI = {
   cancelRunV2: (runId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CANCEL_RUN_V2, runId) as Promise<boolean>,
   migrateCaseV2: (caseId: string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.MIGRATE_CASE_V2, caseId) as Promise<import('@profer/shared').ReviewCaseV2 | undefined>,
+  seedFixtureV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SEED_FIXTURE_V2) as Promise<boolean>,
+  createCaseV2: (input: { caseId: string; templateId: string; version: number; payload: unknown; actor: import('@profer/shared').Actor }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_CASE_V2, input) as Promise<import('@profer/shared').ReviewCaseV2 | undefined>,
+  getAggregateV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_AGGREGATE_V2, caseId) as Promise<import('@profer/shared').CaseAggregateV2 | undefined>,
+  updateFieldsV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_FIELDS_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  correctObservationV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CORRECT_OBSERVATION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  setEvidenceLinkV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SET_EVIDENCE_LINK_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   bootCheckV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BOOT_CHECK_V2) as Promise<{ templatesSeeded: number; templatesPublished: number; migratableCases: string[]; notes: string[] }>,
   getLatestRun: (caseId: string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LATEST_RUN, caseId) as Promise<import('@profer/shared').ReviewLatestRunResult>,

@@ -6,7 +6,7 @@
  * 命令外壳扩展与错误码见文末；新设计哈希用 SHA-256，旧 SHA-1 记录带 algorithm 标识。
  */
 
-import type { Actor, FieldSpec, ReviewAppErrorCode, RoleId, SourceLocation } from './review-v2'
+import type { Actor, Appeal, BusinessDecision, EvidenceLink, FieldSpec, Observation, ReviewAppErrorCode, ReviewCaseV2, RoleId, SourceLocation, SupplementRequest } from './review-v2'
 
 // ===== 政策仓库（07 §2.1 PolicyRef/PolicyVersion；05 §2.1 误判 8：模板必须有对应政策） =====
 
@@ -274,3 +274,34 @@ export function fieldScopeOf(spec: Pick<FieldSpec, 'key'> & Partial<FieldSpecV2>
 }
 
 export type { SourceLocation, ReviewAppErrorCode }
+
+// ===== 案卷聚合与命令结果（N1c/N1d：主进程与渲染层共用形态） =====
+
+export interface CommandReceipt {
+  requestId: string
+  type: string
+  payloadHash: string
+  revision: number
+  at: string
+  summary: string
+}
+
+/** 单案业务聚合（state.v2.json 形态；07 §3.3） */
+export interface CaseAggregateV2 {
+  caseV2: ReviewCaseV2
+  observations: Observation[]
+  evidenceLinks: EvidenceLink[]
+  dispositions: Array<{ findingKey: string; disposition: string; actor: string; reason: string; at: string }>
+  tasks: WorkflowTask[]
+  decisions: BusinessDecision[]
+  supplements: SupplementRequest[]
+  appeals: Appeal[]
+  receiptLog: CommandReceipt[]
+}
+
+export type CommandErrorCode =
+  | 'VERSION_CONFLICT' | 'NOT_FOUND' | 'VALIDATION_FAILED' | 'REQUEST_ID_COLLISION' | 'INVALID_TRANSITION' | 'DEPENDENCY_UNRESOLVED'
+
+export type ReviewCommandResult<TEntity = unknown> =
+  | { ok: true; receipt: CommandReceipt; aggregate: CaseAggregateV2; entity?: TEntity }
+  | { ok: false; code: CommandErrorCode; message: string; currentRevision?: number }

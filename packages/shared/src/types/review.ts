@@ -470,6 +470,13 @@ export const REVIEW_IPC_CHANNELS = {
   CANCEL_RUN_V2: 'review-v2:cancel-run',
   MIGRATE_CASE_V2: 'review-v2:migrate-case',
   BOOT_CHECK_V2: 'review-v2:boot-check',
+  // ===== N1d：V2 应用命令（07 §3.2 首批） =====
+  SEED_FIXTURE_V2: 'review-v2:seed-fixture',
+  CREATE_CASE_V2: 'review-v2:create-case',
+  GET_AGGREGATE_V2: 'review-v2:get-aggregate',
+  UPDATE_FIELDS_V2: 'review-v2:update-fields',
+  CORRECT_OBSERVATION_V2: 'review-v2:correct-observation',
+  SET_EVIDENCE_LINK_V2: 'review-v2:set-evidence-link',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */

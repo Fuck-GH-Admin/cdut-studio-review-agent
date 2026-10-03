@@ -23,7 +23,7 @@ async function setup(): Promise<void> {
   await createAggregate(caseV2.id, caseV2)
 }
 
-const bumpStage = (aggregate: import('./case-store-v2').CaseAggregateV2): void => {
+const bumpStage = (aggregate: import('@profer/shared').CaseAggregateV2): void => {
   aggregate.caseV2.stage = 'submitted'
 }
 
