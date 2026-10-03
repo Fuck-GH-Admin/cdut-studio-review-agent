@@ -31,6 +31,9 @@ import type {
  */
 export const reviewCasesByIdAtom = atom<Record<string, ReviewCase>>({})
 
+/** 每案最近运行是否与当前输入同版（M0/H09：false=过期，仅历史参考） */
+export const reviewRunStaleByCaseAtom = atom<Record<string, boolean>>({})
+
 /** 每案最近一次运行（M0/H05：A 的运行回 A，替代原全局单例） */
 export const reviewRunsByCaseAtom = atom<Record<string, ReviewRun | null>>({})
 
@@ -120,6 +123,12 @@ export const reviewBusyAtom = atom(
     })
   },
 )
+
+/** 当前案卷最近运行是否过期（M0/H09 只读派生） */
+export const reviewRunStaleAtom = atom((get) => {
+  const id = get(selectedCaseIdAtom)
+  return id ? (get(reviewRunStaleByCaseAtom)[id] ?? false) : false
+})
 
 // ===== 联动状态 =====
 

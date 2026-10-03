@@ -3623,6 +3623,8 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GENERATE_RULE_OUTLINE, input) as Promise<import('@profer/shared').RuleOutlineItem[]>,
   extractItems: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.EXTRACT_ITEMS, caseId) as Promise<import('@profer/shared').ReviewItem[]>,
   runReview: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW, caseId) as Promise<import('@profer/shared').ReviewRun>,
+  getLatestRun: (caseId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LATEST_RUN, caseId) as Promise<import('@profer/shared').ReviewLatestRunResult>,
   getRun: (input: { caseId: string; runId: string }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_RUN, input) as Promise<import('@profer/shared').ReviewRun | undefined>,
   assistantChat: (input: import('@profer/shared').AssistantChatRequest) =>

@@ -13,7 +13,8 @@ import { join } from 'node:path'
 import type { ExportReportResult, FindingKind, ReviewReportData, ReviewRun } from '@profer/shared'
 import { getConfigDir } from '../config-paths'
 import { getCase, latestRunSafe } from './report-data'
-import { assertSafeId } from './case-store'
+import { assertSafeId, computeCaseInputHash 
+} from './case-store'
 
 /** Markdown 表格单元格转义：竖线与换行会破坏表格结构 */
 function escapeMdCell(text: string): string {
@@ -72,6 +73,15 @@ export async function exportReport(caseId: string): Promise<ExportReportResult> 
 
   const run: ReviewRun | undefined = latestRunSafe(caseId)
   if (!run) throw new Error('该案卷尚未执行审核，无法导出报告（请先在右栏运行审核）')
+
+  // M0/H06/H10 同版守门：报告禁止"当前案卷元数据 × 旧运行"混版。
+  // 输入指纹不一致（材料/规则/领域在审核后被改过）→ 拒绝导出当前报告，提示重审。
+  if (run.inputHash !== undefined && run.inputHash !== computeCaseInputHash(reviewCase)) {
+    throw new Error('案卷在本次审核后已修改，最近一次结果已过期：请重审后再导出报告')
+  }
+  if (run.inputHash === undefined) {
+    throw new Error('该运行记录缺少输入快照（旧格式），无法证明与当前案卷同版：请重审后再导出报告')
+  }
 
   const data: ReviewReportData = {
     caseId: reviewCase.id,

@@ -312,6 +312,13 @@ export interface ReviewRun {
   error?: string
 }
 
+/** 最近运行查询结果（M0/H09：恢复 + 输入过期标记） */
+export interface ReviewLatestRunResult {
+  run: ReviewRun | null
+  /** true = 最近运行的输入指纹与案卷当前输入不一致（材料/规则/领域已改动），结果仅作历史参考 */
+  inputStale: boolean
+}
+
 // ===== 案卷 =====
 
 /** 审核类型 */
@@ -452,6 +459,7 @@ export const REVIEW_IPC_CHANNELS = {
   RUN_REVIEW: 'review:run-review',
   /** 查询运行状态 */
   GET_RUN: 'review:get-run',
+  LATEST_RUN: 'review:get-latest-run',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */

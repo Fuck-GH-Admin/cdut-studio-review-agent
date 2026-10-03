@@ -34,6 +34,7 @@ import type {
 } from '@profer/shared'
 import {
   reviewAssistantPendingAtom,
+  reviewRunStaleByCaseAtom,
   reviewAssistantThreadsAtom,
   reviewCasesByIdAtom,
   reviewCaseListAtom,
@@ -70,6 +71,7 @@ export interface ReviewActionsApi {
   generateRuleOutline(request: { caseId: string; rulePackId?: string }): Promise<RuleOutlineItem[]>
   extractItems(caseId: string): Promise<ReviewItem[]>
   runReview(caseId: string): Promise<ReviewRun>
+  getLatestRun(caseId: string): Promise<{ run: ReviewRun | null; inputStale: boolean }>
   exportReport(caseId: string): Promise<ExportReportResult>
   getModelGatewayStatus(): Promise<ReviewModelGatewayStatus>
   assistantChat(input: {
@@ -154,6 +156,16 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
       store.set(selectedFindingIdAtom, null)
       store.set(reviewFocusAtom, null)
       store.set(reviewRuleLocateAtom, null)
+      // M0/H09：恢复该案卷最近一次运行与有效性（磁盘 runs 已有，此前重开显示"尚未运行"）
+      try {
+        const latest = await api.getLatestRun(caseId)
+        if (generation === selectionGeneration) {
+          store.set(reviewRunsByCaseAtom, { ...store.get(reviewRunsByCaseAtom), [caseId]: latest.run })
+          store.set(reviewRunStaleByCaseAtom, { ...store.get(reviewRunStaleByCaseAtom), [caseId]: latest.inputStale })
+        }
+      } catch (restoreError) {
+        console.error('[审核专区] 恢复最近运行失败', restoreError)
+      }
       setError(null)
       return true
     } catch (error) {
@@ -445,6 +457,7 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
         const run: ReviewRun = await api.runReview(caseId)
         // 按案落位：A 的运行回 A——用户切到 B 也不串（K05 主场景）
         store.set(reviewRunsByCaseAtom, { ...store.get(reviewRunsByCaseAtom), [caseId]: run })
+        store.set(reviewRunStaleByCaseAtom, { ...store.get(reviewRunStaleByCaseAtom), [caseId]: false })
         if (run.error) {
           setError(`审核完成但部分失败：${run.error}`, { caseId })
         } else {

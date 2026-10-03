@@ -16,7 +16,9 @@ import { Download, Gavel, Play, ShieldAlert } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
 import { Spinner } from '@profer/ui/primitives/spinner'
 import type { ReviewRun } from '@profer/shared'
-import { reviewRunAtom, reviewRunningAtom, selectedFindingIdAtom, sortedFindingsAtom } from '@/atoms/review-atoms'
+import { reviewRunAtom, reviewRunningAtom, selectedFindingIdAtom, sortedFindingsAtom,
+  reviewRunStaleAtom,
+} from '@/atoms/review-atoms'
 import { cn } from '@/lib/utils'
 import type { ReviewActions } from './use-review-actions'
 import { FindingCard } from './FindingCard'
@@ -27,6 +29,7 @@ interface RightPanelProps {
 
 export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
   const run = useAtomValue(reviewRunAtom)
+  const runStale = useAtomValue(reviewRunStaleAtom)
   const running = useAtomValue(reviewRunningAtom)
   const findings = useAtomValue(sortedFindingsAtom)
   const selectedFindingId = useAtomValue(selectedFindingIdAtom)
@@ -80,6 +83,15 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
           {running ? '审核中…' : run ? '重新审核' : '开始审核'}
         </Button>
       </section>
+
+      {/* 输入过期提示（M0/H09）：材料/规则在审核后被改过，结果仅作历史参考 */}
+      {run && runStale && (
+        <section className="mx-3 rounded-lg border border-amber-500/40 bg-amber-500/[0.06] px-3 py-2">
+          <p className="text-[11px] font-semibold text-amber-600 dark:text-amber-400">
+            案卷在本次审核后已修改，以下结果已过期——请重审后再作为当前结论或导出报告。
+          </p>
+        </section>
+      )}
 
       {/* 覆盖摘要（run.coverage → 四个小格） */}
       {run && <CoverageSummary run={run} />}

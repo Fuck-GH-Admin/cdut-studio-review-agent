@@ -145,3 +145,24 @@ export function latestRun(caseId: string): ReviewRun | undefined {
   const runs = listRuns(caseId)
   return runs.length > 0 ? runs[runs.length - 1] : undefined
 }
+
+/**
+ * 判断运行输入是否过期（M0/H06/H09）：run.inputHash 与案卷当前输入指纹比对。
+ * 缺 inputHash 的旧格式运行一律视为过期（不能证明同版，K06/H09）。
+ */
+export function isRunInputStale(run: ReviewRun, currentCase: ReviewCase): boolean {
+  return run.inputHash !== computeCaseInputHash(currentCase)
+}
+
+/**
+ * 查询案卷最近一次运行及其有效性（M0/H09）：
+ * selectCase 恢复运行 + RightPanel 过期标记 + 导出守门共用此语义。
+ */
+export function getLatestRunStatus(caseId: string): { run: ReviewRun | null; inputStale: boolean } {
+  assertSafeId(caseId)
+  const run = latestRun(caseId) ?? null
+  if (!run) return { run: null, inputStale: false }
+  const currentCase = getCase(caseId)
+  if (!currentCase) return { run, inputStale: true }
+  return { run, inputStale: isRunInputStale(run, currentCase) }
+}

@@ -171,6 +171,14 @@ export function registerReviewIpc(): void {
     },
   )
 
+  /** 查询最近一次运行及输入有效性（M0/H09：恢复 + 过期标记） */
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LATEST_RUN, (_event, caseId: string) => {
+    if (typeof caseId !== 'string' || caseId.length === 0) throw new Error('参数 caseId 非法')
+    // 惰性引入避免与 run-service 的模块初始化顺序耦合（与 GET_RUN 同款做法）
+    const { getLatestRunStatus } = require('./run-service') as typeof import('./run-service')
+    return getLatestRunStatus(caseId)
+  })
+
   /** 删除案卷 */
   ipcMain.handle(REVIEW_IPC_CHANNELS.DELETE_CASE, (_event, caseId: string): void => {
     deleteCase(caseId)

@@ -17,6 +17,7 @@ import {
   reviewErrorAtom,
   reviewRunsByCaseAtom,
   reviewTasksByCaseAtom,
+  reviewRunStaleByCaseAtom,
   selectedCaseIdAtom,
 } from '@/atoms/review-atoms'
 
@@ -105,6 +106,7 @@ function makeApi() {
       return gate(`run-${calls.runReview}`).promise as Promise<ReviewRun>
     },
     exportReport: async () => ({ markdownPath: '/tmp/x.md', jsonPath: '/tmp/x.json' }) as never,
+    getLatestRun: async (caseId: string) => ({ run: null, inputStale: false }),
     getModelGatewayStatus: async () => ({ available: true, protocol: 'openai' }) as never,
     assistantChat: async () => ({ content: 'ok' }),
   }
@@ -127,7 +129,7 @@ describe('review-actions-controller（M0/H05 并发与按案写入）', () => {
 
     await actions.selectCase('case-B') // 用户切到 B
     expect(store.get(selectedCaseIdAtom)).toBe('case-B')
-    expect(store.get(reviewRunsByCaseAtom)['case-B']).toBeUndefined()
+    expect(store.get(reviewRunsByCaseAtom)['case-B'] ?? null).toBeNull()
 
     // 模型返回 A 的运行
     ;(shift('run-1') ).resolve(makeRun('case-A', 3))
@@ -135,12 +137,23 @@ describe('review-actions-controller（M0/H05 并发与按案写入）', () => {
 
     expect(store.get(reviewRunsByCaseAtom)['case-A']?.caseId).toBe('case-A')
     expect(store.get(reviewRunsByCaseAtom)['case-A']?.findings).toHaveLength(3)
-    expect(store.get(reviewRunsByCaseAtom)['case-B']).toBeUndefined() // 不串 B
+    expect(store.get(reviewRunsByCaseAtom)['case-B']).toBeNull() // 不串 B（恢复查询无运行 → null）
     expect(store.get(selectedCaseIdAtom)).toBe('case-B') // 不强制切回
     expect(store.get(reviewTasksByCaseAtom)['case-A']?.running).toBe(false)
     expect(store.get(reviewTasksByCaseAtom)['case-B']?.running ?? false).toBe(false)
+    expect(store.get(reviewRunStaleByCaseAtom)['case-A']).toBe(false)
     // B 视图无错误（A 的结果/error 不污染当前视图）
     expect(store.get(reviewErrorAtom)).toBeNull()
+  })
+
+  test('H09 恢复：selectCase 拉回最近运行与过期标记', async () => {
+    const { api } = makeApi()
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    api.getLatestRun = async (caseId: string) => ({ run: makeRun(caseId, 1), inputStale: true })
+    await actions.selectCase('case-A')
+    expect(store.get(reviewRunsByCaseAtom)['case-A']?.findings).toHaveLength(1)
+    expect(store.get(reviewRunStaleByCaseAtom)['case-A']).toBe(true)
   })
 
   test('K05 交错：同案大纲（慢）与识别（快）都保留，互不覆盖', async () => {
