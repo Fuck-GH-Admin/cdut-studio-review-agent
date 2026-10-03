@@ -40,6 +40,14 @@ export interface FieldSpec {
   extractionHint?: string
   /** 对外可见性：public = 学生可见；internal = 仅审核侧 */
   visibility: 'public' | 'internal'
+  /** N1a（07 §2.1）：作用域 case/subject（缺省 subject 兼容旧模板） */
+  scope?: 'case' | 'subject'
+  /** 枚举可选项（kind='enum' 时应提供） */
+  options?: Array<{ value: string; label: string }>
+  defaultValue?: unknown
+  displayHint?: string
+  readOnly?: boolean
+  validation?: Array<{ kind: 'min' | 'max' | 'pattern' | 'required-when'; value?: string; when?: unknown }>
 }
 
 /** 条件树（03 §4：有限算子，业务运算由注册算子执行，不 eval） */
@@ -207,6 +215,8 @@ export interface TemplateVersion {
   fields: FieldSpec[]
   materialSlots: MaterialSlotSpec[]
   policyVersionIds: string[]
+  /** N1b：精确政策引用（ID+版本+内容 hash；与 policyVersionIds 并存，发布校验以此为准） */
+  policyRefs?: import('./review-v2-contracts').PolicyRef[]
   rubric?: RubricSpec
   stages: WorkflowStageSpec[]
   outputs: Array<{ id: string; kind: 'approval' | 'item-feedback' | 'supplement-list' | 'score-sheet' | 'roster' | 'rating-matrix'; audience: RoleId }>

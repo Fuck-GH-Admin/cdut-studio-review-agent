@@ -10,6 +10,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { TemplateVersion } from '@profer/shared'
+import { validatePolicyRef } from './policy-store'
 import { getConfigDir } from '../config-paths'
 
 export const TEMPLATE_SCHEMA_VERSION = 2
@@ -120,6 +121,11 @@ export function validateTemplate(template: TemplateVersion): TemplateValidationI
   // 政策引用存在性由仓库层核对（getPolicyVersion），模板侧仅检查非空数组声明
   if (template.policyVersionIds.length === 0 && template.stages.some((stage) => stage.kind === 'auto-check')) {
     issues.push({ level: 'warning', message: '模板声明了自动检查阶段但没有引用任何政策版本' })
+  }
+  // N1b：精确政策引用校验（存在+已发布+hash 一致；缺失即 error 阻止发布）
+  for (const ref of template.policyRefs ?? []) {
+    const check = validatePolicyRef(ref)
+    if (!check.ok) issues.push({ level: 'error', message: check.reason ?? '政策引用校验失败' })
   }
   // 流程：无循环（阶段序列中同一阶段不得出现两次）、终态必须是 finalize 或 handoff 之外的确定性结尾
   const stageIds = template.stages.map((stage) => stage.id)
