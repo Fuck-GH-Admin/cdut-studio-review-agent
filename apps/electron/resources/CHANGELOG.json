@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.103",
+      "date": "2026-10-04",
+      "title": "v0.15.103",
+      "notes": "- M2/事实与绑定：Observation 替代链服务（人工确认值不被 AI 重提取静默覆盖，A05）；EvidenceLink 多对多绑定（一证多事/多证一事/同事实去重/人工否决不复活），candidate→confirmed 状态机与主体覆盖度查询（A04）"
+    },
+    {
       "version": "0.15.102",
       "date": "2026-10-04",
       "title": "v0.15.102",
