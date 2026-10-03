@@ -10,23 +10,11 @@
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { join } from 'node:path'
-import type { ReviewBatch, SyncReceipt } from '@profer/shared'
+import type { BatchStateV2, ReviewBatch, SyncReceipt } from '@profer/shared'
 import { getConfigDir } from '../config-paths'
 import type { PushPayload, SchoolPort } from './external-ports'
 
 // ===== 批次 =====
-
-export interface BatchState {
-  batch: ReviewBatch
-  status: 'draft' | 'queued' | 'running' | 'finalized' | 'reopened'
-  /** 案卷级状态（坏案不阻塞全批） */
-  cases: Array<{ caseId: string; status: 'queued' | 'running' | 'done' | 'failed' | 'paused'; error?: string }>
-  /** 定稿快照 hash（重开后新轮次引用） */
-  finalizedSnapshotHash?: string
-  finalizedAt?: string
-  round: number
-  reopenedFromBatchId?: string
-}
 
 function batchPath(batchId: string): string {
   return join(getConfigDir(), 'review-batches', batchId, 'batch.json')
@@ -38,66 +26,66 @@ function writeAtomic(filePath: string, data: unknown): void {
   renameSync(tmp, filePath)
 }
 
-export function saveBatchState(state: BatchState): void {
+export function saveBatchStateV2(state: BatchStateV2): void {
   const filePath = batchPath(state.batch.id)
   if (!existsSync(join(getConfigDir(), 'review-batches', state.batch.id))) mkdirSync(join(getConfigDir(), 'review-batches', state.batch.id), { recursive: true })
   writeAtomic(filePath, state)
 }
 
-export function readBatchState(batchId: string): BatchState | undefined {
+export function readBatchStateV2(batchId: string): BatchStateV2 | undefined {
   const filePath = batchPath(batchId)
   if (!existsSync(filePath)) return undefined
   try {
-    return JSON.parse(readFileSync(filePath, 'utf-8')) as BatchState
+    return JSON.parse(readFileSync(filePath, 'utf-8')) as BatchStateV2
   } catch {
     return undefined
   }
 }
 
 /** 创建批次（锁定模板/政策版本，A12） */
-export function createBatchV2(batch: ReviewBatch): BatchState {
+export function createBatchV2(batch: ReviewBatch): BatchStateV2 {
   if (existsSync(batchPath(batch.id))) throw new Error(`批次已存在: ${batch.id}`)
-  const state: BatchState = { batch, status: 'draft', cases: batch.caseIds.map((caseId) => ({ caseId, status: 'queued' })), round: 1 }
-  saveBatchState(state)
+  const state: BatchStateV2 = { batch, status: 'draft', cases: batch.caseIds.map((caseId) => ({ caseId, status: 'queued' })), round: 1 }
+  saveBatchStateV2(state)
   return state
 }
 
 /** 入队/暂停/重试（单案失败不阻塞全批，06 §7.1） */
-export function updateCaseStatus(batchId: string, caseId: string, status: BatchState['cases'][number]['status'], error?: string): BatchState {
-  const state = readBatchState(batchId)
+export function updateCaseStatus(batchId: string, caseId: string, status: BatchStateV2['cases'][number]['status'], error?: string): BatchStateV2 {
+  const state = readBatchStateV2(batchId)
   if (!state) throw new Error(`批次不存在: ${batchId}`)
   if (state.status === 'finalized') throw new Error('批次已定稿，变更需重开新轮次')
   state.cases = state.cases.map((entry) => (entry.caseId === caseId ? { ...entry, status, error } : entry))
-  saveBatchState(state)
+  saveBatchStateV2(state)
   return state
 }
 
 /** 定稿：冻结快照 → 原子提交 manifest（R08：定稿后变更只能重开） */
-export function finalizeBatch(batchId: string, snapshot: Record<string, unknown>): BatchState {
-  const state = readBatchState(batchId)
+export function finalizeBatch(batchId: string, snapshot: Record<string, unknown>): BatchStateV2 {
+  const state = readBatchStateV2(batchId)
   if (!state) throw new Error(`批次不存在: ${batchId}`)
   if (state.cases.some((entry) => entry.status === 'running')) throw new Error('存在运行中案卷，不能定稿')
   const snapshotHash = createHash('sha256').update(JSON.stringify(snapshot), 'utf-8').digest('hex')
   state.status = 'finalized'
   state.finalizedSnapshotHash = snapshotHash
   state.finalizedAt = new Date().toISOString()
-  saveBatchState(state)
+  saveBatchStateV2(state)
   return state
 }
 
 /** 重开：基于定稿批次创建新轮次（不改写原定稿，07 §7.2） */
-export function reopenBatch(batchId: string, newBatchId: string, reason: string): BatchState {
-  const previous = readBatchState(batchId)
+export function reopenBatch(batchId: string, newBatchId: string, reason: string): BatchStateV2 {
+  const previous = readBatchStateV2(batchId)
   if (!previous) throw new Error(`批次不存在: ${batchId}`)
   if (previous.status !== 'finalized') throw new Error('只有已定稿批次可重开')
-  const state: BatchState = {
+  const state: BatchStateV2 = {
     batch: { ...previous.batch, id: newBatchId, name: `${previous.batch.name}（重开 R${previous.round + 1}）`, createdAt: new Date().toISOString() },
     status: 'draft',
     cases: previous.batch.caseIds.map((caseId) => ({ caseId, status: 'queued' })),
     round: previous.round + 1,
     reopenedFromBatchId: batchId,
   }
-  saveBatchState(state)
+  saveBatchStateV2(state)
   console.log(`[批次] 重开: ${batchId} → ${newBatchId}（${reason}）`)
   return state
 }

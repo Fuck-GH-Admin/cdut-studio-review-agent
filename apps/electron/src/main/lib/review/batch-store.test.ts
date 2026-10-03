@@ -5,7 +5,9 @@ import { afterAll, describe, expect, test } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewBatch } from '@profer/shared'
-import { createBatchV2, finalizeBatch, pushViaOutbox, readBatchState, reopenBatch, updateCaseStatus } from './batch-store'
+import { createBatchV2, finalizeBatch, pushViaOutbox, readBatchStateV2, reopenBatch, updateCaseStatus } from './batch-store'
+import type { BatchStateV2 } from '@profer/shared'
+type Entry = BatchStateV2['cases'][number]
 import { MockSchoolAdapter } from './external-ports'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-batch-${Date.now()}`)
@@ -18,11 +20,11 @@ describe('批次状态机（R08）', () => {
   test('Given 创建+单案失败+重试 When 操作 Then 案卷级状态独立（坏案不阻塞全批）', () => {
     createBatchV2(batch('b1'))
     updateCaseStatus('b1', 'c1', 'failed', '坏文件')
-    const state = readBatchState('b1')!
-    expect(state.cases.find((entry) => entry.caseId === 'c1')?.status).toBe('failed')
-    expect(state.cases.find((entry) => entry.caseId === 'c2')?.status).toBe('queued') // c2 不受影响
+    const state = readBatchStateV2('b1')!
+    expect(state.cases.find((entry: Entry) => entry.caseId === 'c1')?.status).toBe('failed')
+    expect(state.cases.find((entry: Entry) => entry.caseId === 'c2')?.status).toBe('queued') // c2 不受影响
     const retried = updateCaseStatus('b1', 'c1', 'queued')
-    expect(retried.cases.find((entry) => entry.caseId === 'c1')?.status).toBe('queued')
+    expect(retried.cases.find((entry: Entry) => entry.caseId === 'c1')?.status).toBe('queued')
   })
 
   test('Given 全部完成 When 定稿 Then 快照 hash 锁定；再变更被拒；重开=新轮次', () => {
@@ -38,7 +40,7 @@ describe('批次状态机（R08）', () => {
     expect(reopened.status).toBe('draft')
     expect(reopened.reopenedFromBatchId).toBe('b2')
     // 原定稿不改写
-    expect(readBatchState('b2')?.finalizedSnapshotHash).toBe(finalized.finalizedSnapshotHash)
+    expect(readBatchStateV2('b2')?.finalizedSnapshotHash).toBe(finalized.finalizedSnapshotHash)
   })
 
   test('Given 有运行中案卷 When 定稿 Then 拒绝', () => {

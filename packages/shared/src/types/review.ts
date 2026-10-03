@@ -486,6 +486,10 @@ export const REVIEW_IPC_CHANNELS = {
   // ===== N4b：模板向导 =====
   CREATE_POLICY_V2: 'review-v2:create-policy',
   SAVE_TEMPLATE_DRAFT_V2: 'review-v2:save-template-draft',
+  // ===== N5b：批次管理 =====
+  CREATE_BATCH_V2: 'review-v2:create-batch',
+  GET_BATCH_V2: 'review-v2:get-batch',
+  BATCH_ACTION_V2: 'review-v2:batch-action',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */

@@ -305,3 +305,14 @@ export type CommandErrorCode =
 export type ReviewCommandResult<TEntity = unknown> =
   | { ok: true; receipt: CommandReceipt; aggregate: CaseAggregateV2; entity?: TEntity }
   | { ok: false; code: CommandErrorCode; message: string; currentRevision?: number }
+
+/** 批次运行状态（N5：batch-store 持久化形态，renderer 可读） */
+export interface BatchStateV2 {
+  batch: import('./review-v2').ReviewBatch
+  status: 'draft' | 'queued' | 'running' | 'finalized' | 'reopened'
+  cases: Array<{ caseId: string; status: 'queued' | 'running' | 'done' | 'failed' | 'paused'; error?: string }>
+  finalizedSnapshotHash?: string
+  finalizedAt?: string
+  round: number
+  reopenedFromBatchId?: string
+}

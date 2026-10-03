@@ -294,6 +294,21 @@ export function registerReviewIpc(): void {
     return saveDraft(template)
   })
 
+  // ===== N5b：批次管理（薄委托 batch-store） =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CREATE_BATCH_V2, (_e, input: { batch: import('@profer/shared').ReviewBatch }) => {
+    const { createBatchV2 } = require('./batch-store') as typeof import('./batch-store')
+    return createBatchV2(input.batch)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_BATCH_V2, (_e, batchId: string) => {
+    const { readBatchStateV2 } = require('./batch-store') as typeof import('./batch-store')
+    return readBatchStateV2(batchId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, (_e, input: { action: 'finalize' | 'reopen'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown> }) => {
+    const { finalizeBatch, reopenBatch } = require('./batch-store') as typeof import('./batch-store')
+    if (input.action === 'finalize') return finalizeBatch(input.batchId, input.snapshot ?? {})
+    return reopenBatch(input.batchId, input.newBatchId ?? `${input.batchId}-r${Date.now().toString(36)}`, input.reason ?? '人工重开')
+  })
+
   /** 删除案卷 */
   ipcMain.handle(REVIEW_IPC_CHANNELS.DELETE_CASE, (_event, caseId: string): void => {
     deleteCase(caseId)
