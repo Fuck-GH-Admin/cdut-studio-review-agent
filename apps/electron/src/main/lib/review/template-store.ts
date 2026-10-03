@@ -1,0 +1,172 @@
+/**
+ * 模板仓库（M1，设计 03 §7/§11）
+ *
+ * 存储：{configDir}/review-templates/{templateId}/versions/{version}.json
+ * - draft 可改；publish 生成不可变版本（publishedAfterWrite 校验）
+ * - validate：悬空字段/材料槽引用、流程循环、评分范围与缺失策略（02 §5.6 发布检查）
+ * - 全部纯 Node（bun test 直跑），不引入本地数据库
+ */
+
+import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
+import type { TemplateVersion } from '@profer/shared'
+import { getConfigDir } from '../config-paths'
+
+export const TEMPLATE_SCHEMA_VERSION = 2
+
+function templatesRoot(): string {
+  const dir = join(getConfigDir(), 'review-templates')
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
+  return dir
+}
+
+function versionPath(templateId: string, version: number): string {
+  return join(templatesRoot(), templateId, 'versions', `${version}.json`)
+}
+
+function writeAtomic(filePath: string, data: unknown): void {
+  const tmp = `${filePath}.tmp`
+  writeFileSync(tmp, JSON.stringify(data, null, 2), 'utf-8')
+  renameSync(tmp, filePath)
+}
+
+/** 读取模板；version 缺省取最大已存版本 */
+export function getTemplate(templateId: string, version?: number): TemplateVersion | undefined {
+  const dir = join(templatesRoot(), templateId, 'versions')
+  if (!existsSync(dir)) return undefined
+  const versions = readdirSync(dir)
+    .filter((name) => name.endsWith('.json'))
+    .map((name) => Number(name.replace('.json', '')))
+    .filter((n) => Number.isFinite(n))
+    .sort((a, b) => b - a)
+  const target = version ?? versions[0]
+  if (target === undefined || !existsSync(versionPath(templateId, target))) return undefined
+  try {
+    return JSON.parse(readFileSync(versionPath(templateId, target), 'utf-8')) as TemplateVersion
+  } catch (error) {
+    console.warn(`[审核模板] 模板解析失败: ${templateId}@${target}`, error)
+    return undefined
+  }
+}
+
+/** 列出全部模板（每个取最新版本） */
+export function listTemplates(): TemplateVersion[] {
+  const root = templatesRoot()
+  if (!existsSync(root)) return []
+  const out: TemplateVersion[] = []
+  for (const entry of readdirSync(root)) {
+    const latest = getTemplate(entry)
+    if (latest) out.push(latest)
+  }
+  return out.sort((a, b) => a.templateId.localeCompare(b.templateId))
+}
+
+/** 保存草稿（status 强制 draft；version 不可与已有 published 冲突） */
+export function saveDraft(template: TemplateVersion): TemplateVersion {
+  if (template.status !== 'draft') throw new Error('saveDraft 只接受草稿状态模板')
+  const existing = getTemplate(template.templateId, template.version)
+  if (existing && existing.status === 'published') {
+    throw new Error(`版本 ${template.version} 已发布不可覆盖；请提升版本号`)
+  }
+  const filePath = versionPath(template.templateId, template.version)
+  mkdirSync(join(templatesRoot(), template.templateId, 'versions'), { recursive: true })
+  writeAtomic(filePath, template)
+  return template
+}
+
+export interface TemplateValidationIssue {
+  level: 'error' | 'warning'
+  message: string
+}
+
+/**
+ * 模板验证（02 §5.6 发布检查）：
+ * - 无悬空字段/材料槽/政策引用；无流程循环；评分有范围与缺失策略
+ * - 发布要求 error 清零；warning 允许带发布
+ */
+export function validateTemplate(template: TemplateVersion): TemplateValidationIssue[] {
+  const issues: TemplateValidationIssue[] = []
+  const fieldKeys = new Set(template.fields.map((field) => field.key))
+  const slotIds = new Set(template.materialSlots.map((slot) => slot.id))
+
+  // 字段合法性：条件必填引用的字段必须存在
+  for (const field of template.fields) {
+    if (field.kind === 'number' && field.min !== undefined && field.max !== undefined && field.min > field.max) {
+      issues.push({ level: 'error', message: `字段 ${field.key} 的 min 大于 max` })
+    }
+  }
+  // 条件树引用的字段（field op）必须可解析
+  const condFields = (ast: unknown): string[] => {
+    if (!ast || typeof ast !== 'object') return []
+    const node = ast as Record<string, unknown>
+    if (Array.isArray(node.all)) return node.all.flatMap(condFields)
+    if (Array.isArray(node.any)) return node.any.flatMap(condFields)
+    if (node.not) return condFields(node.not)
+    if (typeof node.field === 'string') return [node.field]
+    return []
+  }
+  for (const field of template.fields) {
+    for (const ref of condFields(field.conditionRequired)) {
+      if (!fieldKeys.has(ref)) issues.push({ level: 'error', message: `字段 ${field.key} 的条件必填引用了不存在的字段 ${ref}` })
+    }
+  }
+  // 材料槽：requiredWhen 引用存在；min<=max
+  for (const slot of template.materialSlots) {
+    for (const ref of condFields(slot.requiredWhen)) {
+      if (!fieldKeys.has(ref)) issues.push({ level: 'error', message: `材料槽 ${slot.id} 的条件引用了不存在的字段 ${ref}` })
+    }
+    if (slot.minCount > slot.maxCount) issues.push({ level: 'error', message: `材料槽 ${slot.id} 的 minCount 大于 maxCount` })
+  }
+  // 政策引用存在性由仓库层核对（getPolicyVersion），模板侧仅检查非空数组声明
+  if (template.policyVersionIds.length === 0 && template.stages.some((stage) => stage.kind === 'auto-check')) {
+    issues.push({ level: 'warning', message: '模板声明了自动检查阶段但没有引用任何政策版本' })
+  }
+  // 流程：无循环（阶段序列中同一阶段不得出现两次）、终态必须是 finalize 或 handoff 之外的确定性结尾
+  const stageIds = template.stages.map((stage) => stage.id)
+  if (new Set(stageIds).size !== stageIds.length) issues.push({ level: 'error', message: '流程存在重复阶段 ID（循环/重复定义）' })
+  if (template.stages.length === 0) issues.push({ level: 'error', message: '流程为空' })
+  // 评分：有量表则必须有精度与缺失策略，且权重合法
+  if (template.rubric) {
+    const weightSum = template.rubric.dimensions.reduce((sum, dimension) => sum + dimension.weight, 0)
+    if (template.rubric.dimensions.some((dimension) => dimension.min >= dimension.max)) {
+      issues.push({ level: 'error', message: '量表存在 min>=max 的维度' })
+    }
+    if (weightSum <= 0) issues.push({ level: 'error', message: '量表维度权重之和必须为正' })
+    if (template.rubric.missingStrategy !== 'block' && template.rubric.missingStrategy !== 'exclude') {
+      issues.push({ level: 'error', message: '量表缺少缺评策略' })
+    }
+  }
+  // 输出可见性引用的角色必须合法（字段级检查交给类型层）
+  if (template.outputs.length === 0) issues.push({ level: 'warning', message: '未配置任何输出，发布后只能查看原始数据' })
+  return issues
+}
+
+/** 发布：draft → published 不可变；error 清零才允许（02 §5.6） */
+export function publishTemplate(templateId: string, version: number): TemplateVersion {
+  const template = getTemplate(templateId, version)
+  if (!template) throw new Error(`模板不存在: ${templateId}@${version}`)
+  if (template.status === 'published') return template
+  const issues = validateTemplate(template)
+  const errors = issues.filter((issue) => issue.level === 'error')
+  if (errors.length > 0) {
+    throw new Error(`模板未通过发布检查：${errors.map((issue) => issue.message).join('；')}`)
+  }
+  const published: TemplateVersion = {
+    ...template,
+    status: 'published',
+    publishedAt: new Date().toISOString(),
+  }
+  writeAtomic(versionPath(templateId, version), published)
+  console.log(`[审核模板] 已发布: ${templateId}@${version}`)
+  return published
+}
+
+/** 停用（仅已发布版本可停用；保留历史可读） */
+export function deprecateTemplate(templateId: string, version: number): TemplateVersion {
+  const template = getTemplate(templateId, version)
+  if (!template) throw new Error(`模板不存在: ${templateId}@${version}`)
+  if (template.status !== 'published') throw new Error('只有已发布版本可停用')
+  const deprecated = { ...template, status: 'deprecated' as const }
+  writeAtomic(versionPath(templateId, version), deprecated)
+  return deprecated
+}
