@@ -8,7 +8,7 @@ import { join } from 'node:path'
 import type { ReviewCaseV2, TemplateVersion } from '@profer/shared'
 import { cancelRunV2, runReviewCaseV2 } from './run-service-v2'
 import type { NodeExecutor } from './review-run-graph'
-import { getRunV2, listRunsV2 } from './run-store-v2'
+import { getRunV2, listRunsV2, readArtifact, saveArtifact } from './run-store-v2'
 import { ensureBuiltinTemplateDrafts } from './builtin-templates'
 import { getTemplate as getTemplateStored, saveDraft as saveDraftStored } from './template-store'
 
@@ -67,5 +67,54 @@ describe('runReviewCaseV2（M3 编排）', () => {
     const persisted = getRunV2(caseV2.id, 'r-cancel')!
     expect(persisted.status).toBe('cancelled')
     expect(persisted.completedAt).toBeUndefined()
+  })
+
+  test('Given 后续节点尚在运行 When 读取运行文件 Then 前一节点检查点和产物已经落盘', async () => {
+    let checked = false
+    const executors: typeof okExecutors = {
+      ...okExecutors,
+      register: async (_node, hash) => ({ status: 'done', inputHash: hash, artifact: { sourceIds: [], summary: '已登记' } }),
+      parse: async (_node, hash) => {
+        const checkpoint = getRunV2(caseV2.id, 'r-midway')!.checkpoints.find(c => c.nodeId === 'node-auto-check-register')!
+        expect(checkpoint.status).toBe('done')
+        expect(checkpoint.outputRef).toBe('artifacts/node-auto-check-register.json')
+        expect(readArtifact(caseV2.id, 'r-midway', checkpoint.nodeId)).toBeDefined()
+        checked = true
+        return { status: 'done', inputHash: hash }
+      },
+    }
+    const run = await runReviewCaseV2(caseV2, template, executors, { runId: 'r-midway' })
+    expect(checked).toBe(true)
+    expect(run.status).toBe('completed')
+  })
+
+  test('Given OCR 产物丢失 When 续跑至新运行 Then 重做 OCR 和下游且保留可复用产物', async () => {
+    const artifacts = { ...okExecutors }
+    for (const kind of ALL_KINDS) {
+      artifacts[kind] = async (_node, hash) => ({ status: 'done', inputHash: hash, artifact: { sourceIds: [], summary: kind } })
+    }
+    const initial = await runReviewCaseV2(caseV2, template, artifacts, { runId: 'r-missing' })
+    rmSync(join(CONFIG_DIR, 'review-cases', caseV2.id, 'runs-v2', 'r-missing', 'artifacts', 'node-auto-check-ocr.json'))
+    const calls = { parse: 0, ocr: 0, extract: 0 }
+    const counting = { ...artifacts }
+    for (const kind of ['parse', 'ocr', 'extract'] as const) {
+      counting[kind] = async (node, hash) => { calls[kind]++; return artifacts[kind](node, hash) }
+    }
+    const run = await runReviewCaseV2(caseV2, template, counting, { runId: 'r-missing-resumed', resumeRunId: 'r-missing' })
+    expect(calls).toEqual({ parse: 0, ocr: 1, extract: 1 })
+    expect(run.checkpoints).toHaveLength(initial.checkpoints.length)
+    expect(readArtifact<{ runId: string }>(caseV2.id, run.id, 'node-auto-check-register')?.runId).toBe(run.id)
+    expect(readArtifact(caseV2.id, run.id, 'node-auto-check-ocr')).toBeDefined()
+    expect(run.status).toBe('completed')
+  })
+
+  test('Given 产物指纹损坏 When 同运行续跑 Then 重新执行对应节点', async () => {
+    const artifacts: typeof okExecutors = { ...okExecutors, ocr: async (_node, hash) => ({ status: 'done', inputHash: hash, artifact: { sourceIds: [], summary: 'OCR' } }) }
+    await runReviewCaseV2(caseV2, template, artifacts, { runId: 'r-corrupt' })
+    saveArtifact(caseV2.id, 'r-corrupt', 'node-auto-check-ocr', { runId: 'r-corrupt', nodeId: 'node-auto-check-ocr', schemaRevision: 2, dependencyHash: '损坏的指纹', sourceIds: [] })
+    let calls = 0
+    const run = await runReviewCaseV2(caseV2, template, { ...artifacts, ocr: async (node, hash) => { calls++; return artifacts.ocr(node, hash) } }, { runId: 'r-corrupt', resumeRunId: 'r-corrupt' })
+    expect(calls).toBe(1)
+    expect(run.status).toBe('completed')
   })
 })

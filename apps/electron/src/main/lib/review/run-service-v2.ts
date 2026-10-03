@@ -9,7 +9,7 @@
 
 import { createHash } from 'node:crypto'
 import type { CheckpointRecord, ReviewCaseV2, ReviewRunV2, TemplateVersion } from '@profer/shared'
-import { executeRunGraph, planRunGraph, restoreCheckpoints, type NodeExecutor, type NodeKind, type RunEvent } from './review-run-graph'
+import { executeRunGraph, planRunGraph, type NodeArtifact, type NodeExecutor, type NodeKind, type RunEvent } from './review-run-graph'
 import { getRunV2, readArtifact, saveArtifact, saveRunV2 } from './run-store-v2'
 
 /** 进程内取消注册表（单机桌面应用：跨进程取消无需持久化标记） */
@@ -60,32 +60,43 @@ export async function runReviewCaseV2(
   executors: Record<NodeKind, NodeExecutor>,
   options: StartRunOptions = {},
 ): Promise<ReviewRunV2> {
-  const runId = options.runId ?? `run-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
+  const runId = options.runId ?? options.resumeRunId ?? `run-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
+  const inputHash = computeRunInputHash(caseV2, [], [])
   const nodes = planRunGraph(template)
-  let checkpoints: CheckpointRecord[] = nodes.map((node) => ({ nodeId: node.id, inputHash: 'no-input', status: 'pending' as const, attempts: 0 }))
-  let events: RunEvent[] = []
+  for (const node of nodes) {
+    node.inputHash = createHash('sha256').update(JSON.stringify({ inputHash, nodeId: node.id, dependencies: node.dependsOn })).digest('hex')
+  }
+  let checkpoints: CheckpointRecord[] = nodes.map((node) => ({ nodeId: node.id, inputHash: node.inputHash!, status: 'pending' as const, attempts: 0 }))
 
   // 续跑：恢复检查点（done+同 hash 跳过）
   if (options.resumeRunId) {
     const previous = getRunV2(caseV2.id, options.resumeRunId)
     if (!previous) throw new Error(`续跑目标运行不存在: ${options.resumeRunId}`)
     // 输入指纹一致性：manifest 变了就不允许在旧运行上续（结果混版，K06）
-    const currentHash = computeRunInputHash(caseV2, [], [])
-    if (previous.inputManifest.hash !== currentHash && previous.checkpoints.some((checkpoint) => checkpoint.status === 'done')) {
+    if (previous.inputManifest.hash !== inputHash && previous.checkpoints.some((checkpoint) => checkpoint.status === 'done')) {
       throw new Error('案卷输入在运行后已变化，不能在旧运行上续跑（请发起新运行）')
     }
-    checkpoints = previous.checkpoints
-    events = previous.diagnostics.length > 0 ? [] : events
-    // 节点状态同步
-    const statusById = new Map(previous.checkpoints.map((checkpoint) => [checkpoint.nodeId, checkpoint.status]))
+    const previousById = new Map(previous.checkpoints.map((checkpoint) => [checkpoint.nodeId, checkpoint]))
+    const reusableIds = new Set<string>()
+    // 校验真实产物和依赖；任一产物失效后，其下游必须重新执行。
     for (const node of nodes) {
-      const checkpointStatus = statusById.get(node.id)
-      if (checkpointStatus === 'done') node.status = 'done'
-      if (checkpointStatus === 'failed') node.status = 'pending'
+      const checkpoint = previousById.get(node.id)
+      if (!checkpoint) continue
+      node.attempts = checkpoint.attempts
+      const artifact = checkpoint.outputRef ? readArtifact<NodeArtifact>(caseV2.id, previous.id, node.id) : undefined
+      const validArtifact = !checkpoint.outputRef || !!(artifact && artifact.schemaRevision === 2 && artifact.runId === previous.id && artifact.nodeId === node.id && artifact.dependencyHash === node.inputHash)
+      const reusable = checkpoint.status === 'done' && checkpoint.inputHash === node.inputHash && validArtifact && node.dependsOn.every(id => reusableIds.has(id))
+      if (reusable) {
+        node.status = 'done'
+        reusableIds.add(node.id)
+        if (artifact && runId !== previous.id) saveArtifact(caseV2.id, runId, node.id, { ...artifact, runId })
+      }
+      checkpoints = checkpoints.map(current => current.nodeId === node.id
+        ? (reusable ? { ...checkpoint } : { ...current, attempts: checkpoint.attempts })
+        : current)
     }
   }
 
-  const inputHash = computeRunInputHash(caseV2, [], [])
   const run: ReviewRunV2 = {
     id: runId,
     caseId: caseV2.id,
@@ -109,9 +120,8 @@ export async function runReviewCaseV2(
   }
   saveRunV2(run)
 
-  const restored = restoreCheckpoints(nodes, checkpoints)
   const outcome = await executeRunGraph(
-    restored.nodes.map((node) => ({ ...node, inputHash: node.inputHash ?? undefined })),
+    nodes,
     executors,
     {
       cancelled: options.cancelled ?? (() => isRunCancelled(runId)),
@@ -121,20 +131,18 @@ export async function runReviewCaseV2(
       writeArtifact: (nodeId, artifact) => {
         // 每节点产物即时落盘（崩溃可续，R03）
         saveArtifact(caseV2.id, runId, nodeId, artifact)
-        // checkpoint 增量持久化：读回最新 run 补 checkpoint
-        const latest = getRunV2(caseV2.id, runId)
-        if (latest) {
-          saveRunV2({ ...latest, checkpoints: [...latest.checkpoints.filter((c) => c.nodeId !== nodeId), ...latest.checkpoints.filter((c) => c.nodeId === nodeId).map((c) => c)] })
-        }
+      },
+      writeCheckpoint: (checkpoint) => {
+        // 先保存产物，再保存完成/等待/失败检查点，最后广播事件。
+        run.checkpoints = run.checkpoints.map(current => current.nodeId === checkpoint.nodeId ? checkpoint : current)
+        saveRunV2(run)
       },
     },
   )
-  events = outcome.events
 
   run.status = outcome.status
-  run.checkpoints = outcome.checkpoints.length > 0 ? outcome.checkpoints : checkpoints
   // checks/opinions/coverage 由节点产物装配（07 §4.2：不从工具内存数组推测——修正误判 1）
-  const artifacts = outcome.checkpoints
+  const artifacts = run.checkpoints
     .filter((checkpoint) => checkpoint.outputRef)
     .map((checkpoint) => readArtifact<Record<string, unknown>>(caseV2.id, runId, checkpoint.nodeId))
     .filter((artifact): artifact is Record<string, unknown> => !!artifact)

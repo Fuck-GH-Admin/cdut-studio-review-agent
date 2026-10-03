@@ -21,6 +21,12 @@ const d04Inputs: CalcInput[] = [
 ]
 
 describe('computeGroupScore（D04 择高+上限）', () => {
+  test('Given max 聚合的两个事项 When 计算 Then 明细之和等于组计入总分', () => {
+    const rule = { ...d04Rule, calculation: { ...d04Rule.calculation!, deduplicateBy: undefined, select: 'sum' as const, aggregate: 'max' as const, cap: undefined } }
+    const outcome = computeGroupScore(rule, d04Inputs.slice(0, 2))
+    expect(outcome.total).toBe('6.00')
+    expect(outcome.allocation.reduce((sum, entry) => sum + Number(entry.allocated), 0)).toBe(6)
+  })
   test('Given E1 两证 6/3、E2=5、上限 10 When 计算 Then 总 10，E1=6/E2=4，舍弃项 0（重放一致）', () => {
     const first = computeGroupScore(d04Rule, d04Inputs)
     expect(first.status).toBe('compliant')

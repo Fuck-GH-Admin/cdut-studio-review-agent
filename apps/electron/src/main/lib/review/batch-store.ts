@@ -64,13 +64,35 @@ export function updateCaseStatus(batchId: string, caseId: string, status: BatchS
 export function finalizeBatch(batchId: string, snapshot: Record<string, unknown>): BatchStateV2 {
   const state = readBatchStateV2(batchId)
   if (!state) throw new Error(`批次不存在: ${batchId}`)
-  if (state.cases.some((entry) => entry.status === 'running')) throw new Error('存在运行中案卷，不能定稿')
   const snapshotHash = createHash('sha256').update(JSON.stringify(snapshot), 'utf-8').digest('hex')
+  if (state.status === 'finalized') {
+    if (state.finalizedSnapshotHash === snapshotHash) return state
+    throw new Error('批次已定稿，修改快照需重开新轮次')
+  }
+  if (state.cases.some((entry) => entry.status === 'running')) throw new Error('存在运行中案卷，不能定稿')
+  if (state.cases.length === 0 || state.cases.some((entry) => entry.status !== 'done')) throw new Error('案卷未完成，不能定稿')
+  // 先保存完整快照，再提交批次状态；只有 hash 无法在重启后还原名单/评分。
+  writeAtomic(join(getConfigDir(), 'review-batches', batchId, `finalized-r${state.round}.json`), { snapshot, snapshotHash, round: state.round })
   state.status = 'finalized'
   state.finalizedSnapshotHash = snapshotHash
   state.finalizedAt = new Date().toISOString()
   saveBatchStateV2(state)
   return state
+}
+
+/** 读取已定稿内容并校验；历史版本缺快照时不能拼当前数据冒充。 */
+export function readFinalizedSnapshot(batchId: string): Record<string, unknown> | undefined {
+  const state = readBatchStateV2(batchId)
+  if (!state || state.status !== 'finalized') return undefined
+  const path = join(getConfigDir(), 'review-batches', batchId, `finalized-r${state.round}.json`)
+  if (!existsSync(path)) return undefined
+  try {
+    const saved = JSON.parse(readFileSync(path, 'utf-8')) as { snapshot: Record<string, unknown>; snapshotHash: string }
+    const hash = createHash('sha256').update(JSON.stringify(saved.snapshot), 'utf-8').digest('hex')
+    return hash === saved.snapshotHash && hash === state.finalizedSnapshotHash ? saved.snapshot : undefined
+  } catch {
+    return undefined
+  }
 }
 
 /** 重开：基于定稿批次创建新轮次（不改写原定稿，07 §7.2） */

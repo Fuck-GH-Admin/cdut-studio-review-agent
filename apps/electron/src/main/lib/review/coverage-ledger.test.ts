@@ -38,6 +38,17 @@ describe('检查账本（M2）', () => {
 })
 
 describe('combineCoverage（全部符合判定，A08）', () => {
+  test('Given 检查发现违规 When 组合 Then 完成检查不表示全部符合', () => {
+    const summary = combineCoverage([doc('v', '申报.md', 'read')], [rule('r', 'subject')], ['s'], [result('r', ['s'], 'non-compliant')])
+    expect(summary.completedChecks).toBe(1)
+    expect(summary.allClearVerdictAllowed).toBeFalse()
+  })
+
+  test('Given 材料仅登记或没有适用检查 When 组合 Then 不宣称全部符合', () => {
+    expect(combineCoverage([doc('v', '待处理.png', 'registered')], [rule('r', 'subject')], ['s'], [result('r', ['s'], 'compliant')]).allClearVerdictAllowed).toBeFalse()
+    expect(combineCoverage([], [], [], []).allClearVerdictAllowed).toBeFalse()
+    expect(combineCoverage([], [rule('r', 'subject')], ['s'], [result('r', ['s'], 'not-applicable')]).allClearVerdictAllowed).toBeFalse()
+  })
   test('Given 存在未读材料与未执行检查 When 组合 Then 阻止"全部符合"并列出 blockers', () => {
     const docs = [doc('v1', '申报.md', 'read'), doc('v2', '扫描件.pdf', 'unread', '无文本层')]
     const summary = combineCoverage(docs, [rule('r1', 'subject')], ['s1'], [])

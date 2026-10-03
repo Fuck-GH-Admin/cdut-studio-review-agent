@@ -10,7 +10,6 @@ import { reviewV2BusyAtom } from './V2CasePanel'
 
 export function BatchPanel(): JSX.Element {
   const store = useStore()
-  const [batchId, setBatchId] = useState('')
   const [state, setState] = useState<BatchStateV2 | null>(null)
 
   const run = useCallback(async (action: () => Promise<void>): Promise<void> => {
@@ -22,7 +21,6 @@ export function BatchPanel(): JSX.Element {
     const id = `batch-${Date.now().toString(36)}`
     const batch: ReviewBatch = { id, name: `批次 ${id}`, templateId: 'comprehensive-assessment-v2', templateVersion: 2, policyVersionLock: [{ policyVersionId: 'policy-comprehensive-assessment-demo', version: 1 }], caseIds: ['case-rt-1'], createdAt: new Date().toISOString() }
     const created = await window.reviewAPI.createBatchV2(batch)
-    setBatchId(id)
     setState(created)
     toast.success(`批次已创建：${id}`)
   }), [run])
@@ -43,12 +41,12 @@ export function BatchPanel(): JSX.Element {
             ))}
           </ul>
           <div className="flex gap-1.5">
-            <Button size="sm" variant="outline" onClick={() => void refresh(batchId)}>刷新</Button>
+            <Button size="sm" variant="outline" onClick={() => void refresh(state.batch.id)}>刷新</Button>
             {state.status !== 'finalized' && (
-              <Button size="sm" onClick={() => void run(async () => { setState(await window.reviewAPI.batchActionV2({ action: 'finalize', batchId, snapshot: { cases: state.cases } })); toast.success('批次已定稿（快照锁定）') })}>定稿</Button>
+              <Button size="sm" disabled={state.cases.length === 0 || state.cases.some((entry) => entry.status !== 'done')} onClick={() => void run(async () => { setState(await window.reviewAPI.batchActionV2({ action: 'finalize', batchId: state.batch.id, snapshot: { cases: state.cases } })); toast.success('批次已定稿（快照锁定）') })}>定稿</Button>
             )}
             {state.status === 'finalized' && (
-              <Button size="sm" variant="outline" onClick={() => void run(async () => { setState(await window.reviewAPI.batchActionV2({ action: 'reopen', batchId, reason: '评分复核' })); toast.success('已重开新轮次（原定稿保留）') })}>重开新轮次</Button>
+              <Button size="sm" variant="outline" onClick={() => void run(async () => { setState(await window.reviewAPI.batchActionV2({ action: 'reopen', batchId: state.batch.id, reason: '评分复核' })); toast.success('已重开新轮次（原定稿保留）') })}>重开新轮次</Button>
             )}
           </div>
         </div>

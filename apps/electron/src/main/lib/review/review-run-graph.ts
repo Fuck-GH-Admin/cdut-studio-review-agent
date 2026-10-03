@@ -129,7 +129,7 @@ export interface RunOutcome {
 export async function executeRunGraph(
   inputNodes: RunGraphNode[],
   executors: Record<NodeKind, NodeExecutor>,
-  options: { cancelled?: () => boolean; now?: () => string; onEvent?: (event: RunEvent) => void; writeArtifact?: (nodeId: string, artifact: NodeArtifact) => void; runId?: string } = {},
+  options: { cancelled?: () => boolean; now?: () => string; onEvent?: (event: RunEvent) => void; writeArtifact?: (nodeId: string, artifact: NodeArtifact) => void; writeCheckpoint?: (checkpoint: CheckpointRecord) => void; runId?: string } = {},
 ): Promise<RunOutcome> {
   const now = options.now ?? (() => new Date().toISOString())
   const nodes = inputNodes.map((node) => ({ ...node }))
@@ -172,11 +172,14 @@ export async function executeRunGraph(
             checkpoint.outputRef = `artifacts/${node.id}.json`
           }
           checkpoints.push(checkpoint)
+          options.writeCheckpoint?.(checkpoint)
           emit('node-completed', node.id)
         } else {
           node.status = 'waiting-input'
           node.lastError = result.reason
-          checkpoints.push({ nodeId: node.id, inputHash: node.inputHash ?? 'no-input', status: 'waiting-input', attempts: node.attempts + 1, lastError: result.reason })
+          const checkpoint: CheckpointRecord = { nodeId: node.id, inputHash: node.inputHash ?? 'no-input', status: 'waiting-input', attempts: node.attempts + 1, lastError: result.reason }
+          checkpoints.push(checkpoint)
+          options.writeCheckpoint?.(checkpoint)
           waiting.push({ nodeId: node.id, reason: result.reason })
           anyWaiting = true
           emit('node-waiting', node.id, result.reason)
@@ -185,7 +188,9 @@ export async function executeRunGraph(
         node.attempts += 1
         node.status = 'failed'
         node.lastError = error instanceof Error ? error.message : String(error)
-        checkpoints.push({ nodeId: node.id, inputHash: node.inputHash ?? 'no-input', status: 'failed', attempts: node.attempts, lastError: node.lastError })
+        const checkpoint: CheckpointRecord = { nodeId: node.id, inputHash: node.inputHash ?? 'no-input', status: 'failed', attempts: node.attempts, lastError: node.lastError }
+        checkpoints.push(checkpoint)
+        options.writeCheckpoint?.(checkpoint)
         anyFailed = true
         emit('node-failed', node.id, node.lastError)
       }

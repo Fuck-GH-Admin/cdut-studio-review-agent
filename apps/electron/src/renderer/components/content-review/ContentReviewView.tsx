@@ -40,6 +40,8 @@ import {
   reviewRunAtom,
   reviewRunStaleAtom,
   reviewRunningAtom,
+  reviewWorkspaceSectionAtom,
+  type ReviewWorkspaceSection,
 } from '@/atoms/review-atoms'
 import { channelsAtom } from '@/atoms/conversation-atoms'
 import type { ReviewModelGatewayStatus } from '@profer/shared'
@@ -66,6 +68,8 @@ export function ContentReviewView(): React.ReactElement {
   const run = useAtomValue(reviewRunAtom)
   const runStale = useAtomValue(reviewRunStaleAtom)
   const running = useAtomValue(reviewRunningAtom)
+  const section = useAtomValue(reviewWorkspaceSectionAtom)
+  const setSection = useSetAtom(reviewWorkspaceSectionAtom)
   const channels = useAtomValue(channelsAtom)
   const activePane = useAtomValue(reviewActivePaneAtom)
   const setActivePane = useSetAtom(reviewActivePaneAtom)
@@ -193,8 +197,19 @@ export function ContentReviewView(): React.ReactElement {
         </div>
       </header>
 
+      <nav aria-label="审核工作页" className="relative z-10 flex shrink-0 flex-wrap gap-1 border-b bg-card/60 px-3 py-1.5 titlebar-no-drag">
+        {([
+          ['workbench', '预审工作台'],
+          ['case-v2', 'V2 案卷'],
+          ['templates', '模板编排'],
+          ['batches', '批次管理'],
+        ] as Array<[ReviewWorkspaceSection, string]>).map(([id, label]) => (
+          <Button key={id} size="sm" variant={section === id ? 'secondary' : 'ghost'} aria-pressed={section === id} onClick={() => setSection(id)}>{label}</Button>
+        ))}
+      </nav>
+
       {/* ===== 窄屏：顶部三按钮切换栏 ===== */}
-      {narrow && (
+      {narrow && section === 'workbench' && (
         <nav
           role="tablist"
           aria-label="工作台栏目"
@@ -207,7 +222,7 @@ export function ContentReviewView(): React.ReactElement {
       )}
 
       {/* ===== 三栏主体 ===== */}
-      <main className="relative flex min-h-0 flex-1 titlebar-no-drag">
+      <main className={cn('relative flex min-h-0 flex-1 titlebar-no-drag', section !== 'workbench' && 'hidden')}>
         <PaneWrapper
           pane="left"
           className="flex-[3]"
@@ -230,6 +245,16 @@ export function ContentReviewView(): React.ReactElement {
           <RightPanel actions={actions} />
         </PaneWrapper>
       </main>
+
+      <section aria-label="V2 案卷管理" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'case-v2' && 'hidden')}>
+        <V2CasePanel />
+      </section>
+      <section aria-label="审核模板编排" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'templates' && 'hidden')}>
+        <TemplateWizardPanel />
+      </section>
+      <section aria-label="审核批次管理" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'batches' && 'hidden')}>
+        <BatchPanel />
+      </section>
 
       {/* ===== 助手抽屉（fixed 到本视图根） ===== */}
       <AssistantDrawer actions={actions} />
@@ -325,9 +350,6 @@ function PaneWrapper({
       )}
     >
       {children}
-      <V2CasePanel />
-      <TemplateWizardPanel />
-      <BatchPanel />
     </div>
   )
 }

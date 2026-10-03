@@ -165,7 +165,9 @@ export function computeGroupScore(
 
   // 5) 封顶 + 分配（score-desc-then-subject-id：高分优先计入，余量给后面的）
   const cap = calc.cap ? Number(calc.cap.value) : Number.POSITIVE_INFINITY
-  let remaining = cap
+  const total = Math.min(rawTotal, cap)
+  // max 聚合只能分配实际计入的总额，否则明细会把其余事项再次计分。
+  let remaining = total
   const ordered = [...pool].sort((a, b) => b.value - a.value || a.subjectId.localeCompare(b.subjectId))
   const allocation: GroupScoreOutcome['allocation'] = []
   for (const candidate of ordered) {
@@ -174,7 +176,7 @@ export function computeGroupScore(
     allocation.push({
       subjectId: candidate.subjectId,
       allocated: fmt(allocated),
-      note: allocated < candidate.value ? `被组上限截断（原值 ${fmt(candidate.value)}）` : '全额计入',
+      note: allocated < candidate.value ? `${calc.aggregate === 'max' ? 'max 聚合未全额计入' : '被组上限截断'}（原值 ${fmt(candidate.value)}）` : '全额计入',
     })
   }
   // 去重舍弃项计 0.00 入账（账本分母完整，A07）
@@ -182,7 +184,6 @@ export function computeGroupScore(
     allocation.push({ subjectId: candidate.subjectId, allocated: fmt(0), note: `同键择高舍弃（原值 ${fmt(candidate.value)}）` })
   }
   if (calc.cap) detailLines.push(`- 组上限 ${fmt(cap)}：按分数降序分配，被舍弃/截断部分记 0`)
-  const total = Math.min(rawTotal, cap)
   detailLines.push(`- 组计入总额：${fmt(total)}`)
 
   return { status: 'compliant', total: fmt(total), allocation, unknowns: [], detailLines }

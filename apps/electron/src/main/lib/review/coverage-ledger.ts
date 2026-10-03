@@ -93,13 +93,17 @@ export function combineCoverage(
 ): CoverageSummary {
   const documentLedger = buildDocumentLedger(documents)
   const checkLedger = buildCheckLedger(plannedRules, subjectIds, results)
-  const unread = documentLedger.filter((entry) => entry.status === 'unread' || entry.status === 'partially-read')
+  const unread = documentLedger.filter((entry) => entry.status !== 'read')
   const notExecuted = checkLedger.filter((entry) => entry.status === 'not-executed' || entry.status === 'execution-failed')
   const awaiting = checkLedger.filter((entry) => entry.status === 'awaiting-confirmation' || entry.status === 'awaiting-supplement')
+  const violations = checkLedger.filter((entry) => entry.status === 'non-compliant')
   const blockers: string[] = []
+  if (checkLedger.length === 0) blockers.push('没有有效检查计划，不能宣称全部符合')
+  else if (checkLedger.every((entry) => entry.status === 'not-applicable')) blockers.push('本次没有适用检查，不能宣称全部符合')
   for (const entry of unread) blockers.push(`材料「${entry.fileName}」未完整读取${entry.reason ? `（${entry.reason}）` : ''}`)
   if (notExecuted.length > 0) blockers.push(`${notExecuted.length} 项计划检查未执行`)
   if (awaiting.length > 0) blockers.push(`${awaiting.length} 项检查待确认/待补件`)
+  if (violations.length > 0) blockers.push(`${violations.length} 项检查不符合`)
   return {
     documents: documentLedger,
     plannedChecks: checkLedger.length,

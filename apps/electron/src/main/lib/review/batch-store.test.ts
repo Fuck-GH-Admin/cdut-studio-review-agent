@@ -5,7 +5,7 @@ import { afterAll, describe, expect, test } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewBatch } from '@profer/shared'
-import { createBatchV2, finalizeBatch, pushViaOutbox, readBatchStateV2, reopenBatch, updateCaseStatus } from './batch-store'
+import { createBatchV2, finalizeBatch, pushViaOutbox, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus } from './batch-store'
 import type { BatchStateV2 } from '@profer/shared'
 type Entry = BatchStateV2['cases'][number]
 import { MockSchoolAdapter } from './external-ports'
@@ -17,6 +17,18 @@ afterAll(() => rmSync(CONFIG_DIR, { recursive: true, force: true }))
 const batch = (id: string): ReviewBatch => ({ id, name: `批次${id}`, templateId: 't', templateVersion: 1, policyVersionLock: [{ policyVersionId: 'p', version: 1 }], caseIds: ['c1', 'c2'], createdAt: new Date().toISOString() })
 
 describe('批次状态机（R08）', () => {
+  test('Given 案卷尚未处理或失败 When 定稿 Then 拒绝且保留未定稿状态', () => {
+    for (const status of ['queued', 'failed', 'paused'] as const) {
+      const id = `unfinished-${status}`
+      createBatchV2(batch(id))
+      updateCaseStatus(id, 'c1', status)
+      updateCaseStatus(id, 'c2', 'done')
+      expect(() => finalizeBatch(id, {})).toThrow('未完成')
+      expect(readBatchStateV2(id)?.status).toBe('draft')
+    }
+    createBatchV2({ ...batch('empty'), caseIds: [] })
+    expect(() => finalizeBatch('empty', {})).toThrow('未完成')
+  })
   test('Given 创建+单案失败+重试 When 操作 Then 案卷级状态独立（坏案不阻塞全批）', () => {
     createBatchV2(batch('b1'))
     updateCaseStatus('b1', 'c1', 'failed', '坏文件')
@@ -34,6 +46,8 @@ describe('批次状态机（R08）', () => {
     const finalized = finalizeBatch('b2', { ranking: [{ caseId: 'c1', rank: 1 }] })
     expect(finalized.status).toBe('finalized')
     expect(finalized.finalizedSnapshotHash).toHaveLength(64)
+    expect(readFinalizedSnapshot('b2')).toEqual({ ranking: [{ caseId: 'c1', rank: 1 }] })
+    expect(() => finalizeBatch('b2', { ranking: [] })).toThrow('重开')
     expect(() => updateCaseStatus('b2', 'c1', 'queued')).toThrow('重开')
     const reopened = reopenBatch('b2', 'b2-r2', '评分复核')
     expect(reopened.round).toBe(2)
