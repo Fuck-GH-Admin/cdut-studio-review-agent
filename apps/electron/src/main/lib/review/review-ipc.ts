@@ -257,6 +257,23 @@ export function registerReviewIpc(): void {
     return setEvidenceLink(input.caseId, command as unknown as Parameters<typeof setEvidenceLink>[1])
   })
 
+  // ===== N3b：业务闭环命令（薄委托 stage-workflow） =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RECORD_STAGE_DECISION_V2, (_e, input: { caseId: string; command: Record<string, unknown>; templateId: string; version: number }) => {
+    const { recordStageDecision } = require('./stage-workflow') as typeof import('./stage-workflow')
+    const { getTemplate } = require('./template-store') as typeof import('./template-store')
+    const template = getTemplate(input.templateId, input.version)
+    if (!template) throw new Error(`模板不存在: ${input.templateId}@${input.version}`)
+    return recordStageDecision(input.caseId, input.command as unknown as Parameters<typeof recordStageDecision>[1], template)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+    const { resolveSupplementV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
+    return resolveSupplementV2(input.caseId, input.command as unknown as Parameters<typeof resolveSupplementV2>[1])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_APPEAL_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+    const { resolveAppealV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
+    return resolveAppealV2(input.caseId, input.command as unknown as Parameters<typeof resolveAppealV2>[1])
+  })
+
   /** 删除案卷 */
   ipcMain.handle(REVIEW_IPC_CHANNELS.DELETE_CASE, (_event, caseId: string): void => {
     deleteCase(caseId)

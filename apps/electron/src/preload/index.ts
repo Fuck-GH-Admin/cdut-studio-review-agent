@@ -3653,6 +3653,12 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CORRECT_OBSERVATION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   setEvidenceLinkV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SET_EVIDENCE_LINK_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  recordStageDecisionV2: (input: { caseId: string; command: Record<string, unknown>; templateId: string; version: number }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RECORD_STAGE_DECISION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  resolveSupplementV2: (input: { caseId: string; command: Record<string, unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  resolveAppealV2: (input: { caseId: string; command: Record<string, unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESOLVE_APPEAL_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   bootCheckV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BOOT_CHECK_V2) as Promise<{ templatesSeeded: number; templatesPublished: number; migratableCases: string[]; notes: string[] }>,
   getLatestRun: (caseId: string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LATEST_RUN, caseId) as Promise<import('@profer/shared').ReviewLatestRunResult>,

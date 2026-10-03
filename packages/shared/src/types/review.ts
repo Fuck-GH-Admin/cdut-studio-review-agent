@@ -477,6 +477,12 @@ export const REVIEW_IPC_CHANNELS = {
   UPDATE_FIELDS_V2: 'review-v2:update-fields',
   CORRECT_OBSERVATION_V2: 'review-v2:correct-observation',
   SET_EVIDENCE_LINK_V2: 'review-v2:set-evidence-link',
+  // ===== N3b：业务闭环命令 =====
+  ENSURE_INITIAL_TASK_V2: 'review-v2:ensure-initial-task',
+  RECORD_STAGE_DECISION_V2: 'review-v2:record-stage-decision',
+  RESOLVE_SUPPLEMENT_V2: 'review-v2:resolve-supplement',
+  SUBMIT_APPEAL_V2: 'review-v2:submit-appeal',
+  RESOLVE_APPEAL_V2: 'review-v2:resolve-appeal',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */

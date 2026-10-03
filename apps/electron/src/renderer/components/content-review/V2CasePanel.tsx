@@ -98,6 +98,7 @@ export function V2CasePanel(): JSX.Element {
         )}
         {current && (
           <div className="space-y-1.5 text-xs">
+            <BusinessFlowSection aggregate={current} onResult={applyResult} />
             <p className="font-medium">{current.caseV2.title}</p>
             <p className="text-muted-foreground">
               阶段 {current.caseV2.stage} · revision {current.caseV2.revision} · 回执 {current.receiptLog.length} 条
@@ -128,4 +129,70 @@ export function V2CasePanel(): JSX.Element {
       </div>
     </div>
   )
+}
+
+/** 业务流程操作区（N3b，06 §5.2 动作表；U03-U05 入口） */
+function BusinessFlowSection({ aggregate, onResult }: { aggregate: CaseAggregateV2; onResult: (result: ReviewCommandResult | undefined) => void }): JSX.Element {
+  const openTasks = aggregate.tasks.filter((task) => task.status === 'open')
+  const projection = resolveFinalDecisionProjectionPublic(aggregate.decisions)
+  const templateId = aggregate.caseV2.templateId
+  const version = aggregate.caseV2.templateVersion
+  const caseId = aggregate.caseV2.id
+
+  const act = async (action: string, extra: Record<string, unknown>): Promise<void> => {
+    const task = openTasks[0]
+    if (!task) {
+      return
+    }
+    const result = await window.reviewAPI.recordStageDecisionV2({
+      caseId,
+      templateId,
+      version,
+      command: { requestId: `dec-${Date.now().toString(36)}`, target: { kind: 'case', id: caseId }, expectedRevision: aggregate.caseV2.revision, actor: localActor, type: 'RecordStageDecision', payload: { action, taskId: task.id, reason: String((extra as { reason?: string }).reason ?? '面板操作'), ...extra } },
+    })
+    onResult(result)
+  }
+
+  return (
+    <div className="rounded-lg border-t pt-2">
+      <p className="mb-1 font-medium">业务流程（{templateId}@{version}）</p>
+      <p className="text-muted-foreground">
+        开放任务：{openTasks.length > 0 ? openTasks.map((task) => `${task.stageId}(R${task.round})`).join('、') : '无'}
+        {' · '}最终决定：{projection.decision ? `${projection.decision.result}${projection.isFinal ? '（终审）' : '（阶段）'}` : '未形成'}
+      </p>
+      {openTasks.length > 0 && (
+        <div className="mt-1 flex flex-wrap gap-1.5">
+          <Button size="sm" variant="outline" onClick={() => void act('stage-pass', { reason: `${openTasks[0]?.stageId ?? ''} 通过` })}>阶段通过</Button>
+          <Button size="sm" variant="outline" onClick={() => void act('return-for-supplement', { reason: '缺证明', supplementRequiredElements: ['等级', '日期'], supplementReason: '请补交含等级与日期的证明' })}>退回补件</Button>
+          <Button size="sm" variant="outline" onClick={() => void act('final-reject', { reason: '不符合规定' })}>最终驳回</Button>
+          <Button size="sm" variant="outline" onClick={() => void act('withdraw', { reason: '提交者撤回' })}>撤回</Button>
+        </div>
+      )}
+      {aggregate.supplements.filter((request) => request.status === 'open' || request.status === 'responded').length > 0 && (
+        <div className="mt-1 flex flex-wrap items-center gap-1.5">
+          <span className="text-muted-foreground">补件：</span>
+          {aggregate.supplements.filter((request) => request.status === 'open' || request.status === 'responded').map((request) => (
+            <span key={request.id} className="inline-flex items-center gap-1">
+              <code className="rounded bg-muted px-1">{request.id.slice(0, 10)}</code>
+              <Button size="sm" variant="outline" onClick={() => {
+                void window.reviewAPI.resolveSupplementV2({
+                  caseId,
+                  command: { requestId: `sup-${Date.now().toString(36)}`, target: { kind: 'case', id: caseId }, expectedRevision: aggregate.caseV2.revision, actor: localActor, type: 'ResolveSupplement', payload: { supplementId: request.id, outcome: 'satisfied', reason: '要素齐全' } },
+                }).then(onResult)
+              }}>判定满足</Button>
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+/** 投影纯函数的前端引用（服务层同源逻辑：finality 优先 + 更正排除） */
+function resolveFinalDecisionProjectionPublic(decisions: Array<{ id: string; result: string; finality?: string; amendsDecisionId?: string; at: string }>): { decision: { id: string; result: string } | null; isFinal: boolean } {
+  const superseded = decisions.filter((decision) => decision.amendsDecisionId).map((decision) => decision.amendsDecisionId!)
+  const effective = decisions.filter((decision) => !superseded.includes(decision.id))
+  const final = [...effective].filter((decision) => decision.finality === 'final').sort((a, b) => a.at.localeCompare(b.at)).at(-1)
+  if (final) return { decision: final, isFinal: true }
+  return { decision: [...effective].sort((a, b) => a.at.localeCompare(b.at)).at(-1) ?? null, isFinal: false }
 }
