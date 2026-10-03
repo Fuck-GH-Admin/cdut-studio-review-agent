@@ -163,6 +163,10 @@ win:
   extraResources:
     - from: resources/bin/profer.exe
       to: bin/profer.exe
+    - from: resources/bin/git
+      to: bin/git
+      filter:
+        - "**/*"
   fileAssociations:
     - ext: profer-backup
       name: CDUT Studio Personal Backup

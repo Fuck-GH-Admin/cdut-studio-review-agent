@@ -112,9 +112,9 @@ function areToolsBeforeIndexCompleted(
     toolIndices.push(index)
   }
   if (toolIndices.length === 0) {
-    // 没有 tool_use 时不认为"工具已完成"——避免流式中只有 thinking + 尾部 text
-    // 时把还可能变成中间过程的 text 提前外置。
-    return false
+    // 没有 tool_use 时，前面的块纯粹是 thinking（如 DeepSeek/Claude 纯思考回答），
+    // 此时尾部 text 就是最终回复正文，必须直接外置呈现，不能折叠进过程组死等。
+    return true
   }
 
   // 多工具长序列：允许「最后一个工具的 result 还在路上」时也把尾部 text 外置——

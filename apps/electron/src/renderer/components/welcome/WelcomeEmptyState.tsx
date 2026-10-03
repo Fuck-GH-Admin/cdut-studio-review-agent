@@ -6,7 +6,7 @@
 
 import * as React from 'react'
 import { useAtomValue } from 'jotai'
-import { Lightbulb, Bot } from 'lucide-react'
+import { Lightbulb } from 'lucide-react'
 import { userProfileAtom } from '@/atoms/user-profile'
 import { appModeAtom } from '@/atoms/app-mode'
 import { currentAgentWorkspaceIdAtom, agentWorkspacesAtom } from '@/atoms/agent-atoms'
@@ -38,7 +38,7 @@ export function WelcomeEmptyState(): React.ReactElement {
   const displayName = userProfile.userName || '用户'
 
   return (
-    <div className="welcome-empty-state flex h-full translate-y-[90px] flex-col items-center justify-center gap-6 px-4 [@media(max-height:820px)]:translate-y-0 [@media(max-height:700px)]:gap-4">
+    <div className="welcome-empty-state flex h-full translate-y-[60px] flex-col items-center justify-center gap-5 px-4 [@media(max-height:820px)]:translate-y-0 [@media(max-height:700px)]:gap-3.5">
       <h1 className="text-[26px] font-semibold tracking-tight text-foreground">
         {displayName}，{greeting}
       </h1>
@@ -46,11 +46,6 @@ export function WelcomeEmptyState(): React.ReactElement {
       <div className="flex items-center gap-2.5 rounded-full bg-muted/50 px-4 py-2 text-[13px] text-muted-foreground">
         <Lightbulb size={14} className="flex-shrink-0 text-amber-500/80" />
         <span>{tip.text}</span>
-      </div>
-
-      <div className="flex items-center gap-1.5 rounded-xl bg-muted/60 px-5 py-2 text-[13px] font-medium text-foreground">
-        <Bot size={15} />
-        <span>Agent</span>
       </div>
 
       {showHeatmap && (

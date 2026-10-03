@@ -257,18 +257,9 @@ export function ChannelForm({ channel, onSaved, onAgentEligibilityChange, onCanc
   const [agentBaseUrl, setAgentBaseUrl] = React.useState(channel?.agentBaseUrl ?? '')
   /** 用户是否手改过 Anthropic 端点；未改过就不回传，交给主进程按 OpenAI 端点推导。 */
   const agentBaseUrlEditedRef = React.useRef(false)
-  /** Agent 模式仅保留 Pi 内核。 */
-  const [agentRuntimes, setAgentRuntimes] = React.useState<AgentRuntimeMode[]>(() =>
-    channel
-      ? channel.agentRuntimes ?? inferAgentRuntimeModes(channel)
-      : inferAgentRuntimeModes({ provider: 'anthropic' }),
-  )
-  const toggleAgentRuntime = React.useCallback((mode: AgentRuntimeMode, enabled: boolean): void => {
-    setAgentRuntimes((prev) => enabled
-      ? (prev.includes(mode) ? prev : [...prev, mode])
-      : prev.filter((item) => item !== mode))
-  }, [])
-  const piEnabled = agentRuntimes.includes('pi')
+  /** Agent 模式仅保留 Pi 内核，默认强制启用。 */
+  const agentRuntimes: AgentRuntimeMode[] = React.useMemo(() => ['pi'], [])
+  const piEnabled = true
   const showOpenAIEndpoint = true
   const [apiKey, setApiKey] = React.useState('')
   const [showApiKey, setShowApiKey] = React.useState(false)
@@ -416,8 +407,6 @@ export function ChannelForm({ channel, onSaved, onAgentEligibilityChange, onCanc
     setCredentialMode('api-key')
     setOauthConfigured(false)
     setAgentExperimentalEnabled(false)
-    // 换供应商通常意味着换协议；按新供应商重推内核勾选，用户可再手改
-    setAgentRuntimes(inferAgentRuntimeModes({ provider: p }))
     agentBaseUrlEditedRef.current = false
     setAgentBaseUrl('')
     setTestResult(null)
@@ -738,13 +727,6 @@ export function ChannelForm({ channel, onSaved, onAgentEligibilityChange, onCanc
               description="API Key 由 xAI API 计费；订阅 OAuth 使用 SuperGrok 或 X Premium。"
             />
           )}
-          {/* Agent 内核：当前产品统一使用 Pi */}
-          <SettingsToggle
-            label="Pi 模式"
-            description="Pi 内核可用"
-            checked={agentRuntimes.includes('pi')}
-            onCheckedChange={(checked) => toggleAgentRuntime('pi', checked)}
-          />
 
           {showOpenAIEndpoint && (
             <SettingsInput

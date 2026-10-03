@@ -115,6 +115,7 @@ import {
   getNextWorkspaceSortMode,
 } from './sidebar-utils'
 import {
+  buildAgentSessionTrees,
   collectDelegatedDeletionSessionIds,
   getDirectRelatedChildren,
   getSyncableDelegatedChildren,
@@ -915,10 +916,10 @@ export function useLeftSidebar() {
     }
   }
 
-  /** 在指定项目中创建 Agent 会话；未指定时使用当前项目；新建会话跟随默认预设（不再创建时选岗位，会话内自由切换） */
-  const createAgentSessionInWorkspace = React.useCallback(async (workspaceId?: string, presetId?: string): Promise<void> => {
+  /** 在指定项目中创建 Agent 会话；未指定时使用当前项目；传入 null 时创建无工作区的全局独立会话 */
+  const createAgentSessionInWorkspace = React.useCallback(async (workspaceId?: string | null, presetId?: string): Promise<void> => {
     try {
-      const targetWorkspaceId = workspaceId ?? currentWorkspaceId ?? undefined
+      const targetWorkspaceId = workspaceId === null ? undefined : (workspaceId ?? currentWorkspaceId ?? undefined)
       if (targetWorkspaceId && targetWorkspaceId !== currentWorkspaceId) {
         setCurrentWorkspaceId(targetWorkspaceId)
         window.electronAPI.updateSettings({ agentWorkspaceId: targetWorkspaceId }).catch(console.error)
@@ -956,10 +957,10 @@ export function useLeftSidebar() {
     }
   }, [agentChannelId, agentModelId, currentWorkspaceId, openSession, setActiveView, setAgentSessions, setCurrentWorkspaceId, setSessionChannelMap, setSessionModelMap])
 
-  /** 创建新 Agent 会话 */
+  /** 创建新 Agent 会话（全局独立会话，不指定工作区） */
   const handleNewAgentSession = React.useCallback(async (): Promise<void> => {
     setActiveView('conversations')
-    await createAgentSessionInWorkspace()
+    await createAgentSessionInWorkspace(null)
   }, [createAgentSessionInWorkspace, setActiveView])
 
   /** 选择项目并打开其隐藏草稿会话；真实 UI 直接复用 AgentView。 */
@@ -1609,7 +1610,29 @@ export function useLeftSidebar() {
     return visibleWorkspaces
   }, [visibleWorkspaces, workspaceSortMode, agentSessions])
 
-  /** Agent 普通历史按项目分组（排除置顶 / 归档 / draft） */
+  /** 全局独立会话（不指定工作区的会话，按置顶优先 + updatedAt 倒序） */
+  const agentGlobalSessionTrees = React.useMemo<AgentSessionTreeItem[]>(
+    () => {
+      const globalSessions = agentSessions.filter((session) =>
+        !session.archived
+        && !session.draft
+        && !draftSessionIds.has(session.id)
+        && !session.workspaceId
+        && !hasPinnedVisibleParent(session, agentSessions)
+      )
+
+      const trees = buildAgentSessionTrees(globalSessions)
+      return trees.sort((a, b) => {
+        const aPinned = !!a.session.pinned
+        const bPinned = !!b.session.pinned
+        if (aPinned !== bPinned) return aPinned ? -1 : 1
+        return b.session.updatedAt - a.session.updatedAt
+      })
+    },
+    [agentSessions, draftSessionIds],
+  )
+
+  /** Agent 项目分组（仅收纳属于各工作区的会话，置顶项在项目内部排在最前） */
   const agentProjectGroups = React.useMemo<AgentProjectGroup[]>(
     () => {
       const sessionsByWorkspaceId = new Map<string, AgentSessionMeta[]>()
@@ -1620,28 +1643,34 @@ export function useLeftSidebar() {
       const visibleHistory = sortAgentSessionsByUpdatedAtDesc(
         agentSessions.filter((session) =>
           !session.archived
-          && !session.pinned
           && !session.draft
           && !draftSessionIds.has(session.id)
-          && (!session.workspaceId || visibleWorkspaceIds.has(session.workspaceId))
-          // 已被置顶母会话收纳的子会话留在置顶区的母会话下面，避免重复显示为项目根会话
+          && !!session.workspaceId
+          && visibleWorkspaceIds.has(session.workspaceId)
           && !hasPinnedVisibleParent(session, agentSessions)
         )
       )
 
-      const defaultWsId = sortedWorkspaces.find((ws) => ws.slug === 'default')?.id ?? sortedWorkspaces[0]?.id
       for (const session of visibleHistory) {
-        const targetId = session.workspaceId && sessionsByWorkspaceId.has(session.workspaceId)
-          ? session.workspaceId
-          : defaultWsId
-        if (!targetId) continue
-        sessionsByWorkspaceId.get(targetId)!.push(session)
+        if (session.workspaceId && sessionsByWorkspaceId.has(session.workspaceId)) {
+          sessionsByWorkspaceId.get(session.workspaceId)!.push(session)
+        }
       }
 
-      return sortedWorkspaces.map((workspace) => ({
-        workspace,
-        sessions: sessionsByWorkspaceId.get(workspace.id) ?? [],
-      }))
+      return sortedWorkspaces.map((workspace) => {
+        const wsSessions = sessionsByWorkspaceId.get(workspace.id) ?? []
+        // 置顶优先，其次按 updatedAt 倒序
+        wsSessions.sort((a, b) => {
+          const aPinned = !!a.pinned
+          const bPinned = !!b.pinned
+          if (aPinned !== bPinned) return aPinned ? -1 : 1
+          return b.updatedAt - a.updatedAt
+        })
+        return {
+          workspace,
+          sessions: wsSessions,
+        }
+      })
     },
     [agentSessions, draftSessionIds, sortedWorkspaces, visibleWorkspaceIds],
   )
@@ -1836,6 +1865,7 @@ export function useLeftSidebar() {
     agentDraftIds,
     pinnedAgentSessions,
     pinnedAgentSessionTrees,
+    agentGlobalSessionTrees,
     agentProjectGroups,
     agentSessionGroups,
     progressiveAgentSessionGroups,
