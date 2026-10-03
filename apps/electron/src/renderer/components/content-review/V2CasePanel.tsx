@@ -6,7 +6,7 @@
  */
 
 import { atom, useAtomValue, useStore, useSetAtom } from 'jotai'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import type { Actor, CaseAggregateV2, ReviewCommandResult } from '@profer/shared'
 import { Button } from '@profer/ui/primitives/button'
 import { toast } from 'sonner'
@@ -23,6 +23,19 @@ export function V2CasePanel(): JSX.Element {
   const store = useStore()
   const aggregate = useAtomValue(reviewV2AggregateAtom)
   const setNotice = useSetAtom(reviewV2NoticeAtom)
+
+interface CaseListEntry { caseId: string; title: string; stage: string; revision: number; templateId: string; templateVersion: number; updatedAt: string }
+
+  const [caseList, setCaseList] = useState<CaseListEntry[]>([])
+
+  const refreshList = useCallback(async (): Promise<void> => {
+    try {
+      setCaseList(await window.reviewAPI.listCasesV2())
+    } catch (error) {
+      console.error('[V2] 案卷列表加载失败', error)
+    }
+  }, [])
+  useEffect(() => { void refreshList() }, [refreshList])
 
   const run = useCallback(async (action: () => Promise<void>): Promise<void> => {
     store.set(reviewV2BusyAtom, true)
@@ -49,6 +62,13 @@ export function V2CasePanel(): JSX.Element {
     }
   }, [store, setNotice, toast])
 
+  const openCase = useCallback((caseId: string) => run(async () => {
+    const loaded = await window.reviewAPI.openAggregateV2(caseId)
+    if (!loaded) { toast.error(`案卷不存在: ${caseId}`); return }
+    store.set(reviewV2AggregateAtom, loaded)
+    toast.success(`已打开案卷：${loaded.caseV2.title}`)
+  }), [run, store])
+
   const seedAndCreate = useCallback(() => run(async () => {
     await window.reviewAPI.seedFixtureV2()
     const caseId = `v2-demo-${Date.now().toString(36)}`
@@ -65,8 +85,9 @@ export function V2CasePanel(): JSX.Element {
     })
     const aggregate = await window.reviewAPI.getAggregateV2(caseId)
     store.set(reviewV2AggregateAtom, aggregate ?? null)
+    await refreshList()
     if (result) toast.success(`V2 案卷已创建：${caseId}`)
-  }), [run, store, toast])
+  }), [run, store, toast, refreshList])
 
   const current = aggregate
   const updateTitle = useCallback(() => {
@@ -90,6 +111,17 @@ export function V2CasePanel(): JSX.Element {
   return (
     <div className="mx-3 mb-3 rounded-xl border bg-card p-3 shadow-sm">
       <p className="mb-2 text-sm font-semibold">V2 案卷（通用审核）</p>
+      {caseList.length > 0 && (
+        <div className="mb-2 space-y-1">
+          <p className="text-xs font-medium text-muted-foreground">已保存案卷（重启可恢复）</p>
+          {caseList.map((entry: CaseListEntry) => (
+            <div key={entry.caseId} className="flex items-center justify-between gap-2 rounded-md border px-2 py-1">
+              <span className="truncate text-xs">{entry.title} · {entry.stage} · r{entry.revision}</span>
+              <Button size="sm" variant="outline" onClick={() => void openCase(entry.caseId)}>打开</Button>
+            </div>
+          ))}
+        </div>
+      )}
       <div className="space-y-2">
         {!current && (
           <Button size="sm" disabled={store.get(reviewV2BusyAtom)} onClick={seedAndCreate}>

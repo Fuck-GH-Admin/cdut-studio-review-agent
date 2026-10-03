@@ -10,7 +10,7 @@
  * - 回执与业务变化同一事务落盘（不能先写业务再单独写回执）
  */
 
-import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { join } from 'node:path'
 import type { Actor, Appeal, BusinessDecision, CaseAggregateV2, CommandErrorCode, CommandReceipt, ReviewCommandResult, EvidenceLink, Observation, ReviewCaseV2, SupplementRequest, WorkflowTask } from '@profer/shared'
@@ -39,6 +39,37 @@ export function readAggregate(caseId: string): CaseAggregateV2 | undefined {
     console.warn(`[审核V2聚合] 解析失败: ${caseId}`, error)
     return undefined
   }
+}
+
+/** 聚合摘要列表（G13：重启后可恢复入口的数据面） */
+export interface AggregateSummary {
+  caseId: string
+  title: string
+  stage: string
+  revision: number
+  templateId: string
+  templateVersion: number
+  updatedAt: string
+}
+
+export function listAggregatesV2(): AggregateSummary[] {
+  const dir = join(getConfigDir(), 'review-cases')
+  if (!existsSync(dir)) return []
+  const out: AggregateSummary[] = []
+  for (const entry of readdirSync(dir)) {
+    const aggregate = readAggregate(entry)
+    if (!aggregate) continue
+    out.push({
+      caseId: aggregate.caseV2.id,
+      title: aggregate.caseV2.title,
+      stage: aggregate.caseV2.stage,
+      revision: aggregate.caseV2.revision,
+      templateId: aggregate.caseV2.templateId,
+      templateVersion: aggregate.caseV2.templateVersion,
+      updatedAt: aggregate.caseV2.updatedAt,
+    })
+  }
+  return out.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
 }
 
 /** 原子落盘：唯一临时名 + rename（避免并发覆盖固定 .tmp） */

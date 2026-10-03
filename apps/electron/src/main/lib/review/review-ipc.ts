@@ -309,6 +309,11 @@ export function registerReviewIpc(): void {
     return reopenBatch(input.batchId, input.newBatchId ?? `${input.batchId}-r${Date.now().toString(36)}`, input.reason ?? '人工重开')
   })
 
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_CASES_V2, () => {
+    const { listAggregatesV2 } = require('./case-store-v2') as typeof import('./case-store-v2')
+    return listAggregatesV2()
+  })
+
   /** 删除案卷 */
   ipcMain.handle(REVIEW_IPC_CHANNELS.DELETE_CASE, (_event, caseId: string): void => {
     deleteCase(caseId)
