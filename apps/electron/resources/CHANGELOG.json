@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.110",
+      "date": "2026-10-04",
+      "title": "0.15.110",
+      "notes": "- M5/外部端口：SchoolPort 统一合同（动作幂等、期望版本冲突 C02）+ MockSchoolAdapter（内存模拟校方，可注版本制造冲突）+ LocalPackageAdapter（离线包往返，哈希随包）；S 类真实联调按设计属外部条件不在本轮"
+    },
+    {
       "version": "0.15.109",
       "date": "2026-10-04",
       "title": "0.15.109",
