@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.115",
+      "date": "2026-10-05",
+      "title": "0.15.115",
+      "notes": "- N5/N6：批次状态机（案卷级状态独立、定稿快照锁定、重开=新轮次不改写定稿，R08）+ 持久 outbox（sync-outbox/{actionId}.json，重启幂等、载荷漂移拒绝、conflict 持久化，R11）"
+    },
+    {
       "version": "0.15.114",
       "date": "2026-10-05",
       "title": "0.15.114",
