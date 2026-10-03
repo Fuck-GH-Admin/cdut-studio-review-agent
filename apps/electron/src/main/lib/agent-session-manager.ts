@@ -465,38 +465,34 @@ export function createAgentSession(
   // 确保消息目录存在
   getAgentSessionsDir()
 
-  // 若有工作区，创建 session 级别子文件夹并初始化 .claude / .context
-  if (workspaceId) {
-    const ws = getAgentWorkspace(workspaceId)
-    if (ws) {
-      const sessionDir = getAgentSessionWorkspacePath(ws.slug, meta.id)
+  // 创建 session 级别子文件夹并初始化 .claude / .context（独立会话归入 default 工作区沙箱）
+  const targetWorkspaceSlug = presetWorkspaceSlug ?? 'default'
+  const sessionDir = getAgentSessionWorkspacePath(targetWorkspaceSlug, meta.id)
 
-      // 初始化 .claude/settings.json（plansDirectory → .context）
-      const claudeDir = join(sessionDir, '.claude')
-      if (!existsSync(claudeDir)) mkdirSync(claudeDir, { recursive: true })
-      const settingsPath = join(claudeDir, 'settings.json')
-      let sdkSettings: Record<string, unknown> = {}
-      try {
-        sdkSettings = JSON.parse(readFileSync(settingsPath, 'utf-8'))
-      } catch { /* 文件不存在或解析失败 */ }
-      let needsWrite = false
-      if (sdkSettings.plansDirectory !== '.context') {
-        sdkSettings.plansDirectory = '.context'
-        needsWrite = true
-      }
-      if (sdkSettings.skipWebFetchPreflight !== true) {
-        sdkSettings.skipWebFetchPreflight = true
-        needsWrite = true
-      }
-      if (needsWrite) {
-        writeFileSync(settingsPath, JSON.stringify(sdkSettings, null, 2))
-      }
-
-      // 初始化 .context/ 目录
-      const contextDir = join(sessionDir, '.context')
-      if (!existsSync(contextDir)) mkdirSync(contextDir, { recursive: true })
-    }
+  // 初始化 .claude/settings.json（plansDirectory → .context）
+  const claudeDir = join(sessionDir, '.claude')
+  if (!existsSync(claudeDir)) mkdirSync(claudeDir, { recursive: true })
+  const settingsPath = join(claudeDir, 'settings.json')
+  let sdkSettings: Record<string, unknown> = {}
+  try {
+    sdkSettings = JSON.parse(readFileSync(settingsPath, 'utf-8'))
+  } catch { /* 文件不存在或解析失败 */ }
+  let needsWrite = false
+  if (sdkSettings.plansDirectory !== '.context') {
+    sdkSettings.plansDirectory = '.context'
+    needsWrite = true
   }
+  if (sdkSettings.skipWebFetchPreflight !== true) {
+    sdkSettings.skipWebFetchPreflight = true
+    needsWrite = true
+  }
+  if (needsWrite) {
+    writeFileSync(settingsPath, JSON.stringify(sdkSettings, null, 2))
+  }
+
+  // 初始化 .context/ 目录
+  const contextDir = join(sessionDir, '.context')
+  if (!existsSync(contextDir)) mkdirSync(contextDir, { recursive: true })
 
   console.log(`[Agent 会话] 已创建会话: ${meta.title} (${meta.id})`)
   return meta
@@ -1309,7 +1305,7 @@ export function updateAgentSessionMeta(
 /**
  * 删除会话
  */
-export function deleteAgentSession(id: string): void {
+export function deleteAgentSession(id: string, options?: { backgroundDiskCleanup?: boolean }): void {
   const index = readIndex()
   const idx = index.sessions.findIndex((s) => s.id === id)
 
@@ -1382,26 +1378,26 @@ export function deleteAgentSession(id: string): void {
   }
   writeIndex(index)
 
-  // 删除消息与任务图文件。任务图和会话消息均属于该 Profer session，删除必须同步清理。
-  for (const [label, filePath] of [
-    ['消息', getAgentSessionMessagesPath(id)],
-    ['任务图', getGraphJsonlPath(getAgentSessionsDir(), id)],
-    ['Pi Harness 账本', getPiHarnessEventsPath(id)],
-  ] as const) {
-    if (!existsSync(filePath)) continue
-    try {
-      unlinkSync(filePath)
-    } catch (error) {
-      console.warn(`[Agent 会话] 删除${label}文件失败 (${id}):`, error)
-    }
-  }
-
-  // 清理 session 工作目录
-  if (removed.workspaceId) {
-    const ws = getAgentWorkspace(removed.workspaceId)
-    if (ws) {
+  const doCleanup = (): void => {
+    // 删除消息与任务图文件。任务图和会话消息均属于该 Profer session，删除必须清理。
+    for (const [label, filePath] of [
+      ['消息', getAgentSessionMessagesPath(id)],
+      ['任务图', getGraphJsonlPath(getAgentSessionsDir(), id)],
+      ['Pi Harness 账本', getPiHarnessEventsPath(id)],
+    ] as const) {
+      if (!existsSync(filePath)) continue
       try {
-        const sessionDir = getAgentSessionWorkspacePath(ws.slug, id)
+        unlinkSync(filePath)
+      } catch (error) {
+        console.warn(`[Agent 会话] 删除${label}文件失败 (${id}):`, error)
+      }
+    }
+
+    // 清理 session 工作目录（支持指定工作区及独立会话 default 沙箱）
+    const targetSlug = removed.workspaceId ? getAgentWorkspace(removed.workspaceId)?.slug : 'default'
+    if (targetSlug) {
+      try {
+        const sessionDir = getAgentSessionWorkspacePath(targetSlug, id)
         if (existsSync(sessionDir)) {
           removeForkPath(sessionDir)
           console.log(`[Agent 会话] 已清理 session 工作目录: ${sessionDir}`)
@@ -1410,78 +1406,90 @@ export function deleteAgentSession(id: string): void {
         console.warn(`[Agent 会话] 清理 session 工作目录失败 (${id}):`, error)
       }
     }
-  }
 
-  // 新版检查点位于配置目录，删除会话后必须显式清理；旧版 cwd 内快照已随工作区删除。
-  try {
-    removePiFileCheckpoints(getPiCheckpointsDir(), id)
-  } catch (error) {
-    console.warn(`[Agent 会话] 清理 Pi 文件检查点失败 (${id}):`, error)
-  }
-
-  console.log(`[Agent 会话] 已删除会话: ${removed.title} (${removed.id})`)
-
-  // 清理 SDK 关联数据（file-history 和 projects 下的 session JSONL）
-  // ⚠️ 只清理本会话自己的 sdkSessionId，绝不能清理 forkSourceSdkSessionId：
-  // 后者指向的是**源会话仍在使用**的 SDK session（fork 只是引用它做回退定位，
-  // 并不拥有它的副本 — fork 自己的数据存在 forkResult.sessionId 即 sdkSessionId 下）。
-  // 若一并删除，会在「删除某个 fork 会话」或「fork 中途失败触发回滚」时连带摧毁
-  // 源会话的 SDK JSONL 和 file-history，使源会话变成无法 resume 的孤儿。
-  // 源会话自身被删除时，它自己的 sdkSessionId 会走这里正常清理，不会泄漏。
-  const sdkSessionIds = [removed.sdkSessionId].filter(Boolean) as string[]
-  if (sdkSessionIds.length > 0) {
-    const sdkConfigDir = getSdkConfigDir()
-
-    const fileHistoryDir = join(sdkConfigDir, 'file-history')
-    for (const sid of sdkSessionIds) {
-      const histDir = join(fileHistoryDir, sid)
-      if (existsSync(histDir)) {
-        try {
-          rmSync(histDir, { recursive: true, force: true })
-          console.log(`[Agent 会话] 已清理 file-history: ${sid}`)
-        } catch (e) {
-          console.warn(`[Agent 会话] 清理 file-history 失败 (${sid}):`, e)
-        }
-      }
+    // 新版检查点位于配置目录，删除会话后必须显式清理；旧版 cwd 内快照已随工作区删除。
+    try {
+      removePiFileCheckpoints(getPiCheckpointsDir(), id)
+    } catch (error) {
+      console.warn(`[Agent 会话] 清理 Pi 文件检查点失败 (${id}):`, error)
     }
 
-    // Pi session 文件由 Pi SessionManager 写入独立目录；按 JSONL header 的精确 ID 删除，
-    // 禁止按文件名片段匹配以避免误删另一会话。
-    if (normalizeAgentRuntime(removed.agentRuntime) === 'pi') {
+    console.log(`[Agent 会话] 已删除会话: ${removed.title} (${removed.id})`)
+
+    // 清理 SDK 关联数据（file-history 和 projects 下的 session JSONL）
+    // ⚠️ 只清理本会话自己的 sdkSessionId，绝不能清理 forkSourceSdkSessionId：
+    // 后者指向的是**源会话仍在使用**的 SDK session（fork 只是引用它做回退定位，
+    // 并不拥有它的副本 — fork 自己的数据存在 forkResult.sessionId 即 sdkSessionId 下）。
+    // 若一并删除，会在「删除某个 fork 会话」或「fork 中途失败触发回滚」时连带摧毁
+    // 源会话的 SDK JSONL 和 file-history，使源会话变成无法 resume 的孤儿。
+    // 源会话自身被删除时，它自己的 sdkSessionId 会走这里正常清理，不会泄漏。
+    const sdkSessionIds = [removed.sdkSessionId].filter(Boolean) as string[]
+    if (sdkSessionIds.length > 0) {
+      const sdkConfigDir = getSdkConfigDir()
+
+      const fileHistoryDir = join(sdkConfigDir, 'file-history')
       for (const sid of sdkSessionIds) {
-        const piSessionFile = findPiSessionJsonl(sid)
-        if (!piSessionFile) continue
-        try {
-          unlinkSync(piSessionFile)
-          console.log(`[Agent 会话] 已清理 Pi session 文件: ${piSessionFile}`)
-        } catch (e) {
-          console.warn('[Agent 会话] 清理 Pi session 文件失败:', e)
+        const histDir = join(fileHistoryDir, sid)
+        if (existsSync(histDir)) {
+          try {
+            rmSync(histDir, { recursive: true, force: true })
+            console.log(`[Agent 会话] 已清理 file-history: ${sid}`)
+          } catch (e) {
+            console.warn(`[Agent 会话] 清理 file-history 失败 (${sid}):`, e)
+          }
         }
       }
-    }
 
-    const projectsDir = join(sdkConfigDir, 'projects')
-    if (existsSync(projectsDir)) {
-      try {
-        for (const hashDir of readdirSync(projectsDir)) {
-          const projPath = join(projectsDir, hashDir)
-          for (const sid of sdkSessionIds) {
-            const sessionFile = join(projPath, `${sid}.jsonl`)
-            if (existsSync(sessionFile)) {
-              try {
-                unlinkSync(sessionFile)
-                console.log(`[Agent 会话] 已清理 SDK session 文件: ${sessionFile}`)
-              } catch (e) {
-                console.warn('[Agent 会话] 清理 SDK session 文件失败:', e)
+      // Pi session 文件由 Pi SessionManager 写入独立目录；按 JSONL header 的精确 ID 删除，
+      // 禁止按文件名片段匹配以避免误删另一会话。
+      if (normalizeAgentRuntime(removed.agentRuntime) === 'pi') {
+        for (const sid of sdkSessionIds) {
+          const piSessionFile = findPiSessionJsonl(sid)
+          if (!piSessionFile) continue
+          try {
+            unlinkSync(piSessionFile)
+            console.log(`[Agent 会话] 已清理 Pi session 文件: ${piSessionFile}`)
+          } catch (e) {
+            console.warn('[Agent 会话] 清理 Pi session 文件失败:', e)
+          }
+        }
+      }
+
+      const projectsDir = join(sdkConfigDir, 'projects')
+      if (existsSync(projectsDir)) {
+        try {
+          for (const hashDir of readdirSync(projectsDir)) {
+            const projPath = join(projectsDir, hashDir)
+            for (const sid of sdkSessionIds) {
+              const sessionFile = join(projPath, `${sid}.jsonl`)
+              if (existsSync(sessionFile)) {
+                try {
+                  unlinkSync(sessionFile)
+                  console.log(`[Agent 会话] 已清理 SDK session 文件: ${sessionFile}`)
+                } catch (e) {
+                  console.warn('[Agent 会话] 清理 SDK session 文件失败:', e)
+                }
               }
             }
+            try {
+              if (readdirSync(projPath).length === 0) rmSync(projPath, { recursive: true })
+            } catch { /* ignore */ }
           }
-          try {
-            if (readdirSync(projPath).length === 0) rmSync(projPath, { recursive: true })
-          } catch { /* ignore */ }
-        }
-      } catch { /* ignore */ }
+        } catch { /* ignore */ }
+      }
     }
+  }
+
+  if (options?.backgroundDiskCleanup) {
+    setImmediate(() => {
+      try {
+        doCleanup()
+      } catch (err) {
+        console.warn(`[Agent 会话] 后台异步清理磁盘数据失败 (${id}):`, err)
+      }
+    })
+  } else {
+    doCleanup()
   }
 }
 

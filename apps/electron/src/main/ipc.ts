@@ -3108,7 +3108,7 @@ export function registerIpcHandlers(): void {
           exitPlanService.clearSessionPending(sessionId)
           void browserController.close(sessionId)
         },
-        deleteSession: deleteAgentSession,
+        deleteSession: (sessionId) => deleteAgentSession(sessionId, { backgroundDiskCleanup: true }),
       })
     }
   )

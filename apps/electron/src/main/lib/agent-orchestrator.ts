@@ -714,7 +714,7 @@ export class AgentOrchestrator {
       // 写诊断文件供后续排查
       try {
         const diagDir = join(
-          getAgentSessionWorkspacePath(getAgentWorkspace(getAgentSessionMeta(sessionId)?.workspaceId ?? '')?.slug ?? 'unknown', sessionId),
+          getAgentSessionWorkspacePath(getAgentWorkspace(getAgentSessionMeta(sessionId)?.workspaceId ?? '')?.slug ?? 'default', sessionId),
           '.context',
         )
         if (!existsSync(diagDir)) mkdirSync(diagDir, { recursive: true })
@@ -1142,6 +1142,9 @@ export class AgentOrchestrator {
         agentCwd = homedir()
       }
 
+      const effectiveWorkspaceId = workspaceId ?? workspace?.id
+      const effectiveWorkspaceSlug = workspaceSlug ?? workspace?.slug
+
       // 9.4.1 Fork session JSONL 迁移已在 forkAgentSession 中完成，
       // fork 后的会话直接使用自己的 cwd，无需回退到源目录。
       // forkSourceDir 仅作为备用参考字段保留，不再影响 agentCwd。
@@ -1241,7 +1244,7 @@ export class AgentOrchestrator {
 
       // 11.5 注入 mention 引用指令（Skill/MCP/会话）— 仅引用当前预设实际可用的能力。
       let enrichedMessage = runtimeUserMessage
-      const referencedSessionsBlock = buildReferencedSessionsPrompt(sessionId, mentionedSessionIds, workspaceId)
+      const referencedSessionsBlock = buildReferencedSessionsPrompt(sessionId, mentionedSessionIds, effectiveWorkspaceId)
       if (referencedSessionsBlock) {
         enrichedMessage = `${referencedSessionsBlock}\n\n${enrichedMessage}`
         console.log(`[Agent 编排] 注入 referenced_sessions: ${mentionedSessionIds?.length ?? 0} sessions`)
@@ -1309,11 +1312,11 @@ ${enrichedMessage}`
       const browserAllowedRoots = [
         ...new Set(
           [
-        workspaceId ? agentCwd : undefined,
+            effectiveWorkspaceId ? agentCwd : undefined,
             ...collectAttachedDirectories({
               extraDirs: additionalDirectories,
               sessionMeta,
-              workspaceSlug,
+              workspaceSlug: effectiveWorkspaceSlug,
             }),
             ...collectProductArtifactDirectories(),
           ].filter((root): root is string => typeof root === 'string' && root.length > 0),
@@ -1330,9 +1333,9 @@ ${enrichedMessage}`
               channelId,
               modelId,
               agentRuntime,
-              workspaceId,
+              workspaceId: effectiveWorkspaceId,
               isTeamWorkspace: workspace?.type === 'team',
-              workspaceSlug,
+              workspaceSlug: effectiveWorkspaceSlug,
               agentCwd,
               allowedRoots: browserAllowedRoots,
               onPreviewRequest: (event) => agentFilePreviewSessionManager.waitUntilReady(event, (previewEvent) => {
