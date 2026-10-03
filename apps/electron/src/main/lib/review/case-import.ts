@@ -9,8 +9,8 @@
 import { dialog, BrowserWindow } from 'electron'
 import { copyFileSync, statSync, mkdirSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
-import type { ReviewCase, SourceDocument } from '@profer/shared'
-import { getCase, saveCase, assertSafeId, getReviewCasesDir } from './case-store'
+import type { RulePack, ReviewCase, SourceDocument } from '@profer/shared'
+import { getCase, saveCase, updateCase, assertSafeId, getReviewCasesDir } from './case-store'
 import { parseFileIntoSourceDocument } from './document-service'
 
 /** 单文件大小上限（50MB，超过直接拒绝） */
@@ -79,32 +79,33 @@ export async function importDocumentIntoCase(input: {
   const storedDocument: SourceDocument = { ...document, id: docId, origin: 'upload' }
 
   // 依据文件自动登记规则包：否则大纲生成与审核运行都找不到"依据包"（真机验证暴露的缺口）
-  const rulePacks =
+  // M0/H05：只构造「新增」的包；写回时以队列内最新 rulePacks 为基底追加，不整体替换
+  const newRulePack: RulePack | null =
     input.role === 'rule'
-      ? [
-          ...reviewCase.rulePacks,
-          {
-            id: `pack-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-            documentId: docId,
-            // 名称取文件名去扩展名（用户可后续在 UI 改）；发布单位留空由用户补
-            name: fileName.replace(/\.[^.]+$/, ''),
-            publisher: '',
-            academicYear: reviewCase.academicYear,
-            version: 'v1',
-            outline: [],
-            confirmed: false,
-          },
-        ]
-      : reviewCase.rulePacks
+      ? {
+          id: `pack-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          documentId: docId,
+          // 名称取文件名去扩展名（用户可后续在 UI 改）；发布单位留空由用户补
+          name: fileName.replace(/\.[^.]+$/, ''),
+          publisher: '',
+          academicYear: reviewCase.academicYear,
+          version: 'v1',
+          outline: [],
+          confirmed: false,
+        }
+      : null
 
-  // 写回案卷
-  const updated: ReviewCase = {
-    ...reviewCase,
-    documents: [...reviewCase.documents, storedDocument],
-    rulePacks,
-    updatedAt: new Date().toISOString(),
-  }
-  saveCase(updated)
+  // 写回案卷（M0/H05：逐案串行队列内读最新再定向追加，导入窗口内的其他写回不丢失；
+  // 系统选择框打开期间案卷可能已变化，因此以队列内最新为基底，而不是调用前快照）
+  await updateCase(
+    input.caseId,
+    (fresh) => ({
+      ...fresh,
+      documents: [...fresh.documents, storedDocument],
+      rulePacks: newRulePack ? [...fresh.rulePacks, newRulePack] : fresh.rulePacks,
+    }),
+    { reason: `导入材料 ${fileName}（${storedDocument.parseStatus}）` },
+  )
   console.log(
     `[审核专区] 已导入材料: ${fileName} → ${input.caseId}/${docId}（解析 ${storedDocument.parseStatus}` +
       `${input.role === 'rule' ? '，已登记规则包' : ''}）`,

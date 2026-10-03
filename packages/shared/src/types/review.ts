@@ -283,6 +283,12 @@ export interface ReviewRun {
   status: ReviewRunStatus
   /** 输入版本（案卷内容哈希，重审可对比） */
   inputVersion: string
+  /**
+   * 输入指纹（M0/H06）：对影响审核判定的业务输入做内容哈希，与 inputVersion 同值。
+   * 用于「运行结果是否对应案卷当前输入」的过期判断；
+   * 不是文件数/事项数或 updatedAt 的拼接（同数量下改日期/等级/替换文件也能检出）。
+   */
+  inputHash?: string
   startedAt: string
   completedAt?: string
   /** 全部发现 */
@@ -334,6 +340,11 @@ export interface ReviewCase {
    * 缺省时回落为「role === 'application' 的全部文档」。
    */
   subjectDocumentIds?: string[]
+  /**
+   * 案卷修订号（M0/H05）：每次主进程写回 +1，单调递增。
+   * 渲染层按 caseId 缓存案卷时用它判断新旧；V1 兼容字段，缺省视为 0。
+   */
+  revision?: number
 }
 
 /** 案卷列表项（不含重文档内容，列表展示用） */

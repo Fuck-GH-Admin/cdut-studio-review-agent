@@ -40,7 +40,7 @@ import {
 } from '@profer/shared'
 import { readFileSync, statSync } from 'node:fs'
 import { isAbsolute, join } from 'node:path'
-import { getCase, getReviewCasesDir, listRuns, saveCase } from './case-store'
+import { getCase, getReviewCasesDir, listRuns, saveCase, updateCase } from './case-store'
 import { buildDemoCase } from './demo-fixtures/demo-case-fixture'
 import { runMockReview } from './mock-review-engine'
 import {
@@ -308,17 +308,20 @@ export async function generateRuleOutline(
     const text = await chatCompletion(resolved.channel, messages, { maxTokens: MAX_TOKENS })
     const outline = parseOutline(extractJson(text))
     console.log(`[审核专区] 规则大纲 AI 生成成功: ${outline.length} 条`)
-    // 大纲回写案卷（与 extractItems 对齐：案卷是唯一事实来源，助手/mock 引擎读盘生效）
-    // 同样重读最新案卷合并，规避读改写窗口丢更新
-    const fresh = getCase(request.caseId)
-    if (fresh) {
-      const updatedPacks = fresh.rulePacks.map((pack) =>
-        pack.id === (request.rulePackId ?? fresh.rulePacks[0]?.id)
-          ? { ...pack, outline, confirmed: false }
-          : pack,
-      )
-      saveCase({ ...fresh, rulePacks: updatedPacks, updatedAt: new Date().toISOString() })
-    }
+    // 大纲回写案卷（M0/H05：进逐案串行写队列，队列内读最新再定向 patch，
+    // 模型调用窗口内其他写入（导入/识别）不会被覆盖；确认态重置为未确认待人工复核）
+    await updateCase(
+      request.caseId,
+      (fresh) => ({
+        ...fresh,
+        rulePacks: fresh.rulePacks.map((pack) =>
+          pack.id === (request.rulePackId ?? fresh.rulePacks[0]?.id)
+            ? { ...pack, outline, confirmed: false }
+            : pack,
+        ),
+      }),
+      { reason: `规则大纲写回（${outline.length} 条）` },
+    )
     return outline
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
@@ -431,10 +434,13 @@ export async function extractItems(caseId: string): Promise<ReviewItem[]> {
     }
     const items = parseItems(extractJson(result.text))
     console.log(`[审核专区] 条目识别 AI 成功: ${items.length} 条`)
-    // 识别结果回写案卷（与渲染层"识别条目"动作语义一致：案卷是唯一事实来源）
-    // 写回前重读最新案卷合并，避免 60s 模型调用窗口内其他写入（如导入材料）被旧快照覆盖
-    const fresh = getCase(caseId)
-    if (fresh) saveCase({ ...fresh, items, updatedAt: new Date().toISOString() })
+    // 识别结果回写案卷（M0/H05：进逐案串行写队列，队列内读最新再定向 patch——
+    // 60s 模型调用窗口内其他写入（导入/大纲）不会被本次覆盖）
+    await updateCase(
+      caseId,
+      (fresh) => ({ ...fresh, items }),
+      { reason: `条目识别写回（${items.length} 条）` },
+    )
     return items
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)

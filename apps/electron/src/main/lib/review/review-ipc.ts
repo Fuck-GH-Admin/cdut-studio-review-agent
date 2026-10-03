@@ -30,6 +30,7 @@ import {
   listCases,
   loadDemoCase,
   saveCase,
+  updateCase,
 } from './case-store'
 import { parseFileIntoSourceDocument } from './document-service'
 import {
@@ -113,7 +114,7 @@ export function registerReviewIpc(): void {
   /** 更新案卷设置（领域包 / 标题 / 类型 / 待审主体文档） */
   ipcMain.handle(
     REVIEW_IPC_CHANNELS.UPDATE_CASE_SETTINGS,
-    (_event, input: UpdateCaseSettingsRequest): ReviewCase => {
+    async (_event, input: UpdateCaseSettingsRequest): Promise<ReviewCase> => {
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
       const caseId = requireString(input.caseId, 'caseId')
       const reviewCase = getCase(caseId)
@@ -139,18 +140,18 @@ export function registerReviewIpc(): void {
           throw new Error('待审主体文档包含不属于本案卷的文档 ID')
         }
       }
-      const updated: ReviewCase = {
-        ...reviewCase,
-        ...(input.title !== undefined ? { title: input.title.trim() || reviewCase.title } : {}),
-        ...(input.type !== undefined ? { type: input.type } : {}),
-        ...(input.domainPackId !== undefined ? { domainPackId: input.domainPackId } : {}),
-        ...(subjectDocumentIds !== undefined ? { subjectDocumentIds } : {}),
-        updatedAt: new Date().toISOString(),
-      }
-      saveCase(updated)
-      console.log(
-        `[审核专区] 已更新案卷设置: ${caseId}` +
-          `${input.domainPackId ? `（领域包 ${input.domainPackId}）` : ''}`,
+      // M0/H05：设置变更走逐案串行写队列（读最新 → 定向 patch → revision+1），
+      // 避免校验期间的其他写回（导入/大纲/识别）被整案快照覆盖
+      const updated = await updateCase(
+        caseId,
+        (fresh) => ({
+          ...fresh,
+          ...(input.title !== undefined ? { title: input.title.trim() || fresh.title } : {}),
+          ...(input.type !== undefined ? { type: input.type } : {}),
+          ...(input.domainPackId !== undefined ? { domainPackId: input.domainPackId } : {}),
+          ...(subjectDocumentIds !== undefined ? { subjectDocumentIds } : {}),
+        }),
+        { reason: `更新案卷设置${input.domainPackId ? `（领域包 ${input.domainPackId}）` : ''}` },
       )
       return updated
     },
