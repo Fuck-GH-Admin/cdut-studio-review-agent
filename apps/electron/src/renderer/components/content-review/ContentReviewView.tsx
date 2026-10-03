@@ -114,7 +114,7 @@ export function ContentReviewView(): React.ReactElement {
       <header className="relative z-10 flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2 border-b border-border/60 bg-card/80 px-4 py-2.5 titlebar-no-drag backdrop-blur-sm">
         <div className="flex items-center gap-2">
           <ClipboardCheck size={16} className="text-primary" />
-          <span className="text-[13px] font-semibold">内容审核专区</span>
+          <span className="text-[13px] font-semibold">材料审核智能体</span>
           {/* 演示徽标 */}
           <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">演示版</span>
           {/* 出口状态徽标 */}

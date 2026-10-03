@@ -311,8 +311,19 @@ export function MainArea(): React.ReactElement {
           // Agent 技能视图：全屏取代 TabBar + TabContent
           <AgentSkillsView />
         ) : activeView === 'content-review' ? (
-          // 内容审核专区：全屏取代 TabBar + TabContent（三栏工作台内部自管案卷导航）
+          // 材料审核智能体：全屏取代 TabBar + TabContent（三栏工作台内部自管案卷导航）
           <ContentReviewView />
+        ) : activeView === 'cdut-zone' ? (
+          // CDUT 专区：全屏视图（业务代码留空预留）
+          <div className="flex flex-1 flex-col items-center justify-center p-8 text-center text-muted-foreground select-none">
+            <div className="size-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4 text-2xl font-bold">
+              CDUT
+            </div>
+            <h2 className="text-xl font-semibold text-foreground mb-1">CDUT 专区</h2>
+            <p className="text-xs text-muted-foreground max-w-sm">
+              专区专属业务功能构建中，敬请期待...
+            </p>
+          </div>
         ) : (
           <div className="flex min-h-0 flex-1 flex-col">
             {/* 顶栏横跨整个主区：组合分屏时两侧顶栏共用同一条基线。 */}
