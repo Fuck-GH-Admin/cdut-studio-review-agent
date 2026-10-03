@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.101",
+      "date": "2026-10-04",
+      "title": "v0.15.101",
+      "notes": "- M1/迁移与契约：V1→V2 案卷迁移器（分数转字段/fixture 保留 origin/未知领域不默认综测/可重复执行）；主体动作命令信封（requestId/actor/expectedRevision，VERSION_CONFLICT 语义）；模型显式选择纯函数（渠道删除/禁用/模型不在列表即报错，K16）；shared 0.1.49"
+    },
+    {
       "version": "0.15.100",
       "date": "2026-10-04",
       "title": "v0.15.100",

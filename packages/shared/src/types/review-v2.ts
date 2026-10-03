@@ -484,3 +484,90 @@ export interface SyncReceipt {
   status: 'pending' | 'accepted' | 'rejected' | 'conflict'
   externalReceipt?: { receivedAt: string; externalId?: string; message?: string }
 }
+
+// ===== 应用命令契约（M1：03 §7 应用命令与查询契约） =====
+
+/** 命令执行主体（本地/模拟/校方认证三来源；本地手填身份不得冒充校方授权） */
+export interface Actor {
+  actorId: string
+  actorSource: 'local' | 'mock' | 'school'
+  role: RoleId
+}
+
+/** 修改类命令统一信封：幂等键 + 主体 + 乐观并发（03 §7） */
+export interface ReviewAppCommand<TPayload> {
+  requestId: string
+  actor: Actor
+  caseId: string
+  /** 调用方持有的案卷修订号；冲突返回 VERSION_CONFLICT 与当前版 */
+  expectedRevision: number
+  payload: TPayload
+}
+
+export type ReviewAppErrorCode = 'VERSION_CONFLICT' | 'NOT_FOUND' | 'VALIDATION_FAILED' | 'CAPABILITY_UNAVAILABLE' | 'PERMISSION_DENIED'
+
+export interface ReviewAppCommandResult<TEntity> {
+  ok: true
+  newRevision: number
+  entity: TEntity
+}
+
+export interface ReviewAppCommandError {
+  ok: false
+  code: ReviewAppErrorCode
+  message: string
+  /** VERSION_CONFLICT 时携带当前修订号与差异摘要 */
+  currentRevision?: number
+  diffSummary?: string
+}
+
+/** 乐观并发校验（03 §7：冲突返回当前版，不覆盖整份旧快照） */
+export function assertExpectedRevision(
+  command: { expectedRevision: number },
+  currentRevision: number,
+): ReviewAppCommandError | null {
+  if (command.expectedRevision !== currentRevision) {
+    return {
+      ok: false,
+      code: 'VERSION_CONFLICT',
+      message: `案卷已被其他操作更新（当前 revision=${currentRevision}），请刷新后重试`,
+      currentRevision,
+    }
+  }
+  return null
+}
+
+// ===== 模型选择与能力（M1/H16） =====
+
+/** 能力来源：实测/声明/未知——不能仅从模型名称猜（03 §8） */
+export interface ModelCapability {
+  channel: string
+  model: string
+  protocol: string
+  source: 'measured' | 'declared' | 'unknown'
+  text: boolean
+  vision: boolean
+  structuredJson: boolean
+  tools: boolean
+  checkedAt?: string
+}
+
+/** 显式模型选择（K16：所选渠道被删/禁用时暂停需模型阶段，不静默改用别的渠道） */
+export interface ModelSelection {
+  channelId: string
+  model: string
+}
+
+/** 纯函数：从渠道列表解析显式选择；未知/禁用渠道抛出可呈现错误（由调用方映射 CAPABILITY_UNAVAILABLE） */
+export function resolveModelSelection(
+  channels: Array<{ id: string; enabled: boolean; models: string[]; protocol: string }>,
+  selection: ModelSelection,
+): { channel: { id: string; protocol: string }; model: string } {
+  const channel = channels.find((candidate) => candidate.id === selection.channelId)
+  if (!channel) throw new Error(`所选模型渠道不存在或已删除: ${selection.channelId}`)
+  if (!channel.enabled) throw new Error(`所选模型渠道已禁用: ${selection.channelId}`)
+  if (channel.models.length > 0 && !channel.models.includes(selection.model)) {
+    throw new Error(`所选模型不在渠道可用列表中: ${selection.model}`)
+  }
+  return { channel: { id: channel.id, protocol: channel.protocol }, model: selection.model }
+}
