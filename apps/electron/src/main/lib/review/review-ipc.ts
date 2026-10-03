@@ -179,6 +179,50 @@ export function registerReviewIpc(): void {
     return getLatestRunStatus(caseId)
   })
 
+  // ===== V2 通道（M5：全部薄委托，服务层见 review-v2 系列文件） =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_TEMPLATES_V2, () => {
+    const { listTemplates } = require('./template-store') as typeof import('./template-store')
+    return listTemplates()
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_TEMPLATE_V2, (_e, templateId: string, version?: number) => {
+    if (typeof templateId !== 'string' || !templateId) throw new Error('参数 templateId 非法')
+    const { getTemplate } = require('./template-store') as typeof import('./template-store')
+    return getTemplate(templateId, version)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.PUBLISH_TEMPLATE_V2, (_e, templateId: string, version: number) => {
+    if (typeof templateId !== 'string' || !templateId || !Number.isFinite(version)) throw new Error('参数非法')
+    const { publishTemplate } = require('./template-store') as typeof import('./template-store')
+    return publishTemplate(templateId, version)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_RUNS_V2, (_e, caseId: string) => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+    return listRunsV2(caseId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_RUN_V2, (_e, input: { caseId: string; runId: string }) => {
+    if (!input?.caseId || !input?.runId) throw new Error('参数非法')
+    const { getRunV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+    return getRunV2(input.caseId, input.runId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CANCEL_RUN_V2, (_e, runId: string) => {
+    if (typeof runId !== 'string' || !runId) throw new Error('参数 runId 非法')
+    const { cancelRunV2 } = require('./run-service-v2') as typeof import('./run-service-v2')
+    cancelRunV2(runId)
+    return true
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.MIGRATE_CASE_V2, (_e, caseId: string) => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    const { getCase } = require('./case-store') as typeof import('./case-store')
+    const { migrateCaseToV2 } = require('./migration') as typeof import('./migration')
+    const v1 = getCase(caseId)
+    if (!v1) throw new Error(`案卷不存在: ${caseId}`)
+    return migrateCaseToV2(v1)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.BOOT_CHECK_V2, () => {
+    const { runBootCheckV2 } = require('./boot-check') as typeof import('./boot-check')
+    return runBootCheckV2()
+  })
+
   /** 删除案卷 */
   ipcMain.handle(REVIEW_IPC_CHANNELS.DELETE_CASE, (_event, caseId: string): void => {
     deleteCase(caseId)

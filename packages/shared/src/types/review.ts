@@ -460,6 +460,16 @@ export const REVIEW_IPC_CHANNELS = {
   /** 查询运行状态 */
   GET_RUN: 'review:get-run',
   LATEST_RUN: 'review:get-latest-run',
+  // ===== V2（通用审核 Agent，M5 接线） =====
+  LIST_TEMPLATES_V2: 'review-v2:list-templates',
+  GET_TEMPLATE_V2: 'review-v2:get-template',
+  PUBLISH_TEMPLATE_V2: 'review-v2:publish-template',
+  RUN_REVIEW_V2: 'review-v2:run-review',
+  LIST_RUNS_V2: 'review-v2:list-runs',
+  GET_RUN_V2: 'review-v2:get-run',
+  CANCEL_RUN_V2: 'review-v2:cancel-run',
+  MIGRATE_CASE_V2: 'review-v2:migrate-case',
+  BOOT_CHECK_V2: 'review-v2:boot-check',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */
