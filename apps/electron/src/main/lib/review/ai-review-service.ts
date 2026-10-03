@@ -100,6 +100,28 @@ function renderRuleDocument(reviewCase: ReviewCase, documentId: string): string 
  * 优先用案卷显式声明的 subjectDocumentIds（按声明顺序，过滤已删除的）；
  * 未声明时回落为全部 role === 'application' 的文档；一份都没有则返回空数组。
  */
+/**
+ * 渲染全部依据（M0/H02）：每个规则包对应文档逐份渲染（带规则包名与 documentId），
+ * 并附上该包大纲条目（供模型引用 ruleItemId）。不再用首包代表整组依据。
+ */
+export function renderRuleDocuments(reviewCase: ReviewCase): string {
+  if (reviewCase.rulePacks.length === 0) return ''
+  return reviewCase.rulePacks
+    .map((pack, index) => {
+      const doc = reviewCase.documents.find((d) => d.id === pack.documentId)
+      const body = doc ? doc.blocks.map((block) => `[${block.id}] ${block.text}`).join('\n') : '（依据文档缺失）'
+      const outline = pack.outline
+        .map((item) => `  - ruleItemId=${item.id} ${item.title}`)
+        .join('\n')
+      return (
+        `===== 依据 ${index + 1}/${reviewCase.rulePacks.length}：${pack.name}（documentId=${pack.documentId}，` +
+        `${doc?.fileName ?? '文件缺失'}）=====\n${body}` +
+        (outline ? `\n【本依据大纲条目】\n${outline}` : '')
+      )
+    })
+    .join('\n\n')
+}
+
 function subjectDocuments(reviewCase: ReviewCase): SourceDocument[] {
   const declared = reviewCase.subjectDocumentIds
   if (declared && declared.length > 0) {
@@ -293,9 +315,14 @@ export async function generateRuleOutline(
 
   const resolved = resolveReviewGatewayChannel()
   if (!resolved) {
-    const outline = fallbackOutline(reviewCase, request.rulePackId)
-    console.warn(`[审核专区] 规则大纲降级: 无可用模型出口，返回演示规则大纲（${outline.length} 条）`)
-    return outline
+    // M0/H03：演示回退仅限演示案卷（isDemo 且 fixture 来源）；
+    // 真实案卷不再回填演示校规——失败如实抛出，保留案卷已有大纲与人工补充入口
+    if (reviewCase.isDemo) {
+      const outline = fallbackOutline(reviewCase, request.rulePackId)
+      console.warn(`[审核专区] 规则大纲降级: 无可用模型出口，演示案卷返回预置大纲（${outline.length} 条）`)
+      return outline
+    }
+    throw new Error('规则大纲生成失败：无可用模型出口（未回填任何预置规则，可重试或人工补充）')
   }
 
   try {
@@ -337,9 +364,13 @@ export async function generateRuleOutline(
     return outline
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
-    const outline = fallbackOutline(reviewCase, request.rulePackId)
-    console.warn(`[审核专区] 规则大纲降级: ${message}；返回演示规则大纲（${outline.length} 条）`)
-    return outline
+    if (reviewCase.isDemo) {
+      const outline = fallbackOutline(reviewCase, request.rulePackId)
+      console.warn(`[审核专区] 规则大纲降级: ${message}；演示案卷返回预置大纲（${outline.length} 条）`)
+      return outline
+    }
+    // 真实案卷：模型调用失败不伪装成大纲；已有大纲保持不动（写回仅在成功路径）
+    throw new Error(`规则大纲生成失败：${message}（案卷已有大纲未改动，可重试或人工补充）`)
   }
 }
 
@@ -647,10 +678,13 @@ export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutco
   }
 
   try {
-    const pack = requireRulePack(reviewCase)
+    if (reviewCase.rulePacks.length === 0) {
+      // 与 requireRulePack 原语义一致：没有依据包属于调用方配置问题
+      throw new Error('案卷没有依据规则包，无法审核')
+    }
     const domainPack = resolveDomainPack(reviewCase.domainPackId)
     const domain = domainPromptParts(domainPack)
-    const ruleText = renderRuleDocument(reviewCase, pack.documentId)
+    const ruleText = renderRuleDocuments(reviewCase)
     const appText = renderSubjectDocuments(reviewCase)
     const subjectDocs = subjectDocuments(reviewCase)
     const evidencesBrief = reviewCase.evidences
@@ -677,7 +711,9 @@ export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutco
         role: 'system',
         content:
           `${domain.role}。${domain.guideline}` +
-          '请对照依据文件逐条审核待审内容，产出问题清单。' +
+          `本案卷共有 ${reviewCase.rulePacks.length} 份依据，请对照【全部依据文件】逐条审核待审内容，不得只审其中一份。` +
+          '依据之间冲突时不得自行裁定，相关条目给 manual-review。' +
+          '产出问题清单。' +
           `每条发现给出：itemId（待审条目 ID，无对应条目时用该文件首个条目 ID 或 "case-level"）、` +
           `kind（取值：${domain.kinds}）、` +
           'severity（red/yellow）、title、detail（说明为什么判，必须引用依据条款原文要点）、' +

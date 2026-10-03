@@ -1,6 +1,6 @@
 {
   "name": "@profer/electron",
-  "version": "0.15.93",
+  "version": "0.15.94",
   "description": "CDUT Studio",
   "main": "dist/main.cjs",
   "author": "Profer Team",
