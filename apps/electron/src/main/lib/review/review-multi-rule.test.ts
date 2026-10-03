@@ -10,7 +10,7 @@ import { join } from 'node:path'
 import type { ReviewCase } from '@profer/shared'
 import { buildDemoCase } from './demo-fixtures/demo-case-fixture'
 import { renderRuleDocuments } from './ai-review-service'
-import { generateRuleOutline } from './ai-review-service'
+import { extractItems, generateRuleOutline, runAiReview } from './ai-review-service'
 import { getCase, saveCase } from './case-store'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-multi-rule-${Date.now()}`)
@@ -89,5 +89,17 @@ describe('generateRuleOutline 演示降级门控（M0/H03）', () => {
     saveCase(demo)
     const outline = await generateRuleOutline({ caseId: demo.id, rulePackId: demo.rulePacks[0]!.id })
     expect(outline.length).toBeGreaterThan(0)
+  })
+})
+
+// ===== M0/H14：未知领域不默认综测执行（K14） =====
+describe('未知领域守卫（M0/H14）', () => {
+  test('Given 显式未知领域包 When 审核/识别/大纲 Then 如实失败而非套用综测', async () => {
+    const reviewCase = buildTwoRuleCase('case-k14')
+    const unknown = { ...reviewCase, domainPackId: 'not-a-pack' as never }
+    saveCase(unknown)
+    await expect(generateRuleOutline({ caseId: unknown.id, rulePackId: unknown.rulePacks[0]!.id })).rejects.toThrow('审核领域未配置')
+    await expect(extractItems(unknown.id)).rejects.toThrow('审核领域未配置')
+    await expect(runAiReview(unknown)).rejects.toThrow('审核领域未配置')
   })
 })

@@ -36,6 +36,7 @@ import {
   FALLBACK_FINDING_KIND,
   findingKindSeverity,
   isKnownFindingKind,
+  isKnownDomainPack,
   resolveDomainPack,
 } from '@profer/shared'
 import { readFileSync, statSync } from 'node:fs'
@@ -312,6 +313,12 @@ export async function generateRuleOutline(
 ): Promise<RuleOutlineItem[]> {
   const reviewCase = getCase(request.caseId)
   if (!reviewCase) throw new Error(`案卷不存在: ${request.caseId}`)
+  if (!isKnownDomainPack(reviewCase.domainPackId)) {
+    // M0/H14：未知领域不得悄悄按综测规则执行（K14）
+    throw new Error(`审核领域未配置: ${String(reviewCase.domainPackId)}（请选择有效领域包）`)
+  }
+
+
 
   const resolved = resolveReviewGatewayChannel()
   if (!resolved) {
@@ -432,6 +439,11 @@ function fallbackAnchor(reviewCase: ReviewCase, role: SourceDocument['role']): R
 export async function extractItems(caseId: string): Promise<ReviewItem[]> {
   const reviewCase = getCase(caseId)
   if (!reviewCase) throw new Error(`案卷不存在: ${caseId}`)
+  if (!isKnownDomainPack(reviewCase.domainPackId)) {
+    // M0/H14：未知领域不得悄悄按综测规则执行（K14）
+    throw new Error(`审核领域未配置: ${String(reviewCase.domainPackId)}（请选择有效领域包）`)
+  }
+
 
   const resolved = resolveReviewGatewayChannel()
   if (!resolved) {
@@ -726,6 +738,10 @@ export function buildSourceRegistry(reviewCase: ReviewCase): string {
 }
 
 export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutcome> {
+  if (!isKnownDomainPack(reviewCase.domainPackId)) {
+    // M0/H14：未知领域不得悄悄按综测规则执行（K14）
+    throw new Error(`审核领域未配置: ${String(reviewCase.domainPackId)}（请选择有效领域包）`)
+  }
   const resolved = resolveReviewGatewayChannel()
   if (!resolved) {
     const outcome = runMockReview(reviewCase)

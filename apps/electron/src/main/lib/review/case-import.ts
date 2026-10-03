@@ -41,7 +41,8 @@ export async function importDocumentIntoCase(input: {
           // 文本类
           'md', 'txt', 'csv', 'json', 'svg',
           // 文档类（document-parser 覆盖的格式）
-          'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'rtf', 'odt', 'ods', 'odp',
+          'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx',
+          // rtf/odt/ods/odp 解析未接通（M0/H15）：不再出现在可选过滤器，避免"选了却导入失败"（K15）
           // 图片类（走 Vision 识别）
           'png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp',
         ],

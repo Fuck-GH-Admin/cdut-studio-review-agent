@@ -196,6 +196,12 @@ export const BUILTIN_DOMAIN_PACKS: ReviewDomainPack[] = [
  *
  * @param packId 领域包 ID（可缺省）
  */
+/** 显式声明的领域包 ID 是否为已知内置包（M0/H14：未知 ID 阻止默默按综测执行，K14） */
+export function isKnownDomainPack(packId?: string): boolean {
+  if (!packId) return true // 未声明 = 使用缺省包，属于显式语义
+  return BUILTIN_DOMAIN_PACKS.some((pack) => pack.id === packId)
+}
+
 export function resolveDomainPack(packId?: string): ReviewDomainPack {
   if (!packId) return COMPREHENSIVE_ASSESSMENT
   return BUILTIN_DOMAIN_PACKS.find((pack) => pack.id === packId) ?? COMPREHENSIVE_ASSESSMENT
