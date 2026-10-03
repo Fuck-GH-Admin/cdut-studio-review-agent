@@ -9,6 +9,8 @@ const template = (stages: TemplateVersion['stages']): TemplateVersion =>
   ({ templateId: 't', version: 1, schemaVersion: 2, name: 't', objectType: 'person', displayName: { template: '' }, fields: [], materialSlots: [], policyVersionIds: [], stages, outputs: [], status: 'published', createdAt: '' }) as unknown as TemplateVersion
 
 const ok: NodeExecutor = async (_node, hash) => ({ status: 'done', inputHash: hash })
+const ALL_KINDS: NodeKind[] = ['register', 'parse', 'ocr', 'extract', 'bind', 'plan', 'check', 'calculate', 'verify', 'summarize', 'task']
+const okAll = Object.fromEntries(ALL_KINDS.map((kind) => [kind, ok])) as Record<NodeKind, NodeExecutor>
 
 describe('planRunGraph', () => {
   test('Given 两级流程模板 When 生成 Then 节点线性依赖', () => {
@@ -17,9 +19,12 @@ describe('planRunGraph', () => {
       { id: 'review', name: '初审', kind: 'manual-review', executorRole: 'reviewer' },
       { id: 'final', name: '终审', kind: 'manual-review', executorRole: 'teacher' },
     ]))
-    expect(nodes.map((node) => node.id)).toEqual(['node-auto', 'node-review', 'node-final'])
-    expect(nodes[1]!.dependsOn).toEqual(['node-auto'])
-    expect(nodes[2]!.dependsOn).toEqual(['node-review'])
+    expect(nodes.map((node) => node.id)).toEqual([
+      'node-auto-register', 'node-auto-parse', 'node-auto-ocr', 'node-auto-extract', 'node-auto-bind', 'node-auto-plan', 'node-auto-check', 'node-auto-calculate', 'node-auto-verify', 'node-auto-summarize',
+      'node-review-task', 'node-final-task',
+    ])
+    expect(nodes[1]!.dependsOn).toEqual(['node-auto-register'])
+    expect(nodes[10]!.kind).toBe('task')
   })
 })
 
@@ -28,24 +33,24 @@ describe('executeRunGraph（A18）', () => {
     const outcome = await executeRunGraph(planRunGraph(template([
       { id: 'a', name: 'a', kind: 'auto-check', executorRole: 'system' },
       { id: 'b', name: 'b', kind: 'manual-review', executorRole: 'teacher' },
-    ])), { parse: ok, extract: ok, bind: ok, check: ok, compute: ok, summarize: ok })
+    ])), okAll)
     expect(outcome.status).toBe('completed')
-    expect(outcome.checkpoints).toHaveLength(2)
+    expect(outcome.checkpoints).toHaveLength(11) // auto 阶段 10 步 + 人工 task 1
     expect(outcome.events.some((event) => event.kind === 'node-started')).toBeTrue()
     expect(outcome.events.some((event) => event.kind === 'run-completed')).toBeTrue()
   })
 
   test('Given 第二节点等待输入 When 执行 Then awaiting-input 且第三节点不执行（分支暂停）', async () => {
-    const waiting: NodeExecutor = async (_node, hash) => (_node.id === 'node-b' ? { status: 'waiting-input', reason: '缺证明材料' } : { status: 'done', inputHash: hash })
+    const waiting = Object.fromEntries(ALL_KINDS.map((kind) => [kind, async (_node: RunGraphNode, hash: string) => (_node.stageId === 'b' && _node.kind === 'task' ? { status: 'waiting-input' as const, reason: '缺证明材料' } : { status: 'done' as const, inputHash: hash })])) as Record<NodeKind, NodeExecutor>
     const outcome = await executeRunGraph(planRunGraph(template([
       { id: 'a', name: 'a', kind: 'auto-check', executorRole: 'system' },
       { id: 'b', name: 'b', kind: 'manual-review', executorRole: 'teacher' },
       { id: 'c', name: 'c', kind: 'summary', executorRole: 'organizer' },
-    ])), { parse: waiting, extract: waiting, bind: waiting, check: waiting, compute: waiting, summarize: waiting })
+    ])), waiting)
     expect(outcome.status).toBe('awaiting-input')
-    expect(outcome.waiting).toEqual([{ nodeId: 'node-b', reason: '缺证明材料' }])
+    expect(outcome.waiting).toEqual([{ nodeId: 'node-b-task', reason: '缺证明材料' }])
     // c 是 b 的下游，未执行
-    const cCheckpoint = outcome.checkpoints.find((checkpoint) => checkpoint.nodeId === 'node-c')
+    const cCheckpoint = outcome.checkpoints.find((checkpoint) => checkpoint.nodeId === 'node-c-task')
     expect(cCheckpoint).toBeUndefined()
   })
 
@@ -69,11 +74,12 @@ describe('executeRunGraph（A18）', () => {
       calls += 1
       return ok(node, hash)
     }
+    const countingAll = Object.fromEntries(ALL_KINDS.map((kind) => [kind, counting])) as Record<NodeKind, NodeExecutor>
     const outcome = await executeRunGraph(planRunGraph(template([
       { id: 'a', name: 'a', kind: 'auto-check', executorRole: 'system' },
       { id: 'b', name: 'b', kind: 'manual-review', executorRole: 'teacher' },
       { id: 'c', name: 'c', kind: 'summary', executorRole: 'organizer' },
-    ])), { parse: counting, extract: counting, bind: counting, check: counting, compute: counting, summarize: counting }, { cancelled: () => calls >= 1 })
+    ])), countingAll, { cancelled: () => calls >= 1 })
     expect(outcome.status).toBe('cancelled')
     expect(outcome.events.some((event) => event.kind === 'run-cancelled')).toBeTrue()
     expect(outcome.checkpoints.length).toBeLessThan(3) // 未全部执行
@@ -85,7 +91,7 @@ describe('executeRunGraph（A18）', () => {
       throw new Error('模型超时')
     }
     const outcome = await executeRunGraph(planRunGraph(template([{ id: 'a', name: 'a', kind: 'auto-check', executorRole: 'system' }])),
-      { parse: boom, extract: ok, bind: ok, check: ok, compute: ok, summarize: ok })
+      { ...okAll, register: boom })
     expect(outcome.status).toBe('failed')
     expect(outcome.checkpoints[0]!.attempts).toBe(1)
     expect(outcome.checkpoints[0]!.lastError).toContain('模型超时')

@@ -121,9 +121,18 @@ export function computeGroupScore(
       detailLines: [...detailLines, ...unknowns.map((u) => `- 主体 ${u.subjectId} 的 ${u.field} 未知 → 待确认（不当零分）`)],
     }
   }
-
   // 2) 去重：同 dedupeKey 择高（D04：同一 event 只计最高）
   let pool = candidates
+  // 空组：明确"无候选"（不触发 reduce 异常，07 §5.2；由规则定义无候选语义）
+  if (pool.length === 0) {
+    return { status: 'awaiting-confirmation', total: '', allocation: [], unknowns: [], detailLines: [...detailLines, '- 组内无有效候选 → 待确认'] }
+  }
+  // 负值拒绝（07 §5.2：验证阶段拒绝非法输入）
+  const negative = pool.filter((candidate) => candidate.value < 0)
+  if (negative.length > 0) {
+    return { status: 'awaiting-confirmation', total: '', allocation: [], unknowns: [], detailLines: [...detailLines, `- 存在负值输入（${negative.map((c) => c.subjectId).join('、')}）→ 待确认（不参与计算）`] }
+  }
+
   if (calc.deduplicateBy && calc.deduplicateBy.length > 0) {
     const bestByKey = new Map<string, Candidate>()
     for (const candidate of candidates) {
@@ -141,15 +150,18 @@ export function computeGroupScore(
     pool = candidates.filter((candidate) => kept.has(candidate.subjectId))
   }
 
-  // 3) 全局择高仅在未声明去重键时使用（有 deduplicateBy 时择高已在键内完成）
+  // 3) 选择模式（07 §5.2：single 多候选待确认；max 不得偷偷 sum）
   if (!calc.deduplicateBy?.length && calc.select === 'highest-eligible-score') {
     pool = [pool.reduce((best, candidate) => (candidate.value > best.value ? candidate : best), pool[0]!)]
     detailLines.push(`- 组内择高：保留主体 ${pool[0]!.subjectId}（${fmt(pool[0]!.value)}）`)
   }
+  if (calc.select === 'single' && pool.length > 1) {
+    return { status: 'awaiting-confirmation', total: '', allocation: [], unknowns: [], detailLines: [...detailLines, `- single 语义出现 ${pool.length} 个候选 → 待确认（不擅自选择）`] }
+  }
 
-  // 4) 聚合
-  const rawTotal = pool.reduce((sum, candidate) => sum + candidate.value, 0)
-  detailLines.push(`- 聚合合计：${fmt(rawTotal)}`)
+  // 4) 聚合（max 与 sum 分明，07 §5.2）
+  const rawTotal = calc.aggregate === 'max' ? Math.max(...pool.map((candidate) => candidate.value)) : pool.reduce((sum, candidate) => sum + candidate.value, 0)
+  detailLines.push(`- 聚合（${calc.aggregate ?? 'sum'}）：${fmt(rawTotal)}`)
 
   // 5) 封顶 + 分配（score-desc-then-subject-id：高分优先计入，余量给后面的）
   const cap = calc.cap ? Number(calc.cap.value) : Number.POSITIVE_INFINITY

@@ -10,7 +10,7 @@
 
 import type { CheckpointRecord, RunV2Status, TemplateVersion, WorkflowStageSpec } from '@profer/shared'
 
-export type NodeKind = 'parse' | 'extract' | 'bind' | 'check' | 'compute' | 'summarize'
+export type NodeKind = 'register' | 'parse' | 'ocr' | 'extract' | 'bind' | 'plan' | 'check' | 'calculate' | 'verify' | 'summarize' | 'task'
 
 export interface RunGraphNode {
   id: string
@@ -35,30 +35,42 @@ export interface RunEvent {
 /** 节点执行体：返回 done 或 waiting（业务等待，如缺材料/待确认） */
 export type NodeExecutor = (node: RunGraphNode, inputHash: string) => Promise<{ status: 'done'; inputHash: string } | { status: 'waiting-input'; reason: string }>
 
-/** 由模板阶段生成节点图（同一 stage.kind → 对应节点 kind；依赖线性串联） */
+/** 自动审核阶段的技术步骤展开（07 §4.1：一个 auto-check ≠ 一个节点） */
+const AUTO_CHECK_STEPS: Array<{ suffix: string; kind: NodeKind; label: string }> = [
+  { suffix: 'register', kind: 'register', label: '登记分类' },
+  { suffix: 'parse', kind: 'parse', label: '按文件解析' },
+  { suffix: 'ocr', kind: 'ocr', label: '按页 OCR' },
+  { suffix: 'extract', kind: 'extract', label: '按对象提取' },
+  { suffix: 'bind', kind: 'bind', label: '绑定候选证明' },
+  { suffix: 'plan', kind: 'plan', label: '生成检查计划' },
+  { suffix: 'check', kind: 'check', label: '规则检查' },
+  { suffix: 'calculate', kind: 'calculate', label: '组级计算' },
+  { suffix: 'verify', kind: 'verify', label: '引用与覆盖核验' },
+  { suffix: 'summarize', kind: 'summarize', label: '生成摘要' },
+]
+
+/**
+ * 生成节点图（N2a 修正，07 §4.1）：
+ * - auto-check 展开为 10 个技术步骤节点（线性依赖，同 stage 前后串联）
+ * - 人工阶段（manual-review/independent-rating 等）→ 单个 task 节点（由应用服务建 WorkflowTask 推进，
+ *   不映射为任意 AI check 节点）
+ */
 export function planRunGraph(template: TemplateVersion): RunGraphNode[] {
-  const kindByStage: Record<WorkflowStageSpec['kind'], NodeKind> = {
-    'auto-check': 'parse',
-    'manual-review': 'check',
-    'independent-rating': 'check',
-    'supplement-wait': 'extract',
-    summary: 'compute',
-    finalize: 'summarize',
-    handoff: 'summarize',
-  }
   const nodes: RunGraphNode[] = []
   let previous: string | null = null
-  for (const stage of template.stages) {
-    const id = `node-${stage.id}`
-    nodes.push({
-      id,
-      kind: kindByStage[stage.kind],
-      stageId: stage.id,
-      dependsOn: previous ? [previous] : [],
-      status: 'pending',
-      attempts: 0,
-    })
+  const push = (id: string, kind: NodeKind, stageId: string): void => {
+    nodes.push({ id, kind, stageId, dependsOn: previous ? [previous] : [], status: 'pending', attempts: 0 })
     previous = id
+  }
+  for (const stage of template.stages) {
+    if (stage.kind === 'auto-check') {
+      for (const step of AUTO_CHECK_STEPS) {
+        push(`node-${stage.id}-${step.suffix}`, step.kind, stage.id)
+      }
+    } else {
+      // 人工/评分/交接阶段：应用服务建任务；执行器负责任务落盘与状态（不是 AI 检查）
+      push(`node-${stage.id}-task`, 'task', stage.id)
+    }
   }
   return nodes
 }
