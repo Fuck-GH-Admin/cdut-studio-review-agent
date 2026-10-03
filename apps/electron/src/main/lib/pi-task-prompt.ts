@@ -72,7 +72,7 @@ export function buildPiTaskPrompt(options: PiTaskPromptOptions): string {
   if (collaboration) {
     prompt = collaboration.rest
     const needsCollaboration = hasAnyTool(tools, (name) => name.startsWith('mcp__collaboration__'))
-      && matches(task, /(?:\b(?:agent|agents|subagent|sub-agent|parallel|delegate|delegation)\b|子\s*Agent|多会话|并行|协作|委派)/i)
+      && matches(task, /(?:\b(?:agent|agents|subagent|sub-agent|parallel|delegate|delegation|team|subtask|subtasks)\b|子\s*Agent|子智能体|多智能体|团队|多会话|并行|协作|委派|拆分任务|分工)/i)
     if (needsCollaboration) lowFrequency.push(collaboration.text)
   }
 
