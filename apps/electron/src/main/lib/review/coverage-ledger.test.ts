@@ -60,7 +60,7 @@ describe('OCR 端口与预览（M2）', () => {
   test('Given NullOcrPort When 识别 Then 如实拒绝并说明原因（不冒充已读）', async () => {
     const port = new NullOcrPort()
     expect(port.available).toBeFalse()
-    await expect(port.recognize('/tmp/x.png')).rejects.toThrow('OCR 不可用')
+    await expect(port.recognize({ documentVersionId: 'v', pageAssetPath: '/tmp/x.png', language: 'chi_sim' })).rejects.toThrow('OCR 不可用')
   })
 
   test('Given 图片/非图片 When 描述预览 Then 图片直显、其余 needs-renderer（诚实标注）', () => {
