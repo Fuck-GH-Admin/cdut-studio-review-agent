@@ -65,7 +65,8 @@ jobs:
         run: bun run check:boundaries
 
       - name: Verify built-in skin surface contract
-        run: bun --cwd apps/electron run check:skin-contract
+        working-directory: apps/electron
+        run: bun run check:skin-contract
 
       - name: Run unit and regression tests
         # --isolate: bun 的 mock.module('electron') 是进程级注册表，默认并行下多文件互相覆盖导致误报；隔离模式保证每个测试文件独立
@@ -100,7 +101,7 @@ jobs:
         shell: pwsh
         working-directory: apps/electron
         run: |
-          $appPath = Join-Path $PWD "out/win-unpacked/Profer.exe"
+          $appPath = Join-Path $PWD "out/win-unpacked/CDUT Studio.exe"
           if (-not (Test-Path -LiteralPath $appPath)) {
             throw "Missing unpacked application: $appPath"
           }
@@ -131,12 +132,12 @@ jobs:
             throw "Missing unpacked resources for Pi probe: $unpackedResources"
           }
           $env:ELECTRON_RUN_AS_NODE = "1"
-          # Profer.exe 是 GUI 子系统程序，pwsh 的 `&` 调用不会等待其退出，
+          # Electron exe 是 GUI 子系统程序，pwsh 的 `&` 调用不会等待其退出，
           # 必须用 Start-Process -Wait -PassThru 同步等待并捕获退出码。
           # 外层 Wait-Process -Timeout 防止 native/WASM 初始化挂死时 job 无限卡到 6h。
           $stdout = Join-Path $PWD "probe-out.txt"
           $stderr = Join-Path $PWD "probe-err.txt"
-          $process = Start-Process -FilePath (Join-Path $PWD "out/win-unpacked/Profer.exe") `
+          $process = Start-Process -FilePath (Join-Path $PWD "out/win-unpacked/CDUT Studio.exe") `
             -ArgumentList @($probePath, $unpackedResources) `
             -PassThru -NoNewWindow `
             -RedirectStandardOutput $stdout -RedirectStandardError $stderr
@@ -181,8 +182,8 @@ jobs:
           $required = @(
             "latest.yml",
             "latest.yml.sig",
-            "Profer-Setup-$version.exe",
-            "Profer-Setup-$version.exe.blockmap"
+            "CDUT-Studio-Setup-$version.exe",
+            "CDUT-Studio-Setup-$version.exe.blockmap"
           )
 
           foreach ($name in $required) {

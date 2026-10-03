@@ -47,13 +47,15 @@ jobs:
         run: bun run check:boundaries
 
       - name: Verify built-in skin surface contract
-        run: bun --cwd apps/electron run check:skin-contract
+        working-directory: apps/electron
+        run: bun run check:skin-contract
 
       - name: Build main / preload / renderer
+        working-directory: apps/electron
         run: |
-          bun --cwd apps/electron run build:main
-          bun --cwd apps/electron run build:preload
-          bun --cwd apps/electron run build:renderer
+          bun run build:main
+          bun run build:preload
+          bun run build:renderer
 
       - name: Run unit and regression tests
         # --isolate: bun 的 mock.module('electron') 是进程级注册表，默认并行下多文件互相覆盖导致误报；

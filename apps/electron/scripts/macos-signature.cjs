@@ -41,9 +41,22 @@ const fs = require('node:fs')
 const os = require('node:os')
 const path = require('node:path')
 
-const PRODUCT_APP_NAME = 'Profer.app'
+const PRODUCT_APP_NAME = 'CDUT Studio.app'
 const ADHOC_TEAM_IDENTIFIER = 'not set'
 const REQUIREMENTS_FILE_PREFIX = 'profer-mac-designated-requirement'
+
+/** 只查找当前产品的解包目录，避免误用 out 中残留的旧品牌安装包。 */
+function findMacAppBundle(outputDir) {
+  const direct = path.join(outputDir, PRODUCT_APP_NAME)
+  if (fs.existsSync(direct) && fs.statSync(direct).isDirectory()) return direct
+  if (!fs.existsSync(outputDir)) return null
+  for (const entry of fs.readdirSync(outputDir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue
+    const candidate = path.join(outputDir, entry.name, PRODUCT_APP_NAME)
+    if (fs.existsSync(candidate) && fs.statSync(candidate).isDirectory()) return candidate
+  }
+  return null
+}
 
 /**
  * 顶层 App 期望的 designated requirement 表达式。
@@ -258,6 +271,7 @@ function assertMacSignatureContract(appPath) {
 
 module.exports = {
   PRODUCT_APP_NAME,
+  findMacAppBundle,
   expectedDesignatedRequirement,
   parseDesignatedRequirement,
   readBundleIdentifier,
