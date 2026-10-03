@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.99",
+      "date": "2026-10-03",
+      "title": "v0.15.99",
+      "notes": "- M1/V2 契约（第一步）：shared 新增 review-v2 类型层——TemplateVersion/PolicyVersion+RuleSpec/ReviewCaseV2/DocumentVersion/Observation/EvidenceLink/CheckResult/ReviewRunV2/BusinessDecision/SupplementRequest/Appeal/JudgeAssignment+Rating/ReviewBatch/SyncReceipt/SourceRef 及条件树与三值语义（设计 03 §3 全实体）；与 V1 并存，未接入运行时"
+    },
+    {
       "version": "0.15.98",
       "date": "2026-10-03",
       "title": "v0.15.98",

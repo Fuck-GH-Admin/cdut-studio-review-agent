@@ -83,3 +83,4 @@ export * from './planning'
 
 // 内容审核专区（Content Review）相关类型
 export * from './review'
+export * from './review-v2'
