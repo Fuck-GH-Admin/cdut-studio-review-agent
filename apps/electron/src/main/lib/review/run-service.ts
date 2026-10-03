@@ -13,7 +13,7 @@
 import type { ReviewCase, ReviewRun } from '@profer/shared'
 import { assertSafeId, computeCaseInputHash, getCase, listRuns, saveRun } from './case-store'
 import { runMockReview } from './mock-review-engine'
-import { runAiReview } from './ai-review-service'
+import { computeUnprocessedMaterials, runAiReview } from './ai-review-service'
 
 /** 引擎选择：'mock-engine' 确定性算法 / 'ai' 真实模型（网关不可用时内部降级回 mock） */
 export type ReviewEngineChoice = 'mock-engine' | 'ai'
@@ -107,10 +107,13 @@ export async function startReviewRun(
     return failedRun
   }
 
-  // ---- 第 3 步：正常完成 ----
+  // ---- 第 3 步：正常完成（mock 路径补挂未处理材料账本；AI 路径 outcome 已带） ----
   const completedRun: ReviewRun = {
     ...runningRun,
     ...outcome,
+    coverage: outcome.coverage.unprocessedMaterials
+      ? outcome.coverage
+      : { ...outcome.coverage, unprocessedMaterials: engine === 'ai' ? undefined : computeUnprocessedMaterials(reviewCase) },
     status: 'completed',
     completedAt: new Date().toISOString(),
   }

@@ -84,6 +84,22 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
       {/* 覆盖摘要（run.coverage → 四个小格） */}
       {run && <CoverageSummary run={run} />}
 
+      {/* 未处理材料账本（M0/H01）：已登记但未纳入检查的文件，用户必须可见 */}
+      {run && (run.coverage.unprocessedMaterials?.length ?? 0) > 0 && (
+        <section className="mx-3 rounded-lg border border-amber-500/40 bg-amber-500/[0.06] px-3 py-2">
+          <p className="text-[11px] font-semibold text-amber-600 dark:text-amber-400">
+            未处理材料 {run.coverage.unprocessedMaterials!.length} 份（未纳入本次检查，"全部符合"结论不成立）
+          </p>
+          <ul className="mt-1 space-y-0.5">
+            {run.coverage.unprocessedMaterials!.map((material) => (
+              <li key={`${material.documentId}-${material.reason}`} className="text-[11px] leading-4 text-muted-foreground">
+                「{material.fileName}」：{material.reason}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {/* 问题卡列表 / 空态 */}
       <section className="flex min-h-0 flex-1 flex-col px-3 py-3">
         <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">

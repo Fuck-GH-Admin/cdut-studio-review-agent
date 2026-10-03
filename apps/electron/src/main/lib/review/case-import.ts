@@ -9,7 +9,7 @@
 import { dialog, BrowserWindow } from 'electron'
 import { copyFileSync, statSync, mkdirSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
-import type { RulePack, ReviewCase, SourceDocument } from '@profer/shared'
+import type { EvidenceDocument, RulePack, ReviewCase, SourceDocument } from '@profer/shared'
 import { getCase, saveCase, updateCase, assertSafeId, getReviewCasesDir } from './case-store'
 import { parseFileIntoSourceDocument } from './document-service'
 
@@ -103,6 +103,15 @@ export async function importDocumentIntoCase(input: {
       ...fresh,
       documents: [...fresh.documents, storedDocument],
       rulePacks: newRulePack ? [...fresh.rulePacks, newRulePack] : fresh.rulePacks,
+      // 证明材料同步登记证明卡（H01）：已收录、待识别——中栏立即可见，
+      // 不再出现"导入成功但 0 份证明"；事实提取（识别）完成后更新为真实识别结果
+      evidences:
+        input.role === 'evidence' && !fresh.evidences.some((evidence) => evidence.documentId === docId)
+          ? ([
+              ...fresh.evidences,
+              { documentId: docId, recognizedFacts: '', parseStatus: 'unrecognized', linkedItemIds: [] },
+            ] as EvidenceDocument[])
+          : fresh.evidences,
     }),
     { reason: `导入材料 ${fileName}（${storedDocument.parseStatus}）` },
   )

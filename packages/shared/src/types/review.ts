@@ -299,6 +299,12 @@ export interface ReviewRun {
     manualReviewItemIds: string[]
     unrecognizedDocumentIds: string[]
     ruleUncoveredItemIds: string[]
+    /**
+     * 未处理材料账本（M0/H01）：已登记但本次未能纳入检查的文件及原因
+     * （图片超单请求上限、模型不支持视觉、扫描件无文本层、解析失败等）。
+     * 有该清单时 UI 必须展示，且完整符合结论不成立。
+     */
+    unprocessedMaterials?: Array<{ documentId: string; fileName: string; reason: string }>
   }
   /** 结果来源 */
   engine: 'ai' | 'mock-engine'

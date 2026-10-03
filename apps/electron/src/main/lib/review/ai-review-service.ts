@@ -132,29 +132,40 @@ function renderSubjectDocuments(reviewCase: ReviewCase): string {
     .join('\n\n')
 }
 
+interface DroppedMaterial {
+  documentId: string
+  fileName: string
+  reason: string
+}
+
+interface VisionCollection {
+  parts: ReviewContentPart[]
+  /** 本次未能送入模型处理的材料（H01 账本：不只日志告警） */
+  dropped: DroppedMaterial[]
+}
+
 /**
  * 收集待审文件与证明里的图片，转成 Vision 内容部件（D13）。
  *
- * 返回空数组表示没有可送模型的图片（无图片材料，或文件缺失/超限）。
- * 超限与读取失败都带中文原因记入 warnings，由调用方在报告里如实标注。
+ * 超限与读取失败不静默：返回 dropped 清单（文档 ID + 中文原因），
+ * 由调用方写入运行覆盖账本（coverage.unprocessedMaterials），对应用户可见的"未处理材料"。
  */
-function collectVisionImages(
-  reviewCase: ReviewCase,
-  warnings: string[],
-): ReviewContentPart[] {
+function collectVisionImages(reviewCase: ReviewCase, warnings: string[]): VisionCollection {
   const caseDir = join(getReviewCasesDir(), reviewCase.id)
   const parts: ReviewContentPart[] = []
+  const dropped: DroppedMaterial[] = []
   let skipped = 0
 
   for (const doc of reviewCase.documents) {
-    if (parts.length >= MAX_VISION_IMAGES) {
-      skipped += 1
-      continue
-    }
     for (const block of doc.blocks) {
       if (block.kind !== 'image' || !block.imageAssetPath) continue
       if (parts.length >= MAX_VISION_IMAGES) {
         skipped += 1
+        dropped.push({
+          documentId: doc.id,
+          fileName: doc.fileName,
+          reason: `超出单次 ${MAX_VISION_IMAGES} 张图片上限`,
+        })
         continue
       }
       const assetPath = isAbsolute(block.imageAssetPath)
@@ -163,9 +174,12 @@ function collectVisionImages(
       try {
         const size = statSync(assetPath).size
         if (size > MAX_VISION_IMAGE_BYTES) {
-          warnings.push(
-            `${doc.fileName} 图片过大（${(size / 1024 / 1024).toFixed(1)}MB），未纳入模型识别`,
-          )
+          warnings.push(`${doc.fileName} 图片过大（${(size / 1024 / 1024).toFixed(1)}MB），未纳入模型识别`)
+          dropped.push({
+            documentId: doc.id,
+            fileName: doc.fileName,
+            reason: `图片过大（${(size / 1024 / 1024).toFixed(1)}MB）`,
+          })
           continue
         }
         const base64 = readFileSync(assetPath).toString('base64')
@@ -177,14 +191,12 @@ function collectVisionImages(
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error)
         warnings.push(`${doc.fileName} 图片读取失败，未纳入模型识别: ${message}`)
+        dropped.push({ documentId: doc.id, fileName: doc.fileName, reason: `图片读取失败: ${message}` })
       }
     }
   }
 
-  if (skipped > 0) {
-    warnings.push(`超出单次 ${MAX_VISION_IMAGES} 张图片上限，${skipped} 张图片未送模型`)
-  }
-  return parts
+  return { parts, dropped }
 }
 
 /**
@@ -407,7 +419,8 @@ export async function extractItems(caseId: string): Promise<ReviewItem[]> {
       ? 'category（德育/智育/体育/美育/劳育/其他 之一）'
       : `category（建议取自 ${domain.categories}；不确定时用"其他"）`
     const visionWarnings: string[] = []
-    const images = collectVisionImages(reviewCase, visionWarnings)
+    const { parts: images, dropped: extractDropped } = collectVisionImages(reviewCase, visionWarnings)
+    for (const item of extractDropped) console.warn(`[审核专区] 条目识别: ${item.fileName} ${item.reason}`)
     const imageNote = images.length > 0
       ? `\n\n【随附图片】${images.length} 张证明材料图片已随本条消息提供，请直接阅读图片内容并据实识别。`
       : ''
@@ -560,6 +573,69 @@ function parseFindings(
  * 注意：这里只在"网关可用但调用失败"时兜底；完全无渠道的降级由 run-service
  * 与本函数共同保证（无渠道同样落到本函数的 mock 分支）。
  */
+/**
+ * 渲染证明材料的原文文本（M0/H01）：文本型证明此前只出现在 EvidenceDocument 摘要里，
+ * 原文从未进入审核请求；现在按文档逐块给出（带 documentId/blockId 供模型引用）。
+ * 只有解析成功的文本块参与；扫描件/解析失败保持"未处理"语义，由覆盖账本表达。
+ */
+export function renderEvidenceDocuments(reviewCase: ReviewCase): string {
+  const evidenceDocs = reviewCase.documents.filter(
+    (doc) => doc.role === 'evidence' && doc.parseStatus === 'parsed' && doc.blocks.length > 0,
+  )
+  if (evidenceDocs.length === 0) return ''
+  return evidenceDocs
+    .map((doc) => {
+      const body = doc.blocks
+        .map((block) => (block.text ? `[${block.id}] ${block.text}` : `[${block.id}]（图片块，见随附图像）`))
+        .join('\n')
+      return `===== 证明原文：${doc.fileName}（documentId=${doc.id}）=====\n${body}`
+    })
+    .join('\n\n')
+}
+
+/**
+ * 未处理材料账本（M0/H01）：已登记但本次未能纳入检查的文件及原因。
+ * 覆盖：解析失败/无文本层（扫描件）、视觉路径弃用（超限/过大/读取失败）。
+ * 出现在账本中的材料阻止"完整符合"结论，UI 必须可见。
+ */
+export function computeUnprocessedMaterials(
+  reviewCase: ReviewCase,
+  visionDropped: DroppedMaterial[] = [],
+): Array<{ documentId: string; fileName: string; reason: string }> {
+  const entries: Array<{ documentId: string; fileName: string; reason: string }> = []
+  for (const doc of reviewCase.documents) {
+    if (doc.parseStatus === 'failed') {
+      entries.push({ documentId: doc.id, fileName: doc.fileName, reason: '解析失败' })
+    } else if (doc.parseStatus === 'partial' && doc.blocks.length === 0) {
+      entries.push({ documentId: doc.id, fileName: doc.fileName, reason: '未提取到文本（典型：扫描件无文本层）' })
+    }
+  }
+  const seen = new Set(entries.map((entry) => entry.documentId))
+  for (const drop of visionDropped) {
+    if (seen.has(drop.documentId)) continue
+    entries.push(drop)
+  }
+  return entries
+}
+
+/**
+ * 来源注册表（M0/H07 前半）：把案卷内全部文档与其块 ID 列成模型可引用的白名单。
+ * 模型输出的锚点必须来自该表（存在性核验在 parseFindings/渲染层完成）。
+ */
+export function buildSourceRegistry(reviewCase: ReviewCase): string {
+  const roleLabels: Record<SourceDocument['role'], string> = {
+    rule: '依据文件',
+    application: '待审文件',
+    evidence: '证明材料',
+  }
+  const lines = reviewCase.documents.map((doc) => {
+    const blockIds = doc.blocks.map((block) => block.id)
+    const range = blockIds.length > 0 ? `，块 ${blockIds[0]}..${blockIds[blockIds.length - 1]}` : '（无文本块）'
+    return `- ${doc.id}（${roleLabels[doc.role]}「${doc.fileName}」${range}）`
+  })
+  return `【来源注册表】引用锚点（documentId/blockId）必须取自下列真实 ID，禁止编造：\n${lines.join('\n')}`
+}
+
 export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutcome> {
   const resolved = resolveReviewGatewayChannel()
   if (!resolved) {
@@ -582,12 +658,14 @@ export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutco
       .join('\n')
 
     const visionWarnings: string[] = []
-    const images = collectVisionImages(reviewCase, visionWarnings)
+    const { parts: images, dropped: visionDropped } = collectVisionImages(reviewCase, visionWarnings)
     for (const warning of visionWarnings) console.warn(`[审核专区] ${warning}`)
     const imageNote = images.length > 0
       ? `\n\n【随附图片】${images.length} 张图片已随本条消息提供（证明/扫描件），请直接阅读图片内容，` +
         '需要引用图片依据时，锚点用该图片所在文档的 documentId + 该 image 块的 blockId。'
       : ''
+    const evidenceText = renderEvidenceDocuments(reviewCase)
+    const sourceRegistry = buildSourceRegistry(reviewCase)
     const crossDocNote = subjectDocs.length > 1
       ? `\n\n【跨文件比对】本案卷有 ${subjectDocs.length} 份待审文件（${subjectDocs.map((d) => d.fileName).join('、')}）。` +
         '请额外核对文件之间是否存在互相矛盾之处；一旦发现，kind 用 cross-document-mismatch，' +
@@ -627,7 +705,9 @@ export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutco
               ]
             : `【依据文件】\n${ruleText}\n\n【待审文件】\n${appText}\n\n` +
               `【证明识别结果】\n${evidencesBrief}\n\n` +
-              `【待审条目】\n${JSON.stringify(reviewCase.items, null, 2)}` +
+              (evidenceText ? `【证明原文】\n${evidenceText}\n\n` : '') +
+              `【待审条目】\n${JSON.stringify(reviewCase.items, null, 2)}\n\n` +
+              sourceRegistry +
               crossDocNote,
       },
     ]
@@ -664,6 +744,8 @@ export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutco
           .map((doc) => doc.id),
         // 规则未覆盖 = AI 逐条审阅后没有任何发现引用的条目（真实信号，不再恒为空）
         ruleUncoveredItemIds: reviewedItemIds.filter((id) => !hitItemIds.has(id)),
+        // 未处理材料账本（H01）：超限图片/解析失败/扫描未读，UI 可见并阻止"完整符合"
+        unprocessedMaterials: computeUnprocessedMaterials(reviewCase, visionDropped),
       },
       engine: 'ai',
     }

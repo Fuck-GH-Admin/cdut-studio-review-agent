@@ -7,7 +7,7 @@
 
 import { describe, expect, test } from 'bun:test'
 import { createStore } from 'jotai'
-import type { ReviewCase, ReviewRun } from '@profer/shared'
+import type { ReviewCase, ReviewItem, ReviewRun, RuleOutlineItem } from '@profer/shared'
 import {
   createReviewActionsController,
   type ReviewActionsApi,
@@ -20,11 +20,11 @@ import {
   selectedCaseIdAtom,
 } from '@/atoms/review-atoms'
 
-/** 可手工 resolve/reject 的延迟任务 */
-class Deferred<T> {
-  resolve!: (value: T) => void
+/** 可手工 resolve/reject 的延迟任务（值类型由调用方 cast，测试内只做触发） */
+class Deferred {
+  resolve!: (value: unknown) => void
   reject!: (error: unknown) => void
-  readonly promise = new Promise<T>((res, rej) => {
+  readonly promise = new Promise<unknown>((res, rej) => {
     this.resolve = res
     this.reject = rej
   })
@@ -76,13 +76,13 @@ function makeRun(caseId: string, findings = 0): ReviewRun {
 /** 假 IPC：每个方法可挂延迟门闩，记录调用次数 */
 function makeApi() {
   const calls = { runReview: 0, outline: 0, items: 0 }
-  const gates: Record<string, Deferred<unknown>[]> = {}
-  const gate = <T>(key: string): Deferred<T> => {
-    const d = new Deferred<T>()
+  const gates: Record<string, Deferred[]> = {}
+  const gate = (key: string): Deferred => {
+    const d = new Deferred()
     ;(gates[key] ??= []).push(d)
-    return d as Deferred<T>
+    return d
   }
-  const shift = <T>(key: string): Deferred<T> => (gates[key] ??= []).shift() as Deferred<T>
+  const shift = (key: string): Deferred => (gates[key] ??= []).shift() as Deferred
 
   const api: ReviewActionsApi = {
     listCases: async () => [],
@@ -94,15 +94,15 @@ function makeApi() {
     updateCaseSettings: async (input) => ({ ...makeCase(input.caseId), domainPackId: input.domainPackId }),
     generateRuleOutline: async () => {
       calls.outline += 1
-      return gate<never[]>(`outline-${calls.outline}`).promise as never
+      return gate(`outline-${calls.outline}`).promise as never
     },
     extractItems: async () => {
       calls.items += 1
-      return gate<never[]>(`items-${calls.items}`).promise as never
+      return gate(`items-${calls.items}`).promise as never
     },
     runReview: async (caseId) => {
       calls.runReview += 1
-      return gate<ReviewRun>(`run-${calls.runReview}`).promise
+      return gate(`run-${calls.runReview}`).promise as Promise<ReviewRun>
     },
     exportReport: async () => ({ markdownPath: '/tmp/x.md', jsonPath: '/tmp/x.json' }) as never,
     getModelGatewayStatus: async () => ({ available: true, protocol: 'openai' }) as never,
@@ -130,7 +130,7 @@ describe('review-actions-controller（M0/H05 并发与按案写入）', () => {
     expect(store.get(reviewRunsByCaseAtom)['case-B']).toBeUndefined()
 
     // 模型返回 A 的运行
-    ;(shift('run-1') as Deferred<ReviewRun>).resolve(makeRun('case-A', 3))
+    ;(shift('run-1') ).resolve(makeRun('case-A', 3))
     await runPromise
 
     expect(store.get(reviewRunsByCaseAtom)['case-A']?.caseId).toBe('case-A')
@@ -155,14 +155,14 @@ describe('review-actions-controller（M0/H05 并发与按案写入）', () => {
     const outline: RuleOutlineItem[] = [
       { id: 'rule-1', title: '省级加分', summary: '', anchors: [], generatedBy: 'ai' },
     ] as unknown as RuleOutlineItem[]
-    ;(shift('outline-1') as Deferred<RuleOutlineItem[]>).resolve(outline) // 大纲先……不对：大纲慢，这里让它后返回
+    ;(shift('outline-1') ).resolve(outline) // 大纲先……不对：大纲慢，这里让它后返回
     // 识别先完成
-    ;(shift('items-1') as Deferred<ReviewItem[]>).resolve([
+    ;(shift('items-1') ).resolve([
       { id: 'item-1', title: '事项', category: '其他', declaredScore: 2, anchor: { documentId: 'd', precision: 'block', blockId: 'b' }, evidenceDocumentIds: [], status: 'identified', identifiedBy: 'ai' },
     ] as unknown as ReviewItem[])
     await itemsPromise
     // 识别完成后大纲才返回
-    ;(gate('outline-1') as Deferred<RuleOutlineItem[]>).resolve(outline)
+    ;(gate('outline-1') ).resolve(outline)
     await outlinePromise
 
     const cached = store.get(reviewCasesByIdAtom)['case-A']
@@ -215,11 +215,11 @@ describe('review-actions-controller（M0/H05 并发与按案写入）', () => {
     // 切走不解除 A 的守卫（K05：运行中状态按案保留）；B 可以运行
     const second = actions.runReview()
     expect(calls.runReview).toBe(2)
-    ;(shift('run-2') as Deferred<ReviewRun>).resolve(makeRun('case-B'))
+    ;(shift('run-2') ).resolve(makeRun('case-B'))
     await second
     expect(store.get(reviewRunsByCaseAtom)['case-B']).toBeDefined()
 
-    ;(shift('run-1') as Deferred<ReviewRun>).resolve(makeRun('case-A'))
+    ;(shift('run-1') ).resolve(makeRun('case-A'))
     await first
   })
 
@@ -234,7 +234,7 @@ describe('review-actions-controller（M0/H05 并发与按案写入）', () => {
     expect(store.get(reviewErrorAtom)).toContain('已在进行中')
 
     const outline = [{ id: 'rule-1', title: '新大纲', summary: '', anchors: [], generatedBy: 'ai' }] as unknown as RuleOutlineItem[]
-    ;(shift('outline-1') as Deferred<RuleOutlineItem[]>).resolve(outline)
+    ;(shift('outline-1') ).resolve(outline)
     await first
     expect(store.get(reviewCasesByIdAtom)['case-A']?.rulePacks[0]?.outline).toHaveLength(1)
     expect(store.get(reviewErrorAtom)).toBeNull()
@@ -248,7 +248,7 @@ describe('review-actions-controller（M0/H05 并发与按案写入）', () => {
 
     const runPromise = actions.runReview()
     await actions.selectCase('case-B')
-    ;(shift('run-1') as Deferred<ReviewRun>).reject(new Error('模型超时'))
+    ;(shift('run-1') ).reject(new Error('模型超时'))
     await runPromise
 
     expect(store.get(reviewErrorAtom)).toBeNull() // A 的失败不写进 B 的错误条
