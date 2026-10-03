@@ -46,3 +46,27 @@ export function listRunsV2(caseId: string): ReviewRunV2[] {
     .filter((run): run is ReviewRunV2 => !!run)
     .sort((a, b) => b.startedAt.localeCompare(a.startedAt))
 }
+
+/** 节点产物目录：runs-v2/{runId}/artifacts/{nodeId}.json（不可变；恢复核验依据，R03） */
+function artifactsDir(caseId: string, runId: string): string {
+  const dir = join(getConfigDir(), 'review-cases', caseId, 'runs-v2', runId, 'artifacts')
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
+  return dir
+}
+
+export function saveArtifact(caseId: string, runId: string, nodeId: string, artifact: unknown): void {
+  const filePath = join(artifactsDir(caseId, runId), `${nodeId}.json`)
+  const tmp = `${filePath}.${Math.random().toString(36).slice(2, 6)}.tmp`
+  writeFileSync(tmp, JSON.stringify(artifact, null, 2), 'utf-8')
+  renameSync(tmp, filePath)
+}
+
+export function readArtifact<T = unknown>(caseId: string, runId: string, nodeId: string): T | undefined {
+  const filePath = join(artifactsDir(caseId, runId), `${nodeId}.json`)
+  if (!existsSync(filePath)) return undefined
+  try {
+    return JSON.parse(readFileSync(filePath, 'utf-8')) as T
+  } catch {
+    return undefined // 结构损坏视为无产物（恢复时重做）
+  }
+}

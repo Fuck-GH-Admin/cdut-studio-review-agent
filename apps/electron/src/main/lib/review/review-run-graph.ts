@@ -33,7 +33,22 @@ export interface RunEvent {
 }
 
 /** 节点执行体：返回 done 或 waiting（业务等待，如缺材料/待确认） */
-export type NodeExecutor = (node: RunGraphNode, inputHash: string) => Promise<{ status: 'done'; inputHash: string } | { status: 'waiting-input'; reason: string }>
+/** 节点产物（07 §4.2：不能只返回 done+hash；checks/opinions 由产物装配） */
+export interface NodeArtifact {
+  runId: string
+  nodeId: string
+  dependencyHash: string
+  schemaRevision: 2
+  sourceIds: string[]
+  checks?: Array<Record<string, unknown>>
+  opinions?: Array<Record<string, unknown>>
+  observations?: Array<Record<string, unknown>>
+  links?: Array<Record<string, unknown>>
+  parseIndex?: Array<Record<string, unknown>>
+  summary?: string
+}
+
+export type NodeExecutor = (node: RunGraphNode, inputHash: string) => Promise<{ status: 'done'; inputHash: string; artifact?: Omit<NodeArtifact, 'runId' | 'nodeId' | 'dependencyHash' | 'schemaRevision'> } | { status: 'waiting-input'; reason: string }>
 
 /** 自动审核阶段的技术步骤展开（07 §4.1：一个 auto-check ≠ 一个节点） */
 const AUTO_CHECK_STEPS: Array<{ suffix: string; kind: NodeKind; label: string }> = [
@@ -114,7 +129,7 @@ export interface RunOutcome {
 export async function executeRunGraph(
   inputNodes: RunGraphNode[],
   executors: Record<NodeKind, NodeExecutor>,
-  options: { cancelled?: () => boolean; now?: () => string } = {},
+  options: { cancelled?: () => boolean; now?: () => string; onEvent?: (event: RunEvent) => void; writeArtifact?: (nodeId: string, artifact: NodeArtifact) => void; runId?: string } = {},
 ): Promise<RunOutcome> {
   const now = options.now ?? (() => new Date().toISOString())
   const nodes = inputNodes.map((node) => ({ ...node }))
@@ -122,7 +137,10 @@ export async function executeRunGraph(
   const events: RunEvent[] = []
   const waiting: Array<{ nodeId: string; reason: string }> = []
   const emit = (kind: RunEventKind, nodeId?: string, detail?: string): void => {
-    events.push({ kind, nodeId, at: now(), detail })
+    // N2b：事件即时回调（执行中推送，持久化后订阅广播；不再等整图结束）
+    const event: RunEvent = { kind, nodeId, at: now(), detail }
+    events.push(event)
+    options.onEvent?.(event)
   }
 
   const byId = new Map(nodes.map((node) => [node.id, node]))
@@ -147,7 +165,13 @@ export async function executeRunGraph(
         if (result.status === 'done') {
           node.status = 'done'
           node.inputHash = result.inputHash
-          checkpoints.push({ nodeId: node.id, inputHash: result.inputHash, status: 'done', attempts: node.attempts + 1 })
+          const checkpoint: CheckpointRecord = { nodeId: node.id, inputHash: result.inputHash, status: 'done', attempts: node.attempts + 1 }
+          if (result.artifact) {
+            const artifact: NodeArtifact = { ...result.artifact, runId: options.runId ?? 'run', nodeId: node.id, dependencyHash: result.inputHash, schemaRevision: 2 }
+            options.writeArtifact?.(node.id, artifact)
+            checkpoint.outputRef = `artifacts/${node.id}.json`
+          }
+          checkpoints.push(checkpoint)
           emit('node-completed', node.id)
         } else {
           node.status = 'waiting-input'
@@ -180,7 +204,13 @@ export async function executeRunGraph(
   if (anyWaiting) {
     return { status: 'awaiting-input', checkpoints, events, waiting }
   }
-  const allDone = nodes.every((node) => node.status === 'done' || node.status === 'waiting-input')
-  emit('run-completed', undefined, allDone ? '全部节点完成' : '无可执行节点')
+  const unfinished = nodes.filter((node) => node.status === 'pending')
+  if (unfinished.length > 0) {
+    // 存在永远无法就绪的节点（缺依赖/环/计划错误）→ 绝不返回 completed（07 §4.3）
+    const detail = `${unfinished.length} 个节点无法就绪（依赖缺失或计划错误）`
+    emit('node-failed', undefined, detail)
+    return { status: 'failed', checkpoints, events, waiting }
+  }
+  emit('run-completed', undefined, '全部节点完成')
   return { status: 'completed', checkpoints, events, waiting }
 }

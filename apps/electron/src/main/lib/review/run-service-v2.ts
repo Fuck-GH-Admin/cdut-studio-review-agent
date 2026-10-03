@@ -10,7 +10,7 @@
 import { createHash } from 'node:crypto'
 import type { CheckpointRecord, ReviewCaseV2, ReviewRunV2, TemplateVersion } from '@profer/shared'
 import { executeRunGraph, planRunGraph, restoreCheckpoints, type NodeExecutor, type NodeKind, type RunEvent } from './review-run-graph'
-import { getRunV2, saveRunV2 } from './run-store-v2'
+import { getRunV2, readArtifact, saveArtifact, saveRunV2 } from './run-store-v2'
 
 /** 进程内取消注册表（单机桌面应用：跨进程取消无需持久化标记） */
 const cancelledRunIds = new Set<string>()
@@ -29,15 +29,17 @@ export function computeRunInputHash(
   observationSnapshot: Array<Record<string, unknown>>,
   evidenceSnapshot: Array<Record<string, unknown>>,
 ): string {
+  // N2b（07 §3.4）：输入包含 caseFields、解析修订与真实观察/绑定快照（修正误判 3：旧 hash 缺 caseFields）
   const material = JSON.stringify({
     templateId: caseV2.templateId,
     templateVersion: caseV2.templateVersion,
-    documents: caseV2.documents.map((document) => ({ id: document.versionId, hash: document.contentHash })),
+    caseFields: caseV2.caseFields,
+    documents: caseV2.documents.map((document) => ({ id: document.versionId, hash: document.contentHash, parseRevision: document.parseRevision })),
     subjects: caseV2.subjects.map((subject) => ({ id: subject.id, fields: subject.fields, status: subject.status })),
     observations: observationSnapshot,
     evidenceLinks: evidenceSnapshot,
   })
-  return createHash('sha1').update(material, 'utf-8').digest('hex')
+  return createHash('sha256').update(material, 'utf-8').digest('hex')
 }
 
 export interface StartRunOptions {
@@ -92,7 +94,7 @@ export async function runReviewCaseV2(
     inputManifest: {
       hash: inputHash,
       templateVersion: template.version,
-      policyVersions: template.policyVersionIds.map((policyVersionId) => ({ policyVersionId, version: 1 })),
+      policyVersions: (template.policyRefs?.map((ref) => ({ policyVersionId: ref.policyId, version: ref.version })) ?? template.policyVersionIds.map((policyVersionId) => ({ policyVersionId, version: 1 }))),
       documentVersions: caseV2.documents.map((document) => ({ documentId: document.documentId, versionId: document.versionId, contentHash: document.contentHash })),
       observationIds: [],
       evidenceLinkIds: [],
@@ -111,13 +113,33 @@ export async function runReviewCaseV2(
   const outcome = await executeRunGraph(
     restored.nodes.map((node) => ({ ...node, inputHash: node.inputHash ?? undefined })),
     executors,
-    { cancelled: options.cancelled ?? (() => isRunCancelled(runId)), now: () => new Date().toISOString() },
+    {
+      cancelled: options.cancelled ?? (() => isRunCancelled(runId)),
+      now: () => new Date().toISOString(),
+      runId,
+      onEvent: options.onEvent, // N2b：即时事件（不再等整图结束——修正误判 1）
+      writeArtifact: (nodeId, artifact) => {
+        // 每节点产物即时落盘（崩溃可续，R03）
+        saveArtifact(caseV2.id, runId, nodeId, artifact)
+        // checkpoint 增量持久化：读回最新 run 补 checkpoint
+        const latest = getRunV2(caseV2.id, runId)
+        if (latest) {
+          saveRunV2({ ...latest, checkpoints: [...latest.checkpoints.filter((c) => c.nodeId !== nodeId), ...latest.checkpoints.filter((c) => c.nodeId === nodeId).map((c) => c)] })
+        }
+      },
+    },
   )
   events = outcome.events
-  for (const event of events) options.onEvent?.(event)
 
   run.status = outcome.status
   run.checkpoints = outcome.checkpoints.length > 0 ? outcome.checkpoints : checkpoints
+  // checks/opinions/coverage 由节点产物装配（07 §4.2：不从工具内存数组推测——修正误判 1）
+  const artifacts = outcome.checkpoints
+    .filter((checkpoint) => checkpoint.outputRef)
+    .map((checkpoint) => readArtifact<Record<string, unknown>>(caseV2.id, runId, checkpoint.nodeId))
+    .filter((artifact): artifact is Record<string, unknown> => !!artifact)
+  run.checks = artifacts.flatMap((artifact) => (artifact.checks as Array<never>) ?? [])
+  run.opinions = artifacts.flatMap((artifact) => (artifact.opinions as Array<never>) ?? [])
   run.completedAt = outcome.status === 'completed' ? new Date().toISOString() : undefined
   saveRunV2(run)
   cancelledRunIds.delete(runId)
