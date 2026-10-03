@@ -136,7 +136,6 @@ export function correctObservation(
 ): Promise<ReviewCommandResult<Observation>> {
   return submitCommand<CorrectObservationPayload, Observation>(caseId, { ...command, type: 'CorrectObservation' }, (aggregate, payload) => {
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '更正必须附理由（保留更正历史）')
-    let created: Observation | undefined
     return {
       summary: `更正事实 ${payload.subjectId}.${payload.fieldKey}`,
       mutate: (draft) => {
@@ -148,9 +147,8 @@ export function correctObservation(
           extractedBy: 'user',
           confirmed: true,
         })
-        created = draft.observations[draft.observations.length - 1]!
+        return draft.observations[draft.observations.length - 1]!
       },
-      entity: created,
     }
   })
 }
@@ -167,14 +165,13 @@ export interface SetEvidenceLinkPayload {
 export function setEvidenceLink(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: SetEvidenceLinkPayload }): Promise<ReviewCommandResult<EvidenceLink[]>> {
   return submitCommand<SetEvidenceLinkPayload, EvidenceLink[]>(caseId, { ...command, type: 'SetEvidenceLink' }, (aggregate, payload) => {
     if (!payload.supportsFact.trim()) throw new CommandValidationError('VALIDATION_FAILED', '绑定必须说明支持的事实')
-    let links: EvidenceLink[] = []
     return {
       summary: `绑定证据 ${payload.documentVersionId} → ${payload.subjectIds.length} 个事项`,
       mutate: (draft) => {
-        links = buildEvidenceLinks(draft.evidenceLinks, payload)
+        const links = buildEvidenceLinks(draft.evidenceLinks, payload)
         draft.evidenceLinks = links
+        return links
       },
-      entity: links,
     }
   })
 }

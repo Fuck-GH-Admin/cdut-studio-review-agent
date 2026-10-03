@@ -66,7 +66,7 @@ export function payloadHash(type: string, payload: unknown): string {
 }
 
 /** 命令处理器：只做校验与纯变更（不动 revision、不落盘）；抛 CommandError 中止 */
-export type CommandHandler<TPayload, TEntity = TPayload> = (aggregate: CaseAggregateV2, payload: TPayload) => { entity?: TEntity; summary: string; mutate: (aggregate: CaseAggregateV2) => void } | never
+export type CommandHandler<TPayload, TEntity = TPayload> = (aggregate: CaseAggregateV2, payload: TPayload) => { summary: string; mutate: (aggregate: CaseAggregateV2) => TEntity | void } | never
 
 /** 应用命令事务（07 §3.3 全步骤；幂等/冲突/校验失败不写部分业务数据） */
 export async function submitCommand<TPayload, TEntity = TPayload>(
@@ -94,14 +94,14 @@ export async function submitCommand<TPayload, TEntity = TPayload>(
     }
 
     // 校验 + 纯变更（handler 内抛错即整体拒绝，不写部分数据）
-    let applied: { entity?: TEntity; summary: string; mutate: (aggregate: CaseAggregateV2) => void }
+    let applied: { summary: string; mutate: (aggregate: CaseAggregateV2) => TEntity | void }
     try {
       applied = handler(aggregate, command.payload)
     } catch (error) {
       return { ok: false, code: error instanceof CommandValidationError ? error.code : 'VALIDATION_FAILED', message: error instanceof Error ? error.message : String(error) }
     }
     const draft: CaseAggregateV2 = structuredClone(aggregate)
-    applied.mutate(draft)
+    const entity = applied.mutate(draft)
     // revision 由事务统一 +1 一次
     draft.caseV2 = { ...draft.caseV2, revision: aggregate.caseV2.revision + 1, updatedAt: new Date().toISOString() }
     const receipt: CommandReceipt = { requestId: command.requestId, type: command.type, payloadHash: hash, revision: draft.caseV2.revision, at: new Date().toISOString(), summary: applied.summary }
@@ -109,7 +109,7 @@ export async function submitCommand<TPayload, TEntity = TPayload>(
 
     // 回执与业务变化同一事务落盘
     writeAggregate(draft)
-    return { ok: true, receipt, aggregate: draft, entity: applied.entity }
+    return { ok: true, receipt, aggregate: draft, entity: entity as TEntity | undefined }
   })
 }
 

@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.113",
+      "date": "2026-10-05",
+      "title": "0.15.113",
+      "notes": "- N2d：Pi 审核执行器与工具档案——review 档案不注册通用工具（R10），允许协议 openai-chat/ollama-chat，材料指令边界与 AbortSignal 取消"
+    },
+    {
       "version": "0.15.112",
       "date": "2026-10-03",
       "title": "0.15.112",
