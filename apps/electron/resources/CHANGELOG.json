@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.116",
+      "date": "2026-10-05",
+      "title": "0.15.116",
+      "notes": "- N6：角色投影（student/judge/organizer 服务层过滤，未知字段默认 internal 不泄漏，R12）+ 独立副本往返包（student-reply/judge-rating-reply：投影+哈希导出，导入哈希校验、重复包 duplicate 不重复计票、篡改 rejected，U12/R11）"
+    },
+    {
       "version": "0.15.115",
       "date": "2026-10-05",
       "title": "0.15.115",
