@@ -637,6 +637,56 @@ export function renderEvidenceDocuments(reviewCase: ReviewCase): string {
  * 覆盖：解析失败/无文本层（扫描件）、视觉路径弃用（超限/过大/读取失败）。
  * 出现在账本中的材料阻止"完整符合"结论，UI 必须可见。
  */
+/**
+ * 锚点存在性核验（M0/H07 后半）：对照案卷真实文档/块，修复或降级模型输出的出处。
+ * - documentId 不存在 → 锚点删除（不猜测落点、不指向第一份材料）
+ * - 文档存在但 blockId 不存在 → 降级为文件级定位（precision 'document'，删除假块 ID）
+ * - 全部出处均不可核验的发现 → 严重度降为 yellow + suggestion 改 manual-review，
+ *   detail 追加降级原因（伪引用不得以红卡交付）
+ */
+export function sanitizeFindingSources(finding: ReviewFinding, reviewCase: ReviewCase): ReviewFinding {
+  const docIds = new Set(reviewCase.documents.map((doc) => doc.id))
+  const blocksOf = (documentId: string): Set<string> | undefined =>
+    reviewCase.documents.find((doc) => doc.id === documentId)?.blocks
+      ? new Set(reviewCase.documents.find((doc) => doc.id === documentId)!.blocks.map((block) => block.id))
+      : undefined
+
+  const check = (anchor: ReviewSourceAnchor | undefined): ReviewSourceAnchor | undefined => {
+    if (!anchor || !anchor.documentId || !docIds.has(anchor.documentId)) return undefined
+    if (!anchor.blockId) return anchor
+    const blocks = blocksOf(anchor.documentId)
+    if (blocks?.has(anchor.blockId)) return anchor
+    // 真实文件但块失效：降级文件级定位，不保留假块 ID
+    return { documentId: anchor.documentId, precision: 'document' }
+  }
+
+  const ruleAnchors = (finding.ruleAnchors ?? []).map(check).filter((a): a is ReviewSourceAnchor => !!a)
+  const subjectChecked = check(finding.subjectAnchor)
+  const evidenceChecked = check(finding.evidenceAnchor)
+  const counterpartChecked = check(finding.counterpartAnchor)
+  const hasAnySource = ruleAnchors.length > 0 || !!subjectChecked || !!evidenceChecked || !!counterpartChecked
+
+  if (!hasAnySource) {
+    // 全部出处不可核验：保留原引用供排查，但结论降级为待确认（不得以红卡交付）
+    return {
+      ...finding,
+      severity: 'yellow',
+      suggestion: 'manual-review',
+      suggestionText: '出处未能核验（模型引用的文件/位置不存在），已降级为待人工确认。',
+      detail: `${finding.detail}\n\n[系统] 该结论的出处引用无法在案卷中核验，不能作为已核验的确定结论。`,
+    }
+  }
+  // 部分可核验：核验通过的替换（文件级降级/真块保留）；subjectAnchor 类型必填，
+  // 指向未知文档时保留原值——该锚点不会命中任何块（无高亮），卡片已注明待确认
+  return {
+    ...finding,
+    ruleAnchors,
+    ...(subjectChecked ? { subjectAnchor: subjectChecked } : {}),
+    evidenceAnchor: evidenceChecked,
+    counterpartAnchor: counterpartChecked,
+  }
+}
+
 export function computeUnprocessedMaterials(
   reviewCase: ReviewCase,
   visionDropped: DroppedMaterial[] = [],
@@ -768,7 +818,9 @@ export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutco
     if (result.imagesDropped) {
       console.warn('[审核专区] AI 审核: 模型不支持图片，已剔除图片仅按文本审核（结论会标注）')
     }
-    const findings = parseFindings(extractJson(result.text), reviewCase, domainPack, result.imagesDropped)
+    const parsed = parseFindings(extractJson(result.text), reviewCase, domainPack, result.imagesDropped)
+    // M0/H07：出处存在性核验——伪引用降级为待确认，不伪装成已核验红卡
+    const findings = parsed.map((finding) => sanitizeFindingSources(finding, reviewCase))
     console.log(`[审核专区] AI 审核成功: 发现 ${findings.length} 条`)
 
     // 覆盖摘要：以案卷条目为全集，AI 未提及的条目仍算"已审阅"（模型逐条过了一遍）

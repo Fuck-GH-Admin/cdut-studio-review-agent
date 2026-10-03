@@ -95,8 +95,11 @@ export function SourceBlockView({
   React.useEffect(() => {
     if (!focusHitAnchor && !ruleHitAnchor) return
 
+    // M0/H07：问题卡命中的"依据侧"锚点恒为蓝色（设计 §8：左栏校规定位始终蓝）；
+    // 仅申报/证明侧锚点按问题严重度红/黄
+    const hitIsRuleSide = focusHitAnchor !== undefined && focusHitAnchor === focus?.ruleAnchor
     const color: 'red' | 'yellow' | 'blue' = focusHitAnchor
-      ? (focus?.severity ?? 'red')
+      ? (hitIsRuleSide ? 'blue' : (focus?.severity ?? 'red'))
       : 'blue'
     // 命中的那个锚点（精度降级角标用它；两路都命中时以问题卡侧为准）
     const targetAnchor = focusHitAnchor ?? ruleHitAnchor
