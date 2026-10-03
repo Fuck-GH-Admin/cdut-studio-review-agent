@@ -111,7 +111,12 @@ export function ContentReviewView(): React.ReactElement {
       <WindowControlsHost id="content-review" priority={20} className="absolute right-2 top-[3px] z-20" />
 
       {/* ===== 顶栏 ===== */}
-      <header className="relative z-10 flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2 border-b border-border/60 bg-card/80 px-4 py-2.5 titlebar-no-drag backdrop-blur-sm">
+      {/* Windows 下右侧为窗口按钮（最小化/最大化/关闭）预留 safe width，顶栏右端按钮簇不得伸入其下，
+          否则被 z-20 的 WindowControlsHost 盖住无法点击（见 window-controls-layout.ts 的共用宽度约定） */}
+      <header
+        className="relative z-10 flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2 border-b border-border/60 bg-card/80 px-4 py-2.5 titlebar-no-drag backdrop-blur-sm"
+        style={isWindows ? { paddingRight: resolveWindowControlsRightInset(isWindows) + 12 } : undefined}
+      >
         <div className="flex items-center gap-2">
           <ClipboardCheck size={16} className="text-primary" />
           <span className="text-[13px] font-semibold">内容审核专区</span>

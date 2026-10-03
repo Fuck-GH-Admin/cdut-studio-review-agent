@@ -37,10 +37,15 @@ describe('Mac 设置页接线契约', () => {
     expect(navigate).toContain('setSettingsOpen(false)')
   })
 
-  test('Given Mac 通用设置 When 渲染 Shell 控件 Then 仅 Windows 条件允许显示', () => {
+  test('Given 设置页精简 When 渲染 Shell 状态 Then 收敛到关于页且无运行时状态不渲染', () => {
+    // Rebrand（testBuild）把通用设置里的「Agent Shell 环境」选择器裁掉了；
+    // Shell 状态现在收敛到关于页 ShellEnvironmentCard：没有 runtimeStatus.shell 时不渲染空卡片。
     const general = source('renderer/components/settings/GeneralSettings.tsx')
-    expect(general).toContain('const isWindows = detectIsWindows()')
-    expect(general).toMatch(/\{isWindows && <SettingsSelect\s+label="Agent Shell 环境"/)
+    expect(general).not.toContain('Agent Shell 环境')
+    const about = source('renderer/components/settings/AboutSettings.tsx')
+    expect(about).toContain('function ShellEnvironmentCard')
+    expect(about).toContain('if (!runtimeStatus || !runtimeStatus.shell)')
+    expect(about).toContain('<ShellEnvironmentCard />')
   })
 
   test('Given 系统登录项被用户修改 When 打开设置或启动 Mac Then 读取系统而不覆盖它', () => {
@@ -58,17 +63,14 @@ describe('Mac 设置页接线契约', () => {
     expect(startup).toContain('app.setLoginItemSettings({ openAtLogin: enabled })')
   })
 
-  test('Given 开发版只能手动下载更新 When 设置页展示 Then 引导打开发布页且类型贯通 IPC', () => {
-    const about = source('renderer/components/settings/AboutSettings.tsx')
-    expect(about).toContain("case 'disabled':")
-    expect(about).toContain('当前版本暂不支持应用内更新')
-    // 开发版不再因 'disabled' 禁用检查按钮：自动安装仍不可用，但可以查最新 Release。
-    expect(about).toContain('disabled={isChecking}')
-    expect(about).not.toContain("status.status === 'disabled'")
-    // 开发版发现新版本时只给手动下载入口，不进入 quitAndInstall 流程。
-    expect(about).toContain("status.manualUrl && status.status === 'available'")
-    expect(about).toContain('请手动下载')
-    expect(about).toContain('handleOpenManualUpdate')
+  test('Given 更新弹窗全局挂载 When 存在手动渠道 Then 不自动弹窗且类型贯通 IPC', () => {
+    // Rebrand 后关于页不再内置更新 switch；更新 UI 收敛为全局挂载的 UpdateDialog。
+    // manualUrl（开发版等手动渠道）存在时禁止自动弹窗，避免绕过手动发布流程。
+    const dialog = source('renderer/components/settings/UpdateDialog.tsx')
+    expect(dialog).toContain('!updateStatus.manualUrl')
+    expect(dialog).toContain('window.electronAPI.updater?.quitAndInstall()')
+    const main = source('renderer/main.tsx')
+    expect(main).toContain('<UpdateDialog />')
     for (const path of ['renderer/atoms/updater.ts', 'renderer/vite-env.d.ts', 'preload/index.ts']) {
       expect(source(path)).toContain("| 'disabled' | 'error'")
     }
