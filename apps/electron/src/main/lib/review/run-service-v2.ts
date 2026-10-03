@@ -9,7 +9,7 @@
 
 import { createHash } from 'node:crypto'
 import type { CheckpointRecord, ReviewCaseV2, ReviewRunV2, TemplateVersion } from '@profer/shared'
-import { executeRunGraph, planRunGraph, restoreCheckpoints, type NodeExecutor, type RunEvent } from './review-run-graph'
+import { executeRunGraph, planRunGraph, restoreCheckpoints, type NodeExecutor, type NodeKind, type RunEvent } from './review-run-graph'
 import { getRunV2, saveRunV2 } from './run-store-v2'
 
 /** 进程内取消注册表（单机桌面应用：跨进程取消无需持久化标记） */
@@ -55,7 +55,7 @@ export interface StartRunOptions {
 export async function runReviewCaseV2(
   caseV2: ReviewCaseV2,
   template: TemplateVersion,
-  executors: Record<'parse' | 'extract' | 'bind' | 'check' | 'compute' | 'summarize', NodeExecutor>,
+  executors: Record<NodeKind, NodeExecutor>,
   options: StartRunOptions = {},
 ): Promise<ReviewRunV2> {
   const runId = options.runId ?? `run-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`

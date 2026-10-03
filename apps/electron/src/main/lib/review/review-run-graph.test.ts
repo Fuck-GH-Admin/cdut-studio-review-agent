@@ -3,7 +3,7 @@
  */
 import { describe, expect, test } from 'bun:test'
 import type { TemplateVersion } from '@profer/shared'
-import { executeRunGraph, planRunGraph, restoreCheckpoints, type NodeExecutor, type RunGraphNode } from './review-run-graph'
+import { executeRunGraph, planRunGraph, restoreCheckpoints, type NodeExecutor, type NodeKind, type RunGraphNode } from './review-run-graph'
 
 const template = (stages: TemplateVersion['stages']): TemplateVersion =>
   ({ templateId: 't', version: 1, schemaVersion: 2, name: 't', objectType: 'person', displayName: { template: '' }, fields: [], materialSlots: [], policyVersionIds: [], stages, outputs: [], status: 'published', createdAt: '' }) as unknown as TemplateVersion

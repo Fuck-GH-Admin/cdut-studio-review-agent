@@ -27,14 +27,10 @@ const caseV2: ReviewCaseV2 = {
   revision: 1, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
 }
 
-const okExecutors: Record<'parse' | 'extract' | 'bind' | 'check' | 'compute' | 'summarize', NodeExecutor> = {
-  parse: async (_n: Parameters<NodeExecutor>[0], hash: string) => ({ status: 'done' as const, inputHash: hash }),
-  extract: async (_n: Parameters<NodeExecutor>[0], hash: string) => ({ status: 'done' as const, inputHash: hash }),
-  bind: async (_n: Parameters<NodeExecutor>[0], hash: string) => ({ status: 'done' as const, inputHash: hash }),
-  check: async (_n: Parameters<NodeExecutor>[0], hash: string) => ({ status: 'done' as const, inputHash: hash }),
-  compute: async (_n: Parameters<NodeExecutor>[0], hash: string) => ({ status: 'done' as const, inputHash: hash }),
-  summarize: async (_n: Parameters<NodeExecutor>[0], hash: string) => ({ status: 'done' as const, inputHash: hash }),
-}
+import type { NodeKind } from './review-run-graph'
+const ALL_KINDS: NodeKind[] = ['register', 'parse', 'ocr', 'extract', 'bind', 'plan', 'check', 'calculate', 'verify', 'summarize', 'task']
+const done = async (_n: Parameters<NodeExecutor>[0], hash: string) => ({ status: 'done' as const, inputHash: hash })
+const okExecutors: Record<NodeKind, NodeExecutor> = Object.fromEntries(ALL_KINDS.map((kind) => [kind, done])) as Record<NodeKind, NodeExecutor>
 
 describe('runReviewCaseV2（M3 编排）', () => {
   test('Given 正常执行 When 运行 Then completed 且检查点落盘（可读回）', async () => {
