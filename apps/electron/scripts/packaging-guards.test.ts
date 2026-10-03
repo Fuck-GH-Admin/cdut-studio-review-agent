@@ -15,6 +15,8 @@ interface PackagedCliContractModule {
 }
 
 interface MacSignatureModule {
+  PRODUCT_APP_NAME: string
+  findMacAppBundle: (outputDir: string) => string | null
   expectedDesignatedRequirement: (bundleId: string) => string
   parseDesignatedRequirement: (codesignOutput: string) => string | null
   assertMacSignatureContract: (appPath: string) => { bundleId: string; designatedRequirement: string }
@@ -28,6 +30,8 @@ const {
 } = require('./packaging-host.cjs') as PackagingHostModule
 const { verifyPackagedWindowsCli } = require('./packaged-cli-contract.cjs') as PackagedCliContractModule
 const {
+  PRODUCT_APP_NAME,
+  findMacAppBundle,
   expectedDesignatedRequirement,
   parseDesignatedRequirement,
   assertMacSignatureContract,
@@ -116,6 +120,22 @@ describe('Windows 随包 CLI 契约', () => {
 })
 
 describe('平台打包入口配置', () => {
+  test('Given 当前品牌打包配置 When Windows workflow 检查主程序和安装包 Then 文件名与实际产物一致', () => {
+    const appDir = resolve(import.meta.dir, '..')
+    const config = readFileSync(join(appDir, 'electron-builder.yml'), 'utf8')
+    const workflow = readFileSync(join(appDir, '..', '..', '.github', 'workflows', 'release.yml'), 'utf8')
+    const productName = config.match(/^productName:\s*(.+)$/m)?.[1]?.trim()
+    const artifactName = getTopLevelSection(config, 'nsis').match(/artifactName:\s*(.+)/)?.[1]?.trim()
+    expect(productName).toBeDefined()
+    expect(artifactName).toBeDefined()
+    const installer = artifactName!.replace('${version}', '$version').replace('${ext}', 'exe')
+    expect(workflow).toContain(`out/win-unpacked/${productName}.exe`)
+    expect(workflow).toContain(`"${installer}"`)
+    expect(workflow).toContain(`"${installer}.blockmap"`)
+    expect(workflow).not.toContain('out/win-unpacked/Profer.exe')
+    expect(PRODUCT_APP_NAME).toBe(`${productName}.app`)
+  })
+
   test('Given electron-builder 配置 When 选择平台 Then 只复制对应 CLI 文件名', () => {
     const appDir = resolve(import.meta.dir, '..')
     const config = readFileSync(join(appDir, 'electron-builder.yml'), 'utf8').replace(/\r\n/g, '\n')
@@ -176,6 +196,21 @@ describe('平台打包入口配置', () => {
 })
 
 describe('macOS 签名契约', () => {
+  test('Given 改名后 App 和旧品牌残留 When 查找解包目录 Then 只选当前产品且支持嵌套目录', () => {
+    const root = createTemporaryRoot()
+    mkdirSync(join(root, 'Profer.app'))
+    expect(findMacAppBundle(root)).toBeNull()
+
+    const nested = join(root, 'mac-arm64', PRODUCT_APP_NAME)
+    mkdirSync(nested, { recursive: true })
+    expect(findMacAppBundle(root)).toBe(nested)
+
+    const direct = join(root, PRODUCT_APP_NAME)
+    mkdirSync(direct)
+    expect(findMacAppBundle(root)).toBe(direct)
+    expect(findMacAppBundle(join(root, 'missing-output'))).toBeNull()
+  })
+
   test('Given bundle id When 构造 designated requirement Then 只锚定 identifier', () => {
     // 钉死 identifier 是 ad-hoc 下唯一能跨版本稳定的形式；换成 cdhash 会让每次构建的
     // DR 都不同，Squirrel.Mac 就会拒绝安装新包。

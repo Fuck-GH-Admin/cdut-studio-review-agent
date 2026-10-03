@@ -283,6 +283,12 @@ export interface ReviewRun {
   status: ReviewRunStatus
   /** 输入版本（案卷内容哈希，重审可对比） */
   inputVersion: string
+  /**
+   * 输入指纹（M0/H06）：对影响审核判定的业务输入做内容哈希，与 inputVersion 同值。
+   * 用于「运行结果是否对应案卷当前输入」的过期判断；
+   * 不是文件数/事项数或 updatedAt 的拼接（同数量下改日期/等级/替换文件也能检出）。
+   */
+  inputHash?: string
   startedAt: string
   completedAt?: string
   /** 全部发现 */
@@ -293,11 +299,24 @@ export interface ReviewRun {
     manualReviewItemIds: string[]
     unrecognizedDocumentIds: string[]
     ruleUncoveredItemIds: string[]
+    /**
+     * 未处理材料账本（M0/H01）：已登记但本次未能纳入检查的文件及原因
+     * （图片超单请求上限、模型不支持视觉、扫描件无文本层、解析失败等）。
+     * 有该清单时 UI 必须展示，且完整符合结论不成立。
+     */
+    unprocessedMaterials?: Array<{ documentId: string; fileName: string; reason: string }>
   }
   /** 结果来源 */
   engine: 'ai' | 'mock-engine'
   /** 失败原因 */
   error?: string
+}
+
+/** 最近运行查询结果（M0/H09：恢复 + 输入过期标记） */
+export interface ReviewLatestRunResult {
+  run: ReviewRun | null
+  /** true = 最近运行的输入指纹与案卷当前输入不一致（材料/规则/领域已改动），结果仅作历史参考 */
+  inputStale: boolean
 }
 
 // ===== 案卷 =====
@@ -334,6 +353,11 @@ export interface ReviewCase {
    * 缺省时回落为「role === 'application' 的全部文档」。
    */
   subjectDocumentIds?: string[]
+  /**
+   * 案卷修订号（M0/H05）：每次主进程写回 +1，单调递增。
+   * 渲染层按 caseId 缓存案卷时用它判断新旧；V1 兼容字段，缺省视为 0。
+   */
+  revision?: number
 }
 
 /** 案卷列表项（不含重文档内容，列表展示用） */
@@ -435,6 +459,7 @@ export const REVIEW_IPC_CHANNELS = {
   RUN_REVIEW: 'review:run-review',
   /** 查询运行状态 */
   GET_RUN: 'review:get-run',
+  LATEST_RUN: 'review:get-latest-run',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */

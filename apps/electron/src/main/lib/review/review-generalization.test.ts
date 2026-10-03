@@ -450,14 +450,13 @@ describe('多待审文件（P2）', () => {
     })
   })
 
-  test('Given 案卷无待审文件 When 审核 Then 降级 mock 引擎而不谎报 AI 结果', async () => {
+  test('Given 案卷无待审文件 When 审核 Then 如实失败而不产出任何结论（M0/H04）', async () => {
     const reviewCase = buildCase({ subjectCount: 0 })
     nextError = null
     nextImagesDropped = false
     nextReply = '[]'
 
-    const outcome = await runAiReview(reviewCase)
-    expect(outcome.engine).toBe('mock-engine')
+    await expect(runAiReview(reviewCase)).rejects.toThrow('待审文件')
   })
 })
 

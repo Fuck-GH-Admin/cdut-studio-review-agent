@@ -16,7 +16,9 @@ import { Download, Gavel, Play, ShieldAlert } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
 import { Spinner } from '@profer/ui/primitives/spinner'
 import type { ReviewRun } from '@profer/shared'
-import { reviewRunAtom, reviewRunningAtom, selectedFindingIdAtom, sortedFindingsAtom } from '@/atoms/review-atoms'
+import { reviewRunAtom, reviewRunningAtom, selectedFindingIdAtom, sortedFindingsAtom,
+  reviewRunStaleAtom,
+} from '@/atoms/review-atoms'
 import { cn } from '@/lib/utils'
 import type { ReviewActions } from './use-review-actions'
 import { FindingCard } from './FindingCard'
@@ -27,6 +29,7 @@ interface RightPanelProps {
 
 export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
   const run = useAtomValue(reviewRunAtom)
+  const runStale = useAtomValue(reviewRunStaleAtom)
   const running = useAtomValue(reviewRunningAtom)
   const findings = useAtomValue(sortedFindingsAtom)
   const selectedFindingId = useAtomValue(selectedFindingIdAtom)
@@ -81,8 +84,33 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
         </Button>
       </section>
 
+      {/* 输入过期提示（M0/H09）：材料/规则在审核后被改过，结果仅作历史参考 */}
+      {run && runStale && (
+        <section className="mx-3 rounded-lg border border-amber-500/40 bg-amber-500/[0.06] px-3 py-2">
+          <p className="text-[11px] font-semibold text-amber-600 dark:text-amber-400">
+            案卷在本次审核后已修改，以下结果已过期——请重审后再作为当前结论或导出报告。
+          </p>
+        </section>
+      )}
+
       {/* 覆盖摘要（run.coverage → 四个小格） */}
       {run && <CoverageSummary run={run} />}
+
+      {/* 未处理材料账本（M0/H01）：已登记但未纳入检查的文件，用户必须可见 */}
+      {run && (run.coverage.unprocessedMaterials?.length ?? 0) > 0 && (
+        <section className="mx-3 rounded-lg border border-amber-500/40 bg-amber-500/[0.06] px-3 py-2">
+          <p className="text-[11px] font-semibold text-amber-600 dark:text-amber-400">
+            未处理材料 {run.coverage.unprocessedMaterials!.length} 份（未纳入本次检查，"全部符合"结论不成立）
+          </p>
+          <ul className="mt-1 space-y-0.5">
+            {run.coverage.unprocessedMaterials!.map((material) => (
+              <li key={`${material.documentId}-${material.reason}`} className="text-[11px] leading-4 text-muted-foreground">
+                「{material.fileName}」：{material.reason}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* 问题卡列表 / 空态 */}
       <section className="flex min-h-0 flex-1 flex-col px-3 py-3">
@@ -97,10 +125,22 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
               点击上方「开始审核」，AI 审核员会逐项核对规则、申报与证明，生成可定位的问题卡。
             </p>
           </div>
+        ) : run.status === 'failed' ? (
+          <div className="rounded-lg border border-destructive/40 bg-destructive/[0.06] px-3 py-6 text-center">
+            <p className="text-[13px] font-medium text-destructive">本次审核未能完成</p>
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">
+              {run.error ?? '审核运行失败'}——不存在可用的审核结论，请重试或检查模型出口。
+            </p>
+          </div>
         ) : findings.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-border/60 px-3 py-6 text-center text-xs text-muted-foreground">
-            本次审核未发现问题。
-          </p>
+          <div className="rounded-lg border border-dashed border-border/60 px-3 py-6 text-center">
+            <p className="text-xs text-muted-foreground">本次审核未发现问题。</p>
+            {(run.coverage.unprocessedMaterials?.length ?? 0) > 0 && (
+              <p className="mt-1 text-[11px] leading-4 text-amber-600 dark:text-amber-400">
+                但存在未处理材料，覆盖不完整，"全部符合"结论暂不成立。
+              </p>
+            )}
+          </div>
         ) : (
           <div className="space-y-2">
             {findings.map((finding) => (

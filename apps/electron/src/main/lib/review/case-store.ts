@@ -9,6 +9,7 @@
  * （只允许 [a-zA-Z0-9_-]），否则视为路径穿越攻击直接 throw。
  */
 
+import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewCase, ReviewCaseSummary, ReviewRun } from '@profer/shared'
@@ -186,6 +187,122 @@ export function saveCase(reviewCase: ReviewCase): void {
     console.error(`[审核专区] 保存案卷失败: ${filePath}`, error)
     throw new Error(`保存案卷失败: ${reviewCase.id}`)
   }
+}
+
+// ===== M0/H05：逐案串行写 + 修订号 + 定向 patch =====
+
+/** 每案写队列：同一案卷的读改写串行执行，消除「A/B 同时读 v0 → 后写者丢前者字段」的竞态 */
+const caseWriteQueues = new Map<string, Promise<unknown>>()
+
+/**
+ * 在案卷写队列中串行执行一个异步任务。
+ * 队列按 caseId 独立：不同案卷并行、同案卷严格顺序。
+ */
+function enqueueCaseWrite<T>(caseId: string, task: () => Promise<T> | T): Promise<T> {
+  const previous = caseWriteQueues.get(caseId) ?? Promise.resolve()
+  const next = previous.then(task, task)
+  // 队尾吞错不影响后续任务（任务自身负责抛错语义）
+  caseWriteQueues.set(
+    caseId,
+    next.catch(() => undefined),
+  )
+  return next
+}
+
+/** 更新冲突错误（渲染层据此提示「案卷已更新，请刷新后重试」） */
+export class CaseRevisionConflictError extends Error {
+  constructor(
+    public readonly caseId: string,
+    public readonly expectedRevision: number,
+    public readonly currentRevision: number,
+  ) {
+    super(`案卷修订冲突: ${caseId} 期望 revision=${expectedRevision}，当前 revision=${currentRevision}`)
+    this.name = 'CaseRevisionConflictError'
+  }
+}
+
+/**
+ * 定向更新案卷（M0/H05）：
+ * 在该案卷的写队列内「读最新 → 校验 expectedRevision → 应用 patch → revision+1 原子写回」。
+ *
+ * - patch 返回 null 表示本次无需变更（不动 revision 不写盘）。
+ * - expectedRevision 缺省视为 0：仅当盘上 revision 也是 0/缺省时接受（旧格式案卷首次写回）；
+ *   已带 revision 的案卷必须显式传入调用方持有的值，防止用调用前快照覆盖新字段。
+ * - 主进程内部既有调用点（大纲/识别/导入/设置）读取即写，统一传「读到的 revision」由队列保证新鲜；
+ *   跨进程的乐观并发校验由渲染层随后续批次接入 expectedRevision 完成。
+ */
+export function updateCase(
+  caseId: string,
+  patch: (latest: ReviewCase) => ReviewCase | null,
+  options: { expectedRevision?: number; reason?: string } = {},
+): Promise<ReviewCase> {
+  assertSafeId(caseId)
+  return enqueueCaseWrite(caseId, () => {
+    const latest = getCase(caseId)
+    if (!latest) throw new Error(`案卷不存在: ${caseId}`)
+    const currentRevision = latest.revision ?? 0
+    if (options.expectedRevision !== undefined && options.expectedRevision !== currentRevision) {
+      throw new CaseRevisionConflictError(caseId, options.expectedRevision, currentRevision)
+    }
+    const patched = patch(latest)
+    if (!patched) return latest
+    const updated: ReviewCase = {
+      ...patched,
+      revision: currentRevision + 1,
+      updatedAt: new Date().toISOString(),
+    }
+    saveCase(updated)
+    if (options.reason) console.log(`[审核专区] 案卷已更新(rev=${updated.revision}): ${caseId} — ${options.reason}`)
+    return updated
+  })
+}
+
+/**
+ * 审核输入指纹（M0/H06）：对影响审核判定的业务输入做稳定内容哈希。
+ *
+ * 覆盖：领域包（评分参数）、规则包（含大纲内容与确认态）、文档（含块文本与解析状态）、
+ * 申报事项（字段值/等级/日期/分数）、证明识别结果、待审主体文档集合。
+ * 刻意排除：updatedAt/createdAt/revision 等元数据——同数量下改日期、等级、替换文件也能被检出。
+ */
+export function computeCaseInputHash(reviewCase: ReviewCase): string {
+  const fingerprint = {
+    domainPackId: reviewCase.domainPackId ?? 'comprehensive-assessment',
+    subjectDocumentIds: reviewCase.subjectDocumentIds ?? null,
+    rulePacks: reviewCase.rulePacks.map((pack) => ({
+      id: pack.id,
+      version: pack.version,
+      academicYear: pack.academicYear,
+      confirmed: pack.confirmed,
+      outline: pack.outline.map((item) => ({ id: item.id, title: item.title, anchors: item.anchors })),
+    })),
+    documents: reviewCase.documents.map((doc) => ({
+      id: doc.id,
+      role: doc.role,
+      fileName: doc.fileName,
+      parseStatus: doc.parseStatus,
+      blocks: doc.blocks.map((block) => block.text),
+    })),
+    items: reviewCase.items.map((item) => ({
+      id: item.id,
+      title: item.title,
+      category: item.category,
+      level: item.level ?? null,
+      declaredScore: item.declaredScore,
+      activityDate: item.activityDate ?? null,
+      organizer: item.organizer ?? null,
+      evidenceDocumentIds: item.evidenceDocumentIds,
+      status: item.status,
+    })),
+    evidences: reviewCase.evidences.map((evidence) => ({
+      documentId: evidence.documentId,
+      recognizedFacts: evidence.recognizedFacts,
+      recognizedLevel: evidence.recognizedLevel ?? null,
+      parseStatus: evidence.parseStatus,
+      linkedItemIds: evidence.linkedItemIds,
+    })),
+  }
+  // 稳定序列化：对象键序固定（构造顺序确定），无需额外排序
+  return createHash('sha1').update(JSON.stringify(fingerprint), 'utf-8').digest('hex')
 }
 
 /** 删除案卷（整目录 rm -rf；不存在时静默） */

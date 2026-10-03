@@ -11,9 +11,9 @@
  */
 
 import type { ReviewCase, ReviewRun } from '@profer/shared'
-import { assertSafeId, getCase, listRuns, saveRun } from './case-store'
+import { assertSafeId, computeCaseInputHash, getCase, listRuns, saveRun } from './case-store'
 import { runMockReview } from './mock-review-engine'
-import { runAiReview } from './ai-review-service'
+import { computeUnprocessedMaterials, runAiReview } from './ai-review-service'
 
 /** 引擎选择：'mock-engine' 确定性算法 / 'ai' 真实模型（网关不可用时内部降级回 mock） */
 export type ReviewEngineChoice = 'mock-engine' | 'ai'
@@ -34,11 +34,13 @@ function newRunId(): string {
   return `run-${Date.now()}-${rand}`
 }
 
-/** 输入指纹：案卷 updatedAt + 文档数 + 条目数（detect 后续重审输入是否变化） */
+/**
+ * 输入指纹（M0/H06）：案卷审核输入的内容哈希（computeCaseInputHash）。
+ * 覆盖领域包/规则/文档块文本/事项字段/证明事实——同数量下改日期、等级、替换文件也会变化；
+ * 不再用 updatedAt+数量的拼接（K06 明确要求）。
+ */
 function inputVersionOf(reviewCase: ReviewCase): string {
-  const docCount = reviewCase.documents?.length ?? 0
-  const itemCount = reviewCase.items?.length ?? 0
-  return `${reviewCase.updatedAt}-${docCount}d-${itemCount}i`
+  return computeCaseInputHash(reviewCase)
 }
 
 /**
@@ -75,6 +77,7 @@ export async function startReviewRun(
     caseId,
     status: 'running',
     inputVersion,
+    inputHash: inputVersion,
     startedAt: new Date().toISOString(),
     findings: [],
     coverage: emptyCoverage(),
@@ -104,10 +107,13 @@ export async function startReviewRun(
     return failedRun
   }
 
-  // ---- 第 3 步：正常完成 ----
+  // ---- 第 3 步：正常完成（mock 路径补挂未处理材料账本；AI 路径 outcome 已带） ----
   const completedRun: ReviewRun = {
     ...runningRun,
     ...outcome,
+    coverage: outcome.coverage.unprocessedMaterials
+      ? outcome.coverage
+      : { ...outcome.coverage, unprocessedMaterials: engine === 'ai' ? undefined : computeUnprocessedMaterials(reviewCase) },
     status: 'completed',
     completedAt: new Date().toISOString(),
   }
@@ -138,4 +144,25 @@ export function latestRun(caseId: string): ReviewRun | undefined {
   assertSafeId(caseId)
   const runs = listRuns(caseId)
   return runs.length > 0 ? runs[runs.length - 1] : undefined
+}
+
+/**
+ * 判断运行输入是否过期（M0/H06/H09）：run.inputHash 与案卷当前输入指纹比对。
+ * 缺 inputHash 的旧格式运行一律视为过期（不能证明同版，K06/H09）。
+ */
+export function isRunInputStale(run: ReviewRun, currentCase: ReviewCase): boolean {
+  return run.inputHash !== computeCaseInputHash(currentCase)
+}
+
+/**
+ * 查询案卷最近一次运行及其有效性（M0/H09）：
+ * selectCase 恢复运行 + RightPanel 过期标记 + 导出守门共用此语义。
+ */
+export function getLatestRunStatus(caseId: string): { run: ReviewRun | null; inputStale: boolean } {
+  assertSafeId(caseId)
+  const run = latestRun(caseId) ?? null
+  if (!run) return { run: null, inputStale: false }
+  const currentCase = getCase(caseId)
+  if (!currentCase) return { run, inputStale: true }
+  return { run, inputStale: isRunInputStale(run, currentCase) }
 }

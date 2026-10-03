@@ -9,6 +9,7 @@ const fs = require('node:fs')
 const path = require('node:path')
 const { execFileSync } = require('node:child_process')
 const { findUnpackedNativeFiles } = require('./packaged-pi-probe.cjs')
+const { PRODUCT_APP_NAME, findMacAppBundle } = require('./macos-signature.cjs')
 
 if (process.platform !== 'darwin' || process.arch !== 'arm64') {
   throw new Error(`verify:mac-package 仅支持 darwin-arm64，当前为 ${process.platform}-${process.arch}`)
@@ -22,35 +23,26 @@ function assertExists(filePath, description) {
   if (!fs.existsSync(filePath)) throw new Error(`macOS 安装包缺少 ${description}: ${filePath}`)
 }
 
-function findAppBundle() {
-  const direct = path.join(outputDir, 'Profer.app')
-  if (fs.existsSync(direct)) return direct
-  if (!fs.existsSync(outputDir)) return null
-  for (const entry of fs.readdirSync(outputDir, { withFileTypes: true })) {
-    if (!entry.isDirectory()) continue
-    const candidate = path.join(outputDir, entry.name, 'Profer.app')
-    if (fs.existsSync(candidate)) return candidate
-  }
-  return null
-}
-
-const appBundle = findAppBundle()
-if (!appBundle) throw new Error(`未找到 macOS Profer.app 解包产物: ${outputDir}`)
+const appBundle = findMacAppBundle(outputDir)
+if (!appBundle) throw new Error(`未找到 macOS ${PRODUCT_APP_NAME} 解包产物: ${outputDir}`)
 const contents = path.join(appBundle, 'Contents')
 const resources = path.join(contents, 'Resources')
 const macOsDir = path.join(contents, 'MacOS')
 const appArchive = path.join(resources, 'app.asar')
 const unpackedNodeModules = path.join(resources, 'app.asar.unpacked', 'node_modules')
 const cliPath = path.join(resources, 'bin', 'profer')
-const claudePath = path.join(unpackedNodeModules, '@anthropic-ai', 'claude-agent-sdk-darwin-arm64', 'claude')
+const executableName = execFileSync('/usr/libexec/PlistBuddy', [
+  '-c', 'Print :CFBundleExecutable', path.join(contents, 'Info.plist'),
+], { encoding: 'utf8' }).trim()
+if (!executableName) throw new Error('Info.plist 缺少 CFBundleExecutable')
+const appBinary = path.join(macOsDir, executableName)
 
-assertExists(path.join(macOsDir, 'Profer'), '应用可执行文件')
+assertExists(appBinary, '应用可执行文件')
 assertExists(appArchive, 'app.asar')
 assertExists(unpackedNodeModules, 'app.asar.unpacked/node_modules')
 assertExists(cliPath, 'Profer CLI')
-assertExists(claudePath, 'Claude Agent SDK darwin-arm64 CLI')
 
-for (const [binary, description] of [[cliPath, 'Profer CLI'], [claudePath, 'Claude CLI']]) {
+for (const [binary, description] of [[cliPath, '随包 CLI'], [appBinary, '应用主程序']]) {
   try {
     fs.accessSync(binary, fs.constants.X_OK)
   } catch {
@@ -60,13 +52,20 @@ for (const [binary, description] of [[cliPath, 'Profer CLI'], [claudePath, 'Clau
 
 const nativeFiles = findUnpackedNativeFiles(unpackedNodeModules)
 if (nativeFiles.length === 0) throw new Error('app.asar.unpacked 中未找到 Pi native/WASM 文件')
-const appBinaryInfo = execFileSync('file', ['-b', path.join(macOsDir, 'Profer')], { encoding: 'utf8' }).trim()
-if (!/arm64|arm64e/i.test(appBinaryInfo)) throw new Error(`Profer.app 主二进制不是 arm64: ${appBinaryInfo}`)
+const appBinaryInfo = execFileSync('file', ['-b', appBinary], { encoding: 'utf8' }).trim()
+if (!/arm64|arm64e/i.test(appBinaryInfo)) throw new Error(`${PRODUCT_APP_NAME} 主二进制不是 arm64: ${appBinaryInfo}`)
+
+// 使用安装包自身的 Electron/Node ABI 验证 Pi-only 闭包，不依赖已移除的 Claude SDK CLI。
+execFileSync(appBinary, [path.join(__dirname, 'packaged-pi-probe.cjs'), resources], {
+  env: { ...process.env, ELECTRON_RUN_AS_NODE: '1' },
+  encoding: 'utf8',
+  timeout: 120_000,
+})
 
 console.log(JSON.stringify({
   ok: true,
   appBundle,
-  claudePath,
+  appBinary,
   nativeFileCount: nativeFiles.length,
   appBinaryInfo,
 }, null, 2))

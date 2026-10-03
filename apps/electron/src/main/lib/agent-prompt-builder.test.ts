@@ -37,7 +37,7 @@ mock.module('electron', () => ({
 
 const { buildSystemPrompt, buildDynamicContext } = await import('./agent-prompt-builder')
 const { buildPiTaskPrompt } = await import('./pi-task-prompt')
-const { getConfigDirName } = await import('./config-paths')
+const { getConfigDirName, resolveConfigDir } = await import('./config-paths')
 
 describe('buildSystemPrompt', () => {
   test('默认使用求实姿态并保留不可变执行底线', () => {
@@ -155,7 +155,6 @@ describe('buildSystemPrompt', () => {
   test('工作区会话恢复指向 Profer workspace profile，而非用户项目指令文件', () => {
     const slug = 'demo-workspace'
     const sessionId = 'session-123'
-    const configDirName = getConfigDirName()
     const prompt = buildSystemPrompt({
       workspaceName: 'Demo',
       workspaceSlug: slug,
@@ -163,7 +162,7 @@ describe('buildSystemPrompt', () => {
       permissionMode: 'bypassPermissions',
     })
 
-    const workspaceRoot = join(homedir(), configDirName, 'agent-workspaces', slug)
+    const workspaceRoot = join(resolveConfigDir(), 'agent-workspaces', slug)
     const workspaceProfile = join(workspaceRoot, 'workspace-profile.md')
     expect(prompt).toContain(`**Profer 工作区资料**: ${workspaceProfile}`)
     expect(prompt).toContain(`③ Profer 工作区资料（\`${workspaceProfile}\``)

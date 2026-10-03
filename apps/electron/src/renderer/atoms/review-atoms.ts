@@ -25,23 +25,110 @@ import type {
 
 // ===== 数据状态 =====
 
-/** 当前打开的案卷 */
-export const reviewCaseAtom = atom<ReviewCase | null>(null)
+/**
+ * 案卷内存缓存（M0/H05）：按 caseId 存取，异步回写只动对应案卷。
+ * 异步完成 A 时即使用户已切到 B，也只更新 A 的条目——不再用调用前快照覆盖"当前案卷"。
+ */
+export const reviewCasesByIdAtom = atom<Record<string, ReviewCase>>({})
+
+/** 每案最近运行是否与当前输入同版（M0/H09：false=过期，仅历史参考） */
+export const reviewRunStaleByCaseAtom = atom<Record<string, boolean>>({})
+
+/** 每案最近一次运行（M0/H05：A 的运行回 A，替代原全局单例） */
+export const reviewRunsByCaseAtom = atom<Record<string, ReviewRun | null>>({})
+
+/** 每案任务进行中标记（M0/H05：运行/大纲/识别按案隔离，切走不丢守卫） */
+export interface ReviewCaseTasks {
+  outline: boolean
+  items: boolean
+  running: boolean
+}
+
+export const reviewTasksByCaseAtom = atom<Record<string, ReviewCaseTasks>>({})
+
+/** 当前选中案卷 ID（选择与异步任务 ID 分离：慢返回不把界面切回旧案） */
+export const selectedCaseIdAtom = atom<string | null>(null)
+
+function emptyTasks(): ReviewCaseTasks {
+  return { outline: false, items: false, running: false }
+}
+
+/**
+ * 当前打开的案卷（可写派生：读 = 缓存[选中ID]；写 = 写入缓存并选中该案卷）。
+ * 三栏组件照旧读写此 atom；控制器在异步路径直接操作按案映射。
+ */
+export const reviewCaseAtom = atom(
+  (get) => {
+    const id = get(selectedCaseIdAtom)
+    return id ? (get(reviewCasesByIdAtom)[id] ?? null) : null
+  },
+  (get, set, next: ReviewCase | null) => {
+    if (!next) {
+      set(selectedCaseIdAtom, null)
+      return
+    }
+    set(reviewCasesByIdAtom, { ...get(reviewCasesByIdAtom), [next.id]: next })
+    if (get(selectedCaseIdAtom) !== next.id) set(selectedCaseIdAtom, next.id)
+  },
+)
 
 /** 已存储案卷列表 */
 export const reviewCaseListAtom = atom<ReviewCaseSummary[]>([])
 
-/** 当前案卷最近一次审核运行 */
-export const reviewRunAtom = atom<ReviewRun | null>(null)
+/** 当前案卷最近一次审核运行（可写派生：写 = 写入选中案卷的运行槽位） */
+export const reviewRunAtom = atom(
+  (get) => {
+    const id = get(selectedCaseIdAtom)
+    return id ? (get(reviewRunsByCaseAtom)[id] ?? null) : null
+  },
+  (get, set, next: ReviewRun | null) => {
+    const id = get(selectedCaseIdAtom)
+    if (!id) return
+    set(reviewRunsByCaseAtom, { ...get(reviewRunsByCaseAtom), [id]: next })
+  },
+)
 
-/** 审核运行进行中标记 */
-export const reviewRunningAtom = atom<boolean>(false)
+/** 审核运行进行中标记（当前案卷视图；控制器按 caseId 写 reviewTasksByCaseAtom） */
+export const reviewRunningAtom = atom(
+  (get) => {
+    const id = get(selectedCaseIdAtom)
+    return id ? (get(reviewTasksByCaseAtom)[id] ?? emptyTasks()).running : false
+  },
+  (get, set, running: boolean) => {
+    const id = get(selectedCaseIdAtom)
+    if (!id) return
+    set(reviewTasksByCaseAtom, {
+      ...get(reviewTasksByCaseAtom),
+      [id]: { ...emptyTasks(), ...get(reviewTasksByCaseAtom)[id], running },
+    })
+  },
+)
 
 /** 模型出口自检结果 */
 export const reviewGatewayStatusAtom = atom<ReviewModelGatewayStatus | null>(null)
 
-/** 各异步任务的进行中标记 */
-export const reviewBusyAtom = atom<{ outline: boolean; items: boolean }>({ outline: false, items: false })
+/** 各异步任务的进行中标记（当前案卷视图） */
+export const reviewBusyAtom = atom(
+  (get) => {
+    const id = get(selectedCaseIdAtom)
+    const tasks = id ? get(reviewTasksByCaseAtom)[id] : undefined
+    return { outline: tasks?.outline ?? false, items: tasks?.items ?? false }
+  },
+  (get, set, busy: { outline: boolean; items: boolean }) => {
+    const id = get(selectedCaseIdAtom)
+    if (!id) return
+    set(reviewTasksByCaseAtom, {
+      ...get(reviewTasksByCaseAtom),
+      [id]: { ...emptyTasks(), ...get(reviewTasksByCaseAtom)[id], ...busy },
+    })
+  },
+)
+
+/** 当前案卷最近运行是否过期（M0/H09 只读派生） */
+export const reviewRunStaleAtom = atom((get) => {
+  const id = get(selectedCaseIdAtom)
+  return id ? (get(reviewRunStaleByCaseAtom)[id] ?? false) : false
+})
 
 // ===== 联动状态 =====
 

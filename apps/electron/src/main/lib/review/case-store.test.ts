@@ -20,6 +20,9 @@ import { existsSync, readdirSync, readFileSync, rmSync, statSync } from 'node:fs
 import { join } from 'node:path'
 import type { ReviewCase } from '@profer/shared'
 import {
+  CaseRevisionConflictError,
+  computeCaseInputHash,
+  updateCase,
   DEMO_CASE_ID,
   assertSafeId,
   deleteCase,
@@ -158,5 +161,69 @@ describe('loadDemoCase', () => {
     const demoSummaries = summaries.filter((summary) => summary.isDemo === true)
 
     expect(demoSummaries.map((summary) => summary.id)).toEqual([DEMO_CASE_ID])
+  })
+})
+
+// ===== M0 批1：updateCase 串行/修订冲突 + 输入指纹（H05/H06） =====
+
+describe('updateCase（M0/H05）', () => {
+  test('Given 已存案卷 When 定向更新 Then revision+1 且字段落盘', async () => {
+    saveCase(buildTestCase())
+    const updated = await updateCase(TEST_CASE_ID, (fresh) => ({ ...fresh, title: '改后标题' }), { reason: '测试' })
+    expect(updated.revision).toBe(1)
+    expect(updated.title).toBe('改后标题')
+    expect(getCase(TEST_CASE_ID)?.title).toBe('改后标题')
+  })
+
+  test('Given expectedRevision 过期 When 更新 Then 抛修订冲突并携带当前值', async () => {
+    saveCase({ ...buildTestCase(), title: '并发前' })
+    const current = getCase(TEST_CASE_ID)!
+    await updateCase(TEST_CASE_ID, (fresh) => ({ ...fresh, title: '别人先改了' }))
+    try {
+      await updateCase(TEST_CASE_ID, () => getCase(TEST_CASE_ID)!, { expectedRevision: current.revision ?? 0 })
+      expect.unreachable()
+    } catch (error) {
+      expect(error).toBeInstanceOf(CaseRevisionConflictError)
+      const conflict = error as CaseRevisionConflictError
+      expect(conflict.currentRevision).toBe((current.revision ?? 0) + 1)
+    }
+  })
+
+  test('Given 两个并发更新 When 同案写队列 Then 两个定向 patch 都保留（不丢字段）', async () => {
+    saveCase(buildTestCase())
+    // 模拟识别与导入交错：一个改 items、一个加 documents
+    const [a, b] = await Promise.all([
+      updateCase(TEST_CASE_ID, (fresh) => ({ ...fresh, items: [{ ...fresh.items[0]!, id: 'item-new' }] })),
+      updateCase(TEST_CASE_ID, (fresh) => ({ ...fresh, documents: [...fresh.documents, { ...fresh.documents[0]!, id: 'doc-new' }] })),
+    ])
+    const final = getCase(TEST_CASE_ID)!
+    expect(final.items.some((item) => item.id === 'item-new')).toBeTrue()
+    expect(final.documents.some((doc) => doc.id === 'doc-new')).toBeTrue()
+    // 两次定向更新各 +1：串行队列保证修订号单调
+    expect(final.revision).toBe(2)
+    expect(final.revision).toBe(b.revision)
+  })
+})
+
+describe('computeCaseInputHash（M0/H06）', () => {
+  test('Given 同文档数/事项数但字段值不同 When 计算指纹 Then 哈希不同（K06）', () => {
+    const base = buildTestCase()
+    const modified: ReviewCase = {
+      ...base,
+      items: base.items.map((item, index) => (index === 0 ? { ...item, activityDate: '2026-01-02' } : item)),
+    }
+    // 同数量同 updatedAt：旧指纹（updatedAt+数量）无法检出，新指纹必须不同
+    expect(computeCaseInputHash(base)).not.toBe(computeCaseInputHash(modified))
+  })
+
+  test('Given 内容相同 When 计算指纹 Then 稳定一致', () => {
+    const base = buildTestCase()
+    expect(computeCaseInputHash(base)).toBe(computeCaseInputHash(buildTestCase()))
+  })
+
+  test('Given 与审核无关的元数据变化（updatedAt/revision） When 计算指纹 Then 不变', () => {
+    const base = buildTestCase()
+    const touched: ReviewCase = { ...base, updatedAt: '2030-01-01T00:00:00.000Z', revision: 99 }
+    expect(computeCaseInputHash(base)).toBe(computeCaseInputHash(touched))
   })
 })
