@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.104",
+      "date": "2026-10-04",
+      "title": "v0.15.104",
+      "notes": "- M2/覆盖账本与端口：材料账本（read/partially-read/unread 全入账不消失）+ 检查账本（计划检查缺失记 not-executed）；combineCoverage 双分母汇总并判定\"全部符合\"是否成立（未读/未执行/待确认任一即阻止）；OCR 端口契约 + Null 实现（如实声明不可用）与原件预览描述符（图片直显/PDF 需渲染器诚实标注）"
+    },
+    {
       "version": "0.15.103",
       "date": "2026-10-04",
       "title": "v0.15.103",
