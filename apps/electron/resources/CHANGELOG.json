@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.136",
+      "date": "2026-10-05",
+      "title": "0.15.136",
+      "notes": "- 复查 §5.5 收尾：pushViaOutbox 发送前先落盘 pending（端口响应后再写会丢中断现场）；recoverPendingPushes 启动扫描 pending 条目；测试以延迟端口断言发送时 pending 已在盘"
+    },
+    {
       "version": "0.15.135",
       "date": "2026-10-05",
       "title": "0.15.135",

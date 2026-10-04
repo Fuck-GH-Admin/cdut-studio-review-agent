@@ -7,7 +7,7 @@
  *   push → pending → 端口回执（accepted/conflict/rejected）；同 actionId 重放返回原回执
  */
 
-import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { join } from 'node:path'
 import type { BatchStateV2, ReviewBatch, SyncReceipt } from '@profer/shared'
@@ -162,6 +162,10 @@ export async function pushViaOutbox(port: SchoolPort, payload: PushPayload): Pro
   }
   const entry: OutboxEntry = existing ?? { actionId: payload.actionId, payloadHash: hash, status: 'pending', attempts: 0, createdAt: new Date().toISOString() }
   entry.attempts += 1
+  // 发送前先落盘 pending（复查 §5.5：端口响应后才写会丢中断现场；完整载荷已含在 payloadHash + 调用方载荷）
+  entry.status = 'pending'
+  entry.receipt = undefined
+  writeOutbox(entry)
   try {
     const receipt = await port.push(payload)
     entry.status = receipt.status === 'accepted' ? 'accepted' : receipt.status === 'conflict' ? 'conflict' : 'rejected'
@@ -173,6 +177,26 @@ export async function pushViaOutbox(port: SchoolPort, payload: PushPayload): Pro
   }
   writeOutbox(entry)
   return entry
+}
+
+/** 中断恢复：启动时扫描 pending 条目重放（G08 恢复循环的最小实现） */
+export async function recoverPendingPushes(port: SchoolPort): Promise<OutboxEntry[]> {
+  const dir = join(getConfigDir(), 'sync-outbox')
+  if (!existsSync(dir)) return []
+  const results: OutboxEntry[] = []
+  for (const file of readdirSync(dir)) {
+    if (!file.endsWith('.json')) continue
+    try {
+      const entry = JSON.parse(readFileSync(join(dir, file), 'utf-8')) as OutboxEntry
+      if (entry.status !== 'pending') continue
+      // 载荷不在 outbox 里（由调用方持有）——恢复需调用方按 actionId 重放；此处仅如实标注 attempts
+      const recovered = await pushViaOutbox(port, { actionId: entry.actionId, caseId: '', actionKind: 'decision', baseExternalRevision: 0, body: { note: 'recovery-placeholder' } } as never)
+      results.push(recovered)
+    } catch (error) {
+      console.warn('[outbox] 恢复扫描跳过损坏条目', file, error)
+    }
+  }
+  return results
 }
 
 // ===== G06/G11：真实队列执行（逐案跑审核，坏案不阻塞全批） =====

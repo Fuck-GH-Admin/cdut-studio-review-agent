@@ -9,6 +9,7 @@ import { createBatchV2, finalizeBatch, pushViaOutbox, readBatchStateV2, readFina
 import type { BatchStateV2 } from '@profer/shared'
 type Entry = BatchStateV2['cases'][number]
 import { MockSchoolAdapter } from './external-ports'
+import type { SchoolPort, PushPayload } from './external-ports'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-batch-${Date.now()}`)
 process.env.PROFER_CONFIG_DIR = CONFIG_DIR
@@ -123,5 +124,22 @@ describe('批次队列执行（G06/G11 真实队列）', () => {
   test('Given 未注入 runCase When 执行 Then 拒绝（不隐式默认执行器）', async () => {
     createBatchV2(batch('bq3'))
     await expect(runBatchQueue('bq3')).rejects.toThrow('注入')
+  })
+})
+
+describe('outbox 发送前持久化（复查 §5.5）', () => {
+  test('Given 延迟响应的端口 When 推送中 Then pending 已先落盘（中断现场可恢复）', async () => {
+    const { readFileSync, existsSync } = await import('node:fs')
+    const { join } = await import('node:path')
+    const mock = new MockSchoolAdapter()
+    const slowPort: SchoolPort = { ...mock, push: async (payload: PushPayload) => { await new Promise((resolve) => setTimeout(resolve, 60)); return mock.push(payload) } }
+    const payload = { caseId: 'c1', actionId: 'act-pending-first', actionKind: 'decision' as const, baseExternalRevision: 0, body: { result: 'pass' } }
+    const promise = pushViaOutbox(slowPort, payload)
+    await new Promise((resolve) => setTimeout(resolve, 15))
+    const outboxFile = join(CONFIG_DIR, 'sync-outbox', 'act-pending-first.json')
+    expect(existsSync(outboxFile)).toBeTrue() // 发送前已落盘
+    expect(JSON.parse(readFileSync(outboxFile, 'utf-8')).status).toBe('pending')
+    const final = await promise
+    expect(final.status).toBe('accepted')
   })
 })
