@@ -8,7 +8,11 @@
  * - 内部意见/其他评委评分/匿名映射不出包
  */
 
+import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { join } from 'node:path'
 import type { CaseAggregateV2, FieldValue, ReviewCommandResult, ReviewCaseV2 } from '@profer/shared'
+import { getConfigDir } from '../config-paths'
 import { exportHandoffPackage, importHandoffPackage } from './report-service-v2'
 
 export type AudienceRole = 'student' | 'reviewer' | 'teacher' | 'judge' | 'organizer'
@@ -111,24 +115,139 @@ export function exportRoundTripPackage(aggregate: CaseAggregateV2, kind: RoundTr
   return exportHandoffPackage<Omit<RoundTripPayload, never>>({ kind, caseId: aggregate.caseV2.id, actor, projection, reply })
 }
 
-const importedReceipts = new Map<string, RoundTripReceipt>()
-
-/** 导入回复包（独立副本回传）：哈希校验 → 载荷一致去重 → 应用（R11/R12） */
-export function importRoundTripPackage(pkg: ReturnType<typeof exportHandoffPackage>): RoundTripReceipt {
-  const checked = importHandoffPackage<RoundTripPayload>(pkg as never)
-  if (!checked.ok && checked.code === 'HASH_MISMATCH') {
-    return { actionId: pkg.packageId, caseId: '', status: 'rejected', message: checked.message }
-  }
-  const payload = checked.ok ? checked.payload : (pkg.payload as RoundTripPayload)
-  const receiptKey = `${payload.kind}:${payload.caseId}:${payload.actor.actorId}:${JSON.stringify(payload.reply)}`
-  const existing = importedReceipts.get(receiptKey)
-  if (existing) return { ...existing, status: 'duplicate', message: '重复包：已应用过相同回复（不重复计票）' }
-  const receipt: RoundTripReceipt = { actionId: pkg.packageId, caseId: payload.caseId, status: 'accepted', message: '回复已应用' }
-  importedReceipts.set(receiptKey, receipt)
-  return receipt
+/** 持久 outbox 条目（G07：发送前先落盘 pending；应用后写终态回执） */
+export interface RoundTripOutboxEntry {
+  packageId: string
+  kind: RoundTripKind
+  caseId: string
+  actor: string
+  replyHash: string
+  status: 'pending' | 'accepted' | 'duplicate' | 'rejected'
+  message?: string
+  appliedAt?: string
+  attempts: number
 }
 
-/** 测试/重置辅助：清空进程内去重表（持久化由 outbox 承担） */
-export function resetRoundTripDedup(): void {
-  importedReceipts.clear()
+function outboxDir(): string {
+  const dir = join(getConfigDir(), 'sync-outbox', 'roundtrip')
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
+  return dir
+}
+
+function outboxPath(packageId: string): string {
+  return join(outboxDir(), `${packageId}.json`)
+}
+
+function readOutboxEntry(packageId: string): RoundTripOutboxEntry | undefined {
+  const filePath = outboxPath(packageId)
+  if (!existsSync(filePath)) return undefined
+  try {
+    return JSON.parse(readFileSync(filePath, 'utf-8')) as RoundTripOutboxEntry
+  } catch {
+    return undefined
+  }
+}
+
+function writeOutboxEntry(entry: RoundTripOutboxEntry): void {
+  const tmp = `${outboxPath(entry.packageId)}.${Math.random().toString(36).slice(2, 6)}.tmp`
+  writeFileSync(tmp, JSON.stringify(entry, null, 2), 'utf-8')
+  renameSync(tmp, outboxPath(entry.packageId))
+}
+
+function replyHashOf(payload: RoundTripPayload): string {
+  return createHash('sha256').update(JSON.stringify(payload.reply), 'utf-8').digest('hex')
+}
+
+/** 接受导入：校验 → 去重 → 事务应用到聚合（ratings/supplement responses 真实落盘） */
+export function applyRoundTripPackage(pkg: ReturnType<typeof exportHandoffPackage>): Promise<RoundTripReceipt> {
+  const checked = importHandoffPackage<RoundTripPayload>(pkg as never)
+  if (!checked.ok && checked.code === 'HASH_MISMATCH') {
+    return Promise.resolve({ actionId: pkg.packageId, caseId: '', status: 'rejected', message: checked.message })
+  }
+  const payload = checked.ok ? checked.payload : (pkg.payload as RoundTripPayload)
+  return applyPayloadTransaction(payload)
+}
+
+async function applyPayloadTransaction(payload: RoundTripPayload): Promise<RoundTripReceipt> {
+  const { readAggregate } = await import('./case-store-v2')
+  const aggregate = readAggregate(payload.caseId)
+  if (!aggregate) return { actionId: '', caseId: payload.caseId, status: 'rejected', message: `案卷聚合不存在: ${payload.caseId}` }
+
+  // judge-rating-reply → 走 castRating（唯一票约束）
+  if (payload.kind === 'judge-rating-reply') {
+    const { castRating } = await import('./rating-service')
+    const scores = (payload.reply.scores ?? {}) as Record<string, number | 'N/A'>
+    const stageId = String(payload.reply.stageId ?? 'rating')
+    const outcome = (await castRating(payload.caseId, {
+      requestId: `rt-${pkgPackageIdOf(payload)}`,
+      actor: { actorId: payload.actor.actorId, actorSource: payload.actor.actorSource, role: 'judge' },
+      expectedRevision: aggregate.caseV2.revision,
+      payload: { stageId, scores, round: (payload.reply.round as number | undefined) ?? 1 },
+    })) as { ok: boolean; message?: string }
+    return outcome.ok
+      ? { actionId: pkgPackageIdOf(payload), caseId: payload.caseId, status: 'accepted', message: '评分已应用（唯一票）' }
+      : { actionId: pkgPackageIdOf(payload), caseId: payload.caseId, status: 'rejected', message: outcome.message ?? '评分应用失败' }
+  }
+
+  // student-reply → 追加到对应补件请求（无目标则拒绝，不冒充已应用）
+  const supplementId = String(payload.reply.supplementId ?? '')
+  const target = aggregate.supplements.find((request) => request.id === supplementId)
+  if (!target) return { actionId: pkgPackageIdOf(payload), caseId: payload.caseId, status: 'rejected', message: '回复缺少可应用的补件请求（supplementId 不存在）' }
+  const { submitCommand } = await import('./case-store-v2')
+  const outcome = (await submitCommand<{ supplementId: string; note: string }, void>(payload.caseId, {
+    requestId: `rt-${pkgPackageIdOf(payload)}`,
+    actor: { actorId: payload.actor.actorId, actorSource: payload.actor.actorSource, role: 'student' },
+    expectedRevision: aggregate.caseV2.revision,
+    type: 'RespondSupplement',
+    payload: { supplementId, note: String(payload.reply.note ?? '独立副本回复') },
+  }, () => ({
+    summary: `应用独立副本补件回复 ${supplementId}`,
+    mutate: (draft) => {
+      draft.supplements = draft.supplements.map((request) => (request.id === supplementId
+        ? { ...request, status: 'responded', responses: [...request.responses, { id: `resp-${Date.now()}`, documentVersionIds: (payload.reply.documentVersionIds as string[] | undefined) ?? [], note: String(payload.reply.note ?? '独立副本回复'), at: new Date().toISOString(), actor: payload.actor.actorId }] }
+        : request))
+    },
+  }))) as { ok: boolean; message?: string }
+  return outcome.ok
+    ? { actionId: pkgPackageIdOf(payload), caseId: payload.caseId, status: 'accepted', message: '补件回复已应用（事务落盘）' }
+    : { actionId: pkgPackageIdOf(payload), caseId: payload.caseId, status: 'rejected', message: outcome.message ?? '应用失败' }
+}
+
+function pkgPackageIdOf(payload: RoundTripPayload): string {
+  return `rt-${payload.kind}-${payload.caseId}-${payload.actor.actorId}`
+}
+
+/**
+ * G07 发送流程：先把 outbox 条目落盘（pending），再事务应用，最后写终态。
+ * 重复发送：同 packageId + 同载荷 → 已 accepted 直接 duplicate（跨进程持久幂等）；
+ * 载荷漂移 → 拒绝。
+ */
+export async function importRoundTripPackage(pkg: ReturnType<typeof exportHandoffPackage>): Promise<RoundTripReceipt> {
+  const checked = importHandoffPackage<RoundTripPayload>(pkg as never)
+  const payload = checked.ok ? checked.payload : (pkg.payload as RoundTripPayload)
+  const packageId = pkg.packageId
+  const hash = replyHashOf(payload)
+  const existing = readOutboxEntry(packageId)
+  if (existing && existing.status === 'accepted') {
+    if (existing.replyHash !== hash) return { actionId: packageId, caseId: existing.caseId, status: 'rejected', message: '同 packageId 载荷漂移，拒绝覆盖' }
+    return { actionId: packageId, caseId: existing.caseId, status: 'duplicate', message: '重复包：已应用过（持久回执，不重复计票）' }
+  }
+  // 发送前持久化 pending（G08）
+  const entry: RoundTripOutboxEntry = existing && existing.replyHash === hash
+    ? { ...existing, attempts: existing.attempts + 1 }
+    : { packageId, kind: payload.kind, caseId: payload.caseId, actor: payload.actor.actorId, replyHash: hash, status: 'pending', attempts: 1 }
+  if (existing && existing.replyHash !== hash) {
+    entry.status = 'rejected'
+    entry.message = '同 packageId 载荷漂移，拒绝覆盖'
+    writeOutboxEntry(entry)
+    return { actionId: packageId, caseId: payload.caseId, status: 'rejected', message: entry.message }
+  }
+  writeOutboxEntry(entry)
+  const receipt = await applyRoundTripPackage(pkg)
+  // 终态回执写回 outbox（accepted → 幂等；rejected 可重试）
+  entry.status = receipt.status
+  entry.message = receipt.message
+  if (receipt.status === 'accepted') entry.appliedAt = new Date().toISOString()
+  writeOutboxEntry(entry)
+  return receipt
 }

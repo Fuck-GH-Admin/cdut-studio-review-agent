@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.123",
+      "date": "2026-10-05",
+      "title": "0.15.123",
+      "notes": "- G07/G08：独立副本回复改为事务化应用（修正\"显示已应用实际没更新案卷\"）——student-reply 真实写补件 responses、judge-rating-reply 走 castRating 唯一票；发送前 outbox 落盘 pending（sync-outbox/roundtrip/{packageId}.json），终态回执持久化，跨进程重复 duplicate、载荷漂移拒绝、无目标不冒充已应用"
+    },
+    {
       "version": "0.15.122",
       "date": "2026-10-05",
       "title": "0.15.122",
