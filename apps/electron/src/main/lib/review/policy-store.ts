@@ -108,3 +108,41 @@ export function validatePolicyRef(ref: PolicyRef): PolicyRefCheck {
   }
   return { ok: true }
 }
+
+// ===== G02/G10：负责人规则文本 → 结构化 RuleSpec（简单行编译） =====
+
+/**
+ * 将负责人逐行规则编译为 RuleSpec：
+ * - 每个非空行一条规则；支持 "[严重度] 编号 说明" 或裸说明（自动编号）
+ * - 这是**确定性文本编译**，不做语义理解；复杂条件仍由负责人在政策原文中说明
+ */
+export function compileOwnerRules(text: string, policyId = '', version = 1): import('@profer/shared').RuleSpec[] {
+  const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)
+  const severityMap: Record<string, 'high' | 'medium' | 'low'> = { 高: 'high', 中: 'medium', 低: 'low', high: 'high', medium: 'medium', low: 'low' }
+  return lines.map((line, index) => {
+    let severity: 'high' | 'medium' | 'low' = 'medium'
+    let statement = line
+    const bracket = line.match(/^\[(高|中|低|high|medium|low)\]\s*(.+)$/i)
+    if (bracket) {
+      severity = severityMap[bracket[1]!.toLowerCase()] ?? 'medium'
+      statement = bracket[2]!
+    }
+    const idMatch = statement.match(/^(?:([A-Z]{1,4}\d{1,3})|第\s*(\d+)\s*条)[：:.、]?\s*(.+)$/)
+    const id = idMatch?.[1] ?? (idMatch?.[2] ? `R${idMatch[2]}` : `R${index + 1}`)
+    return {
+      id,
+      policyVersionId: `${policyId}@${version}`,
+      title: id,
+      when: { field: undefined, op: 'exists' } as never,
+      requirement: idMatch?.[3] ?? statement,
+      targetScope: 'case' as const,
+      execution: 'semantic' as const,
+      semanticOutputEnum: ['compliant', 'non-compliant'],
+      onFail: 'manual-review' as const,
+      onUnknown: 'needs-confirmation' as const,
+      sourceRefIds: [],
+      priority: index + 1,
+      confirmation: 'confirmed' as const,
+    }
+  })
+}

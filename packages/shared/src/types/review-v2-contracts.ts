@@ -28,6 +28,8 @@ export interface PolicyRecord {
   publishedAt?: string
   /** 确认记录：谁在何时确认了本版政策 */
   confirmations: Array<{ actorId: string; role: RoleId; at: string; note?: string }>
+  /** G02/G12：结构化规则（负责人录入或文档条款编译），coverage/检查计划的分母来源 */
+  compiledRules?: import('./review-v2').RuleSpec[]
 }
 
 /** 模板对政策的精确引用（替代仅 policyId + 硬编码 version=1） */

@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.126",
+      "date": "2026-10-05",
+      "title": "0.15.126",
+      "notes": "- G02/G10：负责人规则文本编译器（compileOwnerRules：逐行/严重度括号/F编号/第N条 → 结构化 RuleSpec，policyVersionId 溯源）；CREATE_POLICY_V2 政策携带 compiledRules（coverage 分母来源就绪）"
+    },
+    {
       "version": "0.15.125",
       "date": "2026-10-05",
       "title": "0.15.125",

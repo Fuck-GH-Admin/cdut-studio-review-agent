@@ -285,9 +285,10 @@ export function registerReviewIpc(): void {
   // ===== N4b：模板向导（无代码创建：政策先行 → 模板草稿 → 发布走 PUBLISH_TEMPLATE_V2） =====
   ipcMain.handle(REVIEW_IPC_CHANNELS.CREATE_POLICY_V2, (_e, input: { policyId: string; title: string; content: string; enteredBy: string }) => {
     if (!input?.policyId || !input?.content) throw new Error('参数非法')
-    const { canonicalContentHash, publishPolicy, savePolicyDraft } = require('./policy-store') as typeof import('./policy-store')
+    const { canonicalContentHash, compileOwnerRules, publishPolicy, savePolicyDraft } = require('./policy-store') as typeof import('./policy-store')
     const record = {
       policyId: input.policyId, version: 1, title: input.title, contentHash: canonicalContentHash(input.content), content: input.content,
+      compiledRules: compileOwnerRules(input.content, input.policyId, 1),
       origin: { kind: 'owner-statement' as const, text: '向导录入', enteredBy: String(input.enteredBy ?? 'local-user'), enteredAt: new Date().toISOString() },
       status: 'draft' as const,
       confirmations: [{ actorId: String(input.enteredBy ?? 'local-user'), role: 'template-owner' as const, at: new Date().toISOString(), note: '向导录入确认' }],
