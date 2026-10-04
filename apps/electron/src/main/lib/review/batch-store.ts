@@ -174,3 +174,41 @@ export async function pushViaOutbox(port: SchoolPort, payload: PushPayload): Pro
   writeOutbox(entry)
   return entry
 }
+
+// ===== G06/G11：真实队列执行（逐案跑审核，坏案不阻塞全批） =====
+
+export interface BatchQueueOptions {
+  /** 运行参数注入（测试可传假执行器）；默认调用 runReviewCaseV2 */
+  runCase?: (caseId: string) => Promise<{ status: string }>
+}
+
+/**
+ * 批次队列执行：按案卷状态逐个 queued→running→done/failed。
+ * - 单案失败记录 error 并继续（06 §7.1 坏案不拖全批）
+ * - 定稿批次拒绝执行（重开新轮次后才能跑）
+ * - 中断可重入：已 done 的跳过，failed/queued 重试
+ */
+export async function runBatchQueue(batchId: string, options: BatchQueueOptions = {}): Promise<BatchStateV2> {
+  const state = readBatchStateV2(batchId)
+  if (!state) throw new Error(`批次不存在: ${batchId}`)
+  if (state.status === 'finalized') throw new Error('批次已定稿，需重开新轮次才能执行')
+  state.status = 'running'
+  saveBatchStateV2(state)
+  if (!options.runCase) throw new Error('runBatchQueue 需要注入 runCase（产品层由 buildReviewExecutors 提供，避免隐式默认执行器）')
+  const runCase = options.runCase
+  for (const entry of state.cases) {
+    if (entry.status === 'done') continue
+    updateCaseStatus(batchId, entry.caseId, 'running')
+    try {
+      const outcome = await runCase(entry.caseId)
+      if (outcome.status === 'completed') updateCaseStatus(batchId, entry.caseId, 'done')
+      else updateCaseStatus(batchId, entry.caseId, 'failed', `运行结束状态: ${outcome.status}`)
+    } catch (error) {
+      updateCaseStatus(batchId, entry.caseId, 'failed', error instanceof Error ? error.message : String(error))
+    }
+  }
+  const final = readBatchStateV2(batchId)!
+  final.status = final.cases.every((entry) => entry.status === 'done') ? 'queued' : 'queued' // 执行完回 queued（等待人工定稿，不自动定稿）
+  saveBatchStateV2(final)
+  return final
+}

@@ -5,7 +5,7 @@ import { afterAll, describe, expect, test } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewBatch } from '@profer/shared'
-import { createBatchV2, finalizeBatch, pushViaOutbox, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus } from './batch-store'
+import { createBatchV2, finalizeBatch, pushViaOutbox, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus, runBatchQueue } from './batch-store'
 import type { BatchStateV2 } from '@profer/shared'
 type Entry = BatchStateV2['cases'][number]
 import { MockSchoolAdapter } from './external-ports'
@@ -90,5 +90,38 @@ describe('持久 outbox（R11）', () => {
     const mock = new MockSchoolAdapter()
     await pushViaOutbox(mock, { caseId: 'c1', actionId: 'act-drift', actionKind: 'decision', baseExternalRevision: 0, body: { result: 'pass' } })
     await expect(pushViaOutbox(mock, { caseId: 'c1', actionId: 'act-drift', actionKind: 'decision', baseExternalRevision: 0, body: { result: 'reject' } })).rejects.toThrow('不同载荷')
+  })
+})
+
+describe('批次队列执行（G06/G11 真实队列）', () => {
+  test('Given 注入假 runCase When 执行 Then 逐案状态流转且坏案不阻塞', async () => {
+    createBatchV2(batch('bq1'))
+    await import('./case-store-v2').then(async (store) => {
+      void store
+    })
+    const state = await runBatchQueue('bq1', {
+      runCase: async (caseId: string) => {
+        if (caseId === 'c1') throw new Error('解析失败（坏案）')
+        return { status: 'completed' }
+      },
+    })
+    const c1 = state.cases.find((entry) => entry.caseId === 'c1')!
+    const c2 = state.cases.find((entry) => entry.caseId === 'c2')!
+    expect(c1.status).toBe('failed')
+    expect(c1.error).toContain('坏案')
+    expect(c2.status).toBe('done') // 坏案不阻塞全批
+  })
+
+  test('Given 已定稿批次 When 执行 Then 拒绝（重开才能跑）', async () => {
+    createBatchV2(batch('bq2'))
+    updateCaseStatus('bq2', 'c1', 'done')
+    updateCaseStatus('bq2', 'c2', 'done')
+    finalizeBatch('bq2', {})
+    await expect(runBatchQueue('bq2', { runCase: async () => ({ status: 'completed' }) })).rejects.toThrow('重开')
+  })
+
+  test('Given 未注入 runCase When 执行 Then 拒绝（不隐式默认执行器）', async () => {
+    createBatchV2(batch('bq3'))
+    await expect(runBatchQueue('bq3')).rejects.toThrow('注入')
   })
 })

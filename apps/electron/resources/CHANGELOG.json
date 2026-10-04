@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.128",
+      "date": "2026-10-05",
+      "title": "0.15.128",
+      "notes": "- G06/G11 真实队列：runBatchQueue 逐案 queued→running→done/failed（坏案不阻塞全批、已定稿拒绝、必须显式注入 runCase 不隐式默认执行器）；执行完回 queued 等待人工定稿"
+    },
+    {
       "version": "0.15.127",
       "date": "2026-10-05",
       "title": "0.15.127",
