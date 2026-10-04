@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.134",
+      "date": "2026-10-05",
+      "title": "0.15.134",
+      "notes": "- 复查 §5.3-5 申诉闭环：maintain-original→upheld / amend-original→overturned / withdrawn；复核结论后关闭开放任务并 decided；更正决定 actor=复核人（不继承原判）、finality=final"
+    },
+    {
       "version": "0.15.133",
       "date": "2026-10-05",
       "title": "0.15.133",

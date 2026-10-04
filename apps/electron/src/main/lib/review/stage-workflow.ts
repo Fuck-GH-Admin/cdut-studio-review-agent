@@ -217,11 +217,25 @@ export function resolveAppealV2(caseId: string, command: { requestId: string; ac
           // 更正 = 追加关联决定（不改写原判，07 §7.1）
           const originalDecision = draft.decisions.find((decision) => decision.id === original.againstDecisionId)
           if (!originalDecision) throw new CommandValidationError('NOT_FOUND', '原决定不存在')
-          amended = { ...originalDecision, id: draft.appeals[appealIndex]!.reviewDecisionId!, amendsDecisionId: originalDecision.id, result: payload.amendedResult ?? 'pass', reason: `申诉更正：${payload.reason}`, at: new Date().toISOString(), finality: originalDecision.finality }
+          amended = { ...originalDecision, id: draft.appeals[appealIndex]!.reviewDecisionId!, actor: command.actor, amendsDecisionId: originalDecision.id, result: payload.amendedResult ?? 'pass', reason: `申诉更正：${payload.reason}`, at: new Date().toISOString(), finality: 'final' }
           draft.decisions = [...draft.decisions, amended!]
         }
         if (payload.resolution === 'withdrawn') {
           draft.appeals[appealIndex] = { ...draft.appeals[appealIndex]!, status: 'withdrawn' }
+        }
+        // 复查 §5.3-5：resolution 明确后申诉闭环——维持/更正/撤回都终结申诉状态并闭锁案卷阶段
+        if (payload.resolution === 'maintain-original') {
+          draft.appeals[appealIndex] = { ...draft.appeals[appealIndex]!, status: 'upheld' }
+        }
+        if (payload.resolution === 'amend-original') {
+          draft.appeals[appealIndex] = { ...draft.appeals[appealIndex]!, status: 'overturned' }
+        }
+        if (payload.resolution !== 'withdrawn') {
+          // 维持/更正 = 复核结论已定：关闭开放任务并进入 decided（无其他开放任务时）
+          const hasOpen = draft.tasks.some((task) => task.status === 'open' && task.id !== draft.tasks.find((candidate) => candidate.stageId === 'final' && candidate.status === 'open')?.id)
+          draft.tasks = draft.tasks.map((task) => (task.status === 'open' ? { ...task, status: 'completed' as const, completedAt: new Date().toISOString() } : task))
+          void hasOpen
+          draft.caseV2.stage = 'decided'
         }
       },
       entity: aggregate.appeals.find((candidate) => candidate.id === payload.appealId),

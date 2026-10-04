@@ -222,3 +222,38 @@ describe('补件不足后再回复（复查 §5.3）', () => {
     if (done.ok) expect(done.aggregate.caseV2.stage).toBe('awaiting-supplement') // insufficient 阻断
   })
 })
+
+describe('申诉闭环（复查 §5.3-5）', () => {
+  test('Given 维持原判 When resolution Then 申诉 upheld 且案卷 decided', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const reject = await recordStageDecision(caseId, { requestId: nextReq(), actor, expectedRevision: 1, payload: { action: 'final-reject', taskId: firstTaskId, reason: '驳回' } }, template)
+    const agg = reject.ok ? reject.aggregate : readAggregate(caseId)!
+    const { submitCommand, readAggregate: readAgg } = await import('./case-store-v2')
+    await submitCommand(caseId, { requestId: nextReq(), actor, expectedRevision: agg.caseV2.revision, type: 'SeedAppeal', payload: {} }, () => ({ summary: '种子申诉', mutate: (draft) => { draft.appeals = [{ id: 'ap-1', caseId, againstDecisionId: draft.decisions[0]!.id, appellant: { actorId: 'stu', actorSource: 'local' }, statement: '不服', newEvidenceDocumentVersionIds: [], status: 'in-review' as const, resolution: undefined, reviewDecisionId: undefined, createdAt: new Date().toISOString() }] } }))
+    const base = readAgg(caseId)!
+    const outcome = await resolveAppealV2(caseId, { requestId: nextReq(), actor: { actorId: 'teacher-1', actorSource: 'local', role: 'teacher' }, expectedRevision: base.caseV2.revision, payload: { appealId: 'ap-1', resolution: 'maintain-original', reason: '复核维持' } })
+    expect(outcome.ok).toBeTrue()
+    if (outcome.ok) {
+      expect(outcome.aggregate.appeals[0]!.status).toBe('upheld')
+      expect(outcome.aggregate.caseV2.stage).toBe('decided')
+    }
+  })
+
+  test('Given 更正 When resolution Then 新决定 actor=复核人 且 finality=final', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const reject = await recordStageDecision(caseId, { requestId: nextReq(), actor, expectedRevision: 1, payload: { action: 'final-reject', taskId: firstTaskId, reason: '驳回' } }, template)
+    const agg = reject.ok ? reject.aggregate : readAggregate(caseId)!
+    const { submitCommand, readAggregate: readAgg2 } = await import('./case-store-v2')
+    await submitCommand(caseId, { requestId: nextReq(), actor, expectedRevision: agg.caseV2.revision, type: 'SeedAppeal', payload: {} }, () => ({ summary: '种子申诉', mutate: (draft) => { draft.appeals = [{ id: 'ap-2', caseId, againstDecisionId: draft.decisions[0]!.id, appellant: { actorId: 'stu', actorSource: 'local' }, statement: '证据有效', newEvidenceDocumentVersionIds: [], status: 'in-review' as const, resolution: undefined, reviewDecisionId: 'dec-amend', createdAt: new Date().toISOString() }] } }))
+    const base = readAgg2(caseId)!
+    const outcome = await resolveAppealV2(caseId, { requestId: nextReq(), actor: { actorId: 'teacher-1', actorSource: 'local', role: 'teacher' }, expectedRevision: base.caseV2.revision, payload: { appealId: 'ap-2', resolution: 'amend-original', reason: '证明有效', amendedResult: 'pass' } })
+    expect(outcome.ok).toBeTrue()
+    if (outcome.ok) {
+      expect(outcome.aggregate.appeals[0]!.status).toBe('overturned')
+      expect(outcome.aggregate.caseV2.stage).toBe('decided')
+      const amend = outcome.aggregate.decisions.find((decision) => decision.amendsDecisionId)
+      expect(amend!.actor.actorId).toBe('teacher-1') // 不继承原决定 actor
+      expect(amend!.finality).toBe('final')
+    }
+  })
+})
