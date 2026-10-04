@@ -75,10 +75,14 @@ export function projectForRole(
       fields: Object.fromEntries(Object.entries(subject.fields).filter(([key]) => isPublicField(fieldVisibility[key])).map(([key, value]) => [key, projectFieldValue(value)])),
     }))
   }
-  // judge 只见本人评分
+  // judge 只见本人评分（复查 §5.6：从 ratings 取，不再取 dispositions）
   if (role === 'judge' && viewerId) {
-    const own = aggregate.dispositions.find((entry) => entry.actor === viewerId)
+    const own = aggregate.ratings?.find((rating) => rating.actor === viewerId)
     base.ownRating = own ?? null
+  }
+  // 学生/评委视角：决定 reason 可能含内部调查细节（复查 §5.6）——公开投影只保留结果与终审性
+  if (role === 'student' || role === 'judge') {
+    base.decisions = base.decisions.map((decision) => ({ ...decision, reason: '' }))
   }
   // 内部意见仅审核/组织者
   if (role === 'reviewer' || role === 'teacher' || role === 'organizer') {

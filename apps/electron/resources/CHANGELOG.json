@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.132",
+      "date": "2026-10-05",
+      "title": "0.15.132",
+      "notes": "- G09 投影共用（复查 §5.6）：projectForRole 的 ownRating 改从 ratings 取；student/judge 视角决定 reason 不输出（内部调查细节不进公开投影）"
+    },
+    {
       "version": "0.15.131",
       "date": "2026-10-05",
       "title": "0.15.131",

@@ -102,3 +102,18 @@ describe('公开报告投影（G09）', () => {
     expect(anonymizeName('张三')).toBe(anonymizeName('张三'))
   })
 })
+
+describe('投影共用策略（复查 §5.6）', () => {
+  test('Given student 视角 When 投影 Then 决定 reason 不输出（内部细节不公开）', () => {
+    const withReason = { ...aggregate, decisions: [{ id: 'd1', actor: localActor, scope: { kind: 'case', ids: [] }, stageId: 'final', result: 'reject', reason: '内部调查：该生曾有处分记录', basedOnRunId: 'r', basedOnRevision: 1, at: new Date().toISOString(), finality: 'final' }] } as typeof aggregate
+    const projection = projectForRole(withReason, 'student', visibility)
+    expect(projection.decisions[0]!.result).toBe('reject')
+    expect(projection.decisions[0]!.reason).toBe('')
+  })
+
+  test('Given judge 视角带 ratings When 投影 Then ownRating 来自 ratings 而非 dispositions', () => {
+    const withRating = { ...aggregate, ratings: [{ id: 'r1', caseId: aggregate.caseV2.id, stageId: 'rating', actor: 'judge-9', scores: { d1: 4 }, at: new Date().toISOString(), round: 1 }] } as typeof aggregate
+    const projection = projectForRole(withRating, 'judge', visibility, 'judge-9')
+    expect(projection.ownRating).toMatchObject({ scores: { d1: 4 } })
+  })
+})
