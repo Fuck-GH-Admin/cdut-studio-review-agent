@@ -1,8 +1,7 @@
 /**
  * AboutSettings - 关于页面
  *
- * 显示应用版本号等基本信息，以及版本检测状态。
- * 检测到新版本后引导用户去 GitHub Releases 手动下载。
+ * 显示应用版本号等基本信息，以及 Agent 运行环境检测状态。
  */
 
 import * as React from 'react'

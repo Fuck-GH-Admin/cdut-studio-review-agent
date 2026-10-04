@@ -16,18 +16,18 @@ import {
   Loader2,
   Brain,
   MessageSquareText,
-  Download,
   Check,
 } from 'lucide-react'
 import { useAtomValue } from 'jotai'
 import { thinkingExpandedAtom } from '@/atoms/conversation-atoms'
 import { cn } from '@/lib/utils'
-import { ImageLightbox } from '@profer/ui/primitives/image-lightbox'
 import { MessageResponse } from '@/components/ai-elements/message'
 import { getToolIcon, extractFilePath } from './tool-utils'
 import { getToolPhrase } from './tool-phrase'
 import { ToolResultRenderer } from './tool-result-renderers'
 import { parseAgentImageAttachmentDetails, parseAgentImageAttachmentMarkers, type ParsedAgentImageAttachment } from './image-attachment-marker'
+import { AgentImageThumb, dedupeImages, toRenderableFromAttachment, type AgentRenderableImage } from './agent-renderable-image'
+import { useToolSupplementalImages } from './tool-supplemental-images'
 import { PreviewOpenButton } from './tool-result-renderers/preview-open-button'
 import { getTaskGetStatusLabel, parseTaskGetResult, type ParsedTaskGetResult } from './tool-result-renderers/task-get-result'
 import { parseTaskListResult, type ParsedTaskListItem } from './tool-result-renderers/task-list-result'
@@ -361,9 +361,18 @@ function ToolUseBlock({ block, allMessages, animate = false, index = 0, dimmed =
   const toolResult = useToolResult(block.id, allMessages)
   const resultText = toolResult?.result
   const isError = toolResult?.isError === true
-  // generate_image 已有独立的持久化生成卡片；这里只让 send_local_image 的结构化附件
-  // 直接出现在工具行，避免同一张生图在时间线和工具结果中重复显示。
-  const imageAttachments = block.name === 'send_local_image' ? (toolResult?.imageAttachments ?? []) : []
+  // 通用图片渲染：工具结果里的结构化图片附件（generate_image 有独立卡片，不重复展示）
+  // + 来自本地状态的补充图片（如 CDUT 学籍证件照）。
+  const action = typeof block.input.action === 'string' ? block.input.action : ''
+  const supplementalImages = useToolSupplementalImages(block.name, action)
+  const imageAttachments = React.useMemo<AgentRenderableImage[]>(() => {
+    const structured = block.name === 'generate_image'
+      ? []
+      : (toolResult?.imageAttachments ?? []).map(toRenderableFromAttachment)
+    // 补充图片（如 CDUT 证件照）仅在工具成功完成后展示，避免执行中提前露出
+    const supplemental = toolResult && !isError ? supplementalImages : []
+    return dedupeImages([structured, supplemental])
+  }, [block.name, toolResult, isError, supplementalImages])
   const shouldShowResult = !!resultText || imageAttachments.length > 0
   const taskGetSummary = React.useMemo(() => {
     if (block.name !== 'TaskGet' || !resultText || isError) return null
@@ -613,7 +622,7 @@ function ToolUseBlock({ block, allMessages, animate = false, index = 0, dimmed =
       {imageAttachments.length > 0 && (
         <div className="ml-5.5 mt-1 mb-2 flex flex-wrap gap-3">
           {imageAttachments.map((image, i) => (
-            <GeneratedImageThumb key={`${image.localPath}:${i}`} image={image} />
+            <AgentImageThumb key={`${image.kind}:${i}`} image={image} />
           ))}
         </div>
       )}
@@ -748,55 +757,6 @@ function ThinkingBlock({ block, dimmed = false, streaming = false }: ThinkingBlo
   )
 }
 
-// ===== Agent 图片附件解析与渲染 =====
-
-/** 生成图片缩略图组件（点击可预览大图） */
-function GeneratedImageThumb({ image }: { image: ParsedAgentImageAttachment }): React.ReactElement {
-  const [imageSrc, setImageSrc] = React.useState<string | null>(null)
-  const [lightboxOpen, setLightboxOpen] = React.useState(false)
-
-  React.useEffect(() => {
-    window.electronAPI
-      .readAttachment(image.localPath)
-      .then((base64) => setImageSrc(`data:${image.mediaType};base64,${base64}`))
-      .catch((err) => console.error('[GeneratedImage] 读取图片失败:', err))
-  }, [image.localPath, image.mediaType])
-
-  const handleSave = React.useCallback((): void => {
-    window.electronAPI.saveImageAs(image.localPath, image.filename)
-  }, [image.localPath, image.filename])
-
-  if (!imageSrc) {
-    return <div className="w-full max-w-[300px] h-[200px] rounded-lg bg-muted/30 animate-pulse shrink-0" />
-  }
-
-  return (
-    <div className="relative group inline-block">
-      <img
-        src={imageSrc}
-        alt={image.filename}
-        className="max-w-[400px] max-h-[350px] rounded-lg object-contain cursor-pointer border border-border/50"
-        onClick={() => setLightboxOpen(true)}
-      />
-      <button
-        type="button"
-        onClick={handleSave}
-        className="absolute bottom-2 right-2 p-1.5 rounded-md bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70"
-        title="保存图片"
-      >
-        <Download className="size-4" />
-      </button>
-      <ImageLightbox
-        src={imageSrc}
-        alt={image.filename}
-        open={lightboxOpen}
-        onOpenChange={setLightboxOpen}
-        onSave={handleSave}
-      />
-    </div>
-  )
-}
-
 // ===== ContentBlock 主组件 =====
 
 const ContentBlockView = function ContentBlock({ block, allMessages, basePath, basePaths, animate = false, index = 0, dimmed = false, childBlocks, isStreaming, showThinking = true }: ContentBlockProps): React.ReactElement | null {
@@ -807,14 +767,15 @@ const ContentBlockView = function ContentBlock({ block, allMessages, basePath, b
 
     // 兼容历史消息中的本地图片标记；新工具结果使用结构化附件。
     // Goal 迭代的 <goal_result> 机器协议块只用于主进程解析，不做展示。
-    const { images, cleanText } = parseAgentImageAttachmentMarkers(stripGoalResultBlocks(textBlock.text))
+    const { images: markerImages, cleanText } = parseAgentImageAttachmentMarkers(stripGoalResultBlocks(textBlock.text))
+    const images = markerImages.map(toRenderableFromAttachment)
 
     return (
       <>
         {images.length > 0 && (
           <div className="flex flex-wrap gap-3 mb-3">
             {images.map((img, i) => (
-              <GeneratedImageThumb key={`${img.localPath}:${i}`} image={img} />
+              <AgentImageThumb key={`${img.kind}:${i}`} image={img} />
             ))}
           </div>
         )}

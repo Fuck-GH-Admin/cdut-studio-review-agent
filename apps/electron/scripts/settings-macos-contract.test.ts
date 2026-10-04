@@ -63,17 +63,5 @@ describe('Mac 设置页接线契约', () => {
     expect(startup).toContain('app.setLoginItemSettings({ openAtLogin: enabled })')
   })
 
-  test('Given 更新弹窗全局挂载 When 存在手动渠道 Then 不自动弹窗且类型贯通 IPC', () => {
-    // Rebrand 后关于页不再内置更新 switch；更新 UI 收敛为全局挂载的 UpdateDialog。
-    // manualUrl（开发版等手动渠道）存在时禁止自动弹窗，避免绕过手动发布流程。
-    const dialog = source('renderer/components/settings/UpdateDialog.tsx')
-    expect(dialog).toContain('!updateStatus.manualUrl')
-    expect(dialog).toContain('window.electronAPI.updater?.quitAndInstall()')
-    const main = source('renderer/main.tsx')
-    expect(main).toContain('<UpdateDialog />')
-    for (const path of ['renderer/atoms/updater.ts', 'renderer/vite-env.d.ts', 'preload/index.ts']) {
-      expect(source(path)).toContain("| 'disabled' | 'error'")
-    }
-  })
 })
 

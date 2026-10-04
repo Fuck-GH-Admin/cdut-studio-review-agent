@@ -30,7 +30,6 @@ import { settingsTabAtom, channelFormDirtyAtom, settingsCloseRequestedAtom, sett
 import type { SettingsTab } from "@/atoms/settings-tab";
 import { appModeAtom } from "@/atoms/app-mode";
 import { authStatusAtom } from "@/atoms/identity-atoms";
-import { hasUpdateAtom } from "@/atoms/updater";
 import { tabsAtom, activeTabIdAtom, openTab, TUTORIAL_TAB_ID } from "@/atoms/tab-atoms";
 import { hasEnvironmentIssuesAtom } from "@/atoms/environment";
 import { developerModeEnabledAtom } from "@/atoms/developer-mode";
@@ -97,7 +96,7 @@ const SYSTEM_GROUP_ITEMS: SettingsTabItem[] = [
 /** 帮助：教程 / 关于与更新 */
 const HELP_GROUP_ITEMS: SettingsTabItem[] = [
   { id: "tutorial", label: "CDUT Studio 教程", icon: <GraduationCap size={16} /> },
-  { id: "about", label: "关于/更新", icon: <Info size={16} /> },
+  { id: "about", label: "关于", icon: <Info size={16} /> },
 ];
 
 const DEVELOPER_MODE_ITEM: SettingsTabItem = {
@@ -157,7 +156,6 @@ export function SettingsPanel({
   const [closeRequested, setCloseRequested] = useAtom(settingsCloseRequestedAtom);
   const setSettingsOpen = useSetAtom(settingsOpenAtom);
   const appMode = useAtomValue(appModeAtom);
-  const hasUpdate = useAtomValue(hasUpdateAtom);
   const hasEnvironmentIssues = useAtomValue(hasEnvironmentIssuesAtom);
   const developerModeEnabled = useAtomValue(developerModeEnabledAtom);
   const [mainTabs, setMainTabs] = useAtom(tabsAtom);
@@ -306,7 +304,7 @@ export function SettingsPanel({
                     effectiveTab === tab.id ? "text-primary" : "text-muted-foreground/70 group-hover:text-foreground"
                   )}>{tab.icon}</span>
                   <span className="truncate">{tab.label}</span>
-                  {tab.id === "about" && (hasUpdate || hasEnvironmentIssues) && (
+                  {tab.id === "about" && hasEnvironmentIssues && (
                     <span className="ml-auto size-2 rounded-full bg-red-500" />
                   )}
                 </button>

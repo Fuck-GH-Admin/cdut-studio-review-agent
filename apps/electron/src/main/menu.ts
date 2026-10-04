@@ -78,17 +78,17 @@ export function createApplicationMenu(): Menu {
     ...(isMac
       ? [
           {
-            label: 'Profer',
+            label: 'CDUT Studio',
             submenu: [
-              { role: 'about' as const, label: '关于 Profer' },
+              { role: 'about' as const, label: '关于 CDUT Studio' },
               { type: 'separator' as const },
               { role: 'services' as const, label: '服务' },
               { type: 'separator' as const },
-              { role: 'hide' as const, label: '隐藏 Profer' },
+              { role: 'hide' as const, label: '隐藏 CDUT Studio' },
               { role: 'hideOthers' as const, label: '隐藏其他' },
               { role: 'unhide' as const, label: '显示全部' },
               { type: 'separator' as const },
-              { role: 'quit' as const, label: '退出 Profer' },
+              { role: 'quit' as const, label: '退出 CDUT Studio' },
             ],
           },
         ]
@@ -184,7 +184,7 @@ export function createApplicationMenu(): Menu {
         {
           label: '了解更多',
           click: async () => {
-            await shell.openExternal('https://github.com/yourusername/proma')
+            await shell.openExternal('https://github.com/Nya-Angle/CDUT-Studio')
           },
         },
       ],
