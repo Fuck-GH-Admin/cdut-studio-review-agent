@@ -273,6 +273,10 @@ export function registerReviewIpc(): void {
     const { respondSupplementV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
     return respondSupplementV2(input.caseId, input.command as unknown as Parameters<typeof respondSupplementV2>[1])
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CAST_RATING_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+    const { castRating } = require('./rating-service') as typeof import('./rating-service')
+    return castRating(input.caseId, input.command as unknown as Parameters<typeof castRating>[1])
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_APPEAL_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { resolveAppealV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
     return resolveAppealV2(input.caseId, input.command as unknown as Parameters<typeof resolveAppealV2>[1])

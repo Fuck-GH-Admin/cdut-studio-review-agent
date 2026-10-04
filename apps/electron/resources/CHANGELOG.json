@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.122",
+      "date": "2026-10-05",
+      "title": "0.15.122",
+      "notes": "- G06/G11：独立评分服务——castRating 唯一票（事务内查重 INVALID_TRANSITION）；aggregateRatings 纯函数：N-A block/exclude-renormalize 两策略、缺评阻断、最低有效人数门控、重复票检出；CaseAggregateV2.ratings 落盘；评委评分按钮入面板"
+    },
+    {
       "version": "0.15.121",
       "date": "2026-10-05",
       "title": "0.15.121",

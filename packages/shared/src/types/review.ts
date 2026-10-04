@@ -482,6 +482,7 @@ export const REVIEW_IPC_CHANNELS = {
   RECORD_STAGE_DECISION_V2: 'review-v2:record-stage-decision',
   RESOLVE_SUPPLEMENT_V2: 'review-v2:resolve-supplement',
   RESPOND_SUPPLEMENT_V2: 'review-v2:respond-supplement',
+  CAST_RATING_V2: 'review-v2:cast-rating',
   SUBMIT_APPEAL_V2: 'review-v2:submit-appeal',
   RESOLVE_APPEAL_V2: 'review-v2:resolve-appeal',
   // ===== N4b：模板向导 =====

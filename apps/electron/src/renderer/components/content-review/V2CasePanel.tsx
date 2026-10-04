@@ -222,6 +222,14 @@ function BusinessFlowSection({ aggregate, onResult }: { aggregate: CaseAggregate
           <Button size="sm" variant="outline" onClick={() => void act('return-for-supplement', { reason: '缺证明', supplementRequiredElements: ['等级', '日期'], supplementReason: '请补交含等级与日期的证明' })}>退回补件</Button>
           <Button size="sm" variant="outline" onClick={() => void act('final-reject', { reason: '不符合规定' })}>最终驳回</Button>
           <Button size="sm" variant="outline" onClick={() => void act('withdraw', { reason: '提交者撤回' })}>撤回</Button>
+          {openTasks[0]?.stageId === 'rating' && (
+            <Button size="sm" variant="outline" onClick={() => {
+              void window.reviewAPI.castRatingV2({
+                caseId,
+                command: { requestId: `rate-${Date.now().toString(36)}`, target: { kind: 'case', id: caseId }, expectedRevision: aggregate.caseV2.revision, actor: { actorId: 'judge-local', actorSource: 'local', role: 'judge' }, type: 'CastRating', payload: { stageId: 'rating', scores: { overall: 4 } } },
+              }).then(onResult)
+            }}>评委评分（4/5）</Button>
+          )}
         </div>
       )}
       {aggregate.supplements.filter((request) => request.status === 'open' || request.status === 'responded').length > 0 && (

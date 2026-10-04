@@ -3659,6 +3659,8 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   respondSupplementV2: (input: { caseId: string; command: Record<string, unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESPOND_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  castRatingV2: (input: { caseId: string; command: Record<string, unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CAST_RATING_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   resolveAppealV2: (input: { caseId: string; command: Record<string, unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESOLVE_APPEAL_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   createPolicyV2: (input: { policyId: string; title: string; content: string; enteredBy: string }) =>

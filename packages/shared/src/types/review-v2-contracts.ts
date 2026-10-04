@@ -287,6 +287,16 @@ export interface CommandReceipt {
 }
 
 /** 单案业务聚合（state.v2.json 形态；07 §3.3） */
+export interface RatingEntryV2 {
+  id: string
+  caseId: string
+  stageId: string
+  actor: string
+  scores: Record<string, number | 'N/A'>
+  at: string
+  round: number
+}
+
 export interface CaseAggregateV2 {
   caseV2: ReviewCaseV2
   observations: Observation[]
@@ -297,6 +307,8 @@ export interface CaseAggregateV2 {
   supplements: SupplementRequest[]
   appeals: Appeal[]
   receiptLog: CommandReceipt[]
+  /** 独立评分（G06：唯一票，事务内查重） */
+  ratings?: RatingEntryV2[]
 }
 
 export type CommandErrorCode =
