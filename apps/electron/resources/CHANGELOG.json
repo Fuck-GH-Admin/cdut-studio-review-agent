@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.129",
+      "date": "2026-10-05",
+      "title": "0.15.129",
+      "notes": "- G02 第一步：RUN_REVIEW_V2 四层接通——v2-executor-factory 装配 11 节点真实执行器（extract/summarize 走 Pi 网关：输入含案卷字段/规则/材料文本，输出 JSON 经引用校验与规则白名单过滤；parse 建段落索引；check 走确定性引擎；OCR 如实 unavailable）；未配置渠道明确报错不冒充审核；面板开始自动审核按钮"
+    },
+    {
       "version": "0.15.128",
       "date": "2026-10-05",
       "title": "0.15.128",

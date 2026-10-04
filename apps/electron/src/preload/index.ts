@@ -3659,6 +3659,7 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   respondSupplementV2: (input: { caseId: string; command: Record<string, unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESPOND_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  runReviewV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, caseId) as Promise<import('@profer/shared').ReviewRunV2>,
   castRatingV2: (input: { caseId: string; command: Record<string, unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CAST_RATING_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   resolveAppealV2: (input: { caseId: string; command: Record<string, unknown> }) =>
