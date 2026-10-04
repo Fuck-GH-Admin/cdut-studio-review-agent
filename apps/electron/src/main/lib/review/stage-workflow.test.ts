@@ -188,3 +188,37 @@ describe('申诉更正与最终投影（R07）', () => {
     expect(appealOutcome.ok).toBeTrue()
   })
 })
+
+describe('补件不足后再回复（复查 §5.3）', () => {
+  test('Given insufficient When 再次回复+判定满足 Then 流程恢复', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const open = await recordStageDecision(caseId, { requestId: nextReq(), actor, expectedRevision: 1, payload: { action: 'return-for-supplement', taskId: firstTaskId, reason: '缺', supplementRequiredElements: ['a'], supplementReason: '补A' } }, template)
+    const aggregate = open.ok ? open.aggregate : readAggregate(caseId)!
+    const sup = aggregate.supplements[0]!
+    // 判不足
+    const ins = await resolveSupplementV2(caseId, { requestId: nextReq(), actor, expectedRevision: aggregate.caseV2.revision, payload: { supplementId: sup.id, outcome: 'insufficient', reason: '仍缺' } })
+    expect(ins.ok).toBeTrue()
+    // 再次回复（修复前 INVALID_TRANSITION）
+    const reply = await respondSupplementV2(caseId, { requestId: nextReq(), actor: { actorId: 'stu', actorSource: 'local', role: 'student' }, expectedRevision: (ins.ok ? ins.aggregate : aggregate).caseV2.revision, payload: { supplementId: sup.id, note: '第二次已补齐' } })
+    expect(reply.ok).toBeTrue()
+    // 满足后恢复+回流
+    const done = await resolveSupplementV2(caseId, { requestId: nextReq(), actor, expectedRevision: (reply.ok ? reply.aggregate : aggregate).caseV2.revision, payload: { supplementId: sup.id, outcome: 'satisfied', reason: '齐全' } })
+    expect(done.ok).toBeTrue()
+    if (done.ok) {
+      expect(done.aggregate.caseV2.stage).toBe('reviewing')
+      expect(done.aggregate.tasks.some((task) => task.stageId === 'first' && task.status === 'open')).toBeTrue()
+    }
+  })
+
+  test('Given satisfied 但另一请求 insufficient When 门控 Then 不恢复（insufficient 计入未满足）', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const open = await recordStageDecision(caseId, { requestId: nextReq(), actor, expectedRevision: 1, payload: { action: 'return-for-supplement', taskId: firstTaskId, reason: '缺', supplementRequiredElements: ['a'], supplementReason: '补A' } }, template)
+    let agg = open.ok ? open.aggregate : readAggregate(caseId)!
+    const { submitCommand } = await import('./case-store-v2')
+    await submitCommand(caseId, { requestId: nextReq(), actor, expectedRevision: agg.caseV2.revision, type: 'Seed', payload: {} }, () => ({ summary: '注入第二请求', mutate: (draft) => { draft.supplements = [...draft.supplements, { id: 'sup-2', caseId, originFindingKeys: [], requiredElements: ['b'], reason: '缺B', responsibleRole: 'student', status: 'insufficient', responses: [], createdAt: new Date().toISOString() }] } }))
+    agg = readAggregate(caseId)!
+    const done = await resolveSupplementV2(caseId, { requestId: nextReq(), actor, expectedRevision: agg.caseV2.revision, payload: { supplementId: agg.supplements[0]!.id, outcome: 'satisfied', reason: '齐' } })
+    expect(done.ok).toBeTrue()
+    if (done.ok) expect(done.aggregate.caseV2.stage).toBe('awaiting-supplement') // insufficient 阻断
+  })
+})

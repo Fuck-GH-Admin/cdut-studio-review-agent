@@ -24,7 +24,9 @@ export interface AggregatedRatings {
 }
 
 /** 聚合评分（纯函数）：rubric 权重 + N-A 策略 + 缺评门控 */
-export function aggregateRatings(ratings: RatingEntry[], rubric: RubricSpec): AggregatedRatings {
+export function aggregateRatings(ratings: RatingEntry[], rubric: RubricSpec, filterRound?: number): AggregatedRatings {
+  // 轮次隔离：只汇总指定轮次（复查 §5.4：R1 的 j1 与 R2 的 j2 不得混算）
+  const scoped = filterRound === undefined ? ratings : ratings.filter((rating) => rating.round === filterRound)
   const dimensions = rubric.dimensions
   const naStrategy = rubric.naStrategy ?? 'block'
   const blocked: string[] = []
@@ -32,7 +34,7 @@ export function aggregateRatings(ratings: RatingEntry[], rubric: RubricSpec): Ag
   let naCount = 0
   let missingCount = 0
 
-  for (const rating of ratings) {
+  for (const rating of scoped) {
     const naDimensions: string[] = []
     const missingDimensions: string[] = []
     // 权重归一化基础：block 策略下 N/A 不重归一（直接阻断）；exclude 策略剔除后重归一
@@ -74,7 +76,7 @@ export function aggregateRatings(ratings: RatingEntry[], rubric: RubricSpec): Ag
 
   // 唯一票检查（同 actor 同阶段重复）
   const seen = new Set<string>()
-  for (const rating of ratings) {
+  for (const rating of scoped) {
     const key = `${rating.stageId}:${rating.actor}`
     if (seen.has(key)) blocked.push(`评委 ${rating.actor} 在 ${rating.stageId} 存在重复票（唯一票约束）`)
     seen.add(key)
@@ -91,7 +93,9 @@ export function aggregateRatings(ratings: RatingEntry[], rubric: RubricSpec): Ag
 /** 提交评分（命令事务；唯一票约束在事务内校验） */
 export function castRating(caseId: string, command: { requestId: string; actor: import('@profer/shared').Actor; expectedRevision: number; payload: { stageId: string; scores: Record<string, number | 'N/A'>; round?: number } }): Promise<unknown> {
   return submitCommand<{ stageId: string; scores: Record<string, number | 'N/A'>; round?: number }, RatingEntry>(caseId, { ...command, type: 'CastRating' }, (aggregate, payload) => {
-    const duplicate = aggregate.ratings?.some((rating) => rating.stageId === payload.stageId && rating.actor === command.actor.actorId)
+    // 唯一票键含轮次（复查 §5.4：重开后同人有合法新票；同轮次重复才拒绝）
+  const round = payload.round ?? 1
+  const duplicate = aggregate.ratings?.some((rating) => rating.stageId === payload.stageId && rating.actor === command.actor.actorId && rating.round === round)
     if (duplicate) throw new CommandValidationError('INVALID_TRANSITION', '该评委在此阶段已提交过评分（唯一票）')
     for (const value of Object.values(payload.scores)) {
       if (value === 'N/A') continue

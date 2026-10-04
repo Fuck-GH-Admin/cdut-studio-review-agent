@@ -154,7 +154,7 @@ export function respondSupplementV2(caseId: string, command: { requestId: string
   return submitCommand<{ supplementId: string; note: string; documentVersionIds?: string[] }, SupplementRequest>(caseId, { ...command, type: 'RespondSupplement' }, (aggregate, payload) => {
     const target = aggregate.supplements.find((request) => request.id === payload.supplementId)
     if (!target) throw new CommandValidationError('NOT_FOUND', `补件请求不存在: ${payload.supplementId}`)
-    if (target.status !== 'open' && target.status !== 'responded') throw new CommandValidationError('INVALID_TRANSITION', `补件已关闭（${target.status}）`)
+    if (target.status !== 'open' && target.status !== 'responded' && target.status !== 'insufficient') throw new CommandValidationError('INVALID_TRANSITION', `补件已关闭（${target.status}）`)
     // 角色校验（05 §2 补件责任方）：仅 student/submitter 可回复
     if (target.responsibleRole === 'student' && command.actor.role !== 'student' && command.actor.role !== 'reviewer') throw new CommandValidationError('INVALID_TRANSITION', '该补件由学生负责，其他角色不能代回复')
     if (!payload.note.trim() && !(payload.documentVersionIds?.length)) throw new CommandValidationError('VALIDATION_FAILED', '回复必须附说明或材料')
@@ -181,8 +181,8 @@ export function resolveSupplementV2(caseId: string, command: { requestId: string
       summary: `补件判定：${payload.outcome}`,
       mutate: (draft) => {
         draft.supplements = draft.supplements.map((request) => (request.id === payload.supplementId ? { ...request, status: payload.outcome } : request))
-        // 多请求门控：所有未结束请求结束才恢复
-        const stillOpen = draft.supplements.some((request) => request.status === 'open' || request.status === 'responded')
+        // 多请求门控：所有未满足请求结束才恢复（open/responded/insufficient 都阻断；cancelled=明确豁免）
+        const stillOpen = draft.supplements.some((request) => request.status === 'open' || request.status === 'responded' || request.status === 'insufficient')
         if (payload.outcome === 'satisfied' && !stillOpen) {
           draft.caseV2.stage = 'reviewing'
           // G05 任务回流：按退回来源阶段重建开放任务（同轮次续审补交材料）

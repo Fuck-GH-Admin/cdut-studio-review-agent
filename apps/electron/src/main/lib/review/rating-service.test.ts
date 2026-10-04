@@ -70,3 +70,21 @@ describe('提交评分事务（G06）', () => {
     if (!(second as { ok: boolean }).ok) expect((second as { code: string }).code).toBe('INVALID_TRANSITION')
   })
 })
+
+describe('评分轮次隔离（复查 §5.4）', () => {
+  test('Given R1 与 R2 的评分 When 按 R2 汇总 Then 只算 R2', () => {
+    const r1 = rating('j1', { d1: 1, d2: 1 }); const r2 = rating('j2', { d1: 5, d2: 5 })
+    const r1e = { ...r1, round: 1 }; const r2e = { ...r2, round: 2 }
+    const result = aggregateRatings([r1e, r2e], { ...rubric, minEffectiveJudges: 1 }, 2)
+    expect(result.effectiveJudges).toBe(1)
+    expect(result.average).toBe(5)
+  })
+
+  test('Given 同人不同轮次 When castRating Then 新轮次可提交', async () => {
+    const actor = { actorId: 'judge-9', actorSource: 'local' as const, role: 'judge' as const }
+    const r1 = await castRating('case-rate-1', { requestId: 'rr1', actor, expectedRevision: 1, payload: { stageId: 'rating', scores: { d1: 3, d2: 3 }, round: 1 } })
+    expect((r1 as { ok: boolean }).ok).toBeTrue()
+    const again = await castRating('case-rate-1', { requestId: 'rr2', actor, expectedRevision: 2, payload: { stageId: 'rating', scores: { d1: 4, d2: 4 }, round: 2 } })
+    expect((again as { ok: boolean }).ok).toBeTrue() // 跨轮次合法新票
+  })
+})
