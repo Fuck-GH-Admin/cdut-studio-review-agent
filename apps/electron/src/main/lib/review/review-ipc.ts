@@ -274,6 +274,33 @@ export function registerReviewIpc(): void {
     return respondSupplementV2(input.caseId, input.command as unknown as Parameters<typeof respondSupplementV2>[1])
   })
   // ===== G02：V2 真实运行（网关客户端 → 真实执行器 → 运行图管线；未配置渠道时明确报错不冒充审核） =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_BATCH_V2, async (_e, batchId: string) => {
+    if (typeof batchId !== 'string' || !batchId) throw new Error('参数 batchId 非法')
+    const { runBatchQueue } = require('./batch-store') as typeof import('./batch-store')
+    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+    const { getTemplate } = require('./template-store') as typeof import('./template-store')
+    const { runReviewCaseV2 } = require('./run-service-v2') as typeof import('./run-service-v2')
+    const { resolveReviewGatewayChannel, chatCompletion, REVIEW_RUN_TIMEOUT_MS } = require('./review-model-gateway') as typeof import('./review-model-gateway')
+    const { assembleV2Executors } = require('./v2-executor-factory') as typeof import('./v2-executor-factory')
+    const resolved = resolveReviewGatewayChannel()
+    if (!resolved) throw new Error('未配置可用模型渠道，无法执行批次审核')
+    const client = {
+      protocol: (resolved.channel as { protocol?: string }).protocol ?? 'openai-chat',
+      complete: async (input: { prompt: string; system: string; signal?: AbortSignal }) => ({
+        content: await chatCompletion(resolved.channel, [{ role: 'system', content: input.system }, { role: 'user', content: input.prompt }], { timeoutMs: REVIEW_RUN_TIMEOUT_MS }),
+      }),
+    }
+    return runBatchQueue(batchId, {
+      runCase: async (caseId: string) => {
+        const aggregate = getCaseV2Aggregate(caseId)
+        if (!aggregate) throw new Error(`案卷聚合不存在: ${caseId}`)
+        const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+        if (!template) throw new Error(`模板不存在: ${aggregate.caseV2.templateId}`)
+        const run = await runReviewCaseV2(aggregate.caseV2, template, assembleV2Executors(aggregate, template, { client }), {})
+        return { status: run.status }
+      },
+    })
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, async (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')

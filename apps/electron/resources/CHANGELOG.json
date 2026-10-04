@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.131",
+      "date": "2026-10-05",
+      "title": "0.15.131",
+      "notes": "- G10 使用入口 + G11 产品接通：V2CasePanel 已发布模板选择→动态字段表单→建案（替换硬编码）；RUN_BATCH_V2 通道（网关执行器注入 runBatchQueue）+ 批次面板执行队列按钮（完成回 queued 等人工定稿）"
+    },
+    {
       "version": "0.15.130",
       "date": "2026-10-05",
       "title": "0.15.130",

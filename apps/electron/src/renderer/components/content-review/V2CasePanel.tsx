@@ -25,8 +25,15 @@ export function V2CasePanel(): JSX.Element {
   const setNotice = useSetAtom(reviewV2NoticeAtom)
 
 interface CaseListEntry { caseId: string; title: string; stage: string; revision: number; templateId: string; templateVersion: number; updatedAt: string }
+interface TemplateLite { templateId: string; version: number; name: string; status: string; fields: Array<{ key: string; label: string; kind: string; required: boolean; scope?: string }> }
+type TemplateFieldInput = { key: string; label: string; kind: string; required: boolean }
 
   const [caseList, setCaseList] = useState<CaseListEntry[]>([])
+  const [templates, setTemplates] = useState<TemplateLite[]>([])
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateLite | null>(null)
+  const [fieldValues, setFieldValues] = useState<Record<string, string>>({})
+  const [newTitle, setNewTitle] = useState('')
+
 
   const refreshList = useCallback(async (): Promise<void> => {
     try {
@@ -69,6 +76,34 @@ interface CaseListEntry { caseId: string; title: string; stage: string; revision
     toast.success(`已打开案卷：${loaded.caseV2.title}`)
   }), [run, store])
 
+  const loadTemplates = useCallback(async (): Promise<void> => {
+    try {
+      const all = await window.reviewAPI.listTemplatesV2()
+      const published = all.filter((template: { status: string }) => template.status === 'published')
+      setTemplates(published as TemplateLite[])
+    } catch (error) {
+      console.error('[V2] 模板列表加载失败', error)
+    }
+  }, [])
+  useEffect(() => { void loadTemplates() }, [loadTemplates])
+
+  const createFromTemplate = useCallback(() => run(async () => {
+    if (!selectedTemplate) { toast.error('请先选择已发布模板'); return }
+    if (!newTitle.trim()) { toast.error('请填写案卷标题'); return }
+    const caseId = `case-${Date.now().toString(36)}`
+    await window.reviewAPI.createCaseV2({
+      caseId,
+      templateId: selectedTemplate.templateId,
+      version: selectedTemplate.version,
+      payload: { title: newTitle.trim(), fieldValues, subjects: [] },
+      actor: localActor,
+    })
+    const aggregate = await window.reviewAPI.getAggregateV2(caseId)
+    store.set(reviewV2AggregateAtom, aggregate ?? null)
+    await refreshList()
+    setNewTitle(''); setFieldValues({})
+    toast.success(`案卷已创建：${caseId}（${selectedTemplate.name}）`)
+  }), [selectedTemplate, newTitle, fieldValues, run, store, refreshList])
   const seedAndCreate = useCallback(() => run(async () => {
     await window.reviewAPI.seedFixtureV2()
     const caseId = `v2-demo-${Date.now().toString(36)}`
@@ -131,6 +166,32 @@ interface CaseListEntry { caseId: string; title: string; stage: string; revision
   return (
     <div className="mx-3 mb-3 rounded-xl border bg-card p-3 shadow-sm">
       <p className="mb-2 text-sm font-semibold">V2 案卷（通用审核）</p>
+      <div className="mb-2 space-y-1.5 rounded-lg border-t pt-2">
+        <p className="text-xs font-medium text-muted-foreground">从已发布模板建案（G10 使用入口）</p>
+        <select className="w-full rounded-md border bg-background px-2 py-1 text-xs" value={selectedTemplate?.templateId ?? ''} onChange={(event) => { setSelectedTemplate(templates.find((template) => template.templateId === event.target.value) ?? null); setFieldValues({}) }}>
+          <option value="">选择已发布模板…</option>
+          {templates.map((template) => (
+            <option key={template.templateId} value={template.templateId}>{template.name}（{template.templateId}@v{template.version}）</option>
+          ))}
+        </select>
+        {selectedTemplate && (
+          <>
+            <input className="w-full rounded-md border bg-background px-2 py-1 text-xs" placeholder="案卷标题" value={newTitle} onChange={(event) => setNewTitle(event.target.value)} />
+            {selectedTemplate.fields.filter((field) => (field.scope ?? 'case') === 'case').map((field) => (
+              <div key={field.key} className="flex items-center gap-1.5">
+                <span className="w-24 shrink-0 truncate text-xs">{field.label}{field.required ? ' *' : ''}</span>
+                <input
+                  className="flex-1 rounded border px-1 py-0.5 text-xs"
+                  type={field.kind === 'number' ? 'number' : field.kind === 'date' ? 'date' : 'text'}
+                  value={fieldValues[field.key] ?? ''}
+                  onChange={(event) => setFieldValues({ ...fieldValues, [field.key]: event.target.value })}
+                />
+              </div>
+            ))}
+            <Button size="sm" disabled={!newTitle.trim()} onClick={() => void createFromTemplate()}>用该模板创建案卷</Button>
+          </>
+        )}
+      </div>
       {caseList.length > 0 && (
         <div className="mb-2 space-y-1">
           <p className="text-xs font-medium text-muted-foreground">已保存案卷（重启可恢复）</p>
