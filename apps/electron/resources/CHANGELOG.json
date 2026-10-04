@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.135",
+      "date": "2026-10-05",
+      "title": "0.15.135",
+      "notes": "- G02 OCR 适配：TesseractOcrPort（动态加载 tesseract.js——未安装/缺语言包如实 available=false 并给原因，不冒充已读；words→OcrBlock 矩形+置信度；资源探测 vendor/tesseract；AbortSignal 前后检查）——依赖与语言资源随包就绪后即启用"
+    },
+    {
       "version": "0.15.134",
       "date": "2026-10-05",
       "title": "0.15.134",
