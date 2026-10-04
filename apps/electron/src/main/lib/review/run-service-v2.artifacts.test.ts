@@ -5,11 +5,11 @@ import { afterAll, describe, expect, test } from 'bun:test'
 import { existsSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewCaseV2 } from '@profer/shared'
+import type { NodeExecutor, NodeKind } from './review-run-graph'
 import { runReviewCaseV2, computeRunInputHash } from './run-service-v2'
 import { getRunV2, readArtifact } from './run-store-v2'
 import { getTemplate, saveDraft } from './template-store'
 import { ensureBuiltinTemplateDrafts } from './builtin-templates'
-import type { NodeExecutor, NodeKind } from './review-run-graph'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-art-${Date.now()}`)
 process.env.PROFER_CONFIG_DIR = CONFIG_DIR
@@ -61,5 +61,22 @@ describe('N2b 输入快照完整性（R04，修正误判 3）', () => {
     const changed = computeRunInputHash({ ...caseV2, caseFields: { studentName: { kind: 'text', value: '李四' } } }, [], [])
     expect(changed).not.toBe(base)
     expect(changed).toHaveLength(64) // SHA-256
+  })
+})
+
+describe('coverage 由产物账本装配（G12）', () => {
+  test('Given 模板无政策规则 When 运行 Then coverage 由材料账本如实给出（plannedChecks=0）', async () => {
+    const { createAggregate } = await import('./case-store-v2')
+    const { runReviewCaseV2 } = await import('./run-service-v2')
+    const template = (await import('./fixtures/comprehensive-fixture')).buildComprehensiveFixture().template
+    const caseId = `case-cov-${Date.now().toString(36)}`
+    const caseV2 = { id: caseId, templateId: template.templateId, templateVersion: template.version, title: '覆盖测试', objectType: 'person', caseFields: {}, subjects: [{ id: 's1', type: 'item', title: '事项', fields: {}, sourceRefs: [], correction: 'user-confirmed', status: 'confirmed' }], documents: [], stage: 'reviewing', revision: 0, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() } as never
+    await createAggregate(caseId, caseV2)
+    const done = async (_n: Parameters<NodeExecutor>[0], hash: string) => ({ status: 'done' as const, inputHash: hash })
+    const allKinds: NodeKind[] = ['register', 'parse', 'ocr', 'extract', 'bind', 'plan', 'check', 'calculate', 'verify', 'summarize', 'task']
+    const executors = Object.fromEntries(allKinds.map((kind) => [kind, done])) as Record<NodeKind, NodeExecutor>
+    const run = await runReviewCaseV2(caseV2 as never, template as never, executors as never, {})
+    expect(run.coverage.plannedChecks).toBe(0) // 无 compiledRules → 分母如实为 0
+    expect(run.coverage.documents).toHaveLength(0)
   })
 })

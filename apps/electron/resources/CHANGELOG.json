@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.127",
+      "date": "2026-10-05",
+      "title": "0.15.127",
+      "notes": "- G12 完成接线：运行结束 coverage 由真实产物账本装配（材料账本+检查账本组展开；分母=政策 compiledRules；组值来自产物 groups）；blockers 写入 run.diagnostics；无规则时 plannedChecks 如实为 0"
+    },
+    {
       "version": "0.15.126",
       "date": "2026-10-05",
       "title": "0.15.126",

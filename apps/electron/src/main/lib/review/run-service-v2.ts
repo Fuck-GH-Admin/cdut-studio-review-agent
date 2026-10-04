@@ -148,6 +148,32 @@ export async function runReviewCaseV2(
     .filter((artifact): artifact is Record<string, unknown> => !!artifact)
   run.checks = artifacts.flatMap((artifact) => (artifact.checks as Array<never>) ?? [])
   run.opinions = artifacts.flatMap((artifact) => (artifact.opinions as Array<never>) ?? [])
+  // G12：coverage 由真实产物账本装配（材料账本 + 检查账本含组展开；分母 = 政策 compiledRules）
+  {
+    const { combineCoverage } = await import('./coverage-ledger')
+    const { getPolicy } = await import('./policy-store')
+    const { getTemplate } = await import('./template-store')
+    const template = getTemplate(caseV2.templateId, caseV2.templateVersion)
+    const policyRules: never[] = []
+    for (const ref of template?.policyRefs ?? []) {
+      const policy = getPolicy(ref.policyId, ref.version)
+      for (const rule of policy?.compiledRules ?? []) policyRules.push(rule as never)
+    }
+    const groupValues: Record<string, string[]> = {}
+    for (const artifact of artifacts) {
+      const groups = artifact.groups as Record<string, string[]> | undefined
+      if (groups) for (const [ruleId, values] of Object.entries(groups)) groupValues[ruleId] = values
+    }
+    const summary = combineCoverage(caseV2.documents, policyRules, caseV2.subjects.map((subject) => subject.id), run.checks as never, groupValues)
+    run.coverage = {
+      documents: summary.documents,
+      plannedChecks: summary.plannedChecks,
+      completedChecks: summary.completedChecks,
+      effectiveVerdicts: summary.effectiveVerdicts,
+      pendingChecks: summary.pendingChecks,
+    }
+    if (!summary.allClearVerdictAllowed) run.diagnostics = [...run.diagnostics, ...summary.blockers.map((blocker) => `coverage: ${blocker}`)]
+  }
   run.completedAt = outcome.status === 'completed' ? new Date().toISOString() : undefined
   saveRunV2(run)
   cancelledRunIds.delete(runId)
