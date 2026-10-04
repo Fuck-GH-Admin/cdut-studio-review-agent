@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.121",
+      "date": "2026-10-05",
+      "title": "0.15.121",
+      "notes": "- G04/G05：补件闭环行为修复——退回补件记录 originTaskId/originStageId；respondSupplementV2 学生回复命令（角色校验）；判定满足后按原阶段回流开放任务（修正\"补件后没有任务\"）；补件回复按钮入面板"
+    },
+    {
       "version": "0.15.120",
       "date": "2026-10-05",
       "title": "0.15.120",

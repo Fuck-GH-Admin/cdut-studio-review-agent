@@ -481,6 +481,7 @@ export const REVIEW_IPC_CHANNELS = {
   ENSURE_INITIAL_TASK_V2: 'review-v2:ensure-initial-task',
   RECORD_STAGE_DECISION_V2: 'review-v2:record-stage-decision',
   RESOLVE_SUPPLEMENT_V2: 'review-v2:resolve-supplement',
+  RESPOND_SUPPLEMENT_V2: 'review-v2:respond-supplement',
   SUBMIT_APPEAL_V2: 'review-v2:submit-appeal',
   RESOLVE_APPEAL_V2: 'review-v2:resolve-appeal',
   // ===== N4b：模板向导 =====

@@ -231,6 +231,12 @@ function BusinessFlowSection({ aggregate, onResult }: { aggregate: CaseAggregate
             <span key={request.id} className="inline-flex items-center gap-1">
               <code className="rounded bg-muted px-1">{request.id.slice(0, 10)}</code>
               <Button size="sm" variant="outline" onClick={() => {
+                void window.reviewAPI.respondSupplementV2({
+                  caseId,
+                  command: { requestId: `res-${Date.now().toString(36)}`, target: { kind: 'case', id: caseId }, expectedRevision: aggregate.caseV2.revision, actor: { actorId: 'local-student', actorSource: 'local', role: 'student' }, type: 'RespondSupplement', payload: { supplementId: request.id, note: '已补交材料（面板快捷回复）' } },
+                }).then(onResult)
+              }}>回复补件</Button>
+              <Button size="sm" variant="outline" onClick={() => {
                 void window.reviewAPI.resolveSupplementV2({
                   caseId,
                   command: { requestId: `sup-${Date.now().toString(36)}`, target: { kind: 'case', id: caseId }, expectedRevision: aggregate.caseV2.revision, actor: localActor, type: 'ResolveSupplement', payload: { supplementId: request.id, outcome: 'satisfied', reason: '要素齐全' } },

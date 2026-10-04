@@ -448,6 +448,9 @@ export interface SupplementRequest {
   status: 'open' | 'responded' | 'satisfied' | 'insufficient' | 'cancelled'
   responses: Array<{ id: string; documentVersionIds: string[]; note: string; at: string; actor: string }>
   createdAt: string
+  /** G04：退回来源（核验通过后按原阶段回流任务） */
+  originTaskId?: string
+  originStageId?: string
 }
 
 /** 申诉/复审（A10：关联原决定，另起任务） */

@@ -116,7 +116,7 @@ export function recordStageDecision(
             break
           case 'return-for-supplement': {
             if (!payload.supplementRequiredElements?.length || !payload.supplementReason?.trim()) throw new CommandValidationError('VALIDATION_FAILED', '退回补件必须指定要素与原因')
-            supplement = { id: `sup-${Date.now()}`, caseId: draft.caseV2.id, originFindingKeys: [], materialSlotId: undefined, requiredElements: payload.supplementRequiredElements, reason: payload.supplementReason, responsibleRole: 'student', status: 'open', responses: [], createdAt: now }
+            supplement = { id: `sup-${Date.now()}`, caseId: draft.caseV2.id, originFindingKeys: [], materialSlotId: undefined, requiredElements: payload.supplementRequiredElements, reason: payload.supplementReason, responsibleRole: 'student', status: 'open', responses: [], createdAt: now, originTaskId: task.id, originStageId: task.stageId }
             draft.supplements = [...draft.supplements, supplement!]
             draft.caseV2.stage = 'awaiting-supplement'
             // 补件回流：创建同阶段新轮次任务（等待补件核验后开放处理）
@@ -149,7 +149,28 @@ export function recordStageDecision(
 
 // ===== 补件核验（多请求门控） =====
 
-/** 补件判定：satisfied → 全部未结束请求结束才恢复 reviewing（06 §5.3：一项完成不解除其他等待） */
+/** 补件回复（G04：学生/提交方对单个请求提交说明与材料版本；open→responded） */
+export function respondSupplementV2(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: { supplementId: string; note: string; documentVersionIds?: string[] } }): Promise<ReviewCommandResult<SupplementRequest>> {
+  return submitCommand<{ supplementId: string; note: string; documentVersionIds?: string[] }, SupplementRequest>(caseId, { ...command, type: 'RespondSupplement' }, (aggregate, payload) => {
+    const target = aggregate.supplements.find((request) => request.id === payload.supplementId)
+    if (!target) throw new CommandValidationError('NOT_FOUND', `补件请求不存在: ${payload.supplementId}`)
+    if (target.status !== 'open' && target.status !== 'responded') throw new CommandValidationError('INVALID_TRANSITION', `补件已关闭（${target.status}）`)
+    // 角色校验（05 §2 补件责任方）：仅 student/submitter 可回复
+    if (target.responsibleRole === 'student' && command.actor.role !== 'student' && command.actor.role !== 'reviewer') throw new CommandValidationError('INVALID_TRANSITION', '该补件由学生负责，其他角色不能代回复')
+    if (!payload.note.trim() && !(payload.documentVersionIds?.length)) throw new CommandValidationError('VALIDATION_FAILED', '回复必须附说明或材料')
+    return {
+      summary: `补件回复：${target.id}`,
+      mutate: (draft) => {
+        draft.supplements = draft.supplements.map((request) => (request.id === payload.supplementId
+          ? { ...request, status: 'responded', responses: [...request.responses, { id: `resp-${Date.now()}`, documentVersionIds: payload.documentVersionIds ?? [], note: payload.note.trim(), at: new Date().toISOString(), actor: command.actor.actorId }] }
+          : request))
+      },
+      entity: undefined,
+    }
+  })
+}
+
+/** 补件判定：satisfied → 全部未结束请求结束才恢复，并按原阶段回流任务（G05：修正"补件后没有任务"） */
 export function resolveSupplementV2(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: { supplementId: string; outcome: 'satisfied' | 'insufficient' | 'cancelled'; reason: string } }): Promise<ReviewCommandResult<SupplementRequest>> {
   return submitCommand<{ supplementId: string; outcome: 'satisfied' | 'insufficient' | 'cancelled'; reason: string }, SupplementRequest>(caseId, { ...command, type: 'ResolveSupplement' }, (aggregate, payload) => {
     const target = aggregate.supplements.find((request) => request.id === payload.supplementId)
@@ -162,7 +183,15 @@ export function resolveSupplementV2(caseId: string, command: { requestId: string
         draft.supplements = draft.supplements.map((request) => (request.id === payload.supplementId ? { ...request, status: payload.outcome } : request))
         // 多请求门控：所有未结束请求结束才恢复
         const stillOpen = draft.supplements.some((request) => request.status === 'open' || request.status === 'responded')
-        if (payload.outcome === 'satisfied' && !stillOpen) draft.caseV2.stage = 'reviewing'
+        if (payload.outcome === 'satisfied' && !stillOpen) {
+          draft.caseV2.stage = 'reviewing'
+          // G05 任务回流：按退回来源阶段重建开放任务（同轮次续审补交材料）
+          const originStageId = target.originStageId
+          if (originStageId && !draft.tasks.some((task) => task.stageId === originStageId && task.status === 'open')) {
+            const originTask = target.originTaskId ? draft.tasks.find((task) => task.id === target.originTaskId) : undefined
+            draft.tasks = [...draft.tasks, { id: `task-${Date.now() + 3}`, caseId: draft.caseV2.id, stageId: originStageId, round: originTask?.round ?? 1, assigneeRole: originTask?.assigneeRole ?? 'reviewer', status: 'open', prerequisiteTaskId: target.originTaskId, inputRevision: draft.caseV2.revision, createdAt: new Date().toISOString() }]
+          }
+        }
       },
       entity: payload.outcome === 'satisfied' ? { ...target, status: 'satisfied' } : { ...target, status: payload.outcome },
     }

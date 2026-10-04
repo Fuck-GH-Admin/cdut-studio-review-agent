@@ -6,7 +6,7 @@ import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewCaseV2, TemplateVersion } from '@profer/shared'
 import { createAggregate, readAggregate } from './case-store-v2'
-import { ensureInitialTask, recordStageDecision, resolveAppealV2, resolveFinalDecisionProjection, resolveSupplementV2, type StageDecisionPayload } from './stage-workflow'
+import { ensureInitialTask, recordStageDecision, resolveAppealV2, resolveFinalDecisionProjection, resolveSupplementV2, respondSupplementV2, type StageDecisionPayload } from './stage-workflow'
 import { submitAppeal } from './business-workflow'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-stage-${Date.now()}`)
@@ -115,6 +115,51 @@ describe('补件多请求门控（06 §5.3）', () => {
       // 还有未结束请求 → 不恢复（06 §5.3）
       expect(satisfied.aggregate.caseV2.stage).toBe('awaiting-supplement')
     }
+  })
+})
+
+describe('补件回复与任务回流（G04/G05）', () => {
+  test('Given 退回补件 When 学生回复+判定满足 Then 原阶段任务回流（不是没有任务）', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const open = await recordStageDecision(caseId, { requestId: nextReq(), actor, expectedRevision: 1, payload: { action: 'return-for-supplement', taskId: firstTaskId, reason: '缺证明', supplementRequiredElements: ['等级'], supplementReason: '补等级证明' } }, template)
+    expect(open.ok).toBeTrue()
+    const aggregate = open.ok ? open.aggregate : readAggregate(caseId)!
+    const supplement = aggregate.supplements[0]!
+    expect(supplement.originStageId).toBe('first') // 退回来源已记录
+    // 学生回复
+    const replied = await respondSupplementV2(caseId, { requestId: nextReq(), actor: { actorId: 'stu-1', actorSource: 'local', role: 'student' }, expectedRevision: aggregate.caseV2.revision, payload: { supplementId: supplement.id, note: '已补交等级证明' } })
+    expect(replied.ok).toBeTrue()
+    if (replied.ok) expect(replied.aggregate.supplements[0]!.status).toBe('responded')
+    // 判定满足 → 恢复 reviewing 并回流 first 阶段任务
+    const resolved = await resolveSupplementV2(caseId, { requestId: nextReq(), actor, expectedRevision: (replied.ok ? replied.aggregate : aggregate).caseV2.revision, payload: { supplementId: supplement.id, outcome: 'satisfied', reason: '要素齐全' } })
+    expect(resolved.ok).toBeTrue()
+    if (resolved.ok) {
+      expect(resolved.aggregate.caseV2.stage).toBe('reviewing')
+      const reopened = resolved.aggregate.tasks.filter((task) => task.stageId === 'first' && task.status === 'open')
+      expect(reopened).toHaveLength(1) // 任务回流：补件后流程可继续
+      expect(reopened[0]!.prerequisiteTaskId).toBe(firstTaskId)
+    }
+  })
+
+  test('Given 判定不足 When 处理 Then 不恢复阶段也不回流任务', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const open = await recordStageDecision(caseId, { requestId: nextReq(), actor, expectedRevision: 1, payload: { action: 'return-for-supplement', taskId: firstTaskId, reason: '缺', supplementRequiredElements: ['a'], supplementReason: '补A' } }, template)
+    const aggregate = open.ok ? open.aggregate : readAggregate(caseId)!
+    const resolved = await resolveSupplementV2(caseId, { requestId: nextReq(), actor, expectedRevision: aggregate.caseV2.revision, payload: { supplementId: aggregate.supplements[0]!.id, outcome: 'insufficient', reason: '仍缺' } })
+    expect(resolved.ok).toBeTrue()
+    if (resolved.ok) {
+      expect(resolved.aggregate.caseV2.stage).toBe('awaiting-supplement')
+      expect(resolved.aggregate.tasks.filter((task) => task.status === 'open')).toHaveLength(0)
+    }
+  })
+
+  test('Given 学生负责的补件 When 教师代回复 Then 拒绝（角色校验）', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const open = await recordStageDecision(caseId, { requestId: nextReq(), actor, expectedRevision: 1, payload: { action: 'return-for-supplement', taskId: firstTaskId, reason: '缺', supplementRequiredElements: ['a'], supplementReason: '补A' } }, template)
+    const aggregate = open.ok ? open.aggregate : readAggregate(caseId)!
+    const denied = await respondSupplementV2(caseId, { requestId: nextReq(), actor: { actorId: 't-1', actorSource: 'local', role: 'teacher' }, expectedRevision: aggregate.caseV2.revision, payload: { supplementId: aggregate.supplements[0]!.id, note: '代回复' } })
+    expect(denied.ok).toBeFalse()
+    if (!denied.ok) expect(denied.code).toBe('INVALID_TRANSITION')
   })
 })
 
