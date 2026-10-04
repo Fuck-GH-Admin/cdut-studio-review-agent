@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.120",
+      "date": "2026-10-05",
+      "title": "0.15.120",
+      "notes": "- G03：UpdateFields 接模板 schema 校验——未知 key/作用域越权/数字有限性/ISO 日期/枚举选项/必填缺失拒绝，数值字段保留数值精度；UPDATE_FIELDS_V2 自动取当前模板"
+    },
+    {
       "version": "0.15.119",
       "date": "2026-10-05",
       "title": "0.15.119",

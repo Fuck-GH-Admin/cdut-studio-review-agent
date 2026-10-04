@@ -90,6 +90,56 @@ export async function createCaseFromTemplate(
   return { ok: true, receipt: { requestId: `create-${caseId}`, type: 'CreateCaseFromTemplate', payloadHash: payloadHash('CreateCaseFromTemplate', payload), revision: 0, at: now, summary: `案卷已创建（${template.name}）` }, aggregate, entity: aggregate.caseV2 }
 }
 
+// ===== G03：字段类型与作用域校验（模板 schema 驱动） =====
+
+export interface FieldValidationIssue {
+  key: string
+  reason: string
+}
+
+/**
+ * 按模板 FieldSpec 校验输入值：
+ * - 未知 key / 作用域不符拒绝（防止越权写 subject 字段进 case）
+ * - number 须可解析为有限数、date 须 ISO 日期、enum 须在选项内
+ * - required 缺失拒绝（仅对显式传入 undefined/空串判缺，未传键不触发）
+ */
+export function validateFieldValuesV2(
+  template: TemplateVersion,
+  scope: 'case' | 'subject',
+  values: Record<string, unknown>,
+  providedKeys: Set<string>,
+): FieldValidationIssue[] {
+  const issues: FieldValidationIssue[] = []
+  const specs = template.fields.filter((spec) => (spec.scope ?? 'case') === scope)
+  for (const [key, value] of Object.entries(values)) {
+    const spec = specs.find((candidate) => candidate.key === key)
+    if (!spec) {
+      issues.push({ key, reason: (scope === 'case' ? '案卷' : '事项') + '字段不在模板中: ' + key })
+      continue
+    }
+    if (value === undefined || value === null || value === '') {
+      if (spec.required && providedKeys.has(key)) issues.push({ key, reason: '必填字段缺失' })
+      continue
+    }
+    if (spec.kind === 'number') {
+      const parsed = typeof value === 'number' ? value : Number(value)
+      if (!Number.isFinite(parsed)) issues.push({ key, reason: '数字字段值不是有限数' })
+    } else if (spec.kind === 'date') {
+      if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}/.test(value)) issues.push({ key, reason: '日期字段须为 ISO 日期（YYYY-MM-DD）' })
+    } else if (spec.kind === 'enum') {
+      const options = spec.options ?? []
+      if (options.length > 0 && !options.map((option) => option.value).includes(String(value))) issues.push({ key, reason: `枚举值不在选项内: ${String(value)}` })
+    }
+  }
+  return issues
+}
+
+/** 将输入值规范化为 FieldValue（保持类型 kind 与数值精度） */
+export function toFieldValueV2(spec: { kind: string }, value: unknown): FieldValue {
+  if (spec.kind === 'number') return { kind: 'number', value: Number(value) }
+  return { kind: 'text', value: String(value) }
+}
+
 // ===== UpdateFields =====
 
 export interface UpdateFieldsPayload {
@@ -97,20 +147,30 @@ export interface UpdateFieldsPayload {
   subjectFieldValues?: Array<{ subjectId: string; values: Record<string, unknown> }>
 }
 
-export function updateFields(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: UpdateFieldsPayload }): Promise<ReviewCommandResult<undefined>> {
+export function updateFields(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: UpdateFieldsPayload }, template?: TemplateVersion): Promise<ReviewCommandResult<undefined>> {
   return submitCommand<UpdateFieldsPayload, undefined>(caseId, { ...command, type: 'UpdateFields' }, (aggregate, payload) => {
     if (aggregate.caseV2.stage === 'archived') throw new CommandValidationError('INVALID_TRANSITION', '已归档案卷不可修改')
+    if (template) {
+      const caseIssues = validateFieldValuesV2(template, 'case', payload.caseFieldValues ?? {}, new Set(Object.keys(payload.caseFieldValues ?? {})))
+      if (caseIssues.length > 0) throw new CommandValidationError('VALIDATION_FAILED', caseIssues.map((issue) => `${issue.key}: ${issue.reason}`).join('；'))
+      for (const subjectUpdate of payload.subjectFieldValues ?? []) {
+        const subjectIssues = validateFieldValuesV2(template, 'subject', subjectUpdate.values, new Set(Object.keys(subjectUpdate.values)))
+        if (subjectIssues.length > 0) throw new CommandValidationError('VALIDATION_FAILED', subjectIssues.map((issue) => `${subjectUpdate.subjectId}.${issue.key}: ${issue.reason}`).join('；'))
+      }
+    }
     return {
       summary: `更新 ${Object.keys(payload.caseFieldValues ?? {}).length} 个案卷字段 / ${payload.subjectFieldValues?.length ?? 0} 个事项`,
       mutate: (draft) => {
         for (const [key, value] of Object.entries(payload.caseFieldValues ?? {})) {
-          draft.caseV2.caseFields[key] = { kind: 'text', value: String(value) }
+          const spec = template?.fields.find((candidate) => candidate.key === key)
+          draft.caseV2.caseFields[key] = toFieldValueV2(spec ?? { kind: 'text' }, value)
         }
         for (const subjectUpdate of payload.subjectFieldValues ?? []) {
           const subject = draft.caseV2.subjects.find((candidate) => candidate.id === subjectUpdate.subjectId)
           if (!subject) throw new CommandValidationError('NOT_FOUND', `事项不存在: ${subjectUpdate.subjectId}`)
           for (const [key, value] of Object.entries(subjectUpdate.values)) {
-            subject.fields[key] = { kind: 'text', value: String(value) }
+            const spec = template?.fields.find((candidate) => candidate.key === key)
+            subject.fields[key] = toFieldValueV2(spec ?? { kind: 'text' }, value)
             subject.correction = 'user-confirmed'
           }
         }
