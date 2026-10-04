@@ -126,15 +126,18 @@ type TemplateFieldInput = { key: string; label: string; kind: string; required: 
 
   const current = aggregate
 
+  const [slotId, setSlotId] = useState('')
+  const currentTemplate = templates.find((template) => template.templateId === current?.caseV2.templateId && template.version === current?.caseV2.templateVersion)
+
   const registerMaterials = useCallback(() => run(async () => {
     if (!current) return
-    const versionIds = await window.reviewAPI.pickRegisterMaterialV2({ caseId: current.caseV2.id, role: 'evidence' })
+    const versionIds = await window.reviewAPI.pickRegisterMaterialV2({ caseId: current.caseV2.id, role: 'evidence', materialSlotId: slotId || undefined })
     if (versionIds.length === 0) { toast.info('未选择文件'); return }
     const loaded = await window.reviewAPI.openAggregateV2(current.caseV2.id)
     if (loaded) store.set(reviewV2AggregateAtom, loaded)
     await refreshList()
-    toast.success(`已登记 ${versionIds.length} 份材料`)
-  }), [current, run, store, refreshList])
+    toast.success(`已登记 ${versionIds.length} 份材料${slotId ? `至槽位 ${slotId}` : ''}`)
+  }), [current, run, store, refreshList, slotId])
 
   const submitCase = useCallback(() => run(async () => {
     if (!current) return
@@ -211,6 +214,24 @@ type TemplateFieldInput = { key: string; label: string; kind: string; required: 
         )}
         {current && (
           <div className="space-y-1.5 text-xs">
+            {currentTemplate && currentTemplate.fields.length >= 0 && (current as unknown as { caseV2: { templateId: string } }).caseV2.templateId && (
+              <div className="flex items-center gap-1.5">
+                <span className="shrink-0 text-muted-foreground">材料槽：</span>
+                <select className="rounded border bg-background px-1 py-0.5" value={slotId} onChange={(event) => setSlotId(event.target.value)}>
+                  <option value="">未指定</option>
+                  {(currentTemplate as unknown as { materialSlots?: Array<{ id: string; name: string }> }).materialSlots?.map((slot) => (
+                    <option key={slot.id} value={slot.id}>{slot.name}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+            {current.caseV2.documents.length > 0 && (
+              <ul className="list-disc pl-4 text-muted-foreground">
+                {current.caseV2.documents.map((doc) => (
+                  <li key={doc.versionId}>{doc.fileName} · {doc.versionId.slice(-8)}{doc.active === false ? '（旧版）' : ''}{doc.materialSlotId ? ` · ${doc.materialSlotId}` : ''}</li>
+                ))}
+              </ul>
+            )}
             <div className="flex flex-wrap gap-1.5">
               <Button size="sm" variant="outline" onClick={registerMaterials}>登记材料</Button>
               {(current.caseV2.stage === 'draft' || (current.caseV2.stage === 'submitted' && current.tasks.length === 0)) && (
@@ -252,6 +273,8 @@ type TemplateFieldInput = { key: string; label: string; kind: string; required: 
 
 /** 业务流程操作区（N3b，06 §5.2 动作表；U03-U05 入口） */
 function BusinessFlowSection({ aggregate, onResult }: { aggregate: CaseAggregateV2; onResult: (result: ReviewCommandResult | undefined) => void }): JSX.Element {
+  const [replyText, setReplyText] = useState('')
+  const [replyAttachments, setReplyAttachments] = useState<string[]>([])
   const openTasks = aggregate.tasks.filter((task) => task.status === 'open')
   const projection = resolveFinalDecisionProjectionPublic(aggregate.decisions)
   const templateId = aggregate.caseV2.templateId
@@ -301,11 +324,27 @@ function BusinessFlowSection({ aggregate, onResult }: { aggregate: CaseAggregate
           {aggregate.supplements.filter((request) => request.status === 'open' || request.status === 'responded').map((request) => (
             <span key={request.id} className="inline-flex items-center gap-1">
               <code className="rounded bg-muted px-1">{request.id.slice(0, 10)}</code>
-              <Button size="sm" variant="outline" onClick={() => {
+              <input
+                className="rounded border px-1 py-0.5"
+                placeholder="回复说明"
+                value={replyText}
+                onChange={(event) => setReplyText(event.target.value)}
+              />
+              {aggregate.caseV2.documents.filter((doc) => doc.active !== false).map((doc) => (
+                <label key={doc.versionId} className="flex items-center gap-1 text-muted-foreground">
+                  <input
+                    type="checkbox"
+                    checked={replyAttachments.includes(doc.versionId)}
+                    onChange={(event) => setReplyAttachments(event.target.checked ? [...replyAttachments, doc.versionId] : replyAttachments.filter((id) => id !== doc.versionId))}
+                  />
+                  {doc.fileName}
+                </label>
+              ))}
+              <Button size="sm" variant="outline" disabled={!replyText.trim() && replyAttachments.length === 0} onClick={() => {
                 void window.reviewAPI.respondSupplementV2({
                   caseId,
-                  command: { requestId: `res-${Date.now().toString(36)}`, target: { kind: 'case', id: caseId }, expectedRevision: aggregate.caseV2.revision, actor: { actorId: 'local-student', actorSource: 'local', role: 'student' }, type: 'RespondSupplement', payload: { supplementId: request.id, note: '已补交材料（面板快捷回复）' } },
-                }).then(onResult)
+                  command: { requestId: `res-${Date.now().toString(36)}`, target: { kind: 'case', id: caseId }, expectedRevision: aggregate.caseV2.revision, actor: { actorId: 'local-student', actorSource: 'local', role: 'student' }, type: 'RespondSupplement', payload: { supplementId: request.id, note: replyText.trim() || '见附件', documentVersionIds: replyAttachments } },
+                }).then((result) => { onResult(result); if (result?.ok) { setReplyText(''); setReplyAttachments([]) } })
               }}>回复补件</Button>
               <Button size="sm" variant="outline" onClick={() => {
                 void window.reviewAPI.resolveSupplementV2({

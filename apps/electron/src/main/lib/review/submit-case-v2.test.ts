@@ -21,7 +21,8 @@ async function seed(caseId: string): Promise<void> {
   await createCaseFromTemplate('comprehensive-assessment-v2', 2, {
     title: '提交测试', fieldValues: { studentName: '测试学生', studentId: '001', academicYear: '2025-2026', applicant: '测试学生' }, subjects: [],
   }, actor, caseId)
-  await registerMaterial(caseId, { requestId: 'register', actor, expectedRevision: 0, payload: { sourcePath: material, role: 'evidence' } })
+  await registerMaterial(caseId, { requestId: 'register', actor, expectedRevision: 0, payload: { sourcePath: material, role: 'evidence', materialSlotId: 'application-form' } })
+  await registerMaterial(caseId, { requestId: 'register-cert', actor, expectedRevision: 1, payload: { sourcePath: material, role: 'evidence', materialSlotId: 'certificates' } })
 }
 
 describe('提交案卷的原子事务', () => {
@@ -47,8 +48,8 @@ describe('提交案卷的原子事务', () => {
     expect(result.ok).toBe(true)
     const after = readAggregate('legacy')!
     expect(after.tasks).toHaveLength(1)
-    expect(after.caseV2.documents).toHaveLength(1)
-    expect(after.caseV2.revision).toBe(3)
+    expect(after.caseV2.documents).toHaveLength(2)
+    expect(after.caseV2.revision).toBe(3) // 双材料登记 r2 + 恢复提交合并一次 r3
   })
 
   test('Given 提交重试 When 连续调用 Then 只有一个首任务和一次业务 revision', async () => {

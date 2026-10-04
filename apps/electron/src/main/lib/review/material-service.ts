@@ -53,18 +53,18 @@ export async function registerMaterial(caseId: string, command: { requestId: str
     if (aggregate.caseV2.stage === 'archived') throw new CommandValidationError('INVALID_TRANSITION', '已归档案卷不可登记材料')
     const sourcePath = payload.sourcePath
     if (!sourcePath) throw new CommandValidationError('VALIDATION_FAILED', '缺少源文件路径')
-    // 版本号：同逻辑材料按已登记数量递增（同名 = 同逻辑材料）
+    // 版本链语义（复查 §5.9）：同槽位 + 同文件名 = 同一逻辑材料的新版本；不同槽位各自独立
     const incomingName = sourcePath.split(/[\\/]/).pop() ?? 'material.bin'
-    const sameName = aggregate.caseV2.documents.filter((doc) => doc.fileName === incomingName)
-    const versionSeq = sameName.length + 1
+    const sameLogic = aggregate.caseV2.documents.filter((doc) => doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId)
+    const versionSeq = sameLogic.length + 1
     const documentId = `doc-${aggregate.caseV2.documents.length + 1}-${Date.now().toString(36)}`
     const versionId = `${documentId}-v${versionSeq}`
     const { byteHash, assetKey, sizeBytes } = copyAsset(caseId, versionId, sourcePath)
     return {
       summary: `登记材料 ${incomingName}（${versionId}）`,
       mutate: (draft) => {
-        // 同名旧版本停止参与新审核（supersedes 语义由 active 标记表达）
-        const docs = draft.caseV2.documents.map((doc) => (doc.fileName === incomingName ? { ...doc, active: false } : doc))
+        // 同槽位同名旧版本停止参与新审核（supersedes：同 slotId+name 才替换）
+        const docs = draft.caseV2.documents.map((doc) => (doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId ? { ...doc, active: false, supersedesVersionId: doc.versionId === doc.versionId ? undefined : doc.versionId } : doc))
         const doc: DocumentVersion = {
           documentId,
           versionId,
