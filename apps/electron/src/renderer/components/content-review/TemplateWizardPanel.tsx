@@ -24,13 +24,15 @@ export function TemplateWizardPanel(): JSX.Element {
   const [fields, setFields] = useState<WizardField[]>([{ key: 'applicantName', label: '申请人', kind: 'text', required: true }])
   const [slots, setSlots] = useState<WizardSlot[]>([{ id: 'main-doc', name: '主要材料', requiredElements: '要素1,要素2' }])
   const [publishedId, setPublishedId] = useState<string | null>(null)
+  const [policyText, setPolicyText] = useState('')
 
   const finish = useCallback(async (): Promise<void> => {
     store.set(reviewV2BusyAtom, true)
     try {
       const templateId = `wizard-${name.trim().replace(/\s+/g, '-')}-${Date.now().toString(36)}`.toLowerCase()
       const policyId = `policy-${templateId}`
-      const content = `【虚构演示】${name}审核政策（向导生成 v1）\n\nF1 材料要素齐全；F2 字段一致；F3 两级人工审核。`
+      // G10：负责人自有规则（录入为依据来源，不再固定演示文本）
+      const content = policyText.trim() || `【虚构演示】${name}审核政策（向导生成 v1）\n\nF1 材料要素齐全；F2 字段一致；F3 两级人工审核。`
       const ref = await window.reviewAPI.createPolicyV2({ policyId, title: `${name}审核政策`, content, enteredBy: 'local-user' })
       const template: TemplateVersion = {
         templateId, version: 1, schemaVersion: 2, name: name.trim(), objectType,
@@ -112,7 +114,8 @@ export function TemplateWizardPanel(): JSX.Element {
       {step === 4 && (
         <div className="space-y-2 text-xs">
           <label className="flex items-center gap-1"><input type="checkbox" checked={scored} onChange={(event) => setScored(event.target.checked)} />需要评分（独立评委量表）</label>
-          <p className="text-muted-foreground">依据：将自动生成虚构演示政策（负责人声明来源），发布后可替换为真实政策。</p>
+          <textarea className="w-full rounded-md border bg-background px-2 py-1" rows={3} placeholder="负责人自有规则（每行一条，如：F1 材料要素齐全）——留空则使用演示政策" value={policyText} onChange={(event) => setPolicyText(event.target.value)} />
+          <p className="text-muted-foreground">依据：录入内容将作为负责人声明政策发布（origin=owner-statement）；留空则生成虚构演示政策。</p>
           <div className="flex gap-1.5"><Button size="sm" onClick={() => setStep(3)}>上一步</Button><Button size="sm" onClick={() => setStep(5)}>下一步</Button></div>
         </div>
       )}

@@ -251,3 +251,45 @@ export async function importRoundTripPackage(pkg: ReturnType<typeof exportHandof
   writeOutboxEntry(entry)
   return receipt
 }
+
+// ===== G09：公开报告投影（角色输出；内部意见不公开，judge 侧匿名） =====
+
+/** 匿名映射：judge 视角学生实名 → 学员#短哈希（稳定，不随导出次数变化） */
+export function anonymizeName(realName: string): string {
+  return `学员#${createHash('sha256').update(realName).digest('hex').slice(0, 6)}`
+}
+
+export interface PublicReportInput {
+  title: string
+  fields: Record<string, unknown>
+  decisions: Array<{ result: string; reason: string; finality?: string }>
+  supplements: Array<{ reason: string; status: string }>
+  internalNotes?: string[]
+}
+
+/** 公开报告（纯文本 MD）：student/judge 视角不含 internalNotes；judge 看到匿名标题 */
+export function buildPublicReport(input: PublicReportInput, audience: 'student' | 'judge'): string {
+  const lines: string[] = []
+  const title = audience === 'judge' ? anonymizeName(input.title) : input.title
+  lines.push(`# 审核结果（${audience === 'judge' ? '评委' : '学生'}公开版）`)
+  lines.push('')
+  lines.push(`**案卷**：${title}`)
+  lines.push('')
+  lines.push('## 决定')
+  for (const decision of input.decisions) {
+    lines.push(`- ${decision.result}${decision.finality === 'final' ? '（终审）' : ''}：${decision.reason}`)
+  }
+  lines.push('')
+  lines.push('## 补件事项')
+  for (const supplement of input.supplements) {
+    lines.push(`- ${supplement.reason}（${supplement.status}）`)
+  }
+  if (audience === 'student' || audience === 'judge') {
+    // 内部意见一律不进公开报告（G09）
+    lines.push('')
+    lines.push('---')
+    lines.push('内部审核意见不在公开版本中提供。')
+  }
+  void input.fields
+  return lines.join('\n')
+}

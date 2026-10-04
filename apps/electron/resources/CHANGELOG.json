@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.124",
+      "date": "2026-10-05",
+      "title": "0.15.124",
+      "notes": "- G09/G10：公开报告投影（buildPublicReport：student/judge 版不含内部意见，judge 侧实名稳定匿名 学员#hash）+ 模板向导负责人自有规则文本（owner-statement 政策改为负责人录入，留空才用演示文本）"
+    },
+    {
       "version": "0.15.123",
       "date": "2026-10-05",
       "title": "0.15.123",

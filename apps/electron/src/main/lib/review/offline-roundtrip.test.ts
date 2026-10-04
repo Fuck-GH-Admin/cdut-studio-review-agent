@@ -8,7 +8,7 @@ import type { ReviewCaseV2 } from '@profer/shared'
 import { emptyAggregate } from './case-store-v2'
 import type { Actor } from '@profer/shared'
 const localActor: Actor = { actorId: 't', actorSource: 'local', role: 'reviewer' }
-import { exportRoundTripPackage, importRoundTripPackage, projectForRole } from './offline-roundtrip'
+import { anonymizeName, buildPublicReport, exportRoundTripPackage, importRoundTripPackage, projectForRole } from './offline-roundtrip'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-rt-${Date.now()}`)
 process.env.PROFER_CONFIG_DIR = CONFIG_DIR
@@ -73,5 +73,32 @@ describe('独立副本往返（G07/G08：事务应用 + 持久 outbox）', () =>
     const tampered = { ...pkg, payload: { ...pkg.payload, reply: { note: '被改' } } }
     const outcome = await importRoundTripPackage(tampered)
     expect(outcome.status).toBe('rejected')
+  })
+})
+
+describe('公开报告投影（G09）', () => {
+  const reportInput = {
+    title: '张三',
+    fields: { studentName: '张三' },
+    decisions: [{ result: 'pass', reason: '符合规定', finality: 'final' }],
+    supplements: [{ reason: '补等级证明', status: 'satisfied' }],
+    internalNotes: ['内部：该生曾处分记录'],
+  }
+
+  test('Given student 视角 When 生成公开报告 Then 内部意见不出现', () => {
+    const report = buildPublicReport(reportInput, 'student')
+    expect(report).toContain('符合规定')
+    expect(report).not.toContain('处分记录')
+    expect(report).toContain('内部审核意见不在公开版本')
+  })
+
+  test('Given judge 视角 When 生成公开报告 Then 实名匿名化', () => {
+    const report = buildPublicReport(reportInput, 'judge')
+    expect(report).not.toContain('张三')
+    expect(report).toMatch(/学员#[0-9a-f]{6}/)
+  })
+
+  test('Given 同名多次导出 When 匿名 Then 映射稳定', () => {
+    expect(anonymizeName('张三')).toBe(anonymizeName('张三'))
   })
 })
