@@ -1,0 +1,130 @@
+/**
+ * 覆盖账本（M2，设计 03 §6 材料账本 + 检查账本；A08/K06）
+ *
+ * - 材料账本：每份文档版本都有 read/partially-read/unread 状态与原因；"未识别"不从分母消失
+ * - 检查账本：每个计划检查（规则×目标）都有 CheckResult；缺失记 not-executed
+ * - "全部符合"结论仅当：无未读材料 且 计划检查全部执行 且 无 awaiting
+ */
+
+import type { CheckResult, DocumentVersion, RuleSpec } from '@profer/shared'
+
+export interface DocumentLedgerEntry {
+  documentVersionId: string
+  fileName: string
+  status: DocumentVersion['usage']
+  reason?: string
+}
+
+/** 材料账本：从文档版本直接投影（usage 字段由解析/审核流程维护） */
+export function buildDocumentLedger(documents: DocumentVersion[]): DocumentLedgerEntry[] {
+  return documents.map((doc) => ({
+    documentVersionId: doc.versionId,
+    fileName: doc.fileName,
+    status: doc.usage,
+    reason: doc.unusedReason,
+  }))
+}
+
+export interface CheckLedgerEntry {
+  ruleId: string
+  targetKey: string
+  status: CheckResult['status'] | 'not-executed'
+  reason?: string
+}
+
+/**
+ * 检查账本：以「计划检查」为分母核对执行结果。
+ * 计划 = 规则 × 其目标分组键的笛卡尔：subject 规则按主体展开；group 规则按组值逐组展开
+ * （G12/误判 5：组规则不再折叠成一个聚合 key——每组一条账目，缺组即 not-executed）。
+ */
+export function buildCheckLedger(
+  plannedRules: RuleSpec[],
+  subjectIds: string[],
+  results: CheckResult[],
+  groupValues?: Record<string, string[]>,
+): CheckLedgerEntry[] {
+  const byRuleTarget = new Map<string, CheckResult>()
+  for (const result of results) {
+    const key = `${result.ruleId}::${result.target.scope}::${[...result.target.subjectIds].sort().join(',')}`
+    byRuleTarget.set(key, result)
+  }
+  const ledger: CheckLedgerEntry[] = []
+  for (const rule of plannedRules) {
+    if (rule.targetScope === 'subject') {
+      for (const subjectId of subjectIds) {
+        const hit = byRuleTarget.get(`${rule.id}::subject::${subjectId}`)
+        ledger.push(
+          hit
+            ? { ruleId: rule.id, targetKey: subjectId, status: hit.status }
+            : { ruleId: rule.id, targetKey: subjectId, status: 'not-executed', reason: '计划检查未产生结果记录' },
+        )
+      }
+    } else if (rule.targetScope === 'group') {
+      const groups = groupValues?.[rule.id] ?? []
+      if (groups.length === 0) {
+        ledger.push({ ruleId: rule.id, targetKey: 'group', status: 'not-executed', reason: '组规则未提供组值，无法展开' })
+        continue
+      }
+      for (const groupValue of groups) {
+        const hit = byRuleTarget.get(`${rule.id}::group::${groupValue}`)
+        ledger.push(
+          hit
+            ? { ruleId: rule.id, targetKey: groupValue, status: hit.status }
+            : { ruleId: rule.id, targetKey: groupValue, status: 'not-executed', reason: '组内计划检查未产生结果记录' },
+        )
+      }
+    } else {
+      const key = `${rule.id}::${rule.targetScope}::${subjectIds.sort().join(',')}`
+      const hit = byRuleTarget.get(key)
+      ledger.push(
+        hit
+          ? { ruleId: rule.id, targetKey: rule.targetScope, status: hit.status }
+          : { ruleId: rule.id, targetKey: rule.targetScope, status: 'not-executed', reason: '计划检查未产生结果记录' },
+      )
+    }
+  }
+  return ledger
+}
+
+export interface CoverageSummary {
+  documents: Array<{ documentVersionId: string; status: DocumentVersion['usage']; reason?: string }>
+  plannedChecks: number
+  completedChecks: number
+  effectiveVerdicts: number
+  pendingChecks: number
+  /** "全部符合"是否成立（未读材料/未执行/待确认任一存在即不成立） */
+  allClearVerdictAllowed: boolean
+  blockers: string[]
+}
+
+/** 组合双账本 → ReviewRunV2.coverage + 全部符合判定（A08） */
+export function combineCoverage(
+  documents: DocumentVersion[],
+  plannedRules: RuleSpec[],
+  subjectIds: string[],
+  results: CheckResult[],
+  groupValues?: Record<string, string[]>,
+): CoverageSummary {
+  const documentLedger = buildDocumentLedger(documents)
+  const checkLedger = buildCheckLedger(plannedRules, subjectIds, results, groupValues)
+  const unread = documentLedger.filter((entry) => entry.status !== 'read')
+  const notExecuted = checkLedger.filter((entry) => entry.status === 'not-executed' || entry.status === 'execution-failed')
+  const awaiting = checkLedger.filter((entry) => entry.status === 'awaiting-confirmation' || entry.status === 'awaiting-supplement')
+  const violations = checkLedger.filter((entry) => entry.status === 'non-compliant')
+  const blockers: string[] = []
+  if (checkLedger.length === 0) blockers.push('没有有效检查计划，不能宣称全部符合')
+  else if (checkLedger.every((entry) => entry.status === 'not-applicable')) blockers.push('本次没有适用检查，不能宣称全部符合')
+  for (const entry of unread) blockers.push(`材料「${entry.fileName}」未完整读取${entry.reason ? `（${entry.reason}）` : ''}`)
+  if (notExecuted.length > 0) blockers.push(`${notExecuted.length} 项计划检查未执行`)
+  if (awaiting.length > 0) blockers.push(`${awaiting.length} 项检查待确认/待补件`)
+  if (violations.length > 0) blockers.push(`${violations.length} 项检查不符合`)
+  return {
+    documents: documentLedger,
+    plannedChecks: checkLedger.length,
+    completedChecks: checkLedger.filter((entry) => entry.status !== 'not-executed').length,
+    effectiveVerdicts: checkLedger.filter((entry) => entry.status === 'compliant' || entry.status === 'non-compliant').length,
+    pendingChecks: awaiting.length + notExecuted.length,
+    allClearVerdictAllowed: blockers.length === 0,
+    blockers,
+  }
+}

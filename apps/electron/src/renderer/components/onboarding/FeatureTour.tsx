@@ -26,12 +26,12 @@ const TOUR_INTERVAL_MS = 4000
 const TOUR_TRANSITION_MS = 600
 
 const FEATURE_TOUR_SLIDES: FeatureSlide[] = [
-  { title: 'Chat', summary: '问任何事。', example: '把这段话改成正式邮件' },
+  { title: 'Agent 对话', summary: '问问题，也能完成任务。', example: '把这段话改成正式邮件' },
   { title: 'Agent', summary: '把事情交给它。', example: '分析 @销售.xlsx，给我一份报告' },
   { title: '工作区', summary: '让文件成为上下文。', example: '按模板重写 @报告.md' },
   { title: 'Skills', summary: '把重复工作留下来。', example: '创建一个写周报的 Skill' },
   { title: '自动化', summary: '让任务自己发生。', example: '每周一整理项目进展并提醒我' },
-  { title: '手机操作', summary: '随时继续你的工作。', example: '在手机上继续处理这个任务' },
+  { title: '材料审核', summary: '把规则和材料放在一起核对。', example: '对照评分细则检查申报材料，并定位问题出处' },
 ]
 
 interface FeatureTourProps {
@@ -117,7 +117,7 @@ export function FeatureTour({ onNext, onSkip, finishLabel }: FeatureTourProps): 
 
       <div className="relative z-10 flex w-full flex-col px-8 py-7 sm:px-14 sm:py-10">
         <header className="flex items-center justify-between">
-          <span className="font-mono text-[10px] tracking-[0.3em] text-white/45">PROFER / 00{activeIndex + 1}</span>
+          <span className="font-mono text-[10px] tracking-[0.3em] text-white/45">CDUT STUDIO / 00{activeIndex + 1}</span>
           <Button variant="ghost" size="icon" onClick={onSkip} className="text-white/55 hover:bg-white/10 hover:text-white" aria-label="跳过介绍">
             <X className="h-4 w-4" />
           </Button>
@@ -184,7 +184,7 @@ function TourSlide({
         direction === 1 ? 'feature-tour-forward' : 'feature-tour-backward',
       )}
     >
-      <p className="feature-tour-kicker font-mono text-[11px] tracking-[0.24em] text-white/45">WHAT PROFER CAN DO</p>
+      <p className="feature-tour-kicker font-mono text-[11px] tracking-[0.24em] text-white/45">WHAT CDUT STUDIO CAN DO</p>
       <h2 className="feature-tour-title mt-4 text-5xl font-semibold tracking-normal sm:text-7xl">{slide.title}</h2>
       <p className="feature-tour-summary mt-5 text-lg text-white/70 sm:text-xl">{slide.summary}</p>
       <div className="feature-tour-example mt-11 flex items-center gap-3 border-b border-white/30 pb-3 text-sm text-white/90 sm:text-base">

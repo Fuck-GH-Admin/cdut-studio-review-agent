@@ -3,7 +3,7 @@
  *
  * 布局：顶栏（标题/徽标/案卷信息/操作按钮） + 三栏（审核依据 | 申请与证明 | AI 审核员） + 助手抽屉 + 底部错误条。
  * 三栏宽度 flex-[3] / flex-[4] / flex-[3]，栏间 1px 分隔，各自独立滚动（overflow-y-auto）。
- * 窄窗口（<1100px）时三栏都渲染、非当前栏 hidden，由顶部三按钮切换（reviewActivePaneAtom）。
+ * 窄窗口（<1100px）时只挂载当前栏，由顶部三按钮切换；切栏时重放已有定位。
  *
  * 交互：
  * - 挂载时 actions.initialize()：刷新案卷列表 + 模型出口自检（顶栏徽标）。
@@ -15,6 +15,7 @@
  */
 
 import * as React from 'react'
+import { toast } from 'sonner'
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
   ClipboardCheck,
@@ -27,7 +28,6 @@ import {
 } from 'lucide-react'
 import { detectIsWindows } from '@profer/ui'
 import { Button } from '@profer/ui/primitives/button'
-import { Spinner } from '@profer/ui/primitives/spinner'
 import { WindowControlsHost } from '@/components/WindowControlsTemplate'
 import { resolveWindowControlsRightInset } from '@/lib/window-controls-layout'
 import { isEditableTarget } from '@/lib/navigation-controller'
@@ -37,13 +37,22 @@ import {
   reviewCaseAtom,
   reviewErrorAtom,
   reviewGatewayStatusAtom,
+  reviewRunAtom,
+  reviewRunStaleAtom,
+  reviewRunningAtom,
+  reviewWorkspaceSectionAtom,
+  type ReviewWorkspaceSection,
 } from '@/atoms/review-atoms'
+import { channelsAtom } from '@/atoms/conversation-atoms'
 import type { ReviewModelGatewayStatus } from '@profer/shared'
 import { cn } from '@/lib/utils'
 import { AssistantDrawer } from './AssistantDrawer'
 import { CenterPanel } from './CenterPanel'
 import { LeftPanel } from './LeftPanel'
 import { RightPanel } from './RightPanel'
+import { V2CasePanel } from './V2CasePanel'
+import { TemplateWizardPanel } from './TemplateWizardPanel'
+import { BatchPanel } from './BatchPanel'
 import { useReviewActions } from './use-review-actions'
 
 /** 窄屏单栏切换的栏目标识 */
@@ -56,6 +65,12 @@ export function ContentReviewView(): React.ReactElement {
   const reviewCase = useAtomValue(reviewCaseAtom)
   const gatewayStatus = useAtomValue(reviewGatewayStatusAtom)
   const errorMessage = useAtomValue(reviewErrorAtom)
+  const run = useAtomValue(reviewRunAtom)
+  const runStale = useAtomValue(reviewRunStaleAtom)
+  const running = useAtomValue(reviewRunningAtom)
+  const section = useAtomValue(reviewWorkspaceSectionAtom)
+  const setSection = useSetAtom(reviewWorkspaceSectionAtom)
+  const channels = useAtomValue(channelsAtom)
   const activePane = useAtomValue(reviewActivePaneAtom)
   const setActivePane = useSetAtom(reviewActivePaneAtom)
   const assistantOpen = useSetAtom(reviewAssistantOpenAtom)
@@ -66,16 +81,27 @@ export function ContentReviewView(): React.ReactElement {
     () => typeof window !== 'undefined' && window.innerWidth < NARROW_BREAKPOINT_PX,
   )
   const isWindows = React.useMemo(() => detectIsWindows(), [])
+  const [exporting, setExporting] = React.useState(false)
 
-  // 挂载：载入演示案卷 + 网关自检；resize 监听（窄屏单栏降级）
+  const handleExport = async (): Promise<void> => {
+    setExporting(true)
+    try {
+      const result = await actions.exportReport()
+      if (result) toast.success('预审报告已导出', { description: result.markdownPath })
+    } finally {
+      setExporting(false)
+    }
+  }
+
+  // 设置面板覆盖工作台而不卸载它；渠道变化时也需刷新出口徽标。
+  React.useEffect(() => { void actions.initialize() }, [actions, channels])
+
+  // 监听窗口宽度，窄屏切换为单栏。
   React.useEffect(() => {
-    void actions.initialize()
     const handleResize = (): void => setNarrow(window.innerWidth < NARROW_BREAKPOINT_PX)
     handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-    // actions 引用在 hook 内已 useCallback 稳定，仅挂载执行一次
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Ctrl+Shift+A / Cmd+Shift+A：仅本视图挂载期间生效，切换助手抽屉
@@ -152,8 +178,8 @@ export function ContentReviewView(): React.ReactElement {
             variant="outline"
             size="sm"
             className="h-8 gap-1.5 px-3 text-[13px]"
-            disabled={!reviewCase}
-            onClick={() => void actions.exportReport()}
+            disabled={exporting || running || !run || run.status !== 'completed' || runStale}
+            onClick={() => void handleExport()}
           >
             <Download size={13} />
             导出报告
@@ -171,8 +197,19 @@ export function ContentReviewView(): React.ReactElement {
         </div>
       </header>
 
+      <nav aria-label="审核工作页" className="relative z-10 flex shrink-0 flex-wrap gap-1 border-b bg-card/60 px-3 py-1.5 titlebar-no-drag">
+        {([
+          ['workbench', '预审工作台'],
+          ['case-v2', 'V2 案卷'],
+          ['templates', '模板编排'],
+          ['batches', '批次管理'],
+        ] as Array<[ReviewWorkspaceSection, string]>).map(([id, label]) => (
+          <Button key={id} size="sm" variant={section === id ? 'secondary' : 'ghost'} aria-pressed={section === id} onClick={() => setSection(id)}>{label}</Button>
+        ))}
+      </nav>
+
       {/* ===== 窄屏：顶部三按钮切换栏 ===== */}
-      {narrow && (
+      {narrow && section === 'workbench' && (
         <nav
           role="tablist"
           aria-label="工作台栏目"
@@ -185,7 +222,7 @@ export function ContentReviewView(): React.ReactElement {
       )}
 
       {/* ===== 三栏主体 ===== */}
-      <main className="relative flex min-h-0 flex-1 titlebar-no-drag">
+      <main className={cn('relative flex min-h-0 flex-1 titlebar-no-drag', section !== 'workbench' && 'hidden')}>
         <PaneWrapper
           pane="left"
           className="flex-[3]"
@@ -209,6 +246,16 @@ export function ContentReviewView(): React.ReactElement {
         </PaneWrapper>
       </main>
 
+      <section aria-label="V2 案卷管理" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'case-v2' && 'hidden')}>
+        <V2CasePanel />
+      </section>
+      <section aria-label="审核模板编排" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'templates' && 'hidden')}>
+        <TemplateWizardPanel />
+      </section>
+      <section aria-label="审核批次管理" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'batches' && 'hidden')}>
+        <BatchPanel />
+      </section>
+
       {/* ===== 助手抽屉（fixed 到本视图根） ===== */}
       <AssistantDrawer actions={actions} />
 
@@ -227,7 +274,7 @@ export function ContentReviewView(): React.ReactElement {
   )
 }
 
-/** 模型出口状态徽标（可用 → 双出口名，不可用 → 离线模拟模式） */
+/** 模型出口状态徽标；无模型只表示未配置，演示模拟由运行徽标单独说明。 */
 function GatewayBadge({ status }: { status: ReviewModelGatewayStatus | null }): React.ReactElement | null {
   if (!status) return null
   if (status.available) {
@@ -240,7 +287,7 @@ function GatewayBadge({ status }: { status: ReviewModelGatewayStatus | null }): 
   }
   return (
     <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400">
-      离线模拟模式
+      未配置审核模型
     </span>
   )
 }
@@ -291,6 +338,8 @@ function PaneWrapper({
   children: React.ReactNode
 }): React.ReactElement {
   const visible = !narrow || active === pane
+  // 隐藏栏中的定位计时器会先结束；重新挂载后按保留的焦点滚动并高亮。
+  if (!visible) return <></>
   return (
     <div
       className={cn(
@@ -298,7 +347,6 @@ function PaneWrapper({
         showSeparator && 'border-r border-border/60',
         // 宽屏三栏比例；窄屏单栏占满
         narrow ? 'flex w-full flex-1' : `flex ${className}`,
-        visible ? 'flex' : 'hidden',
       )}
     >
       {children}

@@ -5,13 +5,15 @@
  */
 
 import { afterAll, describe, expect, test } from 'bun:test'
-import { rmSync } from 'node:fs'
+import { readFileSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewCase } from '@profer/shared'
 import { buildDemoCase } from './demo-fixtures/demo-case-fixture'
 import { renderRuleDocuments } from './ai-review-service'
 import { extractItems, generateRuleOutline, runAiReview } from './ai-review-service'
-import { getCase, saveCase } from './case-store'
+import { computeCaseInputHash, getCase, saveCase, saveRun } from './case-store'
+import { startReviewRun } from './run-service'
+import { exportReport } from './report-service'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-multi-rule-${Date.now()}`)
 process.env.PROFER_CONFIG_DIR = CONFIG_DIR
@@ -101,5 +103,53 @@ describe('未知领域守卫（M0/H14）', () => {
     await expect(generateRuleOutline({ caseId: unknown.id, rulePackId: unknown.rulePacks[0]!.id })).rejects.toThrow('审核领域未配置')
     await expect(extractItems(unknown.id)).rejects.toThrow('审核领域未配置')
     await expect(runAiReview(unknown)).rejects.toThrow('审核领域未配置')
+  })
+})
+
+describe('真实界面验收回归：无模型与未识别对象不代表审核通过', () => {
+  test('Given 真实案卷无模型 When 识别及运行 Then 明确失败，拒绝导出成功报告', async () => {
+    const reviewCase = buildTwoRuleCase('qa-no-model')
+    saveCase(reviewCase)
+    await expect(extractItems(reviewCase.id)).rejects.toThrow('尚未检查待审文件')
+    const run = await startReviewRun(reviewCase.id)
+    expect(run.status).toBe('failed')
+    expect(run.findings).toHaveLength(0)
+    expect(run.error).toContain('真实案卷不能使用演示模拟审核')
+    await expect(exportReport(reviewCase.id)).rejects.toThrow('尚未成功完成')
+  })
+
+  test('Given 零条目案卷 When 开始审核 Then 失败并要求先识别对象', async () => {
+    const reviewCase = { ...buildTwoRuleCase('qa-zero-items'), items: [], isDemo: true }
+    saveCase(reviewCase)
+    const run = await startReviewRun(reviewCase.id)
+    expect(run.status).toBe('failed')
+    expect(run.error).toContain('尚未识别可审核条目')
+  })
+
+  test('Given 内置演示案卷无模型 When 开始审核 Then 保持离线演示可用', async () => {
+    const reviewCase = buildDemoCase()
+    saveCase(reviewCase)
+    const run = await startReviewRun(reviewCase.id)
+    expect(run.status).toBe('completed')
+    expect(run.engine).toBe('mock-engine')
+    expect(run.findings.length).toBeGreaterThan(0)
+  })
+
+  test('Given 自定义审核及未处理文件 When 导出 Then 类型、修改建议、出处与覆盖缺口都可读', async () => {
+    const reviewCase = { ...buildDemoCase(), id: 'qa-human-report', type: '自定义审核' as const, isDemo: false }
+    saveCase(reviewCase)
+    const run = await startReviewRun(reviewCase.id) // 无模型先产生真实失败记录
+    const demo = buildDemoCase()
+    saveCase(demo)
+    const finding = (await startReviewRun(demo.id)).findings[0]!
+    saveRun(reviewCase.id, { ...run, status: 'completed', engine: 'ai', inputHash: computeCaseInputHash(reviewCase), findings: [finding], coverage: { ...run.coverage, unprocessedMaterials: [{ documentId: 'unread', fileName: '扫描件.pdf', reason: '无文本层' }] } })
+    const paths = await exportReport(reviewCase.id)
+    const markdown = readFileSync(paths.markdownPath, 'utf8')
+    expect(markdown).toContain('| 审核类型 | 自定义审核 |')
+    expect(markdown).toContain('修改建议：')
+    expect(markdown).toContain('依据位置：')
+    expect(markdown).toContain('证明位置：')
+    expect(markdown).toContain('扫描件.pdf（无文本层）')
+    expect(markdown).toContain('不能表示全部材料符合要求')
   })
 })

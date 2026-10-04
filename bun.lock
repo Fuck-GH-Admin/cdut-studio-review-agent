@@ -39,7 +39,7 @@
     },
     "apps/electron": {
       "name": "@profer/electron",
-      "version": "0.15.91",
+      "version": "0.15.112",
       "dependencies": {
         "@anthropic-ai/sdk": "^0.93.0",
         "@earendil-works/pi-agent-core": "0.86.1",
@@ -204,7 +204,7 @@
     },
     "packages/shared": {
       "name": "@profer/shared",
-      "version": "0.1.45",
+      "version": "0.1.50",
       "devDependencies": {
         "typescript": "^5.0.0",
       },

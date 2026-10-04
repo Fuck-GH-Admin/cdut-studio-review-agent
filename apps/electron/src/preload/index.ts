@@ -3631,6 +3631,54 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GENERATE_RULE_OUTLINE, input) as Promise<import('@profer/shared').RuleOutlineItem[]>,
   extractItems: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.EXTRACT_ITEMS, caseId) as Promise<import('@profer/shared').ReviewItem[]>,
   runReview: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW, caseId) as Promise<import('@profer/shared').ReviewRun>,
+  // ===== V2 通道（M5） =====
+  listTemplatesV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_TEMPLATES_V2) as Promise<import('@profer/shared').TemplateVersion[]>,
+  getTemplateV2: (templateId: string, version?: number) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_TEMPLATE_V2, templateId, version) as Promise<import('@profer/shared').TemplateVersion | undefined>,
+  publishTemplateV2: (templateId: string, version: number) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.PUBLISH_TEMPLATE_V2, templateId, version) as Promise<import('@profer/shared').TemplateVersion>,
+  listRunsV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_RUNS_V2, caseId) as Promise<import('@profer/shared').ReviewRunV2[]>,
+  getRunV2: (caseId: string, runId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_RUN_V2, { caseId, runId }) as Promise<import('@profer/shared').ReviewRunV2 | undefined>,
+  cancelRunV2: (runId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CANCEL_RUN_V2, runId) as Promise<boolean>,
+  migrateCaseV2: (caseId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.MIGRATE_CASE_V2, caseId) as Promise<import('@profer/shared').ReviewCaseV2 | undefined>,
+  seedFixtureV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SEED_FIXTURE_V2) as Promise<boolean>,
+  createCaseV2: (input: { caseId: string; templateId: string; version: number; payload: unknown; actor: import('@profer/shared').Actor }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_CASE_V2, input) as Promise<import('@profer/shared').ReviewCaseV2 | undefined>,
+  getAggregateV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_AGGREGATE_V2, caseId) as Promise<import('@profer/shared').CaseAggregateV2 | undefined>,
+  updateFieldsV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_FIELDS_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  correctObservationV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CORRECT_OBSERVATION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  setEvidenceLinkV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SET_EVIDENCE_LINK_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  recordStageDecisionV2: (input: { caseId: string; command: Record<string, unknown>; templateId: string; version: number }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RECORD_STAGE_DECISION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  resolveSupplementV2: (input: { caseId: string; command: Record<string, unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  respondSupplementV2: (input: { caseId: string; command: Record<string, unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESPOND_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  runBatchV2: (batchId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_BATCH_V2, batchId) as Promise<import('@profer/shared').BatchStateV2>,
+  runReviewV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, caseId) as Promise<import('@profer/shared').ReviewRunV2>,
+  castRatingV2: (input: { caseId: string; command: Record<string, unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CAST_RATING_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  resolveAppealV2: (input: { caseId: string; command: Record<string, unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESOLVE_APPEAL_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  createPolicyV2: (input: { policyId: string; title: string; content: string; enteredBy: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_POLICY_V2, input) as Promise<{ policyId: string; version: number; contentHash: string }>,
+  saveTemplateDraftV2: (template: import('@profer/shared').TemplateVersion) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SAVE_TEMPLATE_DRAFT_V2, template) as Promise<import('@profer/shared').TemplateVersion>,
+  createBatchV2: (batch: import('@profer/shared').ReviewBatch) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_BATCH_V2, { batch }) as Promise<import('@profer/shared').BatchStateV2>,
+  getBatchV2: (batchId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_BATCH_V2, batchId) as Promise<import('@profer/shared').BatchStateV2 | undefined>,
+  batchActionV2: (input: { action: 'finalize' | 'reopen'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, input) as Promise<import('@profer/shared').BatchStateV2>,
+  listCasesV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_CASES_V2) as Promise<Array<{ caseId: string; title: string; stage: string; revision: number; templateId: string; templateVersion: number; updatedAt: string }>>,
+  openAggregateV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_AGGREGATE_V2, caseId) as Promise<import('@profer/shared').CaseAggregateV2 | undefined>,
+  submitCaseV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, caseId) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  pickRegisterMaterialV2: (input: { caseId: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.PICK_REGISTER_MATERIAL_V2, input) as Promise<string[]>,
+  bootCheckV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BOOT_CHECK_V2) as Promise<{ templatesSeeded: number; templatesPublished: number; migratableCases: string[]; notes: string[] }>,
   getLatestRun: (caseId: string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LATEST_RUN, caseId) as Promise<import('@profer/shared').ReviewLatestRunResult>,
   getRun: (input: { caseId: string; runId: string }) =>

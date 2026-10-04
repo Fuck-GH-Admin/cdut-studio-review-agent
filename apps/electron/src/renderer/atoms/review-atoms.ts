@@ -25,6 +25,10 @@ import type {
 
 // ===== 数据状态 =====
 
+/** 审核区工作页：管理入口只挂载一次，切页保留正在填写的表单。 */
+export type ReviewWorkspaceSection = 'workbench' | 'case-v2' | 'templates' | 'batches'
+export const reviewWorkspaceSectionAtom = atom<ReviewWorkspaceSection>('workbench')
+
 /**
  * 案卷内存缓存（M0/H05）：按 caseId 存取，异步回写只动对应案卷。
  * 异步完成 A 时即使用户已切到 B，也只更新 A 的条目——不再用调用前快照覆盖"当前案卷"。

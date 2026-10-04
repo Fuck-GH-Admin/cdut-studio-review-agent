@@ -179,6 +179,238 @@ export function registerReviewIpc(): void {
     return getLatestRunStatus(caseId)
   })
 
+  // ===== V2 通道（M5：全部薄委托，服务层见 review-v2 系列文件） =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_TEMPLATES_V2, () => {
+    const { listTemplates } = require('./template-store') as typeof import('./template-store')
+    return listTemplates()
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_TEMPLATE_V2, (_e, templateId: string, version?: number) => {
+    if (typeof templateId !== 'string' || !templateId) throw new Error('参数 templateId 非法')
+    const { getTemplate } = require('./template-store') as typeof import('./template-store')
+    return getTemplate(templateId, version)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.PUBLISH_TEMPLATE_V2, (_e, templateId: string, version: number) => {
+    if (typeof templateId !== 'string' || !templateId || !Number.isFinite(version)) throw new Error('参数非法')
+    const { publishTemplate } = require('./template-store') as typeof import('./template-store')
+    return publishTemplate(templateId, version)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_RUNS_V2, (_e, caseId: string) => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+    return listRunsV2(caseId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_RUN_V2, (_e, input: { caseId: string; runId: string }) => {
+    if (!input?.caseId || !input?.runId) throw new Error('参数非法')
+    const { getRunV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+    return getRunV2(input.caseId, input.runId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CANCEL_RUN_V2, (_e, runId: string) => {
+    if (typeof runId !== 'string' || !runId) throw new Error('参数 runId 非法')
+    const { cancelRunV2 } = require('./run-service-v2') as typeof import('./run-service-v2')
+    cancelRunV2(runId)
+    return true
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.MIGRATE_CASE_V2, (_e, caseId: string) => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    const { getCase } = require('./case-store') as typeof import('./case-store')
+    const { migrateCaseToV2 } = require('./migration') as typeof import('./migration')
+    const v1 = getCase(caseId)
+    if (!v1) throw new Error(`案卷不存在: ${caseId}`)
+    return migrateCaseToV2(v1)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.BOOT_CHECK_V2, () => {
+    const { runBootCheckV2 } = require('./boot-check') as typeof import('./boot-check')
+    return runBootCheckV2()
+  })
+
+  // ===== N1d：V2 应用命令（薄委托 application-service / fixture） =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.SEED_FIXTURE_V2, () => {
+    const { seedComprehensiveFixture, publishComprehensiveFixture } = require('./fixtures/comprehensive-fixture') as typeof import('./fixtures/comprehensive-fixture')
+    const { getTemplate, saveDraft, publishTemplate } = require('./template-store') as typeof import('./template-store')
+    seedComprehensiveFixture({ getTemplate, saveDraft })
+    publishComprehensiveFixture({ getTemplate, saveDraft, publish: publishTemplate })
+    return true
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CREATE_CASE_V2, (_e, input: { caseId: string; templateId: string; version: number; payload: unknown; actor: import('@profer/shared').Actor }) => {
+    if (!input?.caseId || !input?.templateId) throw new Error('参数非法')
+    const { createCaseFromTemplate } = require('./application-service') as typeof import('./application-service')
+    return createCaseFromTemplate(input.templateId, input.version, input.payload as never, input.actor, input.caseId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_AGGREGATE_V2, (_e, caseId: string) => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+    return getCaseV2Aggregate(caseId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.UPDATE_FIELDS_V2, (_e, input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) => {
+    const { updateFields } = require('./application-service') as typeof import('./application-service')
+    const command = input.command as unknown as { requestId: string; actor: import('@profer/shared').Actor; expectedRevision: number; payload: unknown }
+    return updateFields(input.caseId, command as unknown as Parameters<typeof updateFields>[1])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CORRECT_OBSERVATION_V2, (_e, input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) => {
+    const { correctObservation } = require('./application-service') as typeof import('./application-service')
+    const command = input.command as unknown as { requestId: string; actor: import('@profer/shared').Actor; expectedRevision: number; payload: unknown }
+    return correctObservation(input.caseId, command as unknown as Parameters<typeof correctObservation>[1])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.SET_EVIDENCE_LINK_V2, (_e, input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) => {
+    const { setEvidenceLink } = require('./application-service') as typeof import('./application-service')
+    const command = input.command as unknown as { requestId: string; actor: import('@profer/shared').Actor; expectedRevision: number; payload: unknown }
+    return setEvidenceLink(input.caseId, command as unknown as Parameters<typeof setEvidenceLink>[1])
+  })
+
+  // ===== N3b：业务闭环命令（薄委托 stage-workflow） =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RECORD_STAGE_DECISION_V2, (_e, input: { caseId: string; command: Record<string, unknown>; templateId: string; version: number }) => {
+    const { recordStageDecision } = require('./stage-workflow') as typeof import('./stage-workflow')
+    const { getTemplate } = require('./template-store') as typeof import('./template-store')
+    const template = getTemplate(input.templateId, input.version)
+    if (!template) throw new Error(`模板不存在: ${input.templateId}@${input.version}`)
+    return recordStageDecision(input.caseId, input.command as unknown as Parameters<typeof recordStageDecision>[1], template)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+    const { resolveSupplementV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
+    return resolveSupplementV2(input.caseId, input.command as unknown as Parameters<typeof resolveSupplementV2>[1])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RESPOND_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+    const { respondSupplementV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
+    return respondSupplementV2(input.caseId, input.command as unknown as Parameters<typeof respondSupplementV2>[1])
+  })
+  // ===== G02：V2 真实运行（网关客户端 → 真实执行器 → 运行图管线；未配置渠道时明确报错不冒充审核） =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_BATCH_V2, async (_e, batchId: string) => {
+    if (typeof batchId !== 'string' || !batchId) throw new Error('参数 batchId 非法')
+    const { runBatchQueue } = require('./batch-store') as typeof import('./batch-store')
+    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+    const { getTemplate } = require('./template-store') as typeof import('./template-store')
+    const { runReviewCaseV2 } = require('./run-service-v2') as typeof import('./run-service-v2')
+    const { resolveReviewGatewayChannel, chatCompletion, REVIEW_RUN_TIMEOUT_MS } = require('./review-model-gateway') as typeof import('./review-model-gateway')
+    const { assembleV2Executors } = require('./v2-executor-factory') as typeof import('./v2-executor-factory')
+    const resolved = resolveReviewGatewayChannel()
+    if (!resolved) throw new Error('未配置可用模型渠道，无法执行批次审核')
+    const client = {
+      protocol: (resolved.channel as { protocol?: string }).protocol ?? 'openai-chat',
+      complete: async (input: { prompt: string; system: string; signal?: AbortSignal }) => ({
+        content: await chatCompletion(resolved.channel, [{ role: 'system', content: input.system }, { role: 'user', content: input.prompt }], { timeoutMs: REVIEW_RUN_TIMEOUT_MS }),
+      }),
+    }
+    return runBatchQueue(batchId, {
+      runCase: async (caseId: string) => {
+        const aggregate = getCaseV2Aggregate(caseId)
+        if (!aggregate) throw new Error(`案卷聚合不存在: ${caseId}`)
+        const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+        if (!template) throw new Error(`模板不存在: ${aggregate.caseV2.templateId}`)
+        const run = await runReviewCaseV2(aggregate.caseV2, template, assembleV2Executors(aggregate, template, { client }), {})
+        return { status: run.status }
+      },
+    })
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, async (_e, caseId: string) => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+    const { getTemplate } = require('./template-store') as typeof import('./template-store')
+    const { runReviewCaseV2 } = require('./run-service-v2') as typeof import('./run-service-v2')
+    const { resolveReviewGatewayChannel, chatCompletion, REVIEW_RUN_TIMEOUT_MS } = require('./review-model-gateway') as typeof import('./review-model-gateway')
+    const { assembleV2Executors } = require('./v2-executor-factory') as typeof import('./v2-executor-factory')
+    const aggregate = getCaseV2Aggregate(caseId)
+    if (!aggregate) throw new Error(`案卷聚合不存在: ${caseId}`)
+    const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+    if (!template) throw new Error(`模板不存在: ${aggregate.caseV2.templateId}@${aggregate.caseV2.templateVersion}`)
+    const resolved = resolveReviewGatewayChannel()
+    if (!resolved) throw new Error('未配置可用模型渠道，无法执行真实审核（请在设置中配置渠道）')
+    const client = {
+      protocol: (resolved.channel as { protocol?: string }).protocol ?? 'openai-chat',
+      complete: async (input: { prompt: string; system: string; signal?: AbortSignal }) => ({
+        content: await chatCompletion(resolved.channel, [
+          { role: 'system', content: input.system },
+          { role: 'user', content: input.prompt },
+        ], { timeoutMs: REVIEW_RUN_TIMEOUT_MS }),
+      }),
+    }
+    const executors = assembleV2Executors(aggregate, template, { client })
+    return runReviewCaseV2(aggregate.caseV2, template, executors, {})
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CAST_RATING_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+    const { castRating } = require('./rating-service') as typeof import('./rating-service')
+    return castRating(input.caseId, input.command as unknown as Parameters<typeof castRating>[1])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_APPEAL_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+    const { resolveAppealV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
+    return resolveAppealV2(input.caseId, input.command as unknown as Parameters<typeof resolveAppealV2>[1])
+  })
+
+  // ===== N4b：模板向导（无代码创建：政策先行 → 模板草稿 → 发布走 PUBLISH_TEMPLATE_V2） =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CREATE_POLICY_V2, (_e, input: { policyId: string; title: string; content: string; enteredBy: string }) => {
+    if (!input?.policyId || !input?.content) throw new Error('参数非法')
+    const { canonicalContentHash, compileOwnerRules, publishPolicy, savePolicyDraft } = require('./policy-store') as typeof import('./policy-store')
+    const record = {
+      policyId: input.policyId, version: 1, title: input.title, contentHash: canonicalContentHash(input.content), content: input.content,
+      compiledRules: compileOwnerRules(input.content, input.policyId, 1),
+      origin: { kind: 'owner-statement' as const, text: '向导录入', enteredBy: String(input.enteredBy ?? 'local-user'), enteredAt: new Date().toISOString() },
+      status: 'draft' as const,
+      confirmations: [{ actorId: String(input.enteredBy ?? 'local-user'), role: 'template-owner' as const, at: new Date().toISOString(), note: '向导录入确认' }],
+    }
+    savePolicyDraft(record)
+    publishPolicy(input.policyId, 1)
+    return { policyId: input.policyId, version: 1, contentHash: record.contentHash }
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.SAVE_TEMPLATE_DRAFT_V2, (_e, template: import('@profer/shared').TemplateVersion) => {
+    if (!template?.templateId) throw new Error('参数非法')
+    const { saveDraft } = require('./template-store') as typeof import('./template-store')
+    return saveDraft(template)
+  })
+
+  // ===== N5b：批次管理（薄委托 batch-store） =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CREATE_BATCH_V2, (_e, input: { batch: import('@profer/shared').ReviewBatch }) => {
+    const { createBatchV2 } = require('./batch-store') as typeof import('./batch-store')
+    return createBatchV2(input.batch)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_BATCH_V2, (_e, batchId: string) => {
+    const { readBatchStateV2 } = require('./batch-store') as typeof import('./batch-store')
+    return readBatchStateV2(batchId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, (_e, input: { action: 'finalize' | 'reopen'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown> }) => {
+    const { finalizeBatch, reopenBatch } = require('./batch-store') as typeof import('./batch-store')
+    if (input.action === 'finalize') return finalizeBatch(input.batchId, input.snapshot ?? {})
+    return reopenBatch(input.batchId, input.newBatchId ?? `${input.batchId}-r${Date.now().toString(36)}`, input.reason ?? '人工重开')
+  })
+
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_CASES_V2, () => {
+    const { listAggregatesV2 } = require('./case-store-v2') as typeof import('./case-store-v2')
+    return listAggregatesV2()
+  })
+
+  // ===== G01：材料登记与提交 =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.PICK_REGISTER_MATERIAL_V2, async (_e, input: { caseId: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string }) => {
+    if (!input?.caseId) throw new Error('参数 caseId 非法')
+        const { BrowserWindow, dialog } = require('electron') as typeof import('electron')
+    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+    const aggregate = getCaseV2Aggregate(input.caseId)
+    if (!aggregate) throw new Error(`案卷不存在: ${input.caseId}`)
+    // 逐文件读取聚合 revision 串行登记（事务天然串行；对话框一次性返回多选）
+    const actor = { actorId: 'local-user', actorSource: 'local' as const, role: 'reviewer' as const }
+    const { registerMaterial } = require('./material-service') as typeof import('./material-service')
+    const options = { properties: ['openFile', 'multiSelections'] as Array<'openFile' | 'multiSelections'> }
+    const win = BrowserWindow.getFocusedWindow() ?? undefined
+    const result = win ? await dialog.showOpenDialog(win, options) : await dialog.showOpenDialog(options)
+    if (result.canceled) return []
+    const versionIds: string[] = []
+    for (const sourcePath of result.filePaths) {
+      const fresh = getCaseV2Aggregate(input.caseId)!
+      const outcome = (await registerMaterial(input.caseId, {
+        requestId: `reg-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        actor,
+        expectedRevision: fresh.caseV2.revision,
+        payload: { sourcePath, role: input.role, materialSlotId: input.materialSlotId },
+      })) as { ok: boolean; message?: string }
+      if (!outcome.ok) throw new Error(outcome.message ?? '登记失败')
+      const updated = getCaseV2Aggregate(input.caseId)!
+      versionIds.push(updated.caseV2.documents[updated.caseV2.documents.length - 1]!.versionId)
+    }
+    return versionIds
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, (_e, caseId: string) => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    const { submitCaseV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
+    return submitCaseV2(caseId)
+  })
+
   /** 删除案卷 */
   ipcMain.handle(REVIEW_IPC_CHANNELS.DELETE_CASE, (_event, caseId: string): void => {
     deleteCase(caseId)

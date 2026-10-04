@@ -11,6 +11,7 @@
  */
 
 import { readFileSync } from 'node:fs'
+import { pathToFileURL } from 'node:url'
 import { extname } from 'node:path'
 import { resolveAttachmentPath } from './config-paths'
 
@@ -383,6 +384,7 @@ async function extractDocxWithMammoth(filePath: string): Promise<string> {
 }
 
 interface PdfJsModule {
+  GlobalWorkerOptions: { workerSrc: string }
   getDocument(src: {
     data: Uint8Array
     disableFontFace?: boolean
@@ -421,6 +423,9 @@ function isPdfTextItem(item: unknown): item is PdfTextItem {
 
 async function extractPdfWithPdfJs(buffer: Buffer): Promise<string> {
   const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs') as unknown as PdfJsModule
+  // esbuild 后模块位于 dist/main.cjs，默认相对 worker 路径会失效。
+  // 从随包的 pdfjs-dist 定位 worker，file URL 同时兼容 Windows 盘符路径。
+  pdfjs.GlobalWorkerOptions.workerSrc = pathToFileURL(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
   const loadingTask = pdfjs.getDocument({
     data: new Uint8Array(buffer),
     disableFontFace: true,

@@ -10,7 +10,7 @@
 
 import { mkdirSync, writeFileSync, renameSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
-import type { ExportReportResult, FindingKind, ReviewReportData, ReviewRun } from '@profer/shared'
+import type { ExportReportResult, FindingKind, ReviewCase, ReviewReportData, ReviewRun, ReviewSourceAnchor } from '@profer/shared'
 import { getConfigDir } from '../config-paths'
 import { getCase, latestRunSafe } from './report-data'
 import { assertSafeId, computeCaseInputHash 
@@ -73,6 +73,7 @@ export async function exportReport(caseId: string): Promise<ExportReportResult> 
 
   const run: ReviewRun | undefined = latestRunSafe(caseId)
   if (!run) throw new Error('该案卷尚未执行审核，无法导出报告（请先在右栏运行审核）')
+  if (run.status !== 'completed') throw new Error('本次审核尚未成功完成，无法导出预审结论：请完成审核后重试')
 
   // M0/H06/H10 同版守门：报告禁止"当前案卷元数据 × 旧运行"混版。
   // 输入指纹不一致（材料/规则/领域在审核后被改过）→ 拒绝导出当前报告，提示重审。
@@ -105,27 +106,27 @@ export async function exportReport(caseId: string): Promise<ExportReportResult> 
   const markdownPath = join(getReportsDir(), `${caseId}-${stamp}.md`)
 
   writeFileAtomic(jsonPath, JSON.stringify(data, null, 2))
-  writeFileAtomic(markdownPath, renderMarkdown(data, reviewCase.isDemo))
+  writeFileAtomic(markdownPath, renderMarkdown(data, reviewCase))
 
   console.log(`[审核专区] 已导出预审报告: ${jsonPath}`)
   return { jsonPath, markdownPath }
 }
 
 /** 渲染 Markdown 报告（人工可读的交接格式） */
-function renderMarkdown(data: ReviewReportData, isDemo: boolean): string {
+function renderMarkdown(data: ReviewReportData, reviewCase: ReviewCase): string {
   const run = data.runs[0]
   const lines: string[] = []
 
   lines.push(`# 内容审核预审报告`)
   lines.push('')
-  if (isDemo) lines.push(`> ⚠️ 本报告基于**演示用虚构案卷**生成，不得作为任何真实审核依据。`)
+  if (reviewCase.isDemo) lines.push(`> ⚠️ 本报告基于**演示用虚构案卷**生成，不得作为任何真实审核依据。`)
   lines.push('')
   lines.push(`| 项目 | 内容 |`)
   lines.push(`| --- | --- |`)
-  lines.push(`| 案卷 | ${data.caseTitle}（${data.caseId}） |`)
-  lines.push(`| 审核类型 | 综合测评 |`)
-  lines.push(`| 申请人 | ${data.applicant} |`)
-  lines.push(`| 适用学年 | ${data.academicYear} |`)
+  lines.push(`| 案卷 | ${escapeMdCell(data.caseTitle)}（${data.caseId}） |`)
+  lines.push(`| 审核类型 | ${escapeMdCell(reviewCase.type)} |`)
+  lines.push(`| 申请人 | ${escapeMdCell(data.applicant)} |`)
+  lines.push(`| 适用学年 | ${escapeMdCell(data.academicYear)} |`)
   lines.push(`| 生成时间 | ${data.generatedAt} |`)
   lines.push(`| 审核引擎 | ${run?.engine === 'ai' ? 'AI 审核' : '确定性模拟引擎'} |`)
   lines.push('')
@@ -162,6 +163,24 @@ function renderMarkdown(data: ReviewReportData, isDemo: boolean): string {
   }
   lines.push('')
 
+  const describeAnchor = (anchor: ReviewSourceAnchor): string => {
+    const document = reviewCase.documents.find((document) => document.id === anchor.documentId)
+    return `${document?.fileName ?? anchor.documentId} · ${anchor.blockId ?? (anchor.page ? `第 ${anchor.page} 页` : '文件级定位')}`
+  }
+  for (const finding of run?.findings ?? []) {
+    const item = reviewCase.items.find((item) => item.id === finding.itemId)
+    lines.push(`### ${finding.title}`)
+    lines.push('')
+    lines.push(`- 事项：${item?.title ?? finding.itemId}`)
+    lines.push(`- 说明：${finding.detail}`)
+    lines.push(`- 修改建议：${finding.suggestionText}`)
+    lines.push(`- 待审位置：${describeAnchor(finding.subjectAnchor)}`)
+    if (finding.evidenceAnchor) lines.push(`- 证明位置：${describeAnchor(finding.evidenceAnchor)}`)
+    if (finding.counterpartAnchor) lines.push(`- 对照位置：${describeAnchor(finding.counterpartAnchor)}`)
+    for (const anchor of finding.ruleAnchors) lines.push(`- 依据位置：${describeAnchor(anchor)}`)
+    lines.push('')
+  }
+
   lines.push(`## 覆盖摘要`)
   lines.push('')
   if (run) {
@@ -169,6 +188,10 @@ function renderMarkdown(data: ReviewReportData, isDemo: boolean): string {
     lines.push(`- 待人工复核：${run.coverage.manualReviewItemIds.length} 条`)
     lines.push(`- 未识别文件：${run.coverage.unrecognizedDocumentIds.length} 份`)
     lines.push(`- 规则未覆盖：${run.coverage.ruleUncoveredItemIds.length} 条`)
+    for (const material of run.coverage.unprocessedMaterials ?? []) {
+      lines.push(`- 未处理材料：${material.fileName}（${material.reason}）`)
+    }
+    if ((run.coverage.unprocessedMaterials?.length ?? 0) > 0) lines.push('> 存在未处理材料，本报告不能表示全部材料符合要求。')
   }
   lines.push('')
 

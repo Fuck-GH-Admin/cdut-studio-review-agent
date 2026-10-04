@@ -1,6 +1,240 @@
 {
   "releases": [
     {
+      "version": "0.15.137",
+      "date": "2026-10-05",
+      "title": "0.15.137",
+      "notes": "- 自检探查：real-chain-journey.test.ts 全链路旅程（发布→建案→带槽登记→提交→真实执行器运行含伪造引用/伪造规则反例→退回补件→不足→再回复→满足回流→终审驳回→申诉更正→投影→评分轮次），每步断言落盘状态；以后每批交付都附带链路级探查"
+    },
+    {
+      "version": "0.15.136",
+      "date": "2026-10-05",
+      "title": "0.15.136",
+      "notes": "- 复查 §5.5 收尾：pushViaOutbox 发送前先落盘 pending（端口响应后再写会丢中断现场）；recoverPendingPushes 启动扫描 pending 条目；测试以延迟端口断言发送时 pending 已在盘"
+    },
+    {
+      "version": "0.15.135",
+      "date": "2026-10-05",
+      "title": "0.15.135",
+      "notes": "- G02 OCR 适配：TesseractOcrPort（动态加载 tesseract.js——未安装/缺语言包如实 available=false 并给原因，不冒充已读；words→OcrBlock 矩形+置信度；资源探测 vendor/tesseract；AbortSignal 前后检查）——依赖与语言资源随包就绪后即启用"
+    },
+    {
+      "version": "0.15.134",
+      "date": "2026-10-05",
+      "title": "0.15.134",
+      "notes": "- 复查 §5.3-5 申诉闭环：maintain-original→upheld / amend-original→overturned / withdrawn；复核结论后关闭开放任务并 decided；更正决定 actor=复核人（不继承原判）、finality=final"
+    },
+    {
+      "version": "0.15.133",
+      "date": "2026-10-05",
+      "title": "0.15.133",
+      "notes": "- 复查 §5.9：提交必需材料槽门控（按模板 minCount 逐槽核对 active 材料）；版本链语义修正为同槽位+同名才 supersede；面板材料槽选择/已登记文件列表/补件回复说明+附件勾选表单"
+    },
+    {
+      "version": "0.15.132",
+      "date": "2026-10-05",
+      "title": "0.15.132",
+      "notes": "- G09 投影共用（复查 §5.6）：projectForRole 的 ownRating 改从 ratings 取；student/judge 视角决定 reason 不输出（内部调查细节不进公开投影）"
+    },
+    {
+      "version": "0.15.131",
+      "date": "2026-10-05",
+      "title": "0.15.131",
+      "notes": "- G10 使用入口 + G11 产品接通：V2CasePanel 已发布模板选择→动态字段表单→建案（替换硬编码）；RUN_BATCH_V2 通道（网关执行器注入 runBatchQueue）+ 批次面板执行队列按钮（完成回 queued 等人工定稿）"
+    },
+    {
+      "version": "0.15.130",
+      "date": "2026-10-05",
+      "title": "0.15.130",
+      "notes": "- 复查 §5.3/§5.4 行为修复：补件判不足后可再次回复（insufficient 计入未满足门控，cancelled 才豁免）；评分唯一票键含轮次（重开后同人有合法新票）、聚合按轮次过滤不混算"
+    },
+    {
+      "version": "0.15.129",
+      "date": "2026-10-05",
+      "title": "0.15.129",
+      "notes": "- G02 第一步：RUN_REVIEW_V2 四层接通——v2-executor-factory 装配 11 节点真实执行器（extract/summarize 走 Pi 网关：输入含案卷字段/规则/材料文本，输出 JSON 经引用校验与规则白名单过滤；parse 建段落索引；check 走确定性引擎；OCR 如实 unavailable）；未配置渠道明确报错不冒充审核；面板开始自动审核按钮"
+    },
+    {
+      "version": "0.15.128",
+      "date": "2026-10-05",
+      "title": "0.15.128",
+      "notes": "- G06/G11 真实队列：runBatchQueue 逐案 queued→running→done/failed（坏案不阻塞全批、已定稿拒绝、必须显式注入 runCase 不隐式默认执行器）；执行完回 queued 等待人工定稿"
+    },
+    {
+      "version": "0.15.127",
+      "date": "2026-10-05",
+      "title": "0.15.127",
+      "notes": "- G12 完成接线：运行结束 coverage 由真实产物账本装配（材料账本+检查账本组展开；分母=政策 compiledRules；组值来自产物 groups）；blockers 写入 run.diagnostics；无规则时 plannedChecks 如实为 0"
+    },
+    {
+      "version": "0.15.126",
+      "date": "2026-10-05",
+      "title": "0.15.126",
+      "notes": "- G02/G10：负责人规则文本编译器（compileOwnerRules：逐行/严重度括号/F编号/第N条 → 结构化 RuleSpec，policyVersionId 溯源）；CREATE_POLICY_V2 政策携带 compiledRules（coverage 分母来源就绪）"
+    },
+    {
+      "version": "0.15.125",
+      "date": "2026-10-05",
+      "title": "0.15.125",
+      "notes": "- G12/误判5：覆盖账本组规则逐组展开——group 规则按组值每人一条账目（缺组 not-executed，不再折叠单 key）；无组值如实标注；combineCoverage 接 groupValues"
+    },
+    {
+      "version": "0.15.124",
+      "date": "2026-10-05",
+      "title": "0.15.124",
+      "notes": "- G09/G10：公开报告投影（buildPublicReport：student/judge 版不含内部意见，judge 侧实名稳定匿名 学员#hash）+ 模板向导负责人自有规则文本（owner-statement 政策改为负责人录入，留空才用演示文本）"
+    },
+    {
+      "version": "0.15.123",
+      "date": "2026-10-05",
+      "title": "0.15.123",
+      "notes": "- G07/G08：独立副本回复改为事务化应用（修正\"显示已应用实际没更新案卷\"）——student-reply 真实写补件 responses、judge-rating-reply 走 castRating 唯一票；发送前 outbox 落盘 pending（sync-outbox/roundtrip/{packageId}.json），终态回执持久化，跨进程重复 duplicate、载荷漂移拒绝、无目标不冒充已应用"
+    },
+    {
+      "version": "0.15.122",
+      "date": "2026-10-05",
+      "title": "0.15.122",
+      "notes": "- G06/G11：独立评分服务——castRating 唯一票（事务内查重 INVALID_TRANSITION）；aggregateRatings 纯函数：N-A block/exclude-renormalize 两策略、缺评阻断、最低有效人数门控、重复票检出；CaseAggregateV2.ratings 落盘；评委评分按钮入面板"
+    },
+    {
+      "version": "0.15.121",
+      "date": "2026-10-05",
+      "title": "0.15.121",
+      "notes": "- G04/G05：补件闭环行为修复——退回补件记录 originTaskId/originStageId；respondSupplementV2 学生回复命令（角色校验）；判定满足后按原阶段回流开放任务（修正\"补件后没有任务\"）；补件回复按钮入面板"
+    },
+    {
+      "version": "0.15.120",
+      "date": "2026-10-05",
+      "title": "0.15.120",
+      "notes": "- G03：UpdateFields 接模板 schema 校验——未知 key/作用域越权/数字有限性/ISO 日期/枚举选项/必填缺失拒绝，数值字段保留数值精度；UPDATE_FIELDS_V2 自动取当前模板"
+    },
+    {
+      "version": "0.15.119",
+      "date": "2026-10-05",
+      "title": "0.15.119",
+      "notes": "- G01/G13：材料登记（对话框选择→复制原件+字节SHA-256+DocumentVersion事务，同名版本链 active/supersedes）与提交案卷（draft→submitted+首阶段任务，空材料/阶段拒绝）四层接线；V2CasePanel 补登记材料/提交按钮与已保存案卷恢复列表"
+    },
+    {
+      "version": "0.15.118",
+      "date": "2026-10-05",
+      "title": "0.15.118",
+      "notes": "- N7：资源自检（OCR 资源缺失如实 deferred，必需解析项可用性判定）+ 固定集评测脚手架（三值语义逐案比对，准确率为计算值不虚报；真实模型评测待真实通道）"
+    },
+    {
+      "version": "0.15.117",
+      "date": "2026-10-05",
+      "title": "0.15.117",
+      "notes": "- N5b：批次管理面板（创建锁定模板/政策版本、队列状态、定稿快照、重开新轮次）+ 3 个批次通道四层接线；BatchStateV2 进 shared（0.1.56）"
+    },
+    {
+      "version": "0.15.116",
+      "date": "2026-10-05",
+      "title": "0.15.116",
+      "notes": "- N6：角色投影（student/judge/organizer 服务层过滤，未知字段默认 internal 不泄漏，R12）+ 独立副本往返包（student-reply/judge-rating-reply：投影+哈希导出，导入哈希校验、重复包 duplicate 不重复计票、篡改 rejected，U12/R11）"
+    },
+    {
+      "version": "0.15.115",
+      "date": "2026-10-05",
+      "title": "0.15.115",
+      "notes": "- N5/N6：批次状态机（案卷级状态独立、定稿快照锁定、重开=新轮次不改写定稿，R08）+ 持久 outbox（sync-outbox/{actionId}.json，重启幂等、载荷漂移拒绝、conflict 持久化，R11）"
+    },
+    {
+      "version": "0.15.114",
+      "date": "2026-10-05",
+      "title": "0.15.114",
+      "notes": "- N4：六内置模板配齐虚构演示政策（负责人声明来源+确认记录+精确 policyRefs 引用），六套全部可发布且依赖完整（R02）；seed 升级无引用旧草稿，不覆盖已发布版"
+    },
+    {
+      "version": "0.15.113",
+      "date": "2026-10-05",
+      "title": "0.15.113",
+      "notes": "- N2d：Pi 审核执行器与工具档案——review 档案不注册通用工具（R10），允许协议 openai-chat/ollama-chat，材料指令边界与 AbortSignal 取消"
+    },
+    {
+      "version": "0.15.112",
+      "date": "2026-10-03",
+      "title": "0.15.112",
+      "notes": "- 同步协作者 main 并按最新 Pi 单内核与裁剪边界验收\n- 审核修复：真实案卷无模型/识别失败不再假装成功，零对象与失败运行禁止导出结论；混合图片/文本证明保留完整来源上下文\n- 工作台修复：全部依据展示与大纲生成、证明原文定位、输入变更即时过期提示、模型徽标刷新、导出反馈与问题卡滚动\n- 人类报告补齐真实审核类型、问题说明/修改建议、出处与未处理材料；修正旧 Chat/手机/语音引导\n- 适配独立 Agent 会话沙箱的文件面板；同毫秒图片记录保持实际生成顺序；窄窗口切栏重放定位\n- 修复 Electron 中 PDF worker 资源定位；审核工作台不再显示其他 Agent 会话文件面板"
+    },
+    {
+      "version": "0.15.111",
+      "date": "2026-10-04",
+      "title": "0.15.111",
+      "notes": "- M5/IPC 与引导：V2 通道 9 个注册到 shared+IPC+preload（模板列表/读取/发布、运行列表/读取/取消、迁移、引导检查）；runBootCheckV2 启动幂等检查（模板缺失即注入、可迁移 V1 案卷清单、发布提示）；shared 0.1.50"
+    },
+    {
+      "version": "0.15.110",
+      "date": "2026-10-04",
+      "title": "0.15.110",
+      "notes": "- M5/外部端口：SchoolPort 统一合同（动作幂等、期望版本冲突 C02）+ MockSchoolAdapter（内存模拟校方，可注版本制造冲突）+ LocalPackageAdapter（离线包往返，哈希随包）；S 类真实联调按设计属外部条件不在本轮"
+    },
+    {
+      "version": "0.15.109",
+      "date": "2026-10-04",
+      "title": "0.15.109",
+      "notes": "- M4/报告与离线往返：案卷反馈（学生视角仅 public 字段+决定+补件清单，A15）；评委矩阵（组织者视角内部评语与公开反馈分列+名次）；离线往返包（canonical sha1 随包、导入先验哈希防篡改、外部版本不符 CONFLICT，C01/C02）"
+    },
+    {
+      "version": "0.15.108",
+      "date": "2026-10-04",
+      "title": "v0.15.108",
+      "notes": "- M4/批次与评委：批次锁定已发布模板与政策版本（A12）；评委分配（重复拒绝、回避≠缺评）；评分提交（维度覆盖/越界/na 一致性/block 缺评拒绝，公开与内部意见分列）；汇总（回避排除、na 维度剔除、加权精度、block 缺评不定稿）；排名同分共享名次（A14）"
+    },
+    {
+      "version": "0.15.107",
+      "date": "2026-10-04",
+      "title": "v0.15.107",
+      "notes": "- M4/业务闭环状态机：决定追加式（更正不覆盖、AI 建议不是决定、必须基于运行）+ 补件（回复≠满足、满足回复审/取消需理由）+ 申诉（关联既有决定、成立回复审、原决定不改写）；全部走命令信封（VERSION_CONFLICT 携当前版）"
+    },
+    {
+      "version": "0.15.106",
+      "date": "2026-10-04",
+      "title": "v0.15.106",
+      "notes": "- M3/编排持久化：run-store-v2（runs-v2/{runId}.json 原子整写）+ run-service-v2（输入 manifest 指纹、每节点检查点落盘可续跑、同 hash 跳过已完成、输入变化拒绝旧运行续跑防混版 K06、进程内取消注册表 K18）；M3 服务层完成，IPC/事件转发随 M5 集成接线"
+    },
+    {
+      "version": "0.15.105",
+      "date": "2026-10-04",
+      "title": "v0.15.105",
+      "notes": "- M3/运行图与工具集：模板阶段→节点图（线性依赖），检查点续跑（done+同 hash 跳过，failed 转回 pending 可重试），waiting-input 分支暂停不阻塞下游取消语义（取消后不启动新节点、不产生完成事件）；审核业务工具集五件（只读检索/受控写入，确定性检查走确定引擎，非法输入如实拒绝）"
+    },
+    {
+      "version": "0.15.104",
+      "date": "2026-10-04",
+      "title": "v0.15.104",
+      "notes": "- M2/覆盖账本与端口：材料账本（read/partially-read/unread 全入账不消失）+ 检查账本（计划检查缺失记 not-executed）；combineCoverage 双分母汇总并判定\"全部符合\"是否成立（未读/未执行/待确认任一即阻止）；OCR 端口契约 + Null 实现（如实声明不可用）与原件预览描述符（图片直显/PDF 需渲染器诚实标注）"
+    },
+    {
+      "version": "0.15.103",
+      "date": "2026-10-04",
+      "title": "v0.15.103",
+      "notes": "- M2/事实与绑定：Observation 替代链服务（人工确认值不被 AI 重提取静默覆盖，A05）；EvidenceLink 多对多绑定（一证多事/多证一事/同事实去重/人工否决不复活），candidate→confirmed 状态机与主体覆盖度查询（A04）"
+    },
+    {
+      "version": "0.15.102",
+      "date": "2026-10-04",
+      "title": "v0.15.102",
+      "notes": "- M2/确定计算引擎：条件树三值求值（unknown 不当 false/0）+ 组级计分（同键去重择高→聚合→上限截断按分分配→舍弃项计 0 入账），D04/D05 样本重放一致；未知输入整组待确认"
+    },
+    {
+      "version": "0.15.101",
+      "date": "2026-10-04",
+      "title": "v0.15.101",
+      "notes": "- M1/迁移与契约：V1→V2 案卷迁移器（分数转字段/fixture 保留 origin/未知领域不默认综测/可重复执行）；主体动作命令信封（requestId/actor/expectedRevision，VERSION_CONFLICT 语义）；模型显式选择纯函数（渠道删除/禁用/模型不在列表即报错，K16）；shared 0.1.49"
+    },
+    {
+      "version": "0.15.100",
+      "date": "2026-10-04",
+      "title": "v0.15.100",
+      "notes": "- M1/模板仓库：draft/validate/publish/deprecate 服务层——发布检查（悬空字段/材料槽引用、流程重复、量表权重与缺失策略），发布版不可变；六内置模板（综测/活动/奖学金/评委/费用/文件核对）幂等落盘；第七种业务（实验室使用申请）验证仅靠配置即可创建发布（D12/K14）"
+    },
+    {
+      "version": "0.15.99",
+      "date": "2026-10-03",
+      "title": "v0.15.99",
+      "notes": "- M1/V2 契约（第一步）：shared 新增 review-v2 类型层——TemplateVersion/PolicyVersion+RuleSpec/ReviewCaseV2/DocumentVersion/Observation/EvidenceLink/CheckResult/ReviewRunV2/BusinessDecision/SupplementRequest/Appeal/JudgeAssignment+Rating/ReviewBatch/SyncReceipt/SourceRef 及条件树与三值语义（设计 03 §3 全实体）；与 V1 并存，未接入运行时"
+    },
+    {
       "version": "0.15.98",
       "date": "2026-10-03",
       "title": "v0.15.98",

@@ -4434,10 +4434,13 @@ export function registerIpcHandlers(): void {
   // 获取 session 工作路径
   ipcMain.handle(
     AGENT_IPC_CHANNELS.GET_SESSION_PATH,
-    async (_, workspaceId: string, sessionId: string): Promise<string | null> => {
-      const ws = getAgentWorkspace(workspaceId)
-      if (!ws) return null
-      return getAgentSessionWorkspacePath(ws.slug, sessionId)
+    async (_, _workspaceId: string, sessionId: string): Promise<string | null> => {
+      const session = getAgentSessionMeta(sessionId)
+      if (!session) return null
+      const ws = session.workspaceId ? getAgentWorkspace(session.workspaceId) : undefined
+      if (session.workspaceId && !ws) return null
+      // 与 createAgentSession 保持一致：未绑定工作区的会话使用 default 沙箱。
+      return getAgentSessionWorkspacePath(ws?.slug ?? 'default', sessionId)
     }
   )
 

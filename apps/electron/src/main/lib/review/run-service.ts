@@ -88,6 +88,10 @@ export async function startReviewRun(
   // ---- 第 2 步：执行引擎，异常全部就地消化 ----
   let outcome: Omit<ReviewRun, 'id' | 'startedAt' | 'completedAt' | 'status' | 'inputVersion'>
   try {
+    if (reviewCase.rulePacks.length === 0) throw new Error('案卷没有审核依据，请先导入依据材料')
+    if (!reviewCase.documents.some((document) => document.role === 'application')) throw new Error('案卷没有待审文件，请先导入材料')
+    if (reviewCase.items.length === 0) throw new Error('尚未识别可审核条目，请先识别条目并确认审核对象')
+    if (engine === 'mock-engine' && !reviewCase.isDemo) throw new Error('无可用模型出口，真实案卷不能使用演示模拟审核')
     outcome =
       engine === 'ai'
         ? await runAiReview(reviewCase)

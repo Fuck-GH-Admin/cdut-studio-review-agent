@@ -460,6 +460,42 @@ export const REVIEW_IPC_CHANNELS = {
   /** 查询运行状态 */
   GET_RUN: 'review:get-run',
   LATEST_RUN: 'review:get-latest-run',
+  // ===== V2（通用审核 Agent，M5 接线） =====
+  LIST_TEMPLATES_V2: 'review-v2:list-templates',
+  GET_TEMPLATE_V2: 'review-v2:get-template',
+  PUBLISH_TEMPLATE_V2: 'review-v2:publish-template',
+  RUN_REVIEW_V2: 'review-v2:run-review',
+  LIST_RUNS_V2: 'review-v2:list-runs',
+  GET_RUN_V2: 'review-v2:get-run',
+  CANCEL_RUN_V2: 'review-v2:cancel-run',
+  MIGRATE_CASE_V2: 'review-v2:migrate-case',
+  BOOT_CHECK_V2: 'review-v2:boot-check',
+  // ===== N1d：V2 应用命令（07 §3.2 首批） =====
+  SEED_FIXTURE_V2: 'review-v2:seed-fixture',
+  CREATE_CASE_V2: 'review-v2:create-case',
+  GET_AGGREGATE_V2: 'review-v2:get-aggregate',
+  UPDATE_FIELDS_V2: 'review-v2:update-fields',
+  CORRECT_OBSERVATION_V2: 'review-v2:correct-observation',
+  SET_EVIDENCE_LINK_V2: 'review-v2:set-evidence-link',
+  // ===== N3b：业务闭环命令 =====
+  ENSURE_INITIAL_TASK_V2: 'review-v2:ensure-initial-task',
+  RECORD_STAGE_DECISION_V2: 'review-v2:record-stage-decision',
+  RESOLVE_SUPPLEMENT_V2: 'review-v2:resolve-supplement',
+  RESPOND_SUPPLEMENT_V2: 'review-v2:respond-supplement',
+  CAST_RATING_V2: 'review-v2:cast-rating',
+  RUN_BATCH_V2: 'review-v2:run-batch',
+  SUBMIT_APPEAL_V2: 'review-v2:submit-appeal',
+  RESOLVE_APPEAL_V2: 'review-v2:resolve-appeal',
+  // ===== N4b：模板向导 =====
+  CREATE_POLICY_V2: 'review-v2:create-policy',
+  SAVE_TEMPLATE_DRAFT_V2: 'review-v2:save-template-draft',
+  // ===== N5b：批次管理 =====
+  CREATE_BATCH_V2: 'review-v2:create-batch',
+  GET_BATCH_V2: 'review-v2:get-batch',
+  BATCH_ACTION_V2: 'review-v2:batch-action',
+  LIST_CASES_V2: 'review-v2:list-cases',
+  SUBMIT_CASE_V2: 'review-v2:submit-case',
+  PICK_REGISTER_MATERIAL_V2: 'review-v2:pick-register-material',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */

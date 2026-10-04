@@ -157,6 +157,8 @@ export interface PiAgentQueryOptions extends AgentQueryInput {
   piAgentDir: string
   piSessionDir: string
   customTools?: ToolDefinition[]
+  /** N2d（07 §4.4）：工具档案——review 仅注册审核业务工具+压缩，不注册通用 read/bash/write 与产品工具 */
+  toolProfile?: 'general' | 'review'
   onSessionId?: (sdkSessionId: string, sessionFile?: string) => void
   /** Profer assistant UI UUID → Pi 树状 session entry ID 的持久映射；分叉/回退依赖它定位 branch 点。 */
   onPiEntryBindings?: (bindings: Record<string, string>) => void
@@ -2174,21 +2176,27 @@ export class PiAgentAdapter implements AgentProviderAdapter {
       )
       let compactContextRequested = false
       let automaticCompactionContinuations = 0
+      const isReviewProfile = input.toolProfile === 'review'
       const customTools = [
         buildCurrentSessionCompactionTool(
           sdk,
           () => { compactContextRequested = true },
           input.canUseTool,
         ),
-        ...buildBuiltinToolDefinitions(
-          sdk,
-          input.sessionId,
-          cwd,
-          input.canUseTool,
-          input.runtimeEnv,
-          input.onToolExecutionResult,
-        ),
-        ...buildPromaProductToolDefinitions(sdk, input.canUseTool),
+        // review 档案不注册通用内置工具（read/bash/write 等）与产品工具（R10：通用工具不进审核会话）
+        ...(isReviewProfile
+          ? []
+          : [
+              ...buildBuiltinToolDefinitions(
+                sdk,
+                input.sessionId,
+                cwd,
+                input.canUseTool,
+                input.runtimeEnv,
+                input.onToolExecutionResult,
+              ),
+              ...buildPromaProductToolDefinitions(sdk, input.canUseTool),
+            ]),
         ...wrapCustomToolDefinitions(input.customTools, input.canUseTool),
       ]
 

@@ -1,0 +1,95 @@
+/**
+ * M1 模板仓库单测（对应 K14/D12：第七种业务只靠配置创建）
+ * 隔离：PROFER_CONFIG_DIR 指向唯一临时目录。
+ */
+import { afterAll, describe, expect, test } from 'bun:test'
+import { rmSync } from 'node:fs'
+import { join } from 'node:path'
+import { BUILTIN_TEMPLATES_V2, ensureBuiltinTemplateDrafts } from './builtin-templates'
+import { deprecateTemplate, getTemplate, listTemplates, publishTemplate, saveDraft, validateTemplate } from './template-store'
+
+const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-template-${Date.now()}`)
+process.env.PROFER_CONFIG_DIR = CONFIG_DIR
+afterAll(() => rmSync(CONFIG_DIR, { recursive: true, force: true }))
+
+describe('六内置模板（M1）', () => {
+  test('Given 六模板草稿 When validate Then 全部 error 清零（可直接发布）', () => {
+    for (const template of BUILTIN_TEMPLATES_V2) {
+      const errors = validateTemplate(template).filter((issue) => issue.level === 'error')
+      expect(errors).toEqual([])
+    }
+  })
+
+  test('Given 内置草稿 When ensureBuiltinTemplateDrafts Then 幂等落盘且可发布', () => {
+    ensureBuiltinTemplateDrafts({ getTemplate, saveDraft })
+    ensureBuiltinTemplateDrafts({ getTemplate, saveDraft }) // 第二次不覆盖
+    expect(listTemplates().length).toBeGreaterThanOrEqual(6)
+    const published = publishTemplate('comprehensive-assessment-v2', 1)
+    expect(published.status).toBe('published')
+    expect(published.publishedAt).toBeString()
+    // 已发布不可覆盖（saveDraft 拒绝非草稿 / 版本冲突双保险）
+    expect(() => saveDraft(published)).toThrow()
+  })
+
+  test('Given 已发布版本 When 停用 Then 状态 deprecated 且历史可读', () => {
+    publishTemplate('document-checklist-v2', 1)
+    const deprecated = deprecateTemplate('document-checklist-v2', 1)
+    expect(deprecated.status).toBe('deprecated')
+    expect(getTemplate('document-checklist-v2', 1)?.status).toBe('deprecated')
+  })
+})
+
+describe('发布检查（02 §5.6）', () => {
+  test('Given 悬空条件引用 When validate Then error 指出缺失字段', () => {
+    const template = BUILTIN_TEMPLATES_V2[1]!
+    const broken = {
+      ...template,
+      fields: [...template.fields, { key: 'extra', label: 'x', kind: 'text' as const, required: false, visibility: 'public' as const, conditionRequired: { field: 'ghost-field', op: 'exists' as const } }],
+    }
+    const issues = validateTemplate(broken)
+    expect(issues.some((issue) => issue.message.includes('ghost-field'))).toBeTrue()
+  })
+
+  test('Given 流程重复阶段 When validate Then 报循环/重复', () => {
+    const template = BUILTIN_TEMPLATES_V2[0]!
+    const issues = validateTemplate({ ...template, stages: [...template.stages, template.stages[0]!] })
+    expect(issues.some((issue) => issue.message.includes('重复阶段'))).toBeTrue()
+  })
+
+  test('Given 非法量表 When validate Then 报权重/范围错误', () => {
+    const template = BUILTIN_TEMPLATES_V2[3]!
+    const issues = validateTemplate({ ...template, rubric: { ...template.rubric!, dimensions: [{ id: 'd', name: 'd', min: 5, max: 1, weight: 0 }] } })
+    expect(issues.some((issue) => issue.message.includes('min>=max'))).toBeTrue()
+  })
+})
+
+describe('第七种业务只靠配置创建（D12/K14）', () => {
+  test('Given 实验室使用申请配置 When validate+publish Then 通过且无学年/申报分字段', () => {
+    const lab: Parameters<typeof saveDraft>[0] = {
+      templateId: 'lab-usage-v2', version: 1, schemaVersion: 2, name: '实验室使用申请',
+      objectType: 'organization', displayName: { template: '{{orgName}}' },
+      fields: [
+        { key: 'orgName', label: '申请组织', kind: 'text', required: true, visibility: 'public' },
+        { key: 'headcount', label: '人数', kind: 'number', required: true, visibility: 'public', min: 1, max: 50 },
+        { key: 'usage', label: '用途', kind: 'text', required: true, visibility: 'public' },
+        { key: 'slotStart', label: '使用时段', kind: 'date', required: true, visibility: 'public' },
+      ],
+      materialSlots: [{ id: 'plan', name: '使用计划书', purpose: '用途与安全', requiredElements: ['安全'], acceptedKinds: ['pdf', 'office'], minCount: 1, maxCount: 3, allowReuseAcrossSubjects: false }],
+      policyVersionIds: ['policy-lab-usage'],
+      stages: [
+        { id: 'auto-check', name: '自动核对', kind: 'auto-check', executorRole: 'system' },
+        { id: 'first-review', name: '初审', kind: 'manual-review', executorRole: 'reviewer' },
+        { id: 'final-review', name: '终审', kind: 'manual-review', executorRole: 'teacher' },
+      ],
+      outputs: [{ id: 'approval', kind: 'approval', audience: 'teacher' }],
+      status: 'draft', createdAt: new Date().toISOString(),
+    }
+    expect(validateTemplate(lab).filter((issue) => issue.level === 'error')).toEqual([])
+    saveDraft(lab)
+    const published = publishTemplate('lab-usage-v2', 1)
+    expect(published.status).toBe('published')
+    // 无评分量表、无学年/申报分占位字段
+    expect(published.rubric).toBeUndefined()
+    expect(published.fields.some((field) => field.key === 'academicYear' || field.key === 'declaredScore')).toBeFalse()
+  })
+})

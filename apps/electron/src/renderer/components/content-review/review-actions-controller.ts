@@ -137,6 +137,19 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
   /** 取当前选中案卷 ID */
   const currentCaseId = (): string | null => store.get(selectedCaseIdAtom)
 
+  /** 每次输入变更与运行返回后查询主进程指纹，避免旧结论在当前页面继续冒充同版结果。 */
+  const refreshRunValidity = async (caseId: string): Promise<void> => {
+    try {
+      const latest = await api.getLatestRun(caseId)
+      store.set(reviewRunStaleByCaseAtom, { ...store.get(reviewRunStaleByCaseAtom), [caseId]: latest.inputStale })
+    } catch (error) {
+      if (store.get(reviewRunsByCaseAtom)[caseId]) {
+        store.set(reviewRunStaleByCaseAtom, { ...store.get(reviewRunStaleByCaseAtom), [caseId]: true })
+      }
+      console.error('[审核专区] 核验运行输入版本失败', error)
+    }
+  }
+
   /** 选中案卷（带选择代次）：慢返回若期间已选其他案卷则整体丢弃 */
   const selectCaseInternal = async (caseId: string): Promise<boolean> => {
     const generation = ++selectionGeneration
@@ -304,6 +317,7 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
           console.error('[审核专区] 导入后刷新案卷失败', refreshError)
         }
         await refreshCaseList()
+        await refreshRunValidity(caseId)
         if (document.parseStatus === 'parsed') {
           setError(null, { caseId })
         } else {
@@ -357,6 +371,7 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
         // 按案回写：响应期间切走也只更新原案卷缓存（H05 领域切换不串案）
         const updated = await api.updateCaseSettings({ caseId, domainPackId: packId })
         store.set(reviewCasesByIdAtom, { ...store.get(reviewCasesByIdAtom), [updated.id]: updated })
+        await refreshRunValidity(caseId)
         await refreshCaseList()
         setError(null)
         return true
@@ -374,31 +389,34 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
         return
       }
       const caseId = selected.id
-      const rulePackId = rulePack.id
       if (!tryBeginTask(caseId, 'outline')) {
         setError('该案卷的大纲生成已在进行中', { caseId })
         return
       }
       const generation = beginOperation(caseId, 'outline')
       try {
-        const outline = await api.generateRuleOutline({ caseId, rulePackId })
-        // 旧代次丢弃：期间用户再次发起的大纲已更新，晚返回不得覆盖（K05 交错）
-        if (!isCurrentOperation(caseId, 'outline', generation)) {
-          console.warn('[审核专区] 旧的大纲响应已丢弃（已有更新的请求完成）:', caseId)
-          return
-        }
-        // 定向合并到缓存最新：只动目标规则包的 outline，不覆盖期间发生的其他字段变更
-        const latest = store.get(reviewCasesByIdAtom)[caseId]
-        if (latest) {
-          store.set(reviewCasesByIdAtom, {
-            ...store.get(reviewCasesByIdAtom),
-            [caseId]: {
-              ...latest,
-              rulePacks: latest.rulePacks.map((pack) =>
-                pack.id === rulePackId ? { ...pack, outline, confirmed: false } : pack,
-              ),
-            },
-          })
+        // 每份依据都有独立大纲；完整走过全部规则包，成功的包即时合并，失败不清空已有内容。
+        for (const pack of selected.rulePacks) {
+          const rulePackId = pack.id
+          const outline = await api.generateRuleOutline({ caseId, rulePackId })
+          // 旧代次丢弃：期间用户再次发起的大纲已更新，晚返回不得覆盖（K05 交错）
+          if (!isCurrentOperation(caseId, 'outline', generation)) {
+            console.warn('[审核专区] 旧的大纲响应已丢弃（已有更新的请求完成）:', caseId)
+            return
+          }
+          // 定向合并到缓存最新：只动目标规则包的 outline，不覆盖期间发生的其他字段变更
+          const latest = store.get(reviewCasesByIdAtom)[caseId]
+          if (latest) {
+            store.set(reviewCasesByIdAtom, {
+              ...store.get(reviewCasesByIdAtom),
+              [caseId]: {
+                ...latest,
+                rulePacks: latest.rulePacks.map((pack) =>
+                  pack.id === rulePackId ? { ...pack, outline, confirmed: false } : pack,
+                ),
+              },
+            })
+          }
         }
         setError(null, { caseId })
       } catch (error) {
@@ -406,6 +424,7 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
           reportError('生成规则大纲失败', error, { caseId })
         }
       } finally {
+        await refreshRunValidity(caseId)
         endTask(caseId, 'outline')
       }
     },
@@ -433,6 +452,7 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
         if (latest) {
           store.set(reviewCasesByIdAtom, { ...store.get(reviewCasesByIdAtom), [caseId]: { ...latest, items } })
         }
+        await refreshRunValidity(caseId)
         setError(null, { caseId })
       } catch (error) {
         if (isCurrentOperation(caseId, 'items', generation)) {
@@ -457,9 +477,9 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
         const run: ReviewRun = await api.runReview(caseId)
         // 按案落位：A 的运行回 A——用户切到 B 也不串（K05 主场景）
         store.set(reviewRunsByCaseAtom, { ...store.get(reviewRunsByCaseAtom), [caseId]: run })
-        store.set(reviewRunStaleByCaseAtom, { ...store.get(reviewRunStaleByCaseAtom), [caseId]: false })
+        await refreshRunValidity(caseId)
         if (run.error) {
-          setError(`审核完成但部分失败：${run.error}`, { caseId })
+          setError(`审核未完成：${run.error}`, { caseId })
         } else {
           setError(null, { caseId })
         }

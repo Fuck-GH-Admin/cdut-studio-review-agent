@@ -579,11 +579,10 @@ describe('extractItems 多待审文件（P2）', () => {
     expect(systemText()).toContain('2 份待审文件')
   })
 
-  test('Given 无待审文件 When 识别条目 Then 降级返回案卷既有条目', async () => {
+  test('Given 无待审文件 When 识别条目 Then 明确失败且保留既有条目', async () => {
     const reviewCase = buildCase({ subjectCount: 0 })
     nextError = null
-    const items = await extractItems(reviewCase.id)
-    expect(items).toEqual(reviewCase.items)
+    await expect(extractItems(reviewCase.id)).rejects.toThrow('没有待审文件')
   })
 })
 
@@ -614,12 +613,43 @@ describe('锚点宽进严出（回归）', () => {
     expect(finding.subjectAnchor.precision).toBe('document')
   })
 
-  test('Given 模型调用失败 When 审核 Then 降级 mock 引擎且不抛错', async () => {
+  test('Given 真实案卷模型调用失败 When 审核 Then 如实报错且不生成模拟结论', async () => {
     const reviewCase = buildCase({})
     nextError = new Error('模拟的网络错误')
-    const outcome = await runAiReview(reviewCase)
-    expect(outcome.engine).toBe('mock-engine')
+    await expect(runAiReview(reviewCase)).rejects.toThrow('未生成模拟结论')
     expect(callCount).toBeGreaterThan(0)
+    nextError = null
+  })
+
+  test('Given 演示案卷模型调用失败 When 审核 Then 仍允许显式模拟结果', async () => {
+    const reviewCase = { ...buildCase({}), isDemo: true }
+    nextError = new Error('模拟的网络错误')
+    expect((await runAiReview(reviewCase)).engine).toBe('mock-engine')
+    nextError = null
+  })
+
+  test('Given 图片与文本证明同时存在 When 审核 Then 文本证明和来源注册表也进入多模态请求', async () => {
+    const reviewCase = buildCase({ withImage: true, suffix: 'mixed-proof' })
+    const assetDir = join(CONFIG_DIR, 'review-cases', reviewCase.id, 'source-docs')
+    mkdirSync(assetDir, { recursive: true })
+    writeFileSync(join(assetDir, '证书.png'), Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg==', 'base64'))
+    reviewCase.documents.push({ ...reviewCase.documents[0]!, id: 'doc-text-proof', role: 'evidence', fileName: '电子证明.txt', blocks: [{ id: 'blk-proof', kind: 'paragraph', text: '核验码 QA-MIXED-PROOF-4488', page: 1 }] })
+    nextError = null
+    nextImagesDropped = false
+    nextReply = '[]'
+    const outcome = await runAiReview(reviewCase)
+    expect(lastUserText()).toContain('QA-MIXED-PROOF-4488')
+    expect(lastUserText()).toContain('来源注册表')
+    expect(lastUserText()).toContain('doc-text-proof')
+    expect(lastUserImageCount()).toBe(1)
+    expect(outcome.findings).toHaveLength(0)
+    expect(outcome.coverage.ruleUncoveredItemIds).toHaveLength(0)
+  })
+
+  test('Given 真实案卷识别服务失败 When 识别 Then 保留原条目并返回明确失败', async () => {
+    const reviewCase = buildCase({ suffix: 'extract-failure' })
+    nextError = new Error('识别端点不可用')
+    await expect(extractItems(reviewCase.id)).rejects.toThrow('已有条目未改动')
     nextError = null
   })
 })
