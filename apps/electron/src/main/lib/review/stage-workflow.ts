@@ -250,21 +250,41 @@ export async function submitCaseV2(caseId: string): Promise<ReviewCommandResult<
   const { getTemplate } = await import('./template-store')
   const aggregate = (await import('./case-store-v2')).readAggregate(caseId)
   if (!aggregate) throw new CommandValidationError('NOT_FOUND', `案卷聚合不存在: ${caseId}`)
-  if (aggregate.caseV2.stage !== 'draft') throw new CommandValidationError('INVALID_TRANSITION', `当前阶段 ${aggregate.caseV2.stage} 不可提交`)
+  // 重试已成功的提交，返回原回执；不重复生成任务或增加 revision。
+  if (aggregate.caseV2.stage === 'submitted' && aggregate.tasks.length > 0) {
+    const receipt = aggregate.receiptLog.findLast(entry => entry.type === 'SubmitCase')
+    if (receipt) return { ok: true, receipt, aggregate, entity: aggregate.tasks[0] }
+  }
+  const recovering = aggregate.caseV2.stage === 'submitted' && aggregate.tasks.length === 0
+  if (aggregate.caseV2.stage !== 'draft' && !recovering) throw new CommandValidationError('INVALID_TRANSITION', `当前阶段 ${aggregate.caseV2.stage} 不可提交`)
   if (aggregate.caseV2.documents.length === 0) throw new CommandValidationError('VALIDATION_FAILED', '尚未登记任何材料，不能提交')
   const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
   if (!template) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '模板不存在或已删除')
-  // 提交命令：阶段→submitted；随后由 ensureInitialTask 建任务（两次事务，幂等键独立）
-  const submit = await submitCommand<Record<string, never>, void>(caseId, {
-    requestId: `submit-${aggregate.caseV2.revision}-${Date.now()}`,
+  const firstStage = template.stages[0]
+  if (!firstStage) throw new CommandValidationError('VALIDATION_FAILED', '模板没有审核阶段')
+  // 状态和首任务在同一个聚合事务内保存，避免两次写入间出现已提交却无任务。
+  return submitCommand<Record<string, never>, WorkflowTask>(caseId, {
+    requestId: `submit-${caseId}-${aggregate.caseV2.revision}`,
     actor: { actorId: 'local-user', actorSource: 'local', role: 'reviewer' },
     expectedRevision: aggregate.caseV2.revision,
     type: 'SubmitCase',
     payload: {},
-  }, () => ({
-    summary: '案卷已提交进入审核',
-    mutate: (draft) => { draft.caseV2.stage = 'submitted' },
+  }, current => ({
+    summary: recovering ? '恢复已提交案卷的首阶段任务' : '案卷已提交进入审核',
+    mutate: (draft) => {
+      const task: WorkflowTask = {
+        id: `task-submit-${caseId}-${current.caseV2.revision}`,
+        caseId,
+        stageId: firstStage.id,
+        round: 1,
+        assigneeRole: firstStage.executorRole,
+        status: 'open',
+        inputRevision: current.caseV2.revision,
+        createdAt: new Date().toISOString(),
+      }
+      draft.caseV2.stage = 'submitted'
+      draft.tasks = [...draft.tasks, task]
+      return task
+    },
   }))
-  if (!submit.ok) return submit as unknown as ReviewCommandResult<WorkflowTask>
-  return ensureInitialTask(caseId, template, { actorId: 'local-user', actorSource: 'local', role: 'reviewer' })
 }

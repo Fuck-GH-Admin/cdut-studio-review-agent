@@ -152,7 +152,9 @@ interface CaseListEntry { caseId: string; title: string; stage: string; revision
           <div className="space-y-1.5 text-xs">
             <div className="flex flex-wrap gap-1.5">
               <Button size="sm" variant="outline" onClick={registerMaterials}>登记材料</Button>
-              {current.caseV2.stage === 'draft' && <Button size="sm" onClick={submitCase}>提交案卷</Button>}
+              {(current.caseV2.stage === 'draft' || (current.caseV2.stage === 'submitted' && current.tasks.length === 0)) && (
+                <Button size="sm" onClick={submitCase}>{current.caseV2.stage === 'draft' ? '提交案卷' : '恢复审核任务'}</Button>
+              )}
             </div>
             <BusinessFlowSection aggregate={current} onResult={applyResult} />
             <p className="font-medium">{current.caseV2.title}</p>
@@ -160,7 +162,7 @@ interface CaseListEntry { caseId: string; title: string; stage: string; revision
               阶段 {current.caseV2.stage} · revision {current.caseV2.revision} · 回执 {current.receiptLog.length} 条
             </p>
             <div className="flex items-center gap-1.5">
-              <input id="v2-student-name" className="h-7 w-32 rounded-md border bg-background px-2 text-xs" placeholder="学生姓名" defaultValue={String((current.caseV2.caseFields.studentName as { value?: string })?.value ?? '')} />
+              <input key={current.caseV2.id} id="v2-student-name" className="h-7 w-32 rounded-md border bg-background px-2 text-xs" placeholder="学生姓名" defaultValue={String((current.caseV2.caseFields.studentName as { value?: string })?.value ?? '')} />
               <Button size="sm" variant="outline" onClick={() => {
                 const input = document.getElementById('v2-student-name') as HTMLInputElement | null
                 if (!input?.value) return

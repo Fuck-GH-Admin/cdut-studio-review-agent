@@ -62,7 +62,7 @@ export function TemplateWizardPanel(): JSX.Element {
     } finally {
       store.set(reviewV2BusyAtom, false)
     }
-  }, [name, objectType, scored, fields, slots, store])
+  }, [name, objectType, scored, fields, slots, policyText, store])
 
   return (
     <div className="mx-3 mb-3 rounded-xl border bg-card p-3 shadow-sm">
