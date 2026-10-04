@@ -3178,7 +3178,7 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
   return (
     <>
     <AgentSessionProvider sessionId={sessionId}>
-      <div data-profer-navigation-region="conversation" data-agent-session-id={sessionId} tabIndex={-1} className="agent-conversation flex h-full min-h-0 min-w-0 w-full flex-1 flex-col max-w-[min(72rem,100%)] mx-auto">
+      <div data-profer-navigation-region="conversation" data-agent-session-id={sessionId} tabIndex={-1} className="agent-conversation relative flex h-full min-h-0 min-w-0 w-full flex-1 flex-col max-w-[min(72rem,100%)] mx-auto">
         <div className="shrink-0">
           <AgentHeader sessionId={sessionId} />
         </div>

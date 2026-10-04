@@ -804,8 +804,8 @@ export function AgentMessages({ sessionId, sessionModelId, agentRuntime, message
   return (
     <FileAccessSessionProvider sessionId={sessionId}>
     <BasePathsProvider basePaths={resolvedBasePaths}>
-    <div ref={historySelectionRootRef} className="relative flex min-h-0 flex-1 flex-col">
-    <Conversation resize={ready && !transitioning ? 'smooth' : 'instant'} className={ready ? (skipFadeIn ? 'opacity-100' : 'opacity-100 transition-opacity duration-200') : 'opacity-0'}>
+    <div ref={historySelectionRootRef} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+      <Conversation resize={ready && !transitioning ? 'smooth' : 'instant'} className={cn('relative z-10', ready ? (skipFadeIn ? 'opacity-100' : 'opacity-100 transition-opacity duration-200') : 'opacity-0')}>
       <ScrollPositionManager id={sessionId} ready={ready} />
       <TopHistoryLoader
         onLoadEarlierHistory={onLoadEarlierHistory}
@@ -975,6 +975,14 @@ export function AgentMessages({ sessionId, sessionModelId, agentRuntime, message
     </Conversation>
       <AgentHistorySelectionLayer sessionId={sessionId} rootRef={historySelectionRootRef} explorationEnabled={explorationEnabled && agentRuntime === 'pi'} />
     </div>
+    {!hasContent && !streaming && runningDelegationCount === 0 && (
+      <img
+        src="cdut-resource://background.png"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 right-0 h-3/4 w-1/2 object-contain opacity-75 select-none z-0"
+      />
+    )}
     </BasePathsProvider>
     </FileAccessSessionProvider>
   )

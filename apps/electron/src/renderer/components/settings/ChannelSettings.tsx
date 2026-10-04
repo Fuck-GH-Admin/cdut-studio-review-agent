@@ -1,8 +1,8 @@
 /**
  * ChannelSettings - 渠道配置页
  *
- * 管理所有渠道的添加、编辑、删除与启用状态；每个渠道直接展示可用的 Agent Core。
- * Chat 与 Agent 视觉上统一为一个列表，Agent 兼容性通过内联标签展示。
+ * 管理所有渠道的添加、编辑、删除与启用状态。
+ * Chat 与 Agent 视觉上统一为一个列表。
  */
 
 import * as React from 'react'
@@ -10,10 +10,9 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Plus, Pencil, Trash2, Server, RefreshCw, ChevronDown } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
 import { Switch } from '@profer/ui/primitives/switch'
-import { PROVIDER_LABELS, isAgentCompatibleProvider, isAgentEnabledForChannel } from '@profer/shared'
+import { PROVIDER_LABELS, isAgentEnabledForChannel } from '@profer/shared'
 import type { Channel, OfficialChannelHealth, ProviderType } from '@profer/shared'
 import { getChannelLogo } from '@/lib/model-logo'
-import { resolvePiCoreState } from '@/lib/channel-model-groups'
 import { agentChannelIdAtom, agentModelIdAtom, agentChannelIdsAtom } from '@/atoms/agent-atoms'
 import { channelsAtom } from '@/atoms/conversation-atoms'
 import { authStatusAtom } from '@/atoms/identity-atoms'
@@ -260,7 +259,7 @@ export function ChannelSettings(): React.ReactElement {
         description={
           commercialMode && !canSelfConfig
             ? `${managedFamilySummary}模型池由团队服务器统一管理，无需手动配置；普通/VIP 路由与上游故障转移由后台处理`
-            : '管理 AI 供应商连接，配置 API Key 和可用模型。支持 Agent 的渠道会显示对应标签'
+            : '管理 AI 供应商连接，配置 API Key 和可用模型'
         }
         action={
           (commercialMode && !canSelfConfig) ? null : (
@@ -370,7 +369,6 @@ function OfficialChannelGroupRow({ channels, health, isModelFamily }: { channels
     }
   }
   const groupedHealth = new Map([...modelsById].map(([modelId, models]) => [modelId, aggregateModelHealth(models)]))
-  const supportsClaude = isAgentCompatibleProvider(representative.provider)
   const multiple = channels.length > 1
   return (
     <div className="group border-b border-border/50 last:border-b-0">
@@ -380,11 +378,7 @@ function OfficialChannelGroupRow({ channels, health, isModelFamily }: { channels
           <span className="block truncate text-sm font-medium">{isModelFamily ? getOfficialChannelDisplayName(representative) : `${representative.name} · 官方`}{multiple ? ` · ${channels.length} 个渠道` : ''}</span>
           <span className="block truncate text-xs text-muted-foreground">{isModelFamily ? `${PROVIDER_LABELS[representative.provider]} 协议 · 当前账号 ${enabledModels.size} 个模型可用` : `${PROVIDER_LABELS[representative.provider]} · ${enabledModels.size} 个模型已启用`}</span>
         </span>
-        <span className="flex items-center gap-1 shrink-0">
-          {supportsClaude && <span className="inline-flex px-1.5 py-0.5 rounded text-[10px] bg-blue-500/10 text-blue-600">Claude</span>}
-          <span className="inline-flex px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-600">Pi</span>
-          <ChevronDown size={16} className={`ml-1 transition-transform ${expanded ? 'rotate-180' : ''}`} />
-        </span>
+        <ChevronDown size={16} className={`shrink-0 transition-transform ${expanded ? 'rotate-180' : ''}`} />
       </button>
       {expanded && <div className="border-t border-border/50 bg-muted/20 px-5 py-3 pl-[68px] space-y-2">
         {isModelFamily ? <p className="text-xs text-muted-foreground">这是服务端汇流的模型池；普通/VIP 路由、上游主备与故障重试由后台自动处理。</p> : multiple ? <p className="text-xs text-muted-foreground">已合并 {channels.length} 个同名官方渠道；上游主备与重试由 New API 自动处理。</p> : null}
@@ -426,9 +420,6 @@ function ChannelRow({ channel, onEdit, onDelete, onToggle, commercialMode, canSe
 
   const controls = (
     <div className="flex items-center gap-2.5" onClick={(event) => event.stopPropagation()}>
-      {/* Agent Core 兼容性标签 */}
-      <AgentCoreChips channel={channel} />
-
       {/* 操作按钮 */}
         {!isOfficial && (!commercialMode || canSelfConfig) && (
           <>
@@ -502,26 +493,5 @@ function ChannelRow({ channel, onEdit, onDelete, onToggle, commercialMode, canSe
         </div>
       )}
     </div>
-  )
-}
-
-// ===== Agent Core 兼容性标签 =====
-
-function AgentCoreChips({ channel }: { channel: Pick<Channel, 'provider' | 'enabled' | 'agentExperimentalEnabled' | 'agentRuntimes'> }): React.ReactElement {
-  const supportsClaude = isAgentCompatibleProvider(channel.provider)
-  const piCoreState = resolvePiCoreState(channel)
-  const isExperimentalXai = piCoreState !== 'active'
-
-  return (
-    <span className="flex items-center gap-1 shrink-0">
-      {supportsClaude && (
-        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-          Claude
-        </span>
-      )}
-      <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium ${isExperimentalXai ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20' : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'}`}>
-        {isExperimentalXai ? (piCoreState === 'experimental-active' ? 'Pi 实验' : 'Pi 实验未启用') : 'Pi'}
-      </span>
-    </span>
   )
 }

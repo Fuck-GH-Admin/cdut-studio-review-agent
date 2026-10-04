@@ -40,24 +40,24 @@ CDUT Studio 是一个集成通用 AI Agent 的下一代桌面人工智能软件�
 
 ## 2. Monorepo 结构与常用命令
 
-基于 Bun workspace 的 Monorepo 结构（8 个核心包）：
+基于 Bun workspace 的 Monorepo 结构（6 个核心包 + Electron 应用 + CLI）：
 
 ```
 CDUT-Studio/
 ├── packages/
 │   ├── shared/        # 共享类型、IPC 常量、配置与权限规则 (@profer/shared)
-│   ├── agent-fabric/  # Agent 编排抽象与能力装配 (@profer/agent-fabric)
-│   ├── project-core/  # 项目级配置与上下文解析 (@profer/project-core)
+│   ├── agent-fabric/  # Agent 编排契约与纯函数行为 (@profer/agent-fabric)
+│   ├── project-core/  # 项目级图构建、状态重放与查询 (@profer/project-core)
 │   ├── session-core/  # headless session 读取/分组/搜索/渲染 (@profer/session-core)
 │   ├── core/          # AI Provider 适配器、代码高亮服务 (@profer/core)
-│   ├── cli/           # 独立命令行脚手架 (@profer/cli)
 │   └── ui/            # 共享 UI 组件库 (@profer/ui)
 └── apps/
-    └── electron/      # Electron 桌面应用主体 (@profer/electron)
-        └── src/
-            ├── main/       # 主进程 + 服务层 (main/lib/)
-            ├── preload/    # IPC 上下文桥接
-            └── renderer/   # React UI (Vite + Tailwind + Radix UI)
+    ├── electron/      # Electron 桌面应用主体 (@profer/electron)
+    │   └── src/
+    │       ├── main/       # 主进程 + 服务层 (main/lib/)
+    │       ├── preload/    # IPC 上下文桥接
+    │       └── renderer/   # React UI (Vite + Tailwind + Radix UI)
+    └── cli/           # 独立命令行脚手架 (@profer/cli，bin: profer)
 ```
 
 **依赖管理**：内部包使用 `workspace:*` 互相引用。优先使用 Bun 原生 API（`Bun.file` > `node:fs`）。
@@ -71,23 +71,22 @@ bun run dev
 # 构建全量产物
 bun run electron:build
 
-# 类型检查（全仓库 8 个包，提交或打包前必跑）
+# 类型检查（全仓库 6 包 + Electron + CLI，提交或打包前必跑）
 bun run typecheck
-bun run --filter='@profer/electron' typecheck
+cd apps/electron && bun run typecheck
 
 # 单元测试
 bun test
 
-# Windows MinGit 资源预检与准备
-bun run ensure:mingit
-
-# 架构边界检查与依赖同步
+# 架构边界检查
 bun run check:boundaries
+
+# 依赖同步与 Pi 运行时校验（须在 apps/electron/ 下执行；verify 脚本仅 Windows）
+cd apps/electron
 bun run sync:runtime-deps
 bun run verify:packaged-pi-runtime
 
 # 打包分发（Windows x64 请在 Windows 主机执行）
-cd apps/electron
 bun run dist:fast     # 当前架构快速打包 (win-unpacked)
 bun run dist:win      # Windows x64 正式安装包
 bun run dist:mac      # macOS 产物打包
@@ -122,9 +121,14 @@ cmd.exe /c ".\apps\electron\out\win-unpacked\CDUT Studio.exe --enable-logging"
   - Windows 执行环境实行**静默自动降级策略**：`Git Bash（若已装） > 内置 BusyBox Bash > WSL > 原生 PowerShell`。
   - 用户无感知、界面无切换开关，确保全新纯净 Win10/Win11 机器无需预装 Git 或配置 WSL 即可直接运行。
   - **内置 MinGit 零配置检查点**：针对无 Git 的 Windows 设备，系统优先探测本机 Git，缺失时无缝切换至应用内置的精简版 MinGit（`resources/bin/git/cmd/git.exe`），保证增量检查点毫秒级快照开箱即用。
-- **沙箱隔离与快照拒止（防卡死红线）**：
-  - **无工作区模式沙箱隔离**：未指定工作区时，主进程必须在会话沙箱目录（`~/.cdutai/agent-workspaces/default/{sessionId}`）内启动 Agent，**严禁将用户宿主个人主目录（`homedir`）或盘符根目录作为 Agent 工作空间**。
+- **沙箱隔离与全能力同构（防特权缺失与串扰）**：
+  - **无工作区模式沙箱隔离**：未指定工作区时，统一使用默认工作区提供会话隔离沙箱（`~/.cdutai/agent-workspaces/default/{sessionId}`），**严禁将用户宿主个人主目录（`homedir`）或盘符根目录作为 Agent 工作空间**。
+  - **独立会话能力 100% 同构**：无工作区会话在编排时自动绑定有效沙箱工作区引用（`effectiveWorkspaceId = workspaceId ?? workspace?.id`），**严禁因未指定工程工作区而关闭子智能体委派（`collaboration`）、任务图（`task-graph`）与记忆库能力**。
+- **快照拒止与主进程防冻结（防卡死红线）**：
   - **快照拒止与熔断机制**：`pi-file-checkpoint.ts` 对敏感目录（主目录与盘符根目录）绝对拒止执行快照；物理复制降级引擎强制执行 `MAX_SNAPSHOT_FILE_COUNT = 500` 文件硬熔断，严禁同步复制几十万文件阻塞 Electron 主线程事件循环。
+  - **非阻塞式快照回收与会话删除**：
+    - 快照垃圾回收（`gcShadowRepo`）必须在独立子进程后台静默异步执行并去重，**严禁在主事件循环同步调用 `git gc` 阻塞 UI**（测试环境保持同步以防临时目录占用）；
+    - 会话删除（`deleteAgentSession`）实行“索引瞬时摘除 + 物理磁盘后台异步离线清理”，保证 UI 毫秒级反馈。
 - **思考链 (Thinking) 流式体验**：
   - 支持思考的模型（如 DeepSeek/Claude）思考块必须正常渲染并支持折叠收纳；
   - 无工具调用时正文必须直接外置流式输出，**严禁将纯回复误收纳进折叠过程组**导致界面出现假死无限 Spinner。
@@ -134,24 +138,45 @@ cmd.exe /c ".\apps\electron\out\win-unpacked\CDUT Studio.exe --enable-logging"
 
 ### 3.3 主进程服务层 (`main/lib/`)
 
+`main/lib/` 是体量很大的服务矩阵（400+ 文件）。核心编排与运行时：
+
 | 服务模块 | 职责与设计要点 |
 |----------|----------------|
 | `agent-orchestrator.ts` | 核心编排层：并发守卫、渠道调度、环境装配、沙箱隔离、自动标题生成与流式推送 |
+| `adapters/pi-*.ts` | Pi 内核适配器：绑定 Pi runtime，转换消息/工具/模型注册/MCP/Skills/提示链 |
+| `pi-harness/` | Pi Harness 运行时治理：goal-controller、governor、reconciler、verification-evaluator、replay |
 | `pi-file-checkpoint.ts` | 文件增量快照引擎：优先 Git 检查点，内置 MinGit 降级回退，物理复制带 500 文件安全熔断 |
-| `git-detector.ts` | Git 探测器：本机系统 PATH 优先，未安装时透明回退到打包内置 MinGit |
+| `agent-session-manager.ts` | 会话管理：消息持久化、元数据 CRUD、JSONL 存储、委派子会话 |
+| `agent-collaboration-tools.ts` | 子智能体委派工具：`delegate_agent(s)` / `wait_for_delegations` / `get_delegation_results` 等 |
+| `agent-prompt-builder.ts` | 系统提示词构建：动态上下文、内置 Agent、工作区上下文注入 |
 | `channel-manager.ts` | 渠道管理：模型渠道 CRUD、API Key AES-256-GCM 本地加密存储与连通性测试 |
-| `feishu-bridge.ts` | 飞书集成：飞书机器人任务通知、会话消息同步与 OAuth 认证 |
+| `memory-service.ts` | 跨会话记忆存储、归档检索与 wikilink |
+| `automation-manager.ts` / `automation-scheduler.ts` | 定时任务持久化调度、运行与通知 |
+| `goal-*.ts` / `planning-manager.ts` | Goal 运行时与规划（Planning）管理 |
+| `skill-master-manager.ts` / `skill-routing.ts` | 全局元 Skill、技能路由与策略投影 |
+| `browser-controller.ts` / `browser-*.ts` | 内嵌浏览器控制、策略、截图与会话 |
+| `feishu-bridge.ts` / `feishu/` | 飞书集成：消息同步、任务通知、卡片渲染、OAuth 认证 |
 | `review/` | 内容审核专区服务矩阵（案卷存储、文档切块、白名单网关、双路径预审、报告导出） |
-| `runtime-init.ts` | 运行时初始化：Shell 环境注入、Bun/Git 检测与自适应配置 |
+| `runtime-init.ts` / `git-detector.ts` / `shell-env.ts` | 运行时初始化：Shell 环境注入、Bun/Git/Node 检测与自适应配置 |
+| `config-paths.ts` | 配置路径管理：`~/.cdutai/` 目录结构与默认 Skills 播种 |
+| `updater/` | 自动更新、发布与更新日志 |
 
 ---
 
 ### 3.4 AI Provider 适配器 (`packages/core/src/providers/`)
 
-基于适配器模式，统一通过 `ProviderAdapter` 接口提供流式通信服务：
-- **Anthropic 协议**：Messages API，支持 Claude extended_thinking、DeepSeek-reasoner、MiniMax；
-- **OpenAI 协议**：Chat Completions，支持 OpenAI、智谱、豆包、通义千问、自定义端点；
-- **Google 协议**：Gemini Generative Language API；
+基于适配器模式，通过 `adapterRegistry` 统一管理，按 `providerId` 查找适配器。四种协议适配器：`AnthropicAdapter`（Messages API）、`OpenAIAdapter`（Chat Completions）、`OpenAIResponsesAdapter`（Responses API）、`GoogleAdapter`（Generative Language API）；通用 SSE 读取器 `sse-reader.ts`。
+
+实际注册表共 **18 个 providerId**：
+
+| 协议 | 适配器 | providerId |
+|------|--------|-----------|
+| Anthropic Messages | `AnthropicAdapter` | `anthropic`、`anthropic-compatible` |
+| Anthropic 兼容 | `AnthropicAdapter` | `kimi-api`、`kimi-coding`、`zhipu-coding`、`minimax`、`xiaomi`、`xiaomi-token-plan` |
+| OpenAI Chat Completions | `OpenAIAdapter` | `openai`、`deepseek`、`zhipu`、`ollama`、`doubao`、`qwen`、`custom` |
+| OpenAI Responses | `OpenAIResponsesAdapter` | `openai-responses`、`xai` |
+| Google Generative Language | `GoogleAdapter` | `google` |
+
 - **多模态格式**：适配器自动将图片及文档 `<file>` 格式转换为 Provider 原生协议。
 
 ---
@@ -164,9 +189,18 @@ cmd.exe /c ".\apps\electron\out\win-unpacked\CDUT Studio.exe --enable-logging"
 |-----------|----------|
 | `agent-atoms.ts` | 会话列表、当前激活会话、流式状态 (`AgentStreamState`)、渠道/工作区映射、权限与问答请求队列 |
 | `review-atoms.ts` | 内容审核专区状态：当前案卷、规则大纲、问题卡选中态、三栏联动焦点 (`reviewFocusAtom`) |
-| `active-view.ts` | 主面板视图路由（`conversations` / `agent-skills` / `content-review`） |
-| `settings-tab.ts` | 设置面板标签页路由（渠道配置、关于更新、通用设置等） |
+| `active-view.ts` | 主面板视图路由（`conversations` / `planning` / `agent-skills` / `content-review`） |
+| `settings-tab.ts` | 设置面板标签页路由（18 个：general / usage / account / channels / appearance / about / agent / prompts / tools / bots / tutorial / shortcuts / team / openapi / data-management / developer / proxy / devices） |
 | `theme.ts` | 界面主题模式（`light` / `dark` / `system`） |
+| `conversation-atoms.ts` / `draft-session-atoms.ts` | 会话数据与草稿会话 |
+| `tab-atoms.ts` / `tab-group-atoms.ts` / `sidebar-atoms.ts` / `panel-layout-atoms.ts` | 标签页、侧边栏与面板布局 |
+| `planning-atoms.ts` / `goal-atoms.ts` / `graph-atoms.ts` | 规划、目标与项目图状态 |
+| `automation-atoms.ts` | 定时任务（`automationsAtom`、`automationFormAtom`） |
+| `browser-atoms.ts` / `preview-atoms.ts` | 内嵌浏览器与预览面板 |
+| `feishu-atoms.ts` / `dingtalk-atoms.ts` / `wechat-atoms.ts` | 飞书/钉钉/微信集成状态 |
+| `system-prompt-atoms.ts` / `agent-preset-atoms.ts` | 系统提示词与 Agent 预设 |
+| `ui-preferences.ts` / `ui-scale.ts` / `markdown-font-size.ts` | 界面偏好、界面缩放、Markdown 字号 |
+| `user-profile.ts` / `updater.ts` / `notifications.ts` | 用户档案、自动更新状态与通知 |
 
 ### 核心前端设计模式
 
@@ -181,7 +215,8 @@ cmd.exe /c ".\apps\electron\out\win-unpacked\CDUT Studio.exe --enable-logging"
 
 ## 5. 本地存储规范与精简边界
 
-- **配置文件优先**：配置存放在 `~/.profer/`（如 `channels.json`、`agent-sessions.json`），用户 Agent 沙箱存放在 `~/.cdutai/`。
+- **配置文件优先**：配置存放在 `~/.cdutai/`（正式版）/ `~/.cdutai-dev/`（开发版），可由 `PROFER_CONFIG_DIR` 覆盖。CDUT Studio 不读取也不迁移 `~/.proma` / `~/.profer` 旧数据。
+- **用户 Agent 沙箱**：`~/.cdutai/agent-workspaces/{slug}/`，无工作区会话落到 `~/.cdutai/agent-workspaces/default/{sessionId}`。
 - **结构化日志**：会话消息采用追加式 JSONL 存储（`agent-sessions/{sessionId}.jsonl`）。
 - **坚守原则**：**绝不引入复杂重量级的本地数据库（如 SQLite）**，轻量文本配置与原子写入优于一切。
 - **产品边界**：保持纯粹的 AI Agent 交互体验。历史遗留的独立服务端、多用户协同 UI 等已彻底清理，严禁引入过度设计的冗余模块。
@@ -199,3 +234,51 @@ cmd.exe /c ".\apps\electron\out\win-unpacked\CDUT Studio.exe --enable-logging"
    - 内置依赖程序（如 MinGit 检查点引擎、BusyBox 等）通过 `electron-builder.yml` 明确配置 `extraResources` 并置于标准路径。
 4. **文档同步铁律**：
    - 功能与架构发生调整后，保持 `AGENTS.md` 和 `README.md` 同步更新，且修改前必须经过用户确认。
+
+> **已知待修点**：`apps/electron/electron-builder.yml` 的 `files` 仍保留 `!node_modules/@proma/**`（过时前缀，代码待修）。
+
+---
+
+## 7. 默认 Skills（`apps/electron/default-skills/`）
+
+应用启动时按 semver 比较自动同步到 `~/.cdutai/default-skills/` 与各工作区，共 **17 个**：
+
+| Skill | 用途 |
+|-------|------|
+| `automation` | 内嵌定时任务 |
+| `brainstorming` | 创意工作前需求探索与设计 |
+| `docx` | Word 文档创建/读取/编辑 |
+| `executing-plans` | 带审查检查点的实现计划执行 |
+| `find-skills` | 发现并安装 Skills |
+| `guizang-ppt-skill` | 横向翻页网页 PPT 生成 |
+| `in-app-browser` | 内嵌浏览器操作 |
+| `lark-delivery` | 飞书/Lark 交付与推送 |
+| `pdf` | PDF 文档处理 |
+| `pptx` | PowerPoint 演示文稿 |
+| `profer-coach` | CDUT Studio 使用顾问 |
+| `session-cleaner` | 会话 JSONL 清洗为 Markdown |
+| `skill-creator` | Skill 创建/编辑/评估 |
+| `tool-builder` | 自定义 HTTP 工具管理 |
+| `user-sense` | 用户感知/人设与语气适配 |
+| `writing-plans` | 多步骤任务实施计划 |
+| `xlsx` | 电子表格处理 |
+
+### 版本契约与全局元 Skill（master）
+
+- **修改任何 `default-skills/<skill>/` 内容时必须同步递增该 `SKILL.md` frontmatter 的 `version`（patch +1）**——否则 `seedDefaultSkills` 不会用新版覆盖老用户全局库。
+- `upgradeDefaultSkillsInWorkspaces` 语义为「缺失即注入」，不再对已存在工作区 skill 做基于 version 的全量覆盖。
+- 全局元 Skill 库 = `~/.cdutai/default-skills/{slug}/`（唯一编辑源）；历史快照 `~/.cdutai/default-skills-history/{slug}/v{n}/`（v1 为出厂基线），索引 `index.json`。
+- 保存即 bump：`saveMasterSkill` 自动 patch+1 并落盘快照；`rollbackMasterSkill` 回退保留新记录。
+- 工作区同步：`syncMasterSkillToWorkspace` 覆盖到个人工作区 `skills/{slug}` 并写 `.source.json`；基于内容哈希 `detectSkillConflict` 检测冲突，非强制同步拒绝覆盖。
+
+---
+
+## 8. 版本管理与发版
+
+- **版本递增**：提交代码时始终递增受影响包的 patch 版本（影响多包则逐个递增）。
+- **构建目标**：`__PROFER_BUILD_TARGET__` 编译期注入 `oss` / `commercial`，互不串扰。
+- **Pi 内核升级**：根 `overrides` 将四个 Pi 包统钉 `0.86.1`，`patchedDependencies` 施加补丁；升级必须四者同步并评估补丁 rebase 与 native addon 兼容性。
+- **Windows 正式发版（本地唯一发布者）**：由 `scripts/push-release.cjs` 单独完成——构建签名 Windows x64 安装包、上传国内更新源、推送源码/tag、创建或补齐 GitHub Release。tag 与 `package.json`/CHANGELOG 首条版本必须一致；脚本不 rebase、不强推 tag。
+- **macOS arm64 验收**：`.github/workflows/macos-package.yml` 手动触发，仅产出无签名、无公证的 arm64 验收包（Actions Artifact），需用户明确确认后方可作为测试资产加入 Pre-release，不进入 Windows 国内更新源。
+- **构建验证 workflow**：`release.yml` 为仅手动触发的构建验证，绝不因 tag 自动构建或写入 GitHub Release。
+- **辅助脚本/校验**：`scripts/verify-release-preflight.cjs`（发版预检）、`scripts/release-asset-contract.cjs`（资产契约）、`scripts/build-releases-json.cjs`（`release:releases-json`）、`scripts/push-mac-release.cjs`（`release:mac`）。

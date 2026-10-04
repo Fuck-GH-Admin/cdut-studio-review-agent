@@ -5,3 +5,8 @@
 preload = ["../../test/preload-electron-mock.ts"]
 
 # Bun 1.3.14 的 isolate 仅支持 CLI 参数；package.json 的 `test` 脚本显式传递它。
+
+[install]
+# 与 workspace 根保持一致：固定 hoisted，避免子包单独 bun install 时
+# 回落到 isolated 链接器而在 Windows 上产生解析失败的符号链接。
+linker = "hoisted"

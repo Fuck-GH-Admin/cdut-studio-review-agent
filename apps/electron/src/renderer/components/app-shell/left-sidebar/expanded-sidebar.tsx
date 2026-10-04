@@ -18,7 +18,6 @@ import { ConversationItem, AgentSessionItem, RelatedChildSessionItem, AgentProje
 import { WORKSPACE_SORT_LABEL } from './sidebar-utils'
 import { getRelatedSessionSummary, getSessionTreeStatus, treeContainsSessionId } from './session-tree'
 import { getActiveAccelerator, getAcceleratorDisplay } from '@/lib/shortcut-registry'
-import { useCloseTab } from '@/hooks/useCloseTab'
 import type { SidebarModel } from './use-left-sidebar'
 
 export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement {
@@ -30,7 +29,6 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
     mode,
     conversations,
     agentSessions,
-    tabs,
     handleNewAgentSession,
     handleNewConversation,
     setSearchDialogOpen,
@@ -111,13 +109,6 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
     hasUpdate,
     hasEnvironmentIssues,
   } = s
-  const { requestClose: requestCloseTab } = useCloseTab()
-  const openSessionTabs = React.useMemo(() => tabs.filter((tab) => {
-    if (mode === 'chat') return tab.type === 'chat'
-    if (mode !== 'agent' || tab.type !== 'agent') return false
-    const session = agentSessions.find((item) => item.id === tab.sessionId)
-    return !session?.parentSessionId
-  }), [agentSessions, mode, tabs])
   return (
     <div className="relative h-full flex flex-col overflow-hidden">
       <SidebarWindowDragStrip
@@ -261,62 +252,6 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
           />
         </div>
       )}
-
-      {/* 当前会话：直接复用现有会话行组件，不另造一套 Tab 行。 */}
-      <div className="flex-none px-2 pt-2 pb-1 titlebar-no-drag">
-        <div className="mb-1 flex items-center justify-between px-2">
-          <span className="text-[11px] font-medium uppercase tracking-[0.08em] text-foreground/40">当前会话</span>
-          <span className="text-[10px] tabular-nums text-foreground/30">{openSessionTabs.length}</span>
-        </div>
-        <div className="sidebar-session-scroll -mr-2 flex max-h-[144px] flex-col gap-0.5 overflow-y-auto pr-2 scrollbar-thin">
-          {openSessionTabs.map((tab) => {
-            const conversation = tab.type === 'chat' ? conversations.find((item) => item.id === tab.sessionId) : null
-            const session = tab.type === 'agent' ? agentSessions.find((item) => item.id === tab.sessionId) : null
-            const active = tab.sessionId === activeSessionId
-            if (conversation) return (
-              <ConversationItem
-                key={tab.id}
-                conversation={conversation}
-                active={active}
-                streaming={streamingIds.has(conversation.id)}
-                showPinIcon={false}
-                hasDraft={conversationDraftMap.has(conversation.id)}
-                relativeTimeNow={relativeTimeNow}
-                onSelect={handleSelectConversation}
-                onRequestDelete={handleRequestDelete}
-                onRename={handleRename}
-                onRegenerateTitle={handleRegenerateConversationTitle}
-                onTogglePin={handleTogglePin}
-                onToggleArchive={handleToggleArchive}
-                onCloseTab={() => requestCloseTab(tab.id)}
-              />
-            )
-            if (session) return (
-              <AgentSessionItem
-                key={tab.id}
-                session={session}
-                active={active}
-                indicatorStatus={agentIndicatorMap.get(session.id) ?? 'idle'}
-                showPinIcon={false}
-                hasDraft={agentDraftIds.has(session.id)}
-                leftAccent={getSessionLeftAccent(agentIndicatorMap.get(session.id) ?? 'idle')}
-                workspaceName={session.workspaceId ? workspaceNameMap.get(session.workspaceId) : undefined}
-                relativeTimeNow={relativeTimeNow}
-                onSelect={handleSelectAgentSession}
-                onRequestDelete={handleRequestDelete}
-                onRequestMove={handleRequestMove}
-                onRename={handleAgentRename}
-                onRegenerateTitle={handleAgentRegenerateTitle}
-                onTogglePin={handleTogglePinAgent}
-                onToggleArchive={handleToggleArchiveAgent}
-                onMarkUnread={handleMarkUnread}
-                onCloseTab={() => requestCloseTab(tab.id)}
-              />
-            )
-            return null
-          })}
-        </div>
-      </div>
 
       {/* Chat 模式 active 视图：置顶 + 对话历史，结构与 Agent active 视图保持一致 */}
       {mode === 'chat' && viewMode === 'active' ? (

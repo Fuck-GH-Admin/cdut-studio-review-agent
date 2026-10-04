@@ -8,6 +8,9 @@
     "packages/*",
     "apps/*"
   ],
+  "trustedDependencies": [
+    "electron"
+  ],
   "scripts": {
     "dev": "bun run --filter='@profer/electron' dev",
     "electron:dev": "bun run --filter='@profer/electron' dev",

@@ -22,7 +22,6 @@ import {
   Users,
   Database,
   Network,
-  UserRound,
   FlaskConical,
   SlidersHorizontal,
 } from "lucide-react";
@@ -48,7 +47,6 @@ import {
 import { ChannelSettings } from "./ChannelSettings";
 import { GeneralSettings } from "./GeneralSettings";
 import { UsageSettings } from "./UsageSettings";
-import { AccountSettings } from "./AccountSettings";
 import { AppearanceSettings } from "./AppearanceSettings";
 import { AboutSettings } from "./AboutSettings";
 import { AgentSettings } from "./AgentSettings";
@@ -72,11 +70,6 @@ export interface SettingsTabGroup {
   title?: string;
   items: SettingsTabItem[];
 }
-
-/** 账户：身份、额度、订阅和团队能力。开放 API 暂不开放入口。 */
-const ACCOUNT_GROUP_ITEMS: SettingsTabItem[] = [
-  { id: "account", label: "账户与资料", icon: <UserRound size={16} /> },
-];
 
 /** 模型与能力：渠道 / Agent */
 const MODEL_GROUP_ITEMS: SettingsTabItem[] = [
@@ -122,8 +115,6 @@ function renderTabContent(tab: SettingsTab): React.ReactElement {
       return <GeneralSettings />;
     case "usage":
       return <UsageSettings />;
-    case "account":
-      return <AccountSettings />;
     case "channels":
       return <ChannelSettings />;
     case "agent":
@@ -207,7 +198,7 @@ export function SettingsPanel({
   }
 
   // 受限环境传入白名单时直接使用（无分组标题）；否则按语义分组组装导航。
-  // 未登录时过滤掉需要团队账号的 Tab；账户页始终保留，用于登录入口。
+  // 未登录时过滤掉需要团队账号的 Tab，并清理空分组。
   const groups = React.useMemo<SettingsTabGroup[]>(() => {
     if (tabsOverride) {
       return [{ items: tabsOverride }]
@@ -223,7 +214,6 @@ export function SettingsPanel({
 
     const allGroups: SettingsTabGroup[] = [
       { items: [{ id: "general", label: "通用", icon: <Settings size={16} /> }, { id: "usage", label: "使用偏好", icon: <SlidersHorizontal size={16} /> }] },
-      { title: "账户", items: ACCOUNT_GROUP_ITEMS },
       { title: "模型与能力", items: modelItems },
       { title: "体验", items: EXPERIENCE_GROUP_ITEMS },
       { title: "连接", items: CONNECTION_GROUP_ITEMS },
