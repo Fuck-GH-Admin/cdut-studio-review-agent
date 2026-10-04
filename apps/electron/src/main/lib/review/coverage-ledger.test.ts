@@ -79,3 +79,28 @@ describe('OCR 端口与预览（M2）', () => {
     expect(describePreview('v2', 'b.pdf', 'application/pdf', 1).preview).toBe('needs-renderer')
   })
 })
+
+describe('组规则展开（G12/误判 5）', () => {
+  const groupRule = { id: 'r-group', targetScope: 'group', severity: 'high', statement: '每条活动记录需完整', checks: [] } as unknown as Parameters<typeof buildCheckLedger>[0][number]
+  const hit = (groupValue: string) => ({ checkId: 'c', ruleId: 'r-group', status: 'compliant', target: { scope: 'group', subjectIds: [groupValue] }, at: '', engine: 'mock' }) as unknown as CheckResult
+
+  test('Given 组规则与三个组值 When 只回填两个组结果 Then 第三组 not-executed（逐组展开不折叠）', () => {
+    const ledger = buildCheckLedger([groupRule], ['s1'], [hit('g1'), hit('g2')], { 'r-group': ['g1', 'g2', 'g3'] })
+    expect(ledger).toHaveLength(3)
+    expect(ledger.find((entry) => entry.targetKey === 'g3')?.status).toBe('not-executed')
+    expect(ledger.find((entry) => entry.targetKey === 'g1')?.status).toBe('compliant')
+  })
+
+  test('Given 组规则无组值 When 构建 Then 单条 not-executed（不冒充覆盖）', () => {
+    const ledger = buildCheckLedger([groupRule], ['s1'], [hit('g1')])
+    expect(ledger).toHaveLength(1)
+    expect(ledger[0]!.status).toBe('not-executed')
+    expect(ledger[0]!.reason).toContain('未提供组值')
+  })
+
+  test('Given combineCoverage 带组值 When 存在未执行组 Then allClear 被阻断', () => {
+    const summary = combineCoverage([], [groupRule], ['s1'], [hit('g1')], { 'r-group': ['g1', 'g2'] })
+    expect(summary.allClearVerdictAllowed).toBeFalse()
+    expect(summary.blockers.join()).toContain('未执行')
+  })
+})

@@ -34,14 +34,15 @@ export interface CheckLedgerEntry {
 
 /**
  * 检查账本：以「计划检查」为分母核对执行结果。
- * 计划 = 规则 × 其目标分组键的笛卡尔（group 规则按 groupKey 展开为组，subject 规则按主体展开）。
+ * 计划 = 规则 × 其目标分组键的笛卡尔：subject 规则按主体展开；group 规则按组值逐组展开
+ * （G12/误判 5：组规则不再折叠成一个聚合 key——每组一条账目，缺组即 not-executed）。
  */
 export function buildCheckLedger(
   plannedRules: RuleSpec[],
   subjectIds: string[],
   results: CheckResult[],
+  groupValues?: Record<string, string[]>,
 ): CheckLedgerEntry[] {
-  const resultIndex = new Map(results.map((result) => [result.checkId, result]))
   const byRuleTarget = new Map<string, CheckResult>()
   for (const result of results) {
     const key = `${result.ruleId}::${result.target.scope}::${[...result.target.subjectIds].sort().join(',')}`
@@ -51,12 +52,25 @@ export function buildCheckLedger(
   for (const rule of plannedRules) {
     if (rule.targetScope === 'subject') {
       for (const subjectId of subjectIds) {
-        const key = `${rule.id}::subject::${subjectId}`
-        const hit = byRuleTarget.get(key)
+        const hit = byRuleTarget.get(`${rule.id}::subject::${subjectId}`)
         ledger.push(
           hit
             ? { ruleId: rule.id, targetKey: subjectId, status: hit.status }
             : { ruleId: rule.id, targetKey: subjectId, status: 'not-executed', reason: '计划检查未产生结果记录' },
+        )
+      }
+    } else if (rule.targetScope === 'group') {
+      const groups = groupValues?.[rule.id] ?? []
+      if (groups.length === 0) {
+        ledger.push({ ruleId: rule.id, targetKey: 'group', status: 'not-executed', reason: '组规则未提供组值，无法展开' })
+        continue
+      }
+      for (const groupValue of groups) {
+        const hit = byRuleTarget.get(`${rule.id}::group::${groupValue}`)
+        ledger.push(
+          hit
+            ? { ruleId: rule.id, targetKey: groupValue, status: hit.status }
+            : { ruleId: rule.id, targetKey: groupValue, status: 'not-executed', reason: '组内计划检查未产生结果记录' },
         )
       }
     } else {
@@ -69,7 +83,6 @@ export function buildCheckLedger(
       )
     }
   }
-  void resultIndex
   return ledger
 }
 
@@ -90,9 +103,10 @@ export function combineCoverage(
   plannedRules: RuleSpec[],
   subjectIds: string[],
   results: CheckResult[],
+  groupValues?: Record<string, string[]>,
 ): CoverageSummary {
   const documentLedger = buildDocumentLedger(documents)
-  const checkLedger = buildCheckLedger(plannedRules, subjectIds, results)
+  const checkLedger = buildCheckLedger(plannedRules, subjectIds, results, groupValues)
   const unread = documentLedger.filter((entry) => entry.status !== 'read')
   const notExecuted = checkLedger.filter((entry) => entry.status === 'not-executed' || entry.status === 'execution-failed')
   const awaiting = checkLedger.filter((entry) => entry.status === 'awaiting-confirmation' || entry.status === 'awaiting-supplement')

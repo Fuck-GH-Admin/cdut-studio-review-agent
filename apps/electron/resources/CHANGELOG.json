@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.125",
+      "date": "2026-10-05",
+      "title": "0.15.125",
+      "notes": "- G12/误判5：覆盖账本组规则逐组展开——group 规则按组值每人一条账目（缺组 not-executed，不再折叠单 key）；无组值如实标注；combineCoverage 接 groupValues"
+    },
+    {
       "version": "0.15.124",
       "date": "2026-10-05",
       "title": "0.15.124",
