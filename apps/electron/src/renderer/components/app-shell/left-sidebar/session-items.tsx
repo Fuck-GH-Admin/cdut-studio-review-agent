@@ -6,7 +6,6 @@
  * - 对话行 ConversationItem
  * - Agent 会话行 AgentSessionItem / RelatedChildSessionItem
  * - 项目分组 AgentProjectGroupItem
- * - 折叠态 rail 的最近会话按钮 RailRecentButton
  */
 
 import * as React from 'react'
@@ -37,7 +36,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@profer/ui/primitives/p
 import {
   SessionMiniMapPopover,
   useSessionMiniMapHover,
-  type SessionMiniMapType,
 } from '@/components/session-preview/SessionMiniMapPopover'
 import { browserStateMapAtom } from '@/atoms/browser-atoms'
 import { currentAgentSessionIdAtom, type SessionIndicatorStatus } from '@/atoms/agent-atoms'
@@ -77,92 +75,9 @@ const PINNED_SESSION_VISIBLE_LIMIT = 6
 const PINNED_SESSION_ROW_HEIGHT_PX = 32
 export const PINNED_SESSION_MAX_HEIGHT = PINNED_SESSION_VISIBLE_LIMIT * PINNED_SESSION_ROW_HEIGHT_PX
 
-const RAIL_STATUS_CLASS: Record<SessionIndicatorStatus, string> = {
-  idle: 'hidden',
-  running: 'border-blue-500 animate-pulse',
-  blocked: 'border-orange-500',
-  completed: 'border-emerald-500',
-}
-
 export interface AgentProjectGroup {
   workspace: AgentWorkspace
   sessions: AgentSessionMeta[]
-}
-
-export interface RailRecentItem {
-  id: string
-  title: string
-  type: SessionMiniMapType
-  initial: string
-  active: boolean
-  status: SessionIndicatorStatus
-  pinned: boolean
-  workspaceName?: string
-  isAutomation?: boolean
-}
-
-export function RailRecentButton({
-  item,
-  onSelect,
-}: {
-  item: RailRecentItem
-  onSelect: (item: RailRecentItem) => void
-}): React.ReactElement {
-  const preview = useSessionMiniMapHover()
-
-  return (
-    <>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            ref={preview.setAnchorRef}
-            type="button"
-            aria-label={`打开${item.type === 'agent' ? 'Agent 会话' : 'Chat 对话'}：${item.title}`}
-            onClick={() => { if (preview.shouldSuppressClick()) return; onSelect(item) }}
-            onMouseEnter={preview.handleMouseEnter}
-            onMouseLeave={preview.handleMouseLeave}
-            onTouchStart={preview.handleTouchStart}
-            onTouchMove={preview.handleTouchMove}
-            onTouchEnd={preview.handleTouchEnd}
-            onTouchCancel={preview.handleTouchCancel}
-            className={cn(
-              'relative size-10 flex items-center justify-center overflow-hidden rounded-[12px] transition-colors titlebar-no-drag',
-              item.active
-                ? 'bg-primary/10 text-foreground shadow-[0_1px_2px_0_rgba(0,0,0,0.05)]'
-                : 'text-foreground/55 hover:bg-foreground/[0.06] hover:text-foreground/80'
-            )}
-          >
-            <span
-              className={cn(
-                'absolute inset-y-0 left-0 w-0 border-l-[3px] rounded-l-[12px] pointer-events-none',
-                RAIL_STATUS_CLASS[item.status]
-              )}
-            />
-            {item.isAutomation
-              ? <Clock size={14} className="text-foreground/40" />
-              : <span className="text-[13px] font-semibold leading-none">{item.initial}</span>
-            }
-          </button>
-        </TooltipTrigger>
-        <TooltipContent side="right">
-          {item.type === 'agent' ? 'Agent' : 'Chat'} · {item.title}
-        </TooltipContent>
-      </Tooltip>
-      <SessionMiniMapPopover
-        target={{
-          type: item.type,
-          sessionId: item.id,
-          title: item.title,
-          workspaceName: item.workspaceName,
-        }}
-        anchorRef={preview.anchorRef}
-        open={preview.isOpen}
-        isLeaving={preview.isLeaving}
-        onMouseEnter={preview.handlePanelMouseEnter}
-        onMouseLeave={preview.handlePanelMouseLeave}
-      />
-    </>
-  )
 }
 
 // ===== 列表项操作按钮（时间/置顶/归档/三点菜单） =====

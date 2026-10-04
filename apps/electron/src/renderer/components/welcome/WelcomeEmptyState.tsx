@@ -38,18 +38,18 @@ export function WelcomeEmptyState(): React.ReactElement {
   const displayName = userProfile.userName || '用户'
 
   return (
-    <div className="welcome-empty-state flex h-full translate-y-[60px] flex-col items-center justify-center gap-5 px-4 [@media(max-height:820px)]:translate-y-0 [@media(max-height:700px)]:gap-3.5">
-      <h1 className="text-[26px] font-semibold tracking-tight text-foreground">
+    <div className="welcome-empty-state relative flex h-full translate-y-[60px] flex-col items-center justify-center gap-5 px-4 [@media(max-height:820px)]:translate-y-0 [@media(max-height:700px)]:gap-3.5 overflow-hidden">
+      <h1 className="text-[26px] font-semibold tracking-tight text-foreground z-10">
         {displayName}，{greeting}
       </h1>
 
-      <div className="flex items-center gap-2.5 rounded-full bg-muted/50 px-4 py-2 text-[13px] text-muted-foreground">
+      <div className="z-10 flex items-center gap-2.5 rounded-full bg-muted/50 px-4 py-2 text-[13px] text-muted-foreground">
         <Lightbulb size={14} className="flex-shrink-0 text-amber-500/80" />
         <span>{tip.text}</span>
       </div>
 
       {showHeatmap && (
-        <div className="[@media(max-height:640px)]:hidden">
+        <div className="z-10 [@media(max-height:640px)]:hidden">
           <UsageHeatmap />
         </div>
       )}

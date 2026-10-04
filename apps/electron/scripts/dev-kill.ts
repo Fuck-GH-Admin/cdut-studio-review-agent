@@ -10,7 +10,10 @@
  * 不要在与 dev:vite 并发的 dev:electron 内部跑，否则会误杀本次刚启动的 vite。
  */
 import { execFileSync, execSync } from 'child_process'
-import { resolve } from 'path'
+import { existsSync, rmSync } from 'node:fs'
+import { homedir } from 'node:os'
+import { join, resolve } from 'path'
+import { resolveDevUserDataPath } from '../src/main/lib/dev-instance'
 
 const isWin = process.platform === 'win32'
 const killVite = process.argv.includes('--vite')
@@ -155,8 +158,41 @@ function killStaleElectron(): void {
   }
 }
 
+/**
+ * 清理开发版 userData 目录中残留的 Chromium 单实例锁。
+ * 上次 Electron 被强杀（taskkill /F）时，SingletonLock/Cookie/Socket 会残留在磁盘上，
+ * 导致下次启动 requestSingleInstanceLock() 失败 → app.quit() → concurrently -k 级联退出，
+ * 表现为 `bun run dev` 报「已有 CDUT Studio 进程持有单实例锁」并整体退出。
+ * 仅删除这三个固定文件，且严格限定在解析出的开发版 userData 目录内，绝不触碰正式版目录。
+ */
+function clearDevSingletonLock(): void {
+  try {
+    const appData = isWin
+      ? process.env.APPDATA
+      : process.platform === 'darwin'
+        ? join(homedir(), 'Library', 'Application Support')
+        : process.env.XDG_CONFIG_HOME ?? join(homedir(), '.config')
+    if (!appData) return
+    const devUserData = resolveDevUserDataPath(appData, false, process.env)
+    for (const name of ['SingletonLock', 'SingletonCookie', 'SingletonSocket']) {
+      const target = join(devUserData, name)
+      if (!existsSync(target)) continue
+      try {
+        rmSync(target, { force: true })
+      } catch {
+        // 仍被其他进程占用时忽略，交由 Electron 自身处理。
+      }
+    }
+  } catch {
+    // 路径解析或删除失败不应阻塞 dev 启动。
+  }
+}
+
 // 先杀 supervisor，再杀 Electron，避免旧 supervisor 重新拉起窗口。
 killStaleElectronmon()
 kill(isWin ? 'electronmon.exe' : 'electronmon \\.')
 killStaleElectron()
+// 进程清理后，务必清掉残留的单实例锁，否则 Electron 启动即 app.quit()，
+// 触发 concurrently -k 级联退出，dev 整体报错。
+clearDevSingletonLock()
 if (killVite) killStaleVite(VITE_PORT)

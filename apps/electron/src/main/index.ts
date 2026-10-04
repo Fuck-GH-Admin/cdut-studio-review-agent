@@ -70,10 +70,8 @@ function registerProtocolsAndHandlers(): void {
   // 用于内联预览本地文件（renderer 用 iframe 加载 cdut-file:// 资源）
   protocol.registerSchemesAsPrivileged([
     { scheme: 'cdut-file', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
-    // 皮肤 assets 稳定协议：skin.css 中 url(assets/...) 被替换为 cdut-skin://<skinId>/assets/...，
-    // 由主进程按需读取（P2：替代 base64 内联，移除大图 IPC 传输与编码开销）
     { scheme: 'cdut-skin', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
-    // 第三方插件页面资源。具体 handler 注册在每个插件独立 Session 上，主会话不处理该协议。
+    { scheme: 'cdut-resource', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
   ])
 
   // Windows: 禁用 LCD 次像素抗锯齿（ClearType），改用灰度 AA。
@@ -143,6 +141,7 @@ import { initializeRuntime } from './lib/runtime-init'
 import { seedDefaultSkills, VITE_DEV_SERVER_URL } from './lib/config-paths'
 import { configureGlobalSkillSystem, ensureGlobalSkillSystemReady } from './lib/global-skill-manager'
 import { ensurePresetSystemReady } from './lib/agent-preset-manager'
+import { handleProferResourceRequest } from './lib/local-resource-protocol'
 import { getMainWindow, setMainWindow } from './lib/main-window-state'
 import { stopAllAgents, killOrphanedClaudeSubprocesses } from './lib/agent-service'
 import { disposePiMcpConnections } from './lib/adapters/pi-mcp-tools'
@@ -832,13 +831,9 @@ async function bootstrap(): Promise<void> {
   // 初始化 Profer 版本号（供 User-Agent 等全局标识使用）
   setProferVersion(app.getVersion())
 
-  // 注册自定义协议 cdut-file:// 用于内联预览本地文件。
-  // 协议只接受主进程签发的 opaque token，不解析 renderer 提供的绝对路径。
   protocol.handle('cdut-file', handleProferFileRequest)
-
-  // 注册皮肤 assets 协议 cdut-skin://<skinId>/assets/<file>。
-  // 仅允许皮肤目录内 assets/ 图片，skinId 走 kebab-case 白名单，防目录穿越。
   protocol.handle('cdut-skin', handleProferSkinRequest)
+  protocol.handle('cdut-resource', handleProferResourceRequest)
 
   // 初始化运行时环境（Shell 环境 + Bun + Git 检测）
   // 热启动时从磁盘缓存恢复，耗时 < 10ms

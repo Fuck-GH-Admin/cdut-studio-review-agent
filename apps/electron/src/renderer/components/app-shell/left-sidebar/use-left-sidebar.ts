@@ -107,7 +107,6 @@ import { getVisibleAgentWorkspaces } from '@/lib/product-feature-flags'
 
 import {
   groupByDate,
-  getRailInitial,
   toggleSetEntry,
   deleteSetEntry,
   sliceGroupsByCount,
@@ -1738,80 +1737,6 @@ export function useLeftSidebar() {
     setViewMode,
   ])
 
-  const railRecentItems = React.useMemo(() => {
-    if (mode === 'chat') {
-      return conversations
-        .filter((c) => !c.archived && !draftSessionIds.has(c.id))
-        .sort((a, b) => {
-          const activeDelta = Number(b.id === activeSessionId) - Number(a.id === activeSessionId)
-          if (activeDelta !== 0) return activeDelta
-          const streamingDelta = Number(streamingIds.has(b.id)) - Number(streamingIds.has(a.id))
-          if (streamingDelta !== 0) return streamingDelta
-          const pinnedDelta = Number(!!b.pinned) - Number(!!a.pinned)
-          if (pinnedDelta !== 0) return pinnedDelta
-          return b.updatedAt - a.updatedAt
-        })
-        .slice(0, 5)
-        .map((conversation) => ({
-          id: conversation.id,
-          title: conversation.title,
-          type: 'chat' as const,
-          initial: getRailInitial(conversation.title),
-          active: conversation.id === activeSessionId,
-          status: streamingIds.has(conversation.id) ? 'running' as const : 'idle' as const,
-          pinned: !!conversation.pinned,
-          workspaceName: undefined,
-        }))
-    }
-
-    return agentSessions
-      .filter((session) =>
-        !session.archived
-        && !session.draft
-        && !draftSessionIds.has(session.id)
-        && (!currentWorkspaceId || session.workspaceId === currentWorkspaceId)
-      )
-      .sort((a, b) => {
-        const statusA = agentIndicatorMap.get(a.id) ?? (unviewedCompletedSessionIds.has(a.id) ? 'completed' : 'idle')
-        const statusB = agentIndicatorMap.get(b.id) ?? (unviewedCompletedSessionIds.has(b.id) ? 'completed' : 'idle')
-        const priority = (session: AgentSessionMeta, status: SessionIndicatorStatus): number => {
-          if (session.id === activeSessionId) return 0
-          if (status === 'blocked') return 1
-          if (status === 'running') return 2
-          if (session.pinned) return 3
-          if (status === 'completed') return 4
-          return 5
-        }
-        const priorityDelta = priority(a, statusA) - priority(b, statusB)
-        if (priorityDelta !== 0) return priorityDelta
-        return b.updatedAt - a.updatedAt
-      })
-      .slice(0, 5)
-      .map((session) => ({
-        id: session.id,
-        title: session.title,
-        type: 'agent' as const,
-        initial: getRailInitial(session.title),
-        active: session.id === activeSessionId,
-        status: agentIndicatorMap.get(session.id) ?? (unviewedCompletedSessionIds.has(session.id) ? 'completed' as const : 'idle' as const),
-        pinned: !!session.pinned,
-        workspaceName: session.workspaceId ? workspaceNameMap.get(session.workspaceId) : undefined,
-        isAutomation: !!session.sourceAutomationId,
-      }))
-  }, [
-    mode,
-    conversations,
-    agentSessions,
-    draftSessionIds,
-    currentWorkspaceId,
-    activeSessionId,
-    streamingIds,
-    agentIndicatorMap,
-    unviewedCompletedSessionIds,
-    workspaceNameMap,
-  ])
-
-
   return {
     // 视图/模式
     activeView,
@@ -1940,7 +1865,6 @@ export function useLeftSidebar() {
     handleSessionMoved,
 
     // 折叠 rail
-    railRecentItems,
     handleRailModeSwitch,
 
     // 通用

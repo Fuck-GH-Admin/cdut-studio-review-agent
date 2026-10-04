@@ -104,6 +104,9 @@ extraResources:
   # 版本更新日志（设置 → 软件更新 → 版本历史；changelog-service 读取 process.resourcesPath/CHANGELOG.json）
   - from: resources/CHANGELOG.json
     to: CHANGELOG.json
+  # 背景图
+  - from: resources/background.png
+    to: background.png
 
 # ============================================
 # macOS 本地构建（P1：仅 Apple Silicon）

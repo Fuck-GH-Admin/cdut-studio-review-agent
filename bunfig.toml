@@ -1,5 +1,5 @@
 # Bun 配置（根 workspace）
-# 仅配置 bun test 的全局行为；其余使用默认值。
+# 配置 bun test 与依赖安装链接器；其余使用默认值。
 
 [test]
 # 每个测试文件运行前先执行 preload，统一 mock electron，
@@ -10,3 +10,10 @@ preload = ["./test/preload-electron-mock.ts"]
 # server 的 node 原生测试（*.node.test.mjs）依赖 better-sqlite3/node:test，必须由 node 直跑
 # （server/scripts/run-node-tests.mjs）。此处精确排除，保留 server 的 bun 回归（*.test.js）。
 pathIgnorePatterns = ["server/**/*.node.test.mjs"]
+
+[install]
+# 固定为 hoisted（npm 式扁平布局）。Windows 上 isolated 链接器依赖
+# node_modules 内的符号链接/junction 权限，权限不足或重装时会导致
+# @profer/* 工作区包解析失败，表现为 typecheck / dev 反复报 Cannot find module。
+# hoisted 布局不依赖符号链接权限，且仓库打包脚本已兼容该布局。
+linker = "hoisted"
