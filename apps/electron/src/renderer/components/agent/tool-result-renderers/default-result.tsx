@@ -1,14 +1,20 @@
 /**
- * 默认工具结果渲染器 — Key-Value 表格 / 纯文本
+ * 默认工具结果渲染器 — Key-Value 表格 / 纯文本 / 通用图片
  *
- * 用于未匹配到专属渲染器的工具（包括 MCP 工具）
+ * 用于未匹配到专属渲染器的工具（包括 MCP 工具）。
+ * 图片来源：结构化附件 + 历史 marker + 文本内嵌图片（data URL / 图片地址）。
  */
 
 import * as React from 'react'
-import { Download } from 'lucide-react'
-import { ImageLightbox } from '@profer/ui/primitives/image-lightbox'
 import { CollapsibleResult } from './collapsible-result'
 import { parseAgentImageAttachmentMarkers, type ParsedAgentImageAttachment } from '../image-attachment-marker'
+import {
+  AgentImageThumb,
+  dedupeImages,
+  toRenderableFromAttachment,
+  type AgentRenderableImage,
+} from '../agent-renderable-image'
+import { parseInlineImageCandidates } from '../inline-image-sources'
 
 interface DefaultResultRendererProps {
   result: string
@@ -33,53 +39,6 @@ function tryParseKeyValue(text: string): Array<{ key: string; value: string }> |
   return null
 }
 
-/** 生成图片缩略图 */
-function GeneratedImageThumb({ image }: { image: ParsedAgentImageAttachment }): React.ReactElement {
-  const [imageSrc, setImageSrc] = React.useState<string | null>(null)
-  const [lightboxOpen, setLightboxOpen] = React.useState(false)
-
-  React.useEffect(() => {
-    window.electronAPI
-      .readAttachment(image.localPath)
-      .then((base64) => setImageSrc(`data:${image.mediaType};base64,${base64}`))
-      .catch((err) => console.error('[DefaultResult] 读取图片失败:', err))
-  }, [image.localPath, image.mediaType])
-
-  const handleSave = React.useCallback((): void => {
-    window.electronAPI.saveImageAs(image.localPath, image.filename)
-  }, [image.localPath, image.filename])
-
-  if (!imageSrc) {
-    return <div className="w-full max-w-[240px] h-[160px] rounded-lg bg-muted/30 animate-pulse shrink-0" />
-  }
-
-  return (
-    <div className="relative group inline-block">
-      <img
-        src={imageSrc}
-        alt={image.filename}
-        className="max-w-[300px] max-h-[250px] rounded-lg object-contain cursor-pointer border border-border/50"
-        onClick={() => setLightboxOpen(true)}
-      />
-      <button
-        type="button"
-        onClick={handleSave}
-        className="absolute bottom-2 right-2 p-1.5 rounded-md bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70"
-        title="保存图片"
-      >
-        <Download className="size-4" />
-      </button>
-      <ImageLightbox
-        src={imageSrc}
-        alt={image.filename}
-        open={lightboxOpen}
-        onOpenChange={setLightboxOpen}
-        onSave={handleSave}
-      />
-    </div>
-  )
-}
-
 export function DefaultResultRenderer({ result, isError, imageAttachments = [] }: DefaultResultRendererProps): React.ReactElement {
   if (isError) {
     return (
@@ -91,14 +50,25 @@ export function DefaultResultRenderer({ result, isError, imageAttachments = [] }
 
   // 解析受控图片附件标记；仅加载 PNG/JPEG/GIF/WebP。
   const { images: legacyImages, cleanText } = React.useMemo(() => parseAgentImageAttachmentMarkers(result), [result])
-  const images = React.useMemo(() => {
-    const all = [...imageAttachments, ...legacyImages]
-    return all.filter((image, index) => all.findIndex((item) => item.localPath === image.localPath) === index)
-  }, [imageAttachments, legacyImages])
+
+  // 从剩余文本中提取内嵌图片（data URL / 图片地址）
+  const { cleanText: textAfterInline, images: inlineImages } = React.useMemo(
+    () => parseInlineImageCandidates(cleanText),
+    [cleanText],
+  )
+
+  const images = React.useMemo<AgentRenderableImage[]>(
+    () => dedupeImages([
+      imageAttachments.map(toRenderableFromAttachment),
+      legacyImages.map(toRenderableFromAttachment),
+      inlineImages,
+    ]),
+    [imageAttachments, legacyImages, inlineImages],
+  )
 
   // 纯文本 fallback
   if (images.length === 0) {
-    const keyValues = tryParseKeyValue(cleanText)
+    const keyValues = tryParseKeyValue(textAfterInline)
 
     if (keyValues && keyValues.length > 0) {
       return (
@@ -123,7 +93,7 @@ export function DefaultResultRenderer({ result, isError, imageAttachments = [] }
 
     return (
       <CollapsibleResult
-        content={cleanText}
+        content={textAfterInline}
         // 这个 <pre> 自带 max-h + 纵向滚动，限高交给容器；
         // 再按行折叠会与内部滚动重复，故仅按字符数折叠。
         foldByLines={false}
@@ -141,12 +111,12 @@ export function DefaultResultRenderer({ result, isError, imageAttachments = [] }
     <div className="space-y-3">
       <div className="flex flex-wrap gap-3">
         {images.map((img, i) => (
-          <GeneratedImageThumb key={`${img.localPath}:${i}`} image={img} />
+          <AgentImageThumb key={`${img.kind}:${i}`} image={img} maxWidthClass="max-w-[300px]" maxHeightClass="max-h-[250px]" />
         ))}
       </div>
-      {cleanText && (
+      {textAfterInline && (
         <CollapsibleResult
-          content={cleanText}
+          content={textAfterInline}
           // 同上：内部滚动负责限高，不叠加按行折叠
           foldByLines={false}
           renderContent={(text) => (

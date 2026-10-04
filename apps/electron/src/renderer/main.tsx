@@ -46,7 +46,6 @@ import {
   dockBadgeCountAtom,
   unviewedCompletedSessionIdsAtom,
 } from './atoms/agent-atoms'
-import { updateStatusAtom, initializeUpdater } from './atoms/updater'
 import { automationsAtom } from './atoms/automation-atoms'
 import {
   notificationsEnabledAtom,
@@ -73,6 +72,7 @@ import {
 } from './atoms/ui-scale'
 import { developerModeEnabledAtom, openEpistemicModeEnabledAtom } from './atoms/developer-mode'
 import { useGlobalAgentListeners } from './hooks/useGlobalAgentListeners'
+import { useCdutAccountHydration } from './hooks/useCdutAccountHydration'
 import { useBrowserLocalFileSelectionQuote } from './hooks/useBrowserLocalFileSelectionQuote'
 import { useBrowserPreviewThemeSync } from './hooks/useBrowserPreviewThemeSync'
 import {
@@ -111,7 +111,6 @@ import type { WorkspaceCapabilities } from '@profer/shared'
 import { showCapabilityChangeToasts } from './lib/capabilities-toast'
 import { invalidateFileSnapshotCache, invalidateWorkspaceCapabilitiesCache } from './components/agent/mention-query-utils'
 import { getVisibleAgentWorkspaces, isAgentWorkspaceVisible } from './lib/product-feature-flags'
-import { UpdateDialog } from './components/settings/UpdateDialog'
 import { GlobalShortcuts } from './components/shortcuts/GlobalShortcuts'
 import { TabSwitcher } from './components/tabs/TabSwitcher'
 import { NavigationInputProvider } from './components/navigation/NavigationInputProvider'
@@ -396,22 +395,6 @@ function AgentSettingsInitializer(): null {
 }
 
 /**
- * 自动更新初始化组件
- *
- * 订阅主进程推送的更新状态变化事件。
- */
-function UpdaterInitializer(): null {
-  const setUpdateStatus = useSetAtom(updateStatusAtom)
-
-  useEffect(() => {
-    const cleanup = initializeUpdater(setUpdateStatus)
-    return cleanup
-  }, [setUpdateStatus])
-
-  return null
-}
-
-/**
  * 定时任务初始化组件
  *
  * 加载全部定时任务，并订阅主进程的变更事件（运行完成/状态变化）刷新列表。
@@ -635,6 +618,8 @@ function UiScaleInitializer(): null {
  */
 function AgentListenersInitializer(): null {
   useGlobalAgentListeners()
+  // CDUT 特区账户全局水合：让聊天中的 CDUT 学籍证件照（本地已保存头像）随时可渲染
+  useCdutAccountHydration()
   // 浏览器列里文件预览的划词由主进程转投过来，落进与预览面板同一个引用 atom
   useBrowserLocalFileSelectionQuote()
   // 换皮肤时让已打开的文件预览跟上（受管浏览器里的普通网页不跟）
@@ -1103,7 +1088,6 @@ if (isDetachedPreviewWindow) {
       <MarkdownFontSizeInitializer />
       <UiScaleInitializer />
       <AgentListenersInitializer />
-      <UpdaterInitializer />
       <AutomationInitializer />
       <PlanningInitializer />
       <PlanningShortcutInitializer />
@@ -1115,7 +1099,6 @@ if (isDetachedPreviewWindow) {
       <NavigationInputProvider />
       <TabSwitcher />
       <App />
-      <UpdateDialog />
       <ProferToaster position="top-right" offset={96} />
     </React.StrictMode>
   )

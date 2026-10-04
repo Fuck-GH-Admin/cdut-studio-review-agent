@@ -110,7 +110,7 @@ cmd.exe /c ".\apps\electron\out\win-unpacked\CDUT Studio.exe --enable-logging"
 3. **Preload 桥接**：`preload/index.ts` 通过 `contextBridge.exposeInMainWorld` 暴露安全 API（`window.electronAPI.*`）；
 4. **渲染进程**：通过 Jotai Atoms 或专用 Hooks 封装通信调用，不在 UI 组件内散落原生通信。
 
-主要通道组：`AGENT_IPC_CHANNELS`、`CHANNEL_IPC_CHANNELS`、`REVIEW_IPC_CHANNELS`、`FEISHU_IPC_CHANNELS`、`ENVIRONMENT_IPC_CHANNELS`、`PROXY_IPC_CHANNELS`。
+主要通道组：`AGENT_IPC_CHANNELS`、`CHANNEL_IPC_CHANNELS`、`REVIEW_IPC_CHANNELS`、`FEISHU_IPC_CHANNELS`、`ENVIRONMENT_IPC_CHANNELS`、`PROXY_IPC_CHANNELS`、`CDUT_ZONE_IPC_CHANNELS`。
 
 ---
 
@@ -156,10 +156,11 @@ cmd.exe /c ".\apps\electron\out\win-unpacked\CDUT Studio.exe --enable-logging"
 | `skill-master-manager.ts` / `skill-routing.ts` | 全局元 Skill、技能路由与策略投影 |
 | `browser-controller.ts` / `browser-*.ts` | 内嵌浏览器控制、策略、截图与会话 |
 | `feishu-bridge.ts` / `feishu/` | 飞书集成：消息同步、任务通知、卡片渲染、OAuth 认证 |
+| `cdut/cdut-auth-manager.ts` | CDUT 专区「特区账户」认证：隐藏窗口 headless 统一身份认证（CAS）、办事大厅画像抓取（学院/专业/班级/头像）、10 分钟静默保活、OS 级加密凭据持久化 |
 | `review/` | 内容审核专区服务矩阵（案卷存储、文档切块、白名单网关、双路径预审、报告导出） |
 | `runtime-init.ts` / `git-detector.ts` / `shell-env.ts` | 运行时初始化：Shell 环境注入、Bun/Git/Node 检测与自适应配置 |
 | `config-paths.ts` | 配置路径管理：`~/.cdutai/` 目录结构与默认 Skills 播种 |
-| `updater/` | 自动更新、发布与更新日志 |
+| `changelog-service.ts` / `github-release-service.ts` | 版本更新日志与 GitHub Release 展示（只读，不涉及自动更新） |
 
 ---
 
@@ -181,6 +182,57 @@ cmd.exe /c ".\apps\electron\out\win-unpacked\CDUT Studio.exe --enable-logging"
 
 ---
 
+### 3.5 CDUT 专区（特区账户）认证与画像
+
+`main/lib/cdut/cdut-auth-manager.ts` 负责「特区账户」接入：主进程在隔离分区 `persist:cdut-auth-zone` 中通过隐藏窗口完成 headless 统一身份认证（CAS），鉴权落点严格收敛至青果教务主框架（`/jsxsd/framework/xsMainV`），渲染层仅消费状态、绝不接触明文密码。对应渲染组件为 `renderer/components/cdut-zone/CdutZoneView.tsx`，状态原子为 `renderer/atoms/cdut-account-atoms.ts`（`cdutAccountAtom`），IPC 走 `CDUT_ZONE_IPC_CHANNELS`。
+
+- **认证成功判定红线**：
+  - CAS 登录页必须严格按 `new URL(url).hostname === 'cas.paas.cdut.edu.cn'` 判定；
+  - 认证落点成功必须以 `url.includes('/jsxsd/framework/xsMainV')` 判定（教务主框架），**严禁在 CAS/SSO 中间重定向阶段（如 `/sso/login.jsp`）过早结算**，否则会导致票据未完成握手就发起业务请求。
+- **表单注入自适应**：注入脚本对 Vant（`input.van-field__control` / `.van-button--primary`）、Element-UI（`.el-input__inner`）与原生 `input` / `button[type=submit]` 三重回退，配合「原生 value setter + `input`/`change` 事件」写入，并轮询等待前端框架渲染完成后再提交。
+- **双轨画像提取与保底**：
+  - 双轨之一：主框架顶栏 DOM 直取真实中文姓名（`EXTRACT_TOP_NAME_SCRIPT`，不依赖底层网络请求，先保底拿到真实姓名）；
+  - 双轨之二：Chromium 窗口上下文与专属 Session 协同提取学籍完整信息与证件照。
+- **静默保活**：每 10 分钟以 `redirect:'manual'` 探活 `https://jw.cdut.edu.cn/jsxsd/framework/xsMainV.htmlx`，命中 `/cas/login` 或 401/403 时置状态 `expired` 并广播，停止计时器；计时器必须 `.unref()`，避免阻塞进程退出。
+- **凭据本地加密**：落盘 `~/.cdutai/cdut-account.json`（`safe-file` 原子写入），密码仅在勾选「记住密码」时经 `token-crypto`（优先 `safeStorage`，回退 AES-256-GCM `proferv1:` 格式）加密；登出三阶段清理凭据文件与分区存储。
+- **如实标注**：状态 `active` 仅表示最近一次认证成功且保活心跳正常，**不代表维持内网长连接**；不嗅探内网 Cookie，失败的持久化路径不得伪造成成功。
+
+---
+
+### 3.6 CDUT 专属 Tools 与教务接口高可用调用规范（确保 HTTP 200）
+
+CDUT 内网青果教务系统部署有瑞数（RuiShu）动态安全反爬 WAF，且不同模块的版式存在细微差异。为确保 CDUT 专属 Tools（课表、成绩、空教室、考务、个人档案等）稳定可用，所有接口请求必须严格遵守以下契约：
+
+#### 1. 瑞数 WAF 动态签名机制与 HTTP 400 根除准则
+- **根因诊断**：瑞数采用「服务端会话 Cookie（以 `O` 结尾，如 `sMLAeTqisZbFO`）+ 客户端页面级动态签名 Cookie（以 `P` 结尾，如 `sMLAeTqisZbFP`）」校验机制。页面加载完成后，`*P` 签名仅对前序页面有效。若直接发起新接口请求并携带了旧页面的 `*P` Cookie，网关会直接拒绝连接并返回 **`HTTP 400 Bad Request`（空响应体）**。
+- **必选防御措施**：
+  - 主进程底层网络请求在每次调用 `ses.fetch` 前，**必须先执行 `stripStaleRuiShuCookies(ses)`**，移除 `domain: 'jw.cdut.edu.cn'` 下所有成对出现的陈旧 `*P` 签名；
+  - 网关放行后，服务端基于 `JSESSIONID` 与 `*O` 会话 Cookie 正常响应业务数据（确保 HTTP 200）；
+  - 避免盲目在父页面控制台执行 `window.fetch`，如遇复杂页面应优先驱动后台 `BrowserWindow` 真实导航加载。
+
+#### 2. 分区隔离与 HTTP 请求构造规范
+- **会话分区隔离红线**：所有请求必须走 `session.fromPartition(CDUT_AUTH_PARTITION).fetch(...)`，**严禁使用全局 `net.fetch`**（`net.fetch` 恒走默认分区，不携带特区账户 Cookie，会导致 401 未授权或重定向至登录页）。
+- **Referer 契约**：每次请求必须携带合法的 `Referer`（默认 `https://jw.cdut.edu.cn/jsxsd/framework/xsMainV.htmlx`，或图片/子功能所在页面的具体绝对 URL），避免中间件基于防盗链规则阻断。
+- **POST 表单规范**：必须设置 `headers['Content-Type'] = 'application/x-www-form-urlencoded'`，使用 `new URLSearchParams()` 序列化参数，严禁直接拼接未经 URI 编码的字符串。
+
+#### 3. 学生证件照/头像抓取三阶梯引擎
+- **阶梯 1（浏览器内存 Canvas 直取，最优先）**：
+  Chromium 导航加载学籍页后，照片已解码在渲染进程内存中。等待 `img.complete && img.naturalWidth > 0`（带 1.8s 超时防假死），直接通过 `<canvas>` 导出 Base64 DataURL（`canvas.toDataURL('image/jpeg', 0.92)`）。**零网络往返、不受 Cookie 失效与 WAF 干扰**。
+- **阶梯 2（窗口上下文 fetch 转 Blob -> DataURL）**：
+  在窗口上下文执行带凭证的 `fetch(photoUrl, { credentials: 'include' })`。**必须注意**：青果教务 Servlet（如 `showzp.do`、`xsxx_zp.do`）返回的图片经常是 `Content-Type: application/octet-stream`，**严禁因 MIME 非 `image/` 而丢弃**；须检查 `blob.size >= 100`，读取后规范化规整为 `data:image/jpeg;base64,...`，确保渲染端 `UserAvatar` 可正确识别显示。
+- **阶梯 3（主进程专属 Session 下载兜底）**：
+  若窗口内未产出 Base64，将绝对地址交由主进程 `fetchImageAsBase64`，下载二进制流并使用 `isImageBuffer` 嗅探图片魔数（JPEG `FF D8 FF`、PNG `89 50 4E 47` 等），拦截非图片并转 DataURL。
+- **端点多级补漏**：优先扫描 `/jsxsd/grxx/xsxx`（学籍卡片）；若未提取到照片，自动导航至 `/jsxsd/xsxj/xjxxgl.do`（学籍信息管理）二次提取。
+- **选择器集合**：覆盖 `img#xjkp`、`#xsxxPhoto img`、`img#zp`、`img#xszp`、`img[src*="zp"]`（不加斜杠以兼容 `showzp.do`）、`td[rowspan] img` 等，并用 `isPlaceholderPhoto` 正则严格排除站点图标与占位图。
+
+#### 4. 学籍表格与非结构化数据解析健壮性防线
+- **双版式自适应**：同时兼容「标签与值同格（`<td>学院：地球物理学院</td>`）」与「标签与值分列（`<td>学院</td><td>地球物理学院</td>`）」，杜绝将下一格错配为上一格值的 Bug。
+- **控件优先取值**：优先读取 `<input readonly>`、`<select>`、`<textarea>` 的当前值，取不到再退回单元格文本 `textContent`。
+- **冒号切分容错**：纯数字时间（如 `08:00`）绝对不拆分为标签，避免时间数据被截断丢失。
+- **持久化兜底**：当次网络抖动未取得头像时，优先继承本地缓存中已保存的有效头像，防止刷新后回退为默认首字母占位。
+
+---
+
 ## 4. 渲染进程架构与 Jotai 状态管理
 
 状态管理全量采用 **Jotai**（`apps/electron/src/renderer/atoms/`）：
@@ -198,9 +250,10 @@ cmd.exe /c ".\apps\electron\out\win-unpacked\CDUT Studio.exe --enable-logging"
 | `automation-atoms.ts` | 定时任务（`automationsAtom`、`automationFormAtom`） |
 | `browser-atoms.ts` / `preview-atoms.ts` | 内嵌浏览器与预览面板 |
 | `feishu-atoms.ts` / `dingtalk-atoms.ts` / `wechat-atoms.ts` | 飞书/钉钉/微信集成状态 |
+| `cdut-account-atoms.ts` | CDUT 专区「特区账户」状态（`cdutAccountAtom`：学号、姓名、头像、学院/专业、连接状态） |
 | `system-prompt-atoms.ts` / `agent-preset-atoms.ts` | 系统提示词与 Agent 预设 |
 | `ui-preferences.ts` / `ui-scale.ts` / `markdown-font-size.ts` | 界面偏好、界面缩放、Markdown 字号 |
-| `user-profile.ts` / `updater.ts` / `notifications.ts` | 用户档案、自动更新状态与通知 |
+| `user-profile.ts` / `notifications.ts` | 用户档案与通知 |
 
 ### 核心前端设计模式
 
@@ -218,6 +271,7 @@ cmd.exe /c ".\apps\electron\out\win-unpacked\CDUT Studio.exe --enable-logging"
 - **配置文件优先**：配置存放在 `~/.cdutai/`（正式版）/ `~/.cdutai-dev/`（开发版），可由 `PROFER_CONFIG_DIR` 覆盖。CDUT Studio 不读取也不迁移 `~/.proma` / `~/.profer` 旧数据。
 - **用户 Agent 沙箱**：`~/.cdutai/agent-workspaces/{slug}/`，无工作区会话落到 `~/.cdutai/agent-workspaces/default/{sessionId}`。
 - **结构化日志**：会话消息采用追加式 JSONL 存储（`agent-sessions/{sessionId}.jsonl`）。
+- **特区账户凭据**：`~/.cdutai/cdut-account.json`，原子写入；密码字段仅在勾选记住时经 OS 级加密（`safeStorage` / AES-256-GCM），登出即清理。
 - **坚守原则**：**绝不引入复杂重量级的本地数据库（如 SQLite）**，轻量文本配置与原子写入优于一切。
 - **产品边界**：保持纯粹的 AI Agent 交互体验。历史遗留的独立服务端、多用户协同 UI 等已彻底清理，严禁引入过度设计的冗余模块。
 

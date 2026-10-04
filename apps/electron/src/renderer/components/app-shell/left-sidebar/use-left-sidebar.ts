@@ -86,7 +86,6 @@ import { userProfileAtom } from '@/atoms/user-profile'
 import { authStatusAtom } from '@/atoms/identity-atoms'
 import { sidebarViewModeAtom, workspaceSortModeAtom } from '@/atoms/sidebar-atoms'
 import { searchDialogOpenAtom } from '@/atoms/search-atoms'
-import { hasUpdateAtom } from '@/atoms/updater'
 import { draftSessionIdsAtom } from '@/atoms/draft-session-atoms'
 import { hasEnvironmentIssuesAtom } from '@/atoms/environment'
 import { promptConfigAtom, selectedPromptIdAtom, conversationPromptIdAtom } from '@/atoms/system-prompt-atoms'
@@ -263,7 +262,6 @@ export function useLeftSidebar() {
   const streamingIds = useAtomValue(streamingConversationIdsAtom)
   const mode = useAtomValue(appModeAtom)
   const isMac = React.useMemo(() => detectIsMac(), [])
-  const hasUpdate = useAtomValue(hasUpdateAtom)
   const hasEnvironmentIssues = useAtomValue(hasEnvironmentIssuesAtom)
   const promptConfig = useAtomValue(promptConfigAtom)
   const setSelectedPromptId = useSetAtom(selectedPromptIdAtom)
@@ -1871,7 +1869,6 @@ export function useLeftSidebar() {
     relativeTimeNow,
     progressiveCount,
     userProfile,
-    hasUpdate,
     hasEnvironmentIssues,
     setSettingsOpen,
     setSearchDialogOpen,

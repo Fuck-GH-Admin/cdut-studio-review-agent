@@ -106,7 +106,6 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
     viewMode,
     setViewMode,
     userProfile,
-    hasUpdate,
     hasEnvironmentIssues,
   } = s
   return (
@@ -667,7 +666,7 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
           <span className="flex-1 text-sm truncate text-left">{userProfile.userName}</span>
           <div className="relative flex-shrink-0 text-foreground/40">
             <Settings size={16} />
-            {(hasUpdate || hasEnvironmentIssues) && (
+            {hasEnvironmentIssues && (
               <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-red-500" />
             )}
           </div>

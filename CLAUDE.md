@@ -393,14 +393,13 @@ React UI 更新
 
 ### 渲染进程初始化组件（`renderer/main.tsx`）
 
-`main.tsx` 顶部挂载一组初始化组件（当前约 15 个）：
+`main.tsx` 顶部挂载一组初始化组件（当前约 14 个）：
 
 | 组件 | 职责 |
 |------|------|
 | `ThemeInitializer` | 从主进程加载主题设置、监听系统主题变化、同步到 DOM |
 | `AgentSettingsInitializer` | 加载 Agent 渠道/模型/工作区设置、订阅 MCP/文件变化事件 |
 | `AgentListenersInitializer` | 挂载 `useGlobalAgentListeners`，全局 Agent IPC 监听 |
-| `UpdaterInitializer` | 订阅主进程推送的自动更新状态变化事件 |
 | `AutomationInitializer` | 加载定时任务状态并订阅调度事件 |
 | `PlanningInitializer` / `PlanningShortcutInitializer` | 初始化规划数据与规划快捷键 |
 | `NotificationsInitializer` / `DockBadgeInitializer` | 桌面通知与 Dock 角标 |

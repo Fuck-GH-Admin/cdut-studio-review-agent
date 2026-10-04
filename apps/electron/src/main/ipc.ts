@@ -131,6 +131,7 @@ import type {
   BrowserAddBookmarkInput,
 } from '@profer/shared'
 import { KNOWLEDGE_IPC_CHANNELS } from '@profer/shared'
+import { CDUT_ZONE_IPC_CHANNELS, type CdutLoginInput, type CdutMutationConfirmResult } from '@profer/shared'
 import type { UserProfile, AppSettings } from '../types'
 import { getRuntimeStatus, getGitRepoStatus, reinitializeRuntime } from './lib/runtime-init'
 import { browserController } from './lib/browser-controller'
@@ -141,8 +142,11 @@ import { listBookmarks, addBookmark, removeBookmark, listHistory, clearHistory }
 import { getUnstagedChanges, getFileDiff, getUntrackedContent, revertFile, getDiffContents, listWorktrees, getWorktreeChanges, getMainRepoRoot, invalidateGitDiffCache } from './lib/git-diff-service'
 import { registerProferDirectoryPath, registerProferFilePath } from './lib/local-file-protocol'
 import { isReadOnlyPreviewPathAllowed } from './lib/preview-path-policy'
-import { registerUpdaterIpc } from './lib/updater/updater-ipc'
+import { CHANGELOG_IPC_CHANNELS, type ChangelogEntry } from '@profer/shared'
+import { getChangelog } from './lib/changelog-service'
 import { registerReviewIpc } from './lib/review/review-ipc'
+import { cdutAuthManager } from './lib/cdut/cdut-auth-manager'
+import { resolveCdutMutationConfirm } from './lib/cdut/cdut-mutation-guard'
 import {
   listChannels,
   createChannel,
@@ -187,6 +191,7 @@ import {
   deleteAttachment,
   openFileDialog,
 } from './lib/attachment-service'
+import { resolveRemoteImageUrl } from './lib/image-url-resolver'
 import { extractTextFromAttachment } from './lib/document-parser'
 import { getTutorialContent, createWelcomeConversation } from './lib/tutorial-service'
 import { getUserProfile, updateUserProfile } from './lib/user-profile-service'
@@ -1938,6 +1943,14 @@ export function registerIpcHandlers(): void {
     CHAT_IPC_CHANNELS.READ_ATTACHMENT,
     async (_, localPath: string): Promise<string> => {
       return readAttachmentAsBase64(localPath)
+    }
+  )
+
+  // 确认远程 URL 是否为图片（通用图片渲染能力：确认后返回可直接渲染的 data URL）
+  ipcMain.handle(
+    CHAT_IPC_CHANNELS.RESOLVE_IMAGE_URL,
+    async (_, url: string) => {
+      return resolveRemoteImageUrl(url)
     }
   )
 
@@ -5986,11 +5999,46 @@ export function registerIpcHandlers(): void {
 
   console.log('[IPC] IPC 处理器注册完成')
 
-  // 注册更新 IPC 处理器
-  registerUpdaterIpc()
+  // 版本更新日志（内置本地 CHANGELOG）
+  ipcMain.handle(CHANGELOG_IPC_CHANNELS.GET, (): ChangelogEntry[] => {
+    return getChangelog()
+  })
 
   // 注册内容审核专区 IPC 处理器
   registerReviewIpc()
+
+  // ===== CDUT 专区特区账户 =====
+  // 特区账户与通用账户物理隔离，独立持久化于 ~/.cdutai/cdut-account.json
+  ipcMain.handle(CDUT_ZONE_IPC_CHANNELS.GET_ACCOUNT, () => cdutAuthManager.getProfile())
+
+  // 已保存账户摘要：仅回传脱敏元数据（姓名/学工号/头像 + 可选密文解密后的密码），供登录窗一键填充
+  ipcMain.handle(CDUT_ZONE_IPC_CHANNELS.GET_SAVED_ACCOUNT, () => cdutAuthManager.getSavedAccount())
+
+  ipcMain.handle(CDUT_ZONE_IPC_CHANNELS.LOGIN, async (_event, input: CdutLoginInput) => {
+    return await cdutAuthManager.login(input)
+  })
+
+  ipcMain.handle(CDUT_ZONE_IPC_CHANNELS.LOGOUT, async () => {
+    await cdutAuthManager.logout()
+    return { success: true }
+  })
+
+  // 写操作二次确认：渲染端回传用户抉择，唤醒主进程挂起的教务写请求
+  ipcMain.handle(CDUT_ZONE_IPC_CHANNELS.CONFIRM_MUTATION, (_event, result: CdutMutationConfirmResult) => {
+    return { handled: resolveCdutMutationConfirm(result) }
+  })
+
+  // 特区账户状态变更时向所有存活窗口广播
+  cdutAuthManager.setStatusCallback((profile) => {
+    for (const window of BrowserWindow.getAllWindows()) {
+      if (!window.isDestroyed()) {
+        window.webContents.send(CDUT_ZONE_IPC_CHANNELS.STATUS_CHANGED, profile)
+      }
+    }
+  })
+
+  // 客户端启动治理：复位为未登录并清空专属网络分区 Cookie，确保重新登录走全新纯净 CAS 通道
+  void cdutAuthManager.resetOnStartup()
 
   // 启动时自动归档 + 每 24 小时定期检查
   const runAutoArchive = (): void => {

@@ -115,6 +115,11 @@ import {
 import { GPT_IMAGE_QUALITIES, GPT_IMAGE_SIZES } from '../gpt-image-service'
 import { buildPiAgentSkinTools } from '../agent-skin-tools'
 import { normalizeGoalToolResult } from '../goal-tools'
+import { session } from 'electron'
+import type { CdutMutationConfirmRequest, CdutToolDomain, CdutToolParamsMap } from '@profer/shared'
+import { CDUT_AUTH_PARTITION, cdutAuthManager } from '../cdut/cdut-auth-manager'
+import { describeCdutMutation, executeDomainTool, isCdutMutationAction } from '../cdut/cdut-jw-client'
+import { requestCdutMutationConfirm } from '../cdut/cdut-mutation-guard'
 
 type PiSdk = typeof import('@earendil-works/pi-coding-agent')
 
@@ -1578,6 +1583,272 @@ function buildProferCloudTools(sdk: PiSdk, _ctx: PiBuiltinToolsContext): ToolDef
   return []
 }
 
+// ===== CDUT 青果教务系统专用工具 =====
+
+/**
+ * 8 大业务域工具的统一执行入口：
+ *   1. 前置校验特区账户登录态（未登录直接拒止）；
+ *   2. 写操作（选退课、报名、缓考、改密等）向渲染端派发二次确认，未确认绝不提交；
+ *   3. 调用青果教务客户端，只回传清洗后的「Markdown + JSON」，绝不泄露 Cookie 或原始 HTML。
+ */
+async function runCdutDomain(
+  domain: CdutToolDomain,
+  toolName: string,
+  params: CdutToolParamsMap[CdutToolDomain],
+): Promise<AgentToolResult<unknown>> {
+  const profile = cdutAuthManager.getProfile()
+  if (profile.status !== 'active') {
+    return textToolResult('⚠️ 特区账户未登录或登录态已失效，请先在「CDUT 专区」完成登录后再试。', {
+      error: 'not_logged_in',
+    })
+  }
+
+  const rawAction = (params as { action?: unknown }).action
+  const action = typeof rawAction === 'string' ? rawAction : ''
+
+  if (action && isCdutMutationAction(domain, action)) {
+    const confirmed = await requestCdutMutationConfirm({
+      requestId: randomUUID(),
+      toolName,
+      action,
+      title: describeCdutMutation(domain, action),
+      description: `AI 正在申请【${describeCdutMutation(domain, action)}】，请确认是否执行？`,
+      payload: params,
+    })
+    if (!confirmed) {
+      return textToolResult('⚠️ 用户在界面上取消了此项申请操作，未对您的教务数据做任何修改。', {
+        cancelled: true,
+      })
+    }
+  }
+
+  try {
+    const ses = session.fromPartition(CDUT_AUTH_PARTITION)
+    const result = await executeDomainTool(domain, ses, params)
+    if (!result.success) {
+      return textToolResult(result.markdown, { error: result.error })
+    }
+    return textToolResult(result.markdown, result.json)
+  } catch (error) {
+    return jsonToolError(error)
+  }
+}
+
+/** 注册成都理工大学青果教务系统 8 大业务域专用 Tools。 */
+export function buildPiCdutTools(sdk: PiSdk, ctx: PiBuiltinToolsContext): ToolDefinition[] {
+  void ctx
+  const tools = [
+    sdk.defineTool({
+      name: 'cdut_academic_profile',
+      label: 'CDUT 学籍与个人档案',
+      description:
+        '查询成都理工大学青果教务系统的学籍档案（证件照/学院/专业/班级/学籍状态）、个人联系方式、学籍异动记录、大类专业分流与辅修报名信息；提交大类分流志愿与辅修报名属于写操作，需用户二次确认。',
+      parameters: Type.Object({
+        action: Type.Union([
+          Type.Literal('get_profile'),
+          Type.Literal('get_contact_info'),
+          Type.Literal('query_status_changes'),
+          Type.Literal('query_major_split'),
+          Type.Literal('submit_major_preference'),
+          Type.Literal('query_minor_signup'),
+          Type.Literal('apply_minor'),
+        ]),
+        payload: Type.Optional(
+          Type.Object({
+            volunteerOrder: Type.Optional(Type.Array(Type.String())),
+            minorMajorCode: Type.Optional(Type.String()),
+            phoneNumber: Type.Optional(Type.String()),
+          }),
+        ),
+      }),
+      async execute(_toolCallId, params) {
+        return await runCdutDomain('profile', 'cdut_academic_profile', params as unknown as CdutToolParamsMap['profile'])
+      },
+    }),
+    sdk.defineTool({
+      name: 'cdut_schedule',
+      label: 'CDUT 课表与作息日程',
+      description:
+        '获取成都理工大学在读学期的周课表（课程、教师、教室、节次、单双周）；亦可按班级、教师或教室检索全校其他课表。',
+      parameters: Type.Object({
+        action: Type.Union([Type.Literal('get_my_schedule'), Type.Literal('query_other_schedule')]),
+        semester: Type.Optional(Type.String()),
+        week: Type.Optional(Type.Integer({ minimum: 1, maximum: 30 })),
+        queryType: Type.Optional(Type.Union([Type.Literal('class'), Type.Literal('teacher'), Type.Literal('classroom')])),
+        queryKeyword: Type.Optional(Type.String()),
+      }),
+      async execute(_toolCallId, params) {
+        return await runCdutDomain('schedule', 'cdut_schedule', params as unknown as CdutToolParamsMap['schedule'])
+      },
+    }),
+    sdk.defineTool({
+      name: 'cdut_grades_assessment',
+      label: 'CDUT 成绩与考核评定',
+      description:
+        '查询成都理工大学历年全科成绩、学分与绩点 GPA、四六级/计算机等级考试成绩；查询社考成绩置换与查卷复核记录；提交查卷申请与社考认定属于写操作，需用户二次确认。',
+      parameters: Type.Object({
+        action: Type.Union([
+          Type.Literal('query_grades'),
+          Type.Literal('query_level_exams'),
+          Type.Literal('query_social_exam_replace'),
+          Type.Literal('apply_social_exam_replace'),
+          Type.Literal('query_grade_review'),
+          Type.Literal('apply_grade_review'),
+        ]),
+        semester: Type.Optional(Type.String()),
+        courseType: Type.Optional(Type.String()),
+        reviewPayload: Type.Optional(
+          Type.Object({
+            courseId: Type.String({ minLength: 1 }),
+            reason: Type.String({ minLength: 1 }),
+          }),
+        ),
+      }),
+      async execute(_toolCallId, params) {
+        return await runCdutDomain('grades', 'cdut_grades_assessment', params as unknown as CdutToolParamsMap['grades'])
+      },
+    }),
+    sdk.defineTool({
+      name: 'cdut_exam_affairs',
+      label: 'CDUT 考务安排与报名',
+      description:
+        '查询期末考试日程（时间、考场、座位号、准考证号）、补考名单与重修开课；查询缓考申请记录；提交补考报名、重修报名与缓考申请属于写操作，需用户二次确认。',
+      parameters: Type.Object({
+        action: Type.Union([
+          Type.Literal('query_exam_schedule'),
+          Type.Literal('query_makeup_exams'),
+          Type.Literal('signup_makeup_exam'),
+          Type.Literal('query_retake_courses'),
+          Type.Literal('signup_retake_course'),
+          Type.Literal('query_deferral_status'),
+          Type.Literal('apply_exam_deferral'),
+        ]),
+        semester: Type.Optional(Type.String()),
+        payload: Type.Optional(
+          Type.Object({
+            courseCode: Type.Optional(Type.String()),
+            examType: Type.Optional(Type.Union([Type.Literal('midterm'), Type.Literal('final'), Type.Literal('makeup')])),
+            deferralReason: Type.Optional(Type.String()),
+            contactTel: Type.Optional(Type.String()),
+          }),
+        ),
+      }),
+      async execute(_toolCallId, params) {
+        return await runCdutDomain('exams', 'cdut_exam_affairs', params as unknown as CdutToolParamsMap['exams'])
+      },
+    }),
+    sdk.defineTool({
+      name: 'cdut_classroom_resource',
+      label: 'CDUT 教室资源与自习雷达',
+      description:
+        '按校区（成都/宜宾）、教学楼、星期、周次与节次实时检索空闲自习教室及座位容量；亦可查阅指定教室的全天占用明细。',
+      parameters: Type.Object({
+        action: Type.Union([Type.Literal('query_empty_classrooms'), Type.Literal('query_room_occupancy')]),
+        // 成都校区 / 宜宾校区；yanshan 为历史别名，兼容映射回成都校区
+        campus: Type.Union([Type.Literal('chengdu'), Type.Literal('yibin'), Type.Literal('yanshan')]),
+        building: Type.Optional(Type.String()),
+        week: Type.Optional(Type.Integer({ minimum: 1, maximum: 30 })),
+        dayOfWeek: Type.Optional(Type.Integer({ minimum: 1, maximum: 7 })),
+        timeSlots: Type.Optional(Type.Array(Type.Integer({ minimum: 1, maximum: 12 }))),
+        minSeats: Type.Optional(Type.Integer({ minimum: 0 })),
+      }),
+      async execute(_toolCallId, params) {
+        return await runCdutDomain('classrooms', 'cdut_classroom_resource', params as unknown as CdutToolParamsMap['classrooms'])
+      },
+    }),
+    sdk.defineTool({
+      name: 'cdut_curriculum_plan',
+      label: 'CDUT 培养方案与毕业学分',
+      description:
+        '查询指导性培养方案、各课程模块已修/欠缺学分与毕业要求达成情况；查询学位申请资格与延后毕业申请记录；提交学位申请与延毕申请属于写操作，需用户二次确认。',
+      parameters: Type.Object({
+        action: Type.Union([
+          Type.Literal('get_training_plan'),
+          Type.Literal('check_graduation_requirements'),
+          Type.Literal('query_degree_application'),
+          Type.Literal('apply_degree'),
+          Type.Literal('query_delay_graduation'),
+          Type.Literal('apply_delay_graduation'),
+        ]),
+        moduleName: Type.Optional(Type.String()),
+        payload: Type.Optional(
+          Type.Object({
+            delayReason: Type.Optional(Type.String()),
+            expectedGraduationYear: Type.Optional(Type.String()),
+          }),
+        ),
+      }),
+      async execute(_toolCallId, params) {
+        return await runCdutDomain('curriculum', 'cdut_curriculum_plan', params as unknown as CdutToolParamsMap['curriculum'])
+      },
+    }),
+    sdk.defineTool({
+      name: 'cdut_course_selection',
+      label: 'CDUT 选课中心与选课结果',
+      description:
+        '查询当前开放的选课轮次与截止时间、检索可选课程与余量名额、查询已选课程与总学分；提交选课与退课属于写操作，需用户二次确认。',
+      parameters: Type.Object({
+        action: Type.Union([
+          Type.Literal('query_selection_rounds'),
+          Type.Literal('query_available_courses'),
+          Type.Literal('select_course'),
+          Type.Literal('drop_course'),
+          Type.Literal('query_selected_results'),
+        ]),
+        roundCode: Type.Optional(Type.String()),
+        courseFilter: Type.Optional(
+          Type.Object({
+            keyword: Type.Optional(Type.String()),
+            courseCategory: Type.Optional(Type.String()),
+            onlyWithRemainingSeats: Type.Optional(Type.Boolean()),
+          }),
+        ),
+        operatePayload: Type.Optional(
+          Type.Object({
+            courseId: Type.String({ minLength: 1 }),
+            courseName: Type.String({ minLength: 1 }),
+          }),
+        ),
+      }),
+      async execute(_toolCallId, params) {
+        return await runCdutDomain('selection', 'cdut_course_selection', params as unknown as CdutToolParamsMap['selection'])
+      },
+    }),
+    sdk.defineTool({
+      name: 'cdut_notices_system',
+      label: 'CDUT 教务通知与系统服务',
+      description:
+        '查询成都理工大学教务处通知公告、留言、在线问答与公共下载文档；查询学业预警状态与密码安全策略；发起在线提问与修改教务密码属于写操作，需用户二次确认。',
+      parameters: Type.Object({
+        action: Type.Union([
+          Type.Literal('query_notices'),
+          Type.Literal('query_bulletins'),
+          Type.Literal('query_messages'),
+          Type.Literal('query_faq'),
+          Type.Literal('post_question'),
+          Type.Literal('query_documents'),
+          Type.Literal('query_academic_warnings'),
+          Type.Literal('get_password_policy'),
+          Type.Literal('change_password'),
+          Type.Literal('get_quick_identity'),
+        ]),
+        page: Type.Optional(Type.Integer({ minimum: 1 })),
+        keyword: Type.Optional(Type.String()),
+        changePasswordPayload: Type.Optional(
+          Type.Object({
+            oldPassword: Type.Optional(Type.String()),
+            newPassword: Type.Optional(Type.String()),
+          }),
+        ),
+      }),
+      async execute(_toolCallId, params) {
+        return await runCdutDomain('notices', 'cdut_notices_system', params as unknown as CdutToolParamsMap['notices'])
+      },
+    }),
+  ]
+  return tools as unknown as ToolDefinition[]
+}
+
 // ===== 统一入口 =====
 
 export interface PiBuiltinToolsResult {
@@ -1759,6 +2030,13 @@ export async function buildPiBuiltinTools(
     } catch (error) {
       console.error('[Pi 桥接] 注入系统剪贴板工具失败:', error)
     }
+  }
+
+  // CDUT 青果教务系统专用工具：登录态由工具内部前置校验，写操作走二次确认拦截。
+  try {
+    tools.push(...buildPiCdutTools(sdk, ctx))
+  } catch (error) {
+    console.error('[Pi 桥接] 注入 CDUT 教务工具失败:', error)
   }
 
   const cloudTools = buildProferCloudTools(sdk, ctx)

@@ -30,7 +30,6 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
     capabilities,
     setSettingsOpen,
     userProfile,
-    hasUpdate,
     hasEnvironmentIssues,
   } = s
 
@@ -212,7 +211,7 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
                 className="relative size-10 flex items-center justify-center rounded-[12px] transition-colors titlebar-no-drag hover:bg-foreground/5"
               >
                 <UserAvatar avatar={userProfile.avatar} size={28} />
-                {(hasUpdate || hasEnvironmentIssues) && (
+                {hasEnvironmentIssues && (
                   <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-red-500" />
                 )}
               </button>

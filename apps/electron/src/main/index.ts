@@ -148,7 +148,6 @@ import { disposePiMcpConnections } from './lib/adapters/pi-mcp-tools'
 import { disposeLarkCliService } from './lib/lark-cli-service'
 import { disposeLarkMcpService } from './lib/lark-mcp-service'
 import { browserController } from './lib/browser-controller'
-import { initAutoUpdater, cleanupUpdater } from './lib/updater/auto-updater'
 import { startWorkspaceWatcher, stopWorkspaceWatcher } from './lib/workspace-watcher'
 import { getIsQuitting, setQuitting } from './lib/app-lifecycle'
 import {
@@ -952,9 +951,6 @@ async function bootstrap(): Promise<void> {
     safeRun('startBridgeSelfHealing', startBridgeSelfHealing)
     safeRun('startScheduler', startScheduler)
     safeRun('startPlanningReminderScheduler', startPlanningReminderScheduler)
-    if (mainWindow) {
-      safeRun('initAutoUpdater', () => initAutoUpdater(mainWindow!))
-    }
   }, 0)
 
   // 启动时恢复团队会话：先检查已登录，否则用 refreshToken 尝试恢复
@@ -1087,7 +1083,7 @@ function handleBootstrapFailure(err: unknown): void {
   try {
     const message = err instanceof Error ? (err.stack ?? err.message) : String(err)
     dialog.showErrorBox(
-      'Profer 启动遇到错误',
+      'CDUT Studio 启动遇到错误',
       `部分功能可能不可用：\n\n${message}\n\n` +
         `日志位置：${app.getPath('logs')}\n\n` +
         `常见原因与排查：\n` +
@@ -1131,8 +1127,6 @@ app.on('before-quit', () => {
   // 最后兜底：扫描并强杀所有孤儿 claude-agent-sdk 子进程（Issue #357）
   // 针对 pidMap 未覆盖、dispose 漏杀等极端场景，确保不遗留残留进程
   killOrphanedClaudeSubprocesses()
-  // 清理自动更新定时器
-  cleanupUpdater()
   // 停止工作区文件监听
   stopWorkspaceWatcher()
   // 停止所有 Bridge

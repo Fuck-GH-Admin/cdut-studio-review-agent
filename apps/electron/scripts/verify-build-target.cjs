@@ -16,19 +16,13 @@ const bundle = readFileSync(resolve(bundlePath), 'utf8')
 // 避免 esbuild 折叠三元表达式导致下面的字面量消失），匹配时对空白不敏感。
 const ossLiteral = /false\s*\?\s*"oss"\s*:\s*"oss"/
 const commercialLiteral = /false\s*\?\s*"oss"\s*:\s*"commercial"/
-const updateFeed = 'https://updates.profer.cn/'
 
 const hasOssTarget = ossLiteral.test(bundle)
 const hasCommercialTarget = commercialLiteral.test(bundle)
-const hasUpdateFeed = bundle.includes(updateFeed)
 
 if (expectedTarget === 'oss') {
   if (!hasOssTarget || hasCommercialTarget) {
     console.error('[verify-build-target] OSS build target mismatch: expected oss bundle.')
-    process.exit(1)
-  }
-  if (!hasUpdateFeed) {
-    console.error('[verify-build-target] OSS build is missing the configured updater feed.')
     process.exit(1)
   }
 }
@@ -36,10 +30,6 @@ if (expectedTarget === 'oss') {
 if (expectedTarget === 'commercial') {
   if (!hasCommercialTarget || hasOssTarget) {
     console.error('[verify-build-target] Commercial build target mismatch: expected commercial bundle.')
-    process.exit(1)
-  }
-  if (!hasUpdateFeed) {
-    console.error('[verify-build-target] Commercial build is missing the configured updater feed.')
     process.exit(1)
   }
 }

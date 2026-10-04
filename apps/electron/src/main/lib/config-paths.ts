@@ -99,6 +99,17 @@ export function getChannelsPath(): string {
 }
 
 /**
+ * 获取 CDUT 特区账户安全存储路径
+ *
+ * 特区账户与通用账户物理隔离，独立存放于全局配置目录，严防写入项目工作区导致 Git 泄露。
+ *
+ * @returns ~/.cdutai/cdut-account.json
+ */
+export function getCdutAccountPath(): string {
+  return join(getConfigDir(), 'cdut-account.json')
+}
+
+/**
  * 获取对话索引文件路径
  *
  * @returns ~/.cdutai/conversations.json
