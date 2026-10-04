@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.119",
+      "date": "2026-10-05",
+      "title": "0.15.119",
+      "notes": "- G01/G13：材料登记（对话框选择→复制原件+字节SHA-256+DocumentVersion事务，同名版本链 active/supersedes）与提交案卷（draft→submitted+首阶段任务，空材料/阶段拒绝）四层接线；V2CasePanel 补登记材料/提交按钮与已保存案卷恢复列表"
+    },
+    {
       "version": "0.15.118",
       "date": "2026-10-05",
       "title": "0.15.118",

@@ -214,3 +214,28 @@ export function resolveFinalDecisionProjection(decisions: BusinessDecision[]): {
   const latestStage = [...effective].sort((a, b) => a.at.localeCompare(b.at)).at(-1) ?? null
   return { decision: latestStage, isFinal: false, supersededIds }
 }
+
+// ===== 提交案卷（G01：draft → submitted + 首阶段任务） =====
+
+export async function submitCaseV2(caseId: string): Promise<ReviewCommandResult<WorkflowTask>> {
+  const { getTemplate } = await import('./template-store')
+  const aggregate = (await import('./case-store-v2')).readAggregate(caseId)
+  if (!aggregate) throw new CommandValidationError('NOT_FOUND', `案卷聚合不存在: ${caseId}`)
+  if (aggregate.caseV2.stage !== 'draft') throw new CommandValidationError('INVALID_TRANSITION', `当前阶段 ${aggregate.caseV2.stage} 不可提交`)
+  if (aggregate.caseV2.documents.length === 0) throw new CommandValidationError('VALIDATION_FAILED', '尚未登记任何材料，不能提交')
+  const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+  if (!template) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '模板不存在或已删除')
+  // 提交命令：阶段→submitted；随后由 ensureInitialTask 建任务（两次事务，幂等键独立）
+  const submit = await submitCommand<Record<string, never>, void>(caseId, {
+    requestId: `submit-${aggregate.caseV2.revision}-${Date.now()}`,
+    actor: { actorId: 'local-user', actorSource: 'local', role: 'reviewer' },
+    expectedRevision: aggregate.caseV2.revision,
+    type: 'SubmitCase',
+    payload: {},
+  }, () => ({
+    summary: '案卷已提交进入审核',
+    mutate: (draft) => { draft.caseV2.stage = 'submitted' },
+  }))
+  if (!submit.ok) return submit as unknown as ReviewCommandResult<WorkflowTask>
+  return ensureInitialTask(caseId, template, { actorId: 'local-user', actorSource: 'local', role: 'reviewer' })
+}

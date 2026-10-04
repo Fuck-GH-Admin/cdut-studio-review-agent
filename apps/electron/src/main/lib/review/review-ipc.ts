@@ -314,6 +314,41 @@ export function registerReviewIpc(): void {
     return listAggregatesV2()
   })
 
+  // ===== G01：材料登记与提交 =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.PICK_REGISTER_MATERIAL_V2, async (_e, input: { caseId: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string }) => {
+    if (!input?.caseId) throw new Error('参数 caseId 非法')
+        const { BrowserWindow, dialog } = require('electron') as typeof import('electron')
+    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+    const aggregate = getCaseV2Aggregate(input.caseId)
+    if (!aggregate) throw new Error(`案卷不存在: ${input.caseId}`)
+    // 逐文件读取聚合 revision 串行登记（事务天然串行；对话框一次性返回多选）
+    const actor = { actorId: 'local-user', actorSource: 'local' as const, role: 'reviewer' as const }
+    const { registerMaterial } = require('./material-service') as typeof import('./material-service')
+    const options = { properties: ['openFile', 'multiSelections'] as Array<'openFile' | 'multiSelections'> }
+    const win = BrowserWindow.getFocusedWindow() ?? undefined
+    const result = win ? await dialog.showOpenDialog(win, options) : await dialog.showOpenDialog(options)
+    if (result.canceled) return []
+    const versionIds: string[] = []
+    for (const sourcePath of result.filePaths) {
+      const fresh = getCaseV2Aggregate(input.caseId)!
+      const outcome = (await registerMaterial(input.caseId, {
+        requestId: `reg-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        actor,
+        expectedRevision: fresh.caseV2.revision,
+        payload: { sourcePath, role: input.role, materialSlotId: input.materialSlotId },
+      })) as { ok: boolean; message?: string }
+      if (!outcome.ok) throw new Error(outcome.message ?? '登记失败')
+      const updated = getCaseV2Aggregate(input.caseId)!
+      versionIds.push(updated.caseV2.documents[updated.caseV2.documents.length - 1]!.versionId)
+    }
+    return versionIds
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, (_e, caseId: string) => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    const { submitCaseV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
+    return submitCaseV2(caseId)
+  })
+
   /** 删除案卷 */
   ipcMain.handle(REVIEW_IPC_CHANNELS.DELETE_CASE, (_event, caseId: string): void => {
     deleteCase(caseId)

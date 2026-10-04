@@ -90,6 +90,26 @@ interface CaseListEntry { caseId: string; title: string; stage: string; revision
   }), [run, store, toast, refreshList])
 
   const current = aggregate
+
+  const registerMaterials = useCallback(() => run(async () => {
+    if (!current) return
+    const versionIds = await window.reviewAPI.pickRegisterMaterialV2({ caseId: current.caseV2.id, role: 'evidence' })
+    if (versionIds.length === 0) { toast.info('未选择文件'); return }
+    const loaded = await window.reviewAPI.openAggregateV2(current.caseV2.id)
+    if (loaded) store.set(reviewV2AggregateAtom, loaded)
+    await refreshList()
+    toast.success(`已登记 ${versionIds.length} 份材料`)
+  }), [current, run, store, refreshList])
+
+  const submitCase = useCallback(() => run(async () => {
+    if (!current) return
+    const result = await window.reviewAPI.submitCaseV2(current.caseV2.id)
+    if (result && !result.ok) { toast.error(result.message ?? '提交失败'); return }
+    const loaded = await window.reviewAPI.openAggregateV2(current.caseV2.id)
+    if (loaded) store.set(reviewV2AggregateAtom, loaded)
+    await refreshList()
+    toast.success('案卷已提交，进入审核')
+  }), [current, run, store, refreshList])
   const updateTitle = useCallback(() => {
     if (!current) return
     return run(async () => {
@@ -130,6 +150,10 @@ interface CaseListEntry { caseId: string; title: string; stage: string; revision
         )}
         {current && (
           <div className="space-y-1.5 text-xs">
+            <div className="flex flex-wrap gap-1.5">
+              <Button size="sm" variant="outline" onClick={registerMaterials}>登记材料</Button>
+              {current.caseV2.stage === 'draft' && <Button size="sm" onClick={submitCase}>提交案卷</Button>}
+            </div>
             <BusinessFlowSection aggregate={current} onResult={applyResult} />
             <p className="font-medium">{current.caseV2.title}</p>
             <p className="text-muted-foreground">

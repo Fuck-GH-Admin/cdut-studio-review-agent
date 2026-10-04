@@ -3669,6 +3669,9 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, input) as Promise<import('@profer/shared').BatchStateV2>,
   listCasesV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_CASES_V2) as Promise<Array<{ caseId: string; title: string; stage: string; revision: number; templateId: string; templateVersion: number; updatedAt: string }>>,
   openAggregateV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_AGGREGATE_V2, caseId) as Promise<import('@profer/shared').CaseAggregateV2 | undefined>,
+  submitCaseV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, caseId) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  pickRegisterMaterialV2: (input: { caseId: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.PICK_REGISTER_MATERIAL_V2, input) as Promise<string[]>,
   bootCheckV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BOOT_CHECK_V2) as Promise<{ templatesSeeded: number; templatesPublished: number; migratableCases: string[]; notes: string[] }>,
   getLatestRun: (caseId: string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LATEST_RUN, caseId) as Promise<import('@profer/shared').ReviewLatestRunResult>,

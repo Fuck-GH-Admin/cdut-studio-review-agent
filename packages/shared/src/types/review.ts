@@ -491,6 +491,8 @@ export const REVIEW_IPC_CHANNELS = {
   GET_BATCH_V2: 'review-v2:get-batch',
   BATCH_ACTION_V2: 'review-v2:batch-action',
   LIST_CASES_V2: 'review-v2:list-cases',
+  SUBMIT_CASE_V2: 'review-v2:submit-case',
+  PICK_REGISTER_MATERIAL_V2: 'review-v2:pick-register-material',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */

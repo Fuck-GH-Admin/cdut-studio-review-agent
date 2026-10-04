@@ -99,6 +99,10 @@ export interface DocumentVersion {
   /** 审核使用状态：登记≠已读（03 §6 材料账本） */
   usage: 'registered' | 'read' | 'partially-read' | 'unread'
   unusedReason?: string
+  /** N2c/G01：版本链（同名替换旧版不参与新审核）与原件字节身份 */
+  active?: boolean
+  supersedesVersionId?: string
+  byteHash?: string
 }
 
 // ===== 模板与规则 =====
