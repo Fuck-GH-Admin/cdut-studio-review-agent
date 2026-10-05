@@ -279,8 +279,11 @@ async function performChatCompletion(
   const url = isOllama
     ? // 本地私有线：归一化根地址（渠道可能存了带 /v1 的地址）
       `${trimTrailingSlash(channel.baseUrl).replace(/\/v1$/, '')}/api/chat`
-    : // OpenAI 兼容线：复用 core 的 URL 解析（custom 完整端点原样、其余拼后缀）
-      resolveOpenAIChatCompletionsUrl(channel.baseUrl, channel.provider)
+    : // OpenAI 兼容线：复用 core 的 URL 解析；custom 端点原样返回的语义与设置页预览（自动拼 /chat/completions）不一致，这里兜底补齐
+      (() => {
+        const resolved = resolveOpenAIChatCompletionsUrl(channel.baseUrl, channel.provider)
+        return resolved.endsWith('/chat/completions') ? resolved : `${resolved.replace(/\/$/, '')}/chat/completions`
+      })()
 
   let apiKey = ''
   if (!isOllama) {
@@ -325,21 +328,32 @@ async function performChatCompletion(
   const timer = setTimeout(() => controller.abort(), timeoutMs)
 
   try {
-    const response = await fetchFn(url, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(body),
-      signal: controller.signal,
-    })
+    // 429 限流重试：免费渠道并发池紧张（服务端提示 retry later），最多 3 次指数退避
+    const MAX_RETRIES = 3
+    for (let attempt = 0; ; attempt += 1) {
+      const response = await fetchFn(url, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      })
 
-    if (!response.ok) {
-      const text = await response.text().catch(() => '')
-      const truncated = text.length > ERROR_BODY_MAX ? `${text.slice(0, ERROR_BODY_MAX)}…` : text
-      throw new Error(`模型请求失败: HTTP ${response.status} ${truncated}`)
+      if (response.status === 429 && attempt < MAX_RETRIES) {
+        const backoffMs = 8000 * (attempt + 1)
+        console.warn(`[审核专区] 模型限流（429），${backoffMs / 1000}s 后第 ${attempt + 1} 次重试`)
+        await new Promise((resolve) => setTimeout(resolve, backoffMs))
+        continue
+      }
+
+      if (!response.ok) {
+        const text = await response.text().catch(() => '')
+        const truncated = text.length > ERROR_BODY_MAX ? `${text.slice(0, ERROR_BODY_MAX)}…` : text
+        throw new Error(`模型请求失败: HTTP ${response.status} ${truncated}`)
+      }
+
+      const data = (await response.json()) as unknown
+      return extractChatContent(data, isOllama)
     }
-
-    const data = (await response.json()) as unknown
-    return extractChatContent(data, isOllama)
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
       throw new Error(`模型请求超时（超过 ${timeoutMs / 1000} 秒未响应）`)

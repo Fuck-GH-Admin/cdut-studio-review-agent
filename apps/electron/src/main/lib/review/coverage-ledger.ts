@@ -43,16 +43,20 @@ export function buildCheckLedger(
   results: CheckResult[],
   groupValues?: Record<string, string[]>,
 ): CheckLedgerEntry[] {
+  const subjectIds0 = [...subjectIds]
   const byRuleTarget = new Map<string, CheckResult>()
   for (const result of results) {
-    const key = `${result.ruleId}::${result.target.scope}::${[...result.target.subjectIds].sort().join(',')}`
+    // 真实模型返回的 check 可能缺 target（确定性引擎总会带）：缺省按 case 级归位，逐案规则由下方回退匹配消费
+    const scope = result.target?.scope ?? 'case'
+    const subjectIds = result.target?.subjectIds ?? subjectIds0
+    const key = `${result.ruleId}::${scope}::${[...subjectIds].sort().join(',')}`
     byRuleTarget.set(key, result)
   }
   const ledger: CheckLedgerEntry[] = []
   for (const rule of plannedRules) {
     if (rule.targetScope === 'subject') {
       for (const subjectId of subjectIds) {
-        const hit = byRuleTarget.get(`${rule.id}::subject::${subjectId}`)
+        const hit = byRuleTarget.get(`${rule.id}::subject::${subjectId}`) ?? byRuleTarget.get(`${rule.id}::case::${subjectIds0.sort().join(',')}`)
         ledger.push(
           hit
             ? { ruleId: rule.id, targetKey: subjectId, status: hit.status }

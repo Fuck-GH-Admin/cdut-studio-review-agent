@@ -13,6 +13,7 @@ const STATUS_LABEL: Record<string, string> = {
 export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refreshNonce: number }): JSX.Element {
   const [runs, setRuns] = useState<ReviewRunV2[]>([])
   const [expandedRun, setExpandedRun] = useState<string | null>(null)
+  const [running, setRunning] = useState(false)
 
   const load = useCallback(async (): Promise<void> => {
     try {
@@ -26,16 +27,30 @@ export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refre
 
   useEffect(() => { void load() }, [load, refreshNonce])
 
-  if (runs.length === 0) {
-    return <div className="rounded-lg border-t pt-2 text-xs text-muted-foreground">尚无审核运行（点击"开始自动审核"后此处显示真实检查结果）</div>
-  }
+  /** 触发真实审核运行（RUN_REVIEW_V2 四层：真实渠道 + 真实执行器） */
+  const startRun = useCallback(async (): Promise<void> => {
+    setRunning(true)
+    try {
+      const run = await window.reviewAPI.runReviewV2(caseId)
+      toast.success(`审核运行完成：${run.id}（检查 ${(run.checks ?? []).length} 项）`)
+      await load()
+    } catch (error) {
+      toast.error(`审核运行失败：${error instanceof Error ? error.message : String(error)}`)
+    } finally {
+      setRunning(false)
+    }
+  }, [caseId, load])
 
   return (
     <div className="space-y-1.5 rounded-lg border-t pt-2">
       <div className="flex items-center justify-between">
         <p className="text-xs font-medium">审核运行（{runs.length}）</p>
-        <Button size="sm" variant="ghost" onClick={() => void load()}>刷新</Button>
+        <div className="flex items-center gap-1">
+          <Button size="sm" variant="outline" disabled={running} onClick={() => void startRun()}>{running ? '审核中…' : '开始自动审核'}</Button>
+          <Button size="sm" variant="ghost" onClick={() => void load()}>刷新</Button>
+        </div>
       </div>
+      {runs.length === 0 && <p className="text-xs text-muted-foreground">尚无审核运行，点击"开始自动审核"用已配置的真实模型渠道执行检查</p>}
       {runs.slice(0, 3).map((run) => (
         <div key={run.id} className="rounded-md border p-2 text-xs">
           <button type="button" className="flex w-full items-center justify-between" onClick={() => setExpandedRun(expandedRun === run.id ? null : run.id)}>

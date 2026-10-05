@@ -22,9 +22,10 @@ import { getConfigDir } from '../config-paths'
 import { extractJson } from './review-model-gateway'
 
 /** 解析材料真实文本：PDF/Office 走 document-parser，文本直读；图片走 OCR 端口（不可用则如实空） */
-async function materialTextOf(doc: DocumentVersion, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
+async function materialTextOf(doc: DocumentVersion, caseId: string, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
   const ext = doc.fileName.toLowerCase().split('.').pop() ?? ''
-  const absolute = join(getConfigDir(), 'review-cases', doc.versionId.split('-v')[0] ?? doc.documentId, doc.assetPath)
+  // assetPath 已含 source-docs/{versionId}/{fileName} 相对段（material-service 写入），基于案卷目录拼接
+  const absolute = join(getConfigDir(), 'review-cases', caseId, doc.assetPath)
   try {
     if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'].includes(ext)) {
       // 阶段 A：OCR 由注入端口承担（系统 tesseract 真实引擎）；不可用返回空（不冒充已读）
@@ -50,7 +51,7 @@ function truncate(text: string, max = 6000): string {
 }
 
 /** 构建注入给 Pi 的材料/规则/字段上下文（内容仅作为数据，指令边界由 REVIEW_SYSTEM_PROMPT 承担） */
-async function buildMaterialContext(aggregate: CaseAggregateV2, template: TemplateVersion, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
+async function buildMaterialContext(aggregate: CaseAggregateV2, template: TemplateVersion, caseId: string, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
   const parts: string[] = []
   parts.push('【案卷字段】')
   for (const [key, value] of Object.entries(aggregate.caseV2.caseFields)) {
@@ -67,7 +68,7 @@ async function buildMaterialContext(aggregate: CaseAggregateV2, template: Templa
   parts.push('【材料内容】')
   for (const doc of aggregate.caseV2.documents) {
     if (doc.active === false) continue
-    const text = truncate(await materialTextOf(doc, ocr))
+    const text = truncate(await materialTextOf(doc, caseId, ocr))
     parts.push(text ? `--- ${doc.fileName}（${doc.versionId}） ---\n${text}` : `--- ${doc.fileName}（${doc.versionId}）--- [非文本或未可读：不作为已读依据]`)
   }
   return parts.join('\n')
@@ -86,7 +87,7 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
   const rules = (template.policyRefs ?? []).length > 0 ? collectRules(template) : []
   const subjectIds = aggregate.caseV2.subjects.map((subject) => subject.id)
   // 材料上下文按需构建（PDF/Office 为异步解析）
-  const materialContext = await buildMaterialContext(aggregate, template, options.ocrPort)
+  const materialContext = await buildMaterialContext(aggregate, template, caseId, options.ocrPort)
 
   const piExtract: NodeExecutor = async (node, inputHash) => {
     if (options.signal?.aborted) throw new Error('已取消（模型调用前）')
@@ -150,7 +151,7 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
     const parseIndex: Array<Record<string, unknown>> = []
     for (const doc of aggregate.caseV2.documents) {
       if (doc.active === false) continue
-      const text = await materialTextOf(doc, options.ocrPort)
+      const text = await materialTextOf(doc, caseId, options.ocrPort)
       if (!text) continue
       const index = buildTextSourceIndex(doc.versionId, text)
       parseIndex.push({ documentVersionId: doc.versionId, segments: index.entries.length, kind: 'text' })

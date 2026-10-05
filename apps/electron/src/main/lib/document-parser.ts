@@ -136,7 +136,10 @@ async function extractPdf(filePath: string): Promise<string> {
   const buffer = readFileSync(filePath)
 
   try {
-    const pdfParse = (await import('pdf-parse')).default
+    // 直接引 lib/pdf-parse.js：主入口 index.js 在 esbuild 捆绑下 module.parent 丢失会误入 debug 分支（读仓库测试文件导致 ENOENT）
+    // 该子路径无类型声明，用动态变量绕开 TS 路径解析（运行时由 esbuild 捆绑解析）
+    const libSpecifier = 'pdf-parse/lib/pdf-parse.js'
+    const pdfParse = ((await import(/* @vite-ignore */ libSpecifier)) as { default: (b: Buffer) => Promise<{ text: string; numpages: number }> }).default
     const result = await pdfParse(buffer)
     const text = result.text.trim()
     if (text.length > 0) {

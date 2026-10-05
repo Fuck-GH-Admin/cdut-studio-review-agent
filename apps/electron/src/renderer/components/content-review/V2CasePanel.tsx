@@ -16,6 +16,8 @@ import { RunResultPanel } from './RunResultPanel'
 export const reviewV2AggregateAtom = atom<CaseAggregateV2 | null>(null)
 export const reviewV2BusyAtom = atom(false)
 export const reviewV2NoticeAtom = atom<string | null>(null)
+/** 模板发布后通知 V2CasePanel 重载模板列表（面板常驻挂载，tab 切换不触发 effect） */
+export const templatesRefreshAtom = atom(0)
 
 const localActor: Actor = { actorId: 'local-user', actorSource: 'local', role: 'reviewer' }
 
@@ -31,6 +33,7 @@ type TemplateFieldInput = { key: string; label: string; kind: string; required: 
 
   const [caseList, setCaseList] = useState<CaseListEntry[]>([])
   const [templates, setTemplates] = useState<TemplateLite[]>([])
+  const templatesRefresh = useAtomValue(templatesRefreshAtom)
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateLite | null>(null)
   const [fieldValues, setFieldValues] = useState<Record<string, string>>({})
   const [newTitle, setNewTitle] = useState('')
@@ -86,7 +89,7 @@ type TemplateFieldInput = { key: string; label: string; kind: string; required: 
       console.error('[V2] 模板列表加载失败', error)
     }
   }, [])
-  useEffect(() => { void loadTemplates() }, [loadTemplates])
+  useEffect(() => { void loadTemplates() }, [loadTemplates, templatesRefresh])
 
   const createFromTemplate = useCallback(() => run(async () => {
     if (!selectedTemplate) { toast.error('请先选择已发布模板'); return }

@@ -9,6 +9,8 @@ import { useCallback, useState } from 'react'
 import type { TemplateVersion } from '@profer/shared'
 import { Button } from '@profer/ui/primitives/button'
 import { toast } from 'sonner'
+import { useSetAtom } from 'jotai'
+import { templatesRefreshAtom } from './V2CasePanel'
 import { useStore } from 'jotai'
 import { reviewV2BusyAtom } from './V2CasePanel'
 
@@ -16,6 +18,7 @@ interface WizardField { key: string; label: string; kind: 'text' | 'number' | 'd
 interface WizardSlot { id: string; name: string; requiredElements: string }
 
 export function TemplateWizardPanel(): JSX.Element {
+  const bumpTemplatesRefresh = useSetAtom(templatesRefreshAtom)
   const store = useStore()
   const [step, setStep] = useState(1)
   const [name, setName] = useState('')
@@ -55,6 +58,7 @@ export function TemplateWizardPanel(): JSX.Element {
       await window.reviewAPI.saveTemplateDraftV2(template)
       const published = await window.reviewAPI.publishTemplateV2(templateId, 1)
       setPublishedId(`${published.templateId}@${published.version}`)
+      bumpTemplatesRefresh(Date.now())
       toast.success(`模板已发布：${name}`)
       setStep(6)
     } catch (error) {
