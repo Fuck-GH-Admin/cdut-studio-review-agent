@@ -30,6 +30,8 @@ export default defineConfig({
       canvas: resolve(__dirname, 'src/renderer/lib/node-canvas-stub.ts'),
       '@/types': resolve(__dirname, 'src/types'),
       '@': resolve(__dirname, 'src/renderer'),
+      // 根目录 assets 别名：供 CDUT 专区等渲染组件干净引用校徽与校宠立绘等静态资产
+      '@assets': resolve(__dirname, '../../assets'),
     },
   },
   server: {

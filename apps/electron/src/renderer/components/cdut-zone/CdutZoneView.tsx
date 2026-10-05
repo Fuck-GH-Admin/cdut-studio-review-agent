@@ -1,11 +1,11 @@
 /**
  * CdutZoneView — CDUT 专区主界面
  *
- * 结构：顶栏（学士帽图标 + 「特区账户」徽章 + 拖拽区） + 主视图。
+ * 结构：顶栏（学士帽图标 + 「特区账户」徽章 + 拖拽区） + 主视图 + 左下角校宠水印背景。
  * - 未登录态：左右分栏大师级布局 —— 左侧品牌愿景与三大核心能力矩阵，
  *   右侧一体化登录悬浮卡片（学工号 / 密码 / 记住密码，后台静默提交 CAS）。
- * - 已登录态：精致详情页，展示真实头像、姓名、学工号、学院、专业与绿色在线脉冲灯，
- *   并提供【退出特区账户】。
+ * - 已登录态：70 周年红金通栏横幅 + 无边框用户信息微底色字段群 +
+ *   正中央校标与三大 Bento 战略板块 + 底部高频场景胶囊按钮与顶层抽屉卡片。
  *
  * 如实标注：状态 `active` 表示最近一次认证成功且后台静默保活心跳正常；
  * 本客户端不嗅探内网 Cookie，密码仅在勾选时经 OS 级加密落盘。
@@ -16,10 +16,8 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import {
   Building2,
   CalendarDays,
-  ClipboardList,
   GraduationCap,
   LogIn,
-  LogOut,
   ShieldCheck,
   Sparkles,
   User,
@@ -35,6 +33,12 @@ import { Input } from '@profer/ui/primitives/input'
 import { ConfirmDialog } from '@profer/ui/primitives/confirm-dialog'
 import { cdutAccountAtom } from '@/atoms/cdut-account-atoms'
 import { MutationConfirmModal } from './MutationConfirmModal'
+import { CdutAnniversaryBanner } from './CdutAnniversaryBanner'
+import { CdutProfileFields } from './CdutProfileFields'
+import { CdutHeroSection } from './CdutHeroSection'
+import { CdutQuickBar, type CdutQuickFeature } from './CdutQuickBar'
+import { CdutFeatureSheet } from './CdutFeatureSheet'
+import { CdutWatermarkBackground } from './CdutWatermarkBackground'
 
 /** 未登录态：专区三大核心能力矩阵展示 */
 const CAPABILITY_CARDS = [
@@ -55,34 +59,6 @@ const CAPABILITY_CARDS = [
   },
 ] as const
 
-/** 已登录态：4 大高频场景快捷卡片 */
-const QUICK_ACTIONS = [
-  {
-    icon: CalendarDays,
-    title: '今日课表',
-    desc: '查看今日课程、节次、教室与任课教师',
-    hint: '我今天有哪些课',
-  },
-  {
-    icon: GraduationCap,
-    title: '成绩与 GPA',
-    desc: '历学期成绩单透视、学分与绩点加权分析',
-    hint: '查一下我的成绩单',
-  },
-  {
-    icon: Building2,
-    title: '自习空教室',
-    desc: '成都/宜宾校区按教学楼与节次检索空教室',
-    hint: '今天下午6教有没有空教室',
-  },
-  {
-    icon: ClipboardList,
-    title: '期末考场',
-    desc: '期末考试时间、考场教室、座位号与准考证号',
-    hint: '我的期末考试安排',
-  },
-] as const
-
 export function CdutZoneView(): React.ReactElement {
   const account = useAtomValue(cdutAccountAtom)
   const setAccount = useSetAtom(cdutAccountAtom)
@@ -97,6 +73,10 @@ export function CdutZoneView(): React.ReactElement {
 
   const [logoutOpen, setLogoutOpen] = React.useState(false)
   const [loggingOut, setLoggingOut] = React.useState(false)
+
+  // 底部高频场景抽屉卡片状态
+  const [activeFeature, setActiveFeature] = React.useState<CdutQuickFeature | null>(null)
+  const [sheetOpen, setSheetOpen] = React.useState(false)
 
   // 本地已保存的特区账户（登录窗一键填充引导）
   const [savedAccount, setSavedAccount] = React.useState<CdutSavedAccountSummary | null>(null)
@@ -205,6 +185,12 @@ export function CdutZoneView(): React.ReactElement {
     setErrorMessage('')
   }
 
+  /** 打开底部高频场景抽屉卡片 */
+  const handleOpenFeature = (feature: CdutQuickFeature): void => {
+    setActiveFeature(feature)
+    setSheetOpen(true)
+  }
+
   const handleLogout = async (): Promise<void> => {
     setLoggingOut(true)
     try {
@@ -220,6 +206,9 @@ export function CdutZoneView(): React.ReactElement {
     <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-content-area">
       {/* 标题栏拖拽区 */}
       <div className="absolute inset-x-0 top-0 z-0 h-14 titlebar-drag-region" aria-hidden="true" />
+
+      {/* 左下角校宠立绘艺术环境水印 */}
+      <CdutWatermarkBackground />
 
       {/* 顶栏：左侧学士帽图标 + 放大后的特区账户标签 */}
       <header className="relative z-10 flex shrink-0 items-center gap-3 border-b border-border/60 bg-card/80 px-5 py-3 titlebar-no-drag backdrop-blur-sm">
@@ -428,99 +417,31 @@ export function CdutZoneView(): React.ReactElement {
             </div>
           </div>
         ) : (
-          /* ================= 已登录：精致特区详情页 ================= */
-          <div className="mx-auto w-full max-w-4xl space-y-6 p-8">
-            {/* 常驻特区账户卡片（含头像、姓名、学号、学院、专业） */}
-            <section className="relative overflow-hidden rounded-2xl border border-surface-border/70 bg-card p-6 shadow-sm">
-              <div className="flex flex-wrap items-center justify-between gap-6">
-                {/* 左半部分：真实头像与详细画像 */}
-                <div className="flex items-center gap-5">
-                  <div className="relative size-16 shrink-0 overflow-hidden rounded-2xl border-2 border-primary/20 bg-primary/5 shadow-inner">
-                    {account.avatar ? (
-                      <img src={account.avatar} alt="头像" className="size-full object-cover" />
-                    ) : (
-                      <div className="flex size-full items-center justify-center text-primary/40">
-                        <User size={30} />
-                      </div>
-                    )}
-                    {/* 绿色在线脉冲小圆点 */}
-                    <span className="absolute bottom-1 right-1 size-3.5 rounded-full border-2 border-card bg-emerald-500 animate-pulse" />
-                  </div>
+          /* ================= 已登录：全新特区专属工作台 ================= */
+          <div className="flex min-h-full flex-col">
+            {/* 顶部 70 周年红金流光通栏横幅 */}
+            <CdutAnniversaryBanner />
 
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-3">
-                      <h2 className="text-xl font-bold tracking-tight text-foreground">
-                        {account.studentName}
-                      </h2>
-                      <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
-                        内网会话在线
-                      </span>
-                      {account.role ? (
-                        <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                          {account.role}
-                        </span>
-                      ) : null}
-                    </div>
+            <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 p-8">
+              {/* 用户信息无边框微底色字段群 */}
+              <CdutProfileFields account={account} onLogout={() => setLogoutOpen(true)} />
 
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                      <span>学工号: {account.studentId || '—'}</span>
-                      <span>学院: {account.college || '—'}</span>
-                      <span>专业: {account.major || '—'}</span>
-                    </div>
-                  </div>
-                </div>
+              {/* 正中央校标与三大 Bento 战略板块 */}
+              <CdutHeroSection />
 
-                {/* 右半部分：操作按钮 */}
-                <div className="flex items-center gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="h-8 gap-1.5 px-3 text-xs"
-                    onClick={() => setLogoutOpen(true)}
-                  >
-                    <LogOut size={13} />
-                    <span>退出特区账户</span>
-                  </Button>
-                </div>
-              </div>
-            </section>
-
-            {/* Agent 准备就绪横幅 */}
-            <section className="flex items-center gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-5">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Sparkles size={18} />
-              </span>
-              <div>
-                <h3 className="text-sm font-semibold text-foreground">特区专属 Agent 准备就绪</h3>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  内网数据通道已建立，每 10
-                  分钟自动静默保活。可直接用自然语言调度课表、成绩、空教室与考务等 8 大教务业务域。
-                </p>
-              </div>
-            </section>
-
-            {/* 4 大高频场景快捷卡片 */}
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {QUICK_ACTIONS.map((card) => (
-                <div
-                  key={card.title}
-                  className="rounded-2xl border border-surface-border/60 bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
-                >
-                  <span className="flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <card.icon size={16} />
-                  </span>
-                  <h3 className="mt-3 text-sm font-semibold text-foreground">{card.title}</h3>
-                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{card.desc}</p>
-                  <div className="mt-4 inline-block rounded-md bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">
-                    对 AI 说「{card.hint}」
-                  </div>
-                </div>
-              ))}
+              {/* 底部 4 大高频场景胶囊按钮条 */}
+              <CdutQuickBar onSelect={handleOpenFeature} />
             </div>
           </div>
         )}
       </div>
+
+      {/* 底部拉起的顶层抽屉卡片（预留业务域占位） */}
+      <CdutFeatureSheet
+        feature={activeFeature}
+        open={sheetOpen}
+        onOpenChange={setSheetOpen}
+      />
 
       {/* 写操作二次确认浮层（常驻挂载，全局监听主进程派发） */}
       <MutationConfirmModal />
