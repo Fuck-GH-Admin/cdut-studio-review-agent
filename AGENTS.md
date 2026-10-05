@@ -78,6 +78,10 @@ cd apps/electron && bun run typecheck
 # 单元测试
 bun test
 
+# 图标成品守卫（校验 resources/icon.png 为 1024x1024 正方形、icon.ico 为合法多图 ICO；
+# 纯字节解析、零额外依赖，不需要 rsvg-convert，任意平台可运行）
+cd apps/electron && bun test scripts/packaging-guards.test.ts
+
 # 架构边界检查
 bun run check:boundaries
 
