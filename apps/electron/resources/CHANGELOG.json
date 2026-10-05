@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.140",
+      "date": "2026-10-05",
+      "title": "0.15.140",
+      "notes": "- 阶段 B：系统 tesseract CLI 真实 OCR 端口（chi_sim+eng，TSV 词级块解析，33 块真实读出证书内容）；OCR 节点执行器真实化；AI 抽取人工确认/更正面板（correctObservationV2 接 UI，更正必附理由）；导出报告按钮（EXPORT_REPORT_V2 → 案卷 reports/ 落盘 MD）"
+    },
+    {
       "version": "0.15.139",
       "date": "2026-10-05",
       "title": "0.15.139",

@@ -3649,6 +3649,10 @@ const reviewAPI = {
   getAggregateV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_AGGREGATE_V2, caseId) as Promise<import('@profer/shared').CaseAggregateV2 | undefined>,
   updateFieldsV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_FIELDS_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  exportReportV2: (caseId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.EXPORT_REPORT_V2, caseId) as Promise<{ file: string; decision: { result: string; reason: string; at: string } | null }>,
+  getRunObservationsV2: (caseId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_RUN_OBSERVATIONS_V2, caseId) as Promise<Array<Record<string, unknown>>>,
   correctObservationV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CORRECT_OBSERVATION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   setEvidenceLinkV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>

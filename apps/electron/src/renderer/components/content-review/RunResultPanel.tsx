@@ -28,6 +28,16 @@ export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refre
   useEffect(() => { void load() }, [load, refreshNonce])
 
   /** 触发真实审核运行（RUN_REVIEW_V2 四层：真实渠道 + 真实执行器） */
+  /** 导出报告：真实调用 EXPORT_REPORT_V2（公开反馈投影 + 检查结果落盘 MD） */
+  const exportReport = useCallback(async (): Promise<void> => {
+    try {
+      const result = await window.reviewAPI.exportReportV2(caseId)
+      toast.success(`报告已导出：${result.file}`)
+    } catch (error) {
+      toast.error(`导出失败：${error instanceof Error ? error.message : String(error)}`)
+    }
+  }, [caseId])
+
   const startRun = useCallback(async (): Promise<void> => {
     setRunning(true)
     try {
@@ -47,6 +57,7 @@ export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refre
         <p className="text-xs font-medium">审核运行（{runs.length}）</p>
         <div className="flex items-center gap-1">
           <Button size="sm" variant="outline" disabled={running} onClick={() => void startRun()}>{running ? '审核中…' : '开始自动审核'}</Button>
+          <Button size="sm" variant="ghost" disabled={runs.length === 0} onClick={() => void exportReport()}>导出报告</Button>
           <Button size="sm" variant="ghost" onClick={() => void load()}>刷新</Button>
         </div>
       </div>

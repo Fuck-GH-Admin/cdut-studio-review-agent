@@ -476,6 +476,8 @@ export const REVIEW_IPC_CHANNELS = {
   GET_AGGREGATE_V2: 'review-v2:get-aggregate',
   UPDATE_FIELDS_V2: 'review-v2:update-fields',
   CORRECT_OBSERVATION_V2: 'review-v2:correct-observation',
+  GET_RUN_OBSERVATIONS_V2: 'review-v2:get-run-observations',
+  EXPORT_REPORT_V2: 'review-v2:export-report',
   SET_EVIDENCE_LINK_V2: 'review-v2:set-evidence-link',
   // ===== N3b：业务闭环命令 =====
   ENSURE_INITIAL_TASK_V2: 'review-v2:ensure-initial-task',

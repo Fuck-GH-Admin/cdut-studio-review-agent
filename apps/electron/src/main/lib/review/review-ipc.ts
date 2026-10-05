@@ -246,6 +246,53 @@ export function registerReviewIpc(): void {
     const command = input.command as unknown as { requestId: string; actor: import('@profer/shared').Actor; expectedRevision: number; payload: unknown }
     return updateFields(input.caseId, command as unknown as Parameters<typeof updateFields>[1])
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.EXPORT_REPORT_V2, (_e, caseId: string) => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+    const { buildCaseFeedback } = require('./report-service-v2') as typeof import('./report-service-v2')
+    const aggregate = getCaseV2Aggregate(caseId)
+    if (!aggregate) throw new Error(`案卷聚合不存在: ${caseId}`)
+    // 公开反馈投影（字段可见性按模板默认 public）+ 真实检查结果摘要，写 MD 落盘
+    const feedback = buildCaseFeedback(aggregate.caseV2, aggregate.decisions, aggregate.supplements, {})
+    const { listRunsV2, readArtifact } = require('./run-store-v2') as typeof import('./run-store-v2')
+    const completed = listRunsV2(caseId).filter((run) => run.status === 'completed')
+    const lastRun = completed[0]
+    const lines: string[] = [`# 审核报告：${aggregate.caseV2.title}`, '', `- 案卷：${caseId}`, `- 阶段：${aggregate.caseV2.stage}（revision ${aggregate.caseV2.revision}）`, '']
+    if (feedback.decision) lines.push(`## 决定`, `- 结果：${feedback.decision.result}`, `- 理由：${feedback.decision.reason}`, `- 时间：${feedback.decision.at}`, '')
+    if (lastRun) {
+      lines.push(`## 检查结果（运行 ${lastRun.id}）`)
+      for (const check of lastRun.checks) {
+        const item = check as { ruleId: string; status: string; reason?: string }
+        lines.push(`- ${item.ruleId}：${item.status}${item.reason ? `——${item.reason}` : ''}`)
+      }
+      lines.push('')
+    }
+    if (feedback.supplements.length > 0) {
+      lines.push('## 补件')
+      for (const supplement of feedback.supplements) lines.push(`- ${supplement.reason}（${supplement.status}，要素：${supplement.requiredElements.join('、') || '—'}）`)
+      lines.push('')
+    }
+    lines.push('## 事项字段')
+    for (const item of feedback.items) lines.push(`- ${item.title}：${JSON.stringify(item.publicFields)}`)
+    const { writeFileSync, mkdirSync } = require('node:fs') as typeof import('node:fs')
+    const { join } = require('node:path') as typeof import('node:path')
+    const { getConfigDir } = require('../config-paths') as typeof import('../config-paths')
+    const dir = join(getConfigDir(), 'review-cases', caseId, 'reports')
+    mkdirSync(dir, { recursive: true })
+    const file = join(dir, `report-${Date.now().toString(36)}.md`)
+    writeFileSync(file, lines.join('\n'), 'utf-8')
+    return { file, decision: feedback.decision }
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_RUN_OBSERVATIONS_V2, (_e, caseId: string) => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    const { listRunsV2, readArtifact } = require('./run-store-v2') as typeof import('./run-store-v2')
+    const runs = listRunsV2(caseId).filter((run) => run.status === 'completed')
+    if (runs.length === 0) return []
+    // 取最近完成运行的 extract 产物观察（真实模型抽取结果，含 sourceRefs 与 confirmed 标记）
+    const runId = runs[0]!.id
+    const artifact = readArtifact<{ observations?: Array<{ subjectId: string; fieldKey: string; value: unknown; sourceRefs?: Array<{ documentVersionId: string; quote?: string }>; extractedBy?: string; confirmed?: boolean; confidence?: number }> }>(caseId, runId, 'node-auto-check-extract')
+    return (artifact?.observations ?? []) as Array<Record<string, unknown>>
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.CORRECT_OBSERVATION_V2, (_e, input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) => {
     const { correctObservation } = require('./application-service') as typeof import('./application-service')
     const command = input.command as unknown as { requestId: string; actor: import('@profer/shared').Actor; expectedRevision: number; payload: unknown }
@@ -323,7 +370,10 @@ export function registerReviewIpc(): void {
         ], { timeoutMs: REVIEW_RUN_TIMEOUT_MS }),
       }),
     }
-    const executors = await assembleV2Executors(aggregate, template, { client })
+    // 真实 OCR：系统 tesseract CLI 探测可用即注入（不可用如实降级，材料记 unread）
+    const { SystemTesseractOcrPort } = require('./system-tesseract-ocr-adapter') as typeof import('./system-tesseract-ocr-adapter')
+    const ocrPort = SystemTesseractOcrPort.create()
+    const executors = await assembleV2Executors(aggregate, template, { client, ocrPort })
     return runReviewCaseV2(aggregate.caseV2, template, executors, {})
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.CAST_RATING_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {

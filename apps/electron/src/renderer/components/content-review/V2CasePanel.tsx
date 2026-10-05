@@ -11,6 +11,7 @@ import type { Actor, CaseAggregateV2, ReviewCommandResult } from '@profer/shared
 import { Button } from '@profer/ui/primitives/button'
 import { toast } from 'sonner'
 import { RunResultPanel } from './RunResultPanel'
+import { ObservationConfirmPanel } from './ObservationConfirmPanel'
 
 /** 当前 V2 聚合（单案；N3 扩展为按案映射） */
 export const reviewV2AggregateAtom = atom<CaseAggregateV2 | null>(null)
@@ -245,6 +246,7 @@ type TemplateFieldInput = { key: string; label: string; kind: string; required: 
             </div>
             <BusinessFlowSection aggregate={current} onResult={applyResult} />
             <RunResultPanel caseId={current.caseV2.id} refreshNonce={runNonce} />
+            <ObservationConfirmPanel caseId={current.caseV2.id} aggregate={current} onResult={applyResult} refreshNonce={runNonce} />
             <p className="font-medium">{current.caseV2.title}</p>
             <p className="text-muted-foreground">
               阶段 {current.caseV2.stage} · revision {current.caseV2.revision} · 回执 {current.receiptLog.length} 条

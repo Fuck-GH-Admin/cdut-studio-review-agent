@@ -78,7 +78,7 @@ export interface AssembleOptions {
   client: ReviewModelClient
   signal?: AbortSignal
   /** OCR 端口（真实引擎注入；缺省=图片不可读，如实标注） */
-  ocrPort?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }
+  ocrPort?: { available: boolean; unavailableReason?: string; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ engine: string; engineVersion: string; blocks: Array<{ text: string; rect: { x: number; y: number; w: number; h: number }; confidence: number }>; imageWidth: number; imageHeight: number }> }
 }
 
 /** 装配 11 个节点的真实执行器（extract/summarize 走 Pi；check/calculate 走确定性引擎） */
@@ -160,8 +160,24 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
   }
 
   const ocr: NodeExecutor = async (_node, inputHash) => {
-    // OCR：当前无可用实现（NullOcrPort），如实标注——不冒充已读
-    return { status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], parseIndex: aggregate.caseV2.documents.filter((doc) => /\.(png|jpg|jpeg|gif|webp|bmp)$/i.test(doc.fileName)).map((doc) => ({ documentVersionId: doc.versionId, kind: 'image', ocr: 'unavailable' })) } }
+    // OCR：有真实端口（系统 tesseract）则逐图识别产出块级文本索引；不可用如实标注——不冒充已读
+    const images = aggregate.caseV2.documents.filter((doc) => doc.active !== false && /\.(png|jpg|jpeg|gif|webp|bmp)$/i.test(doc.fileName))
+    const ocrPort = options.ocrPort
+    const parseIndex: Array<Record<string, unknown>> = []
+    for (const doc of images) {
+      const absolute = join(getConfigDir(), 'review-cases', caseId, doc.assetPath)
+      if (!ocrPort?.available) {
+        parseIndex.push({ documentVersionId: doc.versionId, kind: 'image', ocr: 'unavailable', reason: ocrPort?.unavailableReason ?? '未注入 OCR 端口' })
+        continue
+      }
+      try {
+        const result = await ocrPort.recognize({ documentVersionId: doc.versionId, pageAssetPath: absolute, language: 'chi_sim' })
+        parseIndex.push({ documentVersionId: doc.versionId, kind: 'image', ocr: 'done', engine: result.engine, blocks: result.blocks.length })
+      } catch (error) {
+        parseIndex.push({ documentVersionId: doc.versionId, kind: 'image', ocr: 'failed', reason: error instanceof Error ? error.message : String(error) })
+      }
+    }
+    return { status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], parseIndex } }
   }
 
   const trivial = (extra: Record<string, unknown> = {}): NodeExecutor => async (_node, inputHash) => ({ status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], ...extra } })
