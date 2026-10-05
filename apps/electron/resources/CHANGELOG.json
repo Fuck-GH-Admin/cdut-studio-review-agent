@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.141",
+      "date": "2026-10-05",
+      "title": "0.15.141",
+      "notes": "- 阶段 B 真实闭环验收：证书图片登记（文件对话框）→ OCR 真实识别（tesseract-cli 33 块）→ 二次审核 F2/F3 转 compliant（跨文档一致性判定）→ AI 抽取人工确认（correctObservation confirmed=true 落盘）→ 补件回复/判定满足/三阶段 pass → 最终决定 final → 导出报告 MD 落盘（含决定/检查/补件/字段全投影）"
+    },
+    {
       "version": "0.15.140",
       "date": "2026-10-05",
       "title": "0.15.140",
