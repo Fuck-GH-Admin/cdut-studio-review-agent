@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react'
 import type { Actor, CaseAggregateV2, ReviewCommandResult } from '@profer/shared'
 import { Button } from '@profer/ui/primitives/button'
 import { toast } from 'sonner'
+import { RunResultPanel } from './RunResultPanel'
 
 /** 当前 V2 聚合（单案；N3 扩展为按案映射） */
 export const reviewV2AggregateAtom = atom<CaseAggregateV2 | null>(null)
@@ -127,6 +128,7 @@ type TemplateFieldInput = { key: string; label: string; kind: string; required: 
   const current = aggregate
 
   const [slotId, setSlotId] = useState('')
+  const [runNonce, setRunNonce] = useState(0)
   const currentTemplate = templates.find((template) => template.templateId === current?.caseV2.templateId && template.version === current?.caseV2.templateVersion)
 
   const registerMaterials = useCallback(() => run(async () => {
@@ -239,6 +241,7 @@ type TemplateFieldInput = { key: string; label: string; kind: string; required: 
               )}
             </div>
             <BusinessFlowSection aggregate={current} onResult={applyResult} />
+            <RunResultPanel caseId={current.caseV2.id} refreshNonce={runNonce} />
             <p className="font-medium">{current.caseV2.title}</p>
             <p className="text-muted-foreground">
               阶段 {current.caseV2.stage} · revision {current.caseV2.revision} · 回执 {current.receiptLog.length} 条

@@ -296,7 +296,7 @@ export function registerReviewIpc(): void {
         if (!aggregate) throw new Error(`案卷聚合不存在: ${caseId}`)
         const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
         if (!template) throw new Error(`模板不存在: ${aggregate.caseV2.templateId}`)
-        const run = await runReviewCaseV2(aggregate.caseV2, template, assembleV2Executors(aggregate, template, { client }), {})
+        const run = await runReviewCaseV2(aggregate.caseV2, template, await assembleV2Executors(aggregate, template, { client }), {})
         return { status: run.status }
       },
     })
@@ -323,7 +323,7 @@ export function registerReviewIpc(): void {
         ], { timeoutMs: REVIEW_RUN_TIMEOUT_MS }),
       }),
     }
-    const executors = assembleV2Executors(aggregate, template, { client })
+    const executors = await assembleV2Executors(aggregate, template, { client })
     return runReviewCaseV2(aggregate.caseV2, template, executors, {})
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.CAST_RATING_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {

@@ -21,20 +21,36 @@ import { buildTextSourceIndex } from './source-index'
 import { getConfigDir } from '../config-paths'
 import { extractJson } from './review-model-gateway'
 
-/** 读取材料解析文本（parseIndex 产物或原始文本文件直读；图片类如实标注不可读） */
-function materialTextOf(doc: DocumentVersion): string {
+/** 解析材料真实文本：PDF/Office 走 document-parser，文本直读；图片走 OCR 端口（不可用则如实空） */
+async function materialTextOf(doc: DocumentVersion, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
   const ext = doc.fileName.toLowerCase().split('.').pop() ?? ''
-  if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'].includes(ext)) return ''
+  const absolute = join(getConfigDir(), 'review-cases', doc.versionId.split('-v')[0] ?? doc.documentId, doc.assetPath)
   try {
-    const raw = readFileSync(join(getConfigDir(), 'review-cases', doc.versionId.split('-v')[0] ?? doc.documentId, doc.assetPath), 'utf-8')
-    return raw.length > 6000 ? `${raw.slice(0, 6000)}\n…（截断）` : raw
-  } catch {
+    if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'].includes(ext)) {
+      // 阶段 A：OCR 由注入端口承担（系统 tesseract 真实引擎）；不可用返回空（不冒充已读）
+      if (!ocr?.available) return ''
+      const result = await ocr.recognize({ documentVersionId: doc.versionId, pageAssetPath: absolute, language: 'chi_sim' })
+      return result.blocks.map((block) => block.text).join(' ')
+    }
+    if (ext === 'pdf' || ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].includes(ext)) {
+      const { extractTextFromFile } = await import('../document-parser')
+      const text = await extractTextFromFile(absolute)
+      return text
+    }
+    const raw = readFileSync(absolute, 'utf-8')
+    return raw
+  } catch (error) {
+    console.warn(`[executor] 材料解析失败 ${doc.fileName}:`, error instanceof Error ? error.message : error)
     return ''
   }
 }
 
+function truncate(text: string, max = 6000): string {
+  return text.length > max ? `${text.slice(0, max)}\n…（截断）` : text
+}
+
 /** 构建注入给 Pi 的材料/规则/字段上下文（内容仅作为数据，指令边界由 REVIEW_SYSTEM_PROMPT 承担） */
-function buildMaterialContext(aggregate: CaseAggregateV2, template: TemplateVersion): string {
+async function buildMaterialContext(aggregate: CaseAggregateV2, template: TemplateVersion, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
   const parts: string[] = []
   parts.push('【案卷字段】')
   for (const [key, value] of Object.entries(aggregate.caseV2.caseFields)) {
@@ -51,7 +67,7 @@ function buildMaterialContext(aggregate: CaseAggregateV2, template: TemplateVers
   parts.push('【材料内容】')
   for (const doc of aggregate.caseV2.documents) {
     if (doc.active === false) continue
-    const text = materialTextOf(doc)
+    const text = truncate(await materialTextOf(doc, ocr))
     parts.push(text ? `--- ${doc.fileName}（${doc.versionId}） ---\n${text}` : `--- ${doc.fileName}（${doc.versionId}）--- [非文本或未可读：不作为已读依据]`)
   }
   return parts.join('\n')
@@ -60,14 +76,17 @@ function buildMaterialContext(aggregate: CaseAggregateV2, template: TemplateVers
 export interface AssembleOptions {
   client: ReviewModelClient
   signal?: AbortSignal
+  /** OCR 端口（真实引擎注入；缺省=图片不可读，如实标注） */
+  ocrPort?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }
 }
 
 /** 装配 11 个节点的真实执行器（extract/summarize 走 Pi；check/calculate 走确定性引擎） */
-export function assembleV2Executors(aggregate: CaseAggregateV2, template: TemplateVersion, options: AssembleOptions): Record<NodeKind, NodeExecutor> {
+export async function assembleV2Executors(aggregate: CaseAggregateV2, template: TemplateVersion, options: AssembleOptions): Promise<Record<NodeKind, NodeExecutor>> {
   const caseId = aggregate.caseV2.id
   const rules = (template.policyRefs ?? []).length > 0 ? collectRules(template) : []
-  const materialContext = buildMaterialContext(aggregate, template)
   const subjectIds = aggregate.caseV2.subjects.map((subject) => subject.id)
+  // 材料上下文按需构建（PDF/Office 为异步解析）
+  const materialContext = await buildMaterialContext(aggregate, template, options.ocrPort)
 
   const piExtract: NodeExecutor = async (node, inputHash) => {
     if (options.signal?.aborted) throw new Error('已取消（模型调用前）')
@@ -131,7 +150,7 @@ export function assembleV2Executors(aggregate: CaseAggregateV2, template: Templa
     const parseIndex: Array<Record<string, unknown>> = []
     for (const doc of aggregate.caseV2.documents) {
       if (doc.active === false) continue
-      const text = materialTextOf(doc)
+      const text = await materialTextOf(doc, options.ocrPort)
       if (!text) continue
       const index = buildTextSourceIndex(doc.versionId, text)
       parseIndex.push({ documentVersionId: doc.versionId, segments: index.entries.length, kind: 'text' })

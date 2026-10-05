@@ -81,7 +81,7 @@ describe('全链路旅程（自检探查）', () => {
   test('2. 真实执行器运行：引用校验过滤伪造 observations，规则白名单过滤伪造 checks', async () => {
     const template = getTemplate('comprehensive-assessment-v2', 2)!
     const aggregate = readAggregate(caseId)!
-    const executors: Record<NodeKind, NodeExecutor> = assembleV2Executors(aggregate!, template, { client: fakeClient as never })
+    const executors: Record<NodeKind, NodeExecutor> = await assembleV2Executors(aggregate!, template, { client: fakeClient as never })
     run = await runReviewCaseV2(aggregate.caseV2, template, executors, {})
     expect(run.status).toBe('completed')
     // extract 产物：伪造引用被丢弃（只剩合法引用的 observations）

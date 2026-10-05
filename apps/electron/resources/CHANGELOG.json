@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.138",
+      "date": "2026-10-05",
+      "title": "0.15.138",
+      "notes": "- 阶段 A：真实材料链路——materialTextOf 接 document-parser（PDF/Office 真实解析进 AI 上下文）+ OCR 端口注入位；RunResultPanel V2 运行结果展示（检查明细/结论/覆盖/诊断，可展开）；assembleV2Executors 转异步"
+    },
+    {
       "version": "0.15.137",
       "date": "2026-10-05",
       "title": "0.15.137",
