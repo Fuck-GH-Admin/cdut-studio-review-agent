@@ -7,7 +7,6 @@
 
 import * as React from 'react'
 import { useAtom, useAtomValue } from 'jotai'
-import { Check } from 'lucide-react'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@profer/ui/primitives/alert-dialog'
 import { toast } from 'sonner'
 import {
@@ -35,27 +34,9 @@ import {
   updateUiScale,
   UI_SCALE_OPTIONS,
 } from '@/atoms/ui-scale'
-import { cn } from '@/lib/utils'
 import { SkinManager } from './SkinManager'
-import { detectIsWindows } from '@profer/ui'
 import type { ThemeMode, ThemeStyle, MarkdownFontSize, UiScale, SkinInfo } from '../../../types'
 
-// ===== Logo 资源导入（用于图标选择器） =====
-import proferBlackLogo from '@/assets/bots/profer-logos/profer-black.png'
-import proferWhiteLogo from '@/assets/bots/profer-logos/profer-white.png'
-import proferBlueLogo from '@/assets/bots/profer-logos/profer-blue.png'
-import proferPurpleLogo from '@/assets/bots/profer-logos/profer-purple.png'
-import proferGradientLogo from '@/assets/bots/profer-logos/profer-gradient.png'
-import proferCoralLogo from '@/assets/bots/profer-logos/profer-coral.png'
-import proferVeriPeriLogo from '@/assets/bots/profer-logos/profer-veri-peri.png'
-import proferVivaMagentaLogo from '@/assets/bots/profer-logos/profer-viva-magenta.png'
-import proferMochaMousseLogo from '@/assets/bots/profer-logos/profer-mocha-mousse.png'
-import proferEmeraldLogo from '@/assets/bots/profer-logos/profer-emerald.png'
-import proma8bitLogo from '@/assets/bots/profer-logos/profer-8bit.png'
-import proferCyberpunkLogo from '@/assets/bots/profer-logos/profer-cyberpunk.png'
-import proferFuturisticLogo from '@/assets/bots/profer-logos/profer-futuristic.png'
-
-// ===== 主题预览图片导入 =====
 /** 主题选项 */
 const THEME_OPTIONS = [
   { value: 'light', label: '浅色' },
@@ -70,41 +51,11 @@ const MARKDOWN_FONT_SIZE_OPTIONS = [
   { value: 'large', label: '大' },
 ]
 
-
-
-/** 图标变体定义 */
-interface IconVariant {
-  id: string
-  name: string
-  src: string
-  previewBg: string
-}
-
-const ICON_VARIANTS: readonly IconVariant[] = [
-  { id: 'default', name: '默认', src: '', previewBg: 'bg-neutral-900' },
-  { id: 'black', name: '经典黑', src: proferBlackLogo, previewBg: 'bg-neutral-900' },
-  { id: 'white', name: '纯白版', src: proferWhiteLogo, previewBg: 'bg-white' },
-  { id: 'blue', name: '品牌蓝', src: proferBlueLogo, previewBg: 'bg-blue-900' },
-  { id: 'purple', name: '紫色版', src: proferPurpleLogo, previewBg: 'bg-purple-900' },
-  { id: 'gradient', name: '渐变版', src: proferGradientLogo, previewBg: 'bg-gradient-to-br from-blue-600 to-purple-600' },
-  { id: 'coral', name: '珊瑚橘', src: proferCoralLogo, previewBg: 'bg-[#FF6F61]' },
-  { id: 'veri-peri', name: '长春花蓝', src: proferVeriPeriLogo, previewBg: 'bg-[#6667AB]' },
-  { id: 'viva-magenta', name: '非凡洋红', src: proferVivaMagentaLogo, previewBg: 'bg-[#BB2649]' },
-  { id: 'mocha-mousse', name: '摩卡慕斯', src: proferMochaMousseLogo, previewBg: 'bg-[#A47764]' },
-  { id: 'emerald', name: '翡翠绿', src: proferEmeraldLogo, previewBg: 'bg-[#009473]' },
-  { id: '8bit', name: '8bit 像素', src: proma8bitLogo, previewBg: 'bg-[#1a1a2e]' },
-  { id: 'cyberpunk', name: '赛博朋克', src: proferCyberpunkLogo, previewBg: 'bg-[#0d0221]' },
-  { id: 'futuristic', name: '未来质感', src: proferFuturisticLogo, previewBg: 'bg-[#4a4a4a]' },
-] as const
-
 /** 根据平台返回缩放快捷键提示 */
 const isMac = navigator.userAgent.includes('Mac')
 const ZOOM_HINT = isMac
   ? '使用 ⌘= 放大、⌘- 缩小、⌘0 恢复默认大小'
   : '使用 Ctrl++ 放大、Ctrl+- 缩小、Ctrl+0 恢复默认大小'
-
-// macOS 专属的 Dock 图标切换暂不对外展示；保留实现，后续可直接恢复。
-const SHOW_MACOS_SETTINGS = false
 
 export function AppearanceSettings(): React.ReactElement {
   const [themeMode, setThemeMode] = useAtom(themeModeAtom)
@@ -227,129 +178,6 @@ export function AppearanceSettings(): React.ReactElement {
       <AlertDialog open={conflict !== null} onOpenChange={(open) => { if (!open) setConflict(null) }}>
         <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>皮肤已存在</AlertDialogTitle><AlertDialogDescription>是否以新导入的皮肤替换同名用户皮肤？</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>取消</AlertDialogCancel><AlertDialogAction onClick={() => { const item = conflict; setConflict(null); if (item) void importSkin(item.kind, true, item.path) }}>替换</AlertDialogAction></AlertDialogFooter></AlertDialogContent>
       </AlertDialog>
-      {SHOW_MACOS_SETTINGS && <AppIconPicker />}
     </div>
-  )
-}
-
-/** 应用图标选择器 */
-function AppIconPicker(): React.ReactElement {
-  const [activeIcon, setActiveIcon] = React.useState<string>('default')
-  const [isLoading, setIsLoading] = React.useState(false)
-
-  // 初始化时读取当前设置
-  React.useEffect(() => {
-    window.electronAPI.getSettings().then((settings) => {
-      setActiveIcon(settings.appIconVariant ?? 'default')
-    })
-  }, [])
-
-  const isWindows = React.useMemo(() => detectIsWindows(), [])
-
-  const handleIconSelect = React.useCallback(async (variantId: string) => {
-    if (isWindows) {
-      toast.error('Windows 系统暂不支持更换应用图标')
-      return
-    }
-    if (variantId === activeIcon || isLoading) return
-    setIsLoading(true)
-    try {
-      const success = await window.electronAPI.setAppIcon(variantId)
-      if (success) {
-        setActiveIcon(variantId)
-        toast.success('应用图标已更换')
-      } else {
-        toast.error('图标切换失败')
-      }
-    } catch {
-      toast.error('图标切换失败')
-    } finally {
-      setIsLoading(false)
-    }
-  }, [activeIcon, isLoading, isWindows])
-
-  return (
-    <SettingsSection
-      title="应用图标"
-      description="自定义 Dock 栏中的应用图标样式"
-    >
-      <SettingsCard divided={false}>
-        <div className="px-4 py-3">
-          <div className="grid grid-cols-7 gap-3">
-            {ICON_VARIANTS.map((variant) => (
-              <IconCard
-                key={variant.id}
-                variant={variant}
-                isSelected={activeIcon === variant.id}
-                onSelect={() => handleIconSelect(variant.id)}
-              />
-            ))}
-          </div>
-        </div>
-      </SettingsCard>
-    </SettingsSection>
-  )
-}
-
-/** 图标选项卡片 */
-function IconCard({
-  variant,
-  isSelected,
-  onSelect,
-}: {
-  variant: IconVariant
-  isSelected: boolean
-  onSelect: () => void
-}): React.ReactElement {
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={cn(
-        'relative flex flex-col items-center gap-1.5 rounded-lg p-2 transition-all',
-        isSelected
-          ? 'ring-2 ring-primary bg-primary/5'
-          : 'hover:bg-muted/50'
-      )}
-    >
-      <div
-        className={cn(
-          'w-12 h-12 rounded-xl overflow-hidden border border-border/50 flex items-center justify-center',
-          variant.previewBg,
-        )}
-      >
-        {variant.id === 'default' ? (
-          // 默认图标用 CSS 模拟 CDUT Studio logo 形状
-          <div className="flex items-end gap-[2px] -rotate-12">
-            {[1, 0.85, 0.7, 0.55, 0.4, 0.25].map((opacity, i) => (
-              <div
-                key={i}
-                className="rounded-[1px]"
-                style={{
-                  width: i === 0 ? 4 : 3,
-                  height: i === 0 ? 14 : 14 - i * 1.5,
-                  backgroundColor: `rgba(255,255,255,${opacity})`,
-                }}
-              />
-            ))}
-          </div>
-        ) : (
-          <img
-            src={variant.src}
-            alt={variant.name}
-            className="w-full h-full object-contain"
-            draggable={false}
-          />
-        )}
-      </div>
-      <span className="text-[10px] font-medium text-muted-foreground leading-tight text-center">
-        {variant.name}
-      </span>
-      {isSelected && (
-        <div className="absolute -top-0.5 -right-0.5 size-4 rounded-full bg-primary flex items-center justify-center">
-          <Check className="size-2.5 text-primary-foreground" />
-        </div>
-      )}
-    </button>
   )
 }

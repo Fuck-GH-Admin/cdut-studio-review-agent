@@ -76,9 +76,9 @@ extraResources:
   # 教程文件（教程查看器 + 欢迎对话使用）
   - from: ../../tutorial/tutorial-v2.md
     to: tutorial.md
-  # Proma 品牌 Logo 素材（品牌素材下载功能使用）
-  - from: resources/profer-logos
-    to: profer-logos
+  # 托盘图标素材（tray.ts 读取 process.resourcesPath/tray-icons）
+  - from: resources/tray-icons
+    to: tray-icons
     filter:
       - "**/*"
   # 内置皮肤包（设置 → 外观设置 → 特殊风格；skin-service 打包路径 process.resourcesPath/skins）
