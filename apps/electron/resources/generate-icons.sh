@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Profer Icon Generation Script
-# Generates all required icon formats from icon.svg
+# CDUT Studio Icon Generation Script
+# Generates all required icon formats from CDUT_Studio.svg
 # Requires: rsvg-convert (librsvg), iconutil (macOS), magick (ImageMagick)
 
 set -e
@@ -9,7 +9,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-echo "🎨 Generating Profer icons..."
+echo "🎨 Generating CDUT Studio icons..."
 
 # Check required tools
 if ! command -v rsvg-convert &> /dev/null; then
@@ -27,8 +27,12 @@ if ! command -v iconutil &> /dev/null; then
 fi
 
 # 1. Generate icon.png (1024x1024) from SVG
+# 兼容性优先：只指定 -w，rsvg-convert 会按原始比例自动推算高度（只给单个尺寸时始终保比例，
+# 无需 rsvg-convert 2.46+ 才有的 --keep-aspect-ratio）；再用 ImageMagick 居中补透明边成
+# 正方形，既不变形，也保证下游 sips/magick 处理时统一为 1024x1024。
 echo "📦 Generating icon.png (1024x1024)..."
-rsvg-convert -w 1024 -h 1024 icon.svg -o icon.png
+rsvg-convert -w 1024 CDUT_Studio.svg -o icon.png
+magick icon.png -background none -gravity center -extent 1024x1024 icon.png
 
 # 2. Generate menubar/tray icons (multi-resolution for Retina displays)
 echo "📦 Generating tray icons..."
@@ -89,6 +93,20 @@ fi
 echo "📦 Generating icon.ico..."
 magick icon.png -define icon:auto-resize=256,128,96,64,48,32,16 icon.ico
 echo "✅ icon.ico generated"
+
+# 5. 产物自检：任何一项异常都立即失败，避免把坏图当作成功交付
+PNG_SIZE="$(magick identify -format '%wx%h' icon.png)"
+if [ "$PNG_SIZE" != "1024x1024" ]; then
+  echo "❌ 自检失败：icon.png 尺寸为 ${PNG_SIZE}，期望 1024x1024"
+  exit 1
+fi
+for f in icon.png icon.ico; do
+  if [ ! -s "$f" ]; then
+    echo "❌ 自检失败：产物缺失或为空 ${f}"
+    exit 1
+  fi
+done
+echo "✅ 自检通过：icon.png=1024x1024，icon.ico 已生成"
 
 echo ""
 echo "✅ All icons generated successfully!"
