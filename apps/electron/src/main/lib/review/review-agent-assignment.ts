@@ -16,6 +16,7 @@ import { getConfigDir } from '../config-paths'
 /** 指派允许的动作范围（C1：操作类全量；C2 增加决定类动作受代批开关二次约束） */
 export type ReviewAssignmentAction =
   | 'list' | 'create-case' | 'register-material' | 'submit-case' | 'start-run' | 'get-run-status' | 'cancel-run' | 'export-report'
+  | 'decide-stage' | 'resolve-supplement' | 'respond-supplement'
 
 /** 可信指派（落盘形态） */
 export interface ReviewAgentAssignment {

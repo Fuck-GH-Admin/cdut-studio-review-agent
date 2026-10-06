@@ -400,5 +400,130 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
     }))
   }
 
+
+  // ===== C2：决定类工具（代批开关开启 + 指派含决定动作才可达；服务层仍有硬门控） =====
+
+  // 12) 阶段决定（stage-pass / return-for-supplement / final-reject 等）
+  if (enabled('review_decide_stage')) {
+    tools.push(sdk.defineTool({
+      name: 'review_decide_stage',
+      label: '代批阶段决定',
+      description: '代做阶段决定（stage-pass/return-for-supplement/return-to-previous-stage/final-reject/withdraw）。需指派含 decide-stage 且 AI 代批开关开启；服务层二次校验，被拒时如实返回。',
+      parameters: Type.Object({
+        ...AssignmentParam,
+        caseId: Type.String({ minLength: 4 }),
+        taskId: Type.String({ minLength: 4 }),
+        action: Type.Union(['stage-pass', 'item-pass', 'item-partial-pass', 'return-for-supplement', 'return-to-previous-stage', 'final-reject', 'withdraw'].map((value) => Type.Literal(value))),
+        reason: Type.String({ minLength: 2, maxLength: 500 }),
+        supplementRequiredElements: Type.Optional(Type.Array(Type.String())),
+      }),
+      async execute(_id, params) {
+        try {
+          const input = params as { assignmentId: string; caseId: string; taskId: string; action: string; reason: string; supplementRequiredElements?: string[] }
+          const guard = requireAssignment(input.assignmentId, 'decide-stage')
+          const assignment = guard.assignment!
+          if (assignment.caseId && assignment.caseId !== input.caseId) return result({ error: `指派绑定的是案卷 ${assignment.caseId}` }, true)
+          const { recordStageDecision } = require('../review/stage-workflow') as typeof import('../review/stage-workflow')
+          const { getTemplate } = require('../review/template-store') as typeof import('../review/template-store')
+          const { getCaseV2Aggregate } = require('../review/application-service') as typeof import('../review/application-service')
+          const aggregate = getCaseV2Aggregate(input.caseId)
+          if (!aggregate) return result({ error: '案卷不存在' }, true)
+          const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+          if (!template) return result({ error: '模板不存在' }, true)
+          const outcome = await recordStageDecision(input.caseId, {
+            requestId: `dec-${input.assignmentId}-${Date.now().toString(36)}`,
+            actor: { actorId: guard.actorId, actorSource: 'agent', role: guard.role },
+            expectedRevision: aggregate.caseV2.revision,
+            payload: { action: input.action as never, taskId: input.taskId, reason: input.reason, ...(input.supplementRequiredElements ? { supplementRequiredElements: input.supplementRequiredElements } : {}) },
+          }, template)
+          if (!outcome.ok) return result({ error: `决定被拒[${outcome.code}]: ${outcome.message}`, code: outcome.code }, true)
+          return result({ caseId: input.caseId, stage: outcome.aggregate.caseV2.stage, revision: outcome.aggregate.caseV2.revision, decisions: outcome.aggregate.decisions.slice(-1).map((decision) => ({ result: decision.result, actorSource: decision.actor.actorSource })) })
+        } catch (error) {
+          return result({ error: error instanceof Error ? error.message : String(error) }, true)
+        }
+      },
+    }))
+  }
+
+  // 13) 补件判定（满足/不足）
+  if (enabled('review_resolve_supplement')) {
+    tools.push(sdk.defineTool({
+      name: 'review_resolve_supplement',
+      label: '代批补件判定',
+      description: '代做补件判定（satisfied/insufficient/cancelled）。需指派含 resolve-supplement 且 AI 代批开关开启；服务层二次校验。',
+      parameters: Type.Object({
+        ...AssignmentParam,
+        caseId: Type.String({ minLength: 4 }),
+        supplementId: Type.String({ minLength: 4 }),
+        outcome: Type.Union([Type.Literal('satisfied'), Type.Literal('insufficient'), Type.Literal('cancelled')]),
+        reason: Type.String({ minLength: 2, maxLength: 500 }),
+      }),
+      async execute(_id, params) {
+        try {
+          const input = params as { assignmentId: string; caseId: string; supplementId: string; outcome: string; reason: string }
+          const guard = requireAssignment(input.assignmentId, 'resolve-supplement')
+          const assignment = guard.assignment!
+          if (assignment.caseId && assignment.caseId !== input.caseId) return result({ error: `指派绑定的是案卷 ${assignment.caseId}` }, true)
+          const { resolveSupplementV2 } = require('../review/stage-workflow') as typeof import('../review/stage-workflow')
+          const { getCaseV2Aggregate } = require('../review/application-service') as typeof import('../review/application-service')
+          const aggregate = getCaseV2Aggregate(input.caseId)
+          if (!aggregate) return result({ error: '案卷不存在' }, true)
+          const outcome = await resolveSupplementV2(input.caseId, {
+            requestId: `rsl-${input.assignmentId}-${Date.now().toString(36)}`,
+            actor: { actorId: guard.actorId, actorSource: 'agent', role: guard.role },
+            expectedRevision: aggregate.caseV2.revision,
+            payload: { supplementId: input.supplementId, outcome: input.outcome as never, reason: input.reason },
+          })
+          if (!outcome.ok) return result({ error: `判定被拒[${outcome.code}]: ${outcome.message}`, code: outcome.code }, true)
+          return result({ caseId: input.caseId, supplementId: input.supplementId, status: outcome.entity?.status, revision: outcome.aggregate.caseV2.revision })
+        } catch (error) {
+          return result({ error: error instanceof Error ? error.message : String(error) }, true)
+        }
+      },
+    }))
+  }
+
+  // 14) 代回复补件（提交者侧动作；不受代批开关限制，受指派+归属校验）
+  if (enabled('review_respond_supplement')) {
+    tools.push(sdk.defineTool({
+      name: 'review_respond_supplement',
+      label: '代回复补件',
+      description: '代提交者回复补件请求（说明 + 本案已登记附件版本）。不是审核决定；校验指派与请求归属。',
+      parameters: Type.Object({
+        ...AssignmentParam,
+        caseId: Type.String({ minLength: 4 }),
+        supplementId: Type.String({ minLength: 4 }),
+        note: Type.String({ minLength: 1, maxLength: 500 }),
+        documentVersionIds: Type.Optional(Type.Array(Type.String({ minLength: 4 }))),
+      }),
+      async execute(_id, params) {
+        try {
+          const input = params as { assignmentId: string; caseId: string; supplementId: string; note: string; documentVersionIds?: string[] }
+          const guard = requireAssignment(input.assignmentId, 'respond-supplement')
+          const assignment = guard.assignment!
+          if (assignment.caseId && assignment.caseId !== input.caseId) return result({ error: `指派绑定的是案卷 ${assignment.caseId}` }, true)
+          const { respondSupplementV2 } = require('../review/stage-workflow') as typeof import('../review/stage-workflow')
+          const { getCaseV2Aggregate } = require('../review/application-service') as typeof import('../review/application-service')
+          const aggregate = getCaseV2Aggregate(input.caseId)
+          if (!aggregate) return result({ error: '案卷不存在' }, true)
+          // 附件归属校验：documentVersionIds 必须属于本案
+          const caseDocIds = new Set(aggregate.caseV2.documents.map((doc) => doc.versionId))
+          const invalid = (input.documentVersionIds ?? []).filter((id) => !caseDocIds.has(id))
+          if (invalid.length > 0) return result({ error: `附件不属于本案: ${invalid.join(', ')}` }, true)
+          const outcome = await respondSupplementV2(input.caseId, {
+            requestId: `rsp-${input.assignmentId}-${Date.now().toString(36)}`,
+            actor: { actorId: guard.actorId, actorSource: 'agent', role: guard.role },
+            expectedRevision: aggregate.caseV2.revision,
+            payload: { supplementId: input.supplementId, note: input.note, documentVersionIds: input.documentVersionIds },
+          })
+          if (!outcome.ok) return result({ error: `回复被拒[${outcome.code}]: ${outcome.message}`, code: outcome.code }, true)
+          return result({ caseId: input.caseId, supplementId: input.supplementId, status: outcome.entity?.status, revision: outcome.aggregate.caseV2.revision })
+        } catch (error) {
+          return result({ error: error instanceof Error ? error.message : String(error) }, true)
+        }
+      },
+    }))
+  }
+
   return tools
 }

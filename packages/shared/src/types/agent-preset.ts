@@ -283,6 +283,9 @@ export const AGENT_PRESET_CAPABILITY_GROUPS = [
       capabilityTool('review_get_run_status', '查询审核运行', '读运行状态与检查摘要'),
       capabilityTool('review_cancel_run', '取消审核运行', '取消进行中运行（需指派）', 'write'),
       capabilityTool('review_export_report', '导出审核报告', '导出 MD 报告（需指派）', 'write'),
+      capabilityTool('review_decide_stage', '代批阶段决定', 'AI 代批开启且指派含决定权限时可用', 'destructive'),
+      capabilityTool('review_resolve_supplement', '代批补件判定', 'AI 代批开启且指派含决定权限时可用', 'destructive'),
+      capabilityTool('review_respond_supplement', '代回复补件', '代提交者回复补件请求（需指派）', 'write'),
     ],
   }),
 ] as const satisfies readonly AgentPresetCapabilityGroup[];

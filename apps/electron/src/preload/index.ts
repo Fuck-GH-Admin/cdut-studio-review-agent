@@ -467,6 +467,7 @@ export interface ElectronAPI {
 
   /** 通知主进程 renderer 已完成首屏初始化 */
   notifyRendererReady: () => void
+  setReviewAgentAutoApproval: (input: { enabled: boolean; grantedBy: string }) => Promise<AppSettings>
 
   /** 获取应用设置 */
   getSettings: () => Promise<AppSettings>
@@ -1964,6 +1965,8 @@ const electronAPI: ElectronAPI = {
 
   // 应用设置
   notifyRendererReady: () => { ipcRenderer.send(SETTINGS_IPC_CHANNELS.RENDERER_READY) },
+  setReviewAgentAutoApproval: (input: { enabled: boolean; grantedBy: string }) =>
+    ipcRenderer.invoke(SETTINGS_IPC_CHANNELS.SET_REVIEW_AGENT_AUTO_APPROVAL, input) as Promise<AppSettings>,
   getSettings: () => {
     // 启动时去重：多个初始化组件同时调用 getSettings()，共享同一个 Promise
     if (!_settingsPromise) {

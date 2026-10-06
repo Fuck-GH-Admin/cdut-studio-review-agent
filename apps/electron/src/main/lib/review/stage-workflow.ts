@@ -48,6 +48,9 @@ export async function ensureInitialTask(caseId: string, template: TemplateVersio
  */
 function assertAgentDecisionAllowed(command: { actor: Actor; type: string }): void {
   if (command.actor.actorSource !== 'agent') return
+  // C2：代批开关——事务校验内读取（settings 内存缓存与 updateSettings 同步更新，排队期间关闭立即生效）
+  const { getSettings } = require('../settings-service') as typeof import('../settings-service')
+  if (getSettings().reviewAgentAutoApproval === true) return
   throw new CommandValidationError('AGENT_DECISION_DISABLED', 'AI 代批未开启：此类决定需要人工做出（可在审核专区高级设置中开启并确认风险）')
 }
 
