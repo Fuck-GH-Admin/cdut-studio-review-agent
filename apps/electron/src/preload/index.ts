@@ -3651,6 +3651,14 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_FIELDS_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   exportReportV2: (caseId: string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.EXPORT_REPORT_V2, caseId) as Promise<{ file: string; decision: { result: string; reason: string; at: string } | null }>,
+  createAssignmentV2: (input: { sessionId: string; turnId: string; caseId?: string; templateId?: string; templateVersion?: number; actions: string[]; workRole?: 'reviewer' | 'student' }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSIGNMENT_CREATE_V2, input) as Promise<{ id: string }>,
+  revokeAssignmentV2: (assignmentId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSIGNMENT_REVOKE_V2, assignmentId) as Promise<boolean>,
+  listAssignmentsV2: (sessionId?: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSIGNMENT_LIST_V2, sessionId) as Promise<Array<Record<string, unknown>>>,
+  getCaseTimelineV2: (caseId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CASE_TIMELINE_V2, caseId) as Promise<Array<Record<string, unknown>>>,
   getRunObservationsV2: (caseId: string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_RUN_OBSERVATIONS_V2, caseId) as Promise<Array<Record<string, unknown>>>,
   correctObservationV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>

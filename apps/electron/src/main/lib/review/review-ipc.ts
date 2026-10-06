@@ -252,6 +252,30 @@ export function registerReviewIpc(): void {
     const { exportCaseReport } = require('./report-export-v2-service') as typeof import('./report-export-v2-service')
     return exportCaseReport(caseId)
   })
+  // ===== C1：审核操作可信指派（显式指派是 Agent 写权限唯一来源） =====
+  ipcMain.handle(REVIEW_IPC_CHANNELS.ASSIGNMENT_CREATE_V2, (_e, input: { sessionId: string; turnId: string; caseId?: string; templateId?: string; templateVersion?: number; actions: string[]; workRole?: 'reviewer' | 'student' }) => {
+    if (!input || typeof input !== 'object' || !input.sessionId || !input.turnId) throw new Error('指派必须绑定会话与用户轮次')
+    const { createAssignment } = require('./review-agent-assignment') as typeof import('./review-agent-assignment')
+    return createAssignment({ sessionId: input.sessionId, turnId: input.turnId, caseId: input.caseId, templateId: input.templateId, templateVersion: input.templateVersion, actions: input.actions as never, workRole: input.workRole })
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.ASSIGNMENT_REVOKE_V2, (_e, assignmentId: string) => {
+    if (typeof assignmentId !== 'string' || !assignmentId) throw new Error('参数 assignmentId 非法')
+    const { revokeAssignment } = require('./review-agent-assignment') as typeof import('./review-agent-assignment')
+    return revokeAssignment(assignmentId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.ASSIGNMENT_LIST_V2, (_e, sessionId?: string) => {
+    const { listAssignments } = require('./review-agent-assignment') as typeof import('./review-agent-assignment')
+    return listAssignments(sessionId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CASE_TIMELINE_V2, (_e, caseId: string) => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+    const { buildCaseTimeline } = require('./case-timeline') as typeof import('./case-timeline')
+    const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+    const aggregate = getCaseV2Aggregate(caseId)
+    if (!aggregate) throw new Error(`案卷聚合不存在: ${caseId}`)
+    return buildCaseTimeline(aggregate, listRunsV2(caseId))
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_RUN_OBSERVATIONS_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
     const { listRunsV2, readArtifact } = require('./run-store-v2') as typeof import('./run-store-v2')

@@ -478,6 +478,10 @@ export const REVIEW_IPC_CHANNELS = {
   CORRECT_OBSERVATION_V2: 'review-v2:correct-observation',
   GET_RUN_OBSERVATIONS_V2: 'review-v2:get-run-observations',
   EXPORT_REPORT_V2: 'review-v2:export-report',
+  ASSIGNMENT_CREATE_V2: 'review-v2:assignment-create',
+  ASSIGNMENT_REVOKE_V2: 'review-v2:assignment-revoke',
+  ASSIGNMENT_LIST_V2: 'review-v2:assignment-list',
+  CASE_TIMELINE_V2: 'review-v2:case-timeline',
   SET_EVIDENCE_LINK_V2: 'review-v2:set-evidence-link',
   // ===== N3b：业务闭环命令 =====
   ENSURE_INITIAL_TASK_V2: 'review-v2:ensure-initial-task',
