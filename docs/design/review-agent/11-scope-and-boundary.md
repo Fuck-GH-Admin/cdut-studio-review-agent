@@ -1,7 +1,11 @@
 # 团队工作边界说明（审核专区 AI Agent 接入线）
 
 > 本文档划清我们在 CDUT-Studio 项目中**负责交付的内容**与**不属于我们范围的内容**，供协作方（Nya-Angle/CDUT-Studio 原作者与团队）对照。
-> 分支：`fix/ci-gate-and-version-sync`（本地，未推送）。版本：electron 0.15.143。
+> 分支：`fix/ci-gate-and-version-sync`。版本：electron 0.15.143。
+>
+> **本项目副本（公开）**：<https://github.com/Fuck-GH-Admin/cdut-studio-review-agent>
+> —— 这是本次审核 Agent 工作的独立公开副本，**未改动、未推送到原项目 `Nya-Angle/CDUT-Studio`**。
+> 上游项目为 AGPL-3.0 开源（本副本保持同一许可证）。
 
 ## 1. 我们负责的范围
 
@@ -45,8 +49,10 @@
 
 ## 3. 交付物形态
 
-- 全部工作在本地分支 `fix/ci-gate-and-version-sync`（26+ 提交，从 CI 修复到 C1/C2/C3），每批独立提交、独立过门禁（全量测试 3069/0、typecheck 0）。
-- 未推送远端（等待仓库归属方确认接收方式）；除 PR #7（CI 修复，已经原作者合并）外无其他远端写入。
+- 全部工作在分支 `fix/ci-gate-and-version-sync`，每批独立提交、独立过门禁（全量测试 3069/0、typecheck 0）。
+- 公开副本已推送至 <https://github.com/Fuck-GH-Admin/cdut-studio-review-agent>（`main` 分支，含完整上游历史 + 我们的提交）。
+- **原项目 `Nya-Angle/CDUT-Studio` 未被写入**；除 PR #7（CI 修复，已经原作者合并）外无其他原项目远端写入。
+- 推送前已扫描 git 全历史：无 API Key / token / 渠道配置 / 运行时用户数据入库。
 
 ## 4. 验收口径
 
