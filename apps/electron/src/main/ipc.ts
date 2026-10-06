@@ -131,7 +131,7 @@ import type {
   BrowserAddBookmarkInput,
 } from '@profer/shared'
 import { KNOWLEDGE_IPC_CHANNELS } from '@profer/shared'
-import { CDUT_ZONE_IPC_CHANNELS, type CdutLoginInput, type CdutMutationConfirmResult } from '@profer/shared'
+import { CDUT_AI_CLASS_IPC_CHANNELS, CDUT_ZONE_IPC_CHANNELS, STUDY_IPC_CHANNELS, type CdutGatekeeperDecision, type CdutLoginInput, type CdutMutationConfirmResult, type StudyDocumentQueryInput, type StudyGraphGenerateInput, type StudyIngestDocumentsInput, type StudySearchKnowledgeInput } from '@profer/shared'
 import type { UserProfile, AppSettings } from '../types'
 import { getRuntimeStatus, getGitRepoStatus, reinitializeRuntime } from './lib/runtime-init'
 import { browserController } from './lib/browser-controller'
@@ -146,7 +146,22 @@ import { CHANGELOG_IPC_CHANNELS, type ChangelogEntry } from '@profer/shared'
 import { getChangelog } from './lib/changelog-service'
 import { registerReviewIpc } from './lib/review/review-ipc'
 import { cdutAuthManager } from './lib/cdut/cdut-auth-manager'
+import { resolveCdutGatekeeper } from './lib/cdut/cdut-gatekeeper'
 import { resolveCdutMutationConfirm } from './lib/cdut/cdut-mutation-guard'
+import {
+  createAiClassSession,
+  deleteAiClassSession,
+  estimateGraphGenerationCost,
+  generateKnowledgeGraph,
+  listAiClassSessions,
+} from './lib/cdut/cdut-ai-class-manager'
+import { getGlobalStudyRetriever } from './lib/study/hybrid-retriever'
+import {
+  getStudyDocumentOutline,
+  ingestStudyDocuments,
+  listStudyDocuments,
+  removeStudyDocument,
+} from './lib/study/study-document-indexer'
 import {
   listChannels,
   createChannel,
@@ -6026,6 +6041,61 @@ export function registerIpcHandlers(): void {
   // 写操作二次确认：渲染端回传用户抉择，唤醒主进程挂起的教务写请求
   ipcMain.handle(CDUT_ZONE_IPC_CHANNELS.CONFIRM_MUTATION, (_event, result: CdutMutationConfirmResult) => {
     return { handled: resolveCdutMutationConfirm(result) }
+  })
+
+  // 统一门禁抉择：渲染端回传用户选择，唤醒主进程挂起的 CDUT 工具门禁请求
+  ipcMain.handle(CDUT_ZONE_IPC_CHANNELS.GATEKEEPER_RESPOND, (_event, decision: CdutGatekeeperDecision) => {
+    return { handled: resolveCdutGatekeeper(decision) }
+  })
+
+  // ===== AI 速课堂（学习资料） =====
+  ipcMain.handle(STUDY_IPC_CHANNELS.INGEST_DOCUMENTS, async (_event, input: StudyIngestDocumentsInput) => {
+    return await ingestStudyDocuments(input.sessionId, input.filePaths ?? [])
+  })
+
+  ipcMain.handle(STUDY_IPC_CHANNELS.LIST_DOCUMENTS, (_event, sessionId: string) => {
+    return listStudyDocuments(sessionId)
+  })
+
+  ipcMain.handle(STUDY_IPC_CHANNELS.GET_OUTLINE, (_event, input: StudyDocumentQueryInput) => {
+    return getStudyDocumentOutline(input.sessionId, input.documentId)
+  })
+
+  ipcMain.handle(STUDY_IPC_CHANNELS.REMOVE_DOCUMENT, (_event, input: StudyDocumentQueryInput) => {
+    return { success: removeStudyDocument(input.sessionId, input.documentId) }
+  })
+
+  // ===== AI 速课堂（专属工作区 / 会话 / 资料树图谱） =====
+  ipcMain.handle(CDUT_AI_CLASS_IPC_CHANNELS.LIST_SESSIONS, () => {
+    return listAiClassSessions()
+  })
+
+  ipcMain.handle(CDUT_AI_CLASS_IPC_CHANNELS.CREATE_SESSION, (_event, courseName: string) => {
+    return createAiClassSession(courseName)
+  })
+
+  ipcMain.handle(CDUT_AI_CLASS_IPC_CHANNELS.DELETE_SESSION, (_event, sessionId: string) => {
+    deleteAiClassSession(sessionId)
+    return { success: true }
+  })
+
+  ipcMain.handle(CDUT_AI_CLASS_IPC_CHANNELS.GENERATE_GRAPH_RELATIONS, async (event, input: StudyGraphGenerateInput) => {
+    // 恒定由前端弹窗确认后主动触发；未传 mode 时兜底为智能精炼
+    // 通过 event.sender 实时把推演批次进度转发给渲染端
+    return await generateKnowledgeGraph(input.sessionId, input.mode ?? 'ai_smart', (progress) => {
+      event.sender.send(CDUT_AI_CLASS_IPC_CHANNELS.GENERATE_PROGRESS, progress)
+    })
+  })
+
+  ipcMain.handle(CDUT_AI_CLASS_IPC_CHANNELS.ESTIMATE_GRAPH_COST, (_event, sessionId: string) => {
+    return estimateGraphGenerationCost(sessionId)
+  })
+
+  ipcMain.handle(CDUT_AI_CLASS_IPC_CHANNELS.SEARCH_KNOWLEDGE, (_event, input: StudySearchKnowledgeInput) => {
+    return getGlobalStudyRetriever().searchHybrid(input.sessionId, input.query, {
+      ...(input.targetDocumentId ? { targetDocumentId: input.targetDocumentId } : {}),
+      ...(input.topK ? { topK: input.topK } : {}),
+    })
   })
 
   // 特区账户状态变更时向所有存活窗口广播

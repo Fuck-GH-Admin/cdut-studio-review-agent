@@ -162,4 +162,32 @@ describe('EffectiveAgentPresetPolicy', () => {
     )
     expect(policy.suppressPromptSections).toEqual(['memory', 'task-graph'])
   })
+
+  test('会话级附加禁用与预设禁用取并集，并驱动子 Agent 门禁与提示词隐藏映射', () => {
+    const policy = createEffectiveAgentPresetPolicy(
+      preset({ disabledToolGroups: ['browser'], disabledTools: ['WebFetch'] }),
+      reference,
+      {
+        runtimeSupportsSubagents: true,
+        extraDisabledToolGroups: ['automation', 'collaboration', 'clipboard'],
+        extraDisabledTools: ['create_skin', 'WebFetch'],
+      },
+    )
+
+    expect(policy.disabledToolGroups).toEqual(['browser', 'automation', 'collaboration', 'clipboard'])
+    expect(policy.disabledTools).toEqual(['WebFetch', 'create_skin'])
+    expect(policy.allowSubagents).toBe(false)
+    expect(policy.sessionCanUseSubagents).toBe(false)
+    // automation→automation、collaboration→subagents 自动映射隐藏段；browser/clipboard 无映射
+    expect(policy.suppressPromptSections).toEqual(['automation', 'subagents'])
+    expect(isEffectiveAgentPresetToolDisabled(policy, 'mcp__automation__create_automation')).toBe(true)
+    expect(isEffectiveAgentPresetToolDisabled(policy, 'clipboard_read_text')).toBe(true)
+    expect(isEffectiveAgentPresetToolDisabled(policy, 'create_skin')).toBe(true)
+  })
+
+  test('不传附加禁用时策略快照保持 undefined/空数组语义不变', () => {
+    const baseline = createEffectiveAgentPresetPolicy(preset(), reference, { runtimeSupportsSubagents: true })
+    expect(baseline.disabledToolGroups).toEqual([])
+    expect(baseline.disabledTools).toBeUndefined()
+  })
 })

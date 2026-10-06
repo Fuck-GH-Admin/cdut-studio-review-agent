@@ -6,8 +6,8 @@ const { assertWindowsReleaseReady, requiredWindowsReleaseAssetNames } = contract
 describe('macOS 补充发布资产前置条件', () => {
   const expectedNames = [
     'latest.yml',
-    'Profer-Setup-0.15.68.exe',
-    'Profer-Setup-0.15.68.exe.blockmap',
+    'CDUT-Studio-Setup-0.15.68.exe',
+    'CDUT-Studio-Setup-0.15.68.exe.blockmap',
   ]
 
   test('要求已发布版本包含完整 Windows 资产', () => {
@@ -45,6 +45,6 @@ describe('macOS 补充发布资产前置条件', () => {
     expect(() => assertWindowsReleaseReady({
       isDraft: false,
       assets: assets.map((asset) => asset.name.endsWith('.exe') ? { ...asset, state: 'new' } : asset),
-    }, '0.15.68')).toThrow('Profer-Setup-0.15.68.exe')
+    }, '0.15.68')).toThrow('CDUT-Studio-Setup-0.15.68.exe')
   })
 })

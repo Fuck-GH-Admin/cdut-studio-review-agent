@@ -12,8 +12,9 @@
  *
  * 防竞态：generation 计数器，只有最新一代的渲染结果才会生效
  *
- * 缩放交互：仅头部按钮（缩小 / 重置 / 放大）。不响应滚轮和拖拽，
- * 让滚轮事件正常冒泡到页面滚动；放大后用容器原生 overflow scrollbar 浏览。
+ * 缩放交互：头部按钮（缩小 / 重置 / 放大）+ 放大溢出后滚轮缩放（以光标为锚点）。
+ * 未溢出（图完整适配）时不拦截滚轮，让其正常冒泡滚动页面，避免在长消息里经过图表被“卡住”；
+ * 放大溢出后可用滚轮缩放、按住左键/右键拖动平移，或用容器原生 overflow scrollbar 浏览。
  *
  * 缩放模型：图以自然尺寸渲染，scale 直接作用其上。
  *  - 最小缩放 = min(框宽/图宽, 框高/图高)：图完整可见（一端贴满、另一端不溢出），
@@ -26,6 +27,7 @@
 
 import * as React from 'react'
 import type { DiagramColors, RenderOptions } from 'beautiful-mermaid'
+import { Dialog, DialogContent, DialogTitle } from '../primitives/dialog'
 
 interface MermaidBlockProps {
   /** mermaid 源码 */
@@ -238,12 +240,254 @@ const zoomOutPath = (
     <line x1="8" y1="11" x2="14" y2="11" />
   </>
 )
+/** 全屏放大（Maximize2） */
+const maximizePath = (
+  <>
+    <path d="M15 3h6v6" />
+    <path d="M9 21H3v-6" />
+    <path d="M21 3l-7 7" />
+    <path d="M3 21l7-7" />
+  </>
+)
+/** 重置视图（RotateCcw） */
+const resetPath = (
+  <>
+    <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+    <path d="M3 3v5h5" />
+  </>
+)
+/** 关闭（X） */
+const closePath = (
+  <>
+    <line x1="18" y1="6" x2="6" y2="18" />
+    <line x1="6" y1="6" x2="18" y2="18" />
+  </>
+)
+
+// ===== 全屏放大弹窗 =====
+
+/** 弹窗内缩放范围（无级） */
+const MODAL_MIN_SCALE = 0.2
+const MODAL_MAX_SCALE = 4
+/** 图边缘与弹窗视口边缘的留白（px） */
+const MODAL_PADDING = 24
+
+interface MermaidZoomModalProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  svg: string | null
+  code: string
+}
+
+/**
+ * MermaidZoomModal —— 近全屏大型查看视口。
+ *
+ * 该弹窗内置于 @profer/ui 的 MermaidBlock 公共原语底层，因此对全软件的所有
+ * 会话视图（通用 Agent 会话、CDUT 专区各板块会话、Markdown 预览）天然
+ * 100% 全局生效，业务层无需逐个适配。
+ *
+ * 交互：滚轮无级缩放（0.2x ~ 4x，以光标为锚点）、按住左键自由拖拽平移、
+ * 一键重置视图、ESC / 右上角关闭（ESC 由 Dialog 原语原生支持）。
+ */
+function MermaidZoomModal({ open, onOpenChange, svg, code }: MermaidZoomModalProps): React.ReactElement {
+  const viewportRef = React.useRef<HTMLDivElement | null>(null)
+  const [viewportEl, setViewportEl] = React.useState<HTMLDivElement | null>(null)
+  /** 回调 ref：弹窗内容由 Radix Presence 延迟挂载，视口挂载后滚轮 effect 才会重跑并绑定监听 */
+  const setViewportRef = React.useCallback((node: HTMLDivElement | null): void => {
+    viewportRef.current = node
+    setViewportEl(node)
+  }, [])
+  const contentRef = React.useRef<HTMLDivElement | null>(null)
+  const [view, setView] = React.useState({ scale: 1, tx: 0, ty: 0 })
+  const [copied, setCopied] = React.useState(false)
+  const [dragging, setDragging] = React.useState(false)
+  const viewRef = React.useRef(view)
+  viewRef.current = view
+  const dragRef = React.useRef<{ x: number; y: number; tx: number; ty: number } | null>(null)
+
+  /** 量取 SVG 自然尺寸（取 width/height 属性，稳定） */
+  const measureNatural = React.useCallback((): { w: number; h: number } => {
+    const content = contentRef.current
+    if (!content) return { w: 0, h: 0 }
+    const node = content.querySelector('svg')
+    let w = node ? parseFloat(node.getAttribute('width') ?? '') : NaN
+    let h = node ? parseFloat(node.getAttribute('height') ?? '') : NaN
+    if (!Number.isFinite(w) || !Number.isFinite(h) || w <= 0 || h <= 0) {
+      w = content.offsetWidth
+      h = content.offsetHeight
+    }
+    return { w, h }
+  }, [])
+
+  /** 适应视口并居中（小图封顶 100%，避免放大失真） */
+  const fitToViewport = React.useCallback((): void => {
+    const vp = viewportRef.current
+    if (!vp) return
+    const { w, h } = measureNatural()
+    const rect = vp.getBoundingClientRect()
+    if (w <= 0 || h <= 0 || rect.width <= 0 || rect.height <= 0) return
+    const availableW = rect.width - MODAL_PADDING * 2
+    const availableH = rect.height - MODAL_PADDING * 2
+    const scale = clamp(Math.min(availableW / w, availableH / h, 1), MODAL_MIN_SCALE, MODAL_MAX_SCALE)
+    setView({ scale, tx: (rect.width - w * scale) / 2, ty: (rect.height - h * scale) / 2 })
+  }, [measureNatural])
+
+  /** 打开时在下一帧自适应（弹窗完成布局后方可准确量取尺寸） */
+  React.useEffect(() => {
+    if (!open) return
+    setCopied(false)
+    setDragging(false)
+    dragRef.current = null
+    const raf = requestAnimationFrame(() => fitToViewport())
+    return () => cancelAnimationFrame(raf)
+  }, [open, fitToViewport])
+
+  /** 滚轮无级缩放：以光标位置为锚点（非被动监听，确保可 preventDefault） */
+  React.useEffect(() => {
+    if (!open || !viewportEl) return
+    const onWheel = (event: WheelEvent): void => {
+      event.preventDefault()
+      const rect = viewportEl.getBoundingClientRect()
+      const anchorX = event.clientX - rect.left
+      const anchorY = event.clientY - rect.top
+      const delta = event.deltaMode === 1 ? event.deltaY * 33 : event.deltaY
+      setView((prev) => {
+        const nextScale = clamp(prev.scale * Math.exp(-delta * 0.0015), MODAL_MIN_SCALE, MODAL_MAX_SCALE)
+        const k = nextScale / prev.scale
+        return { scale: nextScale, tx: anchorX - k * (anchorX - prev.tx), ty: anchorY - k * (anchorY - prev.ty) }
+      })
+    }
+    viewportEl.addEventListener('wheel', onWheel, { passive: false })
+    return () => viewportEl.removeEventListener('wheel', onWheel)
+  }, [open, viewportEl])
+
+  /** 以视口中心为锚点按倍率缩放（供 +/- 按钮使用） */
+  const zoomByFactor = React.useCallback((factor: number): void => {
+    const rect = viewportRef.current?.getBoundingClientRect()
+    const anchorX = rect ? rect.width / 2 : 0
+    const anchorY = rect ? rect.height / 2 : 0
+    setView((prev) => {
+      const nextScale = clamp(prev.scale * factor, MODAL_MIN_SCALE, MODAL_MAX_SCALE)
+      const k = nextScale / prev.scale
+      return { scale: nextScale, tx: anchorX - k * (anchorX - prev.tx), ty: anchorY - k * (anchorY - prev.ty) }
+    })
+  }, [])
+
+  const onPointerDown = React.useCallback((event: React.PointerEvent<HTMLDivElement>): void => {
+    if (event.button !== 0) return
+    if ((event.target as HTMLElement).closest('button')) return
+    event.preventDefault() // 阻止拖动时选中 SVG 文本（全选文本 / 拖动文字）
+    event.currentTarget.setPointerCapture(event.pointerId)
+    dragRef.current = { x: event.clientX, y: event.clientY, tx: viewRef.current.tx, ty: viewRef.current.ty }
+  }, [])
+
+  const onPointerMove = React.useCallback((event: React.PointerEvent<HTMLDivElement>): void => {
+    const drag = dragRef.current
+    if (!drag) return
+    setDragging(true)
+    setView((prev) => ({ ...prev, tx: drag.tx + (event.clientX - drag.x), ty: drag.ty + (event.clientY - drag.y) }))
+  }, [])
+
+  const onPointerUp = React.useCallback((): void => {
+    dragRef.current = null
+    setDragging(false)
+  }, [])
+
+  const handleCopy = React.useCallback(async (): Promise<void> => {
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (error) {
+      console.error('[MermaidBlock] 复制失败:', error)
+    }
+  }, [code])
+
+  const zoomPercent = Math.round(view.scale * 100)
+  const iconButton =
+    'flex items-center justify-center rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground'
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
+        hideClose
+        className="grid h-[88vh] w-[90vw] max-w-none grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden rounded-2xl border-border/60 bg-card/95 p-0 shadow-2xl backdrop-blur-xl"
+      >
+        <DialogTitle className="sr-only">Mermaid 图表全屏查看</DialogTitle>
+
+        {/* 顶部工具栏 */}
+        <div className="relative z-20 flex h-12 shrink-0 items-center gap-2 border-b border-border/50 px-4">
+          <span className="text-xs font-semibold tracking-tight text-foreground">Mermaid</span>
+          <span className="text-[11px] text-muted-foreground">全屏查看</span>
+          <span className="ml-2 min-w-[46px] text-center text-[11px] font-medium tabular-nums text-muted-foreground">
+            {zoomPercent}%
+          </span>
+          <div className="ml-auto flex items-center gap-0.5">
+            <button type="button" onClick={() => zoomByFactor(1 / 1.2)} className={iconButton} title="缩小" aria-label="缩小">
+              <svg {...ICON_ATTRS}>{zoomOutPath}</svg>
+            </button>
+            <button type="button" onClick={() => zoomByFactor(1.2)} className={iconButton} title="放大" aria-label="放大">
+              <svg {...ICON_ATTRS}>{zoomInPath}</svg>
+            </button>
+            <button type="button" onClick={fitToViewport} className={iconButton} title="重置视图" aria-label="重置视图">
+              <svg {...ICON_ATTRS}>{resetPath}</svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => void handleCopy()}
+              className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
+              title="复制源码"
+            >
+              <svg {...ICON_ATTRS}>{copied ? checkIconPath : copyIconPath}</svg>
+              <span>{copied ? '已复制' : '复制'}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onOpenChange(false)}
+              className="ml-1 flex items-center justify-center rounded-full bg-foreground/5 p-1.5 text-foreground/70 transition-colors hover:bg-foreground/15 hover:text-foreground"
+              title="关闭（ESC）"
+              aria-label="关闭"
+            >
+              <svg {...ICON_ATTRS}>{closePath}</svg>
+            </button>
+          </div>
+        </div>
+
+        {/* 画布视口：滚轮缩放 + 左键拖拽平移 */}
+        <div
+          ref={setViewportRef}
+          className="relative min-h-0 flex-1 touch-none overflow-hidden select-none"
+          style={{
+            cursor: dragging ? 'grabbing' : 'grab',
+            backgroundImage:
+              'radial-gradient(circle, hsl(var(--muted-foreground)/0.08) 0.5px, transparent 0.5px),' +
+              'radial-gradient(circle, hsl(var(--muted-foreground)/0.12) 1px, transparent 1px)',
+            backgroundSize: '6px 6px, 30px 30px',
+          }}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+        >
+          <div
+            ref={contentRef}
+            className="mermaid-svg absolute left-0 top-0 origin-top-left"
+            style={{ transform: `translate(${view.tx}px, ${view.ty}px) scale(${view.scale})` }}
+            dangerouslySetInnerHTML={{ __html: svg ?? '' }}
+          />
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 // ===== 主组件 =====
 
 export function MermaidBlock({ code }: MermaidBlockProps): React.ReactElement {
   const [renderedSvg, setRenderedSvg] = React.useState<string | null>(null)
   const [copied, setCopied] = React.useState(false)
+  /** 全屏放大弹窗开关（全局公共能力） */
+  const [zoomOpen, setZoomOpen] = React.useState(false)
   const [scale, setScale] = React.useState<number>(1)
   /** SVG 自然尺寸（取 width/height 属性，稳定，不受滚动条影响） */
   const [svgSize, setSvgSize] = React.useState({ w: 0, h: 0 })
@@ -260,10 +504,12 @@ export function MermaidBlock({ code }: MermaidBlockProps): React.ReactElement {
   const contentRef = React.useRef<HTMLDivElement | null>(null)
   /** 缩放后待应用的滚动位置：useLayoutEffect 里在 transform 提交生效后应用 */
   const pendingScrollRef = React.useRef<{ x: number; y: number } | null>(null)
-  /** 右键拖动平移：是否正在拖动（控制光标样式） */
+  /** 拖动平移：是否正在拖动（控制光标样式） */
   const [isPanning, setIsPanning] = React.useState(false)
-  /** 右键拖动起始信息（起始指针坐标 + 起始滚动位置） */
-  const panRef = React.useRef<{ x: number; y: number; left: number; top: number } | null>(null)
+  /** 拖动起始信息（起始指针坐标 + 起始滚动位置 + 是否已越过死区） */
+  const panRef = React.useRef<{ x: number; y: number; left: number; top: number; moved: boolean } | null>(null)
+  /** 拖动结束后抑制这一次 click，避免拖动被误判为「点击放大」 */
+  const suppressClickRef = React.useRef(false)
 
   codeRef.current = code
 
@@ -317,12 +563,12 @@ export function MermaidBlock({ code }: MermaidBlockProps): React.ReactElement {
   const minZoom = Math.min(minScale, ZOOM_MAX)
 
   /**
-   * 按「视口中心锚定」缩放：先读取当前视口中心对应的内容点（未缩放坐标系），
-   * 改变 scale 后由下方 useLayoutEffect 把该点重新对齐到视口中心。
+   * 缩放锚定：先读取锚点（默认视口中心，滚轮缩放时传入光标位置）对应的内容点（未缩放坐标系），
+   * 改变 scale 后由下方 useLayoutEffect 把该点重新对齐回锚点屏幕位置。
    * transform-origin 为 top left，缩放只向右/下扩展；配合 translate 平移量
    * 使未溢出时居中、溢出时顶格，左端（图头）/顶端永不落入不可滚动的负坐标区。
    */
-  const applyZoom = React.useCallback((newScale: number) => {
+  const applyZoom = React.useCallback((newScale: number, anchor?: { x: number; y: number }) => {
     const scrollEl = scrollRef.current
     const contentEl = contentRef.current
     // 图表未渲染或尚未测得尺寸时直接改缩放即可
@@ -339,11 +585,12 @@ export function MermaidBlock({ code }: MermaidBlockProps): React.ReactElement {
     // 布局位置（不含平移量）：可视左上角 - 当前平移量
     const baseLeft = left - tx
     const baseTop = top - ty
-    // 当前视口中心对应的内容点（未缩放坐标系）
-    const vpCx = scrollEl.clientWidth / 2
-    const vpCy = scrollEl.clientHeight / 2
-    const itemX = (scrollEl.scrollLeft + vpCx - left) / oldScale
-    const itemY = (scrollEl.scrollTop + vpCy - top) / oldScale
+    // 锚点默认取视口中心；滚轮缩放时传入光标在视口内的位置
+    const ax = anchor ? anchor.x : scrollEl.clientWidth / 2
+    const ay = anchor ? anchor.y : scrollEl.clientHeight / 2
+    // 锚点对应的内容点（未缩放坐标系）
+    const itemX = (scrollEl.scrollLeft + ax - left) / oldScale
+    const itemY = (scrollEl.scrollTop + ay - top) / oldScale
     // 新缩放下的平移量与可视左上角
     const newScaledW = svgSize.w * newScale
     const newScaledH = svgSize.h * newScale
@@ -351,10 +598,10 @@ export function MermaidBlock({ code }: MermaidBlockProps): React.ReactElement {
     const newTy = newScaledH < frameSize.h ? (frameSize.h - newScaledH) / 2 : 0
     const newLeft = baseLeft + newTx
     const newTop = baseTop + newTy
-    // 新缩放下使该点仍落在视口中心所需的滚动位置
+    // 新缩放下使锚点仍落在原屏幕位置所需的滚动位置
     pendingScrollRef.current = {
-      x: newLeft + itemX * newScale - vpCx,
-      y: newTop + itemY * newScale - vpCy,
+      x: newLeft + itemX * newScale - ax,
+      y: newTop + itemY * newScale - ay,
     }
     setScale(newScale)
   }, [scale, tx, ty, svgSize, frameSize])
@@ -424,40 +671,58 @@ export function MermaidBlock({ code }: MermaidBlockProps): React.ReactElement {
     setScale(minZoom)
   }, [scale, minZoom])
 
-  // ---- 右键拖动平移：按住右键拖动，图片跟随鼠标（仅图片溢出时启用） ----
-  const handlePanMouseDown = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.button !== 2) return // 仅右键
+  // ---- 拖动平移：图表放大溢出后，按住左键（或右键）拖动，图片跟随鼠标 ----
+  const handlePanPointerDown = React.useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0 && e.button !== 2) return // 仅左右键
     const scrollEl = scrollRef.current
     if (!scrollEl) return
-    // 仅在有溢出（可滚动）时启用
+    // 仅在有溢出（可滚动 / 已放大）时启用
     if (scrollEl.scrollWidth <= scrollEl.clientWidth && scrollEl.scrollHeight <= scrollEl.clientHeight) return
-    e.preventDefault()
-    panRef.current = { x: e.clientX, y: e.clientY, left: scrollEl.scrollLeft, top: scrollEl.scrollTop }
-    setIsPanning(true)
+    e.currentTarget.setPointerCapture(e.pointerId)
+    panRef.current = { x: e.clientX, y: e.clientY, left: scrollEl.scrollLeft, top: scrollEl.scrollTop, moved: false }
   }, [])
 
-  // 拖动过程中监听 window 级 mousemove/mouseup（鼠标移出容器也能继续拖、正常释放）
+  const handlePanPointerMove = React.useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    const start = panRef.current
+    const scrollEl = scrollRef.current
+    if (!start || !scrollEl) return
+    const dx = e.clientX - start.x
+    const dy = e.clientY - start.y
+    if (!start.moved) {
+      if (Math.hypot(dx, dy) <= 3) return // 3px 死区：区分点击与拖动
+      start.moved = true
+      setIsPanning(true)
+      suppressClickRef.current = true // 拖动后抑制同一次 click（不再触发「点击放大」）
+    }
+    // 图片跟随鼠标：鼠标往右拖，图片往右移 → scrollLeft 减小（浏览器自动 clamp 到有效范围）
+    scrollEl.scrollLeft = start.left - dx
+    scrollEl.scrollTop = start.top - dy
+  }, [])
+
+  const handlePanEnd = React.useCallback((): void => {
+    panRef.current = null
+    setIsPanning(false)
+  }, [])
+
+  // ---- 滚轮缩放：仅在图表放大溢出（已可缩放浏览）时接管，避免劫持页面滚动 ----
   React.useEffect(() => {
-    if (!isPanning) return
-    const onMove = (e: MouseEvent) => {
-      const scrollEl = scrollRef.current
-      const start = panRef.current
-      if (!scrollEl || !start) return
-      // 图片跟随鼠标：鼠标往右拖，图片往右移 → scrollLeft 减小（浏览器自动 clamp 到有效范围）
-      scrollEl.scrollLeft = start.left - (e.clientX - start.x)
-      scrollEl.scrollTop = start.top - (e.clientY - start.y)
+    const scrollEl = scrollRef.current
+    if (!scrollEl || !renderedSvg) return
+    const onWheel = (event: WheelEvent): void => {
+      // 图表完整适配（未放大、无溢出）时不拦截，让滚轮正常滚动页面
+      const overflowing =
+        scrollEl.scrollWidth > scrollEl.clientWidth + 1 || scrollEl.scrollHeight > scrollEl.clientHeight + 1
+      if (!overflowing) return
+      const delta = event.deltaMode === 1 ? event.deltaY * 33 : event.deltaY
+      const nextScale = clamp(scale * Math.exp(-delta * 0.0015), minZoom, ZOOM_MAX)
+      if (nextScale === scale) return
+      event.preventDefault()
+      const rect = scrollEl.getBoundingClientRect()
+      applyZoom(nextScale, { x: event.clientX - rect.left, y: event.clientY - rect.top })
     }
-    const onUp = () => {
-      panRef.current = null
-      setIsPanning(false)
-    }
-    window.addEventListener('mousemove', onMove)
-    window.addEventListener('mouseup', onUp)
-    return () => {
-      window.removeEventListener('mousemove', onMove)
-      window.removeEventListener('mouseup', onUp)
-    }
-  }, [isPanning])
+    scrollEl.addEventListener('wheel', onWheel, { passive: false })
+    return () => scrollEl.removeEventListener('wheel', onWheel)
+  }, [renderedSvg, scale, minZoom, applyZoom])
 
   const handleCopy = React.useCallback(async () => {
     try {
@@ -468,6 +733,20 @@ export function MermaidBlock({ code }: MermaidBlockProps): React.ReactElement {
       console.error('[MermaidBlock] 复制失败:', error)
     }
   }, [code])
+
+  /** 打开全屏放大弹窗（头部按钮与画布点击双重触发共用） */
+  const handleOpenZoom = React.useCallback(() => {
+    setZoomOpen(true)
+  }, [])
+
+  /** 画布点击：拖动结束后抑制这一次 click，避免「拖动」被误判为「点击放大」 */
+  const handleDiagramClick = React.useCallback((): void => {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false
+      return
+    }
+    handleOpenZoom()
+  }, [handleOpenZoom])
 
   const zoomPercent = Math.round(scale * 100)
 
@@ -497,6 +776,18 @@ export function MermaidBlock({ code }: MermaidBlockProps): React.ReactElement {
               </button>
             </div>
           )}
+          {renderedSvg && (
+            <button
+              type="button"
+              onClick={handleOpenZoom}
+              onMouseDown={(e) => e.preventDefault()}
+              className="flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-foreground/10 transition-colors text-muted-foreground hover:text-foreground"
+              title="全屏放大查看"
+            >
+              <svg {...ICON_ATTRS}>{maximizePath}</svg>
+              <span>全屏查看</span>
+            </button>
+          )}
           <button type="button" onClick={handleCopy} onMouseDown={(e) => e.preventDefault()} className="flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-foreground/10 transition-colors text-muted-foreground hover:text-foreground">
             <svg {...ICON_ATTRS}>{copied ? checkIconPath : copyIconPath}</svg>
             <span>{copied ? '已复制' : '复制'}</span>
@@ -504,7 +795,7 @@ export function MermaidBlock({ code }: MermaidBlockProps): React.ReactElement {
         </div>
       </div>
 
-      <div className="overflow-hidden">
+      <div className="relative group/zoom overflow-hidden">
         {!renderedSvg ? (
           <pre
             className="mermaid-block-scroll overflow-x-auto p-4 m-0 text-[13px] leading-[1.6] bg-muted/30 text-foreground/80"
@@ -514,9 +805,13 @@ export function MermaidBlock({ code }: MermaidBlockProps): React.ReactElement {
         ) : (
           <div
             ref={scrollRef}
-            className="mermaid-block-scroll bg-background overflow-auto min-h-[180px]"
+            className="mermaid-block-scroll bg-background overflow-auto min-h-[180px] select-none"
             style={{ cursor: isPanning ? 'grabbing' : undefined }}
-            onMouseDown={handlePanMouseDown}
+            onPointerDown={handlePanPointerDown}
+            onPointerMove={handlePanPointerMove}
+            onPointerUp={handlePanEnd}
+            onPointerCancel={handlePanEnd}
+            onClick={handleDiagramClick}
             onContextMenu={(e) => e.preventDefault()}
           >
             <div className="flex items-start min-h-[180px]" style={{ padding: PANEL_PADDING }}>
@@ -532,7 +827,17 @@ export function MermaidBlock({ code }: MermaidBlockProps): React.ReactElement {
             </div>
           </div>
         )}
+
+        {/* 悬浮微胶囊提示：仅图表渲染完成后出现，提示可点击放大 */}
+        {renderedSvg && (
+          <div className="pointer-events-none absolute bottom-2 right-2 z-10 rounded-full bg-foreground/75 px-2 py-0.5 text-[10px] font-medium text-background opacity-0 transition-opacity duration-150 group-hover/zoom:opacity-100">
+            点击放大
+          </div>
+        )}
       </div>
+
+      {/* 全屏放大弹窗（@profer/ui 底层公共原语，全软件所有会话视图全局生效） */}
+      <MermaidZoomModal open={zoomOpen} onOpenChange={setZoomOpen} svg={renderedSvg} code={code} />
     </div>
   )
 }

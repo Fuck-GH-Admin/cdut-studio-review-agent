@@ -22,7 +22,7 @@ import Markdown, { defaultUrlTransform } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
-import { ChevronDown, ChevronUp, Paperclip, FileText, Sparkles, Server, Download, MessageSquareText, Link2, Copy, Check, ListChecks, X } from 'lucide-react'
+import { ChevronDown, ChevronUp, Paperclip, FileText, Sparkles, Server, Download, MessageSquareText, Link2, Copy, Check, ListChecks, X, Play, Code } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { normalizeLatexDelimiters } from '@/lib/normalize-latex'
 import { normalizeMarkdownEmphasisWhitespace } from '@/lib/normalize-markdown-emphasis'
@@ -627,6 +627,116 @@ function extractText(node: React.ReactNode): string {
   return ''
 }
 
+/** 语言标注命中这些值时代码块提供「一键渲染」 */
+const HTML_CODE_LANGUAGES = new Set(['html', 'htm', 'xhtml'])
+
+/** 预览高度上报消息类型，避免与页面其它 postMessage 混淆 */
+const HTML_PREVIEW_HEIGHT_MESSAGE = 'cdut-html-preview-height'
+
+/** 注入的高度上报脚本（load/resize/ResizeObserver + 多次兜底定时） */
+function buildHeightReporterScript(): string {
+  return `<script>(function(){function report(){try{var d=document.documentElement,b=document.body;var h=Math.max(d?d.scrollHeight:0,b?b.scrollHeight:0,d?d.offsetHeight:0,b?b.offsetHeight:0);parent.postMessage({type:'${HTML_PREVIEW_HEIGHT_MESSAGE}',height:h},'*')}catch(e){}}window.addEventListener('load',report);window.addEventListener('resize',report);if(window.ResizeObserver){try{new ResizeObserver(report).observe(document.documentElement)}catch(e){}}setTimeout(report,50);setTimeout(report,300);setTimeout(report,1000);})()<\/script>`
+}
+
+/**
+ * 自适应高度 iframe：通过注入脚本（postMessage）把文档实际高度回传给父窗口。
+ * 用上报而非直接读 contentDocument，是为了在**不开放 allow-same-origin** 时也能自适应高度。
+ */
+function SelfSizingFrame({
+  srcDoc,
+  sandbox,
+  className,
+  title,
+  initialHeight = 120,
+  maxHeight = 820,
+}: {
+  srcDoc: string
+  sandbox: string
+  className: string
+  title: string
+  initialHeight?: number
+  maxHeight?: number
+}): React.ReactElement {
+  const frameRef = React.useRef<HTMLIFrameElement>(null)
+  const [height, setHeight] = React.useState(initialHeight)
+
+  React.useEffect(() => {
+    function onMessage(event: MessageEvent): void {
+      if (event.source !== frameRef.current?.contentWindow) return
+      const payload = event.data as { type?: string; height?: number } | null
+      if (payload?.type === HTML_PREVIEW_HEIGHT_MESSAGE && typeof payload.height === 'number') {
+        setHeight(Math.min(Math.max(initialHeight, Math.ceil(payload.height)), maxHeight))
+      }
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [initialHeight, maxHeight])
+
+  return (
+    <iframe
+      ref={frameRef}
+      title={title}
+      srcDoc={srcDoc}
+      sandbox={sandbox}
+      allowFullScreen
+      referrerPolicy="no-referrer"
+      style={{ height }}
+      className={className}
+    />
+  )
+}
+
+/**
+ * HTML 内联预览框：以沙箱 iframe 渲染模型产出的 HTML，高度随内容自适应。
+ * 不开放 allow-same-origin，产出的 HTML 仍处于 opaque origin 沙箱中。
+ */
+function HtmlPreviewFrame({ html }: { html: string }): React.ReactElement {
+  const srcDoc = React.useMemo(() => {
+    const reporter = buildHeightReporterScript()
+    return /<\/body\s*>/i.test(html)
+      ? html.replace(/<\/body\s*>/i, `${reporter}</body>`)
+      : `${html}${reporter}`
+  }, [html])
+
+  return (
+    <SelfSizingFrame
+      title="HTML 渲染预览"
+      srcDoc={srcDoc}
+      sandbox="allow-scripts allow-forms allow-popups"
+      className="block w-full border-0 bg-white"
+    />
+  )
+}
+
+/**
+ * HTML 代码块渲染器：头部追加「渲染 / 源码」切换。
+ * 点击「渲染」时**在原代码框位置内**整体替换为沙箱 iframe 预览（不新开容器），
+ * 预览框高度随 HTML 内容自适应。
+ */
+const HtmlCodeBlock = React.memo(function HtmlCodeBlock({
+  code,
+  children,
+}: { code: string; children?: React.ReactNode }): React.ReactElement {
+  const [rendered, setRendered] = React.useState(false)
+  return (
+    <CodeBlock
+      headerActions={
+        <button
+          type="button"
+          onClick={() => setRendered((v) => !v)}
+          className="flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-foreground/10 transition-colors text-muted-foreground hover:text-foreground"
+        >
+          {rendered ? <Code className="size-3.5" /> : <Play className="size-3.5" />}
+          <span>{rendered ? '源码' : '渲染'}</span>
+        </button>
+      }
+      bodyOverride={rendered ? <HtmlPreviewFrame html={code} /> : undefined}
+    >
+      {children}
+    </CodeBlock>
+  )
+})
+
 /** 代码块 / Mermaid 渲染器 */
 const MarkdownPre = React.memo(function MarkdownPre({
   children: preChildren,
@@ -655,6 +765,16 @@ const MarkdownPre = React.memo(function MarkdownPre({
       if (shouldRenderMermaidCodeBlock(className, mermaidCode)) {
         return <MermaidBlock code={mermaidCode} />
       }
+    }
+
+    // HTML 代码块：头部提供「渲染」切换，点击后在会话区域直接渲染
+    const langName = className.match(/\blanguage-(\S+)/)?.[1]?.toLowerCase()
+    if (langName && HTML_CODE_LANGUAGES.has(langName)) {
+      return (
+        <HtmlCodeBlock code={extractText(codeProps.children).replace(/\n$/, '')}>
+          {preChildren}
+        </HtmlCodeBlock>
+      )
     }
 
     // 未标注语言且非 Mermaid 时：highlight.js 自动检测，命中后注入 language-xxx 喂给 CodeBlock 高亮
@@ -722,19 +842,59 @@ export function rowsToMarkdown(rows: string[][]): string {
 /** 多选块点击时不应把内容交互误判为块选择。 */
 const AGENT_BLOCK_INTERACTION_SELECTOR = 'a,button,input,textarea,select,img,[role="button"],[role="img"]'
 
-/** Markdown 图片渲染器。 */
+// ===== 多模态音视频支持 =====
+
+/** 视频扩展名（小写，不含点） */
+const VIDEO_EXTENSIONS = new Set(['mp4', 'webm', 'mov', 'mkv', 'm4v', 'ogv'])
+/** 音频扩展名（小写，不含点） */
+const AUDIO_EXTENSIONS = new Set(['mp3', 'wav', 'ogg', 'oga', 'm4a', 'aac', 'flac', 'opus'])
+
+/** 从资源地址嗅探音视频类型（忽略 query / hash，兼容网络与本地路径） */
+function detectMediaKind(src: string | undefined): 'video' | 'audio' | null {
+  if (!src) return null
+  const clean = src.split(/[?#]/, 1)[0] ?? ''
+  const dot = clean.lastIndexOf('.')
+  if (dot < 0) return null
+  const ext = clean.slice(dot + 1).toLowerCase()
+  if (VIDEO_EXTENSIONS.has(ext)) return 'video'
+  if (AUDIO_EXTENSIONS.has(ext)) return 'audio'
+  return null
+}
+
+/**
+ * 把原生 HTML5 `<video>` / `<audio>` 媒体标签归一化为 Markdown 图片语法，
+ * 交由 MarkdownImage 的扩展名嗅探渲染为原生播放器。
+ * 仅重写媒体标签，不开启任意原始 HTML 渲染，保持会话内容的安全边界。
+ */
+const HTML_MEDIA_TAG_RE = /<(video|audio)\b[^>]*\bsrc\s*=\s*["']([^"']+)["'][^>]*>(?:\s*<\/\1>)?/gi
+function normalizeHtmlMediaTags(markdown: string): string {
+  if (!markdown.includes('<video') && !markdown.includes('<audio')) return markdown
+  return markdown.replace(
+    HTML_MEDIA_TAG_RE,
+    (_match, kind: string, src: string) => `![${kind === 'video' ? '视频' : '音频'}](<${src}>)`,
+  )
+}
+
+/**
+ * Markdown 图片 / 音视频渲染器。
+ * - 图片：走 Lightbox（由外层 img 渲染器处理）；
+ * - 视频（.mp4/.webm/.mov 等）：智能嗅探后渲染为原生 `<video controls>` 卡片；
+ * - 音频（.mp3/.wav/.ogg 等）：智能嗅探后渲染为原生 `<audio controls>` 播放条；
+ * 本地路径统一经 `window.electronAPI.resolveFilePath` 转为 `cdut-file://` 安全协议。
+ */
 const MarkdownImage = React.memo(function MarkdownImage({ src, alt }: React.ImgHTMLAttributes<HTMLImageElement>): React.ReactElement {
   const sessionId = useFileAccessSessionId()
   const basePaths = React.useContext(BasePathsContext)
   const [resolvedSrc, setResolvedSrc] = React.useState<string>()
+  const mediaKind = detectMediaKind(src)
 
   React.useEffect(() => {
     if (!src || !sessionId) return
-    const filePath = localFileUrlToPath(src) ?? src
     if (/^(https?:|data:|blob:)/.test(src)) {
       setResolvedSrc(src)
       return
     }
+    const filePath = localFileUrlToPath(src) ?? src
     let active = true
     window.electronAPI.resolveFilePath(filePath, {
       sessionId,
@@ -745,7 +905,22 @@ const MarkdownImage = React.memo(function MarkdownImage({ src, alt }: React.ImgH
     return () => { active = false }
   }, [basePaths, sessionId, src])
 
-  return resolvedSrc ? <img src={resolvedSrc} alt={alt} /> : <span role="img" aria-label={alt} />
+  if (mediaKind === 'video') {
+    return resolvedSrc
+      ? <video src={resolvedSrc} controls className="my-2 max-w-full rounded-lg border border-border/60 shadow-sm" />
+      : <span role="img" aria-label={alt} />
+  }
+  if (mediaKind === 'audio') {
+    return resolvedSrc
+      ? <audio src={resolvedSrc} controls className="my-2 w-full" />
+      : <span role="img" aria-label={alt} />
+  }
+
+  // 远程图片统一不带 Referer 发起请求：B 站（*.hdslb.com）等 CDN 按 Referer 防盗链，
+  // 携带应用来源会被判定为盗链并返回 403 导致破图，no-referrer 可正常放行。
+  return resolvedSrc
+    ? <img src={resolvedSrc} alt={alt} referrerPolicy="no-referrer" />
+    : <span role="img" aria-label={alt} />
 })
 
 /** GFM 表格本身只负责布局；复制与格式选择由外层块右上角统一操作条提供。 */
@@ -957,7 +1132,7 @@ function CopyableMarkdownBlock({ block, components, remarkPlugins, selected, sel
 
 export const MessageResponse = React.memo(
   function MessageResponse({ children, className, basePath, basePaths, remarkPlugins, enableBlockCopy = false }: MessageResponseProps): React.ReactElement {
-    const processed = React.useMemo(() => normalizeMarkdownEmphasisWhitespace(normalizeLatexDelimiters(children.replace(/<!--PROMA_AUTOMATION:[\s\S]*?-->/g, '').trim())), [children])
+    const processed = React.useMemo(() => normalizeMarkdownEmphasisWhitespace(normalizeLatexDelimiters(normalizeHtmlMediaTags(children.replace(/<!--PROMA_AUTOMATION:[\s\S]*?-->/g, '').trim()))), [children])
     const blocks = React.useMemo(() => parseAgentMarkdownBlocks(processed), [processed])
     const [selection, setSelection] = React.useState<AgentBlockSelectionUpdate>({ selectedIds: new Set(), selecting: false })
     const { selectedIds, selecting } = selection

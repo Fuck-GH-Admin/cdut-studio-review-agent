@@ -11,7 +11,7 @@
 import * as React from 'react'
 import { useAtomValue } from 'jotai'
 import {
-  Pin, PinOff, Pencil, Trash2, MoreHorizontal, Clock, GitBranch, GitFork, Globe, Loader2, ChevronRight, Cloud, FolderOpen, GripVertical, ArrowRightLeft, Archive, ArchiveRestore, Plus, Mail, Sparkles, X,
+  Pin, PinOff, Pencil, Trash2, MoreHorizontal, Clock, GitBranch, GitFork, Globe, Loader2, ChevronRight, Cloud, FolderOpen, GripVertical, ArrowRightLeft, Archive, ArchiveRestore, Plus, Mail, Sparkles, X, Lock,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useShortcut } from '@/hooks/useShortcut'
@@ -627,6 +627,10 @@ interface AgentSessionItemProps {
   regeneratingTitle?: boolean
   /** 仅当前会话 Tab 区使用：关闭入口，不删除会话数据。 */
   onCloseTab?: () => void
+  /** 锁定态：未登录特区账户的 AI速课堂 会话，禁止一切查看/交互 */
+  locked?: boolean
+  /** 锁定态被点击时的引导回调（弹出登录引导弹窗） */
+  onLockedInteract?: () => void
 }
 
 export const AgentSessionItem = React.memo(function AgentSessionItem({
@@ -650,6 +654,8 @@ export const AgentSessionItem = React.memo(function AgentSessionItem({
   onRegenerateTitle,
   regeneratingTitle,
   onCloseTab,
+  locked,
+  onLockedInteract,
 }: AgentSessionItemProps): React.ReactElement {
   const interfaceVariant = useAtomValue(interfaceVariantAtom)
   const isClassic = interfaceVariant === 'classic'
@@ -663,7 +669,7 @@ export const AgentSessionItem = React.memo(function AgentSessionItem({
   const inputRef = React.useRef<HTMLInputElement>(null)
   const justStartedEditing = React.useRef(false)
   // 菜单打开时关闭迷你地图预览，避免预览面板盖住菜单项导致点不动
-  const preview = useSessionMiniMapHover(600, disableMiniMap || menuOpen)
+  const preview = useSessionMiniMapHover(600, disableMiniMap || menuOpen || !!locked)
 
   const startEdit = (): void => {
     setEditTitle(session.title)
@@ -698,7 +704,7 @@ export const AgentSessionItem = React.memo(function AgentSessionItem({
 
   // F2 快速重命名当前活跃会话：用 id 精确匹配，避免父行（treeActive 为 true）与子行同时命中。
   // 另需 exclusive：同一会话可能同时在顶部「当前会话」区与项目列表区各渲染一行。
-  useShortcut('rename-item', startEdit, currentAgentSessionId === session.id && !editing, RENAME_SHORTCUT_OPTIONS)
+  useShortcut('rename-item', startEdit, currentAgentSessionId === session.id && !editing && !locked, RENAME_SHORTCUT_OPTIONS)
 
   const canMove = indicatorStatus === 'idle' || indicatorStatus === 'completed'
 
@@ -745,155 +751,184 @@ export const AgentSessionItem = React.memo(function AgentSessionItem({
     </>
   )
 
-  return (
-    <ContextMenu>
-      <ContextMenuTrigger asChild>
-        <div
-          ref={preview.setAnchorRef}
-          role="button"
-          data-profer-navigation-item="session"
-          data-profer-navigation-active={active ? 'true' : undefined}
-          tabIndex={0}
-          draggable={!editing}
-          onDragStart={(event) => {
-            const target = event.target as HTMLElement
-            if (target.closest('button, input')) {
-              event.preventDefault()
-              clearSessionReferenceDragState()
-              return
-            }
-            setSessionReferenceDragData(event.dataTransfer, { sessionId: session.id, title: session.title })
-          }}
-          onDragEnd={clearSessionReferenceDragState}
-          onClick={() => { if (preview.shouldSuppressClick()) return; onSelect(session.id, session.title) }}
-          onMouseDown={(event) => {
-            // 中键关闭当前会话入口（与顶栏 Tab 行为一致），不删除会话数据。
-            if (event.button !== 1 || !onCloseTab) return
-            event.preventDefault()
-            event.stopPropagation()
-            onCloseTab()
-          }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault()
-              onSelect(session.id, session.title)
-            }
-          }}
-          onMouseEnter={preview.handleMouseEnter}
-          onMouseLeave={preview.handleMouseLeave}
-          onTouchStart={preview.handleTouchStart}
-          onTouchMove={preview.handleTouchMove}
-          onTouchEnd={preview.handleTouchEnd}
-          onTouchCancel={preview.handleTouchCancel}
-          onDoubleClick={(e) => {
-            e.stopPropagation()
-            startEdit()
-          }}
+  const row = (
+    <div
+      ref={preview.setAnchorRef}
+      role="button"
+      data-profer-navigation-item="session"
+      data-profer-navigation-active={active ? 'true' : undefined}
+      aria-disabled={locked || undefined}
+      tabIndex={0}
+      draggable={!editing && !locked}
+      onDragStart={(event) => {
+        if (locked) {
+          event.preventDefault()
+          clearSessionReferenceDragState()
+          return
+        }
+        const target = event.target as HTMLElement
+        if (target.closest('button, input')) {
+          event.preventDefault()
+          clearSessionReferenceDragState()
+          return
+        }
+        setSessionReferenceDragData(event.dataTransfer, { sessionId: session.id, title: session.title })
+      }}
+      onDragEnd={clearSessionReferenceDragState}
+      onClick={() => {
+        if (locked) {
+          onLockedInteract?.()
+          return
+        }
+        if (preview.shouldSuppressClick()) return
+        onSelect(session.id, session.title)
+      }}
+      onMouseDown={(event) => {
+        // 中键关闭当前会话入口（与顶栏 Tab 行为一致），不删除会话数据。
+        if (locked || event.button !== 1 || !onCloseTab) return
+        event.preventDefault()
+        event.stopPropagation()
+        onCloseTab()
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          if (locked) {
+            onLockedInteract?.()
+            return
+          }
+          onSelect(session.id, session.title)
+        }
+      }}
+      onContextMenu={locked ? (event) => { event.preventDefault(); onLockedInteract?.() } : undefined}
+      onMouseEnter={preview.handleMouseEnter}
+      onMouseLeave={preview.handleMouseLeave}
+      onTouchStart={preview.handleTouchStart}
+      onTouchMove={preview.handleTouchMove}
+      onTouchEnd={preview.handleTouchEnd}
+      onTouchCancel={preview.handleTouchCancel}
+      onDoubleClick={(e) => {
+        e.stopPropagation()
+        if (locked) return
+        startEdit()
+      }}
+      className={cn(
+        'group relative w-full flex items-center gap-1.5 rounded-md py-1 pl-2.5 pr-1.5 transition-colors duration-100 titlebar-no-drag text-left',
+        active && 'agent-session-item-active',
+        locked
+          ? 'cursor-not-allowed opacity-55'
+          : leftAccent
+            ? SESSION_ACCENT_ROW_CLASS[leftAccent]
+            : 'hover:bg-foreground/[0.03]',
+        // 选中态背景：浅色叠加深色变深、深色叠加浅色变浅，自动适配主题。
+        // orange accent 自带橙色底色，不再叠加，避免视觉过重。
+        !locked && active && leftAccent !== 'orange' && 'bg-foreground/[0.08]',
+      )}
+    >
+      {(leftAccent || (isClassic && active)) && (
+        <span
           className={cn(
-            'group relative w-full flex items-center gap-1.5 rounded-md py-1 pl-2.5 pr-1.5 transition-colors duration-100 titlebar-no-drag text-left',
-            active && 'agent-session-item-active',
-            leftAccent
-              ? SESSION_ACCENT_ROW_CLASS[leftAccent]
-              : 'hover:bg-foreground/[0.03]',
-            // 选中态背景：浅色叠加深色变深、深色叠加浅色变浅，自动适配主题。
-            // orange accent 自带橙色底色，不再叠加，避免视觉过重。
-            active && leftAccent !== 'orange' && 'bg-foreground/[0.08]',
+            'absolute inset-y-0 left-0 w-[3px] rounded-l-md pointer-events-none',
+            leftAccent ? SESSION_ACCENT_INDICATOR_CLASS[leftAccent] : 'bg-primary',
           )}
-        >
-          {(leftAccent || (isClassic && active)) && (
-            <span
-              className={cn(
-                'absolute inset-y-0 left-0 w-[3px] rounded-l-md pointer-events-none',
-                leftAccent ? SESSION_ACCENT_INDICATOR_CLASS[leftAccent] : 'bg-primary',
-              )}
-            />
-          )}
-          <div className="flex-1 min-w-0">
-            {editing ? (
-              <input
-                ref={inputRef}
-                value={editTitle}
-                onChange={(e) => setEditTitle(e.target.value)}
-                onKeyDown={handleKeyDown}
-                onBlur={saveTitle}
-                onClick={(e) => e.stopPropagation()}
-                className="w-full bg-transparent text-[13px] leading-5 text-foreground border-b border-primary/50 outline-none px-0 py-0"
-                maxLength={100}
-              />
-            ) : (
-              <div className={cn(
-                'truncate text-[13px] leading-[18px] flex items-center gap-1.5',
-                active ? 'text-foreground' : 'text-foreground/80'
-              )}>
-                {showPinIcon && (
-                  <Pin size={11} className="flex-shrink-0 text-primary/60" />
+        />
+      )}
+      <div className="flex-1 min-w-0">
+        {editing ? (
+          <input
+            ref={inputRef}
+            value={editTitle}
+            onChange={(e) => setEditTitle(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onBlur={saveTitle}
+            onClick={(e) => e.stopPropagation()}
+            className="w-full bg-transparent text-[13px] leading-5 text-foreground border-b border-primary/50 outline-none px-0 py-0"
+            maxLength={100}
+          />
+        ) : (
+          <div className={cn(
+            'truncate text-[13px] leading-[18px] flex items-center gap-1.5',
+            active ? 'text-foreground' : 'text-foreground/80'
+          )}>
+            {locked && (
+              <Lock size={11} className="flex-shrink-0 text-foreground/45" aria-label="需要登录特区账户" />
+            )}
+            {showPinIcon && (
+              <Pin size={11} className="flex-shrink-0 text-primary/60" />
+            )}
+            {session.sourceAutomationId && !session.sourceDelegationId && (
+              <Clock size={11} className="flex-shrink-0 text-foreground/40" />
+            )}
+            {session.explorationParentSessionId && session.explorationSourceMessageId ? (
+              <GitFork size={11} className={cn('flex-shrink-0', DELEGATION_STATUS_ICON_CLASS[indicatorStatus])} />
+            ) : session.sourceDelegationId ? (
+              <GitBranch size={11} className={cn('flex-shrink-0', DELEGATION_STATUS_ICON_CLASS[indicatorStatus])} />
+            ) : null}
+            {/* 该会话有活动浏览器会话/标签：在会话行上标识，便于从侧边栏识别哪个会话在用浏览器 */}
+            {regeneratingTitle ? (
+              <Loader2 size={11} className="flex-shrink-0 text-foreground/40 animate-spin" aria-label="正在重新生成标题" />
+            ) : hasBrowser ? (
+              <Globe size={11} className="flex-shrink-0 text-foreground/40" aria-label="该会话正在使用浏览器" />
+            ) : null}
+            <span className="truncate">{session.title}</span>
+            {/* 草稿标记：输入框有未发送内容 */}
+            {hasDraft && (
+              <Pencil size={11} className="flex-shrink-0 text-foreground/40" aria-label="输入框有未发送内容" />
+            )}
+            {workspaceName && (
+              <span className="flex-shrink-0 px-1.5 py-0 rounded-full bg-primary/10 text-[10px] leading-4 workspace-badge font-medium truncate max-w-[80px]">
+                {workspaceName}
+              </span>
+            )}
+            {delegationSummary && (
+              <button
+                type="button"
+                aria-label={`${delegationSummary.expanded ? '收起' : '展开'}${delegationSummary.label}`}
+                onClick={(event) => {
+                  event.stopPropagation()
+                  delegationSummary.onToggle()
+                }}
+                className="flex-shrink-0 inline-flex items-center gap-0.5 text-[11px] leading-4 text-foreground/45 hover:text-foreground/65 transition-colors"
+              >
+                <ChevronRight
+                  size={10}
+                  className={cn(
+                    'transition-transform duration-150',
+                    delegationSummary.expanded && 'rotate-90',
+                  )}
+                />
+                {/* 探索分支不显示 x/y：父行右侧已挤着时间/置顶/归档/菜单，只留箭头。 */}
+                {delegationSummary.showCount && (
+                  <span>{delegationSummary.completed}/{delegationSummary.total} {delegationSummary.label}</span>
                 )}
-                {session.sourceAutomationId && !session.sourceDelegationId && (
-                  <Clock size={11} className="flex-shrink-0 text-foreground/40" />
-                )}
-                {session.explorationParentSessionId && session.explorationSourceMessageId ? (
-                  <GitFork size={11} className={cn('flex-shrink-0', DELEGATION_STATUS_ICON_CLASS[indicatorStatus])} />
-                ) : session.sourceDelegationId ? (
-                  <GitBranch size={11} className={cn('flex-shrink-0', DELEGATION_STATUS_ICON_CLASS[indicatorStatus])} />
-                ) : null}
-                {/* 该会话有活动浏览器会话/标签：在会话行上标识，便于从侧边栏识别哪个会话在用浏览器 */}
-                {regeneratingTitle ? (
-                  <Loader2 size={11} className="flex-shrink-0 text-foreground/40 animate-spin" aria-label="正在重新生成标题" />
-                ) : hasBrowser ? (
-                  <Globe size={11} className="flex-shrink-0 text-foreground/40" aria-label="该会话正在使用浏览器" />
-                ) : null}
-                <span className="truncate">{session.title}</span>
-                {/* 草稿标记：输入框有未发送内容 */}
-                {hasDraft && (
-                  <Pencil size={11} className="flex-shrink-0 text-foreground/40" aria-label="输入框有未发送内容" />
-                )}
-                {workspaceName && (
-                  <span className="flex-shrink-0 px-1.5 py-0 rounded-full bg-primary/10 text-[10px] leading-4 workspace-badge font-medium truncate max-w-[80px]">
-                    {workspaceName}
-                  </span>
-                )}
-                {delegationSummary && (
-                  <button
-                    type="button"
-                    aria-label={`${delegationSummary.expanded ? '收起' : '展开'}${delegationSummary.label}`}
-                    onClick={(event) => {
-                      event.stopPropagation()
-                      delegationSummary.onToggle()
-                    }}
-                    className="flex-shrink-0 inline-flex items-center gap-0.5 text-[11px] leading-4 text-foreground/45 hover:text-foreground/65 transition-colors"
-                  >
-                    <ChevronRight
-                      size={10}
-                      className={cn(
-                        'transition-transform duration-150',
-                        delegationSummary.expanded && 'rotate-90',
-                      )}
-                    />
-                    {/* 探索分支不显示 x/y：父行右侧已挤着时间/置顶/归档/菜单，只留箭头。 */}
-                    {delegationSummary.showCount && (
-                      <span>{delegationSummary.completed}/{delegationSummary.total} {delegationSummary.label}</span>
-                    )}
-                  </button>
-                )}
-              </div>
+              </button>
             )}
           </div>
+        )}
+      </div>
 
-          {!editing && (
-            <SessionItemActions
-              updatedAt={session.updatedAt}
-              relativeTimeNow={relativeTimeNow}
-              pinned={!!session.pinned}
-              archived={!!session.archived}
-              onTogglePin={() => onTogglePin(session.id)}
-              onToggleArchive={() => onToggleArchive(session.id)}
-              onCloseTab={onCloseTab}
-              onMenuOpenChange={setMenuOpen}
-              menuItems={menuItems}
-            />
-          )}
-        </div>
-      </ContextMenuTrigger>
+      {!editing && !locked && (
+        <SessionItemActions
+          updatedAt={session.updatedAt}
+          relativeTimeNow={relativeTimeNow}
+          pinned={!!session.pinned}
+          archived={!!session.archived}
+          onTogglePin={() => onTogglePin(session.id)}
+          onToggleArchive={() => onToggleArchive(session.id)}
+          onCloseTab={onCloseTab}
+          onMenuOpenChange={setMenuOpen}
+          menuItems={menuItems}
+        />
+      )}
+    </div>
+  )
+
+  // 锁定态：直接渲染行，不提供右键菜单、操作按钮与迷你地图预览，阻断一切内容泄露
+  if (locked) return row
+
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger asChild>{row}</ContextMenuTrigger>
       <ContextMenuContent className="w-40 z-[9999] min-w-0 p-0.5">
         {menuItems(ContextMenuItem, ContextMenuSeparator)}
       </ContextMenuContent>
@@ -935,6 +970,10 @@ interface RelatedChildSessionItemProps {
   regeneratingTitle?: boolean
   /** 手动重新生成标题（用前几轮有效消息重命名并重新锁定） */
   onRegenerateTitle?: (id: string) => Promise<void>
+  /** 锁定态：未登录特区账户的 AI速课堂 会话 */
+  locked?: boolean
+  /** 锁定态被点击时的引导回调 */
+  onLockedInteract?: () => void
 }
 
 export const RelatedChildSessionItem = React.memo(function RelatedChildSessionItem({
@@ -953,6 +992,8 @@ export const RelatedChildSessionItem = React.memo(function RelatedChildSessionIt
   onMarkUnread,
   onRegenerateTitle,
   regeneratingTitle,
+  locked,
+  onLockedInteract,
 }: RelatedChildSessionItemProps): React.ReactElement {
   const status = getRelatedChildStatus(session, agentIndicatorMap)
 
@@ -973,6 +1014,8 @@ export const RelatedChildSessionItem = React.memo(function RelatedChildSessionIt
       onMarkUnread={onMarkUnread}
       onRegenerateTitle={onRegenerateTitle}
       regeneratingTitle={regeneratingTitle}
+      locked={locked}
+      onLockedInteract={onLockedInteract}
     />
   )
 })
@@ -1021,6 +1064,10 @@ interface AgentProjectGroupItemProps {
   onRegenerateTitle?: (id: string) => Promise<void>
   /** 工作区最近一次切换的时间戳，用于短暂高亮 */
   workspaceSwitchTs?: number
+  /** 锁定态：未登录特区账户的 AI速课堂 项目，禁止一切交互 */
+  locked?: boolean
+  /** 锁定态被点击时的引导回调（弹出登录引导弹窗） */
+  onLockedInteract?: () => void
 }
 
 export const AgentProjectGroupItem = React.memo(function AgentProjectGroupItem({
@@ -1060,6 +1107,8 @@ export const AgentProjectGroupItem = React.memo(function AgentProjectGroupItem({
   onToggleRelatedParent,
   onMarkUnread,
   onRegenerateTitle,
+  locked,
+  onLockedInteract,
 }: AgentProjectGroupItemProps): React.ReactElement {
   const isCurrent = group.workspace.id === currentWorkspaceId
   /** 最近 1.2 秒内切换到此工作区时，短暂高亮 */
@@ -1164,7 +1213,7 @@ export const AgentProjectGroupItem = React.memo(function AgentProjectGroupItem({
       onDragLeave={onDragLeave}
       onDrop={(e) => onDrop(e, group.workspace.id)}
       onDragEnd={onDragEnd}
-      className={cn('relative py-0.5 rounded-md transition-opacity', dragging && 'opacity-45')}
+      className={cn('relative py-0.5 rounded-md transition-opacity', dragging && 'opacity-45', locked && 'opacity-60')}
     >
       {dropPosition === 'before' && (
         <div className="absolute -top-0.5 left-3 right-3 h-0.5 translate-x-[2px] rounded-full bg-primary z-10" />
@@ -1172,9 +1221,9 @@ export const AgentProjectGroupItem = React.memo(function AgentProjectGroupItem({
 
       <div className="group/project relative flex translate-x-[2px] items-center">
         <span
-          draggable
-          onDragStart={(e) => onDragStart(e, group.workspace.id)}
-          title="拖拽排序"
+          draggable={!locked}
+          onDragStart={(e) => { if (locked) return; onDragStart(e, group.workspace.id) }}
+          title={locked ? '登录特区账户后可排序' : '拖拽排序'}
           className="absolute -left-0.5 top-1/2 z-10 flex size-[18px] -translate-y-1/2 cursor-grab items-center justify-center text-foreground/20 opacity-0 transition-opacity group-hover/project:opacity-100 active:cursor-grabbing"
           aria-hidden="true"
         >
@@ -1210,6 +1259,10 @@ export const AgentProjectGroupItem = React.memo(function AgentProjectGroupItem({
             aria-controls={`project-sessions-${group.workspace.id}`}
             onClick={(e) => {
               e.stopPropagation()
+              if (locked) {
+                onLockedInteract?.()
+                return
+              }
               if (e.target instanceof Element && e.target.closest('[data-project-collapse]')) {
                 onToggleProjectCollapse(group.workspace.id)
                 return
@@ -1222,6 +1275,7 @@ export const AgentProjectGroupItem = React.memo(function AgentProjectGroupItem({
             }}
             onDoubleClick={(e) => {
               e.stopPropagation()
+              if (locked) return
               if (projectClickTimerRef.current) {
                 clearTimeout(projectClickTimerRef.current)
                 projectClickTimerRef.current = null
@@ -1234,87 +1288,96 @@ export const AgentProjectGroupItem = React.memo(function AgentProjectGroupItem({
                 ? 'agent-project-item-current text-foreground'
                 : 'text-foreground/65 hover:text-foreground/88',
               justSwitchedTo && 'animate-workspace-highlight bg-primary/15 rounded-md',
+              locked && 'cursor-not-allowed hover:bg-transparent',
             )}
           >
             {renderWorkspaceIcon(13, 'flex-shrink-0 text-foreground/40')}
             <span className="flex-1 min-w-0 truncate text-[13px] font-medium leading-[18px]">
               {group.workspace.name}
             </span>
-            <span
-              data-project-collapse
-              title={collapsed ? '展开项目会话' : '收起项目会话'}
-              className="flex-shrink-0 text-foreground/30 transition-colors hover:text-foreground/70"
-            >
-              <ChevronRight
-                size={12}
-                className={cn(
-                  'transition-transform duration-150',
-                  collapsed ? '-rotate-90' : 'rotate-90',
-                )}
-              />
-            </span>
+            {locked ? (
+              <Lock size={12} className="flex-shrink-0 text-foreground/45" aria-label="需要登录特区账户" />
+            ) : (
+              <span
+                data-project-collapse
+                title={collapsed ? '展开项目会话' : '收起项目会话'}
+                className="flex-shrink-0 text-foreground/30 transition-colors hover:text-foreground/70"
+              >
+                <ChevronRight
+                  size={12}
+                  className={cn(
+                    'transition-transform duration-150',
+                    collapsed ? '-rotate-90' : 'rotate-90',
+                  )}
+                />
+              </span>
+            )}
           </button>
         )}
 
-        <button
-          type="button"
-          aria-label={`在「${group.workspace.id}」中新建会话`}
-          onClick={() => { void onNewSession(group.workspace.id) }}
-          className="absolute right-5 top-1/2 flex size-5 -translate-y-1/2 items-center justify-center rounded-md text-foreground/30 opacity-0 transition-colors hover:bg-foreground/[0.055] hover:text-foreground/65 group-hover/project:opacity-100 data-[state=open]:opacity-100 titlebar-no-drag"
-        >
-          <Plus size={13} />
-        </button>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+        {!locked && (
+          <>
             <button
               type="button"
-              aria-label="项目菜单"
-              className="absolute right-0 top-1/2 flex size-5 -translate-y-1/2 items-center justify-center rounded-md text-foreground/30 opacity-0 transition-colors hover:bg-foreground/[0.055] hover:text-foreground/60 group-hover/project:opacity-100 data-[state=open]:opacity-100 titlebar-no-drag"
+              aria-label={`在「${group.workspace.id}」中新建会话`}
+              onClick={() => { void onNewSession(group.workspace.id) }}
+              className="absolute right-5 top-1/2 flex size-5 -translate-y-1/2 items-center justify-center rounded-md text-foreground/30 opacity-0 transition-colors hover:bg-foreground/[0.055] hover:text-foreground/65 group-hover/project:opacity-100 data-[state=open]:opacity-100 titlebar-no-drag"
             >
-              <MoreHorizontal size={13} />
+              <Plus size={13} />
             </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-44 z-[9999] min-w-0 p-0.5">
-            <DropdownMenuItem
-              className="text-xs py-1 [&>svg]:size-3.5"
-              onSelect={() => onSelectProject(group.workspace.id)}
-            >
-              {renderWorkspaceIcon(14, '')}
-              设为当前项目
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="text-xs py-1 [&>svg]:size-3.5"
-              onSelect={handleStartWorkspaceRename}
-            >
-              <Pencil size={14} />
-              重命名
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="text-xs py-1 [&>svg]:size-3.5"
-              onSelect={() => onToggleArchiveWorkspace(group.workspace.id)}
-            >
-              <Archive size={14} />
-              收纳工作区
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="my-0.5" />
-            <DropdownMenuItem
-              disabled={!canDeleteWorkspace}
-              className={cn(
-                'text-xs py-1 [&>svg]:size-3.5',
-                canDeleteWorkspace && 'text-destructive focus:text-destructive',
-              )}
-              onSelect={() => onRequestDeleteWorkspace(group.workspace.id)}
-            >
-              <Trash2 size={14} />
-              删除项目
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="项目菜单"
+                  className="absolute right-0 top-1/2 flex size-5 -translate-y-1/2 items-center justify-center rounded-md text-foreground/30 opacity-0 transition-colors hover:bg-foreground/[0.055] hover:text-foreground/60 group-hover/project:opacity-100 data-[state=open]:opacity-100 titlebar-no-drag"
+                >
+                  <MoreHorizontal size={13} />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-44 z-[9999] min-w-0 p-0.5">
+                <DropdownMenuItem
+                  className="text-xs py-1 [&>svg]:size-3.5"
+                  onSelect={() => onSelectProject(group.workspace.id)}
+                >
+                  {renderWorkspaceIcon(14, '')}
+                  设为当前项目
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="text-xs py-1 [&>svg]:size-3.5"
+                  onSelect={handleStartWorkspaceRename}
+                >
+                  <Pencil size={14} />
+                  重命名
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="text-xs py-1 [&>svg]:size-3.5"
+                  onSelect={() => onToggleArchiveWorkspace(group.workspace.id)}
+                >
+                  <Archive size={14} />
+                  收纳工作区
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="my-0.5" />
+                <DropdownMenuItem
+                  disabled={!canDeleteWorkspace}
+                  className={cn(
+                    'text-xs py-1 [&>svg]:size-3.5',
+                    canDeleteWorkspace && 'text-destructive focus:text-destructive',
+                  )}
+                  onSelect={() => onRequestDeleteWorkspace(group.workspace.id)}
+                >
+                  <Trash2 size={14} />
+                  删除项目
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
+        )}
       </div>
 
       <div id={`project-sessions-${group.workspace.id}`} className="ml-4 mt-px">
-        {!collapsed ? (
+        {(!collapsed || locked) ? (
           treeItems.length > 0 ? (
             <div className="flex flex-col gap-0.5">
               {sessions.map((item) => {
@@ -1349,6 +1412,8 @@ export const AgentProjectGroupItem = React.memo(function AgentProjectGroupItem({
                       onTogglePin={onTogglePin}
                       onToggleArchive={onToggleArchive}
                       onMarkUnread={onMarkUnread}
+                      locked={locked}
+                      onLockedInteract={onLockedInteract}
                     />
 
                     {childCount > 0 && expandedChildren && (
@@ -1369,6 +1434,8 @@ export const AgentProjectGroupItem = React.memo(function AgentProjectGroupItem({
                             onTogglePin={onTogglePin}
                             onToggleArchive={onToggleArchive}
                             onMarkUnread={onMarkUnread}
+                            locked={locked}
+                            onLockedInteract={onLockedInteract}
                           />
                         ))}
                       </div>

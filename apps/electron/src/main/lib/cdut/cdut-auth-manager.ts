@@ -31,6 +31,7 @@ import {
   stripStaleRuiShuCookies,
   type JwProfileSummary,
 } from './cdut-jw-client'
+import { cdutDemoService } from './cdut-demo/demo-service'
 
 /** 成都理工统一身份认证（CAS）登录地址：service 绑定青果教务系统在 CAS 登记的官方 SSO 入口 */
 const CAS_LOGIN_URL =
@@ -776,6 +777,17 @@ export class CdutAuthManager {
    * 执行后台无头 CAS 登录与画像全流程。
    */
   public async login(input: CdutLoginInput): Promise<CdutLoginResult> {
+    // 演示账户优先命中：旁路真实 CAS，仅进入内存演示态（不保活、不落盘），供离线产品演示使用
+    const demoResult = cdutDemoService.tryLogin(input)
+    if (demoResult) {
+      if (demoResult.success && demoResult.profile) {
+        this.stopKeepAlive()
+        this.profile = demoResult.profile
+        this.onStatusChangeCallback?.(this.getProfile())
+      }
+      return demoResult
+    }
+
     const { username, password, rememberPassword = true } = input
     if (!username || !password) {
       return { success: false, error: '学工号和密码不能为空' }
@@ -1106,6 +1118,8 @@ export class CdutAuthManager {
    */
   public async logout(): Promise<void> {
     this.stopKeepAlive()
+    // 复位演示态：确保演示账户登出后工具层立即回落真实门禁
+    cdutDemoService.reset()
 
     // 1) 删除本地持久化凭据（含 .bak / .tmp 残留）
     try {

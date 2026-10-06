@@ -365,13 +365,30 @@ export async function resolvePiReasoningCapability(provider: ProviderType, model
  * - 缺失时按 stop / toolUse 推断结束原因，保住这一轮已经拿到的正文与工具调用；
  * - 真正的传输中断由底层抛网络错误，走不到这条判定，不会被静默吞掉。
  */
-function applyOpenAICompatibleFinishReasonFallback(
+function buildOpenAICompatibleCompatDefaults(
   input: PiAgentQueryOptions,
   api: Api,
   compat: PiModelDefaults['compat'],
 ): PiModelDefaults['compat'] {
   if (api !== 'openai-completions' || input.provider !== 'custom') return compat
-  return { ...(compat ?? {}), supportsFinishReason: false } as PiModelDefaults['compat']
+  return {
+    ...(compat ?? {}),
+    // 1. 彻底禁用 store 字段，杜绝 302.ai 及开源端点抛 -10003
+    supportsStore: false,
+    // 2. 彻底禁用 developer 角色，确保系统提示词始终为安全的 system 角色
+    supportsDeveloperRole: false,
+    // 3. 强制使用全行业通用的 max_tokens 字段
+    maxTokensField: 'max_tokens',
+    // 4. 禁用非标 stream_options，防止某些反向代理报错
+    supportsUsageInStreaming: false,
+    // 5. 保持原有 finish_reason 容错
+    supportsFinishReason: false,
+  } as PiModelDefaults['compat']
+}
+
+function isHeuristicReasoningModel(modelId?: string): boolean {
+  if (!modelId) return false
+  return /(?:^|[-_/])(?:r1|thinking|reasoning|reasoner|o1|o3|o4)(?:[-_/]|$)/i.test(modelId)
 }
 
 async function resolvePiModelDefaults(
@@ -413,9 +430,10 @@ async function resolvePiModelDefaults(
   // 渠道模型上的 1M 勾选最后统一生效（强开抬到 1M、强关压回保守窗口）。
   const contextWindow = applyModel1MContextPreference(computedContextWindow, input.context1m)
   return {
-    reasoning: catalogModel?.reasoning ?? true,
+    // 非 catalog 模型不再默认赋为 true，仅当模型名明确命中推理特征时为 true
+    reasoning: catalogModel?.reasoning ?? isHeuristicReasoningModel(input.model),
     thinkingLevelMap: providerSpecificCapabilities?.thinkingLevelMap ?? catalogModel?.thinkingLevelMap,
-    compat: applyOpenAICompatibleFinishReasonFallback(
+    compat: buildOpenAICompatibleCompatDefaults(
       input,
       api,
       providerSpecificCapabilities?.compat,

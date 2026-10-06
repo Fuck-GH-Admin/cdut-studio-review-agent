@@ -1215,3 +1215,17 @@ export const stoppedByUserSessionsAtom = atom<Set<string>>(new Set<string>())
 
 /** AgentSettingsInitializer 是否已完成加载（渠道/工作区/设置全部就绪） */
 export const agentSettingsReadyAtom = atom(false)
+
+// ===== 会话级上下文记忆开关 =====
+
+/**
+ * 按 sessionId 记录上下文记忆是否关闭（默认开启，即 false；关闭为 true）。
+ * 仅对当前会话有效，不影响其他会话。
+ */
+export const sessionMemoryDisabledMapAtom = atom<Record<string, boolean>>({})
+
+/** 派生指定会话的上下文记忆开关状态（未设置时默认开启，即 false）。 */
+export const sessionMemoryDisabledAtom = atomFamily((sessionId: string) =>
+  atom((get) => get(sessionMemoryDisabledMapAtom)[sessionId] ?? false),
+)
+
