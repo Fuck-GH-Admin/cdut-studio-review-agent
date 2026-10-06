@@ -167,7 +167,7 @@ type TemplateFieldInput = { key: string; label: string; kind: string; required: 
 
   return (
     <div className="mx-3 mb-3 rounded-xl border bg-card p-3 shadow-sm">
-      <p className="mb-2 text-sm font-semibold">V2 案卷（通用审核）</p>
+      <p className="mb-2 flex items-center gap-2 text-sm font-semibold">V2 案卷（通用审核）<span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">审核 v3 · 拖放导入</span></p>
       <div className="mb-2 space-y-1.5 rounded-lg border-t pt-2">
         <p className="text-xs font-medium text-muted-foreground">从已发布模板建案（G10 使用入口）</p>
         <select className="w-full rounded-md border bg-background px-2 py-1 text-xs" value={selectedTemplate?.templateId ?? ''} onChange={(event) => { setSelectedTemplate(templates.find((template) => template.templateId === event.target.value) ?? null); setFieldValues({}) }}>
