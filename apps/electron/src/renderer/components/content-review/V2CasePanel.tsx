@@ -14,6 +14,7 @@ import { RunResultPanel } from './RunResultPanel'
 import { ObservationConfirmPanel } from './ObservationConfirmPanel'
 import { ReviewAssignmentCard } from './ReviewAssignmentCard'
 import { CaseTimelinePanel } from './CaseTimelinePanel'
+import { MaterialDropZone } from './MaterialDropZone'
 
 /** 当前 V2 聚合（单案；N3 扩展为按案映射） */
 export const reviewV2AggregateAtom = atom<CaseAggregateV2 | null>(null)
@@ -137,20 +138,6 @@ type TemplateFieldInput = { key: string; label: string; kind: string; required: 
   const [runNonce, setRunNonce] = useState(0)
   const currentTemplate = templates.find((template) => template.templateId === current?.caseV2.templateId && template.version === current?.caseV2.templateVersion)
 
-  const registerMaterials = useCallback(() => run(async () => {
-    if (!current) return
-    if (currentTemplate && currentTemplate.materialSlots?.length && !slotId) {
-      toast.error('请先在「材料槽」下拉中选择要登记到哪个槽位')
-      return
-    }
-    const versionIds = await window.reviewAPI.pickRegisterMaterialV2({ caseId: current.caseV2.id, role: 'evidence', materialSlotId: slotId || undefined })
-    if (versionIds.length === 0) { toast.info('未选择文件'); return }
-    const loaded = await window.reviewAPI.openAggregateV2(current.caseV2.id)
-    if (loaded) store.set(reviewV2AggregateAtom, loaded)
-    await refreshList()
-    toast.success(`已登记 ${versionIds.length} 份材料${slotId ? `至槽位 ${slotId}` : ''}`)
-  }), [current, run, store, refreshList, slotId, currentTemplate])
-
   const submitCase = useCallback(() => run(async () => {
     if (!current) return
     const result = await window.reviewAPI.submitCaseV2(current.caseV2.id)
@@ -244,8 +231,18 @@ type TemplateFieldInput = { key: string; label: string; kind: string; required: 
                 ))}
               </ul>
             )}
+            <MaterialDropZone
+              caseId={current.caseV2.id}
+              slotId={slotId}
+              hasSlots={!!currentTemplate?.materialSlots?.length}
+              slotLabel={currentTemplate?.materialSlots?.find((slot) => slot.id === slotId)?.name}
+              onRegistered={() => run(async () => {
+                const loaded = await window.reviewAPI.openAggregateV2(current.caseV2.id)
+                if (loaded) store.set(reviewV2AggregateAtom, loaded)
+                await refreshList()
+              })}
+            />
             <div className="flex flex-wrap gap-1.5">
-              <Button size="sm" variant="outline" onClick={registerMaterials}>登记材料</Button>
               {(current.caseV2.stage === 'draft' || (current.caseV2.stage === 'submitted' && current.tasks.length === 0)) && (
                 <Button size="sm" onClick={submitCase}>{current.caseV2.stage === 'draft' ? '提交案卷' : '恢复审核任务'}</Button>
               )}

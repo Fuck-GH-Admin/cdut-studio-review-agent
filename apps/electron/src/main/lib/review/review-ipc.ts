@@ -434,6 +434,23 @@ export function registerReviewIpc(): void {
     }
     return versionIds
   })
+  // 拖拽登记：渲染层经 webUtils.getPathForFile 拿到本地路径后逐个登记（同一事务链）
+  ipcMain.handle(REVIEW_IPC_CHANNELS.REGISTER_MATERIAL_PATH_V2, async (_e, input: { caseId: string; sourcePath: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string }) => {
+    if (!input || typeof input.sourcePath !== 'string' || !input.sourcePath) throw new Error('参数 sourcePath 非法')
+    const { registerMaterial } = require('./material-service') as typeof import('./material-service')
+    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+    const fresh = getCaseV2Aggregate(input.caseId)
+    if (!fresh) throw new Error(`案卷不存在: ${input.caseId}`)
+    const actor = { actorId: 'local-user', actorSource: 'local' as const, role: 'reviewer' as const }
+    const outcome = (await registerMaterial(input.caseId, {
+      requestId: `reg-drop-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      actor,
+      expectedRevision: fresh.caseV2.revision,
+      payload: { sourcePath: input.sourcePath, role: input.role, materialSlotId: input.materialSlotId },
+    })) as { ok: boolean; message?: string; entity?: { versionId: string } }
+    if (!outcome.ok) throw new Error(outcome.message ?? '登记失败')
+    return outcome.entity?.versionId
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
     const { submitCaseV2 } = require('./stage-workflow') as typeof import('./stage-workflow')

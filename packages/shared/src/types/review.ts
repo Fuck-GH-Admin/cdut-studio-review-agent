@@ -502,6 +502,7 @@ export const REVIEW_IPC_CHANNELS = {
   LIST_CASES_V2: 'review-v2:list-cases',
   SUBMIT_CASE_V2: 'review-v2:submit-case',
   PICK_REGISTER_MATERIAL_V2: 'review-v2:pick-register-material',
+  REGISTER_MATERIAL_PATH_V2: 'review-v2:register-material-path',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */
