@@ -55,6 +55,8 @@ export interface ReviewChatOptions {
   maxTokens?: number
   /** 单次请求超时（缺省 60 秒；长上下文审核运行传 REVIEW_RUN_TIMEOUT_MS） */
   timeoutMs?: number
+  /** 外部取消信号（08 设计：run 级取消穿透到网络请求；超时仍走内部 timer） */
+  signal?: AbortSignal
 }
 
 /** 调用结果（含降级标记，供调用方在结论/报告里如实标注） */
@@ -326,11 +328,18 @@ async function performChatCompletion(
   const timeoutMs = options?.timeoutMs ?? REQUEST_TIMEOUT_MS
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), timeoutMs)
+  // 外部取消信号（run 级取消）穿透：触发即中止请求与退避等待
+  const externalSignal = options?.signal
+  if (externalSignal) {
+    if (externalSignal.aborted) controller.abort()
+    else externalSignal.addEventListener('abort', () => controller.abort(), { once: true })
+  }
 
   try {
     // 429 限流重试：免费渠道并发池紧张（服务端提示 retry later），最多 3 次指数退避
     const MAX_RETRIES = 3
     for (let attempt = 0; ; attempt += 1) {
+      if (externalSignal?.aborted) throw new Error('模型请求已取消')
       const response = await fetchFn(url, {
         method: 'POST',
         headers,
@@ -341,7 +350,11 @@ async function performChatCompletion(
       if (response.status === 429 && attempt < MAX_RETRIES) {
         const backoffMs = 8000 * (attempt + 1)
         console.warn(`[审核专区] 模型限流（429），${backoffMs / 1000}s 后第 ${attempt + 1} 次重试`)
-        await new Promise((resolve) => setTimeout(resolve, backoffMs))
+        await new Promise<void>((resolve, reject) => {
+          const backoffTimer = setTimeout(resolve, backoffMs)
+          // 退避期间外部取消立即中止等待
+          externalSignal?.addEventListener('abort', () => { clearTimeout(backoffTimer); reject(new Error('模型请求已取消')) }, { once: true })
+        })
         continue
       }
 
@@ -355,7 +368,10 @@ async function performChatCompletion(
       return extractChatContent(data, isOllama)
     }
   } catch (error) {
+    if (error instanceof Error && error.message === '模型请求已取消') throw error
     if (error instanceof Error && error.name === 'AbortError') {
+      // 外部取消与内部超时共用 AbortController：按信号来源区分语义
+      if (externalSignal?.aborted) throw new Error('模型请求已取消')
       throw new Error(`模型请求超时（超过 ${timeoutMs / 1000} 秒未响应）`)
     }
     if (error instanceof Error && error.message.startsWith('模型请求失败')) throw error

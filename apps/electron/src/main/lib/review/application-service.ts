@@ -9,7 +9,7 @@
  * AI 工具不能直接调用这些命令的人工动作；actor 来源按命令传入（本地模式 local）。
  */
 
-import type { Actor, EvidenceLink, FieldValue, Observation, ReviewCaseV2, TemplateVersion } from '@profer/shared'
+import type { Actor, CommandReceipt, EvidenceLink, FieldValue, Observation, ReviewCaseV2, TemplateVersion } from '@profer/shared'
 import { buildEvidenceLinks, recordObservation } from './evidence-service'
 import { getTemplate } from './template-store'
 import { validatePolicyRef } from './policy-store'
@@ -85,9 +85,10 @@ export async function createCaseFromTemplate(
     createdAt: now,
     updatedAt: now,
   }
-  await createAggregate(caseId, caseV2)
+  const receipt: CommandReceipt = { requestId: `create-${caseId}`, type: 'CreateCaseFromTemplate', payloadHash: payloadHash('CreateCaseFromTemplate', payload), revision: 0, at: now, summary: `案卷已创建（${template.name}）`, actor }
+  await createAggregate(caseId, caseV2, receipt)
   const aggregate = readAggregate(caseId)!
-  return { ok: true, receipt: { requestId: `create-${caseId}`, type: 'CreateCaseFromTemplate', payloadHash: payloadHash('CreateCaseFromTemplate', payload), revision: 0, at: now, summary: `案卷已创建（${template.name}）` }, aggregate, entity: aggregate.caseV2 }
+  return { ok: true, receipt, aggregate, entity: aggregate.caseV2 }
 }
 
 // ===== G03：字段类型与作用域校验（模板 schema 驱动） =====

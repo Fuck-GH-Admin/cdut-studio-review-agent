@@ -48,6 +48,8 @@ export interface StartRunOptions {
   resumeRunId?: string
   onEvent?: (event: RunEvent) => void
   cancelled?: () => boolean
+  /** 外部取消信号（08 设计：取消穿透到模型请求网络层） */
+  signal?: AbortSignal
 }
 
 /**

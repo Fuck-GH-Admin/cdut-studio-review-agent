@@ -99,11 +99,20 @@ export function payloadHash(type: string, payload: unknown): string {
 /** 命令处理器：只做校验与纯变更（不动 revision、不落盘）；抛 CommandError 中止 */
 export type CommandHandler<TPayload, TEntity = TPayload> = (aggregate: CaseAggregateV2, payload: TPayload) => { summary: string; mutate: (aggregate: CaseAggregateV2) => TEntity | void } | never
 
+/** 命令来源元数据（08 设计：Agent 代操作时的指派与会话追溯） */
+export interface CommandSourceMeta {
+  /** 可信指派 ID（ReviewAgentAssignment.id；人工操作缺省） */
+  assignmentId?: string
+  /** 发起会话完整 ID（显示用短码由 UI 派生） */
+  sessionId?: string
+}
+
 /** 应用命令事务（07 §3.3 全步骤；幂等/冲突/校验失败不写部分业务数据） */
 export async function submitCommand<TPayload, TEntity = TPayload>(
   caseId: string,
   command: { requestId: string; actor: Actor; expectedRevision: number; type: string; payload: TPayload },
   handler: CommandHandler<TPayload, TEntity>,
+  source?: CommandSourceMeta,
 ): Promise<ReviewCommandResult<TEntity>> {
   return enqueueCase(caseId, async (): Promise<ReviewCommandResult<TEntity>> => {
     const aggregate = readAggregate(caseId)
@@ -135,7 +144,8 @@ export async function submitCommand<TPayload, TEntity = TPayload>(
     const entity = applied.mutate(draft)
     // revision 由事务统一 +1 一次
     draft.caseV2 = { ...draft.caseV2, revision: aggregate.caseV2.revision + 1, updatedAt: new Date().toISOString() }
-    const receipt: CommandReceipt = { requestId: command.requestId, type: command.type, payloadHash: hash, revision: draft.caseV2.revision, at: new Date().toISOString(), summary: applied.summary }
+    // 操作者与指派来源同事务落盘（08 设计：时间线可辨人工/AI；旧记录无此字段按未记录呈现）
+    const receipt: CommandReceipt = { requestId: command.requestId, type: command.type, payloadHash: hash, revision: draft.caseV2.revision, at: new Date().toISOString(), summary: applied.summary, actor: command.actor, ...(source ?? {}) }
     draft.receiptLog = [...draft.receiptLog, receipt]
 
     // 回执与业务变化同一事务落盘
@@ -152,9 +162,12 @@ export class CommandValidationError extends Error {
 }
 
 /** 创建新案卷聚合（CreateCaseFromTemplate 专用：不走 expectedRevision，revision=0 起） */
-export async function createAggregate(caseId: string, caseV2: ReviewCaseV2): Promise<void> {
+export async function createAggregate(caseId: string, caseV2: ReviewCaseV2, initialReceipt?: CommandReceipt): Promise<void> {
   await enqueueCase(caseId, async () => {
     if (existsSync(aggregatePath(caseId))) throw new CommandValidationError('INVALID_TRANSITION', `案卷聚合已存在: ${caseId}`)
-    writeAggregate(emptyAggregate(caseV2))
+    const fresh = emptyAggregate(caseV2)
+    // 创建回执与创建动作同事务落盘（08 设计：创建动作可追溯）
+    if (initialReceipt) fresh.receiptLog = [initialReceipt]
+    writeAggregate(fresh)
   })
 }

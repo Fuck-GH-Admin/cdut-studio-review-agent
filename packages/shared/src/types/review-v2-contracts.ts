@@ -286,6 +286,12 @@ export interface CommandReceipt {
   revision: number
   at: string
   summary: string
+  /** 操作者（08 设计：时间线可辨人工/AI；旧记录缺省按"未记录"呈现） */
+  actor?: Actor
+  /** 命令的可信指派来源（C1：ReviewAgentAssignment.id；人工操作缺省） */
+  assignmentId?: string
+  /** 发起会话（Agent 操作可追溯完整身份；短码仅显示用） */
+  sessionId?: string
 }
 
 /** 单案业务聚合（state.v2.json 形态；07 §3.3） */
@@ -315,6 +321,7 @@ export interface CaseAggregateV2 {
 
 export type CommandErrorCode =
   | 'VERSION_CONFLICT' | 'NOT_FOUND' | 'VALIDATION_FAILED' | 'REQUEST_ID_COLLISION' | 'INVALID_TRANSITION' | 'DEPENDENCY_UNRESOLVED'
+  | 'AGENT_DECISION_DISABLED'
 
 export type ReviewCommandResult<TEntity = unknown> =
   | { ok: true; receipt: CommandReceipt; aggregate: CaseAggregateV2; entity?: TEntity }

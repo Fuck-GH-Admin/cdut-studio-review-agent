@@ -248,40 +248,9 @@ export function registerReviewIpc(): void {
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.EXPORT_REPORT_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
-    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
-    const { buildCaseFeedback } = require('./report-service-v2') as typeof import('./report-service-v2')
-    const aggregate = getCaseV2Aggregate(caseId)
-    if (!aggregate) throw new Error(`案卷聚合不存在: ${caseId}`)
-    // 公开反馈投影（字段可见性按模板默认 public）+ 真实检查结果摘要，写 MD 落盘
-    const feedback = buildCaseFeedback(aggregate.caseV2, aggregate.decisions, aggregate.supplements, {})
-    const { listRunsV2, readArtifact } = require('./run-store-v2') as typeof import('./run-store-v2')
-    const completed = listRunsV2(caseId).filter((run) => run.status === 'completed')
-    const lastRun = completed[0]
-    const lines: string[] = [`# 审核报告：${aggregate.caseV2.title}`, '', `- 案卷：${caseId}`, `- 阶段：${aggregate.caseV2.stage}（revision ${aggregate.caseV2.revision}）`, '']
-    if (feedback.decision) lines.push(`## 决定`, `- 结果：${feedback.decision.result}`, `- 理由：${feedback.decision.reason}`, `- 时间：${feedback.decision.at}`, '')
-    if (lastRun) {
-      lines.push(`## 检查结果（运行 ${lastRun.id}）`)
-      for (const check of lastRun.checks) {
-        const item = check as { ruleId: string; status: string; reason?: string }
-        lines.push(`- ${item.ruleId}：${item.status}${item.reason ? `——${item.reason}` : ''}`)
-      }
-      lines.push('')
-    }
-    if (feedback.supplements.length > 0) {
-      lines.push('## 补件')
-      for (const supplement of feedback.supplements) lines.push(`- ${supplement.reason}（${supplement.status}，要素：${supplement.requiredElements.join('、') || '—'}）`)
-      lines.push('')
-    }
-    lines.push('## 事项字段')
-    for (const item of feedback.items) lines.push(`- ${item.title}：${JSON.stringify(item.publicFields)}`)
-    const { writeFileSync, mkdirSync } = require('node:fs') as typeof import('node:fs')
-    const { join } = require('node:path') as typeof import('node:path')
-    const { getConfigDir } = require('../config-paths') as typeof import('../config-paths')
-    const dir = join(getConfigDir(), 'review-cases', caseId, 'reports')
-    mkdirSync(dir, { recursive: true })
-    const file = join(dir, `report-${Date.now().toString(36)}.md`)
-    writeFileSync(file, lines.join('\n'), 'utf-8')
-    return { file, decision: feedback.decision }
+    // 薄委托共享导出服务（08 设计：IPC 与 Agent 工具同服务函数）
+    const { exportCaseReport } = require('./report-export-v2-service') as typeof import('./report-export-v2-service')
+    return exportCaseReport(caseId)
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_RUN_OBSERVATIONS_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
@@ -350,31 +319,9 @@ export function registerReviewIpc(): void {
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, async (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
-    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
-    const { getTemplate } = require('./template-store') as typeof import('./template-store')
-    const { runReviewCaseV2 } = require('./run-service-v2') as typeof import('./run-service-v2')
-    const { resolveReviewGatewayChannel, chatCompletion, REVIEW_RUN_TIMEOUT_MS } = require('./review-model-gateway') as typeof import('./review-model-gateway')
-    const { assembleV2Executors } = require('./v2-executor-factory') as typeof import('./v2-executor-factory')
-    const aggregate = getCaseV2Aggregate(caseId)
-    if (!aggregate) throw new Error(`案卷聚合不存在: ${caseId}`)
-    const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
-    if (!template) throw new Error(`模板不存在: ${aggregate.caseV2.templateId}@${aggregate.caseV2.templateVersion}`)
-    const resolved = resolveReviewGatewayChannel()
-    if (!resolved) throw new Error('未配置可用模型渠道，无法执行真实审核（请在设置中配置渠道）')
-    const client = {
-      protocol: (resolved.channel as { protocol?: string }).protocol ?? 'openai-chat',
-      complete: async (input: { prompt: string; system: string; signal?: AbortSignal }) => ({
-        content: await chatCompletion(resolved.channel, [
-          { role: 'system', content: input.system },
-          { role: 'user', content: input.prompt },
-        ], { timeoutMs: REVIEW_RUN_TIMEOUT_MS }),
-      }),
-    }
-    // 真实 OCR：系统 tesseract CLI 探测可用即注入（不可用如实降级，材料记 unread）
-    const { SystemTesseractOcrPort } = require('./system-tesseract-ocr-adapter') as typeof import('./system-tesseract-ocr-adapter')
-    const ocrPort = SystemTesseractOcrPort.create()
-    const executors = await assembleV2Executors(aggregate, template, { client, ocrPort })
-    return runReviewCaseV2(aggregate.caseV2, template, executors, {})
+    // 薄委托共享运行服务（08 设计：IPC 与 Agent 工具同服务函数；人工发起 local-user）
+    const { assembleAndRunReview } = require('./run-async-service') as typeof import('./run-async-service')
+    return assembleAndRunReview(caseId)
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.CAST_RATING_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { castRating } = require('./rating-service') as typeof import('./rating-service')

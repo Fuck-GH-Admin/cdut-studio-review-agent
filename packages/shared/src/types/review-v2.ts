@@ -274,7 +274,7 @@ export interface ReviewCaseV2 {
   createdAt: string
   updatedAt: string
   /** 提交者主体（本地模式为 local 身份） */
-  submitter?: { actorId: string; actorSource: 'local' | 'mock' | 'school' }
+  submitter?: { actorId: string; actorSource: ActorSource }
 }
 
 // ===== 事实与证据 =====
@@ -356,7 +356,7 @@ export type FindingDisposition = 'pending' | 'confirmed-issue' | 'false-positive
 export interface FindingDispositionRecord {
   findingKey: string
   disposition: FindingDisposition
-  actor: { actorId: string; actorSource: 'local' | 'mock' | 'school'; role: RoleId }
+  actor: Actor
   reason: string
   at: string
 }
@@ -411,6 +411,8 @@ export interface ReviewRunV2 {
   startedAt: string
   completedAt?: string
   error?: string
+  /** 运行发起者（08 设计：时间线可辨人工/AI）；旧运行无此字段按"未记录"呈现 */
+  initiatedBy?: Actor
 }
 
 // ===== 业务决定与任务 =====
@@ -418,7 +420,7 @@ export interface ReviewRunV2 {
 /** 业务决定：AI 建议不是决定（02 §7） */
 export interface BusinessDecision {
   id: string
-  actor: { actorId: string; actorSource: 'local' | 'mock' | 'school'; role: RoleId }
+  actor: Actor
   scope: { kind: 'subject' | 'case'; ids: string[] }
   stageId: string
   result: 'pass' | 'partial-pass' | 'return' | 'reject' | 'withdraw'
@@ -458,7 +460,7 @@ export interface Appeal {
   id: string
   caseId: string
   againstDecisionId: string
-  appellant: { actorId: string; actorSource: 'local' | 'mock' | 'school' }
+  appellant: { actorId: string; actorSource: ActorSource }
   statement: string
   newEvidenceDocumentVersionIds: string[]
   status: 'submitted' | 'in-review' | 'upheld' | 'overturned' | 'withdrawn'
@@ -522,10 +524,13 @@ export interface SyncReceipt {
 
 // ===== 应用命令契约（M1：03 §7 应用命令与查询契约） =====
 
-/** 命令执行主体（本地/模拟/校方认证三来源；本地手填身份不得冒充校方授权） */
+/** 操作者来源（08 设计 §2.3：'agent' = 本机通用 Agent 代操作，由用户显式指派；不冒充校方授权） */
+export type ActorSource = 'local' | 'mock' | 'school' | 'agent'
+
+/** 命令执行主体（本地/模拟/校方认证/Agent 代操作四来源；本地手填身份不得冒充校方授权） */
 export interface Actor {
   actorId: string
-  actorSource: 'local' | 'mock' | 'school'
+  actorSource: ActorSource
   role: RoleId
 }
 

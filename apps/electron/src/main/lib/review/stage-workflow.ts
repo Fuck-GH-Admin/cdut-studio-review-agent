@@ -13,7 +13,7 @@
  */
 
 import type { Appeal, BusinessDecision, CaseAggregateV2, ReviewCommandResult, SupplementRequest, TemplateVersion, WorkflowTask } from '@profer/shared'
-import { CommandValidationError, submitCommand } from './case-store-v2'
+import { CommandValidationError, submitCommand, type CommandSourceMeta } from './case-store-v2'
 import type { Actor } from '@profer/shared'
 
 // ===== 任务创建（提交案卷时按模板首阶段建任务） =====
@@ -35,6 +35,23 @@ export async function ensureInitialTask(caseId: string, template: TemplateVersio
 }
 
 // ===== 阶段决定（06 §5.2 动作表） =====
+
+// ===== 决定类命令的 Agent 代批门控（08 设计 §2.1；C1：默认禁止） =====
+
+/**
+ * 断言决定类命令的操作者合法性。
+ * - 人工来源（local/mock/school）：放行（业务角色门控由各命令原有校验负责）。
+ * - Agent 来源：C1 一律拒绝（AGENT_DECISION_DISABLED）；C2 将在此接入代批开关，
+ *   开关读取放在事务校验内（排队期间关闭开关也生效）。
+ * 覆盖范围：RecordStageDecision 全部改变决定的动作 + ResolveSupplement；
+ * RespondSupplement 是提交者侧动作，不受此门控（由指派与归属校验约束）。
+ */
+function assertAgentDecisionAllowed(command: { actor: Actor; type: string }): void {
+  if (command.actor.actorSource !== 'agent') return
+  throw new CommandValidationError('AGENT_DECISION_DISABLED', 'AI 代批未开启：此类决定需要人工做出（可在审核专区高级设置中开启并确认风险）')
+}
+
+
 
 export type StageDecisionAction = 'stage-pass' | 'item-pass' | 'item-partial-pass' | 'return-for-supplement' | 'return-to-previous-stage' | 'final-reject' | 'withdraw'
 
@@ -61,6 +78,8 @@ export function recordStageDecision(
   template: TemplateVersion,
 ): Promise<ReviewCommandResult<{ decision: BusinessDecision; task?: WorkflowTask; supplement?: SupplementRequest }>> {
   return submitCommand<StageDecisionPayload, { decision: BusinessDecision; task?: WorkflowTask; supplement?: SupplementRequest }>(caseId, { ...command, type: 'RecordStageDecision' }, (aggregate, payload) => {
+    // Agent 代批门控：在事务校验内、任何业务变更前检查（排队期间关闭也生效）
+    assertAgentDecisionAllowed({ actor: command.actor, type: 'RecordStageDecision' })
     const task = aggregate.tasks.find((candidate) => candidate.id === payload.taskId && candidate.status === 'open')
     if (!task) throw new CommandValidationError('INVALID_TRANSITION', '当前阶段没有开放任务（或已处理）')
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '决定必须附理由')
@@ -173,6 +192,8 @@ export function respondSupplementV2(caseId: string, command: { requestId: string
 /** 补件判定：satisfied → 全部未结束请求结束才恢复，并按原阶段回流任务（G05：修正"补件后没有任务"） */
 export function resolveSupplementV2(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: { supplementId: string; outcome: 'satisfied' | 'insufficient' | 'cancelled'; reason: string } }): Promise<ReviewCommandResult<SupplementRequest>> {
   return submitCommand<{ supplementId: string; outcome: 'satisfied' | 'insufficient' | 'cancelled'; reason: string }, SupplementRequest>(caseId, { ...command, type: 'ResolveSupplement' }, (aggregate, payload) => {
+    // Agent 代批门控：判定满足/不足属于审核决定（08 设计 §2.1）
+    assertAgentDecisionAllowed({ actor: command.actor, type: 'ResolveSupplement' })
     const target = aggregate.supplements.find((request) => request.id === payload.supplementId)
     if (!target) throw new CommandValidationError('NOT_FOUND', `补件请求不存在: ${payload.supplementId}`)
     if (target.status !== 'open' && target.status !== 'responded') throw new CommandValidationError('INVALID_TRANSITION', `补件已关闭（${target.status}）`)
@@ -260,7 +281,7 @@ export function resolveFinalDecisionProjection(decisions: BusinessDecision[]): {
 
 // ===== 提交案卷（G01：draft → submitted + 首阶段任务） =====
 
-export async function submitCaseV2(caseId: string): Promise<ReviewCommandResult<WorkflowTask>> {
+export async function submitCaseV2(caseId: string, actor?: Actor, source?: CommandSourceMeta): Promise<ReviewCommandResult<WorkflowTask>> {
   const { getTemplate } = await import('./template-store')
   const aggregate = (await import('./case-store-v2')).readAggregate(caseId)
   if (!aggregate) throw new CommandValidationError('NOT_FOUND', `案卷聚合不存在: ${caseId}`)
@@ -286,7 +307,7 @@ export async function submitCaseV2(caseId: string): Promise<ReviewCommandResult<
   // 状态和首任务在同一个聚合事务内保存，避免两次写入间出现已提交却无任务。
   return submitCommand<Record<string, never>, WorkflowTask>(caseId, {
     requestId: `submit-${caseId}-${aggregate.caseV2.revision}`,
-    actor: { actorId: 'local-user', actorSource: 'local', role: 'reviewer' },
+    actor: actor ?? { actorId: 'local-user', actorSource: 'local', role: 'reviewer' },
     expectedRevision: aggregate.caseV2.revision,
     type: 'SubmitCase',
     payload: {},
@@ -307,5 +328,5 @@ export async function submitCaseV2(caseId: string): Promise<ReviewCommandResult<
       draft.tasks = [...draft.tasks, task]
       return task
     },
-  }))
+  }), source)
 }
