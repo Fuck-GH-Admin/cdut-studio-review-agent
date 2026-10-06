@@ -27,6 +27,35 @@ export function saveRunV2(run: ReviewRunV2): void {
   renameSync(tmp, filePath)
 }
 
+
+/** 启动恢复：把上次进程崩溃/重启遗留的 queued/running 运行标 interrupted（08 设计 §5：不能留永久 running 文件） */
+export function markStaleRunsInterrupted(caseId?: string): number {
+  const baseDir = join(getConfigDir(), 'review-cases')
+  if (!existsSync(baseDir)) return 0
+  let count = 0
+  for (const entry of readdirSync(baseDir)) {
+    if (caseId && entry !== caseId) continue
+    const runsDir = join(baseDir, entry, 'runs-v2')
+    if (!existsSync(runsDir)) continue
+    for (const file of readdirSync(runsDir)) {
+      if (!file.endsWith('.json')) continue
+      const filePath = join(runsDir, file)
+      try {
+        const run = JSON.parse(readFileSync(filePath, 'utf-8')) as ReviewRunV2
+        if (run.status === 'running' || run.status === 'queued') {
+          run.status = 'failed'
+          run.error = '应用重启导致运行中断（材料与检查点已保留，可续跑）'
+          run.completedAt = new Date().toISOString()
+          run.diagnostics = [...(run.diagnostics ?? []), 'interrupted: 进程重启']
+          writeFileSync(filePath, `${JSON.stringify(run, null, 2)}\n`, 'utf-8')
+          count += 1
+        }
+      } catch { /* 跳过损坏文件 */ }
+    }
+  }
+  return count
+}
+
 export function getRunV2(caseId: string, runId: string): ReviewRunV2 | undefined {
   const filePath = runPath(caseId, runId)
   if (!existsSync(filePath)) return undefined

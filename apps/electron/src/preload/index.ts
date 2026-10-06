@@ -3660,8 +3660,8 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSIGNMENT_REVOKE_V2, assignmentId) as Promise<boolean>,
   listAssignmentsV2: (sessionId?: string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSIGNMENT_LIST_V2, sessionId) as Promise<Array<Record<string, unknown>>>,
-  getCaseTimelineV2: (caseId: string) =>
-    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CASE_TIMELINE_V2, caseId) as Promise<Array<Record<string, unknown>>>,
+  getCaseTimelineV2: (input: { caseId: string; filterOperator?: 'human' | 'agent' | 'mock' | 'school' | 'unknown' }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CASE_TIMELINE_V2, input) as Promise<Array<Record<string, unknown>>>,
   getRunObservationsV2: (caseId: string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_RUN_OBSERVATIONS_V2, caseId) as Promise<Array<Record<string, unknown>>>,
   correctObservationV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>

@@ -30,17 +30,24 @@ const BADGE_TEXT: Record<TimelineRow['operatorKind'], string> = {
   unknown: '未记录',
 }
 
+const FILTERS: Array<{ key: TimelineRow['operatorKind'] | 'all'; label: string }> = [
+  { key: 'all', label: '全部' },
+  { key: 'agent', label: 'AI Agent' },
+  { key: 'human', label: '人工' },
+]
+
 export function CaseTimelinePanel({ caseId, refreshNonce }: { caseId: string; refreshNonce: number }): JSX.Element {
   const [rows, setRows] = useState<TimelineRow[]>([])
+  const [filter, setFilter] = useState<TimelineRow['operatorKind'] | 'all'>('all')
 
   const load = useCallback(async (): Promise<void> => {
     try {
-      const list = await window.reviewAPI.getCaseTimelineV2(caseId)
+      const list = await window.reviewAPI.getCaseTimelineV2({ caseId, filterOperator: filter === 'all' ? undefined : filter })
       setRows((list ?? []) as unknown as TimelineRow[])
     } catch (error) {
       console.error('[V2] 时间线加载失败', error)
     }
-  }, [caseId])
+  }, [caseId, filter])
 
   useEffect(() => { void load() }, [load, refreshNonce])
 
@@ -50,7 +57,14 @@ export function CaseTimelinePanel({ caseId, refreshNonce }: { caseId: string; re
 
   return (
     <div className="space-y-1 rounded-lg border-t pt-2">
-      <p className="text-xs font-medium">案卷时间线（{rows.length}）</p>
+      <div className="flex items-center gap-1.5">
+        <p className="text-xs font-medium">案卷时间线（{rows.length}）</p>
+        {FILTERS.map((item) => (
+          <button key={item.key} type="button" className={`rounded px-1.5 py-0.5 text-[10px] ${filter === item.key ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'}`} onClick={() => setFilter(item.key)}>
+            {item.label}
+          </button>
+        ))}
+      </div>
       {rows.slice(0, 30).map((row, index) => (
         <div key={index} className="flex items-start gap-2 rounded px-2 py-1 text-xs hover:bg-muted/40">
           <span className="shrink-0 font-mono text-muted-foreground">{row.at.slice(5, 19)}</span>

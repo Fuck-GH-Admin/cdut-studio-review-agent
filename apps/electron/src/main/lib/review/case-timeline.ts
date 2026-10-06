@@ -35,8 +35,12 @@ function operatorOf(actorSource?: string, actorId?: string): { operatorKind: Tim
   }
 }
 
-/** 构建案卷时间线（回执 + 运行 + 决定；倒序） */
-export function buildCaseTimeline(aggregate: CaseAggregateV2, runs?: Array<{ id: string; status: string; startedAt: string; initiatedBy?: { actorSource: string; actorId: string } }>): TimelineEntry[] {
+/** 构建案卷时间线（回执 + 运行 + 决定；倒序；filterOperator 可选过滤操作者类别） */
+export function buildCaseTimeline(
+  aggregate: CaseAggregateV2,
+  runs?: Array<{ id: string; status: string; startedAt: string; initiatedBy?: { actorSource: string; actorId: string } }>,
+  filterOperator?: TimelineEntry['operatorKind'],
+): TimelineEntry[] {
   const entries: TimelineEntry[] = []
 
   for (const receipt of aggregate.receiptLog) {
@@ -49,5 +53,6 @@ export function buildCaseTimeline(aggregate: CaseAggregateV2, runs?: Array<{ id:
     entries.push({ at: run.startedAt, action: `发起审核运行 ${run.id}`, operatorKind, operatorLabel, detail: `状态 ${run.status}` })
   }
 
-  return entries.sort((a, b) => b.at.localeCompare(a.at))
+  const sorted = entries.sort((a, b) => b.at.localeCompare(a.at))
+  return filterOperator ? sorted.filter((entry) => entry.operatorKind === filterOperator) : sorted
 }

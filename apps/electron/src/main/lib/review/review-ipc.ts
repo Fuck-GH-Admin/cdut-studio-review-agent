@@ -65,6 +65,14 @@ function requireString(value: unknown, name: string): string {
  * 由 registerIpcHandlers() 在应用启动时调用一次（幂等由外层守卫保证）。
  */
 export function registerReviewIpc(): void {
+  // 启动恢复：上次进程遗留的 queued/running 运行标 interrupted（08 设计 §5）
+  try {
+    const { markStaleRunsInterrupted } = require('./run-store-v2') as typeof import('./run-store-v2')
+    const recovered = markStaleRunsInterrupted()
+    if (recovered > 0) console.log(`[审核V2] 启动恢复：${recovered} 个中断运行已标记（可续跑）`)
+  } catch (error) {
+    console.warn('[审核V2] 启动恢复检查失败:', error)
+  }
   // ===== 案卷管理 =====
 
   /** 载入演示案卷（首次复制进配置目录，之后读存储） */
@@ -267,14 +275,14 @@ export function registerReviewIpc(): void {
     const { listAssignments } = require('./review-agent-assignment') as typeof import('./review-agent-assignment')
     return listAssignments(sessionId)
   })
-  ipcMain.handle(REVIEW_IPC_CHANNELS.CASE_TIMELINE_V2, (_e, caseId: string) => {
-    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CASE_TIMELINE_V2, (_e, input: { caseId: string; filterOperator?: 'human' | 'agent' | 'mock' | 'school' | 'unknown' }) => {
+    if (!input || typeof input !== 'object' || typeof input.caseId !== 'string' || !input.caseId) throw new Error('参数 caseId 非法')
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
     const { buildCaseTimeline } = require('./case-timeline') as typeof import('./case-timeline')
     const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
-    const aggregate = getCaseV2Aggregate(caseId)
-    if (!aggregate) throw new Error(`案卷聚合不存在: ${caseId}`)
-    return buildCaseTimeline(aggregate, listRunsV2(caseId))
+    const aggregate = getCaseV2Aggregate(input.caseId)
+    if (!aggregate) throw new Error(`案卷聚合不存在: ${input.caseId}`)
+    return buildCaseTimeline(aggregate, listRunsV2(input.caseId), input.filterOperator)
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_RUN_OBSERVATIONS_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
