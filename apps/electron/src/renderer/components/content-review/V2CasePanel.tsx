@@ -31,7 +31,7 @@ export function V2CasePanel(): JSX.Element {
   const setNotice = useSetAtom(reviewV2NoticeAtom)
 
 interface CaseListEntry { caseId: string; title: string; stage: string; revision: number; templateId: string; templateVersion: number; updatedAt: string }
-interface TemplateLite { templateId: string; version: number; name: string; status: string; fields: Array<{ key: string; label: string; kind: string; required: boolean; scope?: string }> }
+interface TemplateLite { templateId: string; version: number; name: string; status: string; fields: Array<{ key: string; label: string; kind: string; required: boolean; scope?: string }>; materialSlots?: Array<{ id: string; name: string; minCount?: number }> }
 type TemplateFieldInput = { key: string; label: string; kind: string; required: boolean }
 
   const [caseList, setCaseList] = useState<CaseListEntry[]>([])
@@ -139,13 +139,17 @@ type TemplateFieldInput = { key: string; label: string; kind: string; required: 
 
   const registerMaterials = useCallback(() => run(async () => {
     if (!current) return
+    if (currentTemplate && currentTemplate.materialSlots?.length && !slotId) {
+      toast.error('请先在「材料槽」下拉中选择要登记到哪个槽位')
+      return
+    }
     const versionIds = await window.reviewAPI.pickRegisterMaterialV2({ caseId: current.caseV2.id, role: 'evidence', materialSlotId: slotId || undefined })
     if (versionIds.length === 0) { toast.info('未选择文件'); return }
     const loaded = await window.reviewAPI.openAggregateV2(current.caseV2.id)
     if (loaded) store.set(reviewV2AggregateAtom, loaded)
     await refreshList()
     toast.success(`已登记 ${versionIds.length} 份材料${slotId ? `至槽位 ${slotId}` : ''}`)
-  }), [current, run, store, refreshList, slotId])
+  }), [current, run, store, refreshList, slotId, currentTemplate])
 
   const submitCase = useCallback(() => run(async () => {
     if (!current) return
@@ -234,7 +238,7 @@ type TemplateFieldInput = { key: string; label: string; kind: string; required: 
               </div>
             )}
             {current.caseV2.documents.length > 0 && (
-              <ul className="list-disc pl-4 text-muted-foreground">
+              <ul className="list-disc space-y-1 pl-4 text-[13px] text-muted-foreground">
                 {current.caseV2.documents.map((doc) => (
                   <li key={doc.versionId}>{doc.fileName} · {doc.versionId.slice(-8)}{doc.active === false ? '（旧版）' : ''}{doc.materialSlotId ? ` · ${doc.materialSlotId}` : ''}</li>
                 ))}

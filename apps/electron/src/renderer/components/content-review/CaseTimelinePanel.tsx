@@ -52,13 +52,13 @@ export function CaseTimelinePanel({ caseId, refreshNonce }: { caseId: string; re
   useEffect(() => { void load() }, [load, refreshNonce])
 
   if (rows.length === 0) {
-    return <div className="rounded-lg border-t pt-2 text-xs text-muted-foreground">尚无时间线记录</div>
+    return <div className="rounded-lg border-t pt-3 text-[13px] text-muted-foreground">尚无时间线记录</div>
   }
 
   return (
-    <div className="space-y-1 rounded-lg border-t pt-2">
-      <div className="flex items-center gap-1.5">
-        <p className="text-xs font-medium">案卷时间线（{rows.length}）</p>
+    <div className="space-y-1.5 rounded-lg border-t pt-3">
+      <div className="flex items-center gap-2">
+        <p className="text-[13px] font-semibold">案卷时间线（{rows.length}）</p>
         {FILTERS.map((item) => (
           <button key={item.key} type="button" className={`rounded px-1.5 py-0.5 text-[10px] ${filter === item.key ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'}`} onClick={() => setFilter(item.key)}>
             {item.label}
@@ -66,13 +66,13 @@ export function CaseTimelinePanel({ caseId, refreshNonce }: { caseId: string; re
         ))}
       </div>
       {rows.slice(0, 30).map((row, index) => (
-        <div key={index} className="flex items-start gap-2 rounded px-2 py-1 text-xs hover:bg-muted/40">
+        <div key={index} className="flex items-start gap-2.5 rounded px-2 py-1.5 text-[13px] hover:bg-muted/40">
           <span className="shrink-0 font-mono text-muted-foreground">{row.at.slice(5, 19)}</span>
-          <span className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium ${BADGE_STYLE[row.operatorKind]}`}>{BADGE_TEXT[row.operatorKind]}</span>
+          <span className={`shrink-0 rounded px-1.5 py-0.5 text-xs font-medium ${BADGE_STYLE[row.operatorKind]}`}>{BADGE_TEXT[row.operatorKind]}</span>
           <span className="min-w-0 flex-1 truncate" title={`${row.action} · ${row.operatorLabel} · ${row.detail}`}>{row.action}</span>
         </div>
       ))}
-      {rows.length > 30 && <p className="px-2 text-[10px] text-muted-foreground">仅显示最近 30 条（共 {rows.length}）</p>}
+      {rows.length > 30 && <p className="px-2 text-xs text-muted-foreground">仅显示最近 30 条（共 {rows.length}）</p>}
     </div>
   )
 }

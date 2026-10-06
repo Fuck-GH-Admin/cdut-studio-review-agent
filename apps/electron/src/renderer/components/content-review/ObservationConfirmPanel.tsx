@@ -77,17 +77,17 @@ export function ObservationConfirmPanel({ caseId, aggregate, onResult, refreshNo
   }, [caseId, aggregate, onResult, load, editValue, editReason])
 
   if (rows.length === 0) {
-    return <div className="rounded-lg border-t pt-2 text-xs text-muted-foreground">尚无 AI 抽取条目（完成一次自动审核后此处可人工确认/更正）</div>
+    return <div className="rounded-lg border-t pt-3 text-[13px] text-muted-foreground">尚无 AI 抽取条目（完成一次自动审核后此处可人工确认/更正）</div>
   }
 
   return (
-    <div className="space-y-1.5 rounded-lg border-t pt-2">
-      <p className="text-xs font-medium">AI 抽取条目（{rows.length}）· 人工确认</p>
+    <div className="space-y-2 rounded-lg border-t pt-3">
+      <p className="text-[13px] font-semibold">AI 抽取条目（{rows.length}）· 人工确认</p>
       {rows.map((row, index) => {
         const key = `${row.subjectId}.${row.fieldKey}`
         const valueText = typeof row.value === 'object' && row.value !== null ? JSON.stringify((row.value as { value?: unknown }).value ?? row.value) : String(row.value)
         return (
-          <div key={index} className="rounded bg-muted/40 px-2 py-1.5 text-xs">
+          <div key={index} className="rounded bg-muted/40 px-2.5 py-2 text-[13px]">
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0 flex-1">
                 <span className="font-medium">{row.fieldKey}</span>
@@ -109,8 +109,8 @@ export function ObservationConfirmPanel({ caseId, aggregate, onResult, refreshNo
             </div>
             {editingKey === key && (
               <div className="mt-1.5 flex items-center gap-1">
-                <input className="w-40 rounded border px-1.5 py-0.5 text-xs" value={editValue} onChange={(event) => setEditValue(event.target.value)} placeholder="更正后的值" />
-                <input className="flex-1 rounded border px-1.5 py-0.5 text-xs" value={editReason} onChange={(event) => setEditReason(event.target.value)} placeholder="更正理由（必填）" />
+                <input className="w-40 rounded border px-2 py-1 text-[13px]" value={editValue} onChange={(event) => setEditValue(event.target.value)} placeholder="更正后的值" />
+                <input className="flex-1 rounded border px-2 py-1 text-[13px]" value={editReason} onChange={(event) => setEditReason(event.target.value)} placeholder="更正理由（必填）" />
                 <Button size="sm" onClick={() => void amendRow(row)}>提交更正</Button>
               </div>
             )}

@@ -130,9 +130,22 @@ throw new CommandValidationError('AGENT_DECISION_DISABLED', 'AI 代批未开启�
 - UI 真实点击（Xvfb :99 + xdotool）：指派创建（`asg-a7b118f2` 落盘+UI 双确认）、时间线渲染 21 条历史（旧记录如实「未记录」）。
 - 全量门禁：3069 pass / 0 fail（预设内置数量 3→4 的断言已同步更新），typecheck 0。
 
-## 8. 已知边界（别踩）
+## 8. 排版规范（对齐系统其他页面）
+
+审核专区新面板曾密集使用 `text-xs`/`text-[10px]`，与系统其他页面（Agent 消息、设置页主体 `text-sm`/`text-[13px]`）不协调，已统一：
+
+- 面板小标题：`text-[13px] font-semibold`
+- 正文/列表行：`text-[13px]`（替代 text-xs）
+- 徽标/辅助行：`text-xs`（替代 text-[10px]）
+- 行距：列表 `space-y-1.5`+，行内 `py-2`+，区块间 `pt-3`
+
+新增 UI 组件请沿用这组 token，不要再往下压字号。
+
+## 9. 已知边界（别踩）
 
 - 外部进程**不能**直写 `state.v2.json`（会绕过 enqueueCase 串行锁）；一切写走服务层。
 - `RUN_REVIEW_V2` IPC 仍是同步 await 全图（UI 按钮路径）；Agent 工具走异步 `startReviewRunAsync`。两条路径共用同一装配服务。
 - settings 读取有内存缓存；`updateSettings` 是唯一安全写入口（代批字段已在通用通道剥离）。
 - 指派存储是单文件 JSON（`review-agent-assignments.json`），按「显式指派、低频写」设计；不做跨机同步。
+- **GNOME Wayland 下原生对话框会静默失败**（`zxdg_exporter_v2: exported surface had an invalid role`，无异常抛出、UI 无反应）。dev 启动 Electron 必须设 `ELECTRON_OZONE_PLATFORM_HINT=x11`（Xwayland 下 dialog 正常）。该结论同样适用于任何调用 `dialog.showOpenDialog` 的入口。
+- V2 案卷的「登记材料」按钮在模板有材料槽时强制先选槽位（前端守卫 toast 提示），防止材料落入未分配槽导致覆盖账本 unread。
