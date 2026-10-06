@@ -106,6 +106,7 @@ import {
   executeOpenFilePreviewTool,
 } from '../agent-preview-tools'
 import { generateAgentGptImage } from '../agent-gpt-image-service'
+import { buildReviewOpsTools } from './pi-review-ops-tools'
 import {
   AGENT_GPT_IMAGE_DESCRIPTION,
   AGENT_GPT_IMAGE_TOOL_NAME,
@@ -1654,6 +1655,19 @@ export async function buildPiBuiltinTools(
       tools.push(...buildPiAgentSkinTools(sdk, ctx))
     } catch (error) {
       console.error('[Pi 桥接] 注入皮肤工具失败:', error)
+    }
+  }
+
+  if (!isAgentPresetToolGroupDisabled(ctx.disabledToolGroups, 'review-ops')) {
+    try {
+      tools.push(...buildReviewOpsTools(sdk, {
+        sessionId: ctx.sessionId,
+        triggeredBy: ctx.triggeredBy,
+        allowedRoots: ctx.allowedRoots ?? [],
+        disabledTools: ctx.disabledTools,
+      }))
+    } catch (error) {
+      console.error('[Pi 桥接] 注入审核操作工具失败:', error)
     }
   }
 

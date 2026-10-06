@@ -269,6 +269,22 @@ export const AGENT_PRESET_CAPABILITY_GROUPS = [
       capabilityTool('audit_ppt_delivery', '审计 PPT 交付', '检查 PPT 交付结果'),
     ],
   }),
+  capabilityGroup({
+    id: 'review-ops', label: '审核操作', hint: '显式指派下的审核案卷操作（查询/建案/登记/提交/运行/导出）',
+    tools: [
+      capabilityTool('review_list_templates', '查询审核模板', '列出可用已发布模板'),
+      capabilityTool('review_get_template', '读取审核模板', '读字段 schema 与材料槽'),
+      capabilityTool('review_list_cases', '列出审核案卷', '列出案卷摘要'),
+      capabilityTool('review_get_case', '读取审核案卷', '读案卷状态与开放任务'),
+      capabilityTool('review_create_case', '创建审核案卷', '从模板建案（需指派）', 'write'),
+      capabilityTool('review_register_material', '登记审核材料', '登记授权目录内文件（需指派）', 'write'),
+      capabilityTool('review_submit_case', '提交审核案卷', '提交案卷进入审核（需指派）', 'write'),
+      capabilityTool('review_start_run', '发起自动审核', '异步启动真实模型审核（需指派）', 'write'),
+      capabilityTool('review_get_run_status', '查询审核运行', '读运行状态与检查摘要'),
+      capabilityTool('review_cancel_run', '取消审核运行', '取消进行中运行（需指派）', 'write'),
+      capabilityTool('review_export_report', '导出审核报告', '导出 MD 报告（需指派）', 'write'),
+    ],
+  }),
 ] as const satisfies readonly AgentPresetCapabilityGroup[];
 
 export type AgentPresetToolGroup =
