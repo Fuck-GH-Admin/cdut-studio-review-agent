@@ -249,6 +249,108 @@ export interface CdutMutationConfirmResult {
   confirmed: boolean
 }
 
+// ===== Tool 9：CDUT 逆向反代大模型接入 =====
+
+/** CDUT 专区三大板块子页面标识；null 表示停留在专区首页 */
+export type CdutSubViewId = 'ai-class' | 'yanhu-express' | 'material-review' | null
+
+/** Tool 9：CDUT 逆向反代大模型调用入参（提问内容由发起 AI 自行构造） */
+export interface CdutReverseProxyParams {
+  /** 发起 AI 根据上下文自行生成的提问内容（必填） */
+  queryPrompt: string
+  /** 可选的任务上下文，供反代大模型理解背景 */
+  taskContext?: string
+  /** 可选的目标任务标识，用于路由到特定反代任务 */
+  targetTask?: string
+}
+
+/** Tool 9 调用结果：复用双模返回结构 */
+export type CdutReverseProxyResult = CdutDomainToolResult
+
+// ===== 统一门禁拦截契约 =====
+
+/** 统一门禁拦截通知（主进程 -> 渲染进程），触发专属门禁引导弹窗 */
+export interface CdutGatekeeperNoticeEvent {
+  requestId: string
+  toolName: string
+  toolLabel: string
+}
+
+/** 统一门禁用户决策响应（渲染进程 -> 主进程） */
+export interface CdutGatekeeperDecision {
+  requestId: string
+  action: 'navigate_login' | 'decline'
+}
+
+// ===== AI 速课堂专属工作区与会话 IPC 契约 =====
+
+/** 速课堂专属工作区 slug（物理隔离于 agent-workspaces 下） */
+export const CDUT_AI_CLASS_WORKSPACE_SLUG = 'cdut-ai-class'
+
+/** 速课堂专属工作区展示名（用于会话类型判定，兼容 slug 冲突场景） */
+export const CDUT_AI_CLASS_WORKSPACE_NAME = 'AI速课堂'
+
+export const CDUT_AI_CLASS_IPC_CHANNELS = {
+  /** 列出速课堂历史课堂简报 */
+  LIST_SESSIONS: 'cdut-ai-class:list-sessions',
+  /** 新建速课堂会话（自动锁定内部导师预设） */
+  CREATE_SESSION: 'cdut-ai-class:create-session',
+  /** 删除速课堂会话 */
+  DELETE_SESSION: 'cdut-ai-class:delete-session',
+  /** 按用户选定模式生成跨资料知识关联并返回图谱数据（入参 StudyGraphGenerateInput） */
+  GENERATE_GRAPH_RELATIONS: 'cdut-ai-class:generate-graph-relations',
+  /** 图谱推演进度事件（主进程 -> 渲染进程，实时广播批次进度） */
+  GENERATE_PROGRESS: 'cdut-ai-class:generate-progress',
+  /** 动态测算当前会话三种生成模式的 Token 与费用预估 */
+  ESTIMATE_GRAPH_COST: 'cdut-ai-class:estimate-graph-cost',
+  /** 全域跨文档高精度混合检索（入参 StudySearchKnowledgeInput） */
+  SEARCH_KNOWLEDGE: 'cdut-ai-class:search-knowledge',
+} as const
+
+/** 图谱推演进度事件（主进程 -> 渲染进程，驱动资料树顶部进度胶囊） */
+export interface StudyGraphProgressEvent {
+  sessionId: string
+  /** 已完成批次 */
+  current: number
+  /** 总批次 */
+  total: number
+  /** 完成百分比（0~100） */
+  percent: number
+  /** 当前阶段文案（如「正在推演分层知识网络」） */
+  phase: string
+}
+
+/** 全域跨文档混合检索入参（AI 导师 study_search_knowledge 工具与渲染端共用） */
+export interface StudySearchKnowledgeInput {
+  sessionId: string
+  /** 检索查询词或学生的具体提问 */
+  query: string
+  /** 可选：限定在某份特定文档中检索；不传则跨全域所有文档检索 */
+  targetDocumentId?: string
+  /** 返回最相关的切块数量（默认 5） */
+  topK?: number
+}
+
+/** 单条全域检索结果（带来源文档名与章节定位） */
+export interface StudySearchResultItem {
+  documentId: string
+  documentFileName: string
+  sectionId: string
+  sectionTitle: string
+  score: number
+  /** 经过显著性剪枝后的高密度事实摘要 */
+  matchedExcerpt: string
+  /** PDF 页码范围（非 PDF 可省略） */
+  pageRange?: [number, number]
+}
+
+/** 全域跨文档混合检索结果 */
+export interface StudySearchKnowledgeResult {
+  success: boolean
+  items: StudySearchResultItem[]
+  error?: string
+}
+
 export const CDUT_ZONE_IPC_CHANNELS = {
   GET_ACCOUNT: 'cdut-zone:get-account',
   /** 查询本地已保存的特区账户元数据（供登录窗一键填充引导） */
@@ -262,4 +364,8 @@ export const CDUT_ZONE_IPC_CHANNELS = {
   CONFIRM_MUTATION: 'cdut-zone:confirm-mutation',
   /** 主进程派发写操作确认请求 */
   ON_MUTATION_REQUEST: 'cdut-zone:on-mutation-request',
+  /** 主进程派发统一门禁拦截通知（拉起专属门禁弹窗） */
+  GATEKEEPER_BLOCKED: 'cdut-zone:gatekeeper-blocked',
+  /** 渲染端回传统一门禁用户决策 */
+  GATEKEEPER_RESPOND: 'cdut-zone:gatekeeper-respond',
 } as const

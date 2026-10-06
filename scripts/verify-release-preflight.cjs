@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Profer 发布前置校验（只读）。
+ * CDUT Studio 发布前置校验（只读）。
  *
  * 在任何 SSH/SCP、git push/tag 或 GitHub Release 写入之前执行，
  * 防止 tag/Release 冲突留下半发布状态。
@@ -17,7 +17,7 @@ if (!version) throw new Error('用法: node scripts/verify-release-preflight.cjs
 const root = path.resolve(__dirname, '..')
 const electron = path.join(root, 'apps/electron')
 const tag = `v${version}`
-const repo = 'Yuan-lai-ru-ci/ProferAI'
+const repo = 'Nya-Angle/CDUT-Studio'
 
 function run(command, cwd = root) {
   return execSync(command, { cwd, encoding: 'utf8', stdio: 'pipe' }).trim()

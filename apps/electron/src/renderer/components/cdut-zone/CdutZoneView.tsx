@@ -12,8 +12,9 @@
  */
 
 import * as React from 'react'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import {
+  ArrowLeftRight,
   Building2,
   CalendarDays,
   GraduationCap,
@@ -27,11 +28,17 @@ import {
   AlertCircle,
   Loader2,
 } from 'lucide-react'
-import type { CdutSavedAccountSummary } from '@profer/shared'
+import type { CdutSavedAccountSummary, CdutSubViewId } from '@profer/shared'
+import { detectIsWindows } from '@profer/ui'
 import { Button } from '@profer/ui/primitives/button'
 import { Input } from '@profer/ui/primitives/input'
 import { ConfirmDialog } from '@profer/ui/primitives/confirm-dialog'
-import { cdutAccountAtom } from '@/atoms/cdut-account-atoms'
+import { WindowControlsHost } from '@/components/WindowControlsTemplate'
+import { resolveWindowControlsRightInset } from '@/lib/window-controls-layout'
+import { cdutAccountAtom, cdutSidebarRestoreAtom, cdutSubViewAtom } from '@/atoms/cdut-account-atoms'
+import { sidebarCollapsedAtom } from '@/atoms/tab-atoms'
+import { useEnterCdutAiClass } from '@/hooks/useEnterCdutAiClass'
+import { AiClassSessionPickerModal } from './AiClassSessionPickerModal'
 import { MutationConfirmModal } from './MutationConfirmModal'
 import { CdutAnniversaryBanner } from './CdutAnniversaryBanner'
 import { CdutProfileFields } from './CdutProfileFields'
@@ -39,6 +46,28 @@ import { CdutHeroSection } from './CdutHeroSection'
 import { CdutQuickBar, type CdutQuickFeature } from './CdutQuickBar'
 import { CdutFeatureSheet } from './CdutFeatureSheet'
 import { CdutWatermarkBackground } from './CdutWatermarkBackground'
+import { CdutSubViewContainer } from './CdutSubViewContainer'
+import { AiClassView } from './AiClassView'
+
+/** 三大板块子页面标题映射 */
+const SUB_VIEW_TITLES: Record<Exclude<CdutSubViewId, null>, string> = {
+  'ai-class': 'AI 速课堂',
+  'yanhu-express': '砚湖秒通',
+  'material-review': '材料审查',
+}
+
+/** 未实现业务板块的留白占位（由统一子页面容器承载） */
+function SubViewPlaceholder({ title, description }: { title: string; description: string }): React.ReactElement {
+  return (
+    <div className="flex h-full flex-col items-center justify-center gap-2 p-8 text-center">
+      <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+        <Sparkles size={22} />
+      </span>
+      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+      <p className="max-w-md text-xs leading-relaxed text-muted-foreground">{description}</p>
+    </div>
+  )
+}
 
 /** 未登录态：专区三大核心能力矩阵展示 */
 const CAPABILITY_CARDS = [
@@ -83,6 +112,71 @@ export function CdutZoneView(): React.ReactElement {
   const [showSavedCard, setShowSavedCard] = React.useState(true)
 
   const isConnected = account.status === 'active'
+
+  // 子页面路由与主边栏沉浸式折叠记忆
+  const [activeSubView, setActiveSubView] = useAtom(cdutSubViewAtom)
+  const [sidebarRestore, setSidebarRestore] = useAtom(cdutSidebarRestoreAtom)
+  const sidebarCollapsed = useAtomValue(sidebarCollapsedAtom)
+  const setSidebarCollapsed = useSetAtom(sidebarCollapsedAtom)
+
+  // 速课堂会话选择前置弹窗（点击 Bento 卡片 / 顶栏【切换课堂】时唤起）
+  const [sessionPickerOpen, setSessionPickerOpen] = React.useState(false)
+  const enterAiClass = useEnterCdutAiClass()
+
+  // Windows 窗口按钮（最小化/最大化/关闭）位于右上角；三大板块顶栏需为其预留安全宽度
+  const isWindows = React.useMemo(() => detectIsWindows(), [])
+
+  // 供卸载清理读取最新暂存值，避免闭包捕获旧值
+  const sidebarRestoreRef = React.useRef(sidebarRestore)
+  sidebarRestoreRef.current = sidebarRestore
+
+  // 若在子页面中直接离开 CDUT 专区（组件卸载），恢复进入前的边栏状态
+  React.useEffect(() => {
+    return () => {
+      if (sidebarRestoreRef.current !== null) {
+        setSidebarCollapsed(sidebarRestoreRef.current)
+        setSidebarRestore(null)
+      }
+    }
+  }, [setSidebarCollapsed, setSidebarRestore])
+
+  /** 进入板块：速课堂先弹会话选择弹窗，其余板块直接进入 */
+  const handleSelectModule = (id: string): void => {
+    if (id === 'ai-class') {
+      setSessionPickerOpen(true)
+      return
+    }
+    if (id !== 'yanhu-express' && id !== 'material-review') return
+    setSidebarRestore(sidebarCollapsed)
+    setSidebarCollapsed(true)
+    setActiveSubView(id)
+  }
+
+  /**
+   * 选定/新建速课堂后正式进入：
+   * 复用统一 useEnterCdutAiClass（激活专属会话、保持停留 CDUT 专区、沉浸式折叠主边栏、打开速课堂子页面）。
+   */
+  const handlePickSession = (sessionId: string, courseName: string): void => {
+    enterAiClass(sessionId, courseName)
+    setSessionPickerOpen(false)
+  }
+
+  /** 关闭子页面：返回专区首页并恢复进入前的边栏状态 */
+  const handleCloseSubView = (): void => {
+    setSessionPickerOpen(false)
+    setActiveSubView(null)
+    if (sidebarRestore !== null) setSidebarCollapsed(sidebarRestore)
+    setSidebarRestore(null)
+  }
+
+  // 若在子页面中登出/登录态失效，强制退回专区首页并恢复边栏
+  React.useEffect(() => {
+    if (!isConnected && activeSubView !== null) {
+      setActiveSubView(null)
+      if (sidebarRestore !== null) setSidebarCollapsed(sidebarRestore)
+      setSidebarRestore(null)
+    }
+  }, [activeSubView, isConnected, setActiveSubView, setSidebarCollapsed, setSidebarRestore, sidebarRestore])
 
   // 订阅主进程状态推送，并在挂载时拉取一次当前状态
   React.useEffect(() => {
@@ -202,8 +296,73 @@ export function CdutZoneView(): React.ReactElement {
     }
   }
 
+  // ===== 子页面视图：隐藏 70 周年横幅，渲染统一顶栏 + 板块业务内容 =====
+  if (activeSubView !== null) {
+    return (
+      <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-content-area">
+        {/* 标题栏拖拽区：在 Windows 窗口按钮前结束，避免拖拽矩形压住按钮（高 DPI 下会判成标题栏点击） */}
+        <div
+          className="absolute inset-x-0 top-0 z-0 h-14 titlebar-drag-region"
+          style={{ right: resolveWindowControlsRightInset(isWindows) }}
+          aria-hidden="true"
+        />
+        {/* 三大板块自声明的窗口按钮宿主（priority 20 高于 MainArea 兜底 5），
+            确保右上角关闭按钮不与窗口按钮重合、且可正常点击 */}
+        <WindowControlsHost id="cdut-subview" priority={20} className="absolute right-2 top-[3px] z-20" />
+
+        {/* 左下角校宠立绘艺术环境水印 */}
+        <CdutWatermarkBackground />
+
+        <div className="relative z-10 min-h-0 flex-1">
+          <CdutSubViewContainer
+            title={SUB_VIEW_TITLES[activeSubView]}
+            onClose={handleCloseSubView}
+            actions={
+              activeSubView === 'ai-class' ? (
+                <button
+                  type="button"
+                  onClick={() => setSessionPickerOpen(true)}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-[11px] font-medium text-foreground/80 transition-colors hover:border-primary/40 hover:text-foreground"
+                  title="切换课堂"
+                >
+                  <ArrowLeftRight size={12} />
+                  <span>切换课堂</span>
+                </button>
+              ) : null
+            }
+          >
+            {activeSubView === 'ai-class' ? (
+              <AiClassView />
+            ) : activeSubView === 'yanhu-express' ? (
+              <SubViewPlaceholder
+                title="砚湖秒通"
+                description="内置自动化浏览器，请假、课表、查分全流程自动化交互。业务界面正在建设中。"
+              />
+            ) : (
+              <SubViewPlaceholder
+                title="材料审查"
+                description="标准栏 × 待审栏 × AI 研判栏，毫秒级比对校级评优与报销材料偏差。业务界面正在建设中。"
+              />
+            )}
+          </CdutSubViewContainer>
+        </div>
+
+        {/* 速课堂会话选择前置弹窗（顶栏【切换课堂】随时唤起） */}
+        <AiClassSessionPickerModal
+          open={sessionPickerOpen}
+          onOpenChange={setSessionPickerOpen}
+          onSelect={handlePickSession}
+        />
+
+        {/* 写操作二次确认浮层（进入子页面后仍保持监听） */}
+        <MutationConfirmModal />
+      </div>
+    )
+  }
+
   return (
     <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-content-area">
+
       {/* 标题栏拖拽区 */}
       <div className="absolute inset-x-0 top-0 z-0 h-14 titlebar-drag-region" aria-hidden="true" />
 
@@ -427,7 +586,7 @@ export function CdutZoneView(): React.ReactElement {
               <CdutProfileFields account={account} onLogout={() => setLogoutOpen(true)} />
 
               {/* 正中央校标与三大 Bento 战略板块 */}
-              <CdutHeroSection />
+              <CdutHeroSection onSelect={handleSelectModule} />
 
               {/* 底部 4 大高频场景胶囊按钮条 */}
               <CdutQuickBar onSelect={handleOpenFeature} />
@@ -441,6 +600,13 @@ export function CdutZoneView(): React.ReactElement {
         feature={activeFeature}
         open={sheetOpen}
         onOpenChange={setSheetOpen}
+      />
+
+      {/* 速课堂会话选择前置弹窗（专区首页点击 Bento 卡片时唤起） */}
+      <AiClassSessionPickerModal
+        open={sessionPickerOpen}
+        onOpenChange={setSessionPickerOpen}
+        onSelect={handlePickSession}
       />
 
       {/* 写操作二次确认浮层（常驻挂载，全局监听主进程派发） */}

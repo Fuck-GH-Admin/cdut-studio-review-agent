@@ -1,4 +1,4 @@
-﻿const PROMA_REPO_URL = 'https://github.com/Yuan-lai-ru-ci/Profer'
+const PROMA_REPO_URL = 'https://github.com/Nya-Angle/CDUT-Studio'
 
 /** semver 格式校验（MAJOR.MINOR.PATCH 及预发布后缀） */
 const SEMVER_RE = /^\d+\.\d+\.\d+(-[a-zA-Z0-9.]+)?$/

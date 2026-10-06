@@ -5,7 +5,7 @@
  * ## 为什么需要它
  *
  * electron-builder 在找不到可用签名身份时会**完全跳过** macOS 签名，产出的
- * `Profer.app` 缺少 `Contents/_CodeSignature/CodeResources`，于是连
+ * `CDUT Studio.app` 缺少 `Contents/_CodeSignature/CodeResources`，于是连
  * `codesign --verify` 都过不去：
  *
  *   code has no resources but signature indicates they must be present
@@ -43,7 +43,7 @@ const path = require('node:path')
 
 const PRODUCT_APP_NAME = 'CDUT Studio.app'
 const ADHOC_TEAM_IDENTIFIER = 'not set'
-const REQUIREMENTS_FILE_PREFIX = 'profer-mac-designated-requirement'
+const REQUIREMENTS_FILE_PREFIX = 'cdut-studio-mac-designated-requirement'
 
 /** 只查找当前产品的解包目录，避免误用 out 中残留的旧品牌安装包。 */
 function findMacAppBundle(outputDir) {

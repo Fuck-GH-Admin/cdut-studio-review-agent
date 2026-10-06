@@ -1206,6 +1206,58 @@ export function getKnowledgeItemDir(itemId: string): string {
   return dir
 }
 
+// ===== AI 速课堂（学习资料与认知档案）路径 =====
+
+/** 会话 / 文档标识的受控字符集：仅允许字母数字与连字符，杜绝路径穿越。 */
+const STUDY_ID_RE = /^[A-Za-z0-9_-]+$/
+
+/** 校验学习资料路径片段，非法直接抛错，避免 renderer 传入任意路径。 */
+function assertStudyId(value: string, label: string): string {
+  if (typeof value !== 'string' || !STUDY_ID_RE.test(value)) {
+    throw new Error(`${label}无效`)
+  }
+  return value
+}
+
+/**
+ * 获取学习资料根目录
+ *
+ * @returns ~/.cdutai/study-materials/
+ */
+export function getStudyMaterialsRootDir(): string {
+  const dir = join(getConfigDir(), 'study-materials')
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
+  return dir
+}
+
+/** 单会话学习资料目录；仅在写入流程创建。 */
+export function getStudySessionDir(sessionId: string): string {
+  const root = resolve(getStudyMaterialsRootDir())
+  const dir = resolve(root, assertStudyId(sessionId, '会话标识'))
+  if (!dir.startsWith(`${root}${sep}`)) throw new Error('会话标识无效')
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
+  return dir
+}
+
+/** 单份学习资料索引目录；只在导入写入时创建。 */
+export function getStudyDocumentDir(sessionId: string, documentId: string): string {
+  const root = resolve(getStudySessionDir(sessionId))
+  const dir = resolve(root, assertStudyId(documentId, '文档标识'))
+  if (!dir.startsWith(`${root}${sep}`)) throw new Error('文档标识无效')
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
+  return dir
+}
+
+/** 单份学习资料的分块索引文件路径（含完整原文分块）。 */
+export function getStudyDocumentIndexPath(sessionId: string, documentId: string): string {
+  return join(getStudyDocumentDir(sessionId, documentId), 'index.json')
+}
+
+/** 学生认知记忆档案路径（Markdown，三维概念清单）。 */
+export function getStudentCognitionPath(sessionId: string): string {
+  return join(getStudySessionDir(sessionId), 'student-cognition.md')
+}
+
 /**
  * 获取设备身份文件路径
  *

@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, mock, test } from 'bun:test'
+import { STUDY_CLASS_DISABLED_TOOL_GROUPS, STUDY_CLASS_DISABLED_TOOLS } from '@profer/shared'
 
 // memory-archive 使用 node:sqlite，Pi bridge 测试只验证注册契约，避免 Bun 测试运行器加载原生 Node 模块。
 mock.module('../memory-archive-search', () => ({
@@ -425,6 +426,31 @@ describe('Pi builtin tools disabledToolGroups pruning (preset capability pruning
     await buildPiBuiltinTools(sdk, { ...baseCtx, disabledToolGroups: ['automation'] })
     expect(tools.some((tool) => tool.name.startsWith('mcp__automation__'))).toBe(false)
     expect(tools.some((tool) => tool.name.startsWith('mcp__planning__'))).toBe(false)
+  })
+
+  test('Given an AI 速课堂 session Then browser/automation/collaboration/clipboard/create_skin are pruned and study tools survive', async () => {
+    const { sdk } = createPiSdkStub()
+    const result = await buildPiBuiltinTools(sdk, {
+      ...baseCtx,
+      isStudyClass: true,
+      agentCwd: 'C:/safe/session',
+      allowedRoots: ['C:/safe/attached'],
+      disabledToolGroups: [...STUDY_CLASS_DISABLED_TOOL_GROUPS],
+      disabledTools: [...STUDY_CLASS_DISABLED_TOOLS],
+    })
+    const names = result.tools.map((tool) => tool.name)
+    const registered = new Set(names)
+    for (const prefix of ['Browser', 'mcp__automation__', 'mcp__planning__', 'mcp__collaboration__', 'clipboard_']) {
+      expect(names.some((name) => name.startsWith(prefix)), `${prefix}* should be pruned`).toBe(false)
+    }
+    expect(registered.has('create_skin')).toBe(false)
+    // 保留：本地图片输出、文件预览、速课堂学习工具、CDUT 教务工具
+    expect(registered.has('send_local_image')).toBe(true)
+    expect(registered.has('inspect_preview')).toBe(true)
+    for (const name of ['study_inspect_section', 'study_search_knowledge', 'study_cognition']) {
+      expect(registered.has(name), `${name} should survive`).toBe(true)
+    }
+    expect(names.some((name) => name.startsWith('cdut_'))).toBe(true)
   })
 
   test('Given each group disabled individually Then only that group is pruned', async () => {

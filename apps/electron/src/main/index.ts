@@ -85,6 +85,17 @@ function registerProtocolsAndHandlers(): void {
       app.commandLine.appendSwitch('use-angle', angleBackend)
       console.info(`[图形] ANGLE backend: ${angleBackend}`)
     }
+    // 视频绿屏规避：部分 Windows 显卡/驱动在「窗口内合成」路径下，硬件视频解码经
+    // DirectComposition 覆盖层呈现会失败，非全屏时整帧为绿色（进入原生全屏后切换到
+    // 独立呈现路径才恢复正常）。改用软件解码可从根上规避该问题，会话内联短视频性能无感。
+    // 需要恢复硬件解码（如笔记本省电场景）时，设 PROFER_ENABLE_HW_VIDEO_DECODE=1。
+    if (process.env.PROFER_ENABLE_HW_VIDEO_DECODE !== '1') {
+      app.commandLine.appendSwitch('disable-accelerated-video-decode')
+      console.info('[图形] 已禁用视频硬件解码（规避非全屏绿屏）')
+    }
+    // 叠加关闭 DirectComposition 视频覆盖层：该硬件覆盖层在部分 Windows 驱动下会把
+    // 页面内合成的视频整帧呈成绿色/花屏，改回普通纹理合成即可规避（保留硬件解码）。
+    app.commandLine.appendSwitch('disable-direct-composition-video-overlays')
   }
 
   // macOS 文件关联：在 app ready 之前注册 open-file 事件

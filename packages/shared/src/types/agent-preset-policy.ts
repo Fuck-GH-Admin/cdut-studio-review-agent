@@ -76,6 +76,10 @@ export interface EffectiveAgentPresetPolicyOptions {
   loadedMcpServerNames?: readonly string[]
   /** runtime 理论上是否支持子 Agent；默认 false，避免静态信息意外放权。 */
   runtimeSupportsSubagents?: boolean
+  /** 会话级附加禁用组（如速课堂画像）；与预设自身禁用并集，仍受同一冻结快照约束。 */
+  extraDisabledToolGroups?: readonly AgentPresetToolGroup[]
+  /** 会话级附加禁用单工具（短名）；与预设 disabledTools 并集。 */
+  extraDisabledTools?: readonly string[]
 }
 
 /**
@@ -147,16 +151,21 @@ export function createEffectiveAgentPresetPolicy(
   options: EffectiveAgentPresetPolicyOptions = {},
 ): EffectiveAgentPresetPolicy {
   const disabledToolGroups = new Set<AgentPresetToolGroup>(preset.disabledToolGroups ?? [])
+  for (const group of options.extraDisabledToolGroups ?? []) disabledToolGroups.add(group)
   if (preset.allowSubagents === false || options.runtimeSupportsSubagents === false) {
     disabledToolGroups.add('collaboration')
   }
+  // 单工具禁用取「预设声明 ∪ 会话级附加」；仅当任一侧有值时才输出，保留 undefined＝不裁剪语义。
+  const disabledTools = [
+    ...new Set([...(preset.disabledTools ?? []), ...(options.extraDisabledTools ?? [])]),
+  ]
 
   const policy: EffectiveAgentPresetPolicy = {
     preset: clonePreset(preset),
     presetReference: Object.freeze({ ...presetReference }),
     disabledToolGroups: Object.freeze([...disabledToolGroups]),
-    ...(preset.disabledTools !== undefined && {
-      disabledTools: uniqueStrings(preset.disabledTools),
+    ...((preset.disabledTools !== undefined || disabledTools.length > 0) && {
+      disabledTools: uniqueStrings(disabledTools),
     }),
     suppressPromptSections: Object.freeze([
       ...new Set([

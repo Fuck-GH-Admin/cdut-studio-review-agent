@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Profer macOS 发布（Apple Silicon + 国内更新源 + GitHub Release）。
+ * CDUT Studio macOS 发布（Apple Silicon + 国内更新源 + GitHub Release）。
  *
  * 必须在 macOS arm64 上运行。自动更新的硬门槛是“包可验证 + 顶层 designated
  * requirement 钉死为 identifier "com.profer.app"”（见
@@ -19,7 +19,7 @@ const fs = require('node:fs')
 const path = require('node:path')
 const { assertWindowsReleaseReady } = require('./release-asset-contract.cjs')
 // 与构建时的 afterSign 钩子共用同一份签名契约，避免门禁与产物实现漂移。
-const { assertMacSignatureContract } = require('../apps/electron/scripts/macos-signature.cjs')
+const { PRODUCT_APP_NAME, findMacAppBundle, assertMacSignatureContract } = require('../apps/electron/scripts/macos-signature.cjs')
 
 const VERSION = process.argv[2]
 if (!VERSION) throw new Error('用法：node scripts/push-mac-release.cjs <版本号>')
@@ -32,7 +32,7 @@ const ROOT = path.resolve(__dirname, '..')
 const ELECTRON = path.join(ROOT, 'apps/electron')
 const OUT = path.join(ELECTRON, 'out')
 const TAG = `v${VERSION}`
-const GH_REPO = 'Yuan-lai-ru-ci/ProferAI'
+const GH_REPO = 'Nya-Angle/CDUT-Studio'
 const HOST = process.env.PROFER_UPDATE_SSH_HOST || '45.114.127.232'
 const USER = process.env.PROFER_UPDATE_SSH_USER || 'root'
 const SSH_PORT = process.env.PROFER_UPDATE_SSH_PORT || '41235'
@@ -62,27 +62,17 @@ function assertExists(filePath) { if (!fs.existsSync(filePath)) throw new Error(
 
 function findMacAssets() {
   const metadata = path.join(OUT, MAC_UPDATE_METADATA)
-  const zip = path.join(OUT, `Profer-${VERSION}-arm64-mac.zip`)
-  const dmg = path.join(OUT, `Profer-${VERSION}-arm64.dmg`)
+  const zip = path.join(OUT, `CDUT-Studio-${VERSION}-arm64.zip`)
+  const dmg = path.join(OUT, `CDUT-Studio-${VERSION}-arm64.dmg`)
   // 增量下载依赖 ZIP 旁边的 .zip.blockmap；缺它会让每次更新都退化成全量下载。
   const blockmap = `${zip}.blockmap`
   for (const filePath of [metadata, zip, dmg, blockmap]) assertExists(filePath)
   return [metadata, zip, dmg, blockmap]
 }
 
-function findAppBundle() {
-  const direct = path.join(OUT, 'Profer.app')
-  const nested = fs.existsSync(OUT)
-    ? fs.readdirSync(OUT, { withFileTypes: true })
-      .filter((entry) => entry.isDirectory())
-      .map((entry) => path.join(OUT, entry.name, 'Profer.app'))
-    : []
-  return [direct, ...nested].find((candidate) => fs.existsSync(candidate)) ?? null
-}
-
 function assertSignedApp() {
-  const appPath = findAppBundle()
-  if (!appPath) throw new Error(`未找到 macOS 解包产物：${path.join(OUT, 'Profer.app')}`)
+  const appPath = findMacAppBundle(OUT)
+  if (!appPath) throw new Error(`未找到 macOS 解包产物：${path.join(OUT, PRODUCT_APP_NAME)}`)
   const result = assertMacSignatureContract(appPath)
   console.log(`  签名契约通过：DR=${result.designatedRequirement}（嵌套 App ${result.nestedAppCount} 个）`)
 }
@@ -99,11 +89,11 @@ function ensureGitHubAssets(assetPaths) {
     if (asset && asset.size === fs.statSync(filePath).size && asset.digest === `sha256:${sha256(filePath)}`) continue
     run(`gh release upload ${TAG} ${JSON.stringify(filePath)} --repo ${GH_REPO} --clobber`)
   }
-  run(`gh release edit ${TAG} --repo ${GH_REPO} --latest --title ${JSON.stringify(`Profer ${TAG}`)}`)
+  run(`gh release edit ${TAG} --repo ${GH_REPO} --latest --title ${JSON.stringify(`CDUT Studio ${TAG}`)}`)
 }
 
 (async () => {
-  console.log(`=== Profer macOS 发布 ${TAG} ===`)
+  console.log(`=== CDUT Studio macOS 发布 ${TAG} ===`)
   // Mac 资产只能在 Windows Release 完成后由独立 Apple Silicon 主机补齐。
   run(`node scripts/verify-release-preflight.cjs ${VERSION} --allow-published-release`)
   assertWindowsReleaseReady(readReleaseAssets(), VERSION)

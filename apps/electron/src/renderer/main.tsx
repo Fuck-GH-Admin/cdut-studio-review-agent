@@ -72,6 +72,8 @@ import {
 } from './atoms/ui-scale'
 import { developerModeEnabledAtom, openEpistemicModeEnabledAtom } from './atoms/developer-mode'
 import { useGlobalAgentListeners } from './hooks/useGlobalAgentListeners'
+import { GatekeeperNoticeModal } from './components/cdut-zone/GatekeeperNoticeModal'
+import { CdutAiClassAccessDialog } from './components/cdut-zone/CdutAiClassAccessDialog'
 import { useCdutAccountHydration } from './hooks/useCdutAccountHydration'
 import { useBrowserLocalFileSelectionQuote } from './hooks/useBrowserLocalFileSelectionQuote'
 import { useBrowserPreviewThemeSync } from './hooks/useBrowserPreviewThemeSync'
@@ -1099,6 +1101,8 @@ if (isDetachedPreviewWindow) {
       <NavigationInputProvider />
       <TabSwitcher />
       <App />
+      <GatekeeperNoticeModal />
+      <CdutAiClassAccessDialog />
       <ProferToaster position="top-right" offset={96} />
     </React.StrictMode>
   )

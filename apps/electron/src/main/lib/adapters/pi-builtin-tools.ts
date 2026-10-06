@@ -116,10 +116,14 @@ import { GPT_IMAGE_QUALITIES, GPT_IMAGE_SIZES } from '../gpt-image-service'
 import { buildPiAgentSkinTools } from '../agent-skin-tools'
 import { normalizeGoalToolResult } from '../goal-tools'
 import { session } from 'electron'
-import type { CdutMutationConfirmRequest, CdutToolDomain, CdutToolParamsMap } from '@profer/shared'
-import { CDUT_AUTH_PARTITION, cdutAuthManager } from '../cdut/cdut-auth-manager'
+import type { CdutMutationConfirmRequest, CdutReverseProxyParams, CdutToolDomain, CdutToolParamsMap } from '@profer/shared'
+import { CDUT_AUTH_PARTITION } from '../cdut/cdut-auth-manager'
+import { checkCdutGatekeeper } from '../cdut/cdut-gatekeeper'
+import { executeCdutReverseProxy } from '../cdut/cdut-reverse-proxy-client'
 import { describeCdutMutation, executeDomainTool, isCdutMutationAction } from '../cdut/cdut-jw-client'
 import { requestCdutMutationConfirm } from '../cdut/cdut-mutation-guard'
+import { cdutDemoService } from '../cdut/cdut-demo/demo-service'
+import { buildPiStudyTools } from '../study/study-tools'
 
 type PiSdk = typeof import('@earendil-works/pi-coding-agent')
 
@@ -134,6 +138,8 @@ export interface PiBuiltinToolsContext {
   /** 团队共享记忆仅能在团队工作区会话中注册。 */
   isTeamWorkspace?: boolean
   workspaceSlug?: string
+  /** 是否为 AI 速课堂专属会话；仅此时注册速课堂学习工具（资料查阅 / 学生认知档案）。 */
+  isStudyClass?: boolean
   permissionMode?: ProferPermissionMode
   triggeredBy?: 'user' | 'automation' | 'delegation' | 'goal'
   /** 当前 Agent 工作目录；用于解析生图产物、参考图和本地网页预览的相对路径。 */
@@ -1585,9 +1591,22 @@ function buildProferCloudTools(sdk: PiSdk, _ctx: PiBuiltinToolsContext): ToolDef
 
 // ===== CDUT 青果教务系统专用工具 =====
 
+/** CDUT 工具集统一中文标签，供门禁弹窗与审计展示。 */
+const CDUT_TOOL_LABELS: Record<string, string> = {
+  cdut_academic_profile: 'CDUT 学籍与个人档案',
+  cdut_schedule: 'CDUT 课表与作息日程',
+  cdut_grades_assessment: 'CDUT 成绩与考核评定',
+  cdut_exam_affairs: 'CDUT 考务安排与报名',
+  cdut_classroom_resource: 'CDUT 教室资源与自习雷达',
+  cdut_curriculum_plan: 'CDUT 培养方案与毕业学分',
+  cdut_course_selection: 'CDUT 选课中心与选课结果',
+  cdut_notices_system: 'CDUT 教务通知与系统服务',
+  cdut_reverse_proxy_agent: 'CDUT 反代大模型接入',
+}
+
 /**
  * 8 大业务域工具的统一执行入口：
- *   1. 前置校验特区账户登录态（未登录直接拒止）；
+ *   1. 前置门禁切面（checkCdutGatekeeper）：未登录即拦截并拉起专属门禁弹窗；
  *   2. 写操作（选退课、报名、缓考、改密等）向渲染端派发二次确认，未确认绝不提交；
  *   3. 调用青果教务客户端，只回传清洗后的「Markdown + JSON」，绝不泄露 Cookie 或原始 HTML。
  */
@@ -1596,11 +1615,10 @@ async function runCdutDomain(
   toolName: string,
   params: CdutToolParamsMap[CdutToolDomain],
 ): Promise<AgentToolResult<unknown>> {
-  const profile = cdutAuthManager.getProfile()
-  if (profile.status !== 'active') {
-    return textToolResult('⚠️ 特区账户未登录或登录态已失效，请先在「CDUT 专区」完成登录后再试。', {
-      error: 'not_logged_in',
-    })
+  const gate = await checkCdutGatekeeper(toolName, CDUT_TOOL_LABELS[toolName] ?? toolName)
+  if (!gate.allowed) {
+    const rejection = gate.rejectionResult
+    return textToolResult(rejection?.markdown ?? '⚠️ 特区账户未登录，CDUT 教务工具调用已被门禁拦截。', rejection?.json ?? { status: 'blocked' })
   }
 
   const rawAction = (params as { action?: unknown }).action
@@ -1620,6 +1638,15 @@ async function runCdutDomain(
         cancelled: true,
       })
     }
+  }
+
+  // 演示态：直接返回离线演示数据，绝不向青果教务系统发起任何真实请求
+  if (cdutDemoService.isActive()) {
+    const demoResult = cdutDemoService.execute(domain, params)
+    if (!demoResult.success) {
+      return textToolResult(demoResult.markdown, { error: demoResult.error })
+    }
+    return textToolResult(demoResult.markdown, demoResult.json)
   }
 
   try {
@@ -1845,6 +1872,28 @@ export function buildPiCdutTools(sdk: PiSdk, ctx: PiBuiltinToolsContext): ToolDe
         return await runCdutDomain('notices', 'cdut_notices_system', params as unknown as CdutToolParamsMap['notices'])
       },
     }),
+    sdk.defineTool({
+      name: 'cdut_reverse_proxy_agent',
+      label: 'CDUT 反代大模型接入',
+      description:
+        'CDUT 专区第 9 个内置工具：由发起 AI 根据当前上下文自行构造提问内容，经主进程转发到逆向反代大模型接口取回另一路回答。适用于需要第二意见、跨模型交叉验证或补充推理的场景。调用受特区账户登录门禁保护。',
+      promptSnippet:
+        'cdut_reverse_proxy_agent: forward an AI-generated query to the CDUT reverse-proxy LLM and return its answer. Requires the CDUT zone account.',
+      parameters: Type.Object({
+        queryPrompt: Type.String({ minLength: 1, maxLength: 8000, description: '发起 AI 根据上下文自行构造的提问内容（必填）' }),
+        taskContext: Type.Optional(Type.String({ maxLength: 4000, description: '可选的任务上下文，帮助反代大模型理解背景' })),
+        targetTask: Type.Optional(Type.String({ maxLength: 200, description: '可选的目标任务标识，用于路由到特定反代任务' })),
+      }),
+      async execute(_toolCallId, params) {
+        const gate = await checkCdutGatekeeper('cdut_reverse_proxy_agent', CDUT_TOOL_LABELS.cdut_reverse_proxy_agent!)
+        if (!gate.allowed) {
+          const rejection = gate.rejectionResult
+          return textToolResult(rejection?.markdown ?? '⚠️ 特区账户未登录，反代工具调用已被门禁拦截。', rejection?.json ?? { status: 'blocked' })
+        }
+        const result = await executeCdutReverseProxy(params as CdutReverseProxyParams)
+        return textToolResult(result.markdown, result.success ? result.json : { error: result.error ?? result.json })
+      },
+    }),
   ]
   return tools as unknown as ToolDefinition[]
 }
@@ -2032,11 +2081,23 @@ export async function buildPiBuiltinTools(
     }
   }
 
-  // CDUT 青果教务系统专用工具：登录态由工具内部前置校验，写操作走二次确认拦截。
-  try {
-    tools.push(...buildPiCdutTools(sdk, ctx))
-  } catch (error) {
-    console.error('[Pi 桥接] 注入 CDUT 教务工具失败:', error)
+  // CDUT 专区能力组：8+1 个教务/反代工具统一走门禁切面，写操作再叠加二次确认拦截。
+  // 所有会话均注册这 9 个工具；是否登录由 checkCdutGatekeeper 依特区账户状态自动拦截，无需提示词层干预。
+  if (!isAgentPresetToolGroupDisabled(ctx.disabledToolGroups, 'cdut-tools')) {
+    try {
+      tools.push(...buildPiCdutTools(sdk, ctx))
+    } catch (error) {
+      console.error('[Pi 桥接] 注入 CDUT 教务工具失败:', error)
+    }
+  }
+
+  // AI 速课堂专属学习工具（资料查阅 + 学生认知档案）：仅在速课堂会话注册，避免污染常规会话能力面。
+  if (ctx.isStudyClass) {
+    try {
+      tools.push(...buildPiStudyTools(sdk, ctx))
+    } catch (error) {
+      console.error('[Pi 桥接] 注入 AI 速课堂学习工具失败:', error)
+    }
   }
 
   const cloudTools = buildProferCloudTools(sdk, ctx)

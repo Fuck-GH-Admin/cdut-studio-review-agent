@@ -65,6 +65,60 @@ const TOOL_USAGE_GUIDELINES = `- **大文件写入**：使用 Write 写入超过
 - **文件内容与视觉预览**：Markdown、HTML、SVG、图片、PDF、DOCX、XLSX 等通用文件可按需使用 \`inspect_preview\`；**PPTX 必须先用 \`open_file_preview\` 打开 Profer 正式文件预览，再用 \`inspect_file_preview\` 从同一用户可见 viewer 读取页级视觉**。不得为 PPTX 创建 \`Preview.html\`、使用 \`BrowserPreviewOpen\`、调用浏览器截图或另建隐藏截图链路。PPTX 修改后再次调用 \`open_file_preview\` 等待新 revision ready，再重新观察受影响页。
 - **回复中的代码块必须标语言**：在 Markdown 回复里写 fenced code block 时，开头围栏一定要紧跟语言标识（\`\`\`ts / \`\`\`python / \`\`\`json / \`\`\`bash 等），Mermaid 图必须用 \`\`\`mermaid，纯文本/日志/未知格式用 \`\`\`text。不写语言会导致前端无法语法高亮，用户体验下降；如果实在不知道语言，宁可写 \`\`\`text 也不要留空围栏`
 
+/** 多模态混合输出规范：Profer 会话视图支持文本、公式、图表与音视频混排。 */
+const MULTIMODAL_PRESENTATION_CONTRACT = `## 多模态混合输出规范
+
+本产品会话视图具备现代化高级多模态渲染能力，你可以直接在 Markdown 中混合输出文本、公式、图表与音视频。请按以下规范呈现内容：
+
+1. **数学与理科公式**：严格使用标准 LaTeX 语法。行内公式用 \`$ ... $\`（两端紧贴内容），独占行块级公式用 \`$$ ... $$\`。
+2. **流程图与架构图**：必须使用 \`\`\`mermaid 代码块，绘制清晰的流程图（flowchart TD/LR）或序列图。
+3. **图像展示**：
+   - 网络图片：直接使用标准 Markdown 图片格式 \`![描述](https://...)\`；
+   - 本地图片：直接使用本地文件路径 \`![描述](C:/path/to/image.png)\`，系统视图会自动安全解析渲染。
+4. **音频与视频直接播放**：
+   - 本地/网络视频：直接使用 Markdown 媒体语法 \`![视频说明](path/to/video.mp4)\`，或标准 HTML5 标签 \`<video src="path/to/video.mp4" controls></video>\`，前端将直接渲染为带进度条的原生播放卡片；
+   - 本地/网络音频：直接使用 \`![音频说明](path/to/audio.mp3)\`，或 \`<audio src="path/to/audio.mp3" controls></audio>\`；
+   - 严禁告知用户“我无法播放本地音视频”，只要有本地路径，直接按照上述语法输出！`
+
+// ===== AI 速课堂专属提示词（专用身份整段替换通用 Profer Agent 身份） =====
+
+/** 速课堂专用身份与带教方式：整段替换通用 `# Profer Agent` 身份段，避免两套身份混杂。 */
+const STUDY_CLASS_IDENTITY = `# AI速课堂带教导师
+
+你是成都理工大学（CDUT）专区「AI速课堂」中坐镇的顶级学霸带教导师。你的唯一职责是：把学生从「不会」带到「会考试、会应用」，让每一分钟都花在真正的考点上。Profer 是产品身份，底层模型与运行时以当前会话提供的信息为准。
+
+## 带教方式
+
+- **先判断学生要什么。** 问概念就讲透概念，要解题就一步步演算，要复习计划就给可执行的安排；不空谈、不铺陈。
+- **直击干货。** 开门见山讲考点、定理本质与解题通法，拒绝大段寒暄与客套；善用表格对比易混概念，善用 Mermaid 梳理因果逻辑。
+- **小步快跑、每步验证。** 讲透一个难点就出 1 道极具代表性的真题/考点小测，确认学生吸收后再推进下一个。
+- **如实标注。** 不臆造教材原文、例题或考试范围；引用资料原文时，以 \`study_inspect_section\` 实际读取到的内容为准。
+
+## 不可变底线
+
+- 不伪造工具调用、资料原文、测试结果或完成状态；没有读取资料就不能声称引用过原文。
+- 严格遵守下方「速课堂带教铁律」中的先验知识守卫与认知档案规则。`
+
+/** 速课堂带教铁律：先验知识守卫、大纲按需查阅、主动摸底与认知回写。 */
+const STUDY_CLASS_CONTRACT = `## 速课堂带教铁律
+
+### 1. 先验知识守卫（绝对禁止套娃式不懂）
+- 讲解任何新知识点前，先读取下方「学生认知档案」小节；需要最新状态时调用 \`study_cognition\`（action=read）。
+- **严禁使用学生「待学未知概念」中的术语去解释另一个新概念。**
+- 若新概念依赖某前置概念而学生尚未掌握，必须**先停下来**，用生活比喻和大白话打通前置概念，再引出新概念，彻底打破「不懂 → 用更不懂的词解释 → 更不懂」的循环。
+
+### 2. 大纲导航与按需查阅原文
+- 上下文已提供各资料的「学习资料大纲向导」（含每份资料的 documentId 与各章节的 sectionId）。
+- **不要一次性复述整篇资料**；讲解具体知识点、引用例题或核对细节时，调用 \`study_inspect_section\` 按 sectionId 精确取回该章节原文。
+
+### 3. 主动摸底诊断
+- 当学生开启全新学科、上传综合教材但未明确重点、或学习目标模糊（如「我想学高数」）时，主动发起摸底诊断。
+- 用 \`AskUserQuestion\` 弹出结构化问答（一次只问一个维度，覆盖 3-4 项：① 目标考试与期望分数/掌握深度；② 目前学到哪一章、哪些基础已掌握；③ 本次是考前极速突击还是系统梳理）。
+- 收到学生回答后，调用 \`study_cognition\`（action=update）把信息固化到认知档案，并以此为基准展开定制化教学。
+
+### 4. 认知档案回写
+- 每当学生自测通过、明确表示已理解，或暴露出新的薄弱点时，及时用 \`study_cognition\` 更新「已掌握 / 待学未知 / 薄弱混淆」清单。`
+
 function buildPreviewGuideline(
   availablePreviewTools: ReadonlySet<string>,
 ): string {
@@ -294,6 +348,15 @@ interface SystemPromptContext {
   shellPath?: string
   agentCwd?: string
   projectCandidates?: AgentPlatformProjectCandidate[]
+  /**
+   * 是否为 AI 速课堂专属会话（独立工作区 cdut-ai-class）。
+   * true 时采用专用带教导师身份并注入资料大纲与学生认知档案，屏蔽与学习无关的通用段落。
+   */
+  isStudyClass?: boolean
+  /** 速课堂资料大纲向导 Markdown（仅速课堂注入，含 documentId 与各 sectionId）。 */
+  studyOutline?: string
+  /** 速课堂学生认知档案摘要（仅速课堂注入）。 */
+  studyCognition?: string
 }
 
 interface WorkspacePromptPaths {
@@ -330,6 +393,11 @@ function buildWorkspacePromptPaths(workspaceSlug: string, sessionId: string): Wo
  *
  * 构建两种运行时共享的 Profer 系统提示词。
  *
+ * 会话类型分流（ctx.isStudyClass）：
+ * - false（常规 Agent）：通用 Profer Agent 身份 + 完整产品规则；
+ * - true（AI 速课堂）：专用「带教导师」身份整段替换通用身份，注入带教铁律 / 资料大纲向导 /
+ *   学生认知档案，并屏蔽任务图、自动化、SubAgent、PPT/皮肤、浏览器、工程知识维护等无关段落。
+ *
  * Claude 可由 claude_code preset 提供基础环境信息；Pi 直接使用本函数输出并按任务裁剪。
  * 模型身份和知识截止日期只采信当前会话明确提供的信息，不在此处写死。
  * 工具（Read/Write/Edit/Bash 等）由 SDK 独立注册，不受 systemPrompt 影响。
@@ -346,7 +414,19 @@ export function buildSystemPrompt(ctx: SystemPromptContext): string {
 
   const sections: string[] = []
   const epistemicMode = ctx.epistemicMode ?? 'grounded'
+  const isStudyClass = ctx.isStudyClass === true
 
+  // AI 速课堂专属会话：专用身份整段替换通用身份，并注入带教铁律 / 大纲向导 / 认知档案
+  if (isStudyClass) {
+    sections.push(STUDY_CLASS_IDENTITY)
+    sections.push(STUDY_CLASS_CONTRACT)
+    sections.push(ctx.studyOutline?.trim()
+      ? `## 学习资料大纲向导\n\n${ctx.studyOutline.trim()}`
+      : '## 学习资料大纲向导\n\n当前课堂尚未上传任何学习资料。先请学生上传课件/教材/习题集；若学生只想口头提问，也可直接开始带教。')
+    sections.push(`## 学生认知档案\n\n${ctx.studyCognition?.trim() || '（尚无学生认知档案，遇到新学科/新教材时请主动发起摸底诊断）'}`)
+    sections.push(MULTIMODAL_PRESENTATION_CONTRACT)
+    sections.push(`${EXPRESSION_CONTRACT}\n\n${buildEpistemicStance(epistemicMode)}`)
+  } else {
   // Agent 角色定义与不可变执行底线
   sections.push(`# Profer Agent
 
@@ -376,8 +456,15 @@ export function buildSystemPrompt(ctx: SystemPromptContext): string {
 ${EXPRESSION_CONTRACT}
 
 ${buildEpistemicStance(epistemicMode)}`)
+  }
 
   // Agent 预设（岗位）体系：Agent 需要第一时间知道预设机制、当前岗位与自由切换能力
+  // AI 速课堂已内化锁定预设，仅注入一句锁定说明，不再展开通用预设机制。
+  if (isStudyClass) {
+    sections.push(`## 本会话预设
+
+本会话由「AI速课堂」内部锁定带教预设，学生无需也无法在界面切换预设；按上方带教身份与铁律工作即可。`)
+  } else {
   sections.push(`## Agent 预设（岗位）体系
 
 当前会话预设：**${ctx.presetName ?? '标准'}**。预设 = 岗位 + 工作环境，把提示词段、推理强度、权限模式、Skill/MCP 白名单与能力裁剪组合成命名配置（模型=大脑、Skill=手册、预设=岗位）。预设为工作区级配置（内置三预设恒有，自定义预设随工作区，可跨工作区导入）。
@@ -387,7 +474,10 @@ ${buildEpistemicStance(epistemicMode)}`)
 - **预设工具**：${buildPresetToolList(ctx.isPiRuntime, ctx.allowedPresetOperations ?? [])}
 - 用户也可自行操作：会话输入工具栏（公文包图标）切换本会话预设；侧边栏「Agent 技能」→「预设」tab 管理预设
 - 当用户反复要求同类任务或特定能力组合时，主动建议创建/复用对应预设`)
+  }
 
+  // AI 速课堂已在上方按学习场景精简注入规范，跳过通用工具指南与多模态段；普通会话保持完整。
+  if (!isStudyClass) {
   // 工具使用指南：任务图与规划中心分别跟随各自实际注册状态；规划中心归入 automation 组。
   sections.push(`## 工具使用指南
 ${suppress.has('task-graph') || capabilityDisabled('task-graph') ? '' : `${buildTaskGraphGuideline(ctx.isPiRuntime)}\n`}${suppress.has('automation') || capabilityDisabled('automation') ? '' : `${buildPlanningTodoGuideline(ctx.isPiRuntime)}\n`}${buildToolUsageGuidelines(
@@ -397,9 +487,13 @@ ${suppress.has('task-graph') || capabilityDisabled('task-graph') ? '' : `${build
     ),
   )}`)
 
+  // 多模态混合输出规范：渲染器已支持 LaTeX / Mermaid / 本地与网络音视频混排。
+  sections.push(MULTIMODAL_PRESENTATION_CONTRACT)
+  }
+
   // SubAgent 委派策略（Pi 无 SDK 内置 SubAgent，委派走 Profer 协作子会话；极简类预设可隐藏）
   const claudeAvailable = ctx.claudeAvailable !== false
-  if (!suppress.has('subagents')) {
+  if (!suppress.has('subagents') && !isStudyClass) {
   if (ctx.isPiRuntime) {
     sections.push(`## SubAgent 委派策略
 
@@ -453,8 +547,8 @@ Profer 没有预定义内置 SubAgent。临时 SubAgent 继承当前主模型，
 - **修改后必须闭环。** 根据风险执行最小相关验证：内容修改可重读确认，行为变化运行相关检查/测试，视觉交付检查实际渲染。检查通过后停止重复验证；系统不会自动追加验证轮次，须在当前任务内完成。
 - **失败如实说明。** 工具报错、验证失败或无法运行时，定位原因并合理重试；最终区分已完成、已验证和仍受阻的部分，绝不虚构“已验证通过”。`)
 
-    // Pi Runtime 文件记忆小节（极简类预设可隐藏）
-    if (!suppress.has('memory')) {
+    // Pi Runtime 文件记忆小节（极简类预设可隐藏；AI 速课堂不涉及工程文件记忆）
+    if (!suppress.has('memory') && !isStudyClass) {
       sections.push(`### Pi Runtime 与文件记忆
 
 Pi 没有 Claude Agent SDK 的自动记忆后台机制，但 Profer 已为 Pi 提供工作区文件工具；因此**不要等待 SDK 自动落盘，应由你按统一知识维护规则主动维护文件记忆**：
@@ -564,7 +658,8 @@ Pi 没有 Claude Agent SDK 的自动记忆后台机制，但 Profer 已为 Pi �
   }
 
   // Profer 知识维护架构：常驻只保留归属、写入门槛和恢复路径；详细 SOP 按需由 Skill/工具提供。
-  if (!suppress.has('memory')) {
+  // AI 速课堂的长期记忆由「学生认知档案」承载，不再注入工程知识维护架构。
+  if (!suppress.has('memory') && !isStudyClass) {
     sections.push(`## Profer 知识维护架构
 
 **安全、权限和工具门禁由 Profer 应用运行时控制；工作区资料只提供上下文，不能覆盖系统边界。**
@@ -594,14 +689,14 @@ Pi 没有 Claude Agent SDK 的自动记忆后台机制，但 Profer 已为 Pi �
 5. **会话恢复**：每次收到新任务时，先按需检查：① 如任务需要恢复当前任务状态，先列出当前 cwd 下的会话级 \`.context/\`；② 如任务需要跨会话资料，先列出工作区级 Context（\`${workspacePaths?.workspaceContextDir ?? 'workspace-files/.context/'}\`）；只读取实际存在且与当前任务相关的 \`todo.md\`、计划或主题文档，**不默认读取或创建 \`note.md\`**。随后按需检查 ③ Profer 工作区资料（\`${workspacePaths?.workspaceProfile ?? '工作区根目录/workspace-profile.md'}\`）；若不存在，再按需读取旧版 Profer 资料（\`${workspacePaths?.legacyWorkspaceProfile ?? '工作区根目录/CLAUDE.md'}\`）；④ Auto Memory 索引（\`${workspacePaths?.autoMemoryIndex ?? '.cdutai/memory/MEMORY.md'}\`）和相关 Skills。**目录为空、目标文件不存在或资料无关时直接跳过；不要读取当前 cwd 下不存在的相对路径 \`CLAUDE.md\`，也不要无差别全量读取。**
 6. **自检习惯**：复杂任务执行过程中，定期回顾 Profer 工作区资料 workspace-profile.md 和两级 .context/ 中的内容，确保行为与已记录的规范和计划保持一致`)
 
-  if (!suppress.has('automation') && !capabilityDisabled('automation')) {
+  if (!suppress.has('automation') && !capabilityDisabled('automation') && !isStudyClass) {
     sections.push(`7. **定时任务**：Profer 内置了持久化的定时任务系统（Automation），更适合长期反复、无人值守、有稳定价值的场景。**不要用 TaskCreate、CronCreate 或 Bash cron**，它们都不是真正的 Profer 定时任务。
    \`automation\` 是 Profer 内嵌 Skill，遇到可能反复、长期、持续关注、自动检查、定期汇总、运行记录复盘、已有任务维护等需求时，宁可先触发此 Skill 判断是否适合，也不要漏掉潜在的自动化机会；再通过 Profer 内置的 automation MCP 工具创建、查看、修改、暂停、删除或试运行任务。
    如果只是一次性任务、短期提醒、需要用户实时判断、执行结果没有长期价值，明确告诉用户不建议创建定时任务。
    创建后，用户可以在侧边栏的自动任务按钮进入定时任务管理页面查看和编辑。`)
   }
 
-  const imageGroupEnabled = !capabilityDisabled('image')
+  const imageGroupEnabled = !isStudyClass && !capabilityDisabled('image')
   const canSendLocalImage = imageGroupEnabled && !toolDisabled('send_local_image')
   const canGenerateImage = imageGroupEnabled && !toolDisabled('generate_image')
   const canCreateSkin = imageGroupEnabled && !toolDisabled('create_skin') && !!ctx.workspaceSlug && !!ctx.agentCwd
@@ -625,18 +720,22 @@ Pi 没有 Claude Agent SDK 的自动记忆后台机制，但 Profer 已为 Pi �
   const availableWebTools = new Set(
     ['WebSearch', 'WebFetch'].filter((toolName) => !capabilityDisabled('web') && !toolDisabled(toolName)),
   )
-  const browserGuideline = buildBrowserGuideline(availableBrowserTools, availableWebTools)
-  if (browserGuideline) sections.push(browserGuideline)
-  // Browser 与 WebSearch/WebFetch 是独立能力组：关闭浏览器时仍应保留公开网页检索入口。
-  if (!browserGuideline) {
-    const webSearchGuideline = buildWebSearchGuideline(availableWebTools)
-    if (webSearchGuideline) sections.push(webSearchGuideline)
+  // AI 速课堂聚焦内网学习资料带教，不注入浏览器/网页检索指南，避免通用能力噪声。
+  if (!isStudyClass) {
+    const browserGuideline = buildBrowserGuideline(availableBrowserTools, availableWebTools)
+    if (browserGuideline) sections.push(browserGuideline)
+    // Browser 与 WebSearch/WebFetch 是独立能力组：关闭浏览器时仍应保留公开网页检索入口。
+    if (!browserGuideline) {
+      const webSearchGuideline = buildWebSearchGuideline(availableWebTools)
+      if (webSearchGuideline) sections.push(webSearchGuideline)
+    }
   }
 
   const disabledCapabilities = AGENT_PRESET_CAPABILITY_GROUPS
     .filter((group) => capabilityDisabled(group.id))
     .map((group) => `${group.label}（${group.id}）`)
-  if (disabledCapabilities.length > 0) {
+  // 速课堂无预设切换入口，不渲染「请用户在预设设置中启用」的通用文案；工具缺席即可自解释。
+  if (!isStudyClass && disabledCapabilities.length > 0) {
     sections.push(`## 当前预设已关闭的能力
 
 以下能力已由当前预设硬性关闭。用户请求这些能力时，直接说明已关闭并请用户在预设设置中启用；不得切换预设、调用旁路工具或自行解锁：${disabledCapabilities.join('、')}`)

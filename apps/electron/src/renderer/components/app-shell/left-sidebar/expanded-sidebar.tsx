@@ -121,7 +121,7 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
       <div className="titlebar-drag-region flex items-center justify-between px-3 pt-1.5 pb-1">
         <div className="flex items-center gap-2 min-w-0 select-none">
           <img src={cdutLogo} alt="CDUT Logo" className="size-5 object-contain flex-shrink-0" />
-          <span className="text-[13px] font-semibold text-foreground/85 tracking-tight truncate">Welcome</span>
+          <span className="text-[13px] font-semibold text-foreground/85 tracking-tight truncate">CDUT Studio | Welcome ~</span>
         </div>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -536,6 +536,8 @@ export function ExpandedSidebar({ s }: { s: SidebarModel }): React.ReactElement 
                     onToggleRelatedParent={handleToggleRelatedParent}
                     onMarkUnread={handleMarkUnread}
                     workspaceSwitchTs={workspaceSwitchTs}
+                    locked={s.isAiClassWorkspaceLocked(group.workspace)}
+                    onLockedInteract={s.handleAiClassLockedInteract}
                   />
                 ))}
               </div>

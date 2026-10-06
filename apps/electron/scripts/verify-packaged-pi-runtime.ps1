@@ -1,9 +1,8 @@
 # 离线验证 Windows packaged Pi runtime 闭包。
-# Profer.exe 是 GUI 子系统程序，PowerShell 的直接调用不会可靠等待，必须 Start-Process + Wait-Process。
+# CDUT Studio.exe 是 GUI 子系统程序，PowerShell 的直接调用不会可靠等待，必须 Start-Process + Wait-Process。
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
-$candidateExe = Join-Path $root 'out/win-unpacked/CDUT Studio.exe'
-$appPath = if (Test-Path -LiteralPath $candidateExe) { $candidateExe } else { Join-Path $root 'out/win-unpacked/Profer.exe' }
+$appPath = Join-Path $root 'out/win-unpacked/CDUT Studio.exe'
 $probePath = Join-Path $root 'scripts/packaged-pi-probe.cjs'
 $resourcesPath = Join-Path $root 'out/win-unpacked/resources'
 

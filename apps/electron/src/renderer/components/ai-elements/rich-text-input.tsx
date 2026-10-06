@@ -184,6 +184,8 @@ interface RichTextInputProps {
   attachedDirs?: string[]
   /** 会话级附加目录路径列表（@ 引用时标记为会话文件） */
   sessionAttachedDirs?: string[]
+  /** 需要禁用的 Mention 触发字符（如 ['/', '#', '&']）；命中则不注册对应补全建议 */
+  disabledMentionChars?: string[]
   /** HTML 草稿值（切换会话恢复时使用，保留 mention 等富文本结构） */
   htmlValue?: string
   /** HTML 值变更回调（用于保存富文本草稿） */
@@ -227,6 +229,7 @@ export const RichTextInput = forwardRef<RichTextInputHandle, RichTextInputProps>
   sessionId,
   attachedDirs = [],
   sessionAttachedDirs = [],
+  disabledMentionChars = [],
   htmlValue,
   onHtmlChange,
   sendWithCmdEnter = false,
@@ -407,7 +410,7 @@ export const RichTextInput = forwardRef<RichTextInputHandle, RichTextInputProps>
             skillSuggestion,
             mcpSuggestion,
             sessionSuggestion,
-          ],
+          ].filter((suggestion) => !disabledMentionChars.includes(suggestion.char ?? '')),
         }),
       ] : []),
     ],

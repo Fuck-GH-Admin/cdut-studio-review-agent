@@ -467,6 +467,8 @@ function createMarkdownImageView(initialNode: ProseMirrorNode, fileAccessRef: Fi
 
   const img = document.createElement('img')
   img.draggable = false
+  // 与消息区一致：远程图片不携带 Referer，规避 B 站等 CDN 的 Referer 防盗链（否则 403 破图）。
+  img.referrerPolicy = 'no-referrer'
   setClass(img, 'max-w-full rounded-md border border-border/30 bg-muted/20')
   figure.appendChild(img)
 

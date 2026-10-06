@@ -10,7 +10,7 @@ async function read(path: string): Promise<string> {
 }
 
 describe('Pi packaged runtime 闭包', () => {
-  test('electron-builder 解包 Pi 所需的 native/WASM scope，并保留 Profer 打包契约', async () => {
+  test('electron-builder 解包 Pi 所需的 native/WASM scope，并保留 CDUT Studio 打包契约', async () => {
     const builder = await read(join(appDir, 'electron-builder.yml'))
 
     for (const pattern of [
@@ -29,7 +29,7 @@ describe('Pi packaged runtime 闭包', () => {
     const probe = require('./packaged-pi-probe.cjs') as {
       resolvePackageImportEntry(appArchive: string, packageName: string): string
     }
-    const root = mkdtempSync(join(tmpdir(), 'profer-pi-esm-probe-'))
+    const root = mkdtempSync(join(tmpdir(), 'cdut-studio-pi-esm-probe-'))
     try {
       const packageDir = join(root, 'node_modules', '@earendil-works', 'pi-ai')
       mkdirSync(packageDir, { recursive: true })
@@ -56,7 +56,7 @@ describe('Pi packaged runtime 闭包', () => {
     const probe = require('./packaged-pi-probe.cjs') as {
       findUnpackedNativeFiles(root: string): string[]
     }
-    const root = mkdtempSync(join(tmpdir(), 'profer-pi-native-probe-'))
+    const root = mkdtempSync(join(tmpdir(), 'cdut-studio-pi-native-probe-'))
     try {
       const allowedNode = join(root, '@napi-rs', 'canvas', 'binding.node')
       const allowedWasm = join(root, '@silvia-odwyer', 'photon-node', 'binding.wasm')
