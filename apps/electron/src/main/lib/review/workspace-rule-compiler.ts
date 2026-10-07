@@ -20,8 +20,9 @@ export function compileWorkspaceRule(pack: RulePack, outline: RuleOutlineItem, p
     when = { field: 'declaredScore', op: 'exists' }
     calculation = { valueFrom: 'declaredScore', aggregate: 'sum', cap: { value: String(constraint.value), unit: 'point' }, allocation: 'score-desc-then-subject-id' }
   } else if (constraint?.kind === 'score-value' && typeof constraint.value === 'number') {
-    execution = 'deterministic'
-    when = fieldCondition('declaredScore', 'eq', constraint.value)
+    // 固定分值必须有明确适用条件；没有条件时转人工核对，避免误套到全部事项。
+    execution = constraint.appliesWhen ? 'deterministic' : 'manual'
+    when = { field: constraint.appliesWhen?.field ?? 'title', op: 'exists' }
   } else if (constraint?.kind === 'date-range' && (constraint.dateFrom || constraint.dateTo)) {
     execution = 'deterministic'
     const conditions = [

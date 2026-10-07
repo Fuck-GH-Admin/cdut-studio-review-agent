@@ -27,7 +27,7 @@ const activeRuns = new Map<string, ActiveRun>()
 async function assembleReviewClient(): Promise<{ client: import('./pi-review-executor').ReviewModelClient; ocrPort: import('./system-tesseract-ocr-adapter').SystemTesseractOcrPort }> {
   const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
   const { getTemplate } = require('./template-store') as typeof import('./template-store')
-  const { resolveReviewGatewayChannel, chatCompletion, REVIEW_RUN_TIMEOUT_MS } = require('./review-model-gateway') as typeof import('./review-model-gateway')
+  const { resolveReviewGatewayChannel, chatCompletion, reviewPromptWithImages, REVIEW_RUN_TIMEOUT_MS } = require('./review-model-gateway') as typeof import('./review-model-gateway')
 
   const resolved = resolveReviewGatewayChannel()
   if (!resolved) throw new Error('未配置可用模型渠道，无法执行真实审核（请在设置中配置渠道）')
@@ -37,7 +37,7 @@ async function assembleReviewClient(): Promise<{ client: import('./pi-review-exe
       complete: async (input) => ({
         content: await chatCompletion(resolved.channel, [
           { role: 'system', content: input.system },
-          { role: 'user', content: input.prompt },
+          { role: 'user', content: reviewPromptWithImages(input.prompt, input.images) },
         ], { timeoutMs: REVIEW_RUN_TIMEOUT_MS, signal: input.signal }),
       }),
     },

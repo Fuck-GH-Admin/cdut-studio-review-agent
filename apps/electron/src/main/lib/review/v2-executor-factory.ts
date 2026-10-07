@@ -10,8 +10,8 @@
  * 全部节点走 executeRunGraph 的产物/检查点管线（A11）。
  */
 
-import { readFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { readFileSync, statSync } from 'node:fs'
+import { extname, isAbsolute, join, relative, resolve } from 'node:path'
 import type { AiOpinion, CaseAggregateV2, CheckResult, CheckStatus, DocumentVersion, RuleSpec, SourceRef, TemplateVersion } from '@profer/shared'
 import type { NodeExecutor, NodeKind } from './review-run-graph'
 import type { ReviewModelClient } from './pi-review-executor'
@@ -22,6 +22,40 @@ import { buildTextSourceIndex } from './source-index'
 import { getConfigDir } from '../config-paths'
 import { extractJson } from './review-model-gateway'
 import { resolveEffectiveRules } from './effective-rules'
+
+const MAX_REVIEW_VISION_IMAGES = 8
+const MAX_REVIEW_VISION_IMAGE_BYTES = 8 * 1024 * 1024
+
+/** 从当前激活材料的 image blocks 取受案卷目录约束的图片，作为 V2 模型视觉输入。 */
+export function collectV2VisionImages(aggregate: CaseAggregateV2, caseRoot: string): string[] {
+  const root = resolve(caseRoot)
+  const images: string[] = []
+  for (const document of aggregate.caseV2.documents) {
+    if (document.active === false) continue
+    for (const block of document.blocks) {
+      if (block.kind !== 'image' || !block.imageAssetPath) continue
+      if (images.length >= MAX_REVIEW_VISION_IMAGES) return images
+      const assetPath = isAbsolute(block.imageAssetPath) ? resolve(block.imageAssetPath) : resolve(root, block.imageAssetPath)
+      const relation = relative(root, assetPath)
+      if (relation.startsWith('..') || isAbsolute(relation)) continue
+      try {
+        const size = statSync(assetPath).size
+        if (size <= 0 || size > MAX_REVIEW_VISION_IMAGE_BYTES) continue
+        const extension = extname(assetPath).toLowerCase()
+        const mime = extension === '.jpg' || extension === '.jpeg' ? 'image/jpeg'
+          : extension === '.webp' ? 'image/webp'
+            : extension === '.gif' ? 'image/gif'
+              : extension === '.png' ? 'image/png'
+                : null
+        if (!mime) continue
+        images.push(`data:${mime};base64,${readFileSync(assetPath).toString('base64')}`)
+      } catch {
+        // A missing image must not prevent the text path from completing.
+      }
+    }
+  }
+  return images
+}
 
 /** 解析材料真实文本：PDF/Office 走 document-parser，文本直读；图片走 OCR 端口（不可用则如实空） */
 async function materialTextOf(doc: DocumentVersion, caseId: string, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
@@ -71,7 +105,13 @@ async function buildMaterialContext(aggregate: CaseAggregateV2, rules: RuleSpec[
   for (const doc of aggregate.caseV2.documents) {
     if (doc.active === false) continue
     const text = truncate(await materialTextOf(doc, caseId, ocr))
-    parts.push(text ? `--- ${doc.fileName}（${doc.versionId}） ---\n${text}` : `--- ${doc.fileName}（${doc.versionId}）--- [非文本或未可读：不作为已读依据]`)
+    const visualPages = doc.blocks.filter((block) => block.kind === 'image' && block.imageAssetPath).length
+    const visualNote = visualPages > 0 ? `\n[含 ${visualPages} 张图像页；模型收到的页面范围会在提示中明确]` : ''
+    parts.push(text
+      ? `--- ${doc.fileName}（${doc.versionId}） ---\n${text}${visualNote}`
+      : visualPages > 0
+        ? `--- ${doc.fileName}（${doc.versionId}）--- [无可提取文本；图像页已附加供视觉识别]${visualNote}`
+        : `--- ${doc.fileName}（${doc.versionId}）--- [非文本或未可读：不作为已读依据]`)
   }
   return parts.join('\n')
 }
@@ -88,29 +128,83 @@ function fieldValueOf(value: unknown): unknown {
   return value
 }
 
-function resolveRuleField(
+/** 唯一事实优先级：已确认人工值 → 人工录入 → 最新申报字段 → AI/其他识别 → 未知。 */
+export function resolveEffectiveFieldValue(
   aggregate: CaseAggregateV2,
   observations: Array<Record<string, unknown>>,
   fieldKey: string,
   subjectId?: string,
-): { known: boolean; value: unknown } {
+): { known: boolean; value: unknown; observationId?: string; sourceRefs: SourceRef[] } {
+  const matching = [...observations].reverse().filter((candidate) => candidate.subjectId === subjectId && candidate.fieldKey === fieldKey && 'value' in candidate)
+  const humanConfirmed = matching.find((candidate) => candidate.extractedBy === 'user' && candidate.confirmed === true)
+  const humanEntered = matching.find((candidate) => candidate.extractedBy === 'user')
+  const selectedHuman = humanConfirmed ?? humanEntered
+  if (selectedHuman) return {
+    known: true,
+    value: fieldValueOf(selectedHuman.value),
+    observationId: typeof selectedHuman.id === 'string' ? selectedHuman.id : undefined,
+    sourceRefs: sourceRefsFromUnknown(selectedHuman.sourceRefs),
+  }
   if (subjectId) {
     const subject = aggregate.caseV2.subjects.find((candidate) => candidate.id === subjectId)
     const subjectValue = subject?.fields[fieldKey]
-    const observation = [...observations].reverse().find((candidate) => candidate.subjectId === subjectId && candidate.fieldKey === fieldKey)
-    // 人工确认/更正事实优先于申报字段和新一轮 AI 抽取，避免重跑把人工结论冲掉。
-    if (observation && observation.extractedBy === 'user' && observation.confirmed === true && 'value' in observation) {
-      return { known: true, value: fieldValueOf(observation.value) }
+    if (subjectValue !== undefined) return { known: true, value: fieldValueOf(subjectValue), sourceRefs: [] }
+    const observation = matching.find((candidate) => candidate.extractedBy !== 'user')
+    if (observation) return {
+      known: true,
+      value: fieldValueOf(observation.value),
+      observationId: typeof observation.id === 'string' ? observation.id : undefined,
+      sourceRefs: sourceRefsFromUnknown(observation.sourceRefs),
     }
-    if (subjectValue !== undefined) return { known: true, value: fieldValueOf(subjectValue) }
-    if (observation && 'value' in observation) return { known: true, value: fieldValueOf(observation.value) }
-    return { known: false, value: null }
+    return { known: false, value: null, sourceRefs: [] }
   }
   const caseValue = aggregate.caseV2.caseFields[fieldKey]
-  if (caseValue !== undefined) return { known: true, value: fieldValueOf(caseValue) }
-  const observation = [...observations].reverse().find((candidate) => !candidate.subjectId && candidate.fieldKey === fieldKey)
-  if (observation && 'value' in observation) return { known: true, value: fieldValueOf(observation.value) }
-  return { known: false, value: null }
+  if (caseValue !== undefined) return { known: true, value: fieldValueOf(caseValue), sourceRefs: [] }
+  const observation = matching.find((candidate) => candidate.extractedBy !== 'user')
+  if (observation) return {
+    known: true,
+    value: fieldValueOf(observation.value),
+    observationId: typeof observation.id === 'string' ? observation.id : undefined,
+    sourceRefs: sourceRefsFromUnknown(observation.sourceRefs),
+  }
+  return { known: false, value: null, sourceRefs: [] }
+}
+
+function sourceRefsFromUnknown(value: unknown): SourceRef[] {
+  if (!Array.isArray(value)) return []
+  return value.filter((ref): ref is SourceRef => !!ref && typeof ref === 'object' && typeof (ref as SourceRef).documentVersionId === 'string' && typeof (ref as SourceRef).caseId === 'string' && typeof (ref as SourceRef).location === 'object')
+}
+
+function makeCheckBasis(
+  aggregate: CaseAggregateV2,
+  resolved: Array<ReturnType<typeof resolveEffectiveFieldValue>> = [],
+  evidenceLinks: CaseAggregateV2['evidenceLinks'] = [],
+  extraRefs: SourceRef[] = [],
+): NonNullable<CheckResult['basis']> {
+  const observationIds = [...new Set(resolved.flatMap((item) => item.observationId ? [item.observationId] : []))]
+  const refs = [...resolved.flatMap((item) => item.sourceRefs), ...extraRefs]
+  const referencedVersions = new Set(refs.map((ref) => ref.documentVersionId))
+  const links = evidenceLinks.filter((link) => referencedVersions.has(link.documentVersionId))
+  const sourceRefs = [...refs]
+  for (const link of links) {
+    if (link.blockRef) sourceRefs.push(link.blockRef)
+    else {
+      const document = aggregate.caseV2.documents.find((candidate) => candidate.versionId === link.documentVersionId)
+      if (document) sourceRefs.push({ caseId: aggregate.caseV2.id, documentVersionId: document.versionId, parseRevision: document.parseRevision, location: { kind: 'file' } })
+    }
+  }
+  return {
+    observationIds,
+    evidenceLinkIds: [...new Set(links.map((link) => link.id))],
+    sourceRefs: sourceRefs.filter((ref, index) => sourceRefs.findIndex((candidate) => candidate.documentVersionId === ref.documentVersionId && JSON.stringify(candidate.location) === JSON.stringify(ref.location)) === index),
+  }
+}
+
+function conditionFields(condition: RuleSpec['when']): string[] {
+  if ('all' in condition) return condition.all.flatMap(conditionFields)
+  if ('any' in condition) return condition.any.flatMap(conditionFields)
+  if ('not' in condition) return conditionFields(condition.not)
+  return ['field' in condition ? condition.field : condition.fact]
 }
 
 function statusFromTriState(status: 'true' | 'false' | 'unknown', rule: RuleSpec): CheckStatus {
@@ -153,39 +247,86 @@ export function buildDeterministicRuleChecks(
         checks.push({ checkId: checkIdFor(rule, target), ruleId: rule.id, status: 'awaiting-confirmation', reason: `组级规则需要人工确认：${rule.requirement}`, target, sourceRefs: sourceRefsForRule(aggregate, rule), executedBy: 'deterministic', executedAt: new Date().toISOString() })
         continue
       }
-      const inputs = aggregate.caseV2.subjects.map((subject) => ({
-        subjectId: subject.id,
-        fields: Object.fromEntries(Object.entries(subject.fields).map(([key, value]) => {
-          const resolved = fieldValueOf(value)
-          return [key, { value: typeof resolved === 'number' || typeof resolved === 'string' ? resolved : null, known: resolved !== undefined && resolved !== null }]
-        })),
-      }))
+      const resolvedInputs = aggregate.caseV2.subjects.map((subject) => {
+        const keys = new Set([...Object.keys(subject.fields), rule.calculation!.valueFrom, ...(rule.calculation!.deduplicateBy ?? [])])
+        const resolved = Object.fromEntries([...keys].map((key) => [key, resolveEffectiveFieldValue(aggregate, observations, key, subject.id)]))
+        return {
+          subject,
+          resolved,
+          input: {
+            subjectId: subject.id,
+            fields: Object.fromEntries(Object.entries(resolved).map(([key, item]) => [key, {
+              value: typeof item.value === 'number' || typeof item.value === 'string' ? item.value : null,
+              known: item.known,
+            }])),
+          },
+        }
+      })
+      const inputs = resolvedInputs.map((item) => item.input)
       const outcome = computeGroupScore(rule, inputs)
       const target = { scope: 'group' as const, subjectIds: aggregate.caseV2.subjects.map((subject) => subject.id) }
-      checks.push({ checkId: checkIdFor(rule, target), ruleId: rule.id, status: outcome.status, reason: outcome.status === 'compliant' ? `组计入 ${outcome.total}` : `存在未知输入：${rule.requirement}`, target, sourceRefs: sourceRefsForRule(aggregate, rule), executedBy: 'deterministic', executedAt: new Date().toISOString(), calculation: { inputs: [], result: String(outcome.total), detailLines: outcome.detailLines } })
+      const basis = makeCheckBasis(aggregate, resolvedInputs.flatMap((item) => Object.values(item.resolved)), aggregate.evidenceLinks, sourceRefsForRule(aggregate, rule))
+      checks.push({ checkId: checkIdFor(rule, target), ruleId: rule.id, status: outcome.status, reason: outcome.status === 'compliant' ? `组计入 ${outcome.total}` : `存在未知输入：${rule.requirement}`, target, sourceRefs: basis.sourceRefs, basis, executedBy: 'deterministic', executedAt: new Date().toISOString(), calculation: { inputs: [], result: String(outcome.total), detailLines: outcome.detailLines } })
       continue
     }
     const workspaceConstraint = rule.workspaceConstraint
+    if (workspaceConstraint?.kind === 'score-value') {
+      const condition = workspaceConstraint.appliesWhen
+      if (!condition || typeof workspaceConstraint.value !== 'number') {
+        const target = { scope: 'subject' as const, subjectIds: aggregate.caseV2.subjects.map((subject) => subject.id) }
+        checks.push({ checkId: checkIdFor(rule, target), ruleId: rule.id, status: 'awaiting-confirmation', reason: '固定分值缺少明确适用条件，需人工核对', target, sourceRefs: sourceRefsForRule(aggregate, rule), executedBy: 'manual', executedAt: new Date().toISOString() })
+        continue
+      }
+      for (const subject of aggregate.caseV2.subjects) {
+        const applicability = resolveEffectiveFieldValue(aggregate, observations, condition.field, subject.id)
+        const actualScore = resolveEffectiveFieldValue(aggregate, observations, 'declaredScore', subject.id)
+        const applies = condition.equals !== undefined
+          ? String(applicability.value) === String(condition.equals)
+          : condition.includes !== undefined && typeof applicability.value === 'string'
+            ? applicability.value.includes(condition.includes)
+            : false
+        const status: CheckStatus = !applicability.known || (condition.equals === undefined && condition.includes === undefined)
+          ? 'awaiting-confirmation'
+          : !applies ? 'not-applicable'
+            : !actualScore.known || typeof actualScore.value !== 'number' ? 'awaiting-confirmation'
+              : actualScore.value === workspaceConstraint.value ? 'compliant' : 'non-compliant'
+        const target = { scope: 'subject' as const, subjectIds: [subject.id] }
+        const basis = makeCheckBasis(aggregate, [applicability, actualScore], aggregate.evidenceLinks.filter((link) => link.subjectId === subject.id), sourceRefsForRule(aggregate, rule))
+        checks.push({ checkId: checkIdFor(rule, target), ruleId: rule.id, status, reason: status === 'not-applicable'
+          ? `该事项不符合固定分值适用条件（${condition.field}）`
+          : status === 'awaiting-confirmation' ? `需要确认适用条件或申报分值（固定分值 ${workspaceConstraint.value}）`
+            : `适用固定分值 ${workspaceConstraint.value}，申报 ${actualScore.value} 分`, target, sourceRefs: basis.sourceRefs, basis, executedBy: 'deterministic', executedAt: new Date().toISOString() })
+      }
+      continue
+    }
     if (workspaceConstraint?.kind === 'level-mapping') {
       const subjectIds = rule.targetScope === 'subject' ? aggregate.caseV2.subjects.map((subject) => subject.id) : [undefined]
       for (const subjectId of subjectIds) {
-        const subject = aggregate.caseV2.subjects.find((candidate) => candidate.id === subjectId)
-        const rawLevel = String(fieldValueOf(subject?.fields.level ?? resolveRuleField(aggregate, observations, 'level', subjectId).value) ?? '').trim()
+        const levelValue = resolveEffectiveFieldValue(aggregate, observations, 'level', subjectId)
+        const scoreValue = resolveEffectiveFieldValue(aggregate, observations, 'declaredScore', subjectId)
+        const rawLevel = String(levelValue.value ?? '').trim()
         const mappingKeys = Object.keys(workspaceConstraint.levels ?? {}).sort((left, right) => right.length - left.length)
         const mappedKey = mappingKeys.find((level) => level === rawLevel)
           ?? Object.entries(workspaceConstraint.levelKeywords ?? {}).sort(([left], [right]) => right.length - left.length).find(([keyword]) => rawLevel.includes(keyword))?.[1]
           ?? mappingKeys.find((level) => rawLevel.includes(level))
         const expectedScore = mappedKey ? workspaceConstraint.levels?.[mappedKey] : undefined
-        const actualScore = fieldValueOf(subject?.fields.declaredScore ?? resolveRuleField(aggregate, observations, 'declaredScore', subjectId).value)
+        const actualScore = scoreValue.value
         const known = rawLevel.length > 0 && typeof expectedScore === 'number' && typeof actualScore === 'number'
         const status: CheckStatus = !known ? 'awaiting-confirmation' : expectedScore === actualScore ? 'compliant' : 'non-compliant'
         const target = subjectId
           ? { scope: 'subject' as const, subjectIds: [subjectId] }
           : { scope: 'case' as const, subjectIds: aggregate.caseV2.subjects.map((subjectItem) => subjectItem.id) }
+        const relatedLinks = aggregate.evidenceLinks.filter((link) => (!subjectId || link.subjectId === subjectId) && link.status !== 'rejected')
+        const linkedRefs = relatedLinks.flatMap((link) => {
+          if (link.blockRef) return [link.blockRef]
+          const document = aggregate.caseV2.documents.find((candidate) => candidate.versionId === link.documentVersionId)
+          return document ? [{ caseId: aggregate.caseV2.id, documentVersionId: document.versionId, parseRevision: document.parseRevision, location: { kind: 'file' as const } }] : []
+        })
+        const basis = makeCheckBasis(aggregate, [levelValue, scoreValue], relatedLinks, [...sourceRefsForRule(aggregate, rule), ...linkedRefs])
         checks.push({
           checkId: checkIdFor(rule, target), ruleId: rule.id, status,
           reason: !known ? `无法将等级“${rawLevel || '未提供'}”映射到已确认标准或缺少申报分值` : `等级“${rawLevel}”对应 ${expectedScore} 分，申报 ${actualScore} 分`,
-          target, sourceRefs: sourceRefsForRule(aggregate, rule), executedBy: 'deterministic', executedAt: new Date().toISOString(),
+          target, sourceRefs: basis.sourceRefs, basis, executedBy: 'deterministic', executedAt: new Date().toISOString(),
         })
       }
       continue
@@ -210,11 +351,14 @@ export function buildDeterministicRuleChecks(
           ? { scope: 'subject' as const, subjectIds: [subjectId] }
           : { scope: 'case' as const, subjectIds: aggregate.caseV2.subjects.map((subject) => subject.id) }
         const names = matchedDocuments.map((document) => document.fileName)
+        const matchedRefs = matchedDocuments.map((document) => ({ caseId: aggregate.caseV2.id, documentVersionId: document.versionId, parseRevision: document.parseRevision, location: { kind: 'file' as const } }))
+        const basis = makeCheckBasis(aggregate, [], links, [...sourceRefsForRule(aggregate, rule), ...matchedRefs])
         checks.push({
           checkId: checkIdFor(rule, target), ruleId: rule.id, status,
           reason: confirmed ? `已确认所需证明：${names.join('、')}` : candidate || names.length ? `发现证明候选，需人工确认：${names.join('、') || requiredTypes.join('、')}` : `缺少所需证明：${requiredTypes.join('、')}`,
           target,
-          sourceRefs: [...sourceRefsForRule(aggregate, rule), ...matchedDocuments.map((document) => ({ caseId: aggregate.caseV2.id, documentVersionId: document.versionId, parseRevision: document.parseRevision, location: { kind: 'file' as const } }))],
+          sourceRefs: basis.sourceRefs,
+          basis,
           executedBy: 'deterministic', executedAt: new Date().toISOString(),
         })
       }
@@ -222,17 +366,21 @@ export function buildDeterministicRuleChecks(
     }
     const subjectIds = rule.targetScope === 'subject' ? aggregate.caseV2.subjects.map((subject) => subject.id) : [undefined]
     for (const subjectId of subjectIds) {
-      const status = evaluateCondition(rule.when, (ref) => resolveRuleField(aggregate, observations, ref.field ?? ref.fact ?? '', subjectId))
+      const resolvedByField = new Map([...new Set(conditionFields(rule.when))].map((field) => [field, resolveEffectiveFieldValue(aggregate, observations, field, subjectId)]))
+      const resolvedFields = [...resolvedByField.values()]
+      const status = evaluateCondition(rule.when, (ref) => resolvedByField.get(ref.field ?? ref.fact ?? '') ?? { known: false, value: null })
       const target = rule.targetScope === 'subject' && subjectId
         ? { scope: 'subject' as const, subjectIds: [subjectId] }
         : { scope: 'case' as const, subjectIds: aggregate.caseV2.subjects.map((subject) => subject.id) }
+      const basis = makeCheckBasis(aggregate, resolvedFields, aggregate.evidenceLinks.filter((link) => !subjectId || link.subjectId === subjectId), sourceRefsForRule(aggregate, rule))
       checks.push({
         checkId: checkIdFor(rule, target),
         ruleId: rule.id,
         status: statusFromTriState(status, rule),
         reason: rule.requirement,
         target,
-        sourceRefs: sourceRefsForRule(aggregate, rule),
+        sourceRefs: basis.sourceRefs,
+        basis,
         executedBy: 'deterministic',
         executedAt: new Date().toISOString(),
       })
@@ -251,6 +399,20 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
   const semanticRules = rules.filter((rule) => rule.execution === 'semantic')
   // 材料上下文按需构建（PDF/Office 为异步解析）
   const materialContext = await buildMaterialContext(aggregate, rules, caseId, options.ocrPort)
+  const visionImages = collectV2VisionImages(aggregate, join(getConfigDir(), 'review-cases', caseId))
+  const visualPageCount = aggregate.caseV2.documents.filter((document) => document.active !== false)
+    .reduce((count, document) => count + document.blocks.filter((block) => block.kind === 'image' && block.imageAssetPath).length, 0)
+  const visualLimitNote = visualPageCount > visionImages.length
+    ? `\n【图像覆盖提示】当前案卷有 ${visualPageCount} 张图像页，本次模型请求实际附带 ${visionImages.length} 张；未附带或无法读取的页面必须保留人工核对，不得据此形成完整结论。`
+    : ''
+  if (visualPageCount > visionImages.length) {
+    // Run-level material ledger must prevent an all-clear verdict when visual pages were omitted.
+    for (const document of aggregate.caseV2.documents) {
+      if (document.active === false || !document.blocks.some((block) => block.kind === 'image' && block.imageAssetPath)) continue
+      document.usage = 'partially-read'
+      document.unusedReason = '本次审核未能把全部图像页送入模型，需人工核对未覆盖页面'
+    }
+  }
 
   const piExtract: NodeExecutor = async (node, inputHash) => {
     if (options.signal?.aborted) throw new Error('已取消（模型调用前）')
@@ -259,8 +421,9 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
       `输出 JSON 数组，每项 {"subjectId":"…","fieldKey":"…","value":…,"sourceRefs":[{"documentVersionId":"…","quote":"原文引用"}],"confidence":0~1}。`,
       `要求：sourceRefs 的 documentVersionId 必须来自下方材料清单；无对应材料的事实不得输出。`,
       materialContext,
+      visualLimitNote,
     ].join('\n')
-    const { content } = await options.client.complete({ prompt, system: REVIEW_SYSTEM_PROMPT, signal: options.signal })
+    const { content } = await options.client.complete({ prompt, system: REVIEW_SYSTEM_PROMPT, signal: options.signal, images: visionImages })
     if (options.signal?.aborted) throw new Error('已取消（模型调用后）')
     const parsed = extractJson(content)
     const items = Array.isArray(parsed) ? parsed : (parsed as { observations?: unknown[] })?.observations
@@ -303,8 +466,9 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
       `当前已生成的规则检查：${JSON.stringify(latestDeterministicChecks)}`,
       `规则清单：\n${findingsText}`,
       materialContext,
+      visualLimitNote,
     ].join('\n')
-    const { content } = await options.client.complete({ prompt, system: REVIEW_SYSTEM_PROMPT, signal: options.signal })
+    const { content } = await options.client.complete({ prompt, system: REVIEW_SYSTEM_PROMPT, signal: options.signal, images: visionImages })
     if (options.signal?.aborted) throw new Error('已取消（模型调用后）')
     const parsed = (extractJson(content) ?? {}) as { opinion?: string; checks?: Array<{ ruleId?: string; status?: string; reason?: string; subjectIds?: string[] }> }
     const validRuleIds = new Set(semanticRules.map((rule) => rule.id))

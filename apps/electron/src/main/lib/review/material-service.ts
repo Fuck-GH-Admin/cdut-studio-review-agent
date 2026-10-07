@@ -10,7 +10,7 @@
 import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { join } from 'node:path'
-import type { Actor, DocumentVersion, TemplateVersion } from '@profer/shared'
+import type { Actor, DocumentVersion, ReviewCommandResult, TemplateVersion } from '@profer/shared'
 import { CommandValidationError, readAggregate, submitCommand } from './case-store-v2'
 import { getConfigDir } from '../config-paths'
 
@@ -48,7 +48,7 @@ export interface RegisterMaterialPayload {
 }
 
 /** 登记材料（命令事务）：新 DocumentVersion 进聚合；同名再登记产生新版本 */
-export async function registerMaterial(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: RegisterMaterialPayload }): Promise<unknown> {
+export async function registerMaterial(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: RegisterMaterialPayload }): Promise<ReviewCommandResult<DocumentVersion>> {
   return submitCommand<RegisterMaterialPayload, DocumentVersion>(caseId, { ...command, type: 'RegisterMaterial' }, (aggregate, payload) => {
     if (aggregate.caseV2.stage === 'archived') throw new CommandValidationError('INVALID_TRANSITION', '已归档案卷不可登记材料')
     const sourcePath = payload.sourcePath
@@ -57,6 +57,7 @@ export async function registerMaterial(caseId: string, command: { requestId: str
     const incomingName = sourcePath.split(/[\\/]/).pop() ?? 'material.bin'
     const sameLogic = aggregate.caseV2.documents.filter((doc) => doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId)
     const versionSeq = sameLogic.length + 1
+    const previousVersion = sameLogic.at(-1)
     const documentId = `doc-${aggregate.caseV2.documents.length + 1}-${Date.now().toString(36)}`
     const versionId = `${documentId}-v${versionSeq}`
     const { byteHash, assetKey, sizeBytes } = copyAsset(caseId, versionId, sourcePath)
@@ -64,10 +65,11 @@ export async function registerMaterial(caseId: string, command: { requestId: str
       summary: `登记材料 ${incomingName}（${versionId}）`,
       mutate: (draft) => {
         // 同槽位同名旧版本停止参与新审核（supersedes：同 slotId+name 才替换）
-        const docs = draft.caseV2.documents.map((doc) => (doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId ? { ...doc, active: false, supersedesVersionId: doc.versionId === doc.versionId ? undefined : doc.versionId } : doc))
+        const docs = draft.caseV2.documents.map((doc) => (doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId ? { ...doc, active: false } : doc))
         const doc: DocumentVersion = {
           documentId,
           versionId,
+          ...(previousVersion ? { supersedesVersionId: previousVersion.versionId } : {}),
           contentHash: byteHash, // N2c 阶段解析前先以字节 hash 兼作内容指纹
           role: payload.role,
           materialSlotId: payload.materialSlotId,

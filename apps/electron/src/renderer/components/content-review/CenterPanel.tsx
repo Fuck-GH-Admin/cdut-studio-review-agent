@@ -42,6 +42,8 @@ import { cn } from '@/lib/utils'
 import type { ReviewActions } from './use-review-actions'
 import { SourceBlockView } from './SourceBlockView'
 import { useReviewWorkspaceActions } from './use-review-workspace-actions'
+import { ReviewActionDialog } from './ReviewActionDialog'
+import { MoveReviewDocumentButtons, RemoveReviewDocumentButton, ReviewMaterialLaneActions } from './ReviewMaterialControls'
 
 /** 证明识别状态 → 徽标样式/文案 */
 const EVIDENCE_STATUS: Record<EvidenceParseStatus, { label: string; className: string }> = {
@@ -110,9 +112,33 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
           <h2 className="text-[13px] font-semibold text-foreground">申请与证明</h2>
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          {items.length} 条 / {evidences.length} 份证明
+          {items.length} 条 / {documentsByRole.evidence.length} 份证明
         </p>
       </header>
+
+      {/* 申报文件只在中栏管理，和左栏审核依据、下方证明材料分开导入。 */}
+      <section className="shrink-0 border-b border-border/40 px-3 py-3">
+        <div className="flex items-center justify-between gap-2 px-1">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">申报材料</p>
+          <ReviewMaterialLaneActions role="application" documentIds={documentsByRole.application.map((document) => document.id)} actions={actions} />
+        </div>
+        {documentsByRole.application.length === 0 ? (
+          <p className="mt-2 rounded-lg border border-dashed border-border/60 px-3 py-4 text-center text-xs text-muted-foreground">
+            添加学生申报表或其他待审核文件。
+          </p>
+        ) : (
+          <div className="mt-2 space-y-1">
+            {documentsByRole.application.map((document) => (
+              <div key={document.id} className="flex min-w-0 items-center gap-1 rounded-md bg-muted/40 px-2 py-1">
+                <span className="min-w-0 flex-1 truncate text-[11px]" title={document.fileName}>{document.fileName}</span>
+                <span className="shrink-0 text-[10px] text-muted-foreground">{document.parseStatus === 'parsed' ? '已解析' : document.parseStatus === 'partial' ? '部分解析' : '解析失败'}</span>
+                <MoveReviewDocumentButtons role="application" documentIds={documentsByRole.application.map((source) => source.id)} documentId={document.id} actions={actions} />
+                <RemoveReviewDocumentButton document={document} actions={actions} />
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
 
       {/* 申报事项（开始审核时自动识别） */}
       <section className="shrink-0 px-3 py-3">
@@ -136,8 +162,9 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
               const itemBlock = findBlockByAnchor(documentsByRole.application, item.anchor)
 
               return (
-                <div key={item.id} className="rounded-xl border border-border/60 bg-card p-3 shadow-sm">
+                <div id={`review-subject-${encodeURIComponent(item.id)}`} key={item.id} className="rounded-xl border border-border/60 bg-card p-3 shadow-sm">
                   {/* 条目卡主体（整卡可点击定位） */}
+                  <p className="mb-1 px-1 text-[10px] font-semibold text-muted-foreground">申报</p>
                   <button
                     type="button"
                     onClick={() => handleItemClick(item)}
@@ -183,6 +210,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                   )}
                   {aggregate && (
                     <div className="mt-2 space-y-1.5 border-t border-border/50 pt-2">
+                      <p className="px-1 text-[10px] font-semibold text-muted-foreground">核验 · 材料识别结果</p>
                       {[...aggregate.observations.filter((observation) => observation.subjectId === item.id).map((observation) => observation as unknown as Record<string, unknown>), ...extractedObservations.filter((observation) => observation.subjectId === item.id)]
                         .reduce<Array<Record<string, unknown>>>((list, observation) => {
                           const fieldKey = String(observation.fieldKey ?? '')
@@ -197,15 +225,21 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                             key={`${String(observation.fieldKey)}-${String(observation.createdAt ?? index)}`}
                             observation={observation}
                             aggregate={aggregate}
+                            template={workspaceTemplate}
                             onConfirm={(value, reason) => workspaceActions.confirmObservation(observation, value, reason)}
                           />
                         ))}
-                      <ManualFactEntry
-                        subjectId={item.id}
-                        subjectTitle={item.title}
-                        aggregate={aggregate}
-                        onSave={(fieldKey, value, sourceVersionId, reason) => workspaceActions.confirmObservation({ subjectId: item.id, fieldKey, value, sourceRefs: sourceVersionId ? [{ documentVersionId: sourceVersionId }] : [] }, value, reason)}
-                      />
+                      <details className="rounded-lg border border-border/50 px-2.5 py-1.5">
+                        <summary className="cursor-pointer text-[10px] font-medium text-muted-foreground">··· 高级处理</summary>
+                        <ManualFactEntry
+                          subjectId={item.id}
+                          subjectTitle={item.title}
+                          subjectFields={aggregate.caseV2.subjects.find((subject) => subject.id === item.id)?.fields ?? {}}
+                          template={workspaceTemplate}
+                          aggregate={aggregate}
+                          onSave={(fieldKey, value, sourceVersionId, reason) => workspaceActions.confirmObservation({ subjectId: item.id, fieldKey, value, sourceRefs: sourceVersionId ? [{ documentVersionId: sourceVersionId }] : [] }, value, reason)}
+                        />
+                      </details>
                     </div>
                   )}
                   {aggregate?.caseV2.subjects.find((subject) => subject.id === item.id) && (
@@ -230,50 +264,65 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
         if (blocks.length === 0 && !document.parseError) return null
         return (
           <section key={document.id} className="shrink-0 px-3 pb-3">
-            <p className="mb-2 text-xs font-medium">待审原文 · {document.fileName}</p>
-            <div className="rounded-lg bg-muted/40 p-2">
-              {blocks.map((block) => (
-                <SourceBlockView key={block.id} document={document} block={block} dense />
-              ))}
-              {document.parseError && <p className="text-xs text-amber-600">{document.parseError}</p>}
-            </div>
+            <details className="rounded-lg border border-border/50 bg-muted/20 px-2.5 py-2">
+              <summary className="cursor-pointer text-xs font-medium">待审原文 · {document.fileName}（{blocks.length} 段）</summary>
+              <div className="mt-2 rounded-lg bg-muted/40 p-2">
+                {blocks.map((block) => (
+                  <SourceBlockView key={block.id} document={document} block={block} dense />
+                ))}
+                {document.parseError && <p className="text-xs text-amber-600">{document.parseError}</p>}
+              </div>
+            </details>
           </section>
         )
       })}
 
       {/* 证明区 */}
       <section className="shrink-0 px-3 pb-4">
-        <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-          证明材料
-        </p>
+        <span id="review-evidence-section" />
+        <div className="flex items-center justify-between gap-2 px-1 pb-2">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">证明材料</p>
+          <ReviewMaterialLaneActions role="evidence" documentIds={documentsByRole.evidence.map((document) => document.id)} actions={actions} />
+        </div>
         <div className="grid grid-cols-1 gap-2">
-          {evidences.map((evidence) => {
-            const document = documentsByRole.evidence.find((doc) => doc.id === evidence.documentId)
+          {documentsByRole.evidence.map((document) => {
+            const evidence = evidences.find((candidate) => candidate.documentId === document.id) ?? {
+              documentId: document.id,
+              recognizedFacts: '',
+              parseStatus: 'unrecognized' as const,
+              linkedItemIds: [],
+            }
             const linkedItemTitles = items
               .filter((item) => item.evidenceDocumentIds.includes(evidence.documentId))
               .map((item) => item.title)
             return (
-              <div key={evidence.documentId}>
+              <div key={document.id}>
                 <EvidenceCard
                   evidence={evidence}
-                  fileName={document?.fileName ?? evidence.documentId}
+                  fileName={document.fileName}
                   linkedItemTitles={linkedItemTitles}
+                  actions={(
+                    <>
+                      <MoveReviewDocumentButtons role="evidence" documentIds={documentsByRole.evidence.map((source) => source.id)} documentId={document.id} actions={actions} />
+                      <RemoveReviewDocumentButton document={document} actions={actions} />
+                    </>
+                  )}
                 />
-                {aggregate && document && (
-                  <EvidenceLinkControls
-                    aggregate={aggregate}
-                    documentVersionId={`${document.id}-v1`}
-                    actions={workspaceActions}
-                  />
+                {aggregate && (
+                  <details className="mt-1 rounded-lg border border-border/50 px-2.5 py-1.5">
+                    <summary className="cursor-pointer text-[10px] font-medium text-muted-foreground">管理这份证明与申报事项的关联</summary>
+                    <EvidenceLinkControls aggregate={aggregate} documentVersionId={`${document.id}-v1`} actions={workspaceActions} />
+                  </details>
                 )}
-                {document && (
+                <details className="mt-1 rounded-lg border border-border/50 bg-muted/20 px-2.5 py-1.5">
+                  <summary className="cursor-pointer text-[10px] font-medium text-muted-foreground">查看材料原文（{document.blocks.length} 段）</summary>
                   <div className="mt-1 rounded-lg bg-muted/40 p-2">
                     {document.blocks.map((block) => (
                       <SourceBlockView key={block.id} document={document} block={block} dense />
                     ))}
                     {document.parseError && <p className="text-xs text-amber-600">{document.parseError}</p>}
                   </div>
-                )}
+                </details>
               </div>
             )
           })}
@@ -312,6 +361,7 @@ function SubjectAdjudicationCard({
   const [values, setValues] = React.useState<Record<string, string>>(() => initialSubjectValues(subject.fields, current?.finalFields))
   const [busy, setBusy] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
+  const [dialogOutcome, setDialogOutcome] = React.useState<'accepted' | 'rejected' | null>(null)
   const specs = editableSubjectFields(subject.fields, template)
 
   React.useEffect(() => {
@@ -325,8 +375,8 @@ function SubjectAdjudicationCard({
 
   const submit = async (outcome: 'accepted' | 'rejected' | 'modified', finalFields?: Record<string, FieldValue>, why?: string): Promise<void> => {
     if (!canEdit || busy) return
-    const explanation = why ?? window.prompt('填写本事项最终认定理由', outcome === 'accepted' ? '核对材料后确认申报事项' : '依据当前材料不予认定')
-    if (!explanation?.trim()) return
+    if (!why) { setDialogOutcome(outcome === 'modified' ? 'accepted' : outcome); return }
+    const explanation = why
     setBusy(true)
     setError(null)
     try {
@@ -367,8 +417,8 @@ function SubjectAdjudicationCard({
       {current && <p className="mt-1 text-[10px] text-muted-foreground">理由：{current.reason}</p>}
       {!editing ? (
         <div className="mt-2 flex flex-wrap gap-1.5">
-          <button type="button" disabled={!canEdit || busy} onClick={() => void submit('accepted')} className="rounded border px-2 py-1 text-[11px] disabled:opacity-40">确认认定</button>
-          <button type="button" disabled={!canEdit || busy || specs.length === 0} onClick={() => { setValues(initialSubjectValues(subject.fields, current?.finalFields)); setEditing(true); setError(null) }} className="rounded border px-2 py-1 text-[11px] disabled:opacity-40">修改认定</button>
+          <button type="button" disabled={!canEdit || busy} onClick={() => void submit('accepted')} className="rounded border px-2 py-1 text-[11px] disabled:opacity-40">按核验结果认定</button>
+          <button type="button" disabled={!canEdit || busy || specs.length === 0} onClick={() => { setValues(initialSubjectValues(subject.fields, current?.finalFields)); setEditing(true); setError(null) }} className="rounded border px-2 py-1 text-[11px] disabled:opacity-40">调整认定</button>
           <button type="button" disabled={!canEdit || busy} onClick={() => void submit('rejected')} className="rounded border border-destructive/40 px-2 py-1 text-[11px] text-destructive disabled:opacity-40">不予认定</button>
         </div>
       ) : (
@@ -381,18 +431,23 @@ function SubjectAdjudicationCard({
           <div className="flex gap-1.5"><button type="button" disabled={!canEdit || busy || !reason.trim()} onClick={() => void saveModified()} className="rounded bg-primary px-2 py-1 text-[11px] text-primary-foreground disabled:opacity-50">保存认定</button><button type="button" disabled={busy} onClick={() => setEditing(false)} className="rounded border px-2 py-1 text-[11px]">取消</button></div>
         </div>
       )}
+      {dialogOutcome && <ReviewActionDialog
+        title={dialogOutcome === 'accepted' ? '确认最终认定' : '不予认定'}
+        fields={[{ key: 'reason', label: '认定理由', defaultValue: dialogOutcome === 'accepted' ? '核对材料后确认申报事项' : '依据当前材料不予认定', multiline: true }]}
+        onClose={() => setDialogOutcome(null)}
+        onSubmit={async ({ reason: explanation }) => submit(dialogOutcome, undefined, explanation!.trim())}
+      />}
     </section>
   )
 }
 
 function editableSubjectFields(fields: Record<string, FieldValue>, template: TemplateVersion | null): Array<{ key: string; label: string; kind: FieldValue['kind']; options: Array<{ value: string; label: string }> }> {
-  const specs = new Map((template?.fields ?? []).filter((field) => field.scope !== 'case').map((field) => [field.key, field]))
-  return Object.entries(fields).flatMap(([key, value]) => {
-    const spec = specs.get(key)
-    const kind = spec?.kind ?? value.kind
-    if (!['text', 'number', 'date', 'enum', 'multi', 'boolean'].includes(kind)) return []
-    return [{ key, label: spec?.label ?? key, kind, options: spec?.options ?? [] }]
-  })
+  const templateFields = (template?.fields ?? []).filter((field) => field.scope !== 'case' && ['text', 'number', 'date', 'enum', 'multi', 'boolean'].includes(field.kind))
+  const allowed = new Map(templateFields.map((field) => [field.key, { key: field.key, label: field.label, kind: field.kind, options: field.options ?? [] }]))
+  for (const [key, value] of Object.entries(fields)) {
+    if (!allowed.has(key) && ['text', 'number', 'date', 'enum', 'multi', 'boolean'].includes(value.kind)) allowed.set(key, { key, label: businessFieldLabel(key, template), kind: value.kind, options: [] })
+  }
+  return [...allowed.values()]
 }
 
 function initialSubjectValues(fields: Record<string, FieldValue>, finalFields?: Record<string, FieldValue>): Record<string, string> {
@@ -418,7 +473,13 @@ function parseFieldValue(kind: FieldValue['kind'], value: string, previous?: Fie
 
 function displaySubjectFields(fields: Record<string, FieldValue>, template: TemplateVersion | null): string {
   const entries = Object.entries(fields).filter(([, value]) => !['object', 'rows', 'attachment'].includes(value.kind)).slice(0, 4)
-  return entries.map(([key, value]) => `${template?.fields.find((field) => field.key === key)?.label ?? key} ${fieldValueText(value)}`).join(' / ') || '暂无可展示字段'
+  return entries.map(([key, value]) => `${businessFieldLabel(key, template)} ${fieldValueText(value)}`).join(' / ') || '暂无可展示字段'
+}
+
+function businessFieldLabel(key: string, template: TemplateVersion | null): string {
+  const configured = template?.fields.find((field) => field.key === key)?.label
+  if (configured) return configured
+  return ({ level: '获奖等级', declaredScore: '申报分值', score: '申报分值', activityDate: '活动日期', organizer: '主办单位', category: '事项类别', title: '事项名称' } as Record<string, string>)[key] ?? '补充信息'
 }
 
 function displayValue(raw: unknown): string {
@@ -429,11 +490,15 @@ function displayValue(raw: unknown): string {
 function ManualFactEntry({
   subjectId,
   subjectTitle,
+  subjectFields,
+  template,
   aggregate,
   onSave,
 }: {
   subjectId: string
   subjectTitle: string
+  subjectFields: Record<string, FieldValue>
+  template: TemplateVersion | null
   aggregate: CaseAggregateV2
   onSave(fieldKey: string, value: string, sourceVersionId: string, reason: string): Promise<void>
 }): React.ReactElement {
@@ -443,6 +508,8 @@ function ManualFactEntry({
   const [sourceVersionId, setSourceVersionId] = React.useState(aggregate.caseV2.documents.find((doc) => doc.role === 'evidence')?.versionId ?? '')
   const [reason, setReason] = React.useState('')
   const [busy, setBusy] = React.useState(false)
+  const fields = editableSubjectFields(subjectFields, template)
+  const selectedField = fields.find((field) => field.key === fieldKey)
   const save = async (): Promise<void> => {
     if (!fieldKey.trim() || !value.trim() || !reason.trim()) return
     setBusy(true)
@@ -458,8 +525,10 @@ function ManualFactEntry({
       {!open ? <button onClick={() => setOpen(true)} className="rounded border px-2 py-1 text-[11px] hover:bg-background">手工录入事实</button> : (
         <div className="space-y-1.5 rounded-lg border bg-background p-2">
           <p className="text-[11px] font-medium">为“{subjectTitle}”添加人工核实事实</p>
-          <input value={fieldKey} onChange={(event) => setFieldKey(event.target.value)} className="h-7 w-full rounded border px-2" placeholder="事实字段，如 awardLevel" aria-label="事实字段" />
-          <input value={value} onChange={(event) => setValue(event.target.value)} className="h-7 w-full rounded border px-2" placeholder="事实值" aria-label="事实值" />
+          <label className="block text-[10px]">事实类型<select value={fieldKey} onChange={(event) => { setFieldKey(event.target.value); setValue('') }} className="mt-1 h-8 w-full rounded border bg-background px-2" aria-label="事实类型"><option value="">请选择事实类型</option>{fields.map((field) => <option key={field.key} value={field.key}>{field.label}</option>)}</select></label>
+          <label className="block text-[10px]">核验结果{selectedField?.kind === 'enum' && selectedField.options.length > 0
+            ? <select value={value} onChange={(event) => setValue(event.target.value)} className="mt-1 h-8 w-full rounded border bg-background px-2">{selectedField.options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select>
+            : <input value={value} onChange={(event) => setValue(event.target.value)} className="mt-1 h-8 w-full rounded border px-2" placeholder="填写核验结果" aria-label="核验结果" />}</label>
           <select value={sourceVersionId} onChange={(event) => setSourceVersionId(event.target.value)} className="h-7 w-full rounded border bg-background px-2" aria-label="事实来源材料">
             <option value="">不关联材料来源</option>
             {aggregate.caseV2.documents.map((doc) => <option key={doc.versionId} value={doc.versionId}>{doc.fileName}</option>)}
@@ -478,10 +547,12 @@ function ManualFactEntry({
 function WorkspaceObservationCard({
   observation,
   aggregate,
+  template,
   onConfirm,
 }: {
   observation: Record<string, unknown>
   aggregate: CaseAggregateV2
+  template: TemplateVersion | null
   onConfirm(value: unknown, reason: string): Promise<void>
 }): React.ReactElement {
   const [editing, setEditing] = React.useState(false)
@@ -490,6 +561,7 @@ function WorkspaceObservationCard({
   const [busy, setBusy] = React.useState(false)
   const subjectId = String(observation.subjectId ?? '')
   const fieldKey = String(observation.fieldKey ?? '事实')
+  const fieldLabel = businessFieldLabel(fieldKey, template)
   const refs = Array.isArray(observation.sourceRefs) ? observation.sourceRefs : []
   const sourceNames = refs.flatMap((raw) => {
     if (!raw || typeof raw !== 'object' || !('documentVersionId' in raw)) return []
@@ -512,14 +584,14 @@ function WorkspaceObservationCard({
   return (
     <div className="rounded-lg bg-muted/35 px-2.5 py-2 text-xs">
       <div className="flex items-center justify-between gap-2">
-        <span className="font-medium">材料事实 · {fieldKey}</span>
+        <span className="font-medium">{fieldLabel} · 材料识别结果</span>
         <span className={cn('rounded px-1.5 py-0.5 text-[10px]', confirmed ? 'bg-green-500/10 text-green-700 dark:text-green-400' : 'bg-amber-500/10 text-amber-700 dark:text-amber-400')}>
           {confirmed ? '人工确认' : `待确认${typeof observation.confidence === 'number' ? ` · ${Math.round(observation.confidence * 100)}%` : ''}`}
         </span>
       </div>
       {!editing ? <p className="mt-1 text-foreground">{displayValue(observation.value) || '未识别'}</p> : (
         <div className="mt-1.5 space-y-1.5">
-          <input className="h-7 w-full rounded border bg-background px-2" value={value} onChange={(event) => setValue(event.target.value)} aria-label={`${fieldKey} 更正值`} />
+          <input className="h-7 w-full rounded border bg-background px-2" value={value} onChange={(event) => setValue(event.target.value)} aria-label={`${fieldLabel}核验结果`} />
           <input className="h-7 w-full rounded border bg-background px-2" value={reason} onChange={(event) => setReason(event.target.value)} placeholder="更正理由（必填）" aria-label="更正理由" />
           <div className="flex gap-1.5">
             <button disabled={busy || !reason.trim()} onClick={() => void run(value, reason)} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存更正</button>
@@ -530,8 +602,8 @@ function WorkspaceObservationCard({
       {sourceNames.length > 0 && <p className="mt-1 text-muted-foreground">来源：{[...new Set(sourceNames)].join('、')}</p>}
       {!confirmed && !editing && (
         <div className="mt-1.5 flex gap-1.5">
-          <button disabled={busy} onClick={() => void run(observation.value, '审核员核对原始材料后确认该事实')} className="rounded border px-2 py-1 text-[11px] hover:bg-background disabled:opacity-50">确认无误</button>
-          <button disabled={busy} onClick={() => { setValue(displayValue(observation.value)); setEditing(true) }} className="rounded border px-2 py-1 text-[11px] hover:bg-background disabled:opacity-50">更正</button>
+          <button disabled={busy} onClick={() => void run(observation.value, '审核员核对原始材料后确认该识别结果')} className="rounded border px-2 py-1 text-[11px] hover:bg-background disabled:opacity-50">识别正确</button>
+          <button disabled={busy} onClick={() => { setValue(displayValue(observation.value)); setEditing(true) }} className="rounded border px-2 py-1 text-[11px] hover:bg-background disabled:opacity-50">识别有误</button>
         </div>
       )}
     </div>
@@ -578,10 +650,11 @@ interface EvidenceCardProps {
   evidence: EvidenceDocument
   fileName: string
   linkedItemTitles: string[]
+  actions?: React.ReactNode
 }
 
 /** 证明卡：文件名 + 识别事实 + 状态徽标 + 关联条目（按 T6 简化：不渲染原图） */
-function EvidenceCard({ evidence, fileName, linkedItemTitles }: EvidenceCardProps): React.ReactElement {
+function EvidenceCard({ evidence, fileName, linkedItemTitles, actions }: EvidenceCardProps): React.ReactElement {
   const status = EVIDENCE_STATUS[evidence.parseStatus]
 
   return (
@@ -595,8 +668,9 @@ function EvidenceCard({ evidence, fileName, linkedItemTitles }: EvidenceCardProp
           <span className="min-w-0 flex-1 truncate text-[13px] font-medium text-foreground" title={fileName}>
             {fileName}
           </span>
-          <span className={cn('shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-medium', status.className)}>
-            {status.label}
+          <span className="flex shrink-0 items-center gap-1">
+            <span className={cn('rounded-md px-1.5 py-0.5 text-[11px] font-medium', status.className)}>{status.label}</span>
+            {actions}
           </span>
         </div>
         <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{evidence.recognizedFacts}</p>

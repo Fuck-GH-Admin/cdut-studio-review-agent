@@ -146,6 +146,8 @@ export interface RuleConstraint {
   requiredEvidenceTypes?: string[]
   /** 等级关键词 → 标准等级（用于冲突比对） */
   levelKeywords?: Record<string, string>
+  /** 固定分值适用范围；没有明确适用条件时不得按固定分值自动判定。 */
+  appliesWhen?: { field: string; equals?: string | number; includes?: string }
 }
 
 /** 规则包：一份依据材料 + 其提取的大纲 */
@@ -335,6 +337,8 @@ export interface ReviewCase {
   updatedAt: string
   /** 来源文档（依据 + 申报 + 证明） */
   documents: SourceDocument[]
+  /** 已从当前审核材料中移除的文件；保留记录用于 V2 来源追溯。 */
+  archivedDocuments?: SourceDocument[]
   /** 规则包 */
   rulePacks: RulePack[]
   /** 申报事项 */
@@ -447,6 +451,12 @@ export const REVIEW_IPC_CHANNELS = {
   CREATE_CASE: 'review:create-case',
   /** 导入文件到案卷（返回解析后的 SourceDocument） */
   IMPORT_DOCUMENT: 'review:import-document',
+  /** 开发版自动化验收：使用受控路径直接导入，避开原生文件选择框。 */
+  IMPORT_DOCUMENT_FROM_PATH: 'review:import-document-from-path',
+  /** 从当前案卷审核输入中移除材料（原件保留在案卷目录） */
+  REMOVE_DOCUMENTS: 'review:remove-documents',
+  /** 更新同角色材料的审核顺序 */
+  REORDER_DOCUMENTS: 'review:reorder-documents',
   /** 删除案卷 */
   DELETE_CASE: 'review:delete-case',
   /** 更新案卷设置（领域包 / 标题 / 类型 / 待审主体文档） */

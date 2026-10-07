@@ -47,6 +47,13 @@ export interface ReviewChatMessage {
   content: string | ReviewContentPart[]
 }
 
+/** 把 V2 检查用的图像 data URL 转为审核网关的多模态消息内容。 */
+export function reviewPromptWithImages(prompt: string, images: string[] = []): string | ReviewContentPart[] {
+  return images.length === 0
+    ? prompt
+    : [{ type: 'text', text: prompt }, ...images.map((url) => ({ type: 'image_url' as const, image_url: { url } }))]
+}
+
 /** chatCompletion 可选参数 */
 export interface ReviewChatOptions {
   /** 采样温度 */

@@ -33,7 +33,7 @@ export function assertAllowedProtocol(protocol: string): void {
 export interface ReviewModelClient {
   protocol: string
   /** 语义节点调用：返回结构化 JSON（不执行文件/网络操作） */
-  complete(input: { prompt: string; system: string; signal?: AbortSignal }): Promise<{ content: string }>
+  complete(input: { prompt: string; system: string; signal?: AbortSignal; images?: string[] }): Promise<{ content: string }>
 }
 
 export interface ReviewExecutorDeps {

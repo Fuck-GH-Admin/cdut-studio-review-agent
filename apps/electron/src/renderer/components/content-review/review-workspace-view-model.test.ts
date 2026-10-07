@@ -71,7 +71,7 @@ describe('单案审核工作台 ViewModel', () => {
       { subjectId: 's1', fieldKey: 'hobby', value: '摄影', confidence: 0.2, confirmed: false, extractedBy: 'ai', sourceRefs: [{ documentVersionId: 'e-v1' }] },
     ]
     const result = buildReviewWorkspaceViewModel(input, run({ inputManifest: { ...run().inputManifest, effectiveRuleDependencies: [{ ruleId: 'rule-1', fieldKeys: ['level'] }] } }), false, extracted)
-    expect(result.pendingActions.filter((item) => item.kind === 'fact').map((item) => item.title)).toEqual(['待确认事实：level 省级'])
+    expect(result.pendingActions.filter((item) => item.kind === 'fact').map((item) => item.title)).toEqual(['待核实：获奖等级 省级'])
   })
 
   test('未最终认定的申报事项本身就是可恢复的待办', () => {
@@ -79,5 +79,25 @@ describe('单案审核工作台 ViewModel', () => {
     const result = buildReviewWorkspaceViewModel(input, run({ checks: [] }), false)
     expect(result.pendingActions).toContainEqual(expect.objectContaining({ key: 'adjudication:s1', kind: 'adjudication' }))
     expect(result.canDecide).toBeFalse()
+  })
+
+  test('待办只映射为三类展示任务、按业务优先级排序，并沿用共享决定准备度', () => {
+    const input = aggregate({
+      caseV2: {
+        ...baseCase,
+        subjects: [{ id: 's1', type: 'item', title: '竞赛事项', fields: {}, sourceRefs: [], correction: 'user-confirmed', status: 'identified' }],
+        documents: [{ documentId: 'd', versionId: 'd-v1', contentHash: '', role: 'evidence', fileName: '证书.pdf', mimeType: 'application/pdf', sizeBytes: 1, assetPath: '', parseRevision: 1, parseStatus: 'failed', parseError: '文件不可读', blocks: [], usage: 'unread' }],
+      },
+      evidenceLinks: [{ id: 'link-1', documentVersionId: 'd-v1', subjectId: 's1', supportsFact: '获奖等级', status: 'candidate', linkedBy: 'ai' }],
+      supplements: [{ id: 'sup1', caseId: 'workspace-case', originFindingKeys: [], requiredElements: ['日期'], reason: '材料缺日期', responsibleRole: 'student', status: 'open', responses: [], createdAt: '' }],
+    })
+    const currentRun = run({ checks: [{ ...check, status: 'awaiting-confirmation', reason: '等级需人工核实' }] })
+    const view = buildReviewWorkspaceViewModel(input, currentRun, false, [{ subjectId: 's1', fieldKey: 'level', value: '省级二等奖', confidence: 0.5, confirmed: false }])
+
+    expect(view.pendingActions[0]?.kind).toBe('check')
+    expect(view.pendingActions[0]?.presentationGroup).toBe('verify')
+    expect(new Set(view.pendingActions.map((item) => item.presentationGroup))).toEqual(new Set(['verify', 'resolve', 'adjudicate']))
+    expect(view.decisionReadiness.ready).toBeFalse()
+    expect(view.decisionReadiness.blockers.length).toBeGreaterThan(0)
   })
 })

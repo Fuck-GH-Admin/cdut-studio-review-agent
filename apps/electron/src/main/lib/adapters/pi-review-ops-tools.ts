@@ -227,20 +227,29 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
     tools.push(sdk.defineTool({
       name: 'review_register_material',
       label: '登记审核材料',
-      description: '把授权目录内的本地文件登记进案卷材料槽（复制原件并计算哈希）。返回 documentVersionId。路径必须在本会话授权目录内。',
+      description: '把授权目录内的本地文件添加到当前审核案卷；可指定为审核依据、申报材料或证明材料，路径必须在本会话授权目录内。工作台单案会同步显示，返回来源版本 ID。',
       parameters: Type.Object({
         ...AssignmentParam,
         caseId: Type.String({ minLength: 4 }),
         sourcePath: Type.String({ minLength: 2, description: '本地文件的绝对路径（必须在本会话授权目录内）' }),
-        materialSlotId: Type.String({ minLength: 1, description: '材料槽 ID（从 review_get_template 获得）' }),
+        role: Type.Optional(Type.Union([Type.Literal('rule'), Type.Literal('application'), Type.Literal('evidence')], { description: '审核依据、申报材料或证明材料；省略时作为申报材料' })),
+        materialSlotId: Type.Optional(Type.String({ minLength: 1, description: '使用 V2 模板工作流时的材料槽 ID（从 review_get_template 获得）' })),
       }),
       async execute(_id, params) {
         try {
-          const input = params as { assignmentId: string; caseId: string; sourcePath: string; materialSlotId: string }
+          const input = params as { assignmentId: string; caseId: string; sourcePath: string; role?: 'rule' | 'application' | 'evidence'; materialSlotId?: string }
           const guard = requireAssignment(input.assignmentId, 'register-material')
           const assignment = guard.assignment!
           if (assignment.caseId && assignment.caseId !== input.caseId) return result({ error: `指派绑定的是案卷 ${assignment.caseId}，不能操作 ${input.caseId}` }, true)
           if (!isPathUnderRoots(input.sourcePath, ctx.allowedRoots)) return result({ error: '文件路径不在本会话授权目录内（拒绝登记）' }, true)
+          const role = input.role ?? 'application'
+          const { getCase } = require('../review/case-store') as typeof import('../review/case-store')
+          if (getCase(input.caseId)) {
+            const { importDocumentFromPath } = require('../review/case-import') as typeof import('../review/case-import')
+            const document = await importDocumentFromPath({ caseId: input.caseId, sourcePath: input.sourcePath, role })
+            return result({ caseId: input.caseId, documentVersionId: `${document.id}-v1`, documentId: document.id, fileName: document.fileName, role, parseStatus: document.parseStatus })
+          }
+          if (!input.materialSlotId) return result({ error: 'V2 模板案卷登记需要 materialSlotId；请先调用 review_get_template 获取材料槽。' }, true)
           const { registerMaterial } = require('../review/material-service') as typeof import('../review/material-service')
           const { getCaseV2Aggregate } = require('../review/application-service') as typeof import('../review/application-service')
           const fresh = getCaseV2Aggregate(input.caseId)
@@ -249,7 +258,7 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
             requestId: `reg-${input.assignmentId}-${Date.now().toString(36)}`,
             actor: { actorId: guard.actorId, actorSource: 'agent', role: guard.role },
             expectedRevision: fresh.caseV2.revision,
-            payload: { sourcePath: input.sourcePath, role: 'application', materialSlotId: input.materialSlotId },
+            payload: { sourcePath: input.sourcePath, role, materialSlotId: input.materialSlotId },
           }) as { ok: boolean; message?: string; entity?: { versionId: string; fileName: string } }
           if (!outcome.ok) return result({ error: outcome.message ?? '登记失败' }, true)
           return result({ caseId: input.caseId, documentVersionId: outcome.entity?.versionId, fileName: outcome.entity?.fileName, slot: input.materialSlotId })

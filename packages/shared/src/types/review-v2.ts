@@ -97,7 +97,7 @@ export interface DocumentVersion {
   parseStatus: 'pending' | 'parsed' | 'partial' | 'failed'
   parseError?: string
   /** 解析产物：文本块（带位置）与表格/图片资产索引（M2 扩展） */
-  blocks: Array<{ blockId: string; text: string; location?: SourceLocation; kind: 'text' | 'image' | 'table' }>
+  blocks: Array<{ blockId: string; text: string; location?: SourceLocation; kind: 'text' | 'image' | 'table'; imageAssetPath?: string }>
   /** 审核使用状态：登记≠已读（03 §6 材料账本） */
   usage: 'registered' | 'read' | 'partially-read' | 'unread'
   unusedReason?: string
@@ -332,6 +332,8 @@ export interface CheckResult {
   /** 状态理由（not-applicable 带条件理由；not-executed 带原因） */
   reason: string
   sourceRefs: SourceRef[]
+  /** 本次结论实际使用的事实、证明关联和出处，可供审核员追溯。 */
+  basis?: { observationIds: string[]; evidenceLinkIds: string[]; sourceRefs: SourceRef[] }
   /** 确定计算明细（数值规则） */
   calculation?: {
     inputs: Array<{ key: string; value: number; from: string }>

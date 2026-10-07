@@ -9,7 +9,8 @@ function outline(id: string, constraint?: RuleOutlineItem['constraint']): RuleOu
 
 describe('审核依据规则编译', () => {
   test('可结构化比较的分值和日期约束进入 deterministic', () => {
-    expect(compileWorkspaceRule(pack, outline('score', { kind: 'score-value', value: 4 })).execution).toBe('deterministic')
+    expect(compileWorkspaceRule(pack, outline('score', { kind: 'score-value', value: 4, appliesWhen: { field: 'category', equals: '竞赛' } })).execution).toBe('deterministic')
+    expect(compileWorkspaceRule(pack, outline('unsafe-score', { kind: 'score-value', value: 4 })).execution).toBe('manual')
     expect(compileWorkspaceRule(pack, outline('date', { kind: 'date-range', dateFrom: '2025-01-01', dateTo: '2025-12-31' })).execution).toBe('deterministic')
   })
 

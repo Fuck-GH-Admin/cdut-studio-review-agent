@@ -214,7 +214,7 @@ export interface ReviewFocus {
 export const reviewFocusAtom = atom<ReviewFocus | null>(null)
 
 /** V2 原生来源定位；使用 SourceRef 坐标，不伪造 V1 ReviewFinding。 */
-export const reviewSourceFocusAtom = atom<{ ref: SourceRef; purpose: 'rule' | 'application' | 'evidence'; nonce: number } | null>(null)
+export const reviewSourceFocusAtom = atom<{ ref: SourceRef; purpose: 'rule' | 'application' | 'evidence'; nonce: number; originPendingActionKey?: string } | null>(null)
 /** Right-panel action asks the corresponding center-panel subject card to open its editor. */
 export const reviewAdjudicationEditorSubjectAtom = atom<string | null>(null)
 

@@ -25,11 +25,53 @@ function projectedCase(v1: ReviewCase, current: ReviewCaseV2): ReviewCaseV2 {
   const template = getTemplate(mapping.templateId, current.templateId === mapping.templateId ? current.templateVersion : undefined)
   if (!template) throw new Error(`V2 模板不存在或未初始化: ${mapping.templateId}`)
 
+  const previousSubjects = new Map(current.subjects.map((subject) => [subject.id, subject]))
   const subjects = v1.items.map((item) => {
     const subject = itemToSubject(item)
-    return { ...subject, sourceRefs: subject.sourceRefs.map((ref) => ({ ...ref, caseId: v1.id })) }
+    const previous = previousSubjects.get(subject.id)
+    return {
+      ...previous,
+      ...subject,
+      // V1 owns current declared values; V2-only fields remain available after a source refresh.
+      fields: { ...previous?.fields, ...subject.fields },
+      sourceRefs: subject.sourceRefs.map((ref) => ({ ...ref, caseId: v1.id })),
+    }
   })
   const reviewRules: RuleSpec[] = v1.rulePacks.flatMap((pack) => pack.outline.map((outline, index) => compileWorkspaceRule(pack, outline, index + 1)))
+  const previousDocuments = new Map(current.documents.map((document) => [document.versionId, document]))
+  const projectDocument = (document: ReviewCase['documents'][number]) => {
+    const version = documentToVersion(document)
+    const slotted = mapping.templateId !== 'comprehensive-assessment-v2'
+      ? version
+      : document.role === 'application' ? { ...version, materialSlotId: 'application-form' }
+        : document.role === 'evidence' ? { ...version, materialSlotId: 'certificates' }
+          : version
+    const previous = previousDocuments.get(slotted.versionId)
+    return previous ? {
+      ...previous,
+      ...slotted,
+      // V1 refreshes source metadata; human material handling and version lineage belong to V2.
+      usage: previous.usage,
+      ...(previous.unusedReason ? { unusedReason: previous.unusedReason } : {}),
+      ...(previous.active !== undefined ? { active: previous.active } : {}),
+      ...(previous.supersedesVersionId ? { supersedesVersionId: previous.supersedesVersionId } : {}),
+    } : slotted
+  }
+  const activeDocuments = v1.documents.map(projectDocument)
+  const activeVersionIds = new Set(activeDocuments.map((document) => document.versionId))
+  const archivedDocuments = (v1.archivedDocuments ?? [])
+    .map((document) => {
+      const projected = projectDocument(document)
+      const previous = previousDocuments.get(projected.versionId)
+      return {
+        ...projected,
+        ...(previous?.supersedesVersionId ? { supersedesVersionId: previous.supersedesVersionId } : {}),
+        active: false,
+        usage: 'unread' as const,
+        unusedReason: '审核员已从当前审核材料中移除',
+      }
+    })
+    .filter((document) => !activeVersionIds.has(document.versionId))
   return {
     ...current,
     templateId: template.templateId,
@@ -42,13 +84,7 @@ function projectedCase(v1: ReviewCase, current: ReviewCaseV2): ReviewCaseV2 {
     },
     subjects,
     reviewRules,
-    documents: v1.documents.map((document) => {
-      const version = documentToVersion(document)
-      if (mapping.templateId !== 'comprehensive-assessment-v2') return version
-      if (document.role === 'application') return { ...version, materialSlotId: 'application-form' }
-      if (document.role === 'evidence') return { ...version, materialSlotId: 'certificates' }
-      return version
-    }),
+    documents: [...activeDocuments, ...archivedDocuments],
   }
 }
 
@@ -105,6 +141,7 @@ export async function syncWorkspaceProjectionV2(caseId: string): Promise<CaseAgg
     const legacy = getCase(caseId)
     if (!legacy) throw new Error(`辅助审核案卷不存在: ${caseId}`)
     const projection = projectedCase(legacy, current.caseV2)
+    const archivedVersionIds = new Set((legacy.archivedDocuments ?? []).map((document) => `${document.id}-v1`))
     if (projectionFingerprint(projection) === projectionFingerprint(current.caseV2)) return current
     const digest = createHash('sha256').update(projectionFingerprint(projection)).digest('hex')
     const result = await submitCommand(caseId, {
@@ -117,6 +154,11 @@ export async function syncWorkspaceProjectionV2(caseId: string): Promise<CaseAgg
       summary: `同步申报输入与材料（${projection.subjects.length} 项 / ${projection.documents.length} 份）`,
       mutate: (draft) => {
         draft.caseV2 = { ...projection, revision: draft.caseV2.revision, updatedAt: draft.caseV2.updatedAt }
+        if (archivedVersionIds.size > 0) {
+          draft.evidenceLinks = draft.evidenceLinks.map((link) => archivedVersionIds.has(link.documentVersionId)
+            ? { ...link, status: 'rejected' }
+            : link)
+        }
         // 来自 V1 识别的关联先作为 AI 候选；审核员可在工作台确认、拒绝或改绑。
         for (const item of legacy.items) {
           const versionIds = item.evidenceDocumentIds.map((documentId) => `${documentId}-v1`)

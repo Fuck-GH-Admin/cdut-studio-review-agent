@@ -8,7 +8,9 @@ import { ensureBuiltinTemplateDrafts } from './builtin-templates'
 import { getTemplate as getTemplateStored, saveDraft as saveDraftStored } from './template-store'
 import { readAggregate } from './case-store-v2'
 import { ensureWorkspaceAggregateV2, syncWorkspaceProjectionV2 } from './workspace-service-v2'
-import { correctObservation } from './application-service'
+import { correctObservation, setEvidenceLink } from './application-service'
+import { acknowledgeWorkspaceMaterialV2 } from './workspace-business-service-v2'
+import { removeDocumentsFromCase, reorderDocumentsInCase } from './case-import'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-workspace-v2-${Date.now()}`)
 process.env.PROFER_CONFIG_DIR = CONFIG_DIR
@@ -51,6 +53,90 @@ describe('单一工作台案卷映射到 V2 聚合', () => {
     expect(synced.caseV2.subjects[0]?.title).toBe('更新后的申报事项')
     expect(synced.observations.some((observation) => observation.value.kind === 'text' && observation.value.value === '人工确认等级')).toBeTrue()
     expect(synced.receiptLog.some((receipt) => receipt.type === 'CorrectObservation')).toBeTrue()
+  })
+
+  test('重新投影新申报材料时保留已读状态、确认的证明关联与人工事实', async () => {
+    ensureBuiltinTemplateDrafts({ getTemplate: getTemplateStored, saveDraft: saveDraftStored })
+    const legacy = buildDemoCase()
+    saveCase(legacy)
+    let aggregate = await ensureWorkspaceAggregateV2(legacy.id)
+    const subjectId = legacy.items[0]!.id
+    const evidenceDocument = aggregate.caseV2.documents.find((document) => document.role === 'evidence')!
+    const applicationDocument = aggregate.caseV2.documents.find((document) => document.role === 'application')!
+
+    const acknowledged = await acknowledgeWorkspaceMaterialV2(legacy.id, {
+      requestId: 'projection-material-read', actor: reviewer, expectedRevision: aggregate.caseV2.revision,
+      payload: { documentVersionId: applicationDocument.versionId, action: 'read', reason: '已核对申报材料' },
+    })
+    expect(acknowledged.ok).toBeTrue()
+    aggregate = readAggregate(legacy.id)!
+    const candidate = await setEvidenceLink(legacy.id, {
+      requestId: 'projection-evidence-candidate', actor: reviewer, expectedRevision: aggregate.caseV2.revision,
+      payload: { documentVersionId: evidenceDocument.versionId, subjectIds: [subjectId], supportsFact: '获奖等级', linkedBy: 'user' },
+    })
+    expect(candidate.ok).toBeTrue()
+    aggregate = readAggregate(legacy.id)!
+    const linkId = aggregate.evidenceLinks.find((link) => link.subjectId === subjectId)!.id
+    const confirmed = await setEvidenceLink(legacy.id, {
+      requestId: 'projection-evidence-confirm', actor: reviewer, expectedRevision: aggregate.caseV2.revision,
+      payload: { evidenceLinkId: linkId, documentVersionId: evidenceDocument.versionId, subjectIds: [subjectId], supportsFact: '获奖等级', linkedBy: 'user', status: 'confirmed' },
+    })
+    expect(confirmed.ok).toBeTrue()
+
+    const newApplication = { ...legacy.documents.find((document) => document.role === 'application')!, id: 'new-application', fileName: '补充申报说明.txt' }
+    saveCase({ ...legacy, documents: [...legacy.documents, newApplication], items: legacy.items.map((item, index) => index === 0 ? { ...item, title: '更新后的申报事项' } : item) })
+    const synced = await syncWorkspaceProjectionV2(legacy.id)
+
+    expect(synced.caseV2.subjects[0]?.title).toBe('更新后的申报事项')
+    expect(synced.caseV2.documents.find((document) => document.versionId === applicationDocument.versionId)?.usage).toBe('read')
+    expect(synced.evidenceLinks.find((link) => link.id === linkId)?.status).toBe('confirmed')
+    expect(synced.receiptLog.some((receipt) => receipt.type === 'AcknowledgeWorkspaceMaterial')).toBeTrue()
+    expect(synced.receiptLog.some((receipt) => receipt.type === 'SetEvidenceLink')).toBeTrue()
+  })
+
+  test('从证明栏移除材料时清理当前关联并保留不可用的版本与历史关联', async () => {
+    ensureBuiltinTemplateDrafts({ getTemplate: getTemplateStored, saveDraft: saveDraftStored })
+    const legacy = buildDemoCase()
+    saveCase(legacy)
+    let aggregate = await ensureWorkspaceAggregateV2(legacy.id)
+    const subjectId = legacy.items[0]!.id
+    const evidenceDocument = legacy.documents.find((document) => document.role === 'evidence')!
+    const linked = await setEvidenceLink(legacy.id, {
+      requestId: 'remove-proof-link-create', actor: reviewer, expectedRevision: aggregate.caseV2.revision,
+      payload: { documentVersionId: `${evidenceDocument.id}-v1`, subjectIds: [subjectId], supportsFact: '证明获奖情况', linkedBy: 'user' },
+    })
+    expect(linked.ok).toBeTrue()
+    aggregate = readAggregate(legacy.id)!
+    const linkId = aggregate.evidenceLinks.find((link) => link.documentVersionId === `${evidenceDocument.id}-v1`)!.id
+    const confirmed = await setEvidenceLink(legacy.id, {
+      requestId: 'remove-proof-link-confirm', actor: reviewer, expectedRevision: aggregate.caseV2.revision,
+      payload: { evidenceLinkId: linkId, documentVersionId: `${evidenceDocument.id}-v1`, subjectIds: [subjectId], supportsFact: '证明获奖情况', linkedBy: 'user', status: 'confirmed' },
+    })
+    expect(confirmed.ok).toBeTrue()
+
+    const removed = await removeDocumentsFromCase({ caseId: legacy.id, role: 'evidence', documentIds: [evidenceDocument.id] })
+    aggregate = readAggregate(legacy.id)!
+    expect(removed.documents.some((document) => document.id === evidenceDocument.id)).toBeFalse()
+    expect(removed.archivedDocuments?.some((document) => document.id === evidenceDocument.id)).toBeTrue()
+    expect(removed.evidences.some((evidence) => evidence.documentId === evidenceDocument.id)).toBeFalse()
+    expect(removed.items.every((item) => !item.evidenceDocumentIds.includes(evidenceDocument.id))).toBeTrue()
+    expect(aggregate.caseV2.documents.find((document) => document.versionId === `${evidenceDocument.id}-v1`)).toMatchObject({ active: false, usage: 'unread' })
+    expect(aggregate.evidenceLinks.find((link) => link.id === linkId)?.status).toBe('rejected')
+    expect(aggregate.receiptLog.some((receipt) => receipt.summary.includes('同步申报输入与材料'))).toBeTrue()
+  })
+
+  test('重排证明材料后 V1 与 V2 保持同一来源顺序', async () => {
+    ensureBuiltinTemplateDrafts({ getTemplate: getTemplateStored, saveDraft: saveDraftStored })
+    const legacy = buildDemoCase()
+    saveCase(legacy)
+    await ensureWorkspaceAggregateV2(legacy.id)
+    const expectedOrder = legacy.documents.filter((document) => document.role === 'evidence').map((document) => document.id).reverse()
+    expect(expectedOrder.length).toBeGreaterThan(1)
+
+    const reordered = await reorderDocumentsInCase({ caseId: legacy.id, role: 'evidence', documentIds: expectedOrder })
+    const aggregate = readAggregate(legacy.id)!
+    expect(reordered.documents.filter((document) => document.role === 'evidence').map((document) => document.id)).toEqual(expectedOrder)
+    expect(aggregate.caseV2.documents.filter((document) => document.role === 'evidence').map((document) => document.documentId)).toEqual(expectedOrder)
   })
 
   test('审核依据按约束结构化编译，未确认内容仍保持人工检查', async () => {

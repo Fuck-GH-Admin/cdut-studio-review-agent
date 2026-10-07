@@ -9,7 +9,7 @@
  * 避免向 7700+ 行的 ipc.ts 继续追加业务逻辑。
  */
 
-import { ipcMain } from 'electron'
+import { app, ipcMain } from 'electron'
 import {
   REVIEW_IPC_CHANNELS,
   type AssistantChatRequest,
@@ -43,7 +43,7 @@ import { startReviewRun } from './run-service'
 import { exportReport } from './report-service'
 import { getReviewModelGatewayStatus } from './review-model-gateway'
 import { createEmptyCase } from './case-creation'
-import { importDocumentIntoCase } from './case-import'
+import { importDocumentFromPath, importDocumentIntoCase, removeDocumentsFromCase, reorderDocumentsInCase } from './case-import'
 import { invalidateDerivedReviewInputs } from './input-invalidation'
 import { ensureWorkspaceAggregateV2, syncWorkspaceProjectionV2 } from './workspace-service-v2'
 
@@ -181,15 +181,8 @@ export function registerReviewIpc(): void {
   ipcMain.handle(REVIEW_IPC_CHANNELS.CONFIRM_RULE_PACK, async (_event, input: { caseId: string; rulePackId: string }): Promise<ReviewCase> => {
     const caseId = requireString(input?.caseId, 'caseId')
     const rulePackId = requireString(input?.rulePackId, 'rulePackId')
-    const reviewCase = getCase(caseId)
-    if (!reviewCase) throw new Error(`案卷不存在: ${caseId}`)
-    if (!reviewCase.rulePacks.some((pack) => pack.id === rulePackId)) throw new Error(`审核依据不存在: ${rulePackId}`)
-    const updated = await updateCase(caseId, (fresh) => ({
-      ...fresh,
-      rulePacks: fresh.rulePacks.map((pack) => pack.id === rulePackId ? { ...pack, confirmed: true } : pack),
-    }), { reason: `审核员确认依据 ${rulePackId}` })
-    await syncWorkspaceProjectionV2(caseId)
-    return updated
+    const { confirmRulePackInCase } = require('./case-import') as typeof import('./case-import')
+    return confirmRulePackInCase(caseId, rulePackId)
   })
 
   /** 导入文件到案卷（系统选择框 → 解析为 SourceDocument 并写回案卷） */
@@ -204,6 +197,52 @@ export function registerReviewIpc(): void {
         fileName: requireString(input.fileName, 'fileName'),
         role: input.role,
         parentWindow: BrowserWindow.fromWebContents(_event.sender) ?? undefined,
+      })
+    },
+  )
+
+  /** 开发版 UI 自动化/模型验收入口；正式构建仍只允许由系统文件选择框授权路径。 */
+  ipcMain.handle(
+    REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_FROM_PATH,
+    async (_event, input: { caseId: string; sourcePath: string; role: SourceDocument['role'] }): Promise<SourceDocument> => {
+      if (app.isPackaged) throw new Error('路径直导仅在开发版可用')
+      if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+      if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
+      const sourcePath = requireString(input.sourcePath, 'sourcePath')
+      return importDocumentFromPath({ caseId: requireString(input.caseId, 'caseId'), sourcePath, role: input.role })
+    },
+  )
+
+  /** 从当前审核输入中移除一份或某一角色的全部材料；保留案卷内原件。 */
+  ipcMain.handle(
+    REVIEW_IPC_CHANNELS.REMOVE_DOCUMENTS,
+    (_event, input: { caseId: string; role: SourceDocument['role']; documentIds?: string[] }): Promise<ReviewCase> => {
+      if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+      if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
+      if (input.documentIds !== undefined && (!Array.isArray(input.documentIds) || input.documentIds.some((id) => typeof id !== 'string'))) {
+        throw new Error('参数 documentIds 类型非法')
+      }
+      return removeDocumentsFromCase({
+        caseId: requireString(input.caseId, 'caseId'),
+        role: input.role,
+        ...(input.documentIds !== undefined ? { documentIds: input.documentIds.map((id) => requireString(id, 'documentId')) } : {}),
+      })
+    },
+  )
+
+  /** 更新同一材料栏的呈现与审核顺序。 */
+  ipcMain.handle(
+    REVIEW_IPC_CHANNELS.REORDER_DOCUMENTS,
+    (_event, input: { caseId: string; role: SourceDocument['role']; documentIds: string[] }): Promise<ReviewCase> => {
+      if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+      if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
+      if (!Array.isArray(input.documentIds) || input.documentIds.some((id) => typeof id !== 'string')) {
+        throw new Error('参数 documentIds 类型非法')
+      }
+      return reorderDocumentsInCase({
+        caseId: requireString(input.caseId, 'caseId'),
+        role: input.role,
+        documentIds: input.documentIds.map((id) => requireString(id, 'documentId')),
       })
     },
   )
@@ -386,14 +425,14 @@ export function registerReviewIpc(): void {
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
     const { getTemplate } = require('./template-store') as typeof import('./template-store')
     const { runReviewCaseV2 } = require('./run-service-v2') as typeof import('./run-service-v2')
-    const { resolveReviewGatewayChannel, chatCompletion, REVIEW_RUN_TIMEOUT_MS } = require('./review-model-gateway') as typeof import('./review-model-gateway')
+    const { resolveReviewGatewayChannel, chatCompletion, reviewPromptWithImages, REVIEW_RUN_TIMEOUT_MS } = require('./review-model-gateway') as typeof import('./review-model-gateway')
     const { assembleV2Executors } = require('./v2-executor-factory') as typeof import('./v2-executor-factory')
     const resolved = resolveReviewGatewayChannel()
     if (!resolved) throw new Error('未配置可用模型渠道，无法执行批次审核')
     const client = {
       protocol: (resolved.channel as { protocol?: string }).protocol ?? 'openai-chat',
-      complete: async (input: { prompt: string; system: string; signal?: AbortSignal }) => ({
-        content: await chatCompletion(resolved.channel, [{ role: 'system', content: input.system }, { role: 'user', content: input.prompt }], { timeoutMs: REVIEW_RUN_TIMEOUT_MS }),
+      complete: async (input: { prompt: string; system: string; signal?: AbortSignal; images?: string[] }) => ({
+        content: await chatCompletion(resolved.channel, [{ role: 'system', content: input.system }, { role: 'user', content: reviewPromptWithImages(input.prompt, input.images) }], { timeoutMs: REVIEW_RUN_TIMEOUT_MS, signal: input.signal }),
       }),
     }
     return runBatchQueue(batchId, {

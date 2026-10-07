@@ -71,6 +71,7 @@ export function documentToVersion(doc: ReviewCase['documents'][number]): Documen
       text: block.text ?? '',
       location: { kind: 'paragraph' as const, index },
       kind: block.kind === 'image' ? 'image' : block.kind === 'table-cell' ? 'table' : 'text',
+      ...(block.imageAssetPath ? { imageAssetPath: block.imageAssetPath } : {}),
     })),
     usage: doc.parseStatus === 'parsed' && doc.blocks.length > 0 ? 'read' : 'unread',
     unusedReason: doc.parseStatus === 'failed' ? 'V1 解析失败' : doc.blocks.length === 0 ? 'V1 未提取到文本' : undefined,

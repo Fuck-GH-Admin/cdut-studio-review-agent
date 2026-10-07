@@ -3627,6 +3627,12 @@ const reviewAPI = {
   }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_CASE, input) as Promise<import('@profer/shared').ReviewCase>,
   importDocument: (input: { caseId: string; fileName: string; role: import('@profer/shared').SourceDocument['role'] }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT, input) as Promise<import('@profer/shared').SourceDocument>,
+  importDocumentFromPath: (input: { caseId: string; sourcePath: string; role: import('@profer/shared').SourceDocument['role'] }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_FROM_PATH, input) as Promise<import('@profer/shared').SourceDocument>,
+  removeDocuments: (input: { caseId: string; role: import('@profer/shared').SourceDocument['role']; documentIds?: string[] }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.REMOVE_DOCUMENTS, input) as Promise<import('@profer/shared').ReviewCase>,
+  reorderDocuments: (input: { caseId: string; role: import('@profer/shared').SourceDocument['role']; documentIds: string[] }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.REORDER_DOCUMENTS, input) as Promise<import('@profer/shared').ReviewCase>,
   deleteCase: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.DELETE_CASE, caseId) as Promise<void>,
   updateCaseSettings: (input: import('@profer/shared').UpdateCaseSettingsRequest) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_CASE_SETTINGS, input) as Promise<import('@profer/shared').ReviewCase>,

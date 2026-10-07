@@ -34,6 +34,12 @@ import {
   reviewErrorAtom,
   reviewGatewayStatusAtom,
   reviewWorkspaceSectionAtom,
+  reviewSourceFocusAtom,
+  reviewWorkspaceAggregateAtom,
+  reviewWorkspaceRunAtom,
+  reviewWorkspaceRunStaleAtom,
+  reviewWorkspaceExtractedObservationsAtom,
+  reviewWorkspaceTemplateAtom,
   type ReviewWorkspaceSection,
 } from '@/atoms/review-atoms'
 import { channelsAtom } from '@/atoms/conversation-atoms'
@@ -48,6 +54,7 @@ import { ReviewContextBar } from './ReviewContextBar'
 import { TemplateWizardPanel } from './TemplateWizardPanel'
 import { BatchPanel } from './BatchPanel'
 import { useReviewActions } from './use-review-actions'
+import { buildReviewWorkspaceViewModel } from './review-workspace-view-model'
 
 /** 窄屏单栏切换的栏目标识 */
 type Pane = 'left' | 'center' | 'right'
@@ -63,6 +70,15 @@ export function ContentReviewView(): React.ReactElement {
   const channels = useAtomValue(channelsAtom)
   const activePane = useAtomValue(reviewActivePaneAtom)
   const setActivePane = useSetAtom(reviewActivePaneAtom)
+  const sourceFocus = useAtomValue(reviewSourceFocusAtom)
+  const setSourceFocus = useSetAtom(reviewSourceFocusAtom)
+  const aggregate = useAtomValue(reviewWorkspaceAggregateAtom)
+  const workspaceRun = useAtomValue(reviewWorkspaceRunAtom)
+  const workspaceRunStale = useAtomValue(reviewWorkspaceRunStaleAtom)
+  const extractedObservations = useAtomValue(reviewWorkspaceExtractedObservationsAtom)
+  const template = useAtomValue(reviewWorkspaceTemplateAtom)
+  const workspaceView = aggregate ? buildReviewWorkspaceViewModel(aggregate, workspaceRun, workspaceRunStale, extractedObservations, template) : null
+  const originTitle = workspaceView?.pendingActions.find((item) => item.key === sourceFocus?.originPendingActionKey)?.title
   const assistantOpen = useSetAtom(reviewAssistantOpenAtom)
 
   const actions = useReviewActions()
@@ -171,6 +187,18 @@ export function ContentReviewView(): React.ReactElement {
         <div className="flex h-full min-h-0 flex-col">
           <div className="shrink-0 overflow-auto border-b border-border/60 bg-card/40 py-2">
             <ReviewContextBar actions={actions} />
+            {sourceFocus && <div className="mx-3 mt-2 flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/[0.04] px-3 py-1.5 text-xs">
+              <span className="min-w-0 flex-1 truncate">正在查看：{originTitle ?? '相关审核材料'}</span>
+              <Button type="button" size="sm" variant="ghost" onClick={() => {
+                const originKey = sourceFocus.originPendingActionKey
+                setSourceFocus(null)
+                setActivePane('right')
+                window.setTimeout(() => {
+                  const target = originKey ? document.querySelector(`[data-review-pending-key="${CSS.escape(originKey)}"]`) : null
+                  target?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                }, 50)
+              }}>返回待办</Button>
+            </div>}
           </div>
           <div className="relative flex min-h-0 flex-1">
         <PaneWrapper

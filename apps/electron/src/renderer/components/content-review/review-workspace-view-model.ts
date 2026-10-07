@@ -1,5 +1,6 @@
 import { assessDecisionReadiness, isDecisionRelevantObservation } from '@profer/shared'
 import type { CaseAggregateV2, ReviewRunV2, SourceRef, TemplateVersion } from '@profer/shared'
+import type { DecisionReadiness } from '@profer/shared'
 
 export interface ReviewWorkspacePendingAction {
   key: string
@@ -11,6 +12,7 @@ export interface ReviewWorkspacePendingAction {
   sourceDocumentVersionIds?: string[]
   materialSlotId?: string
   sourceRefs?: SourceRef[]
+  presentationGroup?: 'verify' | 'resolve' | 'adjudicate'
 }
 
 export interface ReviewWorkspaceViewModel {
@@ -20,10 +22,17 @@ export interface ReviewWorkspaceViewModel {
   pendingActions: ReviewWorkspacePendingAction[]
   resolvedActions: ReviewWorkspacePendingAction[]
   canDecide: boolean
+  decisionReadiness: DecisionReadiness
 }
 
 const actionableCheckStatuses = new Set(['non-compliant', 'awaiting-supplement', 'awaiting-confirmation', 'not-executed', 'execution-failed'])
 const activeSupplementStatuses = new Set(['open', 'responded', 'insufficient'])
+
+function fieldLabel(fieldKey: string, template?: TemplateVersion | null): string {
+  const configured = template?.fields.find((field) => field.key === fieldKey)?.label
+  if (configured) return configured
+  return ({ level: '获奖等级', declaredScore: '申报分值', score: '申报分值', activityDate: '活动日期', organizer: '主办单位', category: '事项类别', title: '事项名称' } as Record<string, string>)[fieldKey] ?? '补充信息'
+}
 
 export function buildReviewWorkspaceViewModel(
   aggregate: CaseAggregateV2,
@@ -51,7 +60,10 @@ export function buildReviewWorkspaceViewModel(
         key: `check:${check.checkId}`,
         kind: supplementPending ? 'supplement' : 'check',
         title: check.reason || check.ruleId,
-        detail: `${check.ruleId} · ${check.status}`,
+        detail: check.status === 'awaiting-supplement' ? '缺少必要证明材料，请补充后继续。'
+          : check.status === 'awaiting-confirmation' ? '请核对材料识别结果与审核依据。'
+            : check.status === 'execution-failed' || check.status === 'not-executed' ? '本项尚未完成核对，请重试审核。'
+              : '请核对审核依据并记录处理结果。',
         checkId: check.checkId,
         subjectId: check.target.subjectIds[0],
         sourceDocumentVersionIds: check.sourceRefs.map((ref) => ref.documentVersionId),
@@ -75,7 +87,7 @@ export function buildReviewWorkspaceViewModel(
       pendingActions.push({
         key: `fact:${subjectId}:${fieldKey}`,
         kind: 'fact',
-        title: `待确认事实：${fieldKey} ${value}`,
+        title: `待核实：${fieldLabel(fieldKey, template)} ${value}`,
         detail: `识别置信度 ${Math.round(confidence * 100)}%`,
         subjectId,
         sourceDocumentVersionIds: refs.flatMap((ref) => ref && typeof ref === 'object' && 'documentVersionId' in ref ? [String((ref as { documentVersionId: unknown }).documentVersionId)] : []),
@@ -133,7 +145,7 @@ export function buildReviewWorkspaceViewModel(
       key: `supplement:${supplement.id}`,
       kind: 'supplement',
       title: `待处理补件：${supplement.reason}`,
-      detail: `${supplement.status} · 缺少：${supplement.requiredElements.join('、')}`,
+      detail: `${supplement.status === 'responded' ? '已收到补充材料，等待核验' : supplement.status === 'insufficient' ? '补充材料仍未满足要求' : '等待补充材料'} · 缺少：${supplement.requiredElements.join('、')}`,
     })
   }
 
@@ -143,7 +155,7 @@ export function buildReviewWorkspaceViewModel(
   for (const subject of aggregate.caseV2.subjects) {
     const adjudication = adjudicatedSubjects.get(subject.id)
     const item: ReviewWorkspacePendingAction = adjudication
-      ? { key: `adjudication:${subject.id}`, kind: 'adjudication', subjectId: subject.id, title: `已认定事项：${subject.title}`, detail: `${adjudication.outcome} · ${adjudication.reason}` }
+      ? { key: `adjudication:${subject.id}`, kind: 'adjudication', subjectId: subject.id, title: `已完成认定：${subject.title}`, detail: `${adjudication.outcome === 'accepted' ? '认可' : adjudication.outcome === 'modified' ? '调整认定' : '不予认定'} · ${adjudication.reason}` }
       : { key: `adjudication:${subject.id}`, kind: 'adjudication', subjectId: subject.id, title: `待最终认定：${subject.title}`, detail: '请在中栏事项卡确认、修改等级/分值，或作不予认定。' }
     if (adjudication) resolvedActions.push(item)
     else pendingActions.push(item)
@@ -164,5 +176,20 @@ export function buildReviewWorkspaceViewModel(
             ? 'needs-attention'
             : 'ready-for-decision'
 
-  return { caseId: aggregate.caseV2.id, title: aggregate.caseV2.title, status, pendingActions, resolvedActions, canDecide }
+  const priority = (item: ReviewWorkspacePendingAction): number => {
+    const check = item.checkId ? run?.checks.find((candidate) => candidate.checkId === item.checkId) : undefined
+    if (check && ['awaiting-confirmation', 'not-executed', 'execution-failed'].includes(check.status)) return 0
+    if (item.kind === 'material' || item.kind === 'material-slot' || item.kind === 'supplement') return 1
+    if (check?.status === 'non-compliant' || check?.status === 'awaiting-supplement') return 2
+    if (item.kind === 'fact' || item.kind === 'evidence') return 3
+    if (item.kind === 'adjudication') return 4
+    return 5
+  }
+  for (const item of pendingActions) {
+    item.presentationGroup = item.kind === 'adjudication' ? 'adjudicate'
+      : item.kind === 'check' && item.checkId && run?.checks.some((check) => check.checkId === item.checkId && ['non-compliant', 'awaiting-supplement'].includes(check.status)) || item.kind === 'material-slot' || item.kind === 'supplement'
+        ? 'resolve' : 'verify'
+  }
+  pendingActions.sort((left, right) => priority(left) - priority(right))
+  return { caseId: aggregate.caseV2.id, title: aggregate.caseV2.title, status, pendingActions, resolvedActions, canDecide, decisionReadiness: readiness }
 }

@@ -24,7 +24,11 @@ function finalScoresFor(aggregate: CaseAggregateV2, adjudications: Map<string, S
     const adjudication = adjudications.get(subject.id)
     if (!adjudication) return []
     if (adjudication.outcome === 'rejected') return [{ subjectId: subject.id, value: '0', basisRunId: runId }]
-    const field = adjudication.finalFields?.declaredScore ?? adjudication.finalFields?.score ?? subject.fields.declaredScore ?? subject.fields.score
+    const manuallyConfirmedScore = aggregate.observations
+      .filter((observation) => observation.subjectId === subject.id && observation.fieldKey === 'declaredScore' && observation.extractedBy === 'user' && observation.confirmed)
+      .sort((left, right) => left.createdAt.localeCompare(right.createdAt))
+      .at(-1)?.value
+    const field = adjudication.finalFields?.declaredScore ?? adjudication.finalFields?.score ?? manuallyConfirmedScore ?? subject.fields.declaredScore ?? subject.fields.score
     if (!field || field.kind !== 'number') return []
     return [{ subjectId: subject.id, value: String(field.value), basisRunId: runId }]
   })
