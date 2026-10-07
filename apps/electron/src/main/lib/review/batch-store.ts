@@ -202,7 +202,7 @@ export async function recoverPendingPushes(port: SchoolPort): Promise<OutboxEntr
 // ===== G06/G11：真实队列执行（逐案跑审核，坏案不阻塞全批） =====
 
 export interface BatchQueueOptions {
-  /** 运行参数注入（测试可传假执行器）；默认调用 runReviewCaseV2 */
+  /** 运行参数注入（测试可传假执行器）；产品层复用 Pi 审核 Agent */
   runCase?: (caseId: string) => Promise<{ status: string }>
 }
 

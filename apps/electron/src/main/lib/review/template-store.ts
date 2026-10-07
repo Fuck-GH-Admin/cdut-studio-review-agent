@@ -12,6 +12,7 @@ import { join } from 'node:path'
 import type { TemplateVersion } from '@profer/shared'
 import { validatePolicyRef } from './policy-store'
 import { getConfigDir } from '../config-paths'
+import { archiveTemplateInCatalog, isTemplateArchived, listArchivedTemplateIds, orderTemplateIds, reorderTemplateCatalog, restoreTemplateInCatalog } from './template-catalog'
 
 export const TEMPLATE_SCHEMA_VERSION = 2
 
@@ -68,10 +69,13 @@ export function listTemplates(): TemplateVersion[] {
   if (!existsSync(root)) return []
   const out: TemplateVersion[] = []
   for (const entry of readdirSync(root)) {
+    if (isTemplateArchived(entry)) continue
     const latest = getTemplate(entry)
     if (latest) out.push(latest)
   }
-  return out.sort((a, b) => a.templateId.localeCompare(b.templateId))
+  const orderedIds = orderTemplateIds(out.map((template) => template.templateId))
+  const rank = new Map(orderedIds.map((id, index) => [id, index]))
+  return out.sort((a, b) => (rank.get(a.templateId) ?? Number.MAX_SAFE_INTEGER) - (rank.get(b.templateId) ?? Number.MAX_SAFE_INTEGER))
 }
 
 /** 列出模板的全部版本，供版本历史、已发布版本选择和草稿编辑使用。 */
@@ -80,6 +84,7 @@ export function listTemplateVersions(): TemplateVersion[] {
   if (!existsSync(root)) return []
   const out: TemplateVersion[] = []
   for (const templateId of readdirSync(root)) {
+    if (isTemplateArchived(templateId)) continue
     const dir = join(root, templateId, 'versions')
     if (!existsSync(dir)) continue
     const versions = readdirSync(dir)
@@ -92,7 +97,41 @@ export function listTemplateVersions(): TemplateVersion[] {
       if (template) out.push(template)
     }
   }
-  return out.sort((a, b) => a.name.localeCompare(b.name) || a.templateId.localeCompare(b.templateId) || b.version - a.version)
+  const orderedIds = orderTemplateIds([...new Set(out.map((template) => template.templateId))])
+  const rank = new Map(orderedIds.map((id, index) => [id, index]))
+  return out.sort((a, b) => (rank.get(a.templateId) ?? Number.MAX_SAFE_INTEGER) - (rank.get(b.templateId) ?? Number.MAX_SAFE_INTEGER) || b.version - a.version)
+}
+
+/** 已移出模板库的模板只用于恢复操作；历史案卷仍可通过 getTemplate 读取固定版本。 */
+export function listArchivedTemplates(): TemplateVersion[] {
+  return listArchivedTemplateIds().flatMap((templateId) => {
+    const template = getTemplate(templateId)
+    return template ? [template] : []
+  })
+}
+
+/** 保存用户排序；模板内容版本与展示顺序分开存储。 */
+export function reorderTemplates(templateIds: string[]): TemplateVersion[] {
+  const available = listTemplates()
+  const availableIds = new Set(available.map((template) => template.templateId))
+  if (templateIds.length !== available.length || templateIds.some((id) => !availableIds.has(id))) {
+    throw new Error('模板顺序与当前模板库不一致，请刷新后重试')
+  }
+  reorderTemplateCatalog(templateIds)
+  return listTemplates()
+}
+
+/** 从模板库移除模板；发布版本和已引用案卷历史保留。 */
+export function removeTemplateFromLibrary(templateId: string): void {
+  if (!getTemplate(templateId)) throw new Error(`模板不存在: ${templateId}`)
+  archiveTemplateInCatalog(templateId)
+}
+
+export function restoreTemplateToLibrary(templateId: string): TemplateVersion {
+  const template = getTemplate(templateId)
+  if (!template) throw new Error(`模板不存在: ${templateId}`)
+  restoreTemplateInCatalog(templateId)
+  return template
 }
 
 /** 保存草稿（status 强制 draft；version 不可与已有 published 冲突） */

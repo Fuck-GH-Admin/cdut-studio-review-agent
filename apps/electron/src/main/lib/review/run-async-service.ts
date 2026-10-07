@@ -10,6 +10,9 @@ import type { Actor, ReviewRunV2 } from '@profer/shared'
 import { cancelRunV2, isRunCancelled, runReviewCaseV2 } from './run-service-v2'
 import { getRunV2, saveRunV2 } from './run-store-v2'
 import type { CommandSourceMeta } from './case-store-v2'
+import { getConfigDir } from '../config-paths'
+import { createPiReviewModelClient } from './pi-review-agent-client'
+import { join } from 'node:path'
 
 /** 异步运行登记表项：进程内保留后台 promise 与取消控制器 */
 interface ActiveRun {
@@ -24,23 +27,28 @@ interface ActiveRun {
 const activeRuns = new Map<string, ActiveRun>()
 
 /** 组装模型 client + OCR 端口（渠道/OCR 装配的唯一出口，IPC 与 Agent 工具薄委托） */
-async function assembleReviewClient(): Promise<{ client: import('./pi-review-executor').ReviewModelClient; ocrPort: import('./system-tesseract-ocr-adapter').SystemTesseractOcrPort }> {
-  const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
-  const { getTemplate } = require('./template-store') as typeof import('./template-store')
-  const { resolveReviewGatewayChannel, chatCompletion, reviewPromptWithImages, REVIEW_RUN_TIMEOUT_MS } = require('./review-model-gateway') as typeof import('./review-model-gateway')
+async function assembleReviewClient(caseId: string): Promise<{ client: import('./pi-review-executor').ReviewModelClient; ocrPort: import('./system-tesseract-ocr-adapter').SystemTesseractOcrPort }> {
+  const { resolveReviewGatewayChannel, REVIEW_RUN_TIMEOUT_MS } = require('./review-model-gateway') as typeof import('./review-model-gateway')
 
   const resolved = resolveReviewGatewayChannel()
   if (!resolved) throw new Error('未配置可用模型渠道，无法执行真实审核（请在设置中配置渠道）')
+  const model = resolved.channel.models?.find((candidate) => candidate.enabled !== false)?.id ?? resolved.channel.models?.[0]?.id
+  if (!model) throw new Error(`审核渠道「${resolved.channel.name}」没有已配置模型`)
+  const { PiAgentAdapter } = require('../adapters/pi-agent-adapter') as typeof import('../adapters/pi-agent-adapter')
+  const { getSdkConfigDir } = require('../config-paths') as typeof import('../config-paths')
+  const adapter = new PiAgentAdapter()
   return {
-    client: {
-      protocol: (resolved.channel as { protocol?: string }).protocol ?? 'openai-chat',
-      complete: async (input) => ({
-        content: await chatCompletion(resolved.channel, [
-          { role: 'system', content: input.system },
-          { role: 'user', content: reviewPromptWithImages(input.prompt, input.images) },
-        ], { timeoutMs: REVIEW_RUN_TIMEOUT_MS, signal: input.signal }),
-      }),
-    },
+    client: createPiReviewModelClient({
+      channel: resolved.channel,
+      apiKey: resolved.apiKey,
+      model,
+      baseUrl: resolved.channel.baseUrl,
+      timeoutMs: REVIEW_RUN_TIMEOUT_MS,
+      cwd: join(getConfigDir(), 'review-cases', caseId),
+      piAgentDir: getSdkConfigDir(),
+      query: (input) => adapter.query(input),
+      abort: (sessionId) => adapter.abort(sessionId),
+    }),
     ocrPort: (require('./system-tesseract-ocr-adapter') as typeof import('./system-tesseract-ocr-adapter')).SystemTesseractOcrPort.create(),
   }
 }
@@ -55,7 +63,7 @@ export async function assembleAndRunReview(caseId: string, options: { signal?: A
   if (!aggregate) throw new Error(`案卷聚合不存在: ${caseId}`)
   const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
   if (!template) throw new Error(`模板不存在: ${aggregate.caseV2.templateId}@${aggregate.caseV2.templateVersion}`)
-  const { client, ocrPort } = await assembleReviewClient()
+  const { client, ocrPort } = await assembleReviewClient(caseId)
   const executors = await assembleV2Executors(aggregate, template, { client, ocrPort, signal: options.signal })
   return runReviewCaseV2(aggregate.caseV2, template, executors, {
     initiatedBy: options.initiatedBy ?? { actorId: 'local-user', actorSource: 'local', role: 'reviewer' },
@@ -125,7 +133,7 @@ export function startReviewRunAsync(caseId: string, initiatedBy: Actor, source?:
   const controller = new AbortController()
   const promise = (async (): Promise<ReviewRunV2> => {
     try {
-      const { client, ocrPort } = await assembleReviewClient()
+      const { client, ocrPort } = await assembleReviewClient(caseId)
       const executors = await assembleV2Executors(aggregate, template, { client, ocrPort, signal: controller.signal })
       return await runReviewCaseV2(aggregate.caseV2, template, executors, {
         runId,

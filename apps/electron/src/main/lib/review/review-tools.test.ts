@@ -38,9 +38,10 @@ describe('审核业务工具集（M3）', () => {
   test('Given record_observation When AI 提取 Then 受控写入并建立 supersedes 链（后续值可追溯）', async () => {
     const tools = buildReviewTools(context)
     const record = tools.find((tool) => tool.name === 'record_observation')!
-    const first = await record.execute({ subjectId: 's1', fieldKey: 'confirmedLevelScore', kind: 'number', value: 6, documentVersionId: 'd1-v1' })
+    expect((await record.execute({ subjectId: 's1', fieldKey: 'confirmedLevelScore', kind: 'number', value: 6, documentVersionId: 'd1-v1', blockId: 'b1', quote: '不存在的原文' })).ok).toBeFalse()
+    const first = await record.execute({ subjectId: 's1', fieldKey: 'confirmedLevelScore', kind: 'number', value: 6, documentVersionId: 'd1-v1', blockId: 'b1', quote: '省赛一等奖证书' })
     expect(first.ok).toBeTrue()
-    const second = await record.execute({ subjectId: 's1', fieldKey: 'confirmedLevelScore', kind: 'number', value: 3, documentVersionId: 'd1-v1' })
+    const second = await record.execute({ subjectId: 's1', fieldKey: 'confirmedLevelScore', kind: 'number', value: 3, documentVersionId: 'd1-v1', blockId: 'b1', quote: '省赛一等奖证书' })
     expect(second.ok).toBeTrue()
     expect(context.observations).toHaveLength(2)
     expect(context.observations[1]!.supersedesObservationId).toBe(context.observations[0]!.id)
@@ -62,6 +63,13 @@ describe('审核业务工具集（M3）', () => {
     const submit = tools.find((tool) => tool.name === 'submit_check')!
     expect((await submit.execute({ ruleId: 'ghost', status: 'compliant' })).ok).toBeFalse()
     expect((await submit.execute({ ruleId: 'r1', status: 'magic-status' })).ok).toBeFalse()
+  })
+
+  test('语义规则的通过/不通过结论必须带有效材料块引用', async () => {
+    const tools = buildReviewTools({ ...context, rules: [{ ...context.rules[0]!, execution: 'semantic' }] })
+    const submit = tools.find((tool) => tool.name === 'submit_check')!
+    expect((await submit.execute({ ruleId: 'r1', subjectIds: ['s1'], status: 'compliant', reason: '无引用' })).ok).toBeFalse()
+    expect((await submit.execute({ ruleId: 'r1', subjectIds: ['s1'], status: 'compliant', reason: '有引用', sourceRefs: [{ documentVersionId: 'd1-v1', blockId: 'b1', quote: '省赛一等奖证书' }] })).ok).toBeTrue()
   })
 
   test('Given link_evidence When 绑定 Then candidate 状态进入上下文', async () => {

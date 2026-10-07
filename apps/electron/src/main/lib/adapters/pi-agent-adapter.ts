@@ -109,6 +109,13 @@ type PiRetrySettings = {
   baseDelayMs?: number
 }
 
+function toPiPromptImages(images: string[] | undefined): Array<{ type: 'image'; source: { type: 'base64'; mediaType: string; data: string } }> {
+  return (images ?? []).flatMap((image) => {
+    const match = /^data:(image\/[a-zA-Z0-9.+-]+);base64,([A-Za-z0-9+/=]+)$/.exec(image)
+    return match ? [{ type: 'image' as const, source: { type: 'base64' as const, mediaType: match[1]!, data: match[2]! } }] : []
+  })
+}
+
 /**
  * Pi SDK 原生重试按 provider 隔离。
  *
@@ -159,6 +166,8 @@ export interface PiAgentQueryOptions extends AgentQueryInput {
   customTools?: ToolDefinition[]
   /** N2d（07 §4.4）：工具档案——review 仅注册审核业务工具+压缩，不注册通用 read/bash/write 与产品工具 */
   toolProfile?: 'general' | 'review'
+  /** 内容审核专用多模态页图；只附加到本次 Pi 首轮消息，不进入普通文件工具上下文。 */
+  images?: string[]
   onSessionId?: (sdkSessionId: string, sessionFile?: string) => void
   /** Profer assistant UI UUID → Pi 树状 session entry ID 的持久映射；分叉/回退依赖它定位 branch 点。 */
   onPiEntryBindings?: (bindings: Record<string, string>) => void
@@ -2785,6 +2794,7 @@ export class PiAgentAdapter implements AgentProviderAdapter {
           .finally(cleanupActiveSession)
       } else {
         const runCompactionAwareChain = async (): Promise<void> => {
+          let pendingReviewImages = toPiPromptImages(input.images)
           let continuationPrompt: string | undefined
           do {
             await runPiPromptChain(
@@ -2792,7 +2802,15 @@ export class PiAgentAdapter implements AgentProviderAdapter {
               active,
               {
                 // 受管 Skill 已在 prepareInitialPrompt 处理，禁止 SDK 按文本再展开一次。
-                prompt: (prompt) => session.prompt(prompt, { source: 'rpc', expandPromptTemplates: false }),
+                prompt: (prompt) => {
+                  const images = pendingReviewImages
+                  pendingReviewImages = []
+                  return session.prompt(prompt, {
+                    source: 'rpc',
+                    expandPromptTemplates: false,
+                    ...(images.length > 0 ? { images } : {}),
+                  } as never)
+                },
                 prepareInitialPrompt: (prompt) => preparePromptWithPromaSkills(resourceLoader, prompt, input.skillMentions),
                 shouldStopBeforeNextTurn: () => runtimeGuard.shouldStopBeforeNextTurn(),
                 rejectPendingInterruptPrompts: (error) => rejectPendingInterruptPrompts(active, error),

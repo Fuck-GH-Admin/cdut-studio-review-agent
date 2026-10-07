@@ -50,6 +50,7 @@
         "cheerio": "1.2.0",
         "pdfjs-dist": "^4.10.38",
         "pptxgenjs": "4.0.1",
+        "xlsx": "npm:@stackline/xlsx@^1.0.6",
       },
       "devDependencies": {
         "@emoji-mart/data": "^1.2.1",

@@ -53,13 +53,14 @@ export interface ReviewOpsToolsContext {
 const AssignmentParam = { assignmentId: Type.String({ minLength: 4, description: '可信指派 ID（用户显式指派生成，asg- 前缀）' }) }
 
 /** 案卷摘要（不含材料全文与 assetPath） */
-function caseSummary(aggregate: { caseV2: { id: string; title: string; stage: string; revision: number; templateId: string; templateVersion: number; documents: Array<{ versionId: string; fileName: string; active?: boolean; materialSlotId?: string }> }; tasks: Array<{ id: string; stageId: string; status: string; round: number; assigneeRole: string }> }): Record<string, unknown> {
+function caseSummary(aggregate: { caseV2: { id: string; title: string; stage: string; revision: number; templateId: string; templateVersion: number; subjects?: Array<{ id: string; title: string; sectionId?: string }>; documents: Array<{ versionId: string; fileName: string; active?: boolean; materialSlotId?: string }> }; tasks: Array<{ id: string; stageId: string; status: string; round: number; assigneeRole: string }> }): Record<string, unknown> {
   return {
     caseId: aggregate.caseV2.id,
     title: aggregate.caseV2.title,
     stage: aggregate.caseV2.stage,
     revision: aggregate.caseV2.revision,
     template: `${aggregate.caseV2.templateId}@${aggregate.caseV2.templateVersion}`,
+    subjects: (aggregate.caseV2.subjects ?? []).map((subject) => ({ id: subject.id, title: subject.title, sectionId: subject.sectionId ?? null })),
     documents: aggregate.caseV2.documents.filter((doc) => doc.active !== false).map((doc) => ({ versionId: doc.versionId, fileName: doc.fileName, slot: doc.materialSlotId ?? null })),
     openTasks: aggregate.tasks.filter((task) => task.status === 'open').map((task) => ({ taskId: task.id, stageId: task.stageId, round: task.round, assigneeRole: task.assigneeRole })),
   }
@@ -92,7 +93,8 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
           const templates = listTemplates().filter((template) => template.status === 'published')
           return result({
             templates: templates.map((template) => ({
-              templateId: template.templateId, version: template.version, name: template.name, objectType: template.objectType,
+              templateId: template.templateId, version: template.version, name: template.name, description: template.description ?? null, catalogKind: template.catalogKind ?? 'custom', objectType: template.objectType,
+              sections: (template.sections ?? []).map((section) => ({ id: section.id, name: section.name, required: section.required, criteria: section.criteria.map((criterion) => ({ id: criterion.id, title: criterion.title, execution: criterion.execution })) })),
               fields: template.fields.map((field) => ({ key: field.key, label: field.label, kind: field.kind, required: field.required, scope: field.scope ?? 'subject' })),
               materialSlots: template.materialSlots.map((slot) => ({ id: slot.id, name: slot.name, acceptedKinds: slot.acceptedKinds, minCount: slot.minCount })),
               stages: template.stages.map((stage) => ({ id: stage.id, name: stage.name, kind: stage.kind, executorRole: stage.executorRole })),
@@ -122,9 +124,10 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
           const template = getTemplate(templateId, version)
           if (!template || template.status !== 'published') return result({ error: `模板不存在或未发布: ${templateId}@${version}` }, true)
           return result({
-            templateId: template.templateId, version: template.version, name: template.name, objectType: template.objectType,
+            templateId: template.templateId, version: template.version, name: template.name, description: template.description ?? null, objectType: template.objectType,
             fields: template.fields.map((field) => ({ key: field.key, label: field.label, kind: field.kind, required: field.required, scope: field.scope ?? 'subject', unit: field.unit ?? null })),
             materialSlots: template.materialSlots.map((slot) => ({ id: slot.id, name: slot.name, purpose: slot.purpose, acceptedKinds: slot.acceptedKinds, minCount: slot.minCount, maxCount: slot.maxCount })),
+            sections: (template.sections ?? []).map((section) => ({ id: section.id, name: section.name, description: section.description ?? null, required: section.required, order: section.order, criteria: section.criteria })),
             stages: template.stages.map((stage) => ({ id: stage.id, name: stage.name, kind: stage.kind, executorRole: stage.executorRole, nextStageId: stage.nextStageId ?? null })),
           })
         } catch (error) {
@@ -193,11 +196,11 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
         templateVersion: Type.Integer({ minimum: 1 }),
         title: Type.String({ minLength: 1, maxLength: 120 }),
         fieldValues: Type.Optional(Type.Record(Type.String(), Type.Unknown())),
-        subjects: Type.Optional(Type.Array(Type.Object({ id: Type.String({ minLength: 1 }), type: Type.Optional(Type.String()), title: Type.String({ minLength: 1 }), fieldValues: Type.Optional(Type.Record(Type.String(), Type.Unknown())) }))),
+        subjects: Type.Optional(Type.Array(Type.Object({ id: Type.String({ minLength: 1 }), type: Type.Optional(Type.String()), title: Type.String({ minLength: 1 }), sectionId: Type.Optional(Type.String({ minLength: 1, description: '审核分项 ID，必须来自 review_get_template 返回的 sections' })), fieldValues: Type.Optional(Type.Record(Type.String(), Type.Unknown())) }))),
       }),
       async execute(_id, params) {
         try {
-          const input = params as { assignmentId: string; templateId: string; templateVersion: number; title: string; fieldValues?: Record<string, unknown>; subjects?: Array<{ id: string; type?: string; title: string; fieldValues?: Record<string, unknown> }> }
+          const input = params as { assignmentId: string; templateId: string; templateVersion: number; title: string; fieldValues?: Record<string, unknown>; subjects?: Array<{ id: string; type?: string; title: string; sectionId?: string; fieldValues?: Record<string, unknown> }> }
           const guard = requireAssignment(input.assignmentId, 'create-case')
           const assignment = guard.assignment!
           // 指派锁定的模板必须一致
@@ -210,7 +213,7 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
           const outcome = await createCaseFromTemplate(input.templateId, input.templateVersion, {
             title: input.title,
             fieldValues: (input.fieldValues ?? {}) as never,
-            subjects: (input.subjects ?? []).map((subject) => ({ id: subject.id, type: subject.type ?? 'person', title: subject.title, fieldValues: (subject.fieldValues ?? {}) as never })) as never,
+            subjects: (input.subjects ?? []).map((subject) => ({ id: subject.id, type: subject.type ?? 'person', title: subject.title, sectionId: subject.sectionId, fieldValues: (subject.fieldValues ?? {}) as never })) as never,
           }, { actorId: guard.actorId, actorSource: 'agent', role: guard.role }, caseId)
           if (!outcome.ok) return result({ error: `建案失败[${outcome.code}]: ${outcome.message}`, currentRevision: outcome.currentRevision }, true)
           bindCaseToAssignment(input.assignmentId, caseId)

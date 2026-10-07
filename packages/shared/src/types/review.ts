@@ -513,6 +513,10 @@ export const REVIEW_IPC_CHANNELS = {
   // ===== N4b：模板向导 =====
   CREATE_POLICY_V2: 'review-v2:create-policy',
   SAVE_TEMPLATE_DRAFT_V2: 'review-v2:save-template-draft',
+  LIST_ARCHIVED_TEMPLATES_V2: 'review-v2:list-archived-templates',
+  REORDER_TEMPLATES_V2: 'review-v2:reorder-templates',
+  REMOVE_TEMPLATE_V2: 'review-v2:remove-template',
+  RESTORE_TEMPLATE_V2: 'review-v2:restore-template',
   // ===== N5b：批次管理 =====
   CREATE_BATCH_V2: 'review-v2:create-batch',
   GET_BATCH_V2: 'review-v2:get-batch',

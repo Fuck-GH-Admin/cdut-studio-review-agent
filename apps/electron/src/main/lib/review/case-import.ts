@@ -20,11 +20,12 @@ import { syncWorkspaceProjectionV2 } from './workspace-service-v2'
 const MAX_IMPORT_BYTES = 50 * 1024 * 1024
 
 /** PDF raster images are retained as image blocks so the model sees embedded scans and charts. */
-async function renderPdfImageBlocks(input: {
+export async function renderPdfImageBlocks(input: {
   filePath: string
   fileName: string
   documentId: string
   assetDir: string
+  assetDirectoryPrefix?: string
 }): Promise<ReviewDocumentBlock[]> {
   const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs') as unknown as {
     OPS: Record<string, number>
@@ -69,8 +70,9 @@ async function renderPdfImageBlocks(input: {
     })
     const image = rendered.images[0]
     if (!image) continue
-    const imageAssetPath = `source-docs/${input.documentId}-page-${String(page).padStart(3, '0')}.png`
-    writeFileSync(join(input.assetDir, `${input.documentId}-page-${String(page).padStart(3, '0')}.png`), Buffer.from(image.data, 'base64'))
+    const imageFileName = `${input.documentId}-page-${String(page).padStart(3, '0')}.png`
+    const imageAssetPath = `${input.assetDirectoryPrefix ?? 'source-docs'}/${imageFileName}`
+    writeFileSync(join(input.assetDir, imageFileName), Buffer.from(image.data, 'base64'))
     blocks.push({
       id: `blk-${input.documentId}-page-${String(page).padStart(3, '0')}-image`,
       kind: 'image',
@@ -112,8 +114,11 @@ export async function importDocumentIntoCase(input: {
           // 文本类
           'md', 'txt', 'csv', 'json', 'svg',
           // 文档类（document-parser 覆盖的格式）
-          'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx',
-          // rtf/odt/ods/odp 解析未接通（M0/H15）：不再出现在可选过滤器，避免"选了却导入失败"（K15）
+          'pdf', 'doc', 'docx', 'docm', 'dot', 'dotx', 'dotm', 'wps', 'wpt',
+          'xls', 'xlsx', 'xlsm', 'xltx', 'xltm', 'et', 'ett',
+          'ppt', 'pptx', 'pptm', 'potx', 'potm', 'ppsx', 'ppsm', 'dps', 'dpt',
+          // 富文本与 OpenDocument 格式由文档解析器提取；DOCX 图片进入视觉材料块
+          'rtf', 'odt', 'ods', 'odp',
           // 图片类（走 Vision 识别）
           'png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp',
         ],
@@ -159,7 +164,7 @@ export async function importDocumentFromPath(input: {
   const assetRelativePath = `source-docs/${storedFileName}`
 
   // 解析（parseFileIntoSourceDocument 读取原件路径）
-  const document = await parseFileIntoSourceDocument(filePath, fileName, input.role, assetRelativePath)
+  const document = await parseFileIntoSourceDocument(filePath, fileName, input.role, assetRelativePath, assetDir)
   let storedDocument: SourceDocument = { ...document, id: docId, origin: 'upload' }
   if (extname(fileName).toLowerCase() === '.pdf') {
     try {

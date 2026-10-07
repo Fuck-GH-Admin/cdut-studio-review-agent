@@ -6,7 +6,7 @@
  * 工具边界：read 前缀为只读；record / link / submit 前缀为受控写入（返回新数组，由执行器决定持久化）。
  */
 
-import type { CheckResult, EvidenceLink, FieldValue, Observation, ReviewSubject, SourceRef, DocumentVersion, RuleSpec } from '@profer/shared'
+import type { CheckResult, EvidenceLink, FieldSpec, FieldValue, Observation, ReviewSubject, SourceRef, DocumentVersion, RuleSpec } from '@profer/shared'
 import { buildEvidenceLinks, recordObservation } from './evidence-service'
 import { computeGroupScore, toCalculationResult, type CalcInput } from './deterministic-engine'
 
@@ -16,6 +16,7 @@ export interface ReviewToolContext {
   subjects: ReviewSubject[]
   documents: DocumentVersion[]
   rules: RuleSpec[]
+  fields?: FieldSpec[]
   observations: Observation[]
   evidenceLinks: EvidenceLink[]
   results: CheckResult[]
@@ -36,7 +37,21 @@ function findSubject(context: ReviewToolContext, subjectId: string): ReviewSubje
 
 /** 装配本案业务工具（Pi 执行器在 run 开始时调用；工具集固定，不随 Prompt 变化） */
 export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
-  const ref = (documentVersionId: string): SourceRef => ({ caseId: context.caseId, documentVersionId, parseRevision: 1, location: { kind: 'file' } })
+  const ref = (documentVersionId: string, blockId?: string, quote?: string): SourceRef | undefined => {
+    const document = context.documents.find((candidate) => candidate.versionId === documentVersionId)
+    if (!document) return undefined
+    const block = blockId ? document.blocks.find((candidate) => candidate.blockId === blockId) : undefined
+    if (blockId && !block) return undefined
+    if (block?.kind === 'image' && quote) return undefined
+    if (block && quote && block.text && !block.text.includes(quote)) return undefined
+    return {
+      caseId: context.caseId,
+      documentVersionId,
+      parseRevision: document.parseRevision,
+      location: block?.location ?? { kind: 'file' },
+      ...(quote || block?.text ? { quote: (quote || block?.text || '').slice(0, 400) } : {}),
+    }
+  }
 
   return [
     {
@@ -62,16 +77,31 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
         const keyword = String(input.keyword ?? '')
         const role = input.role as string | undefined
         if (!keyword) return { ok: false, error: 'keyword 不能为空' }
-        const hits: Array<{ documentId: string; blockId: string; fileName: string; text: string }> = []
+        const hits: Array<{ documentVersionId: string; blockId: string; fileName: string; location: unknown; text: string }> = []
+        const visualBlocks: Array<{ documentVersionId: string; blockId: string; fileName: string; location: unknown; imageAlt?: string }> = []
         for (const document of context.documents) {
           if (role && document.role !== role) continue
           for (const block of document.blocks) {
+            if (block.kind === 'image') {
+              visualBlocks.push({ documentVersionId: document.versionId, blockId: block.blockId, fileName: document.fileName, location: block.location ?? { kind: 'file' }, ...(block.imageAlt ? { imageAlt: block.imageAlt } : {}) })
+              continue
+            }
             if (block.text.includes(keyword)) {
-              hits.push({ documentId: document.documentId, blockId: block.blockId, fileName: document.fileName, text: block.text.slice(0, 200) })
+              hits.push({ documentVersionId: document.versionId, blockId: block.blockId, fileName: document.fileName, location: block.location ?? { kind: 'file' }, text: block.text.slice(0, 400) })
             }
           }
         }
-        return { ok: true, data: { hits, truncated: hits.length > 50 } }
+        return { ok: true, data: { hits, visualBlocks, truncated: hits.length > 50 } }
+      },
+    },
+    {
+      name: 'read_rule',
+      description: '读取指定审核规则的要求、执行方式、作用范围、确认状态和适用期限；不存在或未确认规则不得推断为自动通过',
+      input: '{ ruleId }',
+      async execute(input) {
+        const rule = context.rules.find((candidate) => candidate.id === String(input.ruleId ?? ''))
+        if (!rule) return { ok: false, error: `规则不存在: ${String(input.ruleId ?? '')}` }
+        return { ok: true, data: { id: rule.id, title: rule.title, requirement: rule.requirement, execution: rule.execution, targetScope: rule.targetScope, sectionId: rule.sectionId ?? null, confirmation: rule.confirmation, effectiveFrom: rule.effectiveFrom ?? null, effectiveUntil: rule.effectiveUntil ?? null, onFail: rule.onFail, onUnknown: rule.onUnknown } }
       },
     },
     {
@@ -80,21 +110,49 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
       input: '{ subjectId, fieldKey, kind, value, documentVersionId }',
       async execute(input) {
         const subjectId = String(input.subjectId ?? '')
-        if (!findSubject(context, subjectId)) return { ok: false, error: `主体不存在: ${subjectId}` }
-        const kind = String(input.kind ?? 'text') as 'text' | 'number' | 'date'
+        const subject = findSubject(context, subjectId)
+        if (!subject) return { ok: false, error: `主体不存在: ${subjectId}` }
+        const fieldKey = String(input.fieldKey ?? '')
+        const fieldSpec = context.fields?.find((candidate) => candidate.key === fieldKey)
+        if (context.fields && !fieldSpec) return { ok: false, error: `字段不在模板中: ${fieldKey}` }
+        if (fieldSpec && (fieldSpec.scope ?? 'subject') !== 'subject') return { ok: false, error: `字段不是事项字段: ${fieldKey}` }
+        if (fieldSpec?.sectionId && fieldSpec.sectionId !== subject.sectionId) return { ok: false, error: `字段 ${fieldKey} 不属于分项 ${subject.sectionId ?? '(未分项)'}` }
+        const kind = String(input.kind ?? fieldSpec?.kind ?? 'text') as FieldValue['kind']
+        if (fieldSpec && fieldSpec.kind !== kind) return { ok: false, error: `字段 ${fieldKey} 类型不匹配: 需要 ${fieldSpec.kind}` }
         const rawValue = input.value
-        const value = kind === 'number' ? ({ kind, value: Number(rawValue) } as FieldValue) : ({ kind, value: String(rawValue) } as FieldValue)
         const documentVersionId = String(input.documentVersionId ?? '')
+        const blockId = typeof input.blockId === 'string' ? input.blockId : undefined
+        const quote = typeof input.quote === 'string' ? input.quote : undefined
+        const sourceRef = ref(documentVersionId, blockId, quote)
+        if (!sourceRef) return { ok: false, error: `材料版本或引用块不存在，或引用内容与原文不一致: ${documentVersionId}${blockId ? `/${blockId}` : ''}` }
+        if (!blockId) return { ok: false, error: '记录审核事实必须引用材料块 blockId；请先搜索材料或定位图像页' }
+        let value: FieldValue
+        if (kind === 'number') {
+          const number = typeof rawValue === 'number' ? rawValue : Number(rawValue)
+          if (!Number.isFinite(number)) return { ok: false, error: `数字字段 ${fieldKey} 的值无效` }
+          value = { kind, value: number, ...(fieldSpec?.unit ? { unit: fieldSpec.unit } : {}) }
+        } else if (kind === 'boolean') {
+          if (typeof rawValue !== 'boolean') return { ok: false, error: `布尔字段 ${fieldKey} 必须提交 true/false` }
+          value = { kind, value: rawValue }
+        } else if (kind === 'multi') {
+          if (!Array.isArray(rawValue) || rawValue.some((item) => typeof item !== 'string')) return { ok: false, error: `多选字段 ${fieldKey} 必须是字符串列表` }
+          value = { kind, value: rawValue as string[] }
+        } else if (kind === 'text' || kind === 'date' || kind === 'enum') {
+          if (typeof rawValue !== 'string') return { ok: false, error: `字段 ${fieldKey} 必须提交文本` }
+          value = { kind, value: rawValue }
+        } else {
+          return { ok: false, error: `暂不支持由 Agent 抽取 ${kind} 类型字段` }
+        }
         const updated = recordObservation(context.observations, {
           subjectId,
-          fieldKey: String(input.fieldKey ?? ''),
+          fieldKey,
           value,
-          sourceRefs: [ref(documentVersionId)],
+          sourceRefs: [sourceRef],
           extractedBy: 'ai',
         })
         context.observations.length = 0
         context.observations.push(...updated)
-        return { ok: true, data: { recorded: true, observations: updated.length } }
+        return { ok: true, data: { recorded: true, fieldKey, sourceRef, observations: updated.length } }
       },
     },
     {
@@ -102,9 +160,14 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
       description: '把证明材料绑定到主体事实（candidate；人工确认走命令信封）',
       input: '{ documentVersionId, subjectIds, supportsFact }',
       async execute(input) {
+        const documentVersionId = String(input.documentVersionId ?? '')
+        if (!context.documents.some((document) => document.versionId === documentVersionId)) return { ok: false, error: `材料版本不存在: ${documentVersionId}` }
+        const subjectIds = Array.isArray(input.subjectIds) ? (input.subjectIds as string[]) : []
+        const missingSubject = subjectIds.find((subjectId) => !findSubject(context, subjectId))
+        if (missingSubject) return { ok: false, error: `主体不存在: ${missingSubject}` }
         const updated = buildEvidenceLinks(context.evidenceLinks, {
-          documentVersionId: String(input.documentVersionId ?? ''),
-          subjectIds: Array.isArray(input.subjectIds) ? (input.subjectIds as string[]) : [],
+          documentVersionId,
+          subjectIds,
           supportsFact: String(input.supportsFact ?? ''),
           linkedBy: 'ai',
         })
@@ -125,6 +188,22 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
           return { ok: false, error: `非法检查状态: ${status}` }
         }
         const subjectIds = Array.isArray(input.subjectIds) ? (input.subjectIds as string[]) : []
+        if (subjectIds.some((subjectId) => !findSubject(context, subjectId))) return { ok: false, error: '检查主体列表包含未知事项' }
+        if (rule.sectionId && subjectIds.some((subjectId) => findSubject(context, subjectId)?.sectionId !== rule.sectionId)) return { ok: false, error: `规则 ${rule.id} 不能检查其他分项的事项` }
+        const rawSourceRefs = Array.isArray(input.sourceRefs) ? input.sourceRefs : []
+        const sourceRefs = rawSourceRefs.flatMap((candidate) => {
+          if (!candidate || typeof candidate !== 'object') return []
+          const refValue = candidate as { documentVersionId?: unknown; blockId?: unknown; quote?: unknown }
+          if (typeof refValue.documentVersionId !== 'string') return []
+          const resolved = ref(refValue.documentVersionId, typeof refValue.blockId === 'string' ? refValue.blockId : undefined, typeof refValue.quote === 'string' ? refValue.quote : undefined)
+          return resolved ? [resolved] : []
+        })
+        if (rule.execution === 'semantic' && ['compliant', 'non-compliant'].includes(status) && sourceRefs.length === 0) {
+          return { ok: false, error: '符合/不符合结论必须引用至少一个真实材料块；否则应提交待人工确认或补件' }
+        }
+        if (sourceRefs.length !== rawSourceRefs.length) {
+          return { ok: false, error: 'sourceRefs 含不存在的材料块或与原文不匹配的引用；请重新搜索并提交准确定位' }
+        }
         let result: CheckResult
         if (rule.execution === 'deterministic' && rule.calculation) {
           const inputs: CalcInput[] = subjectIds.map((subjectId) => ({
@@ -145,7 +224,7 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
             target: { scope: rule.targetScope, subjectIds },
             status,
             reason: String(input.reason ?? ''),
-            sourceRefs: [],
+            sourceRefs,
             executedBy: rule.execution === 'semantic' ? 'semantic' : 'manual',
             executedAt: new Date().toISOString(),
           }

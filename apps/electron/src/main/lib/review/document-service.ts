@@ -15,17 +15,20 @@
  * - 其他二进制 → 单块 paragraph + parseStatus 'failed' + 中文原因
  */
 
-import { readFile, stat } from 'node:fs/promises'
-import { extname } from 'node:path'
+import { readFile, stat, writeFile, mkdir } from 'node:fs/promises'
+import { dirname, extname, join } from 'node:path'
 import type { ReviewDocumentBlock, SourceDocument } from '@profer/shared'
-import { extractTextFromFile } from '../document-parser'
+import { extractDocxReviewContent, extractSpreadsheetReviewContent, extractTextFromFile } from '../document-parser'
 
 /** 支持直接按文本切块的扩展名 */
 const TEXT_EXTENSIONS = new Set(['.md', '.txt', '.csv', '.json'])
 
 /** 文档类扩展名：交给 document-parser 的成熟解析器（PDF / Office / WPS 旧版 Word） */
 const DOCUMENT_EXTENSIONS = new Set([
-  '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx',
+  '.pdf', '.doc', '.docx', '.docm', '.dot', '.dotx', '.dotm', '.wps', '.wpt',
+  '.xls', '.xlsx', '.xlsm', '.xltx', '.xltm', '.et', '.ett',
+  '.ppt', '.pptx', '.pptm', '.potx', '.potm', '.ppsx', '.ppsm', '.dps', '.dpt',
+  '.rtf', '.odt', '.ods', '.odp',
 ])
 
 /** 图片类扩展名：内容需经多模态模型识别，走 Vision 而非文本切块 */
@@ -117,6 +120,34 @@ function guessMimeType(ext: string): string {
     case '.json': return 'application/json'
     case '.svg': return 'image/svg+xml'
     case '.pdf': return 'application/pdf'
+    case '.doc': return 'application/msword'
+    case '.docx': return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    case '.docm': return 'application/vnd.ms-word.document.macroEnabled.12'
+    case '.dot': return 'application/msword'
+    case '.dotx': return 'application/vnd.openxmlformats-officedocument.wordprocessingml.template'
+    case '.dotm': return 'application/vnd.ms-word.template.macroEnabled.12'
+    case '.wps':
+    case '.wpt': return 'application/vnd.ms-works'
+    case '.xls': return 'application/vnd.ms-excel'
+    case '.xlsx': return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    case '.xlsm': return 'application/vnd.ms-excel.sheet.macroEnabled.12'
+    case '.xltx': return 'application/vnd.openxmlformats-officedocument.spreadsheetml.template'
+    case '.xltm': return 'application/vnd.ms-excel.template.macroEnabled.12'
+    case '.et':
+    case '.ett': return 'application/vnd.ms-works'
+    case '.ppt': return 'application/vnd.ms-powerpoint'
+    case '.pptx': return 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+    case '.pptm': return 'application/vnd.ms-powerpoint.presentation.macroEnabled.12'
+    case '.potx': return 'application/vnd.openxmlformats-officedocument.presentationml.template'
+    case '.potm': return 'application/vnd.ms-powerpoint.template.macroEnabled.12'
+    case '.ppsx': return 'application/vnd.openxmlformats-officedocument.presentationml.slideshow'
+    case '.ppsm': return 'application/vnd.ms-powerpoint.slideshow.macroEnabled.12'
+    case '.dps':
+    case '.dpt': return 'application/vnd.ms-works'
+    case '.rtf': return 'application/rtf'
+    case '.odt': return 'application/vnd.oasis.opendocument.text'
+    case '.ods': return 'application/vnd.oasis.opendocument.spreadsheet'
+    case '.odp': return 'application/vnd.oasis.opendocument.presentation'
     case '.png': return 'image/png'
     case '.jpg':
     case '.jpeg': return 'image/jpeg'
@@ -174,12 +205,14 @@ function toSourceDocument(draft: SourceDocumentDraft): SourceDocument {
  * @param role 文档在案卷中的角色
  * @param assetRelativePath 图片原件在案卷目录内的相对路径（如 `source-docs/doc-x-证书.png`），
  *   写入 imageAssetPath 供后续 Vision 送模型；非图片分支忽略
+ * @param assetDirectory 案卷内 source-docs 目录；DOCX 提取的嵌入图片写入此目录供后续 Vision 使用
  */
 export async function parseFileIntoSourceDocument(
   filePath: string,
   fileName: string,
   role: SourceDocument['role'],
   assetRelativePath?: string,
+  assetDirectory?: string,
 ): Promise<SourceDocument> {
   const ext = extname(fileName).toLowerCase()
   const now = new Date().toISOString()
@@ -217,7 +250,88 @@ export async function parseFileIntoSourceDocument(
     )
   }
 
-  // 文档类（PDF / Office）：复用既有解析器提取文本，再走同一套纯文本切块管线
+  // DOCX 额外保留标题、列表、表格坐标与嵌入图片，避免 Mammoth 纯文本路径丢失结构。
+  if (ext === '.docx') {
+    try {
+      const parsed = await extractDocxReviewContent(filePath)
+      const imageExtension: Record<string, string> = {
+        'image/png': '.png', 'image/jpeg': '.jpg', 'image/gif': '.gif', 'image/webp': '.webp', 'image/bmp': '.bmp',
+      }
+      const blocks: ReviewDocumentBlock[] = []
+      let omittedImages = 0
+      for (const parsedBlock of parsed.blocks) {
+        const index = blocks.length
+        if (parsedBlock.kind === 'image') {
+          const image = parsedBlock.imageIndex === undefined ? undefined : parsed.images[parsedBlock.imageIndex]
+          const imageExt = image ? imageExtension[image.contentType] : undefined
+          let imageAssetPath: string | undefined
+          if (image && imageExt && assetDirectory && assetRelativePath) {
+            const embeddedName = `${slug}-embedded-${String(parsedBlock.imageIndex! + 1).padStart(3, '0')}${imageExt}`
+            const targetPath = join(assetDirectory, embeddedName)
+            await mkdir(dirname(targetPath), { recursive: true })
+            await writeFile(targetPath, image.data)
+            const slash = assetRelativePath.lastIndexOf('/')
+            imageAssetPath = `${slash >= 0 ? assetRelativePath.slice(0, slash + 1) : ''}${embeddedName}`
+          } else if (parsedBlock.imageIndex !== undefined) {
+            omittedImages += 1
+          }
+          blocks.push({
+            id: blockIdAt(slug, index), kind: 'image', text: '', page: 1,
+            ...(parsedBlock.imageAlt ? { imageAlt: parsedBlock.imageAlt } : {}),
+            ...(imageAssetPath ? { imageAssetPath } : {}),
+          })
+          continue
+        }
+        blocks.push({
+          id: blockIdAt(slug, index), kind: parsedBlock.kind, text: parsedBlock.text, page: 1,
+          ...(parsedBlock.table ? { table: parsedBlock.table } : {}),
+        })
+      }
+      const extractedText = blocks.some((block) => block.text.trim())
+      if (!extractedText && blocks.length === 0) {
+        return draftOf('partial', [], 'DOCX 未提取到可审核文本或图片；需查看原件人工复核')
+      }
+      const warnings = [...parsed.warnings]
+      if (omittedImages > 0) warnings.push(`${omittedImages} 张嵌入图片未保存为视觉材料，需查看原件人工复核`)
+      const parseStatus: SourceDocument['parseStatus'] = warnings.length > 0 || omittedImages > 0 ? 'partial' : 'parsed'
+      return draftOf(parseStatus, blocks, warnings.length > 0 ? [...new Set(warnings)].join('；') : undefined)
+    } catch (error) {
+      // 结构解析异常时保留原有纯文本兜底；明确标成 partial，不能伪装成完整结构解析。
+      console.warn(`[审核专区] DOCX 结构解析失败，回退纯文本: ${filePath}`, error)
+      try {
+        const fallback = await extractTextFromFile(filePath)
+        if (fallback.trim()) return draftOf('partial', parseTextIntoBlocks(fileName, fallback), 'DOCX 结构解析失败，已回退纯文本；表格、版式和嵌入图片可能未保留')
+      } catch (fallbackError) {
+        console.warn(`[审核专区] DOCX 纯文本兜底失败: ${filePath}`, fallbackError)
+      }
+      return draftOf('failed', placeholderBlocks(), `DOCX 解析失败: ${error instanceof Error ? error.message : String(error)}`)
+    }
+  }
+
+  if (['.xls', '.xlsx', '.xlsm', '.xltx', '.xltm'].includes(ext)) {
+    try {
+      const parsed = extractSpreadsheetReviewContent(filePath)
+      const blocks: ReviewDocumentBlock[] = parsed.blocks.map((cell, index) => ({
+        id: blockIdAt(slug, index), kind: 'table-cell', text: cell.text, page: 1,
+        table: { row: cell.row, column: cell.column, sheet: cell.sheet },
+      }))
+      if (blocks.length === 0) {
+        return draftOf('partial', [], parsed.warnings.join('；') || 'Excel 未提取到有值的单元格，需查看原件人工复核')
+      }
+      return draftOf(parsed.warnings.length > 0 ? 'partial' : 'parsed', blocks, parsed.warnings.length > 0 ? parsed.warnings.join('；') : undefined)
+    } catch (error) {
+      console.warn(`[审核专区] Excel 单元格结构解析失败，回退纯文本: ${filePath}`, error)
+      try {
+        const fallback = await extractTextFromFile(filePath)
+        if (fallback.trim()) return draftOf('partial', parseTextIntoBlocks(fileName, fallback), 'Excel 单元格结构解析失败，已回退纯文本；工作表和行列坐标可能未保留')
+      } catch (fallbackError) {
+        console.warn(`[审核专区] XLSX 纯文本兜底失败: ${filePath}`, fallbackError)
+      }
+      return draftOf('failed', placeholderBlocks(), `Excel 解析失败: ${error instanceof Error ? error.message : String(error)}`)
+    }
+  }
+
+  // 其他文档类（PDF / Office）：复用既有解析器提取文本，再走同一套纯文本切块管线
   if (DOCUMENT_EXTENSIONS.has(ext)) {
     let extracted = ''
     try {

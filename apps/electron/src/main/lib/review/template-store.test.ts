@@ -3,20 +3,24 @@
  * 隔离：PROFER_CONFIG_DIR 指向唯一临时目录。
  */
 import { afterAll, describe, expect, test } from 'bun:test'
-import { rmSync } from 'node:fs'
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { BUILTIN_TEMPLATES_V2, ensureBuiltinTemplateDrafts } from './builtin-templates'
-import { deprecateTemplate, getTemplate, listTemplateVersions, listTemplates, publishTemplate, saveDraft, validateTemplate } from './template-store'
+import { ALL_DEFAULT_TEMPLATES_V2, BUILTIN_TEMPLATES_V2, ensureBuiltinTemplateDrafts } from './builtin-templates'
+import { deprecateTemplate, getTemplate, listArchivedTemplates, listTemplateVersions, listTemplates, publishTemplate, removeTemplateFromLibrary, reorderTemplates, restoreTemplateToLibrary, saveDraft, validateTemplate } from './template-store'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-template-${Date.now()}`)
 process.env.PROFER_CONFIG_DIR = CONFIG_DIR
 afterAll(() => rmSync(CONFIG_DIR, { recursive: true, force: true }))
 
-describe('六内置模板（M1）', () => {
+describe('审核模板目录（M1）', () => {
   test('旧版本地综测模板读取时补齐申报表/证明材料生命周期默认值', () => {
     const legacy = {
       ...BUILTIN_TEMPLATES_V2[0]!,
-      materialSlots: BUILTIN_TEMPLATES_V2[0]!.materialSlots.map(({ requiredAt: _requiredAt, ...slot }) => slot),
+      version: 1,
+      materialSlots: [
+        ...BUILTIN_TEMPLATES_V2[0]!.materialSlots.map(({ requiredAt: _requiredAt, ...slot }) => slot),
+        { ...BUILTIN_TEMPLATES_V2[0]!.materialSlots[0]!, id: 'certificates', requiredAt: undefined },
+      ],
     }
     saveDraft(legacy)
     const loaded = getTemplate('comprehensive-assessment-v2', 1)!
@@ -24,8 +28,11 @@ describe('六内置模板（M1）', () => {
     expect(loaded.materialSlots.find((slot) => slot.id === 'certificates')?.requiredAt).toBe('decision')
   })
 
-  test('Given 六模板草稿 When validate Then 全部 error 清零（可直接发布）', () => {
-    for (const template of BUILTIN_TEMPLATES_V2) {
+  test('内置模板与开源参考范本都能通过结构校验', () => {
+    expect(BUILTIN_TEMPLATES_V2).toHaveLength(2)
+    expect(BUILTIN_TEMPLATES_V2.every((template) => template.catalogKind === 'builtin')).toBeTrue()
+    expect(ALL_DEFAULT_TEMPLATES_V2.filter((template) => template.catalogKind === 'reference')).toHaveLength(8)
+    for (const template of ALL_DEFAULT_TEMPLATES_V2) {
       const errors = validateTemplate(template).filter((issue) => issue.level === 'error')
       expect(errors).toEqual([])
     }
@@ -44,7 +51,7 @@ describe('六内置模板（M1）', () => {
 
   test('新草稿版本存在时仍可读取并使用之前的已发布版本', () => {
     const templateId = 'template-version-history-test'
-    const draft = { ...BUILTIN_TEMPLATES_V2[0]!, templateId, name: '模板版本历史测试', status: 'draft' as const }
+    const draft = { ...BUILTIN_TEMPLATES_V2[0]!, templateId, version: 1, name: '模板版本历史测试', status: 'draft' as const }
     saveDraft(draft)
     publishTemplate(templateId, 1)
     saveDraft({ ...draft, version: 2, name: '模板版本历史测试新草稿', status: 'draft' })
@@ -54,14 +61,34 @@ describe('六内置模板（M1）', () => {
   })
 
   test('Given 内置草稿 When ensureBuiltinTemplateDrafts Then 幂等落盘且可发布', () => {
+    mkdirSync(join(CONFIG_DIR, 'review-templates'), { recursive: true })
+    writeFileSync(join(CONFIG_DIR, 'review-templates', 'catalog.json'), JSON.stringify({ schemaVersion: 1, order: ['template-version-history-test'], archived: [] }))
     ensureBuiltinTemplateDrafts({ getTemplate, saveDraft })
     ensureBuiltinTemplateDrafts({ getTemplate, saveDraft }) // 第二次不覆盖
     expect(listTemplates().length).toBeGreaterThanOrEqual(6)
-    const published = publishTemplate('comprehensive-assessment-v2', 1)
+    expect(listTemplates().some((template) => template.templateId === 'activity-approval-v2')).toBeFalse()
+    expect(listArchivedTemplates().some((template) => template.templateId === 'activity-approval-v2')).toBeTrue()
+    expect(listTemplates()[0]?.templateId).toBe('template-version-history-test')
+    const published = publishTemplate('comprehensive-assessment-v2', BUILTIN_TEMPLATES_V2[0]!.version)
     expect(published.status).toBe('published')
     expect(published.publishedAt).toBeString()
     // 已发布不可覆盖（saveDraft 拒绝非草稿 / 版本冲突双保险）
     expect(() => saveDraft(published)).toThrow()
+  })
+
+  test('模板库支持排序、移出与恢复；历史版本仍可读取', () => {
+    const original = listTemplates().map((template) => template.templateId)
+    expect(ALL_DEFAULT_TEMPLATES_V2.every((template) => original.includes(template.templateId))).toBeTrue()
+    const reordered = reorderTemplates([...original].reverse())
+    expect(reordered.map((template) => template.templateId)).toEqual([...original].reverse())
+
+    const target = reordered[0]!
+    removeTemplateFromLibrary(target.templateId)
+    expect(listTemplates().some((template) => template.templateId === target.templateId)).toBeFalse()
+    expect(getTemplate(target.templateId, target.version)?.name).toBe(target.name)
+    expect(listArchivedTemplates().some((template) => template.templateId === target.templateId)).toBeTrue()
+    restoreTemplateToLibrary(target.templateId)
+    expect(listTemplates().some((template) => template.templateId === target.templateId)).toBeTrue()
   })
 
   test('Given 已发布版本 When 停用 Then 状态 deprecated 且历史可读', () => {
@@ -90,7 +117,7 @@ describe('发布检查（02 §5.6）', () => {
   })
 
   test('Given 非法量表 When validate Then 报权重/范围错误', () => {
-    const template = BUILTIN_TEMPLATES_V2[3]!
+    const template = ALL_DEFAULT_TEMPLATES_V2.find((candidate) => candidate.rubric)!
     const issues = validateTemplate({ ...template, rubric: { ...template.rubric!, dimensions: [{ id: 'd', name: 'd', min: 5, max: 1, weight: 0 }] } })
     expect(issues.some((issue) => issue.message.includes('min>=max'))).toBeTrue()
   })

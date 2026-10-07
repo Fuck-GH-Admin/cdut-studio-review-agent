@@ -264,6 +264,26 @@ export function registerReviewIpc(): void {
     const { listTemplateVersions } = require('./template-store') as typeof import('./template-store')
     return listTemplateVersions()
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_ARCHIVED_TEMPLATES_V2, () => {
+    const { listArchivedTemplates } = require('./template-store') as typeof import('./template-store')
+    return listArchivedTemplates()
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.REORDER_TEMPLATES_V2, (_e, templateIds: string[]) => {
+    if (!Array.isArray(templateIds) || templateIds.some((id) => typeof id !== 'string')) throw new Error('模板顺序参数非法')
+    const { reorderTemplates } = require('./template-store') as typeof import('./template-store')
+    return reorderTemplates(templateIds)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.REMOVE_TEMPLATE_V2, (_e, templateId: string) => {
+    if (typeof templateId !== 'string' || !templateId) throw new Error('参数 templateId 非法')
+    const { removeTemplateFromLibrary } = require('./template-store') as typeof import('./template-store')
+    removeTemplateFromLibrary(templateId)
+    return true
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RESTORE_TEMPLATE_V2, (_e, templateId: string) => {
+    if (typeof templateId !== 'string' || !templateId) throw new Error('参数 templateId 非法')
+    const { restoreTemplateToLibrary } = require('./template-store') as typeof import('./template-store')
+    return restoreTemplateToLibrary(templateId)
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_TEMPLATE_V2, (_e, templateId: string, version?: number) => {
     if (typeof templateId !== 'string' || !templateId) throw new Error('参数 templateId 非法')
     const { getTemplate } = require('./template-store') as typeof import('./template-store')
@@ -422,30 +442,14 @@ export function registerReviewIpc(): void {
     const { respondSupplementV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
     return respondSupplementV2(input.caseId, input.command as unknown as Parameters<typeof respondSupplementV2>[1])
   })
-  // ===== G02：V2 真实运行（网关客户端 → 真实执行器 → 运行图管线；未配置渠道时明确报错不冒充审核） =====
+  // ===== G02：V2 批次复用 Pi 审核 Agent 与同一审核工具链 =====
   ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_BATCH_V2, async (_e, batchId: string) => {
     if (typeof batchId !== 'string' || !batchId) throw new Error('参数 batchId 非法')
     const { runBatchQueue } = require('./batch-store') as typeof import('./batch-store')
-    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
-    const { getTemplate } = require('./template-store') as typeof import('./template-store')
-    const { runReviewCaseV2 } = require('./run-service-v2') as typeof import('./run-service-v2')
-    const { resolveReviewGatewayChannel, chatCompletion, reviewPromptWithImages, REVIEW_RUN_TIMEOUT_MS } = require('./review-model-gateway') as typeof import('./review-model-gateway')
-    const { assembleV2Executors } = require('./v2-executor-factory') as typeof import('./v2-executor-factory')
-    const resolved = resolveReviewGatewayChannel()
-    if (!resolved) throw new Error('未配置可用模型渠道，无法执行批次审核')
-    const client = {
-      protocol: (resolved.channel as { protocol?: string }).protocol ?? 'openai-chat',
-      complete: async (input: { prompt: string; system: string; signal?: AbortSignal; images?: string[] }) => ({
-        content: await chatCompletion(resolved.channel, [{ role: 'system', content: input.system }, { role: 'user', content: reviewPromptWithImages(input.prompt, input.images) }], { timeoutMs: REVIEW_RUN_TIMEOUT_MS, signal: input.signal }),
-      }),
-    }
+    const { assembleAndRunReview } = require('./run-async-service') as typeof import('./run-async-service')
     return runBatchQueue(batchId, {
       runCase: async (caseId: string) => {
-        const aggregate = getCaseV2Aggregate(caseId)
-        if (!aggregate) throw new Error(`案卷聚合不存在: ${caseId}`)
-        const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
-        if (!template) throw new Error(`模板不存在: ${aggregate.caseV2.templateId}`)
-        const run = await runReviewCaseV2(aggregate.caseV2, template, await assembleV2Executors(aggregate, template, { client }), {})
+        const run = await assembleAndRunReview(caseId)
         return { status: run.status }
       },
     })

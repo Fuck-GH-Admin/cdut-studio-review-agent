@@ -1,7 +1,7 @@
 /** 审核模板库与编辑器：案卷字段、材料槽、综测分项、审核标准与流程均可在界面配置。 */
 
 import { useCallback, useEffect, useState } from 'react'
-import type { FieldSpec, MaterialSlotSpec, TemplateCriterionSpec, TemplateSectionSpec, TemplateVersion, WorkflowStageSpec } from '@profer/shared'
+import type { FieldSpec, MaterialSlotSpec, RubricSpec, TemplateCriterionSpec, TemplateSectionSpec, TemplateVersion, WorkflowStageSpec } from '@profer/shared'
 import { Button } from '@profer/ui/primitives/button'
 import { toast } from 'sonner'
 import { useSetAtom } from 'jotai'
@@ -21,6 +21,20 @@ const STAGE_KINDS: Array<{ value: WorkflowStageSpec['kind']; label: string }> = 
 const ROLE_OPTIONS: Array<{ value: WorkflowStageSpec['executorRole']; label: string }> = [
   { value: 'system', label: '系统/Agent' }, { value: 'reviewer', label: '审核员' }, { value: 'teacher', label: '教师' },
   { value: 'judge', label: '评委' }, { value: 'organizer', label: '负责人' },
+]
+const MATERIAL_KINDS: Array<{ value: MaterialSlotSpec['acceptedKinds'][number]; label: string }> = [
+  { value: 'pdf', label: 'PDF' }, { value: 'image', label: '图片' }, { value: 'office', label: 'Word/演示' },
+  { value: 'sheet', label: '表格' }, { value: 'text', label: '文本' },
+]
+const OUTPUT_KINDS: Array<{ value: TemplateVersion['outputs'][number]['kind']; label: string }> = [
+  { value: 'approval', label: '审批结果' }, { value: 'item-feedback', label: '事项反馈' },
+  { value: 'supplement-list', label: '补件清单' }, { value: 'score-sheet', label: '评分表' },
+  { value: 'roster', label: '汇总名单' }, { value: 'rating-matrix', label: '评审评分矩阵' },
+]
+const OUTPUT_AUDIENCES: Array<{ value: TemplateVersion['outputs'][number]['audience']; label: string }> = [
+  { value: 'student', label: '学生/申请人' }, { value: 'reviewer', label: '审核员' },
+  { value: 'teacher', label: '教师' }, { value: 'judge', label: '评委' },
+  { value: 'organizer', label: '组织者' }, { value: 'template-owner', label: '模板负责人' },
 ]
 
 function generatedId(prefix: string): string {
@@ -62,6 +76,8 @@ function newTemplate(kind: 'blank' | 'comprehensive'): TemplateVersion {
   return {
     templateId: `review-${generatedId(isComprehensive ? 'comprehensive' : 'template')}`,
     version: 1, schemaVersion: 2, name: isComprehensive ? '学生综合测评（待配置）' : '新审核模板',
+    description: isComprehensive ? '新建的综测结构草稿，请填写本校当年审核标准后发布。' : '请根据实际业务添加审核分项、材料和流程。',
+    catalogKind: 'custom',
     objectType: 'person', displayName: { template: isComprehensive ? '{{studentName}}' : '{{applicantName}}' },
     fields, materialSlots: slots, ...(sections.length > 0 ? { sections } : {}),
     policyVersionIds: [], stages, outputs: [{ id: 'approval', kind: 'approval', audience: 'teacher' }],
@@ -108,12 +124,23 @@ export function TemplateWizardPanel(): JSX.Element {
   const bumpTemplatesRefresh = useSetAtom(templatesRefreshAtom)
   const store = useStore()
   const [templates, setTemplates] = useState<TemplateVersion[]>([])
+  const [templateVersions, setTemplateVersions] = useState<TemplateVersion[]>([])
+  const [archivedTemplates, setArchivedTemplates] = useState<TemplateVersion[]>([])
   const [editing, setEditing] = useState<TemplateVersion | null>(null)
   const [message, setMessage] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
 
   const refreshTemplates = useCallback(async (): Promise<void> => {
-    try { setTemplates(await window.reviewAPI.listTemplateVersionsV2()) }
+    try {
+      const [latest, versions, archived] = await Promise.all([
+        window.reviewAPI.listTemplatesV2(),
+        window.reviewAPI.listTemplateVersionsV2(),
+        window.reviewAPI.listArchivedTemplatesV2(),
+      ])
+      setTemplates(latest)
+      setTemplateVersions(versions)
+      setArchivedTemplates(archived)
+    }
     catch (error) { toast.error(`模板列表加载失败：${error instanceof Error ? error.message : String(error)}`) }
   }, [])
   useEffect(() => { void refreshTemplates() }, [refreshTemplates])
@@ -124,7 +151,7 @@ export function TemplateWizardPanel(): JSX.Element {
   }
 
   const openTemplate = (template: TemplateVersion): void => {
-    const nextVersion = Math.max(0, ...templates.filter((candidate) => candidate.templateId === template.templateId).map((candidate) => candidate.version)) + 1
+    const nextVersion = Math.max(0, ...templateVersions.filter((candidate) => candidate.templateId === template.templateId).map((candidate) => candidate.version)) + 1
     setEditing(template.status === 'draft' ? template : nextDraft(template, nextVersion))
     setMessage([])
   }
@@ -186,6 +213,35 @@ export function TemplateWizardPanel(): JSX.Element {
   }
 
   const moveSection = (index: number, offset: -1 | 1): void => updateTemplate((current) => ({ ...current, sections: normalizeOrder(reordered(current.sections ?? [], index, offset)) }))
+  const moveField = (index: number, offset: -1 | 1): void => updateTemplate((current) => ({ ...current, fields: reordered(current.fields, index, offset) }))
+  const moveMaterialSlot = (index: number, offset: -1 | 1): void => updateTemplate((current) => ({ ...current, materialSlots: reordered(current.materialSlots, index, offset) }))
+
+  const moveTemplate = async (index: number, offset: -1 | 1): Promise<void> => {
+    const next = reordered(templates, index, offset)
+    try { setTemplates(await window.reviewAPI.reorderTemplatesV2(next.map((template) => template.templateId))) }
+    catch (error) { toast.error(`模板排序失败：${error instanceof Error ? error.message : String(error)}`) }
+  }
+
+  const removeTemplate = async (template: TemplateVersion): Promise<void> => {
+    const confirmed = window.confirm(`删除「${template.name}」？\n模板会从模板库隐藏，历史案卷仍可读取原版本，之后可以恢复。`)
+    if (!confirmed) return
+    try {
+      await window.reviewAPI.removeTemplateFromLibraryV2(template.templateId)
+      if (editing?.templateId === template.templateId) setEditing(null)
+      await refreshTemplates()
+      bumpTemplatesRefresh(Date.now())
+      toast.success(`已删除模板：${template.name}`)
+    } catch (error) { toast.error(`删除失败：${error instanceof Error ? error.message : String(error)}`) }
+  }
+
+  const restoreTemplate = async (template: TemplateVersion): Promise<void> => {
+    try {
+      await window.reviewAPI.restoreTemplateToLibraryV2(template.templateId)
+      await refreshTemplates()
+      bumpTemplatesRefresh(Date.now())
+      toast.success(`已恢复模板：${template.name}`)
+    } catch (error) { toast.error(`恢复失败：${error instanceof Error ? error.message : String(error)}`) }
+  }
 
   return (
     <div className="mx-3 mb-4 space-y-3">
@@ -196,25 +252,42 @@ export function TemplateWizardPanel(): JSX.Element {
             <p className="mt-1 max-w-3xl text-sm text-muted-foreground">一个模板定义一类案卷。综测的多个分项、各自要求和材料槽会进入同一案卷，并在一次审核运行中统一处理。</p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button size="sm" variant="outline" onClick={() => startNew('comprehensive')}>从综测开始</Button>
             <Button size="sm" onClick={() => startNew('blank')}>新建空白模板</Button>
           </div>
         </div>
         <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {templates.map((template) => (
-            <div key={`${template.templateId}@${template.version}`} className="rounded-lg bg-muted/40 p-3">
+          {templates.map((template, index) => (
+            <div key={template.templateId} className="rounded-lg bg-muted/40 p-3">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium">{template.name}</p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">v{template.version} · {template.sections?.length ?? 0} 个分项 · {template.fields.length} 个字段</p>
+                  <p className="text-sm font-medium">{template.name}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">最新 v{template.version} · {template.sections?.length ?? 0} 个分项 · {template.fields.length} 个字段</p>
                 </div>
                 <span className="shrink-0 rounded-full bg-background px-2 py-0.5 text-[11px]">{template.status === 'published' ? '已发布' : template.status === 'deprecated' ? '已停用' : '草稿'}</span>
               </div>
-              <Button size="sm" variant="outline" className="mt-2" onClick={() => openTemplate(template)}>{template.status === 'draft' ? '继续编辑' : '基于此版本编辑'}</Button>
+              {template.description && <p className="mt-2 line-clamp-3 text-xs text-muted-foreground">{template.description}</p>}
+              <div className="mt-2 flex items-center justify-between gap-2">
+                <span className="rounded-full bg-background px-2 py-0.5 text-[11px]">{template.catalogKind === 'builtin' ? '内置' : template.catalogKind === 'reference' ? '参考范本' : '自建'}</span>
+                <div className="flex gap-1">
+                  <Button size="sm" variant="ghost" aria-label="模板上移" disabled={index === 0} onClick={() => void moveTemplate(index, -1)}>↑</Button>
+                  <Button size="sm" variant="ghost" aria-label="模板下移" disabled={index === templates.length - 1} onClick={() => void moveTemplate(index, 1)}>↓</Button>
+                  <Button size="sm" variant="outline" onClick={() => openTemplate(template)}>{template.status === 'draft' ? '继续编辑' : '基于此版本修改'}</Button>
+                  <Button size="sm" variant="ghost" onClick={() => void removeTemplate(template)}>删除</Button>
+                </div>
+              </div>
+              {template.sourceNote && <details className="mt-2 text-xs text-muted-foreground"><summary className="cursor-pointer">参考来源</summary><p className="mt-1">{template.sourceNote}</p></details>}
             </div>
           ))}
-          {templates.length === 0 && <p className="text-sm text-muted-foreground">还没有审核模板，可从综测模板或空白模板开始。</p>}
+          {templates.length === 0 && <p className="text-sm text-muted-foreground">模板库为空，可新建空白模板或从下方恢复已删除模板。</p>}
         </div>
+        {archivedTemplates.length > 0 && (
+          <details className="mt-3 rounded-lg bg-muted/30 p-3">
+            <summary className="cursor-pointer text-sm font-medium">已删除模板（{archivedTemplates.length}，历史案卷仍可读取）</summary>
+            <div className="mt-2 space-y-2">
+              {archivedTemplates.map((template) => <div key={template.templateId} className="flex items-center justify-between gap-3 rounded-md bg-background p-2 text-sm"><span>{template.name} · v{template.version}</span><Button size="sm" variant="outline" onClick={() => void restoreTemplate(template)}>恢复</Button></div>)}
+            </div>
+          </details>
+        )}
       </div>
 
       {editing && (
@@ -240,7 +313,11 @@ export function TemplateWizardPanel(): JSX.Element {
                 <option value="person">个人</option><option value="organization">组织</option><option value="project">项目</option><option value="document">文件</option><option value="transaction">交易</option><option value="custom">自定义</option>
               </select>
             </label>
+            <label className="text-xs md:col-span-2">模板用途说明
+              <textarea className="mt-1 w-full rounded-md border bg-background px-2 py-1.5 text-sm" rows={2} value={editing.description ?? ''} onChange={(event) => updateTemplate((current) => ({ ...current, description: event.target.value }))} placeholder="说明适用对象、流程范围和需要负责人确认的规则边界" />
+            </label>
           </div>
+          {editing.sourceNote && <p className="mt-2 rounded-lg bg-muted/50 px-3 py-2 text-xs text-muted-foreground">参考来源与边界：{editing.sourceNote}</p>}
 
           <details open className="mt-4 rounded-lg bg-muted/30 p-3">
             <summary className="cursor-pointer text-sm font-medium">案卷与申报字段（{editing.fields.length}）</summary>
@@ -263,12 +340,19 @@ export function TemplateWizardPanel(): JSX.Element {
                   </select>
                   <div className="flex items-center justify-between gap-2">
                     <label className="flex items-center gap-1 whitespace-nowrap text-xs"><input type="checkbox" checked={field.required} onChange={(event) => updateTemplate((current) => ({ ...current, fields: current.fields.map((item, i) => i === index ? { ...item, required: event.target.checked } : item) }))} />必填</label>
+                    <Button size="sm" variant="ghost" aria-label="字段上移" disabled={index === 0} onClick={() => moveField(index, -1)}>↑</Button>
+                    <Button size="sm" variant="ghost" aria-label="字段下移" disabled={index === editing.fields.length - 1} onClick={() => moveField(index, 1)}>↓</Button>
                     <Button size="sm" variant="ghost" onClick={() => updateTemplate((current) => ({ ...current, fields: current.fields.filter((_, i) => i !== index) }))}>删除</Button>
                   </div>
                   {field.kind === 'enum' && <input className="sm:col-span-5 rounded border px-2 py-1 text-xs" placeholder="选项，以中文逗号分隔" value={(field.options ?? []).map((option) => option.label).join('，')} onChange={(event) => {
                     const options = event.target.value.split(/[，,]/).map((label) => label.trim()).filter(Boolean).map((label) => ({ value: label, label }))
                     updateTemplate((current) => ({ ...current, fields: current.fields.map((item, i) => i === index ? { ...item, options } : item) }))
                   }} />}
+                  {field.kind === 'number' && <div className="grid gap-2 sm:col-span-5 sm:grid-cols-3">
+                    <input className="rounded border px-2 py-1 text-xs" placeholder="单位，如 分/小时/元" value={field.unit ?? ''} onChange={(event) => updateTemplate((current) => ({ ...current, fields: current.fields.map((item, i) => i === index ? { ...item, unit: event.target.value || undefined } : item) }))} />
+                    <input type="number" className="rounded border px-2 py-1 text-xs" placeholder="最小值（可选）" value={field.min ?? ''} onChange={(event) => updateTemplate((current) => ({ ...current, fields: current.fields.map((item, i) => i === index ? { ...item, min: event.target.value === '' ? undefined : Number(event.target.value) } : item) }))} />
+                    <input type="number" className="rounded border px-2 py-1 text-xs" placeholder="最大值（可选）" value={field.max ?? ''} onChange={(event) => updateTemplate((current) => ({ ...current, fields: current.fields.map((item, i) => i === index ? { ...item, max: event.target.value === '' ? undefined : Number(event.target.value) } : item) }))} />
+                  </div>}
                 </div>
               ))}
             </div>
@@ -343,8 +427,15 @@ export function TemplateWizardPanel(): JSX.Element {
                   <select aria-label="材料所属分项" className="rounded border bg-background px-2 py-1 text-xs" value={slot.sectionId ?? ''} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, sectionId: event.target.value || undefined } : item) }))}>
                     <option value="">整份案卷共用</option>{(editing.sections ?? []).map((section) => <option key={section.id} value={section.id}>{section.name}</option>)}
                   </select>
-                  <Button size="sm" variant="ghost" onClick={() => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.filter((_, i) => i !== index) }))}>删除</Button>
+                  <div className="flex items-center gap-1">
+                    <Button size="sm" variant="ghost" aria-label="材料槽上移" disabled={index === 0} onClick={() => moveMaterialSlot(index, -1)}>↑</Button>
+                    <Button size="sm" variant="ghost" aria-label="材料槽下移" disabled={index === editing.materialSlots.length - 1} onClick={() => moveMaterialSlot(index, 1)}>↓</Button>
+                    <Button size="sm" variant="ghost" onClick={() => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.filter((_, i) => i !== index) }))}>删除</Button>
+                  </div>
                   <input className="md:col-span-5 rounded border px-2 py-1 text-xs" placeholder="材料中需要核对的要素，以中文逗号分隔" value={slot.requiredElements.join('，')} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, requiredElements: event.target.value.split(/[，,]/).map((part) => part.trim()).filter(Boolean) } : item) }))} />
+                  <div className="flex flex-wrap gap-x-3 gap-y-1 md:col-span-5">
+                    {MATERIAL_KINDS.map((kind) => <label key={kind.value} className="flex items-center gap-1 text-[11px]"><input type="checkbox" checked={slot.acceptedKinds.includes(kind.value)} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, acceptedKinds: event.target.checked ? [...new Set([...item.acceptedKinds, kind.value])] : item.acceptedKinds.filter((value) => value !== kind.value) } : item) }))} />{kind.label}</label>)}
+                  </div>
                   <div className="grid gap-2 md:col-span-5 md:grid-cols-4">
                     <label className="text-[11px] text-muted-foreground">最少份数（0 表示可选）<input type="number" min={0} className="mt-1 w-full rounded border bg-background px-2 py-1 text-xs text-foreground" value={slot.minCount} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, minCount: Math.max(0, Number(event.target.value) || 0) } : item) }))} /></label>
                     <label className="text-[11px] text-muted-foreground">最多份数<input type="number" min={1} className="mt-1 w-full rounded border bg-background px-2 py-1 text-xs text-foreground" value={slot.maxCount} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, maxCount: Math.max(1, Number(event.target.value) || 1) } : item) }))} /></label>
@@ -355,6 +446,47 @@ export function TemplateWizardPanel(): JSX.Element {
               ))}
             </div>
             <Button size="sm" variant="outline" className="mt-2" onClick={() => updateTemplate((current) => ({ ...current, materialSlots: [...current.materialSlots, { id: generatedId('material'), name: '新材料', purpose: '', requiredElements: [], acceptedKinds: ['pdf', 'image', 'office', 'sheet', 'text'], minCount: 1, maxCount: 10, requiredAt: 'submission', allowReuseAcrossSubjects: false }] }))}>添加材料槽</Button>
+          </details>
+
+          <details className="mt-3 rounded-lg bg-muted/30 p-3">
+            <summary className="cursor-pointer text-sm font-medium">评分量表（可选）</summary>
+            <label className="mt-2 flex items-center gap-2 text-xs"><input type="checkbox" checked={Boolean(editing.rubric)} onChange={(event) => updateTemplate((current) => ({
+              ...current,
+              rubric: event.target.checked
+                ? current.rubric ?? { dimensions: [{ id: generatedId('dimension'), name: '评审维度', min: 1, max: 5, weight: 1 }], totalPrecision: 2, missingStrategy: 'block', naStrategy: 'exclude-renormalize', minEffectiveJudges: 2 }
+                : undefined,
+            }))} />启用多评委评分</label>
+            {editing.rubric && <>
+              <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                <label className="text-xs">缺评处理<select className="mt-1 w-full rounded border bg-background px-2 py-1.5" value={editing.rubric.missingStrategy} onChange={(event) => updateTemplate((current) => ({ ...current, rubric: current.rubric ? { ...current.rubric, missingStrategy: event.target.value as RubricSpec['missingStrategy'] } : undefined }))}><option value="block">缺少评分时阻止汇总</option><option value="exclude">排除缺评维度后汇总</option></select></label>
+                <label className="text-xs">最低有效评委数<input type="number" min={1} className="mt-1 w-full rounded border bg-background px-2 py-1.5" value={editing.rubric.minEffectiveJudges ?? 1} onChange={(event) => updateTemplate((current) => ({ ...current, rubric: current.rubric ? { ...current.rubric, minEffectiveJudges: Math.max(1, Number(event.target.value) || 1) } : undefined }))} /></label>
+              </div>
+              <div className="mt-2 space-y-2">
+                {editing.rubric.dimensions.map((dimension, index) => <div key={dimension.id} className="grid gap-2 rounded-md bg-background p-2 sm:grid-cols-[1fr_1fr_90px_90px_90px_auto]">
+                  <input className="rounded border px-2 py-1 text-xs" aria-label="评分维度编号" value={dimension.id} onChange={(event) => updateTemplate((current) => ({ ...current, rubric: current.rubric ? { ...current.rubric, dimensions: current.rubric.dimensions.map((item, i) => i === index ? { ...item, id: event.target.value.trim() } : item) } : undefined }))} />
+                  <input className="rounded border px-2 py-1 text-xs" aria-label="评分维度名称" value={dimension.name} onChange={(event) => updateTemplate((current) => ({ ...current, rubric: current.rubric ? { ...current.rubric, dimensions: current.rubric.dimensions.map((item, i) => i === index ? { ...item, name: event.target.value } : item) } : undefined }))} />
+                  <input type="number" aria-label="最低分" className="rounded border px-2 py-1 text-xs" value={dimension.min} onChange={(event) => updateTemplate((current) => ({ ...current, rubric: current.rubric ? { ...current.rubric, dimensions: current.rubric.dimensions.map((item, i) => i === index ? { ...item, min: Number(event.target.value) } : item) } : undefined }))} />
+                  <input type="number" aria-label="最高分" className="rounded border px-2 py-1 text-xs" value={dimension.max} onChange={(event) => updateTemplate((current) => ({ ...current, rubric: current.rubric ? { ...current.rubric, dimensions: current.rubric.dimensions.map((item, i) => i === index ? { ...item, max: Number(event.target.value) } : item) } : undefined }))} />
+                  <input type="number" min={0} step="0.1" aria-label="评分权重" className="rounded border px-2 py-1 text-xs" value={dimension.weight} onChange={(event) => updateTemplate((current) => ({ ...current, rubric: current.rubric ? { ...current.rubric, dimensions: current.rubric.dimensions.map((item, i) => i === index ? { ...item, weight: Number(event.target.value) } : item) } : undefined }))} />
+                  <Button size="sm" variant="ghost" disabled={(editing.rubric?.dimensions.length ?? 0) <= 1} onClick={() => updateTemplate((current) => ({ ...current, rubric: current.rubric ? { ...current.rubric, dimensions: current.rubric.dimensions.filter((_, i) => i !== index) } : undefined }))}>删除</Button>
+                </div>)}
+              </div>
+              <Button size="sm" variant="outline" className="mt-2" onClick={() => updateTemplate((current) => ({ ...current, rubric: current.rubric ? { ...current.rubric, dimensions: [...current.rubric.dimensions, { id: generatedId('dimension'), name: '', min: 1, max: 5, weight: 1 }] } : undefined }))}>添加评分维度</Button>
+            </>}
+          </details>
+
+          <details className="mt-3 rounded-lg bg-muted/30 p-3">
+            <summary className="cursor-pointer text-sm font-medium">审核输出（{editing.outputs.length}）</summary>
+            <p className="mb-2 mt-2 text-xs text-muted-foreground">配置本模板生成的结果类型及可见对象。</p>
+            <div className="space-y-2">
+              {editing.outputs.map((output, index) => <div key={`${output.id}-${index}`} className="grid gap-2 rounded-md bg-background p-2 sm:grid-cols-[1fr_1fr_1fr_auto]">
+                <input className="rounded border px-2 py-1 text-xs" aria-label="输出编号" value={output.id} onChange={(event) => updateTemplate((current) => ({ ...current, outputs: current.outputs.map((item, i) => i === index ? { ...item, id: event.target.value.trim() } : item) }))} />
+                <select className="rounded border bg-background px-2 py-1 text-xs" aria-label="输出类型" value={output.kind} onChange={(event) => updateTemplate((current) => ({ ...current, outputs: current.outputs.map((item, i) => i === index ? { ...item, kind: event.target.value as TemplateVersion['outputs'][number]['kind'] } : item) }))}>{OUTPUT_KINDS.map((kind) => <option key={kind.value} value={kind.value}>{kind.label}</option>)}</select>
+                <select className="rounded border bg-background px-2 py-1 text-xs" aria-label="输出对象" value={output.audience} onChange={(event) => updateTemplate((current) => ({ ...current, outputs: current.outputs.map((item, i) => i === index ? { ...item, audience: event.target.value as TemplateVersion['outputs'][number]['audience'] } : item) }))}>{OUTPUT_AUDIENCES.map((audience) => <option key={audience.value} value={audience.value}>{audience.label}</option>)}</select>
+                <Button size="sm" variant="ghost" disabled={editing.outputs.length <= 1} onClick={() => updateTemplate((current) => ({ ...current, outputs: current.outputs.filter((_, i) => i !== index) }))}>删除</Button>
+              </div>)}
+            </div>
+            <Button size="sm" variant="outline" className="mt-2" onClick={() => updateTemplate((current) => ({ ...current, outputs: [...current.outputs, { id: generatedId('output'), kind: 'item-feedback', audience: 'reviewer' }] }))}>添加审核输出</Button>
           </details>
 
           <details className="mt-3 rounded-lg bg-muted/30 p-3">

@@ -99,7 +99,17 @@ export interface DocumentVersion {
   parseStatus: 'pending' | 'parsed' | 'partial' | 'failed'
   parseError?: string
   /** 解析产物：文本块（带位置）与表格/图片资产索引（M2 扩展） */
-  blocks: Array<{ blockId: string; text: string; location?: SourceLocation; kind: 'text' | 'image' | 'table'; imageAssetPath?: string }>
+  blocks: Array<{
+    blockId: string
+    text: string
+    location?: SourceLocation
+    kind: 'text' | 'image' | 'table'
+    /** Office 文档的块级结构信息，保留标题、列表与表格单元格语义。 */
+    format?: 'heading' | 'paragraph' | 'list-item' | 'table-cell'
+    table?: { row: number; column: number }
+    imageAlt?: string
+    imageAssetPath?: string
+  }>
   /** 审核使用状态：登记≠已读（03 §6 材料账本） */
   usage: 'registered' | 'read' | 'partially-read' | 'unread'
   unusedReason?: string
@@ -243,6 +253,12 @@ export interface TemplateVersion {
   version: number
   schemaVersion: 2
   name: string
+  /** 模板库展示说明；用于说明适用场景与初始化边界。 */
+  description?: string
+  /** 模板来源类别：项目内置、开源项目启发或用户自建。 */
+  catalogKind?: 'builtin' | 'reference' | 'custom'
+  /** 开源参考来源与使用边界，不代表采纳了其学校规则或分值。 */
+  sourceNote?: string
   /** 审核对象类型（02 §5.1：个人/组织/项目/文件/交易/自定义） */
   objectType: 'person' | 'organization' | 'project' | 'document' | 'transaction' | 'custom'
   /** 主体展示名来源（学年不是全局必填） */
