@@ -12,6 +12,8 @@ import { join } from 'node:path'
 import type { EvidenceDocument, RulePack, ReviewCase, SourceDocument } from '@profer/shared'
 import { getCase, saveCase, updateCase, assertSafeId, getReviewCasesDir } from './case-store'
 import { parseFileIntoSourceDocument } from './document-service'
+import { invalidateDerivedReviewInputs } from './input-invalidation'
+import { syncWorkspaceProjectionV2 } from './workspace-service-v2'
 
 /** 单文件大小上限（50MB，超过直接拒绝） */
 const MAX_IMPORT_BYTES = 50 * 1024 * 1024
@@ -101,8 +103,11 @@ export async function importDocumentIntoCase(input: {
   await updateCase(
     input.caseId,
     (fresh) => ({
-      ...fresh,
+      ...invalidateDerivedReviewInputs(fresh, { applicationMaterialsChanged: input.role === 'application' }),
       documents: [...fresh.documents, storedDocument],
+      ...(input.role === 'application' && fresh.subjectDocumentIds
+        ? { subjectDocumentIds: [...new Set([...fresh.subjectDocumentIds, docId])] }
+        : {}),
       rulePacks: newRulePack ? [...fresh.rulePacks, newRulePack] : fresh.rulePacks,
       // 证明材料同步登记证明卡（H01）：已收录、待识别——中栏立即可见，
       // 不再出现"导入成功但 0 份证明"；事实提取（识别）完成后更新为真实识别结果
@@ -116,6 +121,7 @@ export async function importDocumentIntoCase(input: {
     }),
     { reason: `导入材料 ${fileName}（${storedDocument.parseStatus}）` },
   )
+  await syncWorkspaceProjectionV2(input.caseId)
   console.log(
     `[审核专区] 已导入材料: ${fileName} → ${input.caseId}/${docId}（解析 ${storedDocument.parseStatus}` +
       `${input.role === 'rule' ? '，已登记规则包' : ''}）`,

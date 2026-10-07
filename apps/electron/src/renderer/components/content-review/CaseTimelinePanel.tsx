@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from 'react'
 interface TimelineRow {
   at: string
   action: string
-  operatorKind: 'human' | 'agent' | 'mock' | 'school' | 'unknown'
+  operatorKind: 'human' | 'agent' | 'mock' | 'school' | 'system' | 'unknown'
   operatorLabel: string
   detail: string
 }
@@ -19,6 +19,7 @@ const BADGE_STYLE: Record<TimelineRow['operatorKind'], string> = {
   agent: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300',
   mock: 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300',
   school: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
+  system: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300',
   unknown: 'bg-zinc-100 text-zinc-500 italic dark:bg-zinc-800 dark:text-zinc-400',
 }
 
@@ -27,6 +28,7 @@ const BADGE_TEXT: Record<TimelineRow['operatorKind'], string> = {
   agent: 'AI Agent',
   mock: '模拟',
   school: '校方',
+  system: '系统',
   unknown: '未记录',
 }
 

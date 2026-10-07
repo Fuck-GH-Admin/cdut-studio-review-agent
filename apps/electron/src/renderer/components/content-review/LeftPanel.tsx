@@ -11,7 +11,7 @@
 
 import * as React from 'react'
 import { useAtomValue } from 'jotai'
-import { BookOpen, FileText } from 'lucide-react'
+import { BookOpen, FileText, ShieldCheck } from 'lucide-react'
 import {
   documentsByRoleAtom,
   reviewCaseAtom,
@@ -60,7 +60,7 @@ export function LeftPanel({ actions }: LeftPanelProps): React.ReactElement {
         </section>
       ))}
 
-      {/* 规则摘要（开始审核时自动准备） */}
+      {/* 规则摘要先由审核员对照原文确认，再用于 V2 语义检查。 */}
       <section className="shrink-0 px-3 pb-3">
         <div className="flex items-center justify-between px-1 pb-2">
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
@@ -70,8 +70,19 @@ export function LeftPanel({ actions }: LeftPanelProps): React.ReactElement {
         {rulePacks.length === 0 && <RuleOutlineList outline={[]} onLocate={actions.locateRuleAnchor} />}
         {rulePacks.map((pack) => (
           <div key={pack.id} className="mb-3">
-            <p className="mb-2 text-xs font-medium">{pack.name} · {pack.version}</p>
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <p className="truncate text-xs font-medium">{pack.name} · {pack.version}</p>
+              <span className={pack.confirmed ? 'shrink-0 text-[10px] text-green-600 dark:text-green-400' : 'shrink-0 text-[10px] text-amber-600 dark:text-amber-400'}>{pack.confirmed ? '已确认' : '待对照原文确认'}</span>
+            </div>
             <RuleOutlineList outline={pack.outline} onLocate={actions.locateRuleAnchor} />
+            {pack.outline.length > 0 && !pack.confirmed && (
+              <div className="mt-2 rounded-lg border border-amber-500/30 bg-amber-500/[0.06] p-2.5">
+                <p className="text-[11px] leading-4 text-muted-foreground">对照上方原文检查 AI 提取的规则摘要。确认后，这些规则才会进入 AI 语义检查。</p>
+                <button type="button" onClick={() => void actions.confirmRulePack(pack.id)} className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90">
+                  <ShieldCheck size={13} />确认审核依据
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </section>

@@ -44,6 +44,8 @@ import { exportReport } from './report-service'
 import { getReviewModelGatewayStatus } from './review-model-gateway'
 import { createEmptyCase } from './case-creation'
 import { importDocumentIntoCase } from './case-import'
+import { invalidateDerivedReviewInputs } from './input-invalidation'
+import { ensureWorkspaceAggregateV2, syncWorkspaceProjectionV2 } from './workspace-service-v2'
 
 /** 来源角色枚举（IMPORT_DOCUMENT 入参白名单） */
 const SOURCE_ROLES: ReadonlySet<string> = new Set(['rule', 'application', 'evidence'])
@@ -76,8 +78,10 @@ export function registerReviewIpc(): void {
   // ===== 案卷管理 =====
 
   /** 载入演示案卷（首次复制进配置目录，之后读存储） */
-  ipcMain.handle(REVIEW_IPC_CHANNELS.LOAD_DEMO_CASE, (): ReviewCase => {
-    return loadDemoCase()
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LOAD_DEMO_CASE, async (): Promise<ReviewCase> => {
+    const reviewCase = loadDemoCase()
+    await ensureWorkspaceAggregateV2(reviewCase.id)
+    return reviewCase
   })
 
   /** 列出已存储案卷（摘要） */
@@ -93,7 +97,7 @@ export function registerReviewIpc(): void {
   /** 创建空案卷 */
   ipcMain.handle(
     REVIEW_IPC_CHANNELS.CREATE_CASE,
-    (
+    async (
       _event,
       input: {
         title: string
@@ -102,20 +106,22 @@ export function registerReviewIpc(): void {
         academicYear: string
         domainPackId?: string
       },
-    ): ReviewCase => {
+    ): Promise<ReviewCase> => {
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
       if (!CASE_TYPES.has(input.type)) throw new Error(`参数 type 非法：${String(input.type)}`)
       // 领域包 ID 只做存在性判断：未知 ID 回落缺省包由 resolveDomainPack 负责，不因拼错而拒绝建卷
       if (input.domainPackId !== undefined && typeof input.domainPackId !== 'string') {
         throw new Error('参数 domainPackId 类型非法')
       }
-      return createEmptyCase({
+      const reviewCase = createEmptyCase({
         title: requireString(input.title, 'title'),
         type: input.type,
         applicant: requireString(input.applicant, 'applicant'),
         academicYear: requireString(input.academicYear, 'academicYear'),
         ...(input.domainPackId ? { domainPackId: input.domainPackId } : {}),
       })
+      await ensureWorkspaceAggregateV2(reviewCase.id)
+      return reviewCase
     },
   )
 
@@ -152,18 +158,39 @@ export function registerReviewIpc(): void {
       // 避免校验期间的其他写回（导入/大纲/识别）被整案快照覆盖
       const updated = await updateCase(
         caseId,
-        (fresh) => ({
-          ...fresh,
-          ...(input.title !== undefined ? { title: input.title.trim() || fresh.title } : {}),
-          ...(input.type !== undefined ? { type: input.type } : {}),
-          ...(input.domainPackId !== undefined ? { domainPackId: input.domainPackId } : {}),
-          ...(subjectDocumentIds !== undefined ? { subjectDocumentIds } : {}),
-        }),
+        (fresh) => {
+          const domainPackChanged = input.domainPackId !== undefined
+            && (fresh.domainPackId ?? 'comprehensive-assessment') !== input.domainPackId
+          const subjectDocumentsChanged = subjectDocumentIds !== undefined
+            && JSON.stringify(fresh.subjectDocumentIds ?? []) !== JSON.stringify(subjectDocumentIds)
+          return {
+            ...invalidateDerivedReviewInputs(fresh, { domainPackChanged, subjectDocumentsChanged }),
+            ...(input.title !== undefined ? { title: input.title.trim() || fresh.title } : {}),
+            ...(input.type !== undefined ? { type: input.type } : {}),
+            ...(input.domainPackId !== undefined ? { domainPackId: input.domainPackId } : {}),
+            ...(subjectDocumentIds !== undefined ? { subjectDocumentIds } : {}),
+          }
+        },
         { reason: `更新案卷设置${input.domainPackId ? `（领域包 ${input.domainPackId}）` : ''}` },
       )
+      await syncWorkspaceProjectionV2(caseId)
       return updated
     },
   )
+
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CONFIRM_RULE_PACK, async (_event, input: { caseId: string; rulePackId: string }): Promise<ReviewCase> => {
+    const caseId = requireString(input?.caseId, 'caseId')
+    const rulePackId = requireString(input?.rulePackId, 'rulePackId')
+    const reviewCase = getCase(caseId)
+    if (!reviewCase) throw new Error(`案卷不存在: ${caseId}`)
+    if (!reviewCase.rulePacks.some((pack) => pack.id === rulePackId)) throw new Error(`审核依据不存在: ${rulePackId}`)
+    const updated = await updateCase(caseId, (fresh) => ({
+      ...fresh,
+      rulePacks: fresh.rulePacks.map((pack) => pack.id === rulePackId ? { ...pack, confirmed: true } : pack),
+    }), { reason: `审核员确认依据 ${rulePackId}` })
+    await syncWorkspaceProjectionV2(caseId)
+    return updated
+  })
 
   /** 导入文件到案卷（系统选择框 → 解析为 SourceDocument 并写回案卷） */
   ipcMain.handle(
@@ -218,13 +245,15 @@ export function registerReviewIpc(): void {
     cancelRunV2(runId)
     return true
   })
-  ipcMain.handle(REVIEW_IPC_CHANNELS.MIGRATE_CASE_V2, (_e, caseId: string) => {
+  ipcMain.handle(REVIEW_IPC_CHANNELS.MIGRATE_CASE_V2, async (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
     const { getCase } = require('./case-store') as typeof import('./case-store')
     const { migrateCaseToV2 } = require('./migration') as typeof import('./migration')
     const v1 = getCase(caseId)
     if (!v1) throw new Error(`案卷不存在: ${caseId}`)
-    return migrateCaseToV2(v1)
+    const result = migrateCaseToV2(v1)
+    if (result.caseV2) await ensureWorkspaceAggregateV2(caseId)
+    return result
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.BOOT_CHECK_V2, () => {
     const { runBootCheckV2 } = require('./boot-check') as typeof import('./boot-check')
@@ -275,7 +304,7 @@ export function registerReviewIpc(): void {
     const { listAssignments } = require('./review-agent-assignment') as typeof import('./review-agent-assignment')
     return listAssignments(sessionId)
   })
-  ipcMain.handle(REVIEW_IPC_CHANNELS.CASE_TIMELINE_V2, (_e, input: { caseId: string; filterOperator?: 'human' | 'agent' | 'mock' | 'school' | 'unknown' }) => {
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CASE_TIMELINE_V2, (_e, input: { caseId: string; filterOperator?: 'human' | 'agent' | 'mock' | 'school' | 'system' | 'unknown' }) => {
     if (!input || typeof input !== 'object' || typeof input.caseId !== 'string' || !input.caseId) throw new Error('参数 caseId 非法')
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
     const { buildCaseTimeline } = require('./case-timeline') as typeof import('./case-timeline')
@@ -287,12 +316,19 @@ export function registerReviewIpc(): void {
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_RUN_OBSERVATIONS_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
     const { listRunsV2, readArtifact } = require('./run-store-v2') as typeof import('./run-store-v2')
-    const runs = listRunsV2(caseId).filter((run) => run.status === 'completed')
+    const runs = listRunsV2(caseId).filter((run) => run.status === 'completed' || run.status === 'partially-completed')
     if (runs.length === 0) return []
     // 取最近完成运行的 extract 产物观察（真实模型抽取结果，含 sourceRefs 与 confirmed 标记）
     const runId = runs[0]!.id
     const artifact = readArtifact<{ observations?: Array<{ subjectId: string; fieldKey: string; value: unknown; sourceRefs?: Array<{ documentVersionId: string; quote?: string }>; extractedBy?: string; confirmed?: boolean; confidence?: number }> }>(caseId, runId, 'node-auto-check-extract')
     return (artifact?.observations ?? []) as Array<Record<string, unknown>>
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_WORKSPACE_RUN_VALIDITY_V2, (_e, input: { caseId: string; runId: string }) => {
+    if (!input?.caseId || !input?.runId) throw new Error('参数非法')
+    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+    const { isWorkspaceRunStaleV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+    const aggregate = getCaseV2Aggregate(input.caseId)
+    return !aggregate || isWorkspaceRunStaleV2(aggregate, input.runId)
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.CORRECT_OBSERVATION_V2, (_e, input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) => {
     const { correctObservation } = require('./application-service') as typeof import('./application-service')
@@ -303,6 +339,22 @@ export function registerReviewIpc(): void {
     const { setEvidenceLink } = require('./application-service') as typeof import('./application-service')
     const command = input.command as unknown as { requestId: string; actor: import('@profer/shared').Actor; expectedRevision: number; payload: unknown }
     return setEvidenceLink(input.caseId, command as unknown as Parameters<typeof setEvidenceLink>[1])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RECORD_WORKSPACE_DISPOSITION_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+    const { recordWorkspaceDispositionV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+    return recordWorkspaceDispositionV2(input.caseId, input.command as unknown as Parameters<typeof recordWorkspaceDispositionV2>[1])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.OPEN_WORKSPACE_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+    const { openWorkspaceSupplementV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+    return openWorkspaceSupplementV2(input.caseId, input.command as unknown as Parameters<typeof openWorkspaceSupplementV2>[1])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.ACKNOWLEDGE_WORKSPACE_MATERIAL_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+    const { acknowledgeWorkspaceMaterialV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+    return acknowledgeWorkspaceMaterialV2(input.caseId, input.command as unknown as Parameters<typeof acknowledgeWorkspaceMaterialV2>[1])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.DECIDE_WORKSPACE_CASE_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+    const { decideWorkspaceCaseV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+    return decideWorkspaceCaseV2(input.caseId, input.command as unknown as Parameters<typeof decideWorkspaceCaseV2>[1])
   })
 
   // ===== N3b：业务闭环命令（薄委托 stage-workflow） =====
@@ -467,14 +519,18 @@ export function registerReviewIpc(): void {
   /** 生成规则大纲（左栏；无出口时降级返回 fixture 大纲） */
   ipcMain.handle(
     REVIEW_IPC_CHANNELS.GENERATE_RULE_OUTLINE,
-    (_event, request: GenerateRuleOutlineRequest): Promise<RuleOutlineItem[]> => {
-      return generateRuleOutline(request)
+    async (_event, request: GenerateRuleOutlineRequest): Promise<RuleOutlineItem[]> => {
+      const outline = await generateRuleOutline(request)
+      await syncWorkspaceProjectionV2(request.caseId)
+      return outline
     },
   )
 
   /** 识别可审核条目（中栏；无出口时降级返回已有条目） */
-  ipcMain.handle(REVIEW_IPC_CHANNELS.EXTRACT_ITEMS, (_event, caseId: string): Promise<ReviewItem[]> => {
-    return extractItems(caseId)
+  ipcMain.handle(REVIEW_IPC_CHANNELS.EXTRACT_ITEMS, async (_event, caseId: string): Promise<ReviewItem[]> => {
+    const items = await extractItems(caseId)
+    await syncWorkspaceProjectionV2(caseId)
+    return items
   })
 
   // ===== 审核运行（右栏）=====

@@ -13,8 +13,9 @@
 
 import * as React from 'react'
 import { useAtomValue } from 'jotai'
-import { Award, Layers } from 'lucide-react'
+import { Award, Layers, Link2, Unlink2 } from 'lucide-react'
 import type {
+  CaseAggregateV2,
   EvidenceDocument,
   EvidenceParseStatus,
   FindingSeverity,
@@ -28,10 +29,14 @@ import {
   findBlockByAnchor,
   reviewRunAtom,
   reviewCaseAtom,
+  reviewWorkspaceAggregateAtom,
+  reviewWorkspaceExtractedObservationsAtom,
+  reviewWorkspaceRunStaleAtom,
 } from '@/atoms/review-atoms'
 import { cn } from '@/lib/utils'
 import type { ReviewActions } from './use-review-actions'
 import { SourceBlockView } from './SourceBlockView'
+import { useReviewWorkspaceActions } from './use-review-workspace-actions'
 
 /** 证明识别状态 → 徽标样式/文案 */
 const EVIDENCE_STATUS: Record<EvidenceParseStatus, { label: string; className: string }> = {
@@ -50,6 +55,10 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
   const documentsByRole = useAtomValue(documentsByRoleAtom)
   const run = useAtomValue(reviewRunAtom)
   const reviewCase = useAtomValue(reviewCaseAtom)
+  const aggregate = useAtomValue(reviewWorkspaceAggregateAtom)
+  const extractedObservations = useAtomValue(reviewWorkspaceExtractedObservationsAtom)
+  const workspaceRunStale = useAtomValue(reviewWorkspaceRunStaleAtom)
+  const workspaceActions = useReviewWorkspaceActions()
 
   const renderedBlockIds = new Set(items.map((item) => item.anchor.blockId))
 
@@ -165,6 +174,33 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                       <SourceBlockView document={itemBlock.document} block={itemBlock.block} dense />
                     </div>
                   )}
+                  {aggregate && (
+                    <div className="mt-2 space-y-1.5 border-t border-border/50 pt-2">
+                      {[...aggregate.observations.filter((observation) => observation.subjectId === item.id).map((observation) => observation as unknown as Record<string, unknown>), ...extractedObservations.filter((observation) => observation.subjectId === item.id)]
+                        .reduce<Array<Record<string, unknown>>>((list, observation) => {
+                          const fieldKey = String(observation.fieldKey ?? '')
+                          const existingIndex = list.findIndex((candidate) => candidate.fieldKey === fieldKey)
+                          if (existingIndex >= 0 && observation.extractedBy !== 'user') return list
+                          if (existingIndex >= 0) list[existingIndex] = observation
+                          else list.push(observation)
+                          return list
+                        }, [])
+                        .map((observation, index) => (
+                          <WorkspaceObservationCard
+                            key={`${String(observation.fieldKey)}-${String(observation.createdAt ?? index)}`}
+                            observation={observation}
+                            aggregate={aggregate}
+                            onConfirm={(value, reason) => workspaceActions.confirmObservation(observation, value, reason)}
+                          />
+                        ))}
+                      <ManualFactEntry
+                        subjectId={item.id}
+                        subjectTitle={item.title}
+                        aggregate={aggregate}
+                        onSave={(fieldKey, value, sourceVersionId, reason) => workspaceActions.confirmObservation({ subjectId: item.id, fieldKey, value, sourceRefs: sourceVersionId ? [{ documentVersionId: sourceVersionId }] : [] }, value, reason)}
+                      />
+                    </div>
+                  )}
                 </div>
               )
             })}
@@ -207,6 +243,13 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                   fileName={document?.fileName ?? evidence.documentId}
                   linkedItemTitles={linkedItemTitles}
                 />
+                {aggregate && document && (
+                  <EvidenceLinkControls
+                    aggregate={aggregate}
+                    documentVersionId={`${document.id}-v1`}
+                    actions={workspaceActions}
+                  />
+                )}
                 {document && (
                   <div className="mt-1 rounded-lg bg-muted/40 p-2">
                     {document.blocks.map((block) => (
@@ -220,6 +263,164 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
           })}
         </div>
       </section>
+      {workspaceRunStale && (
+        <p className="mx-3 mb-3 rounded-lg border border-amber-500/40 bg-amber-500/[0.06] px-3 py-2 text-xs text-amber-700 dark:text-amber-300">
+          人工事实或证明关联已修改，当前审核结果已过期；请重新审核后再形成决定。
+        </p>
+      )}
+    </div>
+  )
+}
+
+function displayValue(raw: unknown): string {
+  if (raw && typeof raw === 'object' && 'value' in raw) return String((raw as { value: unknown }).value ?? '')
+  return raw == null ? '' : String(raw)
+}
+
+function ManualFactEntry({
+  subjectId,
+  subjectTitle,
+  aggregate,
+  onSave,
+}: {
+  subjectId: string
+  subjectTitle: string
+  aggregate: CaseAggregateV2
+  onSave(fieldKey: string, value: string, sourceVersionId: string, reason: string): Promise<void>
+}): React.ReactElement {
+  const [open, setOpen] = React.useState(false)
+  const [fieldKey, setFieldKey] = React.useState('')
+  const [value, setValue] = React.useState('')
+  const [sourceVersionId, setSourceVersionId] = React.useState(aggregate.caseV2.documents.find((doc) => doc.role === 'evidence')?.versionId ?? '')
+  const [reason, setReason] = React.useState('')
+  const [busy, setBusy] = React.useState(false)
+  const save = async (): Promise<void> => {
+    if (!fieldKey.trim() || !value.trim() || !reason.trim()) return
+    setBusy(true)
+    try {
+      await onSave(fieldKey.trim(), value.trim(), sourceVersionId, reason.trim())
+      setOpen(false); setFieldKey(''); setValue(''); setReason('')
+    } catch (error) {
+      console.error(`[审核工作台] 手工录入 ${subjectTitle} 事实失败`, error)
+    } finally { setBusy(false) }
+  }
+  return (
+    <div className="pt-1">
+      {!open ? <button onClick={() => setOpen(true)} className="rounded border px-2 py-1 text-[11px] hover:bg-background">手工录入事实</button> : (
+        <div className="space-y-1.5 rounded-lg border bg-background p-2">
+          <p className="text-[11px] font-medium">为“{subjectTitle}”添加人工核实事实</p>
+          <input value={fieldKey} onChange={(event) => setFieldKey(event.target.value)} className="h-7 w-full rounded border px-2" placeholder="事实字段，如 awardLevel" aria-label="事实字段" />
+          <input value={value} onChange={(event) => setValue(event.target.value)} className="h-7 w-full rounded border px-2" placeholder="事实值" aria-label="事实值" />
+          <select value={sourceVersionId} onChange={(event) => setSourceVersionId(event.target.value)} className="h-7 w-full rounded border bg-background px-2" aria-label="事实来源材料">
+            <option value="">不关联材料来源</option>
+            {aggregate.caseV2.documents.map((doc) => <option key={doc.versionId} value={doc.versionId}>{doc.fileName}</option>)}
+          </select>
+          <input value={reason} onChange={(event) => setReason(event.target.value)} className="h-7 w-full rounded border px-2" placeholder="核实理由（必填）" aria-label="核实理由" />
+          <div className="flex gap-1.5">
+            <button disabled={busy || !fieldKey.trim() || !value.trim() || !reason.trim()} onClick={() => void save()} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存事实</button>
+            <button disabled={busy} onClick={() => setOpen(false)} className="rounded border px-2 py-1">取消</button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function WorkspaceObservationCard({
+  observation,
+  aggregate,
+  onConfirm,
+}: {
+  observation: Record<string, unknown>
+  aggregate: CaseAggregateV2
+  onConfirm(value: unknown, reason: string): Promise<void>
+}): React.ReactElement {
+  const [editing, setEditing] = React.useState(false)
+  const [value, setValue] = React.useState(displayValue(observation.value))
+  const [reason, setReason] = React.useState('')
+  const [busy, setBusy] = React.useState(false)
+  const subjectId = String(observation.subjectId ?? '')
+  const fieldKey = String(observation.fieldKey ?? '事实')
+  const refs = Array.isArray(observation.sourceRefs) ? observation.sourceRefs : []
+  const sourceNames = refs.flatMap((raw) => {
+    if (!raw || typeof raw !== 'object' || !('documentVersionId' in raw)) return []
+    const doc = aggregate.caseV2.documents.find((item) => item.versionId === String((raw as { documentVersionId: unknown }).documentVersionId))
+    return doc ? [doc.fileName] : []
+  })
+  const confirmed = observation.confirmed === true || observation.extractedBy === 'user'
+  const run = async (nextValue: unknown, nextReason: string): Promise<void> => {
+    setBusy(true)
+    try {
+      await onConfirm(nextValue, nextReason)
+      setEditing(false)
+      setReason('')
+    } catch (error) {
+      console.error('[审核工作台] 保存事实失败', error)
+    } finally {
+      setBusy(false)
+    }
+  }
+  return (
+    <div className="rounded-lg bg-muted/35 px-2.5 py-2 text-xs">
+      <div className="flex items-center justify-between gap-2">
+        <span className="font-medium">材料事实 · {fieldKey}</span>
+        <span className={cn('rounded px-1.5 py-0.5 text-[10px]', confirmed ? 'bg-green-500/10 text-green-700 dark:text-green-400' : 'bg-amber-500/10 text-amber-700 dark:text-amber-400')}>
+          {confirmed ? '人工确认' : `待确认${typeof observation.confidence === 'number' ? ` · ${Math.round(observation.confidence * 100)}%` : ''}`}
+        </span>
+      </div>
+      {!editing ? <p className="mt-1 text-foreground">{displayValue(observation.value) || '未识别'}</p> : (
+        <div className="mt-1.5 space-y-1.5">
+          <input className="h-7 w-full rounded border bg-background px-2" value={value} onChange={(event) => setValue(event.target.value)} aria-label={`${fieldKey} 更正值`} />
+          <input className="h-7 w-full rounded border bg-background px-2" value={reason} onChange={(event) => setReason(event.target.value)} placeholder="更正理由（必填）" aria-label="更正理由" />
+          <div className="flex gap-1.5">
+            <button disabled={busy || !reason.trim()} onClick={() => void run(value, reason)} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存更正</button>
+            <button disabled={busy} onClick={() => setEditing(false)} className="rounded border px-2 py-1">取消</button>
+          </div>
+        </div>
+      )}
+      {sourceNames.length > 0 && <p className="mt-1 text-muted-foreground">来源：{[...new Set(sourceNames)].join('、')}</p>}
+      {!confirmed && !editing && (
+        <div className="mt-1.5 flex gap-1.5">
+          <button disabled={busy} onClick={() => void run(observation.value, '审核员核对原始材料后确认该事实')} className="rounded border px-2 py-1 text-[11px] hover:bg-background disabled:opacity-50">确认无误</button>
+          <button disabled={busy} onClick={() => { setValue(displayValue(observation.value)); setEditing(true) }} className="rounded border px-2 py-1 text-[11px] hover:bg-background disabled:opacity-50">更正</button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function EvidenceLinkControls({
+  aggregate,
+  documentVersionId,
+  actions,
+}: {
+  aggregate: CaseAggregateV2
+  documentVersionId: string
+  actions: ReturnType<typeof useReviewWorkspaceActions>
+}): React.ReactElement {
+  const [subjectId, setSubjectId] = React.useState(aggregate.caseV2.subjects[0]?.id ?? '')
+  const [busy, setBusy] = React.useState(false)
+  const links = aggregate.evidenceLinks.filter((link) => link.documentVersionId === documentVersionId)
+  const doc = aggregate.caseV2.documents.find((item) => item.versionId === documentVersionId)
+  const titles = new Map(aggregate.caseV2.subjects.map((subject) => [subject.id, subject.title]))
+  const update = async (input: Parameters<typeof actions.transitionEvidenceLink>[0]): Promise<void> => {
+    setBusy(true)
+    try { await actions.transitionEvidenceLink(input) } catch (error) { console.error('[审核工作台] 更新证明关联失败', error) } finally { setBusy(false) }
+  }
+  return (
+    <div className="mt-1 rounded-lg border border-border/50 bg-card px-2.5 py-2 text-xs">
+      {links.map((link) => (
+        <div key={link.id} className="flex items-center justify-between gap-2 py-1">
+          <span className="min-w-0 truncate">{titles.get(link.subjectId) ?? link.subjectId} · {link.supportsFact} <span className="text-muted-foreground">({link.status === 'candidate' ? '待确认' : link.status === 'confirmed' ? '已确认' : '已取消'})</span></span>
+          {link.status !== 'rejected' && <button disabled={busy} title={link.status === 'candidate' ? '确认关联' : '取消关联'} onClick={() => void update({ id: link.id, documentVersionId, subjectId: link.subjectId, supportsFact: link.supportsFact, status: link.status === 'candidate' ? 'confirmed' : 'rejected' })} className="shrink-0 rounded border p-1 hover:bg-muted disabled:opacity-50">{link.status === 'candidate' ? <Link2 size={13} /> : <Unlink2 size={13} />}</button>}
+        </div>
+      ))}
+      <div className="mt-1 flex gap-1.5">
+        <select value={subjectId} onChange={(event) => setSubjectId(event.target.value)} className="min-w-0 flex-1 rounded border bg-background px-1.5 py-1" aria-label="关联到申报事项">
+          {aggregate.caseV2.subjects.map((subject) => <option key={subject.id} value={subject.id}>{subject.title}</option>)}
+        </select>
+        <button disabled={busy || !subjectId || !doc} onClick={() => void update({ documentVersionId, subjectId, supportsFact: doc?.fileName ?? '人工关联证明', status: 'confirmed' })} className="inline-flex shrink-0 items-center gap-1 rounded border px-2 py-1 hover:bg-muted disabled:opacity-50"><Link2 size={12} />添加证明</button>
+      </div>
     </div>
   )
 }

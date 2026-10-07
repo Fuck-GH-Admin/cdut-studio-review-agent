@@ -77,6 +77,8 @@ export interface SourceRef {
   documentVersionId: string
   parseRevision: number
   location: SourceLocation
+  /** 原文摘录（若解析器只提供 file 级位置，仍保留模型引用的短文本）。 */
+  quote?: string
 }
 
 /** 文档版本（同名文件不同版本；原始文件不改写；解析状态与审核使用状态分开） */
@@ -268,6 +270,8 @@ export interface ReviewCaseV2 {
   caseFields: Record<string, FieldValue>
   subjects: ReviewSubject[]
   documents: DocumentVersion[]
+  /** 从当前工作台审核依据生成的可追溯规则快照（迁移期与模板政策并行）。 */
+  reviewRules?: RuleSpec[]
   stage: CaseStage
   /** 乐观并发：每次业务写入 +1（03 §7 expectedRevision） */
   revision: number
@@ -450,6 +454,8 @@ export interface SupplementRequest {
   status: 'open' | 'responded' | 'satisfied' | 'insufficient' | 'cancelled'
   responses: Array<{ id: string; documentVersionIds: string[]; note: string; at: string; actor: string }>
   createdAt: string
+  /** 本地审核员模拟补件时，用于只接收请求创建后新增的材料版本。 */
+  documentVersionIdsAtRequest?: string[]
   /** G04：退回来源（核验通过后按原阶段回流任务） */
   originTaskId?: string
   originStageId?: string
@@ -525,7 +531,7 @@ export interface SyncReceipt {
 // ===== 应用命令契约（M1：03 §7 应用命令与查询契约） =====
 
 /** 操作者来源（08 设计 §2.3：'agent' = 本机通用 Agent 代操作，由用户显式指派；不冒充校方授权） */
-export type ActorSource = 'local' | 'mock' | 'school' | 'agent'
+export type ActorSource = 'local' | 'mock' | 'school' | 'agent' | 'system'
 
 /** 命令执行主体（本地/模拟/校方认证/Agent 代操作四来源；本地手填身份不得冒充校方授权） */
 export interface Actor {

@@ -65,4 +65,12 @@ describe('V2 规则执行正确性门禁', () => {
     expect(checks.map((check) => check.ruleId)).toEqual(['manual-rule', 'manual-rule'])
     expect(checks.every((check) => check.status === 'awaiting-confirmation' && check.executedBy === 'manual')).toBe(true)
   })
+
+  test('人工确认事实优先于原申报字段，用于重跑后的规则计算', () => {
+    const checks = buildDeterministicRuleChecks(makeAggregate(), [rule({ id: 'reviewed-level', when: { field: 'level', op: 'eq', value: '省级' } })], [
+      { subjectId: 'subject-a', fieldKey: 'level', value: { kind: 'text', value: '省级' }, extractedBy: 'user', confirmed: true },
+    ])
+    expect(checks.find((check) => check.target.subjectIds[0] === 'subject-a')?.status).toBe('compliant')
+    expect(checks.find((check) => check.target.subjectIds[0] === 'subject-b')?.status).toBe('compliant')
+  })
 })

@@ -3630,6 +3630,8 @@ const reviewAPI = {
   deleteCase: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.DELETE_CASE, caseId) as Promise<void>,
   updateCaseSettings: (input: import('@profer/shared').UpdateCaseSettingsRequest) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_CASE_SETTINGS, input) as Promise<import('@profer/shared').ReviewCase>,
+  confirmRulePack: (input: { caseId: string; rulePackId: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CONFIRM_RULE_PACK, input) as Promise<import('@profer/shared').ReviewCase>,
   generateRuleOutline: (input: import('@profer/shared').GenerateRuleOutlineRequest) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GENERATE_RULE_OUTLINE, input) as Promise<import('@profer/shared').RuleOutlineItem[]>,
   extractItems: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.EXTRACT_ITEMS, caseId) as Promise<import('@profer/shared').ReviewItem[]>,
@@ -3645,7 +3647,7 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_RUN_V2, { caseId, runId }) as Promise<import('@profer/shared').ReviewRunV2 | undefined>,
   cancelRunV2: (runId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CANCEL_RUN_V2, runId) as Promise<boolean>,
   migrateCaseV2: (caseId: string) =>
-    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.MIGRATE_CASE_V2, caseId) as Promise<import('@profer/shared').ReviewCaseV2 | undefined>,
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.MIGRATE_CASE_V2, caseId) as Promise<{ migrated: boolean; note: string; caseV2?: import('@profer/shared').ReviewCaseV2 }>,
   seedFixtureV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SEED_FIXTURE_V2) as Promise<boolean>,
   createCaseV2: (input: { caseId: string; templateId: string; version: number; payload: unknown; actor: import('@profer/shared').Actor }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_CASE_V2, input) as Promise<import('@profer/shared').ReviewCaseV2 | undefined>,
@@ -3660,10 +3662,12 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSIGNMENT_REVOKE_V2, assignmentId) as Promise<boolean>,
   listAssignmentsV2: (sessionId?: string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSIGNMENT_LIST_V2, sessionId) as Promise<Array<Record<string, unknown>>>,
-  getCaseTimelineV2: (input: { caseId: string; filterOperator?: 'human' | 'agent' | 'mock' | 'school' | 'unknown' }) =>
+  getCaseTimelineV2: (input: { caseId: string; filterOperator?: 'human' | 'agent' | 'mock' | 'school' | 'system' | 'unknown' }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CASE_TIMELINE_V2, input) as Promise<Array<Record<string, unknown>>>,
   getRunObservationsV2: (caseId: string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_RUN_OBSERVATIONS_V2, caseId) as Promise<Array<Record<string, unknown>>>,
+  getWorkspaceRunValidityV2: (input: { caseId: string; runId: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_WORKSPACE_RUN_VALIDITY_V2, input) as Promise<boolean>,
   correctObservationV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CORRECT_OBSERVATION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   setEvidenceLinkV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
@@ -3674,6 +3678,14 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   respondSupplementV2: (input: { caseId: string; command: Record<string, unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESPOND_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  recordWorkspaceDispositionV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RECORD_WORKSPACE_DISPOSITION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  openWorkspaceSupplementV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.OPEN_WORKSPACE_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  acknowledgeWorkspaceMaterialV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ACKNOWLEDGE_WORKSPACE_MATERIAL_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  decideWorkspaceCaseV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.DECIDE_WORKSPACE_CASE_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   runBatchV2: (batchId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_BATCH_V2, batchId) as Promise<import('@profer/shared').BatchStateV2>,
   runReviewV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, caseId) as Promise<import('@profer/shared').ReviewRunV2>,
   castRatingV2: (input: { caseId: string; command: Record<string, unknown> }) =>

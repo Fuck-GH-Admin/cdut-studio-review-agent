@@ -309,7 +309,18 @@ export interface CaseAggregateV2 {
   caseV2: ReviewCaseV2
   observations: Observation[]
   evidenceLinks: EvidenceLink[]
-  dispositions: Array<{ findingKey: string; disposition: string; actor: string; reason: string; at: string }>
+  dispositions: Array<{
+    findingKey: string
+    disposition: string
+    actor: string
+    reason: string
+    at: string
+    /** 阶段 3：处置绑定到不可变运行输入；不同输入下旧处置自然变为历史记录。 */
+    runId?: string
+    inputHash?: string
+    actorSource?: import('./review-v2').ActorSource
+    role?: import('./review-v2').RoleId
+  }>
   tasks: WorkflowTask[]
   decisions: BusinessDecision[]
   supplements: SupplementRequest[]
@@ -319,8 +330,14 @@ export interface CaseAggregateV2 {
   ratings?: RatingEntryV2[]
 }
 
+/** 普通审核工作台到业务聚合的内部映射；当前迁移期统一使用同一 caseId。 */
+export interface ReviewWorkspaceCaseRef {
+  workspaceCaseId: string
+  aggregateV2Id: string
+}
+
 export type CommandErrorCode =
-  | 'VERSION_CONFLICT' | 'NOT_FOUND' | 'VALIDATION_FAILED' | 'REQUEST_ID_COLLISION' | 'INVALID_TRANSITION' | 'DEPENDENCY_UNRESOLVED'
+  | 'VERSION_CONFLICT' | 'NOT_FOUND' | 'VALIDATION_FAILED' | 'REQUEST_ID_COLLISION' | 'INVALID_TRANSITION' | 'DEPENDENCY_UNRESOLVED' | 'STALE_INPUT'
   | 'AGENT_DECISION_DISABLED'
 
 export type ReviewCommandResult<TEntity = unknown> =

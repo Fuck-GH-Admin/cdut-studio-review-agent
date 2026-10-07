@@ -21,6 +21,9 @@ import type {
   ReviewDocumentBlock,
   SourceDocument,
   FindingSeverity,
+  CaseAggregateV2,
+  ReviewRunV2,
+  ReviewWorkspaceCaseRef,
 } from '@profer/shared'
 
 // ===== 数据状态 =====
@@ -64,6 +67,33 @@ export const reviewTasksByCaseAtom = atom<Record<string, ReviewCaseTasks>>({})
 
 /** 当前选中案卷 ID（选择与异步任务 ID 分离：慢返回不把界面切回旧案） */
 export const selectedCaseIdAtom = atom<string | null>(null)
+
+/** V2 作为辅助审核业务事实来源；按 workspace caseId 映射并缓存。 */
+export const reviewWorkspaceAggregatesByCaseAtom = atom<Record<string, CaseAggregateV2 | null>>({})
+export const reviewWorkspaceAggregateAtom = atom((get) => {
+  const caseId = get(selectedCaseIdAtom)
+  return caseId ? get(reviewWorkspaceAggregatesByCaseAtom)[caseId] ?? null : null
+})
+export const reviewWorkspaceCaseRefAtom = atom((get): ReviewWorkspaceCaseRef | null => {
+  const caseId = get(selectedCaseIdAtom)
+  const aggregate = caseId ? get(reviewWorkspaceAggregatesByCaseAtom)[caseId] : null
+  return caseId && aggregate ? { workspaceCaseId: caseId, aggregateV2Id: aggregate.caseV2.id } : null
+})
+export const reviewWorkspaceRunsByCaseAtom = atom<Record<string, ReviewRunV2 | null>>({})
+export const reviewWorkspaceExtractedObservationsByCaseAtom = atom<Record<string, Array<Record<string, unknown>>>>({})
+export const reviewWorkspaceRunStaleByCaseAtom = atom<Record<string, boolean>>({})
+export const reviewWorkspaceRunAtom = atom((get) => {
+  const caseId = get(selectedCaseIdAtom)
+  return caseId ? get(reviewWorkspaceRunsByCaseAtom)[caseId] ?? null : null
+})
+export const reviewWorkspaceRunStaleAtom = atom((get) => {
+  const caseId = get(selectedCaseIdAtom)
+  return caseId ? get(reviewWorkspaceRunStaleByCaseAtom)[caseId] ?? false : false
+})
+export const reviewWorkspaceExtractedObservationsAtom = atom((get) => {
+  const caseId = get(selectedCaseIdAtom)
+  return caseId ? get(reviewWorkspaceExtractedObservationsByCaseAtom)[caseId] ?? [] : []
+})
 
 function emptyTasks(): ReviewCaseTasks {
   return { outline: false, items: false, running: false }

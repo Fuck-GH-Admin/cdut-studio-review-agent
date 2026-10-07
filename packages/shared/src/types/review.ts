@@ -451,6 +451,7 @@ export const REVIEW_IPC_CHANNELS = {
   DELETE_CASE: 'review:delete-case',
   /** 更新案卷设置（领域包 / 标题 / 类型 / 待审主体文档） */
   UPDATE_CASE_SETTINGS: 'review:update-case-settings',
+  CONFIRM_RULE_PACK: 'review:confirm-rule-pack',
   /** 生成规则大纲（左栏） */
   GENERATE_RULE_OUTLINE: 'review:generate-rule-outline',
   /** 识别可审核条目（中栏） */
@@ -488,6 +489,11 @@ export const REVIEW_IPC_CHANNELS = {
   RECORD_STAGE_DECISION_V2: 'review-v2:record-stage-decision',
   RESOLVE_SUPPLEMENT_V2: 'review-v2:resolve-supplement',
   RESPOND_SUPPLEMENT_V2: 'review-v2:respond-supplement',
+  RECORD_WORKSPACE_DISPOSITION_V2: 'review-v2:record-workspace-disposition',
+  OPEN_WORKSPACE_SUPPLEMENT_V2: 'review-v2:open-workspace-supplement',
+  ACKNOWLEDGE_WORKSPACE_MATERIAL_V2: 'review-v2:acknowledge-workspace-material',
+  DECIDE_WORKSPACE_CASE_V2: 'review-v2:decide-workspace-case',
+  GET_WORKSPACE_RUN_VALIDITY_V2: 'review-v2:get-workspace-run-validity',
   CAST_RATING_V2: 'review-v2:cast-rating',
   RUN_BATCH_V2: 'review-v2:run-batch',
   SUBMIT_APPEAL_V2: 'review-v2:submit-appeal',

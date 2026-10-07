@@ -46,7 +46,7 @@ async function assembleReviewClient(): Promise<{ client: import('./pi-review-exe
 }
 
 /** 同步执行一次真实审核（原 RUN_REVIEW_V2 handler 逻辑；调用方自行处理长等待） */
-export async function assembleAndRunReview(caseId: string, options: { signal?: AbortSignal } = {}): Promise<ReviewRunV2> {
+export async function assembleAndRunReview(caseId: string, options: { signal?: AbortSignal; initiatedBy?: Actor } = {}): Promise<ReviewRunV2> {
   const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
   const { getTemplate } = require('./template-store') as typeof import('./template-store')
   const { assembleV2Executors } = require('./v2-executor-factory') as typeof import('./v2-executor-factory')
@@ -58,6 +58,7 @@ export async function assembleAndRunReview(caseId: string, options: { signal?: A
   const { client, ocrPort } = await assembleReviewClient()
   const executors = await assembleV2Executors(aggregate, template, { client, ocrPort, signal: options.signal })
   return runReviewCaseV2(aggregate.caseV2, template, executors, {
+    initiatedBy: options.initiatedBy ?? { actorId: 'local-user', actorSource: 'local', role: 'reviewer' },
     cancelled: options.signal ? () => options.signal!.aborted : undefined,
     observationSnapshot: aggregate.observations as unknown as Array<Record<string, unknown>>,
     evidenceSnapshot: aggregate.evidenceLinks as unknown as Array<Record<string, unknown>>,

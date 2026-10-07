@@ -53,6 +53,7 @@ function blockHash(texts: string[]): string {
 
 /** V1 源文档 → V2 文档版本（versionId 稳定：docId-v1） */
 export function documentToVersion(doc: ReviewCase['documents'][number]): DocumentVersion {
+  const legacyAssetPath = (doc as { imageAssetPath?: string }).imageAssetPath
   return {
     documentId: doc.id,
     versionId: `${doc.id}-v1`,
@@ -61,10 +62,16 @@ export function documentToVersion(doc: ReviewCase['documents'][number]): Documen
     fileName: doc.fileName,
     mimeType: doc.mimeType,
     sizeBytes: doc.sizeBytes,
-    assetPath: (doc as { imageAssetPath?: string }).imageAssetPath ?? '',
+    // 上传文件统一存放在 source-docs/{docId}-{fileName}；迁移时保留原件相对路径。
+    assetPath: legacyAssetPath || (doc.origin === 'upload' ? `source-docs/${doc.id}-${doc.fileName}` : ''),
     parseRevision: 1,
     parseStatus: doc.parseStatus === 'parsed' ? 'parsed' : doc.parseStatus === 'partial' ? 'partial' : doc.parseStatus === 'failed' ? 'failed' : 'pending',
-    blocks: doc.blocks.map((block) => ({ blockId: block.id, text: block.text ?? '', kind: block.kind === 'image' ? 'image' : 'text' })),
+    blocks: doc.blocks.map((block, index) => ({
+      blockId: block.id,
+      text: block.text ?? '',
+      location: { kind: 'paragraph' as const, index },
+      kind: block.kind === 'image' ? 'image' : block.kind === 'table-cell' ? 'table' : 'text',
+    })),
     usage: doc.parseStatus === 'parsed' && doc.blocks.length > 0 ? 'read' : 'unread',
     unusedReason: doc.parseStatus === 'failed' ? 'V1 解析失败' : doc.blocks.length === 0 ? 'V1 未提取到文本' : undefined,
   }
@@ -77,7 +84,7 @@ export function itemToSubject(item: ReviewCase['items'][number]): ReviewSubject 
     type: 'item',
     title: item.title,
     fields: itemToSubjectFields(item),
-    sourceRefs: [{ caseId: '', documentVersionId: item.anchor.documentId, parseRevision: 1, location: { kind: 'file' } }],
+    sourceRefs: [{ caseId: '', documentVersionId: `${item.anchor.documentId}-v1`, parseRevision: 1, location: { kind: 'file' } }],
     correction: item.identifiedBy === 'ai' ? 'ai-extracted' : 'user-confirmed',
     status: item.status === 'ignored' ? 'ignored' : 'identified',
   }

@@ -29,6 +29,8 @@ import type {
   ReviewItem,
   ReviewModelGatewayStatus,
   ReviewRun,
+  ReviewRunV2,
+  CaseAggregateV2,
   RuleOutlineItem,
   SourceDocument,
 } from '@profer/shared'
@@ -40,6 +42,10 @@ import {
   reviewCaseListAtom,
   reviewErrorAtom,
   reviewExecutionByCaseAtom,
+  reviewWorkspaceAggregatesByCaseAtom,
+  reviewWorkspaceExtractedObservationsByCaseAtom,
+  reviewWorkspaceRunStaleByCaseAtom,
+  reviewWorkspaceRunsByCaseAtom,
   reviewFocusAtom,
   reviewGatewayStatusAtom,
   reviewRunsByCaseAtom,
@@ -50,6 +56,7 @@ import {
 } from '@/atoms/review-atoms'
 import type { ReviewCaseTasks } from '@/atoms/review-atoms'
 import type { ReviewExecutionViewState, ReviewFocus } from '@/atoms/review-atoms'
+import { buildReviewWorkspaceViewModel } from './review-workspace-view-model'
 
 /** focus/locate 联动 nonce（每次点击 +1 驱动 useEffect 重放） */
 let focusNonce = 0
@@ -69,6 +76,7 @@ export interface ReviewActionsApi {
   importDocument(input: { caseId: string; fileName: string; role: SourceDocument['role'] }): Promise<SourceDocument>
   deleteCase(caseId: string): Promise<void>
   updateCaseSettings(input: { caseId: string; domainPackId: ReviewDomainPackId }): Promise<ReviewCase>
+  confirmRulePack?(input: { caseId: string; rulePackId: string }): Promise<ReviewCase>
   generateRuleOutline(request: { caseId: string; rulePackId?: string }): Promise<RuleOutlineItem[]>
   extractItems(caseId: string): Promise<ReviewItem[]>
   runReview(caseId: string): Promise<ReviewRun>
@@ -80,6 +88,14 @@ export interface ReviewActionsApi {
     history: ReviewAssistantMessage[]
     focusFindingId?: string
   }): Promise<{ content: string; references?: ReviewAssistantMessage['references']; degraded?: boolean }>
+  /** 自动恢复/同步同 ID 的 V2 业务聚合；旧测试适配器可省略。 */
+  migrateCaseV2?(caseId: string): Promise<unknown>
+  getAggregateV2?(caseId: string): Promise<CaseAggregateV2 | undefined>
+  listRunsV2?(caseId: string): Promise<ReviewRunV2[]>
+  getRunObservationsV2?(caseId: string): Promise<Array<Record<string, unknown>>>
+  getWorkspaceRunValidityV2?(input: { caseId: string; runId: string }): Promise<boolean>
+  runReviewV2?(caseId: string): Promise<ReviewRunV2>
+  submitCaseV2?(caseId: string): Promise<{ ok: boolean; aggregate?: CaseAggregateV2; message?: string } | undefined>
 }
 
 /** 新建案卷入参 */
@@ -102,6 +118,35 @@ function buildFocus(finding: ReviewFinding): ReviewFocus {
     severity: finding.severity,
     nonce: focusNonce,
   }
+}
+
+/** 运行有任何关键覆盖缺口时只能显示为部分完成，不能形成“全部符合”。 */
+function hasIncompleteReviewCoverage(run: ReviewRun): boolean {
+  const coverage = run.coverage
+  return (coverage.unprocessedMaterials?.length ?? 0) > 0
+    || coverage.manualReviewItemIds.length > 0
+    || coverage.unrecognizedDocumentIds.length > 0
+    || coverage.ruleUncoveredItemIds.length > 0
+}
+
+function executionStateFromRun(run: ReviewRun | null, inputStale: boolean): ReviewExecutionViewState {
+  if (!run) return { status: 'idle' }
+  if (run.status === 'failed') {
+    return { status: 'failed', stage: 'summary', message: '最近一次审核未完成', error: run.error ?? '审核运行失败' }
+  }
+  if (inputStale || hasIncompleteReviewCoverage(run)) {
+    return { status: 'partial', stage: 'summary', message: inputStale ? '案卷输入已变化，需重新审核' : '审核部分完成，仍有待人工处理项' }
+  }
+  return { status: 'completed', stage: 'summary', message: '最近一次审核已完成' }
+}
+
+function executionStateFromWorkspace(aggregate: CaseAggregateV2 | null, run: ReviewRunV2 | null, inputStale: boolean, observations: Array<Record<string, unknown>>): ReviewExecutionViewState | null {
+  if (!run || !aggregate) return null
+  if (run.status === 'failed') return { status: 'failed', stage: 'summary', message: '最近一次 V2 审核未完成', error: run.error ?? '审核运行失败' }
+  if (run.status === 'awaiting-input') return { status: 'awaiting-input', stage: 'summary', message: '审核等待补充输入' }
+  const view = buildReviewWorkspaceViewModel(aggregate, run, inputStale, observations)
+  if (view.status === 'decided' || view.canDecide) return { status: 'completed', stage: 'summary', message: view.status === 'decided' ? '案卷已完成人工决定' : '审核完成，等待人工决定' }
+  return { status: 'partial', stage: 'summary', message: `审核仍有 ${view.pendingActions.length} 项待处理动作` }
 }
 
 /** 导入角色的中文名（同时作为 IMPORT_DOCUMENT 的 fileName 兜底值） */
@@ -151,6 +196,40 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
     }
   }
 
+  /** 当前 workspace caseId 与 V2 aggregateId 一致；选择/写入后从持久层重读。 */
+  const refreshWorkspaceV2 = async (caseId: string): Promise<void> => {
+    if (api.migrateCaseV2) await api.migrateCaseV2(caseId)
+    if (api.getAggregateV2) {
+      const aggregate = await api.getAggregateV2(caseId)
+      store.set(reviewWorkspaceAggregatesByCaseAtom, { ...store.get(reviewWorkspaceAggregatesByCaseAtom), [caseId]: aggregate ?? null })
+    }
+    if (api.listRunsV2) {
+      const runs = await api.listRunsV2(caseId)
+      const latest = runs[0] ?? null
+      store.set(reviewWorkspaceRunsByCaseAtom, { ...store.get(reviewWorkspaceRunsByCaseAtom), [caseId]: latest })
+      if (latest && api.getWorkspaceRunValidityV2) {
+        const stale = await api.getWorkspaceRunValidityV2({ caseId, runId: latest.id })
+        store.set(reviewWorkspaceRunStaleByCaseAtom, { ...store.get(reviewWorkspaceRunStaleByCaseAtom), [caseId]: stale })
+      } else if (!latest) {
+        store.set(reviewWorkspaceRunStaleByCaseAtom, { ...store.get(reviewWorkspaceRunStaleByCaseAtom), [caseId]: false })
+      }
+    }
+    if (api.getRunObservationsV2) {
+      const observations = await api.getRunObservationsV2(caseId)
+      store.set(reviewWorkspaceExtractedObservationsByCaseAtom, { ...store.get(reviewWorkspaceExtractedObservationsByCaseAtom), [caseId]: observations })
+    }
+    const tasks = store.get(reviewTasksByCaseAtom)[caseId]
+    if (!tasks?.running && !tasks?.outline && !tasks?.items) {
+      const state = executionStateFromWorkspace(
+        store.get(reviewWorkspaceAggregatesByCaseAtom)[caseId] ?? null,
+        store.get(reviewWorkspaceRunsByCaseAtom)[caseId] ?? null,
+        store.get(reviewWorkspaceRunStaleByCaseAtom)[caseId] ?? false,
+        store.get(reviewWorkspaceExtractedObservationsByCaseAtom)[caseId] ?? [],
+      )
+      if (state) store.set(reviewExecutionByCaseAtom, { ...store.get(reviewExecutionByCaseAtom), [caseId]: state })
+    }
+  }
+
   /** 选中案卷（带选择代次）：慢返回若期间已选其他案卷则整体丢弃 */
   const selectCaseInternal = async (caseId: string): Promise<boolean> => {
     const generation = ++selectionGeneration
@@ -162,6 +241,12 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
           await refreshCaseList()
         }
         return false
+      }
+      if (generation !== selectionGeneration) return false
+      try {
+        await refreshWorkspaceV2(caseId)
+      } catch (error) {
+        reportError('恢复单案业务记录失败', error)
       }
       if (generation !== selectionGeneration) return false
       // 只更新缓存与选中态：焦点/定位/选中卡等界面态清除，但按案任务守卫保留（切回可见"运行中"）
@@ -176,6 +261,14 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
         if (generation === selectionGeneration) {
           store.set(reviewRunsByCaseAtom, { ...store.get(reviewRunsByCaseAtom), [caseId]: latest.run })
           store.set(reviewRunStaleByCaseAtom, { ...store.get(reviewRunStaleByCaseAtom), [caseId]: latest.inputStale })
+          store.set(reviewExecutionByCaseAtom, { ...store.get(reviewExecutionByCaseAtom), [caseId]: executionStateFromRun(latest.run, latest.inputStale) })
+          const workspaceState = executionStateFromWorkspace(
+            store.get(reviewWorkspaceAggregatesByCaseAtom)[caseId] ?? null,
+            store.get(reviewWorkspaceRunsByCaseAtom)[caseId] ?? null,
+            store.get(reviewWorkspaceRunStaleByCaseAtom)[caseId] ?? false,
+            store.get(reviewWorkspaceExtractedObservationsByCaseAtom)[caseId] ?? [],
+          )
+          if (workspaceState) store.set(reviewExecutionByCaseAtom, { ...store.get(reviewExecutionByCaseAtom), [caseId]: workspaceState })
         }
       } catch (restoreError) {
         console.error('[审核专区] 恢复最近运行失败', restoreError)
@@ -264,10 +357,28 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
         if (generation !== selectionGeneration) return null
         store.set(reviewCasesByIdAtom, { ...store.get(reviewCasesByIdAtom), [reviewCase.id]: reviewCase })
         store.set(selectedCaseIdAtom, reviewCase.id)
+        await refreshWorkspaceV2(reviewCase.id).catch((error) => reportError('恢复演示案卷业务记录失败', error))
         store.set(selectedFindingIdAtom, null)
         store.set(reviewFocusAtom, null)
         store.set(reviewRuleLocateAtom, null)
         await refreshCaseList()
+        try {
+          const latest = await api.getLatestRun(reviewCase.id)
+          if (generation === selectionGeneration) {
+            store.set(reviewRunsByCaseAtom, { ...store.get(reviewRunsByCaseAtom), [reviewCase.id]: latest.run })
+            store.set(reviewRunStaleByCaseAtom, { ...store.get(reviewRunStaleByCaseAtom), [reviewCase.id]: latest.inputStale })
+            store.set(reviewExecutionByCaseAtom, { ...store.get(reviewExecutionByCaseAtom), [reviewCase.id]: executionStateFromRun(latest.run, latest.inputStale) })
+            const workspaceState = executionStateFromWorkspace(
+              store.get(reviewWorkspaceAggregatesByCaseAtom)[reviewCase.id] ?? null,
+              store.get(reviewWorkspaceRunsByCaseAtom)[reviewCase.id] ?? null,
+              store.get(reviewWorkspaceRunStaleByCaseAtom)[reviewCase.id] ?? false,
+              store.get(reviewWorkspaceExtractedObservationsByCaseAtom)[reviewCase.id] ?? [],
+            )
+            if (workspaceState) store.set(reviewExecutionByCaseAtom, { ...store.get(reviewExecutionByCaseAtom), [reviewCase.id]: workspaceState })
+          }
+        } catch (restoreError) {
+          console.error('[审核专区] 恢复演示案卷运行失败', restoreError)
+        }
         setError(null)
         return reviewCase
       } catch (error) {
@@ -291,6 +402,7 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
           academicYear: input.academicYear,
           ...(input.domainPackId ? { domainPackId: input.domainPackId } : {}),
         })
+        await refreshWorkspaceV2(created.id).catch((error) => reportError('初始化单案业务记录失败', error))
         await refreshCaseList()
         if (generation !== selectionGeneration) return created
         store.set(reviewCasesByIdAtom, { ...store.get(reviewCasesByIdAtom), [created.id]: created })
@@ -318,6 +430,7 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
           if (refreshed) {
             store.set(reviewCasesByIdAtom, { ...store.get(reviewCasesByIdAtom), [caseId]: refreshed })
           }
+          await refreshWorkspaceV2(caseId)
         } catch (refreshError) {
           console.error('[审核专区] 导入后刷新案卷失败', refreshError)
         }
@@ -376,12 +489,32 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
         // 按案回写：响应期间切走也只更新原案卷缓存（H05 领域切换不串案）
         const updated = await api.updateCaseSettings({ caseId, domainPackId: packId })
         store.set(reviewCasesByIdAtom, { ...store.get(reviewCasesByIdAtom), [updated.id]: updated })
+        await refreshWorkspaceV2(caseId)
         await refreshRunValidity(caseId)
         await refreshCaseList()
         setError(null)
         return true
       } catch (error) {
         reportError('切换领域包失败', error, { caseId })
+        return false
+      }
+    },
+
+    async confirmRulePack(rulePackId: string): Promise<boolean> {
+      const caseId = currentCaseId()
+      if (!caseId || !api.confirmRulePack) {
+        setError('确认审核依据失败：当前客户端不支持该操作')
+        return false
+      }
+      try {
+        const updated = await api.confirmRulePack({ caseId, rulePackId })
+        store.set(reviewCasesByIdAtom, { ...store.get(reviewCasesByIdAtom), [caseId]: updated })
+        await refreshWorkspaceV2(caseId)
+        await refreshRunValidity(caseId)
+        setError(null, { caseId })
+        return true
+      } catch (error) {
+        reportError('确认审核依据失败', error, { caseId })
         return false
       }
     },
@@ -423,12 +556,14 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
               },
             })
           }
+          await refreshWorkspaceV2(caseId)
         }
         setError(null, { caseId })
       } catch (error) {
         if (isCurrentOperation(caseId, 'outline', generation)) {
           reportError('生成规则大纲失败', error, { caseId })
         }
+        throw error
       } finally {
         await refreshRunValidity(caseId)
         endTask(caseId, 'outline')
@@ -458,12 +593,14 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
         if (latest) {
           store.set(reviewCasesByIdAtom, { ...store.get(reviewCasesByIdAtom), [caseId]: { ...latest, items } })
         }
+        await refreshWorkspaceV2(caseId)
         await refreshRunValidity(caseId)
         setError(null, { caseId })
       } catch (error) {
         if (isCurrentOperation(caseId, 'items', generation)) {
           reportError('识别条目失败', error, { caseId })
         }
+        throw error
       } finally {
         endTask(caseId, 'items')
       }
@@ -510,6 +647,10 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
       const update = (state: ReviewExecutionViewState): void => setExecution(caseId, state)
       const current = (): ReviewCase => store.get(reviewCasesByIdAtom)[caseId] ?? selected
       try {
+        if (current().rulePacks.length === 0) {
+          update({ status: 'awaiting-input', stage: 'rules', message: '请先导入至少一份审核依据，再开始审核' })
+          return
+        }
         update({ status: 'preparing', stage: 'rules', message: '正在准备审核依据' })
         const hasOutlines = current().rulePacks.length > 0 && current().rulePacks.every((pack) => pack.outline.length > 0)
         if (!hasOutlines) {
@@ -518,6 +659,11 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
             update({ status: 'awaiting-input', stage: 'rules', message: '请补充或确认审核依据后继续' })
             return
           }
+        }
+        const unconfirmedPacks = current().rulePacks.filter((pack) => !pack.confirmed)
+        if (unconfirmedPacks.length > 0) {
+          update({ status: 'awaiting-input', stage: 'rules', message: `请先在左栏对照原文确认 ${unconfirmedPacks.length} 份审核依据` })
+          return
         }
         const applicationCount = current().documents.filter((document) => document.role === 'application').length
         if (applicationCount === 0) {
@@ -534,17 +680,42 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
           }
         }
         update({ status: 'running', stage: 'checks', message: '正在核对申报事项与证明', documents: { completed: current().documents.length, total: current().documents.length } })
-        const run = await api.runReview(caseId)
-        store.set(reviewRunsByCaseAtom, { ...store.get(reviewRunsByCaseAtom), [caseId]: run })
-        await refreshRunValidity(caseId)
-        if (run.status === 'failed') {
-          update({ status: 'failed', stage: 'checks', message: '审核未完成', error: run.error ?? '审核运行失败' })
-        } else if ((run.coverage.unprocessedMaterials?.length ?? 0) > 0) {
-          update({ status: 'partial', stage: 'summary', message: '审核部分完成，存在未处理材料', documents: { completed: current().documents.length - (run.coverage.unprocessedMaterials?.length ?? 0), total: current().documents.length } })
+        if (api.runReviewV2) {
+          await refreshWorkspaceV2(caseId)
+          let aggregate = store.get(reviewWorkspaceAggregatesByCaseAtom)[caseId]
+          if (!aggregate) throw new Error('单案业务记录尚未初始化')
+          if ((aggregate.caseV2.stage === 'draft' || (aggregate.caseV2.stage === 'submitted' && aggregate.tasks.length === 0)) && api.submitCaseV2) {
+            const submitted = await api.submitCaseV2(caseId)
+            if (!submitted?.ok) throw new Error(submitted?.message ?? '案卷提交失败，请检查申报表与证明材料')
+            aggregate = submitted.aggregate ?? aggregate
+            store.set(reviewWorkspaceAggregatesByCaseAtom, { ...store.get(reviewWorkspaceAggregatesByCaseAtom), [caseId]: aggregate })
+          }
+          const v2Run = await api.runReviewV2(caseId)
+          store.set(reviewWorkspaceRunsByCaseAtom, { ...store.get(reviewWorkspaceRunsByCaseAtom), [caseId]: v2Run })
+          await refreshWorkspaceV2(caseId)
+          const workspaceAggregate = store.get(reviewWorkspaceAggregatesByCaseAtom)[caseId] ?? aggregate
+          const workspaceObservations = store.get(reviewWorkspaceExtractedObservationsByCaseAtom)[caseId] ?? []
+          const v2Stale = store.get(reviewWorkspaceRunStaleByCaseAtom)[caseId] ?? false
+          const workspaceState = executionStateFromWorkspace(workspaceAggregate, v2Run, v2Stale, workspaceObservations)
+          update({
+            ...(workspaceState ?? { status: 'partial' as const, stage: 'summary' as const, message: '审核结果状态不可用' }),
+            documents: { completed: v2Run.coverage.documents.filter((document) => document.status === 'read').length, total: v2Run.coverage.documents.length },
+            checks: { completed: v2Run.coverage.completedChecks, total: v2Run.coverage.plannedChecks },
+          })
+          setError(v2Run.status === 'failed' ? `审核未完成：${v2Run.error ?? '审核运行失败'}` : null, { caseId })
         } else {
-          update({ status: 'completed', stage: 'summary', message: '审核完成', documents: { completed: current().documents.length, total: current().documents.length } })
+          const run = await api.runReview(caseId)
+          store.set(reviewRunsByCaseAtom, { ...store.get(reviewRunsByCaseAtom), [caseId]: run })
+          await refreshRunValidity(caseId)
+          if (run.status === 'failed') {
+            update({ status: 'failed', stage: 'checks', message: '审核未完成', error: run.error ?? '审核运行失败' })
+          } else if (hasIncompleteReviewCoverage(run) || store.get(reviewRunStaleByCaseAtom)[caseId]) {
+            update({ status: 'partial', stage: 'summary', message: '审核部分完成，仍有未处理材料、待人工复核或规则覆盖缺口', documents: { completed: current().documents.length - (run.coverage.unprocessedMaterials?.length ?? 0), total: current().documents.length } })
+          } else {
+            update({ status: 'completed', stage: 'summary', message: '审核完成', documents: { completed: current().documents.length, total: current().documents.length } })
+          }
+          setError(run.status === 'failed' ? `审核未完成：${run.error ?? '审核运行失败'}` : null, { caseId })
         }
-        setError(run.status === 'failed' ? `审核未完成：${run.error ?? '审核运行失败'}` : null, { caseId })
       } catch (error) {
         update({ status: 'failed', message: '审核未完成', error: error instanceof Error ? error.message : String(error) })
         reportError('一键审核失败', error, { caseId })

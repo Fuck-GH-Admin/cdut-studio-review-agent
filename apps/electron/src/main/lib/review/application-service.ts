@@ -10,7 +10,7 @@
  */
 
 import type { Actor, CommandReceipt, EvidenceLink, FieldValue, Observation, ReviewCaseV2, TemplateVersion } from '@profer/shared'
-import { buildEvidenceLinks, recordObservation } from './evidence-service'
+import { buildEvidenceLinks, recordObservation, transitionEvidenceLink } from './evidence-service'
 import { getTemplate } from './template-store'
 import { validatePolicyRef } from './policy-store'
 import { CommandValidationError, createAggregate, payloadHash, readAggregate, submitCommand } from './case-store-v2'
@@ -221,10 +221,24 @@ export interface SetEvidenceLinkPayload {
   subjectIds: string[]
   supportsFact: string
   linkedBy: 'ai' | 'user'
+  /** Existing link transition for the single-case reviewer workspace. */
+  evidenceLinkId?: string
+  status?: 'confirmed' | 'rejected'
 }
 
 export function setEvidenceLink(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: SetEvidenceLinkPayload }): Promise<ReviewCommandResult<EvidenceLink[]>> {
   return submitCommand<SetEvidenceLinkPayload, EvidenceLink[]>(caseId, { ...command, type: 'SetEvidenceLink' }, (aggregate, payload) => {
+    if (payload.evidenceLinkId) {
+      if (!payload.status) throw new CommandValidationError('VALIDATION_FAILED', '证明关联状态缺失')
+      if (!aggregate.evidenceLinks.some((link) => link.id === payload.evidenceLinkId)) throw new CommandValidationError('NOT_FOUND', '证明关联不存在')
+      return {
+        summary: `审核员${payload.status === 'confirmed' ? '确认' : '取消'}证明关联 ${payload.evidenceLinkId}`,
+        mutate: (draft) => {
+          draft.evidenceLinks = transitionEvidenceLink(draft.evidenceLinks, payload.evidenceLinkId!, payload.status!)
+          return draft.evidenceLinks
+        },
+      }
+    }
     if (!payload.supportsFact.trim()) throw new CommandValidationError('VALIDATION_FAILED', '绑定必须说明支持的事实')
     return {
       summary: `绑定证据 ${payload.documentVersionId} → ${payload.subjectIds.length} 个事项`,
@@ -242,4 +256,3 @@ export function setEvidenceLink(caseId: string, command: { requestId: string; ac
 export function getCaseV2Aggregate(caseId: string): CaseAggregateV2 | undefined {
   return readAggregate(caseId)
 }
-

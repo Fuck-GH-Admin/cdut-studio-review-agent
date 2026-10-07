@@ -7,7 +7,7 @@
 
 import { describe, expect, test } from 'bun:test'
 import { createStore } from 'jotai'
-import type { ReviewCase, ReviewItem, ReviewRun, RuleOutlineItem } from '@profer/shared'
+import type { CaseAggregateV2, ReviewCase, ReviewItem, ReviewRun, ReviewRunV2, RuleOutlineItem } from '@profer/shared'
 import {
   createReviewActionsController,
   type ReviewActionsApi,
@@ -20,6 +20,8 @@ import {
   reviewRunStaleByCaseAtom,
   reviewExecutionByCaseAtom,
   selectedCaseIdAtom,
+  reviewWorkspaceAggregatesByCaseAtom,
+  reviewWorkspaceRunsByCaseAtom,
 } from '@/atoms/review-atoms'
 
 /** 可手工 resolve/reject 的延迟任务（值类型由调用方 cast，测试内只做触发） */
@@ -298,6 +300,99 @@ describe('review-actions-controller（M0/H05 并发与按案写入）', () => {
     expect(calls.runReview).toBe(1)
     expect(store.get(reviewExecutionByCaseAtom)['one-click']?.status).toBe('completed')
     expect(store.get(reviewTasksByCaseAtom)['one-click']?.running).toBe(false)
+  })
+
+  test('阶段 3：一键审核提交同 ID V2 案卷并将主结果写入 V2 run', async () => {
+    const { api, calls } = makeApi()
+    const source = makeCase('v2-one-click', {
+      documents: [{ id: 'application-1', fileName: '申报.txt', role: 'application', mimeType: 'text/plain', sizeBytes: 1, parseStatus: 'parsed', blocks: [{ id: 'b1', kind: 'text', text: '竞赛申报' }], origin: 'upload' } as never],
+      rulePacks: [{ id: 'pack', documentId: 'rule-1', name: '规则', publisher: '', academicYear: '2026', version: 'v1', outline: [{ id: 'r1', category: '资格', title: '规则', summary: '', anchors: [], generatedBy: 'ai' }], confirmed: true }],
+      items: [{ id: 'item-1', title: '事项', declaredScore: 1, category: '其他', evidenceDocumentIds: [], status: 'identified', identifiedBy: 'ai', anchor: { documentId: 'application-1', precision: 'document' } } as never],
+    })
+    const caseV2: CaseAggregateV2['caseV2'] = { id: source.id, templateId: 't', templateVersion: 1, title: source.title, objectType: 'person', caseFields: {}, subjects: [], documents: [], stage: 'draft', revision: 0, createdAt: '', updatedAt: '' }
+    const aggregate: CaseAggregateV2 = { caseV2, observations: [], evidenceLinks: [], dispositions: [], tasks: [], decisions: [], supplements: [], appeals: [], receiptLog: [] }
+    const run: ReviewRunV2 = {
+      id: 'v2-run', caseId: source.id, templateId: 't', templateVersion: 1,
+      inputManifest: { hash: 'h', templateVersion: 1, policyVersions: [], documentVersions: [], observationIds: [], evidenceLinkIds: [] },
+      status: 'completed', checkpoints: [], checks: [{ checkId: 'c1', ruleId: 'r1', target: { scope: 'case', subjectIds: [] }, status: 'compliant', reason: '符合', sourceRefs: [], executedBy: 'deterministic', executedAt: '' }], opinions: [],
+      coverage: { documents: [], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 }, diagnostics: [], startedAt: '', completedAt: '',
+    }
+    api.getCase = async () => source
+    api.getAggregateV2 = async () => aggregate
+    api.listRunsV2 = async () => [run]
+    api.getRunObservationsV2 = async () => []
+    api.getWorkspaceRunValidityV2 = async () => false
+    api.submitCaseV2 = async () => ({ ok: true, aggregate: { ...aggregate, caseV2: { ...caseV2, stage: 'submitted' } } })
+    api.runReviewV2 = async () => run
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    await actions.selectCase(source.id)
+    expect(store.get(reviewWorkspaceRunsByCaseAtom)[source.id]?.id).toBe('v2-run')
+    expect(store.get(reviewExecutionByCaseAtom)[source.id]?.status).toBe('completed')
+    await actions.runFullReview()
+    expect(calls.runReview).toBe(0)
+    expect(store.get(reviewWorkspaceAggregatesByCaseAtom)[source.id]?.caseV2.id).toBe(source.id)
+    expect(store.get(reviewWorkspaceRunsByCaseAtom)[source.id]?.id).toBe('v2-run')
+    expect(store.get(reviewExecutionByCaseAtom)[source.id]?.status).toBe('completed')
+  })
+
+  test('阶段 2 P0：无审核依据时不启动运行', async () => {
+    const { api, calls } = makeApi()
+    api.getCase = async (caseId) => makeCase(caseId, {
+      rulePacks: [],
+      documents: [{ id: 'application-1', fileName: '申报.txt', role: 'application', mimeType: 'text/plain', sizeBytes: 1, parseStatus: 'parsed', blocks: [], origin: 'upload' } as never],
+    })
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    await actions.selectCase('no-rules')
+    await actions.runFullReview()
+    expect(calls.runReview).toBe(0)
+    expect(store.get(reviewExecutionByCaseAtom)['no-rules']?.status).toBe('awaiting-input')
+  })
+
+  test('阶段 2 P0：大纲生成失败显示失败，不伪装成缺少用户材料', async () => {
+    const { api, calls } = makeApi()
+    api.getCase = async (caseId) => makeCase(caseId, {
+      documents: [{ id: 'application-1', fileName: '申报.txt', role: 'application', mimeType: 'text/plain', sizeBytes: 1, parseStatus: 'parsed', blocks: [], origin: 'upload' } as never],
+    })
+    api.generateRuleOutline = async () => { throw new Error('模型出口超时') }
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    await actions.selectCase('outline-error')
+    await actions.runFullReview()
+    expect(calls.runReview).toBe(0)
+    expect(store.get(reviewExecutionByCaseAtom)['outline-error']?.status).toBe('failed')
+    expect(store.get(reviewExecutionByCaseAtom)['outline-error']?.error).toContain('模型出口超时')
+  })
+
+  test('阶段 2 P0：人工复核与覆盖缺口将完成运行标为部分完成', async () => {
+    const { api, calls } = makeApi()
+    const source = makeCase('partial-review', {
+      documents: [{ id: 'application-1', fileName: '申报.txt', role: 'application', mimeType: 'text/plain', sizeBytes: 1, parseStatus: 'parsed', blocks: [], origin: 'upload' } as never],
+      rulePacks: [{ id: 'pack', documentId: 'rule-1', name: '规则', publisher: '', academicYear: '2026', version: 'v1', outline: [{ id: 'r1', category: '资格', title: '规则', summary: '', anchors: [], generatedBy: 'ai' }], confirmed: true }],
+      items: [{ id: 'item-1', title: '事项', declaredScore: 1, category: '其他', evidenceDocumentIds: [], status: 'identified', identifiedBy: 'ai', anchor: { documentId: 'application-1', precision: 'document' } } as never],
+    })
+    api.getCase = async () => source
+    api.runReview = async () => {
+      calls.runReview += 1
+      return { ...makeRun('partial-review'), coverage: { reviewedItemIds: [], manualReviewItemIds: ['item-1'], unrecognizedDocumentIds: [], ruleUncoveredItemIds: [] } }
+    }
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    await actions.selectCase('partial-review')
+    await actions.runFullReview()
+    expect(store.get(reviewExecutionByCaseAtom)['partial-review']?.status).toBe('partial')
+  })
+
+  test('阶段 2 P0：重启恢复时状态与最近运行和输入过期标记一致', async () => {
+    const { api } = makeApi()
+    const partialRun = { ...makeRun('restored'), coverage: { reviewedItemIds: [], manualReviewItemIds: ['item-1'], unrecognizedDocumentIds: [], ruleUncoveredItemIds: [] } }
+    api.getLatestRun = async () => ({ run: partialRun, inputStale: false })
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    await actions.selectCase('restored')
+    expect(store.get(reviewExecutionByCaseAtom)['restored']?.status).toBe('partial')
+    expect(store.get(reviewRunsByCaseAtom)['restored']?.id).toBe(partialRun.id)
   })
 
   test('操作代次与互斥：同类第二次点击被拒；完成后结果正常落位', async () => {

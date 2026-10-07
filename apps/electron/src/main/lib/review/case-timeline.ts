@@ -12,7 +12,7 @@ export interface TimelineEntry {
   /** 动作名（中文摘要） */
   action: string
   /** 操作者徽标：human | agent | mock | school | unknown */
-  operatorKind: 'human' | 'agent' | 'mock' | 'school' | 'unknown'
+  operatorKind: 'human' | 'agent' | 'mock' | 'school' | 'system' | 'unknown'
   /** 显示名（人工操作者 ID / Agent 会话短码） */
   operatorLabel: string
   /** 关联对象（决定结果/运行 ID/材料名等） */
@@ -21,6 +21,8 @@ export interface TimelineEntry {
 
 function operatorOf(actorSource?: string, actorId?: string): { operatorKind: TimelineEntry['operatorKind']; operatorLabel: string } {
   switch (actorSource) {
+    case 'system':
+      return { operatorKind: 'system', operatorLabel: actorId ?? '系统' }
     case 'agent':
       // 保留完整 sessionId 于 actorId；显示只取短码
       return { operatorKind: 'agent', operatorLabel: `AI Agent（${(actorId ?? '').replace(/^agent-/, '').slice(0, 8)}）` }
