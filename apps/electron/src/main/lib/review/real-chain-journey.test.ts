@@ -55,7 +55,7 @@ describe('全链路旅程（自检探查）', () => {
   let run: ReviewRunV2 | undefined
 
   test('1. 建案 → 带槽登记两个真实文件 → 提交（状态+首任务一次落盘）', async () => {
-    const created = await createCaseFromTemplate('comprehensive-assessment-v2', 2, { title: '旅程测试', fieldValues: { studentName: '旅程同学', studentId: 'J001', academicYear: '2025-2026', applicant: '旅程同学' }, subjects: [{ id: 's1', title: '省级一等奖', type: 'item', fieldValues: { category: 'competition', level: 'national-1', declaredScore: 8, eventId: 'E1' } }] }, actor, caseId)
+    const created = await createCaseFromTemplate('comprehensive-assessment-v2', 2, { title: '旅程测试', fieldValues: { studentName: '旅程同学', studentId: 'J001', academicYear: '2025-2026', applicant: '旅程同学' }, subjects: [{ id: 's1', title: '省级一等奖', type: 'item', fieldValues: { category: 'competition', level: 'national-1', declaredScore: 8, activityDate: '2026-09-01', eventId: 'E1' } }] }, actor, caseId)
     expect(created.ok).toBe(true)
     const fileA = join(CONFIG_DIR, 'form.txt')
     writeFileSync(fileA, '综合测评申报表：姓名 旅程同学，等级 national-1')

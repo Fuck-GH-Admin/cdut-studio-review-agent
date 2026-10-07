@@ -29,7 +29,11 @@ export function exportCaseReport(caseId: string): ExportReportResultV2 {
   if (lastRun) {
     lines.push(`## 审核依据（运行 ${lastRun.id}）`)
     lines.push(`- 有效规则集哈希：${lastRun.inputManifest.effectiveRuleSetHash ?? '旧运行未记录'}`)
-    for (const { rule, origin } of effectiveRules) lines.push(`- ${rule.title}（${rule.id}；${rule.execution}；${origin.kind === 'policy' ? `政策 ${origin.policyId}@${origin.version}` : '案卷规则'}）`)
+    for (const { rule, origin } of effectiveRules) {
+      const sectionName = rule.sectionId ? template?.sections?.find((section) => section.id === rule.sectionId)?.name : undefined
+      const source = origin.kind === 'policy' ? `政策 ${origin.policyId}@${origin.version}` : origin.kind === 'template' ? `模板 ${origin.templateId}@${origin.version}` : '案卷规则'
+      lines.push(`- ${sectionName ? `【${sectionName}】` : ''}${rule.title}（${rule.id}；${rule.execution}；${source}）`)
+    }
     lines.push('', `## 检查结果（运行 ${lastRun.id}）`)
     for (const check of lastRun.checks) {
       const item = check as { ruleId: string; status: string; reason?: string }

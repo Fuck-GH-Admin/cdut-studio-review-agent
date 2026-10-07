@@ -31,6 +31,24 @@ describe('唯一有效规则集', () => {
     expect(resolved.every((item) => item.origin.kind === 'workspace')).toBe(true)
   })
 
+  test('同一模板的不同分项生成分项范围规则，并随模板版本进入同一规则集', () => {
+    const configured = {
+      ...template(),
+      sections: [
+        { id: 'study', name: '学业发展', order: 2, required: true, criteria: [{ id: 'credits', title: '学分要求', requirement: '核对本分项的学分材料', execution: 'semantic' as const, targetScope: 'subject' as const }] },
+        { id: 'service', name: '志愿服务', order: 1, required: true, criteria: [{ id: 'hours', title: '服务时长', requirement: '核对本分项的时长证明', execution: 'manual' as const, targetScope: 'subject' as const }] },
+      ],
+    }
+    const resolved = resolveEffectiveRules({ caseV2: { ...baseCase, reviewRules: [] } }, configured)
+
+    expect(resolved.map(({ rule }) => [rule.id, rule.sectionId, rule.title])).toEqual([
+      ['section-service-hours', 'service', '服务时长'],
+      ['section-study-credits', 'study', '学分要求'],
+    ])
+    expect(resolved.every(({ origin }) => origin.kind === 'template' && origin.templateId === configured.templateId && origin.version === configured.version)).toBe(true)
+    expect(hashEffectiveRuleSet(resolved)).toHaveLength(64)
+  })
+
   test('合并模板与案卷规则、同 id 时以案卷规则覆盖并稳定排序', () => {
     const content = 'test policy body'
     const compiledRules = [rule('shared', '模板版本', 1), rule('p2', '模板规则二', 4)]

@@ -6,7 +6,7 @@ import { afterAll, describe, expect, test } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { BUILTIN_TEMPLATES_V2, ensureBuiltinTemplateDrafts } from './builtin-templates'
-import { deprecateTemplate, getTemplate, listTemplates, publishTemplate, saveDraft, validateTemplate } from './template-store'
+import { deprecateTemplate, getTemplate, listTemplateVersions, listTemplates, publishTemplate, saveDraft, validateTemplate } from './template-store'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-template-${Date.now()}`)
 process.env.PROFER_CONFIG_DIR = CONFIG_DIR
@@ -29,6 +29,28 @@ describe('六内置模板（M1）', () => {
       const errors = validateTemplate(template).filter((issue) => issue.level === 'error')
       expect(errors).toEqual([])
     }
+  })
+
+  test('必需审核分项没有标准时不能发布模板', () => {
+    const template = {
+      ...BUILTIN_TEMPLATES_V2[0]!,
+      templateId: 'required-section-without-criteria',
+      sections: [{ id: 'study', name: '学业表现', order: 0, required: true, criteria: [] }],
+    }
+    saveDraft(template)
+    expect(validateTemplate(template).some((issue) => issue.level === 'error' && issue.message.includes('至少需要一条审核要求'))).toBeTrue()
+    expect(() => publishTemplate(template.templateId, template.version)).toThrow('至少需要一条审核要求')
+  })
+
+  test('新草稿版本存在时仍可读取并使用之前的已发布版本', () => {
+    const templateId = 'template-version-history-test'
+    const draft = { ...BUILTIN_TEMPLATES_V2[0]!, templateId, name: '模板版本历史测试', status: 'draft' as const }
+    saveDraft(draft)
+    publishTemplate(templateId, 1)
+    saveDraft({ ...draft, version: 2, name: '模板版本历史测试新草稿', status: 'draft' })
+
+    expect(listTemplates().find((template) => template.templateId === templateId)?.status).toBe('draft')
+    expect(listTemplateVersions().filter((template) => template.templateId === templateId).sort((a, b) => b.version - a.version).map((template) => [template.version, template.status])).toEqual([[2, 'draft'], [1, 'published']])
   })
 
   test('Given 内置草稿 When ensureBuiltinTemplateDrafts Then 幂等落盘且可发布', () => {

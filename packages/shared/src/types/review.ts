@@ -473,6 +473,7 @@ export const REVIEW_IPC_CHANNELS = {
   LATEST_RUN: 'review:get-latest-run',
   // ===== V2（通用审核 Agent，M5 接线） =====
   LIST_TEMPLATES_V2: 'review-v2:list-templates',
+  LIST_TEMPLATE_VERSIONS_V2: 'review-v2:list-template-versions',
   GET_TEMPLATE_V2: 'review-v2:get-template',
   PUBLISH_TEMPLATE_V2: 'review-v2:publish-template',
   RUN_REVIEW_V2: 'review-v2:run-review',

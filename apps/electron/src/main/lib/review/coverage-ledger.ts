@@ -42,6 +42,7 @@ export function buildCheckLedger(
   subjectIds: string[],
   results: CheckResult[],
   groupValues?: Record<string, string[]>,
+  sectionSubjectIds?: Record<string, string[]>,
 ): CheckLedgerEntry[] {
   const subjectIds0 = [...subjectIds]
   const byRuleTarget = new Map<string, CheckResult>()
@@ -54,8 +55,9 @@ export function buildCheckLedger(
   }
   const ledger: CheckLedgerEntry[] = []
   for (const rule of plannedRules) {
+    const ruleSubjectIds = rule.sectionId ? sectionSubjectIds?.[rule.sectionId] ?? [] : subjectIds
     if (rule.targetScope === 'subject') {
-      for (const subjectId of subjectIds) {
+      for (const subjectId of ruleSubjectIds) {
         const hit = byRuleTarget.get(`${rule.id}::subject::${subjectId}`) ?? byRuleTarget.get(`${rule.id}::case::${subjectIds0.sort().join(',')}`)
         ledger.push(
           hit
@@ -78,7 +80,7 @@ export function buildCheckLedger(
         )
       }
     } else {
-      const key = `${rule.id}::${rule.targetScope}::${subjectIds.sort().join(',')}`
+      const key = `${rule.id}::${rule.targetScope}::${[...ruleSubjectIds].sort().join(',')}`
       const hit = byRuleTarget.get(key)
       ledger.push(
         hit
@@ -108,9 +110,10 @@ export function combineCoverage(
   subjectIds: string[],
   results: CheckResult[],
   groupValues?: Record<string, string[]>,
+  sectionSubjectIds?: Record<string, string[]>,
 ): CoverageSummary {
   const documentLedger = buildDocumentLedger(documents)
-  const checkLedger = buildCheckLedger(plannedRules, subjectIds, results, groupValues)
+  const checkLedger = buildCheckLedger(plannedRules, subjectIds, results, groupValues, sectionSubjectIds)
   const unread = documentLedger.filter((entry) => entry.status !== 'read')
   const notExecuted = checkLedger.filter((entry) => entry.status === 'not-executed' || entry.status === 'execution-failed')
   const awaiting = checkLedger.filter((entry) => entry.status === 'awaiting-confirmation' || entry.status === 'awaiting-supplement')

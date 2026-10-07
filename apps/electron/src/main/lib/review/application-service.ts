@@ -21,15 +21,68 @@ import type { CaseAggregateV2, ReviewCommandResult } from '@profer/shared'
 export interface CreateCasePayload {
   title: string
   fieldValues: Record<string, unknown>
-  subjects: Array<{ id: string; title: string; type: 'item' | 'clause' | 'project' | 'budget-line' | 'custom'; fieldValues?: Record<string, unknown> }>
+  subjects: Array<{ id: string; title: string; type: 'item' | 'clause' | 'project' | 'budget-line' | 'custom'; sectionId?: string; fieldValues?: Record<string, unknown> }>
 }
 
 function fieldValueOf(spec: TemplateVersion['fields'][number], raw: unknown): FieldValue {
   switch (spec.kind) {
     case 'number': return { kind: 'number', value: Number(raw) }
     case 'date': return { kind: 'date', value: String(raw) }
-    case 'boolean': return { kind: 'boolean', value: Boolean(raw) }
+    case 'boolean': return { kind: 'boolean', value: raw === true || raw === 'true' || raw === 1 }
+    case 'enum': return { kind: 'enum', value: String(raw ?? '') }
+    case 'multi': return { kind: 'multi', value: Array.isArray(raw) ? raw.map(String) : [String(raw ?? '')] }
+    case 'object': return { kind: 'object', value: (raw && typeof raw === 'object' ? raw : {}) as Record<string, FieldValue> }
+    case 'rows': return { kind: 'rows', value: Array.isArray(raw) ? raw as Array<Record<string, FieldValue>> : [] }
+    case 'attachment': return { kind: 'attachment', documentVersionId: String(raw ?? '') }
     default: return { kind: 'text', value: String(raw ?? '') }
+  }
+}
+
+function validateSectionSubjects(template: TemplateVersion, payload: CreateCasePayload): void {
+  const sections = template.sections ?? []
+  const sectionById = new Map(sections.map((section) => [section.id, section]))
+  const counts = new Map(sections.map((section) => [section.id, 0]))
+  const subjectIds = new Set<string>()
+
+  for (const subject of payload.subjects) {
+    if (!subject.id || subjectIds.has(subject.id)) throw new CommandValidationError('VALIDATION_FAILED', '申报事项 ID 缺失或重复')
+    if (!subject.title.trim()) throw new CommandValidationError('VALIDATION_FAILED', '申报事项名称不能为空')
+    subjectIds.add(subject.id)
+    const section = subject.sectionId ? sectionById.get(subject.sectionId) : undefined
+    if (sections.length > 0 && !section) throw new CommandValidationError('VALIDATION_FAILED', `事项「${subject.title}」未归入有效审核分项`)
+    if (subject.sectionId && !section) throw new CommandValidationError('VALIDATION_FAILED', `事项「${subject.title}」归属的审核分项不存在`)
+    if (section) counts.set(section.id, (counts.get(section.id) ?? 0) + 1)
+
+    const values = subject.fieldValues ?? {}
+    const allowedFields = template.fields.filter((field) =>
+      (field.scope ?? 'subject') === 'subject' && (!field.sectionId || field.sectionId === subject.sectionId),
+    )
+    const allowedKeys = new Set(allowedFields.map((field) => field.key))
+    for (const [key, value] of Object.entries(values)) {
+      if (!allowedKeys.has(key)) throw new CommandValidationError('VALIDATION_FAILED', `${section ? `分项「${section.name}」` : '申报事项'}不接受字段 ${key}`)
+      if (value === '' || value === null || value === undefined || (typeof value === 'string' && !value.trim())) continue
+      const field = allowedFields.find((candidate) => candidate.key === key)!
+      if (field.kind === 'number' && !Number.isFinite(typeof value === 'number' ? value : Number(value))) {
+        throw new CommandValidationError('VALIDATION_FAILED', `${section?.name ? `${section.name}：` : ''}${field.label}必须是有效数字`)
+      }
+      if (field.kind === 'date' && (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}/.test(value))) {
+        throw new CommandValidationError('VALIDATION_FAILED', `${section?.name ? `${section.name}：` : ''}${field.label}必须是有效日期`)
+      }
+      if (field.kind === 'enum' && field.options?.length && !field.options.some((option) => option.value === String(value))) {
+        throw new CommandValidationError('VALIDATION_FAILED', `${section?.name ? `${section.name}：` : ''}${field.label}不在可选范围内`)
+      }
+    }
+    for (const field of allowedFields) {
+      const value = values[field.key]
+      if (field.required && (value === undefined || value === null || value === '' || (typeof value === 'string' && !value.trim()))) {
+        throw new CommandValidationError('VALIDATION_FAILED', `${section ? `分项「${section.name}」` : '申报事项'}缺少必填字段：${field.label}`)
+      }
+    }
+  }
+
+  const missingSections = sections.filter((section) => section.required && (counts.get(section.id) ?? 0) === 0)
+  if (missingSections.length > 0) {
+    throw new CommandValidationError('VALIDATION_FAILED', `案卷缺少必需分项：${missingSections.map((section) => section.name).join('、')}`)
   }
 }
 
@@ -48,11 +101,19 @@ export async function createCaseFromTemplate(
     const check = validatePolicyRef(ref)
     if (!check.ok) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', check.reason ?? '政策依赖不完整')
   }
+  validateSectionSubjects(template, payload)
+  const caseSpecs = template.fields.filter((field) => (field.scope ?? 'subject') === 'case')
+  const caseFieldKeys = new Set(caseSpecs.map((field) => field.key))
+  const unexpectedCaseKeys = Object.keys(payload.fieldValues).filter((key) => !caseFieldKeys.has(key))
+  if (unexpectedCaseKeys.length > 0) throw new CommandValidationError('VALIDATION_FAILED', `案卷字段不在模板中：${unexpectedCaseKeys.join('、')}`)
+  const caseValues = Object.fromEntries(Object.entries(payload.fieldValues).filter(([key]) => caseFieldKeys.has(key)))
+  const caseFieldIssues = validateFieldValuesV2(template, 'case', caseValues, new Set(caseSpecs.map((field) => field.key)))
+  if (caseFieldIssues.length > 0) throw new CommandValidationError('VALIDATION_FAILED', caseFieldIssues.map((issue) => `${issue.key}: ${issue.reason}`).join('；'))
   // 字段作用域：case 字段进 caseFields；subject 缺失值留给事项表单
   const caseFields: Record<string, FieldValue> = {}
   for (const spec of template.fields) {
     if ((spec.scope ?? 'subject') !== 'case') continue
-    if (payload.fieldValues[spec.key] === undefined) {
+    if (payload.fieldValues[spec.key] === undefined || payload.fieldValues[spec.key] === null || payload.fieldValues[spec.key] === '' || (typeof payload.fieldValues[spec.key] === 'string' && !(payload.fieldValues[spec.key] as string).trim())) {
       if (spec.required) throw new CommandValidationError('VALIDATION_FAILED', `缺少必填案卷字段: ${spec.label}（${spec.key}）`)
       continue
     }
@@ -70,9 +131,10 @@ export async function createCaseFromTemplate(
       id: subject.id,
       type: subject.type,
       title: subject.title,
+      ...(subject.sectionId ? { sectionId: subject.sectionId } : {}),
       fields: Object.fromEntries(
         template.fields
-          .filter((spec) => (spec.scope ?? 'subject') === 'subject' && subject.fieldValues?.[spec.key] !== undefined)
+          .filter((spec) => (spec.scope ?? 'subject') === 'subject' && (!spec.sectionId || spec.sectionId === subject.sectionId) && subject.fieldValues?.[spec.key] !== undefined)
           .map((spec) => [spec.key, fieldValueOf(spec, subject.fieldValues![spec.key])]),
       ),
       sourceRefs: [],

@@ -35,6 +35,15 @@ describe('检查账本（M2）', () => {
     expect(ledger).toHaveLength(4)
     expect(ledger.find((entry) => entry.ruleId === 'r2' && entry.targetKey === 's2')?.status).toBe('not-executed')
   })
+
+  test('同一案卷内的分项规则只为所属分项建立计划检查', () => {
+    const sectionRule = { ...rule('r-study', 'subject'), sectionId: 'study' }
+    const ledger = buildCheckLedger([sectionRule], ['s-study', 's-service'], [result('r-study', ['s-study'], 'compliant')], undefined, {
+      study: ['s-study'],
+      service: ['s-service'],
+    })
+    expect(ledger).toEqual([{ ruleId: 'r-study', targetKey: 's-study', status: 'compliant' }])
+  })
 })
 
 describe('combineCoverage（全部符合判定，A08）', () => {

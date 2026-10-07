@@ -74,6 +74,27 @@ export function listTemplates(): TemplateVersion[] {
   return out.sort((a, b) => a.templateId.localeCompare(b.templateId))
 }
 
+/** 列出模板的全部版本，供版本历史、已发布版本选择和草稿编辑使用。 */
+export function listTemplateVersions(): TemplateVersion[] {
+  const root = templatesRoot()
+  if (!existsSync(root)) return []
+  const out: TemplateVersion[] = []
+  for (const templateId of readdirSync(root)) {
+    const dir = join(root, templateId, 'versions')
+    if (!existsSync(dir)) continue
+    const versions = readdirSync(dir)
+      .filter((name) => name.endsWith('.json'))
+      .map((name) => Number(name.replace('.json', '')))
+      .filter((version) => Number.isFinite(version))
+      .sort((a, b) => b - a)
+    for (const version of versions) {
+      const template = getTemplate(templateId, version)
+      if (template) out.push(template)
+    }
+  }
+  return out.sort((a, b) => a.name.localeCompare(b.name) || a.templateId.localeCompare(b.templateId) || b.version - a.version)
+}
+
 /** 保存草稿（status 强制 draft；version 不可与已有 published 冲突） */
 export function saveDraft(template: TemplateVersion): TemplateVersion {
   if (template.status !== 'draft') throw new Error('saveDraft 只接受草稿状态模板')
@@ -101,6 +122,42 @@ export function validateTemplate(template: TemplateVersion): TemplateValidationI
   const issues: TemplateValidationIssue[] = []
   const fieldKeys = new Set(template.fields.map((field) => field.key))
   const slotIds = new Set(template.materialSlots.map((slot) => slot.id))
+  const sections = template.sections ?? []
+  const sectionIds = new Set(sections.map((section) => section.id))
+  const orderedSectionValues = new Set<number>()
+
+  if (new Set(template.fields.map((field) => field.key)).size !== template.fields.length) issues.push({ level: 'error', message: '字段编号重复' })
+  if (new Set(template.materialSlots.map((slot) => slot.id)).size !== template.materialSlots.length) issues.push({ level: 'error', message: '材料槽编号重复' })
+
+  if (new Set(sections.map((section) => section.id)).size !== sections.length) {
+    issues.push({ level: 'error', message: '审核分项 ID 重复' })
+  }
+  for (const section of sections) {
+    if (!section.id.trim() || !section.name.trim()) issues.push({ level: 'error', message: '每个审核分项都必须有 ID 和名称' })
+    if (!Number.isInteger(section.order) || section.order < 0 || orderedSectionValues.has(section.order)) {
+      issues.push({ level: 'error', message: `分项「${section.name || section.id}」的顺序无效或重复` })
+    }
+    orderedSectionValues.add(section.order)
+    const criteria = Array.isArray(section.criteria) ? section.criteria : []
+    if (section.required && criteria.length === 0) {
+      issues.push({ level: 'error', message: `必需分项「${section.name}」至少需要一条审核要求` })
+    }
+    const criterionIds = new Set<string>()
+    for (const criterion of criteria) {
+      if (!criterion.id.trim() || !criterion.title.trim() || !criterion.requirement.trim()) {
+        issues.push({ level: 'error', message: `分项「${section.name}」中的审核要求缺少编号、名称或内容` })
+      }
+      if (criterionIds.has(criterion.id)) issues.push({ level: 'error', message: `分项「${section.name}」存在重复要求编号 ${criterion.id}` })
+      criterionIds.add(criterion.id)
+    }
+  }
+  for (const field of template.fields) {
+    if (field.sectionId && !sectionIds.has(field.sectionId)) issues.push({ level: 'error', message: `字段 ${field.key} 指向不存在的审核分项 ${field.sectionId}` })
+    if (field.sectionId && (field.scope ?? 'subject') !== 'subject') issues.push({ level: 'error', message: `分项字段 ${field.key} 必须是事项字段` })
+  }
+  for (const slot of template.materialSlots) {
+    if (slot.sectionId && !sectionIds.has(slot.sectionId)) issues.push({ level: 'error', message: `材料槽 ${slot.id} 指向不存在的审核分项 ${slot.sectionId}` })
+  }
 
   // 字段合法性：条件必填引用的字段必须存在
   for (const field of template.fields) {
@@ -131,7 +188,7 @@ export function validateTemplate(template: TemplateVersion): TemplateValidationI
     if (slot.minCount > slot.maxCount) issues.push({ level: 'error', message: `材料槽 ${slot.id} 的 minCount 大于 maxCount` })
   }
   // 政策引用存在性由仓库层核对（getPolicyVersion），模板侧仅检查非空数组声明
-  if (template.policyVersionIds.length === 0 && template.stages.some((stage) => stage.kind === 'auto-check')) {
+  if (template.policyVersionIds.length === 0 && template.stages.some((stage) => stage.kind === 'auto-check') && !sections.some((section) => (section.criteria?.length ?? 0) > 0)) {
     issues.push({ level: 'warning', message: '模板声明了自动检查阶段但没有引用任何政策版本' })
   }
   // N1b：精确政策引用校验（存在+已发布+hash 一致；缺失即 error 阻止发布）

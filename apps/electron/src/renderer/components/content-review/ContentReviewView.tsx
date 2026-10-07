@@ -52,6 +52,7 @@ import { LeftPanel } from './LeftPanel'
 import { RightPanel } from './RightPanel'
 import { ReviewContextBar } from './ReviewContextBar'
 import { TemplateWizardPanel } from './TemplateWizardPanel'
+import { V2CasePanel } from './V2CasePanel'
 import { BatchPanel } from './BatchPanel'
 import { useReviewActions } from './use-review-actions'
 import { buildReviewWorkspaceViewModel } from './review-workspace-view-model'
@@ -228,6 +229,11 @@ export function ContentReviewView(): React.ReactElement {
 
       <section aria-label="审核模板编排" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'templates' && 'hidden')}>
         <TemplateWizardPanel />
+        <div className="mx-3 mb-2 mt-5 border-t pt-4">
+          <h2 className="mb-1 text-base font-semibold">按模板创建并审核案卷</h2>
+          <p className="mb-3 text-sm text-muted-foreground">已发布模板在这里使用。一个综测案卷可以录入多个分项和事项，材料与检查结果统一归档。</p>
+        </div>
+        <V2CasePanel />
       </section>
       <section aria-label="审核批次管理" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'batch' && 'hidden')}>
         <BatchPanel />

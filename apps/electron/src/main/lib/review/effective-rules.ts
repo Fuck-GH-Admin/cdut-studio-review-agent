@@ -8,6 +8,7 @@ import { getPolicy } from './policy-store'
 
 export type EffectiveRuleOrigin =
   | { kind: 'policy'; policyId: string; version: number }
+  | { kind: 'template'; templateId: string; version: number }
   | { kind: 'workspace'; rulePackId?: string }
 
 export interface EffectiveRule {
@@ -25,6 +26,30 @@ export function resolveEffectiveRules(aggregate: AggregateRuleSource, template: 
     for (const rule of policy?.compiledRules ?? []) {
       byId.set(rule.id, { rule, origin: { kind: 'policy', policyId: ref.policyId, version: ref.version } })
     }
+  }
+
+  // 分项要求是模板版本的一部分。每条要求生成一条计划检查，所有分项仍属于同一个案卷运行。
+  for (const section of [...(template.sections ?? [])].sort((a, b) => a.order - b.order)) {
+    ;(section.criteria ?? []).forEach((criterion, index) => {
+      const ruleId = `section-${section.id}-${criterion.id}`
+      const rule: RuleSpec = {
+        id: ruleId,
+        policyVersionId: `template:${template.templateId}@${template.version}`,
+        title: criterion.title,
+        sectionId: section.id,
+        when: { all: [] },
+        requirement: criterion.requirement,
+        targetScope: criterion.targetScope,
+        execution: criterion.execution,
+        ...(criterion.execution === 'semantic' ? { semanticOutputEnum: ['compliant', 'non-compliant'] } : {}),
+        onFail: 'manual-review',
+        onUnknown: 'needs-confirmation',
+        sourceRefIds: [],
+        priority: section.order * 1000 + index + 1,
+        confirmation: 'confirmed',
+      }
+      byId.set(rule.id, { rule, origin: { kind: 'template', templateId: template.templateId, version: template.version } })
+    })
   }
 
   // 案卷级人工/导入规则优先于模板中同 id 的规则。

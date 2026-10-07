@@ -3719,6 +3719,7 @@ const reviewAPI = {
   runReview: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW, caseId) as Promise<import('@profer/shared').ReviewRun>,
   // ===== V2 通道（M5） =====
   listTemplatesV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_TEMPLATES_V2) as Promise<import('@profer/shared').TemplateVersion[]>,
+  listTemplateVersionsV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_TEMPLATE_VERSIONS_V2) as Promise<import('@profer/shared').TemplateVersion[]>,
   getTemplateV2: (templateId: string, version?: number) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_TEMPLATE_V2, templateId, version) as Promise<import('@profer/shared').TemplateVersion | undefined>,
   publishTemplateV2: (templateId: string, version: number) =>

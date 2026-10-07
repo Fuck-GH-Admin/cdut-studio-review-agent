@@ -33,6 +33,28 @@ const done = async (_n: Parameters<NodeExecutor>[0], hash: string) => ({ status:
 const okExecutors: Record<NodeKind, NodeExecutor> = Object.fromEntries(ALL_KINDS.map((kind) => [kind, done])) as Record<NodeKind, NodeExecutor>
 
 describe('runReviewCaseV2（M3 编排）', () => {
+  test('同一案卷的一次运行纳入所有分项标准并分别计算覆盖', async () => {
+    const sectionedTemplate: TemplateVersion = {
+      ...template,
+      templateId: 'sectioned-run-template',
+      sections: [
+        { id: 'study', name: '学业表现', order: 0, required: true, criteria: [{ id: 'credit-check', title: '学分核验', requirement: '核对学分', execution: 'manual', targetScope: 'subject' }] },
+        { id: 'service', name: '志愿服务', order: 1, required: true, criteria: [{ id: 'hour-check', title: '时长核验', requirement: '核对服务时长', execution: 'manual', targetScope: 'subject' }] },
+      ],
+    }
+    const sectionedCase: ReviewCaseV2 = {
+      ...caseV2, id: 'case-runv2-sections', templateId: sectionedTemplate.templateId,
+      subjects: [
+        { id: 'study-item', type: 'item', title: '课程学业表现', sectionId: 'study', fields: {}, sourceRefs: [], correction: 'user-confirmed', status: 'identified' },
+        { id: 'service-item', type: 'item', title: '志愿服务记录', sectionId: 'service', fields: {}, sourceRefs: [], correction: 'user-confirmed', status: 'identified' },
+      ],
+    }
+    const run = await runReviewCaseV2(sectionedCase, sectionedTemplate, okExecutors, { runId: 'r-one-run-multiple-sections' })
+
+    expect(run.inputManifest.effectiveRuleIds).toEqual(['section-study-credit-check', 'section-service-hour-check'])
+    expect(run.coverage.plannedChecks).toBe(2)
+  })
+
   test('workspace-only 有效规则同时成为运行清单与 coverage 分母', async () => {
     const workspaceRules: RuleSpec[] = [1, 2, 3].map((index) => ({
       id: `workspace-rule-${index}`, policyVersionId: 'workspace:pack@v1', title: `规则 ${index}`,

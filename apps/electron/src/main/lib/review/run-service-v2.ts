@@ -37,7 +37,7 @@ export function computeRunInputHash(
     caseFields: caseV2.caseFields,
     reviewRules: caseV2.reviewRules ?? [],
     documents: caseV2.documents.map((document) => ({ id: document.versionId, hash: document.contentHash, parseRevision: document.parseRevision, parseStatus: document.parseStatus, usage: document.usage, unusedReason: document.unusedReason })),
-    subjects: caseV2.subjects.map((subject) => ({ id: subject.id, fields: subject.fields, status: subject.status })),
+    subjects: caseV2.subjects.map((subject) => ({ id: subject.id, sectionId: subject.sectionId, fields: subject.fields, status: subject.status })),
     observations: observationSnapshot,
     evidenceLinks: evidenceSnapshot,
   })
@@ -193,7 +193,11 @@ export async function runReviewCaseV2(
       const groups = artifact.groups as Record<string, string[]> | undefined
       if (groups) for (const [ruleId, values] of Object.entries(groups)) groupValues[ruleId] = values
     }
-    const summary = combineCoverage(caseV2.documents, policyRules, caseV2.subjects.map((subject) => subject.id), run.checks as never, groupValues)
+    const sectionSubjectIds = Object.fromEntries((template.sections ?? []).map((section) => [
+      section.id,
+      caseV2.subjects.filter((subject) => subject.sectionId === section.id).map((subject) => subject.id),
+    ]))
+    const summary = combineCoverage(caseV2.documents, policyRules, caseV2.subjects.map((subject) => subject.id), run.checks as never, groupValues, sectionSubjectIds)
     run.coverage = {
       documents: summary.documents,
       plannedChecks: summary.plannedChecks,

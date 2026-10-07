@@ -42,6 +42,8 @@ export interface FieldSpec {
   visibility: 'public' | 'internal'
   /** N1a（07 §2.1）：作用域 case/subject（缺省 subject 兼容旧模板） */
   scope?: 'case' | 'subject'
+  /** subject 字段仅属于此审核分项；未填写时可用于所有分项。 */
+  sectionId?: string
   /** 枚举可选项（kind='enum' 时应提供） */
   options?: Array<{ value: string; label: string }>
   defaultValue?: unknown
@@ -123,6 +125,27 @@ export interface MaterialSlotSpec {
   /** 关键要素：Agent 提取与人工检查的要点 */
   requiredElements: string[]
   allowReuseAcrossSubjects: boolean
+  /** 该材料槽仅服务某个审核分项；未填写时为整份案卷共用。 */
+  sectionId?: string
+}
+
+/** 模板中的一项审核标准；语义规则交给 Agent，人工规则进入同案待办。 */
+export interface TemplateCriterionSpec {
+  id: string
+  title: string
+  requirement: string
+  execution: 'semantic' | 'manual'
+  targetScope: 'subject' | 'group' | 'case'
+}
+
+/** 一个案卷内的审核分项。所有分项共享同一个 ReviewCase 与同一次运行。 */
+export interface TemplateSectionSpec {
+  id: string
+  name: string
+  description?: string
+  order: number
+  required: boolean
+  criteria: TemplateCriterionSpec[]
 }
 
 /** 规则执行类型（03 §4：确定/语义/人工三路） */
@@ -133,6 +156,8 @@ export interface RuleSpec {
   id: string
   policyVersionId: string
   title: string
+  /** 规则限定到同案中的审核分项；未填写时作用于整案。 */
+  sectionId?: string
   /** 适用对象/条件 */
   when: ConditionAST
   /** 检查要求（确定性规则为条件树/计算定义；语义规则为标准描述） */
@@ -224,6 +249,8 @@ export interface TemplateVersion {
   displayName: { template: string }
   fields: FieldSpec[]
   materialSlots: MaterialSlotSpec[]
+  /** 多分项审核配置；旧模板缺省表示整案审核。 */
+  sections?: TemplateSectionSpec[]
   policyVersionIds: string[]
   /** N1b：精确政策引用（ID+版本+内容 hash；与 policyVersionIds 并存，发布校验以此为准） */
   policyRefs?: import('./review-v2-contracts').PolicyRef[]
@@ -253,6 +280,8 @@ export interface ReviewSubject {
   id: string
   type: 'item' | 'clause' | 'project' | 'budget-line' | 'custom'
   title: string
+  /** 事项所属审核分项；同一案卷可包含多个分项。 */
+  sectionId?: string
   fields: Record<string, FieldValue>
   sourceRefs: SourceRef[]
   /** 修正层：ai-extracted → user-confirmed（保留原值可回溯） */

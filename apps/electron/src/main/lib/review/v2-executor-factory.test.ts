@@ -17,8 +17,8 @@ function makeAggregate(): CaseAggregateV2 {
     objectType: 'person',
     caseFields: {},
     subjects: [
-      { id: 'subject-a', type: 'item', title: '事项 A', fields: { level: { kind: 'text', value: '国家级' }, declaredScore: { kind: 'number', value: 4 } }, sourceRefs: [], correction: 'ai-extracted', status: 'identified' },
-      { id: 'subject-b', type: 'item', title: '事项 B', fields: { level: { kind: 'text', value: '省级' }, declaredScore: { kind: 'number', value: 4 } }, sourceRefs: [], correction: 'ai-extracted', status: 'identified' },
+      { id: 'subject-a', type: 'item', title: '事项 A', sectionId: 'study', fields: { level: { kind: 'text', value: '国家级' }, declaredScore: { kind: 'number', value: 4 } }, sourceRefs: [], correction: 'ai-extracted', status: 'identified' },
+      { id: 'subject-b', type: 'item', title: '事项 B', sectionId: 'service', fields: { level: { kind: 'text', value: '省级' }, declaredScore: { kind: 'number', value: 4 } }, sourceRefs: [], correction: 'ai-extracted', status: 'identified' },
     ],
     documents: [],
     stage: 'submitted',
@@ -70,6 +70,13 @@ describe('V2 规则执行正确性门禁', () => {
     expect(checks).toHaveLength(2)
     expect(checks.find((check) => check.target.subjectIds[0] === 'subject-a')?.status).toBe('compliant')
     expect(checks.find((check) => check.target.subjectIds[0] === 'subject-b')?.status).toBe('non-compliant')
+  })
+
+  test('同案分项规则只检查本分项的申报事项', () => {
+    const checks = buildDeterministicRuleChecks(makeAggregate(), [rule({ id: 'study-level', sectionId: 'study' })])
+    expect(checks).toHaveLength(1)
+    expect(checks[0]?.target.subjectIds).toEqual(['subject-a'])
+    expect(checks[0]?.status).toBe('compliant')
   })
 
   test('完整处理嵌套 all/any/not 条件', () => {

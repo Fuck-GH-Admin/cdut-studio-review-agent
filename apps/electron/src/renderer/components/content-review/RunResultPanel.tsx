@@ -12,13 +12,22 @@ const STATUS_LABEL: Record<string, string> = {
 
 export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refreshNonce: number }): JSX.Element {
   const [runs, setRuns] = useState<ReviewRunV2[]>([])
+  const [ruleLabels, setRuleLabels] = useState<Record<string, string>>({})
   const [expandedRun, setExpandedRun] = useState<string | null>(null)
   const [running, setRunning] = useState(false)
 
   const load = useCallback(async (): Promise<void> => {
     try {
-      const list = await window.reviewAPI.listRunsV2(caseId)
+      const [list, aggregate] = await Promise.all([window.reviewAPI.listRunsV2(caseId), window.reviewAPI.getAggregateV2(caseId)])
       setRuns(list ?? [])
+      if (aggregate) {
+        const template = await window.reviewAPI.getTemplateV2(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+        const labels: Record<string, string> = {}
+        for (const section of template?.sections ?? []) {
+          for (const criterion of section.criteria ?? []) labels[`section-${section.id}-${criterion.id}`] = `${section.name} · ${criterion.title}`
+        }
+        setRuleLabels(labels)
+      }
       if (list && list.length > 0) setExpandedRun(list[0]!.id)
     } catch (error) {
       console.error('[审核] 运行列表加载失败', error)
@@ -72,10 +81,10 @@ export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refre
             <div className="mt-1.5 space-y-1">
               {run.checks.length === 0 && <p className="text-muted-foreground">本次运行未产生检查结果（核对规则来源与模型返回）</p>}
               {run.checks.map((check, index) => {
-                const item = check as { ruleId: string; status: string; reason: string }
-                return (
+                  const item = check as { ruleId: string; status: string; reason: string }
+                  return (
                   <div key={index} className="flex items-start justify-between gap-2 rounded bg-muted/40 px-1.5 py-1">
-                    <span className="truncate">{item.ruleId}：{item.reason}</span>
+                    <span className="min-w-0"><span className="font-medium">{ruleLabels[item.ruleId] ?? item.ruleId}</span><span className="text-muted-foreground">：{item.reason}</span></span>
                     <span className={item.status === 'compliant' ? 'text-emerald-600' : item.status === 'non-compliant' ? 'text-red-600' : 'text-amber-600'}>{STATUS_LABEL[item.status] ?? item.status}</span>
                   </div>
                 )

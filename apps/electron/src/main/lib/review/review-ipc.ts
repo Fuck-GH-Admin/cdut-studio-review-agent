@@ -260,6 +260,10 @@ export function registerReviewIpc(): void {
     const { listTemplates } = require('./template-store') as typeof import('./template-store')
     return listTemplates()
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_TEMPLATE_VERSIONS_V2, () => {
+    const { listTemplateVersions } = require('./template-store') as typeof import('./template-store')
+    return listTemplateVersions()
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_TEMPLATE_V2, (_e, templateId: string, version?: number) => {
     if (typeof templateId !== 'string' || !templateId) throw new Error('参数 templateId 非法')
     const { getTemplate } = require('./template-store') as typeof import('./template-store')

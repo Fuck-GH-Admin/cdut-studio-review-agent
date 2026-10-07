@@ -22,6 +22,7 @@ import { buildTextSourceIndex } from './source-index'
 import { getConfigDir } from '../config-paths'
 import { extractJson } from './review-model-gateway'
 import { resolveEffectiveRules } from './effective-rules'
+import { subjectsForRule } from './rule-section-scope'
 
 const MAX_REVIEW_VISION_IMAGES = 8
 const MAX_REVIEW_VISION_IMAGE_BYTES = 8 * 1024 * 1024
@@ -87,14 +88,17 @@ function truncate(text: string, max = 6000): string {
 }
 
 /** 构建注入给 Pi 的材料/规则/字段上下文（内容仅作为数据，指令边界由 REVIEW_SYSTEM_PROMPT 承担） */
-async function buildMaterialContext(aggregate: CaseAggregateV2, rules: RuleSpec[], caseId: string, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
+async function buildMaterialContext(aggregate: CaseAggregateV2, template: TemplateVersion, rules: RuleSpec[], caseId: string, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
   const parts: string[] = []
+  const sectionById = new Map((template.sections ?? []).map((section) => [section.id, section.name]))
+  const slotById = new Map(template.materialSlots.map((slot) => [slot.id, slot]))
   parts.push('【案卷字段】')
   for (const [key, value] of Object.entries(aggregate.caseV2.caseFields)) {
     parts.push(`- ${key} = ${JSON.stringify((value as { value: unknown }).value ?? null)}`)
   }
   for (const subject of aggregate.caseV2.subjects) {
-    parts.push(`【事项 ${subject.id}】${subject.title}`)
+    const sectionName = subject.sectionId ? sectionById.get(subject.sectionId) : undefined
+    parts.push(`【${sectionName ? `分项「${sectionName}」·` : ''}事项 ${subject.id}】${subject.title}`)
     for (const [key, value] of Object.entries(subject.fields)) {
       parts.push(`- ${key} = ${JSON.stringify((value as { value: unknown }).value ?? null)}`)
     }
@@ -104,14 +108,17 @@ async function buildMaterialContext(aggregate: CaseAggregateV2, rules: RuleSpec[
   parts.push('【材料内容】')
   for (const doc of aggregate.caseV2.documents) {
     if (doc.active === false) continue
+    const slot = doc.materialSlotId ? slotById.get(doc.materialSlotId) : undefined
+    const sectionName = slot?.sectionId ? sectionById.get(slot.sectionId) : undefined
+    const materialScope = sectionName ? `分项：${sectionName}` : '全案共用材料'
     const text = truncate(await materialTextOf(doc, caseId, ocr))
     const visualPages = doc.blocks.filter((block) => block.kind === 'image' && block.imageAssetPath).length
     const visualNote = visualPages > 0 ? `\n[含 ${visualPages} 张图像页；模型收到的页面范围会在提示中明确]` : ''
     parts.push(text
-      ? `--- ${doc.fileName}（${doc.versionId}） ---\n${text}${visualNote}`
+      ? `--- ${doc.fileName}（${doc.versionId}；${materialScope}） ---\n${text}${visualNote}`
       : visualPages > 0
-        ? `--- ${doc.fileName}（${doc.versionId}）--- [无可提取文本；图像页已附加供视觉识别]${visualNote}`
-        : `--- ${doc.fileName}（${doc.versionId}）--- [非文本或未可读：不作为已读依据]`)
+        ? `--- ${doc.fileName}（${doc.versionId}；${materialScope}）--- [无可提取文本；图像页已附加供视觉识别]${visualNote}`
+        : `--- ${doc.fileName}（${doc.versionId}；${materialScope}）--- [非文本或未可读：不作为已读依据]`)
   }
   return parts.join('\n')
 }
@@ -232,9 +239,10 @@ export function buildDeterministicRuleChecks(
 ): CheckResult[] {
   const checks: CheckResult[] = []
   for (const rule of rules) {
+    const scopedSubjects = subjectsForRule(aggregate.caseV2.subjects, rule)
     if (rule.execution === 'semantic') continue
     if (rule.execution === 'manual') {
-      const targets = rule.targetScope === 'subject' ? aggregate.caseV2.subjects.map((subject) => [subject.id]) : [aggregate.caseV2.subjects.map((subject) => subject.id)]
+      const targets = rule.targetScope === 'subject' ? scopedSubjects.map((subject) => [subject.id]) : [scopedSubjects.map((subject) => subject.id)]
       for (const subjectIds of targets) {
         const target = { scope: rule.targetScope === 'subject' ? 'subject' as const : rule.targetScope === 'group' ? 'group' as const : 'case' as const, subjectIds }
         checks.push({ checkId: checkIdFor(rule, target), ruleId: rule.id, status: 'awaiting-confirmation', reason: `需要人工核对：${rule.requirement}`, target, sourceRefs: sourceRefsForRule(aggregate, rule), executedBy: 'manual', executedAt: new Date().toISOString() })
@@ -243,11 +251,11 @@ export function buildDeterministicRuleChecks(
     }
     if (rule.targetScope === 'group') {
       if (!rule.calculation) {
-        const target = { scope: 'group' as const, subjectIds: aggregate.caseV2.subjects.map((subject) => subject.id) }
+        const target = { scope: 'group' as const, subjectIds: scopedSubjects.map((subject) => subject.id) }
         checks.push({ checkId: checkIdFor(rule, target), ruleId: rule.id, status: 'awaiting-confirmation', reason: `组级规则需要人工确认：${rule.requirement}`, target, sourceRefs: sourceRefsForRule(aggregate, rule), executedBy: 'deterministic', executedAt: new Date().toISOString() })
         continue
       }
-      const resolvedInputs = aggregate.caseV2.subjects.map((subject) => {
+      const resolvedInputs = scopedSubjects.map((subject) => {
         const keys = new Set([...Object.keys(subject.fields), rule.calculation!.valueFrom, ...(rule.calculation!.deduplicateBy ?? [])])
         const resolved = Object.fromEntries([...keys].map((key) => [key, resolveEffectiveFieldValue(aggregate, observations, key, subject.id)]))
         return {
@@ -264,7 +272,7 @@ export function buildDeterministicRuleChecks(
       })
       const inputs = resolvedInputs.map((item) => item.input)
       const outcome = computeGroupScore(rule, inputs)
-      const target = { scope: 'group' as const, subjectIds: aggregate.caseV2.subjects.map((subject) => subject.id) }
+      const target = { scope: 'group' as const, subjectIds: scopedSubjects.map((subject) => subject.id) }
       const basis = makeCheckBasis(aggregate, resolvedInputs.flatMap((item) => Object.values(item.resolved)), aggregate.evidenceLinks, sourceRefsForRule(aggregate, rule))
       checks.push({ checkId: checkIdFor(rule, target), ruleId: rule.id, status: outcome.status, reason: outcome.status === 'compliant' ? `组计入 ${outcome.total}` : `存在未知输入：${rule.requirement}`, target, sourceRefs: basis.sourceRefs, basis, executedBy: 'deterministic', executedAt: new Date().toISOString(), calculation: { inputs: [], result: String(outcome.total), detailLines: outcome.detailLines } })
       continue
@@ -273,11 +281,11 @@ export function buildDeterministicRuleChecks(
     if (workspaceConstraint?.kind === 'score-value') {
       const condition = workspaceConstraint.appliesWhen
       if (!condition || typeof workspaceConstraint.value !== 'number') {
-        const target = { scope: 'subject' as const, subjectIds: aggregate.caseV2.subjects.map((subject) => subject.id) }
+        const target = { scope: 'subject' as const, subjectIds: scopedSubjects.map((subject) => subject.id) }
         checks.push({ checkId: checkIdFor(rule, target), ruleId: rule.id, status: 'awaiting-confirmation', reason: '固定分值缺少明确适用条件，需人工核对', target, sourceRefs: sourceRefsForRule(aggregate, rule), executedBy: 'manual', executedAt: new Date().toISOString() })
         continue
       }
-      for (const subject of aggregate.caseV2.subjects) {
+      for (const subject of scopedSubjects) {
         const applicability = resolveEffectiveFieldValue(aggregate, observations, condition.field, subject.id)
         const actualScore = resolveEffectiveFieldValue(aggregate, observations, 'declaredScore', subject.id)
         const applies = condition.equals !== undefined
@@ -300,7 +308,7 @@ export function buildDeterministicRuleChecks(
       continue
     }
     if (workspaceConstraint?.kind === 'level-mapping') {
-      const subjectIds = rule.targetScope === 'subject' ? aggregate.caseV2.subjects.map((subject) => subject.id) : [undefined]
+      const subjectIds = rule.targetScope === 'subject' ? scopedSubjects.map((subject) => subject.id) : [undefined]
       for (const subjectId of subjectIds) {
         const levelValue = resolveEffectiveFieldValue(aggregate, observations, 'level', subjectId)
         const scoreValue = resolveEffectiveFieldValue(aggregate, observations, 'declaredScore', subjectId)
@@ -315,7 +323,7 @@ export function buildDeterministicRuleChecks(
         const status: CheckStatus = !known ? 'awaiting-confirmation' : expectedScore === actualScore ? 'compliant' : 'non-compliant'
         const target = subjectId
           ? { scope: 'subject' as const, subjectIds: [subjectId] }
-          : { scope: 'case' as const, subjectIds: aggregate.caseV2.subjects.map((subjectItem) => subjectItem.id) }
+          : { scope: 'case' as const, subjectIds: scopedSubjects.map((subjectItem) => subjectItem.id) }
         const relatedLinks = aggregate.evidenceLinks.filter((link) => (!subjectId || link.subjectId === subjectId) && link.status !== 'rejected')
         const linkedRefs = relatedLinks.flatMap((link) => {
           if (link.blockRef) return [link.blockRef]
@@ -333,7 +341,7 @@ export function buildDeterministicRuleChecks(
     }
     if (workspaceConstraint?.kind === 'required-evidence') {
       const requiredTypes = workspaceConstraint.requiredEvidenceTypes ?? []
-      const subjectIds = rule.targetScope === 'subject' ? aggregate.caseV2.subjects.map((subject) => subject.id) : [undefined]
+      const subjectIds = rule.targetScope === 'subject' ? scopedSubjects.map((subject) => subject.id) : [undefined]
       const normalize = (value: string): string => value.toLocaleLowerCase().replace(/[\s\-_.、，,。:：()（）]/g, '')
       for (const subjectId of subjectIds) {
         const matchedDocuments = aggregate.caseV2.documents.filter((document) => document.active !== false && requiredTypes.some((required) => {
@@ -349,7 +357,7 @@ export function buildDeterministicRuleChecks(
         const status: CheckStatus = confirmed ? 'compliant' : candidate || matchedDocuments.length > 0 ? 'awaiting-confirmation' : 'awaiting-supplement'
         const target = subjectId
           ? { scope: 'subject' as const, subjectIds: [subjectId] }
-          : { scope: 'case' as const, subjectIds: aggregate.caseV2.subjects.map((subject) => subject.id) }
+          : { scope: 'case' as const, subjectIds: scopedSubjects.map((subject) => subject.id) }
         const names = matchedDocuments.map((document) => document.fileName)
         const matchedRefs = matchedDocuments.map((document) => ({ caseId: aggregate.caseV2.id, documentVersionId: document.versionId, parseRevision: document.parseRevision, location: { kind: 'file' as const } }))
         const basis = makeCheckBasis(aggregate, [], links, [...sourceRefsForRule(aggregate, rule), ...matchedRefs])
@@ -364,14 +372,14 @@ export function buildDeterministicRuleChecks(
       }
       continue
     }
-    const subjectIds = rule.targetScope === 'subject' ? aggregate.caseV2.subjects.map((subject) => subject.id) : [undefined]
+    const subjectIds = rule.targetScope === 'subject' ? scopedSubjects.map((subject) => subject.id) : [undefined]
     for (const subjectId of subjectIds) {
       const resolvedByField = new Map([...new Set(conditionFields(rule.when))].map((field) => [field, resolveEffectiveFieldValue(aggregate, observations, field, subjectId)]))
       const resolvedFields = [...resolvedByField.values()]
       const status = evaluateCondition(rule.when, (ref) => resolvedByField.get(ref.field ?? ref.fact ?? '') ?? { known: false, value: null })
       const target = rule.targetScope === 'subject' && subjectId
         ? { scope: 'subject' as const, subjectIds: [subjectId] }
-        : { scope: 'case' as const, subjectIds: aggregate.caseV2.subjects.map((subject) => subject.id) }
+        : { scope: 'case' as const, subjectIds: scopedSubjects.map((subject) => subject.id) }
       const basis = makeCheckBasis(aggregate, resolvedFields, aggregate.evidenceLinks.filter((link) => !subjectId || link.subjectId === subjectId), sourceRefsForRule(aggregate, rule))
       checks.push({
         checkId: checkIdFor(rule, target),
@@ -398,7 +406,7 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
   let latestDeterministicChecks: Array<Record<string, unknown>> = []
   const semanticRules = rules.filter((rule) => rule.execution === 'semantic')
   // 材料上下文按需构建（PDF/Office 为异步解析）
-  const materialContext = await buildMaterialContext(aggregate, rules, caseId, options.ocrPort)
+  const materialContext = await buildMaterialContext(aggregate, template, rules, caseId, options.ocrPort)
   const visionImages = collectV2VisionImages(aggregate, join(getConfigDir(), 'review-cases', caseId))
   const visualPageCount = aggregate.caseV2.documents.filter((document) => document.active !== false)
     .reduce((count, document) => count + document.blocks.filter((block) => block.kind === 'image' && block.imageAssetPath).length, 0)
@@ -442,7 +450,12 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
           ...(ref.quote ? { quote: ref.quote } : {}),
         }]
       })
-      if (!item.subjectId || !aggregate.caseV2.subjects.some((subject) => subject.id === item.subjectId) || !item.fieldKey || refs.length === 0) return null
+      const subject = item.subjectId ? aggregate.caseV2.subjects.find((candidate) => candidate.id === item.subjectId) : undefined
+      const fieldSpec = item.fieldKey ? template.fields.find((field) => field.key === item.fieldKey) : undefined
+      const fieldBelongsToSubject = !!fieldSpec
+        && (fieldSpec.scope ?? 'subject') === 'subject'
+        && (!fieldSpec.sectionId || fieldSpec.sectionId === subject?.sectionId)
+      if (!subject || !item.fieldKey || !fieldBelongsToSubject || refs.length === 0) return null
       return { subjectId: item.subjectId, fieldKey: item.fieldKey, value: item.value ?? null, sourceRefs: refs, extractedBy: 'ai' as const, confirmed: false, confidence: item.confidence }
     }).filter(Boolean)
     const latestConfirmedByField = new Map<string, Record<string, unknown>>()
@@ -459,9 +472,14 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
 
   const piSummarize: NodeExecutor = async (node, inputHash) => {
     if (options.signal?.aborted) throw new Error('已取消（模型调用前）')
-    const findingsText = rules.map((rule) => `- ${rule.id}（${rule.execution}，${rule.targetScope}）：${rule.requirement}`).join('\n')
+    const findingsText = rules.map((rule) => {
+      const section = rule.sectionId ? template.sections?.find((candidate) => candidate.id === rule.sectionId) : undefined
+      const subjectIds = subjectsForRule(aggregate.caseV2.subjects, rule).map((subject) => subject.id)
+      return `- ${rule.id}${section ? `（分项：${section.name}；适用事项：${subjectIds.join('、') || '无'}）` : ''}（${rule.execution}，${rule.targetScope}）：${rule.requirement}`
+    }).join('\n')
     const prompt = [
       '任务：基于案卷字段、材料与规则清单，给出审核结论。',
+      '分项规则只适用于标明的分项事项；分项材料按材料清单标注使用，全案共用材料可供各分项参考。不得把另一分项的专属证明当成本分项的依据。',
       '输出 JSON：{"opinion":"…简短结论…","checks":[{"ruleId":"…","status":"compliant|non-compliant|awaiting-confirmation|not-applicable","reason":"…","subjectIds":["…"]}]}。只为 semantic 规则输出 checks；deterministic/manual 规则由系统提供。',
       `当前已生成的规则检查：${JSON.stringify(latestDeterministicChecks)}`,
       `规则清单：\n${findingsText}`,
@@ -475,11 +493,13 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
     const semanticChecks = (parsed.checks ?? []).flatMap((check) => {
       if (!check.ruleId || !validRuleIds.has(check.ruleId)) return []
       const rule = semanticRules.find((candidate) => candidate.id === check.ruleId)!
+      const applicableSubjects = subjectsForRule(aggregate.caseV2.subjects, rule)
+      const applicableSubjectIds = new Set(applicableSubjects.map((subject) => subject.id))
       const allowed: CheckStatus[] = ['compliant', 'non-compliant', 'awaiting-confirmation', 'not-applicable']
       if (!check.status || !allowed.includes(check.status as CheckStatus)) return []
       const subjectIds = rule.targetScope === 'subject'
-        ? ((check.subjectIds?.length ? check.subjectIds : aggregate.caseV2.subjects.map((subject) => subject.id)).filter((subjectId) => aggregate.caseV2.subjects.some((subject) => subject.id === subjectId)))
-        : aggregate.caseV2.subjects.map((subject) => subject.id)
+        ? ((check.subjectIds?.length ? check.subjectIds : [...applicableSubjectIds]).filter((subjectId) => applicableSubjectIds.has(subjectId)))
+        : applicableSubjects.map((subject) => subject.id)
       const targets = rule.targetScope === 'subject'
         ? subjectIds.map((subjectId) => ({ scope: 'subject' as const, subjectIds: [subjectId] }))
         : [{ scope: rule.targetScope === 'group' ? 'group' as const : 'case' as const, subjectIds }]
