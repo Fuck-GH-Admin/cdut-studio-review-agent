@@ -48,6 +48,18 @@ export interface ReviewCaseTasks {
   running: boolean
 }
 
+export interface ReviewExecutionViewState {
+  status: 'idle' | 'preparing' | 'running' | 'awaiting-input' | 'completed' | 'partial' | 'failed' | 'cancelled'
+  stage?: 'rules' | 'materials' | 'extract' | 'evidence' | 'checks' | 'summary'
+  message?: string
+  documents?: { completed: number; total: number }
+  checks?: { completed: number; total: number }
+  error?: string
+}
+
+/** 产品级审核状态：三栏和上下文条只读取这一份视图状态。 */
+export const reviewExecutionByCaseAtom = atom<Record<string, ReviewExecutionViewState>>({})
+
 export const reviewTasksByCaseAtom = atom<Record<string, ReviewCaseTasks>>({})
 
 /** 当前选中案卷 ID（选择与异步任务 ID 分离：慢返回不把界面切回旧案） */
@@ -107,6 +119,11 @@ export const reviewRunningAtom = atom(
     })
   },
 )
+
+export const reviewExecutionAtom = atom((get): ReviewExecutionViewState => {
+  const id = get(selectedCaseIdAtom)
+  return id ? (get(reviewExecutionByCaseAtom)[id] ?? { status: 'idle' }) : { status: 'idle' }
+})
 
 /** 模型出口自检结果 */
 export const reviewGatewayStatusAtom = atom<ReviewModelGatewayStatus | null>(null)

@@ -39,6 +39,7 @@ import {
   reviewCasesByIdAtom,
   reviewCaseListAtom,
   reviewErrorAtom,
+  reviewExecutionByCaseAtom,
   reviewFocusAtom,
   reviewGatewayStatusAtom,
   reviewRunsByCaseAtom,
@@ -48,7 +49,7 @@ import {
   selectedFindingIdAtom,
 } from '@/atoms/review-atoms'
 import type { ReviewCaseTasks } from '@/atoms/review-atoms'
-import type { ReviewFocus } from '@/atoms/review-atoms'
+import type { ReviewExecutionViewState, ReviewFocus } from '@/atoms/review-atoms'
 
 /** focus/locate 联动 nonce（每次点击 +1 驱动 useEffect 重放） */
 let focusNonce = 0
@@ -228,6 +229,10 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
   const isCurrentOperation = (caseId: string, kind: string, generation: number): boolean =>
     operationGenerations.get(`${caseId}:${kind}`) === generation
 
+  const setExecution = (caseId: string, state: ReviewExecutionViewState): void => {
+    store.set(reviewExecutionByCaseAtom, { ...store.get(reviewExecutionByCaseAtom), [caseId]: state })
+  }
+
   return {
     async initialize(): Promise<void> {
       await refreshCaseList()
@@ -381,7 +386,7 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
       }
     },
 
-    async generateRuleOutline(): Promise<void> {
+    async generateRuleOutline(options?: { onlyMissing?: boolean }): Promise<void> {
       const selected = currentCaseId() ? store.get(reviewCasesByIdAtom)[currentCaseId() as string] : undefined
       const rulePack = selected?.rulePacks[0]
       if (!selected || !rulePack) {
@@ -396,7 +401,8 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
       const generation = beginOperation(caseId, 'outline')
       try {
         // 每份依据都有独立大纲；完整走过全部规则包，成功的包即时合并，失败不清空已有内容。
-        for (const pack of selected.rulePacks) {
+        const packs = options?.onlyMissing ? selected.rulePacks.filter((pack) => pack.outline.length === 0) : selected.rulePacks
+        for (const pack of packs) {
           const rulePackId = pack.id
           const outline = await api.generateRuleOutline({ caseId, rulePackId })
           // 旧代次丢弃：期间用户再次发起的大纲已更新，晚返回不得覆盖（K05 交错）
@@ -485,6 +491,63 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
         }
       } catch (error) {
         reportError('开始审核失败', error, { caseId })
+      } finally {
+        endTask(caseId, 'running')
+      }
+    },
+
+    async runFullReview(): Promise<void> {
+      const caseId = currentCaseId()
+      const selected = caseId ? store.get(reviewCasesByIdAtom)[caseId] : undefined
+      if (!caseId || !selected) {
+        setError('开始审核失败：请先新建或选择审核任务')
+        return
+      }
+      if (!tryBeginTask(caseId, 'running')) {
+        setError('该审核任务已有操作正在进行，请等待完成后再试', { caseId })
+        return
+      }
+      const update = (state: ReviewExecutionViewState): void => setExecution(caseId, state)
+      const current = (): ReviewCase => store.get(reviewCasesByIdAtom)[caseId] ?? selected
+      try {
+        update({ status: 'preparing', stage: 'rules', message: '正在准备审核依据' })
+        const hasOutlines = current().rulePacks.length > 0 && current().rulePacks.every((pack) => pack.outline.length > 0)
+        if (!hasOutlines) {
+          await this.generateRuleOutline({ onlyMissing: true })
+          if (!current().rulePacks.every((pack) => pack.outline.length > 0)) {
+            update({ status: 'awaiting-input', stage: 'rules', message: '请补充或确认审核依据后继续' })
+            return
+          }
+        }
+        const applicationCount = current().documents.filter((document) => document.role === 'application').length
+        if (applicationCount === 0) {
+          update({ status: 'awaiting-input', stage: 'materials', message: '请先导入待审材料' })
+          return
+        }
+        update({ status: 'preparing', stage: 'materials', message: `已准备 ${current().documents.length} 份材料`, documents: { completed: current().documents.length, total: current().documents.length } })
+        if (current().items.length === 0) {
+          update({ status: 'preparing', stage: 'extract', message: '正在识别申报事项', documents: { completed: applicationCount, total: applicationCount } })
+          await this.extractItems()
+          if ((current().items.length) === 0) {
+            update({ status: 'awaiting-input', stage: 'extract', message: '未识别到可审核事项，请检查待审材料' })
+            return
+          }
+        }
+        update({ status: 'running', stage: 'checks', message: '正在核对申报事项与证明', documents: { completed: current().documents.length, total: current().documents.length } })
+        const run = await api.runReview(caseId)
+        store.set(reviewRunsByCaseAtom, { ...store.get(reviewRunsByCaseAtom), [caseId]: run })
+        await refreshRunValidity(caseId)
+        if (run.status === 'failed') {
+          update({ status: 'failed', stage: 'checks', message: '审核未完成', error: run.error ?? '审核运行失败' })
+        } else if ((run.coverage.unprocessedMaterials?.length ?? 0) > 0) {
+          update({ status: 'partial', stage: 'summary', message: '审核部分完成，存在未处理材料', documents: { completed: current().documents.length - (run.coverage.unprocessedMaterials?.length ?? 0), total: current().documents.length } })
+        } else {
+          update({ status: 'completed', stage: 'summary', message: '审核完成', documents: { completed: current().documents.length, total: current().documents.length } })
+        }
+        setError(run.status === 'failed' ? `审核未完成：${run.error ?? '审核运行失败'}` : null, { caseId })
+      } catch (error) {
+        update({ status: 'failed', message: '审核未完成', error: error instanceof Error ? error.message : String(error) })
+        reportError('一键审核失败', error, { caseId })
       } finally {
         endTask(caseId, 'running')
       }

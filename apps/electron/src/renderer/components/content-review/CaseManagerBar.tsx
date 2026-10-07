@@ -1,5 +1,5 @@
 /**
- * CaseManagerBar — 审核工作台上方的任务上下文条
+ * ReviewContextBar — 审核工作台上方的唯一任务上下文条
  *
  * 拆掉「唯一入口 = 载入演示案卷」的入口墙，提供四件事：
  * 1. 案卷选择器：列出已存储案卷（标题 + 领域包 + 材料数 + 演示标记），点击切换
@@ -14,7 +14,7 @@
 import * as React from 'react'
 import { useAtomValue } from 'jotai'
 import { toast } from 'sonner'
-import { Check, ChevronDown, FilePlus2, FolderOpen, Layers, Plus, Trash2, Upload } from 'lucide-react'
+import { Check, ChevronDown, FilePlus2, FolderOpen, Layers, MoreHorizontal, Plus, Trash2, Upload } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
 import { ConfirmDialog } from '@profer/ui/primitives/confirm-dialog'
 import {
@@ -27,7 +27,7 @@ import {
 } from '@profer/ui/primitives/dropdown-menu'
 import { DEFAULT_DOMAIN_PACK_ID, BUILTIN_DOMAIN_PACKS, resolveDomainPack } from '@profer/shared'
 import type { ReviewCaseSummary, SourceDocument } from '@profer/shared'
-import { reviewCaseAtom, reviewCaseListAtom } from '@/atoms/review-atoms'
+import { reviewCaseAtom, reviewCaseListAtom, reviewExecutionAtom } from '@/atoms/review-atoms'
 import { cn } from '@/lib/utils'
 import { CreateCaseDialog } from './CreateCaseDialog'
 import { REVIEW_DOCUMENT_ROLE_LABELS } from './use-review-actions'
@@ -56,9 +56,10 @@ interface CaseManagerBarProps {
   actions: ReviewActions
 }
 
-export function CaseManagerBar({ actions }: CaseManagerBarProps): React.ReactElement {
+export function ReviewContextBar({ actions }: CaseManagerBarProps): React.ReactElement {
   const currentCase = useAtomValue(reviewCaseAtom)
   const caseList = useAtomValue(reviewCaseListAtom)
+  const execution = useAtomValue(reviewExecutionAtom)
 
   const [createOpen, setCreateOpen] = React.useState(false)
   const [deleteOpen, setDeleteOpen] = React.useState(false)
@@ -113,101 +114,47 @@ export function CaseManagerBar({ actions }: CaseManagerBarProps): React.ReactEle
   const demoUndeletable = currentCase?.isDemo === true
 
   return (
-    <section className="shrink-0 border-b border-border/60 bg-card/40 px-3 py-3">
-      <div className="flex items-center justify-between px-1 pb-2">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">案卷管理</p>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="h-7 gap-1.5 px-2 text-[13px]"
-          onClick={() => setCreateOpen(true)}
-        >
-          <Plus size={13} />
-          新建案卷
-        </Button>
-      </div>
-
-      <div className="space-y-2 rounded-lg bg-card p-2.5 shadow-sm">
-        {/* 案卷选择器 */}
+    <section className="shrink-0 border-b border-border/60 bg-card/40 px-3 py-2">
+      <div className="flex items-center gap-2 px-1">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button
-              type="button"
-              aria-label="选择案卷"
-              className="flex w-full items-center gap-2 rounded-md border border-surface-border/60 bg-input/40 px-2.5 py-1.5 text-left shadow-xs transition-[border-color,box-shadow,background-color] duration-150 hover:border-surface-border-strong hover:bg-input-hover/50 focus:border-focus focus:bg-input focus:outline-none focus:ring-4 focus:ring-focus/15"
-            >
+            <button type="button" aria-label="选择审核任务" className="flex min-w-0 flex-1 items-center gap-2 rounded-md px-1 py-1 text-left hover:bg-muted/50">
               <FolderOpen size={14} className="shrink-0 text-blue-500" />
-              <span className="min-w-0 flex-1 truncate text-[13px] font-medium text-foreground">
-                {currentCase?.title ?? '选择案卷'}
-              </span>
-              {currentCase?.isDemo && (
-                <span className="shrink-0 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
-                  演示
-                </span>
-              )}
+              <span className="min-w-0 flex-1 truncate text-[13px] font-medium text-foreground">{currentCase ? `${currentCase.applicant} · ${currentCase.academicYear} · ${currentCase.title}` : '选择审核任务'}</span>
               <ChevronDown size={14} className="shrink-0 opacity-60" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-[300px]">
-            <DropdownMenuLabel>
-              已存储案卷（{caseList.length}）
-            </DropdownMenuLabel>
-            {caseList.length === 0 ? (
-              <div className="px-2 py-3 text-xs leading-5 text-muted-foreground">
-              暂无审核任务。可点「新建案卷」创建，或载入示例数据。
-              </div>
-            ) : (
-              caseList.map((summary) => (
-                <DropdownMenuItem
-                  key={summary.id}
-                  onSelect={() => handleSelectCase(summary.id)}
-                  className="flex items-start gap-2"
-                >
-                  <Check
-                    size={14}
-                    className={cn('mt-0.5 shrink-0', summary.id === currentCase?.id ? 'opacity-100' : 'opacity-0')}
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="flex items-center gap-1.5">
-                      <span
-                        className={cn(
-                          'truncate text-[13px]',
-                          summary.id === currentCase?.id ? 'font-medium text-foreground' : 'text-foreground/90',
-                        )}
-                      >
-                        {summary.title}
-                      </span>
-                      {summary.isDemo && (
-                        <span className="shrink-0 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
-                          演示
-                        </span>
-                      )}
-                    </span>
-                    <span className="mt-0.5 block truncate text-[11px] text-muted-foreground">
-                      {resolveSummaryPackName(summary)} · {summary.documentCount} 份材料
-                    </span>
-                  </span>
-                </DropdownMenuItem>
-              ))
-            )}
+          <DropdownMenuContent align="start" className="w-[320px]">
+            <DropdownMenuLabel>审核任务（{caseList.length}）</DropdownMenuLabel>
+            {caseList.map((summary) => (
+              <DropdownMenuItem key={summary.id} onSelect={() => handleSelectCase(summary.id)} className="flex items-start gap-2">
+                <Check size={14} className={cn('mt-0.5 shrink-0', summary.id === currentCase?.id ? 'opacity-100' : 'opacity-0')} />
+                <span className="min-w-0 flex-1"><span className="block truncate text-[13px]">{summary.title}</span><span className="mt-0.5 block truncate text-[11px] text-muted-foreground">{resolveSummaryPackName(summary)} · {summary.documentCount} 份材料</span></span>
+              </DropdownMenuItem>
+            ))}
             <DropdownMenuSeparator />
-            {/* 删除：次要位置，且必须二次确认 */}
-            <DropdownMenuItem
-              className="gap-2 text-destructive focus:text-destructive"
-              disabled={!currentCase || demoUndeletable}
-              onSelect={() => setDeleteOpen(true)}
-            >
-              <Trash2 size={14} />
-              删除当前案卷
-            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setCreateOpen(true)}><Plus size={14} />新建审核任务</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <span className="shrink-0 text-[11px] text-muted-foreground">{currentCase ? `${currentCase.documents.length} 份材料 · ${executionLabel(execution.status)}` : '还没有审核任务'}</span>
+        {!currentCase && <Button type="button" size="sm" className="h-7 gap-1.5 px-2 text-[12px]" onClick={() => setCreateOpen(true)}><Plus size={13} />新建审核</Button>}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild><Button type="button" variant="ghost" size="icon-sm" aria-label="更多审核操作" title="更多审核操作"><MoreHorizontal size={15} /></Button></DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-[260px]">
+            <DropdownMenuItem onSelect={() => setCreateOpen(true)}><Plus size={14} />新建审核任务</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => void actions.loadDemoCase()}><FolderOpen size={14} />载入示例数据</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>高级操作</DropdownMenuLabel>
+            {BUILTIN_DOMAIN_PACKS.map((pack) => (
+              <DropdownMenuItem key={pack.id} disabled={!currentCase || switchingPack} onSelect={() => void handlePackChange(pack.id)}><Layers size={14} />审核类型：{pack.name}</DropdownMenuItem>
+            ))}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="text-destructive focus:text-destructive" disabled={!currentCase || demoUndeletable} onSelect={() => setDeleteOpen(true)}><Trash2 size={14} />删除审核任务</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
-        {demoUndeletable && (
-          <p className="px-0.5 text-[11px] leading-4 text-muted-foreground">演示案卷为内置样例，不可删除。</p>
-        )}
-
+      <div className="space-y-2 rounded-lg bg-card p-2.5 shadow-sm">
         {/* 导入材料（三个角色） */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -219,7 +166,7 @@ export function CaseManagerBar({ actions }: CaseManagerBarProps): React.ReactEle
               disabled={!currentCase || importing}
             >
               <Upload size={13} />
-              {importing ? '导入中…' : '导入材料'}
+              {importing ? '导入中…' : '添加材料'}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="w-[340px]">
@@ -244,40 +191,6 @@ export function CaseManagerBar({ actions }: CaseManagerBarProps): React.ReactEle
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* 领域包切换 */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              type="button"
-              aria-label="切换审核类型"
-              disabled={!currentCase || switchingPack}
-              className="flex w-full items-center gap-2 rounded-md border border-surface-border/60 bg-input/40 px-2.5 py-1.5 text-left shadow-xs transition-[border-color,box-shadow,background-color] duration-150 hover:border-surface-border-strong hover:bg-input-hover/50 focus:border-focus focus:bg-input focus:outline-none focus:ring-4 focus:ring-focus/15 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <Layers size={14} className="shrink-0 text-amber-500" />
-              <span className="min-w-0 flex-1 truncate text-[13px] text-foreground">{currentPack.name}</span>
-              <ChevronDown size={14} className="shrink-0 opacity-60" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-[340px]">
-            <DropdownMenuLabel>审核类型（切换规则类别与问题类型）</DropdownMenuLabel>
-            {BUILTIN_DOMAIN_PACKS.map((pack) => (
-              <DropdownMenuItem
-                key={pack.id}
-                onSelect={() => void handlePackChange(pack.id)}
-                className="flex items-start gap-2"
-              >
-                <Check
-                  size={14}
-                  className={cn('mt-0.5 shrink-0', pack.id === currentPack.id ? 'opacity-100' : 'opacity-0')}
-                />
-                <span className="min-w-0 flex-1">
-                  <span className="block text-[13px] font-medium text-foreground">{pack.name}</span>
-                  <span className="mt-0.5 block text-[11px] leading-4 text-muted-foreground">{pack.description}</span>
-                </span>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
 
       {/* 新建案卷对话框 */}
@@ -298,4 +211,12 @@ export function CaseManagerBar({ actions }: CaseManagerBarProps): React.ReactEle
       />
     </section>
   )
+}
+
+/** 兼容旧回归入口；普通审核页面使用 ReviewContextBar。 */
+export const CaseManagerBar = ReviewContextBar
+
+function executionLabel(status: import('@/atoms/review-atoms').ReviewExecutionViewState['status']): string {
+  const labels: Record<typeof status, string> = { idle: '待审核', preparing: '准备中', running: '审核中', 'awaiting-input': '待补充', completed: '已完成', partial: '部分完成', failed: '未完成', cancelled: '已取消' }
+  return labels[status]
 }

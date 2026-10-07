@@ -1,7 +1,7 @@
 /**
  * ContentReviewView — 内容审核专区（三栏审核工作台，主视图）
  *
- * 布局：顶栏（标题/徽标/案卷信息/操作按钮） + 三栏（审核依据 | 申请与证明 | AI 审核员） + 助手抽屉 + 底部错误条。
+ * 布局：顶栏（标题/异常提示） + 三栏（审核依据 | 申请与证明 | 审核结果） + 助手抽屉 + 底部错误条。
  * 三栏宽度 flex-[3] / flex-[4] / flex-[3]，栏间 1px 分隔，各自独立滚动（overflow-y-auto）。
  * 窄窗口（<1100px）时只挂载当前栏，由顶部三按钮切换；切栏时重放已有定位。
  *
@@ -38,14 +38,14 @@ import {
   type ReviewWorkspaceSection,
 } from '@/atoms/review-atoms'
 import { channelsAtom } from '@/atoms/conversation-atoms'
+import { settingsOpenAtom, settingsTabAtom } from '@/atoms/settings-tab'
 import type { ReviewModelGatewayStatus } from '@profer/shared'
 import { cn } from '@/lib/utils'
 import { AssistantDrawer } from './AssistantDrawer'
-import { CaseManagerBar } from './CaseManagerBar'
 import { CenterPanel } from './CenterPanel'
 import { LeftPanel } from './LeftPanel'
 import { RightPanel } from './RightPanel'
-import { V2CasePanel } from './V2CasePanel'
+import { ReviewContextBar } from './ReviewContextBar'
 import { TemplateWizardPanel } from './TemplateWizardPanel'
 import { BatchPanel } from './BatchPanel'
 import { useReviewActions } from './use-review-actions'
@@ -163,7 +163,7 @@ export function ContentReviewView(): React.ReactElement {
         >
           <PaneTab label="审核依据" icon={<FileText size={13} />} active={activePane === 'left'} onClick={() => setActivePane('left')} />
           <PaneTab label="申请与证明" icon={<Layers size={13} />} active={activePane === 'center'} onClick={() => setActivePane('center')} />
-          <PaneTab label="AI 审核员" icon={<Gavel size={13} />} active={activePane === 'right'} onClick={() => setActivePane('right')} />
+          <PaneTab label="审核结果" icon={<Gavel size={13} />} active={activePane === 'right'} onClick={() => setActivePane('right')} />
         </nav>
       )}
 
@@ -171,8 +171,7 @@ export function ContentReviewView(): React.ReactElement {
       <main className={cn('relative min-h-0 flex-1 overflow-hidden titlebar-no-drag', section !== 'assist' && 'hidden')}>
         <div className="flex h-full min-h-0 flex-col">
           <div className="shrink-0 overflow-auto border-b border-border/60 bg-card/40 py-2">
-            <CaseManagerBar actions={actions} />
-            <V2CasePanel />
+            <ReviewContextBar actions={actions} />
           </div>
           <div className="relative flex min-h-0 flex-1">
         <PaneWrapper
@@ -237,12 +236,14 @@ export function ContentReviewView(): React.ReactElement {
 
 /** 模型出口状态徽标；无模型只表示未配置，演示模拟由运行徽标单独说明。 */
 function GatewayBadge({ status }: { status: ReviewModelGatewayStatus | null }): React.ReactElement | null {
+  const setSettingsOpen = useSetAtom(settingsOpenAtom)
+  const setSettingsTab = useSetAtom(settingsTabAtom)
   if (!status) return null
   if (status.available) return null
   return (
-    <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400">
-      未配置审核模型
-    </span>
+    <button type="button" className="rounded-md bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-600 hover:bg-amber-500/20 dark:text-amber-400" onClick={() => { setSettingsTab('channels'); setSettingsOpen(true) }} title={status.reason}>
+      审核模型不可用
+    </button>
   )
 }
 

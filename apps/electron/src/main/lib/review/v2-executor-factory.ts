@@ -12,11 +12,12 @@
 
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import type { CaseAggregateV2, DocumentVersion, Observation, TemplateVersion } from '@profer/shared'
+import type { CaseAggregateV2, CheckStatus, DocumentVersion, RuleSpec, TemplateVersion } from '@profer/shared'
 import type { NodeExecutor, NodeKind } from './review-run-graph'
 import type { ReviewModelClient } from './pi-review-executor'
 import { REVIEW_SYSTEM_PROMPT } from './pi-review-executor'
 import { evaluateCondition } from './deterministic-engine'
+import { computeGroupScore } from './deterministic-engine'
 import { buildTextSourceIndex } from './source-index'
 import { getConfigDir } from '../config-paths'
 import { extractJson } from './review-model-gateway'
@@ -87,6 +88,92 @@ export interface AssembleOptions {
   ocrPort?: { available: boolean; unavailableReason?: string; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ engine: string; engineVersion: string; blocks: Array<{ text: string; rect: { x: number; y: number; w: number; h: number }; confidence: number }>; imageWidth: number; imageHeight: number }> }
 }
 
+interface RuleCheckDraft {
+  ruleId: string
+  status: CheckStatus
+  reason: string
+  target: { scope: 'subject' | 'group' | 'case'; subjectIds: string[]; groupKey?: string }
+  executedBy: 'deterministic' | 'manual'
+  calculation?: { result: string; detailLines: string[] }
+}
+
+function fieldValueOf(value: unknown): unknown {
+  if (value && typeof value === 'object' && 'value' in value) return (value as { value: unknown }).value
+  return value
+}
+
+function resolveRuleField(
+  aggregate: CaseAggregateV2,
+  observations: Array<Record<string, unknown>>,
+  fieldKey: string,
+  subjectId?: string,
+): { known: boolean; value: unknown } {
+  if (subjectId) {
+    const subject = aggregate.caseV2.subjects.find((candidate) => candidate.id === subjectId)
+    const subjectValue = subject?.fields[fieldKey]
+    if (subjectValue !== undefined) return { known: true, value: fieldValueOf(subjectValue) }
+    const observation = [...observations].reverse().find((candidate) => candidate.subjectId === subjectId && candidate.fieldKey === fieldKey)
+    if (observation && 'value' in observation) return { known: true, value: fieldValueOf(observation.value) }
+    return { known: false, value: null }
+  }
+  const caseValue = aggregate.caseV2.caseFields[fieldKey]
+  if (caseValue !== undefined) return { known: true, value: fieldValueOf(caseValue) }
+  const observation = [...observations].reverse().find((candidate) => !candidate.subjectId && candidate.fieldKey === fieldKey)
+  if (observation && 'value' in observation) return { known: true, value: fieldValueOf(observation.value) }
+  return { known: false, value: null }
+}
+
+function statusFromTriState(status: 'true' | 'false' | 'unknown', rule: RuleSpec): CheckStatus {
+  if (status === 'true') return 'compliant'
+  if (status === 'false') return 'non-compliant'
+  return rule.onUnknown === 'pending' ? 'not-executed' : 'awaiting-confirmation'
+}
+
+/** 按规则作用域生成确定性/人工检查草稿，避免不同事项共享同一个字段值。 */
+export function buildDeterministicRuleChecks(
+  aggregate: CaseAggregateV2,
+  rules: RuleSpec[],
+  observations: Array<Record<string, unknown>> = [],
+): RuleCheckDraft[] {
+  const checks: RuleCheckDraft[] = []
+  for (const rule of rules) {
+    if (rule.execution === 'semantic') continue
+    if (rule.execution === 'manual') {
+      const targets = rule.targetScope === 'subject' ? aggregate.caseV2.subjects.map((subject) => [subject.id]) : [aggregate.caseV2.subjects.map((subject) => subject.id)]
+      for (const subjectIds of targets) checks.push({ ruleId: rule.id, status: 'awaiting-confirmation', reason: `需要人工核对：${rule.requirement}`, target: { scope: rule.targetScope === 'subject' ? 'subject' : rule.targetScope === 'group' ? 'group' : 'case', subjectIds }, executedBy: 'manual' })
+      continue
+    }
+    if (rule.targetScope === 'group') {
+      if (!rule.calculation) {
+        checks.push({ ruleId: rule.id, status: 'awaiting-confirmation', reason: `组级规则需要人工确认：${rule.requirement}`, target: { scope: 'group', subjectIds: aggregate.caseV2.subjects.map((subject) => subject.id) }, executedBy: 'deterministic' })
+        continue
+      }
+      const inputs = aggregate.caseV2.subjects.map((subject) => ({
+        subjectId: subject.id,
+        fields: Object.fromEntries(Object.entries(subject.fields).map(([key, value]) => {
+          const resolved = fieldValueOf(value)
+          return [key, { value: typeof resolved === 'number' || typeof resolved === 'string' ? resolved : null, known: resolved !== undefined && resolved !== null }]
+        })),
+      }))
+      const outcome = computeGroupScore(rule, inputs)
+      checks.push({ ruleId: rule.id, status: outcome.status, reason: outcome.status === 'compliant' ? `组计入 ${outcome.total}` : `存在未知输入：${rule.requirement}`, target: { scope: 'group', subjectIds: aggregate.caseV2.subjects.map((subject) => subject.id) }, executedBy: 'deterministic', calculation: { result: outcome.total, detailLines: outcome.detailLines } })
+      continue
+    }
+    const subjectIds = rule.targetScope === 'subject' ? aggregate.caseV2.subjects.map((subject) => subject.id) : [undefined]
+    for (const subjectId of subjectIds) {
+      const status = evaluateCondition(rule.when, (ref) => resolveRuleField(aggregate, observations, ref.field ?? ref.fact ?? '', subjectId))
+      checks.push({
+        ruleId: rule.id,
+        status: statusFromTriState(status, rule),
+        reason: rule.requirement,
+        target: rule.targetScope === 'subject' && subjectId ? { scope: 'subject', subjectIds: [subjectId] } : { scope: 'case', subjectIds: aggregate.caseV2.subjects.map((subject) => subject.id) },
+        executedBy: 'deterministic',
+      })
+    }
+  }
+  return checks
+}
+
 /** 装配 11 个节点的真实执行器（extract/summarize 走 Pi；check/calculate 走确定性引擎） */
 export async function assembleV2Executors(aggregate: CaseAggregateV2, template: TemplateVersion, options: AssembleOptions): Promise<Record<NodeKind, NodeExecutor>> {
   const caseId = aggregate.caseV2.id
@@ -94,6 +181,7 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
   const subjectIds = aggregate.caseV2.subjects.map((subject) => subject.id)
   let extractedObservations: Array<Record<string, unknown>> = aggregate.observations.map((observation) => observation as unknown as Record<string, unknown>)
   let latestDeterministicChecks: Array<Record<string, unknown>> = []
+  const semanticRules = rules.filter((rule) => rule.execution === 'semantic')
   // 材料上下文按需构建（PDF/Office 为异步解析）
   const materialContext = await buildMaterialContext(aggregate, template, caseId, options.ocrPort)
 
@@ -123,42 +211,35 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
 
   const piSummarize: NodeExecutor = async (node, inputHash) => {
     if (options.signal?.aborted) throw new Error('已取消（模型调用前）')
-    const findingsText = rules.map((rule) => `- ${rule.id}: ${rule.requirement}`).join('\n')
+    const findingsText = rules.map((rule) => `- ${rule.id}（${rule.execution}，${rule.targetScope}）：${rule.requirement}`).join('\n')
     const prompt = [
       '任务：基于案卷字段、材料与规则清单，给出审核结论。',
-      '输出 JSON：{"opinion":"…简短结论…"}。规则检查结果由系统确定性检查节点生成，不要重复输出 checks。',
+      '输出 JSON：{"opinion":"…简短结论…","checks":[{"ruleId":"…","status":"compliant|non-compliant|awaiting-confirmation|not-applicable","reason":"…","subjectIds":["…"]}]}。只为 semantic 规则输出 checks；deterministic/manual 规则由系统提供。',
       `当前已生成的规则检查：${JSON.stringify(latestDeterministicChecks)}`,
       `规则清单：\n${findingsText}`,
       materialContext,
     ].join('\n')
     const { content } = await options.client.complete({ prompt, system: REVIEW_SYSTEM_PROMPT, signal: options.signal })
     if (options.signal?.aborted) throw new Error('已取消（模型调用后）')
-    const parsed = (extractJson(content) ?? {}) as { opinion?: string }
+    const parsed = (extractJson(content) ?? {}) as { opinion?: string; checks?: Array<{ ruleId?: string; status?: string; reason?: string; subjectIds?: string[] }> }
+    const validRuleIds = new Set(semanticRules.map((rule) => rule.id))
+    const semanticChecks = (parsed.checks ?? []).flatMap((check) => {
+      if (!check.ruleId || !validRuleIds.has(check.ruleId)) return []
+      const rule = semanticRules.find((candidate) => candidate.id === check.ruleId)!
+      const allowed: CheckStatus[] = ['compliant', 'non-compliant', 'awaiting-confirmation', 'not-applicable']
+      if (!check.status || !allowed.includes(check.status as CheckStatus)) return []
+      const subjectIds = rule.targetScope === 'subject'
+        ? (check.subjectIds ?? []).filter((subjectId) => aggregate.caseV2.subjects.some((subject) => subject.id === subjectId))
+        : aggregate.caseV2.subjects.map((subject) => subject.id)
+      return [{ ruleId: rule.id, status: check.status as CheckStatus, reason: check.reason || rule.requirement, target: { scope: rule.targetScope === 'subject' ? 'subject' : rule.targetScope === 'group' ? 'group' : 'case', subjectIds }, executedBy: 'semantic' as const }]
+    })
     const opinion = parsed.opinion || (latestDeterministicChecks.length > 0 ? `已完成 ${latestDeterministicChecks.length} 项规则检查。` : '已完成材料整理，暂无可执行规则。')
-    return { status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], opinions: [{ text: opinion, at: new Date().toISOString(), engine: 'ai' }], summary: opinion } }
+    return { status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], checks: semanticChecks as Array<Record<string, unknown>>, opinions: [{ text: opinion, at: new Date().toISOString(), engine: 'ai' }], summary: opinion } }
   }
 
   const deterministicCheck: NodeExecutor = async (node, inputHash) => {
-    // 确定性规则：字段已知值逐条评估（引擎三值语义）
-    const knownValues = (fieldKey: string): { known: boolean; value: unknown } => {
-      const caseValue = (aggregate.caseV2.caseFields[fieldKey] as { value?: unknown } | undefined)?.value
-      if (caseValue !== undefined) return { known: true, value: caseValue }
-      for (const subject of aggregate.caseV2.subjects) {
-        const subjectValue = (subject.fields[fieldKey] as { value?: unknown } | undefined)?.value
-        if (subjectValue !== undefined) return { known: true, value: subjectValue }
-      }
-      const extracted = [...extractedObservations].reverse().find((observation) => observation.fieldKey === fieldKey)
-      if (extracted && 'value' in extracted) return { known: true, value: extracted.value }
-      return { known: false, value: null }
-    }
-    const checks = rules
-      .filter((rule) => rule.when && (rule.when as { field?: string }).field !== undefined)
-      .map((rule) => {
-        const condition = rule.when as Parameters<typeof evaluateCondition>[0]
-        const status = evaluateCondition(condition, (ref) => knownValues(ref.field ?? ''))
-        return { ruleId: rule.id, status: status === 'true' ? 'compliant' : status === 'false' ? 'non-compliant' : 'needs-confirmation', reason: rule.requirement, target: { scope: 'case', subjectIds: [] } }
-      })
-    latestDeterministicChecks = checks as Array<Record<string, unknown>>
+    const checks = buildDeterministicRuleChecks(aggregate, rules, extractedObservations)
+    latestDeterministicChecks = checks as unknown as Array<Record<string, unknown>>
     return { status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], checks: latestDeterministicChecks } }
   }
 
@@ -216,14 +297,12 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
 }
 
 /** 汇总模板引用政策的结构化规则 */
-function collectRules(template: TemplateVersion): Array<{ id: string; requirement: string; when: unknown }> {
+function collectRules(template: TemplateVersion): RuleSpec[] {
   const { getPolicy } = require('./policy-store') as typeof import('./policy-store')
-  const rules: Array<{ id: string; requirement: string; when: unknown }> = []
+  const rules: RuleSpec[] = []
   for (const ref of template.policyRefs ?? []) {
     const policy = getPolicy(ref.policyId, ref.version)
-    for (const rule of policy?.compiledRules ?? []) {
-      rules.push({ id: rule.id, requirement: rule.requirement, when: rule.when })
-    }
+    for (const rule of policy?.compiledRules ?? []) rules.push(rule)
   }
   return rules
 }

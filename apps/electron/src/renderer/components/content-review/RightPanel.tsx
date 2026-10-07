@@ -1,5 +1,5 @@
 /**
- * RightPanel — 右栏「AI 审核员」
+ * RightPanel — 右栏「审核结果」
  *
  * 结构：
  * - 头部：栏目名 + 引擎徽标（ai → "AI 审核"、mock-engine → "模拟引擎"）
@@ -17,7 +17,7 @@ import { Button } from '@profer/ui/primitives/button'
 import { Spinner } from '@profer/ui/primitives/spinner'
 import type { ReviewRun } from '@profer/shared'
 import { reviewCaseAtom, reviewRunAtom, reviewRunningAtom, selectedFindingIdAtom, sortedFindingsAtom,
-  reviewRunStaleAtom,
+  reviewRunStaleAtom, reviewExecutionAtom,
 } from '@/atoms/review-atoms'
 import { cn } from '@/lib/utils'
 import type { ReviewActions } from './use-review-actions'
@@ -31,10 +31,11 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
   const run = useAtomValue(reviewRunAtom)
   const runStale = useAtomValue(reviewRunStaleAtom)
   const running = useAtomValue(reviewRunningAtom)
+  const execution = useAtomValue(reviewExecutionAtom)
   const findings = useAtomValue(sortedFindingsAtom)
   const selectedFindingId = useAtomValue(selectedFindingIdAtom)
   const reviewCase = useAtomValue(reviewCaseAtom)
-  const canRun = !!reviewCase && reviewCase.rulePacks.length > 0 && reviewCase.items.length > 0 && reviewCase.documents.some((document) => document.role === 'application')
+  const canRun = !!reviewCase
 
   const [exporting, setExporting] = React.useState(false)
   const [exportNotice, setExportNotice] = React.useState<string | null>(null)
@@ -68,8 +69,7 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
       <header className="shrink-0 border-b border-border/60 px-4 py-3">
         <div className="flex items-center gap-2">
           <Gavel size={16} className="text-primary" />
-          <h2 className="text-[13px] font-semibold text-foreground">AI 审核员</h2>
-          {run && <EngineBadge engine={run.engine} />}
+          <h2 className="text-[13px] font-semibold text-foreground">审核结果</h2>
         </div>
       </header>
 
@@ -79,13 +79,21 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
           type="button"
           className="h-9 w-full gap-2 text-[13px]"
           disabled={running || !canRun}
-          onClick={() => void actions.runReview()}
+          onClick={() => void actions.runFullReview()}
         >
           {running ? <Spinner size="sm" /> : <Play size={14} />}
-          {running ? '审核中…' : run ? '重新审核' : '开始审核'}
+          {running || execution.status === 'preparing' ? '审核中…' : run ? '重新审核' : '开始审核'}
         </Button>
-        {!canRun && <p className="mt-2 text-xs leading-5 text-muted-foreground">请先选择案卷、导入依据和待审文件，再识别可审核条目。</p>}
+        {!canRun && <p className="mt-2 text-xs leading-5 text-muted-foreground">请先新建或选择审核任务。</p>}
       </section>
+
+      {execution.status !== 'idle' && (
+        <section className={cn('mx-3 mt-3 rounded-lg px-3 py-2 text-xs', execution.status === 'failed' ? 'border border-destructive/40 bg-destructive/[0.06]' : execution.status === 'partial' || execution.status === 'awaiting-input' ? 'border border-amber-500/40 bg-amber-500/[0.06]' : 'bg-muted/40')}>
+          <p className="font-medium">{execution.message ?? '审核处理中'}</p>
+          {execution.documents && <p className="mt-1 text-muted-foreground">材料 {execution.documents.completed} / {execution.documents.total}</p>}
+          {execution.error && <p className="mt-1 text-destructive">{execution.error}</p>}
+        </section>
+      )}
 
       {/* 输入过期提示（M0/H09）：材料/规则在审核后被改过，结果仅作历史参考 */}
       {run && runStale && (
@@ -125,7 +133,7 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
             <ShieldAlert size={28} className="text-muted-foreground/60" />
             <p className="text-[13px] font-medium text-foreground/80">尚未运行审核</p>
             <p className="max-w-[220px] text-xs leading-5 text-muted-foreground">
-              点击上方「开始审核」，AI 审核员会逐项核对规则、申报与证明，生成可定位的问题卡。
+              点击上方「开始审核」，系统会自动准备材料、核对规则并生成可定位的问题卡。
             </p>
           </div>
         ) : run.status === 'failed' ? (
@@ -177,21 +185,6 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
         )}
       </footer>
     </div>
-  )
-}
-
-/** 引擎徽标 */
-function EngineBadge({ engine }: { engine: ReviewRun['engine'] }): React.ReactElement {
-  const isAi = engine === 'ai'
-  return (
-    <span
-      className={cn(
-        'rounded-md px-1.5 py-0.5 text-[11px] font-medium',
-        isAi ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400' : 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
-      )}
-    >
-      {isAi ? 'AI 审核' : '模拟引擎'}
-    </span>
   )
 }
 

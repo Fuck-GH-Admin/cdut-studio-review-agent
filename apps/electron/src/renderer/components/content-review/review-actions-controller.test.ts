@@ -18,6 +18,7 @@ import {
   reviewRunsByCaseAtom,
   reviewTasksByCaseAtom,
   reviewRunStaleByCaseAtom,
+  reviewExecutionByCaseAtom,
   selectedCaseIdAtom,
 } from '@/atoms/review-atoms'
 
@@ -48,6 +49,7 @@ function makeCase(id: string, overrides: Partial<ReviewCase> = {}): ReviewCase {
     items: [],
     evidences: [],
     isDemo: false,
+    ...overrides,
   } as ReviewCase
 }
 
@@ -278,6 +280,24 @@ describe('review-actions-controller（M0/H05 并发与按案写入）', () => {
 
     ;(shift('run-1') ).resolve(makeRun('case-A'))
     await first
+  })
+
+  test('一键审核复用已有中间产物，只调用一次最终审核', async () => {
+    const { api, calls } = makeApi()
+    const source = makeCase('one-click', {
+      documents: [{ id: 'application-1', fileName: '申报.txt', role: 'application', mimeType: 'text/plain', sizeBytes: 1, parseStatus: 'parsed', blocks: [], origin: 'upload' } as never],
+      rulePacks: [{ id: 'pack', documentId: 'rule-1', name: '规则', publisher: '', academicYear: '2026', version: 'v1', outline: [{ id: 'r1', category: '资格', title: '规则', summary: '', anchors: [], generatedBy: 'ai' }], confirmed: true }],
+      items: [{ id: 'item-1', title: '事项', declaredScore: 1, category: '其他', evidenceDocumentIds: [], status: 'identified', identifiedBy: 'ai', anchor: { documentId: 'application-1', precision: 'document' } } as never],
+    })
+    api.getCase = async () => source
+    api.runReview = async () => { calls.runReview += 1; return makeRun('one-click') }
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    await actions.selectCase('one-click')
+    await actions.runFullReview()
+    expect(calls.runReview).toBe(1)
+    expect(store.get(reviewExecutionByCaseAtom)['one-click']?.status).toBe('completed')
+    expect(store.get(reviewTasksByCaseAtom)['one-click']?.running).toBe(false)
   })
 
   test('操作代次与互斥：同类第二次点击被拒；完成后结果正常落位', async () => {

@@ -3,7 +3,7 @@
  *
  * 结构：
  * - 头部：栏目名 + 条目统计（N 条 / M 份证明）
- * - AI 识别条目区：识别按钮（busy 时 spinner）→ 条目卡列表
+ * - 申报事项区：开始审核时自动识别 → 条目卡列表
  *   每张条目卡：标题 / 类别 badge / 申报分数 / 日期 / 组织方 + 关联证据缩略名 + 该条 findings 的红/黄圆点
  *   + 卡下方直接渲染该条目的申报原文行（SourceBlockView dense）
  *   点击条目卡 → 写 reviewFocusAtom 定位其申报行（severity 取该条最高严重度）
@@ -13,9 +13,7 @@
 
 import * as React from 'react'
 import { useAtomValue } from 'jotai'
-import { Award, FileSearch, Layers } from 'lucide-react'
-import { Button } from '@profer/ui/primitives/button'
-import { Spinner } from '@profer/ui/primitives/spinner'
+import { Award, Layers } from 'lucide-react'
 import type {
   EvidenceDocument,
   EvidenceParseStatus,
@@ -28,7 +26,6 @@ import {
   currentItemsAtom,
   documentsByRoleAtom,
   findBlockByAnchor,
-  reviewBusyAtom,
   reviewRunAtom,
   reviewCaseAtom,
 } from '@/atoms/review-atoms'
@@ -52,7 +49,6 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
   const evidences = useAtomValue(currentEvidencesAtom)
   const documentsByRole = useAtomValue(documentsByRoleAtom)
   const run = useAtomValue(reviewRunAtom)
-  const busy = useAtomValue(reviewBusyAtom)
   const reviewCase = useAtomValue(reviewCaseAtom)
 
   const renderedBlockIds = new Set(items.map((item) => item.anchor.blockId))
@@ -102,28 +98,17 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
         </p>
       </header>
 
-      {/* AI 识别条目 */}
+      {/* 申报事项（开始审核时自动识别） */}
       <section className="shrink-0 px-3 py-3">
         <div className="flex items-center justify-between px-1 pb-2">
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            AI 识别条目
+            申报事项
           </p>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            disabled={busy.items || !reviewCase || documentsByRole.application.length === 0}
-            onClick={() => void actions.extractItems()}
-            className="h-7 gap-1.5 px-2 text-[13px]"
-          >
-            {busy.items ? <Spinner size="sm" /> : <FileSearch size={13} />}
-            {busy.items ? '识别中…' : items.length > 0 ? '重新识别' : '识别条目'}
-          </Button>
         </div>
 
         {items.length === 0 ? (
           <p className="rounded-lg border border-dashed border-border/60 px-3 py-6 text-center text-xs text-muted-foreground">
-            尚未识别条目，点上方按钮从申报表提取。
+            导入待审材料后，系统会在开始审核时自动识别申报事项。
           </p>
         ) : (
           <div className="space-y-2">

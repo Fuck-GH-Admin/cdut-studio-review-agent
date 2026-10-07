@@ -11,12 +11,9 @@
 
 import * as React from 'react'
 import { useAtomValue } from 'jotai'
-import { BookOpen, FileText, Sparkles } from 'lucide-react'
-import { Button } from '@profer/ui/primitives/button'
-import { Spinner } from '@profer/ui/primitives/spinner'
+import { BookOpen, FileText } from 'lucide-react'
 import {
   documentsByRoleAtom,
-  reviewBusyAtom,
   reviewCaseAtom,
 } from '@/atoms/review-atoms'
 import type { ReviewActions } from './use-review-actions'
@@ -30,11 +27,9 @@ interface LeftPanelProps {
 export function LeftPanel({ actions }: LeftPanelProps): React.ReactElement {
   const reviewCase = useAtomValue(reviewCaseAtom)
   const documentsByRole = useAtomValue(documentsByRoleAtom)
-  const busy = useAtomValue(reviewBusyAtom)
 
   const ruleDocuments = documentsByRole.rule
   const rulePacks = reviewCase?.rulePacks ?? []
-  const hasOutline = rulePacks.some((pack) => pack.outline.length > 0)
 
   return (
     <div className="flex h-full min-h-0 flex-col overflow-y-auto scrollbar-thin">
@@ -65,23 +60,12 @@ export function LeftPanel({ actions }: LeftPanelProps): React.ReactElement {
         </section>
       ))}
 
-      {/* AI 规则大纲 */}
+      {/* 规则摘要（开始审核时自动准备） */}
       <section className="shrink-0 px-3 pb-3">
         <div className="flex items-center justify-between px-1 pb-2">
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            AI 规则大纲
+            规则摘要
           </p>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            disabled={busy.outline || rulePacks.length === 0}
-            onClick={() => void actions.generateRuleOutline()}
-            className="h-7 gap-1.5 px-2 text-[13px]"
-          >
-            {busy.outline ? <Spinner size="sm" /> : <Sparkles size={13} />}
-            {busy.outline ? '生成中…' : hasOutline ? '重新生成' : '生成大纲'}
-          </Button>
         </div>
         {rulePacks.length === 0 && <RuleOutlineList outline={[]} onLocate={actions.locateRuleAnchor} />}
         {rulePacks.map((pack) => (
@@ -96,7 +80,7 @@ export function LeftPanel({ actions }: LeftPanelProps): React.ReactElement {
       {rulePacks.length > 0 && (
         <footer className="mt-auto shrink-0 border-t border-border/60 px-4 py-3 text-xs text-muted-foreground">
           <p>适用学年：{reviewCase?.academicYear}</p>
-          <p className="mt-0.5">共 {rulePacks.length} 份规则包；AI 大纲需人工核对原文。</p>
+          <p className="mt-0.5">共 {rulePacks.length} 份审核依据；开始审核时会自动准备规则摘要。</p>
         </footer>
       )}
     </div>
