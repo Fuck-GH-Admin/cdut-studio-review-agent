@@ -1,5 +1,5 @@
 /**
- * V2 运行结果面板（G02 断点"看见检查结果"）：展示最近一次真实运行的检查明细/结论/覆盖
+ * 审核结果面板：展示最近一次真实运行的检查明细、结论和覆盖情况
  */
 import { useCallback, useEffect, useState } from 'react'
 import type { ReviewRunV2 } from '@profer/shared'
@@ -21,7 +21,7 @@ export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refre
       setRuns(list ?? [])
       if (list && list.length > 0) setExpandedRun(list[0]!.id)
     } catch (error) {
-      console.error('[V2] 运行列表加载失败', error)
+      console.error('[审核] 运行列表加载失败', error)
     }
   }, [caseId])
 
@@ -54,14 +54,14 @@ export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refre
   return (
     <div className="space-y-1.5 rounded-lg border-t pt-2">
       <div className="flex items-center justify-between">
-        <p className="text-xs font-medium">审核运行（{runs.length}）</p>
+        <p className="text-xs font-medium">审核结果（{runs.length} 次）</p>
         <div className="flex items-center gap-1">
-          <Button size="sm" variant="outline" disabled={running} onClick={() => void startRun()}>{running ? '审核中…' : '开始自动审核'}</Button>
+          <Button size="sm" variant="outline" disabled={running} onClick={() => void startRun()}>{running ? '审核中…' : '开始审核'}</Button>
           <Button size="sm" variant="ghost" disabled={runs.length === 0} onClick={() => void exportReport()}>导出报告</Button>
           <Button size="sm" variant="ghost" onClick={() => void load()}>刷新</Button>
         </div>
       </div>
-      {runs.length === 0 && <p className="text-xs text-muted-foreground">尚无审核运行，点击"开始自动审核"用已配置的真实模型渠道执行检查</p>}
+      {runs.length === 0 && <p className="text-xs text-muted-foreground">尚未开始审核。点击“开始自动审核”后，系统会读取当前材料和审核依据。</p>}
       {runs.slice(0, 3).map((run) => (
         <div key={run.id} className="rounded-md border p-2 text-xs">
           <button type="button" className="flex w-full items-center justify-between" onClick={() => setExpandedRun(expandedRun === run.id ? null : run.id)}>

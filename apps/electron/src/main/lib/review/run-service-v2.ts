@@ -44,6 +44,9 @@ export function computeRunInputHash(
 
 export interface StartRunOptions {
   runId?: string
+  initiatedBy?: ReviewRunV2['initiatedBy']
+  observationSnapshot?: Array<Record<string, unknown>>
+  evidenceSnapshot?: Array<Record<string, unknown>>
   /** 续跑：沿用既有运行文件的检查点 */
   resumeRunId?: string
   onEvent?: (event: RunEvent) => void
@@ -63,7 +66,9 @@ export async function runReviewCaseV2(
   options: StartRunOptions = {},
 ): Promise<ReviewRunV2> {
   const runId = options.runId ?? options.resumeRunId ?? `run-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
-  const inputHash = computeRunInputHash(caseV2, [], [])
+  const observationSnapshot = options.observationSnapshot ?? []
+  const evidenceSnapshot = options.evidenceSnapshot ?? []
+  const inputHash = computeRunInputHash(caseV2, observationSnapshot, evidenceSnapshot)
   const nodes = planRunGraph(template)
   for (const node of nodes) {
     node.inputHash = createHash('sha256').update(JSON.stringify({ inputHash, nodeId: node.id, dependencies: node.dependsOn })).digest('hex')
@@ -109,8 +114,8 @@ export async function runReviewCaseV2(
       templateVersion: template.version,
       policyVersions: (template.policyRefs?.map((ref) => ({ policyVersionId: ref.policyId, version: ref.version })) ?? template.policyVersionIds.map((policyVersionId) => ({ policyVersionId, version: 1 }))),
       documentVersions: caseV2.documents.map((document) => ({ documentId: document.documentId, versionId: document.versionId, contentHash: document.contentHash })),
-      observationIds: [],
-      evidenceLinkIds: [],
+      observationIds: observationSnapshot.map((item) => String(item.id ?? '')).filter(Boolean),
+      evidenceLinkIds: evidenceSnapshot.map((item) => String(item.id ?? '')).filter(Boolean),
     },
     status: 'running',
     checkpoints,
@@ -119,6 +124,7 @@ export async function runReviewCaseV2(
     coverage: { documents: [], plannedChecks: 0, completedChecks: 0, effectiveVerdicts: 0, pendingChecks: 0 },
     diagnostics: [],
     startedAt: new Date().toISOString(),
+    initiatedBy: options.initiatedBy,
   }
   saveRunV2(run)
 

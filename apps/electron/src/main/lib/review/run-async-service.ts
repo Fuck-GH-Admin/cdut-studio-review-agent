@@ -57,7 +57,11 @@ export async function assembleAndRunReview(caseId: string, options: { signal?: A
   if (!template) throw new Error(`模板不存在: ${aggregate.caseV2.templateId}@${aggregate.caseV2.templateVersion}`)
   const { client, ocrPort } = await assembleReviewClient()
   const executors = await assembleV2Executors(aggregate, template, { client, ocrPort, signal: options.signal })
-  return runReviewCaseV2(aggregate.caseV2, template, executors, { cancelled: options.signal ? () => options.signal!.aborted : undefined })
+  return runReviewCaseV2(aggregate.caseV2, template, executors, {
+    cancelled: options.signal ? () => options.signal!.aborted : undefined,
+    observationSnapshot: aggregate.observations as unknown as Array<Record<string, unknown>>,
+    evidenceSnapshot: aggregate.evidenceLinks as unknown as Array<Record<string, unknown>>,
+  })
 }
 
 /** 运行去重：同案已有排队/运行中的任务时拒绝重复启动 */
@@ -104,8 +108,8 @@ export function startReviewRunAsync(caseId: string, initiatedBy: Actor, source?:
     caseId: aggregate.caseV2.id,
     templateId: aggregate.caseV2.templateId,
     templateVersion: aggregate.caseV2.templateVersion,
-    inputManifest: { hash: '', templateVersion: aggregate.caseV2.templateVersion, policyVersions: [], documentVersions: [], observationIds: [], evidenceLinkIds: [] },
-    status: 'running',
+    inputManifest: { hash: '', templateVersion: aggregate.caseV2.templateVersion, policyVersions: [], documentVersions: [], observationIds: aggregate.observations.map((item) => item.id), evidenceLinkIds: aggregate.evidenceLinks.map((item) => item.id) },
+    status: 'queued',
     checkpoints: [],
     checks: [],
     opinions: [],
@@ -124,8 +128,23 @@ export function startReviewRunAsync(caseId: string, initiatedBy: Actor, source?:
       const executors = await assembleV2Executors(aggregate, template, { client, ocrPort, signal: controller.signal })
       return await runReviewCaseV2(aggregate.caseV2, template, executors, {
         runId,
+        initiatedBy,
+        observationSnapshot: aggregate.observations as unknown as Array<Record<string, unknown>>,
+        evidenceSnapshot: aggregate.evidenceLinks as unknown as Array<Record<string, unknown>>,
         cancelled: () => isRunCancelled(runId) || controller.signal.aborted,
       })
+    } catch (error) {
+      const current = getRunV2(caseId, runId)
+      if (current && (current.status === 'queued' || current.status === 'running')) {
+        saveRunV2({
+          ...current,
+          status: controller.signal.aborted || isRunCancelled(runId) ? 'cancelled' : 'failed',
+          error: error instanceof Error ? error.message : String(error),
+          diagnostics: [...current.diagnostics, error instanceof Error ? error.message : String(error)],
+          completedAt: new Date().toISOString(),
+        })
+      }
+      throw error
     } finally {
       setTimeout(() => activeRuns.delete(runId), 5_000).unref?.()
     }

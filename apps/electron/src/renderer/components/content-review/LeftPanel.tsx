@@ -2,7 +2,7 @@
  * LeftPanel — 左栏「审核依据」
  *
  * 结构：
- * - 顶部：案卷管理条（选择/新建/导入材料/切换领域包/删除案卷，CaseManagerBar）
+ * - 顶部：当前审核依据和规则内容
  * - 头部：栏目名 + 规则文档名
  * - 规则文档全文（SourceBlockView 列表，只读；问题卡/大纲定位的蓝色高亮落点）
  * - AI 规则大纲区：生成按钮（busy 时 spinner）→ RuleOutlineList
@@ -20,7 +20,6 @@ import {
   reviewCaseAtom,
 } from '@/atoms/review-atoms'
 import type { ReviewActions } from './use-review-actions'
-import { CaseManagerBar } from './CaseManagerBar'
 import { RuleOutlineList } from './RuleOutlineList'
 import { SourceBlockView } from './SourceBlockView'
 
@@ -39,9 +38,6 @@ export function LeftPanel({ actions }: LeftPanelProps): React.ReactElement {
 
   return (
     <div className="flex h-full min-h-0 flex-col overflow-y-auto scrollbar-thin">
-      {/* 案卷管理条（入口：切换/新建/导入材料/领域包/删除） */}
-      <CaseManagerBar actions={actions} />
-
       {/* 头部 */}
       <header className="shrink-0 border-b border-border/60 px-4 py-3">
         <div className="flex items-center gap-2">

@@ -15,16 +15,14 @@
  */
 
 import * as React from 'react'
-import { toast } from 'sonner'
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
   ClipboardCheck,
-  Download,
   FileText,
   Gavel,
   Layers,
   MessageCircle,
-  RotateCcw,
+  Settings,
 } from 'lucide-react'
 import { detectIsWindows } from '@profer/ui'
 import { Button } from '@profer/ui/primitives/button'
@@ -34,12 +32,8 @@ import { isEditableTarget } from '@/lib/navigation-controller'
 import {
   reviewActivePaneAtom,
   reviewAssistantOpenAtom,
-  reviewCaseAtom,
   reviewErrorAtom,
   reviewGatewayStatusAtom,
-  reviewRunAtom,
-  reviewRunStaleAtom,
-  reviewRunningAtom,
   reviewWorkspaceSectionAtom,
   type ReviewWorkspaceSection,
 } from '@/atoms/review-atoms'
@@ -47,6 +41,7 @@ import { channelsAtom } from '@/atoms/conversation-atoms'
 import type { ReviewModelGatewayStatus } from '@profer/shared'
 import { cn } from '@/lib/utils'
 import { AssistantDrawer } from './AssistantDrawer'
+import { CaseManagerBar } from './CaseManagerBar'
 import { CenterPanel } from './CenterPanel'
 import { LeftPanel } from './LeftPanel'
 import { RightPanel } from './RightPanel'
@@ -62,12 +57,8 @@ type Pane = 'left' | 'center' | 'right'
 const NARROW_BREAKPOINT_PX = 1100
 
 export function ContentReviewView(): React.ReactElement {
-  const reviewCase = useAtomValue(reviewCaseAtom)
   const gatewayStatus = useAtomValue(reviewGatewayStatusAtom)
   const errorMessage = useAtomValue(reviewErrorAtom)
-  const run = useAtomValue(reviewRunAtom)
-  const runStale = useAtomValue(reviewRunStaleAtom)
-  const running = useAtomValue(reviewRunningAtom)
   const section = useAtomValue(reviewWorkspaceSectionAtom)
   const setSection = useSetAtom(reviewWorkspaceSectionAtom)
   const channels = useAtomValue(channelsAtom)
@@ -81,18 +72,6 @@ export function ContentReviewView(): React.ReactElement {
     () => typeof window !== 'undefined' && window.innerWidth < NARROW_BREAKPOINT_PX,
   )
   const isWindows = React.useMemo(() => detectIsWindows(), [])
-  const [exporting, setExporting] = React.useState(false)
-
-  const handleExport = async (): Promise<void> => {
-    setExporting(true)
-    try {
-      const result = await actions.exportReport()
-      if (result) toast.success('预审报告已导出', { description: result.markdownPath })
-    } finally {
-      setExporting(false)
-    }
-  }
-
   // 设置面板覆盖工作台而不卸载它；渠道变化时也需刷新出口徽标。
   React.useEffect(() => { void actions.initialize() }, [actions, channels])
 
@@ -145,45 +124,12 @@ export function ContentReviewView(): React.ReactElement {
       >
         <div className="flex items-center gap-2">
           <ClipboardCheck size={16} className="text-primary" />
-          <span className="text-[13px] font-semibold">材料审核智能体</span>
-          {/* 演示徽标 */}
-          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">演示版</span>
+          <span className="text-[13px] font-semibold">材料审核</span>
           {/* 出口状态徽标 */}
           <GatewayBadge status={gatewayStatus} />
         </div>
 
-        {/* 案卷信息 */}
-        {reviewCase && (
-          <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
-            <FileText size={12} className="shrink-0" />
-            <span className="truncate" title={reviewCase.title}>
-              {reviewCase.applicant} · {reviewCase.academicYear}
-            </span>
-          </div>
-        )}
-
         <div className="ml-auto flex shrink-0 items-center gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="h-8 gap-1.5 px-3 text-[13px]"
-            onClick={() => void actions.loadDemoCase()}
-          >
-            <RotateCcw size={13} />
-            载入演示案卷
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="h-8 gap-1.5 px-3 text-[13px]"
-            disabled={exporting || running || !run || run.status !== 'completed' || runStale}
-            onClick={() => void handleExport()}
-          >
-            <Download size={13} />
-            导出报告
-          </Button>
           <Button
             type="button"
             variant="ghost"
@@ -199,17 +145,17 @@ export function ContentReviewView(): React.ReactElement {
 
       <nav aria-label="审核工作页" className="relative z-10 flex shrink-0 flex-wrap gap-1 border-b bg-card/60 px-3 py-1.5 titlebar-no-drag">
         {([
-          ['workbench', '预审工作台'],
-          ['case-v2', 'V2 案卷'],
-          ['templates', '模板编排'],
-          ['batches', '批次管理'],
+          ['assist', '辅助审核'],
+          ['batch', '批量审核'],
+          ['templates', '审核模板'],
+          ['settings', '设置'],
         ] as Array<[ReviewWorkspaceSection, string]>).map(([id, label]) => (
           <Button key={id} size="sm" variant={section === id ? 'secondary' : 'ghost'} aria-pressed={section === id} onClick={() => setSection(id)}>{label}</Button>
         ))}
       </nav>
 
       {/* ===== 窄屏：顶部三按钮切换栏 ===== */}
-      {narrow && section === 'workbench' && (
+      {narrow && section === 'assist' && (
         <nav
           role="tablist"
           aria-label="工作台栏目"
@@ -222,7 +168,13 @@ export function ContentReviewView(): React.ReactElement {
       )}
 
       {/* ===== 三栏主体 ===== */}
-      <main className={cn('relative flex min-h-0 flex-1 titlebar-no-drag', section !== 'workbench' && 'hidden')}>
+      <main className={cn('relative min-h-0 flex-1 overflow-hidden titlebar-no-drag', section !== 'assist' && 'hidden')}>
+        <div className="flex h-full min-h-0 flex-col">
+          <div className="shrink-0 overflow-auto border-b border-border/60 bg-card/40 py-2">
+            <CaseManagerBar actions={actions} />
+            <V2CasePanel />
+          </div>
+          <div className="relative flex min-h-0 flex-1">
         <PaneWrapper
           pane="left"
           className="flex-[3]"
@@ -244,16 +196,25 @@ export function ContentReviewView(): React.ReactElement {
         <PaneWrapper pane="right" className="flex-[3]" narrow={narrow} active={activePane} showSeparator={false}>
           <RightPanel actions={actions} />
         </PaneWrapper>
+          </div>
+        </div>
       </main>
 
-      <section aria-label="V2 案卷管理" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'case-v2' && 'hidden')}>
-        <V2CasePanel />
-      </section>
       <section aria-label="审核模板编排" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'templates' && 'hidden')}>
         <TemplateWizardPanel />
       </section>
-      <section aria-label="审核批次管理" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'batches' && 'hidden')}>
+      <section aria-label="审核批次管理" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'batch' && 'hidden')}>
         <BatchPanel />
+      </section>
+      <section aria-label="审核设置" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'settings' && 'hidden')}>
+        <div className="mx-3 max-w-2xl rounded-xl border bg-card p-4 shadow-sm">
+          <div className="mb-3 flex items-center gap-2 text-sm font-semibold"><Settings size={15} />审核设置</div>
+          <p className="text-sm text-muted-foreground">审核会复用全局模型配置。只有在模型不可用时才需要处理配置问题。</p>
+          <div className="mt-4 rounded-lg bg-muted/40 p-3 text-sm">
+            <div className="flex items-center gap-2 font-medium"><FileText size={14} />模型出口</div>
+            <p className="mt-1 text-muted-foreground">{gatewayStatus?.available ? `已连接：${gatewayStatus.protocol === 'local-private' ? '本地私有出口' : 'OpenAI 兼容出口'}` : '审核模型不可用，请前往全局模型配置。'}</p>
+          </div>
+        </div>
       </section>
 
       {/* ===== 助手抽屉（fixed 到本视图根） ===== */}
@@ -277,14 +238,7 @@ export function ContentReviewView(): React.ReactElement {
 /** 模型出口状态徽标；无模型只表示未配置，演示模拟由运行徽标单独说明。 */
 function GatewayBadge({ status }: { status: ReviewModelGatewayStatus | null }): React.ReactElement | null {
   if (!status) return null
-  if (status.available) {
-    const label = status.protocol === 'local-private' ? '本地私有出口' : 'OpenAI 兼容出口'
-    return (
-      <span className="rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-600 dark:text-green-400">
-        {label}
-      </span>
-    )
-  }
+  if (status.available) return null
   return (
     <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400">
       未配置审核模型

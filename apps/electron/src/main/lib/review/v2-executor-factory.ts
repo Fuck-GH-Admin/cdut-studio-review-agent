@@ -12,7 +12,7 @@
 
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import type { CaseAggregateV2, DocumentVersion, TemplateVersion } from '@profer/shared'
+import type { CaseAggregateV2, DocumentVersion, Observation, TemplateVersion } from '@profer/shared'
 import type { NodeExecutor, NodeKind } from './review-run-graph'
 import type { ReviewModelClient } from './pi-review-executor'
 import { REVIEW_SYSTEM_PROMPT } from './pi-review-executor'
@@ -64,7 +64,13 @@ async function buildMaterialContext(aggregate: CaseAggregateV2, template: Templa
     }
   }
   parts.push('【负责人规则】')
-  for (const ref of template.policyRefs ?? []) void ref
+  const { getPolicy } = require('./policy-store') as typeof import('./policy-store')
+  for (const ref of template.policyRefs ?? []) {
+    const policy = getPolicy(ref.policyId, ref.version)
+    for (const rule of policy?.compiledRules ?? []) {
+      parts.push(`- ${rule.id}: ${rule.requirement}`)
+    }
+  }
   parts.push('【材料内容】')
   for (const doc of aggregate.caseV2.documents) {
     if (doc.active === false) continue
@@ -86,6 +92,8 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
   const caseId = aggregate.caseV2.id
   const rules = (template.policyRefs ?? []).length > 0 ? collectRules(template) : []
   const subjectIds = aggregate.caseV2.subjects.map((subject) => subject.id)
+  let extractedObservations: Array<Record<string, unknown>> = aggregate.observations.map((observation) => observation as unknown as Record<string, unknown>)
+  let latestDeterministicChecks: Array<Record<string, unknown>> = []
   // 材料上下文按需构建（PDF/Office 为异步解析）
   const materialContext = await buildMaterialContext(aggregate, template, caseId, options.ocrPort)
 
@@ -109,6 +117,7 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
       if (!item.subjectId || !item.fieldKey || refs.length === 0) return null
       return { subjectId: item.subjectId, fieldKey: item.fieldKey, value: item.value ?? null, sourceRefs: refs, extractedBy: 'ai' as const, confirmed: false, confidence: item.confidence }
     }).filter(Boolean)
+    extractedObservations = observations as Array<Record<string, unknown>>
     return { status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], observations: observations as Array<Record<string, unknown>>, parseIndex: [] } }
   }
 
@@ -117,16 +126,16 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
     const findingsText = rules.map((rule) => `- ${rule.id}: ${rule.requirement}`).join('\n')
     const prompt = [
       '任务：基于案卷字段、材料与规则清单，给出审核结论。',
-      '输出 JSON：{"opinion":"…简短结论…","checks":[{"ruleId":"…","status":"compliant|non-compliant|needs-confirmation|not-applicable","reason":"…"}]}',
+      '输出 JSON：{"opinion":"…简短结论…"}。规则检查结果由系统确定性检查节点生成，不要重复输出 checks。',
+      `当前已生成的规则检查：${JSON.stringify(latestDeterministicChecks)}`,
       `规则清单：\n${findingsText}`,
       materialContext,
     ].join('\n')
     const { content } = await options.client.complete({ prompt, system: REVIEW_SYSTEM_PROMPT, signal: options.signal })
     if (options.signal?.aborted) throw new Error('已取消（模型调用后）')
-    const parsed = (extractJson(content) ?? {}) as { opinion?: string; checks?: Array<{ ruleId: string; status: string; reason: string }> }
-    const validRuleIds = new Set(rules.map((rule) => rule.id))
-    const checks = (parsed.checks ?? []).filter((check) => validRuleIds.has(check.ruleId) && ['compliant', 'non-compliant', 'needs-confirmation', 'not-applicable'].includes(check.status))
-    return { status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], checks: checks as Array<Record<string, unknown>>, opinions: parsed.opinion ? [{ text: parsed.opinion, at: new Date().toISOString(), engine: 'ai' }] : [], summary: parsed.opinion } }
+    const parsed = (extractJson(content) ?? {}) as { opinion?: string }
+    const opinion = parsed.opinion || (latestDeterministicChecks.length > 0 ? `已完成 ${latestDeterministicChecks.length} 项规则检查。` : '已完成材料整理，暂无可执行规则。')
+    return { status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], opinions: [{ text: opinion, at: new Date().toISOString(), engine: 'ai' }], summary: opinion } }
   }
 
   const deterministicCheck: NodeExecutor = async (node, inputHash) => {
@@ -134,6 +143,12 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
     const knownValues = (fieldKey: string): { known: boolean; value: unknown } => {
       const caseValue = (aggregate.caseV2.caseFields[fieldKey] as { value?: unknown } | undefined)?.value
       if (caseValue !== undefined) return { known: true, value: caseValue }
+      for (const subject of aggregate.caseV2.subjects) {
+        const subjectValue = (subject.fields[fieldKey] as { value?: unknown } | undefined)?.value
+        if (subjectValue !== undefined) return { known: true, value: subjectValue }
+      }
+      const extracted = [...extractedObservations].reverse().find((observation) => observation.fieldKey === fieldKey)
+      if (extracted && 'value' in extracted) return { known: true, value: extracted.value }
       return { known: false, value: null }
     }
     const checks = rules
@@ -143,7 +158,8 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
         const status = evaluateCondition(condition, (ref) => knownValues(ref.field ?? ''))
         return { ruleId: rule.id, status: status === 'true' ? 'compliant' : status === 'false' ? 'non-compliant' : 'needs-confirmation', reason: rule.requirement, target: { scope: 'case', subjectIds: [] } }
       })
-    return { status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], checks: checks as Array<Record<string, unknown>> } }
+    latestDeterministicChecks = checks as Array<Record<string, unknown>>
+    return { status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], checks: latestDeterministicChecks } }
   }
 
   const parse: NodeExecutor = async (_node, inputHash) => {

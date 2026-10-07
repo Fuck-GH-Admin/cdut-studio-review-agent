@@ -1,11 +1,11 @@
 /**
- * CaseManagerBar — 左栏顶部的「案卷管理」条（内容审核专区的入口）
+ * CaseManagerBar — 审核工作台上方的任务上下文条
  *
  * 拆掉「唯一入口 = 载入演示案卷」的入口墙，提供四件事：
  * 1. 案卷选择器：列出已存储案卷（标题 + 领域包 + 材料数 + 演示标记），点击切换
  * 2. 新建案卷：打开 CreateCaseDialog
  * 3. 导入材料：按角色（依据/待审/证明）走系统选择框导入到当前案卷
- * 4. 领域包切换 + 删除案卷（删除需二次确认，演示案卷不可删除）
+ * 4. 审核类型切换 + 删除案卷（删除需二次确认，演示案卷不可删除）
  *
  * 数据来源：reviewCaseListAtom（列表）/ reviewCaseAtom（当前案卷）；
  * 所有写入都经 use-review-actions，本组件不直接调用 window.reviewAPI。
@@ -155,7 +155,7 @@ export function CaseManagerBar({ actions }: CaseManagerBarProps): React.ReactEle
             </DropdownMenuLabel>
             {caseList.length === 0 ? (
               <div className="px-2 py-3 text-xs leading-5 text-muted-foreground">
-                暂无案卷。可点「新建案卷」创建，或用顶栏「载入演示案卷」查看演示数据。
+              暂无审核任务。可点「新建案卷」创建，或载入示例数据。
               </div>
             ) : (
               caseList.map((summary) => (
@@ -249,7 +249,7 @@ export function CaseManagerBar({ actions }: CaseManagerBarProps): React.ReactEle
           <DropdownMenuTrigger asChild>
             <button
               type="button"
-              aria-label="切换审核领域包"
+              aria-label="切换审核类型"
               disabled={!currentCase || switchingPack}
               className="flex w-full items-center gap-2 rounded-md border border-surface-border/60 bg-input/40 px-2.5 py-1.5 text-left shadow-xs transition-[border-color,box-shadow,background-color] duration-150 hover:border-surface-border-strong hover:bg-input-hover/50 focus:border-focus focus:bg-input focus:outline-none focus:ring-4 focus:ring-focus/15 disabled:cursor-not-allowed disabled:opacity-50"
             >
@@ -259,7 +259,7 @@ export function CaseManagerBar({ actions }: CaseManagerBarProps): React.ReactEle
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="w-[340px]">
-            <DropdownMenuLabel>审核领域包（切换规则类别与问题类型）</DropdownMenuLabel>
+            <DropdownMenuLabel>审核类型（切换规则类别与问题类型）</DropdownMenuLabel>
             {BUILTIN_DOMAIN_PACKS.map((pack) => (
               <DropdownMenuItem
                 key={pack.id}
