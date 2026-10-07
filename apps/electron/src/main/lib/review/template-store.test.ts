@@ -13,6 +13,17 @@ process.env.PROFER_CONFIG_DIR = CONFIG_DIR
 afterAll(() => rmSync(CONFIG_DIR, { recursive: true, force: true }))
 
 describe('六内置模板（M1）', () => {
+  test('旧版本地综测模板读取时补齐申报表/证明材料生命周期默认值', () => {
+    const legacy = {
+      ...BUILTIN_TEMPLATES_V2[0]!,
+      materialSlots: BUILTIN_TEMPLATES_V2[0]!.materialSlots.map(({ requiredAt: _requiredAt, ...slot }) => slot),
+    }
+    saveDraft(legacy)
+    const loaded = getTemplate('comprehensive-assessment-v2', 1)!
+    expect(loaded.materialSlots.find((slot) => slot.id === 'application-form')?.requiredAt).toBe('submission')
+    expect(loaded.materialSlots.find((slot) => slot.id === 'certificates')?.requiredAt).toBe('decision')
+  })
+
   test('Given 六模板草稿 When validate Then 全部 error 清零（可直接发布）', () => {
     for (const template of BUILTIN_TEMPLATES_V2) {
       const errors = validateTemplate(template).filter((issue) => issue.level === 'error')

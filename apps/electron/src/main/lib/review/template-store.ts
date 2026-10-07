@@ -43,7 +43,19 @@ export function getTemplate(templateId: string, version?: number): TemplateVersi
   const target = version ?? versions[0]
   if (target === undefined || !existsSync(versionPath(templateId, target))) return undefined
   try {
-    return JSON.parse(readFileSync(versionPath(templateId, target), 'utf-8')) as TemplateVersion
+    const template = JSON.parse(readFileSync(versionPath(templateId, target), 'utf-8')) as TemplateVersion
+    // v1 内置综测模板在 requiredAt 引入前已被本地用户保存；迁移仅补足
+    // 该内置模板证书槽的生命周期语义，其余旧模板仍按 submission 兼容默认值处理。
+    if (templateId === 'comprehensive-assessment-v2') {
+      return {
+        ...template,
+        materialSlots: template.materialSlots.map((slot) => slot.requiredAt !== undefined ? slot : {
+          ...slot,
+          requiredAt: slot.id === 'certificates' ? 'decision' : 'submission',
+        }),
+      }
+    }
+    return template
   } catch (error) {
     console.warn(`[审核模板] 模板解析失败: ${templateId}@${target}`, error)
     return undefined

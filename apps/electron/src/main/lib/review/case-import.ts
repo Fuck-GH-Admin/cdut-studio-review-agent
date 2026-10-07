@@ -27,12 +27,15 @@ export async function importDocumentIntoCase(input: {
   caseId: string
   fileName: string
   role: SourceDocument['role']
+  parentWindow?: import('electron').BrowserWindow
 }): Promise<SourceDocument> {
   assertSafeId(input.caseId)
   const reviewCase = getCase(input.caseId)
   if (!reviewCase) throw new Error(`案卷不存在: ${input.caseId}`)
 
-  const window = BrowserWindow.getAllWindows()[0]
+  const window = input.parentWindow && !input.parentWindow.isDestroyed()
+    ? input.parentWindow
+    : BrowserWindow.getFocusedWindow() ?? BrowserWindow.getAllWindows().find((candidate) => candidate.isVisible())
   const options = {
     title: '导入审核材料',
     properties: ['openFile'] as Array<'openFile'>,

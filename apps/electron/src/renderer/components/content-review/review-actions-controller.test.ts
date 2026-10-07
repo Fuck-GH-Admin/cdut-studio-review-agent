@@ -111,6 +111,7 @@ function makeApi() {
     },
     exportReport: async () => ({ markdownPath: '/tmp/x.md', jsonPath: '/tmp/x.json' }) as never,
     getLatestRun: async (caseId: string) => ({ run: null, inputStale: false }),
+    getTemplateV2: async () => ({ materialSlots: [] }) as never,
     getModelGatewayStatus: async () => ({ available: true, protocol: 'openai' }) as never,
     assistantChat: async () => ({ content: 'ok' }),
   }
@@ -120,6 +121,16 @@ function makeApi() {
 import type { SourceDocument } from '@profer/shared'
 
 describe('review-actions-controller（M0/H05 并发与按案写入）', () => {
+  test('重新打开工作台时恢复已有案卷，材料入口有可用的当前任务', async () => {
+    const { api } = makeApi()
+    api.listCases = async () => [{ id: 'case-restore', title: '恢复案卷', type: '综合测评', applicant: '张三', academicYear: '2026', updatedAt: '2026-10-07T00:00:00.000Z', isDemo: false, documentCount: 0 }]
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    await actions.initialize()
+    expect(store.get(selectedCaseIdAtom)).toBe('case-restore')
+    expect(store.get(reviewCasesByIdAtom)['case-restore']?.title).toBe('案卷-case-restore')
+  })
+
   test('Given 两份依据 When 生成大纲 Then 两包分别请求并保留各自结果', async () => {
     const { api } = makeApi()
     const store = createStore()

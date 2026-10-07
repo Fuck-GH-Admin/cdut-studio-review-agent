@@ -5,7 +5,7 @@
 import { afterAll, describe, expect, test } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
-import type { ReviewCaseV2, TemplateVersion } from '@profer/shared'
+import type { ReviewCaseV2, RuleSpec, TemplateVersion } from '@profer/shared'
 import { cancelRunV2, runReviewCaseV2 } from './run-service-v2'
 import type { NodeExecutor } from './review-run-graph'
 import { getRunV2, listRunsV2, readArtifact, saveArtifact } from './run-store-v2'
@@ -33,6 +33,28 @@ const done = async (_n: Parameters<NodeExecutor>[0], hash: string) => ({ status:
 const okExecutors: Record<NodeKind, NodeExecutor> = Object.fromEntries(ALL_KINDS.map((kind) => [kind, done])) as Record<NodeKind, NodeExecutor>
 
 describe('runReviewCaseV2（M3 编排）', () => {
+  test('workspace-only 有效规则同时成为运行清单与 coverage 分母', async () => {
+    const workspaceRules: RuleSpec[] = [1, 2, 3].map((index) => ({
+      id: `workspace-rule-${index}`, policyVersionId: 'workspace:pack@v1', title: `规则 ${index}`,
+      when: { field: 'declaredScore', op: 'exists' }, requirement: '需要人工核对',
+      targetScope: 'case', execution: 'manual', onFail: 'manual-review', onUnknown: 'pending',
+      sourceRefIds: [], priority: index, confirmation: 'unconfirmed',
+    }))
+    const withRules = { ...caseV2, id: 'case-runv2-workspace-rules', reviewRules: workspaceRules }
+    const checkExecutors: typeof okExecutors = {
+      ...okExecutors,
+      check: async (_node, hash) => ({ status: 'done', inputHash: hash, artifact: { sourceIds: [withRules.id], checks: workspaceRules.map((rule) => ({
+        checkId: `check-${rule.id}-case-case`, ruleId: rule.id, status: 'awaiting-confirmation',
+        reason: rule.requirement, target: { scope: 'case', subjectIds: [] }, sourceRefs: [], executedBy: 'manual', executedAt: new Date().toISOString(),
+      })) } }),
+    }
+    const run = await runReviewCaseV2(withRules, template, checkExecutors, { runId: 'r-workspace-rules' })
+    expect(run.inputManifest.effectiveRuleIds).toEqual(workspaceRules.map((rule) => rule.id))
+    expect(run.inputManifest.effectiveRuleSetHash).toMatch(/^[a-f0-9]{64}$/)
+    expect(run.coverage.plannedChecks).toBe(3)
+    expect(run.coverage.pendingChecks).toBe(3)
+  })
+
   test('Given 正常执行 When 运行 Then completed 且检查点落盘（可读回）', async () => {
     const events: string[] = []
     const run = await runReviewCaseV2(caseV2, template, okExecutors, { runId: 'r-ok', onEvent: (event) => events.push(event.kind) })

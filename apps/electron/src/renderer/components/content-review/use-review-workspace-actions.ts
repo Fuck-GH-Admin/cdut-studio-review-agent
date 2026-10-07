@@ -48,6 +48,7 @@ export function useReviewWorkspaceActions(): {
   respondSupplement(supplementId: string): Promise<void>
   resolveSupplement(supplementId: string): Promise<void>
   decide(input: { result: 'pass' | 'partial-pass' | 'return' | 'reject'; reason: string; requiredElements?: string[]; supplementReason?: string }): Promise<void>
+  adjudicateSubject(input: { subjectId: string; outcome: 'accepted' | 'rejected' | 'modified'; finalFields?: Record<string, FieldValue>; reason: string }): Promise<void>
 } {
   const store = useStore()
   const caseId = useAtomValue(selectedCaseIdAtom)
@@ -180,5 +181,15 @@ export function useReviewWorkspaceActions(): {
     }) }))
   }, [apply, command, currentAggregate, store])
 
-  return { refresh, confirmObservation, transitionEvidenceLink, acknowledgeMaterial, recordDisposition, openSupplement, respondSupplement, resolveSupplement, decide }
+  const adjudicateSubject = useCallback(async (input: { subjectId: string; outcome: 'accepted' | 'rejected' | 'modified'; finalFields?: Record<string, FieldValue>; reason: string }) => {
+    const aggregate = await currentAggregate()
+    const run = store.get(reviewWorkspaceRunsByCaseAtom)[aggregate.caseV2.id]
+    if (!run) throw new Error('请先完成当前审核运行，再进行事项最终认定')
+    await apply(await window.reviewAPI.recordWorkspaceSubjectAdjudicationV2({ caseId: aggregate.caseV2.id, command: command(aggregate, {
+      type: 'RecordWorkspaceSubjectAdjudication',
+      payload: { ...input, runId: run.id, inputHash: run.inputManifest.hash },
+    }) }))
+  }, [apply, command, currentAggregate, store])
+
+  return { refresh, confirmObservation, transitionEvidenceLink, acknowledgeMaterial, recordDisposition, openSupplement, respondSupplement, resolveSupplement, decide, adjudicateSubject }
 }

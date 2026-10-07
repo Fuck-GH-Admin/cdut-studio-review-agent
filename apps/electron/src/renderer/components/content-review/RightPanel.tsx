@@ -5,7 +5,8 @@ import { useAtomValue } from 'jotai'
 import { Gavel, Play, ShieldAlert } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
 import { Spinner } from '@profer/ui/primitives/spinner'
-import type { CheckResult } from '@profer/shared'
+import type { CheckResult, SourceRef } from '@profer/shared'
+import { useSetAtom } from 'jotai'
 import {
   reviewCaseAtom,
   reviewRunningAtom,
@@ -14,6 +15,9 @@ import {
   reviewWorkspaceExtractedObservationsAtom,
   reviewWorkspaceRunAtom,
   reviewWorkspaceRunStaleAtom,
+  reviewWorkspaceTemplateAtom,
+  reviewSourceFocusAtom,
+  reviewAdjudicationEditorSubjectAtom,
 } from '@/atoms/review-atoms'
 import { cn } from '@/lib/utils'
 import type { ReviewActions } from './use-review-actions'
@@ -27,6 +31,7 @@ const STATUS_LABELS: Record<string, string> = {
   draft: '草稿', ready: '可开始审核', reviewing: '审核中', 'needs-attention': '待人工处理',
   'waiting-supplement': '等待补件', 'ready-for-decision': '可作最终决定', decided: '已决定',
 }
+let sourceFocusNonce = 0
 
 export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
   const legacyCase = useAtomValue(reviewCaseAtom)
@@ -36,8 +41,11 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
   const run = useAtomValue(reviewWorkspaceRunAtom)
   const runStale = useAtomValue(reviewWorkspaceRunStaleAtom)
   const extractedObservations = useAtomValue(reviewWorkspaceExtractedObservationsAtom)
+  const template = useAtomValue(reviewWorkspaceTemplateAtom)
+  const setSourceFocus = useSetAtom(reviewSourceFocusAtom)
+  const setAdjudicationEditorSubject = useSetAtom(reviewAdjudicationEditorSubjectAtom)
   const workspaceActions = useReviewWorkspaceActions()
-  const view = aggregate ? buildReviewWorkspaceViewModel(aggregate, run, runStale, extractedObservations) : null
+  const view = aggregate ? buildReviewWorkspaceViewModel(aggregate, run, runStale, extractedObservations, template) : null
   const [busyKey, setBusyKey] = React.useState<string | null>(null)
   const [reason, setReason] = React.useState('')
   const [notice, setNotice] = React.useState<string | null>(null)
@@ -132,18 +140,50 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
                 {view.pendingActions.map((item) => {
                   const check = item.checkId ? run.checks.find((candidate) => candidate.checkId === item.checkId) : undefined
                   const sourceNames = (item.sourceDocumentVersionIds ?? []).map((id) => aggregate?.caseV2.documents.find((doc) => doc.versionId === id)?.fileName ?? id)
-                  const activeSupplement = item.checkId ? aggregate?.supplements.find((supplement) => supplement.originFindingKeys.includes(item.checkId!)) : undefined
+                  const activeSupplement = aggregate?.supplements.find((supplement) => supplement.originFindingKeys.includes(item.checkId ?? item.key))
+                  const relatedSubject = aggregate?.caseV2.subjects.find((subject) => subject.id === item.subjectId)
+                  const sourceRefs = [...(item.sourceRefs ?? []), ...(relatedSubject?.sourceRefs ?? [])]
+                  const distinctSources = sourceRefs.filter((ref, index) => sourceRefs.findIndex((candidate) => candidate.documentVersionId === ref.documentVersionId && JSON.stringify(candidate.location) === JSON.stringify(ref.location)) === index)
+                  const focusSource = (ref: SourceRef): void => {
+                    const document = aggregate?.caseV2.documents.find((candidate) => candidate.versionId === ref.documentVersionId)
+                    const purpose = document?.role === 'rule' ? 'rule' : document?.role === 'application' ? 'application' : 'evidence'
+                    sourceFocusNonce += 1
+                    setSourceFocus({ ref, purpose, nonce: sourceFocusNonce })
+                  }
                   return (
                     <article key={item.key} className="rounded-xl border border-border/60 bg-card p-3 shadow-sm">
                       <p className="text-[13px] font-medium">{item.title}</p>
                       <p className="mt-1 text-xs leading-5 text-muted-foreground">{item.detail}</p>
                       {sourceNames.length > 0 && <p className="mt-1 text-[11px] text-muted-foreground">来源：{[...new Set(sourceNames)].join('、')}</p>}
                       {check && <p className="mt-1 rounded bg-muted/50 px-2 py-1 text-[11px]">规则依据：{check.ruleId} · {check.reason}</p>}
+                      {distinctSources.length > 0 && <div className="mt-2 flex flex-wrap gap-1.5">
+                        {(['rule', 'application', 'evidence'] as const).map((purpose) => {
+                          const ref = distinctSources.find((candidate) => {
+                            const role = aggregate?.caseV2.documents.find((document) => document.versionId === candidate.documentVersionId)?.role
+                            return purpose === 'rule' ? role === 'rule' : purpose === 'application' ? role === 'application' : role === 'evidence' || role === 'attachment'
+                          })
+                          if (!ref) return null
+                          return <button key={purpose} type="button" onClick={() => focusSource(ref)} className="rounded border px-2 py-1 text-[11px]">查看{purpose === 'rule' ? '规则' : purpose === 'application' ? '申报' : '证明'}</button>
+                        })}
+                      </div>}
                       {item.kind === 'check' && check && !runStale && (
                         <div className="mt-2 flex flex-wrap gap-1.5">
                           <button disabled={busyKey !== null} onClick={() => handleDisposition(check, 'confirmed-issue')} className="rounded bg-primary px-2 py-1.5 text-[11px] text-primary-foreground disabled:opacity-50">确认问题</button>
                           <button disabled={busyKey !== null} onClick={() => handleDisposition(check, 'false-positive')} className="rounded border px-2 py-1.5 text-[11px] disabled:opacity-50">AI 误报</button>
+                          {check.target.subjectIds[0] && <button disabled={busyKey !== null} onClick={() => setAdjudicationEditorSubject(check.target.subjectIds[0]!)} className="rounded border px-2 py-1.5 text-[11px] disabled:opacity-50">修改认定</button>}
                           <button disabled={busyKey !== null} onClick={() => handleSupplement(check)} className="rounded border px-2 py-1.5 text-[11px] disabled:opacity-50">要求补件</button>
+                        </div>
+                      )}
+                      {item.kind === 'adjudication' && item.subjectId && (run && !runStale
+                        ? <button type="button" onClick={() => setAdjudicationEditorSubject(item.subjectId!)} className="mt-2 rounded border px-2 py-1.5 text-[11px]">前往认定</button>
+                        : <p className="mt-2 text-[11px] text-muted-foreground">完成当前审核运行后才能记录事项认定。</p>)}
+                      {item.kind === 'material-slot' && run && !runStale && (
+                        <div className="mt-2 flex flex-wrap gap-1.5">
+                          <button disabled={busyKey !== null} onClick={() => {
+                            const reason = window.prompt('为什么需要补交该证明材料？', item.title)
+                            if (!reason?.trim()) return
+                            void perform(`supplement:${item.key}`, () => workspaceActions.openSupplement({ findingKey: item.key, requiredElements: [item.title.replace(/^缺少证明材料：/, '')], reason: reason.trim() }))
+                          }} className="rounded border px-2 py-1.5 text-[11px] disabled:opacity-50">要求补件</button>
                         </div>
                       )}
                       {(item.kind === 'fact' || item.kind === 'evidence') && <p className="mt-2 text-[11px] text-amber-700 dark:text-amber-300">请在中栏对应申报事项或证明材料卡片中确认、修正或关联。</p>}

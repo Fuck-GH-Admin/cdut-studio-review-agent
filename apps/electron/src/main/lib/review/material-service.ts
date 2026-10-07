@@ -136,7 +136,7 @@ export function canSubmit(aggregate: { caseV2: ReviewCaseAggregate }): { ok: boo
   if (aggregate.caseV2.stage !== 'draft') return { ok: false, reason: `当前阶段 ${aggregate.caseV2.stage} 不可提交` }
   const required: string[] = []
   for (const slot of (aggregate as unknown as { template?: TemplateVersion }).template?.materialSlots ?? []) {
-    if (slot.requiredWhen === undefined && aggregate.caseV2.documents.filter((doc) => doc.materialSlotId === slot.id && doc.active !== false).length < slot.minCount) {
+    if ((slot.requiredAt ?? 'submission') === 'submission' && slot.requiredWhen === undefined && aggregate.caseV2.documents.filter((doc) => doc.materialSlotId === slot.id && doc.active !== false).length < slot.minCount) {
       required.push(slot.name)
     }
   }

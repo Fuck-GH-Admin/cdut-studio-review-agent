@@ -301,6 +301,7 @@ export async function submitCaseV2(caseId: string, actor?: Actor, source?: Comma
   // 必需材料槽门控（复查 §5.9：不能只判非空——按模板 minCount 逐槽核对 active 材料）
   const missingSlots: string[] = []
   for (const slot of template.materialSlots ?? []) {
+    if ((slot.requiredAt ?? 'submission') !== 'submission') continue
     const active = aggregate.caseV2.documents.filter((doc) => doc.materialSlotId === slot.id && doc.active !== false)
     if (active.length < slot.minCount) missingSlots.push(`${slot.name}（需 ${slot.minCount}，现有 ${active.length}）`)
   }

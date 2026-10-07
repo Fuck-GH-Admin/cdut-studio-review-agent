@@ -117,6 +117,8 @@ export interface MaterialSlotSpec {
   requiredWhen?: ConditionAST
   acceptedKinds: Array<'pdf' | 'image' | 'office' | 'sheet' | 'text' | 'zip'>
   minCount: number
+  /** 缺少材料在哪个生命周期阶段阻断；旧模板默认 submission。 */
+  requiredAt?: 'submission' | 'decision'
   maxCount: number
   /** 关键要素：Agent 提取与人工检查的要点 */
   requiredElements: string[]
@@ -162,6 +164,8 @@ export interface RuleSpec {
   effectiveFrom?: string
   effectiveUntil?: string
   exceptions?: Array<{ when: ConditionAST; note: string }>
+  /** 由审核依据大纲编译的约束；旧版政策规则缺失时保持兼容。 */
+  workspaceConstraint?: import('./review').RuleConstraint
 }
 
 /** 政策版本：一组规则 + 原始文档来源（不可变） */
@@ -365,6 +369,20 @@ export interface FindingDispositionRecord {
   at: string
 }
 
+/** 审核员对单个申报事项的最终认定；更正通过 supersedes 链追加，保留历史。 */
+export interface SubjectAdjudication {
+  id: string
+  subjectId: string
+  outcome: 'accepted' | 'rejected' | 'modified'
+  finalFields?: Record<string, FieldValue>
+  reason: string
+  basedOnRunId: string
+  inputHash: string
+  actor: Actor
+  at: string
+  supersedesAdjudicationId?: string
+}
+
 // ===== 运行 =====
 
 export type RunV2Status =
@@ -395,6 +413,10 @@ export interface ReviewRunV2 {
     documentVersions: Array<{ documentId: string; versionId: string; contentHash: string }>
     observationIds: string[]
     evidenceLinkIds: string[]
+    effectiveRuleIds?: string[]
+    effectiveRuleSetHash?: string
+    /** 每条有效规则依赖的事实字段；语义规则使用 * 表示依赖材料中的事实。 */
+    effectiveRuleDependencies?: Array<{ ruleId: string; fieldKeys: string[] }>
   }
   status: RunV2Status
   checkpoints: CheckpointRecord[]

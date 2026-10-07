@@ -75,12 +75,21 @@ export function ReviewContextBar({ actions }: CaseManagerBarProps): React.ReactE
 
   const handleImport = async (role: SourceDocument['role']): Promise<void> => {
     if (importing) return
+    if (!currentCase) {
+      setCreateOpen(true)
+      toast.info('先新建审核任务，材料才能归入对应案卷')
+      return
+    }
     setImporting(true)
     try {
       const document = await actions.importDocument(role)
       if (document) {
         toast.success(`已导入${REVIEW_DOCUMENT_ROLE_LABELS[role]}：${document.fileName}`)
+      } else {
+        toast.info('没有导入材料；取消选择不会修改案卷，若导入失败请查看页面底部提示')
       }
+    } catch (error) {
+      toast.error(`导入材料失败：${error instanceof Error ? error.message : String(error)}`)
     } finally {
       setImporting(false)
     }
@@ -156,20 +165,26 @@ export function ReviewContextBar({ actions }: CaseManagerBarProps): React.ReactE
 
       <div className="space-y-2 rounded-lg bg-card p-2.5 shadow-sm">
         {/* 导入材料（三个角色） */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="h-7 w-full gap-1.5 px-2 text-[13px]"
-              disabled={!currentCase || importing}
-            >
-              <Upload size={13} />
-              {importing ? '导入中…' : '添加材料'}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-[340px]">
+        <div className="flex w-full gap-1">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="h-7 min-w-0 flex-1 gap-1.5 px-2 text-[13px]"
+            disabled={importing}
+            title={currentCase ? '点击直接选择申报材料；使用右侧箭头选择审核依据或证明材料' : '先新建审核任务，再添加材料'}
+            onClick={() => void handleImport('application')}
+          >
+            <Upload size={13} />
+            {importing ? '导入中…' : '添加材料'}
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button type="button" variant="outline" size="icon-sm" className="h-7 w-7 shrink-0" disabled={!currentCase || importing} aria-label="选择材料类型" title="选择材料类型">
+                <ChevronDown size={13} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[340px]">
             <DropdownMenuLabel>选择材料角色</DropdownMenuLabel>
             {IMPORT_ROLES.map((role) => (
               <DropdownMenuItem
@@ -188,9 +203,9 @@ export function ReviewContextBar({ actions }: CaseManagerBarProps): React.ReactE
                 </span>
               </DropdownMenuItem>
             ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       {/* 新建案卷对话框 */}

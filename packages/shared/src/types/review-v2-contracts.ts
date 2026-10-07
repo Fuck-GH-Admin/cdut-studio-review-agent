@@ -6,7 +6,7 @@
  * 命令外壳扩展与错误码见文末；新设计哈希用 SHA-256，旧 SHA-1 记录带 algorithm 标识。
  */
 
-import type { Actor, Appeal, BusinessDecision, EvidenceLink, FieldSpec, Observation, ReviewAppErrorCode, ReviewCaseV2, RoleId, SourceLocation, SupplementRequest } from './review-v2'
+import type { Actor, Appeal, BusinessDecision, EvidenceLink, FieldSpec, Observation, ReviewAppErrorCode, ReviewCaseV2, RoleId, SourceLocation, SupplementRequest, SubjectAdjudication } from './review-v2'
 
 // ===== 政策仓库（07 §2.1 PolicyRef/PolicyVersion；05 §2.1 误判 8：模板必须有对应政策） =====
 
@@ -326,6 +326,8 @@ export interface CaseAggregateV2 {
   supplements: SupplementRequest[]
   appeals: Appeal[]
   receiptLog: CommandReceipt[]
+  /** 事项最终认定（可选，兼容既有 state.v2.json）。 */
+  adjudications?: SubjectAdjudication[]
   /** 独立评分（G06：唯一票，事务内查重） */
   ratings?: RatingEntryV2[]
 }

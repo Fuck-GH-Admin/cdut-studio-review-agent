@@ -31,6 +31,7 @@ import type {
   ReviewRun,
   ReviewRunV2,
   CaseAggregateV2,
+  TemplateVersion,
   RuleOutlineItem,
   SourceDocument,
 } from '@profer/shared'
@@ -45,6 +46,7 @@ import {
   reviewWorkspaceAggregatesByCaseAtom,
   reviewWorkspaceExtractedObservationsByCaseAtom,
   reviewWorkspaceRunStaleByCaseAtom,
+  reviewWorkspaceTemplatesByCaseAtom,
   reviewWorkspaceRunsByCaseAtom,
   reviewFocusAtom,
   reviewGatewayStatusAtom,
@@ -60,6 +62,19 @@ import { buildReviewWorkspaceViewModel } from './review-workspace-view-model'
 
 /** focus/locate 联动 nonce（每次点击 +1 驱动 useEffect 重放） */
 let focusNonce = 0
+const LAST_SELECTED_CASE_KEY = 'cdut-studio.review.last-selected-case'
+
+function readLastSelectedCaseId(): string | null {
+  try { return typeof window === 'undefined' ? null : window.localStorage.getItem(LAST_SELECTED_CASE_KEY) } catch { return null }
+}
+
+function saveLastSelectedCaseId(caseId: string | null): void {
+  try {
+    if (typeof window === 'undefined') return
+    if (caseId) window.localStorage.setItem(LAST_SELECTED_CASE_KEY, caseId)
+    else window.localStorage.removeItem(LAST_SELECTED_CASE_KEY)
+  } catch { /* 存储不可用时仍可在当前会话使用案卷。 */ }
+}
 
 /** 控制器依赖的 IPC 子集（结构化最小接口，测试注入假实现） */
 export interface ReviewActionsApi {
@@ -94,6 +109,7 @@ export interface ReviewActionsApi {
   listRunsV2?(caseId: string): Promise<ReviewRunV2[]>
   getRunObservationsV2?(caseId: string): Promise<Array<Record<string, unknown>>>
   getWorkspaceRunValidityV2?(input: { caseId: string; runId: string }): Promise<boolean>
+  getTemplateV2?(templateId: string, version?: number): Promise<TemplateVersion | undefined>
   runReviewV2?(caseId: string): Promise<ReviewRunV2>
   submitCaseV2?(caseId: string): Promise<{ ok: boolean; aggregate?: CaseAggregateV2; message?: string } | undefined>
 }
@@ -140,11 +156,11 @@ function executionStateFromRun(run: ReviewRun | null, inputStale: boolean): Revi
   return { status: 'completed', stage: 'summary', message: '最近一次审核已完成' }
 }
 
-function executionStateFromWorkspace(aggregate: CaseAggregateV2 | null, run: ReviewRunV2 | null, inputStale: boolean, observations: Array<Record<string, unknown>>): ReviewExecutionViewState | null {
+function executionStateFromWorkspace(aggregate: CaseAggregateV2 | null, run: ReviewRunV2 | null, inputStale: boolean, observations: Array<Record<string, unknown>>, template?: TemplateVersion | null): ReviewExecutionViewState | null {
   if (!run || !aggregate) return null
   if (run.status === 'failed') return { status: 'failed', stage: 'summary', message: '最近一次 V2 审核未完成', error: run.error ?? '审核运行失败' }
   if (run.status === 'awaiting-input') return { status: 'awaiting-input', stage: 'summary', message: '审核等待补充输入' }
-  const view = buildReviewWorkspaceViewModel(aggregate, run, inputStale, observations)
+  const view = buildReviewWorkspaceViewModel(aggregate, run, inputStale, observations, template)
   if (view.status === 'decided' || view.canDecide) return { status: 'completed', stage: 'summary', message: view.status === 'decided' ? '案卷已完成人工决定' : '审核完成，等待人工决定' }
   return { status: 'partial', stage: 'summary', message: `审核仍有 ${view.pendingActions.length} 项待处理动作` }
 }
@@ -202,6 +218,10 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
     if (api.getAggregateV2) {
       const aggregate = await api.getAggregateV2(caseId)
       store.set(reviewWorkspaceAggregatesByCaseAtom, { ...store.get(reviewWorkspaceAggregatesByCaseAtom), [caseId]: aggregate ?? null })
+      if (aggregate && api.getTemplateV2) {
+        const template = await api.getTemplateV2(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+        store.set(reviewWorkspaceTemplatesByCaseAtom, { ...store.get(reviewWorkspaceTemplatesByCaseAtom), [caseId]: template ?? null })
+      }
     }
     if (api.listRunsV2) {
       const runs = await api.listRunsV2(caseId)
@@ -225,6 +245,7 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
         store.get(reviewWorkspaceRunsByCaseAtom)[caseId] ?? null,
         store.get(reviewWorkspaceRunStaleByCaseAtom)[caseId] ?? false,
         store.get(reviewWorkspaceExtractedObservationsByCaseAtom)[caseId] ?? [],
+        store.get(reviewWorkspaceTemplatesByCaseAtom)[caseId],
       )
       if (state) store.set(reviewExecutionByCaseAtom, { ...store.get(reviewExecutionByCaseAtom), [caseId]: state })
     }
@@ -252,6 +273,7 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
       // 只更新缓存与选中态：焦点/定位/选中卡等界面态清除，但按案任务守卫保留（切回可见"运行中"）
       store.set(reviewCasesByIdAtom, { ...store.get(reviewCasesByIdAtom), [reviewCase.id]: reviewCase })
       store.set(selectedCaseIdAtom, reviewCase.id)
+      saveLastSelectedCaseId(reviewCase.id)
       store.set(selectedFindingIdAtom, null)
       store.set(reviewFocusAtom, null)
       store.set(reviewRuleLocateAtom, null)
@@ -267,6 +289,7 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
             store.get(reviewWorkspaceRunsByCaseAtom)[caseId] ?? null,
             store.get(reviewWorkspaceRunStaleByCaseAtom)[caseId] ?? false,
             store.get(reviewWorkspaceExtractedObservationsByCaseAtom)[caseId] ?? [],
+            store.get(reviewWorkspaceTemplatesByCaseAtom)[caseId],
           )
           if (workspaceState) store.set(reviewExecutionByCaseAtom, { ...store.get(reviewExecutionByCaseAtom), [caseId]: workspaceState })
         }
@@ -328,7 +351,17 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
 
   return {
     async initialize(): Promise<void> {
-      await refreshCaseList()
+      const cases = await refreshCaseList()
+      // 页面重开后 selectedCaseIdAtom 是空的；恢复上次案卷（或首个案卷），
+      // 否则上下文栏里的材料入口会一直处于 disabled 状态。
+      const selectedId = store.get(selectedCaseIdAtom) ?? readLastSelectedCaseId()
+      const target = cases.find((item) => item.id === selectedId) ?? cases[0]
+      const cached = target ? store.get(reviewCasesByIdAtom)[target.id] : null
+      if (target && (!cached || selectedId !== target.id)) await selectCaseInternal(target.id)
+      else if (!target && selectedId) {
+        store.set(selectedCaseIdAtom, null)
+        saveLastSelectedCaseId(null)
+      }
       try {
         const status = await api.getModelGatewayStatus()
         store.set(reviewGatewayStatusAtom, status)
@@ -373,6 +406,7 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
               store.get(reviewWorkspaceRunsByCaseAtom)[reviewCase.id] ?? null,
               store.get(reviewWorkspaceRunStaleByCaseAtom)[reviewCase.id] ?? false,
               store.get(reviewWorkspaceExtractedObservationsByCaseAtom)[reviewCase.id] ?? [],
+              store.get(reviewWorkspaceTemplatesByCaseAtom)[reviewCase.id],
             )
             if (workspaceState) store.set(reviewExecutionByCaseAtom, { ...store.get(reviewExecutionByCaseAtom), [reviewCase.id]: workspaceState })
           }
@@ -696,7 +730,7 @@ export function createReviewActionsController(store: JotaiStore, api: ReviewActi
           const workspaceAggregate = store.get(reviewWorkspaceAggregatesByCaseAtom)[caseId] ?? aggregate
           const workspaceObservations = store.get(reviewWorkspaceExtractedObservationsByCaseAtom)[caseId] ?? []
           const v2Stale = store.get(reviewWorkspaceRunStaleByCaseAtom)[caseId] ?? false
-          const workspaceState = executionStateFromWorkspace(workspaceAggregate, v2Run, v2Stale, workspaceObservations)
+          const workspaceState = executionStateFromWorkspace(workspaceAggregate, v2Run, v2Stale, workspaceObservations, store.get(reviewWorkspaceTemplatesByCaseAtom)[caseId])
           update({
             ...(workspaceState ?? { status: 'partial' as const, stage: 'summary' as const, message: '审核结果状态不可用' }),
             documents: { completed: v2Run.coverage.documents.filter((document) => document.status === 'read').length, total: v2Run.coverage.documents.length },

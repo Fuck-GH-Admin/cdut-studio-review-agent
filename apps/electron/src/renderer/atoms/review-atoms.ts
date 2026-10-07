@@ -24,6 +24,8 @@ import type {
   CaseAggregateV2,
   ReviewRunV2,
   ReviewWorkspaceCaseRef,
+  TemplateVersion,
+  SourceRef,
 } from '@profer/shared'
 
 // ===== 数据状态 =====
@@ -82,6 +84,11 @@ export const reviewWorkspaceCaseRefAtom = atom((get): ReviewWorkspaceCaseRef | n
 export const reviewWorkspaceRunsByCaseAtom = atom<Record<string, ReviewRunV2 | null>>({})
 export const reviewWorkspaceExtractedObservationsByCaseAtom = atom<Record<string, Array<Record<string, unknown>>>>({})
 export const reviewWorkspaceRunStaleByCaseAtom = atom<Record<string, boolean>>({})
+export const reviewWorkspaceTemplatesByCaseAtom = atom<Record<string, TemplateVersion | null>>({})
+export const reviewWorkspaceTemplateAtom = atom((get) => {
+  const caseId = get(selectedCaseIdAtom)
+  return caseId ? get(reviewWorkspaceTemplatesByCaseAtom)[caseId] ?? null : null
+})
 export const reviewWorkspaceRunAtom = atom((get) => {
   const caseId = get(selectedCaseIdAtom)
   return caseId ? get(reviewWorkspaceRunsByCaseAtom)[caseId] ?? null : null
@@ -205,6 +212,11 @@ export interface ReviewFocus {
 
 /** 三栏联动焦点（点击问题卡时写入） */
 export const reviewFocusAtom = atom<ReviewFocus | null>(null)
+
+/** V2 原生来源定位；使用 SourceRef 坐标，不伪造 V1 ReviewFinding。 */
+export const reviewSourceFocusAtom = atom<{ ref: SourceRef; purpose: 'rule' | 'application' | 'evidence'; nonce: number } | null>(null)
+/** Right-panel action asks the corresponding center-panel subject card to open its editor. */
+export const reviewAdjudicationEditorSubjectAtom = atom<string | null>(null)
 
 /** 当前选中的问题卡 ID */
 export const selectedFindingIdAtom = atom<string | null>(null)

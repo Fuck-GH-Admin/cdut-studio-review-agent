@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'bun:test'
-import type { CaseAggregateV2, ReviewRunV2 } from '@profer/shared'
+import type { CaseAggregateV2, ReviewRunV2, TemplateVersion } from '@profer/shared'
 import { buildReviewWorkspaceViewModel } from './review-workspace-view-model'
 
 const baseCase: CaseAggregateV2['caseV2'] = {
   id: 'workspace-case', templateId: 't', templateVersion: 1, title: '单案测试', objectType: 'person',
-  caseFields: {}, subjects: [{ id: 's1', type: 'item', title: '竞赛事项', fields: {}, sourceRefs: [], correction: 'user-confirmed', status: 'identified' }],
+  caseFields: {}, subjects: [],
   documents: [], stage: 'reviewing', revision: 1, createdAt: '', updatedAt: '',
 }
 const check = {
@@ -36,8 +36,9 @@ describe('单案审核工作台 ViewModel', () => {
   test('当前运行下已记录处置的问题进入已处理；旧输入处置不生效', () => {
     const current = { findingKey: 'check-1', disposition: 'false-positive', actor: 'reviewer', reason: '人工复核不是问题', at: '', runId: 'run-1', inputHash: 'hash-1' }
     const old = { ...current, inputHash: 'old-hash' }
-    const active = buildReviewWorkspaceViewModel(aggregate({ dispositions: [current] }), run(), false)
-    const stale = buildReviewWorkspaceViewModel(aggregate({ dispositions: [old] }), run(), false)
+    const template = { materialSlots: [] } as unknown as TemplateVersion
+    const active = buildReviewWorkspaceViewModel(aggregate({ dispositions: [current] }), run(), false, [], template)
+    const stale = buildReviewWorkspaceViewModel(aggregate({ dispositions: [old] }), run(), false, [], template)
     expect(active.pendingActions).toHaveLength(0)
     expect(active.resolvedActions).toHaveLength(1)
     expect(active.canDecide).toBeTrue()
@@ -54,5 +55,29 @@ describe('单案审核工作台 ViewModel', () => {
     const view = buildReviewWorkspaceViewModel(input, run({ checks: [] }), false, [{ subjectId: 's1', fieldKey: 'level', value: '省级', confidence: 0.4, confirmed: false }])
     expect(view.pendingActions.map((item) => item.kind)).toEqual(expect.arrayContaining(['fact', 'evidence', 'material', 'supplement']))
     expect(view.canDecide).toBeFalse()
+  })
+
+  test('决策阶段必需的证明槽生成可持久验证的材料槽待办', () => {
+    const template = { materialSlots: [{ id: 'certificates', name: '证明材料', minCount: 1, requiredAt: 'decision' }] } as unknown as TemplateVersion
+    const view = buildReviewWorkspaceViewModel(aggregate(), run(), false, [], template)
+    expect(view.pendingActions).toContainEqual(expect.objectContaining({ key: 'material-slot:certificates', kind: 'material-slot', materialSlotId: 'certificates' }))
+    expect(view.canDecide).toBeFalse()
+  })
+
+  test('高置信度不能跳过与有效规则相关事实的人工确认，非相关事实保持安静', () => {
+    const input = aggregate({ caseV2: { ...baseCase, subjects: [{ id: 's1', type: 'item', title: '竞赛事项', fields: {}, sourceRefs: [], correction: 'user-confirmed', status: 'identified' }] } })
+    const extracted = [
+      { subjectId: 's1', fieldKey: 'level', value: '省级', confidence: 0.99, confirmed: false, extractedBy: 'ai', sourceRefs: [{ documentVersionId: 'e-v1' }] },
+      { subjectId: 's1', fieldKey: 'hobby', value: '摄影', confidence: 0.2, confirmed: false, extractedBy: 'ai', sourceRefs: [{ documentVersionId: 'e-v1' }] },
+    ]
+    const result = buildReviewWorkspaceViewModel(input, run({ inputManifest: { ...run().inputManifest, effectiveRuleDependencies: [{ ruleId: 'rule-1', fieldKeys: ['level'] }] } }), false, extracted)
+    expect(result.pendingActions.filter((item) => item.kind === 'fact').map((item) => item.title)).toEqual(['待确认事实：level 省级'])
+  })
+
+  test('未最终认定的申报事项本身就是可恢复的待办', () => {
+    const input = aggregate({ caseV2: { ...baseCase, subjects: [{ id: 's1', type: 'item', title: '竞赛事项', fields: {}, sourceRefs: [], correction: 'user-confirmed', status: 'identified' }] } })
+    const result = buildReviewWorkspaceViewModel(input, run({ checks: [] }), false)
+    expect(result.pendingActions).toContainEqual(expect.objectContaining({ key: 'adjudication:s1', kind: 'adjudication' }))
+    expect(result.canDecide).toBeFalse()
   })
 })

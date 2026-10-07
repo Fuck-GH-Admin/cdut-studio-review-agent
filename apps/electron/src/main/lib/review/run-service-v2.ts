@@ -11,6 +11,7 @@ import { createHash } from 'node:crypto'
 import type { CheckpointRecord, ReviewCaseV2, ReviewRunV2, TemplateVersion } from '@profer/shared'
 import { executeRunGraph, planRunGraph, type NodeArtifact, type NodeExecutor, type NodeKind, type RunEvent } from './review-run-graph'
 import { getRunV2, readArtifact, saveArtifact, saveRunV2 } from './run-store-v2'
+import { hashEffectiveRuleSet, resolveEffectiveRules } from './effective-rules'
 
 /** 进程内取消注册表（单机桌面应用：跨进程取消无需持久化标记） */
 const cancelledRunIds = new Set<string>()
@@ -43,6 +44,28 @@ export function computeRunInputHash(
   return createHash('sha256').update(material, 'utf-8').digest('hex')
 }
 
+function effectiveRuleDependencies(rules: Array<{ rule: import('@profer/shared').RuleSpec }>): Array<{ ruleId: string; fieldKeys: string[] }> {
+  return rules.map(({ rule }) => {
+    const fields = new Set<string>()
+    const visit = (condition: import('@profer/shared').ConditionAST): void => {
+      if ('all' in condition) condition.all.forEach(visit)
+      else if ('any' in condition) condition.any.forEach(visit)
+      else if ('not' in condition) visit(condition.not)
+      else fields.add('field' in condition ? condition.field : condition.fact)
+    }
+    visit(rule.when)
+    for (const field of rule.calculation?.deduplicateBy ?? []) fields.add(field)
+    if (rule.calculation?.valueFrom) fields.add(rule.calculation.valueFrom)
+    const constraint = rule.workspaceConstraint
+    if (constraint?.kind === 'score-value' || constraint?.kind === 'max-score') fields.add('declaredScore')
+    if (constraint?.kind === 'date-range') fields.add('activityDate')
+    if (constraint?.kind === 'amount-limit') fields.add('amount')
+    if (constraint?.kind === 'level-mapping') fields.add('level')
+    if (rule.execution === 'semantic') fields.add('*')
+    return { ruleId: rule.id, fieldKeys: [...fields].sort() }
+  })
+}
+
 export interface StartRunOptions {
   runId?: string
   initiatedBy?: ReviewRunV2['initiatedBy']
@@ -70,6 +93,7 @@ export async function runReviewCaseV2(
   const observationSnapshot = options.observationSnapshot ?? []
   const evidenceSnapshot = options.evidenceSnapshot ?? []
   const inputHash = computeRunInputHash(caseV2, observationSnapshot, evidenceSnapshot)
+  const effectiveRules = resolveEffectiveRules({ caseV2 }, template)
   const nodes = planRunGraph(template)
   for (const node of nodes) {
     node.inputHash = createHash('sha256').update(JSON.stringify({ inputHash, nodeId: node.id, dependencies: node.dependsOn })).digest('hex')
@@ -117,6 +141,9 @@ export async function runReviewCaseV2(
       documentVersions: caseV2.documents.map((document) => ({ documentId: document.documentId, versionId: document.versionId, contentHash: document.contentHash })),
       observationIds: observationSnapshot.map((item) => String(item.id ?? '')).filter(Boolean),
       evidenceLinkIds: evidenceSnapshot.map((item) => String(item.id ?? '')).filter(Boolean),
+      effectiveRuleIds: effectiveRules.map((item) => item.rule.id),
+      effectiveRuleSetHash: hashEffectiveRuleSet(effectiveRules),
+      effectiveRuleDependencies: effectiveRuleDependencies(effectiveRules),
     },
     status: 'running',
     checkpoints,
@@ -157,17 +184,10 @@ export async function runReviewCaseV2(
     .filter((artifact): artifact is Record<string, unknown> => !!artifact)
   run.checks = artifacts.flatMap((artifact) => (artifact.checks as Array<never>) ?? [])
   run.opinions = artifacts.flatMap((artifact) => (artifact.opinions as Array<never>) ?? [])
-  // G12：coverage 由真实产物账本装配（材料账本 + 检查账本含组展开；分母 = 政策 compiledRules）
+  // coverage 与 executor 共用本次 EffectiveRuleSet（材料账本 + 检查账本含组展开）。
   {
     const { combineCoverage } = await import('./coverage-ledger')
-    const { getPolicy } = await import('./policy-store')
-    const { getTemplate } = await import('./template-store')
-    const template = getTemplate(caseV2.templateId, caseV2.templateVersion)
-    const policyRules: never[] = []
-    for (const ref of template?.policyRefs ?? []) {
-      const policy = getPolicy(ref.policyId, ref.version)
-      for (const rule of policy?.compiledRules ?? []) policyRules.push(rule as never)
-    }
+    const policyRules = effectiveRules.map((item) => item.rule)
     const groupValues: Record<string, string[]> = {}
     for (const artifact of artifacts) {
       const groups = artifact.groups as Record<string, string[]> | undefined

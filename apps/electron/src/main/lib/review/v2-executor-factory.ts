@@ -21,6 +21,7 @@ import { computeGroupScore } from './deterministic-engine'
 import { buildTextSourceIndex } from './source-index'
 import { getConfigDir } from '../config-paths'
 import { extractJson } from './review-model-gateway'
+import { resolveEffectiveRules } from './effective-rules'
 
 /** 解析材料真实文本：PDF/Office 走 document-parser，文本直读；图片走 OCR 端口（不可用则如实空） */
 async function materialTextOf(doc: DocumentVersion, caseId: string, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
@@ -52,7 +53,7 @@ function truncate(text: string, max = 6000): string {
 }
 
 /** 构建注入给 Pi 的材料/规则/字段上下文（内容仅作为数据，指令边界由 REVIEW_SYSTEM_PROMPT 承担） */
-async function buildMaterialContext(aggregate: CaseAggregateV2, template: TemplateVersion, caseId: string, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
+async function buildMaterialContext(aggregate: CaseAggregateV2, rules: RuleSpec[], caseId: string, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
   const parts: string[] = []
   parts.push('【案卷字段】')
   for (const [key, value] of Object.entries(aggregate.caseV2.caseFields)) {
@@ -65,14 +66,7 @@ async function buildMaterialContext(aggregate: CaseAggregateV2, template: Templa
     }
   }
   parts.push('【负责人规则】')
-  const { getPolicy } = require('./policy-store') as typeof import('./policy-store')
-  for (const ref of template.policyRefs ?? []) {
-    const policy = getPolicy(ref.policyId, ref.version)
-    for (const rule of policy?.compiledRules ?? []) {
-      parts.push(`- ${rule.id}: ${rule.requirement}`)
-    }
-  }
-  for (const rule of aggregate.caseV2.reviewRules ?? []) parts.push(`- ${rule.id}: ${rule.requirement}`)
+  for (const rule of rules) parts.push(`- ${rule.id}: ${rule.requirement}`)
   parts.push('【材料内容】')
   for (const doc of aggregate.caseV2.documents) {
     if (doc.active === false) continue
@@ -171,6 +165,61 @@ export function buildDeterministicRuleChecks(
       checks.push({ checkId: checkIdFor(rule, target), ruleId: rule.id, status: outcome.status, reason: outcome.status === 'compliant' ? `组计入 ${outcome.total}` : `存在未知输入：${rule.requirement}`, target, sourceRefs: sourceRefsForRule(aggregate, rule), executedBy: 'deterministic', executedAt: new Date().toISOString(), calculation: { inputs: [], result: String(outcome.total), detailLines: outcome.detailLines } })
       continue
     }
+    const workspaceConstraint = rule.workspaceConstraint
+    if (workspaceConstraint?.kind === 'level-mapping') {
+      const subjectIds = rule.targetScope === 'subject' ? aggregate.caseV2.subjects.map((subject) => subject.id) : [undefined]
+      for (const subjectId of subjectIds) {
+        const subject = aggregate.caseV2.subjects.find((candidate) => candidate.id === subjectId)
+        const rawLevel = String(fieldValueOf(subject?.fields.level ?? resolveRuleField(aggregate, observations, 'level', subjectId).value) ?? '').trim()
+        const mappingKeys = Object.keys(workspaceConstraint.levels ?? {}).sort((left, right) => right.length - left.length)
+        const mappedKey = mappingKeys.find((level) => level === rawLevel)
+          ?? Object.entries(workspaceConstraint.levelKeywords ?? {}).sort(([left], [right]) => right.length - left.length).find(([keyword]) => rawLevel.includes(keyword))?.[1]
+          ?? mappingKeys.find((level) => rawLevel.includes(level))
+        const expectedScore = mappedKey ? workspaceConstraint.levels?.[mappedKey] : undefined
+        const actualScore = fieldValueOf(subject?.fields.declaredScore ?? resolveRuleField(aggregate, observations, 'declaredScore', subjectId).value)
+        const known = rawLevel.length > 0 && typeof expectedScore === 'number' && typeof actualScore === 'number'
+        const status: CheckStatus = !known ? 'awaiting-confirmation' : expectedScore === actualScore ? 'compliant' : 'non-compliant'
+        const target = subjectId
+          ? { scope: 'subject' as const, subjectIds: [subjectId] }
+          : { scope: 'case' as const, subjectIds: aggregate.caseV2.subjects.map((subjectItem) => subjectItem.id) }
+        checks.push({
+          checkId: checkIdFor(rule, target), ruleId: rule.id, status,
+          reason: !known ? `无法将等级“${rawLevel || '未提供'}”映射到已确认标准或缺少申报分值` : `等级“${rawLevel}”对应 ${expectedScore} 分，申报 ${actualScore} 分`,
+          target, sourceRefs: sourceRefsForRule(aggregate, rule), executedBy: 'deterministic', executedAt: new Date().toISOString(),
+        })
+      }
+      continue
+    }
+    if (workspaceConstraint?.kind === 'required-evidence') {
+      const requiredTypes = workspaceConstraint.requiredEvidenceTypes ?? []
+      const subjectIds = rule.targetScope === 'subject' ? aggregate.caseV2.subjects.map((subject) => subject.id) : [undefined]
+      const normalize = (value: string): string => value.toLocaleLowerCase().replace(/[\s\-_.、，,。:：()（）]/g, '')
+      for (const subjectId of subjectIds) {
+        const matchedDocuments = aggregate.caseV2.documents.filter((document) => document.active !== false && requiredTypes.some((required) => {
+          const wanted = normalize(required)
+          return [document.fileName, document.materialSlotId ?? ''].some((value) => {
+            const actual = normalize(value)
+            return actual.length > 0 && (actual.includes(wanted) || wanted.includes(actual))
+          })
+        }))
+        const links = aggregate.evidenceLinks.filter((link) => link.subjectId === subjectId && matchedDocuments.some((document) => document.versionId === link.documentVersionId))
+        const confirmed = links.some((link) => link.status === 'confirmed')
+        const candidate = links.some((link) => link.status === 'candidate')
+        const status: CheckStatus = confirmed ? 'compliant' : candidate || matchedDocuments.length > 0 ? 'awaiting-confirmation' : 'awaiting-supplement'
+        const target = subjectId
+          ? { scope: 'subject' as const, subjectIds: [subjectId] }
+          : { scope: 'case' as const, subjectIds: aggregate.caseV2.subjects.map((subject) => subject.id) }
+        const names = matchedDocuments.map((document) => document.fileName)
+        checks.push({
+          checkId: checkIdFor(rule, target), ruleId: rule.id, status,
+          reason: confirmed ? `已确认所需证明：${names.join('、')}` : candidate || names.length ? `发现证明候选，需人工确认：${names.join('、') || requiredTypes.join('、')}` : `缺少所需证明：${requiredTypes.join('、')}`,
+          target,
+          sourceRefs: [...sourceRefsForRule(aggregate, rule), ...matchedDocuments.map((document) => ({ caseId: aggregate.caseV2.id, documentVersionId: document.versionId, parseRevision: document.parseRevision, location: { kind: 'file' as const } }))],
+          executedBy: 'deterministic', executedAt: new Date().toISOString(),
+        })
+      }
+      continue
+    }
     const subjectIds = rule.targetScope === 'subject' ? aggregate.caseV2.subjects.map((subject) => subject.id) : [undefined]
     for (const subjectId of subjectIds) {
       const status = evaluateCondition(rule.when, (ref) => resolveRuleField(aggregate, observations, ref.field ?? ref.fact ?? '', subjectId))
@@ -195,16 +244,13 @@ export function buildDeterministicRuleChecks(
 /** 装配 11 个节点的真实执行器（extract/summarize 走 Pi；check/calculate 走确定性引擎） */
 export async function assembleV2Executors(aggregate: CaseAggregateV2, template: TemplateVersion, options: AssembleOptions): Promise<Record<NodeKind, NodeExecutor>> {
   const caseId = aggregate.caseV2.id
-  const templateRules = collectRules(template)
-  const rulesById = new Map<string, RuleSpec>()
-  for (const rule of [...templateRules, ...(aggregate.caseV2.reviewRules ?? [])]) rulesById.set(rule.id, rule)
-  const rules = [...rulesById.values()]
+  const rules = resolveEffectiveRules(aggregate, template).map((item) => item.rule)
   const subjectIds = aggregate.caseV2.subjects.map((subject) => subject.id)
   let extractedObservations: Array<Record<string, unknown>> = aggregate.observations.map((observation) => observation as unknown as Record<string, unknown>)
   let latestDeterministicChecks: Array<Record<string, unknown>> = []
   const semanticRules = rules.filter((rule) => rule.execution === 'semantic')
   // 材料上下文按需构建（PDF/Office 为异步解析）
-  const materialContext = await buildMaterialContext(aggregate, template, caseId, options.ocrPort)
+  const materialContext = await buildMaterialContext(aggregate, rules, caseId, options.ocrPort)
 
   const piExtract: NodeExecutor = async (node, inputHash) => {
     if (options.signal?.aborted) throw new Error('已取消（模型调用前）')
@@ -218,11 +264,21 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
     if (options.signal?.aborted) throw new Error('已取消（模型调用后）')
     const parsed = extractJson(content)
     const items = Array.isArray(parsed) ? parsed : (parsed as { observations?: unknown[] })?.observations
-    const validDocIds = new Set(aggregate.caseV2.documents.filter((doc) => doc.active !== false).map((doc) => doc.versionId))
     const observations = (Array.isArray(items) ? items : []).map((raw) => {
       const item = raw as { subjectId?: string; fieldKey?: string; value?: unknown; sourceRefs?: Array<{ documentVersionId?: string; quote?: string }>; confidence?: number }
       // 引用校验：指向不存在/未激活材料的 observation 丢弃（防伪造引用）
-      const refs = (item.sourceRefs ?? []).filter((ref) => ref.documentVersionId && validDocIds.has(ref.documentVersionId))
+      const refs = (item.sourceRefs ?? []).flatMap((ref) => {
+        const document = aggregate.caseV2.documents.find((candidate) => candidate.versionId === ref.documentVersionId && candidate.active !== false)
+        if (!document) return []
+        const matched = ref.quote ? document.blocks.find((block) => block.text.includes(ref.quote!) || ref.quote!.includes(block.text)) : undefined
+        return [{
+          caseId,
+          documentVersionId: document.versionId,
+          parseRevision: document.parseRevision,
+          location: matched?.location ?? { kind: 'file' as const },
+          ...(ref.quote ? { quote: ref.quote } : {}),
+        }]
+      })
       if (!item.subjectId || !aggregate.caseV2.subjects.some((subject) => subject.id === item.subjectId) || !item.fieldKey || refs.length === 0) return null
       return { subjectId: item.subjectId, fieldKey: item.fieldKey, value: item.value ?? null, sourceRefs: refs, extractedBy: 'ai' as const, confirmed: false, confidence: item.confidence }
     }).filter(Boolean)
@@ -336,15 +392,4 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
   }
   void subjectIds
   return map
-}
-
-/** 汇总模板引用政策的结构化规则 */
-function collectRules(template: TemplateVersion): RuleSpec[] {
-  const { getPolicy } = require('./policy-store') as typeof import('./policy-store')
-  const rules: RuleSpec[] = []
-  for (const ref of template.policyRefs ?? []) {
-    const policy = getPolicy(ref.policyId, ref.version)
-    for (const rule of policy?.compiledRules ?? []) rules.push(rule)
-  }
-  return rules
 }

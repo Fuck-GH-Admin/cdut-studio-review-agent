@@ -12,7 +12,7 @@
  */
 
 import * as React from 'react'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { Award, Layers, Link2, Unlink2 } from 'lucide-react'
 import type {
   CaseAggregateV2,
@@ -21,6 +21,8 @@ import type {
   FindingSeverity,
   ReviewFinding,
   ReviewItem,
+  FieldValue,
+  TemplateVersion,
 } from '@profer/shared'
 import {
   currentEvidencesAtom,
@@ -32,6 +34,9 @@ import {
   reviewWorkspaceAggregateAtom,
   reviewWorkspaceExtractedObservationsAtom,
   reviewWorkspaceRunStaleAtom,
+  reviewWorkspaceRunAtom,
+  reviewWorkspaceTemplateAtom,
+  reviewAdjudicationEditorSubjectAtom,
 } from '@/atoms/review-atoms'
 import { cn } from '@/lib/utils'
 import type { ReviewActions } from './use-review-actions'
@@ -58,6 +63,8 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
   const aggregate = useAtomValue(reviewWorkspaceAggregateAtom)
   const extractedObservations = useAtomValue(reviewWorkspaceExtractedObservationsAtom)
   const workspaceRunStale = useAtomValue(reviewWorkspaceRunStaleAtom)
+  const workspaceRun = useAtomValue(reviewWorkspaceRunAtom)
+  const workspaceTemplate = useAtomValue(reviewWorkspaceTemplateAtom)
   const workspaceActions = useReviewWorkspaceActions()
 
   const renderedBlockIds = new Set(items.map((item) => item.anchor.blockId))
@@ -201,6 +208,15 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                       />
                     </div>
                   )}
+                  {aggregate?.caseV2.subjects.find((subject) => subject.id === item.id) && (
+                    <SubjectAdjudicationCard
+                      aggregate={aggregate}
+                      subject={aggregate.caseV2.subjects.find((subject) => subject.id === item.id)!}
+                      template={workspaceTemplate}
+                      canEdit={!!workspaceRun && !workspaceRunStale}
+                      actions={workspaceActions}
+                    />
+                  )}
                 </div>
               )
             })}
@@ -270,6 +286,139 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
       )}
     </div>
   )
+}
+
+function SubjectAdjudicationCard({
+  aggregate,
+  subject,
+  template,
+  canEdit,
+  actions,
+}: {
+  aggregate: CaseAggregateV2
+  subject: CaseAggregateV2['caseV2']['subjects'][number]
+  template: TemplateVersion | null
+  canEdit: boolean
+  actions: ReturnType<typeof useReviewWorkspaceActions>
+}): React.ReactElement {
+  const rootRef = React.useRef<HTMLElement>(null)
+  const editorSubject = useAtomValue(reviewAdjudicationEditorSubjectAtom)
+  const setEditorSubject = useSetAtom(reviewAdjudicationEditorSubjectAtom)
+  const records = aggregate.adjudications ?? []
+  const supersededIds = new Set(records.flatMap((record) => record.supersedesAdjudicationId ? [record.supersedesAdjudicationId] : []))
+  const current = records.filter((record) => record.subjectId === subject.id && !supersededIds.has(record.id)).sort((a, b) => a.at.localeCompare(b.at)).at(-1)
+  const [editing, setEditing] = React.useState(false)
+  const [reason, setReason] = React.useState('')
+  const [values, setValues] = React.useState<Record<string, string>>(() => initialSubjectValues(subject.fields, current?.finalFields))
+  const [busy, setBusy] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
+  const specs = editableSubjectFields(subject.fields, template)
+
+  React.useEffect(() => {
+    if (editorSubject !== subject.id) return
+    setValues(initialSubjectValues(subject.fields, current?.finalFields))
+    setReason('')
+    setEditing(true)
+    setEditorSubject(null)
+    requestAnimationFrame(() => rootRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }))
+  }, [editorSubject, subject.id, subject.fields, current?.id, current?.finalFields, setEditorSubject])
+
+  const submit = async (outcome: 'accepted' | 'rejected' | 'modified', finalFields?: Record<string, FieldValue>, why?: string): Promise<void> => {
+    if (!canEdit || busy) return
+    const explanation = why ?? window.prompt('填写本事项最终认定理由', outcome === 'accepted' ? '核对材料后确认申报事项' : '依据当前材料不予认定')
+    if (!explanation?.trim()) return
+    setBusy(true)
+    setError(null)
+    try {
+      await actions.adjudicateSubject({ subjectId: subject.id, outcome, finalFields, reason: explanation.trim() })
+      setEditing(false)
+      setReason('')
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : String(cause))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const saveModified = async (): Promise<void> => {
+    if (!reason.trim()) { setError('请填写修改认定理由'); return }
+    const finalFields: Record<string, FieldValue> = {}
+    for (const field of specs) {
+      const value = values[field.key]
+      if (value === undefined) continue
+      const previous = current?.finalFields?.[field.key] ?? subject.fields[field.key]
+      const converted = parseFieldValue(field.kind, value, previous)
+      if (converted) finalFields[field.key] = converted
+    }
+    if (!Object.keys(finalFields).length) { setError('当前模板没有可编辑的最终认定字段'); return }
+    await submit('modified', finalFields, reason)
+  }
+
+  return (
+    <section ref={rootRef} className="mt-2 rounded-lg border border-border/60 bg-muted/20 p-2.5">
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-[11px] font-semibold">最终认定</p>
+        {current ? <span className="rounded bg-green-500/10 px-1.5 py-0.5 text-[10px] text-green-700 dark:text-green-400">{current.outcome === 'accepted' ? '认可' : current.outcome === 'modified' ? '已修改' : '不予认定'}</span> : <span className="rounded bg-amber-500/10 px-1.5 py-0.5 text-[10px] text-amber-700 dark:text-amber-400">待处理</span>}
+      </div>
+      <p className="mt-1 text-[11px] text-muted-foreground">申报：{displaySubjectFields(subject.fields, template)}</p>
+      {current?.outcome === 'accepted' && <p className="mt-1 text-[11px]">认定：与申报内容一致</p>}
+      {current?.outcome === 'rejected' && <p className="mt-1 text-[11px] text-destructive">认定：不予认定（最终分值 0）</p>}
+      {current?.outcome === 'modified' && current.finalFields && <p className="mt-1 text-[11px]">认定：{displaySubjectFields(current.finalFields, template)}</p>}
+      {current && <p className="mt-1 text-[10px] text-muted-foreground">理由：{current.reason}</p>}
+      {!editing ? (
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          <button type="button" disabled={!canEdit || busy} onClick={() => void submit('accepted')} className="rounded border px-2 py-1 text-[11px] disabled:opacity-40">确认认定</button>
+          <button type="button" disabled={!canEdit || busy || specs.length === 0} onClick={() => { setValues(initialSubjectValues(subject.fields, current?.finalFields)); setEditing(true); setError(null) }} className="rounded border px-2 py-1 text-[11px] disabled:opacity-40">修改认定</button>
+          <button type="button" disabled={!canEdit || busy} onClick={() => void submit('rejected')} className="rounded border border-destructive/40 px-2 py-1 text-[11px] text-destructive disabled:opacity-40">不予认定</button>
+        </div>
+      ) : (
+        <div className="mt-2 space-y-2">
+          {specs.map((field) => <label key={field.key} className="block text-[11px]">{field.label}
+            {field.kind === 'enum' && field.options.length > 0 ? <select value={values[field.key] ?? ''} onChange={(event) => setValues((old) => ({ ...old, [field.key]: event.target.value }))} className="mt-1 h-8 w-full rounded border bg-background px-2">{field.options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select> : <input type={field.kind === 'number' ? 'number' : field.kind === 'date' ? 'date' : 'text'} value={values[field.key] ?? ''} onChange={(event) => setValues((old) => ({ ...old, [field.key]: event.target.value }))} className="mt-1 h-8 w-full rounded border bg-background px-2" />}
+          </label>)}
+          <textarea value={reason} onChange={(event) => setReason(event.target.value)} className="min-h-14 w-full resize-y rounded border bg-background px-2 py-1.5 text-[11px]" placeholder="修改理由（必填）" aria-label="修改认定理由" />
+          {error && <p role="alert" className="text-[11px] text-destructive">{error}</p>}
+          <div className="flex gap-1.5"><button type="button" disabled={!canEdit || busy || !reason.trim()} onClick={() => void saveModified()} className="rounded bg-primary px-2 py-1 text-[11px] text-primary-foreground disabled:opacity-50">保存认定</button><button type="button" disabled={busy} onClick={() => setEditing(false)} className="rounded border px-2 py-1 text-[11px]">取消</button></div>
+        </div>
+      )}
+    </section>
+  )
+}
+
+function editableSubjectFields(fields: Record<string, FieldValue>, template: TemplateVersion | null): Array<{ key: string; label: string; kind: FieldValue['kind']; options: Array<{ value: string; label: string }> }> {
+  const specs = new Map((template?.fields ?? []).filter((field) => field.scope !== 'case').map((field) => [field.key, field]))
+  return Object.entries(fields).flatMap(([key, value]) => {
+    const spec = specs.get(key)
+    const kind = spec?.kind ?? value.kind
+    if (!['text', 'number', 'date', 'enum', 'multi', 'boolean'].includes(kind)) return []
+    return [{ key, label: spec?.label ?? key, kind, options: spec?.options ?? [] }]
+  })
+}
+
+function initialSubjectValues(fields: Record<string, FieldValue>, finalFields?: Record<string, FieldValue>): Record<string, string> {
+  return Object.fromEntries(Object.entries(fields).map(([key, value]) => [key, fieldValueText(finalFields?.[key] ?? value)]))
+}
+
+function fieldValueText(value: FieldValue): string {
+  if ('value' in value) return Array.isArray(value.value) ? value.value.join('、') : String(value.value ?? '')
+  return ''
+}
+
+function parseFieldValue(kind: FieldValue['kind'], value: string, previous?: FieldValue): FieldValue | undefined {
+  if (kind === 'number') {
+    const number = Number(value)
+    return Number.isFinite(number) ? { kind, value: number, ...((previous?.kind === 'number' && previous.unit) ? { unit: previous.unit } : {}) } : undefined
+  }
+  if (kind === 'multi') return { kind, value: value.split(/[，,、]/).map((item) => item.trim()).filter(Boolean) }
+  if (kind === 'boolean') return { kind, value: value === 'true' }
+  if (kind === 'date') return { kind, value }
+  if (kind === 'enum') return { kind, value }
+  return kind === 'text' ? { kind, value } : undefined
+}
+
+function displaySubjectFields(fields: Record<string, FieldValue>, template: TemplateVersion | null): string {
+  const entries = Object.entries(fields).filter(([, value]) => !['object', 'rows', 'attachment'].includes(value.kind)).slice(0, 4)
+  return entries.map(([key, value]) => `${template?.fields.find((field) => field.key === key)?.label ?? key} ${fieldValueText(value)}`).join(' / ') || '暂无可展示字段'
 }
 
 function displayValue(raw: unknown): string {

@@ -6,9 +6,8 @@
  * 窄窗口（<1100px）时只挂载当前栏，由顶部三按钮切换；切栏时重放已有定位。
  *
  * 交互：
- * - 挂载时 actions.initialize()：刷新案卷列表 + 模型出口自检（顶栏徽标）。
- *   不自动选中/载入案卷（首个案卷可能是用户自己的），入口在左栏「案卷管理」条；
- *   「载入演示案卷」按钮保留，由用户显式触发
+ * - 挂载时 actions.initialize()：刷新案卷列表、恢复最近案卷与模型出口状态；
+ *   案卷选择/新建/材料导入入口均在上方上下文条；演示案卷由用户显式触发。
  * - Ctrl+Shift+A（Mac: Cmd+Shift+A）：仅本视图挂载期间监听，toggle 审核助手抽屉
  * - 联动（D8）：问题卡点击 → reviewFocusAtom → SourceBlockView 滚动 + 闪高亮（见各栏组件）
  * - 根 div 保留 data-profer-navigation-region="content-review" + tabIndex={-1}（键盘导航焦点移交）

@@ -1,13 +1,75 @@
 /**
  * 单案工作台业务动作：待办处置、补件和人工最终决定均走 V2 聚合事务。
  */
-import type { Actor, BusinessDecision, CaseAggregateV2, ReviewCommandResult, SupplementRequest } from '@profer/shared'
+import { assessDecisionReadiness } from '@profer/shared'
+import type { Actor, BusinessDecision, CaseAggregateV2, FieldValue, ReviewCommandResult, SubjectAdjudication, SupplementRequest } from '@profer/shared'
 import { CommandValidationError, submitCommand } from './case-store-v2'
-import { getRunV2 } from './run-store-v2'
+import { getRunV2, readArtifact } from './run-store-v2'
 import { computeRunInputHash } from './run-service-v2'
 
 type WorkspaceDisposition = 'confirmed-issue' | 'false-positive' | 'supplement-requested' | 'waived' | 'escalated'
 type WorkspaceDecision = BusinessDecision['result']
+
+function currentSubjectAdjudications(aggregate: CaseAggregateV2, runId?: string, inputHash?: string): Map<string, SubjectAdjudication> {
+  const records = aggregate.adjudications ?? []
+  const supersededIds = new Set(records.flatMap((record) => record.supersedesAdjudicationId ? [record.supersedesAdjudicationId] : []))
+  const current = records.filter((record) => !supersededIds.has(record.id) && (!runId || (record.basedOnRunId === runId && record.inputHash === inputHash))).sort((a, b) => a.at.localeCompare(b.at))
+  const result = new Map<string, SubjectAdjudication>()
+  for (const record of current) result.set(record.subjectId, record)
+  return result
+}
+
+function finalScoresFor(aggregate: CaseAggregateV2, adjudications: Map<string, SubjectAdjudication>, runId: string): BusinessDecision['finalScores'] {
+  return aggregate.caseV2.subjects.flatMap((subject) => {
+    const adjudication = adjudications.get(subject.id)
+    if (!adjudication) return []
+    if (adjudication.outcome === 'rejected') return [{ subjectId: subject.id, value: '0', basisRunId: runId }]
+    const field = adjudication.finalFields?.declaredScore ?? adjudication.finalFields?.score ?? subject.fields.declaredScore ?? subject.fields.score
+    if (!field || field.kind !== 'number') return []
+    return [{ subjectId: subject.id, value: String(field.value), basisRunId: runId }]
+  })
+}
+
+export function recordWorkspaceSubjectAdjudicationV2(
+  caseId: string,
+  command: { requestId: string; actor: Actor; expectedRevision: number; payload: { subjectId: string; outcome: SubjectAdjudication['outcome']; finalFields?: Record<string, FieldValue>; reason: string; runId: string; inputHash: string } },
+): Promise<ReviewCommandResult<SubjectAdjudication>> {
+  return submitCommand(caseId, { ...command, type: 'RecordWorkspaceSubjectAdjudication' }, (aggregate, payload) => {
+    const run = assertCurrentRun(aggregate, payload.runId, payload.inputHash)
+    if (!['completed', 'partially-completed'].includes(run.status)) throw new CommandValidationError('INVALID_TRANSITION', '运行未完成，不能进行事项最终认定')
+    const subject = aggregate.caseV2.subjects.find((candidate) => candidate.id === payload.subjectId)
+    if (!subject) throw new CommandValidationError('NOT_FOUND', `申报事项不存在: ${payload.subjectId}`)
+    if (!['accepted', 'rejected', 'modified'].includes(payload.outcome)) throw new CommandValidationError('VALIDATION_FAILED', '事项认定结果无效')
+    if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '事项最终认定必须填写理由')
+    if (payload.outcome === 'modified' && !Object.keys(payload.finalFields ?? {}).length) throw new CommandValidationError('VALIDATION_FAILED', '修改认定必须填写最终认定内容')
+    const { getTemplate } = require('./template-store') as typeof import('./template-store')
+    const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+    const allowedFields = new Set([...(template?.fields ?? []).map((field) => field.key), ...Object.keys(subject.fields)])
+    for (const key of Object.keys(payload.finalFields ?? {})) {
+      if (!allowedFields.has(key)) throw new CommandValidationError('VALIDATION_FAILED', `事项不支持最终认定字段: ${key}`)
+    }
+    const previous = currentSubjectAdjudications(aggregate).get(subject.id)
+    return {
+      summary: `审核员${payload.outcome === 'modified' ? '修改' : payload.outcome === 'accepted' ? '确认' : '不予'}事项认定：${subject.title}`,
+      mutate: (draft) => {
+        const record: SubjectAdjudication = {
+          id: `adj-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+          subjectId: subject.id,
+          outcome: payload.outcome,
+          ...(payload.finalFields ? { finalFields: payload.finalFields } : {}),
+          reason: payload.reason.trim(),
+          basedOnRunId: run.id,
+          inputHash: run.inputManifest.hash,
+          actor: command.actor,
+          at: new Date().toISOString(),
+          ...(previous ? { supersedesAdjudicationId: previous.id } : {}),
+        }
+        draft.adjudications = [...(draft.adjudications ?? []), record]
+        return record
+      },
+    }
+  })
+}
 
 function assertCurrentRun(aggregate: CaseAggregateV2, runId: string, inputHash: string) {
   const run = getRunV2(aggregate.caseV2.id, runId)
@@ -61,7 +123,16 @@ export function openWorkspaceSupplementV2(
 ): Promise<ReviewCommandResult<SupplementRequest>> {
   return submitCommand(caseId, { ...command, type: 'OpenWorkspaceSupplement' }, (aggregate, payload) => {
     const run = assertCurrentRun(aggregate, payload.runId, payload.inputHash)
-    if (!run.checks.some((check) => check.checkId === payload.findingKey || check.ruleId === payload.findingKey)
+    const slotMatch = payload.findingKey.match(/^material-slot:(.+)$/)
+    if (slotMatch) {
+      const { getTemplate } = require('./template-store') as typeof import('./template-store')
+      const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+      const slot = template?.materialSlots.find((candidate) => candidate.id === slotMatch[1])
+      if (!slot) throw new CommandValidationError('NOT_FOUND', `材料槽不存在: ${slotMatch[1]}`)
+      if ((slot.requiredAt ?? 'submission') !== 'decision') throw new CommandValidationError('VALIDATION_FAILED', `材料槽 ${slot.id} 不是最终决定必需材料`)
+      const activeCount = aggregate.caseV2.documents.filter((document) => document.active !== false && document.materialSlotId === slot.id).length
+      if (activeCount >= slot.minCount) throw new CommandValidationError('INVALID_TRANSITION', `材料槽 ${slot.name} 已满足数量要求，无需补件`)
+    } else if (!run.checks.some((check) => check.checkId === payload.findingKey || check.ruleId === payload.findingKey)
       && !run.opinions.some((opinion) => opinion.id === payload.findingKey || opinion.checkId === payload.findingKey)) {
       throw new CommandValidationError('NOT_FOUND', `本次运行中不存在待办: ${payload.findingKey}`)
     }
@@ -125,23 +196,6 @@ export function acknowledgeWorkspaceMaterialV2(
   })
 }
 
-function unresolvedCheckKeys(aggregate: CaseAggregateV2, runId: string, inputHash: string): string[] {
-  const run = getRunV2(aggregate.caseV2.id, runId)
-  if (!run) return ['运行记录不存在']
-  const actionable = run.checks.filter((check) => !['compliant', 'not-applicable'].includes(check.status))
-  const unresolved = actionable.filter((check) => {
-    const disposition = [...aggregate.dispositions].reverse().find((entry) =>
-      entry.findingKey === check.checkId && entry.runId === run.id && entry.inputHash === inputHash)
-    if (!disposition) return true
-    if (disposition.disposition === 'supplement-requested') {
-      const related = aggregate.supplements.filter((item) => item.originFindingKeys.includes(check.checkId))
-      return related.length === 0 || related.some((item) => ['open', 'responded', 'insufficient'].includes(item.status))
-    }
-    return false
-  })
-  return unresolved.map((check) => check.checkId)
-}
-
 export function decideWorkspaceCaseV2(
   caseId: string,
   command: { requestId: string; actor: Actor; expectedRevision: number; payload: { result: WorkspaceDecision; reason: string; basedOnRunId: string; inputHash: string; requiredElements?: string[]; supplementReason?: string } },
@@ -153,13 +207,25 @@ export function decideWorkspaceCaseV2(
     if (aggregate.caseV2.stage === 'decided' || aggregate.caseV2.stage === 'archived') throw new CommandValidationError('INVALID_TRANSITION', '案卷已结束')
 
     if (payload.result !== 'return') {
-      if (run.coverage.plannedChecks === 0) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '当前运行没有有效的规则检查计划，不能形成通过/部分通过/驳回决定')
-      const unresolved = unresolvedCheckKeys(aggregate, run.id, run.inputManifest.hash)
-      if (unresolved.length) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', `仍有待处理审核项：${unresolved.join('、')}`)
-      if (aggregate.evidenceLinks.some((link) => link.status === 'candidate')) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '仍有未确认的证明关联')
-      if (aggregate.observations.some((observation) => !observation.confirmed)) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '仍有未确认的事实')
-      if (aggregate.caseV2.documents.some((document) => document.active !== false && document.usage !== 'read')) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '仍有未完整读取或未人工确认的材料')
-      if (aggregate.supplements.some((item) => ['open', 'responded', 'insufficient'].includes(item.status))) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '仍有未完成补件')
+      const { getTemplate } = require('./template-store') as typeof import('./template-store')
+      const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+      const extractArtifact = readArtifact<{ observations?: Array<Record<string, unknown>> }>(aggregate.caseV2.id, run.id, 'node-auto-check-extract')
+      const readiness = assessDecisionReadiness({
+        aggregate,
+        run,
+        runStale: false,
+        template,
+        observations: extractArtifact?.observations ?? [],
+      })
+      if (!readiness.ready) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', `仍有阻断最终决定的事项：${readiness.blockers.map((blocker) => blocker.message).join('；')}`)
+      if (aggregate.caseV2.subjects.length > 0) {
+        const adjudications = currentSubjectAdjudications(aggregate, run.id, run.inputManifest.hash)
+        const missing = aggregate.caseV2.subjects.filter((subject) => !adjudications.has(subject.id))
+        if (missing.length) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', `仍有事项未完成人工最终认定：${missing.map((subject) => subject.title).join('、')}`)
+        if (payload.result === 'partial-pass' && ![...adjudications.values()].some((entry) => entry.outcome === 'modified' || entry.outcome === 'rejected')) {
+          throw new CommandValidationError('VALIDATION_FAILED', '部分通过必须至少有一项修改或不予认定的事项结果')
+        }
+      }
     }
     if (payload.result === 'return' && (!(payload.requiredElements?.some((item) => item.trim())) || !payload.supplementReason?.trim())) {
       throw new CommandValidationError('VALIDATION_FAILED', '退回补件必须指定缺少要素和原因')
@@ -178,6 +244,7 @@ export function decideWorkspaceCaseV2(
           reason: payload.reason.trim(),
           basedOnRunId: run.id,
           basedOnRevision: aggregate.caseV2.revision,
+          finalScores: finalScoresFor(aggregate, currentSubjectAdjudications(aggregate, run.id, run.inputManifest.hash), run.id),
           at: now,
           finality: 'final',
         }

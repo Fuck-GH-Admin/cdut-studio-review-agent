@@ -26,6 +26,24 @@ async function seed(caseId: string): Promise<void> {
 }
 
 describe('提交案卷的原子事务', () => {
+  test('有申报表但没有证明时仍可提交审核', async () => {
+    await createCaseFromTemplate('comprehensive-assessment-v2', 2, {
+      title: '缺证明测试', fieldValues: { studentName: '测试学生', studentId: '002', academicYear: '2025-2026', applicant: '测试学生' }, subjects: [],
+    }, actor, 'missing-evidence')
+    await registerMaterial('missing-evidence', { requestId: 'register-application', actor, expectedRevision: 0, payload: { sourcePath: material, role: 'application', materialSlotId: 'application-form' } })
+    const result = await submitCaseV2('missing-evidence')
+    expect(result.ok).toBe(true)
+    expect(readAggregate('missing-evidence')?.caseV2.stage).toBe('submitted')
+  })
+
+  test('没有申报表时仍被提交门槛阻断', async () => {
+    await createCaseFromTemplate('comprehensive-assessment-v2', 2, {
+      title: '无申报表测试', fieldValues: { studentName: '测试学生', studentId: '003', academicYear: '2025-2026', applicant: '测试学生' }, subjects: [],
+    }, actor, 'missing-application')
+    await registerMaterial('missing-application', { requestId: 'register-certificate', actor, expectedRevision: 0, payload: { sourcePath: material, role: 'evidence', materialSlotId: 'certificates' } })
+    await expect(submitCaseV2('missing-application')).rejects.toThrow('缺少必需材料：综合测评申报表')
+  })
+
   test('Given 已登记材料且 revision 非零 When 提交 Then 状态和首任务一次落盘', async () => {
     await seed('normal')
     const before = readAggregate('normal')!

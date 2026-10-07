@@ -10,6 +10,7 @@ import { documentToVersion, itemToSubject, mapDomainToTemplate, migrateCaseToV2 
 import { getTemplate, saveDraft } from './template-store'
 import { ensureBuiltinTemplateDrafts } from './builtin-templates'
 import { buildEvidenceLinks } from './evidence-service'
+import { compileWorkspaceRule } from './workspace-rule-compiler'
 
 const SYSTEM_ACTOR = { actorId: 'review-workspace-sync', actorSource: 'system', role: 'system' } as const
 const ensureFlights = new Map<string, Promise<CaseAggregateV2>>()
@@ -28,21 +29,7 @@ function projectedCase(v1: ReviewCase, current: ReviewCaseV2): ReviewCaseV2 {
     const subject = itemToSubject(item)
     return { ...subject, sourceRefs: subject.sourceRefs.map((ref) => ({ ...ref, caseId: v1.id })) }
   })
-  const reviewRules: RuleSpec[] = v1.rulePacks.flatMap((pack) => pack.outline.map((outline, index) => ({
-    id: `workspace:${pack.id}:${outline.id}`,
-    policyVersionId: `workspace:${pack.id}@${pack.version}`,
-    title: `${outline.category} · ${outline.title}`,
-    when: { field: 'title', op: 'exists' },
-    requirement: outline.summary ? `${outline.title}：${outline.summary}` : outline.title,
-    targetScope: pack.confirmed ? 'subject' : 'case',
-    execution: pack.confirmed ? 'semantic' : 'manual',
-    onFail: 'manual-review',
-    onUnknown: 'needs-confirmation',
-    sourceRefIds: [`${pack.documentId}-v1`],
-    priority: index + 1,
-    confirmation: pack.confirmed ? 'confirmed' : 'unconfirmed',
-    ...(pack.confirmed ? { semanticOutputEnum: ['compliant', 'non-compliant', 'awaiting-confirmation'] } : {}),
-  } as RuleSpec)))
+  const reviewRules: RuleSpec[] = v1.rulePacks.flatMap((pack) => pack.outline.map((outline, index) => compileWorkspaceRule(pack, outline, index + 1)))
   return {
     ...current,
     templateId: template.templateId,

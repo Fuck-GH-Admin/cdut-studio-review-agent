@@ -493,6 +493,7 @@ export const REVIEW_IPC_CHANNELS = {
   OPEN_WORKSPACE_SUPPLEMENT_V2: 'review-v2:open-workspace-supplement',
   ACKNOWLEDGE_WORKSPACE_MATERIAL_V2: 'review-v2:acknowledge-workspace-material',
   DECIDE_WORKSPACE_CASE_V2: 'review-v2:decide-workspace-case',
+  RECORD_WORKSPACE_SUBJECT_ADJUDICATION_V2: 'review-v2:record-workspace-subject-adjudication',
   GET_WORKSPACE_RUN_VALIDITY_V2: 'review-v2:get-workspace-run-validity',
   CAST_RATING_V2: 'review-v2:cast-rating',
   RUN_BATCH_V2: 'review-v2:run-batch',

@@ -30,8 +30,8 @@ const f = (key: string, label: string, kind: 'text' | 'number' | 'date' | 'enum'
   key, label, kind, required: true, visibility: 'public' as const, ...extra,
 })
 
-const slot = (id: string, name: string, purpose: string, requiredElements: string[], accepted: TemplateVersion['materialSlots'][number]['acceptedKinds'] = ['pdf', 'image', 'office']) => ({
-  id, name, purpose, requiredElements, acceptedKinds: accepted, minCount: 1, maxCount: 10, allowReuseAcrossSubjects: false,
+const slot = (id: string, name: string, purpose: string, requiredElements: string[], accepted: TemplateVersion['materialSlots'][number]['acceptedKinds'] = ['pdf', 'image', 'office'], requiredAt: NonNullable<TemplateVersion['materialSlots'][number]['requiredAt']> = 'submission') => ({
+  id, name, purpose, requiredElements, acceptedKinds: accepted, minCount: 1, maxCount: 10, requiredAt, allowReuseAcrossSubjects: false,
 })
 
 /** 1. 学生综测：等级映射/适用年限/互斥/共享上限/加权汇总（02 §2 第一行） */
@@ -51,7 +51,7 @@ const comprehensiveAssessment: TemplateVersion = base({
   ],
   materialSlots: [
     slot('application-form', '综合测评申报表', '申报事项与等级', ['姓名', '学号', '事项', '等级', '日期']),
-    slot('certificates', '证明材料', '等级/日期/颁发单位核验', ['等级', '日期', '颁发单位'], ['pdf', 'image', 'office', 'text']),
+    slot('certificates', '证明材料', '等级/日期/颁发单位核验', ['等级', '日期', '颁发单位'], ['pdf', 'image', 'office', 'text'], 'decision'),
   ],
   policyVersionIds: ['policy-comprehensive-assessment'],
   stages: TWO_LEVEL_STAGES,

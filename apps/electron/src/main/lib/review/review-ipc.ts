@@ -198,10 +198,12 @@ export function registerReviewIpc(): void {
     (_event, input: { caseId: string; fileName: string; role: SourceDocument['role'] }): Promise<SourceDocument> => {
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
       if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
+      const { BrowserWindow } = require('electron') as typeof import('electron')
       return importDocumentIntoCase({
         caseId: requireString(input.caseId, 'caseId'),
         fileName: requireString(input.fileName, 'fileName'),
         role: input.role,
+        parentWindow: BrowserWindow.fromWebContents(_event.sender) ?? undefined,
       })
     },
   )
@@ -355,6 +357,10 @@ export function registerReviewIpc(): void {
   ipcMain.handle(REVIEW_IPC_CHANNELS.DECIDE_WORKSPACE_CASE_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { decideWorkspaceCaseV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
     return decideWorkspaceCaseV2(input.caseId, input.command as unknown as Parameters<typeof decideWorkspaceCaseV2>[1])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RECORD_WORKSPACE_SUBJECT_ADJUDICATION_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+    const { recordWorkspaceSubjectAdjudicationV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+    return recordWorkspaceSubjectAdjudicationV2(input.caseId, input.command as unknown as Parameters<typeof recordWorkspaceSubjectAdjudicationV2>[1])
   })
 
   // ===== N3b：业务闭环命令（薄委托 stage-workflow） =====

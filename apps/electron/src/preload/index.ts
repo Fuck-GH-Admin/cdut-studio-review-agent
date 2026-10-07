@@ -3686,6 +3686,8 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ACKNOWLEDGE_WORKSPACE_MATERIAL_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   decideWorkspaceCaseV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.DECIDE_WORKSPACE_CASE_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  recordWorkspaceSubjectAdjudicationV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RECORD_WORKSPACE_SUBJECT_ADJUDICATION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   runBatchV2: (batchId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_BATCH_V2, batchId) as Promise<import('@profer/shared').BatchStateV2>,
   runReviewV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, caseId) as Promise<import('@profer/shared').ReviewRunV2>,
   castRatingV2: (input: { caseId: string; command: Record<string, unknown> }) =>

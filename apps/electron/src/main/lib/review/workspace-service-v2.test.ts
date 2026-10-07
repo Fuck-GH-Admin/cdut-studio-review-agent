@@ -53,7 +53,7 @@ describe('单一工作台案卷映射到 V2 聚合', () => {
     expect(synced.receiptLog.some((receipt) => receipt.type === 'CorrectObservation')).toBeTrue()
   })
 
-  test('审核依据摘要只有审核员确认后才从人工核验升级为语义检查', async () => {
+  test('审核依据按约束结构化编译，未确认内容仍保持人工检查', async () => {
     ensureBuiltinTemplateDrafts({ getTemplate: getTemplateStored, saveDraft: saveDraftStored })
     const demo = buildDemoCase()
     const unconfirmed = { ...demo, rulePacks: demo.rulePacks.map((pack) => ({ ...pack, confirmed: false })) }
@@ -64,7 +64,9 @@ describe('单一工作台案卷映射到 V2 聚合', () => {
 
     saveCase({ ...unconfirmed, rulePacks: unconfirmed.rulePacks.map((pack) => ({ ...pack, confirmed: true })) })
     const confirmed = await syncWorkspaceProjectionV2(unconfirmed.id)
-    expect(confirmed.caseV2.reviewRules?.every((rule) => rule.execution === 'semantic' && rule.confirmation === 'confirmed')).toBeTrue()
+    expect(confirmed.caseV2.reviewRules?.every((rule) => rule.confirmation === 'confirmed')).toBeTrue()
+    expect(confirmed.caseV2.reviewRules?.some((rule) => rule.execution === 'deterministic')).toBeTrue()
+    expect(confirmed.caseV2.reviewRules?.some((rule) => rule.execution === 'manual')).toBeTrue()
     expect(confirmed.caseV2.reviewRules?.[0]?.sourceRefIds[0]).toEndWith('-v1')
   })
 })
