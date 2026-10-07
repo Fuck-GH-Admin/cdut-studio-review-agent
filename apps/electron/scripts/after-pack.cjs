@@ -1,9 +1,9 @@
 /**
- * electron-builder afterPack hook — 给 Windows exe 打 Profer 图标 + 版本信息
+ * electron-builder afterPack hook — 给 Windows exe 打 CDUT Studio 图标 + 版本信息
  * electron-builder v25 + Electron 43 需 rcedit >= 3.x（用仓库 node_modules 里的 rcedit）
  *
  * 校验契约：
- *  - rcedit 写入成功（版本信息 ProductName/FileDescription/CompanyName = Profer）
+ *  - rcedit 写入成功（版本信息 ProductName/FileDescription/CompanyName = CDUT Studio）
  *  - 失败必须抛出，阻断打包（避免"图标/元数据静默回退为 electron 默认"）
  */
 const { execFileSync } = require('node:child_process')
@@ -62,7 +62,7 @@ module.exports = async function (context) {
   if (context.electronPlatformName !== 'win32') return
 
   const productFilename = context.packager.appInfo.productFilename || 'CDUT Studio'
-  const candidateExeNames = [`${productFilename}.exe`, 'CDUT Studio.exe', 'Profer.exe']
+  const candidateExeNames = [`${productFilename}.exe`, 'CDUT Studio.exe']
   let exePath = ''
   for (const name of candidateExeNames) {
     const candidate = join(context.appOutDir, name)
@@ -83,7 +83,7 @@ module.exports = async function (context) {
   }
 
   const productName = context.packager.appInfo.productName || 'CDUT Studio'
-  const companyName = context.packager.appInfo.companyName || 'CDUT'
+  const companyName = context.packager.appInfo.companyName || 'CDUT Studio Devs'
 
   try {
     const rcedit = findRcedit()

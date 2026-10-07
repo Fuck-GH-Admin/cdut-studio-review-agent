@@ -5,8 +5,8 @@ const WINDOWS_RELEASE_ASSET_NAMES = Object.freeze([
 function requiredWindowsReleaseAssetNames(version) {
   return [
     ...WINDOWS_RELEASE_ASSET_NAMES,
-    `Profer-Setup-${version}.exe`,
-    `Profer-Setup-${version}.exe.blockmap`,
+    `CDUT-Studio-Setup-${version}.exe`,
+    `CDUT-Studio-Setup-${version}.exe.blockmap`,
   ]
 }
 

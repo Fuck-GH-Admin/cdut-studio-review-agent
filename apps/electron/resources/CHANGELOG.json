@@ -34,7 +34,7 @@
       "version": "0.15.138",
       "date": "2026-10-05",
       "title": "0.15.138",
-      "notes": "- 阶段 A：真实材料链路——materialTextOf 接 document-parser（PDF/Office 真实解析进 AI 上下文）+ OCR 端口注入位；RunResultPanel V2 运行结果展示（检查明细/结论/覆盖/诊断，可展开）；assembleV2Executors 转异步"
+      "notes": "- 阶段 A：真实材料链路——materialTextOf 接 document-parser（PDF/Office 真实解析进 AI 上下文）+ OCR 端口注入位；RunResultPanel V2 运行结果展示（检查明细/结论/覆盖/诊断，可展开）；assembleV2Executors 转异步。- 上游：移除自动更新运行时，保留本地 CHANGELOG 与 GitHub Release 版本历史展示能力，设置页「关于/更新」标签更名为「关于」"
     },
     {
       "version": "0.15.137",

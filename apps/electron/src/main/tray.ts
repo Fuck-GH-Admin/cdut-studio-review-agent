@@ -17,15 +17,16 @@ export interface TrayActions {
 
 /**
  * 获取托盘图标路径
- * 所有平台统一使用 Template 图标
+ * macOS 使用单色 Template（系统自动着色），其余平台使用彩色版本
  */
 function getTrayIconPath(): string {
   // dev: __dirname/resources（build:resources 拷贝产物）
   // prod: process.resourcesPath（electron-builder extraResources 产物）
   const resourcesDir = app.isPackaged
-    ? join(process.resourcesPath, 'profer-logos')
-    : join(__dirname, 'resources/profer-logos')
-  return join(resourcesDir, 'iconTemplate.png')
+    ? join(process.resourcesPath, 'tray-icons')
+    : join(__dirname, 'resources/tray-icons')
+  const fileName = process.platform === 'darwin' ? 'iconTemplate.png' : 'iconTray.png'
+  return join(resourcesDir, fileName)
 }
 
 /** 显示主窗口 */
@@ -101,12 +102,12 @@ function buildTrayMenu(actions: TrayActions): Menu {
     },
     { type: 'separator' },
     {
-      label: '打开 Profer',
+      label: '打开 CDUT Studio',
       click: () => actions.showMainWindow(),
     },
     { type: 'separator' },
     {
-      label: '退出 Profer',
+      label: '退出 CDUT Studio',
       click: () => {
         app.quit()
       },
@@ -148,7 +149,7 @@ export function createTray(actionsInput?: Partial<TrayActions>): Tray | null {
     tray = new Tray(image)
 
     // 设置 tooltip
-    tray.setToolTip('Profer')
+    tray.setToolTip('CDUT Studio')
 
     updateTrayMenu(actions)
 

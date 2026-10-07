@@ -22,7 +22,6 @@ import {
   Users,
   Database,
   Network,
-  UserRound,
   FlaskConical,
   SlidersHorizontal,
 } from "lucide-react";
@@ -31,7 +30,6 @@ import { settingsTabAtom, channelFormDirtyAtom, settingsCloseRequestedAtom, sett
 import type { SettingsTab } from "@/atoms/settings-tab";
 import { appModeAtom } from "@/atoms/app-mode";
 import { authStatusAtom } from "@/atoms/identity-atoms";
-import { hasUpdateAtom } from "@/atoms/updater";
 import { tabsAtom, activeTabIdAtom, openTab, TUTORIAL_TAB_ID } from "@/atoms/tab-atoms";
 import { hasEnvironmentIssuesAtom } from "@/atoms/environment";
 import { developerModeEnabledAtom } from "@/atoms/developer-mode";
@@ -48,7 +46,6 @@ import {
 import { ChannelSettings } from "./ChannelSettings";
 import { GeneralSettings } from "./GeneralSettings";
 import { UsageSettings } from "./UsageSettings";
-import { AccountSettings } from "./AccountSettings";
 import { AppearanceSettings } from "./AppearanceSettings";
 import { AboutSettings } from "./AboutSettings";
 import { AgentSettings } from "./AgentSettings";
@@ -72,11 +69,6 @@ export interface SettingsTabGroup {
   title?: string;
   items: SettingsTabItem[];
 }
-
-/** 账户：身份、额度、订阅和团队能力。开放 API 暂不开放入口。 */
-const ACCOUNT_GROUP_ITEMS: SettingsTabItem[] = [
-  { id: "account", label: "账户与资料", icon: <UserRound size={16} /> },
-];
 
 /** 模型与能力：渠道 / Agent */
 const MODEL_GROUP_ITEMS: SettingsTabItem[] = [
@@ -104,7 +96,7 @@ const SYSTEM_GROUP_ITEMS: SettingsTabItem[] = [
 /** 帮助：教程 / 关于与更新 */
 const HELP_GROUP_ITEMS: SettingsTabItem[] = [
   { id: "tutorial", label: "CDUT Studio 教程", icon: <GraduationCap size={16} /> },
-  { id: "about", label: "关于/更新", icon: <Info size={16} /> },
+  { id: "about", label: "关于", icon: <Info size={16} /> },
 ];
 
 const DEVELOPER_MODE_ITEM: SettingsTabItem = {
@@ -122,8 +114,6 @@ function renderTabContent(tab: SettingsTab): React.ReactElement {
       return <GeneralSettings />;
     case "usage":
       return <UsageSettings />;
-    case "account":
-      return <AccountSettings />;
     case "channels":
       return <ChannelSettings />;
     case "agent":
@@ -166,7 +156,6 @@ export function SettingsPanel({
   const [closeRequested, setCloseRequested] = useAtom(settingsCloseRequestedAtom);
   const setSettingsOpen = useSetAtom(settingsOpenAtom);
   const appMode = useAtomValue(appModeAtom);
-  const hasUpdate = useAtomValue(hasUpdateAtom);
   const hasEnvironmentIssues = useAtomValue(hasEnvironmentIssuesAtom);
   const developerModeEnabled = useAtomValue(developerModeEnabledAtom);
   const [mainTabs, setMainTabs] = useAtom(tabsAtom);
@@ -207,7 +196,7 @@ export function SettingsPanel({
   }
 
   // 受限环境传入白名单时直接使用（无分组标题）；否则按语义分组组装导航。
-  // 未登录时过滤掉需要团队账号的 Tab；账户页始终保留，用于登录入口。
+  // 未登录时过滤掉需要团队账号的 Tab，并清理空分组。
   const groups = React.useMemo<SettingsTabGroup[]>(() => {
     if (tabsOverride) {
       return [{ items: tabsOverride }]
@@ -223,7 +212,6 @@ export function SettingsPanel({
 
     const allGroups: SettingsTabGroup[] = [
       { items: [{ id: "general", label: "通用", icon: <Settings size={16} /> }, { id: "usage", label: "使用偏好", icon: <SlidersHorizontal size={16} /> }] },
-      { title: "账户", items: ACCOUNT_GROUP_ITEMS },
       { title: "模型与能力", items: modelItems },
       { title: "体验", items: EXPERIENCE_GROUP_ITEMS },
       { title: "连接", items: CONNECTION_GROUP_ITEMS },
@@ -316,7 +304,7 @@ export function SettingsPanel({
                     effectiveTab === tab.id ? "text-primary" : "text-muted-foreground/70 group-hover:text-foreground"
                   )}>{tab.icon}</span>
                   <span className="truncate">{tab.label}</span>
-                  {tab.id === "about" && (hasUpdate || hasEnvironmentIssues) && (
+                  {tab.id === "about" && hasEnvironmentIssues && (
                     <span className="ml-auto size-2 rounded-full bg-red-500" />
                   )}
                 </button>

@@ -45,11 +45,16 @@ import {
   inferAgentSdkContextWindow,
   strip1MContextSuffix,
   AGENT_PRESET_CAPABILITY_GROUPS,
+  CDUT_AI_CLASS_WORKSPACE_NAME,
+  CDUT_AI_CLASS_WORKSPACE_SLUG,
+  STUDY_CLASS_DISABLED_TOOL_GROUPS,
+  STUDY_CLASS_DISABLED_TOOLS,
   createEffectiveAgentPresetPolicy,
   withLoadedMcpServerNames,
   isEffectiveAgentPresetMcpServerAllowed,
 } from '@profer/shared'
 import type { PermissionRequest, ProferPermissionMode, AskUserRequest, ExitPlanModeRequest, EffectiveAgentPresetPolicy } from '@profer/shared'
+import { buildStudyOutlineForPrompt, describeCognitionForPrompt, readStudentCognition } from './study/study-document-indexer'
 import { AgentEventBus } from './agent-event-bus'
 import {
   decryptApiKey,
@@ -1091,6 +1096,19 @@ export class AgentOrchestrator {
     // Goal 只使用自己的 runtime session；普通会话的 SDK session 不得作为 resume 来源。
     let existingSdkSessionId = input.isolatedRuntimeSession ? input.runtimeSessionId : sessionMeta?.sdkSessionId
 
+    // 单轮聚焦（关闭上下文记忆）：捕获本轮之前已保存的 SDK session id。
+    // 该 id 必须保留，待用户重新开启记忆后仍可续接原多轮链；本轮新 SDK 会话不入库。
+    const memoryOffPreserveSdkSessionId =
+      input.disableContextMemory === true && !input.isolatedRuntimeSession
+        ? sessionMeta?.sdkSessionId
+        : undefined
+
+    // 当开启单轮聚焦（关闭上下文记忆）时，不加载前序 SDK 会话历史，强制开启干净单轮
+    if (input.disableContextMemory === true) {
+      console.log(`[Agent 编排] 会话 ${sessionId} 启用了单轮聚焦模式，跳过恢复 SDK 历史: ${existingSdkSessionId}`)
+      existingSdkSessionId = undefined
+    }
+
     // 4.1 检测回退后的 resume 截断点（快照回退功能）
     let rewindResumeAt: string | undefined
     if (sessionMeta?.resumeAtMessageUuid) {
@@ -1144,6 +1162,11 @@ export class AgentOrchestrator {
 
       const effectiveWorkspaceId = workspaceId ?? workspace?.id
       const effectiveWorkspaceSlug = workspaceSlug ?? workspace?.slug
+      // AI 速课堂专属会话判定：独立工作区（cdut-ai-class）的会话走专用带教身份与学习工具，
+      // 常规 Agent 会话不再被注入速课堂铁律与学习工具，实现两套系统提示词彻底分家。
+      // 同时兜底工作区名，避免 slug 冲突（如 cdut-ai-class-1）导致误判。
+      const isStudyClass = effectiveWorkspaceSlug === CDUT_AI_CLASS_WORKSPACE_SLUG
+        || workspace?.name === CDUT_AI_CLASS_WORKSPACE_NAME
 
       // 9.4.1 Fork session JSONL 迁移已在 forkAgentSession 中完成，
       // fork 后的会话直接使用自己的 cwd，无需回退到源目录。
@@ -1205,6 +1228,11 @@ export class AgentOrchestrator {
           runtimeSupportsSubagents: this.adapter.getRuntimeCapabilities?.(agentRuntime)?.runtimeSupportsSubagents
             ?? this.adapter.getCapabilities?.().runtimeSupportsSubagents
             ?? false,
+          // AI 速课堂只做资料带教：按代码画像剥离浏览器/自动化/协作/剪贴板等通用能力，常规会话不传。
+          ...(isStudyClass && {
+            extraDisabledToolGroups: STUDY_CLASS_DISABLED_TOOL_GROUPS,
+            extraDisabledTools: STUDY_CLASS_DISABLED_TOOLS,
+          }),
         },
       )
       const disabledToolGroups = new Set(presetPolicy.disabledToolGroups)
@@ -1266,16 +1294,19 @@ export class AgentOrchestrator {
 ${enrichedMessage}`
 
       const isCompactCommand = runtimeUserMessage.trim() === '/compact'
+      const isSingleTurnFocus = input.disableContextMemory === true
       let finalPrompt = isCompactCommand
         ? '/compact'
         : existingSdkSessionId
           ? contextualMessage
-          : goalIsolated
+          : goalIsolated || isSingleTurnFocus
             ? contextualMessage
             : buildContextPrompt(sessionId, contextualMessage, { agentCwd })
 
       if (existingSdkSessionId) {
         console.log(`[Agent 编排] 使用 resume 模式，SDK session ID: ${existingSdkSessionId}`)
+      } else if (isSingleTurnFocus) {
+        console.log(`[Agent 编排] 单轮聚焦模式：跳过历史回填，本轮仅携带当前提问与系统指令`)
       } else if (finalPrompt !== contextualMessage) {
         console.log(`[Agent 编排] 无 resume，已回填历史上下文（最近 ${MAX_CONTEXT_MESSAGES} 条消息）`)
       }
@@ -1336,6 +1367,7 @@ ${enrichedMessage}`
               workspaceId: effectiveWorkspaceId,
               isTeamWorkspace: workspace?.type === 'team',
               workspaceSlug: effectiveWorkspaceSlug,
+              isStudyClass,
               agentCwd,
               allowedRoots: browserAllowedRoots,
               onPreviewRequest: (event) => agentFilePreviewSessionManager.waitUntilReady(event, (previewEvent) => {
@@ -1701,6 +1733,10 @@ ${enrichedMessage}`
         shellPath: promptShellPath,
         agentCwd,
         projectCandidates,
+        isStudyClass,
+        // 速课堂专用：真实注入资料大纲向导与学生认知档案（仅速课堂会话）
+        studyOutline: isStudyClass ? buildStudyOutlineForPrompt(sessionId) : undefined,
+        studyCognition: isStudyClass ? describeCognitionForPrompt(readStudentCognition(sessionId)) : undefined,
         })
       // Pi 没有 Claude preset；普通任务只携带核心规则，低频 SOP 按任务与实际工具恢复。
       // 必须先压缩纯基础 Prompt，再追加附加目录和 preset 自定义段，避免标题截取误删后置上下文。
@@ -1842,15 +1878,20 @@ ${enrichedMessage}`
             input.onRuntimeSessionId?.(sdkSessionId, piSessionFile)
           }
           if (!input.isolatedRuntimeSession && (isNewSessionId || artifactReplaced)) {
-            try {
-              updateAgentSessionMeta(sessionId, {
-                sdkSessionId,
-                ...(piSessionFile ? { piSessionFile } : {}),
-                ...(artifactReplaced ? { piEntryBindings: {} } : {}),
-              })
-              console.log(`[Agent 编排] 已保存 SDK session_id: ${sdkSessionId}`)
-            } catch (err) {
-              console.error(`[Agent 编排] 保存 SDK session_id 失败:`, err)
+            if (memoryOffPreserveSdkSessionId) {
+              // 单轮聚焦：保留原 sdkSessionId，本轮新 SDK 会话不覆盖，避免破坏多轮链
+              console.log(`[Agent 编排] 单轮聚焦模式：保留原 sdkSessionId=${memoryOffPreserveSdkSessionId}，本轮新会话 ${sdkSessionId} 不入库`)
+            } else {
+              try {
+                updateAgentSessionMeta(sessionId, {
+                  sdkSessionId,
+                  ...(piSessionFile ? { piSessionFile } : {}),
+                  ...(artifactReplaced ? { piEntryBindings: {} } : {}),
+                })
+                console.log(`[Agent 编排] 已保存 SDK session_id: ${sdkSessionId}`)
+              } catch (err) {
+                console.error(`[Agent 编排] 保存 SDK session_id 失败:`, err)
+              }
             }
           }
 

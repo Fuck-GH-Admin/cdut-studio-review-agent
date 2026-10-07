@@ -32,6 +32,10 @@ interface CodeElementProps {
 interface CodeBlockProps {
   /** react-markdown 传入的 <pre> 子元素（内含 <code>） */
   children: React.ReactNode
+  /** 头部栏右侧的附加操作（渲染在「复制」按钮左侧），如 HTML 一键渲染切换 */
+  headerActions?: React.ReactNode
+  /** 提供后以该节点整体替换代码区（头部栏保留），用于在原位置切换为渲染预览 */
+  bodyOverride?: React.ReactNode
 }
 
 /** 节流间隔（ms）：流式输出时限制高亮更新频率 */
@@ -133,7 +137,7 @@ const CodeLine = React.memo(function CodeLine({ tokens, rawLine }: CodeLineProps
  * - 节流 80ms：流式输出时控制重计算频率
  * - 异步兜底：首次挂载高亮器未就绪时，异步初始化后触发一次更新
  */
-export function CodeBlock({ children }: CodeBlockProps): React.ReactElement {
+export function CodeBlock({ children, headerActions, bodyOverride }: CodeBlockProps): React.ReactElement {
   const { language, code } = React.useMemo(() => extractCodeInfo(children), [children])
   const [copied, setCopied] = React.useState(false)
 
@@ -209,36 +213,41 @@ export function CodeBlock({ children }: CodeBlockProps): React.ReactElement {
       {/* 头部栏：语言标签 + 复制按钮 */}
       <div className="flex items-center justify-between h-[34px] px-2 py-1 bg-muted/60 text-muted-foreground text-xs">
         <span className="font-medium select-none">{getDisplayName(language)}</span>
-        <button
-          type="button"
-          onClick={handleCopy}
-          className="flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-foreground/10 transition-colors text-muted-foreground hover:text-foreground"
-        >
-          <svg {...ICON_ATTRS}>{copied ? checkIconPath : copyIconPath}</svg>
-          <span>{copied ? '已复制' : '复制'}</span>
-        </button>
+        <div className="flex items-center gap-1">
+          {headerActions}
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-foreground/10 transition-colors text-muted-foreground hover:text-foreground"
+          >
+            <svg {...ICON_ATTRS}>{copied ? checkIconPath : copyIconPath}</svg>
+            <span>{copied ? '已复制' : '复制'}</span>
+          </button>
+        </div>
       </div>
 
-      {/* 代码区域：逐行渲染 */}
-      <pre
-        className="shiki overflow-x-auto p-4 m-0 text-[0.875em] leading-[1.6] bg-[hsl(var(--code-bg))]"
-        style={{
-          color: tokenResult?.fgColor ?? '#e1e4e8',
-          borderRadius: '0 0 8px 8px',
-        }}
-      >
-        <code>
-          {rawLines.map((rawLine, i) => (
-            <React.Fragment key={i}>
-              {i > 0 && '\n'}
-              <CodeLine
-                tokens={tokenResult?.lines[i] ?? []}
-                rawLine={rawLine}
-              />
-            </React.Fragment>
-          ))}
-        </code>
-      </pre>
+      {/* 代码区域：逐行渲染；bodyOverride 时整体替换为渲染预览 */}
+      {bodyOverride ?? (
+        <pre
+          className="shiki overflow-x-auto p-4 m-0 text-[0.875em] leading-[1.6] bg-[hsl(var(--code-bg))]"
+          style={{
+            color: tokenResult?.fgColor ?? '#e1e4e8',
+            borderRadius: '0 0 8px 8px',
+          }}
+        >
+          <code>
+            {rawLines.map((rawLine, i) => (
+              <React.Fragment key={i}>
+                {i > 0 && '\n'}
+                <CodeLine
+                  tokens={tokenResult?.lines[i] ?? []}
+                  rawLine={rawLine}
+                />
+              </React.Fragment>
+            ))}
+          </code>
+        </pre>
+      )}
     </div>
   )
 }

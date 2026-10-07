@@ -1,5 +1,5 @@
 /**
- * Profer Windows 发布（本地构建 + 双通道上传）
+ * CDUT Studio Windows 发布（本地构建 + 双通道上传）
  *
  * 用法: node scripts/push-release.cjs <版本号>
  *
@@ -23,7 +23,7 @@ const ROOT = path.resolve(__dirname, '..');
 const ELECTRON = path.join(ROOT, 'apps/electron');
 const OUT = path.join(ELECTRON, 'out');
 const TAG = `v${VERSION}`;
-const GH_REPO = 'Yuan-lai-ru-ci/ProferAI';
+const GH_REPO = 'Nya-Angle/CDUT-Studio';
 const HOST = process.env.PROFER_UPDATE_SSH_HOST || '45.114.127.232';
 const USER = process.env.PROFER_UPDATE_SSH_USER || 'root';
 const SSH_PORT = process.env.PROFER_UPDATE_SSH_PORT || '41235';
@@ -195,7 +195,7 @@ async function ensureGitHubRelease(assets) {
     const notesArg = fs.existsSync(notesFile) ? `--notes-file ${quote(notesFile)}` : '--generate-notes';
     await retryGitHub('创建 GitHub Release', () => {
       const result = tryRun(
-        `gh release create ${TAG} --repo ${GH_REPO} --title ${quote(`Profer ${TAG}`)} --draft ${notesArg}`,
+        `gh release create ${TAG} --repo ${GH_REPO} --title ${quote(`CDUT Studio ${TAG}`)} --draft ${notesArg}`,
       );
       return !result.ok && /already exists|already_exists|HTTP 422/i.test(result.out)
         ? { ok: true, out: result.out }
@@ -214,7 +214,7 @@ async function ensureGitHubRelease(assets) {
   }
 
   const release = await waitForExpectedAssets(assets);
-  const releaseName = `Profer ${TAG}`;
+  const releaseName = `CDUT Studio ${TAG}`;
   if (release.isDraft) {
     await retryGitHub('发布 GitHub Release', () => tryRun(
       `gh release edit ${TAG} --repo ${GH_REPO} --draft=false --latest --title ${quote(releaseName)}`,
@@ -230,7 +230,7 @@ async function ensureGitHubRelease(assets) {
 }
 
 (async () => {
-  console.log(`=== Profer 本地发布 ${TAG} ===`);
+  console.log(`=== CDUT Studio 本地发布 ${TAG} ===`);
   // 必须先完成所有只读预检；随后才允许构建、上传或 Git/GitHub 写入。
   run(`node scripts/verify-release-preflight.cjs ${VERSION}`);
 
@@ -248,8 +248,8 @@ async function ensureGitHubRelease(assets) {
   // 构建模式和已有产物模式都校验 latest.yml 哈希、CLI 和运行时闭包；已有产物模式不重复构建。
 
   const assetNames = UNSIGNED_RELEASE
-    ? ['latest.yml', `Profer-Setup-${VERSION}.exe`, `Profer-Setup-${VERSION}.exe.blockmap`]
-    : ['latest.yml', 'latest.yml.sig', `Profer-Setup-${VERSION}.exe`, `Profer-Setup-${VERSION}.exe.blockmap`];
+    ? ['latest.yml', `CDUT-Studio-Setup-${VERSION}.exe`, `CDUT-Studio-Setup-${VERSION}.exe.blockmap`]
+    : ['latest.yml', 'latest.yml.sig', `CDUT-Studio-Setup-${VERSION}.exe`, `CDUT-Studio-Setup-${VERSION}.exe.blockmap`];
   const assets = assetNames.map((name) => ({ name, path: path.join(OUT, name) }));
   for (const asset of assets) {
     if (!fs.existsSync(asset.path)) throw new Error(`缺少打包资产: ${asset.path}`);
@@ -261,7 +261,7 @@ async function ensureGitHubRelease(assets) {
     throw new Error('更新源必须为 HTTPS，拒绝发布。');
   }
   console.log(`[2/5] 上传国内自动更新源（${UPDATE_FEED_URL}）...`);
-  const installer = assets.find((asset) => asset.name === `Profer-Setup-${VERSION}.exe`);
+  const installer = assets.find((asset) => asset.name === `CDUT-Studio-Setup-${VERSION}.exe`);
   const metadata = assets.find((asset) => asset.name === 'latest.yml');
   const metadataSignature = assets.find((asset) => asset.name === 'latest.yml.sig');
   const blockmap = assets.find((asset) => asset.name.endsWith('.blockmap'));
@@ -288,7 +288,7 @@ async function ensureGitHubRelease(assets) {
       `${sudo}cp /tmp/latest.yml ${target.dir}/ && ` +
       `${sudo}cp /tmp/${installer.name} ${target.dir}/ && ${sudo}cp /tmp/${blockmap.name} ${target.dir}/ && ` +
       `${sudo}cp /tmp/latest.json ${target.dir}/ && ` +
-      `${sudo}ln -sf ${target.dir}/${installer.name} ${target.dir}/Profer-latest.exe && ` +
+      `${sudo}ln -sf ${target.dir}/${installer.name} ${target.dir}/CDUT-Studio-latest.exe && ` +
       `${sudo}chmod -R 755 ${target.dir}`,
       120_000,
       target,

@@ -139,6 +139,8 @@ interface AgentMessagesProps {
   historyLoadingEarlier?: boolean
   /** 嵌入在右侧探索分支时关闭探索入口，避免无限嵌套。 */
   explorationEnabled?: boolean
+  /** 自定义空状态节点（如速课堂专属问候）；缺省回退通用 WelcomeEmptyState */
+  emptyState?: React.ReactNode
 }
 
 /** 空状态引导 — 使用 WelcomeEmptyState */
@@ -529,7 +531,7 @@ function AgentRunningIndicator({ startedAt }: { startedAt?: number }): React.Rea
   )
 }
 
-export function AgentMessages({ sessionId, sessionModelId, agentRuntime, messagesLoaded, persistedSDKMessages, streaming, streamState, runningDelegationCount = 0, liveMessages, sessionPath, attachedDirs, stoppedByUser, streamError, onRetry, onRetryInNewSession, onFork, onExplore, onRewind, onCompact, imageGenerations, onLoadEarlierHistory, historyMoreAvailable, historyLoadingEarlier, explorationEnabled = true }: AgentMessagesProps): React.ReactElement {
+export function AgentMessages({ sessionId, sessionModelId, agentRuntime, messagesLoaded, persistedSDKMessages, streaming, streamState, runningDelegationCount = 0, liveMessages, sessionPath, attachedDirs, stoppedByUser, streamError, onRetry, onRetryInNewSession, onFork, onExplore, onRewind, onCompact, imageGenerations, onLoadEarlierHistory, historyMoreAvailable, historyLoadingEarlier, explorationEnabled = true, emptyState }: AgentMessagesProps): React.ReactElement {
   const userProfile = useAtomValue(userProfileAtom)
   const setMinimapCache = useSetAtom(tabMinimapCacheAtom)
   const channels = useAtomValue(channelsAtom)
@@ -804,8 +806,8 @@ export function AgentMessages({ sessionId, sessionModelId, agentRuntime, message
   return (
     <FileAccessSessionProvider sessionId={sessionId}>
     <BasePathsProvider basePaths={resolvedBasePaths}>
-    <div ref={historySelectionRootRef} className="relative flex min-h-0 flex-1 flex-col">
-    <Conversation resize={ready && !transitioning ? 'smooth' : 'instant'} className={ready ? (skipFadeIn ? 'opacity-100' : 'opacity-100 transition-opacity duration-200') : 'opacity-0'}>
+    <div ref={historySelectionRootRef} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+      <Conversation resize={ready && !transitioning ? 'smooth' : 'instant'} className={cn('relative z-10', ready ? (skipFadeIn ? 'opacity-100' : 'opacity-100 transition-opacity duration-200') : 'opacity-0')}>
       <ScrollPositionManager id={sessionId} ready={ready} />
       <TopHistoryLoader
         onLoadEarlierHistory={onLoadEarlierHistory}
@@ -847,7 +849,7 @@ export function AgentMessages({ sessionId, sessionModelId, agentRuntime, message
           </div>
         )}
         {!hasContent && !streaming && runningDelegationCount === 0 ? (
-          <EmptyState />
+          emptyState ?? <EmptyState />
         ) : (
           <>
             {/* 统一时间线：SDK 消息组和持久化图片卡按创建时间合并，卡片不依赖 tool nesting。 */}
@@ -975,6 +977,14 @@ export function AgentMessages({ sessionId, sessionModelId, agentRuntime, message
     </Conversation>
       <AgentHistorySelectionLayer sessionId={sessionId} rootRef={historySelectionRootRef} explorationEnabled={explorationEnabled && agentRuntime === 'pi'} />
     </div>
+    {!hasContent && !streaming && runningDelegationCount === 0 && (
+      <img
+        src="cdut-resource://background.png"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 -right-[24%] h-3/4 w-1/2 object-contain opacity-75 select-none z-0"
+      />
+    )}
     </BasePathsProvider>
     </FileAccessSessionProvider>
   )

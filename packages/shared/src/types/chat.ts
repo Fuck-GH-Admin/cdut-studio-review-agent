@@ -45,6 +45,21 @@ export interface AttachmentSaveResult {
   attachment: FileAttachment
 }
 
+/** 通用图片渲染支持的位图 MIME 白名单（拒绝 SVG 等可执行/矢量类型） */
+export type ChatImageMediaType = 'image/png' | 'image/jpeg' | 'image/gif' | 'image/webp'
+
+/** 远程图片确认结果：供渲染层通用图片渲染能力消费 */
+export interface ResolveImageUrlResult {
+  /** 是否确认是受支持的位图 */
+  ok: boolean
+  /** 已确认图片时的 MIME 类型 */
+  mediaType?: ChatImageMediaType
+  /** 已确认图片时可直接用于 <img src> 的 data URL */
+  dataUrl?: string
+  /** 未通过确认时的原因（仅用于日志，不面向用户） */
+  reason?: string
+}
+
 /** 文件选择对话框结果 */
 export interface FileDialogResult {
   /** 已读取为 base64 的小文件列表 */
@@ -558,6 +573,8 @@ export const CHAT_IPC_CHANNELS = {
   READ_ATTACHMENT: 'chat:read-attachment',
   /** 另存图片到用户选择的位置（原生 Save As 对话框） */
   SAVE_IMAGE_AS: 'chat:save-image-as',
+  /** 确认远程 URL 是否为图片，返回可直接渲染的 data URL（通用图片渲染能力） */
+  RESOLVE_IMAGE_URL: 'chat:resolve-image-url',
   /** 保存应用内置资源文件到用户选择的位置（原生 Save As 对话框） */
   SAVE_RESOURCE_FILE_AS: 'chat:save-resource-file-as',
   /** 删除附件 */

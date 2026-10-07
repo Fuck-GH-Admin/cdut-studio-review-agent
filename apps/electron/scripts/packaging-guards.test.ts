@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from 'bun:test'
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 
@@ -52,10 +52,11 @@ function createBinDir(): string {
 }
 
 function getTopLevelSection(config: string, key: string): string {
+  const normalized = config.replace(/\r\n/g, '\n')
   const marker = `${key}:\n`
-  const start = config.indexOf(marker)
+  const start = normalized.indexOf(marker)
   if (start < 0) throw new Error(`配置缺少 ${key} 段`)
-  const remainder = config.slice(start + marker.length)
+  const remainder = normalized.slice(start + marker.length)
   const nextSection = remainder.search(/^[A-Za-z][A-Za-z0-9_-]*:/m)
   return nextSection < 0 ? remainder : remainder.slice(0, nextSection)
 }
@@ -247,3 +248,141 @@ describe('macOS 签名契约', () => {
       .toThrow('不存在')
   })
 })
+
+/** 读取 PNG 头部 IHDR 中的宽高（纯字节解析，无需额外依赖）。 */
+function readPngSize(pngPath: string): { width: number; height: number } {
+  const buf = readFileSync(pngPath)
+  return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) }
+}
+
+/** 校验 Windows ICO 文件头并返回内嵌图像数量；非法头返回 -1。 */
+function readIcoImageCount(icoPath: string): number {
+  const buf = readFileSync(icoPath)
+  const validHeader = buf[0] === 0x00 && buf[1] === 0x00 && buf[2] === 0x01 && buf[3] === 0x00
+  return validHeader ? buf.readUInt16LE(4) : -1
+}
+
+describe('核心静态资产与打包配置完整性门禁', () => {
+  test('Given 应用打包依赖 When 检查核心打包配置与关键资源 Then 配置文件和图标必须存在且非空', () => {
+    const appDir = resolve(import.meta.dir, '..')
+    const repoRoot = resolve(appDir, '..', '..')
+
+    // 1. electron-builder.yml 核心打包契约文件
+    const builderConfigPath = join(appDir, 'electron-builder.yml')
+    expect(existsSync(builderConfigPath)).toBe(true)
+    const builderContent = readFileSync(builderConfigPath, 'utf8')
+    expect(builderContent.length).toBeGreaterThan(1000)
+    expect(builderContent).toContain('appId:')
+    expect(builderContent).toContain('productName:')
+    expect(builderContent).toContain('directories:')
+    expect(builderContent).toContain('win:')
+    expect(builderContent).toContain('nsis:')
+
+    // 2. 关键应用图标与品牌矢量素材
+    const icoPath = join(appDir, 'resources', 'icon.ico')
+    const pngPath = join(appDir, 'resources', 'icon.png')
+    const icnsPath = join(appDir, 'resources', 'icon.icns')
+    const svgPath = join(appDir, 'resources', 'CDUT_Studio.svg')
+    expect(existsSync(icoPath)).toBe(true)
+    expect(statSync(icoPath).size).toBeGreaterThan(10000)
+    // Windows 应用图标必须是合法的多分辨率 ICO（00 00 01 00 头且至少含一张图）
+    expect(readIcoImageCount(icoPath)).toBeGreaterThan(0)
+    expect(existsSync(pngPath)).toBe(true)
+    expect(statSync(pngPath).size).toBeGreaterThan(10000)
+    // 应用图标必须是 1024x1024 正方形，防止“保比例 + 补边”环节出错产出非方形图标
+    expect(readPngSize(pngPath)).toEqual({ width: 1024, height: 1024 })
+    expect(existsSync(icnsPath)).toBe(true)
+    expect(existsSync(svgPath)).toBe(true)
+
+    // 3. 根目录与模块关键配置文件
+    expect(existsSync(join(repoRoot, 'package.json'))).toBe(true)
+    expect(existsSync(join(repoRoot, 'bun.lock'))).toBe(true)
+    expect(existsSync(join(appDir, 'package.json'))).toBe(true)
+    expect(existsSync(join(appDir, 'tsconfig.json'))).toBe(true)
+    expect(existsSync(join(appDir, 'vite.config.ts'))).toBe(true)
+  })
+})
+
+describe('内置技能库（default-skills）完整性与安全水位门禁', () => {
+  const EXPECTED_DEFAULT_SKILLS = [
+    'automation',
+    'brainstorming',
+    'docx',
+    'executing-plans',
+    'find-skills',
+    'guizang-ppt-skill',
+    'in-app-browser',
+    'lark-delivery',
+    'pdf',
+    'pptx',
+    'profer-coach',
+    'session-cleaner',
+    'skill-creator',
+    'tool-builder',
+    'user-sense',
+    'writing-plans',
+    'xlsx',
+  ] as const
+
+  test('Given 内置技能库 When 检查 default-skills 目录 Then 17 个关键技能及其 SKILL.md 必须完整存在且非空', () => {
+    const appDir = resolve(import.meta.dir, '..')
+    const defaultSkillsDir = join(appDir, 'default-skills')
+
+    expect(existsSync(defaultSkillsDir)).toBe(true)
+
+    for (const skillName of EXPECTED_DEFAULT_SKILLS) {
+      const skillDir = join(defaultSkillsDir, skillName)
+      expect(existsSync(skillDir)).toBe(true)
+      const skillMd = join(skillDir, 'SKILL.md')
+      expect(existsSync(skillMd)).toBe(true)
+      const content = readFileSync(skillMd, 'utf8')
+      expect(content.trim().length).toBeGreaterThan(50)
+      expect(content).toContain('name:')
+    }
+  })
+
+  test('Given 重型文档技能 When 检查核心执行脚本与 XML 规范 Then 核心脚本与 Schemas 必须完整存在', () => {
+    const appDir = resolve(import.meta.dir, '..')
+    const defaultSkillsDir = join(appDir, 'default-skills')
+
+    // 深度验证 Office 技能的 schemas 与脚本，杜绝被误删掏空
+    const criticalPaths = [
+      join(defaultSkillsDir, 'docx', 'scripts', 'office', 'pack.py'),
+      join(defaultSkillsDir, 'docx', 'scripts', 'office', 'schemas', 'ISO-IEC29500-4_2016', 'wml.xsd'),
+      join(defaultSkillsDir, 'pptx', 'scripts', 'office', 'pack.py'),
+      join(defaultSkillsDir, 'pptx', 'scripts', 'office', 'schemas', 'ISO-IEC29500-4_2016', 'pml.xsd'),
+      join(defaultSkillsDir, 'xlsx', 'scripts', 'office', 'pack.py'),
+      join(defaultSkillsDir, 'xlsx', 'scripts', 'office', 'schemas', 'ISO-IEC29500-4_2016', 'sml.xsd'),
+      join(defaultSkillsDir, 'skill-creator', 'scripts', 'quick_validate.py'),
+      join(defaultSkillsDir, 'session-cleaner', 'references', 'cli-usage.md'),
+    ]
+
+    for (const p of criticalPaths) {
+      expect(existsSync(p)).toBe(true)
+      expect(statSync(p).size).toBeGreaterThan(0)
+    }
+  })
+
+  test('Given 技能同步源 When 统计 default-skills 资源文件数 Then 文件总数必须达到安全水位（>=200）', () => {
+    const appDir = resolve(import.meta.dir, '..')
+    const defaultSkillsDir = join(appDir, 'default-skills')
+
+    function countFiles(dir: string): number {
+      let count = 0
+      for (const entry of readdirSync(dir, { withFileTypes: true })) {
+        const full = join(dir, entry.name)
+        if (entry.isDirectory()) {
+          count += countFiles(full)
+        } else if (entry.isFile()) {
+          count++
+        }
+      }
+      return count
+    }
+
+    const totalFiles = countFiles(defaultSkillsDir)
+    // 历史上包含全套 schemas 时约 240 个文件；若被批量删除或掏空，会远低于此安全阈值
+    expect(totalFiles).toBeGreaterThanOrEqual(200)
+  })
+})
+

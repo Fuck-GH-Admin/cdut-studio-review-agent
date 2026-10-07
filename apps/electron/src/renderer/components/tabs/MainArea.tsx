@@ -23,6 +23,7 @@ import { AutomationFormView } from '@/components/automation/AutomationFormView'
 import { PlanningView } from '@/components/planning/PlanningView'
 import { AgentSkillsView } from '@/components/agent-skills/AgentSkillsView'
 import { ContentReviewView } from '@/components/content-review/ContentReviewView'
+import { CdutZoneView } from '@/components/cdut-zone/CdutZoneView'
 import { automationFormAtom } from '@/atoms/automation-atoms'
 import { activeViewAtom } from '@/atoms/active-view'
 import { appModeAtom } from '@/atoms/app-mode'
@@ -314,16 +315,8 @@ export function MainArea(): React.ReactElement {
           // 材料审核智能体：全屏取代 TabBar + TabContent（三栏工作台内部自管案卷导航）
           <ContentReviewView />
         ) : activeView === 'cdut-zone' ? (
-          // CDUT 专区：全屏视图（业务代码留空预留）
-          <div className="flex flex-1 flex-col items-center justify-center p-8 text-center text-muted-foreground select-none">
-            <div className="size-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4 text-2xl font-bold">
-              CDUT
-            </div>
-            <h2 className="text-xl font-semibold text-foreground mb-1">CDUT 专区</h2>
-            <p className="text-xs text-muted-foreground max-w-sm">
-              专区专属业务功能构建中，敬请期待...
-            </p>
-          </div>
+          // CDUT 专区：全屏视图（特区账户登录 + 专区内容）
+          <CdutZoneView />
         ) : (
           <div className="flex min-h-0 flex-1 flex-col">
             {/* 顶栏横跨整个主区：组合分屏时两侧顶栏共用同一条基线。 */}

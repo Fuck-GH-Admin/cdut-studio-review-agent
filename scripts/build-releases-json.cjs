@@ -37,7 +37,7 @@ const OUT_FILE = path.resolve(outIndex >= 0 ? args[outIndex + 1] : path.join(ROO
 const LIMIT_INDEX = args.indexOf('--limit');
 const LIMIT = LIMIT_INDEX >= 0 ? Number(args[LIMIT_INDEX + 1]) : 100;
 
-const GH_REPO = 'Yuan-lai-ru-ci/ProferAI';
+const GH_REPO = 'Nya-Angle/CDUT-Studio';
 const FILE_NAME = 'releases.json';
 
 const TARGETS = [

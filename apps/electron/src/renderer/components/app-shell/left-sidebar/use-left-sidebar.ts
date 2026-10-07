@@ -86,7 +86,6 @@ import { userProfileAtom } from '@/atoms/user-profile'
 import { authStatusAtom } from '@/atoms/identity-atoms'
 import { sidebarViewModeAtom, workspaceSortModeAtom } from '@/atoms/sidebar-atoms'
 import { searchDialogOpenAtom } from '@/atoms/search-atoms'
-import { hasUpdateAtom } from '@/atoms/updater'
 import { draftSessionIdsAtom } from '@/atoms/draft-session-atoms'
 import { hasEnvironmentIssuesAtom } from '@/atoms/environment'
 import { promptConfigAtom, selectedPromptIdAtom, conversationPromptIdAtom } from '@/atoms/system-prompt-atoms'
@@ -104,10 +103,11 @@ import {
 } from '@/lib/agent-session-list'
 import type { AgentSessionMeta, AgentWorkspace, WorkspaceCapabilities } from '@profer/shared'
 import { getVisibleAgentWorkspaces } from '@/lib/product-feature-flags'
+import { cdutAccountAtom, cdutAiClassLockPromptAtom } from '@/atoms/cdut-account-atoms'
+import { isAiClassWorkspace } from '@/lib/cdut-ai-class'
 
 import {
   groupByDate,
-  getRailInitial,
   toggleSetEntry,
   deleteSetEntry,
   sliceGroupsByCount,
@@ -264,7 +264,6 @@ export function useLeftSidebar() {
   const streamingIds = useAtomValue(streamingConversationIdsAtom)
   const mode = useAtomValue(appModeAtom)
   const isMac = React.useMemo(() => detectIsMac(), [])
-  const hasUpdate = useAtomValue(hasUpdateAtom)
   const hasEnvironmentIssues = useAtomValue(hasEnvironmentIssuesAtom)
   const promptConfig = useAtomValue(promptConfigAtom)
   const setSelectedPromptId = useSetAtom(selectedPromptIdAtom)
@@ -309,6 +308,26 @@ export function useLeftSidebar() {
   // 当前项目能力（MCP + Skill 计数）
   const [capabilities, setCapabilities] = React.useState<WorkspaceCapabilities | null>(null)
   const capabilitiesVersion = useAtomValue(workspaceCapabilitiesVersionAtom)
+
+  // ===== CDUT「AI速课堂」访问管控：未登录特区账户时锁定专属工作区 =====
+  const cdutAccount = useAtomValue(cdutAccountAtom)
+  const setAiClassLockPrompt = useSetAtom(cdutAiClassLockPromptAtom)
+  const cdutAccountActive = cdutAccount.status === 'active'
+  /** 未登录时命中的被锁「AI速课堂」工作区 id 集合（事件处理器纵深防御） */
+  const lockedWorkspaceIds = React.useMemo(() => {
+    if (cdutAccountActive) return new Set<string>()
+    return new Set(workspaces.filter((w) => isAiClassWorkspace(w)).map((w) => w.id))
+  }, [cdutAccountActive, workspaces])
+  /** 判定单个工作区是否处于锁定态（供项目分组渲染） */
+  const isAiClassWorkspaceLocked = React.useCallback(
+    (workspace: Pick<AgentWorkspace, 'slug' | 'name'> | null | undefined): boolean =>
+      !cdutAccountActive && isAiClassWorkspace(workspace),
+    [cdutAccountActive],
+  )
+  /** 用户点击被锁项目/会话：拉起登录引导弹窗 */
+  const handleAiClassLockedInteract = React.useCallback((): void => {
+    setAiClassLockPrompt(true)
+  }, [setAiClassLockPrompt])
 
   // 账号能力：free 用户限 1 个团队工作区
   const [accountCaps, setAccountCaps] = React.useState<{ membershipTier: string; canSelfConfig: boolean }>({ membershipTier: 'free', canSelfConfig: false })
@@ -966,6 +985,10 @@ export function useLeftSidebar() {
   /** 选择项目并打开其隐藏草稿会话；真实 UI 直接复用 AgentView。 */
   const handleSelectProject = React.useCallback(async (workspaceId: string): Promise<void> => {
     if (!visibleWorkspaceIds.has(workspaceId)) return
+    if (lockedWorkspaceIds.has(workspaceId)) {
+      handleAiClassLockedInteract()
+      return
+    }
     const requestId = ++projectSelectionRequestRef.current
     setCurrentWorkspaceId(workspaceId)
     setActiveView('conversations')
@@ -997,7 +1020,7 @@ export function useLeftSidebar() {
       console.error('[侧边栏] 创建项目草稿会话失败:', error)
       toast.error(error instanceof Error ? error.message : '创建项目草稿会话失败')
     }
-  }, [agentChannelId, agentModelId, openSession, setActiveView, setAgentSessions, setCollapsedWorkspaceIds, setCurrentAgentSessionId, setCurrentWorkspaceId, setDraftSessionIds, visibleWorkspaceIds])
+  }, [agentChannelId, agentModelId, openSession, setActiveView, setAgentSessions, setCollapsedWorkspaceIds, setCurrentAgentSessionId, setCurrentWorkspaceId, setDraftSessionIds, visibleWorkspaceIds, lockedWorkspaceIds, handleAiClassLockedInteract])
 
   const handleToggleProjectCollapse = React.useCallback((workspaceId: string): void => {
     setCollapsedWorkspaceIds((previous) => toggleSetEntry(previous, workspaceId))
@@ -1168,6 +1191,11 @@ export function useLeftSidebar() {
   const handleProjectDragOver = React.useCallback((e: React.DragEvent, workspaceId: string): void => {
     e.preventDefault()
     e.dataTransfer.dropEffect = 'move'
+    // 被锁「AI速课堂」项目不受理任何拖拽交互
+    if (lockedWorkspaceIds.has(workspaceId)) {
+      setProjectDropIndicator(null)
+      return
+    }
     if (!dragProjectId || dragProjectId === workspaceId) {
       setProjectDropIndicator(null)
       return
@@ -1181,7 +1209,7 @@ export function useLeftSidebar() {
         ? prev
         : { id: workspaceId, position }
     ))
-  }, [dragProjectId])
+  }, [dragProjectId, lockedWorkspaceIds])
 
   const handleProjectDragLeave = React.useCallback((e: React.DragEvent): void => {
     if (!e.currentTarget.contains(e.relatedTarget as Node)) {
@@ -1199,6 +1227,13 @@ export function useLeftSidebar() {
     }
 
     if (!visibleWorkspaceIds.has(dragProjectId) || !visibleWorkspaceIds.has(targetWorkspaceId)) {
+      setDragProjectId(null)
+      setProjectDropIndicator(null)
+      return
+    }
+
+    // 被锁「AI速课堂」项目不得作为排序落点
+    if (lockedWorkspaceIds.has(targetWorkspaceId)) {
       setDragProjectId(null)
       setProjectDropIndicator(null)
       return
@@ -1241,7 +1276,7 @@ export function useLeftSidebar() {
         setWorkspaces(workspaces)
         toast.error('项目排序失败')
       })
-  }, [dragProjectId, projectDropIndicator, setWorkspaces, visibleWorkspaceIds, workspaces])
+  }, [dragProjectId, projectDropIndicator, setWorkspaces, visibleWorkspaceIds, workspaces, lockedWorkspaceIds])
 
   const handleProjectDragEnd = React.useCallback((): void => {
     setDragProjectId(null)
@@ -1294,6 +1329,11 @@ export function useLeftSidebar() {
   /** 选择 Agent 会话（打开或聚焦标签页）。探索分支打开为父会话上下文内的子会话 Tab。 */
   const handleSelectAgentSession = React.useCallback((id: string, title: string): void => {
     const selected = agentSessions.find((session) => session.id === id)
+    // 纵深防御：即便 UI 层被绕过，被锁「AI速课堂」会话也绝不打开
+    if (selected?.workspaceId && lockedWorkspaceIds.has(selected.workspaceId)) {
+      handleAiClassLockedInteract()
+      return
+    }
     if (selected?.explorationParentSessionId && selected.explorationSourceMessageId) {
       const parent = agentSessions.find((session) => session.id === selected.explorationParentSessionId)
       if (parent) {
@@ -1317,7 +1357,7 @@ export function useLeftSidebar() {
       next.delete(id)
       return next
     })
-  }, [agentSessions, openSession, setActiveView, setUnviewedCompleted, store])
+  }, [agentSessions, openSession, setActiveView, setUnviewedCompleted, store, lockedWorkspaceIds, handleAiClassLockedInteract])
 
   /** 标记 Agent 会话为「未读」：持久化 completedButUnconfirmed + 立即恢复绿标 + 同步列表数据 */
   const handleMarkUnread = React.useCallback((id: string): void => {
@@ -1738,80 +1778,6 @@ export function useLeftSidebar() {
     setViewMode,
   ])
 
-  const railRecentItems = React.useMemo(() => {
-    if (mode === 'chat') {
-      return conversations
-        .filter((c) => !c.archived && !draftSessionIds.has(c.id))
-        .sort((a, b) => {
-          const activeDelta = Number(b.id === activeSessionId) - Number(a.id === activeSessionId)
-          if (activeDelta !== 0) return activeDelta
-          const streamingDelta = Number(streamingIds.has(b.id)) - Number(streamingIds.has(a.id))
-          if (streamingDelta !== 0) return streamingDelta
-          const pinnedDelta = Number(!!b.pinned) - Number(!!a.pinned)
-          if (pinnedDelta !== 0) return pinnedDelta
-          return b.updatedAt - a.updatedAt
-        })
-        .slice(0, 5)
-        .map((conversation) => ({
-          id: conversation.id,
-          title: conversation.title,
-          type: 'chat' as const,
-          initial: getRailInitial(conversation.title),
-          active: conversation.id === activeSessionId,
-          status: streamingIds.has(conversation.id) ? 'running' as const : 'idle' as const,
-          pinned: !!conversation.pinned,
-          workspaceName: undefined,
-        }))
-    }
-
-    return agentSessions
-      .filter((session) =>
-        !session.archived
-        && !session.draft
-        && !draftSessionIds.has(session.id)
-        && (!currentWorkspaceId || session.workspaceId === currentWorkspaceId)
-      )
-      .sort((a, b) => {
-        const statusA = agentIndicatorMap.get(a.id) ?? (unviewedCompletedSessionIds.has(a.id) ? 'completed' : 'idle')
-        const statusB = agentIndicatorMap.get(b.id) ?? (unviewedCompletedSessionIds.has(b.id) ? 'completed' : 'idle')
-        const priority = (session: AgentSessionMeta, status: SessionIndicatorStatus): number => {
-          if (session.id === activeSessionId) return 0
-          if (status === 'blocked') return 1
-          if (status === 'running') return 2
-          if (session.pinned) return 3
-          if (status === 'completed') return 4
-          return 5
-        }
-        const priorityDelta = priority(a, statusA) - priority(b, statusB)
-        if (priorityDelta !== 0) return priorityDelta
-        return b.updatedAt - a.updatedAt
-      })
-      .slice(0, 5)
-      .map((session) => ({
-        id: session.id,
-        title: session.title,
-        type: 'agent' as const,
-        initial: getRailInitial(session.title),
-        active: session.id === activeSessionId,
-        status: agentIndicatorMap.get(session.id) ?? (unviewedCompletedSessionIds.has(session.id) ? 'completed' as const : 'idle' as const),
-        pinned: !!session.pinned,
-        workspaceName: session.workspaceId ? workspaceNameMap.get(session.workspaceId) : undefined,
-        isAutomation: !!session.sourceAutomationId,
-      }))
-  }, [
-    mode,
-    conversations,
-    agentSessions,
-    draftSessionIds,
-    currentWorkspaceId,
-    activeSessionId,
-    streamingIds,
-    agentIndicatorMap,
-    unviewedCompletedSessionIds,
-    workspaceNameMap,
-  ])
-
-
   return {
     // 视图/模式
     activeView,
@@ -1896,6 +1862,8 @@ export function useLeftSidebar() {
     handleNewAgentSession,
     handleSelectProject,
     handleToggleProjectCollapse,
+    isAiClassWorkspaceLocked,
+    handleAiClassLockedInteract,
     collapsedWorkspaceIds,
     expandedExtraCountMap,
     handleShowMoreSessions,
@@ -1940,14 +1908,12 @@ export function useLeftSidebar() {
     handleSessionMoved,
 
     // 折叠 rail
-    railRecentItems,
     handleRailModeSwitch,
 
     // 通用
     relativeTimeNow,
     progressiveCount,
     userProfile,
-    hasUpdate,
     hasEnvironmentIssues,
     setSettingsOpen,
     setSearchDialogOpen,

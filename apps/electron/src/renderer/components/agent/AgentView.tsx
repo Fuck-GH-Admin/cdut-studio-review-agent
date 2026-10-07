@@ -23,6 +23,7 @@ import { AgentHeader } from './AgentHeader'
 import { GoalStatusBar } from './GoalStatusBar'
 import { agentGoalAtomFamily, getGoalActions, GOAL_STATUS_LABELS, goalEditorAtomFamily, goalReplacementAtomFamily, startGoalWithReplacement } from '@/atoms/goal-atoms'
 import { ContextUsageBadge } from './ContextUsageBadge'
+import { ContextMemoryToggleButton } from './ContextMemoryToggleButton'
 import { resolvePlanQuotaChannelId } from './context-usage-badge-channel'
 import { supportsChannelPlanQuota } from '@/lib/channel-plan-quota'
 import { nextAgentChannelIdsAfterModelSelect, resolveAgentModelSelection } from '@/lib/agent-channel-selection'
@@ -112,6 +113,7 @@ import {
   agentQueueAutoSendMapAtom,
   finalizeStreamingActivities,
   workspaceCapabilitiesVersionAtom,
+  sessionMemoryDisabledMapAtom,
 } from '@/atoms/agent-atoms'
 import { persistedGraphAtomFamily } from '@/atoms/graph-atoms'
 import { generateSummary } from '@profer/project-core'
@@ -124,6 +126,10 @@ import { openExplorationBranchTab } from '@/lib/exploration-tab'
 import { channelsAtom, thinkingExpandedAtom } from '@/atoms/conversation-atoms'
 import { draftSessionIdsAtom } from '@/atoms/draft-session-atoms'
 import { useOpenSession } from '@/hooks/useOpenSession'
+import { useEnterCdutAiClass } from '@/hooks/useEnterCdutAiClass'
+import { cdutAccountAtom } from '@/atoms/cdut-account-atoms'
+import { isAiClassWorkspace } from '@/lib/cdut-ai-class'
+import { CdutAiClassComposerLock, CdutAiClassContentGuard } from '@/components/cdut-zone/CdutAiClassGuards'
 import { AgentSessionProvider } from '@/contexts/session-context'
 import { ExplorationBranchBar } from './ExplorationBranchBar'
 import { sendWithCmdEnterAtom } from '@/atoms/shortcut-atoms'
@@ -466,9 +472,17 @@ function ToolbarGraphButton({ onClick, sessionId }: { onClick: () => void; sessi
 
 export interface AgentViewProps {
   sessionId: string
+  /**
+   * 视图变体：'ai-class' 进入 AI 速课堂专属精简模式 ——
+   * 隐藏预设切换开关、禁用 / # & 唤起与补全、使用专属空状态与占位文本。
+   */
+  variant?: 'default' | 'ai-class'
+  /** 空状态自定义节点（速课堂专属问候）；缺省回退通用空状态 */
+  emptyState?: React.ReactNode
 }
 
-export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
+export function AgentView({ sessionId, variant = 'default', emptyState }: AgentViewProps): React.ReactElement {
+  const isAiClass = variant === 'ai-class'
   const [pendingGoalReplacement, setPendingGoalReplacement] = useAtom(goalReplacementAtomFamily(sessionId))
   const [replacingGoal, setReplacingGoal] = React.useState(false)
   const setCurrentGoal = useSetAtom(agentGoalAtomFamily(sessionId))
@@ -915,6 +929,17 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
 
   // 获取工作区共享文件目录路径（@ 引用时需要搜索）
   const workspaceSlug = workspaces.find((w) => w.id === currentWorkspaceId)?.slug ?? null
+
+  // ===== CDUT「AI速课堂」访问管控 =====
+  const cdutAccountActive = useAtomValue(cdutAccountAtom).status === 'active'
+  const isAiClassWorkspaceSession = isAiClassWorkspace(
+    workspaces.find((w) => w.id === currentWorkspaceId),
+  )
+  // 未登录：即便课堂会话已被打开（如残留标签页），内容也必须拦截，兜底防泄露
+  const aiClassBlockedNotLoggedIn = isAiClassWorkspaceSession && !cdutAccountActive
+  // 已登录但从主侧边栏进入（非专区 ai-class 变体）：锁定输入框，引导回专区交互
+  const aiClassLockedOutsideZone = isAiClassWorkspaceSession && cdutAccountActive && !isAiClass
+  const enterCdutAiClass = useEnterCdutAiClass()
   // 预设有效性由工作区预设 API 返回；优先按稳定作用域引用匹配，旧会话才回退裸 ID。
   const sessionPresetId = sessionMeta?.presetId
   const sessionPresetReference = sessionMeta?.presetReference
@@ -970,6 +995,17 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
   const presetPermissionCapMode = sessionBoundPreset?.permissionMode ?? defaultPermissionMode
   const permissionMode = requestedPermissionMode ?? presetPermissionCapMode
   const isPermissionPlanMode = permissionMode === 'plan'
+
+  // 会话级「上下文记忆」开关：关闭后本轮仅携带当前提问与系统指令，不回传历史。
+  const [sessionMemoryDisabledMap, setSessionMemoryDisabledMap] = useAtom(sessionMemoryDisabledMapAtom)
+  const sessionMemoryDisabled = sessionMemoryDisabledMap[sessionId] ?? false
+  const handleToggleSessionMemory = React.useCallback(() => {
+    setSessionMemoryDisabledMap((prev) => ({
+      ...prev,
+      [sessionId]: !(prev[sessionId] ?? false),
+    }))
+  }, [sessionId, setSessionMemoryDisabledMap])
+
   const [presetMenuOpen, setPresetMenuOpen] = React.useState(false)
   const openWorkspacePresets = React.useCallback(() => {
     setActiveView('agent-skills')
@@ -2026,6 +2062,7 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
           // 1.7.1：透传与乐观消息一致的 uuid，使主进程持久化后可按 uuid 与乐观气泡匹配去重
           uuid: message.id,
           permissionModeOverride: permissionMode,
+          disableContextMemory: sessionMemoryDisabled,
           ...(additionalDirectoriesForRun.size > 0 && { additionalDirectories: Array.from(additionalDirectoriesForRun) }),
           ...(payload.mentions.mentionedSkills.length > 0 && { mentionedSkills: payload.mentions.mentionedSkills }),
           ...(payload.mentions.mentionedMcpServers.length > 0 && { mentionedMcpServers: payload.mentions.mentionedMcpServers }),
@@ -2059,7 +2096,7 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
     await startNewRun()
   }, [
     agentChannelId, agentModelId, hasAvailableModel, currentWorkspaceId, sessionAgentRuntime,
-    streaming, backgroundWaiting, permissionMode, attachedDirs, attachedFileDirectories,
+    streaming, backgroundWaiting, permissionMode, sessionMemoryDisabled, attachedDirs, attachedFileDirectories,
     clearStoppedByUser, queueMessageIntoActiveAgent, appendOptimisticPersistedMessage,
     revealRendererDraft, sessionId, setStreamingStates, consumeAgentInterruptionBlock,
   ])
@@ -2356,6 +2393,7 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
       startedAt: streamStartedAt,
       uuid: messageUuid,
       permissionModeOverride: permissionMode,
+      disableContextMemory: sessionMemoryDisabled,
       ...(additionalDirectoriesForRun.size > 0 && { additionalDirectories: Array.from(additionalDirectoriesForRun) }),
       // 解析用户消息中的 Skill/MCP/会话引用，传递结构化元数据给后端
       ...(() => {
@@ -2449,7 +2487,7 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
         return map
       })
     })
-  }, [attachedDirs, attachedFileDirectories, sessionId, agentChannelId, agentModelId, currentWorkspaceId, sessionAgentRuntime, workspaces, streaming, backgroundWaiting, suggestion, hasAvailableModel, streamState?.stopping, store, setStreamingStates, setPendingFiles, setAgentStreamErrors, setPromptSuggestions, setInputContent, setLiveMessagesMap, revealRendererDraft, permissionMode, messagesLoaded, consumeAgentInterruptionBlock, queuedMessages, enqueueCurrentInput, removeOptimisticPersistedMessage, setCurrentGoal, setGoalEditor, setPendingGoalReplacement])
+  }, [attachedDirs, attachedFileDirectories, sessionId, agentChannelId, agentModelId, currentWorkspaceId, sessionAgentRuntime, workspaces, streaming, backgroundWaiting, suggestion, hasAvailableModel, streamState?.stopping, store, setStreamingStates, setPendingFiles, setAgentStreamErrors, setPromptSuggestions, setInputContent, setLiveMessagesMap, revealRendererDraft, permissionMode, sessionMemoryDisabled, messagesLoaded, consumeAgentInterruptionBlock, queuedMessages, enqueueCurrentInput, removeOptimisticPersistedMessage, setCurrentGoal, setGoalEditor, setPendingGoalReplacement])
 
   // ===== 运行中追加消息队列：控制与自动发送 =====
   const allPermissionRequestsForQueue = useAtomValue(allPendingPermissionRequestsAtom)
@@ -3034,7 +3072,8 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
       ),
     },
     { key: 'permission-mode', node: <PermissionModeSelector sessionId={sessionId} presetPermissionMode={sessionBoundPreset?.permissionMode} persistedRevision={sessionMeta?.revision} composerTool /> },
-    { key: 'preset', node: <PresetSelector sessionId={sessionId} persistedPresetId={sessionMeta?.presetId} persistedPresetReference={sessionMeta?.presetReference} persistedRevision={sessionMeta?.revision} workspaceSlug={workspaceSlug ?? undefined} open={presetMenuOpen} onOpenChange={setPresetMenuOpen} onManagePresets={openWorkspacePresets} /> },
+    // 速课堂专属模式：预设逻辑已内化并锁定，界面不暴露预设切换开关
+    ...(isAiClass ? [] : [{ key: 'preset', node: <PresetSelector sessionId={sessionId} persistedPresetId={sessionMeta?.presetId} persistedPresetReference={sessionMeta?.presetReference} persistedRevision={sessionMeta?.revision} workspaceSlug={workspaceSlug ?? undefined} open={presetMenuOpen} onOpenChange={setPresetMenuOpen} onManagePresets={openWorkspacePresets} /> }]),
     {
       key: 'thinking',
       node: (
@@ -3082,6 +3121,16 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
     },
     // Fast Mode 保留会话/请求层能力，但不在输入工具栏暴露切换入口。
     {
+      key: 'memory-toggle',
+      node: (
+        <ContextMemoryToggleButton
+          disabled={sessionMemoryDisabled}
+          onToggle={handleToggleSessionMemory}
+          isProcessing={streaming || backgroundWaiting}
+        />
+      ),
+    },
+    {
       key: 'context-usage',
       node: (
         <ContextUsageBadge
@@ -3107,6 +3156,7 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
   ]
     return items
   }, [
+    isAiClass,
     agentChannelIds,
     sessionAgentRuntime,
     agentChannelId,
@@ -3136,6 +3186,8 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
     openWorkspacePresets,
     sessionBoundPreset,
     taskGraphEnabled,
+    sessionMemoryDisabled,
+    handleToggleSessionMemory,
   ])
 
   const inputTrailingNode = (streaming || streamState?.stopping) ? (
@@ -3170,7 +3222,7 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
   return (
     <>
     <AgentSessionProvider sessionId={sessionId}>
-      <div data-profer-navigation-region="conversation" data-agent-session-id={sessionId} tabIndex={-1} className="agent-conversation flex h-full min-h-0 min-w-0 w-full flex-1 flex-col max-w-[min(72rem,100%)] mx-auto">
+      <div data-profer-navigation-region="conversation" data-agent-session-id={sessionId} tabIndex={-1} className="agent-conversation relative flex h-full min-h-0 min-w-0 w-full flex-1 flex-col max-w-[min(72rem,100%)] mx-auto">
         <div className="shrink-0">
           <AgentHeader sessionId={sessionId} />
         </div>
@@ -3209,6 +3261,9 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
         </AlertDialog>
 
         {/* 消息区域 */}
+        {aiClassBlockedNotLoggedIn ? (
+          <CdutAiClassContentGuard />
+        ) : (
         <AgentMessages
           sessionId={sessionId}
           sessionModelId={agentModelId || undefined}
@@ -3231,7 +3286,9 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
           historyMoreAvailable={historyHasMore}
           historyLoadingEarlier={historyLoading}
           explorationEnabled={!isExplorationBranch}
+          emptyState={emptyState}
         />
+        )}
 
         {/* 权限请求横幅 */}
         <div className="shrink-0">
@@ -3245,7 +3302,16 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
         </div>
 
         {/* 输入区域 — 交互横幅显示时隐藏，由横幅替代 */}
-        {!hasBannerOverlay && (
+        {/* 已登录但从主侧边栏进入课堂会话：锁定输入框，引导回 CDUT 专区交互 */}
+        {!hasBannerOverlay && aiClassLockedOutsideZone && (
+          <div className="shrink-0 px-2.5 pb-2.5 md:px-[18px] md:pb-[18px]" data-input-mode="agent">
+            <CdutAiClassComposerLock
+              onEnter={() => enterCdutAiClass(sessionId, sessionMeta?.title ?? 'AI速课堂')}
+            />
+          </div>
+        )}
+        {/* 未登录课堂会话由内容拦截承接，此处不渲染输入区 */}
+        {!hasBannerOverlay && !aiClassLockedOutsideZone && !aiClassBlockedNotLoggedIn && (
         <div className="shrink-0 px-2.5 pb-2.5 md:px-[18px] md:pb-[18px]" data-input-mode="agent">
           {/* 下方 composer 以完整顶部圆角叠在服务轨上；服务轨延伸至圆角背后。 */}
           <div className="composer-stack">
@@ -3379,17 +3445,19 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
                 onPasteLongText={handlePasteLongText}
                 longTextPasteThreshold={longTextPasteAsAttachmentEnabled ? LONG_TEXT_ATTACHMENT_THRESHOLD : undefined}
                 placeholder={
-                  showPresetSelectionRequired
-                    ? '请先选择 Agent 预设，然后再开始对话'
-                    : isCompacting
-                      ? '正在压缩上下文，完成后可继续对话...'
-                      : agentChannelId && hasAvailableModel
-                        ? sendWithCmdEnter
-                          ? '输入消息... (⌘/Ctrl+Enter 发送，Enter 换行，@ 引用文件，/ 调用 Skill，# 调用 MCP，& 引用会话)'
-                          : '输入消息... (Enter 发送，Shift+Enter 换行，@ 引用文件，/ 调用 Skill，# 调用 MCP，& 引用会话)'
-                        : !agentChannelId
-                          ? '请先在设置中选择 Agent 供应商'
-                          : '暂无可用模型，请先在设置中启用渠道'
+                  isAiClass
+                    ? '输入你的疑问或学习目标... (Enter 发送，Shift+Enter 换行)'
+                    : showPresetSelectionRequired
+                      ? '请先选择 Agent 预设，然后再开始对话'
+                      : isCompacting
+                        ? '正在压缩上下文，完成后可继续对话...'
+                        : agentChannelId && hasAvailableModel
+                          ? sendWithCmdEnter
+                            ? '输入消息... (⌘/Ctrl+Enter 发送，Enter 换行，@ 引用文件，/ 调用 Skill，# 调用 MCP，& 引用会话)'
+                            : '输入消息... (Enter 发送，Shift+Enter 换行，@ 引用文件，/ 调用 Skill，# 调用 MCP，& 引用会话)'
+                          : !agentChannelId
+                            ? '请先在设置中选择 Agent 供应商'
+                            : '暂无可用模型，请先在设置中启用渠道'
                 }
                 disabled={!agentChannelId || !hasAvailableModel}
                 autoFocusTrigger={sessionId}
@@ -3401,6 +3469,7 @@ export function AgentView({ sessionId }: AgentViewProps): React.ReactElement {
                 sessionId={sessionId}
                 attachedDirs={workspaceMentionPaths}
                 sessionAttachedDirs={sessionMentionPaths}
+                disabledMentionChars={isAiClass ? ['/', '#', '&'] : undefined}
                 htmlValue={inputHtmlContent}
                 onHtmlChange={setInputHtmlContent}
                 sendWithCmdEnter={sendWithCmdEnter}

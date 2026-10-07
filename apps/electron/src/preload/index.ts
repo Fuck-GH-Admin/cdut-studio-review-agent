@@ -10,6 +10,7 @@ import { IPC_CHANNELS, REVIEW_IPC_CHANNELS, CHANNEL_IPC_CHANNELS, CHAT_IPC_CHANN
 import { USER_PROFILE_IPC_CHANNELS, SETTINGS_IPC_CHANNELS, SKIN_IPC_CHANNELS, SCRATCH_PAD_IPC_CHANNELS, APP_ICON_IPC_CHANNELS, DOCK_BADGE_IPC_CHANNELS, STORAGE_IPC_CHANNELS, NOTIFICATION_SOUND_IPC_CHANNELS, DESKTOP_NOTIFICATION_IPC_CHANNELS } from '../types'
 import type { CustomNotificationSound } from '../types'
 import type { PresetReference, PresetReferenceReport, PresetScopeRebindResult, LarkCliStatus, LarkCliOperationResult, LarkLoginStartResult, LarkLoginEvent, LarkMcpCredentialsInput, LarkMcpSetupResult, LarkMcpStatus } from '@profer/shared'
+import { CDUT_AI_CLASS_IPC_CHANNELS, CDUT_ZONE_IPC_CHANNELS, STUDY_IPC_CHANNELS, type AiClassSessionSummary, type CdutAccountProfile, type CdutGatekeeperDecision, type CdutGatekeeperNoticeEvent, type CdutLoginInput, type CdutLoginResult, type CdutSavedAccountSummary, type CdutMutationConfirmRequest, type CdutMutationConfirmResult, type KnowledgeGraphData, type StudyDocumentOutline, type StudyDocumentQueryInput, type StudyGraphCostEstimate, type StudyGraphGenerateInput, type StudyGraphProgressEvent, type StudyIngestDocumentsInput, type StudySearchKnowledgeInput, type StudySearchKnowledgeResult } from '@profer/shared'
 import type {
   RuntimeStatus,
   GitRepoStatus,
@@ -31,6 +32,7 @@ import type {
   StreamToolActivityEvent,
   AttachmentSaveInput,
   AttachmentSaveResult,
+  ResolveImageUrlResult,
   FileDialogResult,
   KnowledgeImportBatchResult,
   KnowledgeItem,
@@ -413,6 +415,9 @@ export interface ElectronAPI {
 
   /** 读取附件（返回 base64 字符串） */
   readAttachment: (localPath: string) => Promise<string>
+
+  /** 确认远程 URL 是否为图片，返回可直接渲染的 data URL（通用图片渲染能力） */
+  resolveImageUrl: (url: string) => Promise<ResolveImageUrlResult>
 
   /** 另存图片到用户选择的位置（原生 Save As 对话框） */
   saveImageAs: (localPath: string, defaultFilename: string) => Promise<boolean>
@@ -1165,36 +1170,13 @@ export interface ElectronAPI {
   /** 设置默认提示词 */
   setDefaultPrompt: (id: string | null) => Promise<void>
 
-  // ===== 自动更新 =====
-
-  /** 更新 API */
-  updater?: {
-    checkForUpdates: () => Promise<void>
-    getStatus: () => Promise<{
-      status: 'idle' | 'checking' | 'available' | 'downloading' | 'downloaded' | 'not-available' | 'disabled' | 'error'
-      version?: string
-      releaseNotes?: string
-      manualUrl?: string
-      progress?: { percent: number; transferred: number; total: number; bytesPerSecond: number }
-      error?: string
-    }>
-    onStatusChanged: (callback: (status: {
-      status: 'idle' | 'checking' | 'available' | 'downloading' | 'downloaded' | 'not-available' | 'disabled' | 'error'
-      version?: string
-      releaseNotes?: string
-      manualUrl?: string
-      progress?: { percent: number; transferred: number; total: number; bytesPerSecond: number }
-      error?: string
-    }) => void) => () => void
-    quitAndInstall: () => Promise<void>
-    /** 版本更新日志（内置本地 CHANGELOG） */
-    getChangelog: () => Promise<ChangelogEntry[]>
-  }
-
   // GitHub Release
   getLatestRelease: () => Promise<GitHubRelease | null>
   listReleases: (options?: GitHubReleaseListOptions) => Promise<GitHubRelease[]>
   getReleaseByTag: (tag: string) => Promise<GitHubRelease | null>
+
+  /** 版本更新日志（内置本地 CHANGELOG） */
+  getChangelog: () => Promise<ChangelogEntry[]>
 
   // 工作区文件变化通知
   onCapabilitiesChanged: (callback: () => void) => () => void
@@ -1555,6 +1537,45 @@ export interface ElectronAPI {
     restoreTrash: (workspaceId: string, entryId: string) => Promise<{ ok: boolean; status?: number; data?: { success: boolean; restoredPath: string }; error?: string }>
     purgeTrash: (workspaceId: string, entryId: string) => Promise<{ ok: boolean; status?: number; data?: { success: boolean; state: string }; error?: string }>
   }
+
+  // ===== CDUT 专区特区账户 =====
+  cdutZone: {
+    getAccount: () => Promise<CdutAccountProfile>
+    /** 查询本地已保存的特区账户元数据（供登录窗一键填充引导） */
+    getSavedAccount: () => Promise<CdutSavedAccountSummary>
+    login: (input: CdutLoginInput) => Promise<CdutLoginResult>
+    logout: () => Promise<{ success: boolean }>
+    onStatusChanged: (callback: (profile: CdutAccountProfile) => void) => () => void
+    onMutationRequest: (callback: (request: CdutMutationConfirmRequest) => void) => () => void
+    confirmMutation: (result: CdutMutationConfirmResult) => Promise<{ handled: boolean }>
+    /** 订阅统一门禁拦截通知（拉起专属门禁弹窗） */
+    onGatekeeperBlocked: (callback: (event: CdutGatekeeperNoticeEvent) => void) => () => void
+    /** 回传统一门禁用户决策 */
+    gatekeeperRespond: (decision: CdutGatekeeperDecision) => Promise<{ handled: boolean }>
+  }
+
+  // ===== AI 速课堂（学习资料） =====
+  study: {
+    ingestDocuments: (input: StudyIngestDocumentsInput) => Promise<StudyDocumentOutline[]>
+    listDocuments: (sessionId: string) => Promise<StudyDocumentOutline[]>
+    getOutline: (input: StudyDocumentQueryInput) => Promise<StudyDocumentOutline | null>
+    removeDocument: (input: StudyDocumentQueryInput) => Promise<{ success: boolean }>
+  }
+
+  // ===== AI 速课堂（专属工作区 / 会话 / 资料树图谱） =====
+  cdutAiClass: {
+    listSessions: () => Promise<AiClassSessionSummary[]>
+    createSession: (courseName: string) => Promise<AiClassSessionSummary>
+    deleteSession: (sessionId: string) => Promise<{ success: boolean }>
+    /** 按用户选定模式生成资料树图谱（用户主动触发，不再静默偷跑） */
+    generateGraphRelations: (input: StudyGraphGenerateInput) => Promise<KnowledgeGraphData>
+    /** 动态测算三档生成模式的 Token 与费用预估 */
+    estimateGraphCost: (sessionId: string) => Promise<StudyGraphCostEstimate>
+    /** 监听图谱推演进度事件；返回解绑清理闭包 */
+    onGraphProgress: (callback: (data: StudyGraphProgressEvent) => void) => () => void
+    /** 全域跨文档高精度混合检索（AI 导师与渲染端共用） */
+    searchStudyKnowledge: (input: StudySearchKnowledgeInput) => Promise<StudySearchKnowledgeResult>
+  }
 }
 
 interface MigrationExportResult {
@@ -1908,6 +1929,10 @@ const electronAPI: ElectronAPI = {
 
   readAttachment: (localPath: string) => {
     return ipcRenderer.invoke(CHAT_IPC_CHANNELS.READ_ATTACHMENT, localPath)
+  },
+
+  resolveImageUrl: (url: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.RESOLVE_IMAGE_URL, url)
   },
 
   saveImageAs: (localPath: string, defaultFilename: string) => {
@@ -2960,19 +2985,6 @@ const electronAPI: ElectronAPI = {
     return ipcRenderer.invoke(SYSTEM_PROMPT_IPC_CHANNELS.SET_DEFAULT, id)
   },
 
-  // 自动更新
-  updater: {
-    checkForUpdates: () => ipcRenderer.invoke('updater:check'),
-    getStatus: () => ipcRenderer.invoke('updater:get-status'),
-    onStatusChanged: (callback) => {
-      const listener = (_event: Electron.IpcRendererEvent, status: Parameters<typeof callback>[0]): void => callback(status)
-      ipcRenderer.on('updater:status-changed', listener)
-      return () => { ipcRenderer.removeListener('updater:status-changed', listener) }
-    },
-    quitAndInstall: () => ipcRenderer.invoke('updater:quit-and-install'),
-    getChangelog: () => ipcRenderer.invoke(CHANGELOG_IPC_CHANNELS.GET),
-  },
-
   // GitHub Release
   getLatestRelease: () => {
     return ipcRenderer.invoke(GITHUB_RELEASE_IPC_CHANNELS.GET_LATEST_RELEASE)
@@ -2985,6 +2997,9 @@ const electronAPI: ElectronAPI = {
   getReleaseByTag: (tag) => {
     return ipcRenderer.invoke(GITHUB_RELEASE_IPC_CHANNELS.GET_RELEASE_BY_TAG, tag)
   },
+
+  // 版本更新日志（内置本地 CHANGELOG）
+  getChangelog: () => ipcRenderer.invoke(CHANGELOG_IPC_CHANNELS.GET),
 
   // ===== Lark 用户云端能力 =====
   getLarkCliStatus: () => ipcRenderer.invoke(LARK_IPC_CHANNELS.GET_STATUS),
@@ -3571,6 +3586,66 @@ const electronAPI: ElectronAPI = {
     listTrash: (workspaceId: string) => ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.LIST_TRASH, workspaceId),
     restoreTrash: (workspaceId: string, entryId: string) => ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.RESTORE_TRASH, workspaceId, entryId),
     purgeTrash: (workspaceId: string, entryId: string) => ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.PURGE_TRASH, workspaceId, entryId),
+  },
+
+  // ===== CDUT 专区特区账户 =====
+  cdutZone: {
+    getAccount: () => ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.GET_ACCOUNT),
+    getSavedAccount: () => ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.GET_SAVED_ACCOUNT),
+    login: (input: CdutLoginInput) => ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.LOGIN, input),
+    logout: () => ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.LOGOUT),
+    onStatusChanged: (callback: (profile: CdutAccountProfile) => void) => {
+      const handler = (_: unknown, profile: CdutAccountProfile) => callback(profile)
+      ipcRenderer.on(CDUT_ZONE_IPC_CHANNELS.STATUS_CHANGED, handler)
+      return () => ipcRenderer.removeListener(CDUT_ZONE_IPC_CHANNELS.STATUS_CHANGED, handler)
+    },
+    onMutationRequest: (callback: (request: CdutMutationConfirmRequest) => void) => {
+      const handler = (_: unknown, request: CdutMutationConfirmRequest) => callback(request)
+      ipcRenderer.on(CDUT_ZONE_IPC_CHANNELS.ON_MUTATION_REQUEST, handler)
+      return () => ipcRenderer.removeListener(CDUT_ZONE_IPC_CHANNELS.ON_MUTATION_REQUEST, handler)
+    },
+    confirmMutation: (result: CdutMutationConfirmResult) =>
+      ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.CONFIRM_MUTATION, result),
+    onGatekeeperBlocked: (callback: (event: CdutGatekeeperNoticeEvent) => void) => {
+      const handler = (_: unknown, event: CdutGatekeeperNoticeEvent) => callback(event)
+      ipcRenderer.on(CDUT_ZONE_IPC_CHANNELS.GATEKEEPER_BLOCKED, handler)
+      return () => ipcRenderer.removeListener(CDUT_ZONE_IPC_CHANNELS.GATEKEEPER_BLOCKED, handler)
+    },
+    gatekeeperRespond: (decision: CdutGatekeeperDecision) =>
+      ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.GATEKEEPER_RESPOND, decision),
+  },
+
+  // ===== AI 速课堂（学习资料） =====
+  study: {
+    ingestDocuments: (input: StudyIngestDocumentsInput) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.INGEST_DOCUMENTS, input),
+    listDocuments: (sessionId: string) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.LIST_DOCUMENTS, sessionId),
+    getOutline: (input: StudyDocumentQueryInput) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.GET_OUTLINE, input),
+    removeDocument: (input: StudyDocumentQueryInput) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.REMOVE_DOCUMENT, input),
+  },
+
+  // ===== AI 速课堂（专属工作区 / 会话 / 资料树图谱） =====
+  cdutAiClass: {
+    listSessions: () =>
+      ipcRenderer.invoke(CDUT_AI_CLASS_IPC_CHANNELS.LIST_SESSIONS),
+    createSession: (courseName: string) =>
+      ipcRenderer.invoke(CDUT_AI_CLASS_IPC_CHANNELS.CREATE_SESSION, courseName),
+    deleteSession: (sessionId: string) =>
+      ipcRenderer.invoke(CDUT_AI_CLASS_IPC_CHANNELS.DELETE_SESSION, sessionId),
+    generateGraphRelations: (input: StudyGraphGenerateInput) =>
+      ipcRenderer.invoke(CDUT_AI_CLASS_IPC_CHANNELS.GENERATE_GRAPH_RELATIONS, input),
+    estimateGraphCost: (sessionId: string) =>
+      ipcRenderer.invoke(CDUT_AI_CLASS_IPC_CHANNELS.ESTIMATE_GRAPH_COST, sessionId),
+    onGraphProgress: (callback: (data: StudyGraphProgressEvent) => void) => {
+      const listener = (_event: Electron.IpcRendererEvent, payload: StudyGraphProgressEvent): void => callback(payload)
+      ipcRenderer.on(CDUT_AI_CLASS_IPC_CHANNELS.GENERATE_PROGRESS, listener)
+      return () => ipcRenderer.removeListener(CDUT_AI_CLASS_IPC_CHANNELS.GENERATE_PROGRESS, listener)
+    },
+    searchStudyKnowledge: (input: StudySearchKnowledgeInput) =>
+      ipcRenderer.invoke(CDUT_AI_CLASS_IPC_CHANNELS.SEARCH_KNOWLEDGE, input),
   },
 }
 

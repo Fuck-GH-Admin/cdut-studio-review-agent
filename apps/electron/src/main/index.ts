@@ -70,10 +70,8 @@ function registerProtocolsAndHandlers(): void {
   // 用于内联预览本地文件（renderer 用 iframe 加载 cdut-file:// 资源）
   protocol.registerSchemesAsPrivileged([
     { scheme: 'cdut-file', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
-    // 皮肤 assets 稳定协议：skin.css 中 url(assets/...) 被替换为 cdut-skin://<skinId>/assets/...，
-    // 由主进程按需读取（P2：替代 base64 内联，移除大图 IPC 传输与编码开销）
     { scheme: 'cdut-skin', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
-    // 第三方插件页面资源。具体 handler 注册在每个插件独立 Session 上，主会话不处理该协议。
+    { scheme: 'cdut-resource', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
   ])
 
   // Windows: 禁用 LCD 次像素抗锯齿（ClearType），改用灰度 AA。
@@ -87,6 +85,17 @@ function registerProtocolsAndHandlers(): void {
       app.commandLine.appendSwitch('use-angle', angleBackend)
       console.info(`[图形] ANGLE backend: ${angleBackend}`)
     }
+    // 视频绿屏规避：部分 Windows 显卡/驱动在「窗口内合成」路径下，硬件视频解码经
+    // DirectComposition 覆盖层呈现会失败，非全屏时整帧为绿色（进入原生全屏后切换到
+    // 独立呈现路径才恢复正常）。改用软件解码可从根上规避该问题，会话内联短视频性能无感。
+    // 需要恢复硬件解码（如笔记本省电场景）时，设 PROFER_ENABLE_HW_VIDEO_DECODE=1。
+    if (process.env.PROFER_ENABLE_HW_VIDEO_DECODE !== '1') {
+      app.commandLine.appendSwitch('disable-accelerated-video-decode')
+      console.info('[图形] 已禁用视频硬件解码（规避非全屏绿屏）')
+    }
+    // 叠加关闭 DirectComposition 视频覆盖层：该硬件覆盖层在部分 Windows 驱动下会把
+    // 页面内合成的视频整帧呈成绿色/花屏，改回普通纹理合成即可规避（保留硬件解码）。
+    app.commandLine.appendSwitch('disable-direct-composition-video-overlays')
   }
 
   // macOS 文件关联：在 app ready 之前注册 open-file 事件
@@ -143,13 +152,13 @@ import { initializeRuntime } from './lib/runtime-init'
 import { seedDefaultSkills, VITE_DEV_SERVER_URL } from './lib/config-paths'
 import { configureGlobalSkillSystem, ensureGlobalSkillSystemReady } from './lib/global-skill-manager'
 import { ensurePresetSystemReady } from './lib/agent-preset-manager'
+import { handleProferResourceRequest } from './lib/local-resource-protocol'
 import { getMainWindow, setMainWindow } from './lib/main-window-state'
 import { stopAllAgents, killOrphanedClaudeSubprocesses } from './lib/agent-service'
 import { disposePiMcpConnections } from './lib/adapters/pi-mcp-tools'
 import { disposeLarkCliService } from './lib/lark-cli-service'
 import { disposeLarkMcpService } from './lib/lark-mcp-service'
 import { browserController } from './lib/browser-controller'
-import { initAutoUpdater, cleanupUpdater } from './lib/updater/auto-updater'
 import { startWorkspaceWatcher, stopWorkspaceWatcher } from './lib/workspace-watcher'
 import { getIsQuitting, setQuitting } from './lib/app-lifecycle'
 import {
@@ -832,13 +841,9 @@ async function bootstrap(): Promise<void> {
   // 初始化 Profer 版本号（供 User-Agent 等全局标识使用）
   setProferVersion(app.getVersion())
 
-  // 注册自定义协议 cdut-file:// 用于内联预览本地文件。
-  // 协议只接受主进程签发的 opaque token，不解析 renderer 提供的绝对路径。
   protocol.handle('cdut-file', handleProferFileRequest)
-
-  // 注册皮肤 assets 协议 cdut-skin://<skinId>/assets/<file>。
-  // 仅允许皮肤目录内 assets/ 图片，skinId 走 kebab-case 白名单，防目录穿越。
   protocol.handle('cdut-skin', handleProferSkinRequest)
+  protocol.handle('cdut-resource', handleProferResourceRequest)
 
   // 初始化运行时环境（Shell 环境 + Bun + Git 检测）
   // 热启动时从磁盘缓存恢复，耗时 < 10ms
@@ -957,9 +962,6 @@ async function bootstrap(): Promise<void> {
     safeRun('startBridgeSelfHealing', startBridgeSelfHealing)
     safeRun('startScheduler', startScheduler)
     safeRun('startPlanningReminderScheduler', startPlanningReminderScheduler)
-    if (mainWindow) {
-      safeRun('initAutoUpdater', () => initAutoUpdater(mainWindow!))
-    }
   }, 0)
 
   // 启动时恢复团队会话：先检查已登录，否则用 refreshToken 尝试恢复
@@ -1092,7 +1094,7 @@ function handleBootstrapFailure(err: unknown): void {
   try {
     const message = err instanceof Error ? (err.stack ?? err.message) : String(err)
     dialog.showErrorBox(
-      'Profer 启动遇到错误',
+      'CDUT Studio 启动遇到错误',
       `部分功能可能不可用：\n\n${message}\n\n` +
         `日志位置：${app.getPath('logs')}\n\n` +
         `常见原因与排查：\n` +
@@ -1136,8 +1138,6 @@ app.on('before-quit', () => {
   // 最后兜底：扫描并强杀所有孤儿 claude-agent-sdk 子进程（Issue #357）
   // 针对 pidMap 未覆盖、dispose 漏杀等极端场景，确保不遗留残留进程
   killOrphanedClaudeSubprocesses()
-  // 清理自动更新定时器
-  cleanupUpdater()
   // 停止工作区文件监听
   stopWorkspaceWatcher()
   // 停止所有 Bridge

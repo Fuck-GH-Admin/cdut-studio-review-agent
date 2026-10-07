@@ -19,23 +19,47 @@ logs
 *.log
 report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+# dotenv environment variable files (全量环境变量保护与白名单模板)
+.env*
+!.env.example
+
+# 安全凭证、私钥与证书（严禁入库）
+*.pem
+*.key
+*.pfx
+*.p12
+*.crt
+*.cer
+*.der
+*.keystore
+*.jks
+.npmrc
 
 # caches
 .eslintcache
 .cache
 *.tsbuildinfo
 
-# IntelliJ based IDEs
+# IDE 与编辑器配置（彻底阻断本地配置与临时文件）
 .idea
+.vscode/
+*.code-workspace
+*~
+*.swp
+*.swo
 
-# Finder (MacOS) folder config
+# 操作系统残留文件 (macOS & Windows)
 .DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+
+# AI 辅助工具本地状态与文档（不入库）
+.trae/
 
 # ignore craft-agents-oss folder
 craft-agents-oss
@@ -43,8 +67,8 @@ craft-agents-oss
 # ignore what_are_humans_thinking folder
 what_are_humans_thinking
 
-# vendor binaries
-vendor
+# 第三方脚本构建产物（精确路径）
+apps/electron/src/renderer/public/vendor/
 
 # git worktrees (managed by proma-worktree skill)
 .worktrees

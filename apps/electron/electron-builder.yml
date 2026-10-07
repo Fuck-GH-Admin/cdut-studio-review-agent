@@ -3,7 +3,7 @@
 
 appId: com.cdutai.studio
 productName: CDUT Studio
-copyright: Copyright © 2026 CDUT
+copyright: By 雫窝中央实验室 · 2026
 
 # Electron 版本（CI 环境 bun workspace 下无法自动检测，需显式指定）
 electronVersion: 43.2.0
@@ -76,9 +76,9 @@ extraResources:
   # 教程文件（教程查看器 + 欢迎对话使用）
   - from: ../../tutorial/tutorial-v2.md
     to: tutorial.md
-  # Proma 品牌 Logo 素材（品牌素材下载功能使用）
-  - from: resources/profer-logos
-    to: profer-logos
+  # 托盘图标素材（tray.ts 读取 process.resourcesPath/tray-icons）
+  - from: resources/tray-icons
+    to: tray-icons
     filter:
       - "**/*"
   # 内置皮肤包（设置 → 外观设置 → 特殊风格；skin-service 打包路径 process.resourcesPath/skins）
@@ -104,6 +104,9 @@ extraResources:
   # 版本更新日志（设置 → 软件更新 → 版本历史；changelog-service 读取 process.resourcesPath/CHANGELOG.json）
   - from: resources/CHANGELOG.json
     to: CHANGELOG.json
+  # 背景图
+  - from: resources/background.png
+    to: background.png
 
 # ============================================
 # macOS 本地构建（P1：仅 Apple Silicon）
@@ -113,6 +116,8 @@ extraResources:
 mac:
   category: public.app-category.developer-tools
   icon: resources/icon.icns
+  # 产物名统一为 CDUT Studio 归属（连字符、无空格），与 Windows/Linux 对齐
+  artifactName: CDUT-Studio-${version}-${arch}.${ext}
   # CLI 是宿主原生二进制，只允许复制 macOS 文件名，避免携带 Windows 残留。
   extraResources:
     - from: resources/bin/profer
@@ -121,7 +126,7 @@ mac:
   gatekeeperAssess: false
   entitlements: resources/entitlements.mac.plist
   entitlementsInherit: resources/entitlements.mac.plist
-  # Profer CLI 由当前 macOS runner 构建，并在将来启用签名时纳入签名范围。
+  # 随包 CLI 由当前 macOS runner 构建，并在将来启用签名时纳入签名范围。
   binaries:
     - resources/bin/profer
   extendInfo:
@@ -150,6 +155,7 @@ dmg:
 
 # Linux CLI 与 macOS 同名，但仍按平台精确复制，避免未来 Linux 构建回归。
 linux:
+  artifactName: CDUT-Studio-${version}-${arch}.${ext}
   extraResources:
     - from: resources/bin/profer
       to: bin/profer
@@ -197,6 +203,6 @@ nsis:
 # ============================================
 publish:
   provider: github
-  owner: Yuan-lai-ru-ci
+  owner: Nya-Angle
   repo: CDUT-Studio
   releaseType: release

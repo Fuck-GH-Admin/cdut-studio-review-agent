@@ -11,7 +11,6 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/t
 import { CollapsedWorkspacePopover } from '@/components/agent/CollapsedWorkspacePopover'
 import { UserAvatar } from '@/components/shared/UserAvatar'
 import { SidebarWindowDragStrip, SIDEBAR_DRAG_STRIP_HEIGHT } from './navigation-items'
-import { RailRecentButton } from './session-items'
 import { formatAutomationCount } from './sidebar-utils'
 import type { SidebarModel } from './use-left-sidebar'
 
@@ -29,12 +28,8 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
     handleOpenSkills,
     handleOpenContentReview,
     capabilities,
-    railRecentItems,
-    handleSelectAgentSession,
-    handleSelectConversation,
     setSettingsOpen,
     userProfile,
-    hasUpdate,
     hasEnvironmentIssues,
   } = s
 
@@ -203,24 +198,7 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
 
         <div className="my-3 h-px w-8 bg-border/70" />
 
-        {/* 最近/关键会话入口 */}
-        <div className="flex-1 min-h-0 w-full overflow-y-auto scrollbar-thin">
-          <div className="flex flex-col items-center gap-1.5 pb-2">
-            {railRecentItems.map((item) => (
-              <RailRecentButton
-                key={`${item.type}-${item.id}`}
-                item={item}
-                onSelect={(selected) => {
-                  if (selected.type === 'agent') {
-                    handleSelectAgentSession(selected.id, selected.title)
-                  } else {
-                    handleSelectConversation(selected.id, selected.title)
-                  }
-                }}
-              />
-            ))}
-          </div>
-        </div>
+        <div className="flex-1" />
 
         {/* 用户头像（点击打开设置） */}
         <div className="pt-3 pb-3">
@@ -233,7 +211,7 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
                 className="relative size-10 flex items-center justify-center rounded-[12px] transition-colors titlebar-no-drag hover:bg-foreground/5"
               >
                 <UserAvatar avatar={userProfile.avatar} size={28} />
-                {(hasUpdate || hasEnvironmentIssues) && (
+                {hasEnvironmentIssues && (
                   <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-red-500" />
                 )}
               </button>

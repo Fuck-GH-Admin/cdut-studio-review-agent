@@ -131,6 +131,7 @@ import type {
   BrowserAddBookmarkInput,
 } from '@profer/shared'
 import { KNOWLEDGE_IPC_CHANNELS } from '@profer/shared'
+import { CDUT_AI_CLASS_IPC_CHANNELS, CDUT_ZONE_IPC_CHANNELS, STUDY_IPC_CHANNELS, type CdutGatekeeperDecision, type CdutLoginInput, type CdutMutationConfirmResult, type StudyDocumentQueryInput, type StudyGraphGenerateInput, type StudyIngestDocumentsInput, type StudySearchKnowledgeInput } from '@profer/shared'
 import type { UserProfile, AppSettings } from '../types'
 import { getRuntimeStatus, getGitRepoStatus, reinitializeRuntime } from './lib/runtime-init'
 import { browserController } from './lib/browser-controller'
@@ -141,8 +142,26 @@ import { listBookmarks, addBookmark, removeBookmark, listHistory, clearHistory }
 import { getUnstagedChanges, getFileDiff, getUntrackedContent, revertFile, getDiffContents, listWorktrees, getWorktreeChanges, getMainRepoRoot, invalidateGitDiffCache } from './lib/git-diff-service'
 import { registerProferDirectoryPath, registerProferFilePath } from './lib/local-file-protocol'
 import { isReadOnlyPreviewPathAllowed } from './lib/preview-path-policy'
-import { registerUpdaterIpc } from './lib/updater/updater-ipc'
+import { CHANGELOG_IPC_CHANNELS, type ChangelogEntry } from '@profer/shared'
+import { getChangelog } from './lib/changelog-service'
 import { registerReviewIpc } from './lib/review/review-ipc'
+import { cdutAuthManager } from './lib/cdut/cdut-auth-manager'
+import { resolveCdutGatekeeper } from './lib/cdut/cdut-gatekeeper'
+import { resolveCdutMutationConfirm } from './lib/cdut/cdut-mutation-guard'
+import {
+  createAiClassSession,
+  deleteAiClassSession,
+  estimateGraphGenerationCost,
+  generateKnowledgeGraph,
+  listAiClassSessions,
+} from './lib/cdut/cdut-ai-class-manager'
+import { getGlobalStudyRetriever } from './lib/study/hybrid-retriever'
+import {
+  getStudyDocumentOutline,
+  ingestStudyDocuments,
+  listStudyDocuments,
+  removeStudyDocument,
+} from './lib/study/study-document-indexer'
 import {
   listChannels,
   createChannel,
@@ -187,6 +206,7 @@ import {
   deleteAttachment,
   openFileDialog,
 } from './lib/attachment-service'
+import { resolveRemoteImageUrl } from './lib/image-url-resolver'
 import { extractTextFromAttachment } from './lib/document-parser'
 import { getTutorialContent, createWelcomeConversation } from './lib/tutorial-service'
 import { getUserProfile, updateUserProfile } from './lib/user-profile-service'
@@ -1938,6 +1958,14 @@ export function registerIpcHandlers(): void {
     CHAT_IPC_CHANNELS.READ_ATTACHMENT,
     async (_, localPath: string): Promise<string> => {
       return readAttachmentAsBase64(localPath)
+    }
+  )
+
+  // 确认远程 URL 是否为图片（通用图片渲染能力：确认后返回可直接渲染的 data URL）
+  ipcMain.handle(
+    CHAT_IPC_CHANNELS.RESOLVE_IMAGE_URL,
+    async (_, url: string) => {
+      return resolveRemoteImageUrl(url)
     }
   )
 
@@ -6000,11 +6028,101 @@ export function registerIpcHandlers(): void {
 
   console.log('[IPC] IPC 处理器注册完成')
 
-  // 注册更新 IPC 处理器
-  registerUpdaterIpc()
+  // 版本更新日志（内置本地 CHANGELOG）
+  ipcMain.handle(CHANGELOG_IPC_CHANNELS.GET, (): ChangelogEntry[] => {
+    return getChangelog()
+  })
 
   // 注册内容审核专区 IPC 处理器
   registerReviewIpc()
+
+  // ===== CDUT 专区特区账户 =====
+  // 特区账户与通用账户物理隔离，独立持久化于 ~/.cdutai/cdut-account.json
+  ipcMain.handle(CDUT_ZONE_IPC_CHANNELS.GET_ACCOUNT, () => cdutAuthManager.getProfile())
+
+  // 已保存账户摘要：仅回传脱敏元数据（姓名/学工号/头像 + 可选密文解密后的密码），供登录窗一键填充
+  ipcMain.handle(CDUT_ZONE_IPC_CHANNELS.GET_SAVED_ACCOUNT, () => cdutAuthManager.getSavedAccount())
+
+  ipcMain.handle(CDUT_ZONE_IPC_CHANNELS.LOGIN, async (_event, input: CdutLoginInput) => {
+    return await cdutAuthManager.login(input)
+  })
+
+  ipcMain.handle(CDUT_ZONE_IPC_CHANNELS.LOGOUT, async () => {
+    await cdutAuthManager.logout()
+    return { success: true }
+  })
+
+  // 写操作二次确认：渲染端回传用户抉择，唤醒主进程挂起的教务写请求
+  ipcMain.handle(CDUT_ZONE_IPC_CHANNELS.CONFIRM_MUTATION, (_event, result: CdutMutationConfirmResult) => {
+    return { handled: resolveCdutMutationConfirm(result) }
+  })
+
+  // 统一门禁抉择：渲染端回传用户选择，唤醒主进程挂起的 CDUT 工具门禁请求
+  ipcMain.handle(CDUT_ZONE_IPC_CHANNELS.GATEKEEPER_RESPOND, (_event, decision: CdutGatekeeperDecision) => {
+    return { handled: resolveCdutGatekeeper(decision) }
+  })
+
+  // ===== AI 速课堂（学习资料） =====
+  ipcMain.handle(STUDY_IPC_CHANNELS.INGEST_DOCUMENTS, async (_event, input: StudyIngestDocumentsInput) => {
+    return await ingestStudyDocuments(input.sessionId, input.filePaths ?? [])
+  })
+
+  ipcMain.handle(STUDY_IPC_CHANNELS.LIST_DOCUMENTS, (_event, sessionId: string) => {
+    return listStudyDocuments(sessionId)
+  })
+
+  ipcMain.handle(STUDY_IPC_CHANNELS.GET_OUTLINE, (_event, input: StudyDocumentQueryInput) => {
+    return getStudyDocumentOutline(input.sessionId, input.documentId)
+  })
+
+  ipcMain.handle(STUDY_IPC_CHANNELS.REMOVE_DOCUMENT, (_event, input: StudyDocumentQueryInput) => {
+    return { success: removeStudyDocument(input.sessionId, input.documentId) }
+  })
+
+  // ===== AI 速课堂（专属工作区 / 会话 / 资料树图谱） =====
+  ipcMain.handle(CDUT_AI_CLASS_IPC_CHANNELS.LIST_SESSIONS, () => {
+    return listAiClassSessions()
+  })
+
+  ipcMain.handle(CDUT_AI_CLASS_IPC_CHANNELS.CREATE_SESSION, (_event, courseName: string) => {
+    return createAiClassSession(courseName)
+  })
+
+  ipcMain.handle(CDUT_AI_CLASS_IPC_CHANNELS.DELETE_SESSION, (_event, sessionId: string) => {
+    deleteAiClassSession(sessionId)
+    return { success: true }
+  })
+
+  ipcMain.handle(CDUT_AI_CLASS_IPC_CHANNELS.GENERATE_GRAPH_RELATIONS, async (event, input: StudyGraphGenerateInput) => {
+    // 恒定由前端弹窗确认后主动触发；未传 mode 时兜底为智能精炼
+    // 通过 event.sender 实时把推演批次进度转发给渲染端
+    return await generateKnowledgeGraph(input.sessionId, input.mode ?? 'ai_smart', (progress) => {
+      event.sender.send(CDUT_AI_CLASS_IPC_CHANNELS.GENERATE_PROGRESS, progress)
+    })
+  })
+
+  ipcMain.handle(CDUT_AI_CLASS_IPC_CHANNELS.ESTIMATE_GRAPH_COST, (_event, sessionId: string) => {
+    return estimateGraphGenerationCost(sessionId)
+  })
+
+  ipcMain.handle(CDUT_AI_CLASS_IPC_CHANNELS.SEARCH_KNOWLEDGE, (_event, input: StudySearchKnowledgeInput) => {
+    return getGlobalStudyRetriever().searchHybrid(input.sessionId, input.query, {
+      ...(input.targetDocumentId ? { targetDocumentId: input.targetDocumentId } : {}),
+      ...(input.topK ? { topK: input.topK } : {}),
+    })
+  })
+
+  // 特区账户状态变更时向所有存活窗口广播
+  cdutAuthManager.setStatusCallback((profile) => {
+    for (const window of BrowserWindow.getAllWindows()) {
+      if (!window.isDestroyed()) {
+        window.webContents.send(CDUT_ZONE_IPC_CHANNELS.STATUS_CHANGED, profile)
+      }
+    }
+  })
+
+  // 客户端启动治理：复位为未登录并清空专属网络分区 Cookie，确保重新登录走全新纯净 CAS 通道
+  void cdutAuthManager.resetOnStartup()
 
   // 启动时自动归档 + 每 24 小时定期检查
   const runAutoArchive = (): void => {

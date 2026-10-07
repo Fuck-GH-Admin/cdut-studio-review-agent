@@ -104,6 +104,30 @@ describe('buildSystemPrompt', () => {
     }
   })
 
+  test('速课堂禁用产品能力组时不渲染「当前预设已关闭的能力」段，常规会话保留', () => {
+    const disabledToolGroups = ['browser', 'automation', 'collaboration', 'clipboard'] as const
+
+    const studyPrompt = buildSystemPrompt({
+      workspaceName: 'AI速课堂',
+      workspaceSlug: 'cdut-ai-class',
+      sessionId: 'session-123',
+      permissionMode: 'auto',
+      isStudyClass: true,
+      disabledToolGroups: [...disabledToolGroups],
+      disabledTools: ['create_skin'],
+    })
+    expect(studyPrompt).not.toContain('## 当前预设已关闭的能力')
+
+    const normalPrompt = buildSystemPrompt({
+      workspaceName: 'Demo',
+      workspaceSlug: 'demo-workspace',
+      sessionId: 'session-123',
+      permissionMode: 'auto',
+      disabledToolGroups: [...disabledToolGroups],
+    })
+    expect(normalPrompt).toContain('## 当前预设已关闭的能力')
+  })
+
   test('Pi 按需裁剪后仍保留认识论姿态与不可变底线', () => {
     const basePrompt = buildSystemPrompt({
       workspaceName: 'Demo',

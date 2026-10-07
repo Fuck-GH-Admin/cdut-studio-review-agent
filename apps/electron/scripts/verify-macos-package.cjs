@@ -40,7 +40,7 @@ const appBinary = path.join(macOsDir, executableName)
 assertExists(appBinary, '应用可执行文件')
 assertExists(appArchive, 'app.asar')
 assertExists(unpackedNodeModules, 'app.asar.unpacked/node_modules')
-assertExists(cliPath, 'Profer CLI')
+assertExists(cliPath, '随包 CLI')
 
 for (const [binary, description] of [[cliPath, '随包 CLI'], [appBinary, '应用主程序']]) {
   try {

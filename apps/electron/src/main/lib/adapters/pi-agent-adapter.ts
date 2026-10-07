@@ -700,6 +700,92 @@ export function mapSDKErrorToTypedError(errorCode: string, message: string, orig
   }
 }
 
+/**
+ * OpenAI 兼容协议 Payload 运行时动态净化与瘦身管道
+ *
+ * 核心职责：
+ * 1. 剥离旧轮次 Thinking 思考链（模型看历史只需看最终回答，砍掉数万无谓 tokens）
+ * 2. 截断折叠旧轮次超大 ToolResult（前序大表格折叠为 1500 字符，当轮 100% 完整）
+ * 3. 剥离非标 store 字段，纠正遗留 developer 角色为 system
+ * 4. 纯文本单项数组平坦化为 string，保护多模态图片数组
+ *
+ * 该管道仅在 OpenAI 兼容协议（openai-completions）下通过 onPayload 挂载生效；
+ * Anthropic / Google / Responses 等协议的 payload 结构不含对应字段，天然不受影响。
+ */
+export function sanitizeAndPruneOpenAIPayload(params: any, model: any): any {
+  if (!params || typeof params !== 'object') return params
+
+  // 1. 防御性删除非标 store 字段
+  if ('store' in params) {
+    delete params.store
+  }
+
+  // 2. 处理 messages 列表
+  if (Array.isArray(params.messages) && params.messages.length > 0) {
+    const totalCount = params.messages.length
+
+    // 寻找属于「当前轮」的起点：倒数第一个 user 消息及其之后的消息属于当前轮
+    let currentTurnStartIndex = -1
+    for (let i = totalCount - 1; i >= 0; i--) {
+      if (params.messages[i].role === 'user') {
+        currentTurnStartIndex = i
+        break
+      }
+    }
+    if (currentTurnStartIndex === -1) {
+      currentTurnStartIndex = Math.max(0, totalCount - 2)
+    }
+
+    for (let i = 0; i < totalCount; i++) {
+      const msg = params.messages[i]
+      const isPastTurn = i < currentTurnStartIndex
+
+      // 纠正任何可能残留的 developer 角色
+      if (msg.role === 'developer') {
+        msg.role = 'system'
+      }
+
+      // 【瘦身1：剥离旧轮次的 Thinking 思考链】
+      // 非当前轮的 assistant 消息，不应向模型重复发送内部思维独白
+      if (isPastTurn && msg.role === 'assistant') {
+        if ('reasoning_content' in msg) {
+          delete msg.reasoning_content
+        }
+        if ('reasoning' in msg) {
+          delete msg.reasoning
+        }
+        if ('reasoning_details' in msg) {
+          delete msg.reasoning_details
+        }
+      }
+
+      // 【瘦身2：旧轮次超大 ToolResult 安全折叠截断】
+      // 只有旧轮次的 tool 结果才截断；当前轮正在等待执行/结算的 ToolResult 必须 100% 完整！
+      if (isPastTurn && msg.role === 'tool') {
+        if (typeof msg.content === 'string' && msg.content.length > 2000) {
+          const omitted = msg.content.length - 1500
+          msg.content = `${msg.content.slice(0, 1500)}\n\n[...该历史查询结果已折叠，共省略 ${omitted} 字符以节省上下文...]`
+        }
+      }
+
+      // 【净化：单纯文本数组平坦化为字符串】
+      // 严格检查：必须是长度为 1 的数组，且类型为 text，且不包含图片
+      if (
+        Array.isArray(msg.content) &&
+        msg.content.length === 1 &&
+        msg.content[0] &&
+        typeof msg.content[0] === 'object' &&
+        msg.content[0].type === 'text' &&
+        typeof msg.content[0].text === 'string'
+      ) {
+        msg.content = msg.content[0].text
+      }
+    }
+  }
+
+  return params
+}
+
 /** 轻量 session-id → file-path 索引缓存，避免每次 resume 时递归扫描磁盘 */
 const sessionFileIndex = new Map<string, string>()
 let sessionDirIndexed: string | undefined
@@ -2351,10 +2437,34 @@ export class PiAgentAdapter implements AgentProviderAdapter {
       // 代理作用域必须只覆盖模型 provider stream：在整个 session.prompt() 链上设
       // AsyncLocalStorage 会把 MCP/产品工具等同一 Agent loop 中的 fetch 也错误地送进 Codex 代理。
       const providerStreamFn = session.agent.streamFunction
-      session.agent.streamFunction = (requestModel, context, options) => runWithPiRequestProxy(
-        requestProxyDispatcher,
-        () => providerStreamFn(requestModel, context, options),
-      )
+      // 净化与瘦身管道仅作用于 OpenAI 兼容协议（providerId === 'custom' 或 openai-completions），
+      // Anthropic / Google / Responses 等原生协议渠道不经过该管道。
+      const shouldSanitizeOpenAIPayload = normalizePiApi(input.provider, input.baseUrl) === 'openai-completions'
+      session.agent.streamFunction = (requestModel, context, options) => {
+        if (!shouldSanitizeOpenAIPayload) {
+          return runWithPiRequestProxy(
+            requestProxyDispatcher,
+            () => providerStreamFn(requestModel, context, options),
+          )
+        }
+        const originalOnPayload = options?.onPayload
+        const wrappedOptions = {
+          ...options,
+          onPayload: async (params: any, model: any) => {
+            // 统一进入净化与瘦身管道
+            const cleanedParams = sanitizeAndPruneOpenAIPayload(params, model)
+            if (originalOnPayload) {
+              const customResult = await originalOnPayload(cleanedParams, model)
+              return customResult !== undefined ? customResult : cleanedParams
+            }
+            return cleanedParams
+          },
+        }
+        return runWithPiRequestProxy(
+          requestProxyDispatcher,
+          () => providerStreamFn(requestModel, context, wrappedOptions),
+        )
+      }
 
       if (active.abortRequested) {
         await session.abort().catch(() => {})

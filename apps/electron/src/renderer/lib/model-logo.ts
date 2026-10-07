@@ -97,7 +97,7 @@ import MiniMaxLogo from '@/assets/models/minimax.png'
 import XiaomiLogo from '@/assets/models/xiaomi.png'
 
 // CDUT Studio
-import ProferLogo from '@/assets/models/profer.png'
+import CDUTStudioLogo from '@/assets/models/CDUT_Studio.png'
 
 // Cohere
 import CohereLogo from '@/assets/models/cohere.png'
@@ -309,7 +309,7 @@ export function getProviderLogo(provider: ProviderType): string {
  * 服务（常以 /anthropic 结尾）不应被误判为 Claude（见 #659）。
  */
 const URL_LOGO_MAP: Array<[RegExp, string]> = [
-  [/proma\.cool/i, ProferLogo],
+  [/proma\.cool/i, CDUTStudioLogo],
   [/moonshot\.cn|kimi/i, KimiLogo],
   [/bigmodel\.cn|zhipuai/i, ZhipuLogo],
   [/minimax/i, MiniMaxLogo],
@@ -407,4 +407,4 @@ export function resolveModelProvider(modelId: string, channels: import('@profer/
 }
 
 /** 默认模型图标 */
-export { DefaultLogo, ProferLogo }
+export { DefaultLogo, CDUTStudioLogo }

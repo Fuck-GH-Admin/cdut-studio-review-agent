@@ -288,6 +288,22 @@ export const AGENT_PRESET_CAPABILITY_GROUPS = [
       capabilityTool('review_respond_supplement', '代回复补件', '代提交者回复补件请求（需指派）', 'write'),
     ],
   }),
+  capabilityGroup({
+    id: 'cdut-tools',
+    label: 'CDUT 专区教务与反代工具',
+    hint: '包含成都理工大学青果教务系统 8 大业务域及专属反代 AI 工具，调用受特区账户登录门禁保护',
+    tools: [
+      capabilityTool('cdut_academic_profile', 'CDUT 学籍与档案', '查询学籍档案、异动与专业分流', 'read'),
+      capabilityTool('cdut_schedule', 'CDUT 课表与作息', '查询学期/周次课表', 'read'),
+      capabilityTool('cdut_grades_assessment', 'CDUT 成绩与考核', '成绩单、等级考试与查卷申请', 'read'),
+      capabilityTool('cdut_exam_affairs', 'CDUT 考务与报名', '考程安排、补考重修与缓考', 'read'),
+      capabilityTool('cdut_classroom_resource', 'CDUT 教室自习雷达', '空闲教室与占用查询', 'read'),
+      capabilityTool('cdut_curriculum_plan', 'CDUT 培养方案', '毕业学分与学位审核', 'read'),
+      capabilityTool('cdut_course_selection', 'CDUT 选课中心', '选课轮次、余量与选退课', 'write'),
+      capabilityTool('cdut_notices_system', 'CDUT 教务通知系统', '公告、预警与密码安全', 'read'),
+      capabilityTool('cdut_reverse_proxy_agent', 'CDUT 反代大模型接入', '由发起 AI 自行构造提问获取反代大模型回答', 'external'),
+    ],
+  }),
 ] as const satisfies readonly AgentPresetCapabilityGroup[];
 
 export type AgentPresetToolGroup =
@@ -306,6 +322,23 @@ export const AGENT_PRESET_GROUP_TOOL_NAMES = Object.fromEntries(
 /** 全部可裁剪单工具短名（disabledTools 校验用） */
 export const AGENT_PRESET_TOOL_NAMES: readonly string[] =
   AGENT_PRESET_CAPABILITY_GROUPS.flatMap((group) => [...group.toolNames]);
+
+/**
+ * AI 速课堂专用工具剥离画像（仅 cdut-ai-class 会话生效）。
+ *
+ * 速课堂只做学习资料带教：剥离浏览器、自动化与规划、协作子 Agent、系统剪贴板四个能力组，
+ * 并单独禁用 create_skin（保留同组 send_local_image）。常规 Agent 会话不引用本画像。
+ * 作为唯一事实来源，供编排层按 isStudyClass 并入 disabledToolGroups / disabledTools。
+ */
+export const STUDY_CLASS_DISABLED_TOOL_GROUPS: readonly AgentPresetToolGroup[] = [
+  'browser',
+  'automation',
+  'collaboration',
+  'clipboard',
+];
+
+/** 速课堂额外禁用的单个内置工具（短名）。 */
+export const STUDY_CLASS_DISABLED_TOOLS: readonly string[] = ['create_skin'];
 
 /** 从统一 registry 查询单个逻辑工具的元数据。 */
 export function getAgentPresetCapabilityTool(

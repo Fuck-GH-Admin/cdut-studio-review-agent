@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GitHub Release 服务
  *
  * 从 GitHub API 获取项目的发布日志（Release Notes）
@@ -14,8 +14,8 @@ const GITHUB_API_BASE = 'https://api.github.com'
 
 /** GitHub 仓库配置（从 electron-builder.yml） */
 const GITHUB_REPO = {
-  owner: 'Yuan-lai-ru-ci',
-  repo: 'ProferAI',
+  owner: 'Nya-Angle',
+  repo: 'CDUT-Studio',
 }
 
 /** Release 缓存 */
