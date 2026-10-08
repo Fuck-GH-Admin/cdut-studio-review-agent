@@ -49,6 +49,28 @@ describe('UI/服务端统一的最终决定就绪判断', () => {
     expect(result.blockers).toContainEqual(expect.objectContaining({ kind: 'unread-material', id: document.versionId }))
   })
 
+  test('审核员明确确认核对原件后，解析失败材料解除未读材料阻断', () => {
+    const document = { documentId: 'd1', versionId: 'd1-v1', contentHash: '', role: 'evidence' as const, fileName: '扫描件.pdf', mimeType: 'application/pdf', sizeBytes: 10, assetPath: '', parseRevision: 1, parseStatus: 'failed' as const, blocks: [], usage: 'read' as const, manualReadReceipt: { actorId: 'reviewer', reason: '已逐页核对原件', at: '' } }
+    const result = assessDecisionReadiness({
+      aggregate: aggregate({ caseV2: { ...aggregate().caseV2, documents: [document] } }),
+      run: run({ coverage: { documents: [{ documentVersionId: document.versionId, status: 'unread', reason: '解析失败' }], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 } }),
+      runStale: false,
+      template: { materialSlots: [] } as unknown as TemplateVersion,
+    })
+    expect(result.blockers.some((blocker) => blocker.kind === 'unread-material' && blocker.id === document.versionId)).toBeFalse()
+  })
+
+  test('审核员明确忽略的解析失败材料不再伪装成待读材料阻断', () => {
+    const document = { documentId: 'd1', versionId: 'd1-v1', contentHash: '', role: 'evidence' as const, fileName: '无关附件.pdf', mimeType: 'application/pdf', sizeBytes: 10, assetPath: '', parseRevision: 1, parseStatus: 'failed' as const, blocks: [], usage: 'read' as const, unusedReason: '[审核员忽略] 与本次申报无关' }
+    const result = assessDecisionReadiness({
+      aggregate: aggregate({ caseV2: { ...aggregate().caseV2, documents: [document] } }),
+      run: run({ coverage: { documents: [{ documentVersionId: document.versionId, status: 'unread', reason: '解析失败' }], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 } }),
+      runStale: false,
+      template: { materialSlots: [] } as unknown as TemplateVersion,
+    })
+    expect(result.blockers.some((blocker) => blocker.kind === 'unread-material' && blocker.id === document.versionId)).toBeFalse()
+  })
+
   test('当前运行只部分读取材料时仍保留带读取范围的阻断', () => {
     const document = { documentId: 'd1', versionId: 'd1-v1', contentHash: '', role: 'evidence' as const, fileName: '申请书.docx', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', sizeBytes: 10, assetPath: '', parseRevision: 1, parseStatus: 'parsed' as const, blocks: [{ blockId: 'b1', text: '内容', kind: 'text' as const }], usage: 'registered' as const }
     const reason = '本次审核通过材料工具读取了 1/4 个材料块'

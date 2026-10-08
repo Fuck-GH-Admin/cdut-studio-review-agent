@@ -72,12 +72,21 @@ interface PiReviewSubmissionAttempt {
   missingChecks: string[]
 }
 
+interface PiDocumentReadInheritanceEntry {
+  documentVersionId: string
+  sourceRunId: string
+  contentHash: string
+  proof: 'all-parsed-blocks' | 'full-original-preview'
+  inheritedAt: string
+}
+
 export interface PiReviewPrepareResult {
   assignmentId: string
   runId: string
   caseDirectory: string
   userMessage: string
   continuedRun?: boolean
+  inheritedReadDocumentNames?: string[]
 }
 
 const CASE_ROOT = (caseId: string): string => join(getConfigDir(), 'review-cases', caseId)
@@ -85,6 +94,69 @@ interface PiDocumentReadState {
   blocks?: Record<string, string[]>
   previewedDocumentVersionIds?: string[]
   fullyPreviewedDocumentVersionIds?: string[]
+}
+
+function inheritPiReadReceipts(
+  caseId: string,
+  targetRun: ReviewRunV2,
+  documents: CaseAggregateV2['caseV2']['documents'],
+  history: ReviewRunV2[],
+): { state: PiDocumentReadState; entries: PiDocumentReadInheritanceEntry[]; newDocumentVersionIds: string[] } {
+  const state = readArtifact<PiDocumentReadState>(caseId, targetRun.id, 'node-pi-read-state') ?? { blocks: {} }
+  const blocks = { ...(state.blocks ?? {}) }
+  const previewed = new Set(state.previewedDocumentVersionIds ?? [])
+  const fullyPreviewed = new Set(state.fullyPreviewedDocumentVersionIds ?? [])
+  const priorInheritance = readArtifact<PiDocumentReadInheritanceEntry[]>(caseId, targetRun.id, 'node-pi-read-inheritance') ?? []
+  const inheritedByVersion = new Map(priorInheritance.map((entry) => [entry.documentVersionId, entry]))
+  const manifestByVersion = new Map(targetRun.inputManifest.documentVersions.map((item) => [item.versionId, item]))
+  const targetCoverage = new Map(targetRun.coverage.documents.map((item) => [item.documentVersionId, item]))
+  const documentByVersion = new Map(documents.map((document) => [document.versionId, document]))
+
+  for (const previousRun of history) {
+    if (previousRun.id === targetRun.id || !['completed', 'partially-completed'].includes(previousRun.status)) continue
+    if (!previousRun.diagnostics.some((line) => line.includes('由项目普通 Pi 会话直接审核'))) continue
+    const oldManifest = new Map(previousRun.inputManifest.documentVersions.map((item) => [item.versionId, item]))
+    const previousState = readArtifact<PiDocumentReadState>(caseId, previousRun.id, 'node-pi-read-state')
+    if (!previousState) continue
+    const previousCoverage = new Map(previousRun.coverage.documents.map((item) => [item.documentVersionId, item]))
+    const previousInheritance = readArtifact<PiDocumentReadInheritanceEntry[]>(caseId, previousRun.id, 'node-pi-read-inheritance') ?? []
+
+    for (const [documentVersionId, manifest] of manifestByVersion) {
+      const currentCoverage = targetCoverage.get(documentVersionId)
+      const document = documentByVersion.get(documentVersionId)
+      const oldVersion = oldManifest.get(documentVersionId)
+      if (!currentCoverage || currentCoverage.status === 'read' || !document || document.active === false || !oldVersion || !manifest.contentHash || !oldVersion.contentHash || oldVersion.contentHash !== manifest.contentHash
+        || manifest.contentHash !== document.contentHash || inheritedByVersion.has(documentVersionId)) continue
+      if (previousCoverage.get(documentVersionId)?.status !== 'read') continue
+
+      const documentBlockIds = new Set(document.blocks.map((block) => block.blockId))
+      const oldBlockIds = (previousState.blocks?.[documentVersionId] ?? []).filter((blockId) => documentBlockIds.has(blockId))
+      const oldBlockIdSet = new Set(oldBlockIds)
+      const hasFullPreview = previousState.fullyPreviewedDocumentVersionIds?.includes(documentVersionId) ?? false
+      const allParsedBlocksRead = documentBlockIds.size > 0
+        && oldBlockIdSet.size === documentBlockIds.size
+        && (document.parseStatus === 'parsed' || (document.mimeType.startsWith('image/') && document.blocks.every((block) => block.kind === 'image')))
+      const proof = hasFullPreview ? 'full-original-preview' : allParsedBlocksRead ? 'all-parsed-blocks' : undefined
+      if (!proof) continue
+
+      blocks[documentVersionId] = [...new Set([...(blocks[documentVersionId] ?? []), ...oldBlockIds])]
+      if (previousState.previewedDocumentVersionIds?.includes(documentVersionId)) previewed.add(documentVersionId)
+      if (hasFullPreview) fullyPreviewed.add(documentVersionId)
+      inheritedByVersion.set(documentVersionId, {
+        documentVersionId,
+        sourceRunId: previousInheritance.find((entry) => entry.documentVersionId === documentVersionId)?.sourceRunId ?? previousRun.id,
+        contentHash: document.contentHash,
+        proof,
+        inheritedAt: new Date().toISOString(),
+      })
+    }
+  }
+
+  return {
+    state: { ...state, blocks, previewedDocumentVersionIds: [...previewed], fullyPreviewedDocumentVersionIds: [...fullyPreviewed] },
+    entries: [...inheritedByVersion.values()],
+    newDocumentVersionIds: [...inheritedByVersion.keys()].filter((documentVersionId) => !priorInheritance.some((entry) => entry.documentVersionId === documentVersionId)),
+  }
 }
 
 function snapshots(aggregate: CaseAggregateV2): { observations: Array<Record<string, unknown>>; evidence: Array<Record<string, unknown>> } {
@@ -136,7 +208,7 @@ export function reconcilePiReviewRunsWithReadReceipts(caseId: string, runs: Revi
   if (!aggregate) return runs
   const documentsByVersion = new Map(aggregate.caseV2.documents.map((document) => [document.versionId, document]))
 
-  return runs.map((run) => {
+  const reconciledRuns = runs.map((run) => {
     if (!run.diagnostics.some((line) => line.includes('由项目普通 Pi 会话直接审核'))) return run
     if (run.status === 'running' || run.status === 'queued') return run
 
@@ -173,6 +245,13 @@ export function reconcilePiReviewRunsWithReadReceipts(caseId: string, runs: Revi
     saveRunV2(repaired)
     return repaired
   })
+  const latest = reconciledRuns[0]
+  if (latest && ['completed', 'partially-completed'].includes(latest.status)
+    && latest.diagnostics.some((line) => line.includes('由项目普通 Pi 会话直接审核'))) {
+    const inheritedNames = applyPiReadReceiptInheritance(aggregate, latest, reconciledRuns.filter((run) => run.id !== latest.id))
+    if (inheritedNames.length > 0) saveRunV2(latest)
+  }
+  return reconciledRuns
 }
 
 function effectiveRulesFor(aggregate: CaseAggregateV2, template: TemplateVersion): RuleSpec[] {
@@ -347,7 +426,7 @@ function continuationPrompt(aggregate: CaseAggregateV2, template: TemplateVersio
   ].join('\n\n')
 }
 
-export function preparePiReviewRunV2(input: { caseId: string; sessionId: string; turnId: string; resumeRunId?: string }): PiReviewPrepareResult {
+export function preparePiReviewRunV2(input: { caseId: string; sessionId: string; turnId: string; resumeRunId?: string; inheritReadReceipts?: boolean }): PiReviewPrepareResult {
   if (!input.sessionId || !input.turnId) throw new Error('普通 Pi 审核必须绑定真实会话与用户消息')
   const aggregate = getCaseV2Aggregate(input.caseId)
   if (!aggregate) throw new Error(`案卷不存在或未初始化：${input.caseId}`)
@@ -395,16 +474,23 @@ export function preparePiReviewRunV2(input: { caseId: string; sessionId: string;
       delete run.error
       run.diagnostics = [...run.diagnostics, '通过辅助审核工作台续交未完成的 Pi 检查；沿用原运行 ID 与已接受结果。'].slice(-50)
     }
+    const inheritedReadDocumentNames = input.inheritReadReceipts
+      ? applyPiReadReceiptInheritance(aggregate, run, listRunsV2(input.caseId).filter((item) => item.id !== run.id))
+      : []
     saveRunV2(run)
     bindRunToAssignment(assignment.id, run.id)
     for (const oldAssignment of previousAssignments) revokeAssignment(oldAssignment.id)
-    const userMessage = promptFor(aggregate, template)
+    const inheritedReadNote = inheritedReadDocumentNames.length > 0
+      ? `\n\n【沿用已核验的原件】以下 ${inheritedReadDocumentNames.length} 份文件版本与此前完成的完整核验内容哈希完全一致，系统已保留其可追溯读取凭据，无须重复通读：\n${inheritedReadDocumentNames.map((name) => `- ${name}`).join('\n')}\n新上传或内容变化的材料仍需本轮检查；若具体判断需要，可再次打开原件。`
+      : ''
+    const userMessage = `${promptFor(aggregate, template)}${inheritedReadNote}${continuation ? `\n\n${continuationPrompt(aggregate, template, run)}` : ''}`
     return {
       assignmentId: assignment.id,
       runId: run.id,
       caseDirectory: join(CASE_ROOT(input.caseId), 'source-docs'),
-      userMessage: continuation ? `${userMessage}\n\n${continuationPrompt(aggregate, template, run)}` : userMessage,
+      userMessage,
       ...(continuation ? { continuedRun: true } : {}),
+      ...(inheritedReadDocumentNames.length > 0 ? { inheritedReadDocumentNames } : {}),
     }
   } catch (error) {
     revokeAssignment(assignment.id)
@@ -569,6 +655,68 @@ function recalculateCoverage(run: ReviewRunV2, aggregate: CaseAggregateV2, rules
     effectiveVerdicts: summary.effectiveVerdicts,
     pendingChecks: summary.pendingChecks,
   }
+}
+
+function applyPiReadReceiptInheritance(
+  aggregate: CaseAggregateV2,
+  run: ReviewRunV2,
+  history: ReviewRunV2[],
+): string[] {
+  const inherited = inheritPiReadReceipts(aggregate.caseV2.id, run, aggregate.caseV2.documents, history)
+  if (inherited.newDocumentVersionIds.length === 0) return []
+
+  saveArtifact(aggregate.caseV2.id, run.id, 'node-pi-read-state', inherited.state)
+  saveArtifact(aggregate.caseV2.id, run.id, 'node-pi-read-inheritance', inherited.entries)
+  const manifestByVersion = new Map(run.inputManifest.documentVersions.map((item) => [item.versionId, item]))
+  const runCoverageVersions = new Set(run.coverage.documents.map((item) => item.documentVersionId))
+  const runDocuments = aggregate.caseV2.documents.filter((document) => {
+    const manifest = manifestByVersion.get(document.versionId)
+    return runCoverageVersions.has(document.versionId) && document.active !== false && manifest?.contentHash === document.contentHash
+  })
+  const citedVersions = new Set(run.checks.flatMap((check) => check.sourceRefs.map((ref) => ref.documentVersionId)))
+  const observations = readArtifact<{ observations?: Array<Record<string, unknown>> }>(aggregate.caseV2.id, run.id, 'node-auto-check-extract')?.observations ?? []
+  for (const observation of observations) {
+    for (const ref of Array.isArray(observation.sourceRefs) ? observation.sourceRefs : []) {
+      if (ref && typeof ref === 'object' && 'documentVersionId' in ref) citedVersions.add(String(ref.documentVersionId))
+    }
+  }
+  const inheritedByVersion = new Map(inherited.entries.map((entry) => [entry.documentVersionId, entry]))
+  const finalized = finalizePiDocumentCoverage({
+    documents: runDocuments,
+    previous: run.coverage.documents,
+    readBlocksByDocument: inherited.state.blocks ?? {},
+    previewedDocumentVersionIds: new Set(inherited.state.previewedDocumentVersionIds ?? []),
+    fullyPreviewedDocumentVersionIds: new Set(inherited.state.fullyPreviewedDocumentVersionIds ?? []),
+    citedDocumentVersionIds: citedVersions,
+  })
+  run.coverage.documents = finalized.map((entry) => {
+    const provenance = inheritedByVersion.get(entry.documentVersionId)
+    return provenance && entry.status === 'read'
+      ? { ...entry, reason: `沿用运行 ${provenance.sourceRunId} 的完整原件核验凭据；文件内容哈希未变化。` }
+      : entry
+  })
+  const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+  if (template) {
+    const summary = combineCoverage(
+      runDocuments,
+      effectiveRulesFor(aggregate, template),
+      aggregate.caseV2.subjects.map((subject) => subject.id),
+      run.checks,
+      {},
+      sectionSubjectIds(template, aggregate),
+    )
+    run.coverage = {
+      ...run.coverage,
+      plannedChecks: summary.plannedChecks,
+      completedChecks: summary.completedChecks,
+      effectiveVerdicts: summary.effectiveVerdicts,
+      pendingChecks: summary.pendingChecks,
+    }
+  }
+  run.diagnostics = [...run.diagnostics, `已沿用未变化材料的完整读取凭据：${inherited.newDocumentVersionIds.length} 份。`].slice(-50)
+  const newVersions = new Set(inherited.newDocumentVersionIds)
+  return inherited.entries.filter((entry) => newVersions.has(entry.documentVersionId))
+    .map((entry) => aggregate.caseV2.documents.find((document) => document.versionId === entry.documentVersionId)?.fileName ?? entry.documentVersionId)
 }
 
 export function submitPiReviewResultV2(input: {

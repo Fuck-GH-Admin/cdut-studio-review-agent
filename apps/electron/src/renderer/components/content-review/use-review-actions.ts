@@ -75,7 +75,13 @@ export function useReviewActions() {
       && store.get(reviewWorkspaceRunStaleByCaseAtom)[caseId] === false
       ? previousRun.id
       : undefined
-    const prepared = await window.reviewAPI.preparePiReviewV2({ caseId, sessionId, turnId, ...(resumeRunId ? { resumeRunId } : {}) })
+    const prepared = await window.reviewAPI.preparePiReviewV2({
+      caseId,
+      sessionId,
+      turnId,
+      ...(resumeRunId ? { resumeRunId } : {}),
+      ...(mode === 'update' ? { inheritReadReceipts: true } : {}),
+    })
     try {
       await window.electronAPI.attachDirectory({ sessionId, directoryPath: prepared.caseDirectory })
       // 等待 agentSessionsAtom 更新，避免打开新工作区会话时被可见性筛选误判。

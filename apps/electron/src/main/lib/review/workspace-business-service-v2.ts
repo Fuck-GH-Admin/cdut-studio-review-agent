@@ -7,7 +7,7 @@ import { CommandValidationError, submitCommand } from './case-store-v2'
 import { getRunV2, readArtifact } from './run-store-v2'
 import { computeRunInputHash } from './run-service-v2'
 
-type WorkspaceDisposition = 'confirmed-issue' | 'false-positive' | 'supplement-requested' | 'waived' | 'escalated'
+type WorkspaceDisposition = 'confirmed-issue' | 'human-confirmed-compliant' | 'false-positive' | 'supplement-requested' | 'waived' | 'escalated'
 type WorkspaceDecision = BusinessDecision['result']
 
 function currentSubjectAdjudications(aggregate: CaseAggregateV2, runId?: string, inputHash?: string): Map<string, SubjectAdjudication> {
@@ -97,11 +97,16 @@ export function recordWorkspaceDispositionV2(
       || run.opinions.some((opinion) => opinion.id === payload.findingKey || opinion.checkId === payload.findingKey)
     if (!exists) throw new CommandValidationError('NOT_FOUND', `本次运行中不存在待办: ${payload.findingKey}`)
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '处理待办必须填写理由')
-    if (!['confirmed-issue', 'false-positive', 'supplement-requested', 'waived', 'escalated'].includes(payload.disposition)) {
+    if (!['confirmed-issue', 'human-confirmed-compliant', 'false-positive', 'supplement-requested', 'waived', 'escalated'].includes(payload.disposition)) {
       throw new CommandValidationError('VALIDATION_FAILED', '待办处置状态无效')
     }
+    const dispositionLabel = payload.disposition === 'confirmed-issue' ? '确认问题属实'
+      : payload.disposition === 'human-confirmed-compliant' ? '人工确认本项符合'
+        : payload.disposition === 'false-positive' ? '标记 AI 误报'
+          : payload.disposition === 'supplement-requested' ? '要求补件'
+            : payload.disposition === 'waived' ? '暂不处理' : '升级处理'
     return {
-      summary: `审核员处置待办：${payload.disposition}`,
+      summary: `审核员处置待办：${dispositionLabel}`,
       mutate: (draft) => {
         const record = {
           findingKey: payload.findingKey,
@@ -185,6 +190,7 @@ export function acknowledgeWorkspaceMaterialV2(
     const document = aggregate.caseV2.documents.find((item) => item.versionId === payload.documentVersionId && item.active !== false)
     if (!document) throw new CommandValidationError('NOT_FOUND', `材料版本不存在: ${payload.documentVersionId}`)
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '人工检查材料必须填写处理说明')
+    const acknowledgedAt = new Date().toISOString()
     return {
       summary: payload.action === 'ignore' ? `人工忽略材料：${document.fileName}` : `人工检查材料：${document.fileName}`,
       mutate: (draft) => {
@@ -192,6 +198,9 @@ export function acknowledgeWorkspaceMaterialV2(
           ...document,
           usage: 'read' as const,
           unusedReason: payload.action === 'ignore' ? `[审核员忽略] ${payload.reason.trim()}` : undefined,
+          manualReadReceipt: payload.action === 'read'
+            ? { actorId: command.actor.actorId, reason: payload.reason.trim(), at: acknowledgedAt }
+            : undefined,
         }
         draft.caseV2.documents = draft.caseV2.documents.map((item) => item.versionId === payload.documentVersionId ? changed : item)
         return changed

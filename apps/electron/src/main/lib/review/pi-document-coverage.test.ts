@@ -104,6 +104,20 @@ describe('Pi 单次运行材料覆盖账本', () => {
     expect(coverage).toMatchObject({ status: 'unread', reason: expect.stringContaining('空占位块不代表读取了原件') })
   })
 
+  test('审核员明确确认核对原件后，解析失败材料记为已读并保留说明', () => {
+    const [coverage] = finalizePiDocumentCoverage({
+      documents: [document({
+        parseStatus: 'failed', parseError: 'PDF 文本解析失败', blocks: [],
+        manualReadReceipt: { actorId: 'reviewer', reason: '已逐页核对扫描件', at: '' },
+      })],
+      previous: [{ documentVersionId: 'doc-1-v1', status: 'unread' }],
+      readBlocksByDocument: {},
+      citedDocumentVersionIds: new Set(),
+    })
+
+    expect(coverage).toEqual({ documentVersionId: 'doc-1-v1', status: 'read', reason: '审核员已核对原件：已逐页核对扫描件' })
+  })
+
   test('无读取回执但有真实材料引用时标记为部分读取；完全没有记录时标记未读', () => {
     const cited = finalizePiDocumentCoverage({
       documents: [document()],

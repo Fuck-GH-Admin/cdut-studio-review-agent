@@ -131,6 +131,8 @@ describe('单一工作台案卷映射到 V2 聚合', () => {
     })
     expect(acknowledged.ok).toBeTrue()
     aggregate = readAggregate(legacy.id)!
+    expect(aggregate.caseV2.documents.find((document) => document.versionId === applicationDocument.versionId)?.manualReadReceipt)
+      .toMatchObject({ actorId: reviewer.actorId, reason: '已核对申报材料' })
     const candidate = await setEvidenceLink(legacy.id, {
       requestId: 'projection-evidence-candidate', actor: reviewer, expectedRevision: aggregate.caseV2.revision,
       payload: { documentVersionId: evidenceDocument.versionId, subjectIds: [subjectId], supportsFact: '获奖等级', linkedBy: 'user' },

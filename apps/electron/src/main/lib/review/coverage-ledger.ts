@@ -19,6 +19,14 @@ export interface DocumentLedgerEntry {
 export function buildDocumentLedger(documents: DocumentVersion[]): DocumentLedgerEntry[] {
   return documents.map((doc) => {
     const parseFailed = doc.parseStatus === 'failed'
+    if (doc.manualReadReceipt) {
+      return {
+        documentVersionId: doc.versionId,
+        fileName: doc.fileName,
+        status: 'read',
+        reason: `审核员已核对原件：${doc.manualReadReceipt.reason}`,
+      }
+    }
     return {
       documentVersionId: doc.versionId,
       fileName: doc.fileName,

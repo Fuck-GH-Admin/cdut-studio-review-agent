@@ -80,6 +80,27 @@ describe('三栏单案的 V2 业务闭环事务', () => {
     }
   })
 
+  test('人工核实 AI 无法判定项符合时，保存为独立的符合结论而不是 AI 误报', async () => {
+    const { caseId, run } = await seed()
+    saveRunV2({ ...run, checks: [{ ...run.checks[0]!, status: 'awaiting-confirmation' }] })
+    const result = await recordWorkspaceDispositionV2(caseId, {
+      requestId: request(), actor, expectedRevision: 0,
+      payload: {
+        findingKey: 'check-a',
+        disposition: 'human-confirmed-compliant',
+        reason: '审核员对照审核依据和材料后确认本项符合',
+        runId: run.id,
+        inputHash: run.inputManifest.hash,
+      },
+    })
+
+    expect(result.ok).toBeTrue()
+    if (result.ok) {
+      expect(result.entity?.disposition).toBe('human-confirmed-compliant')
+      expect(result.receipt.summary).toContain('人工确认本项符合')
+    }
+  })
+
   test('当前审核有未处理项时仍允许审核员以理由驳回', async () => {
     const { caseId, run } = await seed()
     const result = await decideWorkspaceCaseV2(caseId, {

@@ -43,7 +43,7 @@ export function useReviewWorkspaceActions(): {
   confirmObservation(observation: Record<string, unknown>, value?: unknown, reason?: string): Promise<void>
   transitionEvidenceLink(input: { id?: string; documentVersionId: string; subjectId: string; supportsFact: string; status: 'confirmed' | 'rejected' }): Promise<void>
   acknowledgeMaterial(input: { documentVersionId: string; action: 'read' | 'ignore'; reason: string }): Promise<void>
-  recordDisposition(input: { findingKey: string; disposition: 'confirmed-issue' | 'false-positive' | 'waived' | 'escalated'; reason: string }): Promise<void>
+  recordDisposition(input: { findingKey: string; disposition: 'confirmed-issue' | 'human-confirmed-compliant' | 'false-positive' | 'waived' | 'escalated'; reason: string }): Promise<void>
   openSupplement(input: { findingKey: string; requiredElements: string[]; reason: string }): Promise<void>
   respondSupplement(supplementId: string): Promise<void>
   resolveSupplement(supplementId: string): Promise<void>
@@ -130,7 +130,7 @@ export function useReviewWorkspaceActions(): {
     }) }))
   }, [apply, command, currentAggregate])
 
-  const recordDisposition = useCallback(async (input: { findingKey: string; disposition: 'confirmed-issue' | 'false-positive' | 'waived' | 'escalated'; reason: string }) => {
+  const recordDisposition = useCallback(async (input: { findingKey: string; disposition: 'confirmed-issue' | 'human-confirmed-compliant' | 'false-positive' | 'waived' | 'escalated'; reason: string }) => {
     const aggregate = await currentAggregate()
     const run = store.get(reviewWorkspaceRunsByCaseAtom)[aggregate.caseV2.id]
     if (!run) throw new Error('没有可处置的审核运行')

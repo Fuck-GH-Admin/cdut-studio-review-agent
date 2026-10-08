@@ -90,11 +90,12 @@ export function assessDecisionReadiness(input: {
   const runDocumentCoverage = new Map((run.coverage.documents ?? []).map((item) => [item.documentVersionId, item]))
   for (const document of aggregate.caseV2.documents) {
     if (document.active === false) continue
+    if (document.unusedReason?.startsWith('[审核员忽略]')) continue
     const runStatus = runDocumentCoverage.get(document.versionId)?.status
     // 人工确认保存在案卷材料上；Agent 的读取证明保存在当前运行上。
     // 两者都能解除材料读取阻断，避免要求 Agent 的读取状态再伪造回写成案卷编辑。
     // 历史解析失败文件可能把空占位块记成 usage=read；失败状态下只有本次完整原件核验记录可解除阻断。
-    const manuallyRead = document.parseStatus !== 'failed' && document.usage === 'read'
+    const manuallyRead = !!document.manualReadReceipt || (document.parseStatus !== 'failed' && document.usage === 'read')
     if (!manuallyRead && runStatus !== 'read') {
       const reason = runDocumentCoverage.get(document.versionId)?.reason
       blockers.push({ kind: 'unread-material', id: document.versionId, message: `材料尚未完整读取或人工处理：${document.fileName}${reason ? `（${reason}）` : ''}` })

@@ -36,6 +36,20 @@ describe('材料账本（M2）', () => {
     }])
     expect(combineCoverage([failed], [], [], []).allClearVerdictAllowed).toBeFalse()
   })
+
+  test('解析失败材料带审核员原件核对凭据时按已读入账', () => {
+    const manuallyChecked = {
+      ...doc('v5', '扫描件.pdf', 'read'),
+      parseStatus: 'failed' as const,
+      manualReadReceipt: { actorId: 'reviewer', reason: '已逐页核对原件', at: '' },
+    }
+    expect(buildDocumentLedger([manuallyChecked])).toEqual([{
+      documentVersionId: 'v5',
+      fileName: '扫描件.pdf',
+      status: 'read',
+      reason: '审核员已核对原件：已逐页核对原件',
+    }])
+  })
 })
 
 describe('检查账本（M2）', () => {

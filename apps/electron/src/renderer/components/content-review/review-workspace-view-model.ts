@@ -64,9 +64,9 @@ export function buildReviewWorkspaceViewModel(
         kind: supplementPending ? 'supplement' : 'check',
         title: check.reason || check.ruleId,
         detail: check.status === 'awaiting-supplement' ? '缺少必要证明材料，请补充后继续。'
-          : check.status === 'awaiting-confirmation' ? '请核对材料识别结果与审核依据。'
+          : check.status === 'awaiting-confirmation' ? 'AI 尚不能判断符合或不符合。请对照规则查看来源，核实后记录该项结论；这不会自动通过或驳回整案。'
             : check.status === 'execution-failed' || check.status === 'not-executed' ? '本项尚未完成核对，请重试审核。'
-              : '请核对审核依据并记录处理结果。',
+              : '请对照审核依据确认问题是否成立，再记录单项处理；这不会自动通过或驳回整案。',
         checkId: check.checkId,
         subjectId: check.target.subjectIds[0],
         sourceDocumentVersionIds: check.sourceRefs.map((ref) => ref.documentVersionId),
@@ -78,7 +78,9 @@ export function buildReviewWorkspaceViewModel(
 
     for (const raw of extractedObservations) {
       if (raw.confirmed === true || raw.extractedBy === 'user') continue
-      const confidence = typeof raw.confidence === 'number' ? raw.confidence : 0
+      const confidence = typeof raw.confidence === 'number' && Number.isFinite(raw.confidence)
+        ? `识别置信度 ${Math.round(raw.confidence * 100)}%`
+        : '尚未人工核对；本次提取未提供置信度'
       const refs = Array.isArray(raw.sourceRefs) ? raw.sourceRefs : []
       const subjectId = typeof raw.subjectId === 'string' ? raw.subjectId : ''
       const fieldKey = typeof raw.fieldKey === 'string' ? raw.fieldKey : '事实'
@@ -91,7 +93,7 @@ export function buildReviewWorkspaceViewModel(
         key: `fact:${subjectId}:${fieldKey}`,
         kind: 'fact',
         title: `待核实：${fieldLabel(fieldKey, template)} ${value}`,
-        detail: `识别置信度 ${Math.round(confidence * 100)}%`,
+        detail: confidence,
         subjectId,
         sourceDocumentVersionIds: refs.flatMap((ref) => ref && typeof ref === 'object' && 'documentVersionId' in ref ? [String((ref as { documentVersionId: unknown }).documentVersionId)] : []),
         sourceRefs: refs.filter((ref): ref is SourceRef => !!ref && typeof ref === 'object' && 'documentVersionId' in ref && 'location' in ref) as SourceRef[],
@@ -117,6 +119,17 @@ export function buildReviewWorkspaceViewModel(
 
   const runDocumentCoverage = new Map((run?.coverage.documents ?? []).map((item) => [item.documentVersionId, item]))
   for (const document of aggregate.caseV2.documents.filter((item) => item.active !== false)) {
+    if (document.unusedReason?.startsWith('[审核员忽略]')) continue
+    if (document.manualReadReceipt) {
+      resolvedActions.push({
+        key: `material:${document.versionId}`,
+        kind: 'material',
+        title: `已人工核对：${document.fileName}`,
+        detail: document.manualReadReceipt.reason,
+        sourceDocumentVersionIds: [document.versionId],
+      })
+      continue
+    }
     // Pi 的读取记录属于一次运行，并不会回写到案卷原始材料元数据。
     // 当前运行覆盖账本优先；新上传、尚未进入本次运行的材料再回退到案卷状态。
     const tracked = runDocumentCoverage.get(document.versionId)
@@ -133,11 +146,15 @@ export function buildReviewWorkspaceViewModel(
       key: `material:${document.versionId}`,
       kind: 'material',
       title,
-      detail: document.parseStatus === 'failed'
-        ? tracked?.status === 'partially-read'
-          ? tracked.reason ?? '自动解析失败；原件已打开，但尚未确认完整核验。'
-          : `自动解析失败；系统空占位块不代表读过原件，请重新解析或打开原件核验。${document.parseError ? `原因：${document.parseError}` : ''}`
-        : document.parseError ?? tracked?.reason ?? document.unusedReason ?? (status === 'partially-read' ? '本次审核有部分材料读取记录，仍需确认剩余内容。' : '本次运行没有可追溯的完整读取记录。'),
+        detail: document.parseStatus === 'failed'
+          ? tracked?.status === 'partially-read'
+            ? '自动解析失败。请打开原件逐页检查后确认已核对；若材料与本案无关，可记录忽略。这是读取状态，不代表材料不合格。'
+            : `自动解析失败；空占位内容不能证明读过原件。请打开原件核验，或记录忽略。${document.parseError ? `原因：${document.parseError}` : ''}`
+          : document.parseStatus === 'partial' && document.blocks.length === 0
+            ? '旧版导入未提取出可用文本。请打开原件逐页检查后确认已核对；若与本案无关，可记录忽略。这不代表材料不合格。'
+            : tracked?.status === 'partially-read'
+              ? `本次只记录了部分内容：${tracked.reason ?? '尚未完整读取'}。请查看剩余内容，或说明为何忽略。`
+              : '当前运行没有完整读取凭据。请查看材料后确认已核对；若与本案无关，可记录忽略。这不代表材料不合格。',
       sourceDocumentVersionIds: [document.versionId],
       sourceRefs: [{ caseId: aggregate.caseV2.id, documentVersionId: document.versionId, parseRevision: document.parseRevision, location: { kind: 'file' } }],
     })

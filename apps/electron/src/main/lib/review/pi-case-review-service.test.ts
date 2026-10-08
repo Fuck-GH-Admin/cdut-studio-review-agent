@@ -6,8 +6,8 @@ import type { Actor, TemplateVersion } from '@profer/shared'
 import { createCaseFromTemplate } from './application-service'
 import { readAggregate } from './case-store-v2'
 import { registerMaterial } from './material-service'
-import { finishPiReviewRunV2, getPiReviewBindingForSession, preparePiReviewRunV2, submitPiReviewResultV2 } from './pi-case-review-service'
-import { getRunV2, readArtifact } from './run-store-v2'
+import { finishPiReviewRunV2, getPiReviewBindingForSession, preparePiReviewRunV2, recordPiReviewDocumentRead, reconcilePiReviewRunsWithReadReceipts, submitPiReviewResultV2 } from './pi-case-review-service'
+import { getRunV2, listRunsV2, readArtifact } from './run-store-v2'
 import { publishTemplate, saveDraft } from './template-store'
 
 const CONFIG_DIR = mkdtempSync(join(tmpdir(), 'cdut-pi-review-submit-'))
@@ -181,5 +181,62 @@ describe('Pi 审核结果提交与续审', () => {
     })
     expect(completed).toMatchObject({ rejected: [], missingChecks: [], status: 'completed' })
     expect(getRunV2(context.caseId, context.prepared.runId)?.checks).toHaveLength(5)
+  })
+
+  test('更新审核会沿用内容未变材料在历史运行中的完整读取回执', async () => {
+    const context = await setupReviewCase('inherit-reads')
+    const binding = {
+      assignmentId: context.prepared.assignmentId,
+      sessionId: context.sessionId,
+      caseId: context.caseId,
+      runId: context.prepared.runId,
+    }
+    const aggregate = readAggregate(context.caseId)!
+    recordPiReviewDocumentRead(binding, context.imageRef.documentVersionId, [context.imageRef.blockId], aggregate.caseV2.documents)
+    recordPiReviewDocumentRead(binding, context.textRef.documentVersionId, [context.textRef.blockId], aggregate.caseV2.documents)
+    finishPiReviewRunV2(binding, { status: 'completed' })
+    expect(getRunV2(context.caseId, context.prepared.runId)?.coverage.documents.filter((entry) => entry.status === 'read')).toHaveLength(2)
+
+    const updated = preparePiReviewRunV2({
+      caseId: context.caseId,
+      sessionId: 'session-inherit-reads-update',
+      turnId: 'turn-inherit-reads-update',
+      inheritReadReceipts: true,
+    })
+    expect(updated.runId).not.toBe(context.prepared.runId)
+    expect(updated.inheritedReadDocumentNames).toHaveLength(2)
+    expect(updated.userMessage).toContain('【沿用已核验的原件】')
+    const run = getRunV2(context.caseId, updated.runId)!
+    expect(run.coverage.documents.filter((entry) => entry.status === 'read')).toHaveLength(2)
+    expect(run.coverage.documents.filter((entry) => entry.status === 'read').every((entry) => entry.reason?.includes(context.prepared.runId))).toBeTrue()
+    expect(readArtifact<Array<{ documentVersionId: string; sourceRunId: string }>>(context.caseId, updated.runId, 'node-pi-read-inheritance'))
+      .toEqual(expect.arrayContaining([
+        expect.objectContaining({ documentVersionId: context.imageRef.documentVersionId, sourceRunId: context.prepared.runId }),
+        expect.objectContaining({ documentVersionId: context.textRef.documentVersionId, sourceRunId: context.prepared.runId }),
+      ]))
+  })
+
+  test('工作台读取历史结果时会修复已完成运行中缺失的跨轮材料读取凭据', async () => {
+    const context = await setupReviewCase('reconcile-reads')
+    const firstBinding = {
+      assignmentId: context.prepared.assignmentId,
+      sessionId: context.sessionId,
+      caseId: context.caseId,
+      runId: context.prepared.runId,
+    }
+    const aggregate = readAggregate(context.caseId)!
+    recordPiReviewDocumentRead(firstBinding, context.imageRef.documentVersionId, [context.imageRef.blockId], aggregate.caseV2.documents)
+    finishPiReviewRunV2(firstBinding, { status: 'completed' })
+
+    const next = preparePiReviewRunV2({ caseId: context.caseId, sessionId: 'session-reconcile-update', turnId: 'turn-reconcile-update' })
+    finishPiReviewRunV2({ assignmentId: next.assignmentId, sessionId: 'session-reconcile-update', caseId: context.caseId, runId: next.runId }, { status: 'completed' })
+    expect(getRunV2(context.caseId, next.runId)?.coverage.documents.find((entry) => entry.documentVersionId === context.imageRef.documentVersionId)?.status).toBe('unread')
+
+    reconcilePiReviewRunsWithReadReceipts(context.caseId, listRunsV2(context.caseId))
+    const repaired = getRunV2(context.caseId, next.runId)!
+    expect(repaired.coverage.documents.find((entry) => entry.documentVersionId === context.imageRef.documentVersionId)).toMatchObject({
+      status: 'read',
+      reason: expect.stringContaining(context.prepared.runId),
+    })
   })
 })

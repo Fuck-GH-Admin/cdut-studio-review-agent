@@ -82,15 +82,17 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
     }
   }
 
-  const handleDisposition = (check: CheckResult, disposition: 'confirmed-issue' | 'false-positive' | 'waived'): void => {
-    const defaultReason = disposition === 'false-positive' ? '' : disposition === 'confirmed-issue' ? '审核员核实后确认该问题属实' : '审核员决定暂不处理该问题'
+  const handleDisposition = (check: CheckResult, disposition: 'confirmed-issue' | 'human-confirmed-compliant' | 'false-positive' | 'waived'): void => {
+    const confirmsNoIssue = disposition === 'human-confirmed-compliant'
+    const defaultReason = disposition === 'false-positive' ? '' : disposition === 'confirmed-issue' ? '审核员核实后确认该问题属实' : disposition === 'human-confirmed-compliant' ? '审核员对照审核依据和材料后确认本项符合' : '审核员决定暂不处理该问题'
     setDialog({
-      title: disposition === 'false-positive' ? '标记识别有误' : disposition === 'confirmed-issue' ? '确认该项问题' : '暂不处理此问题',
+      title: confirmsNoIssue ? '人工确认本项符合' : disposition === 'false-positive' ? '标记识别有误' : disposition === 'confirmed-issue' ? '确认该项问题' : '暂不处理此问题',
       fields: [{ key: 'reason', label: '处理说明', defaultValue: defaultReason, placeholder: '说明核实结论及理由', multiline: true }],
       submit: async ({ reason }) => perform(
         `check:${check.checkId}`,
         () => workspaceActions.recordDisposition({ findingKey: check.checkId, disposition, reason: reason!.trim() }),
-        disposition === 'confirmed-issue' ? '已确认该项 AI 发现并移到“已处理”。这只确认这一条问题，不等于整案驳回。'
+        confirmsNoIssue ? '已记录人工确认本项符合；这只处理这一条检查，不会自动通过整案。'
+          : disposition === 'confirmed-issue' ? '已确认该项 AI 发现并移到“已处理”。这只确认这一条问题，不等于整案驳回。'
           : disposition === 'false-positive' ? '已将该项标记为 AI 误报，并移到“已处理”。'
             : '已记录暂不处理，并移到“已处理”。',
         true,
@@ -269,7 +271,10 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
                       : check?.status === 'awaiting-supplement' ? '需要补件' : null
                   return (
                     <React.Fragment key={item.key}>
-                    {group !== previousGroup && <p className={cn('pt-2 text-xs font-semibold', group === 'resolve' ? 'text-rose-700 dark:text-rose-300' : group === 'verify' ? 'text-amber-700 dark:text-amber-300' : 'text-primary')}>{group === 'verify' ? '需要核实' : group === 'resolve' ? '需要处理' : '待最终认定'} · {view.pendingActions.filter((candidate) => candidate.presentationGroup === group).length}</p>}
+                    {group !== previousGroup && <>
+                      <p className={cn('pt-2 text-xs font-semibold', group === 'resolve' ? 'text-rose-700 dark:text-rose-300' : group === 'verify' ? 'text-amber-700 dark:text-amber-300' : 'text-primary')}>{group === 'verify' ? '待人工核对' : group === 'resolve' ? '需要处理' : '待最终认定'} · {view.pendingActions.filter((candidate) => candidate.presentationGroup === group).length} 项</p>
+                      {group === 'verify' && <p className="text-xs leading-5 text-muted-foreground">这是待办数量，不是整案结论。请核对事实、材料或规则检查；未处理前不能通过。退回补件或驳回需要你在下方单独选择并填写理由。</p>}
+                    </>}
                     <article data-review-pending-key={item.key} className={cn('rounded-xl border p-3 shadow-sm', checkTone)}>
                       <div className="flex items-start gap-2">
                         <p className={cn('min-w-0 flex-1 text-sm font-semibold leading-5', check?.status === 'non-compliant' ? 'text-rose-800 dark:text-rose-200' : checkLabel ? 'text-amber-800 dark:text-amber-200' : 'text-foreground')}>{item.title}</p>
@@ -298,7 +303,7 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
                       {item.kind === 'check' && check && !runStale && (
                         <div className="mt-2 flex flex-wrap gap-1.5">
                           <button type="button" disabled={busyKey !== null} onClick={() => handleDisposition(check, 'confirmed-issue')} className="rounded bg-primary px-2 py-1.5 text-xs text-primary-foreground disabled:opacity-50">确认该项问题</button>
-                          <button type="button" disabled={busyKey !== null} onClick={() => handleDisposition(check, 'false-positive')} className="rounded border px-2 py-1.5 text-xs disabled:opacity-50">AI 误报</button>
+                          <button type="button" disabled={busyKey !== null} onClick={() => handleDisposition(check, check.status === 'awaiting-confirmation' ? 'human-confirmed-compliant' : 'false-positive')} className="rounded border px-2 py-1.5 text-xs disabled:opacity-50">{check.status === 'awaiting-confirmation' ? '人工确认本项符合' : 'AI 误报'}</button>
                           {check.target.subjectIds[0] && <button type="button" disabled={busyKey !== null} onClick={() => setAdjudicationEditorSubject(check.target.subjectIds[0]!)} className="rounded border px-2 py-1.5 text-xs disabled:opacity-50">修改认定</button>}
                           <button type="button" disabled={busyKey !== null} onClick={() => handleSupplement(check)} className="rounded border px-2 py-1.5 text-xs disabled:opacity-50">要求补件</button>
                         </div>
@@ -314,7 +319,8 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
                           ], submit: async ({ required, reason }) => perform(`supplement:${item.key}`, () => workspaceActions.openSupplement({ findingKey: item.key, requiredElements: required!.split(/[，,、\n]/).map((value) => value.trim()).filter(Boolean), reason: reason!.trim() })) })} className="rounded border px-2 py-1.5 text-xs disabled:opacity-50">要求补件</button>
                         </div>
                       )}
-                      {(item.kind === 'fact' || item.kind === 'evidence') && <p className="mt-2 text-xs text-amber-700 dark:text-amber-300">请在中栏对应申报事项或证明材料卡片中确认、修正或关联。</p>}
+                      {item.kind === 'fact' && <p className="mt-2 text-xs text-amber-700 dark:text-amber-300">在中栏打开来源：识别正确就确认，错误就更正。保存后请更新审核结果，让规则按确认后的事实重新判断。</p>}
+                      {item.kind === 'evidence' && <p className="mt-2 text-xs text-amber-700 dark:text-amber-300">请在中栏将这份证明关联到对应申报事项；关联确认只说明材料对应关系，不代表该事项已通过。</p>}
                       {item.kind === 'material' && item.sourceDocumentVersionIds?.[0] && <MaterialActions documentVersionId={item.sourceDocumentVersionIds[0]} busy={busyKey !== null} onAcknowledge={(action) => setDialog({ title: action === 'read' ? '确认材料已核对' : '忽略这份材料', fields: [{ key: 'reason', label: action === 'read' ? '核对说明' : '忽略原因', defaultValue: action === 'read' ? '已人工打开并检查材料内容' : '', placeholder: '请简要说明', multiline: true }], submit: async ({ reason }) => perform(`material:${item.sourceDocumentVersionIds![0]}`, () => workspaceActions.acknowledgeMaterial({ documentVersionId: item.sourceDocumentVersionIds![0]!, action, reason: reason!.trim() })) })} />}
                       {item.kind === 'supplement' && !item.checkId && <SupplementActions supplement={aggregate?.supplements.find((candidate) => item.key === `supplement:${candidate.id}`)} busy={busyKey !== null} perform={perform} actions={workspaceActions} onAddEvidence={goToEvidenceUpload} />}
                       {activeSupplement && <SupplementActions supplement={activeSupplement} busy={busyKey !== null} perform={perform} actions={workspaceActions} onAddEvidence={goToEvidenceUpload} />}

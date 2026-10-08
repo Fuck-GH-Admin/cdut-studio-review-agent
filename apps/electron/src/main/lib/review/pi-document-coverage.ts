@@ -14,6 +14,13 @@ export function finalizePiDocumentCoverage(input: {
   const previousByVersion = new Map(input.previous.map((entry) => [entry.documentVersionId, entry]))
   return input.documents.filter((document) => document.active !== false).map((document) => {
     const previous = previousByVersion.get(document.versionId)
+    if (document.manualReadReceipt) {
+      return {
+        documentVersionId: document.versionId,
+        status: 'read',
+        reason: `审核员已核对原件：${document.manualReadReceipt.reason}`,
+      }
+    }
     if (previous?.status === 'read' && document.parseStatus !== 'failed') return previous
     if (input.fullyPreviewedDocumentVersionIds?.has(document.versionId)) {
       return { documentVersionId: document.versionId, status: 'read' }

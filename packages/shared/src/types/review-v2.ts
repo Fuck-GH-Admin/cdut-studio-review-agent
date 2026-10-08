@@ -115,6 +115,8 @@ export interface DocumentVersion {
   /** 审核使用状态：登记≠已读（03 §6 材料账本） */
   usage: 'registered' | 'read' | 'partially-read' | 'unread'
   unusedReason?: string
+  /** 审核员已明确确认打开并核对原件；可弥补解析失败材料没有机器可读文本的情况。 */
+  manualReadReceipt?: { actorId: string; reason: string; at: string }
   /** N2c/G01：版本链（同名替换旧版不参与新审核）与原件字节身份 */
   active?: boolean
   supersedesVersionId?: string
@@ -425,7 +427,7 @@ export interface AiOpinion {
 }
 
 /** 人工处理状态（02 §7：忽略是有理由的处理，不自动成为符合） */
-export type FindingDisposition = 'pending' | 'confirmed-issue' | 'false-positive' | 'supplement-requested' | 'waived' | 'escalated'
+export type FindingDisposition = 'pending' | 'confirmed-issue' | 'human-confirmed-compliant' | 'false-positive' | 'supplement-requested' | 'waived' | 'escalated'
 
 export interface FindingDispositionRecord {
   findingKey: string

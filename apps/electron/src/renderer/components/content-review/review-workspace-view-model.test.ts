@@ -110,7 +110,7 @@ describe('单案审核工作台 ViewModel', () => {
     expect(view.pendingActions).toContainEqual(expect.objectContaining({
       key: `material:${document.versionId}`,
       title: `本次审核仅部分读取：${document.fileName}`,
-      detail: reason,
+      detail: expect.stringContaining(reason),
     }))
   })
 
@@ -121,8 +121,32 @@ describe('单案审核工作台 ViewModel', () => {
     const view = buildReviewWorkspaceViewModel(aggregateWithFailedRead, run(), false)
     expect(view.pendingActions).toContainEqual(expect.objectContaining({
       key: 'material:d-v1',
-      detail: expect.stringContaining('空占位块不代表读过原件'),
+      detail: expect.stringContaining('空占位内容不能证明读过原件'),
     }))
+  })
+
+  test('无置信度字段时不把未知值显示成 0%', () => {
+    const view = buildReviewWorkspaceViewModel(aggregate(), run({ checks: [] }), false, [
+      { subjectId: 'case', fieldKey: 'studentName', value: '林若岚', confirmed: false, extractedBy: 'ai' },
+    ])
+    expect(view.pendingActions).toContainEqual(expect.objectContaining({
+      kind: 'fact',
+      detail: '尚未人工核对；本次提取未提供置信度',
+    }))
+  })
+
+  test('审核员明确忽略的解析失败材料只显示在已处理，不重复进入待读队列', () => {
+    const ignored = { documentId: 'd', versionId: 'd-v1', contentHash: '', role: 'evidence' as const, fileName: '无关附件.pdf', mimeType: 'application/pdf', sizeBytes: 1, assetPath: '', parseRevision: 1, parseStatus: 'failed' as const, blocks: [], usage: 'read' as const, unusedReason: '[审核员忽略] 与本次申报无关' }
+    const view = buildReviewWorkspaceViewModel(aggregate({ caseV2: { ...baseCase, documents: [ignored] } }), run(), false)
+    expect(view.pendingActions.some((item) => item.key === 'material:d-v1')).toBeFalse()
+    expect(view.resolvedActions).toContainEqual(expect.objectContaining({ key: 'material:d-v1', title: '已人工忽略：无关附件.pdf' }))
+  })
+
+  test('审核员确认已核对解析失败原件后不再显示为待读材料', () => {
+    const checked = { documentId: 'd', versionId: 'd-v1', contentHash: '', role: 'evidence' as const, fileName: '扫描件.pdf', mimeType: 'application/pdf', sizeBytes: 1, assetPath: '', parseRevision: 1, parseStatus: 'failed' as const, blocks: [], usage: 'read' as const, manualReadReceipt: { actorId: 'reviewer', reason: '已逐页核对', at: '' } }
+    const view = buildReviewWorkspaceViewModel(aggregate({ caseV2: { ...baseCase, documents: [checked] } }), run(), false)
+    expect(view.pendingActions.some((item) => item.key === 'material:d-v1')).toBeFalse()
+    expect(view.resolvedActions).toContainEqual(expect.objectContaining({ key: 'material:d-v1', title: '已人工核对：扫描件.pdf', detail: '已逐页核对' }))
   })
 
   test('决策阶段必需的证明槽生成可持久验证的材料槽待办', () => {
