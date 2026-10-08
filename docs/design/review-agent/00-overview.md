@@ -2,7 +2,9 @@
 
 初版日期：2026-10-03，初版代码基线：`422aacdc`。补完设计更新：2026-10-04，设计核对基线为 `c6d92732`（已合入协作者 `6a386e4b`）；N1–N7 复查基线为 `c2f4d901`，最新 G01–G13 实施复查基线为 `ddd9b1e3`，包含本次尚未提交的局部修复。本文档组是**目标设计与验收契约**，不是功能已完成声明。
 
-**现在开工先读 [G01–G13 实际复查及下一轮顺序](../../../work/reports/2026-10-04-g-stage-recheck.md) → [05 补完路线](05-completion-roadmap-and-feasibility.md) → [06 用户闭环](06-workflows-and-usability-design.md) → [07 应用与执行设计](07-application-and-execution-design.md)，以 [04 验收契约](04-acceptance-and-evaluation.md) 判断交付。** 01–03 保留早期调研与整体设计；[N1–N7 复查](../../../work/reports/2026-10-04-n-stage-recheck.md) 和 [前轮 UI 验收](../../../work/reports/2026-10-04-ui-functional-acceptance.md) 保留历史记录，当前完成状态以最新复查为准。
+10 月 4 日实施依据为 [G01–G13 实际复查及下一轮顺序](../../../work/reports/2026-10-04-g-stage-recheck.md) → [05 补完路线](05-completion-roadmap-and-feasibility.md) → [06 用户闭环](06-workflows-and-usability-design.md) → [07 应用与执行设计](07-application-and-execution-design.md)，以 [04 验收契约](04-acceptance-and-evaluation.md) 判断交付。01–03 保留早期调研与整体设计；[N1–N7 复查](../../../work/reports/2026-10-04-n-stage-recheck.md) 和 [前轮 UI 验收](../../../work/reports/2026-10-04-ui-functional-acceptance.md) 保留历史记录，当前完成状态以最新复查为准。
+
+**2026-10-08 最新实施顺序以 [12 模板实测问题分析与可用性修复](12-template-audit-failure-analysis-and-repair.md) 为准。** 基线 `50cc7839` 已完成 11 个模板的真实模型流水线测试，但仍有 9 项语义检查没有获得有效提交、扫描图像核查失败、数值要求未接确定性计算等功能缺口。下一轮以“能用、好用”为标准，先修漏检、失败显示与继续操作，再补图片和模板接线；07 等文档保留整体合同，不要求先完成一次大规模架构改造。
 
 ## 结论：距离目标还有多少
 
@@ -37,6 +39,7 @@ N1–N7 实施后复查曾发现 V2 上传/提交/运行及恢复入口缺失。
 | [05 补完路线与可行性](05-completion-roadmap-and-feasibility.md) | 最新基础与缺口；N1–N7 依赖顺序、首轮任务、团队边界和可行性 |
 | [06 用户闭环与易用性](06-workflows-and-usability-design.md) | 学生/老师/审核员/评委/组织者的页面、动作、状态、失败路径与操作脚本 |
 | [07 应用层与执行设计](07-application-and-execution-design.md) | 共享契约、命令事务、政策仓库、Pi、检查点、计算覆盖、OCR、离线包和代码落点 |
+| [12 模板实测问题分析与可用性修复](12-template-audit-failure-analysis-and-repair.md) | 10 月 8 日实测缺口、已确认原因与未确定原因、最小修复、用户操作闭环和下一轮功能验收 |
 
 ## 与旧文档的关系
 
