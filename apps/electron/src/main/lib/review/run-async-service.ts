@@ -36,6 +36,7 @@ async function assembleReviewClient(caseId: string): Promise<{ client: import('.
   if (!model) throw new Error(`审核渠道「${resolved.channel.name}」没有已配置模型`)
   const { PiAgentAdapter } = require('../adapters/pi-agent-adapter') as typeof import('../adapters/pi-agent-adapter')
   const { getSdkConfigDir } = require('../config-paths') as typeof import('../config-paths')
+  const { SystemTesseractOcrPort } = require('./system-tesseract-ocr-adapter') as typeof import('./system-tesseract-ocr-adapter')
   const adapter = new PiAgentAdapter()
   return {
     client: createPiReviewModelClient({
@@ -49,7 +50,7 @@ async function assembleReviewClient(caseId: string): Promise<{ client: import('.
       query: (input) => adapter.query(input),
       abort: (sessionId) => adapter.abort(sessionId),
     }),
-    ocrPort: (require('./system-tesseract-ocr-adapter') as typeof import('./system-tesseract-ocr-adapter')).SystemTesseractOcrPort.create(),
+    ocrPort: await SystemTesseractOcrPort.create(),
   }
 }
 

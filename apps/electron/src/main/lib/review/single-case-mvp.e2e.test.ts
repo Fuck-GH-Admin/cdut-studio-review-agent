@@ -40,7 +40,7 @@ const templateDraft: TemplateVersion = {
     { id: 'certificates', name: '获奖证书', purpose: '事项证明', acceptedKinds: ['text'], minCount: 1, maxCount: 10, requiredElements: ['等级', '日期'], allowReuseAcrossSubjects: true, requiredAt: 'decision' },
   ],
   policyVersionIds: [], policyRefs: [],
-  stages: [{ id: 'auto-check', name: '自动核对', kind: 'auto-check', executorRole: 'system' }, { id: 'final-review', name: '人工终审', kind: 'manual-review', executorRole: 'reviewer' }],
+  stages: [{ id: 'auto-check', name: '自动核对', kind: 'auto-check', executorRole: 'system', nextStageId: 'final-review' }, { id: 'final-review', name: '人工终审', kind: 'manual-review', executorRole: 'reviewer' }],
   outputs: [{ id: 'item-feedback', kind: 'item-feedback', audience: 'student' }],
   status: 'draft', createdAt: '2026-10-07T00:00:00.000Z',
 }
@@ -48,14 +48,20 @@ const templateDraft: TemplateVersion = {
 const fakeClient = {
   protocol: 'openai-chat',
   complete: async ({ prompt }: { prompt: string; system: string }) => {
-    if (prompt.includes('任务：从下列案卷材料中抽取事实')) {
+    if (prompt.includes('任务：从下列案卷材料中抽取')) {
       const versionId = prompt.match(/student-application\.txt（(doc-[^\s)]+-v\d+)）/)?.[1]
+      const sourceAggregate = readAggregate(caseId)
+      const sourceDocument = sourceAggregate?.caseV2.documents.find((document) => document.versionId === versionId)
+        ?? sourceAggregate?.caseV2.documents.find((document) => document.role === 'application')
       const subjects = [
-        { subjectId: 'subject-a', fieldKey: 'level', value: '国家级一等奖' },
-        { subjectId: 'subject-b', fieldKey: 'level', value: '国家级一等奖' },
-        { subjectId: 'subject-c', fieldKey: 'level', value: '校级二等奖' },
+        { subjectId: 'subject-a', fieldKey: 'level', value: '国家级一等奖', itemLabel: '事项 A', quote: '申报国家级一等奖' },
+        { subjectId: 'subject-b', fieldKey: 'level', value: '国家级一等奖', itemLabel: '事项 B', quote: '申报国家级一等奖' },
+        { subjectId: 'subject-c', fieldKey: 'level', value: '校级二等奖', itemLabel: '事项 C', quote: '申报校级二等奖' },
       ]
-      return { content: JSON.stringify(subjects.map((observation) => ({ ...observation, sourceRefs: [{ documentVersionId: versionId, quote: '申报事项' }], confidence: 0.99 }))) }
+      return { content: JSON.stringify(subjects.map(({ itemLabel, quote, ...observation }) => {
+        const sourceBlock = sourceDocument?.blocks.find((block) => block.text.includes(itemLabel))
+        return { ...observation, sourceRefs: [{ documentVersionId: sourceDocument?.versionId, blockId: sourceBlock?.blockId, quote }], confidence: 0.99 }
+      })) }
     }
     return { content: JSON.stringify({ opinion: '模拟审核运行完成；请审核员逐项核定。', checks: [] }) }
   },

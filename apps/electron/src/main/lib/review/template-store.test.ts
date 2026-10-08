@@ -32,6 +32,12 @@ describe('审核模板目录（M1）', () => {
     expect(BUILTIN_TEMPLATES_V2).toHaveLength(2)
     expect(BUILTIN_TEMPLATES_V2.every((template) => template.catalogKind === 'builtin')).toBeTrue()
     expect(ALL_DEFAULT_TEMPLATES_V2.filter((template) => template.catalogKind === 'reference')).toHaveLength(8)
+    const activity = ALL_DEFAULT_TEMPLATES_V2.find((template) => template.templateId === 'student-activity-approval-v1')!
+    const expense = ALL_DEFAULT_TEMPLATES_V2.find((template) => template.templateId === 'teacher-expense-check-v1')!
+    expect(activity.version).toBe(2)
+    expect(expense.version).toBe(2)
+    expect(activity.sections?.flatMap((section) => section.criteria).some((criterion) => criterion.dataCheck?.kind === 'sheet-sum-match')).toBeTrue()
+    expect(expense.sections?.flatMap((section) => section.criteria).some((criterion) => criterion.dataCheck?.kind === 'sheet-unique-values')).toBeTrue()
     for (const template of ALL_DEFAULT_TEMPLATES_V2) {
       const errors = validateTemplate(template).filter((issue) => issue.level === 'error')
       expect(errors).toEqual([])

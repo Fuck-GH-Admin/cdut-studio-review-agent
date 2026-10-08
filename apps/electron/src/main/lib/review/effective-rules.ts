@@ -41,6 +41,7 @@ export function resolveEffectiveRules(aggregate: AggregateRuleSource, template: 
         requirement: criterion.requirement,
         targetScope: criterion.targetScope,
         execution: criterion.execution,
+        ...(criterion.dataCheck ? { dataCheck: criterion.dataCheck } : {}),
         ...(criterion.execution === 'semantic' ? { semanticOutputEnum: ['compliant', 'non-compliant'] } : {}),
         onFail: 'manual-review',
         onUnknown: 'needs-confirmation',

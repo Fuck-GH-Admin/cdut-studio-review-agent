@@ -188,6 +188,21 @@ export function validateTemplate(template: TemplateVersion): TemplateValidationI
       }
       if (criterionIds.has(criterion.id)) issues.push({ level: 'error', message: `分项「${section.name}」存在重复要求编号 ${criterion.id}` })
       criterionIds.add(criterion.id)
+      if (criterion.dataCheck) {
+        const check = criterion.dataCheck
+        const validColumn = (value: string | undefined): boolean => !!value && /^[A-Z]{1,3}$/i.test(value)
+        if (criterion.execution !== 'deterministic') issues.push({ level: 'error', message: `审核要求「${criterion.title}」配置了确定性数据检查，执行方式必须是确定性` })
+        if (!slotIds.has(check.materialSlotId)) issues.push({ level: 'error', message: `审核要求「${criterion.title}」引用了不存在的工作簿材料槽 ${check.materialSlotId}` })
+        if (!Number.isInteger(check.firstDataRow) || check.firstDataRow < 1) issues.push({ level: 'error', message: `审核要求「${criterion.title}」的数据起始行必须是正整数` })
+        if (!validColumn(check.valueColumn) || (check.labelColumn !== undefined && !validColumn(check.labelColumn))) issues.push({ level: 'error', message: `审核要求「${criterion.title}」的列编号无效，请使用 A、B、AA 等列名` })
+        if ((check.stopLabels?.length ?? 0) > 0 && !check.labelColumn) issues.push({ level: 'error', message: `审核要求「${criterion.title}」配置了停止标签，但没有指定标签列` })
+        if (check.kind === 'sheet-sum-match') {
+          const applicantField = template.fields.find((field) => field.key === check.applicantFieldKey)
+          if (!applicantField || applicantField.kind !== 'number' || applicantField.scope !== 'case') issues.push({ level: 'error', message: `审核要求「${criterion.title}」必须绑定一个案卷级数字字段作为申报值` })
+          if ((check.quantityColumn && !validColumn(check.quantityColumn)) || (check.unitPriceColumn && !validColumn(check.unitPriceColumn))) issues.push({ level: 'error', message: `审核要求「${criterion.title}」的数量/单价列编号无效` })
+          if (!!check.quantityColumn !== !!check.unitPriceColumn) issues.push({ level: 'error', message: `审核要求「${criterion.title}」的数量列和单价列必须同时填写` })
+        }
+      }
     }
   }
   for (const field of template.fields) {

@@ -74,6 +74,14 @@ describe('combineCoverage（全部符合判定，A08）', () => {
     expect(summary.effectiveVerdicts).toBe(1)
     expect(summary.blockers).toEqual([])
   })
+
+  test('系统执行失败不计为已完成检查', () => {
+    const summary = combineCoverage([doc('v1', '申报.md', 'read')], [rule('r1', 'subject')], ['s1'], [result('r1', ['s1'], 'execution-failed')])
+    expect(summary.completedChecks).toBe(0)
+    expect(summary.effectiveVerdicts).toBe(0)
+    expect(summary.pendingChecks).toBe(1)
+    expect(summary.allClearVerdictAllowed).toBeFalse()
+  })
 })
 
 describe('OCR 端口与预览（M2）', () => {
@@ -100,11 +108,17 @@ describe('组规则展开（G12/误判 5）', () => {
     expect(ledger.find((entry) => entry.targetKey === 'g1')?.status).toBe('compliant')
   })
 
-  test('Given 组规则无组值 When 构建 Then 单条 not-executed（不冒充覆盖）', () => {
+  test('无 groupBy 的组规则使用整个作用域作为聚合键', () => {
     const ledger = buildCheckLedger([groupRule], ['s1'], [hit('g1')])
     expect(ledger).toHaveLength(1)
     expect(ledger[0]!.status).toBe('not-executed')
-    expect(ledger[0]!.reason).toContain('未提供组值')
+  })
+
+  test('真实组级聚合结果以适用主体列表匹配覆盖计划', () => {
+    const planned = rule('r-group-real', 'group')
+    const aggregateResult = result('r-group-real', ['s1', 's2'], 'compliant')
+    const ledger = buildCheckLedger([planned], ['s1', 's2'], [aggregateResult])
+    expect(ledger).toEqual([{ ruleId: 'r-group-real', targetKey: 'group', status: 'compliant' }])
   })
 
   test('Given combineCoverage 带组值 When 存在未执行组 Then allClear 被阻断', () => {

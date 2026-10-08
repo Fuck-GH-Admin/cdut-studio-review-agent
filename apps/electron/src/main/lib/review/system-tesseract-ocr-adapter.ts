@@ -9,42 +9,63 @@
  * tesseract 且语言包齐全，先以系统 CLI 真实引擎打通链路；打包分发时再评估随包方案。
  */
 import { spawn } from 'node:child_process'
-import { existsSync } from 'node:fs'
 import type { OcrBlock, OcrRequest, OcrResult } from './ocr-port'
 
 /** 探测系统 tesseract 可执行文件与 chi_sim 语言包（缓存结果，进程内只探一次） */
-let cached: { available: boolean; reason?: string } | undefined
+let cached: Promise<{ available: boolean; reason?: string }> | undefined
 
-export function probeSystemTesseract(): { available: boolean; reason?: string } {
-  if (cached) return cached
-  const result = probeSync()
-  cached = result
-  return result
+export function probeSystemTesseract(): Promise<{ available: boolean; reason?: string }> {
+  return cached ??= probeAsync()
 }
 
-function probeSync(): { available: boolean; reason?: string } {
-  try {
-    const proc = spawn('tesseract', ['--version'], { stdio: 'ignore' })
-    proc.on('error', () => { /* 探测失败走下方 close 判定 */ })
-    // --version 立即退出；spawn 失败（ENOENT）会触发 error 事件
-    proc.unref()
-  } catch {
-    return { available: false, reason: '系统未安装 tesseract CLI' }
-  }
-  // 语言包验证：tesseract --list-langs 输出包含 chi_sim（中文材料必需）
-  try {
-    const proc = spawn('tesseract', ['--list-langs'], { stdio: ['ignore', 'pipe', 'pipe'] })
+async function runTesseract(args: string[], options: { timeoutMs: number; signal?: AbortSignal }): Promise<{ code: number | null; out: string; err: string }> {
+  return new Promise((resolve, reject) => {
+    if (options.signal?.aborted) {
+      const error = new Error('OCR 已取消')
+      error.name = 'AbortError'
+      reject(error)
+      return
+    }
+    const proc = spawn('tesseract', args, { stdio: ['ignore', 'pipe', 'pipe'] })
     let out = ''
+    let err = ''
+    let settled = false
+    const finish = (callback: () => void): void => {
+      if (settled) return
+      settled = true
+      clearTimeout(timeout)
+      options.signal?.removeEventListener('abort', abort)
+      callback()
+    }
+    const abort = (): void => {
+      proc.kill('SIGTERM')
+      const error = new Error('OCR 已取消')
+      error.name = 'AbortError'
+      finish(() => reject(error))
+    }
+    const timeout = setTimeout(() => {
+      proc.kill('SIGTERM')
+      finish(() => reject(new Error(`OCR 超时（${options.timeoutMs} ms）`)))
+    }, options.timeoutMs)
     proc.stdout.on('data', (chunk: Buffer) => { out += chunk.toString('utf-8') })
-    const done = new Promise<void>((resolve) => proc.on('close', () => resolve()))
-    proc.unref()
-    // list-langs 很快，同步等待不可取——此处用 exit 事件即时性不做强同步；以输出探测兜底
-    void done
-    if (out && !out.includes('chi_sim')) return { available: false, reason: '系统 tesseract 缺少 chi_sim 中文语言包' }
-  } catch {
-    return { available: false, reason: '系统 tesseract 语言包探测失败' }
+    proc.stderr.on('data', (chunk: Buffer) => { err += chunk.toString('utf-8') })
+    proc.on('error', (error) => finish(() => reject(new Error(`tesseract CLI 启动失败: ${error.message}`))))
+    proc.on('close', (code) => finish(() => resolve({ code, out, err })))
+    options.signal?.addEventListener('abort', abort, { once: true })
+  })
+}
+
+async function probeAsync(): Promise<{ available: boolean; reason?: string }> {
+  try {
+    const version = await runTesseract(['--version'], { timeoutMs: 5000 })
+    if (version.code !== 0 || !version.out.includes('tesseract')) return { available: false, reason: '系统未安装或无法启动 tesseract CLI' }
+    const languages = await runTesseract(['--list-langs'], { timeoutMs: 5000 })
+    if (languages.code !== 0) return { available: false, reason: '系统 tesseract 语言包探测失败' }
+    if (!/(^|\n)chi_sim(\n|$)/.test(languages.out)) return { available: false, reason: '系统 tesseract 缺少 chi_sim 中文语言包' }
+    return { available: true }
+  } catch (error) {
+    return { available: false, reason: error instanceof Error ? error.message : '系统 tesseract 探测失败' }
   }
-  return { available: true }
 }
 
 export class SystemTesseractOcrPort {
@@ -57,8 +78,8 @@ export class SystemTesseractOcrPort {
   }
 
   /** 工厂：探测系统 CLI 与语言包（不抛错） */
-  static create(): SystemTesseractOcrPort {
-    return new SystemTesseractOcrPort(probeSystemTesseract())
+  static async create(): Promise<SystemTesseractOcrPort> {
+    return new SystemTesseractOcrPort(await probeSystemTesseract())
   }
 
   async recognize(request: OcrRequest): Promise<OcrResult> {
@@ -70,7 +91,9 @@ export class SystemTesseractOcrPort {
     const language = request.language || 'chi_sim'
 
     // TSV 输出：level/page/block/par/line/word + bbox + conf + text（词级，真实坐标）
-    const tsv = await this.runTesseract(absolute, language)
+    const result = await runTesseract([absolute, 'stdout', '-l', language, 'tsv'], { timeoutMs: request.timeoutMs ?? 60_000, signal: request.signal })
+    if (result.code !== 0 || !result.out) throw new Error(`tesseract 退出码 ${result.code}: ${result.err.slice(0, 200)}`)
+    const tsv = result.out
     const blocks = parseTsv(tsv)
     if (blocks.length === 0) throw new Error('OCR 未识别出文本（图片可能为空或纯图形）')
     const width = blocks.reduce((max, block) => Math.max(max, block.rect.x + block.rect.w), 0)
@@ -78,21 +101,6 @@ export class SystemTesseractOcrPort {
     return { engine: 'tesseract-cli', engineVersion: '5', blocks, imageWidth: width, imageHeight: height }
   }
 
-  private runTesseract(absolute: string, language: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-      // stdout 输出 TSV 到 stdout（tsd 标准用法：tesseract img stdout -l lang tsv）
-      const proc = spawn('tesseract', [absolute, 'stdout', '-l', language, 'tsv'], { stdio: ['ignore', 'pipe', 'pipe'] })
-      let out = ''
-      let err = ''
-      proc.stdout.on('data', (chunk: Buffer) => { out += chunk.toString('utf-8') })
-      proc.stderr.on('data', (chunk: Buffer) => { err += chunk.toString('utf-8') })
-      proc.on('error', (error) => reject(new Error(`tesseract CLI 启动失败: ${error.message}`)))
-      proc.on('close', (code) => {
-        if (code === 0 && out) resolve(out)
-        else reject(new Error(`tesseract 退出码 ${code}: ${err.slice(0, 200)}`))
-      })
-    })
-  }
 }
 
 /** 解析 tesseract TSV 为块级结构（词级；过滤低置信噪声与空文本） */

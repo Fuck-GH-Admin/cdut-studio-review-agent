@@ -8,7 +8,6 @@
 
 import type { CheckResult, EvidenceLink, FieldSpec, FieldValue, Observation, ReviewSubject, SourceRef, DocumentVersion, RuleSpec } from '@profer/shared'
 import { buildEvidenceLinks, recordObservation } from './evidence-service'
-import { computeGroupScore, toCalculationResult, type CalcInput } from './deterministic-engine'
 
 /** 工具运行上下文：受控内存态（执行器持引用，持久化在 checkpoint 完成时统一处理） */
 export interface ReviewToolContext {
@@ -17,6 +16,7 @@ export interface ReviewToolContext {
   documents: DocumentVersion[]
   rules: RuleSpec[]
   fields?: FieldSpec[]
+  caseFields?: Record<string, FieldValue>
   observations: Observation[]
   evidenceLinks: EvidenceLink[]
   results: CheckResult[]
@@ -33,6 +33,26 @@ export interface ReviewTool {
 
 function findSubject(context: ReviewToolContext, subjectId: string): ReviewSubject | undefined {
   return context.subjects.find((subject) => subject.id === subjectId)
+}
+
+function numericValueOccursInQuote(value: number, quote: string): boolean {
+  const normalized = (candidate: string): string => candidate.replace(/[，,\s￥¥元]/g, '').replace(/\.0+$/, '')
+  const wanted = normalized(String(value))
+  const candidates = quote.match(/-?\d+(?:[,.，]\d{3})*(?:\.\d+)?/g) ?? []
+  return candidates.some((candidate) => normalized(candidate) === wanted)
+}
+
+function fieldPayload(value: FieldValue): unknown {
+  return 'value' in value ? value.value : value.documentVersionId
+}
+
+function latestObservation(context: ReviewToolContext, subjectId: string, fieldKey: string): Observation[] {
+  return context.observations.filter((observation) => observation.subjectId === subjectId && observation.fieldKey === fieldKey)
+}
+
+/** 与覆盖账本相同的规则+目标键，用来判定计划检查是否确实全部提交。 */
+export function reviewCheckToolKey(ruleId: string, scope: string, subjectIds: string[]): string {
+  return `check:${ruleId}::${scope}::${[...subjectIds].sort().join(',')}`
 }
 
 /** 装配本案业务工具（Pi 执行器在 run 开始时调用；工具集固定，不随 Prompt 变化） */
@@ -59,13 +79,27 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
       description: '读取指定主体的字段当前值（含确认态），缺失返回 unknown 而不是空串',
       input: '{ subjectId, fieldKey }',
       async execute(input) {
-        const subject = findSubject(context, String(input.subjectId ?? ''))
-        if (!subject) return { ok: false, error: `主体不存在: ${String(input.subjectId)}` }
+        const subjectId = String(input.subjectId ?? '')
         const fieldKey = String(input.fieldKey ?? '')
-        const value = subject.fields[fieldKey]
+        const fieldSpec = context.fields?.find((candidate) => candidate.key === fieldKey)
+        if (subjectId === context.caseId && fieldSpec?.scope === 'case') {
+          const observations = latestObservation(context, subjectId, fieldKey)
+          const value = observations.find((item) => item.extractedBy === 'user' && item.confirmed)?.value
+            ?? observations.find((item) => item.extractedBy === 'user')?.value
+            ?? context.caseFields?.[fieldKey]
+            ?? observations.findLast((item) => item.extractedBy !== 'user')?.value
+          return { ok: true, data: value === undefined ? { known: false, value: null } : { known: true, value: fieldPayload(value), kind: value.kind } }
+        }
+        const subject = findSubject(context, subjectId)
+        if (!subject) return { ok: false, error: `主体不存在: ${subjectId}` }
+        const observations = latestObservation(context, subjectId, fieldKey)
+        const value = observations.find((item) => item.extractedBy === 'user' && item.confirmed)?.value
+          ?? observations.find((item) => item.extractedBy === 'user')?.value
+          ?? subject.fields[fieldKey]
+          ?? observations.findLast((item) => item.extractedBy !== 'user')?.value
         return {
           ok: true,
-          data: value === undefined ? { known: false, value: null } : { known: true, value: value.kind === 'number' ? (value as { value: number }).value : (value as { value: unknown }).value, kind: value.kind },
+          data: value === undefined ? { known: false, value: null } : { known: true, value: fieldPayload(value), kind: value.kind },
         }
       },
     },
@@ -76,6 +110,8 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
       async execute(input) {
         const keyword = String(input.keyword ?? '')
         const role = input.role as string | undefined
+        const offset = Number.isInteger(input.offset) ? Math.max(0, Number(input.offset)) : 0
+        const visualOffset = Number.isInteger(input.visualOffset) ? Math.max(0, Number(input.visualOffset)) : 0
         if (!keyword) return { ok: false, error: 'keyword 不能为空' }
         const hits: Array<{ documentVersionId: string; blockId: string; fileName: string; location: unknown; text: string }> = []
         const visualBlocks: Array<{ documentVersionId: string; blockId: string; fileName: string; location: unknown; imageAlt?: string }> = []
@@ -91,7 +127,10 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
             }
           }
         }
-        return { ok: true, data: { hits, visualBlocks, truncated: hits.length > 50 } }
+        const pageSize = 50
+        const page = hits.slice(offset, offset + pageSize)
+        const visualPage = visualBlocks.slice(visualOffset, visualOffset + pageSize)
+        return { ok: true, data: { hits: page, totalHits: hits.length, hitsReturned: page.length, nextOffset: offset + page.length < hits.length ? offset + page.length : null, visualBlocks: visualPage, totalVisualBlocks: visualBlocks.length, visualOffset, nextVisualOffset: visualOffset + visualPage.length < visualBlocks.length ? visualOffset + visualPage.length : null, truncated: offset + page.length < hits.length || visualOffset + visualPage.length < visualBlocks.length } }
       },
     },
     {
@@ -110,13 +149,14 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
       input: '{ subjectId, fieldKey, kind, value, documentVersionId }',
       async execute(input) {
         const subjectId = String(input.subjectId ?? '')
-        const subject = findSubject(context, subjectId)
-        if (!subject) return { ok: false, error: `主体不存在: ${subjectId}` }
         const fieldKey = String(input.fieldKey ?? '')
         const fieldSpec = context.fields?.find((candidate) => candidate.key === fieldKey)
         if (context.fields && !fieldSpec) return { ok: false, error: `字段不在模板中: ${fieldKey}` }
-        if (fieldSpec && (fieldSpec.scope ?? 'subject') !== 'subject') return { ok: false, error: `字段不是事项字段: ${fieldKey}` }
-        if (fieldSpec?.sectionId && fieldSpec.sectionId !== subject.sectionId) return { ok: false, error: `字段 ${fieldKey} 不属于分项 ${subject.sectionId ?? '(未分项)'}` }
+        const isCaseField = fieldSpec?.scope === 'case'
+        const subject = isCaseField && subjectId === context.caseId ? undefined : findSubject(context, subjectId)
+        if (isCaseField ? subjectId !== context.caseId : !subject) return { ok: false, error: `事实目标不存在或字段作用域不匹配: ${subjectId}` }
+        if (fieldSpec && !isCaseField && (fieldSpec.scope ?? 'subject') !== 'subject') return { ok: false, error: `字段不是事项字段: ${fieldKey}` }
+        if (fieldSpec?.sectionId && fieldSpec.sectionId !== subject?.sectionId) return { ok: false, error: `字段 ${fieldKey} 不属于分项 ${subject?.sectionId ?? '(未分项)'}` }
         const kind = String(input.kind ?? fieldSpec?.kind ?? 'text') as FieldValue['kind']
         if (fieldSpec && fieldSpec.kind !== kind) return { ok: false, error: `字段 ${fieldKey} 类型不匹配: 需要 ${fieldSpec.kind}` }
         const rawValue = input.value
@@ -126,10 +166,12 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
         const sourceRef = ref(documentVersionId, blockId, quote)
         if (!sourceRef) return { ok: false, error: `材料版本或引用块不存在，或引用内容与原文不一致: ${documentVersionId}${blockId ? `/${blockId}` : ''}` }
         if (!blockId) return { ok: false, error: '记录审核事实必须引用材料块 blockId；请先搜索材料或定位图像页' }
+        if (!quote?.trim()) return { ok: false, error: '记录审核事实必须附带可核验的原文 quote' }
         let value: FieldValue
         if (kind === 'number') {
           const number = typeof rawValue === 'number' ? rawValue : Number(rawValue)
           if (!Number.isFinite(number)) return { ok: false, error: `数字字段 ${fieldKey} 的值无效` }
+          if (!numericValueOccursInQuote(number, quote)) return { ok: false, error: `数字 ${number} 不在引用原文中，不能记录为材料事实` }
           value = { kind, value: number, ...(fieldSpec?.unit ? { unit: fieldSpec.unit } : {}) }
         } else if (kind === 'boolean') {
           if (typeof rawValue !== 'boolean') return { ok: false, error: `布尔字段 ${fieldKey} 必须提交 true/false` }
@@ -144,7 +186,7 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
           return { ok: false, error: `暂不支持由 Agent 抽取 ${kind} 类型字段` }
         }
         const updated = recordObservation(context.observations, {
-          subjectId,
+          subjectId: isCaseField ? context.caseId : subjectId,
           fieldKey,
           value,
           sourceRefs: [sourceRef],
@@ -152,7 +194,7 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
         })
         context.observations.length = 0
         context.observations.push(...updated)
-        return { ok: true, data: { recorded: true, fieldKey, sourceRef, observations: updated.length } }
+        return { ok: true, data: { recorded: true, subjectId, fieldKey, sourceRef, observations: updated.length, toolKey: `observation:${subjectId}::${fieldKey}` } }
       },
     },
     {
@@ -183,14 +225,23 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
       async execute(input) {
         const rule = context.rules.find((candidate) => candidate.id === String(input.ruleId ?? ''))
         if (!rule) return { ok: false, error: `规则不存在: ${String(input.ruleId)}` }
+        if (rule.execution !== 'semantic') return { ok: false, error: `规则 ${rule.id} 由 ${rule.execution} 执行器处理，Agent 不得覆盖` }
+        const scope = String(input.scope ?? rule.targetScope)
+        if (scope !== rule.targetScope) return { ok: false, error: `规则 ${rule.id} 的目标范围必须为 ${rule.targetScope}` }
         const status = String(input.status ?? '') as CheckResult['status']
         if (!['compliant', 'non-compliant', 'awaiting-supplement', 'awaiting-confirmation', 'not-applicable'].includes(status)) {
           return { ok: false, error: `非法检查状态: ${status}` }
         }
         const subjectIds = Array.isArray(input.subjectIds) ? (input.subjectIds as string[]) : []
-        if (subjectIds.some((subjectId) => !findSubject(context, subjectId))) return { ok: false, error: '检查主体列表包含未知事项' }
+        if ((subjectIds.length === 0 && rule.targetScope === 'subject') || new Set(subjectIds).size !== subjectIds.length || subjectIds.some((subjectId) => !findSubject(context, subjectId))) return { ok: false, error: '检查主体列表为空、重复或包含未知事项' }
         if (rule.sectionId && subjectIds.some((subjectId) => findSubject(context, subjectId)?.sectionId !== rule.sectionId)) return { ok: false, error: `规则 ${rule.id} 不能检查其他分项的事项` }
+        const applicableIds = context.subjects.filter((subject) => !rule.sectionId || subject.sectionId === rule.sectionId).map((subject) => subject.id).sort()
+        if (rule.targetScope !== 'subject' && JSON.stringify([...subjectIds].sort()) !== JSON.stringify(applicableIds)) return { ok: false, error: `规则 ${rule.id} 必须覆盖全部适用事项；期望 ${applicableIds.length} 项，收到 ${subjectIds.length} 项` }
+        if (rule.targetScope === 'subject' && subjectIds.length !== 1) return { ok: false, error: '逐事项规则每次只能提交一个事项，避免部分事项被误记为完成' }
         const rawSourceRefs = Array.isArray(input.sourceRefs) ? input.sourceRefs : []
+        if (['compliant', 'non-compliant'].includes(status) && rawSourceRefs.some((candidate) => !candidate || typeof candidate !== 'object' || typeof (candidate as { blockId?: unknown }).blockId !== 'string')) {
+          return { ok: false, error: '符合/不符合结论必须引用具体材料块 blockId；整份文件级引用不能支撑自动结论' }
+        }
         const sourceRefs = rawSourceRefs.flatMap((candidate) => {
           if (!candidate || typeof candidate !== 'object') return []
           const refValue = candidate as { documentVersionId?: unknown; blockId?: unknown; quote?: unknown }
@@ -198,39 +249,32 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
           const resolved = ref(refValue.documentVersionId, typeof refValue.blockId === 'string' ? refValue.blockId : undefined, typeof refValue.quote === 'string' ? refValue.quote : undefined)
           return resolved ? [resolved] : []
         })
-        if (rule.execution === 'semantic' && ['compliant', 'non-compliant'].includes(status) && sourceRefs.length === 0) {
+        if (['compliant', 'non-compliant'].includes(status) && sourceRefs.length === 0) {
           return { ok: false, error: '符合/不符合结论必须引用至少一个真实材料块；否则应提交待人工确认或补件' }
         }
         if (sourceRefs.length !== rawSourceRefs.length) {
           return { ok: false, error: 'sourceRefs 含不存在的材料块或与原文不匹配的引用；请重新搜索并提交准确定位' }
         }
-        let result: CheckResult
-        if (rule.execution === 'deterministic' && rule.calculation) {
-          const inputs: CalcInput[] = subjectIds.map((subjectId) => ({
-            subjectId,
-            fields: Object.fromEntries(
-              Object.entries(findSubject(context, subjectId)?.fields ?? {}).map(([key, value]) => [
-                key,
-                value.kind === 'number' ? { value: value.value as number, known: true } : { value: null, known: false },
-              ]),
-            ),
-          }))
-          const outcome = computeGroupScore(rule, inputs)
-          result = toCalculationResult(rule, outcome, { scope: rule.targetScope, subjectIds })
-        } else {
-          result = {
-            checkId: `chk-${rule.id}-${Date.now()}`,
-            ruleId: rule.id,
-            target: { scope: rule.targetScope, subjectIds },
-            status,
-            reason: String(input.reason ?? ''),
-            sourceRefs,
-            executedBy: rule.execution === 'semantic' ? 'semantic' : 'manual',
-            executedAt: new Date().toISOString(),
-          }
+        if (['compliant', 'non-compliant'].includes(status) && sourceRefs.some((sourceRef) => {
+          const doc = context.documents.find((candidate) => candidate.versionId === sourceRef.documentVersionId)
+          const block = doc?.blocks.find((candidate) => candidate.location?.kind === sourceRef.location.kind && JSON.stringify(candidate.location) === JSON.stringify(sourceRef.location))
+          return !block || (block.kind !== 'image' && (!sourceRef.quote || !block.text.includes(sourceRef.quote)))
+        })) return { ok: false, error: '符合/不符合结论的引用缺少与原文匹配的短引文或图像页定位' }
+        const result: CheckResult = {
+          checkId: `check-${rule.id}-${rule.targetScope}-${[...subjectIds].sort().join('-') || 'case'}`,
+          ruleId: rule.id,
+          target: { scope: rule.targetScope, subjectIds },
+          status,
+          reason: String(input.reason ?? ''),
+          sourceRefs,
+          executedBy: 'semantic',
+          executedAt: new Date().toISOString(),
         }
-        context.results.push(result)
-        return { ok: true, data: { checkId: result.checkId, status: result.status } }
+        const existing = context.results.findIndex((candidate) => candidate.checkId === result.checkId)
+        if (existing >= 0) context.results[existing] = result
+        else context.results.push(result)
+        const toolKey = reviewCheckToolKey(rule.id, rule.targetScope, subjectIds)
+        return { ok: true, data: { checkId: result.checkId, status: result.status, toolKey } }
       },
     },
   ]
@@ -244,17 +288,20 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
       description: '一次按多个关键词检索材料块，返回带 documentVersionId/blockId 的命中；优先批量搜索，避免逐词重复调用。',
       input: '{ keywords: string[], role? }',
       async execute(input) {
-        const keywords = Array.isArray(input.keywords)
+        const rawKeywords = Array.isArray(input.keywords)
           ? [...new Set(input.keywords.filter((item): item is string => typeof item === 'string').map((item) => item.trim()).filter(Boolean))].slice(0, 32)
           : []
+        const requestedCount = Array.isArray(input.keywords) ? [...new Set(input.keywords.filter((item): item is string => typeof item === 'string').map((item) => item.trim()).filter(Boolean))].length : 0
+        const keywords = rawKeywords
         if (keywords.length === 0) return { ok: false, error: 'keywords 必须包含至少一个非空搜索词' }
         const role = typeof input.role === 'string' ? input.role : undefined
+        const offset = Number.isInteger(input.offset) ? Math.max(0, Number(input.offset)) : 0
         const results = []
         for (const keyword of keywords) {
-          const outcome = await search.execute({ keyword, role })
+          const outcome = await search.execute({ keyword, role, offset })
           results.push({ keyword, ...outcome })
         }
-        return { ok: true, data: { results } }
+        return { ok: true, data: { results, submittedCount: keywords.length, notProcessedCount: Math.max(0, requestedCount - keywords.length) } }
       },
     },
     {
@@ -262,7 +309,8 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
       description: '一次受控记录多条材料事实；每条都必须带真实 documentVersionId、blockId 和准确 quote。',
       input: '{ observations: Array<{ subjectId, fieldKey, kind, value, documentVersionId, blockId, quote? }> }',
       async execute(input) {
-        const observations = Array.isArray(input.observations) ? input.observations.slice(0, 50) : []
+        const rawObservations = Array.isArray(input.observations) ? input.observations : []
+        const observations = rawObservations.slice(0, 50)
         if (observations.length === 0) return { ok: false, error: 'observations 必须包含至少一条事实' }
         const results = []
         for (const observation of observations) {
@@ -272,7 +320,8 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
           }
           results.push(await record.execute(observation as Record<string, unknown>))
         }
-        return { ok: true, data: { results } }
+        const acceptedCount = results.filter((result) => result.ok).length
+        return { ok: true, data: { results, submittedCount: observations.length, notProcessedCount: Math.max(0, rawObservations.length - observations.length), acceptedCount, rejectedCount: results.length - acceptedCount } }
       },
     },
     {
@@ -280,7 +329,8 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
       description: '一次受控提交多条规则检查；每条语义符合/不符合结论都须附真实材料块引用。',
       input: '{ checks: Array<{ ruleId, scope?, subjectIds, status, reason, detailLines?, sourceRefs? }> }',
       async execute(input) {
-        const checks = Array.isArray(input.checks) ? input.checks.slice(0, 50) : []
+        const rawChecks = Array.isArray(input.checks) ? input.checks : []
+        const checks = rawChecks.slice(0, 50)
         if (checks.length === 0) return { ok: false, error: 'checks 必须包含至少一项检查' }
         const results = []
         for (const check of checks) {
@@ -290,7 +340,13 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
           }
           results.push(await submit.execute(check as Record<string, unknown>))
         }
-        return { ok: true, data: { results } }
+        const acceptedCount = results.filter((result) => result.ok).length
+        const toolKeys = results.flatMap((result) => {
+          if (!('data' in result) || !result.data || typeof result.data !== 'object') return []
+          const toolKey = (result.data as { toolKey?: unknown }).toolKey
+          return typeof toolKey === 'string' ? [toolKey] : []
+        })
+        return { ok: true, data: { results, toolKeys, submittedCount: checks.length, notProcessedCount: Math.max(0, rawChecks.length - checks.length), acceptedCount, rejectedCount: results.length - acceptedCount } }
       },
     },
   )

@@ -16,6 +16,8 @@ import { decryptApiKey, listChannels } from '../channel-manager'
 import { getFetchFn } from '../proxy-fetch'
 import { getEffectiveProxyUrl } from '../proxy-settings-service'
 import { resolveOpenAIChatCompletionsUrl } from '@profer/core'
+import { extractJson } from './review-json'
+export { extractJson } from './review-json'
 
 /**
  * 单次请求默认超时（60 秒）。
@@ -423,38 +425,3 @@ function extractChatContent(data: unknown, isOllama: boolean): string {
  * 顺序：整体 JSON.parse → 剥 ```json 围栏 → 第一个 `{` 到最后一个 `}`。
  * 任何一步失败返回 undefined（调用方据此降级或重试，不伪造结果）。
  */
-export function extractJson(text: string): unknown | undefined {
-  if (typeof text !== 'string' || text.trim().length === 0) return undefined
-
-  const trimmed = text.trim()
-
-  // 1. 整体就是合法 JSON
-  try {
-    return JSON.parse(trimmed)
-  } catch {
-    /* 继续尝试剥离围栏 */
-  }
-
-  // 2. 剥 ```json ... ``` 或 ``` ... ``` 围栏
-  const fenceMatch = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/i)
-  if (fenceMatch?.[1]) {
-    try {
-      return JSON.parse(fenceMatch[1].trim())
-    } catch {
-      /* 继续尝试花括号截取 */
-    }
-  }
-
-  // 3. 第一个 { 到最后一个 }（模型常在 JSON 前后加解说文字）
-  const start = trimmed.indexOf('{')
-  const end = trimmed.lastIndexOf('}')
-  if (start >= 0 && end > start) {
-    try {
-      return JSON.parse(trimmed.slice(start, end + 1))
-    } catch {
-      /* 落到 undefined */
-    }
-  }
-
-  return undefined
-}

@@ -105,7 +105,9 @@ export interface DocumentVersion {
     location?: SourceLocation
     kind: 'text' | 'image' | 'table'
     /** Office 文档的块级结构信息，保留标题、列表与表格单元格语义。 */
-    format?: 'heading' | 'paragraph' | 'list-item' | 'table-cell'
+    format?: 'heading' | 'paragraph' | 'list-item' | 'table-cell' | 'ocr-text' | 'vision-text'
+    ocr?: { imageBlockId: string; engine: string; confidence: number; rect: { x: number; y: number; w: number; h: number } }
+    vision?: { imageBlockId: string; engine: string }
     table?: { row: number; column: number }
     imageAlt?: string
     imageAssetPath?: string
@@ -139,13 +141,28 @@ export interface MaterialSlotSpec {
   sectionId?: string
 }
 
+/** 有限的工作簿检查定义；模板只能选择固定操作，不接受脚本或任意公式。 */
+export interface TemplateSheetCheckSpec {
+  kind: 'sheet-sum-match' | 'sheet-unique-values'
+  materialSlotId: string
+  sheetName?: string
+  firstDataRow: number
+  valueColumn: string
+  labelColumn?: string
+  stopLabels?: string[]
+  applicantFieldKey?: string
+  quantityColumn?: string
+  unitPriceColumn?: string
+}
+
 /** 模板中的一项审核标准；语义规则交给 Agent，人工规则进入同案待办。 */
 export interface TemplateCriterionSpec {
   id: string
   title: string
   requirement: string
-  execution: 'semantic' | 'manual'
+  execution: 'deterministic' | 'semantic' | 'manual'
   targetScope: 'subject' | 'group' | 'case'
+  dataCheck?: TemplateSheetCheckSpec
 }
 
 /** 一个案卷内的审核分项。所有分项共享同一个 ReviewCase 与同一次运行。 */
@@ -201,6 +218,8 @@ export interface RuleSpec {
   exceptions?: Array<{ when: ConditionAST; note: string }>
   /** 由审核依据大纲编译的约束；旧版政策规则缺失时保持兼容。 */
   workspaceConstraint?: import('./review').RuleConstraint
+  /** 模板提供的有限数据操作；不会执行模板中的代码。 */
+  dataCheck?: TemplateSheetCheckSpec
 }
 
 /** 政策版本：一组规则 + 原始文档来源（不可变） */

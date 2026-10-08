@@ -12,7 +12,7 @@
 
 import { readFileSync, statSync } from 'node:fs'
 import { extname, isAbsolute, join, relative, resolve } from 'node:path'
-import type { AiOpinion, CaseAggregateV2, CheckResult, CheckStatus, DocumentVersion, RuleSpec, SourceRef, TemplateVersion } from '@profer/shared'
+import type { AiOpinion, CaseAggregateV2, CheckResult, CheckStatus, DocumentVersion, RuleSpec, SourceRef, TemplateSheetCheckSpec, TemplateVersion } from '@profer/shared'
 import type { NodeExecutor, NodeKind } from './review-run-graph'
 import type { ReviewModelClient } from './pi-review-executor'
 import { REVIEW_SYSTEM_PROMPT } from './pi-review-executor'
@@ -20,23 +20,39 @@ import { evaluateCondition } from './deterministic-engine'
 import { computeGroupScore } from './deterministic-engine'
 import { buildTextSourceIndex } from './source-index'
 import { getConfigDir } from '../config-paths'
-import { extractJson } from './review-model-gateway'
+import { extractJson } from './review-json'
 import { resolveEffectiveRules } from './effective-rules'
 import { subjectsForRule } from './rule-section-scope'
-import { buildReviewTools } from './review-tools'
+import { buildReviewTools, reviewCheckToolKey } from './review-tools'
+import type { OcrPort, OcrResult } from './ocr-port'
 
 const MAX_REVIEW_VISION_IMAGES = 8
 const MAX_REVIEW_VISION_IMAGE_BYTES = 8 * 1024 * 1024
 
-/** 从当前激活材料的 image blocks 取受案卷目录约束的图片，作为 V2 模型视觉输入。 */
-function collectV2VisionAttachments(aggregate: CaseAggregateV2, caseRoot: string): Array<{ dataUrl: string; documentVersionId: string; fileName: string; blockId: string; imageAlt?: string }> {
+function caseAssetPath(caseRoot: string, path: string): string | undefined {
   const root = resolve(caseRoot)
-  const images: Array<{ dataUrl: string; documentVersionId: string; fileName: string; blockId: string; imageAlt?: string }> = []
+  const absolute = isAbsolute(path) ? resolve(path) : resolve(root, path)
+  const relation = relative(root, absolute)
+  return relation.startsWith('..') || isAbsolute(relation) ? undefined : absolute
+}
+
+export interface V2VisionAttachment {
+  dataUrl: string
+  documentVersionId: string
+  fileName: string
+  blockId: string
+  imageAlt?: string
+}
+
+/** 从当前激活材料的 image blocks 取一批受案卷目录约束的图片，避免把整案图像一次读入内存。 */
+function collectV2VisionAttachmentBatch(aggregate: CaseAggregateV2, caseRoot: string, offset = 0): V2VisionAttachment[] {
+  const root = resolve(caseRoot)
+  const images: V2VisionAttachment[] = []
+  let validImageIndex = 0
   for (const document of aggregate.caseV2.documents) {
     if (document.active === false) continue
     for (const block of document.blocks) {
       if (block.kind !== 'image' || !block.imageAssetPath) continue
-      if (images.length >= MAX_REVIEW_VISION_IMAGES) return images
       const assetPath = isAbsolute(block.imageAssetPath) ? resolve(block.imageAssetPath) : resolve(root, block.imageAssetPath)
       const relation = relative(root, assetPath)
       if (relation.startsWith('..') || isAbsolute(relation)) continue
@@ -47,9 +63,10 @@ function collectV2VisionAttachments(aggregate: CaseAggregateV2, caseRoot: string
         const mime = extension === '.jpg' || extension === '.jpeg' ? 'image/jpeg'
           : extension === '.webp' ? 'image/webp'
             : extension === '.gif' ? 'image/gif'
-              : extension === '.png' ? 'image/png'
-                : null
+            : extension === '.png' ? 'image/png'
+              : null
         if (!mime) continue
+        if (validImageIndex++ < offset) continue
         images.push({
           dataUrl: `data:${mime};base64,${readFileSync(assetPath).toString('base64')}`,
           documentVersionId: document.versionId,
@@ -57,6 +74,7 @@ function collectV2VisionAttachments(aggregate: CaseAggregateV2, caseRoot: string
           blockId: block.blockId,
           ...(block.imageAlt ? { imageAlt: block.imageAlt } : {}),
         })
+        if (images.length >= MAX_REVIEW_VISION_IMAGES) return images
       } catch {
         // A missing image must not prevent the text path from completing.
       }
@@ -65,25 +83,90 @@ function collectV2VisionAttachments(aggregate: CaseAggregateV2, caseRoot: string
   return images
 }
 
+/** 从当前激活材料的 image blocks 取受案卷目录约束的图片，作为 V2 模型视觉输入。 */
+function collectV2VisionAttachments(aggregate: CaseAggregateV2, caseRoot: string): V2VisionAttachment[] {
+  return collectV2VisionAttachmentBatch(aggregate, caseRoot)
+}
+
 export function collectV2VisionImages(aggregate: CaseAggregateV2, caseRoot: string): string[] {
   return collectV2VisionAttachments(aggregate, caseRoot).map((image) => image.dataUrl)
 }
 
+export interface V2VisionBatchResult {
+  recognized: Array<{ attachment: V2VisionAttachment; text: string }>
+  failed: Array<{ attachment: V2VisionAttachment; reason: string }>
+}
+
+/** 超过单次图片上限时逐批请求 Pi 读取图像，并验证每条返回都能映射回原始 blockId。 */
+export async function recognizeV2VisionBatches(
+  attachments: V2VisionAttachment[],
+  client: ReviewModelClient,
+  signal?: AbortSignal,
+): Promise<V2VisionBatchResult> {
+  const result: V2VisionBatchResult = { recognized: [], failed: [] }
+  let consecutiveUnreadableBatches = 0
+  for (let offset = 0; offset < attachments.length; offset += MAX_REVIEW_VISION_IMAGES) {
+    if (signal?.aborted) throw new Error('视觉识别已取消')
+    const batch = attachments.slice(offset, offset + MAX_REVIEW_VISION_IMAGES)
+    if (consecutiveUnreadableBatches >= 2) {
+      for (const attachment of attachments.slice(offset)) {
+        result.failed.push({ attachment, reason: '连续两个视觉批次均未能识别；为避免重复等待，剩余页面转人工核对' })
+      }
+      break
+    }
+    const attachmentKey = (attachment: Pick<V2VisionAttachment, 'documentVersionId' | 'blockId'>): string => `${attachment.documentVersionId}::${attachment.blockId}`
+    const index = new Map(batch.map((attachment) => [attachmentKey(attachment), attachment]))
+    const prompt = [
+      `任务：识别第 ${Math.floor(offset / MAX_REVIEW_VISION_IMAGES) + 1} 批图像材料。`,
+      '只转写清晰可见的文字，并描述直接可见的表格、印章、签名或图片事实；模糊内容写“无法辨认”，不要猜测。',
+      '按输入索引逐张返回 JSON 数组，每项格式为 {"documentVersionId":"输入索引中的版本 ID","blockId":"输入索引中的 blockId","text":"识别文字和客观描述"}。即使页面无文字也要返回对应 ID，并说明“未发现可辨认文字”。不要添加输入索引中没有的 ID。',
+      `图像索引：\n${batch.map((item) => `- ${item.documentVersionId} / ${item.blockId}（${item.fileName}${item.imageAlt ? `；${item.imageAlt}` : ''}）`).join('\n')}`,
+    ].join('\n')
+    try {
+      const response = await client.complete({ prompt, system: REVIEW_SYSTEM_PROMPT, signal, images: batch.map((item) => item.dataUrl) })
+      if (response.imagesDropped) {
+        const reason = response.imageFailureReason ?? '视觉请求降级到文本，图像未读取'
+        for (const attachment of batch) result.failed.push({ attachment, reason })
+        consecutiveUnreadableBatches++
+        continue
+      }
+      const parsed = extractJson(response.content)
+      const rows = Array.isArray(parsed) ? parsed : (parsed as { images?: unknown[] } | undefined)?.images
+      const seen = new Set<string>()
+      for (const row of Array.isArray(rows) ? rows : []) {
+        const item = row as { documentVersionId?: unknown; blockId?: unknown; text?: unknown }
+        if (typeof item.documentVersionId !== 'string' || typeof item.blockId !== 'string' || typeof item.text !== 'string' || !item.text.trim()) continue
+        const key = `${item.documentVersionId}::${item.blockId}`
+        if (seen.has(key)) continue
+        const attachment = index.get(key)
+        if (!attachment) continue
+        seen.add(key)
+        result.recognized.push({ attachment, text: item.text.trim() })
+      }
+      for (const attachment of batch) {
+        if (!seen.has(attachmentKey(attachment))) result.failed.push({ attachment, reason: 'Pi 未返回该图像页的有效识别结果' })
+      }
+      consecutiveUnreadableBatches = seen.size === 0 ? consecutiveUnreadableBatches + 1 : 0
+    } catch (error) {
+      if (signal?.aborted || (error instanceof Error && error.name === 'AbortError')) throw error
+      const reason = error instanceof Error ? error.message : String(error)
+      for (const attachment of batch) result.failed.push({ attachment, reason })
+      consecutiveUnreadableBatches++
+    }
+  }
+  return result
+}
+
 /** 解析材料真实文本：PDF/Office 走 document-parser，文本直读；图片走 OCR 端口（不可用则如实空） */
-async function materialTextOf(doc: DocumentVersion, caseId: string, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
+async function materialTextOf(doc: DocumentVersion, caseId: string): Promise<string> {
   const ext = doc.fileName.toLowerCase().split('.').pop() ?? ''
   // assetPath 已含 source-docs/{versionId}/{fileName} 相对段（material-service 写入），基于案卷目录拼接
   const absolute = join(getConfigDir(), 'review-cases', caseId, doc.assetPath)
   try {
-    if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'].includes(ext)) {
-      // 阶段 A：OCR 由注入端口承担（系统 tesseract 真实引擎）；不可用返回空（不冒充已读）
-      if (!ocr?.available) return ''
-      const result = await ocr.recognize({ documentVersionId: doc.versionId, pageAssetPath: absolute, language: 'chi_sim' })
-      return result.blocks.map((block) => block.text).join(' ')
-    }
+    if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'].includes(ext)) return ''
     if (ext === 'docx' && doc.blocks.length > 0) {
       return doc.blocks.flatMap((block) => {
-        if (block.kind === 'image') return []
+        if (block.kind === 'image' || block.format === 'ocr-text') return []
         if (block.format === 'heading') return [`\n## ${block.text}`]
         if (block.kind === 'table') return [`[表格 ${block.table?.row ?? '?'} 行 ${block.table?.column ?? '?'} 列] ${block.text}`]
         if (block.format === 'list-item') return [`- ${block.text}`]
@@ -110,12 +193,66 @@ async function materialTextOf(doc: DocumentVersion, caseId: string, ocr?: { avai
   }
 }
 
+export interface OcrPageRecord {
+  documentVersionId: string
+  fileName: string
+  imageBlockId: string
+  status: 'done' | 'unavailable' | 'failed'
+  reason?: string
+  engine?: string
+  engineVersion?: string
+  blocks?: Array<{ blockId: string; text: string; location: unknown; confidence: number; rect: OcrResult['blocks'][number]['rect'] }>
+}
+
+/** OCR every indexed image block, including raster pages inside PDF/DOCX, and add traceable text blocks. */
+export async function recognizeDocumentImages(aggregate: CaseAggregateV2, caseId: string, ocrPort?: OcrPort, signal?: AbortSignal, caseRoot = join(getConfigDir(), 'review-cases', caseId)): Promise<OcrPageRecord[]> {
+  const records: OcrPageRecord[] = []
+  for (const document of aggregate.caseV2.documents) {
+    if (document.active === false) continue
+    const imageBlocks = document.blocks.filter((block) => block.kind === 'image' && block.imageAssetPath)
+    for (const imageBlock of imageBlocks) {
+      if (signal?.aborted) throw new Error('OCR 已取消')
+      const existingOcr = document.blocks.filter((block) => block.ocr?.imageBlockId === imageBlock.blockId)
+      if (existingOcr.length) {
+        records.push({ documentVersionId: document.versionId, fileName: document.fileName, imageBlockId: imageBlock.blockId, status: 'done', engine: existingOcr[0]?.ocr?.engine, blocks: existingOcr.map((block) => ({ blockId: block.blockId, text: block.text, location: block.location ?? { kind: 'file' }, confidence: block.ocr?.confidence ?? 0, rect: block.ocr?.rect ?? { x: 0, y: 0, w: 0, h: 0 } })) })
+        continue
+      }
+      if (!ocrPort?.available) {
+        records.push({ documentVersionId: document.versionId, fileName: document.fileName, imageBlockId: imageBlock.blockId, status: 'unavailable', reason: ocrPort?.unavailableReason ?? '未注入 OCR 端口' })
+        continue
+      }
+      const imagePath = caseAssetPath(caseRoot, imageBlock.imageAssetPath!)
+      if (!imagePath) {
+        records.push({ documentVersionId: document.versionId, fileName: document.fileName, imageBlockId: imageBlock.blockId, status: 'failed', reason: '图像资产不在当前案卷目录中' })
+        continue
+      }
+      try {
+        const result = await ocrPort.recognize({ documentVersionId: document.versionId, pageAssetPath: imagePath, language: 'chi_sim', signal })
+        const blocks = result.blocks.map((ocrBlock, index) => {
+          const blockId = `ocr-${imageBlock.blockId}-${index + 1}`
+          const location = imageBlock.location?.kind === 'pdf-rect'
+            ? { kind: 'pdf-rect' as const, page: imageBlock.location.page, rect: ocrBlock.rect }
+            : imageBlock.location ?? { kind: 'file' as const }
+          const block = { blockId, text: ocrBlock.text, kind: 'text' as const, format: 'ocr-text' as const, location, ocr: { imageBlockId: imageBlock.blockId, engine: result.engine, confidence: ocrBlock.confidence, rect: ocrBlock.rect } }
+          document.blocks.push(block)
+          return { blockId, text: ocrBlock.text, location, confidence: ocrBlock.confidence, rect: ocrBlock.rect }
+        })
+        records.push({ documentVersionId: document.versionId, fileName: document.fileName, imageBlockId: imageBlock.blockId, status: 'done', engine: result.engine, engineVersion: result.engineVersion, blocks })
+      } catch (error) {
+        if (signal?.aborted || (error instanceof Error && error.name === 'AbortError')) throw error
+        records.push({ documentVersionId: document.versionId, fileName: document.fileName, imageBlockId: imageBlock.blockId, status: 'failed', reason: error instanceof Error ? error.message : String(error) })
+      }
+    }
+  }
+  return records
+}
+
 function truncate(text: string, max = 6000): string {
   return text.length > max ? `${text.slice(0, max)}\n…（截断）` : text
 }
 
 /** 构建注入给 Pi 的材料/规则/字段上下文（内容仅作为数据，指令边界由 REVIEW_SYSTEM_PROMPT 承担） */
-async function buildMaterialContext(aggregate: CaseAggregateV2, template: TemplateVersion, rules: RuleSpec[], caseId: string, ocr?: { available: boolean; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ blocks: Array<{ text: string }> }> }): Promise<string> {
+async function buildMaterialContext(aggregate: CaseAggregateV2, template: TemplateVersion, rules: RuleSpec[], caseId: string): Promise<string> {
   const parts: string[] = []
   const sectionById = new Map((template.sections ?? []).map((section) => [section.id, section.name]))
   const slotById = new Map(template.materialSlots.map((slot) => [slot.id, slot]))
@@ -138,7 +275,13 @@ async function buildMaterialContext(aggregate: CaseAggregateV2, template: Templa
     const slot = doc.materialSlotId ? slotById.get(doc.materialSlotId) : undefined
     const sectionName = slot?.sectionId ? sectionById.get(slot.sectionId) : undefined
     const materialScope = sectionName ? `分项：${sectionName}` : '全案共用材料'
-    const text = truncate(await materialTextOf(doc, caseId, ocr))
+    const nativeText = await materialTextOf(doc, caseId)
+    const ocrText = doc.blocks.filter((block) => block.format === 'ocr-text' || block.format === 'vision-text').map((block) => {
+      const sourceImageId = block.ocr?.imageBlockId ?? block.vision?.imageBlockId
+      const engine = block.vision?.engine ? `；识别路径：${block.vision.engine}` : ''
+      return `[图像识别块 ${block.blockId}；原图块 ${sourceImageId ?? '未知'}${engine}] ${block.text}`
+    }).join('\n')
+    const text = truncate([nativeText, ocrText].filter(Boolean).join('\n'))
     const visualPages = doc.blocks.filter((block) => block.kind === 'image' && block.imageAssetPath).length
     const visualBlockRefs = doc.blocks.filter((block) => block.kind === 'image').map((block) => `\n[视觉材料块 ${block.blockId}${block.imageAlt ? `：${block.imageAlt}` : ''}]`).join('')
     const visualNote = visualPages > 0 ? `\n[含 ${visualPages} 个图像块；具体附件范围与 blockId 在视觉索引中列明]${visualBlockRefs}` : ''
@@ -155,7 +298,7 @@ export interface AssembleOptions {
   client: ReviewModelClient
   signal?: AbortSignal
   /** OCR 端口（真实引擎注入；缺省=图片不可读，如实标注） */
-  ocrPort?: { available: boolean; unavailableReason?: string; recognize(req: { documentVersionId: string; pageAssetPath: string; language: string }): Promise<{ engine: string; engineVersion: string; blocks: Array<{ text: string; rect: { x: number; y: number; w: number; h: number }; confidence: number }>; imageWidth: number; imageHeight: number }> }
+  ocrPort?: OcrPort
 }
 
 function fieldValueOf(value: unknown): unknown {
@@ -170,7 +313,8 @@ export function resolveEffectiveFieldValue(
   fieldKey: string,
   subjectId?: string,
 ): { known: boolean; value: unknown; observationId?: string; sourceRefs: SourceRef[] } {
-  const matching = [...observations].reverse().filter((candidate) => candidate.subjectId === subjectId && candidate.fieldKey === fieldKey && 'value' in candidate)
+  const observationTarget = subjectId ?? aggregate.caseV2.id
+  const matching = [...observations].reverse().filter((candidate) => candidate.subjectId === observationTarget && candidate.fieldKey === fieldKey && 'value' in candidate)
   const humanConfirmed = matching.find((candidate) => candidate.extractedBy === 'user' && candidate.confirmed === true)
   const humanEntered = matching.find((candidate) => candidate.extractedBy === 'user')
   const selectedHuman = humanConfirmed ?? humanEntered
@@ -194,7 +338,10 @@ export function resolveEffectiveFieldValue(
     return { known: false, value: null, sourceRefs: [] }
   }
   const caseValue = aggregate.caseV2.caseFields[fieldKey]
-  if (caseValue !== undefined) return { known: true, value: fieldValueOf(caseValue), sourceRefs: [] }
+  if (caseValue !== undefined) {
+    const sourcedObservation = matching.find((candidate) => candidate.extractedBy !== 'user' && JSON.stringify(fieldValueOf(candidate.value)) === JSON.stringify(fieldValueOf(caseValue)))
+    return { known: true, value: fieldValueOf(caseValue), observationId: typeof sourcedObservation?.id === 'string' ? sourcedObservation.id : undefined, sourceRefs: sourceRefsFromUnknown(sourcedObservation?.sourceRefs) }
+  }
   const observation = matching.find((candidate) => candidate.extractedBy !== 'user')
   if (observation) return {
     known: true,
@@ -259,6 +406,137 @@ function checkIdFor(rule: RuleSpec, target: { scope: string; subjectIds: string[
   return `check-${rule.id}-${target.scope}-${[...target.subjectIds].sort().join('-') || 'case'}`
 }
 
+function amountToCents(raw: string): number | undefined {
+  const normalized = raw.replace(/[￥¥元\s]/g, '').replace(/[，,]/g, '')
+  if (!/^-?\d+(?:\.\d{1,2})?$/.test(normalized)) return undefined
+  const amount = Number(normalized)
+  return Number.isFinite(amount) ? Math.round(amount * 100) : undefined
+}
+
+function formatCents(cents: number): string {
+  return `${(cents / 100).toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1')} 元`
+}
+
+function normalizeLabel(value: string): string {
+  return value.replace(/[\s:：]/g, '').trim()
+}
+
+function sheetCellRef(aggregate: CaseAggregateV2, document: DocumentVersion, block: DocumentVersion['blocks'][number]): SourceRef | undefined {
+  if (block.location?.kind !== 'sheet-cell') return undefined
+  return { caseId: aggregate.caseV2.id, documentVersionId: document.versionId, parseRevision: document.parseRevision, location: block.location, ...(block.text ? { quote: block.text.slice(0, 200) } : {}) }
+}
+
+function buildSheetDataCheck(
+  aggregate: CaseAggregateV2,
+  rule: RuleSpec,
+  spec: TemplateSheetCheckSpec,
+  observations: Array<Record<string, unknown>>,
+): CheckResult {
+  const scopedSubjects = subjectsForRule(aggregate.caseV2.subjects, rule)
+  const scope = rule.targetScope
+  const subjectIds = scopedSubjects.map((subject) => subject.id)
+  const target = { scope, subjectIds }
+  const base = (status: CheckStatus, reason: string, refs: SourceRef[] = [], calculation?: CheckResult['calculation'], resolved: Array<ReturnType<typeof resolveEffectiveFieldValue>> = []): CheckResult => {
+    const basis = makeCheckBasis(aggregate, resolved, [], refs)
+    return { checkId: checkIdFor(rule, target), ruleId: rule.id, target, status, reason, sourceRefs: basis.sourceRefs, basis, executedBy: 'deterministic', executedAt: new Date().toISOString(), ...(calculation ? { calculation } : {}) }
+  }
+  const documents = aggregate.caseV2.documents.filter((document) => document.active !== false && document.materialSlotId === spec.materialSlotId && document.blocks.some((block) => block.location?.kind === 'sheet-cell'))
+  if (documents.length === 0) return base('awaiting-supplement', `缺少材料槽「${spec.materialSlotId}」中的工作簿，无法执行：${rule.requirement}`)
+  if (documents.length > 1) return base('awaiting-confirmation', `材料槽「${spec.materialSlotId}」有 ${documents.length} 份文件；请确定唯一用于计算的工作簿`)
+  const document = documents[0]!
+  if (document.parseStatus === 'failed' || document.parseStatus === 'pending') return base('awaiting-confirmation', `工作簿 ${document.fileName} 尚未成功解析，不能把缺失单元格按 0 计算`)
+  const cells = document.blocks.filter((block) => block.location?.kind === 'sheet-cell' && (!spec.sheetName || block.location.sheet === spec.sheetName))
+  if (cells.length === 0) return base('awaiting-confirmation', `工作簿中找不到工作表「${spec.sheetName ?? '(未指定)'}」的可定位单元格`)
+  const firstLocation = cells[0]?.location
+  const sheetName = spec.sheetName ?? (firstLocation?.kind === 'sheet-cell' ? firstLocation.sheet : '')
+  const rows = new Map<number, Map<string, typeof cells[number]>>()
+  for (const cell of cells) {
+    const location = cell.location as Extract<NonNullable<typeof cell.location>, { kind: 'sheet-cell' }>
+    if (location.sheet !== sheetName) continue
+    const row = rows.get(location.row) ?? new Map<string, typeof cell>()
+    row.set(location.column.toUpperCase(), cell)
+    rows.set(location.row, row)
+  }
+  const rowNumbers = [...rows.keys()].filter((row) => row >= spec.firstDataRow).sort((a, b) => a - b)
+  const stopLabels = (spec.stopLabels ?? []).map(normalizeLabel)
+  const dataRows: number[] = []
+  for (const rowNumber of rowNumbers) {
+    const row = rows.get(rowNumber)!
+    const labelText = spec.labelColumn ? row.get(spec.labelColumn.toUpperCase())?.text ?? '' : ''
+    if (stopLabels.some((label) => labelText && normalizeLabel(labelText).includes(label))) break
+    dataRows.push(rowNumber)
+  }
+  const relevantBlocks = dataRows.flatMap((rowNumber) => {
+    const row = rows.get(rowNumber)!
+    return [...new Set([spec.labelColumn, spec.valueColumn, spec.quantityColumn, spec.unitPriceColumn].filter((item): item is string => !!item))]
+      .flatMap((column) => row.get(column.toUpperCase()) ? [row.get(column.toUpperCase())!] : [])
+  })
+  const refs = relevantBlocks.flatMap((block) => sheetCellRef(aggregate, document, block) ?? [])
+  if (document.parseStatus === 'partial') return base('awaiting-confirmation', `工作簿解析不完整；当前 ${dataRows.length} 行不能证明完整明细总额`, refs)
+  if (dataRows.length === 0) return base('awaiting-confirmation', `工作表「${sheetName}」在第 ${spec.firstDataRow} 行后没有可核对明细`, refs)
+
+  if (spec.kind === 'sheet-unique-values') {
+    const values = new Map<string, number[]>()
+    for (const rowNumber of dataRows) {
+      const raw = rows.get(rowNumber)?.get(spec.valueColumn.toUpperCase())?.text.trim() ?? ''
+      if (!raw) return base('awaiting-confirmation', `第 ${rowNumber} 行缺少 ${spec.valueColumn} 列编号，不能判定编号唯一`, refs)
+      const normalized = raw.normalize('NFKC').replace(/\s/g, '').toUpperCase()
+      values.set(normalized, [...(values.get(normalized) ?? []), rowNumber])
+    }
+    const duplicates = [...values].filter(([, rowList]) => rowList.length > 1)
+    if (duplicates.length) {
+      const detailLines = duplicates.map(([value, rowList]) => `编号 ${value} 重复出现在第 ${rowList.join('、')} 行`)
+      return base('non-compliant', detailLines.join('；'), refs, { inputs: [], result: String(duplicates.length), detailLines })
+    }
+    return base('compliant', `已检查 ${dataRows.length} 行，${spec.valueColumn} 列编号均不重复`, refs, { inputs: [], result: '0', detailLines: [`唯一编号 ${dataRows.length} 个`] })
+  }
+
+  const applicant = spec.applicantFieldKey ? resolveEffectiveFieldValue(aggregate, observations, spec.applicantFieldKey) : undefined
+  const applicantValue = applicant?.value
+  const applicantCents = typeof applicantValue === 'number' ? Math.round(applicantValue * 100) : typeof applicantValue === 'string' ? amountToCents(applicantValue) : undefined
+  if (spec.applicantFieldKey && (!applicant?.known || applicantCents === undefined)) return base('awaiting-confirmation', `缺少可核验的案卷金额字段「${spec.applicantFieldKey}」；先从申报材料提取并确认`, refs, undefined, applicant ? [applicant] : [])
+  const applicantRefs = [...(applicant?.sourceRefs ?? [])]
+  if (applicantCents !== undefined && !applicantRefs.some((ref) => ref.location.kind !== 'file')) {
+    for (const sourceDocument of aggregate.caseV2.documents.filter((candidate) => candidate.active !== false && candidate.role === 'application')) {
+      for (const block of sourceDocument.blocks) {
+        if (!block.text || block.kind === 'image') continue
+        const candidates = block.text.match(/-?\d+(?:[,.，]\d{3})*(?:\.\d+)?/g) ?? []
+        if (!candidates.some((candidate) => amountToCents(candidate) === applicantCents)) continue
+        applicantRefs.push({ caseId: aggregate.caseV2.id, documentVersionId: sourceDocument.versionId, parseRevision: sourceDocument.parseRevision, location: block.location ?? { kind: 'file' }, quote: block.text.slice(0, 300) })
+      }
+    }
+  }
+  if (applicantCents !== undefined && applicantRefs.length === 0) return base('awaiting-confirmation', `申报金额 ${formatCents(applicantCents)} 缺少可定位的申报材料出处；请补充或确认金额来源`, refs, undefined, applicant ? [applicant] : [])
+  let totalCents = 0
+  const detailLines: string[] = []
+  const calculationInputs: Array<{ key: string; value: number; from: string }> = []
+  for (const rowNumber of dataRows) {
+    const row = rows.get(rowNumber)!
+    const amountBlock = row.get(spec.valueColumn.toUpperCase())
+    const label = spec.labelColumn ? row.get(spec.labelColumn.toUpperCase())?.text.trim() : undefined
+    const cents = amountBlock ? amountToCents(amountBlock.text) : undefined
+    if (!amountBlock || cents === undefined) return base('awaiting-confirmation', `第 ${rowNumber} 行${label ? `「${label}」` : ''}缺少可识别金额（${spec.valueColumn} 列）；未按 0 处理`, refs)
+    totalCents += cents
+    calculationInputs.push({ key: `${sheetName}!${spec.valueColumn}${rowNumber}`, value: cents, from: `${document.fileName} 第 ${rowNumber} 行` })
+    if (spec.quantityColumn && spec.unitPriceColumn) {
+      const quantity = Number((row.get(spec.quantityColumn.toUpperCase())?.text ?? '').replace(/[，,\s]/g, ''))
+      const unitCents = amountToCents(row.get(spec.unitPriceColumn.toUpperCase())?.text ?? '')
+      if (!Number.isFinite(quantity) || !row.get(spec.quantityColumn.toUpperCase()) || unitCents === undefined) return base('awaiting-confirmation', `第 ${rowNumber} 行缺少可识别数量或单价，不能核对行小计`, refs)
+      const expectedCents = Math.round(quantity * unitCents)
+      if (expectedCents !== cents) detailLines.push(`第 ${rowNumber} 行数量×单价=${formatCents(expectedCents)}，表中小计=${formatCents(cents)}`)
+    }
+  }
+  const arithmeticMismatch = detailLines.length > 0
+  const difference = applicantCents === undefined ? undefined : applicantCents - totalCents
+  const resultStatus: CheckStatus = arithmeticMismatch || (difference !== undefined && difference !== 0) ? 'non-compliant' : 'compliant'
+  const summary = difference === undefined
+    ? `明细合计 ${formatCents(totalCents)}`
+    : `申报 ${formatCents(applicantCents!)}，明细合计 ${formatCents(totalCents)}，差额 ${formatCents(difference)}`
+  const fullDetails = [...detailLines, `${dataRows.length} 条明细合计 ${formatCents(totalCents)}`, ...(difference !== undefined ? [`申报与明细差额 ${formatCents(difference)}`] : [])]
+  const resolved = applicant ? [applicant] : []
+  return base(resultStatus, `${summary}${arithmeticMismatch ? `；${detailLines.join('；')}` : ''}`, [...refs, ...applicantRefs], { inputs: calculationInputs, result: String(totalCents), detailLines: fullDetails }, resolved)
+}
+
 /** 按规则作用域生成确定性/人工检查草稿，避免不同事项共享同一个字段值。 */
 export function buildDeterministicRuleChecks(
   aggregate: CaseAggregateV2,
@@ -270,6 +548,10 @@ export function buildDeterministicRuleChecks(
   for (const rule of rules) {
     const scopedSubjects = subjectsForRule(aggregate.caseV2.subjects, rule)
     if (rule.execution === 'semantic') continue
+    if (rule.dataCheck) {
+      checks.push(buildSheetDataCheck(aggregate, rule, rule.dataCheck, observations))
+      continue
+    }
     if (rule.execution === 'manual') {
       const targets = rule.targetScope === 'subject' ? scopedSubjects.map((subject) => [subject.id]) : [scopedSubjects.map((subject) => subject.id)]
       for (const subjectIds of targets) {
@@ -445,37 +727,85 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
     documents: aggregate.caseV2.documents.filter((document) => document.active !== false),
     rules,
     fields: template.fields,
+    caseFields: aggregate.caseV2.caseFields,
     observations: pluginState.observations,
     evidenceLinks: pluginState.evidenceLinks,
     results: pluginState.results,
     actor: 'pi-review-agent',
   })
   // 材料上下文按需构建（PDF/Office 为异步解析）
-  const materialContext = await buildMaterialContext(aggregate, template, rules, caseId, options.ocrPort)
-  const visionAttachments = collectV2VisionAttachments(aggregate, join(getConfigDir(), 'review-cases', caseId))
-  const visionImages = visionAttachments.map((image) => image.dataUrl)
-  const visualPageCount = aggregate.caseV2.documents.filter((document) => document.active !== false)
-    .reduce((count, document) => count + document.blocks.filter((block) => block.kind === 'image' && block.imageAssetPath).length, 0)
-  const visualLimitNote = visualPageCount > visionImages.length
-    ? `\n【图像覆盖提示】当前案卷有 ${visualPageCount} 张图像页，本次模型请求实际附带 ${visionImages.length} 张；未附带或无法读取的页面必须保留人工核对，不得据此形成完整结论。`
-    : ''
+  const ocrPageResults = await recognizeDocumentImages(aggregate, caseId, options.ocrPort, options.signal, join(getConfigDir(), 'review-cases', caseId))
+  const caseRoot = join(getConfigDir(), 'review-cases', caseId)
+  const visualBlocks = aggregate.caseV2.documents.filter((document) => document.active !== false)
+    .flatMap((document) => document.blocks.filter((block) => block.kind === 'image' && block.imageAssetPath).map((block) => ({ document, block })))
+  const visualPageCount = visualBlocks.length
+  const firstVisionBatch = collectV2VisionAttachmentBatch(aggregate, caseRoot)
+  const failedVisionBlocks: Array<{ documentVersionId: string; blockId: string; reason: string }> = []
+  let visionAttachments = firstVisionBatch
+  let visionImages = firstVisionBatch.map((image) => image.dataUrl)
+  let visionPromptNote = ''
+  if (visualPageCount > MAX_REVIEW_VISION_IMAGES) {
+    // 多页案卷逐批读图；逐页文字附加到原材料块索引，主审核沿用同一套引用与提交工具。
+    visionImages = []
+    visionAttachments = []
+    const processedVisionBlocks = new Set<string>()
+    for (let offset = 0; ; offset += MAX_REVIEW_VISION_IMAGES) {
+      if (options.signal?.aborted) throw new Error('视觉识别已取消')
+      const batch = collectV2VisionAttachmentBatch(aggregate, caseRoot, offset)
+      if (batch.length === 0) break
+      for (const attachment of batch) processedVisionBlocks.add(`${attachment.documentVersionId}::${attachment.blockId}`)
+      const batchResult = await recognizeV2VisionBatches(batch, options.client, options.signal)
+      for (const { attachment, text } of batchResult.recognized) {
+        const document = aggregate.caseV2.documents.find((candidate) => candidate.versionId === attachment.documentVersionId)
+        const sourceImage = document?.blocks.find((block) => block.blockId === attachment.blockId && block.kind === 'image')
+        if (!document || !sourceImage) continue
+        document.blocks.push({
+          blockId: `vision-${attachment.blockId}`,
+          kind: 'text',
+          format: 'vision-text',
+          text,
+          location: sourceImage.location ?? { kind: 'file' },
+          vision: { imageBlockId: attachment.blockId, engine: 'Pi 视觉分批识别' },
+        })
+      }
+      for (const item of batchResult.failed) failedVisionBlocks.push({ documentVersionId: item.attachment.documentVersionId, blockId: item.attachment.blockId, reason: item.reason })
+    }
+    const failedIds = new Set(failedVisionBlocks.map((item) => `${item.documentVersionId}::${item.blockId}`))
+    for (const { document, block } of visualBlocks) {
+      const id = `${document.versionId}::${block.blockId}`
+      if (failedIds.has(id) || processedVisionBlocks.has(id)) continue
+      failedVisionBlocks.push({ documentVersionId: document.versionId, blockId: block.blockId, reason: '图像文件缺失、格式不支持或超过单张大小限制' })
+    }
+    for (const document of aggregate.caseV2.documents) {
+      const failures = failedVisionBlocks.filter((item) => item.documentVersionId === document.versionId)
+      if (failures.length === 0) continue
+      document.usage = 'partially-read'
+      document.unusedReason = `以下图像页未成功识别，需人工核对：${failures.map((item) => `${item.blockId}（${item.reason}）`).join('；')}`
+    }
+    const successfulCount = visualBlocks.filter(({ document, block }) => document.blocks.some((candidate) => candidate.vision?.imageBlockId === block.blockId)).length
+    visionPromptNote = `\n【图像分批识别】共 ${visualPageCount} 页，Pi 已分批识别 ${successfulCount} 页，识别文本已逐页关联原图块并列入材料索引。${failedVisionBlocks.length ? `仍有 ${failedVisionBlocks.length} 页未识别，必须保留人工核对：${failedVisionBlocks.map((item) => item.blockId).join('、')}。` : '所有可用图像页均已识别。'}不得把视觉识别文字当作高于原始材料的证据。`
+  } else {
+    const missingAttachments = visualPageCount - firstVisionBatch.length
+    if (missingAttachments > 0) {
+      visionPromptNote = `\n【图像覆盖提示】当前有 ${visualPageCount} 张图像页，但 ${missingAttachments} 张未能装载；未装载页面必须保留人工核对，不得据此形成完整结论。`
+      for (const { document, block } of visualBlocks) {
+        if (firstVisionBatch.some((image) => image.documentVersionId === document.versionId && image.blockId === block.blockId)) continue
+        document.usage = 'partially-read'
+        document.unusedReason = `图像块 ${block.blockId} 未能装载，需人工核对`
+      }
+    }
+  }
+  const materialContext = await buildMaterialContext(aggregate, template, rules, caseId)
   const visualIndexNote = visionAttachments.length > 0
     ? `\n【Pi 图像输入索引】图片按以下顺序附加到本次用户消息：\n${visionAttachments.map((image, index) => `${index + 1}. ${image.fileName}（${image.documentVersionId}，blockId=${image.blockId}${image.imageAlt ? `，${image.imageAlt}` : ''}）`).join('\n')}\n模型需要引用图像内容时，sourceRefs 使用对应的 documentVersionId 和 blockId，不填写无法逐字核验的 quote。`
     : ''
-  const visualPromptNote = `${visualIndexNote}${visualLimitNote}`
-  if (visualPageCount > visionImages.length) {
-    // Run-level material ledger must prevent an all-clear verdict when visual pages were omitted.
+  visionPromptNote = `${visualIndexNote}${visionPromptNote}`
+  const visualPromptNote = visionPromptNote
+  const markVisionDropped = (reason?: string): void => {
     for (const document of aggregate.caseV2.documents) {
       if (document.active === false || !document.blocks.some((block) => block.kind === 'image' && block.imageAssetPath)) continue
       document.usage = 'partially-read'
-      document.unusedReason = '本次审核未能把全部图像页送入模型，需人工核对未覆盖页面'
-    }
-  }
-  const markVisionDropped = (): void => {
-    for (const document of aggregate.caseV2.documents) {
-      if (document.active === false || !document.blocks.some((block) => block.kind === 'image' && block.imageAssetPath)) continue
-      document.usage = 'partially-read'
-      document.unusedReason = '当前 Pi 模型不接受图像输入；未读取图像需人工核对'
+      document.unusedReason = reason ? `${reason}；未覆盖图像需人工核对` : '本次审核未完成图像核查；未覆盖图像需人工核对'
     }
   }
 
@@ -491,34 +821,41 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
       if (rule.workspaceConstraint?.kind === 'date-range') deterministicFieldKeys.add('activityDate')
       if (rule.workspaceConstraint?.kind === 'amount-limit') deterministicFieldKeys.add('amount')
       if (rule.workspaceConstraint?.kind === 'level-mapping') deterministicFieldKeys.add('level')
+      if (rule.dataCheck?.applicantFieldKey) deterministicFieldKeys.add(rule.dataCheck.applicantFieldKey)
     }
-    const extractableSubjectFields = template.fields.filter((field) =>
-      (field.scope ?? 'subject') === 'subject'
-      && deterministicFieldKeys.has(field.key)
-      && aggregate.caseV2.subjects.some((subject) =>
+    const extractionTargets = template.fields.flatMap((field) => {
+      if (!deterministicFieldKeys.has(field.key)) return []
+      if (field.scope === 'case') return aggregate.caseV2.caseFields[field.key] === undefined
+        && !pluginState.observations.some((item) => item.subjectId === caseId && item.fieldKey === field.key)
+        ? [{ field, subjectId: caseId }]
+        : []
+      return aggregate.caseV2.subjects.filter((subject) =>
         (!field.sectionId || field.sectionId === subject.sectionId)
-        && subject.fields[field.key] === undefined,
-      ),
-    )
-    if (extractableSubjectFields.length === 0) {
+        && subject.fields[field.key] === undefined
+        && !pluginState.observations.some((item) => item.subjectId === subject.id && item.fieldKey === field.key),
+      ).map((subject) => ({ field, subjectId: subject.id }))
+    })
+    if (extractionTargets.length === 0) {
+      const existingObservations = pluginState.observations as unknown as Array<Record<string, unknown>>
+      extractedObservations = existingObservations
       return {
         status: 'done' as const,
         inputHash,
         artifact: {
           sourceIds: [caseId],
-          observations: [],
+          observations: existingObservations,
           evidenceLinks: [],
           toolCalls: [],
           parseIndex: [],
-          skipped: '当前没有待抽取的确定性规则字段；已有表单字段直接进入规则计算，语义规则由审核模型在材料上下文中核查。',
+          skipped: '当前没有待抽取的确定性规则字段；既有事实和人工确认沿用进入计算，语义规则由审核模型在材料上下文中核查。',
         },
       }
     }
     const prompt = [
-      `任务：从下列案卷材料中抽取事实（observations）。`,
+      `任务：从下列案卷材料中抽取确定性规则需要的事实。case 作用域字段使用 subjectId="${caseId}"；事项字段使用清单中的事项 ID。`,
       `并行使用 read_subject_field/read_rule 查询本任务需要的信息；用一次 search_document_text_batch 搜索相关短语，不查标题、案卷编号或已知字段值。`,
       `仅抽取模板字段及规则实际需要的事实，并用一次 record_observations 批量记录；每项必须提供真实 documentVersionId、blockId 和准确 quote。`,
-      `输出 JSON 数组，每项 {"subjectId":"…","fieldKey":"…","value":…,"sourceRefs":[{"documentVersionId":"…","quote":"原文引用"}],"confidence":0~1}。`,
+      `只允许抽取下列字段目标：${extractionTargets.map(({ field, subjectId }) => `${subjectId}/${field.key} (${field.kind})`).join('、')}。输出 JSON 数组，每项 {"subjectId":"…","fieldKey":"…","value":…,"documentVersionId":"…","blockId":"…","quote":"准确原文"}。`,
       `要求：sourceRefs 的 documentVersionId 必须来自下方材料清单；无对应材料的事实不得输出。`,
       materialContext,
       visualPromptNote,
@@ -526,7 +863,7 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
     const observationsBefore = new Set(pluginState.observations.map((observation) => observation.id))
     const evidenceLinksBefore = new Set(pluginState.evidenceLinks.map((link) => link.id))
     const toolCalls: string[] = []
-    const { content, imagesDropped } = await options.client.complete({
+    const { content, imagesDropped, imageFailureReason } = await options.client.complete({
       prompt,
       system: REVIEW_SYSTEM_PROMPT,
       signal: options.signal,
@@ -534,32 +871,40 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
       tools: reviewTools,
       onToolCall: (name) => toolCalls.push(name),
       terminateAfterTools: ['record_observation', 'record_observations'],
+      requiredToolKeys: extractionTargets.map(({ field, subjectId }) => `observation:${subjectId}::${field.key}`),
     })
     if (options.signal?.aborted) throw new Error('已取消（模型调用后）')
-    if (imagesDropped) markVisionDropped()
+    if (imagesDropped) markVisionDropped(imageFailureReason)
     const parsed = extractJson(content)
     const items = Array.isArray(parsed) ? parsed : (parsed as { observations?: unknown[] })?.observations
     const observations = (Array.isArray(items) ? items : []).map((raw) => {
-      const item = raw as { subjectId?: string; fieldKey?: string; value?: unknown; sourceRefs?: Array<{ documentVersionId?: string; quote?: string }>; confidence?: number }
+      const item = raw as { subjectId?: string; fieldKey?: string; value?: unknown; sourceRefs?: Array<{ documentVersionId?: string; blockId?: string; quote?: string }>; confidence?: number }
       // 引用校验：指向不存在/未激活材料的 observation 丢弃（防伪造引用）
       const refs = (item.sourceRefs ?? []).flatMap((ref) => {
         const document = aggregate.caseV2.documents.find((candidate) => candidate.versionId === ref.documentVersionId && candidate.active !== false)
         if (!document) return []
-        const matched = ref.quote ? document.blocks.find((block) => block.text.includes(ref.quote!) || ref.quote!.includes(block.text)) : undefined
+        if (!ref.blockId || !ref.quote) return []
+        const matched = document.blocks.find((block) => block.blockId === ref.blockId && block.kind !== 'image' && block.text.includes(ref.quote!))
+        if (!matched) return []
+        if (typeof item.value === 'number' && amountToCents(String(item.value)) !== undefined) {
+          const numeric = item.value
+          const quoteNumbers = ref.quote.match(/-?\d+(?:[,.，]\d{3})*(?:\.\d+)?/g) ?? []
+          if (!quoteNumbers.some((candidate) => amountToCents(candidate) === amountToCents(String(numeric)))) return []
+        }
         return [{
           caseId,
           documentVersionId: document.versionId,
           parseRevision: document.parseRevision,
-          location: matched?.location ?? { kind: 'file' as const },
+          location: matched.location ?? { kind: 'file' as const },
           ...(ref.quote ? { quote: ref.quote } : {}),
         }]
       })
       const subject = item.subjectId ? aggregate.caseV2.subjects.find((candidate) => candidate.id === item.subjectId) : undefined
       const fieldSpec = item.fieldKey ? template.fields.find((field) => field.key === item.fieldKey) : undefined
-      const fieldBelongsToSubject = !!fieldSpec
-        && (fieldSpec.scope ?? 'subject') === 'subject'
-        && (!fieldSpec.sectionId || fieldSpec.sectionId === subject?.sectionId)
-      if (!subject || !item.fieldKey || !fieldBelongsToSubject || refs.length === 0) return null
+      const isCaseField = !!fieldSpec && fieldSpec.scope === 'case' && item.subjectId === caseId
+      const fieldBelongsToSubject = !!fieldSpec && (fieldSpec.scope ?? 'subject') === 'subject' && !!subject
+        && (!fieldSpec.sectionId || fieldSpec.sectionId === subject.sectionId)
+      if ((!isCaseField && !fieldBelongsToSubject) || !item.fieldKey || refs.length === 0) return null
       return { subjectId: item.subjectId, fieldKey: item.fieldKey, value: item.value ?? null, sourceRefs: refs, extractedBy: 'ai' as const, confirmed: false, confidence: item.confidence }
     }).filter(Boolean)
     const latestConfirmedByField = new Map<string, Record<string, unknown>>()
@@ -596,7 +941,13 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
     ].join('\n')
     const resultCountBefore = pluginState.results.length
     const toolCalls: string[] = []
-    const { content, imagesDropped } = await options.client.complete({
+    const expectedSemanticToolKeys = semanticRules.flatMap((rule) => {
+      const ids = subjectsForRule(aggregate.caseV2.subjects, rule).map((subject) => subject.id)
+      return rule.targetScope === 'subject'
+        ? ids.map((id) => reviewCheckToolKey(rule.id, 'subject', [id]))
+        : [reviewCheckToolKey(rule.id, rule.targetScope, ids)]
+    })
+    const { content, imagesDropped, imageFailureReason } = await options.client.complete({
       prompt,
       system: REVIEW_SYSTEM_PROMPT,
       signal: options.signal,
@@ -604,9 +955,10 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
       tools: reviewTools,
       onToolCall: (name) => toolCalls.push(name),
       terminateAfterTools: ['submit_check', 'submit_checks'],
+      requiredToolKeys: expectedSemanticToolKeys,
     })
     if (options.signal?.aborted) throw new Error('已取消（模型调用后）')
-    if (imagesDropped) markVisionDropped()
+    if (imagesDropped) markVisionDropped(imageFailureReason)
     const parsed = (extractJson(content) ?? {}) as { opinion?: string; checks?: Array<{ ruleId?: string; status?: string; reason?: string; subjectIds?: string[] }> }
     const validRuleIds = new Set(semanticRules.map((rule) => rule.id))
     const semanticChecksFromJson = (options.client.runtime === 'pi' ? [] : parsed.checks ?? []).flatMap((check) => {
@@ -659,7 +1011,7 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
             : existingTargets.size > 0 ? [] : [subjects.map((subject) => subject.id)]
           return missingTargets.map((subjectIds) => {
             const target = { scope: rule.targetScope === 'subject' ? 'subject' as const : rule.targetScope === 'group' ? 'group' as const : 'case' as const, subjectIds }
-            return { checkId: checkIdFor(rule, target), ruleId: rule.id, status: 'awaiting-confirmation' as const, reason: 'Pi 审核 Agent 未通过内置审核工具提交可核验结论，需审核员人工复核。', target, sourceRefs: sourceRefsForRule(aggregate, rule), executedBy: 'semantic' as const, executedAt: new Date().toISOString() }
+            return { checkId: checkIdFor(rule, target), ruleId: rule.id, status: 'execution-failed' as const, reason: 'Pi 审核 Agent 未通过内置审核工具提交可核验结论；系统未完成该检查，请修正引用后重试或由审核员接手。', target, sourceRefs: sourceRefsForRule(aggregate, rule), executedBy: 'semantic' as const, executedAt: new Date().toISOString() }
           })
         })
       : []
@@ -680,7 +1032,8 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
     const parseIndex: Array<Record<string, unknown>> = []
     for (const doc of aggregate.caseV2.documents) {
       if (doc.active === false) continue
-      const text = await materialTextOf(doc, caseId, options.ocrPort)
+      const ocrText = doc.blocks.filter((block) => block.format === 'ocr-text').map((block) => `[${block.blockId}] ${block.text}`).join('\n')
+      const text = [await materialTextOf(doc, caseId), ocrText].filter(Boolean).join('\n')
       if (!text) continue
       const index = buildTextSourceIndex(doc.versionId, text)
       parseIndex.push({ documentVersionId: doc.versionId, segments: index.entries.length, kind: 'text' })
@@ -689,24 +1042,7 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
   }
 
   const ocr: NodeExecutor = async (_node, inputHash) => {
-    // OCR：有真实端口（系统 tesseract）则逐图识别产出块级文本索引；不可用如实标注——不冒充已读
-    const images = aggregate.caseV2.documents.filter((doc) => doc.active !== false && /\.(png|jpg|jpeg|gif|webp|bmp)$/i.test(doc.fileName))
-    const ocrPort = options.ocrPort
-    const parseIndex: Array<Record<string, unknown>> = []
-    for (const doc of images) {
-      const absolute = join(getConfigDir(), 'review-cases', caseId, doc.assetPath)
-      if (!ocrPort?.available) {
-        parseIndex.push({ documentVersionId: doc.versionId, kind: 'image', ocr: 'unavailable', reason: ocrPort?.unavailableReason ?? '未注入 OCR 端口' })
-        continue
-      }
-      try {
-        const result = await ocrPort.recognize({ documentVersionId: doc.versionId, pageAssetPath: absolute, language: 'chi_sim' })
-        parseIndex.push({ documentVersionId: doc.versionId, kind: 'image', ocr: 'done', engine: result.engine, blocks: result.blocks.length })
-      } catch (error) {
-        parseIndex.push({ documentVersionId: doc.versionId, kind: 'image', ocr: 'failed', reason: error instanceof Error ? error.message : String(error) })
-      }
-    }
-    return { status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], parseIndex } }
+    return { status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], parseIndex: ocrPageResults.map((record) => ({ ...record, kind: 'image' })) } }
   }
 
   const trivial = (extra: Record<string, unknown> = {}): NodeExecutor => async (_node, inputHash) => ({ status: 'done' as const, inputHash, artifact: { sourceIds: [caseId], ...extra } })

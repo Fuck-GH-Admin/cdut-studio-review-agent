@@ -36,7 +36,8 @@ export function computeRunInputHash(
     templateVersion: caseV2.templateVersion,
     caseFields: caseV2.caseFields,
     reviewRules: caseV2.reviewRules ?? [],
-    documents: caseV2.documents.map((document) => ({ id: document.versionId, hash: document.contentHash, parseRevision: document.parseRevision, parseStatus: document.parseStatus, usage: document.usage, unusedReason: document.unusedReason })),
+    // usage / unusedReason are run outputs; changing them must not invalidate their own input snapshot.
+    documents: caseV2.documents.map((document) => ({ id: document.versionId, hash: document.contentHash, parseRevision: document.parseRevision, parseStatus: document.parseStatus })),
     subjects: caseV2.subjects.map((subject) => ({ id: subject.id, sectionId: subject.sectionId, fields: subject.fields, status: subject.status })),
     observations: observationSnapshot,
     evidenceLinks: evidenceSnapshot,

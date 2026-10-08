@@ -10,9 +10,19 @@ const STATUS_LABEL: Record<string, string> = {
   compliant: '符合', 'non-compliant': '不符合', 'needs-confirmation': '待确认', 'not-applicable': '不适用', 'not-executed': '未执行', 'execution-failed': '执行失败', 'awaiting-confirmation': '待确认', 'awaiting-supplement': '待补件',
 }
 
+interface RunPreflight {
+  deterministicCount: number
+  semanticCount: number
+  manualCount: number
+  missingRequiredSlots: string[]
+  missingDataCheckSlots: string[]
+  policyReviewTitles: string[]
+}
+
 export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refreshNonce: number }): JSX.Element {
   const [runs, setRuns] = useState<ReviewRunV2[]>([])
   const [ruleLabels, setRuleLabels] = useState<Record<string, string>>({})
+  const [preflight, setPreflight] = useState<RunPreflight | null>(null)
   const [expandedRun, setExpandedRun] = useState<string | null>(null)
   const [running, setRunning] = useState(false)
 
@@ -23,10 +33,27 @@ export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refre
       if (aggregate) {
         const template = await window.reviewAPI.getTemplateV2(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
         const labels: Record<string, string> = {}
+        const criteria = (template?.sections ?? []).flatMap((section) => section.criteria ?? [])
         for (const section of template?.sections ?? []) {
           for (const criterion of section.criteria ?? []) labels[`section-${section.id}-${criterion.id}`] = `${section.name} · ${criterion.title}`
         }
         setRuleLabels(labels)
+        const activeDocuments = aggregate.caseV2.documents.filter((document) => document.active !== false)
+        const missingRequiredSlots = (template?.materialSlots ?? []).filter((slot) => slot.requiredAt !== 'decision' && slot.minCount > 0 && activeDocuments.filter((document) => document.materialSlotId === slot.id).length < slot.minCount).map((slot) => slot.name)
+        const dataChecks = criteria.flatMap((criterion) => criterion.execution === 'deterministic' && criterion.dataCheck ? [criterion.dataCheck] : [])
+        const missingDataCheckSlots = [...new Set(dataChecks.filter((check) => !activeDocuments.some((document) => document.materialSlotId === check.materialSlotId && document.blocks.some((block) => block.location?.kind === 'sheet-cell'))).map((check) => (template?.materialSlots ?? []).find((slot) => slot.id === check.materialSlotId)?.name ?? check.materialSlotId))]
+        const hasConfirmedPolicy = (template?.policyRefs?.length ?? 0) > 0 || (template?.policyVersionIds.length ?? 0) > 0
+        const policyReviewTitles = !hasConfirmedPolicy
+          ? criteria.filter((criterion) => criterion.execution === 'manual' && /政策|制度|额度|限额|标准|资格|可报/.test(criterion.title + criterion.requirement)).map((criterion) => criterion.title)
+          : []
+        setPreflight({
+          deterministicCount: criteria.filter((criterion) => criterion.execution === 'deterministic').length,
+          semanticCount: criteria.filter((criterion) => criterion.execution === 'semantic').length,
+          manualCount: criteria.filter((criterion) => criterion.execution === 'manual').length,
+          missingRequiredSlots,
+          missingDataCheckSlots,
+          policyReviewTitles,
+        })
       }
       if (list && list.length > 0) setExpandedRun(list[0]!.id)
     } catch (error) {
@@ -70,6 +97,14 @@ export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refre
           <Button size="sm" variant="ghost" onClick={() => void load()}>刷新</Button>
         </div>
       </div>
+      {preflight && (
+        <div className="space-y-0.5 rounded-md bg-muted/40 px-2 py-1.5 text-[11px] text-muted-foreground">
+          <p>本模板分工：程序核对 {preflight.deterministicCount} 项 · Agent 核对 {preflight.semanticCount} 项 · 人工确认 {preflight.manualCount} 项。</p>
+          {preflight.missingRequiredSlots.length > 0 && <p>尚缺必需材料：{preflight.missingRequiredSlots.join('、')}。上传后再开始，避免把缺件误作通过。</p>}
+          {preflight.missingDataCheckSlots.length > 0 && <p>表格计算尚未就绪：{preflight.missingDataCheckSlots.join('、')}。缺少工作簿时对应计算会显示待补件。</p>}
+          {preflight.policyReviewTitles.length > 0 && <p>模板没有关联正式政策；{preflight.policyReviewTitles.join('、')}会留给人工判断，不自动决定额度或资格。</p>}
+        </div>
+      )}
       {runs.length === 0 && <p className="text-xs text-muted-foreground">尚未开始审核。点击“开始自动审核”后，系统会读取当前材料和审核依据。</p>}
       {runs.slice(0, 3).map((run) => (
         <div key={run.id} className="rounded-md border p-2 text-xs">

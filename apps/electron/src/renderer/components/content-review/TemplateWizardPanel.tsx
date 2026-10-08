@@ -161,6 +161,10 @@ export function TemplateWizardPanel(): JSX.Element {
     setMessage([])
   }
 
+  const updateCriterion = (sectionIndex: number, criterionIndex: number, update: (criterion: TemplateCriterionSpec) => TemplateCriterionSpec): void => {
+    updateTemplate((current) => ({ ...current, sections: (current.sections ?? []).map((section, i) => i === sectionIndex ? { ...section, criteria: section.criteria.map((criterion, j) => j === criterionIndex ? update(criterion) : criterion) } : section) }))
+  }
+
   const saveDraft = async (): Promise<TemplateVersion | null> => {
     if (!editing) return null
     const problems = validateEditor(editing)
@@ -389,8 +393,11 @@ export function TemplateWizardPanel(): JSX.Element {
                       <div key={criterion.id} className="rounded-md bg-muted/30 p-2">
                         <div className="grid gap-2 md:grid-cols-[1fr_150px_150px_auto]">
                           <input aria-label="标准名称" className="rounded border bg-background px-2 py-1 text-xs" placeholder="标准名称，如等级核对" value={criterion.title} onChange={(event) => updateTemplate((current) => ({ ...current, sections: (current.sections ?? []).map((item, i) => i === sectionIndex ? { ...item, criteria: item.criteria.map((entry, j) => j === criterionIndex ? { ...entry, title: event.target.value } : entry) } : item) }))} />
-                          <select aria-label="执行方式" className="rounded border bg-background px-2 py-1 text-xs" value={criterion.execution} onChange={(event) => updateTemplate((current) => ({ ...current, sections: (current.sections ?? []).map((item, i) => i === sectionIndex ? { ...item, criteria: item.criteria.map((entry, j) => j === criterionIndex ? { ...entry, execution: event.target.value as TemplateCriterionSpec['execution'] } : entry) } : item) }))}>
-                            <option value="semantic">Agent 核对</option><option value="manual">人工确认</option>
+                          <select aria-label="执行方式" className="rounded border bg-background px-2 py-1 text-xs" value={criterion.execution} onChange={(event) => {
+                            const execution = event.target.value as TemplateCriterionSpec['execution']
+                            updateCriterion(sectionIndex, criterionIndex, (entry) => ({ ...entry, execution, ...(execution === 'deterministic' ? { dataCheck: entry.dataCheck ?? { kind: 'sheet-sum-match', materialSlotId: editing.materialSlots[0]?.id ?? '', firstDataRow: 2, labelColumn: 'A', valueColumn: 'B', stopLabels: ['合计'] } } : { dataCheck: undefined }) }))
+                          }}>
+                            <option value="semantic">Agent 核对</option><option value="manual">人工确认</option><option value="deterministic">程序计算</option>
                           </select>
                           <select aria-label="检查范围" className="rounded border bg-background px-2 py-1 text-xs" value={criterion.targetScope} onChange={(event) => updateTemplate((current) => ({ ...current, sections: (current.sections ?? []).map((item, i) => i === sectionIndex ? { ...item, criteria: item.criteria.map((entry, j) => j === criterionIndex ? { ...entry, targetScope: event.target.value as TemplateCriterionSpec['targetScope'] } : entry) } : item) }))}>
                             <option value="subject">逐条申报事项</option><option value="group">本分项汇总</option><option value="case">本分项整体</option>
@@ -402,6 +409,31 @@ export function TemplateWizardPanel(): JSX.Element {
                           </div>
                         </div>
                         <textarea className="mt-2 w-full rounded border bg-background px-2 py-1.5 text-xs" rows={2} placeholder="写清审核要求与判定边界；按本单位、本年度正式依据填写。" value={criterion.requirement} onChange={(event) => updateTemplate((current) => ({ ...current, sections: (current.sections ?? []).map((item, i) => i === sectionIndex ? { ...item, criteria: item.criteria.map((entry, j) => j === criterionIndex ? { ...entry, requirement: event.target.value } : entry) } : item) }))} />
+                        {criterion.execution === 'deterministic' && criterion.dataCheck && (
+                          <div className="mt-2 grid gap-2 rounded border bg-background p-2 text-xs md:grid-cols-3">
+                            <label>表格检查
+                              <select className="mt-1 w-full rounded border px-2 py-1.5" value={criterion.dataCheck.kind} onChange={(event) => updateCriterion(sectionIndex, criterionIndex, (entry) => ({ ...entry, dataCheck: { ...entry.dataCheck!, kind: event.target.value as NonNullable<TemplateCriterionSpec['dataCheck']>['kind'] } }))}>
+                                <option value="sheet-sum-match">明细合计与申报值核对</option><option value="sheet-unique-values">编号重复检查</option>
+                              </select>
+                            </label>
+                            <label>材料槽
+                              <select className="mt-1 w-full rounded border px-2 py-1.5" value={criterion.dataCheck.materialSlotId} onChange={(event) => updateCriterion(sectionIndex, criterionIndex, (entry) => ({ ...entry, dataCheck: { ...entry.dataCheck!, materialSlotId: event.target.value } }))}>
+                                {(editing.materialSlots ?? []).map((slot) => <option key={slot.id} value={slot.id}>{slot.name}（{slot.id}）</option>)}
+                              </select>
+                            </label>
+                            <label>工作表名称（空白取首张）<input className="mt-1 w-full rounded border px-2 py-1.5" value={criterion.dataCheck.sheetName ?? ''} onChange={(event) => updateCriterion(sectionIndex, criterionIndex, (entry) => ({ ...entry, dataCheck: { ...entry.dataCheck!, sheetName: event.target.value || undefined } }))} /></label>
+                            <label>明细起始行<input type="number" min={1} className="mt-1 w-full rounded border px-2 py-1.5" value={criterion.dataCheck.firstDataRow} onChange={(event) => updateCriterion(sectionIndex, criterionIndex, (entry) => ({ ...entry, dataCheck: { ...entry.dataCheck!, firstDataRow: Number(event.target.value) } }))} /></label>
+                            <label>编号/金额列<input className="mt-1 w-full rounded border px-2 py-1.5" value={criterion.dataCheck.valueColumn} placeholder="A" onChange={(event) => updateCriterion(sectionIndex, criterionIndex, (entry) => ({ ...entry, dataCheck: { ...entry.dataCheck!, valueColumn: event.target.value.toUpperCase() } }))} /></label>
+                            <label>标签列（用于排除合计行）<input className="mt-1 w-full rounded border px-2 py-1.5" value={criterion.dataCheck.labelColumn ?? ''} placeholder="A" onChange={(event) => updateCriterion(sectionIndex, criterionIndex, (entry) => ({ ...entry, dataCheck: { ...entry.dataCheck!, labelColumn: event.target.value.toUpperCase() || undefined } }))} /></label>
+                            <label className="md:col-span-2">停止标签（逗号分隔）<input className="mt-1 w-full rounded border px-2 py-1.5" value={(criterion.dataCheck.stopLabels ?? []).join(', ')} placeholder="合计, 明细合计" onChange={(event) => updateCriterion(sectionIndex, criterionIndex, (entry) => ({ ...entry, dataCheck: { ...entry.dataCheck!, stopLabels: event.target.value.split(/[，,]/).map((value) => value.trim()).filter(Boolean) } }))} /></label>
+                            {criterion.dataCheck.kind === 'sheet-sum-match' && <>
+                              <label>案卷级申报金额字段<select className="mt-1 w-full rounded border px-2 py-1.5" value={criterion.dataCheck.applicantFieldKey ?? ''} onChange={(event) => updateCriterion(sectionIndex, criterionIndex, (entry) => ({ ...entry, dataCheck: { ...entry.dataCheck!, applicantFieldKey: event.target.value || undefined } }))}><option value="">选择数字字段</option>{editing.fields.filter((field) => field.kind === 'number' && field.scope === 'case').map((field) => <option key={field.key} value={field.key}>{field.label}（{field.key}）</option>)}</select></label>
+                              <label>数量列（可选）<input className="mt-1 w-full rounded border px-2 py-1.5" value={criterion.dataCheck.quantityColumn ?? ''} placeholder="B" onChange={(event) => updateCriterion(sectionIndex, criterionIndex, (entry) => ({ ...entry, dataCheck: { ...entry.dataCheck!, quantityColumn: event.target.value.toUpperCase() || undefined } }))} /></label>
+                              <label>单价列（可选）<input className="mt-1 w-full rounded border px-2 py-1.5" value={criterion.dataCheck.unitPriceColumn ?? ''} placeholder="C" onChange={(event) => updateCriterion(sectionIndex, criterionIndex, (entry) => ({ ...entry, dataCheck: { ...entry.dataCheck!, unitPriceColumn: event.target.value.toUpperCase() || undefined } }))} /></label>
+                            </>}
+                            <p className="text-muted-foreground md:col-span-3">表格明细按单元格位置读取；合计行通过停止标签排除。没有识别到的值会要求确认，不会按 0 计算。</p>
+                          </div>
+                        )}
                       </div>
                     ))}
                     <Button size="sm" variant="outline" onClick={() => updateTemplate((current) => ({ ...current, sections: (current.sections ?? []).map((item, i) => i === sectionIndex ? { ...item, criteria: [...item.criteria, { id: generatedId('criterion'), title: '', requirement: '', execution: 'semantic', targetScope: 'subject' }] } : item) }))}>添加审核标准</Button>

@@ -4,7 +4,7 @@ import type { PiAgentQueryOptions } from '../adapters/pi-agent-adapter'
 import { createPiReviewModelClient } from './pi-review-agent-client'
 
 describe('Pi 审核 Agent 客户端', () => {
-  test('受控检查提交尝试结束 Pi 工具轮，并在缺少模型总结时返回保守摘要', async () => {
+  test('批量调用中检查被拒绝时不结束 Pi 工具轮', async () => {
     let terminateHint: unknown
     const client = createPiReviewModelClient({
       channel: { id: 'test-channel', name: 'Test', provider: 'openai' } as Channel,
@@ -18,6 +18,7 @@ describe('Pi 审核 Agent 客户端', () => {
         if (!submit) throw new Error('submit_checks tool missing')
         const result = await submit.execute('call-submit', { checks: [{ ruleId: 'rule-1' }] } as never, undefined, undefined, {} as never) as { terminate?: boolean }
         terminateHint = result.terminate
+        yield { type: 'assistant', message: { role: 'assistant', content: [{ type: 'text', text: '{"ok":true}' }] } } as SDKMessage
         yield { type: 'result', subtype: 'success' } as SDKMessage
       },
     })
@@ -32,8 +33,34 @@ describe('Pi 审核 Agent 客户端', () => {
       }],
     })
 
-    expect(terminateHint).toBe(true)
-    expect(JSON.parse(result.content).opinion).toContain('审核工具已执行，但 Pi 未返回最终摘要')
+    expect(terminateHint).toBeUndefined()
+    expect(result.content).toBe('{"ok":true}')
+  })
+
+  test('多条计划检查只在必需目标全部接受后提前结束', async () => {
+    const terminateHints: Array<boolean | undefined> = []
+    const client = createPiReviewModelClient({
+      channel: { id: 'test-channel', name: 'Test', provider: 'openai' } as Channel,
+      apiKey: 'test-key', model: 'test-model', cwd: '/tmp/review-case', piAgentDir: '/tmp/pi-config',
+      loadSdk: async () => ({ defineTool: (definition: unknown) => definition }) as never,
+      query: async function* (input) {
+        const submit = input.customTools?.find((tool) => tool.name === 'submit_checks')!
+        for (const ruleId of ['r1', 'r2']) {
+          const result = await submit.execute('call-submit', { checks: [{ ruleId }] } as never, undefined, undefined, {} as never) as { terminate?: boolean }
+          terminateHints.push(result.terminate)
+        }
+        yield { type: 'result', subtype: 'success' } as SDKMessage
+      },
+    })
+    await client.complete({
+      prompt: '逐项提交', system: '审核', terminateAfterTools: ['submit_checks'],
+      requiredToolKeys: ['check:r1::subject::s1', 'check:r2::subject::s1'],
+      tools: [{ name: 'submit_checks', description: '批量提交', input: '{}', execute: async (input) => {
+        const ruleId = String((input.checks as Array<{ ruleId?: string }> | undefined)?.[0]?.ruleId ?? '')
+        return { ok: true, data: { results: [{ ok: true, data: { toolKey: `check:${ruleId}::subject::s1` } }] } }
+      } }],
+    })
+    expect(terminateHints).toEqual([undefined, true])
   })
 
   test('总结阶段未授权提前结束时不把事实记录误认为检查完成', async () => {
@@ -105,9 +132,10 @@ describe('Pi 审核 Agent 客户端', () => {
 
     const output = await client.complete({ prompt: '检查图片材料', system: '审核', images: ['data:image/png;base64,aGVsbG8='] })
 
-    expect(output).toEqual({ content: '{"ok":true}', imagesDropped: true })
+    expect(output).toMatchObject({ content: '{"ok":true}', imagesDropped: true })
+    expect(output.imageFailureReason).toContain('带图请求失败')
     expect(observedImages).toEqual([['data:image/png;base64,aGVsbG8='], []])
-    expect(observedPrompts[1]).toContain('图像中的事实一律标记待人工核对')
+    expect(observedPrompts[1]).toContain('图像事实一律待人工核对')
     },
   )
 
@@ -150,5 +178,21 @@ describe('Pi 审核 Agent 客户端', () => {
     const tool = observed?.customTools?.[0]
     await tool?.execute('call-1', { ruleId: 'r1' } as never, undefined, undefined, {} as never)
     expect(toolCalls).toEqual(['read_rule'])
+  })
+
+  test('Pi query 无事件时总时限仍能结束并取消上游会话', async () => {
+    let aborted = false
+    const client = createPiReviewModelClient({
+      channel: { id: 'test-channel', name: 'Test', provider: 'openai' } as Channel,
+      apiKey: 'test-key', model: 'test-model', timeoutMs: 15, cwd: '/tmp/review-case', piAgentDir: '/tmp/pi-config',
+      loadSdk: async () => ({ defineTool: (definition: unknown) => definition }) as never,
+      abort: () => { aborted = true },
+      query: () => ({ [Symbol.asyncIterator]: () => ({ next: () => new Promise<IteratorResult<SDKMessage>>(() => undefined) }) }),
+    })
+    const startedAt = Date.now()
+    const result = await client.complete({ prompt: '审核', system: '审核', terminateAfterTools: ['submit_checks'] })
+    expect(Date.now() - startedAt).toBeLessThan(500)
+    expect(aborted).toBe(true)
+    expect(JSON.parse(result.content).opinion).toContain('本轮未得到可核验的模型结论')
   })
 })

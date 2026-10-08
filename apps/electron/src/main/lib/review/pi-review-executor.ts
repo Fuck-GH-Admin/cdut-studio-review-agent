@@ -42,7 +42,7 @@ export interface ReviewModelClient {
   protocol: string
   runtime?: 'pi'
   /** 语义节点调用：返回结构化 JSON（不执行文件/网络操作） */
-  complete(input: { prompt: string; system: string; signal?: AbortSignal; images?: string[]; tools?: ReviewTool[]; onToolCall?: (name: string) => void; terminateAfterTools?: string[] }): Promise<{ content: string; imagesDropped?: boolean }>
+  complete(input: { prompt: string; system: string; signal?: AbortSignal; images?: string[]; tools?: ReviewTool[]; onToolCall?: (name: string) => void; terminateAfterTools?: string[]; requiredToolKeys?: string[] }): Promise<{ content: string; imagesDropped?: boolean; imageFailureReason?: string }>
 }
 
 /** 把审核域的受控工具注册为 Pi customTools；review profile 不会加载通用 read/bash/write。 */
@@ -50,13 +50,13 @@ export function buildPiReviewToolDefinitions(
   sdk: PiSdk,
   tools: ReviewTool[],
   onToolCall?: (name: string) => void,
-  onToolResult?: (name: string, outcome: { ok: boolean; data?: unknown }) => void,
+  onToolResult?: (name: string, outcome: { ok: boolean; data?: unknown }) => boolean | void,
   terminateAfterTools: string[] = [],
 ): ToolDefinition[] {
   const schemas: Record<string, ReturnType<typeof Type.Object>> = {
     read_subject_field: Type.Object({ subjectId: Type.String(), fieldKey: Type.String() }),
-    search_document_text: Type.Object({ keyword: Type.String(), role: Type.Optional(Type.Union([Type.Literal('rule'), Type.Literal('application'), Type.Literal('evidence')])) }),
-    search_document_text_batch: Type.Object({ keywords: Type.Array(Type.String()), role: Type.Optional(Type.Union([Type.Literal('rule'), Type.Literal('application'), Type.Literal('evidence')])) }),
+    search_document_text: Type.Object({ keyword: Type.String(), role: Type.Optional(Type.Union([Type.Literal('rule'), Type.Literal('application'), Type.Literal('evidence')])), offset: Type.Optional(Type.Integer({ minimum: 0 })), visualOffset: Type.Optional(Type.Integer({ minimum: 0 })) }),
+    search_document_text_batch: Type.Object({ keywords: Type.Array(Type.String()), role: Type.Optional(Type.Union([Type.Literal('rule'), Type.Literal('application'), Type.Literal('evidence')])), offset: Type.Optional(Type.Integer({ minimum: 0 })) }),
     read_rule: Type.Object({ ruleId: Type.String() }),
     record_observation: Type.Object({ subjectId: Type.String(), fieldKey: Type.String(), kind: Type.Union([Type.Literal('text'), Type.Literal('number'), Type.Literal('date'), Type.Literal('enum'), Type.Literal('boolean'), Type.Literal('multi')]), value: Type.Union([Type.String(), Type.Number(), Type.Boolean(), Type.Array(Type.String())]), documentVersionId: Type.String(), blockId: Type.Optional(Type.String()), quote: Type.Optional(Type.String()) }),
     record_observations: Type.Object({ observations: Type.Array(Type.Object({ subjectId: Type.String(), fieldKey: Type.String(), kind: Type.Union([Type.Literal('text'), Type.Literal('number'), Type.Literal('date'), Type.Literal('enum'), Type.Literal('boolean'), Type.Literal('multi')]), value: Type.Union([Type.String(), Type.Number(), Type.Boolean(), Type.Array(Type.String())]), documentVersionId: Type.String(), blockId: Type.String(), quote: Type.Optional(Type.String()) })) }),
@@ -74,10 +74,10 @@ export function buildPiReviewToolDefinitions(
       async execute(_toolCallId, input) {
         onToolCall?.(tool.name)
         const outcome = await tool.execute(input as Record<string, unknown>)
-        onToolResult?.(tool.name, outcome)
+        const terminateAfterValidatedResult = onToolResult?.(tool.name, outcome) === true
         const batchResults = outcome.ok ? (outcome.data as { results?: unknown[] } | undefined)?.results : undefined
         const submittedBatch = Array.isArray(batchResults) && batchResults.length > 0
-        const terminate = terminateAfterTools.includes(tool.name) && outcome.ok && (
+        const terminate = terminateAfterTools.includes(tool.name) && outcome.ok && terminateAfterValidatedResult && (
           tool.name === 'record_observation'
           || tool.name === 'submit_check'
           || submittedBatch

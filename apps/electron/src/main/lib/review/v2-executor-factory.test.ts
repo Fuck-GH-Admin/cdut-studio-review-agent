@@ -3,7 +3,7 @@ import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { CaseAggregateV2, DocumentVersion, ReviewCaseV2, RuleSpec } from '@profer/shared'
-import { buildDeterministicRuleChecks, collectV2VisionImages } from './v2-executor-factory'
+import { buildDeterministicRuleChecks, collectV2VisionImages, recognizeDocumentImages, recognizeV2VisionBatches } from './v2-executor-factory'
 
 const VISION_ROOT = join(tmpdir(), `cdut-review-v2-vision-${Date.now()}`)
 afterAll(() => rmSync(VISION_ROOT, { recursive: true, force: true }))
@@ -65,6 +65,89 @@ describe('V2 规则执行正确性门禁', () => {
     expect(images[0]).toStartWith('data:image/png;base64,')
   })
 
+  test('超过单次视觉图片上限时分批识别并逐张校验原图块 ID', async () => {
+    const attachments = Array.from({ length: 10 }, (_, index) => ({
+      dataUrl: `data:image/png;base64,${index}`,
+      documentVersionId: 'visual-v1',
+      fileName: '扫描附件.pdf',
+      blockId: `page-${index + 1}`,
+    }))
+    const batchSizes: number[] = []
+    const result = await recognizeV2VisionBatches(attachments, {
+      protocol: 'openai-chat',
+      async complete({ images }) {
+        const batch = images ?? []
+        batchSizes.push(batch.length)
+        const offset = batchSizes.length === 1 ? 0 : 8
+        return { content: JSON.stringify(batch.map((_image, index) => ({ documentVersionId: 'visual-v1', blockId: `page-${offset + index + 1}`, text: `第 ${offset + index + 1} 页文字` }))) }
+      },
+    })
+    expect(batchSizes).toEqual([8, 2])
+    expect(result.recognized.map((item) => item.attachment.blockId)).toHaveLength(10)
+    expect(result.failed).toHaveLength(0)
+  })
+
+  test('视觉批次失败只标记该批图片，不中断其他可识别页', async () => {
+    const attachments = Array.from({ length: 9 }, (_, index) => ({
+      dataUrl: `data:image/png;base64,${index}`,
+      documentVersionId: 'visual-v1',
+      fileName: '扫描附件.pdf',
+      blockId: `page-${index + 1}`,
+    }))
+    let callCount = 0
+    const result = await recognizeV2VisionBatches(attachments, {
+      protocol: 'openai-chat',
+      async complete({ images }) {
+        callCount++
+        if (callCount === 1) return { content: '图像请求失败', imagesDropped: true, imageFailureReason: '网关拒绝图像' }
+        return { content: JSON.stringify((images ?? []).map((_image, index) => ({ documentVersionId: 'visual-v1', blockId: `page-${index + 9}`, text: '可辨认文字' }))) }
+      },
+    })
+    expect(callCount).toBe(2)
+    expect(result.failed.map((item) => item.attachment.blockId)).toHaveLength(8)
+    expect(result.recognized.map((item) => item.attachment.blockId)).toEqual(['page-9'])
+  })
+
+  test('视觉连续失败两批后停止重复等待并把剩余页面标为人工核对', async () => {
+    const attachments = Array.from({ length: 20 }, (_, index) => ({
+      dataUrl: `data:image/png;base64,${index}`,
+      documentVersionId: 'visual-v1',
+      fileName: '扫描附件.pdf',
+      blockId: `page-${index + 1}`,
+    }))
+    let callCount = 0
+    const result = await recognizeV2VisionBatches(attachments, {
+      protocol: 'openai-chat',
+      async complete() {
+        callCount++
+        return { content: '图片请求失败', imagesDropped: true, imageFailureReason: '上游不支持当前图片请求' }
+      },
+    })
+    expect(callCount).toBe(2)
+    expect(result.failed).toHaveLength(20)
+    expect(result.failed[19]?.reason).toContain('为避免重复等待')
+  })
+
+  test('PDF 页图经 OCR 写回可引用文字块与原页坐标', async () => {
+    const caseRoot = join(VISION_ROOT, 'ocr-case')
+    mkdirSync(join(caseRoot, 'source-docs'), { recursive: true })
+    const aggregate = makeAggregate()
+    aggregate.caseV2.documents = [{
+      documentId: 'scan', versionId: 'scan-v1', contentHash: 'scan-hash', role: 'evidence', fileName: '扫描证明.pdf', mimeType: 'application/pdf', sizeBytes: 10, assetPath: 'scan.pdf', parseRevision: 2, parseStatus: 'partial', usage: 'registered', active: true,
+      blocks: [{ blockId: 'page-3-image', kind: 'image', text: '', imageAssetPath: 'source-docs/page-003.png', location: { kind: 'pdf-rect', page: 3, rect: { x: 0, y: 0, w: 500, h: 700 } } }],
+    }]
+    const pages = await recognizeDocumentImages(aggregate, aggregate.caseV2.id, {
+      available: true,
+      async recognize() { return { engine: 'test-ocr', engineVersion: '1', imageWidth: 500, imageHeight: 700, blocks: [{ text: '获奖金额 300 元', confidence: 0.92, rect: { x: 20, y: 30, w: 110, h: 24 } }] } },
+    }, undefined, caseRoot)
+    expect(pages).toHaveLength(1)
+    expect(pages[0]?.status).toBe('done')
+    const ocrBlock = aggregate.caseV2.documents[0]?.blocks.find((block) => block.format === 'ocr-text')
+    expect(ocrBlock?.text).toBe('获奖金额 300 元')
+    expect(ocrBlock?.ocr?.imageBlockId).toBe('page-3-image')
+    expect(ocrBlock?.location).toEqual({ kind: 'pdf-rect', page: 3, rect: { x: 20, y: 30, w: 110, h: 24 } })
+  })
+
   test('按 subject 隔离同名字段，并标记正确目标', () => {
     const checks = buildDeterministicRuleChecks(makeAggregate(), [rule({ id: 'level-national' })])
     expect(checks).toHaveLength(2)
@@ -102,6 +185,60 @@ describe('V2 规则执行正确性门禁', () => {
     ])
     expect(checks.find((check) => check.target.subjectIds[0] === 'subject-a')?.status).toBe('compliant')
     expect(checks.find((check) => check.target.subjectIds[0] === 'subject-b')?.status).toBe('compliant')
+  })
+
+  test('确定性预算规则逐行求和、排除合计行并引用申报值与表格单元格', () => {
+    const aggregate = makeAggregate()
+    aggregate.caseV2.caseFields.budget = { kind: 'number', value: 1680, unit: '元' }
+    aggregate.caseV2.documents = [
+      {
+        documentId: 'application', versionId: 'application-v1', contentHash: 'app-hash', role: 'application', fileName: '申请书.docx', mimeType: 'application/docx', sizeBytes: 1, assetPath: 'application.docx', parseRevision: 1, parseStatus: 'parsed', usage: 'registered', blocks: [
+          { blockId: 'budget-text', kind: 'text', text: '申请经费：1,680 元', location: { kind: 'paragraph', index: 2 } },
+        ],
+      },
+      {
+        documentId: 'budget-sheet', versionId: 'budget-sheet-v1', contentHash: 'sheet-hash', role: 'evidence', materialSlotId: 'budget', fileName: 'activity-budget.xlsx', mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', sizeBytes: 1, assetPath: 'activity-budget.xlsx', parseRevision: 1, parseStatus: 'parsed', usage: 'registered', blocks: [
+          ['A', '活动材料包'], ['B', '20'], ['C', '30'], ['D', '600'],
+          ['A', '场地耗材'], ['B', '10'], ['C', '48'], ['D', '480'],
+          ['A', '宣传印制'], ['B', '4'], ['C', '10'], ['D', '40'],
+          ['A', '设备使用支持'], ['B', '3'], ['C', '120'], ['D', '360'],
+          ['A', '申请表申报总额'], ['D', '1680'], ['A', '明细合计'], ['D', '1480'],
+        ].map(([column, text], index) => ({ blockId: `budget-${index + 1}`, kind: 'table' as const, text: text!, location: { kind: 'sheet-cell' as const, sheet: '预算明细', row: index < 16 ? 6 + Math.floor(index / 4) : index < 18 ? 10 : 11, column: column! } })),
+      },
+    ]
+    const budgetRule = rule({ id: 'budget-sum', targetScope: 'case', dataCheck: { kind: 'sheet-sum-match', materialSlotId: 'budget', sheetName: '预算明细', firstDataRow: 6, labelColumn: 'A', valueColumn: 'D', stopLabels: ['申请表申报总额', '明细合计'], applicantFieldKey: 'budget', quantityColumn: 'B', unitPriceColumn: 'C' } })
+    const [check] = buildDeterministicRuleChecks(aggregate, [budgetRule])
+    expect(check?.status).toBe('non-compliant')
+    expect(check?.reason).toContain('差额 200 元')
+    expect(check?.calculation?.result).toBe('148000')
+    expect(check?.sourceRefs.some((ref) => ref.documentVersionId === 'application-v1' && ref.location.kind === 'paragraph')).toBe(true)
+    expect(check?.sourceRefs.some((ref) => ref.documentVersionId === 'budget-sheet-v1' && ref.location.kind === 'sheet-cell' && ref.location.column === 'D')).toBe(true)
+  })
+
+  test('重复票号报出具体行，金额缺失时不按零完成合计', () => {
+    const aggregate = makeAggregate()
+    const makeExpenseDoc = (missingAmount = false): DocumentVersion => ({
+      documentId: 'expense', versionId: 'expense-v1', contentHash: 'expense-hash', role: 'evidence', materialSlotId: 'claim-form', fileName: 'expense-claim.xlsx', mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', sizeBytes: 1, assetPath: 'expense.xlsx', parseRevision: 1, parseStatus: 'parsed', usage: 'registered',
+      blocks: [
+        ['A', 6, 'TEST-INV-01'], ['A', 7, 'TEST-INV-02'], ['A', 8, 'TEST-INV-02'], ['A', 9, 'TEST-INV-03'], ['A', 11, '明细合计'],
+        ...(missingAmount ? [['E', 8, ''] as [string, number, string]] : []),
+      ].map(([column, row, text], index) => ({ blockId: `expense-${index}`, kind: 'table' as const, text: String(text), location: { kind: 'sheet-cell' as const, sheet: '报销明细', row: Number(row), column: String(column) } })),
+    })
+    aggregate.caseV2.documents = [makeExpenseDoc()]
+    const duplicateRule = rule({ id: 'duplicate-invoice', targetScope: 'case', dataCheck: { kind: 'sheet-unique-values', materialSlotId: 'claim-form', sheetName: '报销明细', firstDataRow: 6, labelColumn: 'A', valueColumn: 'A', stopLabels: ['明细合计'] } })
+    const [duplicate] = buildDeterministicRuleChecks(aggregate, [duplicateRule])
+    expect(duplicate?.status).toBe('non-compliant')
+    expect(duplicate?.reason).toContain('TEST-INV-02')
+    expect(duplicate?.reason).toContain('7、8')
+
+    aggregate.caseV2.caseFields.totalAmount = { kind: 'number', value: 4580, unit: '元' }
+    aggregate.caseV2.documents = [
+      makeExpenseDoc(true),
+      { documentId: 'claim', versionId: 'claim-v1', contentHash: 'claim-hash', role: 'application', fileName: 'claim.docx', mimeType: 'application/docx', sizeBytes: 1, assetPath: 'claim.docx', parseRevision: 1, parseStatus: 'parsed', usage: 'registered', blocks: [{ blockId: 'claim-total', kind: 'text', text: '申报总金额 4,580 元', location: { kind: 'paragraph', index: 1 } }] },
+    ]
+    const [missing] = buildDeterministicRuleChecks(aggregate, [rule({ id: 'expense-sum', targetScope: 'case', dataCheck: { kind: 'sheet-sum-match', materialSlotId: 'claim-form', sheetName: '报销明细', firstDataRow: 6, labelColumn: 'A', valueColumn: 'E', stopLabels: ['明细合计'], applicantFieldKey: 'totalAmount' } })])
+    expect(missing?.status).toBe('awaiting-confirmation')
+    expect(missing?.reason).toContain('未按 0 处理')
   })
 
   test('等级映射也使用人工更正值，并在检查结果中保留事实、证明与出处链', () => {

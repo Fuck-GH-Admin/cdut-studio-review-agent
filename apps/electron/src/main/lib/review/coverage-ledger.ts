@@ -52,6 +52,7 @@ export function buildCheckLedger(
     const subjectIds = result.target?.subjectIds ?? subjectIds0
     const key = `${result.ruleId}::${scope}::${[...subjectIds].sort().join(',')}`
     byRuleTarget.set(key, result)
+    if (scope === 'group' && result.target?.groupKey) byRuleTarget.set(`${result.ruleId}::group-key::${result.target.groupKey}`, result)
   }
   const ledger: CheckLedgerEntry[] = []
   for (const rule of plannedRules) {
@@ -66,13 +67,18 @@ export function buildCheckLedger(
         )
       }
     } else if (rule.targetScope === 'group') {
-      const groups = groupValues?.[rule.id] ?? []
+      // A group rule with no groupBy is one aggregate check for the rule's full section/case scope.
+      // Older runs omitted an explicit groupValues list and produced precisely this aggregate target.
+      const groups = groupValues?.[rule.id] ?? (rule.groupBy?.length ? [] : ['group'])
       if (groups.length === 0) {
         ledger.push({ ruleId: rule.id, targetKey: 'group', status: 'not-executed', reason: '组规则未提供组值，无法展开' })
         continue
       }
       for (const groupValue of groups) {
-        const hit = byRuleTarget.get(`${rule.id}::group::${groupValue}`)
+        const aggregateKey = `${rule.id}::group::${[...ruleSubjectIds].sort().join(',')}`
+        const hit = byRuleTarget.get(`${rule.id}::group-key::${groupValue}`)
+          ?? (groupValue === 'group' ? byRuleTarget.get(aggregateKey) : undefined)
+          ?? byRuleTarget.get(`${rule.id}::group::${groupValue}`)
         ledger.push(
           hit
             ? { ruleId: rule.id, targetKey: groupValue, status: hit.status }
@@ -128,7 +134,7 @@ export function combineCoverage(
   return {
     documents: documentLedger,
     plannedChecks: checkLedger.length,
-    completedChecks: checkLedger.filter((entry) => entry.status !== 'not-executed').length,
+    completedChecks: checkLedger.filter((entry) => entry.status !== 'not-executed' && entry.status !== 'execution-failed').length,
     effectiveVerdicts: checkLedger.filter((entry) => entry.status === 'compliant' || entry.status === 'non-compliant').length,
     pendingChecks: awaiting.length + notExecuted.length,
     allClearVerdictAllowed: blockers.length === 0,

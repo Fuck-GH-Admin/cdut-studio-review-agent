@@ -6,7 +6,7 @@ import { afterAll, describe, expect, test } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewCaseV2, RuleSpec, TemplateVersion } from '@profer/shared'
-import { cancelRunV2, runReviewCaseV2 } from './run-service-v2'
+import { cancelRunV2, computeRunInputHash, runReviewCaseV2 } from './run-service-v2'
 import type { NodeExecutor } from './review-run-graph'
 import { getRunV2, listRunsV2, readArtifact, saveArtifact } from './run-store-v2'
 import { ensureBuiltinTemplateDrafts } from './builtin-templates'
@@ -33,6 +33,14 @@ const done = async (_n: Parameters<NodeExecutor>[0], hash: string) => ({ status:
 const okExecutors: Record<NodeKind, NodeExecutor> = Object.fromEntries(ALL_KINDS.map((kind) => [kind, done])) as Record<NodeKind, NodeExecutor>
 
 describe('runReviewCaseV2（M3 编排）', () => {
+  const autoCheckTemplate: TemplateVersion = { ...template, stages: [{ id: 'auto-check', name: '自动核验', kind: 'auto-check', executorRole: 'system' }] }
+  test('材料读取状态是运行输出，不让本次运行因自身覆盖更新变成过期', () => {
+    const document = { documentId: 'd', versionId: 'd-v1', contentHash: 'h', role: 'application' as const, fileName: '申请.md', mimeType: 'text/markdown', sizeBytes: 1, assetPath: 'd.md', parseRevision: 1, parseStatus: 'parsed' as const, usage: 'registered' as const, blocks: [] }
+    const before = computeRunInputHash({ ...caseV2, documents: [document] }, [], [])
+    const afterRead = computeRunInputHash({ ...caseV2, documents: [{ ...document, usage: 'read' as const, unusedReason: '已由审核节点读取' }] }, [], [])
+    expect(afterRead).toBe(before)
+    expect(computeRunInputHash({ ...caseV2, documents: [{ ...document, parseRevision: 2 }] }, [], [])).not.toBe(before)
+  })
   test('同一案卷的一次运行纳入所有分项标准并分别计算覆盖', async () => {
     const sectionedTemplate: TemplateVersion = {
       ...template,
@@ -119,15 +127,15 @@ describe('runReviewCaseV2（M3 编排）', () => {
       ...okExecutors,
       register: async (_node, hash) => ({ status: 'done', inputHash: hash, artifact: { sourceIds: [], summary: '已登记' } }),
       parse: async (_node, hash) => {
-        const checkpoint = getRunV2(caseV2.id, 'r-midway')!.checkpoints.find(c => c.nodeId === 'node-auto-check-register')!
+        const checkpoint = getRunV2(caseV2.id, 'r-midway')!.checkpoints.find(c => c.nodeId.endsWith('-register'))!
         expect(checkpoint.status).toBe('done')
-        expect(checkpoint.outputRef).toBe('artifacts/node-auto-check-register.json')
+        expect(checkpoint.outputRef).toBe(`artifacts/${checkpoint.nodeId}.json`)
         expect(readArtifact(caseV2.id, 'r-midway', checkpoint.nodeId)).toBeDefined()
         checked = true
         return { status: 'done', inputHash: hash }
       },
     }
-    const run = await runReviewCaseV2(caseV2, template, executors, { runId: 'r-midway' })
+    const run = await runReviewCaseV2(caseV2, autoCheckTemplate, executors, { runId: 'r-midway' })
     expect(checked).toBe(true)
     expect(run.status).toBe('completed')
   })
@@ -137,14 +145,15 @@ describe('runReviewCaseV2（M3 编排）', () => {
     for (const kind of ALL_KINDS) {
       artifacts[kind] = async (_node, hash) => ({ status: 'done', inputHash: hash, artifact: { sourceIds: [], summary: kind } })
     }
-    const initial = await runReviewCaseV2(caseV2, template, artifacts, { runId: 'r-missing' })
-    rmSync(join(CONFIG_DIR, 'review-cases', caseV2.id, 'runs-v2', 'r-missing', 'artifacts', 'node-auto-check-ocr.json'))
+    const initial = await runReviewCaseV2(caseV2, autoCheckTemplate, artifacts, { runId: 'r-missing' })
+    const ocrCheckpoint = initial.checkpoints.find((checkpoint) => checkpoint.nodeId.endsWith('-ocr'))!
+    rmSync(join(CONFIG_DIR, 'review-cases', caseV2.id, 'runs-v2', 'r-missing', ocrCheckpoint.outputRef!))
     const calls = { parse: 0, ocr: 0, extract: 0 }
     const counting = { ...artifacts }
     for (const kind of ['parse', 'ocr', 'extract'] as const) {
       counting[kind] = async (node, hash) => { calls[kind]++; return artifacts[kind](node, hash) }
     }
-    const run = await runReviewCaseV2(caseV2, template, counting, { runId: 'r-missing-resumed', resumeRunId: 'r-missing' })
+    const run = await runReviewCaseV2(caseV2, autoCheckTemplate, counting, { runId: 'r-missing-resumed', resumeRunId: 'r-missing' })
     expect(calls).toEqual({ parse: 0, ocr: 1, extract: 1 })
     expect(run.checkpoints).toHaveLength(initial.checkpoints.length)
     expect(readArtifact<{ runId: string }>(caseV2.id, run.id, 'node-auto-check-register')?.runId).toBe(run.id)
@@ -154,10 +163,11 @@ describe('runReviewCaseV2（M3 编排）', () => {
 
   test('Given 产物指纹损坏 When 同运行续跑 Then 重新执行对应节点', async () => {
     const artifacts: typeof okExecutors = { ...okExecutors, ocr: async (_node, hash) => ({ status: 'done', inputHash: hash, artifact: { sourceIds: [], summary: 'OCR' } }) }
-    await runReviewCaseV2(caseV2, template, artifacts, { runId: 'r-corrupt' })
-    saveArtifact(caseV2.id, 'r-corrupt', 'node-auto-check-ocr', { runId: 'r-corrupt', nodeId: 'node-auto-check-ocr', schemaRevision: 2, dependencyHash: '损坏的指纹', sourceIds: [] })
+    const initial = await runReviewCaseV2(caseV2, autoCheckTemplate, artifacts, { runId: 'r-corrupt' })
+    const ocrCheckpoint = initial.checkpoints.find((checkpoint) => checkpoint.nodeId.endsWith('-ocr'))!
+    saveArtifact(caseV2.id, 'r-corrupt', ocrCheckpoint.nodeId, { runId: 'r-corrupt', nodeId: ocrCheckpoint.nodeId, schemaRevision: 2, dependencyHash: '损坏的指纹', sourceIds: [] })
     let calls = 0
-    const run = await runReviewCaseV2(caseV2, template, { ...artifacts, ocr: async (node, hash) => { calls++; return artifacts.ocr(node, hash) } }, { runId: 'r-corrupt', resumeRunId: 'r-corrupt' })
+    const run = await runReviewCaseV2(caseV2, autoCheckTemplate, { ...artifacts, ocr: async (node, hash) => { calls++; return artifacts.ocr(node, hash) } }, { runId: 'r-corrupt', resumeRunId: 'r-corrupt' })
     expect(calls).toBe(1)
     expect(run.status).toBe('completed')
   })

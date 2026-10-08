@@ -8,7 +8,7 @@ import { buildReviewTools, type ReviewToolContext } from './review-tools'
 const context: ReviewToolContext = {
   caseId: 'c1',
   subjects: [{ id: 's1', type: 'item', title: '省赛一等奖', fields: { declaredScore: { kind: 'number', value: 6 }, category: { kind: 'text', value: 'competition' } }, sourceRefs: [], correction: 'ai-extracted', status: 'identified' }],
-  documents: [{ documentId: 'd1', versionId: 'd1-v1', fileName: '证书.pdf', role: 'evidence', blocks: [{ blockId: 'b1', text: '省赛一等奖证书 省教育厅', kind: 'text' }], contentHash: 'h', mimeType: 'application/pdf', sizeBytes: 1, assetPath: '', parseRevision: 1, parseStatus: 'parsed', usage: 'read' }],
+  documents: [{ documentId: 'd1', versionId: 'd1-v1', fileName: '证书.pdf', role: 'evidence', blocks: [{ blockId: 'b1', text: '省赛一等奖证书 6分；复核记分 3分', kind: 'text', location: { kind: 'paragraph', index: 0 } }], contentHash: 'h', mimeType: 'application/pdf', sizeBytes: 1, assetPath: '', parseRevision: 1, parseStatus: 'parsed', usage: 'read' }],
   rules: [{ id: 'r1', policyVersionId: 'p', title: '竞赛组上限', when: { field: 'category', op: 'eq', value: 'competition' }, requirement: '', targetScope: 'group', execution: 'deterministic', calculation: { valueFrom: 'confirmedLevelScore', aggregate: 'sum', cap: { value: '10.00', unit: 'point' }, allocation: 'score-desc-then-subject-id' }, onFail: 'reject', onUnknown: 'needs-confirmation', sourceRefIds: [], priority: 1, confirmation: 'confirmed' }],
   observations: [],
   evidenceLinks: [],
@@ -50,7 +50,7 @@ describe('审核业务工具集（M3）', () => {
 
     const record = tools.find((tool) => tool.name === 'record_observations')!
     const recorded = await record.execute({ observations: [
-      { subjectId: 's1', fieldKey: 'confirmedLevelScore', kind: 'number', value: 6, documentVersionId: 'd1-v1', blockId: 'b1', quote: '省赛一等奖证书' },
+      { subjectId: 's1', fieldKey: 'confirmedLevelScore', kind: 'number', value: 6, documentVersionId: 'd1-v1', blockId: 'b1', quote: '省赛一等奖证书 6分' },
       { subjectId: 'missing', fieldKey: 'confirmedLevelScore', kind: 'number', value: 6, documentVersionId: 'd1-v1', blockId: 'b1' },
     ] }) as { ok: true; data: { results: Array<{ ok: boolean }> } }
     expect(recorded.data.results.map((result) => result.ok)).toEqual([true, false])
@@ -69,23 +69,41 @@ describe('审核业务工具集（M3）', () => {
     const tools = buildReviewTools(context)
     const record = tools.find((tool) => tool.name === 'record_observation')!
     expect((await record.execute({ subjectId: 's1', fieldKey: 'confirmedLevelScore', kind: 'number', value: 6, documentVersionId: 'd1-v1', blockId: 'b1', quote: '不存在的原文' })).ok).toBeFalse()
-    const first = await record.execute({ subjectId: 's1', fieldKey: 'confirmedLevelScore', kind: 'number', value: 6, documentVersionId: 'd1-v1', blockId: 'b1', quote: '省赛一等奖证书' })
+    const first = await record.execute({ subjectId: 's1', fieldKey: 'confirmedLevelScore', kind: 'number', value: 6, documentVersionId: 'd1-v1', blockId: 'b1', quote: '省赛一等奖证书 6分' })
     expect(first.ok).toBeTrue()
-    const second = await record.execute({ subjectId: 's1', fieldKey: 'confirmedLevelScore', kind: 'number', value: 3, documentVersionId: 'd1-v1', blockId: 'b1', quote: '省赛一等奖证书' })
+    const second = await record.execute({ subjectId: 's1', fieldKey: 'confirmedLevelScore', kind: 'number', value: 3, documentVersionId: 'd1-v1', blockId: 'b1', quote: '复核记分 3分' })
     expect(second.ok).toBeTrue()
     expect(context.observations).toHaveLength(2)
     expect(context.observations[1]!.supersedesObservationId).toBe(context.observations[0]!.id)
   })
 
-  test('Given submit_check（确定性规则）When 提交 Then 走确定引擎产出计算明细', async () => {
+  test('案卷级数字字段可以用带原文的材料事实提取并再次读取', async () => {
+    const local: ReviewToolContext = {
+      ...context,
+      fields: [{ key: 'budget', label: '申请经费', kind: 'number', required: false, visibility: 'internal', scope: 'case', unit: '元' }],
+      caseFields: {},
+      documents: [{ ...context.documents[0]!, blocks: [
+        ...context.documents[0]!.blocks,
+        { blockId: 'budget-block', text: '申请经费：1,680 元', kind: 'text', location: { kind: 'paragraph', index: 1 } },
+      ] }],
+      observations: [], evidenceLinks: [], results: [],
+    }
+    const tools = buildReviewTools(local)
+    const record = tools.find((tool) => tool.name === 'record_observation')!
+    const recorded = await record.execute({ subjectId: 'c1', fieldKey: 'budget', kind: 'number', value: 1680, documentVersionId: 'd1-v1', blockId: 'budget-block', quote: '申请经费：1,680 元' })
+    expect(recorded.ok).toBeTrue()
+    expect(local.observations[0]?.subjectId).toBe('c1')
+    const read = tools.find((tool) => tool.name === 'read_subject_field')!
+    expect(await read.execute({ subjectId: 'c1', fieldKey: 'budget' })).toEqual({ ok: true, data: { known: true, value: 1680, kind: 'number' } })
+  })
+
+  test('Agent 不能覆盖确定性规则的程序计算结果', async () => {
     const tools = buildReviewTools(context)
     const submit = tools.find((tool) => tool.name === 'submit_check')!
     context.subjects[0]!.fields.confirmedLevelScore = num(6)
-    const outcome = (await submit.execute({ ruleId: 'r1', scope: 'group', subjectIds: ['s1'], status: 'compliant', reason: '按确认分计' })) as { ok: true; data: { status: string } }
-    expect(outcome.ok).toBeTrue()
-    expect(context.results).toHaveLength(1)
-    expect(context.results[0]!.executedBy).toBe('deterministic')
-    expect(context.results[0]!.calculation!.detailLines.join('')).toContain('组计入总额')
+    const outcome = await submit.execute({ ruleId: 'r1', scope: 'group', subjectIds: ['s1'], status: 'compliant', reason: '按确认分计' })
+    expect(outcome.ok).toBeFalse()
+    expect(context.results).toHaveLength(0)
   })
 
   test('Given 非法规则/状态 When 提交 Then 如实拒绝（不静默通过）', async () => {

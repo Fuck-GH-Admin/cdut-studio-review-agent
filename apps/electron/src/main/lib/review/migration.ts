@@ -6,7 +6,7 @@
  * - 未配置 domainPack、未知领域 ID、无 items、损坏文件：按映射表处理并记录迁移注记
  */
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { join } from 'node:path'
 import type { ReviewCase } from '@profer/shared'
@@ -109,10 +109,15 @@ export function migrateCaseToV2(v1: ReviewCase): MigrationResult {
   const { templateId, note } = mapDomainToTemplate(v1.domainPackId)
   if (note) note0.push(note)
 
-  // 模板必须真实存在（builtin-templates 幂等落盘保证），否则只记注记不产 V2
-  const templatePath = join(getConfigDir(), 'review-templates', templateId, 'versions', '1.json')
+  // 模板必须真实存在（builtin-templates 幂等落盘保证）；V1 迁移采用当前最高模板版本，
+  // 之后模板版本固定写入 V2 案卷，后续发布不会回写已迁移案卷。
+  const versionsDir = join(getConfigDir(), 'review-templates', templateId, 'versions')
+  const latestVersion = existsSync(versionsDir)
+    ? readdirSync(versionsDir).filter((name) => /^\d+\.json$/.test(name)).map((name) => Number(name.slice(0, -5))).filter(Number.isSafeInteger).sort((a, b) => b - a)[0]
+    : undefined
+  const templatePath = latestVersion === undefined ? undefined : join(versionsDir, `${latestVersion}.json`)
   let template: TemplateVersion | undefined
-  if (templateId && existsSync(templatePath)) {
+  if (templateId && templatePath && existsSync(templatePath)) {
     template = JSON.parse(readFileSync(templatePath, 'utf-8')) as TemplateVersion
   } else {
     note0.push(`模板 ${templateId || '(未映射)'} 不存在：V2 案卷暂不可创建，请先确保内置模板已落盘`)
