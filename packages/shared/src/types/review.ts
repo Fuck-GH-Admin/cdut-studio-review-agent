@@ -82,6 +82,28 @@ export interface SourceDocument {
   importedAt: string
 }
 
+/** 多文件导入结果；失败项按文件返回，已成功的材料不会回滚。 */
+export interface ImportDocumentsResult {
+  documents: SourceDocument[]
+  failures: Array<{ fileName: string; message: string }>
+  canceled: boolean
+}
+
+/** 材料导入的逐文件进度；扫描 PDF 会额外报告页检查和图像渲染阶段。 */
+export interface ReviewImportProgressEvent {
+  requestId: string
+  caseId: string
+  role: SourceDocument['role']
+  phase: 'selecting' | 'file-start' | 'extracting-text' | 'scanning-pdf' | 'rendering-pdf' | 'file-complete' | 'file-failed' | 'batch-complete' | 'cancelled'
+  fileName?: string
+  fileIndex?: number
+  fileCount?: number
+  completedFiles?: number
+  page?: number
+  totalPages?: number
+  message?: string
+}
+
 // ===== 规则包与大纲 =====
 
 /**
@@ -326,6 +348,13 @@ export interface ReviewLatestRunResult {
 /** 审核类型 */
 export type ReviewCaseType = '综合测评' | '活动申请' | '自定义审核'
 
+/** 案卷级手写规则；与上传的审核依据并存，编辑只影响当前案卷。 */
+export interface ManualReviewRule {
+  id: string
+  title: string
+  requirement: string
+}
+
 /** 案卷（demo 核心聚合根） */
 export interface ReviewCase {
   id: string
@@ -352,6 +381,10 @@ export interface ReviewCase {
    * 缺省视为 'comprehensive-assessment'（兼容既有案卷）。
    */
   domainPackId?: ReviewDomainPackId
+  /** 当前案卷固定使用的已发布模板版本；未设置时按领域包选择默认模板。 */
+  reviewTemplate?: { templateId: string; version: number }
+  /** 用户针对当前案卷补充的可编辑规则。 */
+  manualRules?: ManualReviewRule[]
   /**
    * 待审主体文档 ID 列表（P2/D16）：支持多份待审文件（多份合同/多份申报）。
    * 缺省时回落为「role === 'application' 的全部文档」。
@@ -449,8 +482,10 @@ export const REVIEW_IPC_CHANNELS = {
   GET_CASE: 'review:get-case',
   /** 创建空案卷 */
   CREATE_CASE: 'review:create-case',
-  /** 导入文件到案卷（返回解析后的 SourceDocument） */
+  /** 多选导入文件到案卷（逐文件返回解析结果与失败项） */
   IMPORT_DOCUMENT: 'review:import-document',
+  /** 多文件导入进度事件，按 requestId 关联到发起导入的界面。 */
+  IMPORT_DOCUMENT_PROGRESS: 'review:import-document-progress',
   /** 开发版自动化验收：使用受控路径直接导入，避开原生文件选择框。 */
   IMPORT_DOCUMENT_FROM_PATH: 'review:import-document-from-path',
   /** 从当前案卷审核输入中移除材料（原件保留在案卷目录） */
@@ -461,6 +496,14 @@ export const REVIEW_IPC_CHANNELS = {
   DELETE_CASE: 'review:delete-case',
   /** 更新案卷设置（领域包 / 标题 / 类型 / 待审主体文档） */
   UPDATE_CASE_SETTINGS: 'review:update-case-settings',
+  /** 手动修改从依据文件生成的单条规则摘要。 */
+  UPDATE_RULE_OUTLINE: 'review:update-rule-outline',
+  /** 人工修正一条 AI 识别的申报事项。 */
+  UPDATE_REVIEW_ITEM: 'review:update-review-item',
+  /** 安全解析案卷图像块的本地预览路径。 */
+  GET_IMAGE_PREVIEW_PATH: 'review:get-image-preview-path',
+  /** 获取 V2 案卷已登记原件的只读预览路径。 */
+  GET_WORKSPACE_DOCUMENT_PREVIEW_PATH: 'review-v2:get-document-preview-path',
   CONFIRM_RULE_PACK: 'review:confirm-rule-pack',
   /** 生成规则大纲（左栏） */
   GENERATE_RULE_OUTLINE: 'review:generate-rule-outline',
@@ -477,6 +520,11 @@ export const REVIEW_IPC_CHANNELS = {
   GET_TEMPLATE_V2: 'review-v2:get-template',
   PUBLISH_TEMPLATE_V2: 'review-v2:publish-template',
   RUN_REVIEW_V2: 'review-v2:run-review',
+  /** 从真实 Pi 会话启动按案卷授权的直接审核运行。 */
+  PREPARE_PI_REVIEW_V2: 'review-v2:prepare-pi-review',
+  GET_PI_REVIEW_SESSION_V2: 'review-v2:get-pi-review-session',
+  /** 发送失败时结束直接审核运行并撤销本轮授权。 */
+  ABORT_PI_REVIEW_V2: 'review-v2:abort-pi-review',
   LIST_RUNS_V2: 'review-v2:list-runs',
   GET_RUN_V2: 'review-v2:get-run',
   CANCEL_RUN_V2: 'review-v2:cancel-run',
@@ -531,6 +579,9 @@ export const REVIEW_IPC_CHANNELS = {
   EXPORT_REPORT: 'review:export-report',
   /** 查询当前可用模型出口（网关自检） */
   GET_MODEL_GATEWAY_STATUS: 'review:get-model-gateway-status',
+  /** 查询/保存审核模块独立使用的 Agent 渠道与模型。 */
+  GET_MODULE_SETTINGS_V2: 'review-v2:get-module-settings',
+  SAVE_MODULE_SETTINGS_V2: 'review-v2:save-module-settings',
 } as const
 
 export type ReviewIpcChannel = (typeof REVIEW_IPC_CHANNELS)[keyof typeof REVIEW_IPC_CHANNELS]
@@ -549,6 +600,11 @@ export interface ReviewModelGatewayStatus {
   modelId?: string
   /** 不可用原因 */
   reason?: string
+}
+
+/** 审核模块偏好。密钥仍保存在全局渠道配置里，这里只保存选择的渠道和模型 ID。 */
+export interface ReviewModuleSettingsV2 {
+  agentModelSelection: { channelId: string; modelId: string } | null
 }
 
 /** 请求：生成规则大纲 */
@@ -576,6 +632,31 @@ export interface UpdateCaseSettingsRequest {
   type?: ReviewCaseType
   /** 待审主体文档 ID 列表（P2 多待审文件） */
   subjectDocumentIds?: string[]
+  /** 设置为 null 时回退到按审核类型匹配的默认模板。 */
+  reviewTemplate?: { templateId: string; version: number } | null
+  /** 全量替换本案手写规则；传空数组可清空。 */
+  manualRules?: ManualReviewRule[]
+}
+
+/** 请求：编辑依据文件生成的规则摘要（来源锚点由主进程保留）。 */
+export interface UpdateRuleOutlineRequest {
+  caseId: string
+  rulePackId: string
+  ruleId: string
+  title: string
+  summary: string
+}
+
+/** 请求：人工修正 AI 识别的申报事项字段。来源锚点和材料关联由主进程保留。 */
+export interface UpdateReviewItemRequest {
+  caseId: string
+  itemId: string
+  title: string
+  category: string
+  declaredScore: number
+  level?: string
+  activityDate?: string
+  organizer?: string
 }
 
 /** 请求：助手对话 */

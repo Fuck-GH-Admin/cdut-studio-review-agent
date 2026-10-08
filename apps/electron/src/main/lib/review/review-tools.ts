@@ -113,7 +113,7 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
   const tools: ReviewTool[] = [
     {
       name: 'list_review_documents',
-      description: '列出当前案卷中已激活材料的版本、用途、解析状态、表格工作表和图像页 blockId；不读取原始文件路径。',
+      description: '列出当前案卷中已激活材料的版本、用途、解析状态与错误、可读材料块数、表格工作表和图像页 blockId；解析失败的材料不会提供空占位块，应查看原件并按需补充。',
       input: '{ role? }',
       async execute(input) {
         const role = typeof input.role === 'string' ? input.role : undefined

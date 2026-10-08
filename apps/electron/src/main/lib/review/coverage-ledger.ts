@@ -15,14 +15,19 @@ export interface DocumentLedgerEntry {
   reason?: string
 }
 
-/** 材料账本：从文档版本直接投影（usage 字段由解析/审核流程维护） */
+/** 材料账本：解析失败的旧材料即使残留 usage=read，也不能当作读过原件。 */
 export function buildDocumentLedger(documents: DocumentVersion[]): DocumentLedgerEntry[] {
-  return documents.map((doc) => ({
-    documentVersionId: doc.versionId,
-    fileName: doc.fileName,
-    status: doc.usage,
-    reason: doc.unusedReason,
-  }))
+  return documents.map((doc) => {
+    const parseFailed = doc.parseStatus === 'failed'
+    return {
+      documentVersionId: doc.versionId,
+      fileName: doc.fileName,
+      status: parseFailed ? 'unread' : doc.usage,
+      reason: parseFailed
+        ? `自动解析失败；空占位块不代表读过原件。${doc.parseError ? `解析原因：${doc.parseError}` : '请重新解析或打开原件核验。'}`
+        : doc.unusedReason,
+    }
+  })
 }
 
 export interface CheckLedgerEntry {

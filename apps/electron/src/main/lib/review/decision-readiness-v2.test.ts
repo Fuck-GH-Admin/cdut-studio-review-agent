@@ -27,6 +27,40 @@ describe('UI/服务端统一的最终决定就绪判断', () => {
     expect(result.ready).toBeFalse()
   })
 
+  test('Agent 本次运行已完整读取的材料不再因案卷元数据仍为 registered 而阻断决定', () => {
+    const document = { documentId: 'd1', versionId: 'd1-v1', contentHash: '', role: 'evidence' as const, fileName: '证书.pdf', mimeType: 'application/pdf', sizeBytes: 10, assetPath: '', parseRevision: 1, parseStatus: 'parsed' as const, blocks: [{ blockId: 'b1', text: '内容', kind: 'text' as const }], usage: 'registered' as const }
+    const result = assessDecisionReadiness({
+      aggregate: aggregate({ caseV2: { ...aggregate().caseV2, documents: [document] }, adjudications: [accepted] }),
+      run: run({ coverage: { documents: [{ documentVersionId: document.versionId, status: 'read' }], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 } }),
+      runStale: false,
+      template: { materialSlots: [] } as unknown as TemplateVersion,
+    })
+    expect(result).toEqual({ ready: true, blockers: [] })
+  })
+
+  test('解析失败材料的历史空占位块阅读状态不能解除最终决定阻断', () => {
+    const document = { documentId: 'd1', versionId: 'd1-v1', contentHash: '', role: 'evidence' as const, fileName: '损坏.pdf', mimeType: 'application/pdf', sizeBytes: 10, assetPath: '', parseRevision: 1, parseStatus: 'failed' as const, parseError: '文件损坏', blocks: [{ blockId: 'placeholder', text: '', kind: 'text' as const }], usage: 'read' as const }
+    const result = assessDecisionReadiness({
+      aggregate: aggregate({ caseV2: { ...aggregate().caseV2, documents: [document] }, adjudications: [accepted] }),
+      run: run({ coverage: { documents: [{ documentVersionId: document.versionId, status: 'unread', reason: '自动解析失败；读取空占位块不代表读取了原件' }], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 } }),
+      runStale: false,
+      template: { materialSlots: [] } as unknown as TemplateVersion,
+    })
+    expect(result.blockers).toContainEqual(expect.objectContaining({ kind: 'unread-material', id: document.versionId }))
+  })
+
+  test('当前运行只部分读取材料时仍保留带读取范围的阻断', () => {
+    const document = { documentId: 'd1', versionId: 'd1-v1', contentHash: '', role: 'evidence' as const, fileName: '申请书.docx', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', sizeBytes: 10, assetPath: '', parseRevision: 1, parseStatus: 'parsed' as const, blocks: [{ blockId: 'b1', text: '内容', kind: 'text' as const }], usage: 'registered' as const }
+    const reason = '本次审核通过材料工具读取了 1/4 个材料块'
+    const result = assessDecisionReadiness({
+      aggregate: aggregate({ caseV2: { ...aggregate().caseV2, documents: [document] }, adjudications: [accepted] }),
+      run: run({ coverage: { documents: [{ documentVersionId: document.versionId, status: 'partially-read', reason }], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 } }),
+      runStale: false,
+      template: { materialSlots: [] } as unknown as TemplateVersion,
+    })
+    expect(result.blockers).toContainEqual(expect.objectContaining({ kind: 'unread-material', id: document.versionId, message: expect.stringContaining(reason) }))
+  })
+
   test('非规则相关事实不阻断，当前认定和显式豁免可以完成决定就绪', () => {
     const result = assessDecisionReadiness({
       aggregate: aggregate({ adjudications: [accepted], dispositions: [{ findingKey: 'check-a', disposition: 'waived', actor: 'reviewer', reason: '保留人工豁免记录', at: '', runId: 'r1', inputHash: 'h1' }] }),

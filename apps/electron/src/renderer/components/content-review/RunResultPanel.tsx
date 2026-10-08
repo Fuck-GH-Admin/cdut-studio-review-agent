@@ -98,7 +98,7 @@ export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refre
         </div>
       </div>
       {preflight && (
-        <div className="space-y-0.5 rounded-md bg-muted/40 px-2 py-1.5 text-[11px] text-muted-foreground">
+        <div className="space-y-0.5 rounded-md bg-muted/40 px-2 py-1.5 text-xs text-muted-foreground">
           <p>本模板分工：程序核对 {preflight.deterministicCount} 项 · Agent 核对 {preflight.semanticCount} 项 · 人工确认 {preflight.manualCount} 项。</p>
           {preflight.missingRequiredSlots.length > 0 && <p>尚缺必需材料：{preflight.missingRequiredSlots.join('、')}。上传后再开始，避免把缺件误作通过。</p>}
           {preflight.missingDataCheckSlots.length > 0 && <p>表格计算尚未就绪：{preflight.missingDataCheckSlots.join('、')}。缺少工作簿时对应计算会显示待补件。</p>}

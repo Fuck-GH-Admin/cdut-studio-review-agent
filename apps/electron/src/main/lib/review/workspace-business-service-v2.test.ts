@@ -80,6 +80,20 @@ describe('三栏单案的 V2 业务闭环事务', () => {
     }
   })
 
+  test('当前审核有未处理项时仍允许审核员以理由驳回', async () => {
+    const { caseId, run } = await seed()
+    const result = await decideWorkspaceCaseV2(caseId, {
+      requestId: request(), actor, expectedRevision: 0,
+      payload: { result: 'reject', reason: '当前材料与审核要求不符，按问题结论驳回', basedOnRunId: run.id, inputHash: run.inputManifest.hash },
+    })
+    expect(result.ok).toBeTrue()
+    if (result.ok) {
+      expect(result.entity?.result).toBe('reject')
+      expect(result.aggregate.caseV2.stage).toBe('decided')
+      expect(result.aggregate.decisions.at(-1)?.reason).toContain('驳回')
+    }
+  })
+
   test('Given 案卷输入变更 When 处理旧运行 Then 明确拒绝过期处置', async () => {
     const { caseId, run } = await seed()
     await submitCommand(caseId, { requestId: request(), actor, expectedRevision: 0, type: 'InputChanged', payload: {} }, (_aggregate) => ({

@@ -15,6 +15,12 @@ import { getConfigDir } from '../config-paths'
 import { archiveTemplateInCatalog, isTemplateArchived, listArchivedTemplateIds, orderTemplateIds, reorderTemplateCatalog, restoreTemplateInCatalog } from './template-catalog'
 
 export const TEMPLATE_SCHEMA_VERSION = 2
+const SAFE_TEMPLATE_ID = /^[\p{L}\p{N}_-]{1,120}$/u
+
+/** 模板 ID 允许中文等 Unicode 字母/数字，但不允许路径分隔符或点号。 */
+export function isSafeTemplateId(value: unknown): value is string {
+  return typeof value === 'string' && SAFE_TEMPLATE_ID.test(value)
+}
 
 function templatesRoot(): string {
   const dir = join(getConfigDir(), 'review-templates')
@@ -34,6 +40,7 @@ function writeAtomic(filePath: string, data: unknown): void {
 
 /** 读取模板；version 缺省取最大已存版本 */
 export function getTemplate(templateId: string, version?: number): TemplateVersion | undefined {
+  if (!isSafeTemplateId(templateId)) return undefined
   const dir = join(templatesRoot(), templateId, 'versions')
   if (!existsSync(dir)) return undefined
   const versions = readdirSync(dir)

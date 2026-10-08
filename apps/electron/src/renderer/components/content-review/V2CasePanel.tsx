@@ -6,7 +6,7 @@
  */
 
 import { atom, useAtomValue, useStore, useSetAtom } from 'jotai'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { Actor, CaseAggregateV2, FieldSpec, ReviewCommandResult, TemplateVersion } from '@profer/shared'
 import { Button } from '@profer/ui/primitives/button'
 import { toast } from 'sonner'
@@ -65,6 +65,13 @@ export function V2CasePanel(): JSX.Element {
 
   const [caseList, setCaseList] = useState<CaseListEntry[]>([])
   const [templates, setTemplates] = useState<TemplateVersion[]>([])
+  const publishedTemplates = useMemo(() => {
+    const latestByTemplate = new Map<string, TemplateVersion>()
+    for (const template of [...templates].filter((item) => item.status === 'published').sort((a, b) => b.version - a.version)) {
+      if (!latestByTemplate.has(template.templateId)) latestByTemplate.set(template.templateId, template)
+    }
+    return [...latestByTemplate.values()]
+  }, [templates])
   const templatesRefresh = useAtomValue(templatesRefreshAtom)
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateVersion | null>(null)
   const [fieldValues, setFieldValues] = useState<Record<string, string>>({})
@@ -228,10 +235,11 @@ export function V2CasePanel(): JSX.Element {
         <p className="text-xs font-medium text-muted-foreground">从模板新建审核任务</p>
         <select className="w-full rounded-md border bg-background px-2 py-1 text-xs" value={selectedTemplate ? `${selectedTemplate.templateId}@${selectedTemplate.version}` : ''} onChange={(event) => selectTemplate(event.target.value)}>
           <option value="">选择已发布模板…</option>
-          {templates.filter((template) => template.status === 'published').map((template) => (
+          {publishedTemplates.map((template) => (
             <option key={`${template.templateId}@${template.version}`} value={`${template.templateId}@${template.version}`}>{template.name} v{template.version}</option>
           ))}
         </select>
+        <p className="text-xs text-muted-foreground">当前有 {publishedTemplates.length} 套已发布模板可创建案卷；草稿和参考范本需先在模板库配置并发布。</p>
         {selectedTemplate && (
           <>
             <input className="w-full rounded-md border bg-background px-2 py-1 text-xs" placeholder="案卷标题" value={newTitle} onChange={(event) => setNewTitle(event.target.value)} />
@@ -249,12 +257,12 @@ export function V2CasePanel(): JSX.Element {
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <p className="text-xs font-medium">{section.order + 1}. {section.name}{section.required ? ' · 必需分项' : ''}</p>
-                      {section.description && <p className="mt-0.5 text-[11px] text-muted-foreground">{section.description}</p>}
+                      {section.description && <p className="mt-0.5 text-xs text-muted-foreground">{section.description}</p>}
                     </div>
                     <Button size="sm" variant="outline" onClick={() => setSubjectRows((current) => [...current, { id: subjectId(section.id), title: '', sectionId: section.id, fieldValues: {} }])}>添加事项</Button>
                   </div>
-                  {section.criteria.length > 0 && <details className="text-[11px] text-muted-foreground"><summary className="cursor-pointer">本分项审核标准（{section.criteria.length}）</summary><ol className="mt-1 list-decimal space-y-1 pl-5">{section.criteria.map((criterion) => <li key={criterion.id}><span className="font-medium">{criterion.title}</span>：{criterion.requirement}</li>)}</ol></details>}
-                  {rows.length === 0 && <p className="rounded bg-background px-2 py-2 text-[11px] text-muted-foreground">此分项暂未添加申报事项{section.required ? '（创建案卷前需要添加）' : ''}。</p>}
+                  {section.criteria.length > 0 && <details className="text-xs text-muted-foreground"><summary className="cursor-pointer">本分项审核标准（{section.criteria.length}）</summary><ol className="mt-1 list-decimal space-y-1 pl-5">{section.criteria.map((criterion) => <li key={criterion.id}><span className="font-medium">{criterion.title}</span>：{criterion.requirement}</li>)}</ol></details>}
+                  {rows.length === 0 && <p className="rounded bg-background px-2 py-2 text-xs text-muted-foreground">此分项暂未添加申报事项{section.required ? '（创建案卷前需要添加）' : ''}。</p>}
                   {rows.map((subject) => (
                     <div key={subject.id} className="space-y-1.5 rounded-md bg-background p-2">
                       <div className="flex items-center gap-2">
@@ -263,7 +271,7 @@ export function V2CasePanel(): JSX.Element {
                       </div>
                       {specs.map((field) => (
                         <div key={field.key} className="flex items-center gap-2">
-                          <span className="w-28 shrink-0 truncate text-[11px]">{field.label}{field.required ? ' *' : ''}</span>
+                          <span className="w-28 shrink-0 truncate text-xs">{field.label}{field.required ? ' *' : ''}</span>
                           {renderTemplateFieldInput(field, subject.fieldValues[field.key] ?? '', (value) => updateSubject(subject.id, (current) => ({ ...current, fieldValues: { ...current.fieldValues, [field.key]: value } })))}
                         </div>
                       ))}
@@ -280,7 +288,7 @@ export function V2CasePanel(): JSX.Element {
                     <div className="flex items-center gap-2"><input className="flex-1 rounded border px-2 py-1 text-xs" placeholder="事项名称" value={subject.title} onChange={(event) => updateSubject(subject.id, (current) => ({ ...current, title: event.target.value }))} /><Button size="sm" variant="ghost" onClick={() => setSubjectRows((current) => current.filter((item) => item.id !== subject.id))}>删除</Button></div>
                     {selectedTemplate.fields.filter((field) => (field.scope ?? 'subject') === 'subject').map((field) => (
                       <div key={field.key} className="flex items-center gap-2">
-                        <span className="w-28 shrink-0 text-[11px]">{field.label}{field.required ? ' *' : ''}</span>
+                        <span className="w-28 shrink-0 text-xs">{field.label}{field.required ? ' *' : ''}</span>
                         {renderTemplateFieldInput(field, subject.fieldValues[field.key] ?? '', (value) => updateSubject(subject.id, (current) => ({ ...current, fieldValues: { ...current.fieldValues, [field.key]: value } })))}
                       </div>
                     ))}
@@ -289,7 +297,7 @@ export function V2CasePanel(): JSX.Element {
                 <Button size="sm" variant="outline" onClick={() => setSubjectRows((current) => [...current, { id: subjectId(), title: '', fieldValues: {} }])}>添加事项</Button>
               </div>
             )}
-            <p className="text-[11px] text-muted-foreground">保存后可在案卷材料区分别选择共用材料或分项材料槽；整份案卷只需启动一次审核。</p>
+            <p className="text-xs text-muted-foreground">保存后可在案卷材料区分别选择共用材料或分项材料槽；整份案卷只需启动一次审核。</p>
             <Button size="sm" disabled={!newTitle.trim() || store.get(reviewV2BusyAtom)} onClick={() => void createFromTemplate()}>创建一份案卷</Button>
           </>
         )}
@@ -326,7 +334,7 @@ export function V2CasePanel(): JSX.Element {
               </div>
             )}
             {current.caseV2.documents.length > 0 && (
-              <ul className="list-disc space-y-1 pl-4 text-[13px] text-muted-foreground">
+              <ul className="list-disc space-y-1 pl-4 text-sm text-muted-foreground">
                 {current.caseV2.documents.map((doc) => (
                   <li key={doc.versionId}>{doc.fileName} · {doc.versionId.slice(-8)}{doc.active === false ? '（旧版）' : ''}{doc.materialSlotId ? ` · ${currentTemplate?.materialSlots.find((slot) => slot.id === doc.materialSlotId)?.name ?? doc.materialSlotId}` : ''}</li>
                 ))}

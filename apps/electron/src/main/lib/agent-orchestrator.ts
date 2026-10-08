@@ -3287,9 +3287,13 @@ ${enrichedMessage}`
     // C3 清理语义：会话停止即撤销其审核指派（新写入被拒；已完成动作保留时间线）
     try {
       const { listAssignments, revokeAssignment } = require('./review/review-agent-assignment') as typeof import('./review/review-agent-assignment')
+      const { cancelPiReviewRunForSession } = require('./review/pi-case-review-service') as typeof import('./review/pi-case-review-service')
       let revoked = 0
       for (const assignment of listAssignments(sessionId)) {
-        if (!assignment.revokedAt && revokeAssignment(assignment.id)) revoked += 1
+        if (!assignment.revokedAt) {
+          cancelPiReviewRunForSession(sessionId, assignment)
+          if (revokeAssignment(assignment.id)) revoked += 1
+        }
       }
       if (revoked > 0) console.log(`[Agent 编排] 会话停止，已撤销 ${revoked} 个审核指派: sessionId=${sessionId}`)
     } catch (err) {

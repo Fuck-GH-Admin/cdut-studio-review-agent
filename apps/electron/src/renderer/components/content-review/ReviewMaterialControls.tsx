@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { useAtomValue } from 'jotai'
 import { toast } from 'sonner'
-import { ChevronDown, ChevronUp, LoaderCircle, Plus, Trash2 } from 'lucide-react'
-import type { SourceDocument } from '@profer/shared'
+import { ChevronDown, ChevronUp, LoaderCircle, Plus, Trash2, Upload } from 'lucide-react'
+import type { ReviewImportProgressEvent, SourceDocument } from '@profer/shared'
 import { Button } from '@profer/ui/primitives/button'
 import { ConfirmDialog } from '@profer/ui/primitives/confirm-dialog'
 import { reviewCaseAtom } from '@/atoms/review-atoms'
@@ -14,28 +14,65 @@ const ROLE_NAMES: Record<SourceDocument['role'], string> = {
   evidence: '证明材料',
 }
 
+function createImportRequestId(): string {
+  return globalThis.crypto?.randomUUID?.() ?? `review-import-${Date.now()}-${Math.random().toString(36).slice(2)}`
+}
+
+function importProgressLabel(progress: ReviewImportProgressEvent | null, fallback: string): string {
+  if (!progress) return fallback
+  const batch = progress.fileIndex && progress.fileCount ? `${progress.fileIndex}/${progress.fileCount} · ` : ''
+  if (progress.phase === 'selecting') return '等待选择文件…'
+  if (progress.phase === 'scanning-pdf' || progress.phase === 'rendering-pdf') return `${batch}检查 PDF ${progress.page ?? 0}/${progress.totalPages ?? 0} 页`
+  if (progress.phase === 'extracting-text') return `${batch}正在解析：${progress.fileName ?? ''}`
+  if (progress.phase === 'file-failed') return `${batch}导入失败：${progress.fileName ?? '文件'}`
+  if (progress.phase === 'file-complete') return `${batch}已导入：${progress.fileName ?? '文件'}`
+  return `${batch}${progress.message ?? fallback}`
+}
+
+function subscribeToImportProgress(callback: (event: ReviewImportProgressEvent) => void): (() => void) | undefined {
+  // dev 下 renderer 可能先于 preload 热更新；旧 bridge 不提供进度订阅时仍允许正常上传。
+  const subscribe = window.reviewAPI?.onImportProgress
+  return typeof subscribe === 'function' ? subscribe(callback) : undefined
+}
+
 export function ReviewMaterialLaneActions({
   role,
   documentIds,
   actions,
+  onAddManual,
 }: {
   role: SourceDocument['role']
   documentIds: string[]
   actions: ReviewActions
+  onAddManual?: () => void
 }): React.ReactElement {
   const reviewCase = useAtomValue(reviewCaseAtom)
   const [importing, setImporting] = React.useState(false)
+  const [progress, setProgress] = React.useState<ReviewImportProgressEvent | null>(null)
+  const activeRequestId = React.useRef<string | null>(null)
   const [clearOpen, setClearOpen] = React.useState(false)
   const [clearing, setClearing] = React.useState(false)
   const name = ROLE_NAMES[role]
 
+  React.useEffect(() => subscribeToImportProgress((event) => {
+    if (event.requestId === activeRequestId.current) setProgress(event)
+  }), [])
+
   const importOne = async (): Promise<void> => {
     if (!reviewCase || importing) return
+    const requestId = createImportRequestId()
+    activeRequestId.current = requestId
+    setProgress({ requestId, caseId: reviewCase.id, role, phase: 'selecting', message: '等待选择文件' })
     setImporting(true)
     try {
-      const document = await actions.importDocument(role)
-      if (document) toast.success(`已添加${name}：${document.fileName}`)
+      const result = await actions.importDocument(role, requestId)
+      if (result?.documents.length) toast.success(`已添加 ${result.documents.length} 份${name}`)
+      if (result?.failures.length) toast.error(`${result.failures.length} 份文件导入失败：${result.failures.slice(0, 3).map((failure) => failure.fileName).join('、')}`)
+    } catch (error) {
+      toast.error(`${name}导入失败：${error instanceof Error ? error.message : String(error)}`)
     } finally {
+      activeRequestId.current = null
+      setProgress(null)
       setImporting(false)
     }
   }
@@ -56,25 +93,38 @@ export function ReviewMaterialLaneActions({
 
   return (
     <div className="flex shrink-0 items-center gap-1.5">
-      <Button
-        type="button"
-        size="sm"
-        variant="outline"
-        className="h-7 gap-1 px-2 text-[11px]"
-        disabled={!reviewCase || importing}
-        title={reviewCase ? `只添加到${name}` : '请先新建审核任务'}
-        onClick={() => void importOne()}
-      >
-        {importing ? <LoaderCircle size={12} className="animate-spin" /> : <Plus size={12} />}
-        {importing ? '选择中…' : `添加${name}`}
-      </Button>
+      {role === 'rule' && onAddManual ? (
+        <>
+          <Button type="button" size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs" disabled={!reviewCase || importing} title={reviewCase ? '手写一条审核依据' : '请先新建审核任务'} onClick={onAddManual}>
+            <Plus size={12} />添加依据
+          </Button>
+          <Button type="button" size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs" disabled={!reviewCase || importing} title={importing ? importProgressLabel(progress, '等待选择…') : reviewCase ? '从本地选择依据文件' : '请先新建审核任务'} onClick={() => void importOne()}>
+          {importing ? <LoaderCircle size={12} className="animate-spin" /> : <Plus size={12} />}
+            {importing ? <span className="min-w-0 max-w-40 truncate">{importProgressLabel(progress, '等待选择…')}</span> : '上传依据'}
+          </Button>
+        </>
+      ) : (
+        <Button
+          id={role === 'evidence' ? 'review-evidence-upload-button' : undefined}
+          type="button"
+          size="sm"
+          variant="outline"
+          className="h-7 gap-1 px-2 text-xs"
+          disabled={!reviewCase || importing}
+          title={importing ? importProgressLabel(progress, '正在导入…') : reviewCase ? `只添加到${name}` : '请先新建审核任务'}
+          onClick={() => void importOne()}
+        >
+          {importing ? <LoaderCircle size={12} className="animate-spin" /> : <Plus size={12} />}
+          {importing ? <span className="min-w-0 max-w-40 truncate">{importProgressLabel(progress, '等待选择…')}</span> : `添加${name}`}
+        </Button>
+      )}
       {documentIds.length > 0 && (
         <>
           <Button
             type="button"
             size="sm"
             variant="ghost"
-            className="h-7 px-1.5 text-[11px] text-muted-foreground hover:text-destructive"
+            className="h-7 px-1.5 text-xs text-muted-foreground hover:text-destructive"
             disabled={clearing}
             onClick={() => setClearOpen(true)}
           >
@@ -92,6 +142,91 @@ export function ReviewMaterialLaneActions({
           />
         </>
       )}
+    </div>
+  )
+}
+
+/** 中栏申报材料与证明材料的统一拖放导入框。 */
+export function ReviewMaterialDropZone({
+  role,
+  hasDocuments,
+  actions,
+}: {
+  role: 'application' | 'evidence'
+  hasDocuments: boolean
+  actions: ReviewActions
+}): React.ReactElement {
+  const reviewCase = useAtomValue(reviewCaseAtom)
+  const [dragging, setDragging] = React.useState(false)
+  const [importing, setImporting] = React.useState(false)
+  const [progress, setProgress] = React.useState<ReviewImportProgressEvent | null>(null)
+  const activeRequestId = React.useRef<string | null>(null)
+  const dragCounter = React.useRef(0)
+  const label = role === 'application' ? '申报材料' : '证明材料'
+
+  React.useEffect(() => subscribeToImportProgress((event) => {
+    if (event.requestId === activeRequestId.current) setProgress(event)
+  }), [])
+
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>): Promise<void> => {
+    event.preventDefault()
+    event.stopPropagation()
+    setDragging(false)
+    dragCounter.current = 0
+    if (!reviewCase || importing) return
+    const files = Array.from(event.dataTransfer.files ?? [])
+    if (files.length === 0) return
+
+    const paths: string[] = []
+    for (const file of files) {
+      try {
+        const path = window.electronAPI.getPathForFile(file)
+        if (path) paths.push(path)
+      } catch { /* 无法读取本地路径的文件会在下方汇总提示 */ }
+    }
+    if (paths.length === 0) {
+      toast.error('无法读取拖入文件的本地路径，请点击右上角按钮选择文件')
+      return
+    }
+
+    setImporting(true)
+    const requestId = createImportRequestId()
+    activeRequestId.current = requestId
+    setProgress({ requestId, caseId: reviewCase.id, role, phase: 'extracting-text', fileName: paths[0], message: `正在导入 ${paths.length} 份${label}` })
+    let imported = 0
+    try {
+      for (const path of paths) {
+        if (await actions.importDocumentFromPath(role, path, requestId)) imported += 1
+      }
+      if (imported > 0) toast.success(`已添加 ${imported} 份${label}`)
+      if (imported < paths.length) toast.error(`${paths.length - imported} 份文件未能导入，请查看页面提示`)
+    } finally {
+      activeRequestId.current = null
+      setProgress(null)
+      setImporting(false)
+    }
+  }
+
+  return (
+    <div
+      role="region"
+      aria-label={`拖入${label}文件`}
+      onDragEnter={(event) => { event.preventDefault(); event.stopPropagation(); dragCounter.current += 1; setDragging(true) }}
+      onDragOver={(event) => { event.preventDefault(); event.stopPropagation() }}
+      onDragLeave={(event) => { event.preventDefault(); event.stopPropagation(); dragCounter.current = Math.max(0, dragCounter.current - 1); if (dragCounter.current === 0) setDragging(false) }}
+      onDrop={(event) => void handleDrop(event)}
+      className={[
+        'flex shrink-0 items-center justify-center gap-2 rounded-lg border border-dashed px-3 text-center transition-colors',
+        hasDocuments ? 'min-h-12 py-2' : 'min-h-16 py-3',
+        dragging ? 'border-primary bg-primary/5 text-primary' : 'border-border/70 text-muted-foreground',
+        importing ? 'opacity-70' : '',
+      ].join(' ')}
+    >
+      {importing ? <LoaderCircle size={15} className="shrink-0 animate-spin" /> : <Upload size={15} className="shrink-0" />}
+      <div className="min-w-0">
+        <p className="text-xs font-medium">{importing ? importProgressLabel(progress, `正在导入${label}…`) : dragging ? `松手添加为${label}` : `将文件拖到这里添加${label}`}</p>
+        {!dragging && !importing && <p className="mt-0.5 text-xs">支持一次拖入多个文件</p>}
+      </div>
     </div>
   )
 }

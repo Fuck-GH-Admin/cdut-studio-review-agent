@@ -179,14 +179,14 @@ export function CreateCaseDialog({ open, onOpenChange, onCreate }: CreateCaseDia
                       className={cn('mt-0.5 shrink-0', pack.id === domainPackId ? 'opacity-100' : 'opacity-0')}
                     />
                     <span className="min-w-0 flex-1">
-                      <span className="block text-[13px] font-medium text-foreground">{pack.name}</span>
-                      <span className="mt-0.5 block text-[11px] leading-4 text-muted-foreground">{pack.description}</span>
+                      <span className="block text-sm font-medium text-foreground">{pack.name}</span>
+                      <span className="mt-0.5 block text-xs leading-4 text-muted-foreground">{pack.description}</span>
                     </span>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <p className="text-[11px] leading-4 text-muted-foreground">{selectedPack.description}</p>
+            <p className="text-xs leading-4 text-muted-foreground">{selectedPack.description}</p>
           </div>
 
           <DialogFooter className="gap-2 pt-2">
@@ -198,7 +198,7 @@ export function CreateCaseDialog({ open, onOpenChange, onCreate }: CreateCaseDia
             </Button>
           </DialogFooter>
           {!canSubmit && !submitting && (
-            <p className="text-right text-[11px] text-muted-foreground">案卷标题与申请人为必填项</p>
+            <p className="text-right text-xs text-muted-foreground">案卷标题与申请人为必填项</p>
           )}
         </form>
       </DialogContent>

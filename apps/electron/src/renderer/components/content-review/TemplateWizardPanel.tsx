@@ -4,11 +4,13 @@ import { useCallback, useEffect, useState } from 'react'
 import type { FieldSpec, MaterialSlotSpec, RubricSpec, TemplateCriterionSpec, TemplateSectionSpec, TemplateVersion, WorkflowStageSpec } from '@profer/shared'
 import { Button } from '@profer/ui/primitives/button'
 import { toast } from 'sonner'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { templatesRefreshAtom, reviewV2BusyAtom } from './V2CasePanel'
 import { useStore } from 'jotai'
+import { reviewWorkspaceSectionAtom } from '@/atoms/review-atoms'
 
 type EditableFieldKind = 'text' | 'number' | 'date' | 'boolean' | 'enum'
+type TemplateLibraryFilter = 'all' | 'published' | 'reference' | 'drafts'
 const FIELD_KINDS: Array<{ value: EditableFieldKind; label: string }> = [
   { value: 'text', label: '文本' }, { value: 'number', label: '数字' }, { value: 'date', label: '日期' },
   { value: 'boolean', label: '是/否' }, { value: 'enum', label: '单选' },
@@ -122,6 +124,8 @@ function linkedStages(stages: WorkflowStageSpec[]): WorkflowStageSpec[] {
 
 export function TemplateWizardPanel(): JSX.Element {
   const bumpTemplatesRefresh = useSetAtom(templatesRefreshAtom)
+  const setWorkspaceSection = useSetAtom(reviewWorkspaceSectionAtom)
+  const refreshSignal = useAtomValue(templatesRefreshAtom)
   const store = useStore()
   const [templates, setTemplates] = useState<TemplateVersion[]>([])
   const [templateVersions, setTemplateVersions] = useState<TemplateVersion[]>([])
@@ -129,6 +133,7 @@ export function TemplateWizardPanel(): JSX.Element {
   const [editing, setEditing] = useState<TemplateVersion | null>(null)
   const [message, setMessage] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
+  const [libraryFilter, setLibraryFilter] = useState<TemplateLibraryFilter>('all')
 
   const refreshTemplates = useCallback(async (): Promise<void> => {
     try {
@@ -143,7 +148,7 @@ export function TemplateWizardPanel(): JSX.Element {
     }
     catch (error) { toast.error(`模板列表加载失败：${error instanceof Error ? error.message : String(error)}`) }
   }, [])
-  useEffect(() => { void refreshTemplates() }, [refreshTemplates])
+  useEffect(() => { void refreshTemplates() }, [refreshTemplates, refreshSignal])
 
   const startNew = (kind: 'blank' | 'comprehensive'): void => {
     setEditing(newTemplate(kind))
@@ -154,6 +159,34 @@ export function TemplateWizardPanel(): JSX.Element {
     const nextVersion = Math.max(0, ...templateVersions.filter((candidate) => candidate.templateId === template.templateId).map((candidate) => candidate.version)) + 1
     setEditing(template.status === 'draft' ? template : nextDraft(template, nextVersion))
     setMessage([])
+  }
+
+  const copyReferenceTemplate = async (template: TemplateVersion): Promise<void> => {
+    const copy: TemplateVersion = {
+      ...template,
+      templateId: generatedId('custom-review'),
+      version: 1,
+      name: `${template.name}（我的配置）`,
+      catalogKind: 'custom',
+      status: 'draft',
+      createdAt: new Date().toISOString(),
+      publishedAt: undefined,
+    }
+    setLoading(true)
+    store.set(reviewV2BusyAtom, true)
+    try {
+      const saved = await window.reviewAPI.saveTemplateDraftV2(copy)
+      setEditing(saved)
+      await refreshTemplates()
+      bumpTemplatesRefresh(Date.now())
+      setMessage([])
+      toast.success(`已复制「${template.name}」，请按实际制度配置后发布`)
+    } catch (error) {
+      toast.error(`复制范本失败：${error instanceof Error ? error.message : String(error)}`)
+    } finally {
+      store.set(reviewV2BusyAtom, false)
+      setLoading(false)
+    }
   }
 
   const updateTemplate = (update: (current: TemplateVersion) => TemplateVersion): void => {
@@ -226,6 +259,19 @@ export function TemplateWizardPanel(): JSX.Element {
     catch (error) { toast.error(`模板排序失败：${error instanceof Error ? error.message : String(error)}`) }
   }
 
+  const libraryCounts = {
+    all: templates.length,
+    published: templates.filter((template) => template.status === 'published').length,
+    reference: templates.filter((template) => template.catalogKind === 'reference' && template.status === 'draft').length,
+    drafts: templates.filter((template) => template.status === 'draft' && template.catalogKind !== 'reference').length,
+  }
+  const visibleTemplates = templates.filter((template) => {
+    if (libraryFilter === 'published') return template.status === 'published'
+    if (libraryFilter === 'reference') return template.catalogKind === 'reference'
+    if (libraryFilter === 'drafts') return template.status === 'draft' && template.catalogKind !== 'reference'
+    return true
+  })
+
   const removeTemplate = async (template: TemplateVersion): Promise<void> => {
     const confirmed = window.confirm(`删除「${template.name}」？\n模板会从模板库隐藏，历史案卷仍可读取原版本，之后可以恢复。`)
     if (!confirmed) return
@@ -253,36 +299,59 @@ export function TemplateWizardPanel(): JSX.Element {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h2 className="text-base font-semibold">审核模板</h2>
-            <p className="mt-1 max-w-3xl text-sm text-muted-foreground">一个模板定义一类案卷。综测的多个分项、各自要求和材料槽会进入同一案卷，并在一次审核运行中统一处理。</p>
+            <p className="mt-1 max-w-3xl text-sm text-muted-foreground">模板只有发布后才会出现在辅助审核的“本案审核模板”中。参考范本先复制并按本单位制度确认，再发布为可载入模板。</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button size="sm" onClick={() => startNew('blank')}>新建空白模板</Button>
           </div>
         </div>
+        <div className="mt-3 rounded-lg border border-primary/15 bg-primary/[0.035] px-3 py-2 text-xs leading-5 text-muted-foreground">
+          当前有 <span className="font-medium text-foreground">{libraryCounts.published} 套可载入</span>、
+          <span className="font-medium text-foreground">{libraryCounts.reference + libraryCounts.drafts} 套待配置</span>。
+          草稿不会直接进入审核，避免未确认的示例标准被当成本校正式规则。
+        </div>
+        <div className="mt-3 flex flex-wrap gap-1" role="tablist" aria-label="模板库分类">
+          {([
+            ['all', `全部模板（${libraryCounts.all}）`],
+            ['published', `可载入（${libraryCounts.published}）`],
+            ['reference', `参考范本（${libraryCounts.reference}）`],
+            ['drafts', `内置/自建草稿（${libraryCounts.drafts}）`],
+          ] as Array<[TemplateLibraryFilter, string]>).map(([filter, label]) => (
+            <Button key={filter} size="sm" variant={libraryFilter === filter ? 'secondary' : 'ghost'} role="tab" aria-selected={libraryFilter === filter} onClick={() => setLibraryFilter(filter)}>{label}</Button>
+          ))}
+        </div>
         <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {templates.map((template, index) => (
+          {visibleTemplates.map((template, index) => (
             <div key={template.templateId} className="rounded-lg bg-muted/40 p-3">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <p className="text-sm font-medium">{template.name}</p>
                   <p className="mt-0.5 text-xs text-muted-foreground">最新 v{template.version} · {template.sections?.length ?? 0} 个分项 · {template.fields.length} 个字段</p>
                 </div>
-                <span className="shrink-0 rounded-full bg-background px-2 py-0.5 text-[11px]">{template.status === 'published' ? '已发布' : template.status === 'deprecated' ? '已停用' : '草稿'}</span>
+                <span className="shrink-0 rounded-full bg-background px-2 py-0.5 text-xs">{template.status === 'published' ? '已发布 · 可载入' : template.status === 'deprecated' ? '已停用' : '草稿 · 待配置'}</span>
               </div>
               {template.description && <p className="mt-2 line-clamp-3 text-xs text-muted-foreground">{template.description}</p>}
               <div className="mt-2 flex items-center justify-between gap-2">
-                <span className="rounded-full bg-background px-2 py-0.5 text-[11px]">{template.catalogKind === 'builtin' ? '内置' : template.catalogKind === 'reference' ? '参考范本' : '自建'}</span>
-                <div className="flex gap-1">
-                  <Button size="sm" variant="ghost" aria-label="模板上移" disabled={index === 0} onClick={() => void moveTemplate(index, -1)}>↑</Button>
-                  <Button size="sm" variant="ghost" aria-label="模板下移" disabled={index === templates.length - 1} onClick={() => void moveTemplate(index, 1)}>↓</Button>
-                  <Button size="sm" variant="outline" onClick={() => openTemplate(template)}>{template.status === 'draft' ? '继续编辑' : '基于此版本修改'}</Button>
+                <span className="rounded-full bg-background px-2 py-0.5 text-xs">{template.catalogKind === 'builtin' ? '内置' : template.catalogKind === 'reference' ? '参考范本' : '自建'}</span>
+                <div className="flex flex-wrap justify-end gap-1">
+                  {libraryFilter === 'all' && <>
+                    <Button size="sm" variant="ghost" aria-label="模板上移" disabled={index === 0} onClick={() => void moveTemplate(index, -1)}>↑</Button>
+                    <Button size="sm" variant="ghost" aria-label="模板下移" disabled={index === visibleTemplates.length - 1} onClick={() => void moveTemplate(index, 1)}>↓</Button>
+                  </>}
+                  {template.status === 'published'
+                    ? <Button size="sm" variant="outline" onClick={() => setWorkspaceSection('assist')}>去辅助审核选择</Button>
+                    : template.catalogKind === 'reference'
+                      ? <Button size="sm" variant="outline" disabled={loading} onClick={() => void copyReferenceTemplate(template)}>复制并配置</Button>
+                      : <Button size="sm" variant="outline" onClick={() => openTemplate(template)}>{template.status === 'draft' ? '继续配置' : '基于此版本修改'}</Button>}
+                  {template.status === 'published' && <Button size="sm" variant="ghost" onClick={() => openTemplate(template)}>修改</Button>}
                   <Button size="sm" variant="ghost" onClick={() => void removeTemplate(template)}>删除</Button>
                 </div>
               </div>
+              {template.status !== 'published' && <p className="mt-2 text-xs leading-4 text-muted-foreground">配置本单位、本年度规则并发布后，才可载入辅助审核。</p>}
               {template.sourceNote && <details className="mt-2 text-xs text-muted-foreground"><summary className="cursor-pointer">参考来源</summary><p className="mt-1">{template.sourceNote}</p></details>}
             </div>
           ))}
-          {templates.length === 0 && <p className="text-sm text-muted-foreground">模板库为空，可新建空白模板或从下方恢复已删除模板。</p>}
+          {visibleTemplates.length === 0 && <p className="text-sm text-muted-foreground">此分类下暂无模板。</p>}
         </div>
         {archivedTemplates.length > 0 && (
           <details className="mt-3 rounded-lg bg-muted/30 p-3">
@@ -322,6 +391,7 @@ export function TemplateWizardPanel(): JSX.Element {
             </label>
           </div>
           {editing.sourceNote && <p className="mt-2 rounded-lg bg-muted/50 px-3 py-2 text-xs text-muted-foreground">参考来源与边界：{editing.sourceNote}</p>}
+          {editing.catalogKind === 'custom' && editing.sourceNote && <p className="mt-2 rounded-lg bg-amber-500/10 px-3 py-2 text-xs text-amber-800 dark:text-amber-200">这是从参考范本复制的草稿。发布前请用本单位、本年度正式依据核对或改写每条审核标准；范本内容不能直接视为校内政策。</p>}
 
           <details open className="mt-4 rounded-lg bg-muted/30 p-3">
             <summary className="cursor-pointer text-sm font-medium">案卷与申报字段（{editing.fields.length}）</summary>
@@ -466,13 +536,13 @@ export function TemplateWizardPanel(): JSX.Element {
                   </div>
                   <input className="md:col-span-5 rounded border px-2 py-1 text-xs" placeholder="材料中需要核对的要素，以中文逗号分隔" value={slot.requiredElements.join('，')} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, requiredElements: event.target.value.split(/[，,]/).map((part) => part.trim()).filter(Boolean) } : item) }))} />
                   <div className="flex flex-wrap gap-x-3 gap-y-1 md:col-span-5">
-                    {MATERIAL_KINDS.map((kind) => <label key={kind.value} className="flex items-center gap-1 text-[11px]"><input type="checkbox" checked={slot.acceptedKinds.includes(kind.value)} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, acceptedKinds: event.target.checked ? [...new Set([...item.acceptedKinds, kind.value])] : item.acceptedKinds.filter((value) => value !== kind.value) } : item) }))} />{kind.label}</label>)}
+                    {MATERIAL_KINDS.map((kind) => <label key={kind.value} className="flex items-center gap-1 text-xs"><input type="checkbox" checked={slot.acceptedKinds.includes(kind.value)} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, acceptedKinds: event.target.checked ? [...new Set([...item.acceptedKinds, kind.value])] : item.acceptedKinds.filter((value) => value !== kind.value) } : item) }))} />{kind.label}</label>)}
                   </div>
                   <div className="grid gap-2 md:col-span-5 md:grid-cols-4">
-                    <label className="text-[11px] text-muted-foreground">最少份数（0 表示可选）<input type="number" min={0} className="mt-1 w-full rounded border bg-background px-2 py-1 text-xs text-foreground" value={slot.minCount} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, minCount: Math.max(0, Number(event.target.value) || 0) } : item) }))} /></label>
-                    <label className="text-[11px] text-muted-foreground">最多份数<input type="number" min={1} className="mt-1 w-full rounded border bg-background px-2 py-1 text-xs text-foreground" value={slot.maxCount} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, maxCount: Math.max(1, Number(event.target.value) || 1) } : item) }))} /></label>
-                    <label className="text-[11px] text-muted-foreground">要求提交时间<select className="mt-1 w-full rounded border bg-background px-2 py-1 text-xs text-foreground" value={slot.requiredAt ?? 'submission'} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, requiredAt: event.target.value as MaterialSlotSpec['requiredAt'] } : item) }))}><option value="submission">提交时</option><option value="decision">定稿前</option></select></label>
-                    <label className="mt-4 flex items-center gap-1 text-[11px]"><input type="checkbox" checked={slot.allowReuseAcrossSubjects} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, allowReuseAcrossSubjects: event.target.checked } : item) }))} />允许事项共用</label>
+                    <label className="text-xs text-muted-foreground">最少份数（0 表示可选）<input type="number" min={0} className="mt-1 w-full rounded border bg-background px-2 py-1 text-xs text-foreground" value={slot.minCount} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, minCount: Math.max(0, Number(event.target.value) || 0) } : item) }))} /></label>
+                    <label className="text-xs text-muted-foreground">最多份数<input type="number" min={1} className="mt-1 w-full rounded border bg-background px-2 py-1 text-xs text-foreground" value={slot.maxCount} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, maxCount: Math.max(1, Number(event.target.value) || 1) } : item) }))} /></label>
+                    <label className="text-xs text-muted-foreground">要求提交时间<select className="mt-1 w-full rounded border bg-background px-2 py-1 text-xs text-foreground" value={slot.requiredAt ?? 'submission'} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, requiredAt: event.target.value as MaterialSlotSpec['requiredAt'] } : item) }))}><option value="submission">提交时</option><option value="decision">定稿前</option></select></label>
+                    <label className="mt-4 flex items-center gap-1 text-xs"><input type="checkbox" checked={slot.allowReuseAcrossSubjects} onChange={(event) => updateTemplate((current) => ({ ...current, materialSlots: current.materialSlots.map((item, i) => i === index ? { ...item, allowReuseAcrossSubjects: event.target.checked } : item) }))} />允许事项共用</label>
                   </div>
                 </div>
               ))}

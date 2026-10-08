@@ -4,7 +4,9 @@
 
 10 月 4 日实施依据为 [G01–G13 实际复查及下一轮顺序](../../../work/reports/2026-10-04-g-stage-recheck.md) → [05 补完路线](05-completion-roadmap-and-feasibility.md) → [06 用户闭环](06-workflows-and-usability-design.md) → [07 应用与执行设计](07-application-and-execution-design.md)，以 [04 验收契约](04-acceptance-and-evaluation.md) 判断交付。01–03 保留早期调研与整体设计；[N1–N7 复查](../../../work/reports/2026-10-04-n-stage-recheck.md) 和 [前轮 UI 验收](../../../work/reports/2026-10-04-ui-functional-acceptance.md) 保留历史记录，当前完成状态以最新复查为准。
 
-**2026-10-08 最新实施顺序以 [12 模板实测问题分析与可用性修复](12-template-audit-failure-analysis-and-repair.md) 为准。** 基线 `50cc7839` 已完成 11 个模板的真实模型流水线测试，但仍有 9 项语义检查没有获得有效提交、扫描图像核查失败、数值要求未接确定性计算等功能缺口。下一轮以“能用、好用”为标准，先修漏检、失败显示与继续操作，再补图片和模板接线；07 等文档保留整体合同，不要求先完成一次大规模架构改造。
+**2026-10-09 当前收敛方向与下一轮实施顺序见 [14 普通 Pi Agent 与简洁工作台](14-pi-native-review-and-simple-workspace-design.md)。** 14 核对当前实现并提出设计，尚未实施；[13 框架阅读与直接试用](13-single-agent-framework-trial.md)提供单 Agent、材料解析和按需视觉读取的实验依据。保留项目 Pi、现有业务服务和历史数据，先适配一个正常主会话，再收敛页面与待办。
+
+[12 模板实测问题分析与可用性修复](12-template-audit-failure-analysis-and-repair.md)记录基线 `50cc7839` 的问题和功能验收要求。其当时的语义提交、图片与计算缺口不能直接当作当前全量未实现清单；当前已存在工作簿合计/唯一性定义及接线等进展，具体保留项和调整点按 14 的代码核对说明评估。07 等文档保留业务合同，不要求先完成一次大规模架构改造。
 
 ## 结论：距离目标还有多少
 
@@ -32,6 +34,8 @@ N1–N7 实施后复查曾发现 V2 上传/提交/运行及恢复入口缺失。
 
 | 文档 | 用来决定什么 |
 | --- | --- |
+| [14 普通 Pi Agent 与简洁工作台](14-pi-native-review-and-simple-workspace-design.md) | 当前代码有哪些能力；正常主会话与最少提交能力如何接入；简洁页面、数据收敛和下一轮功能验收 |
+| [13 框架阅读与直接试用](13-single-agent-framework-trial.md) | Deep Agents / Docling 源码与实际试用结果、适用范围和复跑方法；不把实验能力当成已接入产品 |
 | [01 调研与差距](01-research-and-gap.md) | 现有代码实际做到哪一步；六份本地参考的价值；学生、老师、审核员、评委的具体问题 |
 | [02 产品与模板](02-product-and-templates.md) | 最后用户看到什么、需要做什么；完整功能清单；模板如何不用代码编排 |
 | [03 架构与落地](03-architecture-and-delivery.md) | 数据、状态、执行、复用边界、校方接口、迁移和交付依赖 |

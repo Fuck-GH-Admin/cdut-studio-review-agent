@@ -12,16 +12,18 @@
  * - .pdf/.doc/.docx/.xls/.xlsx/.ppt/.pptx 复用 document-parser 提取文本后按行切块
  * - 图片（png/jpg/jpeg/gif/webp/bmp）→ 单个 image 块 + imageAssetPath（相对案卷目录），
  *   状态 partial：纯文本管线读不到图内文字，需后续 Vision 送模型
- * - 其他二进制 → 单块 paragraph + parseStatus 'failed' + 中文原因
+ * - 不支持或解析失败的文件 → 零个可读块 + parseStatus 'failed' + 中文原因；原件单独预览
  */
 
 import { readFile, stat, writeFile, mkdir } from 'node:fs/promises'
 import { dirname, extname, join } from 'node:path'
+import { TextDecoder } from 'node:util'
+import { load } from 'cheerio'
 import type { ReviewDocumentBlock, SourceDocument } from '@profer/shared'
 import { extractDocxReviewContent, extractSpreadsheetReviewContent, extractTextFromFile } from '../document-parser'
 
 /** 支持直接按文本切块的扩展名 */
-const TEXT_EXTENSIONS = new Set(['.md', '.txt', '.csv', '.json'])
+const TEXT_EXTENSIONS = new Set(['.md', '.txt', '.csv', '.json', '.html', '.htm', '.eml'])
 
 /** 文档类扩展名：交给 document-parser 的成熟解析器（PDF / Office / WPS 旧版 Word） */
 const DOCUMENT_EXTENSIONS = new Set([
@@ -118,6 +120,9 @@ function guessMimeType(ext: string): string {
     case '.txt': return 'text/plain'
     case '.csv': return 'text/csv'
     case '.json': return 'application/json'
+    case '.html':
+    case '.htm': return 'text/html'
+    case '.eml': return 'message/rfc822'
     case '.svg': return 'image/svg+xml'
     case '.pdf': return 'application/pdf'
     case '.doc': return 'application/msword'
@@ -156,6 +161,117 @@ function guessMimeType(ext: string): string {
     case '.bmp': return 'image/bmp'
     default: return 'application/octet-stream'
   }
+}
+
+/** Extract readable text from HTML without evaluating markup or scripts. */
+function htmlToReviewText(html: string): string {
+  const $ = load(html)
+  $('script, style, noscript, template, head, svg').remove()
+  $('br').replaceWith('\n')
+  $('td, th').each((_index, element) => { $(element).after('\t') })
+  $('p, div, li, tr, h1, h2, h3, h4, h5, h6, section, article, blockquote, header, footer').each((_index, element) => { $(element).after('\n') })
+  return $('body').text()
+    .replace(/[\t ]+\n/g, '\n')
+    .replace(/\n[\t ]+/g, '\n')
+    .replace(/[\t ]{2,}/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
+interface MimeEntity {
+  headers: Map<string, string>
+  body: string
+}
+
+function splitMimeEntity(raw: string): MimeEntity {
+  const boundary = raw.search(/\r?\n\r?\n/)
+  if (boundary < 0) return { headers: new Map(), body: raw }
+  const separatorLength = raw.slice(boundary).startsWith('\r\n\r\n') ? 4 : 2
+  const headerText = raw.slice(0, boundary).replace(/\r?\n[ \t]+/g, ' ')
+  const headers = new Map<string, string>()
+  for (const line of headerText.split(/\r?\n/)) {
+    const colon = line.indexOf(':')
+    if (colon <= 0) continue
+    const name = line.slice(0, colon).trim().toLowerCase()
+    const value = line.slice(colon + 1).trim()
+    headers.set(name, headers.has(name) ? `${headers.get(name)}, ${value}` : value)
+  }
+  return { headers, body: raw.slice(boundary + separatorLength) }
+}
+
+function mimeParameter(header: string, name: string): string | undefined {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return header.match(new RegExp(`(?:^|;)\\s*${escaped}\\s*=\\s*(?:"([^"]*)"|([^;\\s]*))`, 'i'))?.slice(1).find(Boolean)
+}
+
+function decodeQuotedPrintable(value: string): Buffer {
+  const normalized = value.replace(/=\r?\n/g, '').replace(/=([\da-f]{2})/gi, (_match, byte: string) => String.fromCharCode(Number.parseInt(byte, 16)))
+  return Buffer.from(normalized, 'binary')
+}
+
+function decodeMimeBytes(bytes: Uint8Array, charset: string): string {
+  try { return new TextDecoder(charset || 'utf-8').decode(bytes) }
+  catch { return new TextDecoder('utf-8').decode(bytes) }
+}
+
+function decodeMimeText(body: string, headers: Map<string, string>): string {
+  const transfer = headers.get('content-transfer-encoding')?.toLowerCase().trim()
+  const bytes = transfer === 'base64'
+    ? Buffer.from(body.replace(/\s+/g, ''), 'base64')
+    : transfer === 'quoted-printable'
+      ? decodeQuotedPrintable(body)
+      : Buffer.from(body, 'utf-8')
+  return decodeMimeBytes(bytes, mimeParameter(headers.get('content-type') ?? '', 'charset') ?? 'utf-8')
+}
+
+function mimeTextParts(raw: string, depth = 0): { plain: string[]; html: string[] } {
+  if (depth > 8) return { plain: [], html: [] }
+  const { headers, body } = splitMimeEntity(raw)
+  if (/\battachment\b/i.test(headers.get('content-disposition') ?? '')) return { plain: [], html: [] }
+  const contentType = headers.get('content-type') ?? 'text/plain'
+  if (/^multipart\//i.test(contentType)) {
+    const boundary = mimeParameter(contentType, 'boundary')
+    if (!boundary) return { plain: [], html: [] }
+    const parts = body.split(`--${boundary}`).slice(1).filter((part) => !part.trimStart().startsWith('--'))
+    return parts.reduce((result, part) => {
+      const next = mimeTextParts(part.replace(/^\r?\n/, '').replace(/\r?\n$/, ''), depth + 1)
+      result.plain.push(...next.plain)
+      result.html.push(...next.html)
+      return result
+    }, { plain: [] as string[], html: [] as string[] })
+  }
+  const text = decodeMimeText(body, headers).trim()
+  if (!text) return { plain: [], html: [] }
+  if (/^text\/html\b/i.test(contentType)) return { plain: [], html: [text] }
+  if (/^text\/plain\b/i.test(contentType)) return { plain: [text], html: [] }
+  return { plain: [], html: [] }
+}
+
+function decodeMimeHeader(value: string): string {
+  return value.replace(/=\?([^?]+)\?([bq])\?([^?]*)\?=/gi, (_match, charset: string, encoding: string, payload: string) => {
+    const bytes = encoding.toLowerCase() === 'b'
+      ? Buffer.from(payload, 'base64')
+      : decodeQuotedPrintable(payload.replace(/_/g, ' '))
+    return decodeMimeBytes(bytes, charset)
+  })
+}
+
+function emlToReviewText(eml: string): string {
+  const { headers } = splitMimeEntity(eml)
+  const parts = mimeTextParts(eml)
+  const body = parts.plain[0] ?? parts.html.map(htmlToReviewText).find(Boolean) ?? ''
+  const headerLines = ['from', 'to', 'date', 'subject']
+    .flatMap((key) => headers.has(key) ? [`${key[0]!.toUpperCase()}${key.slice(1)}: ${decodeMimeHeader(headers.get(key)!)}`] : [])
+  return [...headerLines, ...(headerLines.length > 0 && body ? [''] : []), body].filter((line) => line !== '').join('\n').trim()
+}
+
+/** Read plain review text for formats that need lightweight normalization before block splitting. */
+export async function extractReviewableTextFile(filePath: string, fileName: string): Promise<string> {
+  const ext = extname(fileName).toLowerCase()
+  const contents = await readFile(filePath, 'utf-8')
+  if (ext === '.html' || ext === '.htm') return htmlToReviewText(contents)
+  if (ext === '.eml') return emlToReviewText(contents)
+  return contents
 }
 
 /** SourceDocument 公共字段：各分支只决定 parseStatus / blocks / parseError */
@@ -236,9 +352,13 @@ export async function parseFileIntoSourceDocument(
   ): SourceDocument =>
     toSourceDocument({ fileName, role, mimeType, sizeBytes, importedAt: now, parseStatus, blocks, parseError })
 
-  /** 解析失败时的占位块（不伪造内容，仅保证 UI 有可展示的锚点） */
+  /**
+   * 解析失败时不创建占位块。
+   * 空文本占位块会被能力库误当成真实解析块，Agent 读取后就会出现“已读 1/1”的假进度。
+   * 失败原因由 parseError 承载，原件仍通过只读文件预览查看。
+   */
   const placeholderBlocks = (): ReviewDocumentBlock[] => [
-    { id: `blk-${slug}-001`, kind: 'paragraph', text: '', page: 1 },
+    // Keep the helper so all parser failure branches share the same empty result.
   ]
 
   // 图片：产出单个 image 块并记录原件相对路径（供 Vision 送模型）；纯文本管线读不到图内文字，故为 partial
@@ -246,7 +366,7 @@ export async function parseFileIntoSourceDocument(
     return draftOf(
       'partial',
       [{ id: `blk-${slug}-001`, kind: 'image', text: '', page: 1, imageAssetPath: assetRelativePath }],
-      '图片内容需经多模态模型识别',
+      '图片原件已收录；内容由视觉模型识别（不做文本切块），无法视觉识别时需人工核对',
     )
   }
 
@@ -352,7 +472,7 @@ export async function parseFileIntoSourceDocument(
       return draftOf(
         'partial',
         [],
-        `${label} 未提取到文本内容（可能是扫描件或纯图片文档），需人工复核或 OCR 处理`,
+        `${label} 未提取到文本内容（可能是扫描件或纯图片文档，需 OCR/视觉核验）；原件已保留，审核 Agent 可按需查看页面图像`,
       )
     }
 
@@ -366,7 +486,7 @@ export async function parseFileIntoSourceDocument(
 
   let text = ''
   try {
-    text = await readFile(filePath, 'utf-8')
+    text = await extractReviewableTextFile(filePath, fileName)
   } catch (error) {
     console.error(`[审核专区] 读取文件失败: ${filePath}`, error)
     return draftOf(

@@ -107,6 +107,7 @@ import {
 } from '../agent-preview-tools'
 import { generateAgentGptImage } from '../agent-gpt-image-service'
 import { buildReviewOpsTools } from './pi-review-ops-tools'
+import { getPiReviewBindingForSession, recordPiReviewPreviewByPath } from '../review/pi-case-review-service'
 import {
   AGENT_GPT_IMAGE_DESCRIPTION,
   AGENT_GPT_IMAGE_TOOL_NAME,
@@ -811,13 +812,26 @@ function buildPiAgentPreviewTools(sdk: PiSdk, ctx: PiBuiltinToolsContext): ToolD
       }),
       async execute(_toolCallId, params) {
         const args = params as Record<string, unknown>
-        return executeAgentPreviewTool({
-          filePath: typeof args.filePath === 'string' ? args.filePath : '',
+        const filePath = typeof args.filePath === 'string' ? args.filePath : ''
+        const scope = args.scope === 'overview' || args.scope === 'page' || args.scope === 'all' ? args.scope : 'overview'
+        const page = typeof args.page === 'number' ? args.page : undefined
+        const inspected = await executeAgentPreviewTool({
+          filePath,
           mode: args.mode === 'content' || args.mode === 'visual' || args.mode === 'both' ? args.mode : undefined,
-          scope: args.scope === 'overview' || args.scope === 'page' || args.scope === 'all' ? args.scope : undefined,
-          page: typeof args.page === 'number' ? args.page : undefined,
+          scope,
+          page,
           previousRevision: typeof args.previousRevision === 'string' ? args.previousRevision : undefined,
-        }, { agentCwd: ctx.workspaceSlug ? ctx.agentCwd! : '', allowedRoots: ctx.allowedRoots ?? [] }) as Promise<AgentToolResult<unknown>>
+        }, { agentCwd: ctx.workspaceSlug ? ctx.agentCwd! : '', allowedRoots: ctx.allowedRoots ?? [] }) as AgentToolResult<unknown>
+        const details = inspected.details as { error?: unknown; visual?: { images?: unknown[] } }
+        const binding = getPiReviewBindingForSession(ctx.sessionId)
+        if (binding && details && !details.error) {
+          const pageLabel = scope === 'page' ? `第 ${page} 页` : scope === 'all' ? '全文预览范围' : '首页/总览'
+          recordPiReviewPreviewByPath(binding, filePath, `inspect_preview 查看 ${filePath.split(/[\\/]/).pop() ?? '材料'}（${pageLabel}）`, {
+            scope,
+            visualImageCount: details.visual?.images?.length ?? 0,
+          })
+        }
+        return inspected
       },
     }),
   ] as unknown as ToolDefinition[]
@@ -1980,12 +1994,20 @@ export async function buildPiBuiltinTools(
 
   if (!isAgentPresetToolGroupDisabled(ctx.disabledToolGroups, 'review-ops')) {
     try {
-      tools.push(...buildReviewOpsTools(sdk, {
-        sessionId: ctx.sessionId,
-        triggeredBy: ctx.triggeredBy,
-        allowedRoots: ctx.allowedRoots ?? [],
-        disabledTools: ctx.disabledTools,
-      }))
+      const isReviewOperator = ctx.currentPresetReference?.presetId === 'review-operator'
+      const directReviewBinding = isReviewOperator && ctx.triggeredBy === 'user'
+        ? getPiReviewBindingForSession(ctx.sessionId)
+        : undefined
+      // 审核专区创建的普通 Pi 会话按案卷限定工具；停止或授权失效后不退回旧的泛审核操作清单。
+      if (!isReviewOperator || directReviewBinding) {
+        tools.push(...buildReviewOpsTools(sdk, {
+          sessionId: ctx.sessionId,
+          triggeredBy: ctx.triggeredBy,
+          allowedRoots: ctx.allowedRoots ?? [],
+          disabledTools: ctx.disabledTools,
+          ...(directReviewBinding ? { directReviewBinding } : {}),
+        }))
+      }
     } catch (error) {
       console.error('[Pi 桥接] 注入审核操作工具失败:', error)
     }

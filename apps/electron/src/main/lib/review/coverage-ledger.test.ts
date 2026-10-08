@@ -25,6 +25,17 @@ describe('材料账本（M2）', () => {
     expect(ledger).toHaveLength(3)
     expect(ledger.find((entry) => entry.documentVersionId === 'v2')?.reason).toContain('无文本层')
   })
+
+  test('历史解析失败材料即使 usage=read 也按未读入账并说明原因', () => {
+    const failed = { ...doc('v4', '损坏.pdf', 'read'), parseStatus: 'failed' as const, parseError: '文件无法解码' }
+    expect(buildDocumentLedger([failed])).toEqual([{
+      documentVersionId: 'v4',
+      fileName: '损坏.pdf',
+      status: 'unread',
+      reason: '自动解析失败；空占位块不代表读过原件。解析原因：文件无法解码',
+    }])
+    expect(combineCoverage([failed], [], [], []).allClearVerdictAllowed).toBeFalse()
+  })
 })
 
 describe('检查账本（M2）', () => {

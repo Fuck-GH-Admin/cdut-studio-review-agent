@@ -30,6 +30,7 @@ describe('单案审核工作台 ViewModel', () => {
     const view = buildReviewWorkspaceViewModel(aggregate(), run(), false)
     expect(view.pendingActions.map((item) => item.key)).toContain('check:check-1')
     expect(view.canDecide).toBeFalse()
+    expect(view.canReject).toBeTrue()
     expect(view.status).toBe('needs-attention')
   })
 
@@ -42,8 +43,33 @@ describe('单案审核工作台 ViewModel', () => {
     expect(active.pendingActions).toHaveLength(0)
     expect(active.resolvedActions).toHaveLength(1)
     expect(active.canDecide).toBeTrue()
+    expect(active.canReject).toBeTrue()
     expect(stale.pendingActions).toHaveLength(1)
     expect(stale.canDecide).toBeFalse()
+    expect(stale.canReject).toBeTrue()
+  })
+
+  test('整案驳回后关闭剩余待办，但明确保留“未逐条确认”的含义', () => {
+    const rejection = {
+      id: 'decision-1', actor: { actorId: 'reviewer', actorSource: 'local' as const, role: 'reviewer' as const },
+      scope: { kind: 'case' as const, ids: [] }, stageId: 'reviewing', result: 'reject' as const,
+      reason: '申报材料不符合要求', basedOnRunId: 'run-1', basedOnRevision: 1, at: '', finality: 'final' as const,
+    }
+    const input = aggregate({ caseV2: { ...baseCase, stage: 'decided' }, decisions: [rejection] })
+
+    const view = buildReviewWorkspaceViewModel(input, run(), false)
+
+    expect(view.pendingActions).toHaveLength(0)
+    expect(view.closedActions).toContainEqual(expect.objectContaining({
+      key: 'check:check-1',
+      detail: expect.stringContaining('不表示该条 AI 发现或材料已被逐项确认'),
+    }))
+    expect(view.status).toBe('decided')
+  })
+
+  test('过期运行仍不能作出最终驳回', () => {
+    const view = buildReviewWorkspaceViewModel(aggregate(), run(), true)
+    expect(view.canReject).toBeFalse()
   })
 
   test('事实、候选证明、未读材料和补件统一显示为待处理', () => {
@@ -55,6 +81,48 @@ describe('单案审核工作台 ViewModel', () => {
     const view = buildReviewWorkspaceViewModel(input, run({ checks: [] }), false, [{ subjectId: 's1', fieldKey: 'level', value: '省级', confidence: 0.4, confirmed: false }])
     expect(view.pendingActions.map((item) => item.kind)).toEqual(expect.arrayContaining(['fact', 'evidence', 'material', 'supplement']))
     expect(view.canDecide).toBeFalse()
+  })
+
+  test('材料读取状态以当前运行账本为准，不把案卷中的登记状态误报为未读', () => {
+    const document = {
+      documentId: 'doc-1', versionId: 'doc-1-v1', contentHash: 'hash', role: 'evidence' as const,
+      fileName: '证明材料.pdf', mimeType: 'application/pdf', sizeBytes: 1, assetPath: '', parseRevision: 1,
+      parseStatus: 'parsed' as const, blocks: [{ blockId: 'block-1', text: '材料内容', kind: 'text' as const }], usage: 'registered' as const,
+    }
+    const input = aggregate({ caseV2: { ...baseCase, documents: [document] } })
+    const currentRun = run({ coverage: { documents: [{ documentVersionId: document.versionId, status: 'read' }], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 } })
+    const view = buildReviewWorkspaceViewModel(input, currentRun, false)
+
+    expect(view.pendingActions.some((item) => item.key === `material:${document.versionId}`)).toBeFalse()
+  })
+
+  test('本次运行有部分读取记录时显示部分读取，并保留运行原因', () => {
+    const document = {
+      documentId: 'doc-2', versionId: 'doc-2-v1', contentHash: 'hash', role: 'evidence' as const,
+      fileName: '较长的申请书.docx', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      sizeBytes: 1, assetPath: '', parseRevision: 1, parseStatus: 'parsed' as const,
+      blocks: [{ blockId: 'block-1', text: '材料内容', kind: 'text' as const }], usage: 'registered' as const,
+    }
+    const reason = '本次审核通过材料工具读取了 1/4 个材料块'
+    const currentRun = run({ coverage: { documents: [{ documentVersionId: document.versionId, status: 'partially-read', reason }], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 } })
+    const view = buildReviewWorkspaceViewModel(aggregate({ caseV2: { ...baseCase, documents: [document] } }), currentRun, false)
+
+    expect(view.pendingActions).toContainEqual(expect.objectContaining({
+      key: `material:${document.versionId}`,
+      title: `本次审核仅部分读取：${document.fileName}`,
+      detail: reason,
+    }))
+  })
+
+  test('历史 failed 材料即使残留 usage=read 的占位块记录也仍进入待处理', () => {
+    const aggregateWithFailedRead = aggregate({
+      caseV2: { ...baseCase, documents: [{ documentId: 'd', versionId: 'd-v1', contentHash: '', role: 'evidence', fileName: '损坏.pdf', mimeType: 'application/pdf', sizeBytes: 1, assetPath: '', parseRevision: 1, parseStatus: 'failed', parseError: '文件损坏', blocks: [{ blockId: 'placeholder', text: '', kind: 'text' }], usage: 'read' }] },
+    })
+    const view = buildReviewWorkspaceViewModel(aggregateWithFailedRead, run(), false)
+    expect(view.pendingActions).toContainEqual(expect.objectContaining({
+      key: 'material:d-v1',
+      detail: expect.stringContaining('空占位块不代表读过原件'),
+    }))
   })
 
   test('决策阶段必需的证明槽生成可持久验证的材料槽待办', () => {

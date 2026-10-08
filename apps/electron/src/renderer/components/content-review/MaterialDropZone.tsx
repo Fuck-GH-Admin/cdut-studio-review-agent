@@ -100,7 +100,7 @@ export function MaterialDropZone({ caseId, slotId, hasSlots, slotLabel, onRegist
       ].join(' ')}
     >
       <Upload size={18} className={dragging ? 'text-primary' : 'text-muted-foreground'} />
-      <p className="text-[13px] font-medium">{busy ? '登记中…' : dragging ? '松手登记到案卷' : '点击选择或拖入材料文件'}</p>
+      <p className="text-sm font-medium">{busy ? '登记中…' : dragging ? '松手登记到案卷' : '点击选择或拖入材料文件'}</p>
       <p className="text-xs text-muted-foreground">支持多选；登记后自动计算哈希并进入材料列表</p>
     </div>
   )

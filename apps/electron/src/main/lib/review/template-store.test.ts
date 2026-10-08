@@ -6,13 +6,22 @@ import { afterAll, describe, expect, test } from 'bun:test'
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { ALL_DEFAULT_TEMPLATES_V2, BUILTIN_TEMPLATES_V2, ensureBuiltinTemplateDrafts } from './builtin-templates'
-import { deprecateTemplate, getTemplate, listArchivedTemplates, listTemplateVersions, listTemplates, publishTemplate, removeTemplateFromLibrary, reorderTemplates, restoreTemplateToLibrary, saveDraft, validateTemplate } from './template-store'
+import { deprecateTemplate, getTemplate, isSafeTemplateId, listArchivedTemplates, listTemplateVersions, listTemplates, publishTemplate, removeTemplateFromLibrary, reorderTemplates, restoreTemplateToLibrary, saveDraft, validateTemplate } from './template-store'
+import { resolveEffectiveRules } from './effective-rules'
+import { emptyAggregate } from './case-store-v2'
+import { combineCoverage } from './coverage-ledger'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-template-${Date.now()}`)
 process.env.PROFER_CONFIG_DIR = CONFIG_DIR
 afterAll(() => rmSync(CONFIG_DIR, { recursive: true, force: true }))
 
 describe('审核模板目录（M1）', () => {
+  test('模板 ID 支持中文名称并拒绝路径穿越字符', () => {
+    expect(isSafeTemplateId('wizard-学生综合素质测评-muuq80nv')).toBeTrue()
+    expect(isSafeTemplateId('../outside')).toBeFalse()
+    expect(isSafeTemplateId('has.dot')).toBeFalse()
+  })
+
   test('旧版本地综测模板读取时补齐申报表/证明材料生命周期默认值', () => {
     const legacy = {
       ...BUILTIN_TEMPLATES_V2[0]!,
@@ -42,6 +51,22 @@ describe('审核模板目录（M1）', () => {
       const errors = validateTemplate(template).filter((issue) => issue.level === 'error')
       expect(errors).toEqual([])
     }
+  })
+
+  test('新版综测模板即使尚未预登记事项也会生成整案分项检查', () => {
+    ensureBuiltinTemplateDrafts({ getTemplate, saveDraft })
+    const template = getTemplate('comprehensive-assessment-v2', 3)!
+    const aggregate = emptyAggregate({
+      id: 'comprehensive-empty-subjects', templateId: template.templateId, templateVersion: template.version,
+      title: '空事项测试', objectType: 'person', caseFields: {}, subjects: [], documents: [], stage: 'submitted',
+      revision: 0, createdAt: '', updatedAt: '',
+    })
+    const rules = resolveEffectiveRules(aggregate, template).map((item) => item.rule)
+    const coverage = combineCoverage([], rules, [], [], {}, Object.fromEntries((template.sections ?? []).map((section) => [section.id, []])))
+    expect(template.status).toBe('published')
+    expect(rules.length).toBeGreaterThan(0)
+    expect(rules.every((rule) => rule.targetScope === 'group')).toBeTrue()
+    expect(coverage.plannedChecks).toBeGreaterThan(0)
   })
 
   test('必需审核分项没有标准时不能发布模板', () => {

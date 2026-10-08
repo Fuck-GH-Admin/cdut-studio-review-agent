@@ -16,7 +16,7 @@ import { getConfigDir } from '../config-paths'
 /** 指派允许的动作范围（C1：操作类全量；C2 增加决定类动作受代批开关二次约束） */
 export type ReviewAssignmentAction =
   | 'list' | 'create-case' | 'register-material' | 'submit-case' | 'start-run' | 'get-run-status' | 'cancel-run' | 'export-report'
-  | 'decide-stage' | 'resolve-supplement' | 'respond-supplement'
+  | 'submit-result' | 'decide-stage' | 'resolve-supplement' | 'respond-supplement'
 
 /** 可信指派（落盘形态） */
 export interface ReviewAgentAssignment {
@@ -32,6 +32,8 @@ export interface ReviewAgentAssignment {
   templateVersion?: number
   /** 允许的动作范围（工具调用动作必须在此范围内） */
   actions: ReviewAssignmentAction[]
+  /** 当前 Pi 会话直接审核的运行；由宿主创建与绑定，模型不能指定。 */
+  activeRunId?: string
   /** 被授权的工作角色（工具 actor.role 由此决定，不由模型自由声明） */
   workRole: 'reviewer' | 'student'
   /** 指派发起者（人工授权人，与代操作 AI 分开记录） */
@@ -119,6 +121,19 @@ export function bindCaseToAssignment(assignmentId: string, caseId: string): Revi
   return target
 }
 
+/** 将宿主创建的直接 Pi 审核运行绑定到指派；每个指派只能绑定一个运行。 */
+export function bindRunToAssignment(assignmentId: string, runId: string): ReviewAgentAssignment {
+  if (!runId) throw new Error('审核运行 ID 不能为空')
+  const all = readAll()
+  const target = all.find((item) => item.id === assignmentId)
+  if (!target) throw new Error(`指派不存在: ${assignmentId}`)
+  if (target.revokedAt) throw new Error('指派已撤销，不能绑定审核运行')
+  if (target.activeRunId && target.activeRunId !== runId) throw new Error('该指派已绑定其他审核运行')
+  target.activeRunId = runId
+  writeAll(all)
+  return target
+}
+
 /** 指派校验结果 */
 export interface AssignmentCheck {
   ok: boolean
@@ -156,6 +171,17 @@ export function listAssignments(sessionId?: string): ReviewAgentAssignment[] {
   const all = readAll()
   const filtered = sessionId ? all.filter((item) => item.sessionId === sessionId) : all
   return filtered.map((item) => ({ ...item }))
+}
+
+/** 读取会话最近一条有效的直接审核指派。 */
+export function findActivePiReviewAssignment(sessionId: string): ReviewAgentAssignment | undefined {
+  return readAll()
+    .filter((item) => item.sessionId === sessionId
+      && !item.revokedAt
+      && item.caseId
+      && item.activeRunId
+      && item.actions.includes('submit-result'))
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0]
 }
 
 /** 由指派构造工具 actor（role 来自指派工作角色，不由模型声明；actorId 保留完整会话身份） */

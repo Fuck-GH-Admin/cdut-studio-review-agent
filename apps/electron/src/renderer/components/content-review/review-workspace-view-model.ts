@@ -21,7 +21,9 @@ export interface ReviewWorkspaceViewModel {
   status: 'draft' | 'ready' | 'reviewing' | 'needs-attention' | 'waiting-supplement' | 'ready-for-decision' | 'decided'
   pendingActions: ReviewWorkspacePendingAction[]
   resolvedActions: ReviewWorkspacePendingAction[]
+  closedActions: ReviewWorkspacePendingAction[]
   canDecide: boolean
+  canReject: boolean
   decisionReadiness: DecisionReadiness
 }
 
@@ -43,11 +45,12 @@ export function buildReviewWorkspaceViewModel(
 ): ReviewWorkspaceViewModel {
   const pendingActions: ReviewWorkspacePendingAction[] = []
   const resolvedActions: ReviewWorkspacePendingAction[] = []
+  const closedActions: ReviewWorkspacePendingAction[] = []
   const inputHash = run?.inputManifest.hash
 
   if (run) {
     if (run.coverage.plannedChecks === 0) {
-      pendingActions.push({ key: 'coverage:no-checks', kind: 'check', title: '没有生成有效的规则检查', detail: '请确认审核依据已映射到当前审核模板；当前运行不能支持最终决定。' })
+      pendingActions.push({ key: 'coverage:no-checks', kind: 'check', title: '没有生成有效的规则检查', detail: '当前模板/审核依据没有生成可执行检查；本次只是 Agent 的材料分析，不能视为按规则完成审核。请补全模板规则和申报事项后重新审核。' })
     }
     for (const check of run.checks) {
       if (!actionableCheckStatuses.has(check.status)) continue
@@ -112,12 +115,29 @@ export function buildReviewWorkspaceViewModel(
     else if (link.status === 'confirmed') resolvedActions.push(item)
   }
 
-  for (const document of aggregate.caseV2.documents.filter((item) => item.active !== false && (item.usage === 'registered' || item.usage === 'unread' || item.usage === 'partially-read'))) {
+  const runDocumentCoverage = new Map((run?.coverage.documents ?? []).map((item) => [item.documentVersionId, item]))
+  for (const document of aggregate.caseV2.documents.filter((item) => item.active !== false)) {
+    // Pi 的读取记录属于一次运行，并不会回写到案卷原始材料元数据。
+    // 当前运行覆盖账本优先；新上传、尚未进入本次运行的材料再回退到案卷状态。
+    const tracked = runDocumentCoverage.get(document.versionId)
+    const status = document.parseStatus === 'failed'
+      ? tracked?.status ?? 'unread'
+      : document.usage === 'read' ? 'read' : tracked?.status ?? document.usage
+    if (status === 'read') continue
+    const title = !run
+      ? `待审核材料：${document.fileName}`
+      : status === 'partially-read'
+        ? `本次审核仅部分读取：${document.fileName}`
+        : `本次审核未记录完整读取：${document.fileName}`
     pendingActions.push({
       key: `material:${document.versionId}`,
       kind: 'material',
-      title: `材料尚未完整读取：${document.fileName}`,
-      detail: document.parseError ?? document.unusedReason ?? '需要人工检查材料内容',
+      title,
+      detail: document.parseStatus === 'failed'
+        ? tracked?.status === 'partially-read'
+          ? tracked.reason ?? '自动解析失败；原件已打开，但尚未确认完整核验。'
+          : `自动解析失败；系统空占位块不代表读过原件，请重新解析或打开原件核验。${document.parseError ? `原因：${document.parseError}` : ''}`
+        : document.parseError ?? tracked?.reason ?? document.unusedReason ?? (status === 'partially-read' ? '本次审核有部分材料读取记录，仍需确认剩余内容。' : '本次运行没有可追溯的完整读取记录。'),
       sourceDocumentVersionIds: [document.versionId],
       sourceRefs: [{ caseId: aggregate.caseV2.id, documentVersionId: document.versionId, parseRevision: document.parseRevision, location: { kind: 'file' } }],
     })
@@ -161,9 +181,21 @@ export function buildReviewWorkspaceViewModel(
     else pendingActions.push(item)
   }
 
+  const currentFinalDecision = [...aggregate.decisions].reverse().find((decision) =>
+    decision.finality === 'final' && decision.scope.kind === 'case' && decision.basedOnRunId === run?.id)
+  if (aggregate.caseV2.stage === 'decided' && currentFinalDecision?.result === 'reject') {
+    closedActions.push(...pendingActions.splice(0).map((item) => ({
+      ...item,
+      detail: `已随整案驳回结案；这不表示该条 AI 发现或材料已被逐项确认。整案驳回理由：${currentFinalDecision.reason}`,
+    })))
+  }
+
   const hasUsableRun = !!run && ['completed', 'partially-completed'].includes(run.status)
   const readiness = assessDecisionReadiness({ aggregate, run, runStale, template, observations: extractedObservations })
   const canDecide = hasUsableRun && readiness.ready && aggregate.caseV2.stage !== 'decided' && aggregate.caseV2.stage !== 'archived'
+  // A reviewer may reject a current completed run because a confirmed blocker or
+  // missing material can itself justify rejection. Passing still requires readiness.
+  const canReject = hasUsableRun && !runStale && aggregate.caseV2.stage !== 'decided' && aggregate.caseV2.stage !== 'archived'
   const status: ReviewWorkspaceViewModel['status'] = aggregate.caseV2.stage === 'decided'
     ? 'decided'
     : aggregate.caseV2.stage === 'awaiting-supplement'
@@ -191,5 +223,5 @@ export function buildReviewWorkspaceViewModel(
         ? 'resolve' : 'verify'
   }
   pendingActions.sort((left, right) => priority(left) - priority(right))
-  return { caseId: aggregate.caseV2.id, title: aggregate.caseV2.title, status, pendingActions, resolvedActions, canDecide, decisionReadiness: readiness }
+  return { caseId: aggregate.caseV2.id, title: aggregate.caseV2.title, status, pendingActions, resolvedActions, closedActions, canDecide, canReject, decisionReadiness: readiness }
 }

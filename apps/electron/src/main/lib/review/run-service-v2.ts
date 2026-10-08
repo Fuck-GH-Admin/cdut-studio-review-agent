@@ -29,6 +29,7 @@ export function computeRunInputHash(
   caseV2: ReviewCaseV2,
   observationSnapshot: Array<Record<string, unknown>>,
   evidenceSnapshot: Array<Record<string, unknown>>,
+  documentOrder?: string[],
 ): string {
   // N2b（07 §3.4）：输入包含 caseFields、解析修订与真实观察/绑定快照（修正误判 3：旧 hash 缺 caseFields）
   const material = JSON.stringify({
@@ -37,7 +38,15 @@ export function computeRunInputHash(
     caseFields: caseV2.caseFields,
     reviewRules: caseV2.reviewRules ?? [],
     // usage / unusedReason are run outputs; changing them must not invalidate their own input snapshot.
-    documents: caseV2.documents.map((document) => ({ id: document.versionId, hash: document.contentHash, parseRevision: document.parseRevision, parseStatus: document.parseStatus })),
+    // Material order is a presentation/workflow concern. Legacy projection and V2
+    // hydration can reorder the same documents without changing their contents;
+    // that must not make a just-finished run unusable. The manifest still records
+    // the user-facing order separately for display/debugging.
+    documents: [...caseV2.documents]
+      .sort((left, right) => documentOrder
+        ? (documentOrder.indexOf(left.versionId) - documentOrder.indexOf(right.versionId))
+        : left.versionId.localeCompare(right.versionId))
+      .map((document) => ({ id: document.versionId, hash: document.contentHash, parseRevision: document.parseRevision, parseStatus: document.parseStatus })),
     subjects: caseV2.subjects.map((subject) => ({ id: subject.id, sectionId: subject.sectionId, fields: subject.fields, status: subject.status })),
     observations: observationSnapshot,
     evidenceLinks: evidenceSnapshot,

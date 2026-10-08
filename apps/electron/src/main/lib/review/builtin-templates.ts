@@ -5,6 +5,7 @@
 
 import type { FieldSpec, MaterialSlotSpec, TemplateCriterionSpec, TemplateSectionSpec, TemplateVersion, WorkflowStageSpec } from '@profer/shared'
 import { initializeTemplateCatalog } from './template-catalog'
+import { publishTemplate } from './template-store'
 
 const CREATED_AT = '2026-10-07T00:00:00.000Z'
 
@@ -50,6 +51,16 @@ function section(
   return { id, name, order: 0, required: true, criteria, ...options }
 }
 
+/** 综测有时只有一份汇总申报表、事项尚未逐条登记；分项规则仍应形成整案检查。 */
+function groupSection(
+  id: string,
+  name: string,
+  criteria: TemplateCriterionSpec[],
+  options: Partial<TemplateSectionSpec> = {},
+): TemplateSectionSpec {
+  return section(id, name, criteria.map((item) => ({ ...item, targetScope: 'group' })), options)
+}
+
 function stages(finalRole: WorkflowStageSpec['executorRole'] = 'teacher'): WorkflowStageSpec[] {
   return [
     { id: 'intake', name: '材料登记与完整性检查', kind: 'auto-check', executorRole: 'system', nextStageId: 'first-review' },
@@ -71,11 +82,13 @@ function base(input: Omit<TemplateVersion, 'schemaVersion' | 'version' | 'status
 /** 项目内置：学生综测各分项属于一份案卷、同一次审核。类别仅作通用起点。 */
 const comprehensiveAssessment = base({
   templateId: 'comprehensive-assessment-v2',
-  version: 2,
+  // v2 was published by early installs without sections/rules. Published template
+  // versions are immutable, so the complete rules must ship as a new version.
+  version: 3,
   name: '学生综合测评（分项案卷）',
   description: '把学业、竞赛荣誉、学生工作、志愿实践和身心发展放入同一学年案卷；每个分项可独立配置要求和材料。',
   catalogKind: 'builtin',
-  sourceNote: '目录结构参考本地 CQES4CS 与 ComprehensivePerformanceSimplifier；分类和交互为通用示例，不含成都理工大学当年计分政策。',
+  sourceNote: '分项和材料核验项为通用示例；不含成都理工大学当年计分政策或分值标准。',
   objectType: 'person',
   domainPackId: 'comprehensive-assessment',
   displayName: { template: '{{studentName}} · {{academicYear}} 综合测评' },
@@ -95,25 +108,25 @@ const comprehensiveAssessment = base({
     field('declaredHours', '申报时长/次数', 'number'),
   ],
   sections: [
-    section('academic', '学业与专业发展', [
+    groupSection('academic', '学业与专业发展', [
       criterion('identity', '学籍与学年', '核对成绩或学业材料对应学生、专业和本次综测学年；身份或周期不一致时标记待确认。'),
       criterion('result', '成绩与申报结果', '逐项对照正式成绩材料，检查课程、成绩、学分或专业发展结果是否能支持申报内容；不自行推算校级加分政策。'),
       criterion('duplicate', '重复申报', '检查同一成绩、课程或成果是否在其他申报事项重复计入；无法判断时转人工复核。', { targetScope: 'group' }),
     ]),
-    section('competition-honor', '竞赛、科研与荣誉', [
+    groupSection('competition-honor', '竞赛、科研与荣誉', [
       criterion('award-identity', '获奖与成果归属', '核对证书中的姓名、团队、成果名称、级别、日期和颁发单位是否与申报事项对应。'),
       criterion('award-role', '个人/团队贡献', '团队成果需核对申报人的成员身份、角色及证明范围；材料未说明个人贡献时不得推定。'),
       criterion('award-duplicate', '同一成果去重', '检查同一竞赛/成果是否重复拆分申报，或个人奖与团队奖的依据是否相同；冲突转人工核实。', { targetScope: 'group' }),
     ]),
-    section('student-work', '学生工作与集体服务', [
+    groupSection('student-work', '学生工作与集体服务', [
       criterion('position', '任职与任期', '核对任职证明中的组织、职务、起止时间和申报学年；未覆盖本学年的材料需提示补充。'),
       criterion('service', '履职事实', '根据工作记录或活动材料核对实际职责和参与事实；仅有任命材料时，不推断工作时长或完成质量。'),
     ]),
-    section('practice-volunteer', '社会实践与志愿服务', [
+    groupSection('practice-volunteer', '社会实践与志愿服务', [
       criterion('practice-period', '活动时间与组织', '核对活动名称、时间、主办/服务组织及申报人身份是否一致。'),
       criterion('practice-proof', '时长与参与证明', '逐项核对签到、服务记录或主办方证明支持的时长/次数；图片难以辨认或口径不明时转人工复核。'),
     ]),
-    section('health-development', '身心发展与文体活动', [
+    groupSection('health-development', '身心发展与文体活动', [
       criterion('activity-participation', '参与事实', '核对活动/赛事名称、日期、参与人或成绩记录是否能证明申报事项。'),
       criterion('result-proof', '成绩与证明范围', '区分参与证明、名次证明和等级证书；材料只能支持其中一类时不得扩大结论。'),
     ]),
@@ -302,6 +315,15 @@ export function ensureBuiltinTemplateDrafts(store: {
 }): void {
   for (const template of [...ALL_DEFAULT_TEMPLATES_V2, ...LEGACY_COMPAT_TEMPLATES_V2]) {
     if (!store.getTemplate(template.templateId, template.version)) store.saveDraft(template)
+
+    // This version repairs the previously published but rule-empty built-in. Its
+    // checks are generic evidence checks and carry no school policy or score table.
+    if (template.templateId === 'comprehensive-assessment-v2' && template.version === 3) {
+      const current = store.getTemplate(template.templateId, template.version)
+      if (current?.status === 'draft' && current.catalogKind === 'builtin') {
+        publishTemplate(current.templateId, current.version)
+      }
+    }
 
     // Repair the originally seeded grant template without replacing user-edited content.
     // Older drafts exposed a final-decision stage but ended the chain at the panel stage.

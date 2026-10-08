@@ -54,21 +54,21 @@ export function CaseTimelinePanel({ caseId, refreshNonce }: { caseId: string; re
   useEffect(() => { void load() }, [load, refreshNonce])
 
   if (rows.length === 0) {
-    return <div className="rounded-lg border-t pt-3 text-[13px] text-muted-foreground">尚无时间线记录</div>
+    return <div className="rounded-lg border-t pt-3 text-sm text-muted-foreground">尚无时间线记录</div>
   }
 
   return (
     <div className="space-y-1.5 rounded-lg border-t pt-3">
       <div className="flex items-center gap-2">
-        <p className="text-[13px] font-semibold">案卷时间线（{rows.length}）</p>
+        <p className="text-sm font-semibold">案卷时间线（{rows.length}）</p>
         {FILTERS.map((item) => (
-          <button key={item.key} type="button" className={`rounded px-1.5 py-0.5 text-[10px] ${filter === item.key ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'}`} onClick={() => setFilter(item.key)}>
+          <button key={item.key} type="button" className={`rounded px-1.5 py-0.5 text-xs ${filter === item.key ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'}`} onClick={() => setFilter(item.key)}>
             {item.label}
           </button>
         ))}
       </div>
       {rows.slice(0, 30).map((row, index) => (
-        <div key={index} className="flex items-start gap-2.5 rounded px-2 py-1.5 text-[13px] hover:bg-muted/40">
+        <div key={index} className="flex items-start gap-2.5 rounded px-2 py-1.5 text-sm hover:bg-muted/40">
           <span className="shrink-0 font-mono text-muted-foreground">{row.at.slice(5, 19)}</span>
           <span className={`shrink-0 rounded px-1.5 py-0.5 text-xs font-medium ${BADGE_STYLE[row.operatorKind]}`}>{BADGE_TEXT[row.operatorKind]}</span>
           <span className="min-w-0 flex-1 truncate" title={`${row.action} · ${row.operatorLabel} · ${row.detail}`}>{row.action}</span>

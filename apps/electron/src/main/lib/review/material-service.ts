@@ -15,6 +15,7 @@ import type { Actor, DocumentVersion, ReviewCommandResult, ReviewDocumentBlock, 
 import { CommandValidationError, readAggregate, submitCommand } from './case-store-v2'
 import { getConfigDir } from '../config-paths'
 import { extractDocxReviewContent, extractSpreadsheetReviewContent, extractTextFromFile, type DocxReviewContent, type XlsxReviewContent } from '../document-parser'
+import { extractReviewableTextFile } from './document-service'
 
 const IMAGE_MIME_PREFIX = 'image/'
 const MAX_MATERIAL_BYTES = 50 * 1024 * 1024
@@ -40,6 +41,8 @@ function guessMime(fileName: string): string {
   const ext = fileName.toLowerCase().split('.').pop() ?? ''
   if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'].includes(ext)) return `image/${ext === 'jpg' ? 'jpeg' : ext}`
   if (ext === 'pdf') return 'application/pdf'
+  if (ext === 'html' || ext === 'htm') return 'text/html'
+  if (ext === 'eml') return 'message/rfc822'
   if (ext === 'doc') return 'application/msword'
   if (ext === 'docx') return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   if (ext === 'docm') return 'application/vnd.ms-word.document.macroEnabled.12'
@@ -73,6 +76,10 @@ export interface RegisterMaterialPayload {
   sourcePath: string
   role: DocumentVersion['role']
   materialSlotId?: string
+  /** 重新解析案卷内存档原件时保留用户原文件名，不使用案卷存储文件名前缀。 */
+  fileName?: string
+  /** 重新解析失败材料时一并停用对应的旧版本或此前错误登记的副本。 */
+  replacesVersionIds?: string[]
 }
 
 /** 登记材料（命令事务）：新 DocumentVersion 进聚合；同名再登记产生新版本 */
@@ -105,7 +112,7 @@ export async function registerMaterial(caseId: string, command: { requestId: str
     '.pdf', '.doc', '.docx', '.docm', '.dot', '.dotx', '.dotm', '.wps', '.wpt',
     '.xls', '.xlsx', '.xlsm', '.xltx', '.xltm', '.et', '.ett',
     '.ppt', '.pptx', '.pptm', '.potx', '.potm', '.ppsx', '.ppsm', '.dps', '.dpt',
-    '.rtf', '.odt', '.ods', '.odp', '.md', '.txt', '.csv', '.json', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp',
+    '.rtf', '.odt', '.ods', '.odp', '.md', '.txt', '.csv', '.json', '.html', '.htm', '.eml', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp',
   ])
   let fallbackText: string | undefined
   let fallbackParseError: string | undefined
@@ -122,7 +129,11 @@ export async function registerMaterial(caseId: string, command: { requestId: str
     }
   }
   if (!parsedDocx && !parsedXlsx && supportedReviewExtensions.has(incomingExtension) && !imageExtensions.has(incomingExtension)) {
-    try { fallbackText = await extractTextFromFile(command.payload.sourcePath) }
+    try {
+      fallbackText = incomingExtension === '.html' || incomingExtension === '.htm' || incomingExtension === '.eml'
+        ? await extractReviewableTextFile(command.payload.sourcePath, basename(command.payload.sourcePath))
+        : await extractTextFromFile(command.payload.sourcePath)
+    }
     catch (error) { fallbackParseError = error instanceof Error ? error.message : String(error) }
   }
   try {
@@ -131,7 +142,7 @@ export async function registerMaterial(caseId: string, command: { requestId: str
     const sourcePath = payload.sourcePath
     if (!sourcePath) throw new CommandValidationError('VALIDATION_FAILED', '缺少源文件路径')
     // 版本链语义（复查 §5.9）：同槽位 + 同文件名 = 同一逻辑材料的新版本；不同槽位各自独立
-    const incomingName = sourcePath.split(/[\\/]/).pop() ?? 'material.bin'
+    const incomingName = command.payload.fileName ?? (sourcePath.split(/[\\/]/).pop() ?? 'material.bin')
     const sameLogic = aggregate.caseV2.documents.filter((doc) => doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId)
     const versionSeq = sameLogic.length + 1
     const previousVersion = sameLogic.at(-1)
@@ -180,7 +191,7 @@ export async function registerMaterial(caseId: string, command: { requestId: str
     }
     const parseWarnings = [...(parsedDocx?.warnings ?? []), ...(parsedXlsx?.warnings ?? [])]
     if (pdfParseWarning) parseWarnings.push(pdfParseWarning)
-    if (imageExtensions.has(fileExtension)) parseWarnings.push('图片原件已保存；需由视觉模型识别，无法送入模型的内容需人工核对')
+    if (imageExtensions.has(fileExtension)) parseWarnings.push('图片原件已保存；内容由视觉模型识别（不做文本切块），无法视觉识别时需人工核对')
     if (omittedEmbeddedImage) parseWarnings.push('部分 DOCX 内嵌图片未能提取或保存，需人工查看原件')
     if (docxParseError) parseWarnings.push(docxParseError)
     if (xlsxParseError) parseWarnings.push(xlsxParseError)
@@ -206,7 +217,12 @@ export async function registerMaterial(caseId: string, command: { requestId: str
       summary: `登记材料 ${incomingName}（${versionId}）`,
       mutate: (draft) => {
         // 同槽位同名旧版本停止参与新审核（supersedes：同 slotId+name 才替换）
-        const docs = draft.caseV2.documents.map((doc) => (doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId ? { ...doc, active: false } : doc))
+        const replacedVersions = new Set(payload.replacesVersionIds ?? [])
+        const docs = draft.caseV2.documents.map((doc) => (
+          (doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId) || replacedVersions.has(doc.versionId)
+            ? { ...doc, active: false }
+            : doc
+        ))
         const doc: DocumentVersion = {
           documentId,
           versionId,
@@ -227,8 +243,8 @@ export async function registerMaterial(caseId: string, command: { requestId: str
         doc.byteHash = byteHash
         doc.active = true
         draft.caseV2.documents = [...docs, doc]
+        return doc
       },
-      entity: undefined,
     }
     })
   } finally {
@@ -253,7 +269,7 @@ export async function pickAndRegisterMaterials(
   const options = {
     properties: ['openFile', 'multiSelections'],
     filters: [
-      { name: '审核材料', extensions: ['pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'md', 'txt', 'csv', 'json', 'doc', 'docx', 'docm', 'dot', 'dotx', 'dotm', 'wps', 'wpt', 'xls', 'xlsx', 'xlsm', 'xltx', 'xltm', 'et', 'ett', 'ppt', 'pptx', 'pptm', 'potx', 'potm', 'ppsx', 'ppsm', 'dps', 'dpt', 'rtf', 'odt', 'ods', 'odp'] },
+      { name: '审核材料', extensions: ['pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'md', 'txt', 'csv', 'json', 'html', 'htm', 'eml', 'doc', 'docx', 'docm', 'dot', 'dotx', 'dotm', 'wps', 'wpt', 'xls', 'xlsx', 'xlsm', 'xltx', 'xltm', 'et', 'ett', 'ppt', 'pptx', 'pptm', 'potx', 'potm', 'ppsx', 'ppsm', 'dps', 'dpt', 'rtf', 'odt', 'ods', 'odp'] },
       { name: '全部文件', extensions: ['*'] },
     ],
   }

@@ -8,9 +8,9 @@
 
 import type { BrowserWindow } from 'electron'
 import { copyFileSync, statSync, mkdirSync, existsSync, readFileSync, writeFileSync } from 'node:fs'
-import { dirname, extname, join } from 'node:path'
+import { dirname, join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import type { EvidenceDocument, ReviewCase, ReviewDocumentBlock, RulePack, SourceDocument } from '@profer/shared'
+import type { EvidenceDocument, ImportDocumentsResult, ReviewCase, ReviewDocumentBlock, ReviewImportProgressEvent, RulePack, SourceDocument } from '@profer/shared'
 import { getCase, saveCase, updateCase, assertSafeId, getReviewCasesDir } from './case-store'
 import { parseFileIntoSourceDocument } from './document-service'
 import { invalidateDerivedReviewInputs } from './input-invalidation'
@@ -18,6 +18,15 @@ import { syncWorkspaceProjectionV2 } from './workspace-service-v2'
 
 /** 单文件大小上限（50MB，超过直接拒绝） */
 const MAX_IMPORT_BYTES = 50 * 1024 * 1024
+type ImportProgressPayload = Omit<ReviewImportProgressEvent, 'requestId' | 'caseId' | 'role'>
+
+function emitImportProgress(
+  context: { requestId?: string; caseId: string; role: SourceDocument['role']; onProgress?: (event: ReviewImportProgressEvent) => void },
+  payload: ImportProgressPayload,
+): void {
+  if (!context.requestId) return
+  context.onProgress?.({ ...payload, requestId: context.requestId, caseId: context.caseId, role: context.role })
+}
 
 /** PDF raster images are retained as image blocks so the model sees embedded scans and charts. */
 export async function renderPdfImageBlocks(input: {
@@ -26,6 +35,7 @@ export async function renderPdfImageBlocks(input: {
   documentId: string
   assetDir: string
   assetDirectoryPrefix?: string
+  onProgress?: (progress: { phase: 'scanning-pdf' | 'rendering-pdf'; page: number; totalPages: number }) => void
 }): Promise<ReviewDocumentBlock[]> {
   const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs') as unknown as {
     OPS: Record<string, number>
@@ -49,6 +59,7 @@ export async function renderPdfImageBlocks(input: {
   const imagePages: number[] = []
   try {
     for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+      input.onProgress?.({ phase: 'scanning-pdf', page: pageNumber, totalPages: pdf.numPages })
       const page = await pdf.getPage(pageNumber)
       const operators = await page.getOperatorList()
       if (operators.fnArray.some((operator) => imageOperators.has(operator))) imagePages.push(pageNumber)
@@ -61,6 +72,7 @@ export async function renderPdfImageBlocks(input: {
   const { renderAuthorizedPreview } = await import('../preview-inspection-service')
   const blocks: ReviewDocumentBlock[] = []
   for (const page of imagePages) {
+    input.onProgress?.({ phase: 'rendering-pdf', page, totalPages: pdf.numPages })
     const rendered = await renderAuthorizedPreview({
       filePath: input.filePath,
       fileName: input.fileName,
@@ -86,16 +98,16 @@ export async function renderPdfImageBlocks(input: {
 }
 
 /**
- * 弹出系统选择框导入一份材料到案卷。
- *
- * @returns 解析后的 SourceDocument；用户取消选择时抛出带标记的错误文案
+ * 弹出系统多选框批量导入材料到案卷；逐份复用同一原生导入与解析服务。
+ * 单份失败不会撤销已经成功登记的其他文件。
  */
-export async function importDocumentIntoCase(input: {
+export async function importDocumentsIntoCase(input: {
   caseId: string
-  fileName: string
   role: SourceDocument['role']
   parentWindow?: import('electron').BrowserWindow
-}): Promise<SourceDocument> {
+  requestId?: string
+  onProgress?: (event: ReviewImportProgressEvent) => void
+}): Promise<ImportDocumentsResult> {
   const { dialog, BrowserWindow } = require('electron') as typeof import('electron')
   assertSafeId(input.caseId)
   const reviewCase = getCase(input.caseId)
@@ -105,14 +117,14 @@ export async function importDocumentIntoCase(input: {
     ? input.parentWindow
     : BrowserWindow.getFocusedWindow() ?? BrowserWindow.getAllWindows().find((candidate) => candidate.isVisible())
   const options = {
-    title: '导入审核材料',
-    properties: ['openFile'] as Array<'openFile'>,
+    title: `选择${input.role === 'rule' ? '审核依据' : input.role === 'application' ? '申报材料' : '证明材料'}（可多选）`,
+    properties: ['openFile', 'multiSelections'] as Array<'openFile' | 'multiSelections'>,
     filters: [
       {
         name: '审核材料',
         extensions: [
           // 文本类
-          'md', 'txt', 'csv', 'json', 'svg',
+          'md', 'txt', 'csv', 'json', 'html', 'htm', 'eml', 'svg',
           // 文档类（document-parser 覆盖的格式）
           'pdf', 'doc', 'docx', 'docm', 'dot', 'dotx', 'dotm', 'wps', 'wpt',
           'xls', 'xlsx', 'xlsm', 'xltx', 'xltm', 'et', 'ett',
@@ -127,12 +139,38 @@ export async function importDocumentIntoCase(input: {
     ],
   }
   // 无可用窗口时退化为无父窗口的对话框（showOpenDialog 静态方法两种签名都接受）
+  emitImportProgress(input, { phase: 'selecting', message: '等待选择文件' })
   const result = window ? await dialog.showOpenDialog(window, options) : await dialog.showOpenDialog(options)
   if (result.canceled || result.filePaths.length === 0) {
-    throw new Error('已取消导入')
+    emitImportProgress(input, { phase: 'cancelled', message: '已取消选择' })
+    return { documents: [], failures: [], canceled: true }
   }
 
-  return importDocumentFromPath({ caseId: input.caseId, sourcePath: result.filePaths[0]!, role: input.role })
+  const documents: SourceDocument[] = []
+  const failures: Array<{ fileName: string; message: string }> = []
+  for (const [index, sourcePath] of result.filePaths.entries()) {
+    const fileName = sourcePath.split(/[\\/]/).pop() ?? '审核材料'
+    const fileIndex = index + 1
+    const fileCount = result.filePaths.length
+    emitImportProgress(input, { phase: 'file-start', fileName, fileIndex, fileCount, completedFiles: index, message: `准备导入 ${fileIndex}/${fileCount}` })
+    try {
+      documents.push(await importDocumentFromPath({
+        caseId: input.caseId,
+        sourcePath,
+        role: input.role,
+        requestId: input.requestId,
+        onProgress: input.onProgress,
+        fileIndex,
+        fileCount,
+      }))
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      failures.push({ fileName, message })
+      emitImportProgress(input, { phase: 'file-failed', fileName, fileIndex, fileCount, completedFiles: index + 1, message: `第 ${fileIndex}/${fileCount} 份失败：${message}` })
+    }
+  }
+  emitImportProgress(input, { phase: 'batch-complete', fileCount: result.filePaths.length, completedFiles: result.filePaths.length, message: `导入完成：${documents.length} 份成功，${failures.length} 份失败` })
+  return { documents, failures, canceled: false }
 }
 
 /** 与文件选择框共用的导入链，供自动化验收和拖拽入口复用。 */
@@ -140,12 +178,23 @@ export async function importDocumentFromPath(input: {
   caseId: string
   sourcePath: string
   role: SourceDocument['role']
+  requestId?: string
+  onProgress?: (event: ReviewImportProgressEvent) => void
+  fileIndex?: number
+  fileCount?: number
 }): Promise<SourceDocument> {
   assertSafeId(input.caseId)
   const reviewCase = getCase(input.caseId)
   if (!reviewCase) throw new Error(`案卷不存在: ${input.caseId}`)
   const filePath = input.sourcePath
   const fileName = filePath.split(/[\\/]/).pop() ?? '审核材料'
+  const progressContext = { ...input, fileName }
+  const reportProgress = (payload: ImportProgressPayload): void => emitImportProgress(progressContext, {
+    ...payload,
+    fileName,
+    ...(input.fileIndex ? { fileIndex: input.fileIndex } : {}),
+    ...(input.fileCount ? { fileCount: input.fileCount } : {}),
+  })
 
   // 体积校验：超过上限直接拒绝（避免超大文件拖垮解析与存储）
   const sizeBytes = statSync(filePath).size
@@ -160,34 +209,13 @@ export async function importDocumentFromPath(input: {
   const storedFileName = `${docId}-${fileName}`
   copyFileSync(filePath, join(assetDir, storedFileName))
 
-  // 原件在案卷目录内的相对路径：统一用正斜杠，保证跨平台落盘一致（图片块据此送 Vision）
+  // 原件在案卷目录内的相对路径：统一用正斜杠，保证跨平台落盘一致。
   const assetRelativePath = `source-docs/${storedFileName}`
 
   // 解析（parseFileIntoSourceDocument 读取原件路径）
+  reportProgress({ phase: 'extracting-text', message: `正在解析：${fileName}` })
   const document = await parseFileIntoSourceDocument(filePath, fileName, input.role, assetRelativePath, assetDir)
-  let storedDocument: SourceDocument = { ...document, id: docId, origin: 'upload' }
-  if (extname(fileName).toLowerCase() === '.pdf') {
-    try {
-      const imageBlocks = await renderPdfImageBlocks({ filePath, fileName, documentId: docId, assetDir })
-      if (imageBlocks.length > 0) {
-        storedDocument = {
-          ...storedDocument,
-          blocks: [...storedDocument.blocks, ...imageBlocks],
-          ...(storedDocument.parseStatus === 'partial' && storedDocument.blocks.length === 0
-            ? { parseError: `PDF 未提取到文字层；已保留 ${imageBlocks.length} 页图像用于视觉识别` }
-            : {}),
-        }
-      }
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error)
-      console.warn(`[审核专区] PDF 图像页渲染失败，仍保留文本解析结果: ${fileName}`, error)
-      storedDocument = {
-        ...storedDocument,
-        parseStatus: storedDocument.parseStatus === 'failed' ? 'failed' : 'partial',
-        parseError: [storedDocument.parseError, `PDF 图像页渲染失败：${message}`].filter(Boolean).join('；'),
-      }
-    }
-  }
+  const storedDocument: SourceDocument = { ...document, id: docId, origin: 'upload' }
 
   // 依据文件自动登记规则包：否则大纲生成与审核运行都找不到"依据包"（真机验证暴露的缺口）
   // M0/H05：只构造「新增」的包；写回时以队列内最新 rulePacks 为基底追加，不整体替换
@@ -230,6 +258,13 @@ export async function importDocumentFromPath(input: {
     { reason: `导入材料 ${fileName}（${storedDocument.parseStatus}）` },
   )
   await syncWorkspaceProjectionV2(input.caseId)
+  reportProgress({
+    phase: 'file-complete',
+    completedFiles: input.fileIndex ?? 1,
+    fileIndex: input.fileIndex ?? 1,
+    fileCount: input.fileCount ?? 1,
+    message: `已完成：${fileName}`,
+  })
   console.log(
     `[审核专区] 已导入材料: ${fileName} → ${input.caseId}/${docId}（解析 ${storedDocument.parseStatus}` +
       `${input.role === 'rule' ? '，已登记规则包' : ''}）`,

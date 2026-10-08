@@ -3750,6 +3750,16 @@ export function registerIpcHandlers(): void {
     AGENT_IPC_CHANNELS.SEND_MESSAGE,
     async (event, input: AgentSendInput): Promise<void> => {
       assertSensitiveAgentIpcSender(event)
+      const inputForRun: AgentSendInput = { ...input }
+      try {
+        const { getPiReviewBindingForSession, finishPiReviewRunV2 } = require('./lib/review/pi-case-review-service') as typeof import('./lib/review/pi-case-review-service')
+        const reviewBinding = input.sessionId ? getPiReviewBindingForSession(input.sessionId) : undefined
+        if (reviewBinding) {
+          inputForRun.onRunOutcome = (outcome) => finishPiReviewRunV2(reviewBinding, outcome)
+        }
+      } catch (error) {
+        console.warn('[审核 Pi 会话] 绑定运行结果回调失败:', error)
+      }
       await coordinateAgentSend(input, {
         getSession: getAgentSessionMeta,
         workspaceExists: (workspaceId) => Boolean(getAgentWorkspace(workspaceId)),
@@ -3770,7 +3780,7 @@ export function registerIpcHandlers(): void {
           getAgentPresetByReference(reference, workspaceSlug)
         },
         startMirror: (session) => feishuBridgeManager.startSessionMirrorRun(session),
-        startAgent: () => runAgent(input, event.sender, async (session) => {
+        startAgent: () => runAgent(inputForRun, event.sender, async (session) => {
           try {
             await feishuBridgeManager.startSessionMirrorRun(session)
           } catch (error) {

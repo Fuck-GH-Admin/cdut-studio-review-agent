@@ -62,6 +62,20 @@ describe('DocumentCapabilityLibrary', () => {
     expect(() => library.loadImage(source.versionId, 'page-1')).toThrow('不在当前案卷目录中')
   })
 
+  test('独立 PNG 完成视觉核对后记为已读，不因没有文本层而永久停在部分读取', () => {
+    const source = document([{ blockId: 'image-1', text: '', kind: 'image', imageAssetPath: 'source-docs/proof.png' }])
+    source.fileName = '证明.png'
+    source.mimeType = 'image/png'
+    source.parseStatus = 'partial'
+    const library = new DocumentCapabilityLibrary({ caseId: 'case-1', caseRoot: '/tmp/case', documents: [source] })
+
+    expect(library.isFullyRead(source.versionId)).toBeFalse()
+    library.markImageRead(source.versionId, 'image-1')
+
+    expect(source.usage).toBe('read')
+    expect(library.isFullyRead(source.versionId)).toBeTrue()
+  })
+
   test('只有当前 Agent 会话读取过全部块才算完整读取', () => {
     const source = document([
       { blockId: 'p1', text: '政策第一段', kind: 'text' },
@@ -75,5 +89,41 @@ describe('DocumentCapabilityLibrary', () => {
     expect(library.isFullyRead(source.versionId)).toBe(false)
     library.read({ documentVersionId: source.versionId, offset: 1 })
     expect(library.isFullyRead(source.versionId)).toBe(true)
+  })
+
+  test('解析失败的历史占位块不进入材料目录，不可读取或标记为完整读取', () => {
+    const source = document([{ blockId: 'placeholder', text: '', kind: 'text' }])
+    source.parseStatus = 'failed'
+    source.parseError = 'PDF 解析失败'
+    const library = new DocumentCapabilityLibrary({ caseId: 'case-1', caseRoot: '/tmp/case', documents: [source] })
+
+    expect(library.listDocuments()[0]).toMatchObject({ blockCount: 0, textBlockCount: 0, imageBlocks: [], parseError: 'PDF 解析失败' })
+    expect(library.read({ documentVersionId: source.versionId })).toMatchObject({
+      parseStatus: 'failed',
+      parseError: 'PDF 解析失败',
+      blocks: [],
+      totalBlocks: 0,
+      fullyRead: false,
+    })
+    expect(library.isFullyRead(source.versionId)).toBeFalse()
+    expect(source.usage).toBe('registered')
+  })
+
+  test('长文本块按字符分页读取，全部页连续读取后才标记为已读', () => {
+    const text = '甲'.repeat(20_500)
+    const source = document([{ blockId: 'long-policy', text, kind: 'text' }])
+    const library = new DocumentCapabilityLibrary({ caseId: 'case-1', caseRoot: '/tmp/case', documents: [source] })
+
+    const firstPage = library.read({ documentVersionId: source.versionId, blockIds: ['long-policy'] })
+    expect(firstPage.blocks[0]).toMatchObject({ textOffset: 0, nextTextOffset: 12_000, truncated: true })
+    expect(firstPage.fullyRead).toBeFalse()
+    expect(library.isFullyRead(source.versionId)).toBe(false)
+
+    const secondPage = library.read({ documentVersionId: source.versionId, blockIds: ['long-policy'], textOffset: firstPage.nextTextOffset! })
+    expect(secondPage.blocks[0]).toMatchObject({ textOffset: 12_000, truncated: false })
+    expect(secondPage.blocks[0]!.text).toHaveLength(8_500)
+    expect(secondPage.fullyRead).toBeTrue()
+    expect(library.isFullyRead(source.versionId)).toBe(true)
+    expect(() => library.read({ documentVersionId: source.versionId, blockIds: ['long-policy'], textOffset: text.length + 1 })).toThrow('超出文本块长度')
   })
 })

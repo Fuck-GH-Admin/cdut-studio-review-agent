@@ -16,6 +16,7 @@ import { decryptApiKey, listChannels } from '../channel-manager'
 import { getFetchFn } from '../proxy-fetch'
 import { getEffectiveProxyUrl } from '../proxy-settings-service'
 import { resolveOpenAIChatCompletionsUrl } from '@profer/core'
+import { getReviewModuleSettings } from './module-settings-store'
 import { extractJson } from './review-json'
 export { extractJson } from './review-json'
 
@@ -166,17 +167,34 @@ function trimTrailingSlash(baseUrl: string): string {
  * 可用 = provider 在白名单内，且（models 数组非空 或 ollama——本地模型允许未登记模型清单）。
  */
 function findFirstAllowedChannel(): Channel | undefined {
-  return listChannels().find((channel) => {
+  const channels = listChannels()
+  const configuredSelection = getReviewModuleSettings().agentModelSelection
+  if (configuredSelection) {
+    const selectedChannel = channels.find((channel) => channel.id === configuredSelection.channelId)
+    if (!selectedChannel || !isUsableReviewChannel(selectedChannel)
+      || !selectedChannel.models?.some((model) => model.id === configuredSelection.modelId && model.enabled !== false)) {
+      return undefined
+    }
+    return selectedChannel
+  }
+  return channels.find(isUsableReviewChannel)
+}
+
+function isUsableReviewChannel(channel: Channel): boolean {
     if (!isAllowedProvider(channel.provider)) return false
     // 与 chat-service 一致：用户停用的渠道对审核专区同样停用（不外发任何案卷数据）
     if (channel.enabled !== true) return false
     if (channel.provider === 'ollama') return true
     return Array.isArray(channel.models) && channel.models.length > 0
-  })
 }
 
 /** 取渠道要提交给模型的 ID：优先取已启用模型；demo 不做模型选择 UI */
 function firstModelId(channel: Channel): string | undefined {
+  const selection = getReviewModuleSettings().agentModelSelection
+  if (selection?.channelId === channel.id
+    && channel.models?.some((model) => model.id === selection.modelId && model.enabled !== false)) {
+    return selection.modelId
+  }
   const enabled = channel.models?.find((model) => model.enabled !== false)
   return enabled?.id ?? channel.models?.[0]?.id
 }
@@ -189,10 +207,13 @@ function firstModelId(channel: Channel): string | undefined {
 export function getReviewModelGatewayStatus(): ReviewModelGatewayStatus {
   const channel = findFirstAllowedChannel()
   if (!channel) {
+    const hasExplicitSelection = getReviewModuleSettings().agentModelSelection !== null
     return {
       available: false,
       protocol: 'none',
-      reason: '未配置 OpenAI 兼容渠道或本地模型渠道（内容审核专区仅支持这两种出口）',
+      reason: hasExplicitSelection
+        ? '审核专属渠道或模型已不可用，请打开审核设置重新选择'
+        : '未配置 OpenAI 兼容渠道或本地模型渠道（内容审核专区仅支持这些出口）',
     }
   }
 

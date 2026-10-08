@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import JSZip from 'jszip'
 import type { Actor, TemplateVersion } from '@profer/shared'
 import { createCaseFromTemplate } from './application-service'
-import { readAggregate } from './case-store-v2'
+import { readAggregate, writeAggregate } from './case-store-v2'
 import { registerMaterial } from './material-service'
 import { publishTemplate, saveDraft } from './template-store'
 
@@ -49,6 +49,54 @@ describe('材料版本链', () => {
     expect(versions[0]?.active).toBeFalse()
     expect(versions[1]?.supersedesVersionId).toBe(firstVersion)
     expect(versions[1]?.active).toBeTrue()
+  })
+
+  test('迁移失败材料重解析时保留原文件名、替换旧版本并返回新版本 ID', async () => {
+    saveDraft({ ...template, templateId: 'material-reparse-review' })
+    publishTemplate('material-reparse-review', 1)
+    const caseId = `material-reparse-${Date.now()}`
+    expect((await createCaseFromTemplate('material-reparse-review', 1, { title: '旧材料重解析', fieldValues: {}, subjects: [] }, actor, caseId)).ok).toBeTrue()
+    const sourcePath = join(SOURCE_DIR, `legacy-${caseId}-获奖页.html`)
+    writeFileSync(sourcePath, '<html><head><title>旧网页</title></head><body><h1>获奖公示</h1><p>获奖人：张三</p></body></html>')
+
+    let aggregate = readAggregate(caseId)!
+    const first = await registerMaterial(caseId, {
+      requestId: `${caseId}-old`, actor, expectedRevision: aggregate.caseV2.revision,
+      payload: { sourcePath, role: 'evidence', materialSlotId: 'certificates', fileName: '获奖页.html' },
+    })
+    expect(first.ok).toBeTrue()
+    aggregate = readAggregate(caseId)!
+    const oldVersionId = aggregate.caseV2.documents[0]!.versionId
+    const oldAggregate = structuredClone(aggregate)
+    oldAggregate.caseV2.documents[0] = {
+      ...oldAggregate.caseV2.documents[0]!,
+      mimeType: 'application/octet-stream',
+      parseStatus: 'failed',
+      parseRevision: 1,
+      blocks: [],
+      unusedReason: 'V1 解析失败',
+    }
+    writeAggregate(oldAggregate)
+
+    const repaired = await registerMaterial(caseId, {
+      requestId: `${caseId}-repair`, actor, expectedRevision: oldAggregate.caseV2.revision,
+      payload: {
+        sourcePath,
+        role: 'evidence',
+        materialSlotId: 'certificates',
+        fileName: '获奖页.html',
+        replacesVersionIds: [oldVersionId],
+      },
+    })
+
+    expect(repaired.ok).toBeTrue()
+    if (!repaired.ok) return
+    expect(repaired.entity?.fileName).toBe('获奖页.html')
+    expect(repaired.entity?.versionId).toBeTruthy()
+    expect(repaired.entity?.parseStatus).toBe('parsed')
+    const documents = readAggregate(caseId)!.caseV2.documents
+    expect(documents.find((document) => document.versionId === oldVersionId)?.active).toBeFalse()
+    expect(documents.at(-1)).toMatchObject({ fileName: '获奖页.html', active: true, parseStatus: 'parsed', supersedesVersionId: oldVersionId })
   })
 
   test('XLSX 登记后保留可引用的工作表和单元格定位', async () => {

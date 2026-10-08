@@ -1,16 +1,17 @@
 import { afterAll, describe, expect, test } from 'bun:test'
-import { rmSync } from 'node:fs'
+import { rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { Actor } from '@profer/shared'
 import { buildDemoCase } from './demo-fixtures/demo-case-fixture'
-import { saveCase } from './case-store'
+import { getCase, saveCase } from './case-store'
 import { ensureBuiltinTemplateDrafts } from './builtin-templates'
-import { getTemplate as getTemplateStored, saveDraft as saveDraftStored } from './template-store'
+import { getTemplate as getTemplateStored, publishTemplate, saveDraft as saveDraftStored } from './template-store'
 import { readAggregate } from './case-store-v2'
 import { ensureWorkspaceAggregateV2, syncWorkspaceProjectionV2 } from './workspace-service-v2'
 import { correctObservation, setEvidenceLink } from './application-service'
 import { acknowledgeWorkspaceMaterialV2 } from './workspace-business-service-v2'
 import { removeDocumentsFromCase, reorderDocumentsInCase } from './case-import'
+import { registerMaterial } from './material-service'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-workspace-v2-${Date.now()}`)
 process.env.PROFER_CONFIG_DIR = CONFIG_DIR
@@ -53,6 +54,66 @@ describe('单一工作台案卷映射到 V2 聚合', () => {
     expect(synced.caseV2.subjects[0]?.title).toBe('更新后的申报事项')
     expect(synced.observations.some((observation) => observation.value.kind === 'text' && observation.value.value === '人工确认等级')).toBeTrue()
     expect(synced.receiptLog.some((receipt) => receipt.type === 'CorrectObservation')).toBeTrue()
+  })
+
+  test('同步 V1 投影时保留 V2 工作台直接登记的新材料版本', async () => {
+    ensureBuiltinTemplateDrafts({ getTemplate: getTemplateStored, saveDraft: saveDraftStored })
+    const legacy = { ...buildDemoCase(), id: 'workspace-v2-only-material-case' }
+    saveCase(legacy)
+    let aggregate = await ensureWorkspaceAggregateV2(legacy.id)
+    const sourcePath = join(CONFIG_DIR, 'workbench-only-proof.html')
+    writeFileSync(sourcePath, '<html><body><p>工作台补录材料</p></body></html>')
+
+    const registered = await registerMaterial(legacy.id, {
+      requestId: 'workspace-v2-only-material', actor: reviewer, expectedRevision: aggregate.caseV2.revision,
+      payload: { sourcePath, role: 'evidence', materialSlotId: 'certificates' },
+    })
+    if (!registered.ok) throw new Error(registered.message)
+    const versionId = registered.entity!.versionId
+
+    aggregate = await syncWorkspaceProjectionV2(legacy.id)
+    expect(aggregate.caseV2.documents.find((document) => document.versionId === versionId)).toMatchObject({
+      fileName: 'workbench-only-proof.html', parseStatus: 'parsed', active: true,
+    })
+    expect(aggregate.caseV2.documents.filter((document) => document.versionId === versionId)).toHaveLength(1)
+  })
+
+  test('辅助审核页保存的模板版本与手写规则会和文件依据一起投影到审核输入', async () => {
+    ensureBuiltinTemplateDrafts({ getTemplate: getTemplateStored, saveDraft: saveDraftStored })
+    const legacy = buildDemoCase()
+    const chosenTemplate = getTemplateStored('scholarship-v2')
+    expect(chosenTemplate).toBeDefined()
+    const manualRules = [{ id: 'local-rule-1', title: '核对活动时间', requirement: '确认活动日期处于本次申报周期内。' }]
+    saveCase({ ...legacy, reviewTemplate: { templateId: chosenTemplate!.templateId, version: chosenTemplate!.version }, manualRules })
+
+    const aggregate = await ensureWorkspaceAggregateV2(legacy.id)
+
+    expect(aggregate.caseV2.templateId).toBe(chosenTemplate!.templateId)
+    expect(aggregate.caseV2.templateVersion).toBe(chosenTemplate!.version)
+    expect(aggregate.caseV2.reviewRules?.some((rule) => rule.id === `manual:${legacy.id}:local-rule-1`)).toBeTrue()
+    expect(aggregate.caseV2.reviewRules?.some((rule) => rule.sourceRefIds.some((sourceId) => sourceId.endsWith('-v1')))).toBeTrue()
+
+    const synced = await syncWorkspaceProjectionV2(legacy.id)
+    expect(synced.caseV2.templateId).toBe(chosenTemplate!.templateId)
+    expect(synced.caseV2.reviewRules?.some((rule) => rule.id === `manual:${legacy.id}:local-rule-1`)).toBeTrue()
+  })
+
+  test('旧版空规则综测案卷升级到有整案检查的新版本并保留旧运行引用', async () => {
+    ensureBuiltinTemplateDrafts({ getTemplate: getTemplateStored, saveDraft: saveDraftStored })
+    const current = getTemplateStored('comprehensive-assessment-v2', 3)!
+    const stale = { ...current, version: 2, name: '学生综合测评（完整版）', sections: [], materialSlots: current.materialSlots.map(({ sectionId: _sectionId, ...slot }) => slot), policyRefs: undefined, status: 'draft' as const }
+    saveDraftStored(stale)
+    publishTemplate(stale.templateId, stale.version)
+
+    const source = buildDemoCase()
+    const legacy = { ...source, reviewTemplate: { templateId: stale.templateId, version: stale.version } }
+    saveCase(legacy)
+    const aggregate = await ensureWorkspaceAggregateV2(legacy.id)
+
+    expect(getCase(legacy.id)?.reviewTemplate).toEqual({ templateId: current.templateId, version: current.version })
+    expect(aggregate.caseV2.templateId).toBe(current.templateId)
+    expect(aggregate.caseV2.templateVersion).toBe(current.version)
+    expect(aggregate.caseV2.subjects).toHaveLength(legacy.items.length)
   })
 
   test('重新投影新申报材料时保留已读状态、确认的证明关联与人工事实', async () => {

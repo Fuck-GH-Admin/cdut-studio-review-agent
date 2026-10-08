@@ -90,12 +90,12 @@ export function ReviewAssignmentCard({ caseId }: { caseId: string }): JSX.Elemen
   return (
     <div className="space-y-2 rounded-lg border-t pt-3">
       <div className="flex items-center justify-between">
-        <p className="text-[13px] font-semibold">Agent 指派（显式授权）</p>
+        <p className="text-sm font-semibold">Agent 指派（显式授权）</p>
         <Button size="sm" variant="outline" disabled={creating || activeCount > 0} onClick={() => void createAssignment()}>
           {activeCount > 0 ? `已有 ${activeCount} 个有效指派` : creating ? '指派中…' : '交给 Agent'}
         </Button>
       </div>
-      {rows.length === 0 && <p className="text-[13px] leading-5 text-muted-foreground">尚无指派。Agent 只有在你显式指派后才能操作此案卷（查询/建案/登记/提交/运行/导出；决定类始终需人工）。</p>}
+      {rows.length === 0 && <p className="text-sm leading-5 text-muted-foreground">尚无指派。Agent 只有在你显式指派后才能操作此案卷（查询/建案/登记/提交/运行/导出；决定类始终需人工）。</p>}
       {/* C2：高级区（默认折叠——隐蔽开关要求） */}
       <div className="rounded bg-muted/20">
         <button type="button" className="w-full px-2 py-1 text-left text-xs text-muted-foreground hover:text-foreground" onClick={() => setShowAdvanced(!showAdvanced)}>
@@ -103,7 +103,7 @@ export function ReviewAssignmentCard({ caseId }: { caseId: string }): JSX.Elemen
         </button>
         {showAdvanced && (
           <div className="flex items-center justify-between px-2 pb-2">
-            <span className="text-[13px]">AI 代批（Agent 代替你做阶段决定）</span>
+            <span className="text-sm">AI 代批（Agent 代替你做阶段决定）</span>
             <Button size="sm" variant={autoApprovalEnabled ? 'destructive' : 'outline'} onClick={() => setAutoApprovalOpen(true)}>
               {autoApprovalEnabled ? '已开启（点击关闭）' : '关闭'}
             </Button>
@@ -111,7 +111,7 @@ export function ReviewAssignmentCard({ caseId }: { caseId: string }): JSX.Elemen
         )}
       </div>
       {rows.filter((row) => row.caseId === caseId).map((row) => (
-        <div key={row.id} className="flex items-center justify-between rounded bg-muted/40 px-2.5 py-2 text-[13px]">
+        <div key={row.id} className="flex items-center justify-between rounded bg-muted/40 px-2.5 py-2 text-sm">
           <div className="min-w-0 flex-1">
             <span className="font-medium">{row.id}</span>
             <span className="mx-1">·</span>

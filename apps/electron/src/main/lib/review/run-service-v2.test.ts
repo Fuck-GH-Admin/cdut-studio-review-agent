@@ -41,6 +41,13 @@ describe('runReviewCaseV2（M3 编排）', () => {
     expect(afterRead).toBe(before)
     expect(computeRunInputHash({ ...caseV2, documents: [{ ...document, parseRevision: 2 }] }, [], [])).not.toBe(before)
   })
+  test('同一批材料仅展示顺序变化不应让已完成运行变成过期', () => {
+    const first = { documentId: 'd1', versionId: 'd1-v1', contentHash: 'h1', role: 'application' as const, fileName: '申报.md', mimeType: 'text/markdown', sizeBytes: 1, assetPath: 'd1.md', parseRevision: 1, parseStatus: 'parsed' as const, usage: 'registered' as const, blocks: [] }
+    const second = { ...first, documentId: 'd2', versionId: 'd2-v1', contentHash: 'h2', fileName: '细则.md' }
+    const forward = computeRunInputHash({ ...caseV2, documents: [first, second] }, [], [])
+    const reversed = computeRunInputHash({ ...caseV2, documents: [second, first] }, [], [])
+    expect(reversed).toBe(forward)
+  })
   test('同一案卷的一次运行纳入所有分项标准并分别计算覆盖', async () => {
     const sectionedTemplate: TemplateVersion = {
       ...template,

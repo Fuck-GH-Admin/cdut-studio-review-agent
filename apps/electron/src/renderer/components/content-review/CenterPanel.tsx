@@ -13,7 +13,8 @@
 
 import * as React from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { Award, Layers, Link2, Unlink2 } from 'lucide-react'
+import { toast } from 'sonner'
+import { Award, Check, Layers, Link2, Pencil, Unlink2, X } from 'lucide-react'
 import type {
   CaseAggregateV2,
   EvidenceDocument,
@@ -43,7 +44,17 @@ import type { ReviewActions } from './use-review-actions'
 import { SourceBlockView } from './SourceBlockView'
 import { useReviewWorkspaceActions } from './use-review-workspace-actions'
 import { ReviewActionDialog } from './ReviewActionDialog'
-import { MoveReviewDocumentButtons, RemoveReviewDocumentButton, ReviewMaterialLaneActions } from './ReviewMaterialControls'
+import { Button } from '@profer/ui/primitives/button'
+import { MoveReviewDocumentButtons, RemoveReviewDocumentButton, ReviewMaterialDropZone, ReviewMaterialLaneActions } from './ReviewMaterialControls'
+
+interface ReviewItemDraft {
+  title: string
+  category: string
+  level: string
+  declaredScore: string
+  activityDate: string
+  organizer: string
+}
 
 /** 证明识别状态 → 徽标样式/文案 */
 const EVIDENCE_STATUS: Record<EvidenceParseStatus, { label: string; className: string }> = {
@@ -68,6 +79,14 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
   const workspaceRun = useAtomValue(reviewWorkspaceRunAtom)
   const workspaceTemplate = useAtomValue(reviewWorkspaceTemplateAtom)
   const workspaceActions = useReviewWorkspaceActions()
+  const [editingItemId, setEditingItemId] = React.useState<string | null>(null)
+  const [itemDraft, setItemDraft] = React.useState<ReviewItemDraft | null>(null)
+  const [savingItemId, setSavingItemId] = React.useState<string | null>(null)
+
+  React.useEffect(() => {
+    setEditingItemId(null)
+    setItemDraft(null)
+  }, [reviewCase?.id])
 
   const renderedBlockIds = new Set(items.map((item) => item.anchor.blockId))
 
@@ -103,13 +122,59 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
     }, { select: false })
   }
 
+  const beginEditingItem = (item: ReviewItem): void => {
+    setEditingItemId(item.id)
+    setItemDraft({
+      title: item.title,
+      category: item.category,
+      level: item.level ?? '',
+      declaredScore: String(item.declaredScore),
+      activityDate: item.activityDate ?? '',
+      organizer: item.organizer ?? '',
+    })
+  }
+
+  const cancelEditingItem = (): void => {
+    setEditingItemId(null)
+    setItemDraft(null)
+  }
+
+  const saveEditedItem = async (item: ReviewItem): Promise<void> => {
+    if (!itemDraft || savingItemId) return
+    const score = Number(itemDraft.declaredScore)
+    if (!itemDraft.title.trim() || !itemDraft.category.trim() || !itemDraft.declaredScore.trim() || !Number.isFinite(score) || score < 0) {
+      toast.error('请填写事项名称、类别和有效的非负分值')
+      return
+    }
+    setSavingItemId(item.id)
+    try {
+      const ok = await actions.updateReviewItem({
+        itemId: item.id,
+        title: itemDraft.title,
+        category: itemDraft.category,
+        declaredScore: score,
+        level: itemDraft.level,
+        activityDate: itemDraft.activityDate,
+        organizer: itemDraft.organizer,
+      })
+      if (!ok) {
+        toast.error('保存申报事项失败，请查看页面提示')
+        return
+      }
+      toast.success('申报事项已修正，审核结果需要重新审核')
+      cancelEditingItem()
+    } finally {
+      setSavingItemId(null)
+    }
+  }
+
   return (
     <div className="flex h-full min-h-0 flex-col overflow-y-auto scrollbar-thin">
       {/* 头部：栏目名 + 统计 */}
       <header className="shrink-0 border-b border-border/60 px-4 py-3">
         <div className="flex items-center gap-2">
           <Layers size={16} className="text-primary" />
-          <h2 className="text-[13px] font-semibold text-foreground">申请与证明</h2>
+          <h2 className="text-sm font-semibold text-foreground">申请与证明</h2>
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
           {items.length} 条 / {documentsByRole.evidence.length} 份证明
@@ -119,31 +184,34 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
       {/* 申报文件只在中栏管理，和左栏审核依据、下方证明材料分开导入。 */}
       <section className="shrink-0 border-b border-border/40 px-3 py-3">
         <div className="flex items-center justify-between gap-2 px-1">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">申报材料</p>
+          <p className="text-xs font-semibold  text-muted-foreground">申报材料</p>
           <ReviewMaterialLaneActions role="application" documentIds={documentsByRole.application.map((document) => document.id)} actions={actions} />
         </div>
         {documentsByRole.application.length === 0 ? (
-          <p className="mt-2 rounded-lg border border-dashed border-border/60 px-3 py-4 text-center text-xs text-muted-foreground">
-            添加学生申报表或其他待审核文件。
+          <p className="mt-2 px-1 text-xs text-muted-foreground">
+            添加申报表或其他待审核文件；开始审核时会自动识别申报事项。
           </p>
         ) : (
           <div className="mt-2 space-y-1">
             {documentsByRole.application.map((document) => (
               <div key={document.id} className="flex min-w-0 items-center gap-1 rounded-md bg-muted/40 px-2 py-1">
-                <span className="min-w-0 flex-1 truncate text-[11px]" title={document.fileName}>{document.fileName}</span>
-                <span className="shrink-0 text-[10px] text-muted-foreground">{document.parseStatus === 'parsed' ? '已解析' : document.parseStatus === 'partial' ? '部分解析' : '解析失败'}</span>
+                <span className="min-w-0 flex-1 truncate text-xs" title={document.fileName}>{document.fileName}</span>
+                <span className="shrink-0 text-xs text-muted-foreground">{document.parseStatus === 'parsed' ? '已解析' : document.parseStatus === 'partial' ? '部分解析' : '解析失败'}</span>
                 <MoveReviewDocumentButtons role="application" documentIds={documentsByRole.application.map((source) => source.id)} documentId={document.id} actions={actions} />
                 <RemoveReviewDocumentButton document={document} actions={actions} />
               </div>
             ))}
           </div>
         )}
+        <div className="mt-2">
+          <ReviewMaterialDropZone role="application" hasDocuments={documentsByRole.application.length > 0} actions={actions} />
+        </div>
       </section>
 
       {/* 申报事项（开始审核时自动识别） */}
       <section className="shrink-0 px-3 py-3">
         <div className="flex items-center justify-between px-1 pb-2">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+          <p className="text-xs font-semibold  text-muted-foreground">
             申报事项
           </p>
         </div>
@@ -164,43 +232,64 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
               return (
                 <div id={`review-subject-${encodeURIComponent(item.id)}`} key={item.id} className="rounded-xl border border-border/60 bg-card p-3 shadow-sm">
                   {/* 条目卡主体（整卡可点击定位） */}
-                  <p className="mb-1 px-1 text-[10px] font-semibold text-muted-foreground">申报</p>
-                  <button
-                    type="button"
-                    onClick={() => handleItemClick(item)}
-                    className="flex w-full flex-col gap-1.5 rounded-lg px-1 py-0.5 text-left transition-colors hover:bg-foreground/[0.03] focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                    title="定位到申报原文行"
-                  >
-                    <span className="flex items-center gap-2">
-                      <span className="min-w-0 flex-1 truncate text-[13px] font-medium text-foreground">
-                        {item.title}
-                      </span>
-                      {/* 该条 findings 的红/黄小圆点 */}
-                      {itemFindings.map((finding) => (
-                        <span
-                          key={finding.id}
-                          title={finding.title}
-                          className={cn(
-                            'size-2 shrink-0 rounded-full',
-                            finding.severity === 'red' ? 'bg-red-500' : 'bg-amber-400',
-                          )}
-                        />
-                      ))}
-                    </span>
-                    <span className="flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground">
-                      <span className="rounded-md bg-blue-500/10 px-1.5 py-0.5 font-medium text-blue-600 dark:text-blue-400">
-                        {item.category}
-                      </span>
-                      <span className="tabular-nums">申报 {item.declaredScore} 分</span>
-                      {item.activityDate && <span className="tabular-nums">{item.activityDate}</span>}
-                      {item.organizer && <span className="truncate">{item.organizer}</span>}
-                    </span>
-                    {evidenceNames.length > 0 && (
-                      <span className="truncate text-[11px] text-muted-foreground">
-                        关联证明：{evidenceNames.join('、')}
-                      </span>
+                  <div className="mb-1 flex items-center justify-between gap-2 px-1">
+                    <p className="text-xs font-semibold text-muted-foreground">申报 · {item.status === 'confirmed' ? '已确认' : item.status === 'ignored' ? '已忽略' : 'AI 识别'}</p>
+                    {editingItemId === item.id ? (
+                      <div className="flex items-center gap-1">
+                        <Button type="button" size="sm" className="h-6 gap-1 px-2 text-xs" disabled={savingItemId === item.id} onClick={() => void saveEditedItem(item)}><Check size={12} />保存</Button>
+                        <Button type="button" size="sm" variant="ghost" className="h-6 gap-1 px-1.5 text-xs" disabled={savingItemId === item.id} onClick={cancelEditingItem}><X size={12} />取消</Button>
+                      </div>
+                    ) : (
+                      <Button type="button" size="sm" variant="ghost" className="h-6 gap-1 px-1.5 text-xs" disabled={!!editingItemId} aria-label={`修正申报事项：${item.title}`} title="修正 AI 识别结果" onClick={() => beginEditingItem(item)}><Pencil size={11} />修正</Button>
                     )}
-                  </button>
+                  </div>
+                  {editingItemId === item.id && itemDraft ? (
+                    <div className="space-y-2 rounded-lg bg-muted/30 p-2">
+                      <label className="grid gap-1 text-xs text-muted-foreground">事项名称
+                        <input autoFocus maxLength={160} value={itemDraft.title} onChange={(event) => setItemDraft({ ...itemDraft, title: event.target.value })} className="rounded border border-input bg-background px-2 py-1.5 text-xs text-foreground" />
+                      </label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <label className="grid gap-1 text-xs text-muted-foreground">类别
+                          <input maxLength={80} value={itemDraft.category} onChange={(event) => setItemDraft({ ...itemDraft, category: event.target.value })} className="min-w-0 rounded border border-input bg-background px-2 py-1.5 text-xs text-foreground" />
+                        </label>
+                        <label className="grid gap-1 text-xs text-muted-foreground">申报分值
+                          <input type="number" min="0" step="any" value={itemDraft.declaredScore} onChange={(event) => setItemDraft({ ...itemDraft, declaredScore: event.target.value })} className="min-w-0 rounded border border-input bg-background px-2 py-1.5 text-xs text-foreground" />
+                        </label>
+                        <label className="grid gap-1 text-xs text-muted-foreground">等级
+                          <input maxLength={100} value={itemDraft.level} onChange={(event) => setItemDraft({ ...itemDraft, level: event.target.value })} className="min-w-0 rounded border border-input bg-background px-2 py-1.5 text-xs text-foreground" />
+                        </label>
+                        <label className="grid gap-1 text-xs text-muted-foreground">活动日期
+                          <input maxLength={80} value={itemDraft.activityDate} onChange={(event) => setItemDraft({ ...itemDraft, activityDate: event.target.value })} className="min-w-0 rounded border border-input bg-background px-2 py-1.5 text-xs text-foreground" />
+                        </label>
+                      </div>
+                      <label className="grid gap-1 text-xs text-muted-foreground">组织方 / 颁发单位
+                        <input maxLength={200} value={itemDraft.organizer} onChange={(event) => setItemDraft({ ...itemDraft, organizer: event.target.value })} className="rounded border border-input bg-background px-2 py-1.5 text-xs text-foreground" />
+                      </label>
+                      <p className="text-xs leading-4 text-muted-foreground">保存后保留申报原文和证明关联；修改会使旧审核结果过期。</p>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => handleItemClick(item)}
+                      className="flex w-full flex-col gap-1.5 rounded-lg px-1 py-0.5 text-left transition-colors hover:bg-foreground/[0.03] focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                      title="定位到申报原文行"
+                    >
+                      <span className="flex items-center gap-2">
+                        <span className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">{item.title}</span>
+                        {itemFindings.map((finding) => (
+                          <span key={finding.id} title={finding.title} className={cn('size-2 shrink-0 rounded-full', finding.severity === 'red' ? 'bg-red-500' : 'bg-amber-400')} />
+                        ))}
+                      </span>
+                      <span className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+                        <span className="rounded-md bg-blue-500/10 px-1.5 py-0.5 font-medium text-blue-600 dark:text-blue-400">{item.category}</span>
+                        <span className="tabular-nums">申报 {item.declaredScore} 分</span>
+                        {item.activityDate && <span className="tabular-nums">{item.activityDate}</span>}
+                        {item.level && <span>{item.level}</span>}
+                        {item.organizer && <span className="truncate">{item.organizer}</span>}
+                      </span>
+                      {evidenceNames.length > 0 && <span className="truncate text-xs text-muted-foreground">关联证明：{evidenceNames.join('、')}</span>}
+                    </button>
+                  )}
 
                   {/* 该条目的申报原文行（联动高亮落点） */}
                   {itemBlock && (
@@ -210,7 +299,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                   )}
                   {aggregate && (
                     <div className="mt-2 space-y-1.5 border-t border-border/50 pt-2">
-                      <p className="px-1 text-[10px] font-semibold text-muted-foreground">核验 · 材料识别结果</p>
+                      <p className="px-1 text-xs font-semibold text-muted-foreground">核验 · 材料识别结果</p>
                       {[...aggregate.observations.filter((observation) => observation.subjectId === item.id).map((observation) => observation as unknown as Record<string, unknown>), ...extractedObservations.filter((observation) => observation.subjectId === item.id)]
                         .reduce<Array<Record<string, unknown>>>((list, observation) => {
                           const fieldKey = String(observation.fieldKey ?? '')
@@ -230,7 +319,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                           />
                         ))}
                       <details className="rounded-lg border border-border/50 px-2.5 py-1.5">
-                        <summary className="cursor-pointer text-[10px] font-medium text-muted-foreground">··· 高级处理</summary>
+                        <summary className="cursor-pointer text-xs font-medium text-muted-foreground">··· 高级处理</summary>
                         <ManualFactEntry
                           subjectId={item.id}
                           subjectTitle={item.title}
@@ -260,7 +349,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
 
       {/* 未被条目卡引用的原文仍可见：识别失败与漏项不能使待审文件从界面消失。 */}
       {documentsByRole.application.map((document) => {
-        const blocks = document.blocks.filter((block) => !renderedBlockIds.has(block.id))
+        const blocks = (document.parseStatus === 'failed' ? [] : document.blocks).filter((block) => !renderedBlockIds.has(block.id))
         if (blocks.length === 0 && !document.parseError) return null
         return (
           <section key={document.id} className="shrink-0 px-3 pb-3">
@@ -281,7 +370,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
       <section className="shrink-0 px-3 pb-4">
         <span id="review-evidence-section" />
         <div className="flex items-center justify-between gap-2 px-1 pb-2">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">证明材料</p>
+          <p className="text-xs font-semibold  text-muted-foreground">证明材料</p>
           <ReviewMaterialLaneActions role="evidence" documentIds={documentsByRole.evidence.map((document) => document.id)} actions={actions} />
         </div>
         <div className="grid grid-cols-1 gap-2">
@@ -310,14 +399,14 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                 />
                 {aggregate && (
                   <details className="mt-1 rounded-lg border border-border/50 px-2.5 py-1.5">
-                    <summary className="cursor-pointer text-[10px] font-medium text-muted-foreground">管理这份证明与申报事项的关联</summary>
+                    <summary className="cursor-pointer text-xs font-medium text-muted-foreground">管理这份证明与申报事项的关联</summary>
                     <EvidenceLinkControls aggregate={aggregate} documentVersionId={`${document.id}-v1`} actions={workspaceActions} />
                   </details>
                 )}
                 <details className="mt-1 rounded-lg border border-border/50 bg-muted/20 px-2.5 py-1.5">
-                  <summary className="cursor-pointer text-[10px] font-medium text-muted-foreground">查看材料原文（{document.blocks.length} 段）</summary>
+                  <summary className="cursor-pointer text-xs font-medium text-muted-foreground">查看材料原文（{document.parseStatus === 'failed' ? 0 : document.blocks.length} 段）</summary>
                   <div className="mt-1 rounded-lg bg-muted/40 p-2">
-                    {document.blocks.map((block) => (
+                    {(document.parseStatus === 'failed' ? [] : document.blocks).map((block) => (
                       <SourceBlockView key={block.id} document={document} block={block} dense />
                     ))}
                     {document.parseError && <p className="text-xs text-amber-600">{document.parseError}</p>}
@@ -326,6 +415,9 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
               </div>
             )
           })}
+        </div>
+        <div className="mt-2">
+          <ReviewMaterialDropZone role="evidence" hasDocuments={documentsByRole.evidence.length > 0} actions={actions} />
         </div>
       </section>
       {workspaceRunStale && (
@@ -407,28 +499,28 @@ function SubjectAdjudicationCard({
   return (
     <section ref={rootRef} className="mt-2 rounded-lg border border-border/60 bg-muted/20 p-2.5">
       <div className="flex items-center justify-between gap-2">
-        <p className="text-[11px] font-semibold">最终认定</p>
-        {current ? <span className="rounded bg-green-500/10 px-1.5 py-0.5 text-[10px] text-green-700 dark:text-green-400">{current.outcome === 'accepted' ? '认可' : current.outcome === 'modified' ? '已修改' : '不予认定'}</span> : <span className="rounded bg-amber-500/10 px-1.5 py-0.5 text-[10px] text-amber-700 dark:text-amber-400">待处理</span>}
+        <p className="text-xs font-semibold">最终认定</p>
+        {current ? <span className="rounded bg-green-500/10 px-1.5 py-0.5 text-xs text-green-700 dark:text-green-400">{current.outcome === 'accepted' ? '认可' : current.outcome === 'modified' ? '已修改' : '不予认定'}</span> : <span className="rounded bg-amber-500/10 px-1.5 py-0.5 text-xs text-amber-700 dark:text-amber-400">待处理</span>}
       </div>
-      <p className="mt-1 text-[11px] text-muted-foreground">申报：{displaySubjectFields(subject.fields, template)}</p>
-      {current?.outcome === 'accepted' && <p className="mt-1 text-[11px]">认定：与申报内容一致</p>}
-      {current?.outcome === 'rejected' && <p className="mt-1 text-[11px] text-destructive">认定：不予认定（最终分值 0）</p>}
-      {current?.outcome === 'modified' && current.finalFields && <p className="mt-1 text-[11px]">认定：{displaySubjectFields(current.finalFields, template)}</p>}
-      {current && <p className="mt-1 text-[10px] text-muted-foreground">理由：{current.reason}</p>}
+      <p className="mt-1 text-xs text-muted-foreground">申报：{displaySubjectFields(subject.fields, template)}</p>
+      {current?.outcome === 'accepted' && <p className="mt-1 text-xs">认定：与申报内容一致</p>}
+      {current?.outcome === 'rejected' && <p className="mt-1 text-xs text-destructive">认定：不予认定（最终分值 0）</p>}
+      {current?.outcome === 'modified' && current.finalFields && <p className="mt-1 text-xs">认定：{displaySubjectFields(current.finalFields, template)}</p>}
+      {current && <p className="mt-1 text-xs text-muted-foreground">理由：{current.reason}</p>}
       {!editing ? (
         <div className="mt-2 flex flex-wrap gap-1.5">
-          <button type="button" disabled={!canEdit || busy} onClick={() => void submit('accepted')} className="rounded border px-2 py-1 text-[11px] disabled:opacity-40">按核验结果认定</button>
-          <button type="button" disabled={!canEdit || busy || specs.length === 0} onClick={() => { setValues(initialSubjectValues(subject.fields, current?.finalFields)); setEditing(true); setError(null) }} className="rounded border px-2 py-1 text-[11px] disabled:opacity-40">调整认定</button>
-          <button type="button" disabled={!canEdit || busy} onClick={() => void submit('rejected')} className="rounded border border-destructive/40 px-2 py-1 text-[11px] text-destructive disabled:opacity-40">不予认定</button>
+          <button type="button" disabled={!canEdit || busy} onClick={() => void submit('accepted')} className="rounded border px-2 py-1 text-xs disabled:opacity-40">按核验结果认定</button>
+          <button type="button" disabled={!canEdit || busy || specs.length === 0} onClick={() => { setValues(initialSubjectValues(subject.fields, current?.finalFields)); setEditing(true); setError(null) }} className="rounded border px-2 py-1 text-xs disabled:opacity-40">调整认定</button>
+          <button type="button" disabled={!canEdit || busy} onClick={() => void submit('rejected')} className="rounded border border-destructive/40 px-2 py-1 text-xs text-destructive disabled:opacity-40">不予认定</button>
         </div>
       ) : (
         <div className="mt-2 space-y-2">
-          {specs.map((field) => <label key={field.key} className="block text-[11px]">{field.label}
+          {specs.map((field) => <label key={field.key} className="block text-xs">{field.label}
             {field.kind === 'enum' && field.options.length > 0 ? <select value={values[field.key] ?? ''} onChange={(event) => setValues((old) => ({ ...old, [field.key]: event.target.value }))} className="mt-1 h-8 w-full rounded border bg-background px-2">{field.options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select> : <input type={field.kind === 'number' ? 'number' : field.kind === 'date' ? 'date' : 'text'} value={values[field.key] ?? ''} onChange={(event) => setValues((old) => ({ ...old, [field.key]: event.target.value }))} className="mt-1 h-8 w-full rounded border bg-background px-2" />}
           </label>)}
-          <textarea value={reason} onChange={(event) => setReason(event.target.value)} className="min-h-14 w-full resize-y rounded border bg-background px-2 py-1.5 text-[11px]" placeholder="修改理由（必填）" aria-label="修改认定理由" />
-          {error && <p role="alert" className="text-[11px] text-destructive">{error}</p>}
-          <div className="flex gap-1.5"><button type="button" disabled={!canEdit || busy || !reason.trim()} onClick={() => void saveModified()} className="rounded bg-primary px-2 py-1 text-[11px] text-primary-foreground disabled:opacity-50">保存认定</button><button type="button" disabled={busy} onClick={() => setEditing(false)} className="rounded border px-2 py-1 text-[11px]">取消</button></div>
+          <textarea value={reason} onChange={(event) => setReason(event.target.value)} className="min-h-14 w-full resize-y rounded border bg-background px-2 py-1.5 text-xs" placeholder="修改理由（必填）" aria-label="修改认定理由" />
+          {error && <p role="alert" className="text-xs text-destructive">{error}</p>}
+          <div className="flex gap-1.5"><button type="button" disabled={!canEdit || busy || !reason.trim()} onClick={() => void saveModified()} className="rounded bg-primary px-2 py-1 text-xs text-primary-foreground disabled:opacity-50">保存认定</button><button type="button" disabled={busy} onClick={() => setEditing(false)} className="rounded border px-2 py-1 text-xs">取消</button></div>
         </div>
       )}
       {dialogOutcome && <ReviewActionDialog
@@ -522,11 +614,11 @@ function ManualFactEntry({
   }
   return (
     <div className="pt-1">
-      {!open ? <button onClick={() => setOpen(true)} className="rounded border px-2 py-1 text-[11px] hover:bg-background">手工录入事实</button> : (
+      {!open ? <button onClick={() => setOpen(true)} className="rounded border px-2 py-1 text-xs hover:bg-background">手工录入事实</button> : (
         <div className="space-y-1.5 rounded-lg border bg-background p-2">
-          <p className="text-[11px] font-medium">为“{subjectTitle}”添加人工核实事实</p>
-          <label className="block text-[10px]">事实类型<select value={fieldKey} onChange={(event) => { setFieldKey(event.target.value); setValue('') }} className="mt-1 h-8 w-full rounded border bg-background px-2" aria-label="事实类型"><option value="">请选择事实类型</option>{fields.map((field) => <option key={field.key} value={field.key}>{field.label}</option>)}</select></label>
-          <label className="block text-[10px]">核验结果{selectedField?.kind === 'enum' && selectedField.options.length > 0
+          <p className="text-xs font-medium">为“{subjectTitle}”添加人工核实事实</p>
+          <label className="block text-xs">事实类型<select value={fieldKey} onChange={(event) => { setFieldKey(event.target.value); setValue('') }} className="mt-1 h-8 w-full rounded border bg-background px-2" aria-label="事实类型"><option value="">请选择事实类型</option>{fields.map((field) => <option key={field.key} value={field.key}>{field.label}</option>)}</select></label>
+          <label className="block text-xs">核验结果{selectedField?.kind === 'enum' && selectedField.options.length > 0
             ? <select value={value} onChange={(event) => setValue(event.target.value)} className="mt-1 h-8 w-full rounded border bg-background px-2">{selectedField.options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select>
             : <input value={value} onChange={(event) => setValue(event.target.value)} className="mt-1 h-8 w-full rounded border px-2" placeholder="填写核验结果" aria-label="核验结果" />}</label>
           <select value={sourceVersionId} onChange={(event) => setSourceVersionId(event.target.value)} className="h-7 w-full rounded border bg-background px-2" aria-label="事实来源材料">
@@ -585,7 +677,7 @@ function WorkspaceObservationCard({
     <div className="rounded-lg bg-muted/35 px-2.5 py-2 text-xs">
       <div className="flex items-center justify-between gap-2">
         <span className="font-medium">{fieldLabel} · 材料识别结果</span>
-        <span className={cn('rounded px-1.5 py-0.5 text-[10px]', confirmed ? 'bg-green-500/10 text-green-700 dark:text-green-400' : 'bg-amber-500/10 text-amber-700 dark:text-amber-400')}>
+        <span className={cn('rounded px-1.5 py-0.5 text-xs', confirmed ? 'bg-green-500/10 text-green-700 dark:text-green-400' : 'bg-amber-500/10 text-amber-700 dark:text-amber-400')}>
           {confirmed ? '人工确认' : `待确认${typeof observation.confidence === 'number' ? ` · ${Math.round(observation.confidence * 100)}%` : ''}`}
         </span>
       </div>
@@ -602,8 +694,8 @@ function WorkspaceObservationCard({
       {sourceNames.length > 0 && <p className="mt-1 text-muted-foreground">来源：{[...new Set(sourceNames)].join('、')}</p>}
       {!confirmed && !editing && (
         <div className="mt-1.5 flex gap-1.5">
-          <button disabled={busy} onClick={() => void run(observation.value, '审核员核对原始材料后确认该识别结果')} className="rounded border px-2 py-1 text-[11px] hover:bg-background disabled:opacity-50">识别正确</button>
-          <button disabled={busy} onClick={() => { setValue(displayValue(observation.value)); setEditing(true) }} className="rounded border px-2 py-1 text-[11px] hover:bg-background disabled:opacity-50">识别有误</button>
+          <button disabled={busy} onClick={() => void run(observation.value, '审核员核对原始材料后确认该识别结果')} className="rounded border px-2 py-1 text-xs hover:bg-background disabled:opacity-50">识别正确</button>
+          <button disabled={busy} onClick={() => { setValue(displayValue(observation.value)); setEditing(true) }} className="rounded border px-2 py-1 text-xs hover:bg-background disabled:opacity-50">识别有误</button>
         </div>
       )}
     </div>
@@ -665,17 +757,17 @@ function EvidenceCard({ evidence, fileName, linkedItemTitles, actions }: Evidenc
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-start justify-between gap-2">
-          <span className="min-w-0 flex-1 truncate text-[13px] font-medium text-foreground" title={fileName}>
+          <span className="min-w-0 flex-1 truncate text-sm font-medium text-foreground" title={fileName}>
             {fileName}
           </span>
           <span className="flex shrink-0 items-center gap-1">
-            <span className={cn('rounded-md px-1.5 py-0.5 text-[11px] font-medium', status.className)}>{status.label}</span>
+            <span className={cn('rounded-md px-1.5 py-0.5 text-xs font-medium', status.className)}>{status.label}</span>
             {actions}
           </span>
         </div>
         <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{evidence.recognizedFacts}</p>
         {linkedItemTitles.length > 0 && (
-          <p className="mt-1 truncate text-[11px] text-muted-foreground">
+          <p className="mt-1 truncate text-xs text-muted-foreground">
             关联条目：{linkedItemTitles.join('、')}
           </p>
         )}

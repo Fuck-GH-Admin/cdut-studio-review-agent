@@ -4,7 +4,7 @@
  */
 import { createHash } from 'node:crypto'
 import type { CaseAggregateV2, CommandReceipt, FieldValue, ReviewCase, ReviewCaseV2, RuleSpec } from '@profer/shared'
-import { getCase } from './case-store'
+import { getCase, updateCase } from './case-store'
 import { createAggregate, readAggregate, submitCommand } from './case-store-v2'
 import { documentToVersion, itemToSubject, mapDomainToTemplate, migrateCaseToV2 } from './migration'
 import { getTemplate, saveDraft } from './template-store'
@@ -22,8 +22,11 @@ function text(value: string): FieldValue {
 function projectedCase(v1: ReviewCase, current: ReviewCaseV2): ReviewCaseV2 {
   const mapping = mapDomainToTemplate(v1.domainPackId)
   if (!mapping.templateId) throw new Error(mapping.note ?? `审核领域未映射到 V2 模板: ${v1.domainPackId ?? '(默认)'}`)
-  const template = getTemplate(mapping.templateId, current.templateId === mapping.templateId ? current.templateVersion : undefined)
-  if (!template) throw new Error(`V2 模板不存在或未初始化: ${mapping.templateId}`)
+  const selectedTemplateId = v1.reviewTemplate?.templateId ?? mapping.templateId
+  const selectedTemplateVersion = v1.reviewTemplate?.version
+    ?? (current.templateId === selectedTemplateId ? current.templateVersion : undefined)
+  const template = getTemplate(selectedTemplateId, selectedTemplateVersion)
+  if (!template) throw new Error(`V2 模板不存在或未初始化: ${selectedTemplateId}`)
 
   const previousSubjects = new Map(current.subjects.map((subject) => [subject.id, subject]))
   const subjects = v1.items.map((item) => {
@@ -37,7 +40,23 @@ function projectedCase(v1: ReviewCase, current: ReviewCaseV2): ReviewCaseV2 {
       sourceRefs: subject.sourceRefs.map((ref) => ({ ...ref, caseId: v1.id })),
     }
   })
-  const reviewRules: RuleSpec[] = v1.rulePacks.flatMap((pack) => pack.outline.map((outline, index) => compileWorkspaceRule(pack, outline, index + 1)))
+  const sourceRules: RuleSpec[] = v1.rulePacks.flatMap((pack) => pack.outline.map((outline, index) => compileWorkspaceRule(pack, outline, index + 1)))
+  const manualRules: RuleSpec[] = (v1.manualRules ?? []).map((rule, index) => ({
+    id: `manual:${v1.id}:${rule.id}`,
+    policyVersionId: `case-manual:${v1.id}@1`,
+    title: rule.title,
+    when: { field: 'title', op: 'exists' },
+    requirement: rule.requirement,
+    targetScope: 'subject',
+    execution: 'semantic',
+    onFail: 'manual-review',
+    onUnknown: 'needs-confirmation',
+    sourceRefIds: [],
+    priority: sourceRules.length + index + 1,
+    confirmation: 'confirmed',
+    semanticOutputEnum: ['compliant', 'non-compliant', 'awaiting-confirmation'],
+  }))
+  const reviewRules = [...sourceRules, ...manualRules]
   const previousDocuments = new Map(current.documents.map((document) => [document.versionId, document]))
   const projectDocument = (document: ReviewCase['documents'][number]) => {
     const version = documentToVersion(document)
@@ -57,8 +76,8 @@ function projectedCase(v1: ReviewCase, current: ReviewCaseV2): ReviewCaseV2 {
       ...(previous.supersedesVersionId ? { supersedesVersionId: previous.supersedesVersionId } : {}),
     } : slotted
   }
-  const activeDocuments = v1.documents.map(projectDocument)
-  const activeVersionIds = new Set(activeDocuments.map((document) => document.versionId))
+  const projectedActiveDocuments = v1.documents.map(projectDocument)
+  const activeVersionIds = new Set(projectedActiveDocuments.map((document) => document.versionId))
   const archivedDocuments = (v1.archivedDocuments ?? [])
     .map((document) => {
       const projected = projectDocument(document)
@@ -72,6 +91,14 @@ function projectedCase(v1: ReviewCase, current: ReviewCaseV2): ReviewCaseV2 {
       }
     })
     .filter((document) => !activeVersionIds.has(document.versionId))
+  // The legacy V1 case is only a projection of its own uploads. Versions created
+  // directly in the V2 workbench (for example, a repaired/reparsed source file)
+  // have no V1 document row and must survive every later projection sync.
+  const legacyVersionIds = new Set([
+    ...v1.documents,
+    ...(v1.archivedDocuments ?? []),
+  ].map((document) => `${document.id}-v1`))
+  const v2OnlyDocuments = current.documents.filter((document) => !legacyVersionIds.has(document.versionId))
   return {
     ...current,
     templateId: template.templateId,
@@ -84,7 +111,7 @@ function projectedCase(v1: ReviewCase, current: ReviewCaseV2): ReviewCaseV2 {
     },
     subjects,
     reviewRules,
-    documents: [...activeDocuments, ...archivedDocuments],
+    documents: [...projectedActiveDocuments, ...archivedDocuments, ...v2OnlyDocuments],
   }
 }
 
@@ -134,6 +161,8 @@ export async function ensureWorkspaceAggregateV2(caseId: string): Promise<CaseAg
 
 /** 将工作台已有的申报字段、事项和文件版本投影到同 ID 的 V2 聚合，不触碰人工业务记录。 */
 export async function syncWorkspaceProjectionV2(caseId: string): Promise<CaseAggregateV2> {
+  ensureBuiltinTemplateDrafts({ getTemplate, saveDraft })
+  await upgradeLegacyComprehensiveTemplateAssignment(caseId)
   let current = readAggregate(caseId) ?? await initializeAggregate(caseId)
 
   // 乐观并发冲突时重新读取并重试；不会用旧快照覆盖另一条人工操作。
@@ -179,6 +208,27 @@ export async function syncWorkspaceProjectionV2(caseId: string): Promise<CaseAgg
     current = readAggregate(caseId) ?? current
   }
   throw new Error(`案卷聚合同步冲突，请刷新后重试: ${caseId}`)
+}
+
+/**
+ * Early releases published comprehensive-assessment-v2@2 as a thin, rule-empty
+ * compatibility template. Keep that published version for old runs, but move the
+ * affected live case to the new built-in v3 before projecting or starting another run.
+ */
+async function upgradeLegacyComprehensiveTemplateAssignment(caseId: string): Promise<void> {
+  const legacy = getCase(caseId)
+  const selected = legacy?.reviewTemplate
+  if (!legacy || selected?.templateId !== 'comprehensive-assessment-v2' || selected.version !== 2) return
+  const oldTemplate = getTemplate(selected.templateId, selected.version)
+  const currentTemplate = getTemplate(selected.templateId)
+  if (!oldTemplate || (oldTemplate.sections ?? []).some((item) => item.criteria.length > 0)) return
+  if (!currentTemplate || currentTemplate.version !== 3 || currentTemplate.status !== 'published'
+    || !(currentTemplate.sections ?? []).some((item) => item.criteria.length > 0)) return
+
+  await updateCase(caseId, (fresh) => {
+    if (fresh.reviewTemplate?.templateId !== selected.templateId || fresh.reviewTemplate.version !== selected.version) return null
+    return { ...fresh, reviewTemplate: { templateId: currentTemplate.templateId, version: currentTemplate.version } }
+  }, { reason: `升级空规则内置综测模板 v2 → v${currentTemplate.version}（保留历史运行）` })
 }
 
 /** 测试与查询使用的纯投影构造。 */

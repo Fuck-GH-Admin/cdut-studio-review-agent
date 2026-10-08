@@ -210,7 +210,7 @@ export function decideWorkspaceCaseV2(
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '最终决定必须填写理由')
     if (aggregate.caseV2.stage === 'decided' || aggregate.caseV2.stage === 'archived') throw new CommandValidationError('INVALID_TRANSITION', '案卷已结束')
 
-    if (payload.result !== 'return') {
+    if (payload.result === 'pass' || payload.result === 'partial-pass') {
       const { getTemplate } = require('./template-store') as typeof import('./template-store')
       const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
       const extractArtifact = readArtifact<{ observations?: Array<Record<string, unknown>> }>(aggregate.caseV2.id, run.id, 'node-auto-check-extract')
@@ -281,7 +281,21 @@ export function decideWorkspaceCaseV2(
 export function isWorkspaceRunStaleV2(aggregate: CaseAggregateV2, runId: string): boolean {
   const run = getRunV2(aggregate.caseV2.id, runId)
   if (!run?.inputManifest.hash) return true
-  if (computeRunInputHash(aggregate.caseV2, aggregate.observations as unknown as Array<Record<string, unknown>>, aggregate.evidenceLinks as unknown as Array<Record<string, unknown>>) !== run.inputManifest.hash) return true
+  const observations = aggregate.observations as unknown as Array<Record<string, unknown>>
+  const evidenceLinks = aggregate.evidenceLinks as unknown as Array<Record<string, unknown>>
+  const currentHash = computeRunInputHash(aggregate.caseV2, observations, evidenceLinks)
+  if (currentHash !== run.inputManifest.hash) {
+    // Runs created before document ordering was removed from the content hash
+    // keep their recorded order in the manifest. Recompute against that order
+    // so a later projection-only reorder does not disable reviewer actions.
+    const manifestOrder = run.inputManifest.documentVersions.map((document) => document.versionId)
+    const currentIds = aggregate.caseV2.documents.map((document) => document.versionId)
+    const manifestIds = new Set(manifestOrder)
+    if (manifestIds.size !== manifestOrder.length
+      || manifestIds.size !== currentIds.length
+      || currentIds.some((id) => !manifestIds.has(id))
+      || computeRunInputHash(aggregate.caseV2, observations, evidenceLinks, manifestOrder) !== run.inputManifest.hash) return true
+  }
   const completedAt = run.completedAt ?? run.startedAt
   return aggregate.supplements.some((supplement) => supplement.createdAt > completedAt || supplement.responses.some((response) => response.at > completedAt))
 }

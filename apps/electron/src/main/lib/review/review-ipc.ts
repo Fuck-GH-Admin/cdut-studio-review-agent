@@ -11,22 +11,28 @@
 
 import { app, ipcMain } from 'electron'
 import {
+  REVIEW_MODEL_PROVIDERS,
   REVIEW_IPC_CHANNELS,
   type AssistantChatRequest,
   type ExportReportResult,
+  type ImportDocumentsResult,
   type GenerateRuleOutlineRequest,
   type ReviewCase,
   type ReviewCaseType,
   type ReviewItem,
   type ReviewModelGatewayStatus,
+  type ReviewModuleSettingsV2,
   type ReviewRun,
   type RuleOutlineItem,
   type SourceDocument,
   type UpdateCaseSettingsRequest,
+  type UpdateRuleOutlineRequest,
+  type UpdateReviewItemRequest,
 } from '@profer/shared'
 import {
   deleteCase,
   getCase,
+  getReviewCasesDir,
   listCases,
   loadDemoCase,
   saveCase,
@@ -43,9 +49,10 @@ import { startReviewRun } from './run-service'
 import { exportReport } from './report-service'
 import { getReviewModelGatewayStatus } from './review-model-gateway'
 import { createEmptyCase } from './case-creation'
-import { importDocumentFromPath, importDocumentIntoCase, removeDocumentsFromCase, reorderDocumentsInCase } from './case-import'
+import { importDocumentFromPath, importDocumentsIntoCase, removeDocumentsFromCase, reorderDocumentsInCase } from './case-import'
 import { invalidateDerivedReviewInputs } from './input-invalidation'
 import { ensureWorkspaceAggregateV2, syncWorkspaceProjectionV2 } from './workspace-service-v2'
+import { resolveCaseDocumentPreviewPath } from './document-preview-path'
 
 /** 来源角色枚举（IMPORT_DOCUMENT 入参白名单） */
 const SOURCE_ROLES: ReadonlySet<string> = new Set(['rule', 'application', 'evidence'])
@@ -142,6 +149,44 @@ export function registerReviewIpc(): void {
       if (input.title !== undefined && typeof input.title !== 'string') {
         throw new Error('参数 title 类型非法')
       }
+      let reviewTemplate: ReviewCase['reviewTemplate'] | null | undefined
+      if (input.reviewTemplate !== undefined) {
+        if (input.reviewTemplate === null) {
+          reviewTemplate = null
+        } else {
+          const selected = input.reviewTemplate
+          if (!selected || typeof selected !== 'object'
+            || typeof selected.templateId !== 'string'
+            || !Number.isInteger(selected.version) || selected.version < 1) {
+            throw new Error('审核模板参数非法')
+          }
+          const { getTemplate, isSafeTemplateId } = require('./template-store') as typeof import('./template-store')
+          if (!isSafeTemplateId(selected.templateId)) throw new Error('审核模板参数非法')
+          const template = getTemplate(selected.templateId, selected.version)
+          if (!template || template.status !== 'published') {
+            throw new Error('只能载入已发布的审核模板版本')
+          }
+          reviewTemplate = { templateId: selected.templateId, version: selected.version }
+        }
+      }
+      let manualRules: ReviewCase['manualRules'] | undefined
+      if (input.manualRules !== undefined) {
+        if (!Array.isArray(input.manualRules) || input.manualRules.length > 100) {
+          throw new Error('手写规则必须是 100 条以内的列表')
+        }
+        const seenRuleIds = new Set<string>()
+        manualRules = input.manualRules.map((rule, index) => {
+          if (!rule || typeof rule !== 'object'
+            || typeof rule.id !== 'string' || !/^[a-zA-Z0-9_-]{1,100}$/.test(rule.id)
+            || seenRuleIds.has(rule.id)
+            || typeof rule.title !== 'string' || rule.title.trim().length === 0 || rule.title.length > 160
+            || typeof rule.requirement !== 'string' || rule.requirement.trim().length === 0 || rule.requirement.length > 8000) {
+            throw new Error(`第 ${index + 1} 条手写规则无效`)
+          }
+          seenRuleIds.add(rule.id)
+          return { id: rule.id, title: rule.title.trim(), requirement: rule.requirement.trim() }
+        })
+      }
       // 待审主体文档：逐个校验是否属于本卷，防止悬空 ID 让三栏联动指向不存在的文档
       let subjectDocumentIds: string[] | undefined
       if (input.subjectDocumentIds !== undefined) {
@@ -169,14 +214,72 @@ export function registerReviewIpc(): void {
             ...(input.type !== undefined ? { type: input.type } : {}),
             ...(input.domainPackId !== undefined ? { domainPackId: input.domainPackId } : {}),
             ...(subjectDocumentIds !== undefined ? { subjectDocumentIds } : {}),
+            ...(reviewTemplate !== undefined ? { reviewTemplate: reviewTemplate ?? undefined } : {}),
+            ...(manualRules !== undefined ? { manualRules } : {}),
           }
         },
-        { reason: `更新案卷设置${input.domainPackId ? `（领域包 ${input.domainPackId}）` : ''}` },
+        { reason: `更新案卷审核设置${input.domainPackId ? `（领域包 ${input.domainPackId}）` : ''}` },
       )
       await syncWorkspaceProjectionV2(caseId)
       return updated
     },
   )
+
+  ipcMain.handle(REVIEW_IPC_CHANNELS.UPDATE_RULE_OUTLINE, async (_event, input: UpdateRuleOutlineRequest): Promise<ReviewCase> => {
+    if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+    const caseId = requireString(input.caseId, 'caseId')
+    const rulePackId = requireString(input.rulePackId, 'rulePackId')
+    const ruleId = requireString(input.ruleId, 'ruleId')
+    if (typeof input.title !== 'string' || !input.title.trim() || input.title.length > 160) throw new Error('规则名称不能为空且不能超过 160 字')
+    if (typeof input.summary !== 'string' || input.summary.length > 8000) throw new Error('规则摘要不能超过 8000 字')
+    const updated = await updateCase(caseId, (fresh) => {
+      const pack = fresh.rulePacks.find((item) => item.id === rulePackId)
+      if (!pack || !pack.outline.some((item) => item.id === ruleId)) throw new Error('规则摘要不存在或已被移除，请刷新后重试')
+      return {
+        ...fresh,
+        rulePacks: fresh.rulePacks.map((item) => item.id === rulePackId
+          ? { ...item, outline: item.outline.map((rule) => rule.id === ruleId ? { ...rule, title: input.title.trim(), summary: input.summary.trim() } : rule) }
+          : item),
+      }
+    }, { reason: `手动调整规则摘要 ${ruleId}` })
+    await syncWorkspaceProjectionV2(caseId)
+    return updated
+  })
+
+  ipcMain.handle(REVIEW_IPC_CHANNELS.UPDATE_REVIEW_ITEM, async (_event, input: UpdateReviewItemRequest): Promise<ReviewCase> => {
+    if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+    const caseId = requireString(input.caseId, 'caseId')
+    const itemId = requireString(input.itemId, 'itemId')
+    if (typeof input.title !== 'string' || !input.title.trim() || input.title.length > 160) throw new Error('申报事项名称不能为空且不能超过 160 字')
+    if (typeof input.category !== 'string' || !input.category.trim() || input.category.length > 80) throw new Error('申报事项类别不能为空且不能超过 80 字')
+    if (typeof input.declaredScore !== 'number' || !Number.isFinite(input.declaredScore) || input.declaredScore < 0 || input.declaredScore > 1000000) throw new Error('申报分值必须是 0 至 1000000 之间的数字')
+    for (const [field, value, maxLength] of [
+      ['level', input.level, 100],
+      ['activityDate', input.activityDate, 80],
+      ['organizer', input.organizer, 200],
+    ] as const) {
+      if (value !== undefined && (typeof value !== 'string' || value.length > maxLength)) throw new Error(`申报事项${field}字段无效`)
+    }
+    const updated = await updateCase(caseId, (fresh) => {
+      if (!fresh.items.some((item) => item.id === itemId)) throw new Error('申报事项已不存在，请刷新后重试')
+      return {
+        ...fresh,
+        items: fresh.items.map((item) => item.id === itemId ? {
+          ...item,
+          title: input.title.trim(),
+          category: input.category.trim(),
+          declaredScore: input.declaredScore,
+          ...(input.level?.trim() ? { level: input.level.trim() } : { level: undefined }),
+          ...(input.activityDate?.trim() ? { activityDate: input.activityDate.trim() } : { activityDate: undefined }),
+          ...(input.organizer?.trim() ? { organizer: input.organizer.trim() } : { organizer: undefined }),
+          status: 'confirmed',
+          identifiedBy: 'manual',
+        } : item),
+      }
+    }, { reason: `人工修正申报事项 ${itemId}` })
+    await syncWorkspaceProjectionV2(caseId)
+    return updated
+  })
 
   ipcMain.handle(REVIEW_IPC_CHANNELS.CONFIRM_RULE_PACK, async (_event, input: { caseId: string; rulePackId: string }): Promise<ReviewCase> => {
     const caseId = requireString(input?.caseId, 'caseId')
@@ -188,15 +291,19 @@ export function registerReviewIpc(): void {
   /** 导入文件到案卷（系统选择框 → 解析为 SourceDocument 并写回案卷） */
   ipcMain.handle(
     REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT,
-    (_event, input: { caseId: string; fileName: string; role: SourceDocument['role'] }): Promise<SourceDocument> => {
+    (_event, input: { caseId: string; role: SourceDocument['role']; requestId?: string }): Promise<ImportDocumentsResult> => {
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
       if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
       const { BrowserWindow } = require('electron') as typeof import('electron')
-      return importDocumentIntoCase({
+      const sender = _event.sender
+      return importDocumentsIntoCase({
         caseId: requireString(input.caseId, 'caseId'),
-        fileName: requireString(input.fileName, 'fileName'),
         role: input.role,
         parentWindow: BrowserWindow.fromWebContents(_event.sender) ?? undefined,
+        requestId: typeof input.requestId === 'string' ? input.requestId : undefined,
+        onProgress: (progress) => {
+          if (!sender.isDestroyed()) sender.send(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_PROGRESS, progress)
+        },
       })
     },
   )
@@ -204,14 +311,63 @@ export function registerReviewIpc(): void {
   /** 开发版 UI 自动化/模型验收入口；正式构建仍只允许由系统文件选择框授权路径。 */
   ipcMain.handle(
     REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_FROM_PATH,
-    async (_event, input: { caseId: string; sourcePath: string; role: SourceDocument['role'] }): Promise<SourceDocument> => {
+    async (_event, input: { caseId: string; sourcePath: string; role: SourceDocument['role']; requestId?: string }): Promise<SourceDocument> => {
       if (app.isPackaged) throw new Error('路径直导仅在开发版可用')
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
       if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
       const sourcePath = requireString(input.sourcePath, 'sourcePath')
-      return importDocumentFromPath({ caseId: requireString(input.caseId, 'caseId'), sourcePath, role: input.role })
+      const sender = _event.sender
+      return importDocumentFromPath({
+        caseId: requireString(input.caseId, 'caseId'),
+        sourcePath,
+        role: input.role,
+        requestId: typeof input.requestId === 'string' ? input.requestId : undefined,
+        onProgress: (progress) => {
+          if (!sender.isDestroyed()) sender.send(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_PROGRESS, progress)
+        },
+      })
     },
   )
+
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_IMAGE_PREVIEW_PATH, (_event, input: { caseId: string; documentId: string; blockId: string }): string | null => {
+    if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+    const caseId = requireString(input.caseId, 'caseId')
+    const documentId = requireString(input.documentId, 'documentId')
+    const blockId = requireString(input.blockId, 'blockId')
+    const reviewCase = getCase(caseId)
+    const document = reviewCase?.documents.find((item) => item.id === documentId)
+    const block = document?.blocks.find((item) => item.id === blockId)
+    if (!reviewCase || !document || !block || block.kind !== 'image') return null
+
+    const { existsSync, realpathSync, statSync } = require('node:fs') as typeof import('node:fs')
+    const { isAbsolute, join, relative, resolve, sep } = require('node:path') as typeof import('node:path')
+    const caseRoot = resolve(getReviewCasesDir(), caseId)
+    const assetPath = block.imageAssetPath ?? join('source-docs', `${document.id}-${document.fileName}`)
+    const candidate = isAbsolute(assetPath) ? resolve(assetPath) : resolve(caseRoot, assetPath)
+    try {
+      if (!existsSync(candidate)) return null
+      const rootReal = realpathSync(caseRoot)
+      const assetReal = realpathSync(candidate)
+      const insidePath = relative(rootReal, assetReal)
+      if (!insidePath || insidePath === '..' || insidePath.startsWith(`..${sep}`) || isAbsolute(insidePath)) return null
+      const info = statSync(assetReal)
+      if (!info.isFile() || info.size > 50 * 1024 * 1024) return null
+      return assetReal
+    } catch {
+      return null
+    }
+  })
+
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_WORKSPACE_DOCUMENT_PREVIEW_PATH, (_event, input: { caseId: string; documentVersionId: string }): string | null => {
+    if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+    const caseId = requireString(input.caseId, 'caseId')
+    const documentVersionId = requireString(input.documentVersionId, 'documentVersionId')
+    if (!/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(caseId)) throw new Error('参数 caseId 非法')
+    const { readAggregate } = require('./case-store-v2') as typeof import('./case-store-v2')
+    const aggregate = readAggregate(caseId)
+    const caseRoot = require('node:path').resolve(getReviewCasesDir(), caseId) as string
+    return resolveCaseDocumentPreviewPath(caseRoot, aggregate, documentVersionId)
+  })
 
   /** 从当前审核输入中移除一份或某一角色的全部材料；保留案卷内原件。 */
   ipcMain.handle(
@@ -297,7 +453,8 @@ export function registerReviewIpc(): void {
   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_RUNS_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
     const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
-    return listRunsV2(caseId)
+    const { reconcilePiReviewRunsWithReadReceipts } = require('./pi-case-review-service') as typeof import('./pi-case-review-service')
+    return reconcilePiReviewRunsWithReadReceipts(caseId, listRunsV2(caseId))
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_RUN_V2, (_e, input: { caseId: string; runId: string }) => {
     if (!input?.caseId || !input?.runId) throw new Error('参数非法')
@@ -374,9 +531,11 @@ export function registerReviewIpc(): void {
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
     const { buildCaseTimeline } = require('./case-timeline') as typeof import('./case-timeline')
     const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+    const { reconcilePiReviewRunsWithReadReceipts } = require('./pi-case-review-service') as typeof import('./pi-case-review-service')
     const aggregate = getCaseV2Aggregate(input.caseId)
     if (!aggregate) throw new Error(`案卷聚合不存在: ${input.caseId}`)
-    return buildCaseTimeline(aggregate, listRunsV2(input.caseId), input.filterOperator)
+    const runs = reconcilePiReviewRunsWithReadReceipts(input.caseId, listRunsV2(input.caseId))
+    return buildCaseTimeline(aggregate, runs, input.filterOperator)
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_RUN_OBSERVATIONS_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
@@ -460,6 +619,34 @@ export function registerReviewIpc(): void {
     const { assembleAndRunReview } = require('./run-async-service') as typeof import('./run-async-service')
     return assembleAndRunReview(caseId)
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.PREPARE_PI_REVIEW_V2, (_event, input: { caseId: string; sessionId: string; turnId: string }) => {
+    if (!input || typeof input.caseId !== 'string' || typeof input.sessionId !== 'string' || typeof input.turnId !== 'string') {
+      throw new Error('审核案卷、Pi 会话和用户消息标识均为必填')
+    }
+    const { getAgentSessionMeta } = require('../agent-session-manager') as typeof import('../agent-session-manager')
+    const session = getAgentSessionMeta(input.sessionId)
+    if (!session) throw new Error('项目 Pi 会话不存在')
+    if (session.agentRuntime && session.agentRuntime !== 'pi') throw new Error('审核工作台只能使用项目 Pi Agent')
+    const presetId = session.presetReference?.presetId ?? session.presetId
+    if (presetId !== 'review-operator') throw new Error('审核会话必须使用审核操作员预设')
+    const { preparePiReviewRunV2 } = require('./pi-case-review-service') as typeof import('./pi-case-review-service')
+    return preparePiReviewRunV2(input)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_PI_REVIEW_SESSION_V2, (_event, caseId: string) => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    const { getPiReviewSessionForCase } = require('./pi-case-review-service') as typeof import('./pi-case-review-service')
+    return getPiReviewSessionForCase(caseId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.ABORT_PI_REVIEW_V2, (_event, input: { caseId: string; sessionId: string; assignmentId: string; runId: string }) => {
+    if (!input?.caseId || !input.sessionId || !input.assignmentId || !input.runId) throw new Error('审核取消参数不完整')
+    const { getPiReviewBindingForSession, finishPiReviewRunV2 } = require('./pi-case-review-service') as typeof import('./pi-case-review-service')
+    const binding = getPiReviewBindingForSession(input.sessionId)
+    if (!binding || binding.caseId !== input.caseId || binding.runId !== input.runId || binding.assignmentId !== input.assignmentId) return false
+    const { revokeAssignment } = require('./review-agent-assignment') as typeof import('./review-agent-assignment')
+    finishPiReviewRunV2(binding, { status: 'failed', error: 'Pi 审核启动失败，授权已撤销' })
+    revokeAssignment(binding.assignmentId)
+    return true
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.CAST_RATING_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { castRating } = require('./rating-service') as typeof import('./rating-service')
     return castRating(input.caseId, input.command as unknown as Parameters<typeof castRating>[1])
@@ -540,21 +727,32 @@ export function registerReviewIpc(): void {
     return versionIds
   })
   // 拖拽登记：渲染层经 webUtils.getPathForFile 拿到本地路径后逐个登记（同一事务链）
-  ipcMain.handle(REVIEW_IPC_CHANNELS.REGISTER_MATERIAL_PATH_V2, async (_e, input: { caseId: string; sourcePath: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string }) => {
+  ipcMain.handle(REVIEW_IPC_CHANNELS.REGISTER_MATERIAL_PATH_V2, async (_e, input: { caseId: string; sourcePath: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string; fileName?: string; replacesVersionIds?: string[] }) => {
     if (!input || typeof input.sourcePath !== 'string' || !input.sourcePath) throw new Error('参数 sourcePath 非法')
+    if (input.fileName !== undefined) {
+      const { basename } = require('node:path') as typeof import('node:path')
+      if (typeof input.fileName !== 'string' || !input.fileName || basename(input.fileName) !== input.fileName) throw new Error('参数 fileName 非法')
+    }
+    if (input.replacesVersionIds !== undefined && (!Array.isArray(input.replacesVersionIds) || input.replacesVersionIds.some((value) => typeof value !== 'string'))) throw new Error('参数 replacesVersionIds 非法')
     const { registerMaterial } = require('./material-service') as typeof import('./material-service')
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
     const fresh = getCaseV2Aggregate(input.caseId)
     if (!fresh) throw new Error(`案卷不存在: ${input.caseId}`)
     const actor = { actorId: 'local-user', actorSource: 'local' as const, role: 'reviewer' as const }
-    const outcome = (await registerMaterial(input.caseId, {
+    const outcome = await registerMaterial(input.caseId, {
       requestId: `reg-drop-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
       actor,
       expectedRevision: fresh.caseV2.revision,
-      payload: { sourcePath: input.sourcePath, role: input.role, materialSlotId: input.materialSlotId },
-    })) as { ok: boolean; message?: string; entity?: { versionId: string } }
+      payload: {
+        sourcePath: input.sourcePath,
+        role: input.role,
+        materialSlotId: input.materialSlotId,
+        ...(input.fileName ? { fileName: input.fileName } : {}),
+        ...(input.replacesVersionIds ? { replacesVersionIds: input.replacesVersionIds } : {}),
+      },
+    })
     if (!outcome.ok) throw new Error(outcome.message ?? '登记失败')
-    return outcome.entity?.versionId
+    return outcome.entity?.versionId ?? outcome.aggregate.caseV2.documents.at(-1)?.versionId
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
@@ -633,6 +831,33 @@ export function registerReviewIpc(): void {
   /** 查询当前可用模型出口（白名单自检） */
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_MODEL_GATEWAY_STATUS, (): ReviewModelGatewayStatus => {
     return getReviewModelGatewayStatus()
+  })
+
+  /** 审核模块使用自己的 Agent 模型选择；密钥仍由全局渠道配置管理。 */
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_MODULE_SETTINGS_V2, (): ReviewModuleSettingsV2 => {
+    const { getReviewModuleSettings } = require('./module-settings-store') as typeof import('./module-settings-store')
+    return getReviewModuleSettings()
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.SAVE_MODULE_SETTINGS_V2, (_event, input: ReviewModuleSettingsV2): ReviewModuleSettingsV2 => {
+    if (!input || typeof input !== 'object' || !('agentModelSelection' in input)) throw new Error('审核设置参数非法')
+    const selection = input.agentModelSelection
+    if (selection !== null) {
+      if (!selection || typeof selection !== 'object'
+        || typeof selection.channelId !== 'string' || !selection.channelId
+        || typeof selection.modelId !== 'string' || !selection.modelId) {
+        throw new Error('审核模型选择参数非法')
+      }
+      const { listChannels } = require('../channel-manager') as typeof import('../channel-manager')
+      const channel = listChannels().find((candidate) => candidate.id === selection.channelId)
+      if (!channel || channel.enabled !== true || !(REVIEW_MODEL_PROVIDERS as readonly string[]).includes(channel.provider)) {
+        throw new Error('审核渠道不可用，请选择已启用的 OpenAI 兼容或本地模型渠道')
+      }
+      if (!channel.models?.some((model) => model.id === selection.modelId && model.enabled !== false)) {
+        throw new Error('审核模型不可用，请选择该渠道中已启用的模型')
+      }
+    }
+    const { saveReviewModuleSettings } = require('./module-settings-store') as typeof import('./module-settings-store')
+    return saveReviewModuleSettings({ agentModelSelection: selection })
   })
 
   console.log('[审核专区] IPC 处理器注册完成')
