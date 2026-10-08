@@ -619,8 +619,9 @@ export function registerReviewIpc(): void {
     const { assembleAndRunReview } = require('./run-async-service') as typeof import('./run-async-service')
     return assembleAndRunReview(caseId)
   })
-  ipcMain.handle(REVIEW_IPC_CHANNELS.PREPARE_PI_REVIEW_V2, (_event, input: { caseId: string; sessionId: string; turnId: string }) => {
-    if (!input || typeof input.caseId !== 'string' || typeof input.sessionId !== 'string' || typeof input.turnId !== 'string') {
+  ipcMain.handle(REVIEW_IPC_CHANNELS.PREPARE_PI_REVIEW_V2, (_event, input: { caseId: string; sessionId: string; turnId: string; resumeRunId?: string }) => {
+    if (!input || typeof input.caseId !== 'string' || typeof input.sessionId !== 'string' || typeof input.turnId !== 'string'
+      || (input.resumeRunId !== undefined && typeof input.resumeRunId !== 'string')) {
       throw new Error('审核案卷、Pi 会话和用户消息标识均为必填')
     }
     const { getAgentSessionMeta } = require('../agent-session-manager') as typeof import('../agent-session-manager')

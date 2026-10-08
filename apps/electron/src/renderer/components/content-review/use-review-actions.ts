@@ -69,7 +69,13 @@ export function useReviewActions() {
 
     if (!sessionId || !session) throw new Error('无法准备项目 Pi 会话')
     const turnId = window.crypto?.randomUUID?.() ?? `review-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
-    const prepared = await window.reviewAPI.preparePiReviewV2({ caseId, sessionId, turnId })
+    const previousRun = mode === 'update' ? store.get(reviewWorkspaceRunsByCaseAtom)[caseId] : null
+    const resumeRunId = previousRun?.status === 'partially-completed'
+      && previousRun.checks.some((check) => check.status === 'execution-failed')
+      && store.get(reviewWorkspaceRunStaleByCaseAtom)[caseId] === false
+      ? previousRun.id
+      : undefined
+    const prepared = await window.reviewAPI.preparePiReviewV2({ caseId, sessionId, turnId, ...(resumeRunId ? { resumeRunId } : {}) })
     try {
       await window.electronAPI.attachDirectory({ sessionId, directoryPath: prepared.caseDirectory })
       // 等待 agentSessionsAtom 更新，避免打开新工作区会话时被可见性筛选误判。
@@ -80,7 +86,9 @@ export function useReviewActions() {
         ...store.get(reviewExecutionByCaseAtom),
         [caseId]: { status: 'running', stage: 'checks', message: '项目 Pi Agent 正在审核材料' },
       })
-      const userMessage = mode === 'update' && canReuseSession
+      const userMessage = prepared.continuedRun
+        ? `${prepared.userMessage}\n\n【本次续审】请在同一运行中补齐上面列出的检查，保留已保存的有效结果。若出处被拒，按上次拒绝原因修正引用后再次调用提交工具；只有返回 rejected 和 missingChecks 均为空时才完成。`
+        : mode === 'update' && canReuseSession
         ? `${prepared.userMessage}\n\n【本次续审】请结合本会话此前的审核过程与当前案卷材料，重新核验受材料变更或补充影响的事实和检查结论；此前结论只能作为线索，仍须依据当前材料确认。保留仍有充分依据的结论，修正或撤回已不成立的结论，并提交覆盖当前案卷的完整结果。`
         : `${prepared.userMessage}\n\n【本次从头审核】请把本次案卷材料和审核依据作为唯一判断依据，完整重新核对并提交当前结果；不要沿用其他审核会话或历史结论。`
       const send = window.electronAPI.sendAgentMessage({

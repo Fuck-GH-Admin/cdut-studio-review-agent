@@ -13,7 +13,7 @@ import { hashEffectiveRuleSet, resolveEffectiveRules } from './effective-rules'
 import { getTemplate } from './template-store'
 import { getRunV2, listRunsV2, readArtifact, saveArtifact, saveRunV2 } from './run-store-v2'
 import { recordObservation } from './evidence-service'
-import { actorOfAssignment, bindRunToAssignment, checkAssignment, createAssignment, findActivePiReviewAssignment, type ReviewAgentAssignment } from './review-agent-assignment'
+import { actorOfAssignment, bindRunToAssignment, checkAssignment, createAssignment, findActivePiReviewAssignment, listAssignments, revokeAssignment, type ReviewAgentAssignment } from './review-agent-assignment'
 import { DocumentCapabilityLibrary } from './document-capability-library'
 import { finalizePiDocumentCoverage } from './pi-document-coverage'
 
@@ -59,11 +59,25 @@ export interface PiReviewResultInput {
   finish?: boolean
 }
 
+export interface PiReviewSubmissionRejection {
+  kind: 'observation' | 'check'
+  index: number
+  reason: string
+}
+
+interface PiReviewSubmissionAttempt {
+  at: string
+  finishRequested: boolean
+  rejected: PiReviewSubmissionRejection[]
+  missingChecks: string[]
+}
+
 export interface PiReviewPrepareResult {
   assignmentId: string
   runId: string
   caseDirectory: string
   userMessage: string
+  continuedRun?: boolean
 }
 
 const CASE_ROOT = (caseId: string): string => join(getConfigDir(), 'review-cases', caseId)
@@ -307,7 +321,7 @@ function promptFor(aggregate: CaseAggregateV2, template: TemplateVersion): strin
       '当前模板包含通用材料核验项，但没有已编译的正式学校政策/计分规则。若本案附有 role=rule 的审核依据文件，应先读取并按其原文判断；不得把通用模板描述冒充成学校正式标准，也不得自行推导综测分值、资格或最终通过结论。',
     ]),
     '按模板要求完成整案核对；多个分项仍是同一次案卷审核。确定性预算/编号规则由系统按现有计算器校验，不接受模型自算值替代。规则或材料不足时如实提交待确认/待补件。符合或不符合必须提供本案真实 documentVersionId、blockId 和准确引文；图片引用需提供清楚的图像观察描述。',
-    '用 review_submit_result 提交事实候选与检查结果。可以先分批提交（finish=false），核对缺项后最后一次提交 finish=true。工具返回接受/拒绝和缺项，按具体错误修正后再提交。审核分析结束不等于正式认定或批准；不得调用决定类操作。',
+    '用 review_submit_result 提交事实候选与检查结果。可以先分批提交（finish=false）。finish=true 只有在所有语义检查都有效且提交没有被拒绝时才会关闭运行；若有缺项或出处被拒，运行会保持开放，请按工具返回的 rejected 和 missingChecks 修正并再次提交。审核分析结束不等于正式认定或批准；不得调用决定类操作。',
     `【事项】\n${subjects}`,
     `【检查要求】\n${rulesText}`,
     `【材料目录】\n${docs}`,
@@ -315,7 +329,25 @@ function promptFor(aggregate: CaseAggregateV2, template: TemplateVersion): strin
   ].join('\n\n')
 }
 
-export function preparePiReviewRunV2(input: { caseId: string; sessionId: string; turnId: string }): PiReviewPrepareResult {
+function continuationPrompt(aggregate: CaseAggregateV2, template: TemplateVersion, run: ReviewRunV2): string {
+  const rules = effectiveRulesFor(aggregate, template)
+  const ruleTitles = new Map(rules.map((rule) => [rule.id, rule.title]))
+  const expected = expectedSemanticChecks(rules, aggregate)
+  const missing = expected.filter((item) => !run.checks.some((check) => check.checkId === item.checkId && check.status !== 'execution-failed'))
+  const previousAccepted = expected.length - missing.length
+  const history = readArtifact<{ attempts?: PiReviewSubmissionAttempt[] }>(aggregate.caseV2.id, run.id, 'node-pi-submit-attempts')
+  const lastAttempt = history?.attempts?.at(-1)
+  const pendingText = missing.map((check) => `- ${check.checkId} | ${ruleTitles.get(check.ruleId) ?? check.ruleId} | ${check.target.subjectIds.join('、') || '整案'}`).join('\n')
+  const rejectedText = lastAttempt?.rejected.map((item) => `- ${item.kind}[${item.index}]：${item.reason}`).join('\n')
+  return [
+    `【续审同一运行】本次继续 runId=${run.id}，不新建运行。已保留 ${previousAccepted}/${expected.length} 项有效语义检查；请补齐下列未完成项并保留其他有效结论。`,
+    `【未完成检查】\n${pendingText || '（无语义检查占位项；依据本次运行的剩余覆盖问题继续处理。）'}`,
+    ...(rejectedText ? [`【上次提交被拒原因】\n${rejectedText}`] : []),
+    '修正出处时必须使用本案当前激活材料的有效 blockId 和准确引文；图像出处被拒时，先用 review_inspect_document_image 实际读取该图像块，再提交该检查。只有 rejected 为空且 missingChecks 为空时 finish=true 才会关闭运行；否则运行保持开放供本轮继续提交。',
+  ].join('\n\n')
+}
+
+export function preparePiReviewRunV2(input: { caseId: string; sessionId: string; turnId: string; resumeRunId?: string }): PiReviewPrepareResult {
   if (!input.sessionId || !input.turnId) throw new Error('普通 Pi 审核必须绑定真实会话与用户消息')
   const aggregate = getCaseV2Aggregate(input.caseId)
   if (!aggregate) throw new Error(`案卷不存在或未初始化：${input.caseId}`)
@@ -329,8 +361,23 @@ export function preparePiReviewRunV2(input: { caseId: string; sessionId: string;
   if (planned === 0) {
     throw new Error(`模板「${template.name}」没有可应用到当前案卷的检查目标；审核尚未启动。请先登记申报事项或调整模板分项。`)
   }
+  let continuation: ReviewRunV2 | undefined
+  if (input.resumeRunId) {
+    const previous = getRunV2(input.caseId, input.resumeRunId)
+    if (!previous || previous.status !== 'partially-completed') throw new Error('只能续审部分完成的 Pi 审核运行；请刷新结果后重试')
+    if (previous.templateId !== template.templateId || previous.templateVersion !== template.version) throw new Error('案卷模板已变化，不能续写旧运行；请开始新一轮审核')
+    if (inputHashOf(aggregate) !== previous.inputManifest.hash) throw new Error('案卷材料或人工事实已变化，旧运行结果已过期；请开始新一轮审核')
+    const expected = expectedSemanticChecks(effectiveRules, aggregate)
+    const unfinished = expected.filter((item) => !previous.checks.some((check) => check.checkId === item.checkId && check.status !== 'execution-failed'))
+    if (unfinished.length === 0) throw new Error('该运行没有可续交的语义检查项；请刷新结果或开始新一轮审核')
+    continuation = previous
+  }
   const activeRun = listRunsV2(input.caseId).find((run) => run.status === 'running' || run.status === 'queued')
   if (activeRun) throw new Error(`该案卷已有 Pi 审核在进行：${activeRun.id}`)
+
+  const previousAssignments = continuation
+    ? listAssignments().filter((item) => item.activeRunId === continuation!.id && !item.revokedAt)
+    : []
 
   const assignment = createAssignment({
     sessionId: input.sessionId,
@@ -341,18 +388,27 @@ export function preparePiReviewRunV2(input: { caseId: string; sessionId: string;
   })
   try {
     const actor = actorOfAssignment(assignment)
-    const run = buildRun(aggregate, template, actor)
+    const run = continuation ? structuredClone(continuation) : buildRun(aggregate, template, actor)
+    if (continuation) {
+      run.status = 'running'
+      delete run.completedAt
+      delete run.error
+      run.diagnostics = [...run.diagnostics, '通过辅助审核工作台续交未完成的 Pi 检查；沿用原运行 ID 与已接受结果。'].slice(-50)
+    }
     saveRunV2(run)
     bindRunToAssignment(assignment.id, run.id)
+    for (const oldAssignment of previousAssignments) revokeAssignment(oldAssignment.id)
+    const userMessage = promptFor(aggregate, template)
     return {
       assignmentId: assignment.id,
       runId: run.id,
       caseDirectory: join(CASE_ROOT(input.caseId), 'source-docs'),
-      userMessage: promptFor(aggregate, template),
+      userMessage: continuation ? `${userMessage}\n\n${continuationPrompt(aggregate, template, run)}` : userMessage,
+      ...(continuation ? { continuedRun: true } : {}),
     }
   } catch (error) {
-    const { revokeAssignment } = require('./review-agent-assignment') as typeof import('./review-agent-assignment')
     revokeAssignment(assignment.id)
+    if (continuation) saveRunV2(continuation)
     throw error
   }
 }
@@ -519,7 +575,7 @@ export function submitPiReviewResultV2(input: {
   binding: PiReviewBinding
   triggeredBy?: 'user' | 'automation' | 'delegation' | 'goal'
   result: PiReviewResultInput
-}): { accepted: number; rejected: Array<{ index: number; reason: string }>; missingChecks: string[]; status: ReviewRunV2['status'] } {
+}): { accepted: number; rejected: PiReviewSubmissionRejection[]; missingChecks: string[]; status: ReviewRunV2['status'] } {
   const auth = checkAssignment({ assignmentId: input.binding.assignmentId, sessionId: input.binding.sessionId, action: 'submit-result', turnTriggeredBy: input.triggeredBy })
   if (!auth.ok || !auth.assignment) throw new Error(`审核授权失效：${auth.message ?? auth.code}`)
   const run = getRunV2(input.binding.caseId, input.binding.runId)
@@ -531,7 +587,8 @@ export function submitPiReviewResultV2(input: {
   if (inputHashOf(aggregate) !== run.inputManifest.hash) throw new Error('案卷材料或人工事实已变化；本次结果已过期，请开始新一轮审核')
   const rules = effectiveRulesFor(aggregate, template)
   const observations: Array<Record<string, unknown>> = []
-  const rejected: Array<{ index: number; reason: string }> = []
+  const rejected: PiReviewSubmissionRejection[] = []
+  const acceptedCheckIds: string[] = []
   const previous = readArtifact<{ observations?: Array<Record<string, unknown>> }>(input.binding.caseId, run.id, 'node-auto-check-extract')
   const mergedObservations = [...(previous?.observations ?? [])]
 
@@ -563,39 +620,41 @@ export function submitPiReviewResultV2(input: {
       if (sameField >= 0) mergedObservations[sameField] = observation as unknown as Record<string, unknown>
       else mergedObservations.push(observation as unknown as Record<string, unknown>)
     } catch (error) {
-      rejected.push({ index, reason: error instanceof Error ? error.message : String(error) })
+      rejected.push({ kind: 'observation', index, reason: error instanceof Error ? error.message : String(error) })
     }
   }
 
-  const semanticResultMap = new Map(run.checks.filter((item) => item.executedBy === 'semantic').map((item) => [item.checkId, item]))
+  // A previous interrupted turn may have inserted execution-failed placeholders.
+  // They are missing work, not accepted results, and must stay replaceable.
+  const semanticResultMap = new Map(run.checks.filter((item) => item.executedBy === 'semantic' && item.status !== 'execution-failed').map((item) => [item.checkId, item]))
   for (const [index, candidate] of (input.result.checks ?? []).entries()) {
     const rule = rules.find((item) => item.id === candidate.ruleId)
     if (!rule || rule.execution !== 'semantic') {
-      rejected.push({ index, reason: '只能提交本案有效模板中的语义检查项' })
+      rejected.push({ kind: 'check', index, reason: '只能提交本案有效模板中的语义检查项' })
       continue
     }
     if (rule.confirmation !== 'confirmed' && ['compliant', 'non-compliant'].includes(candidate.status)) {
-      rejected.push({ index, reason: '规则尚未确认，不能提交符合/不符合结论' })
+      rejected.push({ kind: 'check', index, reason: '规则尚未确认，不能提交符合/不符合结论' })
       continue
     }
     const target = plannedTargetMatches(rule, aggregate, candidate.subjectIds)
     if (!target) {
-      rejected.push({ index, reason: '目标事项与规则分项范围不一致' })
+      rejected.push({ kind: 'check', index, reason: '目标事项与规则分项范围不一致' })
       continue
     }
     const reason = String(candidate.reason ?? '').trim().slice(0, 2000)
     if (!reason) {
-      rejected.push({ index, reason: '检查理由不能为空' })
+      rejected.push({ kind: 'check', index, reason: '检查理由不能为空' })
       continue
     }
     const requiresEvidence = candidate.status === 'compliant' || candidate.status === 'non-compliant'
     const source = resolveSourceRefs(aggregate, candidate.sourceRefs, requiresEvidence, input.binding)
     if (source.error || (requiresEvidence && source.refs.length === 0)) {
-      rejected.push({ index, reason: source.error ?? '符合/不符合结论至少需要一条精确材料引用' })
+      rejected.push({ kind: 'check', index, reason: source.error ?? '符合/不符合结论至少需要一条精确材料引用' })
       continue
     }
     if (rule.confirmation !== 'confirmed' && candidate.status !== 'awaiting-confirmation') {
-      rejected.push({ index, reason: '规则未确认时只能提交待确认状态' })
+      rejected.push({ kind: 'check', index, reason: '规则未确认时只能提交待确认状态' })
       continue
     }
     const check: CheckResult = {
@@ -609,6 +668,7 @@ export function submitPiReviewResultV2(input: {
       executedAt: new Date().toISOString(),
     }
     semanticResultMap.set(check.checkId, check)
+    acceptedCheckIds.push(check.checkId)
   }
 
   const observationSnapshot = [...aggregate.observations, ...mergedObservations]
@@ -620,12 +680,27 @@ export function submitPiReviewResultV2(input: {
   )
   run.checks = [...deterministic, ...semanticResultMap.values()]
 
-  let missingChecks: string[] = []
+  const expected = expectedSemanticChecks(rules, aggregate)
+  const received = new Set(run.checks.filter((item) => item.executedBy === 'semantic' && item.status !== 'execution-failed').map((item) => item.checkId))
+  const missing = expected.filter((item) => !received.has(item.checkId))
+  const missingChecks = missing.map((item) => `${item.ruleId} / ${item.target.subjectIds.join('、') || '整案'}`)
   if (input.result.finish) {
-    const expected = expectedSemanticChecks(rules, aggregate)
-    const received = new Set(run.checks.filter((item) => item.executedBy === 'semantic').map((item) => item.checkId))
-    const missing = expected.filter((item) => !received.has(item.checkId))
-    missingChecks = missing.map((item) => `${item.ruleId} / ${item.target.subjectIds.join('、') || '整案'}`)
+    if (missingChecks.length > 0 || rejected.length > 0) {
+      const attempt: PiReviewSubmissionAttempt = {
+        at: new Date().toISOString(),
+        finishRequested: true,
+        rejected,
+        missingChecks,
+      }
+      const history = readArtifact<{ attempts?: PiReviewSubmissionAttempt[] }>(input.binding.caseId, run.id, 'node-pi-submit-attempts')
+      saveArtifact(input.binding.caseId, run.id, 'node-pi-submit-attempts', { attempts: [...(history?.attempts ?? []), attempt].slice(-30) })
+      run.diagnostics = [...run.diagnostics, `提交尚未结束：${missingChecks.length} 项检查待补齐，${rejected.length} 条结果被拒绝；运行保持进行中，可继续提交。`].slice(-50)
+      recalculateCoverage(run, aggregate, rules, template)
+      saveArtifact(input.binding.caseId, run.id, 'node-auto-check-extract', { observations: mergedObservations })
+      saveRunV2(run)
+      return { accepted: observations.length + acceptedCheckIds.length, rejected, missingChecks, status: 'running' }
+    }
+
     run.checks.push(...missing)
     const citedVersions = new Set(run.checks.flatMap((item) => item.sourceRefs.map((ref) => ref.documentVersionId)))
     for (const observation of mergedObservations) {
@@ -656,21 +731,28 @@ export function submitPiReviewResultV2(input: {
       verification: 'unverified',
     }
     run.opinions = [opinion]
-    run.status = missingChecks.length > 0 || rejected.length > 0 ? 'partially-completed' : 'completed'
+    run.status = 'completed'
     run.completedAt = new Date().toISOString()
     run.diagnostics = [
       '由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。',
-      ...(missingChecks.length ? [`仍有 ${missingChecks.length} 项语义规则没有有效结果。`] : []),
-      ...(rejected.length ? [`有 ${rejected.length} 条 Agent 提交因引用或范围校验被拒绝。`] : []),
     ]
     recalculateCoverage(run, aggregate, rules, template)
     saveArtifact(input.binding.caseId, run.id, 'node-auto-check-extract', { observations: mergedObservations })
     saveArtifact(input.binding.caseId, run.id, 'node-auto-check-summarize', { summary: opinion.detail, checks: run.checks, agentActivity: run.agentActivity ?? [] })
-  } else if (observations.length > 0 || (input.result.checks?.length ?? 0) > 0) {
-    saveArtifact(input.binding.caseId, run.id, 'node-auto-check-extract', { observations: mergedObservations })
+  } else {
+    if (observations.length > 0 || (input.result.checks?.length ?? 0) > 0) {
+      saveArtifact(input.binding.caseId, run.id, 'node-auto-check-extract', { observations: mergedObservations })
+    }
+    recalculateCoverage(run, aggregate, rules, template)
+    if (rejected.length > 0) {
+      const history = readArtifact<{ attempts?: PiReviewSubmissionAttempt[] }>(input.binding.caseId, run.id, 'node-pi-submit-attempts')
+      saveArtifact(input.binding.caseId, run.id, 'node-pi-submit-attempts', {
+        attempts: [...(history?.attempts ?? []), { at: new Date().toISOString(), finishRequested: false, rejected, missingChecks }].slice(-30),
+      })
+    }
   }
   saveRunV2(run)
-  return { accepted: observations.length + semanticResultMap.size, rejected, missingChecks, status: run.status }
+  return { accepted: observations.length + acceptedCheckIds.length, rejected, missingChecks, status: run.status }
 }
 
 /** Pi 流式轮结束但没有提交完成时，保存为部分完成，避免留下永久 running。 */

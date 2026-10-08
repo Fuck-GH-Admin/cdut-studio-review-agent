@@ -157,7 +157,7 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
     const submitResult = sdk.defineTool({
       name: 'review_submit_result',
       label: '提交审核结果',
-      description: '保存当前案卷的事实候选和语义检查。案卷、运行、模板、输入版本与操作者由应用绑定；符合/不符合需带真实材料块和准确引文。先分批提交可设 finish=false，最后设 finish=true。',
+      description: '保存当前案卷的事实候选和语义检查。案卷、运行、模板、输入版本与操作者由应用绑定；符合/不符合需带真实材料块和准确引文。可分批提交 finish=false。只有 rejected 和 missingChecks 都为空时 finish=true 才会关闭运行；否则运行保持开放，可以按错误修正后再次提交。',
       parameters: Type.Object({
         summary: Type.String({ minLength: 1, maxLength: 6000 }),
         observations: Type.Optional(Type.Array(Type.Object({
@@ -183,9 +183,12 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
             triggeredBy: ctx.triggeredBy,
             result: input as Parameters<typeof submitPiReviewResultV2>[0]['result'],
           })
-          return result({ ...outcome, message: outcome.missingChecks.length
-            ? `已保存有效结果；仍有 ${outcome.missingChecks.length} 项检查未完成，请根据 missingChecks 继续。`
-            : '审核结果已保存；分析完成不代表正式批准。' })
+          const message = outcome.status === 'running'
+            ? input.finish
+              ? `本次提交未结束，运行仍保持开放：${outcome.missingChecks.length} 项检查待补齐，${outcome.rejected.length} 条结果被拒绝。请按 rejected 的原因修正，并补齐 missingChecks 后再次提交。`
+              : `本批结果已保存，运行仍保持开放：${outcome.missingChecks.length} 项检查待提交，${outcome.rejected.length} 条结果被拒绝。继续提交；全部有效后再使用 finish=true。`
+            : '审核结果已保存；分析完成不代表正式批准。'
+          return result({ ...outcome, message })
         } catch (error) {
           return result({ error: error instanceof Error ? error.message : String(error) }, true)
         }

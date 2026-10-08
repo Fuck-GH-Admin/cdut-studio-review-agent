@@ -3790,8 +3790,8 @@ const reviewAPI = {
   runBatchV2: (batchId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_BATCH_V2, batchId) as Promise<import('@profer/shared').BatchStateV2>,
   runReviewV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, caseId) as Promise<import('@profer/shared').ReviewRunV2>,
   getPiReviewSessionV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_PI_REVIEW_SESSION_V2, caseId) as Promise<string | null>,
-  preparePiReviewV2: (input: { caseId: string; sessionId: string; turnId: string }) =>
-    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.PREPARE_PI_REVIEW_V2, input) as Promise<{ assignmentId: string; runId: string; caseDirectory: string; userMessage: string }>,
+  preparePiReviewV2: (input: { caseId: string; sessionId: string; turnId: string; resumeRunId?: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.PREPARE_PI_REVIEW_V2, input) as Promise<{ assignmentId: string; runId: string; caseDirectory: string; userMessage: string; continuedRun?: boolean }>,
   abortPiReviewV2: (input: { caseId: string; sessionId: string; assignmentId: string; runId: string }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ABORT_PI_REVIEW_V2, input) as Promise<boolean>,
   castRatingV2: (input: { caseId: string; command: Record<string, unknown> }) =>
