@@ -1,11 +1,12 @@
 import { afterAll, describe, expect, test } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
-import type { Actor, ReviewCaseV2, ReviewRunV2 } from '@profer/shared'
+import { assessDecisionReadiness, type Actor, type ReviewCaseV2, type ReviewRunV2 } from '@profer/shared'
 import { createAggregate, readAggregate, submitCommand } from './case-store-v2'
 import { computeRunInputHash } from './run-service-v2'
 import { saveRunV2 } from './run-store-v2'
 import { getTemplate, publishTemplate, saveDraft } from './template-store'
+import { respondSupplementV2 } from './stage-workflow'
 import { decideWorkspaceCaseV2, isWorkspaceRunStaleV2, openWorkspaceSupplementV2, recordWorkspaceDispositionV2, recordWorkspaceSubjectAdjudicationV2 } from './workspace-business-service-v2'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-workspace-business-${Date.now()}`)
@@ -129,8 +130,14 @@ describe('三栏单案的 V2 业务闭环事务', () => {
     if (!result.ok) expect(result.code).toBe('STALE_INPUT')
   })
 
-  test('Given 发现缺材料 When 要求补件 Then 写入 Supplement、处置和等待补件状态', async () => {
+  test('要求补件不让当前审核作废；仍可处理其他待办，但未完成补件时不能通过', async () => {
     const { caseId, run } = await seed()
+    const runWithSecondCheck: ReviewRunV2 = {
+      ...run,
+      coverage: { ...run.coverage, plannedChecks: 2, completedChecks: 2, effectiveVerdicts: 2, pendingChecks: 2 },
+      checks: [run.checks[0]!, { ...run.checks[0]!, checkId: 'check-b', ruleId: 'rule-b', reason: '另一项仍需审核' }],
+    }
+    saveRunV2(runWithSecondCheck)
     const result = await openWorkspaceSupplementV2(caseId, {
       requestId: request(), actor, expectedRevision: 0,
       payload: { findingKey: 'check-a', runId: run.id, inputHash: run.inputManifest.hash, requiredElements: ['证书日期'], reason: '证明文件没有日期' },
@@ -140,8 +147,32 @@ describe('三栏单案的 V2 业务闭环事务', () => {
       expect(result.aggregate.caseV2.stage).toBe('awaiting-supplement')
       expect(result.aggregate.supplements[0]?.status).toBe('open')
       expect(result.aggregate.dispositions[0]?.disposition).toBe('supplement-requested')
-      expect(isWorkspaceRunStaleV2(result.aggregate, run.id)).toBeTrue()
+      expect(isWorkspaceRunStaleV2(result.aggregate, run.id)).toBeFalse()
+      const readiness = assessDecisionReadiness({ aggregate: result.aggregate, run: runWithSecondCheck, runStale: false, template: getTemplate('workspace-test', 1) })
+      expect(readiness.ready).toBeFalse()
+      expect(readiness.blockers.some((blocker) => blocker.kind === 'open-supplement')).toBeTrue()
+
+      const otherAction = await recordWorkspaceDispositionV2(caseId, {
+        requestId: request(), actor, expectedRevision: result.aggregate.caseV2.revision,
+        payload: { findingKey: 'check-b', disposition: 'confirmed-issue', reason: '已核实另一项问题属实', runId: run.id, inputHash: run.inputManifest.hash },
+      })
+      expect(otherAction.ok).toBeTrue()
     }
+  })
+
+  test('补件回复到达后，旧运行标记为过期并要求重新审核', async () => {
+    const { caseId, run } = await seed()
+    const opened = await openWorkspaceSupplementV2(caseId, {
+      requestId: request(), actor, expectedRevision: 0,
+      payload: { findingKey: 'check-a', runId: run.id, inputHash: run.inputManifest.hash, requiredElements: ['证书日期'], reason: '证明文件没有日期' },
+    })
+    if (!opened.ok) throw new Error(opened.message)
+    const replied = await respondSupplementV2(caseId, {
+      requestId: request(), actor, expectedRevision: opened.aggregate.caseV2.revision,
+      payload: { supplementId: opened.entity!.id, note: '已补充说明' },
+    })
+    expect(replied.ok).toBeTrue()
+    if (replied.ok) expect(isWorkspaceRunStaleV2(replied.aggregate, run.id)).toBeTrue()
   })
 
   test('事项认定追加历史，并从当前认定派生 partial-pass 与最终分数', async () => {

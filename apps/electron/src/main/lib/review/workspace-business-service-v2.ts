@@ -2,13 +2,20 @@
  * 单案工作台业务动作：待办处置、补件和人工最终决定均走 V2 聚合事务。
  */
 import { assessDecisionReadiness } from '@profer/shared'
-import type { Actor, BusinessDecision, CaseAggregateV2, FieldValue, ReviewCommandResult, SubjectAdjudication, SupplementRequest } from '@profer/shared'
+import type { Actor, BusinessDecision, CaseAggregateV2, FieldValue, ReviewCommandResult, ReviewRunV2, SubjectAdjudication, SupplementRequest } from '@profer/shared'
 import { CommandValidationError, submitCommand } from './case-store-v2'
 import { getRunV2, readArtifact } from './run-store-v2'
 import { computeRunInputHash } from './run-service-v2'
 
 type WorkspaceDisposition = 'confirmed-issue' | 'human-confirmed-compliant' | 'false-positive' | 'supplement-requested' | 'waived' | 'escalated'
 type WorkspaceDecision = BusinessDecision['result']
+
+function hasSupplementResponseAfterRun(aggregate: CaseAggregateV2, run: ReviewRunV2): boolean {
+  const completedAt = run.completedAt ?? run.startedAt
+  // Opening a request records workflow intent against this run; it does not
+  // change the reviewed inputs. A response does, and requires a fresh review.
+  return aggregate.supplements.some((supplement) => supplement.responses.some((response) => response.at > completedAt))
+}
 
 function currentSubjectAdjudications(aggregate: CaseAggregateV2, runId?: string, inputHash?: string): Map<string, SubjectAdjudication> {
   const records = aggregate.adjudications ?? []
@@ -80,10 +87,7 @@ function assertCurrentRun(aggregate: CaseAggregateV2, runId: string, inputHash: 
   if (!run || run.inputManifest.hash !== inputHash) throw new CommandValidationError('STALE_INPUT', '审核运行已过期，请重新运行后再处理')
   const currentHash = computeRunInputHash(aggregate.caseV2, aggregate.observations as unknown as Array<Record<string, unknown>>, aggregate.evidenceLinks as unknown as Array<Record<string, unknown>>)
   if (currentHash !== inputHash) throw new CommandValidationError('STALE_INPUT', '案卷输入已变化，请重新运行后再处理')
-  const completedAt = run.completedAt ?? run.startedAt
-  const supplementChangedAfterRun = aggregate.supplements.some((supplement) =>
-    supplement.createdAt > completedAt || supplement.responses.some((response) => response.at > completedAt))
-  if (supplementChangedAfterRun) throw new CommandValidationError('STALE_INPUT', '补件状态在审核运行后发生变化，请重新审核后再处理')
+  if (hasSupplementResponseAfterRun(aggregate, run)) throw new CommandValidationError('STALE_INPUT', '补件回复在审核运行后发生变化，请重新审核后再处理')
   return run
 }
 
@@ -305,6 +309,5 @@ export function isWorkspaceRunStaleV2(aggregate: CaseAggregateV2, runId: string)
       || currentIds.some((id) => !manifestIds.has(id))
       || computeRunInputHash(aggregate.caseV2, observations, evidenceLinks, manifestOrder) !== run.inputManifest.hash) return true
   }
-  const completedAt = run.completedAt ?? run.startedAt
-  return aggregate.supplements.some((supplement) => supplement.createdAt > completedAt || supplement.responses.some((response) => response.at > completedAt))
+  return hasSupplementResponseAfterRun(aggregate, run)
 }
