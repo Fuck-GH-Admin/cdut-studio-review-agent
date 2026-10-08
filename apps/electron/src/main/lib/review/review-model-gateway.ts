@@ -66,6 +66,8 @@ export interface ReviewChatOptions {
   timeoutMs?: number
   /** 外部取消信号（08 设计：run 级取消穿透到网络请求；超时仍走内部 timer） */
   signal?: AbortSignal
+  /** false 时视觉请求失败直接返回错误，不额外发起一轮丢图文本请求。 */
+  retryWithoutImages?: boolean
 }
 
 /** 调用结果（含降级标记，供调用方在结论/报告里如实标注） */
@@ -74,6 +76,13 @@ export interface ReviewChatResult {
   text: string
   /** 是否因模型不支持多模态而剔除图片后重试成功 */
   imagesDropped: boolean
+  /** 服务端返回的 token 用量；用于记录按需视觉能力的真实成本。 */
+  usage?: { inputTokens?: number; outputTokens?: number; cacheReadInputTokens?: number }
+}
+
+interface ReviewChatCompletionResponse {
+  text: string
+  usage?: ReviewChatResult['usage']
 }
 
 /** 是否有图片部件 */
@@ -257,15 +266,15 @@ export async function chatCompletionWithMeta(
 ): Promise<ReviewChatResult> {
   const withImages = hasImageParts(messages)
   try {
-    const text = await performChatCompletion(channel, messages, options)
-    return { text, imagesDropped: false }
+    const response = await performChatCompletion(channel, messages, options)
+    return { ...response, imagesDropped: false }
   } catch (error) {
-    if (!withImages || !isMultimodalLikelyFailure(error)) throw error
+    if (!withImages || options?.retryWithoutImages === false || !isMultimodalLikelyFailure(error)) throw error
     console.warn(
       `[审核专区] 多模态请求失败，剔除图片后重试: ${error instanceof Error ? error.message : String(error)}`,
     )
-    const text = await performChatCompletion(channel, stripImageParts(messages), options)
-    return { text, imagesDropped: true }
+    const response = await performChatCompletion(channel, stripImageParts(messages), options)
+    return { ...response, imagesDropped: true }
   }
 }
 
@@ -274,7 +283,7 @@ async function performChatCompletion(
   channel: Channel,
   messages: ReviewChatMessage[],
   options?: ReviewChatOptions,
-): Promise<string> {
+): Promise<ReviewChatCompletionResponse> {
   // 白名单强制：任何调用路径都先过这道闸
   if (!isAllowedProvider(channel.provider)) {
     console.warn(`[审核专区] 已拒绝非白名单出口: ${channel.provider}（渠道 ${channel.name}）`)
@@ -374,7 +383,8 @@ async function performChatCompletion(
       }
 
       const data = (await response.json()) as unknown
-      return extractChatContent(data, isOllama)
+      const usage = usageFromResponse(data)
+      return { text: extractChatContent(data, isOllama), ...(usage ? { usage } : {}) }
     }
   } catch (error) {
     if (error instanceof Error && error.message === '模型请求已取消') throw error
@@ -390,6 +400,27 @@ async function performChatCompletion(
   } finally {
     clearTimeout(timer)
   }
+}
+
+function usageFromResponse(value: unknown): ReviewChatResult['usage'] | undefined {
+  if (!value || typeof value !== 'object' || !('usage' in value)) return undefined
+  const usage = (value as { usage?: unknown }).usage
+  if (!usage || typeof usage !== 'object') return undefined
+  const record = usage as Record<string, unknown>
+  const promptDetails = record.prompt_tokens_details && typeof record.prompt_tokens_details === 'object'
+    ? record.prompt_tokens_details as Record<string, unknown>
+    : record.input_tokens_details && typeof record.input_tokens_details === 'object'
+      ? record.input_tokens_details as Record<string, unknown>
+      : undefined
+  const inputTokens = Number(record.prompt_tokens ?? record.input_tokens)
+  const outputTokens = Number(record.completion_tokens ?? record.output_tokens)
+  const cacheReadInputTokens = Number(record.prompt_cache_hit_tokens ?? promptDetails?.cached_tokens)
+  const result = {
+    ...(Number.isFinite(inputTokens) ? { inputTokens } : {}),
+    ...(Number.isFinite(outputTokens) ? { outputTokens } : {}),
+    ...(Number.isFinite(cacheReadInputTokens) ? { cacheReadInputTokens } : {}),
+  }
+  return Object.keys(result).length ? result : undefined
 }
 
 /** 从响应 JSON 中提取文本内容（两条协议形状不同） */

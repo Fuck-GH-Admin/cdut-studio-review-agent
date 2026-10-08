@@ -8,6 +8,7 @@
 
 import type { CheckResult, EvidenceLink, FieldSpec, FieldValue, Observation, ReviewSubject, SourceRef, DocumentVersion, RuleSpec } from '@profer/shared'
 import { buildEvidenceLinks, recordObservation } from './evidence-service'
+import { DocumentCapabilityLibrary, type DocumentCapabilityEvent } from './document-capability-library'
 
 /** 工具运行上下文：受控内存态（执行器持引用，持久化在 checkpoint 完成时统一处理） */
 export interface ReviewToolContext {
@@ -21,6 +22,10 @@ export interface ReviewToolContext {
   evidenceLinks: EvidenceLink[]
   results: CheckResult[]
   actor: string
+  caseRoot?: string
+  documentCapabilities?: DocumentCapabilityLibrary
+  onCapabilityEvent?: (event: DocumentCapabilityEvent) => void
+  inspectDocumentImage?: (input: { documentVersionId: string; fileName: string; blockId: string; dataUrl: string; question: string }) => Promise<string>
 }
 
 export interface ReviewTool {
@@ -42,8 +47,31 @@ function numericValueOccursInQuote(value: number, quote: string): boolean {
   return candidates.some((candidate) => normalized(candidate) === wanted)
 }
 
-function fieldPayload(value: FieldValue): unknown {
+function fieldPayload(value: FieldValue | undefined): unknown {
+  if (value === undefined) return undefined
   return 'value' in value ? value.value : value.documentVersionId
+}
+
+function crossSectionDuplicateSubjects(context: ReviewToolContext, rule: RuleSpec, subjectIds: string[]): string[] {
+  if (rule.targetScope !== 'group' || !/重复/.test(rule.requirement) || !/确认/.test(rule.requirement)) return []
+  const selected = context.subjects.filter((subject) => subjectIds.includes(subject.id))
+  if (selected.length === 0) return []
+  const selectedSections = new Set(selected.map((subject) => subject.sectionId).filter((value): value is string => !!value))
+  const identityFields = (context.fields ?? []).filter((field) =>
+    /(?:成果|奖项|项目|作品|achievement|award|project|work).*(?:名称|name|title)|(?:名称|name|title).*(?:成果|奖项|项目|作品|achievement|award|project|work)/i.test(`${field.key} ${field.label}`),
+  )
+  if (identityFields.length === 0) return []
+  const duplicateIds = new Set<string>()
+  for (const field of identityFields) {
+    const selectedValues = new Set(selected.map((subject) => fieldPayload(subject.fields[field.key])).filter((value): value is string => typeof value === 'string' && value.trim().length >= 3).map((value) => value.trim().toLocaleLowerCase()))
+    if (selectedValues.size === 0) continue
+    for (const subject of context.subjects) {
+      if (subjectIds.includes(subject.id) || (subject.sectionId && selectedSections.has(subject.sectionId))) continue
+      const value = fieldPayload(subject.fields[field.key])
+      if (typeof value === 'string' && selectedValues.has(value.trim().toLocaleLowerCase())) duplicateIds.add(subject.id)
+    }
+  }
+  return [...duplicateIds]
 }
 
 function latestObservation(context: ReviewToolContext, subjectId: string, fieldKey: string): Observation[] {
@@ -57,6 +85,12 @@ export function reviewCheckToolKey(ruleId: string, scope: string, subjectIds: st
 
 /** 装配本案业务工具（Pi 执行器在 run 开始时调用；工具集固定，不随 Prompt 变化） */
 export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
+  const documentCapabilities = context.documentCapabilities ?? new DocumentCapabilityLibrary({
+    caseId: context.caseId,
+    caseRoot: context.caseRoot ?? '',
+    documents: context.documents,
+    onActivity: context.onCapabilityEvent,
+  })
   const ref = (documentVersionId: string, blockId?: string, quote?: string): SourceRef | undefined => {
     const document = context.documents.find((candidate) => candidate.versionId === documentVersionId)
     if (!document) return undefined
@@ -72,8 +106,99 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
       ...(quote || block?.text ? { quote: (quote || block?.text || '').slice(0, 400) } : {}),
     }
   }
+  const unreadRuleDocuments = (): DocumentVersion[] => context.documents.filter((document) =>
+    document.active !== false && document.role === 'rule' && !documentCapabilities.isFullyRead(document.versionId),
+  )
 
   const tools: ReviewTool[] = [
+    {
+      name: 'list_review_documents',
+      description: '列出当前案卷中已激活材料的版本、用途、解析状态、表格工作表和图像页 blockId；不读取原始文件路径。',
+      input: '{ role? }',
+      async execute(input) {
+        const role = typeof input.role === 'string' ? input.role : undefined
+        const documents = documentCapabilities.listDocuments().filter((document) => !role || document.role === role)
+        context.onCapabilityEvent?.({ capability: 'list_review_documents', summary: `列出案卷材料（${documents.length} 份）` })
+        return { ok: true, data: { documents } }
+      },
+    },
+    {
+      name: 'read_document',
+      description: '按材料版本读取解析块，可按 blockId、Excel 工作表和行范围定位；返回可用于引用的原文及坐标。不传 blockIds 时读取完整材料。',
+      input: '{ documentVersionId, blockIds?, offset?, limit?, sheetName?, fromRow?, toRow? }',
+      async execute(input) {
+        try {
+          const documentVersionId = String(input.documentVersionId ?? '')
+          if (!documentVersionId) return { ok: false, error: 'documentVersionId 不能为空' }
+          const blockIds = Array.isArray(input.blockIds) ? input.blockIds.filter((item): item is string => typeof item === 'string').slice(0, 80) : undefined
+          const result = documentCapabilities.read({
+            documentVersionId,
+            ...(blockIds?.length ? { blockIds } : {}),
+            ...(Number.isInteger(input.offset) ? { offset: Number(input.offset) } : {}),
+            ...(Number.isInteger(input.limit) ? { limit: Number(input.limit) } : {}),
+            ...(typeof input.sheetName === 'string' ? { sheetName: input.sheetName } : {}),
+            ...(Number.isInteger(input.fromRow) ? { fromRow: Number(input.fromRow) } : {}),
+            ...(Number.isInteger(input.toRow) ? { toRow: Number(input.toRow) } : {}),
+          })
+          return { ok: true, data: result }
+        } catch (error) {
+          return { ok: false, error: error instanceof Error ? error.message : String(error) }
+        }
+      },
+    },
+    {
+      name: 'read_documents',
+      description: '一次读取多份已选材料（最多 8 份），适合同时核对规则文件与多个相关依据；每份可指定工作表/行范围，结果分别带原文、坐标和完整度。',
+      input: '{ documents: Array<{ documentVersionId, blockIds?, offset?, limit?, sheetName?, fromRow?, toRow? }> }',
+      async execute(input) {
+        const rawDocuments = Array.isArray(input.documents) ? input.documents : []
+        const documents = rawDocuments.slice(0, 8)
+        if (documents.length === 0) return { ok: false, error: 'documents 必须包含至少一份材料' }
+        const read = tools.find((tool) => tool.name === 'read_document')!
+        const results = await Promise.all(documents.map(async (raw) => {
+          if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return { ok: false, error: '材料读取项必须是对象' }
+          return read.execute(raw as Record<string, unknown>)
+        }))
+        const acceptedCount = results.filter((result) => result.ok).length
+        return { ok: true, data: { results, submittedCount: documents.length, notProcessedCount: Math.max(0, rawDocuments.length - documents.length), acceptedCount, rejectedCount: results.length - acceptedCount } }
+      },
+    },
+    {
+      name: 'inspect_document_image',
+      description: '只把指定材料版本中的一个图像 block 交给多模态模型核对；返回识别文字和图像事实，并关联原图块。',
+      input: '{ documentVersionId, blockId, question }',
+      async execute(input) {
+        const documentVersionId = String(input.documentVersionId ?? '')
+        const blockId = String(input.blockId ?? '')
+        const question = String(input.question ?? '').trim().slice(0, 1000)
+        if (!documentVersionId || !blockId || !question) return { ok: false, error: 'documentVersionId、blockId 和 question 均为必填项' }
+        if (!context.inspectDocumentImage) return { ok: false, error: '当前审核会话未配置图像核对能力；需人工检查原图' }
+        try {
+          const attachment = documentCapabilities.loadImage(documentVersionId, blockId)
+          const text = await context.inspectDocumentImage({ ...attachment, question })
+          const document = context.documents.find((candidate) => candidate.versionId === documentVersionId)
+          const imageBlock = document?.blocks.find((candidate) => candidate.blockId === blockId && candidate.kind === 'image')
+          if (!document || !imageBlock) return { ok: false, error: '图像块在核对后已无法定位' }
+          const visionBlockId = `vision-${blockId}`
+          const previous = document.blocks.find((candidate) => candidate.blockId === visionBlockId)
+          const visionBlock = {
+            blockId: visionBlockId,
+            kind: 'text' as const,
+            format: 'vision-text' as const,
+            text,
+            location: imageBlock.location ?? { kind: 'file' as const },
+            vision: { imageBlockId: blockId, engine: '项目 Pi 审核 Agent' },
+          }
+          if (previous) Object.assign(previous, visionBlock)
+          else document.blocks.push(visionBlock)
+          documentCapabilities.markImageRead(documentVersionId, blockId)
+          documentCapabilities.read({ documentVersionId, blockIds: [visionBlockId], limit: 1 })
+          return { ok: true, data: { documentVersionId, fileName: attachment.fileName, imageBlockId: blockId, textBlockId: visionBlockId, location: attachment.location ?? { kind: 'file' }, text } }
+        } catch (error) {
+          return { ok: false, error: error instanceof Error ? error.message : String(error) }
+        }
+      },
+    },
     {
       name: 'read_subject_field',
       description: '读取指定主体的字段当前值（含确认态），缺失返回 unknown 而不是空串',
@@ -111,26 +236,10 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
         const keyword = String(input.keyword ?? '')
         const role = input.role as string | undefined
         const offset = Number.isInteger(input.offset) ? Math.max(0, Number(input.offset)) : 0
-        const visualOffset = Number.isInteger(input.visualOffset) ? Math.max(0, Number(input.visualOffset)) : 0
         if (!keyword) return { ok: false, error: 'keyword 不能为空' }
-        const hits: Array<{ documentVersionId: string; blockId: string; fileName: string; location: unknown; text: string }> = []
-        const visualBlocks: Array<{ documentVersionId: string; blockId: string; fileName: string; location: unknown; imageAlt?: string }> = []
-        for (const document of context.documents) {
-          if (role && document.role !== role) continue
-          for (const block of document.blocks) {
-            if (block.kind === 'image') {
-              visualBlocks.push({ documentVersionId: document.versionId, blockId: block.blockId, fileName: document.fileName, location: block.location ?? { kind: 'file' }, ...(block.imageAlt ? { imageAlt: block.imageAlt } : {}) })
-              continue
-            }
-            if (block.text.includes(keyword)) {
-              hits.push({ documentVersionId: document.versionId, blockId: block.blockId, fileName: document.fileName, location: block.location ?? { kind: 'file' }, text: block.text.slice(0, 400) })
-            }
-          }
-        }
-        const pageSize = 50
-        const page = hits.slice(offset, offset + pageSize)
-        const visualPage = visualBlocks.slice(visualOffset, visualOffset + pageSize)
-        return { ok: true, data: { hits: page, totalHits: hits.length, hitsReturned: page.length, nextOffset: offset + page.length < hits.length ? offset + page.length : null, visualBlocks: visualPage, totalVisualBlocks: visualBlocks.length, visualOffset, nextVisualOffset: visualOffset + visualPage.length < visualBlocks.length ? visualOffset + visualPage.length : null, truncated: offset + page.length < hits.length || visualOffset + visualPage.length < visualBlocks.length } }
+        const page = documentCapabilities.search({ keyword, role: role as DocumentVersion['role'] | undefined, offset, limit: 50 })
+        context.onCapabilityEvent?.({ capability: 'search_document_text', summary: `检索案卷材料（命中 ${page.totalHits} 块）` })
+        return { ok: true, data: { ...page, hitsReturned: page.hits.length, truncated: page.nextOffset !== null } }
       },
     },
     {
@@ -232,9 +341,22 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
         if (!['compliant', 'non-compliant', 'awaiting-supplement', 'awaiting-confirmation', 'not-applicable'].includes(status)) {
           return { ok: false, error: `非法检查状态: ${status}` }
         }
+        if (['compliant', 'non-compliant'].includes(status)) {
+          const unread = unreadRuleDocuments()
+          if (unread.length > 0) {
+            return {
+              ok: false,
+              error: `确定结论前必须完整读取所有 role=rule 规则材料；尚未读完：${unread.map((document) => `${document.fileName}（${document.versionId}）`).join('、')}。请先用 read_documents/read_document 读取完整内容；图片页还需 inspect_document_image。`,
+            }
+          }
+        }
         const subjectIds = Array.isArray(input.subjectIds) ? (input.subjectIds as string[]) : []
         if ((subjectIds.length === 0 && rule.targetScope === 'subject') || new Set(subjectIds).size !== subjectIds.length || subjectIds.some((subjectId) => !findSubject(context, subjectId))) return { ok: false, error: '检查主体列表为空、重复或包含未知事项' }
         if (rule.sectionId && subjectIds.some((subjectId) => findSubject(context, subjectId)?.sectionId !== rule.sectionId)) return { ok: false, error: `规则 ${rule.id} 不能检查其他分项的事项` }
+        const duplicateSubjects = crossSectionDuplicateSubjects(context, rule, subjectIds)
+        if (duplicateSubjects.length > 0 && !['awaiting-confirmation', 'awaiting-supplement'].includes(status)) {
+          return { ok: false, error: `发现疑似同一成果跨分项重复申报（事项 ${duplicateSubjects.join('、')}）；该规则要求负责人确认，不能提交确定结论，请转 awaiting-confirmation。` }
+        }
         const applicableIds = context.subjects.filter((subject) => !rule.sectionId || subject.sectionId === rule.sectionId).map((subject) => subject.id).sort()
         if (rule.targetScope !== 'subject' && JSON.stringify([...subjectIds].sort()) !== JSON.stringify(applicableIds)) return { ok: false, error: `规则 ${rule.id} 必须覆盖全部适用事项；期望 ${applicableIds.length} 项，收到 ${subjectIds.length} 项` }
         if (rule.targetScope === 'subject' && subjectIds.length !== 1) return { ok: false, error: '逐事项规则每次只能提交一个事项，避免部分事项被误记为完成' }

@@ -18,6 +18,8 @@ describe('工具白名单（R10）', () => {
     ]
     const selected = selectReviewTools(infiltrated)
     expect(selected.map((tool) => tool.name).sort()).toEqual([...REVIEW_TOOL_ALLOWLIST].sort())
+    expect(selected.map((tool) => tool.name)).toContain('list_review_documents')
+    expect(selected.map((tool) => tool.name)).toContain('inspect_document_image')
     expect(selected.some((tool) => tool.name === 'bash')).toBeFalse()
   })
 })

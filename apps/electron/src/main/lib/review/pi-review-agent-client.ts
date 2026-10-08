@@ -191,6 +191,7 @@ export function createPiReviewModelClient(options: PiReviewModelClientOptions): 
       try {
         return { content: await runPi(request, images, deadlineAt), imagesDropped: false }
       } catch (error) {
+        if (request.retryWithoutImages === false) throw error
         if (images.length === 0 || !isVisionCompatibilityFailure(error)) throw error
         const reason = imageFailureReason(error)
         const retryPrompt = `${request.prompt}\n\n【图像请求降级】${reason}。未被 OCR 精确读取或其他材料支持的图像事实一律待人工核对，不得根据缺失内容推定。`

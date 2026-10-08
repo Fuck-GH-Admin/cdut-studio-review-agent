@@ -13,6 +13,7 @@ import type { CommandSourceMeta } from './case-store-v2'
 import { getConfigDir } from '../config-paths'
 import { createPiReviewModelClient } from './pi-review-agent-client'
 import { join } from 'node:path'
+import type { ReviewImageInspector } from './v2-executor-factory'
 
 /** 异步运行登记表项：进程内保留后台 promise 与取消控制器 */
 interface ActiveRun {
@@ -27,8 +28,8 @@ interface ActiveRun {
 const activeRuns = new Map<string, ActiveRun>()
 
 /** 组装模型 client + OCR 端口（渠道/OCR 装配的唯一出口，IPC 与 Agent 工具薄委托） */
-async function assembleReviewClient(caseId: string): Promise<{ client: import('./pi-review-executor').ReviewModelClient; ocrPort: import('./system-tesseract-ocr-adapter').SystemTesseractOcrPort }> {
-  const { resolveReviewGatewayChannel, REVIEW_RUN_TIMEOUT_MS } = require('./review-model-gateway') as typeof import('./review-model-gateway')
+async function assembleReviewClient(caseId: string): Promise<{ client: import('./pi-review-executor').ReviewModelClient; ocrPort: import('./system-tesseract-ocr-adapter').SystemTesseractOcrPort; imageInspector: ReviewImageInspector }> {
+  const { resolveReviewGatewayChannel, REVIEW_RUN_TIMEOUT_MS, chatCompletionWithMeta, reviewPromptWithImages } = require('./review-model-gateway') as typeof import('./review-model-gateway')
 
   const resolved = resolveReviewGatewayChannel()
   if (!resolved) throw new Error('未配置可用模型渠道，无法执行真实审核（请在设置中配置渠道）')
@@ -50,6 +51,20 @@ async function assembleReviewClient(caseId: string): Promise<{ client: import('.
       query: (input) => adapter.query(input),
       abort: (sessionId) => adapter.abort(sessionId),
     }),
+    imageInspector: async ({ prompt, system, dataUrl, signal }) => {
+      const response = await chatCompletionWithMeta(resolved.channel, [
+        { role: 'system', content: system },
+        { role: 'user', content: reviewPromptWithImages(prompt, [dataUrl]) },
+      ], { timeoutMs: REVIEW_RUN_TIMEOUT_MS, signal, retryWithoutImages: false, maxTokens: 1_000 })
+      return {
+        content: response.text,
+        imagesDropped: response.imagesDropped,
+        channel: resolved.channel.name,
+        model,
+        protocol: 'openai-chat',
+        ...(response.usage ? { usage: response.usage } : {}),
+      }
+    },
     ocrPort: await SystemTesseractOcrPort.create(),
   }
 }
@@ -64,8 +79,8 @@ export async function assembleAndRunReview(caseId: string, options: { signal?: A
   if (!aggregate) throw new Error(`案卷聚合不存在: ${caseId}`)
   const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
   if (!template) throw new Error(`模板不存在: ${aggregate.caseV2.templateId}@${aggregate.caseV2.templateVersion}`)
-  const { client, ocrPort } = await assembleReviewClient(caseId)
-  const executors = await assembleV2Executors(aggregate, template, { client, ocrPort, signal: options.signal })
+  const { client, ocrPort, imageInspector } = await assembleReviewClient(caseId)
+  const executors = await assembleV2Executors(aggregate, template, { client, ocrPort, imageInspector, signal: options.signal })
   return runReviewCaseV2(aggregate.caseV2, template, executors, {
     initiatedBy: options.initiatedBy ?? { actorId: 'local-user', actorSource: 'local', role: 'reviewer' },
     cancelled: options.signal ? () => options.signal!.aborted : undefined,
@@ -134,8 +149,8 @@ export function startReviewRunAsync(caseId: string, initiatedBy: Actor, source?:
   const controller = new AbortController()
   const promise = (async (): Promise<ReviewRunV2> => {
     try {
-      const { client, ocrPort } = await assembleReviewClient(caseId)
-      const executors = await assembleV2Executors(aggregate, template, { client, ocrPort, signal: controller.signal })
+      const { client, ocrPort, imageInspector } = await assembleReviewClient(caseId)
+      const executors = await assembleV2Executors(aggregate, template, { client, ocrPort, imageInspector, signal: controller.signal })
       return await runReviewCaseV2(aggregate.caseV2, template, executors, {
         runId,
         initiatedBy,

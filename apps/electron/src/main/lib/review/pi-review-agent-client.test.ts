@@ -7,7 +7,7 @@ describe('Pi 审核 Agent 客户端', () => {
   test('批量调用中检查被拒绝时不结束 Pi 工具轮', async () => {
     let terminateHint: unknown
     const client = createPiReviewModelClient({
-      channel: { id: 'test-channel', name: 'Test', provider: 'openai' } as Channel,
+      channel: { id: 'test-channel', name: 'Test', provider: 'openai', models: [{ id: 'test-model', name: 'Test Model' }] } as Channel,
       apiKey: 'test-key',
       model: 'test-model',
       cwd: '/tmp/review-case',
@@ -40,7 +40,7 @@ describe('Pi 审核 Agent 客户端', () => {
   test('多条计划检查只在必需目标全部接受后提前结束', async () => {
     const terminateHints: Array<boolean | undefined> = []
     const client = createPiReviewModelClient({
-      channel: { id: 'test-channel', name: 'Test', provider: 'openai' } as Channel,
+      channel: { id: 'test-channel', name: 'Test', provider: 'openai', models: [{ id: 'test-model', name: 'Test Model' }] } as Channel,
       apiKey: 'test-key', model: 'test-model', cwd: '/tmp/review-case', piAgentDir: '/tmp/pi-config',
       loadSdk: async () => ({ defineTool: (definition: unknown) => definition }) as never,
       query: async function* (input) {
@@ -65,7 +65,7 @@ describe('Pi 审核 Agent 客户端', () => {
 
   test('总结阶段未授权提前结束时不把事实记录误认为检查完成', async () => {
     const client = createPiReviewModelClient({
-      channel: { id: 'test-channel', name: 'Test', provider: 'openai' } as Channel,
+      channel: { id: 'test-channel', name: 'Test', provider: 'openai', models: [{ id: 'test-model', name: 'Test Model' }] } as Channel,
       apiKey: 'test-key',
       model: 'test-model',
       cwd: '/tmp/review-case',
@@ -93,7 +93,7 @@ describe('Pi 审核 Agent 客户端', () => {
 
   test('文本审核遇到服务超时后返回明确人工待办，不丢弃整案运行', async () => {
     const client = createPiReviewModelClient({
-      channel: { id: 'test-channel', name: 'Test', provider: 'openai' } as Channel,
+      channel: { id: 'test-channel', name: 'Test', provider: 'openai', models: [{ id: 'test-model', name: 'Test Model' }] } as Channel,
       apiKey: 'test-key',
       model: 'test-model',
       cwd: '/tmp/review-case',
@@ -115,7 +115,7 @@ describe('Pi 审核 Agent 客户端', () => {
     const observedImages: Array<string[] | undefined> = []
     const observedPrompts: string[] = []
     const client = createPiReviewModelClient({
-      channel: { id: 'test-channel', name: 'Test', provider: 'openai' } as Channel,
+      channel: { id: 'test-channel', name: 'Test', provider: 'openai', models: [{ id: 'test-model', name: 'Test Model' }] } as Channel,
       apiKey: 'test-key',
       model: 'test-model',
       cwd: '/tmp/review-case',
@@ -139,11 +139,29 @@ describe('Pi 审核 Agent 客户端', () => {
     },
   )
 
+  test('按需视觉能力失败时不再重复发送纯文本请求', async () => {
+    const observedImages: Array<string[] | undefined> = []
+    const client = createPiReviewModelClient({
+      channel: { id: 'test-channel', name: 'Test', provider: 'openai', models: [{ id: 'test-model', name: 'Test Model' }] } as Channel,
+      apiKey: 'test-key', model: 'test-model', cwd: '/tmp/review-case', piAgentDir: '/tmp/pi-config',
+      loadSdk: async () => ({ defineTool: (definition: unknown) => definition }) as never,
+      query: async function* (input) {
+        observedImages.push(input.images)
+        throw new Error('502: upstream service temporarily unavailable')
+      },
+    })
+
+    await expect(client.complete({
+      prompt: '检查这一页', system: '审核', images: ['data:image/png;base64,aGVsbG8='], retryWithoutImages: false,
+    })).rejects.toThrow('502: upstream service temporarily unavailable')
+    expect(observedImages).toEqual([['data:image/png;base64,aGVsbG8=']])
+  })
+
   test('通过项目 Pi review profile 注册受控审核工具并传递视觉输入', async () => {
     let observed: PiAgentQueryOptions | undefined
     const toolCalls: string[] = []
     const client = createPiReviewModelClient({
-      channel: { id: 'test-channel', name: 'Test', provider: 'ollama' } as Channel,
+      channel: { id: 'test-channel', name: 'Test', provider: 'ollama', models: [{ id: 'test-model', name: 'Test Model' }] } as Channel,
       apiKey: '',
       model: 'test-model',
       cwd: '/tmp/review-case',
@@ -183,7 +201,7 @@ describe('Pi 审核 Agent 客户端', () => {
   test('Pi query 无事件时总时限仍能结束并取消上游会话', async () => {
     let aborted = false
     const client = createPiReviewModelClient({
-      channel: { id: 'test-channel', name: 'Test', provider: 'openai' } as Channel,
+      channel: { id: 'test-channel', name: 'Test', provider: 'openai', models: [{ id: 'test-model', name: 'Test Model' }] } as Channel,
       apiKey: 'test-key', model: 'test-model', timeoutMs: 15, cwd: '/tmp/review-case', piAgentDir: '/tmp/pi-config',
       loadSdk: async () => ({ defineTool: (definition: unknown) => definition }) as never,
       abort: () => { aborted = true },

@@ -185,6 +185,13 @@ export async function runReviewCaseV2(
     .filter((artifact): artifact is Record<string, unknown> => !!artifact)
   run.checks = artifacts.flatMap((artifact) => (artifact.checks as Array<never>) ?? [])
   run.opinions = artifacts.flatMap((artifact) => (artifact.opinions as Array<never>) ?? [])
+  run.agentActivity = [...new Set(artifacts.flatMap((artifact) => Array.isArray(artifact.capabilityCalls)
+    ? artifact.capabilityCalls.filter((item): item is string => typeof item === 'string')
+    : []))].slice(0, 100)
+  run.modelUsage = [...new Map(artifacts.flatMap((artifact) => Array.isArray(artifact.modelUsage)
+    ? artifact.modelUsage.filter((item): item is Record<string, unknown> => !!item && typeof item === 'object')
+      .map((item) => [JSON.stringify(item), item] as const)
+    : [])).values()] as NonNullable<ReviewRunV2['modelUsage']>
   // coverage 与 executor 共用本次 EffectiveRuleSet（材料账本 + 检查账本含组展开）。
   {
     const { combineCoverage } = await import('./coverage-ledger')

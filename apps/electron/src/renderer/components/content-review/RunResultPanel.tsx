@@ -125,6 +125,15 @@ export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refre
                 )
               })}
               {run.opinions.length > 0 && <p className="rounded bg-muted/40 px-1.5 py-1">结论：{(run.opinions[0] as unknown as { text?: string }).text ?? '—'}</p>}
+              {run.agentActivity && run.agentActivity.length > 0 && (
+                <details className="text-muted-foreground">
+                  <summary>Agent 材料能力调用（{run.agentActivity.length}）</summary>
+                  <ol className="list-decimal pl-4">{run.agentActivity.map((activity, index) => <li key={`${index}-${activity}`}>{activity}</li>)}</ol>
+                </details>
+              )}
+              {run.modelUsage && run.modelUsage.length > 0 && (
+                <p className="text-muted-foreground">按需图像核验：{run.modelUsage.length} 次模型调用 · {run.modelUsage.reduce((sum, item) => sum + (item.tokens ?? 0), 0).toLocaleString()} tokens。</p>
+              )}
               {run.diagnostics.length > 0 && (
                 <details className="text-muted-foreground">
                   <summary>诊断（{run.diagnostics.length}）</summary>

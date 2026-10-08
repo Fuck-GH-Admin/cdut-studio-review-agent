@@ -497,8 +497,10 @@ export interface ReviewRunV2 {
     pendingChecks: number
   }
   /** 实际模型/解析版本与诊断用量（H16） */
-  modelUsage?: Array<{ purpose: string; channel: string; model: string; protocol: string; tokens?: number; ms?: number }>
+  modelUsage?: Array<{ purpose: string; channel: string; model: string; protocol: string; tokens?: number; inputTokens?: number; outputTokens?: number; cacheReadInputTokens?: number; ms?: number }>
   parseVersions?: Array<{ documentId: string; parseRevision: number }>
+  /** Pi 审核 Agent 本次按需调用的案卷能力摘要，用于界面复查其材料读取路径。 */
+  agentActivity?: string[]
   diagnostics: string[]
   startedAt: string
   completedAt?: string

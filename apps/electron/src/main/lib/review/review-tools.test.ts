@@ -35,6 +35,14 @@ describe('审核业务工具集（M3）', () => {
     expect(hits.data.hits[0]!.blockId).toBe('b1')
   })
 
+  test('案卷材料目录与指定块读取通过能力库返回真实位置', async () => {
+    const tools = buildReviewTools(context)
+    const listed = await tools.find((tool) => tool.name === 'list_review_documents')!.execute({})
+    expect(listed).toMatchObject({ ok: true, data: { documents: [{ documentVersionId: 'd1-v1', fileName: '证书.pdf', textBlockCount: 1 }] } })
+    const read = await tools.find((tool) => tool.name === 'read_document')!.execute({ documentVersionId: 'd1-v1', blockIds: ['b1'] })
+    expect(read).toMatchObject({ ok: true, data: { blocks: [{ blockId: 'b1', location: { kind: 'paragraph', index: 0 }, text: '省赛一等奖证书 6分；复核记分 3分' }] } })
+  })
+
   test('批量搜索、事实记录和检查提交在一次工具调用中保留逐项校验', async () => {
     const local: ReviewToolContext = {
       ...context,
@@ -118,6 +126,49 @@ describe('审核业务工具集（M3）', () => {
     const submit = tools.find((tool) => tool.name === 'submit_check')!
     expect((await submit.execute({ ruleId: 'r1', subjectIds: ['s1'], status: 'compliant', reason: '无引用' })).ok).toBeFalse()
     expect((await submit.execute({ ruleId: 'r1', subjectIds: ['s1'], status: 'compliant', reason: '有引用', sourceRefs: [{ documentVersionId: 'd1-v1', blockId: 'b1', quote: '省赛一等奖证书' }] })).ok).toBeTrue()
+  })
+
+  test('未完整读取规则材料时拒绝确定结论，读完后允许带引用提交', async () => {
+    const policyDoc = {
+      ...context.documents[0]!, documentId: 'policy', versionId: 'policy-v1', fileName: 'rules.md', role: 'rule' as const,
+      blocks: [{ blockId: 'policy-p1', text: '合成测试材料不得据此确定积分', kind: 'text' as const, location: { kind: 'paragraph' as const, index: 0 } }],
+    }
+    const local: ReviewToolContext = {
+      ...context,
+      documents: [...context.documents, policyDoc],
+      rules: [{ ...context.rules[0]!, execution: 'semantic' }],
+      observations: [], evidenceLinks: [], results: [],
+    }
+    const tools = buildReviewTools(local)
+    const submit = tools.find((tool) => tool.name === 'submit_check')!
+    const input = { ruleId: 'r1', subjectIds: ['s1'], status: 'compliant', reason: '证据足够', sourceRefs: [{ documentVersionId: 'd1-v1', blockId: 'b1', quote: '省赛一等奖证书' }] }
+
+    const blocked = await submit.execute(input)
+    expect(blocked).toMatchObject({ ok: false, error: expect.stringContaining('必须完整读取所有 role=rule') })
+    expect(local.results).toHaveLength(0)
+
+    const read = await tools.find((tool) => tool.name === 'read_documents')!.execute({ documents: [{ documentVersionId: 'policy-v1' }] })
+    expect(read).toMatchObject({ ok: true, data: { acceptedCount: 1, results: [{ ok: true, data: { fullyRead: true } }] } })
+    expect((await submit.execute(input)).ok).toBeTrue()
+    expect(local.results).toHaveLength(1)
+  })
+
+  test('同一成果名称跨分项重复出现时，要求人工决定分配口径', async () => {
+    const baseSubject = context.subjects[0]!
+    const local: ReviewToolContext = {
+      ...context,
+      subjects: [
+        { ...baseSubject, id: 'individual-1', sectionId: 'individual', fields: { ...baseSubject.fields, achievementName: { kind: 'text', value: '合成竞赛团队成果' } } },
+        { ...baseSubject, id: 'team-1', sectionId: 'team', fields: { ...baseSubject.fields, achievementName: { kind: 'text', value: '合成竞赛团队成果' } } },
+      ],
+      fields: [{ key: 'achievementName', label: '成果名称', kind: 'text', required: true, visibility: 'internal' }],
+      rules: [{ ...context.rules[0]!, id: 'team-split', title: '分项与成员拆分', requirement: '一个材料支持多个事项时检查是否为同一成果的重复申报；成员分配口径由负责人确认。', targetScope: 'group', sectionId: 'team', execution: 'semantic' }],
+      observations: [], evidenceLinks: [], results: [],
+    }
+    const submit = buildReviewTools(local).find((tool) => tool.name === 'submit_check')!
+    const blocked = await submit.execute({ ruleId: 'team-split', scope: 'group', subjectIds: ['team-1'], status: 'compliant', reason: '无重复', sourceRefs: [{ documentVersionId: 'd1-v1', blockId: 'b1', quote: '省赛一等奖证书' }] })
+    expect(blocked).toMatchObject({ ok: false, error: expect.stringContaining('疑似同一成果跨分项重复申报') })
+    expect((await submit.execute({ ruleId: 'team-split', scope: 'group', subjectIds: ['team-1'], status: 'awaiting-confirmation', reason: '同名成果跨分项，成员分配口径待负责人确认' })).ok).toBeTrue()
   })
 
   test('Given link_evidence When 绑定 Then candidate 状态进入上下文', async () => {
