@@ -239,6 +239,30 @@ export function validateTemplate(template: TemplateVersion): TemplateValidationI
   const stageIds = template.stages.map((stage) => stage.id)
   if (new Set(stageIds).size !== stageIds.length) issues.push({ level: 'error', message: '流程存在重复阶段 ID（循环/重复定义）' })
   if (template.stages.length === 0) issues.push({ level: 'error', message: '流程为空' })
+  const stagesById = new Map(template.stages.map((stage) => [stage.id, stage]))
+  for (const stage of template.stages) {
+    if (stage.nextStageId && !stagesById.has(stage.nextStageId)) {
+      issues.push({ level: 'error', message: `流程阶段 ${stage.name} 指向不存在的下一阶段 ${stage.nextStageId}` })
+    }
+    if (stage.returnToStageId && !stagesById.has(stage.returnToStageId)) {
+      issues.push({ level: 'error', message: `流程阶段 ${stage.name} 指向不存在的退回阶段 ${stage.returnToStageId}` })
+    }
+  }
+  if (template.stages[0] && stageIds.length === new Set(stageIds).size) {
+    const reachable = new Set<string>()
+    let stageId: string | undefined = template.stages[0].id
+    while (stageId) {
+      if (reachable.has(stageId)) {
+        issues.push({ level: 'error', message: `流程从阶段 ${stagesById.get(stageId)?.name ?? stageId} 开始形成循环，无法结束` })
+        break
+      }
+      reachable.add(stageId)
+      stageId = stagesById.get(stageId)?.nextStageId
+    }
+    for (const stage of template.stages) {
+      if (!reachable.has(stage.id)) issues.push({ level: 'error', message: `流程阶段 ${stage.name} 无法从首阶段到达` })
+    }
+  }
   // 评分：有量表则必须有精度与缺失策略，且权重合法
   if (template.rubric) {
     const weightSum = template.rubric.dimensions.reduce((sum, dimension) => sum + dimension.weight, 0)

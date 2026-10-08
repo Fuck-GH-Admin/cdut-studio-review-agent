@@ -18,6 +18,7 @@ async function buildDocx(text: string, bodyXml?: string): Promise<Buffer> {
     + `<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>`
     + `<Default Extension="xml" ContentType="application/xml"/>`
     + `<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>`
+    + `<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>`
     + `</Types>`)
   zip.folder('_rels')!.file('.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>`
     + `<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">`
@@ -26,6 +27,15 @@ async function buildDocx(text: string, bodyXml?: string): Promise<Buffer> {
   zip.folder('word')!.file('document.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>`
     + `<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">`
     + `<w:body>${bodyXml ?? `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`}</w:body></w:document>`)
+  zip.folder('word')!.folder('_rels')!.file('document.xml.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>`
+    + `<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">`
+    + `<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>`
+    + `</Relationships>`)
+  zip.folder('word')!.file('styles.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>`
+    + `<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">`
+    + `<w:style w:type="paragraph" w:styleId="Title"><w:name w:val="Title"/></w:style>`
+    + `<w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/></w:style>`
+    + `</w:styles>`)
   return zip.generateAsync({ type: 'nodebuffer' })
 }
 
@@ -108,6 +118,16 @@ describe('document-parser / 真实提取', () => {
     expect(parsed.blocks.find((block) => block.kind === 'paragraph')?.text).toContain('**Important rule**')
     expect(parsed.blocks.filter((block) => block.kind === 'table-cell').map((block) => block.text)).toEqual(['Applicant', 'Deadline'])
     expect(parsed.blocks.filter((block) => block.kind === 'table-cell').map((block) => block.table?.column)).toEqual([0, 1])
+  })
+
+  test('Word 内置 Title 段落样式解析为标题且不降级为带警告文档', async () => {
+    const path = join(dir, 'built-in-title.docx')
+    const body = '<w:p><w:pPr><w:pStyle w:val="Title"/></w:pPr><w:r><w:t>合成申请书标题</w:t></w:r></w:p>'
+    writeFileSync(path, await buildDocx('', body))
+    const parsed = await extractDocxReviewContent(path)
+
+    expect(parsed.blocks).toContainEqual({ kind: 'heading', text: '合成申请书标题' })
+    expect(parsed.warnings).toEqual([])
   })
 
   test('XLSX 审核解析保留工作表、单元格坐标及前导零文本', async () => {

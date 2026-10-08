@@ -230,7 +230,7 @@ export const REFERENCE_TEMPLATES_V2: TemplateVersion[] = [
     fields: [requiredCaseField('projectName', '项目名称'), requiredCaseField('fundingCall', '基金/项目批次'), field('applicant', '申请人'), field('department', '单位/学院', 'text', { scope: 'case' }), field('coApplicants', '合作成员'), field('duration', '项目周期'), field('requestedAmount', '申请金额', 'number'), field('abstract', '项目摘要')],
     sections: [section('eligibility', '申报资格与利益冲突', [criterion('eligibility', '资格与申报范围', '对照本批次正式指南核对申请人资格、主题范围、合作要求和限制；适用条件未提供时转人工。'), criterion('independence', '评审独立性', '记录评审人利益冲突声明及回避情况，不能由材料模型自行确认评审关系。', { execution: 'manual', targetScope: 'case' })]), section('scientific-merit', '学术价值与项目目标', [criterion('merit', '问题价值与创新', '评价申请书论证的研究问题、重要性、相关工作和预期贡献，结论须引用申请材料或评审依据。'), criterion('fit', '项目目标契合度', '按本批次正式指南核对目标与资助主题的契合情况，不用参考项目的主题替代本项目指南。')]), section('plan', '研究设计、团队与产出', [criterion('design', '研究设计与方法', '核对研究问题、方法、数据/对象、风险和里程碑之间是否完整且相互支持。'), criterion('team-and-output', '团队能力与预期成果', '对照成员分工和既往材料核对执行能力；区分计划产出和已完成产出。')]), section('budget', '预算与资源', [criterion('budget-consistency', '预算合计与计划对应', '检查预算明细、计算、周期和项目活动计划的一致性。'), criterion('budget-eligibility', '经费合规性', '只按正式指南/财务制度检查可列支范围；自动检查只能提示疑点，不认定票据或支出合规。', { execution: 'manual' })]), section('panel', '同行评议与评审结论', [criterion('review-report', '结构化专家意见', '分别记录优势、风险、需澄清问题和建议；保留原始评审人与依据，不自动覆盖评审者意见。', { execution: 'manual' }), criterion('funding-decision', '资助排序与决策', '按经批准的评分口径、名额和决议归纳排序；未配置时只汇总意见，不自动推荐资助。', { execution: 'manual', targetScope: 'group' })])].map((item, order) => ({ ...item, order })),
     materialSlots: [slot('call', '基金指南/申报通知', '资格、主题、预算及评价依据', ['申请资格', '评审标准', '预算规则', '时间'], { acceptedKinds: ['pdf', 'office', 'text'], maxCount: 5 }), slot('proposal', '项目申请書/研究计划', '申请书正文和方法', ['摘要', '研究问题', '方法', '成果计划'], { sectionId: 'scientific-merit', maxCount: 10 }), slot('budget', '预算与资源说明', '预算明细和计算', ['科目', '单价/数量', '合计'], { sectionId: 'budget', acceptedKinds: ['pdf', 'office', 'sheet'], maxCount: 10 }), slot('review', '评审表与回避记录', '同行评议、评分和利益冲突留痕', ['评审意见', '评审人/回避信息'], { sectionId: 'panel', requiredAt: 'decision', maxCount: 30 })],
-    policyVersionIds: [], stages: [{ id: 'intake', name: '秘书资格审查', kind: 'auto-check', executorRole: 'system', nextStageId: 'expert-review' }, { id: 'expert-review', name: '专家独立评审', kind: 'independent-rating', executorRole: 'judge', requiredApprovers: 2, nextStageId: 'panel' }, { id: 'panel', name: '评审会汇总', kind: 'summary', executorRole: 'organizer' }, { id: 'decision', name: '主管部门定稿', kind: 'finalize', executorRole: 'teacher' }],
+    policyVersionIds: [], stages: [{ id: 'intake', name: '秘书资格审查', kind: 'auto-check', executorRole: 'system', nextStageId: 'expert-review' }, { id: 'expert-review', name: '专家独立评审', kind: 'independent-rating', executorRole: 'judge', requiredApprovers: 2, nextStageId: 'panel' }, { id: 'panel', name: '评审会汇总', kind: 'summary', executorRole: 'organizer', nextStageId: 'decision' }, { id: 'decision', name: '主管部门定稿', kind: 'finalize', executorRole: 'teacher' }],
     rubric: { dimensions: [{ id: 'merit', name: '研究价值与契合度', min: 1, max: 5, weight: 1 }, { id: 'design', name: '研究设计与可行性', min: 1, max: 5, weight: 1 }, { id: 'team', name: '团队与成果', min: 1, max: 5, weight: 1 }, { id: 'budget', name: '预算合理性', min: 1, max: 5, weight: 1 }], totalPrecision: 2, missingStrategy: 'block', minEffectiveJudges: 2, tieBreaker: 'owner-decides' },
     outputs: [{ id: 'ratings', kind: 'rating-matrix', audience: 'organizer' }, { id: 'feedback', kind: 'item-feedback', audience: 'reviewer' }],
   }),
@@ -302,6 +302,25 @@ export function ensureBuiltinTemplateDrafts(store: {
 }): void {
   for (const template of [...ALL_DEFAULT_TEMPLATES_V2, ...LEGACY_COMPAT_TEMPLATES_V2]) {
     if (!store.getTemplate(template.templateId, template.version)) store.saveDraft(template)
+
+    // Repair the originally seeded grant template without replacing user-edited content.
+    // Older drafts exposed a final-decision stage but ended the chain at the panel stage.
+    if (template.templateId === 'teacher-research-grant-review-v1') {
+      const current = store.getTemplate(template.templateId)
+      if (current?.status === 'draft' && current.catalogKind === 'reference' && current.sourceNote === template.sourceNote) {
+        const expectedIds = template.stages.map((stage) => stage.id)
+        const panel = current.stages.find((stage) => stage.id === 'panel')
+        const hasDecision = current.stages.some((stage) => stage.id === 'decision')
+        const sameStageSet = expectedIds.length === current.stages.length && expectedIds.every((id) => current.stages.some((stage) => stage.id === id))
+        if (panel && !panel.nextStageId && hasDecision && sameStageSet) {
+          store.saveDraft({
+            ...current,
+            version: current.version + 1,
+            stages: current.stages.map((stage) => stage.id === 'panel' ? { ...stage, nextStageId: 'decision' } : stage),
+          })
+        }
+      }
+    }
   }
   initializeTemplateCatalog(
     ALL_DEFAULT_TEMPLATES_V2.map((template) => template.templateId),

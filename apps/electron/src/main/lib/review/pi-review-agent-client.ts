@@ -37,7 +37,34 @@ function textFromMessage(message: SDKMessage): string | undefined {
 
 function isVisionCompatibilityFailure(error: unknown): boolean {
   if (!(error instanceof Error) || error.name === 'AbortError') return false
-  return /HTTP (400|413|415|422|500)|image|vision|multimodal|图片|多模态/i.test(error.message)
+  return /HTTP (400|413|415|422|500|502)|\b(400|413|415|422|500|502)\b|internal server error|upstream service temporarily unavailable|审核 Agent 超时|image|vision|multimodal|图片|多模态/i.test(error.message)
+}
+
+function hasStructuredJson(text: string): boolean {
+  const start = text.indexOf('{')
+  const end = text.lastIndexOf('}')
+  if (start < 0 || end <= start) return false
+  try {
+    return typeof JSON.parse(text.slice(start, end + 1)) === 'object'
+  } catch {
+    return false
+  }
+}
+
+const REVIEW_TOOL_RESULT_FALLBACK = JSON.stringify({
+  opinion: '审核工具已执行，但 Pi 未返回最终摘要。已接受的事实和检查以系统记录为准；未接受或缺少证据的项目需人工核对。',
+  checks: [],
+  observations: [],
+})
+const REVIEW_TIMEOUT_FALLBACK = JSON.stringify({
+  opinion: '模型请求超时或上游服务失败；本轮未得到可核验的模型结论。缺失事实和语义检查均保持人工确认或补件，不作推定。',
+  checks: [],
+  observations: [],
+})
+
+function isRecoverableReviewServiceFailure(error: unknown): boolean {
+  if (!(error instanceof Error) || error.name === 'AbortError') return false
+  return /Pi 审核 Agent 超时|\btimeout\b|internal server error|upstream service temporarily unavailable|HTTP (500|502|503|504)|\b(500|502|503|504)\b|fetch failed|network error/i.test(error.message)
 }
 
 /** 每个审核语义调用使用独立的临时 Pi transcript；执行结束后即删除，避免在会话列表里制造幽灵会话。 */
@@ -47,7 +74,16 @@ export function createPiReviewModelClient(options: PiReviewModelClientOptions): 
   const runPi = async (request: Parameters<ReviewModelClient['complete']>[0], images: string[]): Promise<string> => {
     if (request.signal?.aborted) throw new Error('审核已取消')
     const sdk = await (options.loadSdk ?? (() => import('@earendil-works/pi-coding-agent')))()
-    const customTools = buildPiReviewToolDefinitions(sdk, request.tools ?? [], request.onToolCall)
+    let completedReviewToolAttempt = false
+    const customTools = buildPiReviewToolDefinitions(sdk, request.tools ?? [], request.onToolCall, (name, outcome) => {
+      if (!request.terminateAfterTools?.includes(name)) return
+      if (!outcome.ok) return
+      if (name === 'record_observation' || name === 'submit_check') completedReviewToolAttempt = true
+      if (name === 'record_observations' || name === 'submit_checks') {
+        const results = (outcome.data as { results?: Array<{ ok?: boolean }> } | undefined)?.results
+        if (Array.isArray(results) && results.length > 0) completedReviewToolAttempt = true
+      }
+    }, request.terminateAfterTools)
     const sessionId = `review-${randomUUID()}`
     const sessionDir = mkdtempSync(join(tmpdir(), 'cdut-pi-review-'))
     let timedOut = false
@@ -91,8 +127,18 @@ export function createPiReviewModelClient(options: PiReviewModelClientOptions): 
         }
       }
       if (timedOut) throw new Error(`Pi 审核 Agent 超时（${options.timeoutMs ?? 150_000} ms）`)
+      if (!response && completedReviewToolAttempt) return REVIEW_TOOL_RESULT_FALLBACK
       if (!response) throw new Error('Pi 审核 Agent 没有返回可用的结构化结果')
+      if (completedReviewToolAttempt && !hasStructuredJson(response)) return REVIEW_TOOL_RESULT_FALLBACK
       return response
+    } catch (error) {
+      if (completedReviewToolAttempt && !request.signal?.aborted && !(error instanceof Error && error.name === 'AbortError')) {
+        return REVIEW_TOOL_RESULT_FALLBACK
+      }
+      if (images.length === 0 && (request.terminateAfterTools?.length ?? 0) > 0 && !request.signal?.aborted && isRecoverableReviewServiceFailure(error)) {
+        return REVIEW_TIMEOUT_FALLBACK
+      }
+      throw error
     } finally {
       request.signal?.removeEventListener('abort', stop)
       clearTimeout(timeout)

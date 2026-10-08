@@ -35,6 +35,36 @@ describe('审核业务工具集（M3）', () => {
     expect(hits.data.hits[0]!.blockId).toBe('b1')
   })
 
+  test('批量搜索、事实记录和检查提交在一次工具调用中保留逐项校验', async () => {
+    const local: ReviewToolContext = {
+      ...context,
+      subjects: context.subjects.map((subject) => ({ ...subject, fields: { ...subject.fields } })),
+      observations: [], evidenceLinks: [], results: [],
+      rules: [{ ...context.rules[0]!, execution: 'semantic' }],
+    }
+    const tools = buildReviewTools(local)
+    const search = tools.find((tool) => tool.name === 'search_document_text_batch')!
+    const searched = await search.execute({ keywords: ['省赛一等奖', '不存在'] }) as { ok: true; data: { results: Array<{ keyword: string; data?: { hits: Array<{ blockId: string }> } }> } }
+    expect(searched.data.results[0]?.data?.hits[0]?.blockId).toBe('b1')
+    expect(searched.data.results[1]?.data?.hits).toHaveLength(0)
+
+    const record = tools.find((tool) => tool.name === 'record_observations')!
+    const recorded = await record.execute({ observations: [
+      { subjectId: 's1', fieldKey: 'confirmedLevelScore', kind: 'number', value: 6, documentVersionId: 'd1-v1', blockId: 'b1', quote: '省赛一等奖证书' },
+      { subjectId: 'missing', fieldKey: 'confirmedLevelScore', kind: 'number', value: 6, documentVersionId: 'd1-v1', blockId: 'b1' },
+    ] }) as { ok: true; data: { results: Array<{ ok: boolean }> } }
+    expect(recorded.data.results.map((result) => result.ok)).toEqual([true, false])
+    expect(local.observations).toHaveLength(1)
+
+    const submit = tools.find((tool) => tool.name === 'submit_checks')!
+    const submitted = await submit.execute({ checks: [
+      { ruleId: 'r1', subjectIds: ['s1'], status: 'compliant', reason: '材料支持结论', sourceRefs: [{ documentVersionId: 'd1-v1', blockId: 'b1', quote: '省赛一等奖证书' }] },
+      { ruleId: 'missing', subjectIds: ['s1'], status: 'awaiting-confirmation', reason: '待确认' },
+    ] }) as { ok: true; data: { results: Array<{ ok: boolean }> } }
+    expect(submitted.data.results.map((result) => result.ok)).toEqual([true, false])
+    expect(local.results).toHaveLength(1)
+  })
+
   test('Given record_observation When AI 提取 Then 受控写入并建立 supersedes 链（后续值可追溯）', async () => {
     const tools = buildReviewTools(context)
     const record = tools.find((tool) => tool.name === 'record_observation')!

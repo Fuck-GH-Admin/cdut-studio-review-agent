@@ -388,7 +388,7 @@ function parseRtf(rtf: string): string {
 
 interface MammothModule {
   extractRawText(input: { path?: string, buffer?: Buffer }): Promise<{ value: string }>
-  convertToHtml(input: { path?: string, buffer?: Buffer }, options?: { convertImage?: unknown }): Promise<{ value: string; messages: Array<{ message: string }> }>
+  convertToHtml(input: { path?: string, buffer?: Buffer }, options?: { styleMap?: string[]; convertImage?: unknown }): Promise<{ value: string; messages: Array<{ message: string }> }>
   images: {
     imgElement(handler: (image: { contentType: string; readAsBuffer(): Promise<Buffer> }) => Promise<{ src: string }>): unknown
   }
@@ -650,6 +650,7 @@ export async function extractDocxReviewContent(filePath: string): Promise<DocxRe
   let totalImageBytes = 0
   const allowedImageTypes = new Set(['image/png', 'image/jpeg', 'image/gif', 'image/webp'])
   const result = await mammoth.convertToHtml({ path: filePath }, {
+    styleMap: ["p[style-name='Title'] => h1:fresh"],
     convertImage: mammoth.images.imgElement(async (image) => {
       if (!allowedImageTypes.has(image.contentType) || images.length >= 24) {
         warnings.push('部分嵌入图片格式不支持或数量超过 24 张，未纳入视觉审核')

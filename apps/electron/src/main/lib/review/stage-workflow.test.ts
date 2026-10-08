@@ -27,14 +27,50 @@ let requestIdCounter = 0
 const nextReq = (): string => `req-${(requestIdCounter += 1)}`
 
 let caseCounter = 0
-async function seed(): Promise<{ caseId: string; firstTaskId: string }> {
+async function seed(flowTemplate: TemplateVersion = template): Promise<{ caseId: string; firstTaskId: string }> {
   const caseId = `case-stage-${(caseCounter += 1)}`
   await createAggregate(caseId, { ...caseV2, id: caseId })
-  const taskResult = await ensureInitialTask(caseId, template, actor)
+  const taskResult = await ensureInitialTask(caseId, flowTemplate, actor)
   return { caseId, firstTaskId: taskResult.ok ? taskResult.entity!.id : '' }
 }
 
 describe('阶段推进（R07，修正误判 6）', () => {
+  test('Given 三阶段审核且时钟不前进 When 连续通过 Then 每个阶段任务仍有唯一 ID 并可终审', async () => {
+    const threeStageTemplate = {
+      ...template,
+      stages: [
+        { id: 'first', name: '初审', kind: 'manual-review', executorRole: 'reviewer', nextStageId: 'middle' },
+        { id: 'middle', name: '复核', kind: 'manual-review', executorRole: 'reviewer', nextStageId: 'final' },
+        { id: 'final', name: '终审', kind: 'manual-review', executorRole: 'teacher' },
+      ],
+    } as TemplateVersion
+    const originalNow = Date.now
+    Date.now = () => 1
+    try {
+      const { caseId, firstTaskId } = await seed(threeStageTemplate)
+      let agg = readAggregate(caseId)!
+      const first = await recordStageDecision(caseId, { requestId: nextReq(), actor, expectedRevision: agg.caseV2.revision, payload: { action: 'stage-pass', taskId: firstTaskId, reason: '初审通过' } }, threeStageTemplate)
+      expect(first.ok).toBeTrue()
+      if (!first.ok) return
+      agg = first.aggregate
+      const middleTask = agg.tasks.find((task) => task.stageId === 'middle' && task.status === 'open')!
+      const middle = await recordStageDecision(caseId, { requestId: nextReq(), actor, expectedRevision: agg.caseV2.revision, payload: { action: 'stage-pass', taskId: middleTask.id, reason: '复核通过' } }, threeStageTemplate)
+      expect(middle.ok).toBeTrue()
+      if (!middle.ok) return
+      agg = middle.aggregate
+      const finalTask = agg.tasks.find((task) => task.stageId === 'final' && task.status === 'open')!
+      const final = await recordStageDecision(caseId, { requestId: nextReq(), actor, expectedRevision: agg.caseV2.revision, payload: { action: 'stage-pass', taskId: finalTask.id, reason: '终审通过' } }, threeStageTemplate)
+      expect(final.ok).toBeTrue()
+      if (final.ok) {
+        expect(final.aggregate.caseV2.stage).toBe('decided')
+        expect(new Set(final.aggregate.tasks.map((task) => task.id)).size).toBe(3)
+        expect(final.aggregate.decisions.map((decision) => decision.stageId)).toEqual(['first', 'middle', 'final'])
+      }
+    } finally {
+      Date.now = originalNow
+    }
+  })
+
   test('Given 初审通过 When 决定 Then 创建终审任务且案卷不 decided', async () => {
     const { caseId, firstTaskId } = await seed()
     const aggregate = readAggregate(caseId)!

@@ -13,8 +13,11 @@
  */
 
 import type { Appeal, BusinessDecision, CaseAggregateV2, ReviewCommandResult, SupplementRequest, TemplateVersion, WorkflowTask } from '@profer/shared'
+import { randomUUID } from 'node:crypto'
 import { CommandValidationError, submitCommand, type CommandSourceMeta } from './case-store-v2'
 import type { Actor } from '@profer/shared'
+
+const newWorkflowTaskId = (): string => `task-${randomUUID()}`
 
 // ===== 任务创建（提交案卷时按模板首阶段建任务） =====
 
@@ -26,7 +29,7 @@ export async function ensureInitialTask(caseId: string, template: TemplateVersio
     return {
       summary: `创建初审任务（${firstStage.name}）`,
       mutate: (draft) => {
-        const created: WorkflowTask = { id: `task-${Date.now()}`, caseId: draft.caseV2.id, stageId: firstStage.id, round: 1, assigneeRole: firstStage.executorRole, status: 'open', inputRevision: draft.caseV2.revision, createdAt: new Date().toISOString() }
+        const created: WorkflowTask = { id: newWorkflowTaskId(), caseId: draft.caseV2.id, stageId: firstStage.id, round: 1, assigneeRole: firstStage.executorRole, status: 'open', inputRevision: draft.caseV2.revision, createdAt: new Date().toISOString() }
         draft.tasks = [...draft.tasks, created]
         return created
       },
@@ -123,7 +126,7 @@ export function recordStageDecision(
             if (stage?.nextStageId) {
               // 初审通过 → 下一阶段任务（不是 decided）
               const nextStage = template.stages.find((candidate) => candidate.id === stage.nextStageId)
-              nextTask = { id: `task-${Date.now() + 1}`, caseId: draft.caseV2.id, stageId: stage.nextStageId, round: task.round, assigneeRole: nextStage?.executorRole ?? 'teacher', status: 'open', prerequisiteTaskId: task.id, inputRevision: draft.caseV2.revision, createdAt: now }
+              nextTask = { id: newWorkflowTaskId(), caseId: draft.caseV2.id, stageId: stage.nextStageId, round: task.round, assigneeRole: nextStage?.executorRole ?? 'teacher', status: 'open', prerequisiteTaskId: task.id, inputRevision: draft.caseV2.revision, createdAt: now }
               draft.tasks = [...draft.tasks, nextTask!]
               draft.caseV2.stage = 'reviewing'
             } else {
@@ -149,7 +152,7 @@ export function recordStageDecision(
             const returnTo = stage?.returnToStageId
             if (!returnTo) throw new CommandValidationError('INVALID_TRANSITION', '该阶段没有退回目标')
             const previousStage = template.stages.find((candidate) => candidate.id === returnTo)
-            nextTask = { id: `task-${Date.now() + 2}`, caseId: draft.caseV2.id, stageId: returnTo, round: task.round + 1, assigneeRole: previousStage?.executorRole ?? 'reviewer', status: 'open', prerequisiteTaskId: task.id, inputRevision: draft.caseV2.revision, createdAt: now }
+            nextTask = { id: newWorkflowTaskId(), caseId: draft.caseV2.id, stageId: returnTo, round: task.round + 1, assigneeRole: previousStage?.executorRole ?? 'reviewer', status: 'open', prerequisiteTaskId: task.id, inputRevision: draft.caseV2.revision, createdAt: now }
             draft.tasks = [...draft.tasks, nextTask!]
             draft.caseV2.stage = 'reviewing'
             break
@@ -213,7 +216,7 @@ export function resolveSupplementV2(caseId: string, command: { requestId: string
           const originStageId = target.originStageId
           if (originStageId && !draft.tasks.some((task) => task.stageId === originStageId && task.status === 'open')) {
             const originTask = target.originTaskId ? draft.tasks.find((task) => task.id === target.originTaskId) : undefined
-            draft.tasks = [...draft.tasks, { id: `task-${Date.now() + 3}`, caseId: draft.caseV2.id, stageId: originStageId, round: originTask?.round ?? 1, assigneeRole: originTask?.assigneeRole ?? 'reviewer', status: 'open', prerequisiteTaskId: target.originTaskId, inputRevision: draft.caseV2.revision, createdAt: new Date().toISOString() }]
+            draft.tasks = [...draft.tasks, { id: newWorkflowTaskId(), caseId: draft.caseV2.id, stageId: originStageId, round: originTask?.round ?? 1, assigneeRole: originTask?.assigneeRole ?? 'reviewer', status: 'open', prerequisiteTaskId: target.originTaskId, inputRevision: draft.caseV2.revision, createdAt: new Date().toISOString() }]
           }
         }
       },

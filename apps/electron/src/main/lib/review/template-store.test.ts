@@ -116,6 +116,33 @@ describe('发布检查（02 §5.6）', () => {
     expect(issues.some((issue) => issue.message.includes('重复阶段'))).toBeTrue()
   })
 
+  test('Given 阶段链遗漏终审 When validate Then 阻止发布且内置基金模板链路闭合', () => {
+    const source = ALL_DEFAULT_TEMPLATES_V2.find((template) => template.templateId === 'teacher-research-grant-review-v1')!
+    const disconnected = { ...source, stages: source.stages.map((stage) => stage.id === 'panel' ? { ...stage, nextStageId: undefined } : stage) }
+    expect(validateTemplate(disconnected).some((issue) => issue.level === 'error' && issue.message.includes('主管部门定稿'))).toBeTrue()
+    expect(validateTemplate(source).filter((issue) => issue.level === 'error')).toEqual([])
+  })
+
+  test('Given 下一阶段连成循环 When validate Then 阻止无法终止的流程发布', () => {
+    const source = ALL_DEFAULT_TEMPLATES_V2.find((template) => template.templateId === 'teacher-research-grant-review-v1')!
+    const cyclic = { ...source, stages: source.stages.map((stage) => stage.id === 'decision' ? { ...stage, nextStageId: 'expert-review' } : stage) }
+    expect(validateTemplate(cyclic).some((issue) => issue.level === 'error' && issue.message.includes('流程从阶段'))).toBeTrue()
+  })
+
+  test('Given 旧版内置基金草稿 When 启动初始化 Then 保留旧版本并新增闭环草稿', () => {
+    const source = ALL_DEFAULT_TEMPLATES_V2.find((template) => template.templateId === 'teacher-research-grant-review-v1')!
+    const stale = { ...source, stages: source.stages.map((stage) => stage.id === 'panel' ? { ...stage, nextStageId: undefined } : stage) }
+    saveDraft(stale)
+
+    ensureBuiltinTemplateDrafts({ getTemplate, saveDraft })
+
+    expect(getTemplate(stale.templateId, 1)?.stages.find((stage) => stage.id === 'panel')?.nextStageId).toBeUndefined()
+    const repaired = getTemplate(stale.templateId)!
+    expect(repaired.version).toBe(2)
+    expect(repaired.stages.find((stage) => stage.id === 'panel')?.nextStageId).toBe('decision')
+    expect(validateTemplate(repaired).filter((issue) => issue.level === 'error')).toEqual([])
+  })
+
   test('Given 非法量表 When validate Then 报权重/范围错误', () => {
     const template = ALL_DEFAULT_TEMPLATES_V2.find((candidate) => candidate.rubric)!
     const issues = validateTemplate({ ...template, rubric: { ...template.rubric!, dimensions: [{ id: 'd', name: 'd', min: 5, max: 1, weight: 0 }] } })
@@ -137,8 +164,8 @@ describe('第七种业务只靠配置创建（D12/K14）', () => {
       materialSlots: [{ id: 'plan', name: '使用计划书', purpose: '用途与安全', requiredElements: ['安全'], acceptedKinds: ['pdf', 'office'], minCount: 1, maxCount: 3, allowReuseAcrossSubjects: false }],
       policyVersionIds: ['policy-lab-usage'],
       stages: [
-        { id: 'auto-check', name: '自动核对', kind: 'auto-check', executorRole: 'system' },
-        { id: 'first-review', name: '初审', kind: 'manual-review', executorRole: 'reviewer' },
+        { id: 'auto-check', name: '自动核对', kind: 'auto-check', executorRole: 'system', nextStageId: 'first-review' },
+        { id: 'first-review', name: '初审', kind: 'manual-review', executorRole: 'reviewer', nextStageId: 'final-review' },
         { id: 'final-review', name: '终审', kind: 'manual-review', executorRole: 'teacher' },
       ],
       outputs: [{ id: 'approval', kind: 'approval', audience: 'teacher' }],

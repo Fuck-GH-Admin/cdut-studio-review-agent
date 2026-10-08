@@ -481,10 +481,43 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
 
   const piExtract: NodeExecutor = async (node, inputHash) => {
     if (options.signal?.aborted) throw new Error('已取消（模型调用前）')
+    const deterministicFieldKeys = new Set<string>()
+    for (const rule of rules) {
+      if (rule.execution !== 'deterministic') continue
+      conditionFields(rule.when).forEach((fieldKey) => deterministicFieldKeys.add(fieldKey))
+      rule.calculation?.deduplicateBy?.forEach((fieldKey) => deterministicFieldKeys.add(fieldKey))
+      if (rule.calculation?.valueFrom) deterministicFieldKeys.add(rule.calculation.valueFrom)
+      if (rule.workspaceConstraint?.kind === 'score-value' || rule.workspaceConstraint?.kind === 'max-score') deterministicFieldKeys.add('declaredScore')
+      if (rule.workspaceConstraint?.kind === 'date-range') deterministicFieldKeys.add('activityDate')
+      if (rule.workspaceConstraint?.kind === 'amount-limit') deterministicFieldKeys.add('amount')
+      if (rule.workspaceConstraint?.kind === 'level-mapping') deterministicFieldKeys.add('level')
+    }
+    const extractableSubjectFields = template.fields.filter((field) =>
+      (field.scope ?? 'subject') === 'subject'
+      && deterministicFieldKeys.has(field.key)
+      && aggregate.caseV2.subjects.some((subject) =>
+        (!field.sectionId || field.sectionId === subject.sectionId)
+        && subject.fields[field.key] === undefined,
+      ),
+    )
+    if (extractableSubjectFields.length === 0) {
+      return {
+        status: 'done' as const,
+        inputHash,
+        artifact: {
+          sourceIds: [caseId],
+          observations: [],
+          evidenceLinks: [],
+          toolCalls: [],
+          parseIndex: [],
+          skipped: '当前没有待抽取的确定性规则字段；已有表单字段直接进入规则计算，语义规则由审核模型在材料上下文中核查。',
+        },
+      }
+    }
     const prompt = [
       `任务：从下列案卷材料中抽取事实（observations）。`,
-      `必须使用 read_subject_field/read_rule 查询已知信息，使用 search_document_text 复核文本，使用 record_observation 记录每项事实。`,
-      `每次 record_observation 必须提供真实的 documentVersionId 与 blockId；来源不明确、扫描不清或规则缺少时不得猜测。`,
+      `并行使用 read_subject_field/read_rule 查询本任务需要的信息；用一次 search_document_text_batch 搜索相关短语，不查标题、案卷编号或已知字段值。`,
+      `仅抽取模板字段及规则实际需要的事实，并用一次 record_observations 批量记录；每项必须提供真实 documentVersionId、blockId 和准确 quote。`,
       `输出 JSON 数组，每项 {"subjectId":"…","fieldKey":"…","value":…,"sourceRefs":[{"documentVersionId":"…","quote":"原文引用"}],"confidence":0~1}。`,
       `要求：sourceRefs 的 documentVersionId 必须来自下方材料清单；无对应材料的事实不得输出。`,
       materialContext,
@@ -493,7 +526,15 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
     const observationsBefore = new Set(pluginState.observations.map((observation) => observation.id))
     const evidenceLinksBefore = new Set(pluginState.evidenceLinks.map((link) => link.id))
     const toolCalls: string[] = []
-    const { content, imagesDropped } = await options.client.complete({ prompt, system: REVIEW_SYSTEM_PROMPT, signal: options.signal, images: visionImages, tools: reviewTools, onToolCall: (name) => toolCalls.push(name) })
+    const { content, imagesDropped } = await options.client.complete({
+      prompt,
+      system: REVIEW_SYSTEM_PROMPT,
+      signal: options.signal,
+      images: visionImages,
+      tools: reviewTools,
+      onToolCall: (name) => toolCalls.push(name),
+      terminateAfterTools: ['record_observation', 'record_observations'],
+    })
     if (options.signal?.aborted) throw new Error('已取消（模型调用后）')
     if (imagesDropped) markVisionDropped()
     const parsed = extractJson(content)
@@ -545,7 +586,7 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
     const prompt = [
       '任务：基于案卷字段、材料与规则清单，给出审核结论。',
       '分项规则只适用于标明的分项事项；分项材料按材料清单标注使用，全案共用材料可供各分项参考。不得把另一分项的专属证明当成本分项的依据。',
-      '必须对每条适用规则调用 read_rule 确认要求，并用 search_document_text 查找材料块；每条适用 semantic 规则均调用 submit_check 提交判定、理由和真实 sourceRefs。',
+      '并行读取适用规则，并用一次 search_document_text_batch 查找能支撑这些规则的材料块；用一次 submit_checks 批量提交所有 semantic 检查及真实 sourceRefs。',
       '没有足够证据时提交 awaiting-confirmation 或 awaiting-supplement，不得用其他分项的材料补足。',
       '输出 JSON：{"opinion":"…简短结论…","checks":[{"ruleId":"…","status":"compliant|non-compliant|awaiting-confirmation|not-applicable","reason":"…","subjectIds":["…"]}]}。只为 semantic 规则输出 checks；deterministic/manual 规则由系统提供。',
       `当前已生成的规则检查：${JSON.stringify(latestDeterministicChecks)}`,
@@ -555,7 +596,15 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
     ].join('\n')
     const resultCountBefore = pluginState.results.length
     const toolCalls: string[] = []
-    const { content, imagesDropped } = await options.client.complete({ prompt, system: REVIEW_SYSTEM_PROMPT, signal: options.signal, images: visionImages, tools: reviewTools, onToolCall: (name) => toolCalls.push(name) })
+    const { content, imagesDropped } = await options.client.complete({
+      prompt,
+      system: REVIEW_SYSTEM_PROMPT,
+      signal: options.signal,
+      images: visionImages,
+      tools: reviewTools,
+      onToolCall: (name) => toolCalls.push(name),
+      terminateAfterTools: ['submit_check', 'submit_checks'],
+    })
     if (options.signal?.aborted) throw new Error('已取消（模型调用后）')
     if (imagesDropped) markVisionDropped()
     const parsed = (extractJson(content) ?? {}) as { opinion?: string; checks?: Array<{ ruleId?: string; status?: string; reason?: string; subjectIds?: string[] }> }

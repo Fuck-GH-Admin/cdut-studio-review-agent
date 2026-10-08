@@ -53,7 +53,7 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
     }
   }
 
-  return [
+  const tools: ReviewTool[] = [
     {
       name: 'read_subject_field',
       description: '读取指定主体的字段当前值（含确认态），缺失返回 unknown 而不是空串',
@@ -234,4 +234,65 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
       },
     },
   ]
+  const byName = new Map(tools.map((tool) => [tool.name, tool]))
+  const search = byName.get('search_document_text')!
+  const record = byName.get('record_observation')!
+  const submit = byName.get('submit_check')!
+  tools.push(
+    {
+      name: 'search_document_text_batch',
+      description: '一次按多个关键词检索材料块，返回带 documentVersionId/blockId 的命中；优先批量搜索，避免逐词重复调用。',
+      input: '{ keywords: string[], role? }',
+      async execute(input) {
+        const keywords = Array.isArray(input.keywords)
+          ? [...new Set(input.keywords.filter((item): item is string => typeof item === 'string').map((item) => item.trim()).filter(Boolean))].slice(0, 32)
+          : []
+        if (keywords.length === 0) return { ok: false, error: 'keywords 必须包含至少一个非空搜索词' }
+        const role = typeof input.role === 'string' ? input.role : undefined
+        const results = []
+        for (const keyword of keywords) {
+          const outcome = await search.execute({ keyword, role })
+          results.push({ keyword, ...outcome })
+        }
+        return { ok: true, data: { results } }
+      },
+    },
+    {
+      name: 'record_observations',
+      description: '一次受控记录多条材料事实；每条都必须带真实 documentVersionId、blockId 和准确 quote。',
+      input: '{ observations: Array<{ subjectId, fieldKey, kind, value, documentVersionId, blockId, quote? }> }',
+      async execute(input) {
+        const observations = Array.isArray(input.observations) ? input.observations.slice(0, 50) : []
+        if (observations.length === 0) return { ok: false, error: 'observations 必须包含至少一条事实' }
+        const results = []
+        for (const observation of observations) {
+          if (!observation || typeof observation !== 'object' || Array.isArray(observation)) {
+            results.push({ ok: false, error: '事实必须是对象' })
+            continue
+          }
+          results.push(await record.execute(observation as Record<string, unknown>))
+        }
+        return { ok: true, data: { results } }
+      },
+    },
+    {
+      name: 'submit_checks',
+      description: '一次受控提交多条规则检查；每条语义符合/不符合结论都须附真实材料块引用。',
+      input: '{ checks: Array<{ ruleId, scope?, subjectIds, status, reason, detailLines?, sourceRefs? }> }',
+      async execute(input) {
+        const checks = Array.isArray(input.checks) ? input.checks.slice(0, 50) : []
+        if (checks.length === 0) return { ok: false, error: 'checks 必须包含至少一项检查' }
+        const results = []
+        for (const check of checks) {
+          if (!check || typeof check !== 'object' || Array.isArray(check)) {
+            results.push({ ok: false, error: '检查项必须是对象' })
+            continue
+          }
+          results.push(await submit.execute(check as Record<string, unknown>))
+        }
+        return { ok: true, data: { results } }
+      },
+    },
+  )
+  return tools
 }
