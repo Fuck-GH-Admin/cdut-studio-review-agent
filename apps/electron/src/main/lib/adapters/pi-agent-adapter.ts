@@ -147,6 +147,10 @@ export interface PiAgentQueryOptions extends AgentQueryInput {
    * Pi 不做 SDK 侧 beta 協商，该偏好只决定注册给 Pi 的上下文窗口。
    */
   context1m?: boolean | null
+  /** 用户为所选渠道模型明确配置的上下文窗口 token 数。 */
+  contextWindow?: number
+  /** 用户为所选渠道模型明确配置的最大输出 token 数。 */
+  maxTokens?: number
   maxTurns?: number
   permissionMode: ProferPermissionMode
   canUseTool?: (

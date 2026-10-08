@@ -432,7 +432,7 @@ export type ReviewContentPart = ReviewTextContentPart | ReviewImageContentPart
 // ===== 模型出口白名单（全局核心：双出口收敛） =====
 
 /** 审核专区允许的模型出口类型 */
-export const REVIEW_MODEL_PROVIDERS = ['openai', 'custom', 'ollama'] as const
+export const REVIEW_MODEL_PROVIDERS = ['openai', 'deepseek', 'custom', 'ollama'] as const
 
 /** 审核专区拒绝的出口类型时给出的解释文案 */
 export const REVIEW_MODEL_PROVIDER_REJECTED_NOTICE =

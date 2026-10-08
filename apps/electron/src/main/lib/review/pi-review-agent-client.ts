@@ -76,6 +76,7 @@ function isRecoverableReviewServiceFailure(error: unknown): boolean {
 /** 每个审核语义调用使用独立的临时 Pi transcript；执行结束后即删除，避免在会话列表里制造幽灵会话。 */
 export function createPiReviewModelClient(options: PiReviewModelClientOptions): ReviewModelClient {
   const protocol = options.channel.provider === 'ollama' ? 'ollama-chat' : 'openai-chat'
+  const configuredModel = options.channel.models.find((item) => item.id.toLowerCase() === options.model.toLowerCase())
 
   const runPi = async (request: Parameters<ReviewModelClient['complete']>[0], images: string[], deadlineAt: number): Promise<string> => {
     if (request.signal?.aborted) throw new Error('审核已取消')
@@ -137,6 +138,9 @@ export function createPiReviewModelClient(options: PiReviewModelClientOptions): 
         provider: options.channel.provider,
         channelId: options.channel.id,
         channelName: options.channel.name,
+        ...(configuredModel?.context1m !== undefined && { context1m: configuredModel.context1m }),
+        ...(configuredModel?.contextWindow !== undefined && { contextWindow: configuredModel.contextWindow }),
+        ...(configuredModel?.maxTokens !== undefined && { maxTokens: configuredModel.maxTokens }),
         permissionMode: 'bypassPermissions',
         systemPrompt: request.system,
         piAgentDir: options.piAgentDir,

@@ -1082,7 +1082,9 @@ export class AgentOrchestrator {
     const sdk1MSelection = resolveAgentSdk1MSelection(configuredModelId, channel.provider, context1mPreference)
     const oneMillionContextEnabled = sdk1MSelection.oneMillionContextEnabled
     const effectiveSdkModelId = sdk1MSelection.modelId
-    const initialContextWindow = inferAgentSdkContextWindow(configuredModelId, channel.provider, context1mPreference)
+    const configuredContextWindow = configuredChannelModel?.contextWindow
+    const initialContextWindow = configuredContextWindow
+      ?? inferAgentSdkContextWindow(configuredModelId, channel.provider, context1mPreference)
     if (initialContextWindow != null) {
       // 兼容网关可能剥掉 [1m] 后缀或不返回 modelUsage；启动时先同步本轮最终窗口。
       this.eventBus.emit(sessionId, {
@@ -1799,6 +1801,8 @@ ${enrichedMessage}`
           channelName: channel.name,
           // Pi 不做 SDK 侧 beta 協商，只用 1M 偏好决定注册的上下文窗口（影响压缩阈值与用量环）。
           ...(context1mPreference !== null && { context1m: context1mPreference }),
+          ...(configuredChannelModel?.contextWindow !== undefined && { contextWindow: configuredChannelModel.contextWindow }),
+          ...(configuredChannelModel?.maxTokens !== undefined && { maxTokens: configuredChannelModel.maxTokens }),
           permissionMode: initialPermissionMode,
           piAgentDir: getSdkConfigDir(),
           // Keep Pi JSONL session files below the SDK-isolated config directory, never in another workspace.
