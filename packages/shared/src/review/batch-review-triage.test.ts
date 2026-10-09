@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 import type { ReviewRunV2, CheckResult, ReviewBatch } from '../types'
-import { groupBatchIssues, triageBatchCase, type BatchTriageInput } from './batch-review-triage'
+import { groupBatchIssues, triageBatchCase, prepareBatchIssueActionDraft, type BatchTriageInput } from './batch-review-triage'
 
 const batch: Pick<ReviewBatch, 'templateId' | 'templateVersion' | 'policyVersionLock'> = {
   templateId: 't', templateVersion: 2,
@@ -152,5 +152,45 @@ describe('相似问题保守归组', () => {
     const a = item({ entryStatus: 'queued', run: run({ checks: [check({ status: 'awaiting-supplement' })] }) })
     const b = item({ caseId: 'c2', run: run({ caseId: 'c2', templateVersion: 1, checks: [check({ status: 'non-compliant' })] }) })
     expect(groupBatchIssues([a, b])).toEqual([])
+  })
+})
+
+
+describe('问题组人工处置草稿不自动写入决定', () => {
+  test('仅当前有效组能生成草稿，每案均携带 runId/inputHash 和检查 ID', () => {
+    const a = item({ run: run({ checks: [check({ status: 'awaiting-supplement', reason: '缺少等级证明' })] }) })
+    const b = item({ caseId: 'c2', run: run({ id: 'r2', caseId: 'c2', checks: [check({ checkId: 'c2-ch', status: 'awaiting-supplement', reason: '缺少等级证明' })] }) })
+    const group = groupBatchIssues([a, b])[0]!
+    const draft = prepareBatchIssueActionDraft([a, b], group.key)
+    expect(draft?.action).toBe('supplement-draft')
+    expect(draft?.eligibleCount).toBe(2)
+    expect(draft?.cases.map((item) => item.caseId)).toEqual(['c1', 'c2'])
+    expect(draft?.cases[1]?.runId).toBe('r2')
+    expect(draft?.cases[1]?.inputHash).toBe('input-hash')
+    expect(draft?.cases[1]?.findingKeys).toEqual(['c2-ch'])
+  })
+
+  test('同组中仅部分案卷可处理时，不将不合格的案卷计入可执行范围', () => {
+    const a = item({ run: run({ checks: [check({ status: 'awaiting-supplement', reason: '补证明' })] }) })
+    const b = item({ caseId: 'c2', run: run({
+      caseId: 'c2',
+      checks: [check({ checkId: 'b', status: 'awaiting-supplement', reason: '补证明' }),
+        check({ checkId: 'b2', ruleId: 'r2', status: 'non-compliant', reason: '资格不符' })],
+      coverage: { ...run().coverage, plannedChecks: 2, completedChecks: 2 },
+    }) })
+    const group = groupBatchIssues([a, b]).find((g) => g.status === 'awaiting-supplement')!
+    const draft = prepareBatchIssueActionDraft([a, b], group.key)
+    expect(draft?.eligibleCount).toBe(1)
+    expect(draft?.cases.find((x) => x.caseId === 'c2')?.eligible).toBe(false)
+    expect(prepareBatchIssueActionDraft([a, b], group.key, ['c2'])?.eligibleCount).toBe(0)
+  })
+
+  test('不允许用旧输入哈希或无效版本的组构造草稿', () => {
+    const invalid = item({ run: run({
+      inputManifest: { ...run().inputManifest, templateVersion: 999 },
+      checks: [check({ status: 'awaiting-supplement', reason: '补证明' })],
+    }) })
+    expect(groupBatchIssues([invalid])).toEqual([])
+    expect(prepareBatchIssueActionDraft([invalid], 'nonexistent')).toBeNull()
   })
 })
