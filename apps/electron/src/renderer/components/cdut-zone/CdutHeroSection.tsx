@@ -2,7 +2,7 @@
  * CdutHeroSection — CDUT 专区正中央校标与三大 Bento 毛玻璃战略板块
  *
  * 居中展示成都理工大学校徽（CDUT-CE.png），下方以 Bento 空间毛玻璃黄金律
- * 横向展开三大全新战略板块：AI 速课堂、砚湖秒通、材料审查。
+ * 横向展开三大全新战略板块：AI 速课堂、砚湖秒通、材料审核。
  * 每张卡片赋予专属微光晕、光掠与 3D Hover 浮起微动效，深浅主题无缝自适应。
  */
 
@@ -53,7 +53,7 @@ const BENTO_MODULES: BentoModule[] = [
   {
     id: 'material-review',
     icon: FileCheck2,
-    title: '材料审查',
+    title: '材料审核',
     tag: '三栏研判 · 偏差稽核',
     desc: '标准栏 × 待审栏 × AI 研判栏，毫秒级比对校级评优与报销材料偏差。',
     surface: 'from-amber-500/10 via-card to-card',

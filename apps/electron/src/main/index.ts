@@ -1,9 +1,13 @@
+// 彻底抑制开发环境下控制台 Electron Security Warning 输出，避免被瑞数等反爬脚本通过 console.warn 探针识破
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
+
 import { app, BrowserWindow, dialog, Menu, powerMonitor, protocol, screen, shell } from 'electron'
 import { join } from 'path'
 import { createConnection } from 'net'
 import { existsSync } from 'fs'
 import { getDevInstanceId, resolveDevAppName, resolveDevUserDataPath } from './lib/dev-instance'
 import { appendDevDiagnostic } from './lib/dev-diagnostics-log'
+import { isCdutDomain } from './lib/cdut/yanhu/yanhu-domain-gatekeeper'
 
 /**
  * dev 模式下等待 Vite dev server 就绪的轮询参数。
@@ -74,6 +78,14 @@ function registerProtocolsAndHandlers(): void {
     { scheme: 'cdut-resource', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
   ])
 
+  // 砚湖秒通多层框架白屏根除（引擎级隐身，须在 app ready 前注入）：
+  // C++ Blink 引擎原生将 navigator.webdriver 置为 false，其访问器为原生 native code，
+  // 通过瑞数所有 Function.prototype.toString / Realm 对比检测（取代脆弱的 JS 原型链劫持）。
+  app.commandLine.appendSwitch('disable-blink-features', 'AutomationControlled')
+  // 优化同站多框架/frameset 内存通道与凭据共享，规避严格 OOPIF（站点隔离）导致
+  // 内层子框架跨框架 Cookie 断层、动态签名缺失而遭瑞数 WAF 返回 HTTP 400 空包。
+  app.commandLine.appendSwitch('disable-features', 'IsolateOrigins,site-per-process')
+
   // Windows: 禁用 LCD 次像素抗锯齿（ClearType），改用灰度 AA。
   // ClearType 是为浅色背景+深色文字设计的，在深色代码块背景下会产生彩色边缘，导致文字模糊。
   if (process.platform === 'win32') {
@@ -111,6 +123,17 @@ function registerProtocolsAndHandlers(): void {
     if (fileArg) {
       handleMigrationFileOpen(fileArg)
     }
+  })
+
+  // 砚湖秒通内网白屏根除：校内站点普遍使用内网中间证书/自签名证书，
+  // 一律信任 *.cdut.edu.cn，避免证书校验失败把整页拦成白屏；站外域名保持默认拒绝策略。
+  app.on('certificate-error', (event, _webContents, url, _error, _certificate, callback) => {
+    if (isCdutDomain(url)) {
+      event.preventDefault()
+      callback(true)
+      return
+    }
+    callback(false)
   })
 }
 
@@ -159,6 +182,8 @@ import { disposePiMcpConnections } from './lib/adapters/pi-mcp-tools'
 import { disposeLarkCliService } from './lib/lark-cli-service'
 import { disposeLarkMcpService } from './lib/lark-mcp-service'
 import { browserController } from './lib/browser-controller'
+import { yanhuExpressManager } from './lib/cdut/yanhu/yanhu-express-manager'
+import { yanhuPetWindowManager } from './lib/cdut/yanhu/yanhu-pet-window-manager'
 import { startWorkspaceWatcher, stopWorkspaceWatcher } from './lib/workspace-watcher'
 import { getIsQuitting, setQuitting } from './lib/app-lifecycle'
 import {
@@ -533,6 +558,8 @@ function createWindow(): void {
   installMacTrafficLightZoomSync(mainWindow)
   updateWindowFrameAppearance(mainWindow)
   browserController.setOwnerWindow(mainWindow)
+  yanhuExpressManager.setOwnerWindow(mainWindow)
+  yanhuPetWindowManager.setOwnerWindow(mainWindow)
 
   // 主窗口隐藏加载 renderer；独立 splash 窗口覆盖整个初始化阶段，避免导航替换掉启动画面。
   const isDev = !app.isPackaged
@@ -802,6 +829,8 @@ function createWindow(): void {
     mainWindow = null
     setMainWindow(null)
     browserController.dispose()
+    yanhuExpressManager.dispose()
+    yanhuPetWindowManager.dispose()
   })
 
   setMainWindow(mainWindow)
@@ -1134,6 +1163,8 @@ app.on('before-quit', () => {
   disposeLarkCliService()
   disposeLarkMcpService()
   browserController.dispose()
+  yanhuExpressManager.dispose()
+  yanhuPetWindowManager.dispose()
   disposeAgentPreviewRenderer()
   // 最后兜底：扫描并强杀所有孤儿 claude-agent-sdk 子进程（Issue #357）
   // 针对 pidMap 未覆盖、dispose 漏杀等极端场景，确保不遗留残留进程

@@ -131,7 +131,7 @@ import type {
   BrowserAddBookmarkInput,
 } from '@profer/shared'
 import { KNOWLEDGE_IPC_CHANNELS } from '@profer/shared'
-import { CDUT_AI_CLASS_IPC_CHANNELS, CDUT_ZONE_IPC_CHANNELS, STUDY_IPC_CHANNELS, type CdutGatekeeperDecision, type CdutLoginInput, type CdutMutationConfirmResult, type StudyDocumentQueryInput, type StudyGraphGenerateInput, type StudyIngestDocumentsInput, type StudySearchKnowledgeInput } from '@profer/shared'
+import { CDUT_AI_CLASS_IPC_CHANNELS, CDUT_ZONE_IPC_CHANNELS, STUDY_IPC_CHANNELS, YANHU_EXPRESS_IPC_CHANNELS, type CdutGatekeeperDecision, type CdutLoginInput, type CdutMutationConfirmResult, type StudyDocumentQueryInput, type StudyGraphGenerateInput, type StudyIngestDocumentsInput, type StudySearchKnowledgeInput, type YanhuCdpInput, type YanhuCdpResult, type YanhuCloseRightInput, type YanhuCreateTabInput, type YanhuNavigateInput, type YanhuReorderTabsInput, type YanhuSyncThemeInput, type YanhuTabRefInput, type YanhuViewLayout } from '@profer/shared'
 import type { UserProfile, AppSettings } from '../types'
 import { getRuntimeStatus, getGitRepoStatus, reinitializeRuntime } from './lib/runtime-init'
 import { browserController } from './lib/browser-controller'
@@ -146,6 +146,15 @@ import { CHANGELOG_IPC_CHANNELS, type ChangelogEntry } from '@profer/shared'
 import { getChangelog } from './lib/changelog-service'
 import { registerReviewIpc } from './lib/review/review-ipc'
 import { cdutAuthManager } from './lib/cdut/cdut-auth-manager'
+import { yanhuExpressManager } from './lib/cdut/yanhu/yanhu-express-manager'
+import { yanhuPetWindowManager } from './lib/cdut/yanhu/yanhu-pet-window-manager'
+import { yanhuPiRuntime } from './lib/cdut/yanhu/yanhu-pi-runtime'
+import type {
+  YanhuPetChatInput,
+  YanhuPetConfig,
+  YanhuPetViewport,
+  YanhuPetWindowGeometry,
+} from '@profer/shared'
 import { resolveCdutGatekeeper } from './lib/cdut/cdut-gatekeeper'
 import { resolveCdutMutationConfirm } from './lib/cdut/cdut-mutation-guard'
 import {
@@ -156,6 +165,7 @@ import {
   listAiClassSessions,
 } from './lib/cdut/cdut-ai-class-manager'
 import { getGlobalStudyRetriever } from './lib/study/hybrid-retriever'
+import { searchStudyRouted } from './lib/study/study-retrieval-router'
 import {
   getStudyDocumentOutline,
   ingestStudyDocuments,
@@ -384,6 +394,7 @@ import { resolveMemoryWikilink, findMemoryBacklinks } from './lib/memory-wikilin
 import { assertSafeSkillSegment } from './lib/skill-path-security'
 import { searchFileCandidate, type FileSearchResult as FileCandidateSearchResult } from './lib/file-search-service'
 import { createMemoryArchiveSearcher } from './lib/memory-archive-search'
+import { searchMemoryArchiveRouted } from './lib/memory-search-router'
 import { cancelLarkLogin, detectLarkCli, installLarkCli, startLarkLogin, __setLarkLoginEventHandler } from './lib/lark-cli-service'
 import { cancelLarkMcpLogin, disableLarkMcpForWorkspace, enableLarkMcpForWorkspace, getLarkMcpStatus, saveLarkMcpCredentials, startLarkMcpLogin, testLarkMcpConnection, __setLarkMcpLoginEventHandler } from './lib/lark-mcp-service'
 import type { MemoryWikilinkTarget, MemoryBacklink } from '@profer/shared'
@@ -4102,7 +4113,12 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.SEARCH_MEMORY_ARCHIVE,
     async (_event, workspaceSlug: string, query: string, topK?: number) => {
-      const searcher = createMemoryArchiveSearcher(getWorkspaceMemoryArchivePath(workspaceSlug))
+      const archivePath = getWorkspaceMemoryArchivePath(workspaceSlug)
+      // 双引擎路由：用户可在设置里切换 HippoRAG 图谱增强；默认经典 FTS5，保持不变。
+      if (getSettings().memoryRetrievalEngine === 'hipporag') {
+        return searchMemoryArchiveRouted(archivePath, query, 'hipporag', topK ?? 20)
+      }
+      const searcher = createMemoryArchiveSearcher(archivePath)
       try {
         return searcher.search(query, topK ?? 20)
       } finally {
@@ -6048,6 +6064,164 @@ export function registerIpcHandlers(): void {
     return { handled: resolveCdutGatekeeper(decision) }
   })
 
+  // ===== CDUT 专区 · 砚湖秒通（Yanhu Express）轻量级定制浏览器 =====
+  // 前端 100% 纯净：仅暴露浏览器外壳所需通道；底层 CDP 能力静默预留、不提供任何调试 UI 入口。
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.INIT_OR_RESTORE, () => yanhuExpressManager.initOrRestore())
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.GET_TABS_STATE, () => yanhuExpressManager.getTabsState())
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.SHOW_VIEW, () => {
+    const state = yanhuExpressManager.showView()
+    // 呈现砚湖秒通时同步唤起桌宠子窗口（紧凑包裹，随同主窗口生命周期）
+    yanhuPetWindowManager.setPresented(true)
+    return state
+  })
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.HIDE_VIEW, () => {
+    yanhuExpressManager.hideView()
+    yanhuPetWindowManager.setPresented(false)
+    return { success: true }
+  })
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.UPDATE_BOUNDS, (_event, layout: YanhuViewLayout) => {
+    yanhuExpressManager.updateBounds(layout)
+    if (layout && layout.visible && layout.viewportBounds && layout.pageBounds) {
+      yanhuPetWindowManager.setPresented(true)
+      yanhuPetWindowManager.syncViewport({
+        x: layout.viewportBounds.x + layout.pageBounds.x,
+        y: layout.viewportBounds.y + layout.pageBounds.y,
+        width: layout.pageBounds.width,
+        height: layout.pageBounds.height,
+      })
+    } else if (layout && !layout.visible) {
+      yanhuPetWindowManager.setPresented(false)
+    }
+    return { success: true }
+  })
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.SYNC_THEME, async (_event, input: YanhuSyncThemeInput) => {
+    await yanhuExpressManager.syncTheme(input?.isDark ?? true)
+    return { success: true }
+  })
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.CREATE_TAB, (_event, input: YanhuCreateTabInput) =>
+    yanhuExpressManager.createTab(input ?? {}),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.ACTIVATE_TAB, (_event, input: YanhuTabRefInput) =>
+    yanhuExpressManager.activateTab(input.tabId),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.CLOSE_TAB, (_event, input: YanhuTabRefInput) =>
+    yanhuExpressManager.closeTab(input.tabId),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.CLOSE_OTHER_TABS, (_event, input: YanhuTabRefInput) =>
+    yanhuExpressManager.closeOtherTabs(input.tabId),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.CLOSE_RIGHT_TABS, (_event, input: YanhuCloseRightInput) =>
+    yanhuExpressManager.closeRightTabs(input.tabId),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.REORDER_TABS, (_event, input: YanhuReorderTabsInput) =>
+    yanhuExpressManager.reorderTabs(input.orderedTabIds ?? []),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.NAVIGATE, (_event, input: YanhuNavigateInput) =>
+    yanhuExpressManager.navigate(input),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.GO_BACK, (_event, input?: YanhuTabRefInput) =>
+    yanhuExpressManager.goBack(input?.tabId),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.GO_FORWARD, (_event, input?: YanhuTabRefInput) =>
+    yanhuExpressManager.goForward(input?.tabId),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.RELOAD, (_event, input?: YanhuTabRefInput) =>
+    yanhuExpressManager.reload(input?.tabId),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.RETRY_WITH_CLEAN, (_event, input?: YanhuTabRefInput) =>
+    yanhuExpressManager.retryTabWithClean(input?.tabId),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.SHOW_TAB_MENU, (_event, input?: YanhuTabRefInput) => {
+    yanhuExpressManager.showTabContextMenu(input?.tabId)
+    return { success: true }
+  })
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.OPEN_EXTERNAL, async (_event, url: string) => {
+    await yanhuExpressManager.openExternal(url)
+    return { success: true }
+  })
+
+  // 底层静默 CDP 能力（为二期 AI 预留）：统一以 YanhuCdpResult 语义安全降级，不向 IPC 层抛出。
+  const runYanhuCdp = async <T>(task: () => Promise<T> | T): Promise<YanhuCdpResult<T>> => {
+    try {
+      return { success: true, data: await task() }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : String(error) }
+    }
+  }
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.CDP_GET_DOM, (_event, input: YanhuCdpInput) =>
+    runYanhuCdp(() => yanhuExpressManager.cdpGetDom(input?.tabId, input?.depth)),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.CDP_GET_SOURCE, (_event, input: YanhuCdpInput) =>
+    runYanhuCdp(() => yanhuExpressManager.cdpGetSource(input?.tabId)),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.CDP_GET_NETWORK_LOGS, (_event, input: YanhuCdpInput) =>
+    runYanhuCdp(() => yanhuExpressManager.cdpGetNetworkLogs(input?.tabId, input?.filterRegex)),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.CDP_GET_CONSOLE_LOGS, (_event, input: YanhuCdpInput) =>
+    runYanhuCdp(() => yanhuExpressManager.cdpGetConsoleLogs(input?.tabId)),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.CDP_EXECUTE_SCRIPT, (_event, input: YanhuCdpInput) =>
+    runYanhuCdp(() => yanhuExpressManager.cdpExecuteScript(input?.tabId, input?.expression ?? '')),
+  )
+
+  // ===== 砚湖秒通 · 桌宠「砚小龙」（阉割版 Pi 运行时 + 紧凑包裹子窗口） =====
+  // 视口同步：主渲染窗口测得砚湖秒通视口（CSS 像素），驱动桌宠子窗口贴合定位
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.PET_SYNC_VIEWPORT, (_event, rect: YanhuPetViewport) => {
+    if (rect) {
+      if (rect.width > 4 && rect.height > 4) {
+        yanhuPetWindowManager.setPresented(true)
+      }
+      yanhuPetWindowManager.syncViewport(rect)
+    }
+    return { success: true }
+  })
+  // 桌宠渲染进程上报紧凑包裹几何（DIP）-> 主进程应用窗口 Bounds
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.PET_UPDATE_GEOMETRY, (_event, geometry: YanhuPetWindowGeometry) => {
+    if (geometry) yanhuPetWindowManager.applyGeometry(geometry)
+    return { success: true }
+  })
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.PET_GET_BOOTSTRAP, () => yanhuPetWindowManager.getBootstrap())
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.PET_GET_CONFIG, () => yanhuPetWindowManager.getConfig())
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.PET_SAVE_CONFIG, (_event, patch: Partial<YanhuPetConfig>) =>
+    yanhuPetWindowManager.saveConfig(patch ?? {}),
+  )
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.PET_GET_HISTORY, () => yanhuPetWindowManager.getHistory())
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.PET_CLEAR_HISTORY, () => {
+    yanhuPetWindowManager.clearHistory()
+    return { success: true }
+  })
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.PET_CHAT_SEND, async (_event, input: YanhuPetChatInput) => {
+    try {
+      await yanhuPiRuntime.send(
+        input ?? { text: '' },
+        () => yanhuExpressManager.getActiveTabId(),
+        (event) => yanhuPetWindowManager.emitStream(event),
+      )
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : String(error) }
+    }
+  })
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.PET_CHAT_ABORT, () => {
+    yanhuPiRuntime.abort()
+    return { success: true }
+  })
+  // 桌宠鼠标穿透控制：透明区域允许底层网页接收鼠标事件
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.PET_SET_IGNORE_MOUSE, (_event, ignore: boolean) => {
+    yanhuPetWindowManager.setIgnoreMouseEvents(Boolean(ignore))
+    return { success: true }
+  })
+  // 桌宠原生上下文菜单：主进程 Menu.popup，彻底消除紧凑透明窗口边界裁切
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.PET_SHOW_CONTEXT_MENU, () => {
+    yanhuPetWindowManager.showContextMenu()
+    return { success: true }
+  })
+  // 隐藏特权指令：唤起实时底层诊断控制台（零 Token 消耗）
+  ipcMain.handle(YANHU_EXPRESS_IPC_CHANNELS.OPEN_DIAGNOSTIC_CONSOLE, () => {
+    yanhuExpressManager.openDiagnosticConsole()
+    return { success: true }
+  })
+
   // ===== AI 速课堂（学习资料） =====
   ipcMain.handle(STUDY_IPC_CHANNELS.INGEST_DOCUMENTS, async (_event, input: StudyIngestDocumentsInput) => {
     return await ingestStudyDocuments(input.sessionId, input.filePaths ?? [])
@@ -6092,10 +6266,15 @@ export function registerIpcHandlers(): void {
   })
 
   ipcMain.handle(CDUT_AI_CLASS_IPC_CHANNELS.SEARCH_KNOWLEDGE, (_event, input: StudySearchKnowledgeInput) => {
-    return getGlobalStudyRetriever().searchHybrid(input.sessionId, input.query, {
+    const options = {
       ...(input.targetDocumentId ? { targetDocumentId: input.targetDocumentId } : {}),
       ...(input.topK ? { topK: input.topK } : {}),
-    })
+    }
+    // 双引擎路由：用户可在设置里切换分层 Leiden GraphRAG；默认经典混合检索，保持不变。
+    if (getSettings().studyRetrievalEngine === 'graphrag') {
+      return searchStudyRouted(input.sessionId, input.query, 'graphrag', options)
+    }
+    return getGlobalStudyRetriever().searchHybrid(input.sessionId, input.query, options)
   })
 
   // 特区账户状态变更时向所有存活窗口广播

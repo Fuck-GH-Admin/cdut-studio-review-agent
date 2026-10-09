@@ -62,6 +62,14 @@ interface OpenAIChunkData {
     }
     finish_reason?: string | null
   }>
+  /** 流末独立 chunk 携带的累计用量（需请求 stream_options.include_usage） */
+  usage?: {
+    prompt_tokens?: number
+    completion_tokens?: number
+    total_tokens?: number
+    prompt_tokens_details?: { cached_tokens?: number }
+    completion_tokens_details?: { reasoning_tokens?: number }
+  }
 }
 
 /** OpenAI 标题响应 */
@@ -208,6 +216,11 @@ export class OpenAIAdapter implements ProviderAdapter {
       stream: true,
     }
 
+    // 请求流末附带累计用量；ollama 兼容端点不识别该字段，跳过以规避报错
+    if (this.providerType !== 'ollama') {
+      bodyObj.stream_options = { include_usage: true }
+    }
+
     // 工具定义
     if (input.tools && input.tools.length > 0) {
       bodyObj.tools = toOpenAITools(input.tools)
@@ -266,6 +279,26 @@ export class OpenAIAdapter implements ProviderAdapter {
       const finishReason = chunk.choices?.[0]?.finish_reason
       if (finishReason === 'tool_calls') {
         events.push({ type: 'done', stopReason: 'tool_use' })
+      }
+
+      // 流末累计用量（choices 为空的独立 chunk）
+      if (chunk.usage) {
+        const u = chunk.usage
+        const hasAny = [
+          u.prompt_tokens,
+          u.completion_tokens,
+          u.prompt_tokens_details?.cached_tokens,
+          u.completion_tokens_details?.reasoning_tokens,
+        ].some((value) => typeof value === 'number' && Number.isFinite(value))
+        if (hasAny) {
+          events.push({
+            type: 'usage',
+            inputTokens: u.prompt_tokens,
+            outputTokens: u.completion_tokens,
+            cacheReadTokens: u.prompt_tokens_details?.cached_tokens,
+            reasoningTokens: u.completion_tokens_details?.reasoning_tokens,
+          })
+        }
       }
 
       return events

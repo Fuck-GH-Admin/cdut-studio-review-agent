@@ -5,6 +5,8 @@
  * 凭证仅加密保存密码字段（见 token-crypto.ts），不宣称嗅探或持有 Cookie。
  */
 
+import type { BrowserViewBounds } from './browser'
+
 export type CdutAccountStatus = 'disconnected' | 'connecting' | 'active' | 'expired'
 
 export interface CdutAccountProfile {
@@ -136,8 +138,8 @@ export interface CdutExamAffairsParams {
 /** Tool 5：教室资源与自习雷达 */
 export interface CdutClassroomParams {
   action: 'query_empty_classrooms' | 'query_room_occupancy'
-  /** 校区：成都校区 / 宜宾校区；`yanshan` 为历史别名，兼容映射回成都校区 */
-  campus: 'chengdu' | 'yibin' | 'yanshan'
+  /** 校区：成都校区 / 宜宾校区（成都理工大学法定两校区） */
+  campus: 'chengdu' | 'yibin'
   building?: string
   week?: number
   dayOfWeek?: number
@@ -349,6 +351,468 @@ export interface StudySearchKnowledgeResult {
   success: boolean
   items: StudySearchResultItem[]
   error?: string
+}
+
+// ===== CDUT 专区 · 砚湖秒通（Yanhu Express）轻量级定制浏览器 =====
+//
+// 说明：砚湖秒通内嵌于 CDUT 专区，基于 Electron 原生 WebContentsView 驱动（零额外体积，
+// 不打包任何额外 Chromium 二进制）。本模块只描述「砚湖秒通」的状态与 IPC 契约，
+// 底层 CDP 采集仅为二期 AI 自动化预留高可用信道，前端不暴露任何调试 UI。
+
+/**
+ * 砚湖秒通默认入口：办事大厅（未指定工作区时冷启动直达）。
+ */
+export const YANHU_DEFAULT_HOME_URL = 'https://bsdt.cdut.edu.cn/EIP/caslogin.jsp'
+
+/**
+ * 砚湖秒通高频校内书签（导航栏快捷胶囊，顺序即展示顺序）。
+ */
+export interface YanhuBookmark {
+  id: string
+  label: string
+  url: string
+}
+
+export const YANHU_BOOKMARKS: readonly YanhuBookmark[] = [
+  { id: 'bsdt', label: '办事大厅', url: 'https://bsdt.cdut.edu.cn/EIP/caslogin.jsp' },
+  { id: 'jw', label: '青果教务', url: 'https://jw.cdut.edu.cn/jsxsd/framework/xsMainV.htmlx' },
+  { id: 'library', label: '图书馆', url: 'https://library.cdut.edu.cn' },
+  { id: 'gra', label: '研究生院', url: 'https://gra.cdut.edu.cn' },
+] as const
+
+/** 内置拦截页哨兵协议前缀；标签 url 命中该前缀时，渲染层改渲染 YanhuBlockedPage 卡片 */
+export const YANHU_BLOCKED_URL_PREFIX = 'yanhu://blocked'
+
+/** 构造内置拦截页哨兵 URL（携带被拦截的原始外链目标） */
+export function buildYanhuBlockedUrl(targetUrl: string): string {
+  return `${YANHU_BLOCKED_URL_PREFIX}?target=${encodeURIComponent(targetUrl)}`
+}
+
+/** 判定标签 url 是否为内置拦截页哨兵 */
+export function isYanhuBlockedUrl(rawUrl: string): boolean {
+  return typeof rawUrl === 'string' && rawUrl.startsWith(YANHU_BLOCKED_URL_PREFIX)
+}
+
+/** 从内置拦截页哨兵 URL 中解析被拦截的原始外链目标；解析失败返回 null */
+export function parseYanhuBlockedTarget(rawUrl: string): string | null {
+  if (!isYanhuBlockedUrl(rawUrl)) return null
+  const queryIndex = rawUrl.indexOf('?')
+  if (queryIndex === -1) return null
+  try {
+    const target = new URLSearchParams(rawUrl.slice(queryIndex + 1)).get('target')
+    return target || null
+  } catch {
+    return null
+  }
+}
+
+
+/** 砚湖秒通主框架加载失败信息（成功或加载中为 null） */
+export interface YanhuTabError {
+  /** Chromium 网络错误码（如 -105 ERR_NAME_NOT_RESOLVED） */
+  errorCode: number
+  /** 可读错误描述（如 ERR_CONNECTION_TIMED_OUT） */
+  errorDescription: string
+  /** 触发失败的原始 URL */
+  failedUrl: string
+}
+
+/**
+ * 砚湖秒通单标签元数据（拓扑持久化与 UI 渲染共用）。
+ *
+ * `isDormant` 为真时表示该标签仅保留元数据、底层 WebContentsView 尚未实例化；
+ * 用户点击激活时才惰性唤醒加载，避免重启时的 WAF 风暴与突发卡顿。
+ */
+export interface YanhuTabItem {
+  id: string
+  title: string
+  url: string
+  /** 页面图标（favicon URL 或 data URL）；空串表示尚未获取 */
+  favicon?: string
+  createdAt: number
+  lastActiveAt: number
+  zoomFactor: number
+  isDormant: boolean
+  /** 当前是否正在加载（仅运行时态，落盘时可忽略） */
+  loading?: boolean
+  canGoBack?: boolean
+  canGoForward?: boolean
+  /** 主框架加载失败信息（成功或加载中为 null） */
+  error?: YanhuTabError | null
+}
+
+/** 砚湖秒通标签拓扑状态（主进程为唯一数据源，向渲染端广播） */
+export interface YanhuTabsState {
+  tabs: YanhuTabItem[]
+  activeTabId: string
+}
+
+/** 砚湖秒通原生视图布局（renderer 测得，主进程应用） */
+export interface YanhuViewLayout {
+  /** 当前 renderer 实例标识；刷新后旧实例晚到的布局必须全部丢弃 */
+  rendererInstanceId: string
+  /** 当前视口挂载来源序号；顶栏切换后旧视口的 cleanup 不能覆盖新视口 */
+  layoutSourceRevision: number
+  /** 同一布局来源内单调递增的布局代际；主进程忽略晚到的旧布局 IPC */
+  revision: number
+  visible: boolean
+  /** 唯一由 renderer 测得并由主进程应用的原生视口（CSS 像素） */
+  viewportBounds: BrowserViewBounds
+  /** 网页在原生视口内的局部矩形（顶部为标签栏 + 导航栏，由 renderer DOM 承担） */
+  pageBounds: BrowserViewBounds
+}
+
+/** 新建标签入参 */
+export interface YanhuCreateTabInput {
+  url?: string
+  /** 是否立即激活（默认 true） */
+  activate?: boolean
+}
+
+/** 单标签引用入参 */
+export interface YanhuTabRefInput {
+  tabId: string
+}
+
+/** 导航入参（未指定 tabId 时作用于当前激活标签） */
+export interface YanhuNavigateInput {
+  tabId?: string
+  url: string
+}
+
+/** 标签顺序重排入参（给出期望的完整顺序） */
+export interface YanhuReorderTabsInput {
+  orderedTabIds: string[]
+}
+
+/** 关闭右侧标签入参（基准标签，含该标签右侧全部关闭） */
+export interface YanhuCloseRightInput {
+  tabId: string
+}
+
+/** 主题同步入参（主进程 -> 底层视图 + 网页媒体仿真） */
+export interface YanhuSyncThemeInput {
+  isDark: boolean
+}
+
+// ===== 底层静默 CDP 数据契约（为二期 AI 自动化预留） =====
+
+/** 网络链路嗅探条目 */
+export interface YanhuNetworkEntry {
+  requestId: string
+  url: string
+  method: string
+  status?: number
+  requestHeaders: Record<string, string>
+  responseHeaders?: Record<string, string>
+  mimeType?: string
+  timing?: { start: number; end?: number; durationMs?: number }
+  postData?: string
+}
+
+/** 控制台日志条目 */
+export interface YanhuConsoleEntry {
+  type: 'log' | 'warn' | 'error' | 'info' | 'debug'
+  text: string
+  timestamp: number
+  stackTrace?: string
+}
+
+/** 已加载资源清单条目（Sources 能力） */
+export interface YanhuLoadedResource {
+  url: string
+  type: string
+}
+
+/** CDP 能力统一返回结构（IPC 可安全序列化） */
+export interface YanhuCdpResult<T> {
+  success: boolean
+  data?: T
+  error?: string
+}
+
+/** CDP 能力调用入参（按需携带 tabId / 过滤正则 / 脚本表达式 / DOM 深度） */
+export interface YanhuCdpInput {
+  /** 目标标签（缺省作用于当前激活标签） */
+  tabId?: string
+  /** 网络日志 URL 过滤正则（可选） */
+  filterRegex?: string
+  /** 在隔离环境中求值的脚本表达式（可选） */
+  expression?: string
+  /** DOM 树展开深度（可选，缺省使用默认深度） */
+  depth?: number
+}
+
+/**
+ * 工业级 CDP 环形数据总线接口（主进程实现，前端不暴露入口）。
+ * 完整接口签名见规格书 4.5 节。
+ */
+export interface YanhuDevToolsHubContract {
+  getDomTree(tabId: string, depth?: number): Promise<unknown>
+  getPageSource(tabId: string): Promise<string>
+  getLoadedResources(tabId: string): Promise<YanhuLoadedResource[]>
+  getNetworkLogs(tabId: string, filterRegex?: string): YanhuNetworkEntry[]
+  getConsoleLogs(tabId: string): YanhuConsoleEntry[]
+  executeScript(tabId: string, expression: string): Promise<unknown>
+}
+
+// ===== 砚湖秒通 · 桌宠「砚小龙」与无视感知（Vision-Less）契约 =====
+//
+// 说明：桌宠「砚小龙」为砚湖秒通内嵌浏览器专属的 AI 伴侣与自动化操作精灵。
+// 其运行时为完全独立的“阉割版” Pi 运行时（Chat + Memory + ToolCalling），
+// 通过无视感知（Vision-Less）DOM 蒸馏与双射动态 ID（BIDs）实现确定性意图落地，
+// 不挂载任何文件系统、外部终端与子会话委派特权。
+
+/** 桌宠四态精灵动画状态 */
+export type YanhuPetSpriteState = 'blinking' | 'breathing' | 'walking' | 'yawning'
+
+/** 桌宠持久化配置 */
+export interface YanhuPetConfig {
+  /** 对话框相对桌宠的排布朝向 */
+  dialogPosition: 'left' | 'right'
+  /** 对话框是否折叠（仅显示桌宠立绘） */
+  isCollapsed: boolean
+  /** 上下文记忆保留条数（0 - 1000） */
+  memoryLimit: number
+  /** 桌宠相对视口左上角的坐标（DIP） */
+  petPosition: { x: number; y: number }
+  /** 砚湖秒通专属渠道 ID（未配置时回落到全局默认激活渠道） */
+  selectedChannelId?: string
+  /** 砚湖秒通专属模型 ID */
+  selectedModelId?: string
+  /** 是否向大模型暴露开发者级工具（默认关闭，经隐藏指令切换并持久化） */
+  devToolsEnabled?: boolean
+}
+
+/** 桌宠工具调用（微胶囊标签消费） */
+export interface YanhuPetToolInvocation {
+  id: string
+  toolName: string
+  /** 形如「⚡ 正在读取页面」「👆 点击 [3] 成绩查询」的胶囊标签 */
+  label: string
+  args: Record<string, unknown>
+  result?: unknown
+  status: 'running' | 'success' | 'error'
+}
+
+/** 桌宠单轮对话用量统计（耗时与 Token 明细，与主视图用量语义对齐） */
+export interface YanhuPetMessageUsage {
+  /** 输入 Token（含系统提示词、历史与工具结果） */
+  inputTokens?: number
+  /** 输出 Token（正文与思考） */
+  outputTokens?: number
+  /** 缓存读取 Token */
+  cacheReadTokens?: number
+  /** 缓存写入 Token */
+  cacheCreationTokens?: number
+  /** 总 Token */
+  totalTokens?: number
+  /** 本轮总耗时（毫秒） */
+  durationMs?: number
+}
+
+/** 桌宠单条会话消息 */
+export interface YanhuPetMessage {
+  id: string
+  role: 'user' | 'assistant' | 'system'
+  content: string
+  timestamp: number
+  toolInvocations?: YanhuPetToolInvocation[]
+  /** 本轮对话用量（仅助手消息携带） */
+  usage?: YanhuPetMessageUsage
+}
+
+/** 桌宠对话发起入参 */
+export interface YanhuPetChatInput {
+  /** 用户提问正文 */
+  text: string
+  /** 目标标签；缺省作用于当前激活标签 */
+  tabId?: string
+}
+
+/** 桌宠流式事件（主进程 -> 渲染端） */
+export interface YanhuPetStreamEvent {
+  /** 同一次对话请求的关联 ID */
+  requestId: string
+  type: 'delta' | 'reasoning' | 'tool-start' | 'tool-end' | 'done' | 'error'
+  /** 正文增量（type = delta） */
+  delta?: string
+  /** 思考链增量（type = reasoning） */
+  reasoning?: string
+  /** 工具调用快照（type = tool-start / tool-end） */
+  tool?: YanhuPetToolInvocation
+  /** 本轮用量统计（type = done） */
+  usage?: YanhuPetMessageUsage
+  /** 错误说明（type = error） */
+  error?: string
+}
+
+/** 桌宠视口矩形（相对主窗口内容区左上角，CSS 像素） */
+export interface YanhuPetViewport {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
+/** 桌宠紧凑包裹窗口几何（DIP，相对于砚湖秒通视口左上角） */
+export interface YanhuPetWindowGeometry {
+  /** 窗口左上角在视口坐标系中的位置 */
+  x: number
+  y: number
+  /** 紧凑包裹矩形尺寸 */
+  width: number
+  height: number
+}
+
+/** 桌宠启动引导数据（主进程 -> 桌宠子窗口） */
+export interface YanhuPetBootstrap {
+  config: YanhuPetConfig
+  history: YanhuPetMessage[]
+  /** 砚湖秒通视口尺寸（DIP）；视口未知时为 null */
+  viewport: { width: number; height: number } | null
+  presented: boolean
+}
+
+/** 桌宠状态广播（主进程 -> 桌宠子窗口）：视口尺寸 / 呈现态 / 最新配置 */
+export interface YanhuPetStateEvent {
+  /** 砚湖秒通视口尺寸（DIP）；视口未知时为 null */
+  viewport: { width: number; height: number } | null
+  presented: boolean
+  /**
+   * 配置修订号：仅在显式 `saveConfig` 时递增。
+   * 渲染层据此判定“是否需要应用配置”，避免视口高频广播反复回写本地朝向（压过自适应翻转）。
+   */
+  configRevision: number
+  /** 最新配置（渲染层仅消费影响 UI 的字段，如 isCollapsed / dialogPosition / memoryLimit） */
+  config: YanhuPetConfig
+}
+
+/** 无视感知：单个可交互节点的 BID 标定记录 */
+export interface YanhuBidNode {
+  bid: number
+  role: string
+  name: string
+  tag: string
+  value?: string
+  description?: string
+  bounds: { x: number; y: number; width: number; height: number }
+  /** 中心点被上层浮层遮挡 */
+  isOccluded?: boolean
+  /** 处于折叠 / 后台隐藏容器内（display:none / 零高宽 / 未激活 tab-pane 等），需先解封再操作 */
+  collapsed?: boolean
+  /** 所属高层语义区域（Region4Web 风格分块） */
+  parentRegion?: string
+  /** 框架路径（嵌套 frame/iframe 标识，如 leftFrame, mainFrame） */
+  framePath?: string
+  /** 下拉框选项快照 */
+  options?: Array<{ value: string; text: string; selected: boolean }>
+}
+
+/** 无视感知：四级蒸馏后的极简页面摘要 */
+export interface YanhuDistilledPage {
+  url: string
+  title: string
+  /** 投递给大模型的紧凑文本（Region 分块 + BID 标定） */
+  digestText: string
+  /** 标定的 BID 总量 */
+  bidCount: number
+  nodes: YanhuBidNode[]
+  /** 深层 iframe 穿透直提的结构化数据表格（Markdown），纳入多要素指纹与增量判定 */
+  dataTables?: string[]
+  /**
+   * 全框架可见渲染文本的归一化哈希。
+   *
+   * 关键：URL 与网页框架常常**都不变**，只有被渲染出来的内容变了；若仅对可交互节点取指纹，
+   * 这类「纯内容变化」会被误判为「页面无变化」。故把渲染文本摘要一并纳入指纹。
+   */
+  textDigest?: string
+  /** 渲染文本摘要（有界截断），随 PageDigest 投递给模型，让内容变化「看得见」 */
+  textSample?: string
+  timestamp: number
+}
+
+/** 砚湖秒通 IPC 通道契约 */
+export const YANHU_EXPRESS_IPC_CHANNELS = {
+  // 视图与生命周期管理
+  INIT_OR_RESTORE: 'yanhu:init-or-restore',
+  UPDATE_BOUNDS: 'yanhu:update-bounds',
+  HIDE_VIEW: 'yanhu:hide-view',
+  SHOW_VIEW: 'yanhu:show-view',
+  SYNC_THEME: 'yanhu:sync-theme',
+
+  // 标签页操作
+  GET_TABS_STATE: 'yanhu:get-tabs-state',
+  CREATE_TAB: 'yanhu:create-tab',
+  ACTIVATE_TAB: 'yanhu:activate-tab',
+  CLOSE_TAB: 'yanhu:close-tab',
+  CLOSE_OTHER_TABS: 'yanhu:close-other-tabs',
+  CLOSE_RIGHT_TABS: 'yanhu:close-right-tabs',
+  REORDER_TABS: 'yanhu:reorder-tabs',
+
+  // 导航与页面交互
+  NAVIGATE: 'yanhu:navigate',
+  GO_BACK: 'yanhu:go-back',
+  GO_FORWARD: 'yanhu:go-forward',
+  RELOAD: 'yanhu:reload',
+  OPEN_EXTERNAL: 'yanhu:open-external',
+  /** 一键自愈重试：净化陈旧动态签名后重载当前标签 */
+  RETRY_WITH_CLEAN: 'yanhu:retry-with-clean',
+  /** 弹出标签栏原生上下文菜单（主进程 Menu.popup，天然悬浮于网页视图之上） */
+  SHOW_TAB_MENU: 'yanhu:show-tab-menu',
+
+  // 状态广播（主进程 -> 渲染端）
+  ON_TABS_CHANGED: 'yanhu:on-tabs-changed',
+  ON_LOADING_CHANGED: 'yanhu:on-loading-changed',
+  ON_URL_CHANGED: 'yanhu:on-url-changed',
+
+  // 底层静默 CDP 能力标准接口（为二期 AI 预留）
+  CDP_GET_DOM: 'yanhu:cdp-get-dom',
+  CDP_GET_SOURCE: 'yanhu:cdp-get-source',
+  CDP_GET_NETWORK_LOGS: 'yanhu:cdp-get-network-logs',
+  CDP_GET_CONSOLE_LOGS: 'yanhu:cdp-get-console-logs',
+  CDP_EXECUTE_SCRIPT: 'yanhu:cdp-execute-script',
+
+  // 桌宠「砚小龙」：视口同步、窗口几何、对话与记忆、特权诊断控制台
+  /** 主渲染窗口 -> 主进程：同步砚湖秒通视口矩形（CSS 像素） */
+  PET_SYNC_VIEWPORT: 'yanhu-express:pet-sync-viewport',
+  /** 桌宠子窗口 -> 主进程：上报紧凑包裹窗口几何（DIP） */
+  PET_UPDATE_GEOMETRY: 'yanhu-express:pet-update-geometry',
+  /** 主进程 -> 桌宠子窗口：视口尺寸 / 呈现态 / 配置变更广播 */
+  PET_STATE_CHANGED: 'yanhu-express:pet-state-changed',
+  /** 桌宠子窗口 -> 主进程：拉取启动引导数据（配置 + 历史 + 视口） */
+  PET_GET_BOOTSTRAP: 'yanhu-express:pet-get-bootstrap',
+  PET_CHAT_SEND: 'yanhu-express:pet-chat-send',
+  PET_CHAT_ABORT: 'yanhu-express:pet-chat-abort',
+  /** 主进程 -> 桌宠子窗口：流式事件广播 */
+  PET_CHAT_STREAM_CHUNK: 'yanhu-express:pet-chat-stream-chunk',
+  PET_GET_CONFIG: 'yanhu-express:pet-get-config',
+  PET_SAVE_CONFIG: 'yanhu-express:pet-save-config',
+  PET_GET_HISTORY: 'yanhu-express:pet-get-history',
+  PET_CLEAR_HISTORY: 'yanhu-express:pet-clear-history',
+  /** 主进程 -> 桌宠子窗口：记忆已被清空（原生菜单触发时同步 UI） */
+  PET_HISTORY_CLEARED: 'yanhu-express:pet-history-cleared',
+  /** 桌宠透明区域鼠标穿透：避免遮挡底层网页交互 */
+  PET_SET_IGNORE_MOUSE: 'yanhu-express:pet-set-ignore-mouse',
+  /** 桌宠原生上下文菜单（主进程 Menu.popup，彻底根除紧凑子窗口边界裁切） */
+  PET_SHOW_CONTEXT_MENU: 'yanhu-express:pet-show-context-menu',
+  /** 特权指令：唤起实时底层诊断控制台（零 Token 消耗） */
+  OPEN_DIAGNOSTIC_CONSOLE: 'yanhu-express:open-diagnostic-console',
+} as const
+
+/** 主进程 -> 渲染端：标签加载态变化事件 */
+export interface YanhuLoadingChangedEvent {
+  tabId: string
+  loading: boolean
+}
+
+/** 主进程 -> 渲染端：标签 URL / 标题 / 导航能力变化事件 */
+export interface YanhuUrlChangedEvent {
+  tabId: string
+  url: string
+  title: string
+  canGoBack: boolean
+  canGoForward: boolean
 }
 
 export const CDUT_ZONE_IPC_CHANNELS = {

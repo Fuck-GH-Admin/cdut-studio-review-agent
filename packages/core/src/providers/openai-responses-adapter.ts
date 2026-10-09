@@ -87,6 +87,12 @@ interface ResponsesStreamData {
     output?: ResponsesStreamItem[]
     error?: { code?: string; message?: string }
     incomplete_details?: { reason?: string }
+    usage?: {
+      input_tokens?: number
+      output_tokens?: number
+      input_tokens_details?: { cached_tokens?: number }
+      output_tokens_details?: { reasoning_tokens?: number }
+    }
   }
   code?: string
   message?: string
@@ -360,6 +366,25 @@ export class OpenAIResponsesAdapter implements ProviderAdapter {
         case 'response.incomplete': {
           const stopReason = mapResponsesStatusToStopReason(event.response?.status)
           if (stopReason) events.push({ type: 'done', stopReason })
+          // response.completed 携带完整 usage
+          const u = event.response?.usage
+          if (u) {
+            const hasAny = [
+              u.input_tokens,
+              u.output_tokens,
+              u.input_tokens_details?.cached_tokens,
+              u.output_tokens_details?.reasoning_tokens,
+            ].some((value) => typeof value === 'number' && Number.isFinite(value))
+            if (hasAny) {
+              events.push({
+                type: 'usage',
+                inputTokens: u.input_tokens,
+                outputTokens: u.output_tokens,
+                cacheReadTokens: u.input_tokens_details?.cached_tokens,
+                reasoningTokens: u.output_tokens_details?.reasoning_tokens,
+              })
+            }
+          }
           break
         }
 

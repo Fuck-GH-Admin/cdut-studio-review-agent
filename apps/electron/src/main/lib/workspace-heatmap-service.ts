@@ -5,11 +5,11 @@
  * 结果缓存到 ~/.cdutai/heatmap-cache/{workspaceId}.json。
  *
  * 缓存策略：按自然日结算（缓存只作「加速层」，不作为权威数据源）。
- *   — 缓存记录 lastFinalizedDate（最后一次已结算的本地日期）。
- *   — 无缓存 → 全量扫描，但只统计到昨天，绝不读取当天用量。
+ *   — 缓存记录 lastFinalizedDate（最后一次已结算的本地日期，恒为昨天及之前）。
+ *   — 无缓存 → 全量扫描，只结算到昨天，并在返回时叠加当天实时用量。
  *   — lastFinalizedDate < 昨天 → 只补算尚未结算的历史日期直到昨天。
- *   — lastFinalizedDate >= 昨天 → 直接返回缓存，当天后续访问零会话文件 I/O。
- *   — 用户连续多天未打开时，一次性补算缺失的完整日期区间。
+ *   — 无论缓存是否命中，当天始终通过轻量增量扫描 [今天, 今天] 实时合并返回，
+ *     保证当天产生与持续增长的 Token 能即时体现在热力图上。
  *
  * 数据来源：每个会话 JSONL 中 **所有** type=result 消息的 usage 字段。
  * 统计口径：input + cache read + cache creation + output；缺失字段按 0 处理。
@@ -31,14 +31,14 @@ export interface HeatmapDailyEntry {
 }
 
 /** 缓存格式版本：结构变更时递增以自动淘汰旧缓存 */
-export const CACHE_VERSION = 6
+export const CACHE_VERSION = 7
 
 interface HeatmapCache {
   /** 缓存格式版本 */
   version: number
   /**
    * 最后一次已结算的本地日期（ISO "YYYY-MM-DD"）。
-   * 该日期及之前的数据固定不再变化；当天永远不进入缓存。
+   * 该日期及之前的数据固定不再变化；当天数据实时扫描，不写入缓存。
    */
   lastFinalizedDate: string
   /** 缓存时间戳 */
@@ -64,6 +64,11 @@ function yesterdayDate(): string {
   const yesterday = new Date()
   yesterday.setDate(yesterday.getDate() - 1)
   return timestampToLocalDate(yesterday.getTime())
+}
+
+/** 返回今天的本地日期（ISO "YYYY-MM-DD"）。 */
+export function todayDate(): string {
+  return timestampToLocalDate(Date.now())
 }
 
 // ── JSONL 读取 ────────────────────────────────────────────
@@ -169,7 +174,7 @@ function extractSessionDailyTokens(sessionId: string): Map<string, number> {
 export function buildWorkspaceTokenDaily(
   _workspaceId: string,
   sessions: Array<{ id: string; createdAt: number; updatedAt?: number; archived?: boolean }>,
-  throughDate: string = yesterdayDate(),
+  throughDate: string = todayDate(),
 ): HeatmapDailyEntry[] {
   const cutoff = new Date()
   cutoff.setDate(cutoff.getDate() - 365)
@@ -236,15 +241,13 @@ function writeCache(workspaceId: string, cache: HeatmapCache): void {
  * 获取工作区热力图每日 token 数据。
  *
  * 缓存策略（按天增量快照，缓存只作为「加速层」，不作为权威数据源）：
- *   1. 无缓存 → 全量扫描，建立初始缓存。
- *   2. lastSnapshotDate < 今天 → 增量扫描 [lastSnapshotDate, 今天] 合并进缓存。
- *      fromDate 从 lastSnapshotDate 当天开始（而非下一天），确保快照日当天后续
- *      产生的 result 也能被合并，不会因边界而被永久跳过。
- *   3. lastSnapshotDate === 今天 → 当天数据仍在持续增长，重扫 [今天, 今天] 合并，
- *      保证停留页面期间/当天后续的新 result 不会丢失。（旧实现此处直接 return 缓存，
- *      导致当天后续数据被永久丢弃）
+ *   1. 无缓存 → 全量扫描已完结历史（截至昨天），建立初始缓存。
+ *   2. lastFinalizedDate < 昨天 → 增量扫描缺失的已完结日期并合并进缓存。
+ *      fromDate 从 lastFinalizedDate 次日开始，避免重复结算。
+ *   3. 无论缓存是否命中，**当天** 数据始终通过增量扫描 [今天, 今天] 实时合并返回，
+ *      确保停留页面期间/当天后续产生的 result 立即可见（不写入缓存）。
  *
- * 历史数据缺口（如脏缓存遗留的丢失日期）无法靠增量补齐，因此版本 6
+ * 历史数据缺口（如脏缓存遗留的丢失日期）无法靠增量补齐，因此版本 7
  * 会用仍保留的会话 JSONL 做一次全量恢复；之后历史日期不再因归档变化。
  */
 export function getWorkspaceHeatmapDaily(
@@ -253,27 +256,27 @@ export function getWorkspaceHeatmapDaily(
 ): HeatmapDailyEntry[] {
   // 归档不会改变已发生的 Token 用量；只要会话 JSONL 尚存，就纳入历史统计。
   const selectedSessions = sessions
+  const today = todayDate()
   const yesterday = yesterdayDate()
-  const cache = readCache(workspaceId)
+  let cache = readCache(workspaceId)
 
-  // No cache: build history once, explicitly excluding today.
+  // 无缓存：全量扫描已完结历史（截至昨天）建立初始缓存，当天随后单独实时扫描。
   if (!cache) {
     const daily = buildWorkspaceTokenDaily(workspaceId, selectedSessions, yesterday)
-    writeCache(workspaceId, { version: CACHE_VERSION, lastFinalizedDate: yesterday, daily, cachedAt: Date.now() })
-    return daily
-  }
-
-  // Crossed one or more local dates: finalize all missing dates through yesterday.
-  if (cache.lastFinalizedDate < yesterday) {
+    cache = { version: CACHE_VERSION, lastFinalizedDate: yesterday, daily, cachedAt: Date.now() }
+    writeCache(workspaceId, cache)
+  } else if (cache.lastFinalizedDate < yesterday) {
+    // 跨过一个或多个自然日：把缺失的已完结日期补算至昨天。
     const fromDate = nextDay(cache.lastFinalizedDate)
     const incremental = incrementalScan(selectedSessions, fromDate, yesterday)
     const daily = mergeDaily(cache.daily, incremental)
-    writeCache(workspaceId, { version: CACHE_VERSION, lastFinalizedDate: yesterday, daily, cachedAt: Date.now() })
-    return daily
+    cache = { version: CACHE_VERSION, lastFinalizedDate: yesterday, daily, cachedAt: Date.now() }
+    writeCache(workspaceId, cache)
   }
 
-  // Same day: return fixed values without touching any session JSONL file.
-  return cache.daily
+  // 当天数据仍在持续增长：每次实时轻量扫描 [今天, 今天] 并与已完结历史合并返回。
+  const todayIncremental = incrementalScan(selectedSessions, today, today)
+  return mergeDaily(cache.daily, todayIncremental)
 }
 
 /** Return the next local calendar date for an ISO date string. */

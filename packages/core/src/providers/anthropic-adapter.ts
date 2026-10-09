@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Anthropic 供应商适配器
  *
  * 实现 Anthropic Messages API 的消息转换、请求构建和 SSE 解析。
@@ -72,6 +72,22 @@ interface AnthropicMessage {
 /** Anthropic SSE 事件 */
 interface AnthropicSSEEvent {
   type: string
+  /** message_start 的 message 对象（含 usage） */
+  message?: {
+    usage?: {
+      input_tokens?: number
+      output_tokens?: number
+      cache_creation_input_tokens?: number
+      cache_read_input_tokens?: number
+    }
+  }
+  /** message_delta 顶层的累计 usage（含 output_tokens） */
+  usage?: {
+    input_tokens?: number
+    output_tokens?: number
+    cache_creation_input_tokens?: number
+    cache_read_input_tokens?: number
+  }
   /** content_block_start 的 content_block */
   content_block?: {
     type: string
@@ -91,6 +107,27 @@ interface AnthropicSSEEvent {
     /** message_delta 的 stop_reason */
     stop_reason?: string
   }
+}
+
+/** 将 Anthropic usage 载荷转换为统一的 usage 事件 */
+function toAnthropicUsageEvent(usage?: {
+  input_tokens?: number
+  output_tokens?: number
+  cache_creation_input_tokens?: number
+  cache_read_input_tokens?: number
+}): StreamEvent | null {
+  if (!usage) return null
+  const event: StreamEvent = {
+    type: 'usage',
+    inputTokens: usage.input_tokens,
+    outputTokens: usage.output_tokens,
+    cacheReadTokens: usage.cache_read_input_tokens,
+    cacheWriteTokens: usage.cache_creation_input_tokens,
+  }
+  const hasAny = [usage.input_tokens, usage.output_tokens, usage.cache_creation_input_tokens, usage.cache_read_input_tokens].some(
+    (value) => typeof value === 'number' && Number.isFinite(value),
+  )
+  return hasAny ? event : null
 }
 
 /** Anthropic 标题响应 */
@@ -394,6 +431,12 @@ export class AnthropicAdapter implements ProviderAdapter {
         console.log('[SSE]', jsonLine.slice(0, 400))
       }
 
+      // message_start 携带 message.usage（input / cache 全量）
+      if (event.type === 'message_start') {
+        const usageEvent = toAnthropicUsageEvent(event.message?.usage)
+        if (usageEvent) events.push(usageEvent)
+      }
+
       // 内容块开始（跟踪块类型以正确匹配 content_block_stop）
       if (event.type === 'content_block_start') {
         this.activeBlockType = event.content_block?.type ?? null
@@ -437,9 +480,13 @@ export class AnthropicAdapter implements ProviderAdapter {
         }
       }
 
-      // message_delta 携带 stop_reason
-      if (event.type === 'message_delta' && event.delta?.stop_reason) {
-        events.push({ type: 'done', stopReason: event.delta.stop_reason })
+      // message_delta 携带 stop_reason 与累计 usage
+      if (event.type === 'message_delta') {
+        if (event.delta?.stop_reason) {
+          events.push({ type: 'done', stopReason: event.delta.stop_reason })
+        }
+        const usageEvent = toAnthropicUsageEvent(event.usage)
+        if (usageEvent) events.push(usageEvent)
       }
 
       return events

@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react'
-import { PanelLeftOpen, Bot, Plus, Search, CalendarDays, Blocks, ClipboardCheck } from 'lucide-react'
+import { PanelLeftOpen, Bot, Plus, Search, CalendarDays, Blocks } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@profer/ui/primitives/tooltip'
 import { CollapsedWorkspacePopover } from '@/components/agent/CollapsedWorkspacePopover'
@@ -26,7 +26,6 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
     handleOpenAutomations,
     activeView,
     handleOpenSkills,
-    handleOpenContentReview,
     capabilities,
     setSettingsOpen,
     userProfile,
@@ -146,27 +145,6 @@ export function SidebarRail({ s }: { s: SidebarModel }): React.ReactElement {
             <TooltipContent side="right">
               规划中心（{automationCount} 个定时任务）
             </TooltipContent>
-          </Tooltip>
-
-          {/* 材料审核智能体入口 */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                type="button"
-                aria-label="材料审核智能体"
-                data-profer-navigation-item="content-review"
-                onClick={handleOpenContentReview}
-                className={cn(
-                  'relative size-10 flex items-center justify-center rounded-[12px] transition-colors titlebar-no-drag border',
-                  activeView === 'content-review'
-                    ? 'border-primary/80 bg-primary text-primary-foreground shadow-sm'
-                    : 'border-border/45 bg-foreground/[0.025] text-foreground/45 hover:border-border/70 hover:bg-foreground/[0.045] hover:text-primary',
-                )}
-              >
-                <ClipboardCheck size={16} />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="right">材料审核智能体</TooltipContent>
           </Tooltip>
 
           {/* Agent 技能入口 */}

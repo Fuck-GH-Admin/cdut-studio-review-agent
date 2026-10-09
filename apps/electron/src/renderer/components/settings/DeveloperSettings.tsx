@@ -11,6 +11,55 @@ export function DeveloperSettings(): React.ReactElement {
   const [openEpistemicModeEnabled, setOpenEpistemicModeEnabled] = useAtom(openEpistemicModeEnabledAtom)
   const setActiveTab = useSetAtom(settingsTabAtom)
   const [saving, setSaving] = React.useState(false)
+  // 双引擎检索引擎开关（默认 classic 经典实现，开启即切到增强引擎）
+  const [memoryEngine, setMemoryEngine] = React.useState<'classic' | 'hipporag'>('classic')
+  const [studyEngine, setStudyEngine] = React.useState<'classic' | 'graphrag'>('classic')
+
+  React.useEffect(() => {
+    void window.electronAPI
+      .getSettings()
+      .then((settings) => {
+        setMemoryEngine(settings.memoryRetrievalEngine === 'hipporag' ? 'hipporag' : 'classic')
+        setStudyEngine(settings.studyRetrievalEngine === 'graphrag' ? 'graphrag' : 'classic')
+      })
+      .catch(() => {
+        // 读取失败保持默认 classic，不影响面板使用
+      })
+  }, [])
+
+  const updateMemoryEngine = async (enhanced: boolean): Promise<void> => {
+    const previous = memoryEngine
+    const next: 'classic' | 'hipporag' = enhanced ? 'hipporag' : 'classic'
+    setMemoryEngine(next)
+    setSaving(true)
+    try {
+      const settings = await window.electronAPI.updateSettings({ memoryRetrievalEngine: next })
+      setMemoryEngine(settings.memoryRetrievalEngine === 'hipporag' ? 'hipporag' : 'classic')
+      toast.success(enhanced ? '终身记忆已切换为 HippoRAG 图谱增强引擎' : '终身记忆已切换为经典 FTS5 引擎')
+    } catch (error) {
+      setMemoryEngine(previous)
+      toast.error('检索引擎设置保存失败', { description: error instanceof Error ? error.message : String(error) })
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const updateStudyEngine = async (enhanced: boolean): Promise<void> => {
+    const previous = studyEngine
+    const next: 'classic' | 'graphrag' = enhanced ? 'graphrag' : 'classic'
+    setStudyEngine(next)
+    setSaving(true)
+    try {
+      const settings = await window.electronAPI.updateSettings({ studyRetrievalEngine: next })
+      setStudyEngine(settings.studyRetrievalEngine === 'graphrag' ? 'graphrag' : 'classic')
+      toast.success(enhanced ? '速课堂已切换为分层 Leiden GraphRAG 引擎' : '速课堂已切换为经典混合检索引擎')
+    } catch (error) {
+      setStudyEngine(previous)
+      toast.error('检索引擎设置保存失败', { description: error instanceof Error ? error.message : String(error) })
+    } finally {
+      setSaving(false)
+    }
+  }
 
   const updateOpenEpistemicMode = async (enabled: boolean): Promise<void> => {
     const previous = openEpistemicModeEnabled
@@ -58,6 +107,28 @@ export function DeveloperSettings(): React.ReactElement {
             description="开启后 Agent 不再为了保持「绝对正确」而回避表态：先给判断、不做两头并列、不堆免责声明，允许暂定结论与创作自由。执行事实、文件修改、测试、发送与发布仍必须真实可核验。全局设置，下一轮 Agent 消息起生效。"
             checked={openEpistemicModeEnabled}
             onCheckedChange={(enabled) => { void updateOpenEpistemicMode(enabled) }}
+            disabled={saving}
+          />
+        </SettingsCard>
+      </SettingsSection>
+
+      <SettingsSection
+        title="增强检索引擎（双引擎并行，单开独立链路）"
+        description="经典实现始终保留且 100% 不动；开启后改为纯内存增强链路，可随时切回。全部本地运行，不引入任何外部数据库。"
+      >
+        <SettingsCard>
+          <SettingsToggle
+            label="终身记忆：HippoRAG 图谱多跳检索"
+            description="关闭时使用经典 FTS5 BM25 全文检索；开启后改用纯内存海马体共现图 + 个性化 PageRank 扩散，支持多跳隐式关联召回。全局设置，立即生效。"
+            checked={memoryEngine === 'hipporag'}
+            onCheckedChange={(enabled) => { void updateMemoryEngine(enabled) }}
+            disabled={saving}
+          />
+          <SettingsToggle
+            label="速课堂：分层 Leiden GraphRAG 检索"
+            description="关闭时使用经典全域混合检索；开启后改用 Leiden 模块度社区聚类 + 三层社群摘要，支持全局宏观思想演变问答。全局设置，立即生效。"
+            checked={studyEngine === 'graphrag'}
+            onCheckedChange={(enabled) => { void updateStudyEngine(enabled) }}
             disabled={saving}
           />
         </SettingsCard>

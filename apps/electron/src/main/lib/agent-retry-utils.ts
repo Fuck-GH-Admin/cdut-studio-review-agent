@@ -16,14 +16,14 @@ export const AUTO_RETRYABLE_ERROR_CODES: ReadonlySet<string> = new Set([
   'network_error',
 ])
 
-/** 通用自动重试最大次数 */
-export const MAX_AUTO_RETRIES = 25
+/** 通用自动重试最大次数（重试预算风暴治理：单次故障最多重发 5 遍完整上下文） */
+export const MAX_AUTO_RETRIES = 5
 
-/** OpenAI 官方上游繁忙错误在 UI 中统一展示为「重试 n/8」 */
-export const OPENAI_UPSTREAM_BUSY_MAX_RETRIES = 8
+/** OpenAI 官方上游繁忙错误在 UI 中统一展示为「重试 n/5」 */
+export const OPENAI_UPSTREAM_BUSY_MAX_RETRIES = 5
 
-/** 自动重试累计等待预算（毫秒） */
-export const MAX_AUTO_RETRY_WAIT_MS = 5 * 60_000
+/** 自动重试累计等待预算（毫秒）：控制在 60 秒内，避免长时间反复重发烧 Token */
+export const MAX_AUTO_RETRY_WAIT_MS = 60_000
 
 /** 重试单次延迟上限（毫秒） */
 export const RETRY_MAX_DELAY_MS = 15_000

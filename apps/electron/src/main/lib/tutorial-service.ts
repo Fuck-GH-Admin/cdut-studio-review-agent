@@ -67,11 +67,11 @@ export function createWelcomeConversation(): ConversationMeta | null {
 
   try {
     // 1. 创建对话
-    const meta = createConversation('了解 Profer')
+    const meta = createConversation('了解 CDUT Studio')
 
     // 2. 保存教程文件为附件
     const attachmentId = randomUUID()
-    const attachmentFilename = 'Profer 使用教程.md'
+    const attachmentFilename = 'CDUT Studio 使用教程.md'
     const localPath = `${meta.id}/${attachmentId}.md`
     const dir = getConversationAttachmentsDir(meta.id)
     const fullPath = join(dir, `${attachmentId}.md`)
@@ -94,7 +94,7 @@ export function createWelcomeConversation(): ConversationMeta | null {
       id: randomUUID(),
       parentId: null,
       role: 'user',
-      content: '你好，我是 Profer 的新用户，希望快速上手。这是完整的使用教程，作为你的参考。',
+      content: '你好，我是 CDUT Studio 的新用户，希望快速上手。这是完整的使用教程，作为你的参考。',
       createdAt: now,
       attachments: [attachment],
     }
@@ -105,7 +105,7 @@ export function createWelcomeConversation(): ConversationMeta | null {
       id: randomUUID(),
       parentId: userMessage.id,
       role: 'assistant',
-      content: `你好，欢迎来到 Profer！Profer 是一个通用的 Agent，其实它可以完成任何事，说实话这也挺难的，因为你要构建完整的工作环境才能做到，这会涉及到一些新的概念或者思考方式，不过别担心，我们做了很多设计可以帮助你靠谱稳定的越用越好用。
+      content: `你好，欢迎来到 CDUT Studio！CDUT Studio 是一个通用的 Agent，其实它可以完成任何事，说实话这也挺难的，因为你要构建完整的工作环境才能做到，这会涉及到一些新的概念或者思考方式，不过别担心，我们做了很多设计可以帮助你靠谱稳定的越用越好用。
 
 在介绍功能之前，想先认识一下你：
 
@@ -113,11 +113,11 @@ export function createWelcomeConversation(): ConversationMeta | null {
 2. 你的职业或主要角色是什么？（比如独立开发者、产品经理、数据分析师、运营、学生……）
 3. 你最近在做什么工作或项目？有哪些场景或痛点想交给 AI 帮忙？
 
-了解你的背景之后，我会为你单独整理一份专属的 Profer 使用最佳实践——告诉你哪些功能最值得用、推荐的 Skills / MCP 配置，以及贴合你场景的工作流模板。
+了解你的背景之后，我会为你单独整理一份专属的 CDUT Studio 使用最佳实践——告诉你哪些功能最值得用、推荐的 Skills / MCP 配置，以及贴合你场景的工作流模板。
 
 直接在下面回复就好，可以一次说完，也可以分几条慢慢聊。`,
       createdAt: now + 1,
-      model: 'Profer',
+      model: 'CDUT Studio',
     }
     appendMessage(meta.id, assistantMessage)
 

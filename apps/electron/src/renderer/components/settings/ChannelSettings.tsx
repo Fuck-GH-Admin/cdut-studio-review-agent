@@ -29,6 +29,7 @@ import {
 } from '@profer/ui/primitives/alert-dialog'
 import { ChannelForm } from './ChannelForm'
 import { ModelAvailabilityBar } from './ModelAvailabilityBar'
+import { YanhuPetModelSettings } from './YanhuPetModelSettings'
 import { getOfficialChannelDisplayName, isOfficialChannel, isModelFamilyChannel } from '@/lib/channel-model-groups'
 import { aggregateModelHealth } from '@/lib/channel-health-aggregation'
 
@@ -319,6 +320,9 @@ export function ChannelSettings(): React.ReactElement {
           </>
         )}
       </SettingsSection>
+
+      {/* 砚湖秒通 · 桌宠「砚小龙」专属模型 */}
+      <YanhuPetModelSettings channels={channels} />
 
       {/* 删除确认弹窗 */}
       <AlertDialog open={deleteTarget !== null} onOpenChange={(open) => { if (!open) setDeleteTarget(null) }}>
