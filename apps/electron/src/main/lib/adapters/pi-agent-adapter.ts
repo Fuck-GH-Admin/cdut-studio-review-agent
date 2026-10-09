@@ -718,91 +718,127 @@ export function mapSDKErrorToTypedError(errorCode: string, message: string, orig
   }
 }
 
+/** 历史工具结果折叠阈值（字符）：超过即紧凑折叠，杜绝 50KB 终端/文件输出反复重放。 */
+const HISTORICAL_TOOL_RESULT_MAX_CHARS = 800
+
+/** content 块是否属于「思考/推理」类，必须在历史轮次中剥离。 */
+function isThinkingBlock(block: unknown): boolean {
+  if (!block || typeof block !== 'object') return false
+  const type = (block as { type?: unknown }).type
+  return type === 'thinking' || type === 'redacted_thinking' || type === 'reasoning'
+}
+
+/** OpenAI 兼容协议：单条纯文本块数组 → 平坦化为字符串。 */
+function isSingleTextBlockArray(content: unknown): content is Array<{ type: 'text'; text: string }> {
+  return Array.isArray(content)
+    && content.length === 1
+    && !!content[0]
+    && typeof content[0] === 'object'
+    && (content[0] as { type?: unknown }).type === 'text'
+    && typeof (content[0] as { text?: unknown }).text === 'string'
+}
+
+/** 剥离历史 assistant 的 Thinking/Reasoning：顶层字段与 content/parts 中的思考块。 */
+function stripHistoricalReasoning(msg: any): void {
+  for (const field of ['reasoning_content', 'reasoning', 'reasoning_details'] as const) {
+    if (field in msg) delete msg[field]
+  }
+  if (Array.isArray(msg.content)) {
+    msg.content = msg.content.filter((block: unknown) => !isThinkingBlock(block))
+    if (msg.content.length === 0) msg.content = ''
+  }
+  // Google Generative Language：思考块为带 thought:true 的 part。
+  if (Array.isArray(msg.parts)) {
+    msg.parts = msg.parts.filter((part: unknown) => !(part && typeof part === 'object' && (part as { thought?: unknown }).thought === true))
+  }
+}
+
+/** 折叠历史超大工具输出；当前轮结果不处理，保证正在进行的工具循环完整。 */
+function foldHistoricalToolContent(msg: any, limit: number): void {
+  if (typeof msg.content === 'string' && msg.content.length > limit) {
+    const omitted = msg.content.length - limit
+    msg.content = `${msg.content.slice(0, limit)}\n\n[...该历史查询结果已折叠，共省略 ${omitted} 字符以节省上下文...]`
+  }
+}
+
 /**
- * OpenAI 兼容协议 Payload 运行时动态净化与瘦身管道
+ * 全协议推理上下文净化与瘦身管道（cross-protocol）。
  *
- * 核心职责：
- * 1. 剥离旧轮次 Thinking 思考链（模型看历史只需看最终回答，砍掉数万无谓 tokens）
- * 2. 截断折叠旧轮次超大 ToolResult（前序大表格折叠为 1500 字符，当轮 100% 完整）
- * 3. 剥离非标 store 字段，纠正遗留 developer 角色为 system
- * 4. 纯文本单项数组平坦化为 string，保护多模态图片数组
+ * 统一处理 OpenAI Chat Completions / Anthropic Messages / Google / OpenAI Responses 全协议：
+ * 1. 剥离历史轮次 Thinking/Reasoning（assistant 的 reasoning_content/reasoning/reasoning_details
+ *    字段，以及 content 块数组中的 thinking/redacted_thinking 块、Google thought part）；
+ * 2. 折叠历史轮次超大 ToolResult（超过 HISTORICAL_TOOL_RESULT_MAX_CHARS 字符）；
+ * 3. OpenAI 兼容协议专属：删除非标 store 字段、developer 角色纠正为 system、纯文本单项数组平坦化。
  *
- * 该管道仅在 OpenAI 兼容协议（openai-completions）下通过 onPayload 挂载生效；
- * Anthropic / Google / Responses 等协议的 payload 结构不含对应字段，天然不受影响。
+ * 当前轮消息 100% 保留完整，避免破坏正在等待执行/结算的工具循环。
+ * 纯函数式原地净化，零模型延迟、零额外 Token 开销。
  */
-export function sanitizeAndPruneOpenAIPayload(params: any, model: any): any {
+export function sanitizeContextForInference(
+  params: any,
+  model: any,
+  options: { openAICompatible?: boolean } = {},
+): any {
   if (!params || typeof params !== 'object') return params
 
-  // 1. 防御性删除非标 store 字段
-  if ('store' in params) {
+  // OpenAI 兼容协议专属：防御性删除非标 store 字段
+  if (options.openAICompatible && 'store' in params) {
     delete params.store
   }
 
-  // 2. 处理 messages 列表
-  if (Array.isArray(params.messages) && params.messages.length > 0) {
-    const totalCount = params.messages.length
+  // 消息列表：OpenAI/Anthropic/Responses 使用 messages，Google 使用 contents。
+  const messages: any[] | undefined = Array.isArray(params.messages)
+    ? params.messages
+    : Array.isArray(params.contents) ? params.contents : undefined
+  if (!messages || messages.length === 0) return params
 
-    // 寻找属于「当前轮」的起点：倒数第一个 user 消息及其之后的消息属于当前轮
-    let currentTurnStartIndex = -1
-    for (let i = totalCount - 1; i >= 0; i--) {
-      if (params.messages[i].role === 'user') {
-        currentTurnStartIndex = i
-        break
-      }
+  const totalCount = messages.length
+
+  // 寻找属于「当前轮」的起点：倒数第一个 user 消息及其之后的消息属于当前轮
+  let currentTurnStartIndex = -1
+  for (let i = totalCount - 1; i >= 0; i--) {
+    if (messages[i]?.role === 'user') {
+      currentTurnStartIndex = i
+      break
     }
-    if (currentTurnStartIndex === -1) {
-      currentTurnStartIndex = Math.max(0, totalCount - 2)
+  }
+  if (currentTurnStartIndex === -1) {
+    currentTurnStartIndex = Math.max(0, totalCount - 2)
+  }
+
+  for (let i = 0; i < totalCount; i++) {
+    const msg = messages[i]
+    if (!msg || typeof msg !== 'object') continue
+    const isPastTurn = i < currentTurnStartIndex
+
+    // 纠正任何可能残留的 developer 角色（OpenAI 兼容协议）
+    if (options.openAICompatible && msg.role === 'developer') {
+      msg.role = 'system'
     }
 
-    for (let i = 0; i < totalCount; i++) {
-      const msg = params.messages[i]
-      const isPastTurn = i < currentTurnStartIndex
+    // 【瘦身1：剥离旧轮次的 Thinking 思考链】（Google 助手角色为 model）
+    if (isPastTurn && (msg.role === 'assistant' || msg.role === 'model')) {
+      stripHistoricalReasoning(msg)
+    }
 
-      // 纠正任何可能残留的 developer 角色
-      if (msg.role === 'developer') {
-        msg.role = 'system'
-      }
+    // 【瘦身2：旧轮次超大 ToolResult 安全折叠截断】
+    if (isPastTurn && msg.role === 'tool') {
+      foldHistoricalToolContent(msg, HISTORICAL_TOOL_RESULT_MAX_CHARS)
+    }
 
-      // 【瘦身1：剥离旧轮次的 Thinking 思考链】
-      // 非当前轮的 assistant 消息，不应向模型重复发送内部思维独白
-      if (isPastTurn && msg.role === 'assistant') {
-        if ('reasoning_content' in msg) {
-          delete msg.reasoning_content
-        }
-        if ('reasoning' in msg) {
-          delete msg.reasoning
-        }
-        if ('reasoning_details' in msg) {
-          delete msg.reasoning_details
-        }
-      }
-
-      // 【瘦身2：旧轮次超大 ToolResult 安全折叠截断】
-      // 只有旧轮次的 tool 结果才截断；当前轮正在等待执行/结算的 ToolResult 必须 100% 完整！
-      if (isPastTurn && msg.role === 'tool') {
-        if (typeof msg.content === 'string' && msg.content.length > 2000) {
-          const omitted = msg.content.length - 1500
-          msg.content = `${msg.content.slice(0, 1500)}\n\n[...该历史查询结果已折叠，共省略 ${omitted} 字符以节省上下文...]`
-        }
-      }
-
-      // 【净化：单纯文本数组平坦化为字符串】
-      // 严格检查：必须是长度为 1 的数组，且类型为 text，且不包含图片
-      if (
-        Array.isArray(msg.content) &&
-        msg.content.length === 1 &&
-        msg.content[0] &&
-        typeof msg.content[0] === 'object' &&
-        msg.content[0].type === 'text' &&
-        typeof msg.content[0].text === 'string'
-      ) {
-        msg.content = msg.content[0].text
-      }
+    // 【净化：单纯文本数组平坦化为字符串】（OpenAI 兼容协议）
+    if (options.openAICompatible && isSingleTextBlockArray(msg.content)) {
+      msg.content = msg.content[0].text
     }
   }
 
   return params
 }
+
+/**
+ * @deprecated 已升级为跨协议的 sanitizeContextForInference；保留旧名以兼容既有引用。
+ */
+export const sanitizeAndPruneOpenAIPayload = (params: any, model: any): any =>
+  sanitizeContextForInference(params, model, { openAICompatible: true })
 
 /** 轻量 session-id → file-path 索引缓存，避免每次 resume 时递归扫描磁盘 */
 const sessionFileIndex = new Map<string, string>()
@@ -2201,6 +2237,67 @@ function wrapCustomToolDefinitions(
     wrapToolWithPermission(tool as unknown as ToolDefinition<TSchema, unknown, unknown>, { canUseTool }) as ToolDefinition)
 }
 
+// ===== TACO 确定性终端/命令输出过滤 =====
+
+/** 需要 TACO 过滤的命令执行类工具（bash / powershell / grep）。 */
+const TACO_TARGET_TOOLS = new Set(['bash', 'Bash', 'powershell', 'PowerShell', 'grep', 'Grep'])
+
+/** 触发 TACO 过滤的行数 / 字符阈值。 */
+const TACO_TRIGGER_LINES = 40
+const TACO_TRIGGER_CHARS = 2_000
+/** 保留的头部（命令启动与环境信息）与尾部（最终执行结果与错误摘要）行数。 */
+const TACO_HEAD_LINES = 15
+const TACO_TAIL_LINES = 20
+/** 中间区段的关键证据（错误堆栈、异常、涉及路径）正则。 */
+const TACO_EVIDENCE = /(?:\b(?:Error|Exception|Traceback|Caused by|FATAL|FAILED|failed|panic|warning|WARN)\b|^\s+at\s+\S|\/[\w./-]+\.(?:tsx?|jsx?|mjs|cjs|py|go|rs|java|c|cc|cpp|h|hpp|json|ya?ml|md|css|html|vue|svelte|rb|php|sh|ps1|sql)\b)/i
+
+/**
+ * TACO 结构化过滤：命令类工具的超长输出只保留首尾关键段，并从中间抽取
+ * 报错堆栈/异常/涉及路径等关键证据，其余重复日志折叠为一行提示。
+ *
+ * 纯同步执行，0ms、零模型二次开销；短输出原样返回，彻底消除 50KB 终端日志轰炸。
+ */
+export function tacoFilterCommandOutput(output: string): string {
+  if (!output) return output
+  const lines = output.split('\n')
+  if (lines.length <= TACO_TRIGGER_LINES && output.length <= TACO_TRIGGER_CHARS) return output
+
+  const head = lines.slice(0, TACO_HEAD_LINES)
+  const tail = lines.length > TACO_HEAD_LINES ? lines.slice(-TACO_TAIL_LINES) : []
+  const middleEnd = Math.max(TACO_HEAD_LINES, lines.length - TACO_TAIL_LINES)
+  const middle = lines.slice(TACO_HEAD_LINES, middleEnd)
+
+  const evidence: string[] = []
+  for (const line of middle) {
+    if (TACO_EVIDENCE.test(line)) evidence.push(line)
+    if (evidence.length >= 40) break
+  }
+
+  const parts: string[] = [...head]
+  if (evidence.length > 0) {
+    parts.push('', `[...TACO 提取的关键行（错误堆栈/异常/涉及路径）共 ${evidence.length} 行...]`, ...evidence)
+  }
+  const omitted = middle.length - evidence.length
+  parts.push(`[...TACO 过滤：已折叠 ${omitted} 行重复输出，完整错误堆栈已保留如上...]`)
+  parts.push(...tail)
+  return parts.join('\n')
+}
+
+/** 仅对命令类工具结果应用 TACO；无变化时返回原数组引用，避免无谓的 hook 覆盖。 */
+function applyTacoToCommandResult(toolName: string, content: any): any {
+  if (!TACO_TARGET_TOOLS.has(toolName) || !Array.isArray(content)) return content
+  let changed = false
+  const next = content.map((block: any) => {
+    if (!block || typeof block !== 'object') return block
+    if (block.type !== 'text' || typeof block.text !== 'string') return block
+    const filtered = tacoFilterCommandOutput(block.text)
+    if (filtered === block.text) return block
+    changed = true
+    return { ...block, text: filtered }
+  })
+  return changed ? next : content
+}
+
 export function installRuntimeGuardHooks(session: AgentSession, guard: AgentRuntimeGuard): void {
   const previousAfterToolCall = session.agent.afterToolCall
   session.agent.afterToolCall = async (context, signal) => {
@@ -2211,13 +2308,17 @@ export function installRuntimeGuardHooks(session: AgentSession, guard: AgentRunt
       terminate: previousResult?.terminate ?? context.result.terminate,
     }
     const guardedResult = guard.applyToolResult(resultAfterPreviousHooks)
+    // TACO：命令类工具的超长输出在进入上下文前做确定性折叠过滤。
+    const filteredContent = applyTacoToCommandResult(context.toolCall.name, guardedResult.content)
+    const contentChanged = filteredContent !== guardedResult.content
 
-    if (!previousResult && guardedResult.terminate === context.result.terminate) {
+    if (!previousResult && guardedResult.terminate === context.result.terminate && !contentChanged) {
       return undefined
     }
 
     return {
       ...previousResult,
+      ...(contentChanged ? { content: filteredContent } : {}),
       terminate: guardedResult.terminate,
     }
   }
@@ -2498,22 +2599,16 @@ export class PiAgentAdapter implements AgentProviderAdapter {
       // 代理作用域必须只覆盖模型 provider stream：在整个 session.prompt() 链上设
       // AsyncLocalStorage 会把 MCP/产品工具等同一 Agent loop 中的 fetch 也错误地送进 Codex 代理。
       const providerStreamFn = session.agent.streamFunction
-      // 净化与瘦身管道仅作用于 OpenAI 兼容协议（providerId === 'custom' 或 openai-completions），
-      // Anthropic / Google / Responses 等原生协议渠道不经过该管道。
-      const shouldSanitizeOpenAIPayload = normalizePiApi(input.provider, input.baseUrl) === 'openai-completions'
+      // 全协议净化与瘦身管道：剥离历史 Thinking、折叠历史超长 ToolResult。
+      // OpenAI 兼容协议额外做 store/developer/平坦化专属处理。
+      const isOpenAICompatiblePayload = normalizePiApi(input.provider, input.baseUrl) === 'openai-completions'
       session.agent.streamFunction = (requestModel, context, options) => {
-        if (!shouldSanitizeOpenAIPayload) {
-          return runWithPiRequestProxy(
-            requestProxyDispatcher,
-            () => providerStreamFn(requestModel, context, options),
-          )
-        }
         const originalOnPayload = options?.onPayload
         const wrappedOptions = {
           ...options,
           onPayload: async (params: any, model: any) => {
-            // 统一进入净化与瘦身管道
-            const cleanedParams = sanitizeAndPruneOpenAIPayload(params, model)
+            // 统一进入跨协议净化与瘦身管道
+            const cleanedParams = sanitizeContextForInference(params, model, { openAICompatible: isOpenAICompatiblePayload })
             if (originalOnPayload) {
               const customResult = await originalOnPayload(cleanedParams, model)
               return customResult !== undefined ? customResult : cleanedParams

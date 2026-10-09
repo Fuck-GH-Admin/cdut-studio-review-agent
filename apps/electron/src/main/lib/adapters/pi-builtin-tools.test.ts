@@ -545,6 +545,38 @@ describe('Pi builtin tools disabledToolGroups pruning (preset capability pruning
     expect(names.has('mcp__agent-presets__preset_list')).toBe(true)
   })
 
+  test('Given 预设关闭部分能力组 When building Pi builtin tools Then discover_tools 报告启用状态与已挂载工具', async () => {
+    const { sdk, tools } = createPiSdkStub()
+    await buildPiBuiltinTools(sdk, {
+      ...baseCtx,
+      disabledToolGroups: ['browser', 'automation'],
+    })
+    const discover = tools.find((tool) => tool.name === 'discover_tools')
+    expect(discover).toBeDefined()
+
+    const result = await discover!.execute!('call-discover', {}) as {
+      details?: { groups?: Array<{ id: string; enabled: boolean; mountedTools: string[] }> }
+    }
+    const groups = result.details?.groups ?? []
+    const browser = groups.find((group) => group.id === 'browser')
+    expect(browser?.enabled).toBe(false)
+    expect(browser?.mountedTools).toEqual([])
+
+    const automation = groups.find((group) => group.id === 'automation')
+    expect(automation?.enabled).toBe(false)
+
+    // 未禁用的分组应标记为 enabled，并列出已实际挂载的工具（含 Pi 前缀匹配）。
+    const memory = groups.find((group) => group.id === 'memory')
+    expect(memory?.enabled).toBe(true)
+    expect((memory?.mountedTools ?? []).length).toBeGreaterThan(0)
+
+    // category 过滤只返回匹配的分组。
+    const filtered = await discover!.execute!('call-discover-filter', { category: 'browser' }) as {
+      details?: { groups?: Array<{ id: string }> }
+    }
+    expect((filtered.details?.groups ?? []).every((group) => group.id.includes('browser'))).toBe(true)
+  })
+
   test('Given disabledTools 单工具短名 When building Pi builtin tools Then 只过滤列出的工具且同组其余工具保留', async () => {
     const { sdk } = createPiSdkStub()
     const result = await buildPiBuiltinTools(sdk, {

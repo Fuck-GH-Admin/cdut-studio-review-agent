@@ -1044,7 +1044,7 @@ class FeishuBridge {
     // 渠道/模型：Bot 配置 > 应用设置
     const channelId = this.botConfig.defaultChannelId ?? appSettings.agentChannelId
     if (!channelId) {
-      await this.sendMessage(chatId, '请先在 Profer Agent 设置中选择渠道。')
+      await this.sendMessage(chatId, '请先在 CDUT Studio 设置中选择渠道。')
       return
     }
 

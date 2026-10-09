@@ -149,6 +149,27 @@ export interface StreamDoneEvent {
   stopReason?: 'end_turn' | 'tool_use' | string
 }
 
+/**
+ * Token 用量事件
+ *
+ * 由各适配器从供应商 SSE 载荷中提取（Anthropic message_start/message_delta、
+ * OpenAI 尾 chunk、Responses response.completed、Google usageMetadata）。
+ * 供应商未回传时为缺省，调用方应回退启发式估算。
+ */
+export interface StreamUsageEvent {
+  type: 'usage'
+  /** 输入 Token（含系统提示词、历史与工具结果） */
+  inputTokens?: number
+  /** 输出 Token（正文与思考） */
+  outputTokens?: number
+  /** 缓存读取 Token */
+  cacheReadTokens?: number
+  /** 缓存写入 Token */
+  cacheWriteTokens?: number
+  /** 思考 Token（如 Gemini thoughtsTokenCount） */
+  reasoningTokens?: number
+}
+
 /** 工具调用开始事件 */
 export interface StreamToolCallStartEvent {
   type: 'tool_call_start'
@@ -182,6 +203,7 @@ export type StreamEvent =
   | StreamReasoningBlockStopEvent
   | StreamErrorEvent
   | StreamDoneEvent
+  | StreamUsageEvent
   | StreamToolCallStartEvent
   | StreamToolCallDeltaEvent
 

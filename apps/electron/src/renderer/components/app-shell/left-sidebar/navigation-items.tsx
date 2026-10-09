@@ -130,7 +130,6 @@ export function SidebarWindowDragStrip({ height }: { height: number }): React.Re
 export function enterableViewSelector(item: string): string | null {
   if (item === 'planning') return '[data-profer-navigation-region="planning"]'
   if (item === 'agent-skills') return '[data-profer-navigation-region="agent-skills"]'
-  if (item === 'content-review') return '[data-profer-navigation-region="content-review"]'
   return null
 }
 

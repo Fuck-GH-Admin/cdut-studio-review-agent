@@ -48,8 +48,10 @@ export {
 export type { AgentAttachmentKind } from './agent-image-attachment'
 export { supportsProviderPlanQuota } from './channel-plan-quota'
 export { promoteMru, removeMruId, selectMruFallbackId } from './tab-mru'
-// Pi 自动压缩阈值（80% 占用触发）
+// Pi 自动压缩阈值（SWE-Compressor 32k 封顶）
 export {
+  PI_AUTO_COMPACTION_MAX_TOKENS,
+  PI_AUTO_COMPACTION_TRIGGER_TOKENS,
   PI_AUTO_COMPACTION_THRESHOLD_RATIO,
   calculatePiAutoCompactionReserveTokens,
   calculatePiAutoCompactionThresholdTokens,
@@ -63,3 +65,5 @@ export type {
   AutomationScheduleFields,
   AutomationOccurrenceDay,
 } from './automation-schedule'
+export { pruneToolOutputByEntropy } from './context-entropy-pruner'
+export type { EntropyPruneOptions } from './context-entropy-pruner'

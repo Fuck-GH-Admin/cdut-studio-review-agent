@@ -26,6 +26,7 @@ import type {
   PresetReference,
 } from '@profer/shared'
 import type {
+  AgentPresetToolGroup,
   CalendarEventListQuery,
   CreateAutomationInput,
   CreateCalendarEventInput,
@@ -36,6 +37,7 @@ import type {
   UpdateTodoInput,
 } from '@profer/shared'
 import {
+  AGENT_PRESET_CAPABILITY_GROUPS,
   AGENT_PRESET_SUPPRESS_KEYS,
   AGENT_PRESET_TOOL_GROUPS,
   filterDisabledTools,
@@ -150,6 +152,8 @@ export interface PiBuiltinToolsContext {
   allowedRoots?: string[]
   /** PPT 专用能力是否已通过会话级激活门禁。 */
   pptCapabilityActive?: boolean
+  /** 当前会话激活的场景工具组集合；传入时仅注册集合内的工具组；未传时回退兼容模式。 */
+  activeToolGroups?: ReadonlySet<string>
   /** 图片生命周期持久化成功后通知 renderer 的安全卡片。 */
   onImageGenerationUpdate?: (record: AgentImageGenerationCard) => void
   /** Agent 请求使用当前会话的正式文件预览入口，并等待用户可见 viewer ready/error。 */
@@ -813,21 +817,21 @@ function buildPiAgentPreviewTools(sdk: PiSdk, ctx: PiBuiltinToolsContext): ToolD
       async execute(_toolCallId, params) {
         const args = params as Record<string, unknown>
         const filePath = typeof args.filePath === 'string' ? args.filePath : ''
-        const scope = args.scope === 'overview' || args.scope === 'page' || args.scope === 'all' ? args.scope : 'overview'
-        const page = typeof args.page === 'number' ? args.page : undefined
+        const scope = args.scope === 'overview' || args.scope === 'page' || args.scope === 'all' ? args.scope : undefined
         const inspected = await executeAgentPreviewTool({
           filePath,
           mode: args.mode === 'content' || args.mode === 'visual' || args.mode === 'both' ? args.mode : undefined,
           scope,
-          page,
+          page: typeof args.page === 'number' ? args.page : undefined,
           previousRevision: typeof args.previousRevision === 'string' ? args.previousRevision : undefined,
         }, { agentCwd: ctx.workspaceSlug ? ctx.agentCwd! : '', allowedRoots: ctx.allowedRoots ?? [] }) as AgentToolResult<unknown>
         const details = inspected.details as { error?: unknown; visual?: { images?: unknown[] } }
         const binding = getPiReviewBindingForSession(ctx.sessionId)
         if (binding && details && !details.error) {
-          const pageLabel = scope === 'page' ? `第 ${page} 页` : scope === 'all' ? '全文预览范围' : '首页/总览'
+          const effectiveScope = scope ?? 'overview'
+          const pageLabel = effectiveScope === 'page' ? `第 ${typeof args.page === 'number' ? args.page : '?'} 页` : effectiveScope === 'all' ? '全文预览范围' : '首页/总览'
           recordPiReviewPreviewByPath(binding, filePath, `inspect_preview 查看 ${filePath.split(/[\\/]/).pop() ?? '材料'}（${pageLabel}）`, {
-            scope,
+            scope: effectiveScope,
             visualImageCount: details.visual?.images?.length ?? 0,
           })
         }
@@ -1786,8 +1790,8 @@ export function buildPiCdutTools(sdk: PiSdk, ctx: PiBuiltinToolsContext): ToolDe
         '按校区（成都/宜宾）、教学楼、星期、周次与节次实时检索空闲自习教室及座位容量；亦可查阅指定教室的全天占用明细。',
       parameters: Type.Object({
         action: Type.Union([Type.Literal('query_empty_classrooms'), Type.Literal('query_room_occupancy')]),
-        // 成都校区 / 宜宾校区；yanshan 为历史别名，兼容映射回成都校区
-        campus: Type.Union([Type.Literal('chengdu'), Type.Literal('yibin'), Type.Literal('yanshan')]),
+        // 成都校区 / 宜宾校区
+        campus: Type.Union([Type.Literal('chengdu'), Type.Literal('yibin')]),
         building: Type.Optional(Type.String()),
         week: Type.Optional(Type.Integer({ minimum: 1, maximum: 30 })),
         dayOfWeek: Type.Optional(Type.Integer({ minimum: 1, maximum: 7 })),
@@ -1955,11 +1959,74 @@ function buildWindowsShellInstallerTools(sdk: PiSdk, ctx: PiBuiltinToolsContext)
   ] as unknown as ToolDefinition[]
 }
 
+/**
+ * Tier 2：能力发现兜底工具（轻量目录，约 150 Tokens）。
+ *
+ * 当模型需要某类能力（浏览器、定时任务、子 Agent 委派、PPT 等）但当前工具列表中
+ * 未见对应工具时，先调用本工具确认该能力组是否存在、是否被当前预设关闭，以及哪些
+ * 工具已实际挂载可直接调用。避免「找不到工具就放弃」。
+ */
+function buildDiscoverToolsTool(
+  sdk: PiSdk,
+  mountedNames: ReadonlySet<string>,
+  disabledGroups: ReadonlySet<string>,
+): ToolDefinition {
+  return sdk.defineTool({
+    name: 'discover_tools',
+    label: 'CDUT Studio 能力发现',
+    description: '查询 CDUT Studio 可用的工具能力分组（任务图 / 记忆 / 协作 / 自动化与规划 / 浏览器 / 预览 / 图片 / 网页检索 / PPT / CDUT 教务 / 速课堂学习等），以及被当前预设关闭的分组。当需要某类能力但当前工具列表中没有对应工具时，先调用它确认能力是否存在、是否被预设关闭。',
+    parameters: Type.Object({
+      category: Type.Optional(Type.String({ description: '可选：能力组 id 或关键词，如 browser / automation / ppt；省略则返回全部分组。' })),
+    }),
+    async execute(_toolCallId, params) {
+      const category = (params as { category?: string }).category?.trim().toLowerCase()
+      const groups = AGENT_PRESET_CAPABILITY_GROUPS
+        .map((group) => {
+          const groupToolNames = group.tools.map((tool) => tool.name)
+          const mountedTools = groupToolNames.filter((name) =>
+            [...mountedNames].some((mounted) => mounted === name || mounted.endsWith(`__${name}`)),
+          )
+          return {
+            id: group.id,
+            label: group.label,
+            hint: group.hint,
+            enabled: !disabledGroups.has(group.id),
+            mountedTools,
+          }
+        })
+        .filter((group) => !category
+          || group.id.toLowerCase().includes(category)
+          || group.label.toLowerCase().includes(category)
+          || group.hint.toLowerCase().includes(category))
+      const payload = {
+        groups,
+        tip: 'mountedTools 表示当前已实际挂载、可直接调用的工具；enabled=false 表示该能力组被当前预设关闭，需用户在预设设置中启用后才能使用。',
+      }
+      return {
+        content: [{ type: 'text', text: JSON.stringify(payload) }],
+        details: payload,
+      } as AgentToolResult<unknown>
+    },
+  })
+}
+
 export async function buildPiBuiltinTools(
   sdk: PiSdk,
   ctx: PiBuiltinToolsContext,
 ): Promise<PiBuiltinToolsResult> {
   const disabled = new Set(ctx.disabledToolGroups ?? [])
+
+  // 场景工具组激活判定：预设禁用拥有一票否决权；若提供了 activeToolGroups 则严格按需判定；未提供时回退为全量兼容（用于单测）
+  const isGroupActive = (groupId: AgentPresetToolGroup): boolean => {
+    if (disabled.has(groupId) || isAgentPresetToolGroupDisabled(ctx.disabledToolGroups, groupId)) {
+      return false
+    }
+    if (ctx.activeToolGroups) {
+      return ctx.activeToolGroups.has(groupId)
+    }
+    return true
+  }
+
   browserController.configureSession(ctx.sessionId, {
     profileKey: resolveBrowserProfileKey(ctx.workspaceId, ctx.sessionId),
     allowedRoots: ctx.allowedRoots,
@@ -1972,33 +2039,25 @@ export async function buildPiBuiltinTools(
     tools.push(...buildPiGoalTools(sdk, ctx))
   }
 
-  if (!isAgentPresetToolGroupDisabled(ctx.disabledToolGroups, 'image')) {
+  // 1. 图片与皮肤工具组（image）
+  if (isGroupActive('image')) {
     try {
       tools.push(...buildPiAgentImageOutputTools(sdk, ctx))
-    } catch (error) {
-      console.error('[Pi 桥接] 注入本地图片输出工具失败:', error)
-    }
-
-    try {
       tools.push(...buildPiAgentGptImageTools(sdk, ctx))
-    } catch (error) {
-      console.error('[Pi 桥接] 注入 GPT Image 工具失败:', error)
-    }
-
-    try {
       tools.push(...buildPiAgentSkinTools(sdk, ctx))
     } catch (error) {
-      console.error('[Pi 桥接] 注入皮肤工具失败:', error)
+      console.error('[Pi 桥接] 注入图片/皮肤工具失败:', error)
     }
   }
 
-  if (!isAgentPresetToolGroupDisabled(ctx.disabledToolGroups, 'review-ops')) {
+  // 审核工具仍受场景分组与预设禁用控制；有效案卷指派允许其在当前轮次即时挂载。
+  const isReviewOperator = ctx.currentPresetReference?.presetId === 'review-operator'
+  const directReviewBinding = isReviewOperator && ctx.triggeredBy === 'user'
+    ? getPiReviewBindingForSession(ctx.sessionId)
+    : undefined
+  const reviewOpsEnabled = !disabled.has('review-ops') && !isAgentPresetToolGroupDisabled(ctx.disabledToolGroups, 'review-ops')
+  if (reviewOpsEnabled && (isGroupActive('review-ops') || directReviewBinding)) {
     try {
-      const isReviewOperator = ctx.currentPresetReference?.presetId === 'review-operator'
-      const directReviewBinding = isReviewOperator && ctx.triggeredBy === 'user'
-        ? getPiReviewBindingForSession(ctx.sessionId)
-        : undefined
-      // 审核专区创建的普通 Pi 会话按案卷限定工具；停止或授权失效后不退回旧的泛审核操作清单。
       if (!isReviewOperator || directReviewBinding) {
         tools.push(...buildReviewOpsTools(sdk, {
           sessionId: ctx.sessionId,
@@ -2013,7 +2072,8 @@ export async function buildPiBuiltinTools(
     }
   }
 
-  if (!isAgentPresetToolGroupDisabled(ctx.disabledToolGroups, 'preview')) {
+  // 2. 预览工具组（preview）
+  if (isGroupActive('preview')) {
     try {
       tools.push(...buildPiAgentPreviewTools(sdk, ctx))
     } catch (error) {
@@ -2021,7 +2081,8 @@ export async function buildPiBuiltinTools(
     }
   }
 
-  if (!isAgentPresetToolGroupDisabled(ctx.disabledToolGroups, 'ppt-materials')) {
+  // 3. PPT 交付工具组（ppt-materials）
+  if (isGroupActive('ppt-materials')) {
     try {
       tools.push(...buildPiPptDeliveryTools(sdk, ctx))
     } catch (error) {
@@ -2029,49 +2090,56 @@ export async function buildPiBuiltinTools(
     }
   }
 
-  if (!isAgentPresetToolGroupDisabled(ctx.disabledToolGroups, 'web') && isWebSearchEnabledForAgent()) {
+  // 4. 公开网页检索（web）
+  if (isGroupActive('web') && isWebSearchEnabledForAgent()) {
     try {
       tools.push(...buildWebTools(sdk))
     } catch (error) {
-      console.error('[Pi 桥接] 注入 WebSearch/WebFetch 工具失败:', error)
+      console.error('[Pi 桥接] 注入 Web 工具失败:', error)
     }
   }
 
-  // 注入个人记忆、任务图、规划中心和 Agent 预设工具。
-  try {
-    if (!disabled.has('memory')) {
+  // 5. 个人记忆与团队记忆（memory）
+  if (isGroupActive('memory')) {
+    try {
       tools.push(...buildPiMemoryArchiveTools(sdk, ctx))
       tools.push(...buildTeamMemoryTools(sdk, ctx))
+    } catch (error) {
+      console.error('[Pi 桥接] 注入记忆工具失败:', error)
     }
-    if (!disabled.has('task-graph')) {
+  }
+
+  // 6. 任务图（task-graph）
+  if (isGroupActive('task-graph')) {
+    try {
       tools.push(...buildPiTaskGraphTools(sdk, ctx))
+    } catch (error) {
+      console.error('[Pi 桥接] 注入任务图工具失败:', error)
     }
-    if (!disabled.has('automation')) {
+  }
+
+  // 7. 定时任务与规划（automation）
+  if (isGroupActive('automation')) {
+    try {
       tools.push(...buildPiPlanningTools(sdk, {
         sessionId: ctx.sessionId,
         workspaceId: ctx.workspaceId,
         isTeamWorkspace: ctx.isTeamWorkspace,
         disabledTools: ctx.disabledTools,
       }))
-    }
-    tools.push(...buildPiAgentPresetTools(sdk, ctx))
-  } catch (error) {
-    console.error('[Pi 桥接] 注入个人记忆、任务图或规划中心工具失败:', error)
-  }
-
-  // Automation 是 Profer 已有的本地能力，不依赖上游 builtin-MCP catalog。
-  if (!disabled.has('automation')) {
-    try {
       tools.push(...buildAutomationTools(sdk, ctx))
     } catch (error) {
-      console.error('[Pi 桥接] 注入 automation 工具失败:', error)
+      console.error('[Pi 桥接] 注入 automation/planning 工具失败:', error)
     }
   }
 
-  // collaboration 桥接
+  // 8. 预设管理工具（跟随预设或 base）
+  tools.push(...buildPiAgentPresetTools(sdk, ctx))
+
+  // 9. 子智能体协作（collaboration）
   const collaborationAvailable = !!ctx.workspaceId && ctx.triggeredBy !== 'delegation' && !disabled.has('collaboration')
 
-  if (collaborationAvailable) {
+  if (collaborationAvailable && isGroupActive('collaboration')) {
     try {
       const collaborationTools = buildPiCollaborationTools(sdk, {
         sessionId: ctx.sessionId,
@@ -2097,9 +2165,8 @@ export async function buildPiBuiltinTools(
     console.error('[Pi 桥接] 注入 Windows Shell 安装工具失败:', error)
   }
 
-  // Pi-native 受管浏览器不经过 MCP：网页 WebContents 和 CDP 永远停留在主进程。
-  // 用户会话、自动任务与协作子会话共用同一套受管浏览器能力，仍受 URL、下载和权限策略约束。
-  if (!isAgentPresetToolGroupDisabled(ctx.disabledToolGroups, 'browser')) {
+  // 11. 受管浏览器（browser，12个工具）
+  if (isGroupActive('browser')) {
     try {
       tools.push(...buildBrowserTools(sdk, ctx))
     } catch (error) {
@@ -2107,8 +2174,7 @@ export async function buildPiBuiltinTools(
     }
   }
 
-  // 系统剪贴板工具：Agent 读取/写入系统剪贴板走主进程 Electron clipboard（UTF-8），
-  // 避免退化为 PowerShell Get-Clipboard（Windows 代码页导致中文乱码）。
+  // 12. 剪贴板工具（Tier 0 基础）
   if (!isAgentPresetToolGroupDisabled(ctx.disabledToolGroups, 'clipboard')) {
     try {
       tools.push(...buildPiClipboardTools(sdk))
@@ -2117,9 +2183,9 @@ export async function buildPiBuiltinTools(
     }
   }
 
-  // CDUT 专区能力组：8+1 个教务/反代工具统一走门禁切面，写操作再叠加二次确认拦截。
-  // 所有会话均注册这 9 个工具；是否登录由 checkCdutGatekeeper 依特区账户状态自动拦截，无需提示词层干预。
-  if (!isAgentPresetToolGroupDisabled(ctx.disabledToolGroups, 'cdut-tools')) {
+  // 13. CDUT 教务工具组（cdut-tools，9个工具）
+  // 是否登录由 checkCdutGatekeeper 依特区账户状态自动拦截，无需提示词层干预。
+  if (isGroupActive('cdut-tools')) {
     try {
       tools.push(...buildPiCdutTools(sdk, ctx))
     } catch (error) {
@@ -2127,7 +2193,7 @@ export async function buildPiBuiltinTools(
     }
   }
 
-  // AI 速课堂专属学习工具（资料查阅 + 学生认知档案）：仅在速课堂会话注册，避免污染常规会话能力面。
+  // 14. 速课堂学习工具（study）
   if (ctx.isStudyClass) {
     try {
       tools.push(...buildPiStudyTools(sdk, ctx))
@@ -2139,11 +2205,21 @@ export async function buildPiBuiltinTools(
   const cloudTools = buildProferCloudTools(sdk, ctx)
   tools.push(...cloudTools)
 
+  // 15. Tier 2 能力发现保底工具（常驻）
+  try {
+    const mountedBeforeDiscover = new Set(tools.map((tool) => tool.name))
+    tools.push(buildDiscoverToolsTool(sdk, mountedBeforeDiscover, new Set(ctx.disabledToolGroups ?? [])))
+  } catch (error) {
+    console.error('[Pi 桥接] 注入能力发现工具失败:', error)
+  }
+
   // 单工具裁剪：shared 唯一事实表口径（短名 = name 末段），与 disabledToolGroups 叠加生效。
   const filtered = filterDisabledTools(tools, ctx.disabledTools)
   if (filtered.length !== tools.length) {
     console.log(`[Pi 桥接] 单工具裁剪: ${tools.length - filtered.length} 个工具被预设禁用（${(ctx.disabledTools ?? []).join(', ')}）`)
   }
+
+  console.log(`[Pi 桥接] 已挂载 ${filtered.length} 个工具（激活组: ${[...(ctx.activeToolGroups ?? [])].join(', ') || '仅基础'}）`)
 
   return { tools: filtered, collaborationAvailable }
 }

@@ -1,37 +1,46 @@
 /**
- * ContentReviewView — 内容审核专区（三栏审核工作台，主视图）
+ * ContentReviewView — CDUT 专区「材料审核」子页面（三栏审核工作台主体）
  *
- * 布局：顶栏（标题/异常提示） + 三栏（审核依据 | 申请与证明 | 审核结果） + 助手抽屉 + 底部错误条。
+ * 作为 CdutZoneView 子页面内页挂载：统一顶栏（校徽 + 标题 + 关闭按钮）与窗口按钮宿主
+ * 由外层 CdutZoneView（cdut-subview）统管，本组件不再声明自身的 WindowControlsHost 与拖拽层，
+ * 避免同为 priority 20 争抢窗口按钮。
+ *
+ * 布局：工作台二级工具栏（模块导航 + 案卷摘要 + 出口徽标 + 操作按钮） +
+ * 三栏（审核依据 | 申请与证明 | AI 审核员） + 助手抽屉 + 底部错误条。
  * 三栏宽度 flex-[3] / flex-[4] / flex-[3]，栏间 1px 分隔，各自独立滚动（overflow-y-auto）。
  * 窄窗口（<1100px）时只挂载当前栏，由顶部三按钮切换；切栏时重放已有定位。
  *
  * 交互：
- * - 挂载时 actions.initialize()：刷新案卷列表、恢复最近案卷与模型出口状态；
- *   案卷选择/新建/材料导入入口均在上方上下文条；演示案卷由用户显式触发。
+ * - 挂载时 actions.initialize()：刷新案卷列表 + 模型出口自检（工具栏徽标）。
+ *   不自动选中/载入案卷（首个案卷可能是用户自己的），入口在左栏「案卷管理」条；
+ *   「载入演示案卷」按钮保留，由用户显式触发
  * - Ctrl+Shift+A（Mac: Cmd+Shift+A）：仅本视图挂载期间监听，toggle 审核助手抽屉
  * - 联动（D8）：问题卡点击 → reviewFocusAtom → SourceBlockView 滚动 + 闪高亮（见各栏组件）
  * - 根 div 保留 data-profer-navigation-region="content-review" + tabIndex={-1}（键盘导航焦点移交）
  */
 
 import * as React from 'react'
+import { toast } from 'sonner'
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
-  ClipboardCheck,
+  Download,
   FileText,
   Gavel,
   Layers,
   MessageCircle,
+  RotateCcw,
 } from 'lucide-react'
-import { detectIsWindows } from '@profer/ui'
 import { Button } from '@profer/ui/primitives/button'
-import { WindowControlsHost } from '@/components/WindowControlsTemplate'
-import { resolveWindowControlsRightInset } from '@/lib/window-controls-layout'
 import { isEditableTarget } from '@/lib/navigation-controller'
 import {
   reviewActivePaneAtom,
   reviewAssistantOpenAtom,
+  reviewCaseAtom,
   reviewErrorAtom,
   reviewGatewayStatusAtom,
+  reviewRunAtom,
+  reviewRunStaleAtom,
+  reviewRunningAtom,
   reviewWorkspaceSectionAtom,
   type ReviewWorkspaceSection,
 } from '@/atoms/review-atoms'
@@ -42,12 +51,10 @@ import { AssistantDrawer } from './AssistantDrawer'
 import { CenterPanel } from './CenterPanel'
 import { LeftPanel } from './LeftPanel'
 import { RightPanel } from './RightPanel'
-import { ReviewContextBar } from './ReviewContextBar'
+import { reviewV2AggregateAtom, V2CasePanel } from './V2CasePanel'
 import { TemplateWizardPanel } from './TemplateWizardPanel'
 import { BatchPanel } from './BatchPanel'
-import { ReviewHistoryPanel } from './ReviewHistoryPanel'
 import { useReviewActions } from './use-review-actions'
-import { ReviewSettingsPanel } from './ReviewSettingsPanel'
 
 /** 窄屏单栏切换的栏目标识 */
 type Pane = 'left' | 'center' | 'right'
@@ -56,12 +63,16 @@ type Pane = 'left' | 'center' | 'right'
 const NARROW_BREAKPOINT_PX = 1100
 
 export function ContentReviewView(): React.ReactElement {
+  const reviewCase = useAtomValue(reviewCaseAtom)
   const gatewayStatus = useAtomValue(reviewGatewayStatusAtom)
   const errorMessage = useAtomValue(reviewErrorAtom)
+  const run = useAtomValue(reviewRunAtom)
+  const runStale = useAtomValue(reviewRunStaleAtom)
+  const running = useAtomValue(reviewRunningAtom)
   const section = useAtomValue(reviewWorkspaceSectionAtom)
   const setSection = useSetAtom(reviewWorkspaceSectionAtom)
+  const setV2Aggregate = useSetAtom(reviewV2AggregateAtom)
   const channels = useAtomValue(channelsAtom)
-  const setGatewayStatus = useSetAtom(reviewGatewayStatusAtom)
   const activePane = useAtomValue(reviewActivePaneAtom)
   const setActivePane = useSetAtom(reviewActivePaneAtom)
   const assistantOpen = useSetAtom(reviewAssistantOpenAtom)
@@ -71,7 +82,18 @@ export function ContentReviewView(): React.ReactElement {
   const [narrow, setNarrow] = React.useState(
     () => typeof window !== 'undefined' && window.innerWidth < NARROW_BREAKPOINT_PX,
   )
-  const isWindows = React.useMemo(() => detectIsWindows(), [])
+  const [exporting, setExporting] = React.useState(false)
+
+  const handleExport = async (): Promise<void> => {
+    setExporting(true)
+    try {
+      const result = await actions.exportReport()
+      if (result) toast.success('预审报告已导出', { description: result.markdownPath })
+    } finally {
+      setExporting(false)
+    }
+  }
+
   // 设置面板覆盖工作台而不卸载它；渠道变化时也需刷新出口徽标。
   React.useEffect(() => { void actions.initialize() }, [actions, channels])
 
@@ -106,57 +128,81 @@ export function ContentReviewView(): React.ReactElement {
       data-profer-navigation-region="content-review"
       tabIndex={-1}
     >
-      {/* 标题栏拖拽区（本页全屏取代 TabBar；Windows 窗口按钮前结束，避免高 DPI 点击误判） */}
-      <div
-        className="absolute inset-x-0 top-0 z-0 h-14 titlebar-drag-region"
-        style={{ right: resolveWindowControlsRightInset(isWindows) }}
-        aria-hidden="true"
-      />
-      {/* 窗口按钮宿主：priority 20 高于 MainArea 兜底(5)，全屏视图接管最小化/最大化/关闭 */}
-      <WindowControlsHost id="content-review" priority={20} className="absolute right-2 top-[3px] z-20" />
+      {/* 工作台专属二级工具栏：模块导航与操作动作合流，居于 CDUT 专区统一顶栏下方，
+          享有完整容器宽度，物理上不会与右上角 Windows 窗口按钮重叠 */}
+      <header className="relative z-10 flex shrink-0 flex-wrap items-center gap-x-3 gap-y-2 border-b border-border/60 bg-card/60 px-4 py-2 titlebar-no-drag">
+        {/* 左侧：二级导航 + 当前案卷摘要 */}
+        <div className="flex min-w-0 flex-wrap items-center gap-3">
+          <nav aria-label="审核工作页" className="flex shrink-0 flex-wrap items-center gap-1">
+            {([
+              ['workbench', '预审工作台'],
+              ['case-v2', 'V2 案卷'],
+              ['templates', '模板编排'],
+              ['batches', '批次管理'],
+            ] as Array<[ReviewWorkspaceSection, string]>).map(([id, label]) => (
+              <Button
+                key={id}
+                size="sm"
+                variant={section === id ? 'secondary' : 'ghost'}
+                className="h-7 px-2.5 text-xs font-medium"
+                aria-pressed={section === id}
+                onClick={() => setSection(id)}
+              >
+                {label}
+              </Button>
+            ))}
+          </nav>
 
-      {/* ===== 顶栏 ===== */}
-      {/* Windows 下右侧为窗口按钮（最小化/最大化/关闭）预留 safe width，顶栏右端按钮簇不得伸入其下，
-          否则被 z-20 的 WindowControlsHost 盖住无法点击（见 window-controls-layout.ts 的共用宽度约定） */}
-      <header
-        className="relative z-10 flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2 border-b border-border/60 bg-card/80 px-4 py-2.5 titlebar-no-drag backdrop-blur-sm"
-        style={isWindows ? { paddingRight: resolveWindowControlsRightInset(isWindows) + 12 } : undefined}
-      >
-        <div className="flex items-center gap-2">
-          <ClipboardCheck size={24} className="text-primary" />
-          <h1 className="text-2xl font-semibold text-foreground">材料审核</h1>
-          {/* 出口状态徽标 */}
-          <GatewayBadge status={gatewayStatus} onOpenSettings={() => setSection('settings')} />
+          {reviewCase && (
+            <div className="flex min-w-0 items-center gap-1.5 rounded-md bg-foreground/[0.04] px-2 py-1 text-xs text-muted-foreground">
+              <FileText size={12} className="shrink-0 text-foreground/60" />
+              <span className="max-w-[200px] truncate" title={reviewCase.title}>
+                {reviewCase.applicant} · {reviewCase.academicYear}
+              </span>
+            </div>
+          )}
         </div>
 
+        {/* 右侧：出口状态徽标 + 业务操作按钮 */}
         <div className="ml-auto flex shrink-0 items-center gap-2">
+          <GatewayBadge status={gatewayStatus} />
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="h-7 gap-1.5 px-2.5 text-xs"
+            onClick={() => void actions.loadDemoCase()}
+          >
+            <RotateCcw size={12} />
+            <span>载入演示案卷</span>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="h-7 gap-1.5 px-2.5 text-xs"
+            disabled={exporting || running || !run || run.status !== 'completed' || runStale}
+            onClick={() => void handleExport()}
+          >
+            <Download size={12} />
+            <span>导出报告</span>
+          </Button>
           <Button
             type="button"
             variant="ghost"
             size="icon-sm"
+            className="h-7 w-7"
             aria-label="打开审核助手（Ctrl+Shift+A）"
             title={`审核助手（${navigator.platform.startsWith('Mac') ? '⌘⇧A' : 'Ctrl+Shift+A'}）`}
             onClick={() => assistantOpen((previous) => !previous)}
           >
-            <MessageCircle size={15} />
+            <MessageCircle size={14} />
           </Button>
         </div>
       </header>
 
-      <nav aria-label="审核工作页" className="relative z-10 flex shrink-0 flex-wrap gap-1 border-b bg-card/60 px-3 py-1.5 titlebar-no-drag">
-        {([
-          ['assist', '辅助审核'],
-          ['batch', '批量审核'],
-          ['history', '历史记录'],
-          ['templates', '审核模板'],
-          ['settings', '审核设置'],
-        ] as Array<[ReviewWorkspaceSection, string]>).map(([id, label]) => (
-          <Button key={id} size="sm" variant={section === id ? 'secondary' : 'ghost'} aria-pressed={section === id} onClick={() => setSection(id)}>{label}</Button>
-        ))}
-      </nav>
-
       {/* ===== 窄屏：顶部三按钮切换栏 ===== */}
-      {narrow && section === 'assist' && (
+      {narrow && section === 'workbench' && (
         <nav
           role="tablist"
           aria-label="工作台栏目"
@@ -164,17 +210,12 @@ export function ContentReviewView(): React.ReactElement {
         >
           <PaneTab label="审核依据" icon={<FileText size={13} />} active={activePane === 'left'} onClick={() => setActivePane('left')} />
           <PaneTab label="申请与证明" icon={<Layers size={13} />} active={activePane === 'center'} onClick={() => setActivePane('center')} />
-          <PaneTab label="审核结果" icon={<Gavel size={13} />} active={activePane === 'right'} onClick={() => setActivePane('right')} />
+          <PaneTab label="AI 审核员" icon={<Gavel size={13} />} active={activePane === 'right'} onClick={() => setActivePane('right')} />
         </nav>
       )}
 
       {/* ===== 三栏主体 ===== */}
-      <main className={cn('relative min-h-0 flex-1 overflow-hidden titlebar-no-drag', section !== 'assist' && 'hidden')}>
-        <div className="flex h-full min-h-0 flex-col">
-          <div className="shrink-0 overflow-auto border-b border-border/60 bg-card/40 py-2">
-            <ReviewContextBar actions={actions} />
-          </div>
-          <div className="relative flex min-h-0 flex-1">
+      <main className={cn('relative flex min-h-0 flex-1 titlebar-no-drag', section !== 'workbench' && 'hidden')}>
         <PaneWrapper
           pane="left"
           className="flex-[3]"
@@ -196,39 +237,31 @@ export function ContentReviewView(): React.ReactElement {
         <PaneWrapper pane="right" className="flex-[3]" narrow={narrow} active={activePane} showSeparator={false}>
           <RightPanel actions={actions} />
         </PaneWrapper>
-          </div>
-        </div>
       </main>
 
+      <section aria-label="V2 案卷管理" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'case-v2' && 'hidden')}>
+        <V2CasePanel />
+      </section>
       <section aria-label="审核模板编排" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'templates' && 'hidden')}>
-        <div className="mx-3 mb-2">
-          <h2 className="mb-1 text-base font-semibold">审核模板库</h2>
-          <p className="mb-3 text-sm text-muted-foreground">创建、调整并发布可复用的审核模板；新项目在创建时选择模板。</p>
-        </div>
         <TemplateWizardPanel />
       </section>
-      <section aria-label="审核批次管理" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'batch' && 'hidden')}>
+      <section aria-label="审核批次管理" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'batches' && 'hidden')}>
         <BatchPanel
-          active={section === 'batch'}
+          active={section === 'batches'}
           onOpenProject={async (caseId) => {
+            const aggregate = await window.reviewAPI.openAggregateV2(caseId)
+            if (aggregate) {
+              setV2Aggregate(aggregate)
+              setSection('case-v2')
+              return true
+            }
             const opened = await actions.selectCase(caseId)
-            if (opened) setSection('assist')
+            if (opened) setSection('workbench')
             return opened
           }}
         />
       </section>
-      <section aria-label="审核历史记录" className={cn('relative min-h-0 flex-1 overflow-auto py-4 titlebar-no-drag', section !== 'history' && 'hidden')}>
-        <ReviewHistoryPanel active={section === 'history'} onOpenProject={async (caseId) => {
-          const opened = await actions.selectCase(caseId)
-          if (opened) setSection('assist')
-          return opened
-        }} />
-      </section>
-      <section aria-label="审核专属设置" className={cn('relative min-h-0 flex-1 overflow-auto py-6 titlebar-no-drag', section !== 'settings' && 'hidden')}>
-        <ReviewSettingsPanel
-          onSaved={() => { void window.reviewAPI.getModelGatewayStatus().then(setGatewayStatus).catch(() => undefined) }}
-        />
-      </section>
+
       {/* ===== 助手抽屉（fixed 到本视图根） ===== */}
       <AssistantDrawer actions={actions} />
 
@@ -243,16 +276,26 @@ export function ContentReviewView(): React.ReactElement {
           </span>
         </div>
       )}
-
     </div>
   )
 }
 
 /** 模型出口状态徽标；无模型只表示未配置，演示模拟由运行徽标单独说明。 */
-function GatewayBadge({ status, onOpenSettings }: { status: ReviewModelGatewayStatus | null; onOpenSettings: () => void }): React.ReactElement | null {
+function GatewayBadge({ status }: { status: ReviewModelGatewayStatus | null }): React.ReactElement | null {
   if (!status) return null
-  if (status.available) return null
-  return <button type="button" className="rounded-md bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-600 hover:bg-amber-500/20 dark:text-amber-400" onClick={onOpenSettings} title={status.reason}>审核模型不可用 · 设置</button>
+  if (status.available) {
+    const label = status.protocol === 'local-private' ? '本地私有出口' : 'OpenAI 兼容出口'
+    return (
+      <span className="rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-600 dark:text-green-400">
+        {label}
+      </span>
+    )
+  }
+  return (
+    <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400">
+      未配置审核模型
+    </span>
+  )
 }
 
 /** 窄屏单栏切换按钮 */
@@ -274,7 +317,7 @@ function PaneTab({
       aria-selected={active}
       onClick={onClick}
       className={cn(
-        'flex h-8 items-center gap-1.5 rounded-lg px-3 text-sm transition-colors',
+        'flex h-8 items-center gap-1.5 rounded-lg px-3 text-[13px] transition-colors',
         active ? 'bg-surface-raised font-medium text-foreground shadow-sm ring-1 ring-surface-border/35' : 'text-muted-foreground hover:text-foreground',
       )}
     >

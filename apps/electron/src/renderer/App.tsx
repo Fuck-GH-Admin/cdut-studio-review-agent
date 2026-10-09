@@ -21,15 +21,7 @@ const MigrationImportDialog = React.lazy(() => import('./components/migration/Mi
 const SettingsDialog = React.lazy(() => import('./components/settings/SettingsDialog').then(m => ({ default: m.SettingsDialog })))
 
 export default function App(): React.ReactElement {
-  // [FLASH-DEBUG] 监控 App 组件重渲染（如果看到频繁日志，说明根组件被频繁重渲染）
-  const appRenderCountRef = React.useRef(0)
-  appRenderCountRef.current++
-  if (appRenderCountRef.current > 1) {
-    console.warn(`[FLASH-DEBUG] App re-render #${appRenderCountRef.current}, isLoading/showOnboarding may have changed`)
-  }
-
   const store = useStore()
-  const { createAgent } = useCreateSession()
   const [isLoading, setIsLoading] = React.useState(true)
   const [showOnboarding, setShowOnboarding] = React.useState(false)
   const [showOnboardingEnvironmentTest, setShowOnboardingEnvironmentTest] = useAtom(replayIntroEnvironmentTestAtom)
@@ -63,27 +55,13 @@ export default function App(): React.ReactElement {
     if (!isLoading) window.electronAPI.notifyRendererReady()
   }, [isLoading])
 
-  // 完成 onboarding 回调：创建欢迎对话，可选打开教程 Tab
-  const handleOnboardingComplete = async (openTutorial?: boolean) => {
-    setShowOnboarding(false)
-
-    if (openTutorial) {
-      const tabs = store.get(tabsAtom)
-      const result = openTab(tabs, { type: 'tutorial', sessionId: TUTORIAL_TAB_ID, title: 'CDUT Studio 使用教程' })
-      store.set(tabsAtom, result.tabs)
-      store.set(activeTabIdAtom, result.activeTabId)
-      return
-    }
-
-    try {
-      await createAgent()
-      // Onboarding 接力：进入主界面后自动播放一次界面蒙层引导；
-      // 等首帧渲染稳定再启动，保证锚点（输入区/模型选择器）已挂载。
-      window.setTimeout(() => store.set(coachTourOpenAtom, true), 600)
-    } catch (error) {
-      console.error('[App] 创建 Agent 会话失败:', error)
-    }
-  }
+  // 打开教程 Tab（纯 store 派发，不涉及会话创建，无需订阅会话/模型 atom）
+  const handleOpenTutorial = React.useCallback((): void => {
+    const tabs = store.get(tabsAtom)
+    const result = openTab(tabs, { type: 'tutorial', sessionId: TUTORIAL_TAB_ID, title: 'CDUT Studio 使用教程' })
+    store.set(tabsAtom, result.tabs)
+    store.set(activeTabIdAtom, result.activeTabId)
+  }, [store])
 
   // 加载中状态
   if (isLoading) {
@@ -117,7 +95,10 @@ export default function App(): React.ReactElement {
     return (
       <TooltipProvider delayDuration={200}>
         <React.Suspense fallback={null}>
-          <OnboardingView onComplete={handleOnboardingComplete} />
+          <OnboardingRoute
+            onExit={() => setShowOnboarding(false)}
+            onOpenTutorial={handleOpenTutorial}
+          />
         </React.Suspense>
         <React.Suspense fallback={null}>
           <MigrationImportDialog />
@@ -146,6 +127,45 @@ export default function App(): React.ReactElement {
       <CoachTourOverlay />
     </TooltipProvider>
   )
+}
+
+/**
+ * OnboardingRoute —— 仅在校首次引导期挂载的引导入口。
+ *
+ * `useCreateSession`（内部经 `useOpenSession` 订阅 tabs / agentSessions / 模型等多个 atom）
+ * 被收敛到本子树：引导结束后本组件即卸载，App 根组件不再订阅这些无关 atom，
+ * 从根本上消除「App re-render #41」式的根组件高频重渲染。
+ */
+function OnboardingRoute({
+  onExit,
+  onOpenTutorial,
+}: {
+  onExit: () => void
+  onOpenTutorial: () => void
+}): React.ReactElement {
+  const store = useStore()
+  const { createAgent } = useCreateSession()
+
+  const handleComplete = React.useCallback(
+    async (openTutorial?: boolean): Promise<void> => {
+      onExit()
+      if (openTutorial) {
+        onOpenTutorial()
+        return
+      }
+      try {
+        await createAgent()
+        // Onboarding 接力：进入主界面后自动播放一次界面蒙层引导；
+        // 等首帧渲染稳定再启动，保证锚点（输入区/模型选择器）已挂载。
+        window.setTimeout(() => store.set(coachTourOpenAtom, true), 600)
+      } catch (error) {
+        console.error('[App] 创建 Agent 会话失败:', error)
+      }
+    },
+    [createAgent, store, onExit, onOpenTutorial],
+  )
+
+  return <OnboardingView onComplete={handleComplete} />
 }
 
 /**

@@ -339,7 +339,7 @@ export function TemplateWizardPanel(): JSX.Element {
                     <Button size="sm" variant="ghost" aria-label="模板下移" disabled={index === visibleTemplates.length - 1} onClick={() => void moveTemplate(index, 1)}>↓</Button>
                   </>}
                   {template.status === 'published'
-                    ? <Button size="sm" variant="outline" onClick={() => setWorkspaceSection('assist')}>去辅助审核选择</Button>
+                    ? <Button size="sm" variant="outline" onClick={() => setWorkspaceSection('case-v2')}>去新建审核项目</Button>
                     : template.catalogKind === 'reference'
                       ? <Button size="sm" variant="outline" disabled={loading} onClick={() => void copyReferenceTemplate(template)}>复制并配置</Button>
                       : <Button size="sm" variant="outline" onClick={() => openTemplate(template)}>{template.status === 'draft' ? '继续配置' : '基于此版本修改'}</Button>}

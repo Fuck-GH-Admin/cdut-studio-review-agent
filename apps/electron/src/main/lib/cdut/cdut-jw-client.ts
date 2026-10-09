@@ -28,6 +28,7 @@ import type {
   CdutToolDomain,
   CdutToolParamsMap,
 } from '@profer/shared'
+import { stripStaleRuiShuCookies } from './yanhu/yanhu-cookie-utils'
 
 /** 青果教务系统站点根 */
 const JW_BASE = 'https://jw.cdut.edu.cn'
@@ -143,26 +144,10 @@ function isSessionExpired(finalUrl: string, html: string): boolean {
 /**
  * 清理专属分区中导致青果瑞数 WAF 误判并拒绝连接（HTTP 400）的陈旧动态签名 Cookie。
  *
- * 根因诊断：
- *   瑞数 WAF 采用「服务端会话 Cookie（以 O 结尾，如 sMLAeTqisZbFO）+ 客户端页面级动态签名 Cookie（以 P 结尾，如 sMLAeTqisZbFP）」双轨校验。
- *   页面完成首轮加载后，P 结尾的动态签名 Cookie 已针对前序路径失效或过期。若由 ses.fetch 再次携带陈旧的 P Cookie 发起新端点请求，
- *   瑞数反向代理判定签名非法，会直接拦截 TCP 连接并返回「HTTP 400 Bad Request（空响应体）」。
- *   剔除陈旧的 P 签名后，网关放行底层请求，由服务端基于 JSESSIONID / O Cookie 正常响应业务数据。
+ * 实现已抽取至 `yanhu/yanhu-cookie-utils.ts`，供砚湖秒通浏览器与教务客户端共用，
+ * 避免同一安全策略出现多份实现。此处保持同名再导出，默认目标域语义（jw.cdut.edu.cn）不变。
  */
-export async function stripStaleRuiShuCookies(ses: Session): Promise<void> {
-  try {
-    const cookies = await ses.cookies.get({ domain: 'jw.cdut.edu.cn' })
-    const names = new Set(cookies.map((c) => c.name))
-    for (const c of cookies) {
-      if (c.name.endsWith('P') && names.has(c.name.slice(0, -1) + 'O')) {
-        await ses.cookies.remove('https://jw.cdut.edu.cn', c.name).catch(() => {})
-        await ses.cookies.remove('http://jw.cdut.edu.cn', c.name).catch(() => {})
-      }
-    }
-  } catch {
-    // 忽略清理异常
-  }
-}
+export { stripStaleRuiShuCookies }
 
 /**
  * 发起一次教务请求并返回原始 HTML。
@@ -1247,15 +1232,15 @@ interface EmptyRoom {
   hasAirConditioner: boolean
 }
 
-/** 校区入参：成都校区 / 宜宾校区；yanshan 为历史别名，兼容映射回成都校区 */
-type CdutCampus = 'chengdu' | 'yibin' | 'yanshan'
+/** 校区入参：成都校区 / 宜宾校区 */
+type CdutCampus = 'chengdu' | 'yibin'
 
-/** 校区代号映射（青果常见：01 成都校区、02 宜宾校区） */
+/** 校区代号映射（01 成都校区、02 宜宾校区） */
 function campusCode(campus: CdutCampus): string {
   return campus === 'yibin' ? '02' : '01'
 }
 
-/** 校区中文名（成都理工大学法定校区，保留 yanshan 别名兼容） */
+/** 校区中文名 */
 function campusLabel(campus: CdutCampus): string {
   return campus === 'yibin' ? '宜宾校区' : '成都校区'
 }

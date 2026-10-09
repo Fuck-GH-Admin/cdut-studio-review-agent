@@ -34,6 +34,14 @@ const LEVEL_CLASSES = [
 
 // ── 工具函数 ──────────────────────────────────────────────
 
+/** 以本机时区格式化为 ISO 日期（YYYY-MM-DD）；避免 toISOString 在东八区午夜回退一天。 */
+function formatLocalDate(d: Date): string {
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
 function buildWeekGrid(entries: WorkspaceHeatmapEntry[], weeks: number = WEEKS) {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -58,7 +66,7 @@ function buildWeekGrid(entries: WorkspaceHeatmapEntry[], weeks: number = WEEKS) 
     for (let r = 0; r < 7; r++) {
       const d = new Date(startDate)
       d.setDate(startDate.getDate() + col * 7 + r)
-      const dateStr = d.toISOString().slice(0, 10)
+      const dateStr = formatLocalDate(d)
       const future = d.getTime() > today.getTime()
 
       if (future) {
@@ -115,8 +123,7 @@ export function UsageHeatmap({ workspaceId }: UsageHeatmapProps = {}): React.Rea
   const [entries, setEntries] = React.useState<WorkspaceHeatmapEntry[] | null>(null)
   const [loading, setLoading] = React.useState(true)
 
-  // The heatmap is a finalized historical snapshot. It deliberately does not
-  // poll: today is excluded and will be committed on the next calendar day.
+  // 热力图包含当天实时用量：后端每次都会对当天做轻量增量扫描。
   React.useEffect(() => {
     if (!targetWorkspaceId) {
       setLoading(false)
@@ -140,18 +147,8 @@ export function UsageHeatmap({ workspaceId }: UsageHeatmapProps = {}): React.Rea
     )
   }
 
-  // ── 无数据态 ──
-  if (!entries || entries.length === 0) {
-    return (
-      <div className="flex items-center justify-center min-h-[140px]">
-        <span className="text-[13px] text-muted-foreground/50">
-          开始你的第一个 Agent 会话，Token 消耗热力图将在这里显示
-        </span>
-      </div>
-    )
-  }
-
-  const { cells, monthLabels } = buildWeekGrid(entries)
+  // ── 空数据也渲染完整网格（与 GitHub 贡献图一致），不再用文字占位阻断 ──
+  const { cells, monthLabels } = buildWeekGrid(entries ?? [])
 
   return (
     <div className="select-none px-1">

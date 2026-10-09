@@ -338,6 +338,10 @@ export interface AppSettings {
   pocketModePort?: number
   /** Windows Shell 环境偏好：'auto'（自动检测，优先 Git Bash）| 'git-bash' | 'wsl'（默认 'auto'） */
   agentShellPreference?: 'auto' | 'git-bash' | 'wsl'
+  /** 终身记忆检索引擎：'classic' 经典 FTS5 BM25 | 'hipporag' 海马体图谱多跳增强（默认 classic） */
+  memoryRetrievalEngine?: 'classic' | 'hipporag'
+  /** 速课堂知识检索引擎：'classic' 经典混合检索 | 'graphrag' 分层 Leiden GraphRAG（默认 classic） */
+  studyRetrievalEngine?: 'classic' | 'graphrag'
 }
 
 /** 主窗口大小、位置和最大化状态 */

@@ -1,6 +1,6 @@
 # 审核功能收敛设计：普通 Pi Agent 与简洁工作台
 
-日期：2026-10-09。核对对象为当前工作区的审核代码，提交基线 `60c25542`；参考 [13 的源码阅读和隔离试用](13-single-agent-framework-trial.md)。**本文是下一轮设计，不是实施完成声明。** 本轮进行了代码核对，没有新增模型实测或页面操作验收。
+日期：2026-10-09；现状补记：2026-10-10。核对对象为当前工作区的审核代码，提交基线 `60c25542`；参考 [13 的源码阅读和隔离试用](13-single-agent-framework-trial.md) 与 [15 模板模块和运行时边界规范](15-template-modules-and-runtime-boundary-spec.md)。**本文是下一轮设计，不是实施完成声明。** 本轮进行了代码核对，没有新增模型实测或页面操作验收。
 
 ## 1. 要解决的问题与取舍
 
@@ -33,7 +33,7 @@
 | 预算合计、编号唯一性、条件与计分 | [TemplateSheetCheckSpec](../../../packages/shared/src/types/review-v2.ts)、[v2-executor-factory](../../../apps/electron/src/main/lib/review/v2-executor-factory.ts)、[deterministic-engine](../../../apps/electron/src/main/lib/review/deterministic-engine.ts) | 已有固定计算及接线，不能再笼统写成“完全没有确定性核对”；拆出可复用计算服务，保留单元格来源、缺值和公式警告 |
 | 补件、事实修正、证明关联、人工认定、最终决定 | [application-service](../../../apps/electron/src/main/lib/review/application-service.ts)、[workspace-business-service-v2](../../../apps/electron/src/main/lib/review/workspace-business-service-v2.ts)、[decision-readiness-v2](../../../packages/shared/src/review/decision-readiness-v2.ts) | 保留持久化与权限；减少同一问题产生多张待办和多个确认表单 |
 | 来源点击定位、报告与历史 | [SourceBlockView](../../../apps/electron/src/renderer/components/content-review/SourceBlockView.tsx)、[RightPanel](../../../apps/electron/src/renderer/components/content-review/RightPanel.tsx)、[report-export-v2-service](../../../apps/electron/src/main/lib/review/report-export-v2-service.ts) | 默认只显示本次结果；来源打开原件，导出区分当前/历史与未完成范围 |
-| 批次与评委服务 | [batch-store](../../../apps/electron/src/main/lib/review/batch-store.ts)、[judging-service](../../../apps/electron/src/main/lib/review/judging-service.ts)、[rating-service](../../../apps/electron/src/main/lib/review/rating-service.ts) | 保留服务，暂不放默认工作台。当前 BatchPanel 的建批次仍是硬编码示例入口，不能以此宣称通用批量界面已经完成 |
+| 批次与评委服务 | [batch-store](../../../apps/electron/src/main/lib/review/batch-store.ts)、[judging-service](../../../apps/electron/src/main/lib/review/judging-service.ts)、[rating-service](../../../apps/electron/src/main/lib/review/rating-service.ts)、[BatchPanel](../../../apps/electron/src/renderer/components/content-review/BatchPanel.tsx) | 批次页已可读持久化批次、按批次展示项目进度并新建批次；队列执行和定稿服务及 IPC 已存在，但页面尚未接入启动队列、重试、人工处置与定稿的控制入口 |
 
 ### 2.1 已经确认的主流程问题
 
@@ -242,3 +242,23 @@ Docling 仅作为复杂材料的可选服务。普通文本与现有 XLSX 单元
 8. 旧案、原生模板案卷、模板高级配置和旧运行产物均可读取，UI 与 Agent 对同一案卷操作不会串案。
 
 实际效率使用同模型、同任务和同材料比较旧/新应用流程，记录真实模型请求、含缓存的输入、输出、完成时间及功能正确性。格式、状态分类和来源定位分别核对；不以流程结束、全转待确认或 UI 卡片减少代替审核完成。本轮不安排视觉精修、压测或通用框架升级。
+
+## 7. 2026-10-10 现状补记
+
+### 批量审核界面
+
+批量审核已从示例占位页改为真实数据页：能列出持久化批次、切换批次、展示项目名称/申请人/进度/待处理状态/最近更新，并从已发布模板和已有审核项目创建批次。项目行会按案卷类型打开 V2 案卷页或旧版审核工作台。状态来自批次条目、V2 案卷阶段和最近一次 V2 运行记录。
+
+目前批次主要承担项目编组和进度汇总：创建时要选择同一模板版本下已经存在的项目；不会自动创建项目或上传材料。队列执行与定稿能力已有服务和 IPC，但批次页没有相应操作入口，用户暂时仍需逐项目进入工作台处理；批次级调度、逐项目恢复/重试、统一处理待办和正式定稿尚未形成可从页面使用的闭环。因此当前页面可以用于查看和编组，不能称作可操作的全自动批量审核。
+
+### 上游同步
+
+本次核对到上游 `Nya-Angle/CDUT-Studio` 的 `main` 最新提交为 `0a9ef5af`（合并 PR #14）。审核入口跟随上游 CDUT 专区的导航结构，批次页作为审核二级页面接入；审核专属 Pi 工具仍按审核会话和工具组启用。当前同步只以该次 fetch 确认到的 `main` 为准。
+
+### 模板模块规范
+
+[15 号规范](15-template-modules-and-runtime-boundary-spec.md)已经定稿，已阅读。它明确了模板目录、完整业务模板和复用模块的边界，建议先把少量完整模板及其验收材料跑稳，再从实际重复部分提取模块；审核运行时继续接收编译后的完整模板快照，不让审核 Agent 理解模块化编辑概念。文档描述的是后续基座设计，不表示模块库、组合解析器或冲突检查已经实现。业务材料尚未准备，因此这部分暂不进入实施。
+
+### 本轮代码验证
+
+本次同步后已运行类型检查、批次存储测试和 Electron 主进程/预加载/渲染构建。它们能验证代码兼容与可构建，不替代应用内交互验收；交互验收需在应用启动后由实际使用者完成。

@@ -11,6 +11,7 @@ import { USER_PROFILE_IPC_CHANNELS, SETTINGS_IPC_CHANNELS, SKIN_IPC_CHANNELS, SC
 import type { CustomNotificationSound } from '../types'
 import type { PresetReference, PresetReferenceReport, PresetScopeRebindResult, LarkCliStatus, LarkCliOperationResult, LarkLoginStartResult, LarkLoginEvent, LarkMcpCredentialsInput, LarkMcpSetupResult, LarkMcpStatus } from '@profer/shared'
 import { CDUT_AI_CLASS_IPC_CHANNELS, CDUT_ZONE_IPC_CHANNELS, STUDY_IPC_CHANNELS, type AiClassSessionSummary, type CdutAccountProfile, type CdutGatekeeperDecision, type CdutGatekeeperNoticeEvent, type CdutLoginInput, type CdutLoginResult, type CdutSavedAccountSummary, type CdutMutationConfirmRequest, type CdutMutationConfirmResult, type KnowledgeGraphData, type StudyDocumentOutline, type StudyDocumentQueryInput, type StudyGraphCostEstimate, type StudyGraphGenerateInput, type StudyGraphProgressEvent, type StudyIngestDocumentsInput, type StudySearchKnowledgeInput, type StudySearchKnowledgeResult } from '@profer/shared'
+import { YANHU_EXPRESS_IPC_CHANNELS, type YanhuCloseRightInput, type YanhuCreateTabInput, type YanhuLoadingChangedEvent, type YanhuNavigateInput, type YanhuReorderTabsInput, type YanhuSyncThemeInput, type YanhuTabRefInput, type YanhuTabsState, type YanhuUrlChangedEvent, type YanhuViewLayout, type YanhuPetBootstrap, type YanhuPetChatInput, type YanhuPetConfig, type YanhuPetMessage, type YanhuPetStateEvent, type YanhuPetStreamEvent, type YanhuPetViewport, type YanhuPetWindowGeometry } from '@profer/shared'
 import type {
   RuntimeStatus,
   GitRepoStatus,
@@ -1552,6 +1553,67 @@ export interface ElectronAPI {
     onGatekeeperBlocked: (callback: (event: CdutGatekeeperNoticeEvent) => void) => () => void
     /** 回传统一门禁用户决策 */
     gatekeeperRespond: (decision: CdutGatekeeperDecision) => Promise<{ handled: boolean }>
+  }
+
+  // ===== CDUT 专区 · 砚湖秒通（Yanhu Express）内置浏览器 =====
+  yanhuExpress: {
+    /** 初始化或从落盘拓扑恢复（仅实例化激活标签，其余休眠） */
+    initOrRestore: () => Promise<YanhuTabsState>
+    getTabsState: () => Promise<YanhuTabsState>
+    /** 呈现原生视图（挂载子页面时调用） */
+    showView: () => Promise<YanhuTabsState>
+    /** 隐藏原生视图（离开子页面时调用，保留标签存活） */
+    hideView: () => Promise<{ success: boolean }>
+    /** 上报 renderer 测得的视图布局（CSS 像素，主进程换算为原生边界） */
+    updateBounds: (layout: YanhuViewLayout) => Promise<{ success: boolean }>
+    /** 同步深浅主题到底层视图与网页媒体特征 */
+    syncTheme: (input: YanhuSyncThemeInput) => Promise<{ success: boolean }>
+    createTab: (input?: YanhuCreateTabInput) => Promise<YanhuTabsState>
+    activateTab: (input: YanhuTabRefInput) => Promise<YanhuTabsState>
+    closeTab: (input: YanhuTabRefInput) => Promise<YanhuTabsState>
+    closeOtherTabs: (input: YanhuTabRefInput) => Promise<YanhuTabsState>
+    closeRightTabs: (input: YanhuCloseRightInput) => Promise<YanhuTabsState>
+    reorderTabs: (input: YanhuReorderTabsInput) => Promise<YanhuTabsState>
+    navigate: (input: YanhuNavigateInput) => Promise<YanhuTabsState>
+    goBack: (input?: YanhuTabRefInput) => Promise<YanhuTabsState>
+    goForward: (input?: YanhuTabRefInput) => Promise<YanhuTabsState>
+    reload: (input?: YanhuTabRefInput) => Promise<YanhuTabsState>
+    /** 一键自愈：净化陈旧动态签名后重载当前标签 */
+    retryWithClean: (input?: YanhuTabRefInput) => Promise<YanhuTabsState>
+    /** 弹出标签栏原生上下文菜单（系统绘制，悬浮于网页视图之上） */
+    showTabMenu: (input: YanhuTabRefInput) => Promise<{ success: boolean }>
+    /** 在系统默认浏览器打开外链（仅 http/https） */
+    openExternal: (url: string) => Promise<{ success: boolean }>
+    onTabsChanged: (callback: (state: YanhuTabsState) => void) => () => void
+    onLoadingChanged: (callback: (event: YanhuLoadingChangedEvent) => void) => () => void
+    onUrlChanged: (callback: (event: YanhuUrlChangedEvent) => void) => () => void
+
+    // ===== 桌宠「砚小龙」（独立阉割版 Pi 运行时） =====
+    /** 主渲染窗口：同步砚湖秒通视口矩形（CSS 像素） */
+    petSyncViewport: (rect: YanhuPetViewport) => Promise<{ success: boolean }>
+    /** 桌宠窗口：上报紧凑包裹窗口几何（DIP） */
+    petUpdateGeometry: (geometry: YanhuPetWindowGeometry) => Promise<{ success: boolean }>
+    /** 桌宠窗口：拉取启动引导数据（配置 + 历史 + 视口） */
+    petGetBootstrap: () => Promise<YanhuPetBootstrap>
+    petGetConfig: () => Promise<YanhuPetConfig>
+    petSaveConfig: (patch: Partial<YanhuPetConfig>) => Promise<YanhuPetConfig>
+    petGetHistory: () => Promise<YanhuPetMessage[]>
+    petClearHistory: () => Promise<{ success: boolean }>
+    /** 发起一次桌宠对话（流式事件经 onPetStream 推送） */
+    petSendChat: (input: YanhuPetChatInput) => Promise<{ success: boolean; error?: string }>
+    petAbortChat: () => Promise<{ success: boolean }>
+    /** 订阅桌宠流式事件（主进程 -> 桌宠窗口） */
+    onPetStream: (callback: (event: YanhuPetStreamEvent) => void) => () => void
+    /** 订阅桌宠状态（视口尺寸 / 呈现态 / 最新配置）变更 */
+    onPetStateChanged: (callback: (state: YanhuPetStateEvent) => void) => () => void
+    /** 订阅桌宠记忆被清空（原生菜单触发时同步 UI） */
+    onPetHistoryCleared: (callback: () => void) => () => void
+    /** 桌宠透明区域鼠标穿透控制 */
+    petSetIgnoreMouse: (ignore: boolean) => Promise<{ success: boolean }>
+    /** 唤起桌宠原生上下文菜单 */
+    petShowContextMenu: () => Promise<{ success: boolean }>
+    /** 特权指令：唤起「砚湖秒通 · 实时底层诊断控制台」 */
+    openDiagnosticConsole: () => Promise<{ success: boolean }>
   }
 
   // ===== AI 速课堂（学习资料） =====
@@ -3613,6 +3675,95 @@ const electronAPI: ElectronAPI = {
     },
     gatekeeperRespond: (decision: CdutGatekeeperDecision) =>
       ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.GATEKEEPER_RESPOND, decision),
+  },
+
+  // ===== CDUT 专区 · 砚湖秒通（Yanhu Express）内置浏览器 =====
+  yanhuExpress: {
+    initOrRestore: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.INIT_OR_RESTORE),
+    getTabsState: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.GET_TABS_STATE),
+    showView: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.SHOW_VIEW),
+    hideView: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.HIDE_VIEW),
+    updateBounds: (layout: YanhuViewLayout) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.UPDATE_BOUNDS, layout),
+    syncTheme: (input: YanhuSyncThemeInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.SYNC_THEME, input),
+    createTab: (input?: YanhuCreateTabInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.CREATE_TAB, input ?? {}),
+    activateTab: (input: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.ACTIVATE_TAB, input),
+    closeTab: (input: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.CLOSE_TAB, input),
+    closeOtherTabs: (input: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.CLOSE_OTHER_TABS, input),
+    closeRightTabs: (input: YanhuCloseRightInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.CLOSE_RIGHT_TABS, input),
+    reorderTabs: (input: YanhuReorderTabsInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.REORDER_TABS, input),
+    navigate: (input: YanhuNavigateInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.NAVIGATE, input),
+    goBack: (input?: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.GO_BACK, input),
+    goForward: (input?: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.GO_FORWARD, input),
+    reload: (input?: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.RELOAD, input),
+    retryWithClean: (input?: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.RETRY_WITH_CLEAN, input),
+    showTabMenu: (input: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.SHOW_TAB_MENU, input),
+    openExternal: (url: string) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.OPEN_EXTERNAL, url),
+    onTabsChanged: (callback: (state: YanhuTabsState) => void) => {
+      const handler = (_: unknown, state: YanhuTabsState) => callback(state)
+      ipcRenderer.on(YANHU_EXPRESS_IPC_CHANNELS.ON_TABS_CHANGED, handler)
+      return () => ipcRenderer.removeListener(YANHU_EXPRESS_IPC_CHANNELS.ON_TABS_CHANGED, handler)
+    },
+    onLoadingChanged: (callback: (event: YanhuLoadingChangedEvent) => void) => {
+      const handler = (_: unknown, event: YanhuLoadingChangedEvent) => callback(event)
+      ipcRenderer.on(YANHU_EXPRESS_IPC_CHANNELS.ON_LOADING_CHANGED, handler)
+      return () => ipcRenderer.removeListener(YANHU_EXPRESS_IPC_CHANNELS.ON_LOADING_CHANGED, handler)
+    },
+    onUrlChanged: (callback: (event: YanhuUrlChangedEvent) => void) => {
+      const handler = (_: unknown, event: YanhuUrlChangedEvent) => callback(event)
+      ipcRenderer.on(YANHU_EXPRESS_IPC_CHANNELS.ON_URL_CHANGED, handler)
+      return () => ipcRenderer.removeListener(YANHU_EXPRESS_IPC_CHANNELS.ON_URL_CHANGED, handler)
+    },
+
+    // ===== 桌宠「砚小龙」 =====
+    petSyncViewport: (rect: YanhuPetViewport) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_SYNC_VIEWPORT, rect),
+    petUpdateGeometry: (geometry: YanhuPetWindowGeometry) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_UPDATE_GEOMETRY, geometry),
+    petGetBootstrap: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_GET_BOOTSTRAP),
+    petGetConfig: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_GET_CONFIG),
+    petSaveConfig: (patch: Partial<YanhuPetConfig>) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_SAVE_CONFIG, patch),
+    petGetHistory: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_GET_HISTORY),
+    petClearHistory: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_CLEAR_HISTORY),
+    petSendChat: (input: YanhuPetChatInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_CHAT_SEND, input),
+    petAbortChat: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_CHAT_ABORT),
+    onPetStream: (callback: (event: YanhuPetStreamEvent) => void) => {
+      const handler = (_: unknown, event: YanhuPetStreamEvent) => callback(event)
+      ipcRenderer.on(YANHU_EXPRESS_IPC_CHANNELS.PET_CHAT_STREAM_CHUNK, handler)
+      return () => ipcRenderer.removeListener(YANHU_EXPRESS_IPC_CHANNELS.PET_CHAT_STREAM_CHUNK, handler)
+    },
+    onPetStateChanged: (callback: (state: YanhuPetStateEvent) => void) => {
+      const handler = (_: unknown, state: YanhuPetStateEvent) => callback(state)
+      ipcRenderer.on(YANHU_EXPRESS_IPC_CHANNELS.PET_STATE_CHANGED, handler)
+      return () => ipcRenderer.removeListener(YANHU_EXPRESS_IPC_CHANNELS.PET_STATE_CHANGED, handler)
+    },
+    onPetHistoryCleared: (callback: () => void) => {
+      const handler = () => callback()
+      ipcRenderer.on(YANHU_EXPRESS_IPC_CHANNELS.PET_HISTORY_CLEARED, handler)
+      return () => ipcRenderer.removeListener(YANHU_EXPRESS_IPC_CHANNELS.PET_HISTORY_CLEARED, handler)
+    },
+    openDiagnosticConsole: () =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.OPEN_DIAGNOSTIC_CONSOLE),
+    petSetIgnoreMouse: (ignore: boolean) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_SET_IGNORE_MOUSE, ignore),
+    petShowContextMenu: () =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_SHOW_CONTEXT_MENU),
   },
 
   // ===== AI 速课堂（学习资料） =====

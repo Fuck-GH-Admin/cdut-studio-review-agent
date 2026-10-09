@@ -22,7 +22,6 @@ import { TabContent } from './TabContent'
 import { AutomationFormView } from '@/components/automation/AutomationFormView'
 import { PlanningView } from '@/components/planning/PlanningView'
 import { AgentSkillsView } from '@/components/agent-skills/AgentSkillsView'
-import { ContentReviewView } from '@/components/content-review/ContentReviewView'
 import { CdutZoneView } from '@/components/cdut-zone/CdutZoneView'
 import { automationFormAtom } from '@/atoms/automation-atoms'
 import { activeViewAtom } from '@/atoms/active-view'
@@ -311,9 +310,6 @@ export function MainArea(): React.ReactElement {
         ) : activeView === 'agent-skills' ? (
           // Agent 技能视图：全屏取代 TabBar + TabContent
           <AgentSkillsView />
-        ) : activeView === 'content-review' ? (
-          // 材料审核智能体：全屏取代 TabBar + TabContent（三栏工作台内部自管案卷导航）
-          <ContentReviewView />
         ) : activeView === 'cdut-zone' ? (
           // CDUT 专区：全屏视图（特区账户登录 + 专区内容）
           <CdutZoneView />

@@ -77,10 +77,10 @@ describe('OpenAI 官方上游繁忙提示', () => {
     expect(getRetryDisplayReason('anthropic', '服务繁忙')).toBe('服务繁忙')
   })
 
-  test('官方上游繁忙限制为 8 次，通用重试保持原上限', () => {
-    expect(MAX_AUTO_RETRIES).toBe(25)
-    expect(OPENAI_UPSTREAM_BUSY_MAX_RETRIES).toBe(8)
-    expect(getMaxAutoRetries('openai', 'overloaded')).toBe(8)
+  test('重试预算收敛为 5 次，官方上游繁忙同样上限 5 次', () => {
+    expect(MAX_AUTO_RETRIES).toBe(5)
+    expect(OPENAI_UPSTREAM_BUSY_MAX_RETRIES).toBe(5)
+    expect(getMaxAutoRetries('openai', 'overloaded')).toBe(5)
   })
 })
 
