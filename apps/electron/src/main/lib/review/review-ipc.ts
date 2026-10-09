@@ -718,6 +718,16 @@ export function registerReviewIpc(): void {
     if (input.action === 'recover') return recoverInterruptedBatch(input.batchId)
     throw new Error('未知批次操作')
   })
+  // Local-human batch group operation. The backend recomputes the preview and
+  // reruns each case's existing transaction guards; the renderer supplies no actor.
+  ipcMain.handle('review:batch-group-preview-v2', (_e, input: import('@profer/shared').BatchGroupActionRequest) => {
+    const { previewBatchGroupAction } = require('./batch-group-action-service') as typeof import('./batch-group-action-service')
+    return previewBatchGroupAction(input)
+  })
+  ipcMain.handle('review:batch-group-apply-v2', (_e, input: import('@profer/shared').BatchGroupApplyRequest) => {
+    const { applyBatchGroupAction } = require('./batch-group-action-service') as typeof import('./batch-group-action-service')
+    return applyBatchGroupAction(input)
+  })
 
   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_CASES_V2, () => {
     const { listAggregatesV2 } = require('./case-store-v2') as typeof import('./case-store-v2')
