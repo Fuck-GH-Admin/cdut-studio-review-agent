@@ -43,9 +43,9 @@ function formatTime(value: string | undefined): string {
 function caseStatus(row: BatchProjectRow, batch: BatchStateV2): { label: string; tone: string } {
   if (row.stage === 'awaiting-supplement') return { label: '等待补件', tone: 'bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300' }
   if (row.stage === 'awaiting-review' || row.stage === 'awaiting-final') return { label: '需要人工处理', tone: 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300' }
-  if (row.entryStatus === 'running' || row.stage === 'reviewing') return { label: '审核中', tone: 'bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300' }
   if (row.entryStatus === 'failed') return { label: '执行失败', tone: 'bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-300' }
   if (row.entryStatus === 'paused') return { label: '已暂停', tone: 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300' }
+  if (row.entryStatus === 'running') return { label: '审核中', tone: 'bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300' }
   if (row.entryStatus === 'done') return { label: batch.status === 'finalized' ? '批次已定稿' : '检查已完成', tone: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300' }
   if (batch.status === 'draft') return { label: '待开始', tone: 'bg-muted text-muted-foreground' }
   return { label: '排队中', tone: 'bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300' }
@@ -350,7 +350,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                         <td className="px-3 py-3 tabular-nums text-muted-foreground">{coverage ? coverage.pendingChecks : '—'}</td>
                         <td className="px-3 py-3">
                           <span className={`inline-flex whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-medium ${status.tone}`}>{status.label}</span>
-                          {(row.entryStatus === 'failed' || row.entryStatus === 'paused') && selectedBatch.status !== 'running' && selectedBatch.status !== 'finalized' && (
+                          {(row.entryStatus === 'failed' || row.entryStatus === 'paused' || (row.entryStatus === 'done' && triage?.route === 'technical-exception')) && selectedBatch.status !== 'running' && selectedBatch.status !== 'finalized' && (
                             <button type="button" className="ml-2 text-[11px] text-primary hover:underline"
                               disabled={executing || handlingBatch}
                               title={selectedBatch.cases.find((entry) => entry.caseId === row.caseId)?.error ?? '重新入队，仅本案'}
