@@ -1,6 +1,7 @@
 /** 批量审核：按批次查看项目进度；审核队列策略后续单独收敛。 */
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import type { BatchStateV2, ReviewBatch, ReviewCaseSummary, TemplateVersion } from '@profer/shared'
+import type { BatchStateV2, ReviewBatch, ReviewCaseSummary, TemplateVersion, BatchTriageInput, BatchTriageRoute } from '@profer/shared'
+import { groupBatchIssues, triageBatchCase } from '@profer/shared'
 import { AlertTriangle, CheckCircle2, Clock3, FileWarning, FolderOpen, Plus, RefreshCw } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@profer/ui/primitives/dialog'
@@ -44,19 +45,29 @@ function caseStatus(row: BatchProjectRow, batch: BatchStateV2): { label: string;
   if (row.entryStatus === 'running' || row.stage === 'reviewing') return { label: '审核中', tone: 'bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300' }
   if (row.entryStatus === 'failed') return { label: '执行失败', tone: 'bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-300' }
   if (row.entryStatus === 'paused') return { label: '已暂停', tone: 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300' }
-  if (row.entryStatus === 'done') return { label: batch.status === 'finalized' ? '已定稿' : '审核完成', tone: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300' }
+  if (row.entryStatus === 'done') return { label: batch.status === 'finalized' ? '批次已定稿' : '检查已完成', tone: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300' }
   if (batch.status === 'draft') return { label: '待开始', tone: 'bg-muted text-muted-foreground' }
   return { label: '排队中', tone: 'bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300' }
 }
 
-function getRowStats(row: BatchProjectRow, batch: BatchStateV2): { inProgress: boolean; human: boolean; complete: boolean; supplement: boolean } {
-  const status = caseStatus(row, batch).label
-  return {
-    inProgress: status === '审核中' || status === '排队中',
-    human: status === '需要人工处理' || status === '执行失败' || status === '已暂停',
-    complete: status === '审核完成' || status === '已定稿',
-    supplement: status === '等待补件',
-  }
+const TRIAGE_LABELS: Record<BatchTriageRoute, string> = {
+  pending: '待执行/处理中',
+  'awaiting-supplement': '等待补件',
+  'technical-exception': '技术异常',
+  'manual-review': '待人工判断',
+  'auto-return-candidate': '可退回候选',
+  'auto-pass-candidate': '可通过候选',
+  'already-decided': '已作业务决定',
+}
+
+const TRIAGE_TONES: Record<BatchTriageRoute, string> = {
+  pending: 'text-muted-foreground',
+  'awaiting-supplement': 'text-blue-700 dark:text-blue-300',
+  'technical-exception': 'text-red-600 dark:text-red-400',
+  'manual-review': 'text-amber-600 dark:text-amber-400',
+  'auto-return-candidate': 'text-orange-600 dark:text-orange-400',
+  'auto-pass-candidate': 'text-emerald-700 dark:text-emerald-300',
+  'already-decided': 'text-foreground',
 }
 
 export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Element {
@@ -71,6 +82,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
   const [error, setError] = useState<string | null>(null)
   const [createOpen, setCreateOpen] = useState(false)
   const [creating, setCreating] = useState(false)
+  const [executing, setExecuting] = useState(false)
   const [batchName, setBatchName] = useState('')
   const [templateKey, setTemplateKey] = useState('')
   const [selectedCaseIds, setSelectedCaseIds] = useState<string[]>([])
@@ -185,15 +197,42 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
     }
   }
 
-  const counts = rows.reduce((total, row) => {
-    const value = getRowStats(row, selectedBatch!)
-    return {
-      inProgress: total.inProgress + Number(value.inProgress),
-      human: total.human + Number(value.human),
-      complete: total.complete + Number(value.complete),
-      supplement: total.supplement + Number(value.supplement),
+
+  const triageInputs = useMemo<BatchTriageInput[]>(() => selectedBatch
+    ? rows.map((row) => ({
+      caseId: row.caseId,
+      entryStatus: row.entryStatus,
+      caseStage: row.stage,
+      run: row.run,
+      batch: selectedBatch.batch,
+    }))
+    : [], [rows, selectedBatch])
+  const triageByCase = useMemo(() => new Map(triageInputs.map((input) =>
+    [input.caseId, triageBatchCase(input)])), [triageInputs])
+  const issueGroups = useMemo(() => groupBatchIssues(triageInputs), [triageInputs])
+  const counts = triageInputs.reduce((total, input) => {
+    const route = triageByCase.get(input.caseId)?.route
+    if (route === 'pending') total.pending++
+    if (route === 'manual-review') total.human++
+    if (route === 'technical-exception') total.technical++
+    if (route === 'auto-pass-candidate') total.passCandidate++
+    if (route === 'auto-return-candidate' || route === 'awaiting-supplement') total.supplement++
+    return total
+  }, { pending: 0, human: 0, technical: 0, passCandidate: 0, supplement: 0 })
+
+  const runSelectedBatch = async (): Promise<void> => {
+    if (!selectedBatch || executing || selectedBatch.status === 'finalized' || selectedBatch.status === 'running') return
+    setExecuting(true)
+    try {
+      await window.reviewAPI.runBatchV2(selectedBatch.batch.id)
+      toast.success('本轮批次审核结束；请查看分流候选和待处理问题')
+    } catch (cause) {
+      toast.error(`批次执行失败：${cause instanceof Error ? cause.message : String(cause)}`)
+    } finally {
+      setExecuting(false)
+      await refresh()
     }
-  }, { inProgress: 0, human: 0, complete: 0, supplement: 0 })
+  }
 
   return (
     <div className="mx-auto w-full max-w-[1500px] space-y-5 px-5 py-5">
@@ -202,18 +241,28 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
           <h2 className="text-xl font-semibold tracking-tight">批量审核</h2>
           <p className="mt-1 text-sm text-muted-foreground">按批次跟进多个审核项目的进度和待处理情况。</p>
         </div>
-        <Button type="button" size="sm" className="h-9 rounded-lg px-4" onClick={openCreate}>
-          <Plus size={15} />新建批次
-        </Button>
+        <div className="flex items-center gap-2">
+          {selectedBatch && (
+            <Button type="button" size="sm" variant="outline" className="h-9 rounded-lg px-3"
+              disabled={executing || selectedBatch.status === 'finalized' || selectedBatch.status === 'running' || !selectedBatch.cases.some((entry) => entry.status !== 'done')}
+              onClick={() => void runSelectedBatch()}>
+              <Clock3 size={15} />{executing ? '批次审核中…' : '开始/继续批次审核'}
+            </Button>
+          )}
+          <Button type="button" size="sm" className="h-9 rounded-lg px-4" onClick={openCreate}>
+            <Plus size={15} />新建批次
+          </Button>
+        </div>
       </header>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <SummaryCard label="进行中" value={counts.inProgress} hint={selectedBatch ? '当前批次' : '当前批次'} icon={<Clock3 size={15} />} tone="text-blue-600 dark:text-blue-400" />
-        <SummaryCard label="待人工处理" value={counts.human} hint={`涉及 ${counts.human} 个项目`} icon={<AlertTriangle size={15} />} tone="text-amber-600 dark:text-amber-400" />
-        <SummaryCard label="已完成" value={counts.complete} hint="本轮累计" icon={<CheckCircle2 size={15} />} tone="text-emerald-600 dark:text-emerald-400" />
-        <SummaryCard label="等待补件" value={counts.supplement} hint="需要联系申请人" icon={<FileWarning size={15} />} tone="text-orange-600 dark:text-orange-400" />
+        <SummaryCard label="待执行/处理中" value={counts.pending} hint="尚未完成本轮检查" icon={<Clock3 size={15} />} tone="text-blue-600 dark:text-blue-400" />
+        <SummaryCard label="待人工判断" value={counts.human} hint="不含技术异常" icon={<AlertTriangle size={15} />} tone="text-amber-600 dark:text-amber-400" />
+        <SummaryCard label="可通过候选" value={counts.passCandidate} hint="未作正式批准" icon={<CheckCircle2 size={15} />} tone="text-emerald-600 dark:text-emerald-400" />
+        <SummaryCard label="补件/退回候选" value={counts.supplement} hint="仍需正式授权" icon={<FileWarning size={15} />} tone="text-orange-600 dark:text-orange-400" />
       </div>
 
+      {selectedBatch && <p className="text-xs text-muted-foreground">技术异常：{counts.technical} 项。分流结果仅为只读建议，系统尚未自动批准或自动退回任何案卷；正式处理仍需业务门槛与授权。</p>}
       {error && <div role="alert" className="rounded-lg border border-destructive/40 bg-destructive/5 px-3 py-2 text-sm text-destructive">批次加载失败：{error}</div>}
 
       <section className="space-y-3">
@@ -243,7 +292,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
         {selectedBatch ? (
           <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[850px] border-collapse text-left text-xs">
+              <table className="w-full min-w-[1000px] border-collapse text-left text-xs">
                 <thead className="bg-muted/45 text-[11px] font-medium text-muted-foreground">
                   <tr>
                     <th className="px-3 py-3">项目</th>
@@ -251,6 +300,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                     <th className="px-3 py-3">审核进度</th>
                     <th className="px-3 py-3">待处理</th>
                     <th className="px-3 py-3">状态</th>
+                    <th className="px-3 py-3">分流建议</th>
                     <th className="px-3 py-3 text-right">最近更新</th>
                   </tr>
                 </thead>
@@ -258,6 +308,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                   {rows.map((row) => {
                     const status = caseStatus(row, selectedBatch)
                     const coverage = row.run?.coverage
+                    const triage = triageByCase.get(row.caseId)
                     return (
                       <tr key={row.caseId} className="transition-colors hover:bg-muted/25">
                         <td className="max-w-[360px] px-3 py-3">
@@ -267,11 +318,12 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                         <td className="px-3 py-3 tabular-nums text-muted-foreground">{coverage && coverage.plannedChecks > 0 ? `${coverage.completedChecks} / ${coverage.plannedChecks}` : '—'}</td>
                         <td className="px-3 py-3 tabular-nums text-muted-foreground">{coverage ? coverage.pendingChecks : '—'}</td>
                         <td className="px-3 py-3"><span className={`inline-flex whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-medium ${status.tone}`}>{status.label}</span></td>
+                        <td className={`px-3 py-3 font-medium ${triage ? TRIAGE_TONES[triage.route] : 'text-muted-foreground'}`} title={triage?.explanation}>{triage ? TRIAGE_LABELS[triage.route] : '—'}</td>
                         <td className="px-3 py-3 text-right tabular-nums text-muted-foreground">{formatTime(row.updatedAt)}</td>
                       </tr>
                     )
                   })}
-                  {rows.length === 0 && <tr><td colSpan={6} className="px-4 py-12 text-center text-sm text-muted-foreground">这个批次还没有纳入审核项目。</td></tr>}
+                  {rows.length === 0 && <tr><td colSpan={7} className="px-4 py-12 text-center text-sm text-muted-foreground">这个批次还没有纳入审核项目。</td></tr>}
                 </tbody>
               </table>
             </div>
@@ -285,6 +337,36 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
           </div>
         )}
       </section>
+
+      {selectedBatch && issueGroups.length > 0 && (
+        <section className="space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h3 className="text-sm font-semibold">同类审核问题</h3>
+            <span className="text-xs text-muted-foreground">保守归组 · {issueGroups.length} 组 · 只读，不批量执行决定</span>
+          </div>
+          <div className="grid gap-2 lg:grid-cols-2">
+            {issueGroups.map((group) => (
+              <div key={group.key} className="rounded-xl border border-border/80 bg-card p-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium">{group.reason}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{group.ruleId} · {group.status} · {group.occurrences.length} 条检查</p>
+                  </div>
+                  <span className="shrink-0 rounded-md bg-muted px-2 py-1 text-xs">{group.caseIds.length} 个案卷</span>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {group.caseIds.slice(0, 4).map((caseId) => {
+                    const row = rows.find((item) => item.caseId === caseId)
+                    return <button type="button" key={caseId} className="rounded-md border border-border px-2 py-1 text-xs text-muted-foreground hover:text-primary hover:border-primary/40"
+                      onClick={() => void openProject(caseId)}>{row?.applicant && row.applicant !== '未填写' ? row.applicant : row?.title ?? caseId}</button>
+                  })}
+                  {group.caseIds.length > 4 && <span className="py-1 text-xs text-muted-foreground">等 {group.caseIds.length} 项</span>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <CreateBatchDialog
         open={createOpen}
