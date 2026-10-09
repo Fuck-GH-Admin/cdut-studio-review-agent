@@ -705,6 +705,10 @@ export function registerReviewIpc(): void {
     const { readBatchStateV2 } = require('./batch-store') as typeof import('./batch-store')
     return readBatchStateV2(batchId)
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_BATCHES_V2, () => {
+    const { listBatchStatesV2 } = require('./batch-store') as typeof import('./batch-store')
+    return listBatchStatesV2()
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, (_e, input: { action: 'finalize' | 'reopen'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown> }) => {
     const { finalizeBatch, reopenBatch } = require('./batch-store') as typeof import('./batch-store')
     if (input.action === 'finalize') return finalizeBatch(input.batchId, input.snapshot ?? {})

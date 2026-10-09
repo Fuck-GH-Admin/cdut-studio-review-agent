@@ -3806,6 +3806,7 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SAVE_TEMPLATE_DRAFT_V2, template) as Promise<import('@profer/shared').TemplateVersion>,
   createBatchV2: (batch: import('@profer/shared').ReviewBatch) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_BATCH_V2, { batch }) as Promise<import('@profer/shared').BatchStateV2>,
   getBatchV2: (batchId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_BATCH_V2, batchId) as Promise<import('@profer/shared').BatchStateV2 | undefined>,
+  listBatchesV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_BATCHES_V2) as Promise<import('@profer/shared').BatchStateV2[]>,
   batchActionV2: (input: { action: 'finalize' | 'reopen'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, input) as Promise<import('@profer/shared').BatchStateV2>,
   listCasesV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_CASES_V2) as Promise<Array<{ caseId: string; title: string; stage: string; revision: number; templateId: string; templateVersion: number; updatedAt: string }>>,

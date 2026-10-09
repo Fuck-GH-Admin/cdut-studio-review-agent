@@ -208,7 +208,14 @@ export function ContentReviewView(): React.ReactElement {
         <TemplateWizardPanel />
       </section>
       <section aria-label="审核批次管理" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'batch' && 'hidden')}>
-        <BatchPanel />
+        <BatchPanel
+          active={section === 'batch'}
+          onOpenProject={async (caseId) => {
+            const opened = await actions.selectCase(caseId)
+            if (opened) setSection('assist')
+            return opened
+          }}
+        />
       </section>
       <section aria-label="审核历史记录" className={cn('relative min-h-0 flex-1 overflow-auto py-4 titlebar-no-drag', section !== 'history' && 'hidden')}>
         <ReviewHistoryPanel active={section === 'history'} onOpenProject={async (caseId) => {

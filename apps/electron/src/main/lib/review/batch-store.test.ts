@@ -5,7 +5,7 @@ import { afterAll, describe, expect, test } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewBatch } from '@profer/shared'
-import { createBatchV2, finalizeBatch, pushViaOutbox, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus, runBatchQueue } from './batch-store'
+import { createBatchV2, finalizeBatch, listBatchStatesV2, pushViaOutbox, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus, runBatchQueue } from './batch-store'
 import type { BatchStateV2 } from '@profer/shared'
 type Entry = BatchStateV2['cases'][number]
 import { MockSchoolAdapter } from './external-ports'
@@ -18,6 +18,13 @@ afterAll(() => rmSync(CONFIG_DIR, { recursive: true, force: true }))
 const batch = (id: string): ReviewBatch => ({ id, name: `批次${id}`, templateId: 't', templateVersion: 1, policyVersionLock: [{ policyVersionId: 'p', version: 1 }], caseIds: ['c1', 'c2'], createdAt: new Date().toISOString() })
 
 describe('批次状态机（R08）', () => {
+  test('Given 多个已保存批次 When 查询目录 Then 返回全部批次并按创建时间倒序', () => {
+    createBatchV2({ ...batch('list-old'), createdAt: '2026-10-01T00:00:00.000Z' })
+    createBatchV2({ ...batch('list-new'), createdAt: '2026-10-02T00:00:00.000Z' })
+    const listedIds = listBatchStatesV2().map((state) => state.batch.id)
+    expect(listedIds.indexOf('list-new')).toBeLessThan(listedIds.indexOf('list-old'))
+  })
+
   test('Given 案卷尚未处理或失败 When 定稿 Then 拒绝且保留未定稿状态', () => {
     for (const status of ['queued', 'failed', 'paused'] as const) {
       const id = `unfinished-${status}`

@@ -42,6 +42,16 @@ export function readBatchStateV2(batchId: string): BatchStateV2 | undefined {
   }
 }
 
+/** 列出已保存批次，供批量审核工作台恢复批次目录。 */
+export function listBatchStatesV2(): BatchStateV2[] {
+  const root = join(getConfigDir(), 'review-batches')
+  if (!existsSync(root)) return []
+  return readdirSync(root)
+    .map((batchId) => readBatchStateV2(batchId))
+    .filter((state): state is BatchStateV2 => !!state)
+    .sort((a, b) => b.batch.createdAt.localeCompare(a.batch.createdAt))
+}
+
 /** 创建批次（锁定模板/政策版本，A12） */
 export function createBatchV2(batch: ReviewBatch): BatchStateV2 {
   if (existsSync(batchPath(batch.id))) throw new Error(`批次已存在: ${batch.id}`)
