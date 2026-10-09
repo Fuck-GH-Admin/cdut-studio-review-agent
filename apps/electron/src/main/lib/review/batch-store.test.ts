@@ -132,6 +132,32 @@ describe('批次队列执行（G06/G11 真实队列）', () => {
     createBatchV2(batch('bq3'))
     await expect(runBatchQueue('bq3')).rejects.toThrow('注入')
   })
+
+  test('Given 没有执行器 When 启动失败 Then 批次不遗留 running 状态', async () => {
+    createBatchV2(batch('bq-no-executor'))
+    await expect(runBatchQueue('bq-no-executor')).rejects.toThrow('注入')
+    expect(readBatchStateV2('bq-no-executor')?.status).toBe('draft')
+  })
+
+  test('Given 同一批次已经运行 When 重复点击启动 Then 防止并发双跑', async () => {
+    createBatchV2({ ...batch('bq-concurrent'), caseIds: ['c1'] })
+    let release!: () => void
+    let started!: () => void
+    const entered = new Promise<void>((resolve) => { started = resolve })
+    const blocker = new Promise<void>((resolve) => { release = resolve })
+    let calls = 0
+    const first = runBatchQueue('bq-concurrent', {
+      runCase: async () => { calls++; started(); await blocker; return { status: 'completed' } },
+    })
+    await entered
+    await expect(runBatchQueue('bq-concurrent', {
+      runCase: async () => { calls++; return { status: 'completed' } },
+    })).rejects.toThrow('正在执行')
+    release()
+    await first
+    expect(calls).toBe(1)
+    expect(readBatchStateV2('bq-concurrent')?.cases[0]?.status).toBe('done')
+  })
 })
 
 describe('outbox 发送前持久化（复查 §5.5）', () => {
