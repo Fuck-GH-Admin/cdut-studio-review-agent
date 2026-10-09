@@ -101,6 +101,7 @@ import { currentConversationIdAtom, channelsAtom, channelsLoadedAtom, selectedMo
 import { appModeAtom } from './atoms/app-mode'
 import type { FeishuBotBridgeState, FeishuBridgeState, DingTalkBotBridgeState, DingTalkBridgeState } from '@profer/shared'
 import { Toaster } from '@profer/ui'
+import { TooltipProvider } from '@profer/ui/primitives/tooltip'
 
 /** 桌面壳 Toaster：把皮肤系统解析出的主题注入通用基元（基元本身已不含 jotai 依赖） */
 function ProferToaster(props: Omit<React.ComponentProps<typeof Toaster>, 'theme'>) {
@@ -134,6 +135,8 @@ function hasEnabledModel(
 const isDetachedPreviewWindow = new URLSearchParams(window.location.search).get('window') === 'detached-preview'
 const isAgentPreviewWindow = new URLSearchParams(window.location.search).get('window') === 'agent-preview'
 const isPlanningWindow = new URLSearchParams(window.location.search).get('window') === 'planning'
+// 砚湖秒通 · 桌宠「砚小龙」独立透明子窗口
+const isYanhuPetWindow = new URLSearchParams(window.location.search).get('window') === 'yanhu-pet'
 
 /**
  * 主题初始化组件
@@ -1076,6 +1079,19 @@ if (isDetachedPreviewWindow) {
         <PlanningWindowApp />
         <ProferToaster position="top-right" offset={96} />
       </React.StrictMode>
+    )
+  })
+} else if (isYanhuPetWindow) {
+  // ===== 砚湖秒通 · 桌宠「砚小龙」透明子窗口 =====
+  import('./components/cdut-zone/yanhu/pet/YanhuPetFloatingHost').then(({ YanhuPetFloatingHost }) => {
+    ReactDOM.createRoot(document.getElementById('root')!).render(
+      <React.StrictMode>
+        <ThemeInitializer />
+        <TooltipProvider delayDuration={200}>
+          <YanhuPetFloatingHost />
+        </TooltipProvider>
+        <ProferToaster position="top-center" offset={12} />
+      </React.StrictMode>,
     )
   })
 } else {

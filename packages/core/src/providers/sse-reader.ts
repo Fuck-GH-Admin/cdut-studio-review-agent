@@ -32,6 +32,15 @@ export interface StreamSSEOptions {
   fetchFn?: typeof globalThis.fetch
 }
 
+/** 单次流式请求汇总的 Token 用量（供应商回传时填充） */
+export interface StreamUsage {
+  inputTokens?: number
+  outputTokens?: number
+  cacheReadTokens?: number
+  cacheWriteTokens?: number
+  reasoningTokens?: number
+}
+
 /** streamSSE 的返回结果 */
 export interface StreamSSEResult {
   /** 累积的完整文本内容 */
@@ -49,6 +58,8 @@ export interface StreamSSEResult {
   toolCalls: ToolCall[]
   /** 停止原因（'tool_use' 表示需要执行工具后继续） */
   stopReason?: string
+  /** 供应商回传的真实 Token 用量；未回传时为 undefined */
+  usage?: StreamUsage
 }
 
 // ===== 首字节前自动重试 =====
@@ -246,6 +257,34 @@ async function runStreamAttempt(options: StreamSSEOptions): Promise<StreamSSERes
   let content = ''
   let reasoning = ''
   let stopReason: string | undefined
+  // 真实 Token 用量累积：input 类字段取最后出现的非空值，output 类取最大值（provider 常回传累计值）
+  const usage: StreamUsage = {}
+  let usageSeen = false
+  const mergeUsage = (event: { inputTokens?: number; outputTokens?: number; cacheReadTokens?: number; cacheWriteTokens?: number; reasoningTokens?: number }): void => {
+    const lastNonEmpty = (prev: number | undefined, next: number | undefined): number | undefined =>
+      typeof next === 'number' && Number.isFinite(next) ? next : prev
+    const maxOf = (prev: number | undefined, next: number | undefined): number | undefined =>
+      typeof next === 'number' && Number.isFinite(next) ? Math.max(prev ?? 0, next) : prev
+    const nextInput = lastNonEmpty(usage.inputTokens, event.inputTokens)
+    const nextCacheRead = lastNonEmpty(usage.cacheReadTokens, event.cacheReadTokens)
+    const nextCacheWrite = lastNonEmpty(usage.cacheWriteTokens, event.cacheWriteTokens)
+    const nextReasoning = maxOf(usage.reasoningTokens, event.reasoningTokens)
+    const nextOutput = maxOf(usage.outputTokens, event.outputTokens)
+    if (
+      nextInput !== undefined ||
+      nextOutput !== undefined ||
+      nextCacheRead !== undefined ||
+      nextCacheWrite !== undefined ||
+      nextReasoning !== undefined
+    ) {
+      usageSeen = true
+    }
+    usage.inputTokens = nextInput
+    usage.outputTokens = nextOutput
+    usage.cacheReadTokens = nextCacheRead
+    usage.cacheWriteTokens = nextCacheWrite
+    usage.reasoningTokens = nextReasoning
+  }
   const reader = response.body.getReader()
   const decoder = new TextDecoder()
   let buffer = ''
@@ -316,6 +355,8 @@ async function runStreamAttempt(options: StreamSSEOptions): Promise<StreamSSERes
         }
       } else if (event.type === 'done' && event.stopReason) {
         stopReason = event.stopReason
+      } else if (event.type === 'usage') {
+        mergeUsage(event)
       } else if (event.type === 'error') {
         throw new ProviderStreamError(event.error)
       }
@@ -388,7 +429,7 @@ async function runStreamAttempt(options: StreamSSEOptions): Promise<StreamSSERes
   }
 
   onEvent({ type: 'done', stopReason })
-  return { content, reasoning, thinkingBlocks, toolCalls, stopReason }
+  return { content, reasoning, thinkingBlocks, toolCalls, stopReason, usage: usageSeen ? usage : undefined }
 }
 
 // ===== 非流式标题请求 =====

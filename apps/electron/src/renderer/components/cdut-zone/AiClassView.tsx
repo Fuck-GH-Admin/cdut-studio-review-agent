@@ -37,6 +37,8 @@ import {
 } from '@/atoms/study-atoms'
 import { AiClassChatPanel } from './AiClassChatPanel'
 import { AiClassKnowledgeTree } from './AiClassKnowledgeTree'
+import { AiClassCognitionButton } from './AiClassCognitionButton'
+import { AiClassCognitionModal } from './AiClassCognitionModal'
 
 /** 支持上传的资料扩展名（与白名单同源，用于 file input accept 提示） */
 const ACCEPT_EXTENSIONS = ALLOWED_STUDY_EXTENSIONS.join(',')
@@ -280,7 +282,10 @@ export function AiClassView(): React.ReactElement {
       </aside>
 
       {/* ===== 中栏：速课堂专属对话面板 ===== */}
-      <section className="flex min-w-0 flex-1 flex-col bg-content-area">
+      <section className="relative flex min-w-0 flex-1 flex-col bg-content-area">
+        {/* 右上角：认知底座双引擎快捷入口胶囊 */}
+        <AiClassCognitionButton />
+        <AiClassCognitionModal />
         {sessionId ? (
           <AiClassChatPanel sessionId={sessionId} />
         ) : (

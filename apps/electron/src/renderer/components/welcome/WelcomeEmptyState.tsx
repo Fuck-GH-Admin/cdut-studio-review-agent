@@ -49,7 +49,7 @@ export function WelcomeEmptyState(): React.ReactElement {
       </div>
 
       {showHeatmap && (
-        <div className="z-10 [@media(max-height:640px)]:hidden">
+        <div className="z-10 mt-3 [@media(max-height:640px)]:hidden">
           <UsageHeatmap />
         </div>
       )}

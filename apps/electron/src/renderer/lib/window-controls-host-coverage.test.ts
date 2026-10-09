@@ -26,9 +26,11 @@ const FULLSCREEN_VIEWS: Array<{ path: string; minHosts: number; why: string }> =
     why: 'Agent 技能全屏视图（含未选工作区空态）',
   },
   {
-    path: '../components/content-review/ContentReviewView.tsx',
+    path: '../components/cdut-zone/CdutZoneView.tsx',
+    // 专区首页依赖 MainArea 兜底宿主；进入三大板块子页面后由专区自声明宿主（priority 20）接管，
+    // 材料审核工作台（ContentReviewView）不再自管窗口按钮，避免同优先级争抢。
     minHosts: 1,
-    why: '内容审核专区全屏视图',
+    why: 'CDUT 专区全屏视图（含子页面宿主声明）',
   },
 ]
 

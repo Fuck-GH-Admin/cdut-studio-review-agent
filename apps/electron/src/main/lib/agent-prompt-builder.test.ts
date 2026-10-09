@@ -176,7 +176,7 @@ describe('buildSystemPrompt', () => {
     }
   })
 
-  test('工作区会话恢复指向 Profer workspace profile，而非用户项目指令文件', () => {
+  test('工作区会话恢复指向 CDUT Studio workspace profile，而非用户项目指令文件', () => {
     const slug = 'demo-workspace'
     const sessionId = 'session-123'
     const prompt = buildSystemPrompt({
@@ -188,15 +188,15 @@ describe('buildSystemPrompt', () => {
 
     const workspaceRoot = join(resolveConfigDir(), 'agent-workspaces', slug)
     const workspaceProfile = join(workspaceRoot, 'workspace-profile.md')
-    expect(prompt).toContain(`**Profer 工作区资料**: ${workspaceProfile}`)
-    expect(prompt).toContain(`③ Profer 工作区资料（\`${workspaceProfile}\``)
-    expect(prompt).toContain('旧版 Profer 工作区资料（仅兼容读取）')
+    expect(prompt).toContain(`**CDUT Studio 工作区资料**: ${workspaceProfile}`)
+    expect(prompt).toContain(`③ CDUT Studio 工作区资料（\`${workspaceProfile}\``)
+    expect(prompt).toContain('旧版 CDUT Studio 工作区资料（仅兼容读取）')
     expect(prompt).toContain('项目中的 `AGENTS.md` / `CLAUDE.md` 属于用户资产')
     expect(prompt).toContain('不要读取当前 cwd 下不存在的相对路径 `CLAUDE.md`')
     expect(prompt).not.toContain('维护工作区根目录下的 CLAUDE.md')
     expect(prompt).toContain(join(workspaceRoot, 'workspace-files', '.context'))
     expect(prompt).toContain(join(workspaceRoot, '.cdutai', 'memory', 'MEMORY.md'))
-    expect(prompt).not.toContain('Profer 脱胎于开源项目')
+    expect(prompt).not.toContain('CDUT Studio 脱胎于开源项目')
   })
 
   test('PROFER_CONFIG_DIR 覆盖时，提示中的工作区路径跟随隔离根目录', () => {
@@ -213,7 +213,7 @@ describe('buildSystemPrompt', () => {
       })
 
       const workspaceRoot = join(isolatedRoot, 'agent-workspaces', slug)
-      expect(prompt).toContain(`**Profer 工作区资料**: ${join(workspaceRoot, 'workspace-profile.md')}`)
+      expect(prompt).toContain(`**CDUT Studio 工作区资料**: ${join(workspaceRoot, 'workspace-profile.md')}`)
       expect(prompt).toContain(join(workspaceRoot, 'workspace-files', '.context'))
       expect(prompt).not.toContain(join(homedir(), '.cdutai-dev', 'agent-workspaces', slug))
     } finally {
@@ -234,7 +234,7 @@ describe('buildSystemPrompt', () => {
 
     expect(prompt).toContain('先列出两个目录；只读取**实际存在且与当前任务相关**的文件')
     expect(prompt).toContain('不得默认创建或读取 `note.md`、`todo.md`')
-    expect(prompt).toContain('Profer Memory')
+    expect(prompt).toContain('CDUT Studio Memory')
     expect(prompt).not.toContain('按主题命名的 Markdown — 研究与分析输出')
     expect(prompt).toContain('按需检索和读取，不默认创建或读取通用 `note.md`')
     expect(prompt).not.toContain('会话级 `.context/`（note.md、todo.md）')
@@ -382,10 +382,10 @@ describe('buildSystemPrompt', () => {
     // 隐藏：任务图、委派、记忆、规划及所有增强型产品能力说明。
     expect(minimalPrompt).not.toContain('proma_task_create')
     expect(minimalPrompt).not.toContain('## SubAgent 委派策略')
-    expect(minimalPrompt).not.toContain('## Profer 知识维护架构')
+    expect(minimalPrompt).not.toContain('## CDUT Studio 知识维护架构')
     expect(minimalPrompt).not.toContain('### Pi Runtime 与文件记忆')
     expect(minimalPrompt).not.toContain('create_todo')
-    expect(minimalPrompt).not.toContain('## Profer 受管浏览器')
+    expect(minimalPrompt).not.toContain('## CDUT Studio 受管浏览器')
     expect(minimalPrompt).not.toContain('`inspect_preview`')
     expect(minimalPrompt).not.toContain('`generate_image`')
     expect(minimalPrompt).not.toContain('`WebSearch`')
@@ -407,7 +407,7 @@ describe('buildSystemPrompt', () => {
     expect(standardPrompt).toContain('## SubAgent 委派策略')
     expect(standardPrompt).toContain('presetReference')
     expect(standardPrompt).toContain('不传时子 Agent 继承当前父会话的稳定预设引用')
-    expect(standardPrompt).toContain('## Profer 知识维护架构')
+    expect(standardPrompt).toContain('## CDUT Studio 知识维护架构')
     expect(standardPrompt).toContain('### Pi Runtime 与文件记忆')
   })
 
@@ -449,7 +449,7 @@ describe('buildSystemPrompt', () => {
     expect(withoutAutomation).toContain('6. **自检习惯**')
   })
 
-  test('Pi composer 将低频 SOP 留给任务命中时注入，核心执行规则始终保留', () => {
+  test('Pi composer 静态裁剪：仅按工具挂载决定低频 SOP，且不随用户文本变化', () => {
     const basePrompt = buildSystemPrompt({
       workspaceName: 'Demo',
       workspaceSlug: 'demo-workspace',
@@ -458,44 +458,61 @@ describe('buildSystemPrompt', () => {
       isPiRuntime: true,
       pptCapabilityActive: true,
     })
+
+    // Tier 0：未挂载任何产品工具 → 低频 SOP 全部裁掉，核心规则与常驻知识治理保留。
+    const tier0 = buildPiTaskPrompt({
+      basePrompt,
+      userMessage: '检查这个 TypeScript 项目的类型错误。',
+      toolNames: [],
+    })
+    expect(tier0).toContain('## 做事方式')
+    expect(tier0).toContain('修改后必须闭环')
+    expect(tier0).toContain('计划模式文件路径')
+    expect(tier0).toContain('## CDUT Studio 知识维护架构')
+    expect(tier0).not.toContain('## CDUT Studio 受管浏览器')
+    expect(tier0).not.toContain('7. **定时任务**')
+    expect(tier0).not.toContain('## SubAgent 委派策略')
+    expect(tier0).not.toContain('### Pi Runtime 与文件记忆')
+    // 同一工具集合下，不同用户文本输出必须完全一致（前缀缓存友好）。
+    const tier0OtherText = buildPiTaskPrompt({
+      basePrompt,
+      userMessage: '完全不同的提问：打开网页并做成幻灯片。',
+      toolNames: [],
+    })
+    expect(tier0OtherText).toBe(tier0)
+
+    // 挂载浏览器/PPT/自动化/协作/记忆工具 → 各自 SOP 恢复；文本变化仍不改变输出。
     const toolNames = [
       'BrowserObserve',
       'plan_ppt_visuals',
       'audit_ppt_delivery',
+      'open_file_preview',
+      'inspect_file_preview',
       'mcp__automation__create_automation',
       'mcp__collaboration__delegate_agent',
       'mcp__memory-archive__search_memory',
     ]
-
-    const ordinary = buildPiTaskPrompt({
+    const full = buildPiTaskPrompt({
       basePrompt,
       userMessage: '检查这个 TypeScript 项目的类型错误。',
       toolNames,
+      pptCapabilityActive: true,
     })
-    expect(ordinary).toContain('## 做事方式')
-    expect(ordinary).toContain('修改后必须闭环')
-    expect(ordinary).toContain('计划模式文件路径')
-    expect(ordinary).not.toContain('## Profer 受管浏览器')
-    expect(ordinary).not.toContain('PPT 视觉交付门禁')
-    expect(ordinary).not.toContain('7. **定时任务**')
-    expect(ordinary).not.toContain('## SubAgent 委派策略')
-    // Pi 专属文件记忆细节只在记忆任务按需恢复；常驻的知识维护架构仍负责收尾候选检查。
-    expect(ordinary).not.toContain('### Pi Runtime 与文件记忆')
-    // 普通本地任务应显著减去低频 SOP，而不是只做无意义的段落重排。
-    // 08-26 起收尾知识治理架构为常驻约束；其余低频 SOP 仍需裁掉，控制在基础 prompt 的 75% 内。
-    expect(ordinary.length).toBeLessThan(basePrompt.length * 0.75)
+    expect(full).toContain('## CDUT Studio 受管浏览器')
+    expect(full).toContain('7. **定时任务**')
+    expect(full).toContain('## SubAgent 委派策略')
+    expect(full).toContain('### Pi Runtime 与文件记忆')
+    // PPT 任务走 PptxGenJS Skill；已移除 generate_pptx_fast 的专属提示词。
+    expect(full).not.toContain('快速 PPTX 生成')
+    expect(full).not.toContain('generate_pptx_fast')
 
-    const webAndPpt = buildPiTaskPrompt({
+    const fullOtherText = buildPiTaskPrompt({
       basePrompt,
       userMessage: '访问 https://example.com 并做成 pptx 幻灯片。',
       toolNames,
       pptCapabilityActive: true,
     })
-    expect(webAndPpt).toContain('## Profer 受管浏览器')
-    // PPT 任务走 PptxGenJS Skill；已移除 generate_pptx_fast 的专属提示词。
-    expect(webAndPpt).not.toContain('快速 PPTX 生成')
-    expect(webAndPpt).not.toContain('generate_pptx_fast')
-    expect(webAndPpt).not.toContain('7. **定时任务**')
+    expect(fullOtherText).toBe(full)
   })
 
   test('禁用 memory 时团队工作区不再注入团队记忆提示词', () => {
@@ -525,7 +542,7 @@ describe('buildSystemPrompt', () => {
     expect(prompt).not.toContain('`BrowserPreviewOpen`')
     expect(prompt).not.toContain('`WebSearch`')
     expect(prompt).not.toContain('`WebFetch`')
-    expect(prompt).toContain('## Profer 受管浏览器')
+    expect(prompt).toContain('## CDUT Studio 受管浏览器')
     expect(prompt).toContain('BrowserObserve')
     expect(prompt).toContain('BrowserScreenshot')
   })
@@ -538,7 +555,7 @@ describe('buildSystemPrompt', () => {
       permissionMode: 'auto',
       disabledTools: ['BrowserScreenshot'],
     })
-    expect(browserScreenshotDisabled).toContain('## Profer 受管浏览器')
+    expect(browserScreenshotDisabled).toContain('## CDUT Studio 受管浏览器')
     expect(browserScreenshotDisabled).toContain('BrowserObserve')
     expect(browserScreenshotDisabled).toContain('BrowserPreviewOpen')
     expect(browserScreenshotDisabled).not.toContain('BrowserScreenshot')
@@ -551,7 +568,7 @@ describe('buildSystemPrompt', () => {
       permissionMode: 'auto',
       disabledTools: ['BrowserObserve'],
     })
-    expect(browserObserveDisabled).toContain('## Profer 受管浏览器')
+    expect(browserObserveDisabled).toContain('## CDUT Studio 受管浏览器')
     expect(browserObserveDisabled).toContain('BrowserScreenshot')
     expect(browserObserveDisabled).not.toContain('BrowserObserve')
     expect(browserObserveDisabled).not.toContain('先调用 `BrowserObserve`')
@@ -577,7 +594,7 @@ describe('buildSystemPrompt', () => {
     expect(openPreviewDisabled).toContain('inspect_preview')
     expect(openPreviewDisabled).toContain('inspect_file_preview')
     expect(openPreviewDisabled).not.toContain('必须先用 `open_file_preview`')
-    expect(openPreviewDisabled).toContain('使用 `inspect_file_preview` 检查当前用户可见的 Profer PPTX 正式预览')
+    expect(openPreviewDisabled).toContain('使用 `inspect_file_preview` 检查当前用户可见的 CDUT Studio PPTX 正式预览')
 
     const inspectFilePreviewDisabled = buildSystemPrompt({
       workspaceName: 'Demo',
@@ -589,7 +606,7 @@ describe('buildSystemPrompt', () => {
     expect(inspectFilePreviewDisabled).toContain('inspect_preview')
     expect(inspectFilePreviewDisabled).toContain('open_file_preview')
     expect(inspectFilePreviewDisabled).not.toContain('inspect_file_preview')
-    expect(inspectFilePreviewDisabled).toContain('PPTX 必须先用 `open_file_preview` 打开 Profer 正式文件预览')
+    expect(inspectFilePreviewDisabled).toContain('PPTX 必须先用 `open_file_preview` 打开 CDUT Studio 正式文件预览')
 
     const allPreviewDisabled = buildSystemPrompt({
       workspaceName: 'Demo',
@@ -614,15 +631,15 @@ describe('buildSystemPrompt', () => {
     })
     expect(prompt).toContain('proma_task_create')
     expect(prompt).toContain('## SubAgent 委派策略')
-    expect(prompt).toContain('## Profer 知识维护架构')
+    expect(prompt).toContain('## CDUT Studio 知识维护架构')
     expect(prompt).toContain('`inspect_preview`')
     expect(prompt).toContain('`WebSearch`')
     expect(prompt).toContain('`send_local_image`')
     expect(prompt).not.toContain('create_todo')
-    expect(prompt).not.toContain('## Profer 受管浏览器')
+    expect(prompt).not.toContain('## CDUT Studio 受管浏览器')
     expect(prompt).not.toContain('`generate_image`')
     // create_skin 归属 image 组：代码预设声明生图关闭时，皮肤创建工具及其 SOP 也必须一并消失
-    expect(prompt).not.toContain('10. **创建 Profer 皮肤**')
+    expect(prompt).not.toContain('10. **创建 CDUT Studio 皮肤**')
   })
 
   test('六类能力硬禁用时 Prompt 与动态浏览器上下文不暴露对应入口', () => {
@@ -634,7 +651,7 @@ describe('buildSystemPrompt', () => {
       permissionMode: 'auto',
       disabledToolGroups: disabled,
     })
-    expect(prompt).not.toContain('## Profer 受管浏览器')
+    expect(prompt).not.toContain('## CDUT Studio 受管浏览器')
     expect(prompt).not.toContain('`inspect_preview`')
     expect(prompt).not.toContain('`generate_image`')
     expect(prompt).not.toContain('`WebSearch`')
@@ -690,7 +707,7 @@ describe('buildSystemPrompt', () => {
     const taskPrompt = buildPiTaskPrompt({
       basePrompt: macPrompt,
       userMessage: '检查类型错误。',
-      toolNames: ['BrowserObserve', 'mcp__memory-archive__search_memory'],
+      toolNames: [],
     })
     expect(taskPrompt).toContain('## 当前平台与项目路径（macOS）')
     expect(taskPrompt).toContain('/bin/zsh')
@@ -698,7 +715,7 @@ describe('buildSystemPrompt', () => {
     expect(taskPrompt).toContain('## 当前预设已关闭的能力')
     expect(taskPrompt).toContain('clipboard')
     expect(taskPrompt).not.toContain('### Pi Runtime 与文件记忆')
-    expect(taskPrompt).not.toContain('## Profer 受管浏览器')
+    expect(taskPrompt).not.toContain('## CDUT Studio 受管浏览器')
   })
 
   test('动态上下文只展示当前预设实际允许的 MCP，且不泄露命令和 URL', () => {
@@ -755,7 +772,7 @@ describe('buildSystemPrompt 皮肤创建指引', () => {
   test('create_skin 可用时给出固定皮肤目录，并要求不要全盘扫描', () => {
     const prompt = buildSystemPrompt(base)
     const userSkinDir = `~/${getConfigDirName()}/skins/`
-    expect(prompt).toContain('10. **创建 Profer 皮肤**')
+    expect(prompt).toContain('10. **创建 CDUT Studio 皮肤**')
     expect(prompt).toContain(userSkinDir)
     expect(prompt).toContain('installedPath')
     // 措辞必须涵盖 Windows 侧的递归搜索命令，而不只是 macOS/Linux 的 find/ls
@@ -767,6 +784,6 @@ describe('buildSystemPrompt 皮肤创建指引', () => {
 
   test('create_skin 被禁用时不再注入皮肤创建 SOP', () => {
     const prompt = buildSystemPrompt({ ...base, disabledTools: ['create_skin'] })
-    expect(prompt).not.toContain('10. **创建 Profer 皮肤**')
+    expect(prompt).not.toContain('10. **创建 CDUT Studio 皮肤**')
   })
 })

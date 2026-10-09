@@ -107,4 +107,41 @@ describe('streamSSE', () => {
       onEvent: () => {},
     })).rejects.toThrow('流式响应空闲超过 5ms')
   })
+
+  test('Given 流末携带 usage chunk When 读取 Then 汇总到 result.usage 并派发 usage 事件', async () => {
+    const adapter = new OpenAIAdapter()
+    const lines = [
+      { choices: [{ delta: { content: 'hi' } }] },
+      { choices: [{ delta: {}, finish_reason: 'stop' }] },
+      { choices: [], usage: { prompt_tokens: 100, completion_tokens: 20, total_tokens: 120 } },
+    ]
+    const body = lines.map((line) => `data: ${JSON.stringify(line)}\n\n`).join('') + 'data: [DONE]\n\n'
+    const seen: string[] = []
+
+    const result = await streamSSE({
+      request,
+      adapter,
+      fetchFn: responseFromText(body),
+      onEvent: (event) => {
+        seen.push(event.type)
+      },
+    })
+
+    expect(result.usage?.inputTokens).toBe(100)
+    expect(result.usage?.outputTokens).toBe(20)
+    expect(seen).toContain('usage')
+  })
+
+  test('Given 供应商未回传 usage When 读取 Then result.usage 为 undefined（调用方回退估算）', async () => {
+    const adapter = new OpenAIAdapter()
+    const payload = JSON.stringify({ choices: [{ delta: { content: 'no-usage' } }] })
+    const result = await streamSSE({
+      request,
+      adapter,
+      fetchFn: responseFromText(`data: ${payload}\n\n`),
+      onEvent: () => {},
+    })
+
+    expect(result.usage).toBeUndefined()
+  })
 })

@@ -1,12 +1,17 @@
 /**
- * ContentReviewView — 内容审核专区（三栏审核工作台，主视图）
+ * ContentReviewView — CDUT 专区「材料审核」子页面（三栏审核工作台主体）
  *
- * 布局：顶栏（标题/徽标/案卷信息/操作按钮） + 三栏（审核依据 | 申请与证明 | AI 审核员） + 助手抽屉 + 底部错误条。
+ * 作为 CdutZoneView 子页面内页挂载：统一顶栏（校徽 + 标题 + 关闭按钮）与窗口按钮宿主
+ * 由外层 CdutZoneView（cdut-subview）统管，本组件不再声明自身的 WindowControlsHost 与拖拽层，
+ * 避免同为 priority 20 争抢窗口按钮。
+ *
+ * 布局：工作台二级工具栏（模块导航 + 案卷摘要 + 出口徽标 + 操作按钮） +
+ * 三栏（审核依据 | 申请与证明 | AI 审核员） + 助手抽屉 + 底部错误条。
  * 三栏宽度 flex-[3] / flex-[4] / flex-[3]，栏间 1px 分隔，各自独立滚动（overflow-y-auto）。
  * 窄窗口（<1100px）时只挂载当前栏，由顶部三按钮切换；切栏时重放已有定位。
  *
  * 交互：
- * - 挂载时 actions.initialize()：刷新案卷列表 + 模型出口自检（顶栏徽标）。
+ * - 挂载时 actions.initialize()：刷新案卷列表 + 模型出口自检（工具栏徽标）。
  *   不自动选中/载入案卷（首个案卷可能是用户自己的），入口在左栏「案卷管理」条；
  *   「载入演示案卷」按钮保留，由用户显式触发
  * - Ctrl+Shift+A（Mac: Cmd+Shift+A）：仅本视图挂载期间监听，toggle 审核助手抽屉
@@ -18,7 +23,6 @@ import * as React from 'react'
 import { toast } from 'sonner'
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
-  ClipboardCheck,
   Download,
   FileText,
   Gavel,
@@ -26,10 +30,7 @@ import {
   MessageCircle,
   RotateCcw,
 } from 'lucide-react'
-import { detectIsWindows } from '@profer/ui'
 import { Button } from '@profer/ui/primitives/button'
-import { WindowControlsHost } from '@/components/WindowControlsTemplate'
-import { resolveWindowControlsRightInset } from '@/lib/window-controls-layout'
 import { isEditableTarget } from '@/lib/navigation-controller'
 import {
   reviewActivePaneAtom,
@@ -80,7 +81,6 @@ export function ContentReviewView(): React.ReactElement {
   const [narrow, setNarrow] = React.useState(
     () => typeof window !== 'undefined' && window.innerWidth < NARROW_BREAKPOINT_PX,
   )
-  const isWindows = React.useMemo(() => detectIsWindows(), [])
   const [exporting, setExporting] = React.useState(false)
 
   const handleExport = async (): Promise<void> => {
@@ -127,86 +127,78 @@ export function ContentReviewView(): React.ReactElement {
       data-profer-navigation-region="content-review"
       tabIndex={-1}
     >
-      {/* 标题栏拖拽区（本页全屏取代 TabBar；Windows 窗口按钮前结束，避免高 DPI 点击误判） */}
-      <div
-        className="absolute inset-x-0 top-0 z-0 h-14 titlebar-drag-region"
-        style={{ right: resolveWindowControlsRightInset(isWindows) }}
-        aria-hidden="true"
-      />
-      {/* 窗口按钮宿主：priority 20 高于 MainArea 兜底(5)，全屏视图接管最小化/最大化/关闭 */}
-      <WindowControlsHost id="content-review" priority={20} className="absolute right-2 top-[3px] z-20" />
+      {/* 工作台专属二级工具栏：模块导航与操作动作合流，居于 CDUT 专区统一顶栏下方，
+          享有完整容器宽度，物理上不会与右上角 Windows 窗口按钮重叠 */}
+      <header className="relative z-10 flex shrink-0 flex-wrap items-center gap-x-3 gap-y-2 border-b border-border/60 bg-card/60 px-4 py-2 titlebar-no-drag">
+        {/* 左侧：二级导航 + 当前案卷摘要 */}
+        <div className="flex min-w-0 flex-wrap items-center gap-3">
+          <nav aria-label="审核工作页" className="flex shrink-0 flex-wrap items-center gap-1">
+            {([
+              ['workbench', '预审工作台'],
+              ['case-v2', 'V2 案卷'],
+              ['templates', '模板编排'],
+              ['batches', '批次管理'],
+            ] as Array<[ReviewWorkspaceSection, string]>).map(([id, label]) => (
+              <Button
+                key={id}
+                size="sm"
+                variant={section === id ? 'secondary' : 'ghost'}
+                className="h-7 px-2.5 text-xs font-medium"
+                aria-pressed={section === id}
+                onClick={() => setSection(id)}
+              >
+                {label}
+              </Button>
+            ))}
+          </nav>
 
-      {/* ===== 顶栏 ===== */}
-      {/* Windows 下右侧为窗口按钮（最小化/最大化/关闭）预留 safe width，顶栏右端按钮簇不得伸入其下，
-          否则被 z-20 的 WindowControlsHost 盖住无法点击（见 window-controls-layout.ts 的共用宽度约定） */}
-      <header
-        className="relative z-10 flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2 border-b border-border/60 bg-card/80 px-4 py-2.5 titlebar-no-drag backdrop-blur-sm"
-        style={isWindows ? { paddingRight: resolveWindowControlsRightInset(isWindows) + 12 } : undefined}
-      >
-        <div className="flex items-center gap-2">
-          <ClipboardCheck size={16} className="text-primary" />
-          <span className="text-[13px] font-semibold">材料审核智能体</span>
-          {/* 演示徽标 */}
-          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">演示版</span>
-          {/* 出口状态徽标 */}
-          <GatewayBadge status={gatewayStatus} />
+          {reviewCase && (
+            <div className="flex min-w-0 items-center gap-1.5 rounded-md bg-foreground/[0.04] px-2 py-1 text-xs text-muted-foreground">
+              <FileText size={12} className="shrink-0 text-foreground/60" />
+              <span className="max-w-[200px] truncate" title={reviewCase.title}>
+                {reviewCase.applicant} · {reviewCase.academicYear}
+              </span>
+            </div>
+          )}
         </div>
 
-        {/* 案卷信息 */}
-        {reviewCase && (
-          <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
-            <FileText size={12} className="shrink-0" />
-            <span className="truncate" title={reviewCase.title}>
-              {reviewCase.applicant} · {reviewCase.academicYear}
-            </span>
-          </div>
-        )}
-
+        {/* 右侧：出口状态徽标 + 业务操作按钮 */}
         <div className="ml-auto flex shrink-0 items-center gap-2">
+          <GatewayBadge status={gatewayStatus} />
           <Button
             type="button"
             variant="outline"
             size="sm"
-            className="h-8 gap-1.5 px-3 text-[13px]"
+            className="h-7 gap-1.5 px-2.5 text-xs"
             onClick={() => void actions.loadDemoCase()}
           >
-            <RotateCcw size={13} />
-            载入演示案卷
+            <RotateCcw size={12} />
+            <span>载入演示案卷</span>
           </Button>
           <Button
             type="button"
             variant="outline"
             size="sm"
-            className="h-8 gap-1.5 px-3 text-[13px]"
+            className="h-7 gap-1.5 px-2.5 text-xs"
             disabled={exporting || running || !run || run.status !== 'completed' || runStale}
             onClick={() => void handleExport()}
           >
-            <Download size={13} />
-            导出报告
+            <Download size={12} />
+            <span>导出报告</span>
           </Button>
           <Button
             type="button"
             variant="ghost"
             size="icon-sm"
+            className="h-7 w-7"
             aria-label="打开审核助手（Ctrl+Shift+A）"
             title={`审核助手（${navigator.platform.startsWith('Mac') ? '⌘⇧A' : 'Ctrl+Shift+A'}）`}
             onClick={() => assistantOpen((previous) => !previous)}
           >
-            <MessageCircle size={15} />
+            <MessageCircle size={14} />
           </Button>
         </div>
       </header>
-
-      <nav aria-label="审核工作页" className="relative z-10 flex shrink-0 flex-wrap gap-1 border-b bg-card/60 px-3 py-1.5 titlebar-no-drag">
-        {([
-          ['workbench', '预审工作台'],
-          ['case-v2', 'V2 案卷'],
-          ['templates', '模板编排'],
-          ['batches', '批次管理'],
-        ] as Array<[ReviewWorkspaceSection, string]>).map(([id, label]) => (
-          <Button key={id} size="sm" variant={section === id ? 'secondary' : 'ghost'} aria-pressed={section === id} onClick={() => setSection(id)}>{label}</Button>
-        ))}
-      </nav>
 
       {/* ===== 窄屏：顶部三按钮切换栏 ===== */}
       {narrow && section === 'workbench' && (

@@ -844,6 +844,8 @@ export interface AgentSessionMeta {
   workspaceId?: string
   /** 当前 Agent 会话是否已激活 PPT 专用能力；缺省为 false。 */
   pptCapabilityActive?: boolean
+  /** 当前 Agent 会话已按需激活的场景能力组列表（如 'cdut-tools' | 'browser' | 'automation' 等）；缺省为空。 */
+  activatedToolGroups?: string[]
   /** 是否置顶 */
   pinned?: boolean
   /** 是否已归档 */

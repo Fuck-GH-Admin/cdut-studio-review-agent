@@ -48,25 +48,14 @@ import { CdutFeatureSheet } from './CdutFeatureSheet'
 import { CdutWatermarkBackground } from './CdutWatermarkBackground'
 import { CdutSubViewContainer } from './CdutSubViewContainer'
 import { AiClassView } from './AiClassView'
+import { YanhuExpressView } from './yanhu/YanhuExpressView'
+import { ContentReviewView } from '@/components/content-review/ContentReviewView'
 
 /** 三大板块子页面标题映射 */
 const SUB_VIEW_TITLES: Record<Exclude<CdutSubViewId, null>, string> = {
   'ai-class': 'AI 速课堂',
   'yanhu-express': '砚湖秒通',
-  'material-review': '材料审查',
-}
-
-/** 未实现业务板块的留白占位（由统一子页面容器承载） */
-function SubViewPlaceholder({ title, description }: { title: string; description: string }): React.ReactElement {
-  return (
-    <div className="flex h-full flex-col items-center justify-center gap-2 p-8 text-center">
-      <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-        <Sparkles size={22} />
-      </span>
-      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
-      <p className="max-w-md text-xs leading-relaxed text-muted-foreground">{description}</p>
-    </div>
-  )
+  'material-review': '材料审核',
 }
 
 /** 未登录态：专区三大核心能力矩阵展示 */
@@ -334,15 +323,9 @@ export function CdutZoneView(): React.ReactElement {
             {activeSubView === 'ai-class' ? (
               <AiClassView />
             ) : activeSubView === 'yanhu-express' ? (
-              <SubViewPlaceholder
-                title="砚湖秒通"
-                description="内置自动化浏览器，请假、课表、查分全流程自动化交互。业务界面正在建设中。"
-              />
+              <YanhuExpressView />
             ) : (
-              <SubViewPlaceholder
-                title="材料审查"
-                description="标准栏 × 待审栏 × AI 研判栏，毫秒级比对校级评优与报销材料偏差。业务界面正在建设中。"
-              />
+              <ContentReviewView />
             )}
           </CdutSubViewContainer>
         </div>

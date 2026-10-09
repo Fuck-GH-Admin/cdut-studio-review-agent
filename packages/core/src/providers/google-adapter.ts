@@ -59,6 +59,14 @@ interface GoogleStreamData {
     }
     finishReason?: string
   }>
+  /** 每个 chunk 顶层携带的用量元信息（末 chunk 为累计总量） */
+  usageMetadata?: {
+    promptTokenCount?: number
+    candidatesTokenCount?: number
+    totalTokenCount?: number
+    cachedContentTokenCount?: number
+    thoughtsTokenCount?: number
+  }
 }
 
 /** Google 标题响应 */
@@ -255,10 +263,30 @@ export class GoogleAdapter implements ProviderAdapter {
   parseSSELine(jsonLine: string): StreamEvent[] {
     try {
       const parsed = JSON.parse(jsonLine) as GoogleStreamData
-      const parts = parsed.candidates?.[0]?.content?.parts
-      if (!parts) return []
-
       const events: StreamEvent[] = []
+
+      // usageMetadata 可能出现在无 parts 的末 chunk 中，必须在提前 return 之前处理
+      const usage = parsed.usageMetadata
+      if (usage) {
+        const hasAny = [
+          usage.promptTokenCount,
+          usage.candidatesTokenCount,
+          usage.cachedContentTokenCount,
+          usage.thoughtsTokenCount,
+        ].some((value) => typeof value === 'number' && Number.isFinite(value))
+        if (hasAny) {
+          events.push({
+            type: 'usage',
+            inputTokens: usage.promptTokenCount,
+            outputTokens: usage.candidatesTokenCount,
+            cacheReadTokens: usage.cachedContentTokenCount,
+            reasoningTokens: usage.thoughtsTokenCount,
+          })
+        }
+      }
+
+      const parts = parsed.candidates?.[0]?.content?.parts
+      if (!parts) return events
 
       // 遍历所有 parts，区分推理内容、正常文本和函数调用
       for (const part of parts) {

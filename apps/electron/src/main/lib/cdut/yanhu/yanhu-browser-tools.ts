@@ -1,0 +1,2487 @@
+﻿/**
+ * 砚湖秒�?· 专属门禁工具集（YanhuBrowserTools�? *
+ * 这是「砚小龙」运行时唯一可用的工具源，共 16 项浏览器专属能力�? * 所有工具严格不对外部通用 Agent 暴露，语义上等价于“只在上网，不碰本机”�? *
+ * 工具采用供应商无关的统一 ToolDefinition 契约（JSON Schema 风格），
+ * �?`buildYanhuBrowserTools(tabResolver)` 装配为可投递给大模型的工具清单�? * 执行层统一�?`yanhuExpressManager` 驱动底层 WebContentsView �?CDP 总线�? */
+
+import { isYanhuBlockedUrl, type YanhuBidNode, type YanhuDistilledPage, type YanhuNetworkEntry } from '@profer/shared'
+import type { ToolDefinition } from '@profer/core'
+import { yanhuExpressManager } from './yanhu-express-manager'
+import { isCdutDomain } from './yanhu-domain-gatekeeper'
+import { hasOneTimeTicket, stripOneTimeTicket } from './yanhu-constants'
+import { logYanhuEvent } from './yanhu-event-log'
+import {
+  HybridAdaptiveDispatcher,
+  yanhuDeadlockGuard,
+  type CausalObservation,
+  type CausalSnapshot,
+  type HybridDispatcherAdapter,
+} from './yanhu-stabilization'
+import {
+  buildYanhuCollectorScript,
+  normalizeStateString,
+  yanhuDomDistillationEngine,
+  YANHU_ACCESSIBLE_NAME_SNIPPET,
+  type BidNodeRecord,
+  type YanhuCollectedPage,
+} from './yanhu-dom-distillation'
+
+/** 单个工具的执行回�?*/
+export interface YanhuToolExecutionResult {
+  content: string
+  isError?: boolean
+}
+
+/** 单个门禁工具的完整描述（定义 + 胶囊标签 + 执行器） */
+export interface YanhuBrowserTool {
+  definition: ToolDefinition
+  /** 生成微胶囊标签（如「�?点击 [3] 成绩查询」） */
+  label: (args: Record<string, unknown>) => string
+  /** 执行�?*/
+  execute: (args: Record<string, unknown>) => Promise<YanhuToolExecutionResult>
+  /** 是否为开发者级工具 */
+  developer?: boolean
+}
+
+// ===== 单轮 Token 预算硬上限（防止单次工具输出撑爆上下文） =====
+
+/** `yanhu_read_page` 缺省 Token 预算（弹性扩容至 2500，避免页面靠后深层元素被过早腰斩�?*/
+export const DEFAULT_READ_PAGE_TOKENS = 2500
+/** `yanhu_read_page` 显式请求时的 Token 上限 */
+export const MAX_READ_PAGE_TOKENS = 6000
+/** `yanhu_eval_script` 返回内容字符上限 */
+const EVAL_SCRIPT_MAX_CHARS = 500
+/** `yanhu_inspect_element` 内联 HTML 字符上限 */
+const INSPECT_HTML_MAX_CHARS = 300
+/** `yanhu_inspect_element` 总输出字符上�?*/
+const INSPECT_OUTPUT_MAX_CHARS = 600
+/** 网络日志单条 URL 字符上限 */
+const NETWORK_URL_MAX_CHARS = 120
+/** 网络日志总字符硬熔断 */
+const NETWORK_TOTAL_MAX_CHARS = 1000
+
+/**
+ * 读页缓存有效期（毫秒）�? *
+ * 缓存用于消除「同一时刻连续读」的重复采集；但若页面通过 XHR / 定时�?*异步自更�?*而未触发
+ * 导航或交互事件，长期命中缓存会永远返回陈旧快照并被误判为「页面无变化」。故设短 TTL 兜底�? * 超时后强制重新采集，兼顾性能与正确性�? */
+const YANHU_READ_CACHE_TTL_MS = 1500
+
+// ===== 拟人化操作节流（Human-like Action Throttler）：防教务系统高频触发注销 =====
+
+/** 两次交互动作之间的恒定物理间隔（毫秒）——严格固定，杜绝高频连击被判定为机器爬虫 */
+export const YANHU_ACTION_MIN_INTERVAL_MS = 500
+
+/** 最近一次交互动作时间戳（模块级，跨工具共享�?*/
+let lastYanhuActionTime = 0
+
+/**
+ * 「重复点击」判定窗口（毫秒）�? *
+ * 同一标签内对**同一 BID** 的再次点击，若模型所见的页面渲染内容自上次点击起完全未变�? * 则判定为无意义重复点击并拦截——URL / 框架常常都不变，只有渲染内容变，故判定必须基于内容指纹�? */
+export const YANHU_REPEAT_CLICK_WINDOW_MS = 60_000
+
+/** 重置节流时钟（仅供单测隔离使用） */
+export function resetYanhuActionThrottle(): void {
+  lastYanhuActionTime = 0
+}
+
+/**
+ * 自适应安全间隔控制器（动静分离节流）�? *
+ * 纯表单内部控件操作（fill / select / set_date / 局部点击）不产生全页网络请求，成理 WAF
+ * 不检测纯前端 JS 变化，故施加 **0ms** 间隔直接放行，彻底消灭「本地填一项先�?500ms」的负优化；
+ * 仅可能触发全页加载的网络导航操作（navigate / reload）保留恒�?500ms 物理间隔�? * 杜绝高频连击被教务系统判定为机器而注销登录态�? */
+export async function enforceYanhuHumanInterval(
+  isLocalAction = false,
+  nowFn: () => number = Date.now,
+): Promise<void> {
+  if (isLocalAction) return
+  const now = nowFn()
+  const elapsed = now - lastYanhuActionTime
+  if (elapsed < YANHU_ACTION_MIN_INTERVAL_MS) {
+    await new Promise((resolve) => setTimeout(resolve, YANHU_ACTION_MIN_INTERVAL_MS - elapsed))
+  }
+  lastYanhuActionTime = nowFn()
+}
+
+/** 动作执行后的 DOM 稳态观察窗（毫秒）：等待局部重绘与事件派发完成 */
+const YANHU_ACTION_SETTLE_MS = 300
+/** DOM 稳态观察窗硬超时（毫秒）：无论如何不超过该上限，杜绝死�?*/
+const YANHU_ACTION_SETTLE_MAX_MS = 500
+
+/** 危险操作（注销 / 退出登录）名称特征：命中即由底层硬拦截，保护当前会�?*/
+const YANHU_DANGEROUS_ACTION_RE = /(安全退出|退出登录|退出系统|注销|Logout|返回登录)/i
+
+/** 工具层短路熔断提示（连续重复空读且无有效交互时） */
+const YANHU_CIRCUIT_BREAK_NOTICE =
+  '【熔断拦截】当前页面与上一状态完全一致且未执行任何交互操作，禁止重复刷新读取！请直接使用已有 [BID] 执行点击、选择等操作，或向用户汇报结果。';
+
+/**
+ * 生成页面脚本：基�?DOM Mutation / 样式突变观察局部展开，一旦静默即提前返回�? *
+ * 相比盲目 `waitForIdle` 死等整页导航超时，本脚本保证至少 300ms、至�?500ms 的稳态观察窗�? * 检测到折叠菜单 / 卡片展开等局部突变后于静�?120ms 立即返回，兼顾响应速度与重绘完整性�? */
+function buildDomSettleScript(): string {
+  return `(() => {
+    return new Promise((resolve) => {
+      const started = Date.now();
+      const MIN = ${YANHU_ACTION_SETTLE_MS}, MAX = ${YANHU_ACTION_SETTLE_MAX_MS}, QUIET = 120;
+      let done = false, lastMutation = 0, obs = null;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        try { if (obs) obs.disconnect(); } catch (e) {}
+        resolve({ settled: true, elapsed: Date.now() - started });
+      };
+      try {
+        obs = new MutationObserver(() => { lastMutation = Date.now(); });
+        obs.observe(document.documentElement || document, {
+          childList: true, subtree: true, attributes: true,
+          attributeFilter: ['style', 'class', 'hidden', 'aria-hidden', 'open'],
+        });
+      } catch (e) {}
+      const tick = () => {
+        if (done) return;
+        const now = Date.now();
+        if (now - started >= MAX) return finish();
+        if (now - started >= MIN && now - lastMutation >= QUIET) return finish();
+        setTimeout(tick, 50);
+      };
+      setTimeout(tick, MIN);
+    });
+  })()`
+}
+
+/** 执行动作后的 DOM 稳态微等待（脚本异常时回退为固定观察窗�?*/
+async function waitForDomSettle(tabId: string): Promise<void> {
+  try {
+    await yanhuExpressManager.evalInPage(tabId, buildDomSettleScript())
+  } catch {
+    await new Promise((resolve) => setTimeout(resolve, YANHU_ACTION_SETTLE_MS))
+  }
+}
+
+/** 生成仅重载教务主框架核心内容区（mainFrame）的脚本，保护外层导航框架不丢失 */
+function buildMainFrameReloadScript(): string {
+  return `(() => {
+    try {
+      const mf = document.querySelector('frame[name="mainFrame"], iframe[name="mainFrame"], frame#mainFrame, iframe#mainFrame');
+      if (mf) {
+        const frameWin = mf.contentWindow || (window.frames && window.frames['mainFrame']);
+        if (frameWin && frameWin.location && typeof frameWin.location.reload === 'function') {
+          frameWin.location.reload();
+          return { ok: true };
+        }
+      }
+    } catch (e) {}
+    return { ok: false };
+  })()`
+}
+
+/**
+ * 页面无变化时的短路提示�? *
+ * 关键修复：不再只回传�?8 项（历史缺陷会导致「看不到 BID > 8 的控�?�?反复盲猜 �?12 轮空转」）�? * 而是输出**当前全部**可交互控件的紧凑索引，并由调用方�?token 预算截断，保证模型始终持有完整台账�? */
+function buildUnchangedNotice(page: YanhuDistilledPage): string {
+  const lines = [
+    '=== [PageDigest: 页面无变化] ===',
+    '当前页面与上一次观察完全一致，未发生跳转或内容刷新。请思考：是否需要执行 yanhu_click / yanhu_fill 操作推进流程，或通过 yanhu_navigate 前往新页面？不要再盲目调用 yanhu_read_page！',
+  ]
+  if (page.nodes.length > 0) {
+    lines.push(`当前可用控件索引（共 ${page.nodes.length} 项）：`)
+    for (const node of page.nodes) {
+      const marker = node.collapsed ? ' [Collapsed]' : node.isOccluded ? ' [Occluded]' : ''
+      lines.push(`- [${node.bid}] ${node.role} "${node.name}"${marker}`)
+    }
+  } else {
+    lines.push('当前页面未识别到任何可交互控件。')
+  }
+  lines.push(
+    '提示：若目标控件不在上方索引中，说明它未被识别为独立可交互元素；可尝试点击其所在容器 [BID]，或使用 yanhu_scroll / yanhu_get_network_logs 进一步排查。请勿重复空读。',
+  )
+  return lines.join('\n')
+}
+
+/** 静态资源后缀（图�?/ 字体 / 媒体 / 样式脚本，一律从网络日志中过滤） */
+const YANHU_NETWORK_STATIC_RE =
+  /\.(png|jpe?g|gif|webp|svg|ico|bmp|woff2?|ttf|eot|otf|mp4|mp3|webm|ogg|wav|css|js|map)$/i
+
+/**
+ * 净化并硬熔断网络日志（纯函数，便于单测）�? *
+ * - 丢弃 `data:` 协议、静态资源（图片/字体/媒体/样式脚本）与 favicon�? * - 单条 URL 超长截断�? * - 逐行累加�?total 字符上限即停，彻底杜绝对大模型的 Base64 / 静态资源噪声轰炸�? */
+export function sanitizeYanhuNetworkLogs(
+  entries: readonly YanhuNetworkEntry[],
+  options: { maxLines?: number; maxUrlChars?: number; maxTotalChars?: number } = {},
+): string {
+  const maxLines = options.maxLines && options.maxLines > 0 ? options.maxLines : 30
+  const maxUrlChars = options.maxUrlChars && options.maxUrlChars > 0 ? options.maxUrlChars : NETWORK_URL_MAX_CHARS
+  const maxTotalChars = options.maxTotalChars && options.maxTotalChars > 0 ? options.maxTotalChars : NETWORK_TOTAL_MAX_CHARS
+  const lines: string[] = []
+  let total = 0
+  for (const entry of entries.slice(-maxLines)) {
+    const url = typeof entry.url === 'string' ? entry.url : ''
+    if (!url || url.startsWith('data:')) continue
+    const path = url.split('?')[0]?.split('#')[0] ?? url
+    if (YANHU_NETWORK_STATIC_RE.test(path)) continue
+    if (/favicon/i.test(path)) continue
+    const shown = url.length > maxUrlChars ? `${url.slice(0, maxUrlChars)}…` : url
+    const duration = entry.timing?.durationMs != null ? `${entry.timing.durationMs}ms ` : ''
+    const line = `${entry.method || 'GET'} ${entry.status ?? '-'} ${duration}${shown}`
+    if (total + line.length + 1 > maxTotalChars) {
+      lines.push('…（已按 token 预算截断）。')
+      break
+    }
+    lines.push(line)
+    total += line.length + 1
+  }
+  if (lines.length === 0) {
+    return entries.length === 0 ? '暂无网络日志。' : '（网络日志均为静态资源/data协议，已省略）'
+  }
+  return lines.join('\n')
+}
+
+/** 解析入参整数 */
+function asInt(value: unknown, fallback = 0): number {
+  const n = typeof value === 'number' ? value : Number(value)
+  return Number.isFinite(n) ? Math.trunc(n) : fallback
+}
+
+/** 安全读取字符�?*/
+function asStr(value: unknown, fallback = ''): string {
+  return typeof value === 'string' ? value : fallback
+}
+
+/** 归一化页面采集回执（防御式，拒绝非法结构�?*/
+function normalizeCollected(raw: unknown): YanhuCollectedPage {
+  if (!raw || typeof raw !== 'object') return { url: '', title: '', elements: [] }
+  const candidate = raw as Partial<YanhuCollectedPage>
+  return {
+    url: typeof candidate.url === 'string' ? candidate.url : '',
+    title: typeof candidate.title === 'string' ? candidate.title : '',
+    elements: Array.isArray(candidate.elements) ? candidate.elements : [],
+    dataTables: Array.isArray(candidate.dataTables)
+      ? candidate.dataTables.filter((table): table is string => typeof table === 'string')
+      : undefined,
+    textDigest: typeof candidate.textDigest === 'string' ? candidate.textDigest : undefined,
+    textSample: typeof candidate.textSample === 'string' ? candidate.textSample : undefined,
+  }
+}
+
+/**
+ * 生成页面内元素定位器前置脚本�? *
+ * 通过「标�?+ 可访问名 + 边界中心距离」三元匹配，规避动�?class / XPath 脆弱性�? *
+ * 名称推导与采集端共用 {@link YANHU_ACCESSIBLE_NAME_SNIPPET}，保�?BID 语义与定位完全对称；
+ * 且当「名称全不匹配」时**绝不盲猜坐标最近�?*（仅折叠 / 历史回退的放宽模式才允许坐标兜底），
+ * 从根源根除「静默点错控件」——点错一个「退课」远比点不中更危险�? */
+function buildFinderPrelude(record: YanhuBidNode, options: { relaxed?: boolean } = {}): string {
+  const tag = JSON.stringify(record.tag)
+  const name = JSON.stringify(record.name)
+  const targetFrame = JSON.stringify(record.framePath || '')
+  const cx = Math.round(record.bounds.x + record.bounds.width / 2)
+  const cy = Math.round(record.bounds.y + record.bounds.height / 2)
+  const relaxed = options.relaxed === true
+  return `
+    ${YANHU_ACCESSIBLE_NAME_SNIPPET}
+    const __tag = ${tag}, __name = ${name}, __cx = ${cx}, __cy = ${cy}, __targetFrame = ${targetFrame}, __relaxed = ${relaxed ? 'true' : 'false'};
+    const __normName = (s) => (s || '').replace(/\\s+/g, ' ').trim();
+    const __nameMatches = (text) => {
+      if (!__name) return true;
+      const a = __normName(text), b = __normName(__name);
+      if (!a) return false;
+      return a === b || (a.indexOf(b) >= 0 && b.length > 0) || (b.indexOf(a) >= 0 && a.length > 0);
+    };
+    const __find = () => {
+      let bestNamed = null, bestNamedScore = Infinity, bestAny = null, bestAnyScore = Infinity;
+      const scanDoc = (doc, framePath, offsetX, offsetY, depth) => {
+        if (!doc || depth > 6) return;
+        try {
+          const root = doc.body || doc.documentElement || doc;
+          const list = Array.from(root.querySelectorAll ? root.querySelectorAll(__tag) : []);
+          for (const el of list) {
+            const r = el.getBoundingClientRect();
+            if (!__relaxed && (r.width <= 0 || r.height <= 0)) continue;
+            const ecx = offsetX + r.left + r.width / 2;
+            const ecy = offsetY + r.top + r.height / 2;
+            const d = Math.abs(ecx - __cx) + Math.abs(ecy - __cy);
+            const frameOk = !__targetFrame || framePath === __targetFrame;
+            const score = d + (frameOk ? 0 : 20000);
+            if (__nameMatches(__yanhuDeriveName(el, el.ownerDocument || doc))) {
+              if (score < bestNamedScore) { bestNamedScore = score; bestNamed = el; }
+            } else if (score < bestAnyScore) { bestAnyScore = score; bestAny = el; }
+          }
+        } catch (e) {}
+
+        try {
+          const frameEls = Array.from(doc.querySelectorAll ? doc.querySelectorAll('frame, iframe') : []);
+          for (let i = 0; i < frameEls.length; i++) {
+            const f = frameEls[i];
+            let fr = { left: 0, top: 0 };
+            try { fr = f.getBoundingClientRect(); } catch {}
+            const fName = f.getAttribute('name') || f.getAttribute('id') || ('frame_' + i);
+            const nextPath = framePath ? (framePath + '/' + fName) : fName;
+            try {
+              // 三级鲁棒穿透：contentDocument -> contentWindow.document -> defaultView.frames[name | i].document
+              const frameWin = f.contentWindow;
+              const view = doc.defaultView;
+              const subDoc =
+                f.contentDocument ||
+                (frameWin && frameWin.document) ||
+                (view && view.frames && (
+                  (view.frames[fName] && view.frames[fName].document) ||
+                  (view.frames[i] && view.frames[i].document)
+                ));
+              if (subDoc) scanDoc(subDoc, nextPath, offsetX + (fr.left || 0), offsetY + (fr.top || 0), depth + 1);
+            } catch (e) {}
+          }
+        } catch (e) {}
+      };
+
+      scanDoc(document, '', 0, 0, 0);
+      // 优先返回名称匹配者；无名称匹配时仅在放宽模式下按坐标兜底，否则拒绝盲点
+      if (bestNamed) return bestNamed;
+      if (__relaxed) return bestAny;
+      return null;
+    };
+  `
+}
+
+/** 生成祖先容器自动解封 + 瞬时居中的公共脚本片段（�?click / fill / select 复用�?*/
+function buildUnsealHelpers(): string {
+  return `
+    const __unseal = (el) => {
+      try {
+        let node = el, depth = 0;
+        while (node && node.nodeType === 1 && depth < 8) {
+          const tag = (node.tagName || '').toLowerCase();
+          const cls = (node.className && typeof node.className === 'string') ? node.className : '';
+          const id = node.id || '';
+          const hay = (cls + ' ' + id).toLowerCase();
+          if (tag === 'details' && !node.open) { try { node.open = true; } catch (e) {} }
+          if (/(^|\\s)(collapse|collapsed|accordion)(\\s|$)/.test(hay) && !/(^|\\s)show(\\s|$)/.test(hay)) {
+            try { node.classList.remove('collapsing'); node.classList.add('show'); } catch (e) {}
+            if (id) {
+              try {
+                const doc = node.ownerDocument;
+                const trigger = doc.querySelector('[data-bs-toggle="collapse"][href="#' + id + '"], [data-toggle="collapse"][href="#' + id + '"], [aria-controls="' + id + '"]');
+                if (trigger && typeof trigger.click === 'function') trigger.click();
+              } catch (e) {}
+            }
+          }
+          if (/(^|\\s)tab-pane(\\s|$)/.test(hay) && !/(^|\\s)(active|show)(\\s|$)/.test(hay)) {
+            if (id) {
+              try {
+                const doc = node.ownerDocument;
+                const trigger = doc.querySelector('[data-bs-toggle="tab"][href="#' + id + '"], [data-toggle="tab"][href="#' + id + '"], [role="tab"][aria-controls="' + id + '"]');
+                if (trigger && typeof trigger.click === 'function') trigger.click();
+              } catch (e) {}
+            }
+            try { node.classList.add('active'); node.classList.add('show'); } catch (e) {}
+          }
+          let style = null;
+          try { style = node.ownerDocument.defaultView.getComputedStyle(node); } catch (e) {}
+          if (style && style.display === 'none') {
+            try { node.style.display = ''; } catch (e) {}
+            try { if (node.getAttribute && node.getAttribute('aria-hidden') === 'true') node.setAttribute('aria-hidden', 'false'); } catch (e) {}
+          }
+          node = node.parentElement;
+          depth += 1;
+        }
+      } catch (e) {}
+    };
+    const __center = (el) => {
+      try { el.scrollIntoView({ block: 'center', inline: 'center', behavior: 'instant' }); return; } catch (e) {}
+      try { el.scrollIntoView(); } catch (e) {}
+    };
+  `
+}
+
+/**
+ * 生成底层强触达脚本（Force Trigger Engine）�? *
+ * 定位（折叠目标放宽尺寸过滤）�?祖先容器递归解封 �?scrollIntoView 瞬时居中 �? * 完整 DOM 合成事件�?�?jQuery 事件穿�?�?href 兜底导航�? */
+export function buildForceTriggerScript(record: YanhuBidNode, options: { doubleClick?: boolean } = {}): string {
+  const relaxed = finderRelaxed(record)
+  return `(() => {
+    ${buildFinderPrelude(record, { relaxed })}
+    ${buildUnsealHelpers()}
+    const __fireMouse = (el, type) => {
+      try {
+        const r = el.getBoundingClientRect ? el.getBoundingClientRect() : { left: 0, top: 0, width: 0, height: 0 };
+        const cx = Math.round(r.left + r.width / 2);
+        const cy = Math.round(r.top + r.height / 2);
+        const win = (el.ownerDocument && el.ownerDocument.defaultView) || window;
+        const Ctor = type.indexOf('pointer') === 0 ? (win.PointerEvent || win.MouseEvent) : win.MouseEvent;
+        if (!Ctor) return;
+        el.dispatchEvent(new Ctor(type, { bubbles: true, cancelable: true, composed: true, view: win, clientX: cx, clientY: cy, button: 0 }));
+      } catch (e) {}
+    };
+    const el = __find();
+    if (!el) return { ok: false, reason: 'not-found', syncMutations: 0, stateChanged: false };
+    // 先执行解封 + 瞬时居中
+    __unseal(el);
+    __center(el);
+    // 控件状态签名：捕获 checked / selectedIndex / value / aria-* / className
+    const __stateSig = (node) => {
+      try {
+        const tag = (node.tagName || '').toLowerCase();
+        const parts = [tag];
+        if (tag === 'input' || tag === 'select' || tag === 'textarea') {
+          parts.push(String(node.value != null ? node.value : ''));
+          parts.push(node.checked ? '1' : '0');
+          parts.push(String(node.selectedIndex != null ? node.selectedIndex : ''));
+        }
+        const g = (n) => (node.getAttribute ? (node.getAttribute(n) || '') : '');
+        parts.push(g('aria-expanded'), g('aria-selected'), g('aria-checked'));
+        parts.push(String(node.className && typeof node.className === 'string' ? node.className : ''));
+        return parts.join('|');
+      } catch (e) { return ''; }
+    };
+    const __before = __stateSig(el);
+    // 同步突变监听：对顶层与全部子 frame 文档挂载 MutationObserver
+    let __syncObs = [];
+    try {
+      const __seenDocs = [];
+      const __collectObs = (doc, depth) => {
+        if (!doc || depth > 6) return;
+        for (let i = 0; i < __seenDocs.length; i++) { if (__seenDocs[i] === doc) return; }
+        __seenDocs.push(doc);
+        try {
+          const target = doc.documentElement || doc.body || doc;
+          if (target && typeof MutationObserver === 'function') {
+            const o = new MutationObserver(function () {});
+            o.observe(target, { childList: true, subtree: true, attributes: true, characterData: true });
+            __syncObs.push(o);
+          }
+        } catch (e) {}
+        let frames = [];
+        try { frames = doc.querySelectorAll ? Array.from(doc.querySelectorAll('frame, iframe')) : []; } catch (e) { frames = []; }
+        for (let i = 0; i < frames.length; i++) {
+          try {
+            const sub = frames[i].contentDocument || (frames[i].contentWindow && frames[i].contentWindow.document);
+            if (sub) __collectObs(sub, depth + 1);
+          } catch (e) {}
+        }
+      };
+      __collectObs(document, 0);
+    } catch (e) { __syncObs = []; }
+    const __takeSyncMutations = () => {
+      let count = 0;
+      for (let i = 0; i < __syncObs.length; i++) {
+        try {
+          const recs = __syncObs[i].takeRecords();
+          if (recs) count += recs.length;
+          __syncObs[i].disconnect();
+        } catch (e) {}
+      }
+      return count;
+    };
+    __fireMouse(el, 'pointerdown');
+    __fireMouse(el, 'mousedown');
+    try { if (typeof el.focus === 'function') el.focus(); } catch (e) {}
+    __fireMouse(el, 'pointerup');
+    __fireMouse(el, 'mouseup');
+    // 单次点击语义（关键修复）：仅派发**一�?* click 事件（带坐标的合�?MouseEvent 优先�?    // dispatchEvent 抛错时才回退原生 el.click()）。历史缺陷曾同时派发「合�?MouseEvent +
+    // 单次点击防重派发
+    let __clickDispatched = false;
+    try {
+      const win = (el.ownerDocument && el.ownerDocument.defaultView) || window;
+      const cr = el.getBoundingClientRect ? el.getBoundingClientRect() : { left: 0, top: 0, width: 0, height: 0 };
+      const ccx = Math.round(cr.left + cr.width / 2);
+      const ccy = Math.round(cr.top + cr.height / 2);
+      el.dispatchEvent(new win.MouseEvent('click', { bubbles: true, cancelable: true, composed: true, view: win, clientX: ccx, clientY: ccy, button: 0 }));
+      __clickDispatched = true;
+    } catch (e) {
+      try { if (typeof el.click === 'function') { el.click(); __clickDispatched = true; } } catch (e2) {}
+    }
+    ${options.doubleClick === true
+      ? `if (__clickDispatched) { __fireMouse(el, 'dblclick'); }`
+      : ''}
+    let navigated = false;
+    try {
+      const tag = (el.tagName || '').toLowerCase();
+      // 仅在 click 未被派发成功时才启用 href 兜底
+      if (tag === 'a' && !el.__yanhuForceTriggered && !__clickDispatched) {
+        const href = el.getAttribute ? (el.getAttribute('href') || '') : '';
+        const target = el.getAttribute ? (el.getAttribute('target') || '') : '';
+        const inForm = el.closest ? !!el.closest('form') : false;
+        if (href && !inForm && href.charAt(0) !== '#' && href.indexOf('javascript:') !== 0 && /^https?:/i.test(href)) {
+          el.__yanhuForceTriggered = true;
+          const win = (el.ownerDocument && el.ownerDocument.defaultView) || window;
+          try {
+            if (!target || target === '_self') {
+              win.location.assign(href);
+              navigated = true;
+            } else if (target !== '_blank' && target !== '_top' && target !== '_parent') {
+              // 命名框架：仅驱动目标框架导航，绝不顶�?location.assign 撕毁外层 frameset
+              const topW = win.top || win;
+              const fr = topW.document.querySelector('frame[name="' + target + '"], iframe[name="' + target + '"], frame#' + target + ', iframe#' + target + '');
+              const fwin = fr && (fr.contentWindow || (topW.frames && topW.frames[target]));
+              if (fwin && fwin.location) { fwin.location.assign(href); navigated = true; }
+            }
+          } catch (e) {}
+        }
+      }
+    } catch (e) {}
+    // 单�?/ 复选框级联强触发（关键修复）：合成点击虽会激活浏览器原生勾选行为，但在金智 EMAP /
+    // Vue 响应式表单中，「请假性质」单选的 change 处理器常挂在 jQuery 事件委托链上，仅靠原�?    // 激活行为无法可靠拉起二级联动（事假 / 病假）。此处显式补�?input + change + jQuery change�?    // 并对同表单同名单选组一并触发
+    try {
+      const __cTag = (el.tagName || '').toLowerCase();
+      const __cType = ((el.getAttribute && el.getAttribute('type')) || '').toLowerCase();
+      const __cRole = ((el.getAttribute && el.getAttribute('role')) || '').toLowerCase();
+      const __cIsInputChoice = __cTag === 'input' && (__cType === 'radio' || __cType === 'checkbox');
+      if (__cIsInputChoice || __cRole === 'radio' || __cRole === 'checkbox') {
+        try { if (__cIsInputChoice) el.checked = true; } catch (e) {}
+        const __cWin = (el.ownerDocument && el.ownerDocument.defaultView) || window;
+        try { el.dispatchEvent(new __cWin.Event('input', { bubbles: true, cancelable: true })); } catch (e) {}
+        try { el.dispatchEvent(new __cWin.Event('change', { bubbles: true, cancelable: true })); } catch (e) {}
+        try {
+          const __cJq = __cWin.$ || __cWin.jQuery;
+          if (__cJq) {
+            __cJq(el).trigger('change');
+            // 同名组联动仅限最近表单作用域
+            if (el.name) {
+              const __cScope = el.form || (el.closest && el.closest('form')) || el.ownerDocument || document;
+              __cJq(__cScope).find('input[name="' + String(el.name).replace(/"/g, '') + '"]').trigger('change');
+            }
+          }
+        } catch (e) {}
+      }
+    } catch (e) {}
+    const stateChanged = __stateSig(el) !== __before;
+    return { ok: true, navigated: navigated, syncMutations: __takeSyncMutations(), stateChanged: stateChanged };
+  })()`
+}
+
+/**
+ * 可输入控件的 `input[type]` 白名单（文本类）�? * 勾选框 / 单�?/ 提交按钮 / 文件 / 取色 / 滑块等一律不算「可填写」，由工具层直接拒绝�? */
+const EDITABLE_INPUT_TYPES = [
+  'text',
+  'search',
+  'password',
+  'email',
+  'tel',
+  'url',
+  'number',
+  'date',
+  'datetime-local',
+  'month',
+  'week',
+  'time',
+  '',
+]
+
+/**
+ * 生成「填写目标校验」脚本（确定性守卫）�? *
+ * 在真正写入前判定�?BID 指向的元素是否真的可输入：非输入框（下拉 / 勾选框 / 按钮 / 链接�? * 会被就地判出并带�?tag/type/role 诊断，避免把文本灌进错误控件、更避免降级脚本�? * `Illegal invocation`。判定完全由代码完成，不依赖模型自觉�? */
+function buildFillTargetGuardScript(record: YanhuBidNode): string {
+  return `(() => {
+    ${buildFinderPrelude(record, { relaxed: finderRelaxed(record) })}
+    const el = __find();
+    if (!el) return { ok: false, reason: 'not-found' };
+    const tag = (el.tagName || '').toLowerCase();
+    const type = ((el.getAttribute && el.getAttribute('type')) || 'text').toLowerCase();
+    const role = ((el.getAttribute && el.getAttribute('role')) || '').toLowerCase();
+    const editableInput = tag === 'input' && ${JSON.stringify(EDITABLE_INPUT_TYPES)}.indexOf(type) >= 0;
+    const editable = editableInput || tag === 'textarea' || !!el.isContentEditable;
+    return { ok: true, editable: editable, tag: tag, type: type, role: role };
+  })()`
+}
+
+/** 依据守卫诊断生成「非输入框」的结构化拒绝文案（并给出确定的替代工具�?*/
+function buildNonEditableFillMessage(
+  bid: number,
+  record: YanhuBidNode,
+  guard: { tag?: string; type?: string; role?: string },
+): string {
+  const desc = `[BID: ${bid}] ${record.role} "${record.name}"�?{guard.tag || 'element'}${guard.type && guard.type !== '' ? `/${guard.type}` : ''}）`
+  if (guard.tag === 'select' || guard.role === 'combobox' || guard.role === 'listbox') {
+    return `填写失败�?{desc} 是下拉控件而不是输入框。请改用 yanhu_select（原�?select）或�?yanhu_click 展开后点击选项。`
+  }
+  if (guard.type === 'checkbox' || guard.type === 'radio') {
+    return `填写失败�?{desc} 是勾选控件而不是输入框。请改用 yanhu_click 切换其选中状态。`
+  }
+  return `填写失败�?{desc} 不是可输入控件。请改用 yanhu_click 点击它，或用 yanhu_read_page 重新确认目标 BID。`
+}
+
+/**
+ * 生成降级回退填写脚本（CDP 坐标不可用时使用）�? *
+ * 复用采集端同一套定位器，以原生 value setter 写入并派发完�?`input` / `change` 事件链，
+ * 可选派发回车键（合成键盘事件无法触发表单原生提交，仅作页面侧监听兜底）�? *
+ * 自我保护：脚本自身也做可输入校验，非输入框直接返�?`not-editable`�? * 绝不执行 `HTMLInputElement.prototype.value` �?setter（否则在 select 上会�?Illegal invocation）�? */
+function buildLegacyFillScript(
+  record: YanhuBidNode,
+  value: string,
+  clearFirst: boolean,
+  pressEnter: boolean,
+): string {
+  return `(() => {
+    ${buildFinderPrelude(record, { relaxed: finderRelaxed(record) })}
+    ${buildUnsealHelpers()}
+    const el = __find();
+    if (!el) return { ok: false, reason: 'not-found' };
+    const tag = (el.tagName || '').toLowerCase();
+    const type = ((el.getAttribute && el.getAttribute('type')) || 'text').toLowerCase();
+    const editableInput = tag === 'input' && ${JSON.stringify(EDITABLE_INPUT_TYPES)}.indexOf(type) >= 0;
+    if (!(editableInput || tag === 'textarea' || !!el.isContentEditable)) {
+      return { ok: false, reason: 'not-editable', tag: tag, type: type };
+    }
+    __unseal(el);
+    __center(el);
+    try { el.focus(); } catch (e) {}
+    const isField = tag === 'input' || tag === 'textarea';
+    const prev = isField ? String(el.value != null ? el.value : '') : String(el.textContent || '');
+    const next = ${clearFirst ? 'true' : 'false'} ? ${JSON.stringify(value)} : prev + ${JSON.stringify(value)};
+    if (isField) {
+      const proto = tag === 'textarea' ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+      const desc = Object.getOwnPropertyDescriptor(proto, 'value');
+      if (desc && desc.set) desc.set.call(el, next); else el.value = next;
+    } else {
+      // 富文本编辑器（contenteditable）协议
+      let inserted = false;
+      try {
+        const rdoc = el.ownerDocument || document;
+        const rsel = rdoc.getSelection ? rdoc.getSelection() : null;
+        if (${clearFirst ? 'true' : 'false'}) {
+          try {
+            const all = rdoc.createRange();
+            all.selectNodeContents(el);
+            if (rsel) { rsel.removeAllRanges(); rsel.addRange(all); }
+            rdoc.execCommand('delete', false, null);
+          } catch (e) {}
+        }
+        try {
+          const caret = rdoc.createRange();
+          caret.selectNodeContents(el);
+          caret.collapse(false);
+          if (rsel) { rsel.removeAllRanges(); rsel.addRange(caret); }
+        } catch (e) {}
+        inserted = rdoc.execCommand ? rdoc.execCommand('insertText', false, ${JSON.stringify(value)}) : false;
+      } catch (e) { inserted = false; }
+      if (!inserted) {
+        // 兜底：以 Range 原位插入文本节点，同样绝不整体覆写子节点
+        try {
+          const rdoc = el.ownerDocument || document;
+          const rng = rdoc.createRange();
+          rng.selectNodeContents(el);
+          if (${clearFirst ? 'true' : 'false'}) rng.deleteContents(); else rng.collapse(false);
+          const tn = rdoc.createTextNode(${JSON.stringify(value)});
+          rng.insertNode(tn);
+          rng.setStartAfter(tn);
+          rng.collapse(true);
+          const rsel = rdoc.getSelection ? rdoc.getSelection() : null;
+          if (rsel) { rsel.removeAllRanges(); rsel.addRange(rng); }
+        } catch (e) {}
+      }
+    }
+    // 表单事件单发语义：原�?input / change 各派发一次即可（jQuery .on 绑定的是原生监听器，
+    // 表单事件单发语义
+    let __evtDispatched = false;
+    try {
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      __evtDispatched = true;
+    } catch (e) {}
+    if (!__evtDispatched) {
+      try {
+        const win = (el.ownerDocument && el.ownerDocument.defaultView) || window;
+        const jq = win.$ || win.jQuery;
+        if (jq) { jq(el).trigger('input'); jq(el).trigger('change'); }
+      } catch (e) {}
+    }
+    ${pressEnter
+      ? `const ke = { key: 'Enter', code: 'Enter', keyCode: 13, which: 13, bubbles: true };
+    el.dispatchEvent(new KeyboardEvent('keydown', ke));
+    el.dispatchEvent(new KeyboardEvent('keypress', ke));
+    el.dispatchEvent(new KeyboardEvent('keyup', ke));`
+      : ''}
+    try { if (typeof el.blur === 'function') el.blur(); } catch (e) {}
+    return { ok: true, tag: tag, type: type };
+  })()`
+}
+
+/**
+ * 生成输入框写入校验脚本：复用同一定位器回读目标控件当前值�? *
+ * 用于甄别 CDP 硬件文本流是否真正落入目标输入框——若定位到别处，焦点会落到其他元素，
+ * `Input.insertText` 将写入错误位置，工具却会误报成功（静默错填）。校验失败即降级回退�? */
+function buildFillVerificationScript(record: YanhuBidNode): string {
+  return `(() => {
+    ${buildFinderPrelude(record, { relaxed: finderRelaxed(record) })}
+    const el = __find();
+    if (!el) return { ok: false, reason: 'not-found' };
+    const cur = el.value != null ? String(el.value) : '';
+    return { ok: true, value: cur };
+  })()`
+}
+
+/**
+ * 生成「文件输入框定位」脚本：返回目标 `input[type=file]` 元素本身（供 CDP Runtime.evaluate 取远端句柄）�? *
+ * BID 可能命中文件输入框本体，也可能是其样式化包装容器（自定义上传按钮 / 拖拽区）�? * 此处向外兼容：命中容器时自动向内检索真实的 `input[type=file]`，确�?`DOM.setFileInputFiles`
+ * 始终有可注入的节点；未找到则返回 null（由工具层给出明确引导，绝不误报成功）�? */
+function buildFileInputResolveScript(record: YanhuBidNode): string {
+  return `(() => {
+    ${buildFinderPrelude(record, { relaxed: finderRelaxed(record) })}
+    const el = __find();
+    if (!el) return null;
+    const tag = (el.tagName || '').toLowerCase();
+    const type = ((el.getAttribute && el.getAttribute('type')) || '').toLowerCase();
+    if (tag === 'input' && type === 'file') return el;
+    if (el.querySelector) {
+      const inner = el.querySelector('input[type="file"]');
+      if (inner) return inner;
+    }
+    try {
+      const scope = el.closest ? (el.closest('form, .form-item, .ant-form-item, .el-form-item, .bh-form-item, label') || el.parentElement) : el.parentElement;
+      if (scope && scope.querySelector) {
+        const inner2 = scope.querySelector('input[type="file"]');
+        if (inner2) return inner2;
+      }
+    } catch (e) {}
+    return null;
+  })()`
+}
+
+/**
+ * 生成「原�?select 选择」脚本�? *
+ * 返回 `isNativeSelect` 诊断字段：非原生 `<select>` �?*不再误报「选项不存在�?*�? * 而是把控制权交给工具层的确定性降级路径（展开自定义下�?�?精确点选）�? * 原生下拉匹配失败时一并回�?*真实可用选项文本**，供代码直接给出确定答案，杜绝模型盲试�? */
+function buildNativeSelectScript(record: YanhuBidNode, target: string): string {
+  return `(() => {
+    ${buildFinderPrelude(record, { relaxed: finderRelaxed(record) })}
+    ${buildUnsealHelpers()}
+    const el = __find();
+    if (!el) return { ok: false, reason: 'not-found' };
+    __unseal(el);
+    __center(el);
+    const tag = (el.tagName || '').toLowerCase();
+    const isNative = tag === 'select' && !!el.options && typeof el.selectedIndex === 'number';
+    if (!isNative) {
+      return {
+        ok: false,
+        isNativeSelect: false,
+        reason: 'not-native-select',
+        tag: tag,
+        role: ((el.getAttribute && el.getAttribute('role')) || '').toLowerCase(),
+      };
+    }
+    try { el.focus(); } catch (e) {}
+    const target = ${JSON.stringify(target)};
+    const opts = Array.from(el.options || []);
+    const opt = opts.find(function (o) { return o.value === target || (o.textContent || '').trim() === target; });
+    if (!opt) {
+      return {
+        ok: false,
+        isNativeSelect: true,
+        reason: 'option-not-found',
+        tag: tag,
+        options: opts.map(function (o) { return (o.textContent || '').trim(); })
+          .filter(function (t) { return !!t; })
+          .slice(0, 30),
+      };
+    }
+    // 同步原生选中态：显式�?opt.selected �?selectedIndex，避免依赖属性判断的老旧 JSP 脚本读到旧�?    el.value = opt.value;
+    opt.selected = true;
+    try { el.selectedIndex = opt.index; } catch (e) {}
+    let evtOk = false;
+    try {
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      evtOk = true;
+    } catch (e) {}
+    if (!evtOk) {
+      try {
+        const win = (el.ownerDocument && el.ownerDocument.defaultView) || window;
+        const jq = win.$ || win.jQuery;
+        if (jq) { jq(el).trigger('change'); }
+      } catch (e) {}
+    }
+    try { if (typeof el.blur === 'function') el.blur(); } catch (e) {}
+    return { ok: true, isNativeSelect: true, value: opt.value };
+  })()`
+}
+
+/**
+ * 生成「JQWidgets DropDownList 专属 API 极速点选」脚本�? *
+ * 针对金智 EMAP / 成理学工请假表单深度优化�? * 当目标为 JQWidgets 下拉（class 包含 jqx-dropdownlist 或存�?$.fn.jqxDropDownList）时�? * 直接通过 getItems() 遍历权威选项列表，命中目标文本（如「事假」）后调�?selectIndex()�? * 随后同步控件内部�?<input type="hidden"> 并派�?change 事件�? *
+ * 优势：零等待、免展开动画延迟、完全绕开浮层定位与视口裁剪问题，耗时 < 2ms�?00% 确定性�? */
+export function buildJqxSelectScript(record: YanhuBidNode, target: string): string {
+  return `(() => {
+    ${buildFinderPrelude(record, { relaxed: finderRelaxed(record) })}
+    const el = __find();
+    if (!el) return { ok: false, reason: 'not-found' };
+    const win = (el.ownerDocument && el.ownerDocument.defaultView) || window;
+    const jq = win.$ || win.jQuery;
+    if (!jq) return { ok: false, reason: 'no-jquery' };
+    const target = ${JSON.stringify(target)};
+    const norm = (s) => (s || '').replace(/\\s+/g, ' ').trim();
+    try {
+      const $el = jq(el);
+      if (typeof $el.jqxDropDownList === 'function') {
+        const items = $el.jqxDropDownList('getItems');
+        if (Array.isArray(items) && items.length > 0) {
+          let match = items.find(function (it) {
+            const l = norm(it.label || it.html || it.text);
+            const v = norm(it.value);
+            return l === target || v === target;
+          });
+          if (!match) {
+            match = items.find(function (it) {
+              const l = norm(it.label || it.html || it.text);
+              return l && (l.indexOf(target) >= 0 || target.indexOf(l) >= 0);
+            });
+          }
+          if (match && typeof match.index === 'number') {
+            $el.jqxDropDownList('selectIndex', match.index);
+            $el.trigger('change');
+            $el.trigger('select');
+            // 同步表单真实接收提交值的隐藏 input，并触发原生�?jQuery 变更
+            try {
+              const hidden = el.querySelector('input[type="hidden"]');
+              if (hidden && match.value != null) {
+                hidden.value = match.value;
+                hidden.dispatchEvent(new Event('input', { bubbles: true }));
+                hidden.dispatchEvent(new Event('change', { bubbles: true }));
+              }
+            } catch (e) {}
+            return {
+              ok: true,
+              via: 'jqx-api',
+              text: norm(match.label || match.html || match.text) || target,
+              value: match.value,
+            };
+          }
+        }
+      }
+    } catch (e) {}
+    return { ok: false, reason: 'not-jqx-or-unmatched' };
+  })()`
+}
+
+
+
+/**
+ * 生成「展开自定义下拉」脚本�? *
+ * 派发**完整鼠标事件�?*（pointerdown + mousedown + pointerup + mouseup + click）；当目标节点是
+ * 容器（如 `.bh-pull-down`）时，改为向内渗透点击真正的触发器（输入�?/ 下拉箭头 / 图标），
+ * 并在面板仍未展开时自适应回落到容器本体与 jQuery `trigger('click')`�? *
+ * 自适应性保障「既不漏开、也不开-�?开抖动」：仅在判定面板确实未展开时才追加兜底点击�? */
+export function buildOpenDropdownScript(record: YanhuBidNode): string {
+  return `(() => {
+    ${buildFinderPrelude(record, { relaxed: finderRelaxed(record) })}
+    ${buildUnsealHelpers()}
+    const el = __find();
+    if (!el) return { ok: false, reason: 'not-found' };
+    __unseal(el);
+    __center(el);
+    try { el.focus(); } catch (e) {}
+
+    const __docs = () => {
+      const list = [document];
+      try {
+        const frames = Array.from(document.querySelectorAll('frame, iframe'));
+        for (let i = 0; i < frames.length; i++) {
+          try {
+            const d = frames[i].contentDocument || (frames[i].contentWindow && frames[i].contentWindow.document);
+            if (d) list.push(d);
+          } catch (e) {}
+        }
+      } catch (e) {}
+      return list;
+    };
+    // 浮层是否已真实展开：覆盖通用框架�?JQWidgets / aria-owns 显式所有权绑定�?    // 关键：现场浮层外壳以 listBox... / innerListBox... 命名，容器自身无 role="listbox"（仅选项�?role="option"），
+    // 优先依据 Combobox 的 aria-owns 定位浮层
+    const __panelOpen = () => {
+      const ariaOwns = el.getAttribute ? (el.getAttribute('aria-owns') || '') : '';
+      const docs = __docs();
+      if (ariaOwns) {
+        for (let di = 0; di < docs.length; di++) {
+          try {
+            const owned = docs[di].getElementById(ariaOwns);
+            if (owned) {
+              const st = (owned.ownerDocument.defaultView || window).getComputedStyle(owned);
+              if (st && st.display !== 'none' && st.visibility !== 'hidden' && parseFloat(st.opacity || '1') > 0) {
+                const r = owned.getBoundingClientRect();
+                if (r.width > 0 && r.height > 0) return true;
+              }
+            }
+          } catch (e) {}
+        }
+      }
+      const popupSels = ['.bh-pull-down-list', '.bh-select-dropdown', '.bh-dropdown-menu', '[class*="dropdown"]', '[class*="popper"]', '[class*="popover"]', '[class*="picker"]', '[role="listbox"]', '[id*="innerListBox"]', '[id*="listBoxContent"]', '.jqx-listbox', '.jqx-dropdownlist-popup'];
+      for (let di = 0; di < docs.length; di++) {
+        for (let si = 0; si < popupSels.length; si++) {
+          let list = [];
+          try { list = Array.from(docs[di].querySelectorAll(popupSels[si])); } catch (e) { list = []; }
+          for (let i = 0; i < list.length; i++) {
+            const n = list[i];
+            let st = null;
+            try { st = (n.ownerDocument.defaultView || window).getComputedStyle(n); } catch (e) {}
+            if (st && (st.display === 'none' || st.visibility === 'hidden' || parseFloat(st.opacity || '1') <= 0)) continue;
+            let r = { width: 0, height: 0 };
+            try { r = n.getBoundingClientRect(); } catch (e) {}
+            if (r.width > 0 && r.height > 0) return true;
+          }
+        }
+      }
+      return false;
+    };
+    const __fireAll = (target) => {
+      try {
+        const win = (target.ownerDocument && target.ownerDocument.defaultView) || window;
+        const r = target.getBoundingClientRect ? target.getBoundingClientRect() : { left: 0, top: 0, width: 0, height: 0 };
+        const opts = { bubbles: true, cancelable: true, composed: true, view: win, clientX: Math.round(r.left + r.width / 2), clientY: Math.round(r.top + r.height / 2), button: 0 };
+        const Ptr = win.PointerEvent || win.MouseEvent;
+        if (Ptr) target.dispatchEvent(new Ptr('pointerdown', opts));
+        target.dispatchEvent(new win.MouseEvent('mousedown', opts));
+        if (Ptr) target.dispatchEvent(new Ptr('pointerup', opts));
+        target.dispatchEvent(new win.MouseEvent('mouseup', opts));
+        target.dispatchEvent(new win.MouseEvent('click', opts));
+        return true;
+      } catch (e) { return false; }
+    };
+    // 语义判定真实触发器
+    const __isTriggerLike = (n) => {
+      const tag = (n.tagName || '').toLowerCase();
+      const role = ((n.getAttribute && n.getAttribute('role')) || '').toLowerCase();
+      return tag === 'input' || tag === 'select' || tag === 'button' || tag === 'a' ||
+        role === 'combobox' || role === 'button' || n.isContentEditable === true;
+    };
+    let primary = __isTriggerLike(el) ? el : null;
+    if (!primary && el.querySelector) {
+      primary = el.querySelector('input:not([type="hidden"]), select, [role="combobox"], [class*="arrow"], [class*="caret"], [class*="icon"], [class*="trigger"]');
+    }
+    if (!primary) primary = el;
+
+    // 复合 combobox（如 JQWidgets）优先向内渗透至最贴近监听器的箭头 / 包装器：
+    // JQWidgets 的展开监听挂在 #dropdownlistWrapper �?#dropdownlistArrow 内部节点上，
+    // 内部箭头/图标检索
+    let innerArrow = null;
+    if (el.querySelector) {
+      innerArrow = el.querySelector('[id*="dropdownlistArrow"], [class*="icon-arrow"], [class*="arrow"], [class*="caret"], [id*="dropdownlistWrapper"]');
+    }
+
+    // 派发顺序：命中内部箭头时优先派发它，避免箭头 + 宿主双重派发造成开-�?开抖动
+    if (innerArrow) {
+      __fireAll(innerArrow);
+      if (!__panelOpen() && primary !== innerArrow) __fireAll(primary);
+    } else {
+      __fireAll(primary);
+      if (primary !== el && !__panelOpen()) __fireAll(el);
+    }
+
+    // jQuery / JQWidgets 权威 API 穿透：仅在原生派发均未展开时才启用，避免重�?click 造成开-�?开抖动
+    if (!__panelOpen()) {
+      try {
+        const win = (el.ownerDocument && el.ownerDocument.defaultView) || window;
+        const jq = win.$ || win.jQuery;
+        if (jq) {
+          const $el = jq(el);
+          if (typeof $el.jqxDropDownList === 'function') $el.jqxDropDownList('open');
+          jq(primary).trigger('click');
+          if (innerArrow) jq(innerArrow).trigger('mousedown').trigger('mouseup').trigger('click');
+          if (primary !== el && !__panelOpen()) jq(el).trigger('click');
+        }
+      } catch (e) {}
+    }
+    return { ok: true, opened: __panelOpen() };
+  })()`
+}
+
+/**
+ * 自定义下拉选项的确定性候选选择器（精确覆盖主流组件库）�? *
+ * 刻意只覆盖「选项 / 面板」语义的节点，避免大范围扫描后误点页面其他区域�? * 关键：不再把选项限定�?`li`——金�?EMAP / BH-UI / JQWidgets 的选项大量使用 `div`
+ * （如 `div.jqx-listitem-element`、`div.bh-pull-down-item`），历史缺陷正是�?`* li` 限定而直接漏判�? */
+export const CUSTOM_OPTION_SELECTORS = [
+  '[role="option"]',
+  '[role="menuitem"]',
+  '[role="treeitem"]',
+  // 金智轻应�?(EMAP / BH-UI / JQWidgets) 专属下拉结构
+  '.bh-pull-down-list li',
+  '.bh-pull-down-list div',
+  '.bh-pull-down-item',
+  '.jqx-listitem-element',
+  '.jqx-listitem-state-normal',
+  '.jqx-item',
+  'div[id*="innerListBox"] [role="option"]',
+  'div[id*="innerListBox"] .jqx-listitem-element',
+  'div[id*="listBoxContent"] div',
+  'div[id*="innerListBox"] div',
+  '.bh-dropdown-menu li',
+  '.bh-dropdown-menu div',
+  '.bh-select-dropdown li',
+  '.bh-select-dropdown div',
+  '.bh-select-dropdown [class*="item"]',
+  '.bh-picker-item',
+  // 通用框架类目
+  '[class*="pull-down"] li',
+  '[class*="pull-down"] div',
+  '[class*="pull-down"] [class*="item"]',
+  '[class*="dropdown-item"]',
+  '[class*="dropdown"] li',
+  '[class*="dropdown"] div',
+  '.el-select-dropdown__item',
+  '.ant-select-item-option',
+  '.van-picker-column__item',
+  '.van-picker__option',
+  '.ivu-select-item',
+  '.arco-select-option',
+  '[class*="popper"] li',
+  '[class*="popper"] div',
+  '[class*="popper"] [class*="item"]',
+  '[class*="options"] li',
+  '[class*="options"] div',
+]
+
+/**
+ * 浮动面板根节点选择器（选项预设选择器全未命中时的叶子文本兜底扫描用）�? */
+const CUSTOM_POPUP_SELECTORS = [
+  '.bh-pull-down-list',
+  '.bh-select-dropdown',
+  '.bh-dropdown-menu',
+  '[class*="dropdown"]',
+  '[class*="popper"]',
+  '[class*="popover"]',
+  '[class*="picker"]',
+  '[role="listbox"]',
+  '[id*="innerListBox"]',
+  '[id*="listBoxContent"]',
+  '.jqx-listbox',
+  '.jqx-dropdownlist-popup',
+]
+
+/**
+ * 生成「在已展开面板中点选选项」脚本（异步轮询探针）�? *
+ * 在候选集中按文本精确匹配（次选包含匹配，取最短文本以排除容器聚合项），命中即**单次点击**�? * 匹配失败返回 `option-not-found`，由工具层给出确定引导，绝不盲点无关区域�? *
+ * 关键设计�? * 1. 候选扫�?*递归穿透全部子 frame / iframe**（复用采集端同构的三级鲁棒穿透思路），
+ *    使嵌套在业务 iframe（如金智 EMAP 轻应用）内的下拉面板同样可被精确定位点击�? * 2. **异步轮询探针**：浮层展开动画（opacity / slideDown）与 XHR 选项回填常存�?100~300ms 时序差，
+ *    同步瞬时查找会直接误判「选项不存在」。此处以 50ms 间隔轮询、最长等�?800ms，自适应等待渲染完成�? */
+export function buildPickCustomOptionScript(target: string): string {
+  return `(() => {
+    return new Promise((resolve) => {
+      const target = ${JSON.stringify(target)};
+      const norm = (s) => (s || '').replace(/\\s+/g, ' ').trim();
+      const selectors = ${JSON.stringify(CUSTOM_OPTION_SELECTORS)};
+      const popupSelectors = ${JSON.stringify(CUSTOM_POPUP_SELECTORS)};
+      const POLL_MS = 50;
+      const TIMEOUT_MS = 800;
+      const start = Date.now();
+      const seen = [];
+      const exact = [];
+      const loose = [];
+
+      const isVisible = (el) => {
+        try {
+          const st = (el.ownerDocument.defaultView || window).getComputedStyle(el);
+          if (st && (st.display === 'none' || st.visibility === 'hidden' || parseFloat(st.opacity || '1') <= 0)) return false;
+        } catch (e) {}
+        try {
+          const r = el.getBoundingClientRect();
+          return r.width > 0 && r.height > 0;
+        } catch (e) { return false; }
+      };
+      const consider = (el) => {
+        if (!el || seen.indexOf(el) >= 0) return;
+        seen.push(el);
+        if (!isVisible(el)) return;
+        const text = norm(el.textContent);
+        if (!text) return;
+        if (text === target) exact.push({ el: el, len: text.length });
+        else if (text.indexOf(target) >= 0) loose.push({ el: el, len: text.length });
+      };
+      const collect = (doc, depth) => {
+        if (!doc || depth > 6) return;
+        for (let i = 0; i < selectors.length; i++) {
+          let list = [];
+          try { list = Array.from(doc.querySelectorAll(selectors[i])); } catch (e) { list = []; }
+          for (let j = 0; j < list.length; j++) consider(list[j]);
+        }
+        // 兜底：预设选择器全未命中时，扫描全部可见浮动面板内的叶子文本节点（兼容自定义类名组件）
+        let popups = [];
+        try { popups = Array.from(doc.querySelectorAll(popupSelectors.join(','))); } catch (e) { popups = []; }
+        for (let pi = 0; pi < popups.length; pi++) {
+          let leaves = [];
+          try { leaves = Array.from(popups[pi].querySelectorAll('*')); } catch (e) { leaves = []; }
+          for (let li = 0; li < leaves.length; li++) {
+            const leaf = leaves[li];
+            if (leaf.children && leaf.children.length > 0) continue;
+            consider(leaf);
+          }
+        }
+        let frames = [];
+        try { frames = doc.querySelectorAll ? Array.from(doc.querySelectorAll('frame, iframe')) : []; } catch (e) { frames = []; }
+        for (let i = 0; i < frames.length; i++) {
+          try {
+            const f = frames[i];
+            const sub = f.contentDocument || (f.contentWindow && f.contentWindow.document);
+            if (sub) collect(sub, depth + 1);
+          } catch (e) {}
+        }
+      };
+      const clickOption = (pick) => {
+        try {
+          const win = (pick.ownerDocument && pick.ownerDocument.defaultView) || window;
+          const r = pick.getBoundingClientRect();
+          const opts = { bubbles: true, cancelable: true, composed: true, view: win, clientX: Math.round(r.left + r.width / 2), clientY: Math.round(r.top + r.height / 2), button: 0 };
+          const Ptr = win.PointerEvent || win.MouseEvent;
+          if (Ptr) pick.dispatchEvent(new Ptr('pointerdown', opts));
+          pick.dispatchEvent(new win.MouseEvent('mousedown', opts));
+          if (Ptr) pick.dispatchEvent(new Ptr('pointerup', opts));
+          pick.dispatchEvent(new win.MouseEvent('mouseup', opts));
+          // 单次点击语义：仅派发一�?click（含副作用的组件不会被重复触发两次以上）
+          pick.dispatchEvent(new win.MouseEvent('click', opts));
+        } catch (e) {
+          try { if (typeof pick.click === 'function') pick.click(); } catch (e2) {}
+        }
+        return norm(pick.textContent).slice(0, 40);
+      };
+
+      const check = () => {
+        seen.length = 0;
+        exact.length = 0;
+        loose.length = 0;
+        collect(document, 0);
+        const pool = exact.length > 0 ? exact : loose;
+        if (pool.length > 0) {
+          pool.sort(function (a, b) { return a.len - b.len; });
+          return resolve({ ok: true, matched: pool.length, text: clickOption(pool[0].el) });
+        }
+        if (Date.now() - start < TIMEOUT_MS) {
+          setTimeout(check, POLL_MS);
+        } else {
+          resolve({ ok: false, reason: 'option-not-found', matched: 0 });
+        }
+      };
+
+      check();
+    });
+  })()`
+}
+
+/**
+ * 生成「CI4A 语义单�?/ 复选组多态点选」脚本�? *
+ * 抹平前端组件形态差异：当模型对单选组（`role="radio"` / `input[type=radio]`）调�?yanhu_select�? * 或对单选项本体调用时，在自�?/ 同级 / 祖先容器内检索单选候选，按可访问名精确匹配目标文本，
+ * 命中即以**完整事件�?*（pointerdown + mousedown + focus + pointerup + mouseup + click + input
+ * + change + jQuery change）点选，确保 Vue `v-model` �?jQuery `change` 联动、金智级联逻辑立即激活�? *
+ * 契约：命中返�?`{ ok: true, ci4a: 'radio', text }`；未命中返回 `{ ok: false, ci4a: ... }`�? * 由工具层无缝回落至「原�?select / 自定义下拉」确定性路径，绝不误报成功�? */
+function buildSemanticOptionClickScript(record: YanhuBidNode, target: string): string {
+  return `(() => {
+    ${buildFinderPrelude(record, { relaxed: finderRelaxed(record) })}
+    const __ci4aTarget = ${JSON.stringify(target)};
+    const __ci4aNorm = (s) => (s || '').replace(/\\s+/g, ' ').trim();
+    const el = __find();
+    if (!el) return { ok: false, ci4a: 'not-found' };
+    const __ci4aIsChoice = (n) => {
+      const t = (n.tagName || '').toLowerCase();
+      const ty = ((n.getAttribute && n.getAttribute('type')) || '').toLowerCase();
+      const ro = ((n.getAttribute && n.getAttribute('role')) || '').toLowerCase();
+      return ro === 'radio' || ro === 'checkbox' || (t === 'input' && (ty === 'radio' || ty === 'checkbox'));
+    };
+    let scope = null;
+    try { scope = el.closest ? el.closest('form, fieldset, [role="radiogroup"], ul, ol, .bh-form-item, .form-item, .el-form-item, .ant-form-item, li') : null; } catch (e) { scope = null; }
+    if (!scope) scope = el.parentElement || el.ownerDocument || document;
+    const CHOICE_QUERY = 'input[type="radio"], input[type="checkbox"], [role="radio"], [role="checkbox"]';
+    let pool = [];
+    try { pool = scope.querySelectorAll ? Array.from(scope.querySelectorAll(CHOICE_QUERY)) : []; } catch (e) { pool = []; }
+    if (__ci4aIsChoice(el) && pool.indexOf(el) < 0) pool = [el].concat(pool);
+    if (pool.length === 0) return { ok: false, ci4a: 'no-group' };
+    const __ci4aNameOf = (n) => {
+      try {
+        const lb = n.closest ? n.closest('label') : null;
+        if (lb && lb.textContent) return __ci4aNorm(lb.textContent);
+        const id = n.id || '';
+        if (id && n.ownerDocument && n.ownerDocument.querySelector) {
+          const f = n.ownerDocument.querySelector('label[for="' + id + '"]');
+          if (f && f.textContent) return __ci4aNorm(f.textContent);
+        }
+        if (n.labels && n.labels.length > 0 && n.labels[0].textContent) return __ci4aNorm(n.labels[0].textContent);
+        let sib = n.nextElementSibling;
+        while (sib) { const st = __ci4aNorm(sib.textContent); if (st) return st; sib = sib.nextElementSibling; }
+        const p = n.parentElement;
+        if (p) return __ci4aNorm(p.textContent);
+      } catch (e) {}
+      return '';
+    };
+    let pick = null;
+    for (let i = 0; i < pool.length; i++) { if (__ci4aNorm(__ci4aNameOf(pool[i])) === __ci4aTarget) { pick = pool[i]; break; } }
+    if (!pick) {
+      for (let i = 0; i < pool.length; i++) {
+        const t = __ci4aNorm(__ci4aNameOf(pool[i]));
+        if (t && t.indexOf(__ci4aTarget) >= 0) { pick = pool[i]; break; }
+      }
+    }
+    if (!pick) return { ok: false, ci4a: 'option-not-found', options: pool.map(__ci4aNameOf).filter(Boolean).slice(0, 30) };
+    try { if (pick.scrollIntoView) pick.scrollIntoView({ block: 'center', inline: 'center' }); } catch (e) {}
+    const win = (pick.ownerDocument && pick.ownerDocument.defaultView) || window;
+    const __ci4aFire = (type) => {
+      try {
+        const r = pick.getBoundingClientRect ? pick.getBoundingClientRect() : { left: 0, top: 0, width: 0, height: 0 };
+        const Ctor = type.indexOf('pointer') === 0 ? (win.PointerEvent || win.MouseEvent) : win.MouseEvent;
+        if (!Ctor) return;
+        pick.dispatchEvent(new Ctor(type, { bubbles: true, cancelable: true, composed: true, view: win, clientX: Math.round(r.left + r.width / 2), clientY: Math.round(r.top + r.height / 2), button: 0 }));
+      } catch (e) {}
+    };
+    __ci4aFire('pointerdown');
+    __ci4aFire('mousedown');
+    try { if (typeof pick.focus === 'function') pick.focus(); } catch (e) {}
+    __ci4aFire('pointerup');
+    __ci4aFire('mouseup');
+    try {
+      if (typeof pick.click === 'function') pick.click();
+      else pick.dispatchEvent(new win.MouseEvent('click', { bubbles: true, cancelable: true, composed: true, view: win, button: 0 }));
+    } catch (e) {}
+    // 框架响应式变更：原生 input / change + jQuery change，激�?Vue v-model 与金智级联逻辑
+    try {
+      pick.dispatchEvent(new Event('input', { bubbles: true }));
+      pick.dispatchEvent(new Event('change', { bubbles: true }));
+    } catch (e) {}
+    try {
+      const jq = win.$ || win.jQuery;
+      if (jq) jq(pick).trigger('change');
+    } catch (e) {}
+    return { ok: true, ci4a: 'radio', text: __ci4aNorm(__ci4aNameOf(pick)) || __ci4aTarget };
+  })()`
+}
+
+/**
+ * 生成第二阶梯（CDP 硬件级仿真）所需的根视口坐标定位脚本�? *
+ * 复用采集端同一套定位器（标�?+ 可访问名 + 边界中心距离），先祖先解封与 `scrollIntoView`
+ * 保障可视性，再自内向外累加各�?frame �?BoundingRect，把叶子框架内的点投影为根视�?CSS 像素�? */
+export function buildHardwareClickTargetScript(record: YanhuBidNode): string {
+  return `(() => {
+    ${buildFinderPrelude(record, { relaxed: finderRelaxed(record) })}
+    ${buildUnsealHelpers()}
+    const el = __find();
+    if (!el) return { ok: false, reason: 'not-found' };
+    __unseal(el);
+    __center(el);
+    // 吸顶遮挡绕过
+    const __stickyBypass = (target) => {
+      try {
+        const tdoc = target.ownerDocument || document;
+        if (!tdoc.elementFromPoint) return;
+        const view = tdoc.defaultView || window;
+        for (let pass = 0; pass < 3; pass++) {
+          const rect = target.getBoundingClientRect ? target.getBoundingClientRect() : null;
+          if (!rect || rect.width <= 0 || rect.height <= 0) return;
+          const probeX = rect.left + rect.width / 2;
+          const probeY = rect.top + Math.min(6, Math.max(1, rect.height / 4));
+          let hit = null;
+          try { hit = tdoc.elementFromPoint(probeX, probeY); } catch (e) { return; }
+          const covered = hit && hit !== target && !(target.contains && target.contains(hit)) && !(hit.contains && hit.contains(target));
+          if (!covered) return;
+          // 内容向下位移
+          const delta = 48 + Math.round(rect.height);
+          let adjusted = false;
+          let node = target.parentElement;
+          let guard = 0;
+          while (node && guard < 20) {
+            let cs = null;
+            try { cs = view.getComputedStyle ? view.getComputedStyle(node) : null; } catch (e) { cs = null; }
+            const oy = cs ? cs.overflowY : '';
+            const scrollable = (oy === 'auto' || oy === 'scroll' || oy === 'overlay') && node.scrollHeight > node.clientHeight + 1;
+            if (scrollable) {
+              const before = node.scrollTop;
+              node.scrollTop = Math.max(0, before - delta);
+              if (node.scrollTop !== before) adjusted = true;
+              break;
+            }
+            node = node.parentElement;
+            guard += 1;
+          }
+          if (!adjusted) {
+            try {
+              const beforeY = view.scrollY || 0;
+              view.scrollBy(0, -delta);
+              if ((view.scrollY || 0) === beforeY) return;
+            } catch (e) { return; }
+          }
+        }
+      } catch (e) {}
+    };
+    __stickyBypass(el);
+    let cx = 0, cy = 0;
+    try {
+      const r = el.getBoundingClientRect();
+      cx = r.left + r.width / 2;
+      cy = r.top + r.height / 2;
+    } catch (e) { return { ok: false, reason: 'rect-failed' }; }
+    // 多层 Frame 递归绝对投影：自内向外累加各�?frame 在父视口中的偏移
+    let doc = el.ownerDocument;
+    let depth = 0;
+    while (doc && depth < 8) {
+      const fw = doc.defaultView;
+      if (!fw || fw === window) break;
+      let fe = null;
+      try { fe = fw.frameElement; } catch (e) { fe = null; }
+      if (!fe) break;
+      const fr = fe.getBoundingClientRect();
+      cx += fr.left; cy += fr.top;
+      doc = fe.ownerDocument;
+      depth += 1;
+    }
+    // Hit-Test 命中穿透校验与修正：中心点若被浮层覆盖，回退至元素矩形内的候选采样点
+    let hitOk = true;
+    let fx = cx, fy = cy;
+    try {
+      const topW = window.top || window;
+      const topDoc = topW.document;
+      if (topDoc && topDoc.elementFromPoint) {
+        let expect = el;
+        let d2 = 0, d2doc = el.ownerDocument;
+        while (d2doc && d2 < 8) {
+          const f = d2doc.defaultView;
+          if (!f || f === topW) break;
+          let fe2 = null;
+          try { fe2 = f.frameElement; } catch (e) { fe2 = null; }
+          if (!fe2) break;
+          expect = fe2;
+          d2doc = fe2.ownerDocument;
+          d2 += 1;
+        }
+        const r0 = el.getBoundingClientRect();
+        const offX = cx - (r0.left + r0.width / 2);
+        const offY = cy - (r0.top + r0.height / 2);
+        const samples = [
+          [r0.left + r0.width / 2, r0.top + r0.height / 2],
+          [r0.left + r0.width * 0.25, r0.top + r0.height * 0.25],
+          [r0.left + r0.width * 0.75, r0.top + r0.height * 0.75],
+          [r0.left + r0.width * 0.25, r0.top + r0.height * 0.75],
+          [r0.left + r0.width * 0.75, r0.top + r0.height * 0.25],
+        ];
+        let found = false;
+        for (let i = 0; i < samples.length; i++) {
+          const px = samples[i][0] + offX, py = samples[i][1] + offY;
+          let hit = null;
+          try { hit = topDoc.elementFromPoint(Math.round(px), Math.round(py)); } catch (e) { hit = null; }
+          const isSelf = !hit || hit === el || hit === expect ||
+            (el.contains && el.contains(hit)) || (expect.contains && expect.contains(hit));
+          if (isSelf) { fx = px; fy = py; found = true; break; }
+        }
+        if (!found) hitOk = false;
+      }
+    } catch (e) { hitOk = true; }
+    // �?Frame 原生导航兜底：记�?<a target="frameName"> 的联动目标与目标框架起点 URL
+    let nav = null;
+    try {
+      const tag = (el.tagName || '').toLowerCase();
+      if (tag === 'a') {
+        const href = el.getAttribute ? (el.getAttribute('href') || '') : '';
+        const target = el.getAttribute ? (el.getAttribute('target') || '') : '';
+        const win = (el.ownerDocument && el.ownerDocument.defaultView) || window;
+        const base = (win && win.location) ? win.location.href : location.href;
+        if (href && /^https?:/i.test(href) && target && target !== '_self' && target !== '_blank') {
+          let from = '';
+          try {
+            const topW = window.top || window;
+            const fr = topW.document.querySelector('frame[name="' + target + '"], iframe[name="' + target + '"], frame#' + target + ', iframe#' + target + '');
+            const fwin = fr && (fr.contentWindow || (topW.frames && topW.frames[target]));
+            from = (fwin && fwin.location) ? fwin.location.href : '';
+          } catch (e) {}
+          let absolute = href;
+          try { absolute = new URL(href, base).href; } catch (e) {}
+          nav = { frameName: target, href: absolute, from: from };
+        }
+      }
+    } catch (e) { nav = null; }
+    return { ok: true, x: Math.round(fx), y: Math.round(fy), hitOk: hitOk, nav: nav };
+  })()`
+}
+
+/** �?Frame 原生导航双保险脚本：仅当目标框架仍停留于起点时才兜底导航，避免重复加�?*/
+function buildEnsureNavigationScript(nav: { frameName: string; href: string; from: string }): string {
+  return `(() => {
+    try {
+      const target = ${JSON.stringify(nav.frameName)};
+      const dest = ${JSON.stringify(nav.href)};
+      const from = ${JSON.stringify(nav.from)};
+      const topW = window.top || window;
+      const fr = topW.document.querySelector('frame[name="' + target + '"], iframe[name="' + target + '"], frame#' + target + ', iframe#' + target + '');
+      const fwin = fr && (fr.contentWindow || (topW.frames && topW.frames[target]));
+      if (!fwin || !fwin.location) return { ok: false, reason: 'frame-not-found' };
+      let current = '';
+      try { current = fwin.location.href; } catch (e) { current = ''; }
+      if (from && current && current !== from) return { ok: true, assigned: false };
+      if (current === dest) return { ok: true, assigned: false };
+      fwin.location.assign(dest);
+      return { ok: true, assigned: true };
+    } catch (e) { return { ok: false, reason: 'error' }; }
+  })()`
+}
+
+/** 动作后的双平面稳态收口（网络流静�?+ �?Frame DOM 排空；脚本异常回退固定观察窗） */
+async function settleAfterAction(tabId: string): Promise<void> {
+  try {
+    await yanhuExpressManager.awaitStable(tabId, { windowMs: 300, timeoutMs: 1500 })
+  } catch {
+    await waitForDomSettle(tabId)
+  }
+}
+
+/**
+ * 因果 DAG 跨平面观察器：并行监�?DOM 突变 / 网络在�?/ URL 变更 / 标签拓扑四类因果边，
+ * 命中任一即提前返回，避免固定延时；观察窗内零命中即判�?No-Op（供上层升级�?CDP 硬件级）�? */
+async function observeYanhuCausality(tabId: string, baseline: CausalSnapshot, windowMs: number): Promise<CausalObservation> {
+  const probePromise = yanhuExpressManager
+    .probeCrossFrameActivity(tabId, windowMs)
+    .catch(() => ({ settled: true, mutated: false, mutations: 0, frames: 0, elapsedMs: 0 }))
+  const domState: { drain: { mutated: boolean } | null } = { drain: null }
+  probePromise.then((drain) => {
+    domState.drain = drain
+  })
+
+  const deadline = Date.now() + windowMs
+  let networkStarted = false
+  let urlChanged = false
+  let newTab = false
+  while (Date.now() < deadline) {
+    if (domState.drain?.mutated) break
+    if (yanhuExpressManager.getInflightRequestCount(tabId) > baseline.inflight) {
+      networkStarted = true
+      break
+    }
+    if (yanhuExpressManager.getNetworkActivityAt(tabId) > baseline.networkActivityAt) {
+      networkStarted = true
+      break
+    }
+    if (yanhuExpressManager.getTabCount() > baseline.tabCount) {
+      newTab = true
+      break
+    }
+    const meta = yanhuExpressManager.getTabMeta(tabId)
+    if (meta && meta.url && meta.url !== baseline.url) {
+      urlChanged = true
+      break
+    }
+    await new Promise((resolve) => setTimeout(resolve, 60))
+  }
+
+  let mutated = domState.drain?.mutated === true
+  if (!mutated && !networkStarted && !urlChanged && !newTab) {
+    const drain = domState.drain ?? (await probePromise)
+    mutated = drain.mutated
+  }
+
+  const evidence: string[] = []
+  if (mutated) evidence.push('因果边命中：�?Frame DOM 发生突变')
+  if (networkStarted) evidence.push('因果边命中：网络请求在�?/ 新增')
+  if (urlChanged) evidence.push('因果边命中：主框�?URL 变更')
+  if (newTab) evidence.push('因果边命中：检测到新标签页创建')
+  if (evidence.length === 0) evidence.push(`观察�?${windowMs}ms 内零因果边（判定 No-Op）`)
+  return { mutated, networkStarted, urlChanged, newTab, evidence }
+}
+
+/** 装配主进程侧的两阶梯自适应分派宿主 */
+function createHybridDispatcherAdapter(): HybridDispatcherAdapter {
+  return {
+    async dispatchSynthetic(tabId, record, options) {
+      try {
+        const result = (await yanhuExpressManager.evalInPage(
+          tabId,
+          buildForceTriggerScript(record, { doubleClick: options.doubleClick === true }),
+        )) as { ok?: boolean; syncMutations?: number; stateChanged?: boolean } | null
+        const ok = !!result && result.ok === true
+        const rawSync = result?.syncMutations
+        const syncMutations =
+          typeof rawSync === 'number' && Number.isFinite(rawSync) ? Math.max(0, Math.trunc(rawSync)) : 0
+        return { ok, syncMutations, stateChanged: result?.stateChanged === true }
+      } catch {
+        return { ok: false, syncMutations: 0, stateChanged: false }
+      }
+    },
+    async dispatchHardware(tabId, record, options) {
+      try {
+        const located = (await yanhuExpressManager.evalInPage(tabId, buildHardwareClickTargetScript(record))) as
+          | {
+              ok?: boolean
+              x?: number
+              y?: number
+              hitOk?: boolean
+              nav?: { frameName: string; href: string; from: string } | null
+            }
+          | null
+        if (!located || located.ok !== true || typeof located.x !== 'number' || typeof located.y !== 'number') {
+          // 跨域（OOPIF）框架内控件无法被页面脚本定位，改用采集期已投影的根视口绝对坐标直接点击
+          return dispatchCrossOriginRecordClick(tabId, record, options.doubleClick === true)
+        }
+        // 命中穿透校验：中心点被浮层遮挡（hitOk=false）时拒绝硬件点击，避免点中遮罩层
+        if (located.hitOk === false) return false
+        await yanhuExpressManager.dispatchHumanClick(tabId, located.x, located.y, {
+          doubleClick: options.doubleClick === true,
+        })
+        // �?Frame 原生导航双保险：�?frameset 联动未生效，由主进程直接驱动目标框架导航
+        const nav = located.nav
+        if (nav && nav.frameName && nav.href) {
+          try {
+            await yanhuExpressManager.evalInPage(tabId, buildEnsureNavigationScript(nav))
+          } catch {
+            // 兜底脚本异常不影响点击结果。
+          }
+        }
+        return true
+      } catch {
+        return false
+      }
+    },
+    snapshot(tabId): CausalSnapshot {
+      return {
+        url: yanhuExpressManager.getTabMeta(tabId)?.url ?? '',
+        inflight: yanhuExpressManager.getInflightRequestCount(tabId),
+        networkActivityAt: yanhuExpressManager.getNetworkActivityAt(tabId),
+        tabCount: yanhuExpressManager.getTabCount(),
+      }
+    },
+    observeCausality: (tabId, baseline, windowMs) => observeYanhuCausality(tabId, baseline, windowMs),
+    awaitQuiescence: (tabId, options) => yanhuExpressManager.awaitStable(tabId, options),
+    resolveActiveTabId: () => yanhuExpressManager.getActiveTabId(),
+  }
+}
+
+/** 全局共享的两阶梯自适应分派器（懒装配，保证单测中可热替换底层管理器方法�?*/
+let sharedHybridDispatcher: HybridAdaptiveDispatcher | null = null
+function getHybridDispatcher(): HybridAdaptiveDispatcher {
+  if (!sharedHybridDispatcher) {
+    sharedHybridDispatcher = new HybridAdaptiveDispatcher(createHybridDispatcherAdapter())
+  }
+  return sharedHybridDispatcher
+}
+
+/**
+ * 解析 BID 为标定记录�? *
+ * 优先命中当前索引；若当前索引�?markDirty 失效，则自动回退到历史回退池（stale 记录），
+ * 从而消除「点�?-> BID 失效 -> 重读 -> 再点击」的固定冗余交互，不向模型抛出「BID 失效」�? * 仅当�?BID 从未被标定时才给出明确引导�? */
+function requireBid(tabId: string, bid: number): BidNodeRecord {
+  const record = yanhuDomDistillationEngine.resolveBidWithFallback(tabId, bid)
+  if (!record) {
+    // 未知 BID 回传可用台账
+    const available = yanhuDomDistillationEngine.listBidsWithFallback(tabId)
+    const listing = available
+      .slice(0, 40)
+      .map((node) => `[${node.bid}] ${node.role} "${node.name}"`)
+      .join('\n')
+    const hint = listing ? `当前可用 BID：\n${listing}` : '当前页面尚无标定记录，请先调用 yanhu_read_page 观察页面。'
+    throw new Error(`BID ${bid} 不存在。${hint}`)
+  }
+  return record
+}
+
+/** 生成定位器的放宽判定标志：折叠或历史回退记录需放宽尺寸过滤，按语义名模糊重�?*/
+function finderRelaxed(record: YanhuBidNode): boolean {
+  return record.collapsed === true || (record as BidNodeRecord).stale === true
+}
+
+/** 判定记录是否来自跨域（OOPIF）子框架（采集期�?`xframe:` 前缀标记�?*/
+function isCrossOriginFrameRecord(record: YanhuBidNode): boolean {
+  return typeof record.framePath === 'string' && record.framePath.startsWith('xframe:')
+}
+
+/**
+ * 跨域框架控件的硬件点击兜底�? *
+ * 页面脚本无法穿透跨�?iframe，故无法就地定位；改用采集期�?CDP 已投影为根视口的绝对坐标�? * 直接�?`Input.dispatchMouseEvent` 派发物理点击，使内嵌第三方表单控件同样可被真实命中�? */
+async function dispatchCrossOriginRecordClick(
+  tabId: string,
+  record: YanhuBidNode,
+  doubleClick: boolean,
+): Promise<boolean> {
+  if (!isCrossOriginFrameRecord(record)) return false
+  const { x, y, width, height } = record.bounds
+  if (width <= 0 || height <= 0) return false
+  try {
+    await yanhuExpressManager.dispatchHumanClick(
+      tabId,
+      Math.round(x + width / 2),
+      Math.round(y + height / 2),
+      { doubleClick },
+    )
+    return true
+  } catch {
+    return false
+  }
+}
+
+/**
+ * 计算当前标签的归一化环境状态指纹�? *
+ * 已投递页面的全要素指纹天然剔除了框架随机动�?ID（仅�?role / name / value / region 结构计算），
+ * 再经 {@link normalizeStateString} 归一化，作为 DeadlockGuard 判定「环境是否被反复拉回相同」的依据�? */
+function currentStateHash(tabId: string): string {
+  const fingerprint = yanhuDomDistillationEngine.getDeliveredFingerprint(tabId)
+  return normalizeStateString(fingerprint ?? '')
+}
+
+/**
+ * 交互动作的前置死锁防护（DeadlockGuard 拦截器）�? *
+ * 命中乒乓振荡（Period-2 交替死锁）或动作已被动态遮罩时，返回熔断回执；否则登记本步并返�?null�? */
+function guardAgainstDeadlock(tabId: string, bid: number, actionName: string): YanhuToolExecutionResult | null {
+  const verdict = yanhuDeadlockGuard.evaluate(tabId, currentStateHash(tabId), bid, actionName)
+  if (!verdict.deadlock) return null
+  const pattern = verdict.cyclePattern ? `（振荡周期：${verdict.cyclePattern}）` : ''
+  return {
+    content: `【死锁防护拦截】检测到针对 [BID: ${bid}] 的交替振荡点击${pattern}，页面未产生有效推进。已触发动作空间遮罩，请勿继续点击该按钮，请改用其他控件或先读取页面。`,
+    isError: true,
+  }
+}
+
+/**
+ * 生成本次操作后「紧随其后的可交互字段」精简提示（出参自包含状态反馈）�? *
+ * 工具成功后直接回传后续紧邻字段的 [BID] 台账，模型无需再花一整个 LLM 往�?read_page 验证�? * 即可在一个思考轮次内批量推进整张表单，从源头消灭「填一�?�?读一次」的 50% 冗余轮次�? */
+function buildNextFieldHint(tabId: string, currentBid: number): string {
+  const nodes = yanhuDomDistillationEngine.listBidsWithFallback(tabId)
+  if (nodes.length === 0) return ''
+  const idx = nodes.findIndex((node) => node.bid === currentBid)
+  const rest = idx >= 0 ? nodes.slice(idx + 1) : nodes
+  const next = rest.filter((node) => !node.collapsed).slice(0, 4)
+  if (next.length === 0) return ''
+  return `后续字段：${next.map((node) => `[BID: ${node.bid}] \"${node.name}\"`).join("、")}。`
+}
+
+/** 蒸馏当前页面（供 read_page 复用；带�?TTL 缓存，导�?/ 交互后由 markDirty 触发重建�?*/
+async function distillCurrent(tabId: string): Promise<YanhuDistilledPage> {
+  const cached = yanhuDomDistillationEngine.getCached(tabId)
+  if (cached && Date.now() - cached.timestamp <= YANHU_READ_CACHE_TTL_MS) return cached
+  const collectorScript = buildYanhuCollectorScript()
+  const collected = normalizeCollected(await yanhuExpressManager.evalInPage(tabId, collectorScript))
+  // 跨域（OOPIF）子框架补充采集：页面脚本无法穿�?contentWindow.document 的跨域盲区，改由 CDP 补齐
+  try {
+    const oopif = await yanhuExpressManager.collectCrossOriginFrameElements(tabId, collectorScript)
+    if (oopif.elements.length > 0) {
+      collected.elements = collected.elements.concat(oopif.elements)
+    }
+    if (oopif.dataTables.length > 0) {
+      collected.dataTables = [...(collected.dataTables ?? []), ...oopif.dataTables]
+    }
+  } catch {
+    // 跨域采集失败不影响主框架页面感知
+  }
+  let axNodes: unknown[] = []
+  try {
+    const ax = await yanhuExpressManager.getFullAXTree(tabId)
+    axNodes = Array.isArray(ax) ? ax : []
+  } catch {
+    axNodes = []
+  }
+  return yanhuDomDistillationEngine.distill(tabId, collected, axNodes)
+}
+
+/** 截断�?Token 预算（粗�?1 token �?4 字符�?*/
+function capByTokens(text: string, maxTokens?: number): string {
+  if (!maxTokens || maxTokens <= 0) return text
+  const maxChars = maxTokens * 4
+  return text.length <= maxChars ? text : `${text.slice(0, maxChars)}\n…（PageDigest 已按 maxTokens 截断）`
+}
+
+/**
+ * 装配「砚小龙」专属门禁工具集�? *
+ * @param tabResolver 返回当前目标标签 ID 的解析器（通常为激活标签）
+ */
+export function buildYanhuBrowserTools(tabResolver: () => string): YanhuBrowserTool[] {
+  const tools: YanhuBrowserTool[] = []
+  /** 工具层熔断标记：记录「上一�?read_page 报告页面无变化」所属的标签 ID（按标签隔离，杜绝跨标签误熔断） */
+  let unchangedBreakerTabId: string | null = null
+  /** 重复点击护栏台账：`${tabId}:${bid}` -> 上次点击时的「已投递页面指纹」与时间�?*/
+  const recentClicks = new Map<string, { at: number; fingerprint: string }>()
+  /** 记录一次有效交互动作（click/select/fill/scroll/navigate 等），解除熔断并刷新观察基准 */
+  const markInteraction = (): void => {
+    unchangedBreakerTabId = null
+  }
+  /**
+   * 组装「操作成�?+ 后续紧邻字段」的自包含出参�?   *
+   * 纯值写入类动作（fill / select / set_date）成功后直接回带下一批字段的 [BID] 台账�?   * 引导模型在一个轮次内批量推进整张表单，无需再为每个字段耗一�?read_page 往返�?   */
+  const withNextFields = (tabId: string, bid: number, base: string): string => {
+    const hint = buildNextFieldHint(tabId, bid)
+    return `${base}${hint ? ` ${hint}` : ''}无需再次 read_page 验证，请继续推进下一表单项！`
+  }
+
+  // 1. yanhu_read_page —�?观察页面
+  tools.push({
+    definition: {
+      name: 'yanhu_read_page',
+
+      description: `读取并理解当前页面：返回经四级蒸馏后的极简 PageDigest（含 [BID] 交互映射与表格降噪快照）。每次发生加载、跳转或交互后，必须优先调用本工具观察最新状态。`,
+      parameters: {
+        type: 'object',
+        properties: {
+          maxTokens: { type: "number", description: "返回文本 Token 上限（缺省不限制）" },
+        },
+      },
+    },
+    label: () => `⚡ 正在读取页面`,
+    execute: async (args) => {
+      const tabId = tabResolver()
+            // 工具层短路熔断
+      const cached = yanhuDomDistillationEngine.getCached(tabId)
+      if (unchangedBreakerTabId === tabId) {
+        const indexText = cached ? `\n${buildUnchangedNotice(cached)}` : ''
+        return { content: `${YANHU_CIRCUIT_BREAK_NOTICE}${indexText}`, isError: true }
+      }
+      const requested = asInt(args.maxTokens, 0)
+      const budget = requested > 0 ? Math.min(requested, MAX_READ_PAGE_TOKENS) : DEFAULT_READ_PAGE_TOKENS
+      const page = await distillCurrent(tabId)
+      const { unchanged, diffText } = yanhuDomDistillationEngine.recordDelivery(tabId, page)
+      // 全要素指纹一致：页面完全无变化时短路回传组件索引（受 token 预算约束），阻断巨型 PageDigest 重复重放
+      if (unchanged) {
+        unchangedBreakerTabId = tabId
+        return { content: capByTokens(buildUnchangedNotice(page), budget) }
+      }
+      unchangedBreakerTabId = null
+      // Git-Diff 局部增量
+      if (diffText) return { content: diffText }
+      return { content: capByTokens(page.digestText, budget) }
+    },
+  })
+
+  // 2. yanhu_click —�?点击
+  tools.push({
+    definition: {
+      name: 'yanhu_click',
+      description:
+        `点击页面上编号为 [BID] 的控件。优先使用硬件级 CDP 鼠标事件，失败时回退到原生 click()。点击后建议再次调用 yanhu_read_page 验证结果。`,
+      parameters: {
+        type: 'object',
+        properties: {
+          bid: { type: "number", description: "目标控件的数字编号 BID" },
+          doubleClick: { type: 'boolean', description: '是否双击' },
+          waitForNavigation: { type: "boolean", description: "点击后等待页面加载完成（默认 false）" },
+        },
+        required: ['bid'],
+      },
+    },
+    label: (args) => `👆 点击 [${asInt(args.bid)}]`,
+    execute: async (args) => {
+      const tabId = tabResolver()
+      const bid = asInt(args.bid)
+      const record = requireBid(tabId, bid)
+      // 危险操作底层硬拦截：注销 / 退出登录不得由模型误触，直接保护当前会话。
+      if (YANHU_DANGEROUS_ACTION_RE.test(record.name)) {
+        return {
+          content: `【安全拦截】该操作为注销/退出系统，已由底层自动拦截以保护当前会话。`,
+          isError: true,
+        }
+      }
+      // 死锁防护前置拦截：命中乒乓振荡或动作空间遮罩，立即熔断，终止模型 20 步空转。
+      const deadlock = guardAgainstDeadlock(tabId, bid, `click`)
+      if (deadlock) return deadlock
+      // 动静分离节流：表单内部局部点击不产生全页请求。
+      await enforceYanhuHumanInterval(true)
+      // 确定性护栏（基于「渲染内容指纹」而非 URL/框架）：同一控件在页面内容毫无变化时被重复点击，
+      // 说明上一次点击没有产生任何可见效果，再点一次也不会有效果——直接拦截，终止模型空转。
+      const clickKey = `${tabId}:${bid}`
+      const deliveredFingerprint = yanhuDomDistillationEngine.getDeliveredFingerprint(tabId)
+      const previousClick = recentClicks.get(clickKey)
+      if (
+        deliveredFingerprint &&
+        previousClick &&
+        previousClick.fingerprint === deliveredFingerprint &&
+        Date.now() - previousClick.at <= YANHU_REPEAT_CLICK_WINDOW_MS
+      ) {
+        const seconds = Math.max(1, Math.round((Date.now() - previousClick.at) / 1000))
+        return {
+          content: `【重复点击拦截】[BID: ${bid}] "${record.name}" �?${seconds} 秒前已点击过，且此后页面**渲染内容完全没有变化**（URL / 框架不变并不代表没变，此处按内容指纹判定）。重复点击不会产生新效果：请改用 yanhu_select / yanhu_fill，或点击其它 [BID]，亦可先 yanhu_read_page 复核当前状态。`,
+          isError: true,
+        }
+      }
+      // 确定性交互总线：合成事件注入 -> 因果 DAG 探测 -> 无因果自动升降级 CDP 硬件 -> 双平面静止决算
+      const dispatch = await getHybridDispatcher().dispatch(tabId, record, {
+        doubleClick: args.doubleClick === true,
+        waitForNavigation: args.waitForNavigation === true,
+      })
+      yanhuDomDistillationEngine.markDirty(tabId)
+      markInteraction()
+      if (dispatch.outcome === 'terminal-failed') {
+        return {
+          content: `点击失败：未能在页面中定位或触发 [BID: ${bid}]（${record.role} "${record.name}"）。因果链：${dispatch.evidence.join(' → ')}。`,
+          isError: true,
+        }
+      }
+      // 仅在点击「确实生效」时才登记护栏台账，保证失败重试不被误拦
+      if (deliveredFingerprint) recentClicks.set(clickKey, { at: Date.now(), fingerprint: deliveredFingerprint })
+      const collapsedNote = record.collapsed ? `（折叠容器已自动解封）` : ``
+      const note = record.isOccluded ? `（注意：该控件此前疑似被浮层遮挡）` : ``
+      const escalatedNote = dispatch.escalated ? '（合成事件被拦截，已自动升级�?CDP 硬件级点击）' : ''
+      const newTabNote = dispatch.newTab
+        ? `（检测到新标签页创建，已自动等待新页面稳定，当前激活：${dispatch.activeTabId}）`
+        : ''
+      return {
+        content: `已点击 [BID: ${bid}] ${record.role} \"${record.name}\"（${dispatch.method}）${collapsedNote}${note}。请调用 yanhu_read_page 验证结果。`,
+      }
+    },
+  })
+
+  // 3. yanhu_fill —�?填写
+  tools.push({
+    definition: {
+      name: 'yanhu_fill',
+      description:
+        `向编号为 [BID] 的输入框（input / textarea / contenteditable）填写文本，自动触发 input 与 change 事件。仅对可输入控件有效——下拉 / 勾选框 / 按钮请改用 yanhu_select / yanhu_click（工具会直接拒绝并给出建议）。pressEnter 默认只派发合成回车（供下拉筛选 / 联想选定，绝不会提交表单）；仅当确实要提交表单时才显式设置 allowFormSubmit=true。`,
+      parameters: {
+        type: 'object',
+        properties: {
+          bid: { type: 'number', description: '目标输入框的 BID' },
+          value: { type: 'string', description: '要写入的文本' },
+          clearFirst: { type: "boolean", description: "写入前是否清空" },
+          pressEnter: { type: "boolean", description: "写入后是否触发回车（默认仅合成回车，不会提交表单）" },
+          allowFormSubmit: {
+            type: 'boolean',
+            description:
+              "是否允许回车触发浏览器原生表单提交（默认 false）。仅在明确需要提交表单时设为 true。",
+          },
+        },
+        required: ['bid', 'value'],
+      },
+    },
+    label: (args) => `⌨ 填写 [${asInt(args.bid)}]`,
+    execute: async (args) => {
+      const tabId = tabResolver()
+      const bid = asInt(args.bid)
+      const record = requireBid(tabId, bid)
+      // 动静分离节流置于 BID 解析之后：本地值写�?0ms 放行，非�?BID 亦不白白等待物理间隔
+      await enforceYanhuHumanInterval(true)
+      const value = asStr(args.value)
+      const clearFirst = args.clearFirst !== false
+      const pressEnter = args.pressEnter === true
+      // 安全默认：绝不允许回车触发原生表单提交，除非调用方显式开启。
+      const allowFormSubmit = args.allowFormSubmit === true
+      // 确定性守卫：先判定目标是否真的可输入，非输入框直接结构化拒绝（不把决定权交给模型）。
+      const guard = (await yanhuExpressManager.evalInPage(tabId, buildFillTargetGuardScript(record))) as
+        | { ok?: boolean; editable?: boolean; tag?: string; type?: string; role?: string }
+        | null
+      if (!guard || guard.ok !== true) {
+        return { content: `填写失败：未能在页面中定�?[BID: ${bid}]。`, isError: true }
+      }
+      if (guard.editable !== true) {
+        return { content: buildNonEditableFillMessage(bid, record, guard), isError: true }
+      }
+
+      // 首选：CDP 硬件物理输入（真实聚�?+ 原生文本�?insertText + 可选回车）
+      let filled = false
+      try {
+        const located = (await yanhuExpressManager.evalInPage(tabId, buildHardwareClickTargetScript(record))) as
+          | { ok?: boolean; x?: number; y?: number; hitOk?: boolean }
+          | null
+        if (
+          located &&
+          located.ok === true &&
+          located.hitOk !== false &&
+          typeof located.x === 'number' &&
+          typeof located.y === 'number'
+        ) {
+          await yanhuExpressManager.dispatchHumanTextInput(tabId, located.x, located.y, value, {
+            clearFirst,
+            pressEnter,
+            allowFormSubmit,
+          })
+          filled = true
+          // 写入校验：回读目标输入框当前值，确认文本真正落到目标控件（杜绝静默错填）
+          const check = (await yanhuExpressManager.evalInPage(tabId, buildFillVerificationScript(record))) as
+            | { ok?: boolean; value?: string }
+            | null
+          if (!check || check.ok !== true) {
+            filled = false
+          } else if (value.length > 0 && String(check.value ?? '').indexOf(value) < 0) {
+            filled = false
+          }
+        }
+      } catch {
+        filled = false
+      }
+
+      // 降级回退：CDP 坐标不可用时退回纯 JS 原生 value setter + 完整事件链（回车为合成事件，天然不会提交表单）。
+      if (!filled) {
+        const result = (await yanhuExpressManager.evalInPage(
+          tabId,
+          buildLegacyFillScript(record, value, clearFirst, pressEnter),
+        )) as { ok?: boolean } | null
+        if (!result || result.ok !== true) {
+          return { content: `填写失败：未能定�?[BID: ${bid}] 输入框。`, isError: true }
+        }
+      }
+      // 隐式等待：双平面稳态收口，确认局部重绘、事件派发与关联网络请求均已完成
+      await settleAfterAction(tabId)
+      yanhuDomDistillationEngine.markDirty(tabId)
+      const enterNote = pressEnter ? `并回车` : ``
+      const safeNote = pressEnter && !allowFormSubmit ? `（已派发合成回车，未触发原生表单提交）` : ``
+      return { content: withNextFields(tabId, bid, `已向 [BID: ${bid}] \"${record.name}\" 填写内容${enterNote}。${safeNote}`) }
+      return { content: withNextFields(tabId, bid, `已向 [BID: ${bid}] "${record.name}" 填写内容${enterNote}�?{safeNote}`) }
+    },
+  })
+
+  // 4. yanhu_select —�?下拉选择
+  tools.push({
+    definition: {
+      name: 'yanhu_select',
+      description:
+        `操作编号为 [BID] 的下拉框：原生 select 直接赋值并派发 change；自定义下拉框将自动展开并点击文本匹配项（无需模型手动展开点选）。`,
+      parameters: {
+        type: 'object',
+        properties: {
+          bid: { type: 'number', description: '目标下拉框的 BID' },
+          valueOrText: { type: "string", description: "选项的 value 或显示文本" },
+        },
+        required: ['bid', 'valueOrText'],
+      },
+    },
+    label: (args) => `🔽 选择 [${asInt(args.bid)}]`,
+    execute: async (args) => {
+      const tabId = tabResolver()
+      const bid = asInt(args.bid)
+      const record = requireBid(tabId, bid)
+      // 死锁防护前置拦截：命中乒乓振荡或动作空间遮罩，立即熔断，终止模型 20 步空转。
+      const deadlock = guardAgainstDeadlock(tabId, bid, `select`)
+      if (deadlock) return deadlock
+      // 动静分离节流置于 BID 解析之后：本地值写�?0ms 放行，非�?BID 亦不白白等待物理间隔
+      await enforceYanhuHumanInterval(true)
+      const target = asStr(args.valueOrText)
+
+      // 阶梯 0（CI4A 语义多态）：目标为单�?/ 复选组时，按可访问名精准点选并触发响应式变更，
+      // 抹平前端组件形态差异（金智 EMAP / Vue 单选组「无名控件」在 yanhu_select 下亦可直接命中）。
+      const ci4a = (await yanhuExpressManager.evalInPage(tabId, buildSemanticOptionClickScript(record, target))) as
+        | { ok?: boolean; ci4a?: string; text?: string }
+        | null
+      if (ci4a?.ok === true && ci4a.ci4a === 'radio') {
+        await settleAfterAction(tabId)
+        yanhuDomDistillationEngine.markDirty(tabId)
+        markInteraction()
+        return {
+          content: withNextFields(
+            tabId,
+            bid,
+            `已选择 [BID: ${bid}] "${record.name}" -> ${ci4a.text ?? target}（CI4A 语义单选匹配，已自动触发响应式变更）。`,
+          ),
+        }
+      }
+
+      // 第一阶梯（确定性）：原生 <select> 直接赋值
+      const native = (await yanhuExpressManager.evalInPage(tabId, buildNativeSelectScript(record, target))) as
+        | {
+            ok?: boolean
+            reason?: string
+            isNativeSelect?: boolean
+            tag?: string
+            options?: string[]
+          }
+        | null
+      if (!native) {
+        return { content: `选择失败：未能在页面中定�?[BID: ${bid}]。`, isError: true }
+      }
+      if (native.ok === true) {
+        await settleAfterAction(tabId)
+        yanhuDomDistillationEngine.markDirty(tabId)
+        markInteraction()
+        return { content: withNextFields(tabId, bid, `已选择 [BID: ${bid}] "${record.name}" -> ${target}（原生下拉）。`) }
+      }
+      if (native.reason === 'not-found') {
+        return { content: `选择失败：未能在页面中定�?[BID: ${bid}]。`, isError: true }
+      }
+      if (native.reason === 'option-not-found' && native.isNativeSelect === true) {
+        // 代码直接给出真实可用选项清单，模型无需盲试其它 BID
+        const list = (native.options ?? []).slice(0, 20).join(' / ')
+        return {
+          content: `选择失败：[BID: ${bid}] 原生下拉中不存在选项「${target}」。可用选项：${list || '（无）'}。`,
+          isError: true,
+        }
+      }
+
+      // 第二阶梯（核心新增）：JQWidgets / EMAP 专属 API 极速通道
+      // 金智 EMAP 基于 jQuery + JQWidgets，getItems() / selectIndex() 为原生权威 API。
+      // 零动画等待、免浮层定位，率先命中即返回，避免后续不可靠的 DOM 猜测。
+      if (native.reason === "not-native-select") {
+        const jqxResult = (await yanhuExpressManager.evalInPage(tabId, buildJqxSelectScript(record, target))) as
+          | { ok?: boolean; text?: string; via?: string }
+          | null
+        // 必须以脚本显式回传的「jqx-api」成功标记为准，杜绝任何泛化 { ok: true } 被误判为命中
+        if (jqxResult?.ok === true && jqxResult.via === 'jqx-api') {
+          await settleAfterAction(tabId)
+          yanhuDomDistillationEngine.markDirty(tabId)
+          markInteraction()
+          return {
+            content: withNextFields(
+              tabId,
+              bid,
+              `已选择 [BID: ${bid}] "${record.name}" -> ${jqxResult.text ?? target}（JQWidgets 专属极速通道，已自动同步值并触发级联）。`,
+            ),
+          }
+        }
+
+        // 第三阶梯（确定性降级）：自定义下拉 -> 单次展开 -> 面板内精确点击。
+        await yanhuExpressManager.evalInPage(tabId, buildOpenDropdownScript(record))
+        await settleAfterAction(tabId)
+        const picked = (await yanhuExpressManager.evalInPage(tabId, buildPickCustomOptionScript(target))) as
+          | { ok?: boolean; text?: string }
+          | null
+        if (picked?.ok === true) {
+          await settleAfterAction(tabId)
+          yanhuDomDistillationEngine.markDirty(tabId)
+          markInteraction()
+          return {
+            content: withNextFields(
+              tabId,
+              bid,
+              `已选择 [BID: ${bid}] "${record.name}" -> ${picked.text ?? target}（自定义下拉，已自动展开并点选）。`,
+            ),
+          }
+        }
+        return {
+          content: `选择失败：[BID: ${bid}]（${native.tag || "element"}）不是原生下拉，展开后也未能匹配到选项「${target}」。请调用 yanhu_read_page 查看展开面板中各选项的 [BID]，再用 yanhu_click 点击对应选项。`,
+          isError: true,
+        }
+      }
+      return { content: `选择失败：[BID: ${bid}] 无法完成选择。`, isError: true }
+    },
+  })
+
+// 6. yanhu_scroll —�?滚动
+  tools.push({
+    definition: {
+      name: 'yanhu_scroll',
+      description: `平滑滚动当前页面视口。`,
+      parameters: {
+        type: 'object',
+        properties: {
+          direction: { type: 'string', enum: ['up', 'down', 'top', 'bottom'], description: '滚动方向' },
+          distance: { type: 'number', description: '滚动距离（像素，默认一个视口高度）' },
+        },
+        required: ['direction'],
+      },
+    },
+    label: (args) => `🖱 滚动页面（${asStr(args.direction, 'down')}）`,
+    execute: async (args) => {
+      const tabId = tabResolver()
+      const direction = asStr(args.direction, 'down')
+      const distance = asInt(args.distance, 0)
+      const script = `(() => {
+        let targetWin = window;
+        let targetDoc = document;
+        try {
+          const mf = document.querySelector('frame[name="mainFrame"], iframe[name="mainFrame"], frame#mainFrame, iframe#mainFrame');
+          if (mf) {
+            // 三级鲁棒穿透：contentWindow -> window.frames[name] -> 原 window 兜底
+            const frameWin = mf.contentWindow;
+            targetWin = frameWin || (window.frames && window.frames['mainFrame']) || targetWin;
+            targetDoc = mf.contentDocument || (frameWin && frameWin.document) || (targetWin && targetWin.document) || targetDoc;
+          } else if (window.frames && window.frames['mainFrame']) {
+            targetWin = window.frames['mainFrame'];
+            targetDoc = targetWin.document || targetDoc;
+          }
+        } catch (e) {}
+
+        const h = targetWin.innerHeight || 800;
+        const d = ${distance} > 0 ? ${distance} : h;
+        const dir = ${JSON.stringify(direction)};
+        const root = targetDoc.body || targetDoc.documentElement;
+        const maxScroll = root ? root.scrollHeight : 999999;
+
+        if (dir === 'top') targetWin.scrollTo({ top: 0, behavior: 'smooth' });
+        else if (dir === 'bottom') targetWin.scrollTo({ top: maxScroll, behavior: 'smooth' });
+        else if (dir === 'up') targetWin.scrollBy({ top: -d, behavior: 'smooth' });
+        else targetWin.scrollBy({ top: d, behavior: 'smooth' });
+
+        return { ok: true, y: Math.round(targetWin.scrollY || 0) };
+      })()`
+      await yanhuExpressManager.evalInPage(tabId, script)
+      yanhuDomDistillationEngine.markDirty(tabId)
+      markInteraction()
+      return { content: `页面已向${direction}滚动，请再次调用 yanhu_read_page 观察新内容。` }
+    },
+  })
+
+  // 7. yanhu_navigate —�?导航
+  tools.push({
+    definition: {
+      name: 'yanhu_navigate',
+      description: `在当前标签导航到指定 URL。支持任意网站（http/https），仅非砚湖 / 成理内部域名会受限。`,
+      parameters: {
+        type: 'object',
+        properties: { url: { type: 'string', description: '目标 URL' } },
+        required: ['url'],
+      },
+    },
+    label: (args) => `🧭 导航：${asStr(args.url)}`,
+    execute: async (args) => {
+      const tabId = tabResolver()
+      const url = asStr(args.url).trim()
+      if (!url) return { content: `导航失败：URL 为空。`, isError: true }
+      // 网络导航级操作
+      await enforceYanhuHumanInterval()
+
+      // 多层框架智能承接
+      const meta = yanhuExpressManager.getTabMeta(tabId)
+      const currentUrl = meta?.url || ''
+      if (
+        // 教务主框架内路由仅对校内地址生效：框架内 location.assign 属于子框架导航，不经�?will-navigate
+        // 顶层守卫
+        isCdutDomain(url) &&
+        currentUrl.includes('/jsxsd/framework/xsMainV') &&
+        !url.includes('/jsxsd/framework/xsMainV') &&
+        (url.includes('/jsxsd/') || url.endsWith('.do') || url.endsWith('.htmlx'))
+      ) {
+        const routeScript = `(() => {
+          try {
+            const mf = document.querySelector('frame[name="mainFrame"], iframe[name="mainFrame"], frame#mainFrame, iframe#mainFrame');
+            if (mf) {
+              const fw = mf.contentWindow || (window.frames && window.frames['mainFrame']);
+              if (fw && fw.location) {
+                fw.location.assign(${JSON.stringify(url)});
+                return { ok: true, redirectedInFrame: true };
+              }
+            }
+          } catch (e) {}
+          return { ok: false };
+        })()`
+        let routeOk = false
+        try {
+          const routeResult = (await yanhuExpressManager.evalInPage(tabId, routeScript)) as { ok?: boolean } | null
+          routeOk = routeResult?.ok === true
+        } catch {
+          routeOk = false
+        }
+        if (routeOk) {
+          yanhuDomDistillationEngine.markDirty(tabId)
+          markInteraction()
+          await yanhuExpressManager.waitForIdle(tabId, 8000)
+          return { content: `已在教务主框�?mainFrame 内平滑载入目标页面：${url}（外层导航框架完整保持）。请调用 yanhu_read_page 观察结果。` }
+        }
+        return {
+          content:
+            `【拦截提示】当前页面为多层嵌套框架系统（教务主框架 xsMainV 等），包含 leftFrame 导航与 mainFrame 核心内容区。内部功能页面均在 IFrame / Frame 中加载。` +
+            `若强行跳转会导致框架撕裂。您应当直接点击页面上的 [BID] 菜单项来进入对应功能。\n`,
+          isError: true,
+        }
+      }
+
+      yanhuExpressManager.navigate({ tabId, url })
+      yanhuDomDistillationEngine.markDirty(tabId)
+      markInteraction()
+      await yanhuExpressManager.waitForIdle(tabId, 8000)
+      const afterMeta = yanhuExpressManager.getTabMeta(tabId)
+      if (afterMeta && isYanhuBlockedUrl(afterMeta.url)) {
+        return { content: `导航被安全网关拦截：${url} 不是可访问的 http/https 网页地址。`, isError: true }
+      }
+      return { content: `已导航至 ${url}（当前：${afterMeta?.url ?? url}）。` }
+    },
+  })
+
+  // 8-10. 后退 / 前进 / 刷新
+  tools.push({
+    definition: { name: "yanhu_go_back", description: "返回上一页。", parameters: { type: "object", properties: {} } },
+    label: () => `◀ 返回上一页`,
+    execute: async () => {
+      const tabId = tabResolver()
+      yanhuExpressManager.goBack(tabId)
+      yanhuDomDistillationEngine.markDirty(tabId)
+      markInteraction()
+      await yanhuExpressManager.waitForIdle(tabId)
+      return { content: `已返回上一页。` }
+    },
+  })
+  tools.push({
+    definition: { name: "yanhu_go_forward", description: "前进到下一页。", parameters: { type: "object", properties: {} } },
+    label: () => `▶ 前进下一页`,
+    execute: async () => {
+      const tabId = tabResolver()
+      yanhuExpressManager.goForward(tabId)
+      yanhuDomDistillationEngine.markDirty(tabId)
+      markInteraction()
+      await yanhuExpressManager.waitForIdle(tabId)
+      return { content: `已前进到下一页。` }
+    },
+  })
+  tools.push({
+    definition: { name: "yanhu_reload", description: "刷新当前页面。", parameters: { type: "object", properties: {} } },
+    label: () => '🔄 刷新页面',
+    execute: async () => {
+      const tabId = tabResolver()
+      // 网络导航级操作
+      await enforceYanhuHumanInterval()
+      // 一次�?SSO 票据净化刷新（白屏根除红线）：�?ticket / qzticket 的地址严禁�?reload—�?      // 票据净化
+      const liveUrl = yanhuExpressManager.getTabLiveUrl(tabId) || yanhuExpressManager.getTabMeta(tabId)?.url || ''
+      if (hasOneTimeTicket(liveUrl)) {
+        const cleanUrl = stripOneTimeTicket(liveUrl)
+        logYanhuEvent('reload', { tabId, url: liveUrl, reason: 'tool-ticket-sanitized' })
+        await yanhuExpressManager.loadUrl(tabId, cleanUrl)
+        yanhuDomDistillationEngine.markDirty(tabId)
+        markInteraction()
+        await yanhuExpressManager.waitForIdle(tabId, 8000)
+        return { content: `页面已通过安全净化地址刷新（已剥离一次性 SSO 票据，防止白屏）。` }
+      }
+      // 框架页智能刷新保护：教务主框架 xsMainV 下不执行破坏性全局重载。
+      // 仅重载核心内容区（mainFrame），保护外层导航框架与会话不丢失。
+      if (liveUrl.includes('xsMainV')) {
+        const result = (await yanhuExpressManager.evalInPage(tabId, buildMainFrameReloadScript())) as
+          | { ok?: boolean }
+          | null
+        if (result && result.ok === true) {
+          logYanhuEvent('reload', { tabId, url: liveUrl, reason: 'tool-mainframe' })
+          yanhuDomDistillationEngine.markDirty(tabId)
+          markInteraction()
+          await yanhuExpressManager.waitForIdle(tabId, 8000)
+          return { content: `已刷新核心内容区（mainFrame），外层教务导航框架已保护。` }
+        }
+      }
+      yanhuExpressManager.reload(tabId, 'tool')
+      yanhuDomDistillationEngine.markDirty(tabId)
+      markInteraction()
+      await yanhuExpressManager.waitForIdle(tabId, 8000)
+      return { content: `页面已刷新。` }
+    },
+  })
+
+  // 11. yanhu_eval_script【开发者级】
+  tools.push({
+    developer: true,
+    definition: {
+      name: 'yanhu_eval_script',
+      description:
+        `【开发者级】在当前页面主上下文中执行 JavaScript 表达式并返回结果。仅当没有任何 yanhu_* 工具能完成任务时作为最后的保底手段使用。`,
+      parameters: {
+        type: 'object',
+        properties: { expression: { type: "string", description: "要执行的 JS 表达式" } },
+        required: ['expression'],
+      },
+    },
+    label: () => '⚡ 执行页面脚本',
+    execute: async (args) => {
+      const expression = asStr(args.expression)
+      if (!expression) return { content: `执行失败：表达式为空。`, isError: true }
+      try {
+        const value = await yanhuExpressManager.evalInPage(tabResolver(), expression)
+        let serialized: string
+        try {
+          // 注意：JSON.stringify(undefined) 运行时返�?undefined（TS 签名却声明为 string），
+          // 无返回值表达式兜底
+          serialized = value === undefined ? 'undefined' : JSON.stringify(value, null, 2)
+          if (typeof serialized !== 'string') serialized = String(serialized)
+        } catch {
+          serialized = String(value)
+        }
+        if (serialized.length > EVAL_SCRIPT_MAX_CHARS) {
+          serialized = `${serialized.slice(0, EVAL_SCRIPT_MAX_CHARS)}\n…（已按 token 预算截断）`
+        }
+        return { content: `脚本执行结果：\n${serialized}` }
+      } catch (err) {
+        return { content: `脚本执行异常�?{err instanceof Error ? err.message : String(err)}`, isError: true }
+      }
+    },
+  })
+
+  // 12. yanhu_inspect_element【开发者级】
+  tools.push({
+    developer: true,
+    definition: {
+      name: "yanhu_inspect_element",
+      description: `【开发者级】输出指定 [BID] 对应 DOM 节点的 outerHTML、盒模型边界与关键计算样式。`,
+      parameters: {
+        type: "object",
+        properties: { bid: { type: "number", description: "目标控件的 BID" } },
+        required: ["bid"],
+      },
+    },
+    label: (args) => `🔍 检查 [${asInt(args.bid)}]`,
+    execute: async (args) => {
+      const tabId = tabResolver()
+      const record = requireBid(tabId, asInt(args.bid))
+      const script = `(() => {
+        ${buildFinderPrelude(record, { relaxed: finderRelaxed(record) })}
+        const el = __find();
+        if (!el) return null;
+        const r = el.getBoundingClientRect();
+        const style = window.getComputedStyle(el);
+        return {
+          html: (el.outerHTML || '').replace(/data:[^"']{80,}/g, 'data:�?).slice(0, ${INSPECT_HTML_MAX_CHARS}),
+          rect: { x: Math.round(r.left), y: Math.round(r.top), width: Math.round(r.width), height: Math.round(r.height) },
+          style: {
+            display: style.display, visibility: style.visibility, position: style.position,
+            zIndex: style.zIndex, color: style.color, backgroundColor: style.backgroundColor,
+            pointerEvents: style.pointerEvents,
+          },
+        };
+      })()`
+      const result = await yanhuExpressManager.evalInPage(tabId, script)
+      if (!result) return { content: `未能在页面中定位 [BID: ${record.bid}]。`, isError: true }
+      const text = JSON.stringify(result, null, 2)
+      return {
+        content:
+          text.length > INSPECT_OUTPUT_MAX_CHARS
+            ? `${text.slice(0, INSPECT_OUTPUT_MAX_CHARS)}\n…（已按 token 预算截断）`
+            : text,
+      }
+    },
+  })
+
+  // 13. yanhu_get_network_logs【开发者级】
+  tools.push({
+    developer: true,
+    definition: {
+      name: "yanhu_get_network_logs",
+      description: `【开发者级】读取页面最近捕获的 HTTP 报文流（URL、状态码、耗时、方法）。`,
+      parameters: {
+        type: "object",
+        properties: {
+          limit: { type: "number", description: "返回条数上限（默认 30）" },
+          filterRegex: { type: "string", description: "按 URL 过滤的正则" },
+        },
+      },
+    },
+    label: () => '📡 读取网络日志',
+    execute: async (args) => {
+      // 显式 limit=0 应视为「未指定」回落到默认 30；负数同样回落，避免 slice 语义异常
+      const requestedLimit = asInt(args.limit, 0)
+      const limit = requestedLimit > 0 ? requestedLimit : 30
+      const entries = yanhuExpressManager.cdpGetNetworkLogs(tabResolver(), asStr(args.filterRegex) || undefined)
+      return { content: sanitizeYanhuNetworkLogs(entries, { maxLines: limit }) }
+    },
+  })
+
+  // 14. yanhu_get_console_logs【开发者级】
+  tools.push({
+    developer: true,
+    definition: {
+      name: "yanhu_get_console_logs",
+      description: `【开发者级】读取页面捕获的原生 console 输出与 JS 运行时异常日志。`,
+      parameters: {
+        type: "object",
+        properties: {
+          limit: { type: "number", description: "返回条数上限（默认 50）" },
+          level: { type: "string", description: "日志级别（error, warning, info 等）" },
+        },
+      },
+    },
+    label: () => `🖥 读取控制台日志`,
+    execute: async (args) => {
+      const entries = yanhuExpressManager.cdpGetConsoleLogs(tabResolver())
+      const level = asStr(args.level)
+      const filtered = level ? entries.filter((e) => e.type === level) : entries
+      const sliced = filtered.slice(-50)
+      if (sliced.length === 0) return { content: '暂无控制台日志。' }
+      return { content: sliced.map((e) => `[${e.type}] ${e.text}`).join('\n') }
+    },
+  })
+
+  // 15. yanhu_tab_actions —。标签拓扑
+  tools.push({
+    definition: {
+      name: 'yanhu_tab_actions',
+      description: '管理砚湖秒通内的标签：新建、关闭或切换标签。',
+      parameters: {
+        type: 'object',
+        properties: {
+          action: { type: 'string', enum: ['create', 'close', 'switch'], description: '操作类型' },
+          url: { type: 'string', description: '新建标签时的目标 URL' },
+          tabId: { type: 'string', description: '关闭 / 切换标签时的目标标签 ID' },
+        },
+        required: ['action'],
+      },
+    },
+    label: (args) => `🗂 标签操作（${asStr(args.action)}）`,
+    execute: async (args) => {
+      const action = asStr(args.action)
+      if (action === 'create') {
+        const targetUrl = asStr(args.url).trim()
+        // 确定性去重：已存在完全相同 URL 的标签时直接激活它，绝不重复新建。
+        if (targetUrl) {
+          const existing = yanhuExpressManager.getTabsState().tabs.find((tab) => tab.url === targetUrl)
+          if (existing) {
+            const state = yanhuExpressManager.activateTab(existing.id)
+            return {
+              content: `已存在相同页面的标签（${existing.id}），已切换过去，未重复新建。当前激活：${state.activeTabId}。`,
+            }
+          }
+        }
+        const state = yanhuExpressManager.createTab({ url: targetUrl || undefined, activate: true })
+        return { content: `已新建标签，当前。${state.tabs.length} 个标签，激活：${state.activeTabId}。` }
+      }
+      const tabId = asStr(args.tabId) || tabResolver()
+      if (action === 'close') {
+        // 显式指定了不存在的标签时给出明确错误，避免误导模型已成功关闭
+        if (!yanhuExpressManager.getTabMeta(tabId)) {
+          return { content: `未找到标签 ${tabId}，无法关闭。`, isError: true }
+        }
+        const state = yanhuExpressManager.closeTab(tabId)
+        return { content: `已关闭标签 ${tabId}，剩。${state.tabs.length} 个。` }
+      }
+      if (action === 'switch') {
+        if (!yanhuExpressManager.getTabMeta(tabId)) {
+          return { content: `未找到标签 ${tabId}，无法切换。`, isError: true }
+        }
+        const state = yanhuExpressManager.activateTab(tabId)
+        return { content: `已切换到标签 ${state.activeTabId}。` }
+      }
+      return { content: `未知标签操作。{action}`, isError: true }
+    },
+  })
+
+  // 16. yanhu_upload_file —— 文件上传（CDP DOM.setFileInputFiles 原生注入）
+  tools.push({
+    definition: {
+      name: 'yanhu_upload_file',
+      description:
+        '向编号为 [BID] 的文件上传控件附加本机文件（如请假证明材料）。BID 既可以是 input[type=file] 本体，也可以是其包装容器（工具会自动向内定位真实文件输入框）。filePath 为本机绝对文件路径。',
+      parameters: {
+        type: 'object',
+        properties: {
+          bid: { type: 'number', description: '文件上传控件或其包装容器。BID' },
+          filePath: { type: 'string', description: '本机绝对文件路径' },
+        },
+        required: ['bid', 'filePath'],
+      },
+    },
+    label: (args) => `📎 上传文件 [${asInt(args.bid)}]`,
+    execute: async (args) => {
+      const tabId = tabResolver()
+      const bid = asInt(args.bid)
+      const record = requireBid(tabId, bid)
+      // 文件注入不产生网络导航，0ms 放行
+      await enforceYanhuHumanInterval(true)
+      const filePath = asStr(args.filePath).trim()
+      if (!filePath) {
+        return { content: '上传失败：filePath 为空，请提供本机绝对文件路径。', isError: true }
+      }
+      // 取得 file input 的远端对象句柄（绕过浏览器禁止脚本设。files 的安全封锁）
+      const objectId = await yanhuExpressManager.evalForObjectId(tabId, buildFileInputResolveScript(record))
+      if (!objectId) {
+        return {
+          content: `上传失败：未能在 [BID: ${bid}] "${record.name}" 处定位到 input[type=file] 控件（该 BID 可能不是文件上传控件）。请调用 yanhu_read_page 复核目标。`,
+          isError: true,
+        }
+      }
+      const ok = await yanhuExpressManager.setFileInputFiles(tabId, objectId, [filePath])
+      if (!ok) {
+        return {
+          content: `上传失败：CDP 未能。[BID: ${bid}] 注入文件，请确认文件路径存在后重试。`,
+          isError: true,
+        }
+      }
+      await settleAfterAction(tabId)
+      yanhuDomDistillationEngine.markDirty(tabId)
+      markInteraction()
+      return {
+        content: `已向 [BID: ${bid}] "${record.name}" 附加文件：${filePath}。请调用 yanhu_read_page 确认附件列表已显示。`,
+      }
+    },
+  })
+
+  // 统一错误兜底：任何非 read_page 的工具一旦执行出错立即释放读屏熔断
+  const markToolError = (): void => {
+    unchangedBreakerTabId = null
+  }
+  for (const tool of tools) {
+    if (tool.definition.name === 'yanhu_read_page') continue
+    const originalExecute = tool.execute
+    tool.execute = async (args) => {
+      try {
+        const result = await originalExecute(args)
+        if (result.isError) markToolError()
+        return result
+      } catch (err) {
+        // 异常路径同样释放熔断：requireBid / evalInPage 等抛出异常时，若不释放会导致
+        // read_page 死锁兜底
+        markToolError()
+        throw err
+      }
+    }
+  }
+
+  return tools
+}
+
+/** 工具执行后的胶囊标签生成器（供运行时生成微胶囊标签） */
+export function createYanhuToolLabeler(
+  tools: readonly YanhuBrowserTool[],
+): (toolName: string, args: Record<string, unknown>) => string {
+  const index = new Map(tools.map((tool) => [tool.definition.name, tool]))
+  return (toolName, args) => {
+    const tool = index.get(toolName)
+    return tool ? tool.label(args) : toolName
+  }
+}
+
+
