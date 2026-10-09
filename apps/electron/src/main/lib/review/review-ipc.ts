@@ -709,10 +709,14 @@ export function registerReviewIpc(): void {
     const { listBatchStatesV2 } = require('./batch-store') as typeof import('./batch-store')
     return listBatchStatesV2()
   })
-  ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, (_e, input: { action: 'finalize' | 'reopen'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown> }) => {
-    const { finalizeBatch, reopenBatch } = require('./batch-store') as typeof import('./batch-store')
+  ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, (_e, input: { action: 'finalize' | 'reopen' | 'retry' | 'recover'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown>; caseIds?: string[] }) => {
+    if (!input || typeof input.batchId !== 'string' || !input.batchId) throw new Error('无效批次操作')
+    const { finalizeBatch, reopenBatch, retryBatchCases, recoverInterruptedBatch } = require('./batch-store') as typeof import('./batch-store')
     if (input.action === 'finalize') return finalizeBatch(input.batchId, input.snapshot ?? {})
-    return reopenBatch(input.batchId, input.newBatchId ?? `${input.batchId}-r${Date.now().toString(36)}`, input.reason ?? '人工重开')
+    if (input.action === 'reopen') return reopenBatch(input.batchId, input.newBatchId ?? `${input.batchId}-r${Date.now().toString(36)}`, input.reason ?? '人工重开')
+    if (input.action === 'retry') return retryBatchCases(input.batchId, input.caseIds ?? [])
+    if (input.action === 'recover') return recoverInterruptedBatch(input.batchId)
+    throw new Error('未知批次操作')
   })
 
   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_CASES_V2, () => {
