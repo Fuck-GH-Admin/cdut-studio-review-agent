@@ -130,7 +130,7 @@ describe('B 阶段：人工集中处置预览与逐案 V2 事务', () => {
     const changed = await submitCommand(a.caseId, {
       requestId: next('manual-update'), actor: reviewer, expectedRevision: 0,
       type: 'ChangeCaseFacts', payload: { val: 'changed' },
-    }, () => ({ summary: '人工作出修改', mutate: (aggregate) => { aggregate.caseV2.caseFields = { changed: { kind: 'string', value: 'new' } } } }))
+    }, () => ({ summary: '人工作出修改', mutate: (aggregate) => { aggregate.caseV2.caseFields = { changed: { kind: 'text', value: 'new' } } } }))
     expect(changed.ok).toBeTrue()
     await expect(applyBatchGroupAction({
       ...req, previewHash: preview.previewHash, operationId: next('operation-id'), confirmed: true,
