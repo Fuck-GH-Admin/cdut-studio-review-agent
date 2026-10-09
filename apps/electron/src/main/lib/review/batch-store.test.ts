@@ -105,6 +105,35 @@ describe('批次中断恢复与定向重试（B 切片）', () => {
     expect(result.cases.find((x) => x.caseId === 'c3')?.status).toBe('done')
   })
 
+  test('Given done 但检查账本缺失 When 手动重试 Then 允许重新审核技术异常案卷', () => {
+    const id = 'retry-invalid-done'
+    createBatchV2({ ...batch(id), caseIds: ['no-usable-run'] })
+    updateCaseStatus(id, 'no-usable-run', 'done')
+    const state = retryBatchCases(id, ['no-usable-run'])
+    expect(state.cases[0]?.status).toBe('queued')
+  })
+
+  test('Given done 且审核记录有效 When 请求重试 Then 不允许重复审核成功案卷', async () => {
+    const id = 'retry-valid-done'
+    const caseId = 'retry-valid-done-case'
+    createBatchV2({ ...batch(id), caseIds: [caseId] })
+    updateCaseStatus(id, caseId, 'done')
+    const { saveRunV2 } = await import('./run-store-v2')
+    saveRunV2({
+      id: 'run-valid-done', caseId, templateId: 't', templateVersion: 1,
+      inputManifest: { hash: 'valid-hash', templateVersion: 1, policyVersions: [{ policyVersionId: 'p', version: 1 }],
+        documentVersions: [], observationIds: [], evidenceLinkIds: [], effectiveRuleIds: ['rule-1'] },
+      status: 'completed', checkpoints: [],
+      checks: [{ checkId: 'c1', ruleId: 'rule-1', status: 'compliant', reason: '符合', target: { scope: 'case', subjectIds: [] },
+        sourceRefs: [], executedBy: 'deterministic', executedAt: '' }],
+      opinions: [],
+      coverage: { documents: [], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 },
+      diagnostics: [], startedAt: '2026-10-10T00:00:00Z', completedAt: '2026-10-10T00:00:01Z',
+    })
+    expect(() => retryBatchCases(id, [caseId])).toThrow('不可重试')
+    expect(readBatchStateV2(id)?.cases[0]?.status).toBe('done')
+  })
+
   test('Given 非失败状态或非法案卷 When 批量重试 Then 全部校验通过前不落盘', () => {
     createBatchV2(batch('retry-atomic'))
     updateCaseStatus('retry-atomic', 'c1', 'failed', '之前错误')
