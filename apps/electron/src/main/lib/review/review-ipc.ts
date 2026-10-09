@@ -720,11 +720,11 @@ export function registerReviewIpc(): void {
   })
   // Local-human batch group operation. The backend recomputes the preview and
   // reruns each case's existing transaction guards; the renderer supplies no actor.
-  ipcMain.handle('review:batch-group-preview-v2', (_e, input: import('@profer/shared').BatchGroupActionRequest) => {
+  ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_GROUP_PREVIEW_V2, (_e, input: import('@profer/shared').BatchGroupActionRequest) => {
     const { previewBatchGroupAction } = require('./batch-group-action-service') as typeof import('./batch-group-action-service')
     return previewBatchGroupAction(input)
   })
-  ipcMain.handle('review:batch-group-apply-v2', (_e, input: import('@profer/shared').BatchGroupApplyRequest) => {
+  ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_GROUP_APPLY_V2, (_e, input: import('@profer/shared').BatchGroupApplyRequest) => {
     const { applyBatchGroupAction } = require('./batch-group-action-service') as typeof import('./batch-group-action-service')
     return applyBatchGroupAction(input)
   })
