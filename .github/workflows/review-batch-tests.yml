@@ -1,6 +1,9 @@
 name: Review batch focused tests
 
 on:
+  push:
+    branches:
+      - feat/batch-review-triage-v1
   pull_request:
     paths:
       - 'packages/shared/src/review/batch-review-triage*'
