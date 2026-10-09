@@ -137,7 +137,7 @@ describe('批次中断恢复与定向重试（B 切片）', () => {
   test('Given 非失败状态或非法案卷 When 批量重试 Then 全部校验通过前不落盘', () => {
     createBatchV2(batch('retry-atomic'))
     updateCaseStatus('retry-atomic', 'c1', 'failed', '之前错误')
-    updateCaseStatus('retry-atomic', 'c2', 'done')
+    updateCaseStatus('retry-atomic', 'c2', 'queued') // 待执行项不可用“重试失败项”绕过状态门槛
     expect(() => retryBatchCases('retry-atomic', ['c1', 'c2'])).toThrow('不可重试')
     expect(() => retryBatchCases('retry-atomic', ['not-in-batch'])).toThrow('不属于')
     expect(() => retryBatchCases('retry-atomic', ['c1', 'c1'])).toThrow('不能重复')
