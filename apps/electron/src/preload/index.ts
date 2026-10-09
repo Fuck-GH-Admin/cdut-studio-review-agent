@@ -3942,9 +3942,9 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RECORD_WORKSPACE_SUBJECT_ADJUDICATION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   runBatchV2: (batchId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_BATCH_V2, batchId) as Promise<import('@profer/shared').BatchStateV2>,
   previewBatchGroupV2: (input: import('@profer/shared').BatchGroupActionRequest) =>
-    ipcRenderer.invoke('review:batch-group-preview-v2', input) as Promise<import('@profer/shared').BatchGroupPreview>,
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BATCH_GROUP_PREVIEW_V2, input) as Promise<import('@profer/shared').BatchGroupPreview>,
   applyBatchGroupV2: (input: import('@profer/shared').BatchGroupApplyRequest) =>
-    ipcRenderer.invoke('review:batch-group-apply-v2', input) as Promise<import('@profer/shared').BatchGroupApplyResult>,
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BATCH_GROUP_APPLY_V2, input) as Promise<import('@profer/shared').BatchGroupApplyResult>,
   runReviewV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, caseId) as Promise<import('@profer/shared').ReviewRunV2>,
   getPiReviewSessionV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_PI_REVIEW_SESSION_V2, caseId) as Promise<string | null>,
   preparePiReviewV2: (input: { caseId: string; sessionId: string; turnId: string; resumeRunId?: string; inheritReadReceipts?: boolean }) =>
