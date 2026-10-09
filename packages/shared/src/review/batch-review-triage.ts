@@ -51,6 +51,41 @@ function hasMatchingPolicyLock(
       item.policyVersionId === expected.policyVersionId && item.version === expected.version))
 }
 
+/**
+ * One effective-run gate for both triage and issue grouping. Do not show findings
+ * from stale/incomplete/invalid runs as current actionable batch issues.
+ * Note: the caller must supply the CURRENT case's run; this function cannot
+ * derive current input revision from the run alone.
+ */
+export function validateBatchRun(input: BatchTriageInput): { valid: true; run: ReviewRunV2 } | { valid: false; reason: string } {
+  if (input.entryStatus !== 'done') return { valid: false, reason: '未完成当前批次的审核运行' }
+  const run = input.run
+  if (!run) return { valid: false, reason: '标记完成但找不到审核结果' }
+  if (run.caseId !== input.caseId
+    || run.templateId !== input.batch.templateId
+    || run.templateVersion !== input.batch.templateVersion
+    || run.inputManifest.templateVersion !== input.batch.templateVersion
+    || !run.inputManifest.hash
+    || !hasMatchingPolicyLock(run.inputManifest.policyVersions, input.batch.policyVersionLock)) {
+    return { valid: false, reason: '审核结果与批次锁定的模板、政策或案卷不匹配，或输入哈希缺失' }
+  }
+  if (run.status !== 'completed') return { valid: false, reason: '审核没有完整结束' }
+  if (run.coverage.plannedChecks <= 0
+    || (run.inputManifest.effectiveRuleIds && run.inputManifest.effectiveRuleIds.length === 0)
+    || run.coverage.effectiveVerdicts <= 0
+    || run.coverage.completedChecks < run.coverage.plannedChecks
+    || run.checks.length < run.coverage.plannedChecks) {
+    return { valid: false, reason: '检查结果不足或没有有效检查，不能按无异常通过' }
+  }
+  if (run.coverage.documents.some((document) => document.status !== 'read')) {
+    return { valid: false, reason: '仍有材料未完整读取；需核实材料覆盖范围' }
+  }
+  if (run.checks.some((check) => HARD_FAILURES.has(check.status))) {
+    return { valid: false, reason: '存在未执行或执行失败的检查' }
+  }
+  return { valid: true, run }
+}
+
 /** Conservative, deterministic and side-effect free. */
 export function triageBatchCase(input: BatchTriageInput): BatchTriageResult {
   const result = (route: BatchTriageRoute, explanation: string): BatchTriageResult => ({
@@ -76,30 +111,9 @@ export function triageBatchCase(input: BatchTriageInput): BatchTriageResult {
   if (input.entryStatus === 'paused') return result('pending', '批次已暂停')
   if (input.entryStatus !== 'done') return result('pending', '未完成当前批次的审核运行')
 
-  const run = input.run
-  if (!run) return result('technical-exception', '标记完成但找不到审核结果')
-  if (run.caseId !== input.caseId
-    || run.templateId !== input.batch.templateId
-    || run.templateVersion !== input.batch.templateVersion
-    || run.inputManifest.templateVersion !== input.batch.templateVersion
-    || !run.inputManifest.hash
-    || !hasMatchingPolicyLock(run.inputManifest.policyVersions, input.batch.policyVersionLock)) {
-    return result('technical-exception', '审核结果与批次锁定的模板、政策或案卷不匹配')
-  }
-  if (run.status !== 'completed') return result('technical-exception', '审核没有完整结束')
-  if (run.coverage.plannedChecks <= 0
-    || (run.inputManifest.effectiveRuleIds && run.inputManifest.effectiveRuleIds.length === 0)
-    || run.coverage.effectiveVerdicts <= 0
-    || run.coverage.completedChecks < run.coverage.plannedChecks
-    || run.checks.length < run.coverage.plannedChecks) {
-    return result('technical-exception', '检查结果不足或没有有效检查，不能按无异常通过')
-  }
-  if (run.coverage.documents.some((document) => document.status !== 'read')) {
-    return result('technical-exception', '仍有材料未完整读取；需核实材料覆盖范围')
-  }
-  if (run.checks.some((check) => HARD_FAILURES.has(check.status))) {
-    return result('technical-exception', '存在未执行或执行失败的检查')
-  }
+  const validated = validateBatchRun(input)
+  if (!validated.valid) return result('technical-exception', validated.reason)
+  const run = validated.run
   if (input.caseStage === 'awaiting-review' || input.caseStage === 'awaiting-final' || input.caseStage === 'awaiting-rating') {
     return result('manual-review', '当前流程阶段要求人工认定或评分')
   }
@@ -153,13 +167,15 @@ function normalizedCause(value: string): string {
 export function groupBatchIssues(inputs: BatchTriageInput[]): BatchIssueGroup[] {
   const groups = new Map<string, BatchIssueGroup>()
   for (const input of inputs) {
-    if (input.entryStatus !== 'done' || !input.run || input.run.status !== 'completed') continue
-    if (input.run.caseId !== input.caseId
-      || input.run.templateId !== input.batch.templateId
-      || input.run.templateVersion !== input.batch.templateVersion
-      || !hasMatchingPolicyLock(input.run.inputManifest.policyVersions, input.batch.policyVersionLock)) continue
+    const validated = validateBatchRun(input)
+    if (!validated.valid) continue
+    // Already decided, awaiting supplements, or unknown case stages must not
+    // surface old checks as current human-actionable groups.
+    const route = triageBatchCase(input).route
+    if (route !== 'manual-review' && route !== 'auto-return-candidate') continue
+    const run = validated.run
 
-    for (const check of input.run.checks) {
+    for (const check of run.checks) {
       if (!ISSUE_STATUSES.has(check.status)) continue
       const reason = check.reason.trim() || '未提供具体原因'
       // JSON encoding avoids separator collisions in policy IDs and free text.
@@ -173,8 +189,8 @@ export function groupBatchIssues(inputs: BatchTriageInput[]): BatchIssueGroup[] 
       if (!group.occurrences.some((item) => item.caseId === input.caseId && item.checkId === check.checkId)) {
         group.occurrences.push({
           caseId: input.caseId,
-          runId: input.run.id,
-          inputHash: input.run.inputManifest.hash,
+          runId: run.id,
+          inputHash: run.inputManifest.hash,
           checkId: check.checkId,
           ruleId: check.ruleId,
           status: check.status,
