@@ -1,6 +1,6 @@
 /** 批量审核：按批次查看项目进度；审核队列策略后续单独收敛。 */
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import type { BatchStateV2, ReviewBatch, ReviewCaseSummary, TemplateVersion, BatchTriageInput, BatchTriageRoute } from '@profer/shared'
+import type { BatchStateV2, ReviewBatch, ReviewCaseSummary, TemplateVersion, BatchTriageInput, BatchTriageRoute, BatchIssueGroup } from '@profer/shared'
 import { groupBatchIssues, triageBatchCase, prepareBatchIssueActionDraft } from '@profer/shared'
 import { AlertTriangle, CheckCircle2, Clock3, FileWarning, FolderOpen, Plus, RefreshCw } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
@@ -86,7 +86,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
   const [executing, setExecuting] = useState(false)
   const [handlingBatch, setHandlingBatch] = useState(false)
   const [openedGroupKey, setOpenedGroupKey] = useState<string | null>(null)
-  const [actionGroupKey, setActionGroupKey] = useState<string | null>(null)
+  const [actionGroup, setActionGroup] = useState<BatchIssueGroup | null>(null)
   const [batchName, setBatchName] = useState('')
   const [templateKey, setTemplateKey] = useState('')
   const [selectedCaseIds, setSelectedCaseIds] = useState<string[]>([])
@@ -407,7 +407,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                     {openedGroupKey === group.key ? '收起处置草稿' : '查看逐案处置草稿'}
                   </button>
                   <Button size="sm" variant="outline" type="button" disabled={selectedBatch.status === 'finalized' || selectedBatch.status === 'running' || executing || handlingBatch}
-                    onClick={() => setActionGroupKey(group.key)}>人工集中处理</Button>
+                    onClick={() => setActionGroup(group)}>人工集中处理</Button>
                 </div>
                 {openedGroupKey === group.key && issueDraft?.groupKey === group.key && (
                   <div className="mt-2 space-y-2 rounded-md bg-muted/50 p-3 text-xs">
@@ -428,11 +428,11 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
         </section>
       )}
 
-      {selectedBatch && actionGroupKey && issueGroups.some((group) => group.key === actionGroupKey) && (
-        <BatchGroupActionDialog key={actionGroupKey} batchId={selectedBatch.batch.id}
-          group={issueGroups.find((group) => group.key === actionGroupKey)!}
+      {selectedBatch && actionGroup && (
+        <BatchGroupActionDialog key={actionGroup.key} batchId={selectedBatch.batch.id}
+          group={actionGroup}
           titleOf={(caseId) => rows.find((row) => row.caseId === caseId)?.title ?? caseId}
-          onClose={() => setActionGroupKey(null)}
+          onClose={() => setActionGroup(null)}
           onApplied={refresh}
         />
       )}
