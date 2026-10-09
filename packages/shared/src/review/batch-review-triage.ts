@@ -203,3 +203,62 @@ export function groupBatchIssues(inputs: BatchTriageInput[]): BatchIssueGroup[] 
   return [...groups.values()].sort((a, b) =>
     b.caseIds.length - a.caseIds.length || a.ruleId.localeCompare(b.ruleId) || a.key.localeCompare(b.key))
 }
+
+
+/** Read-only batch handling preview. Its case selection never creates decisions. */
+export interface BatchIssueActionDraft {
+  groupKey: string
+  ruleId: string
+  /** No auto-reject/auto-pass is ever prepared from a group. */
+  action: 'supplement-draft' | 'human-review-draft'
+  suggestedReason: string
+  cases: Array<{
+    caseId: string
+    runId: string
+    inputHash: string
+    findingKeys: string[]
+    eligible: boolean
+    note: string
+  }>
+  eligibleCount: number
+}
+
+/**
+ * Re-derive membership from effective runs. A grouping key is NOT authority to
+ * change all cases: each draft row carries its own eligibility and run identity.
+ */
+export function prepareBatchIssueActionDraft(
+  inputs: BatchTriageInput[],
+  groupKey: string,
+  selectedCaseIds?: string[],
+): BatchIssueActionDraft | null {
+  const group = groupBatchIssues(inputs).find((candidate) => candidate.key === groupKey)
+  if (!group) return null
+  const selected = selectedCaseIds ? new Set(selectedCaseIds) : null
+  const action = group.status === 'awaiting-supplement' ? 'supplement-draft' : 'human-review-draft'
+  const cases = group.caseIds.filter((id) => !selected || selected.has(id)).map((caseId) => {
+    const input = inputs.find((item) => item.caseId === caseId)!
+    const triage = triageBatchCase(input)
+    const related = group.occurrences.filter((item) => item.caseId === caseId)
+    const eligible = action === 'supplement-draft'
+      ? triage.route === 'auto-return-candidate'
+      : triage.route === 'manual-review'
+    return {
+      caseId,
+      runId: related[0]!.runId,
+      inputHash: related[0]!.inputHash,
+      findingKeys: [...new Set(related.map((item) => item.checkId))],
+      eligible,
+      note: eligible ? '仅供人工核对；正式操作前逐案复核当前证据、补件要素及权限'
+        : '本案存在其他阻断因素，不能套用本问题组的建议动作',
+    }
+  })
+  return {
+    groupKey,
+    ruleId: group.ruleId,
+    action,
+    suggestedReason: group.reason,
+    cases,
+    eligibleCount: cases.filter((item) => item.eligible).length,
+  }
+}
