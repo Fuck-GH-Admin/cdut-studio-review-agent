@@ -84,6 +84,10 @@ describe('批量审核分流只产生候选，不执行正式决定', () => {
     expect(triageBatchCase(item({ caseStage: 'awaiting-final' })).route).toBe('manual-review')
     expect(triageBatchCase(item({ caseStage: 'awaiting-rating' })).route).toBe('manual-review')
   })
+
+  test('案卷索引出现未知阶段时按人工处理，不产生自动候选', () => {
+    expect(triageBatchCase(item({ caseStage: 'unknown-future-stage' })).route).toBe('manual-review')
+  })
 })
 
 describe('相似问题保守归组', () => {
