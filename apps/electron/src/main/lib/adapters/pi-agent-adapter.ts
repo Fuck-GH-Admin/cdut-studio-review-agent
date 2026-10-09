@@ -49,6 +49,7 @@ import type {
   AgentSessionEvent,
   ResourceLoader,
   ToolDefinition,
+  ExtensionFactory,
 } from '@earendil-works/pi-coding-agent'
 import type { Transport as PiAgentTransport } from '@earendil-works/pi-ai'
 import type { AgentToolResult, AgentToolUpdateCallback } from '@earendil-works/pi-agent-core'
@@ -172,6 +173,8 @@ export interface PiAgentQueryOptions extends AgentQueryInput {
   customTools?: ToolDefinition[]
   /** N2d（07 §4.4）：工具档案——review 仅注册审核业务工具+压缩，不注册通用 read/bash/write 与产品工具 */
   toolProfile?: 'general' | 'review'
+  /** 仅在辅助审核工作台的有效案卷运行绑定上启用；不改变普通 Pi 会话策略。 */
+  contextPolicy?: { kind: 'review'; caseId: string; runId: string }
   /** 内容审核专用多模态页图；只附加到本次 Pi 首轮消息，不进入普通文件工具上下文。 */
   images?: string[]
   onSessionId?: (sdkSessionId: string, sessionFile?: string) => void
@@ -961,6 +964,48 @@ export const PI_COMPACTION_CONTINUATION_PROMPT = `<profer_compaction_continuatio
 - 只有原始需求全部完成时才给出最终答复；若确实受阻，明确说明阻塞原因。
 </profer_compaction_continuation>`
 
+const PI_REVIEW_COMPACTION_THRESHOLD_RATIO = 0.7
+const PI_REVIEW_COMPACTION_INSTRUCTIONS = '这是辅助审核工作台中的案卷审核会话。请用简短、可继续执行的状态摘要压缩旧上下文，严格保留：当前案卷与运行 ID、模板和规则版本；已提交检查的 ID、结论与状态；尚未提交的检查草稿须明确标成草稿；已确认事实及其材料版本、blockId 和引文；材料逐份读取状态与尚未读取/需人工核验的材料；最近一次被拒提交的项目和原因；下一步应继续的检查。\n不得把“材料已读取”当成“材料符合”，不得把草稿或待核实事项变成已接受结论，不得丢弃冲突与不确定性。不要复制长段材料正文、图片内容或 base64。摘要不是材料出处；压缩后应先查看案卷运行账本确认已提交状态，再继续未完成的读取和检查。若当前轮尚有可提交的检查结果，先用 review_submit_result 以 finish=false 持久化，再压缩。'
+const PI_REVIEW_COMPACTION_CONTINUATION_PROMPT = '<profer_review_compaction_continuation>\n审核会话刚完成上下文压缩。先使用审核工具核对当前案卷运行账本中的已提交检查、材料读取覆盖和拒绝项；再继续未读材料与缺失检查。保留有效结论，不把压缩摘要当作材料证据，不重复已完成的读取或提交。\n</profer_review_compaction_continuation>'
+
+function calculatePiAutoCompactionReserveTokensForPolicy(contextWindow: number, contextPolicy?: PiAgentQueryOptions['contextPolicy']): number {
+  if (contextPolicy?.kind !== 'review') return calculatePiAutoCompactionReserveTokens(contextWindow)
+  if (!Number.isFinite(contextWindow) || contextWindow <= 0) {
+    throw new TypeError('Pi context window must be a positive finite number')
+  }
+  // 审核会话更早压缩，给大批材料读取和后续检查留出空间；普通会话继续使用共享的 80% 阈值。
+  return Math.ceil(contextWindow * (1 - PI_REVIEW_COMPACTION_THRESHOLD_RATIO))
+}
+
+function createPiReviewLedgerCompactionExtension(contextPolicy: NonNullable<PiAgentQueryOptions['contextPolicy']>): ExtensionFactory {
+  return (pi) => {
+    pi.on('session_before_compact', async (event) => {
+      try {
+        const { buildPiReviewCompactionSummary } = require('../review/pi-case-review-service') as typeof import('../review/pi-case-review-service')
+        const summary = buildPiReviewCompactionSummary(contextPolicy.caseId, contextPolicy.runId)
+        if (!summary) return undefined
+        return {
+          compaction: {
+            summary,
+            firstKeptEntryId: event.preparation.firstKeptEntryId,
+            tokensBefore: event.preparation.tokensBefore,
+            details: {
+              kind: 'review-ledger-checkpoint',
+              caseId: contextPolicy.caseId,
+              runId: contextPolicy.runId,
+              readFiles: [...event.preparation.fileOps.read],
+              modifiedFiles: [...event.preparation.fileOps.edited],
+            },
+          },
+        }
+      } catch (error) {
+        console.warn(`[Pi 审核压缩] 无法从运行账本生成检查点，回退到 Pi 原生摘要 (${contextPolicy.runId}):`, error)
+        return undefined
+      }
+    })
+  }
+}
+
 export function planPiCompactionContinuation(options: {
   continuationCount: number
   abortRequested: boolean
@@ -1078,9 +1123,10 @@ export function buildCurrentSessionCompactionTool(
 export async function compactCurrentSessionAfterTurn(
   session: Pick<AgentSession, 'compact' | 'sessionId'>,
   onNoop: (message: SDKMessage) => void,
+  customInstructions?: string,
 ): Promise<'compacted' | 'noop'> {
   try {
-    await session.compact()
+    await session.compact(customInstructions)
     return 'compacted'
   } catch (error) {
     if (!isCompactionNoopError(error)) throw error
@@ -2272,8 +2318,9 @@ export class PiAgentAdapter implements AgentProviderAdapter {
         ? sdk.SessionManager.open(sessionFile, input.piSessionDir, cwd)
         : sdk.SessionManager.create(cwd, input.piSessionDir)
       const { modelRuntime, model } = await buildModel(sdk, input)
-      const autoCompactionReserveTokens = calculatePiAutoCompactionReserveTokens(
+      const autoCompactionReserveTokens = calculatePiAutoCompactionReserveTokensForPolicy(
         model.contextWindow ?? DEFAULT_CONTEXT_WINDOW,
+        input.contextPolicy,
       )
       let compactContextRequested = false
       let automaticCompactionContinuations = 0
@@ -2302,9 +2349,7 @@ export class PiAgentAdapter implements AgentProviderAdapter {
       ]
 
       const settingsManager = sdk.SettingsManager.inMemory({
-        // 使用 Pi SDK 原生压缩策略：
-        // - 手动压缩由 session.compact() 触发；
-        // - 自动压缩在上下文达到模型窗口的约 80% 时触发；Pi 以 reserveTokens 表示预留空间。
+        // 使用 Pi SDK 原生压缩策略。普通会话在约 80% 触发；审核工作台按有效案卷绑定提前到约 70%。
         compaction: { enabled: true, reserveTokens: autoCompactionReserveTokens },
         // Continue the same transcript after transient failures so completed tools are not replayed.
         // Ollama 由 buildPiRetrySettings 单独关闭 native retry，避免兼容层重复提交工具上下文。
@@ -2336,6 +2381,7 @@ export class PiAgentAdapter implements AgentProviderAdapter {
           })
         : undefined
       const extensionFactories = [
+        ...(input.contextPolicy?.kind === 'review' ? [createPiReviewLedgerCompactionExtension(input.contextPolicy)] : []),
         ...(input.provider === 'openai-codex'
           ? [createCodexRequestSettingsExtension({
               thinkingLevel: input.thinkingLevel ?? 'off',
@@ -2760,7 +2806,7 @@ export class PiAgentAdapter implements AgentProviderAdapter {
         // 手动压缩：走 pi 原生 session.compact()，而非把 /compact 当普通 prompt 发给模型。
         // compaction_start/end 事件已在上面的 subscribe 中转成 compacting/compact_boundary system 消息；
         // compact() 不发 agent_end，故这里补一个合成 result 消息收束本轮（供 orchestrator 结束消费循环）。
-        session.compact()
+        session.compact(input.contextPolicy?.kind === 'review' ? PI_REVIEW_COMPACTION_INSTRUCTIONS : undefined)
           .then(() => {
             queue.push({
               type: 'result',
@@ -2829,7 +2875,11 @@ export class PiAgentAdapter implements AgentProviderAdapter {
             if (!compactContextRequested) break
             try {
               // 模型主动请求压缩：本 turn 落定后执行 session.compact()，再按需续跑原任务。
-              await compactCurrentSessionAfterTurn(session, (message) => queue.push(message))
+              await compactCurrentSessionAfterTurn(
+                session,
+                (message) => queue.push(message),
+                input.contextPolicy?.kind === 'review' ? PI_REVIEW_COMPACTION_INSTRUCTIONS : undefined,
+              )
             } catch (error) {
               // 用户在压缩期间停止时，Pi 会取消 summarization；这是正常中止而不是运行错误。
               if (active.abortRequested) return
@@ -2843,7 +2893,10 @@ export class PiAgentAdapter implements AgentProviderAdapter {
             })
             if (continuation.shouldContinue) {
               automaticCompactionContinuations += 1
-              continuationPrompt = appendOutputFormatInstruction(continuation.prompt, input.outputFormat)
+              continuationPrompt = appendOutputFormatInstruction(
+                input.contextPolicy?.kind === 'review' ? PI_REVIEW_COMPACTION_CONTINUATION_PROMPT : continuation.prompt,
+                input.outputFormat,
+              )
               // 当前终态仅表示为执行压缩而结束的内部 loop，不应让上层把原任务视为完成。
               pendingTerminalResult = undefined
             } else {

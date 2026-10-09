@@ -1220,6 +1220,21 @@ export class AgentOrchestrator {
         : []
       const currentPresetReference = presetSessionMeta?.presetReference
         ?? presetReferenceForId(workspaceSlug, presetSessionMeta?.presetId)
+      // 审核上下文策略必须同时满足工作台预设、用户发起和真实活动案卷运行绑定。
+      // 单独选用同一模型或预设不会改变普通 Pi 任务的压缩阈值与摘要策略。
+      const activePiReviewBinding = agentRuntime === 'pi'
+        && currentPresetReference?.presetId === 'review-operator'
+        && presetOperationSource === 'user'
+        ? (() => {
+            try {
+              const { getPiReviewBindingForSession } = require('./review/pi-case-review-service') as typeof import('./review/pi-case-review-service')
+              return getPiReviewBindingForSession(sessionId)
+            } catch (error) {
+              console.warn(`[Agent 编排] 无法确认 Pi 审核运行绑定，沿用普通上下文策略 (${sessionId}):`, error)
+              return undefined
+            }
+          })()
+        : undefined
       const presetPolicy = createEffectiveAgentPresetPolicy(
         sessionPreset,
         currentPresetReference,
@@ -1803,6 +1818,13 @@ ${enrichedMessage}`
           ...(context1mPreference !== null && { context1m: context1mPreference }),
           ...(configuredChannelModel?.contextWindow !== undefined && { contextWindow: configuredChannelModel.contextWindow }),
           ...(configuredChannelModel?.maxTokens !== undefined && { maxTokens: configuredChannelModel.maxTokens }),
+          ...(activePiReviewBinding && {
+            contextPolicy: {
+              kind: 'review' as const,
+              caseId: activePiReviewBinding.caseId,
+              runId: activePiReviewBinding.runId,
+            },
+          }),
           permissionMode: initialPermissionMode,
           piAgentDir: getSdkConfigDir(),
           // Keep Pi JSONL session files below the SDK-isolated config directory, never in another workspace.

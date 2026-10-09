@@ -4,7 +4,7 @@
  */
 import { existsSync, realpathSync } from 'node:fs'
 import { extname, isAbsolute, join, relative, resolve, sep } from 'node:path'
-import type { AiOpinion, CaseAggregateV2, CheckResult, FieldValue, ReviewRunV2, RuleSpec, SourceRef, TemplateVersion } from '@profer/shared'
+import type { AiOpinion, CaseAggregateV2, CheckResult, FieldValue, Observation, ReviewRunV2, RuleSpec, SourceRef, TemplateVersion } from '@profer/shared'
 import { getConfigDir } from '../config-paths'
 import { getCaseV2Aggregate } from './application-service'
 import { buildDeterministicRuleChecks } from './v2-executor-factory'
@@ -401,6 +401,7 @@ function promptFor(aggregate: CaseAggregateV2, template: TemplateVersion): strin
     ]),
     '按模板要求完成整案核对；多个分项仍是同一次案卷审核。确定性预算/编号规则由系统按现有计算器校验，不接受模型自算值替代。规则或材料不足时如实提交待确认/待补件。符合或不符合必须提供本案真实 documentVersionId、blockId 和准确引文；图片引用需提供清楚的图像观察描述。',
     '用 review_submit_result 提交事实候选与检查结果。可以先分批提交（finish=false）。finish=true 只有在所有语义检查都有效且提交没有被拒绝时才会关闭运行；若有缺项或出处被拒，运行会保持开放，请按工具返回的 rejected 和 missingChecks 修正并再次提交。审核分析结束不等于正式认定或批准；不得调用决定类操作。',
+    '长流程中请分批提交已经核验的检查（finish=false），避免只把大量原文留在对话历史里。需要压缩上下文时，先持久化当前可提交结果，再调用 CompactContext；压缩后先读取运行账本确认已提交项、读取覆盖和缺项，再继续审核。未读取材料和待核实事项必须继续保留为未完成状态。',
     `【事项】\n${subjects}`,
     `【检查要求】\n${rulesText}`,
     `【材料目录】\n${docs}`,
@@ -505,6 +506,99 @@ export function getPiReviewBindingForSession(sessionId: string): PiReviewBinding
   const run = getRunV2(assignment.caseId, assignment.activeRunId)
   if (!run || run.status !== 'running') return undefined
   return { assignmentId: assignment.id, sessionId, caseId: assignment.caseId, runId: run.id }
+}
+
+/** Build a factual, model-free Pi compaction checkpoint from the durable review ledger. */
+export function buildPiReviewCompactionSummary(caseId: string, runId: string): string | undefined {
+  const aggregate = getCaseV2Aggregate(caseId)
+  const run = getRunV2(caseId, runId)
+  if (!aggregate || !run || run.caseId !== caseId) return undefined
+  const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+  const rules = template ? effectiveRulesFor(aggregate, template) : []
+  const documentsByVersion = new Map(aggregate.caseV2.documents.map((document) => [document.versionId, document]))
+  const subjectsById = new Map(aggregate.caseV2.subjects.map((subject) => [subject.id, subject]))
+  const readState = readArtifact<PiDocumentReadState>(caseId, runId, 'node-pi-read-state') ?? {}
+  const savedAiObservations = readArtifact<{ observations?: Observation[] }>(caseId, runId, 'node-auto-check-extract')?.observations ?? []
+  const inheritedReadReceipts = readArtifact<PiDocumentReadInheritanceEntry[]>(caseId, runId, 'node-pi-read-inheritance') ?? []
+  const attempts = readArtifact<{ attempts?: PiReviewSubmissionAttempt[] }>(caseId, runId, 'node-pi-submit-attempts')?.attempts ?? []
+  const clip = (value: unknown, max = 180): string => {
+    let text: string
+    try {
+      text = typeof value === 'string' ? value : JSON.stringify(value) ?? String(value)
+    } catch {
+      text = String(value)
+    }
+    return text.length > max ? `${text.slice(0, max)}…` : text
+  }
+  const sourceLabel = (ref: SourceRef): string => {
+    const name = documentsByVersion.get(ref.documentVersionId)?.fileName ?? ref.documentVersionId
+    const location = ref.location.kind === 'pdf-rect' ? `p${ref.location.page}`
+      : ref.location.kind === 'sheet-cell' ? `${ref.location.sheet}!${ref.location.column}${ref.location.row}`
+        : ref.location.kind === 'paragraph' ? `段${ref.location.index}`
+          : ref.location.kind === 'text-range' ? `字符${ref.location.start}-${ref.location.end}` : '文件级'
+    return `${name}@${location}${ref.quote ? `“${clip(ref.quote, 100)}”` : ''}`
+  }
+
+  const lines = [
+    `辅助审核账本检查点 | 案卷=${aggregate.caseV2.title} | case=${caseId} | run=${runId} | 状态=${run.status}`,
+    `模板=${run.templateId}@${run.templateVersion} | 规则集=${run.inputManifest.effectiveRuleSetHash ?? '未记录'} | 输入哈希=${run.inputManifest.hash}`,
+    ...(inputHashOf(aggregate) === run.inputManifest.hash ? [] : ['案卷输入已不同于本运行快照；不要续写旧结论，应按工作台当前输入重新审核。']),
+    '以下状态来自持久化案卷账本；本摘要不是原件证据，也不补充未提交结论。',
+    `当前规则 (${rules.length})：`,
+    ...rules.map((rule) => `- ${rule.id} | ${rule.execution} | ${rule.targetScope} | ${rule.title}：${clip(rule.requirement, 320)}`),
+    `申报事项 (${aggregate.caseV2.subjects.length})：`,
+    ...aggregate.caseV2.subjects.map((subject) => `- ${subject.id} | ${subject.title}${subject.sectionId ? ` | 分项=${subject.sectionId}` : ''}`),
+    `已提交检查 (${run.checks.length})：`,
+    ...run.checks.map((check) => {
+      const subjectNames = check.target.subjectIds.map((id) => subjectsById.get(id)?.title ?? id).join('、')
+      const refs = check.sourceRefs.map(sourceLabel)
+      return `- ${check.checkId} | ${check.status}${subjectNames ? ` | ${subjectNames}` : ''} | ${clip(check.reason, 140)}${refs.length ? ` | 出处：${refs.join('；')}` : ''}`
+    }),
+  ]
+
+  if (template) {
+    const expected = expectedSemanticChecks(rules, aggregate)
+    const recorded = new Set(run.checks.filter((check) => check.status !== 'execution-failed').map((check) => check.checkId))
+    const missing = expected.filter((check) => !recorded.has(check.checkId))
+    lines.push(`尚缺语义检查 (${missing.length})：`, ...missing.map((check) => `- ${check.checkId} | ${check.ruleId} | ${check.target.subjectIds.map((id) => subjectsById.get(id)?.title ?? id).join('、') || '整案'}`))
+  }
+
+  const observations = [...aggregate.observations, ...savedAiObservations]
+  lines.push(`案卷事实 (${observations.length})：`, ...observations.map((observation) => {
+    const subject = subjectsById.get(observation.subjectId)
+    const value = observation.value && typeof observation.value === 'object' && 'value' in observation.value
+      ? observation.value.value
+      : observation.value
+    const refs = observation.sourceRefs.map(sourceLabel)
+    return `- ${subject?.title ?? observation.subjectId}.${observation.fieldKey}=${clip(value, 120)} | ${observation.confirmed ? '已确认' : '待核实'} | ${observation.extractedBy}${refs.length ? ` | ${refs.join('；')}` : ''}`
+  }))
+
+  const activeDocuments = aggregate.caseV2.documents.filter((document) => document.active !== false)
+  const coverage = new Map(run.coverage.documents.map((item) => [item.documentVersionId, item]))
+  const fullyPreviewed = new Set(readState.fullyPreviewedDocumentVersionIds ?? [])
+  const partiallyPreviewed = new Set(readState.previewedDocumentVersionIds ?? [])
+  const inheritedByVersion = new Map(inheritedReadReceipts.map((item) => [item.documentVersionId, item]))
+  lines.push(`材料读取账本 (${activeDocuments.length})：`, ...activeDocuments.map((document) => {
+    const readBlockCount = readState.blocks?.[document.versionId]?.length ?? 0
+    const inherited = inheritedByVersion.get(document.versionId)
+    const readProof = inherited ? ` | 沿用运行 ${inherited.sourceRunId} 的 ${inherited.proof} 凭据`
+      : document.manualReadReceipt ? ' | 人工已确认核对原件'
+        : fullyPreviewed.has(document.versionId) ? ' | 原件全页预览已登记'
+          : partiallyPreviewed.has(document.versionId) ? ' | 原件部分预览已登记' : ''
+    const documentCoverage = coverage.get(document.versionId)
+    return `- ${document.fileName} | ${document.versionId} | ${documentCoverage?.status ?? 'unread'}${documentCoverage?.reason ? ` (${documentCoverage.reason})` : ''} | 已记录块=${readBlockCount}${readProof}`
+  }))
+
+  if (run.opinions.length > 0) {
+    lines.push(`已提交意见 (${run.opinions.length})：`, ...run.opinions.map((opinion) => `- ${opinion.severity} | ${opinion.title} | ${opinion.suggestionText} | ${opinion.sourceRefs.map(sourceLabel).join('；')}`))
+  }
+  const lastRejected = [...attempts].reverse().find((attempt) => attempt.rejected.length > 0)
+  if (lastRejected) {
+    lines.push('最近一次提交拒绝项：', ...lastRejected.rejected.map((item) => `- ${item.kind}[${item.index}]：${item.reason}`))
+    if (lastRejected.missingChecks.length > 0) lines.push(`该次缺项：${lastRejected.missingChecks.join('、')}`)
+  }
+  lines.push('下一步：以当前运行账本复核已提交项；先补读未读材料，再补齐尚缺检查和待核实事实。不得把待读材料或压缩前未提交的推理视为完成。')
+  return lines.join('\n')
 }
 
 /** 为一次普通 Pi 轮次创建案卷限定读取工具使用的材料库，并恢复此前读取进度。 */
