@@ -262,3 +262,60 @@ export function prepareBatchIssueActionDraft(
     eligibleCount: cases.filter((item) => item.eligible).length,
   }
 }
+
+
+/** Explicit local-human batch treatment; these are not autonomous AI decisions. */
+export type BatchGroupAction =
+  | 'confirm-issue' | 'false-positive' | 'human-confirmed-compliant' | 'escalate'
+  | 'request-supplement' | 'final-return' | 'final-pass'
+
+export interface BatchGroupActionRequest {
+  batchId: string
+  groupKey: string
+  caseIds: string[]
+  action: BatchGroupAction
+  reason: string
+  requiredElements?: string[]
+}
+
+export interface BatchGroupPreviewRow {
+  caseId: string
+  title: string
+  eligible: boolean
+  reason: string
+  revision: number | null
+  runId: string | null
+  inputHash: string | null
+  findingKey: string | null
+  sourceCount: number
+}
+
+export interface BatchGroupPreview {
+  previewHash: string
+  batchId: string
+  action: BatchGroupAction
+  groupKey: string
+  eligibleCount: number
+  rows: BatchGroupPreviewRow[]
+  /** Preview has no effect on any case or business decision. */
+  advisoryOnly: true
+}
+
+export interface BatchGroupApplyRequest extends BatchGroupActionRequest {
+  previewHash: string
+  operationId: string
+  /** UI requires a fresh explicit confirmation for each operation. */
+  confirmed: true
+}
+
+export interface BatchGroupApplyResult {
+  batchId: string
+  operationId: string
+  action: BatchGroupAction
+  previewHash: string
+  results: Array<{ caseId: string; status: 'applied' | 'excluded' | 'conflict' | 'failed'; message: string; receiptId?: string }>
+  applied: number
+  excluded: number
+  conflicts: number
+  failed: number
+}
