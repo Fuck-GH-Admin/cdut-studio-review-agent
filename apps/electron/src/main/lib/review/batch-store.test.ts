@@ -5,7 +5,7 @@ import { afterAll, describe, expect, test } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewBatch } from '@profer/shared'
-import { createBatchV2, finalizeBatch, listBatchStatesV2, pushViaOutbox, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus, runBatchQueue } from './batch-store'
+import { createBatchV2, finalizeBatch, listBatchStatesV2, pushViaOutbox, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus, runBatchQueue, retryBatchCases, recoverInterruptedBatch } from './batch-store'
 import type { BatchStateV2 } from '@profer/shared'
 type Entry = BatchStateV2['cases'][number]
 import { MockSchoolAdapter } from './external-ports'
@@ -69,6 +69,65 @@ describe('批次状态机（R08）', () => {
     createBatchV2(batch('b3'))
     updateCaseStatus('b3', 'c1', 'running')
     expect(() => finalizeBatch('b3', {})).toThrow('运行中')
+  })
+})
+
+describe('批次中断恢复与定向重试（B 切片）', () => {
+  test('Given 上次进程中断的 running 案卷 When 显式恢复 Then 失败标记等待人工确认，其他状态不变', () => {
+    createBatchV2({ ...batch('recover-orphan'), caseIds: ['c1', 'c2', 'c3'] })
+    const state = readBatchStateV2('recover-orphan')!
+    state.status = 'running'
+    state.cases = [
+      { caseId: 'c1', status: 'running' },
+      { caseId: 'c2', status: 'done' },
+      { caseId: 'c3', status: 'failed', error: '此前失败' },
+    ]
+    const { saveBatchStateV2 } = require('./batch-store') as typeof import('./batch-store')
+    saveBatchStateV2(state)
+    const recovered = recoverInterruptedBatch('recover-orphan')
+    expect(recovered.status).toBe('queued')
+    expect(recovered.cases[0]?.status).toBe('failed')
+    expect(recovered.cases[0]?.error).toContain('中断')
+    expect(recovered.cases[1]?.status).toBe('done')
+    expect(recovered.cases[2]?.error).toBe('此前失败')
+  })
+
+  test('Given 失败和成功共存 When 选择单个失败案卷重试 Then 只执行选中的失败项', async () => {
+    createBatchV2({ ...batch('retry-specific'), caseIds: ['c1', 'c2', 'c3'] })
+    updateCaseStatus('retry-specific', 'c1', 'failed', '解析失败')
+    updateCaseStatus('retry-specific', 'c2', 'failed', '服务异常')
+    updateCaseStatus('retry-specific', 'c3', 'done')
+    retryBatchCases('retry-specific', ['c1'])
+    const executed: string[] = []
+    const result = await runBatchQueue('retry-specific', { runCase: async (id) => { executed.push(id); return { status: 'completed' } } })
+    expect(executed).toEqual(['c1'])
+    expect(result.cases.find((x) => x.caseId === 'c2')?.status).toBe('failed')
+    expect(result.cases.find((x) => x.caseId === 'c3')?.status).toBe('done')
+  })
+
+  test('Given 非失败状态或非法案卷 When 批量重试 Then 全部校验通过前不落盘', () => {
+    createBatchV2(batch('retry-atomic'))
+    updateCaseStatus('retry-atomic', 'c1', 'failed', '之前错误')
+    updateCaseStatus('retry-atomic', 'c2', 'done')
+    expect(() => retryBatchCases('retry-atomic', ['c1', 'c2'])).toThrow('不可重试')
+    expect(() => retryBatchCases('retry-atomic', ['not-in-batch'])).toThrow('不属于')
+    expect(() => retryBatchCases('retry-atomic', ['c1', 'c1'])).toThrow('不能重复')
+    expect(readBatchStateV2('retry-atomic')?.cases[0]?.status).toBe('failed')
+  })
+
+  test('Given 运行进程仍在执行 When 尝试按崩溃恢复 Then 拒绝中断恢复', async () => {
+    createBatchV2({ ...batch('active-run'), caseIds: ['c1'] })
+    let signal!: () => void
+    let release!: () => void
+    const entered = new Promise<void>((resolve) => { signal = resolve })
+    const block = new Promise<void>((resolve) => { release = resolve })
+    const pending = runBatchQueue('active-run', { runCase: async () => { signal(); await block; return { status: 'completed' } } })
+    await entered
+    expect(() => recoverInterruptedBatch('active-run')).toThrow('仍在当前进程')
+    expect(() => retryBatchCases('active-run', ['c1'])).toThrow('执行中')
+    release()
+    await pending
+    expect(readBatchStateV2('active-run')?.cases[0]?.status).toBe('done')
   })
 })
 
