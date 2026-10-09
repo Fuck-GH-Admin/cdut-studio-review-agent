@@ -18,6 +18,7 @@ import {
   documentsByRoleAtom,
   reviewCaseAtom,
   reviewRuleLocateAtom,
+  reviewWorkspaceTemplateAtom,
 } from '@/atoms/review-atoms'
 import type { ReviewActions } from './use-review-actions'
 import { RuleOutlineList } from './RuleOutlineList'
@@ -32,6 +33,7 @@ export function LeftPanel({ actions }: LeftPanelProps): React.ReactElement {
   const reviewCase = useAtomValue(reviewCaseAtom)
   const documentsByRole = useAtomValue(documentsByRoleAtom)
   const ruleLocate = useAtomValue(reviewRuleLocateAtom)
+  const template = useAtomValue(reviewWorkspaceTemplateAtom)
   const documentDetails = React.useRef(new Map<string, HTMLDetailsElement>())
   const [manualRules, setManualRules] = React.useState<import('@profer/shared').ManualReviewRule[]>([])
   const [manualDialogOpen, setManualDialogOpen] = React.useState(false)
@@ -149,6 +151,32 @@ export function LeftPanel({ actions }: LeftPanelProps): React.ReactElement {
           <span className="truncate">{ruleDocuments.length} 份文件 · {manualRules.length} 条手写依据</span>
         </p>
       </header>
+
+      {template && (template.sections ?? []).some((section) => section.criteria.length > 0) && (
+        <section className="shrink-0 px-3 pt-3">
+          <details className="rounded-lg border border-primary/20 bg-primary/[0.025]">
+            <summary className="cursor-pointer px-3 py-2 text-xs font-semibold">
+              {template.name} · 审核标准（{(template.sections ?? []).reduce((sum, section) => sum + section.criteria.length, 0)}）
+            </summary>
+            <div className="space-y-2 border-t border-border/50 px-3 py-2">
+              {(template.sections ?? []).slice().sort((a, b) => a.order - b.order).map((section) => section.criteria.length > 0 && (
+                <div key={section.id}>
+                  <p className="mb-1 text-xs font-medium">{section.name}</p>
+                  <ol className="list-decimal space-y-1 pl-4 text-xs text-muted-foreground">
+                    {section.criteria.map((criterion) => (
+                      <li key={criterion.id}>
+                        <span className="font-medium text-foreground">{criterion.title}</span>
+                        {criterion.requirement ? `：${criterion.requirement}` : ''}
+                        <span className="ml-1 text-[10px]">({criterion.execution === 'semantic' ? 'Agent' : criterion.execution === 'deterministic' ? '程序' : '人工'})</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              ))}
+            </div>
+          </details>
+        </section>
+      )}
 
       {/* 规则文档全文（SourceBlockView 列表，只读；蓝色高亮定位落点） */}
       {ruleDocuments.map((ruleDocument) => {

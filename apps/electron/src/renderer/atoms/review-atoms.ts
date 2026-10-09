@@ -31,7 +31,7 @@ import type {
 // ===== 数据状态 =====
 
 /** 审核区工作页：管理入口只挂载一次，切页保留正在填写的表单。 */
-export type ReviewWorkspaceSection = 'assist' | 'batch' | 'templates' | 'settings'
+export type ReviewWorkspaceSection = 'assist' | 'batch' | 'history' | 'templates' | 'settings'
 export const reviewWorkspaceSectionAtom = atom<ReviewWorkspaceSection>('assist')
 
 /**

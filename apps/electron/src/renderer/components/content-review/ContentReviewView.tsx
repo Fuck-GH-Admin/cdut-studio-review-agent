@@ -44,8 +44,8 @@ import { LeftPanel } from './LeftPanel'
 import { RightPanel } from './RightPanel'
 import { ReviewContextBar } from './ReviewContextBar'
 import { TemplateWizardPanel } from './TemplateWizardPanel'
-import { V2CasePanel } from './V2CasePanel'
 import { BatchPanel } from './BatchPanel'
+import { ReviewHistoryPanel } from './ReviewHistoryPanel'
 import { useReviewActions } from './use-review-actions'
 import { ReviewSettingsPanel } from './ReviewSettingsPanel'
 
@@ -147,6 +147,7 @@ export function ContentReviewView(): React.ReactElement {
         {([
           ['assist', '辅助审核'],
           ['batch', '批量审核'],
+          ['history', '历史记录'],
           ['templates', '审核模板'],
           ['settings', '审核设置'],
         ] as Array<[ReviewWorkspaceSection, string]>).map(([id, label]) => (
@@ -200,15 +201,21 @@ export function ContentReviewView(): React.ReactElement {
       </main>
 
       <section aria-label="审核模板编排" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'templates' && 'hidden')}>
-        <TemplateWizardPanel />
-        <div className="mx-3 mb-2 mt-5 border-t pt-4">
-          <h2 className="mb-1 text-base font-semibold">按模板创建并审核案卷</h2>
-          <p className="mb-3 text-sm text-muted-foreground">已发布模板在这里使用。一个综测案卷可以录入多个分项和事项，材料与检查结果统一归档。</p>
+        <div className="mx-3 mb-2">
+          <h2 className="mb-1 text-base font-semibold">审核模板库</h2>
+          <p className="mb-3 text-sm text-muted-foreground">创建、调整并发布可复用的审核模板；新项目在创建时选择模板。</p>
         </div>
-        <V2CasePanel />
+        <TemplateWizardPanel />
       </section>
       <section aria-label="审核批次管理" className={cn('relative min-h-0 flex-1 overflow-auto py-3 titlebar-no-drag', section !== 'batch' && 'hidden')}>
         <BatchPanel />
+      </section>
+      <section aria-label="审核历史记录" className={cn('relative min-h-0 flex-1 overflow-auto py-4 titlebar-no-drag', section !== 'history' && 'hidden')}>
+        <ReviewHistoryPanel active={section === 'history'} onOpenProject={async (caseId) => {
+          const opened = await actions.selectCase(caseId)
+          if (opened) setSection('assist')
+          return opened
+        }} />
       </section>
       <section aria-label="审核专属设置" className={cn('relative min-h-0 flex-1 overflow-auto py-6 titlebar-no-drag', section !== 'settings' && 'hidden')}>
         <ReviewSettingsPanel

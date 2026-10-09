@@ -478,6 +478,8 @@ export const REVIEW_IPC_CHANNELS = {
   LOAD_DEMO_CASE: 'review:load-demo-case',
   /** 列出已存储案卷 */
   LIST_CASES: 'review:list-cases',
+  /** 列出某案卷的全部历史运行 */
+  LIST_RUNS: 'review:list-runs',
   /** 读取单个案卷 */
   GET_CASE: 'review:get-case',
   /** 创建空案卷 */

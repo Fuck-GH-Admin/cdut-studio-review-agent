@@ -167,15 +167,23 @@ export function ReviewContextBar({ actions }: CaseManagerBarProps): React.ReactE
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => setCreateOpen(true)}><Plus size={14} />新建审核任务</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setCreateOpen(true)}><Plus size={14} />新建审核项目</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <span className="shrink-0 text-xs text-muted-foreground">{currentCase ? `${currentCase.documents.length} 份材料 · ${executionLabel(execution.status)}` : '还没有审核任务'}</span>
-        {!currentCase && <Button type="button" size="sm" className="h-7 gap-1.5 px-2 text-xs" onClick={() => setCreateOpen(true)}><Plus size={13} />新建审核</Button>}
+        <span className="shrink-0 text-xs text-muted-foreground">{currentCase ? `${currentCase.documents.length} 份材料 · ${executionLabel(execution.status)}` : '未选择审核任务'}</span>
+        <Button
+          type="button"
+          size="sm"
+          className="h-7 shrink-0 gap-1.5 px-2 text-xs"
+          title="新建项目并选择审核模板"
+          onClick={() => setCreateOpen(true)}
+        >
+          <Plus size={13} />新建审核项目
+        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild><Button type="button" variant="ghost" size="icon-sm" aria-label="更多审核操作" title="更多审核操作"><MoreHorizontal size={15} /></Button></DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[260px]">
-            <DropdownMenuItem onSelect={() => setCreateOpen(true)}><Plus size={14} />新建审核任务</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setCreateOpen(true)}><Plus size={14} />新建审核项目</DropdownMenuItem>
             <DropdownMenuItem onSelect={() => void actions.loadDemoCase()}><FolderOpen size={14} />载入示例数据</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuLabel>高级操作</DropdownMenuLabel>
@@ -213,7 +221,7 @@ export function ReviewContextBar({ actions }: CaseManagerBarProps): React.ReactE
         </p>
       </div>
       {/* 新建案卷对话框 */}
-      <CreateCaseDialog open={createOpen} onOpenChange={setCreateOpen} onCreate={actions.createCase} />
+      <CreateCaseDialog open={createOpen} onOpenChange={setCreateOpen} templates={publishedTemplates} onCreate={actions.createCase} />
 
       {/* 删除二次确认 */}
       <ConfirmDialog

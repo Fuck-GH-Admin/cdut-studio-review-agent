@@ -34,6 +34,7 @@ import {
   getCase,
   getReviewCasesDir,
   listCases,
+  listRuns,
   loadDemoCase,
   saveCase,
   updateCase,
@@ -96,6 +97,11 @@ export function registerReviewIpc(): void {
     return listCases()
   })
 
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_RUNS, (_event, caseId: string): ReviewRun[] => {
+    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    return listRuns(caseId)
+  })
+
   /** 读取单个案卷 */
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_CASE, (_event, caseId: string): ReviewCase | undefined => {
     return getCase(caseId)
@@ -112,6 +118,7 @@ export function registerReviewIpc(): void {
         applicant: string
         academicYear: string
         domainPackId?: string
+        reviewTemplate?: { templateId: string; version: number }
       },
     ): Promise<ReviewCase> => {
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
@@ -120,12 +127,22 @@ export function registerReviewIpc(): void {
       if (input.domainPackId !== undefined && typeof input.domainPackId !== 'string') {
         throw new Error('参数 domainPackId 类型非法')
       }
+      if (input.reviewTemplate !== undefined) {
+        const { templateId, version } = input.reviewTemplate
+        if (typeof templateId !== 'string' || !templateId || !Number.isInteger(version) || version < 1) {
+          throw new Error('参数 reviewTemplate 非法')
+        }
+        const { getTemplate } = require('./template-store') as typeof import('./template-store')
+        const template = getTemplate(templateId, version)
+        if (!template || template.status !== 'published') throw new Error('只能使用已发布的审核模板创建项目')
+      }
       const reviewCase = createEmptyCase({
         title: requireString(input.title, 'title'),
         type: input.type,
         applicant: requireString(input.applicant, 'applicant'),
         academicYear: requireString(input.academicYear, 'academicYear'),
         ...(input.domainPackId ? { domainPackId: input.domainPackId } : {}),
+        ...(input.reviewTemplate ? { reviewTemplate: input.reviewTemplate } : {}),
       })
       await ensureWorkspaceAggregateV2(reviewCase.id)
       return reviewCase

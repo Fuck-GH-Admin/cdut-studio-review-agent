@@ -45,6 +45,7 @@ import { SourceBlockView } from './SourceBlockView'
 import { useReviewWorkspaceActions } from './use-review-workspace-actions'
 import { ReviewActionDialog } from './ReviewActionDialog'
 import { Button } from '@profer/ui/primitives/button'
+import { MaterialDropZone } from './MaterialDropZone'
 import { MoveReviewDocumentButtons, RemoveReviewDocumentButton, ReviewMaterialDropZone, ReviewMaterialLaneActions } from './ReviewMaterialControls'
 
 interface ReviewItemDraft {
@@ -207,6 +208,43 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
           <ReviewMaterialDropZone role="application" hasDocuments={documentsByRole.application.length > 0} actions={actions} />
         </div>
       </section>
+
+      {workspaceTemplate?.materialSlots?.length ? (
+        <section className="shrink-0 border-b border-border/40 px-3 py-2">
+          <details className="rounded-lg border border-border/50 bg-card/60">
+            <summary className="cursor-pointer px-3 py-2 text-xs font-semibold text-foreground">
+              {workspaceTemplate.name} · 模板材料要求（{workspaceTemplate.materialSlots.length}）
+            </summary>
+            <ul className="space-y-3 border-t border-border/50 px-3 py-2">
+              {workspaceTemplate.materialSlots.map((slot) => {
+                const sectionName = workspaceTemplate.sections?.find((section) => section.id === slot.sectionId)?.name
+                const slotDocuments = (aggregate?.caseV2.documents ?? []).filter((document) => document.active !== false && document.materialSlotId === slot.id)
+                return (
+                  <li key={slot.id} className="rounded-md border border-border/50 p-2">
+                    <p className="text-xs leading-5 text-muted-foreground">
+                      <span className="font-medium text-foreground">{sectionName ? `${sectionName} · ` : ''}{slot.name}</span>
+                      {slot.minCount > 0 ? ` · 至少 ${slot.minCount} 份` : ' · 可选'}
+                      {slot.purpose ? ` · ${slot.purpose}` : ''}
+                    </p>
+                    {slotDocuments.length > 0 && <p className="mt-1 truncate text-xs text-muted-foreground" title={slotDocuments.map((document) => document.fileName).join('、')}>
+                      已添加 {slotDocuments.length} 份：{slotDocuments.map((document) => document.fileName).join('、')}
+                    </p>}
+                    {aggregate && <div className="mt-2">
+                      <MaterialDropZone
+                        caseId={aggregate.caseV2.id}
+                        slotId={slot.id}
+                        hasSlots
+                        slotLabel={slot.name}
+                        onRegistered={() => { void workspaceActions.refresh() }}
+                      />
+                    </div>}
+                  </li>
+                )
+              })}
+            </ul>
+          </details>
+        </section>
+      ) : null}
 
       {/* 申报事项（开始审核时自动识别） */}
       <section className="shrink-0 px-3 py-3">

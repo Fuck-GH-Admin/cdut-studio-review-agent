@@ -3691,6 +3691,7 @@ if (process.isMainFrame) contextBridge.exposeInMainWorld('agentPreviewAPI', agen
 const reviewAPI = {
   loadDemoCase: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOAD_DEMO_CASE) as Promise<import('@profer/shared').ReviewCase>,
   listCases: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_CASES) as Promise<import('@profer/shared').ReviewCaseSummary[]>,
+  listRuns: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_RUNS, caseId) as Promise<import('@profer/shared').ReviewRun[]>,
   getCase: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_CASE, caseId) as Promise<import('@profer/shared').ReviewCase | undefined>,
   createCase: (input: {
     title: string
@@ -3699,6 +3700,7 @@ const reviewAPI = {
     academicYear: string
     /** 审核领域包（可缺省；未知 ID 由主进程 resolveDomainPack 回落缺省包） */
     domainPackId?: import('@profer/shared').ReviewDomainPackId
+    reviewTemplate?: { templateId: string; version: number }
   }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_CASE, input) as Promise<import('@profer/shared').ReviewCase>,
   importDocument: (input: { caseId: string; role: import('@profer/shared').SourceDocument['role']; requestId?: string }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT, input) as Promise<import('@profer/shared').ImportDocumentsResult>,
