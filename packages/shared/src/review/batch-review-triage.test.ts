@@ -118,6 +118,36 @@ describe('相似问题保守归组', () => {
     expect(groupBatchIssues([a])).toHaveLength(3)
   })
 
+  test('外层模板版本符合但 manifest 版本不符时，技术异常不能同时进入问题组（回归）', () => {
+    const invalid = item({ run: run({
+      checks: [check({ status: 'awaiting-supplement', reason: '缺少证明' })],
+      inputManifest: { ...run().inputManifest, templateVersion: 1 },
+    }) })
+    expect(triageBatchCase(invalid).route).toBe('technical-exception')
+    expect(groupBatchIssues([invalid])).toHaveLength(0)
+  })
+
+  test('输入哈希缺失、检查不完整、材料未读都不能进入问题组', () => {
+    const badRuns = [
+      run({ checks: [check({ status: 'awaiting-supplement' })], inputManifest: { ...run().inputManifest, hash: '' } }),
+      run({ checks: [check({ status: 'awaiting-supplement' })], coverage: { ...run().coverage, plannedChecks: 2, completedChecks: 1 } }),
+      run({ checks: [check({ status: 'awaiting-supplement' })], coverage: { ...run().coverage, documents: [{ documentVersionId: 'doc-1', status: 'unread' }] } }),
+      run({ checks: [check({ status: 'not-executed' })] }),
+      run({ checks: [check({ status: 'awaiting-supplement' })], inputManifest: { ...run().inputManifest, effectiveRuleIds: [] } }),
+    ]
+    for (const invalidRun of badRuns) {
+      const invalid = item({ run: invalidRun })
+      expect(triageBatchCase(invalid).route).toBe('technical-exception')
+      expect(groupBatchIssues([invalid])).toEqual([])
+    }
+  })
+
+  test('已形成正式决定或正在补件的运行不产生当前待处理问题组', () => {
+    const withIssue = run({ checks: [check({ status: 'awaiting-supplement' })] })
+    expect(groupBatchIssues([item({ caseStage: 'decided', run: withIssue })])).toEqual([])
+    expect(groupBatchIssues([item({ caseStage: 'awaiting-supplement', run: withIssue })])).toEqual([])
+  })
+
   test('未完成或批次版本不匹配的运行不参与当前问题组', () => {
     const a = item({ entryStatus: 'queued', run: run({ checks: [check({ status: 'awaiting-supplement' })] }) })
     const b = item({ caseId: 'c2', run: run({ caseId: 'c2', templateVersion: 1, checks: [check({ status: 'non-compliant' })] }) })
