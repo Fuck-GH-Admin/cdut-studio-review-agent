@@ -10,6 +10,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { join } from 'node:path'
+import { triageBatchCase } from '@profer/shared'
 import type { BatchStateV2, ReviewBatch, SyncReceipt } from '@profer/shared'
 import { getConfigDir } from '../config-paths'
 import type { PushPayload, SchoolPort } from './external-ports'
@@ -249,7 +250,18 @@ export function retryBatchCases(batchId: string, caseIds: string[]): BatchStateV
   for (const caseId of requested) {
     const entry = state.cases.find((item) => item.caseId === caseId)
     if (!entry) throw new Error(`案卷不属于此批次: ${caseId}`)
-    if (entry.status !== 'failed' && entry.status !== 'paused') throw new Error(`案卷当前状态不可重试: ${caseId} (${entry.status})`)
+    if (entry.status === 'failed' || entry.status === 'paused') continue
+    if (entry.status === 'done') {
+      const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+      const { readAggregate } = require('./case-store-v2') as typeof import('./case-store-v2')
+      const aggregate = readAggregate(caseId)
+      const run = [...listRunsV2(caseId)].sort((a, b) => (b.completedAt ?? b.startedAt).localeCompare(a.completedAt ?? a.startedAt))[0]
+      const route = triageBatchCase({
+        caseId, entryStatus: 'done', caseStage: aggregate?.caseV2.stage, run, batch: state.batch,
+      }).route
+      if (route === 'technical-exception') continue
+    }
+    throw new Error(`案卷当前状态不可重试: ${caseId} (${entry.status})`)
   }
   state.cases = state.cases.map((entry) => requested.has(entry.caseId) ? { ...entry, status: 'queued', error: undefined } : entry)
   saveBatchStateV2(state)
