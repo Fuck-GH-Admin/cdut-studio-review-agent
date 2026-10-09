@@ -126,6 +126,13 @@ export function previewBatchGroupAction(request: BatchGroupActionRequest): Batch
         base.reason = '本项已有相同的人工处理记录'; return base
       }
     } else if (request.action === 'request-supplement' || request.action === 'final-return') {
+      if (request.action === 'final-return' && (
+        template.stages.filter((stage) => !stage.nextStageId).length !== 1
+        || template.stages.find((stage) => !stage.nextStageId)?.executorRole !== 'reviewer'
+        || (template.stages.length > 1 && !agg.tasks.some((task) => task.status === 'open' && task.stageId === template.stages.find((stage) => !stage.nextStageId)?.id))
+      )) {
+        base.reason = '当前角色或阶段不允许作出最终退回决定'; return base
+      }
       if (occurrence.status !== 'awaiting-supplement' || route !== 'auto-return-candidate') {
         base.reason = '其他检查尚有阻断，或本项不是明确可补正的问题'; return base
       }
@@ -134,8 +141,9 @@ export function previewBatchGroupAction(request: BatchGroupActionRequest): Batch
       }
     } else if (request.action === 'final-pass') {
       const finalStage = template.stages.find((stage) => !stage.nextStageId)
-      if (finalStage?.executorRole !== 'reviewer') {
-        base.reason = '最终审批角色不是 reviewer'; return base
+      if (!finalStage || finalStage.executorRole !== 'reviewer'
+        || (template.stages.length > 1 && !agg.tasks.some((task) => task.status === 'open' && task.stageId === finalStage.id))) {
+        base.reason = '当前角色或阶段不允许作出最终通过决定'; return base
       }
       const artifact = readArtifact<{ observations?: Array<Record<string, unknown>> }>(caseId, run.id, 'node-auto-check-extract')
       const readiness = assessDecisionReadiness({ aggregate: agg, run, runStale: false, template, observations: artifact?.observations ?? [] })
@@ -159,7 +167,7 @@ export function previewBatchGroupAction(request: BatchGroupActionRequest): Batch
     previewHash, rows, eligibleCount: rows.filter((r) => r.eligible).length, advisoryOnly: true }
 }
 
-type PersistedOp = { inputHash: string; result: BatchGroupApplyResult }
+type PersistedOp = { inputHash: string; result: BatchGroupApplyResult; completed: boolean }
 
 export async function applyBatchGroupAction(request: BatchGroupApplyRequest): Promise<BatchGroupApplyResult> {
   validateRequest(request)
@@ -168,15 +176,25 @@ export async function applyBatchGroupAction(request: BatchGroupApplyRequest): Pr
   if (!/^[0-9a-f]{64}$/.test(request.previewHash)) throw new Error('预览指纹无效')
   const path = operationFile(request.batchId, request.operationId)
   const inputHash = digest({ ...request, confirmed: true })
+  const liveKey = `${request.batchId}:${request.operationId}`
+  if (liveOperations.has(liveKey)) throw new Error('相同批量操作正在执行')
   if (existsSync(path)) {
     const saved = JSON.parse(readFileSync(path, 'utf8')) as PersistedOp
     if (saved.inputHash !== inputHash) throw new Error('操作 ID 已被不同载荷使用')
-    // Retrying an operation returns its persisted receipt; it never replays
-    // side effects. An interrupted operation remains explicitly inspectable.
+    if (!saved.completed) {
+      // Crash recovery is intentionally non-replaying: the last local command
+      // may have committed even if its batch-level receipt was not saved.
+      const processed = new Set(saved.result.results.map((row) => row.caseId))
+      for (const caseId of request.caseIds) {
+        if (processed.has(caseId)) continue
+        saved.result.results.push({ caseId, status: 'failed', message: '批量操作中断，写入状态未确认；请核对案卷审计记录后重新预览处理' })
+        saved.result.failed++
+      }
+      saved.completed = true
+      persist(path, saved)
+    }
     return saved.result
   }
-  const liveKey = `${request.batchId}:${request.operationId}`
-  if (liveOperations.has(liveKey)) throw new Error('相同批量操作正在执行')
   liveOperations.add(liveKey)
   try {
     const preview = previewBatchGroupAction(request)
@@ -188,7 +206,7 @@ export async function applyBatchGroupAction(request: BatchGroupApplyRequest): Pr
     // Write ahead before the first business mutation. After a crash, the saved
     // receipt states exactly which cases were confirmed applied and which were
     // interrupted. The caller must inspect it before creating another action.
-    persist(path, { inputHash, result } satisfies PersistedOp)
+    persist(path, { inputHash, result, completed: false } satisfies PersistedOp)
     for (const row of preview.rows) {
       if (!row.eligible || !row.runId || !row.inputHash || !row.findingKey || row.revision === null) {
         result.results.push({ caseId: row.caseId, status: 'excluded', message: row.reason })
@@ -237,6 +255,7 @@ export async function applyBatchGroupAction(request: BatchGroupApplyRequest): Pr
       }
       persist(path, { inputHash, result } satisfies PersistedOp)
     }
+    persist(path, { inputHash, result, completed: true } satisfies PersistedOp)
     return result
   } finally {
     liveOperations.delete(liveKey)
