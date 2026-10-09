@@ -226,10 +226,11 @@ export async function runBatchQueue(batchId: string, options: BatchQueueOptions 
   const state = readBatchStateV2(batchId)
   if (!state) throw new Error(`批次不存在: ${batchId}`)
   if (state.status === 'finalized') throw new Error('批次已定稿，需重开新轮次才能执行')
-  state.status = 'running'
-  saveBatchStateV2(state)
+  if (state.status === 'running') throw new Error('批次正在执行，不能重复启动')
   if (!options.runCase) throw new Error('runBatchQueue 需要注入 runCase（产品层由 buildReviewExecutors 提供，避免隐式默认执行器）')
   const runCase = options.runCase
+  state.status = 'running'
+  saveBatchStateV2(state)
   for (const entry of state.cases) {
     if (entry.status === 'done') continue
     updateCaseStatus(batchId, entry.caseId, 'running')
@@ -242,7 +243,7 @@ export async function runBatchQueue(batchId: string, options: BatchQueueOptions 
     }
   }
   const final = readBatchStateV2(batchId)!
-  final.status = final.cases.every((entry) => entry.status === 'done') ? 'queued' : 'queued' // 执行完回 queued（等待人工定稿，不自动定稿）
+  final.status = 'queued' // 执行完回 queued（等待后续业务决定，不自动定稿）
   saveBatchStateV2(final)
   return final
 }
