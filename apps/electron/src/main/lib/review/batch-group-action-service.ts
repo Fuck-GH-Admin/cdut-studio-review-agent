@@ -211,7 +211,7 @@ export async function applyBatchGroupAction(request: BatchGroupApplyRequest): Pr
       if (!row.eligible || !row.runId || !row.inputHash || !row.findingKey || row.revision === null) {
         result.results.push({ caseId: row.caseId, status: 'excluded', message: row.reason })
         result.excluded++
-        persist(path, { inputHash, result } satisfies PersistedOp)
+        persist(path, { inputHash, result, completed: false } satisfies PersistedOp)
         continue
       }
       // Re-read the case for each write; preview is not a capability token.
@@ -220,7 +220,7 @@ export async function applyBatchGroupAction(request: BatchGroupApplyRequest): Pr
         || isWorkspaceRunStaleV2(agg, row.runId) || readBatchStateV2(request.batchId)?.status !== 'queued') {
         result.results.push({ caseId: row.caseId, status: 'conflict', message: '提交前案卷版本、输入或批次状态改变' })
         result.conflicts++
-        persist(path, { inputHash, result } satisfies PersistedOp)
+        persist(path, { inputHash, result, completed: false } satisfies PersistedOp)
         continue
       }
       const requestId = `batch-${digest([request.operationId, row.caseId, request.action, row.findingKey]).slice(0,36)}`
@@ -253,7 +253,7 @@ export async function applyBatchGroupAction(request: BatchGroupApplyRequest): Pr
         result.results.push({ caseId: row.caseId, status: 'failed', message: error instanceof Error ? error.message : String(error) })
         result.failed++
       }
-      persist(path, { inputHash, result } satisfies PersistedOp)
+      persist(path, { inputHash, result, completed: false } satisfies PersistedOp)
     }
     persist(path, { inputHash, result, completed: true } satisfies PersistedOp)
     return result
