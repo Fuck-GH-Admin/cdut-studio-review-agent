@@ -1,7 +1,7 @@
 /** 批量审核：按批次查看项目进度；审核队列策略后续单独收敛。 */
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { BatchStateV2, ReviewBatch, ReviewCaseSummary, TemplateVersion, BatchTriageInput, BatchTriageRoute } from '@profer/shared'
-import { groupBatchIssues, triageBatchCase } from '@profer/shared'
+import { groupBatchIssues, triageBatchCase, prepareBatchIssueActionDraft } from '@profer/shared'
 import { AlertTriangle, CheckCircle2, Clock3, FileWarning, FolderOpen, Plus, RefreshCw } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@profer/ui/primitives/dialog'
@@ -83,6 +83,8 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
   const [createOpen, setCreateOpen] = useState(false)
   const [creating, setCreating] = useState(false)
   const [executing, setExecuting] = useState(false)
+  const [handlingBatch, setHandlingBatch] = useState(false)
+  const [openedGroupKey, setOpenedGroupKey] = useState<string | null>(null)
   const [batchName, setBatchName] = useState('')
   const [templateKey, setTemplateKey] = useState('')
   const [selectedCaseIds, setSelectedCaseIds] = useState<string[]>([])
@@ -210,6 +212,9 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
   const triageByCase = useMemo(() => new Map(triageInputs.map((input) =>
     [input.caseId, triageBatchCase(input)])), [triageInputs])
   const issueGroups = useMemo(() => groupBatchIssues(triageInputs), [triageInputs])
+  const issueDraft = useMemo(() => openedGroupKey
+    ? prepareBatchIssueActionDraft(triageInputs, openedGroupKey)
+    : null, [triageInputs, openedGroupKey])
   const counts = triageInputs.reduce((total, input) => {
     const route = triageByCase.get(input.caseId)?.route
     if (route === 'pending') total.pending++
@@ -221,7 +226,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
   }, { pending: 0, human: 0, technical: 0, passCandidate: 0, supplement: 0 })
 
   const runSelectedBatch = async (): Promise<void> => {
-    if (!selectedBatch || executing || selectedBatch.status === 'finalized' || selectedBatch.status === 'running') return
+    if (!selectedBatch || executing || handlingBatch || selectedBatch.status === 'finalized' || selectedBatch.status === 'running') return
     setExecuting(true)
     try {
       await window.reviewAPI.runBatchV2(selectedBatch.batch.id)
@@ -234,6 +239,24 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
     }
   }
 
+  const handleBatchAction = async (action: 'recover' | 'retry', caseId?: string): Promise<void> => {
+    if (!selectedBatch || executing || handlingBatch) return
+    setHandlingBatch(true)
+    try {
+      await window.reviewAPI.batchActionV2({
+        action,
+        batchId: selectedBatch.batch.id,
+        ...(caseId ? { caseIds: [caseId] } : {}),
+      })
+      toast.success(action === 'recover' ? '已标记上次中断的案卷，请核查后选择重试' : '已将指定案卷重新加入待执行队列')
+      await refresh()
+    } catch (cause) {
+      toast.error(`批次操作失败：${cause instanceof Error ? cause.message : String(cause)}`)
+    } finally {
+      setHandlingBatch(false)
+    }
+  }
+
   return (
     <div className="mx-auto w-full max-w-[1500px] space-y-5 px-5 py-5">
       <header className="flex flex-wrap items-end justify-between gap-3">
@@ -242,11 +265,17 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
           <p className="mt-1 text-sm text-muted-foreground">按批次跟进多个审核项目的进度和待处理情况。</p>
         </div>
         <div className="flex items-center gap-2">
+          {selectedBatch?.status === 'running' && (
+            <Button type="button" size="sm" variant="outline" className="h-9 rounded-lg px-3"
+              disabled={executing || handlingBatch} onClick={() => void handleBatchAction('recover')}>
+              <RefreshCw size={15} />恢复中断批次
+            </Button>
+          )}
           {selectedBatch && (
             <Button type="button" size="sm" variant="outline" className="h-9 rounded-lg px-3"
-              disabled={executing || selectedBatch.status === 'finalized' || selectedBatch.status === 'running' || !selectedBatch.cases.some((entry) => entry.status !== 'done')}
+              disabled={executing || handlingBatch || selectedBatch.status === 'finalized' || selectedBatch.status === 'running' || !selectedBatch.cases.some((entry) => entry.status === 'queued')}
               onClick={() => void runSelectedBatch()}>
-              <Clock3 size={15} />{executing ? '批次审核中…' : '开始/继续批次审核'}
+              <Clock3 size={15} />{executing ? '批次审核中…' : '执行待审核案卷'}
             </Button>
           )}
           <Button type="button" size="sm" className="h-9 rounded-lg px-4" onClick={openCreate}>
@@ -317,7 +346,15 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                         <td className="px-3 py-3 text-muted-foreground">{row.applicant}</td>
                         <td className="px-3 py-3 tabular-nums text-muted-foreground">{coverage && coverage.plannedChecks > 0 ? `${coverage.completedChecks} / ${coverage.plannedChecks}` : '—'}</td>
                         <td className="px-3 py-3 tabular-nums text-muted-foreground">{coverage ? coverage.pendingChecks : '—'}</td>
-                        <td className="px-3 py-3"><span className={`inline-flex whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-medium ${status.tone}`}>{status.label}</span></td>
+                        <td className="px-3 py-3">
+                          <span className={`inline-flex whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-medium ${status.tone}`}>{status.label}</span>
+                          {(row.entryStatus === 'failed' || row.entryStatus === 'paused') && selectedBatch.status !== 'running' && selectedBatch.status !== 'finalized' && (
+                            <button type="button" className="ml-2 text-[11px] text-primary hover:underline"
+                              disabled={executing || handlingBatch}
+                              title={selectedBatch.cases.find((entry) => entry.caseId === row.caseId)?.error ?? '重新入队，仅本案'}
+                              onClick={() => void handleBatchAction('retry', row.caseId)}>重试本案</button>
+                          )}
+                        </td>
                         <td className={`px-3 py-3 font-medium ${triage ? TRIAGE_TONES[triage.route] : 'text-muted-foreground'}`} title={triage?.explanation}>{triage ? TRIAGE_LABELS[triage.route] : '—'}</td>
                         <td className="px-3 py-3 text-right tabular-nums text-muted-foreground">{formatTime(row.updatedAt)}</td>
                       </tr>
@@ -362,6 +399,23 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                   })}
                   {group.caseIds.length > 4 && <span className="py-1 text-xs text-muted-foreground">等 {group.caseIds.length} 项</span>}
                 </div>
+                <button type="button" className="mt-3 text-xs text-primary hover:underline"
+                  onClick={() => setOpenedGroupKey((current) => current === group.key ? null : group.key)}>
+                  {openedGroupKey === group.key ? '收起处置草稿' : '查看逐案处置草稿'}
+                </button>
+                {openedGroupKey === group.key && issueDraft?.groupKey === group.key && (
+                  <div className="mt-2 space-y-2 rounded-md bg-muted/50 p-3 text-xs">
+                    <p className="font-medium">建议：{issueDraft.action === 'supplement-draft' ? '核对补件要素' : '人工复核'} · 可适用 {issueDraft.eligibleCount}/{issueDraft.cases.length} 项</p>
+                    <p className="text-muted-foreground">{issueDraft.suggestedReason}</p>
+                    {issueDraft.cases.map((draftCase) => (
+                      <div key={draftCase.caseId} className="flex justify-between gap-2">
+                        <button type="button" className="text-left hover:text-primary hover:underline" onClick={() => void openProject(draftCase.caseId)}>{rows.find((row) => row.caseId === draftCase.caseId)?.title ?? draftCase.caseId}</button>
+                        <span className={draftCase.eligible ? 'text-amber-600' : 'text-muted-foreground'}>{draftCase.eligible ? '待核对' : '排除批量操作'}</span>
+                      </div>
+                    ))}
+                    <p className="text-muted-foreground">草稿不执行审批；请打开案卷核对来源、业务规则及授权。</p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
