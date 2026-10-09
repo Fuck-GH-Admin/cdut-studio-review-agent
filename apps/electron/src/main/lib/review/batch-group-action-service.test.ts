@@ -163,6 +163,62 @@ describe('B 阶段：人工集中处置预览与逐案 V2 事务', () => {
     expect(preview.rows[0]?.reason).toContain('阻断')
   })
 
+  test('人工解决问题后才允许正式通过，且最终调用既有通过事务', async () => {
+    const a = await makeCase('non-compliant')
+    const batchId = makeBatch([a.caseId])
+    const resolved = request(batchId, [a.caseId], 'false-positive', 'non-compliant')
+    const firstPreview = previewBatchGroupAction(resolved)
+    expect((await applyBatchGroupAction({
+      ...resolved, previewHash: firstPreview.previewHash, operationId: next('operation-id'), confirmed: true,
+    })).applied).toBe(1)
+    const passRequest = request(batchId, [a.caseId], 'final-pass', 'non-compliant')
+    const passPreview = previewBatchGroupAction(passRequest)
+    expect(passPreview.eligibleCount).toBe(1)
+    const outcome = await applyBatchGroupAction({
+      ...passRequest, previewHash: passPreview.previewHash, operationId: next('operation-id'), confirmed: true,
+    })
+    expect(outcome.applied).toBe(1)
+    const agg = readAggregate(a.caseId)!
+    expect(agg.caseV2.stage).toBe('decided')
+    expect(agg.decisions.at(-1)?.result).toBe('pass')
+    expect(agg.decisions.at(-1)?.actor.actorSource).toBe('local')
+  })
+
+  test('明确补正缺项时，人工正式退回通过现有业务决定服务写补件', async () => {
+    const a = await makeCase('awaiting-supplement')
+    const batchId = makeBatch([a.caseId])
+    const req = request(batchId, [a.caseId], 'final-return', 'awaiting-supplement')
+    const preview = previewBatchGroupAction(req)
+    expect(preview.eligibleCount).toBe(1)
+    const result = await applyBatchGroupAction({
+      ...req, previewHash: preview.previewHash, operationId: next('operation-id'), confirmed: true,
+    })
+    expect(result.applied).toBe(1)
+    const agg = readAggregate(a.caseId)!
+    expect(agg.decisions.at(-1)?.result).toBe('return')
+    expect(agg.caseV2.stage).toBe('awaiting-supplement')
+    expect(agg.supplements.at(-1)?.requiredElements).toContain('原始获奖等级证明')
+  })
+
+  test('存在其他角色的未办任务时，不允许 reviewer 代替该角色批量操作', async () => {
+    const a = await makeCase('non-compliant')
+    const batchId = makeBatch([a.caseId])
+    const command = await submitCommand(a.caseId, {
+      requestId: next('setup-teacher-task'), actor: reviewer, expectedRevision: 0,
+      type: 'SeedTeacherTask', payload: {},
+    }, () => ({ summary: '测试教师待办', mutate: (aggregate) => {
+      aggregate.tasks = [...aggregate.tasks, {
+        id: 'teacher-task', caseId: a.caseId, stageId: 'teacher-review', round: 1,
+        assigneeRole: 'teacher', status: 'open', inputRevision: 0, createdAt: '2026-10-10T00:00:00Z',
+      }]
+    } }))
+    expect(command.ok).toBeTrue()
+    const req = request(batchId, [a.caseId], 'confirm-issue', 'non-compliant')
+    const preview = previewBatchGroupAction(req)
+    expect(preview.eligibleCount).toBe(0)
+    expect(preview.rows[0]?.reason).toContain('其他角色')
+  })
+
   test('未确认操作、重复 ID 更改载荷、或非法选择范围均不能写入', async () => {
     const a = await makeCase('non-compliant')
     const batchId = makeBatch([a.caseId])
