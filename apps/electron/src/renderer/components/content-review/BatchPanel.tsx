@@ -10,6 +10,7 @@ import { Label } from '@profer/ui/primitives/label'
 import { toast } from 'sonner'
 import { useStore } from 'jotai'
 import { reviewV2BusyAtom } from './V2CasePanel'
+import { BatchGroupActionDialog } from './BatchGroupActionDialog'
 
 type CaseIndexItem = Awaited<ReturnType<typeof window.reviewAPI.listCasesV2>>[number]
 type ReviewRunV2 = Awaited<ReturnType<typeof window.reviewAPI.listRunsV2>>[number]
@@ -85,6 +86,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
   const [executing, setExecuting] = useState(false)
   const [handlingBatch, setHandlingBatch] = useState(false)
   const [openedGroupKey, setOpenedGroupKey] = useState<string | null>(null)
+  const [actionGroupKey, setActionGroupKey] = useState<string | null>(null)
   const [batchName, setBatchName] = useState('')
   const [templateKey, setTemplateKey] = useState('')
   const [selectedCaseIds, setSelectedCaseIds] = useState<string[]>([])
@@ -379,7 +381,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
         <section className="space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h3 className="text-sm font-semibold">同类审核问题</h3>
-            <span className="text-xs text-muted-foreground">保守归组 · {issueGroups.length} 组 · 只读，不批量执行决定</span>
+            <span className="text-xs text-muted-foreground">保守归组 · {issueGroups.length} 组 · 可按组预览与人工确认逐案处理</span>
           </div>
           <div className="grid gap-2 lg:grid-cols-2">
             {issueGroups.map((group) => (
@@ -399,10 +401,14 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                   })}
                   {group.caseIds.length > 4 && <span className="py-1 text-xs text-muted-foreground">等 {group.caseIds.length} 项</span>}
                 </div>
-                <button type="button" className="mt-3 text-xs text-primary hover:underline"
-                  onClick={() => setOpenedGroupKey((current) => current === group.key ? null : group.key)}>
-                  {openedGroupKey === group.key ? '收起处置草稿' : '查看逐案处置草稿'}
-                </button>
+                <div className="mt-3 flex flex-wrap items-center gap-4">
+                  <button type="button" className="text-xs text-primary hover:underline"
+                    onClick={() => setOpenedGroupKey((current) => current === group.key ? null : group.key)}>
+                    {openedGroupKey === group.key ? '收起处置草稿' : '查看逐案处置草稿'}
+                  </button>
+                  <Button size="sm" variant="outline" type="button" disabled={selectedBatch.status === 'finalized' || selectedBatch.status === 'running' || executing || handlingBatch}
+                    onClick={() => setActionGroupKey(group.key)}>人工集中处理</Button>
+                </div>
                 {openedGroupKey === group.key && issueDraft?.groupKey === group.key && (
                   <div className="mt-2 space-y-2 rounded-md bg-muted/50 p-3 text-xs">
                     <p className="font-medium">建议：{issueDraft.action === 'supplement-draft' ? '核对补件要素' : '人工复核'} · 可适用 {issueDraft.eligibleCount}/{issueDraft.cases.length} 项</p>
@@ -420,6 +426,15 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
             ))}
           </div>
         </section>
+      )}
+
+      {selectedBatch && actionGroupKey && issueGroups.some((group) => group.key === actionGroupKey) && (
+        <BatchGroupActionDialog key={actionGroupKey} batchId={selectedBatch.batch.id}
+          group={issueGroups.find((group) => group.key === actionGroupKey)!}
+          titleOf={(caseId) => rows.find((row) => row.caseId === caseId)?.title ?? caseId}
+          onClose={() => setActionGroupKey(null)}
+          onApplied={refresh}
+        />
       )}
 
       <CreateBatchDialog
