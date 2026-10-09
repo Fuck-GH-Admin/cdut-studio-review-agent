@@ -8,7 +8,7 @@
  * Keep the deterministic first-pass clustering conservative. No fuzzy similarity
  * is permitted to authorize a bulk decision.
  */
-import type { BatchStateV2, CheckResult, ReviewRunV2, ReviewBatch, ReviewCaseV2 } from '../types'
+import type { BatchStateV2, CheckResult, ReviewRunV2, ReviewBatch } from '../types'
 
 export type BatchTriageRoute =
   | 'pending'
@@ -22,7 +22,8 @@ export type BatchTriageRoute =
 export interface BatchTriageInput {
   caseId: string
   entryStatus: BatchStateV2['cases'][number]['status']
-  caseStage?: ReviewCaseV2['stage']
+  /** The case index currently exposes stage as string; unknown values fail closed. */
+  caseStage?: string
   run?: ReviewRunV2
   batch: Pick<ReviewBatch, 'templateId' | 'templateVersion' | 'policyVersionLock'>
 }
@@ -64,6 +65,12 @@ export function triageBatchCase(input: BatchTriageInput): BatchTriageResult {
   }
   if (input.caseStage === 'awaiting-supplement') {
     return result('awaiting-supplement', '已进入补件流程，等待补件后新一轮审核')
+  }
+  if (input.caseStage && ![
+    'draft', 'submitted', 'reviewing', 'awaiting-supplement', 'awaiting-review',
+    'awaiting-rating', 'awaiting-final', 'decided', 'archived',
+  ].includes(input.caseStage)) {
+    return result('manual-review', '无法识别当前业务阶段，请先人工核实')
   }
   if (input.entryStatus === 'failed') return result('technical-exception', '批次执行失败，需诊断或重试')
   if (input.entryStatus === 'paused') return result('pending', '批次已暂停')
