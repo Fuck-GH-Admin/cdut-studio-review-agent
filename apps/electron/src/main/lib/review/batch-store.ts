@@ -211,6 +211,52 @@ export async function recoverPendingPushes(port: SchoolPort): Promise<OutboxEntr
 
 // ===== G06/G11：真实队列执行（逐案跑审核，坏案不阻塞全批） =====
 
+/** Active invocations only live in this Electron main process; persisted running is an interrupted batch after restart. */
+const activeBatchRuns = new Set<string>()
+
+/**
+ * Explicit crash recovery. Never silently rerun an orphaned running case:
+ * review writes might already have occurred, so mark it failed for inspection.
+ */
+export function recoverInterruptedBatch(batchId: string): BatchStateV2 {
+  const state = readBatchStateV2(batchId)
+  if (!state) throw new Error(`批次不存在: ${batchId}`)
+  if (state.status === 'finalized') throw new Error('已定稿批次不能恢复运行')
+  if (activeBatchRuns.has(batchId)) throw new Error('批次仍在当前进程执行，不能按中断恢复')
+  if (state.status !== 'running' && !state.cases.some((entry) => entry.status === 'running')) {
+    throw new Error('没有需要恢复的中断任务')
+  }
+  state.cases = state.cases.map((entry) => entry.status === 'running'
+    ? { ...entry, status: 'failed', error: '上次审核被中断，请检查案卷运行记录后手动重试' }
+    : entry)
+  state.status = 'queued'
+  saveBatchStateV2(state)
+  return state
+}
+
+/**
+ * Only failed or explicitly paused cases can be requeued. Successful cases
+ * remain untouched; caller must explicitly choose each retry target.
+ */
+export function retryBatchCases(batchId: string, caseIds: string[]): BatchStateV2 {
+  const state = readBatchStateV2(batchId)
+  if (!state) throw new Error(`批次不存在: ${batchId}`)
+  if (state.status === 'finalized') throw new Error('已定稿批次不能重试')
+  if (state.status === 'running' || activeBatchRuns.has(batchId)) throw new Error('批次执行中不能修改重试队列')
+  if (!Array.isArray(caseIds) || caseIds.length === 0 || caseIds.some((id) => !id)) throw new Error('请选择需要重试的案卷')
+  const requested = new Set(caseIds)
+  if (requested.size !== caseIds.length) throw new Error('重试案卷不能重复')
+  for (const caseId of requested) {
+    const entry = state.cases.find((item) => item.caseId === caseId)
+    if (!entry) throw new Error(`案卷不属于此批次: ${caseId}`)
+    if (entry.status !== 'failed' && entry.status !== 'paused') throw new Error(`案卷当前状态不可重试: ${caseId} (${entry.status})`)
+  }
+  state.cases = state.cases.map((entry) => requested.has(entry.caseId) ? { ...entry, status: 'queued', error: undefined } : entry)
+  saveBatchStateV2(state)
+  return state
+}
+
+
 export interface BatchQueueOptions {
   /** 运行参数注入（测试可传假执行器）；产品层复用 Pi 审核 Agent */
   runCase?: (caseId: string) => Promise<{ status: string }>
@@ -226,24 +272,30 @@ export async function runBatchQueue(batchId: string, options: BatchQueueOptions 
   const state = readBatchStateV2(batchId)
   if (!state) throw new Error(`批次不存在: ${batchId}`)
   if (state.status === 'finalized') throw new Error('批次已定稿，需重开新轮次才能执行')
-  if (state.status === 'running') throw new Error('批次正在执行，不能重复启动')
+  if (state.status === 'running' || activeBatchRuns.has(batchId)) throw new Error('批次正在执行，不能重复启动')
   if (!options.runCase) throw new Error('runBatchQueue 需要注入 runCase（产品层由 buildReviewExecutors 提供，避免隐式默认执行器）')
+  const queued = state.cases.filter((entry) => entry.status === 'queued')
+  if (queued.length === 0) throw new Error('没有待执行的案卷；失败项请先选择重试')
   const runCase = options.runCase
-  state.status = 'running'
-  saveBatchStateV2(state)
-  for (const entry of state.cases) {
-    if (entry.status === 'done') continue
-    updateCaseStatus(batchId, entry.caseId, 'running')
-    try {
-      const outcome = await runCase(entry.caseId)
-      if (outcome.status === 'completed') updateCaseStatus(batchId, entry.caseId, 'done')
-      else updateCaseStatus(batchId, entry.caseId, 'failed', `运行结束状态: ${outcome.status}`)
-    } catch (error) {
-      updateCaseStatus(batchId, entry.caseId, 'failed', error instanceof Error ? error.message : String(error))
+  activeBatchRuns.add(batchId)
+  try {
+    state.status = 'running'
+    saveBatchStateV2(state)
+    for (const entry of queued) {
+      updateCaseStatus(batchId, entry.caseId, 'running')
+      try {
+        const outcome = await runCase(entry.caseId)
+        if (outcome.status === 'completed') updateCaseStatus(batchId, entry.caseId, 'done')
+        else updateCaseStatus(batchId, entry.caseId, 'failed', `运行结束状态: ${outcome.status}`)
+      } catch (error) {
+        updateCaseStatus(batchId, entry.caseId, 'failed', error instanceof Error ? error.message : String(error))
+      }
     }
+    const final = readBatchStateV2(batchId)!
+    final.status = 'queued' // 等待后续业务决定；执行完不是正式通过
+    saveBatchStateV2(final)
+    return final
+  } finally {
+    activeBatchRuns.delete(batchId)
   }
-  const final = readBatchStateV2(batchId)!
-  final.status = 'queued' // 执行完回 queued（等待后续业务决定，不自动定稿）
-  saveBatchStateV2(final)
-  return final
 }
