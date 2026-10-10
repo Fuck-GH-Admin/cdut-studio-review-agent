@@ -91,6 +91,12 @@ bun apps/electron/scripts/review-authoring-v1.ts diff old.json new.json
 
 ## 7. D1 收尾：发布资格、历史链校验及模块双版本语义（2026-10-11）
 
+### 候选首次保存的受控入口
+
+- 使用 `saveAuthoringCandidateDraft(template)` 登记 D1 编译候选，服务侧强制持久化 `candidate-held`；即使候选首次落盘时已删除所有说明标签或重新命名分项也不放行。
+- Agent CLI 示例：`PROFER_CONFIG_DIR=/tmp/d1-authoring-sandbox bun apps/electron/scripts/review-authoring-v1.ts candidate-save docs/design/review-agent/fixtures/d1-authoring-text-v1.json text-review 1`。CLI 先编译并验证 manifest、拒绝覆盖目标版本，再调用专用保存 API；仅表示草稿保存，不表示学校制度认证。
+- 旧 `saveDraft` 在已登记后允许继续编辑文字，但不能撤销 `candidate-held`；清理 `sourceNote` 没有授权作用。旧版普通本地模板兼容原保存流程，该流程不代表正式校规治理。
+
 ### 发布资格不是 `sourceNote`
 
 - 控制记录路径：`{configDir}/review-template-controls/{templateId}/{version}.json`，与可编辑的 `TemplateVersion` 文本分开；`saveDraft` 在**同一模板版本锁内**登记来源类别，`publishTemplate` 同锁验证控制记录、模板结构和发布校验。
