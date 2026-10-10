@@ -11,6 +11,8 @@ export interface ExportReportResultV2 {
 }
 
 export function exportCaseReport(caseId: string): ExportReportResultV2 {
+  const { assertSafeReviewStorageId } = require('./review-storage-id') as typeof import('./review-storage-id')
+  assertSafeReviewStorageId(caseId, 'caseId')
   const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
   const { buildCaseFeedback } = require('./report-service-v2') as typeof import('./report-service-v2')
   const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
