@@ -152,5 +152,23 @@ class QualityGateTests(unittest.TestCase):
         self.assertEqual(r["gate"],"FAIL")
         self.assertTrue(any("Run evidence" in v for v in r["errors"]))
 
+    def test_original_archive_md_pilot_catches_real_b_fragment_omissions(self):
+        # Real D2 plan from independently authored PR #12, not a reconstructed plan.
+        root=pathlib.Path(__file__).resolve().parents[3] / "docs/design/review-agent/fixtures"
+        prefix="d3-md-archive-"
+        get=lambda filename: json.loads((root/(prefix+filename)).read_text(encoding="utf-8"))
+        catalog=get("7-pilot-catalog.json")
+        ledger=get("7-pilot-ledger-agent-b.json")
+        gold=get("7-pilot-independent-gold.json")
+        gaps=get("7-pilot-gaps.json")
+        plan=get("b-actual-plan-snapshot.json")
+        result=module.validate(catalog,ledger,plan,gold,gaps=gaps)
+        self.assertEqual(result["gate"],"FAIL")
+        self.assertEqual(result["catalogRuleCount"],7)
+        self.assertEqual(result["compiledPlanCheckCount"],6)
+        self.assertTrue(any("R08" in e and "required Checks" in e for e in result["errors"]), result["errors"])
+        self.assertTrue(any("R33" in e for e in result["errors"]), result["errors"])
+        self.assertFalse(result["completeBusinessTemplateCertified"])
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
