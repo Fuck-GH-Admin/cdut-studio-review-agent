@@ -94,6 +94,29 @@ async function setup(templateId: string, caseSelection: D2ScenarioSelection) {
 }
 
 describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
+  test('Agent JSON CLI 基于固定 workspace 与对象选择无副作用编译 Pi 计划', () => {
+    const fixtureRoot = resolve(import.meta.dir, '../../../../../../docs/design/review-agent/fixtures')
+    const inputPath = join(home, 'd2-cli-case.json')
+    writeFileSync(inputPath, JSON.stringify(caseV2('d2-cli-case', 'archive-access')))
+    const run = Bun.spawnSync({
+      cmd: [
+        process.execPath,
+        resolve(import.meta.dir, '../../../../scripts/review-d2-plan.ts'),
+        'preview',
+        join(fixtureRoot, 'd2-workspace-synthetic.json'),
+        join(fixtureRoot, 'd2-selection-archive.json'),
+        inputPath,
+      ],
+      env: { ...process.env, PROFER_CONFIG_DIR: home },
+    })
+    expect(run.exitCode).toBe(0)
+    if (run.exitCode !== 0) throw new Error(run.stderr.toString())
+    const plan = JSON.parse(run.stdout.toString()) as { fingerprint: string; publicationAllowed: boolean; rules: Array<{ id: string }> }
+    expect(plan.fingerprint).toHaveLength(64)
+    expect(plan.rules).toHaveLength(3)
+    expect(plan.publicationAllowed).toBeFalse()
+  })
+
   test('普通文本任务无需业务对象/高级 Claim 图即可编译为单一语义检查', () => {
     const plan = compileD2RuntimePlan(authoring(), selection('text-review'), caseV2('d2-syntactic', 'text-review'))
     expect(plan.rules).toHaveLength(1)
