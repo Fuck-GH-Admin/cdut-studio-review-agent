@@ -52,14 +52,25 @@ describe('D1 作者态真实映射与来源治理（BDD）', () => {
     expect(result.manifest.mapping[0]?.ruleId).toBe('section-semantic-tasks-' + result.manifest.mapping[0]?.criterionId)
     expect(result.manifest.mapping[0]?.sourceIds).toEqual(['request'])
     expect(result.manifest.mapping[0]?.sourceKinds).toEqual(['user-request'])
-    expect(verifyReviewAuthoringManifestV1(result.template, result.manifest)).toEqual([])
+    expect(verifyReviewAuthoringManifestV1(result.template, result.manifest, basic())).toEqual([])
   })
 
   test('Given 运行候选被改写 When 重新核验 Then 不得再复用旧有效规则映射', () => {
     const result = compileReviewAuthoringCandidateV1(basic(), 'simple-text', 1)
     result.template.sections![0]!.criteria[0]!.requirement = '只核对摘要；擅自忽略正文'
-    expect(verifyReviewAuthoringManifestV1(result.template, result.manifest).join('；')).toContain('模板内容或版本与作者态 manifest 不符')
-    expect(verifyReviewAuthoringManifestV1(result.template, result.manifest).join('；')).toContain('生效规则集与作者态 manifest 不符')
+    expect(verifyReviewAuthoringManifestV1(result.template, result.manifest, basic()).join('；')).toContain('模板内容或版本与作者态 manifest 不符')
+    expect(verifyReviewAuthoringManifestV1(result.template, result.manifest, basic()).join('；')).toContain('生效规则集与作者态 manifest 不符')
+  })
+
+  test('Given manifest 来源映射被修改 When 对照不可变作者态 Then 不能把未知来源伪装成原始来源', () => {
+    const workspace = basic()
+    const candidate = compileReviewAuthoringCandidateV1(workspace, 'simple-text', 1)
+    const altered = structuredClone(candidate.manifest)
+    altered.mapping[0]!.sourceIds = ['another-source']
+    expect(verifyReviewAuthoringManifestV1(candidate.template, altered, workspace).join('；')).toContain('责任来源映射与作者态不一致')
+    const changedWorkspace = structuredClone(workspace)
+    changedWorkspace.sources[0]!.note = '来源后续被修改'
+    expect(verifyReviewAuthoringManifestV1(candidate.template, candidate.manifest, changedWorkspace).join('；')).toContain('作者态定义或来源绑定已变化')
   })
 
   test('Given 缺来源绑定或引用错误 When 静态验证 Then 不以隐式来源生成规则', () => {
