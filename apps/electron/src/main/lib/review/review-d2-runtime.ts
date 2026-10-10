@@ -116,6 +116,15 @@ export function compileD2RuntimePlan(
     throw new Error('D2_SCENARIO_REQUIRED: 未知分支不能当作不适用')
   }
   if (!template.scenarios?.length && selection.scenario) throw new Error('D2_SCENARIO_INVALID: 无条件模板不接受分支')
+  if (template.scenarios?.length) {
+    if (!selection.scenarioObjectKey || selection.targets.length !== 1 ||
+        selection.targets[0]?.kind !== 'campus-card' ||
+        selection.targets[0].objectKey !== selection.scenarioObjectKey) {
+      throw new Error('D2_SCENARIO_SCOPE_REQUIRED: 当前 D2 校园卡分支必须绑定唯一的申请主体，不能降级成整案规则或档案操作')
+    }
+  } else if (selection.scenarioObjectKey) {
+    throw new Error('D2_SCENARIO_SCOPE_INVALID: 无分支模板不能声明校园卡情景主体')
+  }
   validateTargets(selection)
   const preview = previewDemo(toDemo(workspace), selection.templateId, selection.version, selection.scenario)
   if (preview.blocked || !preview.tasks.length) throw new Error('D2_PREVIEW_BLOCKED: ' + preview.issues.join('；'))
