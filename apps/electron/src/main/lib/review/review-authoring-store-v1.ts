@@ -34,21 +34,34 @@ function validateEnvelope(record: ReviewAuthoringRevisionV1): void {
   if (problems.length) throw new Error('作者态历史修订数据校验失败：' + problems.join('；'))
 }
 
-/** 读取历史版本或最新版本，不自动改写配置。 */
+/**
+ * 读取历史修订必须核对 1..N 的完整父摘要链：遗漏、断链、伪造 parentDigest
+ * 均拒绝读取与继续写入。仅防本地非预期篡改，不提供外部攻击者级别的数字签名。
+ */
 export function getReviewAuthoringRevisionV1(id: string, revision?: number): ReviewAuthoringRevisionV1 | undefined {
   const dir = join(root(id), 'revisions')
   if (!existsSync(dir)) return undefined
-  const revisions = readdirSync(dir).filter((value) => /^[1-9]\d*\.json$/.test(value))
+  const revisions = readdirSync(dir).filter((value) => /^[1-9]\\d*\\.json$/.test(value))
     .map((name) => Number(name.slice(0, -5))).filter((n) => Number.isSafeInteger(n))
-    .sort((a, b) => b - a)
-  const selected = revision ?? revisions[0]
+    .sort((a, b) => a - b)
+  const selected = revision ?? revisions.at(-1)
   if (!selected || !revisions.includes(selected)) return undefined
-  const record = JSON.parse(readFileSync(filename(id, selected), 'utf8')) as ReviewAuthoringRevisionV1
-  validateEnvelope(record)
-  if (record.workspace.workspaceId !== id || record.workspace.revision !== selected) {
-    throw new Error('作者态历史修订所属工作区或修订号不匹配')
+  let previous: ReviewAuthoringRevisionV1 | undefined
+  for (let current = 1; current <= selected; current++) {
+    if (!revisions.includes(current)) throw new Error('AUTHORING_HISTORY_BROKEN: 历史修订缺失：' + id + '@' + current)
+    let record: ReviewAuthoringRevisionV1
+    try { record = JSON.parse(readFileSync(filename(id, current), 'utf8')) as ReviewAuthoringRevisionV1 }
+    catch { throw new Error('AUTHORING_HISTORY_BROKEN: 历史修订不可读取或 JSON 损坏：' + id + '@' + current) }
+    validateEnvelope(record)
+    if (record.workspace.workspaceId !== id || record.workspace.revision !== current) {
+      throw new Error('AUTHORING_HISTORY_BROKEN: 历史修订所属工作区或修订号不匹配：' + id + '@' + current)
+    }
+    if (current === 1 ? record.parentDigest !== undefined : record.parentDigest !== previous?.digest) {
+      throw new Error('AUTHORING_HISTORY_BROKEN: 父版本摘要链不匹配：' + id + '@' + current)
+    }
+    previous = record
   }
-  return record
+  return previous
 }
 
 /**
