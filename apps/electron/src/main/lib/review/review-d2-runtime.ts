@@ -5,12 +5,12 @@
 import { createHash } from 'node:crypto'
 import type {
   Actor, CaseAggregateV2, D2RuntimePlan, D2ScenarioSelection, D2RuleBinding, D2TargetBinding,
-  ReviewAuthoringWorkspaceV1, ReviewCaseV2, ReviewCommandResult, ReviewRunV2,
+  ReviewAuthoringWorkspaceV1, ReviewCaseV2, ReviewCommandResult, ReviewRunV2, CommandReceipt,
   ReviewSubject, RuleSpec, TemplateVersion,
 } from '@profer/shared'
 import { previewDemo, type DemoState } from './semantic-module-demo'
 import { validateReviewAuthoringV1 } from './review-authoring-v1'
-import { CommandValidationError, submitCommand } from './case-store-v2'
+import { CommandValidationError, createAggregate, payloadHash, readAggregate, submitCommand } from './case-store-v2'
 import { getTemplate, isAuthoringCandidateDraft } from './template-store'
 import { hashEffectiveRuleSet, resolveEffectiveRules } from './effective-rules'
 import { computeRunInputHash } from './run-service-v2'
@@ -247,6 +247,57 @@ export function attachD2RuntimePlan(input: {
       }
     },
   )
+}
+
+/**
+ * 专用技术预审建案入口：正式 createCaseFromTemplate 仍只允许已发布模板，
+ * 本入口只接受 D1 服务层登记的 candidate-held 草稿，并在创建前完成 D2 编译。
+ * 技术建案与 attach 各有独立事务；若第二步受 I/O 故障影响，裸草稿仍不能执行审核，
+ * 可用 attachD2RuntimePlan 显式恢复，绝不降级成已发布模板。
+ */
+export async function createD2TechnicalCase(input: {
+  caseId: string
+  title: string
+  actor: Actor
+  workspace: ReviewAuthoringWorkspaceV1
+  selection: D2ScenarioSelection
+}): Promise<ReviewCommandResult<D2RuntimePlan>> {
+  if (!safe(input.caseId) || !input.title?.trim() || !input.actor.actorId?.trim() || input.actor.role !== 'reviewer') {
+    throw new CommandValidationError('VALIDATION_FAILED', 'D2 技术建案缺少安全案卷 ID、标题或审核员身份')
+  }
+  const template = getTemplate(input.selection.templateId, input.selection.version)
+  if (!template || template.status !== 'draft' || !isAuthoringCandidateDraft(template.templateId, template.version)) {
+    throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术建案只能选择服务端登记的候选草稿，不能复用已发布模板')
+  }
+  const now = new Date().toISOString()
+  const caseV2: ReviewCaseV2 = {
+    id: input.caseId, templateId: template.templateId, templateVersion: template.version,
+    title: input.title.trim(), objectType: template.objectType,
+    caseFields: {}, subjects: [], documents: [],
+    stage: 'draft', revision: 0, createdAt: now, updatedAt: now,
+  }
+  // 前置编译 fail-closed；坏情景、悬空对象或无来源责任不能留下半个案卷。
+  compileD2RuntimePlan(input.workspace, input.selection, caseV2)
+  const type = 'CreateD2TechnicalReviewCase'
+  const createPayload = { title: caseV2.title, templateId: caseV2.templateId, templateVersion: caseV2.templateVersion }
+  const receipt: CommandReceipt = {
+    requestId: 'd2-create-' + input.caseId, type,
+    payloadHash: payloadHash(type, createPayload), revision: 0, at: now,
+    summary: '创建 D2 技术预审草稿案卷（不可形成校方行政决定）',
+    actor: input.actor,
+  }
+  await createAggregate(input.caseId, caseV2, receipt)
+  const attached = await attachD2RuntimePlan({
+    caseId: input.caseId, requestId: 'd2-attach-' + input.caseId,
+    actor: input.actor, expectedRevision: 0,
+    workspace: input.workspace, selection: input.selection,
+  })
+  // 仅返回实际有计划且已验真配置的案卷，不冒充创建成功。
+  if (attached.ok) {
+    const problems = verifyD2InstalledPlan(attached.aggregate)
+    if (problems.length) throw new Error('D2 创建后计划核验失败：' + problems.join('；'))
+  }
+  return attached
 }
 
 /**
