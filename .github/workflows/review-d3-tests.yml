@@ -36,6 +36,8 @@ jobs:
         run: bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-handoff-cli.test.ts
       - name: D3 first-Agent minimal text case and portable D2 CLI
         run: bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-minimal-cli.test.ts
+      - name: D3 shared C A modules across real Pi submission
+        run: bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-pi-integration.test.ts
       - name: D1 D2 authoring and Pi compatibility
         run: |
           bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-authoring-v1.test.ts
