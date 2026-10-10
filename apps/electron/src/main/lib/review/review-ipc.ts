@@ -1,3 +1,4 @@
+import { bindLocalReviewerCommand } from './review-ipc-actor-guard'
 /**
  * 内容审核专区 - IPC 处理器注册
  *
@@ -583,27 +584,23 @@ export function registerReviewIpc(): void {
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RECORD_WORKSPACE_DISPOSITION_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { recordWorkspaceDispositionV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
-    return recordWorkspaceDispositionV2(input.caseId, input.command as unknown as Parameters<typeof recordWorkspaceDispositionV2>[1])
+    return recordWorkspaceDispositionV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof recordWorkspaceDispositionV2>[1])
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.OPEN_WORKSPACE_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { openWorkspaceSupplementV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
-    return openWorkspaceSupplementV2(input.caseId, input.command as unknown as Parameters<typeof openWorkspaceSupplementV2>[1])
+    return openWorkspaceSupplementV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof openWorkspaceSupplementV2>[1])
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.ACKNOWLEDGE_WORKSPACE_MATERIAL_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { acknowledgeWorkspaceMaterialV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
-    return acknowledgeWorkspaceMaterialV2(input.caseId, input.command as unknown as Parameters<typeof acknowledgeWorkspaceMaterialV2>[1])
+    return acknowledgeWorkspaceMaterialV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof acknowledgeWorkspaceMaterialV2>[1])
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.DECIDE_WORKSPACE_CASE_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
-    // IPC is untrusted renderer input; system/agent/school principals are
-    // minted by main-process services, never accepted as renderer claims.
-    const claimed = input?.command?.actor as import('@profer/shared').Actor | undefined
-    if (!claimed || claimed.actorSource !== 'local') throw new Error('前端不能声明系统、Agent 或校方审批身份')
     const { decideWorkspaceCaseV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
-    return decideWorkspaceCaseV2(input.caseId, input.command as unknown as Parameters<typeof decideWorkspaceCaseV2>[1])
+    return decideWorkspaceCaseV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof decideWorkspaceCaseV2>[1])
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RECORD_WORKSPACE_SUBJECT_ADJUDICATION_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { recordWorkspaceSubjectAdjudicationV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
-    return recordWorkspaceSubjectAdjudicationV2(input.caseId, input.command as unknown as Parameters<typeof recordWorkspaceSubjectAdjudicationV2>[1])
+    return recordWorkspaceSubjectAdjudicationV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof recordWorkspaceSubjectAdjudicationV2>[1])
   })
 
   // ===== N3b：业务闭环命令（薄委托 stage-workflow） =====
@@ -612,11 +609,11 @@ export function registerReviewIpc(): void {
     const { getTemplate } = require('./template-store') as typeof import('./template-store')
     const template = getTemplate(input.templateId, input.version)
     if (!template) throw new Error(`模板不存在: ${input.templateId}@${input.version}`)
-    return recordStageDecision(input.caseId, input.command as unknown as Parameters<typeof recordStageDecision>[1], template)
+    return recordStageDecision(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof recordStageDecision>[1], template)
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { resolveSupplementV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
-    return resolveSupplementV2(input.caseId, input.command as unknown as Parameters<typeof resolveSupplementV2>[1])
+    return resolveSupplementV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof resolveSupplementV2>[1])
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RESPOND_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { respondSupplementV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
@@ -678,11 +675,11 @@ export function registerReviewIpc(): void {
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.CAST_RATING_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { castRating } = require('./rating-service') as typeof import('./rating-service')
-    return castRating(input.caseId, input.command as unknown as Parameters<typeof castRating>[1])
+    return castRating(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof castRating>[1])
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_APPEAL_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { resolveAppealV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
-    return resolveAppealV2(input.caseId, input.command as unknown as Parameters<typeof resolveAppealV2>[1])
+    return resolveAppealV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof resolveAppealV2>[1])
   })
 
   // ===== N4b：模板向导（无代码创建：政策先行 → 模板草稿 → 发布走 PUBLISH_TEMPLATE_V2） =====
