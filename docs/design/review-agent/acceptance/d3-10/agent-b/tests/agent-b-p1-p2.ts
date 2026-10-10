@@ -131,6 +131,71 @@ try{
  }
  output.p1={status:'PASS',caseId,runId:prepared.runId,negativeRejected:wrongful.rejected.length,verification:verify}
  record('plans/pi-archive-r3-own-run.json',recordP1)
+ record('tests/p1-original-run-snapshot.json',done)
+ record('tests/p1-original-case-aggregate.json',readAggregate(caseId)!)
+ // SECONDARY SYNTHETIC CONTROL: unverified-policy guard otherwise rejects first,
+ // so permit only the two COPY checks to use explicit test-only synthetic authority.
+ // This is NOT the original authored A r3, NOT official school policy, and NOT saved D1.
+ const probeWorkspace=structuredClone(archive)
+ probeWorkspace.workspaceId='d310-agent-b-copy-guard-probe'
+ probeWorkspace.revision=4
+ const copySourceIds=['archive-access@1:module/item-1-copy/authorization','archive-access@1:module/item-1-copy-local/copy-authorization']
+ for(const link of probeWorkspace.sourceBindings)if(copySourceIds.includes(link.checkId)){
+   link.sourceIds=['synthetic-source']
+   link.applicabilityNote='TECHNICAL PROBE ONLY: disable unknown policy early rejection to isolate operation-specific evidence gate'
+ }
+ assert(validateReviewAuthoringV1(probeWorkspace).length===0,'probe variant valid but isolated')
+ record('tests/p1-synthetic-copy-authority-probe-workspace.json',probeWorkspace)
+ const probeCaseId='d310-agent-b-copy-evidence-probe'
+ const probeCreated=await createD2TechnicalCase({
+  caseId:probeCaseId,title:'仅为验证Pi逐操作拒止的合成来源探针（非原模板正式校规）',
+  actor,workspace:probeWorkspace,selection})
+ assert(probeCreated.ok,'Pi operation probe creates a real separate technical case')
+ const probeMat=await registerMaterial(probeCaseId,{
+ requestId:'d310-b-probe-material',actor,expectedRevision:readAggregate(probeCaseId)!.caseV2.revision,
+ payload:{sourcePath:docFile,role:'evidence'}})
+ assert(probeMat.ok,'probe material registered independently')
+ const probeDoc=readAggregate(probeCaseId)!.caseV2.documents[0]!
+ const probeBlock=probeDoc.blocks.find((b:any)=>b.kind!=='image')!
+ const probeRef={documentVersionId:probeDoc.versionId,blockId:probeBlock.blockId,quote:'查阅授权已由申请人提供'}
+ const probeLink=await setEvidenceLink(probeCaseId,{
+ requestId:'d310-b-probe-link-read-only',actor,expectedRevision:readAggregate(probeCaseId)!.caseV2.revision,
+ payload:{documentVersionId:probeRef.documentVersionId,subjectIds:[readTarget.subjectId],supportsFact:'d2:archive:read',linkedBy:'user'}})
+ assert(probeLink.ok,'probe links evidence to read and only read')
+ const probeSession='agent-b-own-copy-guard-probe-session'
+ const probeRun=preparePiReviewRunV2({caseId:probeCaseId,sessionId:probeSession,turnId:'agent-b-probe-copy-turn'})
+ const probeBinding={assignmentId:probeRun.assignmentId,sessionId:probeSession,caseId:probeCaseId,runId:probeRun.runId}
+ const probeCopy=probeCreated.entity!.mapping.find((m:any)=>m.checkId==='module/item-1-copy/authorization')!
+ assert(probeCopy.authority==='request-scope','probe copy has test-only request-scope authority')
+ const operationRejected=submitPiReviewResultV2({binding:probeBinding,triggeredBy:'user',result:{
+ summary:'synthetic controlled negative; read-only evidence falsely submitted as copy compliance',
+ checks:[{ruleId:probeCopy.ruleId,subjectIds:[copyTarget.subjectId],status:'compliant',reason:'read erroneously substituted for copy',sourceRefs:[probeRef]}],
+ finish:true}})
+ assert(operationRejected.accepted===0,'Pi service refuses copy compliance in test-only confirmed-rule variant')
+ assert(operationRejected.rejected.some((item:any)=>item.reason.includes('档案逐操作')),'Pi service rejects specifically because operation evidence does not match COPY')
+ const probeFinal=submitPiReviewResultV2({binding:probeBinding,triggeredBy:'user',result:{
+ summary:'synthetic operation probe finalized with all pending; never authorize copy',
+ checks:probeCreated.entity!.mapping.map((m:any)=>({
+ ruleId:m.ruleId,subjectIds:m.subjectId?[m.subjectId]:selection.targets.map((t:any)=>t.subjectId),
+ status:'awaiting-confirmation',reason:'仅为跨操作拒止探针；真实制度和复制许可尚待核实',sourceRefs:[]})),finish:true}})
+ assert(probeFinal.status==='completed'&&probeFinal.rejected.length===0,'probe run completes without false compliance')
+ const probeDone=getRunV2(probeCaseId,probeRun.runId)!
+ assert(verifyD2PiRun(readAggregate(probeCaseId)!,probeDone).complete,'probe real Run is verifiable')
+ record('tests/p1-probe-run-snapshot.json',probeDone)
+ record('plans/pi-copy-operation-guard-probe.json',{
+ codeSha:fixed,kind:'synthetic-control-not-original-archive-r3',
+ note:'The original A r3 uses unknown school policy; this isolated variant changes only COPY sourceBinding to synthetic request-scope so Pi reaches the independent evidence-boundary guard.',
+ probeWorkspaceId:probeWorkspace.workspaceId,
+ baselineWorkspaceId:archive.workspaceId,
+ originalCaseId:caseId,originalRunId:prepared.runId,probeCaseId,probeRunId:probeRun.runId,
+ copyCheckId:probeCopy.checkId,copyRuleId:probeCopy.ruleId,
+ readOnlyDocumentVersionId:probeRef.documentVersionId,originalReadSubjectId:readTarget.subjectId,
+ attemptedCopySubjectId:copyTarget.subjectId,
+ negativePiSubmission:operationRejected,finalPiReceipt:probeFinal,
+ verifyD2PiRun:verifyD2PiRun(readAggregate(probeCaseId)!,probeDone),
+ onlineModelRun:'not-run',syntheticToolReceipt:true
+ })
+ output.p1={...output.p1 as object,syntheticCopyGuardProbe:{caseId:probeCaseId,runId:probeRun.runId,operationSpecificRejection:operationRejected.rejected.map((x:any)=>x.reason)}}
 }catch(error){
  const message=String(error instanceof Error ? error.stack??error.message : error)
  output.errors.push('P1 '+message)
