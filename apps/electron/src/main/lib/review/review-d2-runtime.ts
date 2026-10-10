@@ -291,7 +291,7 @@ export async function createD2TechnicalCase(input: {
   }
   const template = getTemplate(input.selection.templateId, input.selection.version)
   const shellProblem = d2CandidateShellProblem(template)
-  if (shellProblem) throw new CommandValidationError('AGENT_DECISION_DISABLED', shellProblem)
+  if (shellProblem || !template) throw new CommandValidationError('AGENT_DECISION_DISABLED', shellProblem ?? 'D2 候选模板不存在')
   const now = new Date().toISOString()
   const caseV2: ReviewCaseV2 = {
     id: input.caseId, templateId: template.templateId, templateVersion: template.version,
