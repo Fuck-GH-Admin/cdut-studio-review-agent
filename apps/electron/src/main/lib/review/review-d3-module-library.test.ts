@@ -131,7 +131,7 @@ describe('D3：不可变共享模块及 Agent-first 制作携包（BDD）', () =
     expect(validateReviewAuthoringV1(forged).join(';')).toContain('D3_LOCK_DIGEST')
     const omitted = structuredClone(original)
     delete omitted.sharedModuleLocks
-    expect(() => exportD3Bundle(omitted)).toThrow('D3_AMBIGUOUS_MODULE')
+    expect(() => exportD3Bundle(omitted)).toThrow('D3_LOCK_UNDECLARED')
   })
 
   test('Given 携带冻结资产的交付包 When 清单与 workspace 锁不符 Then 即便重算包摘要也禁止导入', () => {
