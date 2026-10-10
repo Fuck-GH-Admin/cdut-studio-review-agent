@@ -718,8 +718,10 @@ export function registerReviewIpc(): void {
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, (_e, input: { action: 'finalize' | 'reopen' | 'retry' | 'recover' | 'configure-automation' | 'finalize-completed'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown>; caseIds?: string[]; mode?: import('@profer/shared').BatchAutomationMode; confirmed?: boolean }) => {
     if (!input || typeof input.batchId !== 'string' || !input.batchId) throw new Error('无效批次操作')
-    const { finalizeBatch, reopenBatch, retryBatchCases, recoverInterruptedBatch } = require('./batch-store') as typeof import('./batch-store')
-    if (input.action === 'finalize') return finalizeBatch(input.batchId, input.snapshot ?? {})
+    const { reopenBatch, retryBatchCases, recoverInterruptedBatch } = require('./batch-store') as typeof import('./batch-store')
+    // Legacy free-form renderer snapshots are NOT authoritative decisions.
+    // Use the central verified finalization service instead.
+    if (input.action === 'finalize') throw new Error('原始快照定稿入口已禁用，请使用核验并定稿')
     if (input.action === 'reopen') return reopenBatch(input.batchId, input.newBatchId ?? `${input.batchId}-r${Date.now().toString(36)}`, input.reason ?? '人工重开')
     if (input.action === 'retry') return retryBatchCases(input.batchId, input.caseIds ?? [])
     if (input.action === 'recover') return recoverInterruptedBatch(input.batchId)
