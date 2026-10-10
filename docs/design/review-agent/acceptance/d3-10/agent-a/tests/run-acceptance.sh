@@ -68,12 +68,13 @@ run 16-import-clean 0 plans/16-import-receipt.json bun "$D3" import "$A/bundles/
 run 17-reimport-preview 0 plans/14-reimported-plan.json bun "$D2" preview "$A/bundles/reimported-workspace.json" "$SEL" "$CASE"
 run 18-duplicate-import-refused 1 - bun "$D3" import "$A/bundles/portable.json" "$A/bundles/reimported-workspace.json"
 run 19-independent-contract-and-gold 0 - python3 "$A/tests/verify-plan.py"
+run 20-pi-real-service-synthetic-receipts 0 - bun "$A/tests/pi-synthetic-interface.ts" "$A/tests/pi-structured-results.json"
 {
   echo
   echo '## Recovery and caveats'
   echo '- Step 11 intentionally attempts stale expectedRevision=0 after revision 2 and expects exit 1; step 12 continues with the intact revision.'
   echo '- Step 18 intentionally refuses to overwrite an imported workspace; earlier imported file is reused at step 17.'
-  echo '- The supplied positive/negative/unknown text cases were checked against an explicitly independent deterministic GOLD oracle only. D2 CLI preview does not read material, and no online Pi model execution is implied.'
+  echo '- Three text cases are independently GOLD-classified; step 20 sends predeclared SYNTHETIC structured results through the real Pi service (registerMaterial/prepare/submit/verify). This is not a model-generated judgment.'
   echo "- Non-matching exits: $FAIL (0 means expected exit statuses matched; test 19 includes structural assertions)."
 } >> "$A/run-log.md"
 if [[ "$FAIL" == 0 ]]; then
@@ -86,9 +87,9 @@ cat > "$A/verdict.md" <<EOF
 - Portable bundle export/import into distinct empty configuration: **pass**, see \`bundles/\`, \`plans/14-reimported-plan.json\`, \`plans/summary.json\`.
 - Negative/stale edit recovery: **pass**, see \`logs/11-stale-save-refused.stderr\` and \`logs/18-duplicate-import-refused.stderr\`.
 - Rule/Check/Source/fingerprint and no-Claim checks: **pass** (structural; \`plans/summary.json\`).
-- Positive/negative/unknown synthetic material: **GOLD oracle pass / actual Pi semantic review not-run**, see \`tests/cases.json\`, \`tests/actual-results.json\`.
-- Online Pi model result, real document ingest, formal publication / policy validity: **not-run / prohibited**.
-- Overall D3-10 Agent A full end-to-end semantic execution: **not-run, not a blanket PASS**. Also requires independent Agent B and integrator.
+- Positive/negative/unknown synthetic material: **independent GOLD oracle and real Pi service structured-receipt tests pass**, see \`tests/cases.json\`, \`tests/actual-results.json\`, \`tests/pi-structured-results.json\`; classifications were intentionally supplied, not inferred by an online model.
+- Synthetic text document material registration / valid SourceRef: **pass through real backend**. Online Pi model inference and formal publication / policy validity: **not-run / prohibited**.
+- Overall D3-10 Agent A: **technical contract and service interface PASS; actual online semantic reading NOT-RUN**. Not a blanket D3-10 release PASS (independent Agent B/integrator remain).
 EOF
 else
 cat > "$A/verdict.md" <<EOF
