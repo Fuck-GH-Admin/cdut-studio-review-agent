@@ -346,6 +346,41 @@ export type ReviewCommandResult<TEntity = unknown> =
   | { ok: true; receipt: CommandReceipt; aggregate: CaseAggregateV2; entity?: TEntity }
   | { ok: false; code: CommandErrorCode; message: string; currentRevision?: number }
 
+export type BatchAutomationMode = 'assist' | 'auto-return' | 'auto-approve'
+
+/** Per-batch explicit local authorization. Not a school-side approval credential. */
+export interface BatchAutomationPolicy {
+  mode: BatchAutomationMode
+  grantedBy: string
+  grantedAt: string
+  /** Incremented whenever an authorized user changes policy, including revocation. */
+  revision: number
+  templateId: string
+  templateVersion: number
+}
+
+/** Outcome of a real V2 transaction, never a raw AI opinion. */
+export interface BatchAutomationReceipt {
+  caseId: string
+  runId: string
+  action: 'pass' | 'return'
+  status: 'applied' | 'blocked' | 'failed' | 'conflict'
+  message: string
+  at: string
+  requestId: string
+  policyRevision: number
+}
+
+export interface BatchAutomationReport {
+  batchId: string
+  policyRevision: number
+  results: BatchAutomationReceipt[]
+  applied: number
+  blocked: number
+  failed: number
+  conflicts: number
+}
+
 /** 批次运行状态（N5：batch-store 持久化形态，renderer 可读） */
 export interface BatchStateV2 {
   batch: import('./review-v2').ReviewBatch
@@ -355,4 +390,6 @@ export interface BatchStateV2 {
   finalizedAt?: string
   round: number
   reopenedFromBatchId?: string
+  automation?: BatchAutomationPolicy
+  automationReceipts?: BatchAutomationReceipt[]
 }
