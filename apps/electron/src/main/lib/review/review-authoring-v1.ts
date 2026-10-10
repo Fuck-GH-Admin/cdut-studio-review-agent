@@ -114,6 +114,8 @@ export function compileReviewAuthoringCandidateV1(
   if (workspace.advanced && Object.values(workspace.advanced).some((value) => Array.isArray(value) && value.length > 0)) {
     throw new Error('UNMAPPABLE_ADVANCED: 高级角色/Claim/Evidence 关系尚未映射至有效规则，不得静默投影')
   }
+  // 先递归审查全部引用树是否能无损落到旧模板，再按当前情景生成候选任务。
+  const template = projectSimpleDemoDraft(toDemo(workspace), templateId, version)
   const preview = previewDemo(toDemo(workspace), templateId, version)
   if (preview.blocked) throw new Error('审核责任预览仍被阻断：' + preview.issues.join('；'))
 
@@ -126,7 +128,6 @@ export function compileReviewAuthoringCandidateV1(
       throw new Error('UNVERIFIED_AUTHORITY: 跨校参考、制度候选或未知适用范围不得编译成当前生效要求：' + key)
     }
   }
-  const template = projectSimpleDemoDraft(toDemo(workspace), templateId, version)
   // 在现有 criterion 中保留来源性质，使 Pi 最终收到的任务文本不丢失来源警告；
   // sourceIds 在 manifest 中提供精确机读对应，但不伪造真实材料的 SourceRef。
   for (const task of preview.tasks) {
