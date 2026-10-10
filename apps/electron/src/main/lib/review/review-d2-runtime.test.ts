@@ -12,7 +12,7 @@ import { compileD2RuntimePlan, makeD2CandidateShell, attachD2RuntimePlan, verify
 import { createAggregate, readAggregate } from './case-store-v2'
 import { registerMaterial } from './material-service'
 import { setEvidenceLink } from './application-service'
-import { saveAuthoringCandidateDraft, publishTemplate } from './template-store'
+import { saveAuthoringCandidateDraft, isAuthoringCandidateDraft, publishTemplate } from './template-store'
 import { preparePiReviewRunV2, submitPiReviewResultV2 } from './pi-case-review-service'
 import { getRunV2 } from './run-store-v2'
 import { decideWorkspaceCaseV2 } from './workspace-business-service-v2'
@@ -289,6 +289,24 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
     const run = getRunV2(info.id, prepared.runId)!
     expect(verifyD2PiRun(after, run).complete).toBeFalse()
     expect(verifyD2PiRun(after, run).problems.join(' ')).toContain('输入哈希')
+  })
+
+  test('D2 安装资格来自服务端独立登记，删改 sourceNote 也不影响候选技术预审', async () => {
+    const workspace = authoring()
+    const candidate = makeD2CandidateShell(workspace, 'text-review', 1)
+    delete candidate.sourceNote
+    saveAuthoringCandidateDraft(candidate)
+    expect(isAuthoringCandidateDraft('text-review', 1)).toBeTrue()
+    const id = 'd2-note-independent'
+    await createAggregate(id, caseV2(id, 'text-review'))
+    const attached = await attachD2RuntimePlan({
+      caseId: id, requestId: 'd2-no-note', actor,
+      expectedRevision: readAggregate(id)!.caseV2.revision,
+      workspace, selection: selection('text-review'),
+    })
+    expect(attached.ok).toBeTrue()
+    expect(verifyD2InstalledPlan(readAggregate(id)!)).toEqual([])
+    expect(() => publishTemplate('text-review', 1)).toThrow('发布资格')
   })
 
   test('候选壳始终是草稿，直接发布必须被服务端拒绝', () => {
