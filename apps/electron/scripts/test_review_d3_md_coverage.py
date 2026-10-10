@@ -170,5 +170,34 @@ class QualityGateTests(unittest.TestCase):
         self.assertTrue(any("R33" in e for e in result["errors"]), result["errors"])
         self.assertFalse(result["completeBusinessTemplateCertified"])
 
+    def test_non_table_exception_can_be_anchored_in_full_source(self):
+        s=list(sample())
+        longer=MD+b"\nException E01: historical identity changes shall not be auto rejected.\n"
+        digest=hashlib.sha256(longer).hexdigest()
+        s[0]["scope"]="full"
+        for k in (0,1,3):
+            s[k]["sourceSha256"]=digest
+        s[0]["requirements"].append({"id":"E01","locator":"Exceptions/E01",
+            "purpose":"historical identity is not automatically false",
+            "sourceAnchor":"Exception E01: historical identity changes shall not be auto rejected."})
+        s[1]["requirements"].append({"id":"E01","status":"manual-only","checkIds":[],
+            "reason":"Human decision explicitly required in this test fixture"})
+        s[3]["requirements"].append({"id":"E01","allowedStatuses":["manual-only"]})
+        with tempfile.TemporaryDirectory() as td:
+            md=pathlib.Path(td)/"original.md"
+            md.write_bytes(longer)
+            r=module.validate(s[0],s[1],s[2],s[3],source=str(md),gaps=s[4])
+        self.assertEqual(r["gate"],"PASS",r["errors"])
+        self.assertFalse(r["completeBusinessTemplateCertified"])
+    def test_unanchored_exception_is_not_allowed_in_full_source(self):
+        s=list(sample())
+        s[0]["scope"]="full"
+        s[0]["requirements"].append({"id":"E01","locator":"Exceptions/E01","purpose":"unknown injected exception"})
+        s[1]["requirements"].append({"id":"E01","status":"manual-only","checkIds":[],"reason":"test"})
+        s[3]["requirements"].append({"id":"E01","allowedStatuses":["manual-only"]})
+        r=self.check(s)
+        self.assertEqual(r["gate"],"FAIL")
+        self.assertTrue(any("non-table duty" in e for e in r["errors"]),r["errors"])
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
