@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "workspaceId": "d3-10-agent-a-plain-text",
+  "revision": 3,
+  "definitions": {
+    "modules": [],
+    "templates": [
+      {
+        "templateId": "plain-document",
+        "version": 1,
+        "name": "单文档章节检查（Agent A 独立合成）",
+        "purpose": "仅按合成请求逐项检查摘要、正文、结论的文本完整性",
+        "limits": "只提供技术预审意见，不代替校方批准，也不建立未经说明的格式要求",
+        "source": {
+          "kind": "synthetic",
+          "note": "继承 d3-minimal 结构并独立制作的 Agent A 合成工作区"
+        },
+        "modules": [],
+        "localTasks": [
+          {
+            "id": "abstract-completeness",
+            "title": "摘要章节标题与实质内容",
+            "requirement": "单独核对当前材料的“摘要”标题是否出现，且该标题下是否至少有一段可读、非空、非“待填写”等占位内容；不得用其他章节的内容或出处替代本章节核验；章节缺失或仅有占位内容时标记不符合，无法读取、缺页或损坏时标记待核，不得推测补齐",
+            "completion": "仅对“摘要”分别输出符合、不符合或待核并说明理由，记录当前材料版本、定位块及真实出处；该检查的结果不得代表其他两个章节已通过",
+            "limits": "仅依合成用户请求进行文本结构技术预审；不证明内容真实性，不增设校方格式制度，不作行政批准"
+          },
+          {
+            "id": "body-completeness",
+            "title": "正文章节标题与实质内容",
+            "requirement": "单独核对当前材料的“正文”标题是否出现，且该标题下是否至少有一段可读、非空、非“待填写”等占位内容；不得用其他章节的内容或出处替代本章节核验；章节缺失或仅有占位内容时标记不符合，无法读取、缺页或损坏时标记待核，不得推测补齐",
+            "completion": "仅对“正文”分别输出符合、不符合或待核并说明理由，记录当前材料版本、定位块及真实出处；该检查的结果不得代表其他两个章节已通过",
+            "limits": "仅依合成用户请求进行文本结构技术预审；不证明内容真实性，不增设校方格式制度，不作行政批准"
+          },
+          {
+            "id": "conclusion-completeness",
+            "title": "结论章节标题与实质内容",
+            "requirement": "单独核对当前材料的“结论”标题是否出现，且该标题下是否至少有一段可读、非空、非“待填写”等占位内容；不得用其他章节的内容或出处替代本章节核验；章节缺失或仅有占位内容时标记不符合，无法读取、缺页或损坏时标记待核，不得推测补齐",
+            "completion": "仅对“结论”分别输出符合、不符合或待核并说明理由，记录当前材料版本、定位块及真实出处；该检查的结果不得代表其他两个章节已通过",
+            "limits": "仅依合成用户请求进行文本结构技术预审；不证明内容真实性，不增设校方格式制度，不作行政批准"
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "sourceId": "user-synthetic-spec",
+      "kind": "synthetic",
+      "label": "Agent A 合成文本核对请求",
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "仅限验收中声明的合成检查要求；不是学校制度或批准"
+    }
+  ],
+  "sourceBindings": [
+    {
+      "checkId": "plain-document@1:local/abstract-completeness",
+      "sourceIds": [
+        "user-synthetic-spec"
+      ]
+    },
+    {
+      "checkId": "plain-document@1:local/body-completeness",
+      "sourceIds": [
+        "user-synthetic-spec"
+      ]
+    },
+    {
+      "checkId": "plain-document@1:local/conclusion-completeness",
+      "sourceIds": [
+        "user-synthetic-spec"
+      ]
+    }
+  ]
+}

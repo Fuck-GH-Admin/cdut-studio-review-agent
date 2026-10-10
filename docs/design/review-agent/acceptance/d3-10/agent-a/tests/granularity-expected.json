@@ -1,0 +1,26 @@
+[
+  {
+    "id": "positive",
+    "expectedByCheck": {
+      "local/abstract-completeness": "compliant",
+      "local/body-completeness": "compliant",
+      "local/conclusion-completeness": "compliant"
+    }
+  },
+  {
+    "id": "negative",
+    "expectedByCheck": {
+      "local/abstract-completeness": "compliant",
+      "local/body-completeness": "non-compliant",
+      "local/conclusion-completeness": "compliant"
+    }
+  },
+  {
+    "id": "unknown",
+    "expectedByCheck": {
+      "local/abstract-completeness": "compliant",
+      "local/body-completeness": "awaiting-confirmation",
+      "local/conclusion-completeness": "compliant"
+    }
+  }
+]

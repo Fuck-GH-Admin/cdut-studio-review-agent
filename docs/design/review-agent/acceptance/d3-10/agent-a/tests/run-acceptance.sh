@@ -73,12 +73,25 @@ run 17-reimport-preview 0 plans/14-reimported-plan.json bun "$D2" preview "$A/bu
 run 18-duplicate-import-refused 1 - bun "$D3" import "$A/bundles/portable.json" "$A/bundles/reimported-workspace.json"
 run 19-independent-contract-and-gold 0 - python3 "$A/tests/verify-plan.py"
 run 20-pi-real-service-synthetic-receipts 0 - bun "$A/tests/pi-synthetic-interface.ts" "$A/tests/pi-structured-results.json"
+# Restore original isolated configuration so D1 revision 3 appends to the actual 1 -> 2 chain.
+export PROFER_CONFIG_DIR="$ORIGINAL_CONFIG"
+WS3="$A/workspaces/granular-revision-3.json"
+run 21-granular-diff 0 plans/21-granular-diff.json bun "$D1" diff "$WS2" "$WS3"
+run 22-granular-validate 0 plans/22-granular-validate.json bun "$D1" validate "$WS3"
+run 23-granular-preview 0 plans/23-granular-plan.json bun "$D2" preview "$WS3" "$SEL" "$CASE"
+run 24-granular-save 0 plans/24-revision-3.json bun "$D1" save "$WS3" 2 independent-agent-a
+run 25-granular-read 0 plans/25-read-revision-3.json bun "$D1" read d3-10-agent-a-plain-text 3
+run 26-granular-assertions 0 - python3 "$A/tests/verify-granularity.py"
+run 27-granular-pi-service 0 - bun "$A/tests/pi-granularity-interface.ts" "$A/tests/granularity-results.json"
+
 {
   echo
   echo '## Recovery and caveats'
   echo '- Step 11 intentionally attempts stale expectedRevision=0 after revision 2 and expects exit 1; step 12 continues with the intact revision.'
   echo '- Step 18 intentionally refuses to overwrite an imported workspace; earlier imported file is reused at step 17.'
+  echo '- All runner output is uploaded as an Actions artifact; it no longer commits from a bot and thereby invalidates same-SHA CI provenance.'
   echo '- Before running, only the two generated bundle target filenames are removed (not workspace inputs or any production state), because export/import use exclusive create. The first repeat-run failure is recorded in gaps/recovery-export-target-collision.md.'
+  echo '- P2 follow-up revision 3 splits independently judged headings into three source-bound Checks; actual steps 21-27 build D1/D2 and submit distinct synthetic Pi service statuses.'
   echo '- Three text cases are independently GOLD-classified; step 20 sends predeclared SYNTHETIC structured results through the real Pi service (registerMaterial/prepare/submit/verify). This is not a model-generated judgment.'
   echo "- Non-matching exits: $FAIL (0 means expected exit statuses matched; test 19 includes structural assertions)."
 } >> "$A/run-log.md"
@@ -94,7 +107,7 @@ cat > "$A/verdict.md" <<EOF
 - Rule/Check/Source/fingerprint and no-Claim checks: **pass** (structural; \`plans/summary.json\`).
 - Positive/negative/unknown synthetic material: **independent GOLD oracle and real Pi service structured-receipt tests pass**, see \`tests/cases.json\`, \`tests/actual-results.json\`, \`tests/pi-structured-results.json\`; classifications were intentionally supplied, not inferred by an online model.
 - Synthetic text document material registration / valid SourceRef: **pass through real backend**. Online Pi model inference and formal publication / policy validity: **not-run / prohibited**.
-- Overall D3-10 Agent A: **technical contract and service interface PASS; actual online semantic reading NOT-RUN**. Not a blanket D3-10 release PASS (independent Agent B/integrator remain).
+- P2 granular revision 3 (three independent Check/Rule items): **pass**, see \`plans/21-granular-diff.json\`, \`plans/23-granular-plan.json\`, \`plans/24-revision-3.json\`, \`plans/granularity-summary.json\` and \`tests/granularity-results.json\`; still no online model reasoning.\n- Overall D3-10 Agent A: **technical contract and service interface PASS; actual online semantic reading NOT-RUN**. Not a blanket D3-10 release PASS (independent Agent B/integrator remain).
 EOF
 else
 cat > "$A/verdict.md" <<EOF

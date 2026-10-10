@@ -1,0 +1,7 @@
+# P2-A-003 — CI must be green on the exact final test branch HEAD
+
+- **Observed state**: [Agent A workflow 38090644378](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38090644378) and [PR CI 38090644374](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38090644374) completed successfully on a pre-bot SHA. The workflow itself later pushed an evidence commit `fc4d12adf5c0e7219f88becde7220e15d915f935`; its PR workflows `38090683497`/`38090683558` reported `action_required`, zero jobs. That is **not** a CI pass for the bot commit.
+- **Root**: the independent Actions job was mutating its own PR branch after checks completed, creating a different HEAD without runnable new checks (token bot pushes do not necessarily trigger new Actions).
+- **Fix in acceptance branch**: `.github/workflows/review-d3-agent-a-acceptance.yml` now checks out the triggering SHA, uses `contents: read`, uploads raw run-log, plans, bundles, Pi artifacts with `actions/upload-artifact`, and **never commits or pushes from the workflow**.
+- **Verification criterion**: after this change verify **both** PR CI and Agent A workflow jobs are `success` for the **same exact head SHA**. Later manual edits require new same-SHA CI; do not use historical green runs as evidence. D3 release-level D1/D2/D3 gate requires a separate integrator check, not an Agent A blanket release approval.
+- **Scope**: CI provenance/tooling, not school policy or D3/D2 runtime implementation.
