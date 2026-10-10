@@ -2,6 +2,7 @@
  * D3 W0/W1 自检：每个测试使用隔离配置目录；合成业务语义、非真实校方规则。
  */
 import { afterAll, describe, expect, test } from 'bun:test'
+import { createHash } from 'node:crypto'
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
@@ -74,11 +75,25 @@ describe('D3：不可变共享模块及 Agent-first 制作携包（BDD）', () =
     const record = freezeD3Module(base, ['fixture:valid-proxy', 'fixture:unknown-proxy'])
     expect(record.digest).toHaveLength(64)
     expect(record.status).toBe('shared-frozen')
-    expect(freezeD3Module(base, ['fixture:valid-proxy'])).toMatchObject({ digest: record.digest })
+    expect(freezeD3Module(base, ['fixture:valid-proxy', 'fixture:unknown-proxy'])).toMatchObject({ digest: record.digest })
+    expect(() => freezeD3Module(base, ['fixture:valid-proxy'])).toThrow('D3_FROZEN_CONFLICT')
     const changed = structuredClone(base)
     changed.limits = '不允许悄悄去掉授权边界'
     expect(() => freezeD3Module(changed, ['fixture:wrong'])).toThrow('D3_FROZEN_CONFLICT')
     expect(inspectFrozenD3Module('delegation-scope', 1)?.module.limits).toBe(base.limits)
+  })
+
+  test('Given 同模块内容但测试资产关联被换 When 导入后尝试覆盖 Then 应保护冻结验证清单', () => {
+    const prior = inspectFrozenD3Module('delegation-scope', 1)!
+    const mutated = structuredClone(prior)
+    mutated.exampleIds = ['fixture:forged-test-only']
+    const w = reuse(workspace('test-link-frozen'), prior.digest)
+    const pack = exportD3Bundle(w)
+    pack.frozen[0] = mutated
+    const { fingerprint: _old, ...unsigned } = pack
+    pack.fingerprint = createHash('sha256').update(JSON.stringify(unsigned)).digest('hex')
+    expect(() => importD3Bundle(pack)).toThrow('D3_FROZEN_CONFLICT')
+    expect(inspectFrozenD3Module('delegation-scope', 1)?.exampleIds).toEqual(prior.exampleIds)
   })
 
   test('Given 共享依赖 When 冻结复合模块 Then 依赖锁是当前已存在的精确版本摘要', () => {
