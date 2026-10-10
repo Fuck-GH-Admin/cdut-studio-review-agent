@@ -1,6 +1,6 @@
 # 27｜D3 W3：真实 Pi 结构化回执、安全门禁与独立 Agent 交接准备
 
-> 状态：**W3 合成集成测试 / 待全量 CI 最终确认**。文中「技术审核完成」只指按固定责任收到合法回执，不是学校批准、真实政策生效或线上大模型阅读质量。D3 Release 和 D3→D4 准入**尚未签署**。以 PR #9 最新提交和 GitHub Actions 为唯一运行证据。
+> 状态：**W3 合成集成已通过全量 CI**（提交 `f260e35`，全量 [38087399127](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38087399127)、D3 [38087399178](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38087399178)）；后续 W4 修改需要按最新 SHA 重新验收。文中「技术审核完成」只指按固定责任收到合法回执，不是学校批准、真实政策生效或线上大模型阅读质量。D3 Release 和 D3→D4 准入**尚未签署**。以 PR #9 最新提交和 GitHub Actions 为唯一运行证据。
 
 ## 1. 完整制作与运行路径
 
@@ -75,6 +75,27 @@ bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-m
 | D3-09 | 自动化通过 | 两个干净隔离目录导入携包并比较固定任务指纹 |
 | D3-10 | **not-run** | 两名陌生 Agent 的独立操作和主观使用摩擦尚未评估 |
 | D3-11 | 须核对最新 SHA | GitHub PR #9 同提交全量 CI + 基线 + D1/D2/D3 门禁，历史绿色不替代最新 |
-| D3-12 | 部分通过 | 缺口票已有源 MD、位置、任务、归因和复现信息；五业务真实反馈/关联运行仍待确认 |
+| D3-12 | W4 已有结构化映射，独立业务实测待执行 | `report-gap` 强制源责任 ID、受影响模板版本、实例路径、Check 和 Run ID 列表；还需从五业务真实反馈核验映射质量 |
 
 **结论：D3 尚未可交付 D4**。至少 D3-10 未运行和真实未知业务源文验证等仍须独立推进。W3 的正确性改进并未授权立即制作或发布五套正式审核模板。
+
+## 6. W4：问题票从文本提示升级为可追溯影响关系（仍待最终 CI）
+
+`review-d3-library.ts report-gap <issue.json>` 的输入在原有 `sourceMd / locator / requirement / blockedOperation / owner / reproduce` 之外，**必须提供**：
+
+```json
+{
+  "affected": {
+    "templateId": "archive-access",
+    "templateVersion": 1,
+    "sourceRequirementIds": ["A-claim-alternative-evidence-001"],
+    "instancePaths": ["module/item-1-read"],
+    "checkIds": [],
+    "runIds": []
+  }
+}
+```
+
+上文为新增字段片段，完整可执行输入见 `fixtures/d3-gap-evidence-alternatives.json`。尚未成功编译/尚未建运行时允许 `checkIds: [] / runIds: []`，但**必须显式填写空列表**，不把没有 ID 伪装为“不受影响”。没有原始责任 ID、缺少模板、数组含无效路径文本，一律 `D3_GAP_INVALID` 非零退出。输出同时附机器可读 `impact` 和 `verifiedAgainstRun:false`，不能把作者填的运行编号冒充已经通过服务校验的真实运行记录。来源缺失与工具表达故障分开：`policy-source` 归因为 `source-missing`，其余为 `tooling-blocked`。
+
+这只是 **D3-12 的工具级基座**。D4 五会话独立提交问题、统一验收者复跑记录后才能评价是否真正足够诊断多模板和多运行影响。
