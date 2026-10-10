@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewAuthoringWorkspaceV1, ReviewD3FrozenModule, ReviewD3ModuleLock } from '@profer/shared'
-import { getConfigDir } from '../config-paths'
+import { resolveConfigDir } from '../config-paths'
 
 const SAFE = /^[a-z][a-z0-9-]{0,79}$/
 const HASH = /^[0-9a-f]{64}$/
@@ -36,7 +36,7 @@ export function validateD3WorkspaceLocks(workspace: ReviewAuthoringWorkspaceV1, 
   if (installed) for (const module of workspace.definitions.modules) {
     if (!SAFE.test(module.moduleId) || !Number.isSafeInteger(module.version) || module.version < 1) continue
     const k = key(module.moduleId,module.version)
-    const frozenFile = join(getConfigDir(), 'review-d3-frozen-modules', module.moduleId, module.version + '.json')
+    const frozenFile = join(resolveConfigDir(), 'review-d3-frozen-modules', module.moduleId, module.version + '.json')
     if (existsSync(frozenFile) && !known.has(k)) {
       errors.push('D3_LOCK_UNDECLARED: 当前环境存在同名冻结模块，工作区却未声明冻结身份 ' + k)
     }
@@ -52,7 +52,7 @@ export function validateD3WorkspaceLocks(workspace: ReviewAuthoringWorkspaceV1, 
       }
     }
     if (!installed) continue
-    const file = join(getConfigDir(), 'review-d3-frozen-modules', lock.moduleId, lock.version + '.json')
+    const file = join(resolveConfigDir(), 'review-d3-frozen-modules', lock.moduleId, lock.version + '.json')
     if (!existsSync(file)) { errors.push('D3_LOCK_NOT_INSTALLED: ' + k); continue }
     let record: ReviewD3FrozenModule
     try { record = JSON.parse(readFileSync(file,'utf8')) as ReviewD3FrozenModule }
