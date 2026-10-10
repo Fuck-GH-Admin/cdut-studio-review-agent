@@ -1,0 +1,32 @@
+{
+  "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+  "locator": "第6节 R08-R10（行289–291）、R29（行310）与第4节 S03-S04",
+  "requirement": "合法电子委托与按条件替代的证明关系要分别核对代理主体、档案件、操作、期间和学校规则适用；不得删除R08-R10/R29。",
+  "blockedOperation": "archive-r3 advanced.evidenceRelations 已通过D1有效性检查，实际D2 CLI报 D2_UNMAPPED_ADVANCED；无法无损映射条件性替代证据及校本效力。",
+  "owner": "D3",
+  "reproduce": "bun apps/electron/scripts/review-d2-plan.ts preview <workspaces/archive-r3-advanced-evidence-alternative.json> docs/design/review-agent/fixtures/d2-selection-archive.json <tests/archive-case.json>；本轮返回D2_UNMAPPED_ADVANCED。",
+  "affected": {
+    "templateId": "archive-access",
+    "templateVersion": 1,
+    "sourceRequirementIds": [
+      "R08",
+      "R09",
+      "R10",
+      "R29"
+    ],
+    "instancePaths": [
+      "module/item-1-read",
+      "module/item-1-copy",
+      "module/item-1-copy-local"
+    ],
+    "checkIds": [
+      "module/item-1-copy/authorization",
+      "module/item-1-copy-local/copy-authorization",
+      "module/item-1-read/authorization",
+      "module/item-1-read/scope-trace"
+    ],
+    "runIds": [
+      "run-pi-mv2zah2q-j8pa7"
+    ]
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "caseId": "d310-agent-b-archive-r3-run",
+  "runId": "run-pi-mv2zah2q-j8pa7",
+  "actualCaseCreated": true,
+  "templateId": "archive-access",
+  "workspaceId": "d310-agent-b-archive",
+  "authoringRevision": 3,
+  "authoringDigest": "aee8989b6dbcd521830301af3b6e90f315c8b28bca49073dcdf49dd924364d25",
+  "planFingerprint": "dea4870a11dd2eba0dd7e0715e572d823fc69ba00fea3ed44af4ad58aa7bd1a6",
+  "sourceDocumentVersionId": "doc-1-mv2zah1e-v1",
+  "sourceBlockId": "doc-1-mv2zah1e-v1-block-001",
+  "independentReadSubject": "d2-item1-read",
+  "independentCopySubject": "d2-item1-copy",
+  "readOnlyEvidenceLinkCount": 1,
+  "readOperationGuard": null,
+  "copyOperationGuard": "档案逐操作/开放状态缺少审核员确认的独立证据绑定：item-1/copy（d2:archive:copy）；不得挪用其他操作的授权",
+  "copyLocalGuard": "档案逐操作/开放状态缺少审核员确认的独立证据绑定：item-1/copy（d2:archive:copy）；不得挪用其他操作的授权",
+  "negativePiSubmission": {
+    "accepted": 0,
+    "rejected": [
+      {
+        "kind": "check",
+        "index": 0,
+        "reason": "规则尚未确认，不能提交符合/不符合结论"
+      }
+    ],
+    "missingChecks": [
+      "d2-3eb30a800377614dbb59 / d2-item1-open",
+      "d2-2cf6d714fbe349fc29df / d2-item1-copy",
+      "d2-e8c768436e7d1f9bef8d / d2-item1-read",
+      "d2-3f4c81ef4191e30932fd / d2-item1-copy",
+      "d2-09b7948a3a74e27100ee / d2-item1-read",
+      "d2-f3d968c24b8d5f3ec0a4 / d2-item1-read"
+    ],
+    "status": "running"
+  },
+  "runStatusAfterNegative": "running",
+  "acceptedFinalReceipt": {
+    "accepted": 6,
+    "rejected": [],
+    "missingChecks": [],
+    "status": "completed"
+  },
+  "verification": {
+    "complete": true,
+    "problems": []
+  },
+  "storedRunStatus": "completed",
+  "relevantChecks": [
+    {
+      "checkId": "check-d2-3eb30a800377614dbb59-subject-d2-item1-open",
+      "ruleId": "d2-3eb30a800377614dbb59",
+      "status": "awaiting-confirmation",
+      "subjectIds": [
+        "d2-item1-open"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "checkId": "check-d2-2cf6d714fbe349fc29df-subject-d2-item1-copy",
+      "ruleId": "d2-2cf6d714fbe349fc29df",
+      "status": "awaiting-confirmation",
+      "subjectIds": [
+        "d2-item1-copy"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "checkId": "check-d2-e8c768436e7d1f9bef8d-subject-d2-item1-read",
+      "ruleId": "d2-e8c768436e7d1f9bef8d",
+      "status": "compliant",
+      "subjectIds": [
+        "d2-item1-read"
+      ],
+      "sourceRefs": [
+        {
+          "caseId": "d310-agent-b-archive-r3-run",
+          "documentVersionId": "doc-1-mv2zah1e-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 0
+          },
+          "quote": "查阅授权已由申请人提供"
+        }
+      ]
+    },
+    {
+      "checkId": "check-d2-3f4c81ef4191e30932fd-subject-d2-item1-copy",
+      "ruleId": "d2-3f4c81ef4191e30932fd",
+      "status": "awaiting-confirmation",
+      "subjectIds": [
+        "d2-item1-copy"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "checkId": "check-d2-09b7948a3a74e27100ee-subject-d2-item1-read",
+      "ruleId": "d2-09b7948a3a74e27100ee",
+      "status": "awaiting-confirmation",
+      "subjectIds": [
+        "d2-item1-read"
+      ],
+      "sourceRefs": []
+    },
+    {
+      "checkId": "check-d2-f3d968c24b8d5f3ec0a4-subject-d2-item1-read",
+      "ruleId": "d2-f3d968c24b8d5f3ec0a4",
+      "status": "awaiting-confirmation",
+      "subjectIds": [
+        "d2-item1-read"
+      ],
+      "sourceRefs": []
+    }
+  ],
+  "inputManifest": {
+    "hash": "03a49a4476f0b2c2a55c38854c37d5859d8cc70fb2cdf6fd193137ec9bdb9126",
+    "effectiveRuleSetHash": "7b3e58169e3acd517c9267d86e3ec748f79c0714b5908c8c7d52908a31465f54"
+  },
+  "expected": {
+    "readEvidenceOnly": true,
+    "copyCompliantRejected": true,
+    "copyAwaitingConfirmation": true
+  },
+  "onlineModelRun": "not-run",
+  "syntheticToolReceipt": true
+}

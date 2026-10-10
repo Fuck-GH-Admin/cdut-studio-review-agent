@@ -1,0 +1,28 @@
+{
+  "codeSha": "d16f047af653f7ba259456807c1fc150e9d0f417",
+  "errors": [],
+  "onlineModelRun": "not-run",
+  "syntheticToolReceipt": true,
+  "caseId": "d310-agent-b-archive-r3-run",
+  "runId": "run-pi-mv2zah2q-j8pa7",
+  "p1": {
+    "status": "PASS",
+    "caseId": "d310-agent-b-archive-r3-run",
+    "runId": "run-pi-mv2zah2q-j8pa7",
+    "negativeRejected": 1,
+    "verification": {
+      "complete": true,
+      "problems": []
+    }
+  },
+  "p2": {
+    "status": "PASS",
+    "d1Validation": true,
+    "d2CompileExitCode": 1,
+    "d2Error": "D2_UNMAPPED_ADVANCED",
+    "gapStatus": "tooling-blocked",
+    "baselineRunIds": [
+      "run-pi-mv2zah2q-j8pa7"
+    ]
+  }
+}
