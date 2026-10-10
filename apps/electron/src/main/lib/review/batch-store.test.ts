@@ -77,8 +77,8 @@ describe('批次状态机（R08）', () => {
       expect(() => finalizeBatch(id, {})).toThrow('未完成')
       expect(readBatchStateV2(id)?.status).toBe('draft')
     }
-    createBatchV2({ ...batch('empty'), caseIds: [] })
-    expect(() => finalizeBatch('empty', {})).toThrow('未完成')
+    expect(() => createBatchV2({ ...batch('empty'), caseIds: [] })).toThrow('必须选择有效案卷')
+    expect(readBatchStateV2('empty')).toBeUndefined()
   })
   test('Given 创建+单案失败+重试 When 操作 Then 案卷级状态独立（坏案不阻塞全批）', () => {
     createBatchV2(batch('b1'))
