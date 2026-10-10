@@ -614,15 +614,9 @@ export function registerReviewIpc(): void {
     if (!template) throw new Error(`模板不存在: ${input.templateId}@${input.version}`)
     return recordStageDecision(input.caseId, input.command as unknown as Parameters<typeof recordStageDecision>[1], template)
   })
-  ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, async (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { resolveSupplementV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
-    const result = await resolveSupplementV2(input.caseId, input.command as unknown as Parameters<typeof resolveSupplementV2>[1])
-    if (result.ok && result.entity?.status === 'satisfied') {
-      // Requeue only after ALL open supplements are resolved, never on response alone.
-      const { requeueCaseAfterSupplement } = require('./batch-store') as typeof import('./batch-store')
-      requeueCaseAfterSupplement(input.caseId)
-    }
-    return result
+    return resolveSupplementV2(input.caseId, input.command as unknown as Parameters<typeof resolveSupplementV2>[1])
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RESPOND_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { respondSupplementV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
