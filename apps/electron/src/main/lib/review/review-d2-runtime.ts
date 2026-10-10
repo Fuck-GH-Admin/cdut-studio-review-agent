@@ -245,7 +245,7 @@ export function attachD2RuntimePlan(input: {
       }
       const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
       const shellProblem = d2CandidateShellProblem(template)
-      if (shellProblem) throw new CommandValidationError('AGENT_DECISION_DISABLED', shellProblem)
+      if (shellProblem || !template) throw new CommandValidationError('AGENT_DECISION_DISABLED', shellProblem ?? '候选模板不存在')
       const plan = compileD2RuntimePlan(payload.workspace, payload.selection, aggregate.caseV2)
       if ((aggregate.caseV2.reviewRules?.length ?? 0) > 0 || aggregate.caseV2.subjects.length > 0) {
         throw new CommandValidationError('VALIDATION_FAILED', 'D2 草稿案卷不能预先混入未登记的规则或业务主体；须先固定唯一任务包')
