@@ -105,7 +105,7 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
     const workspace = authoring()
     const family = compileD2RuntimePlan(workspace, selection('special-campus-card', 'family'), caseV2('d2-family-compile', 'special-campus-card'))
     const temporary = compileD2RuntimePlan(workspace, selection('special-campus-card', 'temporary-service'), caseV2('d2-temporary-compile', 'special-campus-card'))
-    expect(family.rules.map((rule) => rule.requirement).join(' ')).toContain('关系证明')
+    expect(family.rules.map((rule) => rule.requirement).join(' ')).toContain('关联教职工已故')
     expect(family.rules.map((rule) => rule.requirement).join(' ')).not.toContain('派遣协议')
     expect(temporary.rules.map((rule) => rule.requirement).join(' ')).toContain('派遣协议')
     expect(temporary.rules.map((rule) => rule.requirement).join(' ')).not.toContain('关联教职工已故')
@@ -215,7 +215,7 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
     const pending = info.plan.mapping.find((item) => item.authority === 'unverified-policy')!
     const denied = submitPiReviewResultV2({
       binding, triggeredBy: 'user',
-      result: { summary: '错误声称制度符合', checks: [{ ruleId: pending.ruleId, subjectIds: [], status: 'compliant', reason: '伪造政策判断', sourceRefs: [info.sourceRef] }], finish: true },
+      result: { summary: '错误声称制度符合', checks: [{ ruleId: pending.ruleId, subjectIds: [familyTarget.subjectId], status: 'compliant', reason: '伪造政策判断', sourceRefs: [info.sourceRef] }], finish: true },
     })
     expect(denied.rejected.some((item) => item.reason.includes('尚未确认'))).toBeTrue()
     expect(denied.status).toBe('running')
@@ -224,7 +224,7 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
       result: {
         summary: '家属卡仅作材料技术预审，校规资格继续待核。',
         checks: info.plan.mapping.map((item) => ({
-          ruleId: item.ruleId, subjectIds: item.subjectId ? [item.subjectId] : [],
+          ruleId: item.ruleId, subjectIds: item.subjectId ? [item.subjectId] : [familyTarget.subjectId],
           status: 'awaiting-confirmation' as const, reason: '需授权部门根据适用校规与原件复核', sourceRefs: [],
         })), finish: true,
       },
