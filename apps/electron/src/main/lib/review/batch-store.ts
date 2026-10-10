@@ -334,10 +334,12 @@ export async function pushViaOutbox(port: SchoolPort, payload: PushPayload): Pro
     try {
       const receipt = await port.push(entry.payload)
       if (receipt.actionId !== actionId || receipt.caseId !== payload.caseId
-        || !['accepted', 'conflict', 'rejected'].includes(receipt.status)) {
+        || !['accepted', 'conflict', 'rejected', 'awaiting-receipt'].includes(receipt.status)) {
         throw new Error('校方端口回执与原动作不匹配或状态无效')
       }
-      entry.status = receipt.status
+      // awaiting-receipt is not a final business outcome: retain the original
+      // payload and retry the SAME actionId until the external port resolves.
+      entry.status = receipt.status === 'awaiting-receipt' ? 'pending' : receipt.status
       entry.receipt = receipt
     } catch (error) {
       // The remote system might have accepted the action before the reply was
