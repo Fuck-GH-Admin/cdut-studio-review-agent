@@ -25,6 +25,13 @@ jobs:
         with:
           node-version: 22
       - run: bun install --frozen-lockfile
+      - name: Reset previous generated traces for repeatability
+        shell: bash
+        run: |
+          ROOT=docs/design/review-agent/acceptance/d3-10/agent-b
+          rm -rf "$ROOT/workspaces" "$ROOT/bundles" "$ROOT/plans" "$ROOT/gaps" "$ROOT/logs"
+          rm -rf "$ROOT/tests/isolated-config-B" "$ROOT/tests/clean-config-A" "$ROOT/tests/clean-config-C"
+          find "$ROOT/tests" -maxdepth 1 -name '*.json' -type f -delete
       - name: Execute independent D3 Agent B acceptance
         id: execution
         shell: bash
@@ -46,7 +53,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/design/review-agent/acceptance/d3-10/agent-b/
+          git add -A docs/design/review-agent/acceptance/d3-10/agent-b/
+          git add -f docs/design/review-agent/acceptance/d3-10/agent-b/logs/*.stdout docs/design/review-agent/acceptance/d3-10/agent-b/logs/*.stderr
           git commit -m "test(d3): record Agent B real CLI traces" || true
           git push origin HEAD:test/d3-10-agent-b-cross-business
       - name: Fail if independent acceptance failed
