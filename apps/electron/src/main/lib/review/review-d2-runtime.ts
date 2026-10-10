@@ -39,6 +39,20 @@ const scopeRef = (binding: D2TargetBinding): ReviewSubject => ({
   sourceRefs: [], correction: 'user-confirmed', status: 'confirmed',
 })
 const digestPlan = (plan: Omit<D2RuntimePlan, 'fingerprint'>): string => sha(plan)
+/** 业务规则只存在于 D2 的固定案卷任务包中；候选模板壳不允许夹带额外规则/政策/审批动作。 */
+function d2CandidateShellProblem(template: TemplateVersion | undefined): string | undefined {
+  if (!template || template.status !== 'draft' || !isAuthoringCandidateDraft(template.templateId, template.version)) {
+    return 'D2 模板失去受控候选资格'
+  }
+  if (template.fields.length || template.materialSlots.length || (template.sections ?? []).length ||
+      template.policyVersionIds.length || (template.policyRefs?.length ?? 0) ||
+      template.outputs.length !== 1 || template.outputs[0]?.kind !== 'item-feedback' ||
+      template.stages.length !== 1 || template.stages[0]?.kind !== 'manual-review' ||
+      template.stages[0]?.executorRole !== 'reviewer' || template.objectType !== 'document') {
+    return 'D2 候选模板壳被加入额外政策、静态规则、字段、阶段或审批输出；不能混入技术预审'
+  }
+  return undefined
+}
 
 /** D2 固定为技术预审，提供可被真实 Pi 案卷加载的最小草稿壳，不是校规。 */
 export function makeD2CandidateShell(workspace: ReviewAuthoringWorkspaceV1, templateId: string, version: number): TemplateVersion {
@@ -174,6 +188,8 @@ export function verifyD2InstalledPlan(aggregate: CaseAggregateV2): string[] {
   const plan = aggregate.d2RuntimePlan
   if (!plan) return []
   const problems: string[] = []
+  const candidateProblem = d2CandidateShellProblem(getTemplate(plan.templateId, plan.templateVersion))
+  if (candidateProblem) problems.push(candidateProblem)
   const { fingerprint, ...bare } = plan
   if (plan.schemaVersion !== 1 || plan.mode !== 'technical-pre-review' || plan.publicationAllowed !== false || fingerprint !== digestPlan(bare)) {
     problems.push('D2 作者态任务包指纹不匹配或伪造发布资格')
@@ -224,9 +240,8 @@ export function attachD2RuntimePlan(input: {
         throw new CommandValidationError('INVALID_TRANSITION', 'D2 只能绑定未开始审核且没有已固定计划的草稿案卷')
       }
       const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
-      if (!template || template.status !== 'draft' || !isAuthoringCandidateDraft(template.templateId, template.version)) {
-        throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 仅支持不可发布的技术预审候选壳')
-      }
+      const shellProblem = d2CandidateShellProblem(template)
+      if (shellProblem) throw new CommandValidationError('AGENT_DECISION_DISABLED', shellProblem)
       const plan = compileD2RuntimePlan(payload.workspace, payload.selection, aggregate.caseV2)
       const otherRules = aggregate.caseV2.reviewRules ?? []
       if (otherRules.some((rule) => rule.id.startsWith('d2-') || plan.rules.some((item) => item.id === rule.id))) {
@@ -266,9 +281,8 @@ export async function createD2TechnicalCase(input: {
     throw new CommandValidationError('VALIDATION_FAILED', 'D2 技术建案缺少安全案卷 ID、标题或审核员身份')
   }
   const template = getTemplate(input.selection.templateId, input.selection.version)
-  if (!template || template.status !== 'draft' || !isAuthoringCandidateDraft(template.templateId, template.version)) {
-    throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术建案只能选择服务端登记的候选草稿，不能复用已发布模板')
-  }
+  const shellProblem = d2CandidateShellProblem(template)
+  if (shellProblem) throw new CommandValidationError('AGENT_DECISION_DISABLED', shellProblem)
   const now = new Date().toISOString()
   const caseV2: ReviewCaseV2 = {
     id: input.caseId, templateId: template.templateId, templateVersion: template.version,
