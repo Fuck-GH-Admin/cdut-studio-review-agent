@@ -47,7 +47,7 @@ bun apps/electron/scripts/review-semantic-demo.ts /tmp/d05-state.json docs/desig
 {"kind":"preview","templateId":"text-review","version":1}
 ```
 
-使用 `kind: "list"` 查看库中模块及模板版本。使用 `kind: "project"` 能将**无条件、无逐操作 objectKey** 的简单审核责任输出成现有 `TemplateVersion` 草稿 JSON。投影包含每条检查的固定追溯 ID、合成来源性质、任务目标和禁区，并保留 `status: "draft"`。
+使用 `kind: "list"` 查看库中模块及模板版本。使用 `kind: "project"` 只能将**完整引用树均无条件、无逐操作 objectKey、无尚未映射结构属性**的简单审核责任输出成现有 `TemplateVersion` 草稿 JSON；投影前遍历全部子引用（包括预览时未激活的子模块），不允许先跳过再投影。投影包含每条检查的固定追溯 ID、合成来源性质、任务目标和禁区，并保留 `status: "draft"`。
 
 只有在明确提供 `confirmDemoWrite: true` **且设置隔离的 `PROFER_CONFIG_DIR`** 时，`kind: "project-draft"` 才会调用已有 `saveDraft`，同时拒绝覆盖已有版本。不要把演示状态导入正式用户模板库。演示草稿不得通过 `publishTemplate` 正式发布。
 
@@ -60,9 +60,9 @@ bun apps/electron/scripts/review-semantic-demo.ts /tmp/d05-state.json docs/desig
 | 档案逐操作 | `item-1/read` 与 `item-1/copy` 使用同一授权模块的独立实例；不同 checkId | 查阅授权自动覆盖复制，或目录公开等于档案开放 |
 | 修改模块 | 批量派生新模块版本并只重绑一个实例；旧预览指纹保留 | 能原地修改已发布版本 |
 | 错误/并发 | 缺版本、参数越权、环、重复 ID、revision 冲突原子拒绝 | 程序已理解全部自然语言政策矛盾 |
-| 覆盖记录 | 漏项、无引用的确定性判断、失败或缺说明能被识别 | 提供非空模拟 sourceId 就等于实际核验过可信原件 |
+| 覆盖记录 | 一组回执必须携带与预览一致的 fingerprint；漏项、旧回执、无引用的确定性判断、失败或缺说明会拒绝完整覆盖 | 提供非空模拟 sourceId 就等于实际核验过可信原件 |
 
-**覆盖与批准不同：** 所有检查已给出局部状态，覆盖账本可以是完整的；其中仍可能有 `awaiting-confirmation`。这并非整案具备审批条件。Demo 中的 `sourceIds` 只检查存在性，并未接入真实 `SourceRef` 权属/内容哈希校验；这项校验正式运行时仍应由原审核服务负责。
+**覆盖与批准不同：** 所有检查已给出局部状态，覆盖账本可以是完整的；其中仍可能有 `awaiting-confirmation`。这并非整案具备审批条件。Demo 中的 `sourceIds` 只检查存在性，并未接入真实 `SourceRef` 权属/内容哈希校验；这项校验正式运行时仍应由原审核服务负责。`checkDemoCoverage(preview, { fingerprint: preview.fingerprint, entries })` 对整个回执包核对指纹，拒绝将不同模块版本、任务内容或情景的旧覆盖直接记为当前完成；**指纹不是可信主体签名，也没有绑定实际材料输入哈希**。
 
 ## 4. 运行测试
 
@@ -83,3 +83,21 @@ BDD 测试覆盖基础语义、现有规则映射、模块版本重绑、原子�
 5. 五份 G01 Markdown 原文、独立标准答案、已证校规及真正材料的读图/出处校验需由后续阶段接入。模拟样例绝不替代制度确认或行政审批。
 
 依照仓库 `AGENTS.md`，功能状态变化后 `AGENTS.md` 与 `README.md` 的同步更新应先经项目负责人确认；本分支未擅自修改它们。本文件记录当前 Demo 的真实状态。
+
+## 6. 设计审计增补：嵌套条件与回执版本一致性（2026-10-11）
+
+用户审查发现两个 P0 漏洞，本次均在 D0.5 修复：
+
+1. **嵌套条件静默丢失**：原投影守卫只遍历模板顶层引用；子模块的 `scenario` 在无匹配情景时被 `previewDemo()` 忽略。现由 `visitTemplateUses()` 静态遍历完整的固定引用树，`validateDemoState()` 确认子分支都属于模板声明情景并拒绝父子互斥的不可达组合；`projectSimpleDemoDraft()` 对任何层级的条件分支、`objectKey` 或无法映射的结构化字段一律拒绝投影，而不是误生成看似完整的无条件标准。常规复杂分支仍可按明确 `scenario` 预览，不影响 Agent 的自主工作顺序。
+2. **覆盖回执跨版本复用**：原 `checkDemoCoverage(preview, entries)` 只看 `checkId`，模块文案/版本变化而 ID 不变时可能误用旧检查。现改为 `checkDemoCoverage(preview, { fingerprint, entries })`，`fingerprint` 缺失或不等于当前预览指纹时结果不可能是 `complete`；增加同一检查 ID、内容升级后的回放回归测试。
+
+另外三个已明确的风险与处理边界：
+
+| 风险 | D0.5 处理 | D1/D2 必须保留的约束 |
+| --- | --- | --- |
+| 子模块默认参数覆盖父模块继承参数 | 已明确并测试优先级：**子引用显式参数 > 父引用继承参数 > 子模块默认值**；各模块仍使用明确的参数声明 | 完整参数来源、冲突和授权校验，不允许隐式跨对象授权 |
+| 草稿在相同版本号下可重复编辑 | 仍为试验态 `revision` 乐观锁 + 固定模块版本；**不宣称完整历史回滚** | 区分草稿修订号与发布版本；冻结后不得原地修改；历史快照及差异回滚要有审计来源 |
+| 回执只要求 `sourceIds` 非空 | 保留合成检查，仅防止无依据直接宣称符合；不冒充真实引用核验 | 接回已有的 `SourceRef`、`ReviewRunV2.inputManifest.hash`、文档版本、parseRevision 与实际引用有效性校验，旧输入不能被当作当前有效结果 |
+
+**剩余边界**：本文所谓「无损投影」指 D0.5 **已声明的结构化引用约束**不被静默丢弃，不代表能自动证明所有自由文本的制度适用性或自然语言语义等价性。对复杂审核继续坚持明确分支预览，不开放正式发布。
+
