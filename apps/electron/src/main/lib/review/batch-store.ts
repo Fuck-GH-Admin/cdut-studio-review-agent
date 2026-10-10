@@ -151,14 +151,15 @@ export function assertBatchBusinessReadyForFinalization(state: BatchStateV2): vo
   if (!state.cases.length || state.cases.some((entry) => entry.status !== 'done')) throw new Error('案卷未完成，不能定稿')
   for (const entry of state.cases) {
     const aggregate = readAggregate(entry.caseId)
-    if (!aggregate || !['decided', 'archived'].includes(aggregate.caseV2.stage)) {
-      throw new Error(`案卷没有正式业务终态，不能定稿: ${entry.caseId}`)
+    if (!aggregate) throw new Error(`案卷未完成正式审批（没有正式业务终态），不能定稿: ${entry.caseId}`)
+    if (aggregate.supplements.some((item) => ['open', 'responded', 'insufficient'].includes(item.status))) {
+      throw new Error(`案卷仍待补件，不能定稿: ${entry.caseId}`)
+    }
+    if (!['decided', 'archived'].includes(aggregate.caseV2.stage)) {
+      throw new Error(`案卷未完成正式审批（没有正式业务终态），不能定稿: ${entry.caseId}`)
     }
     if (aggregate.caseV2.templateId !== state.batch.templateId || aggregate.caseV2.templateVersion !== state.batch.templateVersion) {
       throw new Error(`案卷模板版本与批次锁不匹配: ${entry.caseId}`)
-    }
-    if (aggregate.supplements.some((item) => ['open', 'responded', 'insufficient'].includes(item.status))) {
-      throw new Error(`案卷仍有待补件项目，不能定稿: ${entry.caseId}`)
     }
     if (aggregate.appeals.some((item) => ['submitted', 'in-review'].includes(item.status))) {
       throw new Error(`案卷仍有待处理申诉，不能定稿: ${entry.caseId}`)
