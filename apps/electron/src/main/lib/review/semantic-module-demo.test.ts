@@ -157,7 +157,7 @@ describe('D0.5 Agent-first 轻量语义模块（BDD）', () => {
       { checkId: copy.checkId, status: 'awaiting-confirmation', reason: '复制授权缺少可靠凭证' },
     ])
     expect(receipt.complete).toBeTrue() // 记录齐全，不代表两个操作均已获准
-    expect(() => projectSimpleDemoDraft(state, archive.templateId, 1)).toThrow('审核责任未通过预览校验')
+    expect(() => projectSimpleDemoDraft(state, archive.templateId, 1)).toThrow('复杂业务情景只能预览')
   })
 
   test('Given 审核覆盖账本 When 缺少某个责任或无引证就宣称符合 Then 拒绝完成', () => {
