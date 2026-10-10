@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 import { useStore } from 'jotai'
 import { reviewV2BusyAtom } from './V2CasePanel'
 import { BatchGroupActionDialog } from './BatchGroupActionDialog'
+import { BatchAutomationDialog } from './BatchAutomationDialog'
 
 type CaseIndexItem = Awaited<ReturnType<typeof window.reviewAPI.listCasesV2>>[number]
 type ReviewRunV2 = Awaited<ReturnType<typeof window.reviewAPI.listRunsV2>>[number]
@@ -87,6 +88,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
   const [handlingBatch, setHandlingBatch] = useState(false)
   const [openedGroupKey, setOpenedGroupKey] = useState<string | null>(null)
   const [actionGroup, setActionGroup] = useState<BatchIssueGroup | null>(null)
+  const [configureAutomationOpen, setConfigureAutomationOpen] = useState(false)
   const [batchName, setBatchName] = useState('')
   const [templateKey, setTemplateKey] = useState('')
   const [selectedCaseIds, setSelectedCaseIds] = useState<string[]>([])
@@ -227,12 +229,36 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
     return total
   }, { pending: 0, human: 0, technical: 0, passCandidate: 0, supplement: 0 })
 
+  const processAutomation = async (): Promise<void> => {
+    if (!selectedBatch || executing || handlingBatch || !selectedBatch.automation || selectedBatch.automation.mode === 'assist') return
+    setHandlingBatch(true)
+    try {
+      const report = await window.reviewAPI.processBatchAutomationV2(selectedBatch.batch.id)
+      toast.success(`自动处理结果：已执行 ${report.applied} 案，阻断 ${report.blocked} 案，失败 ${report.failed} 案`)
+      await refresh()
+    } catch (cause) {
+      toast.error(`批次自动处理失败：${cause instanceof Error ? cause.message : String(cause)}`)
+    } finally { setHandlingBatch(false) }
+  }
+
+  const finalizeCompleted = async (): Promise<void> => {
+    if (!selectedBatch || executing || handlingBatch) return
+    setHandlingBatch(true)
+    try {
+      await window.reviewAPI.batchActionV2({ action: 'finalize-completed', batchId: selectedBatch.batch.id })
+      toast.success('全部案卷具备正式业务结论，批次已定稿')
+      await refresh()
+    } catch (cause) {
+      toast.error(`批次尚不能定稿：${cause instanceof Error ? cause.message : String(cause)}`)
+    } finally { setHandlingBatch(false) }
+  }
+
   const runSelectedBatch = async (): Promise<void> => {
     if (!selectedBatch || executing || handlingBatch || selectedBatch.status === 'finalized' || selectedBatch.status === 'running') return
     setExecuting(true)
     try {
       await window.reviewAPI.runBatchV2(selectedBatch.batch.id)
-      toast.success('本轮批次审核结束；请查看分流候选和待处理问题')
+      toast.success('本轮审核及已启用的自动处理完成，请核对真实业务回执与待处理问题')
     } catch (cause) {
       toast.error(`批次执行失败：${cause instanceof Error ? cause.message : String(cause)}`)
     } finally {
@@ -266,7 +292,27 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
           <h2 className="text-xl font-semibold tracking-tight">批量审核</h2>
           <p className="mt-1 text-sm text-muted-foreground">按批次跟进多个审核项目的进度和待处理情况。</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {selectedBatch && selectedBatch.status !== 'finalized' && (
+            <Button type="button" size="sm" variant="outline" className="h-9 rounded-lg px-3"
+              disabled={executing || handlingBatch || selectedBatch.status === 'running'}
+              onClick={() => setConfigureAutomationOpen(true)}>
+              自动化：{selectedBatch.automation?.mode === 'auto-approve' ? '自动通过/补件'
+                : selectedBatch.automation?.mode === 'auto-return' ? '自动补件' : '辅助'}
+            </Button>
+          )}
+          {selectedBatch?.automation && selectedBatch.automation.mode !== 'assist' && selectedBatch.status === 'queued' && (
+            <>
+              <Button type="button" size="sm" variant="outline" className="h-9 rounded-lg px-3"
+                disabled={executing || handlingBatch} onClick={() => void processAutomation()}>
+                执行自动处理
+              </Button>
+              <Button type="button" size="sm" variant="outline" className="h-9 rounded-lg px-3"
+                disabled={executing || handlingBatch} onClick={() => void finalizeCompleted()}>
+                核验并定稿
+              </Button>
+            </>
+          )}
           {selectedBatch?.status === 'running' && (
             <Button type="button" size="sm" variant="outline" className="h-9 rounded-lg px-3"
               disabled={executing || handlingBatch} onClick={() => void handleBatchAction('recover')}>
@@ -293,7 +339,15 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
         <SummaryCard label="补件/退回候选" value={counts.supplement} hint="仍需正式授权" icon={<FileWarning size={15} />} tone="text-orange-600 dark:text-orange-400" />
       </div>
 
-      {selectedBatch && <p className="text-xs text-muted-foreground">技术异常：{counts.technical} 项。分流结果仅为只读建议，系统尚未自动批准或自动退回任何案卷；正式处理仍需业务门槛与授权。</p>}
+      {selectedBatch && (
+        <p className="text-xs text-muted-foreground">
+          技术异常：{counts.technical} 项 · 已执行自动通过：
+          {(selectedBatch.automationReceipts ?? []).filter((r) => r.action === 'pass' && r.status === 'applied').length} 案 ·
+          已执行自动补件：{(selectedBatch.automationReceipts ?? []).filter((r) => r.action === 'return' && r.status === 'applied').length} 案 ·
+          自动阻断/失败：{(selectedBatch.automationReceipts ?? []).filter((r) => r.status !== 'applied').length} 条。
+          候选建议不是正式决定；正式处理仅以案卷事务回执为准。
+        </p>
+      )}
       {error && <div role="alert" className="rounded-lg border border-destructive/40 bg-destructive/5 px-3 py-2 text-sm text-destructive">批次加载失败：{error}</div>}
 
       <section className="space-y-3">
@@ -340,6 +394,8 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                     const status = caseStatus(row, selectedBatch)
                     const coverage = row.run?.coverage
                     const triage = triageByCase.get(row.caseId)
+                    const automationRecord = [...(selectedBatch.automationReceipts ?? [])].reverse()
+                      .find((receipt) => receipt.caseId === row.caseId && receipt.status === 'applied')
                     return (
                       <tr key={row.caseId} className="transition-colors hover:bg-muted/25">
                         <td className="max-w-[360px] px-3 py-3">
@@ -357,7 +413,10 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                               onClick={() => void handleBatchAction('retry', row.caseId)}>重试本案</button>
                           )}
                         </td>
-                        <td className={`px-3 py-3 font-medium ${triage ? TRIAGE_TONES[triage.route] : 'text-muted-foreground'}`} title={triage?.explanation}>{triage ? TRIAGE_LABELS[triage.route] : '—'}</td>
+                        <td className={`px-3 py-3 font-medium ${triage ? TRIAGE_TONES[triage.route] : 'text-muted-foreground'}`} title={triage?.explanation}>
+                          {automationRecord ? (automationRecord.action === 'pass' ? '已自动通过（业务已写入）' : '已自动退回补件（业务已写入）')
+                            : triage ? TRIAGE_LABELS[triage.route] : '—'}
+                        </td>
                         <td className="px-3 py-3 text-right tabular-nums text-muted-foreground">{formatTime(row.updatedAt)}</td>
                       </tr>
                     )
@@ -435,6 +494,11 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
           onClose={() => setActionGroup(null)}
           onApplied={refresh}
         />
+      )}
+
+      {selectedBatch && configureAutomationOpen && (
+        <BatchAutomationDialog key={selectedBatch.batch.id} batch={selectedBatch}
+          onClose={() => setConfigureAutomationOpen(false)} onSaved={refresh} />
       )}
 
       <CreateBatchDialog
