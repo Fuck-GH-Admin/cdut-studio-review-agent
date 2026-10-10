@@ -8,10 +8,10 @@ import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import type { Actor, D2ScenarioSelection, ReviewAuthoringWorkspaceV1, ReviewCaseV2 } from '@profer/shared'
 import { previewDemo, type DemoState } from './semantic-module-demo'
-import { compileD2RuntimePlan, makeD2CandidateShell, attachD2RuntimePlan, verifyD2InstalledPlan, verifyD2PiRun } from './review-d2-runtime'
+import { compileD2RuntimePlan, createD2TechnicalCase, makeD2CandidateShell, attachD2RuntimePlan, verifyD2InstalledPlan, verifyD2PiRun } from './review-d2-runtime'
 import { createAggregate, readAggregate } from './case-store-v2'
 import { registerMaterial } from './material-service'
-import { setEvidenceLink } from './application-service'
+import { createCaseFromTemplate, setEvidenceLink } from './application-service'
 import { saveAuthoringCandidateDraft, isAuthoringCandidateDraft, publishTemplate, getTemplate } from './template-store'
 import { preparePiReviewRunV2, submitPiReviewResultV2 } from './pi-case-review-service'
 import { getRunV2 } from './run-store-v2'
@@ -71,7 +71,10 @@ async function setup(templateId: string, caseSelection: D2ScenarioSelection) {
   const id = 'd2-case-' + suffix
   const workspace = authoring()
   saveAuthoringCandidateDraft(makeD2CandidateShell(workspace, templateId, 1))
-  await createAggregate(id, caseV2(id, templateId))
+  const created = await createD2TechnicalCase({
+    caseId: id, title: 'D2 合成审核', actor, workspace, selection: caseSelection,
+  })
+  if (!created.ok) throw new Error(created.message)
   const file = join(sourceRoot, suffix + '.txt')
   writeFileSync(file, '合成测试材料。查阅授权已由申请人提供；复制尚未确认；档案目录可见，开放状态未知；家庭关系材料可核对。')
   let agg = readAggregate(id)!
@@ -81,15 +84,10 @@ async function setup(templateId: string, caseSelection: D2ScenarioSelection) {
   })
   if (!material.ok) throw new Error(material.message)
   agg = readAggregate(id)!
-  const attached = await attachD2RuntimePlan({
-    caseId: id, requestId: 'attach-' + suffix, actor, expectedRevision: agg.caseV2.revision, workspace, selection: caseSelection,
-  })
-  if (!attached.ok) throw new Error(attached.message)
-  agg = readAggregate(id)!
   const doc = agg.caseV2.documents[0]!
   const block = doc.blocks.find((item) => item.kind !== 'image')!
   return {
-    id, workspace, aggregate: agg, plan: attached.entity!,
+    id, workspace, aggregate: agg, plan: created.entity!,
     sourceRef: { documentVersionId: doc.versionId, blockId: block.blockId, quote: '查阅授权已由申请人提供' },
   }
 }
@@ -116,6 +114,46 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
     expect(plan.fingerprint).toHaveLength(64)
     expect(plan.rules).toHaveLength(3)
     expect(plan.publicationAllowed).toBeFalse()
+  })
+
+  test('不可发布候选只能走显式技术建案，普通正式入口继续拒绝未发布模板', async () => {
+    const workspace = authoring()
+    saveAuthoringCandidateDraft(makeD2CandidateShell(workspace, 'text-review', 1))
+    expect(() => createCaseFromTemplate('text-review', 1, {
+      title: '不应创建', fieldValues: {}, subjects: [],
+    }, actor, 'd2-published-deny')).toThrow('只有已发布模板')
+    const created = await createD2TechnicalCase({
+      caseId: 'd2-proper-entry', title: '正常技术预审', actor,
+      workspace, selection: selection('text-review'),
+    })
+    expect(created.ok).toBeTrue()
+    expect(readAggregate('d2-proper-entry')?.d2RuntimePlan?.publicationAllowed).toBeFalse()
+    const corrupt = selection('special-campus-card')
+    await expect(createD2TechnicalCase({
+      caseId: 'd2-invalid-not-written', title: '错误情景', actor,
+      workspace, selection: corrupt,
+    })).toThrow('D2_SCENARIO_REQUIRED')
+    expect(readAggregate('d2-invalid-not-written')).toBeUndefined()
+  })
+
+  test('Agent JSON CLI 注册候选并建立可运行案卷，不需要绕过正式建案服务', () => {
+    const fixtureRoot = resolve(import.meta.dir, '../../../../../../docs/design/review-agent/fixtures')
+    const script = resolve(import.meta.dir, '../../../../scripts/review-d2-plan.ts')
+    const rootArgs = [
+      join(fixtureRoot, 'd2-workspace-synthetic.json'),
+      join(fixtureRoot, 'd2-selection-text.json'),
+    ]
+    const env = { ...process.env, PROFER_CONFIG_DIR: home }
+    const registered = Bun.spawnSync({ cmd: [process.execPath, script, 'register', ...rootArgs], env })
+    expect(registered.exitCode).toBe(0)
+    if (registered.exitCode !== 0) throw new Error(registered.stderr.toString())
+    const created = Bun.spawnSync({
+      cmd: [process.execPath, script, 'create', ...rootArgs, 'd2-cli-created', 'CLI 技术审核', actor.actorId], env,
+    })
+    expect(created.exitCode).toBe(0)
+    if (created.exitCode !== 0) throw new Error(created.stderr.toString())
+    expect(readAggregate('d2-cli-created')?.d2RuntimePlan?.mapping).toHaveLength(1)
+    expect(readAggregate('d2-cli-created')?.caseV2.title).toBe('CLI 技术审核')
   })
 
   test('普通文本任务无需业务对象/高级 Claim 图即可编译为单一语义检查', () => {
