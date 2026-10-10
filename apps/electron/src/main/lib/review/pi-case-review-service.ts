@@ -16,7 +16,7 @@ import { recordObservation } from './evidence-service'
 import { actorOfAssignment, bindRunToAssignment, checkAssignment, createAssignment, findActivePiReviewAssignment, listAssignments, revokeAssignment, type ReviewAgentAssignment } from './review-agent-assignment'
 import { DocumentCapabilityLibrary } from './document-capability-library'
 import { finalizePiDocumentCoverage } from './pi-document-coverage'
-import { verifyD2InstalledPlan } from './review-d2-runtime'
+import { validateD2OperationEvidence, verifyD2InstalledPlan } from './review-d2-runtime'
 
 export interface PiReviewBinding {
   assignmentId: string
@@ -900,6 +900,11 @@ export function submitPiReviewResultV2(input: {
     const target = plannedTargetMatches(rule, aggregate, candidate.subjectIds)
     if (!target) {
       rejected.push({ kind: 'check', index, reason: '目标事项与规则分项范围不一致' })
+      continue
+    }
+    const d2EvidenceProblem = validateD2OperationEvidence(aggregate, candidate.ruleId, candidate.status, (candidate.sourceRefs ?? []).map((ref) => ref.documentVersionId))
+    if (d2EvidenceProblem) {
+      rejected.push({ kind: 'check', index, reason: d2EvidenceProblem })
       continue
     }
     const reason = String(candidate.reason ?? '').trim().slice(0, 2000)
