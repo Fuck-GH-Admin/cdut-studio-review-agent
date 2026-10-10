@@ -47,6 +47,15 @@ interface D3Gap {
   blockedOperation: string
   owner: 'D3' | 'D4' | 'pi-runtime' | 'policy-source'
   reproduce: string
+  /** D3-12：来源责任必须能映射回具体模板；未产生的运行/检查用显式空数组表示。 */
+  affected: {
+    templateId: string
+    templateVersion: number
+    sourceRequirementIds: string[]
+    instancePaths: string[]
+    checkIds: string[]
+    runIds: string[]
+  }
 }
 async function main(): Promise<void> {
   if (!process.env.PROFER_CONFIG_DIR?.trim()) throw new Error('D3_CONFIG_REQUIRED: 必须显式指定隔离 PROFER_CONFIG_DIR')
@@ -132,12 +141,32 @@ async function main(): Promise<void> {
     case 'report-gap': {
       if (!first) throw new Error('D3_USAGE: report-gap <issue.json>')
       const issue = load<D3Gap>(first)
+      const a = issue.affected
+      const safeIds = (values: unknown, allowEmpty = true): values is string[] =>
+        Array.isArray(values) && (allowEmpty || values.length > 0) &&
+        values.every(value => typeof value === 'string' && !!value.trim())
       if (!issue.sourceMd?.trim() || !issue.locator?.trim() || !issue.requirement?.trim() ||
           !issue.blockedOperation?.trim() || !issue.reproduce?.trim() ||
-          !['D3', 'D4', 'pi-runtime', 'policy-source'].includes(issue.owner)) {
-        throw new Error('D3_GAP_INVALID: 必须提供原文定位、责任、受阻操作、归因及可复现步骤')
+          !['D3', 'D4', 'pi-runtime', 'policy-source'].includes(issue.owner) ||
+          !a || typeof a.templateId !== 'string' || !/^[a-z][a-z0-9-]{0,79}$/.test(a.templateId) ||
+          !Number.isSafeInteger(a.templateVersion) || a.templateVersion < 1 ||
+          !safeIds(a.sourceRequirementIds, false) || !safeIds(a.instancePaths) ||
+          !safeIds(a.checkIds) || !safeIds(a.runIds)) {
+        throw new Error('D3_GAP_INVALID: 缺少原文定位、原始责任 ID、受影响模板/实例/检查/运行的显式映射或复现步骤')
       }
-      show({ schemaVersion: 1, status: 'tooling-blocked', ...issue })
+      show({
+        schemaVersion: 1,
+        status: issue.owner === 'policy-source' ? 'source-missing' : 'tooling-blocked',
+        ...issue,
+        impact: {
+          sourceMd: issue.sourceMd, locator: issue.locator,
+          sourceRequirementIds: a.sourceRequirementIds,
+          templateId: a.templateId, templateVersion: a.templateVersion,
+          instancePaths: a.instancePaths, checkIds: a.checkIds, runIds: a.runIds,
+        },
+        /** 工具只验证票据结构，不能凭一张作者提交的问题票伪称运行已复现。 */
+        verifiedAgainstRun: false,
+      })
       return
     }
     default:
