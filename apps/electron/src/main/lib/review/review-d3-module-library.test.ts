@@ -134,7 +134,7 @@ describe('D3：不可变共享模块及 Agent-first 制作携包（BDD）', () =
       expect(discoverFrozenD3Modules()).toEqual([])
       const recovered = importD3Bundle(bundle)
       expect(recovered).toEqual(bundle.workspace)
-      expect(inspectFrozenD3Module('delegation-scope', 1)!.digest).toBe(bundle.frozen[0]?.digest)
+      expect(inspectFrozenD3Module('delegation-scope', 1)!.digest).toBe(bundle.frozen[0]!.digest)
       const repacked = exportD3Bundle(recovered)
       expect(repacked.fingerprint).toBe(bundle.fingerprint)
     } finally { process.env.PROFER_CONFIG_DIR = oldDir }
