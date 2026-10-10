@@ -39,7 +39,7 @@ D1 只把已验证的最小概念提升为**稳定的作者态数据契约（v1�
 5. 返回 `template`（仅 draft，带 `D1_AUTHORING_CANDIDATE` 标记）、`preview`、`manifest`。manifest 绑定作者态完整摘要、模板内容摘要、生效规则集哈希、责任来源和 `previewFingerprint`。
 6. `verifyReviewAuthoringManifestV1(template, manifest, workspace)` 可重新验证上面的内容摘要及来源绑定。修改作者语义、模板标准、规则或来源都会让旧 manifest 失效。
 
-现有 `template-store.publishTemplate` 阻止 `D1_AUTHORING_CANDIDATE` 草稿未经制度治理直接发布。**编译通过不代表制度适用被认证**。本轮不改 `TemplateCriterionSpec` 现行运行结构、不绕过 Pi 原本的证据/权限校验。
+现有 `template-store.publishTemplate` 在版本锁内检查**服务端独立资格登记**；D1/D0.5 候选首次保存后永久标记为 `candidate-held`，不能通过编辑可变的 `sourceNote`、再次 `saveDraft` 获得普通模板的发布资格。**编译通过不代表制度适用被认证**。本轮不改 `TemplateCriterionSpec` 现行运行结构、不绕过 Pi 原本的证据/权限校验。
 
 ## 4. 可执行的 Agent 操作
 
@@ -88,3 +88,32 @@ bun apps/electron/scripts/review-authoring-v1.ts diff old.json new.json
 6. 五份 G01 Markdown 如不在仓库，仍仅以显式合成用例进行压力测试，不据分析文档伪造细则。
 
 **D1 的完成标准是最小数据契约与规则编译映射被实测，不是整套复杂行政模板已经具备正式运行资格。**
+
+## 7. D1 收尾：发布资格、历史链校验及模块双版本语义（2026-10-11）
+
+### 发布资格不是 `sourceNote`
+
+- 控制记录路径：`{configDir}/review-template-controls/{templateId}/{version}.json`，与可编辑的 `TemplateVersion` 文本分开；`saveDraft` 在**同一模板版本锁内**登记来源类别，`publishTemplate` 同锁验证控制记录、模板结构和发布校验。
+- `candidate-held` 为不可经普通 `saveDraft` 撤销的保留态。即使用户删除 `D1_AUTHORING_CANDIDATE:` 字符串、替换 `sourceNote`、编辑标题及自然语言要求，仍拒绝发布。旧草稿不存在资格记录时**首次发布失败关闭**；需通过服务登记流程补齐记录。已发布版本仍按原不可覆盖行为读取。
+- `regular-draft` 用于兼容现有**本地普通自建模板**的保存/发布，不表示学校真实规则已经核实，不是行政审批授权。D1 本身没有候选转正式制度的授权接口，不能通过改文件标签冒充完成治理。
+- 控制记录与版本锁只保护经**模板服务 API** 的正常编辑/发布路径；具有直接本地文件系统写权限的攻击者、首次登记前伪造完全不同的模板内容以及校方有效制度的签名/身份治理，不属于这套轻量本地资格机制的安全保证。不可声称其具有外部不可篡改的加密授权能力。制度发布工作流仍需独立角色及规则核验（D2+）。
+- 回归案例包含先保存候选、删除/替换标记再保存、首次保存时删除说明字段、控制记录缺失，均不得出现候选被普通发布的结果。
+
+### 草稿修订的父链必须逐级核验
+
+- `getReviewAuthoringRevisionV1` 对选择的第 N 版从 1 到 N 逐一检查：修订文件存在且合法、工作区 ID 和内部 revision 正确、当前内容 digest 正确，首版不得有父摘要，后续 `parentDigest` 必须等于前版记录中的实际 digest。
+- 任意父链不匹配、祖先丢失或历史内容摘要不符，均报出 `AUTHORING_HISTORY_BROKEN` 或明确校验错误。续写新版本前必须先验证最新版本的整条历史链；不进行“自动补齐/修复”来掩盖缺口。
+- 这是简单的本地改动检测及断链保护，**不提供恶意拥有磁盘写权限者级别的签名防篡改**。不引入数据库或签名设施。
+
+### D0.5 固定模块版本 vs D1 草稿演化
+
+| 身份 | 精确定义 | 可否就地改内容 | 是否给其他模板共享引用 |
+| --- | --- | --- | --- |
+| 制作中的作者态工作区 | `workspaceId + revision` 标识某次**草稿快照** | 新 revision 可以重新编辑相同的 `moduleId@version`，且必须保留之前 workspace 快照 | **否**；同名同版本只是本工作区内部草稿身份，不具有不可变外部承诺 |
+| 固定可复用模块版本 | `moduleId + version + 不可变内容摘要`（未来冻结登记） | **不能**；变更须派生新版本及独立摘要 | **是**；引用方锁定版本/摘要，升级需明确确认 |
+
+因此 D0.5 的 `revise-module` 是固定版本更换试验，D1 追加式草稿保存则是作者工作区的制作历史，两者并不矛盾。当前 D1 尚未建立可共享的模块冻结仓库与升级影响迁移，**严禁宣称 D1 的工作区内 `moduleId@version` 已是全局不可变发布资产**。在 D2/D3 建立冻结之前，跨工作区不允许以这个 ID 自动互相引用或自动替换。
+
+### 合并依赖与 CI 门禁
+
+目标依赖顺序：`design/review-template-editor-g01-v01` → `feat/review-d05-agent-semantic-modules`（PR #2）→ `feat/review-d1-authoring-contract-v1`（PR #3）。本轮只推送到 D1 分支，保持各 PR Draft，待负责人验收。完整 CI 的 OOXML workspace 安装/解析失败需单独排查和修复，不以 D1 单元测试绿色代替主构建门禁。
