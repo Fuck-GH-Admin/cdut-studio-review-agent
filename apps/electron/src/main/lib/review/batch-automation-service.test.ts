@@ -187,8 +187,9 @@ describe('C 阶段：显式授权的自动通过与退回', () => {
       payload: { supplementId: request.id, outcome: 'satisfied', reason: '核对完成' },
     })
     expect(resolved.ok).toBeTrue()
-    expect(requeueCaseAfterSupplement(a.caseId)).toContain(batchId)
+    // The workflow command itself requeues (not merely the IPC handler).
     expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('queued')
+    expect(requeueCaseAfterSupplement(a.caseId)).toEqual([]) // idempotent
     expect((await runBatchAutomation(batchId)).applied).toBe(0)
     expect(readAggregate(a.caseId)?.decisions.filter((d) => d.result === 'pass')).toHaveLength(0)
   })
