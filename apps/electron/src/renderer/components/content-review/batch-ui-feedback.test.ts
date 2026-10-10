@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 import type { BatchStateV2, BatchTriageRoute } from '@profer/shared'
-import { reviewBusinessError, summarizeBatchExecution } from './batch-ui-feedback'
+import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution } from './batch-ui-feedback'
 
 describe('21 号本地 UI QA：反馈语义', () => {
   test('Electron IPC 包装信息不显示给用户，但保留真实业务拒绝原因', () => {
@@ -10,6 +10,22 @@ describe('21 号本地 UI QA：反馈语义', () => {
       .toBe('案卷仍待补件')
     expect(reviewBusinessError(new Error('业务内容不完整'))).toBe('业务内容不完整')
     expect(reviewBusinessError(null)).toBe('null')
+  })
+
+  test('补件完成后重新入队只展示本轮待审核，旧自动退回成为历史记录', () => {
+    const receipt = {
+      caseId: 'case-c', runId: 'old-run', action: 'return' as const, status: 'applied' as const,
+      message: '已退回', at: '', requestId: 'action-1', policyRevision: 1,
+    }
+    expect(batchAutomationDisplay('done', 'awaiting-supplement', 'old-run', receipt, '等待补件')).toEqual({
+      label: '已自动退回补件（业务已写入）',
+    })
+    expect(batchAutomationDisplay('queued', 'reviewing', 'old-run', receipt, '待执行/处理中')).toEqual({
+      label: '待本轮重新审核', history: '上次动作：自动退回补件（历史记录）',
+    })
+    expect(batchAutomationDisplay('done', 'reviewing', 'new-run', receipt, '待人工判断')).toEqual({
+      label: '待人工判断', history: '上次动作：自动退回补件（历史记录）',
+    })
   })
 
   test('检查成功和业务批准不同；队列完成提示必须显示失败和待人工数', () => {
