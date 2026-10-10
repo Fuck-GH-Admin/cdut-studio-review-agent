@@ -84,6 +84,7 @@ export function recordStageDecision(
   template: TemplateVersion,
 ): Promise<ReviewCommandResult<{ decision: BusinessDecision; task?: WorkflowTask; supplement?: SupplementRequest }>> {
   return submitCommand<StageDecisionPayload, { decision: BusinessDecision; task?: WorkflowTask; supplement?: SupplementRequest }>(caseId, { ...command, type: 'RecordStageDecision' }, (aggregate, payload) => {
+    if (aggregate.d2RuntimePlan) throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术预审案卷无权进入正式阶段决定')
     // Agent 代批门控：在事务校验内、任何业务变更前检查（排队期间关闭也生效）
     assertAgentDecisionAllowed({ actor: command.actor, type: 'RecordStageDecision' })
     const task = aggregate.tasks.find((candidate) => candidate.id === payload.taskId && candidate.status === 'open')
