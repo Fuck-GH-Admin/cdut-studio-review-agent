@@ -196,8 +196,8 @@ export function respondSupplementV2(caseId: string, command: { requestId: string
 }
 
 /** 补件判定：satisfied → 全部未结束请求结束才恢复，并按原阶段回流任务（G05：修正"补件后没有任务"） */
-export function resolveSupplementV2(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: { supplementId: string; outcome: 'satisfied' | 'insufficient' | 'cancelled'; reason: string } }): Promise<ReviewCommandResult<SupplementRequest>> {
-  return submitCommand<{ supplementId: string; outcome: 'satisfied' | 'insufficient' | 'cancelled'; reason: string }, SupplementRequest>(caseId, { ...command, type: 'ResolveSupplement' }, (aggregate, payload) => {
+export async function resolveSupplementV2(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: { supplementId: string; outcome: 'satisfied' | 'insufficient' | 'cancelled'; reason: string } }): Promise<ReviewCommandResult<SupplementRequest>> {
+  const result = await submitCommand<{ supplementId: string; outcome: 'satisfied' | 'insufficient' | 'cancelled'; reason: string }, SupplementRequest>(caseId, { ...command, type: 'ResolveSupplement' }, (aggregate, payload) => {
     // Agent 代批门控：判定满足/不足属于审核决定（08 设计 §2.1）
     assertAgentDecisionAllowed({ actor: command.actor, type: 'ResolveSupplement' })
     const target = aggregate.supplements.find((request) => request.id === payload.supplementId)
@@ -223,6 +223,13 @@ export function resolveSupplementV2(caseId: string, command: { requestId: string
       entity: payload.outcome === 'satisfied' ? { ...target, status: 'satisfied' } : { ...target, status: payload.outcome },
     }
   })
+  if (result.ok && result.entity?.status === 'satisfied') {
+    // Centralize the review-loop transition here. It must also apply when
+    // a local review tool calls the service directly instead of the IPC route.
+    const { requeueCaseAfterSupplement } = require('./batch-store') as typeof import('./batch-store')
+    requeueCaseAfterSupplement(caseId)
+  }
+  return result
 }
 
 // ===== 申诉 resolution（06 §5.4） =====
