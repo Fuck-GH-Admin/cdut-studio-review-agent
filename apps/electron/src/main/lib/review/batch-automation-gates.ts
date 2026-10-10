@@ -80,6 +80,15 @@ export function checkAutoBatchAction(
     || run.checks.length !== run.coverage.plannedChecks)
     return blocked('政策规则未完整发布确认，或本轮检查与规则计划不一致')
 
+  // A source pointer must actually refer to a current, parseable case document;
+  // a nonempty array with a fabricated version ID is not evidence.
+  if (run.checks.some((check) => check.sourceRefs.some((ref) => ref.caseId !== aggregate.caseV2.id
+    || !aggregate.caseV2.documents.some((doc) =>
+      doc.active !== false && doc.versionId === ref.documentVersionId
+      && doc.parseRevision === ref.parseRevision
+      && (doc.parseStatus === 'parsed' || !!doc.manualReadReceipt))))) {
+    return blocked('检查引用的证据不属于当前有效案卷材料或尚未正确读取')
+  }
   // Each run check must reference a known, confirmed and published policy.
   if (action === 'pass') {
     if (getSettings().reviewAgentAutoApproval !== true) return blocked('全局自动审批授权已撤销')
