@@ -15,7 +15,7 @@ import { getTemplate } from './template-store'
 import { hashEffectiveRuleSet, resolveEffectiveRules } from './effective-rules'
 import { computeRunInputHash } from './run-service-v2'
 
-const sha = (value: unknown): string => createHash('sha256').update(JSON.stringify(value), 'utf8').digest('hex')
+const sha = (value: unknown): string => createHash('sha256').update(JSON.stringify(value) ?? 'undefined', 'utf8').digest('hex')
 const ID = /^[a-z][a-z0-9-]{0,79}$/
 const safe = (value: string): boolean => ID.test(value)
 const toDemo = (workspace: ReviewAuthoringWorkspaceV1): DemoState => ({
@@ -25,8 +25,8 @@ const toDemo = (workspace: ReviewAuthoringWorkspaceV1): DemoState => ({
 })
 const sectionFor = (key: string): string => 'd2-scope-' + sha(key).slice(0, 16)
 const runtimeRuleId = (checkId: string): string => 'd2-' + sha(checkId).slice(0, 20)
-const runtimeCheckId = (ruleId: string, subjectId?: string): string =>
-  `check-${ruleId}-${subjectId ? 'subject-' + subjectId : 'case-case'}`
+const runtimeCheckId = (ruleId: string, subjectId: string | undefined, allSubjects: string[]): string =>
+  `check-${ruleId}-${subjectId ? 'subject-' + subjectId : 'case-' + (allSubjects.join('-') || 'case')}`
 const scopeRef = (binding: D2TargetBinding): ReviewSubject => ({
   id: binding.subjectId, title: binding.title, type: 'custom',
   sectionId: sectionFor(binding.objectKey),
@@ -268,10 +268,11 @@ export function verifyD2PiRun(aggregate: CaseAggregateV2, run: ReviewRunV2): { c
   const checkMap = new Map(run.checks.map((check) => [check.checkId, check]))
   const validDocuments = new Map(run.inputManifest.documentVersions.map((entry) => [entry.versionId, entry.contentHash]))
   for (const mapping of plan.mapping) {
-    const id = runtimeCheckId(mapping.ruleId, mapping.subjectId)
+    const allSubjects = aggregate.caseV2.subjects.map((item) => item.id).sort()
+    const id = runtimeCheckId(mapping.ruleId, mapping.subjectId, allSubjects)
     const check = checkMap.get(id)
     if (!check || check.ruleId !== mapping.ruleId ||
-        sha(check.target.subjectIds) !== sha(mapping.subjectId ? [mapping.subjectId] : aggregate.caseV2.subjects.filter((it) => !mapping.subjectId).map((it) => it.id).sort())) {
+        sha(check.target.subjectIds) !== sha(mapping.subjectId ? [mapping.subjectId] : allSubjects)) {
       problems.push('Pi 运行遗漏或错误复用了业务对象检查：' + mapping.checkId)
       continue
     }
