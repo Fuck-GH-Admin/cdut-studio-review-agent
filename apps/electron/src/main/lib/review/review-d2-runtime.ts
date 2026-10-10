@@ -249,11 +249,39 @@ export function attachD2RuntimePlan(input: {
   )
 }
 
+/**
+ * 档案类「逐操作已授权/未授权」不能只看 Agent 找到的相关段落。
+ * 必须有审核员在既有证据绑定事务中对这一主体、这一具体操作做了确认；
+ * 一份查阅授权不会解锁复制，目录公开亦不会解锁实际开放状态。
+ * 技术预审仍不产生法律/行政授权，只对可断言结论建立最低独立来源门禁。
+ */
+export function validateD2OperationEvidence(
+  aggregate: CaseAggregateV2,
+  ruleId: string,
+  status: string,
+  documentVersionIds: string[],
+): string | undefined {
+  const mapping = aggregate.d2RuntimePlan?.mapping.find((entry) => entry.ruleId === ruleId)
+  const target = aggregate.d2RuntimePlan?.targets.find((item) => item.objectKey === mapping?.objectKey)
+  if (!mapping || !target || target.kind === 'campus-card') return undefined
+  if (!['compliant', 'non-compliant', 'not-applicable'].includes(status)) return undefined
+  const factKey = target.kind === 'archive-operation' ? 'd2:archive:' + target.operation : 'd2:archive:open-status'
+  const proven = aggregate.evidenceLinks.some((link) =>
+    link.status === 'confirmed' && link.linkedBy === 'user' &&
+    link.subjectId === target.subjectId && link.supportsFact === factKey &&
+    documentVersionIds.includes(link.documentVersionId) &&
+    aggregate.caseV2.documents.some((doc) => doc.versionId === link.documentVersionId && doc.active !== false),
+  )
+  if (!proven) return '档案逐操作/开放状态缺少审核员确认的独立证据绑定：' + target.objectKey + '（' + factKey + '）；不得挪用其他操作的授权'
+  return undefined
+}
+
 /** 覆盖判定直接读取 Pi 的真实运行回执及 SourceRef，不能使用独立的演示回执冒充。 */
 export function verifyD2PiRun(aggregate: CaseAggregateV2, run: ReviewRunV2): { complete: boolean; problems: string[] } {
   const plan = aggregate.d2RuntimePlan
   if (!plan) return { complete: false, problems: ['案卷没有 D2 固定任务包'] }
   const problems = verifyD2InstalledPlan(aggregate)
+  if (run.status !== 'completed') problems.push('Pi 当前运行尚未完整完成')
   const snapshots = {
     observations: aggregate.observations.map((item) => item as unknown as Record<string, unknown>),
     evidence: aggregate.evidenceLinks.map((item) => item as unknown as Record<string, unknown>),
@@ -281,6 +309,9 @@ export function verifyD2PiRun(aggregate: CaseAggregateV2, run: ReviewRunV2): { c
       problems.push('未经核实的制度来源不能生成确定性结论：' + mapping.checkId)
     }
     if (!check.reason?.trim()) problems.push('审核结果缺少理由：' + mapping.checkId)
+    const operationIssue = validateD2OperationEvidence(aggregate, mapping.ruleId, check.status, check.sourceRefs.map((ref) => ref.documentVersionId))
+    if (operationIssue) problems.push(operationIssue)
+
     if (['compliant', 'non-compliant'].includes(check.status)) {
       if (!check.sourceRefs.length) problems.push('确定结果缺少真实 SourceRef：' + mapping.checkId)
       for (const ref of check.sourceRefs) {
