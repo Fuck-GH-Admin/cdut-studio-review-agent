@@ -3,7 +3,7 @@
  * These are synthetic task fixtures, never authoritative university regulations or real-model judgments.
  */
 import { afterAll, describe, expect, test } from 'bun:test'
-import { mkdtempSync, readFileSync, rmSync, mkdirSync } from 'node:fs'
+import { mkdtempSync, readFileSync, rmSync, mkdirSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 import type {
@@ -176,9 +176,23 @@ describe('D3 W2 B01/B02 双业务复用与拒用对照',()=>{
       cmd:[process.execPath,script,'report-gap',join(fixtureDir,'d3-gap-evidence-alternatives.json')],env,
     })
     expect(good.exitCode).toBe(0)
-    const report=JSON.parse(good.stdout.toString()) as {status:string;locator:string;owner:string}
-    expect(report).toMatchObject({status:'tooling-blocked',owner:'D3'})
+    const report=JSON.parse(good.stdout.toString()) as {
+      status:string; locator:string;owner:string;verifiedAgainstRun:boolean;
+      impact:{templateId:string;sourceRequirementIds:string[];instancePaths:string[];checkIds:string[];runIds:string[]};
+    }
+    expect(report).toMatchObject({status:'tooling-blocked',owner:'D3',verifiedAgainstRun:false})
     expect(report.locator).toContain('证据替代')
+    expect(report.impact.templateId).toBe('archive-access')
+    expect(report.impact.sourceRequirementIds).toEqual(['A-claim-alternative-evidence-001'])
+    expect(report.impact.instancePaths).toEqual(['module/item-1-read'])
+    expect(report.impact.runIds).toEqual([])
+    const invalid=structuredClone(JSON.parse(readFileSync(join(fixtureDir,'d3-gap-evidence-alternatives.json'),'utf8')))
+    invalid.affected.sourceRequirementIds=[]
+    const invalidPath=join(folder,'d3-gap-missing-origin-id.json')
+    writeFileSync(invalidPath,JSON.stringify(invalid))
+    const rejected=Bun.spawnSync({cmd:[process.execPath,script,'report-gap',invalidPath],env})
+    expect(rejected.exitCode).not.toBe(0)
+    expect(rejected.stderr.toString()).toContain('D3_GAP_INVALID')
     const bad=Bun.spawnSync({cmd:[process.execPath,script,'report-gap',join(fixtureDir,'missing-gap.json')],env})
     expect(bad.exitCode).not.toBe(0)
   })
