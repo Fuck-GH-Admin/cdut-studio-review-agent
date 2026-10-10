@@ -305,6 +305,8 @@ export function validateTemplate(template: TemplateVersion): TemplateValidationI
 export function publishTemplate(templateId: string, version: number): TemplateVersion {
   const template = getTemplate(templateId, version)
   if (!template) throw new Error(`模板不存在: ${templateId}@${version}`)
+  // D0.5 只验证编排和 Pi 生效规则映射，不具备正式制度认证/发布能力。
+  if (template.sourceNote?.startsWith('D0.5_DEMO_ONLY:')) throw new Error('D0.5 演示草稿不得发布为正式审核模板')
   if (template.status === 'published') return template
   const issues = validateTemplate(template)
   const errors = issues.filter((issue) => issue.level === 'error')
