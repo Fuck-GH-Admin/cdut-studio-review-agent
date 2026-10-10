@@ -1,7 +1,7 @@
 import { afterAll, describe, expect, test } from 'bun:test'
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 import type { ReviewAuthoringWorkspaceV1 } from '@profer/shared'
 import {
   compileReviewAuthoringCandidateV1, validateReviewAuthoringV1, verifyReviewAuthoringManifestV1,
@@ -40,6 +40,24 @@ function basic(): ReviewAuthoringWorkspaceV1 {
 }
 
 describe('D1 作者态真实映射与来源治理（BDD）', () => {
+  test('Given 作者态 JSON When Agent 通过 CLI 验证和编译 Then 返回生效规则映射而不发布', () => {
+    const json = resolve(import.meta.dir, '../../../../../../docs/design/review-agent/fixtures/d1-authoring-text-v1.json')
+    const cli = resolve(import.meta.dir, '../../../../scripts/review-authoring-v1.ts')
+    const run = (args: string[]) => {
+      const result = Bun.spawnSync({
+        cmd: [process.execPath, cli, ...args],
+        env: { ...process.env, PROFER_CONFIG_DIR: join(tmpdir(), 'd1-cli-isolated') },
+      })
+      if (result.exitCode !== 0) throw new Error(result.stderr.toString())
+      return JSON.parse(result.stdout.toString()) as Record<string, any>
+    }
+    expect(run(['validate', json]).ok).toBeTrue()
+    const candidate = run(['candidate', json, 'text-review', '1'])
+    expect(candidate.manifest.mapping).toHaveLength(1)
+    expect(candidate.template.status).toBe('draft')
+    expect(candidate.manifest.publicationAllowed).toBeFalse()
+  })
+
   test('Given 自然语言责任 When 编译候选 Then 每条标准都与原 RuleSpec 同一真值且有来源映射', () => {
     const workspace = basic()
     expect(validateReviewAuthoringV1(workspace)).toEqual([])
