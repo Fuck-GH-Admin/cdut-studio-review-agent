@@ -1,4 +1,5 @@
 import { bindLocalReviewerCommand } from './review-ipc-actor-guard'
+import { assertSafeReviewStorageId } from './review-storage-id'
 /**
  * 内容审核专区 - IPC 处理器注册
  *
@@ -469,13 +470,14 @@ export function registerReviewIpc(): void {
     return publishTemplate(templateId, version)
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_RUNS_V2, (_e, caseId: string) => {
-    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    assertSafeReviewStorageId(caseId, 'caseId')
     const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
     const { reconcilePiReviewRunsWithReadReceipts } = require('./pi-case-review-service') as typeof import('./pi-case-review-service')
     return reconcilePiReviewRunsWithReadReceipts(caseId, listRunsV2(caseId))
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_RUN_V2, (_e, input: { caseId: string; runId: string }) => {
-    if (!input?.caseId || !input?.runId) throw new Error('参数非法')
+    assertSafeReviewStorageId(input?.caseId, 'caseId')
+    assertSafeReviewStorageId(input?.runId, 'runId')
     const { getRunV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
     return getRunV2(input.caseId, input.runId)
   })
@@ -509,12 +511,13 @@ export function registerReviewIpc(): void {
     return true
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.CREATE_CASE_V2, (_e, input: { caseId: string; templateId: string; version: number; payload: unknown; actor: import('@profer/shared').Actor }) => {
-    if (!input?.caseId || !input?.templateId) throw new Error('参数非法')
+    if (!input?.templateId) throw new Error('参数非法')
+    assertSafeReviewStorageId(input?.caseId, 'caseId')
     const { createCaseFromTemplate } = require('./application-service') as typeof import('./application-service')
     return createCaseFromTemplate(input.templateId, input.version, input.payload as never, input.actor, input.caseId)
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_AGGREGATE_V2, (_e, caseId: string) => {
-    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    assertSafeReviewStorageId(caseId, 'caseId')
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
     return getCaseV2Aggregate(caseId)
   })
@@ -556,7 +559,7 @@ export function registerReviewIpc(): void {
     return buildCaseTimeline(aggregate, runs, input.filterOperator)
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_RUN_OBSERVATIONS_V2, (_e, caseId: string) => {
-    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    assertSafeReviewStorageId(caseId, 'caseId')
     const { listRunsV2, readArtifact } = require('./run-store-v2') as typeof import('./run-store-v2')
     const runs = listRunsV2(caseId).filter((run) => run.status === 'completed' || run.status === 'partially-completed')
     if (runs.length === 0) return []
@@ -638,7 +641,7 @@ export function registerReviewIpc(): void {
     return readBatchStateV2(batchId)
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, async (_e, caseId: string) => {
-    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+    assertSafeReviewStorageId(caseId, 'caseId')
     // 薄委托共享运行服务（08 设计：IPC 与 Agent 工具同服务函数；人工发起 local-user）
     const { assembleAndRunReview } = require('./run-async-service') as typeof import('./run-async-service')
     return assembleAndRunReview(caseId)
