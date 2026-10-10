@@ -12,10 +12,11 @@ import { compileD2RuntimePlan, makeD2CandidateShell, attachD2RuntimePlan, verify
 import { createAggregate, readAggregate } from './case-store-v2'
 import { registerMaterial } from './material-service'
 import { setEvidenceLink } from './application-service'
-import { saveAuthoringCandidateDraft, isAuthoringCandidateDraft, publishTemplate } from './template-store'
+import { saveAuthoringCandidateDraft, isAuthoringCandidateDraft, publishTemplate, getTemplate } from './template-store'
 import { preparePiReviewRunV2, submitPiReviewResultV2 } from './pi-case-review-service'
 import { getRunV2 } from './run-store-v2'
 import { decideWorkspaceCaseV2 } from './workspace-business-service-v2'
+import { recordStageDecision, resolveAppealV2 } from './stage-workflow'
 
 const home = mkdtempSync(join(tmpdir(), 'cdut-d2-real-pi-'))
 process.env.PROFER_CONFIG_DIR = home
@@ -189,6 +190,18 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
     })
     expect(decision.ok).toBeFalse()
     if (!decision.ok) expect(decision.code).toBe('AGENT_DECISION_DISABLED')
+    const stageDecision = await recordStageDecision(info.id, {
+      requestId: 'd2-forbidden-stage', actor, expectedRevision: current.caseV2.revision,
+      payload: { action: 'stage-pass', taskId: 'forged-stage-task', reason: '技术审核不能当成行政阶段通过' },
+    }, getTemplate('text-review', 1)!)
+    expect(stageDecision.ok).toBeFalse()
+    if (!stageDecision.ok) expect(stageDecision.code).toBe('AGENT_DECISION_DISABLED')
+    const appeal = await resolveAppealV2(info.id, {
+      requestId: 'd2-forbidden-appeal', actor, expectedRevision: current.caseV2.revision,
+      payload: { appealId: 'forged-appeal', resolution: 'amend-original', reason: '技术审核不能更正不存在的正式决定' },
+    })
+    expect(appeal.ok).toBeFalse()
+    if (!appeal.ok) expect(appeal.code).toBe('AGENT_DECISION_DISABLED')
   })
 
   test('档案查阅的真实 SourceRef 不得覆盖复制：Pi 续交完成逐操作三项检查', async () => {
