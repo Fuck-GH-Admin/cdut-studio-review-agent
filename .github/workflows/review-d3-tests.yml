@@ -6,6 +6,8 @@ on:
       - 'packages/shared/src/types/index.ts'
       - 'apps/electron/src/main/lib/review/review-d3-**'
       - 'apps/electron/scripts/review-d3-**'
+      - 'apps/electron/scripts/test_review_d3_md_coverage.py'
+      - 'docs/design/review-agent/3[12]-*'
       - 'docs/design/review-agent/23-*'
       - 'docs/design/review-agent/fixtures/d3-*'
       - '.github/workflows/review-d3-tests.yml'
@@ -28,6 +30,8 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: Typecheck all packages
         run: bun run typecheck
+      - name: D3 original Markdown responsibility coverage and anti-omission gate
+        run: python3 -m unittest discover -s apps/electron/scripts -p 'test_review_d3_md_coverage.py' -v
       - name: D3 frozen library and CLI BDD
         run: bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-module-library.test.ts
       - name: D3 synthetic B01/B02 cross-business handoff
