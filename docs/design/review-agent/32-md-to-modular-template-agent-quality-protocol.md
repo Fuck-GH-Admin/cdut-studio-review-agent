@@ -53,7 +53,7 @@ python3 apps/electron/scripts/review-d3-md-coverage.py \
 四份 JSON 的结构可参照 `docs/design/review-agent/fixtures/d3-md-archive-7-pilot-*.json`，真实 D2 产物参照 `fixtures/d3-md-archive-b-actual-plan-snapshot.json`。
 
 **使用规则**：
-- `catalog.scope=full`：必须提供完整 MD 字节、源摘要且 Rxx 规则表的 ID 与 catalog 精确一致；检测遗漏 1 条或外加 1 条即失败。非 Rxx 原文仍需由审查者建立独立索引，现有自动索引无法识别的必须人工核对，不可宣称已验证。
+- `catalog.scope=full`：必须提供完整 MD 字节、源摘要且 MD 中所有 Rxx 规则表的 ID 都包含在 catalog；漏任一条即失败。**额外的分支、例外、材料槽位或叙述责任也允许纳入 catalog**，但非表格规则必须提供能在完整 MD 字节中定位的原文 `sourceAnchor`；这防止只列 R01–R42 就冒充全部原文已覆盖。仍需独立审查者判断哪些非表格义务必须入账。
 - `scope=pilot`：明确 selectionReason；允许只审一小部分，未纳入的 runtime Check 会被报告，但 **PASS 只表示该小样本结构对照通过，永远不签完整业务模板**。
 - 每条源责任恰有一个 ledger disposition；`tooling-blocked` 必须指向已登记的 `gapId`、原文责任和复现；`policy-awaiting-confirmation` 不能在 D2 中变成已确认制度；编译状态必须能在 D2 mapping 中找到 Check。
 - 独立 gold 能约束所需 Check、目标 subject、来源 IDs，以及少量不可遗漏的 RuleSpec 关键语义文字。关键词只防明显漏写，不证明自然语言等价或法律正确。
