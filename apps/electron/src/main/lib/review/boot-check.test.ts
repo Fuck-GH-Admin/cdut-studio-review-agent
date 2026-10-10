@@ -17,8 +17,9 @@ describe('runBootCheckV2（M5）', () => {
   test('Given 首次启动 When 检查 Then 注入当前默认模板并提示发布', () => {
     const result = runBootCheckV2()
     expect(result.templatesSeeded).toBeGreaterThanOrEqual(ALL_DEFAULT_TEMPLATES_V2.length)
-    expect(result.templatesPublished).toBe(0)
-    expect(result.notes.some((note) => note.includes('尚无已发布模板'))).toBeTrue()
+    // 当前默认综测 v3 内置模板在播种时会自动完成技术模板发布。
+    expect(result.templatesPublished).toBeGreaterThanOrEqual(1)
+    expect(result.notes.some((note) => note.includes('尚无已发布模板'))).toBeFalse()
   })
 
   test('Given 二次启动 When 检查 Then 幂等（不再注入）', () => {
