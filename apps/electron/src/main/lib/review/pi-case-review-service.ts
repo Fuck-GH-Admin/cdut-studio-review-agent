@@ -6,6 +6,7 @@ import { existsSync, realpathSync } from 'node:fs'
 import { extname, isAbsolute, join, relative, resolve, sep } from 'node:path'
 import type { AiOpinion, CaseAggregateV2, CheckResult, FieldValue, Observation, ReviewRunV2, RuleSpec, SourceRef, TemplateVersion } from '@profer/shared'
 import { getConfigDir } from '../config-paths'
+import { assertSafeReviewStorageId } from './review-storage-id'
 import { getCaseV2Aggregate } from './application-service'
 import { buildDeterministicRuleChecks } from './v2-executor-factory'
 import { combineCoverage } from './coverage-ledger'
@@ -89,7 +90,10 @@ export interface PiReviewPrepareResult {
   inheritedReadDocumentNames?: string[]
 }
 
-const CASE_ROOT = (caseId: string): string => join(getConfigDir(), 'review-cases', caseId)
+const CASE_ROOT = (caseId: string): string => {
+  assertSafeReviewStorageId(caseId, 'caseId')
+  return join(getConfigDir(), 'review-cases', caseId)
+}
 interface PiDocumentReadState {
   blocks?: Record<string, string[]>
   previewedDocumentVersionIds?: string[]
