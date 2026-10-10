@@ -103,6 +103,11 @@ export interface ReviewAuthoringWorkspaceV1 {
   }
   sources: ReviewAuthoringSourceV1[]
   sourceBindings: ReviewAuthoringSourceBindingV1[]
+  /**
+   * D3 的不可变共享资产锁，只记录真正 reuse/import 的共享版本。
+   * 未列出的 modules 是 workspace-local 草稿；不能用当前环境目录猜测身份。
+   */
+  sharedModuleLocks?: import('./review-d3').ReviewD3ModuleLock[]
   advanced?: ReviewAuthoringAdvancedV1
 }
 

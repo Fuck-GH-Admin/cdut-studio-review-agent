@@ -1,0 +1,14 @@
+{
+  "id": "d3-plain-case",
+  "templateId": "plain-document",
+  "templateVersion": 1,
+  "title": "独立最简合成文本审核",
+  "objectType": "document",
+  "caseFields": {},
+  "subjects": [],
+  "documents": [],
+  "stage": "draft",
+  "revision": 0,
+  "createdAt": "2026-10-11T00:00:00.000Z",
+  "updatedAt": "2026-10-11T00:00:00.000Z"
+}

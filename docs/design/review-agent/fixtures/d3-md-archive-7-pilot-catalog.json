@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "scope": "pilot",
+  "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+  "sourceSha256": "65157e002dd4d1ccc08d32d341b4a1f7eacfc55d6a3c13a5da949aaf122f9785",
+  "selectionReason": "Independent seven-duty excerpt of original §6 R01-R42, purposely designed to expose missing duties in Agent B's six-Check technical fragment. Never a full-template signoff.",
+  "requirements": [
+    {
+      "id": "R08",
+      "locator": "原 MD §6 / R08",
+      "purpose": "代理人与委托人双方身份分别核对"
+    },
+    {
+      "id": "R09",
+      "locator": "原 MD §6 / R09",
+      "purpose": "代理范围匹配档案件与具体操作"
+    },
+    {
+      "id": "R10",
+      "locator": "原 MD §6 / R10",
+      "purpose": "代理期间和方式匹配"
+    },
+    {
+      "id": "R18",
+      "locator": "原 MD §6 / R18",
+      "purpose": "馆藏目录公布与可利用的开放状态必须分开"
+    },
+    {
+      "id": "R23",
+      "locator": "原 MD §6 / R23",
+      "purpose": "复制页数份数与独立授权，不继承查阅"
+    },
+    {
+      "id": "R29",
+      "locator": "原 MD §6 / R29",
+      "purpose": "可核验的合法电子授权替代不能一律拒绝"
+    },
+    {
+      "id": "R33",
+      "locator": "原 MD §6 / R33",
+      "purpose": "将待有权部门审批与申请人缺件区分"
+    }
+  ]
+}

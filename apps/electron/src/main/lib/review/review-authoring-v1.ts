@@ -11,6 +11,7 @@ import type {
 import { previewDemo, projectSimpleDemoDraft, validateDemoState, type DemoState, type DemoPreview } from './semantic-module-demo'
 import { resolveEffectiveRules, hashEffectiveRuleSet } from './effective-rules'
 import { validateTemplate } from './template-store'
+import { validateD3WorkspaceLocks } from './review-d3-workspace-locks'
 
 const ID = /^[a-z][a-z0-9-]{0,79}$/
 const sha = (value: unknown): string => createHash('sha256').update(JSON.stringify(value), 'utf8').digest('hex')
@@ -26,7 +27,7 @@ const sourceUsableInCandidate = (source: ReviewAuthoringSourceV1): boolean =>
   (source.kind === 'synthetic' || source.kind === 'user-request') &&
   source.applicability === 'request-scope'
 const STRUCTURE_KEYS = {
-  workspace: ['schemaVersion', 'workspaceId', 'revision', 'definitions', 'sources', 'sourceBindings', 'advanced'],
+  workspace: ['schemaVersion', 'workspaceId', 'revision', 'definitions', 'sources', 'sourceBindings', 'sharedModuleLocks', 'advanced'],
   definitions: ['modules', 'templates'],
   module: ['moduleId', 'version', 'name', 'purpose', 'scope', 'limits', 'source', 'tasks', 'parameters', 'references'],
   template: ['templateId', 'version', 'name', 'purpose', 'limits', 'source', 'scenarios', 'modules', 'localTasks'],
@@ -89,6 +90,7 @@ export function validateReviewAuthoringV1(workspace: ReviewAuthoringWorkspaceV1)
     }
   }
   issues.push(...validateDemoState(toDemo(workspace)))
+  issues.push(...validateD3WorkspaceLocks(workspace))
   const sourceMap = new Map<string, ReviewAuthoringSourceV1>()
   for (const source of workspace.sources) {
     if (!ID.test(source.sourceId)) issues.push('来源 ID 非法：' + source.sourceId)
@@ -166,6 +168,8 @@ export function compileReviewAuthoringCandidateV1(
   if (workspace.advanced && Object.values(workspace.advanced).some((value) => Array.isArray(value) && value.length > 0)) {
     throw new Error('UNMAPPABLE_ADVANCED: 高级角色/Claim/Evidence 关系尚未映射至有效规则，不得静默投影')
   }
+  const lockIssues = validateD3WorkspaceLocks(workspace, true)
+  if (lockIssues.length) throw new Error('D3_FROZEN_LOCK_INVALID: ' + lockIssues.join('；'))
   // 先递归审查全部引用树是否能无损落到旧模板，再按当前情景生成候选任务。
   const template = projectSimpleDemoDraft(toDemo(workspace), templateId, version)
   const preview = previewDemo(toDemo(workspace), templateId, version)

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "G29",
+    "sourceRequirementIds": [
+      "R08",
+      "R09",
+      "R10",
+      "R29"
+    ],
+    "reproduce": "D1 accepts advanced evidenceRelations; actual D2 CLI preview rejects with D2_UNMAPPED_ADVANCED; refer to PR #12 gap-p2-advanced-reproduced-response.json",
+    "verifiedAgainstRun": false,
+    "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md"
+  }
+]
