@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, test } from 'bun:test'
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, readFileSync, rmSync, unlinkSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import type { ReviewAuthoringWorkspaceV1 } from '@profer/shared'
@@ -200,6 +200,83 @@ describe('D1 作者态修订存储与候选发布隔离', () => {
     altered.workspace.definitions.modules[0]!.tasks[0]!.requirement = '历史被改写'
     writeFileSync(path, JSON.stringify(altered))
     expect(() => getReviewAuthoringRevisionV1('simple-d1', 1)).toThrow('内容摘要不匹配')
+  })
+
+  test('Given 已登记的 D1 候选 When 草稿删除/替换说明字段并再次保存 Then 发布服务仍拒绝', () => {
+    const workspace = basic()
+    workspace.definitions.templates[0]!.templateId = 'candidate-immutable-gate'
+    workspace.sourceBindings[0]!.checkId = 'candidate-immutable-gate@1:module/text/check'
+    const candidate = compileReviewAuthoringCandidateV1(workspace, 'candidate-immutable-gate', 1)
+    saveDraft(candidate.template)
+    // 模拟普通编辑器直接删掉候选标签，同时改写标题与正文。
+    const stripped = structuredClone(candidate.template)
+    delete stripped.sourceNote
+    stripped.name = '伪装普通草稿'
+    stripped.sections![0]!.criteria[0]!.title = '看似普通的审核要求'
+    saveDraft(stripped)
+    expect(() => publishTemplate(stripped.templateId, 1)).toThrow('模板发布资格未获允许')
+    // 第二次把标记替换为无关文本，也不能重新取得资格。
+    saveDraft({ ...stripped, sourceNote: '用户随意输入的说明文字' })
+    expect(() => publishTemplate(stripped.templateId, 1)).toThrow('模板发布资格未获允许')
+    // 直接在首次登记前剥除说明，结构本身仍会被识别为 D1 候选。
+    const firstSave = { ...stripped, templateId: 'first-save-stripped' }
+    saveDraft(firstSave)
+    expect(() => publishTemplate(firstSave.templateId, 1)).toThrow('模板发布资格未获允许')
+  })
+
+  test('Given 模板资格侧记录不存在 When 首次发布 Then 缺失资格不能默认放行', () => {
+    const workspace = basic()
+    workspace.definitions.templates[0]!.templateId = 'qualification-absent'
+    workspace.sourceBindings[0]!.checkId = 'qualification-absent@1:module/text/check'
+    const candidate = compileReviewAuthoringCandidateV1(workspace, 'qualification-absent', 1)
+    saveDraft(candidate.template)
+    const qualificationPath = join(home, 'review-template-controls', 'qualification-absent', '1.json')
+    unlinkSync(qualificationPath)
+    expect(() => publishTemplate('qualification-absent', 1)).toThrow('发布资格未获允许')
+  })
+
+  test('Given 父摘要链被篡改 When 读历史或继续编辑 Then 明确拒绝而不产生新修订', () => {
+    const name = 'parent-chain-d1'
+    const draft = { ...basic(), workspaceId: name }
+    const one = saveReviewAuthoringRevisionV1(draft, 0, 'test')
+    const secondDraft = { ...structuredClone(draft), revision: 2 }
+    const two = saveReviewAuthoringRevisionV1(secondDraft, 1, 'test')
+    const thirdDraft = { ...structuredClone(draft), revision: 3 }
+    const three = saveReviewAuthoringRevisionV1(thirdDraft, 2, 'test')
+    expect(two.parentDigest).toBe(one.digest)
+    expect(three.parentDigest).toBe(two.digest)
+    const path = join(home, 'review-authoring-v1', name, 'revisions', '3.json')
+    const broken = JSON.parse(readFileSync(path, 'utf8')) as typeof three
+    broken.parentDigest = 'forged-parent-digest'
+    writeFileSync(path, JSON.stringify(broken))
+    expect(() => getReviewAuthoringRevisionV1(name)).toThrow('AUTHORING_HISTORY_BROKEN: 父版本摘要链不匹配')
+    expect(() => getReviewAuthoringRevisionV1(name, 3)).toThrow('父版本摘要链不匹配')
+    expect(() => saveReviewAuthoringRevisionV1({ ...draft, revision: 4 }, 3, 'test')).toThrow('父版本摘要链不匹配')
+    // 恢复当前父指纹后，篡改更早的父链同样不可绕过递归验证。
+    broken.parentDigest = two.digest
+    writeFileSync(path, JSON.stringify(broken))
+    const parentPath = join(home, 'review-authoring-v1', name, 'revisions', '2.json')
+    const brokenParent = JSON.parse(readFileSync(parentPath, 'utf8')) as typeof two
+    brokenParent.parentDigest = 'forged-grandparent'
+    writeFileSync(parentPath, JSON.stringify(brokenParent))
+    expect(() => getReviewAuthoringRevisionV1(name, 3)).toThrow('父版本摘要链不匹配')
+  })
+
+  test('Given 历史缺失或首版本伪造父摘要 When 读取最新草稿 Then 不默默忽略损坏', () => {
+    const name = 'missing-parent-d1'
+    const draft = { ...basic(), workspaceId: name }
+    saveReviewAuthoringRevisionV1(draft, 0, 'test')
+    saveReviewAuthoringRevisionV1({ ...draft, revision: 2 }, 1, 'test')
+    const base = join(home, 'review-authoring-v1', name, 'revisions')
+    const first = join(base, '1.json')
+    const parsed = JSON.parse(readFileSync(first, 'utf8')) as ReturnType<typeof saveReviewAuthoringRevisionV1>
+    parsed.parentDigest = 'invalid-first-parent'
+    writeFileSync(first, JSON.stringify(parsed))
+    expect(() => getReviewAuthoringRevisionV1(name, 1)).toThrow('父版本摘要链不匹配')
+    delete parsed.parentDigest
+    writeFileSync(first, JSON.stringify(parsed))
+    unlinkSync(first)
+    expect(() => getReviewAuthoringRevisionV1(name)).toThrow('AUTHORING_HISTORY_BROKEN: 历史修订缺失')
   })
 
   test('Given D1 已编译候选 When 经老模板服务试图发布 Then 必须拒绝', () => {
