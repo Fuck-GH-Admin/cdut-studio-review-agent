@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "workspaceId": "d3-plain-text-starter",
+  "revision": 1,
+  "definitions": {
+    "modules": [],
+    "templates": [
+      {
+        "templateId": "plain-document",
+        "version": 1,
+        "name": "单文档章节检查（合成）",
+        "purpose": "根据用户明确给出的结构要求检查一份文本",
+        "limits": "只提供文档检查技术建议，不能由此获得校方批准",
+        "source": {
+          "kind": "synthetic",
+          "note": "D3 最小合成作者态样本"
+        },
+        "modules": [],
+        "localTasks": [
+          {
+            "id": "heading-coverage",
+            "title": "明确章节的完整性",
+            "requirement": "核对当前文件是否包含申请人指定的摘要、正文及结论标题；不可读时记录待核",
+            "completion": "分别给出符合、缺失或待核及真实出处",
+            "limits": "不新增未说明的学校格式规则"
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "sourceId": "user-synthetic-spec",
+      "kind": "synthetic",
+      "label": "合成用户文本要求",
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "只用于技术预审，不是正式学校校规"
+    }
+  ],
+  "sourceBindings": [
+    {
+      "checkId": "plain-document@1:local/heading-coverage",
+      "sourceIds": [
+        "user-synthetic-spec"
+      ]
+    }
+  ]
+}
