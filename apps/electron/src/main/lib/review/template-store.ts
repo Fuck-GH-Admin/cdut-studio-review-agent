@@ -79,9 +79,9 @@ function isCandidateDraft(template: TemplateVersion): boolean {
     ((template.sections ?? []).some((section) =>
       section.id === 'semantic-tasks' && section.criteria.some((criterion) => criterion.id.startsWith('demo-'))))
 }
-function registerPublicationControl(template: TemplateVersion): PublicationControl {
+function registerPublicationControl(template: TemplateVersion, forceCandidate: boolean): PublicationControl {
   const existing = readPublicationControl(template.templateId, template.version)
-  const classification: PublicationClass = existing?.classification === 'candidate-held' || isCandidateDraft(template)
+  const classification: PublicationClass = forceCandidate || existing?.classification === 'candidate-held' || isCandidateDraft(template)
     ? 'candidate-held' : 'regular-draft'
   const next: PublicationControl = {
     schemaVersion: 1, templateId: template.templateId, version: template.version, classification,
@@ -206,7 +206,7 @@ export function restoreTemplateToLibrary(templateId: string): TemplateVersion {
 }
 
 /** 保存草稿（status 强制 draft；version 不可与已有 published 冲突） */
-export function saveDraft(template: TemplateVersion): TemplateVersion {
+function saveDraftControlled(template: TemplateVersion, forceCandidate: boolean): TemplateVersion {
   if (template.status !== 'draft') throw new Error('saveDraft 只接受草稿状态模板')
   return withTemplateVersionLock(template.templateId, template.version, () => {
     const existing = getTemplate(template.templateId, template.version)
@@ -215,12 +215,23 @@ export function saveDraft(template: TemplateVersion): TemplateVersion {
     }
     // 先登记（如需则永久封存）服务端资格，再写可编辑的草稿正文。
     // 写入中途失败只可能导致旧草稿被拒绝发布，不会意外放行候选。
-    registerPublicationControl(template)
+    registerPublicationControl(template, forceCandidate)
     const filePath = versionPath(template.templateId, template.version)
     mkdirSync(join(templatesRoot(), template.templateId, 'versions'), { recursive: true })
     writeAtomic(filePath, template)
     return template
   })
+}
+/** 通用本地草稿编辑不具备把既有 candidate-held 转成可发布模板的权限。 */
+export function saveDraft(template: TemplateVersion): TemplateVersion {
+  return saveDraftControlled(template, false)
+}
+/**
+ * D1 作者态专用入口：由内部编译/存储服务强制登记不可发布资格。
+ * 不依据用户可编辑的 sourceNote，也不提供任何候选解锁接口。
+ */
+export function saveAuthoringCandidateDraft(template: TemplateVersion): TemplateVersion {
+  return saveDraftControlled(template, true)
 }
 
 export interface TemplateValidationIssue {
