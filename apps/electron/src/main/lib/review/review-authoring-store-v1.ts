@@ -41,7 +41,7 @@ function validateEnvelope(record: ReviewAuthoringRevisionV1): void {
 export function getReviewAuthoringRevisionV1(id: string, revision?: number): ReviewAuthoringRevisionV1 | undefined {
   const dir = join(root(id), 'revisions')
   if (!existsSync(dir)) return undefined
-  const revisions = readdirSync(dir).filter((value) => /^[1-9]\\d*\\.json$/.test(value))
+  const revisions = readdirSync(dir).filter((value) => /^[1-9]\d*\.json$/.test(value))
     .map((name) => Number(name.slice(0, -5))).filter((n) => Number.isSafeInteger(n))
     .sort((a, b) => a - b)
   const selected = revision ?? revisions.at(-1)
