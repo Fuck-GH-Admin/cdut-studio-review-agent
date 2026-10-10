@@ -9,6 +9,7 @@ import { publishTemplate, saveDraft, getTemplate } from './template-store'
 import { computeRunInputHash } from './run-service-v2'
 import { saveRunV2 } from './run-store-v2'
 import { runBatchAutomation, finalizeCompletedBatch } from './batch-automation-service'
+import { checkAutoBatchAction } from './batch-automation-gates'
 import { respondSupplementV2, resolveSupplementV2 } from './stage-workflow'
 import { getSettings, updateSettings, clearSettingsCache } from '../settings-service'
 
@@ -242,6 +243,41 @@ describe('C 阶段：显式授权的自动通过与退回', () => {
     expect(result.ok).toBeFalse()
     if (!result.ok) expect(result.code).toBe('AGENT_DECISION_DISABLED')
     expect(readAggregate(a.caseId)?.decisions).toHaveLength(0)
+  })
+
+  test('自动审批不接受缺失有效材料的本轮读取记录，即使材料标记为历史已读', async () => {
+    const a = await createCase('compliant')
+    const batchId = makeBatch([a.caseId])
+    updateSettings({ reviewAgentAutoApproval: true })
+    configureBatchAutomation(batchId, 'auto-approve', true)
+    const template = getTemplate('batch-auto-test', 1)!
+    const runWithoutCoverage = {
+      ...a.run,
+      coverage: { ...a.run.coverage, documents: [] },
+    }
+    // Direct gate test: the legacy aggregate document "usage=read" is not
+    // evidence that the current autonomous run actually inspected it.
+    const gate = checkAutoBatchAction(readBatchStateV2(batchId)!, readAggregate(a.caseId)!, runWithoutCoverage, template, 'pass')
+    expect(gate.allowed).toBeFalse()
+    if (!gate.allowed) expect(gate.reason).toContain('全部有效材料')
+  })
+
+  test('有效规则集有两条但运行重复同一条检查时，不得假称所有规则检查完成', async () => {
+    const a = await createCase('compliant')
+    const batchId = makeBatch([a.caseId])
+    updateSettings({ reviewAgentAutoApproval: true })
+    configureBatchAutomation(batchId, 'auto-approve', true)
+    const template = getTemplate('batch-auto-test', 1)!
+    // "proof-rule" is duplicated in the checks while "other-rule" has no
+    // matching result. This must be rejected even if check count matches plan.
+    const duplicated = {
+      ...a.run,
+      inputManifest: { ...a.run.inputManifest, effectiveRuleIds: ['proof-rule', 'other-rule'] },
+      checks: [{ ...a.run.checks[0]! }, { ...a.run.checks[0]!, checkId: 'duplicate' }],
+      coverage: { ...a.run.coverage, plannedChecks: 2, completedChecks: 2, effectiveVerdicts: 2 },
+    }
+    const gate = checkAutoBatchAction(readBatchStateV2(batchId)!, readAggregate(a.caseId)!, duplicated, template, 'pass')
+    expect(gate.allowed).toBeFalse()
   })
 
   test('已真实形成所有最终业务决定后才允许批次定稿', async () => {
