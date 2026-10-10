@@ -212,4 +212,26 @@ describe('D0.5 Agent-first 轻量语义模块（BDD）', () => {
     const afterIds = after.sections![0]!.criteria.map((it) => it.id).sort()
     expect(afterIds).toEqual(beforeIds)
   })
+
+  test('Given 复合语义模块 When 引用子模块并局部补充责任 Then 预览展开稳定子责任而不规定执行顺序', () => {
+    const child = moduleOf('relation-proof', '核对当前对象的授权关系')
+    const group = moduleOf('composite-authority', '核对被委托人的办理目的')
+    group.references = [{ id: 'relation', moduleId: 'relation-proof', version: 1 }]
+    const template = {
+      ...templateOf(), modules: [{ id: 'authority', moduleId: 'composite-authority', version: 1 }],
+    }
+    const original = setup([child, group], template)
+    const edited = applyDemoTransaction(original, {
+      expectedRevision: 1, operations: [{
+        op: 'upsert-local-task', templateId: template.templateId, version: 1,
+        task: task('text-scope', '只核对用户明确提出的文本范围，不进行正式审批'),
+      }],
+    })
+    expect(original.templates[0]?.localTasks).toHaveLength(0)
+    const preview = previewDemo(edited, template.templateId, 1)
+    expect(preview.blocked).toBeFalse()
+    expect(preview.tasks).toHaveLength(3)
+    expect(preview.tasks.map((it) => it.checkId)).toContain('module/authority/relation/check')
+    expect(preview.tasks.find((it) => it.checkId === 'module/authority/relation/check')?.moduleRef?.moduleId).toBe('relation-proof')
+  })
 })
