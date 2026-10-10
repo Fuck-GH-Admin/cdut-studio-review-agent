@@ -11,6 +11,7 @@ import { previewDemo, type DemoState } from './semantic-module-demo'
 import { compileD2RuntimePlan, makeD2CandidateShell, attachD2RuntimePlan, verifyD2InstalledPlan, verifyD2PiRun } from './review-d2-runtime'
 import { createAggregate, readAggregate } from './case-store-v2'
 import { registerMaterial } from './material-service'
+import { setEvidenceLink } from './application-service'
 import { saveAuthoringCandidateDraft, publishTemplate } from './template-store'
 import { preparePiReviewRunV2, submitPiReviewResultV2 } from './pi-case-review-service'
 import { getRunV2 } from './run-store-v2'
@@ -169,6 +170,15 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
 
   test('档案查阅的真实 SourceRef 不得覆盖复制：Pi 续交完成逐操作三项检查', async () => {
     const info = await setup('archive-access', selection('archive-access'))
+    // 仅将查阅授权绑定到查阅主体，并由人工确认；复制不可继承该事实。
+    const link = await setEvidenceLink(info.id, {
+      requestId: 'd2-confirm-read', actor, expectedRevision: readAggregate(info.id)!.caseV2.revision,
+      payload: {
+        documentVersionId: info.sourceRef.documentVersionId, subjectIds: ['d2-archive-read'],
+        supportsFact: 'd2:archive:read', linkedBy: 'user',
+      },
+    })
+    if (!link.ok) throw new Error(link.message)
     const prepared = preparePiReviewRunV2({ caseId: info.id, sessionId: 'd2-pi-archive', turnId: 'd2-archive-turn' })
     const byKey = (key: string) => info.plan.mapping.find((entry) => entry.objectKey === key)!
     const binding = { assignmentId: prepared.assignmentId, sessionId: 'd2-pi-archive', caseId: info.id, runId: prepared.runId }
@@ -186,6 +196,16 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
     expect(first.status).toBe('running')
     expect(first.missingChecks.some((text) => text.includes(copy.ruleId))).toBeTrue()
     expect(first.missingChecks.some((text) => text.includes(open.ruleId))).toBeTrue()
+    const crossAuthorization = submitPiReviewResultV2({
+      binding, triggeredBy: 'user',
+      result: {
+        summary: '尝试用查阅凭据替代复制授权，应被系统拒绝。',
+        checks: [{ ruleId: copy.ruleId, subjectIds: [copy.subjectId!], status: 'compliant', reason: '不应通过', sourceRefs: [info.sourceRef] }],
+        finish: true,
+      },
+    })
+    expect(crossAuthorization.rejected.some((entry) => entry.reason.includes('逐操作'))).toBeTrue()
+    expect(crossAuthorization.missingChecks.some((entry) => entry.includes(copy.ruleId))).toBeTrue()
     expect(verifyD2PiRun(readAggregate(info.id)!, getRunV2(info.id, prepared.runId)!).complete).toBeFalse()
     const second = submitPiReviewResultV2({
       binding, triggeredBy: 'user',
