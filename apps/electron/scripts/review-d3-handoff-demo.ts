@@ -16,7 +16,7 @@ import {
 import { compileD2RuntimePlan } from '../src/main/lib/review/review-d2-runtime'
 import { validateReviewAuthoringV1 } from '../src/main/lib/review/review-authoring-v1'
 
-const fixtureDir=resolve(import.meta.dir,'../../../../docs/design/review-agent/fixtures')
+const fixtureDir=resolve(import.meta.dir,'../../../docs/design/review-agent/fixtures')
 const read=<T>(file:string):T=>JSON.parse(readFileSync(join(fixtureDir,file),'utf8')) as T
 const save=(file:string,value:unknown):void=>{
   writeFileSync(file,JSON.stringify(value,null,2)+'\n',{encoding:'utf8',flag:'wx'})
