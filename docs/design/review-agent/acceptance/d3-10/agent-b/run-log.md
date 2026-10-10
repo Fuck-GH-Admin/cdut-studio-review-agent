@@ -38,3 +38,33 @@
 
 Errors:
 
+
+
+## P1/P2 新增独立真实命令与回执（非旧33条 CLI 回归）
+
+固定 SHA 仍为 `d16f047af653f7ba259456807c1fc150e9d0f417`。GitHub Actions 中继承原版 Agent B 工作区产物后，执行下列额外命令：
+
+```bash
+bun docs/design/review-agent/acceptance/d3-10/agent-b/tests/agent-b-p1-p2.ts
+# exitCode: 0
+```
+
+该受控脚本在一个新的临时 `PROFER_CONFIG_DIR` 内，调用实际 `importD3Bundle`、`createD2TechnicalCase`、`registerMaterial`、`setEvidenceLink`、`preparePiReviewRunV2`、`submitPiReviewResultV2`、`getRunV2`、`verifyD2PiRun`。**两个实际 Pi Run ID** 为 `run-pi-mv2zcewk-7y1vm`（原版 A-r3）和 `run-pi-mv2zcex0-oav4q`（隔离合成证据门禁探针）。
+
+此外在同一隔离环境里真实执行：
+
+```bash
+bun apps/electron/scripts/review-d2-plan.ts preview \
+  docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/archive-r3-advanced-evidence-alternative.json \
+  docs/design/review-agent/fixtures/d2-selection-archive.json \
+  docs/design/review-agent/acceptance/d3-10/agent-b/tests/archive-case.json
+# exitCode: 1
+# stderr: D2_UNMAPPED_ADVANCED: 高级 Claim/Evidence 关系尚无无损执行映射，不得忽略
+
+bun apps/electron/scripts/review-d3-library.ts report-gap \
+  docs/design/review-agent/acceptance/d3-10/agent-b/gaps/gap-p2-advanced-reproduced-request.json
+# exitCode: 0
+# status: tooling-blocked; verifiedAgainstRun: false
+```
+
+原样 CLI 完整路径、退出码、stdout/stderr、独立校验见 `gaps/advanced-evidence-compile-repro.json` 和 `gaps/gap-p2-advanced-cli-trace.json`。该补测脚本的错误数组 `tests/p1-p2-execution-summary.json.errors=[]`。被拒绝的 Pi tool 回执全部保存在 `plans/pi-archive-r3-own-run.json` 和 `plans/pi-copy-operation-guard-probe.json`，不是人工假造的结果。
