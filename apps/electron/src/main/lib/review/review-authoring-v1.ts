@@ -25,6 +25,30 @@ const toDemo = (workspace: ReviewAuthoringWorkspaceV1): DemoState => ({
 const sourceUsableInCandidate = (source: ReviewAuthoringSourceV1): boolean =>
   (source.kind === 'synthetic' || source.kind === 'user-request') &&
   source.applicability === 'request-scope'
+const STRUCTURE_KEYS = {
+  workspace: ['schemaVersion', 'workspaceId', 'revision', 'definitions', 'sources', 'sourceBindings', 'advanced'],
+  definitions: ['modules', 'templates'],
+  module: ['moduleId', 'version', 'name', 'purpose', 'scope', 'limits', 'source', 'tasks', 'parameters', 'references'],
+  template: ['templateId', 'version', 'name', 'purpose', 'limits', 'source', 'scenarios', 'modules', 'localTasks'],
+  responsibility: ['id', 'title', 'requirement', 'completion', 'limits'],
+  use: ['id', 'moduleId', 'version', 'scenario', 'objectKey', 'bindings'],
+  parameter: ['key', 'description', 'defaultValue'],
+  source: ['sourceId', 'kind', 'label', 'reference', 'verification', 'applicability', 'note'],
+  inlineSource: ['kind', 'note'],
+  documentReference: ['documentVersionId', 'locator', 'excerpt'],
+  binding: ['checkId', 'sourceIds', 'applicabilityNote'],
+  advanced: ['objectRoleKeys', 'claimKeys', 'evidenceRelations'],
+  evidenceRelation: ['claimKey', 'requiredSourceIds'],
+} as const
+
+/** 未认识的结构化约束不等于空条件：不能因 schema 较轻就静默忽略。 */
+function checkKnownFields(value: unknown, allowed: readonly string[], at: string, issues: string[]): void {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return
+  for (const key of Object.keys(value)) {
+    if (!allowed.includes(key)) issues.push(at + ' 含未映射结构化字段：' + key)
+  }
+}
+
 
 /** 不使用模型语义推测来填补 sourceBindings，未映射一律报告。 */
 export function validateReviewAuthoringV1(workspace: ReviewAuthoringWorkspaceV1): string[] {
@@ -37,6 +61,32 @@ export function validateReviewAuthoringV1(workspace: ReviewAuthoringWorkspaceV1)
   }
   if (!Array.isArray(workspace.sources) || !Array.isArray(workspace.sourceBindings)) {
     return [...issues, '来源或责任绑定列表缺失']
+  }
+  checkKnownFields(workspace, STRUCTURE_KEYS.workspace, '作者态工作区', issues)
+  checkKnownFields(workspace.definitions, STRUCTURE_KEYS.definitions, '作者态定义', issues)
+  for (const mod of workspace.definitions.modules) {
+    checkKnownFields(mod, STRUCTURE_KEYS.module, mod.moduleId, issues)
+    checkKnownFields(mod.source, STRUCTURE_KEYS.inlineSource, mod.moduleId + '.source', issues)
+    for (const task of mod.tasks ?? []) checkKnownFields(task, STRUCTURE_KEYS.responsibility, mod.moduleId + '/' + task.id, issues)
+    for (const param of mod.parameters ?? []) checkKnownFields(param, STRUCTURE_KEYS.parameter, mod.moduleId + '.param', issues)
+    for (const use of mod.references ?? []) checkKnownFields(use, STRUCTURE_KEYS.use, mod.moduleId + '/' + use.id, issues)
+  }
+  for (const template of workspace.definitions.templates) {
+    checkKnownFields(template, STRUCTURE_KEYS.template, template.templateId, issues)
+    checkKnownFields(template.source, STRUCTURE_KEYS.inlineSource, template.templateId + '.source', issues)
+    for (const task of template.localTasks ?? []) checkKnownFields(task, STRUCTURE_KEYS.responsibility, template.templateId + '/' + task.id, issues)
+    for (const use of template.modules ?? []) checkKnownFields(use, STRUCTURE_KEYS.use, template.templateId + '/' + use.id, issues)
+  }
+  for (const source of workspace.sources) {
+    checkKnownFields(source, STRUCTURE_KEYS.source, source.sourceId, issues)
+    checkKnownFields(source.reference, STRUCTURE_KEYS.documentReference, source.sourceId + '.reference', issues)
+  }
+  for (const link of workspace.sourceBindings) checkKnownFields(link, STRUCTURE_KEYS.binding, link.checkId, issues)
+  if (workspace.advanced) {
+    checkKnownFields(workspace.advanced, STRUCTURE_KEYS.advanced, '作者态高级约束', issues)
+    for (const relation of workspace.advanced.evidenceRelations ?? []) {
+      checkKnownFields(relation, STRUCTURE_KEYS.evidenceRelation, '证据关系', issues)
+    }
   }
   issues.push(...validateDemoState(toDemo(workspace)))
   const sourceMap = new Map<string, ReviewAuthoringSourceV1>()
@@ -204,6 +254,12 @@ export function verifyReviewAuthoringManifestV1(
   if (workspace && validateReviewAuthoringV1(workspace).length) {
     issues.push('作者态数据校验未通过，不能作为来源证明')
   }
+  if (workspace?.definitions?.templates?.some((it) => it.templateId === manifest.templateId && it.version === manifest.templateVersion)) {
+    const preview = previewDemo(toDemo(workspace), manifest.templateId, manifest.templateVersion)
+    if (preview.blocked || preview.fingerprint !== manifest.previewFingerprint) {
+      issues.push('当前生效责任包指纹与作者态 manifest 不一致')
+    }
+  } else issues.push('作者态缺少对应的业务模板定义')
   if (manifest.publicationAllowed !== false || manifest.status !== 'review-candidate') {
     issues.push('作者态候选不得伪装成已获发布授权')
   }
