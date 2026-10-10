@@ -155,7 +155,9 @@ describe('普通审核工作台单案完整链路', () => {
     const submitted = await submitCaseV2(caseUnderTest.id, actor)
     expect(submitted.ok).toBeTrue()
     const firstRun = await runCurrentCase(`${caseUnderTest.id}-run-1`)
-    expect(firstRun.coverage.plannedChecks).toBe(2)
+    // 现有综测 v3 自带额外通用审核责任；V1 导入的两条显式规则不能因此丢失。
+    expect(firstRun.coverage.plannedChecks).toBeGreaterThanOrEqual(2)
+    expect(firstRun.inputManifest.effectiveRuleIds.filter((id) => id.includes('outline-ai-'))).toHaveLength(2)
     const firstChecks = firstRun.checks
     expect(firstChecks.find((check) => check.ruleId.endsWith('outline-ai-1'))?.status).toBe('non-compliant')
     const evidenceCheck = firstChecks.find((check) => check.status === 'awaiting-supplement')!
