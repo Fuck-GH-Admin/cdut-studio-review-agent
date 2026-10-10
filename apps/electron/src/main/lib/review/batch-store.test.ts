@@ -298,9 +298,11 @@ describe('批次队列执行（G06/G11 真实队列）', () => {
   })
 
   test('Given 已定稿批次 When 执行 Then 拒绝（重开才能跑）', async () => {
-    createBatchV2(batch('bq2'))
-    updateCaseStatus('bq2', 'c1', 'done')
-    updateCaseStatus('bq2', 'c2', 'done')
+    await seedFinalCase('bq2-case1')
+    await seedFinalCase('bq2-case2')
+    createBatchV2({ ...batch('bq2'), caseIds: ['bq2-case1', 'bq2-case2'] })
+    updateCaseStatus('bq2', 'bq2-case1', 'done')
+    updateCaseStatus('bq2', 'bq2-case2', 'done')
     finalizeBatch('bq2', {})
     await expect(runBatchQueue('bq2', { runCase: async () => ({ status: 'completed' }) })).rejects.toThrow('重开')
   })
