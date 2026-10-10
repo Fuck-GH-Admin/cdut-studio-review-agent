@@ -101,7 +101,7 @@ async function main(): Promise<void> {
       const fd = openSync(destination, 'wx')
       try {
         const workspace = importD3Bundle(load<ReviewD3TransferBundle>(first))
-        writeFileSync(fd, JSON.stringify(workspace, null, 2) + '\\n', 'utf8')
+        writeFileSync(fd, JSON.stringify(workspace, null, 2) + '\n', 'utf8')
         show({ imported: true, workspaceId: workspace.workspaceId, revision: workspace.revision })
       } catch (error) {
         unlinkSync(destination)
