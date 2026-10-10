@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+  "sourceSha256": "65157e002dd4d1ccc08d32d341b4a1f7eacfc55d6a3c13a5da949aaf122f9785",
+  "workspaceId": "d310-agent-b-archive",
+  "templateId": "archive-access",
+  "templateVersion": 1,
+  "planFingerprint": "dea4870a11dd2eba0dd7e0715e572d823fc69ba00fea3ed44af4ad58aa7bd1a6",
+  "requirements": [
+    {
+      "id": "R08",
+      "status": "policy-awaiting-confirmation",
+      "checkIds": [
+        "module/item-1-read/authorization",
+        "module/item-1-copy/authorization"
+      ],
+      "reason": "B01 checks scope but not individually established both persons' identity; needs independent Check"
+    },
+    {
+      "id": "R09",
+      "status": "policy-awaiting-confirmation",
+      "checkIds": [
+        "module/item-1-read/authorization",
+        "module/item-1-copy/authorization"
+      ]
+    },
+    {
+      "id": "R10",
+      "status": "policy-awaiting-confirmation",
+      "checkIds": [
+        "module/item-1-read/authorization",
+        "module/item-1-read/scope-trace"
+      ]
+    },
+    {
+      "id": "R18",
+      "status": "implemented-not-tested",
+      "checkIds": [
+        "module/item-1-open/open-state"
+      ]
+    },
+    {
+      "id": "R23",
+      "status": "policy-awaiting-confirmation",
+      "checkIds": [
+        "module/item-1-copy-local/copy-authorization"
+      ]
+    },
+    {
+      "id": "R29",
+      "status": "tooling-blocked",
+      "checkIds": [],
+      "gapId": "G29"
+    },
+    {
+      "id": "R33",
+      "status": "manual-only",
+      "checkIds": [],
+      "reason": "Existing generic limits mention human approval, but no independent stage/status Check was compiled"
+    }
+  ]
+}
