@@ -43,12 +43,21 @@ try{
  run('validate-a1',tool('validate',a1));run('validate-c1',tool('validate',c1));
  saveD1(a1,0);saveD1(c1,0);
  const a2=structuredClone(a),c2=structuredClone(c);a2.revision=2;c2.revision=2;
- a2.definitions.templates[0].localTasks.push({
-  id:'independent-copy-boundary',title:'档案复制独立授权（本地）',
-  requirement:'按原始档案MD R23 逐档案件核复制操作范围。查阅授权不自动推出复制资格。馆方权限未核时不得判复制合格。',
-  completion:'逐项给出复制范围、实际证据及待授权原因。',
-  limits:'不替代行政批准和档案馆出件。'});
- a2.sourceBindings.push({checkId:'archive-access@1:local/independent-copy-boundary',sourceIds:['school-policy-unverified']});
+ // The first authoring attempt used a case-level localTask. An independent plan inspection
+ // showed this widened the responsibility beyond the copy operation. Correct it via local module.
+ const archiveCopyLocal={
+  moduleId:'archive-copy-local',version:1,name:'档案复制独立授权（业务本地）',
+  purpose:'对指定档案件的指定复制操作作范围核对，不继承查阅授权',
+  scope:'本次 item-1/copy 操作',
+  source:{kind:'synthetic',note:'原始业务MD R23责任映射；成都理工当前实施细则待核'},
+  limits:'不开放档案，不代替馆方批准和实际出件。',
+  tasks:[{id:'copy-authorization',title:'复制权限与数量范围',
+   requirement:'按原始档案MD R23，只核 item-1/copy 的页数、份数与独立授权；查阅授权不能推出复制许可，权威许可未知则待核。',
+   completion:'输出档案件、copy操作与范围一一对应的证据和未确认原因。',
+   limits:'不凭OCR文字或查阅权限完成行政批准。'}],parameters:[]};
+ a2.definitions.modules.push(archiveCopyLocal);
+ a2.definitions.templates[0].modules.push({id:'item-1-copy-local',moduleId:'archive-copy-local',version:1,objectKey:'item-1/copy'});
+ a2.sourceBindings.push({checkId:'archive-access@1:module/item-1-copy-local/copy-authorization',sourceIds:['school-policy-unverified']});
  c2.definitions.templates[0].localTasks.push({
   id:'independent-card-qualification',title:'校园卡资格不能从代理继承',
   requirement:'代办授权不能推出家属卡关系资格或临时服务资格；分别保留校内资格核验。',
@@ -128,8 +137,10 @@ try{
  assert(!!rc&&!!cc&&rc.subjectId!==cc.subjectId,'read and copy independent Check subject');
  assert(rc.authority==='unverified-policy'&&cc.authority==='unverified-policy','unknown school policy does not become approval');
  assert(rm.some(x=>x.checkId==='module/item-1-read/scope-trace'),'B01 v2 added check visible in D2');
+ const localCopyCheck=rm.find(x=>x.checkId==='module/item-1-copy-local/copy-authorization');
+ assert(!!localCopyCheck&&localCopyCheck.subjectId===cc.subjectId,'archive-only copy rule binds precisely to copy subject');
  const gap={sourceMd:froot,locator:'第4节S03-S04；R08-R10行289-291；R29行310',requirement:'合法电子委托和替代证据必须按对象、操作及有效期匹配；R08-R10/R29不得因不支持高级关系被删减。',blockedOperation:'D3轻量模块不能无损编译带合法替代条件的证据关系，不得把缺证件与未核电子凭据一律判否。',owner:'D3',reproduce:'对item-1/read与copy引入条件性电子委托替代关系、分别核source与operation，预览其高级义务不可映射场景。',
-  affected:{templateId:'archive-access',templateVersion:1,sourceRequirementIds:['R08','R09','R10','R29'],instancePaths:['module/item-1-read','module/item-1-copy'],checkIds:rm.filter(x=>x.checkId.includes('item-1-')).map(x=>x.checkId),runIds:[]}};
+  affected:{templateId:'archive-access',templateVersion:1,sourceRequirementIds:['R08','R09','R10','R29'],instancePaths:['module/item-1-read','module/item-1-copy'],checkIds:rm.filter(x=>['module/item-1-read/authorization','module/item-1-copy/authorization','module/item-1-read/scope-trace','module/item-1-evidence/evidence-boundary','module/item-1-copy-local/copy-authorization'].includes(x.checkId)).map(x=>x.checkId),runIds:[]}};
  const gapFile=path('gaps','gap-request.json');save(gapFile,gap);
  const rep=run('D3-report-gap',tool('report-gap',gapFile));save(path('gaps','gap-report.json'),rep);
  assert(rep.status==='tooling-blocked'&&rep.verifiedAgainstRun===false,'gap mapped but not falsely Run-verified');
