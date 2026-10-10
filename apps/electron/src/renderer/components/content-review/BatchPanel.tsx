@@ -12,6 +12,7 @@ import { useStore } from 'jotai'
 import { reviewV2BusyAtom } from './V2CasePanel'
 import { BatchGroupActionDialog } from './BatchGroupActionDialog'
 import { BatchAutomationDialog } from './BatchAutomationDialog'
+import { reviewBusinessError, summarizeBatchExecution } from './batch-ui-feedback'
 
 type CaseIndexItem = Awaited<ReturnType<typeof window.reviewAPI.listCasesV2>>[number]
 type ReviewRunV2 = Awaited<ReturnType<typeof window.reviewAPI.listRunsV2>>[number]
@@ -170,7 +171,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
     try {
       if (!await onOpenProject(caseId)) toast.error('无法打开这个审核项目，请刷新后重试。')
     } catch (cause) {
-      toast.error(`打开项目失败：${cause instanceof Error ? cause.message : String(cause)}`)
+      toast.error(`打开项目失败：${reviewBusinessError(cause)}`)
     }
   }
 
@@ -196,7 +197,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
       setCreateOpen(false)
       toast.success(`批次已创建：${created.batch.name}`)
     } catch (cause) {
-      toast.error(`批次创建失败：${cause instanceof Error ? cause.message : String(cause)}`)
+      toast.error(`批次创建失败：${reviewBusinessError(cause)}`)
     } finally {
       store.set(reviewV2BusyAtom, false)
       setCreating(false)
@@ -237,7 +238,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
       toast.success(`自动处理结果：已执行 ${report.applied} 案，阻断 ${report.blocked} 案，失败 ${report.failed} 案`)
       await refresh()
     } catch (cause) {
-      toast.error(`批次自动处理失败：${cause instanceof Error ? cause.message : String(cause)}`)
+      toast.error(`批次自动处理失败：${reviewBusinessError(cause)}`)
     } finally { setHandlingBatch(false) }
   }
 
@@ -249,7 +250,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
       toast.success('全部案卷具备正式业务结论，批次已定稿')
       await refresh()
     } catch (cause) {
-      toast.error(`批次尚不能定稿：${cause instanceof Error ? cause.message : String(cause)}`)
+      toast.error(`批次尚不能定稿：${reviewBusinessError(cause)}`)
     } finally { setHandlingBatch(false) }
   }
 
@@ -257,10 +258,37 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
     if (!selectedBatch || executing || handlingBatch || selectedBatch.status === 'finalized' || selectedBatch.status === 'running') return
     setExecuting(true)
     try {
-      await window.reviewAPI.runBatchV2(selectedBatch.batch.id)
-      toast.success('本轮审核及已启用的自动处理完成，请核对真实业务回执与待处理问题')
+      const result = await window.reviewAPI.runBatchV2(selectedBatch.batch.id)
+      // Only the run-result statuses count as completed/failed. Inspect the
+      // fresh per-case route before reporting anything as pending human work.
+      let routes = new Map<string, BatchTriageRoute>()
+      try {
+        const [caseIndex, histories] = await Promise.all([
+          window.reviewAPI.listCasesV2(),
+          Promise.all(result.cases.filter((entry) => entry.status === 'done')
+            .map(async (entry) => ({ caseId: entry.caseId, history: await window.reviewAPI.listRunsV2(entry.caseId) }))),
+        ])
+        const stages = new Map(caseIndex.map((item) => [item.caseId, item.stage]))
+        routes = new Map(histories.map(({ caseId, history }) => {
+          const run = [...history].sort((a, b) =>
+            (b.completedAt ?? b.startedAt).localeCompare(a.completedAt ?? a.startedAt))[0]
+          return [caseId, triageBatchCase({
+            caseId, entryStatus: 'done', caseStage: stages.get(caseId), run, batch: result.batch,
+          }).route] as const
+        }))
+      } catch {
+        // Queue result is authoritative even if optional UI classification fails.
+        // Never turn a completed run into a false "execution failed" notification.
+      }
+      const summary = summarizeBatchExecution(result, routes)
+      const humanText = routes.size ? String(summary.needsHuman) : '待刷新确认'
+      const message = `批次检查结束：完成 ${summary.completed} 案，失败 ${summary.failed} 案，待人工处理 ${humanText} 案`
+        + (summary.technical ? `，技术异常 ${summary.technical} 案` : '')
+        + (summary.pending ? `，仍待执行 ${summary.pending} 案` : '')
+      if (summary.failed || summary.technical || summary.pending) toast.warning(message)
+      else toast.success(message)
     } catch (cause) {
-      toast.error(`批次执行失败：${cause instanceof Error ? cause.message : String(cause)}`)
+      toast.error(`批次执行失败：${reviewBusinessError(cause)}`)
     } finally {
       setExecuting(false)
       await refresh()
@@ -279,7 +307,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
       toast.success(action === 'recover' ? '已标记上次中断的案卷，请核查后选择重试' : '已将指定案卷重新加入待执行队列')
       await refresh()
     } catch (cause) {
-      toast.error(`批次操作失败：${cause instanceof Error ? cause.message : String(cause)}`)
+      toast.error(`批次操作失败：${reviewBusinessError(cause)}`)
     } finally {
       setHandlingBatch(false)
     }
@@ -396,6 +424,9 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                     const triage = triageByCase.get(row.caseId)
                     const automationRecord = [...(selectedBatch.automationReceipts ?? [])].reverse()
                       .find((receipt) => receipt.caseId === row.caseId && receipt.status === 'applied')
+                    const isCurrentAction = !!automationRecord && row.entryStatus === 'done'
+                      && automationRecord.runId === row.run?.id
+                      && ['decided', 'awaiting-supplement', 'archived'].includes(row.stage ?? '')
                     return (
                       <tr key={row.caseId} className="transition-colors hover:bg-muted/25">
                         <td className="max-w-[360px] px-3 py-3">
@@ -414,8 +445,17 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                           )}
                         </td>
                         <td className={`px-3 py-3 font-medium ${triage ? TRIAGE_TONES[triage.route] : 'text-muted-foreground'}`} title={triage?.explanation}>
-                          {automationRecord ? (automationRecord.action === 'pass' ? '已自动通过（业务已写入）' : '已自动退回补件（业务已写入）')
-                            : triage ? TRIAGE_LABELS[triage.route] : '—'}
+                          <div>
+                            {isCurrentAction
+                              ? (automationRecord!.action === 'pass' ? '已自动通过（业务已写入）' : '已自动退回补件（业务已写入）')
+                              : row.entryStatus === 'queued' && automationRecord ? '待本轮重新审核'
+                              : triage ? TRIAGE_LABELS[triage.route] : '—'}
+                          </div>
+                          {automationRecord && !isCurrentAction && (
+                            <div className="mt-1 font-normal text-[11px] text-muted-foreground">
+                              上次动作：{automationRecord.action === 'pass' ? '自动通过' : '自动退回补件'}（历史记录）
+                            </div>
+                          )}
                         </td>
                         <td className="px-3 py-3 text-right tabular-nums text-muted-foreground">{formatTime(row.updatedAt)}</td>
                       </tr>
