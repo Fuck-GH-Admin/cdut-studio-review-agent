@@ -2,11 +2,11 @@
  * N5/N6 单测（R08：定稿锁定/重开；R11：outbox 重启幂等/冲突持久）
  */
 import { afterAll, describe, expect, test } from 'bun:test'
-import { rmSync } from 'node:fs'
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewBatch, ReviewCaseV2 } from '@profer/shared'
 import { createAggregate, readAggregate, submitCommand } from './case-store-v2'
-import { createBatchV2, finalizeBatch, listBatchStatesV2, pushViaOutbox, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus, runBatchQueue, retryBatchCases, recoverInterruptedBatch } from './batch-store'
+import { createBatchV2, finalizeBatch, listBatchStatesV2, pushViaOutbox, recoverPendingPushesDetailed, recoverPendingPushes, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus, runBatchQueue, retryBatchCases, recoverInterruptedBatch } from './batch-store'
 import type { BatchStateV2 } from '@profer/shared'
 type Entry = BatchStateV2['cases'][number]
 import { MockSchoolAdapter } from './external-ports'
@@ -275,6 +275,128 @@ describe('持久 outbox（R11）', () => {
     const mock = new MockSchoolAdapter()
     await pushViaOutbox(mock, { caseId: 'c1', actionId: 'act-drift', actionKind: 'decision', baseExternalRevision: 0, body: { result: 'pass' } })
     await expect(pushViaOutbox(mock, { caseId: 'c1', actionId: 'act-drift', actionKind: 'decision', baseExternalRevision: 0, body: { result: 'reject' } })).rejects.toThrow('不同载荷')
+  })
+})
+
+describe('Outbox 中断恢复与 WAL（第二轮可靠性收口）', () => {
+  test('Given 首次推送失败 When 重启扫描 Then 重放持久化的完整原载荷并记录终态回执', async () => {
+    const payload = {
+      actionId: 'outbox-resume-original', caseId: 'c-outbox-resume',
+      actionKind: 'supplement' as const, baseExternalRevision: 7,
+      body: { requiredElements: ['成绩单', '获奖证书'], detail: { oldHash: 'sha256:abc', note: '精确恢复' } },
+    }
+    let attempts = 0
+    const submissions: typeof payload[] = []
+    const port: SchoolPort = {
+      kind: 'mock',
+      push: async (data) => {
+        attempts++
+        submissions.push(structuredClone(data) as typeof payload)
+        if (attempts === 1) throw new Error('模拟发送后网络断开')
+        return { id: 'receipt-resume', actionId: data.actionId, caseId: data.caseId,
+          externalSystem: 'mock-school', expectedExternalRevision: data.baseExternalRevision,
+          payloadHash: '', status: 'accepted',
+        }
+      },
+    }
+    const first = await pushViaOutbox(port, payload)
+    expect(first.status).toBe('pending')
+    expect(first.attempts).toBe(1)
+    const persisted = JSON.parse(readFileSync(join(CONFIG_DIR, 'sync-outbox', `${payload.actionId}.json`), 'utf-8'))
+    expect(persisted.payload).toEqual(payload)
+    expect(persisted.payloadHash).toHaveLength(64)
+
+    const recovery = await recoverPendingPushesDetailed(port)
+    expect(recovery.needsManualReplay.some((r) => r.actionId === payload.actionId)).toBeFalse()
+    expect(recovery.recovered.find((r) => r.actionId === payload.actionId)?.status).toBe('accepted')
+    expect(recovery.recovered.find((r) => r.actionId === payload.actionId)?.attempts).toBe(2)
+    expect(submissions).toEqual([payload, payload])
+    const countBefore = attempts
+    await recoverPendingPushes(port)
+    expect(attempts).toBe(countBefore)
+  })
+
+  test('Given 旧版 pending 只有哈希 When 自动恢复 Then 不得发送占位载荷；需人工核对后原调用方重放', async () => {
+    const payload = {
+      actionId: 'outbox-legacy-pending', caseId: 'c-legacy',
+      actionKind: 'decision' as const, baseExternalRevision: 1, body: { decisionId: 'd-1', result: 'pass' },
+    }
+    const { createHash } = await import('node:crypto')
+    const payloadHash = createHash('sha256').update(JSON.stringify(payload), 'utf-8').digest('hex')
+    mkdirSync(join(CONFIG_DIR, 'sync-outbox'), { recursive: true })
+    const path = join(CONFIG_DIR, 'sync-outbox', `${payload.actionId}.json`)
+    writeFileSync(path, JSON.stringify({ actionId: payload.actionId, payloadHash, status: 'pending', attempts: 1, createdAt: '2026-01-01' }))
+    let calls = 0
+    const port: SchoolPort = {
+      kind: 'mock',
+      push: async (data) => {
+        calls++
+        return { id: 'legacy-receipt', actionId: data.actionId, caseId: data.caseId,
+          externalSystem: 'mock-school', expectedExternalRevision: data.baseExternalRevision,
+          payloadHash: '', status: 'accepted' }
+      },
+    }
+    const report = await recoverPendingPushesDetailed(port)
+    expect(calls).toBe(0)
+    expect(report.needsManualReplay.find((r) => r.actionId === payload.actionId)?.reason).toContain('未保存原始载荷')
+    expect((JSON.parse(readFileSync(path, 'utf8')) as { attempts: number }).attempts).toBe(1)
+    const explicitlyReplayed = await pushViaOutbox(port, payload)
+    expect(explicitlyReplayed.status).toBe('accepted')
+    expect(explicitlyReplayed.attempts).toBe(2)
+    expect(calls).toBe(1)
+  })
+
+  test('Given outbox 持久化数据被篡改 When 恢复 Then 不会将伪造数据发给外部端口', async () => {
+    const payload = {
+      actionId: 'outbox-corrupt-data', caseId: 'c-secure',
+      actionKind: 'roster' as const, baseExternalRevision: 3, body: { studentIds: ['stu-1'] },
+    }
+    const failPort: SchoolPort = { kind: 'mock', push: async () => { throw new Error('offline') } }
+    expect((await pushViaOutbox(failPort, payload)).status).toBe('pending')
+    const path = join(CONFIG_DIR, 'sync-outbox', `${payload.actionId}.json`)
+    const saved = JSON.parse(readFileSync(path, 'utf8'))
+    saved.payload.body.studentIds = ['attacker']
+    writeFileSync(path, JSON.stringify(saved))
+    let calls = 0
+    const port: SchoolPort = {
+      kind: 'mock',
+      push: async () => { calls++; throw new Error('not expected') },
+    }
+    const report = await recoverPendingPushesDetailed(port)
+    expect(calls).toBe(0)
+    expect(report.needsManualReplay.find((r) => r.actionId === payload.actionId)?.reason).toContain('校验失败')
+    await expect(pushViaOutbox(port, payload)).rejects.toThrow('校验失败')
+  })
+
+  test('Given 恶意 actionId 和并发调用 When 推送 Then 拒绝路径穿越和双重执行', async () => {
+    const port = new MockSchoolAdapter()
+    for (const actionId of ['../outside', '..', 'x/y', 'x\\\\y', '/tmp/push', '', 'a'.repeat(130)]) {
+      await expect(pushViaOutbox(port, { actionId, caseId: 'c1', actionKind: 'decision',
+        baseExternalRevision: 0, body: { result: 'pass' } })).rejects.toThrow('非法 outbox actionId')
+    }
+    let release!: () => void
+    let started!: () => void
+    const entered = new Promise<void>((resolve) => { started = resolve })
+    const held = new Promise<void>((resolve) => { release = resolve })
+    let calls = 0
+    const blockingPort: SchoolPort = { kind: 'mock', push: async (data) => {
+      calls++
+      started()
+      await held
+      return { id: 'r-once', actionId: data.actionId, caseId: data.caseId,
+        externalSystem: 'mock-school', expectedExternalRevision: data.baseExternalRevision,
+        payloadHash: '', status: 'accepted' }
+    }}
+    const data = { actionId: 'outbox-concurrent', caseId: 'case-concurrent',
+      actionKind: 'decision' as const, baseExternalRevision: 0, body: { result: 'pass' } }
+    const pending = pushViaOutbox(blockingPort, data)
+    await entered
+    await expect(pushViaOutbox(blockingPort, data)).rejects.toThrow('并发')
+    const report = await recoverPendingPushesDetailed(blockingPort)
+    expect(report.skippedActive).toContain(data.actionId)
+    release()
+    expect((await pending).status).toBe('accepted')
+    expect(calls).toBe(1)
   })
 })
 
