@@ -317,4 +317,42 @@ describe('D3：不可变共享模块及 Agent-first 制作携包（BDD）', () =
     const withoutEnv=Bun.spawnSync({cmd:[process.execPath,script,'discover'],env:{...process.env,PROFER_CONFIG_DIR:''}})
     expect(withoutEnv.exitCode).not.toBe(0)
   })
+
+  test('Given D1 已保存的冻结消费者 When Agent 通过 impact CLI 输入数字版本 Then 返回真实差异而非用法错误', () => {
+    const old = inspectFrozenD3Module('delegation-scope', 1)!
+    const original = workspace('cli-impact-consumer')
+    saveReviewAuthoringRevisionV1(original, 0, 'd3-impact-cli')
+    saveReviewAuthoringRevisionV1(reuse(original, old.digest), 1, 'd3-impact-cli')
+
+    const script = resolve(import.meta.dir, '../../../../scripts/review-d3-library.ts')
+    const env = { ...process.env, PROFER_CONFIG_DIR: folder }
+    const run = (...args: string[]) => Bun.spawnSync({ cmd: [process.execPath, script, ...args], env })
+    const valid = run('impact', 'delegation-scope', '1', '2')
+    expect(valid.exitCode).toBe(0)
+    if (valid.exitCode !== 0) throw new Error(valid.stderr.toString())
+    const report = JSON.parse(valid.stdout.toString()) as {
+      from: { version: number; digest: string }
+      to: { version: number; digest: string }
+      consumers: Array<{ workspaceId: string; instancePath: string }>
+      requireExplicitMigration: boolean
+    }
+    expect(report.from.version).toBe(1)
+    expect(report.to.version).toBe(2)
+    expect(report.from.digest).toBe(old.digest)
+    expect(report.consumers).toContainEqual(expect.objectContaining({
+      workspaceId: 'cli-impact-consumer', instancePath: 'module/proxy-review',
+    }))
+    expect(report.requireExplicitMigration).toBeTrue()
+
+    for (const invalid of ['1x', '1.5', '0', '-1', '9007199254740992']) {
+      const result = run('impact', 'delegation-scope', invalid, '2')
+      expect(result.exitCode).not.toBe(0)
+      expect(result.stderr.toString()).toContain('D3_USAGE: impact')
+    }
+    const missing = run('impact', 'delegation-scope', '1', '9999')
+    expect(missing.exitCode).not.toBe(0)
+    expect(missing.stderr.toString()).toContain('D3_UPGRADE_LOCK_MISSING')
+    expect(missing.stderr.toString()).not.toContain('D3_USAGE: impact')
+  })
+
 })
