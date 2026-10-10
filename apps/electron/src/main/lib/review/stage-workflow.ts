@@ -88,6 +88,19 @@ export function recordStageDecision(
     assertAgentDecisionAllowed({ actor: command.actor, type: 'RecordStageDecision' })
     const task = aggregate.tasks.find((candidate) => candidate.id === payload.taskId && candidate.status === 'open')
     if (!task) throw new CommandValidationError('INVALID_TRANSITION', '当前阶段没有开放任务（或已处理）')
+    if (aggregate.caseV2.templateId !== template.templateId || aggregate.caseV2.templateVersion !== template.version
+      || template.status !== 'published') {
+      throw new CommandValidationError('INVALID_TRANSITION', '案卷与审核模板版本不一致或模板未发布')
+    }
+    const currentStage = template.stages.find((stage) => stage.id === task.stageId)
+    if (!currentStage || currentStage.executorRole !== task.assigneeRole
+      || command.actor.role !== task.assigneeRole
+      || (task.assigneeActorId && task.assigneeActorId !== command.actor.actorId)) {
+      throw new CommandValidationError('INVALID_TRANSITION', '操作者无权处理当前审核阶段任务')
+    }
+    if (command.actor.actorSource === 'agent' && task.assigneeRole !== 'reviewer') {
+      throw new CommandValidationError('AGENT_DECISION_DISABLED', 'Agent 不得代替教师或校方执行阶段决定')
+    }
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '决定必须附理由')
     if (!aggregate.decisions.every((decision) => decision.taskId !== task.id)) throw new CommandValidationError('INVALID_TRANSITION', '该任务已有决定')
 
