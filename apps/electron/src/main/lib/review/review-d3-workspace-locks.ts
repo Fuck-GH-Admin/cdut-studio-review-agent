@@ -15,8 +15,7 @@ const key = (id: string, version: number): string => id + '@' + version
 const digest = (value: unknown): string => createHash('sha256').update(JSON.stringify(value)).digest('hex')
 
 export function validateD3WorkspaceLocks(workspace: ReviewAuthoringWorkspaceV1, installed = false): string[] {
-  const locks = workspace.sharedModuleLocks
-  if (locks === undefined) return []
+  const locks = workspace.sharedModuleLocks ?? []
   if (!Array.isArray(locks)) return ['D3_LOCK_INVALID: sharedModuleLocks 必须为数组']
   const errors: string[] = []
   const known = new Map<string, ReviewD3ModuleLock>()
@@ -33,6 +32,14 @@ export function validateD3WorkspaceLocks(workspace: ReviewAuthoringWorkspaceV1, 
     const module = modules.get(k)
     if (!module) { errors.push('D3_LOCK_MISSING_MODULE: ' + k); continue }
     if (digest(module) !== lock.digest) errors.push('D3_LOCK_DIGEST: 本地定义偏离已固定资产 ' + k)
+  }
+  if (installed) for (const module of workspace.definitions.modules) {
+    if (!SAFE.test(module.moduleId) || !Number.isSafeInteger(module.version) || module.version < 1) continue
+    const k = key(module.moduleId,module.version)
+    const frozenFile = join(getConfigDir(), 'review-d3-frozen-modules', module.moduleId, module.version + '.json')
+    if (existsSync(frozenFile) && !known.has(k)) {
+      errors.push('D3_LOCK_UNDECLARED: 当前环境存在同名冻结模块，工作区却未声明冻结身份 ' + k)
+    }
   }
   for (const lock of known.values()) {
     const k = key(lock.moduleId,lock.version)
