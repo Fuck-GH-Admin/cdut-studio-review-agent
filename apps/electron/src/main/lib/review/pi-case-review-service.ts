@@ -174,9 +174,15 @@ function inputHashOf(aggregate: CaseAggregateV2): string {
 }
 
 function sectionSubjectIds(template: TemplateVersion, aggregate: CaseAggregateV2): Record<string, string[]> {
-  return Object.fromEntries((template.sections ?? []).map((section) => [
-    section.id,
-    aggregate.caseV2.subjects.filter((subject) => subject.sectionId === section.id).map((subject) => subject.id),
+  // D2 的动态技术预审 RuleSpec 由案卷固定计划承载，模板壳没有静态 section。
+  // 运行覆盖分母与 Pi 计划必须使用同一份真实 section → subject 关系，不能漏项。
+  const sections = new Set([
+    ...(template.sections ?? []).map((section) => section.id),
+    ...(aggregate.d2RuntimePlan?.subjects.map((subject) => subject.sectionId).filter((id): id is string => !!id) ?? []),
+  ])
+  return Object.fromEntries([...sections].map((sectionId) => [
+    sectionId,
+    aggregate.caseV2.subjects.filter((subject) => subject.sectionId === sectionId).map((subject) => subject.id),
   ]))
 }
 
