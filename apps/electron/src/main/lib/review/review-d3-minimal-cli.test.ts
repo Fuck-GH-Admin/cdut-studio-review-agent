@@ -20,8 +20,8 @@ function run(config:string,script:string,...args:string[]) {
   return Bun.spawnSync({cmd:[process.execPath,script,...args],env:{...process.env,PROFER_CONFIG_DIR:config}})
 }
 function parse(proc:ReturnType<typeof Bun.spawnSync>):unknown {
-  if(proc.exitCode!==0)throw new Error(proc.stderr.toString())
-  return JSON.parse(proc.stdout.toString())
+  if(proc.exitCode!==0)throw new Error(proc.stderr?.toString() ?? 'D3_MINIMAL_CLI_FAILED')
+  return JSON.parse(proc.stdout?.toString() ?? '')
 }
 describe('D3-01 可由新 Agent 复制的最简文本制作',()=>{
   test('零共享模块/零复杂 DSL：验证、预览、候选登记、创建并固定 D2 技术预审',()=>{
