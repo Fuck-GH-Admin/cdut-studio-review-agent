@@ -34,20 +34,34 @@
 - `d2-selection-text.json`、`d2-selection-family.json`、`d2-selection-temporary.json`、`d2-selection-archive.json`：稳定的对象和操作引用。
 
 ```bash
-# 在项目根目录，准备案卷 JSON：caseV2.templateId 必须匹配 selection.templateId
+# 1. 只预览：准备 caseV2 JSON，模板 ID 须匹配 selection
 bun apps/electron/scripts/review-d2-plan.ts preview \
   docs/design/review-agent/fixtures/d2-workspace-synthetic.json \
   docs/design/review-agent/fixtures/d2-selection-archive.json \
   /tmp/d2-case-input.json
 
-# attach 写入的是已有 D1 候选草稿壳对应的本地 draft 案卷，不会自动创建模板或审批
+# 2. 隔离配置目录中显式登记不可发布的候选壳
+PROFER_CONFIG_DIR=/tmp/d2-testing bun apps/electron/scripts/review-d2-plan.ts register \
+  docs/design/review-agent/fixtures/d2-workspace-synthetic.json \
+  docs/design/review-agent/fixtures/d2-selection-archive.json
+
+# 3. 创建技术预审案卷，固定情景、对象和实际 RuleSpec
+PROFER_CONFIG_DIR=/tmp/d2-testing bun apps/electron/scripts/review-d2-plan.ts create \
+  docs/design/review-agent/fixtures/d2-workspace-synthetic.json \
+  docs/design/review-agent/fixtures/d2-selection-archive.json \
+  d2-case-id "档案利用合成预审" author-agent
+
+# 已存在但尚未绑定的 D2 草稿可显式用 attach + expectedRevision 修复
 PROFER_CONFIG_DIR=/tmp/d2-testing bun apps/electron/scripts/review-d2-plan.ts attach \
   docs/design/review-agent/fixtures/d2-workspace-synthetic.json \
   docs/design/review-agent/fixtures/d2-selection-archive.json \
-  d2-case-id 1 author-agent
+  d2-old-case-id 0 author-agent
 ```
 
-正式运行前须由系统通过 `saveAuthoringCandidateDraft(makeD2CandidateShell(workspace,...))` 登记不可发布候选，再按现有 V2 案卷服务创建同模板案卷，注册材料；`attachD2RuntimePlan` 在单案 `expectedRevision` 事务内记录主体和审核规则。**没有从非受控文本自动发布制度，也没有 Agent 替代审核部门作出行政决定。**
+`createD2TechnicalCase` 是与正式建案隔离的技术预审专用服务：先校验 D1 服务端 candidate-held 资格和任务，再以现有案卷事务创建案卷并固定计划。原 `createCaseFromTemplate` 继续只允许 `status='published'`，**不能借 D2 让未发布模板进入正式申报**。技术建案后可以沿用原材料注册和普通 Pi 审核能力。
+
+技术建案与计划绑定是两次受控事务：极端 I/O 故障可能留下没有 D2 任务包的草稿。此状态不能通过 D2 运行核验，只能由操作者显式 attach 修复，不能自动升级为正式审核。
+
 
 ## 4. 测试门禁与安全预言
 
