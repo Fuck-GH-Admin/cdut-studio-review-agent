@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "mode": "technical-pre-review",
+  "publicationAllowed": false,
+  "workspaceId": "d3-10-agent-a-plain-text",
+  "revision": 2,
+  "templateId": "plain-document",
+  "templateVersion": 1,
+  "authoringDigest": "1fc3c1677df960fa4ed2913786b9c7623a8e33ed824ae4109ccfca4ee2797a31",
+  "previewFingerprint": "e44feb9cd5d20570d958653ef4541bb2b61b52437bf6f5f4e84d78de047c25db",
+  "targets": [],
+  "subjects": [],
+  "rules": [
+    {
+      "id": "d2-190dfc9d1f530eced844",
+      "policyVersionId": "workspace:d2-d3-10-agent-a-plain-text@2",
+      "title": "三处标题完整性",
+      "requirement": "适用范围：仅按合成请求逐项检查摘要、正文、结论的文本完整性\n逐项核对当前文件是否包含申请人指定的摘要、正文及结论标题，并核对每一标题下至少有一段可读、非空且不是占位文字的实际内容；仅有标题、空白或“待填写”等占位符不得认定完整；遇到不可读、缺页或损坏应标记待核，不得推测补齐\n完成标准：对摘要、正文、结论分别记录标题状态、实质内容状态、材料版本及真实出处；任一可确认缺失不得整体认定符合；不能判读时给待核\n责任边界：只提供技术预审意见，不代替校方批准，也不建立未经说明的格式要求\n只执行本次合成请求中的文本完整性技术核对；不能据此判断内容真实性，不增设校方格式标准，不作行政批准\nD2 技术预审来源：user-synthetic-spec/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "user-synthetic-spec"
+      ],
+      "priority": 50000,
+      "confirmation": "confirmed"
+    }
+  ],
+  "mapping": [
+    {
+      "checkId": "local/heading-coverage",
+      "ruleId": "d2-190dfc9d1f530eced844",
+      "sourceIds": [
+        "user-synthetic-spec"
+      ],
+      "authority": "request-scope"
+    }
+  ],
+  "fingerprint": "eef65ffd7e1028e0a99fc2ab424def6f256e6d4971e42ec362fdb6301b433688"
+}

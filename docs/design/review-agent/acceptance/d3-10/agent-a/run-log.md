@@ -1,12 +1,12 @@
 # Agent A actual execution log
 
-- Repository working tree HEAD at start: 828d88b0ab311068187623fdf249c99a3c9065b2
+- Repository working tree HEAD at start: ac6a9dfe5ad5188f890fe683466d7917e4710aa8
 - Pinned parent code SHA: d16f047af653f7ba259456807c1fc150e9d0f417
 - Bun: 1.4.0
 - Node: v22.23.3
 - Runner: GitHub Actions / Ubuntu; actual jobs/run links are added to PR when available
-- Original `PROFER_CONFIG_DIR`: `/tmp/d3-10-agent-a-original-lWFjTB` (fresh, temp)
-- Import `PROFER_CONFIG_DIR`: `/tmp/d3-10-agent-a-import-DBd5RN` (distinct fresh, temp)
+- Original `PROFER_CONFIG_DIR`: `/tmp/d3-10-agent-a-original-xMTVdH` (fresh, temp)
+- Import `PROFER_CONFIG_DIR`: `/tmp/d3-10-agent-a-import-fH8AVp` (distinct fresh, temp)
 - The two directories are never pointed at production
 - Output: `docs/design/review-agent/acceptance/d3-10/agent-a/`
 - Each stdout/stderr is stored under `logs/<id>.stdout/.stderr`; plan JSON also saved under `plans/`
@@ -27,8 +27,8 @@
 | 12-d3-validate-rev2 | \`bun apps/electron/scripts/review-d3-library.ts validate /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/workspaces/modified.json \` | 0 | 0 | \`logs/12-d3-validate-rev2.stdout\` | \`logs/12-d3-validate-rev2.stderr\` |
 | 13-register | \`bun apps/electron/scripts/review-d2-plan.ts register /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/workspaces/modified.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/tests/selection.json \` | 0 | 0 | \`logs/13-register.stdout\` | \`logs/13-register.stderr\` |
 | 14-create | \`bun apps/electron/scripts/review-d2-plan.ts create /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/workspaces/modified.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/tests/selection.json d3-10-agent-a-technical-case Agent\ A\ 仅技术预审 independent-agent-a \` | 0 | 0 | \`logs/14-create.stdout\` | \`logs/14-create.stderr\` |
-| 15-export | \`bun apps/electron/scripts/review-d3-library.ts export /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/workspaces/modified.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/bundles/portable.json \` | 1 | 0 | \`logs/15-export.stdout\` | \`logs/15-export.stderr\` |
-| 16-import-clean | \`bun apps/electron/scripts/review-d3-library.ts import /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/bundles/portable.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/bundles/reimported-workspace.json \` | 1 | 0 | \`logs/16-import-clean.stdout\` | \`logs/16-import-clean.stderr\` |
+| 15-export | \`bun apps/electron/scripts/review-d3-library.ts export /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/workspaces/modified.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/bundles/portable.json \` | 0 | 0 | \`logs/15-export.stdout\` | \`logs/15-export.stderr\` |
+| 16-import-clean | \`bun apps/electron/scripts/review-d3-library.ts import /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/bundles/portable.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/bundles/reimported-workspace.json \` | 0 | 0 | \`logs/16-import-clean.stdout\` | \`logs/16-import-clean.stderr\` |
 | 17-reimport-preview | \`bun apps/electron/scripts/review-d2-plan.ts preview /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/bundles/reimported-workspace.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/tests/selection.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/tests/case.json \` | 0 | 0 | \`logs/17-reimport-preview.stdout\` | \`logs/17-reimport-preview.stderr\` |
 | 18-duplicate-import-refused | \`bun apps/electron/scripts/review-d3-library.ts import /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/bundles/portable.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/bundles/reimported-workspace.json \` | 1 | 1 | \`logs/18-duplicate-import-refused.stdout\` | \`logs/18-duplicate-import-refused.stderr\` |
 | 19-independent-contract-and-gold | \`python3 /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-a/tests/verify-plan.py \` | 0 | 0 | \`logs/19-independent-contract-and-gold.stdout\` | \`logs/19-independent-contract-and-gold.stderr\` |
@@ -37,5 +37,6 @@
 ## Recovery and caveats
 - Step 11 intentionally attempts stale expectedRevision=0 after revision 2 and expects exit 1; step 12 continues with the intact revision.
 - Step 18 intentionally refuses to overwrite an imported workspace; earlier imported file is reused at step 17.
+- Before running, only the two generated bundle target filenames are removed (not workspace inputs or any production state), because export/import use exclusive create. The first repeat-run failure is recorded in gaps/recovery-export-target-collision.md.
 - Three text cases are independently GOLD-classified; step 20 sends predeclared SYNTHETIC structured results through the real Pi service (registerMaterial/prepare/submit/verify). This is not a model-generated judgment.
 - Non-matching exits: 1 (0 means expected exit statuses matched; test 19 includes structural assertions).
