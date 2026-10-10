@@ -360,13 +360,13 @@ export function projectSimpleDemoDraft(state: DemoState, templateId: string, ver
   return {
     templateId, version, schemaVersion: 2, name: source.name,
     description: '[D0.5 DEMO / 非校规] ' + source.purpose,
-    sourceNote: '合成/用户任务的技术演示。引用内容不得冒充正式行政政策。',
+    sourceNote: 'D0.5_DEMO_ONLY: 合成/用户任务技术演示；不得发布或冒充正式行政政策。',
     catalogKind: 'custom', objectType: 'document', displayName: { template: source.name },
     fields: [], materialSlots: [], policyVersionIds: [],
     sections: [{
       id: 'semantic-tasks', name: '语义审核责任', required: true, order: 0,
-      criteria: preview.tasks.map((task, index) => ({
-        id: 'demo-' + String(index + 1).padStart(3, '0'),
+      criteria: preview.tasks.map((task) => ({
+        id: 'demo-' + createHash('sha256').update(task.checkId).digest('hex').slice(0, 16),
         title: task.checkId + ' · ' + task.title,
         requirement: task.requirement + '\n完成标准：' + task.completion + '\n禁区：' + task.limits
           + '\n来源性质：' + task.source.kind + ' / ' + task.source.note
