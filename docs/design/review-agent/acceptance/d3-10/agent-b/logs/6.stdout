@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "workspaceId": "d310-agent-b-campus",
+  "revision": 1,
+  "fingerprint": "69b2c051cc52c66e31c82a351399c7be37ecfa8e449dea7b9a7a4ff9ba7d4116",
+  "locks": [
+    {
+      "moduleId": "agent-authorization",
+      "version": 1,
+      "digest": "e48d279ce5c813b2bcf9163b44a413bfd44de0291b1de93687af95ef3b1cbb5d"
+    },
+    {
+      "moduleId": "evidence-source-boundary",
+      "version": 1,
+      "digest": "98cc16b522702baf1e98c042dcc3d1381d386188e6db9495feaeab6e54295f90"
+    }
+  ],
+  "publicationAllowed": false
+}
