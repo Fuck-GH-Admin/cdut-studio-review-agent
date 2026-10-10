@@ -1,0 +1,27 @@
+{
+  "moduleId": "agent-authorization",
+  "version": 1,
+  "name": "代理权限范围核验",
+  "purpose": "判断代理授权是否覆盖当事人及本次操作",
+  "scope": "当前申请中已明确指定的审核对象",
+  "source": {
+    "kind": "synthetic",
+    "note": "D0.5 合成案例，非成都理工大学或其他学校的现行规则"
+  },
+  "limits": "材料预审不等于行政批准，不得对不相关对象复用资格结论",
+  "tasks": [
+    {
+      "id": "authorization",
+      "title": "当前动作授权",
+      "requirement": "核对授权是否覆盖 {{action}} 动作、对象和有效期限；其他操作授权不得移用",
+      "completion": "记录独立局部状态、可追溯依据与未完成原因",
+      "limits": "本责任不产生正式批准或拒批"
+    }
+  ],
+  "parameters": [
+    {
+      "key": "action",
+      "description": "当前独立申请操作"
+    }
+  ]
+}

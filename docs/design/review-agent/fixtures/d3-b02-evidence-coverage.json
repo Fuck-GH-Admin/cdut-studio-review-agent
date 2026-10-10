@@ -1,0 +1,27 @@
+{
+  "moduleId": "evidence-source-boundary",
+  "version": 1,
+  "name": "待证事实与原件来源覆盖（B02 合成候选）",
+  "purpose": "针对一个指定待证事实报告可信材料出处、版本以及无法确认的情形；不推断业务资格",
+  "scope": "由模板明确指向的事实对象与操作",
+  "source": {
+    "kind": "synthetic",
+    "note": "D3 B02 合成候选，不是成都理工大学的正式校规"
+  },
+  "limits": "不将一份证明扩展到其他事项；不确认档案开放、校园卡资格或有权批准。",
+  "parameters": [
+    {
+      "key": "matter",
+      "description": "本次待证事实，不得扩大到其他对象"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "evidence-boundary",
+      "title": "事实与证据版本对应",
+      "requirement": "核对 {{matter}} 所依据的原件来源、对应当事人、有效时段与材料版本；若权威来源未知或只覆盖别的操作则报告待确认",
+      "completion": "逐项指出可引用的材料和版本及仍待补证事实；不得在没有真实 SourceRef 时声明符合",
+      "limits": "可定位事实不等于法律效力、行政批准或其他事实自动证成"
+    }
+  ]
+}
