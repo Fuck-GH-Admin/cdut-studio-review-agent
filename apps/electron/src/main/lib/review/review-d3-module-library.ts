@@ -13,6 +13,7 @@ import type {
 import { getConfigDir } from '../config-paths'
 import { validateReviewAuthoringV1 } from './review-authoring-v1'
 import { validateDemoState } from './semantic-module-demo'
+import { validateD3WorkspaceLocks } from './review-d3-workspace-locks'
 
 const SAFE_ID = /^[a-z][a-z0-9-]{0,79}$/
 const VERSION = (value: number): boolean => Number.isSafeInteger(value) && value >= 1
@@ -184,6 +185,12 @@ export function reuseFrozenD3Module(input: {
     const existing = next.definitions.modules.find((m) => key(m.moduleId, m.version) === locked)
     if (existing && digest(existing) !== record.digest) throw new Error('D3_WORKSPACE_COLLISION: 本地同名模块不能遮盖冻结语义 ' + locked)
     if (!existing) next.definitions.modules.push(structuredClone(record.module))
+    next.sharedModuleLocks ??= []
+    const oldLock = next.sharedModuleLocks.find((lock) => key(lock.moduleId,lock.version) === locked)
+    if (oldLock && oldLock.digest !== record.digest) throw new Error('D3_LOCK_MISMATCH: 工作区锁与注册资产不一致 ' + locked)
+    if (!oldLock) next.sharedModuleLocks.push({
+      moduleId: record.module.moduleId, version: record.module.version, digest: record.digest,
+    })
     for (const dep of record.dependencies) {
       const child = inspectFrozenD3Module(dep.moduleId, dep.version)
       if (!child || child.digest !== dep.digest) throw new Error('D3_DEPENDENCY_DIGEST: ' + locked)
@@ -203,19 +210,22 @@ export function reuseFrozenD3Module(input: {
 export function exportD3Bundle(workspace: ReviewAuthoringWorkspaceV1): ReviewD3TransferBundle {
   const issues = validateReviewAuthoringV1(workspace)
   if (issues.length) throw new Error('D3_WORKSPACE_INVALID: ' + issues.join('；'))
+  const lockProblems = validateD3WorkspaceLocks(workspace,true)
+  if (lockProblems.length) throw new Error('D3_LOCK_INVALID: ' + lockProblems.join('；'))
   const seen = new Map<string, ReviewD3FrozenModule>()
-  const collect = (id: string, version: number): void => {
-    const record = inspectFrozenD3Module(id, version)
-    if (!record) return // 本工作区自创草稿模块合法；非共享资产不冒充冻结身份
-    const k = key(id, version)
-    if (seen.has(k)) return
-    const local = workspace.definitions.modules.find((mod) => key(mod.moduleId, mod.version) === k)
-    if (!local || digest(local) !== record.digest) throw new Error('D3_LOCK_MISMATCH: 工作区内同名冻结内容变更 ' + k)
-    seen.set(k, record)
-    for (const dep of record.dependencies) collect(dep.moduleId, dep.version)
+  for (const lock of workspace.sharedModuleLocks ?? []) {
+    const record = inspectFrozenD3Module(lock.moduleId,lock.version)
+    if (!record || record.digest !== lock.digest) throw new Error('D3_LOCK_MISMATCH: ' + key(lock.moduleId,lock.version))
+    seen.set(key(lock.moduleId,lock.version),record)
   }
-  for (const template of workspace.definitions.templates) for (const use of template.modules) collect(use.moduleId, use.version)
-  for (const mod of workspace.definitions.modules) for (const use of mod.references ?? []) collect(use.moduleId, use.version)
+  // 明确区分本地草稿和冻结资产；导出不得从当前机器的目录猜测锁，更不能省略已有锁。
+  for (const mod of workspace.definitions.modules) {
+    const existing = readOne(mod.moduleId,mod.version)
+    if (existing && !(workspace.sharedModuleLocks ?? []).some((lock) =>
+      lock.moduleId === mod.moduleId && lock.version === mod.version)) {
+      throw new Error('D3_AMBIGUOUS_MODULE: 本地草稿与冻结资产同名，需要显式选择来源 ' + key(mod.moduleId,mod.version))
+    }
+  }
   const frozen = [...seen.values()].sort((a,b) => key(a.module.moduleId,a.module.version).localeCompare(key(b.module.moduleId,b.module.version)))
   const bare: Omit<ReviewD3TransferBundle, 'fingerprint'> = {
     schemaVersion: 1, status: 'technical-authoring-only', publicationAllowed: false, workspace: structuredClone(workspace), frozen,
@@ -245,6 +255,12 @@ export function importD3Bundle(bundle: ReviewD3TransferBundle): ReviewAuthoringW
     if (existing && (existing.digest !== record.digest || digest(existing.dependencies) !== digest(record.dependencies))) {
       throw new Error('D3_FROZEN_CONFLICT: 导入不能覆盖本地冻结资产 ' + k)
     }
+  }
+  const expectedLocks = new Map((bundle.workspace.sharedModuleLocks ?? []).map((lock) => [key(lock.moduleId,lock.version),lock.digest]))
+  if (expectedLocks.size !== (bundle.workspace.sharedModuleLocks ?? []).length ||
+      records.size !== expectedLocks.size ||
+      [...records.entries()].some(([id,record]) => expectedLocks.get(id) !== record.digest)) {
+    throw new Error('D3_BUNDLE_LOCK_MISMATCH: 交付包冻结清单与工作区显式模块锁不一致')
   }
   for (const record of records.values()) checkChain(record, (id,v) => records.get(key(id,v)))
   // 导入库之前所有记录已经完整校验；崩溃可能留下合法前缀，但绝不覆盖既有资产。
