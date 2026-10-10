@@ -91,6 +91,21 @@ describe('D1 作者态真实映射与来源治理（BDD）', () => {
     expect(verifyReviewAuthoringManifestV1(candidate.template, candidate.manifest, changedWorkspace).join('；')).toContain('作者态定义或来源绑定已变化')
   })
 
+  test('Given 未映射的结构化条件或被修改的预览指纹 When 核验 Then 必须拒绝静默降级', () => {
+    const original = basic()
+    const unsafe = structuredClone(original)
+    Object.assign(unsafe.definitions.modules[0]!.tasks[0]!, { condition: { role: 'family' } })
+    expect(validateReviewAuthoringV1(unsafe).join('；')).toContain('未映射结构化字段：condition')
+    expect(() => compileReviewAuthoringCandidateV1(unsafe, 'simple-text', 1)).toThrow('AUTHORING_INVALID')
+    const candidate = compileReviewAuthoringCandidateV1(original, 'simple-text', 1)
+    const changed = structuredClone(candidate.manifest)
+    changed.previewFingerprint = 'outdated-preview-fingerprint'
+    expect(verifyReviewAuthoringManifestV1(candidate.template, changed, original).join('；')).toContain('责任包指纹')
+    const unrecognized = structuredClone(original)
+    Object.assign(unrecognized.advanced ??= {}, { mustCheckAuthority: true })
+    expect(validateReviewAuthoringV1(unrecognized).join('；')).toContain('未映射结构化字段')
+  })
+
   test('Given 缺来源绑定或引用错误 When 静态验证 Then 不以隐式来源生成规则', () => {
     const workspace = basic()
     workspace.sourceBindings = []
