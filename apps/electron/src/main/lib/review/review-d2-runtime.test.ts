@@ -119,9 +119,9 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
   test('不可发布候选只能走显式技术建案，普通正式入口继续拒绝未发布模板', async () => {
     const workspace = authoring()
     saveAuthoringCandidateDraft(makeD2CandidateShell(workspace, 'text-review', 1))
-    expect(() => createCaseFromTemplate('text-review', 1, {
+    await expect(createCaseFromTemplate('text-review', 1, {
       title: '不应创建', fieldValues: {}, subjects: [],
-    }, actor, 'd2-published-deny')).toThrow('只有已发布模板')
+    }, actor, 'd2-published-deny')).rejects.toThrow('只有已发布模板')
     const created = await createD2TechnicalCase({
       caseId: 'd2-proper-entry', title: '正常技术预审', actor,
       workspace, selection: selection('text-review'),
@@ -132,7 +132,7 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
     await expect(createD2TechnicalCase({
       caseId: 'd2-invalid-not-written', title: '错误情景', actor,
       workspace, selection: corrupt,
-    })).toThrow('D2_SCENARIO_REQUIRED')
+    })).rejects.toThrow('D2_SCENARIO_REQUIRED')
     expect(readAggregate('d2-invalid-not-written')).toBeUndefined()
   })
 
