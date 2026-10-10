@@ -1,0 +1,11 @@
+{
+  "oldRevision": 1,
+  "newRevision": 2,
+  "changedModules": [],
+  "changedTemplates": [
+    "plain-document@1"
+  ],
+  "changedSources": [],
+  "changedBindings": [],
+  "changedSharedModuleLocks": []
+}
