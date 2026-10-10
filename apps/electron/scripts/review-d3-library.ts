@@ -28,6 +28,9 @@ import { inspectD3UpgradeImpact, upgradeD3ModuleUse } from '../src/main/lib/revi
 
 const load = <T>(path: string): T => JSON.parse(readFileSync(resolve(path), 'utf8')) as T
 const show = (value: unknown): void => process.stdout.write(JSON.stringify(value, null, 2) + '\n')
+const validPositiveVersion = (value: string | undefined): boolean =>
+  value !== undefined && /^\d+$/.test(value) &&
+  Number.isSafeInteger(Number(value)) && Number(value) > 0
 const newFile = (path: string, value: unknown): void => {
   writeFileSync(resolve(path), JSON.stringify(value, null, 2) + '\n', { encoding: 'utf8', flag: 'wx' })
 }
@@ -126,10 +129,10 @@ async function main(): Promise<void> {
       return
     }
     case 'impact': {
-      if (!first || !second || !third || !/^\\d+$/.test(second) || !/^\\d+$/.test(third)) {
-        throw new Error('D3_USAGE: impact <moduleId> <fromVersion> <toVersion>')
+      if (!first || !validPositiveVersion(second) || !validPositiveVersion(third)) {
+        throw new Error('D3_USAGE: impact <moduleId> <fromVersion> <toVersion> (positive safe integers)')
       }
-      show(inspectD3UpgradeImpact(first,Number(second),Number(third)))
+      show(inspectD3UpgradeImpact(first, Number(second), Number(third)))
       return
     }
     case 'upgrade': {
@@ -141,30 +144,39 @@ async function main(): Promise<void> {
     case 'report-gap': {
       if (!first) throw new Error('D3_USAGE: report-gap <issue.json>')
       const issue = load<D3Gap>(first)
-      const a = issue.affected
+      const a = issue?.affected
+      const nonBlank = (value: unknown): value is string =>
+        typeof value === 'string' && !!value.trim() && value === value.trim() &&
+        !/[\u0000-\u001f\u007f]/.test(value)
       const safeIds = (values: unknown, allowEmpty = true): values is string[] =>
-        Array.isArray(values) && (allowEmpty || values.length > 0) &&
-        values.every(value => typeof value === 'string' && !!value.trim())
-      if (!issue.sourceMd?.trim() || !issue.locator?.trim() || !issue.requirement?.trim() ||
-          !issue.blockedOperation?.trim() || !issue.reproduce?.trim() ||
+        Array.isArray(values) && (allowEmpty || values.length > 0) && values.every(nonBlank)
+      const safePaths = (values: unknown): values is string[] =>
+        safeIds(values) && values.every(path =>
+          path.split('/').every(segment => segment !== '' && segment !== '.' && segment !== '..'))
+      if (!issue || !nonBlank(issue.sourceMd) || !nonBlank(issue.locator) || !nonBlank(issue.requirement) ||
+          !nonBlank(issue.blockedOperation) || !nonBlank(issue.reproduce) ||
           !['D3', 'D4', 'pi-runtime', 'policy-source'].includes(issue.owner) ||
           !a || typeof a.templateId !== 'string' || !/^[a-z][a-z0-9-]{0,79}$/.test(a.templateId) ||
           !Number.isSafeInteger(a.templateVersion) || a.templateVersion < 1 ||
-          !safeIds(a.sourceRequirementIds, false) || !safeIds(a.instancePaths) ||
+          !safeIds(a.sourceRequirementIds, false) || !safePaths(a.instancePaths) ||
           !safeIds(a.checkIds) || !safeIds(a.runIds)) {
         throw new Error('D3_GAP_INVALID: 缺少原文定位、原始责任 ID、受影响模板/实例/检查/运行的显式映射或复现步骤')
+      }
+      // Explicit projection: untrusted issue JSON cannot override derived verdict or add fake validation claims.
+      const affected = {
+        templateId: a.templateId, templateVersion: a.templateVersion,
+        sourceRequirementIds: a.sourceRequirementIds, instancePaths: a.instancePaths,
+        checkIds: a.checkIds, runIds: a.runIds,
       }
       show({
         schemaVersion: 1,
         status: issue.owner === 'policy-source' ? 'source-missing' : 'tooling-blocked',
-        ...issue,
-        impact: {
-          sourceMd: issue.sourceMd, locator: issue.locator,
-          sourceRequirementIds: a.sourceRequirementIds,
-          templateId: a.templateId, templateVersion: a.templateVersion,
-          instancePaths: a.instancePaths, checkIds: a.checkIds, runIds: a.runIds,
-        },
-        /** 工具只验证票据结构，不能凭一张作者提交的问题票伪称运行已复现。 */
+        sourceMd: issue.sourceMd, locator: issue.locator,
+        requirement: issue.requirement, blockedOperation: issue.blockedOperation,
+        owner: issue.owner, reproduce: issue.reproduce,
+        affected,
+        impact: { sourceMd: issue.sourceMd, locator: issue.locator, ...affected },
+        /** Structural validation only; no case or Run existence verified here. */
         verifiedAgainstRun: false,
       })
       return
