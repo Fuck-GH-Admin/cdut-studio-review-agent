@@ -10,6 +10,7 @@ import type {
 } from '@profer/shared'
 import { previewDemo, type DemoState } from './semantic-module-demo'
 import { validateReviewAuthoringV1 } from './review-authoring-v1'
+import { validateD3WorkspaceLocks } from './review-d3-workspace-locks'
 import { CommandValidationError, createAggregate, payloadHash, readAggregate, submitCommand } from './case-store-v2'
 import { getTemplate, isAuthoringCandidateDraft } from './template-store'
 import { hashEffectiveRuleSet, resolveEffectiveRules } from './effective-rules'
@@ -105,6 +106,8 @@ export function compileD2RuntimePlan(
 ): D2RuntimePlan {
   const errors = validateReviewAuthoringV1(workspace)
   if (errors.length) throw new Error('D2_AUTHORING_INVALID: ' + errors.join('；'))
+  const lockErrors = validateD3WorkspaceLocks(workspace, true)
+  if (lockErrors.length) throw new Error('D3_FROZEN_LOCK_INVALID: ' + lockErrors.join('；'))
   if (workspace.advanced && Object.values(workspace.advanced).some((value) => Array.isArray(value) && value.length)) {
     throw new Error('D2_UNMAPPED_ADVANCED: 高级 Claim/Evidence 关系尚无无损执行映射，不得忽略')
   }
