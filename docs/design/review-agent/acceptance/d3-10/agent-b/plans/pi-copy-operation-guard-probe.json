@@ -1,0 +1,47 @@
+{
+  "codeSha": "d16f047af653f7ba259456807c1fc150e9d0f417",
+  "kind": "synthetic-control-not-original-archive-r3",
+  "note": "The original A r3 uses unknown school policy; this isolated variant changes only COPY sourceBinding to synthetic request-scope so Pi reaches the independent evidence-boundary guard.",
+  "probeWorkspaceId": "d310-agent-b-copy-guard-probe",
+  "baselineWorkspaceId": "d310-agent-b-archive",
+  "originalCaseId": "d310-agent-b-archive-r3-run",
+  "originalRunId": "run-pi-mv2zcewk-7y1vm",
+  "probeCaseId": "d310-agent-b-copy-evidence-probe",
+  "probeRunId": "run-pi-mv2zcex0-oav4q",
+  "copyCheckId": "module/item-1-copy/authorization",
+  "copyRuleId": "d2-2cf6d714fbe349fc29df",
+  "readOnlyDocumentVersionId": "doc-1-mv2zcewx-v1",
+  "originalReadSubjectId": "d2-item1-read",
+  "attemptedCopySubjectId": "d2-item1-copy",
+  "negativePiSubmission": {
+    "accepted": 0,
+    "rejected": [
+      {
+        "kind": "check",
+        "index": 0,
+        "reason": "档案逐操作/开放状态缺少审核员确认的独立证据绑定：item-1/copy（d2:archive:copy）；不得挪用其他操作的授权"
+      }
+    ],
+    "missingChecks": [
+      "d2-3eb30a800377614dbb59 / d2-item1-open",
+      "d2-2cf6d714fbe349fc29df / d2-item1-copy",
+      "d2-e8c768436e7d1f9bef8d / d2-item1-read",
+      "d2-3f4c81ef4191e30932fd / d2-item1-copy",
+      "d2-09b7948a3a74e27100ee / d2-item1-read",
+      "d2-f3d968c24b8d5f3ec0a4 / d2-item1-read"
+    ],
+    "status": "running"
+  },
+  "finalPiReceipt": {
+    "accepted": 6,
+    "rejected": [],
+    "missingChecks": [],
+    "status": "completed"
+  },
+  "verifyD2PiRun": {
+    "complete": true,
+    "problems": []
+  },
+  "onlineModelRun": "not-run",
+  "syntheticToolReceipt": true
+}

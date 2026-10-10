@@ -1,14 +1,14 @@
 {
   "caseId": "d310-agent-b-archive-r3-run",
-  "runId": "run-pi-mv2zah2q-j8pa7",
+  "runId": "run-pi-mv2zcewk-7y1vm",
   "actualCaseCreated": true,
   "templateId": "archive-access",
   "workspaceId": "d310-agent-b-archive",
   "authoringRevision": 3,
   "authoringDigest": "aee8989b6dbcd521830301af3b6e90f315c8b28bca49073dcdf49dd924364d25",
   "planFingerprint": "dea4870a11dd2eba0dd7e0715e572d823fc69ba00fea3ed44af4ad58aa7bd1a6",
-  "sourceDocumentVersionId": "doc-1-mv2zah1e-v1",
-  "sourceBlockId": "doc-1-mv2zah1e-v1-block-001",
+  "sourceDocumentVersionId": "doc-1-mv2zcewd-v1",
+  "sourceBlockId": "doc-1-mv2zcewd-v1-block-001",
   "independentReadSubject": "d2-item1-read",
   "independentCopySubject": "d2-item1-copy",
   "readOnlyEvidenceLinkCount": 1,
@@ -75,7 +75,7 @@
       "sourceRefs": [
         {
           "caseId": "d310-agent-b-archive-r3-run",
-          "documentVersionId": "doc-1-mv2zah1e-v1",
+          "documentVersionId": "doc-1-mv2zcewd-v1",
           "parseRevision": 1,
           "location": {
             "kind": "paragraph",
@@ -114,7 +114,7 @@
     }
   ],
   "inputManifest": {
-    "hash": "03a49a4476f0b2c2a55c38854c37d5859d8cc70fb2cdf6fd193137ec9bdb9126",
+    "hash": "040bcd23b3d19203b3bd1957b2af8e4ca9e080bb8c2238eb3ca478fdcd35f54e",
     "effectiveRuleSetHash": "7b3e58169e3acd517c9267d86e3ec748f79c0714b5908c8c7d52908a31465f54"
   },
   "expected": {

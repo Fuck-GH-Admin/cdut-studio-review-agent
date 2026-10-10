@@ -4,15 +4,22 @@
   "onlineModelRun": "not-run",
   "syntheticToolReceipt": true,
   "caseId": "d310-agent-b-archive-r3-run",
-  "runId": "run-pi-mv2zah2q-j8pa7",
+  "runId": "run-pi-mv2zcewk-7y1vm",
   "p1": {
     "status": "PASS",
     "caseId": "d310-agent-b-archive-r3-run",
-    "runId": "run-pi-mv2zah2q-j8pa7",
+    "runId": "run-pi-mv2zcewk-7y1vm",
     "negativeRejected": 1,
     "verification": {
       "complete": true,
       "problems": []
+    },
+    "syntheticCopyGuardProbe": {
+      "caseId": "d310-agent-b-copy-evidence-probe",
+      "runId": "run-pi-mv2zcex0-oav4q",
+      "operationSpecificRejection": [
+        "档案逐操作/开放状态缺少审核员确认的独立证据绑定：item-1/copy（d2:archive:copy）；不得挪用其他操作的授权"
+      ]
     }
   },
   "p2": {
@@ -22,7 +29,7 @@
     "d2Error": "D2_UNMAPPED_ADVANCED",
     "gapStatus": "tooling-blocked",
     "baselineRunIds": [
-      "run-pi-mv2zah2q-j8pa7"
+      "run-pi-mv2zcewk-7y1vm"
     ]
   }
 }

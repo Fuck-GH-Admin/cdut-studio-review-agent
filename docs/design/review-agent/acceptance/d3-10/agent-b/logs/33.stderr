@@ -1,10 +1,10 @@
 
 ::group::apps/electron/src/main/lib/review/review-d3-pi-integration.test.ts:
-(pass) D3 W3：冻结 B01/B02 组合通过真实 Pi 材料与回执边界 > 复用后的 C family 和 A archive 均可建技术案卷并实际提交 Pi 回执，且未认证的审批必须保持待核 [205.30ms]
+(pass) D3 W3：冻结 B01/B02 组合通过真实 Pi 材料与回执边界 > 复用后的 C family 和 A archive 均可建技术案卷并实际提交 Pi 回执，且未认证的审批必须保持待核 [92.63ms]
 
 ::endgroup::
 
  1 pass
  0 fail
  19 expect() calls
-Ran 1 test across 1 file. [429.00ms]
+Ran 1 test across 1 file. [313.00ms]

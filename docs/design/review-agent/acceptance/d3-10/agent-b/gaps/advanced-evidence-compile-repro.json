@@ -22,7 +22,7 @@
     "module/item-1-read/scope-trace"
   ],
   "baselineRunIds": [
-    "run-pi-mv2zah2q-j8pa7"
+    "run-pi-mv2zcewk-7y1vm"
   ],
   "note": "Existing run IDs are ONLY from successful baseline A r3; advanced version was never installed/run."
 }

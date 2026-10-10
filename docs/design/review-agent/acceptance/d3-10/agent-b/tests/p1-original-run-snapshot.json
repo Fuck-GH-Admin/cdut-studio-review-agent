@@ -1,0 +1,183 @@
+{
+  "id": "run-pi-mv2zcewk-7y1vm",
+  "caseId": "d310-agent-b-archive-r3-run",
+  "templateId": "archive-access",
+  "templateVersion": 1,
+  "inputManifest": {
+    "hash": "040bcd23b3d19203b3bd1957b2af8e4ca9e080bb8c2238eb3ca478fdcd35f54e",
+    "templateVersion": 1,
+    "policyVersions": [],
+    "documentVersions": [
+      {
+        "documentId": "doc-1-mv2zcewd",
+        "versionId": "doc-1-mv2zcewd-v1",
+        "contentHash": "623229cd7ae2619c285e3ee9fc16d4b30592dcb0840104eef8be568f75533978"
+      }
+    ],
+    "observationIds": [],
+    "evidenceLinkIds": [
+      "evl-doc-1-mv2zcewd-v1-d2-item1-read-1791672160623-ue3j"
+    ],
+    "effectiveRuleIds": [
+      "d2-3eb30a800377614dbb59",
+      "d2-2cf6d714fbe349fc29df",
+      "d2-e8c768436e7d1f9bef8d",
+      "d2-3f4c81ef4191e30932fd",
+      "d2-09b7948a3a74e27100ee",
+      "d2-f3d968c24b8d5f3ec0a4"
+    ],
+    "effectiveRuleSetHash": "7b3e58169e3acd517c9267d86e3ec748f79c0714b5908c8c7d52908a31465f54"
+  },
+  "status": "completed",
+  "checkpoints": [],
+  "checks": [
+    {
+      "checkId": "check-d2-3eb30a800377614dbb59-subject-d2-item1-open",
+      "ruleId": "d2-3eb30a800377614dbb59",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "d2-item1-open"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前操作权限或校本制度尚未核实，禁止推出符合结论",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-10T22:42:40.633Z"
+    },
+    {
+      "checkId": "check-d2-2cf6d714fbe349fc29df-subject-d2-item1-copy",
+      "ruleId": "d2-2cf6d714fbe349fc29df",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "d2-item1-copy"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前操作权限或校本制度尚未核实，禁止推出符合结论",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-10T22:42:40.633Z"
+    },
+    {
+      "checkId": "check-d2-e8c768436e7d1f9bef8d-subject-d2-item1-read",
+      "ruleId": "d2-e8c768436e7d1f9bef8d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "d2-item1-read"
+        ]
+      },
+      "status": "compliant",
+      "reason": "合成read材料与item-1/read证据定位一致；不证明档案利用行政批准",
+      "sourceRefs": [
+        {
+          "caseId": "d310-agent-b-archive-r3-run",
+          "documentVersionId": "doc-1-mv2zcewd-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 0
+          },
+          "quote": "查阅授权已由申请人提供"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-10T22:42:40.633Z"
+    },
+    {
+      "checkId": "check-d2-3f4c81ef4191e30932fd-subject-d2-item1-copy",
+      "ruleId": "d2-3f4c81ef4191e30932fd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "d2-item1-copy"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前操作权限或校本制度尚未核实，禁止推出符合结论",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-10T22:42:40.633Z"
+    },
+    {
+      "checkId": "check-d2-09b7948a3a74e27100ee-subject-d2-item1-read",
+      "ruleId": "d2-09b7948a3a74e27100ee",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "d2-item1-read"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前操作权限或校本制度尚未核实，禁止推出符合结论",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-10T22:42:40.633Z"
+    },
+    {
+      "checkId": "check-d2-f3d968c24b8d5f3ec0a4-subject-d2-item1-read",
+      "ruleId": "d2-f3d968c24b8d5f3ec0a4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "d2-item1-read"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前操作权限或校本制度尚未核实，禁止推出符合结论",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-10T22:42:40.633Z"
+    }
+  ],
+  "opinions": [
+    {
+      "id": "opinion-run-pi-mv2zcewk-7y1vm",
+      "kind": "summary",
+      "severity": "yellow",
+      "title": "Pi 审核意见",
+      "detail": "read-only evidence recorded, copy authorization and official policy must remain awaiting-confirmation",
+      "suggestion": "manual-review",
+      "suggestionText": "分析结果不代表正式决定，请按业务权限办理认定或审批。",
+      "sourceRefs": [
+        {
+          "caseId": "d310-agent-b-archive-r3-run",
+          "documentVersionId": "doc-1-mv2zcewd-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 0
+          },
+          "quote": "查阅授权已由申请人提供"
+        }
+      ],
+      "verification": "unverified"
+    }
+  ],
+  "coverage": {
+    "documents": [
+      {
+        "documentVersionId": "doc-1-mv2zcewd-v1",
+        "status": "partially-read",
+        "reason": "本次审核引用了相关材料片段，但没有完整读取记录"
+      }
+    ],
+    "plannedChecks": 6,
+    "completedChecks": 6,
+    "effectiveVerdicts": 1,
+    "pendingChecks": 5
+  },
+  "diagnostics": [
+    "由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。"
+  ],
+  "startedAt": "2026-10-10T22:42:40.628Z",
+  "initiatedBy": {
+    "actorId": "agent-agent-b-owned-archive-pi-session",
+    "actorSource": "agent",
+    "role": "reviewer"
+  },
+  "completedAt": "2026-10-10T22:42:40.634Z"
+}

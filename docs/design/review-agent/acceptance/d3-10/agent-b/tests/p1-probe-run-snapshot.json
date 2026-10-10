@@ -1,0 +1,161 @@
+{
+  "id": "run-pi-mv2zcex0-oav4q",
+  "caseId": "d310-agent-b-copy-evidence-probe",
+  "templateId": "archive-access",
+  "templateVersion": 1,
+  "inputManifest": {
+    "hash": "d046aee9197c32f50a5fa61b025f4f680a59135e54b63d48c7f3e6266788a9c1",
+    "templateVersion": 1,
+    "policyVersions": [],
+    "documentVersions": [
+      {
+        "documentId": "doc-1-mv2zcewx",
+        "versionId": "doc-1-mv2zcewx-v1",
+        "contentHash": "623229cd7ae2619c285e3ee9fc16d4b30592dcb0840104eef8be568f75533978"
+      }
+    ],
+    "observationIds": [],
+    "evidenceLinkIds": [
+      "evl-doc-1-mv2zcewx-v1-d2-item1-read-1791672160643-1vqu"
+    ],
+    "effectiveRuleIds": [
+      "d2-3eb30a800377614dbb59",
+      "d2-2cf6d714fbe349fc29df",
+      "d2-e8c768436e7d1f9bef8d",
+      "d2-3f4c81ef4191e30932fd",
+      "d2-09b7948a3a74e27100ee",
+      "d2-f3d968c24b8d5f3ec0a4"
+    ],
+    "effectiveRuleSetHash": "e24de59a4b5614b266e5fe244352f255bc49838c6ee492b1d176ace0888d914d"
+  },
+  "status": "completed",
+  "checkpoints": [],
+  "checks": [
+    {
+      "checkId": "check-d2-3eb30a800377614dbb59-subject-d2-item1-open",
+      "ruleId": "d2-3eb30a800377614dbb59",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "d2-item1-open"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "仅为跨操作拒止探针；真实制度和复制许可尚待核实",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-10T22:42:40.647Z"
+    },
+    {
+      "checkId": "check-d2-2cf6d714fbe349fc29df-subject-d2-item1-copy",
+      "ruleId": "d2-2cf6d714fbe349fc29df",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "d2-item1-copy"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "仅为跨操作拒止探针；真实制度和复制许可尚待核实",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-10T22:42:40.647Z"
+    },
+    {
+      "checkId": "check-d2-e8c768436e7d1f9bef8d-subject-d2-item1-read",
+      "ruleId": "d2-e8c768436e7d1f9bef8d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "d2-item1-read"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "仅为跨操作拒止探针；真实制度和复制许可尚待核实",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-10T22:42:40.647Z"
+    },
+    {
+      "checkId": "check-d2-3f4c81ef4191e30932fd-subject-d2-item1-copy",
+      "ruleId": "d2-3f4c81ef4191e30932fd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "d2-item1-copy"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "仅为跨操作拒止探针；真实制度和复制许可尚待核实",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-10T22:42:40.647Z"
+    },
+    {
+      "checkId": "check-d2-09b7948a3a74e27100ee-subject-d2-item1-read",
+      "ruleId": "d2-09b7948a3a74e27100ee",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "d2-item1-read"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "仅为跨操作拒止探针；真实制度和复制许可尚待核实",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-10T22:42:40.647Z"
+    },
+    {
+      "checkId": "check-d2-f3d968c24b8d5f3ec0a4-subject-d2-item1-read",
+      "ruleId": "d2-f3d968c24b8d5f3ec0a4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "d2-item1-read"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "仅为跨操作拒止探针；真实制度和复制许可尚待核实",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-10T22:42:40.647Z"
+    }
+  ],
+  "opinions": [
+    {
+      "id": "opinion-run-pi-mv2zcex0-oav4q",
+      "kind": "summary",
+      "severity": "yellow",
+      "title": "Pi 审核意见",
+      "detail": "synthetic operation probe finalized with all pending; never authorize copy",
+      "suggestion": "manual-review",
+      "suggestionText": "分析结果不代表正式决定，请按业务权限办理认定或审批。",
+      "sourceRefs": [],
+      "verification": "unverified"
+    }
+  ],
+  "coverage": {
+    "documents": [
+      {
+        "documentVersionId": "doc-1-mv2zcewx-v1",
+        "status": "unread",
+        "reason": "本次运行没有可追溯的读取记录"
+      }
+    ],
+    "plannedChecks": 6,
+    "completedChecks": 6,
+    "effectiveVerdicts": 0,
+    "pendingChecks": 6
+  },
+  "diagnostics": [
+    "由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。"
+  ],
+  "startedAt": "2026-10-10T22:42:40.645Z",
+  "initiatedBy": {
+    "actorId": "agent-agent-b-own-copy-guard-probe-session",
+    "actorSource": "agent",
+    "role": "reviewer"
+  },
+  "completedAt": "2026-10-10T22:42:40.648Z"
+}
