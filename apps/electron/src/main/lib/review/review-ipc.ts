@@ -594,6 +594,10 @@ export function registerReviewIpc(): void {
     return acknowledgeWorkspaceMaterialV2(input.caseId, input.command as unknown as Parameters<typeof acknowledgeWorkspaceMaterialV2>[1])
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.DECIDE_WORKSPACE_CASE_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+    // IPC is untrusted renderer input; system/agent/school principals are
+    // minted by main-process services, never accepted as renderer claims.
+    const claimed = input?.command?.actor as import('@profer/shared').Actor | undefined
+    if (!claimed || claimed.actorSource !== 'local') throw new Error('前端不能声明系统、Agent 或校方审批身份')
     const { decideWorkspaceCaseV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
     return decideWorkspaceCaseV2(input.caseId, input.command as unknown as Parameters<typeof decideWorkspaceCaseV2>[1])
   })
@@ -610,9 +614,15 @@ export function registerReviewIpc(): void {
     if (!template) throw new Error(`模板不存在: ${input.templateId}@${input.version}`)
     return recordStageDecision(input.caseId, input.command as unknown as Parameters<typeof recordStageDecision>[1], template)
   })
-  ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, async (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { resolveSupplementV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
-    return resolveSupplementV2(input.caseId, input.command as unknown as Parameters<typeof resolveSupplementV2>[1])
+    const result = await resolveSupplementV2(input.caseId, input.command as unknown as Parameters<typeof resolveSupplementV2>[1])
+    if (result.ok && result.entity?.status === 'satisfied') {
+      // Requeue only after ALL open supplements are resolved, never on response alone.
+      const { requeueCaseAfterSupplement } = require('./batch-store') as typeof import('./batch-store')
+      requeueCaseAfterSupplement(input.caseId)
+    }
+    return result
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RESPOND_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
     const { respondSupplementV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
@@ -623,12 +633,18 @@ export function registerReviewIpc(): void {
     if (typeof batchId !== 'string' || !batchId) throw new Error('参数 batchId 非法')
     const { runBatchQueue } = require('./batch-store') as typeof import('./batch-store')
     const { assembleAndRunReview } = require('./run-async-service') as typeof import('./run-async-service')
-    return runBatchQueue(batchId, {
+    const completed = await runBatchQueue(batchId, {
       runCase: async (caseId: string) => {
         const run = await assembleAndRunReview(caseId)
         return { status: run.status }
       },
     })
+    if (completed.automation && completed.automation.mode !== 'assist') {
+      const { runBatchAutomation } = require('./batch-automation-service') as typeof import('./batch-automation-service')
+      await runBatchAutomation(batchId)
+    }
+    const { readBatchStateV2 } = require('./batch-store') as typeof import('./batch-store')
+    return readBatchStateV2(batchId)
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, async (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
@@ -709,14 +725,28 @@ export function registerReviewIpc(): void {
     const { listBatchStatesV2 } = require('./batch-store') as typeof import('./batch-store')
     return listBatchStatesV2()
   })
-  ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, (_e, input: { action: 'finalize' | 'reopen' | 'retry' | 'recover'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown>; caseIds?: string[] }) => {
+  ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, (_e, input: { action: 'finalize' | 'reopen' | 'retry' | 'recover' | 'configure-automation' | 'finalize-completed'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown>; caseIds?: string[]; mode?: import('@profer/shared').BatchAutomationMode; confirmed?: boolean }) => {
     if (!input || typeof input.batchId !== 'string' || !input.batchId) throw new Error('无效批次操作')
     const { finalizeBatch, reopenBatch, retryBatchCases, recoverInterruptedBatch } = require('./batch-store') as typeof import('./batch-store')
     if (input.action === 'finalize') return finalizeBatch(input.batchId, input.snapshot ?? {})
     if (input.action === 'reopen') return reopenBatch(input.batchId, input.newBatchId ?? `${input.batchId}-r${Date.now().toString(36)}`, input.reason ?? '人工重开')
     if (input.action === 'retry') return retryBatchCases(input.batchId, input.caseIds ?? [])
     if (input.action === 'recover') return recoverInterruptedBatch(input.batchId)
+    if (input.action === 'configure-automation') {
+      const { configureBatchAutomation } = require('./batch-store') as typeof import('./batch-store')
+      if (!input.mode) throw new Error('需要指定批次自动化策略')
+      return configureBatchAutomation(input.batchId, input.mode, input.confirmed === true)
+    }
+    if (input.action === 'finalize-completed') {
+      const { finalizeCompletedBatch } = require('./batch-automation-service') as typeof import('./batch-automation-service')
+      return finalizeCompletedBatch(input.batchId)
+    }
     throw new Error('未知批次操作')
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_AUTO_PROCESS_V2, (_e, batchId: string) => {
+    if (typeof batchId !== 'string' || !batchId) throw new Error('参数 batchId 非法')
+    const { runBatchAutomation } = require('./batch-automation-service') as typeof import('./batch-automation-service')
+    return runBatchAutomation(batchId)
   })
   // Local-human batch group operation. The backend recomputes the preview and
   // reruns each case's existing transaction guards; the renderer supplies no actor.
