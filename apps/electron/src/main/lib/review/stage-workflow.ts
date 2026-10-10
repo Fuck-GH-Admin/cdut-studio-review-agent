@@ -223,7 +223,10 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
       entity: payload.outcome === 'satisfied' ? { ...target, status: 'satisfied' } : { ...target, status: payload.outcome },
     }
   })
-  if (result.ok && result.entity?.status === 'satisfied') {
+  if (result.ok && command.payload.outcome === 'satisfied'
+    && result.aggregate.caseV2.stage === 'reviewing'
+    && result.aggregate.supplements.every((supplement) =>
+      !['open', 'responded', 'insufficient'].includes(supplement.status))) {
     // Centralize the review-loop transition here. It must also apply when
     // a local review tool calls the service directly instead of the IPC route.
     const { requeueCaseAfterSupplement } = require('./batch-store') as typeof import('./batch-store')
