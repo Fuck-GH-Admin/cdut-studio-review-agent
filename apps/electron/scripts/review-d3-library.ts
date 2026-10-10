@@ -146,10 +146,11 @@ async function main(): Promise<void> {
       const issue = load<D3Gap>(first)
       const a = issue?.affected
       const nonBlank = (value: unknown): value is string =>
-        typeof value === 'string' && !!value.trim() && value === value.trim() &&
-        !/[\u0000-\u001f\u007f]/.test(value)
+        typeof value === 'string' && !!value.trim()
+      const safeId = (value: unknown): value is string =>
+        nonBlank(value) && value === value.trim() && !/[\u0000-\u001f\u007f]/.test(value)
       const safeIds = (values: unknown, allowEmpty = true): values is string[] =>
-        Array.isArray(values) && (allowEmpty || values.length > 0) && values.every(nonBlank)
+        Array.isArray(values) && (allowEmpty || values.length > 0) && values.every(safeId)
       const safePaths = (values: unknown): values is string[] =>
         safeIds(values) && values.every(path =>
           path.split('/').every(segment => segment !== '' && segment !== '.' && segment !== '..'))
