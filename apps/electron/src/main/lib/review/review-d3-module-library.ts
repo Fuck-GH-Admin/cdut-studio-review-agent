@@ -12,7 +12,7 @@ import type {
 } from '@profer/shared'
 import { getConfigDir } from '../config-paths'
 import { validateReviewAuthoringV1 } from './review-authoring-v1'
-import { validateDemoState, previewDemo, type DemoState } from './semantic-module-demo'
+import { validateDemoState } from './semantic-module-demo'
 
 const SAFE_ID = /^[a-z][a-z0-9-]{0,79}$/
 const VERSION = (value: number): boolean => Number.isSafeInteger(value) && value >= 1
@@ -20,9 +20,6 @@ const digest = (value: unknown): string => createHash('sha256').update(JSON.stri
 const key = (id: string, version: number): string => id + '@' + version
 const sortLocks = (locks: ReviewD3ModuleLock[]): ReviewD3ModuleLock[] =>
   [...locks].sort((a, b) => key(a.moduleId, a.version).localeCompare(key(b.moduleId, b.version)))
-const stateOf = (workspace: ReviewAuthoringWorkspaceV1): DemoState => ({
-  revision: workspace.revision, modules: workspace.definitions.modules, templates: workspace.definitions.templates,
-})
 
 function validateId(id: string, version: number): void {
   if (!SAFE_ID.test(id) || !VERSION(version)) throw new Error('D3_BAD_MODULE_KEY: ' + key(String(id), version))
