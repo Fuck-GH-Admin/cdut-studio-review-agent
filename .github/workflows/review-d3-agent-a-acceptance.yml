@@ -39,6 +39,7 @@ jobs:
             docs/design/review-agent/acceptance/d3-10/agent-a/plans/
             docs/design/review-agent/acceptance/d3-10/agent-a/bundles/
             docs/design/review-agent/acceptance/d3-10/agent-a/tests/actual-results.json
+            docs/design/review-agent/acceptance/d3-10/agent-a/tests/pi-structured-results.json
             docs/design/review-agent/acceptance/d3-10/agent-a/run-log.md
             docs/design/review-agent/acceptance/d3-10/agent-a/verdict.md
       - name: Commit observed logs and output assets to independent branch
@@ -47,6 +48,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add docs/design/review-agent/acceptance/d3-10/agent-a/
+          git add -f docs/design/review-agent/acceptance/d3-10/agent-a/logs/
           if ! git diff --cached --quiet; then
             git commit -m 'test(d3-10): attach Agent A genuine isolated CLI evidence'
             git push origin HEAD:test/d3-10-agent-a-first-use

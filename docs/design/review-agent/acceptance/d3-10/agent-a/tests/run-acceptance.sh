@@ -6,6 +6,8 @@ A="$ROOT/docs/design/review-agent/acceptance/d3-10/agent-a"
 LOG="$A/logs"
 mkdir -p "$LOG" "$A/plans" "$A/bundles" "$A/tests"
 rm -f "$LOG"/*.stdout "$LOG"/*.stderr
+# D3 portable targets deliberately use O_EXCL; only delete this run's own GENERATED outputs before re-run.
+rm -f "$A/bundles/portable.json" "$A/bundles/reimported-workspace.json"
 ORIGINAL_CONFIG="$(mktemp -d -t d3-10-agent-a-original-XXXXXX)"
 CLEAN_CONFIG="$(mktemp -d -t d3-10-agent-a-import-XXXXXX)"
 export PROFER_CONFIG_DIR="$ORIGINAL_CONFIG"
@@ -45,6 +47,8 @@ run() {
   printf '| %s | \`%s\` | %d | %s | \`logs/%s.stdout\` | \`logs/%s.stderr\` |\n' "$id" "$shown" "$code" "$want" "$id" "$id" >> "$A/run-log.md"
   if [[ "$code" != "$want" ]]; then
     echo "UNEXPECTED STATUS $id got $code wanted $want" >&2
+    echo "--- $id stderr ---" >&2
+    cat "$err" >&2
     FAIL=1
   fi
 }
@@ -74,6 +78,7 @@ run 20-pi-real-service-synthetic-receipts 0 - bun "$A/tests/pi-synthetic-interfa
   echo '## Recovery and caveats'
   echo '- Step 11 intentionally attempts stale expectedRevision=0 after revision 2 and expects exit 1; step 12 continues with the intact revision.'
   echo '- Step 18 intentionally refuses to overwrite an imported workspace; earlier imported file is reused at step 17.'
+  echo '- Before running, only the two generated bundle target filenames are removed (not workspace inputs or any production state), because export/import use exclusive create. The first repeat-run failure is recorded in gaps/recovery-export-target-collision.md.'
   echo '- Three text cases are independently GOLD-classified; step 20 sends predeclared SYNTHETIC structured results through the real Pi service (registerMaterial/prepare/submit/verify). This is not a model-generated judgment.'
   echo "- Non-matching exits: $FAIL (0 means expected exit statuses matched; test 19 includes structural assertions)."
 } >> "$A/run-log.md"
