@@ -11,6 +11,8 @@ import {
   exportD3Bundle, importD3Bundle, diffD3Modules,
 } from './review-d3-module-library'
 import { validateReviewAuthoringV1 } from './review-authoring-v1'
+import { compileD2RuntimePlan } from './review-d2-runtime'
+import { validateD3WorkspaceLocks } from './review-d3-workspace-locks'
 import { previewDemo } from './semantic-module-demo'
 
 const folder = mkdtempSync(join(tmpdir(), 'd3-frozen-library-'))
@@ -105,6 +107,40 @@ describe('D3：不可变共享模块及 Agent-first 制作携包（BDD）', () =
     const local = structuredClone(workspace('author-local-change'))
     local.definitions.modules.push({ ...base, limits: '已经削弱的同名伪模块' })
     expect(() => reuse(local, digest)).toThrow('D3_WORKSPACE_COLLISION')
+  })
+
+  test('Given 已复用的共享资产 When 修改工作区同版定义或伪造锁 Then D1/D2 与导出均拒止', () => {
+    const approvedDigest = inspectFrozenD3Module('delegation-scope', 1)!.digest
+    const original = reuse(workspace('d3-compiler-lock'),approvedDigest)
+    expect(original.sharedModuleLocks).toEqual([{ moduleId:'delegation-scope',version:1,digest:approvedDigest }])
+    expect(validateD3WorkspaceLocks(original,true)).toEqual([])
+    const requestCase = {
+      id:'d3-lock-run',templateId:'text-check',templateVersion:1,title:'D3 test',objectType:'document' as const,
+      caseFields:{},subjects:[],documents:[],stage:'draft' as const,revision:0,createdAt:'2026-10-11T00:00:00.000Z',updatedAt:'2026-10-11T00:00:00.000Z',
+    }
+    expect(compileD2RuntimePlan(original,{templateId:'text-check',version:1,targets:[]},requestCase).rules).toHaveLength(2)
+    const tampered = structuredClone(original)
+    tampered.definitions.modules[0]!.limits = '悄然删除业务授权限制'
+    expect(validateReviewAuthoringV1(tampered).join(';')).toContain('D3_LOCK_DIGEST')
+    expect(() => compileD2RuntimePlan(tampered,{templateId:'text-check',version:1,targets:[]},requestCase)).toThrow('D2_AUTHORING_INVALID')
+    expect(() => exportD3Bundle(tampered)).toThrow('D3_WORKSPACE_INVALID')
+    const forged = structuredClone(original)
+    forged.sharedModuleLocks![0]!.digest = 'a'.repeat(64)
+    expect(validateReviewAuthoringV1(forged).join(';')).toContain('D3_LOCK_DIGEST')
+    const omitted = structuredClone(original)
+    delete omitted.sharedModuleLocks
+    expect(() => exportD3Bundle(omitted)).toThrow('D3_AMBIGUOUS_MODULE')
+  })
+
+  test('Given 携带冻结资产的交付包 When 清单与 workspace 锁不符 Then 即便重算包摘要也禁止导入', () => {
+    const original=exportD3Bundle(reuse(workspace('explicit-frozen-list'),inspectFrozenD3Module('delegation-scope',1)!.digest))
+    const sneaky=structuredClone(original)
+    sneaky.workspace.sharedModuleLocks=[]
+    // 由攻击者重算外层 digest 不意味着能够提升模块身份；内部清单必须吻合。
+    const crypto=require('node:crypto') as typeof import('node:crypto')
+    const {fingerprint:_old,...bare}=sneaky
+    sneaky.fingerprint=crypto.createHash('sha256').update(JSON.stringify(bare)).digest('hex')
+    expect(() => importD3Bundle(sneaky)).toThrow('D3_BUNDLE_LOCK_MISMATCH')
   })
 
   test('Given 旧草稿锁 When 新模块版本产生 Then 不迁移的消费者内容/指纹不漂移', () => {
