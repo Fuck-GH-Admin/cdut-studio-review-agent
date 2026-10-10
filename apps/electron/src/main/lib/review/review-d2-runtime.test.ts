@@ -128,6 +128,7 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
     })
     expect(created.ok).toBeTrue()
     expect(readAggregate('d2-proper-entry')?.d2RuntimePlan?.publicationAllowed).toBeFalse()
+    saveAuthoringCandidateDraft(makeD2CandidateShell(workspace, 'special-campus-card', 1))
     const corrupt = selection('special-campus-card')
     await expect(createD2TechnicalCase({
       caseId: 'd2-invalid-not-written', title: '错误情景', actor,
