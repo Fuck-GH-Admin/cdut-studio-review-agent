@@ -98,11 +98,11 @@ export function compileD2RuntimePlan(
   if (!template || caseV2.templateId !== selection.templateId || caseV2.templateVersion !== selection.version) {
     throw new Error('D2_TEMPLATE_MISMATCH: 案卷模板与作者态不一致')
   }
-  validateTargets(selection)
   if (template.scenarios?.length && (!selection.scenario || !template.scenarios.includes(selection.scenario))) {
     throw new Error('D2_SCENARIO_REQUIRED: 未知分支不能当作不适用')
   }
   if (!template.scenarios?.length && selection.scenario) throw new Error('D2_SCENARIO_INVALID: 无条件模板不接受分支')
+  validateTargets(selection)
   const preview = previewDemo(toDemo(workspace), selection.templateId, selection.version, selection.scenario)
   if (preview.blocked || !preview.tasks.length) throw new Error('D2_PREVIEW_BLOCKED: ' + preview.issues.join('；'))
   const registry = new Map(selection.targets.map((target) => [target.objectKey, target]))
