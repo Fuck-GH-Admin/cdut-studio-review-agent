@@ -8,6 +8,9 @@ on:
       - 'apps/electron/src/main/lib/review/batch-group-action-service*'
       - 'apps/electron/src/main/lib/review/batch-automation-*'
       - 'apps/electron/src/main/lib/review/workspace-business-service-v2.ts'
+      - 'apps/electron/src/main/lib/review/review-ipc-actor-guard*'
+      - 'apps/electron/src/main/lib/review/stage-workflow.ts'
+      - 'apps/electron/src/main/lib/review/review-ipc.ts'
       - 'apps/electron/src/renderer/components/content-review/BatchAutomationDialog.tsx'
       - 'apps/electron/src/renderer/components/content-review/BatchPanel.tsx'
       - '.github/workflows/review-batch-tests.yml'
@@ -36,4 +39,4 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Batch triage and queue regression tests
-        run: bun test --isolate --timeout 30000 packages/shared/src/review/batch-review-triage.test.ts apps/electron/src/main/lib/review/batch-store.test.ts apps/electron/src/main/lib/review/batch-group-action-service.test.ts apps/electron/src/main/lib/review/batch-automation-service.test.ts apps/electron/src/main/lib/review/stage-workflow.test.ts apps/electron/src/main/lib/review/workspace-business-service-v2.test.ts apps/electron/src/main/lib/review/case-store-v2.test.ts apps/electron/src/main/lib/review/template-store.test.ts
+        run: bun test --isolate --timeout 30000 packages/shared/src/review/batch-review-triage.test.ts apps/electron/src/main/lib/review/batch-store.test.ts apps/electron/src/main/lib/review/batch-group-action-service.test.ts apps/electron/src/main/lib/review/batch-automation-service.test.ts apps/electron/src/main/lib/review/stage-workflow.test.ts apps/electron/src/main/lib/review/workspace-business-service-v2.test.ts apps/electron/src/main/lib/review/case-store-v2.test.ts apps/electron/src/main/lib/review/template-store.test.ts apps/electron/src/main/lib/review/review-ipc-actor-guard.test.ts
