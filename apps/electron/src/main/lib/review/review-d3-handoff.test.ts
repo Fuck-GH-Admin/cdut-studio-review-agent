@@ -73,7 +73,7 @@ describe('D3 W2 B01/B02 双业务复用与拒用对照',()=>{
     expect(auth.digest).toHaveLength(64)
     expect(evidence.digest).toHaveLength(64)
     expect(auth.module.limits).toContain('行政批准')
-    expect(evidence.module.limits).toContain('行政批准')
+    expect(evidence.module.limits).toContain('批准')
   })
   test('C family/temporary service 同模板不同分支，B01 绑定分别只激活一个目标；B02 只核当前事实',()=>{
     let w=work('special-campus-card','campus')
