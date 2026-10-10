@@ -1,5 +1,7 @@
 # 审核当前状态与开发者交接
 
+> 2026-10-11 验收补充：内置离线演示账户可直接进入 **CDUT 专区 → 材料审核 → 批次管理**，无需真实 CAS。账号使用方式见 [B 阶段验收入口](16-batch-review-stage-b-local-acceptance.md#离线桌面验收入口)。最新自动化结果与路径校验阻断见 [第三轮 QA](20-batch-review-qa-round3.md)，实际桌面流程补验见 [离线 UI 验收](21-batch-review-offline-ui-acceptance.md)。下文的 `38acb1d0` 验证记录是此前历史基线。
+
 更新日期：2026-10-10。此页是新开发者的当前入口；如果 `feat/batch-review-triage-v1` 再有新提交，应先比较最新提交并更新本文的基线和验证记录。
 
 ## 当前分支与仓库

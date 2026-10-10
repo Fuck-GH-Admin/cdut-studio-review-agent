@@ -43,6 +43,8 @@ bun run electron:build
 
 ## 3. 本地 UI 场景（建议使用合成材料，不碰真实敏感申请）
 
+先按 [B 阶段的离线桌面验收入口](16-batch-review-stage-b-local-acceptance.md#离线桌面验收入口) 使用内置演示账户登录，进入 **CDUT 专区 → 材料审核 → 批次管理**。本地 B+C 验收无需真实校方 CAS 认证或生产 SchoolPort。2026-10-11 的实际桌面补验记录见 [离线 UI 补验报告](21-batch-review-offline-ui-acceptance.md)。
+
 | 场景 | 期望 |
 | --- | --- |
 | 新建批次未授权 | 仅检查与分流建议；无正式自动审批记录 |
