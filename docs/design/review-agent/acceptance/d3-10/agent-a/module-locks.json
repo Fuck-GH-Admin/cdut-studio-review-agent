@@ -1,0 +1,5 @@
+{
+  "frozenLocks": [],
+  "reason": "No shared-frozen D3 modules used; only a workspace-local natural-language task",
+  "workspaceId": "d3-10-agent-a-plain-text"
+}

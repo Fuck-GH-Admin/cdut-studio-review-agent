@@ -1,0 +1,53 @@
+name: D3-10 Agent A Independent First Use
+on:
+  pull_request:
+    paths:
+      - 'docs/design/review-agent/acceptance/d3-10/agent-a/**'
+      - '.github/workflows/review-d3-agent-a-acceptance.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  agent-a:
+    runs-on: ubuntu-latest
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: test/d3-10-agent-a-first-use
+          persist-credentials: true
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install exact lockfile
+        run: bun install --frozen-lockfile
+      - name: Independent A real D1 D2 D3 authoring workflow
+        id: acceptance
+        run: bash docs/design/review-agent/acceptance/d3-10/agent-a/tests/run-acceptance.sh
+      - name: Upload complete execution evidence even after failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: d3-10-agent-a-first-use-evidence
+          if-no-files-found: warn
+          path: |
+            docs/design/review-agent/acceptance/d3-10/agent-a/logs/
+            docs/design/review-agent/acceptance/d3-10/agent-a/plans/
+            docs/design/review-agent/acceptance/d3-10/agent-a/bundles/
+            docs/design/review-agent/acceptance/d3-10/agent-a/tests/actual-results.json
+            docs/design/review-agent/acceptance/d3-10/agent-a/run-log.md
+            docs/design/review-agent/acceptance/d3-10/agent-a/verdict.md
+      - name: Commit observed logs and output assets to independent branch
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/design/review-agent/acceptance/d3-10/agent-a/
+          if ! git diff --cached --quiet; then
+            git commit -m 'test(d3-10): attach Agent A genuine isolated CLI evidence'
+            git push origin HEAD:test/d3-10-agent-a-first-use
+          fi
