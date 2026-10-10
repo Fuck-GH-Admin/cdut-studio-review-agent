@@ -13,6 +13,8 @@ import {
 import { validateReviewAuthoringV1 } from './review-authoring-v1'
 import { compileD2RuntimePlan } from './review-d2-runtime'
 import { validateD3WorkspaceLocks } from './review-d3-workspace-locks'
+import { inspectD3UpgradeImpact, listD3FrozenConsumers, upgradeD3ModuleUse } from './review-d3-upgrade'
+import { getReviewAuthoringRevisionV1, saveReviewAuthoringRevisionV1 } from './review-authoring-store-v1'
 import { previewDemo } from './semantic-module-demo'
 
 const folder = mkdtempSync(join(tmpdir(), 'd3-frozen-library-'))
@@ -156,6 +158,57 @@ describe('D3：不可变共享模块及 Agent-first 制作携包（BDD）', () =
     expect(exportD3Bundle(old).fingerprint).toBe(oldPackage.fingerprint)
     expect(old.definitions.templates[0]?.modules[0]?.version).toBe(1)
     expect(discoverFrozenD3Modules('授权范围').map(v=>v.version)).toEqual([1,2])
+  })
+
+  test('Given D1 工作区记录了共享依赖 When 升级版本 Then 反向消费者和变更影响可解释，旧修订不漂移', () => {
+    const id='author-version-upgrade'
+    const draft=workspace(id)
+    saveReviewAuthoringRevisionV1(draft,0,'d3-test')
+    const old=inspectFrozenD3Module('delegation-scope',1)!
+    const current=reuse(draft,old.digest)
+    saveReviewAuthoringRevisionV1(current,1,'d3-test')
+    const newer=inspectFrozenD3Module('delegation-scope',2)!
+    const impact=inspectD3UpgradeImpact('delegation-scope',1,2)
+    expect(impact.consumers.some(entry=>
+      entry.workspaceId===id && entry.templateId==='text-check' && entry.instancePath==='module/proxy-review')).toBeTrue()
+    expect(impact.contentDiff.changedTasks).toEqual(['authorization'])
+    const next=upgradeD3ModuleUse({
+      workspace:current,expectedRevision:2,
+      templateId:'text-check',templateVersion:1,useId:'proxy-review',
+      expectedOldDigest:old.digest,newVersion:2,expectedNewDigest:newer.digest,
+      sourceBindings:[{checkId:'text-check@1:module/proxy-review/authorization',sourceIds:['local-request']}],
+      acknowledgeRemovedCheckIds:[],
+    })
+    expect(next.workspace.revision).toBe(3)
+    expect(next.workspace.definitions.templates[0]?.modules[0]?.version).toBe(2)
+    expect(next.removedCheckIds).toEqual([])
+    expect(next.workspace.sharedModuleLocks?.map(lock=>lock.version)).toEqual([1,2])
+    expect(getReviewAuthoringRevisionV1(id)?.workspace.definitions.templates[0]?.modules[0]?.version).toBe(1)
+    saveReviewAuthoringRevisionV1(next.workspace,2,'d3-test')
+    expect(listD3FrozenConsumers('delegation-scope',1).some(entry=>entry.workspaceId===id)).toBeFalse()
+    expect(listD3FrozenConsumers('delegation-scope',2).some(entry=>entry.workspaceId===id)).toBeTrue()
+  })
+
+  test('Given 模块升级删去责任 When Agent 未逐项签收删除 Then 原子拒止不损坏旧工作区', () => {
+    const old=inspectFrozenD3Module('delegation-scope',1)!
+    const oldWorkspace=reuse(workspace('acknowledged-removal'),old.digest)
+    const replacement=structuredClone(base)
+    replacement.version=4
+    replacement.tasks=[{id:'new-purpose',title:'替代事项',requirement:'仅核验新授权范围。',completion:'未知须报告待核。'}]
+    const newRecord=freezeD3Module(replacement,['fixture:review-required'])
+    const request={
+      workspace:oldWorkspace,expectedRevision:2,templateId:'text-check',templateVersion:1,
+      useId:'proxy-review',expectedOldDigest:old.digest,
+      newVersion:4,expectedNewDigest:newRecord.digest,
+      sourceBindings:[{checkId:'text-check@1:module/proxy-review/new-purpose',sourceIds:['local-request']}],
+    }
+    expect(()=>upgradeD3ModuleUse({...request,acknowledgeRemovedCheckIds:[]})).toThrow('D3_UPGRADE_REMOVAL_NOT_ACKNOWLEDGED')
+    expect(oldWorkspace.definitions.templates[0]?.modules[0]?.version).toBe(1)
+    const approved=upgradeD3ModuleUse({
+      ...request,acknowledgeRemovedCheckIds:['text-check@1:module/proxy-review/authorization'],
+    })
+    expect(approved.removedCheckIds).toEqual(['text-check@1:module/proxy-review/authorization'])
+    expect(approved.newCheckIds).toEqual(['text-check@1:module/proxy-review/new-purpose'])
   })
 
   test('Given 导出携包 When 进入全新隔离配置目录再导入 Then 摘要、模块与原模板要求一致', () => {
