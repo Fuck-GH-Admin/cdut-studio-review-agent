@@ -44,9 +44,10 @@ async function main(){
     ensure(registered.ok,'text material registration failed '+sample.id)
     const document=readAggregate(caseId)!.caseV2.documents[0]
     ensure(document?.versionId && document?.contentHash,'no material version/hash '+sample.id)
-    const block=document.blocks.find(b=>b.kind!=='image')
-    ensure(block?.blockId,'no parsed text block '+sample.id)
-    const src={documentVersionId:document.versionId,blockId:block.blockId,quote:sample.id==='negative'?'待填写':'摘要'}
+    const quote=sample.id==='negative'?'待填写':'摘要'
+    const block=document.blocks.find(b=>b.kind!=='image' && b.text.includes(quote))
+    ensure(block?.blockId,'no parsed text block containing quoted evidence '+sample.id+': '+quote)
+    const src={documentVersionId:document.versionId,blockId:block.blockId,quote}
     const prep=preparePiReviewRunV2({caseId,sessionId:'agent-a-session-'+sample.id,turnId:'agent-a-turn-'+sample.id})
     ensure(prep.userMessage.includes('D2 固定技术预审包'),'Pi instructions lack D2 plan label')
     ensure(prep.userMessage.includes('非空') && prep.userMessage.includes('摘要') && prep.userMessage.includes('正文') && prep.userMessage.includes('结论'),'edited natural-language duty not in actual Pi task')
@@ -61,6 +62,15 @@ async function main(){
       }})
       rejectedUnsafeStatus=wrong.rejected.length>0
       ensure(rejectedUnsafeStatus,'unreferenced compliant wrongly accepted')
+    }
+    if (sample.id==='negative'){
+      const first=document.blocks.find(b=>b.kind!=='image')!
+      const mismatched=submitPiReviewResultV2({binding,triggeredBy:'user',result:{
+        summary:'negative control: quotation belongs to another block and must be rejected',
+        checks:[{ruleId:m.ruleId,subjectIds:[],status:'non-compliant',reason:'错误的出处块',sourceRefs:[
+          {documentVersionId:document.versionId,blockId:first.blockId,quote:'待填写'}]}],finish:true,
+      }})
+      ensure(mismatched.rejected.length>0,'mismatched block and quote erroneously accepted')
     }
     const intendedStatus=sample.expected==='needs-confirmation'?'awaiting-confirmation':sample.expected
     const submitted=submitPiReviewResultV2({binding,triggeredBy:'user',result:{
