@@ -13,8 +13,8 @@ export const LOCAL_REVIEWER_ACTOR: Actor = Object.freeze({
   role: 'reviewer',
 })
 
-export function bindLocalReviewerCommand<T extends { actor: Actor }>(command: T): T {
-  const claim = command?.actor
+export function bindLocalReviewerCommand<T extends Record<string, unknown>>(command: T): T {
+  const claim = command?.actor as Actor | undefined
   if (!claim || claim.actorSource !== 'local' || claim.role !== 'reviewer') {
     throw new Error('本地审核 IPC 仅允许 reviewer 操作；教师、校方、系统或 Agent 权限必须经过可信服务授权')
   }
