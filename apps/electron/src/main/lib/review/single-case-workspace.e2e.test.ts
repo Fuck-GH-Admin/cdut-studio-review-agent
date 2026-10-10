@@ -129,6 +129,29 @@ describe('普通审核工作台单案完整链路', () => {
     const subjectId = caseUnderTest.items[0]!.id
     expect(aggregate.caseV2.subjects.map((subject) => subject.id)).toContain(subjectId)
 
+    // 新版综测模板对不同材料槽有独立必交门控；旧 E2E 只导入了 V1 申报表。
+    // 先在 V2 中登记各槽的合成占位材料，验证真实提交门控而非绕开该约束。
+    // 占位材料不包含具体获奖凭证，后续「获奖证书待补」仍应由业务规则发现。
+    const activeTemplate = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)!
+    for (const slot of activeTemplate.materialSlots.filter((slot) =>
+      (slot.requiredAt ?? 'submission') === 'submission' && slot.minCount > 0,
+    )) {
+      for (let count = 0; count < slot.minCount; count++) {
+        const current = readAggregate(caseUnderTest.id)!
+        const registered = await registerMaterial(caseUnderTest.id, {
+          requestId: commandId('submission-slot-' + slot.id),
+          actor,
+          expectedRevision: current.caseV2.revision,
+          payload: {
+            sourcePath: file(`材料槽-${slot.id}-${count}.txt`, '合成材料：仅用于测试材料槽已登记，不能证明获奖资格。'),
+            role: 'evidence',
+            materialSlotId: slot.id,
+          },
+        })
+        assertCommandSucceeded(registered)
+      }
+    }
+
     const submitted = await submitCaseV2(caseUnderTest.id, actor)
     expect(submitted.ok).toBeTrue()
     const firstRun = await runCurrentCase(`${caseUnderTest.id}-run-1`)
