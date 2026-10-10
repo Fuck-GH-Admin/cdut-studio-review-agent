@@ -14,6 +14,8 @@ import { validateTemplate } from './template-store'
 
 const ID = /^[a-z][a-z0-9-]{0,79}$/
 const sha = (value: unknown): string => createHash('sha256').update(JSON.stringify(value), 'utf8').digest('hex')
+/** criterionId 完全复用 D0.5 对原始 checkId UTF-8 文本的 hash 约定。 */
+const shaCheckId = (value: string): string => createHash('sha256').update(value, 'utf8').digest('hex')
 const toDemo = (workspace: ReviewAuthoringWorkspaceV1): DemoState => ({
   revision: workspace.revision,
   modules: workspace.definitions.modules,
@@ -131,7 +133,7 @@ export function compileReviewAuthoringCandidateV1(
   // 在现有 criterion 中保留来源性质，使 Pi 最终收到的任务文本不丢失来源警告；
   // sourceIds 在 manifest 中提供精确机读对应，但不伪造真实材料的 SourceRef。
   for (const task of preview.tasks) {
-    const id = 'demo-' + sha(task.checkId).slice(0, 16)
+    const id = 'demo-' + shaCheckId(task.checkId).slice(0, 16)
     const criterion = template.sections?.flatMap((section) => section.criteria).find((entry) => entry.id === id)
     if (!criterion) throw new Error('RULE_TRUTH_MISMATCH: 无法为审核责任追加来源声明：' + task.checkId)
     const sourceIds = links.get(templateId + '@' + version + ':' + task.checkId)!
@@ -153,7 +155,7 @@ export function compileReviewAuthoringCandidateV1(
   }
 
   const mapping: ReviewAuthoringRuleMapV1[] = preview.tasks.map((task) => {
-    const id = 'demo-' + sha(task.checkId).slice(0, 16)
+    const id = 'demo-' + shaCheckId(task.checkId).slice(0, 16)
     const criterion = criteria.find((item) => item.criterion.id === id)
     if (!criterion) throw new Error('RULE_TRUTH_MISMATCH: 审核责任未生成标准 ' + task.checkId)
     const ruleId = 'section-' + criterion.section.id + '-' + id
