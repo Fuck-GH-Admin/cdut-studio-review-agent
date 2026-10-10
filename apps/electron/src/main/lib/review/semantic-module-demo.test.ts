@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test'
-import { mkdtempSync, rmSync } from 'node:fs'
+import { copyFileSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 import type { DemoModule, DemoTemplate, DemoTransaction } from './semantic-module-demo'
 import {
   applyDemoTransaction, checkDemoCoverage, emptyDemoState, previewDemo, projectSimpleDemoDraft, validateDemoState,
@@ -233,5 +233,37 @@ describe('D0.5 Agent-first 轻量语义模块（BDD）', () => {
     expect(preview.tasks).toHaveLength(3)
     expect(preview.tasks.map((it) => it.checkId)).toContain('module/authority/relation/check')
     expect(preview.tasks.find((it) => it.checkId === 'module/authority/relation/check')?.moduleRef?.moduleId).toBe('relation-proof')
+  })
+
+  test('Given 合成 fixture When Agent 从命令行预览并提交批量编辑 Then 状态版本真实落盘且可以投影旧模板', () => {
+    const fixtureDir = resolve(import.meta.dir, '../../../../../../docs/design/review-agent/fixtures')
+    const cliPath = resolve(import.meta.dir, '../../../../scripts/review-semantic-demo.ts')
+    const folder = mkdtempSync(join(tmpdir(), 'd05-cli-'))
+    const statePath = join(folder, 'state.json')
+    const execute = (commandPath: string): Record<string, any> => {
+      const result = Bun.spawnSync({
+        cmd: [process.execPath, cliPath, statePath, commandPath],
+        env: { ...process.env, PROFER_CONFIG_DIR: folder },
+      })
+      if (result.exitCode !== 0) throw new Error(result.stderr.toString())
+      return JSON.parse(result.stdout.toString()) as Record<string, any>
+    }
+    try {
+      copyFileSync(join(fixtureDir, 'd05-synthetic-state.json'), statePath)
+      const family = execute(join(fixtureDir, 'd05-preview-card-family.json'))
+      expect(family.blocked).toBeFalse()
+      expect(family.tasks).toHaveLength(3)
+      const archive = execute(join(fixtureDir, 'd05-preview-archive.json'))
+      expect(archive.tasks.map((it: { objectKey?: string }) => it.objectKey)).toContain('item-1/copy')
+      const edited = execute(join(fixtureDir, 'd05-agent-edit.json'))
+      expect(edited.revision).toBe(2)
+      const commandPath = join(folder, 'project.json')
+      writeFileSync(commandPath, JSON.stringify({ kind: 'project', templateId: 'text-review', version: 1 }))
+      const projected = execute(commandPath)
+      expect(projected.sections[0].criteria[0].requirement).toContain('标题、摘要、正文及结论')
+      expect(projected.status).toBe('draft')
+    } finally {
+      rmSync(folder, { recursive: true, force: true })
+    }
   })
 })
