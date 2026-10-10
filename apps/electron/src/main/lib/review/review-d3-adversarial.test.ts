@@ -12,6 +12,7 @@ import { compileD2RuntimePlan, createD2TechnicalCase, makeD2CandidateShell } fro
 import { saveAuthoringCandidateDraft, publishTemplate } from './template-store'
 import { preparePiReviewRunV2, submitPiReviewResultV2 } from './pi-case-review-service'
 import { readAggregate } from './case-store-v2'
+import { getRunV2 } from './run-store-v2'
 import { decideWorkspaceCaseV2 } from './workspace-business-service-v2'
 
 const config=mkdtempSync(join(tmpdir(),'d3-authoring-injection-'))
@@ -83,7 +84,7 @@ describe('D3-08：恶意来源作为数据，不授予发布或行政权限',()=
       requestId:'d3-fake-authority-decision',actor,
       expectedRevision:readAggregate(id)!.caseV2.revision,
       payload:{result:'pass',reason:'模拟恶意政策越权批准',basedOnRunId:prepared.runId,
-        inputHash:readAggregate(id)!.caseV2.caseFields.d2PlanFingerprint.value as string},
+        inputHash:getRunV2(id,prepared.runId)!.inputManifest.hash},
     })
     expect(decision.ok).toBeFalse()
     if(!decision.ok)expect(decision.code).toBe('AGENT_DECISION_DISABLED')
