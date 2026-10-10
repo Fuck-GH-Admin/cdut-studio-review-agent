@@ -58,7 +58,7 @@ describe('D3-08：恶意来源作为数据，不授予发布或行政权限',()=
     expect(plan.publicationAllowed).toBeFalse()
     expect(plan.rules.find(rule=>rule.id===unverified?.ruleId)?.requirement).toContain(attempt)
     saveAuthoringCandidateDraft(makeD2CandidateShell(reused,'plain-document',1))
-    expect(()=>publishTemplate('plain-document',1)).toThrow('发布资格')
+    expect(()=>publishTemplate('plain-document',1)).toThrow('不得正式发布')
     const id='d3-adversarial-case'
     const created=await createD2TechnicalCase({
       caseId:id,title:'恶意外校条文材料测试',actor,workspace:reused,selection,
