@@ -77,9 +77,17 @@ export function checkAutoBatchAction(
     || run.inputManifest.effectiveRuleIds.some((id) => !rules.has(id))
     || run.checks.some((item) => !rules.has(item.ruleId))
     || run.coverage.completedChecks !== run.coverage.plannedChecks
-    || run.checks.length !== run.coverage.plannedChecks)
+    || run.checks.length !== run.coverage.plannedChecks
+    || run.inputManifest.effectiveRuleIds.some((id) => !run.checks.some((check) => check.ruleId === id)))
     return blocked('政策规则未完整发布确认，或本轮检查与规则计划不一致')
 
+  // For autonomous actions, every current active document must be represented
+  // as read in THIS run, not just a historical case-level usage flag.
+  if (aggregate.caseV2.documents.some((doc) =>
+    doc.active !== false && !doc.unusedReason?.startsWith('[审核员忽略]')
+    && !run.coverage.documents.some((item) => item.documentVersionId === doc.versionId && item.status === 'read'))) {
+    return blocked('本轮审核运行未覆盖全部有效材料，不得自动处理')
+  }
   // A source pointer must actually refer to a current, parseable case document;
   // a nonempty array with a fabricated version ID is not evidence.
   if (run.checks.some((check) => check.sourceRefs.some((ref) => ref.caseId !== aggregate.caseV2.id
