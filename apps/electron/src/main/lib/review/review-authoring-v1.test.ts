@@ -9,7 +9,7 @@ import {
 import {
   diffReviewAuthoringRevisionsV1, getReviewAuthoringRevisionV1, saveReviewAuthoringRevisionV1,
 } from './review-authoring-store-v1'
-import { publishTemplate, saveDraft } from './template-store'
+import { publishTemplate, saveDraft, saveAuthoringCandidateDraft } from './template-store'
 
 const synthetic = { kind: 'synthetic' as const, note: '仅供 D1 验证，非任何学校现行政策' }
 const task = (requirement: string) => ({
@@ -222,6 +222,21 @@ describe('D1 作者态修订存储与候选发布隔离', () => {
     const firstSave = { ...stripped, templateId: 'first-save-stripped' }
     saveDraft(firstSave)
     expect(() => publishTemplate(firstSave.templateId, 1)).toThrow('模板发布资格未获允许')
+  })
+
+  test('Given D1 专用服务登记 When 候选首次保存前连所有可识别的展示标记都被删掉 Then 仍不能获得发布权', () => {
+    const workspace = basic()
+    workspace.definitions.templates[0]!.templateId = 'candidate-forced-hold'
+    workspace.sourceBindings[0]!.checkId = 'candidate-forced-hold@1:module/text/check'
+    const candidate = compileReviewAuthoringCandidateV1(workspace, 'candidate-forced-hold', 1)
+    const altered = structuredClone(candidate.template)
+    delete altered.sourceNote
+    altered.sections![0]!.id = 'custom-section'
+    altered.sections![0]!.criteria[0]!.id = 'plain-check'
+    saveAuthoringCandidateDraft(altered)
+    // 持久化后继续将其修改成普通文字，也不能降级候选发布阻断。
+    saveDraft({ ...altered, name: '普通草稿标题' })
+    expect(() => publishTemplate('candidate-forced-hold', 1)).toThrow('模板发布资格未获允许')
   })
 
   test('Given 模板资格侧记录不存在 When 首次发布 Then 缺失资格不能默认放行', () => {
