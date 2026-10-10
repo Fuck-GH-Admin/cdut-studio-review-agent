@@ -38,6 +38,8 @@ jobs:
         run: bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-minimal-cli.test.ts
       - name: D3 shared C A modules across real Pi submission
         run: bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-pi-integration.test.ts
+      - name: D3 malicious authority and untrusted-source regression
+        run: bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-adversarial.test.ts
       - name: D1 D2 authoring and Pi compatibility
         run: |
           bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-authoring-v1.test.ts
