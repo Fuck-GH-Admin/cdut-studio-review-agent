@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test } from 'bun:test'
+import { afterAll, describe, expect, test } from 'bun:test'
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -130,8 +130,10 @@ describe('D1 作者态修订存储与候选发布隔离', () => {
   const previous = process.env.PROFER_CONFIG_DIR
   const home = mkdtempSync(join(tmpdir(), 'review-d1-test-'))
   process.env.PROFER_CONFIG_DIR = home
-  afterEach(() => {
-    // 测试不修改用户的主配置目录
+  afterAll(() => {
+    if (previous === undefined) delete process.env.PROFER_CONFIG_DIR
+    else process.env.PROFER_CONFIG_DIR = previous
+    rmSync(home, { recursive: true, force: true })
   })
 
   test('Given 草稿连续两次修改 When 记录版本 Then 草稿修订号与发布模板版本不同、历史可读', () => {
