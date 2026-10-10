@@ -88,6 +88,16 @@ describe('V2 存储路径安全：第三轮 QA 阻断修复', () => {
     expect(existsSync(join(dirname(root), 'escaped'))).toBeFalse()
   })
 
+  test('Pi 材料目录与报告导出也不能绕过 V2 caseId 路径校验', async () => {
+    const { assertPiReviewDirectory } = await import('./pi-case-review-service')
+    const { exportCaseReport } = await import('./report-export-v2-service')
+    for (const id of badIds) {
+      expect(() => assertPiReviewDirectory('/tmp', id)).toThrow('非法 caseId')
+      expect(() => exportCaseReport(id)).toThrow('非法 caseId')
+    }
+    expect(existsSync(join(dirname(root), 'escaped'))).toBeFalse()
+  })
+
   test('批次创建逐项核验成员 caseIds，拒绝落盘且不允许未授权重试', () => {
     for (const id of badIds) {
       expect(() => createBatchV2({ id: 'safe-batch', name: '安全批次',
