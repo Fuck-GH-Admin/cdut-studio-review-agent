@@ -186,6 +186,46 @@ describe('D3 W2 B01/B02 双业务复用与拒用对照',()=>{
     expect(report.impact.sourceRequirementIds).toEqual(['A-claim-alternative-evidence-001'])
     expect(report.impact.instancePaths).toEqual(['module/item-1-read'])
     expect(report.impact.runIds).toEqual([])
+    const forged=structuredClone(JSON.parse(readFileSync(join(fixtureDir,'d3-gap-evidence-alternatives.json'),'utf8')))
+    forged.status='verified'
+    forged.schemaVersion=999
+    forged.verifiedAgainstRun=true
+    forged.publicationAllowed=true
+    forged.affected.unverifiedExtra='claimed-run'
+    const forgedPath=join(folder,'d3-gap-false-status.json')
+    writeFileSync(forgedPath,JSON.stringify(forged))
+    const protectedResult=Bun.spawnSync({cmd:[process.execPath,script,'report-gap',forgedPath],env})
+    expect(protectedResult.exitCode).toBe(0)
+    const safe=JSON.parse(protectedResult.stdout.toString()) as Record<string,unknown>
+    expect(safe.status).toBe('tooling-blocked')
+    expect(safe.schemaVersion).toBe(1)
+    expect(safe.verifiedAgainstRun).toBeFalse()
+    expect(safe).not.toHaveProperty('publicationAllowed')
+    expect(safe.affected).not.toHaveProperty('unverifiedExtra')
+
+    const policyMissing=structuredClone(forged)
+    policyMissing.owner='policy-source'
+    const policyPath=join(folder,'d3-gap-policy-source.json')
+    writeFileSync(policyPath,JSON.stringify(policyMissing))
+    const policyResult=Bun.spawnSync({cmd:[process.execPath,script,'report-gap',policyPath],env})
+    expect(policyResult.exitCode).toBe(0)
+    expect(JSON.parse(policyResult.stdout.toString()).status).toBe('source-missing')
+
+    const unsafePath=structuredClone(forged)
+    unsafePath.affected.instancePaths=['module/../../outside']
+    const traversalPath=join(folder,'d3-gap-unsafe-path.json')
+    writeFileSync(traversalPath,JSON.stringify(unsafePath))
+    const blockedPath=Bun.spawnSync({cmd:[process.execPath,script,'report-gap',traversalPath],env})
+    expect(blockedPath.exitCode).not.toBe(0)
+    expect(blockedPath.stderr.toString()).toContain('D3_GAP_INVALID')
+
+    const missingMapping=structuredClone(forged)
+    delete missingMapping.affected.runIds
+    const missingPath=join(folder,'d3-gap-missing-run-map.json')
+    writeFileSync(missingPath,JSON.stringify(missingMapping))
+    const blockedMissing=Bun.spawnSync({cmd:[process.execPath,script,'report-gap',missingPath],env})
+    expect(blockedMissing.exitCode).not.toBe(0)
+    expect(blockedMissing.stderr.toString()).toContain('D3_GAP_INVALID')
     const invalid=structuredClone(JSON.parse(readFileSync(join(fixtureDir,'d3-gap-evidence-alternatives.json'),'utf8')))
     invalid.affected.sourceRequirementIds=[]
     const invalidPath=join(folder,'d3-gap-missing-origin-id.json')
