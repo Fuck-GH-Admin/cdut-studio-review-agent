@@ -230,6 +230,60 @@ describe('补件回复与任务回流（G04/G05）', () => {
   })
 })
 
+describe('角色安全收口（P0）', () => {
+  test('学生或非来源阶段审核员不能代替来源审核人判定补件', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const opened = await recordStageDecision(caseId, {
+      requestId: nextReq(), actor, expectedRevision: 1,
+      payload: { action: 'return-for-supplement', taskId: firstTaskId,
+        reason: '缺材料', supplementRequiredElements: ['原件'], supplementReason: '请补充材料' },
+    }, template)
+    expect(opened.ok).toBeTrue()
+    const agg = readAggregate(caseId)!
+    const forbidden = await resolveSupplementV2(caseId, {
+      requestId: nextReq(), actor: teacherActor, expectedRevision: agg.caseV2.revision,
+      payload: { supplementId: agg.supplements[0]!.id, outcome: 'satisfied', reason: '尝试越权' },
+    })
+    expect(forbidden.ok).toBeFalse()
+    if (!forbidden.ok) expect(forbidden.code).toBe('INVALID_TRANSITION')
+    expect(readAggregate(caseId)?.supplements[0]?.status).toBe('open')
+  })
+
+  test('未获得复核教师角色的本地 reviewer 不得自行维持或更改申诉结论', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const denied = await recordStageDecision(caseId, {
+      requestId: nextReq(), actor, expectedRevision: 1,
+      payload: { action: 'final-reject', taskId: firstTaskId, reason: '初审不符' },
+    }, template)
+    expect(denied.ok).toBeTrue()
+    const { submitCommand } = await import('./case-store-v2')
+    const base = readAggregate(caseId)!
+    const created = await submitCommand(caseId, {
+      requestId: nextReq(), actor, expectedRevision: base.caseV2.revision,
+      type: 'SeedAppealForPermissionTest', payload: {},
+    }, () => ({
+      summary: '测试创建待处理申诉',
+      mutate: (draft) => {
+        draft.appeals.push({
+          id: `role-appeal-${caseId}`, caseId, againstDecisionId: draft.decisions[0]!.id,
+          appellant: { actorId: 'student', actorSource: 'local' },
+          statement: '请求复核', newEvidenceDocumentVersionIds: [], status: 'in-review',
+          createdAt: '2026-10-10T00:00:00Z',
+        })
+      },
+    }))
+    expect(created.ok).toBeTrue()
+    const agg = readAggregate(caseId)!
+    const invalid = await resolveAppealV2(caseId, {
+      requestId: nextReq(), actor, expectedRevision: agg.caseV2.revision,
+      payload: { appealId: `role-appeal-${caseId}`, resolution: 'maintain-original', reason: '冒签教师' },
+    })
+    expect(invalid.ok).toBeFalse()
+    if (!invalid.ok) expect(invalid.code).toBe('INVALID_TRANSITION')
+    expect(readAggregate(caseId)?.appeals[0]?.status).toBe('in-review')
+  })
+})
+
 describe('申诉更正与最终投影（R07）', () => {
   test('Given 申诉更正 When resolve Then 追加关联决定且原决定被投影排除', async () => {
     // 手工构造决定集验证投影
