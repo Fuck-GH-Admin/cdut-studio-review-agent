@@ -46,7 +46,7 @@ function authoring(): ReviewAuthoringWorkspaceV1 {
   }
   return {
     schemaVersion: 1, workspaceId: 'd2-synthetic', revision: 1,
-    definitions: { modules: structuredClone(demo.modules), templates: structuredClone(demo.templates) },
+    definitions: { modules: structuredClone(demo.modules) as ReviewAuthoringWorkspaceV1['definitions']['modules'], templates: structuredClone(demo.templates) as ReviewAuthoringWorkspaceV1['definitions']['templates'] },
     sources: [
       { sourceId: 'synthetic-source', kind: 'synthetic', label: '合成场景要求', verification: 'content-checked', applicability: 'request-scope', note: '只用于测试技术预审，不代表学校规定' },
       { sourceId: 'school-policy-unverified', kind: 'policy-candidate', label: '校方资格待核', verification: 'unverified', applicability: 'unknown', note: '真实校方制度尚未由有权部门确认' },
@@ -205,7 +205,7 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
     const scoped = run.checks.filter((check) => check.ruleId === copy.ruleId)
     expect(scoped).toHaveLength(1)
     expect(scoped[0]?.status).toBe('awaiting-confirmation')
-    expect(scoped[0]?.target.subjectIds).toEqual([copy.subjectId])
+    expect(scoped[0]?.target.subjectIds).toEqual([copy.subjectId!])
   })
 
   test('校园卡正式校规尚未认证时，即使 AI 提交符合结论也必须拒绝', async () => {
