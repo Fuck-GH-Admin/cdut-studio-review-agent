@@ -105,6 +105,6 @@ describe('V2 存储路径安全：第三轮 QA 阻断修复', () => {
     expect(getRunV2(validCase.id, validRun.id)?.id).toBe(validRun.id)
     expect(listRunsV2(validCase.id)).toHaveLength(1)
     saveArtifact(validCase.id, validRun.id, 'node-auto-check-extract', { source: 'test' })
-    expect(readArtifact(validCase.id, validRun.id, 'node-auto-check-extract')).toEqual({ source: 'test' })
+    expect(readArtifact<{ source: string }>(validCase.id, validRun.id, 'node-auto-check-extract')).toEqual({ source: 'test' })
   })
 })
