@@ -1,0 +1,36 @@
+name: D3 Frozen Modules Tests
+on:
+  pull_request:
+    paths:
+      - 'packages/shared/src/types/review-d3.ts'
+      - 'packages/shared/src/types/index.ts'
+      - 'apps/electron/src/main/lib/review/review-d3-**'
+      - 'apps/electron/scripts/review-d3-**'
+      - 'docs/design/review-agent/23-*'
+      - '.github/workflows/review-d3-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  frozen-library:
+    runs-on: ubuntu-latest
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bun install --frozen-lockfile
+      - name: Typecheck all packages
+        run: bun run typecheck
+      - name: D3 frozen library and CLI BDD
+        run: bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-module-library.test.ts
+      - name: D1 D2 authoring and Pi compatibility
+        run: |
+          bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-authoring-v1.test.ts
+          bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d2-runtime.test.ts
+          bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/semantic-module-demo.test.ts
