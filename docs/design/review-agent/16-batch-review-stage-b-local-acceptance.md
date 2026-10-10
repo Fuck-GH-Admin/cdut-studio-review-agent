@@ -1,7 +1,6 @@
 # 批量审核 B 阶段：本地验收说明
 
-> 对照 [16 批量审核自动化规范](16-batch-review-automation-and-issue-clustering-spec.md)；本文件随功能分支提交，不表示 C 阶段已实现。  
-> 验收代码分支：`feat/batch-review-triage-v1`，PR #1 保持 Draft，**不自动合并**。
+> 本文件记录 B 阶段人工集中处置闭环；C 阶段自动化策略已在同一分支实现，见 [C 阶段验收](17-batch-review-stage-c-local-acceptance.md)。当前代码验证和分支状态见[开发者交接](17-current-state-and-handoff.md)。
 
 ## 本次必须完成的闭环
 
@@ -15,10 +14,13 @@
 
 ## 本地测试步骤
 
+在当前共享验收工作区，公开副本远端名为 `mine`；若是从公开副本新克隆，默认远端一般是 `origin`，以下命令中的远端名要换成实际指向公开副本的 remote。
+
 ```bash
-git fetch origin
-git switch feat/batch-review-triage-v1
-git pull --ff-only
+git fetch mine feat/batch-review-triage-v1
+git switch --track mine/feat/batch-review-triage-v1 # 若本地尚无该分支
+# 若本地分支已存在，则使用：git switch feat/batch-review-triage-v1
+git pull --ff-only mine feat/batch-review-triage-v1
 bun install --frozen-lockfile
 bun test --isolate --timeout 30000 \
   packages/shared/src/review/batch-review-triage.test.ts \
@@ -26,6 +28,8 @@ bun test --isolate --timeout 30000 \
   apps/electron/src/main/lib/review/batch-group-action-service.test.ts
 bun run typecheck
 ```
+
+B 阶段专项测试属于当前 B+C 组合回归的一部分。当前完整测试结果、构建记录和未完成 UI 验收见[开发者交接](17-current-state-and-handoff.md)；专项测试不替代真实 UI 案卷验收。
 
 **UI 场景**：
 
@@ -36,13 +40,12 @@ bun run typecheck
 5. 使用中断批次“恢复中断”操作，恢复后的案卷需要人工查看运行历史再定向重试；正常已完成的案卷不重跑。
 6. 对审核结果检查缺失但队列已标为 `done` 的技术异常进行单案重试；正常有效 `done` 不允许此操作。
 
-## 不包含的 C 阶段内容
+## B 阶段不覆盖的后续能力
 
-- 无人值守的自动通过/自动退回及批次自动审批策略开关；
-- 补件回应后自动识别受影响检查并继续完整审核、自动最终定稿；
+- C 阶段的显式批次授权自动补件/自动通过及其全局/模板门槛，见 [C 阶段验收](17-batch-review-stage-c-local-acceptance.md)；
+- 跨案关系检查、基于大模型的模糊聚类及跨案一键决定；
 - 学校审批授权接入与远端正式生效；本阶段操作者标记为**本地 reviewer**，不冒充校方认证身份；
-- 大规模跨案关系检查、基于大模型的模糊聚类及跨案一键决定。
 
 ## 当前已知环境事项
 
-仓库原有全量 PR CI 在运行完类型/边界检查后，渲染器构建可能被 `@silurus/ooxml/dist` 缺失挡住。这是独立于 B 阶段业务回归的安装/构建问题，**不能把专项测试通过等同于应用完整构建已通过**。验收时请记录对应 CI 构建结果并在可正常构建的本地环境实测 UI。
+最新功能分支的 OOXML 构建脚本已支持 Bun workspace 将 `@silurus/ooxml` 提升到根 `node_modules` 的布局。仍须实际运行 Electron 构建并记录 CI；构建通过也**不能替代 UI 手动验收**。

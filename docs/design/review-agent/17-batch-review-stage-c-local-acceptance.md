@@ -17,21 +17,29 @@
 
 ## 2. 开发侧验收
 
+在当前共享验收工作区，公开副本远端名为 `mine`；若是从公开副本新克隆，默认远端一般是 `origin`，以下命令中的远端名要换成实际指向公开副本的 remote。
+
 ```bash
-git fetch origin
-git switch feat/batch-review-triage-v1
-git pull --ff-only
+git fetch mine
+git switch --track mine/feat/batch-review-triage-v1 # 若本地尚无该分支
+# 若本地分支已存在，则使用：git switch feat/batch-review-triage-v1
+git pull --ff-only mine feat/batch-review-triage-v1
 bun install --frozen-lockfile
 bun test --isolate --timeout 30000 \
   packages/shared/src/review/batch-review-triage.test.ts \
   apps/electron/src/main/lib/review/batch-store.test.ts \
   apps/electron/src/main/lib/review/batch-group-action-service.test.ts \
-  apps/electron/src/main/lib/review/batch-automation-service.test.ts
+  apps/electron/src/main/lib/review/batch-automation-service.test.ts \
+  apps/electron/src/main/lib/review/stage-workflow.test.ts \
+  apps/electron/src/main/lib/review/workspace-business-service-v2.test.ts \
+  apps/electron/src/main/lib/review/case-store-v2.test.ts \
+  apps/electron/src/main/lib/review/template-store.test.ts
 bun run typecheck
 bun run check:boundaries
+bun run electron:build
 ```
 
-请另查看 PR 的 GitHub Actions **PR CI**：包括全 workspace typecheck、包边界、UI 皮肤契约、主进程/预加载/renderer 构建和全库 Bun 测试。若 OOXML 资源确实不存在，不得以专项测试成功替代构建验收。
+请另查看分支对应的 GitHub Actions **PR CI**（若已建立 PR）：包括全 workspace typecheck、包边界、UI 皮肤契约、主进程/预加载/renderer 构建和全库 Bun 测试。专项测试成功不能替代应用构建和 UI 验收。
 
 ## 3. 本地 UI 场景（建议使用合成材料，不碰真实敏感申请）
 
