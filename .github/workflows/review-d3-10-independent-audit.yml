@@ -1,0 +1,127 @@
+name: D3-10 Third Party Isolated Replay
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/review-d3-10-independent-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit-a:
+    runs-on: ubuntu-latest
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 5d5caa3ef35572f57485e0f783443fcfd967d66e
+          path: author-a
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Re-execute Agent A against pinned author SHA
+        working-directory: author-a
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "5d5caa3ef35572f57485e0f783443fcfd967d66e"
+          bun install --frozen-lockfile
+          bash docs/design/review-agent/acceptance/d3-10/agent-a/tests/run-acceptance.sh
+      - name: Third-party assertions for A
+        working-directory: author-a
+        run: |
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path("docs/design/review-agent/acceptance/d3-10/agent-a")
+          summary=json.loads((p/"plans/granularity-summary.json").read_text())
+          results=json.loads((p/"tests/granularity-results.json").read_text())
+          assert summary["ok"] is True and summary["oldCheckCount"]==1 and summary["newCheckCount"]==3, summary
+          assert len(set(summary["newCheckIds"]))==3
+          assert results["onlineModelRun"]=="not-run"
+          cases=results["independentCases"]
+          assert len(cases)==3 and all(c["verified"] and len(c["checks"])==3 for c in cases)
+          expected=json.loads((p/"tests/granularity-expected.json").read_text())
+          for case in cases:
+            gold=next(v["expectedByCheck"] for v in expected if v["id"]==case["caseId"].replace("agent-a-p2-",""))
+            assert {r["checkId"]:r["observed"] for r in case["checks"]}==gold
+          plan=json.loads((p/"plans/23-granular-plan.json").read_text())
+          assert plan["publicationAllowed"] is False
+          print("AUDIT_A_PASS: D1 revision 3, 3 distinct checks, scoped Pi synthetic receipts, source and status invariants")
+          PY
+      - name: Persist independently reproduced A proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-audit-agent-a
+          path: |
+            author-a/docs/design/review-agent/acceptance/d3-10/agent-a/logs/
+            author-a/docs/design/review-agent/acceptance/d3-10/agent-a/plans/
+            author-a/docs/design/review-agent/acceptance/d3-10/agent-a/tests/granularity-results.json
+  audit-b:
+    runs-on: ubuntu-latest
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: e69d22dce3d329fc5db19efdd4c6b369f21f68c4
+          path: author-b
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Re-execute Agent B from isolated clean files
+        working-directory: author-b
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "e69d22dce3d329fc5db19efdd4c6b369f21f68c4"
+          bun install --frozen-lockfile
+          ROOT=docs/design/review-agent/acceptance/d3-10/agent-b
+          rm -rf "$ROOT/workspaces" "$ROOT/bundles" "$ROOT/plans" "$ROOT/gaps" "$ROOT/logs"
+          rm -rf "$ROOT/tests/isolated-config-B" "$ROOT/tests/clean-config-A" "$ROOT/tests/clean-config-C"
+          find "$ROOT/tests" -maxdepth 1 -name '*.json' -type f -delete
+          bun "$ROOT/tests/agent-b-runner.ts"
+          bun "$ROOT/tests/agent-b-p1-p2.ts"
+      - name: Third-party assertions for B
+        working-directory: author-b
+        run: |
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path("docs/design/review-agent/acceptance/d3-10/agent-b")
+          base=json.loads((p/"tests/execution-summary.json").read_text())
+          pp=json.loads((p/"tests/p1-p2-execution-summary.json").read_text())
+          assert len(base["commands"])==33 and len(base["assertions"])==17 and all(c["passed"] for c in base["assertions"]) and not base["errors"]
+          assert not pp["errors"] and pp["onlineModelRun"]=="not-run" and pp["syntheticToolReceipt"] is True
+          assert pp["p1"]["status"]=="PASS" and pp["p2"]["status"]=="PASS"
+          original=json.loads((p/"plans/pi-archive-r3-own-run.json").read_text())
+          probe=json.loads((p/"plans/pi-copy-operation-guard-probe.json").read_text())
+          assert original["authoringRevision"]==3 and original["verification"]["complete"] is True
+          assert original["negativePiSubmission"]["accepted"]==0 and original["negativePiSubmission"]["rejected"]
+          assert original["acceptedFinalReceipt"]["accepted"]==6 and not original["acceptedFinalReceipt"]["rejected"]
+          assert all(x["status"]=="awaiting-confirmation" for x in original["relevantChecks"] if "copy" in x["checkId"])
+          assert probe["negativePiSubmission"]["accepted"]==0 and any("逐操作" in x["reason"] for x in probe["negativePiSubmission"]["rejected"])
+          assert probe["verifyD2PiRun"]["complete"] is True
+          gap=json.loads((p/"gaps/gap-p2-advanced-reproduced-response.json").read_text())
+          err=json.loads((p/"gaps/advanced-evidence-compile-repro.json").read_text())
+          assert err["exitCode"]==1 and "D2_UNMAPPED_ADVANCED" in err["stderr"]
+          assert gap["status"]=="tooling-blocked" and gap["verifiedAgainstRun"] is False
+          assert gap["affected"]["runIds"]==[original["runId"]]
+          assert set(gap["affected"]["sourceRequirementIds"])=={"R08","R09","R10","R29"}
+          print("AUDIT_B_PASS: 33 CLI commands, self-authored Pi Run, true operation-specific guard, advanced fail-closed and traced gap")
+          PY
+      - name: Persist independently reproduced B proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-audit-agent-b
+          path: |
+            author-b/docs/design/review-agent/acceptance/d3-10/agent-b/logs/
+            author-b/docs/design/review-agent/acceptance/d3-10/agent-b/plans/
+            author-b/docs/design/review-agent/acceptance/d3-10/agent-b/gaps/
+            author-b/docs/design/review-agent/acceptance/d3-10/agent-b/tests/p1-p2-execution-summary.json
