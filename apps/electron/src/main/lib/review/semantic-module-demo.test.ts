@@ -155,10 +155,10 @@ describe('D0.5 Agent-first 轻量语义模块（BDD）', () => {
     expect(read.checkId).not.toBe(copy.checkId)
     expect(read.requirement).toContain('查阅')
     expect(copy.requirement).toContain('复制')
-    const receipt = checkDemoCoverage(preview, [
+    const receipt = checkDemoCoverage(preview, { fingerprint: preview.fingerprint, entries: [
       { checkId: read.checkId, status: 'compliant', sourceIds: ['synthetic-document:authorization-read'], reason: '仅授权查阅' },
       { checkId: copy.checkId, status: 'awaiting-confirmation', reason: '复制授权缺少可靠凭证' },
-    ])
+    ] })
     expect(receipt.complete).toBeTrue() // 记录齐全，不代表两个操作均已获准
     expect(() => projectSimpleDemoDraft(state, archive.templateId, 1)).toThrow('复杂业务情景只能预览')
   })
@@ -166,10 +166,10 @@ describe('D0.5 Agent-first 轻量语义模块（BDD）', () => {
   test('Given 审核覆盖账本 When 缺少某个责任或无引证就宣称符合 Then 拒绝完成', () => {
     const state = setup([moduleOf('text-structure', '核对正文')], { ...templateOf(), modules: [{ id: 'text', moduleId: 'text-structure', version: 1 }] })
     const preview = previewDemo(state, 'text-proof', 1)
-    expect(checkDemoCoverage(preview, []).problems.join()).toContain('审核责任漏项')
-    expect(checkDemoCoverage(preview, [{ checkId: preview.tasks[0]!.checkId, status: 'compliant', reason: '自称完成' }]).problems.join()).toContain('缺少真实来源引用')
-    expect(checkDemoCoverage(preview, [{ checkId: preview.tasks[0]!.checkId, status: 'execution-failed', reason: '无法读取' }]).complete).toBeFalse()
-    expect(checkDemoCoverage(preview, [{ checkId: preview.tasks[0]!.checkId, status: 'not-applicable', reason: '' }]).complete).toBeFalse()
+    expect(checkDemoCoverage(preview, { fingerprint: preview.fingerprint, entries: [] }).problems.join()).toContain('审核责任漏项')
+    expect(checkDemoCoverage(preview, { fingerprint: preview.fingerprint, entries: [{ checkId: preview.tasks[0]!.checkId, status: 'compliant', reason: '自称完成' }] }).problems.join()).toContain('缺少真实来源引用')
+    expect(checkDemoCoverage(preview, { fingerprint: preview.fingerprint, entries: [{ checkId: preview.tasks[0]!.checkId, status: 'execution-failed', reason: '无法读取' }] }).complete).toBeFalse()
+    expect(checkDemoCoverage(preview, { fingerprint: preview.fingerprint, entries: [{ checkId: preview.tasks[0]!.checkId, status: 'not-applicable', reason: '' }] }).complete).toBeFalse()
     expect(validateDemoState(state)).toEqual([])
   })
 
@@ -265,5 +265,104 @@ describe('D0.5 Agent-first 轻量语义模块（BDD）', () => {
     } finally {
       rmSync(folder, { recursive: true, force: true })
     }
+  })
+
+  test('回归 1：无条件顶层引用含 family 子模块时，必须检测隐藏分支并阻止投影', () => {
+    const child = moduleOf('family-proof', '核对家属关系')
+    const group = moduleOf('composite', '核对共同材料')
+    group.references = [{ id: 'family-only', moduleId: child.moduleId, version: 1, scenario: 'family' }]
+    const template = { ...templateOf(), modules: [{ id: 'root', moduleId: group.moduleId, version: 1 }] }
+    // 未声明情景的整个模板引用树应在创建/保存时被拒绝，不能漏掉未激活的子责任。
+    expect(() => setup([child, group], template)).toThrow('引用未知情景')
+    const valid = setup([child, group], { ...template, scenarios: ['family', 'temporary-service'] })
+    expect(previewDemo(valid, template.templateId, 1, 'family').tasks).toHaveLength(2)
+    expect(previewDemo(valid, template.templateId, 1, 'temporary-service').tasks).toHaveLength(1)
+    expect(previewDemo(valid, template.templateId, 1).blocked).toBeTrue()
+    expect(() => projectSimpleDemoDraft(valid, template.templateId, 1)).toThrow('复杂业务情景只能预览')
+    const legacy = structuredClone(valid)
+    delete legacy.templates[0]!.scenarios
+    const preview = previewDemo(legacy, template.templateId, 1)
+    expect(preview.blocked).toBeTrue()
+    expect(preview.issues.join()).toContain('引用未知情景')
+    expect(() => projectSimpleDemoDraft(legacy, template.templateId, 1)).toThrow('family-only 存在条件情景')
+  })
+
+  test('回归 1：无条件复合模块隐藏逐对象作用范围或未知条件字段，投影必须拒绝', () => {
+    const child = moduleOf('operation-proof', '核对复制授权')
+    const parent = moduleOf('group-proof', '核对共同前提')
+    parent.references = [{ id: 'copy', moduleId: child.moduleId, version: 1, objectKey: 'item-1/copy' }]
+    const template = { ...templateOf(), modules: [{ id: 'root', moduleId: parent.moduleId, version: 1 }] }
+    const state = setup([child, parent], template)
+    expect(previewDemo(state, template.templateId, 1).blocked).toBeFalse()
+    expect(() => projectSimpleDemoDraft(state, template.templateId, 1)).toThrow('逐对象作用范围')
+    const unsafeState = structuredClone(state)
+    Object.assign(unsafeState.modules.find((it) => it.moduleId === 'group-proof')!.references![0]!, { when: { field: 'role', op: 'eq', value: 'family' } })
+    expect(() => projectSimpleDemoDraft(unsafeState, template.templateId, 1)).toThrow('未映射的结构化属性：when')
+    // 无条件嵌套依然允许投影：不能因修复而禁止真正的复合模块。
+    const unconditional = structuredClone(state)
+    delete unconditional.modules.find((it) => it.moduleId === 'group-proof')!.references![0]!.objectKey
+    expect(projectSimpleDemoDraft(unconditional, template.templateId, 1).sections![0]!.criteria).toHaveLength(2)
+  })
+
+  test('回归 1：父子条件互相排斥时要显式报错，而非悄悄遗漏责任', () => {
+    const child = moduleOf('child-review', '核对家属关系')
+    const parent = moduleOf('parent-review', '核对本次资格')
+    parent.references = [{ id: 'child', moduleId: child.moduleId, version: 1, scenario: 'temporary-service' }]
+    const stateTemplate = { ...templateOf(), scenarios: ['family', 'temporary-service'],
+      modules: [{ id: 'root', moduleId: parent.moduleId, version: 1, scenario: 'family' }] }
+    expect(() => setup([parent, child], stateTemplate)).toThrow('子情景与父情景冲突')
+  })
+
+  test('回归 2：相同 checkId 修改审核要求后，旧 fingerprint 的合格回执必须过期', () => {
+    const mod = moduleOf('identity-proof', '核对申请人姓名')
+    const template = { ...templateOf(), modules: [{ id: 'identity', moduleId: mod.moduleId, version: 1 }] }
+    const old = setup([mod], template)
+    const oldPreview = previewDemo(old, template.templateId, 1)
+    const oldReceipt = {
+      fingerprint: oldPreview.fingerprint,
+      entries: [{ checkId: oldPreview.tasks[0]!.checkId, status: 'compliant' as const, reason: '仅核对姓名',
+        sourceIds: ['synthetic-document:name'] }],
+    }
+    expect(checkDemoCoverage(oldPreview, oldReceipt).complete).toBeTrue()
+    const modified = applyDemoTransaction(old, { expectedRevision: 1, operations: [
+      { op: 'revise-module', moduleId: mod.moduleId, fromVersion: 1, toVersion: 2,
+        changes: { tasks: [task('check', '核对姓名及签署日期')] } },
+      { op: 'replace-module-use', templateId: template.templateId, version: 1,
+        use: { id: 'identity', moduleId: mod.moduleId, version: 2 } },
+    ] })
+    const now = previewDemo(modified, template.templateId, 1)
+    expect(now.tasks[0]?.checkId).toBe(oldPreview.tasks[0]?.checkId)
+    expect(now.fingerprint).not.toBe(oldPreview.fingerprint)
+    const rejected = checkDemoCoverage(now, oldReceipt)
+    expect(rejected.complete).toBeFalse()
+    expect(rejected.problems.join()).toContain('fingerprint 不匹配')
+    expect(checkDemoCoverage(now, { fingerprint: now.fingerprint, entries: oldReceipt.entries }).complete).toBeTrue()
+    expect(checkDemoCoverage(now, { entries: oldReceipt.entries } as any).complete).toBeFalse()
+  })
+
+  test('嵌套参数优先级：子引用显式值 > 父模块继承值 > 子模块默认值', () => {
+    const child = moduleOf('child-task', '核对 {{action}} 期限')
+    child.parameters = [{ key: 'action', description: '目标操作', defaultValue: '默认复制' }]
+    const parent = moduleOf('parent-task', '核对 {{action}} 许可')
+    parent.parameters = [{ key: 'action', description: '目标操作' }]
+    parent.references = [{ id: 'nested', moduleId: child.moduleId, version: 1 }]
+    const template = { ...templateOf(), modules: [{ id: 'root', moduleId: parent.moduleId, version: 1, bindings: { action: '查阅' } }] }
+    const state = setup([child, parent], template)
+    const inherited = previewDemo(state, template.templateId, 1)
+    expect(inherited.blocked).toBeFalse()
+    expect(inherited.tasks.find((it) => it.checkId.endsWith('/nested/check'))?.requirement).toContain('查阅')
+    expect(inherited.tasks.find((it) => it.checkId.endsWith('/nested/check'))?.requirement).not.toContain('默认复制')
+
+    const explicit = structuredClone(state)
+    explicit.modules.find((it) => it.moduleId === parent.moduleId)!.references![0]!.bindings = { action: '摘录' }
+    const nested = previewDemo(explicit, template.templateId, 1)
+    expect(nested.blocked).toBeFalse()
+    expect(nested.tasks.find((it) => it.checkId.endsWith('/nested/check'))?.requirement).toContain('摘录')
+
+    const defaultOnly = structuredClone(state)
+    defaultOnly.templates[0]!.modules[0]!.bindings = { action: '查阅' }
+    defaultOnly.modules.find((it) => it.moduleId === parent.moduleId)!.references![0]!.bindings = {}
+    // 模块未明确传入时不覆盖从父级继承的值。
+    expect(previewDemo(defaultOnly, template.templateId, 1).blocked).toBeFalse()
   })
 })
