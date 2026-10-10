@@ -231,17 +231,52 @@ export function reopenBatch(batchId: string, newBatchId: string, reason: string)
 
 // ===== 持久 outbox（R11：重启幂等） =====
 
+/** External business action identifiers must never become arbitrary paths. */
+export function assertSafeOutboxActionId(actionId: unknown): asserts actionId is string {
+  if (typeof actionId !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(actionId)
+    || actionId === '.' || actionId === '..' || actionId.includes('..')) {
+    throw new Error('非法 outbox actionId：不可包含路径或遍历字符')
+  }
+}
+
 function outboxPath(actionId: string): string {
+  assertSafeOutboxActionId(actionId)
   return join(getConfigDir(), 'sync-outbox', `${actionId}.json`)
 }
 
 export interface OutboxEntry {
   actionId: string
   payloadHash: string
+  /** Serialized original snapshot. Required for automated recovery. */
+  payload?: PushPayload
   status: 'pending' | 'accepted' | 'conflict' | 'rejected'
   receipt?: SyncReceipt
   attempts: number
   createdAt: string
+}
+
+const activeOutboxActions = new Set<string>()
+
+function assertOutboxPayload(payload: PushPayload): void {
+  assertSafeOutboxActionId(payload?.actionId)
+  if (typeof payload.caseId !== 'string' || !payload.caseId.trim()
+    || !['decision','supplement','roster','rating-matrix'].includes(payload.actionKind)
+    || !Number.isSafeInteger(payload.baseExternalRevision) || payload.baseExternalRevision < 0
+    || !payload.body || typeof payload.body !== 'object' || Array.isArray(payload.body)) {
+    throw new Error('无效 outbox 推送载荷')
+  }
+}
+
+function storedOutboxPayload(entry: OutboxEntry): PushPayload | undefined {
+  const payload = entry.payload
+  if (!payload) return undefined
+  try {
+    assertOutboxPayload(payload)
+    if (entry.actionId !== payload.actionId || entry.payloadHash !== payloadHashOf(payload)) return undefined
+    return payload
+  } catch {
+    return undefined
+  }
 }
 
 function payloadHashOf(payload: PushPayload): string {
@@ -271,49 +306,107 @@ function writeOutbox(entry: OutboxEntry): void {
  * - 端口失败 → pending + attempts 递增，可重试
  */
 export async function pushViaOutbox(port: SchoolPort, payload: PushPayload): Promise<OutboxEntry> {
-  const existing = readOutbox(payload.actionId)
-  const hash = payloadHashOf(payload)
-  if (existing) {
-    if (existing.payloadHash !== hash) throw new Error(`actionId ${payload.actionId} 已被不同载荷使用`)
-    if (existing.status !== 'pending') return existing // 已有终态回执
-  }
-  const entry: OutboxEntry = existing ?? { actionId: payload.actionId, payloadHash: hash, status: 'pending', attempts: 0, createdAt: new Date().toISOString() }
-  entry.attempts += 1
-  // 发送前先落盘 pending（复查 §5.5：端口响应后才写会丢中断现场；完整载荷已含在 payloadHash + 调用方载荷）
-  entry.status = 'pending'
-  entry.receipt = undefined
-  writeOutbox(entry)
+  assertOutboxPayload(payload)
+  const actionId = payload.actionId
+  if (activeOutboxActions.has(actionId)) throw new Error(`outbox actionId ${actionId} 正在执行，禁止并发重放`)
+  activeOutboxActions.add(actionId)
   try {
-    const receipt = await port.push(payload)
-    entry.status = receipt.status === 'accepted' ? 'accepted' : receipt.status === 'conflict' ? 'conflict' : 'rejected'
-    entry.receipt = receipt
-  } catch (error) {
+    const existing = readOutbox(actionId)
+    const hash = payloadHashOf(payload)
+    if (existing) {
+      if (existing.payloadHash !== hash) throw new Error(`actionId ${actionId} 已被不同载荷使用`)
+      if (existing.status !== 'pending') return existing // 终态回执永久幂等
+      if (existing.payload && !storedOutboxPayload(existing)) {
+        throw new Error(`outbox actionId ${actionId} 持久化载荷校验失败，不允许重放`)
+      }
+    }
+    const entry: OutboxEntry = existing ?? {
+      actionId, payloadHash: hash, status: 'pending', attempts: 0, createdAt: new Date().toISOString(),
+    }
+    // Legacy pending records without a payload may be safely retried *only*
+    // when the original caller explicitly supplies the hash-matching payload.
+    entry.payload = structuredClone(payload)
+    entry.attempts += 1
     entry.status = 'pending'
     entry.receipt = undefined
-    console.warn(`[outbox] 推送失败（保留 pending 重试）: ${payload.actionId}`, error)
+    // WAL: original payload + its hash are durably saved before any port call.
+    writeOutbox(entry)
+    try {
+      const receipt = await port.push(entry.payload)
+      if (receipt.actionId !== actionId || receipt.caseId !== payload.caseId
+        || !['accepted', 'conflict', 'rejected'].includes(receipt.status)) {
+        throw new Error('校方端口回执与原动作不匹配或状态无效')
+      }
+      entry.status = receipt.status
+      entry.receipt = receipt
+    } catch (error) {
+      // The remote system might have accepted the action before the reply was
+      // lost. On recovery retry *the same actionId*, relying on port idempotency.
+      entry.status = 'pending'
+      entry.receipt = undefined
+      console.warn(`[outbox] 推送未确认（保留原始载荷）: ${actionId}`, error)
+    }
+    writeOutbox(entry)
+    return entry
+  } finally {
+    activeOutboxActions.delete(actionId)
   }
-  writeOutbox(entry)
-  return entry
 }
 
-/** 中断恢复：启动时扫描 pending 条目重放（G08 恢复循环的最小实现） */
-export async function recoverPendingPushes(port: SchoolPort): Promise<OutboxEntry[]> {
+export interface OutboxRecoveryReport {
+  recovered: OutboxEntry[]
+  /** Legacy entries and corrupted snapshots MUST be handled manually. */
+  needsManualReplay: Array<{ actionId: string; reason: string }>
+  skippedActive: string[]
+}
+
+/** Replay only original hash-verified snapshots. Never synthesize a replacement payload. */
+export async function recoverPendingPushesDetailed(port: SchoolPort): Promise<OutboxRecoveryReport> {
   const dir = join(getConfigDir(), 'sync-outbox')
-  if (!existsSync(dir)) return []
-  const results: OutboxEntry[] = []
+  const report: OutboxRecoveryReport = { recovered: [], needsManualReplay: [], skippedActive: [] }
+  if (!existsSync(dir)) return report
   for (const file of readdirSync(dir)) {
     if (!file.endsWith('.json')) continue
+    const actionId = file.slice(0, -'.json'.length)
     try {
-      const entry = JSON.parse(readFileSync(join(dir, file), 'utf-8')) as OutboxEntry
+      assertSafeOutboxActionId(actionId)
+      const entry = readOutbox(actionId)
+      if (!entry) {
+        report.needsManualReplay.push({ actionId, reason: 'Outbox 记录损坏或无法读取' })
+        continue
+      }
+      if (entry.actionId !== actionId) {
+        report.needsManualReplay.push({ actionId, reason: 'Outbox 文件名和内部动作 ID 不匹配' })
+        continue
+      }
       if (entry.status !== 'pending') continue
-      // 载荷不在 outbox 里（由调用方持有）——恢复需调用方按 actionId 重放；此处仅如实标注 attempts
-      const recovered = await pushViaOutbox(port, { actionId: entry.actionId, caseId: '', actionKind: 'decision', baseExternalRevision: 0, body: { note: 'recovery-placeholder' } } as never)
-      results.push(recovered)
+      if (activeOutboxActions.has(actionId)) {
+        report.skippedActive.push(actionId)
+        continue
+      }
+      const payload = storedOutboxPayload(entry)
+      if (!payload) {
+        report.needsManualReplay.push({
+          actionId, reason: entry.payload
+            ? '原始载荷、哈希或动作 ID 校验失败，禁止恢复'
+            : '旧版 pending 记录未保存原始载荷；必须核对外部业务系统后由原调用方提供载荷',
+        })
+        continue
+      }
+      report.recovered.push(await pushViaOutbox(port, payload))
     } catch (error) {
-      console.warn('[outbox] 恢复扫描跳过损坏条目', file, error)
+      report.needsManualReplay.push({
+        actionId,
+        reason: error instanceof Error ? error.message : String(error),
+      })
     }
   }
-  return results
+  return report
+}
+
+/** Compatibility API for callers that only need the successfully inspected entries. */
+export async function recoverPendingPushes(port: SchoolPort): Promise<OutboxEntry[]> {
+  return (await recoverPendingPushesDetailed(port)).recovered
 }
 
 // ===== G06/G11：真实队列执行（逐案跑审核，坏案不阻塞全批） =====
