@@ -135,3 +135,38 @@ bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d2-r
 ---
 
 **维护约定**：本文件是接力入口。下一会话若推进 W4/W5，应在这里追加新的完整 SHA、Actions 链接、真实进展与剩余任务，保留此快照作为历史，不要默默把旧版的 `not-run` 改成 `pass`。
+
+
+## 8. W5 接力实际进展：impact CLI 红灯复现、修复与 W4 问题票安全收口（2026-10-11）
+
+> 此节记录本轮**已发生的** GitHub 写入和测试证据；追加文档会产生新 HEAD，所有 CI 必须核对本节提交之后的**最新代码 SHA**。不构成 D3 Release、D3-10 独立 Agent 合格报告或 D4 开工许可。
+
+### P0 缺陷复现及修复
+
+- 旧 CLI 的 `impact <moduleId> <fromVersion> <toVersion>` 使用 `/^\\d+$/`（正则匹配字面反斜杠而非数字）；`inspect` 使用 `/^\d+$/`。新增真实 `Bun.spawnSync` 子进程 CLI 回归，依次创建/保存 D1 共享模块消费者、使用数字版本查询影响、检查返回的消费者/锁/旧新版。
+- **修复前红灯证据**：`151a9987d9e4e3a9d00e2654e4682157427b36a2` 的 [D3 CI #38089217791](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38089217791) 真实执行 14 项，**13 pass / 1 fail**，新增 `impact 1 2` 测试退出码为 1 而期望 0。此红灯故意用于复现，不能当作当前工程退化。
+- **修补**：`1ff1ed7` 更正版本参数的解析并要求正整数、安全整数；`2ec2cb8` 细化问题票字段校验，允许多行 `requirement/reproduce` 正文但拒绝无效身份数组与穿越实例路径。
+- **W4 审计同时发现并关闭的输入污染风险**：原 `report-gap` 把不可信 JSON `...issue` 展开在派生的 `status/schemaVersion` 之后，故作者字段可伪造验证状态。现改为固定字段投影，`status` 始终从 `owner` 计算，`verifiedAgainstRun` 恒为 `false`，不传播用户输入的 `publicationAllowed` 或未知字段。对应 `ad772f71` 新增真实 CLI 回归：状态伪造、`policy-source`、路径穿越、缺失 `runIds`。
+- 以上代码与测试的首个统一候选 HEAD 为 `ad772f71fb3550e6aa9bd35fc80508a6ce9a4219`；对应五组 Actions 为 [PR #38089356393](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38089356393)、[D3 #38089356384](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38089356384)、[D1 #38089356388](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38089356388)、[D2 #38089356469](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38089356469)、[旧回归 #38089356387](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38089356387)。记录时**只有旧回归 confirmed success**，其余 in-progress，未声明全绿。
+
+### D3-01～12 复验分层口径（本轮非 Release 签署）
+
+| 检查 | 当前证据类型 | 待执行或不能冒充的部分 |
+| --- | --- | --- |
+| 01 | 最简文本合成 CLI 与 D2 预审自动化 | 陌生 Agent A 独立从零修改/保存 revision、重导入 |
+| 02–04 | 共享锁、来源隔离、非法冻结拒止等已有 BDD | 新用户独立感知的使用成本 |
+| 05 | D1 反向消费者/升级及新增数字版本子进程回归（需确认最新 CI） | Agent B 新版本真实制作与显式迁移 |
+| 06 | 合成 C/A 调用实际 Pi **服务**的准备/提交/校验接口 | 在线模型审读准确率为 not-run，不得拿模拟回执证明 |
+| 07 | 不支持复杂义务时阻断 + report-gap | 五份完整原始 MD 的业务覆盖不属于本轮合成试验 |
+| 08 | 真实服务端的权限拒止与恶意文本作为数据的安全测试 | 独立在线模型提示注入盲测仍 not-run |
+| 09 | 新隔离配置目录的携包导入/指纹回归 | Agent A/B 的独立重复 |
+| 10 | **not-run** | 必须是两个没有参与 D3 实现、互不共享上下文的独立 Agent |
+| 11 | `ad772f71` 五项 CI 已触发；旧回归 success，其他等待结果 | 本文追加产生新 HEAD 后，必须再核对对应 SHA |
+| 12 | W4 的机器可读映射与状态伪造防护加上新测试 | 原业务责任 ID/真实 Run 存在性需验收者验证，`verifiedAgainstRun:false` |
+
+### 两名 Agent 的交接门槛未改变
+
+- **Agent A**：严格照 [29 号第 1 节](29-d3-independent-agent-acceptance-playbook.md) 在独立 Git 工作树和全新配置中完成最简文本二次编辑、D1 修订链、D2 候选与携包；必须自己产生变更，不能只运行复制样例。
+- **Agent B**：严格照 [29 号第 2 节](29-d3-independent-agent-acceptance-playbook.md) 独立冻结 B01 新版本、保存实际消费者、调用修复的 `impact`、执行有签收的 `upgrade`、做 read/copy 反例和 `report-gap`。
+- 两份报告各自记录 SHA、CLI 退出码、JSON 工件、来源定位、报错恢复、金标与权限边界；由第三方隔离环境复跑。不允许把本轮开发者的测试、两个 CLI 子进程或合成 Pi 结果当成这两名 Agent 的签署。
+- **D3-10 保持 not-run，D3 Release 不签发，PR #9 保持 Draft，D4/D5 不启动**。
