@@ -8,15 +8,19 @@ const root = join(import.meta.dir, '../../../../../../work/tmp', `review-ipc-poc
 process.env.PROFER_CONFIG_DIR = root
 afterAll(() => rmSync(dirname(root), { recursive: true, force: true }))
 
+const handlers = (globalThis.__proferElectronTestHooks as typeof globalThis.__proferElectronTestHooks & {
+  ipcMainHandlers: Map<string, (...args: unknown[]) => unknown>
+}).ipcMainHandlers
+
 function invoke(channel: string, input: unknown): unknown {
-  const handler = globalThis.__proferElectronTestHooks.ipcMainHandlers.get(channel)
+  const handler = handlers.get(channel)
   if (!handler) throw new Error(`Missing IPC test handler: ${channel}`)
   return handler({}, input)
 }
 
 describe('20 号 QA：真实 renderer V2 IPC 路径穿越拒绝', () => {
   test('registerReviewIpc 的 CREATE_CASE_V2、读取及批次创建均拒绝恶意输入，配置目录外不新增文件', async () => {
-    globalThis.__proferElectronTestHooks.ipcMainHandlers.clear()
+    handlers.clear()
     registerReviewIpc()
     const caseId = '../../path-poc'
     expect(() => invoke(REVIEW_IPC_CHANNELS.CREATE_CASE_V2, {
