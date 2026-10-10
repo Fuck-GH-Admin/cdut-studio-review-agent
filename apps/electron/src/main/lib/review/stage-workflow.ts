@@ -86,6 +86,7 @@ export function recordStageDecision(
   return submitCommand<StageDecisionPayload, { decision: BusinessDecision; task?: WorkflowTask; supplement?: SupplementRequest }>(caseId, { ...command, type: 'RecordStageDecision' }, (aggregate, payload) => {
     // Agent 代批门控：在事务校验内、任何业务变更前检查（排队期间关闭也生效）
     assertAgentDecisionAllowed({ actor: command.actor, type: 'RecordStageDecision' })
+    if (aggregate.d2RuntimePlan) throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术预审案卷无权进入正式阶段决定')
     const task = aggregate.tasks.find((candidate) => candidate.id === payload.taskId && candidate.status === 'open')
     if (!task) throw new CommandValidationError('INVALID_TRANSITION', '当前阶段没有开放任务（或已处理）')
     if (aggregate.caseV2.templateId !== template.templateId || aggregate.caseV2.templateVersion !== template.version
@@ -258,6 +259,7 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
 
 export function resolveAppealV2(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: { appealId: string; resolution: Appeal['resolution'] & ('maintain-original' | 'amend-original' | 'withdrawn'); reason: string; amendedResult?: BusinessDecision['result'] } }): Promise<ReviewCommandResult<Appeal>> {
   return submitCommand<{ appealId: string; resolution: string; reason: string; amendedResult?: BusinessDecision['result'] }, Appeal>(caseId, { ...command, type: 'ResolveAppeal' } as never, (aggregate, payload) => {
+    if (aggregate.d2RuntimePlan) throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术预审不支持冒充正式申诉改判')
     const appeal = aggregate.appeals.find((candidate) => candidate.id === payload.appealId)
     if (!appeal) throw new CommandValidationError('NOT_FOUND', `申诉不存在: ${payload.appealId}`)
     if (command.actor.role !== 'teacher') {
