@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { reviewBusinessError } from './batch-ui-feedback'
 import type { BatchAutomationMode, BatchStateV2 } from '@profer/shared'
 import { Button } from '@profer/ui/primitives/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@profer/ui/primitives/dialog'
@@ -25,7 +26,7 @@ export function BatchAutomationDialog({
       await onSaved()
       onClose()
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : String(cause))
+      setError(reviewBusinessError(cause))
     } finally { setBusy(false) }
   }
   return (
