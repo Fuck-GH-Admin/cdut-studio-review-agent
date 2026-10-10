@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "65157e002dd4d1ccc08d32d341b4a1f7eacfc55d6a3c13a5da949aaf122f9785",
+  "provenance": "Independently prepared review from original MD §6 duty table, separate from Agent B original six-Check authoring. NOT verified university policy.",
+  "requirements": [
+    {
+      "id": "R08",
+      "allowedStatuses": [
+        "policy-awaiting-confirmation"
+      ],
+      "requiredCheckIds": [
+        "module/proxy-parties/identity-check"
+      ],
+      "checkSubjects": {
+        "module/proxy-parties/identity-check": [
+          "d2-item1-read",
+          "d2-item1-copy"
+        ]
+      }
+    },
+    {
+      "id": "R09",
+      "allowedStatuses": [
+        "policy-awaiting-confirmation"
+      ],
+      "requiredCheckIds": [
+        "module/item-1-read/authorization",
+        "module/item-1-copy/authorization"
+      ],
+      "checkSubjects": {
+        "module/item-1-read/authorization": [
+          "d2-item1-read"
+        ],
+        "module/item-1-copy/authorization": [
+          "d2-item1-copy"
+        ]
+      },
+      "checkRuleTerms": {
+        "module/item-1-copy/authorization": [
+          "授权",
+          "对象",
+          "有效期限"
+        ]
+      }
+    },
+    {
+      "id": "R10",
+      "allowedStatuses": [
+        "policy-awaiting-confirmation"
+      ],
+      "requiredCheckIds": [
+        "module/item-1-read/authorization",
+        "module/item-1-read/scope-trace"
+      ],
+      "checkSubjects": {
+        "module/item-1-read/scope-trace": [
+          "d2-item1-read"
+        ]
+      },
+      "checkRuleTerms": {
+        "module/item-1-read/scope-trace": [
+          "期限",
+          "操作"
+        ]
+      }
+    },
+    {
+      "id": "R18",
+      "allowedStatuses": [
+        "implemented-not-tested"
+      ],
+      "requiredCheckIds": [
+        "module/item-1-open/open-state"
+      ],
+      "checkSubjects": {
+        "module/item-1-open/open-state": [
+          "d2-item1-open"
+        ]
+      },
+      "checkRuleTerms": {
+        "module/item-1-open/open-state": [
+          "目录可见",
+          "开放"
+        ]
+      }
+    },
+    {
+      "id": "R23",
+      "allowedStatuses": [
+        "policy-awaiting-confirmation"
+      ],
+      "requiredCheckIds": [
+        "module/item-1-copy-local/copy-authorization"
+      ],
+      "checkSubjects": {
+        "module/item-1-copy-local/copy-authorization": [
+          "d2-item1-copy"
+        ]
+      },
+      "checkRuleTerms": {
+        "module/item-1-copy-local/copy-authorization": [
+          "页数",
+          "份数",
+          "查阅授权不能推出复制许可"
+        ]
+      }
+    },
+    {
+      "id": "R29",
+      "allowedStatuses": [
+        "tooling-blocked"
+      ]
+    },
+    {
+      "id": "R33",
+      "allowedStatuses": [
+        "implemented-not-tested",
+        "policy-awaiting-confirmation"
+      ],
+      "requiredCheckIds": [
+        "local/approval-stage-is-not-missing-applicant-material"
+      ]
+    }
+  ]
+}
