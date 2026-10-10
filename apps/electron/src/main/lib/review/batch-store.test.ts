@@ -4,7 +4,8 @@
 import { afterAll, describe, expect, test } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
-import type { ReviewBatch } from '@profer/shared'
+import type { ReviewBatch, ReviewCaseV2 } from '@profer/shared'
+import { createAggregate, readAggregate, submitCommand } from './case-store-v2'
 import { createBatchV2, finalizeBatch, listBatchStatesV2, pushViaOutbox, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus, runBatchQueue, retryBatchCases, recoverInterruptedBatch } from './batch-store'
 import type { BatchStateV2 } from '@profer/shared'
 type Entry = BatchStateV2['cases'][number]
@@ -16,6 +17,48 @@ process.env.PROFER_CONFIG_DIR = CONFIG_DIR
 afterAll(() => rmSync(CONFIG_DIR, { recursive: true, force: true }))
 
 const batch = (id: string): ReviewBatch => ({ id, name: `批次${id}`, templateId: 't', templateVersion: 1, policyVersionLock: [{ policyVersionId: 'p', version: 1 }], caseIds: ['c1', 'c2'], createdAt: new Date().toISOString() })
+
+async function seedFinalCase(caseId: string, options: { final?: boolean; supplement?: boolean; appeal?: boolean } = {}): Promise<void> {
+  const caseV2: ReviewCaseV2 = {
+    id: caseId, templateId: 't', templateVersion: 1, title: caseId,
+    objectType: 'person', caseFields: {}, subjects: [], documents: [],
+    stage: 'reviewing', revision: 0, createdAt: '2026-10-10T00:00:00Z', updatedAt: '2026-10-10T00:00:00Z',
+  }
+  await createAggregate(caseId, caseV2)
+  const result = await submitCommand(caseId, {
+    requestId: `seed-final-${caseId}`,
+    actor: { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' },
+    expectedRevision: 0,
+    type: 'TestSeedDecision',
+    payload: {},
+  }, () => ({
+    summary: '验收测试：预置正式决定和待处理事项',
+    mutate: (agg) => {
+      agg.caseV2.stage = 'decided'
+      if (options.final !== false) {
+        agg.decisions.push({
+          id: `decision-${caseId}`,
+          actor: { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' },
+          stageId: 'final', scope: { kind: 'case', ids: [] }, result: 'pass',
+          reason: '单案审核正式完成', basedOnRunId: 'test-run', basedOnRevision: 0,
+          at: '2026-10-10T00:00:00Z', finality: 'final',
+        })
+      }
+      if (options.supplement) agg.supplements.push({
+        id: `sup-${caseId}`, caseId, originFindingKeys: [], requiredElements: ['身份材料'],
+        reason: '补件尚未处理', responsibleRole: 'student', status: 'open',
+        responses: [], createdAt: '2026-10-10T00:00:00Z',
+      })
+      if (options.appeal) agg.appeals.push({
+        id: `appeal-${caseId}`, caseId, againstDecisionId: `decision-${caseId}`,
+        appellant: { actorId: 'student', actorSource: 'local' },
+        statement: '请求复核', newEvidenceDocumentVersionIds: [],
+        status: 'in-review', createdAt: '2026-10-10T00:00:00Z',
+      })
+    },
+  }))
+  expect(result.ok).toBeTrue()
+}
 
 describe('批次状态机（R08）', () => {
   test('Given 多个已保存批次 When 查询目录 Then 返回全部批次并按创建时间倒序', () => {
@@ -47,14 +90,16 @@ describe('批次状态机（R08）', () => {
     expect(retried.cases.find((entry: Entry) => entry.caseId === 'c1')?.status).toBe('queued')
   })
 
-  test('Given 全部完成 When 定稿 Then 快照 hash 锁定；再变更被拒；重开=新轮次', () => {
-    createBatchV2(batch('b2'))
-    updateCaseStatus('b2', 'c1', 'done')
-    updateCaseStatus('b2', 'c2', 'done')
-    const finalized = finalizeBatch('b2', { ranking: [{ caseId: 'c1', rank: 1 }] })
+  test('Given 所有案卷均有正式终态 When 定稿 Then 快照 hash 锁定；再变更被拒；重开=新轮次', async () => {
+    await seedFinalCase('b2-c1')
+    await seedFinalCase('b2-c2')
+    createBatchV2({ ...batch('b2'), caseIds: ['b2-c1', 'b2-c2'] })
+    updateCaseStatus('b2', 'b2-c1', 'done')
+    updateCaseStatus('b2', 'b2-c2', 'done')
+    const finalized = finalizeBatch('b2', { ranking: [{ caseId: 'b2-c1', rank: 1 }] })
     expect(finalized.status).toBe('finalized')
     expect(finalized.finalizedSnapshotHash).toHaveLength(64)
-    expect(readFinalizedSnapshot('b2')).toEqual({ ranking: [{ caseId: 'c1', rank: 1 }] })
+    expect(readFinalizedSnapshot('b2')).toEqual({ ranking: [{ caseId: 'b2-c1', rank: 1 }] })
     expect(() => finalizeBatch('b2', { ranking: [] })).toThrow('重开')
     expect(() => updateCaseStatus('b2', 'c1', 'queued')).toThrow('重开')
     const reopened = reopenBatch('b2', 'b2-r2', '评分复核')
@@ -63,6 +108,50 @@ describe('批次状态机（R08）', () => {
     expect(reopened.reopenedFromBatchId).toBe('b2')
     // 原定稿不改写
     expect(readBatchStateV2('b2')?.finalizedSnapshotHash).toBe(finalized.finalizedSnapshotHash)
+  })
+
+  test('Given 队列全部 done 但无任何正式业务决定 When 直接调用底层 finalizeBatch Then 禁止绕过', () => {
+    const id = 'finalization-no-decision'
+    createBatchV2(batch(id))
+    updateCaseStatus(id, 'c1', 'done')
+    updateCaseStatus(id, 'c2', 'done')
+    expect(() => finalizeBatch(id, { arbitrary: 'unsafe' })).toThrow('正式业务终态')
+    expect(readBatchStateV2(id)?.status).not.toBe('finalized')
+  })
+
+  test('Given 进入 decided 但最终决定不存在 When 定稿 Then 不把已审完冒充正式决定', async () => {
+    const caseId = 'finalization-stage-only'
+    await seedFinalCase(caseId, { final: false })
+    const id = 'finalization-stage-only-batch'
+    createBatchV2({ ...batch(id), caseIds: [caseId] })
+    updateCaseStatus(id, caseId, 'done')
+    expect(() => finalizeBatch(id, {})).toThrow('最终业务决定')
+  })
+
+  test('Given 正式决定已写入但补件或申诉还未结束 When 定稿 Then 阻止冻结', async () => {
+    for (const type of ['supplement', 'appeal'] as const) {
+      const caseId = `finalization-${type}-case`
+      await seedFinalCase(caseId, { [type]: true })
+      const id = `finalization-${type}-batch`
+      createBatchV2({ ...batch(id), caseIds: [caseId] })
+      updateCaseStatus(id, caseId, 'done')
+      expect(() => finalizeBatch(id, {})).toThrow(type === 'supplement' ? '补件' : '申诉')
+      expect(readBatchStateV2(id)?.status).not.toBe('finalized')
+    }
+  })
+
+  test('Given 批次路径使用穿越、绝对路径或分隔符 When 创建/读取/重开 Then 拒绝', async () => {
+    for (const badId of ['../evil', '..', '.', '/tmp/evil', 'a/b', 'a\\\\b', 'good..bad', '%2Fbad', '', ' space', 'x'.repeat(129)]) {
+      expect(() => createBatchV2(batch(badId))).toThrow('非法批次 ID')
+      expect(() => readBatchStateV2(badId)).toThrow('非法批次 ID')
+    }
+    await seedFinalCase('finalization-safe-reopen')
+    const id = 'finalization-safe-batch'
+    createBatchV2({ ...batch(id), caseIds: ['finalization-safe-reopen'] })
+    updateCaseStatus(id, 'finalization-safe-reopen', 'done')
+    finalizeBatch(id, {})
+    expect(() => reopenBatch(id, '../escape', '用户输入')).toThrow('非法批次 ID')
+    expect(readBatchStateV2(id)?.status).toBe('finalized')
   })
 
   test('Given 有运行中案卷 When 定稿 Then 拒绝', () => {
