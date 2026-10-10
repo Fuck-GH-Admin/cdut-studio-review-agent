@@ -32,6 +32,8 @@ jobs:
         run: bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-module-library.test.ts
       - name: D3 synthetic B01/B02 cross-business handoff
         run: bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-handoff.test.ts
+      - name: Portable D3 technical handoff between CLI processes
+        run: bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-handoff-cli.test.ts
       - name: D1 D2 authoring and Pi compatibility
         run: |
           bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-authoring-v1.test.ts
