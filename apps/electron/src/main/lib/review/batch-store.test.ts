@@ -368,6 +368,27 @@ describe('Outbox 中断恢复与 WAL（第二轮可靠性收口）', () => {
     await expect(pushViaOutbox(port, payload)).rejects.toThrow('校验失败')
   })
 
+  test('Given 校方仅返回 awaiting-receipt When 恢复 Then 保持 pending 并复用原 actionId', async () => {
+    const payload = { actionId: 'outbox-awaiting-receipt', caseId: 'c-awaiting', actionKind: 'decision' as const,
+      baseExternalRevision: 0, body: { result: 'pass' } }
+    let calls = 0
+    const sent: string[] = []
+    const port: SchoolPort = { kind: 'mock', push: async (input) => {
+      calls++
+      sent.push(input.actionId)
+      return { id: `pending-r-${calls}`, actionId: input.actionId, caseId: input.caseId,
+        externalSystem: 'mock-school', expectedExternalRevision: input.baseExternalRevision,
+        payloadHash: '', status: calls === 1 ? 'awaiting-receipt' : 'accepted' }
+    }}
+    const first = await pushViaOutbox(port, payload)
+    expect(first.status).toBe('pending')
+    expect(first.receipt?.status).toBe('awaiting-receipt')
+    const report = await recoverPendingPushesDetailed(port)
+    expect(report.recovered.find((x) => x.actionId === payload.actionId)?.status).toBe('accepted')
+    expect(sent).toEqual([payload.actionId, payload.actionId])
+    expect((await recoverPendingPushes(port)).some((item) => item.actionId === payload.actionId)).toBeFalse()
+  })
+
   test('Given 恶意 actionId 和并发调用 When 推送 Then 拒绝路径穿越和双重执行', async () => {
     const port = new MockSchoolAdapter()
     for (const actionId of ['../outside', '..', 'x/y', 'x\\\\y', '/tmp/push', '', 'a'.repeat(130)]) {
