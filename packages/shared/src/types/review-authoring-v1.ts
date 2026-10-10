@@ -122,6 +122,8 @@ export interface ReviewAuthoringManifestV1 {
   revision: number
   templateId: string
   templateVersion: number
+  /** 作者态定义、来源与实例绑定的不可变内容摘要。 */
+  authoringDigest: string
   previewFingerprint: string
   templateDigest: string
   effectiveRuleDigest: string
