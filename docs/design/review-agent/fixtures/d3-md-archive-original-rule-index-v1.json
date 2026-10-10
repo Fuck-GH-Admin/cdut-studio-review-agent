@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "scope": "full",
+  "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+  "sourceSha256": "65157e002dd4d1ccc08d32d341b4a1f7eacfc55d6a3c13a5da949aaf122f9785",
+  "selectionReason": "Full R01-R42 source index for independent auditing. This is not a converted template, complete ledger, or gold. Original full MD must be supplied externally to run full gate.",
+  "requirements": [
+    {
+      "id": "R01",
+      "locator": "§6 审核规则全集 / R01",
+      "purpose": "受理规则定位"
+    },
+    {
+      "id": "R02",
+      "locator": "§6 审核规则全集 / R02",
+      "purpose": "申请是否属于模板"
+    },
+    {
+      "id": "R03",
+      "locator": "§6 审核规则全集 / R03",
+      "purpose": "申请主体可靠识别"
+    },
+    {
+      "id": "R04",
+      "locator": "§6 审核规则全集 / R04",
+      "purpose": "申请人与实际请求主体区分"
+    },
+    {
+      "id": "R05",
+      "locator": "§6 审核规则全集 / R05",
+      "purpose": "目标档案可定位"
+    },
+    {
+      "id": "R06",
+      "locator": "§6 审核规则全集 / R06",
+      "purpose": "档案类型确认"
+    },
+    {
+      "id": "R07",
+      "locator": "§6 审核规则全集 / R07",
+      "purpose": "本人历史身份链"
+    },
+    {
+      "id": "R08",
+      "locator": "§6 审核规则全集 / R08",
+      "purpose": "代理身份双方核验"
+    },
+    {
+      "id": "R09",
+      "locator": "§6 审核规则全集 / R09",
+      "purpose": "代理授权对象核验"
+    },
+    {
+      "id": "R10",
+      "locator": "§6 审核规则全集 / R10",
+      "purpose": "代理期限与方式核验"
+    },
+    {
+      "id": "R11",
+      "locator": "§6 审核规则全集 / R11",
+      "purpose": "因公单位真实性与资格"
+    },
+    {
+      "id": "R12",
+      "locator": "§6 审核规则全集 / R12",
+      "purpose": "单位函用途及范围"
+    },
+    {
+      "id": "R13",
+      "locator": "§6 审核规则全集 / R13",
+      "purpose": "单位授权不能代替私人委托"
+    },
+    {
+      "id": "R14",
+      "locator": "§6 审核规则全集 / R14",
+      "purpose": "学生档案专用路径"
+    },
+    {
+      "id": "R15",
+      "locator": "§6 审核规则全集 / R15",
+      "purpose": "综合查阅表适用性"
+    },
+    {
+      "id": "R16",
+      "locator": "§6 审核规则全集 / R16",
+      "purpose": "综合外借表适用性"
+    },
+    {
+      "id": "R17",
+      "locator": "§6 审核规则全集 / R17",
+      "purpose": "馆藏位置由权威来源确定"
+    },
+    {
+      "id": "R18",
+      "locator": "§6 审核规则全集 / R18",
+      "purpose": "公布与开放状态分别检查"
+    },
+    {
+      "id": "R19",
+      "locator": "§6 审核规则全集 / R19",
+      "purpose": "未开放或受限档案额外批准"
+    },
+    {
+      "id": "R20",
+      "locator": "§6 审核规则全集 / R20",
+      "purpose": "第三人隐私及技术秘密"
+    },
+    {
+      "id": "R21",
+      "locator": "§6 审核规则全集 / R21",
+      "purpose": "查阅权限精确匹配"
+    },
+    {
+      "id": "R22",
+      "locator": "§6 审核规则全集 / R22",
+      "purpose": "摘录权限精确匹配"
+    },
+    {
+      "id": "R23",
+      "locator": "§6 审核规则全集 / R23",
+      "purpose": "复制扫描权限精确匹配"
+    },
+    {
+      "id": "R24",
+      "locator": "§6 审核规则全集 / R24",
+      "purpose": "档案证明出具权限"
+    },
+    {
+      "id": "R25",
+      "locator": "§6 审核规则全集 / R25",
+      "purpose": "原件外借特别授权"
+    },
+    {
+      "id": "R26",
+      "locator": "§6 审核规则全集 / R26",
+      "purpose": "外借时间和交接"
+    },
+    {
+      "id": "R27",
+      "locator": "§6 审核规则全集 / R27",
+      "purpose": "签章存在与真实性区分"
+    },
+    {
+      "id": "R28",
+      "locator": "§6 审核规则全集 / R28",
+      "purpose": "证据冲突对齐"
+    },
+    {
+      "id": "R29",
+      "locator": "§6 审核规则全集 / R29",
+      "purpose": "电子授权合法替代"
+    },
+    {
+      "id": "R30",
+      "locator": "§6 审核规则全集 / R30",
+      "purpose": "办理渠道材料条件"
+    },
+    {
+      "id": "R31",
+      "locator": "§6 审核规则全集 / R31",
+      "purpose": "截止和规章有效期"
+    },
+    {
+      "id": "R32",
+      "locator": "§6 审核规则全集 / R32",
+      "purpose": "必需材料仅按条件激活"
+    },
+    {
+      "id": "R33",
+      "locator": "§6 审核规则全集 / R33",
+      "purpose": "待审批不等于缺件"
+    },
+    {
+      "id": "R34",
+      "locator": "§6 审核规则全集 / R34",
+      "purpose": "审批结果不能被AI代写"
+    },
+    {
+      "id": "R35",
+      "locator": "§6 审核规则全集 / R35",
+      "purpose": "逐操作汇总结论"
+    },
+    {
+      "id": "R36",
+      "locator": "§6 审核规则全集 / R36",
+      "purpose": "整单汇总不覆盖部分处理"
+    },
+    {
+      "id": "R37",
+      "locator": "§6 审核规则全集 / R37",
+      "purpose": "交付动作强制门控"
+    },
+    {
+      "id": "R38",
+      "locator": "§6 审核规则全集 / R38",
+      "purpose": "证据完整覆盖检查"
+    },
+    {
+      "id": "R39",
+      "locator": "§6 审核规则全集 / R39",
+      "purpose": "校规证据优先级"
+    },
+    {
+      "id": "R40",
+      "locator": "§6 审核规则全集 / R40",
+      "purpose": "合理替代与历史差异"
+    },
+    {
+      "id": "R41",
+      "locator": "§6 审核规则全集 / R41",
+      "purpose": "公开展示结果最小化"
+    },
+    {
+      "id": "R42",
+      "locator": "§6 审核规则全集 / R42",
+      "purpose": "版本变更与重审"
+    }
+  ]
+}
