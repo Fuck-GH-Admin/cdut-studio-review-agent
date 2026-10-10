@@ -11,7 +11,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, writeFile
 import { createHash } from 'node:crypto'
 import { join } from 'node:path'
 import { triageBatchCase } from '@profer/shared'
-import type { BatchStateV2, ReviewBatch, SyncReceipt } from '@profer/shared'
+import type { BatchStateV2, ReviewBatch, SyncReceipt, BatchAutomationMode } from '@profer/shared'
 import { getConfigDir } from '../config-paths'
 import type { PushPayload, SchoolPort } from './external-ports'
 
@@ -59,6 +59,54 @@ export function createBatchV2(batch: ReviewBatch): BatchStateV2 {
   const state: BatchStateV2 = { batch, status: 'draft', cases: batch.caseIds.map((caseId) => ({ caseId, status: 'queued' })), round: 1 }
   saveBatchStateV2(state)
   return state
+}
+
+/** Configure a per-batch automation mode. The renderer never supplies an actor identity. */
+export function configureBatchAutomation(batchId: string, mode: BatchAutomationMode, confirmed: boolean): BatchStateV2 {
+  const state = readBatchStateV2(batchId)
+  if (!state) throw new Error('批次不存在')
+  if (!['assist', 'auto-return', 'auto-approve'].includes(mode)) throw new Error('自动化策略无效')
+  if (state.status === 'running' || state.status === 'finalized' || activeBatchRuns.has(batchId)) {
+    throw new Error('批次执行中或已定稿，不能改变自动化授权')
+  }
+  if (mode !== 'assist' && confirmed !== true) throw new Error('请人工确认自动化策略与风险')
+  if (mode === 'auto-approve') {
+    const { getSettings } = require('../settings-service') as typeof import('../settings-service')
+    if (getSettings().reviewAgentAutoApproval !== true) throw new Error('全局 AI 代批授权未开启，不得自动通过')
+    const { getTemplate } = require('./template-store') as typeof import('./template-store')
+    const template = getTemplate(state.batch.templateId, state.batch.templateVersion)
+    if (template?.status !== 'published' || template.autoPassPolicy?.enabled !== true) {
+      throw new Error('模板未明确允许自动通过')
+    }
+  }
+  state.automation = {
+    mode, grantedBy: 'local-reviewer', grantedAt: new Date().toISOString(),
+    revision: (state.automation?.revision ?? 0) + 1,
+    templateId: state.batch.templateId, templateVersion: state.batch.templateVersion,
+  }
+  saveBatchStateV2(state)
+  return state
+}
+
+/** Close the supplement loop without rewriting history or retrying decided cases. */
+export function requeueCaseAfterSupplement(caseId: string): string[] {
+  const queued: string[] = []
+  const { readAggregate } = require('./case-store-v2') as typeof import('./case-store-v2')
+  const aggregate = readAggregate(caseId)
+  if (!aggregate || aggregate.caseV2.stage !== 'reviewing'
+    || aggregate.supplements.some((request) => ['open', 'responded', 'insufficient'].includes(request.status))) return queued
+  for (const state of listBatchStatesV2()) {
+    if (state.status === 'finalized' || state.status === 'running' || activeBatchRuns.has(state.batch.id)
+      || state.batch.templateId !== aggregate.caseV2.templateId
+      || state.batch.templateVersion !== aggregate.caseV2.templateVersion) continue
+    const entry = state.cases.find((candidate) => candidate.caseId === caseId)
+    if (!entry || entry.status === 'queued' || entry.status === 'running') continue
+    state.cases = state.cases.map((candidate) => candidate.caseId === caseId
+      ? { ...candidate, status: 'queued', error: undefined } : candidate)
+    saveBatchStateV2(state)
+    queued.push(state.batch.id)
+  }
+  return queued
 }
 
 /** 入队/暂停/重试（单案失败不阻塞全批，06 §7.1） */
