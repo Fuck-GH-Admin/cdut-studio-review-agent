@@ -1,0 +1,8 @@
+{
+  "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+  "locator": "合成复现/证据替代关系",
+  "requirement": "当同一材料可替代另一材料时，依据档案件/操作/时点分别核验替代合法性",
+  "blockedOperation": "当前轻量模块未能表达带权威证明的条件替代证据组，不能按无条件要求编译",
+  "owner": "D3",
+  "reproduce": "以合成 B02 为基线，加入必须‘满足其一且在有效期内’的 claim relation；D1/D2 应 fail closed 并报告原规则位置"
+}
