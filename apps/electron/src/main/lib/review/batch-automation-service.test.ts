@@ -2,7 +2,7 @@ import { afterAll, describe, expect, test } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { DocumentVersion, ReviewCaseV2, ReviewRunV2, RuleSpec } from '@profer/shared'
-import { createAggregate, readAggregate } from './case-store-v2'
+import { createAggregate, readAggregate, submitCommand } from './case-store-v2'
 import { createBatchV2, configureBatchAutomation, readBatchStateV2, saveBatchStateV2, requeueCaseAfterSupplement, updateCaseStatus } from './batch-store'
 import { canonicalContentHash, publishPolicy, savePolicyDraft } from './policy-store'
 import { publishTemplate, saveDraft, getTemplate } from './template-store'
@@ -190,6 +190,58 @@ describe('C 阶段：显式授权的自动通过与退回', () => {
     expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('queued')
     expect((await runBatchAutomation(batchId)).applied).toBe(0)
     expect(readAggregate(a.caseId)?.decisions.filter((d) => d.result === 'pass')).toHaveLength(0)
+  })
+
+  test('AI 提供的证据指针指向不存在的材料时不能自动通过', async () => {
+    const a = await createCase('compliant')
+    const run = { ...a.run, checks: a.run.checks.map((check) => ({
+      ...check, sourceRefs: [{ caseId: a.caseId, documentVersionId: 'fabricated-doc',
+        parseRevision: 1, location: { kind: 'file' as const } }],
+    })) }
+    saveRunV2(run)
+    const batchId = makeBatch([a.caseId])
+    updateSettings({ reviewAgentAutoApproval: true })
+    configureBatchAutomation(batchId, 'auto-approve', true)
+    const result = await runBatchAutomation(batchId)
+    expect(result.applied).toBe(0)
+    expect(result.blocked).toBe(1)
+    expect(readAggregate(a.caseId)?.decisions).toHaveLength(0)
+  })
+
+  test('审核完成后修改案卷输入，自动处理必须拒绝旧运行', async () => {
+    const a = await createCase('compliant')
+    const batchId = makeBatch([a.caseId])
+    updateSettings({ reviewAgentAutoApproval: true })
+    configureBatchAutomation(batchId, 'auto-approve', true)
+    const change = await submitCommand(a.caseId, {
+      requestId: id('modify'), actor: reviewer, expectedRevision: 0,
+      type: 'TestChangeCase', payload: { changed: true },
+    }, () => ({ summary: '材料变更', mutate: (agg) => {
+      agg.caseV2.caseFields = { proof: { kind: 'text', value: '新提交内容' } }
+    } }))
+    expect(change.ok).toBeTrue()
+    const result = await runBatchAutomation(batchId)
+    expect(result.applied).toBe(0)
+    expect(result.failed).toBe(1)
+    expect(readAggregate(a.caseId)?.decisions).toHaveLength(0)
+  })
+
+  test('批次授权被关闭后原 system 身份无法绕过事务门槛审批', async () => {
+    const a = await createCase('compliant')
+    const batchId = makeBatch([a.caseId])
+    updateSettings({ reviewAgentAutoApproval: true })
+    const configured = configureBatchAutomation(batchId, 'auto-approve', true)
+    configureBatchAutomation(batchId, 'assist', true)
+    const { decideWorkspaceCaseV2 } = await import('./workspace-business-service-v2')
+    const result = await decideWorkspaceCaseV2(a.caseId, {
+      requestId: id('illegal-auto-actor'),
+      actor: { actorSource: 'system', actorId: `batch-auto:${encodeURIComponent(batchId)}:${configured.automation!.revision}`, role: 'reviewer' },
+      expectedRevision: 0,
+      payload: { result: 'pass', reason: '绕过自动策略', basedOnRunId: a.run.id, inputHash: a.run.inputManifest.hash },
+    })
+    expect(result.ok).toBeFalse()
+    if (!result.ok) expect(result.code).toBe('AGENT_DECISION_DISABLED')
+    expect(readAggregate(a.caseId)?.decisions).toHaveLength(0)
   })
 
   test('已真实形成所有最终业务决定后才允许批次定稿', async () => {
