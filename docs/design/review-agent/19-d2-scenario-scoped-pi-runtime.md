@@ -77,3 +77,11 @@ PROFER_CONFIG_DIR=/tmp/d2-testing bun apps/electron/scripts/review-d2-plan.ts at
 - 合成 `SourceRef` 只在真正 Pi 工具提交阶段由现有材料块核验；编辑态引用源声明不是替代材料真实性证明。
 - 运行正确性测试验证范围/来源/版本约束，不宣称大模型在全部真实校园文件上达到某个准确率；本地 Pi 服务要求真实可用模型出口才能开展模型端到端对照。
 - 模块库正式冻结和跨工作区共享属于 D3；丰富的人类编辑 UI 属于 D5。本阶段保留 JSON Agent-first 接口与轻量数据结构。
+
+## 6. D2 收口增量：真实建案入口及防混入门禁
+
+- **建案入口分离**：正式 `createCaseFromTemplate` 坚持只能使用 published 模板；D2 的 `createD2TechnicalCase` 限定 reviewer 身份、合法案卷 ID、服务端 candidate-held 且纯技术预审的壳，先完整编译情景，再两次受控事务创建案卷与绑定固定计划。Agent JSON CLI 分为 `register` → `create` → 现有材料录入/Pi 审核。错误情景在写入之前拒止。
+- **单一真值**：D2 的静态候选壳必须没有任何 fields、materialSlots、静态 sections、policyRefs、额外政策版本及审批输出；审核要求仅以已固定 `D2RuntimePlan.rules` 投影，后续擅改候选壳将拒绝 Pi 运行。候选案卷没有固定计划不能直接启动 Pi；已绑定案卷如添加未登记的 RuleSpec/ReviewSubject，也须拒止。
+- **条件主体边界**：当前 D2 校园卡分支试点严格要求 **1 个明确的 campus-card 目标**，不得把对象丢弃后把主体检查降级为整案规则；也不允许把该目标伪装成档案对象。多申请人、同案多独立申请的扩展应先定义明确的主体与责任实例，不以当前单目标试点代替。
+- **逐操作独立凭据**：可断言的档案查阅、复制、开放状态必须各有与对应 subjectId 和操作键一致的用户确认证据链接（本案当前有效文件版本）。一份查阅证据不能证明复制；复制权限未知时保留 `awaiting-confirmation`。有证据链接也只证明技术核验来源，**不是学校/档案馆已作出许可**。
+- **完整度边界**：`verifyD2PiRun.complete` 只表示技术检查都收到有效回执且任务/规则/材料输入一致，不代表档案实际开放、家属/临时人员取得发卡资格，更不表示最终审批已完成。实际业务生产化还须独立制度治理、真实 Agent 金标评估及 UI 接入；本轮使用模拟材料和现有 Pi 结果提交链路验证。
