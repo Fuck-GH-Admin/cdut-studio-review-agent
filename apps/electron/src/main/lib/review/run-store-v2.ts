@@ -32,10 +32,10 @@ export function saveRunV2(run: ReviewRunV2): void {
 
 /** 启动恢复：把上次进程崩溃/重启遗留的 queued/running 运行标 interrupted（08 设计 §5：不能留永久 running 文件） */
 export function markStaleRunsInterrupted(caseId?: string): number {
+  if (caseId !== undefined) assertSafeReviewStorageId(caseId, 'caseId')
   const baseDir = join(getConfigDir(), 'review-cases')
   if (!existsSync(baseDir)) return 0
   let count = 0
-  if (caseId !== undefined) assertSafeReviewStorageId(caseId, 'caseId')
   for (const entry of readdirSync(baseDir)) {
     try { assertSafeReviewStorageId(entry, 'caseId') } catch { continue }
     if (caseId && entry !== caseId) continue
