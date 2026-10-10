@@ -233,8 +233,8 @@ function assertAutomatedWorkspaceDecision(
     return
   }
   if (actor.actorSource !== 'system') return
-  const match = /^batch-auto:([^:]+):(\\d+)$/.exec(actor.actorId)
-  if (!match) throw new CommandValidationError('PERMISSION_DENIED' as never, '未经授权的系统审批主体')
+  const match = /^batch-auto:([^:]+):(\d+)$/.exec(actor.actorId)
+  if (!match) throw new CommandValidationError('AGENT_DECISION_DISABLED', '未经授权的系统审批主体')
   const batchId = decodeURIComponent(match[1]!)
   const { readBatchStateV2 } = require('./batch-store') as typeof import('./batch-store')
   const { checkAutoBatchAction } = require('./batch-automation-gates') as typeof import('./batch-automation-gates')
