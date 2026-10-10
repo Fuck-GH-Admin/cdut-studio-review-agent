@@ -3,7 +3,7 @@ import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { DocumentVersion, ReviewCaseV2, ReviewRunV2, RuleSpec } from '@profer/shared'
 import { createAggregate, readAggregate } from './case-store-v2'
-import { createBatchV2, configureBatchAutomation, readBatchStateV2, requeueCaseAfterSupplement, updateCaseStatus } from './batch-store'
+import { createBatchV2, configureBatchAutomation, readBatchStateV2, saveBatchStateV2, requeueCaseAfterSupplement, updateCaseStatus } from './batch-store'
 import { canonicalContentHash, publishPolicy, savePolicyDraft } from './policy-store'
 import { publishTemplate, saveDraft, getTemplate } from './template-store'
 import { computeRunInputHash } from './run-service-v2'
@@ -95,6 +95,9 @@ function makeBatch(caseIds: string[]): string {
     policyVersionLock: [{ policyVersionId: 'auto-policy', version: 1 }],
     createdAt: '2026-10-10T00:00:00Z' })
   for (const caseId of caseIds) updateCaseStatus(batchId, caseId, 'done')
+  const ready = readBatchStateV2(batchId)!
+  ready.status = 'queued'
+  saveBatchStateV2(ready)
   return batchId
 }
 
