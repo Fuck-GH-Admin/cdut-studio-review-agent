@@ -65,6 +65,9 @@ export function listBatchStatesV2(): BatchStateV2[] {
   const root = join(getConfigDir(), 'review-batches')
   if (!existsSync(root)) return []
   return readdirSync(root)
+    .filter((batchId) => {
+      try { assertSafeBatchId(batchId); return true } catch { return false }
+    })
     .map((batchId) => readBatchStateV2(batchId))
     .filter((state): state is BatchStateV2 => !!state)
     .sort((a, b) => b.batch.createdAt.localeCompare(a.batch.createdAt))
@@ -212,6 +215,7 @@ export function reopenBatch(batchId: string, newBatchId: string, reason: string)
   const previous = readBatchStateV2(batchId)
   if (!previous) throw new Error(`批次不存在: ${batchId}`)
   if (previous.status !== 'finalized') throw new Error('只有已定稿批次可重开')
+  if (existsSync(batchPath(newBatchId))) throw new Error('重开批次 ID 已存在，不得覆盖历史批次')
   const state: BatchStateV2 = {
     batch: { ...previous.batch, id: newBatchId, name: `${previous.batch.name}（重开 R${previous.round + 1}）`, createdAt: new Date().toISOString() },
     status: 'draft',
