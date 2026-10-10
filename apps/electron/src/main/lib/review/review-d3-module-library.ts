@@ -126,8 +126,9 @@ export function freezeD3Module(module: ReviewAuthoringModuleV1, exampleIds: stri
   catch (error) {
     if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error
     const prior = inspectFrozenD3Module(module.moduleId, module.version)!
-    if (prior.digest !== record.digest || digest(prior.dependencies) !== digest(record.dependencies)) {
-      throw new Error('D3_FROZEN_CONFLICT: 冻结版本已存在，修改需提升 version')
+    if (prior.digest !== record.digest || digest(prior.dependencies) !== digest(record.dependencies) ||
+        digest(prior.exampleIds) !== digest(record.exampleIds)) {
+      throw new Error('D3_FROZEN_CONFLICT: 已冻结内容、依赖或测试资产关联不可原地改写，需提升 version')
     }
     return prior
   }
@@ -252,8 +253,10 @@ export function importD3Bundle(bundle: ReviewD3TransferBundle): ReviewAuthoringW
     const local = bundle.workspace.definitions.modules.find((mod) => key(mod.moduleId,mod.version) === k)
     if (!local || digest(local) !== record.digest) throw new Error('D3_BUNDLE_LOCK_MISMATCH: ' + k)
     const existing = readOne(record.module.moduleId, record.module.version)
-    if (existing && (existing.digest !== record.digest || digest(existing.dependencies) !== digest(record.dependencies))) {
-      throw new Error('D3_FROZEN_CONFLICT: 导入不能覆盖本地冻结资产 ' + k)
+    if (existing && (existing.digest !== record.digest ||
+        digest(existing.dependencies) !== digest(record.dependencies) ||
+        digest(existing.exampleIds) !== digest(record.exampleIds))) {
+      throw new Error('D3_FROZEN_CONFLICT: 导入不能覆盖本地冻结资产或篡改测试关联 ' + k)
     }
   }
   const expectedLocks = new Map((bundle.workspace.sharedModuleLocks ?? []).map((lock) => [key(lock.moduleId,lock.version),lock.digest]))
@@ -276,7 +279,11 @@ export function importD3Bundle(bundle: ReviewD3TransferBundle): ReviewAuthoringW
     catch (err) {
       if ((err as NodeJS.ErrnoException).code !== 'EEXIST') throw err
       const concurrent = readOne(record.module.moduleId,record.module.version)
-      if (!concurrent || concurrent.digest !== record.digest) throw new Error('D3_FROZEN_CONFLICT: 导入期间版本发生竞态 ' + k)
+      if (!concurrent || concurrent.digest !== record.digest ||
+          digest(concurrent.dependencies) !== digest(record.dependencies) ||
+          digest(concurrent.exampleIds) !== digest(record.exampleIds)) {
+        throw new Error('D3_FROZEN_CONFLICT: 导入期间版本发生竞态 ' + k)
+      }
     }
   }
   for (const record of records.values()) visit(record)
