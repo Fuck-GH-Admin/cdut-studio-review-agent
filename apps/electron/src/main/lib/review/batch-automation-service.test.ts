@@ -3,7 +3,7 @@ import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { DocumentVersion, ReviewCaseV2, ReviewRunV2, RuleSpec } from '@profer/shared'
 import { createAggregate, readAggregate, submitCommand } from './case-store-v2'
-import { createBatchV2, configureBatchAutomation, readBatchStateV2, saveBatchStateV2, requeueCaseAfterSupplement, updateCaseStatus } from './batch-store'
+import { createBatchV2, configureBatchAutomation, readBatchStateV2, saveBatchStateV2, requeueCaseAfterSupplement, updateCaseStatus, runBatchQueue, readFinalizedSnapshot } from './batch-store'
 import { canonicalContentHash, publishPolicy, savePolicyDraft } from './policy-store'
 import { publishTemplate, saveDraft, getTemplate } from './template-store'
 import { computeRunInputHash } from './run-service-v2'
@@ -333,6 +333,47 @@ describe('C 阶段：显式授权的自动通过与退回', () => {
     expect((await complete(second.id)).ok).toBeTrue()
     expect(readAggregate(target.caseId)?.caseV2.stage).toBe('reviewing')
     expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('queued')
+  })
+
+  test('完整批次链路：审核队列 → 自动正式通过 → 可审计定稿 → 重启不可重复执行', async () => {
+    const first = await createCase('compliant')
+    const second = await createCase('compliant')
+    const batchId = makeBatch([first.caseId, second.caseId])
+    const preparing = readBatchStateV2(batchId)!
+    preparing.cases = preparing.cases.map((entry) => ({ ...entry, status: 'queued' as const }))
+    preparing.status = 'queued'
+    saveBatchStateV2(preparing)
+
+    updateSettings({ reviewAgentAutoApproval: true })
+    configureBatchAutomation(batchId, 'auto-approve', true)
+    const dispatched: string[] = []
+    const reviewed = await runBatchQueue(batchId, {
+      runCase: async (caseId) => { dispatched.push(caseId); return { status: 'completed' } },
+    })
+    expect(dispatched).toEqual([first.caseId, second.caseId])
+    expect(reviewed.cases.map((entry) => entry.status)).toEqual(['done', 'done'])
+    expect(readAggregate(first.caseId)?.decisions).toHaveLength(0)
+    const report = await runBatchAutomation(batchId)
+    expect(report.applied).toBe(2)
+    expect(report.failed).toBe(0)
+    expect(report.blocked).toBe(0)
+    for (const caseId of dispatched) {
+      const actual = readAggregate(caseId)!
+      expect(actual.caseV2.stage).toBe('decided')
+      expect(actual.decisions.at(-1)?.finality).toBe('final')
+      expect(actual.decisions.at(-1)?.actor.actorSource).toBe('system')
+    }
+    const finalized = finalizeCompletedBatch(batchId)
+    expect(finalized.status).toBe('finalized')
+    const snapshot = readFinalizedSnapshot(batchId)
+    expect(snapshot).toBeDefined()
+    expect((snapshot?.decisions as unknown[]).length).toBe(2)
+    expect(() => finalizeCompletedBatch(batchId)).toThrow('批次状态不允许')
+    await expect(runBatchQueue(batchId, { runCase: async () => {
+      throw new Error('不应重跑')
+    } })).rejects.toThrow('重开')
+    expect(readAggregate(first.caseId)?.decisions).toHaveLength(1)
+    expect(readAggregate(second.caseId)?.decisions).toHaveLength(1)
   })
 
   test('已真实形成所有最终业务决定后才允许批次定稿', async () => {
