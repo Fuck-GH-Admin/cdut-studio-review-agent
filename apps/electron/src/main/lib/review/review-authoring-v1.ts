@@ -160,7 +160,7 @@ export function compileReviewAuthoringCandidateV1(
   })
   const manifest: ReviewAuthoringManifestV1 = {
     schemaVersion: 1, workspaceId: workspace.workspaceId, revision: workspace.revision,
-    templateId, templateVersion: version, previewFingerprint: preview.fingerprint,
+    templateId, templateVersion: version, authoringDigest: sha(workspace), previewFingerprint: preview.fingerprint,
     templateDigest: digestAuthoringTemplateV1(template),
     effectiveRuleDigest: hashEffectiveRuleSet(effective),
     mapping, status: 'review-candidate', publicationAllowed: false,
@@ -178,8 +178,16 @@ export function digestAuthoringTemplateV1(template: TemplateVersion): string {
 export function verifyReviewAuthoringManifestV1(
   template: TemplateVersion,
   manifest: ReviewAuthoringManifestV1,
+  workspace: ReviewAuthoringWorkspaceV1,
 ): string[] {
   const issues: string[] = []
+  if (!workspace || manifest.authoringDigest !== sha(workspace) || manifest.workspaceId !== workspace.workspaceId ||
+      manifest.revision !== workspace.revision) {
+    issues.push('作者态定义或来源绑定已变化，原 manifest 不可信')
+  }
+  if (workspace && validateReviewAuthoringV1(workspace).length) {
+    issues.push('作者态数据校验未通过，不能作为来源证明')
+  }
   if (manifest.publicationAllowed !== false || manifest.status !== 'review-candidate') {
     issues.push('作者态候选不得伪装成已获发布授权')
   }
@@ -193,9 +201,16 @@ export function verifyReviewAuthoringManifestV1(
   if (manifest.mapping.length !== rules.size || new Set(manifest.mapping.map((it) => it.ruleId)).size !== manifest.mapping.length) {
     issues.push('规则来源映射存在遗漏或重复')
   }
+  const authoredBindings = new Map(workspace?.sourceBindings?.map((entry) => [entry.checkId, entry.sourceIds]) ?? [])
+  const sourceMap = new Map(workspace?.sources?.map((entry) => [entry.sourceId, entry]) ?? [])
   for (const entry of manifest.mapping) {
     const rule = rules.get(entry.ruleId)
     if (!rule || entry.ruleDigest !== sha(rule)) issues.push('生效规则内容或来源映射不匹配：' + entry.checkId)
+    const linked = authoredBindings.get(manifest.templateId + '@' + manifest.templateVersion + ':' + entry.checkId)
+    if (!linked || sha(linked) !== sha(entry.sourceIds) ||
+        sha(linked.map((id) => sourceMap.get(id)?.kind)) !== sha(entry.sourceKinds)) {
+      issues.push('责任来源映射与作者态不一致：' + entry.checkId)
+    }
   }
   return issues
 }
