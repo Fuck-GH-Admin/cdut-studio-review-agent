@@ -16,7 +16,7 @@
  *
  * 用完整 D1 workspace 负责来源绑定；没有真实 policy authority 的地方只输出技术预审。
  */
-import { readFileSync, writeFileSync } from 'node:fs'
+import { closeSync, openSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import type { ReviewAuthoringModuleV1, ReviewAuthoringWorkspaceV1, ReviewD3TransferBundle } from '@profer/shared'
 import {
@@ -95,9 +95,20 @@ async function main(): Promise<void> {
     }
     case 'import': {
       if (!first || !second) throw new Error('D3_USAGE: import <bundle.json> <workspace-output.json>')
-      const workspace = importD3Bundle(load<ReviewD3TransferBundle>(first))
-      newFile(second, workspace)
-      show({ imported: true, workspaceId: workspace.workspaceId, revision: workspace.revision })
+      // Reserve the requested output before mutating the module registry.
+      // If the destination already exists, refuse without importing anything.
+      const destination = resolve(second)
+      const fd = openSync(destination, 'wx')
+      try {
+        const workspace = importD3Bundle(load<ReviewD3TransferBundle>(first))
+        writeFileSync(fd, JSON.stringify(workspace, null, 2) + '\\n', 'utf8')
+        show({ imported: true, workspaceId: workspace.workspaceId, revision: workspace.revision })
+      } catch (error) {
+        unlinkSync(destination)
+        throw error
+      } finally {
+        closeSync(fd)
+      }
       return
     }
     case 'diff': {
