@@ -7,7 +7,7 @@
  * - 全部纯 Node（bun test 直跑），不引入本地数据库
  */
 
-import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
+import { closeSync, existsSync, mkdirSync, openSync, readdirSync, readFileSync, renameSync, unlinkSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { TemplateVersion } from '@profer/shared'
 import { validatePolicyRef } from './policy-store'
@@ -36,6 +36,70 @@ function writeAtomic(filePath: string, data: unknown): void {
   const tmp = `${filePath}.tmp`
   writeFileSync(tmp, JSON.stringify(data, null, 2), 'utf-8')
   renameSync(tmp, filePath)
+}
+
+
+/**
+ * 发布资格存储由模板服务维护，独立于可自由修改的 TemplateVersion.sourceNote。
+ *
+ * regular-draft：现有本地自建/内置模板发布流程的兼容资格，不表示已核实校规；
+ * candidate-held：D0.5/D1 候选永不通过普通草稿编辑操作解锁。
+ *
+ * 旧历史版本没有资格记录时拒绝首次发布，需通过 saveDraft() 重新登记；
+ * 发布前在同一版本锁内读取资格，避免编辑与发布并发交错。
+ */
+type PublicationClass = 'regular-draft' | 'candidate-held'
+interface PublicationControl {
+  schemaVersion: 1
+  templateId: string
+  version: number
+  classification: PublicationClass
+}
+function controlDir(templateId: string): string {
+  return join(getConfigDir(), 'review-template-controls', templateId)
+}
+function controlPath(templateId: string, version: number): string {
+  return join(controlDir(templateId), version + '.json')
+}
+function readPublicationControl(templateId: string, version: number): PublicationControl | undefined {
+  const path = controlPath(templateId, version)
+  if (!existsSync(path)) return undefined
+  let candidate: PublicationControl
+  try { candidate = JSON.parse(readFileSync(path, 'utf8')) as PublicationControl }
+  catch { throw new Error('模板发布资格登记损坏，拒绝发布') }
+  if (candidate.schemaVersion !== 1 || candidate.templateId !== templateId || candidate.version !== version ||
+      !['regular-draft', 'candidate-held'].includes(candidate.classification)) {
+    throw new Error('模板发布资格登记不合法，拒绝发布')
+  }
+  return candidate
+}
+function isCandidateDraft(template: TemplateVersion): boolean {
+  return template.sourceNote?.startsWith('D0.5_DEMO_ONLY:') === true ||
+    template.sourceNote?.startsWith('D1_AUTHORING_CANDIDATE:') === true ||
+    ((template.sections ?? []).some((section) =>
+      section.id === 'semantic-tasks' && section.criteria.some((criterion) => criterion.id.startsWith('demo-'))))
+}
+function registerPublicationControl(template: TemplateVersion, forceCandidate: boolean): PublicationControl {
+  const existing = readPublicationControl(template.templateId, template.version)
+  const classification: PublicationClass = forceCandidate || existing?.classification === 'candidate-held' || isCandidateDraft(template)
+    ? 'candidate-held' : 'regular-draft'
+  const next: PublicationControl = {
+    schemaVersion: 1, templateId: template.templateId, version: template.version, classification,
+  }
+  const dir = controlDir(template.templateId)
+  mkdirSync(dir, { recursive: true })
+  // 同一版本锁内更新资格。已进入 candidate-held 时不能被普通 saveDraft 降级。
+  writeAtomic(controlPath(template.templateId, template.version), next)
+  return next
+}
+function withTemplateVersionLock<T>(templateId: string, version: number, operation: () => T): T {
+  if (!isSafeTemplateId(templateId) || !Number.isSafeInteger(version) || version < 1) throw new Error('模板 ID/版本不合法')
+  const dir = controlDir(templateId)
+  mkdirSync(dir, { recursive: true })
+  const lock = join(dir, version + '.lock')
+  const fd = openSync(lock, 'wx')
+  try { return operation() }
+  finally { closeSync(fd); unlinkSync(lock) }
 }
 
 /** 读取模板；version 缺省取最大已存版本 */
@@ -142,16 +206,32 @@ export function restoreTemplateToLibrary(templateId: string): TemplateVersion {
 }
 
 /** 保存草稿（status 强制 draft；version 不可与已有 published 冲突） */
-export function saveDraft(template: TemplateVersion): TemplateVersion {
+function saveDraftControlled(template: TemplateVersion, forceCandidate: boolean): TemplateVersion {
   if (template.status !== 'draft') throw new Error('saveDraft 只接受草稿状态模板')
-  const existing = getTemplate(template.templateId, template.version)
-  if (existing && existing.status === 'published') {
-    throw new Error(`版本 ${template.version} 已发布不可覆盖；请提升版本号`)
-  }
-  const filePath = versionPath(template.templateId, template.version)
-  mkdirSync(join(templatesRoot(), template.templateId, 'versions'), { recursive: true })
-  writeAtomic(filePath, template)
-  return template
+  return withTemplateVersionLock(template.templateId, template.version, () => {
+    const existing = getTemplate(template.templateId, template.version)
+    if (existing && existing.status === 'published') {
+      throw new Error(`版本 ${template.version} 已发布不可覆盖；请提升版本号`)
+    }
+    // 先登记（如需则永久封存）服务端资格，再写可编辑的草稿正文。
+    // 写入中途失败只可能导致旧草稿被拒绝发布，不会意外放行候选。
+    registerPublicationControl(template, forceCandidate)
+    const filePath = versionPath(template.templateId, template.version)
+    mkdirSync(join(templatesRoot(), template.templateId, 'versions'), { recursive: true })
+    writeAtomic(filePath, template)
+    return template
+  })
+}
+/** 通用本地草稿编辑不具备把既有 candidate-held 转成可发布模板的权限。 */
+export function saveDraft(template: TemplateVersion): TemplateVersion {
+  return saveDraftControlled(template, false)
+}
+/**
+ * D1 作者态专用入口：由内部编译/存储服务强制登记不可发布资格。
+ * 不依据用户可编辑的 sourceNote，也不提供任何候选解锁接口。
+ */
+export function saveAuthoringCandidateDraft(template: TemplateVersion): TemplateVersion {
+  return saveDraftControlled(template, true)
 }
 
 export interface TemplateValidationIssue {
@@ -303,24 +383,30 @@ export function validateTemplate(template: TemplateVersion): TemplateValidationI
 
 /** 发布：draft → published 不可变；error 清零才允许（02 §5.6） */
 export function publishTemplate(templateId: string, version: number): TemplateVersion {
-  const template = getTemplate(templateId, version)
-  if (!template) throw new Error(`模板不存在: ${templateId}@${version}`)
-  // D0.5 只验证编排和 Pi 生效规则映射，不具备正式制度认证/发布能力。
-  if (template.sourceNote?.startsWith('D0.5_DEMO_ONLY:')) throw new Error('D0.5 演示草稿不得发布为正式审核模板')
-  if (template.status === 'published') return template
-  const issues = validateTemplate(template)
-  const errors = issues.filter((issue) => issue.level === 'error')
-  if (errors.length > 0) {
-    throw new Error(`模板未通过发布检查：${errors.map((issue) => issue.message).join('；')}`)
-  }
-  const published: TemplateVersion = {
-    ...template,
-    status: 'published',
-    publishedAt: new Date().toISOString(),
-  }
-  writeAtomic(versionPath(templateId, version), published)
-  console.log(`[审核模板] 已发布: ${templateId}@${version}`)
-  return published
+  return withTemplateVersionLock(templateId, version, () => {
+    const template = getTemplate(templateId, version)
+    if (!template) throw new Error(`模板不存在: ${templateId}@${version}`)
+    if (template.status === 'published') return template
+    // 在实际发布事务中核验服务端资格；可修改的 sourceNote 不是授权凭据。
+    const control = readPublicationControl(templateId, version)
+    if (!control || control.classification !== 'regular-draft' || isCandidateDraft(template)) {
+      // 兼容既有调用者的错误提示，发布决定始终只由服务端资格及校验作出。
+      if (template.sourceNote?.startsWith('D0.5_DEMO_ONLY:')) throw new Error('D0.5 演示草稿不得发布为正式审核模板')
+      if (template.sourceNote?.startsWith('D1_AUTHORING_CANDIDATE:')) throw new Error('D1 作者态候选尚未经过制度治理，不得正式发布')
+      throw new Error('模板发布资格未获允许：候选/演示草稿或未登记版本不得正式发布')
+    }
+    const issues = validateTemplate(template)
+    const errors = issues.filter((issue) => issue.level === 'error')
+    if (errors.length > 0) {
+      throw new Error(`模板未通过发布检查：${errors.map((issue) => issue.message).join('；')}`)
+    }
+    const published: TemplateVersion = {
+      ...template, status: 'published', publishedAt: new Date().toISOString(),
+    }
+    writeAtomic(versionPath(templateId, version), published)
+    console.log(`[审核模板] 已发布: ${templateId}@${version}`)
+    return published
+  })
 }
 
 /** 停用（仅已发布版本可停用；保留历史可读） */
