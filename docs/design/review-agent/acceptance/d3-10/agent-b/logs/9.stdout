@@ -2,7 +2,7 @@
   "ok": true,
   "workspaceId": "d310-agent-b-archive",
   "revision": 2,
-  "fingerprint": "9edf6b8d460afb02af0195fe69e6b0e74ede44d9d708f3537b25ff34ec9eb2f9",
+  "fingerprint": "8130beeb791e09375cf5f87b324970631551b7196ea0dec9f981684f2740200f",
   "locks": [
     {
       "moduleId": "agent-authorization",

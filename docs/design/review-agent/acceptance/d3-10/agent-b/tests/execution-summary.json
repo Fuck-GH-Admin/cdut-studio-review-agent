@@ -364,6 +364,10 @@
     },
     {
       "passed": true,
+      "description": "archive-only copy rule binds precisely to copy subject"
+    },
+    {
+      "passed": true,
       "description": "gap mapped but not falsely Run-verified"
     }
   ],

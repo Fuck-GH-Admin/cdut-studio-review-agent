@@ -82,6 +82,28 @@
           ]
         },
         {
+          "moduleId": "archive-copy-local",
+          "version": 1,
+          "name": "档案复制独立授权（业务本地）",
+          "purpose": "对指定档案件的指定复制操作作范围核对，不继承查阅授权",
+          "scope": "本次 item-1/copy 操作",
+          "source": {
+            "kind": "synthetic",
+            "note": "原始业务MD R23责任映射；成都理工当前实施细则待核"
+          },
+          "limits": "不开放档案，不代替馆方批准和实际出件。",
+          "tasks": [
+            {
+              "id": "copy-authorization",
+              "title": "复制权限与数量范围",
+              "requirement": "按原始档案MD R23，只核 item-1/copy 的页数、份数与独立授权；查阅授权不能推出复制许可，权威许可未知则待核。",
+              "completion": "输出档案件、copy操作与范围一一对应的证据和未确认原因。",
+              "limits": "不凭OCR文字或查阅权限完成行政批准。"
+            }
+          ],
+          "parameters": []
+        },
+        {
           "moduleId": "agent-authorization",
           "version": 2,
           "name": "代理权限范围核验",
@@ -153,6 +175,12 @@
               }
             },
             {
+              "id": "item-1-copy-local",
+              "moduleId": "archive-copy-local",
+              "version": 1,
+              "objectKey": "item-1/copy"
+            },
+            {
               "id": "item-1-read",
               "moduleId": "agent-authorization",
               "version": 2,
@@ -162,15 +190,7 @@
               }
             }
           ],
-          "localTasks": [
-            {
-              "id": "independent-copy-boundary",
-              "title": "档案复制独立授权（本地）",
-              "requirement": "按原始档案MD R23 逐档案件核复制操作范围。查阅授权不自动推出复制资格。馆方权限未核时不得判复制合格。",
-              "completion": "逐项给出复制范围、实际证据及待授权原因。",
-              "limits": "不替代行政批准和档案馆出件。"
-            }
-          ]
+          "localTasks": []
         }
       ]
     },
@@ -212,7 +232,7 @@
         ]
       },
       {
-        "checkId": "archive-access@1:local/independent-copy-boundary",
+        "checkId": "archive-access@1:module/item-1-copy-local/copy-authorization",
         "sourceIds": [
           "school-policy-unverified"
         ]

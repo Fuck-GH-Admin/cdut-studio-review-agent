@@ -21,9 +21,9 @@
       "module/item-1-copy"
     ],
     "checkIds": [
-      "module/item-1-open/open-state",
       "module/item-1-copy/authorization",
       "module/item-1-evidence/evidence-boundary",
+      "module/item-1-copy-local/copy-authorization",
       "module/item-1-read/authorization",
       "module/item-1-read/scope-trace"
     ],
@@ -45,9 +45,9 @@
       "module/item-1-copy"
     ],
     "checkIds": [
-      "module/item-1-open/open-state",
       "module/item-1-copy/authorization",
       "module/item-1-evidence/evidence-boundary",
+      "module/item-1-copy-local/copy-authorization",
       "module/item-1-read/authorization",
       "module/item-1-read/scope-trace"
     ],

@@ -6,8 +6,8 @@
   "revision": 3,
   "templateId": "archive-access",
   "templateVersion": 1,
-  "authoringDigest": "bca7ef077a8f3890e40394d526cc0c799099e534497e0726b7ff580aeb6da811",
-  "previewFingerprint": "e36aaefe398bd61da77821209bab1d3d919507df1e5e1edc7a9fc03ef132ddbb",
+  "authoringDigest": "aee8989b6dbcd521830301af3b6e90f315c8b28bca49073dcdf49dd924364d25",
+  "previewFingerprint": "486c6492defb6de8ffcc4b69cfa94dcb851653b5c3121af4450e59f9bb7feae6",
   "targets": [
     {
       "objectKey": "item-1/read",
@@ -102,28 +102,6 @@
   ],
   "rules": [
     {
-      "id": "d2-b9d3b059588b8110e6dd",
-      "policyVersionId": "workspace:d2-d310-agent-b-archive@3",
-      "title": "档案复制独立授权（本地）",
-      "requirement": "适用范围：同一申请内按档案件与操作分别核验\n按原始档案MD R23 逐档案件核复制操作范围。查阅授权不自动推出复制资格。馆方权限未核时不得判复制合格。\n完成标准：逐项给出复制范围、实际证据及待授权原因。\n责任边界：查阅、摘录、复制、外借不得相互继承授权\n不替代行政批准和档案馆出件。\nD2 技术预审来源：school-policy-unverified/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
-      "when": {
-        "all": []
-      },
-      "targetScope": "case",
-      "execution": "semantic",
-      "semanticOutputEnum": [
-        "compliant",
-        "non-compliant"
-      ],
-      "onFail": "manual-review",
-      "onUnknown": "needs-confirmation",
-      "sourceRefIds": [
-        "school-policy-unverified"
-      ],
-      "priority": 50000,
-      "confirmation": "unconfirmed"
-    },
-    {
       "id": "d2-3eb30a800377614dbb59",
       "policyVersionId": "workspace:d2-d310-agent-b-archive@3",
       "title": "开放状态",
@@ -143,7 +121,7 @@
       "sourceRefIds": [
         "synthetic-source"
       ],
-      "priority": 50001,
+      "priority": 50000,
       "confirmation": "confirmed"
     },
     {
@@ -166,7 +144,7 @@
       "sourceRefIds": [
         "school-policy-unverified"
       ],
-      "priority": 50002,
+      "priority": 50001,
       "confirmation": "unconfirmed"
     },
     {
@@ -189,8 +167,31 @@
       "sourceRefIds": [
         "synthetic-source"
       ],
-      "priority": 50003,
+      "priority": 50002,
       "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-3f4c81ef4191e30932fd",
+      "policyVersionId": "workspace:d2-d310-agent-b-archive@3",
+      "title": "复制权限与数量范围",
+      "requirement": "适用范围：本次 item-1/copy 操作；审核对象：item-1/copy\n按原始档案MD R23，只核 item-1/copy 的页数、份数与独立授权；查阅授权不能推出复制许可，权威许可未知则待核。\n完成标准：输出档案件、copy操作与范围一一对应的证据和未确认原因。\n责任边界：不开放档案，不代替馆方批准和实际出件。\n查阅、摘录、复制、外借不得相互继承授权\n不凭OCR文字或查阅权限完成行政批准。\nD2 技术预审来源：school-policy-unverified/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-ad0607d90809e3d2",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "school-policy-unverified"
+      ],
+      "priority": 50003,
+      "confirmation": "unconfirmed"
     },
     {
       "id": "d2-09b7948a3a74e27100ee",
@@ -241,14 +242,6 @@
   ],
   "mapping": [
     {
-      "checkId": "local/independent-copy-boundary",
-      "ruleId": "d2-b9d3b059588b8110e6dd",
-      "sourceIds": [
-        "school-policy-unverified"
-      ],
-      "authority": "unverified-policy"
-    },
-    {
       "checkId": "module/item-1-open/open-state",
       "ruleId": "d2-3eb30a800377614dbb59",
       "objectKey": "item-1",
@@ -279,6 +272,16 @@
       "authority": "request-scope"
     },
     {
+      "checkId": "module/item-1-copy-local/copy-authorization",
+      "ruleId": "d2-3f4c81ef4191e30932fd",
+      "objectKey": "item-1/copy",
+      "subjectId": "d2-item1-copy",
+      "sourceIds": [
+        "school-policy-unverified"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
       "checkId": "module/item-1-read/authorization",
       "ruleId": "d2-09b7948a3a74e27100ee",
       "objectKey": "item-1/read",
@@ -299,5 +302,5 @@
       "authority": "unverified-policy"
     }
   ],
-  "fingerprint": "6172a2909e48633a29998792920dc2c1b963b5996ad0e047ad7f002dc8c6938e"
+  "fingerprint": "dea4870a11dd2eba0dd7e0715e572d823fc69ba00fea3ed44af4ad58aa7bd1a6"
 }
