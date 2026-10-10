@@ -216,6 +216,13 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
     const card = caseV2('d2-card-invalid', 'special-campus-card')
     expect(() => compileD2RuntimePlan(workspace, selection('special-campus-card'), card)).toThrow('D2_SCENARIO_REQUIRED')
     expect(() => compileD2RuntimePlan(workspace, { ...selection('special-campus-card', 'family'), scenario: 'invalid' }, card)).toThrow('D2_SCENARIO_REQUIRED')
+    expect(() => compileD2RuntimePlan(workspace, {
+      templateId: 'special-campus-card', version: 1, scenario: 'family', targets: [],
+    }, card)).toThrow('D2_SCENARIO_SCOPE_REQUIRED')
+    expect(() => compileD2RuntimePlan(workspace, {
+      ...selection('special-campus-card', 'family'),
+      targets: [{ objectKey: 'family-card', subjectId: 'd2-family', title: '伪装成档案件', kind: 'archive-item', itemId: 'family-card' }],
+    }, card)).toThrow('D2_SCENARIO_SCOPE_REQUIRED')
     const archive = caseV2('d2-archive-invalid', 'archive-access')
     const wrong = structuredClone(selection('archive-access'))
     wrong.targets[0]!.operation = 'copy'
