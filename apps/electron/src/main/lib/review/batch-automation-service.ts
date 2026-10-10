@@ -8,7 +8,7 @@ import { createHash } from 'node:crypto'
 import { triageBatchCase } from '@profer/shared'
 import type { Actor, BatchAutomationReport, BatchAutomationReceipt, ReviewRunV2 } from '@profer/shared'
 import { readAggregate } from './case-store-v2'
-import { readBatchStateV2, saveBatchStateV2, finalizeBatch } from './batch-store'
+import { readBatchStateV2, saveBatchStateV2, finalizeBatch, assertBatchBusinessReadyForFinalization } from './batch-store'
 import { checkAutoBatchAction, type AutoAction } from './batch-automation-gates'
 import { listRunsV2, readArtifact } from './run-store-v2'
 import { getTemplate } from './template-store'
@@ -113,15 +113,18 @@ export function finalizeCompletedBatch(batchId: string) {
   const state = readBatchStateV2(batchId)
   if (!state || state.status !== 'queued' || !state.automation || state.automation.mode === 'assist')
     throw new Error('批次状态不允许自动定稿')
-  if (!state.cases.length || state.cases.some((entry) => entry.status !== 'done'))
-    throw new Error('仍有案卷未完成批次审核')
+  // The core finalizer has the authoritative shared gate; cannot be bypassed
+  // through a raw 'finalize' IPC action or a different service caller.
+  assertBatchBusinessReadyForFinalization(state)
+  const { resolveFinalDecisionProjection } = require('./stage-workflow') as typeof import('./stage-workflow')
   const decisions = state.cases.map(({ caseId }) => {
     const aggregate = readAggregate(caseId)
     if (!aggregate || !['decided', 'archived'].includes(aggregate.caseV2.stage)
       || aggregate.supplements.some((sup) => ['open', 'responded', 'insufficient'].includes(sup.status)))
       throw new Error(`案卷未完成正式审批或仍待补件: ${caseId}`)
-    const final = [...aggregate.decisions].reverse().find((decision) => decision.finality === 'final')
-    if (!final) throw new Error(`案卷缺少可追溯的正式决定: ${caseId}`)
+    const projection = resolveFinalDecisionProjection(aggregate.decisions)
+    const final = projection.decision
+    if (!projection.isFinal || !final) throw new Error(`案卷缺少可追溯的正式决定: ${caseId}`)
     return { caseId, decisionId: final.id, result: final.result, runId: final.basedOnRunId,
       basedOnRevision: final.basedOnRevision, actor: final.actor }
   })
