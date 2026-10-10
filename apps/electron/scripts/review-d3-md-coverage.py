@@ -100,6 +100,7 @@ def validate(catalog, ledger, plan, gold, source=None, gaps=None):
         fail("invalid or duplicate D2 plan checkIds")
     if plan.get("publicationAllowed") is not False:
         fail("D3 source comparison only accepts candidate-held technical plans")
+    compiled_rules = {r.get("id"): r for r in plan.get("rules", []) if isinstance(r, dict) and nonblank(r.get("id"))}
     gap_index = index(gaps or [], "gaps")
     attributed = set()
     for key, item in authored.items():
@@ -130,6 +131,19 @@ def validate(catalog, ledger, plan, gold, source=None, gaps=None):
                     fail(f"{key}: required scope Check not attributed: {cid}")
                 elif cid in mapping and mapping[cid].get("subjectId") not in subjects:
                     fail(f"{key}: Check {cid} compiled for {mapping[cid].get('subjectId')!r}, expected {subjects}")
+            for cid, source_ids in gold_item.get("checkSourceIds", {}).items():
+                if cid not in ids:
+                    fail(f"{key}: required source Check not attributed: {cid}")
+                elif cid in mapping and not set(source_ids).issubset(set(mapping[cid].get("sourceIds", []))):
+                    fail(f"{key}: Check {cid} lost independent source binding {source_ids}")
+            for cid, terms in gold_item.get("checkRuleTerms", {}).items():
+                if cid not in ids:
+                    fail(f"{key}: required semantic rule Check not attributed: {cid}")
+                    continue
+                rule = compiled_rules.get(mapping.get(cid, {}).get("ruleId"), {})
+                requirement = str(rule.get("requirement", ""))
+                if not all(term in requirement for term in terms):
+                    fail(f"{key}: Check {cid} compiled rule is missing required semantic cues {terms}")
             if state == "policy-awaiting-confirmation":
                 if any(mapping[c].get("authority") != "unverified-policy" for c in ids if c in mapping):
                     fail(f"{key}: policy unverified requirement was given stronger D2 authority")
