@@ -215,6 +215,12 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
     assertAgentDecisionAllowed({ actor: command.actor, type: 'ResolveSupplement' })
     const target = aggregate.supplements.find((request) => request.id === payload.supplementId)
     if (!target) throw new CommandValidationError('NOT_FOUND', `补件请求不存在: ${payload.supplementId}`)
+    const originTask = target.originTaskId ? aggregate.tasks.find((task) => task.id === target.originTaskId) : undefined
+    const requiredRole = originTask?.assigneeRole ?? 'reviewer'
+    if (command.actor.role !== requiredRole
+      || (originTask?.assigneeActorId && originTask.assigneeActorId !== command.actor.actorId)) {
+      throw new CommandValidationError('INVALID_TRANSITION', '无权判定其他审核角色负责的补件')
+    }
     if (target.status !== 'open' && target.status !== 'responded') throw new CommandValidationError('INVALID_TRANSITION', `补件已关闭（${target.status}）`)
     if (payload.outcome === 'cancelled' && !payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '取消补件必须说明理由')
     return {
@@ -254,6 +260,9 @@ export function resolveAppealV2(caseId: string, command: { requestId: string; ac
   return submitCommand<{ appealId: string; resolution: string; reason: string; amendedResult?: BusinessDecision['result'] }, Appeal>(caseId, { ...command, type: 'ResolveAppeal' } as never, (aggregate, payload) => {
     const appeal = aggregate.appeals.find((candidate) => candidate.id === payload.appealId)
     if (!appeal) throw new CommandValidationError('NOT_FOUND', `申诉不存在: ${payload.appealId}`)
+    if (command.actor.role !== 'teacher') {
+      throw new CommandValidationError('INVALID_TRANSITION', '申诉更正必须由经过授权的复核教师完成')
+    }
     if (appeal.status === 'upheld' || appeal.status === 'overturned' || appeal.status === 'withdrawn') throw new CommandValidationError('INVALID_TRANSITION', '申诉已关闭')
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '复核必须附结论理由')
     let amended: BusinessDecision | undefined
