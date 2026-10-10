@@ -17,8 +17,24 @@ import type { PushPayload, SchoolPort } from './external-ports'
 
 // ===== 批次 =====
 
+/**
+ * IDs arrive from renderer IPC and persisted filenames. They are *not* paths.
+ * Keep one fail-closed boundary for reads, writes, reopens and final snapshots.
+ */
+export function assertSafeBatchId(value: unknown): asserts value is string {
+  if (typeof value !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(value)
+    || value === '.' || value === '..' || value.includes('..')) {
+    throw new Error('非法批次 ID：只能使用字母、数字、下划线、连字符与单个点，不能包含路径分隔符或 ..')
+  }
+}
+
+function batchDir(batchId: string): string {
+  assertSafeBatchId(batchId)
+  return join(getConfigDir(), 'review-batches', batchId)
+}
+
 function batchPath(batchId: string): string {
-  return join(getConfigDir(), 'review-batches', batchId, 'batch.json')
+  return join(batchDir(batchId), 'batch.json')
 }
 
 function writeAtomic(filePath: string, data: unknown): void {
@@ -29,7 +45,8 @@ function writeAtomic(filePath: string, data: unknown): void {
 
 export function saveBatchStateV2(state: BatchStateV2): void {
   const filePath = batchPath(state.batch.id)
-  if (!existsSync(join(getConfigDir(), 'review-batches', state.batch.id))) mkdirSync(join(getConfigDir(), 'review-batches', state.batch.id), { recursive: true })
+  const directory = batchDir(state.batch.id)
+  if (!existsSync(directory)) mkdirSync(directory, { recursive: true })
   writeAtomic(filePath, state)
 }
 
@@ -55,6 +72,7 @@ export function listBatchStatesV2(): BatchStateV2[] {
 
 /** 创建批次（锁定模板/政策版本，A12） */
 export function createBatchV2(batch: ReviewBatch): BatchStateV2 {
+  assertSafeBatchId(batch.id)
   if (existsSync(batchPath(batch.id))) throw new Error(`批次已存在: ${batch.id}`)
   const state: BatchStateV2 = { batch, status: 'draft', cases: batch.caseIds.map((caseId) => ({ caseId, status: 'queued' })), round: 1 }
   saveBatchStateV2(state)
@@ -119,6 +137,39 @@ export function updateCaseStatus(batchId: string, caseId: string, status: BatchS
   return state
 }
 
+/**
+ * All finalization callers must use this same business-state gate. 'done'
+ * means review run completed, not a formal approval. Check live aggregates,
+ * including unresolved supplement/appeal and superseded final decisions.
+ */
+export function assertBatchBusinessReadyForFinalization(state: BatchStateV2): void {
+  const { readAggregate } = require('./case-store-v2') as typeof import('./case-store-v2')
+  const { resolveFinalDecisionProjection } = require('./stage-workflow') as typeof import('./stage-workflow')
+  if (!state.cases.length || state.cases.some((entry) => entry.status !== 'done')) throw new Error('案卷未完成，不能定稿')
+  for (const entry of state.cases) {
+    const aggregate = readAggregate(entry.caseId)
+    if (!aggregate || !['decided', 'archived'].includes(aggregate.caseV2.stage)) {
+      throw new Error(`案卷没有正式业务终态，不能定稿: ${entry.caseId}`)
+    }
+    if (aggregate.caseV2.templateId !== state.batch.templateId || aggregate.caseV2.templateVersion !== state.batch.templateVersion) {
+      throw new Error(`案卷模板版本与批次锁不匹配: ${entry.caseId}`)
+    }
+    if (aggregate.supplements.some((item) => ['open', 'responded', 'insufficient'].includes(item.status))) {
+      throw new Error(`案卷仍有待补件项目，不能定稿: ${entry.caseId}`)
+    }
+    if (aggregate.appeals.some((item) => ['submitted', 'in-review'].includes(item.status))) {
+      throw new Error(`案卷仍有待处理申诉，不能定稿: ${entry.caseId}`)
+    }
+    if (aggregate.tasks.some((item) => item.status === 'open')) {
+      throw new Error(`案卷仍有未完成审核任务，不能定稿: ${entry.caseId}`)
+    }
+    const projected = resolveFinalDecisionProjection(aggregate.decisions)
+    if (!projected.isFinal || !projected.decision) {
+      throw new Error(`案卷缺少有效且可追溯的最终业务决定: ${entry.caseId}`)
+    }
+  }
+}
+
 /** 定稿：冻结快照 → 原子提交 manifest（R08：定稿后变更只能重开） */
 export function finalizeBatch(batchId: string, snapshot: Record<string, unknown>): BatchStateV2 {
   const state = readBatchStateV2(batchId)
@@ -128,10 +179,11 @@ export function finalizeBatch(batchId: string, snapshot: Record<string, unknown>
     if (state.finalizedSnapshotHash === snapshotHash) return state
     throw new Error('批次已定稿，修改快照需重开新轮次')
   }
-  if (state.cases.some((entry) => entry.status === 'running')) throw new Error('存在运行中案卷，不能定稿')
-  if (state.cases.length === 0 || state.cases.some((entry) => entry.status !== 'done')) throw new Error('案卷未完成，不能定稿')
+  if (state.status === 'running' || activeBatchRuns.has(batchId)
+    || state.cases.some((entry) => entry.status === 'running')) throw new Error('存在运行中案卷，不能定稿')
+  assertBatchBusinessReadyForFinalization(state)
   // 先保存完整快照，再提交批次状态；只有 hash 无法在重启后还原名单/评分。
-  writeAtomic(join(getConfigDir(), 'review-batches', batchId, `finalized-r${state.round}.json`), { snapshot, snapshotHash, round: state.round })
+  writeAtomic(join(batchDir(batchId), `finalized-r${state.round}.json`), { snapshot, snapshotHash, round: state.round })
   state.status = 'finalized'
   state.finalizedSnapshotHash = snapshotHash
   state.finalizedAt = new Date().toISOString()
@@ -143,7 +195,7 @@ export function finalizeBatch(batchId: string, snapshot: Record<string, unknown>
 export function readFinalizedSnapshot(batchId: string): Record<string, unknown> | undefined {
   const state = readBatchStateV2(batchId)
   if (!state || state.status !== 'finalized') return undefined
-  const path = join(getConfigDir(), 'review-batches', batchId, `finalized-r${state.round}.json`)
+  const path = join(batchDir(batchId), `finalized-r${state.round}.json`)
   if (!existsSync(path)) return undefined
   try {
     const saved = JSON.parse(readFileSync(path, 'utf-8')) as { snapshot: Record<string, unknown>; snapshotHash: string }
@@ -156,6 +208,7 @@ export function readFinalizedSnapshot(batchId: string): Record<string, unknown> 
 
 /** 重开：基于定稿批次创建新轮次（不改写原定稿，07 §7.2） */
 export function reopenBatch(batchId: string, newBatchId: string, reason: string): BatchStateV2 {
+  assertSafeBatchId(newBatchId)
   const previous = readBatchStateV2(batchId)
   if (!previous) throw new Error(`批次不存在: ${batchId}`)
   if (previous.status !== 'finalized') throw new Error('只有已定稿批次可重开')
