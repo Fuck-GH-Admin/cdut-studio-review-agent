@@ -7,6 +7,7 @@ on:
       - 'apps/electron/src/main/lib/review/review-d3-**'
       - 'apps/electron/scripts/review-d3-**'
       - 'docs/design/review-agent/23-*'
+      - 'docs/design/review-agent/fixtures/d3-*'
       - '.github/workflows/review-d3-tests.yml'
   workflow_dispatch:
 permissions:
@@ -29,6 +30,8 @@ jobs:
         run: bun run typecheck
       - name: D3 frozen library and CLI BDD
         run: bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-module-library.test.ts
+      - name: D3 synthetic B01/B02 cross-business handoff
+        run: bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-handoff.test.ts
       - name: D1 D2 authoring and Pi compatibility
         run: |
           bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-authoring-v1.test.ts
