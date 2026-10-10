@@ -127,6 +127,19 @@ export function compileReviewAuthoringCandidateV1(
     }
   }
   const template = projectSimpleDemoDraft(toDemo(workspace), templateId, version)
+  // 在现有 criterion 中保留来源性质，使 Pi 最终收到的任务文本不丢失来源警告；
+  // sourceIds 在 manifest 中提供精确机读对应，但不伪造真实材料的 SourceRef。
+  for (const task of preview.tasks) {
+    const id = 'demo-' + sha(task.checkId).slice(0, 16)
+    const criterion = template.sections?.flatMap((section) => section.criteria).find((entry) => entry.id === id)
+    if (!criterion) throw new Error('RULE_TRUTH_MISMATCH: 无法为审核责任追加来源声明：' + task.checkId)
+    const sourceIds = links.get(templateId + '@' + version + ':' + task.checkId)!
+    const notes = sourceIds.map((sourceId) => {
+      const anchor = sourceMap.get(sourceId)!
+      return sourceId + ' / ' + anchor.kind + ' / ' + anchor.applicability + ' / ' + anchor.label
+    })
+    criterion.requirement += '\\n作者态来源（非制度批准）：' + notes.join('；')
+  }
   template.description = '[D1 作者态候选，非已发布学校制度] ' + (template.description ?? '')
   template.sourceNote = 'D1_AUTHORING_CANDIDATE: 只有制作与运行投影校验，禁止无授权发布'
   const templateIssues = validateTemplate(template).filter((issue) => issue.level === 'error')
