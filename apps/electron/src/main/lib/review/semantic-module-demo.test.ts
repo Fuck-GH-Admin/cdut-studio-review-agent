@@ -1,9 +1,12 @@
 import { describe, expect, test } from 'bun:test'
+import { mkdtempSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import type { DemoModule, DemoTemplate, DemoTransaction } from './semantic-module-demo'
 import {
   applyDemoTransaction, checkDemoCoverage, emptyDemoState, previewDemo, projectSimpleDemoDraft, validateDemoState,
 } from './semantic-module-demo'
-import { validateTemplate } from './template-store'
+import { publishTemplate, saveDraft, validateTemplate } from './template-store'
 import { resolveEffectiveRules } from './effective-rules'
 import { emptyAggregate } from './case-store-v2'
 
@@ -168,5 +171,45 @@ describe('D0.5 Agent-first 轻量语义模块（BDD）', () => {
     expect(checkDemoCoverage(preview, [{ checkId: preview.tasks[0]!.checkId, status: 'execution-failed', reason: '无法读取' }]).complete).toBeFalse()
     expect(checkDemoCoverage(preview, [{ checkId: preview.tasks[0]!.checkId, status: 'not-applicable', reason: '' }]).complete).toBeFalse()
     expect(validateDemoState(state)).toEqual([])
+  })
+
+  test('Given D0.5 合成草稿 When 经现有模板服务发布 Then 必须拒绝，不会变成学校规则', () => {
+    const folder = mkdtempSync(join(tmpdir(), 'd05-review-'))
+    const oldDir = process.env.PROFER_CONFIG_DIR
+    process.env.PROFER_CONFIG_DIR = folder
+    try {
+      const state = setup([moduleOf('text-structure', '核对正文')], {
+        ...templateOf(), modules: [{ id: 'text', moduleId: 'text-structure', version: 1 }],
+      })
+      const draft = projectSimpleDemoDraft(state, 'text-proof', 1)
+      saveDraft(draft)
+      expect(() => publishTemplate(draft.templateId, draft.version)).toThrow('D0.5 演示草稿不得发布')
+    } finally {
+      if (oldDir === undefined) delete process.env.PROFER_CONFIG_DIR
+      else process.env.PROFER_CONFIG_DIR = oldDir
+      rmSync(folder, { recursive: true, force: true })
+    }
+  })
+
+  test('Given 同一审核责任 When 调整无关检查顺序 Then 投影后的规则 ID 不漂移', () => {
+    const module = moduleOf('text-structure', '核对章节')
+    module.tasks.push(task('language', '核对语句是否清晰'))
+    const template = { ...templateOf(), modules: [{ id: 'text', moduleId: module.moduleId, version: 1 }] }
+    const old = setup([module], template)
+    const before = projectSimpleDemoDraft(old, template.templateId, 1)
+    const next = applyDemoTransaction(old, {
+      expectedRevision: 1,
+      operations: [{
+        op: 'revise-module', moduleId: module.moduleId, fromVersion: 1, toVersion: 2,
+        changes: { tasks: [...module.tasks].reverse() },
+      }, {
+        op: 'replace-module-use', templateId: template.templateId, version: 1,
+        use: { id: 'text', moduleId: module.moduleId, version: 2 },
+      }],
+    })
+    const after = projectSimpleDemoDraft(next, template.templateId, 1)
+    const beforeIds = before.sections![0]!.criteria.map((it) => it.id).sort()
+    const afterIds = after.sections![0]!.criteria.map((it) => it.id).sort()
+    expect(afterIds).toEqual(beforeIds)
   })
 })
