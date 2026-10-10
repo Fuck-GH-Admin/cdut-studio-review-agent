@@ -14,6 +14,7 @@ import { triageBatchCase } from '@profer/shared'
 import type { BatchStateV2, ReviewBatch, SyncReceipt, BatchAutomationMode } from '@profer/shared'
 import { getConfigDir } from '../config-paths'
 import type { PushPayload, SchoolPort } from './external-ports'
+import { assertSafeReviewStorageId } from './review-storage-id'
 
 // ===== 批次 =====
 
@@ -44,6 +45,8 @@ function writeAtomic(filePath: string, data: unknown): void {
 }
 
 export function saveBatchStateV2(state: BatchStateV2): void {
+  for (const caseId of state.batch.caseIds) assertSafeReviewStorageId(caseId, 'caseId')
+  for (const entry of state.cases) assertSafeReviewStorageId(entry.caseId, 'caseId')
   const filePath = batchPath(state.batch.id)
   const directory = batchDir(state.batch.id)
   if (!existsSync(directory)) mkdirSync(directory, { recursive: true })
@@ -54,7 +57,11 @@ export function readBatchStateV2(batchId: string): BatchStateV2 | undefined {
   const filePath = batchPath(batchId)
   if (!existsSync(filePath)) return undefined
   try {
-    return JSON.parse(readFileSync(filePath, 'utf-8')) as BatchStateV2
+    const state = JSON.parse(readFileSync(filePath, 'utf-8')) as BatchStateV2
+    if (state?.batch?.id !== batchId || !Array.isArray(state.batch.caseIds) || !Array.isArray(state.cases)) return undefined
+    for (const id of state.batch.caseIds) assertSafeReviewStorageId(id, 'caseId')
+    for (const entry of state.cases) assertSafeReviewStorageId(entry?.caseId, 'caseId')
+    return state
   } catch {
     return undefined
   }
@@ -75,7 +82,10 @@ export function listBatchStatesV2(): BatchStateV2[] {
 
 /** 创建批次（锁定模板/政策版本，A12） */
 export function createBatchV2(batch: ReviewBatch): BatchStateV2 {
-  assertSafeBatchId(batch.id)
+  assertSafeBatchId(batch?.id)
+  if (!Array.isArray(batch?.caseIds) || !batch.caseIds.length) throw new Error('批次必须选择有效案卷')
+  for (const caseId of batch.caseIds) assertSafeReviewStorageId(caseId, 'caseId')
+  if (new Set(batch.caseIds).size !== batch.caseIds.length) throw new Error('批次案卷 ID 不得重复')
   if (existsSync(batchPath(batch.id))) throw new Error(`批次已存在: ${batch.id}`)
   const state: BatchStateV2 = { batch, status: 'draft', cases: batch.caseIds.map((caseId) => ({ caseId, status: 'queued' })), round: 1 }
   saveBatchStateV2(state)
@@ -132,6 +142,7 @@ export function requeueCaseAfterSupplement(caseId: string): string[] {
 
 /** 入队/暂停/重试（单案失败不阻塞全批，06 §7.1） */
 export function updateCaseStatus(batchId: string, caseId: string, status: BatchStateV2['cases'][number]['status'], error?: string): BatchStateV2 {
+  assertSafeReviewStorageId(caseId, 'caseId')
   const state = readBatchStateV2(batchId)
   if (!state) throw new Error(`批次不存在: ${batchId}`)
   if (state.status === 'finalized') throw new Error('批次已定稿，变更需重开新轮次')
@@ -441,6 +452,7 @@ export function recoverInterruptedBatch(batchId: string): BatchStateV2 {
  * remain untouched; caller must explicitly choose each retry target.
  */
 export function retryBatchCases(batchId: string, caseIds: string[]): BatchStateV2 {
+  if (Array.isArray(caseIds)) for (const caseId of caseIds) assertSafeReviewStorageId(caseId, 'caseId')
   const state = readBatchStateV2(batchId)
   if (!state) throw new Error(`批次不存在: ${batchId}`)
   if (state.status === 'finalized') throw new Error('已定稿批次不能重试')
