@@ -232,7 +232,7 @@ describe('D1 作者态修订存储与候选发布隔离', () => {
     saveDraft(candidate.template)
     const qualificationPath = join(home, 'review-template-controls', 'qualification-absent', '1.json')
     unlinkSync(qualificationPath)
-    expect(() => publishTemplate('qualification-absent', 1)).toThrow('发布资格未获允许')
+    expect(() => publishTemplate('qualification-absent', 1)).toThrow('不得正式发布')
   })
 
   test('Given 父摘要链被篡改 When 读历史或继续编辑 Then 明确拒绝而不产生新修订', () => {
