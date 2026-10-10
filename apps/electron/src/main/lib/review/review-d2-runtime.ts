@@ -11,7 +11,7 @@ import type {
 import { previewDemo, type DemoState } from './semantic-module-demo'
 import { validateReviewAuthoringV1 } from './review-authoring-v1'
 import { CommandValidationError, submitCommand } from './case-store-v2'
-import { getTemplate } from './template-store'
+import { getTemplate, isAuthoringCandidateDraft } from './template-store'
 import { hashEffectiveRuleSet, resolveEffectiveRules } from './effective-rules'
 import { computeRunInputHash } from './run-service-v2'
 
@@ -224,7 +224,7 @@ export function attachD2RuntimePlan(input: {
         throw new CommandValidationError('INVALID_TRANSITION', 'D2 只能绑定未开始审核且没有已固定计划的草稿案卷')
       }
       const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
-      if (!template || template.status !== 'draft' || !template.sourceNote?.startsWith('D1_AUTHORING_CANDIDATE:')) {
+      if (!template || template.status !== 'draft' || !isAuthoringCandidateDraft(template.templateId, template.version)) {
         throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 仅支持不可发布的技术预审候选壳')
       }
       const plan = compileD2RuntimePlan(payload.workspace, payload.selection, aggregate.caseV2)
