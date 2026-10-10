@@ -258,6 +258,28 @@ describe('D3：不可变共享模块及 Agent-first 制作携包（BDD）', () =
     expect(() => freezeD3Module(missing,['fixture:bad-dep'])).toThrow('D3_DEPENDENCY_MISSING')
   })
 
+  test('Given 导入输出路径已经存在 When 导入 CLI 返回失败 Then 不能先安装模块再报错', () => {
+    const record = inspectFrozenD3Module('delegation-scope', 1)!
+    const portable = exportD3Bundle(reuse(workspace('not-allowed-to-clobber'), record.digest))
+    const scratch = join(folder, 'import-preflight')
+    const destinationConfig = join(scratch, 'config')
+    mkdirSync(destinationConfig, { recursive: true })
+    const bundlePath = join(scratch, 'bundle.json')
+    const outputPath = join(scratch, 'reserved.json')
+    writeFileSync(bundlePath, JSON.stringify(portable))
+    writeFileSync(outputPath, 'existing, must never overwrite')
+    const script = resolve(import.meta.dir, '../../../../scripts/review-d3-library.ts')
+    const env = { ...process.env, PROFER_CONFIG_DIR: destinationConfig }
+    const blocked = Bun.spawnSync({
+      cmd: [process.execPath, script, 'import', bundlePath, outputPath], env,
+    })
+    expect(blocked.exitCode).not.toBe(0)
+    expect(readFileSync(outputPath, 'utf8')).toBe('existing, must never overwrite')
+    const lookup = Bun.spawnSync({ cmd: [process.execPath, script, 'discover'], env })
+    expect(lookup.exitCode).toBe(0)
+    expect(JSON.parse(lookup.stdout.toString())).toEqual([])
+  })
+
   test('Given 新 Agent 仅有 CLI When freeze/discover/reuse/validate/export Then 每一步是真正可执行的 JSON', () => {
     const env={...process.env, PROFER_CONFIG_DIR: folder}
     const script=resolve(import.meta.dir, '../../../../scripts/review-d3-library.ts')
