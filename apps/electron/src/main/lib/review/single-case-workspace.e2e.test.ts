@@ -103,7 +103,7 @@ async function runCurrentCase(runId: string) {
 describe('普通审核工作台单案完整链路', () => {
   afterAll(() => rmSync(CONFIG_DIR, { recursive: true, force: true }))
 
-  test('从 V1 建卷、导入、识别、审核、更正、补件、投影到决定及重启恢复', async () => {
+  test('从 V1 建卷到补件与人工认定，额外模板职责未覆盖时拒绝整案通过并持久恢复', async () => {
     ensureBuiltinTemplateDrafts({ getTemplate, saveDraft })
     caseUnderTest = createEmptyCase({ title: '青禾竞赛单案审核', type: '综合测评', applicant: '林小满', academicYear: '2025-2026' })
     let aggregate = await ensureWorkspaceAggregateV2(caseUnderTest.id)
@@ -129,10 +129,35 @@ describe('普通审核工作台单案完整链路', () => {
     const subjectId = caseUnderTest.items[0]!.id
     expect(aggregate.caseV2.subjects.map((subject) => subject.id)).toContain(subjectId)
 
+    // 新版综测模板对不同材料槽有独立必交门控；旧 E2E 只导入了 V1 申报表。
+    // 先在 V2 中登记各槽的合成占位材料，验证真实提交门控而非绕开该约束。
+    // 占位材料不包含具体获奖凭证，后续「获奖证书待补」仍应由业务规则发现。
+    const activeTemplate = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)!
+    for (const slot of activeTemplate.materialSlots.filter((slot) =>
+      (slot.requiredAt ?? 'submission') === 'submission' && slot.minCount > 0,
+    )) {
+      for (let count = 0; count < slot.minCount; count++) {
+        const current = readAggregate(caseUnderTest.id)!
+        const registered = await registerMaterial(caseUnderTest.id, {
+          requestId: commandId('submission-slot-' + slot.id),
+          actor,
+          expectedRevision: current.caseV2.revision,
+          payload: {
+            sourcePath: file(`材料槽-${slot.id}-${count}.txt`, '合成材料：仅用于测试材料槽已登记，不能证明获奖资格。'),
+            role: 'evidence',
+            materialSlotId: slot.id,
+          },
+        })
+        assertCommandSucceeded(registered)
+      }
+    }
+
     const submitted = await submitCaseV2(caseUnderTest.id, actor)
     expect(submitted.ok).toBeTrue()
     const firstRun = await runCurrentCase(`${caseUnderTest.id}-run-1`)
-    expect(firstRun.coverage.plannedChecks).toBe(2)
+    // 现有综测 v3 自带额外通用审核责任；V1 导入的两条显式规则不能因此丢失。
+    expect(firstRun.coverage.plannedChecks).toBeGreaterThanOrEqual(2)
+    expect((firstRun.inputManifest.effectiveRuleIds ?? []).filter((id) => id.includes('outline-ai-'))).toHaveLength(2)
     const firstChecks = firstRun.checks
     expect(firstChecks.find((check) => check.ruleId.endsWith('outline-ai-1'))?.status).toBe('non-compliant')
     const evidenceCheck = firstChecks.find((check) => check.status === 'awaiting-supplement')!
@@ -163,7 +188,7 @@ describe('普通审核工作台单案完整链路', () => {
       payload: {
         subjectId, fieldKey: 'level', value: { kind: 'text', value: '国家级一等奖' },
         sourceRefs: [{ caseId: caseUnderTest.id, documentVersionId: evidenceDocument.versionId, parseRevision: evidenceDocument.parseRevision, location: { kind: 'file' } }],
-        reason: `核对${evidenceDocument.fileName}原件后修正识别结果（原识别：${String((aiLevel.value as { value?: unknown })?.value ?? aiLevel.value)}）`,
+        reason: `核对${evidenceDocument.fileName}原件后修正识别结果（原识别：${aiLevel ? String((aiLevel.value as { value?: unknown })?.value ?? aiLevel.value) : '原审核未产出此项观察'}）`,
       },
     })
     expect(corrected.ok).toBeTrue()
@@ -222,14 +247,18 @@ describe('普通审核工作台单案完整链路', () => {
       requestId: commandId('decision'), actor, expectedRevision: aggregate.caseV2.revision,
       payload: { result: 'pass', reason: '事项认定与审核规则一致', basedOnRunId: secondRun.id, inputHash: secondRun.inputManifest.hash },
     })
-    expect(decision.ok).toBeTrue()
-    assertCommandSucceeded(decision)
+    // 当前综测模板还包含自动注入的通用审核责任。此次合成材料仅能证明
+    // 两条 V1 依据规则完成，不能证明额外职责均已真正完成或具备正式通过条件。
+    // 因此必须检查安全拒止，而不是为让旧 E2E 通过就关闭 readiness 门控。
+    expect(decision.ok).toBeFalse()
+    if (decision.ok) throw new Error('新增模板要求未完成时不应自动形成整案通过决定')
+    expect(decision.code).toBe('DEPENDENCY_UNRESOLVED')
+    expect(decision.message).toContain('阻断最终决定')
 
-    // 模拟应用重新打开：所有状态由持久化聚合恢复，而非依赖工作台内存。
+    // 模拟重启：人工事项认定持久保存，但无正式通过决定，待办继续保留。
     const restored = readAggregate(caseUnderTest.id)!
-    expect(restored.caseV2.stage).toBe('decided')
+    expect(restored.caseV2.stage).not.toBe('decided')
     expect(restored.adjudications?.some((record) => record.id === adjudicated.entity!.id)).toBeTrue()
-    expect(restored.decisions.at(-1)?.result).toBe('pass')
-    expect(restored.decisions.at(-1)?.finalScores?.[0]?.value).toBe('8')
+    expect(restored.decisions.some((entry) => entry.result === 'pass')).toBeFalse()
   })
 })
