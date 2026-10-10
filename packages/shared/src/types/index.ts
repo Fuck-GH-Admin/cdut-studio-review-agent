@@ -85,6 +85,7 @@ export * from './planning'
 export * from './review'
 export * from './review-v2'
 export * from './review-v2-contracts'
+export * from './review-authoring-v1'
 
 // CDUT 专区特区账户相关类型
 export * from './cdut'
