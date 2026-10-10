@@ -6,6 +6,8 @@ on:
       - 'packages/shared/src/review/batch-review-triage*'
       - 'apps/electron/src/main/lib/review/batch-store*'
       - 'apps/electron/src/main/lib/review/review-storage-id*'
+      - 'apps/electron/src/main/lib/review/review-ipc-path.test.ts'
+      - 'test/preload-electron-mock.ts'
       - 'apps/electron/src/main/lib/review/run-store-v2.ts'
       - 'apps/electron/src/main/lib/review/case-store-v2.ts'
       - 'apps/electron/src/main/lib/review/application-service.ts'
@@ -45,4 +47,4 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Batch triage and queue regression tests
-        run: bun test --isolate --timeout 30000 packages/shared/src/review/batch-review-triage.test.ts apps/electron/src/main/lib/review/batch-store.test.ts apps/electron/src/main/lib/review/batch-group-action-service.test.ts apps/electron/src/main/lib/review/batch-automation-service.test.ts apps/electron/src/main/lib/review/stage-workflow.test.ts apps/electron/src/main/lib/review/workspace-business-service-v2.test.ts apps/electron/src/main/lib/review/case-store-v2.test.ts apps/electron/src/main/lib/review/template-store.test.ts apps/electron/src/main/lib/review/review-ipc-actor-guard.test.ts apps/electron/src/main/lib/review/real-chain-journey.test.ts apps/electron/src/main/lib/review/review-storage-id.test.ts apps/electron/src/renderer/components/content-review/batch-ui-feedback.test.ts
+        run: bun test --isolate --timeout 30000 packages/shared/src/review/batch-review-triage.test.ts apps/electron/src/main/lib/review/batch-store.test.ts apps/electron/src/main/lib/review/batch-group-action-service.test.ts apps/electron/src/main/lib/review/batch-automation-service.test.ts apps/electron/src/main/lib/review/stage-workflow.test.ts apps/electron/src/main/lib/review/workspace-business-service-v2.test.ts apps/electron/src/main/lib/review/case-store-v2.test.ts apps/electron/src/main/lib/review/template-store.test.ts apps/electron/src/main/lib/review/review-ipc-actor-guard.test.ts apps/electron/src/main/lib/review/real-chain-journey.test.ts apps/electron/src/main/lib/review/review-storage-id.test.ts apps/electron/src/renderer/components/content-review/batch-ui-feedback.test.ts apps/electron/src/main/lib/review/review-ipc-path.test.ts
