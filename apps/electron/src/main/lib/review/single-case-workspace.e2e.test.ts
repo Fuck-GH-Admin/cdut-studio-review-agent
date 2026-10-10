@@ -188,7 +188,7 @@ describe('普通审核工作台单案完整链路', () => {
       payload: {
         subjectId, fieldKey: 'level', value: { kind: 'text', value: '国家级一等奖' },
         sourceRefs: [{ caseId: caseUnderTest.id, documentVersionId: evidenceDocument.versionId, parseRevision: evidenceDocument.parseRevision, location: { kind: 'file' } }],
-        reason: `核对${evidenceDocument.fileName}原件后修正识别结果（原识别：${String((aiLevel.value as { value?: unknown })?.value ?? aiLevel.value)}）`,
+        reason: `核对${evidenceDocument.fileName}原件后修正识别结果（原识别：${aiLevel ? String((aiLevel.value as { value?: unknown })?.value ?? aiLevel.value) : '原审核未产出此项观察'}）`,
       },
     })
     expect(corrected.ok).toBeTrue()
