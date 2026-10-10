@@ -12,7 +12,7 @@ import { useStore } from 'jotai'
 import { reviewV2BusyAtom } from './V2CasePanel'
 import { BatchGroupActionDialog } from './BatchGroupActionDialog'
 import { BatchAutomationDialog } from './BatchAutomationDialog'
-import { reviewBusinessError, summarizeBatchExecution } from './batch-ui-feedback'
+import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution } from './batch-ui-feedback'
 
 type CaseIndexItem = Awaited<ReturnType<typeof window.reviewAPI.listCasesV2>>[number]
 type ReviewRunV2 = Awaited<ReturnType<typeof window.reviewAPI.listRunsV2>>[number]
@@ -424,9 +424,9 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                     const triage = triageByCase.get(row.caseId)
                     const automationRecord = [...(selectedBatch.automationReceipts ?? [])].reverse()
                       .find((receipt) => receipt.caseId === row.caseId && receipt.status === 'applied')
-                    const isCurrentAction = !!automationRecord && row.entryStatus === 'done'
-                      && automationRecord.runId === row.run?.id
-                      && ['decided', 'awaiting-supplement', 'archived'].includes(row.stage ?? '')
+                    const display = batchAutomationDisplay(
+                      row.entryStatus, row.stage, row.run?.id, automationRecord, triage ? TRIAGE_LABELS[triage.route] : '—',
+                    )
                     return (
                       <tr key={row.caseId} className="transition-colors hover:bg-muted/25">
                         <td className="max-w-[360px] px-3 py-3">
@@ -445,16 +445,9 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                           )}
                         </td>
                         <td className={`px-3 py-3 font-medium ${triage ? TRIAGE_TONES[triage.route] : 'text-muted-foreground'}`} title={triage?.explanation}>
-                          <div>
-                            {isCurrentAction
-                              ? (automationRecord!.action === 'pass' ? '已自动通过（业务已写入）' : '已自动退回补件（业务已写入）')
-                              : row.entryStatus === 'queued' && automationRecord ? '待本轮重新审核'
-                              : triage ? TRIAGE_LABELS[triage.route] : '—'}
-                          </div>
-                          {automationRecord && !isCurrentAction && (
-                            <div className="mt-1 font-normal text-[11px] text-muted-foreground">
-                              上次动作：{automationRecord.action === 'pass' ? '自动通过' : '自动退回补件'}（历史记录）
-                            </div>
+                          <div>{display.label}</div>
+                          {display.history && (
+                            <div className="mt-1 font-normal text-[11px] text-muted-foreground">{display.history}</div>
                           )}
                         </td>
                         <td className="px-3 py-3 text-right tabular-nums text-muted-foreground">{formatTime(row.updatedAt)}</td>
