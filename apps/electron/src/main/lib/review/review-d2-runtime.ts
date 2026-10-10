@@ -199,11 +199,15 @@ export function verifyD2InstalledPlan(aggregate: CaseAggregateV2): string[] {
       aggregate.caseV2.caseFields.d2PlanFingerprint.value !== fingerprint) {
     problems.push('D2 任务包没有绑定当前案卷模板/固定指纹')
   }
+  const extraRules = (aggregate.caseV2.reviewRules ?? []).filter((rule) => !plan.rules.some((entry) => entry.id === rule.id))
+  if (extraRules.length) problems.push('D2 案卷存在未登记的外部规则，不能混入固定责任包')
   const storedRules = new Map((aggregate.caseV2.reviewRules ?? []).map((item) => [item.id, item]))
   for (const rule of plan.rules) if (sha(storedRules.get(rule.id)) !== sha(rule)) problems.push('D2 生效 RuleSpec 被更改：' + rule.id)
   if ((aggregate.caseV2.reviewRules ?? []).some((rule) => rule.id.startsWith('d2-') && !plan.rules.some((entry) => entry.id === rule.id))) {
     problems.push('出现不属于当前 D2 任务包的额外规则')
   }
+  const extraSubjects = aggregate.caseV2.subjects.filter((subject) => !plan.subjects.some((item) => item.id === subject.id))
+  if (extraSubjects.length) problems.push('D2 案卷存在未登记的外部业务主体，可能污染整案检查范围')
   const storedSubjects = new Map(aggregate.caseV2.subjects.map((item) => [item.id, item]))
   for (const subject of plan.subjects) if (sha(storedSubjects.get(subject.id)) !== sha(subject)) {
     problems.push('D2 业务对象或操作范围被改写：' + subject.id)
@@ -243,12 +247,8 @@ export function attachD2RuntimePlan(input: {
       const shellProblem = d2CandidateShellProblem(template)
       if (shellProblem) throw new CommandValidationError('AGENT_DECISION_DISABLED', shellProblem)
       const plan = compileD2RuntimePlan(payload.workspace, payload.selection, aggregate.caseV2)
-      const otherRules = aggregate.caseV2.reviewRules ?? []
-      if (otherRules.some((rule) => rule.id.startsWith('d2-') || plan.rules.some((item) => item.id === rule.id))) {
-        throw new CommandValidationError('VALIDATION_FAILED', '同案已有冲突或未登记的 D2 规则')
-      }
-      if (aggregate.caseV2.subjects.some((subject) => plan.subjects.some((item) => item.id === subject.id || item.sectionId === subject.sectionId))) {
-        throw new CommandValidationError('VALIDATION_FAILED', '同案已有相同 D2 业务对象或分项')
+      if ((aggregate.caseV2.reviewRules?.length ?? 0) > 0 || aggregate.caseV2.subjects.length > 0) {
+        throw new CommandValidationError('VALIDATION_FAILED', 'D2 草稿案卷不能预先混入未登记的规则或业务主体；须先固定唯一任务包')
       }
       return {
         summary: '固定 D2 技术预审计划：' + plan.templateId + (plan.scenario ? '/' + plan.scenario : '') + '，' + plan.mapping.length + ' 项检查',
