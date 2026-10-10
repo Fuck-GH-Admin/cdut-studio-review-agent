@@ -379,6 +379,9 @@ export function publishTemplate(templateId: string, version: number): TemplateVe
     // 在实际发布事务中核验服务端资格；可修改的 sourceNote 不是授权凭据。
     const control = readPublicationControl(templateId, version)
     if (!control || control.classification !== 'regular-draft' || isCandidateDraft(template)) {
+      // 兼容既有调用者的错误提示，发布决定始终只由服务端资格及校验作出。
+      if (template.sourceNote?.startsWith('D0.5_DEMO_ONLY:')) throw new Error('D0.5 演示草稿不得发布为正式审核模板')
+      if (template.sourceNote?.startsWith('D1_AUTHORING_CANDIDATE:')) throw new Error('D1 作者态候选尚未经过制度治理，不得正式发布')
       throw new Error('模板发布资格未获允许：候选/演示草稿或未登记版本不得正式发布')
     }
     const issues = validateTemplate(template)
