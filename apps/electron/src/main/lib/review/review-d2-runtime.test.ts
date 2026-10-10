@@ -12,7 +12,7 @@ import { compileD2RuntimePlan, createD2TechnicalCase, makeD2CandidateShell, atta
 import { createAggregate, readAggregate } from './case-store-v2'
 import { registerMaterial } from './material-service'
 import { createCaseFromTemplate, setEvidenceLink } from './application-service'
-import { saveAuthoringCandidateDraft, isAuthoringCandidateDraft, publishTemplate, getTemplate } from './template-store'
+import { saveAuthoringCandidateDraft, saveDraft, isAuthoringCandidateDraft, publishTemplate, getTemplate } from './template-store'
 import { preparePiReviewRunV2, submitPiReviewResultV2 } from './pi-case-review-service'
 import { getRunV2 } from './run-store-v2'
 import { decideWorkspaceCaseV2 } from './workspace-business-service-v2'
@@ -368,4 +368,25 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
     expect(draft.outputs.some((output) => output.kind === 'approval')).toBeFalse()
     expect(() => publishTemplate('archive-access', 1)).toThrow('候选')
   })
+  test('候选模板夹带额外 RuleSpec/政策/审批时，固定 D2 运行不能继续', async () => {
+    const workspace = authoring()
+    saveAuthoringCandidateDraft(makeD2CandidateShell(workspace, 'text-review', 1))
+    const created = await createD2TechnicalCase({
+      caseId: 'd2-shell-tampered', title: '静态规则混入拒止', actor,
+      workspace, selection: selection('text-review'),
+    })
+    expect(created.ok).toBeTrue()
+    const modified = getTemplate('text-review', 1)!
+    modified.sections = [{
+      id: 'unauthorized', name: '额外的模板硬性要求', order: 0, required: true,
+      criteria: [{ id: 'approval', title: '错误新增校方资格', requirement: '不得暗中混入', execution: 'semantic', targetScope: 'case' }],
+    }]
+    saveDraft(modified)
+    const issues = verifyD2InstalledPlan(readAggregate('d2-shell-tampered')!)
+    expect(issues.join('；')).toContain('候选模板壳被加入')
+    expect(() => preparePiReviewRunV2({
+      caseId: 'd2-shell-tampered', sessionId: 'd2-tamper-shell-session', turnId: 'd2-tamper-shell-turn',
+    })).toThrow('D2_FIXED_PLAN_MISMATCH')
+  })
+
 })
