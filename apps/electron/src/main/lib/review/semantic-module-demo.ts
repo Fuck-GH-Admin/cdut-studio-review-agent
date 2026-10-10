@@ -97,6 +97,12 @@ export interface DemoCoverageEntry {
   reason: string
 }
 
+/** 一组回执只属于一个固定的生效审核任务包；不接受裸检查数组。 */
+export interface DemoCoverageReceipt {
+  fingerprint: string
+  entries: DemoCoverageEntry[]
+}
+
 const SAFE_ID = /^[a-z][a-z0-9-]{0,79}$/
 const MODULE_KEY = (moduleId: string, version: number): string => moduleId + '@' + version
 const TEMPLATE_KEY = (templateId: string, version: number): string => templateId + '@' + version
@@ -157,6 +163,52 @@ function checkUses(uses: DemoModuleUse[], at: string, modules: Map<string, DemoM
   }
 }
 
+/**
+ * 全量遍历模板引用树：不根据当前场景过滤节点。
+ * 此遍历只用于静态安全校验和无条件投影检查，与 Pi 实际工具执行顺序无关。
+ */
+function visitTemplateUses(
+  template: DemoTemplate,
+  modules: Map<string, DemoModule>,
+  onUse: (use: DemoModuleUse, path: string, inheritedScenario?: string) => void,
+): void {
+  const walk = (use: DemoModuleUse, path: string, ancestorScenario: string | undefined, ancestors: Set<string>): void => {
+    const at = path + '/' + use.id
+    onUse(use, at, ancestorScenario)
+    const key = MODULE_KEY(use.moduleId, use.version)
+    if (ancestors.has(key)) return // 环另由 validateDemoState 报错；不能在此无限递归
+    const mod = modules.get(key)
+    if (!mod) return
+    const nextAncestors = new Set(ancestors)
+    nextAncestors.add(key)
+    for (const nested of mod.references ?? []) walk(nested, at, use.scenario ?? ancestorScenario, nextAncestors)
+  }
+  for (const use of template.modules) walk(use, 'module', undefined, new Set())
+}
+
+const PROJECTABLE_USE_KEYS = new Set(['id', 'moduleId', 'version', 'bindings', 'scenario', 'objectKey'])
+const PROJECTABLE_MODULE_KEYS = new Set(['moduleId', 'version', 'name', 'purpose', 'scope', 'source', 'limits', 'tasks', 'parameters', 'references'])
+const PROJECTABLE_TEMPLATE_KEYS = new Set(['templateId', 'version', 'name', 'purpose', 'limits', 'source', 'scenarios', 'modules', 'localTasks'])
+
+/** 不根据一次预览结果判断可投影性：未激活的分支也不能从无条件快照中消失。 */
+function assertUnconditionalProjection(template: DemoTemplate, modules: Map<string, DemoModule>): void {
+  const errors: string[] = []
+  if ((template.scenarios?.length ?? 0) > 0) errors.push('模板存在业务情景')
+  for (const key of Object.keys(template)) if (!PROJECTABLE_TEMPLATE_KEYS.has(key)) errors.push('模板未识别的结构化属性：' + key)
+  visitTemplateUses(template, modules, (use, path) => {
+    if (use.scenario !== undefined) errors.push(path + ' 存在条件情景')
+    if (use.objectKey !== undefined) errors.push(path + ' 存在逐对象作用范围')
+    for (const key of Object.keys(use)) if (!PROJECTABLE_USE_KEYS.has(key)) errors.push(path + ' 存在未映射的结构化属性：' + key)
+    const mod = modules.get(MODULE_KEY(use.moduleId, use.version))
+    if (!mod) {
+      errors.push(path + ' 引用的模块版本不存在')
+      return
+    }
+    for (const key of Object.keys(mod)) if (!PROJECTABLE_MODULE_KEYS.has(key)) errors.push(path + ' 模块存在未映射的结构化属性：' + key)
+  })
+  if (errors.length) throw new Error('复杂业务情景只能预览，D0.5 不允许丢失审核责任：' + errors.join('；'))
+}
+
 /** 只做可确定的 ID、版本、环、参数与来源性质检查；不冒充自然语言政策冲突裁决。 */
 export function validateDemoState(state: DemoState): string[] {
   const issues: string[] = []
@@ -202,9 +254,15 @@ export function validateDemoState(state: DemoState): string[] {
     if (scenarios.size !== (template.scenarios ?? []).length || [...scenarios].some((it) => !SAFE_ID.test(it))) {
       issues.push(key + ' 情景 ID 重复或非法')
     }
-    for (const use of template.modules) {
-      if (use.scenario && !scenarios.has(use.scenario)) issues.push(key + ' 引用未知情景：' + use.scenario)
-    }
+    // 连复合模块的未激活子分支也必须核验，不能因 preview 当前情景不同而漏检。
+    visitTemplateUses(template, modules, (use, path, ancestorScenario) => {
+      if (use.scenario !== undefined && !scenarios.has(use.scenario)) {
+        issues.push(key + ' ' + path + ' 引用未知情景：' + use.scenario)
+      }
+      if (ancestorScenario && use.scenario && ancestorScenario !== use.scenario) {
+        issues.push(key + ' ' + path + ' 子情景与父情景冲突，不可能被激活')
+      }
+    })
   }
 
   // 模块引用图可以嵌套，但不得循环；并不对应 Pi 工具执行图。
@@ -307,6 +365,7 @@ export function previewDemo(state: DemoState, templateId: string, version: numbe
   const moduleMap = new Map(state.modules.map((mod) => [MODULE_KEY(mod.moduleId, mod.version), mod]))
   const tasks: DemoTaskPreview[] = []
   const visited = new Set<string>()
+  const activeModules = new Set<string>()
   const appendTask = (task: DemoResponsibility, checkId: string, scope: string, limits: string, source: DemoSource, bindings: Record<string, string>, moduleRef?: DemoTaskPreview['moduleRef'], objectKey?: string): void => {
     const at = moduleRef?.usePath ?? 'template'
     const result: DemoTaskPreview = {
@@ -324,13 +383,20 @@ export function previewDemo(state: DemoState, templateId: string, version: numbe
   }
   const expand = (use: DemoModuleUse, path: string, inheritedBindings: Record<string, string> = {}, inheritedObjectKey?: string): void => {
     if (use.scenario && use.scenario !== scenario) return
-    const mod = moduleMap.get(MODULE_KEY(use.moduleId, use.version))
+    const moduleKey = MODULE_KEY(use.moduleId, use.version)
+    const mod = moduleMap.get(moduleKey)
     if (!mod) return
-    const bindings: Record<string, string> = { ...inheritedBindings }
+    if (activeModules.has(moduleKey)) {
+      issues.push(path + '/' + use.id + ' 模块引用循环，不能展开')
+      return
+    }
+    // 参数优先级：当前引用的显式绑定 > 父模块继承值 > 子模块默认值。
+    const bindings: Record<string, string> = {}
     for (const param of mod.parameters ?? []) if (param.defaultValue !== undefined) bindings[param.key] = param.defaultValue
-    Object.assign(bindings, use.bindings ?? {})
+    Object.assign(bindings, inheritedBindings, use.bindings ?? {})
     const objectKey = use.objectKey ?? inheritedObjectKey
     const usePath = path + '/' + use.id
+    activeModules.add(moduleKey)
     for (const task of mod.tasks) {
       const checkId = usePath + '/' + task.id
       if (visited.has(checkId)) issues.push('审核责任重复：' + checkId)
@@ -338,6 +404,7 @@ export function previewDemo(state: DemoState, templateId: string, version: numbe
       appendTask(task, checkId, mod.scope, mod.limits + '\n' + template.limits, mod.source, bindings, { moduleId: mod.moduleId, version: mod.version, usePath }, objectKey)
     }
     for (const nested of mod.references ?? []) expand(nested, usePath, bindings, objectKey)
+    activeModules.delete(moduleKey)
   }
   for (const task of template.localTasks) appendTask(task, 'local/' + task.id, template.purpose, template.limits, template.source, {})
   for (const use of template.modules) expand(use, 'module')
@@ -352,9 +419,7 @@ export function previewDemo(state: DemoState, templateId: string, version: numbe
 export function projectSimpleDemoDraft(state: DemoState, templateId: string, version: number): TemplateVersion {
   const source = state.templates.find((it) => it.templateId === templateId && it.version === version)
   if (!source) throw new Error('模板不存在')
-  if (source.scenarios?.length || source.modules.some((it) => it.scenario || it.objectKey)) {
-    throw new Error('复杂业务情景只能预览，D0.5 不生成可能错误适用的正式草稿')
-  }
+  assertUnconditionalProjection(source, new Map(state.modules.map((mod) => [MODULE_KEY(mod.moduleId, mod.version), mod])))
   const preview = previewDemo(state, templateId, version)
   if (preview.blocked || !preview.tasks.length || preview.tasks.some((it) => it.objectKey)) throw new Error('审核责任未通过预览校验')
   return {
@@ -380,9 +445,17 @@ export function projectSimpleDemoDraft(state: DemoState, templateId: string, ver
   }
 }
 
-/** 独立于 Pi 的合成提交回执检查；未执行、失败、未知与人工边界不能算通过。 */
-export function checkDemoCoverage(preview: DemoPreview, entries: DemoCoverageEntry[]): { complete: boolean; problems: string[] } {
+/**
+ * 独立于 Pi 的合成回执检查。指纹不匹配（包括缺失）时绝不认定当前覆盖，
+ * 即使 checkId 恰好相同。D1/D2 仍需绑定真实输入哈希和 SourceRef。
+ */
+export function checkDemoCoverage(preview: DemoPreview, receipt: DemoCoverageReceipt): { complete: boolean; problems: string[] } {
   const problems = [...preview.issues]
+  if (!receipt || receipt.fingerprint !== preview.fingerprint) {
+    problems.push('生效任务包 fingerprint 不匹配或缺失；旧版本审核回执不能复用')
+  }
+  const entries = Array.isArray(receipt?.entries) ? receipt.entries : []
+  if (!Array.isArray(receipt?.entries)) problems.push('覆盖回执缺少检查记录数组')
   const known = new Set(preview.tasks.map((task) => task.checkId))
   const seen = new Set<string>()
   for (const entry of entries) {
