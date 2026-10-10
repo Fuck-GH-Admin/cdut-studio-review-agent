@@ -1,0 +1,371 @@
+{
+  "fixedCodeSha": "d16f047af653f7ba259456807c1fc150e9d0f417",
+  "bunVersion": "1.4.0",
+  "onlineModelRun": "not-run",
+  "commands": [
+    {
+      "number": 1,
+      "label": "D3-handoff-demo",
+      "command": "bun apps/electron/scripts/review-d3-handoff-demo.ts /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/bundles/handoff",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/1.stdout",
+      "stderr": "logs/1.stderr"
+    },
+    {
+      "number": 2,
+      "label": "discover",
+      "command": "bun apps/electron/scripts/review-d3-library.ts discover authorization",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/2.stdout",
+      "stderr": "logs/2.stderr"
+    },
+    {
+      "number": 3,
+      "label": "inspect-B01",
+      "command": "bun apps/electron/scripts/review-d3-library.ts inspect agent-authorization 1",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/3.stdout",
+      "stderr": "logs/3.stderr"
+    },
+    {
+      "number": 4,
+      "label": "inspect-B02",
+      "command": "bun apps/electron/scripts/review-d3-library.ts inspect evidence-source-boundary 1",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/4.stdout",
+      "stderr": "logs/4.stderr"
+    },
+    {
+      "number": 5,
+      "label": "validate-a1",
+      "command": "bun apps/electron/scripts/review-d3-library.ts validate /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/archive-r1.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/5.stdout",
+      "stderr": "logs/5.stderr"
+    },
+    {
+      "number": 6,
+      "label": "validate-c1",
+      "command": "bun apps/electron/scripts/review-d3-library.ts validate /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/campus-r1.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/6.stdout",
+      "stderr": "logs/6.stderr"
+    },
+    {
+      "number": 7,
+      "label": "d1-save-archive-r1.json",
+      "command": "bun apps/electron/scripts/review-authoring-v1.ts save /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/archive-r1.json 0 agent-b-independent",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/7.stdout",
+      "stderr": "logs/7.stderr"
+    },
+    {
+      "number": 8,
+      "label": "d1-save-campus-r1.json",
+      "command": "bun apps/electron/scripts/review-authoring-v1.ts save /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/campus-r1.json 0 agent-b-independent",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/8.stdout",
+      "stderr": "logs/8.stderr"
+    },
+    {
+      "number": 9,
+      "label": "validate-a2",
+      "command": "bun apps/electron/scripts/review-d3-library.ts validate /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/archive-r2.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/9.stdout",
+      "stderr": "logs/9.stderr"
+    },
+    {
+      "number": 10,
+      "label": "validate-c2",
+      "command": "bun apps/electron/scripts/review-d3-library.ts validate /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/campus-r2.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/10.stdout",
+      "stderr": "logs/10.stderr"
+    },
+    {
+      "number": 11,
+      "label": "d1-save-archive-r2.json",
+      "command": "bun apps/electron/scripts/review-authoring-v1.ts save /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/archive-r2.json 1 agent-b-independent",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/11.stdout",
+      "stderr": "logs/11.stderr"
+    },
+    {
+      "number": 12,
+      "label": "d1-save-campus-r2.json",
+      "command": "bun apps/electron/scripts/review-authoring-v1.ts save /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/campus-r2.json 1 agent-b-independent",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/12.stdout",
+      "stderr": "logs/12.stderr"
+    },
+    {
+      "number": 13,
+      "label": "d1-read-r1",
+      "command": "bun apps/electron/scripts/review-authoring-v1.ts read d310-agent-b-archive 1",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/13.stdout",
+      "stderr": "logs/13.stderr"
+    },
+    {
+      "number": 14,
+      "label": "freeze-B01-v2",
+      "command": "bun apps/electron/scripts/review-d3-library.ts freeze /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/B01-v2-agent-authored.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/fixtures/d3-b01-b02-example-ids.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/14.stdout",
+      "stderr": "logs/14.stderr"
+    },
+    {
+      "number": 15,
+      "label": "inspect-B01-v2",
+      "command": "bun apps/electron/scripts/review-d3-library.ts inspect agent-authorization 2",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/15.stdout",
+      "stderr": "logs/15.stderr"
+    },
+    {
+      "number": 16,
+      "label": "impact-B01-old-consumers",
+      "command": "bun apps/electron/scripts/review-d3-library.ts impact agent-authorization 1 2",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/16.stdout",
+      "stderr": "logs/16.stderr"
+    },
+    {
+      "number": 17,
+      "label": "upgrade-A-read-only",
+      "command": "bun apps/electron/scripts/review-d3-library.ts upgrade /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/archive-r2.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/upgrade-read-to-B01-v2.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/17.stdout",
+      "stderr": "logs/17.stderr"
+    },
+    {
+      "number": 18,
+      "label": "validate-r3",
+      "command": "bun apps/electron/scripts/review-d3-library.ts validate /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/archive-r3.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/18.stdout",
+      "stderr": "logs/18.stderr"
+    },
+    {
+      "number": 19,
+      "label": "d1-save-archive-r3.json",
+      "command": "bun apps/electron/scripts/review-authoring-v1.ts save /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/archive-r3.json 2 agent-b-independent",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/19.stdout",
+      "stderr": "logs/19.stderr"
+    },
+    {
+      "number": 20,
+      "label": "d1-read-r3",
+      "command": "bun apps/electron/scripts/review-authoring-v1.ts read d310-agent-b-archive 3",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/20.stdout",
+      "stderr": "logs/20.stderr"
+    },
+    {
+      "number": 21,
+      "label": "freeze-negative-v3",
+      "command": "bun apps/electron/scripts/review-d3-library.ts freeze /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/tests/B01-v3-negative-only.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/fixtures/d3-b01-b02-example-ids.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/21.stdout",
+      "stderr": "logs/21.stderr"
+    },
+    {
+      "number": 22,
+      "label": "negative-unacknowledged-removal",
+      "command": "bun apps/electron/scripts/review-d3-library.ts upgrade /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/archive-r2.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/tests/upgrade-v3-no-ack.json",
+      "exitCode": 1,
+      "expected": 1,
+      "stdout": "logs/22.stdout",
+      "stderr": "logs/22.stderr"
+    },
+    {
+      "number": 23,
+      "label": "explicit-check-id-replacement",
+      "command": "bun apps/electron/scripts/review-d3-library.ts upgrade /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/archive-r2.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/tests/upgrade-v3-ack.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/23.stdout",
+      "stderr": "logs/23.stderr"
+    },
+    {
+      "number": 24,
+      "label": "export-A",
+      "command": "bun apps/electron/scripts/review-d3-library.ts export /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/archive-r3.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/bundles/archive-export.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/24.stdout",
+      "stderr": "logs/24.stderr"
+    },
+    {
+      "number": 25,
+      "label": "export-C",
+      "command": "bun apps/electron/scripts/review-d3-library.ts export /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/campus-r2.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/bundles/campus-export.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/25.stdout",
+      "stderr": "logs/25.stderr"
+    },
+    {
+      "number": 26,
+      "label": "import-A-clean",
+      "command": "bun apps/electron/scripts/review-d3-library.ts import /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/bundles/archive-export.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/bundles/archive-reimport.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/26.stdout",
+      "stderr": "logs/26.stderr"
+    },
+    {
+      "number": 27,
+      "label": "import-C-clean",
+      "command": "bun apps/electron/scripts/review-d3-library.ts import /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/bundles/campus-export.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/bundles/campus-reimport.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/27.stdout",
+      "stderr": "logs/27.stderr"
+    },
+    {
+      "number": 28,
+      "label": "D2-plan-A",
+      "command": "bun apps/electron/scripts/review-d2-plan.ts preview /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/archive-r3.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/fixtures/d2-selection-archive.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/tests/archive-case.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/28.stdout",
+      "stderr": "logs/28.stderr"
+    },
+    {
+      "number": 29,
+      "label": "D2-plan-A-reimport",
+      "command": "bun apps/electron/scripts/review-d2-plan.ts preview /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/bundles/archive-reimport.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/fixtures/d2-selection-archive.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/tests/archive-case.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/29.stdout",
+      "stderr": "logs/29.stderr"
+    },
+    {
+      "number": 30,
+      "label": "D2-plan-C",
+      "command": "bun apps/electron/scripts/review-d2-plan.ts preview /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/campus-r2.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/fixtures/d2-selection-family.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/tests/campus-case.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/30.stdout",
+      "stderr": "logs/30.stderr"
+    },
+    {
+      "number": 31,
+      "label": "D3-report-gap",
+      "command": "bun apps/electron/scripts/review-d3-library.ts report-gap /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/gaps/gap-request.json",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/31.stdout",
+      "stderr": "logs/31.stderr"
+    },
+    {
+      "number": 32,
+      "label": "negative-gap-validation",
+      "command": "bun apps/electron/scripts/review-d3-library.ts report-gap /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/gaps/gap-negative.json",
+      "exitCode": 1,
+      "expected": 1,
+      "stdout": "logs/32.stdout",
+      "stderr": "logs/32.stderr"
+    },
+    {
+      "number": 33,
+      "label": "real-Pi-service-test",
+      "command": "bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-pi-integration.test.ts",
+      "exitCode": 0,
+      "expected": 0,
+      "stdout": "logs/33.stdout",
+      "stderr": "logs/33.stderr"
+    }
+  ],
+  "assertions": [
+    {
+      "passed": true,
+      "description": "both frozen B01 and B02"
+    },
+    {
+      "passed": true,
+      "description": "frozen digests exact"
+    },
+    {
+      "passed": true,
+      "description": "v2 digest immutable and different"
+    },
+    {
+      "passed": true,
+      "description": "impact sees persisted A consumer"
+    },
+    {
+      "passed": true,
+      "description": "impact sees persisted C consumer"
+    },
+    {
+      "passed": true,
+      "description": "upgrade preserves original check"
+    },
+    {
+      "passed": true,
+      "description": "read upgraded to B01 v2"
+    },
+    {
+      "passed": true,
+      "description": "copy remains B01 v1"
+    },
+    {
+      "passed": true,
+      "description": "C remains old version"
+    },
+    {
+      "passed": true,
+      "description": "D1 revision chain and old read intact"
+    },
+    {
+      "passed": true,
+      "description": "check removal requires explicit acknowledgement"
+    },
+    {
+      "passed": true,
+      "description": "portable D2 fingerprint equal"
+    },
+    {
+      "passed": true,
+      "description": "read and copy independent Check subject"
+    },
+    {
+      "passed": true,
+      "description": "unknown school policy does not become approval"
+    },
+    {
+      "passed": true,
+      "description": "B01 v2 added check visible in D2"
+    },
+    {
+      "passed": true,
+      "description": "gap mapped but not falsely Run-verified"
+    }
+  ],
+  "errors": []
+}

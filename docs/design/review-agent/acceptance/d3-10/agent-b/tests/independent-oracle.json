@@ -1,0 +1,26 @@
+{
+  "source": "g01_archive_utilization_template_editor_spec_v1_5.md",
+  "sha256": "65157e002dd4d1ccc08d32d341b4a1f7eacfc55d6a3c13a5da949aaf122f9785",
+  "gold": [
+    {
+      "case": "archive-read",
+      "expect": "B01 binds read; no official approval"
+    },
+    {
+      "case": "archive-copy",
+      "expect": "read authorization never implies copy; independent source and Check"
+    },
+    {
+      "case": "campus-family",
+      "expect": "B01/B02 do not approve campus card"
+    },
+    {
+      "case": "unknown-policy",
+      "expect": "not compliant, not compulsory missing; remains unverified"
+    },
+    {
+      "case": "upgrade",
+      "expect": "A read v2, A copy v1, C v1, historical r1 immutable"
+    }
+  ]
+}

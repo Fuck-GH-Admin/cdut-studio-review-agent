@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "mode": "technical-pre-review",
+  "publicationAllowed": false,
+  "workspaceId": "d310-agent-b-campus",
+  "revision": 2,
+  "templateId": "special-campus-card",
+  "templateVersion": 1,
+  "scenario": "family",
+  "authoringDigest": "6ec85933a99a993f479cd3514b35c9f6cf53ff4fa94a1f04ec96fff2fa4d6661",
+  "previewFingerprint": "1e19c7caeb7700b455f057abadc13ff19c39422885829ba3d83b87c0fe1b2e40",
+  "targets": [
+    {
+      "objectKey": "family-card",
+      "subjectId": "d2-family",
+      "title": "家属卡待审对象",
+      "kind": "campus-card",
+      "scenario": "family"
+    }
+  ],
+  "subjects": [
+    {
+      "id": "d2-family",
+      "title": "家属卡待审对象",
+      "type": "custom",
+      "sectionId": "d2-scope-6e0413765ce670fc",
+      "fields": {
+        "d2ObjectKey": {
+          "kind": "text",
+          "value": "family-card"
+        },
+        "d2Scenario": {
+          "kind": "text",
+          "value": "family"
+        }
+      },
+      "sourceRefs": [],
+      "correction": "user-confirmed",
+      "status": "confirmed"
+    }
+  ],
+  "rules": [
+    {
+      "id": "d2-ba281f7bc1343cc13116",
+      "policyVersionId": "workspace:d2-d310-agent-b-campus@2",
+      "title": "正式校方资格",
+      "requirement": "适用范围：对家属卡和临时服务人员卡进行分支材料预审\n现有材料只能用于预审，学校制度有效性和发卡批准需由有权限部门认定\n完成标准：记录独立局部状态、可追溯依据与未完成原因\n责任边界：不得将亲属或服务事实代替校方资格决定\n本责任不产生正式批准或拒批\nD2 技术预审来源：school-policy-unverified/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "school-policy-unverified"
+      ],
+      "priority": 50000,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-ef12b9f3d22e6bfdfdff",
+      "policyVersionId": "workspace:d2-d310-agent-b-campus@2",
+      "title": "校园卡资格不能从代理继承",
+      "requirement": "适用范围：对家属卡和临时服务人员卡进行分支材料预审\n代办授权不能推出家属卡关系资格或临时服务资格；分别保留校内资格核验。\n完成标准：对实际资格来源输出待核或明确证据，不自动批准发卡。\n责任边界：不得将亲属或服务事实代替校方资格决定\n档案查阅和复制权限不得继承到校园卡。\nD2 技术预审来源：school-policy-unverified/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "school-policy-unverified"
+      ],
+      "priority": 50001,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-0d17f7f9b0d6b22911d8",
+      "policyVersionId": "workspace:d2-d310-agent-b-campus@2",
+      "title": "关系证明",
+      "requirement": "适用范围：当前申请中已明确指定的审核对象\n核对申请人、拟持卡人与关联教职工的关系；关联教职工已故时不可机械等同于无资格\n完成标准：记录独立局部状态、可追溯依据与未完成原因\n责任边界：材料预审不等于行政批准，不得对不相关对象复用资格结论\n不得将亲属或服务事实代替校方资格决定\n本责任不产生正式批准或拒批\nD2 技术预审来源：synthetic-source/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-6e0413765ce670fc",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "synthetic-source"
+      ],
+      "priority": 50002,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-c3984757dec34063bdfe",
+      "policyVersionId": "workspace:d2-d310-agent-b-campus@2",
+      "title": "当前动作授权",
+      "requirement": "适用范围：当前申请中已明确指定的审核对象\n核对授权是否覆盖 家属卡代办 动作、对象和有效期限；其他操作授权不得移用\n完成标准：记录独立局部状态、可追溯依据与未完成原因\n责任边界：材料预审不等于行政批准，不得对不相关对象复用资格结论\n不得将亲属或服务事实代替校方资格决定\n本责任不产生正式批准或拒批\nD2 技术预审来源：synthetic-source/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-6e0413765ce670fc",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "synthetic-source"
+      ],
+      "priority": 50003,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-e9c82a0d09fe6ea11157",
+      "policyVersionId": "workspace:d2-d310-agent-b-campus@2",
+      "title": "事实与证据版本对应",
+      "requirement": "适用范围：由模板明确指向的事实对象与操作\n核对 家属卡当事人关系证明 所依据的原件来源、对应当事人、有效时段与材料版本；若权威来源未知或只覆盖别的操作则报告待确认\n完成标准：逐项指出可引用的材料和版本及仍待补证事实；不得在没有真实 SourceRef 时声明符合\n责任边界：不将一份证明扩展到其他事项；不确认档案开放、校园卡资格或有权批准。\n不得将亲属或服务事实代替校方资格决定\n可定位事实不等于法律效力、行政批准或其他事实自动证成\nD2 技术预审来源：synthetic-source/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-6e0413765ce670fc",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "synthetic-source"
+      ],
+      "priority": 50004,
+      "confirmation": "confirmed"
+    }
+  ],
+  "mapping": [
+    {
+      "checkId": "local/school-decision",
+      "ruleId": "d2-ba281f7bc1343cc13116",
+      "sourceIds": [
+        "school-policy-unverified"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "local/independent-card-qualification",
+      "ruleId": "d2-ef12b9f3d22e6bfdfdff",
+      "sourceIds": [
+        "school-policy-unverified"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/family-relation/relation",
+      "ruleId": "d2-0d17f7f9b0d6b22911d8",
+      "objectKey": "family-card",
+      "subjectId": "d2-family",
+      "sourceIds": [
+        "synthetic-source"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/family-agent/authorization",
+      "ruleId": "d2-c3984757dec34063bdfe",
+      "objectKey": "family-card",
+      "subjectId": "d2-family",
+      "sourceIds": [
+        "synthetic-source"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/family-evidence/evidence-boundary",
+      "ruleId": "d2-e9c82a0d09fe6ea11157",
+      "objectKey": "family-card",
+      "subjectId": "d2-family",
+      "sourceIds": [
+        "synthetic-source"
+      ],
+      "authority": "request-scope"
+    }
+  ],
+  "fingerprint": "a936cf04712d6201ccd0b2f9e67752823ae6cf2110cc1cfb373c215764f1913c"
+}

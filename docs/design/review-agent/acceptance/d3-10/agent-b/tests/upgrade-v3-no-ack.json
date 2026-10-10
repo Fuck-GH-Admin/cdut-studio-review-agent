@@ -1,0 +1,18 @@
+{
+  "expectedRevision": 2,
+  "templateId": "archive-access",
+  "templateVersion": 1,
+  "useId": "item-1-read",
+  "expectedOldDigest": "e48d279ce5c813b2bcf9163b44a413bfd44de0291b1de93687af95ef3b1cbb5d",
+  "newVersion": 3,
+  "expectedNewDigest": "c18ddc248614e448a76adbe9cb3c3a62cb16258b46220b6ceb40f79a7e67ca13",
+  "sourceBindings": [
+    {
+      "checkId": "archive-access@1:module/item-1-read/authorization-renamed",
+      "sourceIds": [
+        "school-policy-unverified"
+      ]
+    }
+  ],
+  "acknowledgeRemovedCheckIds": []
+}
