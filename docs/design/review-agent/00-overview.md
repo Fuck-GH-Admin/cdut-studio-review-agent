@@ -30,10 +30,20 @@ N1–N7 实施后复查曾发现 V2 上传/提交/运行及恢复入口缺失。
 
 “通用”覆盖有材料、有依据、有检查项或评分量表的文件审批与评审。内置综测、活动审批、奖学金资格、项目评委、报销、文件条款核对六类模板，同时支持从空白创建。事实真伪涉及外部核验时，系统显示核验来源及可用状态。
 
+## 模板制作专项：D3 → D4 → D5（2026-10-11 新增导航）
+
+该专项与早期 N1–N7 补完路线、批量审核 B/C 分支各自有不同验收范围；**不用批量审核的阶段编号代替模板制作 D3/D4**。总体设计依次阅读 [15 模块化规范](15-template-modules-and-runtime-boundary-spec.md) → [16 G01 五模板分析](16-template-editor-five-g01-gap-and-module-extraction-v0.1.md) → [18 D1 作者态](18-d1-authoring-contract-and-runtime-mapping-v1.md) → [23 D3 交付契约](23-d3-shared-module-library-and-d4-handoff-contract.md) → [24 D4 五会话验收契约](24-d4-five-template-authoring-and-feedback-loop.md)。
+
+**最新实施边界**：D0.5、D1 已进入 main；D2 的技术预审实现在 [PR #8](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/8) 的独立分支，须在 D3 开工时重新确认合并及 CI 基线；D3、D4、D5 尚不可宣称完成。[23](23-d3-shared-module-library-and-d4-handoff-contract.md) 负责模块库/Agent 制作工具真正能交给独立会话使用；[24](24-d4-five-template-authoring-and-feedback-loop.md) 负责五份完整模板的制作、交叉验收和发现 D3 缺陷后的返工循环。**五份统一验收通过前不得启动 D5。**
+
+编号兼容：20、21、22 已在独立批量审核分支用于 QA/整改；本专项新文档从 23、24 延续，避免合并后重号。已定稿的 15 号运行/发布权限原则不变。
+
 ## 阅读顺序与用途
 
 | 文档 | 用来决定什么 |
 | --- | --- |
+| [23 D3 模块库与五会话交付](23-d3-shared-module-library-and-d4-handoff-contract.md) | D3 要实际实现哪些跨工作区模块能力、Agent 制作命令、冻结版本、反向依赖和可复验交付包 |
+| [24 D4 五套模板并行与返工验收](24-d4-five-template-authoring-and-feedback-loop.md) | 五个原业务会话交付什么、怎么统一验收、怎样把共性缺陷退回 D3，以及何时才进入 D5 |
 | [14 普通 Pi Agent 与简洁工作台](14-pi-native-review-and-simple-workspace-design.md) | 当前代码有哪些能力；正常主会话与最少提交能力如何接入；简洁页面、数据收敛和下一轮功能验收 |
 | [13 框架阅读与直接试用](13-single-agent-framework-trial.md) | Deep Agents / Docling 源码与实际试用结果、适用范围和复跑方法；不把实验能力当成已接入产品 |
 | [01 调研与差距](01-research-and-gap.md) | 现有代码实际做到哪一步；六份本地参考的价值；学生、老师、审核员、评委的具体问题 |
