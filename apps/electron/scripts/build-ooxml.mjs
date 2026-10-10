@@ -5,7 +5,14 @@ import { fileURLToPath } from 'node:url'
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url))
 const appRoot = path.resolve(scriptDir, '..')
-const sourceDir = path.join(appRoot, 'node_modules', '@silurus', 'ooxml', 'dist')
+// Bun workspace installs can hoist @silurus/ooxml into the root node_modules.
+// Use a real, existing dist directory, never a stub/empty wasm fallback.
+const candidates = [
+  path.join(appRoot, 'node_modules', '@silurus', 'ooxml', 'dist'),
+  path.resolve(appRoot, '..', '..', 'node_modules', '@silurus', 'ooxml', 'dist'),
+]
+const sourceDir = candidates.find((candidate) => fs.existsSync(candidate))
+  ?? candidates[0]
 const publicDir = path.join(appRoot, 'src', 'renderer', 'public', 'vendor', 'ooxml')
 
 if (!fs.existsSync(sourceDir)) {
