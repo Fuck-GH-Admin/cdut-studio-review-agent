@@ -58,6 +58,32 @@ describe('D1 作者态真实映射与来源治理（BDD）', () => {
     expect(candidate.manifest.publicationAllowed).toBeFalse()
   })
 
+  test('Given D1 编译候选 When Agent 经 candidate-save CLI 首次保存 Then 服务端资格强制封存', () => {
+    const fixture = resolve(import.meta.dir, '../../../../../../docs/design/review-agent/fixtures/d1-authoring-text-v1.json')
+    const cli = resolve(import.meta.dir, '../../../../scripts/review-authoring-v1.ts')
+    const folder = mkdtempSync(join(tmpdir(), 'd1-candidate-cli-'))
+    try {
+      const result = Bun.spawnSync({
+        cmd: [process.execPath, cli, 'candidate-save', fixture, 'text-review', '1'],
+        env: { ...process.env, PROFER_CONFIG_DIR: folder },
+      })
+      expect(result.exitCode).toBe(0)
+      if (result.exitCode !== 0) throw new Error(result.stderr.toString())
+      const response = JSON.parse(result.stdout.toString()) as { saved: boolean; publicationEligible: boolean }
+      expect(response.saved).toBeTrue()
+      expect(response.publicationEligible).toBeFalse()
+      const control = JSON.parse(readFileSync(join(folder, 'review-template-controls', 'text-review', '1.json'), 'utf8')) as { classification: string }
+      expect(control.classification).toBe('candidate-held')
+      const second = Bun.spawnSync({
+        cmd: [process.execPath, cli, 'candidate-save', fixture, 'text-review', '1'],
+        env: { ...process.env, PROFER_CONFIG_DIR: folder },
+      })
+      expect(second.exitCode).not.toBe(0) // 相同 ID/版本不能隐式覆盖已登记的候选。
+    } finally {
+      rmSync(folder, { recursive: true, force: true })
+    }
+  })
+
   test('Given 自然语言责任 When 编译候选 Then 每条标准都与原 RuleSpec 同一真值且有来源映射', () => {
     const workspace = basic()
     expect(validateReviewAuthoringV1(workspace)).toEqual([])
