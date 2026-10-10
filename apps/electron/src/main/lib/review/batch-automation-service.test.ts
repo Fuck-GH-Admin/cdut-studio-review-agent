@@ -281,6 +281,60 @@ describe('C 阶段：显式授权的自动通过与退回', () => {
     expect(gate.allowed).toBeFalse()
   })
 
+  test('混合批次逐案分流：符合的通过、可补正的退回、人工问题保留、无证据的阻断', async () => {
+    const pass = await createCase('compliant')
+    const supplement = await createCase('awaiting-supplement')
+    const manual = await createCase('compliant')
+    const noSource = await createCase('compliant', false)
+    saveRunV2({
+      ...manual.run,
+      checks: manual.run.checks.map((check) => ({ ...check, status: 'non-compliant' as const, reason: '资格条款冲突，需人工处理' })),
+    })
+    const batchId = makeBatch([pass.caseId, supplement.caseId, manual.caseId, noSource.caseId])
+    updateSettings({ reviewAgentAutoApproval: true })
+    configureBatchAutomation(batchId, 'auto-approve', true)
+    const report = await runBatchAutomation(batchId)
+    expect(report.applied).toBe(2)
+    expect(report.blocked).toBe(1)
+    expect(report.failed).toBe(0)
+    expect(readAggregate(pass.caseId)?.decisions.at(-1)?.result).toBe('pass')
+    expect(readAggregate(supplement.caseId)?.decisions.at(-1)?.result).toBe('return')
+    expect(readAggregate(manual.caseId)?.decisions).toHaveLength(0)
+    expect(readAggregate(noSource.caseId)?.decisions).toHaveLength(0)
+    expect(readBatchStateV2(batchId)?.automationReceipts?.filter((item) => item.status === 'applied')).toHaveLength(2)
+  })
+
+  test('多个补件请求未全部核验满足，不得提前回流并重复执行旧结果', async () => {
+    const target = await createCase('awaiting-supplement')
+    const batchId = makeBatch([target.caseId])
+    configureBatchAutomation(batchId, 'auto-return', true)
+    expect((await runBatchAutomation(batchId)).applied).toBe(1)
+    const first = readAggregate(target.caseId)!.supplements[0]!
+    const extra = await submitCommand(target.caseId, {
+      requestId: id('second-supplement'), actor: reviewer,
+      expectedRevision: readAggregate(target.caseId)!.caseV2.revision,
+      type: 'TestSecondSupplement', payload: {},
+    }, () => ({ summary: '追加第二项待办补件', mutate: (agg) => {
+      agg.supplements = [...agg.supplements, {
+        ...first, id: id('sup-extra'), status: 'open', responses: [],
+        reason: '另一份待核实材料', requiredElements: ['其他证明'],
+      }]
+    } }))
+    expect(extra.ok).toBeTrue()
+    const complete = async (supplementId: string) => resolveSupplementV2(target.caseId, {
+      requestId: id('resolve-supplement'), actor: reviewer,
+      expectedRevision: readAggregate(target.caseId)!.caseV2.revision,
+      payload: { supplementId, outcome: 'satisfied', reason: '审核员已核验' },
+    })
+    expect((await complete(first.id)).ok).toBeTrue()
+    expect(readAggregate(target.caseId)?.caseV2.stage).toBe('awaiting-supplement')
+    expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('done')
+    const second = readAggregate(target.caseId)!.supplements.find((s) => s.id !== first.id)!
+    expect((await complete(second.id)).ok).toBeTrue()
+    expect(readAggregate(target.caseId)?.caseV2.stage).toBe('reviewing')
+    expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('queued')
+  })
+
   test('已真实形成所有最终业务决定后才允许批次定稿', async () => {
     const a = await createCase('compliant')
     const batchId = makeBatch([a.caseId])
