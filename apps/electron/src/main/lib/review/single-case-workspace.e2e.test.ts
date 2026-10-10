@@ -103,7 +103,7 @@ async function runCurrentCase(runId: string) {
 describe('普通审核工作台单案完整链路', () => {
   afterAll(() => rmSync(CONFIG_DIR, { recursive: true, force: true }))
 
-  test('从 V1 建卷、导入、识别、审核、更正、补件、投影到决定及重启恢复', async () => {
+  test('从 V1 建卷到补件与人工认定，额外模板职责未覆盖时拒绝整案通过并持久恢复', async () => {
     ensureBuiltinTemplateDrafts({ getTemplate, saveDraft })
     caseUnderTest = createEmptyCase({ title: '青禾竞赛单案审核', type: '综合测评', applicant: '林小满', academicYear: '2025-2026' })
     let aggregate = await ensureWorkspaceAggregateV2(caseUnderTest.id)
@@ -247,14 +247,18 @@ describe('普通审核工作台单案完整链路', () => {
       requestId: commandId('decision'), actor, expectedRevision: aggregate.caseV2.revision,
       payload: { result: 'pass', reason: '事项认定与审核规则一致', basedOnRunId: secondRun.id, inputHash: secondRun.inputManifest.hash },
     })
-    expect(decision.ok).toBeTrue()
-    assertCommandSucceeded(decision)
+    // 当前综测模板还包含自动注入的通用审核责任。此次合成材料仅能证明
+    // 两条 V1 依据规则完成，不能证明额外职责均已真正完成或具备正式通过条件。
+    // 因此必须检查安全拒止，而不是为让旧 E2E 通过就关闭 readiness 门控。
+    expect(decision.ok).toBeFalse()
+    if (decision.ok) throw new Error('新增模板要求未完成时不应自动形成整案通过决定')
+    expect(decision.code).toBe('DEPENDENCY_UNRESOLVED')
+    expect(decision.message).toContain('阻断最终决定')
 
-    // 模拟应用重新打开：所有状态由持久化聚合恢复，而非依赖工作台内存。
+    // 模拟重启：人工事项认定持久保存，但无正式通过决定，待办继续保留。
     const restored = readAggregate(caseUnderTest.id)!
-    expect(restored.caseV2.stage).toBe('decided')
+    expect(restored.caseV2.stage).not.toBe('decided')
     expect(restored.adjudications?.some((record) => record.id === adjudicated.entity!.id)).toBeTrue()
-    expect(restored.decisions.at(-1)?.result).toBe('pass')
-    expect(restored.decisions.at(-1)?.finalScores?.[0]?.value).toBe('8')
+    expect(restored.decisions.some((entry) => entry.result === 'pass')).toBeFalse()
   })
 })
