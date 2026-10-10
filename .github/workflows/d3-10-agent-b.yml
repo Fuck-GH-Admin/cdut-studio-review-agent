@@ -3,7 +3,7 @@ on:
   push:
     branches: [test/d3-10-agent-b-cross-business]
     paths:
-      - 'docs/design/review-agent/acceptance/d3-10/agent-b/tests/agent-b-runner.ts'
+      - 'docs/design/review-agent/acceptance/d3-10/agent-b/tests/agent-b-*.ts'
       - '.github/workflows/d3-10-agent-b.yml'
   workflow_dispatch:
 permissions:
@@ -40,6 +40,14 @@ jobs:
           bun docs/design/review-agent/acceptance/d3-10/agent-b/tests/agent-b-runner.ts
           echo "exit_code=$?" >> "$GITHUB_OUTPUT"
           exit 0
+      - name: P1 actual own Pi Run and P2 advanced compile refusal
+        id: p1p2
+        shell: bash
+        run: |
+          set +e
+          bun docs/design/review-agent/acceptance/d3-10/agent-b/tests/agent-b-p1-p2.ts
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          exit 0
       - name: Save all traces even if assertions fail
         if: always()
         uses: actions/upload-artifact@v4
@@ -58,5 +66,5 @@ jobs:
           git commit -m "test(d3): record Agent B real CLI traces" || true
           git push origin HEAD:test/d3-10-agent-b-cross-business
       - name: Fail if independent acceptance failed
-        if: steps.execution.outputs.exit_code != '0'
+        if: steps.execution.outputs.exit_code != '0' || steps.p1p2.outputs.exit_code != '0'
         run: exit 1
