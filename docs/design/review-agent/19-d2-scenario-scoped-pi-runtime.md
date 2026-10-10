@@ -1,0 +1,65 @@
+# D2 · 情景/逐操作映射到真实 Pi 审核任务包（技术预审）
+
+状态：D2 试点实现与合成回归，**未获得任何高校制度发布/审批授权**。基于已合并 main 中设计 15/16、D0.5、D1 的作者态与服务发布资格。D2 不建设第二个模型 Harness，不把所有自然语言责任强制改成复杂 DSL。
+
+## 1. 设计目标与已实现的对应关系
+
+| 作者态与输入 | 运行中的现有数据面 | 不变量 |
+| --- | --- | --- |
+| D1 工作区 + 显式 scenario | previewDemo 精确展开全部当前适用责任 | 分支未知/不支持时拒止，不因未激活嵌套引用漏项 |
+| 对象的稳定 objectKey | ReviewCaseV2.subjects（D2 custom ReviewSubject） | 档案件/read 与 档案件/copy 分别拥有 subjectId、独立 sectionId |
+| 每条审查责任 | ReviewCaseV2.reviewRules[] 中的 RuleSpec | 固定 checkId → ruleId → 独立 scope；不是只在提示词标注业务对象 |
+| 制作来源/候选制度 | D2RuleBinding + RuleSpec.confirmation | 未核政策及跨校参考只能待确认；synthetic/request-scope 不冒充校规 |
+| 已安装的计划 | CaseAggregateV2.d2RuntimePlan | 作者态/展开责任/来源/RuleSpec/主体均有 SHA256 固定指纹 |
+| 普通 Pi 会话 | pi-case-review-service.preparePiReviewRunV2 + submitPiReviewResultV2 | 运行前和结果提交前检查计划；从现有素材工具读取，真实 SourceRef |
+| Pi 结果与材料 | ReviewRunV2 inputManifest、effectiveRuleSetHash、CheckResult | 核验案卷输入、规则集、版本/哈希及所有独立检查；未知与缺证不假合格 |
+| 人工决定 | decideWorkspaceCaseV2 现有业务事务 | D2 技术预审案卷显式拒绝正式批准（AGENT_DECISION_DISABLED） |
+
+**这里的“complete”仅表示必核责任的本轮回执完成且版本/证据来源形式通过校验，不表示业务资格合格，更不表示发卡/档案利用已获准。** 不用规则层 `confirmation:'confirmed'` 当作校方制度认证：它在纯 request-scope 责任中只说明运行规则已确定，制度权威单独保留为未核。
+
+## 2. 简单审核和复杂情景
+
+- **text-review**：零业务对象、零 Claim/Evidence 图，仍可生成整案自然语言核对 RuleSpec，Pi 收到明确责任、来源、限制。
+- **special-campus-card/family**：家属关系、代办操作分别核验；已故教职工不能机械解释为申请必败；独立的校本资格检查保留 `awaiting-confirmation`。
+- **special-campus-card/temporary-service**：核对具体人员与接收单位、服务期限的对应；派遣协议不等于任意人员自动获准。不会包含 family 责任。
+- **archive-access**：对 `item-1/read`、`item-1/copy`、`item-1`（开放状态）分别登记 target/subject/RuleSpec。查阅的证据不能作为复制的审核结果；目录可见不等于已开放。
+
+**单模板仍只有一个审核目的**。D2 使用条件引用，不将两种校园卡拆成两个完整模板，也不以目录展示位置决定审核适用性。
+
+## 3. Authoring JSON 与 Agent-first 命令
+
+示例 JSON（均为合成数据）：
+
+- `docs/design/review-agent/fixtures/d2-workspace-synthetic.json`：D1 workspace，含原始模块、情景、来源绑定；
+- `d2-selection-text.json`、`d2-selection-family.json`、`d2-selection-temporary.json`、`d2-selection-archive.json`：稳定的对象和操作引用。
+
+```bash
+# 在项目根目录，准备案卷 JSON：caseV2.templateId 必须匹配 selection.templateId
+bun apps/electron/scripts/review-d2-plan.ts preview \
+  docs/design/review-agent/fixtures/d2-workspace-synthetic.json \
+  docs/design/review-agent/fixtures/d2-selection-archive.json \
+  /tmp/d2-case-input.json
+
+# attach 写入的是已有 D1 候选草稿壳对应的本地 draft 案卷，不会自动创建模板或审批
+PROFER_CONFIG_DIR=/tmp/d2-testing bun apps/electron/scripts/review-d2-plan.ts attach \
+  docs/design/review-agent/fixtures/d2-workspace-synthetic.json \
+  docs/design/review-agent/fixtures/d2-selection-archive.json \
+  d2-case-id 1 author-agent
+```
+
+正式运行前须由系统通过 `saveAuthoringCandidateDraft(makeD2CandidateShell(workspace,...))` 登记不可发布候选，再按现有 V2 案卷服务创建同模板案卷，注册材料；`attachD2RuntimePlan` 在单案 `expectedRevision` 事务内记录主体和审核规则。**没有从非受控文本自动发布制度，也没有 Agent 替代审核部门作出行政决定。**
+
+## 4. 测试门禁与安全预言
+
+`apps/electron/src/main/lib/review/review-d2-runtime.test.ts` 覆盖合成文本、两个卡情景、档案 read/copy 和开放状态，真实调用现有 Pi 准备/结果提交/业务决定服务，以保留或拒止回执的方式判断实际对象范围。和模型直接连通的真实质量评估不同，测试使用合成材料和合成工具回执，不提供真实政策认证。
+
+静态审计包括：缺分支/未知分支、未登记业务对象、操作键不一致、同一审核对象重复、未绑定来源、未映射高级 Claim 关系；运行审计包括：指纹被篡改、检查遗漏、缺真实 SourceRef、材料内容哈希或版本变化、未确认规则被宣布合格、整案审批拒止。历史草稿及已固定作者态版本仍按 D1 的历史链保护。
+
+完整 CI 同时执行全仓 typecheck、main/preload/renderer 构建、全仓测试。专项 CI 校验 D2 回归、既有 Pi 服务和 D1/D0.5 模板回归；只有真实绿色才能声称测试通过。
+
+## 5. 尚未纳入正式行政产品的能力
+
+- D2 首版以 **明确的情景与对象登记**为输入，不依赖模型临时推测 family/service 资格或未声明的档案操作。复杂 Claim/Evidence 的任意合取、择一/替代、阶段适用结构仍 fail-closed，不允许静默转文本。
+- 合成 `SourceRef` 只在真正 Pi 工具提交阶段由现有材料块核验；编辑态引用源声明不是替代材料真实性证明。
+- 运行正确性测试验证范围/来源/版本约束，不宣称大模型在全部真实校园文件上达到某个准确率；本地 Pi 服务要求真实可用模型出口才能开展模型端到端对照。
+- 模块库正式冻结和跨工作区共享属于 D3；丰富的人类编辑 UI 属于 D5。本阶段保留 JSON Agent-first 接口与轻量数据结构。
