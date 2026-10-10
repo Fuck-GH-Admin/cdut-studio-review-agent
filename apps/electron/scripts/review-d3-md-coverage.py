@@ -45,6 +45,7 @@ def validate(catalog, ledger, plan, gold, source=None, gaps=None):
         fail("sourceMd mismatch or missing")
     verified_md = False
     source_ids = set()
+    source_text = None
     if source is None:
         if scope == "full":
             fail("full coverage requires the exact original MD via --source")
@@ -56,9 +57,10 @@ def validate(catalog, ledger, plan, gold, source=None, gaps=None):
             fail("original MD sha256 differs from fixed catalog")
         else:
             verified_md = True
-        source_ids = set(re.findall(r"^\s*\|\s*(R\d{2,3})\s*\|", data.decode("utf-8-sig"), flags=re.M))
+        source_text = data.decode("utf-8-sig")
+        source_ids = set(re.findall(r"^\s*\|\s*(R\d{2,3})\s*\|", source_text, flags=re.M))
         if not source_ids:
-            warn("MD has no machine-recognizable Rxx table rows; catalog IDs require human verification")
+            warn("MD has no Rxx rule table; every catalog duty must prove an independent sourceAnchor")
     def index(rows, title):
         result = {}
         if not isinstance(rows, list):
@@ -79,11 +81,15 @@ def validate(catalog, ledger, plan, gold, source=None, gaps=None):
     for name, observed in (("ledger", authored), ("gold", reference)):
         if set(observed) != set(primary):
             fail(f"{name} coverage mismatch: missing={sorted(set(primary)-set(observed))}; extra={sorted(set(observed)-set(primary))}")
-    if source_ids:
-        if scope == "full" and set(primary) != source_ids:
-            fail(f"full MD rule-index incomplete: missing={sorted(source_ids-set(primary))}; extra={sorted(set(primary)-source_ids)}")
-        elif not set(primary).issubset(source_ids):
-            fail(f"pilot catalog references IDs absent in original MD: {sorted(set(primary)-source_ids)}")
+    if source_text is not None:
+        missing_rows = source_ids-set(primary)
+        if scope == "full" and missing_rows:
+            fail(f"full MD rule-index incomplete: missing={sorted(missing_rows)}")
+        for key, item in primary.items():
+            if key not in source_ids:
+                anchor = item.get("sourceAnchor")
+                if not nonblank(anchor) or anchor not in source_text:
+                    fail(f"{key}: non-table duty must provide sourceAnchor quoted from original MD")
     for k, item in primary.items():
         if not nonblank(item.get("locator")) or not nonblank(item.get("purpose")):
             fail(f"{k}: independent source index needs locator and purpose")
