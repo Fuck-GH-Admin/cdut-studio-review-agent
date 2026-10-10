@@ -10,12 +10,13 @@ import { getCaseV2Aggregate } from './application-service'
 import { buildDeterministicRuleChecks } from './v2-executor-factory'
 import { combineCoverage } from './coverage-ledger'
 import { hashEffectiveRuleSet, resolveEffectiveRules } from './effective-rules'
-import { getTemplate } from './template-store'
+import { getTemplate, isAuthoringCandidateDraft } from './template-store'
 import { getRunV2, listRunsV2, readArtifact, saveArtifact, saveRunV2 } from './run-store-v2'
 import { recordObservation } from './evidence-service'
 import { actorOfAssignment, bindRunToAssignment, checkAssignment, createAssignment, findActivePiReviewAssignment, listAssignments, revokeAssignment, type ReviewAgentAssignment } from './review-agent-assignment'
 import { DocumentCapabilityLibrary } from './document-capability-library'
 import { finalizePiDocumentCoverage } from './pi-document-coverage'
+import { validateD2OperationEvidence, verifyD2InstalledPlan } from './review-d2-runtime'
 
 export interface PiReviewBinding {
   assignmentId: string
@@ -173,9 +174,15 @@ function inputHashOf(aggregate: CaseAggregateV2): string {
 }
 
 function sectionSubjectIds(template: TemplateVersion, aggregate: CaseAggregateV2): Record<string, string[]> {
-  return Object.fromEntries((template.sections ?? []).map((section) => [
-    section.id,
-    aggregate.caseV2.subjects.filter((subject) => subject.sectionId === section.id).map((subject) => subject.id),
+  // D2 的动态技术预审 RuleSpec 由案卷固定计划承载，模板壳没有静态 section。
+  // 运行覆盖分母与 Pi 计划必须使用同一份真实 section → subject 关系，不能漏项。
+  const sections = new Set([
+    ...(template.sections ?? []).map((section) => section.id),
+    ...(aggregate.d2RuntimePlan?.subjects.map((subject) => subject.sectionId).filter((id): id is string => !!id) ?? []),
+  ])
+  return Object.fromEntries([...sections].map((sectionId) => [
+    sectionId,
+    aggregate.caseV2.subjects.filter((subject) => subject.sectionId === sectionId).map((subject) => subject.id),
   ]))
 }
 
@@ -402,6 +409,13 @@ function promptFor(aggregate: CaseAggregateV2, template: TemplateVersion): strin
     '按模板要求完成整案核对；多个分项仍是同一次案卷审核。确定性预算/编号规则由系统按现有计算器校验，不接受模型自算值替代。规则或材料不足时如实提交待确认/待补件。符合或不符合必须提供本案真实 documentVersionId、blockId 和准确引文；图片引用需提供清楚的图像观察描述。',
     '用 review_submit_result 提交事实候选与检查结果。可以先分批提交（finish=false）。finish=true 只有在所有语义检查都有效且提交没有被拒绝时才会关闭运行；若有缺项或出处被拒，运行会保持开放，请按工具返回的 rejected 和 missingChecks 修正并再次提交。审核分析结束不等于正式认定或批准；不得调用决定类操作。',
     '长流程中请分批提交已经核验的检查（finish=false），避免只把大量原文留在对话历史里。需要压缩上下文时，先持久化当前可提交结果，再调用 CompactContext；压缩后先读取运行账本确认已提交项、读取覆盖和缺项，再继续审核。未读取材料和待核实事项必须继续保留为未完成状态。',
+    ...(aggregate.d2RuntimePlan ? [
+      '【D2 固定技术预审包】版本指纹：' + aggregate.d2RuntimePlan.fingerprint,
+      '选定业务情景：' + (aggregate.d2RuntimePlan.scenario ?? '普通文本审核') + '；规则仅能核对当前业务对象与操作。未知法规、分支或代理授权不得视为不适用；所有校方批准必须交由有权人员决定。',
+      '业务对象与操作绑定：' + aggregate.d2RuntimePlan.mapping.map((item) =>
+        item.checkId + ' → ' + (item.subjectId ?? '整案') + ' / ' + (item.objectKey ?? '整案') + ' / ' + item.authority,
+      ).join('；'),
+    ] : []),
     `【事项】\n${subjects}`,
     `【检查要求】\n${rulesText}`,
     `【材料目录】\n${docs}`,
@@ -431,6 +445,11 @@ export function preparePiReviewRunV2(input: { caseId: string; sessionId: string;
   if (!input.sessionId || !input.turnId) throw new Error('普通 Pi 审核必须绑定真实会话与用户消息')
   const aggregate = getCaseV2Aggregate(input.caseId)
   if (!aggregate) throw new Error(`案卷不存在或未初始化：${input.caseId}`)
+  if (!aggregate.d2RuntimePlan && isAuthoringCandidateDraft(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)) {
+    throw new Error('D2_FIXED_PLAN_MISSING: 作者态候选必须先绑定技术预审任务包，不能直接启动普通 Pi 审核')
+  }
+  const d2Problems = verifyD2InstalledPlan(aggregate)
+  if (d2Problems.length) throw new Error('D2_FIXED_PLAN_MISMATCH: ' + d2Problems.join('；'))
   const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
   if (!template) throw new Error(`案卷模板不存在：${aggregate.caseV2.templateId}@${aggregate.caseV2.templateVersion}`)
   const effectiveRules = effectiveRulesFor(aggregate, template)
@@ -824,6 +843,11 @@ export function submitPiReviewResultV2(input: {
   if (!run || run.status !== 'running') throw new Error('本次审核运行已结束；请在工作台开始新一轮审核')
   const aggregate = getCaseV2Aggregate(input.binding.caseId)
   if (!aggregate) throw new Error('案卷已不存在')
+  if (!aggregate.d2RuntimePlan && isAuthoringCandidateDraft(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)) {
+    throw new Error('D2_FIXED_PLAN_MISSING: 作者态候选必须先绑定技术预审任务包，不能直接启动普通 Pi 审核')
+  }
+  const d2Problems = verifyD2InstalledPlan(aggregate)
+  if (d2Problems.length) throw new Error('D2_FIXED_PLAN_MISMATCH: ' + d2Problems.join('；'))
   const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
   if (!template) throw new Error('案卷模板版本不存在')
   if (inputHashOf(aggregate) !== run.inputManifest.hash) throw new Error('案卷材料或人工事实已变化；本次结果已过期，请开始新一轮审核')
@@ -882,6 +906,11 @@ export function submitPiReviewResultV2(input: {
     const target = plannedTargetMatches(rule, aggregate, candidate.subjectIds)
     if (!target) {
       rejected.push({ kind: 'check', index, reason: '目标事项与规则分项范围不一致' })
+      continue
+    }
+    const d2EvidenceProblem = validateD2OperationEvidence(aggregate, candidate.ruleId, candidate.status, (candidate.sourceRefs ?? []).map((ref) => ref.documentVersionId))
+    if (d2EvidenceProblem) {
+      rejected.push({ kind: 'check', index, reason: d2EvidenceProblem })
       continue
     }
     const reason = String(candidate.reason ?? '').trim().slice(0, 2000)
