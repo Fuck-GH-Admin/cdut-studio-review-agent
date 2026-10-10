@@ -10,6 +10,8 @@
  * export <workspace.json> <output.json>     原子式新建可携包（不覆盖）
  * import <bundle.json> <output.json>        校验/安装锁并导出工作区（不覆盖）
  * diff <oldModule.json> <newModule.json>    比较任务及目的变动
+ * impact <moduleId> <fromVersion> <toVersion> 列出已登记 D1 工作区的受影响消费者
+ * upgrade <workspace.json> <upgrade.json>   显式迁移单实例，输出可登记的完整新工作区
  * report-gap <issue.json>                   缺口可机读校验，不吞失败
  *
  * 用完整 D1 workspace 负责来源绑定；没有真实 policy authority 的地方只输出技术预审。
@@ -22,6 +24,7 @@ import {
   exportD3Bundle, importD3Bundle, diffD3Modules,
 } from '../src/main/lib/review/review-d3-module-library'
 import { validateReviewAuthoringV1 } from '../src/main/lib/review/review-authoring-v1'
+import { inspectD3UpgradeImpact, upgradeD3ModuleUse } from '../src/main/lib/review/review-d3-upgrade'
 
 const load = <T>(path: string): T => JSON.parse(readFileSync(resolve(path), 'utf8')) as T
 const show = (value: unknown): void => process.stdout.write(JSON.stringify(value, null, 2) + '\n')
@@ -47,7 +50,7 @@ interface D3Gap {
 }
 async function main(): Promise<void> {
   if (!process.env.PROFER_CONFIG_DIR?.trim()) throw new Error('D3_CONFIG_REQUIRED: 必须显式指定隔离 PROFER_CONFIG_DIR')
-  const [operation, first, second] = process.argv.slice(2)
+  const [operation, first, second, third] = process.argv.slice(2)
   switch (operation) {
     case 'discover':
       show(discoverFrozenD3Modules(first))
@@ -102,6 +105,19 @@ async function main(): Promise<void> {
       show(diffD3Modules(load<ReviewAuthoringModuleV1>(first), load<ReviewAuthoringModuleV1>(second)))
       return
     }
+    case 'impact': {
+      if (!first || !second || !third || !/^\\d+$/.test(second) || !/^\\d+$/.test(third)) {
+        throw new Error('D3_USAGE: impact <moduleId> <fromVersion> <toVersion>')
+      }
+      show(inspectD3UpgradeImpact(first,Number(second),Number(third)))
+      return
+    }
+    case 'upgrade': {
+      if (!first || !second) throw new Error('D3_USAGE: upgrade <workspace.json> <upgrade-request.json>')
+      const request=load<Parameters<typeof upgradeD3ModuleUse>[0]>(second)
+      show(upgradeD3ModuleUse({ ...request, workspace:load<ReviewAuthoringWorkspaceV1>(first) }))
+      return
+    }
     case 'report-gap': {
       if (!first) throw new Error('D3_USAGE: report-gap <issue.json>')
       const issue = load<D3Gap>(first)
@@ -114,7 +130,7 @@ async function main(): Promise<void> {
       return
     }
     default:
-      throw new Error('D3_USAGE: discover|inspect|freeze|reuse|validate|export|import|diff|report-gap')
+      throw new Error('D3_USAGE: discover|inspect|freeze|reuse|validate|export|import|diff|impact|upgrade|report-gap')
   }
 }
 main().catch((error) => {
