@@ -138,7 +138,7 @@ export function compileReviewAuthoringCandidateV1(
       const anchor = sourceMap.get(sourceId)!
       return sourceId + ' / ' + anchor.kind + ' / ' + anchor.applicability + ' / ' + anchor.label
     })
-    criterion.requirement += '\\n作者态来源（非制度批准）：' + notes.join('；')
+    criterion.requirement += '\n作者态来源（非制度批准）：' + notes.join('；')
   }
   template.description = '[D1 作者态候选，非已发布学校制度] ' + (template.description ?? '')
   template.sourceNote = 'D1_AUTHORING_CANDIDATE: 只有制作与运行投影校验，禁止无授权发布'
