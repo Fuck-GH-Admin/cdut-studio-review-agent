@@ -157,6 +157,38 @@ describe('D2 作者态到 Pi 有效审核规则（BDD）', () => {
     expect(readAggregate('d2-cli-created')?.caseV2.title).toBe('CLI 技术审核')
   })
 
+  test('没有固定 D2 任务包的候选案卷不能绕开技术建案直接运行 Pi', async () => {
+    const workspace = authoring()
+    saveAuthoringCandidateDraft(makeD2CandidateShell(workspace, 'text-review', 1))
+    const id = 'd2-no-fixed-plan'
+    await createAggregate(id, caseV2(id, 'text-review'))
+    expect(() => preparePiReviewRunV2({
+      caseId: id, sessionId: 'd2-missing-plan-session', turnId: 'd2-missing-plan-turn',
+    })).toThrow('D2_FIXED_PLAN_MISSING')
+    expect(readAggregate(id)?.d2RuntimePlan).toBeUndefined()
+  })
+
+  test('D2 计划之外混入额外规则或申报主体应被独立覆盖校验拒止', () => {
+    const ws = authoring()
+    const plan = compileD2RuntimePlan(ws, selection('archive-access'), caseV2('d2-external-items', 'archive-access'))
+    const aggregate = {
+      caseV2: {
+        ...caseV2('d2-external-items', 'archive-access'),
+        caseFields: { d2PlanFingerprint: { kind: 'text' as const, value: plan.fingerprint } },
+        reviewRules: structuredClone(plan.rules),
+        subjects: structuredClone(plan.subjects),
+      },
+      d2RuntimePlan: structuredClone(plan),
+      observations: [], evidenceLinks: [], dispositions: [], tasks: [], decisions: [], supplements: [], appeals: [], receiptLog: [],
+    }
+    const withRule = structuredClone(aggregate)
+    withRule.caseV2.reviewRules.push({ ...plan.rules[0]!, id: 'external-undocumented-rule' })
+    expect(verifyD2InstalledPlan(withRule).join('；')).toContain('未登记的外部规则')
+    const withSubject = structuredClone(aggregate)
+    withSubject.caseV2.subjects.push({ ...plan.subjects[0]!, id: 'external-undocumented-subject' })
+    expect(verifyD2InstalledPlan(withSubject).join('；')).toContain('未登记的外部业务主体')
+  })
+
   test('普通文本任务无需业务对象/高级 Claim 图即可编译为单一语义检查', () => {
     const plan = compileD2RuntimePlan(authoring(), selection('text-review'), caseV2('d2-syntactic', 'text-review'))
     expect(plan.rules).toHaveLength(1)
