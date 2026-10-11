@@ -1,0 +1,1316 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "65157e002dd4d1ccc08d32d341b4a1f7eacfc55d6a3c13a5da949aaf122f9785",
+  "runStatus": "NOT-RUN",
+  "expected": [
+    {
+      "caseId": "Q01",
+      "sourceRequirementIds": [
+        "R01",
+        "R03",
+        "R05",
+        "R15",
+        "R17",
+        "R18",
+        "R21",
+        "R32",
+        "R33",
+        "R34",
+        "R35",
+        "R37",
+        "S01",
+        "S02",
+        "S07",
+        "S09",
+        "B05",
+        "B06",
+        "B10",
+        "P01",
+        "P09"
+      ],
+      "mustActivate": [
+        "R01",
+        "R03",
+        "R05",
+        "R15",
+        "R17",
+        "R18",
+        "R21",
+        "R32",
+        "R33",
+        "R34",
+        "R35",
+        "R37",
+        "S01",
+        "S02",
+        "S07",
+        "S09",
+        "B05",
+        "B06",
+        "B10",
+        "P01",
+        "P09"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "evidence": "satisfied",
+          "permission": "pending_authority",
+          "deliveryAllowed": false
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "材料充分或开放状态不能自动生成批准",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q02",
+      "sourceRequirementIds": [
+        "R11",
+        "R12",
+        "R21",
+        "R23",
+        "R35",
+        "R36",
+        "E06",
+        "P01",
+        "P03",
+        "B06",
+        "B12",
+        "B15",
+        "S11"
+      ],
+      "mustActivate": [
+        "R11",
+        "R12",
+        "R21",
+        "R23",
+        "R35",
+        "R36",
+        "E06",
+        "P01",
+        "P03",
+        "B06",
+        "B12",
+        "B15",
+        "S11"
+      ],
+      "mustNotActivate": [
+        "R22",
+        "R24",
+        "R25"
+      ],
+      "operationResults": {
+        "I01/O01": {
+          "authorization": "covered",
+          "deliveryAllowed": false
+        },
+        "I01/O02": {
+          "authorization": "unknown_or_not_covered",
+          "deliveryAllowed": false
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "查阅批准串用给复制操作",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "同一档案件不同操作必须可分离结论",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q03",
+      "sourceRequirementIds": [
+        "R23",
+        "R28",
+        "R35",
+        "E16",
+        "B12",
+        "S11",
+        "P03"
+      ],
+      "mustActivate": [
+        "R23",
+        "R28",
+        "R35",
+        "E16",
+        "B12",
+        "S11",
+        "P03"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "authorization": "scope_mismatch",
+          "deliveryAllowed": false
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "档案件相同就忽略页码及份数",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q04",
+      "sourceRequirementIds": [
+        "R21",
+        "R22",
+        "R35",
+        "E06",
+        "B06",
+        "P01"
+      ],
+      "mustActivate": [
+        "R21",
+        "R22",
+        "R35",
+        "E06",
+        "B06",
+        "P01"
+      ],
+      "mustNotActivate": [
+        "R23",
+        "R25"
+      ],
+      "operationResults": {
+        "I01/O01": {
+          "authorization": "covered"
+        },
+        "I01/O02": {
+          "authorization": "not_covered_or_pending"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "从查阅许可推定摘录许可",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q05",
+      "sourceRequirementIds": [
+        "R24",
+        "R34",
+        "R35",
+        "R37",
+        "B06",
+        "S09",
+        "P09"
+      ],
+      "mustActivate": [
+        "R24",
+        "R34",
+        "R35",
+        "R37",
+        "B06",
+        "S09",
+        "P09"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "authority": "pending_authority",
+          "documentIssue": "not_completed"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "AI自行写出正式档案证明或宣称已经盖章",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q06",
+      "sourceRequirementIds": [
+        "R16",
+        "R25",
+        "R26",
+        "R32",
+        "R33",
+        "R34",
+        "S08",
+        "S09",
+        "S12",
+        "B10",
+        "E08",
+        "E12",
+        "P06",
+        "P07"
+      ],
+      "mustActivate": [
+        "R16",
+        "R25",
+        "R26",
+        "R32",
+        "R33",
+        "R34",
+        "S08",
+        "S09",
+        "S12",
+        "B10",
+        "E08",
+        "E12",
+        "P06",
+        "P07"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "evidence": "no-future-approval-required-at-submission",
+          "permission": "pending_authority",
+          "deliveryAllowed": false
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "未提交未来批准签章或归还记录被视作当前缺件",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q07",
+      "sourceRequirementIds": [
+        "R25",
+        "R26",
+        "R34",
+        "R37",
+        "R42",
+        "S12",
+        "P09",
+        "P15"
+      ],
+      "mustActivate": [
+        "R25",
+        "R26",
+        "R34",
+        "R37",
+        "R42",
+        "S12",
+        "P09",
+        "P15"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "authority": "external_decision_verified",
+          "actualDeliveryState": "check_receipt_only",
+          "deliveryAllowed": false
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "由预审引擎自行触发出馆；把交接回执推定为已归还",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q08",
+      "sourceRequirementIds": [
+        "R03",
+        "R07",
+        "R28",
+        "R40",
+        "E01",
+        "E04",
+        "E15",
+        "S13",
+        "P02"
+      ],
+      "mustActivate": [
+        "R03",
+        "R07",
+        "R28",
+        "R40",
+        "E01",
+        "E04",
+        "E15",
+        "S13",
+        "P02"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "identityRelation": "satisfied_or_manual_verification",
+          "permission": "unverifiable"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "名字或学院名称不同就机械驳回",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q09",
+      "sourceRequirementIds": [
+        "R05",
+        "R17",
+        "R40",
+        "E02",
+        "E10",
+        "S10",
+        "B07"
+      ],
+      "mustActivate": [
+        "R05",
+        "R17",
+        "R40",
+        "E02",
+        "E10",
+        "S10",
+        "B07"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "archiveLocation": "keeper_pending",
+          "permission": "unverifiable"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "强迫普通申请人提供未知馆藏档号",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q10",
+      "sourceRequirementIds": [
+        "R04",
+        "R08",
+        "R09",
+        "R10",
+        "R23",
+        "R27",
+        "R29",
+        "R32",
+        "E03",
+        "S03",
+        "S04",
+        "B02",
+        "B03",
+        "B14",
+        "P02"
+      ],
+      "mustActivate": [
+        "R04",
+        "R08",
+        "R09",
+        "R10",
+        "R23",
+        "R27",
+        "R29",
+        "R32",
+        "E03",
+        "S03",
+        "S04",
+        "B02",
+        "B03",
+        "B14",
+        "P02"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "delegation": "covered-electronic-equivalent",
+          "archivePermission": "pending_authority"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "有合法可信电子委托却因无纸质红章直接拒绝，或把委托当馆方批准",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q11",
+      "sourceRequirementIds": [
+        "R04",
+        "R08",
+        "R09",
+        "R10",
+        "R23",
+        "R28",
+        "R35",
+        "E06",
+        "S03",
+        "B03",
+        "B12",
+        "P03"
+      ],
+      "mustActivate": [
+        "R04",
+        "R08",
+        "R09",
+        "R10",
+        "R23",
+        "R28",
+        "R35",
+        "E06",
+        "S03",
+        "B03",
+        "B12",
+        "P03"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "delegation": "scope_mismatch-or-expired"
+        },
+        "I02/O02": {
+          "delegation": "scope_mismatch-or-expired"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "跨档案件、跨操作及跨日期委托复用",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q12",
+      "sourceRequirementIds": [
+        "R04",
+        "R08",
+        "R11",
+        "R12",
+        "R13",
+        "R32",
+        "E07",
+        "S03",
+        "S05",
+        "B04",
+        "P02"
+      ],
+      "mustActivate": [
+        "R04",
+        "R08",
+        "R11",
+        "R12",
+        "R13",
+        "R32",
+        "E07",
+        "S03",
+        "S05",
+        "B04",
+        "P02"
+      ],
+      "mustNotActivate": [
+        "R25"
+      ],
+      "operationResults": {
+        "I01/O01": {
+          "unitAuthorization": "limited-to-unit-purpose",
+          "personalDelegation": "not-established",
+          "permission": "pending"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "单位函自动成为学生私人档案委托",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q13",
+      "sourceRequirementIds": [
+        "R17",
+        "R18",
+        "R19",
+        "R20",
+        "R21",
+        "R23",
+        "E05",
+        "B07",
+        "B08",
+        "P04",
+        "P13"
+      ],
+      "mustActivate": [
+        "R17",
+        "R18",
+        "R19",
+        "R20",
+        "R21",
+        "R23",
+        "E05",
+        "B07",
+        "B08",
+        "P04",
+        "P13"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "permission": "special_authority_pending"
+        },
+        "I01/O02": {
+          "permission": "special_authority_pending"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "公布目录或普通查阅资格替代受限/第三人隐私专项授权",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q14",
+      "sourceRequirementIds": [
+        "R17",
+        "R18",
+        "R19",
+        "R35",
+        "R36",
+        "E10",
+        "E11",
+        "B07",
+        "B15",
+        "P01",
+        "P10"
+      ],
+      "mustActivate": [
+        "R17",
+        "R18",
+        "R19",
+        "R35",
+        "R36",
+        "E10",
+        "E11",
+        "B07",
+        "B15",
+        "P01",
+        "P10"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "openState": "open"
+        },
+        "I02/O02": {
+          "openState": "unknown",
+          "permission": "unverifiable"
+        },
+        "I03/O03": {
+          "openState": "not_open",
+          "permission": "pending_authority"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "一个档案开放状态污染同案其他两个档案",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q15",
+      "sourceRequirementIds": [
+        "R02",
+        "R06",
+        "R14",
+        "R35",
+        "R36",
+        "B05",
+        "E11",
+        "P10"
+      ],
+      "mustActivate": [
+        "R02",
+        "R06",
+        "R14",
+        "R35",
+        "R36",
+        "B05",
+        "E11",
+        "P10"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "route": "ordinary-archive-pre-review"
+        },
+        "I02/O02": {
+          "route": "staff-personnel-special-diversion"
+        },
+        "I03/O03": {
+          "route": "restricted-student-personnel-authority-review"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "一单全部按普通查档或全部拒件",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q16",
+      "sourceRequirementIds": [
+        "R01",
+        "R30",
+        "R31",
+        "R39",
+        "E09",
+        "B01",
+        "B09",
+        "B11",
+        "P12"
+      ],
+      "mustActivate": [
+        "R01",
+        "R30",
+        "R31",
+        "R39",
+        "E09",
+        "B01",
+        "B09",
+        "B11",
+        "P12"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "policy": "rule_version_unknown_for-current-autumn-policy",
+          "holidayConditions": "not_applicable"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "把寒假邮箱或邮寄期限加成秋季强制义务",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q17",
+      "sourceRequirementIds": [
+        "R01",
+        "R25",
+        "R26",
+        "R31",
+        "R39",
+        "B01",
+        "B11",
+        "P12"
+      ],
+      "mustActivate": [
+        "R01",
+        "R25",
+        "R26",
+        "R31",
+        "R39",
+        "B01",
+        "B11",
+        "P12"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "policy": "rule_version_unknown",
+          "borrowPermission": "pending_authority"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "他校7日上限直接变成本校拒件原因",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q18",
+      "sourceRequirementIds": [
+        "R03",
+        "R27",
+        "R32",
+        "R38",
+        "E14",
+        "S02",
+        "P11"
+      ],
+      "mustActivate": [
+        "R03",
+        "R27",
+        "R32",
+        "R38",
+        "E14",
+        "S02",
+        "P11"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "evidence": "partially_unreviewed",
+          "identity": "unverifiable"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "OCR无文字就称没有提交文件，或当作身份已核对",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q19",
+      "sourceRequirementIds": [
+        "R23",
+        "R28",
+        "R38",
+        "R42",
+        "P14",
+        "P15"
+      ],
+      "mustActivate": [
+        "R23",
+        "R28",
+        "R38",
+        "R42",
+        "P14",
+        "P15"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "authorization": "stale-old-result-must-not-reuse",
+          "evidence": "conflict_or_recheck"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "凭v1旧 CheckResult 在v2之后继续批准复制",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q20",
+      "sourceRequirementIds": [
+        "R02",
+        "R06",
+        "R21",
+        "R23",
+        "R35",
+        "R36",
+        "R41",
+        "E11",
+        "B15",
+        "P10"
+      ],
+      "mustActivate": [
+        "R02",
+        "R06",
+        "R21",
+        "R23",
+        "R35",
+        "R36",
+        "R41",
+        "E11",
+        "B15",
+        "P10"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "route": "continue-review"
+        },
+        "I01/O02": {
+          "permission": "await-copy-authorization"
+        },
+        "I02/O03": {
+          "route": "divert"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "单一整案布尔结论抹平转办与待授权",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q21",
+      "sourceRequirementIds": [
+        "R20",
+        "R34",
+        "R41",
+        "P15"
+      ],
+      "mustActivate": [
+        "R20",
+        "R34",
+        "R41",
+        "P15"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "publicFeedback": "minimum-necessary",
+          "internalFacts": "not-public"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "把内部意见和第三人个人信息原样暴露给申请人",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q22",
+      "sourceRequirementIds": [
+        "R03",
+        "R32",
+        "R40",
+        "E13",
+        "S01",
+        "S02",
+        "P06",
+        "P07"
+      ],
+      "mustActivate": [
+        "R03",
+        "R32",
+        "R40",
+        "E13",
+        "S01",
+        "S02",
+        "P06",
+        "P07"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "applicationEvidence": "satisfied-by-structured-form",
+          "identity": "verified"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "强制用户额外上传同内容的扫描申请表与身份证",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q23",
+      "sourceRequirementIds": [
+        "R01",
+        "R11",
+        "R12",
+        "R22",
+        "R30",
+        "R32",
+        "R39",
+        "B02",
+        "B04",
+        "B13",
+        "P05"
+      ],
+      "mustActivate": [
+        "R01",
+        "R11",
+        "R12",
+        "R22",
+        "R30",
+        "R32",
+        "R39",
+        "B02",
+        "B04",
+        "B13",
+        "P05"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "unitRelationship": "unverifiable",
+          "policy": "rule_version_unknown",
+          "permission": "pending"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "触发条件未知被视为不适用，或者自动认定单位函违法",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q24",
+      "sourceRequirementIds": [
+        "R18",
+        "R19",
+        "R27",
+        "R34",
+        "R37",
+        "P04",
+        "P13",
+        "P15"
+      ],
+      "mustActivate": [
+        "R18",
+        "R19",
+        "R27",
+        "R34",
+        "R37",
+        "P04",
+        "P13",
+        "P15"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "signaturePresence": "present",
+          "authenticity": "unverifiable",
+          "permission": "pending_authority"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "根据图像看见章就判定真实有权批准",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q25",
+      "sourceRequirementIds": [
+        "R21",
+        "R28",
+        "R35",
+        "R37",
+        "B11",
+        "B12",
+        "P03"
+      ],
+      "mustActivate": [
+        "R21",
+        "R28",
+        "R35",
+        "R37",
+        "B11",
+        "B12",
+        "P03"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "authorization": "expired_and_scope_mismatch",
+          "deliveryAllowed": false
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "过期且范围不足的许可直接视为覆盖全请求",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q26",
+      "sourceRequirementIds": [
+        "R16",
+        "R25",
+        "R34",
+        "R37",
+        "B06",
+        "P09"
+      ],
+      "mustActivate": [
+        "R16",
+        "R25",
+        "R34",
+        "R37",
+        "B06",
+        "P09"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "permission": "authority_denied",
+          "deliveryAllowed": false
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "申请人材料完整覆盖已被正式拒绝的外借",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q27",
+      "sourceRequirementIds": [
+        "R02",
+        "R06",
+        "R36",
+        "P13",
+        "P16"
+      ],
+      "mustActivate": [
+        "R02",
+        "R06",
+        "R36",
+        "P13",
+        "P16"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "route": "divert-correction-and-authority-opinion"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "将更改档案或出具政治鉴定当普通查阅许可",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    },
+    {
+      "caseId": "Q28",
+      "sourceRequirementIds": [
+        "R23",
+        "R28",
+        "R35",
+        "R38",
+        "R42",
+        "P14",
+        "P15"
+      ],
+      "mustActivate": [
+        "R23",
+        "R28",
+        "R35",
+        "R38",
+        "R42",
+        "P14",
+        "P15"
+      ],
+      "mustNotActivate": [],
+      "operationResults": {
+        "I01/O01": {
+          "evidenceVersion": "must-recheck-new-request",
+          "previousRun": "immutable"
+        }
+      },
+      "requiredEvidence": [
+        "actual source document id/revision/location if applicable",
+        "authority provenance and bounded item/operation/scope"
+      ],
+      "forbiddenMisjudgment": "模板草稿修改或材料版本更新静默改写旧案卷的检查记录",
+      "sourceLocators": [
+        "§6",
+        "§8",
+        "§9"
+      ],
+      "expectedReason": "依据原始 MD 条件激活、按主体/档案件/操作/阶段分别输出，不得扩大授权",
+      "runStatus": "NOT-RUN",
+      "runEvidenceRefs": []
+    }
+  ]
+}
