@@ -13,7 +13,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Actor, TemplateVersion } from '@profer/shared'
 import { buildReviewOpsTools } from '../adapters/pi-review-ops-tools'
-import { selectDirectReviewStrictTools } from './review-strict-pi-tools'
+import { isAuthorizedDirectReviewTool, selectDirectReviewStrictTools } from './review-strict-pi-tools'
 import { inspectPreview } from '../preview-inspection-service'
 import { autoCompactWhenIdle, buildCurrentSessionCompactionTool } from '../adapters/pi-agent-adapter'
 import { createCaseFromTemplate } from './application-service'
@@ -248,6 +248,26 @@ describe('P02 existing direct review tools / ledger compatibility', () => {
 })
 
 describe('P02 production strict tool admission and case-scoped original preview', () => {
+  test('host permissions allow only five bound tools; revoked or foreign tools are denied', async () => {
+    const ctx = await caseFixture()
+    for (const name of ['review_read_documents', 'review_inspect_document_image', 'review_submit_result',
+      'review_inspect_original', 'CompactContext']) {
+      expect(isAuthorizedDirectReviewTool(ctx.binding, name), name).toBeTrue()
+    }
+    for (const forbidden of ['Read', 'Write', 'Bash', 'AskUserQuestion', 'inspect_preview',
+      'mcp__thirdparty__upload', 'review_decide_stage', 'discover_tools']) {
+      expect(isAuthorizedDirectReviewTool(ctx.binding, forbidden), forbidden).toBeFalse()
+    }
+    finishPiReviewRunV2(ctx.binding, { status: 'completed' })
+    const continued = preparePiReviewRunV2({
+      caseId: ctx.caseId, sessionId: ctx.sessionId,
+      turnId: `p02-auth-renew-${randomUUID().slice(0, 8)}`,
+      resumeRunId: ctx.prepared.runId,
+    })
+    expect(isAuthorizedDirectReviewTool(ctx.binding, 'review_read_documents')).toBeFalse()
+    expect(isAuthorizedDirectReviewTool({ ...ctx.binding, assignmentId: continued.assignmentId }, 'review_read_documents')).toBeTrue()
+  })
+
   test('admits only the three direct operations plus case-scoped original inspection', async () => {
     const ctx = await caseFixture()
     const direct = strictTools(ctx.binding).tools
