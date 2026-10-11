@@ -2,6 +2,7 @@ name: D3 MD Dynamic and Structured Gates
 on:
   pull_request:
     paths:
+      - 'docs/design/review-agent/fixtures/d3-r0-handoff-manifest.json'
       - '.github/workflows/review-d3-md-dynamic.yml'
       - 'apps/electron/src/main/lib/review/**'
       - 'packages/shared/src/types/review-authoring-v1.ts'
