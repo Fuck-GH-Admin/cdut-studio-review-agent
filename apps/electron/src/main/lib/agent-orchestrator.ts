@@ -118,7 +118,7 @@ import {
   ensureClaudeSkillManifest,
   ensureDefaultWorkspace,
 } from './agent-workspace-manager'
-import { getAgentSessionWorkspacePath, getPiCheckpointsDir, getSdkConfigDir } from './config-paths'
+import { getAgentSessionWorkspacePath, getPiCheckpointsDir, getSdkConfigDir, getConfigDir } from './config-paths'
 import { prepareRuntimeSkills } from './global-skill-manager'
 import { routeSkillsForTask, type SkillRoutingSnapshot } from './skill-routing'
 import { buildSkillRuntimeOptions, prepareAgentSkillRouting } from './skill-runtime-routing'
@@ -172,6 +172,7 @@ import { getOrCreateShellSnapshot } from './shell-snapshot'
 import type { PiAgentQueryOptions } from './adapters/pi-agent-adapter'
 import type { PiRetryUpdate } from './adapters/pi-retry-control'
 import { buildPiBuiltinTools } from './adapters/pi-builtin-tools'
+import { selectDirectReviewStrictTools } from './review/review-strict-pi-tools'
 import { buildPiMcpTools, getMcpPolicyToolName } from './adapters/pi-mcp-tools'
 import { evaluatePptCapability } from './ppt-capability-gate'
 import { agentFilePreviewSessionManager } from './agent-file-preview-session'
@@ -1502,7 +1503,9 @@ ${dynamicCtx}`
               workspaceSlug: effectiveWorkspaceSlug,
               isStudyClass,
               agentCwd,
-              allowedRoots: browserAllowedRoots,
+              allowedRoots: activePiReviewBinding
+                ? [...browserAllowedRoots, join(getConfigDir(), 'review-cases', activePiReviewBinding.caseId)]
+                : browserAllowedRoots,
               onPreviewRequest: (event) => agentFilePreviewSessionManager.waitUntilReady(event, (previewEvent) => {
                 this.eventBus.emit(sessionId, { kind: 'profer_event', event: previewEvent })
               }),
@@ -1517,7 +1520,7 @@ ${dynamicCtx}`
               currentPresetReference,
               presetOperationUserMessage: userMessage,
               pendingPresetChange: userConfirmedPresetChange ? pendingPresetChange : undefined,
-              activeToolGroups, // ← 传入当前轮次计算所得的激活组！
+              activeToolGroups: activePiReviewBinding ? new Set([...activeToolGroups, 'preview']) : activeToolGroups, // 案卷扫描原件预览需始终可用
               onActivateToolGroup: (groupId) => {
                 if (disabledToolGroups.has(groupId as import('@profer/shared').AgentPresetToolGroup)) return
                 activeToolGroups.add(groupId)
@@ -1529,6 +1532,9 @@ ${dynamicCtx}`
               disabledTools,
               pptCapabilityActive,
             })
+            // 活动案卷审核采用 Pi 已有 review 档案，且必须在进入 adapter 前缩小 customTools。
+            // 普通 Pi 会话完全保留原有 MCP/工具构造路径。
+            if (activePiReviewBinding) return selectDirectReviewStrictTools(builtin.tools, activePiReviewBinding)
             const mcpTools = await buildPiMcpTools(mcpServers, presetPolicy)
             return [...builtin.tools, ...mcpTools]
           })()
@@ -1940,6 +1946,7 @@ ${dynamicCtx}`
           ...(configuredChannelModel?.contextWindow !== undefined && { contextWindow: configuredChannelModel.contextWindow }),
           ...(configuredChannelModel?.maxTokens !== undefined && { maxTokens: configuredChannelModel.maxTokens }),
           ...(activePiReviewBinding && {
+            toolProfile: 'review' as const,
             contextPolicy: {
               kind: 'review' as const,
               caseId: activePiReviewBinding.caseId,
