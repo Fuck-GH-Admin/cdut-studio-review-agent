@@ -1,4 +1,10 @@
 import { expect, test } from 'bun:test'
+import { createStore } from 'jotai'
+import type { BrowserViewState } from '@profer/shared'
+import { agentSessionsAtom } from '@/atoms/agent-atoms'
+import { tabsAtom } from '@/atoms/tab-atoms'
+import { openFilePreviewTab } from '@/components/diff/preview-opener'
+import { reconcileBrowserTabs } from './browser-tab'
 import type { AgentSessionMeta } from '@profer/shared'
 import { canOpenOrdinaryWorkTab, resolveOrdinaryTabSession, selectRestorableAgentTabs } from './agent-tab-access'
 
@@ -43,4 +49,30 @@ test('late Main metadata denies internal, deleted, mismatched and failing ID loo
 test('reopen accepts Main-authorized ordinary archived session without trusting stale local cache', async () => {
   const restored = await resolveOrdinaryTabSession('archived', async (id) => id === 'archived' ? archived : null)
   expect(restored?.id).toBe('archived')
+})
+
+test('Preview opener cannot resurrect a hidden or deleted owner from a stale file event', () => {
+  const store = createStore()
+  store.set(agentSessionsAtom, [ordinary])
+  expect(openFilePreviewTab(store, 'internal', { filePath: '/tmp/secret.png' })).toBe('')
+  expect(openFilePreviewTab(store, 'deleted', { filePath: '/tmp/deleted.png' })).toBe('')
+  expect(store.get(tabsAtom)).toHaveLength(0)
+  const allowed = openFilePreviewTab(store, 'ordinary', { filePath: '/tmp/regular.png' })
+  expect(allowed).toContain('__preview__:ordinary:')
+  expect(store.get(tabsAtom).some(t => t.sessionId === 'ordinary' && t.type === 'preview')).toBe(true)
+})
+
+test('Browser restore/push reconciliation refuses unknown review sessions without disrupting normal browser tabs', () => {
+  const store = createStore()
+  store.set(agentSessionsAtom, [ordinary])
+  const makeState = (sessionId: string): BrowserViewState => ({
+    sessionId, activeTabId: 'page-1',
+    tabs: [{ tabId: 'page-1', url: 'https://example.com', title: 'Example' }],
+  } as BrowserViewState)
+  expect(reconcileBrowserTabs(store, makeState('internal'))).toBeNull()
+  expect(store.get(tabsAtom)).toHaveLength(0)
+  expect(reconcileBrowserTabs(store, makeState('ordinary'))).toBe('__browser__:ordinary:page-1')
+  expect(store.get(tabsAtom).some(t => t.type === 'browser' && t.sessionId === 'ordinary')).toBe(true)
+  expect(reconcileBrowserTabs(store, makeState('deleted'))).toBeNull()
+  expect(store.get(tabsAtom).some(t => t.sessionId === 'deleted')).toBe(false)
 })
