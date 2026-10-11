@@ -84,7 +84,9 @@ Main 发起执行时仍需要现有窗口的 `webContents` 用于运行事件转
 
 **P02 最新证据**：在 `42fd57fd` 的 [PR CI](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38173768799) 中受控工具/账本/权限/原件预览探针 **14/14 PASS**，全仓 3728 pass / 5 skip / 0 fail，Electron 构建、typecheck、边界检查通过。真实 Pi/model 与真实扫描型 PDF 的 Electron 渲染仍 NOT-RUN。
 
-**仍未完成的门禁**：P02 真实模型/原件全页视觉运行合并最终 E2E；P03 的无页面依赖受控探针在推进中，真实 ACK/切页仍未实现；P04–P05 Pocket/桌面普通入口隔离、P06 迟到 stop、P07 重启与删除、P08 普通 Agent 回归，均需后续独立证据。详见 [29 号 P01–P08](29-background-session-preflight-audit.md)。
+**P03-S01 新增验证**：在提交 `3a345227` 的 [PR CI](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38175575480) 中，现有 Main runner 无页面目标仍可收尾、V2 `running` 早于真实执行权的两项探针 **2/2 PASS**；全仓 3730 pass / 5 skip / 0 fail，D2 与审核基线均通过。此项不证明真实 Electron 跨页运行。
+
+**仍未完成的门禁**：P02 真实模型/原件全页视觉运行合并最终 E2E；P03-S02 真实 ACK/切页桥接仍未实现；P04–P05 Pocket/桌面普通入口隔离、P06 迟到 stop、P07 重启与删除、P08 普通 Agent 回归，均需后续独立证据。详见 [29 号 P01–P08](29-background-session-preflight-audit.md)。
 
 ## 6. 后续严格按这个顺序执行
 
