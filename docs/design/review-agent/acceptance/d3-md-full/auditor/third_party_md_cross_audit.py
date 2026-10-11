@@ -101,7 +101,7 @@ def audit(a_root, b_root, actual_plan, original=None):
     require(authority_counts == {"request-scope":21,"unverified-policy":56},
             f"source authority drift: {dict(authority_counts)}")
     require(len(plan["targets"]) == 8, "actual target count drift")
-    require(any(x["operation"] == "copy" for x in plan["targets"]),"missing copy")
+    require(any(x.get("operation") == "copy" for x in plan["targets"]),"missing copy")
     require(not any(x.get("operation") == "certified_copy" for x in plan["targets"]),
             "certified_copy assumption changed; revisit scope conclusions")
     requires_full_pi = [x for x in al.values() if x.get("status")=="implemented-and-tested"]
