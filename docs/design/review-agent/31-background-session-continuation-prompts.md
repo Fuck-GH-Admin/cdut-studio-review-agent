@@ -10,7 +10,7 @@
 仓库：https://github.com/Fuck-GH-Admin/cdut-studio-review-agent
 正在开发的 Draft PR：https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/21
 分支：feat/review-owned-background-sessions
-最新已知的旧会话交接基线是 2026-10-12 HEAD cbdd0a8c86bafc6bff60781de466b0ba963d27e2；这只是参照，不代表当前 HEAD，必须从 GitHub 重新核验。
+最近一次 P04-S02 冻结代码 SHA 是 68ef5128025c61b6c737be9baa82f69aefb042fc（受控 CI #38186002063 SUCCESS）；后续已有交接文档提交，必须以 GitHub 当前 HEAD 为准；这只是参照，不代表当前 HEAD，必须从 GitHub 重新核验。
 
 开始前必须用 GitHub 连接器完整阅读下列 PR 分支内文档，不能只读 main：
 - docs/design/review-agent/27-background-review-session-proposal.md
@@ -19,13 +19,13 @@
 - docs/design/review-agent/31-background-session-continuation-prompts.md
 还要核对 PR 描述、最新 HEAD、实际 changed files 与 CI，针对下一批再阅读相关真实生产源码、测试和调用链。若文档与源码冲突，以当前源码/测试事实为准，同时指出并修正文档，不能凭记忆认定已实现。
 
-现状：P01/P02 与 P03-S01～S03 已有受控测试；P04-S01「桌面入口隔离第一批次」受控 8/8 PASS，冻结代码提交 3096ba6f，原 Goal/Stop 旧测试夹具问题已修复，PR #21 保持 Draft。P04 整体 PARTIAL，P05～P08 和真实后台 IPC/跨页 E2E 仍未完成。29 号文档 LIVE-01～LIVE-08 的八项实机验收均 NOT-RUN，必须留到最终统一验证，不可自动勾选。
+现状：P01/P02 与 P03-S01～S03 已有受控测试；P04-S01 桌面主路径 8/8 PASS、P04-S02 历史 Tab 恢复/重开 7/7 PASS（全仓 3755 pass / 5 skip / 0 fail；D2 与 Review Baseline SUCCESS），PR #21 保持 Draft。P04 整体 PARTIAL，P05～P08 和真实后台 IPC/跨页 E2E 仍未完成。29 号文档 LIVE-01～LIVE-08 的八项实机验收均 NOT-RUN，必须留到最终统一验证，不可自动勾选。
 
-本轮只推进 P04-S02：优先审计并以最小局部修改封住历史 Agent/Preview/Browser Tab 的持久化恢复、重新打开/跨窗口绑定时泄露 review owner 的路径；普通会话历史 Tab 必须正常工作。不要一次把剩余全部桌面 IPC、删除后迟到事件、Pocket/Feishu、后台审核正式 IPC 一并改掉；如果这些部分与 S02 不可分割，先给出具体调用链与理由，控制范围，剩余部分必须继续登记为后续 P04-S03/S04 等小批次。
+本轮只推进 P04-S03：重点审计已删除 review owner 后迟到的 session_projection、stream、旧列表/权限快照、SDK completion 等从未知 ID 再插入普通界面的路径。先核对可信删除语义与现有事件机制，再为 owner 删除后的墓碑记录（tombstone）或同等最小阻断补负例，普通 Agent 的创建/删除/刷新仍须保持原行为。不要同批做全部剩余桌面 IPC 和跨窗口队列；这些明确留 P04-S04。不得推进 P05、后台审核正式公共 IPC 或全 UI 改造。
 
-执行习惯：先看代码验证真实缺口，复用现有 owner、Session Manager、Tab/窗口现成机制，不另造会话系统。只改本批必要生产代码与测试，补内部 owner、旧快照、缺失/删除元数据、异步迟到恢复、普通会话不受影响的正反例。按实际冻结 SHA 查 GitHub CI（全仓、D2、Review baseline），失败必须修复后重跑，不能把未运行当 PASS。
+执行习惯：先看代码验证真实缺口，复用现有 owner、Session Manager、Tab/窗口现成机制，不另造会话系统。只改本批必要生产代码与测试，补已删除 owner 的异步事件/旧快照负例、可信 tombstone 的必要时序与普通会话不受影响的正反例。按实际冻结 SHA 查 GitHub CI（全仓、D2、Review baseline），失败必须修复后重跑，不能把未运行当 PASS。
 
-每批结束必须更新 29 号文档的阶段状态、代码/CI SHA、通过/失败/NOT-RUN、P04 剩余入口及 LIVE-06 缺口；同步维护 27/30、PR #21 说明。不要改动 LIVE-01～08 的 NOT-RUN，除非真的取得对应实机证据。总结列出改动、测试证据、剩余风险、下一小批次建议；本轮完成即停止，不擅自推进 P04-S03、P05 或合并/解除 Draft。未经我明确验收，不合并 PR。
+每批结束必须更新 29 号文档的阶段状态、代码/CI SHA、通过/失败/NOT-RUN、P04 剩余入口及 LIVE-06 缺口；同步维护 27/30、PR #21 说明。不要改动 LIVE-01～08 的 NOT-RUN，除非真的取得对应实机证据。总结列出改动、测试证据、剩余风险、下一小批次建议；本轮完成即停止，不擅自推进 P04-S04、P05 或合并/解除 Draft。未经我明确验收，不合并 PR。
 
 如果最新 HEAD 已包含本轮能力，先做差距核验，不重复造轮子；如果无法访问 GitHub 或 CI，要明确写未验证，不能推断成功。
 ```
