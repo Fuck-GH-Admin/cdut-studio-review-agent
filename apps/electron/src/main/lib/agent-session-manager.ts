@@ -57,6 +57,8 @@ import {
   normalizeAgentRuntime,
   type AgentSessionMeta,
   type AgentSessionOwner,
+  isReviewOwnedAgentSession,
+  isVisibleAgentSession,
   type AgentMessage,
   type SDKMessage,
   type SDKUserMessage,
@@ -355,7 +357,7 @@ export function countArchivedAgentSessions(): number {
   const index = readIndex()
   let count = 0
   for (const s of index.sessions) {
-    if (s.archived && !s.draft) count += 1
+    if (s.archived && isVisibleAgentSession(s)) count += 1
   }
   return count
 }
@@ -2734,7 +2736,7 @@ export function autoArchiveAgentSessions(daysThreshold: number): number {
   let count = 0
 
   for (const session of index.sessions) {
-    if (!session.pinned && !session.archived && session.updatedAt < threshold) {
+    if (!isReviewOwnedAgentSession(session) && !session.pinned && !session.archived && session.updatedAt < threshold) {
       session.archived = true
       count++
     }
@@ -2802,7 +2804,7 @@ export async function searchAgentSessionMessages(query: string): Promise<AgentMe
 
   for (const session of index.sessions) {
     if (results.length >= maxResults) break
-    if (session.draft) continue
+    if (!isVisibleAgentSession(session)) continue
 
     const filePath = getAgentSessionMessagesPath(session.id)
     if (!existsSync(filePath)) continue
@@ -2966,7 +2968,7 @@ export function searchAgentSessionReferences(input: AgentSessionReferenceSearchI
   const candidates = listAgentSessions()
     .filter((session) => session.workspaceId === workspaceId)
     .filter((session) => !session.archived)
-    .filter((session) => !session.draft)
+    .filter((session) => isVisibleAgentSession(session))
     .filter((session) => session.id !== input?.excludeSessionId)
 
   const results: AgentSessionReferenceSearchResult[] = []
