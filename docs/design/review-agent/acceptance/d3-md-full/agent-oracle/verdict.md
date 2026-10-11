@@ -4,7 +4,7 @@
 
 - **SOURCE-VERIFIED**：指定原 MD 原始字节摘要匹配。
 - **GOLD-INDEX COMPLETE FOR DECLARED CATEGORIES**：42 个 R、15 个 B、14 个 S、16 个 E、16 个独立正文锚点，共 103 个责任 ID，均有源定位、预期语义或禁止边界。
-- **SYNTHETIC-TEST-DESIGN COMPLETE / NOT-RUN**：28 份虚构案卷和隔离预期，Rxx 案例关联 42/42；尚未执行真实 D2/Pi/模型评分。
+- **SYNTHETIC-TEST-DESIGN COMPLETE / NOT-RUN**：30 份虚构案卷和隔离预期，Rxx 案例关联 42/42、全部103个来源责任均有案例关联；尚未执行真实 D2/Pi/模型评分。
 - **AGENT A CONVERSION: NOT-RUN / NOT-ASSESSABLE**：未阅读另一作者任何产物、分支、PR、Check 或 ledger。没有真实映射与 Run，不宣称其转换成功或失败。
 - **CDUT POLICY EFFECTIVENESS: BLOCKED-BY-POLICY-SOURCE**：2026 三份正式表单原件、2017/2024 制度关系、当前有权审批配置及馆方系统数据仍需可信来源。仅业务真值源无阻断。
 - **D2 HIGHER-ORDER RELATION EXPRESSIBILITY: NOT-RUN**：委托替代、多主体、多操作范围、分阶段材料等存在工具风险，尚无本次 Agent A 合法输入/错误日志证据，不能断言已支持或已失败。
