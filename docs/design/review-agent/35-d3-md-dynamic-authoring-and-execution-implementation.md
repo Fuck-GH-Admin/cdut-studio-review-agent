@@ -100,7 +100,7 @@ bun apps/electron/scripts/review-d3-dynamic-case.ts build \
 
 业务输入仅使用 B 的 \`tests/cases/archive-cases.json\`，**绝不向模型/运行材料注入 \`tests/expected\`**。全部 30 案均须明确处理：其中 28 个已知 D2 可支持的操作类型，真实 D1 校验、D2 编译、技术建案、合成文件注册与 Pi \`awaiting-confirmation\` 检查回执；2 个 \`certified_copy\` 明确 \`TOOLING-BLOCKED\`。每个真实技术 Run、plan fingerprint、业务目标、Run ID 和拒止原因均写入 CI artifact。
 
-另有规则库、证据替代、阶段门禁、来源防串用、D3 携包重导入、包指纹篡改、CLI 一键生成及原 D1/D2/D3 回归。电子替代采用独立标记的合成演示源，不声明已获得学校有权部门签批。
+另有规则库、证据替代、阶段门禁、来源防串用、D3 携包重导入、包指纹篡改、CLI 一键生成及原 D1/D2/D3 回归。针对 B Q05/Q30，还额外用一套第三方显式提供的专有 R24 模块完成独立操作目标编译与人工权威门禁验证；**它不是 A 已交付的原始模板，也不意味着已取得签章权限**。电子替代采用独立标记的合成演示源，不声明已获得学校有权部门签批。
 
 **注意评价维度：28 次 pending-only 的 Pi 技术运行不是 28/30 个业务金标 PASS。** B 的独立预期还需在真实模型/审核过程做盲测，实际语义成绩仍 \`NOT-RUN\`。不能把此次技术通过作为上线或签收依据。
 
