@@ -141,7 +141,7 @@ export function instantiateD3ArchiveCaseV1(
         ...(operationId?{operationId}:{})})
       addUse('operation-'+suffix,request.modules.operation,objectKey)
       for(const [n,mod] of (request.modules.byOperation[normalized]??[]).entries())
-        addUse(normalized+'-'+n+'-'+suffix,mod,objectKey)
+        addUse(normalized.replaceAll('_','-')+'-'+n+'-'+suffix,mod,objectKey)
       normalizedOperations.push({from:operation.operation,to:normalized,objectKey})
       void index
     }
