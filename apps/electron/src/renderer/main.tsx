@@ -94,7 +94,6 @@ import {
   tabGroupsAtom,
   toPersistedTabGroups,
 } from './atoms/tab-group-atoms'
-import type { TabItem } from './atoms/tab-atoms'
 import { feishuBotStatesAtom } from './atoms/feishu-atoms'
 import { dingtalkBotStatesAtom } from './atoms/dingtalk-atoms'
 import { currentConversationIdAtom, channelsAtom, channelsLoadedAtom, selectedModelAtom } from '@/atoms/conversation-atoms'
@@ -109,7 +108,7 @@ function ProferToaster(props: Omit<React.ComponentProps<typeof Toaster>, 'theme'
   return <Toaster theme={theme} {...props} />
 }
 import { toast } from 'sonner'
-import { diffCapabilities, isVisibleAgentSession } from '@profer/shared'
+import { diffCapabilities } from '@profer/shared'
 import type { WorkspaceCapabilities } from '@profer/shared'
 import { showCapabilityChangeToasts } from './lib/capabilities-toast'
 import { invalidateFileSnapshotCache, invalidateWorkspaceCapabilitiesCache } from './components/agent/mention-query-utils'
