@@ -17,7 +17,7 @@
 
 `branch-matrix.json`：主体、档案件、操作、校规来源、渠道、证据和阶段的交叉维度，含 15 个分支和 14 个材料槽。
 
-`tests/cases/archive-cases.json`：仅合成申报与材料、虚构人员和测试学校，不含正确答案；`tests/expected/archive-expectations.json`：28 案预期、所涉责任、误判断言及待核边界。**不能一起传给受测 Pi Agent**。
+`tests/cases/archive-cases.json`：仅合成申报与材料、虚构人员和测试学校，不含正确答案；`tests/expected/archive-expectations.json`：30 案预期、所涉责任、误判断言及待核边界。**不能一起传给受测 Pi Agent**。
 
 `check_oracle.py`：Python 标准库静态检测：责任 ID 完整性、索引对应、期望和材料隔离、测试配对、逐操作目标、source anchor 与原文 SHA。未提供原始 MD 时只允许 `PASS-STRUCTURE-ONLY`。
 
