@@ -128,6 +128,7 @@ export function useOpenSession(): OpenSessionFn {
         setCurrentConversationId(null)
         setCurrentAgentSessionId(null)
       }
+      }
       if (requiresAgentSession && !knownSession) {
         void resolveOrdinaryTabSession(sessionId, window.electronAPI.getAgentSessionMeta)
           .then((meta) => {
