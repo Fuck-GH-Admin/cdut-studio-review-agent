@@ -13,7 +13,7 @@
 - `apps/electron/src/main/lib/review/review-background-reuse.probe.test.ts`：真实 `runAgent()` **函数体**与真实 V2 案卷/指派/存储连通；使用受控模拟编排器（非真实 Pi 模型），完整提交、部分完成、错误、取消、busy 五项均 **PASS**。不调用 `openSession`，模拟 WebContents 只是运行事件接收器。
 - [PR CI #38164270451](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270451)，基线 `1e076ea84889d8f29aaff2deffe1078e1c57c1ff`：3714 pass、5 skip、0 fail；类型检查、架构边界、皮肤契约与 Electron main/preload/renderer 构建成功。
 - [D2 Scoped Pi CI #38164270457](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270457) 与 [Review Baseline CI #38164270496](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270496) 均成功。
-- **P01 受控契约 PASS，真实 Pi/Electron NOT-RUN；P02 受控工具/接线探针 14/14 PASS，真实模型与 PDF Electron 视觉 NOT-RUN；P03-S01 2/2、P03-S02 6/6 受控契约 PASS，真实 Main IPC/桌面切页 NOT-RUN；P04–P07 功能验收 NOT-RUN；P08 仅普通 Agent 现有回归基线 PASS，新功能回归 NOT-RUN。** 后续 HEAD 需重新检查 CI，不能把以上数字冒充不同提交的验证结果。
+- **P01 受控契约 PASS，真实 Pi/Electron NOT-RUN；P02 受控工具/接线探针 14/14 PASS，真实模型与 PDF Electron 视觉 NOT-RUN；P03-S01 2/2、S02 6/6、S03 4/4 受控契约 PASS，真实 Main IPC/桌面切页 NOT-RUN；P04–P07 完整功能验收 NOT-RUN；P08 仅普通 Agent 现有回归基线 PASS，新功能回归 NOT-RUN。** 后续 HEAD 需重新检查 CI，不能把以上数字冒充不同提交的验证结果。
 
 ### P02 验证结论：接口已接通，真实执行仍待验收
 
@@ -79,7 +79,7 @@
 | --- | --- | --- |
 | P01 | **契约探针 PASS（5/5）**：真实 `runAgent()` 函数体、V2 run/assignment 在受控模拟编排器里覆盖完整提交、部分完成、失败、取消、busy；**真实 Pi 和 Electron UI NOT-RUN** | 不能据此认定真实模型已跑通；尚须最小真实 Main/Pi 案卷实验检验无 Tab 启动、工具提交及失败收尾 |
 | P02 | **SAFE-WIRING PASS / LIVE-E2E BLOCKED**：严格工具白名单、案卷限定预览委托、后验轮次核验、主进程权限闸门和 V2 续审/压缩探针均已通过。**真实模型调用、真实扫描 PDF Electron 渲染未运行** | 在合成案卷的实际 Pi/桌面测试证明前不能宣称 P02 全部完成，尤其不能据受控 renderer 假图片标记真实视觉能力通过 |
-| P03 | **S01 PASS（2/2）、S02 PASS（6/6）**：从现有 `runAgent()` 的 `onRunOwned` 真信号确认受理，Main 保留执行 Promise；启动未获得所有权时以当前 assignment/run 安全收口，同指派重复启动不触碰先前 owner。**尚未开放 IPC/创建 owner 会话/完成真正 Electron 切页** | 若仅见 V2 `running` 就回复 ACK、忙碌拒绝误伤已有 run、切页后停止或回调重复覆盖，均不得放行 |
+| P03 | **S01 2/2、S02 6/6、S03 4/4 受控测试 PASS**：Main 真实执行权 ACK / V2 收尾仍复用；新 session 的可信 `owner:review-case` 原子落盘，普通更新不可伪造；普通桌面列表/单条元数据/发送及关键修改入口开始阻断，Pocket 列表/按 ID 命令和重放前写日志进行最小隔离。**真正审核 IPC、桌面 Tab/搜索/异步投影全覆盖尚未完成** | 未拥有执行权就回复 ACK，普通/远程入口仍能按 ID 读写内部会话，或被普通 UI/重放重新暴露，不得放行 |
 | P04 | 内部 session 在桌面侧栏、搜索、归档、最近、Tab 恢复、异步 upsert、引用中均不可见；旧普通会话行为保持 | 任一入口重新出现内部会话、破坏普通会话竞态保护 |
 | P05 | Pocket 列表、按 ID 读取与变更、WS 实时事件、事件重放与远程搜索完全隔离；普通会话仍可使用 | 任一 API 通过内部 sessionId 读取/控制或记录敏感事件到远程重放 |
 | P06 | 同一案卷连续两轮运行，旧运行的迟到停止/失败回调不会改写或中止新的运行 | 任何旧 run 影响新 run |
@@ -92,6 +92,14 @@
 - **测试**：`review-background-reuse.probe.test.ts` 注入受控 Orchestrator 并执行**真实 `runAgent()` 函数体**，另接 `review-pi-admission.ts` 与真实 V2 运行/指派。验证（1）仅实际拥有 onRunOwned 才 ACK，ACK 后 Main 异步收尾且窗口消失仍能写入运行终态；（2）busy 拒绝只失败当前准备 run，不伪造前台事件；（3）未获执行权的早退不留 running；（4）同 assignment 重复启动不取消首轮；（5）获得所有权后预检失败最终写 failed；（6）非用户来源/轮次不匹配不能启动。
 - **生产改动边界**：`agent-service.ts` 仅增加可选第四参数 `onRunOwned`，普通 IPC、普通会话调用保持原状；新增 `review-pi-admission.ts` 仅为 Main 内部工具，可由未来可信审核 IPC 桥接委托现有 `runAgent`；**未接入实际审核 IPC、未创建 owner session，也未验证真实 Electron 切页和真实 provider。**
 - **后续小批次**：先完成 owner 的可信持久化与防漏入口守卫，再接专用审核 IPC/受理回执。避免未隔离 owner 时就暴露内部会话给普通列表/远程消息；实际 Main IPC/交互测验统一列在 `LIVE-04/05`，不能凭此自动化结果代签。
+
+### P03-S03 可信归属与基本访问门禁记录（2026-10-12）
+
+- **冻结证据**：代码提交 `759606afec50eeda4943f8c35b7a560e6668e3e2`，[`PR CI #38182548136`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38182548136) **SUCCESS**：P03-S03 **4/4 PASS**，全仓 **3740 pass / 5 skip / 0 fail**，typecheck、package boundaries、skin contract、Electron main/preload/renderer build 均通过；[`D2 #38182548105`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38182548105) 与 [审核基线 #38182548088](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38182548088) 均成功。
+- **最小实现**：共享 `AgentSessionMeta.owner?: {kind:'review-case',caseId}`，`isVisibleAgentSession` 对内部 owner 不展示；`agent-session-manager.ts` 的可信 Main 工厂 `createReviewOwnedAgentSession` 将 owner 与会话元数据**同一次索引写入**，普通创建 IPC 不接受 owner 参数；`updateAgentSessionMeta` 明确拒绝注入/修改 owner，原始低层 `getAgentSessionMeta` / `listAgentSessions` 仍保持内部维护能力。
+- **第一层常规入口屏障**：`ipc.ts` 的普通 LIST/GET_SESSION_META/SEND_MESSAGE 及 DELETE/UPDATE_MODEL/MOVE 均拦截已有 owner；`remote-service.ts` 的列表和按 `sessionId` 基础命令拒绝内部 owner，runtime context 过滤；事件在 `remoteAgentEventLog.append` **之前**过滤，避免新内部流进入 Pocket 重放日志。
+- **负例证据**：[`review-owned-session.p03.test.ts`](../../../apps/electron/src/main/lib/review/review-owned-session.p03.test.ts) 包含 owner 持久化与普通会话差异、运行时恶意 owner 更新被拒、已知 sessionId 的 Pocket 读取/修改/删除被拒、基础实时/重放预过滤。**这不等于全量 Desktop IPC 或 Pocket/Feishu 入口枚举完成**；目前不会创建/启动真正后台 owner session。
+- **不可提前放行**：P04 必须继续覆盖桌面全套单条/检索/引用/归档/历史 Tab/异步 session_projection 与流事件重新插入；P05 必须继续覆盖所有 Pocket 命令别名/嵌套 ID/事件队列和重放/远程搜索/Feishu 等远程入口。**LIVE-06 仍 NOT-RUN**；尤其不能把此轮测试的“基本阻断”宣称为全表面隔离。
 
 ## 最终统一实机验收清单（必须保留到合并前，当前均 NOT-RUN）
 
