@@ -68,8 +68,8 @@ def main():
     ans_by_id = {a.get("caseId"):a for a in answers}
     if len(cases_by_id) != len(testcases) or len(ans_by_id) != len(answers) or set(cases_by_id) != set(ans_by_id):
         fail("case/expected pairing is not bijective")
-    if len(testcases) < 20:
-        fail("minimum 20 adversarial synthetic cases expected")
+    if len(testcases) < 30:
+        fail("minimum 30 adversarial synthetic cases expected")
     all_covered = set()
     for cid, case in cases_by_id.items():
         if not case.get("synthetic"):
@@ -98,6 +98,8 @@ def main():
             fail(f"{cid}: contradictory activation expectation")
     if not {f"R{i:02d}" for i in range(1,43)} <= all_covered:
         fail("R01-R42 not covered by cases")
+    if all_covered != set(ids):
+        fail(f"all 103 duties must be linked to at least one case: missing={sorted(set(ids)-all_covered)}")
     if len(matrix.get("branches",[])) != 15 or len(matrix.get("materialSlots",[])) != 14 or len(matrix.get("antiFalseRejection",[])) != 16:
         fail("branch/material/exception matrix count mismatch")
     source_verified = False
