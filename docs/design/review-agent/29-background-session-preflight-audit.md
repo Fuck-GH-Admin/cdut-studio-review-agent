@@ -1,6 +1,6 @@
 # 29｜审核受控后台会话：开工前依赖审计与阻断门禁
 
-> 2026-10-12；审计源码基线为测试仓库 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`，配套设计 [27 号方案](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。PR #21 仅设计。**本文件属于静态源码审计；没有克隆后跑通本提案的新链路，没有实测新方案，所有开工门禁均为 NOT-RUN。**
+> 2026-10-12；初始源码审计基线 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；后续代码与受控探针仅在 Draft PR #21 分支实施。配套 [27 号实施规范](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。**文档中的 PASS 只对所附冻结提交、测试环境与覆盖范围有效；真实 Pi/Electron/Pocket 验收尚未完成，不得据此合并。**
 
 ## 结论
 
@@ -79,12 +79,31 @@
 | --- | --- | --- |
 | P01 | **契约探针 PASS（5/5）**：真实 `runAgent()` 函数体、V2 run/assignment 在受控模拟编排器里覆盖完整提交、部分完成、失败、取消、busy；**真实 Pi 和 Electron UI NOT-RUN** | 不能据此认定真实模型已跑通；尚须最小真实 Main/Pi 案卷实验检验无 Tab 启动、工具提交及失败收尾 |
 | P02 | **SAFE-WIRING PASS / LIVE-E2E BLOCKED**：严格工具白名单、案卷限定预览委托、后验轮次核验、主进程权限闸门和 V2 续审/压缩探针均已通过。**真实模型调用、真实扫描 PDF Electron 渲染未运行** | 在合成案卷的实际 Pi/桌面测试证明前不能宣称 P02 全部完成，尤其不能据受控 renderer 假图片标记真实视觉能力通过 |
-| P03 | **S01 受控契约探针 PASS（2/2）**：预处理由 Renderer 完成；V2 `running` 不是 Pi 受理确认；真实 `onRunOwned` 是受理边界；Main 运行后切走/销毁窗口仍需写入 V2 终态。S02 之后才改桥接/用户入口 | 未确认真实执行权就给前台成功 ACK；运行在页面卸载后被误停，或忙碌拒绝留下孤儿 running |
+| P03 | **S01 PASS（2/2）**；**S02 Main 受理 ACK 内部适配层已提交（CI 待证）**：从现有 `runAgent()` 的 `onRunOwned` 真信号确认受理，Main 保留执行 Promise；启动未获得所有权时以当前 assignment/run 安全收口，同指派重复启动不触碰先前 owner。**尚未开放 IPC/创建 owner 会话/完成真正 Electron 切页** | 若仅见 V2 `running` 就回复 ACK、忙碌拒绝误伤已有 run、切页后停止或回调重复覆盖，均不得放行 |
 | P04 | 内部 session 在桌面侧栏、搜索、归档、最近、Tab 恢复、异步 upsert、引用中均不可见；旧普通会话行为保持 | 任一入口重新出现内部会话、破坏普通会话竞态保护 |
 | P05 | Pocket 列表、按 ID 读取与变更、WS 实时事件、事件重放与远程搜索完全隔离；普通会话仍可使用 | 任一 API 通过内部 sessionId 读取/控制或记录敏感事件到远程重放 |
 | P06 | 同一案卷连续两轮运行，旧运行的迟到停止/失败回调不会改写或中止新的运行 | 任何旧 run 影响新 run |
 | P07 | app 重启、进程被杀、删除案卷、工作区切换及模型禁用等异常流程 | 永久 running、伪完成、孤儿权限、跨案 transcript |
 | P08 | 普通 Agent 回归（会话、权限、预览、停止、fork、子会话、Pocket、离线桌面回放） | 任何现有公共行为因审核专用分支意外改变 |
+
+## 最终统一实机验收清单（必须保留到合并前，当前均 NOT-RUN）
+
+> 此表是**集中补测登记簿**，不要因为推进新的开发批次删除或自动勾选。全部使用隔离的 `PROFER_CONFIG_DIR` / `PROFER_USER_DATA_DIR`、非真实个人资料的合成案卷，固定测试提交 SHA；如涉及付费模型，使用获授权且受控的模型渠道。执行时在本表逐行填写 **PASS/FAIL/NOT-RUN、操作人、日期、测试数据版本、CI/日志/截图/录像链接、异常工单**。只有自动化测试通过而无对应真实操作证据时，本表仍为 NOT-RUN。
+
+| 统一验收编号 | 原阶段 | 必须进行的实机操作 / 核验点 | 目前状态 |
+| --- | --- | --- | --- |
+| LIVE-01 | P01/P02 | 使用真实 Pi provider 启动合成案卷，工具名单仅包含 `review_read_documents`、`review_inspect_document_image`、`review_submit_result`、`review_inspect_original`、`CompactContext`；尝试或核验普通 Bash/Write/Read/MCP/AskUser 均不可用。审核提交真实正文与 PNG 证据，V2 结果、引用与回执一致 | **NOT-RUN** |
+| LIVE-02 | P02 | 用真实扫描型/解析失败 PDF 验证 Electron 隐藏 renderer 的 `review_inspect_original`：按材料版本 ID 翻页/`scope=all`，检查页数、视觉内容、失败/预算警告、覆盖账本和不可伪造引文；跨案版本、任意路径、符号链接越界需拒绝 | **NOT-RUN** |
+| LIVE-03 | P02 | 真实 Pi 长轮次分批提交，触发 `CompactContext` 或空闲压缩，同 runId 续交/重新进入后恢复事实、缺项和证据引用，未读材料不能伪装已读取 | **NOT-RUN** |
+| LIVE-04 | P03 | 真实 Electron 中验证 HTML/EML 修复与逐事项识别仍在准备阶段；准备结束但尚未获取 `onRunOwned` 时不得显示“后台已受理”；模型预检/忙碌拒绝时不留下孤儿 running，重复点击不影响原 run | **NOT-RUN** |
+| LIVE-05 | P03 | 真正收到 Main ACK 后关闭/切换审核工作台、打开其他页面并返回，Pi 继续运行；刷新案卷从 V2 重取状态，完成/部分完成/失败一致，不靠 React Hook 长轮询保持执行 | **NOT-RUN** |
+| LIVE-06 | P04/P05 | 内部 review owner 会话对桌面侧栏/搜索/归档/Tab 恢复/异步事件及 Pocket 按 ID 操作、消息检索、WS 实时与重放日志全不可见；旧普通 Agent 会话照常可用 | **NOT-RUN** |
+| LIVE-07 | P06/P07 | 同案更新、从头重审、旧轮次迟到取消与异常回调、停止后立即重启、应用重启/强杀、删除案卷、切换工作区和模型停用；无旧 run 误伤新 run、永久 running、幽灵权限或孤儿会话 | **NOT-RUN** |
+| LIVE-08 | P08 | 普通 Pi/Claude Agent 发送、权限、工具、预览、停止、fork、Pocket、原批量 A/B/C 审核保持原行为；冻结版 CI（类型、边界、所有单测与构建）及桌面操作日志均可复验 | **NOT-RUN** |
+
+**统一验收记录模板（每项填写）**：`编号=LIVE-XX；结果=NOT-RUN/PASS/FAIL；执行日期=；操作者=；应用提交 SHA=；虚构案卷数据集版本=；步骤和预期=；实际结果=；日志/截图/录像/CI=；缺陷与复测=。`
+
+**全局放行规则**：任何 LIVE-01～08 未 PASS，不能把 P02/P03/E2E 整体标为通过；尤其不能因当前 S02 的 Main 受理契约自动测试通过而省掉 LIVE-04/05。合并需要完整证明和用户明确验收。
 
 ## 正式开工门槛（ALL required）
 
