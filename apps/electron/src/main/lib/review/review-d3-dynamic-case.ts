@@ -54,7 +54,7 @@ export function instantiateD3ArchiveCaseV1(
   assertId(request.caseKey,'caseKey')
   if(!Array.isArray(request.items)||!request.items.length||request.items.length>100)
     throw new Error('D3_ITEMS_REQUIRED: one or more bounded archive items')
-  const template=base.definitions.templates.find(t=>t.templateId===request.templateId&&t.version===request.version)
+  const template=base.definitions.templates.find(t=>t.templateId===request.templateId&&t.version===request.version)!
   if(!template||template.scenarios?.length)throw new Error('D3_TEMPLATE_MISMATCH: dynamic archive template without scenarios required')
   if(base.advanced && Object.values(base.advanced).some(v=>Array.isArray(v)&&v.length))
     throw new Error('D3_UNMAPPED_ADVANCED: inherited advanced relationships cannot be lost by re-instantiation')
