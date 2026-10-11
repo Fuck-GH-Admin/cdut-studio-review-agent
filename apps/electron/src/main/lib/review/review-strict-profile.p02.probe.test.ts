@@ -199,6 +199,40 @@ describe('P02 existing direct review tools / ledger compatibility', () => {
     expect(getRunV2(ctx.caseId, ctx.prepared.runId)?.checks).toHaveLength(2)
   })
 
+  test('a case-bound tool cannot read another case by supplying its documentVersionId', async () => {
+    const owner = await caseFixture()
+    const foreign = await caseFixture()
+    const { tool } = strictTools(owner.binding)
+    const textResult = await tool('review_read_documents').execute!('foreign-text', {
+      documents: [{ documentVersionId: foreign.textRef.documentVersionId }],
+    })
+    expect(textResult?.details?.acceptedCount).toBe(0)
+    expect(textResult?.details?.rejectedCount).toBe(1)
+    const visualResult = await tool('review_inspect_document_image').execute!('foreign-image', {
+      ...foreign.imageRef, question: '尝试跨案读取图片',
+    })
+    expect(visualResult?.isError).toBeTrue()
+    expect(readArtifact(owner.caseId, owner.prepared.runId, 'node-pi-read-state')).toBeUndefined()
+  })
+
+  test('a stale tool closure cannot submit after its assignment is revoked by a continuing turn', async () => {
+    const ctx = await caseFixture()
+    const stale = strictTools(ctx.binding)
+    finishPiReviewRunV2(ctx.binding, { status: 'completed' })
+    expect(getRunV2(ctx.caseId, ctx.prepared.runId)?.status).toBe('partially-completed')
+    const continued = preparePiReviewRunV2({
+      caseId: ctx.caseId, sessionId: ctx.sessionId,
+      turnId: `renewed-${randomUUID().slice(0, 8)}`,
+      resumeRunId: ctx.prepared.runId,
+    })
+    const denied = await stale.tool('review_submit_result').execute!('stale-submit', {
+      summary: '使用过期指派提交', checks: [], finish: true,
+    })
+    expect(denied?.isError).toBeTrue()
+    expect(JSON.stringify(denied?.details)).toContain('审核授权失效')
+    expect(getRunV2(ctx.caseId, continued.runId)?.status).toBe('running')
+  })
+
   test('a non-user-triggered turn cannot write review result even if handed a binding', async () => {
     const ctx = await caseFixture()
     const { tool } = strictTools(ctx.binding, 'automation')
