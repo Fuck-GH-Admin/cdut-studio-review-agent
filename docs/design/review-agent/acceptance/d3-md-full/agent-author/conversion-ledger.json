@@ -6,7 +6,7 @@
   "templateId": "g01-archive-utilization",
   "templateVersion": 1,
   "planFingerprint": null,
-  "planStatus": "NOT-RUN: no actual D2 compiler response; proposed check IDs only",
+  "planStatus": "NOT-RUN; proposedCheckIds derive from D1 instance tree; no actual D2 mapping, fingerprint, or SourceRef evidence",
   "requirements": [
     {
       "id": "R01",
@@ -40,9 +40,8 @@
       "sourceBinding": [
         "source-md"
       ],
-      "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "provisionalGap": "G-RUNTIME-NOT-RUN"
+      "status": "implemented-not-tested",
+      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
     },
     {
       "id": "R03",
@@ -76,9 +75,8 @@
       "sourceBinding": [
         "source-md"
       ],
-      "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "provisionalGap": "G-RUNTIME-NOT-RUN"
+      "status": "implemented-not-tested",
+      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
     },
     {
       "id": "R05",
@@ -517,9 +515,8 @@
       "sourceBinding": [
         "source-md"
       ],
-      "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "provisionalGap": "G-RUNTIME-NOT-RUN"
+      "status": "implemented-not-tested",
+      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
     },
     {
       "id": "R28",
@@ -534,9 +531,8 @@
       "sourceBinding": [
         "source-md"
       ],
-      "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "provisionalGap": "G-RUNTIME-NOT-RUN"
+      "status": "implemented-not-tested",
+      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
     },
     {
       "id": "R29",
@@ -708,9 +704,8 @@
       "sourceBinding": [
         "source-md"
       ],
-      "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "provisionalGap": "G-RUNTIME-NOT-RUN"
+      "status": "implemented-not-tested",
+      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
     },
     {
       "id": "R39",
@@ -757,9 +752,8 @@
       "sourceBinding": [
         "source-md"
       ],
-      "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "provisionalGap": "G-RUNTIME-NOT-RUN"
+      "status": "implemented-not-tested",
+      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
     },
     {
       "id": "R42",
@@ -795,9 +789,8 @@
       "sourceBinding": [
         "source-md"
       ],
-      "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "provisionalGap": "G-RUNTIME-NOT-RUN"
+      "status": "implemented-not-tested",
+      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
     },
     {
       "id": "X02",
@@ -953,9 +946,8 @@
       "sourceBinding": [
         "source-md"
       ],
-      "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "provisionalGap": "G-RUNTIME-NOT-RUN"
+      "status": "implemented-not-tested",
+      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
     },
     {
       "id": "X10",
