@@ -8,6 +8,7 @@ on:
       - 'apps/electron/src/main/lib/review/**'
       - 'apps/electron/scripts/review-d2-plan.ts'
       - 'docs/design/review-agent/fixtures/d2-**'
+      - 'docs/design/review-agent/fixtures/d3-r0-handoff-manifest.json'
       - '.github/workflows/review-d2-tests.yml'
   workflow_dispatch:
 permissions:
