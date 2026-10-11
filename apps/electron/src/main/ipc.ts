@@ -3301,8 +3301,8 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.GET_SESSION_PROCESS_COUNT,
     async (event, sessionId: string): Promise<number> => {
-      assertOrdinaryAgentSession(sessionId)
       assertSensitiveAgentIpcSender(event)
+      assertOrdinaryAgentSession(sessionId)
       const owned = await listOwnedRuntimeProcesses(sessionId)
       const keys = new Set<number>()
       for (const record of owned) {
@@ -3318,9 +3318,9 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.LIST_SESSION_PROCESSES,
     async (event, input: ListSessionProcessesInput): Promise<SessionProcessInfo[]> => {
+      assertSensitiveAgentIpcSender(event)
       if (!input || typeof input.sessionId !== 'string') throw new Error('无效的会话标识')
       assertOrdinaryAgentSession(input.sessionId)
-      assertSensitiveAgentIpcSender(event)
       const results = new Map<number, SessionProcessInfo>()
       const owned = await listOwnedRuntimeProcesses(input.sessionId)
       for (const record of owned) {
@@ -3357,9 +3357,9 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.KILL_PROCESS,
     async (event, input: KillProcessInput): Promise<{ ok: boolean; message: string }> => {
+      assertSensitiveAgentIpcSender(event)
       if (!input || typeof input.sessionId !== 'string') throw new Error('无效的会话标识')
       assertOrdinaryAgentSession(input.sessionId)
-      assertSensitiveAgentIpcSender(event)
       if (!input || typeof input.pid !== 'number') {
         throw new Error('无效的 kill 目标')
       }
@@ -3909,9 +3909,9 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.GET_TASK_OUTPUT,
     async (event, input: GetTaskOutputInput): Promise<GetTaskOutputResult> => {
+      assertSensitiveAgentIpcSender(event)
       if (!input || typeof input.sessionId !== 'string') throw new Error('无效的会话标识')
       assertOrdinaryAgentSession(input.sessionId)
-      assertSensitiveAgentIpcSender(event)
       if (!input || typeof input !== 'object') throw new Error('无效的后台任务查询参数')
       if (typeof input.sessionId !== 'string' || !input.sessionId.trim() || input.sessionId.length > 200) {
         throw new Error('无效的后台任务会话标识')
@@ -3973,9 +3973,9 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.STOP_TASK,
     async (event, input: StopTaskInput): Promise<void> => {
+      assertSensitiveAgentIpcSender(event)
       if (!input || typeof input.sessionId !== 'string') throw new Error('无效的会话标识')
       assertOrdinaryAgentSession(input.sessionId)
-      assertSensitiveAgentIpcSender(event)
       if (!input || typeof input !== 'object') throw new Error('无效的后台任务停止参数')
       if (typeof input.sessionId !== 'string' || !input.sessionId.trim() || input.sessionId.length > 200) {
         throw new Error('无效的后台任务会话标识')
@@ -4076,8 +4076,8 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.UPDATE_SESSION_AGENT_RUNTIME,
     async (event, sessionId: string, runtime: AgentRuntime): Promise<AgentSessionMeta> => {
-      assertOrdinaryAgentSession(sessionId)
       assertSensitiveAgentIpcSender(event)
+      assertOrdinaryAgentSession(sessionId)
       if (typeof sessionId !== 'string' || !sessionId.trim() || sessionId.length > 200) {
         throw new Error('Agent 会话标识无效')
       }
