@@ -102,7 +102,11 @@ function existingRunAgentHarness(
   const events: AgentStreamPayload[] = []
   const wcSends: string[] = []
   // This fake WebContents is NOT an Agent tab. No openSession or renderer is created.
-  const webContents = { isDestroyed: () => false, send(channel: string) { wcSends.push(channel) } }
+  const windowState = { destroyed: false }
+  const webContents = {
+    isDestroyed: () => windowState.destroyed,
+    send(channel: string) { if (!windowState.destroyed) wcSends.push(channel) },
+  }
   const deps = {
     orchestrator: { sendMessage, isActive: () => false },
     createAgentRunOutcomeReporter,
@@ -125,7 +129,13 @@ function existingRunAgentHarness(
     ...Object.keys(deps),
     `${compiled}\nreturn runAgent`,
   )(...Object.values(deps)) as (input: AgentSendInput, sender: typeof webContents) => Promise<void>
-  return { run: (input: AgentSendInput) => compiledFunction(input, webContents), events, wcSends }
+  return {
+    run: (input: AgentSendInput) => compiledFunction(input, webContents),
+    // Simulates the backing window disappearing after a Main-owned run starts.
+    destroyWindow: () => { windowState.destroyed = true },
+    events,
+    wcSends,
+  }
 }
 
 describe('P01 direct Pi review can reuse runAgent without navigating to a chat tab', () => {
@@ -197,5 +207,56 @@ describe('P01 direct Pi review can reuse runAgent without navigating to a chat t
     })
     await expect(harness.run(input)).rejects.toBeInstanceOf(AgentRunAlreadyActiveError)
     expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('running')
+  })
+})
+
+describe('P03-S01 Main-owned Pi stage must not depend on review page lifetime', () => {
+  test('after runtime ownership, losing its WebContents does not lose final V2 ledger state', async () => {
+    const { binding, input } = await caseFixture()
+    let resume!: () => void
+    let accepted!: () => void
+    const gate = new Promise<void>((resolve) => { resume = resolve })
+    const onOwned = new Promise<void>((resolve) => { accepted = resolve })
+    const harness = existingRunAgentHarness(async (_input, callbacks) => {
+      callbacks.onRunOwned?.()
+      accepted()
+      await gate
+      callbacks.onComplete([], { resultSubtype: 'success' })
+    })
+    const inFlight = harness.run(input)
+    await onOwned
+    expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('running')
+    // No ordinary Agent tab was created. Destroying even the whole sender
+    // is stronger than unmounting only the review page, and must not change
+    // the Main runner's audit outcome.
+    harness.destroyWindow()
+    resume()
+    await inFlight
+    expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('partially-completed')
+    expect(harness.events.some((event) => event.kind === 'run_complete')).toBeTrue()
+  })
+
+  test('V2 running alone is NOT an acceptance acknowledgement before onRunOwned', async () => {
+    const { binding, input } = await caseFixture()
+    let release!: () => void
+    let reached!: () => void
+    const gate = new Promise<void>((resolve) => { release = resolve })
+    const entered = new Promise<void>((resolve) => { reached = resolve })
+    let owned = false
+    const harness = existingRunAgentHarness(async (_input, callbacks) => {
+      reached()
+      await gate
+      owned = true
+      callbacks.onRunOwned?.()
+      callbacks.onComplete([], { resultSubtype: 'success' })
+    })
+    const task = harness.run(input)
+    await entered
+    expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('running')
+    expect(owned).toBeFalse()
+    release()
+    await task
+    expect(owned).toBeTrue()
+    expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('partially-completed')
   })
 })
