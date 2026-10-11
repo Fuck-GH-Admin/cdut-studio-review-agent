@@ -105,7 +105,7 @@ describe('D3 dynamic case + D2 structured gates against frozen independent A/B',
       try {result=instantiateD3ArchiveCaseV1(source,args)}
       catch(e){
         const message=String(e instanceof Error?e.message:e)
-        expect(message).toContain('D3_UNSUPPORTED_OPERATION')
+        expect(message).toContain('D3_SPECIAL_OPERATION_MODULE_REQUIRED')
         expect(b.archiveItems.some((i:any)=>i.operations.some((o:any)=>o.operation==='certified_copy'))).toBeTrue()
         statuses.push({caseId:b.caseId,status:'TOOLING-BLOCKED',reason:message})
         continue
@@ -196,6 +196,62 @@ describe('D3 dynamic case + D2 structured gates against frozen independent A/B',
       .toThrow('D1_UNMAPPABLE_EXECUTION_GATE')
     w.sourceBindings[0]!.gate={when:{kind:'evidence-any',supportsFacts:[]}}
     expect(validateReviewAuthoringV1(w).some(e=>e.includes('D2_GATE_BAD_EVIDENCE_ALTERNATIVES'))).toBe(true)
+  })
+  test('certified_copy R24 retains distinct operation and authority gate when a dedicated module is authored',()=>{
+    const base=structuredClone(source)
+    base.definitions.modules.push({
+      moduleId:'archive-certified-copy',version:1,
+      name:'档案证明与盖章的人工权限',purpose:'单独核验 R24，绝非普通复制',
+      scope:'档案证明申请',limits:'AI 不能出具/盖章/批准',
+      source:{kind:'synthetic',note:'验证结构上的人工门禁，不是学校授权'},
+      tasks:[{id:'r24',title:'正式档案证明的有权部门审批',
+        requirement:'R24: 档案证明出具仅可由有权机构作最终决定；技术检查不得自动放行',
+        completion:'等待并独立核对正式批准',limits:'不得从普通 copy 或委托直接推定正式证明'}],
+    })
+    base.definitions.templates[0]!.modules.push({
+      id:'certified-prototype',moduleId:'archive-certified-copy',version:1,
+      objectKey:'i01/certified_copy',
+    })
+    base.sourceBindings.push({
+      checkId:'g01-archive-utilization@1:module/certified-prototype/r24',
+      sourceIds:['source-md','source-cd'],
+      applicabilityNote:'R24 simulated scope and unverified school approval; not legal authority',
+      gate:{
+        when:{kind:'case-stage',stages:['draft','submitted','reviewing','decided']},
+        material:{provider:'authority',dueStages:['decided'],
+          alternatives:['d2:archive:certified-approval']},
+      },
+    })
+    expect(validateReviewAuthoringV1(base)).toEqual([])
+    const results:Array<Record<string,unknown>>=[]
+    for(const id of ['Q05','Q30']){
+      const c=bCases.find(x=>x.caseId===id)!
+      const request=req(c)
+      request.modules.byOperation.certified_copy=['archive-certified-copy']
+      const result=instantiateD3ArchiveCaseV1(base,request)
+      const target=result.selection.targets.find(t=>t.operation==='certified_copy')
+      expect(target).toBeDefined()
+      expect(target?.objectKey).toContain('/certified_copy/')
+      expect(result.selection.targets.some(t=>t.operation==='copy')).toBe(false)
+      const caseV2:any={
+        id:'r24-'+id.toLowerCase(),templateId:request.templateId,templateVersion:request.version,
+        title:'专用人工证明合成预审',objectType:'document',
+        caseFields:{},subjects:[],documents:[],stage:'draft',revision:0,
+        createdAt:'2026-10-11T00:00:00.000Z',updatedAt:'2026-10-11T00:00:00.000Z',
+      }
+      const plan=compileD2RuntimePlan(result.workspace,result.selection,caseV2)
+      const r24=plan.mapping.find(m=>m.checkId.includes('/r24'))!
+      expect(r24.objectKey).toBe(target!.objectKey)
+      expect(r24.authority).toBe('unverified-policy')
+      expect(r24.gate?.material?.provider).toBe('authority')
+      const mock=fakeAggregate('draft',target!.subjectId)
+      expect(validateD2GuardSubmission(mock,r24,'non-compliant',[])).toContain('D2_MATERIAL_NOT_DUE')
+      results.push({caseId:id,checkId:r24.checkId,authority:r24.authority,
+        operation:target?.operation,objectKey:target?.objectKey,approvalStatus:'AUTHORITY-OWNED-NOT-VERIFIED'})
+    }
+    emit('certified-copy-distinct-operation-manual-gate.json',{records:results,
+      independentGoldCaseVerdicts:'NOT-SCORED',
+      noAutomaticCertifyingAuthority:true})
   })
   test('author can explicitly bind E03/E13 electronic alternatives to dynamic copy checks without elevating policy',()=>{
     const input=req(bCases.find(c=>c.caseId==='Q02')!)
