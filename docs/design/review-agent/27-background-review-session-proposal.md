@@ -22,7 +22,7 @@
 | 运行状态与历史 | `run-store-v2.ts`、现有工作台结果与待处理项 | V2 运行记录是唯一业务状态来源；前台只做简单状态投影 |
 | 停止 | `stopAgentAndWait(sessionId)` | 审核入口必须先校验当前绑定的 run，再真正停止并等待释放 |
 | 进程重启 | `markStaleRunsInterrupted`、原 Pi resume | 既有运行标记中断，检查点保留；恢复必须由用户发起，不假装后台持续运行 |
-| 审核工具 | `pi-review-ops-tools.ts` 与适配器既有 `toolProfile:'review'` | 先通过 P02 兼容性验证，再让直接审核使用严格的审核工具档案；不得放宽权限 |
+| 审核工具 | `pi-review-ops-tools.ts`、既有 `toolProfile:'review'` 与账本压缩 | P02 受控探针已证明三个 direct 审核工具、图像读取、续审和摘要可复用；**strict profile 不会过滤自定义工具**，接入前必须由 Main 绑定运行的精确白名单裁剪，并处理扫描件原件预览 |
 
 **核心决定**：只新增一个很薄的 Main 审核调用适配层，不重新实现 session manager、message store、permission service、run ledger 或 agent scheduler。
 
@@ -59,6 +59,8 @@ owner?: { kind: 'review-case'; caseId: string }
 
 Main 发起执行时仍需要现有窗口的 `webContents` 用于运行事件转发，**不等于打开 Agent Tab**；若不满足条件，应 fail closed，不得通过虚构窗口/绕过 SDK 解决。
 
+**P02 安全接线要求**：只能由当前有效的 `review-case` 主进程绑定触发严格 `toolProfile:'review'`；`piCustomTools` 在传给 Adapter 之前先按 exact name 保留 direct 案卷工具，`CompactContext` 由 Adapter 自带；不得把其他 `buildPiBuiltinTools`、`buildPiMcpTools`、云、预设修改或任意文件操作工具带入。扫描型 PDF 的 `inspect_preview` 需要复用既有工具并限制为当前案卷真实原件；若安全范围暂不可保证，则标“待人工核验”，不可宣称等效全材料视觉审核。
+
 ### 4.3 Renderer 只改必要的调用点
 
 保留 `createReviewActionsController`、`RightPanel`、`RunResultPanel` 与原有案卷数据模型。在既有 `startPiReview` 回调中改用审核专用 start/status/stop IPC，移除普通 `openSession('agent', ...)` 和人工维护正常聊天 `agentSessionsAtom` 的部分。状态只显示“审核中 / 需要处理 / 已结束 / 未完成”，**不展示材料读取阶段、token、工具调用或百分比**。
@@ -84,7 +86,7 @@ Main 发起执行时仍需要现有窗口的 `webContents` 用于运行事件转
 
 ## 6. 后续严格按这个顺序执行
 
-1. **验证优先**：先完成 29 号 P02（严格工具与会话恢复）以及启动/切页的真实 Main 最小实验。任一不通过，停下调整接线；不立刻写完整 UI。
+1. **验证优先**：29 号 P02 的 direct 工具兼容性已有受控证据；下一步先验证上游工具白名单 + 扫描件视觉范围，再做真实 Pi 案卷实验和切页 Main 实验。任一不通过，先调整接线，不立刻写完整 UI。
 2. **Session 归属及 Guard**：先写普通入口的拒绝/可见性负例，再以最小字段增加 owner；不可更改普通 Agent 既有公共行为。
 3. **薄 Bridge**：仅接入现有 `runAgent`、`preparePiReviewRunV2`、`finishPiReviewRunV2`、`stopAgentAndWait`。逐个测试成功、失败、取消、竞态、重启、删案。
 4. **最少 UI 改动**：仅修改审核触发与业务状态；Pocket、历史 Tab、事件回填与普通聊天逐项回归。
