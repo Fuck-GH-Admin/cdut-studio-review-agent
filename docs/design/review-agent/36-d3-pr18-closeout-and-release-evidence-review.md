@@ -89,3 +89,8 @@ D2: preview → register/create(候选技术案卷) → Pi prepare/submit/verify
 - 集成提交与 PR #18 的最终 HEAD 不是同一 SHA，即使内容经 squash 等价，**不能把合并前的绿灯冒认为合并后的同 SHA 验收**。本段补记又产生后续 D3 分支提交，正式签发仍需读取最新 PR #9 HEAD 的实际 CI 结果。
 - 此处的“D3 工具已具备交接能力”是依据 PR #11/#12/#13、旧版 D3 五组 CI、PR #18 六组 CI 的有条件技术判断；**正式 D3 Release 仍未签署**。合并后逐项复核 CI，再决定是否签署“Agent-first 工具技术 Release”；完整业务 MD 金标、真实在线模型准确率、校方规则认定不得随之自动签署。
 - 保持对 D4 的正确边界：档案专用 `instantiateD3ArchiveCaseV1` 只用于档案业务；其他业务仍从现有 D1/D3/D2 契约起步。未来如遇真实可重现的其他领域工具缺口，另开针对性的 D3 修复并进行依赖影响与回归。
+
+
+## 7. 固定 SHA 集成验收重放
+
+为避免 PR #9 当前与 main 合并冲突阻断 `pull_request` 触发，另行创建只读用途的 [PR #19](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/19)：以历史 D3 基线 `6747de44` 的隔离分支为 base，完整新 D3 代码树为 head，**只用于 GitHub Actions 运行，不合入任何旧基线**。该 PR 的差异包含 PR #18 的实现变更，因而会运行完整 PR/D1/D2/D3/旧回归及动态 A/B 专项。所有回放结论仅以此验证分支最后真实 HEAD 的 Actions 状态为准；验证完成后仅允许将已验收的提交 fast-forward 更新 D3 开发分支，不得合并到 main。
