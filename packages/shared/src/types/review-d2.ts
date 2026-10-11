@@ -14,7 +14,7 @@ export interface D2TargetBinding {
   kind: D2TargetKind
   scenario?: string
   itemId?: string
-  operation?: 'read' | 'copy' | 'excerpt' | 'borrow'
+  operation?: 'read' | 'copy' | 'excerpt' | 'borrow' | 'certified_copy'
   /** Optional stable per-request operation identity; disambiguates same-kind operations. */
   operationId?: string
 }
