@@ -124,6 +124,11 @@ export function validateD2GuardSubmission(
     return 'D2_MATERIAL_NOT_DUE: 当前阶段尚不能索取该材料或判申请人缺件'
   if(material.provider==='authority'&&['non-compliant','awaiting-supplement'].includes(status))
     return 'D2_MATERIAL_AUTHORITY_OWNED: 有权部门待签批不得变成申请人缺件'
+  // A reviewer-confirmed material link is not a signed decision by the competent
+  // department. Until an authenticated authority actor workflow exists, even a
+  // well-scoped document cannot turn an AI pre-review into a legal approval.
+  if(material.provider==='authority'&&status==='compliant')
+    return 'D2_MATERIAL_AUTHORITY_DECISION_REQUIRED: 缺少有权部门独立可信审批，不能从材料或AI结论推定已批准'
   if(status==='compliant'&&!satisfied)
     return 'D2_MATERIAL_ALTERNATIVE_UNVERIFIED: 合法材料替代需在当前对象存在审核员确认的精确证据绑定'
   if(satisfied&&['non-compliant','awaiting-supplement'].includes(status))
