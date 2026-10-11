@@ -41,6 +41,23 @@ function verifyCurrentBinding(binding: PiReviewBinding): void {
   }
 }
 
+const STRICT_RUNTIME_TOOL_NAMES = new Set<string>([
+  ...DIRECT_OPS,
+  'review_inspect_original',
+  'CompactContext',
+])
+
+/** Host-side permission gate for direct review turns; no user-facing technical prompt. */
+export function isAuthorizedDirectReviewTool(binding: PiReviewBinding, toolName: string): boolean {
+  if (!STRICT_RUNTIME_TOOL_NAMES.has(toolName)) return false
+  try {
+    verifyCurrentBinding(binding)
+    return true
+  } catch {
+    return false
+  }
+}
+
 function caseRoot(binding: PiReviewBinding): string {
   assertSafeReviewStorageId(binding.caseId, 'caseId')
   return realpathSync(join(getConfigDir(), 'review-cases', binding.caseId))
