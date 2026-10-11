@@ -352,10 +352,64 @@ describe('D3 dynamic case + D2 structured gates against frozen independent A/B',
       })
     }catch(e){staleError=String(e instanceof Error?e.message:e)}
     expect(staleError).toContain('案卷材料或人工事实已变化')
+    // POSITIVE CONTROL: the current material AND both independent confirmed
+    // reviewer links must exist BEFORE starting a fresh fixed-input Pi Run.
+    const goodCaseId='q1-electronic-option-positive'
+    const good=await createD2TechnicalCase({
+      caseId:goodCaseId,title:'合成电子替代已确认的独立新案卷',
+      actor,workspace:fixture.workspace,selection:fixture.selection,
+    })
+    expect(good.ok).toBeTrue()
+    if(!good.ok)throw Error(good.message)
+    const gd=await registerMaterial(goodCaseId,{
+      requestId:'good-doc',actor,expectedRevision:readAggregate(goodCaseId)!.caseV2.revision,
+      payload:{sourcePath:docpath,role:'evidence'},
+    })
+    expect(gd.ok).toBeTrue()
+    if(!gd.ok)throw Error(gd.message)
+    const goodDocument=readAggregate(goodCaseId)!.caseV2.documents[0]!
+    const goodBlock=goodDocument.blocks.find(b=>b.kind!=='image')!
+    const goodRef={documentVersionId:goodDocument.versionId,blockId:goodBlock.blockId,
+      quote:'合成电子证明已提供'}
+    for(const [idx,fact] of ['d2:archive:copy','d2:document:electronic'].entries()){
+      const next=await setEvidenceLink(goodCaseId,{
+        requestId:'good-link-'+idx,actor,
+        expectedRevision:readAggregate(goodCaseId)!.caseV2.revision,
+        payload:{documentVersionId:goodRef.documentVersionId,
+          subjectIds:[target.subjectId!],supportsFact:fact,linkedBy:'user'},
+      })
+      expect(next.ok).toBeTrue()
+      if(!next.ok)throw Error(next.message)
+    }
+    const positiveSession='positive-electronic-session'
+    const positiveStart=preparePiReviewRunV2({
+      caseId:goodCaseId,sessionId:positiveSession,turnId:'positive-electronic-turn',
+    })
+    const positive=submitPiReviewResultV2({
+      binding:{assignmentId:positiveStart.assignmentId,sessionId:positiveSession,
+        caseId:goodCaseId,runId:positiveStart.runId},triggeredBy:'user',
+      result:{summary:'合成来源已由测试审核员确认可替代，依旧不意味着学校正式批准',
+        checks:good.entity!.mapping.map(m=>({
+          ruleId:m.ruleId,subjectIds:m.subjectId?[m.subjectId]:fixture.selection.targets.map(t=>t.subjectId),
+          status:m.checkId===target.checkId?'compliant' as const:'awaiting-confirmation' as const,
+          reason:m.checkId===target.checkId?
+            '合成测试中针对当前复制对象的电子替代证据由审核员逐项确认':'其余校规和授权尚未确认',
+          sourceRefs:m.checkId===target.checkId?[goodRef]:[],
+        })),finish:true},
+    })
+    expect(positive.rejected).toEqual([])
+    expect(positive.status).toBe('completed')
+    const goodRun=getRunV2(goodCaseId,positiveStart.runId)!
+    expect(verifyD2PiRun(readAggregate(goodCaseId)!,goodRun)).toMatchObject({
+      complete:true,problems:[],
+    })
+    expect(goodRun.checks.find(c=>c.ruleId===target.ruleId)?.status).toBe('compliant')
     emit('electronic-alternative-gate-pi-guard.json',{
       actualCaseId:caseId,actualRunId:started.runId,
       authorCheckId:target.checkId,actualRuleId:target.ruleId,actualSubjectId:target.subjectId,
       falseComplianceRejected:falseClaim.rejected.map(r=>r.reason),newEvidenceRequiresNewRun:staleError,
+      separatePositiveCaseId:goodCaseId,separatePositiveRunId:positiveStart.runId,
+      electronicAlternativeSuccessfullyAcceptedByRealPi:true,
       onlineModelRun:'not-run',actualGoldCaseVerified:false,authority:'synthetic-only',
     })
   })
