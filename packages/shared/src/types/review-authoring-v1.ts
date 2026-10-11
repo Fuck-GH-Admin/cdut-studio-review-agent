@@ -80,6 +80,8 @@ export interface ReviewAuthoringSourceBindingV1 {
   sourceIds: string[]
   /** 留给作者校验的适用性/例外说明，不等于执行型 ConditionAST。 */
   applicabilityNote?: string
+  /** Optional executable fail-closed gate attached to this EXACT instance Check. */
+  gate?: import('./review-d2').D2ExecutionGateV1
 }
 
 /**
