@@ -1,0 +1,1211 @@
+{
+  "schemaVersion": 1,
+  "workspaceId": "d3-md-archive-author-a",
+  "revision": 2,
+  "definitions": {
+    "modules": [
+      {
+        "moduleId": "archive-case",
+        "version": 1,
+        "name": "archive-case",
+        "purpose": "application/受理制度/案卷汇总",
+        "scope": "application/受理制度/案卷汇总",
+        "limits": "技术预审不得替代馆方正式审批；条件未知不得按不适用；不同档案件×操作权限独立；文本责任无法自动保证阶段/替代逻辑。",
+        "source": {
+          "kind": "user-request",
+          "note": "完全依照哈希核对的档案利用MD v1.5设计；不是已获确认的现行校规或行政决定"
+        },
+        "tasks": [
+          {
+            "id": "r01",
+            "title": "受理规则定位：取得适用规则版本并锁快照",
+            "requirement": "原文责任 R01：受理规则定位：取得适用规则版本并锁快照。\n原文触发条件：school/date/channel/recordType。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n\n条件维度：B01 receiving_school,rule_context",
+            "completion": "独立形成 R01 核验记录：规则版本确认/待核/冲突；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r02",
+            "title": "申请是否属于模板：自助服务/专门人事档案/转递分流",
+            "requirement": "原文责任 R02：申请是否属于模板：自助服务/专门人事档案/转递分流。\n原文触发条件：businessPurpose。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n\n",
+            "completion": "独立形成 R02 核验记录：in-scope/divert；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r03",
+            "title": "申请主体可靠识别：申报人身份与可信认证或材料一致",
+            "requirement": "原文责任 R03：申请主体可靠识别：申报人身份与可信认证或材料一致。\n原文触发条件：applicant identity。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n证据槽：S02 启用：身份无法从可信接口确定、或该校该场景要求查验证件；最早阶段：submission；替代或限制：实名登录的可信身份可在获准场景减少附件\n条件维度：B02 applicant_type",
+            "completion": "独立形成 R03 核验记录：matched/unknown/conflict；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r30",
+            "title": "办理渠道材料条件：仅生效公告范围要求专属附件",
+            "requirement": "原文责任 R30：办理渠道材料条件：仅生效公告范围要求专属附件。\n原文触发条件：channel/time。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E09 仅命中本校当前生效材料要求；禁止 强制寒假邮箱/三日办结\n证据槽：S14 启用：选择邮寄或电子交付；最早阶段：decision/post_decision；替代或限制：寒假特定邮寄/扫描要求只在公告适用时生效\n条件维度：B09 channel",
+            "completion": "独立形成 R30 核验记录：applicable/out-of-scope；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r31",
+            "title": "截止和规章有效期：过期寒假通知不覆盖秋季申请",
+            "requirement": "原文责任 R31：截止和规章有效期：过期寒假通知不覆盖秋季申请。\n原文触发条件：submittedAt/effectiveWindow。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E09 仅命中本校当前生效材料要求；禁止 强制寒假邮箱/三日办结\n\n条件维度：B09 channel、B11 submitted_at,effectiveFrom,effectiveUntil",
+            "completion": "独立形成 R31 核验记录：active/expired/unconfirmed；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r36",
+            "title": "整单汇总不覆盖部分处理：输出可受理+补正+转办的并存结果",
+            "requirement": "原文责任 R36：整单汇总不覆盖部分处理：输出可受理+补正+转办的并存结果。\n原文触发条件：all operation results。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E11 逐项结果并存，不整单一刀切；禁止 因一项受限整单拒绝\n\n条件维度：B15 items[].operations[]",
+            "completion": "独立形成 R36 核验记录：aggregate-result；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r39",
+            "title": "校规证据优先级：有效上位法+本校适用细则；外校不自动生效",
+            "requirement": "原文责任 R39：校规证据优先级：有效上位法+本校适用细则；外校不自动生效。\n原文触发条件：multiple rule sources。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n\n条件维度：B01 receiving_school,rule_context、B11 submitted_at,effectiveFrom,effectiveUntil",
+            "completion": "独立形成 R39 核验记录：applicable/conflict/unknown；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r42",
+            "title": "版本变更与重审：修改相关材料/规则后相关检查过期并重新核对",
+            "requirement": "原文责任 R42：版本变更与重审：修改相关材料/规则后相关检查过期并重新核对。\n原文触发条件：material/policy changed。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n\n",
+            "completion": "独立形成 R42 核验记录：stale/recheck；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          }
+        ]
+      },
+      {
+        "moduleId": "archive-relationships",
+        "version": 1,
+        "name": "archive-relationships",
+        "purpose": "申请人与委托人/单位经办关系 (如多关系，须逐关系展开)",
+        "scope": "申请人与委托人/单位经办关系 (如多关系，须逐关系展开)",
+        "limits": "技术预审不得替代馆方正式审批；条件未知不得按不适用；不同档案件×操作权限独立；文本责任无法自动保证阶段/替代逻辑。",
+        "source": {
+          "kind": "user-request",
+          "note": "完全依照哈希核对的档案利用MD v1.5设计；不是已获确认的现行校规或行政决定"
+        },
+        "tasks": [
+          {
+            "id": "r04",
+            "title": "申请人与实际请求主体区分：本人、受托、单位经办不得混同",
+            "requirement": "原文责任 R04：申请人与实际请求主体区分：本人、受托、单位经办不得混同。\n原文触发条件：applicant/principal/archiveSubject。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n\n条件维度：B02 applicant_type",
+            "completion": "独立形成 R04 核验记录：matched/unknown/conflict；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r08",
+            "title": "代理身份双方核验：证明委托人与受托人身份",
+            "requirement": "原文责任 R08：代理身份双方核验：证明委托人与受托人身份。\n原文触发条件：applicantType=proxy。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n证据槽：S03 启用：applicant_type=proxy；最早阶段：submission；替代或限制：要求内容覆盖代理对象、事项、使用方式和授权主体；S04 启用：applicant_type=proxy且有效校规要求；最早阶段：submission；替代或限制：本校历史指南出现委托人身份证复印件；是否双人原件须校核\n条件维度：B02 applicant_type、B03 proxy/delegation",
+            "completion": "独立形成 R08 核验记录：matched/missing-evidence/unverifiable；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r11",
+            "title": "因公单位真实性与资格：单位与经办人/职责任务能够关联",
+            "requirement": "原文责任 R11：因公单位真实性与资格：单位与经办人/职责任务能够关联。\n原文触发条件：applicantType in internal/external。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E07 分别校验私人委托与单位职责；禁止 用单位函替代私人委托\n证据槽：S05 启用：internal_unit/external_unit且校规要求；最早阶段：submission；替代或限制：函件证明单位/经办/用途；不当然扩大馆方权限\n条件维度：B02 applicant_type、B04 internal_unit/external_unit",
+            "completion": "独立形成 R11 核验记录：verified/authority-unknown/conflict；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r13",
+            "title": "单位授权不能代替私人委托：涉及个人代办时另核委托",
+            "requirement": "原文责任 R13：单位授权不能代替私人委托：涉及个人代办时另核委托。\n原文触发条件：unit + personal archive。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E07 分别校验私人委托与单位职责；禁止 用单位函替代私人委托\n\n条件维度：B03 proxy/delegation、B04 internal_unit/external_unit",
+            "completion": "独立形成 R13 核验记录：independent/missing-evidence；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          }
+        ]
+      },
+      {
+        "moduleId": "archive-items",
+        "version": 1,
+        "name": "archive-items",
+        "purpose": "指定archive item",
+        "scope": "指定archive item",
+        "limits": "技术预审不得替代馆方正式审批；条件未知不得按不适用；不同档案件×操作权限独立；文本责任无法自动保证阶段/替代逻辑。",
+        "source": {
+          "kind": "user-request",
+          "note": "完全依照哈希核对的档案利用MD v1.5设计；不是已获确认的现行校规或行政决定"
+        },
+        "tasks": [
+          {
+            "id": "r05",
+            "title": "目标档案可定位：依可得线索定位或交馆方检索",
+            "requirement": "原文责任 R05：目标档案可定位：依可得线索定位或交馆方检索。\n原文触发条件：archiveTitle/year/owner。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E02 允许馆方检索，非必须字段不拒件；禁止 强制档号导致误杀\n\n",
+            "completion": "独立形成 R05 核验记录：located/insufficient/keeper-pending；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r06",
+            "title": "档案类型确认：由馆方或规则确定路线；人事干部档案独立分流",
+            "requirement": "原文责任 R06：档案类型确认：由馆方或规则确定路线；人事干部档案独立分流。\n原文触发条件：archiveType。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n\n条件维度：B05 archive_type",
+            "completion": "独立形成 R06 核验记录：qualified/divert/unverifiable；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r07",
+            "title": "本人历史身份链：姓名变更/旧学号/就读年份可建立合理链",
+            "requirement": "原文责任 R07：本人历史身份链：姓名变更/旧学号/就读年份可建立合理链。\n原文触发条件：self + historicalRecord。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E01 检查曾用名/权威关系，人工复核可接受合法证明；禁止 机械判身份证名字不同为冒用；E04 认可依法允许的更名/户籍关联证明；禁止 缺旧证一律拒件；E15 对照学校机构沿革或人工确认；禁止 文字不一致即拒件\n证据槽：S13 启用：申请人与历史归档名不一致；最早阶段：submission；替代或限制：材料形式按具体要求，不一律附公安证明\n",
+            "completion": "独立形成 R07 核验记录：matched/needs-evidence/unknown；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r14",
+            "title": "学生档案专用路径：校内校外经办及特殊档案批准按校规",
+            "requirement": "原文责任 R14：学生档案专用路径：校内校外经办及特殊档案批准按校规。\n原文触发条件：archiveType=student_personnel_archive。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n证据槽：S06 启用：CDUT学生档案利用且该现行程序适用；最早阶段：submission/decision按校规；替代或限制：2026表名已核，栏位、印章节点待取得\n条件维度：B05 archive_type",
+            "completion": "独立形成 R14 核验记录：route/permission-pending；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r17",
+            "title": "馆藏位置由权威来源确定：馆方事实为依据，未知只能请求查询",
+            "requirement": "原文责任 R17：馆藏位置由权威来源确定：馆方事实为依据，未知只能请求查询。\n原文触发条件：every item。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E10 待权威核实，禁止交付；禁止 模型猜测“已开放”\n证据槽：S10 启用：需要确认能否依法利用；最早阶段：authority_review；替代或限制：未知不能按“未开放”或“开放”擅自填\n条件维度：B07 location_status/access_state、B13 identity/keeper/authority",
+            "completion": "独立形成 R17 核验记录：located/keeper-pending；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r18",
+            "title": "公布与开放状态分别检查：published≠open，标记无可靠来源则unknown",
+            "requirement": "原文责任 R18：公布与开放状态分别检查：published≠open，标记无可靠来源则unknown。\n原文触发条件：every item。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E05 范围缩减/脱敏/专项批准；禁止 开放目录即整卷下载；E10 待权威核实，禁止交付；禁止 模型猜测“已开放”\n证据槽：S10 启用：需要确认能否依法利用；最早阶段：authority_review；替代或限制：未知不能按“未开放”或“开放”擅自填\n条件维度：B07 location_status/access_state、B13 identity/keeper/authority",
+            "completion": "独立形成 R18 核验记录：qualified/unverifiable；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          }
+        ]
+      },
+      {
+        "moduleId": "archive-operations",
+        "version": 1,
+        "name": "archive-operations",
+        "purpose": "每个item/operation (不跨操作继承委托或批准)",
+        "scope": "每个item/operation (不跨操作继承委托或批准)",
+        "limits": "技术预审不得替代馆方正式审批；条件未知不得按不适用；不同档案件×操作权限独立；文本责任无法自动保证阶段/替代逻辑。",
+        "source": {
+          "kind": "user-request",
+          "note": "完全依照哈希核对的档案利用MD v1.5设计；不是已获确认的现行校规或行政决定"
+        },
+        "tasks": [
+          {
+            "id": "r09",
+            "title": "代理授权对象核验：委托对象/档案件/事项与申请一致",
+            "requirement": "原文责任 R09：代理授权对象核验：委托对象/档案件/事项与申请一致。\n原文触发条件：applicantType=proxy。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n证据槽：S03 启用：applicant_type=proxy；最早阶段：submission；替代或限制：要求内容覆盖代理对象、事项、使用方式和授权主体\n条件维度：B03 proxy/delegation、B12 scope,count",
+            "completion": "独立形成 R09 核验记录：covered/scope-mismatch/unknown；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r10",
+            "title": "代理期限与方式核验：委托是否覆盖当次操作和日期",
+            "requirement": "原文责任 R10：代理期限与方式核验：委托是否覆盖当次操作和日期。\n原文触发条件：proxy + time/operation。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n证据槽：S03 启用：applicant_type=proxy；最早阶段：submission；替代或限制：要求内容覆盖代理对象、事项、使用方式和授权主体\n条件维度：B03 proxy/delegation、B12 scope,count",
+            "completion": "独立形成 R10 核验记录：covered/scope-mismatch/unknown；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r12",
+            "title": "单位函用途及范围：单位函的事由、档案与具体方式匹配",
+            "requirement": "原文责任 R12：单位函用途及范围：单位函的事由、档案与具体方式匹配。\n原文触发条件：unit authorization。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n证据槽：S05 启用：internal_unit/external_unit且校规要求；最早阶段：submission；替代或限制：函件证明单位/经办/用途；不当然扩大馆方权限\n条件维度：B04 internal_unit/external_unit、B12 scope,count",
+            "completion": "独立形成 R12 核验记录：covered/scope-mismatch/unknown；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r19",
+            "title": "未开放或受限档案额外批准：专项权限决定/保密要求/允许范围",
+            "requirement": "原文责任 R19：未开放或受限档案额外批准：专项权限决定/保密要求/允许范围。\n原文触发条件：accessState in not_open/restricted/classified。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n证据槽：S09 启用：限制性档案/受控行为需专门批准；最早阶段：decision；替代或限制：提交阶段未签批->pending_authority而非missing_evidence\n条件维度：B07 location_status/access_state、B08 restriction_flags、B13 identity/keeper/authority",
+            "completion": "独立形成 R19 核验记录：authority-approved/pending/denied；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r20",
+            "title": "第三人隐私及技术秘密：有权部门决定范围与必要脱敏",
+            "requirement": "原文责任 R20：第三人隐私及技术秘密：有权部门决定范围与必要脱敏。\n原文触发条件：restriction_flags present。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E05 范围缩减/脱敏/专项批准；禁止 开放目录即整卷下载\n\n条件维度：B08 restriction_flags",
+            "completion": "独立形成 R20 核验记录：privacy-review/pending；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r35",
+            "title": "逐操作汇总结论：保留适用/满足/冲突/权限和证据状态",
+            "requirement": "原文责任 R35：逐操作汇总结论：保留适用/满足/冲突/权限和证据状态。\n原文触发条件：each operation_key。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E11 逐项结果并存，不整单一刀切；禁止 因一项受限整单拒绝\n\n条件维度：B15 items[].operations[]",
+            "completion": "独立形成 R35 核验记录：operation-result；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          }
+        ]
+      },
+      {
+        "moduleId": "archive-read",
+        "version": 1,
+        "name": "archive-read",
+        "purpose": "read操作",
+        "scope": "read操作",
+        "limits": "技术预审不得替代馆方正式审批；条件未知不得按不适用；不同档案件×操作权限独立；文本责任无法自动保证阶段/替代逻辑。",
+        "source": {
+          "kind": "user-request",
+          "note": "完全依照哈希核对的档案利用MD v1.5设计；不是已获确认的现行校规或行政决定"
+        },
+        "tasks": [
+          {
+            "id": "r15",
+            "title": "综合查阅表适用性：成都理工综合查阅表适用且版本匹配",
+            "requirement": "原文责任 R15：综合查阅表适用性：成都理工综合查阅表适用且版本匹配。\n原文触发条件：archiveType=general + operation=view。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n证据槽：S07 启用：CDUT一般综合档案查阅且程序适用；最早阶段：submission/decision按校规；替代或限制：不得拿它直接办理原件外借\n条件维度：B05 archive_type",
+            "completion": "独立形成 R15 核验记录：applicable/version-unknown；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r21",
+            "title": "查阅权限精确匹配：授权档案件+查阅范围+时点一致",
+            "requirement": "原文责任 R21：查阅权限精确匹配：授权档案件+查阅范围+时点一致。\n原文触发条件：operation=view。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E06 查阅与复制各自核授权；禁止 查阅批准自动包含复制\n\n条件维度：B06 operation_type",
+            "completion": "独立形成 R21 核验记录：covered/not-covered/unknown；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          }
+        ]
+      },
+      {
+        "moduleId": "archive-copy",
+        "version": 1,
+        "name": "archive-copy",
+        "purpose": "copy操作",
+        "scope": "copy操作",
+        "limits": "技术预审不得替代馆方正式审批；条件未知不得按不适用；不同档案件×操作权限独立；文本责任无法自动保证阶段/替代逻辑。",
+        "source": {
+          "kind": "user-request",
+          "note": "完全依照哈希核对的档案利用MD v1.5设计；不是已获确认的现行校规或行政决定"
+        },
+        "tasks": [
+          {
+            "id": "r23",
+            "title": "复制扫描权限精确匹配：授权内容页/份数与请求一致",
+            "requirement": "原文责任 R23：复制扫描权限精确匹配：授权内容页/份数与请求一致。\n原文触发条件：operation=copy。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E06 查阅与复制各自核授权；禁止 查阅批准自动包含复制；E16 只许可范围内复制，其余待补批；禁止 按档案件整体放行全部页\n证据槽：S11 启用：copy/excerpt/certified_copy且涉及范围限制；最早阶段：decision；替代或限制：材料只支持查阅不意味着复制批准\n条件维度：B06 operation_type、B12 scope,count",
+            "completion": "独立形成 R23 核验记录：covered/not-covered/unknown；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          }
+        ]
+      },
+      {
+        "moduleId": "archive-excerpt",
+        "version": 1,
+        "name": "archive-excerpt",
+        "purpose": "excerpt操作",
+        "scope": "excerpt操作",
+        "limits": "技术预审不得替代馆方正式审批；条件未知不得按不适用；不同档案件×操作权限独立；文本责任无法自动保证阶段/替代逻辑。",
+        "source": {
+          "kind": "user-request",
+          "note": "完全依照哈希核对的档案利用MD v1.5设计；不是已获确认的现行校规或行政决定"
+        },
+        "tasks": [
+          {
+            "id": "r22",
+            "title": "摘录权限精确匹配：不能从查阅自动继承摘录许可",
+            "requirement": "原文责任 R22：摘录权限精确匹配：不能从查阅自动继承摘录许可。\n原文触发条件：operation=excerpt。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n证据槽：S11 启用：copy/excerpt/certified_copy且涉及范围限制；最早阶段：decision；替代或限制：材料只支持查阅不意味着复制批准\n条件维度：B06 operation_type",
+            "completion": "独立形成 R22 核验记录：covered/not-covered/unknown；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          }
+        ]
+      },
+      {
+        "moduleId": "archive-borrow",
+        "version": 1,
+        "name": "archive-borrow",
+        "purpose": "borrow操作",
+        "scope": "borrow操作",
+        "limits": "技术预审不得替代馆方正式审批；条件未知不得按不适用；不同档案件×操作权限独立；文本责任无法自动保证阶段/替代逻辑。",
+        "source": {
+          "kind": "user-request",
+          "note": "完全依照哈希核对的档案利用MD v1.5设计；不是已获确认的现行校规或行政决定"
+        },
+        "tasks": [
+          {
+            "id": "r16",
+            "title": "综合外借表适用性：成都理工外借审批表与借出操作匹配",
+            "requirement": "原文责任 R16：综合外借表适用性：成都理工外借审批表与借出操作匹配。\n原文触发条件：archiveType=general + borrow_original。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E12 查阅材料不能替代外借表及批准；禁止 查询权限导致借出动作\n证据槽：S08 启用：CDUT综合档案原件外借且程序适用；最早阶段：submission/decision按校规；替代或限制：归还记录属于执行后阶段\n",
+            "completion": "独立形成 R16 核验记录：applicable/need-authorization；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r25",
+            "title": "原件外借特别授权：确认额外审批/保管责任/可外借性",
+            "requirement": "原文责任 R25：原件外借特别授权：确认额外审批/保管责任/可外借性。\n原文触发条件：operation=borrow_original。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E12 查阅材料不能替代外借表及批准；禁止 查询权限导致借出动作\n证据槽：S08 启用：CDUT综合档案原件外借且程序适用；最早阶段：submission/decision按校规；替代或限制：归还记录属于执行后阶段；S12 启用：borrow_original；最早阶段：decision/post_decision；替代或限制：借用责任在申请阶段，交接/归还记录在后续阶段\n条件维度：B06 operation_type、B12 scope,count",
+            "completion": "独立形成 R25 核验记录：pending/approved/denied；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r26",
+            "title": "外借时间和交接：借期按校规；借还回执由馆方确认",
+            "requirement": "原文责任 R26：外借时间和交接：借期按校规；借还回执由馆方确认。\n原文触发条件：borrow_original + post_decision。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E12 查阅材料不能替代外借表及批准；禁止 查询权限导致借出动作\n证据槽：S12 启用：borrow_original；最早阶段：decision/post_decision；替代或限制：借用责任在申请阶段，交接/归还记录在后续阶段\n条件维度：B06 operation_type、B10 review_stage",
+            "completion": "独立形成 R26 核验记录：within-limit/unknown/overdue；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          }
+        ]
+      },
+      {
+        "moduleId": "archive-evidence",
+        "version": 1,
+        "name": "archive-evidence",
+        "purpose": "案卷证据来源与提交阶段",
+        "scope": "案卷证据来源与提交阶段",
+        "limits": "技术预审不得替代馆方正式审批；条件未知不得按不适用；不同档案件×操作权限独立；文本责任无法自动保证阶段/替代逻辑。",
+        "source": {
+          "kind": "user-request",
+          "note": "完全依照哈希核对的档案利用MD v1.5设计；不是已获确认的现行校规或行政决定"
+        },
+        "tasks": [
+          {
+            "id": "r27",
+            "title": "签章存在与真实性区分：可核有无，真伪由可信服务/人工",
+            "requirement": "原文责任 R27：签章存在与真实性区分：可核有无，真伪由可信服务/人工。\n原文触发条件：evidence signature。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n\n条件维度：B14 signature.verification",
+            "completion": "独立形成 R27 核验记录：present/verified/unverifiable；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r28",
+            "title": "证据冲突对齐：姓名/年份/范围/数量跨文件核对",
+            "requirement": "原文责任 R28：证据冲突对齐：姓名/年份/范围/数量跨文件核对。\n原文触发条件：multiple documents。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n\n",
+            "completion": "独立形成 R28 核验记录：consistent/conflict/unknown；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r32",
+            "title": "必需材料仅按条件激活：申请人应交且到达要求阶段才缺件",
+            "requirement": "原文责任 R32：必需材料仅按条件激活：申请人应交且到达要求阶段才缺件。\n原文触发条件：each activated slot。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n证据槽：S01 启用：一个申请至少有一份可确认的申请描述（线上结构化填报可代替PDF）；最早阶段：submission；替代或限制：结构化表单与纸质扫描择其一；不强制重复上传；S02 启用：身份无法从可信接口确定、或该校该场景要求查验证件；最早阶段：submission；替代或限制：实名登录的可信身份可在获准场景减少附件；S04 启用：applicant_type=proxy且有效校规要求；最早阶段：submission；替代或限制：本校历史指南出现委托人身份证复印件；是否双人原件须校核；S06 启用：CDUT学生档案利用且该现行程序适用；最早阶段：submission/decision按校规；替代或限制：2026表名已核，栏位、印章节点待取得；S07 启用：CDUT一般综合档案查阅且程序适用；最早阶段：submission/decision按校规；替代或限制：不得拿它直接办理原件外借\n条件维度：B10 review_stage",
+            "completion": "独立形成 R32 核验记录：missing/complete/not-due；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r38",
+            "title": "证据完整覆盖检查：未读/解析失败不得宣称检查完成",
+            "requirement": "原文责任 R38：证据完整覆盖检查：未读/解析失败不得宣称检查完成。\n原文触发条件：all active attachments。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E14 标部分读取/人工复核，保留原件；禁止 没抽到文字就视为缺失证据\n\n",
+            "completion": "独立形成 R38 核验记录：complete/partial/failed；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          }
+        ]
+      },
+      {
+        "moduleId": "archive-workflow",
+        "version": 1,
+        "name": "archive-workflow",
+        "purpose": "审批阶段和交付门控",
+        "scope": "审批阶段和交付门控",
+        "limits": "技术预审不得替代馆方正式审批；条件未知不得按不适用；不同档案件×操作权限独立；文本责任无法自动保证阶段/替代逻辑。",
+        "source": {
+          "kind": "user-request",
+          "note": "完全依照哈希核对的档案利用MD v1.5设计；不是已获确认的现行校规或行政决定"
+        },
+        "tasks": [
+          {
+            "id": "r33",
+            "title": "待审批不等于缺件：有权批准尚未发生，应等待而不索取未来签批",
+            "requirement": "原文责任 R33：待审批不等于缺件：有权批准尚未发生，应等待而不索取未来签批。\n原文触发条件：reviewStage != post_decision。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E08 待审批而非缺件；禁止 要求申请人上传未来批准文件\n证据槽：S09 启用：限制性档案/受控行为需专门批准；最早阶段：decision；替代或限制：提交阶段未签批->pending_authority而非missing_evidence；S12 启用：borrow_original；最早阶段：decision/post_decision；替代或限制：借用责任在申请阶段，交接/归还记录在后续阶段\n条件维度：B10 review_stage",
+            "completion": "独立形成 R33 核验记录：pending-authority；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r34",
+            "title": "审批结果不能被AI代写：最终批准需要可信部门身份与范围",
+            "requirement": "原文责任 R34：审批结果不能被AI代写：最终批准需要可信部门身份与范围。\n原文触发条件：authority decision。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n证据槽：S09 启用：限制性档案/受控行为需专门批准；最早阶段：decision；替代或限制：提交阶段未签批->pending_authority而非missing_evidence\n条件维度：B13 identity/keeper/authority",
+            "completion": "独立形成 R34 核验记录：human-required；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r37",
+            "title": "交付动作强制门控：仅馆方已作有权决定且有执行记录才能回写已交付",
+            "requirement": "原文责任 R37：交付动作强制门控：仅馆方已作有权决定且有执行记录才能回写已交付。\n原文触发条件：actual delivery。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n\n条件维度：B10 review_stage",
+            "completion": "独立形成 R37 核验记录：delivery-disabled-in-precheck；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r41",
+            "title": "公开展示结果最小化：申请人只见公开反馈，不暴露他人档案/内部意见",
+            "requirement": "原文责任 R41：公开展示结果最小化：申请人只见公开反馈，不暴露他人档案/内部意见。\n原文触发条件：report generation。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n\n\n",
+            "completion": "独立形成 R41 核验记录：public/internal split；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          }
+        ]
+      },
+      {
+        "moduleId": "archive-advanced-not-executable",
+        "version": 1,
+        "name": "archive-advanced-not-executable",
+        "purpose": "证书业务、电子授权与合理替代—阻断未映射高级关系",
+        "scope": "证书业务、电子授权与合理替代—阻断未映射高级关系",
+        "limits": "技术预审不得替代馆方正式审批；条件未知不得按不适用；不同档案件×操作权限独立；文本责任无法自动保证阶段/替代逻辑。",
+        "source": {
+          "kind": "user-request",
+          "note": "完全依照哈希核对的档案利用MD v1.5设计；不是已获确认的现行校规或行政决定"
+        },
+        "tasks": [
+          {
+            "id": "r24",
+            "title": "档案证明出具权限：只能有权档案部门出具或验真",
+            "requirement": "原文责任 R24：档案证明出具权限：只能有权档案部门出具或验真。\n原文触发条件：operation=certified_copy。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E13 核可用范围或分流直达服务；禁止 仍强迫扫描证件/重新盖章\n证据槽：S11 启用：copy/excerpt/certified_copy且涉及范围限制；最早阶段：decision；替代或限制：材料只支持查阅不意味着复制批准\n条件维度：B06 operation_type",
+            "completion": "独立形成 R24 核验记录：pending/approved/unknown；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r29",
+            "title": "电子授权合法替代：认可且可验真时不得一律拒电子件",
+            "requirement": "原文责任 R29：电子授权合法替代：认可且可验真时不得一律拒电子件。\n原文触发条件：digitally-signed authorization。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E03 按可信签章/适用学校确认；禁止 一律要求红色纸章；E13 核可用范围或分流直达服务；禁止 仍强迫扫描证件/重新盖章\n\n条件维度：B14 signature.verification",
+            "completion": "独立形成 R29 核验记录：accepted/verification-pending；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          },
+          {
+            "id": "r40",
+            "title": "合理替代与历史差异：支持合法更名、委托替代、馆方检索",
+            "requirement": "原文责任 R40：合理替代与历史差异：支持合法更名、委托替代、馆方检索。\n原文触发条件：old names/IDs/unknown catalogue。只有条件已核实时才能判定适用/不适用；适用学校、档案类别、提交日期、渠道及审核阶段尚未确认时保留待核。\n合理例外：E01 检查曾用名/权威关系，人工复核可接受合法证明；禁止 机械判身份证名字不同为冒用；E02 允许馆方检索，非必须字段不拒件；禁止 强制档号导致误杀；E04 认可依法允许的更名/户籍关联证明；禁止 缺旧证一律拒件；E13 核可用范围或分流直达服务；禁止 仍强迫扫描证件/重新盖章；E15 对照学校机构沿革或人工确认；禁止 文字不一致即拒件\n证据槽：S13 启用：申请人与历史归档名不一致；最早阶段：submission；替代或限制：材料形式按具体要求，不一律附公安证明\n条件维度：B14 signature.verification",
+            "completion": "独立形成 R40 核验记录：accepted/manual/needs-evidence；实际来源、适用条件、缺口及责任方可定位。",
+            "limits": "该Check即使标compliant也只证明本局部检查，不构成受理学校权限/查档/交付批准。"
+          }
+        ]
+      }
+    ],
+    "templates": [
+      {
+        "templateId": "g01-archive-utilization",
+        "version": 1,
+        "name": "档案利用申请审核",
+        "purpose": "多档案件×多操作的材料、权限、受限状态和阶段技术预审",
+        "limits": "单一模板；不代替成都理工档案馆、保密/形成单位签批；delivery_allowed永远false；缺少电子授权替代映射不可借正常纸件Check自动否决。",
+        "source": {
+          "kind": "user-request",
+          "note": "完全依照哈希核对的档案利用MD v1.5设计；不是已获确认的现行校规或行政决定"
+        },
+        "modules": [
+          {
+            "id": "case",
+            "moduleId": "archive-case",
+            "version": 1
+          },
+          {
+            "id": "rel",
+            "moduleId": "archive-relationships",
+            "version": 1
+          },
+          {
+            "id": "evidence",
+            "moduleId": "archive-evidence",
+            "version": 1
+          },
+          {
+            "id": "workflow",
+            "moduleId": "archive-workflow",
+            "version": 1
+          },
+          {
+            "id": "item-i01",
+            "moduleId": "archive-items",
+            "version": 1,
+            "objectKey": "i01"
+          },
+          {
+            "id": "item-i02",
+            "moduleId": "archive-items",
+            "version": 1,
+            "objectKey": "i02"
+          },
+          {
+            "id": "item-i03",
+            "moduleId": "archive-items",
+            "version": 1,
+            "objectKey": "i03"
+          },
+          {
+            "id": "operation-i01-read",
+            "moduleId": "archive-operations",
+            "version": 1,
+            "objectKey": "i01/read"
+          },
+          {
+            "id": "read-i01-read",
+            "moduleId": "archive-read",
+            "version": 1,
+            "objectKey": "i01/read"
+          },
+          {
+            "id": "operation-i01-copy",
+            "moduleId": "archive-operations",
+            "version": 1,
+            "objectKey": "i01/copy"
+          },
+          {
+            "id": "copy-i01-copy",
+            "moduleId": "archive-copy",
+            "version": 1,
+            "objectKey": "i01/copy"
+          },
+          {
+            "id": "operation-i02-read",
+            "moduleId": "archive-operations",
+            "version": 1,
+            "objectKey": "i02/read"
+          },
+          {
+            "id": "read-i02-read",
+            "moduleId": "archive-read",
+            "version": 1,
+            "objectKey": "i02/read"
+          },
+          {
+            "id": "operation-i03-borrow",
+            "moduleId": "archive-operations",
+            "version": 1,
+            "objectKey": "i03/borrow"
+          },
+          {
+            "id": "borrow-i03-borrow",
+            "moduleId": "archive-borrow",
+            "version": 1,
+            "objectKey": "i03/borrow"
+          },
+          {
+            "id": "operation-i03-excerpt",
+            "moduleId": "archive-operations",
+            "version": 1,
+            "objectKey": "i03/excerpt"
+          },
+          {
+            "id": "excerpt-i03-excerpt",
+            "moduleId": "archive-excerpt",
+            "version": 1,
+            "objectKey": "i03/excerpt"
+          }
+        ],
+        "localTasks": []
+      }
+    ]
+  },
+  "sources": [
+    {
+      "sourceId": "source-md",
+      "kind": "user-request",
+      "label": "经SHA核对的完整业务输入MD",
+      "reference": {
+        "documentVersionId": "archive-md-v1-5-sha256-65157e002dd4",
+        "locator": "§0–§17"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "只作为制作和技术任务说明；不作为现行成都理工授权依据。"
+    },
+    {
+      "sourceId": "source-law",
+      "kind": "policy-candidate",
+      "label": "LAW01-LAW04/SC01上位与省级候选规则",
+      "verification": "unverified",
+      "applicability": "unknown",
+      "note": "本案适用条款与效力需正式核定，不能冒充具体强制附件/已获授权。"
+    },
+    {
+      "sourceId": "source-cd",
+      "kind": "policy-candidate",
+      "label": "CD01-CD06成都理工馆方现行适用性待核",
+      "verification": "unverified",
+      "applicability": "unknown",
+      "note": "2026三表完整栏位及2017/2024制度关系尚未核实，CD04寒假公告不得延伸至秋季。"
+    },
+    {
+      "sourceId": "source-cross",
+      "kind": "cross-school-reference",
+      "label": "EX04-EX06外校可复用结构参考",
+      "verification": "unverified",
+      "applicability": "reference-only",
+      "note": "绝不自动对成都理工形成缺件/拒件资格。"
+    }
+  ],
+  "sourceBindings": [
+    {
+      "checkId": "g01-archive-utilization@1:module/case/r01",
+      "sourceIds": [
+        "source-md",
+        "source-law",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R01 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/case/r02",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R02 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/case/r03",
+      "sourceIds": [
+        "source-md",
+        "source-cd",
+        "source-cross"
+      ],
+      "applicabilityNote": "rule=R03 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/case/r30",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R30 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/case/r31",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R31 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/case/r36",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R36 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/case/r39",
+      "sourceIds": [
+        "source-md",
+        "source-law",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R39 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/case/r42",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R42 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/rel/r04",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R04 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/rel/r08",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R08 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/rel/r11",
+      "sourceIds": [
+        "source-md",
+        "source-cross"
+      ],
+      "applicabilityNote": "rule=R11 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/rel/r13",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R13 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/evidence/r27",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R27 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/evidence/r28",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R28 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/evidence/r32",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R32 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/evidence/r38",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R38 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/workflow/r33",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R33 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/workflow/r34",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R34 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/workflow/r37",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R37 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/workflow/r41",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R41 scope=case; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i01/r05",
+      "sourceIds": [
+        "source-md",
+        "source-cross"
+      ],
+      "applicabilityNote": "rule=R05 scope=i01; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i01/r06",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R06 scope=i01; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i01/r07",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R07 scope=i01; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i01/r14",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R14 scope=i01; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i01/r17",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R17 scope=i01; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i01/r18",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R18 scope=i01; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i02/r05",
+      "sourceIds": [
+        "source-md",
+        "source-cross"
+      ],
+      "applicabilityNote": "rule=R05 scope=i02; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i02/r06",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R06 scope=i02; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i02/r07",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R07 scope=i02; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i02/r14",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R14 scope=i02; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i02/r17",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R17 scope=i02; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i02/r18",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R18 scope=i02; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i03/r05",
+      "sourceIds": [
+        "source-md",
+        "source-cross"
+      ],
+      "applicabilityNote": "rule=R05 scope=i03; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i03/r06",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R06 scope=i03; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i03/r07",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R07 scope=i03; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i03/r14",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R14 scope=i03; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i03/r17",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R17 scope=i03; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/item-i03/r18",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R18 scope=i03; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i01-read/r09",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R09 scope=i01/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i01-read/r10",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R10 scope=i01/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i01-read/r12",
+      "sourceIds": [
+        "source-md",
+        "source-cross"
+      ],
+      "applicabilityNote": "rule=R12 scope=i01/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i01-read/r19",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R19 scope=i01/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i01-read/r20",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R20 scope=i01/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i01-read/r35",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R35 scope=i01/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/read-i01-read/r15",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R15 scope=i01/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/read-i01-read/r21",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R21 scope=i01/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i01-copy/r09",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R09 scope=i01/copy; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i01-copy/r10",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R10 scope=i01/copy; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i01-copy/r12",
+      "sourceIds": [
+        "source-md",
+        "source-cross"
+      ],
+      "applicabilityNote": "rule=R12 scope=i01/copy; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i01-copy/r19",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R19 scope=i01/copy; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i01-copy/r20",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R20 scope=i01/copy; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i01-copy/r35",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R35 scope=i01/copy; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/copy-i01-copy/r23",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R23 scope=i01/copy; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i02-read/r09",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R09 scope=i02/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i02-read/r10",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R10 scope=i02/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i02-read/r12",
+      "sourceIds": [
+        "source-md",
+        "source-cross"
+      ],
+      "applicabilityNote": "rule=R12 scope=i02/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i02-read/r19",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R19 scope=i02/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i02-read/r20",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R20 scope=i02/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i02-read/r35",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R35 scope=i02/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/read-i02-read/r15",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R15 scope=i02/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/read-i02-read/r21",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R21 scope=i02/read; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i03-borrow/r09",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R09 scope=i03/borrow; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i03-borrow/r10",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R10 scope=i03/borrow; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i03-borrow/r12",
+      "sourceIds": [
+        "source-md",
+        "source-cross"
+      ],
+      "applicabilityNote": "rule=R12 scope=i03/borrow; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i03-borrow/r19",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R19 scope=i03/borrow; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i03-borrow/r20",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R20 scope=i03/borrow; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i03-borrow/r35",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R35 scope=i03/borrow; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/borrow-i03-borrow/r16",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R16 scope=i03/borrow; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/borrow-i03-borrow/r25",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R25 scope=i03/borrow; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/borrow-i03-borrow/r26",
+      "sourceIds": [
+        "source-md",
+        "source-cd",
+        "source-cross"
+      ],
+      "applicabilityNote": "rule=R26 scope=i03/borrow; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i03-excerpt/r09",
+      "sourceIds": [
+        "source-md",
+        "source-cd"
+      ],
+      "applicabilityNote": "rule=R09 scope=i03/excerpt; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i03-excerpt/r10",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R10 scope=i03/excerpt; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i03-excerpt/r12",
+      "sourceIds": [
+        "source-md",
+        "source-cross"
+      ],
+      "applicabilityNote": "rule=R12 scope=i03/excerpt; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i03-excerpt/r19",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R19 scope=i03/excerpt; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i03-excerpt/r20",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R20 scope=i03/excerpt; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/operation-i03-excerpt/r35",
+      "sourceIds": [
+        "source-md"
+      ],
+      "applicabilityNote": "rule=R35 scope=i03/excerpt; authority currently unverified unless only business-design source; no official permission inferred"
+    },
+    {
+      "checkId": "g01-archive-utilization@1:module/excerpt-i03-excerpt/r22",
+      "sourceIds": [
+        "source-md",
+        "source-law"
+      ],
+      "applicabilityNote": "rule=R22 scope=i03/excerpt; authority currently unverified unless only business-design source; no official permission inferred"
+    }
+  ],
+  "sharedModuleLocks": []
+}

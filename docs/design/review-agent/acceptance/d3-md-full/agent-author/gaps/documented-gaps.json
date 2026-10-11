@@ -1,0 +1,290 @@
+[
+  {
+    "id": "G-01",
+    "sourceRequirementIds": [
+      "R24"
+    ],
+    "reproduce": "PROFER_CONFIG_DIR=/tmp/d3-md-a bun apps/electron/scripts/review-d2-plan.ts preview docs/design/review-agent/acceptance/d3-md-full/agent-author/workspaces/archive-r2-advanced-blocked.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/selection.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/case.json；预期D2_UNMAPPED_ADVANCED；该错误并非逐项功能支持",
+    "verifiedAgainstRun": false,
+    "owner": "D3",
+    "blockedOperation": "certified_copy不在D2TargetBinding.operation的read/copy/excerpt/borrow集合；无法单独定位有权档案证明签发。",
+    "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+    "locator": "§6/§7/§8/§9及§16.1",
+    "affected": {
+      "templateId": "g01-archive-utilization",
+      "templateVersion": 1,
+      "sourceRequirementIds": [
+        "R24"
+      ],
+      "instancePaths": [],
+      "checkIds": [],
+      "runIds": []
+    }
+  },
+  {
+    "id": "G-02",
+    "sourceRequirementIds": [
+      "R29",
+      "R40",
+      "X03"
+    ],
+    "reproduce": "PROFER_CONFIG_DIR=/tmp/d3-md-a bun apps/electron/scripts/review-d2-plan.ts preview docs/design/review-agent/acceptance/d3-md-full/agent-author/workspaces/archive-r2-advanced-blocked.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/selection.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/case.json；预期D2_UNMAPPED_ADVANCED；该错误并非逐项功能支持",
+    "verifiedAgainstRun": false,
+    "owner": "D3",
+    "blockedOperation": "电子委托/旧名关联/结构化表单与纸件合法替代需要OR和证据关系，D2明确拒绝advanced。",
+    "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+    "locator": "§6/§7/§8/§9及§16.1",
+    "affected": {
+      "templateId": "g01-archive-utilization",
+      "templateVersion": 1,
+      "sourceRequirementIds": [
+        "R29",
+        "R40",
+        "X03"
+      ],
+      "instancePaths": [],
+      "checkIds": [],
+      "runIds": []
+    }
+  },
+  {
+    "id": "G-03",
+    "sourceRequirementIds": [
+      "R32",
+      "R33",
+      "X02",
+      "X05"
+    ],
+    "reproduce": "PROFER_CONFIG_DIR=/tmp/d3-md-a bun apps/electron/scripts/review-d2-plan.ts preview docs/design/review-agent/acceptance/d3-md-full/agent-author/workspaces/archive-r2-advanced-blocked.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/selection.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/case.json；预期D2_UNMAPPED_ADVANCED；该错误并非逐项功能支持",
+    "verifiedAgainstRun": false,
+    "owner": "D3",
+    "blockedOperation": "材料槽启用、requiredAt、申请人/有权机关提供者、阶段条件无法成为D2结构化结果，只能输出文字待核。",
+    "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+    "locator": "§6/§7/§8/§9及§16.1",
+    "affected": {
+      "templateId": "g01-archive-utilization",
+      "templateVersion": 1,
+      "sourceRequirementIds": [
+        "R32",
+        "R33",
+        "X02",
+        "X05"
+      ],
+      "instancePaths": [],
+      "checkIds": [
+        "module/evidence/r32",
+        "module/workflow/r33"
+      ],
+      "runIds": []
+    }
+  },
+  {
+    "id": "G-04",
+    "sourceRequirementIds": [
+      "R35",
+      "R36",
+      "X06",
+      "X08"
+    ],
+    "reproduce": "PROFER_CONFIG_DIR=/tmp/d3-md-a bun apps/electron/scripts/review-d2-plan.ts preview docs/design/review-agent/acceptance/d3-md-full/agent-author/workspaces/archive-r2-advanced-blocked.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/selection.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/case.json；预期D2_UNMAPPED_ADVANCED；该错误并非逐项功能支持",
+    "verifiedAgainstRun": false,
+    "owner": "D3",
+    "blockedOperation": "并存多个独立状态、逐操作业务聚合及证据/权限两轴当前不由D2 schema表达。",
+    "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+    "locator": "§6/§7/§8/§9及§16.1",
+    "affected": {
+      "templateId": "g01-archive-utilization",
+      "templateVersion": 1,
+      "sourceRequirementIds": [
+        "R35",
+        "R36",
+        "X06",
+        "X08"
+      ],
+      "instancePaths": [],
+      "checkIds": [
+        "module/operation-i01-read/r35",
+        "module/operation-i01-copy/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35",
+        "module/case/r36"
+      ],
+      "runIds": []
+    }
+  },
+  {
+    "id": "G-05",
+    "sourceRequirementIds": [
+      "R42",
+      "X07",
+      "X11"
+    ],
+    "reproduce": "PROFER_CONFIG_DIR=/tmp/d3-md-a bun apps/electron/scripts/review-d2-plan.ts preview docs/design/review-agent/acceptance/d3-md-full/agent-author/workspaces/archive-r2-advanced-blocked.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/selection.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/case.json；预期D2_UNMAPPED_ADVANCED；该错误并非逐项功能支持",
+    "verifiedAgainstRun": false,
+    "owner": "D3",
+    "blockedOperation": "文档版本更新后逐事实依赖失效与重审、材料来源引用逐操作精确绑定需执行器支持。",
+    "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+    "locator": "§6/§7/§8/§9及§16.1",
+    "affected": {
+      "templateId": "g01-archive-utilization",
+      "templateVersion": 1,
+      "sourceRequirementIds": [
+        "R42",
+        "X07",
+        "X11"
+      ],
+      "instancePaths": [],
+      "checkIds": [
+        "module/case/r42"
+      ],
+      "runIds": []
+    }
+  },
+  {
+    "id": "G-06",
+    "sourceRequirementIds": [
+      "R04",
+      "R08",
+      "R09",
+      "R10",
+      "R11",
+      "R12",
+      "R13"
+    ],
+    "reproduce": "PROFER_CONFIG_DIR=/tmp/d3-md-a bun apps/electron/scripts/review-d2-plan.ts preview docs/design/review-agent/acceptance/d3-md-full/agent-author/workspaces/archive-r2-advanced-blocked.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/selection.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/case.json；预期D2_UNMAPPED_ADVANCED；该错误并非逐项功能支持",
+    "verifiedAgainstRun": false,
+    "owner": "D3",
+    "blockedOperation": "D2仅提供archive-item/archive-operation，不提供多个独立代理/委托人/单位经办关系subject；case级R04/R08/R11无法在同一案中按关系独立给状态，R09/R10/R12/R13也不能把不同关系与具体操作建立无损授权关联。",
+    "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+    "locator": "§6/§7/§8/§9及§16.1",
+    "affected": {
+      "templateId": "g01-archive-utilization",
+      "templateVersion": 1,
+      "sourceRequirementIds": [
+        "R04",
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12",
+        "R13"
+      ],
+      "instancePaths": [],
+      "checkIds": [
+        "module/rel/r04",
+        "module/rel/r08",
+        "module/operation-i01-read/r09",
+        "module/operation-i01-copy/r09",
+        "module/operation-i02-read/r09",
+        "module/operation-i03-borrow/r09",
+        "module/operation-i03-excerpt/r09",
+        "module/operation-i01-read/r10",
+        "module/operation-i01-copy/r10",
+        "module/operation-i02-read/r10",
+        "module/operation-i03-borrow/r10",
+        "module/operation-i03-excerpt/r10",
+        "module/rel/r11",
+        "module/operation-i01-read/r12",
+        "module/operation-i01-copy/r12",
+        "module/operation-i02-read/r12",
+        "module/operation-i03-borrow/r12",
+        "module/operation-i03-excerpt/r12",
+        "module/rel/r13"
+      ],
+      "runIds": []
+    }
+  },
+  {
+    "id": "G-07",
+    "sourceRequirementIds": [
+      "R18",
+      "R19",
+      "R20",
+      "X04"
+    ],
+    "reproduce": "PROFER_CONFIG_DIR=/tmp/d3-md-a bun apps/electron/scripts/review-d2-plan.ts preview docs/design/review-agent/acceptance/d3-md-full/agent-author/workspaces/archive-r2-advanced-blocked.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/selection.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/case.json；预期D2_UNMAPPED_ADVANCED；该错误并非逐项功能支持",
+    "verifiedAgainstRun": false,
+    "owner": "D3",
+    "blockedOperation": "真实开放状态/公布状态/敏感标签分别绑定权威馆方事实及强制执行门控非普通语义文本可证明。",
+    "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+    "locator": "§6/§7/§8/§9及§16.1",
+    "affected": {
+      "templateId": "g01-archive-utilization",
+      "templateVersion": 1,
+      "sourceRequirementIds": [
+        "R18",
+        "R19",
+        "R20",
+        "X04"
+      ],
+      "instancePaths": [],
+      "checkIds": [
+        "module/item-i01/r18",
+        "module/item-i02/r18",
+        "module/item-i03/r18",
+        "module/operation-i01-read/r19",
+        "module/operation-i01-copy/r19",
+        "module/operation-i02-read/r19",
+        "module/operation-i03-borrow/r19",
+        "module/operation-i03-excerpt/r19",
+        "module/operation-i01-read/r20",
+        "module/operation-i01-copy/r20",
+        "module/operation-i02-read/r20",
+        "module/operation-i03-borrow/r20",
+        "module/operation-i03-excerpt/r20"
+      ],
+      "runIds": []
+    }
+  },
+  {
+    "id": "G-08",
+    "sourceRequirementIds": [
+      "R01",
+      "R14",
+      "R15",
+      "R16",
+      "R26",
+      "R30",
+      "R31",
+      "R39",
+      "X10"
+    ],
+    "reproduce": "核对§16.1所列校本缺失原件及权限接口；不可借外校规范生成确定结论",
+    "verifiedAgainstRun": false,
+    "owner": "policy-source",
+    "blockedOperation": "缺成都理工2026三表原件、2017/2024制度有效关系、可借期限、受限档案批准人和可信馆方接口。",
+    "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+    "locator": "§6/§7/§8/§9及§16.1",
+    "affected": {
+      "templateId": "g01-archive-utilization",
+      "templateVersion": 1,
+      "sourceRequirementIds": [
+        "R01",
+        "R14",
+        "R15",
+        "R16",
+        "R26",
+        "R30",
+        "R31",
+        "R39",
+        "X10"
+      ],
+      "instancePaths": [],
+      "checkIds": [
+        "module/case/r01",
+        "module/item-i01/r14",
+        "module/item-i02/r14",
+        "module/item-i03/r14",
+        "module/read-i01-read/r15",
+        "module/read-i02-read/r15",
+        "module/borrow-i03-borrow/r16",
+        "module/borrow-i03-borrow/r26",
+        "module/case/r30",
+        "module/case/r31",
+        "module/case/r39"
+      ],
+      "runIds": []
+    }
+  }
+]

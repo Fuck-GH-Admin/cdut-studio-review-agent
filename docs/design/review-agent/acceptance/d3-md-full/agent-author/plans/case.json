@@ -1,0 +1,14 @@
+{
+  "id": "d3-md-archive-synthetic-case",
+  "templateId": "g01-archive-utilization",
+  "templateVersion": 1,
+  "title": "高校档案技术预审合成案卷",
+  "objectType": "document",
+  "stage": "draft",
+  "caseFields": {},
+  "subjects": [],
+  "documents": [],
+  "revision": 0,
+  "createdAt": "2026-10-11T00:00:00.000Z",
+  "updatedAt": "2026-10-11T00:00:00.000Z"
+}

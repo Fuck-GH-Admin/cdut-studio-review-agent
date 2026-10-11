@@ -1,0 +1,78 @@
+name: D3 MD Agent A Technical Replay
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/d3-md-agent-a-replay.yml'
+      - 'docs/design/review-agent/acceptance/d3-md-full/agent-author/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  author-technical:
+    name: Agent A D1-D2-D3 isolated technical replay
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install exact dependencies
+        run: bun install --frozen-lockfile
+      - name: Run independently isolated technical authoring replay (NO original MD)
+        shell: bash
+        run: |
+          bash docs/design/review-agent/acceptance/d3-md-full/agent-author/tests/replay-technical.sh "$RUNNER_TEMP/d3-md-agent-a"
+          echo '=== AUTHOR TECHNICAL SUMMARY JSON (actual D2 output, not synthetic claims) ==='
+          cat "$RUNNER_TEMP/d3-md-agent-a/technical-summary.json"
+      - name: Upload actual CLI stdout/stderr, plan, portable bundle and summary even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: d3-md-agent-a-technical-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/d3-md-agent-a/
+          if-no-files-found: warn
+          retention-days: 30
+  pi-synthetic-contract:
+    name: Existing Pi scoped synthetic service BDD (not an Agent A full-case run)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install exact dependencies
+        run: bun install --frozen-lockfile
+      - name: Run Pi synthetic D3 and D2 service tests (separate from MD conversion)
+        shell: bash
+        run: |
+          export PROFER_CONFIG_DIR="$RUNNER_TEMP/d3-md-agent-a-pi"
+          mkdir -p "$PROFER_CONFIG_DIR" "$RUNNER_TEMP/d3-md-agent-a-pi-evidence"
+          set +e
+          bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-pi-integration.test.ts apps/electron/src/main/lib/review/review-d2-runtime.test.ts > "$RUNNER_TEMP/d3-md-agent-a-pi-evidence/pi-stdout.log" 2> "$RUNNER_TEMP/d3-md-agent-a-pi-evidence/pi-stderr.log"
+          ec=$?
+          set -e
+          echo "$ec" > "$RUNNER_TEMP/d3-md-agent-a-pi-evidence/exit-code.txt"
+          cat "$RUNNER_TEMP/d3-md-agent-a-pi-evidence/pi-stdout.log"
+          cat "$RUNNER_TEMP/d3-md-agent-a-pi-evidence/pi-stderr.log" >&2
+          exit "$ec"
+      - name: Upload independent Pi contract test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: d3-md-agent-a-pi-contract-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/d3-md-agent-a-pi-evidence/
+          if-no-files-found: warn
+          retention-days: 30

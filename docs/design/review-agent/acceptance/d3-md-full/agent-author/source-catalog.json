@@ -1,0 +1,1809 @@
+{
+  "schemaVersion": 1,
+  "scope": "full",
+  "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+  "sourceSha256": "65157e002dd4d1ccc08d32d341b4a1f7eacfc55d6a3c13a5da949aaf122f9785",
+  "observedSource": {
+    "bytes": 70413,
+    "lines": 725,
+    "verification": "sha256sum exact bytes 2026-10-11; not evidence of current CDUT regulation"
+  },
+  "sourcePolicy": "business-authoring-input-only; content-checked != currently-effective policy; external school examples reference-only",
+  "requirements": [
+    {
+      "id": "R01",
+      "locator": "§6 R01 (line 282)",
+      "purpose": "受理规则定位：取得适用规则版本并锁快照",
+      "kind": "atomic-rule",
+      "targetScope": "application",
+      "trigger": "school/date/channel/recordType",
+      "resultOrUnknown": "规则版本确认/待核/冲突",
+      "candidateModule": "M02",
+      "sourceLevel": "LEGAL,CD_VERIFIED",
+      "sourceAnchor": "| R01 | 受理规则定位 | application | school/date/channel/recordType | 取得适用规则版本并锁快照 | 规则版本确认/待核/冲突 | M02 | LEGAL,CD_VERIFIED |"
+    },
+    {
+      "id": "R02",
+      "locator": "§6 R02 (line 283)",
+      "purpose": "申请是否属于模板：自助服务/专门人事档案/转递分流",
+      "kind": "atomic-rule",
+      "targetScope": "application",
+      "trigger": "businessPurpose",
+      "resultOrUnknown": "in-scope/divert",
+      "candidateModule": "M01",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R02 | 申请是否属于模板 | application | businessPurpose | 自助服务/专门人事档案/转递分流 | in-scope/divert | M01 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "R03",
+      "locator": "§6 R03 (line 284)",
+      "purpose": "申请主体可靠识别：申报人身份与可信认证或材料一致",
+      "kind": "atomic-rule",
+      "targetScope": "application",
+      "trigger": "applicant identity",
+      "resultOrUnknown": "matched/unknown/conflict",
+      "candidateModule": "M03",
+      "sourceLevel": "CD_VERIFIED,CROSS_SCHOOL",
+      "sourceAnchor": "| R03 | 申请主体可靠识别 | application | applicant identity | 申报人身份与可信认证或材料一致 | matched/unknown/conflict | M03 | CD_VERIFIED,CROSS_SCHOOL |"
+    },
+    {
+      "id": "R04",
+      "locator": "§6 R04 (line 285)",
+      "purpose": "申请人与实际请求主体区分：本人、受托、单位经办不得混同",
+      "kind": "atomic-rule",
+      "targetScope": "relationship",
+      "trigger": "applicant/principal/archiveSubject",
+      "resultOrUnknown": "matched/unknown/conflict",
+      "candidateModule": "M03",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R04 | 申请人与实际请求主体区分 | relationship | applicant/principal/archiveSubject | 本人、受托、单位经办不得混同 | matched/unknown/conflict | M03 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "R05",
+      "locator": "§6 R05 (line 286)",
+      "purpose": "目标档案可定位：依可得线索定位或交馆方检索",
+      "kind": "atomic-rule",
+      "targetScope": "item",
+      "trigger": "archiveTitle/year/owner",
+      "resultOrUnknown": "located/insufficient/keeper-pending",
+      "candidateModule": "M08",
+      "sourceLevel": "CROSS_SCHOOL",
+      "sourceAnchor": "| R05 | 目标档案可定位 | item | archiveTitle/year/owner | 依可得线索定位或交馆方检索 | located/insufficient/keeper-pending | M08 | CROSS_SCHOOL |"
+    },
+    {
+      "id": "R06",
+      "locator": "§6 R06 (line 287)",
+      "purpose": "档案类型确认：由馆方或规则确定路线；人事干部档案独立分流",
+      "kind": "atomic-rule",
+      "targetScope": "item",
+      "trigger": "archiveType",
+      "resultOrUnknown": "qualified/divert/unverifiable",
+      "candidateModule": "M08",
+      "sourceLevel": "CD_VERIFIED",
+      "sourceAnchor": "| R06 | 档案类型确认 | item | archiveType | 由馆方或规则确定路线；人事干部档案独立分流 | qualified/divert/unverifiable | M08 | CD_VERIFIED |"
+    },
+    {
+      "id": "R07",
+      "locator": "§6 R07 (line 288)",
+      "purpose": "本人历史身份链：姓名变更/旧学号/就读年份可建立合理链",
+      "kind": "atomic-rule",
+      "targetScope": "item",
+      "trigger": "self + historicalRecord",
+      "resultOrUnknown": "matched/needs-evidence/unknown",
+      "candidateModule": "M03",
+      "sourceLevel": "CD_VERIFIED",
+      "sourceAnchor": "| R07 | 本人历史身份链 | item | self + historicalRecord | 姓名变更/旧学号/就读年份可建立合理链 | matched/needs-evidence/unknown | M03 | CD_VERIFIED |"
+    },
+    {
+      "id": "R08",
+      "locator": "§6 R08 (line 289)",
+      "purpose": "代理身份双方核验：证明委托人与受托人身份",
+      "kind": "atomic-rule",
+      "targetScope": "relationship",
+      "trigger": "applicantType=proxy",
+      "resultOrUnknown": "matched/missing-evidence/unverifiable",
+      "candidateModule": "M04",
+      "sourceLevel": "CD_VERIFIED",
+      "sourceAnchor": "| R08 | 代理身份双方核验 | relationship | applicantType=proxy | 证明委托人与受托人身份 | matched/missing-evidence/unverifiable | M04 | CD_VERIFIED |"
+    },
+    {
+      "id": "R09",
+      "locator": "§6 R09 (line 290)",
+      "purpose": "代理授权对象核验：委托对象/档案件/事项与申请一致",
+      "kind": "atomic-rule",
+      "targetScope": "operation",
+      "trigger": "applicantType=proxy",
+      "resultOrUnknown": "covered/scope-mismatch/unknown",
+      "candidateModule": "M04",
+      "sourceLevel": "CD_VERIFIED",
+      "sourceAnchor": "| R09 | 代理授权对象核验 | operation | applicantType=proxy | 委托对象/档案件/事项与申请一致 | covered/scope-mismatch/unknown | M04 | CD_VERIFIED |"
+    },
+    {
+      "id": "R10",
+      "locator": "§6 R10 (line 291)",
+      "purpose": "代理期限与方式核验：委托是否覆盖当次操作和日期",
+      "kind": "atomic-rule",
+      "targetScope": "operation",
+      "trigger": "proxy + time/operation",
+      "resultOrUnknown": "covered/scope-mismatch/unknown",
+      "candidateModule": "M04",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R10 | 代理期限与方式核验 | operation | proxy + time/operation | 委托是否覆盖当次操作和日期 | covered/scope-mismatch/unknown | M04 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "R11",
+      "locator": "§6 R11 (line 292)",
+      "purpose": "因公单位真实性与资格：单位与经办人/职责任务能够关联",
+      "kind": "atomic-rule",
+      "targetScope": "relationship",
+      "trigger": "applicantType in internal/external",
+      "resultOrUnknown": "verified/authority-unknown/conflict",
+      "candidateModule": "M05",
+      "sourceLevel": "CROSS_SCHOOL",
+      "sourceAnchor": "| R11 | 因公单位真实性与资格 | relationship | applicantType in internal/external | 单位与经办人/职责任务能够关联 | verified/authority-unknown/conflict | M05 | CROSS_SCHOOL |"
+    },
+    {
+      "id": "R12",
+      "locator": "§6 R12 (line 293)",
+      "purpose": "单位函用途及范围：单位函的事由、档案与具体方式匹配",
+      "kind": "atomic-rule",
+      "targetScope": "operation",
+      "trigger": "unit authorization",
+      "resultOrUnknown": "covered/scope-mismatch/unknown",
+      "candidateModule": "M05",
+      "sourceLevel": "CROSS_SCHOOL",
+      "sourceAnchor": "| R12 | 单位函用途及范围 | operation | unit authorization | 单位函的事由、档案与具体方式匹配 | covered/scope-mismatch/unknown | M05 | CROSS_SCHOOL |"
+    },
+    {
+      "id": "R13",
+      "locator": "§6 R13 (line 294)",
+      "purpose": "单位授权不能代替私人委托：涉及个人代办时另核委托",
+      "kind": "atomic-rule",
+      "targetScope": "relationship",
+      "trigger": "unit + personal archive",
+      "resultOrUnknown": "independent/missing-evidence",
+      "candidateModule": "M04",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R13 | 单位授权不能代替私人委托 | relationship | unit + personal archive | 涉及个人代办时另核委托 | independent/missing-evidence | M04 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "R14",
+      "locator": "§6 R14 (line 295)",
+      "purpose": "学生档案专用路径：校内校外经办及特殊档案批准按校规",
+      "kind": "atomic-rule",
+      "targetScope": "item",
+      "trigger": "archiveType=student_personnel_archive",
+      "resultOrUnknown": "route/permission-pending",
+      "candidateModule": "M09",
+      "sourceLevel": "CD_VERIFIED",
+      "sourceAnchor": "| R14 | 学生档案专用路径 | item | archiveType=student_personnel_archive | 校内校外经办及特殊档案批准按校规 | route/permission-pending | M09 | CD_VERIFIED |"
+    },
+    {
+      "id": "R15",
+      "locator": "§6 R15 (line 296)",
+      "purpose": "综合查阅表适用性：成都理工综合查阅表适用且版本匹配",
+      "kind": "atomic-rule",
+      "targetScope": "item",
+      "trigger": "archiveType=general + operation=view",
+      "resultOrUnknown": "applicable/version-unknown",
+      "candidateModule": "M06",
+      "sourceLevel": "CD_VERIFIED",
+      "sourceAnchor": "| R15 | 综合查阅表适用性 | item | archiveType=general + operation=view | 成都理工综合查阅表适用且版本匹配 | applicable/version-unknown | M06 | CD_VERIFIED |"
+    },
+    {
+      "id": "R16",
+      "locator": "§6 R16 (line 297)",
+      "purpose": "综合外借表适用性：成都理工外借审批表与借出操作匹配",
+      "kind": "atomic-rule",
+      "targetScope": "operation",
+      "trigger": "archiveType=general + borrow_original",
+      "resultOrUnknown": "applicable/need-authorization",
+      "candidateModule": "M12",
+      "sourceLevel": "CD_VERIFIED",
+      "sourceAnchor": "| R16 | 综合外借表适用性 | operation | archiveType=general + borrow_original | 成都理工外借审批表与借出操作匹配 | applicable/need-authorization | M12 | CD_VERIFIED |"
+    },
+    {
+      "id": "R17",
+      "locator": "§6 R17 (line 298)",
+      "purpose": "馆藏位置由权威来源确定：馆方事实为依据，未知只能请求查询",
+      "kind": "atomic-rule",
+      "targetScope": "item",
+      "trigger": "every item",
+      "resultOrUnknown": "located/keeper-pending",
+      "candidateModule": "M09",
+      "sourceLevel": "LEGAL",
+      "sourceAnchor": "| R17 | 馆藏位置由权威来源确定 | item | every item | 馆方事实为依据，未知只能请求查询 | located/keeper-pending | M09 | LEGAL |"
+    },
+    {
+      "id": "R18",
+      "locator": "§6 R18 (line 299)",
+      "purpose": "公布与开放状态分别检查：published≠open，标记无可靠来源则unknown",
+      "kind": "atomic-rule",
+      "targetScope": "item",
+      "trigger": "every item",
+      "resultOrUnknown": "qualified/unverifiable",
+      "candidateModule": "M09",
+      "sourceLevel": "LEGAL",
+      "sourceAnchor": "| R18 | 公布与开放状态分别检查 | item | every item | published≠open，标记无可靠来源则unknown | qualified/unverifiable | M09 | LEGAL |"
+    },
+    {
+      "id": "R19",
+      "locator": "§6 R19 (line 300)",
+      "purpose": "未开放或受限档案额外批准：专项权限决定/保密要求/允许范围",
+      "kind": "atomic-rule",
+      "targetScope": "operation",
+      "trigger": "accessState in not_open/restricted/classified",
+      "resultOrUnknown": "authority-approved/pending/denied",
+      "candidateModule": "M11",
+      "sourceLevel": "LEGAL",
+      "sourceAnchor": "| R19 | 未开放或受限档案额外批准 | operation | accessState in not_open/restricted/classified | 专项权限决定/保密要求/允许范围 | authority-approved/pending/denied | M11 | LEGAL |"
+    },
+    {
+      "id": "R20",
+      "locator": "§6 R20 (line 301)",
+      "purpose": "第三人隐私及技术秘密：有权部门决定范围与必要脱敏",
+      "kind": "atomic-rule",
+      "targetScope": "operation",
+      "trigger": "restriction_flags present",
+      "resultOrUnknown": "privacy-review/pending",
+      "candidateModule": "M09",
+      "sourceLevel": "LEGAL",
+      "sourceAnchor": "| R20 | 第三人隐私及技术秘密 | operation | restriction_flags present | 有权部门决定范围与必要脱敏 | privacy-review/pending | M09 | LEGAL |"
+    },
+    {
+      "id": "R21",
+      "locator": "§6 R21 (line 302)",
+      "purpose": "查阅权限精确匹配：授权档案件+查阅范围+时点一致",
+      "kind": "atomic-rule",
+      "targetScope": "operation",
+      "trigger": "operation=view",
+      "resultOrUnknown": "covered/not-covered/unknown",
+      "candidateModule": "M11",
+      "sourceLevel": "LEGAL",
+      "sourceAnchor": "| R21 | 查阅权限精确匹配 | operation | operation=view | 授权档案件+查阅范围+时点一致 | covered/not-covered/unknown | M11 | LEGAL |"
+    },
+    {
+      "id": "R22",
+      "locator": "§6 R22 (line 303)",
+      "purpose": "摘录权限精确匹配：不能从查阅自动继承摘录许可",
+      "kind": "atomic-rule",
+      "targetScope": "operation",
+      "trigger": "operation=excerpt",
+      "resultOrUnknown": "covered/not-covered/unknown",
+      "candidateModule": "M11",
+      "sourceLevel": "LEGAL",
+      "sourceAnchor": "| R22 | 摘录权限精确匹配 | operation | operation=excerpt | 不能从查阅自动继承摘录许可 | covered/not-covered/unknown | M11 | LEGAL |"
+    },
+    {
+      "id": "R23",
+      "locator": "§6 R23 (line 304)",
+      "purpose": "复制扫描权限精确匹配：授权内容页/份数与请求一致",
+      "kind": "atomic-rule",
+      "targetScope": "operation",
+      "trigger": "operation=copy",
+      "resultOrUnknown": "covered/not-covered/unknown",
+      "candidateModule": "M11",
+      "sourceLevel": "LEGAL",
+      "sourceAnchor": "| R23 | 复制扫描权限精确匹配 | operation | operation=copy | 授权内容页/份数与请求一致 | covered/not-covered/unknown | M11 | LEGAL |"
+    },
+    {
+      "id": "R24",
+      "locator": "§6 R24 (line 305)",
+      "purpose": "档案证明出具权限：只能有权档案部门出具或验真",
+      "kind": "atomic-rule",
+      "targetScope": "operation",
+      "trigger": "operation=certified_copy",
+      "resultOrUnknown": "pending/approved/unknown",
+      "candidateModule": "M11",
+      "sourceLevel": "LEGAL",
+      "sourceAnchor": "| R24 | 档案证明出具权限 | operation | operation=certified_copy | 只能有权档案部门出具或验真 | pending/approved/unknown | M11 | LEGAL |"
+    },
+    {
+      "id": "R25",
+      "locator": "§6 R25 (line 306)",
+      "purpose": "原件外借特别授权：确认额外审批/保管责任/可外借性",
+      "kind": "atomic-rule",
+      "targetScope": "operation",
+      "trigger": "operation=borrow_original",
+      "resultOrUnknown": "pending/approved/denied",
+      "candidateModule": "M12",
+      "sourceLevel": "LEGAL",
+      "sourceAnchor": "| R25 | 原件外借特别授权 | operation | operation=borrow_original | 确认额外审批/保管责任/可外借性 | pending/approved/denied | M12 | LEGAL |"
+    },
+    {
+      "id": "R26",
+      "locator": "§6 R26 (line 307)",
+      "purpose": "外借时间和交接：借期按校规；借还回执由馆方确认",
+      "kind": "atomic-rule",
+      "targetScope": "operation",
+      "trigger": "borrow_original + post_decision",
+      "resultOrUnknown": "within-limit/unknown/overdue",
+      "candidateModule": "M12",
+      "sourceLevel": "CD_VERIFIED,CROSS_SCHOOL",
+      "sourceAnchor": "| R26 | 外借时间和交接 | operation | borrow_original + post_decision | 借期按校规；借还回执由馆方确认 | within-limit/unknown/overdue | M12 | CD_VERIFIED,CROSS_SCHOOL |"
+    },
+    {
+      "id": "R27",
+      "locator": "§6 R27 (line 308)",
+      "purpose": "签章存在与真实性区分：可核有无，真伪由可信服务/人工",
+      "kind": "atomic-rule",
+      "targetScope": "evidence",
+      "trigger": "evidence signature",
+      "resultOrUnknown": "present/verified/unverifiable",
+      "candidateModule": "M13",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R27 | 签章存在与真实性区分 | evidence | evidence signature | 可核有无，真伪由可信服务/人工 | present/verified/unverifiable | M13 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "R28",
+      "locator": "§6 R28 (line 309)",
+      "purpose": "证据冲突对齐：姓名/年份/范围/数量跨文件核对",
+      "kind": "atomic-rule",
+      "targetScope": "evidence",
+      "trigger": "multiple documents",
+      "resultOrUnknown": "consistent/conflict/unknown",
+      "candidateModule": "M13",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R28 | 证据冲突对齐 | evidence | multiple documents | 姓名/年份/范围/数量跨文件核对 | consistent/conflict/unknown | M13 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "R29",
+      "locator": "§6 R29 (line 310)",
+      "purpose": "电子授权合法替代：认可且可验真时不得一律拒电子件",
+      "kind": "atomic-rule",
+      "targetScope": "evidence",
+      "trigger": "digitally-signed authorization",
+      "resultOrUnknown": "accepted/verification-pending",
+      "candidateModule": "M13",
+      "sourceLevel": "LEGAL",
+      "sourceAnchor": "| R29 | 电子授权合法替代 | evidence | digitally-signed authorization | 认可且可验真时不得一律拒电子件 | accepted/verification-pending | M13 | LEGAL |"
+    },
+    {
+      "id": "R30",
+      "locator": "§6 R30 (line 311)",
+      "purpose": "办理渠道材料条件：仅生效公告范围要求专属附件",
+      "kind": "atomic-rule",
+      "targetScope": "application",
+      "trigger": "channel/time",
+      "resultOrUnknown": "applicable/out-of-scope",
+      "candidateModule": "M02",
+      "sourceLevel": "CD_VERIFIED",
+      "sourceAnchor": "| R30 | 办理渠道材料条件 | application | channel/time | 仅生效公告范围要求专属附件 | applicable/out-of-scope | M02 | CD_VERIFIED |"
+    },
+    {
+      "id": "R31",
+      "locator": "§6 R31 (line 312)",
+      "purpose": "截止和规章有效期：过期寒假通知不覆盖秋季申请",
+      "kind": "atomic-rule",
+      "targetScope": "application",
+      "trigger": "submittedAt/effectiveWindow",
+      "resultOrUnknown": "active/expired/unconfirmed",
+      "candidateModule": "M02",
+      "sourceLevel": "CD_VERIFIED",
+      "sourceAnchor": "| R31 | 截止和规章有效期 | application | submittedAt/effectiveWindow | 过期寒假通知不覆盖秋季申请 | active/expired/unconfirmed | M02 | CD_VERIFIED |"
+    },
+    {
+      "id": "R32",
+      "locator": "§6 R32 (line 313)",
+      "purpose": "必需材料仅按条件激活：申请人应交且到达要求阶段才缺件",
+      "kind": "atomic-rule",
+      "targetScope": "evidence",
+      "trigger": "each activated slot",
+      "resultOrUnknown": "missing/complete/not-due",
+      "candidateModule": "M06",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R32 | 必需材料仅按条件激活 | evidence | each activated slot | 申请人应交且到达要求阶段才缺件 | missing/complete/not-due | M06 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "R33",
+      "locator": "§6 R33 (line 314)",
+      "purpose": "待审批不等于缺件：有权批准尚未发生，应等待而不索取未来签批",
+      "kind": "atomic-rule",
+      "targetScope": "workflow",
+      "trigger": "reviewStage != post_decision",
+      "resultOrUnknown": "pending-authority",
+      "candidateModule": "M07",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R33 | 待审批不等于缺件 | workflow | reviewStage != post_decision | 有权批准尚未发生，应等待而不索取未来签批 | pending-authority | M07 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "R34",
+      "locator": "§6 R34 (line 315)",
+      "purpose": "审批结果不能被AI代写：最终批准需要可信部门身份与范围",
+      "kind": "atomic-rule",
+      "targetScope": "workflow",
+      "trigger": "authority decision",
+      "resultOrUnknown": "human-required",
+      "candidateModule": "M11",
+      "sourceLevel": "LEGAL",
+      "sourceAnchor": "| R34 | 审批结果不能被AI代写 | workflow | authority decision | 最终批准需要可信部门身份与范围 | human-required | M11 | LEGAL |"
+    },
+    {
+      "id": "R35",
+      "locator": "§6 R35 (line 316)",
+      "purpose": "逐操作汇总结论：保留适用/满足/冲突/权限和证据状态",
+      "kind": "atomic-rule",
+      "targetScope": "operation",
+      "trigger": "each operation_key",
+      "resultOrUnknown": "operation-result",
+      "candidateModule": "M14",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R35 | 逐操作汇总结论 | operation | each operation_key | 保留适用/满足/冲突/权限和证据状态 | operation-result | M14 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "R36",
+      "locator": "§6 R36 (line 317)",
+      "purpose": "整单汇总不覆盖部分处理：输出可受理+补正+转办的并存结果",
+      "kind": "atomic-rule",
+      "targetScope": "application",
+      "trigger": "all operation results",
+      "resultOrUnknown": "aggregate-result",
+      "candidateModule": "M14",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R36 | 整单汇总不覆盖部分处理 | application | all operation results | 输出可受理+补正+转办的并存结果 | aggregate-result | M14 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "R37",
+      "locator": "§6 R37 (line 318)",
+      "purpose": "交付动作强制门控：仅馆方已作有权决定且有执行记录才能回写已交付",
+      "kind": "atomic-rule",
+      "targetScope": "workflow",
+      "trigger": "actual delivery",
+      "resultOrUnknown": "delivery-disabled-in-precheck",
+      "candidateModule": "M14",
+      "sourceLevel": "LEGAL",
+      "sourceAnchor": "| R37 | 交付动作强制门控 | workflow | actual delivery | 仅馆方已作有权决定且有执行记录才能回写已交付 | delivery-disabled-in-precheck | M14 | LEGAL |"
+    },
+    {
+      "id": "R38",
+      "locator": "§6 R38 (line 319)",
+      "purpose": "证据完整覆盖检查：未读/解析失败不得宣称检查完成",
+      "kind": "atomic-rule",
+      "targetScope": "evidence",
+      "trigger": "all active attachments",
+      "resultOrUnknown": "complete/partial/failed",
+      "candidateModule": "M13",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R38 | 证据完整覆盖检查 | evidence | all active attachments | 未读/解析失败不得宣称检查完成 | complete/partial/failed | M13 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "R39",
+      "locator": "§6 R39 (line 320)",
+      "purpose": "校规证据优先级：有效上位法+本校适用细则；外校不自动生效",
+      "kind": "atomic-rule",
+      "targetScope": "application",
+      "trigger": "multiple rule sources",
+      "resultOrUnknown": "applicable/conflict/unknown",
+      "candidateModule": "M02",
+      "sourceLevel": "LEGAL,CD_VERIFIED",
+      "sourceAnchor": "| R39 | 校规证据优先级 | application | multiple rule sources | 有效上位法+本校适用细则；外校不自动生效 | applicable/conflict/unknown | M02 | LEGAL,CD_VERIFIED |"
+    },
+    {
+      "id": "R40",
+      "locator": "§6 R40 (line 321)",
+      "purpose": "合理替代与历史差异：支持合法更名、委托替代、馆方检索",
+      "kind": "atomic-rule",
+      "targetScope": "evidence",
+      "trigger": "old names/IDs/unknown catalogue",
+      "resultOrUnknown": "accepted/manual/needs-evidence",
+      "candidateModule": "M13",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R40 | 合理替代与历史差异 | evidence | old names/IDs/unknown catalogue | 支持合法更名、委托替代、馆方检索 | accepted/manual/needs-evidence | M13 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "R41",
+      "locator": "§6 R41 (line 322)",
+      "purpose": "公开展示结果最小化：申请人只见公开反馈，不暴露他人档案/内部意见",
+      "kind": "atomic-rule",
+      "targetScope": "workflow",
+      "trigger": "report generation",
+      "resultOrUnknown": "public/internal split",
+      "candidateModule": "M14",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R41 | 公开展示结果最小化 | workflow | report generation | 申请人只见公开反馈，不暴露他人档案/内部意见 | public/internal split | M14 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "R42",
+      "locator": "§6 R42 (line 323)",
+      "purpose": "版本变更与重审：修改相关材料/规则后相关检查过期并重新核对",
+      "kind": "atomic-rule",
+      "targetScope": "workflow",
+      "trigger": "material/policy changed",
+      "resultOrUnknown": "stale/recheck",
+      "candidateModule": "M02",
+      "sourceLevel": "UNIVERSAL_DESIGN",
+      "sourceAnchor": "| R42 | 版本变更与重审 | workflow | material/policy changed | 修改相关材料/规则后相关检查过期并重新核对 | stale/recheck | M02 | UNIVERSAL_DESIGN |"
+    },
+    {
+      "id": "X01",
+      "locator": "§2.1",
+      "purpose": "不同档案件与利用操作必须具备唯一业务键",
+      "sourceAnchor": "一个 `operation_key` 必须唯一",
+      "kind": "narrative-invariant",
+      "targetScope": "operation",
+      "relatedRuleIds": [
+        "R35"
+      ]
+    },
+    {
+      "id": "X02",
+      "locator": "§4.1",
+      "purpose": "材料槽激活、阶段到期及提交责任必须分离",
+      "sourceAnchor": "证据槽是否启用",
+      "kind": "narrative-invariant",
+      "targetScope": "workflow",
+      "relatedRuleIds": [
+        "R32",
+        "R33"
+      ]
+    },
+    {
+      "id": "X03",
+      "locator": "§5.3",
+      "purpose": "条件必须三态且unknown不可转换成false/not_applicable",
+      "sourceAnchor": "条件的真假必须支持三态",
+      "kind": "narrative-invariant",
+      "targetScope": "workflow",
+      "relatedRuleIds": [
+        "R32"
+      ]
+    },
+    {
+      "id": "X04",
+      "locator": "§8.3",
+      "purpose": "AI模板任何预审输出不得驱动交付",
+      "sourceAnchor": "模板自身的所有输出 `delivery_allowed=false`",
+      "kind": "narrative-invariant",
+      "targetScope": "workflow",
+      "relatedRuleIds": [
+        "R37"
+      ]
+    },
+    {
+      "id": "X05",
+      "locator": "§7",
+      "purpose": "提交阶段不得索取未来馆方签批",
+      "sourceAnchor": "`submission` 阶段提交人无需提前拥有未来的馆方批准结果",
+      "kind": "narrative-invariant",
+      "targetScope": "workflow",
+      "relatedRuleIds": [
+        "R33"
+      ]
+    },
+    {
+      "id": "X06",
+      "locator": "§8.4",
+      "purpose": "混合申请可受理、补正、待授权与分流并存",
+      "sourceAnchor": "单一申请允许并存",
+      "kind": "narrative-invariant",
+      "targetScope": "workflow",
+      "relatedRuleIds": [
+        "R35",
+        "R36"
+      ]
+    },
+    {
+      "id": "X07",
+      "locator": "§4.1",
+      "purpose": "同一证据跨档案及操作复用必须独立绑定覆盖范围",
+      "sourceAnchor": "同一份证明若关联多个档案件或操作",
+      "kind": "narrative-invariant",
+      "targetScope": "workflow",
+      "relatedRuleIds": [
+        "R09",
+        "R12",
+        "R23",
+        "R38"
+      ]
+    },
+    {
+      "id": "X08",
+      "locator": "§8.5",
+      "purpose": "同操作多种发现不可最后写入覆盖",
+      "sourceAnchor": "两个发现都保留",
+      "kind": "narrative-invariant",
+      "targetScope": "workflow",
+      "relatedRuleIds": [
+        "R35"
+      ]
+    },
+    {
+      "id": "X09",
+      "locator": "§7",
+      "purpose": "正式办理、交付与归还保留馆方外部责任",
+      "sourceAnchor": "业务执行与归还（外部责任）",
+      "kind": "narrative-invariant",
+      "targetScope": "workflow",
+      "relatedRuleIds": [
+        "R34",
+        "R37"
+      ]
+    },
+    {
+      "id": "X10",
+      "locator": "§0.2",
+      "purpose": "来源内容可核并不等于该校该时该场景制度生效",
+      "sourceAnchor": "证据来源 ≠ 规则是否生效",
+      "kind": "narrative-invariant",
+      "targetScope": "workflow",
+      "relatedRuleIds": [
+        "R01",
+        "R39"
+      ]
+    },
+    {
+      "id": "X11",
+      "locator": "§13.1",
+      "purpose": "档案件及操作必须分别映射业务subject并绑定精确证据",
+      "sourceAnchor": "每个 `(archiveItemId, operationId)` 映射一个",
+      "kind": "narrative-invariant",
+      "targetScope": "workflow",
+      "relatedRuleIds": [
+        "R35"
+      ]
+    },
+    {
+      "id": "X12",
+      "locator": "§14.1",
+      "purpose": "合成审核材料与独立Oracle严格隔离",
+      "sourceAnchor": "Oracle 不可被用于提示模型",
+      "kind": "narrative-invariant",
+      "targetScope": "workflow",
+      "relatedRuleIds": [
+        "R38"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "id": "F001",
+      "locator": "§3.2 line 135",
+      "name": "受理学校标识",
+      "scope": "application",
+      "kind": "enum/text",
+      "requiredWhen": "所有申请",
+      "limit": "不得推断档案形成学校=受理学校"
+    },
+    {
+      "id": "F002",
+      "locator": "§3.2 line 136",
+      "name": "受理馆/部门",
+      "scope": "application",
+      "kind": "text",
+      "requiredWhen": "所有申请",
+      "limit": "不同部门可能保管不同档案"
+    },
+    {
+      "id": "F003",
+      "locator": "§3.2 line 137",
+      "name": "申请单ID",
+      "scope": "application",
+      "kind": "text",
+      "requiredWhen": "所有申请",
+      "limit": "一单内多件多操作"
+    },
+    {
+      "id": "F004",
+      "locator": "§3.2 line 138",
+      "name": "提交时间",
+      "scope": "application",
+      "kind": "datetime",
+      "requiredWhen": "所有申请",
+      "limit": "决定临时公告与制度版本"
+    },
+    {
+      "id": "F005",
+      "locator": "§3.2 line 139",
+      "name": "业务阶段",
+      "scope": "application",
+      "kind": "enum",
+      "requiredWhen": "所有申请",
+      "limit": "不能把待签批当缺件"
+    },
+    {
+      "id": "F006",
+      "locator": "§3.2 line 140",
+      "name": "渠道",
+      "scope": "application",
+      "kind": "enum",
+      "requiredWhen": "所有申请",
+      "limit": "仅触发有效渠道规则"
+    },
+    {
+      "id": "F007",
+      "locator": "§3.2 line 141",
+      "name": "制度快照/版本ID",
+      "scope": "application",
+      "kind": "text",
+      "requiredWhen": "所有申请",
+      "limit": "未确认版本进入待配置"
+    },
+    {
+      "id": "F008",
+      "locator": "§3.2 line 142",
+      "name": "申请人姓名及身份类别",
+      "scope": "application",
+      "kind": "object",
+      "requiredWhen": "所有申请",
+      "limit": "法定身份证明具体格式按校规"
+    },
+    {
+      "id": "F009",
+      "locator": "§3.2 line 143",
+      "name": "申请人身份标识",
+      "scope": "application",
+      "kind": "text",
+      "requiredWhen": "需要建立主体关联",
+      "limit": "不一律要求上传证件双面"
+    },
+    {
+      "id": "F010",
+      "locator": "§3.2 line 144",
+      "name": "申请人单位/联系信息",
+      "scope": "application",
+      "kind": "object",
+      "requiredWhen": "单位因公或送达",
+      "limit": "允许系统预填"
+    },
+    {
+      "id": "F011",
+      "locator": "§3.2 line 145",
+      "name": "代理委托人",
+      "scope": "relationship",
+      "kind": "object",
+      "requiredWhen": "proxy",
+      "limit": "不可与受托人混为一人"
+    },
+    {
+      "id": "F012",
+      "locator": "§3.2 line 146",
+      "name": "委托范围",
+      "scope": "relationship",
+      "kind": "object",
+      "requiredWhen": "proxy",
+      "limit": "要覆盖档案/利用方式/时间"
+    },
+    {
+      "id": "F013",
+      "locator": "§3.2 line 147",
+      "name": "委托生效时间",
+      "scope": "relationship",
+      "kind": "date-range",
+      "requiredWhen": "proxy且制度要求",
+      "limit": "超过生效范围不得扩大权限"
+    },
+    {
+      "id": "F014",
+      "locator": "§3.2 line 148",
+      "name": "受托人身份",
+      "scope": "relationship",
+      "kind": "object",
+      "requiredWhen": "proxy",
+      "limit": "需有可核的身份关联"
+    },
+    {
+      "id": "F015",
+      "locator": "§3.2 line 149",
+      "name": "机构授权主体",
+      "scope": "relationship",
+      "kind": "object",
+      "requiredWhen": "internal_unit/external_unit",
+      "limit": "单位名称不等于授权主体有效"
+    },
+    {
+      "id": "F016",
+      "locator": "§3.2 line 150",
+      "name": "经办人单位资格",
+      "scope": "relationship",
+      "kind": "object",
+      "requiredWhen": "单位因公",
+      "limit": "正式函/授权接口择一/合用依校规"
+    },
+    {
+      "id": "F017",
+      "locator": "§3.2 line 151",
+      "name": "因公事由",
+      "scope": "relationship",
+      "kind": "text",
+      "requiredWhen": "单位因公",
+      "limit": "需与函件具体用途相匹配"
+    },
+    {
+      "id": "F018",
+      "locator": "§3.2 line 152",
+      "name": "人事/档案主管审批身份",
+      "scope": "relationship",
+      "kind": "object",
+      "requiredWhen": "限制性档案/操作",
+      "limit": "权限由有权部门认定"
+    },
+    {
+      "id": "F019",
+      "locator": "§3.2 line 153",
+      "name": "档案件ID",
+      "scope": "item",
+      "kind": "text",
+      "requiredWhen": "所有请求",
+      "limit": "与operation_id组成稳定键"
+    },
+    {
+      "id": "F020",
+      "locator": "§3.2 line 154",
+      "name": "档案标题/材料名称",
+      "scope": "item",
+      "kind": "text",
+      "requiredWhen": "所有请求",
+      "limit": "允许模糊但足以检索"
+    },
+    {
+      "id": "F021",
+      "locator": "§3.2 line 155",
+      "name": "档案类型",
+      "scope": "item",
+      "kind": "enum",
+      "requiredWhen": "所有请求",
+      "limit": "不因申报的类型自动开放"
+    },
+    {
+      "id": "F022",
+      "locator": "§3.2 line 156",
+      "name": "档案归档年度",
+      "scope": "item",
+      "kind": "year/range",
+      "requiredWhen": "已知时",
+      "limit": "未知档号不自动拒绝"
+    },
+    {
+      "id": "F023",
+      "locator": "§3.2 line 157",
+      "name": "档案形成单位/就读信息",
+      "scope": "item",
+      "kind": "object",
+      "requiredWhen": "个人历史/部门档案",
+      "limit": "组织更名/历史更名可做替代链"
+    },
+    {
+      "id": "F024",
+      "locator": "§3.2 line 158",
+      "name": "档案主体",
+      "scope": "item",
+      "kind": "object",
+      "requiredWhen": "每项材料",
+      "limit": "第三人隐私要区分"
+    },
+    {
+      "id": "F025",
+      "locator": "§3.2 line 159",
+      "name": "馆内档号",
+      "scope": "item",
+      "kind": "text",
+      "requiredWhen": "用户/系统已知时",
+      "limit": "不强制普通用户填未知馆号"
+    },
+    {
+      "id": "F026",
+      "locator": "§3.2 line 160",
+      "name": "馆藏位置和状态",
+      "scope": "item",
+      "kind": "enum",
+      "requiredWhen": "所有请求",
+      "limit": "未知->馆方检索，不瞎编"
+    },
+    {
+      "id": "F027",
+      "locator": "§3.2 line 161",
+      "name": "公布状态",
+      "scope": "item",
+      "kind": "enum",
+      "requiredWhen": "需要判断公布限制",
+      "limit": "独立于开放状态"
+    },
+    {
+      "id": "F028",
+      "locator": "§3.2 line 162",
+      "name": "档案开放状态",
+      "scope": "item",
+      "kind": "enum",
+      "requiredWhen": "所有实际访问",
+      "limit": "没有可信来源->unknown"
+    },
+    {
+      "id": "F029",
+      "locator": "§3.2 line 163",
+      "name": "受限原因标志",
+      "scope": "item",
+      "kind": "multi",
+      "requiredWhen": "发现隐私/秘密/原件等",
+      "limit": "可并存不可互相覆盖"
+    },
+    {
+      "id": "F030",
+      "locator": "§3.2 line 164",
+      "name": "操作ID",
+      "scope": "operation",
+      "kind": "text",
+      "requiredWhen": "每种操作",
+      "limit": "稳定 operation_key"
+    },
+    {
+      "id": "F031",
+      "locator": "§3.2 line 165",
+      "name": "操作类型",
+      "scope": "operation",
+      "kind": "enum",
+      "requiredWhen": "每种操作",
+      "limit": "view!=copy!=borrow_original"
+    },
+    {
+      "id": "F032",
+      "locator": "§3.2 line 166",
+      "name": "操作范围",
+      "scope": "operation",
+      "kind": "object",
+      "requiredWhen": "每种操作",
+      "limit": "页/档号/段落/材料份数的精确范围"
+    },
+    {
+      "id": "F033",
+      "locator": "§3.2 line 167",
+      "name": "复制件数量或借出数量",
+      "scope": "operation",
+      "kind": "integer",
+      "requiredWhen": "数量相关操作",
+      "limit": "限额须对应学校规则"
+    },
+    {
+      "id": "F034",
+      "locator": "§3.2 line 168",
+      "name": "所需用途及接收对象",
+      "scope": "operation",
+      "kind": "text",
+      "requiredWhen": "需要用途核验/出证",
+      "limit": "用途不得虚构违法"
+    },
+    {
+      "id": "F035",
+      "locator": "§3.2 line 169",
+      "name": "申请的交付方式",
+      "scope": "operation",
+      "kind": "enum",
+      "requiredWhen": "邮寄/电子交付",
+      "limit": "不邮寄不强制地址"
+    },
+    {
+      "id": "F036",
+      "locator": "§3.2 line 170",
+      "name": "申请人的文件权利依据",
+      "scope": "operation",
+      "kind": "references",
+      "requiredWhen": "涉及限制或因公",
+      "limit": "身份+单位函不直接等于权限"
+    },
+    {
+      "id": "F037",
+      "locator": "§3.2 line 171",
+      "name": "实际批准的操作集合",
+      "scope": "operation",
+      "kind": "set",
+      "requiredWhen": "post_decision或馆方已签批",
+      "limit": "只认同档案件/同操作/同范围"
+    },
+    {
+      "id": "F038",
+      "locator": "§3.2 line 172",
+      "name": "授权开始与终止时间",
+      "scope": "operation",
+      "kind": "date-range",
+      "requiredWhen": "权限有时限时",
+      "limit": "过期批准不合法"
+    },
+    {
+      "id": "F039",
+      "locator": "§3.2 line 173",
+      "name": "馆方批准状态",
+      "scope": "operation",
+      "kind": "enum",
+      "requiredWhen": "需最终准入时",
+      "limit": "待批准不是材料缺失"
+    },
+    {
+      "id": "F040",
+      "locator": "§3.2 line 174",
+      "name": "原件借用责任人",
+      "scope": "operation",
+      "kind": "object",
+      "requiredWhen": "borrow_original",
+      "limit": "要有单位/责任绑定"
+    },
+    {
+      "id": "F041",
+      "locator": "§3.2 line 175",
+      "name": "预计借还日期",
+      "scope": "operation",
+      "kind": "date-range",
+      "requiredWhen": "borrow_original",
+      "limit": "不能套用外校借期数字"
+    },
+    {
+      "id": "F042",
+      "locator": "§3.2 line 176",
+      "name": "原件交接与归还记录",
+      "scope": "operation",
+      "kind": "object",
+      "requiredWhen": "post_decision且borrow_original",
+      "limit": "交付后执行记录，不是申请时必需"
+    },
+    {
+      "id": "F043",
+      "locator": "§3.2 line 177",
+      "name": "证明文件版本与位置",
+      "scope": "evidence",
+      "kind": "references",
+      "requiredWhen": "任何审查依据",
+      "limit": "原件版本、哈希、页码/块位置"
+    },
+    {
+      "id": "F044",
+      "locator": "§3.2 line 178",
+      "name": "文件读取完整性",
+      "scope": "evidence",
+      "kind": "enum",
+      "requiredWhen": "每个活跃附件",
+      "limit": "未读不得声称已核完"
+    },
+    {
+      "id": "F045",
+      "locator": "§3.2 line 179",
+      "name": "证据主体匹配状态",
+      "scope": "evidence",
+      "kind": "enum",
+      "requiredWhen": "每个相关证明",
+      "limit": "OCR低置信度只能待核"
+    },
+    {
+      "id": "F046",
+      "locator": "§3.2 line 180",
+      "name": "签字印章是否存在",
+      "scope": "evidence",
+      "kind": "enum",
+      "requiredWhen": "制度要求签章时",
+      "limit": "存在不证明真伪"
+    },
+    {
+      "id": "F047",
+      "locator": "§3.2 line 181",
+      "name": "签章权威核验状态",
+      "scope": "evidence",
+      "kind": "enum",
+      "requiredWhen": "需验签/审批权时",
+      "limit": "不能以图像生成“真实公章”"
+    },
+    {
+      "id": "F048",
+      "locator": "§3.2 line 182",
+      "name": "规则适用证据",
+      "scope": "workflow",
+      "kind": "references",
+      "requiredWhen": "每项检查",
+      "limit": "来源版本+触发条件+生效时间"
+    },
+    {
+      "id": "F049",
+      "locator": "§3.2 line 183",
+      "name": "人工待办与负责方",
+      "scope": "workflow",
+      "kind": "object",
+      "requiredWhen": "存在未知/待授权/冲突时",
+      "limit": "明确由谁决定/补正"
+    },
+    {
+      "id": "F050",
+      "locator": "§3.2 line 184",
+      "name": "业务审批/执行回执",
+      "scope": "workflow",
+      "kind": "references",
+      "requiredWhen": "已审批/已交付阶段",
+      "limit": "不凭AI建议代替馆方回执"
+    }
+  ],
+  "materialSlots": [
+    {
+      "id": "S01",
+      "locator": "§4 line 194",
+      "name": "主申请表/提交确认",
+      "scope": "application",
+      "activateWhen": "一个申请至少有一份可确认的申请描述（线上结构化填报可代替PDF）",
+      "requiredAt": "submission",
+      "basis": "CD01",
+      "alternativesAndLimits": "结构化表单与纸质扫描择其一；不强制重复上传",
+      "ruleRefs": [
+        "R32"
+      ]
+    },
+    {
+      "id": "S02",
+      "locator": "§4 line 195",
+      "name": "身份/在校信息凭据",
+      "scope": "application/relationship",
+      "activateWhen": "身份无法从可信接口确定、或该校该场景要求查验证件",
+      "requiredAt": "submission",
+      "basis": "CD02/EX04",
+      "alternativesAndLimits": "实名登录的可信身份可在获准场景减少附件",
+      "ruleRefs": [
+        "R03",
+        "R32"
+      ]
+    },
+    {
+      "id": "S03",
+      "locator": "§4 line 196",
+      "name": "委托书/授权关系",
+      "scope": "relationship",
+      "activateWhen": "applicant_type=proxy",
+      "requiredAt": "submission",
+      "basis": "CD03",
+      "alternativesAndLimits": "要求内容覆盖代理对象、事项、使用方式和授权主体",
+      "ruleRefs": [
+        "R08",
+        "R09",
+        "R10"
+      ]
+    },
+    {
+      "id": "S04",
+      "locator": "§4 line 197",
+      "name": "受托人及委托人身份证明",
+      "scope": "relationship",
+      "activateWhen": "applicant_type=proxy且有效校规要求",
+      "requiredAt": "submission",
+      "basis": "CD03",
+      "alternativesAndLimits": "本校历史指南出现委托人身份证复印件；是否双人原件须校核",
+      "ruleRefs": [
+        "R08",
+        "R32"
+      ]
+    },
+    {
+      "id": "S05",
+      "locator": "§4 line 198",
+      "name": "单位介绍信/经办授权函",
+      "scope": "relationship",
+      "activateWhen": "internal_unit/external_unit且校规要求",
+      "requiredAt": "submission",
+      "basis": "CD02/EX04",
+      "alternativesAndLimits": "函件证明单位/经办/用途；不当然扩大馆方权限",
+      "ruleRefs": [
+        "R11",
+        "R12"
+      ]
+    },
+    {
+      "id": "S06",
+      "locator": "§4 line 199",
+      "name": "学生档案利用审批表",
+      "scope": "item",
+      "activateWhen": "CDUT学生档案利用且该现行程序适用",
+      "requiredAt": "submission/decision按校规",
+      "basis": "CD01",
+      "alternativesAndLimits": "2026表名已核，栏位、印章节点待取得",
+      "ruleRefs": [
+        "R14",
+        "R32"
+      ]
+    },
+    {
+      "id": "S07",
+      "locator": "§4 line 200",
+      "name": "综合档案查阅审批表",
+      "scope": "item",
+      "activateWhen": "CDUT一般综合档案查阅且程序适用",
+      "requiredAt": "submission/decision按校规",
+      "basis": "CD01",
+      "alternativesAndLimits": "不得拿它直接办理原件外借",
+      "ruleRefs": [
+        "R15",
+        "R32"
+      ]
+    },
+    {
+      "id": "S08",
+      "locator": "§4 line 201",
+      "name": "综合档案外借审批表",
+      "scope": "operation",
+      "activateWhen": "CDUT综合档案原件外借且程序适用",
+      "requiredAt": "submission/decision按校规",
+      "basis": "CD01",
+      "alternativesAndLimits": "归还记录属于执行后阶段",
+      "ruleRefs": [
+        "R16",
+        "R25"
+      ]
+    },
+    {
+      "id": "S09",
+      "locator": "§4 line 202",
+      "name": "形成单位或有权馆方批准",
+      "scope": "operation",
+      "activateWhen": "限制性档案/受控行为需专门批准",
+      "requiredAt": "decision",
+      "basis": "LAW02/SC01",
+      "alternativesAndLimits": "提交阶段未签批->pending_authority而非missing_evidence",
+      "ruleRefs": [
+        "R19",
+        "R33",
+        "R34"
+      ]
+    },
+    {
+      "id": "S10",
+      "locator": "§4 line 203",
+      "name": "馆方开放状态/馆藏确认",
+      "scope": "item",
+      "activateWhen": "需要确认能否依法利用",
+      "requiredAt": "authority_review",
+      "basis": "LAW02",
+      "alternativesAndLimits": "未知不能按“未开放”或“开放”擅自填",
+      "ruleRefs": [
+        "R17",
+        "R18"
+      ]
+    },
+    {
+      "id": "S11",
+      "locator": "§4 line 204",
+      "name": "具体复制/摘录范围证明",
+      "scope": "operation",
+      "activateWhen": "copy/excerpt/certified_copy且涉及范围限制",
+      "requiredAt": "decision",
+      "basis": "LAW02/EX04",
+      "alternativesAndLimits": "材料只支持查阅不意味着复制批准",
+      "ruleRefs": [
+        "R22",
+        "R23",
+        "R24"
+      ]
+    },
+    {
+      "id": "S12",
+      "locator": "§4 line 205",
+      "name": "原件保管、归还、交接记录",
+      "scope": "operation",
+      "activateWhen": "borrow_original",
+      "requiredAt": "decision/post_decision",
+      "basis": "CD01/EX05",
+      "alternativesAndLimits": "借用责任在申请阶段，交接/归还记录在后续阶段",
+      "ruleRefs": [
+        "R25",
+        "R26",
+        "R33"
+      ]
+    },
+    {
+      "id": "S13",
+      "locator": "§4 line 206",
+      "name": "合法历史更名及档案主体关联证明",
+      "scope": "item/relationship",
+      "activateWhen": "申请人与历史归档名不一致",
+      "requiredAt": "submission",
+      "basis": "CD03",
+      "alternativesAndLimits": "材料形式按具体要求，不一律附公安证明",
+      "ruleRefs": [
+        "R07",
+        "R40"
+      ]
+    },
+    {
+      "id": "S14",
+      "locator": "§4 line 207",
+      "name": "邮寄/电子交付地址与接受方式",
+      "scope": "operation",
+      "activateWhen": "选择邮寄或电子交付",
+      "requiredAt": "decision/post_decision",
+      "basis": "CD04",
+      "alternativesAndLimits": "寒假特定邮寄/扫描要求只在公告适用时生效",
+      "ruleRefs": [
+        "R30"
+      ]
+    }
+  ],
+  "branches": [
+    {
+      "id": "B01",
+      "locator": "§5.1 line 223",
+      "name": "受理学校及现行规则",
+      "parameter": "receiving_school,rule_context",
+      "scope": "所有请求",
+      "effect": "定位校规与版本，不引入外校强制条件",
+      "ruleRefs": [
+        "R01",
+        "R39"
+      ]
+    },
+    {
+      "id": "B02",
+      "locator": "§5.1 line 224",
+      "name": "申请主体类别",
+      "parameter": "applicant_type",
+      "scope": "所有请求",
+      "effect": "self/proxy/internal/external，身份与权利分开",
+      "ruleRefs": [
+        "R03",
+        "R04",
+        "R08",
+        "R11"
+      ]
+    },
+    {
+      "id": "B03",
+      "locator": "§5.1 line 225",
+      "name": "委托关系",
+      "parameter": "proxy/delegation",
+      "scope": "仅代理办理",
+      "effect": "核委托双方与材料范围，不能覆盖馆方限制",
+      "ruleRefs": [
+        "R08",
+        "R09",
+        "R10",
+        "R13"
+      ]
+    },
+    {
+      "id": "B04",
+      "locator": "§5.1 line 226",
+      "name": "单位因公授权",
+      "parameter": "internal_unit/external_unit",
+      "scope": "因公申请",
+      "effect": "单位函+经办权+工作目的各自匹配",
+      "ruleRefs": [
+        "R11",
+        "R12",
+        "R13"
+      ]
+    },
+    {
+      "id": "B05",
+      "locator": "§5.1 line 227",
+      "name": "档案类别",
+      "parameter": "archive_type",
+      "scope": "每档案件",
+      "effect": "学籍/综合/学生个人档案/人事干部/专项",
+      "ruleRefs": [
+        "R06",
+        "R14",
+        "R15"
+      ]
+    },
+    {
+      "id": "B06",
+      "locator": "§5.1 line 228",
+      "name": "操作类别",
+      "parameter": "operation_type",
+      "scope": "每操作",
+      "effect": "查阅、摘录、复制、证明、外借分开",
+      "ruleRefs": [
+        "R21",
+        "R22",
+        "R23",
+        "R24",
+        "R25",
+        "R26"
+      ]
+    },
+    {
+      "id": "B07",
+      "locator": "§5.1 line 229",
+      "name": "馆藏与开放情况",
+      "parameter": "location_status/access_state",
+      "scope": "每档案件",
+      "effect": "未知由馆方查询；不得当开放",
+      "ruleRefs": [
+        "R17",
+        "R18",
+        "R19"
+      ]
+    },
+    {
+      "id": "B08",
+      "locator": "§5.1 line 230",
+      "name": "限制标志",
+      "parameter": "restriction_flags",
+      "scope": "可能受限时",
+      "effect": "可与开放并存，隐私/秘密/珍贵原件额外核权",
+      "ruleRefs": [
+        "R19",
+        "R20"
+      ]
+    },
+    {
+      "id": "B09",
+      "locator": "§5.1 line 231",
+      "name": "办理渠道",
+      "parameter": "channel",
+      "scope": "所有请求",
+      "effect": "电子/到馆/邮寄/临时窗口不同",
+      "ruleRefs": [
+        "R30",
+        "R31"
+      ]
+    },
+    {
+      "id": "B10",
+      "locator": "§5.1 line 232",
+      "name": "阶段",
+      "parameter": "review_stage",
+      "scope": "全流程",
+      "effect": "提交与最终批准、执行交付完全分开",
+      "ruleRefs": [
+        "R26",
+        "R32",
+        "R33",
+        "R37"
+      ]
+    },
+    {
+      "id": "B11",
+      "locator": "§5.1 line 233",
+      "name": "规则时间窗",
+      "parameter": "submitted_at,effectiveFrom,effectiveUntil",
+      "scope": "临时公告/政策变更",
+      "effect": "过期通知不得跨期生效",
+      "ruleRefs": [
+        "R31",
+        "R39"
+      ]
+    },
+    {
+      "id": "B12",
+      "locator": "§5.1 line 234",
+      "name": "操作范围和数量",
+      "parameter": "scope,count",
+      "scope": "多操作尤其复制/外借",
+      "effect": "批准范围按具体档案件、操作、页码/数量比较",
+      "ruleRefs": [
+        "R09",
+        "R10",
+        "R12",
+        "R23",
+        "R25"
+      ]
+    },
+    {
+      "id": "B13",
+      "locator": "§5.1 line 235",
+      "name": "可信身份与权限接口",
+      "parameter": "identity/keeper/authority",
+      "scope": "有连接时",
+      "effect": "接口未提供≠权限成立；输出待核",
+      "ruleRefs": [
+        "R17",
+        "R18",
+        "R19",
+        "R34"
+      ]
+    },
+    {
+      "id": "B14",
+      "locator": "§5.1 line 236",
+      "name": "电子签章与替代材料",
+      "parameter": "signature.verification",
+      "scope": "证书、授权电子文件",
+      "effect": "可信回执可以替代传统纸章，需适用制度认可",
+      "ruleRefs": [
+        "R27",
+        "R29",
+        "R40"
+      ]
+    },
+    {
+      "id": "B15",
+      "locator": "§5.1 line 237",
+      "name": "混合申请",
+      "parameter": "items[].operations[]",
+      "scope": "多件、多操作时",
+      "effect": "分项可独立保留、补正、授权等待或分流",
+      "ruleRefs": [
+        "R35",
+        "R36"
+      ]
+    }
+  ],
+  "exceptions": [
+    {
+      "id": "E01",
+      "locator": "§9 line 432",
+      "case": "历史更名",
+      "condition": "旧档案姓名与现证姓名不同",
+      "allowedHandling": "检查曾用名/权威关系，人工复核可接受合法证明",
+      "forbidden": "机械判身份证名字不同为冒用",
+      "ruleRefs": [
+        "R07",
+        "R40"
+      ]
+    },
+    {
+      "id": "E02",
+      "locator": "§9 line 433",
+      "case": "档号未知",
+      "condition": "申请人提供材料名称、年份但不知馆藏编号",
+      "allowedHandling": "允许馆方检索，非必须字段不拒件",
+      "forbidden": "强制档号导致误杀",
+      "ruleRefs": [
+        "R05",
+        "R40"
+      ]
+    },
+    {
+      "id": "E03",
+      "locator": "§9 line 434",
+      "case": "合法电子委托",
+      "condition": "可核验电子签署及该校接受电子文件",
+      "allowedHandling": "按可信签章/适用学校确认",
+      "forbidden": "一律要求红色纸章",
+      "ruleRefs": [
+        "R29"
+      ]
+    },
+    {
+      "id": "E04",
+      "locator": "§9 line 435",
+      "case": "曾用身份证已收回",
+      "condition": "无法再提交旧证件原件",
+      "allowedHandling": "认可依法允许的更名/户籍关联证明",
+      "forbidden": "缺旧证一律拒件",
+      "ruleRefs": [
+        "R07",
+        "R40"
+      ]
+    },
+    {
+      "id": "E05",
+      "locator": "§9 line 436",
+      "case": "开放目录包含第三人隐私",
+      "condition": "查到目录但所需全文涉个人信息",
+      "allowedHandling": "范围缩减/脱敏/专项批准",
+      "forbidden": "开放目录即整卷下载",
+      "ruleRefs": [
+        "R18",
+        "R20"
+      ]
+    },
+    {
+      "id": "E06",
+      "locator": "§9 line 437",
+      "case": "单位函只授权查阅",
+      "condition": "同案提出查阅+复制",
+      "allowedHandling": "查阅与复制各自核授权",
+      "forbidden": "查阅批准自动包含复制",
+      "ruleRefs": [
+        "R21",
+        "R23"
+      ]
+    },
+    {
+      "id": "E07",
+      "locator": "§9 line 438",
+      "case": "代理+单位经办叠加",
+      "condition": "单位经办持有委托人档案申请",
+      "allowedHandling": "分别校验私人委托与单位职责",
+      "forbidden": "用单位函替代私人委托",
+      "ruleRefs": [
+        "R11",
+        "R13"
+      ]
+    },
+    {
+      "id": "E08",
+      "locator": "§9 line 439",
+      "case": "未到馆方签章阶段",
+      "condition": "申请刚提交",
+      "allowedHandling": "待审批而非缺件",
+      "forbidden": "要求申请人上传未来批准文件",
+      "ruleRefs": [
+        "R33"
+      ]
+    },
+    {
+      "id": "E09",
+      "locator": "§9 line 440",
+      "case": "寒假临时规则已过期",
+      "condition": "申请在秋季",
+      "allowedHandling": "仅命中本校当前生效材料要求",
+      "forbidden": "强制寒假邮箱/三日办结",
+      "ruleRefs": [
+        "R30",
+        "R31"
+      ]
+    },
+    {
+      "id": "E10",
+      "locator": "§9 line 441",
+      "case": "馆藏开放状态未知",
+      "condition": "无法连接档案馆",
+      "allowedHandling": "待权威核实，禁止交付",
+      "forbidden": "模型猜测“已开放”",
+      "ruleRefs": [
+        "R17",
+        "R18"
+      ]
+    },
+    {
+      "id": "E11",
+      "locator": "§9 line 442",
+      "case": "不同档案状态混合",
+      "condition": "I01开放,I02限制,I03应转人事档案",
+      "allowedHandling": "逐项结果并存，不整单一刀切",
+      "forbidden": "因一项受限整单拒绝",
+      "ruleRefs": [
+        "R35",
+        "R36"
+      ]
+    },
+    {
+      "id": "E12",
+      "locator": "§9 line 443",
+      "case": "原件外借",
+      "condition": "必须经批准且交接责任明确",
+      "allowedHandling": "查阅材料不能替代外借表及批准",
+      "forbidden": "查询权限导致借出动作",
+      "ruleRefs": [
+        "R16",
+        "R25",
+        "R26"
+      ]
+    },
+    {
+      "id": "E13",
+      "locator": "§9 line 444",
+      "case": "电子证明合法替代",
+      "condition": "本人取得官方可信档案证明",
+      "allowedHandling": "核可用范围或分流直达服务",
+      "forbidden": "仍强迫扫描证件/重新盖章",
+      "ruleRefs": [
+        "R24",
+        "R29",
+        "R40"
+      ]
+    },
+    {
+      "id": "E14",
+      "locator": "§9 line 445",
+      "case": "OCR无法解析扫描页",
+      "condition": "页面有图片但解析失败",
+      "allowedHandling": "标部分读取/人工复核，保留原件",
+      "forbidden": "没抽到文字就视为缺失证据",
+      "ruleRefs": [
+        "R38"
+      ]
+    },
+    {
+      "id": "E15",
+      "locator": "§9 line 446",
+      "case": "旧学院名称",
+      "condition": "档案形成单位曾改名",
+      "allowedHandling": "对照学校机构沿革或人工确认",
+      "forbidden": "文字不一致即拒件",
+      "ruleRefs": [
+        "R07",
+        "R40"
+      ]
+    },
+    {
+      "id": "E16",
+      "locator": "§9 line 447",
+      "case": "有限复制范围",
+      "condition": "批准仅I1某一页",
+      "allowedHandling": "只许可范围内复制，其余待补批",
+      "forbidden": "按档案件整体放行全部页",
+      "ruleRefs": [
+        "R23"
+      ]
+    }
+  ],
+  "stages": [
+    "submission",
+    "pre_review",
+    "authority_review",
+    "post_decision"
+  ],
+  "operationTypes": [
+    "view",
+    "excerpt",
+    "copy",
+    "certified_copy",
+    "borrow_original"
+  ],
+  "sourceRegistry": [
+    {
+      "id": "LAW01",
+      "locator": "§16",
+      "description": "《中华人民共和国档案法》",
+      "currentPolicyConfirmed": false
+    },
+    {
+      "id": "LAW02",
+      "locator": "§16",
+      "description": "《高等学校档案管理办法》",
+      "currentPolicyConfirmed": false
+    },
+    {
+      "id": "LAW03",
+      "locator": "§16",
+      "description": "《中华人民共和国档案法实施条例》",
+      "currentPolicyConfirmed": false
+    },
+    {
+      "id": "LAW04",
+      "locator": "§16",
+      "description": "《电子档案管理办法》",
+      "currentPolicyConfirmed": false
+    },
+    {
+      "id": "SC01",
+      "locator": "§16",
+      "description": "四川省《高等学校档案管理办法》实施细则",
+      "currentPolicyConfirmed": false
+    },
+    {
+      "id": "CD01",
+      "locator": "§16",
+      "description": "成都理工大学档案馆2026申请表目录",
+      "currentPolicyConfirmed": false
+    },
+    {
+      "id": "CD02",
+      "locator": "§16",
+      "description": "成都理工大学2026学生档案服务指南索引",
+      "currentPolicyConfirmed": false
+    },
+    {
+      "id": "CD03",
+      "locator": "§16",
+      "description": "成都理工大学综合类档案查借阅指南（2020）",
+      "currentPolicyConfirmed": false
+    },
+    {
+      "id": "CD04",
+      "locator": "§16",
+      "description": "成都理工大学2026寒假档案业务通知",
+      "currentPolicyConfirmed": false
+    },
+    {
+      "id": "CD05",
+      "locator": "§16",
+      "description": "成都理工大学2026归档工作通知",
+      "currentPolicyConfirmed": false
+    },
+    {
+      "id": "CD06",
+      "locator": "§16",
+      "description": "成都理工档案法规目录（2017利用办法）",
+      "currentPolicyConfirmed": false
+    },
+    {
+      "id": "EX04",
+      "locator": "§16",
+      "description": "青岛大学2025档案查（借）阅登记表",
+      "currentPolicyConfirmed": false
+    },
+    {
+      "id": "EX05",
+      "locator": "§16",
+      "description": "河北经贸大学档案查阅/借阅审批表",
+      "currentPolicyConfirmed": false
+    },
+    {
+      "id": "EX06",
+      "locator": "§16",
+      "description": "大连海洋大学2025档案利用通知",
+      "currentPolicyConfirmed": false
+    }
+  ],
+  "explicitLimitations": [
+    "no authoritative CDUT 2026 forms",
+    "no binding approved institution policy version",
+    "no authoritative archive/permission/delivery connectors",
+    "no automatic publication/decryption/original lending",
+    "mixed proxy/unit actor combinations require separate proof",
+    "legal electronic authorization alternatives must not be denied by paper-only heuristic"
+  ]
+}

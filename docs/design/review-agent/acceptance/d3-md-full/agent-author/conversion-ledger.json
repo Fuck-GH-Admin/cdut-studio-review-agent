@@ -1,0 +1,1227 @@
+{
+  "schemaVersion": 1,
+  "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+  "sourceSha256": "65157e002dd4d1ccc08d32d341b4a1f7eacfc55d6a3c13a5da949aaf122f9785",
+  "workspaceId": "d3-md-archive-author-a",
+  "templateId": "g01-archive-utilization",
+  "templateVersion": 1,
+  "planFingerprint": "19b615276bd3c64fbebe0ef97afd03841237502c25f3ae6698ba1fdcb091c0f2",
+  "planStatus": "CI D2 PREVIEW SUCCESS (77 Check) | D1/D3/export/import/advanced rejection PASS | business semantics NOT CERTIFIED",
+  "requirements": [
+    {
+      "id": "R01",
+      "locator": "§6 R01 (line 282)",
+      "sourceAnchor": "| R01 | 受理规则定位 | application | school/date/channel/recordType | 取得适用规则版本并锁快照 | 规则版本确认/待核/冲突 | M02 | LEGAL,CD_VERIFIED |",
+      "authoringModule": "archive-case",
+      "proposedCheckIds": [
+        "module/case/r01"
+      ],
+      "checkIds": [
+        "module/case/r01"
+      ],
+      "scope": "application",
+      "sourceBinding": [
+        "source-md",
+        "source-law",
+        "source-cd"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "gapId": "G-08"
+    },
+    {
+      "id": "R02",
+      "locator": "§6 R02 (line 283)",
+      "sourceAnchor": "| R02 | 申请是否属于模板 | application | businessPurpose | 自助服务/专门人事档案/转递分流 | in-scope/divert | M01 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-case",
+      "proposedCheckIds": [
+        "module/case/r02"
+      ],
+      "checkIds": [
+        "module/case/r02"
+      ],
+      "scope": "application",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "implemented-not-tested",
+      "reason": "D1任务在CI的真实D2预览中编译到Check；待业务反例和Pi案卷测试。"
+    },
+    {
+      "id": "R03",
+      "locator": "§6 R03 (line 284)",
+      "sourceAnchor": "| R03 | 申请主体可靠识别 | application | applicant identity | 申报人身份与可信认证或材料一致 | matched/unknown/conflict | M03 | CD_VERIFIED,CROSS_SCHOOL |",
+      "authoringModule": "archive-case",
+      "proposedCheckIds": [
+        "module/case/r03"
+      ],
+      "checkIds": [
+        "module/case/r03"
+      ],
+      "scope": "application",
+      "sourceBinding": [
+        "source-md",
+        "source-cd",
+        "source-cross"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "provisionalGap": "G-RUNTIME-NOT-RUN"
+    },
+    {
+      "id": "R04",
+      "locator": "§6 R04 (line 285)",
+      "sourceAnchor": "| R04 | 申请人与实际请求主体区分 | relationship | applicant/principal/archiveSubject | 本人、受托、单位经办不得混同 | matched/unknown/conflict | M03 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-relationships",
+      "proposedCheckIds": [
+        "module/rel/r04"
+      ],
+      "checkIds": [
+        "module/rel/r04"
+      ],
+      "scope": "relationship",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
+      "gapId": "G-06"
+    },
+    {
+      "id": "R05",
+      "locator": "§6 R05 (line 286)",
+      "sourceAnchor": "| R05 | 目标档案可定位 | item | archiveTitle/year/owner | 依可得线索定位或交馆方检索 | located/insufficient/keeper-pending | M08 | CROSS_SCHOOL |",
+      "authoringModule": "archive-items",
+      "proposedCheckIds": [
+        "module/item-i01/r05",
+        "module/item-i02/r05",
+        "module/item-i03/r05"
+      ],
+      "checkIds": [
+        "module/item-i01/r05",
+        "module/item-i02/r05",
+        "module/item-i03/r05"
+      ],
+      "scope": "item",
+      "sourceBinding": [
+        "source-md",
+        "source-cross"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "provisionalGap": "G-RUNTIME-NOT-RUN"
+    },
+    {
+      "id": "R06",
+      "locator": "§6 R06 (line 287)",
+      "sourceAnchor": "| R06 | 档案类型确认 | item | archiveType | 由馆方或规则确定路线；人事干部档案独立分流 | qualified/divert/unverifiable | M08 | CD_VERIFIED |",
+      "authoringModule": "archive-items",
+      "proposedCheckIds": [
+        "module/item-i01/r06",
+        "module/item-i02/r06",
+        "module/item-i03/r06"
+      ],
+      "checkIds": [
+        "module/item-i01/r06",
+        "module/item-i02/r06",
+        "module/item-i03/r06"
+      ],
+      "scope": "item",
+      "sourceBinding": [
+        "source-md",
+        "source-cd"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "provisionalGap": "G-RUNTIME-NOT-RUN"
+    },
+    {
+      "id": "R07",
+      "locator": "§6 R07 (line 288)",
+      "sourceAnchor": "| R07 | 本人历史身份链 | item | self + historicalRecord | 姓名变更/旧学号/就读年份可建立合理链 | matched/needs-evidence/unknown | M03 | CD_VERIFIED |",
+      "authoringModule": "archive-items",
+      "proposedCheckIds": [
+        "module/item-i01/r07",
+        "module/item-i02/r07",
+        "module/item-i03/r07"
+      ],
+      "checkIds": [
+        "module/item-i01/r07",
+        "module/item-i02/r07",
+        "module/item-i03/r07"
+      ],
+      "scope": "item",
+      "sourceBinding": [
+        "source-md",
+        "source-cd"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "provisionalGap": "G-RUNTIME-NOT-RUN"
+    },
+    {
+      "id": "R08",
+      "locator": "§6 R08 (line 289)",
+      "sourceAnchor": "| R08 | 代理身份双方核验 | relationship | applicantType=proxy | 证明委托人与受托人身份 | matched/missing-evidence/unverifiable | M04 | CD_VERIFIED |",
+      "authoringModule": "archive-relationships",
+      "proposedCheckIds": [
+        "module/rel/r08"
+      ],
+      "checkIds": [
+        "module/rel/r08"
+      ],
+      "scope": "relationship",
+      "sourceBinding": [
+        "source-md",
+        "source-cd"
+      ],
+      "status": "tooling-blocked",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
+      "gapId": "G-06"
+    },
+    {
+      "id": "R09",
+      "locator": "§6 R09 (line 290)",
+      "sourceAnchor": "| R09 | 代理授权对象核验 | operation | applicantType=proxy | 委托对象/档案件/事项与申请一致 | covered/scope-mismatch/unknown | M04 | CD_VERIFIED |",
+      "authoringModule": "archive-operations",
+      "proposedCheckIds": [
+        "module/operation-i01-read/r09",
+        "module/operation-i01-copy/r09",
+        "module/operation-i02-read/r09",
+        "module/operation-i03-borrow/r09",
+        "module/operation-i03-excerpt/r09"
+      ],
+      "checkIds": [
+        "module/operation-i01-copy/r09",
+        "module/operation-i01-read/r09",
+        "module/operation-i02-read/r09",
+        "module/operation-i03-borrow/r09",
+        "module/operation-i03-excerpt/r09"
+      ],
+      "scope": "operation",
+      "sourceBinding": [
+        "source-md",
+        "source-cd"
+      ],
+      "status": "tooling-blocked",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
+      "gapId": "G-06"
+    },
+    {
+      "id": "R10",
+      "locator": "§6 R10 (line 291)",
+      "sourceAnchor": "| R10 | 代理期限与方式核验 | operation | proxy + time/operation | 委托是否覆盖当次操作和日期 | covered/scope-mismatch/unknown | M04 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-operations",
+      "proposedCheckIds": [
+        "module/operation-i01-read/r10",
+        "module/operation-i01-copy/r10",
+        "module/operation-i02-read/r10",
+        "module/operation-i03-borrow/r10",
+        "module/operation-i03-excerpt/r10"
+      ],
+      "checkIds": [
+        "module/operation-i01-copy/r10",
+        "module/operation-i01-read/r10",
+        "module/operation-i02-read/r10",
+        "module/operation-i03-borrow/r10",
+        "module/operation-i03-excerpt/r10"
+      ],
+      "scope": "operation",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
+      "gapId": "G-06"
+    },
+    {
+      "id": "R11",
+      "locator": "§6 R11 (line 292)",
+      "sourceAnchor": "| R11 | 因公单位真实性与资格 | relationship | applicantType in internal/external | 单位与经办人/职责任务能够关联 | verified/authority-unknown/conflict | M05 | CROSS_SCHOOL |",
+      "authoringModule": "archive-relationships",
+      "proposedCheckIds": [
+        "module/rel/r11"
+      ],
+      "checkIds": [
+        "module/rel/r11"
+      ],
+      "scope": "relationship",
+      "sourceBinding": [
+        "source-md",
+        "source-cross"
+      ],
+      "status": "tooling-blocked",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
+      "gapId": "G-06"
+    },
+    {
+      "id": "R12",
+      "locator": "§6 R12 (line 293)",
+      "sourceAnchor": "| R12 | 单位函用途及范围 | operation | unit authorization | 单位函的事由、档案与具体方式匹配 | covered/scope-mismatch/unknown | M05 | CROSS_SCHOOL |",
+      "authoringModule": "archive-operations",
+      "proposedCheckIds": [
+        "module/operation-i01-read/r12",
+        "module/operation-i01-copy/r12",
+        "module/operation-i02-read/r12",
+        "module/operation-i03-borrow/r12",
+        "module/operation-i03-excerpt/r12"
+      ],
+      "checkIds": [
+        "module/operation-i01-copy/r12",
+        "module/operation-i01-read/r12",
+        "module/operation-i02-read/r12",
+        "module/operation-i03-borrow/r12",
+        "module/operation-i03-excerpt/r12"
+      ],
+      "scope": "operation",
+      "sourceBinding": [
+        "source-md",
+        "source-cross"
+      ],
+      "status": "tooling-blocked",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
+      "gapId": "G-06"
+    },
+    {
+      "id": "R13",
+      "locator": "§6 R13 (line 294)",
+      "sourceAnchor": "| R13 | 单位授权不能代替私人委托 | relationship | unit + personal archive | 涉及个人代办时另核委托 | independent/missing-evidence | M04 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-relationships",
+      "proposedCheckIds": [
+        "module/rel/r13"
+      ],
+      "checkIds": [
+        "module/rel/r13"
+      ],
+      "scope": "relationship",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
+      "gapId": "G-06"
+    },
+    {
+      "id": "R14",
+      "locator": "§6 R14 (line 295)",
+      "sourceAnchor": "| R14 | 学生档案专用路径 | item | archiveType=student_personnel_archive | 校内校外经办及特殊档案批准按校规 | route/permission-pending | M09 | CD_VERIFIED |",
+      "authoringModule": "archive-items",
+      "proposedCheckIds": [
+        "module/item-i01/r14",
+        "module/item-i02/r14",
+        "module/item-i03/r14"
+      ],
+      "checkIds": [
+        "module/item-i01/r14",
+        "module/item-i02/r14",
+        "module/item-i03/r14"
+      ],
+      "scope": "item",
+      "sourceBinding": [
+        "source-md",
+        "source-cd"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "gapId": "G-08"
+    },
+    {
+      "id": "R15",
+      "locator": "§6 R15 (line 296)",
+      "sourceAnchor": "| R15 | 综合查阅表适用性 | item | archiveType=general + operation=view | 成都理工综合查阅表适用且版本匹配 | applicable/version-unknown | M06 | CD_VERIFIED |",
+      "authoringModule": "archive-read",
+      "proposedCheckIds": [
+        "module/read-i01-read/r15",
+        "module/read-i02-read/r15"
+      ],
+      "checkIds": [
+        "module/read-i01-read/r15",
+        "module/read-i02-read/r15"
+      ],
+      "scope": "item",
+      "sourceBinding": [
+        "source-md",
+        "source-cd"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "gapId": "G-08"
+    },
+    {
+      "id": "R16",
+      "locator": "§6 R16 (line 297)",
+      "sourceAnchor": "| R16 | 综合外借表适用性 | operation | archiveType=general + borrow_original | 成都理工外借审批表与借出操作匹配 | applicable/need-authorization | M12 | CD_VERIFIED |",
+      "authoringModule": "archive-borrow",
+      "proposedCheckIds": [
+        "module/borrow-i03-borrow/r16"
+      ],
+      "checkIds": [
+        "module/borrow-i03-borrow/r16"
+      ],
+      "scope": "operation",
+      "sourceBinding": [
+        "source-md",
+        "source-cd"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "gapId": "G-08"
+    },
+    {
+      "id": "R17",
+      "locator": "§6 R17 (line 298)",
+      "sourceAnchor": "| R17 | 馆藏位置由权威来源确定 | item | every item | 馆方事实为依据，未知只能请求查询 | located/keeper-pending | M09 | LEGAL |",
+      "authoringModule": "archive-items",
+      "proposedCheckIds": [
+        "module/item-i01/r17",
+        "module/item-i02/r17",
+        "module/item-i03/r17"
+      ],
+      "checkIds": [
+        "module/item-i01/r17",
+        "module/item-i02/r17",
+        "module/item-i03/r17"
+      ],
+      "scope": "item",
+      "sourceBinding": [
+        "source-md",
+        "source-law"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "provisionalGap": "G-RUNTIME-NOT-RUN"
+    },
+    {
+      "id": "R18",
+      "locator": "§6 R18 (line 299)",
+      "sourceAnchor": "| R18 | 公布与开放状态分别检查 | item | every item | published≠open，标记无可靠来源则unknown | qualified/unverifiable | M09 | LEGAL |",
+      "authoringModule": "archive-items",
+      "proposedCheckIds": [
+        "module/item-i01/r18",
+        "module/item-i02/r18",
+        "module/item-i03/r18"
+      ],
+      "checkIds": [
+        "module/item-i01/r18",
+        "module/item-i02/r18",
+        "module/item-i03/r18"
+      ],
+      "scope": "item",
+      "sourceBinding": [
+        "source-md",
+        "source-law"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "gapId": "G-07"
+    },
+    {
+      "id": "R19",
+      "locator": "§6 R19 (line 300)",
+      "sourceAnchor": "| R19 | 未开放或受限档案额外批准 | operation | accessState in not_open/restricted/classified | 专项权限决定/保密要求/允许范围 | authority-approved/pending/denied | M11 | LEGAL |",
+      "authoringModule": "archive-operations",
+      "proposedCheckIds": [
+        "module/operation-i01-read/r19",
+        "module/operation-i01-copy/r19",
+        "module/operation-i02-read/r19",
+        "module/operation-i03-borrow/r19",
+        "module/operation-i03-excerpt/r19"
+      ],
+      "checkIds": [
+        "module/operation-i01-copy/r19",
+        "module/operation-i01-read/r19",
+        "module/operation-i02-read/r19",
+        "module/operation-i03-borrow/r19",
+        "module/operation-i03-excerpt/r19"
+      ],
+      "scope": "operation",
+      "sourceBinding": [
+        "source-md",
+        "source-law"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "gapId": "G-07"
+    },
+    {
+      "id": "R20",
+      "locator": "§6 R20 (line 301)",
+      "sourceAnchor": "| R20 | 第三人隐私及技术秘密 | operation | restriction_flags present | 有权部门决定范围与必要脱敏 | privacy-review/pending | M09 | LEGAL |",
+      "authoringModule": "archive-operations",
+      "proposedCheckIds": [
+        "module/operation-i01-read/r20",
+        "module/operation-i01-copy/r20",
+        "module/operation-i02-read/r20",
+        "module/operation-i03-borrow/r20",
+        "module/operation-i03-excerpt/r20"
+      ],
+      "checkIds": [
+        "module/operation-i01-copy/r20",
+        "module/operation-i01-read/r20",
+        "module/operation-i02-read/r20",
+        "module/operation-i03-borrow/r20",
+        "module/operation-i03-excerpt/r20"
+      ],
+      "scope": "operation",
+      "sourceBinding": [
+        "source-md",
+        "source-law"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "gapId": "G-07"
+    },
+    {
+      "id": "R21",
+      "locator": "§6 R21 (line 302)",
+      "sourceAnchor": "| R21 | 查阅权限精确匹配 | operation | operation=view | 授权档案件+查阅范围+时点一致 | covered/not-covered/unknown | M11 | LEGAL |",
+      "authoringModule": "archive-read",
+      "proposedCheckIds": [
+        "module/read-i01-read/r21",
+        "module/read-i02-read/r21"
+      ],
+      "checkIds": [
+        "module/read-i01-read/r21",
+        "module/read-i02-read/r21"
+      ],
+      "scope": "operation",
+      "sourceBinding": [
+        "source-md",
+        "source-law"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "provisionalGap": "G-RUNTIME-NOT-RUN"
+    },
+    {
+      "id": "R22",
+      "locator": "§6 R22 (line 303)",
+      "sourceAnchor": "| R22 | 摘录权限精确匹配 | operation | operation=excerpt | 不能从查阅自动继承摘录许可 | covered/not-covered/unknown | M11 | LEGAL |",
+      "authoringModule": "archive-excerpt",
+      "proposedCheckIds": [
+        "module/excerpt-i03-excerpt/r22"
+      ],
+      "checkIds": [
+        "module/excerpt-i03-excerpt/r22"
+      ],
+      "scope": "operation",
+      "sourceBinding": [
+        "source-md",
+        "source-law"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "provisionalGap": "G-RUNTIME-NOT-RUN"
+    },
+    {
+      "id": "R23",
+      "locator": "§6 R23 (line 304)",
+      "sourceAnchor": "| R23 | 复制扫描权限精确匹配 | operation | operation=copy | 授权内容页/份数与请求一致 | covered/not-covered/unknown | M11 | LEGAL |",
+      "authoringModule": "archive-copy",
+      "proposedCheckIds": [
+        "module/copy-i01-copy/r23"
+      ],
+      "checkIds": [
+        "module/copy-i01-copy/r23"
+      ],
+      "scope": "operation",
+      "sourceBinding": [
+        "source-md",
+        "source-law"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "provisionalGap": "G-RUNTIME-NOT-RUN"
+    },
+    {
+      "id": "R24",
+      "locator": "§6 R24 (line 305)",
+      "sourceAnchor": "| R24 | 档案证明出具权限 | operation | operation=certified_copy | 只能有权档案部门出具或验真 | pending/approved/unknown | M11 | LEGAL |",
+      "authoringModule": "archive-advanced-not-executable",
+      "proposedCheckIds": [],
+      "checkIds": [],
+      "scope": "operation",
+      "sourceBinding": [],
+      "status": "tooling-blocked",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | CI实际D2计划无此规则的Check；属于保留的tooling-blocked责任。",
+      "gapId": "G-01"
+    },
+    {
+      "id": "R25",
+      "locator": "§6 R25 (line 306)",
+      "sourceAnchor": "| R25 | 原件外借特别授权 | operation | operation=borrow_original | 确认额外审批/保管责任/可外借性 | pending/approved/denied | M12 | LEGAL |",
+      "authoringModule": "archive-borrow",
+      "proposedCheckIds": [
+        "module/borrow-i03-borrow/r25"
+      ],
+      "checkIds": [
+        "module/borrow-i03-borrow/r25"
+      ],
+      "scope": "operation",
+      "sourceBinding": [
+        "source-md",
+        "source-law"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "provisionalGap": "G-RUNTIME-NOT-RUN"
+    },
+    {
+      "id": "R26",
+      "locator": "§6 R26 (line 307)",
+      "sourceAnchor": "| R26 | 外借时间和交接 | operation | borrow_original + post_decision | 借期按校规；借还回执由馆方确认 | within-limit/unknown/overdue | M12 | CD_VERIFIED,CROSS_SCHOOL |",
+      "authoringModule": "archive-borrow",
+      "proposedCheckIds": [
+        "module/borrow-i03-borrow/r26"
+      ],
+      "checkIds": [
+        "module/borrow-i03-borrow/r26"
+      ],
+      "scope": "operation",
+      "sourceBinding": [
+        "source-md",
+        "source-cd",
+        "source-cross"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "gapId": "G-08"
+    },
+    {
+      "id": "R27",
+      "locator": "§6 R27 (line 308)",
+      "sourceAnchor": "| R27 | 签章存在与真实性区分 | evidence | evidence signature | 可核有无，真伪由可信服务/人工 | present/verified/unverifiable | M13 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-evidence",
+      "proposedCheckIds": [
+        "module/evidence/r27"
+      ],
+      "checkIds": [
+        "module/evidence/r27"
+      ],
+      "scope": "evidence",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "implemented-not-tested",
+      "reason": "D1任务在CI的真实D2预览中编译到Check；待业务反例和Pi案卷测试。"
+    },
+    {
+      "id": "R28",
+      "locator": "§6 R28 (line 309)",
+      "sourceAnchor": "| R28 | 证据冲突对齐 | evidence | multiple documents | 姓名/年份/范围/数量跨文件核对 | consistent/conflict/unknown | M13 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-evidence",
+      "proposedCheckIds": [
+        "module/evidence/r28"
+      ],
+      "checkIds": [
+        "module/evidence/r28"
+      ],
+      "scope": "evidence",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "implemented-not-tested",
+      "reason": "D1任务在CI的真实D2预览中编译到Check；待业务反例和Pi案卷测试。"
+    },
+    {
+      "id": "R29",
+      "locator": "§6 R29 (line 310)",
+      "sourceAnchor": "| R29 | 电子授权合法替代 | evidence | digitally-signed authorization | 认可且可验真时不得一律拒电子件 | accepted/verification-pending | M13 | LEGAL |",
+      "authoringModule": "archive-advanced-not-executable",
+      "proposedCheckIds": [],
+      "checkIds": [],
+      "scope": "evidence",
+      "sourceBinding": [],
+      "status": "tooling-blocked",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | CI实际D2计划无此规则的Check；属于保留的tooling-blocked责任。",
+      "gapId": "G-02"
+    },
+    {
+      "id": "R30",
+      "locator": "§6 R30 (line 311)",
+      "sourceAnchor": "| R30 | 办理渠道材料条件 | application | channel/time | 仅生效公告范围要求专属附件 | applicable/out-of-scope | M02 | CD_VERIFIED |",
+      "authoringModule": "archive-case",
+      "proposedCheckIds": [
+        "module/case/r30"
+      ],
+      "checkIds": [
+        "module/case/r30"
+      ],
+      "scope": "application",
+      "sourceBinding": [
+        "source-md",
+        "source-cd"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "gapId": "G-08"
+    },
+    {
+      "id": "R31",
+      "locator": "§6 R31 (line 312)",
+      "sourceAnchor": "| R31 | 截止和规章有效期 | application | submittedAt/effectiveWindow | 过期寒假通知不覆盖秋季申请 | active/expired/unconfirmed | M02 | CD_VERIFIED |",
+      "authoringModule": "archive-case",
+      "proposedCheckIds": [
+        "module/case/r31"
+      ],
+      "checkIds": [
+        "module/case/r31"
+      ],
+      "scope": "application",
+      "sourceBinding": [
+        "source-md",
+        "source-cd"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "gapId": "G-08"
+    },
+    {
+      "id": "R32",
+      "locator": "§6 R32 (line 313)",
+      "sourceAnchor": "| R32 | 必需材料仅按条件激活 | evidence | each activated slot | 申请人应交且到达要求阶段才缺件 | missing/complete/not-due | M06 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-evidence",
+      "proposedCheckIds": [
+        "module/evidence/r32"
+      ],
+      "checkIds": [
+        "module/evidence/r32"
+      ],
+      "scope": "evidence",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
+      "gapId": "G-03"
+    },
+    {
+      "id": "R33",
+      "locator": "§6 R33 (line 314)",
+      "sourceAnchor": "| R33 | 待审批不等于缺件 | workflow | reviewStage != post_decision | 有权批准尚未发生，应等待而不索取未来签批 | pending-authority | M07 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-workflow",
+      "proposedCheckIds": [
+        "module/workflow/r33"
+      ],
+      "checkIds": [
+        "module/workflow/r33"
+      ],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
+      "gapId": "G-03"
+    },
+    {
+      "id": "R34",
+      "locator": "§6 R34 (line 315)",
+      "sourceAnchor": "| R34 | 审批结果不能被AI代写 | workflow | authority decision | 最终批准需要可信部门身份与范围 | human-required | M11 | LEGAL |",
+      "authoringModule": "archive-workflow",
+      "proposedCheckIds": [
+        "module/workflow/r34"
+      ],
+      "checkIds": [
+        "module/workflow/r34"
+      ],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md",
+        "source-law"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "provisionalGap": "G-RUNTIME-NOT-RUN"
+    },
+    {
+      "id": "R35",
+      "locator": "§6 R35 (line 316)",
+      "sourceAnchor": "| R35 | 逐操作汇总结论 | operation | each operation_key | 保留适用/满足/冲突/权限和证据状态 | operation-result | M14 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-operations",
+      "proposedCheckIds": [
+        "module/operation-i01-read/r35",
+        "module/operation-i01-copy/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ],
+      "checkIds": [
+        "module/operation-i01-copy/r35",
+        "module/operation-i01-read/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ],
+      "scope": "operation",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
+      "gapId": "G-04"
+    },
+    {
+      "id": "R36",
+      "locator": "§6 R36 (line 317)",
+      "sourceAnchor": "| R36 | 整单汇总不覆盖部分处理 | application | all operation results | 输出可受理+补正+转办的并存结果 | aggregate-result | M14 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-case",
+      "proposedCheckIds": [
+        "module/case/r36"
+      ],
+      "checkIds": [
+        "module/case/r36"
+      ],
+      "scope": "application",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
+      "gapId": "G-04"
+    },
+    {
+      "id": "R37",
+      "locator": "§6 R37 (line 318)",
+      "sourceAnchor": "| R37 | 交付动作强制门控 | workflow | actual delivery | 仅馆方已作有权决定且有执行记录才能回写已交付 | delivery-disabled-in-precheck | M14 | LEGAL |",
+      "authoringModule": "archive-workflow",
+      "proposedCheckIds": [
+        "module/workflow/r37"
+      ],
+      "checkIds": [
+        "module/workflow/r37"
+      ],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md",
+        "source-law"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "provisionalGap": "G-RUNTIME-NOT-RUN"
+    },
+    {
+      "id": "R38",
+      "locator": "§6 R38 (line 319)",
+      "sourceAnchor": "| R38 | 证据完整覆盖检查 | evidence | all active attachments | 未读/解析失败不得宣称检查完成 | complete/partial/failed | M13 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-evidence",
+      "proposedCheckIds": [
+        "module/evidence/r38"
+      ],
+      "checkIds": [
+        "module/evidence/r38"
+      ],
+      "scope": "evidence",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "implemented-not-tested",
+      "reason": "D1任务在CI的真实D2预览中编译到Check；待业务反例和Pi案卷测试。"
+    },
+    {
+      "id": "R39",
+      "locator": "§6 R39 (line 320)",
+      "sourceAnchor": "| R39 | 校规证据优先级 | application | multiple rule sources | 有效上位法+本校适用细则；外校不自动生效 | applicable/conflict/unknown | M02 | LEGAL,CD_VERIFIED |",
+      "authoringModule": "archive-case",
+      "proposedCheckIds": [
+        "module/case/r39"
+      ],
+      "checkIds": [
+        "module/case/r39"
+      ],
+      "scope": "application",
+      "sourceBinding": [
+        "source-md",
+        "source-law",
+        "source-cd"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
+      "gapId": "G-08"
+    },
+    {
+      "id": "R40",
+      "locator": "§6 R40 (line 321)",
+      "sourceAnchor": "| R40 | 合理替代与历史差异 | evidence | old names/IDs/unknown catalogue | 支持合法更名、委托替代、馆方检索 | accepted/manual/needs-evidence | M13 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-advanced-not-executable",
+      "proposedCheckIds": [],
+      "checkIds": [],
+      "scope": "evidence",
+      "sourceBinding": [],
+      "status": "tooling-blocked",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | CI实际D2计划无此规则的Check；属于保留的tooling-blocked责任。",
+      "gapId": "G-02"
+    },
+    {
+      "id": "R41",
+      "locator": "§6 R41 (line 322)",
+      "sourceAnchor": "| R41 | 公开展示结果最小化 | workflow | report generation | 申请人只见公开反馈，不暴露他人档案/内部意见 | public/internal split | M14 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-workflow",
+      "proposedCheckIds": [
+        "module/workflow/r41"
+      ],
+      "checkIds": [
+        "module/workflow/r41"
+      ],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "implemented-not-tested",
+      "reason": "D1任务在CI的真实D2预览中编译到Check；待业务反例和Pi案卷测试。"
+    },
+    {
+      "id": "R42",
+      "locator": "§6 R42 (line 323)",
+      "sourceAnchor": "| R42 | 版本变更与重审 | workflow | material/policy changed | 修改相关材料/规则后相关检查过期并重新核对 | stale/recheck | M02 | UNIVERSAL_DESIGN |",
+      "authoringModule": "archive-case",
+      "proposedCheckIds": [
+        "module/case/r42"
+      ],
+      "checkIds": [
+        "module/case/r42"
+      ],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
+      "gapId": "G-05"
+    },
+    {
+      "id": "X01",
+      "locator": "§2.1",
+      "sourceAnchor": "一个 `operation_key` 必须唯一",
+      "authoringModule": "cross-reference-to-existing-rule-checks",
+      "proposedCheckIds": [
+        "module/operation-i01-read/r35",
+        "module/operation-i01-copy/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ],
+      "checkIds": [
+        "module/operation-i01-copy/r35",
+        "module/operation-i01-read/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ],
+      "scope": "operation",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "implemented-not-tested",
+      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。 | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "associatedCompiledCheckIds": [
+        "module/operation-i01-copy/r35",
+        "module/operation-i01-read/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ]
+    },
+    {
+      "id": "X02",
+      "locator": "§4.1",
+      "sourceAnchor": "证据槽是否启用",
+      "authoringModule": "cross-reference-to-existing-rule-checks",
+      "proposedCheckIds": [
+        "module/evidence/r32",
+        "module/workflow/r33"
+      ],
+      "checkIds": [],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-03",
+      "associatedCompiledCheckIds": [
+        "module/evidence/r32",
+        "module/workflow/r33"
+      ]
+    },
+    {
+      "id": "X03",
+      "locator": "§5.3",
+      "sourceAnchor": "条件的真假必须支持三态",
+      "authoringModule": "cross-reference-to-existing-rule-checks",
+      "proposedCheckIds": [
+        "module/evidence/r32"
+      ],
+      "checkIds": [],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-02",
+      "associatedCompiledCheckIds": [
+        "module/evidence/r32"
+      ]
+    },
+    {
+      "id": "X04",
+      "locator": "§8.3",
+      "sourceAnchor": "模板自身的所有输出 `delivery_allowed=false`",
+      "authoringModule": "cross-reference-to-existing-rule-checks",
+      "proposedCheckIds": [
+        "module/workflow/r37"
+      ],
+      "checkIds": [],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-07",
+      "associatedCompiledCheckIds": [
+        "module/workflow/r37"
+      ]
+    },
+    {
+      "id": "X05",
+      "locator": "§7",
+      "sourceAnchor": "`submission` 阶段提交人无需提前拥有未来的馆方批准结果",
+      "authoringModule": "cross-reference-to-existing-rule-checks",
+      "proposedCheckIds": [
+        "module/workflow/r33"
+      ],
+      "checkIds": [],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-03",
+      "associatedCompiledCheckIds": [
+        "module/workflow/r33"
+      ]
+    },
+    {
+      "id": "X06",
+      "locator": "§8.4",
+      "sourceAnchor": "单一申请允许并存",
+      "authoringModule": "cross-reference-to-existing-rule-checks",
+      "proposedCheckIds": [
+        "module/operation-i01-read/r35",
+        "module/operation-i01-copy/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35",
+        "module/case/r36"
+      ],
+      "checkIds": [],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-04",
+      "associatedCompiledCheckIds": [
+        "module/case/r36",
+        "module/operation-i01-copy/r35",
+        "module/operation-i01-read/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ]
+    },
+    {
+      "id": "X07",
+      "locator": "§4.1",
+      "sourceAnchor": "同一份证明若关联多个档案件或操作",
+      "authoringModule": "cross-reference-to-existing-rule-checks",
+      "proposedCheckIds": [
+        "module/operation-i01-read/r09",
+        "module/operation-i01-copy/r09",
+        "module/operation-i02-read/r09",
+        "module/operation-i03-borrow/r09",
+        "module/operation-i03-excerpt/r09",
+        "module/operation-i01-read/r12",
+        "module/operation-i01-copy/r12",
+        "module/operation-i02-read/r12",
+        "module/operation-i03-borrow/r12",
+        "module/operation-i03-excerpt/r12",
+        "module/copy-i01-copy/r23",
+        "module/evidence/r38"
+      ],
+      "checkIds": [],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-05",
+      "associatedCompiledCheckIds": [
+        "module/copy-i01-copy/r23",
+        "module/evidence/r38",
+        "module/operation-i01-copy/r09",
+        "module/operation-i01-copy/r12",
+        "module/operation-i01-read/r09",
+        "module/operation-i01-read/r12",
+        "module/operation-i02-read/r09",
+        "module/operation-i02-read/r12",
+        "module/operation-i03-borrow/r09",
+        "module/operation-i03-borrow/r12",
+        "module/operation-i03-excerpt/r09",
+        "module/operation-i03-excerpt/r12"
+      ]
+    },
+    {
+      "id": "X08",
+      "locator": "§8.5",
+      "sourceAnchor": "两个发现都保留",
+      "authoringModule": "cross-reference-to-existing-rule-checks",
+      "proposedCheckIds": [
+        "module/operation-i01-read/r35",
+        "module/operation-i01-copy/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ],
+      "checkIds": [],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-04",
+      "associatedCompiledCheckIds": [
+        "module/operation-i01-copy/r35",
+        "module/operation-i01-read/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ]
+    },
+    {
+      "id": "X09",
+      "locator": "§7",
+      "sourceAnchor": "业务执行与归还（外部责任）",
+      "authoringModule": "cross-reference-to-existing-rule-checks",
+      "proposedCheckIds": [
+        "module/workflow/r34",
+        "module/workflow/r37"
+      ],
+      "checkIds": [
+        "module/workflow/r34",
+        "module/workflow/r37"
+      ],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "implemented-not-tested",
+      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。 | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "associatedCompiledCheckIds": [
+        "module/workflow/r34",
+        "module/workflow/r37"
+      ]
+    },
+    {
+      "id": "X10",
+      "locator": "§0.2",
+      "sourceAnchor": "证据来源 ≠ 规则是否生效",
+      "authoringModule": "cross-reference-to-existing-rule-checks",
+      "proposedCheckIds": [
+        "module/case/r01",
+        "module/case/r39"
+      ],
+      "checkIds": [],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-08",
+      "associatedCompiledCheckIds": [
+        "module/case/r01",
+        "module/case/r39"
+      ]
+    },
+    {
+      "id": "X11",
+      "locator": "§13.1",
+      "sourceAnchor": "每个 `(archiveItemId, operationId)` 映射一个",
+      "authoringModule": "cross-reference-to-existing-rule-checks",
+      "proposedCheckIds": [
+        "module/operation-i01-read/r35",
+        "module/operation-i01-copy/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ],
+      "checkIds": [],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "tooling-blocked",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-05",
+      "associatedCompiledCheckIds": [
+        "module/operation-i01-copy/r35",
+        "module/operation-i01-read/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ]
+    },
+    {
+      "id": "X12",
+      "locator": "§14.1",
+      "sourceAnchor": "Oracle 不可被用于提示模型",
+      "authoringModule": "cross-reference-to-existing-rule-checks",
+      "proposedCheckIds": [
+        "module/evidence/r38"
+      ],
+      "checkIds": [],
+      "scope": "workflow",
+      "sourceBinding": [
+        "source-md"
+      ],
+      "status": "manual-only",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "provisionalGap": "G-RUNTIME-NOT-RUN",
+      "associatedCompiledCheckIds": [
+        "module/evidence/r38"
+      ]
+    }
+  ],
+  "technicalEvidence": {
+    "workflow": "D3 MD Agent A Technical Replay",
+    "runId": 38098657888,
+    "runUrl": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38098657888",
+    "testedCommit": "d2cced085d802feb7c7cd4a1cb41dea380687da2",
+    "artifact": "d3-md-agent-a-technical-38098657888-1",
+    "artifactId": 11686093144,
+    "planFingerprint": "19b615276bd3c64fbebe0ef97afd03841237502c25f3ae6698ba1fdcb091c0f2",
+    "bundleFingerprint": "12ef294151ef577247f3aa82c37d724f058cc9368bfffd6711918916f0be46e2",
+    "compiledCheckCount": 77,
+    "compiledRuleDutyCount": 39,
+    "uninstantiatedBlockedRuleIds": [
+      "R24",
+      "R29",
+      "R40"
+    ],
+    "operationSubjectsVerified": true,
+    "sourceBindingsVerified": true,
+    "cleanImportPlanEquivalent": true,
+    "advancedFailClosedVerified": true,
+    "independentGold": "NOT-RUN",
+    "onlineModelRun": "not-run",
+    "archivePiCaseRun": "NOT-RUN",
+    "note": "technical mapping is not independent source-quality acceptance"
+  }
+}

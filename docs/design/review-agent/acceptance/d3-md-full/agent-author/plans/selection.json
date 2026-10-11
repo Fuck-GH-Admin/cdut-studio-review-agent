@@ -1,0 +1,67 @@
+{
+  "templateId": "g01-archive-utilization",
+  "version": 1,
+  "targets": [
+    {
+      "objectKey": "i01",
+      "subjectId": "archive-i01",
+      "title": "I01历史学籍档案",
+      "kind": "archive-item",
+      "itemId": "i01"
+    },
+    {
+      "objectKey": "i02",
+      "subjectId": "archive-i02",
+      "title": "I02受限综合档案",
+      "kind": "archive-item",
+      "itemId": "i02"
+    },
+    {
+      "objectKey": "i03",
+      "subjectId": "archive-i03",
+      "title": "I03综合实物档案",
+      "kind": "archive-item",
+      "itemId": "i03"
+    },
+    {
+      "objectKey": "i01/read",
+      "subjectId": "op-i01-read",
+      "title": "I01查阅",
+      "kind": "archive-operation",
+      "itemId": "i01",
+      "operation": "read"
+    },
+    {
+      "objectKey": "i01/copy",
+      "subjectId": "op-i01-copy",
+      "title": "I01复制",
+      "kind": "archive-operation",
+      "itemId": "i01",
+      "operation": "copy"
+    },
+    {
+      "objectKey": "i02/read",
+      "subjectId": "op-i02-read",
+      "title": "I02受限查阅",
+      "kind": "archive-operation",
+      "itemId": "i02",
+      "operation": "read"
+    },
+    {
+      "objectKey": "i03/borrow",
+      "subjectId": "op-i03-borrow",
+      "title": "I03原件外借",
+      "kind": "archive-operation",
+      "itemId": "i03",
+      "operation": "borrow"
+    },
+    {
+      "objectKey": "i03/excerpt",
+      "subjectId": "op-i03-excerpt",
+      "title": "I03摘录",
+      "kind": "archive-operation",
+      "itemId": "i03",
+      "operation": "excerpt"
+    }
+  ]
+}

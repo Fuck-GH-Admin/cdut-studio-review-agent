@@ -1,0 +1,115 @@
+[
+  {
+    "id": "A01",
+    "name": "read-grant-not-copy",
+    "targets": [
+      "i01/read",
+      "i01/copy"
+    ],
+    "facts": "同一委托与同档案，仅明示查阅；复制2页另无授权。",
+    "independentExpected": "R21与R23分别判断，copy不可借read通过；两项均不得实际交付",
+    "runtime": "NOT-RUN",
+    "runIds": []
+  },
+  {
+    "id": "A02",
+    "name": "published-not-open",
+    "targets": [
+      "i02/read"
+    ],
+    "facts": "公开目录存在但馆方开放状态未知，涉及第三人隐私。",
+    "independentExpected": "R18待馆方核验，R19/R20不因目录可见自动批准",
+    "runtime": "NOT-RUN",
+    "runIds": []
+  },
+  {
+    "id": "A03",
+    "name": "proxy-not-approval",
+    "targets": [
+      "i01/read"
+    ],
+    "facts": "委托双方核实且期限有效，馆方未给read审批记录。",
+    "independentExpected": "R08/R09/R10可局部满足；R34/R33仍待有权决定",
+    "runtime": "NOT-RUN",
+    "runIds": []
+  },
+  {
+    "id": "A04",
+    "name": "electronic-authorization",
+    "targets": [
+      "i01/read"
+    ],
+    "facts": "合规电子签署，有可信验签结果且受理校允许电子形式。",
+    "independentExpected": "R29不得缺红色实体印章机械拒绝；现有高级OR语义工具阻断",
+    "runtime": "TOOLING-BLOCKED",
+    "runIds": []
+  },
+  {
+    "id": "A05",
+    "name": "approval-not-yet-due",
+    "targets": [
+      "i03/borrow"
+    ],
+    "facts": "刚提交外借申请，未形成部门审批或归还凭据。",
+    "independentExpected": "R32/R33不能将未来机关决定/归还回执当申请人缺件；借出不得执行",
+    "runtime": "TOOLING-BLOCKED",
+    "runIds": []
+  },
+  {
+    "id": "A06",
+    "name": "foreign-policy-not-binding",
+    "targets": [
+      "i01/read"
+    ],
+    "facts": "存在外校签章格式要求，受理校当前制度版本无法确认。",
+    "independentExpected": "R01/R39待核；不得按外校要求判本校申请不合格",
+    "runtime": "NOT-RUN",
+    "runIds": []
+  },
+  {
+    "id": "A07",
+    "name": "mixed-op-partial",
+    "targets": [
+      "i01/read",
+      "i01/copy",
+      "i02/read"
+    ],
+    "facts": "I01 read材料已齐、copy超范围；I02档案是否开放待核。",
+    "independentExpected": "三个独立操作状态并存；整单不得标全部完成/批准",
+    "runtime": "NOT-RUN",
+    "runIds": []
+  },
+  {
+    "id": "A08",
+    "name": "document-version-stale",
+    "targets": [
+      "i01/read"
+    ],
+    "facts": "第一次核验后替换委托书版本且改变授权时间。",
+    "independentExpected": "R42使依赖旧文档的结论过期，不可静默沿用旧Run",
+    "runtime": "TOOLING-BLOCKED",
+    "runIds": []
+  },
+  {
+    "id": "A09",
+    "name": "historical-name-equivalent",
+    "targets": [
+      "i01/read"
+    ],
+    "facts": "旧档案姓名不同，但可信历史更名/学院沿革可建立连续性。",
+    "independentExpected": "R07/R40不得机械否决；若关系不明转人工",
+    "runtime": "TOOLING-BLOCKED",
+    "runIds": []
+  },
+  {
+    "id": "A10",
+    "name": "staff-personnel-diversion",
+    "targets": [
+      "i02/read"
+    ],
+    "facts": "原件被馆方认定为干部人事档案。",
+    "independentExpected": "R02/R06转人事档案专门权限，不能纳入普通档案可用结论",
+    "runtime": "NOT-RUN",
+    "runIds": []
+  }
+]

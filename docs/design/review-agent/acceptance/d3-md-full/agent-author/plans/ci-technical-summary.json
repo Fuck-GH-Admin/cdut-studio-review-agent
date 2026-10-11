@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "provenance": "CI live D1/D2/D3 CLI output; private source hash NOT revalidated in CI",
+  "workspaceId": "d3-md-archive-author-a",
+  "revision": 2,
+  "templateId": "g01-archive-utilization",
+  "templateVersion": 1,
+  "planFingerprint": "19b615276bd3c64fbebe0ef97afd03841237502c25f3ae6698ba1fdcb091c0f2",
+  "authoringDigest": "165a2938341d40393245bcc619d918ac5c9820069b3546b4576658aeea738e43",
+  "previewFingerprint": "079c8b5fc3dc1f166abd8c84d820ae7a0e3ca3a93db3fb46ab644e8826736db6",
+  "bundleFingerprint": "12ef294151ef577247f3aa82c37d724f058cc9368bfffd6711918916f0be46e2",
+  "compiledCheckCount": 77,
+  "uninstantiatedBlockedRules": [
+    "R24",
+    "R29",
+    "R40"
+  ],
+  "sourceIds": [
+    "source-cd",
+    "source-cross",
+    "source-law",
+    "source-md"
+  ],
+  "targets": [
+    {
+      "objectKey": "i01",
+      "subjectId": "archive-i01",
+      "operation": null
+    },
+    {
+      "objectKey": "i02",
+      "subjectId": "archive-i02",
+      "operation": null
+    },
+    {
+      "objectKey": "i03",
+      "subjectId": "archive-i03",
+      "operation": null
+    },
+    {
+      "objectKey": "i01/read",
+      "subjectId": "op-i01-read",
+      "operation": "read"
+    },
+    {
+      "objectKey": "i01/copy",
+      "subjectId": "op-i01-copy",
+      "operation": "copy"
+    },
+    {
+      "objectKey": "i02/read",
+      "subjectId": "op-i02-read",
+      "operation": "read"
+    },
+    {
+      "objectKey": "i03/borrow",
+      "subjectId": "op-i03-borrow",
+      "operation": "borrow"
+    },
+    {
+      "objectKey": "i03/excerpt",
+      "subjectId": "op-i03-excerpt",
+      "operation": "excerpt"
+    }
+  ],
+  "byRule": {
+    "R01": [
+      "module/case/r01"
+    ],
+    "R02": [
+      "module/case/r02"
+    ],
+    "R03": [
+      "module/case/r03"
+    ],
+    "R04": [
+      "module/rel/r04"
+    ],
+    "R05": [
+      "module/item-i01/r05",
+      "module/item-i02/r05",
+      "module/item-i03/r05"
+    ],
+    "R06": [
+      "module/item-i01/r06",
+      "module/item-i02/r06",
+      "module/item-i03/r06"
+    ],
+    "R07": [
+      "module/item-i01/r07",
+      "module/item-i02/r07",
+      "module/item-i03/r07"
+    ],
+    "R08": [
+      "module/rel/r08"
+    ],
+    "R09": [
+      "module/operation-i01-copy/r09",
+      "module/operation-i01-read/r09",
+      "module/operation-i02-read/r09",
+      "module/operation-i03-borrow/r09",
+      "module/operation-i03-excerpt/r09"
+    ],
+    "R10": [
+      "module/operation-i01-copy/r10",
+      "module/operation-i01-read/r10",
+      "module/operation-i02-read/r10",
+      "module/operation-i03-borrow/r10",
+      "module/operation-i03-excerpt/r10"
+    ],
+    "R11": [
+      "module/rel/r11"
+    ],
+    "R12": [
+      "module/operation-i01-copy/r12",
+      "module/operation-i01-read/r12",
+      "module/operation-i02-read/r12",
+      "module/operation-i03-borrow/r12",
+      "module/operation-i03-excerpt/r12"
+    ],
+    "R13": [
+      "module/rel/r13"
+    ],
+    "R14": [
+      "module/item-i01/r14",
+      "module/item-i02/r14",
+      "module/item-i03/r14"
+    ],
+    "R15": [
+      "module/read-i01-read/r15",
+      "module/read-i02-read/r15"
+    ],
+    "R16": [
+      "module/borrow-i03-borrow/r16"
+    ],
+    "R17": [
+      "module/item-i01/r17",
+      "module/item-i02/r17",
+      "module/item-i03/r17"
+    ],
+    "R18": [
+      "module/item-i01/r18",
+      "module/item-i02/r18",
+      "module/item-i03/r18"
+    ],
+    "R19": [
+      "module/operation-i01-copy/r19",
+      "module/operation-i01-read/r19",
+      "module/operation-i02-read/r19",
+      "module/operation-i03-borrow/r19",
+      "module/operation-i03-excerpt/r19"
+    ],
+    "R20": [
+      "module/operation-i01-copy/r20",
+      "module/operation-i01-read/r20",
+      "module/operation-i02-read/r20",
+      "module/operation-i03-borrow/r20",
+      "module/operation-i03-excerpt/r20"
+    ],
+    "R21": [
+      "module/read-i01-read/r21",
+      "module/read-i02-read/r21"
+    ],
+    "R22": [
+      "module/excerpt-i03-excerpt/r22"
+    ],
+    "R23": [
+      "module/copy-i01-copy/r23"
+    ],
+    "R25": [
+      "module/borrow-i03-borrow/r25"
+    ],
+    "R26": [
+      "module/borrow-i03-borrow/r26"
+    ],
+    "R27": [
+      "module/evidence/r27"
+    ],
+    "R28": [
+      "module/evidence/r28"
+    ],
+    "R30": [
+      "module/case/r30"
+    ],
+    "R31": [
+      "module/case/r31"
+    ],
+    "R32": [
+      "module/evidence/r32"
+    ],
+    "R33": [
+      "module/workflow/r33"
+    ],
+    "R34": [
+      "module/workflow/r34"
+    ],
+    "R35": [
+      "module/operation-i01-copy/r35",
+      "module/operation-i01-read/r35",
+      "module/operation-i02-read/r35",
+      "module/operation-i03-borrow/r35",
+      "module/operation-i03-excerpt/r35"
+    ],
+    "R36": [
+      "module/case/r36"
+    ],
+    "R37": [
+      "module/workflow/r37"
+    ],
+    "R38": [
+      "module/evidence/r38"
+    ],
+    "R39": [
+      "module/case/r39"
+    ],
+    "R41": [
+      "module/workflow/r41"
+    ],
+    "R42": [
+      "module/case/r42"
+    ]
+  },
+  "authorityCounts": {
+    "request-scope": 21,
+    "unverified-policy": 56
+  },
+  "technicalChecksVerified": true,
+  "piArchiveCaseRun": "NOT-RUN",
+  "syntheticToolReceipt": false,
+  "onlineModelRun": "not-run",
+  "sourceHashVerifiedInCI": false,
+  "independentGold": "NOT-RUN",
+  "semanticEquivalenceVerified": false,
+  "completeBusinessTemplateCertified": false,
+  "artifact": {
+    "runId": 38098657888,
+    "technicalId": 11686093144,
+    "piContractId": 11686098057,
+    "jobId": 114349796253,
+    "runUrl": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38098657888"
+  }
+}
