@@ -1,0 +1,21 @@
+{
+  "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+  "locator": "§4.1/§9 E03/§6 R29",
+  "requirement": "电子授权合法替代关系R29不允许降格成纸章一致判断",
+  "blockedOperation": "D2高级Claim/Evidence替代映射",
+  "owner": "D3",
+  "reproduce": "使用workspaces/archive-r2-advanced-blocked.json运行D2 preview，预期D2_UNMAPPED_ADVANCED",
+  "affected": {
+    "templateId": "g01-archive-utilization",
+    "templateVersion": 1,
+    "sourceRequirementIds": [
+      "R29",
+      "R40"
+    ],
+    "instancePaths": [
+      "module/evidence"
+    ],
+    "checkIds": [],
+    "runIds": []
+  }
+}
