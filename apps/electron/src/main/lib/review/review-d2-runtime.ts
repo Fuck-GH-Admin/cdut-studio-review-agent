@@ -15,6 +15,7 @@ import { CommandValidationError, createAggregate, payloadHash, readAggregate, su
 import { getTemplate, isAuthoringCandidateDraft } from './template-store'
 import { hashEffectiveRuleSet, resolveEffectiveRules } from './effective-rules'
 import { computeRunInputHash } from './run-service-v2'
+import { validateD2GuardSubmission } from './review-d2-execution-gates'
 
 const sha = (value: unknown): string => createHash('sha256').update(JSON.stringify(value) ?? 'undefined', 'utf8').digest('hex')
 const ID = /^[a-z][a-z0-9-]{0,79}$/
@@ -35,6 +36,7 @@ const scopeRef = (binding: D2TargetBinding): ReviewSubject => ({
     d2ObjectKey: { kind: 'text', value: binding.objectKey },
     ...(binding.itemId ? { d2ItemId: { kind: 'text' as const, value: binding.itemId } } : {}),
     ...(binding.operation ? { d2Operation: { kind: 'text' as const, value: binding.operation } } : {}),
+    ...(binding.operationId ? { d2OperationId: { kind: 'text' as const, value: binding.operationId } } : {}),
     ...(binding.scenario ? { d2Scenario: { kind: 'text' as const, value: binding.scenario } } : {}),
   },
   sourceRefs: [], correction: 'user-confirmed', status: 'confirmed',
@@ -82,13 +84,14 @@ function validateTargets(selection: D2ScenarioSelection): void {
     keys.add(target.objectKey)
     subjects.add(target.subjectId)
     if (target.kind === 'archive-operation') {
-      if (!target.itemId || !target.operation || target.objectKey !== target.itemId + '/' + target.operation) {
+      if (!target.itemId || !target.operation || (target.operationId && !safe(target.operationId)) ||
+          target.objectKey !== target.itemId + '/' + target.operation + (target.operationId ? '/' + target.operationId : '')) {
         throw new Error('D2_TARGET_INVALID: 档案件与操作必须精确对应 itemId/operation')
       }
     } else if (target.kind === 'archive-item') {
-      if (!target.itemId || target.objectKey !== target.itemId || target.operation) throw new Error('D2_TARGET_INVALID: 档案级目标不能冒充具体操作')
+      if (!target.itemId || target.objectKey !== target.itemId || target.operation || target.operationId) throw new Error('D2_TARGET_INVALID: 档案级目标不能冒充具体操作')
     } else if (target.kind === 'campus-card') {
-      if (!selection.scenario || target.scenario !== selection.scenario || target.operation) {
+      if (!selection.scenario || target.scenario !== selection.scenario || target.operation || target.operationId) {
         throw new Error('D2_TARGET_INVALID: 校园卡主体必须绑定已选择的分支')
       }
     } else throw new Error('D2_TARGET_INVALID: 未知目标种类')
@@ -136,7 +139,7 @@ export function compileD2RuntimePlan(
     throw new Error('D2_SCOPE_MISSING: 分支对象未登记')
   }
   const sources = new Map(workspace.sources.map((source) => [source.sourceId, source]))
-  const links = new Map(workspace.sourceBindings.map((link) => [link.checkId, link.sourceIds]))
+  const links = new Map(workspace.sourceBindings.map((link) => [link.checkId, link]))
   const rules: RuleSpec[] = [], mapping: D2RuleBinding[] = []
   const usedKeys = new Set<string>()
   for (const [index, task] of preview.tasks.entries()) {
@@ -144,7 +147,8 @@ export function compileD2RuntimePlan(
     const target = objectKey ? registry.get(objectKey) : undefined
     if (objectKey && !target) throw new Error('D2_SCOPE_MISSING: 未登记业务对象 ' + objectKey)
     if (target) usedKeys.add(target.objectKey)
-    const sourceIds = links.get(selection.templateId + '@' + selection.version + ':' + task.checkId)
+    const sourceBinding = links.get(selection.templateId + '@' + selection.version + ':' + task.checkId)
+    const sourceIds = sourceBinding?.sourceIds
     if (!sourceIds?.length) throw new Error('D2_SOURCE_MISSING: ' + task.checkId)
     const authority: D2RuleBinding['authority'] = task.source.kind === 'cross-school-reference' ||
       sourceIds.some((id) => {
@@ -163,6 +167,10 @@ export function compileD2RuntimePlan(
       }).join('；'),
       '行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。',
       ...(authority === 'unverified-policy' ? ['校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。'] : []),
+      ...(sourceBinding?.gate ? [
+        '结构化执行条件（D2 强制门禁，不是行政制度已生效证明）：' + JSON.stringify(sourceBinding.gate),
+        '执行规则：条件未知一律 awaiting-confirmation；阶段未到不得报申请人缺件；电子/纸质替代须有本对象当前版本的审核员证据确认。',
+      ] : []),
     ].join('\n')
     rules.push({
       id, policyVersionId: `workspace:d2-${workspace.workspaceId}@${workspace.revision}`,
@@ -177,6 +185,7 @@ export function compileD2RuntimePlan(
       checkId: task.checkId, ruleId: id,
       ...(target ? { objectKey: target.objectKey, subjectId: target.subjectId } : {}),
       sourceIds: [...sourceIds], authority,
+      ...(sourceBinding?.gate ? { gate: structuredClone(sourceBinding.gate) } : {}),
     })
   }
   for (const target of selection.targets) if (!usedKeys.has(target.objectKey)) {
@@ -386,8 +395,11 @@ export function verifyD2PiRun(aggregate: CaseAggregateV2, run: ReviewRunV2): { c
       problems.push('未经核实的制度来源不能生成确定性结论：' + mapping.checkId)
     }
     if (!check.reason?.trim()) problems.push('审核结果缺少理由：' + mapping.checkId)
-    const operationIssue = validateD2OperationEvidence(aggregate, mapping.ruleId, check.status, check.sourceRefs.map((ref) => ref.documentVersionId))
+    const versionIds = check.sourceRefs.map((ref) => ref.documentVersionId)
+    const operationIssue = validateD2OperationEvidence(aggregate, mapping.ruleId, check.status, versionIds)
     if (operationIssue) problems.push(operationIssue)
+    const gateIssue = validateD2GuardSubmission(aggregate, mapping, check.status, versionIds)
+    if (gateIssue) problems.push(gateIssue + ': ' + mapping.checkId)
 
     if (['compliant', 'non-compliant'].includes(check.status)) {
       if (!check.sourceRefs.length) problems.push('确定结果缺少真实 SourceRef：' + mapping.checkId)

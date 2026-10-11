@@ -14,7 +14,9 @@ export interface D2TargetBinding {
   kind: D2TargetKind
   scenario?: string
   itemId?: string
-  operation?: 'read' | 'copy' | 'excerpt' | 'borrow'
+  operation?: 'read' | 'copy' | 'excerpt' | 'borrow' | 'certified_copy'
+  /** Optional stable per-request operation identity; disambiguates same-kind operations. */
+  operationId?: string
 }
 export interface D2ScenarioSelection {
   templateId: string
@@ -33,6 +35,28 @@ export interface D2RuleBinding {
   sourceIds: string[]
   /** 记录制度候选/跨校参考尚未获本案授权；Pi 只能返回待确认。 */
   authority: 'request-scope' | 'unverified-policy'
+  /** Structured execution gate; never inferred from task prose. */
+  gate?: D2ExecutionGateV1
+}
+/** Three-valued, fail-closed checks over confirmed human evidence/observations. */
+export type D2GatePredicateV1 =
+  | { kind: 'confirmed-observation'; fieldKey: string; equals: string }
+  | { kind: 'evidence-any'; supportsFacts: string[] }
+  | { kind: 'case-stage'; stages: import('./review-v2').CaseStage[] }
+export type D2GateExpressionV1 =
+  | D2GatePredicateV1
+  | { kind: 'all'; conditions: D2GateExpressionV1[] }
+  | { kind: 'any'; conditions: D2GateExpressionV1[] }
+  | { kind: 'not'; condition: D2GateExpressionV1 }
+/** Applicant material cannot be labelled missing before a verified trigger and due stage. */
+export interface D2ExecutionGateV1 {
+  when?: D2GateExpressionV1
+  material?: {
+    provider: 'applicant' | 'authority'
+    dueStages: import('./review-v2').CaseStage[]
+    /** Alternative accepted fact labels, linked by a reviewer to THIS check's target. */
+    alternatives: string[]
+  }
 }
 export interface D2RuntimePlan {
   schemaVersion: 1

@@ -12,6 +12,7 @@ import { previewDemo, projectSimpleDemoDraft, validateDemoState, type DemoState,
 import { resolveEffectiveRules, hashEffectiveRuleSet } from './effective-rules'
 import { validateTemplate } from './template-store'
 import { validateD3WorkspaceLocks } from './review-d3-workspace-locks'
+import { validateD2ExecutionGate } from './review-d2-execution-gates'
 
 const ID = /^[a-z][a-z0-9-]{0,79}$/
 const sha = (value: unknown): string => createHash('sha256').update(JSON.stringify(value), 'utf8').digest('hex')
@@ -37,7 +38,7 @@ const STRUCTURE_KEYS = {
   source: ['sourceId', 'kind', 'label', 'reference', 'verification', 'applicability', 'note'],
   inlineSource: ['kind', 'note'],
   documentReference: ['documentVersionId', 'locator', 'excerpt'],
-  binding: ['checkId', 'sourceIds', 'applicabilityNote'],
+  binding: ['checkId', 'sourceIds', 'applicabilityNote', 'gate'],
   advanced: ['objectRoleKeys', 'claimKeys', 'evidenceRelations'],
   evidenceRelation: ['claimKey', 'requiredSourceIds'],
 } as const
@@ -82,7 +83,10 @@ export function validateReviewAuthoringV1(workspace: ReviewAuthoringWorkspaceV1)
     checkKnownFields(source, STRUCTURE_KEYS.source, source.sourceId, issues)
     checkKnownFields(source.reference, STRUCTURE_KEYS.documentReference, source.sourceId + '.reference', issues)
   }
-  for (const link of workspace.sourceBindings) checkKnownFields(link, STRUCTURE_KEYS.binding, link.checkId, issues)
+  for (const link of workspace.sourceBindings) {
+    checkKnownFields(link, STRUCTURE_KEYS.binding, link.checkId, issues)
+    if (link.gate) issues.push(...validateD2ExecutionGate(link.gate).map(msg => link.checkId + ': ' + msg))
+  }
   if (workspace.advanced) {
     checkKnownFields(workspace.advanced, STRUCTURE_KEYS.advanced, '作者态高级约束', issues)
     for (const relation of workspace.advanced.evidenceRelations ?? []) {
@@ -167,6 +171,9 @@ export function compileReviewAuthoringCandidateV1(
   if (issues.length) throw new Error('AUTHORING_INVALID: ' + issues.join('；'))
   if (workspace.advanced && Object.values(workspace.advanced).some((value) => Array.isArray(value) && value.length > 0)) {
     throw new Error('UNMAPPABLE_ADVANCED: 高级角色/Claim/Evidence 关系尚未映射至有效规则，不得静默投影')
+  }
+  if (workspace.sourceBindings.some(binding => binding.gate)) {
+    throw new Error('D1_UNMAPPABLE_EXECUTION_GATE: 结构化条件必须通过 D2 固定案卷执行，不能丢失条件后降级成 D1 无条件候选')
   }
   const lockIssues = validateD3WorkspaceLocks(workspace, true)
   if (lockIssues.length) throw new Error('D3_FROZEN_LOCK_INVALID: ' + lockIssues.join('；'))

@@ -1,0 +1,68 @@
+name: D3 MD Dynamic and Structured Gates
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/review-d3-md-dynamic.yml'
+      - 'apps/electron/src/main/lib/review/**'
+      - 'packages/shared/src/types/review-authoring-v1.ts'
+      - 'packages/shared/src/types/review-d2.ts'
+      - 'docs/design/review-agent/35-d3-md-dynamic-authoring-and-execution-implementation.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  md-dynamic-frozen-a-b:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: f8d95c4f7fe995ee55cbdfe15f16e95f514c0333
+          path: frozen-agent-a
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: fbf0ee1e072f790e1d7957cfef80d869d6b5aa91
+          path: frozen-agent-b
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify fixed independent source SHAs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C frozen-agent-a rev-parse HEAD)" = f8d95c4f7fe995ee55cbdfe15f16e95f514c0333
+          test "$(git -C frozen-agent-b rev-parse HEAD)" = fbf0ee1e072f790e1d7957cfef80d869d6b5aa91
+      - name: Install pinned dependencies
+        run: bun install --frozen-lockfile
+      - name: D3 actual dynamic 30-case Pi service, typed gates and regression tests
+        shell: bash
+        env:
+          MDQ1_AUTHOR_ROOT: ${{ github.workspace }}/frozen-agent-a/docs/design/review-agent/acceptance/d3-md-full/agent-author
+          MDQ1_ORACLE_ROOT: ${{ github.workspace }}/frozen-agent-b/docs/design/review-agent/acceptance/d3-md-full/agent-oracle
+          MDQ1_IMPLEMENTATION_OUTPUT_DIR: ${{ runner.temp }}/d3-md-dynamic
+        run: |
+          set -euo pipefail
+          mkdir -p "$MDQ1_IMPLEMENTATION_OUTPUT_DIR"
+          bun test --isolate --timeout 60000 \
+            apps/electron/src/main/lib/review/review-d3-md-dynamic-runtime.test.ts \
+            2>&1 | tee "$MDQ1_IMPLEMENTATION_OUTPUT_DIR/dynamic-test.log"
+          bun test --isolate --timeout 60000 \
+            apps/electron/src/main/lib/review/review-authoring-v1.test.ts \
+            apps/electron/src/main/lib/review/review-d2-runtime.test.ts \
+            apps/electron/src/main/lib/review/review-d3-pi-integration.test.ts \
+            2>&1 | tee "$MDQ1_IMPLEMENTATION_OUTPUT_DIR/regression-test.log"
+      - name: Upload signed source targets and real Pi service traces
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: d3-md-dynamic-pi-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/d3-md-dynamic/
+          retention-days: 21
