@@ -15,13 +15,21 @@ import {setEvidenceLink} from './application-service'
 import {preparePiReviewRunV2,submitPiReviewResultV2} from './pi-case-review-service'
 import {getRunV2} from './run-store-v2'
 
-const folder=mkdtempSync(join(tmpdir(),'d3-md-real-'))
-process.env.PROFER_CONFIG_DIR=join(folder,'config')
-mkdirSync(process.env.PROFER_CONFIG_DIR,{recursive:true})
+// The full-repository regression job has no independent A/B checkouts. Only the
+// dedicated, required MD dynamic workflow provides the pinned source snapshots.
+// Skip this external-fixture suite when *all* inputs are absent; partial setups
+// are errors, not skips. Keep deterministic D2 gate tests in a separate,
+// always-collected review-d2-execution-gates.test.ts.
 const A=process.env.MDQ1_AUTHOR_ROOT
 const B=process.env.MDQ1_ORACLE_ROOT
 const OUT=process.env.MDQ1_IMPLEMENTATION_OUTPUT_DIR
-if(!A||!B||!OUT)throw Error('Pinned author+oracle checkout paths and output directory required')
+if (!A && !B && !OUT) {
+  test.skip('Pinned A/B MD-Q1 acceptance runs in review-d3-md-dynamic.yml, not the unprovisioned full-suite runner',()=>{})
+} else {
+if(!A||!B||!OUT)throw Error('Incomplete pinned A/B acceptance environment: author, oracle and output directory required')
+const folder=mkdtempSync(join(tmpdir(),'d3-md-real-'))
+process.env.PROFER_CONFIG_DIR=join(folder,'config')
+mkdirSync(process.env.PROFER_CONFIG_DIR,{recursive:true})
 mkdirSync(OUT,{recursive:true})
 const load=(p:string)=>JSON.parse(readFileSync(p,'utf8'))
 const source=load(join(A,'workspaces/archive-r2.json')) as ReviewAuthoringWorkspaceV1
@@ -474,3 +482,4 @@ describe('D3 dynamic case + D2 structured gates against frozen independent A/B',
   })
 
 })
+}
