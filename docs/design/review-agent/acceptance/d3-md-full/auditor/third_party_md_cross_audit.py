@@ -120,23 +120,90 @@ def audit(a_root, b_root, actual_plan, original=None):
     if original:
         verified_source = hashlib.sha256(pathlib.Path(original).read_bytes()).hexdigest()==SOURCE_SHA
         require(verified_source, "private original source SHA mismatch")
+    # Map frozen actual Check IDs to author-owned task wording. A B/S/E mention in
+    # task.requirement means author included the label, NOT execution of condition.
+    author_task_text = {}
+    module_defs = {m["moduleId"]:m for m in wa["definitions"]["modules"]}
+    for instance in wa["definitions"]["templates"][0]["modules"]:
+        module = module_defs[instance["moduleId"]]
+        for task in module["tasks"]:
+            cid = "module/" + instance["id"] + "/" + task["id"]
+            require(cid in check_to_plan or task["id"].upper() in BLOCKED_IN_RUNTIME,
+                    "author task without traceable compiled or documented blocked source ID: " + cid)
+            author_task_text[cid] = str(task.get("requirement",""))
+    check_mentions = collections.defaultdict(list)
+    for cid, task_text in author_task_text.items():
+        if cid not in check_to_plan:
+            continue
+        for match in re.finditer(r"(?<![A-Z0-9])([BSE]\d{2})(?![A-Z0-9])",task_text):
+            check_mentions[match.group(1)].append(cid)
+    case_links = collections.defaultdict(list)
+    for case_id, gold_case in expected.items():
+        for duty_id in gold_case["sourceRequirementIds"]:
+            case_links[duty_id].append(case_id)
     # We CAN establish bookkeeping, but NOT assert operational gold compliance.
     rows = []
     for duty in cb["requirements"]:
         id = duty["id"]
-        row = {"sourceDutyId":id, "kind":duty["kind"]}
+        row = {
+            "sourceDutyId":id,
+            "kind":duty["kind"],
+            "sourceLocator":duty.get("locator"),
+            "sourceAnchor":duty.get("sourceAnchor"),
+            "independentExpectedCaseIds":sorted(case_links[id]),
+            "oracleRequires":gold[id].get("checkRequirement"),
+            "runtimeGoldCrossTest":"NOT-RUN",
+            "businessSemanticEquivalenceCertified":False,
+        }
         if id.startswith("R"):
             entry = al[id]
-            row.update({"authorStatus":entry["status"],"compiledCheckIds":sorted(actual_by_r.get(id,[])),
-                        "authorGapId":entry.get("gapId"),"runtimeGoldCrossTest":"NOT-RUN"})
+            check_ids = sorted(actual_by_r.get(id,[]))
+            row.update({
+                "authorStatus":entry["status"],"compiledCheckIds":check_ids,
+                "compiledSubjects":sorted({check_to_plan[c].get("subjectId") or "CASE" for c in check_ids}),
+                "actualRuleIds":[check_to_plan[c]["ruleId"] for c in check_ids],
+                "actualSourceIds":sorted({sid for c in check_ids for sid in check_to_plan[c]["sourceIds"]}),
+                "actualAuthorityLevels":sorted({check_to_plan[c]["authority"] for c in check_ids}),
+                "authorGapId":entry.get("gapId"),
+                "bindingEvidenceLevel":"compiled-text-check-only" if check_ids else "registered-gap-no-compiled-check",
+            })
         elif id.startswith(("B","S","E")):
-            row.update({"authorRepresentation":"inventory-only plus rule text; exact per-case logic NOT VERIFIED",
-                        "runtimeGoldCrossTest":"NOT-RUN"})
+            source_field={"B":"branches","S":"materialSlots","E":"exceptions"}[id[0]]
+            inventory={x["id"]:x for x in ca[source_field]}
+            candidate_checks=sorted(set(check_mentions[id]))
+            row.update({
+                "authorInventoryPresent":id in inventory,
+                "authorInventoryValue":inventory.get(id),
+                "candidateCheckIdsMentioningSourceDuty":candidate_checks,
+                "textMentionCount":len(candidate_checks),
+                "textOnlyNotConditionallyExecuted":True,
+                "authorRepresentation":"inventory plus task wording; activation/substitution/exception behavior NOT VERIFIED",
+                "bindingEvidenceLevel":"text-reference-not-structured-execution" if candidate_checks else "inventory-only-no-Check-text-reference",
+            })
         elif id.startswith("P"):
-            row.update({"candidateAuthorCorrespondence":P_CANDIDATES.get(id,[]),
-                        "candidateOnly":True,"runtimeGoldCrossTest":"NOT-RUN"})
+            candidates=P_CANDIDATES.get(id,[])
+            candidate_checks=sorted({
+                c for cid in candidates for c in
+                (al.get(cid,{}).get("checkIds") or al.get(cid,{}).get("associatedCompiledCheckIds") or [])
+                if c in check_to_plan
+            })
+            row.update({
+                "candidateAuthorCorrespondence":candidates,
+                "candidateCheckIds":candidate_checks,
+                "candidateOnly":True,
+                "authorDispositions":[{"id":cid,"status":al.get(cid,{}).get("status"),"gapId":al.get(cid,{}).get("gapId")} for cid in candidates],
+                "bindingEvidenceLevel":"independent-semantic-review-needed",
+            })
         rows.append(row)
     status_counts=collections.Counter(x["status"] for x in al.values())
+    crosswalk_counts={
+        "compiledRCount":sum(bool(r.get("compiledCheckIds")) for r in rows if r["sourceDutyId"].startswith("R")),
+        "blockedRCount":sum(r.get("authorStatus")=="tooling-blocked" for r in rows if r["sourceDutyId"].startswith("R")),
+        "nonRWithTaskTextReference":sum(bool(r.get("candidateCheckIdsMentioningSourceDuty")) for r in rows if r["sourceDutyId"].startswith(("B","S","E"))),
+        "nonRInventoryOnly":sum(not bool(r.get("candidateCheckIdsMentioningSourceDuty")) for r in rows if r["sourceDutyId"].startswith(("B","S","E"))),
+        "candidatePCount":sum(r["sourceDutyId"].startswith("P") for r in rows),
+        "goldCasesWithActualSemanticScoring":0,
+    }
     report = {
         "schemaVersion":1,"auditor":"third-party isolated fixed-SHA GitHub Actions",
         "fixed":{"baseSha":BASE_SHA,"agentASha":A_SHA,"agentBSha":B_SHA,
@@ -164,6 +231,7 @@ def audit(a_root, b_root, actual_plan, original=None):
             "30 independent B synthetic expected cases have not been executed by A's archive-specific Pi Case/Run",
             "Current CDUT policy sources and authorized formal decisions not verified",
         ],
+        "crosswalkCounters":crosswalk_counts,
         "sourceDutyCrosswalk":rows,
         "errors":error,
     }
