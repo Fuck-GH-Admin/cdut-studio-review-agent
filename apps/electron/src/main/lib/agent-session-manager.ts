@@ -514,7 +514,8 @@ export function createReviewOwnedAgentSession(input: {
   workspaceId?: string
   presetId?: string
 }): AgentSessionMeta {
-  if (!input.caseId || !/^[A-Za-z0-9_-]{1,160}$/.test(input.caseId)) {
+  if (!input.caseId || !/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(input.caseId)
+    || input.caseId.includes('..')) {
     throw new Error('审核会话必须绑定有效案卷 ID')
   }
   if (!input.channelId?.trim()) throw new Error('审核会话必须明确指定渠道')
