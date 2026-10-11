@@ -56,6 +56,7 @@ import { adoptPiFileCheckpoints, loadPiFileCheckpoint, restorePiFileCheckpoint, 
 import {
   normalizeAgentRuntime,
   type AgentSessionMeta,
+  type AgentSessionOwner,
   type AgentMessage,
   type SDKMessage,
   type SDKUserMessage,
@@ -430,6 +431,7 @@ export function createAgentSession(
   agentRuntime: AgentRuntime = 'pi',
   draft = false,
   presetId?: string,
+  owner?: AgentSessionOwner,
 ): AgentSessionMeta {
   const index = readIndex()
   const now = Date.now()
@@ -453,6 +455,7 @@ export function createAgentSession(
     modelId,
     workspaceId,
     agentRuntime: normalizeAgentRuntime(agentRuntime),
+    ...(owner ? { owner: structuredClone(owner) } : {}),
     ...(effectivePresetId ? { presetId: effectivePresetId, presetReference: presetReferenceForId(presetWorkspaceSlug, effectivePresetId) } : {}),
     ...(draft ? { draft: true } : {}),
     createdAt: now,
@@ -496,6 +499,34 @@ export function createAgentSession(
 
   console.log(`[Agent 会话] 已创建会话: ${meta.title} (${meta.id})`)
   return meta
+}
+
+/**
+ * Trusted Main-only factory. Ownership is embedded in the same atomic index
+ * write as creation, so no observable temporary ordinary session exists.
+ * No ordinary desktop/Pocket create handler accepts the owner argument.
+ */
+export function createReviewOwnedAgentSession(input: {
+  caseId: string
+  title: string
+  channelId: string
+  modelId?: string
+  workspaceId?: string
+  presetId?: string
+}): AgentSessionMeta {
+  if (!input.caseId || !/^[A-Za-z0-9_-]{1,160}$/.test(input.caseId)) {
+    throw new Error('审核会话必须绑定有效案卷 ID')
+  }
+  if (!input.channelId?.trim()) throw new Error('审核会话必须明确指定渠道')
+  return createAgentSession(input.title, input.channelId, input.workspaceId, input.modelId, 'pi', false,
+    input.presetId ?? 'review-operator', { kind: 'review-case', caseId: input.caseId })
+}
+
+/** Fail closed for ordinary external/session UI entry points. */
+export function assertOrdinaryAgentSession(sessionId: string): void {
+  if (getAgentSessionMeta(sessionId)?.owner?.kind === 'review-case') {
+    throw new Error('内部审核会话不可通过普通 Agent 入口访问')
+  }
 }
 
 /** 同一项目只保留一个未归档的隐藏草稿会话。函数没有异步间隙，可防止快速重复点击。 */
@@ -1251,6 +1282,9 @@ export function updateAgentSessionMeta(
   }
 
   const existing = index.sessions[idx]!
+  if (Object.prototype.hasOwnProperty.call(updates, 'owner')) {
+    throw new Error('业务会话 owner 不可通过普通元数据更新修改')
+  }
   // 新引用是唯一跨作用域解析依据；旧调用传裸 presetId 时按会话工作区补齐兼容引用。
   if (updates.presetId !== undefined && updates.presetReference === undefined) {
     const workspaceSlug = existing.workspaceId ? getAgentWorkspace(existing.workspaceId)?.slug : undefined
