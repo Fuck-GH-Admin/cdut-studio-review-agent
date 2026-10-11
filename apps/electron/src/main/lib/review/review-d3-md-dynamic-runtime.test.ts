@@ -8,6 +8,7 @@ import {evaluateD2GateExpression,validateD2ExecutionGate,validateD2GuardSubmissi
 import {compileD2RuntimePlan,createD2TechnicalCase,makeD2CandidateShell,verifyD2PiRun} from './review-d2-runtime'
 import {validateReviewAuthoringV1,compileReviewAuthoringCandidateV1} from './review-authoring-v1'
 import {saveAuthoringCandidateDraft} from './template-store'
+import {exportD3Bundle,importD3Bundle} from './review-d3-module-library'
 import {readAggregate} from './case-store-v2'
 import {registerMaterial} from './material-service'
 import {setEvidenceLink} from './application-service'
@@ -195,6 +196,54 @@ describe('D3 dynamic case + D2 structured gates against frozen independent A/B',
       .toThrow('D1_UNMAPPABLE_EXECUTION_GATE')
     w.sourceBindings[0]!.gate={when:{kind:'evidence-any',supportsFacts:[]}}
     expect(validateReviewAuthoringV1(w).some(e=>e.includes('D2_GATE_BAD_EVIDENCE_ALTERNATIVES'))).toBe(true)
+  })
+  test('D3 export/import preserves dynamically bound Check gates and rejects tampered gate fingerprint',()=>{
+    const b=bCases.find(c=>c.caseId==='Q02')!
+    const result=instantiateD3ArchiveCaseV1(source,req(b))
+    const key='g01-archive-utilization@1:module/operation-i01-copy-o02/r35'
+    const binding=result.workspace.sourceBindings.find(v=>v.checkId===key)!
+    binding.gate={
+      when:{kind:'case-stage',stages:['draft']},
+      material:{provider:'applicant',dueStages:['draft'],
+        alternatives:['d2:document:paper','d2:document:electronic']},
+    }
+    const bundle=exportD3Bundle(result.workspace)
+    const imported=importD3Bundle(bundle)
+    expect(imported.sourceBindings.find(v=>v.checkId===key)?.gate).toEqual(binding.gate)
+    const c:any=structuredClone(bundle)
+    c.workspace.sourceBindings.find((v:any)=>v.checkId===key).gate.material.alternatives=['d2:document:paper']
+    expect(()=>importD3Bundle(c)).toThrow('D3_BUNDLE_DIGEST')
+    const caseV2:any={id:'d3-bundle-preview',templateId:'g01-archive-utilization',
+      templateVersion:1,title:'合成',objectType:'document',caseFields:{},
+      subjects:[],documents:[],stage:'draft',revision:0,
+      createdAt:'2026-10-11T00:00:00.000Z',updatedAt:'2026-10-11T00:00:00.000Z'}
+    const plan=compileD2RuntimePlan(imported,result.selection,caseV2)
+    expect(plan.mapping.find(m=>m.checkId==='module/operation-i01-copy-o02/r35')?.gate)
+      .toEqual(binding.gate)
+  })
+  test('Agent-first dynamic CLI emits all 5 JSON artifacts with stable provenance',()=>{
+    const b=bCases.find(c=>c.caseId==='Q02')!
+    const inputPath=join(folder,'cli-workspace.json')
+    const reqPath=join(folder,'cli-request.json')
+    const dest=join(folder,'cli-dynamic-output')
+    writeFileSync(inputPath,JSON.stringify(source))
+    writeFileSync(reqPath,JSON.stringify(req(b)))
+    const script=join(import.meta.dir,'../../../../scripts/review-d3-dynamic-case.ts')
+    const run=Bun.spawnSync({cmd:[process.execPath,script,'build',inputPath,reqPath,dest],
+      env:{...process.env,PROFER_CONFIG_DIR:process.env.PROFER_CONFIG_DIR!}})
+    expect(run.exitCode).toBe(0)
+    if(run.exitCode!==0)throw Error(run.stderr.toString())
+    const summary=JSON.parse(run.stdout.toString())
+    expect(summary.targets).toBe(3)
+    const a=load(join(dest,'workspace.json'))
+    const selection=load(join(dest,'selection.json'))
+    const plan=load(join(dest,'plan.json'))
+    const srcMap=load(join(dest,'origin-map.json'))
+    expect(a.workspaceId).toBe(summary.workspaceId)
+    expect(plan.fingerprint).toBe(summary.fingerprint)
+    expect(plan.mapping.length).toBe(summary.actualChecks)
+    expect(srcMap.administrativeApproval).toBe(false)
+    expect(selection.targets.map((x:any)=>x.operationId).filter(Boolean)).toEqual(['o01','o02'])
   })
   test('Pi service executes actual alternative-evidence guard on a separately labelled synthetic source (not B gold)',async()=>{
     const fixture=instantiateD3ArchiveCaseV1(source,req(bCases.find(c=>c.caseId==='Q02')!))
