@@ -1,5 +1,7 @@
 # 29｜审核受控后台会话：开工前依赖审计与阻断门禁
 
+> **新会话/新负责人必读**：[30｜P04-S01 后的工程交接快照](30-background-session-handoff.md)、[31｜接手与每批次提示词](31-background-session-continuation-prompts.md)。下一小批次建议 **P04-S02：历史 Tab 持久化恢复与跨窗口重绑**；遗留 tombstone、剩余 IPC 必须继续入账，不能在本轮交接中消失。
+
 > 2026-10-12；初始源码审计基线 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；后续代码与受控探针仅在 Draft PR #21 分支实施。配套 [27 号实施规范](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。**文档中的 PASS 只对所附冻结提交、测试环境与覆盖范围有效；真实 Pi/Electron/Pocket 验收尚未完成，不得据此合并。**
 
 ## 结论
@@ -100,6 +102,12 @@
 - **第一层常规入口屏障**：`ipc.ts` 的普通 LIST/GET_SESSION_META/SEND_MESSAGE 及 DELETE/UPDATE_MODEL/MOVE 均拦截已有 owner；`remote-service.ts` 的列表和按 `sessionId` 基础命令拒绝内部 owner，runtime context 过滤；事件在 `remoteAgentEventLog.append` **之前**过滤，避免新内部流进入 Pocket 重放日志。
 - **负例证据**：[`review-owned-session.p03.test.ts`](../../../apps/electron/src/main/lib/review/review-owned-session.p03.test.ts) 包含 owner 持久化与普通会话差异、运行时恶意 owner 更新被拒、已知 sessionId 的 Pocket 读取/修改/删除被拒、基础实时/重放预过滤。**这不等于全量 Desktop IPC 或 Pocket/Feishu 入口枚举完成**；目前不会创建/启动真正后台 owner session。
 - **不可提前放行**：P04 必须继续覆盖桌面全套单条/检索/引用/归档/历史 Tab/异步 session_projection 与流事件重新插入；P05 必须继续覆盖所有 Pocket 命令别名/嵌套 ID/事件队列和重放/远程搜索/Feishu 等远程入口。**LIVE-06 仍 NOT-RUN**；尤其不能把此轮测试的“基本阻断”宣称为全表面隔离。
+
+### 跨会话交接校验（2026-10-12）
+
+- **当前交接基线**：截至制作 30/31 号文档前，Draft PR #21 HEAD 为 `cbdd0a8c86bafc6bff60781de466b0ba963d27e2`，对应 [PR CI #38184974138](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184974138)、[D2 #38184974152](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184974152)、[Review Baseline #38184974119](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184974119) **三项均 SUCCESS**。此后交接文档提交产生更新的 HEAD；这三条历史 CI **不可冒称覆盖文档更新后的 HEAD**。接手者必须重新查询 PR 最新 HEAD 与当次 CI。
+- **阶段状态**：P04-S01 已完成局部受控验证（下节）；P04 整体 PARTIAL。历史 Tab 恢复、多窗口、已删除 owner 的迟到事件/旧快照、残余普通桌面入口需继续分批覆盖。P05 Pocket/Feishu 未完成；实际后台审核 IPC 未启用。**LIVE-01～08 均 NOT-RUN**。
+- **交接工作流**：新会话先读 [30｜交接指南](30-background-session-handoff.md)，复制 [31｜首轮提示词](31-background-session-continuation-prompts.md)；每批必须同步本文件及 27/30/PR，记录 PASS/FAIL/NOT-RUN、冻结 SHA 和 CI run ID，不得仅凭用户上一段聊天或历史 CI 放行。
 
 ### P04-S01 桌面主路径隔离与异步回填受控验证（2026-10-12）
 
