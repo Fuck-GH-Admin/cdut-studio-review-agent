@@ -10,6 +10,7 @@ import {validateReviewAuthoringV1,compileReviewAuthoringCandidateV1} from './rev
 import {saveAuthoringCandidateDraft} from './template-store'
 import {readAggregate} from './case-store-v2'
 import {registerMaterial} from './material-service'
+import {setEvidenceLink} from './application-service'
 import {preparePiReviewRunV2,submitPiReviewResultV2} from './pi-case-review-service'
 import {getRunV2} from './run-store-v2'
 
@@ -195,4 +196,80 @@ describe('D3 dynamic case + D2 structured gates against frozen independent A/B',
     w.sourceBindings[0]!.gate={when:{kind:'evidence-any',supportsFacts:[]}}
     expect(validateReviewAuthoringV1(w).some(e=>e.includes('D2_GATE_BAD_EVIDENCE_ALTERNATIVES'))).toBe(true)
   })
+  test('Pi service executes actual alternative-evidence guard on a separately labelled synthetic source (not B gold)',async()=>{
+    const fixture=instantiateD3ArchiveCaseV1(source,req(bCases.find(c=>c.caseId==='Q02')!))
+    const checkId='g01-archive-utilization@1:module/operation-i01-copy-o02/r35'
+    const binding=fixture.workspace.sourceBindings.find(b=>b.checkId===checkId)
+    expect(binding).toBeDefined()
+    binding!.gate={
+      when:{kind:'case-stage',stages:['draft']},
+      material:{provider:'applicant',dueStages:['draft'],
+        alternatives:['d2:document:paper','d2:document:electronic']},
+    }
+    expect(validateReviewAuthoringV1(fixture.workspace)).toEqual([])
+    const caseId='q1-electronic-option-probe'
+    const created=await createD2TechnicalCase({
+      caseId,title:'仅验证电子替代执行门禁，不是学校真实委托许可',
+      actor,workspace:fixture.workspace,selection:fixture.selection,
+    })
+    expect(created.ok).toBeTrue()
+    if(!created.ok)throw Error(created.message)
+    const target=created.entity!.mapping.find(m=>m.checkId==='module/operation-i01-copy-o02/r35')!
+    expect(target.gate?.material?.alternatives).toContain('d2:document:electronic')
+    expect(target.authority).toBe('request-scope')
+    const docpath=join(folder,'electronic-option-source.txt')
+    writeFileSync(docpath,'合成电子证明已提供，但真实性仅是测试用例，绝非校规。')
+    const registered=await registerMaterial(caseId,{
+      requestId:'el-doc',actor,expectedRevision:readAggregate(caseId)!.caseV2.revision,
+      payload:{sourcePath:docpath,role:'evidence'},
+    })
+    expect(registered.ok).toBeTrue()
+    if(!registered.ok)throw Error(registered.message)
+    const doc=readAggregate(caseId)!.caseV2.documents[0]!
+    const blk=doc.blocks.find(b=>b.kind!=='image')!
+    const src={documentVersionId:doc.versionId,blockId:blk.blockId,quote:'合成电子证明已提供'}
+    // The D2 operation fact and legal alternative fact are DISTINCT reviewer links.
+    const link=await setEvidenceLink(caseId,{
+      requestId:'el-operation',actor,expectedRevision:readAggregate(caseId)!.caseV2.revision,
+      payload:{documentVersionId:src.documentVersionId,subjectIds:[target.subjectId!],
+        supportsFact:'d2:archive:copy',linkedBy:'user'},
+    })
+    expect(link.ok).toBeTrue()
+    if(!link.ok)throw Error(link.message)
+    const session='el-option-session'
+    const started=preparePiReviewRunV2({caseId,sessionId:session,turnId:'el-option-turn'})
+    const bnd={assignmentId:started.assignmentId,sessionId:session,caseId,runId:started.runId}
+    const falseClaim=submitPiReviewResultV2({
+      binding:bnd,triggeredBy:'user',result:{summary:'无电子替代材料绑定却误判符合',
+        checks:[{ruleId:target.ruleId,subjectIds:[target.subjectId!],
+          status:'compliant',reason:'错误的纸质要求合规声称',sourceRefs:[src]}],finish:true},
+    })
+    expect(falseClaim.accepted).toBe(0)
+    expect(falseClaim.rejected.some(r=>r.reason.includes('D2_MATERIAL_ALTERNATIVE_UNVERIFIED'))).toBe(true)
+    const alternative=await setEvidenceLink(caseId,{
+      requestId:'el-alternative',actor,expectedRevision:readAggregate(caseId)!.caseV2.revision,
+      payload:{documentVersionId:src.documentVersionId,subjectIds:[target.subjectId!],
+        supportsFact:'d2:document:electronic',linkedBy:'user'},
+    })
+    expect(alternative.ok).toBeTrue()
+    if(!alternative.ok)throw Error(alternative.message)
+    // Changing evidence after the Run started invalidates the original manifest;
+    // a new Run is required rather than retroactively accepting an old source.
+    let staleError=''
+    try{
+      submitPiReviewResultV2({
+        binding:bnd,triggeredBy:'user',result:{summary:'不应偷渡新绑定',
+          checks:[{ruleId:target.ruleId,subjectIds:[target.subjectId!],
+            status:'compliant',reason:'材料已发生变化，需要新 Run',sourceRefs:[src]}],finish:true},
+      })
+    }catch(e){staleError=String(e instanceof Error?e.message:e)}
+    expect(staleError).toContain('案卷材料或人工事实已变化')
+    emit('electronic-alternative-gate-pi-guard.json',{
+      actualCaseId:caseId,actualRunId:started.runId,
+      authorCheckId:target.checkId,actualRuleId:target.ruleId,actualSubjectId:target.subjectId,
+      falseComplianceRejected:falseClaim.rejected.map(r=>r.reason),newEvidenceRequiresNewRun:staleError,
+      onlineModelRun:'not-run',actualGoldCaseVerified:false,authority:'synthetic-only',
+    })
+  })
+
 })
