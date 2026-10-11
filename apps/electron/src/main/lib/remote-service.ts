@@ -31,7 +31,7 @@ import WebSocket, { WebSocketServer, type RawData } from 'ws'
 import type { AddressInfo } from 'node:net'
 import { app, BrowserWindow } from 'electron'
 
-import { AGENT_IPC_CHANNELS, isChannelEnabledForRuntime, type AgentSessionMeta } from '@profer/shared'
+import { AGENT_IPC_CHANNELS, isChannelEnabledForRuntime, isReviewOwnedAgentSession, type AgentSessionMeta } from '@profer/shared'
 import { agentEventBus, runAgentHeadless, stopAgent, isAgentSessionActive, listActiveAgentRuntimeContexts, updateAgentPermissionMode, queueAgentMessage, beginAgentSessionDeletion, endAgentSessionDeletion, stopAgentAndWait, rewindAgentSession, regenerateAgentTitle } from './agent-service'
 import { publishAgentSessionProjection, updateAgentSessionUiMeta } from './agent-session-ui-projection-publisher'
 import { getUserProfile } from './user-profile-service'
@@ -198,6 +198,8 @@ function isPartialSdkPayload(payload: unknown): boolean {
 
 /** 真正把一条 agent_event 帧广播给所有已连接移动端客户端。 */
 function broadcastAgentFrame(sessionId: string, payload: import('@profer/shared').AgentStreamPayload): void {
+  // Filter before append: replay logs are a durable remote disclosure surface.
+  if (isReviewOwnedAgentSession(getAgentSessionMeta(sessionId))) return
   const record = remoteAgentEventLog.append(sessionId, payload)
   const frame = JSON.stringify({
     kind: 'agent_event',
@@ -645,7 +647,7 @@ export function buildSessionItem(s: ReturnType<typeof listAgentSessions>[number]
 
 /** 会话列表（脱敏，仅暴露移动端需要的字段） */
 function buildSessionList() {
-  return listAgentSessions(true).map(buildSessionItem)
+  return listAgentSessions(true).filter((session) => !isReviewOwnedAgentSession(session)).map(buildSessionItem)
 }
 
 /**
@@ -737,6 +739,11 @@ export async function handleRemoteCommand(
   }
 
   const type = parsed?.type as string
+  // Default-deny every normal remote command that names an internal review session.
+  // Dedicated review APIs (if any) must be separately authorized in later stages.
+  if (typeof parsed.sessionId === 'string' && isReviewOwnedAgentSession(getAgentSessionMeta(parsed.sessionId))) {
+    return { ok: false, error: '会话不存在' }
+  }
   // 旧 Pocket 的 FilePreviewDialog 没有把 sessionId 传给 WS 文件读取命令。
   // 它在打开会话时已经通过 get_sdk_messages/session_detail 等命令声明过会话，
   // 因此仅在同一条受 token 保护的连接内保存该会话作为严格授权的回退上下文。
@@ -763,7 +770,8 @@ export async function handleRemoteCommand(
       return {
         ok: true,
         data: listActiveAgentRuntimeContexts(sessionIds)
-          .filter((snapshot) => isAgentSessionActive(snapshot.sessionId)),
+          .filter((snapshot) => isAgentSessionActive(snapshot.sessionId)
+             && !isReviewOwnedAgentSession(getAgentSessionMeta(snapshot.sessionId))),
       }
     }
 
