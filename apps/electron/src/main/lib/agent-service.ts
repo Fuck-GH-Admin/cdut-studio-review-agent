@@ -237,6 +237,7 @@ export function emitSessionStreamEvent(
   payload: AgentStreamPayload,
   fallbackSender?: WebContents | null,
 ): void {
+  const visibleToDesktop = !sessionId || !isReviewOwnedAgentSession(getAgentSessionMeta(sessionId))
   fanoutSessionEvent(
     {
       // 模块内使用本地实例名 eventBus，对外通过 `export { eventBus as agentEventBus }` 暴露。
@@ -258,7 +259,7 @@ export function emitSessionStreamEvent(
     },
     sessionId,
     payload,
-    fallbackSender,
+    visibleToDesktop ? fallbackSender : null,
   )
 }
 
