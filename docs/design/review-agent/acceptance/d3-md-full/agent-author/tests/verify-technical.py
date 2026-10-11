@@ -80,7 +80,13 @@ must("module/read-i01-read/r21" in observed and "module/copy-i01-copy/r23" in ob
 catalog = read(root / "source-catalog.json")
 ledger = read(root / "conversion-ledger.json")
 must(len(catalog["requirements"]) == len(ledger["requirements"]) == 54, "original source accountability index shrunk")
-must(set("R%02d" % i for i in range(1,43)).issubset(by_rule), "R01-R42 not all represented in workspace")
+all_rule_ids = {"R%02d" % i for i in range(1,43)}
+all_authored_duties = {task["id"].upper() for mod in w2["definitions"]["modules"] for task in mod["tasks"]}
+must(all_rule_ids.issubset(all_authored_duties), "R01-R42 not all preserved in authored module definitions")
+blocked_uninstantiated = sorted(all_rule_ids - set(by_rule))
+must(blocked_uninstantiated == ["R24", "R29", "R40"], "unexpected noncompiled duties: " + repr(blocked_uninstantiated))
+ledger_map = {row["id"]: row for row in ledger["requirements"]}
+must(all(ledger_map[rid]["status"] == "tooling-blocked" and ledger_map[rid].get("gapId") for rid in blocked_uninstantiated), "noncompiled duties must be explicit tooling gaps")
 summary = {
     "schemaVersion": 1,
     "provenance": "CI live D1/D2/D3 CLI output; private source hash NOT revalidated in CI",
@@ -93,6 +99,7 @@ summary = {
     "previewFingerprint": plan["previewFingerprint"],
     "bundleFingerprint": bundle["fingerprint"],
     "compiledCheckCount": len(observed),
+    "uninstantiatedBlockedRules": blocked_uninstantiated,
     "sourceIds": sorted(source_map),
     "targets": [{"objectKey": x["objectKey"], "subjectId": x["subjectId"], "operation": x.get("operation")} for x in selection["targets"]],
     "byRule": {rid: sorted(checks) for rid, checks in sorted(by_rule.items())},
