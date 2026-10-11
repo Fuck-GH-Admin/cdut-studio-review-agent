@@ -160,7 +160,7 @@ def audit(a_root, b_root, actual_plan, original=None):
             "A's 15 branches/14 material slots/16 exception records exist, but are not individually verified as runtime-active condition/evidence/exception behavior",
             "B's 16 prose invariants differ in granularity from A's 12 X-invariants; P-to-R/X candidate correspondences are not proven operational",
             "R24/certified_copy, R29/electronic legal authorization, R40/reasonable substitute have no compiled Check",
-            "A's 21 partly-tooling-blocked R duties have compiled textual Check but lack proven structured condition/phase/evidence execution",
+            "A's 12 partly-tooling-blocked R duties have compiled textual Check but lack proven structured condition/phase/evidence execution",
             "30 independent B synthetic expected cases have not been executed by A's archive-specific Pi Case/Run",
             "Current CDUT policy sources and authorized formal decisions not verified",
         ],
