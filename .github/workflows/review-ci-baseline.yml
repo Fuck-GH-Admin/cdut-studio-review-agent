@@ -7,6 +7,7 @@ on:
       - 'apps/electron/src/main/lib/agent-workspace-profile.test.ts'
       - 'apps/electron/scripts/packaging-guards.test.ts'
       - 'apps/electron/resources/CHANGELOG.json'
+      - 'docs/design/review-agent/fixtures/d3-r0-handoff-manifest.json'
       - '.github/workflows/review-ci-baseline.yml'
   workflow_dispatch:
 
