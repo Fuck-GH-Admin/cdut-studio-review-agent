@@ -20,7 +20,7 @@
 | Q06 实际计划 | 每项宣称实现的行为可追至 D2 `Rule/Check/Subject` | 无真实 Check，或 Check 使用错误 subject |
 | Q07 权威隔离 | SourceBinding 来源与学校/时间/规则范围核对 | `CROSS_SCHOOL`/`CONFIG_PENDING` 被升为 `verified` |
 | Q08 缺口诚实 | Tooling 缺口有真实命令/错误及责任 ID，手工权限可见 | 高级关系不支持却记为已执行 |
-| Q09 金标反例 | 28 案的输入仅含合成材料，预期独立保存、逐 operation 评分 | 仅比编译成功不查行为差异；输入泄漏 gold |
+| Q09 金标反例 | 30 案的输入仅含合成材料，预期独立保存、逐 operation 评分 | 仅比编译成功不查行为差异；输入泄漏 gold |
 | Q10 证据真实性 | Case ID、真实 Run ID、SourceRef、文件版本、拒止日志可复核 | `runEvidenceRefs` 凭空填写、未读材料伪通过 |
 | Q11 生命周期 | 冻结引用 digest/旧案卷快照不漂移；变更后新版本重审 | 编辑草稿直接改写历史 Run |
 | Q12 最终审批门禁 | 预审交付标记始终 false，外部执行回执才能展示实际状态 | 模型替馆方批准、签章、交付 |
