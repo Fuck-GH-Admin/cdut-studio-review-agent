@@ -197,6 +197,45 @@ describe('D3 dynamic case + D2 structured gates against frozen independent A/B',
     w.sourceBindings[0]!.gate={when:{kind:'evidence-any',supportsFacts:[]}}
     expect(validateReviewAuthoringV1(w).some(e=>e.includes('D2_GATE_BAD_EVIDENCE_ALTERNATIVES'))).toBe(true)
   })
+  test('author can explicitly bind E03/E13 electronic alternatives to dynamic copy checks without elevating policy',()=>{
+    const input=req(bCases.find(c=>c.caseId==='Q02')!)
+    input.gateAssignments=[
+      {moduleId:'archive-operations',taskId:'r09',operation:'copy',gate:{
+        when:{kind:'case-stage',stages:['draft','submitted','reviewing']},
+        material:{provider:'applicant',dueStages:['submitted','reviewing'],
+          alternatives:['d2:delegation:paper','d2:delegation:electronic']}}},
+      {moduleId:'archive-operations',taskId:'r12',operation:'copy',gate:{
+        when:{kind:'case-stage',stages:['draft','submitted','reviewing']},
+        material:{provider:'applicant',dueStages:['submitted','reviewing'],
+          alternatives:['d2:proof:paper','d2:proof:electronic']}}},
+    ]
+    const result=instantiateD3ArchiveCaseV1(source,input)
+    const caseV2:any={id:'d3-electronic-plan',templateId:input.templateId,
+      templateVersion:input.version,title:'合成',objectType:'document',caseFields:{},
+      subjects:[],documents:[],stage:'draft',revision:0,
+      createdAt:'2026-10-11T00:00:00.000Z',updatedAt:'2026-10-11T00:00:00.000Z'}
+    const plan=compileD2RuntimePlan(result.workspace,result.selection,caseV2)
+    const r09=plan.mapping.find(m=>m.checkId==='module/operation-i01-copy-o02/r09')!
+    const r12=plan.mapping.find(m=>m.checkId==='module/operation-i01-copy-o02/r12')!
+    expect(r09.gate?.material?.alternatives).toContain('d2:delegation:electronic')
+    expect(r12.gate?.material?.alternatives).toContain('d2:proof:electronic')
+    expect(r09.authority).toBe('unverified-policy')
+    expect(r12.authority).toBe('unverified-policy')
+    expect(plan.mapping.filter(m=>m.gate).length).toBe(2)
+    const missing=structuredClone(input)
+    missing.gateAssignments![0]!.moduleId='archive-imaginary'
+    expect(()=>instantiateD3ArchiveCaseV1(source,missing)).toThrow('D3_GATE_NO_TARGET_CHECK')
+    const duplicate=structuredClone(input)
+    duplicate.gateAssignments!.push(structuredClone(duplicate.gateAssignments![0]!))
+    expect(()=>instantiateD3ArchiveCaseV1(source,duplicate)).toThrow('D3_GATE_DUPLICATE_ASSIGNMENT')
+    emit('electronic-exception-dynamic-gate-mapping.json',{
+      ruleIds:[r09.ruleId,r12.ruleId],subjects:[r09.subjectId,r12.subjectId],
+      checks:[r09.checkId,r12.checkId],authority:[r09.authority,r12.authority],
+      electronicDelegationAlternative:r09.gate?.material?.alternatives,
+      electronicProofAlternative:r12.gate?.material?.alternatives,
+      businessGoldOutcome:'NOT-SCORED',realSchoolRuleActive:false,
+    })
+  })
   test('D3 export/import preserves dynamically bound Check gates and rejects tampered gate fingerprint',()=>{
     const b=bCases.find(c=>c.caseId==='Q02')!
     const result=instantiateD3ArchiveCaseV1(source,req(b))
