@@ -172,7 +172,7 @@ import { getOrCreateShellSnapshot } from './shell-snapshot'
 import type { PiAgentQueryOptions } from './adapters/pi-agent-adapter'
 import type { PiRetryUpdate } from './adapters/pi-retry-control'
 import { buildPiBuiltinTools } from './adapters/pi-builtin-tools'
-import { selectDirectReviewStrictTools } from './review/review-strict-pi-tools'
+import { isAuthorizedDirectReviewTool, selectDirectReviewStrictTools } from './review/review-strict-pi-tools'
 import { buildPiMcpTools, getMcpPolicyToolName } from './adapters/pi-mcp-tools'
 import { evaluatePptCapability } from './ppt-capability-gate'
 import { agentFilePreviewSessionManager } from './agent-file-preview-session'
@@ -1667,6 +1667,15 @@ ${dynamicCtx}`
         if (validationFailure) {
           console.warn(`[Agent 工具验证] 参数缺失: tool=${toolName}, mode=${currentMode}`)
           return validationFailure
+        }
+
+        // 已绑定的单案 Pi 审核只允许五个受控工具。普通 auto 权限弹窗不可见时
+        // 若沿用通用审批会导致后台永久等待；这里在 Main 校验指派后放行。
+        // 不对普通 Agent 或无效/过期指派改变任何权限语义。
+        if (activePiReviewBinding) {
+          return isAuthorizedDirectReviewTool(activePiReviewBinding, toolName)
+            ? { behavior: 'allow' as const, updatedInput: input }
+            : { behavior: 'deny' as const, message: '当前案卷审核仅允许受控工具，或本轮指派已失效' }
         }
 
         // ── Write 大文件 token 截断防护 ──
