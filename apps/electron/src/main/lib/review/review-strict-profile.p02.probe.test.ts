@@ -248,98 +248,111 @@ describe('P02 existing direct review tools / ledger compatibility', () => {
 })
 
 describe('P02 production strict tool admission and case-scoped original preview', () => {
-  test('admits only three direct ops plus version-id original preview, regardless of injected tools', async () => {
+  test('admits only the three direct operations plus case-scoped original inspection', async () => {
     const ctx = await caseFixture()
     const direct = strictTools(ctx.binding).tools
-    const rejected = ['Bash', 'Write', 'Read', 'AskUserQuestion', 'mcp__external__upload', 'review_decide_stage']
+    const injected = ['Bash', 'Write', 'Read', 'AskUserQuestion', 'inspect_preview', 'mcp__external__upload', 'review_decide_stage']
       .map(name => ({ name, execute: async () => ({ details: { unsafe: true } }) }))
-    const available = [...direct, ...rejected, {
-      name: 'inspect_preview',
-      execute: async (_id: string, params: Record<string, unknown>) =>
-        ({ content: [{ type: 'text', text: String(params.filePath) }], details: { original: params.filePath } }),
-    }]
-    const permitted = selectDirectReviewStrictTools(available as never, ctx.binding)
-    expect(permitted.map(t => t.name).sort()).toEqual([
+    const available = [...direct, ...injected]
+    const allowed = selectDirectReviewStrictTools(available as never, ctx.binding)
+    expect(allowed.map(t => t.name).sort()).toEqual([
       'review_read_documents', 'review_inspect_document_image', 'review_submit_result', 'review_inspect_original',
     ].sort())
-    const duplicate = [...available, available.find(tool => tool.name === 'review_submit_result')!]
-    expect(() => selectDirectReviewStrictTools(duplicate as never, ctx.binding)).toThrow('审核工具清单异常')
-    expect(() => selectDirectReviewStrictTools(direct as never, ctx.binding)).toThrow('原件视觉预览')
+    expect(() => selectDirectReviewStrictTools(
+      [...available, direct.find(t => t.name === 'review_submit_result')!] as never, ctx.binding,
+    )).toThrow('审核工具清单异常')
+    expect(() => selectDirectReviewStrictTools(
+      direct.filter(t => t.name !== 'review_read_documents') as never, ctx.binding,
+    )).toThrow('审核工具清单异常')
   })
 
-  test('original inspection delegates only an active registered case asset and never accepts caller supplied file paths', async () => {
+  test('preview only takes an active case version ID, delegates to the existing renderer and records V2 receipt', async () => {
     const ctx = await caseFixture()
     const foreign = await caseFixture()
-    const calls: Record<string, unknown>[] = []
-    const available = [...strictTools(ctx.binding).tools, {
-      name: 'inspect_preview',
-      execute: async (_id: string, params: Record<string, unknown>) => {
-        calls.push(params)
-        return { details: { visual: { images: [{ data: 'AA==' }] } }, content: [{ type: 'image', data: 'AA==', mimeType: 'image/png' }] }
-      },
-    }]
-    const scoped = selectDirectReviewStrictTools(available as never, ctx.binding)
+    const calls: Array<{ input: Record<string, unknown>; roots: string[] }> = []
+    const rendererStub = async (input: Record<string, unknown>, context: { allowedRoots: string[] }) => {
+      calls.push({ input, roots: context.allowedRoots })
+      return {
+        content: [{ type: 'image', data: 'AA==', mimeType: 'image/png' }],
+        details: {
+          file: { name: 'mock.png', kind: 'image', size: 1, modifiedAt: '', revision: '' },
+          visual: { scope: input.scope, images: [{ filename: 'image.png', data: 'AA==', mediaType: 'image/png', page: 1 }] },
+        },
+      }
+    }
+    const tool = selectDirectReviewStrictTools(strictTools(ctx.binding).tools as never, ctx.binding, rendererStub as never)
       .find(t => t.name === 'review_inspect_original')!
-    const execute = scoped.execute as (...args: unknown[]) => Promise<{ isError?: boolean; content?: unknown[] }>
-    const valid = await execute('tool-1', { documentVersionId: ctx.imageRef.documentVersionId, scope: 'all', filePath: '/tmp/should-be-ignored' })
-    expect(valid.isError).not.toBe(true)
+    const exec = tool.execute as (...a: unknown[]) => Promise<{ isError?: boolean }>
+    const good = await exec('tool-1', {
+      documentVersionId: ctx.imageRef.documentVersionId, scope: 'all', filePath: '/tmp/evil',
+    })
+    expect(good.isError).not.toBe(true)
     expect(calls).toHaveLength(1)
-    expect(calls[0]?.mode).toBe('visual')
-    expect(calls[0]?.scope).toBe('all')
-    const path = String(calls[0]?.filePath)
-    expect(path).toContain(ctx.caseId)
-    expect(path).not.toContain('should-be-ignored')
-    const different = await execute('tool-2', { documentVersionId: foreign.imageRef.documentVersionId })
-    expect(different.isError).toBe(true)
-    const noVersion = await execute('tool-3', { documentVersionId: 'unknown-version' })
-    expect(noVersion.isError).toBe(true)
-    const badPage = await execute('tool-4', { documentVersionId: ctx.imageRef.documentVersionId, scope: 'page', page: 0 })
-    expect(badPage.isError).toBe(true)
+    expect(calls[0]?.input.mode).toBe('visual')
+    expect(calls[0]?.input.scope).toBe('all')
+    expect(String(calls[0]?.input.filePath)).toContain(ctx.caseId)
+    expect(String(calls[0]?.input.filePath)).not.toContain('/tmp/evil')
+    expect(calls[0]?.roots).toEqual([join(config, 'review-cases', ctx.caseId)])
+    const receipt = readArtifact<{ fullyPreviewedDocumentVersionIds: string[] }>(ctx.caseId, ctx.prepared.runId, 'node-pi-read-state')
+    expect(receipt?.fullyPreviewedDocumentVersionIds).toContain(ctx.imageRef.documentVersionId)
+    expect((await exec('other', { documentVersionId: foreign.imageRef.documentVersionId })).isError).toBeTrue()
+    expect((await exec('missing', { documentVersionId: 'missing-id' })).isError).toBeTrue()
+    expect((await exec('bad-page', { documentVersionId: ctx.imageRef.documentVersionId, scope: 'page', page: 0 })).isError).toBeTrue()
     expect(calls).toHaveLength(1)
   })
 
-  test('original inspection rejects a stale binding after the next review turn is assigned', async () => {
+  test('stale turn cannot append a preview receipt after changing the active assignment mid-render', async () => {
     const ctx = await caseFixture()
-    const calls: unknown[] = []
-    const available = [...strictTools(ctx.binding).tools, {
-      name: 'inspect_preview',
-      execute: async (_id: string, params: unknown) => {
-        calls.push(params)
-        return { content: [], details: {} }
-      },
-    }]
-    const tool = selectDirectReviewStrictTools(available as never, ctx.binding).find(t => t.name === 'review_inspect_original')!
+    let release!: () => void
+    let started!: () => void
+    const gate = new Promise<void>(r => { release = r })
+    const entered = new Promise<void>(r => { started = r })
+    const rendererStub = async () => {
+      started()
+      await gate
+      return {
+        content: [],
+        details: {
+          file: { name: 'mock.png', kind: 'image', size: 1, modifiedAt: '', revision: '' },
+          visual: { scope: 'all', images: [{ filename: 'image.png', data: 'AA==', mediaType: 'image/png', page: 1 }] },
+        },
+      }
+    }
+    const tool = selectDirectReviewStrictTools(strictTools(ctx.binding).tools as never, ctx.binding, rendererStub as never)
+      .find(t => t.name === 'review_inspect_original')!
+    const run = (tool.execute as (...a: unknown[]) => Promise<{ isError?: boolean }>)('stale', {
+      documentVersionId: ctx.imageRef.documentVersionId, scope: 'all',
+    })
+    await entered
     finishPiReviewRunV2(ctx.binding, { status: 'completed' })
-    preparePiReviewRunV2({
+    const next = preparePiReviewRunV2({
       caseId: ctx.caseId, sessionId: ctx.sessionId,
       turnId: `p02-rebound-${randomUUID().slice(0, 8)}`,
       resumeRunId: ctx.prepared.runId,
     })
-    const result = await (tool.execute as (...args: unknown[]) => Promise<{ isError?: boolean }>)('stale', { documentVersionId: ctx.textRef.documentVersionId })
-    expect(result.isError).toBeTrue()
-    expect(calls).toHaveLength(0)
+    release()
+    expect((await run).isError).toBeTrue()
+    const receipt = readArtifact<{ fullyPreviewedDocumentVersionIds?: string[] }>(ctx.caseId, next.runId, 'node-pi-read-state')
+    expect(receipt?.fullyPreviewedDocumentVersionIds ?? []).not.toContain(ctx.imageRef.documentVersionId)
   })
 
-  test('the existing preview service authorizes a scanned PDF case asset and forbids outside files', async () => {
+  test('existing preview authorization allows registered case assets but denies outside files', async () => {
     const ctx = await caseFixture()
     const aggregate = readAggregate(ctx.caseId)!
     const image = aggregate.caseV2.documents.find(d => d.versionId === ctx.imageRef.documentVersionId)!
     const asset = join(config, 'review-cases', ctx.caseId, image.assetPath)
     const rendererCalls: string[] = []
-    // Exercise the existing file authorization and visual-tool contract with a
-    // controlled renderer: a REAL Electron renderer is still NOT-RUN.
+    const authorized = { agentCwd: '', allowedRoots: [join(config, 'review-cases', ctx.caseId)] }
     const permitted = await inspectPreview({
       filePath: asset, mode: 'visual', scope: 'all',
-    }, { agentCwd: '', allowedRoots: [join(config, 'review-cases', ctx.caseId)] }, {
-      render: async ({ filePath }) => {
-        rendererCalls.push(filePath)
-        return { images: [{ filename: 'page-1.png', mediaType: 'image/png', data: 'AA==', page: 1 }] }
-      },
-    })
+    }, authorized, { render: async ({ filePath }) => {
+      rendererCalls.push(filePath)
+      return { images: [{ filename: 'page-1.png', mediaType: 'image/png', data: 'AA==', page: 1 }] }
+    } })
     expect('error' in permitted).toBe(false)
     expect(rendererCalls).toHaveLength(1)
-    const blocked = await inspectPreview({ filePath: join(config, 'review-cases', ctx.caseId, '..', '..', 'other.pdf'), mode: 'visual' },
-      { agentCwd: '', allowedRoots: [join(config, 'review-cases', ctx.caseId)] }, { render: async () => { throw new Error('render must never execute') } })
+    const blocked = await inspectPreview({ filePath: join(config, 'review-cases', 'outside-case.pdf'), mode: 'visual' },
+      authorized, { render: async () => { throw new Error('must not render outside case') } })
     expect('error' in blocked).toBeTrue()
   })
 })
