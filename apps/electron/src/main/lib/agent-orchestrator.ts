@@ -118,7 +118,7 @@ import {
   ensureClaudeSkillManifest,
   ensureDefaultWorkspace,
 } from './agent-workspace-manager'
-import { getAgentSessionWorkspacePath, getPiCheckpointsDir, getSdkConfigDir, getConfigDir } from './config-paths'
+import { getAgentSessionWorkspacePath, getPiCheckpointsDir, getSdkConfigDir } from './config-paths'
 import { prepareRuntimeSkills } from './global-skill-manager'
 import { routeSkillsForTask, type SkillRoutingSnapshot } from './skill-routing'
 import { buildSkillRuntimeOptions, prepareAgentSkillRouting } from './skill-runtime-routing'
@@ -1503,9 +1503,7 @@ ${dynamicCtx}`
               workspaceSlug: effectiveWorkspaceSlug,
               isStudyClass,
               agentCwd,
-              allowedRoots: activePiReviewBinding
-                ? [...browserAllowedRoots, join(getConfigDir(), 'review-cases', activePiReviewBinding.caseId)]
-                : browserAllowedRoots,
+              allowedRoots: browserAllowedRoots,
               onPreviewRequest: (event) => agentFilePreviewSessionManager.waitUntilReady(event, (previewEvent) => {
                 this.eventBus.emit(sessionId, { kind: 'profer_event', event: previewEvent })
               }),
@@ -1520,7 +1518,7 @@ ${dynamicCtx}`
               currentPresetReference,
               presetOperationUserMessage: userMessage,
               pendingPresetChange: userConfirmedPresetChange ? pendingPresetChange : undefined,
-              activeToolGroups: activePiReviewBinding ? new Set([...activeToolGroups, 'preview']) : activeToolGroups, // 案卷扫描原件预览需始终可用
+              activeToolGroups, // ← 传入当前轮次计算所得的激活组！
               onActivateToolGroup: (groupId) => {
                 if (disabledToolGroups.has(groupId as import('@profer/shared').AgentPresetToolGroup)) return
                 activeToolGroups.add(groupId)
