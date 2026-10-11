@@ -4,16 +4,23 @@
 
 ## 结论
 
-**NO-GO（完整功能开发暂不开始），GO（限定范围的技术预验证与设计契约收口）。** 目前足够判断不需要重构 Pi 内核的基本方向，但不够证明后台审核能在所有普通会话入口、权限、停止和重启路径中正确运行。执行器、事件、权限与会话元数据均为共享基础设施；禁止通过大面积改动这些模块来换取隐藏 UI。
+**NO-GO（完整功能开发暂不开始），GO（限定范围的技术预验证与设计契约收口）。** 27 号文档已经缩减为“复用既有 Pi + 薄 Main bridge + 普通入口守卫”的 v1 方案；不是新建后台执行框架。 目前足够判断不需要重构 Pi 内核的基本方向，但不够证明后台审核能在所有普通会话入口、权限、停止和重启路径中正确运行。执行器、事件、权限与会话元数据均为共享基础设施；禁止通过大面积改动这些模块来换取隐藏 UI。
 
 目标：前台只呈现“可开始审核 / 审核中 / 需要你处理 / 审核已结束 / 本次审核未完成”及原有业务结果、依据、人工补件/确认；技术步骤和原始 transcript 仅供授权诊断，不暴露给普通用户。审核分析结束 **不代表业务审批通过**。
+
+## 当前验证证据（2026-10-12）
+
+- `apps/electron/src/main/lib/review/review-background-reuse.probe.test.ts`：真实 `runAgent()` **函数体**与真实 V2 案卷/指派/存储连通；使用受控模拟编排器（非真实 Pi 模型），完整提交、部分完成、错误、取消、busy 五项均 **PASS**。不调用 `openSession`，模拟 WebContents 只是运行事件接收器。
+- [PR CI #38164270451](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270451)，基线 `1e076ea84889d8f29aaff2deffe1078e1c57c1ff`：3714 pass、5 skip、0 fail；类型检查、架构边界、皮肤契约与 Electron main/preload/renderer 构建成功。
+- [D2 Scoped Pi CI #38164270457](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270457) 与 [Review Baseline CI #38164270496](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270496) 均成功。
+- **P01 单元契约已验证，但 P01 完整真实执行仍 NOT-RUN；P02–P07 NOT-RUN；P08 仅现有普通 Agent 回归基线 PASS，新功能回归 NOT-RUN。** 后续文档提交的新 HEAD 需重新检查 CI，不能把以上验证数字冒充不同提交的结果。
 
 ## 源码事实与影响边界
 
 | 领域 | 已查证的事实 | 必须考虑的影响 |
 | --- | --- | --- |
 | 执行入口 | `agent-service.ts` 的 `runAgent()`/ `runAgentHeadless()` 共用 `AgentOrchestrator`；`runAgent()` 通过 `createAgentRunOutcomeReporter` 处理 `onRunOutcome`，Headless 没有对等收口；现有 `ipc.ts` `SEND_MESSAGE` 按有效绑定附加 `finishPiReviewRunV2` 回调 | 新 Main 入口不能直接把 send 改成 headless 后丢失 run 终态；必须检验忙碌拒绝、启动失败、正常结束、已完成提交、部分完成、停止、崩溃各分支 |
-| 审核启动前步骤 | `review-actions-controller.ts:842+` 的 `runFullReview()` 除启动 Pi 外，还刷新案卷、重新解析旧 HTML/EML 材料、触发逐事项识别；`use-review-actions.ts` 负责模型选择、会话创建、打开普通 Tab、准备运行与轮询 | 仅移动 `sendAgentMessage()` 会留下 Renderer 生命周期依赖；需决定将“预审准备”变成独立显式前置步骤，还是迁移到 Main 协调器，保留原行为与幂等 |
+| 审核启动前步骤 | `review-actions-controller.ts:842+` 的 `runFullReview()` 除启动 Pi 外，还刷新案卷、重新解析旧 HTML/EML 材料、触发逐事项识别；`use-review-actions.ts` 负责模型选择、会话创建、打开普通 Tab、准备运行与轮询 | **v1 只后台化 Pi 运行阶段**：准备流程仍留在现有 Renderer，清楚区分“准备中”和“Pi 已受理”。切换页面时不能声称预处理仍在后台持续；更大范围的后台预处理另议。 |
 | 工具权限 | `review-operator` 预设只关闭部分产品能力组；普通 `AgentOrchestrator` 并未给直接审核传 `toolProfile:'review'`。但 `pi-agent-adapter.ts` 已具备此严格档案（不装通用 read/bash/write），`pi-review-ops-tools.ts` 在有效案卷绑定时只注入读文档、核图页、提交结果三个审核工具 | 必须进行 A/B 工具列表与真实案卷提交试验，确认严格档案与直接审核的压缩、跨轮和视觉能力兼容；不能以“UI 不显示技术弹窗”作为权限豁免 |
 | 指派与轮次 | `review-agent-assignment.ts` 绑定 `sessionId/turnId/caseId/activeRunId`，`checkAssignment` 拒绝非用户发起的写操作，工具还验证当前有效指派；`agent-orchestrator.ts` 的直接审核绑定也依赖 `triggeredBy='user'` | UI 点击由可信 Main 转换为用户发起轮次，不允许任意普通/远程发送伪装，不能改变 assignment、D2、材料/模板/证据快照准入 |
 | 停止语义 | `stopAgentAndWait(sessionId)` 等待运行真正释放；普通停止以 session 为索引，审核 runId/assignmentId 是另一层标识 | 审核取消先按 `caseId+runId+sessionId` 校验当前 run，再停止；必须保证迟到的旧 run 取消不能停止后来复用 session 的新 run |
@@ -33,7 +40,7 @@
 3. **工具隔离**：验证 `toolProfile:'review'` 对“直接审核三工具 + 空闲压缩策略 + 原有多轮 session”可用，且没有 Read/Bash/Write、普通网页/协作/外部 MCP 逃逸。优先通过受控场景配置复用已有 Adapter 能力。
 4. **会话生命周期**：专用 Main coordinator 是单一启动、停止和状态拥有者；新会话用由 Main 设置、不可通过普通 IPC 覆盖的 owner，绑定单一案卷；禁止普通 send、queue、fork、move、archive、delete、权限修改等入口对它操作。
 5. **会话隐私**：服务端拥有非公开完整查询；普通 UI / Pocket / 消息搜索 / 会话引用 / 归档与统计 / 通知 / 事件重放均不包含内部会话。原始运行 transcript 仍为审计材料保留，但需受授权诊断接口才可取。
-6. **前置输入准备**：必须以一个真实可恢复/重试的 Main 工作流程覆盖旧 HTML/EML 解析、逐事项识别和 V2 同步，或明确拆成“案卷就绪”独立前置任务后才允许单击开始审核；不得把页面挂载作为任务可完成条件。
+6. **前置输入准备**：v1 保留当前 Renderer 驱动的 HTML/EML 解析修复、事项识别、V2 同步；这些属于“准备阶段”，**不**承诺切换页面后还能继续。仅当准备完成、Pi 被 Main 成功受理后，才进入本 PR 的后台运行保障。禁止将完整点击流程伪称全链路后台化。
 7. **停止、退出、重启**：按当前 run token 身份做 stop，未获得执行所有权或过时请求不产生终态；关闭页面不中断，应用退出不保证继续执行，重启时中断需用户显式续审；旧版部分完成原 runId 续交仍保留原校验。
 8. **设置快照**：Main 的模型、渠道、review preset、工作目录与工具策略从主进程可验证来源读取并冻结到本轮；与旧 UI 的“跟随全局”设置语义一致。渠道/模型不可用时清晰失败，不猜测替代。
 9. **历史处理**：首次只对新创建的后台审核会话生效；不批量自动迁移旧普通审核会话，不删除历史 transcript；历史新旧两类结果共存并可读。
@@ -46,9 +53,9 @@
 
 | ID | 预验证 | 阻断条件 |
 | --- | --- | --- |
-| P01 | 不打开 Agent Tab，由 Main 创建用户发起审核 turn，真实调用 Pi 工具，完成、部分完成、提交拒绝、启动失败分别产生可信终态 | 任何一种悬挂 running、遗失 `onRunOutcome`、绕过版本门禁 |
+| P01 | **契约探针 PASS（5/5）**：真实 `runAgent()` 函数体、V2 run/assignment 在受控模拟编排器里覆盖完整提交、部分完成、失败、取消、busy；**真实 Pi 和 Electron UI NOT-RUN** | 不能据此认定真实模型已跑通；尚须最小真实 Main/Pi 案卷实验检验无 Tab 启动、工具提交及失败收尾 |
 | P02 | 同一会话启用 review 严格工具档案：精确检查工具名单、压缩策略、图像读取与第二轮续审 | 必需的读取/提交/续审被移除，或仍可调用非审核高权限工具 |
-| P03 | 案卷预处理跨视图/刷新不中止；同案重复点击、切案、停止/重启与旧结果到达不会串案 | 预处理依赖组件存活、重复建卷/建 run、状态覆盖 |
+| P03 | **缩减 v1 范围**：预处理结束且 Pi 已受理后，切页/重新进入案卷不影响 Main 的 Pi 运行；同案重复点击、切案、停止/重启与旧结果不能串案 | Pi 已受理后仍依赖页面挂载；重复建 run、串案或过期结果覆盖 |
 | P04 | 内部 session 在桌面侧栏、搜索、归档、最近、Tab 恢复、异步 upsert、引用中均不可见；旧普通会话行为保持 | 任一入口重新出现内部会话、破坏普通会话竞态保护 |
 | P05 | Pocket 列表、按 ID 读取与变更、WS 实时事件、事件重放与远程搜索完全隔离；普通会话仍可使用 | 任一 API 通过内部 sessionId 读取/控制或记录敏感事件到远程重放 |
 | P06 | 同一案卷连续两轮运行，旧运行的迟到停止/失败回调不会改写或中止新的运行 | 任何旧 run 影响新 run |
@@ -58,7 +65,7 @@
 ## 正式开工门槛（ALL required）
 
 - [ ] 在本文件 §“设计决策”中逐项确定 v1 选择，删除含混的备选说法。
-- [ ] 用可复验的最小测试给出 P01–P03 的执行入口、严格工具集和预处理可行性证据；失败则先调整架构，不写完整 UI。
+- [ ] P01 已完成受控契约验证，仍需真实 Pi / Electron 最小实验；P02 严格工具档案与 P03 后台运行阶段必须拿到可复验证据。失败先调整接线，不写完整 UI。
 - [ ] 完成 P04–P08 的入口枚举与针对性断言/负例；普通 Agent 现有行为先有回归基线。
 - [ ] 明确 owner 与 run/assignment 权限是不同层次，普通 IPC/Pocket 不能持有未受限后门。
 - [ ] 用冻结 SHA 记录测试、类型检查、边界检查、构建与桌面回放结果；未运行即 NOT-RUN。
@@ -66,4 +73,4 @@
 
 ## 与 27 号方案的关系
 
-27 号 §0 保留产品目标；本文件列举其实现之前未闭合的跨模块依赖和预验证。**不得把 §0 对“人工请求可处理”的长远目标自动当成 v1 必做**：如选择“单轮无通用中途交互”，就必须在 27 号和 PR 验收中同步标注具体边界，不许宣称已实现通用 AskUser 转接。旧 27 号在“隐藏状态”“迁移旧会话”“全量管理员诊断”等提法均按本文件的实施顺序分阶段验收。
+27 号已改为轻量 v1 规范；本文件记录其实现之前未闭合的跨模块依赖和预验证。**不得把 §0 对“人工请求可处理”的长远目标自动当成 v1 必做**：如选择“单轮无通用中途交互”，就必须在 27 号和 PR 验收中同步标注具体边界，不许宣称已实现通用 AskUser 转接。旧 27 号在“隐藏状态”“迁移旧会话”“全量管理员诊断”等提法均按本文件的实施顺序分阶段验收。
