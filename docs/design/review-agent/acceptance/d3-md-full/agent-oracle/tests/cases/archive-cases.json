@@ -1677,6 +1677,108 @@
           "verification": "verified"
         }
       ]
+    },
+    {
+      "caseId": "Q29",
+      "synthetic": true,
+      "application": {
+        "school": "CDUT",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "submission",
+        "applicant": {
+          "id": "ST-01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "CDUT-archive-effective-version-unknown",
+          "source": "CD01-form-directory-only",
+          "status": "unconfirmed"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "student_personnel_archive",
+          "accessState": "restricted",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "section": "student-personnel-original"
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "request",
+          "version": "v1",
+          "text": "本人提交学生档案利用申请，学校目录仅显示有学生档案利用审批表，尚未获得原表完整字段和当期签章规则"
+        },
+        {
+          "documentId": "D02",
+          "role": "policy-directory",
+          "version": "v1",
+          "text": "目录上出现学生档案利用审批表名称，无完整有效校规、签批阶段和材料清单"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q30",
+      "synthetic": true,
+      "application": {
+        "school": "CDUT",
+        "submittedAt": "2026-10-11",
+        "channel": "mail",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "2026-holiday-service",
+          "source": "CD04",
+          "status": "expired"
+        },
+        "requestedDelivery": "postal"
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "historical_school_record",
+          "accessState": "unknown",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "certified_copy",
+              "scope": {
+                "document": "enrollment-record",
+                "delivery": "postal"
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "request",
+          "version": "v1",
+          "text": "申请获取证明件，选择邮寄，收件方式尚待馆方确认"
+        },
+        {
+          "documentId": "D02",
+          "role": "holiday-notice",
+          "version": "v1",
+          "text": "2026寒假邮寄服务公告；公告有效窗口已过去"
+        }
+      ],
+      "officialFacts": []
     }
   ]
 }
