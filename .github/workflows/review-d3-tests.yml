@@ -28,6 +28,8 @@ jobs:
         with:
           node-version: 22
       - run: bun install --frozen-lockfile
+      - name: D3-R0 immutable module and source lock manifest validation
+        run: node apps/electron/scripts/review-d3-r0-verify.cjs
       - name: Typecheck all packages
         run: bun run typecheck
       - name: D3 original Markdown responsibility coverage and anti-omission gate
