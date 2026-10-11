@@ -1,10 +1,5 @@
 name: D3 MD Agent A Technical Replay
 on:
-  push:
-    branches: [test/d3-md-full-author-archive]
-    paths:
-      - '.github/workflows/d3-md-agent-a-replay.yml'
-      - 'docs/design/review-agent/acceptance/d3-md-full/agent-author/**'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
