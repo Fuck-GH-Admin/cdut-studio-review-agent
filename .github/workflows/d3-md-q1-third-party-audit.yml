@@ -80,6 +80,15 @@ jobs:
             apps/electron/src/main/lib/review/third-party-mdq1-pi.test.ts
           bun test --isolate --timeout 60000 apps/electron/src/main/lib/review/third-party-mdq1-pi.test.ts \
             2>&1 | tee "$RUNNER_TEMP/md-q1-third-party/pi-high-risk-test.log"
+      - name: Score only real Pi evidence and scope guards against held-out B descriptions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 auditor/docs/design/review-agent/acceptance/d3-md-full/auditor/score_real_pi_guard_results.py \
+            --pi-dir "$RUNNER_TEMP/md-q1-third-party/pi-high-risk" \
+            --oracle-root agent-b/docs/design/review-agent/acceptance/d3-md-full/agent-oracle \
+            --crosswalk "$RUNNER_TEMP/md-q1-third-party/cross-audit.json" \
+            --output "$RUNNER_TEMP/md-q1-third-party/pi-guard-score.json"
       - name: Upload original logs, compiled plans and independent cross-audit results
         if: always()
         uses: actions/upload-artifact@v4
