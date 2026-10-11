@@ -84,13 +84,13 @@ Main 发起执行时仍需要现有窗口的 `webContents` 用于运行事件转
 
 **P02 最新证据**：在 `42fd57fd` 的 [PR CI](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38173768799) 中受控工具/账本/权限/原件预览探针 **14/14 PASS**，全仓 3728 pass / 5 skip / 0 fail，Electron 构建、typecheck、边界检查通过。真实 Pi/model 与真实扫描型 PDF 的 Electron 渲染仍 NOT-RUN。
 
-**仍未完成的门禁**：P02 真实模型/原件全页视觉运行；P03 跨页面执行、P04–P05 Pocket/桌面普通入口隔离、P06 迟到 stop、P07 重启与删除、P08 普通 Agent 回归，均需后续独立证据。详见 [29 号 P01–P08](29-background-session-preflight-audit.md)。
+**仍未完成的门禁**：P02 真实模型/原件全页视觉运行合并最终 E2E；P03 的无页面依赖受控探针在推进中，真实 ACK/切页仍未实现；P04–P05 Pocket/桌面普通入口隔离、P06 迟到 stop、P07 重启与删除、P08 普通 Agent 回归，均需后续独立证据。详见 [29 号 P01–P08](29-background-session-preflight-audit.md)。
 
 ## 6. 后续严格按这个顺序执行
 
-1. **完成 P02 的真实运行验收**：工具精确筛选、权限门禁、案卷限定预览已接线并有受控测试；下一步只补隔离合成案卷的真实 Pi/扫描 PDF Electron 预览。未有真实证据前保持 P02-LIVE-E2E NOT-RUN，不推进 P03/完整 UI。
-2. **Session 归属及 Guard**：先写普通入口的拒绝/可见性负例，再以最小字段增加 owner；不可更改普通 Agent 既有公共行为。
-3. **薄 Bridge**：仅接入现有 `runAgent`、`preparePiReviewRunV2`、`finishPiReviewRunV2`、`stopAgentAndWait`。逐个测试成功、失败、取消、竞态、重启、删案。
+1. **P02 live E2E 合并到最终端到端验收**：白名单、权限闸门、案卷限定预览、V2 续审已经有受控证据；真实 provider Pi / 扫描 PDF Electron 视觉回放在完整 Main 后台链路接通后统一测试，之前仍标 P02-LIVE-E2E NOT-RUN。**允许按小批次开展 P03 接线/受控测试，但严禁在此之前合并、推出功能或宣称 P02 整体通过**。
+2. **P03-S01 先冻结交接契约**：审核材料修复、申报事项识别仍由 Renderer 先完成；`preparePiReviewRunV2` 写入 `running` 不是 Pi 已受理。必须由 Main 观察到真实 `onRunOwned` 后才给出可安全离开页面的受理 ACK；忙碌拒绝或启动失败按原案卷 run/assignment 收口，不能留下虚假 running。切页仅允许发生在已经受理后的 Pi 阶段。之后再分批实现 session owner/入口 Guard。
+3. **薄 Bridge**：仅接入现有 `runAgent`、`preparePiReviewRunV2`、`finishPiReviewRunV2`、`stopAgentAndWait`。入口快速 ACK 与持续运行完成是两个不同 Promise/生命周期；Main 自己持有长期执行，不依赖 React Hook 轮询。逐个测试成功、失败、取消、竞态、重启、删案。
 4. **最少 UI 改动**：仅修改审核触发与业务状态；Pocket、历史 Tab、事件回填与普通聊天逐项回归。
 5. **实测验收**：冻结提交 SHA，运行全部测试、类型/边界/构建、合成案卷 Electron 回放与真实 Pi 受控测试；无法执行的标 NOT-RUN。由用户审核结果后决定是否结束 Draft/合并。
 
