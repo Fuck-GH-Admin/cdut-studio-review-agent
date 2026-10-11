@@ -1,0 +1,1784 @@
+{
+  "schemaVersion": 1,
+  "format": "synthetic-input-only",
+  "disclaimer": "All persons, schools and authorization records are fictional. No expected outcome is included here.",
+  "cases": [
+    {
+      "caseId": "Q01",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "section": "A"
+              }
+            }
+          ],
+          "locationStatus": "located"
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "application",
+          "version": "v1",
+          "text": "本人申请查阅2025年一般档案第一册；认证关联P01"
+        },
+        {
+          "documentId": "D02",
+          "role": "identity",
+          "version": "v1",
+          "text": "模拟可信实名核验P01"
+        }
+      ],
+      "officialFacts": [
+        {
+          "sourceId": "ARCH-SIM",
+          "itemId": "I01",
+          "type": "access_state",
+          "value": "open",
+          "verification": "verified"
+        },
+        {
+          "sourceId": "AU01",
+          "itemId": "I01",
+          "operationId": "O01",
+          "state": "pending",
+          "scope": {
+            "section": "A"
+          },
+          "issuer": "SIM-UNIVERSITY-A archive authority",
+          "verification": "verified"
+        }
+      ]
+    },
+    {
+      "caseId": "Q02",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "pages": [
+                  2,
+                  3
+                ]
+              }
+            },
+            {
+              "operationId": "O02",
+              "operation": "copy",
+              "scope": {
+                "pages": [
+                  2,
+                  3
+                ],
+                "copies": 1
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "unit_letter",
+          "version": "v1",
+          "text": "某部门委托P01办理I01第2至3页查阅，未载复制",
+          "party": "UNIT-01"
+        }
+      ],
+      "officialFacts": [
+        {
+          "sourceId": "AU01",
+          "itemId": "I01",
+          "operationId": "O01",
+          "state": "approved",
+          "scope": {
+            "pages": [
+              2,
+              3
+            ]
+          },
+          "issuer": "SIM-UNIVERSITY-A archive authority",
+          "verification": "verified"
+        }
+      ]
+    },
+    {
+      "caseId": "Q03",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "historical_school_record",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "copy",
+              "scope": {
+                "pages": [
+                  4,
+                  5,
+                  6
+                ],
+                "copies": 2
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "authority_notice",
+          "version": "v1",
+          "text": "可复制I01第4页一份"
+        }
+      ],
+      "officialFacts": [
+        {
+          "sourceId": "AU01",
+          "itemId": "I01",
+          "operationId": "O01",
+          "state": "approved",
+          "scope": {
+            "pages": [
+              4
+            ],
+            "copies": 1
+          },
+          "issuer": "SIM-UNIVERSITY-A archive authority",
+          "verification": "verified"
+        }
+      ]
+    },
+    {
+      "caseId": "Q04",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "pages": [
+                  1
+                ]
+              }
+            },
+            {
+              "operationId": "O02",
+              "operation": "excerpt",
+              "scope": {
+                "pages": [
+                  1
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "authorization",
+          "version": "v1",
+          "text": "授权查阅I01第1页"
+        }
+      ],
+      "officialFacts": [
+        {
+          "sourceId": "AU01",
+          "itemId": "I01",
+          "operationId": "O01",
+          "state": "approved",
+          "scope": {
+            "pages": [
+              1
+            ]
+          },
+          "issuer": "SIM-UNIVERSITY-A archive authority",
+          "verification": "verified"
+        }
+      ]
+    },
+    {
+      "caseId": "Q05",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "historical_school_record",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "certified_copy",
+              "scope": {
+                "pages": [
+                  2
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "request",
+          "version": "v1",
+          "text": "申请由档案馆出具经确认的学籍档案证明"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q06",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "submission",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "borrow_original",
+              "scope": {
+                "volume": "1",
+                "days": 3
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "application",
+          "version": "v1",
+          "text": "申请外借档案原件；申请人P01拟负责保管，未收到学校审批"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q07",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "post_decision",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "borrow_original",
+              "scope": {
+                "volume": "2",
+                "days": 2
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "archive_receipt",
+          "version": "v1",
+          "text": "模拟馆方系统正式批准、交接记录与归还状态见回执",
+          "provenance": "signed simulated archive system"
+        }
+      ],
+      "officialFacts": [
+        {
+          "sourceId": "AU01",
+          "itemId": "I01",
+          "operationId": "O01",
+          "state": "approved",
+          "scope": {
+            "volume": "2",
+            "days": 2
+          },
+          "issuer": "SIM-UNIVERSITY-A archive authority",
+          "verification": "verified",
+          "validFrom": "2026-10-10",
+          "validUntil": "2026-10-15"
+        },
+        {
+          "sourceId": "RC01",
+          "type": "checkout",
+          "itemId": "I01",
+          "operationId": "O01",
+          "verification": "verified",
+          "status": "checked_out"
+        }
+      ]
+    },
+    {
+      "caseId": "Q08",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self",
+          "currentName": "新名甲"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "historical_school_record",
+          "accessState": "unknown",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "record": "old-grade"
+              }
+            }
+          ],
+          "archivedName": "旧名甲",
+          "oldStudentId": "U2001"
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "identity",
+          "version": "v1",
+          "text": "新名甲可信实名信息"
+        },
+        {
+          "documentId": "D02",
+          "role": "name_link",
+          "version": "v1",
+          "text": "模拟合法更名记录证明旧名甲=新名甲"
+        },
+        {
+          "documentId": "D03",
+          "role": "history",
+          "version": "v1",
+          "text": "旧学院名称与现学院名称沿革证据"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q09",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "historical_school_record",
+          "accessState": "unknown",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "record": "graduation-2020"
+              }
+            }
+          ],
+          "archiveTitle": "2020级历史成绩",
+          "year": 2020,
+          "archiveNumber": null,
+          "locationStatus": "unknown"
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "application",
+          "version": "v1",
+          "text": "提供年份、学籍姓名与档案主题，但不清楚内部档号"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q10",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "AG01",
+          "role": "proxy"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        },
+        "principal": {
+          "id": "P01"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "historical_school_record",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "copy",
+              "scope": {
+                "pages": [
+                  1,
+                  2
+                ],
+                "copies": 1
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "delegation",
+          "version": "v1",
+          "text": "P01以电子签名委托AG01复制I01第1至2页，授权2026-10-01至2026-10-31",
+          "signatureVerification": "verified-by-simulated-trust-service"
+        },
+        {
+          "documentId": "D02",
+          "role": "identity",
+          "version": "v1",
+          "text": "P01与AG01双人身份均经模拟可信服务核实"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q11",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "AG01",
+          "role": "proxy"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        },
+        "principal": {
+          "id": "P01"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "historical_school_record",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "copy",
+              "scope": {
+                "pages": [
+                  4
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "itemId": "I02",
+          "archiveType": "historical_school_record",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O02",
+              "operation": "view",
+              "scope": {
+                "pages": [
+                  1
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "delegation",
+          "version": "v1",
+          "text": "P01授权AG01查阅I01第1页，期限2026-01-01至2026-06-01"
+        },
+        {
+          "documentId": "D02",
+          "role": "identity",
+          "version": "v1",
+          "text": "AG01身份可靠，P01身份依据模糊",
+          "readability": "partial"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q12",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "ACT01",
+          "role": "internal_unit"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        },
+        "principal": {
+          "id": "STUDENT01"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "historical_school_record",
+          "accessState": "unknown",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "pages": [
+                  1
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "unit_letter",
+          "version": "v1",
+          "text": "UNIT01指派ACT01为部门内部研究查阅档案"
+        },
+        {
+          "documentId": "D02",
+          "role": "delegation",
+          "version": "v1",
+          "text": "个人STUDENT01未提供任何私人委托"
+        },
+        {
+          "documentId": "D03",
+          "role": "identity",
+          "version": "v1",
+          "text": "ACT01单位员工身份可核"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q13",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "restricted",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "pages": [
+                  1,
+                  2
+                ]
+              }
+            },
+            {
+              "operationId": "O02",
+              "operation": "copy",
+              "scope": {
+                "pages": [
+                  2
+                ]
+              }
+            }
+          ],
+          "publicationState": "published",
+          "restrictionFlags": [
+            "third_party_privacy"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "catalog",
+          "version": "v1",
+          "text": "模拟公开馆藏目录列有该档案"
+        }
+      ],
+      "officialFacts": [
+        {
+          "sourceId": "ARCH01",
+          "type": "access_state",
+          "itemId": "I01",
+          "value": "restricted",
+          "verification": "verified"
+        }
+      ]
+    },
+    {
+      "caseId": "Q14",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "volume": "1"
+              }
+            }
+          ]
+        },
+        {
+          "itemId": "I02",
+          "archiveType": "general_archive",
+          "accessState": "unknown",
+          "operations": [
+            {
+              "operationId": "O02",
+              "operation": "view",
+              "scope": {
+                "volume": "2"
+              }
+            }
+          ]
+        },
+        {
+          "itemId": "I03",
+          "archiveType": "general_archive",
+          "accessState": "not_open",
+          "operations": [
+            {
+              "operationId": "O03",
+              "operation": "view",
+              "scope": {
+                "volume": "3"
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "application",
+          "version": "v1",
+          "text": "同一案卷请求三个不同档案件的查阅"
+        }
+      ],
+      "officialFacts": [
+        {
+          "sourceId": "ARCH01",
+          "type": "access_state",
+          "itemId": "I01",
+          "value": "open",
+          "verification": "verified"
+        },
+        {
+          "sourceId": "ARCH03",
+          "type": "access_state",
+          "itemId": "I03",
+          "value": "not_open",
+          "verification": "verified"
+        }
+      ]
+    },
+    {
+      "caseId": "Q15",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "year": 2018
+              }
+            }
+          ]
+        },
+        {
+          "itemId": "I02",
+          "archiveType": "staff_personnel_archive",
+          "accessState": "unknown",
+          "operations": [
+            {
+              "operationId": "O02",
+              "operation": "view",
+              "scope": {
+                "year": 2019
+              }
+            }
+          ]
+        },
+        {
+          "itemId": "I03",
+          "archiveType": "student_personnel_archive",
+          "accessState": "restricted",
+          "operations": [
+            {
+              "operationId": "O03",
+              "operation": "view",
+              "scope": {
+                "volume": "original"
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "request",
+          "version": "v1",
+          "text": "同时申请综合档案、干部人事档案与学生个人档案"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q16",
+      "synthetic": true,
+      "application": {
+        "school": "CDUT",
+        "submittedAt": "2026-10-11",
+        "channel": "counter",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "2026-holiday-window",
+          "source": "CD04",
+          "status": "expired"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "unknown",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "volume": "1"
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "notice",
+          "version": "v1",
+          "text": "2026寒假邮件办理公告，期限已结束"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q17",
+      "synthetic": true,
+      "application": {
+        "school": "CDUT",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "EX04-only",
+          "source": "other-university",
+          "status": "unverified"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "unknown",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "borrow_original",
+              "scope": {
+                "volume": "1"
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "other_school_guide",
+          "version": "v1",
+          "text": "他校规定：原件借出须单位担保且7日内归还"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q18",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "historical_school_record",
+          "accessState": "unknown",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "pages": [
+                  1
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "identity_scan",
+          "version": "v1",
+          "text": "身份证扫描页包含图像，但是提取文字失败",
+          "readability": "ocr_failed",
+          "pageCount": 1,
+          "readPages": 0
+        },
+        {
+          "documentId": "D02",
+          "role": "request",
+          "version": "v1",
+          "text": "材料清单中存在D01"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q19",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "copy",
+              "scope": {
+                "pages": [
+                  4
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "AU-DOC",
+          "role": "delegation",
+          "version": "v1",
+          "text": "v1授权复制I01第4页",
+          "sha256": "synthetic-hash-v1"
+        },
+        {
+          "documentId": "AU-DOC",
+          "role": "delegation",
+          "version": "v2",
+          "text": "v2更新仅允许查阅I01第4页",
+          "sha256": "synthetic-hash-v2"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q20",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "pages": [
+                  1
+                ]
+              }
+            },
+            {
+              "operationId": "O02",
+              "operation": "copy",
+              "scope": {
+                "pages": [
+                  1
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "itemId": "I02",
+          "archiveType": "staff_personnel_archive",
+          "accessState": "unknown",
+          "operations": [
+            {
+              "operationId": "O03",
+              "operation": "view",
+              "scope": {
+                "pages": [
+                  2
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "request",
+          "version": "v1",
+          "text": "同案两种普通档案操作和一项专门人事档案"
+        }
+      ],
+      "officialFacts": [
+        {
+          "sourceId": "AU01",
+          "itemId": "I01",
+          "operationId": "O01",
+          "state": "pending",
+          "scope": {
+            "pages": [
+              1
+            ]
+          },
+          "issuer": "SIM-UNIVERSITY-A archive authority",
+          "verification": "verified"
+        }
+      ]
+    },
+    {
+      "caseId": "Q21",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "restricted",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "pages": [
+                  1
+                ]
+              }
+            }
+          ],
+          "restrictionFlags": [
+            "third_party_privacy"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "internal_review_note",
+          "version": "v1",
+          "text": "内部意见包含第三人姓名、身份证及尚未公开判断",
+          "visibility": "internal"
+        },
+        {
+          "documentId": "D02",
+          "role": "request",
+          "version": "v1",
+          "text": "对外只需告知待审核与补充材料"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q22",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "historical_school_record",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "record": "graduation-year"
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "structured_request",
+          "version": "v1",
+          "text": "官方在线系统已记录身份、申报信息与电子提交确认",
+          "officialStructuredForm": true
+        },
+        {
+          "documentId": "D02",
+          "role": "identity",
+          "version": "v1",
+          "text": "可信实名接口已确认P01",
+          "officialIdentityApi": true
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q23",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "ACT01",
+          "role": "external_unit"
+        },
+        "policy": {
+          "id": "unknown",
+          "source": "unverified",
+          "status": "unconfirmed"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "unknown",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "excerpt",
+              "scope": {
+                "pages": [
+                  3
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "letter",
+          "version": "v1",
+          "text": "单位名称与用途有记载但函件授权日期模糊",
+          "readability": "partial"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q24",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "authority_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "not_open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "pages": [
+                  1
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "image_signature",
+          "version": "v1",
+          "text": "模糊影像可见红色印章，无可信验签结果",
+          "signatureImage": true,
+          "authoritySignatureVerification": "unknown"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q25",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "authority_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "pages": [
+                  1,
+                  2
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "approval",
+          "version": "v1",
+          "text": "有权部门许可于2026-09-01至2026-09-30查阅I01第1页"
+        }
+      ],
+      "officialFacts": [
+        {
+          "sourceId": "AU01",
+          "itemId": "I01",
+          "operationId": "O01",
+          "state": "expired",
+          "scope": {
+            "pages": [
+              1
+            ]
+          },
+          "issuer": "SIM-UNIVERSITY-A archive authority",
+          "verification": "verified",
+          "validUntil": "2026-09-30"
+        }
+      ]
+    },
+    {
+      "caseId": "Q26",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "authority_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "borrow_original",
+              "scope": {
+                "volume": "1"
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "request",
+          "version": "v1",
+          "text": "申请外借I01原件，馆方系统明确拒绝"
+        }
+      ],
+      "officialFacts": [
+        {
+          "sourceId": "AU01",
+          "itemId": "I01",
+          "operationId": "O01",
+          "state": "denied",
+          "scope": {
+            "volume": "1"
+          },
+          "issuer": "SIM-UNIVERSITY-A archive authority",
+          "verification": "verified"
+        }
+      ]
+    },
+    {
+      "caseId": "Q27",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "other_special",
+          "accessState": "unknown",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "subject": "change-record"
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "request",
+          "version": "v1",
+          "text": "申请修改学校原始档案中记载的出生日期并同时出具政治思想鉴定"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q28",
+      "synthetic": true,
+      "application": {
+        "school": "SIM-UNIVERSITY-A",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "SIM-ARCH-2026",
+          "source": "synthetic-explicit-policy",
+          "status": "active"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "general_archive",
+          "accessState": "open",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "copy",
+              "scope": {
+                "pages": [
+                  2
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "application",
+          "version": "v1",
+          "text": "原申请D01-v1请求第2页"
+        },
+        {
+          "documentId": "D02",
+          "role": "application",
+          "version": "v2",
+          "text": "申请D02-v2新增第3页"
+        }
+      ],
+      "officialFacts": [
+        {
+          "sourceId": "AU01",
+          "itemId": "I01",
+          "operationId": "O01",
+          "state": "pending",
+          "scope": {
+            "pages": [
+              2
+            ]
+          },
+          "issuer": "SIM-UNIVERSITY-A archive authority",
+          "verification": "verified"
+        }
+      ]
+    },
+    {
+      "caseId": "Q29",
+      "synthetic": true,
+      "application": {
+        "school": "CDUT",
+        "submittedAt": "2026-10-11",
+        "channel": "official_online",
+        "stage": "submission",
+        "applicant": {
+          "id": "ST-01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "CDUT-archive-effective-version-unknown",
+          "source": "CD01-form-directory-only",
+          "status": "unconfirmed"
+        }
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "student_personnel_archive",
+          "accessState": "restricted",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "view",
+              "scope": {
+                "section": "student-personnel-original"
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "request",
+          "version": "v1",
+          "text": "本人提交学生档案利用申请，学校目录仅显示有学生档案利用审批表，尚未获得原表完整字段和当期签章规则"
+        },
+        {
+          "documentId": "D02",
+          "role": "policy-directory",
+          "version": "v1",
+          "text": "目录上出现学生档案利用审批表名称，无完整有效校规、签批阶段和材料清单"
+        }
+      ],
+      "officialFacts": []
+    },
+    {
+      "caseId": "Q30",
+      "synthetic": true,
+      "application": {
+        "school": "CDUT",
+        "submittedAt": "2026-10-11",
+        "channel": "mail",
+        "stage": "pre_review",
+        "applicant": {
+          "id": "P01",
+          "role": "self"
+        },
+        "policy": {
+          "id": "2026-holiday-service",
+          "source": "CD04",
+          "status": "expired"
+        },
+        "requestedDelivery": "postal"
+      },
+      "archiveItems": [
+        {
+          "itemId": "I01",
+          "archiveType": "historical_school_record",
+          "accessState": "unknown",
+          "operations": [
+            {
+              "operationId": "O01",
+              "operation": "certified_copy",
+              "scope": {
+                "document": "enrollment-record",
+                "delivery": "postal"
+              }
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "documentId": "D01",
+          "role": "request",
+          "version": "v1",
+          "text": "申请获取证明件，选择邮寄，收件方式尚待馆方确认"
+        },
+        {
+          "documentId": "D02",
+          "role": "holiday-notice",
+          "version": "v1",
+          "text": "2026寒假邮寄服务公告；公告有效窗口已过去"
+        }
+      ],
+      "officialFacts": []
+    }
+  ]
+}

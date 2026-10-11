@@ -1,0 +1,45 @@
+name: D3 MD Agent B Independent Oracle
+
+on:
+  pull_request:
+    paths:
+      - 'docs/design/review-agent/acceptance/d3-md-full/agent-oracle/**'
+      - '.github/workflows/review-d3-md-agent-b-oracle.yml'
+  push:
+    branches:
+      - test/d3-md-independent-gold-archive
+    paths:
+      - 'docs/design/review-agent/acceptance/d3-md-full/agent-oracle/**'
+      - '.github/workflows/review-d3-md-agent-b-oracle.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  oracle-structural-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate independent source IDs, gold, and isolated cases
+        run: |
+          python3 docs/design/review-agent/acceptance/d3-md-full/agent-oracle/check_oracle.py \
+            --output agent-b-structure-report.json
+      - name: Assert no fake runtime/model status
+        run: |
+          python3 - <<'PY'
+          import json
+          d=json.load(open('agent-b-structure-report.json'))
+          assert d['gate']=='PASS-STRUCTURE-ONLY', d
+          assert d['actualD2PlanChecked'] is False
+          assert d['actualPiRunsChecked'] is False
+          assert d['AgentATemplateCertified'] is False
+          print('Structural-only gate passed; private MD not supplied to public CI')
+          PY
+      - name: Upload raw structural report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-b-independent-oracle-structure
+          path: agent-b-structure-report.json
+          if-no-files-found: warn
