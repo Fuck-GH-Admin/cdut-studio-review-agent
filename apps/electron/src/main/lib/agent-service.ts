@@ -265,6 +265,7 @@ export async function runAgent(
   input: AgentSendInput,
   webContents: WebContents,
   onDraftPromoted?: (session: import('@profer/shared').AgentSessionMeta) => void | Promise<void>,
+  onRunOwned?: () => void,
 ): Promise<void> {
   // 更新 webContents 映射（允许覆盖 — 由 orchestrator.activeSessions 处理真正的并发保护）
   registerWebContents(input.sessionId, webContents)
@@ -281,7 +282,14 @@ export async function runAgent(
   let runStarted = false
   try {
     await orchestrator.sendMessage(input, {
-      onRunOwned: () => { runStarted = true },
+      onRunOwned: () => {
+        runStarted = true
+        // P03-S02: the optional Main-only observer is an acceptance signal,
+        // never a reason to interrupt an Agent that already owns its run token.
+        try { onRunOwned?.() } catch (error) {
+          console.error('[Agent 服务] onRunOwned 观察者异常（已隔离）:', error)
+        }
+      },
       onError: (error) => {
         outcomeReporter.onError(error)
         eventBus.emit(input.sessionId, { kind: 'run_error', error })
