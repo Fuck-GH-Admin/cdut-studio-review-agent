@@ -14,7 +14,7 @@ import {compileD2RuntimePlan} from './review-d2-runtime'
 
 const SAFE=/^[a-z][a-z0-9-]{0,79}$/
 const hash=(x:unknown):string=>createHash('sha256').update(JSON.stringify(x)).digest('hex')
-type CanonicalOp='read'|'copy'|'excerpt'|'borrow'
+type CanonicalOp='read'|'copy'|'excerpt'|'borrow'|'certified_copy'
 export type D3BusinessOperationV1=CanonicalOp|'view'|'borrow_original'|'certified_copy'
 export interface D3ArchiveCaseRequestV1 {
   caseKey:string
@@ -28,7 +28,7 @@ export interface D3ArchiveCaseRequestV1 {
   modules:{
     item:string
     operation:string
-    byOperation:Record<CanonicalOp,string[]>
+    byOperation:Partial<Record<CanonicalOp,string[]>>
   }
   /** Optional independently authored per-Check executable constraints, never inferred
    * from module prose or from an unknown school's policy. */
@@ -45,10 +45,9 @@ export interface D3CaseInstanceV1 {
   normalizedOperations:Array<{from:D3BusinessOperationV1;to:CanonicalOp;objectKey:string}>
 }
 function canonical(operation:D3BusinessOperationV1):CanonicalOp {
-  if(operation==='certified_copy')throw new Error('D3_UNSUPPORTED_OPERATION: certified_copy 是有权出具证明，不得偷换为普通 copy')
   if(operation==='view')return 'read'
   if(operation==='borrow_original')return 'borrow'
-  if(['read','copy','excerpt','borrow'].includes(operation))return operation as CanonicalOp
+  if(['read','copy','excerpt','borrow','certified_copy'].includes(operation))return operation as CanonicalOp
   throw new Error('D3_UNSUPPORTED_OPERATION: '+String(operation))
 }
 function assertId(value:string,label:string) {
@@ -131,8 +130,10 @@ export function instantiateD3ArchiveCaseV1(
       if(!operation.title?.trim())throw new Error('D3_OPERATION_TITLE_REQUIRED')
       const operationId=operation.operationId
       if(operationId)assertId(operationId,'operationId')
+      if(normalized==='certified_copy'&&!request.modules.byOperation.certified_copy?.length)
+        throw new Error('D3_SPECIAL_OPERATION_MODULE_REQUIRED: certified_copy requires a dedicated authority-owned author module')
       const objectKey=item.itemId+'/'+normalized+(operationId?'/'+operationId:'')
-      const suffix=item.itemId+'-'+normalized+(operationId?'-'+operationId:'')
+      const suffix=item.itemId+'-'+normalized.replaceAll('_','-')+(operationId?'-'+operationId:'')
       const subjectId='d3-'+suffix
       assertId(subjectId,'subjectId')
       addTarget({objectKey,subjectId,title:operation.title,
@@ -153,7 +154,7 @@ export function instantiateD3ArchiveCaseV1(
     assertId(assignment.moduleId,'gate.moduleId')
     assertId(assignment.taskId,'gate.taskId')
     if(assignment.itemId)assertId(assignment.itemId,'gate.itemId')
-    if(assignment.operation&&!['read','copy','excerpt','borrow'].includes(assignment.operation))
+    if(assignment.operation&&!['read','copy','excerpt','borrow','certified_copy'].includes(assignment.operation))
       throw new Error('D3_GATE_BAD_OPERATION')
     const matched=originalCheckSourceMap.filter(ref=>{
       if(ref.moduleId!==assignment.moduleId||ref.taskId!==assignment.taskId||!ref.objectKey)return false
