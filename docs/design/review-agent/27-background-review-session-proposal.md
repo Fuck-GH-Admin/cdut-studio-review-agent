@@ -86,12 +86,16 @@ Main 发起执行时仍需要现有窗口的 `webContents` 用于运行事件转
 
 **P03-S01 新增验证**：在提交 `3a345227` 的 [PR CI](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38175575480) 中，现有 Main runner 无页面目标仍可收尾、V2 `running` 早于真实执行权的两项探针 **2/2 PASS**；全仓 3730 pass / 5 skip / 0 fail，D2 与审核基线均通过。此项不证明真实 Electron 跨页运行。
 
-**仍未完成的门禁**：P02 真实模型/原件全页视觉运行合并最终 E2E；P03-S02 真实 ACK/切页桥接仍未实现；P04–P05 Pocket/桌面普通入口隔离、P06 迟到 stop、P07 重启与删除、P08 普通 Agent 回归，均需后续独立证据。详见 [29 号 P01–P08](29-background-session-preflight-audit.md)。
+**P03-S02 本轮实现（仅 Main 内部）**：既有 `runAgent()` 增加可选 `onRunOwned` 观察者（普通调用方不传、不改变原行为）；`review-pi-admission.ts` 复用已有 V2 状态/指派和收尾函数，拆分短期“确实取得执行权”的受理 ACK 与持续运行 Promise。启动未受理、忙碌拒绝要收口**对应** run/assignment；同一 assignment 重复启动不能误伤原 owner。只存在内部可注入执行入口，尚未注册新的 IPC，也没有创建隐藏 owner session。
+
+**统一验收待办入口**：[29 号 LIVE-01～LIVE-08 集中验收表](29-background-session-preflight-audit.md#最终统一实机验收清单必须保留到合并前当前均-not-run)。P02 的真实模型/扫描 PDF、P03 的 ACK/切页，以及 Pocket 隔离、重启停止和普通 Agent 全部集中登记为 **NOT-RUN**，后续不得自行勾选。
+
+**仍未完成的门禁**：P03-S02 受控 CI 与真实 Main/Electron 接线验收；P02 真实模型/原件全页视觉运行合并最终 E2E；P03 会话 owner / 授权 IPC / 切页；P04–P05 Pocket/桌面普通入口隔离、P06 迟到 stop、P07 重启与删除、P08 普通 Agent 回归，均需后续独立证据。
 
 ## 6. 后续严格按这个顺序执行
 
 1. **P02 live E2E 合并到最终端到端验收**：白名单、权限闸门、案卷限定预览、V2 续审已经有受控证据；真实 provider Pi / 扫描 PDF Electron 视觉回放在完整 Main 后台链路接通后统一测试，之前仍标 P02-LIVE-E2E NOT-RUN。**允许按小批次开展 P03 接线/受控测试，但严禁在此之前合并、推出功能或宣称 P02 整体通过**。
-2. **P03-S01 先冻结交接契约**：审核材料修复、申报事项识别仍由 Renderer 先完成；`preparePiReviewRunV2` 写入 `running` 不是 Pi 已受理。必须由 Main 观察到真实 `onRunOwned` 后才给出可安全离开页面的受理 ACK；忙碌拒绝或启动失败按原案卷 run/assignment 收口，不能留下虚假 running。切页仅允许发生在已经受理后的 Pi 阶段。之后再分批实现 session owner/入口 Guard。
+2. **P03-S01/S02 按小批次推进**：审核材料修复、申报事项识别仍由 Renderer 先完成；`preparePiReviewRunV2` 写入 `running` 不是 Pi 已受理。必须由 Main 观察到真实 `onRunOwned` 后才给出可安全离开页面的受理 ACK；忙碌拒绝或启动失败按原案卷 run/assignment 收口，不能留下虚假 running。切页仅允许发生在已经受理后的 Pi 阶段。S02 已增加现有 `runAgent` 的 Main ACK 可选钩子及 `review-pi-admission.ts` 薄协调层，需 CI 与 Electron 真机再验；之后才分批实现 session owner/入口 Guard。
 3. **薄 Bridge**：仅接入现有 `runAgent`、`preparePiReviewRunV2`、`finishPiReviewRunV2`、`stopAgentAndWait`。入口快速 ACK 与持续运行完成是两个不同 Promise/生命周期；Main 自己持有长期执行，不依赖 React Hook 轮询。逐个测试成功、失败、取消、竞态、重启、删案。
 4. **最少 UI 改动**：仅修改审核触发与业务状态；Pocket、历史 Tab、事件回填与普通聊天逐项回归。
 5. **实测验收**：冻结提交 SHA，运行全部测试、类型/边界/构建、合成案卷 Electron 回放与真实 Pi 受控测试；无法执行的标 NOT-RUN。由用户审核结果后决定是否结束 Draft/合并。
