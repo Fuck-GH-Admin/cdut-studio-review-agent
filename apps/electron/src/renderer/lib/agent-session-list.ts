@@ -1,4 +1,4 @@
-import type { AgentSessionMeta, AgentSessionUiProjection } from '@profer/shared'
+import { isReviewOwnedAgentSession, type AgentSessionMeta, type AgentSessionUiProjection } from '@profer/shared'
 
 /**
  * 草稿标记集合的幂等增删。
@@ -49,8 +49,8 @@ export function replaceAgentSessionInFreshnessOrder(
   sessions: readonly AgentSessionMeta[],
   updated: AgentSessionMeta,
 ): AgentSessionMeta[] {
-  const others = sessions.filter((session) => session.id !== updated.id)
-  return sortAgentSessionsByUpdatedAtDesc([updated, ...others])
+  const others = sessions.filter((session) => session.id !== updated.id && !isReviewOwnedAgentSession(session))
+  return sortAgentSessionsByUpdatedAtDesc(isReviewOwnedAgentSession(updated) ? others : [updated, ...others])
 }
 
 /**
@@ -65,6 +65,8 @@ export function upsertAgentSessionProjection(
   projection: AgentSessionUiProjection,
 ): AgentSessionMeta[] {
   const existing = sessions.find((session) => session.id === projection.id)
+  // A delayed legacy projection must never resurrect a known internal owner.
+  if (isReviewOwnedAgentSession(existing)) return sessions.filter((session) => session.id !== projection.id)
   if (existing && projection.revision < (existing.revision ?? 0)) return [...sessions]
   const next: AgentSessionMeta = {
     ...(existing ?? {}),
@@ -112,6 +114,9 @@ export function upsertAgentSession(
   incoming: AgentSessionMeta,
 ): AgentSessionMeta[] {
   const existing = sessions.find((session) => session.id === incoming.id)
+  if (isReviewOwnedAgentSession(incoming) || isReviewOwnedAgentSession(existing)) {
+    return sessions.filter((session) => session.id !== incoming.id && !isReviewOwnedAgentSession(session))
+  }
   const merged: AgentSessionMeta = existing
     ? { ...existing, ...incoming }
     : incoming
@@ -136,14 +141,16 @@ export function mergeFetchedAgentSessions(
   prev: readonly AgentSessionMeta[],
   fetched: readonly AgentSessionMeta[],
 ): AgentSessionMeta[] {
-  const fetchedIds = new Set(fetched.map((session) => session.id))
-  const snapshotWatermark = fetched.reduce(
+  const visibleFetched = fetched.filter((session) => !isReviewOwnedAgentSession(session))
+  const fetchedIds = new Set(visibleFetched.map((session) => session.id))
+  const snapshotWatermark = visibleFetched.reduce(
     (max, session) => Math.max(max, session.updatedAt),
     0,
   )
   const survivingLocalOnly = prev.filter(
     (session) =>
-      !fetchedIds.has(session.id) && session.updatedAt >= snapshotWatermark,
+      !isReviewOwnedAgentSession(session)
+      && !fetchedIds.has(session.id) && session.updatedAt >= snapshotWatermark,
   )
-  return sortAgentSessionsByUpdatedAtDesc([...fetched, ...survivingLocalOnly])
+  return sortAgentSessionsByUpdatedAtDesc([...visibleFetched, ...survivingLocalOnly])
 }
