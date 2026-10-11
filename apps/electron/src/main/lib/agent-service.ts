@@ -15,6 +15,7 @@ import { writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { BrowserWindow } from 'electron'
 import type { WebContents } from 'electron'
 import { AGENT_IPC_CHANNELS, MAX_ATTACHMENT_SIZE } from '@profer/shared'
+import { isReviewOwnedAgentSession } from '@profer/shared'
 import type {
   AgentSendInput,
   AgentMessage,
@@ -140,6 +141,7 @@ export function restoreActiveAgentStreams(webContents: WebContents): string[] {
   const snapshots = new Map([...completedStreamEventBacklogs, ...activeStreamEventBacklogs])
   for (const [sessionId, backlog] of snapshots) {
     if (!orchestrator.isActive(sessionId) && !completedStreamEventBacklogs.has(sessionId)) continue
+    if (isReviewOwnedAgentSession(getAgentSessionMeta(sessionId))) continue
     registerWebContents(sessionId, webContents)
     if (orchestrator.isActive(sessionId)) restored.push(sessionId)
     for (const payload of backlog) {
@@ -195,6 +197,12 @@ eventBus.use((sessionId, payload, next) => {
 })
 
 eventBus.use((sessionId, payload, next) => {
+  // Keep internal case events on the Main bus for bookkeeping, but never
+  // forward them to regular desktop tabs or resurrect them on reconnect.
+  if (isReviewOwnedAgentSession(getAgentSessionMeta(sessionId))) {
+    next()
+    return
+  }
   const targets = payload.kind === 'session_projection' || payload.kind === 'catalog_invalidation'
     ? BrowserWindow.getAllWindows().map((window) => window.webContents)
     : [sessionWebContents.get(sessionId)]
