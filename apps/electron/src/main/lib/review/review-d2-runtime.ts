@@ -167,6 +167,10 @@ export function compileD2RuntimePlan(
       }).join('；'),
       '行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。',
       ...(authority === 'unverified-policy' ? ['校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。'] : []),
+      ...(sourceBinding?.gate ? [
+        '结构化执行条件（D2 强制门禁，不是行政制度已生效证明）：' + JSON.stringify(sourceBinding.gate),
+        '执行规则：条件未知一律 awaiting-confirmation；阶段未到不得报申请人缺件；电子/纸质替代须有本对象当前版本的审核员证据确认。',
+      ] : []),
     ].join('\n')
     rules.push({
       id, policyVersionId: `workspace:d2-${workspace.workspaceId}@${workspace.revision}`,
