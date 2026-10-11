@@ -91,6 +91,7 @@ describe('D3 dynamic case + D2 structured gates against frozen independent A/B',
       material:{provider:'authority',dueStages:['reviewing'],alternatives:['d2:formal-signature']}}}
     expect(validateD2GuardSubmission(agg,humanGate,'awaiting-supplement',[])).toContain('D2_MATERIAL_AUTHORITY_OWNED')
     expect(validateD2GuardSubmission(agg,humanGate,'non-compliant',[])).toContain('D2_MATERIAL_AUTHORITY_OWNED')
+    expect(validateD2GuardSubmission(agg,humanGate,'compliant',['v1'])).toContain('D2_MATERIAL_AUTHORITY_DECISION_REQUIRED')
     expect(validateD2GuardSubmission(agg,{...mapping,gate:{when:{kind:'case-stage',stages:['submitted']}}},'not-applicable',[])).toBeUndefined()
     expect(validateD2GuardSubmission(agg,{...mapping,gate:{when:{kind:'case-stage',stages:['submitted']}}},'compliant',[])).toContain('D2_GATE_FALSE')
   })
