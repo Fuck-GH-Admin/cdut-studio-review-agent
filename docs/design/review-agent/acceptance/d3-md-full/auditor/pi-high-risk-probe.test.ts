@@ -9,7 +9,7 @@ import {mkdtempSync,mkdirSync,readFileSync,writeFileSync,rmSync} from 'node:fs'
 import {tmpdir} from 'node:os'
 import {join,resolve} from 'node:path'
 import type {Actor,D2ScenarioSelection,ReviewAuthoringWorkspaceV1} from '@profer/shared'
-import {createD2TechnicalCase,makeD2CandidateShell,validateD2OperationEvidence,verifyD2InstalledPlan,verifyD2PiRun} from './review-d2-runtime'
+import {compileD2RuntimePlan,createD2TechnicalCase,makeD2CandidateShell,validateD2OperationEvidence,verifyD2InstalledPlan,verifyD2PiRun} from './review-d2-runtime'
 import {saveAuthoringCandidateDraft} from './template-store'
 import {readAggregate} from './case-store-v2'
 import {registerMaterial} from './material-service'
@@ -160,7 +160,6 @@ describe('Independent MD-Q1 real authored archive Pi service probes',()=>{
     const dynamicSelection={...selection,targets:requestedTargets}
     const caseInput=JSON.parse(readFileSync(join(aBase,'plans/case.json'),'utf8'))
     caseInput.id='mdq1-b-q02-dynamic-target-test'
-    const {compileD2RuntimePlan}=require('./review-d2-runtime') as typeof import('./review-d2-runtime')
     let error=''
     try{compileD2RuntimePlan(aWorkspace,dynamicSelection,caseInput)}
     catch(e){error=String(e instanceof Error ? e.message:e)}
