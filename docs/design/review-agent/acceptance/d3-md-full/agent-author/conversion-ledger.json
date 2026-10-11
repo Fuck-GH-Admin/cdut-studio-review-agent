@@ -75,8 +75,9 @@
       "sourceBinding": [
         "source-md"
       ],
-      "status": "implemented-not-tested",
-      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
+      "status": "tooling-blocked",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
+      "gapId": "G-06"
     },
     {
       "id": "R05",
@@ -152,9 +153,9 @@
         "source-md",
         "source-cd"
       ],
-      "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "provisionalGap": "G-RUNTIME-NOT-RUN"
+      "status": "tooling-blocked",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
+      "gapId": "G-06"
     },
     {
       "id": "R09",
@@ -174,8 +175,8 @@
         "source-md",
         "source-cd"
       ],
-      "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "status": "tooling-blocked",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
       "gapId": "G-06"
     },
     {
@@ -196,7 +197,7 @@
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
       "gapId": "G-06"
     },
     {
@@ -213,9 +214,9 @@
         "source-md",
         "source-cross"
       ],
-      "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "provisionalGap": "G-RUNTIME-NOT-RUN"
+      "status": "tooling-blocked",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
+      "gapId": "G-06"
     },
     {
       "id": "R12",
@@ -235,8 +236,8 @@
         "source-md",
         "source-cross"
       ],
-      "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "status": "tooling-blocked",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
       "gapId": "G-06"
     },
     {
@@ -253,7 +254,7 @@
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
       "gapId": "G-06"
     },
     {
