@@ -196,10 +196,15 @@ function isPartialSdkPayload(payload: unknown): boolean {
   return p?.kind === 'sdk_message' && p.message?._partial === true
 }
 
+/** Preserve the remote replay-log boundary: hidden review streams are never written. */
+export function mayPublishAgentEventToRemote(sessionId: string): boolean {
+  return !isReviewOwnedAgentSession(getAgentSessionMeta(sessionId))
+}
+
 /** 真正把一条 agent_event 帧广播给所有已连接移动端客户端。 */
 function broadcastAgentFrame(sessionId: string, payload: import('@profer/shared').AgentStreamPayload): void {
   // Filter before append: replay logs are a durable remote disclosure surface.
-  if (isReviewOwnedAgentSession(getAgentSessionMeta(sessionId))) return
+  if (!mayPublishAgentEventToRemote(sessionId)) return
   const record = remoteAgentEventLog.append(sessionId, payload)
   const frame = JSON.stringify({
     kind: 'agent_event',
