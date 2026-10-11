@@ -1,0 +1,14 @@
+{
+  "id": "d3-10-agent-a-case",
+  "templateId": "plain-document",
+  "templateVersion": 1,
+  "title": "Agent A 纯文本合成核验",
+  "objectType": "document",
+  "caseFields": {},
+  "subjects": [],
+  "documents": [],
+  "stage": "draft",
+  "revision": 0,
+  "createdAt": "2026-10-11T00:00:00.000Z",
+  "updatedAt": "2026-10-11T00:00:00.000Z"
+}

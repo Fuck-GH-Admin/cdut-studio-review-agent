@@ -1,0 +1,45 @@
+name: D3-10 Agent A Independent First Use
+on:
+  pull_request:
+    paths:
+      - 'docs/design/review-agent/acceptance/d3-10/agent-a/**'
+      - '.github/workflows/review-d3-agent-a-acceptance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  agent-a:
+    runs-on: ubuntu-latest
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install exact lockfile
+        run: bun install --frozen-lockfile
+      - name: Independent A real D1 D2 D3 authoring workflow
+        id: acceptance
+        run: bash docs/design/review-agent/acceptance/d3-10/agent-a/tests/run-acceptance.sh
+      - name: Upload complete execution evidence even after failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: d3-10-agent-a-first-use-evidence
+          if-no-files-found: warn
+          path: |
+            docs/design/review-agent/acceptance/d3-10/agent-a/logs/
+            docs/design/review-agent/acceptance/d3-10/agent-a/plans/
+            docs/design/review-agent/acceptance/d3-10/agent-a/bundles/
+            docs/design/review-agent/acceptance/d3-10/agent-a/tests/actual-results.json
+            docs/design/review-agent/acceptance/d3-10/agent-a/tests/pi-structured-results.json
+            docs/design/review-agent/acceptance/d3-10/agent-a/tests/granularity-results.json
+            docs/design/review-agent/acceptance/d3-10/agent-a/run-log.md
+            docs/design/review-agent/acceptance/d3-10/agent-a/verdict.md

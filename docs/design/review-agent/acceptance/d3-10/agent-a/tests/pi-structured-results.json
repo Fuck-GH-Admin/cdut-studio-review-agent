@@ -1,0 +1,56 @@
+{
+  "codeParent": "d16f047af653f7ba259456807c1fc150e9d0f417",
+  "execution": "actual Pi service backend with synthetic predeclared submissions",
+  "onlineModelRun": "not-run",
+  "isolation": "fresh mkdtemp config",
+  "cases": [
+    {
+      "id": "positive",
+      "independentExpected": "compliant",
+      "submittedSyntheticStatus": "compliant",
+      "observedServiceStatus": "compliant",
+      "runStatus": "completed",
+      "sourceRefCount": 1,
+      "documentVersionId": "doc-1-mv2yc9wx-v1",
+      "checkId": "local/heading-coverage",
+      "ruleId": "d2-190dfc9d1f530eced844",
+      "runId": "run-pi-mv2yc9x0-bdsmc",
+      "rejectedSourceLessCompliant": true,
+      "verifiedD2PiRun": true,
+      "onlineModelRun": "not-run",
+      "classificationIsModelInferred": false
+    },
+    {
+      "id": "negative",
+      "independentExpected": "non-compliant",
+      "submittedSyntheticStatus": "non-compliant",
+      "observedServiceStatus": "non-compliant",
+      "runStatus": "completed",
+      "sourceRefCount": 1,
+      "documentVersionId": "doc-1-mv2yc9x6-v1",
+      "checkId": "local/heading-coverage",
+      "ruleId": "d2-190dfc9d1f530eced844",
+      "runId": "run-pi-mv2yc9x7-03q2a",
+      "rejectedSourceLessCompliant": null,
+      "verifiedD2PiRun": true,
+      "onlineModelRun": "not-run",
+      "classificationIsModelInferred": false
+    },
+    {
+      "id": "unknown",
+      "independentExpected": "needs-confirmation",
+      "submittedSyntheticStatus": "awaiting-confirmation",
+      "observedServiceStatus": "awaiting-confirmation",
+      "runStatus": "completed",
+      "sourceRefCount": 0,
+      "documentVersionId": "doc-1-mv2yc9xb-v1",
+      "checkId": "local/heading-coverage",
+      "ruleId": "d2-190dfc9d1f530eced844",
+      "runId": "run-pi-mv2yc9xc-jr522",
+      "rejectedSourceLessCompliant": null,
+      "verifiedD2PiRun": true,
+      "onlineModelRun": "not-run",
+      "classificationIsModelInferred": false
+    }
+  ]
+}

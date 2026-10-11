@@ -1,0 +1,55 @@
+{
+  "workspace": {
+    "schemaVersion": 1,
+    "workspaceId": "d3-10-agent-a-plain-text",
+    "revision": 2,
+    "definitions": {
+      "modules": [],
+      "templates": [
+        {
+          "templateId": "plain-document",
+          "version": 1,
+          "name": "单文档章节检查（Agent A 独立合成）",
+          "purpose": "仅按合成请求逐项检查摘要、正文、结论的文本完整性",
+          "limits": "只提供技术预审意见，不代替校方批准，也不建立未经说明的格式要求",
+          "source": {
+            "kind": "synthetic",
+            "note": "继承 d3-minimal 结构并独立制作的 Agent A 合成工作区"
+          },
+          "modules": [],
+          "localTasks": [
+            {
+              "id": "heading-coverage",
+              "title": "三处标题完整性",
+              "requirement": "逐项核对当前文件是否包含申请人指定的摘要、正文及结论标题，并核对每一标题下至少有一段可读、非空且不是占位文字的实际内容；仅有标题、空白或“待填写”等占位符不得认定完整；遇到不可读、缺页或损坏应标记待核，不得推测补齐",
+              "completion": "对摘要、正文、结论分别记录标题状态、实质内容状态、材料版本及真实出处；任一可确认缺失不得整体认定符合；不能判读时给待核",
+              "limits": "只执行本次合成请求中的文本完整性技术核对；不能据此判断内容真实性，不增设校方格式标准，不作行政批准"
+            }
+          ]
+        }
+      ]
+    },
+    "sources": [
+      {
+        "sourceId": "user-synthetic-spec",
+        "kind": "synthetic",
+        "label": "Agent A 合成文本核对请求",
+        "verification": "content-checked",
+        "applicability": "request-scope",
+        "note": "仅限验收中声明的合成检查要求；不是学校制度或批准"
+      }
+    ],
+    "sourceBindings": [
+      {
+        "checkId": "plain-document@1:local/heading-coverage",
+        "sourceIds": [
+          "user-synthetic-spec"
+        ]
+      }
+    ]
+  },
+  "authorId": "independent-agent-a",
+  "recordedAt": "2026-10-10T22:14:34.083Z",
+  "digest": "1fc3c1677df960fa4ed2913786b9c7623a8e33ed824ae4109ccfca4ee2797a31",
+  "parentDigest": "68b206fb232530caed602d9e922186a7bb49769589ccd9e8c42ddb5d13bfe830"
+}

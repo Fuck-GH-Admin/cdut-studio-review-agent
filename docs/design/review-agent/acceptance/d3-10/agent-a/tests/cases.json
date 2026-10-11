@@ -1,0 +1,20 @@
+[
+  {
+    "id": "positive",
+    "text": "摘要\n本项目说明技术目标及边界。\n正文\n本项目使用合成样本独立核对文本段落。\n结论\n三项章节内容完整，尚不构成行政许可。",
+    "expected": "compliant",
+    "rationale": "三个标题及其下均有可读的非空内容"
+  },
+  {
+    "id": "negative",
+    "text": "摘要\n本项目说明技术目标及边界。\n正文\n待填写\n结论\n三项标题均已创建。",
+    "expected": "non-compliant",
+    "rationale": "原始规则仅要求标题，修订版增加非占位正文，正文只有占位文字必须不符合"
+  },
+  {
+    "id": "unknown",
+    "text": "摘要\n材料说明已可见。\n正文\n[UNREADABLE: 页面损坏且没有可核实转录]\n结论\n结论页存在可读文本。",
+    "expected": "needs-confirmation",
+    "rationale": "正文内容不可读，禁止按缺失或凭猜测合格"
+  }
+]

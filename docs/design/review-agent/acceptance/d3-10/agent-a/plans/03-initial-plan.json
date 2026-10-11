@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "mode": "technical-pre-review",
+  "publicationAllowed": false,
+  "workspaceId": "d3-10-agent-a-plain-text",
+  "revision": 1,
+  "templateId": "plain-document",
+  "templateVersion": 1,
+  "authoringDigest": "68b206fb232530caed602d9e922186a7bb49769589ccd9e8c42ddb5d13bfe830",
+  "previewFingerprint": "171b29ca4e6d23f61e2781515b3e24a1880b6ab5a924f005e8f56b5b93cfe755",
+  "targets": [],
+  "subjects": [],
+  "rules": [
+    {
+      "id": "d2-190dfc9d1f530eced844",
+      "policyVersionId": "workspace:d2-d3-10-agent-a-plain-text@1",
+      "title": "三处标题完整性",
+      "requirement": "适用范围：仅按合成请求逐项检查摘要、正文、结论的文本完整性\n核对当前文件是否包含申请人指定的摘要、正文及结论标题；不可读时记录待核\n完成标准：分别给出符合、缺失或待核及真实出处\n责任边界：只提供技术预审意见，不代替校方批准，也不建立未经说明的格式要求\n不新增未说明的学校格式规则，不作行政批准\nD2 技术预审来源：user-synthetic-spec/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "user-synthetic-spec"
+      ],
+      "priority": 50000,
+      "confirmation": "confirmed"
+    }
+  ],
+  "mapping": [
+    {
+      "checkId": "local/heading-coverage",
+      "ruleId": "d2-190dfc9d1f530eced844",
+      "sourceIds": [
+        "user-synthetic-spec"
+      ],
+      "authority": "request-scope"
+    }
+  ],
+  "fingerprint": "c6b8033267d916a7ad98d3626c97ac9e1ac4fdcc1ae2a73536b1a868aa9c318a"
+}

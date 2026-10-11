@@ -1,0 +1,26 @@
+[
+  {
+    "id": "positive",
+    "independentExpected": "compliant",
+    "oracleActual": "compliant",
+    "matches": true,
+    "piExecution": "not-run",
+    "reason": "D2 preview compiles a task plan, it does not ingest or semantically judge test text"
+  },
+  {
+    "id": "negative",
+    "independentExpected": "non-compliant",
+    "oracleActual": "non-compliant",
+    "matches": true,
+    "piExecution": "not-run",
+    "reason": "D2 preview compiles a task plan, it does not ingest or semantically judge test text"
+  },
+  {
+    "id": "unknown",
+    "independentExpected": "needs-confirmation",
+    "oracleActual": "needs-confirmation",
+    "matches": true,
+    "piExecution": "not-run",
+    "reason": "D2 preview compiles a task plan, it does not ingest or semantically judge test text"
+  }
+]

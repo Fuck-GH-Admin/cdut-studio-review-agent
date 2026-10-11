@@ -1,0 +1,60 @@
+{
+  "planContractPass": true,
+  "errors": [],
+  "baseline": {
+    "revision": 1,
+    "fingerprint": "c6b8033267d916a7ad98d3626c97ac9e1ac4fdcc1ae2a73536b1a868aa9c318a",
+    "ruleCount": 1
+  },
+  "modified": {
+    "revision": 2,
+    "fingerprint": "eef65ffd7e1028e0a99fc2ab424def6f256e6d4971e42ec362fdb6301b433688",
+    "ruleCount": 1
+  },
+  "restored": {
+    "fingerprint": "eef65ffd7e1028e0a99fc2ab424def6f256e6d4971e42ec362fdb6301b433688",
+    "equalToModified": true
+  },
+  "ruleMapping": [
+    {
+      "checkId": "local/heading-coverage",
+      "ruleId": "d2-190dfc9d1f530eced844",
+      "sourceIds": [
+        "user-synthetic-spec"
+      ],
+      "authority": "request-scope"
+    }
+  ],
+  "revisionDigestChain": {
+    "first": "68b206fb232530caed602d9e922186a7bb49769589ccd9e8c42ddb5d13bfe830",
+    "second": "1fc3c1677df960fa4ed2913786b9c7623a8e33ed824ae4109ccfca4ee2797a31",
+    "secondParent": "68b206fb232530caed602d9e922186a7bb49769589ccd9e8c42ddb5d13bfe830"
+  },
+  "syntheticCases": [
+    {
+      "id": "positive",
+      "independentExpected": "compliant",
+      "oracleActual": "compliant",
+      "matches": true,
+      "piExecution": "not-run",
+      "reason": "D2 preview compiles a task plan, it does not ingest or semantically judge test text"
+    },
+    {
+      "id": "negative",
+      "independentExpected": "non-compliant",
+      "oracleActual": "non-compliant",
+      "matches": true,
+      "piExecution": "not-run",
+      "reason": "D2 preview compiles a task plan, it does not ingest or semantically judge test text"
+    },
+    {
+      "id": "unknown",
+      "independentExpected": "needs-confirmation",
+      "oracleActual": "needs-confirmation",
+      "matches": true,
+      "piExecution": "not-run",
+      "reason": "D2 preview compiles a task plan, it does not ingest or semantically judge test text"
+    }
+  ],
+  "actualPiMaterialReview": "not-run"
+}
