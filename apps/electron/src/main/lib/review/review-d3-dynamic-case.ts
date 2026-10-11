@@ -61,8 +61,12 @@ export function instantiateD3ArchiveCaseV1(
   const moduleLookup=new Map(base.definitions.modules.map(m=>[m.moduleId+'@'+m.version,m]))
   const useLookup=new Map(template.modules.map(u=>[u.id,u]))
   const instances:ReviewAuthoringUseV1[]=template.modules.filter(u=>!u.objectKey).map(u=>structuredClone(u))
+  // Remove only old OBJECT instance bindings, never the template's global
+  // case/relationship/evidence/workflow Check bindings.
+  const oldObjectPrefixes=template.modules.filter(u=>!!u.objectKey)
+    .map(u=>request.templateId+'@'+request.version+':module/'+u.id+'/')
   const newSourceBindings:ReviewAuthoringSourceBindingV1[]=base.sourceBindings.filter(b=>
-    !b.checkId.startsWith(request.templateId+'@'+request.version+':module/')).map(b=>structuredClone(b))
+    !oldObjectPrefixes.some(prefix=>b.checkId.startsWith(prefix))).map(b=>structuredClone(b))
   const originalCheckSourceMap:D3CaseInstanceV1['originalCheckSourceMap']=[]
   const normalizedOperations:D3CaseInstanceV1['normalizedOperations']=[]
   const targetList:D2TargetBinding[]=[]
