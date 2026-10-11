@@ -59,7 +59,7 @@ const mapping:D2RuleBinding={checkId:'module/demo/material',ruleId:'d2-rule',
   sourceIds:['synthetic-only'],authority:'request-scope',
   objectKey:'i01/copy/o01',subjectId:'d3-i01-copy-o01',gate}
 function emit(filename:string,value:unknown){
-  writeFileSync(join(OUT,filename),JSON.stringify(value,null,2)+'\n')
+  writeFileSync(join(OUT!,filename),JSON.stringify(value,null,2)+'\n')
 }
 describe('D3 dynamic case + D2 structured gates against frozen independent A/B',()=>{
   test('bounded fail-closed tri-state, stages and lawful electronic material alternatives',()=>{
