@@ -15,7 +15,7 @@
 **三态条件与合法替代执行**：\`apps/electron/src/main/lib/review/review-d2-execution-gates.ts\`、D1/D2 数据类型和 Pi 工具提交/核验边界。
 
 - \`when\` 可声明 \`confirmed-observation\`、\`evidence-any\`、\`case-stage\` 及有限递归 \`all/any/not\`。求值只产生 \`true|false|unknown\`。缺失、识别失败、材料未核或冲突都是 \`unknown\`，不得折叠成 \`false\` 或 \`not-applicable\`；未经核实的外校规定仍是 \`unverified-policy\`。
-- \`material\` 的 \`provider\` 明确区分 \`applicant\` 与 \`authority\`；\`dueStages\` 是当前系统 \`CaseStage\` 的精确集合，**不是猜测学校审批时间顺序**。申请人到期前不能判缺件；待馆方盖章不得成为申请人缺件。
+- \`material\` 的 \`provider\` 明确区分 \`applicant\` 与 \`authority\`；\`dueStages\` 是当前系统 \`CaseStage\` 的精确集合，**不是猜测学校审批时间顺序**。申请人到期前不能判缺件；待馆方盖章不得成为申请人缺件。对于 `provider: authority` 的义务，即使存在审核员确认的文档关联，Pi 仍会拒绝直接输出 `compliant`：当前系统缺少有权部门具名签署的可信审批接口，不能将文档审核误报为正式批准。
 - \`alternatives\` 是明确的 OR 关系，可容纳纸质/电子委托、纸质/电子替代证明。**只有当前运行引用的有效文档版本，已由审核员为当前 D2 具体 Subject 确认对应 \`EvidenceLink.supportsFact\`，才认为该替代已被证实。** 证据缺失不是合法性不存在。已证实替代时，Pi 拒绝把“没有纸质件”误报为缺件。
 - Pi 的 \`submitPiReviewResultV2\` 在接收语义检查前执行 gate，\`verifyD2PiRun\` 在已存回执上再次验证 gate。Run input hash/计划指纹包含来源和结构；改写 gate、材料版本、证据绑定都不能直接复用先前判断。
 - 原 D1 无条件发布投影若包含结构化 gate 会明确 \`D1_UNMAPPABLE_EXECUTION_GATE\`，不能把条件丢掉只留一句文本；复杂历史 \`advanced.evidenceRelations\` 仍执行旧的 \`D2_UNMAPPED_ADVANCED\` 拒止，**不能用此有限 OR 伪装任意关系图已实现**。
