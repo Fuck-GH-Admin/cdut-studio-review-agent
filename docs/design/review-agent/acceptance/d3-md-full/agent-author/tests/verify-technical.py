@@ -87,6 +87,13 @@ blocked_uninstantiated = sorted(all_rule_ids - set(by_rule))
 must(blocked_uninstantiated == ["R24", "R29", "R40"], "unexpected noncompiled duties: " + repr(blocked_uninstantiated))
 ledger_map = {row["id"]: row for row in ledger["requirements"]}
 must(all(ledger_map[rid]["status"] == "tooling-blocked" and ledger_map[rid].get("gapId") for rid in blocked_uninstantiated), "noncompiled duties must be explicit tooling gaps")
+# From the next replay onward, the checked-in ledger must agree with actual D2 mapping.
+if ledger.get("planFingerprint") is not None:
+    must(ledger["planFingerprint"] == plan["fingerprint"], "checked-in ledger fingerprint drift")
+    for rid in sorted(all_rule_ids):
+        actual = sorted(by_rule.get(rid, []))
+        must(sorted(ledger_map[rid]["checkIds"]) == actual, "checked-in ledger Check IDs drift " + rid)
+    must(ledger["technicalEvidence"]["compiledCheckCount"] == len(observed), "checked-in ledger count drift")
 summary = {
     "schemaVersion": 1,
     "provenance": "CI live D1/D2/D3 CLI output; private source hash NOT revalidated in CI",
