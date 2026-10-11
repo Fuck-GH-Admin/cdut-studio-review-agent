@@ -275,6 +275,8 @@ describe('D3 dynamic case + D2 structured gates against frozen independent A/B',
     const r09=plan.mapping.find(m=>m.checkId==='module/operation-i01-copy-o02/r09')!
     const r12=plan.mapping.find(m=>m.checkId==='module/operation-i01-copy-o02/r12')!
     expect(r09.gate?.material?.alternatives).toContain('d2:delegation:electronic')
+    expect(plan.rules.find(r=>r.id===r09.ruleId)?.requirement).toContain('d2:delegation:electronic')
+    expect(plan.rules.find(r=>r.id===r09.ruleId)?.requirement).toContain('条件未知一律 awaiting-confirmation')
     expect(r12.gate?.material?.alternatives).toContain('d2:proof:electronic')
     expect(r09.authority).toBe('unverified-policy')
     expect(r12.authority).toBe('unverified-policy')
