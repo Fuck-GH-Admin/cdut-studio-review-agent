@@ -1,7 +1,5 @@
-# D2计划状态：NOT-RUN
+# 实测D2编译证据
 
-`selection.json`和`case.json`是实际CLI预览的**输入**，并不是实际D2输出。
+此前仅有输入文件，现在CI `#38098657888` 真实生成 `actual-d2-plan.json` 与 `imported-d2-plan.json`，均在 [Actions Artifact](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38098657888) 的 `d3-md-agent-a-technical-38098657888-1`；技术核验确认二者全JSON相同，77条Check、8个目标、来源及Authority均可对照。
 
-为何不能提供`actual-d2-plan.json`：执行环境无法clone仓库（`git ls-remote`报`Could not resolve host: github.com`）。已经从已连接GitHub接口精确阅读了目标SHA上的CLI/TypeScript契约，但这不等于运行D2。
-
-请运行`tests/replay.sh`；执行成功后保存stdout JSON，不允许通过手写fingerprint/RuleSpec伪造plan。高级阻断的D2_UNMAPPED_ADVANCED属于预期拒绝，但本次也未运行，不能写exit 1实测。
+`ci-technical-summary.json` 是从成功运行job日志中读取的真实技术摘要，含指纹和逐R编译Check ID，供离线比对。详情请以Artifacts内原始stdout及D2 plan为准。未上传私有原始MD；未执行档案Pi运行或独立gold。

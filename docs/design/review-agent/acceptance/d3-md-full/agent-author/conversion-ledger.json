@@ -5,8 +5,8 @@
   "workspaceId": "d3-md-archive-author-a",
   "templateId": "g01-archive-utilization",
   "templateVersion": 1,
-  "planFingerprint": null,
-  "planStatus": "NOT-RUN; proposedCheckIds derive from D1 instance tree; no actual D2 mapping, fingerprint, or SourceRef evidence",
+  "planFingerprint": "19b615276bd3c64fbebe0ef97afd03841237502c25f3ae6698ba1fdcb091c0f2",
+  "planStatus": "CI D2 PREVIEW SUCCESS (77 Check) | D1/D3/export/import/advanced rejection PASS | business semantics NOT CERTIFIED",
   "requirements": [
     {
       "id": "R01",
@@ -16,7 +16,9 @@
       "proposedCheckIds": [
         "module/case/r01"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/case/r01"
+      ],
       "scope": "application",
       "sourceBinding": [
         "source-md",
@@ -24,7 +26,7 @@
         "source-cd"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "gapId": "G-08"
     },
     {
@@ -35,13 +37,15 @@
       "proposedCheckIds": [
         "module/case/r02"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/case/r02"
+      ],
       "scope": "application",
       "sourceBinding": [
         "source-md"
       ],
       "status": "implemented-not-tested",
-      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
+      "reason": "D1任务在CI的真实D2预览中编译到Check；待业务反例和Pi案卷测试。"
     },
     {
       "id": "R03",
@@ -51,7 +55,9 @@
       "proposedCheckIds": [
         "module/case/r03"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/case/r03"
+      ],
       "scope": "application",
       "sourceBinding": [
         "source-md",
@@ -59,7 +65,7 @@
         "source-cross"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "provisionalGap": "G-RUNTIME-NOT-RUN"
     },
     {
@@ -70,13 +76,15 @@
       "proposedCheckIds": [
         "module/rel/r04"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/rel/r04"
+      ],
       "scope": "relationship",
       "sourceBinding": [
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
       "gapId": "G-06"
     },
     {
@@ -89,14 +97,18 @@
         "module/item-i02/r05",
         "module/item-i03/r05"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/item-i01/r05",
+        "module/item-i02/r05",
+        "module/item-i03/r05"
+      ],
       "scope": "item",
       "sourceBinding": [
         "source-md",
         "source-cross"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "provisionalGap": "G-RUNTIME-NOT-RUN"
     },
     {
@@ -109,14 +121,18 @@
         "module/item-i02/r06",
         "module/item-i03/r06"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/item-i01/r06",
+        "module/item-i02/r06",
+        "module/item-i03/r06"
+      ],
       "scope": "item",
       "sourceBinding": [
         "source-md",
         "source-cd"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "provisionalGap": "G-RUNTIME-NOT-RUN"
     },
     {
@@ -129,14 +145,18 @@
         "module/item-i02/r07",
         "module/item-i03/r07"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/item-i01/r07",
+        "module/item-i02/r07",
+        "module/item-i03/r07"
+      ],
       "scope": "item",
       "sourceBinding": [
         "source-md",
         "source-cd"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "provisionalGap": "G-RUNTIME-NOT-RUN"
     },
     {
@@ -147,14 +167,16 @@
       "proposedCheckIds": [
         "module/rel/r08"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/rel/r08"
+      ],
       "scope": "relationship",
       "sourceBinding": [
         "source-md",
         "source-cd"
       ],
       "status": "tooling-blocked",
-      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
       "gapId": "G-06"
     },
     {
@@ -169,14 +191,20 @@
         "module/operation-i03-borrow/r09",
         "module/operation-i03-excerpt/r09"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/operation-i01-copy/r09",
+        "module/operation-i01-read/r09",
+        "module/operation-i02-read/r09",
+        "module/operation-i03-borrow/r09",
+        "module/operation-i03-excerpt/r09"
+      ],
       "scope": "operation",
       "sourceBinding": [
         "source-md",
         "source-cd"
       ],
       "status": "tooling-blocked",
-      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
       "gapId": "G-06"
     },
     {
@@ -191,13 +219,19 @@
         "module/operation-i03-borrow/r10",
         "module/operation-i03-excerpt/r10"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/operation-i01-copy/r10",
+        "module/operation-i01-read/r10",
+        "module/operation-i02-read/r10",
+        "module/operation-i03-borrow/r10",
+        "module/operation-i03-excerpt/r10"
+      ],
       "scope": "operation",
       "sourceBinding": [
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
       "gapId": "G-06"
     },
     {
@@ -208,14 +242,16 @@
       "proposedCheckIds": [
         "module/rel/r11"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/rel/r11"
+      ],
       "scope": "relationship",
       "sourceBinding": [
         "source-md",
         "source-cross"
       ],
       "status": "tooling-blocked",
-      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
       "gapId": "G-06"
     },
     {
@@ -230,14 +266,20 @@
         "module/operation-i03-borrow/r12",
         "module/operation-i03-excerpt/r12"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/operation-i01-copy/r12",
+        "module/operation-i01-read/r12",
+        "module/operation-i02-read/r12",
+        "module/operation-i03-borrow/r12",
+        "module/operation-i03-excerpt/r12"
+      ],
       "scope": "operation",
       "sourceBinding": [
         "source-md",
         "source-cross"
       ],
       "status": "tooling-blocked",
-      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
       "gapId": "G-06"
     },
     {
@@ -248,13 +290,15 @@
       "proposedCheckIds": [
         "module/rel/r13"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/rel/r13"
+      ],
       "scope": "relationship",
       "sourceBinding": [
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格",
+      "reason": "已有文本责任及预计Check实例，但D2缺关系subject及多主体-操作权限图，不能把case级判断当作每个代理/委托关系均独立合格 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
       "gapId": "G-06"
     },
     {
@@ -267,14 +311,18 @@
         "module/item-i02/r14",
         "module/item-i03/r14"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/item-i01/r14",
+        "module/item-i02/r14",
+        "module/item-i03/r14"
+      ],
       "scope": "item",
       "sourceBinding": [
         "source-md",
         "source-cd"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "gapId": "G-08"
     },
     {
@@ -286,14 +334,17 @@
         "module/read-i01-read/r15",
         "module/read-i02-read/r15"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/read-i01-read/r15",
+        "module/read-i02-read/r15"
+      ],
       "scope": "item",
       "sourceBinding": [
         "source-md",
         "source-cd"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "gapId": "G-08"
     },
     {
@@ -304,14 +355,16 @@
       "proposedCheckIds": [
         "module/borrow-i03-borrow/r16"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/borrow-i03-borrow/r16"
+      ],
       "scope": "operation",
       "sourceBinding": [
         "source-md",
         "source-cd"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "gapId": "G-08"
     },
     {
@@ -324,14 +377,18 @@
         "module/item-i02/r17",
         "module/item-i03/r17"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/item-i01/r17",
+        "module/item-i02/r17",
+        "module/item-i03/r17"
+      ],
       "scope": "item",
       "sourceBinding": [
         "source-md",
         "source-law"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "provisionalGap": "G-RUNTIME-NOT-RUN"
     },
     {
@@ -344,14 +401,18 @@
         "module/item-i02/r18",
         "module/item-i03/r18"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/item-i01/r18",
+        "module/item-i02/r18",
+        "module/item-i03/r18"
+      ],
       "scope": "item",
       "sourceBinding": [
         "source-md",
         "source-law"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "gapId": "G-07"
     },
     {
@@ -366,14 +427,20 @@
         "module/operation-i03-borrow/r19",
         "module/operation-i03-excerpt/r19"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/operation-i01-copy/r19",
+        "module/operation-i01-read/r19",
+        "module/operation-i02-read/r19",
+        "module/operation-i03-borrow/r19",
+        "module/operation-i03-excerpt/r19"
+      ],
       "scope": "operation",
       "sourceBinding": [
         "source-md",
         "source-law"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "gapId": "G-07"
     },
     {
@@ -388,14 +455,20 @@
         "module/operation-i03-borrow/r20",
         "module/operation-i03-excerpt/r20"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/operation-i01-copy/r20",
+        "module/operation-i01-read/r20",
+        "module/operation-i02-read/r20",
+        "module/operation-i03-borrow/r20",
+        "module/operation-i03-excerpt/r20"
+      ],
       "scope": "operation",
       "sourceBinding": [
         "source-md",
         "source-law"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "gapId": "G-07"
     },
     {
@@ -407,14 +480,17 @@
         "module/read-i01-read/r21",
         "module/read-i02-read/r21"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/read-i01-read/r21",
+        "module/read-i02-read/r21"
+      ],
       "scope": "operation",
       "sourceBinding": [
         "source-md",
         "source-law"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "provisionalGap": "G-RUNTIME-NOT-RUN"
     },
     {
@@ -425,14 +501,16 @@
       "proposedCheckIds": [
         "module/excerpt-i03-excerpt/r22"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/excerpt-i03-excerpt/r22"
+      ],
       "scope": "operation",
       "sourceBinding": [
         "source-md",
         "source-law"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "provisionalGap": "G-RUNTIME-NOT-RUN"
     },
     {
@@ -443,14 +521,16 @@
       "proposedCheckIds": [
         "module/copy-i01-copy/r23"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/copy-i01-copy/r23"
+      ],
       "scope": "operation",
       "sourceBinding": [
         "source-md",
         "source-law"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "provisionalGap": "G-RUNTIME-NOT-RUN"
     },
     {
@@ -463,7 +543,7 @@
       "scope": "operation",
       "sourceBinding": [],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | CI实际D2计划无此规则的Check；属于保留的tooling-blocked责任。",
       "gapId": "G-01"
     },
     {
@@ -474,14 +554,16 @@
       "proposedCheckIds": [
         "module/borrow-i03-borrow/r25"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/borrow-i03-borrow/r25"
+      ],
       "scope": "operation",
       "sourceBinding": [
         "source-md",
         "source-law"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "provisionalGap": "G-RUNTIME-NOT-RUN"
     },
     {
@@ -492,7 +574,9 @@
       "proposedCheckIds": [
         "module/borrow-i03-borrow/r26"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/borrow-i03-borrow/r26"
+      ],
       "scope": "operation",
       "sourceBinding": [
         "source-md",
@@ -500,7 +584,7 @@
         "source-cross"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "gapId": "G-08"
     },
     {
@@ -511,13 +595,15 @@
       "proposedCheckIds": [
         "module/evidence/r27"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/evidence/r27"
+      ],
       "scope": "evidence",
       "sourceBinding": [
         "source-md"
       ],
       "status": "implemented-not-tested",
-      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
+      "reason": "D1任务在CI的真实D2预览中编译到Check；待业务反例和Pi案卷测试。"
     },
     {
       "id": "R28",
@@ -527,13 +613,15 @@
       "proposedCheckIds": [
         "module/evidence/r28"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/evidence/r28"
+      ],
       "scope": "evidence",
       "sourceBinding": [
         "source-md"
       ],
       "status": "implemented-not-tested",
-      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
+      "reason": "D1任务在CI的真实D2预览中编译到Check；待业务反例和Pi案卷测试。"
     },
     {
       "id": "R29",
@@ -545,7 +633,7 @@
       "scope": "evidence",
       "sourceBinding": [],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | CI实际D2计划无此规则的Check；属于保留的tooling-blocked责任。",
       "gapId": "G-02"
     },
     {
@@ -556,14 +644,16 @@
       "proposedCheckIds": [
         "module/case/r30"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/case/r30"
+      ],
       "scope": "application",
       "sourceBinding": [
         "source-md",
         "source-cd"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "gapId": "G-08"
     },
     {
@@ -574,14 +664,16 @@
       "proposedCheckIds": [
         "module/case/r31"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/case/r31"
+      ],
       "scope": "application",
       "sourceBinding": [
         "source-md",
         "source-cd"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "gapId": "G-08"
     },
     {
@@ -592,13 +684,15 @@
       "proposedCheckIds": [
         "module/evidence/r32"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/evidence/r32"
+      ],
       "scope": "evidence",
       "sourceBinding": [
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
       "gapId": "G-03"
     },
     {
@@ -609,13 +703,15 @@
       "proposedCheckIds": [
         "module/workflow/r33"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/workflow/r33"
+      ],
       "scope": "workflow",
       "sourceBinding": [
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
       "gapId": "G-03"
     },
     {
@@ -626,14 +722,16 @@
       "proposedCheckIds": [
         "module/workflow/r34"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/workflow/r34"
+      ],
       "scope": "workflow",
       "sourceBinding": [
         "source-md",
         "source-law"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "provisionalGap": "G-RUNTIME-NOT-RUN"
     },
     {
@@ -648,13 +746,19 @@
         "module/operation-i03-borrow/r35",
         "module/operation-i03-excerpt/r35"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/operation-i01-copy/r35",
+        "module/operation-i01-read/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ],
       "scope": "operation",
       "sourceBinding": [
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
       "gapId": "G-04"
     },
     {
@@ -665,13 +769,15 @@
       "proposedCheckIds": [
         "module/case/r36"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/case/r36"
+      ],
       "scope": "application",
       "sourceBinding": [
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
       "gapId": "G-04"
     },
     {
@@ -682,14 +788,16 @@
       "proposedCheckIds": [
         "module/workflow/r37"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/workflow/r37"
+      ],
       "scope": "workflow",
       "sourceBinding": [
         "source-md",
         "source-law"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "provisionalGap": "G-RUNTIME-NOT-RUN"
     },
     {
@@ -700,13 +808,15 @@
       "proposedCheckIds": [
         "module/evidence/r38"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/evidence/r38"
+      ],
       "scope": "evidence",
       "sourceBinding": [
         "source-md"
       ],
       "status": "implemented-not-tested",
-      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
+      "reason": "D1任务在CI的真实D2预览中编译到Check；待业务反例和Pi案卷测试。"
     },
     {
       "id": "R39",
@@ -716,7 +826,9 @@
       "proposedCheckIds": [
         "module/case/r39"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/case/r39"
+      ],
       "scope": "application",
       "sourceBinding": [
         "source-md",
@@ -724,7 +836,7 @@
         "source-cd"
       ],
       "status": "policy-awaiting-confirmation",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收",
       "gapId": "G-08"
     },
     {
@@ -737,7 +849,7 @@
       "scope": "evidence",
       "sourceBinding": [],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | CI实际D2计划无此规则的Check；属于保留的tooling-blocked责任。",
       "gapId": "G-02"
     },
     {
@@ -748,13 +860,15 @@
       "proposedCheckIds": [
         "module/workflow/r41"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/workflow/r41"
+      ],
       "scope": "workflow",
       "sourceBinding": [
         "source-md"
       ],
       "status": "implemented-not-tested",
-      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
+      "reason": "D1任务在CI的真实D2预览中编译到Check；待业务反例和Pi案卷测试。"
     },
     {
       "id": "R42",
@@ -764,13 +878,15 @@
       "proposedCheckIds": [
         "module/case/r42"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/case/r42"
+      ],
       "scope": "workflow",
       "sourceBinding": [
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
+      "reason": "CI D2 preview已经核对本规则的Check路径；不等于语义、有效校规或Pi案卷验收 | 文本Check虽已编译，但缺少可执行的高级对象/阶段/证据关系；不得标记完整支持。",
       "gapId": "G-05"
     },
     {
@@ -785,13 +901,26 @@
         "module/operation-i03-borrow/r35",
         "module/operation-i03-excerpt/r35"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/operation-i01-copy/r35",
+        "module/operation-i01-read/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ],
       "scope": "operation",
       "sourceBinding": [
         "source-md"
       ],
       "status": "implemented-not-tested",
-      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
+      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。 | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "associatedCompiledCheckIds": [
+        "module/operation-i01-copy/r35",
+        "module/operation-i01-read/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ]
     },
     {
       "id": "X02",
@@ -808,8 +937,12 @@
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "gapId": "G-03"
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-03",
+      "associatedCompiledCheckIds": [
+        "module/evidence/r32",
+        "module/workflow/r33"
+      ]
     },
     {
       "id": "X03",
@@ -825,8 +958,11 @@
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "gapId": "G-02"
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-02",
+      "associatedCompiledCheckIds": [
+        "module/evidence/r32"
+      ]
     },
     {
       "id": "X04",
@@ -842,8 +978,11 @@
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "gapId": "G-07"
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-07",
+      "associatedCompiledCheckIds": [
+        "module/workflow/r37"
+      ]
     },
     {
       "id": "X05",
@@ -859,8 +998,11 @@
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "gapId": "G-03"
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-03",
+      "associatedCompiledCheckIds": [
+        "module/workflow/r33"
+      ]
     },
     {
       "id": "X06",
@@ -881,8 +1023,16 @@
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "gapId": "G-04"
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-04",
+      "associatedCompiledCheckIds": [
+        "module/case/r36",
+        "module/operation-i01-copy/r35",
+        "module/operation-i01-read/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ]
     },
     {
       "id": "X07",
@@ -909,8 +1059,22 @@
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "gapId": "G-05"
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-05",
+      "associatedCompiledCheckIds": [
+        "module/copy-i01-copy/r23",
+        "module/evidence/r38",
+        "module/operation-i01-copy/r09",
+        "module/operation-i01-copy/r12",
+        "module/operation-i01-read/r09",
+        "module/operation-i01-read/r12",
+        "module/operation-i02-read/r09",
+        "module/operation-i02-read/r12",
+        "module/operation-i03-borrow/r09",
+        "module/operation-i03-borrow/r12",
+        "module/operation-i03-excerpt/r09",
+        "module/operation-i03-excerpt/r12"
+      ]
     },
     {
       "id": "X08",
@@ -930,8 +1094,15 @@
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "gapId": "G-04"
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-04",
+      "associatedCompiledCheckIds": [
+        "module/operation-i01-copy/r35",
+        "module/operation-i01-read/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ]
     },
     {
       "id": "X09",
@@ -942,13 +1113,20 @@
         "module/workflow/r34",
         "module/workflow/r37"
       ],
-      "checkIds": [],
+      "checkIds": [
+        "module/workflow/r34",
+        "module/workflow/r37"
+      ],
       "scope": "workflow",
       "sourceBinding": [
         "source-md"
       ],
       "status": "implemented-not-tested",
-      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。"
+      "reason": "D1任务和预计Check路径已准备，但尚无真实D2编译结果；因此checkIds为空且不得当作映射已验收。 | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "associatedCompiledCheckIds": [
+        "module/workflow/r34",
+        "module/workflow/r37"
+      ]
     },
     {
       "id": "X10",
@@ -965,8 +1143,12 @@
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "gapId": "G-08"
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-08",
+      "associatedCompiledCheckIds": [
+        "module/case/r01",
+        "module/case/r39"
+      ]
     },
     {
       "id": "X11",
@@ -986,8 +1168,15 @@
         "source-md"
       ],
       "status": "tooling-blocked",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "gapId": "G-05"
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "gapId": "G-05",
+      "associatedCompiledCheckIds": [
+        "module/operation-i01-copy/r35",
+        "module/operation-i01-read/r35",
+        "module/operation-i02-read/r35",
+        "module/operation-i03-borrow/r35",
+        "module/operation-i03-excerpt/r35"
+      ]
     },
     {
       "id": "X12",
@@ -1003,8 +1192,36 @@
         "source-md"
       ],
       "status": "manual-only",
-      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping",
-      "provisionalGap": "G-RUNTIME-NOT-RUN"
+      "reason": "No D2 preview executed on this run; Check ID is predicted from source, not verified against compiled mapping | 已关联的Rxx Check仅作技术定位，非此正文不变量的独立运行结果；需独立gold复核。",
+      "provisionalGap": "G-RUNTIME-NOT-RUN",
+      "associatedCompiledCheckIds": [
+        "module/evidence/r38"
+      ]
     }
-  ]
+  ],
+  "technicalEvidence": {
+    "workflow": "D3 MD Agent A Technical Replay",
+    "runId": 38098657888,
+    "runUrl": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38098657888",
+    "testedCommit": "d2cced085d802feb7c7cd4a1cb41dea380687da2",
+    "artifact": "d3-md-agent-a-technical-38098657888-1",
+    "artifactId": 11686093144,
+    "planFingerprint": "19b615276bd3c64fbebe0ef97afd03841237502c25f3ae6698ba1fdcb091c0f2",
+    "bundleFingerprint": "12ef294151ef577247f3aa82c37d724f058cc9368bfffd6711918916f0be46e2",
+    "compiledCheckCount": 77,
+    "compiledRuleDutyCount": 39,
+    "uninstantiatedBlockedRuleIds": [
+      "R24",
+      "R29",
+      "R40"
+    ],
+    "operationSubjectsVerified": true,
+    "sourceBindingsVerified": true,
+    "cleanImportPlanEquivalent": true,
+    "advancedFailClosedVerified": true,
+    "independentGold": "NOT-RUN",
+    "onlineModelRun": "not-run",
+    "archivePiCaseRun": "NOT-RUN",
+    "note": "technical mapping is not independent source-quality acceptance"
+  }
 }

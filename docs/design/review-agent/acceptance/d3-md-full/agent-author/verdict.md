@@ -1,9 +1,18 @@
-# Agent A 自审结论：PARTIAL / NOT-RUN（未达到完整交付门槛）
+# Agent A 第二轮自审：TECHNICAL-REPLAY-PASS / BUSINESS-Q1-PARTIAL
 
-**已完成**：固定原MD SHA校验；42条R与50字段/14材料槽/15条件维度/16例外逐项索引；正文不变量X01-X12；独立建立单模板D1作者态JSON候选，非复制既有6条Check；拟定3个档案件、5个互相隔离的操作对象及Check/Source绑定；定位八类阻断并登记可复现步骤；十个合成反例的独立预期。
+## PASS（均有独立GitHub Actions真实执行）
 
-**未完成**：D1真实持久化及修订读取、D3真实锁检查/冻结库发现、D2真编译Preview、携包出口及独立导入、Pi合成执行与真实SourceRef/Run ID、全部CI、独立gold正式质量门禁。所有未执行项均如实NOT-RUN。阶段/替代/电子授权/复杂对象关系不能借自然语言任务视为执行型支持。
+- 固定工作区D1保存、读取修订1和2、父链摘要核对以及diff。
+- D3作者态validate与独立配置目录携包导出/导入；工作区、Rules、Source/Subject、previewFingerprint等对比无漂移。
+- D2真实编译**77个Check**，覆盖39个R级责任；逐item/operation的8个targets与所有对应sourceBindings完整匹配。
+- D2高级Claim/Evidence未支持输入实测`D2_UNMAPPED_ADVANCED`退出非0；`report-gap`是结构报告，`verifiedAgainstRun=false`。
+- Pi已有基础合成服务BDD：17 pass，0 fail。CI产物可下载，不能借此声明档案模板77个Check通过Pi。
 
-**验收边界**：`source-catalog.json`的完整索引只是业务分析输入，不证明技术能力；`workspaces/archive-r2.json`只是待CLI验证的真实结构JSON，不是已注册/发布模板。
+## OPEN / MUST NOT CLAIM
 
-**后续阻断**：环境内GitHub DNS不可用、D2认证证书和高级关系不可映射、现行CDUT校规及接口源缺失。此次不主动修改公共内核以绕过问题。
+- R24（有权档案证明操作）、R29（电子授权替代）、R40（合理历史/替代来源）**仍未编译到Check**，保留原责任与gap；其他已编译的文字Check中仍有真实的条件树、阶段、代理关系主体与证据替代缺口。
+- 现行校方制度和审批表未核实；`unverified-policy`的规则不可当成正式校规。
+- 原件CI哈希核验未运行（私有原件不上传）；前期私有本地原件核验已通过，命令保留。
+- **本档案全量Pi真实案卷和Run ID、在线模型、独立Gold的交叉业务验收均NOT-RUN。** 无可用的真实SourceRef/CaseID证明每个合成反例。
+
+**最终判断**：本轮针对性补测达成D1/D2/D3技术目标；`D3-MD-Q1` 完整业务质量仍PARTIAL，绝不签全面PASS。
