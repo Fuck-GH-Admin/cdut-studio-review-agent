@@ -149,4 +149,31 @@ describe('Independent MD-Q1 real authored archive Pi service probes',()=>{
       result:'TECHNICAL GUARD PASS / BUSINESS GOLD NOT-SCORED',
     })
   })
+  test('B Q02 dynamic two-operation case fails rather than silently inventing other A fixed targets',()=>{
+    const b=cases.get('Q02')
+    expect(b).toBeDefined()
+    const operationTypes=b.archiveItems.flatMap((i:any)=>i.operations.map((o:any)=>o.operation))
+    expect(operationTypes).toContain('view')
+    expect(operationTypes).toContain('copy')
+    const requestedTargets=selection.targets.filter(t=>['i01','i01/read','i01/copy'].includes(t.objectKey))
+    expect(requestedTargets).toHaveLength(3)
+    const dynamicSelection={...selection,targets:requestedTargets}
+    const caseInput=JSON.parse(readFileSync(join(aBase,'plans/case.json'),'utf8'))
+    caseInput.id='mdq1-b-q02-dynamic-target-test'
+    const {compileD2RuntimePlan}=require('./review-d2-runtime') as typeof import('./review-d2-runtime')
+    let error=''
+    try{compileD2RuntimePlan(aWorkspace,dynamicSelection,caseInput)}
+    catch(e){error=String(e instanceof Error ? e.message:e)}
+    // This is an author-workspace instantiation limitation: no extra B-case
+    // operation should be silently manufactured just to satisfy static modules.
+    expect(error).toContain('D2_SCOPE_MISSING')
+    write('Q02-dynamic-target-refusal',{
+      bCaseId:'Q02',requestedBOperations:operationTypes,adaptedObjectKeys:requestedTargets.map(t=>t.objectKey),
+      actualCompilerError:error,
+      actualD2DynamicCaseCreated:false,
+      interpretation:'Dynamic B-case selection with only its real targets is incompatible with A hard-wired 8-target module instance set. This is NOT acceptance of Q02 business behavior.',
+      verdict:'TOOLING_OR_AUTHOR_MODELING_GAP_REQUIRES_TRIAGE',
+    })
+  })
+
 })
