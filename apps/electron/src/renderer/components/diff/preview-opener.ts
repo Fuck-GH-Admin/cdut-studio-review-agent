@@ -13,7 +13,8 @@
 import * as React from 'react'
 import { getDefaultStore, useStore } from 'jotai'
 import { previewFileMapAtom, previewFilesByTabAtom, type PreviewFile } from '@/atoms/preview-atoms'
-import { agentSessionPathMapAtom } from '@/atoms/agent-atoms'
+import { agentSessionPathMapAtom, agentSessionsAtom } from '@/atoms/agent-atoms'
+import { canOpenOrdinaryWorkTab } from '@/lib/agent-tab-access'
 import { isAbsoluteFilePath } from '@/lib/file-utils'
 import {
   activeTabIdAtom,
@@ -73,6 +74,7 @@ export function openFilePreviewTab(
   file: PreviewFile,
   options: { activate?: boolean } = {},
 ): string {
+  if (!canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), sessionId)) return ''
   const normalizedFile = normalizePreviewFile(store, sessionId, file)
   store.set(previewFileMapAtom, (prev) => {
     const m = new Map(prev)
