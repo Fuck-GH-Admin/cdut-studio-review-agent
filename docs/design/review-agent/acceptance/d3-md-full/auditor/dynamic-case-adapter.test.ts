@@ -125,7 +125,8 @@ describe('D3-MD-Q1: independent dynamic object instantiation capability (NOT Age
       explanation:'This separate adapter creates fresh per-case D1 module instances using existing A module definitions and preserves source authority. It proves compilation potential only, not that A independently produced the transformation or that runtime semantically evaluates B conditions.'
     },null,2)+'\n')
     expect(pass+unsupported).toBe(30)
-    expect(unsupported).toBeGreaterThan(0)
-    expect(pass).toBeGreaterThan(0)
+    expect(unsupported).toBe(2)
+    expect(pass).toBe(28)
+    console.log('independent dynamic authoring trial: 28 cases compiled, 2 certified_copy deliberately unsupported')
   })
 })
