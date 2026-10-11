@@ -2863,6 +2863,7 @@ export function registerIpcHandlers(): void {
   }
   const assertBrowserSessionAccess = (senderId: number, sessionId: string): void => {
     assertMainRenderer(senderId)
+    assertOrdinaryAgentSession(sessionId)
     const session = getAgentSessionMeta(sessionId)
     if (!session) throw new Error('Agent 会话不存在。')
     // 自动任务与协作子会话同样可以使用受管浏览器；仅校验会话仍存在。
@@ -3068,6 +3069,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.GET_SDK_MESSAGES,
     async (_, id: string, opts?: { tail?: number; before?: number }): Promise<SDKMessage[] | import('./lib/agent-session-manager').SDKMessagePage> => {
+      assertOrdinaryAgentSession(id)
       return opts ? getAgentSessionSDKMessages(id, opts) : getAgentSessionSDKMessages(id)
     }
   )
@@ -3098,6 +3100,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.UPDATE_TITLE,
     async (_, id: string, title: string): Promise<AgentSessionMeta> => {
+      assertOrdinaryAgentSession(id)
       return updateAgentSessionUiMeta(id, { title, titleLockedAt: Date.now() })
     }
   )
@@ -3110,6 +3113,7 @@ export function registerIpcHandlers(): void {
       if (typeof sessionId !== 'string' || !sessionId.trim() || sessionId.length > 200) {
         throw new Error('Agent 会话标识无效')
       }
+      assertOrdinaryAgentSession(sessionId)
       if (typeof enabled !== 'boolean') {
         throw new Error(`无效的队列自动发送状态: ${String(enabled)}`)
       }
@@ -3145,6 +3149,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.REGENERATE_TITLE,
     async (_, id: string, channelId?: string, modelId?: string): Promise<AgentSessionMeta | null> => {
+      assertOrdinaryAgentSession(id)
       const result = await regenerateAgentTitle(id, channelId, modelId)
       return result?.session ?? null
     }
@@ -3184,6 +3189,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.TOGGLE_PIN,
     async (_, id: string): Promise<AgentSessionMeta> => {
+      assertOrdinaryAgentSession(id)
       const sessions = listAgentSessions(true)
       const current = sessions.find((s) => s.id === id)
       if (!current) throw new Error(`Agent session not found: ${id}`)
@@ -3201,6 +3207,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.CLEAR_COMPLETION_STATE,
     async (_, id: string): Promise<AgentSessionMeta> => {
+      assertOrdinaryAgentSession(id)
       const sessions = listAgentSessions(true)
       const current = sessions.find((s) => s.id === id)
       if (!current) throw new Error(`Agent session not found: ${id}`)
@@ -3216,6 +3223,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.SET_COMPLETION_STATE,
     async (_, id: string): Promise<AgentSessionMeta> => {
+      assertOrdinaryAgentSession(id)
       const sessions = listAgentSessions(true)
       const current = sessions.find((s) => s.id === id)
       if (!current) throw new Error(`Agent session not found: ${id}`)
@@ -3228,6 +3236,7 @@ export function registerIpcHandlers(): void {
     AGENT_IPC_CHANNELS.UPDATE_INTERRUPTION_STATE,
     (_e, input: UpdateAgentInterruptStateInput): AgentSessionMeta => {
       const { sessionId, state } = input
+      assertOrdinaryAgentSession(sessionId)
       return updateAgentSessionUiMeta(sessionId, state
         ? { lastInterruptReason: state.reason, lastInterruptLabel: state.label, lastInterruptAt: state.at }
         : { lastInterruptReason: undefined, lastInterruptLabel: undefined, lastInterruptAt: undefined })
@@ -3238,6 +3247,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.TOGGLE_ARCHIVE,
     async (_, id: string): Promise<AgentSessionMeta> => {
+      assertOrdinaryAgentSession(id)
       const sessions = listAgentSessions(true)
       const current = sessions.find((s) => s.id === id)
       if (!current) throw new Error(`Agent session not found: ${id}`)
@@ -3291,6 +3301,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.GET_SESSION_PROCESS_COUNT,
     async (event, sessionId: string): Promise<number> => {
+      assertOrdinaryAgentSession(sessionId)
       assertSensitiveAgentIpcSender(event)
       const owned = await listOwnedRuntimeProcesses(sessionId)
       const keys = new Set<number>()
@@ -3307,6 +3318,8 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.LIST_SESSION_PROCESSES,
     async (event, input: ListSessionProcessesInput): Promise<SessionProcessInfo[]> => {
+      if (!input || typeof input.sessionId !== 'string') throw new Error('无效的会话标识')
+      assertOrdinaryAgentSession(input.sessionId)
       assertSensitiveAgentIpcSender(event)
       const results = new Map<number, SessionProcessInfo>()
       const owned = await listOwnedRuntimeProcesses(input.sessionId)
@@ -3344,6 +3357,8 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.KILL_PROCESS,
     async (event, input: KillProcessInput): Promise<{ ok: boolean; message: string }> => {
+      if (!input || typeof input.sessionId !== 'string') throw new Error('无效的会话标识')
+      assertOrdinaryAgentSession(input.sessionId)
       assertSensitiveAgentIpcSender(event)
       if (!input || typeof input.pid !== 'number') {
         throw new Error('无效的 kill 目标')
@@ -3381,6 +3396,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.FORK_SESSION,
     async (_, input: ForkSessionInput): Promise<AgentSessionMeta> => {
+      assertOrdinaryAgentSession(input.sessionId)
       const session = await forkAgentSession(input)
       // Fork 直接在 session manager 内创建元数据，绕过 CREATE_SESSION 的镜像生命周期。
       // 将它作为新的桌面会话处理，确保 Pi fork 也会立即获得可双向续聊的飞书群。
@@ -3395,6 +3411,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.REWIND_SESSION,
     async (_, input: RewindSessionInput): Promise<RewindSessionResult> => {
+      assertOrdinaryAgentSession(input.sessionId)
       return rewindAgentSession(
         input.sessionId,
         input.assistantMessageUuid,
@@ -3860,6 +3877,7 @@ export function registerIpcHandlers(): void {
     AGENT_IPC_CHANNELS.STOP_AGENT,
     async (event, sessionId: string): Promise<void> => {
       assertSensitiveAgentIpcSender(event)
+      assertOrdinaryAgentSession(sessionId)
       feishuBridgeManager.stopSessionMirrorRun(sessionId)
       const goal = goalSessionService.get(sessionId)
       const ownedByGoal = isGoalRunActive(sessionId, goal?.activeRunId)
@@ -3879,6 +3897,8 @@ export function registerIpcHandlers(): void {
     AGENT_IPC_CHANNELS.QUEUE_MESSAGE,
     async (event, input: import('@profer/shared').AgentQueueMessageInput): Promise<string> => {
       assertSensitiveAgentIpcSender(event)
+      if (!input || typeof input.sessionId !== 'string') throw new Error('会话标识无效')
+      assertOrdinaryAgentSession(input.sessionId)
       return queueAgentMessage(input, event.sender)
     }
   )
@@ -3889,6 +3909,8 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.GET_TASK_OUTPUT,
     async (event, input: GetTaskOutputInput): Promise<GetTaskOutputResult> => {
+      if (!input || typeof input.sessionId !== 'string') throw new Error('无效的会话标识')
+      assertOrdinaryAgentSession(input.sessionId)
       assertSensitiveAgentIpcSender(event)
       if (!input || typeof input !== 'object') throw new Error('无效的后台任务查询参数')
       if (typeof input.sessionId !== 'string' || !input.sessionId.trim() || input.sessionId.length > 200) {
@@ -3951,6 +3973,8 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.STOP_TASK,
     async (event, input: StopTaskInput): Promise<void> => {
+      if (!input || typeof input.sessionId !== 'string') throw new Error('无效的会话标识')
+      assertOrdinaryAgentSession(input.sessionId)
       assertSensitiveAgentIpcSender(event)
       if (!input || typeof input !== 'object') throw new Error('无效的后台任务停止参数')
       if (typeof input.sessionId !== 'string' || !input.sessionId.trim() || input.sessionId.length > 200) {
@@ -3974,6 +3998,7 @@ export function registerIpcHandlers(): void {
         throw new Error(`无效的权限模式: ${mode}`)
       }
       // 会话不存在时直接抛错（避免 updateAgentSessionMeta 的通用异常被降级为 warn）
+      assertOrdinaryAgentSession(sessionId)
       if (!getAgentSessionMeta(sessionId)) {
         throw new Error(`Agent 会话不存在: ${sessionId}`)
       }
@@ -3999,6 +4024,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.UPDATE_SESSION_CODEX_FAST_MODE,
     async (_, sessionId: string, enabled: boolean): Promise<AgentSessionMeta> => {
+      assertOrdinaryAgentSession(sessionId)
       if (typeof enabled !== 'boolean') throw new Error(`无效的 Codex Fast Mode 状态: ${String(enabled)}`)
       if (!getAgentSessionMeta(sessionId)) throw new Error(`Agent 会话不存在: ${sessionId}`)
       if (isAgentSessionActive(sessionId)) throw new Error('Agent 正在运行，完成后再切换快速模式')
@@ -4010,6 +4036,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.UPDATE_SESSION_OPENAI_THINKING,
     async (_, sessionId: string, level: AgentThinkingLevel | null): Promise<AgentSessionMeta> => {
+      assertOrdinaryAgentSession(sessionId)
       const validLevels: (AgentThinkingLevel | null)[] = [null, 'off', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max']
       // level 为 null 表示「使用全局默认」（清除会话级覆盖）
       if (level !== null && !validLevels.includes(level)) {
@@ -4026,6 +4053,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.UPDATE_SESSION_AGENT_EFFORT,
     async (_, sessionId: string, effort: AgentEffort | null): Promise<AgentSessionMeta> => {
+      assertOrdinaryAgentSession(sessionId)
       const validEfforts: (AgentEffort | null)[] = [null, 'low', 'medium', 'high', 'max']
       if (effort !== null && !validEfforts.includes(effort)) {
         throw new Error(`无效的推理强度: ${String(effort)}`)
@@ -4048,6 +4076,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.UPDATE_SESSION_AGENT_RUNTIME,
     async (event, sessionId: string, runtime: AgentRuntime): Promise<AgentSessionMeta> => {
+      assertOrdinaryAgentSession(sessionId)
       assertSensitiveAgentIpcSender(event)
       if (typeof sessionId !== 'string' || !sessionId.trim() || sessionId.length > 200) {
         throw new Error('Agent 会话标识无效')
@@ -4512,6 +4541,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.GET_SESSION_PATH,
     async (_, _workspaceId: string, sessionId: string): Promise<string | null> => {
+      assertOrdinaryAgentSession(sessionId)
       const session = getAgentSessionMeta(sessionId)
       if (!session) return null
       const ws = session.workspaceId ? getAgentWorkspace(session.workspaceId) : undefined
