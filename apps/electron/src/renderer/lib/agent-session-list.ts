@@ -105,7 +105,7 @@ export function upsertAgentSessionProjection(
     lastInterruptLabel: projection.lastInterruptLabel ?? undefined,
     lastInterruptAt: projection.lastInterruptAt ?? undefined,
   }
-  const others = sessions.filter((session) => session.id !== projection.id)
+  const others = sessions.filter((session) => session.id !== projection.id && !isReviewOwnedAgentSession(session))
   return sortAgentSessionsByUpdatedAtDesc([next, ...others])
 }
 
@@ -120,7 +120,7 @@ export function upsertAgentSession(
   const merged: AgentSessionMeta = existing
     ? { ...existing, ...incoming }
     : incoming
-  const others = sessions.filter((session) => session.id !== incoming.id)
+  const others = sessions.filter((session) => session.id !== incoming.id && !isReviewOwnedAgentSession(session))
   return sortAgentSessionsByUpdatedAtDesc([merged, ...others])
 }
 
