@@ -1,5 +1,7 @@
 # 27｜直接案卷审核：复用现有 Pi 的后台会话最小实施规范
 
+> **跨会话接手先读**：[30｜当前项目与 PR #21 交接指南](30-background-session-handoff.md) → [31｜复制即用的接手/小批次提示词](31-background-session-continuation-prompts.md) → 本文件实施规范 → [29｜验收证据及 LIVE-01～08](29-background-session-preflight-audit.md)。**P04-S01 已受控 PASS；接下来从 P04-S02 继续，P04 阶段未全部完成。**
+
 > 2026-10-12 缩减版（原提案的过度设计从当前实施基线移除；历史建议仍可通过 Git 历史查看）。
 > 代码核对：`main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`。本文件是 **v1 目标与允许改动范围**，不是实现完成声明。
 > 开工门槛、遗漏风险与证据状态以 [29 号开工前审计](29-background-session-preflight-audit.md) 为准；现有业务成果以 [28 号交付状态](28-review-stage-delivery-status.md) 为准。
