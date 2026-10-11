@@ -7,6 +7,7 @@ on:
       - 'apps/electron/src/main/lib/review/review-authoring-*.ts'
       - 'apps/electron/src/main/lib/review/template-store.ts'
       - 'apps/electron/scripts/review-authoring-v1.ts'
+      - 'docs/design/review-agent/fixtures/d3-r0-handoff-manifest.json'
       - '.github/workflows/review-d1-tests.yml'
   workflow_dispatch:
 
