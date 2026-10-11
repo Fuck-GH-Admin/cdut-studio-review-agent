@@ -22,7 +22,7 @@
 | 运行状态与历史 | `run-store-v2.ts`、现有工作台结果与待处理项 | V2 运行记录是唯一业务状态来源；前台只做简单状态投影 |
 | 停止 | `stopAgentAndWait(sessionId)` | 审核入口必须先校验当前绑定的 run，再真正停止并等待释放 |
 | 进程重启 | `markStaleRunsInterrupted`、原 Pi resume | 既有运行标记中断，检查点保留；恢复必须由用户发起，不假装后台持续运行 |
-| 审核工具 | `pi-review-ops-tools.ts`、既有 `toolProfile:'review'` 与账本压缩 | P02 受控探针已证明三个 direct 审核工具、图像读取、续审和摘要可复用；**strict profile 不会过滤自定义工具**，接入前必须由 Main 绑定运行的精确白名单裁剪，并处理扫描件原件预览 |
+| 审核工具 | `pi-review-ops-tools.ts`、既有 `toolProfile:'review'` 与账本压缩 | P02 已在本 Draft 分支实现活动案卷绑定后的精确白名单及五工具权限闸门，复用原有 V2 图像/续审/账本压缩和原件预览服务；受控探针已过，**真实 Pi 与扫描 PDF Electron 视觉回放仍需验收** |
 
 **核心决定**：只新增一个很薄的 Main 审核调用适配层，不重新实现 session manager、message store、permission service、run ledger 或 agent scheduler。
 
@@ -59,7 +59,7 @@ owner?: { kind: 'review-case'; caseId: string }
 
 Main 发起执行时仍需要现有窗口的 `webContents` 用于运行事件转发，**不等于打开 Agent Tab**；若不满足条件，应 fail closed，不得通过虚构窗口/绕过 SDK 解决。
 
-**P02 安全接线要求**：只能由当前有效的 `review-case` 主进程绑定触发严格 `toolProfile:'review'`；`piCustomTools` 在传给 Adapter 之前先按 exact name 保留 direct 案卷工具，`CompactContext` 由 Adapter 自带；不得把其他 `buildPiBuiltinTools`、`buildPiMcpTools`、云、预设修改或任意文件操作工具带入。扫描型 PDF 的 `inspect_preview` 需要复用既有工具并限制为当前案卷真实原件；若安全范围暂不可保证，则标“待人工核验”，不可宣称等效全材料视觉审核。
+**P02 接线已存在于本 Draft 分支**：仅有效 `review-operator` / 用户发起 / 活动案卷指派使用严格 `toolProfile:'review'`。主进程 `selectDirectReviewStrictTools` 只向 Adapter 提供三案卷工具与 `review_inspect_original`，`CompactContext` 由 Adapter 自带；普通 MCP、Bash、Write、聊天问答均不进入受控工具清单。案卷原件工具只接收 `documentVersionId`，复用已有 `executeAgentPreviewTool`，并在渲染前后校验绑定。主进程权限只对这五项工具按有效指派放行，过期指派与陌生工具都拒绝。**这些属于 P02 的接线验证，不表示后台 UI 已实现；扫描 PDF 的真实 Electron renderer / provider Pi E2E 仍 NOT-RUN。**
 
 ### 4.3 Renderer 只改必要的调用点
 
@@ -82,11 +82,13 @@ Main 发起执行时仍需要现有窗口的 `webContents` 用于运行事件转
 
 **已通过的局部验证**：P01 复用测试 [`review-background-reuse.probe.test.ts`](../../../apps/electron/src/main/lib/review/review-background-reuse.probe.test.ts) 把真实 `runAgent` 函数体与真实 V2 运行存储/指派连接，使用受控模拟编排器，五种情况均通过：完整提交、部分完成、错误、取消、busy 不误收尾。PR CI 的 [运行 #38164270451](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270451) 验证了 3714 pass / 5 skip / 0 fail，并通过类型、边界与 Electron 构建。此结果**不等于真实 Pi/桌面 E2E**。
 
-**仍未完成的门禁**：真实 Pi 模型调用、严格 `toolProfile:'review'` 的直接审核兼容性、视图切离后继续运行、Pocket/桌面所有入口隔离、过期 stop 竞争、重启与删除、正常 Agent 跨路径回归。详见 [29 号 P01–P08](29-background-session-preflight-audit.md)。
+**P02 最新证据**：在 `42fd57fd` 的 [PR CI](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38173768799) 中受控工具/账本/权限/原件预览探针 **14/14 PASS**，全仓 3728 pass / 5 skip / 0 fail，Electron 构建、typecheck、边界检查通过。真实 Pi/model 与真实扫描型 PDF 的 Electron 渲染仍 NOT-RUN。
+
+**仍未完成的门禁**：P02 真实模型/原件全页视觉运行；P03 跨页面执行、P04–P05 Pocket/桌面普通入口隔离、P06 迟到 stop、P07 重启与删除、P08 普通 Agent 回归，均需后续独立证据。详见 [29 号 P01–P08](29-background-session-preflight-audit.md)。
 
 ## 6. 后续严格按这个顺序执行
 
-1. **验证优先**：29 号 P02 的 direct 工具兼容性已有受控证据；下一步先验证上游工具白名单 + 扫描件视觉范围，再做真实 Pi 案卷实验和切页 Main 实验。任一不通过，先调整接线，不立刻写完整 UI。
+1. **完成 P02 的真实运行验收**：工具精确筛选、权限门禁、案卷限定预览已接线并有受控测试；下一步只补隔离合成案卷的真实 Pi/扫描 PDF Electron 预览。未有真实证据前保持 P02-LIVE-E2E NOT-RUN，不推进 P03/完整 UI。
 2. **Session 归属及 Guard**：先写普通入口的拒绝/可见性负例，再以最小字段增加 owner；不可更改普通 Agent 既有公共行为。
 3. **薄 Bridge**：仅接入现有 `runAgent`、`preparePiReviewRunV2`、`finishPiReviewRunV2`、`stopAgentAndWait`。逐个测试成功、失败、取消、竞态、重启、删案。
 4. **最少 UI 改动**：仅修改审核触发与业务状态；Pocket、历史 Tab、事件回填与普通聊天逐项回归。
