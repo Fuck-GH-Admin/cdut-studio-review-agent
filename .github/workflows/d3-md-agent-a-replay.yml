@@ -50,7 +50,6 @@ jobs:
     timeout-minutes: 25
     env:
       ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
-      PROFER_CONFIG_DIR: ${{ runner.temp }}/d3-md-agent-a-pi
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
@@ -64,7 +63,8 @@ jobs:
       - name: Run Pi synthetic D3 and D2 service tests (separate from MD conversion)
         shell: bash
         run: |
-          mkdir -p "$RUNNER_TEMP/d3-md-agent-a-pi-evidence"
+          export PROFER_CONFIG_DIR="$RUNNER_TEMP/d3-md-agent-a-pi"
+          mkdir -p "$PROFER_CONFIG_DIR" "$RUNNER_TEMP/d3-md-agent-a-pi-evidence"
           set +e
           bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-pi-integration.test.ts apps/electron/src/main/lib/review/review-d2-runtime.test.ts > "$RUNNER_TEMP/d3-md-agent-a-pi-evidence/pi-stdout.log" 2> "$RUNNER_TEMP/d3-md-agent-a-pi-evidence/pi-stderr.log"
           ec=$?
