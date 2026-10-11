@@ -13,18 +13,19 @@
 - `apps/electron/src/main/lib/review/review-background-reuse.probe.test.ts`：真实 `runAgent()` **函数体**与真实 V2 案卷/指派/存储连通；使用受控模拟编排器（非真实 Pi 模型），完整提交、部分完成、错误、取消、busy 五项均 **PASS**。不调用 `openSession`，模拟 WebContents 只是运行事件接收器。
 - [PR CI #38164270451](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270451)，基线 `1e076ea84889d8f29aaff2deffe1078e1c57c1ff`：3714 pass、5 skip、0 fail；类型检查、架构边界、皮肤契约与 Electron main/preload/renderer 构建成功。
 - [D2 Scoped Pi CI #38164270457](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270457) 与 [Review Baseline CI #38164270496](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270496) 均成功。
-- **P01 单元契约已验证，真实 Pi / Electron 仍 NOT-RUN；P02 兼容性探针已有 7/7 PASS（见下），但主进程白名单和扫描 PDF 视觉兜底未接通，**P02 整体 BLOCKED**；P03–P07 NOT-RUN；P08 仅现有普通 Agent 回归基线 PASS，新功能回归 NOT-RUN。** 后续 HEAD 需重新检查 CI，不能把以上数字冒充不同提交的验证结果。
+- **P01 单元契约已验证，真实 Pi / Electron 仍 NOT-RUN；P02 受控工具/接线探针 14/14 PASS，主进程白名单及案卷限定原件预览已在本 Draft 分支接通；但真实 Pi 模型轮次与真实扫描 PDF Electron 渲染未运行，**P02 完整 E2E 门禁仍 BLOCKED**；P03–P07 NOT-RUN；P08 仅现有普通 Agent 回归基线 PASS，新功能回归 NOT-RUN。** 后续 HEAD 需重新检查 CI，不能把以上数字冒充不同提交的验证结果。
 
-### P02 的已验证兼容性与必须补齐的缺口
+### P02 验证结论：接口已接通，真实执行仍待验收
 
-- **P02 受控探针（已通过）**：[`review-strict-profile.p02.probe.test.ts`](../../../apps/electron/src/main/lib/review/review-strict-profile.p02.probe.test.ts) 在提交 `ddb312fc81bce68893b8fc0185e4c463b81ffb9a` 通过 **9/9**。覆盖现有 direct binding 仅提供 `review_read_documents`/`review_inspect_document_image`/`review_submit_result` 三项工具、真实 V2 正文/PNG 视觉读取与回执、提交缺项→部分完成→同 runId 续交、拒绝非用户轮次写入、跨案 documentVersionId 不可读取、过期指派不可提交、持久账本压缩摘要、空闲压缩阈值及严格档案构造。[`PR CI #38171785352`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38171785352) **SUCCESS**，3723 pass / 5 skip / 0 fail；它是受控 Bun 工具/ledger 测试，不是 Pi 模型调用或真实 Electron 视觉预览。
-- **P02 两项负例已通过**：禁止跨案 documentVersionId 读取，以及换绑续审后旧 assignment 不得提交，均在上面的最新 PR CI 中取得 PASS；这验证了现有业务工具的案卷与轮次绑定，不表示外部普通会话入口已被隔离。
-- **已查明的真实接线缺口（必须阻断放行）**：
-  1. 现有直接审核走 `AgentOrchestrator` 的普通 `piCustomTools` 构造路径，**没有**给 `PiAgentAdapter` 传入 `toolProfile:'review'`。
-  2. Pi Adapter 的 `toolProfile:'review'` 仅去掉默认文件/命令工具和 Proma 产品核心工具；**上游 `customTools` 全部原样包装注册**，不是安全白名单。直接审核的普通 `buildPiBuiltinTools` 可能继续提供 `inspect_preview`、预设/产品/云工具，另有 `buildPiMcpTools`。须先在可信 Main/编排入口从**已验证的 activeReviewBinding** 选出具体允许的工具名称，再允许 strict profile 消费，且通过“恶意 MCP / 普通写入命令未挂载”的负例。不要通过改变所有普通 Agent 的工具注册规则完成本修复。
-  3. 现有审核提示词让扫描 PDF/解析失败材料使用 `inspect_preview`；严格三审核工具没有对**不可解析原件视觉页**的等价查看能力。首选复用现有 `inspect_preview` 的案卷原件范围收缩，不提供任意文件系统路径访问；如果不能安全接入，明确标记此类材料待人工核对而不是伪造“已读取/通过”，并在此处记录业务覆盖降级。
-  4. `contextPolicy:{kind:'review',caseId,runId}` 已接账本压缩，`autoCompactWhenIdle` 和 `CompactContext` 已存在；需真实 Pi 续审/压缩试验保证不会把旧摘要当证据、不会重复工具或丢失指派。
-- **P02 放行标准**：受控工具列表精确可枚举、危险工具拒绝、业务图像读取+扫描件路径边界明确、真实受控 Pi 运行能提交与续审、压缩不伪造审核终态。任一未证明则只能写 PARTIAL/BLOCKED，不能标为 PASS。
+- **提交与证据**：在 `42fd57fd5d751cbee2416de6cc16ff03b0493415`，[`review-strict-profile.p02.probe.test.ts`](../../../apps/electron/src/main/lib/review/review-strict-profile.p02.probe.test.ts) **14/14 PASS**；[PR CI #38173768799](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38173768799) **SUCCESS**，全仓 **3728 pass / 5 skip / 0 fail**，typecheck / boundaries / skin / Electron main+preload+renderer 构建均成功；[D2 CI #38173768773](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38173768773) 与 [Review Baseline #38173768777](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38173768777) 均成功。
+- **最小生产接线（仅 Draft PR #21）**：
+  1. `agent-orchestrator.ts` 仅对 `review-operator + triggeredBy=user + getPiReviewBindingForSession` 的活动案卷轮次传 `toolProfile:'review'`，并调用 `selectDirectReviewStrictTools`。普通 Pi 仍走原有 builtin + MCP 注册路径，**本案不将额外 MCP 传给 Adapter**。
+  2. `review-strict-pi-tools.ts` 只允许 `review_read_documents`、`review_inspect_document_image`、`review_submit_result` 和 `review_inspect_original`；`CompactContext` 由 Pi Adapter 自带。缺失或重复审核工具 **fail closed**。`auto` 权限对有效案卷指派只放行上述五个工具，禁止技术弹窗挂起，其余全部拒绝。
+  3. 原件视觉工具只收 `documentVersionId`，用 V2 当前激活材料、realpath 及案卷根目录验证后，调用原有 `executeAgentPreviewTool`/渲染服务；异步渲染结束后重新验证 `caseId/sessionId/runId/assignmentId`，才登记 V2 预览回执。无任意文件路径入参、跨案读取或过期指派写入。提示词已改用 `review_inspect_original`。
+  4. 原有 V2 正文/PNG 图像读取、部分提交、跨轮续审、检查点摘要与空闲压缩都复用且有独立受控探针。
+- **验证范围限制**：探针直接执行真实审核工具/V2 持久化与路径授权，Pi 严格工具装配走已存在函数的受控构造测试；预览使用受控渲染器返回假页面图像。**没有在真实 Electron 隐藏 renderer 中打开扫描 PDF、没有真实 provider/model 的 Pi 完整工具调用，也没有跨视图运行。** 因此本轮只能标记 **P02-SAFE-WIRING PASS / P02-LIVE-E2E NOT-RUN**。不能把全仓 CI 通过等同于这些 E2E 成功。
+- **剩余 P02 门禁**：使用隔离 `PROFER_CONFIG_DIR` 和虚构合成案卷，实际启动 Pi，确认模型真的收到且只收到受控工具、完成一次正文及扫描 PDF 原件审查、提交/续审/上下文压缩，并验证真实预览结果与材料覆盖账本；按真实 API 费用、凭据授权和可用测试环境执行。若无法运行就继续保留 **BLOCKED**，不能默认为 PASS。
+- **回归守护**：此次接线属于现有直接案卷审核的行为变化；虽只有 Draft 分支，仍需真实桌面回放，确认原先的图像、PDF、预览及完成状态没有因为严控工具而失效。普通 Agent/批量 A/B/C 不受本案逻辑分支影响，仍需在最终验收回归中确认。
 
 ## 源码事实与影响边界
 
@@ -48,7 +49,7 @@
 
 1. **首版任务类型**：只覆盖用户主动点击的单案“开始 / 更新 / 重审 / 停止”，不改批量队列与普通聊天。
 2. **中间交互**：建议 v1 不提供通用 Agent 中途问答/权限审批；使用严格审核工具集，缺材料或不清楚的事实写为待补件、待核实；需交互时在本轮结束后的案卷业务动作中处理。若不接受此裁剪，必须先设计完整的异步业务待办/响应/超时/权限身份契约，再开工。
-3. **工具隔离**：P02 证明三审核工具、账本和压缩可以复用，但 `toolProfile:'review'` **不会过滤上游 customTools**。未来在有效 review binding 存在时仅选三项 direct ops + `CompactContext` 与必要的**案卷范围受限**原件视觉预览；禁止带入其他 MCP、云、预设变更、Write/Bash/Read 或普通 Chat 互动工具。需先验证扫描 PDF 的视觉兜底是否兼容，否则明确人工核验降级并取得产品认可。
+3. **工具隔离**：`toolProfile:'review'` **自身不会过滤上游 customTools**；本 Draft 已在有效 active binding 下用 `selectDirectReviewStrictTools` 严格筛为三案卷工具 + 案卷版号视觉预览，由 Adapter 加 `CompactContext`；Main 权限只放行这五项，其它 MCP/云/预设/Write/Bash/Read 不传入或被拒绝。扫描 PDF 已有路径授权与受控模拟预览，**真实 Electron 全页视觉回放仍是 P02 必要门禁**。
 4. **会话生命周期**：专用 Main coordinator 是单一启动、停止和状态拥有者；新会话用由 Main 设置、不可通过普通 IPC 覆盖的 owner，绑定单一案卷；禁止普通 send、queue、fork、move、archive、delete、权限修改等入口对它操作。
 5. **会话隐私**：服务端拥有非公开完整查询；普通 UI / Pocket / 消息搜索 / 会话引用 / 归档与统计 / 通知 / 事件重放均不包含内部会话。原始运行 transcript 仍为审计材料保留，但需受授权诊断接口才可取。
 6. **前置输入准备**：v1 保留当前 Renderer 驱动的 HTML/EML 解析修复、事项识别、V2 同步；这些属于“准备阶段”，**不**承诺切换页面后还能继续。仅当准备完成、Pi 被 Main 成功受理后，才进入本 PR 的后台运行保障。禁止将完整点击流程伪称全链路后台化。
@@ -65,7 +66,7 @@
 | ID | 预验证 | 阻断条件 |
 | --- | --- | --- |
 | P01 | **契约探针 PASS（5/5）**：真实 `runAgent()` 函数体、V2 run/assignment 在受控模拟编排器里覆盖完整提交、部分完成、失败、取消、busy；**真实 Pi 和 Electron UI NOT-RUN** | 不能据此认定真实模型已跑通；尚须最小真实 Main/Pi 案卷实验检验无 Tab 启动、工具提交及失败收尾 |
-| P02 | **PARTIAL/BLOCKED**：已有真实 direct tool/V2 ledger 和严格档案受控探针；**并未**在 Orchestrator 实际接入安全白名单，也没有扫描 PDF 案卷限定预览和真实 Pi E2E | 若 `toolProfile:'review'` 被当成上游 customTools 白名单、原件预览越界或无法读取扫描型材料，就不得放行 |
+| P02 | **SAFE-WIRING PASS / LIVE-E2E BLOCKED**：严格工具白名单、案卷限定预览委托、后验轮次核验、主进程权限闸门和 V2 续审/压缩探针均已通过。**真实模型调用、真实扫描 PDF Electron 渲染未运行** | 在合成案卷的实际 Pi/桌面测试证明前不能宣称 P02 全部完成，尤其不能据受控 renderer 假图片标记真实视觉能力通过 |
 | P03 | **缩减 v1 范围**：预处理结束且 Pi 已受理后，切页/重新进入案卷不影响 Main 的 Pi 运行；同案重复点击、切案、停止/重启与旧结果不能串案 | Pi 已受理后仍依赖页面挂载；重复建 run、串案或过期结果覆盖 |
 | P04 | 内部 session 在桌面侧栏、搜索、归档、最近、Tab 恢复、异步 upsert、引用中均不可见；旧普通会话行为保持 | 任一入口重新出现内部会话、破坏普通会话竞态保护 |
 | P05 | Pocket 列表、按 ID 读取与变更、WS 实时事件、事件重放与远程搜索完全隔离；普通会话仍可使用 | 任一 API 通过内部 sessionId 读取/控制或记录敏感事件到远程重放 |
