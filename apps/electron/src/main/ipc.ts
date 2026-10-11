@@ -130,7 +130,7 @@ import type {
   BrowserStartPageState,
   BrowserAddBookmarkInput,
 } from '@profer/shared'
-import { KNOWLEDGE_IPC_CHANNELS } from '@profer/shared'
+import { KNOWLEDGE_IPC_CHANNELS, isReviewOwnedAgentSession } from '@profer/shared'
 import { CDUT_AI_CLASS_IPC_CHANNELS, CDUT_ZONE_IPC_CHANNELS, STUDY_IPC_CHANNELS, YANHU_EXPRESS_IPC_CHANNELS, type CdutGatekeeperDecision, type CdutLoginInput, type CdutMutationConfirmResult, type StudyDocumentQueryInput, type StudyGraphGenerateInput, type StudyIngestDocumentsInput, type StudySearchKnowledgeInput, type StudySetDocumentsActiveInput, type StudyToggleDocumentActiveInput, type YanhuCdpInput, type YanhuCdpResult, type YanhuCloseRightInput, type YanhuCreateTabInput, type YanhuNavigateInput, type YanhuReorderTabsInput, type YanhuSyncThemeInput, type YanhuTabRefInput, type YanhuViewLayout } from '@profer/shared'
 import type { UserProfile, AppSettings } from '../types'
 import { getRuntimeStatus, getGitRepoStatus, reinitializeRuntime } from './lib/runtime-init'
@@ -272,6 +272,7 @@ import {
 import { broadcastPlanningChanged } from './lib/planning-events'
 import {
   listAgentSessions,
+  assertOrdinaryAgentSession,
   createAgentSession,
   ensureProjectDraftAgentSession,
   getAgentSessionMeta,
@@ -2633,7 +2634,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.LIST_SESSIONS,
     async (_, includeArchived?: boolean): Promise<AgentSessionMeta[]> => {
-      const sessions = listAgentSessions(includeArchived ?? false)
+      const sessions = listAgentSessions(includeArchived ?? false).filter((session) => !isReviewOwnedAgentSession(session))
       // 启动所有已有附加目录的文件监听
       for (const session of sessions) {
         if (session.attachedDirectories) {
@@ -2662,7 +2663,8 @@ export function registerIpcHandlers(): void {
     AGENT_IPC_CHANNELS.GET_SESSION_META,
     async (_, id: string): Promise<AgentSessionMeta | null> => {
       if (typeof id !== 'string' || !id.trim()) return null
-      return getAgentSessionMeta(id) ?? null
+      const meta = getAgentSessionMeta(id)
+      return isReviewOwnedAgentSession(meta) ? null : meta ?? null
     }
   )
 
@@ -3123,6 +3125,7 @@ export function registerIpcHandlers(): void {
     AGENT_IPC_CHANNELS.UPDATE_SESSION_MODEL,
     async (event, id: string, channelId?: string, modelId?: string): Promise<AgentSessionMeta> => {
       assertSensitiveAgentIpcSender(event)
+      assertOrdinaryAgentSession(id)
       if (isAgentSessionActive(id)) {
         throw new Error('Agent 正在运行，完成后再切换模型')
       }
@@ -3151,6 +3154,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.DELETE_SESSION,
     async (_, id: string): Promise<void> => {
+      assertOrdinaryAgentSession(id)
       return agentSessionDeletionCoordinator.delete(id, {
         beginDeletion: beginAgentSessionDeletion,
         endDeletion: endAgentSessionDeletion,
@@ -3267,6 +3271,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.MOVE_SESSION_TO_WORKSPACE,
     async (_, input: MoveSessionToWorkspaceInput): Promise<AgentSessionMeta> => {
+      assertOrdinaryAgentSession(input.sessionId)
       // 渲染进程的 running 状态可能比主进程 activeSessions 清理更早变为 false
       // （STREAM_COMPLETE 在 finally 之前发送），短暂等待后重试一次
       if (isAgentSessionActive(input.sessionId)) {
@@ -3763,6 +3768,8 @@ export function registerIpcHandlers(): void {
     AGENT_IPC_CHANNELS.SEND_MESSAGE,
     async (event, input: AgentSendInput): Promise<void> => {
       assertSensitiveAgentIpcSender(event)
+      if (!input || typeof input.sessionId !== 'string') throw new Error('无效的会话 ID')
+      assertOrdinaryAgentSession(input.sessionId)
       const inputForRun: AgentSendInput = { ...input }
       try {
         const { getPiReviewBindingForSession, finishPiReviewRunV2 } = require('./lib/review/pi-case-review-service') as typeof import('./lib/review/pi-case-review-service')
