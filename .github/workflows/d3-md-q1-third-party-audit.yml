@@ -89,6 +89,18 @@ jobs:
             --oracle-root agent-b/docs/design/review-agent/acceptance/d3-md-full/agent-oracle \
             --crosswalk "$RUNNER_TEMP/md-q1-third-party/cross-audit.json" \
             --output "$RUNNER_TEMP/md-q1-third-party/pi-guard-score.json"
+      - name: Experimental third-party dynamic module instances for all B synthetic object graphs
+        working-directory: agent-a
+        shell: bash
+        env:
+          MDQ1_B_INPUT_ROOT: ${{ github.workspace }}/agent-b/docs/design/review-agent/acceptance/d3-md-full/agent-oracle
+          MDQ1_DYNAMIC_OUTPUT_DIR: ${{ runner.temp }}/md-q1-third-party/dynamic-adapter
+        run: |
+          set -euo pipefail
+          cp ../auditor/docs/design/review-agent/acceptance/d3-md-full/auditor/dynamic-case-adapter.test.ts \
+            apps/electron/src/main/lib/review/third-party-mdq1-dynamic.test.ts
+          bun test --isolate --timeout 60000 apps/electron/src/main/lib/review/third-party-mdq1-dynamic.test.ts \
+            2>&1 | tee "$RUNNER_TEMP/md-q1-third-party/dynamic-adapter-test.log"
       - name: Upload original logs, compiled plans and independent cross-audit results
         if: always()
         uses: actions/upload-artifact@v4
