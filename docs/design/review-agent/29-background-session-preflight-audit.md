@@ -17,8 +17,8 @@
 
 ### P02 的已验证兼容性与必须补齐的缺口
 
-- **P02 受控探针（已通过）**：[`review-strict-profile.p02.probe.test.ts`](../../../apps/electron/src/main/lib/review/review-strict-profile.p02.probe.test.ts) 在提交 `0eca081e2c10bdf7302f8173e957076759b4bd4f` 通过 **7/7**。覆盖现有 direct binding 仅提供 `review_read_documents`/`review_inspect_document_image`/`review_submit_result` 三项工具、真实 V2 正文/PNG 视觉读取与回执、提交缺项→部分完成→同 runId 续交、拒绝非用户轮次写入、持久账本压缩摘要、空闲压缩阈值。[`PR CI #38171401244`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38171401244) 在该提交 **SUCCESS**；它是受控 Bun 工具/ledger 测试，不是 Pi 模型调用或真实 Electron 视觉预览。
-- **P02 增强负例**：提交 `0b1bc64484e212495084e7339edde75802687740` 新增“禁止跨案 documentVersionId 读取”和“换绑续审后旧 assignment 不能提交”。新增两项需以其对应 CI 单独确认。
+- **P02 受控探针（已通过）**：[`review-strict-profile.p02.probe.test.ts`](../../../apps/electron/src/main/lib/review/review-strict-profile.p02.probe.test.ts) 在提交 `ddb312fc81bce68893b8fc0185e4c463b81ffb9a` 通过 **9/9**。覆盖现有 direct binding 仅提供 `review_read_documents`/`review_inspect_document_image`/`review_submit_result` 三项工具、真实 V2 正文/PNG 视觉读取与回执、提交缺项→部分完成→同 runId 续交、拒绝非用户轮次写入、跨案 documentVersionId 不可读取、过期指派不可提交、持久账本压缩摘要、空闲压缩阈值及严格档案构造。[`PR CI #38171785352`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38171785352) **SUCCESS**，3723 pass / 5 skip / 0 fail；它是受控 Bun 工具/ledger 测试，不是 Pi 模型调用或真实 Electron 视觉预览。
+- **P02 两项负例已通过**：禁止跨案 documentVersionId 读取，以及换绑续审后旧 assignment 不得提交，均在上面的最新 PR CI 中取得 PASS；这验证了现有业务工具的案卷与轮次绑定，不表示外部普通会话入口已被隔离。
 - **已查明的真实接线缺口（必须阻断放行）**：
   1. 现有直接审核走 `AgentOrchestrator` 的普通 `piCustomTools` 构造路径，**没有**给 `PiAgentAdapter` 传入 `toolProfile:'review'`。
   2. Pi Adapter 的 `toolProfile:'review'` 仅去掉默认文件/命令工具和 Proma 产品核心工具；**上游 `customTools` 全部原样包装注册**，不是安全白名单。直接审核的普通 `buildPiBuiltinTools` 可能继续提供 `inspect_preview`、预设/产品/云工具，另有 `buildPiMcpTools`。须先在可信 Main/编排入口从**已验证的 activeReviewBinding** 选出具体允许的工具名称，再允许 strict profile 消费，且通过“恶意 MCP / 普通写入命令未挂载”的负例。不要通过改变所有普通 Agent 的工具注册规则完成本修复。
