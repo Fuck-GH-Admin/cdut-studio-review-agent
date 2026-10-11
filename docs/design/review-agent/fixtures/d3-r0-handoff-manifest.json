@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "releaseId": "D3-R0",
+  "purpose": "D4 five G01 business authoring technical tooling; not administrative approval",
+  "frozenRef": "refs/heads/release/d3-r0-20261011",
+  "sourceCodeBaseSha": "7ff2889205b15cc24fb2eb9f08ea2633c711231d",
+  "nodeVersion": "22",
+  "bunVersion": "1.4.0",
+  "installCommand": "bun install --frozen-lockfile",
+  "moduleLocks": [
+    {
+      "moduleId": "agent-authorization",
+      "version": 1,
+      "digest": "e48d279ce5c813b2bcf9163b44a413bfd44de0291b1de93687af95ef3b1cbb5d",
+      "path": "docs/design/review-agent/fixtures/d3-b01-delegation-scope.json",
+      "sourceKind": "synthetic",
+      "sharePolicy": "candidate-local-meaning-only"
+    },
+    {
+      "moduleId": "evidence-source-boundary",
+      "version": 1,
+      "digest": "98cc16b522702baf1e98c042dcc3d1381d386188e6db9495feaeab6e54295f90",
+      "path": "docs/design/review-agent/fixtures/d3-b02-evidence-coverage.json",
+      "sourceKind": "synthetic",
+      "sharePolicy": "candidate-local-meaning-only"
+    }
+  ],
+  "businessSources": [
+    {
+      "key": "I",
+      "business": "学籍身份信息更正",
+      "fileName": "g01_student_identity_complete_template_v1.7.md",
+      "sha256": "52ae0cdc27a16bb46659cd43d3e78632c44d8b5ccc86a18559b263512f51f329"
+    },
+    {
+      "key": "A",
+      "business": "档案利用申请",
+      "fileName": "g01_archive_utilization_template_editor_spec_v1_5.md",
+      "sha256": "65157e002dd4d1ccc08d32d341b4a1f7eacfc55d6a3c13a5da949aaf122f9785"
+    },
+    {
+      "key": "C",
+      "business": "特殊校园卡资格",
+      "fileName": "special_campus_card_template_v1.4.md",
+      "sha256": "fa409cfa30ad0f0c624784f9beab4799cc1e31bbcf3d118c0e41a67deba8937f"
+    },
+    {
+      "key": "S",
+      "business": "专项证明与用印",
+      "fileName": "G01_special_proof_seal_review_template_v1.4.md",
+      "sha256": "bb9b11b7963e0cd7661afe12bb3a23eec1655153de2d122ffb59b26f10190c15"
+    },
+    {
+      "key": "P",
+      "business": "政审材料程序",
+      "fileName": "G01_political_review_template_v0.3.md",
+      "sha256": "542e73ddc26e861e1bc1d454841dc6096299f1a991e944f59a487d84d97304ec"
+    }
+  ],
+  "businessSourceDistribution": "ChatGPT Library/individual original business sessions; private originals intentionally not committed to git. D4 author must obtain its own full original file and pass hash validation.",
+  "inputEntrypoints": [
+    "apps/electron/scripts/review-authoring-v1.ts",
+    "apps/electron/scripts/review-d3-library.ts",
+    "apps/electron/scripts/review-d2-plan.ts",
+    "apps/electron/scripts/review-d3-handoff-demo.ts"
+  ],
+  "specDocuments": [
+    "docs/design/review-agent/15-template-modules-and-runtime-boundary-spec.md",
+    "docs/design/review-agent/23-d3-shared-module-library-and-d4-handoff-contract.md",
+    "docs/design/review-agent/24-d4-five-template-authoring-and-feedback-loop.md",
+    "docs/design/review-agent/32-md-to-modular-template-agent-quality-protocol.md",
+    "docs/design/review-agent/36-d3-pr18-closeout-and-release-evidence-review.md"
+  ],
+  "baselineCi": {
+    "sha": "7ff2889205b15cc24fb2eb9f08ea2633c711231d",
+    "runs": {
+      "PR CI": 38142993546,
+      "D1 Review Authoring Tests": 38142993592,
+      "D2 Scoped Pi Review Tests": 38142993565,
+      "D3 Frozen Modules Tests": 38142993589,
+      "D3 MD Dynamic and Structured Gates": 38142993548,
+      "Review Baseline CI": 38142993624
+    }
+  },
+  "independentlyVerifiedAgents": {
+    "A": {
+      "pr": 11,
+      "head": "5d5caa3ef35572f57485e0f783443fcfd967d66e"
+    },
+    "B": {
+      "pr": 12,
+      "head": "e69d22dce3d329fc5db19efdd4c6b369f21f68c4"
+    },
+    "thirdPartyPr": 13,
+    "independentAuditRun": 38093886953
+  },
+  "permissions": {
+    "technicalReview": true,
+    "officialTemplatePublication": false,
+    "automatedAdministrativeDecision": false,
+    "onlineModelGoldAccuracyVerified": false,
+    "allFiveMdSemanticCompletenessVerified": false
+  }
+}
