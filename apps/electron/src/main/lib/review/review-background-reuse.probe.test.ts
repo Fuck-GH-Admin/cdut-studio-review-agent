@@ -21,6 +21,8 @@ import { createCaseFromTemplate } from './application-service'
 import { readAggregate } from './case-store-v2'
 import { registerMaterial } from './material-service'
 import { finishPiReviewRunV2, preparePiReviewRunV2, submitPiReviewResultV2 } from './pi-case-review-service'
+import { admitPreparedPiReviewTurn } from './review-pi-admission'
+import { findActivePiReviewAssignment } from './review-agent-assignment'
 import { getRunV2 } from './run-store-v2'
 import { publishTemplate, saveDraft } from './template-store'
 
@@ -128,9 +130,9 @@ function existingRunAgentHarness(
   const compiledFunction = new Function(
     ...Object.keys(deps),
     `${compiled}\nreturn runAgent`,
-  )(...Object.values(deps)) as (input: AgentSendInput, sender: typeof webContents) => Promise<void>
+  )(...Object.values(deps)) as (input: AgentSendInput, sender: typeof webContents, draft?: undefined, onOwned?: () => void) => Promise<void>
   return {
-    run: (input: AgentSendInput) => compiledFunction(input, webContents),
+    run: (input: AgentSendInput, onOwned?: () => void) => compiledFunction(input, webContents, undefined, onOwned),
     // Simulates the backing window disappearing after a Main-owned run starts.
     destroyWindow: () => { windowState.destroyed = true },
     events,
@@ -258,5 +260,113 @@ describe('P03-S01 Main-owned Pi stage must not depend on review page lifetime', 
     await task
     expect(owned).toBeTrue()
     expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('partially-completed')
+  })
+})
+
+describe('P03-S02 Main admission ACK and single-owner lifecycle', () => {
+  test('ACK only after onRunOwned, while Main owns the subsequent long Pi turn', async () => {
+    const { binding, input } = await caseFixture()
+    let grant!: () => void
+    let finish!: () => void
+    let entered!: () => void
+    const grantGate = new Promise<void>(resolve => { grant = resolve })
+    const completeGate = new Promise<void>(resolve => { finish = resolve })
+    const entry = new Promise<void>(resolve => { entered = resolve })
+    const harness = existingRunAgentHarness(async (_input, callbacks) => {
+      entered()
+      await grantGate
+      callbacks.onRunOwned?.()
+      await completeGate
+      callbacks.onComplete([], { resultSubtype: 'success' })
+    })
+    let admitted = false
+    const receiptPromise = admitPreparedPiReviewTurn({ ...input, onRunOutcome: undefined },
+      binding, harness.run).then(value => { admitted = true; return value })
+    await entry
+    expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('running')
+    expect(admitted).toBeFalse()
+    grant()
+    const receipt = await receiptPromise
+    expect(receipt).toEqual(binding)
+    expect(admitted).toBeTrue()
+    expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('running')
+    // Even a destroyed WebContents after the ACK does not stop the Main turn.
+    harness.destroyWindow()
+    finish()
+    // Main deliberately retains the running Promise; poll only the persisted
+    // terminal state, not any renderer callback.
+    for (let attempt = 0; attempt < 12 && getRunV2(binding.caseId, binding.runId)?.status === 'running'; attempt++) {
+      await Promise.resolve()
+    }
+    expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('partially-completed')
+  })
+
+  test('busy rejection before ownership closes only the newly prepared V2 run', async () => {
+    const { binding, input } = await caseFixture()
+    const harness = existingRunAgentHarness(async () => {
+      throw new AgentRunAlreadyActiveError(false)
+    })
+    await expect(admitPreparedPiReviewTurn({ ...input, onRunOutcome: undefined }, binding, harness.run))
+      .rejects.toBeInstanceOf(AgentRunAlreadyActiveError)
+    expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('failed')
+    expect(findActivePiReviewAssignment(binding.sessionId)).toBeUndefined()
+    expect(harness.events.some(event => event.kind === 'run_complete')).toBeFalse()
+  })
+
+  test('an early return without onRunOwned cannot emit a false ACK or orphan running', async () => {
+    const { binding, input } = await caseFixture()
+    const harness = existingRunAgentHarness(async () => {})
+    await expect(admitPreparedPiReviewTurn({ ...input, onRunOutcome: undefined }, binding, harness.run))
+      .rejects.toThrow('Agent 未获得执行权')
+    expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('failed')
+    expect(findActivePiReviewAssignment(binding.sessionId)).toBeUndefined()
+  })
+
+  test('a duplicate admission for the same assignment is rejected without cancelling its owner', async () => {
+    const { binding, input } = await caseFixture()
+    let release!: () => void
+    const gate = new Promise<void>(resolve => { release = resolve })
+    let invoked = 0
+    const harness = existingRunAgentHarness(async (_input, callbacks) => {
+      invoked++
+      callbacks.onRunOwned?.()
+      await gate
+      callbacks.onComplete([], { resultSubtype: 'success' })
+    })
+    const request = { ...input, onRunOutcome: undefined }
+    const acknowledged = await admitPreparedPiReviewTurn(request, binding, harness.run)
+    expect(acknowledged.runId).toBe(binding.runId)
+    await expect(admitPreparedPiReviewTurn(request, binding, harness.run))
+      .rejects.toThrow('不得重复启动')
+    expect(invoked).toBe(1)
+    expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('running')
+    release()
+    for (let i = 0; i < 12 && getRunV2(binding.caseId, binding.runId)?.status === 'running'; i++) await Promise.resolve()
+    expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('partially-completed')
+  })
+
+  test('preflight failure after token grant preserves ACK but eventually produces failed V2 result', async () => {
+    const { binding, input } = await caseFixture()
+    const harness = existingRunAgentHarness(async (_input, callbacks) => {
+      callbacks.onRunOwned?.()
+      callbacks.onError('模型预检失败')
+      callbacks.onComplete([], { resultSubtype: 'error_during_execution' })
+    })
+    const accepted = await admitPreparedPiReviewTurn({ ...input, onRunOutcome: undefined }, binding, harness.run)
+    expect(accepted.assignmentId).toBe(binding.assignmentId)
+    for (let i = 0; i < 12 && getRunV2(binding.caseId, binding.runId)?.status === 'running'; i++) await Promise.resolve()
+    expect(getRunV2(binding.caseId, binding.runId)).toMatchObject({ status: 'failed', error: '模型预检失败' })
+  })
+
+  test('untrusted or stale binding cannot start even when V2 has a historical run', async () => {
+    const { binding, input } = await caseFixture()
+    let invoked = false
+    const fakeRun = async () => { invoked = true }
+    await expect(admitPreparedPiReviewTurn({ ...input, onRunOutcome: undefined, triggeredBy: 'automation' },
+      binding, fakeRun)).rejects.toThrow('不一致')
+    await expect(admitPreparedPiReviewTurn({ ...input, onRunOutcome: undefined, uuid: 'different-turn' },
+      binding, fakeRun)).rejects.toThrow('指派已失效')
+    expect(invoked).toBeFalse()
+    expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('running')
   })
 })
