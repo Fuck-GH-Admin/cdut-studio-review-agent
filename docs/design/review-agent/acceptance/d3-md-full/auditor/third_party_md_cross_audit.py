@@ -201,6 +201,7 @@ def audit(a_root, b_root, actual_plan, original=None):
         "blockedRCount":sum(r.get("authorStatus")=="tooling-blocked" for r in rows if r["sourceDutyId"].startswith("R")),
         "nonRWithTaskTextReference":sum(bool(r.get("candidateCheckIdsMentioningSourceDuty")) for r in rows if r["sourceDutyId"].startswith(("B","S","E"))),
         "nonRInventoryOnly":sum(not bool(r.get("candidateCheckIdsMentioningSourceDuty")) for r in rows if r["sourceDutyId"].startswith(("B","S","E"))),
+        "nonRInventoryOnlyIds":[r["sourceDutyId"] for r in rows if r["sourceDutyId"].startswith(("B","S","E")) and not r.get("candidateCheckIdsMentioningSourceDuty")],
         "candidatePCount":sum(r["sourceDutyId"].startswith("P") for r in rows),
         "goldCasesWithActualSemanticScoring":0,
     }
