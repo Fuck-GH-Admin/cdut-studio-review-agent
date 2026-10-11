@@ -144,28 +144,36 @@
   {
     "id": "G-06",
     "sourceRequirementIds": [
+      "R04",
+      "R08",
       "R09",
       "R10",
+      "R11",
       "R12",
       "R13"
     ],
     "reproduce": "PROFER_CONFIG_DIR=/tmp/d3-md-a bun apps/electron/scripts/review-d2-plan.ts preview docs/design/review-agent/acceptance/d3-md-full/agent-author/workspaces/archive-r2-advanced-blocked.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/selection.json docs/design/review-agent/acceptance/d3-md-full/agent-author/plans/case.json；预期D2_UNMAPPED_ADVANCED；该错误并非逐项功能支持",
     "verifiedAgainstRun": false,
     "owner": "D3",
-    "blockedOperation": "多代理/单位复合授权关系缺独立关系级D2 subject目标，原子文字Check不能执行合法委托作用域关系图。",
+    "blockedOperation": "D2仅提供archive-item/archive-operation，不提供多个独立代理/委托人/单位经办关系subject；case级R04/R08/R11无法在同一案中按关系独立给状态，R09/R10/R12/R13也不能把不同关系与具体操作建立无损授权关联。",
     "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
     "locator": "§6/§7/§8/§9及§16.1",
     "affected": {
       "templateId": "g01-archive-utilization",
       "templateVersion": 1,
       "sourceRequirementIds": [
+        "R04",
+        "R08",
         "R09",
         "R10",
+        "R11",
         "R12",
         "R13"
       ],
       "instancePaths": [],
       "checkIds": [
+        "module/rel/r04",
+        "module/rel/r08",
         "module/operation-i01-read/r09",
         "module/operation-i01-copy/r09",
         "module/operation-i02-read/r09",
@@ -176,6 +184,7 @@
         "module/operation-i02-read/r10",
         "module/operation-i03-borrow/r10",
         "module/operation-i03-excerpt/r10",
+        "module/rel/r11",
         "module/operation-i01-read/r12",
         "module/operation-i01-copy/r12",
         "module/operation-i02-read/r12",
