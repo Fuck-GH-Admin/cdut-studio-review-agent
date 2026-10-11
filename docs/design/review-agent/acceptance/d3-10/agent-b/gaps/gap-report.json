@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "status": "tooling-blocked",
+  "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+  "locator": "第4节S03-S04；R08-R10行289-291；R29行310",
+  "requirement": "合法电子委托和替代证据必须按对象、操作及有效期匹配；R08-R10/R29不得因不支持高级关系被删减。",
+  "blockedOperation": "D3轻量模块不能无损编译带合法替代条件的证据关系，不得把缺证件与未核电子凭据一律判否。",
+  "owner": "D3",
+  "reproduce": "对item-1/read与copy引入条件性电子委托替代关系、分别核source与operation，预览其高级义务不可映射场景。",
+  "affected": {
+    "templateId": "archive-access",
+    "templateVersion": 1,
+    "sourceRequirementIds": [
+      "R08",
+      "R09",
+      "R10",
+      "R29"
+    ],
+    "instancePaths": [
+      "module/item-1-read",
+      "module/item-1-copy"
+    ],
+    "checkIds": [
+      "module/item-1-copy/authorization",
+      "module/item-1-evidence/evidence-boundary",
+      "module/item-1-copy-local/copy-authorization",
+      "module/item-1-read/authorization",
+      "module/item-1-read/scope-trace"
+    ],
+    "runIds": []
+  },
+  "impact": {
+    "sourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+    "locator": "第4节S03-S04；R08-R10行289-291；R29行310",
+    "templateId": "archive-access",
+    "templateVersion": 1,
+    "sourceRequirementIds": [
+      "R08",
+      "R09",
+      "R10",
+      "R29"
+    ],
+    "instancePaths": [
+      "module/item-1-read",
+      "module/item-1-copy"
+    ],
+    "checkIds": [
+      "module/item-1-copy/authorization",
+      "module/item-1-evidence/evidence-boundary",
+      "module/item-1-copy-local/copy-authorization",
+      "module/item-1-read/authorization",
+      "module/item-1-read/scope-trace"
+    ],
+    "runIds": []
+  },
+  "verifiedAgainstRun": false
+}

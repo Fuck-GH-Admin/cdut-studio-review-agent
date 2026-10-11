@@ -1,0 +1,11 @@
+[
+  {
+    "moduleId": "agent-authorization",
+    "version": 1,
+    "digest": "e48d279ce5c813b2bcf9163b44a413bfd44de0291b1de93687af95ef3b1cbb5d",
+    "name": "代理权限范围核验",
+    "purpose": "判断代理授权是否覆盖当事人及本次操作",
+    "scope": "当前申请中已明确指定的审核对象",
+    "limits": "材料预审不等于行政批准，不得对不相关对象复用资格结论"
+  }
+]

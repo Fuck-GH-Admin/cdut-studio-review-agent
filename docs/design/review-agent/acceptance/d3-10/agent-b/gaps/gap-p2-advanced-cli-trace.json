@@ -1,0 +1,12 @@
+{
+  "compile": {
+    "exitCode": 1,
+    "stdout": "",
+    "stderr": "D2_UNMAPPED_ADVANCED: 高级 Claim/Evidence 关系尚无无损执行映射，不得忽略\n"
+  },
+  "reportGap": {
+    "exitCode": 0,
+    "stdout": "{\n  \"schemaVersion\": 1,\n  \"status\": \"tooling-blocked\",\n  \"sourceMd\": \"g01_archive_utilization_template_editor_spec_v1_5.md\",\n  \"locator\": \"第6节 R08-R10（行289–291）、R29（行310）与第4节 S03-S04\",\n  \"requirement\": \"合法电子委托与按条件替代的证明关系要分别核对代理主体、档案件、操作、期间和学校规则适用；不得删除R08-R10/R29。\",\n  \"blockedOperation\": \"archive-r3 advanced.evidenceRelations 已通过D1有效性检查，实际D2 CLI报 D2_UNMAPPED_ADVANCED；无法无损映射条件性替代证据及校本效力。\",\n  \"owner\": \"D3\",\n  \"reproduce\": \"bun apps/electron/scripts/review-d2-plan.ts preview <workspaces/archive-r3-advanced-evidence-alternative.json> docs/design/review-agent/fixtures/d2-selection-archive.json <tests/archive-case.json>；本轮返回D2_UNMAPPED_ADVANCED。\",\n  \"affected\": {\n    \"templateId\": \"archive-access\",\n    \"templateVersion\": 1,\n    \"sourceRequirementIds\": [\n      \"R08\",\n      \"R09\",\n      \"R10\",\n      \"R29\"\n    ],\n    \"instancePaths\": [\n      \"module/item-1-read\",\n      \"module/item-1-copy\",\n      \"module/item-1-copy-local\"\n    ],\n    \"checkIds\": [\n      \"module/item-1-copy/authorization\",\n      \"module/item-1-copy-local/copy-authorization\",\n      \"module/item-1-read/authorization\",\n      \"module/item-1-read/scope-trace\"\n    ],\n    \"runIds\": [\n      \"run-pi-mv2zcewk-7y1vm\"\n    ]\n  },\n  \"impact\": {\n    \"sourceMd\": \"g01_archive_utilization_template_editor_spec_v1_5.md\",\n    \"locator\": \"第6节 R08-R10（行289–291）、R29（行310）与第4节 S03-S04\",\n    \"templateId\": \"archive-access\",\n    \"templateVersion\": 1,\n    \"sourceRequirementIds\": [\n      \"R08\",\n      \"R09\",\n      \"R10\",\n      \"R29\"\n    ],\n    \"instancePaths\": [\n      \"module/item-1-read\",\n      \"module/item-1-copy\",\n      \"module/item-1-copy-local\"\n    ],\n    \"checkIds\": [\n      \"module/item-1-copy/authorization\",\n      \"module/item-1-copy-local/copy-authorization\",\n      \"module/item-1-read/authorization\",\n      \"module/item-1-read/scope-trace\"\n    ],\n    \"runIds\": [\n      \"run-pi-mv2zcewk-7y1vm\"\n    ]\n  },\n  \"verifiedAgainstRun\": false\n}\n",
+    "stderr": ""
+  }
+}

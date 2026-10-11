@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "workspaceId": "d310-agent-b-archive",
+  "revision": 3,
+  "fingerprint": "1bde33e404eb82e89115ef0b2379bed72b7b27c87f5c062bd308bc3abedd664c",
+  "locks": [
+    {
+      "moduleId": "agent-authorization",
+      "version": 1,
+      "digest": "e48d279ce5c813b2bcf9163b44a413bfd44de0291b1de93687af95ef3b1cbb5d"
+    },
+    {
+      "moduleId": "agent-authorization",
+      "version": 2,
+      "digest": "e4e43ba9a072b59cfb58db9b0e3e2d11657cdfc14585e18a25efc884dd13f7cb"
+    },
+    {
+      "moduleId": "evidence-source-boundary",
+      "version": 1,
+      "digest": "98cc16b522702baf1e98c042dcc3d1381d386188e6db9495feaeab6e54295f90"
+    }
+  ],
+  "publicationAllowed": false
+}

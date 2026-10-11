@@ -1,0 +1,28 @@
+{
+  "originalSourceMd": "g01_archive_utilization_template_editor_spec_v1_5.md",
+  "sourceMdSha256": "65157e002dd4d1ccc08d32d341b4a1f7eacfc55d6a3c13a5da949aaf122f9785",
+  "originalRequirementIds": [
+    "R08",
+    "R09",
+    "R10",
+    "R29"
+  ],
+  "locator": "第6节 R08–R10（原文行289–291），R29（原文行310）；第4节 S03–S04",
+  "authoredFile": "workspaces/archive-r3-advanced-evidence-alternative.json",
+  "explanation": "This is an advanced evidence relation, not a claim that its two sources encode legal OR/alternative conditions. D2 cannot faithfully compile conditionally substitutable electronic authorization per operation.",
+  "command": "bun apps/electron/scripts/review-d2-plan.ts preview /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/workspaces/archive-r3-advanced-evidence-alternative.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/fixtures/d2-selection-archive.json /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/docs/design/review-agent/acceptance/d3-10/agent-b/tests/archive-case.json",
+  "exitCode": 1,
+  "stderr": "D2_UNMAPPED_ADVANCED: 高级 Claim/Evidence 关系尚无无损执行映射，不得忽略\n",
+  "stdout": "",
+  "validatorIssues": [],
+  "affectedCheckIds": [
+    "module/item-1-copy/authorization",
+    "module/item-1-copy-local/copy-authorization",
+    "module/item-1-read/authorization",
+    "module/item-1-read/scope-trace"
+  ],
+  "baselineRunIds": [
+    "run-pi-mv2zcewk-7y1vm"
+  ],
+  "note": "Existing run IDs are ONLY from successful baseline A r3; advanced version was never installed/run."
+}

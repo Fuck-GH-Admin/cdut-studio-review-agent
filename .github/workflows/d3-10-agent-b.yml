@@ -1,0 +1,70 @@
+name: D3-10 Agent B Independent Acceptance
+on:
+  push:
+    branches: [test/d3-10-agent-b-cross-business]
+    paths:
+      - 'docs/design/review-agent/acceptance/d3-10/agent-b/tests/agent-b-*.ts'
+      - '.github/workflows/d3-10-agent-b.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  agent-b:
+    runs-on: ubuntu-latest
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: test/d3-10-agent-b-cross-business
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bun install --frozen-lockfile
+      - name: Reset previous generated traces for repeatability
+        shell: bash
+        run: |
+          ROOT=docs/design/review-agent/acceptance/d3-10/agent-b
+          rm -rf "$ROOT/workspaces" "$ROOT/bundles" "$ROOT/plans" "$ROOT/gaps" "$ROOT/logs"
+          rm -rf "$ROOT/tests/isolated-config-B" "$ROOT/tests/clean-config-A" "$ROOT/tests/clean-config-C"
+          find "$ROOT/tests" -maxdepth 1 -name '*.json' -type f -delete
+      - name: Execute independent D3 Agent B acceptance
+        id: execution
+        shell: bash
+        run: |
+          set +e
+          bun docs/design/review-agent/acceptance/d3-10/agent-b/tests/agent-b-runner.ts
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: P1 actual own Pi Run and P2 advanced compile refusal
+        id: p1p2
+        shell: bash
+        run: |
+          set +e
+          bun docs/design/review-agent/acceptance/d3-10/agent-b/tests/agent-b-p1-p2.ts
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Save all traces even if assertions fail
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-b-independent-traces
+          path: docs/design/review-agent/acceptance/d3-10/agent-b/
+          retention-days: 21
+      - name: Commit acceptance output only
+        if: always()
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A docs/design/review-agent/acceptance/d3-10/agent-b/
+          git add -f docs/design/review-agent/acceptance/d3-10/agent-b/logs/*.stdout docs/design/review-agent/acceptance/d3-10/agent-b/logs/*.stderr
+          git commit -m "test(d3): record Agent B real CLI traces" || true
+          git push origin HEAD:test/d3-10-agent-b-cross-business
+      - name: Fail if independent acceptance failed
+        if: steps.execution.outputs.exit_code != '0' || steps.p1p2.outputs.exit_code != '0'
+        run: exit 1

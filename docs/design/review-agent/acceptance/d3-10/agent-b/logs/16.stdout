@@ -1,0 +1,62 @@
+{
+  "from": {
+    "moduleId": "agent-authorization",
+    "version": 1,
+    "digest": "e48d279ce5c813b2bcf9163b44a413bfd44de0291b1de93687af95ef3b1cbb5d"
+  },
+  "to": {
+    "moduleId": "agent-authorization",
+    "version": 2,
+    "digest": "e4e43ba9a072b59cfb58db9b0e3e2d11657cdfc14585e18a25efc884dd13f7cb"
+  },
+  "contentDiff": {
+    "from": {
+      "moduleId": "agent-authorization",
+      "version": 1,
+      "digest": "e48d279ce5c813b2bcf9163b44a413bfd44de0291b1de93687af95ef3b1cbb5d"
+    },
+    "to": {
+      "moduleId": "agent-authorization",
+      "version": 2,
+      "digest": "e4e43ba9a072b59cfb58db9b0e3e2d11657cdfc14585e18a25efc884dd13f7cb"
+    },
+    "addedTasks": [
+      "scope-trace"
+    ],
+    "removedTasks": [],
+    "changedTasks": [],
+    "metadataChanged": false,
+    "explicitUpgradeRequired": true
+  },
+  "consumers": [
+    {
+      "workspaceId": "d310-agent-b-archive",
+      "revision": 2,
+      "templateId": "archive-access",
+      "templateVersion": 1,
+      "instancePath": "module/item-1-copy"
+    },
+    {
+      "workspaceId": "d310-agent-b-archive",
+      "revision": 2,
+      "templateId": "archive-access",
+      "templateVersion": 1,
+      "instancePath": "module/item-1-read"
+    },
+    {
+      "workspaceId": "d310-agent-b-campus",
+      "revision": 2,
+      "templateId": "special-campus-card",
+      "templateVersion": 1,
+      "instancePath": "module/family-agent"
+    },
+    {
+      "workspaceId": "d310-agent-b-campus",
+      "revision": 2,
+      "templateId": "special-campus-card",
+      "templateVersion": 1,
+      "instancePath": "module/service-agent"
+    }
+  ],
+  "requireExplicitMigration": true
+}

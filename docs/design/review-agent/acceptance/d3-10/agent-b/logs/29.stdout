@@ -1,0 +1,306 @@
+{
+  "schemaVersion": 1,
+  "mode": "technical-pre-review",
+  "publicationAllowed": false,
+  "workspaceId": "d310-agent-b-archive",
+  "revision": 3,
+  "templateId": "archive-access",
+  "templateVersion": 1,
+  "authoringDigest": "aee8989b6dbcd521830301af3b6e90f315c8b28bca49073dcdf49dd924364d25",
+  "previewFingerprint": "486c6492defb6de8ffcc4b69cfa94dcb851653b5c3121af4450e59f9bb7feae6",
+  "targets": [
+    {
+      "objectKey": "item-1/read",
+      "subjectId": "d2-item1-read",
+      "title": "档案查阅",
+      "kind": "archive-operation",
+      "itemId": "item-1",
+      "operation": "read"
+    },
+    {
+      "objectKey": "item-1/copy",
+      "subjectId": "d2-item1-copy",
+      "title": "档案复制",
+      "kind": "archive-operation",
+      "itemId": "item-1",
+      "operation": "copy"
+    },
+    {
+      "objectKey": "item-1",
+      "subjectId": "d2-item1-open",
+      "title": "档案开放状态",
+      "kind": "archive-item",
+      "itemId": "item-1"
+    }
+  ],
+  "subjects": [
+    {
+      "id": "d2-item1-read",
+      "title": "档案查阅",
+      "type": "custom",
+      "sectionId": "d2-scope-9bc8b24cf4302321",
+      "fields": {
+        "d2ObjectKey": {
+          "kind": "text",
+          "value": "item-1/read"
+        },
+        "d2ItemId": {
+          "kind": "text",
+          "value": "item-1"
+        },
+        "d2Operation": {
+          "kind": "text",
+          "value": "read"
+        }
+      },
+      "sourceRefs": [],
+      "correction": "user-confirmed",
+      "status": "confirmed"
+    },
+    {
+      "id": "d2-item1-copy",
+      "title": "档案复制",
+      "type": "custom",
+      "sectionId": "d2-scope-ad0607d90809e3d2",
+      "fields": {
+        "d2ObjectKey": {
+          "kind": "text",
+          "value": "item-1/copy"
+        },
+        "d2ItemId": {
+          "kind": "text",
+          "value": "item-1"
+        },
+        "d2Operation": {
+          "kind": "text",
+          "value": "copy"
+        }
+      },
+      "sourceRefs": [],
+      "correction": "user-confirmed",
+      "status": "confirmed"
+    },
+    {
+      "id": "d2-item1-open",
+      "title": "档案开放状态",
+      "type": "custom",
+      "sectionId": "d2-scope-6b9fab15cf3bab24",
+      "fields": {
+        "d2ObjectKey": {
+          "kind": "text",
+          "value": "item-1"
+        },
+        "d2ItemId": {
+          "kind": "text",
+          "value": "item-1"
+        }
+      },
+      "sourceRefs": [],
+      "correction": "user-confirmed",
+      "status": "confirmed"
+    }
+  ],
+  "rules": [
+    {
+      "id": "d2-3eb30a800377614dbb59",
+      "policyVersionId": "workspace:d2-d310-agent-b-archive@3",
+      "title": "开放状态",
+      "requirement": "适用范围：当前申请中已明确指定的审核对象；审核对象：item-1\n目录可见不等于馆方确认档案已开放；缺少可信开放记录须待人工核验\n完成标准：记录独立局部状态、可追溯依据与未完成原因\n责任边界：材料预审不等于行政批准，不得对不相关对象复用资格结论\n查阅、摘录、复制、外借不得相互继承授权\n本责任不产生正式批准或拒批\nD2 技术预审来源：synthetic-source/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-6b9fab15cf3bab24",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "synthetic-source"
+      ],
+      "priority": 50000,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-2cf6d714fbe349fc29df",
+      "policyVersionId": "workspace:d2-d310-agent-b-archive@3",
+      "title": "当前动作授权",
+      "requirement": "适用范围：当前申请中已明确指定的审核对象；审核对象：item-1/copy\n核对授权是否覆盖 复制 动作、对象和有效期限；其他操作授权不得移用\n完成标准：记录独立局部状态、可追溯依据与未完成原因\n责任边界：材料预审不等于行政批准，不得对不相关对象复用资格结论\n查阅、摘录、复制、外借不得相互继承授权\n本责任不产生正式批准或拒批\nD2 技术预审来源：school-policy-unverified/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-ad0607d90809e3d2",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "school-policy-unverified"
+      ],
+      "priority": 50001,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-e8c768436e7d1f9bef8d",
+      "policyVersionId": "workspace:d2-d310-agent-b-archive@3",
+      "title": "事实与证据版本对应",
+      "requirement": "适用范围：由模板明确指向的事实对象与操作；审核对象：item-1/read\n核对 档案 item-1 查阅对应事实 所依据的原件来源、对应当事人、有效时段与材料版本；若权威来源未知或只覆盖别的操作则报告待确认\n完成标准：逐项指出可引用的材料和版本及仍待补证事实；不得在没有真实 SourceRef 时声明符合\n责任边界：不将一份证明扩展到其他事项；不确认档案开放、校园卡资格或有权批准。\n查阅、摘录、复制、外借不得相互继承授权\n可定位事实不等于法律效力、行政批准或其他事实自动证成\nD2 技术预审来源：synthetic-source/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-9bc8b24cf4302321",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "synthetic-source"
+      ],
+      "priority": 50002,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-3f4c81ef4191e30932fd",
+      "policyVersionId": "workspace:d2-d310-agent-b-archive@3",
+      "title": "复制权限与数量范围",
+      "requirement": "适用范围：本次 item-1/copy 操作；审核对象：item-1/copy\n按原始档案MD R23，只核 item-1/copy 的页数、份数与独立授权；查阅授权不能推出复制许可，权威许可未知则待核。\n完成标准：输出档案件、copy操作与范围一一对应的证据和未确认原因。\n责任边界：不开放档案，不代替馆方批准和实际出件。\n查阅、摘录、复制、外借不得相互继承授权\n不凭OCR文字或查阅权限完成行政批准。\nD2 技术预审来源：school-policy-unverified/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-ad0607d90809e3d2",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "school-policy-unverified"
+      ],
+      "priority": 50003,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-09b7948a3a74e27100ee",
+      "policyVersionId": "workspace:d2-d310-agent-b-archive@3",
+      "title": "当前动作授权",
+      "requirement": "适用范围：当前申请中已明确指定的审核对象；审核对象：item-1/read\n核对授权是否覆盖 查阅 动作、对象和有效期限；其他操作授权不得移用\n完成标准：记录独立局部状态、可追溯依据与未完成原因\n责任边界：材料预审不等于行政批准，不得对不相关对象复用资格结论\n查阅、摘录、复制、外借不得相互继承授权\n本责任不产生正式批准或拒批\nD2 技术预审来源：school-policy-unverified/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-9bc8b24cf4302321",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "school-policy-unverified"
+      ],
+      "priority": 50004,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-f3d968c24b8d5f3ec0a4",
+      "policyVersionId": "workspace:d2-d310-agent-b-archive@3",
+      "title": "局部证据范围追踪",
+      "requirement": "适用范围：当前申请中已明确指定的审核对象；审核对象：item-1/read\n记录查阅的被代理人、档案件或卡务事项、操作、授权期限；任一维度未知不得取其他操作授权补足。\n完成标准：输出该操作的证据版本与授权有效期间，未知保持待核。\n责任边界：材料预审不等于行政批准，不得对不相关对象复用资格结论\n查阅、摘录、复制、外借不得相互继承授权\n不会推断档案开放、复制权限或发卡资格。\nD2 技术预审来源：school-policy-unverified/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-9bc8b24cf4302321",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "school-policy-unverified"
+      ],
+      "priority": 50005,
+      "confirmation": "unconfirmed"
+    }
+  ],
+  "mapping": [
+    {
+      "checkId": "module/item-1-open/open-state",
+      "ruleId": "d2-3eb30a800377614dbb59",
+      "objectKey": "item-1",
+      "subjectId": "d2-item1-open",
+      "sourceIds": [
+        "synthetic-source"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/item-1-copy/authorization",
+      "ruleId": "d2-2cf6d714fbe349fc29df",
+      "objectKey": "item-1/copy",
+      "subjectId": "d2-item1-copy",
+      "sourceIds": [
+        "school-policy-unverified"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/item-1-evidence/evidence-boundary",
+      "ruleId": "d2-e8c768436e7d1f9bef8d",
+      "objectKey": "item-1/read",
+      "subjectId": "d2-item1-read",
+      "sourceIds": [
+        "synthetic-source"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/item-1-copy-local/copy-authorization",
+      "ruleId": "d2-3f4c81ef4191e30932fd",
+      "objectKey": "item-1/copy",
+      "subjectId": "d2-item1-copy",
+      "sourceIds": [
+        "school-policy-unverified"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/item-1-read/authorization",
+      "ruleId": "d2-09b7948a3a74e27100ee",
+      "objectKey": "item-1/read",
+      "subjectId": "d2-item1-read",
+      "sourceIds": [
+        "school-policy-unverified"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/item-1-read/scope-trace",
+      "ruleId": "d2-f3d968c24b8d5f3ec0a4",
+      "objectKey": "item-1/read",
+      "subjectId": "d2-item1-read",
+      "sourceIds": [
+        "school-policy-unverified"
+      ],
+      "authority": "unverified-policy"
+    }
+  ],
+  "fingerprint": "dea4870a11dd2eba0dd7e0715e572d823fc69ba00fea3ed44af4ad58aa7bd1a6"
+}

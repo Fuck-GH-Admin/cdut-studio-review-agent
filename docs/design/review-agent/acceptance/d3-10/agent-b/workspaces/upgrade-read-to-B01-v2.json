@@ -1,0 +1,24 @@
+{
+  "expectedRevision": 2,
+  "templateId": "archive-access",
+  "templateVersion": 1,
+  "useId": "item-1-read",
+  "expectedOldDigest": "e48d279ce5c813b2bcf9163b44a413bfd44de0291b1de93687af95ef3b1cbb5d",
+  "newVersion": 2,
+  "expectedNewDigest": "e4e43ba9a072b59cfb58db9b0e3e2d11657cdfc14585e18a25efc884dd13f7cb",
+  "sourceBindings": [
+    {
+      "checkId": "archive-access@1:module/item-1-read/authorization",
+      "sourceIds": [
+        "school-policy-unverified"
+      ]
+    },
+    {
+      "checkId": "archive-access@1:module/item-1-read/scope-trace",
+      "sourceIds": [
+        "school-policy-unverified"
+      ]
+    }
+  ],
+  "acknowledgeRemovedCheckIds": []
+}

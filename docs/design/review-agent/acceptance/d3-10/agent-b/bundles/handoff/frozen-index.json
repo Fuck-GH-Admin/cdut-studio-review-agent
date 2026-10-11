@@ -1,0 +1,14 @@
+[
+  {
+    "moduleId": "agent-authorization",
+    "version": 1,
+    "digest": "e48d279ce5c813b2bcf9163b44a413bfd44de0291b1de93687af95ef3b1cbb5d",
+    "limits": "材料预审不等于行政批准，不得对不相关对象复用资格结论"
+  },
+  {
+    "moduleId": "evidence-source-boundary",
+    "version": 1,
+    "digest": "98cc16b522702baf1e98c042dcc3d1381d386188e6db9495feaeab6e54295f90",
+    "limits": "不将一份证明扩展到其他事项；不确认档案开放、校园卡资格或有权批准。"
+  }
+]

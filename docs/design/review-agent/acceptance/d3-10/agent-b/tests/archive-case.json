@@ -1,0 +1,14 @@
+{
+  "id": "agent-b-synthetic-archive-access",
+  "templateId": "archive-access",
+  "templateVersion": 1,
+  "title": "Agent B合成技术审核",
+  "objectType": "document",
+  "caseFields": {},
+  "subjects": [],
+  "documents": [],
+  "stage": "draft",
+  "revision": 0,
+  "createdAt": "2026-10-11T00:00:00.000Z",
+  "updatedAt": "2026-10-11T00:00:00.000Z"
+}

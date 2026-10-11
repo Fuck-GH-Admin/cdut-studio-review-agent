@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "mode": "technical-pre-review",
+  "publicationAllowed": false,
+  "workspaceId": "d3-handoff-campus",
+  "revision": 4,
+  "templateId": "special-campus-card",
+  "templateVersion": 1,
+  "scenario": "temporary-service",
+  "authoringDigest": "28a54d1d762118d25d03ecef12c1e1e2de95b9aea5dee3bb538e418fe3b7dd0e",
+  "previewFingerprint": "5b6543ceea79388e27e185310f85cb09c1dd6e8051bb6ecb51f1616f26614b84",
+  "targets": [
+    {
+      "objectKey": "service-card",
+      "subjectId": "d2-service",
+      "title": "临时服务人员待审对象",
+      "kind": "campus-card",
+      "scenario": "temporary-service"
+    }
+  ],
+  "subjects": [
+    {
+      "id": "d2-service",
+      "title": "临时服务人员待审对象",
+      "type": "custom",
+      "sectionId": "d2-scope-e6d7b8dad0cb5893",
+      "fields": {
+        "d2ObjectKey": {
+          "kind": "text",
+          "value": "service-card"
+        },
+        "d2Scenario": {
+          "kind": "text",
+          "value": "temporary-service"
+        }
+      },
+      "sourceRefs": [],
+      "correction": "user-confirmed",
+      "status": "confirmed"
+    }
+  ],
+  "rules": [
+    {
+      "id": "d2-ba281f7bc1343cc13116",
+      "policyVersionId": "workspace:d2-d3-handoff-campus@4",
+      "title": "正式校方资格",
+      "requirement": "适用范围：对家属卡和临时服务人员卡进行分支材料预审\n现有材料只能用于预审，学校制度有效性和发卡批准需由有权限部门认定\n完成标准：记录独立局部状态、可追溯依据与未完成原因\n责任边界：不得将亲属或服务事实代替校方资格决定\n本责任不产生正式批准或拒批\nD2 技术预审来源：school-policy-unverified/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "school-policy-unverified"
+      ],
+      "priority": 50000,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-6d0ae44ea7555a3b974c",
+      "policyVersionId": "workspace:d2-d3-handoff-campus@4",
+      "title": "服务人员归属",
+      "requirement": "适用范围：当前申请中已明确指定的审核对象\n核对具体服务人员与接收单位、服务期的关联；存在派遣协议不等于该人员已经获批卡资格\n完成标准：记录独立局部状态、可追溯依据与未完成原因\n责任边界：材料预审不等于行政批准，不得对不相关对象复用资格结论\n不得将亲属或服务事实代替校方资格决定\n本责任不产生正式批准或拒批\nD2 技术预审来源：synthetic-source/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-e6d7b8dad0cb5893",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "synthetic-source"
+      ],
+      "priority": 50001,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-a0647aa0343c3b4ccc65",
+      "policyVersionId": "workspace:d2-d3-handoff-campus@4",
+      "title": "当前动作授权",
+      "requirement": "适用范围：当前申请中已明确指定的审核对象\n核对授权是否覆盖 临时服务人员卡代办 动作、对象和有效期限；其他操作授权不得移用\n完成标准：记录独立局部状态、可追溯依据与未完成原因\n责任边界：材料预审不等于行政批准，不得对不相关对象复用资格结论\n不得将亲属或服务事实代替校方资格决定\n本责任不产生正式批准或拒批\nD2 技术预审来源：synthetic-source/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-e6d7b8dad0cb5893",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "synthetic-source"
+      ],
+      "priority": 50002,
+      "confirmation": "confirmed"
+    }
+  ],
+  "mapping": [
+    {
+      "checkId": "local/school-decision",
+      "ruleId": "d2-ba281f7bc1343cc13116",
+      "sourceIds": [
+        "school-policy-unverified"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/service-link/service-link",
+      "ruleId": "d2-6d0ae44ea7555a3b974c",
+      "objectKey": "service-card",
+      "subjectId": "d2-service",
+      "sourceIds": [
+        "synthetic-source"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/service-agent/authorization",
+      "ruleId": "d2-a0647aa0343c3b4ccc65",
+      "objectKey": "service-card",
+      "subjectId": "d2-service",
+      "sourceIds": [
+        "synthetic-source"
+      ],
+      "authority": "request-scope"
+    }
+  ],
+  "fingerprint": "b61781e238e4280ae1b1da936de03ed33e203f83d38f76d7104f64090c922f14"
+}
