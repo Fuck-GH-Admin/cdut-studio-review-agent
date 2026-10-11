@@ -17,6 +17,7 @@ import { actorOfAssignment, bindRunToAssignment, checkAssignment, createAssignme
 import { DocumentCapabilityLibrary } from './document-capability-library'
 import { finalizePiDocumentCoverage } from './pi-document-coverage'
 import { validateD2OperationEvidence, verifyD2InstalledPlan } from './review-d2-runtime'
+import { validateD2GuardSubmission } from './review-d2-execution-gates'
 
 export interface PiReviewBinding {
   assignmentId: string
@@ -913,6 +914,15 @@ export function submitPiReviewResultV2(input: {
     if (d2EvidenceProblem) {
       rejected.push({ kind: 'check', index, reason: d2EvidenceProblem })
       continue
+    }
+    const planned = aggregate.d2RuntimePlan?.mapping.find(item => item.ruleId === candidate.ruleId)
+    if (planned) {
+      const gateProblem = validateD2GuardSubmission(aggregate, planned, candidate.status,
+        (candidate.sourceRefs ?? []).map(ref => ref.documentVersionId))
+      if (gateProblem) {
+        rejected.push({ kind: 'check', index, reason: gateProblem })
+        continue
+      }
     }
     const reason = String(candidate.reason ?? '').trim().slice(0, 2000)
     if (!reason) {
