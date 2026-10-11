@@ -69,7 +69,7 @@
 - `preparePiReviewRunV2` 在真正执行前就写入 `running` 和 assignment；不可仅以账本状态/IPC 请求送出作为 ACK。主进程现有 `agent-service.ts:runAgent` 内部收到 `onRunOwned` 时才有真实执行所有权，但是此信号尚未向业务 Main Bridge 公开。下一批次只在最小适配层暴露明确受理/拒绝结果，不新增新事件总线或第二套任务存储。
 - ACK 拒绝/并发失败：必须以准确 `caseId/sessionId/runId/assignmentId` 收口本轮，并使临时准备中的 running 不悬挂；`onRunOutcome` 单次收尾仍是权威。**未受理不等于模型失败，不得停止已获得所有权的其他 Run。**
 - ACK 成功：Main 保持执行 Promise 持有者，React Hook 卸载只影响显示；再次打开页面时通过 V2 账本恢复状态。整个应用退出则依旧遵守 `markStaleRunsInterrupted`。
-- P03-S01 受控探针：复用真实 `runAgent` 函数体、模拟延迟 Orchestrator、真实 V2 账本，验证 sender 生命周期退出后收尾与 `running` 先于 `onRunOwned`。**只证明 API 契约，不是 Electron/真实模型切页 E2E。**
+- P03-S01 受控探针：复用真实 `runAgent` 函数体、模拟延迟 Orchestrator、真实 V2 账本，验证 sender 生命周期退出后收尾与 `running` 先于 `onRunOwned`。在 `3a34522706289f4f7f36d11f965da43ca1a705e0` 上 [PR CI #38175575480](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38175575480) **PASS（P03-S01 2/2，全仓 3730 pass / 5 skip / 0 fail）**；D2 #38175575468、审核基线 #38175575476 通过。**仅证明 API 契约，不是 Electron/真实模型切页 E2E。**
 
 ## 先证伪、再开工：最小技术预验证
 
@@ -79,7 +79,7 @@
 | --- | --- | --- |
 | P01 | **契约探针 PASS（5/5）**：真实 `runAgent()` 函数体、V2 run/assignment 在受控模拟编排器里覆盖完整提交、部分完成、失败、取消、busy；**真实 Pi 和 Electron UI NOT-RUN** | 不能据此认定真实模型已跑通；尚须最小真实 Main/Pi 案卷实验检验无 Tab 启动、工具提交及失败收尾 |
 | P02 | **SAFE-WIRING PASS / LIVE-E2E BLOCKED**：严格工具白名单、案卷限定预览委托、后验轮次核验、主进程权限闸门和 V2 续审/压缩探针均已通过。**真实模型调用、真实扫描 PDF Electron 渲染未运行** | 在合成案卷的实际 Pi/桌面测试证明前不能宣称 P02 全部完成，尤其不能据受控 renderer 假图片标记真实视觉能力通过 |
-| P03 | **S01 契约探针已提交，CI 待验证**：预处理由 Renderer 完成；V2 `running` 不是 Pi 受理确认；真实 `onRunOwned` 是受理边界；Main 运行后切走/销毁窗口仍需写入 V2 终态。S02 之后才改桥接/用户入口 | 未确认真实执行权就给前台成功 ACK；运行在页面卸载后被误停，或忙碌拒绝留下孤儿 running |
+| P03 | **S01 受控契约探针 PASS（2/2）**：预处理由 Renderer 完成；V2 `running` 不是 Pi 受理确认；真实 `onRunOwned` 是受理边界；Main 运行后切走/销毁窗口仍需写入 V2 终态。S02 之后才改桥接/用户入口 | 未确认真实执行权就给前台成功 ACK；运行在页面卸载后被误停，或忙碌拒绝留下孤儿 running |
 | P04 | 内部 session 在桌面侧栏、搜索、归档、最近、Tab 恢复、异步 upsert、引用中均不可见；旧普通会话行为保持 | 任一入口重新出现内部会话、破坏普通会话竞态保护 |
 | P05 | Pocket 列表、按 ID 读取与变更、WS 实时事件、事件重放与远程搜索完全隔离；普通会话仍可使用 | 任一 API 通过内部 sessionId 读取/控制或记录敏感事件到远程重放 |
 | P06 | 同一案卷连续两轮运行，旧运行的迟到停止/失败回调不会改写或中止新的运行 | 任何旧 run 影响新 run |
