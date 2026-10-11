@@ -6,7 +6,7 @@
  */
 import {createHash} from 'node:crypto'
 import type {
-  D2ScenarioSelection, D2TargetBinding, ReviewAuthoringSourceBindingV1,
+  D2ScenarioSelection, D2TargetBinding, D2ExecutionGateV1, ReviewAuthoringSourceBindingV1,
   ReviewAuthoringUseV1, ReviewAuthoringWorkspaceV1,
 } from '@profer/shared'
 import {validateReviewAuthoringV1} from './review-authoring-v1'
@@ -30,12 +30,18 @@ export interface D3ArchiveCaseRequestV1 {
     operation:string
     byOperation:Record<CanonicalOp,string[]>
   }
+  /** Optional independently authored per-Check executable constraints, never inferred
+   * from module prose or from an unknown school's policy. */
+  gateAssignments?:Array<{
+    moduleId:string;taskId:string;gate:D2ExecutionGateV1
+    itemId?:string;operation?:CanonicalOp
+  }>
 }
 export interface D3CaseInstanceV1 {
   workspace:ReviewAuthoringWorkspaceV1
   selection:D2ScenarioSelection
   /** Exact source-to-new-Check mapping, even for repeated same-kind operations. */
-  originalCheckSourceMap:Array<{checkId:string;sourceTemplateCheckId:string;objectKey?:string}>
+  originalCheckSourceMap:Array<{checkId:string;sourceTemplateCheckId:string;objectKey?:string;moduleId:string;taskId:string}>
   normalizedOperations:Array<{from:D3BusinessOperationV1;to:CanonicalOp;objectKey:string}>
 }
 function canonical(operation:D3BusinessOperationV1):CanonicalOp {
@@ -100,7 +106,7 @@ export function instantiateD3ArchiveCaseV1(
         ...(scopedNote!==undefined?{applicabilityNote:scopedNote}:{}),
       })
       originalCheckSourceMap.push({
-        checkId,sourceTemplateCheckId:source.checkId,objectKey,
+        checkId,sourceTemplateCheckId:source.checkId,objectKey,moduleId,taskId:task.id,
       })
     }
     const cloned:ReviewAuthoringUseV1={
@@ -137,6 +143,32 @@ export function instantiateD3ArchiveCaseV1(
         addUse(normalized+'-'+n+'-'+suffix,mod,objectKey)
       normalizedOperations.push({from:operation.operation,to:normalized,objectKey})
       void index
+    }
+  }
+  // Explicit gates apply only to exact dynamic Check instances, keyed by
+  // module+task+optional target selectors. A zero-match selector is an error:
+  // a typo must not silently drop electronic alternatives or stage logic.
+  const gatesApplied=new Set<string>()
+  for(const assignment of request.gateAssignments??[]) {
+    assertId(assignment.moduleId,'gate.moduleId')
+    assertId(assignment.taskId,'gate.taskId')
+    if(assignment.itemId)assertId(assignment.itemId,'gate.itemId')
+    if(assignment.operation&&!['read','copy','excerpt','borrow'].includes(assignment.operation))
+      throw new Error('D3_GATE_BAD_OPERATION')
+    const matched=originalCheckSourceMap.filter(ref=>{
+      if(ref.moduleId!==assignment.moduleId||ref.taskId!==assignment.taskId||!ref.objectKey)return false
+      const target=targetList.find(t=>t.objectKey===ref.objectKey)!
+      return (!assignment.itemId||target.itemId===assignment.itemId)&&
+        (!assignment.operation||target.operation===assignment.operation)
+    })
+    if(!matched.length)throw new Error('D3_GATE_NO_TARGET_CHECK: '+assignment.moduleId+'/'+assignment.taskId)
+    for(const ref of matched) {
+      if(gatesApplied.has(ref.checkId))throw new Error('D3_GATE_DUPLICATE_ASSIGNMENT: '+ref.checkId)
+      gatesApplied.add(ref.checkId)
+      const link=newSourceBindings.find(x=>x.checkId===ref.checkId)!
+      if(link.gate && hash(link.gate)!==hash(assignment.gate))
+        throw new Error('D3_GATE_SOURCE_PROTOTYPE_CONFLICT: '+ref.checkId)
+      link.gate=structuredClone(assignment.gate)
     }
   }
   // Append any case-level module source mappings unchanged; no instance-less
