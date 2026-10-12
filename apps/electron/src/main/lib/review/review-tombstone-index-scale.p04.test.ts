@@ -3,6 +3,7 @@
  * synthetic scale measurements; not production Electron or a GC policy.
  */
 import { afterAll, describe, expect, test } from 'bun:test'
+import { spawnSync } from 'node:child_process'
 import { randomUUID } from 'node:crypto'
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -78,6 +79,20 @@ describe('P04-TECHDEBT-01 index-coupled owner membership', () => {
     deleteAgentSession(oldOwner.id)
     expect(isReviewOwnedOrDeletedAgentSessionId(oldOwner.id)).toBe(true)
     expect(getAgentSessionMeta(oldOwner.id)).toBeUndefined()
+  })
+
+  test('a fresh Bun process reloads the persisted deleted-owner identity', () => {
+    const owned = createReviewOwnedAgentSession({
+      caseId: 'restart-' + randomUUID().slice(0, 8), title: 'private-restart-check', channelId: 'mock',
+    })
+    deleteAgentSession(owned.id)
+    const moduleUrl = new URL('../agent-session-manager.ts', import.meta.url).href
+    const script = `import { isReviewOwnedOrDeletedAgentSessionId as hidden } from ${JSON.stringify(moduleUrl)}; if (!hidden(${JSON.stringify(owned.id)})) process.exit(13)`
+    const child = spawnSync(process.execPath, ['-e', script], {
+      env: { ...process.env, PROFER_CONFIG_DIR: root }, encoding: 'utf8', timeout: 20_000,
+    })
+    expect({ exit: child.status, signal: child.signal, stderr: child.stderr.slice(-1000) })
+      .toEqual({ exit: 0, signal: null, stderr: '' })
   })
 
   test('0 / 1k / 10k / 100k UUID tombstone persisted-index benchmarks (non-gating)', () => {
