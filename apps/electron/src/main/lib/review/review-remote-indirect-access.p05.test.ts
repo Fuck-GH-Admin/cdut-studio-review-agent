@@ -32,11 +32,15 @@ describe('P05-S01 remote indirect owner boundaries', () => {
     try {
       const result = await cmd('get_pending_interactions')
       expect(result.ok).toBe(true)
+      if (!result.ok) throw new Error(result.error)
       const data = result.data as Record<string, typeof requests>
       for (const key of ['permissions', 'askUsers', 'exitPlans']) {
         expect(data[key]?.map(r => r.requestId)).toEqual(['public'])
       }
-      expect((await cmd('get_pending_interactions', { sessionId: normal.id })).ok).toBe(true)
+      const scoped = await cmd('get_pending_interactions', { sessionId: normal.id })
+      expect(scoped.ok).toBe(true)
+      if (!scoped.ok) throw new Error(scoped.error)
+      expect((scoped.data as Record<string, typeof requests>).permissions?.map(r => r.requestId)).toEqual(['public'])
       expect(await cmd('get_pending_interactions', { sessionId: owner.id }))
         .toEqual({ ok: false, error: '会话不存在' })
     } finally { p.mockRestore(); a.mockRestore(); e.mockRestore() }
@@ -84,8 +88,9 @@ describe('P05-S01 remote indirect owner boundaries', () => {
       expect(await cmd(type, fields)).toEqual({ ok: false, error: '会话不存在' })
       expect(await cmd(type, { filePath: fields.filePath }, { activeSessionId: owner.id }))
         .toEqual({ ok: false, error: '会话不存在' })
-      expect((await cmd(type, { filePath: fields.filePath, access: { sessionId: normal.id } })).error)
-        .not.toBe('会话不存在')
+      const normalResult = await cmd(type, { filePath: fields.filePath, access: { sessionId: normal.id } })
+      expect(normalResult.ok).toBe(false)
+      if (!normalResult.ok) expect(normalResult.error).not.toBe('会话不存在')
     }
     deleteAgentSession(owner.id)
     expect(await cmd('resolve_and_read_file', fields)).toEqual({ ok: false, error: '会话不存在' })
