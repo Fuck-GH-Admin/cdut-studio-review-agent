@@ -172,7 +172,7 @@ cmd.exe /c ".\apps\electron\out\win-unpacked\CDUT Studio.exe --enable-logging"
 
 2026-10-11 使用者已授权向上游提交当前阶段成果的 Draft PR，取代此前不提交 PR 的安排。模板与解析保留项见 [28 号交付状态](docs/design/review-agent/28-review-stage-delivery-status.md)。后台会话继续在测试仓库 Draft PR #21 的 `feat/review-owned-background-sessions` 开发，按 [27 号最小规范](docs/design/review-agent/27-background-review-session-proposal.md)复用既有 Pi 和 V2。
 
-2026-10-13 已授权补齐进入 P06 前的 Main 接线与 A0。直接案卷入口现在由 Main 创建 `owner:review-case` 会话、准备 V2/指派、调用既有 `runAgent`；只有真实 `onRunOwned` 才回复已受理。Renderer 保留材料准备与事项识别，受理后只回读业务状态，不建普通聊天或持有运行 Promise；按案卷/runId 停止并等待现有执行器释放。旧 prepare/abort/指派 IPC 排除新 owner。禁止重新造执行引擎或数据库。A0 证据、外部 Relay/Pocket 阻断、P06 后续范围和合并门禁分别登记；本轮不合并、不解除 Draft，P05 PARTIAL/LIVE 未运行项不能因接线自动关闭。
+2026-10-13 已授权补齐进入 P06 前的 Main 接线与 A0。直接案卷入口现在由 Main 创建 `owner:review-case` 会话、准备 V2/指派、调用既有 `runAgent`；只有真实 `onRunOwned` 才回复已受理。Renderer 保留材料准备与事项识别，受理后只回读业务状态，不建普通聊天或持有运行 Promise；按案卷/runId 停止并等待现有执行器释放。旧 prepare/abort/指派 IPC 排除新 owner。禁止重新造执行引擎或数据库。A0 证据、外部 Relay/Pocket 阻断、P06 后续范围和合并门禁分别登记；本轮不合并、不解除 Draft，P05 PARTIAL/LIVE 未运行项不能因接线自动关闭。 已完成的本地 Main/A0 和下一批 P06 范围见 [34 号](docs/design/review-agent/34-pre-p06-main-a0-acceptance-20261013.md)，不得重复接线或将局部通过写为生产放行。
 
 ---
 

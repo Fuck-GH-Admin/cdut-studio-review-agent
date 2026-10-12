@@ -1,6 +1,16 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
-> 更新基线：2026-10-12，Draft PR #21 **P04-TECHDEBT-01 安全性能补丁冻结代码 SHA** `dccaf6ce96072eac9404c3957742555916bd62f1`（PATH-01 补丁 `7c5e003c` 证据保留）（先前专项 `9eec2311` 的 9 项证据保留）（P05-S05 代码仍保留）（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
+## 最新交接（2026-10-13；优先于下方历史快照）
+
+- 用户授权：补齐进入 P06 前的前置项，更新测试仓库，**先不合并**。本轮完成 Main-only start/read/stop、Renderer 业务状态及 A0，未执行 P06/P07/P08。
+- 冻结应用/验收驱动：`14bc7d6c3625aaa6eec2675aa9ce4dc446475297`（Electron 0.15.156 / shared 0.1.66 / core 0.2.14）；历史 P05 本地报告已补录 [33](33-p05-local-automation-recheck-20261013.md)，本批命令/环境/结果/CI/截图见 [34](34-pre-p06-main-a0-acceptance-20261013.md)。文档归档后 HEAD 会变化，必须查询当次 CI。
+- Main 复用可信 owner factory、V2 prepare、既有 admission/runAgent/stopAgentAndWait；使用审核模块选择或持久全局模型，不猜测替代模型，不继承普通聊天工作区。真实 `onRunOwned` 后 ACK，Renderer 卸载只结束显示轮询。
+- **本地 A0 可进入 P06 工程验证**：真实 DeepSeek 文本案卷完成、关闭真实审核子页后写入带出处的结果；预检无孤儿；当前轮停止 cancelled；真实 Pi 对本机 HTTP 500 收口 failed。后者是受控 provider 故障，不是生产 DeepSeek 故障。
+- P05-RELAY-ROUTE-01 **BLOCKED / NOT-RUN**；P05-POCKET-FIFO-01 **PATCH READY / TARGET NOT-RUN**。P05 整体 PARTIAL、PR #21 Draft/Open/未合并、MERGE NO-GO。P04 永久 ID-only tombstone 不做 TTL/GC，容量增长风险原记录保留。
+- 原件预览曾在 dev 被 `ERR_BLOCKED_BY_CLIENT` 阻断；A0 文本回退完成，扫描 PDF/PNG 不能记 PASS。LIVE 表仅追加已实测子集为 PARTIAL，未完成项保留。
+- 下一批是 **P06：同案连续两轮、旧 run 迟到 stop/失败回调、停止释放后立即重启**；核验当前真实 Main 路径，不重做已完成接线，不借此解除跨仓阻断或合并。
+
+> 历史更新基线：2026-10-12，Draft PR #21 **P04-TECHDEBT-01 安全性能补丁冻结代码 SHA** `dccaf6ce96072eac9404c3957742555916bd62f1`（PATH-01 补丁 `7c5e003c` 证据保留）（先前专项 `9eec2311` 的 9 项证据保留）（P05-S05 代码仍保留）（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
 
 ## 一分钟读懂
 
@@ -68,7 +78,7 @@
 
 **P03-MAIN-S01 新一轮后端接线冻结（2026-10-13）**：冻结代码 [`5f786583`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/5f7865837c6321756c3bc779c5aad2fe793e8fd0)；[PR CI #38290676371](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38290676371)、[D2 #38290676419](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38290676419)、[Review Baseline #38290676426](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38290676426)、[Review batch focused #38290676413](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38290676413) **全部 SUCCESS**；新增 **7/7 PASS**，全仓 **3837 pass / 5 skip / 0 fail（3842 tests / 437 files）**，Typecheck / boundaries / Electron main, preload, renderer build PASS。这批只做 `getBackgroundPiReviewStateV2` 的只读 Main IPC/Preload/共享契约和 `onRunOwned` ACK gate；原 P01–P05 受控历史和 P04-TECHDEBT-01 的安全留存不变。真实后台审核 start/stop 与切页仍未实施，下一小批 `P03-MAIN-S02` 前请核对独立本地验收证据是否已同步远程；目前只能看到旧版 32 号 NOT-RUN，**不可擅自把 LIVE 表改 PASS**。继续 Draft/Open、不合并。
 
-## 当前下一小批：P03-MAIN-S02 可信 start 接线（未执行）
+## 历史下一小批：P03-MAIN-S02（已由最新 Main/A0 交付完成）
 
 - 在现有 Main 受理器和可信 owner factory 上做最小委托；入参必须验证 caseId、真实用户轮次/assignment、review-operator 预设及 Pi 模型，受控 ACK 前禁止切页；不复制 RunStore、不改通用执行内核。
 - 确保 busy、重复启动、同案旧轮次、准备失败与取消只有当前 binding 能收尾；旧普通 Agent 正例不回归。
@@ -98,7 +108,7 @@
 
 ## 最终实机验收绝不能漏
 
-**29 号文档 `LIVE-01～LIVE-08` 是唯一集中登记簿，当前八项全部 NOT-RUN，未获得用户真实证据不可自动打勾。**
+**29 号文档 `LIVE-01～LIVE-08` 是唯一集中登记簿。2026-10-13 A0 的实际子集已记 PARTIAL，完整项目没有任何 LIVE 项获最终 PASS；未执行部分不可自动打勾。**
 
 范围包括真实 Pi/工具隔离、扫描 PDF Electron 预览、长轮次续审压缩、真实 ACK/前置准备、跨页继续执行、桌面/Pocket 实时与历史隔离、停止/重启/删案竞态、普通 Agent/批量 A/B/C 全回归。
 

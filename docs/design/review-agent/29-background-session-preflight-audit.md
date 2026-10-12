@@ -6,11 +6,11 @@
 
 ## 结论
 
-**NO-GO（完整功能开发暂不开始），GO（限定范围的技术预验证与设计契约收口）。** 27 号文档已经缩减为“复用既有 Pi + 薄 Main bridge + 普通入口守卫”的 v1 方案；不是新建后台执行框架。 目前足够判断不需要重构 Pi 内核的基本方向，但不够证明后台审核能在所有普通会话入口、权限、停止和重启路径中正确运行。执行器、事件、权限与会话元数据均为共享基础设施；禁止通过大面积改动这些模块来换取隐藏 UI。
+**2026-10-13：GO（P06 本地工程前置项已补齐）；NO-GO（合并/发布）。** 用户授权本轮补齐 Main 接线、最小前台与 A0，产物只更新测试分支。Main start/read/stop 已落地，详见本文件的新台账和 [34 号验收](34-pre-p06-main-a0-acceptance-20261013.md)。P05 外部端保持原阻断；P06/P07/P08 及 LIVE 剩余门禁仍须逐项验证。27 号“复用既有 Pi + 薄 Main bridge + 普通入口守卫”的 v1 方案不变。执行器、事件、权限与会话元数据仍为共享基础设施，禁止扩大为执行框架重构。
 
 目标：前台只呈现“可开始审核 / 审核中 / 需要你处理 / 审核已结束 / 本次审核未完成”及原有业务结果、依据、人工补件/确认；技术步骤和原始 transcript 仅供授权诊断，不暴露给普通用户。审核分析结束 **不代表业务审批通过**。
 
-## 当前验证证据（2026-10-12）
+## 历史验证证据（2026-10-12；当前进度见 2026-10-13 Main/A0 台账）
 
 - `apps/electron/src/main/lib/review/review-background-reuse.probe.test.ts`：真实 `runAgent()` **函数体**与真实 V2 案卷/指派/存储连通；使用受控模拟编排器（非真实 Pi 模型），完整提交、部分完成、错误、取消、busy 五项均 **PASS**。不调用 `openSession`，模拟 WebContents 只是运行事件接收器。
 - [PR CI #38164270451](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270451)，基线 `1e076ea84889d8f29aaff2deffe1078e1c57c1ff`：3714 pass、5 skip、0 fail；类型检查、架构边界、皮肤契约与 Electron main/preload/renderer 构建成功。
@@ -283,19 +283,30 @@
 - **新 7 项自动化**：无 Pi 或普通 V2 run 不伪装直接审核；未受理 running/queued 不给 ACK；确认 ACK 后 accepted；待处理与已结束区分；失败/取消/部分结果不误称完成；返回结构不暴露内部 ID；实际注册 Review IPC 对非法/不存在案卷拒绝。现有 P03 真实 `runAgent` 函数体受控测试增加 ACK 前/后/完成后的 `isPiReviewRunAdmitted` 时序断言，原正常回归通过。新增状态汇总测试含纯函数/真实 IPC mock，**不是 Electron GUI 中的完整 UI 点击或真实模型测试**。
 - **停点与下一批**：只读 IPC 已注册但 **Renderer 还未切换调用、没有实际后台创建/启动/停止业务 IPC、没有真正 Main bridge start/stop**；不要为避免页面复位而直接把 prepared running 当 ACK。建议下一批 `P03-MAIN-S02`：核验严格 owner 原子创建+assignment/turnId/case/预设/模型的 Main-only start，复用 `admitPreparedPiReviewTurn` + `runAgent`，忙碌/重复/旧轮次负例先行；随后才加 stop 和最小 Renderer。若 P05 外部 Relay/Pocket 证明未完成，继续保留阻断而不宣称 P05/E2E 全绿。P06/P07/P08、A0 和 LIVE-01～08 **仍 NOT-RUN**；Draft PR 不解除、不合并。
 
-## 最终统一实机验收清单（必须保留到合并前，当前均 NOT-RUN）
+### P03-MAIN-S02/S03 + Renderer + A0｜进入 P06 前置项交付（2026-10-13）
+
+- **授权与结论**：用户要求补齐 P06 前置项、更新测试云端、先不合并。Main start/read/stop、最小前台、真实 Electron A0 和证据归档完成，**P06 LOCAL ENTRY READY / MERGE NO-GO**；P06/P07/P08 未执行。此前“不做 Main”保留为历史停点。
+- **冻结应用及 QA 驱动**：[`14bc7d6c`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/14bc7d6c3625aaa6eec2675aa9ce4dc446475297)，Electron 0.15.156 / shared 0.1.66 / core 0.2.14。历史本地 P05 `df0c0d57` 九步和 43/43 补录 [33](33-p05-local-automation-recheck-20261013.md)；本批命令、环境、时间、日志哈希、case/run、截图、CI 见 [34](34-pre-p06-main-a0-acceptance-20261013.md)。文档提交产生新 HEAD，须另外核对其 CI。
+- **接线范围**：Main 委托可信 owner factory、V2 prepare、admission/runAgent 和 stopAgentAndWait；业务 IPC 只接受主窗口。模块模型优先、持久全局回落、enabled/Pi/review preset 校验；默认沙箱不继承聊天工作区。Main 持有执行，真实 onRunOwned 后 ACK；Renderer 只回读业务态，不建普通 Agent Tab；旧 prepare/abort/指派入口拒绝新 owner。
+- **自动化 PASS**：Main bridge 7、business state 7、reuse 13、controller 30，四文件 **57/57**；P05 **43/43**；全仓 **3849 pass / 5 skip / 0 fail（3854 tests / 438 files）**；typecheck、边界、皮肤和三段构建均 exit 0。
+- **真实本地 A0 4/4 PASS**：DeepSeek/deepseek-flash 合成文本获得真实 ACK 后关闭审核子页，Pi 完成 1 check/1 SourceRef，重进回读；普通 list 不含 owner、meta=null、无普通 Tab。预检拒绝 0 run/0 新 owner；当前轮停止 cancelled；真实 Pi 请求本机 HTTP 500（6 次含重试）后 failed，后者不是生产 provider 故障。
+- **缺陷复测**：修复重选案卷的假 ACK 覆盖、复用 owner 的 preset 检查、预检错误卡 IPC 前缀及切案后旧停止提示。受控回归与真实显示补测通过；迟到 stop/失败回调仍归 P06，不能借基本停止代签。隐藏 agent-preview 在 dev 出现 ERR_BLOCKED_BY_CLIENT；正文回退完成，LIVE-02 保留未验。完整工具清单、PNG/压缩/部分完成/跨端矩阵仍缺证据。
+- **冻结 CI SUCCESS**：[PR #38305239415](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38305239415)、[D2 #38305239388](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38305239388)、[Baseline #38305239392](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38305239392)、[batch #38305239385](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38305239385)。
+- **原阻断保留**：Relay BLOCKED / NOT-RUN；独立 Pocket PATCH READY / TARGET NOT-RUN，本轮未验证或应用 patch。P05 PARTIAL；P04 永久 ID-only tombstone、容量增长风险不变；PR #21 Draft/Open/未合并。LIVE 子集只追加 PARTIAL，下一批 P06 验证同案两轮、旧控制及释放后重启。
+
+## 最终统一实机验收清单（必须保留到合并前；A0 只补入已实测子集）
 
 > 此表是**集中补测登记簿**，不要因为推进新的开发批次删除或自动勾选。全部使用隔离的 `PROFER_CONFIG_DIR` / `PROFER_USER_DATA_DIR`、非真实个人资料的合成案卷，固定测试提交 SHA；如涉及付费模型，使用获授权且受控的模型渠道。执行时在本表逐行填写 **PASS/FAIL/NOT-RUN、操作人、日期、测试数据版本、CI/日志/截图/录像链接、异常工单**。只有自动化测试通过而无对应真实操作证据时，本表仍为 NOT-RUN。
 
 | 统一验收编号 | 原阶段 | 必须进行的实机操作 / 核验点 | 目前状态 |
 | --- | --- | --- | --- |
-| LIVE-01 | P01/P02 | 使用真实 Pi provider 启动合成案卷，工具名单仅包含 `review_read_documents`、`review_inspect_document_image`、`review_submit_result`、`review_inspect_original`、`CompactContext`；尝试或核验普通 Bash/Write/Read/MCP/AskUser 均不可用。审核提交真实正文与 PNG 证据，V2 结果、引用与回执一致 | **NOT-RUN** |
+| LIVE-01 | P01/P02 | 使用真实 Pi provider 启动合成案卷，工具名单仅包含 `review_read_documents`、`review_inspect_document_image`、`review_submit_result`、`review_inspect_original`、`CompactContext`；尝试或核验普通 Bash/Write/Read/MCP/AskUser 均不可用。审核提交真实正文与 PNG 证据，V2 结果、引用与回执一致 | **PARTIAL**：A0 真实 provider 正文和 SourceRef 已验证；完整工具清单/负例及 PNG NOT-RUN，见 34 |
 | LIVE-02 | P02 | 用真实扫描型/解析失败 PDF 验证 Electron 隐藏 renderer 的 `review_inspect_original`：按材料版本 ID 翻页/`scope=all`，检查页数、视觉内容、失败/预算警告、覆盖账本和不可伪造引文；跨案版本、任意路径、符号链接越界需拒绝 | **NOT-RUN** |
 | LIVE-03 | P02 | 真实 Pi 长轮次分批提交，触发 `CompactContext` 或空闲压缩，同 runId 续交/重新进入后恢复事实、缺项和证据引用，未读材料不能伪装已读取 | **NOT-RUN** |
-| LIVE-04 | P03 | 真实 Electron 中验证 HTML/EML 修复与逐事项识别仍在准备阶段；准备结束但尚未获取 `onRunOwned` 时不得显示“后台已受理”；模型预检/忙碌拒绝时不留下孤儿 running，重复点击不影响原 run | **NOT-RUN** |
-| LIVE-05 | P03 | 真正收到 Main ACK 后关闭/切换审核工作台、打开其他页面并返回，Pi 继续运行；刷新案卷从 V2 重取状态，完成/部分完成/失败一致，不靠 React Hook 长轮询保持执行 | **NOT-RUN** |
-| LIVE-06 | P04/P05 | 内部 review owner 会话对桌面侧栏/搜索/归档/Tab 恢复/异步事件及 Pocket 按 ID 操作、消息检索、WS 实时与重放日志全不可见；旧普通 Agent 会话照常可用 | **NOT-RUN** |
-| LIVE-07 | P06/P07 | 同案更新、从头重审、旧轮次迟到取消与异常回调、停止后立即重启、应用重启/强杀、删除案卷、切换工作区和模型停用；无旧 run 误伤新 run、永久 running、幽灵权限或孤儿会话 | **NOT-RUN** |
+| LIVE-04 | P03 | 真实 Electron 中验证 HTML/EML 修复与逐事项识别仍在准备阶段；准备结束但尚未获取 `onRunOwned` 时不得显示“后台已受理”；模型预检/忙碌拒绝时不留下孤儿 running，重复点击不影响原 run | **PARTIAL**：A0 预检拒绝无新 owner/run；HTML/EML、事项准备及实机 busy/重复 NOT-RUN，见 34 |
+| LIVE-05 | P03 | 真正收到 Main ACK 后关闭/切换审核工作台、打开其他页面并返回，Pi 继续运行；刷新案卷从 V2 重取状态，完成/部分完成/失败一致，不靠 React Hook 长轮询保持执行 | **PARTIAL**：真实 ACK、关闭审核子页后完成/重进回读及受理后 failed 已验证；部分完成续审与完整矩阵 NOT-RUN，见 34 |
+| LIVE-06 | P04/P05 | 内部 review owner 会话对桌面侧栏/搜索/归档/Tab 恢复/异步事件及 Pocket 按 ID 操作、消息检索、WS 实时与重放日志全不可见；旧普通 Agent 会话照常可用 | **PARTIAL**：A0 普通 list/meta/新聊天 Tab 隔离已验证；搜索/归档/历史恢复/多窗口/Pocket/飞书实机 NOT-RUN，见 34 |
+| LIVE-07 | P06/P07 | 同案更新、从头重审、旧轮次迟到取消与异常回调、停止后立即重启、应用重启/强杀、删除案卷、切换工作区和模型停用；无旧 run 误伤新 run、永久 running、幽灵权限或孤儿会话 | **PARTIAL**：A0 当前轮停止保存 cancelled；P06 旧轮竞态与 P07 重启/强杀/删案等 NOT-RUN，见 34 |
 | LIVE-08 | P08 | 普通 Pi/Claude Agent 发送、权限、工具、预览、停止、fork、Pocket、原批量 A/B/C 审核保持原行为；冻结版 CI（类型、边界、所有单测与构建）及桌面操作日志均可复验 | **NOT-RUN** |
 
 **统一验收记录模板（每项填写）**：`编号=LIVE-XX；结果=NOT-RUN/PASS/FAIL；执行日期=；操作者=；应用提交 SHA=；虚构案卷数据集版本=；步骤和预期=；实际结果=；日志/截图/录像/CI=；缺陷与复测=。`

@@ -1,5 +1,7 @@
 # 32｜P05 阶段独立验收、跨仓阻断与本地实测交接（2026-10-13）
 
+> **本地执行补录**：本手册 §4 已在 `df0c0d57` 执行九步全部通过，完整证据见 [33｜P05 本地复验](33-p05-local-automation-recheck-20261013.md)。用户随后授权补齐 Main/A0，见 [34｜P06 前置验收](34-pre-p06-main-a0-acceptance-20261013.md)。下方是原 P05 冻结批次记录；“不执行 Main”属于当时停点，现已由新授权推进。本轮依旧不合并、不解除 Draft，生产中心和独立 Pocket 状态原样保留。
+
 > 范围：Draft PR #21 / `feat/review-owned-background-sessions`，本文件只总结 P05-S01～S06 的可核验证据与合并门禁。**受控 PASS 不等于真实 Pocket/中心 Relay/飞书/Electron LIVE PASS。** 必须同时阅读 [29 号证据台账](29-background-session-preflight-audit.md) 和 [30 号项目交接](30-background-session-handoff.md)。P04-TECHDEBT-01 的永久保留 tombstone 与性能数据以 29 号为准，不因本次 P05 批次而删除或改写。
 
 ## 1. 本批冻结事实与阶段结论
@@ -7,7 +9,7 @@
 - **冻结桌面端代码**：[`ce992f90`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/ce992f90880ecde1954e925b63585692a085f621)。
 - **CI 原始证据**：[PR CI #38284532497](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38284532497)、[D2 #38284532492](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38284532492)、[Review Baseline #38284532487](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38284532487)，均 SUCCESS。PR CI：**3830 pass / 5 skip / 0 fail**，3835 tests / 436 files，工作区 typecheck、包边界、Electron main/preload/renderer 构建通过。
 - **P05 专项**：六份 `*.p05.test.ts` 的完整 CI 日志逐文件计数合计 **43/43 PASS / 0 fail / 0 skip**，其余全仓 5 skip 与 P05 专项不同。
-- **阶段判定：P05 CODE/CONTROLLED GATES PASS；P05 END-TO-END = BLOCKED / PARTIAL；PR MERGE = NO-GO**。用户本地验收尚未执行，中心端与 Pocket 上游也尚未取得真实修复/部署/测试证据。不是基于抽象“谨慎”，而是下面第 3 节具体两个外部阻断项以及项目整体 A0/LIVE 门禁没有解除。
+- **阶段判定：P05 CODE/CONTROLLED GATES PASS；P05 END-TO-END = BLOCKED / PARTIAL；PR MERGE = NO-GO**。该冻结批次时用户本地验收尚未执行；现已补录 33 号本地证据，中心端与 Pocket 上游仍未取得真实修复/部署/测试证据。不是基于抽象“谨慎”，而是下面第 3 节具体两个外部阻断项以及项目整体 A0/LIVE 门禁没有解除。
 
 ## 2. P05-S01～S06 完整受控核验矩阵
 
@@ -102,4 +104,4 @@ git diff --stat
 
 即便 P05 外部条件全部解除，**本项目 PR #21 合并还受 Main 最小审核业务接线、A0、P06/P07/P08、LIVE-01～08 等项目级门禁约束**，不能将“P05 阶段合格”等同“整个 PR 可合并”。
 
-本轮不合并、不解除 Draft，不执行 Main/P06/P07/P08；P04-TECHDEBT-01 留存与已知容量风险的记录在 29 号完整保留。
+该 P05 冻结批次不合并、不解除 Draft、不执行 Main/P06/P07/P08；后续授权的 Main/A0 交付见 34 号，P06/P07/P08 尚未执行；P04-TECHDEBT-01 留存与已知容量风险的记录在 29 号完整保留。

@@ -1,6 +1,8 @@
 # 27｜直接案卷审核：复用现有 Pi 的后台会话最小实施规范
 
-> **跨会话接手先读**：[30｜当前项目与 PR #21 交接指南](30-background-session-handoff.md) → [31｜复制即用的接手/小批次提示词](31-background-session-continuation-prompts.md) → 本文件实施规范 → [29｜验收证据及 LIVE-01～08](29-background-session-preflight-audit.md)。**P04-S01/S02/S03/S04 均有冻结代码受控 PASS，P04-PATH-01 原 9 项受控证据经复核发现最终目标路径遗漏，现已有新增 5 项真实文件变更受控修补（详见 29 号），P04-TECHDEBT-01 本批受控优化与规模评估完成（保留安全账本，不做 GC），P04 整体因真实 Electron LIVE-06/08 仍 PARTIAL；P05-S01 Pocket 间接 ID/事件重放的受控修复已 PASS；P05-S01/S02/S03/S04/S05 均有受控 PASS，P05 整体仍 PARTIAL；P05-S01～S06 已完成 43/43 受控测试、中心 correlation 冲突/迟到回执夹具与 Pocket 可应用补丁已交付，生产中心和独立 Pocket 上游尚无验收证据，P05 整体仍 PARTIAL、合并 NO-GO，LIVE-01～08 均 NOT-RUN。**
+> **2026-10-13 当前交付**：用户已授权补齐 P06 前置项。Main start/read/stop、最小 Renderer 接线和本地 A0 已交付，冻结应用及驱动代码 `14bc7d6c3625aaa6eec2675aa9ce4dc446475297`；证据见 [34｜Main/A0 本地验收](34-pre-p06-main-a0-acceptance-20261013.md)，原 P05 本地记录见 [33](33-p05-local-automation-recheck-20261013.md)。**本地工程具备进入 P06 的条件；P06/P07/P08 尚未执行，生产 Relay BLOCKED、独立 Pocket TARGET NOT-RUN、完整 PR MERGE NO-GO。** 下方旧批次停点为历史记录，不能用“尚未接线”重复实现已交付入口。
+
+> **历史阶段快照（Main/A0 之前）**；跨会话接手先读：[30｜当前项目与 PR #21 交接指南](30-background-session-handoff.md) → [31｜复制即用的接手/小批次提示词](31-background-session-continuation-prompts.md) → 本文件实施规范 → [29｜验收证据及 LIVE-01～08](29-background-session-preflight-audit.md)。**P04-S01/S02/S03/S04 均有冻结代码受控 PASS，P04-PATH-01 原 9 项受控证据经复核发现最终目标路径遗漏，现已有新增 5 项真实文件变更受控修补（详见 29 号），P04-TECHDEBT-01 本批受控优化与规模评估完成（保留安全账本，不做 GC），P04 整体因真实 Electron LIVE-06/08 仍 PARTIAL；P05-S01 Pocket 间接 ID/事件重放的受控修复已 PASS；P05-S01/S02/S03/S04/S05 均有受控 PASS，P05 整体仍 PARTIAL；P05-S01～S06 已完成 43/43 受控测试、中心 correlation 冲突/迟到回执夹具与 Pocket 可应用补丁已交付，生产中心和独立 Pocket 上游尚无验收证据，P05 整体仍 PARTIAL、合并 NO-GO，LIVE-01～08 均 NOT-RUN。**
 
 > 2026-10-12 缩减版（原提案的过度设计从当前实施基线移除；历史建议仍可通过 Git 历史查看）。
 > 代码核对：`main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`。本文件是 **v1 目标与允许改动范围**，不是实现完成声明。
@@ -8,7 +10,7 @@
 
 ## 1. 要解决的唯一问题
 
-现有直接案卷审核从 `use-review-actions.ts` 创建普通 Agent 会话，把它插入 `agentSessionsAtom`，随后调用 `openSession('agent', ...)` 并通过普通 `SEND_MESSAGE` 启动 Pi。用户被迫进入普通聊天界面，审核会话同时出现在侧栏、搜索、历史和远程会话接口。
+原 main 基线的直接案卷审核从 `use-review-actions.ts` 创建普通 Agent 会话，把它插入 `agentSessionsAtom`，随后调用 `openSession('agent', ...)` 并通过普通 `SEND_MESSAGE` 启动 Pi。该历史路径会使用户进入普通聊天界面。当前 Draft 分支已改由 Main 可信后台入口启动；旧普通审核聊天保留历史，不自动迁移。
 
 **目标**：用户在案卷中点击开始审核，Pi 继续使用既有运行/证据/权限机制，**不创建普通聊天标签和会话入口**。正常审核只显示“审核中”；结束时展示既有结果、依据、需补件或人工决定。未完成时给出简要原因和重试入口。用户无需理解 Pi 技术状态。
 

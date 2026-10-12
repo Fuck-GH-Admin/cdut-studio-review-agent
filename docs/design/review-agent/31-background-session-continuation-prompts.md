@@ -2,7 +2,19 @@
 
 > 本文件的提示词用于 **Draft PR #21** 的连续工程工作。它不替代仓库源码、CI 或 [27](27-background-review-session-proposal.md)/[29](29-background-session-preflight-audit.md)/[30](30-background-session-handoff.md) 文档。任何阶段完成与否以**当次 PR HEAD、实际 GitHub CI 和证据**为准。
 
-## A｜新会话第一次使用（直接复制粘贴）
+## 当前接手提示（2026-10-13；进入 P06 前置项交付后）
+
+```text
+接手测试仓库 Draft PR #21 / feat/review-owned-background-sessions。
+先读 34-pre-p06-main-a0-acceptance-20261013.md、29/30 与 32/33，核对真实 PR HEAD 和当次 CI。
+Main start/read/stop、Renderer 后台 ACK 接线和本地 A0 已完成；冻结代码 14bc7d6c3625aaa6eec2675aa9ce4dc446475297。不要重复接线或重新设计 P05。
+用户本轮只要求补齐 P06 前置并推送、不合并；本轮结束。后续用户授权继续时，下一批做 P06 的同案两轮、迟到旧 stop/失败回调及释放后重启负例，沿用当前 Main/V2/Pi，普通路径回归。
+真实 Relay BLOCKED、独立 Pocket PATCH READY/TARGET NOT-RUN；没有验证 Pocket，勿关闭阻断。如果要验证 Pocket，额外阅读 P05-POCKET-FIFO-01 patch 并核对独立仓库 SHA。
+LIVE 表中 A0 子集仅 PARTIAL；扫描 PDF、完整工具/PNG、压缩、跨窗/移动端、重启强杀删案和普通 Agent 实机矩阵尚未完成。保留永久 tombstone 的容量风险。
+每批记录实际 SHA/命令/环境/退出码/日志/CI，更新 29/30/34 与 PR。保持 Draft/Open，不合并。
+```
+
+## A｜历史首次接手提示（以当前接手提示与最新账本为准）
 
 ```text
 宝宝，接手我们的 cdut-studio-review-agent「直接案卷审核 Pi 后台会话」项目，继续以前一个会话的工程进度，不要重新从头设计。
@@ -44,7 +56,7 @@ P04-TECHDEBT-01 已完成本批受控性能修补与安全不 GC 决策；容量
 特别注意失败/取消/异步迟到、旧缓存恢复、缺失 owner 元数据、按 ID 绕过、跨窗口与普通 Agent 的正常路径。不要新造执行引擎、会话数据库或通用权限框架；不要开发未要求的 UI、模板/批量审核；不要合并或解除 Draft。完成 <小批次 ID> 后停止，向我汇报下一建议。
 ```
 
-## P03-MAIN-S01 后的下一批提示（2026-10-13）
+## 历史 P03-MAIN-S01 后的下一批提示（已由 Main/A0 交付覆盖）
 
 ```text
 恢复 Draft PR #21 当前 HEAD，先读 docs/design/review-agent/29-background-session-preflight-audit.md 中的 P03-MAIN-S01 小节，以及 27/30 和 P05 的 32 号手册。上批只读业务态 IPC 和真实 onRunOwned ACK 标记已经受控通过；下一批只做 P03-MAIN-S02 的 Main-only 可信后台启动入口。
