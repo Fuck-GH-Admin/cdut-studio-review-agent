@@ -3071,7 +3071,8 @@ export function registerIpcHandlers(): void {
   // opts.tail/before 传参时返回分页结果（桌面懒加载：首次只取尾部一页，触顶/按钮补更早）
   ipcMain.handle(
     AGENT_IPC_CHANNELS.GET_SDK_MESSAGES,
-    async (_, id: string, opts?: { tail?: number; before?: number }): Promise<SDKMessage[] | import('./lib/agent-session-manager').SDKMessagePage> => {
+    async (event, id: string, opts?: { tail?: number; before?: number }): Promise<SDKMessage[] | import('./lib/agent-session-manager').SDKMessagePage> => {
+      assertSensitiveAgentIpcSender(event)
       assertOrdinaryAgentSession(id)
       return opts ? getAgentSessionSDKMessages(id, opts) : getAgentSessionSDKMessages(id)
     }
@@ -3158,7 +3159,8 @@ export function registerIpcHandlers(): void {
   // 手动重新生成 Agent 会话标题：绕过定稿锁定，用前几轮有效消息重命名并重新锁定
   ipcMain.handle(
     AGENT_IPC_CHANNELS.REGENERATE_TITLE,
-    async (_, id: string, channelId?: string, modelId?: string): Promise<AgentSessionMeta | null> => {
+    async (event, id: string, channelId?: string, modelId?: string): Promise<AgentSessionMeta | null> => {
+      assertSensitiveAgentIpcSender(event)
       assertOrdinaryAgentSession(id)
       const result = await regenerateAgentTitle(id, channelId, modelId)
       return result?.session ?? null
@@ -3168,7 +3170,8 @@ export function registerIpcHandlers(): void {
   // 删除 Agent 会话：运行中时先中止并等待 finally 完整退出，避免删除后仍写入 JSONL/工作目录。
   ipcMain.handle(
     AGENT_IPC_CHANNELS.DELETE_SESSION,
-    async (_, id: string): Promise<void> => {
+    async (event, id: string): Promise<void> => {
+      assertSensitiveAgentIpcSender(event)
       assertOrdinaryAgentSession(id)
       return agentSessionDeletionCoordinator.delete(id, {
         beginDeletion: beginAgentSessionDeletion,
@@ -3190,7 +3193,9 @@ export function registerIpcHandlers(): void {
   // 迁移 Chat 对话记录到 Agent 会话
   ipcMain.handle(
     AGENT_IPC_CHANNELS.MIGRATE_CHAT_TO_AGENT,
-    async (_, conversationId: string, agentSessionId: string): Promise<void> => {
+    async (event, conversationId: string, agentSessionId: string): Promise<void> => {
+      assertSensitiveAgentIpcSender(event)
+      assertOrdinaryAgentSession(agentSessionId)
       migrateChatToAgentSession(conversationId, agentSessionId)
     }
   )
@@ -3405,7 +3410,8 @@ export function registerIpcHandlers(): void {
   // 分叉 Agent 会话
   ipcMain.handle(
     AGENT_IPC_CHANNELS.FORK_SESSION,
-    async (_, input: ForkSessionInput): Promise<AgentSessionMeta> => {
+    async (event, input: ForkSessionInput): Promise<AgentSessionMeta> => {
+      assertSensitiveAgentIpcSender(event)
       assertOrdinaryAgentSession(input.sessionId)
       const session = await forkAgentSession(input)
       // Fork 直接在 session manager 内创建元数据，绕过 CREATE_SESSION 的镜像生命周期。
@@ -3420,7 +3426,8 @@ export function registerIpcHandlers(): void {
   // 快照回退（同一会话内回退到指定点）
   ipcMain.handle(
     AGENT_IPC_CHANNELS.REWIND_SESSION,
-    async (_, input: RewindSessionInput): Promise<RewindSessionResult> => {
+    async (event, input: RewindSessionInput): Promise<RewindSessionResult> => {
+      assertSensitiveAgentIpcSender(event)
       assertOrdinaryAgentSession(input.sessionId)
       return rewindAgentSession(
         input.sessionId,
@@ -4004,7 +4011,8 @@ export function registerIpcHandlers(): void {
   // 热切换指定会话的权限模式（运行中生效，不广播）
   ipcMain.handle(
     AGENT_IPC_CHANNELS.UPDATE_SESSION_PERMISSION_MODE,
-    async (_, sessionId: string, mode: ProferPermissionMode, expectedRevision?: number): Promise<AgentSessionMeta> => {
+    async (event, sessionId: string, mode: ProferPermissionMode, expectedRevision?: number): Promise<AgentSessionMeta> => {
+      assertSensitiveAgentIpcSender(event)
       if (!isProferPermissionMode(mode)) {
         throw new Error(`无效的权限模式: ${mode}`)
       }
@@ -4348,7 +4356,8 @@ export function registerIpcHandlers(): void {
 
   ipcMain.handle(
     AGENT_IPC_CHANNELS.RUN_RETROSPECTIVE,
-    async (_event, sessionId: string) => {
+    async (event, sessionId: string) => {
+      assertSensitiveAgentIpcSender(event)
       assertOrdinaryAgentSession(sessionId)
       const { runRetrospective } = await import('./lib/retrospective-service')
       return runRetrospective(sessionId)
@@ -4360,7 +4369,8 @@ export function registerIpcHandlers(): void {
   // 保存文件到 Agent session 工作目录
   ipcMain.handle(
     AGENT_IPC_CHANNELS.SAVE_FILES_TO_SESSION,
-    async (_, input: AgentSaveFilesInput): Promise<AgentSavedFile[]> => {
+    async (event, input: AgentSaveFilesInput): Promise<AgentSavedFile[]> => {
+      assertSensitiveAgentIpcSender(event)
       if (!input || typeof input.sessionId !== 'string') throw new Error('无效的会话标识')
       assertOrdinaryAgentSession(input.sessionId)
       return saveFilesToAgentSession(input)
@@ -4406,7 +4416,8 @@ export function registerIpcHandlers(): void {
   // 附加外部目录到 Agent 会话
   ipcMain.handle(
     AGENT_IPC_CHANNELS.ATTACH_DIRECTORY,
-    async (_, input: AgentAttachDirectoryInput): Promise<string[]> => {
+    async (event, input: AgentAttachDirectoryInput): Promise<string[]> => {
+      assertSensitiveAgentIpcSender(event)
       assertOrdinaryAgentSession(input.sessionId)
       const meta = getAgentSessionMeta(input.sessionId)
       if (!meta) throw new Error(`会话不存在: ${input.sessionId}`)
@@ -4425,7 +4436,9 @@ export function registerIpcHandlers(): void {
   // 移除会话的附加目录
   ipcMain.handle(
     AGENT_IPC_CHANNELS.DETACH_DIRECTORY,
-    async (_, input: AgentAttachDirectoryInput): Promise<string[]> => {
+    async (event, input: AgentAttachDirectoryInput): Promise<string[]> => {
+      assertSensitiveAgentIpcSender(event)
+      assertOrdinaryAgentSession(input.sessionId)
       const meta = getAgentSessionMeta(input.sessionId)
       if (!meta) throw new Error(`会话不存在: ${input.sessionId}`)
 
@@ -4441,7 +4454,8 @@ export function registerIpcHandlers(): void {
   // 附加外部文件到 Agent 会话
   ipcMain.handle(
     AGENT_IPC_CHANNELS.ATTACH_FILE,
-    async (_, input: AgentAttachFileInput): Promise<string[]> => {
+    async (event, input: AgentAttachFileInput): Promise<string[]> => {
+      assertSensitiveAgentIpcSender(event)
       assertOrdinaryAgentSession(input.sessionId)
       const meta = getAgentSessionMeta(input.sessionId)
       if (!meta) throw new Error(`会话不存在: ${input.sessionId}`)
@@ -4464,7 +4478,9 @@ export function registerIpcHandlers(): void {
   // 移除会话的附加文件
   ipcMain.handle(
     AGENT_IPC_CHANNELS.DETACH_FILE,
-    async (_, input: AgentAttachFileInput): Promise<string[]> => {
+    async (event, input: AgentAttachFileInput): Promise<string[]> => {
+      assertSensitiveAgentIpcSender(event)
+      assertOrdinaryAgentSession(input.sessionId)
       const meta = getAgentSessionMeta(input.sessionId)
       if (!meta) throw new Error(`会话不存在: ${input.sessionId}`)
 
@@ -4561,7 +4577,8 @@ export function registerIpcHandlers(): void {
   // 获取 session 工作路径
   ipcMain.handle(
     AGENT_IPC_CHANNELS.GET_SESSION_PATH,
-    async (_, _workspaceId: string, sessionId: string): Promise<string | null> => {
+    async (event, _workspaceId: string, sessionId: string): Promise<string | null> => {
+      assertSensitiveAgentIpcSender(event)
       assertOrdinaryAgentSession(sessionId)
       const session = getAgentSessionMeta(sessionId)
       if (!session) return null
