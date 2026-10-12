@@ -2,7 +2,14 @@ import { isReviewOwnedAgentSession, type AgentSessionMeta } from '@profer/shared
 import type { TabItem } from '@/atoms/tab-atoms'
 import { agentSessionsAtom } from '@/atoms/agent-atoms'
 import { upsertAgentSession } from '@/lib/agent-session-list'
-import type { Store } from 'jotai'
+import { atom, type Store } from 'jotai'
+
+/** Renderer-local revocations stop queued events after a delete notification. */
+export const revokedAgentSessionIdsAtom = atom<ReadonlySet<string>>(new Set())
+
+export function markAgentSessionRevoked(store: Store, id: string): void {
+  store.set(revokedAgentSessionIdsAtom, (previous) => new Set([...previous, id]))
+}
 
 /** Historical settings are untrusted. Only persisted, still-existing ordinary Agent sessions can restore. */
 export function selectRestorableAgentTabs(
@@ -57,11 +64,11 @@ export async function ensureOrdinaryWorkTabOwner(
   load: (id: string) => Promise<AgentSessionMeta | null>,
   isCurrent: () => boolean = () => true,
 ): Promise<boolean> {
-  if (!isCurrent()) return false
+  if (!isCurrent() || store.get(revokedAgentSessionIdsAtom).has(sessionId)) return false
   if (canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), sessionId)) return true
   if (store.get(agentSessionsAtom).some((item) => item.id === sessionId)) return false
   const meta = await resolveOrdinaryTabSession(sessionId, load)
-  if (!meta || !isCurrent()) return false
+  if (!meta || !isCurrent() || store.get(revokedAgentSessionIdsAtom).has(sessionId)) return false
   // A newer local owner record must never be replaced by an older async Main response.
   if (store.get(agentSessionsAtom).some((item) => item.id === sessionId
     && isReviewOwnedAgentSession(item))) return false
