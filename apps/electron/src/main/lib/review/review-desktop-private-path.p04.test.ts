@@ -4,15 +4,15 @@
  */
 import { afterAll, describe, expect, test } from 'bun:test'
 import { randomUUID } from 'node:crypto'
-import { existsSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { tmpdir } from 'node:os'
 import {
   createAgentSession, createReviewOwnedAgentSession, deleteAgentSession,
 } from '../agent-session-manager'
 import { createAgentWorkspace } from '../agent-workspace-manager'
-import { getAgentSessionMessagesPath, getAgentSessionWorkspacePath, getAgentWorkspacesDir, getConfigDir, getPiCheckpointsDir, getWorkspaceFilesDir } from '../config-paths'
-import { filterOrdinaryDesktopFileEntries, isReviewPrivateDesktopPath, isUnsafeAgentWorkspaceMutationPath } from '../review-private-file-access'
+import { getAgentSessionMessagesPath, getAgentSessionWorkspacePath, getAgentSessionsDir, getAgentWorkspacesDir, getConfigDir, getPiCheckpointsDir, getWorkspaceFilesDir } from '../config-paths'
+import { filterOrdinaryDesktopFileEntries, isReviewPrivateDesktopPath, isUnsafeAgentWorkspaceMutationPath, renameOrdinaryAgentFileEntry } from '../review-private-file-access'
 import { isReadOnlyPreviewPathAllowed } from '../preview-path-policy'
 import { registerProferDirectoryPath, registerProferFilePath, handleProferFileRequest } from '../local-file-protocol'
 import { searchFileCandidate } from '../file-search-service'
@@ -136,4 +136,61 @@ describe('P04-PATH-01 desktop path-only private owner exclusion', () => {
     const response = await handleProferFileRequest(new Request(url + '/' + owner.id + '/private.md'))
     expect(response.status).toBe(403)
   })
+  test('actual guarded rename cannot overwrite an existing review transcript; ordinary rename still works', () => {
+    const { owner } = fixture()
+    const normal = file(join(getAgentSessionsDir(), 'ordinary-' + randomUUID() + '.jsonl'), 'ordinary-transcript')
+    const secret = file(getAgentSessionMessagesPath(owner.id), 'protected-transcript')
+    expect(() => renameOrdinaryAgentFileEntry(normal, secret)).toThrow('审核内部或共享容器路径不可操作')
+    expect(readFileSync(normal, 'utf8')).toBe('ordinary-transcript')
+    expect(readFileSync(secret, 'utf8')).toBe('protected-transcript')
+
+    const renamed = join(getAgentSessionsDir(), 'renamed-' + randomUUID() + '.jsonl')
+    renameOrdinaryAgentFileEntry(normal, renamed)
+    expect(existsSync(normal)).toBe(false)
+    expect(readFileSync(renamed, 'utf8')).toBe('ordinary-transcript')
+  })
+
+  test('actual guarded move cannot create a previously absent file under review workspace', () => {
+    const { root, normalFile } = fixture()
+    const destination = join(root, 'injected.md')
+    expect(existsSync(destination)).toBe(false)
+    expect(() => renameOrdinaryAgentFileEntry(normalFile, destination)).toThrow('审核内部或共享容器路径不可操作')
+    expect(existsSync(normalFile)).toBe(true)
+    expect(existsSync(destination)).toBe(false)
+  })
+
+  test('missing target behind a symlinked parent is guarded, while ordinary workspace moves succeed', () => {
+    const { ws, root, normalFile } = fixture()
+    const alias = join(getWorkspaceFilesDir(ws.slug), 'alias-' + randomUUID())
+    symlinkSync(root, alias, 'dir')
+    const absentPrivateTarget = join(alias, 'new-secret.md')
+    expect(existsSync(absentPrivateTarget)).toBe(false)
+    expect(isReviewPrivateDesktopPath(absentPrivateTarget)).toBe(true)
+    expect(() => renameOrdinaryAgentFileEntry(normalFile, absentPrivateTarget)).toThrow('审核内部或共享容器路径不可操作')
+    expect(existsSync(normalFile)).toBe(true)
+
+    const normalDestination = join(getWorkspaceFilesDir(ws.slug), 'moved-' + randomUUID() + '.md')
+    renameOrdinaryAgentFileEntry(normalFile, normalDestination)
+    expect(existsSync(normalFile)).toBe(false)
+    expect(readFileSync(normalDestination, 'utf8')).toBe('ordinary-data')
+  })
+
+  test('deleted review tombstone prevents actual rename into leftover private path', () => {
+    const { owner } = fixture()
+    const normal = file(join(getAgentSessionsDir(), 'ordinary-' + randomUUID() + '.jsonl'), 'ordinary-before-delete')
+    deleteAgentSession(owner.id)
+    const deletedTarget = getAgentSessionMessagesPath(owner.id)
+    expect(isReviewPrivateDesktopPath(deletedTarget)).toBe(true)
+    expect(() => renameOrdinaryAgentFileEntry(normal, deletedTarget)).toThrow('审核内部或共享容器路径不可操作')
+    expect(readFileSync(normal, 'utf8')).toBe('ordinary-before-delete')
+    expect(existsSync(deletedTarget)).toBe(false)
+  })
+
+  test('actual guarded mutations refuse shared workspace container changes', () => {
+    const { ws, normalFile } = fixture()
+    expect(() => renameOrdinaryAgentFileEntry(join(getAgentWorkspacesDir(), ws.slug), normalFile))
+      .toThrow('审核内部或共享容器路径不可操作')
+    expect(existsSync(normalFile)).toBe(true)
+  })
+
 })
