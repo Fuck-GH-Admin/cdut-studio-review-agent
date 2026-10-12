@@ -333,10 +333,10 @@ export async function runAgent(
         })
         const currentWc = sessionWebContents.get(input.sessionId)
         if (currentWc && !currentWc.isDestroyed()) {
-          currentWc.send(AGENT_IPC_CHANNELS.TITLE_UPDATED, {
+          sendOrdinarySessionDirect(input.sessionId, () => currentWc.send(AGENT_IPC_CHANNELS.TITLE_UPDATED, {
             sessionId: input.sessionId,
             title,
-          })
+          }))
         }
       },
       onRunStarted: async ({ startedAt }) => {
@@ -448,7 +448,7 @@ export async function runAgentHeadless(
             eventBus.emit(runInput.sessionId, { kind: 'run_complete', completion })
             const currentWc = sessionWebContents.get(runInput.sessionId)
             if (currentWc && !currentWc.isDestroyed()) {
-              sendOrdinarySessionDirect(input.sessionId, () => currentWc.send(AGENT_IPC_CHANNELS.STREAM_COMPLETE, completion))
+              sendOrdinarySessionDirect(runInput.sessionId, () => currentWc.send(AGENT_IPC_CHANNELS.STREAM_COMPLETE, completion))
             }
           },
         })
@@ -462,10 +462,10 @@ export async function runAgentHeadless(
         // 同步到渲染进程
         const currentWc = sessionWebContents.get(runInput.sessionId)
         if (currentWc && !currentWc.isDestroyed()) {
-          currentWc.send(AGENT_IPC_CHANNELS.TITLE_UPDATED, {
+          sendOrdinarySessionDirect(runInput.sessionId, () => currentWc.send(AGENT_IPC_CHANNELS.TITLE_UPDATED, {
             sessionId: runInput.sessionId,
             title,
-          })
+          }))
         }
       },
       onRunStarted: ({ startedAt: persistedStartedAt }) => {
@@ -513,7 +513,7 @@ export async function runAgentHeadless(
     const currentWc = sessionWebContents.get(runInput.sessionId)
     if (currentWc && !currentWc.isDestroyed()) {
       sendOrdinarySessionDirect(runInput.sessionId, () => currentWc.send(AGENT_IPC_CHANNELS.STREAM_ERROR, { sessionId: runInput.sessionId, error: errorMessage }))
-      sendOrdinarySessionDirect(input.sessionId, () => currentWc.send(AGENT_IPC_CHANNELS.STREAM_COMPLETE, terminal))
+      sendOrdinarySessionDirect(runInput.sessionId, () => currentWc.send(AGENT_IPC_CHANNELS.STREAM_COMPLETE, terminal))
     }
   } finally {
     if (!orchestrator.isActive(runInput.sessionId)) {
