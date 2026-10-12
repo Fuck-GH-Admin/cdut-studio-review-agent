@@ -850,22 +850,34 @@ export function useGlobalAgentListeners(): void {
             activateExternalAgentRun(proferEvent)
           } else if (proferEvent.type === 'delegation_session_updated' || proferEvent.type === 'session_updated') {
             const incomingSession = proferEvent.session
-            store.set(agentSessionsAtom, (previous) => {
-              const current = previous.find((session) => session.id === incomingSession.id)
-              if (current && (incomingSession.revision ?? 0) < (current.revision ?? 0)) return previous
-              return upsertAgentSession(previous, incomingSession)
-            })
-            if (incomingSession.permissionMode) {
-              store.set(agentPermissionModeMapAtom, (previous) => {
-                const current = store.get(agentSessionsAtom).find((session) => session.id === incomingSession.id)
+            const applyUpdate = (): void => {
+              if (!effectActive || store.get(revokedAgentSessionIdsAtom).has(incomingSession.id)) return
+              store.set(agentSessionsAtom, (previous) => {
+                const current = previous.find((session) => session.id === incomingSession.id)
                 if (current && (incomingSession.revision ?? 0) < (current.revision ?? 0)) return previous
-                const next = new Map(previous)
-                next.set(incomingSession.id, incomingSession.permissionMode!)
-                return next
+                return upsertAgentSession(previous, incomingSession)
               })
-              store.set(agentPlanModeSessionsAtom, (previous) => updatePlanModeSessionSet(previous, incomingSession.id, incomingSession.permissionMode === 'plan'))
+              if (incomingSession.permissionMode) {
+                store.set(agentPermissionModeMapAtom, (previous) => {
+                  const current = store.get(agentSessionsAtom).find((session) => session.id === incomingSession.id)
+                  if (current && (incomingSession.revision ?? 0) < (current.revision ?? 0)) return previous
+                  const next = new Map(previous)
+                  next.set(incomingSession.id, incomingSession.permissionMode!)
+                  return next
+                })
+                store.set(agentPlanModeSessionsAtom, (previous) =>
+                  updatePlanModeSessionSet(previous, incomingSession.id, incomingSession.permissionMode === 'plan'))
+              }
+              store.set(tabsAtom, (tabs) => updateTabTitle(tabs, incomingSession.id, incomingSession.title))
             }
-            store.set(tabsAtom, (tabs) => updateTabTitle(tabs, incomingSession.id, incomingSession.title))
+            if (canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), incomingSession.id)) {
+              applyUpdate()
+            } else {
+              void ensureOrdinaryWorkTabOwner(store, incomingSession.id,
+                window.electronAPI.getAgentSessionMeta,
+                () => effectActive && !store.get(revokedAgentSessionIdsAtom).has(incomingSession.id),
+              ).then((authorized) => { if (authorized) applyUpdate() })
+            }
             // 委派子会话的后台 Tab 由会话列表与流指示统一补齐；本事件只负责收敛会话和权限状态。
           } else if (proferEvent.type === 'session_deleted') {
             markAgentSessionRevoked(store, proferEvent.sessionId)
@@ -1554,6 +1566,7 @@ export function useGlobalAgentListeners(): void {
 
     const cleanupComplete = window.electronAPI.onAgentStreamComplete(
       (data: AgentStreamCompletePayload) => {
+        if (store.get(revokedAgentSessionIdsAtom).has(data.sessionId)) return
         if (restoreTerminalGate.defer(data.sessionId, () => handleStreamComplete(data))) return
         handleStreamComplete(data)
       }
@@ -1587,6 +1600,7 @@ export function useGlobalAgentListeners(): void {
 
     const cleanupError = window.electronAPI.onAgentStreamError(
       (data: { sessionId: string; error: string }) => {
+        if (store.get(revokedAgentSessionIdsAtom).has(data.sessionId)) return
         if (restoreTerminalGate.defer(data.sessionId, () => handleStreamError(data))) return
         handleStreamError(data)
       }
@@ -1594,6 +1608,7 @@ export function useGlobalAgentListeners(): void {
 
     // ===== 4. 标题更新 =====
     const cleanupTitleUpdated = window.electronAPI.onAgentTitleUpdated(({ sessionId, title }) => {
+      if (store.get(revokedAgentSessionIdsAtom).has(sessionId)) return
       // 先使用事件 payload 立即同步标签页，避免依赖会话列表旧快照比较。
       store.set(tabsAtom, (tabs) => updateTabTitle(tabs, sessionId, title))
       store.set(agentSessionsAtom, (prev) =>
@@ -1610,9 +1625,19 @@ export function useGlobalAgentListeners(): void {
     })
 
     const cleanupSessionUpdated = window.electronAPI.onAgentSessionUpdated(({ session }) => {
-      store.set(agentSessionsAtom, (previous) => upsertAgentSession(previous, session))
-      store.set(tabsAtom, (tabs) => updateTabTitle(tabs, session.id, session.title))
-      store.set(draftSessionIdsAtom, (previous) => syncDraftSessionId(previous, session))
+      const applyUpdate = (): void => {
+        if (!effectActive || store.get(revokedAgentSessionIdsAtom).has(session.id)) return
+        store.set(agentSessionsAtom, (previous) => upsertAgentSession(previous, session))
+        store.set(tabsAtom, (tabs) => updateTabTitle(tabs, session.id, session.title))
+        store.set(draftSessionIdsAtom, (previous) => syncDraftSessionId(previous, session))
+      }
+      if (canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), session.id)) {
+        applyUpdate()
+      } else {
+        void ensureOrdinaryWorkTabOwner(store, session.id, window.electronAPI.getAgentSessionMeta,
+          () => effectActive && !store.get(revokedAgentSessionIdsAtom).has(session.id),
+        ).then((authorized) => { if (authorized) applyUpdate() })
+      }
     })
 
     // 独立规划窗口启动 Todo Agent 后，主进程通过 TODO_AGENT_SESSION_READY 把会话交接给主窗口。
@@ -1620,19 +1645,28 @@ export function useGlobalAgentListeners(): void {
     // 与 PlanningView.startTodoInWorkspace（主窗口中启动）保持同等效果，补齐跨窗口断链。
     const cleanupTodoSessionReady = window.electronAPI.onTodoAgentSessionReady(
       ({ todo, session }) => {
-        if (!isAgentWorkspaceIdVisible(session.workspaceId, store.get(agentWorkspacesAtom))) return
-        store.set(agentSessionsAtom, (previous) => upsertAgentSession(previous, session))
-        if (session.workspaceId) {
-          store.set(currentAgentWorkspaceIdAtom, session.workspaceId)
-          window.electronAPI.updateSettings({ agentWorkspaceId: session.workspaceId })
-            .catch(console.error)
+        const activateTodo = (): void => {
+          if (!effectActive || store.get(revokedAgentSessionIdsAtom).has(session.id)
+            || !isAgentWorkspaceIdVisible(session.workspaceId, store.get(agentWorkspacesAtom))) return
+          store.set(agentSessionsAtom, (previous) => upsertAgentSession(previous, session))
+          if (session.workspaceId) {
+            store.set(currentAgentWorkspaceIdAtom, session.workspaceId)
+            window.electronAPI.updateSettings({ agentWorkspaceId: session.workspaceId })
+              .catch(console.error)
+          }
+          makeNavigateToSession(session.id, session.title)()
+          store.set(agentPendingPromptAtom, {
+            sessionId: session.id,
+            message: buildTodoAgentPrompt(todo.id, session.agentRuntime ?? 'pi', todo),
+          })
         }
-        makeNavigateToSession(session.id, session.title)()
-        store.set(agentPendingPromptAtom, {
-          sessionId: session.id,
-          // non-Pi runtime 需要内联 Todo 快照，Pi 走 mcp__planning__get_todo。
-          message: buildTodoAgentPrompt(todo.id, session.agentRuntime ?? 'pi', todo),
-        })
+        if (canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), session.id)) {
+          activateTodo()
+        } else {
+          void ensureOrdinaryWorkTabOwner(store, session.id, window.electronAPI.getAgentSessionMeta,
+            () => effectActive && !store.get(revokedAgentSessionIdsAtom).has(session.id),
+          ).then((authorized) => { if (authorized) activateTodo() })
+        }
       },
     )
 
