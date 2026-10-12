@@ -5,7 +5,7 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { AgentSendInput, TemplateVersion } from '@profer/shared'
-import { REVIEW_IPC_CHANNELS } from '@profer/shared'
+import { DEFAULT_PRESET_ID, REVIEW_IPC_CHANNELS } from '@profer/shared'
 import type { BrowserWindow, WebContents } from 'electron'
 
 const configDir = mkdtempSync(join(tmpdir(), 'review-main-bridge-'))
@@ -30,7 +30,7 @@ const { updateSettings } = await import('../settings-service')
 const { createCaseFromTemplate } = await import('./application-service')
 const { saveDraft, publishTemplate } = await import('./template-store')
 const { getBackgroundPiReviewState } = await import('./review-background-state')
-const { listAgentSessions, getAgentSessionMeta } = await import('../agent-session-manager')
+const { listAgentSessions, getAgentSessionMeta, updateAgentSessionMeta } = await import('../agent-session-manager')
 const { saveReviewModuleSettings } = await import('./module-settings-store')
 const { getRunV2 } = await import('./run-store-v2')
 const { getPiReviewBindingForSession } = await import('./pi-case-review-service')
@@ -121,6 +121,26 @@ describe('后台 Main 入口与受理边界', () => {
     await expect(startBackgroundPiReview({ caseId: '../../bad' }, windowContents)).rejects.toThrow('非法 caseId')
     await expect(startBackgroundPiReview({ caseId, mode: 'bad' as 'update' }, windowContents)).rejects.toThrow('模式非法')
     expect(listAgentSessions(true)).toHaveLength(count)
+  })
+
+  test('预设不符合审核档案的旧 owner 不复用，防止加载普通工具配置', async () => {
+    const context = await pendingExecution()
+    context.execution.owned()
+    await context.admission
+    context.execution.end('completed')
+    await Bun.sleep(0)
+    updateAgentSessionMeta(context.execution.input.sessionId, { presetId: DEFAULT_PRESET_ID, presetReference: undefined })
+    const count = executions.length
+    const admission = startBackgroundPiReview({ caseId: context.caseId }, windowContents)
+    while (executions.length === count) await Bun.sleep(0)
+    const current = executions.at(-1)!
+    current.owned()
+    await admission
+    expect(current.input.sessionId).not.toBe(context.execution.input.sessionId)
+    const meta = getAgentSessionMeta(current.input.sessionId)!
+    expect(meta.presetReference?.presetId ?? meta.presetId).toBe('review-operator')
+    current.end('completed')
+    await Bun.sleep(0)
   })
 
   test('审核独立模型优先，运行中改设置不改变当前执行输入', async () => {

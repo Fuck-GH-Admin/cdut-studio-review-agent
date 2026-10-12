@@ -6,6 +6,7 @@
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import WebSocket from 'ws'
+import { createServer } from 'node:http'
 
 const reportDir = process.env.QA_REPORT_DIR
 if (!reportDir) throw new Error('QA_REPORT_DIR is required')
@@ -124,6 +125,8 @@ if (!profileRoot || !sourcePath) throw new Error('QA_PROFILE_ROOT and QA_SOURCE_
 const originalSelection = JSON.parse(readFileSync(join(profileRoot, 'config/review-module-settings.json'), 'utf8')).agentModelSelection
 const readOwners = () => { const path=join(profileRoot,'config/agent-sessions.json'); return existsSync(path) ? JSON.parse(readFileSync(path,'utf8')).sessions.filter(session=>session.owner?.kind==='review-case') : [] }
 let cases
+let fixtureRequests=0
+const providerFixture=createServer((_request,response)=>{fixtureRequests+=1;setTimeout(()=>{response.writeHead(500,{'Content-Type':'application/json'});response.end(JSON.stringify({error:{message:'A0 synthetic provider failure',type:'api_error'}}))},1500)})
 async function clickSelector(selector) {
   const rect = await evaluate(`(() => { const el=document.querySelector(${JSON.stringify(selector)}); if(!el) return null; const r=el.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2} })()`)
   if (!rect) throw new Error('Selector not found: ' + selector)
@@ -132,10 +135,14 @@ async function clickSelector(selector) {
 }
 async function openReview() {
   await eventually('preload ready', '!!window.reviewAPI?.startBackgroundPiReviewV2', 120000)
+  await eventually('React shell ready', 'document.body.innerText.trim().length > 10', 120000)
+  await send('Input.dispatchKeyEvent', {type:'keyDown',key:'Escape',code:'Escape'})
+  await send('Input.dispatchKeyEvent', {type:'keyUp',key:'Escape',code:'Escape'})
   if (await evaluate('document.body.innerText.includes("待我处理")')) return
   if(await evaluate(`!!document.querySelector('[aria-label="退出引导"]')`)) await clickSelector('[aria-label="退出引导"]')
   if(await evaluate('document.body.innerText.includes("稍后再学")')) await clickText('稍后再学')
   if(await evaluate(`!!document.querySelector('[aria-label="展开侧边栏"]')`)) await clickSelector('[aria-label="展开侧边栏"]')
+  await eventually('CDUT navigation ready', 'document.body.innerText.includes("CDUT 专区")', 40000)
   await clickText('CDUT 专区')
   await delay(500)
   if (await evaluate('!!document.querySelector("input[type=password]")')) {
@@ -186,7 +193,7 @@ async function seed() {
     const old=await window.reviewAPI.getTemplateV2(templateId,1);
     if(!old){await window.reviewAPI.saveTemplateDraftV2(template);await window.reviewAPI.publishTemplateV2(templateId,1)}
     const found=await window.reviewAPI.listCases();const result={};
-    for(const [key,title] of [['success','A0 后台真实模型'],['preflight','A0 模型预检拒绝'],['stop','A0 停止审核']]) {
+    for(const [key,title] of [['success','A0 后台真实模型'],['preflight','A0 模型预检拒绝'],['stop','A0 停止审核'],['failure','A0 受理后模型失败']]) {
       let c=found.find(x=>x.title===title);
       if(!c){c=await window.reviewAPI.createCase({title,type:'自定义审核',applicant:'合成测试甲',academicYear:'2026',reviewTemplate:{templateId,version:1}});await window.reviewAPI.importDocumentFromPath({caseId:c.id,sourcePath:${JSON.stringify(sourcePath)},role:'application'})}
       result[key]={id:c.id,title};
@@ -226,8 +233,10 @@ try {
     const meta = await evaluate(`window.electronAPI.getAgentSessionMeta(${JSON.stringify(owner.id)})`)
     if (ordinary.some(session=>session.id===owner.id) || meta!==null) throw new Error('Hidden session leaked through ordinary API')
     await screenshot('a0-02-accepted-in-review')
-    await clickSelector('[aria-label="打开设置"], button:has(svg.lucide-settings)')
+    // 设置是浮层；先关闭真实审核子页，以证明原页面不再承载运行。
+    await clickSelector('[aria-label="关闭返回专区首页"]')
     await eventually('review view left', '!document.body.innerText.includes("待我处理")')
+    await clickSelector('[aria-label="打开设置"], button:has(svg.lucide-settings)')
     const terminal = await waitTerminal(cases.success.id)
     const run = await evaluate(`window.reviewAPI.getRunV2(${JSON.stringify(cases.success.id)},${JSON.stringify(terminal.runId)})`)
     if (run.status!=='completed' || run.coverage.completedChecks!==1 || !run.checks.some(check=>check.sourceRefs.length>0)) throw new Error('Real model did not submit complete cited result: '+JSON.stringify({status:run.status,coverage:run.coverage,error:run.error}))
@@ -239,6 +248,22 @@ try {
     await eventually('completed business view restored', '!document.body.innerText.includes("审核中，可切换页面")')
     await screenshot('a0-02-result-restored')
     return {caseId:cases.success.id,ack,terminal,runStatus:run.status,checks:run.coverage.completedChecks,sourceRefs:run.checks.reduce((n,c)=>n+c.sourceRefs.length,0),hiddenFromOrdinaryList:true,ordinaryMeta:null,ordinaryTabOpened:false,provider:'deepseek',model:originalSelection.modelId}
+  })
+  await record('A0-04 real Pi admission then controlled HTTP provider failure persists failed', async () => {
+    await new Promise(resolve=>providerFixture.listen(0,'127.0.0.1',resolve))
+    const port=providerFixture.address().port
+    const channelId=await evaluate(`(async()=>{const c=await window.electronAPI.createChannel({name:'A0 synthetic failure fixture',provider:'custom',baseUrl:'http://127.0.0.1:${port}/v1',apiKey:'a0-fixture-only',enabled:true,agentRuntimes:['pi'],models:[{id:'a0-failure',name:'A0 synthetic model',enabled:true,contextWindow:16000,maxTokens:2000}]});return c.id})()`)
+    await evaluate(`window.reviewAPI.saveModuleSettingsV2({agentModelSelection:{channelId:${JSON.stringify(channelId)},modelId:'a0-failure'}})`)
+    await chooseCase(cases.failure.title)
+    if (await evaluate('[...document.querySelectorAll("button")].some(e=>e.getClientRects().length && e.textContent.trim()==="开始审核")')) await clickText('开始审核'); else await clickText('重新审核')
+    const ack=await waitAccepted(cases.failure.id)
+    const terminal=await waitTerminal(cases.failure.id)
+    if(terminal.runStatus!=='failed' || fixtureRequests===0) throw new Error('HTTP fixture did not prove post-admission runtime failure')
+    await eventually('failed business state visible','document.body.innerText.includes("审核未完成")')
+    await screenshot('a0-04-runtime-failure')
+    await evaluate(`window.reviewAPI.saveModuleSettingsV2({agentModelSelection:${JSON.stringify(originalSelection)}})`)
+    providerFixture.close()
+    return {caseId:cases.failure.id,ack,terminal,fixtureRequests,provider:'controlled-loopback-http-500',realPiRuntime:true}
   })
   await record('A0-03 stop real Pi through case/run endpoint and persist cancelled', async () => {
     await chooseCase(cases.stop.title)
@@ -258,6 +283,7 @@ try {
   console.error(String(error))
   process.exitCode=1
 } finally {
+  providerFixture.close()
   if(ws?.readyState===WebSocket.OPEN) {
     await evaluate(`window.electronAPI.updateChannel(${JSON.stringify(originalSelection.channelId)},{enabled:true})`).catch(()=>{})
     await evaluate(`window.reviewAPI.saveModuleSettingsV2({agentModelSelection:${JSON.stringify(originalSelection)}})`).catch(()=>{})

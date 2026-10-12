@@ -45,6 +45,7 @@ export async function startBackgroundPiReview(input: ReviewBackgroundPiStartRequ
       throw new Error('该案卷已有审核正在进行，请等待结束或先停止本轮')
     }
     const reusable = input.mode !== 'restart' ? sessions.find((session) => !session.archived
+      && (session.presetReference?.presetId ?? session.presetId) === 'review-operator'
       && session.agentRuntime === 'pi' && session.channelId === channel.id && session.modelId === modelId) : undefined
     // 使用默认会话沙箱，不继承当前聊天工作区；旧普通审核会话不迁移。
     const session = reusable ?? createReviewOwnedAgentSession({ caseId: input.caseId,
