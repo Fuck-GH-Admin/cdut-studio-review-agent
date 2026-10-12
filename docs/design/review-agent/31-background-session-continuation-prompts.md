@@ -10,7 +10,7 @@
 仓库：https://github.com/Fuck-GH-Admin/cdut-studio-review-agent
 正在开发的 Draft PR：https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/21
 分支：feat/review-owned-background-sessions
-最近一次 P04-S03 冻结代码 SHA 是 3ca7a6726bfefc3e5a8496ff873203ea6d0018c0（PR CI #38192286740 SUCCESS：3760 pass / 5 skip / 0 fail）；后续已有交接文档提交，必须以 GitHub 当前 HEAD 为准；这只是参照，不代表当前 HEAD，必须从 GitHub 重新核验。
+最近一次 P04-S04 冻结代码 SHA 是 4c458d24bd73dc3221bc1d13333b50f7752d3054（PR CI #38194874977 SUCCESS：3768 pass / 5 skip / 0 fail）；后续已有交接文档提交，必须以 GitHub 当前 HEAD 为准；这只是参照，不代表当前 HEAD，必须从 GitHub 重新核验。
 
 开始前必须用 GitHub 连接器完整阅读下列 PR 分支内文档，不能只读 main：
 - docs/design/review-agent/27-background-review-session-proposal.md
@@ -19,13 +19,13 @@
 - docs/design/review-agent/31-background-session-continuation-prompts.md
 还要核对 PR 描述、最新 HEAD、实际 changed files 与 CI，针对下一批再阅读相关真实生产源码、测试和调用链。若文档与源码冲突，以当前源码/测试事实为准，同时指出并修正文档，不能凭记忆认定已实现。
 
-现状：P01/P02 与 P03-S01～S03 已有受控测试；P04-S01 桌面主路径 8/8、S02 历史 Tab 恢复/重开 7/7、S03 删除后 tombstone 5/5 受控 PASS（全仓 3760 pass / 5 skip / 0 fail；D2 与 Review Baseline SUCCESS），PR #21 保持 Draft。P04 整体 PARTIAL，P05～P08 和真实后台 IPC/跨页 E2E 仍未完成。29 号文档 LIVE-01～LIVE-08 的八项实机验收均 NOT-RUN，必须留到最终统一验证，不可自动勾选。
+现状：P01/P02 与 P03-S01～S03 已有受控测试；P04-S01 桌面主路径 8/8、S02 Tab 恢复/重开 7/7、S03 删除后 tombstone 5/5、S04 桌面 IPC/早到预览/旧队列 8/8 受控 PASS（全仓 3768 pass / 5 skip / 0 fail；D2 与 Review Baseline SUCCESS），PR #21 保持 Draft。P04 整体 PARTIAL，P05～P08 和真实后台 IPC/跨页 E2E 仍未完成。29 号文档 LIVE-01～LIVE-08 的八项实机验收均 NOT-RUN，必须留到最终统一验证，不可自动勾选。
 
-本轮只推进 P04-S04：枚举其余桌面普通按 ID IPC、跨窗口窗口重绑、异步旧队列/缓存，并重点检查 P04-S04-COMPAT-01：正常 Agent 会话元数据尚未水合时 Preview/Browser 事件先到，S02 的本地 owner 保护会拒绝真实普通会话。该风险已有静态代码级原因，实际 Electron 复现未运行；任何修复必须先经 Main 可信鉴权，不能放行未知 ID。已删 owner 的 ID-only tombstone 在 S03 已实现，不要重造引擎。P05 Pocket/Feishu、后台审核正式公共 IPC 和全 UI 改造不在本批。
+本轮只开始 P05 第一个小批次：审计 Pocket/Feishu/WS 的普通会话列表、按 ID 命令、嵌套 ID、事件实时发布与重放、重连、镜像和通知；先固定一个小范围、补 Main/Pocket 普通会话正例与隐藏/已删 owner 负例。P04-S04 已补 known-ID 桌面守卫与普通 Preview/Browser 的 Main 可信校验回填，但真实 Electron 多窗口 LIVE-06/08 均 NOT-RUN；29 号 P04-PATH-01 泛用路径 IPC 尚缺 review 私有沙箱的路径级隔离证明，必须保留并在解除 Draft 前关闭。P05 不顺手改桌面 UI、Pi 引擎或开发正式公共审核 IPC。
 
 执行习惯：先看代码验证真实缺口，复用现有 owner、Session Manager、Tab/窗口现成机制，不另造会话系统。只改本批必要生产代码与测试，补已删除 owner 的异步事件/旧快照负例、可信 tombstone 的必要时序与普通会话不受影响的正反例。按实际冻结 SHA 查 GitHub CI（全仓、D2、Review baseline），失败必须修复后重跑，不能把未运行当 PASS。
 
-每批结束必须更新 29 号文档的阶段状态、代码/CI SHA、通过/失败/NOT-RUN、P04 剩余入口及 LIVE-06 缺口；同步维护 27/30、PR #21 说明。不要改动 LIVE-01～08 的 NOT-RUN，除非真的取得对应实机证据。总结列出改动、测试证据、剩余风险、下一小批次建议；本轮完成即停止，不擅自推进 P05、P06 或合并/解除 Draft。未经我明确验收，不合并 PR。
+每批结束必须更新 29 号文档的阶段状态、代码/CI SHA、通过/失败/NOT-RUN、P04 剩余入口及 LIVE-06 缺口；同步维护 27/30、PR #21 说明。不要改动 LIVE-01～08 的 NOT-RUN，除非真的取得对应实机证据。总结列出改动、测试证据、剩余风险、下一小批次建议；本轮完成即停止，不擅自推进 P05 下一个子批、P06 或合并/解除 Draft。未经我明确验收，不合并 PR。
 
 如果最新 HEAD 已包含本轮能力，先做差距核验，不重复造轮子；如果无法访问 GitHub 或 CI，要明确写未验证，不能推断成功。
 ```

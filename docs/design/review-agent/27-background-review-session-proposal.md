@@ -1,6 +1,6 @@
 # 27｜直接案卷审核：复用现有 Pi 的后台会话最小实施规范
 
-> **跨会话接手先读**：[30｜当前项目与 PR #21 交接指南](30-background-session-handoff.md) → [31｜复制即用的接手/小批次提示词](31-background-session-continuation-prompts.md) → 本文件实施规范 → [29｜验收证据及 LIVE-01～08](29-background-session-preflight-audit.md)。**P04-S01/S02/S03 均有冻结 SHA 的受控 PASS，P04 全阶段仍 PARTIAL；下一小批次 P04-S04 尚未执行，LIVE-01～08 仍 NOT-RUN。**
+> **跨会话接手先读**：[30｜当前项目与 PR #21 交接指南](30-background-session-handoff.md) → [31｜复制即用的接手/小批次提示词](31-background-session-continuation-prompts.md) → 本文件实施规范 → [29｜验收证据及 LIVE-01～08](29-background-session-preflight-audit.md)。**P04-S01/S02/S03/S04 均有冻结代码受控 PASS，P04 整体因真实 Electron 和通用路径 IPC 风险仍 PARTIAL；P05 下一小批次尚未执行，LIVE-01～08 均 NOT-RUN。**
 
 > 2026-10-12 缩减版（原提案的过度设计从当前实施基线移除；历史建议仍可通过 Git 历史查看）。
 > 代码核对：`main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`。本文件是 **v1 目标与允许改动范围**，不是实现完成声明。
@@ -102,16 +102,19 @@ Main 发起执行时仍需要现有窗口的 `webContents` 用于运行事件转
 
 **P04-S03 已完成的最小 tombstone 门禁**：冻结生产/测试 SHA `3ca7a6726bfefc3e5a8496ff873203ea6d0018c0`，[PR CI #38192286740](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38192286740) SUCCESS（P04-S03 新增 **5/5**，全仓 **3760 pass / 5 skip / 0 fail**），[D2 #38192286741](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38192286741)、[Review Baseline #38192286739](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38192286739) SUCCESS。内部审核会话删除时在现有 Agent 索引同次原子保存仅含 ID 的 `reviewOwnerDeletionTombstones`，`isReviewOwnedOrDeletedAgentSessionId` 同时识别现存 owner 与已删 owner；普通按 ID 访问、投影发布/删除、Main 事件流恢复与兜底直发/独立终态通知以及远程实时和重放写入前均使用该门禁。旧投影即使丢失 owner 字段也不得恢复；普通会话行为保持。**并非真实 Electron、Pocket、跨窗或 Pi E2E 通过。**
 
+
+
+**P04-S04 受控结果与未完成的真实门禁**：P04-S04 冻结代码 `4c458d24bd73dc3221bc1d13333b50f7752d3054`：[PR CI #38194874977](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874977) **SUCCESS**（S04 新增 **8/8 PASS**、全仓 **3768 pass / 5 skip / 0 fail**，3773 tests / 428 files；Typecheck / boundaries / Electron main/preload/renderer build PASS），[D2 #38194874914](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874914)、[Review Baseline #38194874938](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874938) 均 **SUCCESS**。 对 `P04-S04-COMPAT-01` 已加 Main 授权后限次水合补偿、普通 Preview/Browser 正例、删除中撤销异步回放、正式 PPTX 失败回执；对未知 SDK 流建立 4096 条上限的临时队列，身份确认后顺序回放。仍需真实双窗口/后端慢查复现，并审计 `LIST_DIRECTORY` 等无 sessionId 的通用路径 IPC，不能因 S04 单测通过提前声明所有桌面入口隔离无缺口。
 **P04-S02 普通工作 Tab 兼容性复查结果**：已确认**静态代码上的明确竞态条件**：`agentSessionsAtom` 的异步水合未与正式 Preview/Browser 状态到达建立屏障；`canOpenOrdinaryWorkTab` 对尚未水合的真实普通会话返回 false，`openFilePreviewTab` 返回空 ID，`reconcileBrowserTabs` 返回 null，正式 PPTX 预览调用方未验证空 ID。**真实发生率、正式回执实际后果尚未实机证明**；在 29 号登记 `P04-S04-COMPAT-01`，LIVE-06/08 NOT-RUN，未来应使用 Main 可信校验 + 有界补偿/重试，不得把未知 ID 直接放行。
 
-**后续只按小批继续**：**P04-S04** 全量复核其余普通桌面按 ID IPC、目标任务、跨窗口重新绑定、前述早到 Preview/Browser 兼容性，以及已投递到 Renderer 队列但未消费的老事件。**P05** Pocket/Feishu 全入口、WS 历史与镜像单独审核；**P06/P07/P08** 正式停止竞态、真实重启删案与普通 Agent 实机回归。P04 整体 PARTIAL，LIVE-01～08 均 NOT-RUN。
+**P04-S04 已推进**：补齐剩余有明确 sessionId 的 Graph/Retrospective/迁移/会话附件与预览回执/权限待审请求、健康列表、恢复 sender、browser 事件以及 Renderer 早到 Tab/迟到队列门禁；正式预览失败现有明确回执。参见 29 号 S04 专节与 PATH-01 文件路径级未验证风险。**后续小批**：**P05** Pocket/Feishu 全入口、WS 历史与镜像单独审核；**P06/P07/P08** 正式停止竞态、真实重启删案与普通 Agent 实机回归。P04 整体 PARTIAL，LIVE-01～08 均 NOT-RUN。
 
-**仍未完成的门禁**：P03 实际业务 Main IPC/会话启动/切页；P02 真实模型与原件视觉 E2E；P04-S04 桌面**剩余入口**隔离与真实 Electron 回放、P05 Pocket/Feishu 的全面隔离、P06 迟到 stop、P07 重启与删除、P08 普通 Agent 真实回归。统一验收 LIVE-01～08 全部保持 NOT-RUN。
+**仍未完成的门禁**：P03 实际业务 Main IPC/会话启动/切页；P02 真实模型与原件视觉 E2E；P04 已知路径型桌面文件 IPC 的完整隔离证明与真实 Electron 回放、P05 Pocket/Feishu 的全面隔离、P06 迟到 stop、P07 重启与删除、P08 普通 Agent 真实回归。统一验收 LIVE-01～08 全部保持 NOT-RUN。
 
 ## 6. 后续严格按这个顺序执行
 
 1. **P02 live E2E 合并到最终端到端验收**：白名单、权限闸门、案卷限定预览、V2 续审已经有受控证据；真实 provider Pi / 扫描 PDF Electron 视觉回放在完整 Main 后台链路接通后统一测试，之前仍标 P02-LIVE-E2E NOT-RUN。**允许按小批次开展 P03 接线/受控测试，但严禁在此之前合并、推出功能或宣称 P02 整体通过**。
-2. **P03-S01～S03 和 P04-S01/S02/S03 已按小批次推进**：审核材料修复、申报事项识别仍由 Renderer 先完成；`preparePiReviewRunV2` 写入 `running` 不是 Pi 已受理。必须由 Main 观察到真实 `onRunOwned` 后才给出可安全离开页面的受理 ACK；忙碌拒绝或启动失败按原案卷 run/assignment 收口，不能留下虚假 running。切页仅允许发生在已经受理后的 Pi 阶段。S02 已增加现有 `runAgent` 的 Main ACK 可选钩子及 `review-pi-admission.ts` 薄协调层，受控 CI 已通过、真实 Electron 真机待验；S03 已具备可信 owner 原子创建与基础屏障；P04-S01 补齐桌面搜索/归档/普通会话操作与投影基本拦截，需先执行 P04-S04、P05 的剩余入口枚举与针对性负例，才能暴露新后台审核 IPC。
+2. **P03-S01～S03 和 P04-S01/S02/S03/S04 已按小批次推进**：审核材料修复、申报事项识别仍由 Renderer 先完成；`preparePiReviewRunV2` 写入 `running` 不是 Pi 已受理。必须由 Main 观察到真实 `onRunOwned` 后才给出可安全离开页面的受理 ACK；忙碌拒绝或启动失败按原案卷 run/assignment 收口，不能留下虚假 running。切页仅允许发生在已经受理后的 Pi 阶段。S02 已增加现有 `runAgent` 的 Main ACK 可选钩子及 `review-pi-admission.ts` 薄协调层，受控 CI 已通过、真实 Electron 真机待验；S03 已具备可信 owner 原子创建与基础屏障；P04-S01 补齐桌面搜索/归档/普通会话操作与投影基本拦截，需继续解决 P04 路径型 IPC 残余证据、执行 P05 的剩余远程入口枚举与针对性负例，才能暴露新后台审核 IPC。
 3. **薄 Bridge**：仅接入现有 `runAgent`、`preparePiReviewRunV2`、`finishPiReviewRunV2`、`stopAgentAndWait`。入口快速 ACK 与持续运行完成是两个不同 Promise/生命周期；Main 自己持有长期执行，不依赖 React Hook 轮询。逐个测试成功、失败、取消、竞态、重启、删案。
 4. **最少 UI 改动**：仅修改审核触发与业务状态；Pocket、历史 Tab、事件回填与普通聊天逐项回归。
 5. **实测验收**：冻结提交 SHA，运行全部测试、类型/边界/构建、合成案卷 Electron 回放与真实 Pi 受控测试；无法执行的标 NOT-RUN。由用户审核结果后决定是否结束 Draft/合并。

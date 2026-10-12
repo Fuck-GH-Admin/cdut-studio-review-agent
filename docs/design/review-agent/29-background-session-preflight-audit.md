@@ -1,6 +1,6 @@
 # 29｜审核受控后台会话：开工前依赖审计与阻断门禁
 
-> **新会话/新负责人必读**：[30｜P04-S03 后的工程交接快照](30-background-session-handoff.md)、[31｜接手与每批次提示词](31-background-session-continuation-prompts.md)。下一小批次建议 **P04-S04：剩余桌面 IPC、跨窗口与早到 Preview/Browser 兼容性**；P04-S03 的删除后 tombstone 已有受控证据，但真实 Electron/旧队列未验收。
+> **新会话/新负责人必读**：[30｜P04-S04 后的工程交接快照](30-background-session-handoff.md)、[31｜接手与每批次提示词](31-background-session-continuation-prompts.md)。P04-S04 已有受控代码/CI 证据；**下一小批次建议 P05：Pocket/Feishu 全入口与事件重放隔离**。P04 路径型文件 IPC、真实双窗口行为与 LIVE-06/08 仍是开放门禁。
 
 > 2026-10-12；初始源码审计基线 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；后续代码与受控探针仅在 Draft PR #21 分支实施。配套 [27 号实施规范](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。**文档中的 PASS 只对所附冻结提交、测试环境与覆盖范围有效；真实 Pi/Electron/Pocket 验收尚未完成，不得据此合并。**
 
@@ -15,7 +15,7 @@
 - `apps/electron/src/main/lib/review/review-background-reuse.probe.test.ts`：真实 `runAgent()` **函数体**与真实 V2 案卷/指派/存储连通；使用受控模拟编排器（非真实 Pi 模型），完整提交、部分完成、错误、取消、busy 五项均 **PASS**。不调用 `openSession`，模拟 WebContents 只是运行事件接收器。
 - [PR CI #38164270451](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270451)，基线 `1e076ea84889d8f29aaff2deffe1078e1c57c1ff`：3714 pass、5 skip、0 fail；类型检查、架构边界、皮肤契约与 Electron main/preload/renderer 构建成功。
 - [D2 Scoped Pi CI #38164270457](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270457) 与 [Review Baseline CI #38164270496](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38164270496) 均成功。
-- **P01 受控契约 PASS，真实 Pi/Electron NOT-RUN；P02 受控工具/接线探针 14/14 PASS，真实模型与 PDF Electron 视觉 NOT-RUN；P03-S01 2/2、S02 6/6、S03 4/4 受控契约 PASS，真实 Main IPC/桌面切页 NOT-RUN；P04-S01 8/8、S02 7/7、S03 5/5 受控 PASS，P04 整体仍 PARTIAL；P05–P07 功能验收 NOT-RUN；P08 仅普通 Agent 现有回归基线 PASS，新功能回归 NOT-RUN。** 后续 HEAD 需重新检查 CI，不能把以上数字冒充不同提交的验证结果。
+- **P01 受控契约 PASS，真实 Pi/Electron NOT-RUN；P02 受控工具/接线探针 14/14 PASS，真实模型与 PDF Electron 视觉 NOT-RUN；P03-S01 2/2、S02 6/6、S03 4/4 受控契约 PASS，真实 Main IPC/桌面切页 NOT-RUN；P04-S01 8/8、S02 7/7、S03 5/5、S04 8/8 受控 PASS，P04 整体仍 PARTIAL；P05–P07 功能验收 NOT-RUN；P08 仅普通 Agent 现有回归基线 PASS，新功能回归 NOT-RUN。** 后续 HEAD 需重新检查 CI，不能把以上数字冒充不同提交的验证结果。
 
 ### P02 验证结论：接口已接通，真实执行仍待验收
 
@@ -82,7 +82,7 @@
 | P01 | **契约探针 PASS（5/5）**：真实 `runAgent()` 函数体、V2 run/assignment 在受控模拟编排器里覆盖完整提交、部分完成、失败、取消、busy；**真实 Pi 和 Electron UI NOT-RUN** | 不能据此认定真实模型已跑通；尚须最小真实 Main/Pi 案卷实验检验无 Tab 启动、工具提交及失败收尾 |
 | P02 | **SAFE-WIRING PASS / LIVE-E2E BLOCKED**：严格工具白名单、案卷限定预览委托、后验轮次核验、主进程权限闸门和 V2 续审/压缩探针均已通过。**真实模型调用、真实扫描 PDF Electron 渲染未运行** | 在合成案卷的实际 Pi/桌面测试证明前不能宣称 P02 全部完成，尤其不能据受控 renderer 假图片标记真实视觉能力通过 |
 | P03 | **S01 2/2、S02 6/6、S03 4/4 受控测试 PASS**：Main 真实执行权 ACK / V2 收尾仍复用；新 session 的可信 `owner:review-case` 原子落盘，普通更新不可伪造；普通桌面列表/单条元数据/发送及关键修改入口开始阻断，Pocket 列表/按 ID 命令和重放前写日志进行最小隔离。**真正审核 IPC、桌面 Tab/搜索/异步投影全覆盖尚未完成** | 未拥有执行权就回复 ACK，普通/远程入口仍能按 ID 读写内部会话，或被普通 UI/重放重新暴露，不得放行 |
-| P04 | **S01 8/8、S02 7/7、S03 5/5 受控 PASS，P04 整体 PARTIAL**：Main 侧普通全文/引用搜索、归档计数/自动归档、按 ID 常用读取与修改、普通 Stop/进程/任务入口已加 owner 守卫；普通桌面投影、流事件转发/刷新恢复按 owner 抑制；Renderer 列表合并/迟到投影不会复活已知 owner。**S02 已守住旧 Agent Tab 持久化/未知 ID 重开、Preview/Browser 运行期恢复；S03 在现有索引加入删除后 ID tombstone 并守住 Main/投影/远程迟到出口；其余桌面 IPC、跨窗事件与普通会话早到预览仍待 S04/实机**，真机 LIVE-06 未运行 | 任一普通入口仍能读取/控制 owner，旧 Tab/异步上报重新出现 owner，或破坏普通会话既有回归与 sender 鉴权 |
+| P04 | **S01 8/8、S02 7/7、S03 5/5、S04 8/8 受控 PASS，P04 整体 PARTIAL**：Main 侧普通全文/引用搜索、归档计数/自动归档、按 ID 常用读取与修改、普通 Stop/进程/任务入口已加 owner 守卫；普通桌面投影、流事件转发/刷新恢复按 owner 抑制；Renderer 列表合并/迟到投影不会复活已知 owner。**S02 已守住旧 Agent Tab 持久化/未知 ID 重开、Preview/Browser 运行期恢复；S03 在现有索引加入删除后 ID tombstone 并守住 Main/投影/远程迟到出口；其余桌面 IPC、跨窗事件与普通会话早到预览仍待 S04/实机**，真机 LIVE-06 未运行 | 任一普通入口仍能读取/控制 owner，旧 Tab/异步上报重新出现 owner，或破坏普通会话既有回归与 sender 鉴权 |
 | P05 | Pocket 列表、按 ID 读取与变更、WS 实时事件、事件重放与远程搜索完全隔离；普通会话仍可使用 | 任一 API 通过内部 sessionId 读取/控制或记录敏感事件到远程重放 |
 | P06 | 同一案卷连续两轮运行，旧运行的迟到停止/失败回调不会改写或中止新的运行 | 任何旧 run 影响新 run |
 | P07 | app 重启、进程被杀、删除案卷、工作区切换及模型禁用等异常流程 | 永久 running、伪完成、孤儿权限、跨案 transcript |
@@ -106,7 +106,7 @@
 ### 跨会话交接校验（2026-10-12）
 
 - **当前交接基线**：截至制作 30/31 号文档前，Draft PR #21 HEAD 为 `cbdd0a8c86bafc6bff60781de466b0ba963d27e2`，对应 [PR CI #38184974138](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184974138)、[D2 #38184974152](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184974152)、[Review Baseline #38184974119](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184974119) **三项均 SUCCESS**。此后交接文档提交产生更新的 HEAD；这三条历史 CI **不可冒称覆盖文档更新后的 HEAD**。接手者必须重新查询 PR 最新 HEAD 与当次 CI。
-- **阶段状态**：P04-S01/S02/S03 均有局部受控验证（下节）；P04 整体 PARTIAL。已删除 owner 的持久索引 tombstone 与 Main 事件出口有受控门禁；旧 Renderer 已投递队列、多窗口实机、残余普通桌面 IPC 和正常会话早到预览兼容性仍待 P04-S04/统一实机验收。P05 Pocket/Feishu 未完成；实际后台审核 IPC 未启用。**LIVE-01～08 均 NOT-RUN**。
+- **阶段状态**：P04-S01/S02/S03/S04 均有受控验证（下节）；P04 整体 PARTIAL。S04 针对已知会话 ID 入口、未知流短队列及正常 Preview/Browser 早到时序有自动化门禁；通用路径 IPC、跨窗 sender 的真实 Electron 行为及正式预览回执的实机效果仍待专项和 LIVE-06/08。P05 Pocket/Feishu 未完成；实际后台审核 IPC 未启用。**LIVE-01～08 均 NOT-RUN**。
 - **交接工作流**：新会话先读 [30｜交接指南](30-background-session-handoff.md)，复制 [31｜首轮提示词](31-background-session-continuation-prompts.md)；每批必须同步本文件及 27/30/PR，记录 PASS/FAIL/NOT-RUN、冻结 SHA 和 CI run ID，不得仅凭用户上一段聊天或历史 CI 放行。
 
 ### P04-S01 桌面主路径隔离与异步回填受控验证（2026-10-12）
@@ -115,8 +115,8 @@
 - **源代码改变**：`agent-session-manager.ts` 的消息全文检索、标题/正文引用、归档计数与过期归档排除 review owner；`ipc.ts` 对 GET_SDK_MESSAGES、普通标题/置顶/归档、fork/rewind、浏览器按 session 访问、Stop/Queue、模型/权限/推理档位、后台任务与进程操作等增加 `assertOrdinaryAgentSession`。敏感 IPC 在发送者校验**之后**执行 owner 守卫，不泄漏内部归属检查结果。
 - **异步入口**：`agent-session-ui-projection-publisher.ts` 在投影事件上行前排除 owner；`agent-service.ts` 过滤普通桌面事件总线转发、刷新重放和直发 fallback；`renderer/lib/agent-session-list.ts` 防止混合/陈旧列表、optimistic upsert、revision 迟到投影把**已知**内部 owner 再插回普通侧栏。
 - **负例与回归**：[`review-desktop-isolation.p04.test.ts`](../../../apps/electron/src/main/lib/review/review-desktop-isolation.p04.test.ts)、[`agent-session-list.test.ts`](../../../apps/electron/src/renderer/lib/agent-session-list.test.ts) 与 [`goal-ipc-routing.test.ts`](../../../apps/electron/src/main/lib/goal-ipc-routing.test.ts)。首轮 PR CI #38184389961 暴露旧 Goal/Stop 源码测试夹具漏注入新守卫，2 项失败；已保留真实安全守卫、修复夹具并增加普通 Stop 不可控制 review owner 的负例，最终冻结版本回归全部通过。
-- **剩余 P04-S04**：其余按 ID 桌面 IPC/目标消息、已投递但未消费的 Renderer 队列/历史事件、跨窗口通知及窗口重绑、普通 Preview/Browser 早到时序；虽 S03 已对删除后 Main/远程出口加 ID tombstone，仍须逐路径审计、负例和隔离 Electron 回放。**P04 阶段整体不是 PASS，LIVE-06 仍 NOT-RUN**。
-- **执行顺序**：先 P04-S04 的跨窗口、剩余桌面入口与兼容性测试，再 P05 Pocket/Feishu 全入口及重放审计；全部隔离覆盖前仍不注册真正的后台审核公共 IPC、不合并 Draft。
+- **P04-S04 当前结果与剩余风险**：按 ID 桌面 IPC/目标消息、已投递但未消费的 Renderer 常用事件、跨窗口通知、普通 Preview/Browser 早到时序已做最小修补；通用路径文件读取、真机双窗口重绑、历史完成直发时序及重启后恢复仍需额外证据，详见 P04-PATH-01 与 LIVE-06/08。**P04 阶段整体不是 PASS，LIVE-06 仍 NOT-RUN**。
+- **执行顺序**：P04-S04 受控提交完成后，下一小批 P05 Pocket/Feishu 全入口及重放审计；P04-PATH-01 和 LIVE-06/08 在解除 Draft 前闭环；全部隔离覆盖前仍不注册真正的后台审核公共 IPC、不合并 Draft。
 
 ### P04-S02 历史 Agent / Preview / Browser Tab 恢复与重新打开（2026-10-12）
 
@@ -154,6 +154,18 @@
 - **为何不可直接 TTL**：tombstone 是阻断已删 review ID 被迟到投影、历史重放/队列及恢复路径误认为普通 ID 的安全凭据。仅靠 7/30/90 天过期不能证明最后一个旧事件已消失；若错误清理，将重引 P04-S03 泄漏。旧版本若未记录 tombstone 的历史删除身份也不能单凭现有索引恢复。
 - **建议验收方案**：① 合成 0 / 1k / 10k / 100k 个 UUID tombstone 测定索引体积、冷/热读取、主进程每事件 guard 耗时、写入/启动成本（记录环境、p50/p95、基线）；② 优先评估与现有索引版本同步失效/重建的内存 `Set` 或等效索引以降低热路径查找开销，禁止使用永不刷新的独立缓存；③ 评估是否确需 tombstone 删除/分段存档/压缩，只有证明所有存量重放及可恢复事件都无法再次命中旧 ID、且能回归核验后才考虑 GC，不允许未经证明按年龄自动删除；④ 覆盖原子写失败、进程重启、外部修改索引、旧索引缺字段、普通会话、新/旧 owner ID、伪造与远程重放安全回归。
 - **调度建议**：先保持 P04-S03 安全门禁，**不在 P04-S04 顺手重构公共 Session Manager**；安排一轮本项目独立的小批次评估（可在 P04-S04 后、解除 Draft 前决策是否实施），若规模基准暴露明显主线程阻塞则升级优先级并协调平台维护者。技术债记录不改变 P04 阶段 PARTIAL，也不改变 LIVE-01～08 **NOT-RUN**。
+
+### P04-S04 剩余桌面 IPC、跨窗口队列与正常预览早到兼容性（2026-10-12）
+
+- **代码冻结与门禁**：P04-S04 冻结代码 `4c458d24bd73dc3221bc1d13333b50f7752d3054`：[PR CI #38194874977](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874977) **SUCCESS**（S04 新增 **8/8 PASS**、全仓 **3768 pass / 5 skip / 0 fail**，3773 tests / 428 files；Typecheck / boundaries / Electron main/preload/renderer build PASS），[D2 #38194874914](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874914)、[Review Baseline #38194874938](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874938) 均 **SUCCESS**。 仅为 GitHub 隔离 runner 的受控验收，不代表真实双窗口 Electron、真实 Pi 或原件 PDF E2E。先前中途提交 `4d6764e6` 因 Jotai `Store` 类型不兼容发生 CI 类型检查失败；已在 `b369b43f` 用 `ReturnType<typeof getDefaultStore>` 修复，**不把失败的中途 CI 当作 PASS**。
+- **Main IPC 审计与定点修补**：`RESTORE_ACTIVE_STREAMS` 现校验主窗口 sender；会话 Graph 的 get/summary/append、Retrospective、Chat→Agent 迁移、会话文件保存、文件路径、目录/文件附件增删均补普通 owner/tombstone 门禁，重点迁移路径不再绕过 owner。SDKMessage 读取、删除、分叉、回退、权限模式、部分会话文件操作增加既有 `assertSensitiveAgentIpcSender`（明确禁止旧 detached 窗口越界）。`FILE_PREVIEW_REPORT/INSPECTION_RESULT` 不可替内部审核会话完成回执。已存在的 GET_TASK_OUTPUT/STOP_TASK、进程管理与受管浏览器按 sessionId 操作继续复用现有检查。
+- **无需 sessionId 的 requestId 间接入口**：普通 `GET_PENDING_REQUESTS` 过滤现存/已删除 review owner 请求；`PERMISSION_RESPOND`、`ASK_USER_RESPOND`、`EXIT_PLAN_MODE_RESPOND` 在修改 Main 权限/审批状态**之前**按可信 pending request 的真实 sessionId 校验 owner。普通请求、已删 review owner 请求与未知 requestId 受控回归新增 2 例。
+- **普通列表和浏览器推送**：`findOrphanSessions` 的健康报告不再返回内部案卷 ID/标题（新增 1 例）；`browser-controller.ts` 的 `BROWSER_STATE_CHANGED`、文件划词回投与下载拦截通知按 owner/tombstone 在投主窗口前过滤。原 `assertBrowserSessionAccess` 主窗口 + session 检查保持，不扩权到 detached 窗口。
+- **Renderer 迟到事件/兼容性**：`ensureOrdinaryWorkTabOwner` 只在本地元数据未知时向 Main `GET_SESSION_META` 查一次，验证 id/非 owner 后补水合；普通归档/草稿/Preview/Browser 正例与隐藏/已删/错 ID/请求失败负例。删除信号触发 `revokedAgentSessionIdsAtom`，阻止正在等待异步结果的预览创建、旧快照列表 merge、SessionUpdate/外部 run/Todo Agent 窗口交接再插入。普通流先到时，最多暂存 4096 条未知会话事件，Main 识别普通 owner 后按接收顺序回放，内部/删除 ID 直接放弃。正式 PPTX `preview_requested` 成功才更新可见刷新版本；无法创建 Tab 会回报明确错误。对应 renderer 测试新增 4（早到正常、伪造/失效、查验途中删除、归档草稿），旧快照 merge 新增 1。
+- **已通过的新增例数**：**8/8** = pending/授权 2 + renderer 早到与撤销 4 + revoked 快照 merge 1 + orphan 健康报告 1。全仓标准自动测试回归绿灯；由于没有实机 Electron harness，跨窗口 sender、Main IPC wiring、正式 PPTX 和未知流短队列目前只做静态调用链+类型/构建及相关纯逻辑测试，**不能声称这些路径逐项真实 E2E PASS**。
+- **P04-PATH-01（后续必须有结论，不借 S04 隐藏）**：`LIST_DIRECTORY`、`READ_DIRECTORY_RECURSIVE`、`OPEN_FILE`、`READ_ATTACHED_FILE`、`FILE_PREVIEW_REVISION` 等**仅按文件路径**授权的公共 IPC 不带 sessionId，无法直接复用 owner/tombstone 校验；即使已有 FileAccessOptions/路径根检查，也尚未证明绝对路径/链接指向 review 私有沙箱时无法通过普通文件预览链路访问。**漏洞可利用性未证实**，必须在以后独立的路径级权限审计中收口或证实安全，验收前不得标全覆盖 PASS。
+- **P04-S04-COMPAT-01 状态**：静态原因已确认、修补代码及受控正反例 **PASS**；实际合法普通会话的 Main 响应延迟、4096 条队列上限、预览工具正式 ready/error 回执和多窗口前台重绑 **NOT-RUN**。必要时在真实 LIVE-06/08 发现问题后局部修复，不回退为未知 ID 默认允许。
+- **阶段判定**：**P04-S04 受控代码/测试 PASS，P04 总体 PARTIAL**（`P04-PATH-01` 与 LIVE-06/08 未闭环）。P05 全入口仍未执行；真实审核 Main IPC 尚未开放。**LIVE-01～LIVE-08 全部 NOT-RUN**。不合并、不解除 Draft。
 
 ## 最终统一实机验收清单（必须保留到合并前，当前均 NOT-RUN）
 

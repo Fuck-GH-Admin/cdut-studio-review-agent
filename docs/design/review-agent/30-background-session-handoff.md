@@ -1,6 +1,6 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
-> 更新基线：2026-10-12，Draft PR #21 **P04-S03 冻结代码 SHA** `3ca7a6726bfefc3e5a8496ff873203ea6d0018c0`（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
+> 更新基线：2026-10-12，Draft PR #21 **P04-S04 冻结代码 SHA** `4c458d24bd73dc3221bc1d13333b50f7752d3054`（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
 
 ## 一分钟读懂
 
@@ -22,7 +22,8 @@
 | **P04-S01** | 普通桌面主路径搜索/归档/按 ID 读写、Stop/进程与任务、投影/流恢复、Renderer 异步合并防复活，**受控 8/8 PASS** | P04 全面 PASS；历史 Tab、删除后的迟到投影、所有剩余桌面入口 |
 | **P04-S02** | 历史 Agent tab 恢复/重新打开、Preview/Browser 运行期再绑定守卫与普通归档正例，新增 **7/7 PASS** | P04 全量 PASS；删除后迟到事件、真正双窗口 Electron 行为 |
 | **P04-S03** | 已删 owner ID-only tombstone + Main/远程迟到事件出口与投影防复活，受控 **5/5 PASS** | 全桌面 IPC、已投递 Renderer 队列及真实跨窗口/删除实机 |
-| P04-S04、P05～P08 | **尚需继续按批次** | 可直接合并或对外发布 |
+| **P04-S04** | 已补桌面按 ID IPC、跨窗 sender、Renderer 迟到队列与正式预览早到，新增 **8/8 PASS** | PATH-01 路径型通用 IPC、真实双窗口 Electron/PDF E2E |
+| P05～P08、P04-PATH-01 | **尚需继续按批次** | 可直接合并或对外发布 |
 
 **当前已证实的 P04-S01 基线**：冻结代码 `3096ba6fc60c0d95a149f2279d5437a2dc0c548f`；[PR CI #38184686298](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686298) SUCCESS（P04-S01 8/8、全仓 3748 pass / 5 skip / 0 fail）；[D2 #38184686276](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686276)、[Review Baseline #38184686293](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686293) SUCCESS。后续又做了 PR 文档更新，**最新 HEAD `cbdd0a8c...` 的三个 CI 也已核实 SUCCESS**。任何新提交需重新读取/确认当次 CI，不能沿用历史 PASS 作为新 HEAD 的证据。
 
@@ -34,13 +35,15 @@
 
 **上轮兼容性原因已静态确认**：Renderer 会话元数据异步水合前，如果先收到正常 Preview/Browser 事件，S02 `canOpenOrdinaryWorkTab` 因本地 `agentSessionsAtom` 尚未包含普通会话而拒绝；Preview 返回空 ID，Browser 返回 null，正式 PPTX 预览调用方未校验空 ID。**代码级原因确认，真实发生率/具体回执后果未实测**；29 号独立追踪 `P04-S04-COMPAT-01`，不解除 owner 门禁。
 
-## 下一阶段：P04-S04（本轮不执行）
+**P04-S04 冻结代码与证据**：P04-S04 冻结代码 `4c458d24bd73dc3221bc1d13333b50f7752d3054`：[PR CI #38194874977](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874977) **SUCCESS**（S04 新增 **8/8 PASS**、全仓 **3768 pass / 5 skip / 0 fail**，3773 tests / 428 files；Typecheck / boundaries / Electron main/preload/renderer build PASS），[D2 #38194874914](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874914)、[Review Baseline #38194874938](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874938) 均 **SUCCESS**。 受控 8 项覆盖 pending request、正常 Preview/Browser 早到、删除中撤销、旧快照 merge、孤儿健康列表。Main 其它有 sessionId 的文件/Graph/迁移/权限入口和 Browser state push 补 owner/tombstone/sender 检查；未知 SDK 流事件在 Main 认证前以有界队列顺序暂存，正式 PPTX 打不开 Tab 则回错误。**真实 Electron 双窗口未跑。**
 
-1. 枚举/测试所有剩余普通桌面按 ID IPC、目标任务/工作窗口、异步队列、session 更新与跨窗口 Sender/前台重绑；不把 S03 的受控 PASS 冒称全量隔离。
-2. `P04-S04-COMPAT-01`：复现普通 Agent 会话列表尚未加载时 Preview/Browser 事件先到的顺序；考虑 Main 可信权限校验后的受限补偿/重试，保持隐藏 owner 无法借缓存开 Tab，并补正式预览失败回执及普通正例。
-3. **已投递但尚未被 Renderer 消费的旧事件**和完全删除案卷的生命周期、跨窗口在最终 LIVE-06/07/08 仍 NOT-RUN。P05 Pocket/Feishu 全量入口单独推进，实际后台审核公共 IPC 仍未开放。
+**仍需收口**：29 号 `P04-PATH-01`：泛用文件路径 IPC 不含 sessionId，其现有路径授权尚未在本项目被证明足以防止读取内部 review 沙箱。不能把本次受控 PASS 外推为桌面全攻击面 PASS。S03 的 tombstone 线性查找/安全 GC 另见 `P04-TECHDEBT-01`。LIVE-01～08 全部 NOT-RUN。
 
-**另行登记、非 P04-S04 的独立技术债**：见 [29 号 `P04-TECHDEBT-01`](29-background-session-preflight-audit.md)。S03 新增的已删 review ID tombstone 目前永久保留在公共 `agent-sessions.json` 数组，且按 ID 守卫在流式/远程事件热路径进行同步索引状态检查和线性查找。**本项目拥有该新增安全策略的首要设计责任**；如需更改公共索引格式/生命周期，邀请 Session Manager 维护者共同评审。先基准测量和设计安全 GC 条件，不直接按时间删；P04-S04 不顺手扩成平台重构，LIVE-01～08 不受影响。
+## 下一阶段：P05（单独小批次，不在本轮执行）
+
+1. 从 27/29/30/31 和 PR #21 HEAD 恢复基线，按已有小批规划枚举 Pocket/Feishu/WS 的按 ID 读取修改、嵌套 sessionId、实时推送、partial/replay/重连、镜像创建与群消息链接；不重复 S04 的桌面 IPC 改动。
+2. 建立普通会话正例与内部 review owner 负例，删除前/后均验证，先做一个小批次，单批更新证据。保持 P04-PATH-01 风险在账，用户最终实机统一核验不提前勾选。
+3. 未实现实际后台审核公共 IPC；不得越界做 P06、合并 PR 或解除 Draft。
 
 ### 需要重点阅读的当前文件（以 HEAD 为准）
 
@@ -52,6 +55,8 @@
 - `apps/electron/src/renderer/lib/agent-tab-access.ts`、`agent-tab-access.test.ts`、`renderer/main.tsx`、`hooks/useOpenSession.ts`：P04-S02 历史 Tab/未知 ID 授权和新增受控 7 例。
 - `renderer/lib/browser-tab.ts`、`components/diff/preview-opener.ts`：运行期工作 Tab 普通会话过滤。
 - `apps/electron/src/main/lib/remote-service.ts`：S03 删除后的 event-log 前置门禁已复用 tombstone；**不是 P05 全量验收**。
+- `apps/electron/src/main/lib/agent-ordinary-pending-access.ts`、`review/review-ordinary-ipc-pending.p04.test.ts`、`renderer/lib/agent-tab-access.test.ts`、`renderer/lib/agent-session-list.test.ts`：P04-S04 受控 8 例、Main pending 与 Renderer 早到/撤销门禁。
+- `apps/electron/src/main/ipc.ts`、`main/lib/browser-controller.ts`、`main/lib/agent-session-manager.ts`、`renderer/hooks/useGlobalAgentListeners.ts`：P04-S04 Sender/会话/推送/迟到队列定点变更。
 - `apps/electron/src/main/lib/review/review-deleted-owner-tombstone.p04.test.ts`、`main/lib/agent-session-manager.ts`、`main/lib/agent-service.ts`、`agent-session-ui-projection-publisher.ts`：P04-S03 的最小删除后持续隔离门禁及 5 例受控测试。
 - `apps/electron/src/main/lib/review/review-desktop-isolation.p04.test.ts`、`apps/electron/src/renderer/lib/agent-session-list.test.ts`、`apps/electron/src/main/lib/goal-ipc-routing.test.ts`：P04-S01 现有回归基础。
 - 其他历史 Tab / persistence / workspace / window 代码须通过仓库全量搜索来**发现**，不可仅依上列文件推断已覆盖全部入口。
@@ -74,4 +79,4 @@
 
 ## 新会话入口
 
-阅读 [31｜跨会话恢复与单小批次执行提示词](31-background-session-continuation-prompts.md)。新会话应先读取 27、29、30、31 及 PR #21 的最新 SHA，再依据现有代码和 CI 开始 **P04-S04**，而不是重复 P04-S03 或直接进入 P05。
+阅读 [31｜跨会话恢复与单小批次执行提示词](31-background-session-continuation-prompts.md)。新会话应先读取 27、29、30、31 及 PR #21 的最新 SHA，再依据现有代码和 CI 开始 **P05 第一个受控小批次**，而不是重复 P04-S04 或跳至 P06。
