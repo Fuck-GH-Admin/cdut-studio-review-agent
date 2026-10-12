@@ -6,14 +6,19 @@
 import { realpathSync } from 'node:fs'
 import { isAbsolute, relative, resolve, sep } from 'node:path'
 import { getConfigDir, getAgentWorkspacesDir } from './config-paths'
-import { isReviewOwnedOrDeletedAgentSessionId } from './agent-session-manager'
 import { isReviewPrivateConfigPath } from './remote-file-access'
 
 export function isReviewPrivateDesktopPath(path: string): boolean {
   if (typeof path !== 'string' || !path) return false
   const candidate = resolve(path)
+  // Keep this pure preview-path module loadable in Bun/renderer-independent
+  // utilities. Resolve the authoritative Main index only when a candidate
+  // actually matches a review-capable private layout, not at import time.
   const deny = (target: string) => isReviewPrivateConfigPath(
-    target, getConfigDir(), isReviewOwnedOrDeletedAgentSessionId,
+    target, getConfigDir(), (id) => {
+      const { isReviewOwnedOrDeletedAgentSessionId } = require('./agent-session-manager') as typeof import('./agent-session-manager')
+      return isReviewOwnedOrDeletedAgentSessionId(id)
+    },
   )
   if (deny(candidate)) return true
   try { return deny(realpathSync(candidate)) }
