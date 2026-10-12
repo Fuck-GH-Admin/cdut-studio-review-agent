@@ -537,6 +537,8 @@ export const REVIEW_IPC_CHANNELS = {
   GET_PI_REVIEW_SESSION_V2: 'review-v2:get-pi-review-session',
   /** Main V2 ledger plus actual Pi execution-ownership ACK; read-only business state. */
   GET_BACKGROUND_PI_REVIEW_STATE_V2: 'review-v2:get-background-pi-review-state',
+  START_BACKGROUND_PI_REVIEW_V2: 'review-v2:start-background-pi-review',
+  STOP_BACKGROUND_PI_REVIEW_V2: 'review-v2:stop-background-pi-review',
   /** 发送失败时结束直接审核运行并撤销本轮授权。 */
   ABORT_PI_REVIEW_V2: 'review-v2:abort-pi-review',
   LIST_RUNS_V2: 'review-v2:list-runs',
@@ -615,6 +617,12 @@ export interface ReviewBackgroundPiRunState {
   /** Persisted V2 ledger status; 'running' alone never means accepted. */
   runStatus?: import('./review-v2').RunV2Status
   completedAt?: string
+}
+
+/** Main 创建内部会话和指派；前台不传 session、目录或执行回调。 */
+export interface ReviewBackgroundPiStartRequest {
+  caseId: string
+  mode?: 'update' | 'restart'
 }
 
 // ===== IPC 请求/响应载荷 =====

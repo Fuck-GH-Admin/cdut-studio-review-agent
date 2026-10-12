@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { useAtomValue } from 'jotai'
-import { Gavel, Play, ShieldAlert } from 'lucide-react'
+import { Gavel, Play, ShieldAlert, Square } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
 import { Spinner } from '@profer/ui/primitives/spinner'
 import type { CaseAggregateV2, CheckResult, SourceRef } from '@profer/shared'
@@ -173,23 +173,26 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
       {reviewBusy ? (
         <section className="shrink-0 px-3 pt-3">
           <Button type="button" className="h-9 w-full gap-2 text-sm" disabled>
-            <Spinner size="sm" />审核中…
+            <Spinner size="sm" />{execution.status === 'preparing' ? '正在准备审核…' : '审核中…'}
           </Button>
+          {execution.status === 'running' && run?.status === 'running' && <Button type="button" variant="outline" className="mt-2 h-8 w-full gap-2 text-xs" disabled={busyKey === 'stop'} onClick={() => void perform('stop', () => actions.stopReview(), '本次审核已停止。')}>
+            <Square size={12} />停止审核
+          </Button>}
         </section>
       ) : run ? (
         <section className="shrink-0 px-3 pt-3">
           <div className="grid grid-cols-2 gap-2">
             <div className="min-w-0">
-              <Button type="button" className="h-9 w-full gap-1 px-2 text-xs" disabled={!canRun} title="沿用当前审核会话，结合新增材料与既有判断更新结果" onClick={() => void actions.runFullReview('update')}>
+              <Button type="button" className="h-9 w-full gap-1 px-2 text-xs" disabled={!canRun} title="结合新增材料与既有判断更新结果" onClick={() => void actions.runFullReview('update')}>
                 <Play size={13} />更新审核结果
               </Button>
-              <p className="mt-1 text-center text-xs leading-4 text-muted-foreground">当前会话续审</p>
+              <p className="mt-1 text-center text-xs leading-4 text-muted-foreground">结合最新材料</p>
             </div>
             <div className="min-w-0">
-              <Button type="button" variant="outline" className="h-9 w-full gap-1 px-2 text-xs" disabled={!canRun} title="创建新 Pi 会话，从头核对当前全部材料" onClick={() => void actions.runFullReview('restart')}>
+              <Button type="button" variant="outline" className="h-9 w-full gap-1 px-2 text-xs" disabled={!canRun} title="从头核对当前全部材料" onClick={() => void actions.runFullReview('restart')}>
                 <Play size={13} />重新审核
               </Button>
-              <p className="mt-1 text-center text-xs leading-4 text-muted-foreground">新会话 · 从头核对</p>
+              <p className="mt-1 text-center text-xs leading-4 text-muted-foreground">从头核对材料</p>
             </div>
           </div>
         </section>
@@ -210,7 +213,6 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
       {execution.status !== 'idle' && (
         <section className={cn('mx-3 mt-3 rounded-lg px-3 py-2 text-xs', execution.status === 'failed' ? 'border border-destructive/40 bg-destructive/[0.06]' : execution.status === 'partial' || execution.status === 'awaiting-input' ? 'border border-amber-500/40 bg-amber-500/[0.06]' : 'bg-muted/40')}>
           <p className="font-medium">{execution.message ?? '审核处理中'}</p>
-          {execution.checks && <p className="mt-1 text-muted-foreground">规则检查 {execution.checks.completed} / {execution.checks.total}</p>}
           {execution.error && <p className="mt-1 text-destructive">{execution.error}</p>}
         </section>
       )}

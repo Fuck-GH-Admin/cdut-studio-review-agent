@@ -150,7 +150,7 @@
 
 测试仓库现已整合上游 PDF/RAG 更新与审核模块，整合依据和冲突处理见[上游整合记录](docs/design/review-agent/25-upstream-review-integration.md)。当前阶段产物将以 Draft PR 提交上游评审，已完成与未完成部分见[阶段交付状态](docs/design/review-agent/28-review-stage-delivery-status.md)：模块化模板完成初次验证后仍在开发，大批试测模板未纳入提交，富文本完整解析等待上游更新。
 
-直接审核当前仍会打开普通 Agent 会话。[后台审核会话方案](docs/design/review-agent/27-background-review-session-proposal.md)分析归属、展示、设置和交互改动，本轮只提交建议，没有实现隐藏功能。
+直接案卷审核的 Pi 阶段已在测试仓库 Draft PR #21 接入 Main 后台入口：Main 创建内部会话、等待真实受理后持续执行，用户在案卷查看结果与停止；普通聊天列表不显示新内部会话。材料准备与事项识别仍在前台，需等待“审核中，可切换页面”后再离开。已有普通审核聊天不批量迁移。实施边界见[最小规范](docs/design/review-agent/27-background-review-session-proposal.md)，验收和外部阻断见[证据台账](docs/design/review-agent/29-background-session-preflight-audit.md)。当前仍为开发阶段，未合并或放行完整生产链路。
 
 上游后续照片蒙版与空闲态压缩已同步，离线审核入口和批量页面已通过实际 `bun run dev` 回放，结果见[dev 复验记录](docs/design/review-agent/26-upstream-refresh-dev-acceptance.md)。
 
