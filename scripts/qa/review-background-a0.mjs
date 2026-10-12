@@ -204,6 +204,15 @@ async function seed() {
 }
 try {
   await connect()
+  // 仅初始化明确传入的隔离实例；避免首次引导异步切换页面干扰业务回放。
+  await eventually('preload bootstrap', '!!window.electronAPI?.getSettings && !!window.reviewAPI', 120000)
+  const initializeGuide = await evaluate(`(async()=>{
+    const {CURRENT_COACH_TOUR_VERSION}=await import('/components/onboarding/coach-tour/coach-tour-steps.ts');
+    const settings=await window.electronAPI.getSettings();
+    if(settings.onboardingCompleted && settings.tutorialBannerDismissed && settings.coachTourVersion===CURRENT_COACH_TOUR_VERSION) return false;
+    await window.electronAPI.updateSettings({onboardingCompleted:true,tutorialBannerDismissed:true,coachTourVersion:CURRENT_COACH_TOUR_VERSION});return true;
+  })()`)
+  if(initializeGuide) await send('Page.reload')
   if(await evaluate('document.body.innerText.includes("欢迎使用 CDUT Studio")')) {
     await evaluate('window.electronAPI.updateSettings({onboardingCompleted:true})')
     await send('Page.reload')
