@@ -1,6 +1,6 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
-> 更新基线：2026-10-12，Draft PR #21 **P04-S02 冻结代码 SHA** `68ef5128025c61b6c737be9baa82f69aefb042fc`（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
+> 更新基线：2026-10-12，Draft PR #21 **P04-S03 冻结代码 SHA** `3ca7a6726bfefc3e5a8496ff873203ea6d0018c0`（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
 
 ## 一分钟读懂
 
@@ -21,7 +21,8 @@
 | P03-S03 | 可信 `owner:{kind:'review-case',caseId}` 原子持久化、不可经普通元数据更新伪造，基本桌面/Pocket 守卫，受控 4/4 | 完整桌面、Pocket/Feishu 隐藏 |
 | **P04-S01** | 普通桌面主路径搜索/归档/按 ID 读写、Stop/进程与任务、投影/流恢复、Renderer 异步合并防复活，**受控 8/8 PASS** | P04 全面 PASS；历史 Tab、删除后的迟到投影、所有剩余桌面入口 |
 | **P04-S02** | 历史 Agent tab 恢复/重新打开、Preview/Browser 运行期再绑定守卫与普通归档正例，新增 **7/7 PASS** | P04 全量 PASS；删除后迟到事件、真正双窗口 Electron 行为 |
-| P04-S03/S04、P05～P08 | **尚需继续按批次** | 可直接合并或对外发布 |
+| **P04-S03** | 已删 owner ID-only tombstone + Main/远程迟到事件出口与投影防复活，受控 **5/5 PASS** | 全桌面 IPC、已投递 Renderer 队列及真实跨窗口/删除实机 |
+| P04-S04、P05～P08 | **尚需继续按批次** | 可直接合并或对外发布 |
 
 **当前已证实的 P04-S01 基线**：冻结代码 `3096ba6fc60c0d95a149f2279d5437a2dc0c548f`；[PR CI #38184686298](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686298) SUCCESS（P04-S01 8/8、全仓 3748 pass / 5 skip / 0 fail）；[D2 #38184686276](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686276)、[Review Baseline #38184686293](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686293) SUCCESS。后续又做了 PR 文档更新，**最新 HEAD `cbdd0a8c...` 的三个 CI 也已核实 SUCCESS**。任何新提交需重新读取/确认当次 CI，不能沿用历史 PASS 作为新 HEAD 的证据。
 
@@ -29,12 +30,15 @@
 
 **P04-S02 本批已冻结代码**：`68ef5128025c61b6c737be9baa82f69aefb042fc`。 [PR CI #38186002063](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38186002063) SUCCESS：新增历史恢复、异步 Main 授权、Preview/Browser 运行时 7/7，**3755 pass / 5 skip / 0 fail**，类型/边界/皮肤契约/Electron 构建均通过；[D2 #38186002055](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38186002055)、[Review Baseline #38186002095](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38186002095) SUCCESS。历史 Tab 恢复使用 `settings.tabState` + Main 过滤后的 Session Manager 元数据验证 ID、owner 和工作区；未知 ID 重开先经 Main `GET_SESSION_META` 断言身份；Preview/Browser 运行时只允许已知普通会话。旧归档会话和持久化项目 draft 保持自动化正例。**不等于 Electron 跨窗口、跨页实机通过。**
 
-## 下一阶段：P04-S03（本轮不执行）
+**P04-S03 冻结代码与证据**：`3ca7a6726bfefc3e5a8496ff873203ea6d0018c0`，[PR CI #38192286740](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38192286740) SUCCESS（**5/5 新增，3760 pass / 5 skip / 0 fail**、类型/边界/构建）、[D2 #38192286741](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38192286741) SUCCESS、[Review Baseline #38192286739](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38192286739) SUCCESS。现有索引 `reviewOwnerDeletionTombstones` 持久保存已删内部审核 ID，不另造数据库；Main event bus、stream 恢复、fallback、终态/title 直发、投影和 remote replay 写入前统一判定。普通会话兼容自动回归通过；**真实 Electron/Pi/跨窗口均 NOT-RUN**。
 
-1. **P04-S03（先处理）**：删除 owner 元数据后，迟到 `session_projection` / stream / event fallback / 快照回填被误认普通会话的风险；审计并设计最小 tombstone/等效阻断，补旧 owner/普通会话负例。禁止大改共享事件引擎。
-2. **P04-S04（随后另起批次）**：剩余桌面 IPC 按 ID 完整清单、目标任务/进程/预览边缘路径、跨窗口旧绑定与排队事件，补 Sender 越权和普通 Agent 回归。现有受管浏览器 `assertMainRenderer` + `assertBrowserSessionAccess` 已阻断普通浏览器的非主窗口和内部 owner，但不等于所有跨窗口路径都已验证。
-3. **统一实机**：历史 Settings 快照、真正双窗口 rebind、真实 Browser/Preview 推送、普通归档/项目 draft 恢复与早到缓存事件的兼容性仍记入 29 号 **LIVE-06/08 NOT-RUN**。
-4. 在 P04 和 P05 Pocket/Feishu 隔离全部完成**以前，不注册直接审核公共后台 IPC**。P05～P08 均不得在本轮越界。
+**上轮兼容性原因已静态确认**：Renderer 会话元数据异步水合前，如果先收到正常 Preview/Browser 事件，S02 `canOpenOrdinaryWorkTab` 因本地 `agentSessionsAtom` 尚未包含普通会话而拒绝；Preview 返回空 ID，Browser 返回 null，正式 PPTX 预览调用方未校验空 ID。**代码级原因确认，真实发生率/具体回执后果未实测**；29 号独立追踪 `P04-S04-COMPAT-01`，不解除 owner 门禁。
+
+## 下一阶段：P04-S04（本轮不执行）
+
+1. 枚举/测试所有剩余普通桌面按 ID IPC、目标任务/工作窗口、异步队列、session 更新与跨窗口 Sender/前台重绑；不把 S03 的受控 PASS 冒称全量隔离。
+2. `P04-S04-COMPAT-01`：复现普通 Agent 会话列表尚未加载时 Preview/Browser 事件先到的顺序；考虑 Main 可信权限校验后的受限补偿/重试，保持隐藏 owner 无法借缓存开 Tab，并补正式预览失败回执及普通正例。
+3. **已投递但尚未被 Renderer 消费的旧事件**和完全删除案卷的生命周期、跨窗口在最终 LIVE-06/07/08 仍 NOT-RUN。P05 Pocket/Feishu 全量入口单独推进，实际后台审核公共 IPC 仍未开放。
 
 ### 需要重点阅读的当前文件（以 HEAD 为准）
 
@@ -45,7 +49,8 @@
 - `apps/electron/src/renderer/lib/agent-session-list.ts`：Renderer 迟到列表/upsert；删除后 tombstone 留待 S03。
 - `apps/electron/src/renderer/lib/agent-tab-access.ts`、`agent-tab-access.test.ts`、`renderer/main.tsx`、`hooks/useOpenSession.ts`：P04-S02 历史 Tab/未知 ID 授权和新增受控 7 例。
 - `renderer/lib/browser-tab.ts`、`components/diff/preview-opener.ts`：运行期工作 Tab 普通会话过滤。
-- `apps/electron/src/main/lib/remote-service.ts`：P05 之前已存在的基础 Pocket 保护，但**不是全量验收**。
+- `apps/electron/src/main/lib/remote-service.ts`：S03 删除后的 event-log 前置门禁已复用 tombstone；**不是 P05 全量验收**。
+- `apps/electron/src/main/lib/review/review-deleted-owner-tombstone.p04.test.ts`、`main/lib/agent-session-manager.ts`、`main/lib/agent-service.ts`、`agent-session-ui-projection-publisher.ts`：P04-S03 的最小删除后持续隔离门禁及 5 例受控测试。
 - `apps/electron/src/main/lib/review/review-desktop-isolation.p04.test.ts`、`apps/electron/src/renderer/lib/agent-session-list.test.ts`、`apps/electron/src/main/lib/goal-ipc-routing.test.ts`：P04-S01 现有回归基础。
 - 其他历史 Tab / persistence / workspace / window 代码须通过仓库全量搜索来**发现**，不可仅依上列文件推断已覆盖全部入口。
 
@@ -67,4 +72,4 @@
 
 ## 新会话入口
 
-阅读 [31｜跨会话恢复与单小批次执行提示词](31-background-session-continuation-prompts.md)。新会话应先读取 27、29、30、31 及 PR #21 的最新 SHA，再依据现有代码和 CI 开始 **P04-S03**，而不是重复 P04-S02 或直接进入 P05。
+阅读 [31｜跨会话恢复与单小批次执行提示词](31-background-session-continuation-prompts.md)。新会话应先读取 27、29、30、31 及 PR #21 的最新 SHA，再依据现有代码和 CI 开始 **P04-S04**，而不是重复 P04-S03 或直接进入 P05。
