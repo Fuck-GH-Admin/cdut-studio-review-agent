@@ -103,6 +103,16 @@ describe('P04-TECHDEBT-01 index-coupled owner membership', () => {
         expect(allowed).toBe(i % 2 === 1 && count > 0)
         samples.push(performance.now() - begin)
       }
+      // Equivalent old hot path after a cache hit: stat + linear tombstone search.
+      // It is an explicit reference comparison, not a pre-change CI result.
+      const linearSamples: number[] = []
+      for (let i = 0; i < 512; i++) {
+        const begin = performance.now()
+        statSync(path)
+        const found = tombstones.includes(i % 2 ? lookupId : 'ordinary-id-not-in-index')
+        expect(found).toBe(i % 2 === 1 && count > 0)
+        linearSamples.push(performance.now() - begin)
+      }
       const writeStart = performance.now()
       updateAgentSessionMeta(ordinary.id, { title: 'bench-' + count })
       const indexedWriteMs = performance.now() - writeStart
@@ -112,7 +122,7 @@ describe('P04-TECHDEBT-01 index-coupled owner membership', () => {
         cold_load_ms: Number(coldLoadMs.toFixed(3)),
         seed_atomic_write_ms: Number(seedWriteMs.toFixed(3)),
         index_update_ms: Number(indexedWriteMs.toFixed(3)),
-        hot_guard: summary(samples),
+        hot_guard: summary(samples), linear_reference: summary(linearSamples),
       })
     }
     console.log('P04_TECHDEBT_01_BENCHMARK=' + JSON.stringify({ platform: process.platform, arch: process.arch, sample_size: 512, measurements: records }))
