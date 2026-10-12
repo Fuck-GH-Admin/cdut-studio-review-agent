@@ -1,6 +1,6 @@
 # 29｜审核受控后台会话：开工前依赖审计与阻断门禁
 
-> **新会话/新负责人必读**：[30｜P05-S03 后的工程交接快照](30-background-session-handoff.md)、[31｜接手与每批次提示词](31-background-session-continuation-prompts.md)。P05-S01/S02/S03 受控门禁均 **PASS**；**下一小批 P05-S04 WS/relay 重连、快照与远程剩余入口**，P05 整体 PARTIAL。P04 路径型文件 IPC、真实双窗口行为与 LIVE-06/08 仍是开放门禁。
+> **新会话/新负责人必读**：[30｜P05-S04 后的工程交接快照](30-background-session-handoff.md)、[31｜接手与每批次提示词](31-background-session-continuation-prompts.md)。P05-S01/S02/S03/S04 受控门禁均 **PASS**；**下一小批 P05-S05 WS/Relay 协议层重连与剩余事件 payload 审计**，P05 整体 PARTIAL。P04 路径型文件 IPC、真实双窗口行为与 LIVE-06/08 仍是开放门禁。
 
 > 2026-10-12；初始源码审计基线 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；后续代码与受控探针仅在 Draft PR #21 分支实施。配套 [27 号实施规范](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。**文档中的 PASS 只对所附冻结提交、测试环境与覆盖范围有效；真实 Pi/Electron/Pocket 验收尚未完成，不得据此合并。**
 
@@ -194,7 +194,17 @@
 - **7 项受控正反例**：① Chat 相对及 `attachments/` 内绝对路径读取/合法删除；② Chat 不能读删 owner 私有文件、其它 app 配置、前缀相似目录或指向私有区的符号链接；③ 普通 Pocket 两种别名仍能读正常会话和共享文件；④ 同工作区隐藏 sibling 的绝对/相对/旧版 `access.sessionId` 路径拒绝，删后残留目录仍按 tombstone 拒绝；⑤ 符号链接别名和显式 attachedFiles/attachedDirectories 指向私有区依旧拒绝；⑥ 跨工作区与外链拒绝，原普通共享文件仍可读；⑦ owner 文件、SDK transcript/checkpoint known layouts、已删 tombstone 能被纯路径守卫识别。
 - **范围结论**：`P05-REMOTE-PATH-01` 在本批审计的 **Chat 读删及两种 Pocket 文件预览命令**得到受控正反例的封闭证据；其它未枚举的远程文件搜索、WS/Relay、真实 Pocket 回放、别的配置路径布局和实际文件修改并发时序尚未全覆盖，P05 整体 **PARTIAL**。Legacy Chat 的任意 app config 绝对路径读取能力被有意收紧；若旧客户端依赖 Agent 工作区任意绝对路径调用 `chat_read_attachment`，需要迁移到携带普通 sessionId 的 Pocket 文件预览指令，真实兼容性列 LIVE-06/08。
 - **不能连带放行**：桌面 `P04-PATH-01` 无 sessionId IPC 未改变，仍是阻断级安全证据缺口；`P04-TECHDEBT-01` tombstone 性能/安全回收另存。Main 业务后台接线、A0、LIVE-01～08 均 **NOT-RUN**；PR Draft/Open/未合并。
-- **下一小批 `P05-S04`（本轮未执行）**：审计 Pocket/relay/WS 重连与快照、Agent event history、按 ID 远程命令/工作区搜索和残存文件型入口的隐藏/已删 owner 隔离；开展同样的普通会话正例和 owner/tombstone 负例。之后再谈首次 Main IPC 接线及 A0；不提前做 P06/P07。
+- **P05-S04 历史计划（现已执行，详细结果见后面的 S04 专节）**：审计 Pocket/relay/WS 重连与快照、Agent event history、按 ID 远程命令/工作区搜索和残存文件型入口的隐藏/已删 owner 隔离；开展同样的普通会话正例和 owner/tombstone 负例。之后再谈首次 Main IPC 接线及 A0；不提前做 P06/P07。
+
+### P05-S04 Pocket 搜索快照、事件 replay/续传与嵌套会话 ID 隔离（2026-10-12）
+
+- **冻结代码与 CI**：P05-S04 代码冻结 `fa6a2a250e6fee0d956ab2ad045812bacd5f3c2c`：[PR CI #38232065193](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38232065193) **SUCCESS**（新增 **8/8 受控 PASS**；全仓 **3795 pass / 5 skip / 0 fail**，3800 tests / 432 files；类型检查、边界和 Electron main/preload/renderer build 均通过）；[D2 #38232065271](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38232065271)、[Review Baseline #38232065165](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38232065165) 均 **SUCCESS**。 文件变更：`remote-workspace-file-search.ts`、`remote-service.ts`、`remote-file-access.ts` 与新增 `review-remote-reconnect-search.p05.test.ts`。本批修改范围限定为普通远程 metadata/队列引用边界，不改 Agent 运行内核或 Renderer。
+- **确认的缺口**：`search_workspace_files` 原先会返回普通会话/工作区显式附加的 owner 目录、文件名与绝对路径，虽然 S03 最终读取命令会拒绝，**搜索结果已产生元数据泄漏**；`queue_message` 原仅检查顶层 `sessionId`，但嵌套 `mentionedSessionIds` 能把 hidden/deleted owner ID 提交给普通会话的消息队列，具体下游实际读取结果未获实机验证。另经代码审查确认：搜索私有目录本身必须过滤，不能只过滤它下面的文件；`isReviewPrivateConfigPath` 的工作区布局判定已扩展到目录根。
+- **修复**：`searchRemoteWorkspaceFiles` 添加 opt-in `denyPath`，目录扫描/附加 root 文件/符号链接均同时对候选和 realpath 做 Main owner/tombstone 判定；正常 session、workspace-files 和普通附加路径不被阻断。`remote-service.ts` 向远程搜索传同一私有路径判定，向 `queue_message` 添加嵌套 owner ID 拒绝。旧 `access.sessionId` 文件预览、Chat 读删权限仍由 S01/S03 门禁负责，未重复实现。
+- **新增 8 个受控测试**：① `list_sessions` + `get_agent_runtime_contexts` 在删除前后不泄漏 owner；② 附加 owner 路径与共享正常文件搜索结果隔离；③ private 文件名检索与删后残留子目录拒绝；④ 文件/目录 symlink 别名及显式 attachedPaths 拒绝；⑤ 纯搜索保留普通文件正例；⑥ `queue_message` 嵌套 live/deleted review ID 拒绝、普通 ID 不被 owner 门禁误拒；⑦ 合成旧事件日志在重放 cursor 时过滤 owner，正常顺序保持；⑧ 日志窗口过期要求 snapshot，不能盲补不完整事件。测试用隔离 `PROFER_CONFIG_DIR`、合成目录/会话、`RemoteAgentEventLog` 进程内重放逻辑；**未启动真实 WS/Relay 连接**。
+- **受控结论**：S04 所列搜索/嵌套 ID/快照及进程内 replay 验证 **PASS**。现有 WS 本地握手与 replay gating、Relay `resume_agent_events` 显式 `requiresSnapshot` 降级在源码上存在，但真实连接互交、同一条连接多个请求、断连重连、丢包、异步竞态、Relay 跨 viewer 路由及事件 payload 间接跨 owner 仍没有端到端证据，不得称 S04 完成真实网络验收或 P05 总体 PASS。
+- **P05-S05 下一小批（本轮不执行）**：专门做受控真实 socket/loopback 与 Relay 适配层的握手、cursor、乱序/旧事件、过期 snapshot、同/多 Pocket viewer 等传输边界及其它 `AgentStreamPayload` 嵌套会话引用审计；只修确认问题。真实飞书群、实际异地网络、手机 Pocket 验证统一保持 LIVE / 实机 NOT-RUN。
+- **阻断门禁不变**：`P04-PATH-01`（桌面无 sessionId 通用路径型 IPC）仍未闭环；`P04-TECHDEBT-01` 单列。`P05` 整体 **PARTIAL**；Main 真实后台审核 IPC、A0、LIVE-01～08 均 **NOT-RUN**，PR #21 持续 Draft/Open/未合并。
 
 ## 最终统一实机验收清单（必须保留到合并前，当前均 NOT-RUN）
 

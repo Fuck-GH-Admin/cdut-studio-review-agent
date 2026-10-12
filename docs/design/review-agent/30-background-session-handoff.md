@@ -1,6 +1,6 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
-> 更新基线：2026-10-12，Draft PR #21 **P05-S03 冻结代码 SHA** `fe89861a52a99836d5d458a528f1d8d9e885ff70`（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
+> 更新基线：2026-10-12，Draft PR #21 **P05-S04 冻结代码 SHA** `fa6a2a250e6fee0d956ab2ad045812bacd5f3c2c`（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
 
 ## 一分钟读懂
 
@@ -26,7 +26,8 @@
 | **P05-S01** | Pocket requestId/旧版嵌套 ID/重放发送前门禁；新增 **5/5 PASS** | 飞书及完整 WS 远程入口仍需验收 |
 | **P05-S02** | 飞书旧绑定/镜像创建、群消息、EventBus 隔离新增 **7/7 PASS** | 真正飞书群/网络及全量 P05 仍未验收 |
 | **P05-S03** | Pocket Chat 附件根与普通工作区里 owner 私有文件路径排除，新增 **7/7 PASS** | 其它远程入口、真实 WS/relay/文件时序仍未验收 |
-| P05-S04+、P06～P08、P04-PATH-01 | **尚需继续按批次** | 可直接合并或对外发布 |
+| **P05-S04** | 搜索元数据私有根与队列嵌套 ID 隔离、新增 **8/8 PASS** | 真实 WS/Relay socket/多 viewer/网络仍 NOT-RUN |
+| P05-S05+、P06～P08、P04-PATH-01 | **尚需继续按批次** | 可直接合并或对外发布 |
 
 **当前已证实的 P04-S01 基线**：冻结代码 `3096ba6fc60c0d95a149f2279d5437a2dc0c548f`；[PR CI #38184686298](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686298) SUCCESS（P04-S01 8/8、全仓 3748 pass / 5 skip / 0 fail）；[D2 #38184686276](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686276)、[Review Baseline #38184686293](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686293) SUCCESS。后续又做了 PR 文档更新，**最新 HEAD `cbdd0a8c...` 的三个 CI 也已核实 SUCCESS**。任何新提交需重新读取/确认当次 CI，不能沿用历史 PASS 作为新 HEAD 的证据。
 
@@ -48,10 +49,12 @@
 
 **P05-S03 受控代码与证据**：P05-S03 冻结代码 `fe89861a52a99836d5d458a528f1d8d9e885ff70`：[PR CI #38201737608](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38201737608) **SUCCESS**（本批 **7/7 新增受控 PASS**、全仓 **3787 pass / 5 skip / 0 fail**，3792 tests / 431 files；Typecheck、包边界及 Electron main/preload/renderer build PASS）；[D2 #38201737615](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38201737615)、[Review Baseline #38201737635](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38201737635) **SUCCESS**。 新增 7 项合成文件正反例：Chat 附件根内合法读删，任意 app config/root 外拒绝，Pocket 普通 session/共享 workspace 正常预览，同 workspace review owner、显式 attachedFiles、符号链接、旧 access、删后 tombstone 和 SDK/checkpoint 已知路径受控拒绝。修改 `remote-service.ts` / `remote-file-access.ts`，不修改通用桌面文件 IPC。`P05-REMOTE-PATH-01` 已列举入口有受控关闭证据；`P04-PATH-01` 未解决，P05 整体仍 PARTIAL，全部 LIVE 未运行。
 
-## 下一阶段：P05-S04（Pocket WS/relay/快照及其余入口，本轮不执行）
+**P05-S04 受控代码与证据**：P05-S04 代码冻结 `fa6a2a250e6fee0d956ab2ad045812bacd5f3c2c`：[PR CI #38232065193](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38232065193) **SUCCESS**（新增 **8/8 受控 PASS**；全仓 **3795 pass / 5 skip / 0 fail**，3800 tests / 432 files；类型检查、边界和 Electron main/preload/renderer build 均通过）；[D2 #38232065271](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38232065271)、[Review Baseline #38232065165](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38232065165) 均 **SUCCESS**。 8 项合成正反例覆盖普通/hidden/deleted Session snapshot、搜索 attached/root/symlink 不泄漏文件与目录名称、消息 queue 嵌套 owner ID 拒绝、已有 EventLog 断线 cursor/过期 snapshot 进程内行为。真实 WS/Relay 多 viewer socket 未连，P05 整体 PARTIAL；桌面 P04-PATH-01 未结，LIVE-01～08 NOT-RUN。下一步 P05-S05 只做协议层真实 socket/loopback 受控证据和 payload 引用清点。
 
-1. 从 27/29/30/31 和 PR #21 HEAD 恢复基线；集中验证 Pocket WS/Relay 连接及重连事件重放、历史快照、workspace 文件搜索和其它未枚举命令，注意跨重连删除后 tombstone、无 sessionId/嵌套 ID 请求。不要重复 S01/S02/S03 已通过的局部守卫。
-2. 用隔离配置/合成会话补普通远程功能正例与隐藏/已删 owner 负例；只对真实缺口最小修补。真实 Pocket/飞书、真实 Electron 留用户集中 LIVE 验收。保持 P04-PATH-01 未解决及 A0 未运行。
+## 下一阶段：P05-S05（远程传输/Relay 实际 socket 受控回放，本轮不执行）
+
+1. 从 27/29/30/31 和 PR #21 HEAD 恢复基线；实施实际本机 WS socket/Relay 适配层受控集成验证：握手、重连、游标、排队实时帧、删除后 tombstone、要求 snapshot、同/多 viewer 和事件 payload 的嵌套 ID；仅修确定缺口，不重复 S01～S04。
+2. 使用隔离配置、普通会话和虚构 review owner，在 CI 可跑的 loopback/socket 上给出证据；网络真机及飞书仍统一保留 LIVE-06/08。保持 P04-PATH-01、A0、Main 业务 IPC 未验收。
 3. 未实现实际后台审核公共 IPC；不得越界做 P06、合并 PR 或解除 Draft。
 
 ### 需要重点阅读的当前文件（以 HEAD 为准）
@@ -88,4 +91,4 @@
 
 ## 新会话入口
 
-阅读 [31｜跨会话恢复与单小批次执行提示词](31-background-session-continuation-prompts.md)。新会话应先读取 27、29、30、31 及 PR #21 的最新 SHA，再依据现有代码和 CI 开始 **P05-S04 WS/relay 与远程剩余入口受控小批次**，而不是重复 P04-S04 或跳至 P06。
+阅读 [31｜跨会话恢复与单小批次执行提示词](31-background-session-continuation-prompts.md)。新会话应先读取 27、29、30、31 及 PR #21 的最新 SHA，再依据现有代码和 CI 开始 **P05-S05 受控 WS/Relay 协议层小批次**，而不是重复 P04-S04 或跳至 P06。
