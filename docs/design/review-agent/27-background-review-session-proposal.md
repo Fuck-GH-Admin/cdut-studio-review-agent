@@ -1,6 +1,6 @@
 # 27｜直接案卷审核：复用现有 Pi 的后台会话最小实施规范
 
-> **跨会话接手先读**：[30｜当前项目与 PR #21 交接指南](30-background-session-handoff.md) → [31｜复制即用的接手/小批次提示词](31-background-session-continuation-prompts.md) → 本文件实施规范 → [29｜验收证据及 LIVE-01～08](29-background-session-preflight-audit.md)。**P04-S01/S02/S03/S04 均有冻结代码受控 PASS，P04 整体因真实 Electron 和通用路径 IPC 风险仍 PARTIAL；P05 下一小批次尚未执行，LIVE-01～08 均 NOT-RUN。**
+> **跨会话接手先读**：[30｜当前项目与 PR #21 交接指南](30-background-session-handoff.md) → [31｜复制即用的接手/小批次提示词](31-background-session-continuation-prompts.md) → 本文件实施规范 → [29｜验收证据及 LIVE-01～08](29-background-session-preflight-audit.md)。**P04-S01/S02/S03/S04 均有冻结代码受控 PASS，P04 整体因真实 Electron 和通用路径 IPC 风险仍 PARTIAL；P05-S01 Pocket 间接 ID/事件重放的受控修复已 PASS；P05 整体仍 PARTIAL，下一小批 P05-S02 飞书，LIVE-01～08 均 NOT-RUN。**
 
 > 2026-10-12 缩减版（原提案的过度设计从当前实施基线移除；历史建议仍可通过 Git 历史查看）。
 > 代码核对：`main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`。本文件是 **v1 目标与允许改动范围**，不是实现完成声明。
@@ -107,7 +107,10 @@ Main 发起执行时仍需要现有窗口的 `webContents` 用于运行事件转
 **P04-S04 受控结果与未完成的真实门禁**：P04-S04 冻结代码 `4c458d24bd73dc3221bc1d13333b50f7752d3054`：[PR CI #38194874977](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874977) **SUCCESS**（S04 新增 **8/8 PASS**、全仓 **3768 pass / 5 skip / 0 fail**，3773 tests / 428 files；Typecheck / boundaries / Electron main/preload/renderer build PASS），[D2 #38194874914](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874914)、[Review Baseline #38194874938](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874938) 均 **SUCCESS**。 对 `P04-S04-COMPAT-01` 已加 Main 授权后限次水合补偿、普通 Preview/Browser 正例、删除中撤销异步回放、正式 PPTX 失败回执；对未知 SDK 流建立 4096 条上限的临时队列，身份确认后顺序回放。仍需真实双窗口/后端慢查复现，并审计 `LIST_DIRECTORY` 等无 sessionId 的通用路径 IPC，不能因 S04 单测通过提前声明所有桌面入口隔离无缺口。
 **P04-S02 普通工作 Tab 兼容性复查结果**：已确认**静态代码上的明确竞态条件**：`agentSessionsAtom` 的异步水合未与正式 Preview/Browser 状态到达建立屏障；`canOpenOrdinaryWorkTab` 对尚未水合的真实普通会话返回 false，`openFilePreviewTab` 返回空 ID，`reconcileBrowserTabs` 返回 null，正式 PPTX 预览调用方未验证空 ID。**真实发生率、正式回执实际后果尚未实机证明**；在 29 号登记 `P04-S04-COMPAT-01`，LIVE-06/08 NOT-RUN，未来应使用 Main 可信校验 + 有界补偿/重试，不得把未知 ID 直接放行。
 
-**P04-S04 已推进**：补齐剩余有明确 sessionId 的 Graph/Retrospective/迁移/会话附件与预览回执/权限待审请求、健康列表、恢复 sender、browser 事件以及 Renderer 早到 Tab/迟到队列门禁；正式预览失败现有明确回执。参见 29 号 S04 专节与 PATH-01 文件路径级未验证风险。**后续小批**：**P05** Pocket/Feishu 全入口、WS 历史与镜像单独审核；**P06/P07/P08** 正式停止竞态、真实重启删案与普通 Agent 实机回归。P04 整体 PARTIAL，LIVE-01～08 均 NOT-RUN。
+**P04-S04 已推进**：补齐剩余有明确 sessionId 的 Graph/Retrospective/迁移/会话附件与预览回执/权限待审请求、健康列表、恢复 sender、browser 事件以及 Renderer 早到 Tab/迟到队列门禁；正式预览失败现有明确回执。参见 29 号 S04 专节与 PATH-01 文件路径级未验证风险。**后续小批**：**P05-S02** 飞书绑定/镜像/EventBus 隔离，再补 Pocket 全入口/WS 历史与镜像剩余验证；**P06/P07/P08** 正式停止竞态、真实重启删案与普通 Agent 实机回归。P04 整体 PARTIAL，LIVE-01～08 均 NOT-RUN。
+
+
+**P05-S01 首个 Pocket 远程隔离小批次**：P05-S01 冻结代码 `2a08e439d19a0d2eea572003b6ad2d71d33ca3c0`：[PR CI #38198346287](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38198346287) **SUCCESS**（本批 **5/5 新增受控 PASS**、全仓 **3773 pass / 5 skip / 0 fail**，3778 tests / 429 files；Typecheck、包边界、Electron build PASS），[D2 #38198346297](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38198346297)、[Review Baseline #38198346361](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38198346361) **SUCCESS**。 复用 P04 的 Main owner/tombstone 和 pending request 检查：`get_pending_interactions` 的权限、AskUser、ExitPlan 全量/按会话快照隐藏 review owner；三条 `respond_*` 先以 Main pending 请求的真实 sessionId 授权，不能只凭 requestId 改变内部审核状态；旧 Pocket 两个文件预览命令的 `access.sessionId` / 连接上下文回退也必须判定 owner；远程事件日志的重放/已排队待发记录在**实际发送时**重新判定 owner/tombstone，删除后不下发早已入队的 owner payload。对普通会话请求/文件操作保留原有路径。**P05 整体仍 PARTIAL**；历史 cursor/元数据、完整 WS 联调、飞书群镜像/旧绑定/事件、路径型远程 Chat 附件仍要单独审查。下一小批 `P05-S02`，不进入 Main 业务接线或 A0 实机。
 
 **仍未完成的门禁**：P03 实际业务 Main IPC/会话启动/切页；P02 真实模型与原件视觉 E2E；P04 已知路径型桌面文件 IPC 的完整隔离证明与真实 Electron 回放、P05 Pocket/Feishu 的全面隔离、P06 迟到 stop、P07 重启与删除、P08 普通 Agent 真实回归。统一验收 LIVE-01～08 全部保持 NOT-RUN。
 
