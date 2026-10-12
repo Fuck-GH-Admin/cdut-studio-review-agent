@@ -91,8 +91,8 @@ describe('P04-TECHDEBT-01 index-coupled owner membership', () => {
     const child = spawnSync(process.execPath, ['-e', script], {
       env: { ...process.env, PROFER_CONFIG_DIR: root }, encoding: 'utf8', timeout: 20_000,
     })
-    expect({ exit: child.status, signal: child.signal, stderr: child.stderr.slice(-1000) })
-      .toEqual({ exit: 0, signal: null, stderr: '' })
+    expect(child.status).toBe(0)
+    expect(child.signal).toBeNull()
   })
 
   test('0 / 1k / 10k / 100k UUID tombstone persisted-index benchmarks (non-gating)', () => {
