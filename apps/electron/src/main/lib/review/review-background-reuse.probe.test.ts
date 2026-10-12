@@ -21,7 +21,7 @@ import { createCaseFromTemplate } from './application-service'
 import { readAggregate } from './case-store-v2'
 import { registerMaterial } from './material-service'
 import { finishPiReviewRunV2, preparePiReviewRunV2, submitPiReviewResultV2 } from './pi-case-review-service'
-import { admitPreparedPiReviewTurn } from './review-pi-admission'
+import { admitPreparedPiReviewTurn, isPiReviewRunAdmitted } from './review-pi-admission'
 import { findActivePiReviewAssignment } from './review-agent-assignment'
 import { getRunV2 } from './run-store-v2'
 import { publishTemplate, saveDraft } from './template-store'
@@ -285,10 +285,12 @@ describe('P03-S02 Main admission ACK and single-owner lifecycle', () => {
     await entry
     expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('running')
     expect(admitted).toBeFalse()
+    expect(isPiReviewRunAdmitted(binding.caseId, binding.runId)).toBeFalse()
     grant()
     const receipt = await receiptPromise
     expect(receipt).toEqual(binding)
     expect(admitted).toBeTrue()
+    expect(isPiReviewRunAdmitted(binding.caseId, binding.runId)).toBeTrue()
     expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('running')
     // Even a destroyed WebContents after the ACK does not stop the Main turn.
     harness.destroyWindow()
@@ -299,6 +301,7 @@ describe('P03-S02 Main admission ACK and single-owner lifecycle', () => {
       await Promise.resolve()
     }
     expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('partially-completed')
+    expect(isPiReviewRunAdmitted(binding.caseId, binding.runId)).toBeFalse()
   })
 
   test('busy rejection before ownership closes only the newly prepared V2 run', async () => {
