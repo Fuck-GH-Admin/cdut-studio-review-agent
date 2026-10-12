@@ -51,7 +51,7 @@ import {
   paginateSDKMessages,
   searchAgentSessionMessages,
 } from './agent-session-manager'
-import { getAgentSessionsDir, getConfigDir, getAgentSessionWorkspacePath, getAgentWorkspacePath, getWorkspaceFilesDir } from './config-paths'
+import { getAgentSessionsDir, getAttachmentsDir, getConfigDir, getAgentSessionWorkspacePath, getAgentWorkspacePath, getWorkspaceFilesDir } from './config-paths'
 import { getSettings } from './settings-service'
 import {
   listAgentWorkspaces,
@@ -109,7 +109,7 @@ const generateTitle = removedChatEngine('generateTitle') as unknown as (input: u
 import { saveAttachment, readAttachmentAsBase64, deleteAttachment } from './attachment-service'
 import { chatEventBus } from './chat-stream-bus'
 import { resolveAndReadFile, readFileAsDataUrl } from './file-preview-service'
-import { resolveAuthorizedRemoteFilePath } from './remote-file-access'
+import { resolveAuthorizedRemoteChatAttachmentPath, resolveAuthorizedRemoteFilePath, isReviewPrivateConfigPath } from './remote-file-access'
 import { loadWorkspaceHeatmapDaily } from './workspace-heatmap-query'
 import { RemoteAgentEventLog, type RemoteAgentEventRecord } from './remote-agent-event-log'
 import { RemoteRelayClient, type RemoteRelaySink } from './remote-relay-client'
@@ -1706,24 +1706,22 @@ export async function handleRemoteCommand(
       }
     }
 
-    case 'chat_delete_attachment': {
-      const localPath = parsed.localPath as string
-      if (!localPath) return { ok: false, error: '缺少 localPath' }
-      try {
-        deleteAttachment(localPath)
-        return { ok: true, data: { deleted: true } }
-      } catch (e) {
-        return { ok: false, error: e instanceof Error ? e.message : '附件删除失败' }
-      }
-    }
-
+    case 'chat_delete_attachment':
     case 'chat_read_attachment': {
-      const localPath = parsed.localPath as string
+      const localPath = typeof parsed.localPath === 'string' ? parsed.localPath : ''
       if (!localPath) return { ok: false, error: '缺少 localPath' }
+      // Chat is retired, but older Pocket clients can still call this path-only API.
+      // Treat it strictly as an attachment operation; never authorize all of getConfigDir().
+      const authorized = resolveAuthorizedRemoteChatAttachmentPath(localPath, getAttachmentsDir())
+      if (!authorized) return { ok: false, error: '附件路径未获授权' }
       try {
-        return { ok: true, data: readAttachmentAsBase64(localPath) }
+        if (type === 'chat_delete_attachment') {
+          deleteAttachment(authorized)
+          return { ok: true, data: { deleted: true } }
+        }
+        return { ok: true, data: readAttachmentAsBase64(authorized) }
       } catch (e) {
-        return { ok: false, error: e instanceof Error ? e.message : '附件读取失败' }
+        return { ok: false, error: e instanceof Error ? e.message : '附件操作失败' }
       }
     }
 
@@ -1761,6 +1759,11 @@ export async function handleRemoteCommand(
           ...(session.attachedFiles ?? []),
           ...getWorkspaceAttachedFiles(workspace.slug),
         ],
+        // A workspace root includes every session folder: exclude internal review
+        // owners (including deleted tombstones) even for attached roots and symlinks.
+        denyPath: (candidate) => isReviewPrivateConfigPath(
+          candidate, getConfigDir(), isReviewOwnedOrDeletedAgentSessionId,
+        ),
       })
       if (!resolvedPath) return { ok: false, error: '文件不存在或不在当前会话授权范围内' }
 
