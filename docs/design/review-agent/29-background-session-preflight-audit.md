@@ -1,6 +1,6 @@
 # 29｜审核受控后台会话：开工前依赖审计与阻断门禁
 
-> **新会话/新负责人必读**：[30｜P05-S04 后的工程交接快照](30-background-session-handoff.md)、[31｜接手与每批次提示词](31-background-session-continuation-prompts.md)。P05-S01/S02/S03/S04 受控门禁均 **PASS**；**下一小批 P05-S05 WS/Relay 协议层重连与剩余事件 payload 审计**，P05 整体 PARTIAL。P04 路径型文件 IPC、真实双窗口行为与 LIVE-06/08 仍是开放门禁。
+> **新会话/新负责人必读**：[30｜P05-S05 后的工程交接快照](30-background-session-handoff.md)、[31｜接手与每批次提示词](31-background-session-continuation-prompts.md)。P05-S01～S05 各小批受控门禁均 **PASS**；**下一小批 P05-S06 中心 Relay 多 viewer 路由与剩余 P05 放行证据**，P05 整体 PARTIAL。P04 路径型文件 IPC、真实双窗口行为与 LIVE-06/08 仍是开放门禁。
 
 > 2026-10-12；初始源码审计基线 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；后续代码与受控探针仅在 Draft PR #21 分支实施。配套 [27 号实施规范](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。**文档中的 PASS 只对所附冻结提交、测试环境与覆盖范围有效；真实 Pi/Electron/Pocket 验收尚未完成，不得据此合并。**
 
@@ -203,8 +203,18 @@
 - **修复**：`searchRemoteWorkspaceFiles` 添加 opt-in `denyPath`，目录扫描/附加 root 文件/符号链接均同时对候选和 realpath 做 Main owner/tombstone 判定；正常 session、workspace-files 和普通附加路径不被阻断。`remote-service.ts` 向远程搜索传同一私有路径判定，向 `queue_message` 添加嵌套 owner ID 拒绝。旧 `access.sessionId` 文件预览、Chat 读删权限仍由 S01/S03 门禁负责，未重复实现。
 - **新增 8 个受控测试**：① `list_sessions` + `get_agent_runtime_contexts` 在删除前后不泄漏 owner；② 附加 owner 路径与共享正常文件搜索结果隔离；③ private 文件名检索与删后残留子目录拒绝；④ 文件/目录 symlink 别名及显式 attachedPaths 拒绝；⑤ 纯搜索保留普通文件正例；⑥ `queue_message` 嵌套 live/deleted review ID 拒绝、普通 ID 不被 owner 门禁误拒；⑦ 合成旧事件日志在重放 cursor 时过滤 owner，正常顺序保持；⑧ 日志窗口过期要求 snapshot，不能盲补不完整事件。测试用隔离 `PROFER_CONFIG_DIR`、合成目录/会话、`RemoteAgentEventLog` 进程内重放逻辑；**未启动真实 WS/Relay 连接**。
 - **受控结论**：S04 所列搜索/嵌套 ID/快照及进程内 replay 验证 **PASS**。现有 WS 本地握手与 replay gating、Relay `resume_agent_events` 显式 `requiresSnapshot` 降级在源码上存在，但真实连接互交、同一条连接多个请求、断连重连、丢包、异步竞态、Relay 跨 viewer 路由及事件 payload 间接跨 owner 仍没有端到端证据，不得称 S04 完成真实网络验收或 P05 总体 PASS。
-- **P05-S05 下一小批（本轮不执行）**：专门做受控真实 socket/loopback 与 Relay 适配层的握手、cursor、乱序/旧事件、过期 snapshot、同/多 Pocket viewer 等传输边界及其它 `AgentStreamPayload` 嵌套会话引用审计；只修确认问题。真实飞书群、实际异地网络、手机 Pocket 验证统一保持 LIVE / 实机 NOT-RUN。
+- **P05-S05 历史下一小批（现已执行；见后续 S05 专节）**：专门做受控真实 socket/loopback 与 Relay 适配层的握手、cursor、乱序/旧事件、过期 snapshot、同/多 Pocket viewer 等传输边界及其它 `AgentStreamPayload` 嵌套会话引用审计；只修确认问题。真实飞书群、实际异地网络、手机 Pocket 验证统一保持 LIVE / 实机 NOT-RUN。
 - **阻断门禁不变**：`P04-PATH-01`（桌面无 sessionId 通用路径型 IPC）仍未闭环；`P04-TECHDEBT-01` 单列。`P05` 整体 **PARTIAL**；Main 真实后台审核 IPC、A0、LIVE-01～08 均 **NOT-RUN**，PR #21 持续 Draft/Open/未合并。
+
+### P05-S05 本机 LAN WS + 模拟 RelayClient 真实 socket、重连与结构化 payload 隔离（2026-10-12）
+
+- **代码冻结/受控证据**：P05-S05 冻结代码 `88b941337749028ae3c51ff0db117c44ceb4d7aa`：[PR CI #38254196437](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38254196437) **SUCCESS**（新增 **8/8 real-loopback/受控 PASS**，全仓 **3803 pass / 5 skip / 0 fail**，3808 tests / 433 files；Typecheck、package boundaries、Electron main/preload/renderer build PASS）；[D2 #38254196484](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38254196484) 与 [Review Baseline #38254196442](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38254196442) 均 **SUCCESS**。 新增 `apps/electron/src/main/lib/review/review-remote-websocket-relay.p05.test.ts` 共 8 项；实际启动 `remote-service` LAN WebSocket server 与两个 socket 客户端，另启动模拟中心 `WebSocketServer` 供真正的 `RemoteRelayClient` 建连、断线再连。测试数据均为隔离 `PROFER_CONFIG_DIR` 下的普通/内部合成会话和模拟 Relay ticket，不依赖手机、真实飞书或生产中心。
+- **确认修复 #1 / Relay 多 viewer**：`remote-service.ts` 原 `remoteRelayCommandContext` 在一个 desktop relay 连接上跨 viewer 复用，会把后一个不带 `sessionId` 的旧版 Pocket 文件预览指向其他 viewer 上次声明的 `activeSessionId`。现在统一由新增 `handleRemoteRelayCommand` 不带会话回退上下文处理，legacy Relay 无 ID 的文件预览返回缺参；携带普通 ID 的 Relay 预览仍成功。本地 LAN 每条连接独立的 legacy `activeSessionId` 回退**保留**，真实 socket 正例通过。**兼容性变化**：旧 Relay viewer 必须升级到明确传 `sessionId` 的文件命令；真实旧端行为待 LIVE。
+- **确认修复 #2 / 普通外层事件夹带内部 ID**：此前 remote 只校验 event envelope 的 `sessionId`，普通会话的 `profer_event` 若在结构化 metadata 的 `targetSessionId`、`relatedSessionIds` 等字段引用内部 owner，仍可能在 WS/relay/旧 replay 暴露。现在 `mayPublishAgentEventToRemote` 对 `profer_event.event` **结构化 ID 字段**做 owner/deleted tombstone 检查；广播前、单客户端发送前、RemoteAgentEventLog 重放前复核。没有无界解析 SDK 文本/任意 tool payload；深层动态/字符串编码引用尚无完整证明，需在后续集成审计中评价。
+- **8 项实际 socket 与协议测试**：① 真 LAN WS token `hello` 与错误 token 4001；② 两个 viewer 独立 replay gate、owner 事件拒绝、正常事件放行；③ 断连重连按 cursor 有序补 ordinary 事件、返回 ACK；④ 删除后的 owner、普通事件中的嵌套 owner ID 在 live/reconnect 中拒绝；⑤ 无效 cursor 显式 `requiresSnapshot`，不发送旧 replay；⑥ 本地 LAN 旧版 session_detail→无 sessionId 文件预览兼容正例；⑦ Relay 无 ID 文件拒绝、带显式普通 ID 允许、内部 ID 拒绝；⑧ 实际 `RemoteRelayClient` 到本机模拟 Relay socket 的 `relay_auth`、`hello`、断线后重新建连与关闭 sink。代码提交过程中初次 D2 因测试脚手架 WS TypeScript 声明失败（[#38253917752](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38253917752)），已最小修补，**冻结代码三套 CI 成功**。
+- **真实 vs 尚未执行**：本轮是真正的**本机 TCP/WS socket + 模拟 Relay server**，不是只调用 replay 纯函数；但 Relay ticket 为 spy 测试桩，未接生产中心 `profer.cn`，没有验证中心端将多个 viewer 的 `command_result` 定向给正确客户端、真实重登/多网络、流式跨端延迟与票据轮转，没有手机 Pocket 或真实飞书群。因此 Relay **传输受控 PASS / 生产网络与多 viewer 路由 NOT-RUN**，不可声称 P05 全阶段或 LIVE-06/08 PASS。
+- **P05-S06 下一小批（本轮不执行）**：聚焦真实中心 Relay 协议契约或可运行的端到端多 viewer relay service fixture，核验 `command_result` 的 `requestId/commandId` 隔离、跨 viewer 消息路由和重连、剩余 `AgentStreamPayload` 深层结构化 ID 来源；仅修有证据的缺口，保留普通会话正例。不新增 Main 审核业务 IPC，不推进 P06/P07。若生产中心不可访问，应写明阻断，不能模拟 PASS。
+- **阶段/门禁**：S05 **受控 PASS**，P05 整体 **PARTIAL**；`P04-PATH-01` 桌面无 sessionId 文件 IPC、`P04-TECHDEBT-01`、真实 Electron/飞书与 A0 均待验。LIVE-01～LIVE-08 **全部 NOT-RUN**；PR #21 持续 Draft/Open/未合并。
 
 ## 最终统一实机验收清单（必须保留到合并前，当前均 NOT-RUN）
 

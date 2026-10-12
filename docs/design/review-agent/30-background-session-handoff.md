@@ -1,6 +1,6 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
-> 更新基线：2026-10-12，Draft PR #21 **P05-S04 冻结代码 SHA** `fa6a2a250e6fee0d956ab2ad045812bacd5f3c2c`（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
+> 更新基线：2026-10-12，Draft PR #21 **P05-S05 冻结代码 SHA** `88b941337749028ae3c51ff0db117c44ceb4d7aa`（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
 
 ## 一分钟读懂
 
@@ -27,7 +27,8 @@
 | **P05-S02** | 飞书旧绑定/镜像创建、群消息、EventBus 隔离新增 **7/7 PASS** | 真正飞书群/网络及全量 P05 仍未验收 |
 | **P05-S03** | Pocket Chat 附件根与普通工作区里 owner 私有文件路径排除，新增 **7/7 PASS** | 其它远程入口、真实 WS/relay/文件时序仍未验收 |
 | **P05-S04** | 搜索元数据私有根与队列嵌套 ID 隔离、新增 **8/8 PASS** | 真实 WS/Relay socket/多 viewer/网络仍 NOT-RUN |
-| P05-S05+、P06～P08、P04-PATH-01 | **尚需继续按批次** | 可直接合并或对外发布 |
+| **P05-S05** | 真正本地 LAN WS 双 viewer + 模拟 RelayClient socket 重连 8/8；stateless Relay 文件命令与结构化 owner payload 拒绝 | 生产中心 Relay、真实 Pocket/Feishu、多 viewer 定向路由未做 |
+| P05-S06+、P06～P08、P04-PATH-01 | **尚需继续按批次** | 可直接合并或对外发布 |
 
 **当前已证实的 P04-S01 基线**：冻结代码 `3096ba6fc60c0d95a149f2279d5437a2dc0c548f`；[PR CI #38184686298](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686298) SUCCESS（P04-S01 8/8、全仓 3748 pass / 5 skip / 0 fail）；[D2 #38184686276](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686276)、[Review Baseline #38184686293](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686293) SUCCESS。后续又做了 PR 文档更新，**最新 HEAD `cbdd0a8c...` 的三个 CI 也已核实 SUCCESS**。任何新提交需重新读取/确认当次 CI，不能沿用历史 PASS 作为新 HEAD 的证据。
 
@@ -51,10 +52,12 @@
 
 **P05-S04 受控代码与证据**：P05-S04 代码冻结 `fa6a2a250e6fee0d956ab2ad045812bacd5f3c2c`：[PR CI #38232065193](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38232065193) **SUCCESS**（新增 **8/8 受控 PASS**；全仓 **3795 pass / 5 skip / 0 fail**，3800 tests / 432 files；类型检查、边界和 Electron main/preload/renderer build 均通过）；[D2 #38232065271](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38232065271)、[Review Baseline #38232065165](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38232065165) 均 **SUCCESS**。 8 项合成正反例覆盖普通/hidden/deleted Session snapshot、搜索 attached/root/symlink 不泄漏文件与目录名称、消息 queue 嵌套 owner ID 拒绝、已有 EventLog 断线 cursor/过期 snapshot 进程内行为。真实 WS/Relay 多 viewer socket 未连，P05 整体 PARTIAL；桌面 P04-PATH-01 未结，LIVE-01～08 NOT-RUN。下一步 P05-S05 只做协议层真实 socket/loopback 受控证据和 payload 引用清点。
 
-## 下一阶段：P05-S05（远程传输/Relay 实际 socket 受控回放，本轮不执行）
+**P05-S05 真实本机 socket 受控冻结证据**：P05-S05 冻结代码 `88b941337749028ae3c51ff0db117c44ceb4d7aa`：[PR CI #38254196437](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38254196437) **SUCCESS**（新增 **8/8 real-loopback/受控 PASS**，全仓 **3803 pass / 5 skip / 0 fail**，3808 tests / 433 files；Typecheck、package boundaries、Electron main/preload/renderer build PASS）；[D2 #38254196484](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38254196484) 与 [Review Baseline #38254196442](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38254196442) 均 **SUCCESS**。 新增 8 项真实 localhost WS / 模拟 Relay server 对接测试，包含双 viewer 独立 replay gate、断线恢复与 ACK、owner/deleted 及 payload 嵌套 ID 拒绝、坏 cursor snapshot、LAN 旧客户端兼容、Relay stateless 显式 ID、RemoteRelayClient 真连接和重连。初次测试样板在 D2 类型校验失败 #38253917752，修补后全部绿。**不能替代生产中心 Relay 多 viewer 定向响应、手机 Pocket、真实飞书、用户实机 LIVE**；P05 整体 PARTIAL，P04-PATH-01、Main 业务 IPC、A0 未解决。
 
-1. 从 27/29/30/31 和 PR #21 HEAD 恢复基线；实施实际本机 WS socket/Relay 适配层受控集成验证：握手、重连、游标、排队实时帧、删除后 tombstone、要求 snapshot、同/多 viewer 和事件 payload 的嵌套 ID；仅修确定缺口，不重复 S01～S04。
-2. 使用隔离配置、普通会话和虚构 review owner，在 CI 可跑的 loopback/socket 上给出证据；网络真机及飞书仍统一保留 LIVE-06/08。保持 P04-PATH-01、A0、Main 业务 IPC 未验收。
+## 下一阶段：P05-S06（中心 Relay 多 viewer 响应隔离与 P05 最终缺口，本轮不执行）
+
+1. 从 PR HEAD 与 27/29/30/31 恢复状态；独立核验中心 Relay 真实/等价协议的多 viewer command_result 路由、requestId/commandId 映射、同账户多端断线重连、事件 payload 深层结构化 ID 来源，不能仅重复本地 WS/RemoteRelayClient socket 测试。
+2. 有可执行生产协议测试则给出 fixture、普通会话正例与 hidden/deleted owner 负例；若中心 Relay 契约/服务不可达，要明示 NOT-RUN 或阻断，并决定 P05 是否仍 PARTIAL。P04-PATH-01、A0 与所有 LIVE 维持未验。
 3. 未实现实际后台审核公共 IPC；不得越界做 P06、合并 PR 或解除 Draft。
 
 ### 需要重点阅读的当前文件（以 HEAD 为准）
@@ -91,4 +94,4 @@
 
 ## 新会话入口
 
-阅读 [31｜跨会话恢复与单小批次执行提示词](31-background-session-continuation-prompts.md)。新会话应先读取 27、29、30、31 及 PR #21 的最新 SHA，再依据现有代码和 CI 开始 **P05-S05 受控 WS/Relay 协议层小批次**，而不是重复 P04-S04 或跳至 P06。
+阅读 [31｜跨会话恢复与单小批次执行提示词](31-background-session-continuation-prompts.md)。新会话应先读取 27、29、30、31 及 PR #21 的最新 SHA，再依据现有代码和 CI 开始 **P05-S06 中心 Relay 多 viewer 定向与剩余 payload 小批次**，而不是重复 P04-S04 或跳至 P06。
