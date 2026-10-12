@@ -569,7 +569,8 @@ function isResolvedPathInsideRoot(targetPath: string, root: string): boolean {
 
 function assertInsideAgentWorkspaces(targetPath: string): void {
   if (isUnsafeAgentWorkspaceMutationPath(targetPath)) throw new Error('审核内部路径不可操作')
-  if (!isResolvedPathInsideRoot(targetPath, getAgentWorkspacesDir())) {
+  if (!isResolvedPathInsideRoot(targetPath, getAgentWorkspacesDir())
+    || !isResolvedPathInsideRoot(realpathOrResolve(targetPath), getAgentWorkspacesDir())) {
     throw new Error('访问路径超出 Agent 工作区范围')
   }
 }
@@ -4698,7 +4699,10 @@ export function registerIpcHandlers(): void {
       // Reading a workspace container is allowed, but its private descendants
       // must never be enumerated. A direct private root request is rejected.
       if (isReviewPrivateDesktopPath(safePath)) throw new Error('审核内部路径不可读取')
-      if (!isResolvedPathInsideRoot(safePath, getAgentWorkspacesDir())) throw new Error('访问路径超出 Agent 工作区范围')
+      if (!isResolvedPathInsideRoot(safePath, getAgentWorkspacesDir())
+        || !isResolvedPathInsideRoot(realpathOrResolve(safePath), getAgentWorkspacesDir())) {
+        throw new Error('访问路径超出 Agent 工作区范围')
+      }
 
       const results: Array<{ relativePath: string; data: Uint8Array }> = []
       const walk = (currentDir: string) => {
@@ -4924,6 +4928,7 @@ export function registerIpcHandlers(): void {
           maxResults: input.mode === 'deep' ? 50 : 1,
           alreadyFound: input.alreadyFound,
           signal: controller.signal,
+          denyPath: isReviewPrivateDesktopPath,
         })
         return result
       } catch (error) {

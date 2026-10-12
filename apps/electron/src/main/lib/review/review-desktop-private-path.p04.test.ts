@@ -15,6 +15,7 @@ import { getAgentSessionMessagesPath, getAgentSessionWorkspacePath, getAgentWork
 import { filterOrdinaryDesktopFileEntries, isReviewPrivateDesktopPath, isUnsafeAgentWorkspaceMutationPath } from '../review-private-file-access'
 import { isReadOnlyPreviewPathAllowed } from '../preview-path-policy'
 import { registerProferDirectoryPath, registerProferFilePath, handleProferFileRequest } from '../local-file-protocol'
+import { searchFileCandidate } from '../file-search-service'
 
 const sandbox = mkdtempSync(join(tmpdir(), 'p04-path-sandbox-'))
 process.env.PROFER_CONFIG_DIR = sandbox
@@ -114,6 +115,17 @@ describe('P04-PATH-01 desktop path-only private owner exclusion', () => {
     const response = await handleProferFileRequest(request)
     expect(response.status).toBe(403)
     expect(existsSync(secret)).toBe(true)
+  })
+
+  test('ordinary file candidate search never returns hidden review file names from shared parent roots', async () => {
+    const { ws, secret, normalFile } = fixture()
+    const parent = join(getAgentWorkspacesDir(), ws.slug)
+    const hidden = await searchFileCandidate({ requestId: 'private', targetName: 'private.md', roots: [parent], maxDepth: 3, denyPath: isReviewPrivateDesktopPath })
+    expect(hidden.candidates).toEqual([])
+    const normal = await searchFileCandidate({ requestId: 'normal', targetName: 'normal.md', roots: [parent], maxDepth: 3, denyPath: isReviewPrivateDesktopPath })
+    expect(normal.candidates?.map(x => x.path)).toContain(normalFile)
+    const explicit = await searchFileCandidate({ requestId: 'target', targetName: 'private.md', targetPath: secret, roots: [parent], maxDepth: 3, denyPath: isReviewPrivateDesktopPath })
+    expect(explicit.candidates).toEqual([])
   })
 
   test('directory URL remains denied after owner deletion even if original token stays valid', async () => {
