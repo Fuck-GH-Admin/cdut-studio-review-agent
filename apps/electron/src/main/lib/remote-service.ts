@@ -128,7 +128,6 @@ let httpServer: HttpServer | null = null
 let wss: WebSocketServer | null = null
 let remoteRelayClient: RemoteRelayClient | null = null
 let remoteRelaySink: RemoteRelaySink | null = null
-let remoteRelayCommandContext: RemoteCommandContext = {}
 
 /** 闲置踢人定时器：定期扫描连接，清理长时间无任何入站消息（含 ping）的假死/僵尸连接。 */
 let idleSweepTimer: ReturnType<typeof setInterval> | null = null
@@ -198,19 +197,49 @@ function isPartialSdkPayload(payload: unknown): boolean {
 }
 
 /** Preserve the remote replay-log boundary: hidden review streams are never written. */
-export function mayPublishAgentEventToRemote(sessionId: string): boolean {
-  return !isReviewOwnedOrDeletedAgentSessionId(sessionId)
+/**
+ * Outer Agent event sessionId is necessary but not sufficient: ordinary session
+ * metadata events can contain a structured reference to a private review session.
+ * Deliberately inspect ID-shaped metadata fields, not arbitrary chat text.
+ */
+export function mayPublishAgentEventToRemote(
+  sessionId: string,
+  payload?: unknown,
+): boolean {
+  if (isReviewOwnedOrDeletedAgentSessionId(sessionId)) return false
+  if (!payload || typeof payload !== 'object') return true
+  const visited = new WeakSet<object>()
+  function containsPrivateId(value: unknown, depth = 0): boolean {
+    if (!value || typeof value !== 'object') return false
+    if (visited.has(value)) return false
+    visited.add(value)
+    // Do not recursively inspect arbitrary large SDK text / tool result payloads.
+    if (depth > 12) return false
+    if (Array.isArray(value)) return value.some((child) => containsPrivateId(child, depth + 1))
+    for (const [key, child] of Object.entries(value)) {
+      const sessionIdentifier = /(?:^sessionId$|SessionId$|^sessionIds$|SessionIds$)/.test(key)
+      if (sessionIdentifier) {
+        if (typeof child === 'string' && isReviewOwnedOrDeletedAgentSessionId(child)) return true
+        if (Array.isArray(child) && child.some((id) => typeof id === 'string' && isReviewOwnedOrDeletedAgentSessionId(id))) return true
+      }
+      if (containsPrivateId(child, depth + 1)) return true
+    }
+    return false
+  }
+  // Metadata events only; arbitrary SDK messages may contain large user-authored JSON.
+  const envelope = payload as { kind?: unknown; event?: unknown }
+  return envelope.kind !== 'profer_event' || !containsPrivateId(envelope.event)
 }
 
 /** Recheck owner visibility at replay/send time: a session may be deleted while queued. */
-export function selectOrdinaryRemoteReplayRecords<T extends { sessionId: string }>(records: readonly T[]): T[] {
-  return records.filter((record) => mayPublishAgentEventToRemote(record.sessionId))
+export function selectOrdinaryRemoteReplayRecords<T extends { sessionId: string; payload?: unknown }>(records: readonly T[]): T[] {
+  return records.filter((record) => mayPublishAgentEventToRemote(record.sessionId, record.payload))
 }
 
 /** 真正把一条 agent_event 帧广播给所有已连接移动端客户端。 */
 function broadcastAgentFrame(sessionId: string, payload: import('@profer/shared').AgentStreamPayload): void {
   // Filter before append: replay logs are a durable remote disclosure surface.
-  if (!mayPublishAgentEventToRemote(sessionId)) return
+  if (!mayPublishAgentEventToRemote(sessionId, payload)) return
   const record = remoteAgentEventLog.append(sessionId, payload)
   const frame = JSON.stringify({
     kind: 'agent_event',
@@ -218,7 +247,9 @@ function broadcastAgentFrame(sessionId: string, payload: import('@profer/shared'
     sessionId: record.sessionId,
     payload: record.payload,
   })
-  if (remoteRelaySink?.isOpen()) remoteRelaySink.send(frame)
+  // The sink may not preserve per-viewer cursors, but it must recheck the
+  // owner/payload boundary immediately before emitting this already-built frame.
+  if (remoteRelaySink?.isOpen() && mayPublishAgentEventToRemote(record.sessionId, record.payload)) remoteRelaySink.send(frame)
   for (const client of wss?.clients ?? []) {
     if (client.readyState !== WebSocket.OPEN) continue
     const replayState = agentReplayStates.get(client)
@@ -234,7 +265,7 @@ function broadcastAgentFrame(sessionId: string, payload: import('@profer/shared'
 }
 
 function sendAgentEventRecord(client: WebSocket, record: RemoteAgentEventRecord): void {
-  if (client.readyState !== WebSocket.OPEN || !mayPublishAgentEventToRemote(record.sessionId)) return
+  if (client.readyState !== WebSocket.OPEN || !mayPublishAgentEventToRemote(record.sessionId, record.payload)) return
   client.send(JSON.stringify({
     kind: 'agent_event',
     eventId: record.eventId,
@@ -1947,8 +1978,7 @@ export function startRemoteService(): string | null {
     remoteRelayClient = new RemoteRelayClient({
       onOpen: (sink) => {
         remoteRelaySink = sink
-        remoteRelayCommandContext = {}
-        // 让 Relay 后面的 Pocket 继续使用现有 WsClient 握手/快照协议。
+              // 让 Relay 后面的 Pocket 继续使用现有 WsClient 握手/快照协议。
         sink.send(JSON.stringify({
           kind: 'hello',
           serverTime: Date.now(),
@@ -1959,7 +1989,6 @@ export function startRemoteService(): string | null {
       },
       onClose: () => {
         remoteRelaySink = null
-        remoteRelayCommandContext = {}
       },
       onMessage: (raw, sink) => {
         let parsed: { kind?: unknown; type?: unknown; _cmdId?: unknown; requestId?: unknown; cursor?: unknown }
@@ -1983,7 +2012,9 @@ export function startRemoteService(): string | null {
         }
         if (typeof parsed.type !== 'string') return
         const requestId = parsed._cmdId ?? parsed.requestId ?? null
-        void handleRemoteCommand(raw, requestId, remoteRelayCommandContext).then((result) => {
+        // Relay multiplexes multiple viewers over one desktop socket. Never share a
+        // connection-level legacy activeSessionId across viewers: require an explicit ID.
+        void handleRemoteCommand(raw, requestId).then((result) => {
           const commandId = typeof requestId === 'string' && requestId.length > 0 ? requestId : randomUUID()
           if (sink.isOpen()) sink.send(JSON.stringify({ kind: 'command_result', requestId, commandId, ...result }))
         })
