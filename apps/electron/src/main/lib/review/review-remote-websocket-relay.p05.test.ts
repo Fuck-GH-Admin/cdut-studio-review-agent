@@ -6,6 +6,7 @@ import { afterAll, beforeAll, describe, expect, spyOn, test } from 'bun:test'
 import { randomUUID } from 'node:crypto'
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { createServer as createNetServer } from 'node:net'
+import { createServer as createHttpServer } from 'node:http'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import WebSocket, { WebSocketServer } from 'ws'
@@ -55,7 +56,7 @@ async function connect(port: number, candidate = token): Promise<SocketFixture> 
   clients.push(socket)
   const frames: Frame[] = []
   socket.on('message', (raw) => {
-    try { frames.push(JSON.parse(raw.toString()) as Frame) } catch { /* ignore */ }
+    try { frames.push(JSON.parse(String(raw)) as Frame) } catch { /* ignore */ }
   })
   await until(() => frames.find(x => x.kind === 'hello') || (socket.readyState === WebSocket.CLOSED ? { kind: 'closed' } : undefined))
   return { socket, frames, send: (obj) => socket.send(JSON.stringify(obj)) }
@@ -196,15 +197,19 @@ describe('P05-S05 local WebSocket real socket isolation', () => {
 describe('P05-S05 actual RelayClient loopback transport (mocked ticket only)', () => {
   test('real socket sends relay_auth and reconnects after server close without carrying old sink', async () => {
     const ticket = spyOn(authService, 'getRemoteRelayTicket').mockResolvedValue({ ticket: 'synthetic-ticket', expiresAt: Date.now() + 120_000 })
-    const relayServer = new WebSocketServer({ port: 0, host: '127.0.0.1' })
-    await new Promise<void>((resolve) => relayServer.once('listening', resolve))
-    const address = relayServer.address()
+    const relayHttp = createHttpServer()
+    const relayServer = new WebSocketServer({ server: relayHttp })
+    await new Promise<void>((resolve, reject) => {
+      relayHttp.once('error', reject)
+      relayHttp.listen(0, '127.0.0.1', () => resolve())
+    })
+    const address = relayHttp.address()
     const relayPort = typeof address === 'object' && address ? address.port : 0
     const received: string[] = []
     const connections: WebSocket[] = []
     relayServer.on('connection', (socket) => {
       connections.push(socket)
-      socket.on('message', (raw) => received.push(raw.toString()))
+      socket.on('message', (raw) => received.push(String(raw)))
     })
     const client = new RemoteRelayClient({
       url: 'ws://127.0.0.1:' + relayPort,
@@ -225,6 +230,7 @@ describe('P05-S05 actual RelayClient loopback transport (mocked ticket only)', (
       client.stop()
       for (const s of connections) s.terminate()
       await new Promise<void>((resolve) => relayServer.close(() => resolve()))
+      await new Promise<void>((resolve) => relayHttp.close(() => resolve()))
       ticket.mockRestore()
     }
   })
