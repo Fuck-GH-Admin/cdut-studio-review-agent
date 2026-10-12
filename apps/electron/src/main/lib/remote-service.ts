@@ -79,6 +79,7 @@ import { listSwitchableChannels, getEnabledModels } from './bridge-model-utils'
 import { permissionService } from './agent-permission-service'
 import { askUserService } from './agent-ask-user-service'
 import { exitPlanService } from './agent-exit-plan-service'
+import { filterOrdinaryPendingRequests } from './agent-ordinary-pending-access'
 import {
   listConversations,
   createConversation,
@@ -201,6 +202,11 @@ export function mayPublishAgentEventToRemote(sessionId: string): boolean {
   return !isReviewOwnedOrDeletedAgentSessionId(sessionId)
 }
 
+/** Recheck owner visibility at replay/send time: a session may be deleted while queued. */
+export function selectOrdinaryRemoteReplayRecords<T extends { sessionId: string }>(records: readonly T[]): T[] {
+  return records.filter((record) => mayPublishAgentEventToRemote(record.sessionId))
+}
+
 /** 真正把一条 agent_event 帧广播给所有已连接移动端客户端。 */
 function broadcastAgentFrame(sessionId: string, payload: import('@profer/shared').AgentStreamPayload): void {
   // Filter before append: replay logs are a durable remote disclosure surface.
@@ -228,7 +234,7 @@ function broadcastAgentFrame(sessionId: string, payload: import('@profer/shared'
 }
 
 function sendAgentEventRecord(client: WebSocket, record: RemoteAgentEventRecord): void {
-  if (client.readyState !== WebSocket.OPEN) return
+  if (client.readyState !== WebSocket.OPEN || !mayPublishAgentEventToRemote(record.sessionId)) return
   client.send(JSON.stringify({
     kind: 'agent_event',
     eventId: record.eventId,
@@ -287,7 +293,9 @@ function replayAgentEvents(client: WebSocket, requestId: unknown, cursor: unknow
     replayState.fallbackTimer = null
   }
   const normalizedCursor = cursor === null ? null : typeof cursor === 'number' ? cursor : -1
-  const replay = remoteAgentEventLog.replayAfter(normalizedCursor)
+  const rawReplay = remoteAgentEventLog.replayAfter(normalizedCursor)
+  // Old in-memory records can predate deletion; never replay owner data by trusting append-time auth.
+  const replay = { ...rawReplay, records: selectOrdinaryRemoteReplayRecords(rawReplay.records) }
   if (replay.requiresSnapshot) {
     // 日志窗口已经不完整时，不发送半段事件；客户端随后按快照重建。
     replayState.queuedLiveFrames = []
@@ -854,9 +862,9 @@ export async function handleRemoteCommand(
       return {
         ok: true,
         data: {
-          permissions: permissionService.getPendingRequests().filter(belongsToSession),
-          askUsers: askUserService.getPendingRequests().filter(belongsToSession),
-          exitPlans: exitPlanService.getPendingRequests().filter(belongsToSession),
+          permissions: filterOrdinaryPendingRequests(permissionService.getPendingRequests()).filter(belongsToSession),
+          askUsers: filterOrdinaryPendingRequests(askUserService.getPendingRequests()).filter(belongsToSession),
+          exitPlans: filterOrdinaryPendingRequests(exitPlanService.getPendingRequests()).filter(belongsToSession),
         },
       }
     }
@@ -865,6 +873,9 @@ export async function handleRemoteCommand(
       const requestId = parsed.requestId as string
       const behavior = parsed.behavior === 'allow' ? 'allow' : parsed.behavior === 'deny' ? 'deny' : null
       if (!requestId || !behavior) return { ok: false, error: '缺少有效 requestId 或 behavior' }
+      if (!filterOrdinaryPendingRequests(permissionService.getPendingRequests()).some((request) => request.requestId === requestId)) {
+        return { ok: false, error: '权限请求不存在或已处理' }
+      }
       const sessionId = permissionService.respondToPermission(requestId, behavior, parsed.alwaysAllow === true)
       if (!sessionId) return { ok: false, error: '权限请求不存在或已处理' }
       agentEventBus.emit(sessionId, { kind: 'profer_event', event: { type: 'permission_resolved', requestId, behavior } })
@@ -875,6 +886,9 @@ export async function handleRemoteCommand(
       const requestId = parsed.requestId as string
       const answers = parsed.answers
       if (!requestId || !answers || typeof answers !== 'object' || Array.isArray(answers)) return { ok: false, error: '缺少有效 requestId 或 answers' }
+      if (!filterOrdinaryPendingRequests(askUserService.getPendingRequests()).some((request) => request.requestId === requestId)) {
+        return { ok: false, error: '提问请求不存在或已处理' }
+      }
       const sessionId = await askUserService.respondToAskUser(requestId, answers as Record<string, string>)
       if (!sessionId) return { ok: false, error: '提问请求不存在或已处理' }
       agentEventBus.emit(sessionId, { kind: 'profer_event', event: { type: 'ask_user_resolved', requestId } })
@@ -885,6 +899,9 @@ export async function handleRemoteCommand(
       const requestId = parsed.requestId as string
       const action = parsed.action as import('@profer/shared').ExitPlanModeAction
       if (!requestId || !['approve_auto', 'approve_edit', 'deny', 'feedback'].includes(action)) return { ok: false, error: '缺少有效 requestId 或 action' }
+      if (!filterOrdinaryPendingRequests(exitPlanService.getPendingRequests()).some((request) => request.requestId === requestId)) {
+        return { ok: false, error: '计划审批不存在或已处理' }
+      }
       const result = exitPlanService.respondToExitPlanMode({ requestId, action, feedback: typeof parsed.feedback === 'string' ? parsed.feedback : undefined })
       if (!result) return { ok: false, error: '计划审批不存在或已处理' }
       agentEventBus.emit(result.sessionId, { kind: 'profer_event', event: { type: 'exit_plan_mode_resolved', requestId } })
@@ -1725,6 +1742,8 @@ export async function handleRemoteCommand(
           ? legacyAccess.sessionId
           : context?.activeSessionId ?? ''
       if (!filePath || !sessionId) return { ok: false, error: '缺少 filePath 或 sessionId' }
+      // Legacy access.sessionId and connection fallback must enforce the same owner gate as top-level IDs.
+      if (isReviewOwnedOrDeletedAgentSessionId(sessionId)) return { ok: false, error: '会话不存在' }
       const session = getAgentSessionMeta(sessionId)
       if (!session?.workspaceId) return { ok: false, error: '会话不存在或未绑定工作区' }
       const workspace = getAgentWorkspace(session.workspaceId)
