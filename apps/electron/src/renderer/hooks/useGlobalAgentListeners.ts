@@ -723,8 +723,11 @@ export function useGlobalAgentListeners(): void {
     const unsubscribeDelegationIndicatorTabs = store.sub(agentSessionIndicatorMapAtom, ensureDelegationChildTabs)
 
     // ===== 1. 流式事件 =====
-    const cleanupEvent = window.electronAPI.onAgentStreamEvent(
-      (streamEvent: AgentStreamEvent) => {
+    // Unknown-ID stream events are queued in-order until Main confirms ordinary
+    // ownership. This avoids both leaked review-owner SDK messages and dropped
+    // legitimate early ordinary streams while renderer session lists hydrate.
+    const unknownStreamQueues = new Map<string, AgentStreamEvent[]>()
+    const dispatchOrdinaryStreamEvent = (streamEvent: AgentStreamEvent): void => {
         unstable_batchedUpdates(() => {
         const { sessionId, payload } = streamEvent
         // A deletion already observed in this renderer cannot be undone by an older queued event.
@@ -1307,8 +1310,42 @@ export function useGlobalAgentListeners(): void {
           }
         }
         }) // unstable_batchedUpdates
+    }
+    const cleanupEvent = window.electronAPI.onAgentStreamEvent((streamEvent: AgentStreamEvent) => {
+      const { sessionId, payload } = streamEvent
+      if (!effectActive || store.get(revokedAgentSessionIdsAtom).has(sessionId)) return
+      // A delete notification must revoke queued events immediately. A projection
+      // carries no secret SDK content and has its own async Main auth when unknown.
+      const isDeletion = payload.kind === 'session_projection' && payload.operation === 'delete'
+        || payload.kind === 'profer_event' && payload.event.type === 'session_deleted'
+      if (isDeletion || payload.kind === 'session_projection' || payload.kind === 'catalog_invalidation') {
+        dispatchOrdinaryStreamEvent(streamEvent)
+        return
       }
-    )
+      if (canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), sessionId)) {
+        dispatchOrdinaryStreamEvent(streamEvent)
+        return
+      }
+      const waiting = unknownStreamQueues.get(sessionId)
+      if (waiting) {
+        // One Main query per unknown ID; bounded buffering prevents unlimited memory
+        // retention if an old window or malicious legacy emitter never resolves.
+        if (waiting.length < 4096) waiting.push(streamEvent)
+        return
+      }
+      const queued = [streamEvent]
+      unknownStreamQueues.set(sessionId, queued)
+      void ensureOrdinaryWorkTabOwner(store, sessionId, window.electronAPI.getAgentSessionMeta,
+        () => effectActive && !store.get(revokedAgentSessionIdsAtom).has(sessionId),
+      ).then((authorized) => {
+        unknownStreamQueues.delete(sessionId)
+        if (!authorized) return
+        for (const event of queued) {
+          if (!effectActive || store.get(revokedAgentSessionIdsAtom).has(sessionId)) break
+          dispatchOrdinaryStreamEvent(event)
+        }
+      }).catch(() => { unknownStreamQueues.delete(sessionId) })
+    })
 
     // 大刷新会清空 renderer Jotai，但 main 中的 Agent run 仍可能继续执行。
     // listener 已安装后再请求重连：main 会先绑定新 webContents 并按顺序回放本轮事件。
