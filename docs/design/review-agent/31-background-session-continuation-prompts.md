@@ -23,7 +23,7 @@
 
 P04-TECHDEBT-01 已完成本批受控性能修补与安全不 GC 决策；容量持续增长属已知风险，真实 LIVE 保持 NOT-RUN，详见 29 号。
 
-本轮只执行 P05-S06：先从仓库确认中心 Relay 的多 viewer 消息路由协议/服务是否可测；专项验证 Relay 多 viewer 并发 command_result/requestId 定向、断线恢复及事件 payload 深层结构化 owner 引用。S05 已使用真实本地 LAN socket、模拟中心 Relay 与 mocked ticket 完成 8/8 受控 PASS，不重复已有工作。只能把真实运行证据标 PASS；无法接入生产或缺少中继端源代码需标 NOT-RUN/阻断。P04-PATH-01 的已枚举通用文件入口与四个 rename/move 最终目标路径受控 PASS（旧 9/9 + 新 5/5，共享生产变更函数实际操作测试；真实 Electron IPC NOT-RUN），但 A0、LIVE-01～08 真实 Electron/Pocket 仍待验；不做 Main IPC、P06/P07 或合并。
+最近一批 P05-S06 的代码受控验证已执行（代码 SHA aaf1ca890a37d679a52e3e79cf10d9f588ce25e5；PR CI #38282086761、D2 #38282086959、Baseline #38282086722 全绿：3828 pass / 5 skip / 0 fail，新增 6/6）。本次接手优先解决 **P05-RELAY-ROUTE-01**（生产中心缺少服务端路由契约/授权多端证据）和 **P05-POCKET-FIFO-01**（独立 Pocket 客户端非匹配 ID 仍可 FIFO 错配），务必获取确切服务端与 Pocket 回归证据；若仍不可达记录 BLOCKED/NOT-RUN，不重复本地模拟以冒充真实中心路由。S05 已使用真实本地 LAN socket、模拟中心 Relay 与 mocked ticket 完成 8/8 受控 PASS，不重复已有工作。只能把真实运行证据标 PASS；无法接入生产或缺少中继端源代码需标 NOT-RUN/阻断。P04-PATH-01 的已枚举通用文件入口与四个 rename/move 最终目标路径受控 PASS（旧 9/9 + 新 5/5，共享生产变更函数实际操作测试；真实 Electron IPC NOT-RUN），但 A0、LIVE-01～08 真实 Electron/Pocket 仍待验；不做 Main IPC、P06/P07 或合并。
 
 执行习惯：先看代码验证真实缺口，复用现有 owner、Session Manager、Tab/窗口现成机制，不另造会话系统。只改本批必要生产代码与测试，补已删除 owner 的异步事件/旧快照负例、可信 tombstone 的必要时序与普通会话不受影响的正反例。按实际冻结 SHA 查 GitHub CI（全仓、D2、Review baseline），失败必须修复后重跑，不能把未运行当 PASS。
 

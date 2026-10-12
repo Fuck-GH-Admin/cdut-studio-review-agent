@@ -29,7 +29,8 @@
 | **P05-S04** | 搜索元数据私有根与队列嵌套 ID 隔离、新增 **8/8 PASS** | 真实 WS/Relay socket/多 viewer/网络仍 NOT-RUN |
 | **P05-S05** | 真正本地 LAN WS 双 viewer + 模拟 RelayClient socket 重连 8/8；stateless Relay 文件命令与结构化 owner payload 拒绝 | 生产中心 Relay、真实 Pocket/Feishu、多 viewer 定向路由未做 |
 | **P04-PATH-01** | 已枚举泛用文件 IPC/协议、工作区树、候选搜索私有路径隔离，原 9/9 + 目标路径追加 **5/5 PASS** | 真实 Electron 双窗口、文件预览/操作 LIVE-06/08 NOT-RUN |
-| P05-S06+、P06～P08、LIVE-01～08 | **尚需继续按批次** | 可直接合并或对外发布 |
+| **P05-S06** | 真本地 WS + 合成中心多 viewer 路由 fixture 3/3；深层 AgentStreamPayload 3/3，合计新增 6/6 PASS | **生产中心无源码/正式票据 NOT-RUN；Pocket 非匹配 ID FIFO 错配风险** |
+| P05 生产路由复核、P06～P08、LIVE-01～08 | **仍待继续分批** | 可直接合并或对外发布 |
 
 **当前已证实的 P04-S01 基线**：冻结代码 `3096ba6fc60c0d95a149f2279d5437a2dc0c548f`；[PR CI #38184686298](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686298) SUCCESS（P04-S01 8/8、全仓 3748 pass / 5 skip / 0 fail）；[D2 #38184686276](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686276)、[Review Baseline #38184686293](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686293) SUCCESS。后续又做了 PR 文档更新，**最新 HEAD `cbdd0a8c...` 的三个 CI 也已核实 SUCCESS**。任何新提交需重新读取/确认当次 CI，不能沿用历史 PASS 作为新 HEAD 的证据。
 
@@ -61,7 +62,9 @@
 
 **P04-TECHDEBT-01 索引热路径与容量决策（2026-10-12）**：冻结代码 [`dccaf6ce`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/dccaf6ce96072eac9404c3957742555916bd62f1)；[PR CI #38273510150](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38273510150)、[D2 #38273510227](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38273510227)、[Review Baseline #38273510354](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38273510354) 均 **SUCCESS**；新增 **5/5 PASS**，全仓 **3822 pass / 5 skip / 0 fail（3827 tests / 435 files）**，typecheck、边界、Electron build PASS。持久 tombstone 仍 ID-only 追加保存，缓存 Set 与索引 mtime/size、写入与重载同步重建；重启、外部变更、写失败、旧索引受控 5/5。100k UUID 时索引 4,400,288 bytes、冷读 16.871ms、索引更新 15.547ms、热查询 p50 0.0040ms（旧线性参考 0.8777ms）；无安全依据不做 TTL/GC，永久增长作为已知容量风险继续观察，并可能需要平台方联合设计分段存档。**本批受控 PASS，不宣称容量有界或桌面 LIVE PASS**；P04 PARTIAL，LIVE-01～08 NOT-RUN，下一批 P05-S06 不变。
 
-## 下一阶段：P05-S06（中心 Relay 多 viewer 响应隔离与 P05 最终缺口，本轮不执行）
+**P05-S06 受控结果与生产中心阻断（2026-10-13）**：代码冻结 [`aaf1ca89`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/aaf1ca890a37d679a52e3e79cf10d9f588ce25e5)；[PR CI #38282086761](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38282086761)、[D2 #38282086959](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38282086959)、[Review Baseline #38282086722](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38282086722) **SUCCESS**；新增 **6/6 PASS**，全仓 **3828 pass / 5 skip / 0 fail（3833 tests / 436 files）**，Typecheck、边界与 Electron 构建均通过。本地两个 viewer、Relay outbound 桌面适配器、不同 `_cmdId` 与相同业务 ID、重连 snapshot、删后 owner、异常深层 session ID、投影与 replay 均受控通过。中心 `profer.cn/remote/ws` 服务端不在仓库且缺少获授权的多 viewer 接入；实际中心路由 **NOT-RUN**。独立 Pocket `ws-client.ts` 在收到非空不匹配回执 ID 后可能 FIFO 兑错 pending，列 `P05-POCKET-FIFO-01` 待客户端维护者修复/验收。**P05 PARTIAL，所有 LIVE NOT-RUN，PR Draft 保留。** 29 号包含完整测试与处置门槛。P04-TECHDEBT-01 结论与保留策略未改变。
+
+## 下一阶段：P05 生产中心 Relay 验证与 Pocket FIFO 阻断收口（尚需独立前置证据）
 
 1. 从 PR HEAD 与 27/29/30/31 恢复状态；独立核验中心 Relay 真实/等价协议的多 viewer command_result 路由、requestId/commandId 映射、同账户多端断线重连、事件 payload 深层结构化 ID 来源，不能仅重复本地 WS/RemoteRelayClient socket 测试。
 2. 有可执行生产协议测试则给出 fixture、普通会话正例与 hidden/deleted owner 负例；若中心 Relay 契约/服务不可达，要明示 NOT-RUN 或阻断，并决定 P05 是否仍 PARTIAL。P04-PATH-01 已受控 PASS 但真实 Electron LIVE-06/08、A0 与所有 LIVE 维持未验。
@@ -101,4 +104,4 @@
 
 ## 新会话入口
 
-阅读 [31｜跨会话恢复与单小批次执行提示词](31-background-session-continuation-prompts.md)。新会话应先读取 27、29、30、31 及 PR #21 的最新 SHA，再依据现有代码和 CI 开始 **P05-S06 中心 Relay 多 viewer 定向与剩余 payload 小批次**，而不是重复 P04-S04 或跳至 P06。
+阅读 [31｜跨会话恢复与单小批次执行提示词](31-background-session-continuation-prompts.md)。新会话先核对 PR 最新 HEAD、27/29/30/31 与 P04-TECHDEBT-01 历史记录；P05-S06 已有受控补批，不重复本地 fixture。**优先协调中心 Relay 服务端实际 viewer 路由证据与 Profer-pocket FIFO 修复**，两者未有证据前不判 P05 PASS，不做 Main/P06 或合并。
