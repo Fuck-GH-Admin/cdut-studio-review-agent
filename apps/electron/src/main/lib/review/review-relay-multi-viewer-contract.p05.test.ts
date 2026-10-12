@@ -55,7 +55,34 @@ let desktop: WebSocket | undefined
 let authenticated = false
 let tickets: ReturnType<typeof spyOn> | undefined
 const sockets = new Set<WebSocket>()
-const pending = new Map<string, WebSocket>()
+type PendingRoute = { viewer: WebSocket; originalCmdId: string }
+const pending = new Map<string, PendingRoute>()
+let relaySequence = 0
+let droppedLateReplies = 0
+const pauseRepliesFor = new Set<string>()
+const heldResponses = new Map<string, Frame>()
+/** Test-only center routing contract: a viewer-local ID is NEVER a global map key. */
+function routeDesktopResponse(frame: Frame): void {
+  const correlationId = typeof frame.commandId === 'string' && frame.commandId.length > 0
+    ? frame.commandId : frame.requestId
+  if (typeof correlationId !== 'string') {
+    protocolErrors.push('uncorrelated response')
+    return
+  }
+  const route = pending.get(correlationId)
+  if (!route) { droppedLateReplies++; return }
+  if (pauseRepliesFor.has(route.originalCmdId)) {
+    heldResponses.set(correlationId, frame)
+    return
+  }
+  pending.delete(correlationId)
+  const normalized = frame.kind === 'command_result'
+    ? { ...frame, commandId: route.originalCmdId, requestId: route.originalCmdId }
+    : { ...frame, requestId: route.originalCmdId }
+  if (route.viewer.readyState === WebSocket.OPEN) {
+    route.viewer.send(JSON.stringify(normalized))
+  }
+}
 const outbound: Frame[] = []
 const protocolErrors: string[] = []
 
@@ -79,18 +106,7 @@ beforeAll(async () => {
           return
         }
         if (frame.kind === 'command_result' || frame.kind === 'agent_events_resumed') {
-          const id = typeof frame.commandId === 'string' ? frame.commandId : frame.requestId
-          if (typeof id !== 'string') {
-            protocolErrors.push('uncorrelated response')
-            return
-          }
-          const target = pending.get(id)
-          if (!target) {
-            protocolErrors.push('unmatched command ' + id)
-            return
-          }
-          pending.delete(id)
-          if (target.readyState === WebSocket.OPEN) target.send(JSON.stringify(frame))
+          routeDesktopResponse(frame)
           return
         }
         if (frame.kind === 'agent_event') {
@@ -104,17 +120,24 @@ beforeAll(async () => {
         let command: Frame
         try { command = JSON.parse(String(raw)) as Frame } catch { return }
         const id = command._cmdId
-        if (typeof id !== 'string' || !id || pending.has(id)) {
-          protocolErrors.push('missing/duplicate viewer command ID')
+        if (typeof id !== 'string' || !id) {
+          protocolErrors.push('missing viewer command ID')
           return
         }
-        pending.set(id, socket)
-        if (desktop?.readyState === WebSocket.OPEN) desktop.send(JSON.stringify(command))
+        if ([...pending.values()].some(route => route.viewer === socket && route.originalCmdId === id)) {
+          protocolErrors.push('duplicate ID in same viewer')
+          return
+        }
+        // The center must generate a globally unique opaque desktop correlation ID,
+        // while retaining each viewer's original _cmdId to restore on the way back.
+        const correlationId = 'center-' + (++relaySequence) + '-' + randomUUID()
+        pending.set(correlationId, { viewer: socket, originalCmdId: id })
+        if (desktop?.readyState === WebSocket.OPEN) desktop.send(JSON.stringify({ ...command, _cmdId: correlationId }))
       })
     }
     socket.on('close', () => {
       sockets.delete(socket)
-      for (const [id, owner] of pending) if (owner === socket) pending.delete(id)
+      for (const [id, route] of pending) if (route.viewer === socket) pending.delete(id)
     })
   })
   await new Promise<void>((resolve, reject) => {
@@ -182,6 +205,48 @@ describe('P05-S06 desktop Relay routing contract (synthetic hub, real WS)', () =
     a.socket.close()
     reconnected.socket.close()
     expect(protocolErrors).toEqual([])
+  })
+
+  test('two viewers may reuse the same _cmdId; center correlation must be unique and restored', async () => {
+    const a = await connectViewer('collision-a')
+    const b = await connectViewer('collision-b')
+    const before = outbound.length
+    a.send({ type: 'session_detail', sessionId: normal, _cmdId: 'same-pocket-command' })
+    b.send({ type: 'session_detail', sessionId: hidden, _cmdId: 'same-pocket-command' })
+    const ok = await until(() => a.frames.find(f => f.kind === 'command_result' && f.commandId === 'same-pocket-command'))
+    const denied = await until(() => b.frames.find(f => f.kind === 'command_result' && f.commandId === 'same-pocket-command'))
+    expect(ok.ok).toBe(true)
+    expect(denied.ok).toBe(false)
+    expect(a.frames.filter(f => f.kind === 'command_result')).toHaveLength(1)
+    expect(b.frames.filter(f => f.kind === 'command_result')).toHaveLength(1)
+    const centerIds = outbound.slice(before).filter(f => f.kind === 'command_result').map(f => f.commandId)
+    expect(centerIds).toHaveLength(2)
+    expect(centerIds[0]).not.toBe(centerIds[1])
+    expect(centerIds.every(id => typeof id === 'string' && id !== 'same-pocket-command')).toBe(true)
+    a.socket.close()
+    b.socket.close()
+    expect(protocolErrors).toEqual([])
+  })
+
+  test('old reply after disconnect cannot settle a new viewer reusing the same _cmdId', async () => {
+    const original = await connectViewer('old-connection')
+    pauseRepliesFor.add('reused-id')
+    original.send({ type: 'session_detail', sessionId: hidden, _cmdId: 'reused-id' })
+    const oldId = await until(() => [...heldResponses.keys()][0])
+    original.socket.close()
+    await until(() => !pending.has(oldId))
+    pauseRepliesFor.delete('reused-id')
+    const replacement = await connectViewer('new-connection')
+    replacement.send({ type: 'session_detail', sessionId: normal, _cmdId: 'reused-id' })
+    const current = await until(() => replacement.frames.find(f => f.kind === 'command_result' && f.commandId === 'reused-id'))
+    expect(current.ok).toBe(true)
+    const beforeDropped = droppedLateReplies
+    routeDesktopResponse(heldResponses.get(oldId)!)
+    heldResponses.delete(oldId)
+    expect(droppedLateReplies).toBe(beforeDropped + 1)
+    expect(replacement.frames.filter(f => f.kind === 'command_result')).toHaveLength(1)
+    expect(protocolErrors).toEqual([])
+    replacement.socket.close()
   })
   test('owner deletion keeps Relay command denied while ordinary commands remain visible', async () => {
     deleteAgentSession(hidden)
