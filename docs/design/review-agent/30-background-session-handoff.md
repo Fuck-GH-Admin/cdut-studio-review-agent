@@ -1,6 +1,6 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
-> 更新基线：2026-10-12，Draft PR #21 **P04-PATH-01 目标路径补丁冻结代码 SHA** `7c5e003c5c1a01dc295e1ff0e4c6ce15e4da42f0`（先前专项 `9eec2311` 的 9 项证据保留）（P05-S05 代码仍保留）（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
+> 更新基线：2026-10-12，Draft PR #21 **P04-TECHDEBT-01 安全性能补丁冻结代码 SHA** `dccaf6ce96072eac9404c3957742555916bd62f1`（PATH-01 补丁 `7c5e003c` 证据保留）（先前专项 `9eec2311` 的 9 项证据保留）（P05-S05 代码仍保留）（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
 
 ## 一分钟读懂
 
@@ -58,6 +58,8 @@
 **P04-PATH-01 专项证据**：P04-PATH-01 冻结代码 `9eec2311b9ed8f5637f8bf6fa281605040899c39`：[PR CI #38260093230](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38260093230) **SUCCESS**（新增 **9/9 受控 PASS**；全仓 **3812 pass / 5 skip / 0 fail**，3817 tests / 434 files；typecheck、边界、Electron main/preload/renderer 构建通过）；[D2 #38260092950](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38260092950) 与 [Review Baseline #38260093231](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38260093231) 均 **SUCCESS**。 直接/嵌套私有路径、符号链接、已删 tombstone、目录列表与递归、候选搜索、cdut-file 目录 token 的测试受控 PASS；原普通文件/外部只读预览正例保留。初次 CI #38259407202 因公共预览引入重型 Electron import 失败，已按需加载 Main owner 判定并在最终 HEAD 修复。**P04 已枚举 PATH 风险受控关闭，整阶段仍 PARTIAL**。P05-S06 原路线不变，P05 仍 PARTIAL。
 
 **P04-PATH-01 新增复核闭环（同日）**：独立审计发现四个 rename/move IPC 没有对实际最终目标路径重新验证；已通过共享真实文件变更函数加 source+destination owner/tombstone 拒绝，补父级 symlink 下的新建目标解析。冻结代码 [`7c5e003c`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/7c5e003c5c1a01dc295e1ff0e4c6ce15e4da42f0)；[PR CI #38269830272](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38269830272)、[D2 #38269830328](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38269830328)、[Review Baseline #38269830273](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38269830273) **全部 SUCCESS**；新增 **5/5**，全仓 **3817 pass / 5 skip / 0 fail（3822 tests / 434 files）**，typecheck/边界/Electron build PASS。旧 9 项 PASS 保留，新增 5 项执行真实临时磁盘变更；但真实 Electron IPC/跨平台与 TOCTOU 仍待 LIVE-06/08，P04 整体 PARTIAL。P05-S06 不变，A0/LIVE-01～08 均 NOT-RUN。
+
+**P04-TECHDEBT-01 索引热路径与容量决策（2026-10-12）**：冻结代码 [`dccaf6ce`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/dccaf6ce96072eac9404c3957742555916bd62f1)；[PR CI #38273510150](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38273510150)、[D2 #38273510227](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38273510227)、[Review Baseline #38273510354](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38273510354) 均 **SUCCESS**；新增 **5/5 PASS**，全仓 **3822 pass / 5 skip / 0 fail（3827 tests / 435 files）**，typecheck、边界、Electron build PASS。持久 tombstone 仍 ID-only 追加保存，缓存 Set 与索引 mtime/size、写入与重载同步重建；重启、外部变更、写失败、旧索引受控 5/5。100k UUID 时索引 4,400,288 bytes、冷读 16.871ms、索引更新 15.547ms、热查询 p50 0.0040ms（旧线性参考 0.8777ms）；无安全依据不做 TTL/GC，永久增长作为已知容量风险继续观察，并可能需要平台方联合设计分段存档。**本批受控 PASS，不宣称容量有界或桌面 LIVE PASS**；P04 PARTIAL，LIVE-01～08 NOT-RUN，下一批 P05-S06 不变。
 
 ## 下一阶段：P05-S06（中心 Relay 多 viewer 响应隔离与 P05 最终缺口，本轮不执行）
 

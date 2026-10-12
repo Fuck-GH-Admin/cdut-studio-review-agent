@@ -146,7 +146,7 @@
 - **5 项针对性负例/普通回归**：删除后持久化 tombstone 且 no meta；普通删除/陌生 ID 不误判；迟到 ownerless 旧投影及删除事件受阻、普通删除投影保留；远程 replay-append gate/按 ID 访问拒绝已删 owner、普通 session_detail 不受影响；委派 ID 不得复用 tombstone。全仓普通 Agent 自动回归通过。**没跑真实 Pi、Electron、已投递的 renderer 队列。**
 - **遗留与阶段状态**：**P04-S03 受控 PASS，但 P04 全阶段 PARTIAL**。P04-S04 继续枚举剩余 desktop IPC、已投递/尚未消费的窗口队列与历史缓存、跨窗口 Sender/重绑及 `P04-S04-COMPAT-01`；P05 另审 Pocket/Feishu 全入口，P06/P07/P08 不前置。所有 LIVE-01～LIVE-08 **NOT-RUN**，尤其 LIVE-06/07/08 必须用户实机统一验证。
 
-### P04-TECHDEBT-01｜已删除内部审核会话 tombstone 容量、热路径与安全清理策略（待排期）
+### P04-TECHDEBT-01｜已删除内部审核会话 tombstone 容量、热路径与安全清理策略（原始立项记录；执行结论见下方）
 
 - **状态 / 归属（2026-10-12）**：`OPEN / DESIGN-REVIEW REQUIRED`；**第一责任方为当前直接案卷审核 Pi 后台会话项目**（P04-S03 新增的 owner 隔离补丁），代码落在公共 `apps/electron/src/main/lib/agent-session-manager.ts`。若需要修改通用索引格式、全局会话生命周期或远程事件重放协议，再邀请 **Session Manager / Agent 平台维护者共同评审**；不应未经协调把新技术债解释为其他模块原有缺陷。
 - **当前客观事实**：`AgentSessionsIndex.reviewOwnerDeletionTombstones?: string[]` 仅在删除 `review-case` owner 时追加 UUID，没有自动过期、大小上限、压缩或清理机制。原 `agent-sessions.json` 与它一起原子写入。普通会话删除不会追加 tombstone，正常桌面小规模使用空间压力预计较低。
@@ -235,6 +235,26 @@
 - **新增 5 项受控实际磁盘变更测试**：①普通文件不能覆盖已存在的内部审核 JSONL，而正常重命名可用；②不能在审核 workspace 新增文件；③父级 symlink 指向审核目录且最终文件不存在时仍拒绝，正常 workspace 移动可用；④删除 owner 后 tombstone 拒绝旧私有目标；⑤工作区整体容器不允许被移动。新增测试验证的是**四个 IPC 共同调用的真实生产文件变更函数及磁盘结果**，不是在 Electron BrowserWindow/preload 中直接驱动四个注册 IPC。
 - **余留门禁**：路径验证与文件系统调用之间仍有一般的符号链接/目录替换 TOCTOU 窗口，跨 OS 行为与真实 Electron IPC/普通旧工作流未实机验收；继续纳入 **LIVE-06/08 NOT-RUN**。不能将 CI 和共享函数测试写成真实攻防 E2E 完成；P04 仍 PARTIAL。原 9/9 历史证据保留，不抹除首次独立审计发现的遗漏。
 - **停点**：本轮只回补 P04-PATH-01 的 destination 缺口，不执行 P05-S06、Main 审核业务 IPC、P06/P07/P08，不解除 Draft，不合并 PR；A0 与 LIVE-01～08 全部 NOT-RUN。
+
+
+### P04-TECHDEBT-01 执行批：索引热路径优化、规模基准与安全留存决策（2026-10-12）
+
+- **最终状态：PERFORMANCE MITIGATED / RETENTION POLICY DECIDED / CAPACITY GROWTH TRACKED**。独立技术债已完成本批可安全实施的优化与定量评估；**没有实行也没有授权 tombstone TTL/GC**，容量随删除数线性增长仍是已接受且必须持续观察的架构成本，不等同容量固定或未来无需平台升级。原上节 `OPEN / DESIGN-REVIEW REQUIRED` 是此批次开始前历史快照，不再代表最新执行状态。
+- **实现最小化**：只修改 `apps/electron/src/main/lib/agent-session-manager.ts`，在现有 `indexCache` 内添加从**同一已验证索引快照**派生的 `reviewOwnerIds: ReadonlySet<string>` 和 `deletedReviewOwnerIds: ReadonlySet<string>`；`isReviewOwnedOrDeletedAgentSessionId` 仍调用现有按 mtime+size 验证的 `readIndex()`，命中缓存后采用 `Set.has`，没有新的永久独立缓存。每次成功写索引或检测外部变更、恢复重读时重建；写失败丢弃缓存；无法缓存时退回原线性安全判断。持久 JSON 的 `reviewOwnerDeletionTombstones?: string[]` 和与 owner 删除同次原子写入的事务边界完全不变；普通旧索引不需迁移。
+- **受控证据**：冻结代码 [`dccaf6ce`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/dccaf6ce96072eac9404c3957742555916bd62f1)；[PR CI #38273510150](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38273510150)、[D2 #38273510227](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38273510227)、[Review Baseline #38273510354](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38273510354) 均 **SUCCESS**；新增 **5/5 PASS**，全仓 **3822 pass / 5 skip / 0 fail（3827 tests / 435 files）**，typecheck、边界、Electron build PASS。
+- **新增测试 5/5**：①owner 删除、普通更新后仍持续保护旧 ID；②外部原子替换索引及旧格式缺失字段能刷新派生缓存；③构造 `.tmp` 写失败后不得以未持久化数据为权威；④真正启动独立 Bun 进程（显式 preload 仓库 `test/preload-electron-mock.ts`）读取 tombstone 仍拒绝；⑤0/1k/10k/100k 合成 UUID 规模基准（非性能门禁）。两次中间 PR CI [#38272437748](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38272437748) 和 [#38272998456](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38272998456) 曾因裸 `bun -e` 没有 Electron mock 而在独立进程测试失败；定位 `safeStorage` export 问题后采用仓库标准 preload，最终冻结版三套 CI 全绿，未掩盖失败历史。
+- **规模数据**：Linux x64 GitHub hosted runner；每档 512 次热查询，p50/p95；冷加载为单次测量，写入为合成索引中单条普通会话元数据变更。线性参考为同进程 `statSync + tombstones.includes`，不是旧 SHA 的完整端到端运行（因此属于对比参考，不等于精确实测旧版整条路径）。
+
+| tombstone 条数 | 索引大小（bytes） | 冷加载（ms） | 更新写入（ms） | 新 guard p50/p95（ms） | 原线性参考 p50/p95（ms） |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 281 | 0.061 | 0.312 | 0.0043 / 0.0070 | 0.0021 / 0.0038 |
+| 1,000 | 44,286 | 0.254 | 0.388 | 0.0041 / 0.0059 | 0.0109 / 0.0133 |
+| 10,000 | 440,287 | 1.563 | 1.631 | 0.0041 / 0.0059 | 0.0902 / 0.1010 |
+| 100,000 | 4,400,288 | 16.871 | 15.547 | 0.0040 / 0.0067 | 0.8777 / 0.8981 |
+
+- **分析**：100k 时 JSON 约 4.4 MB、新 guard p50 0.0040ms，线性参考 0.8777ms；新 guard 保持相对稳定。但冷加载 16.871ms、单次索引更新 15.547ms 仍随规模增长；这是保留安全账本的真实成本，并非已消除。真实用户工作负载、Windows/macOS、应用主线程长时间运行未测，不外推绝对阈值。
+- **安全留存决策**：永久保存 ID-only tombstone，不允许按 7/30/90 天或固定条数自动清理。若以后评估分段存档/压缩/GC，必须有 Session Manager / Agent 平台维护者联合审查，证明旧 replay、持久队列、SDK 恢复、历史快照以及远程连接再也不能引用拟清理 ID，并补跨重启/旧版本兼容/坏账恢复负例后才可更改。**容量超出 100k / 索引超过约 10MB 时建议重新做压力基准并向平台方提出独立架构提案**；这些是建议复评信号，不是代码中的自动 TTL 或硬上限。
+- **门禁**：本批受控性能与一致性证据 PASS，实机稳定性、应用多窗口/真实流仍 LIVE-06/08 **NOT-RUN**，P04 整体仍 **PARTIAL**；P05-S06、Main 业务 IPC、P06～P08 均未执行。A0 和 LIVE-01～08 全部 NOT-RUN；PR #21 保持 Draft/Open/未合并。
 
 ## 最终统一实机验收清单（必须保留到合并前，当前均 NOT-RUN）
 

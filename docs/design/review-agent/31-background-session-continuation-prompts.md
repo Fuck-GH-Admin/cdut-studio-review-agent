@@ -10,7 +10,7 @@
 仓库：https://github.com/Fuck-GH-Admin/cdut-studio-review-agent
 正在开发的 Draft PR：https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/21
 分支：feat/review-owned-background-sessions
-最近一次 P04-PATH-01 目标路径追加补丁冻结代码 SHA 是 7c5e003c5c1a01dc295e1ff0e4c6ce15e4da42f0（PR CI #38269830272 SUCCESS：3817 pass / 5 skip / 0 fail；D2、Review Baseline SUCCESS）；先前 P04-PATH-01 专项 `9eec2311` 的 9/9 仍为有效历史证据；P05-S05 历史冻结代码 SHA 仍是 88b941337749028ae3c51ff0db117c44ceb4d7aa；后续已有交接文档提交，必须以 GitHub 当前 HEAD 为准；这只是参照，不代表当前 HEAD，必须从 GitHub 重新核验。
+最近一次 P04-TECHDEBT-01 冻结代码 SHA 是 dccaf6ce96072eac9404c3957742555916bd62f1（PR CI #38273510150、D2 #38273510227、Baseline #38273510354 SUCCESS：3822 pass / 5 skip / 0 fail；热路径 Set + 索引失效与跨进程恢复 5/5）；P04-PATH-01 目标路径补丁冻结代码 SHA 是 7c5e003c5c1a01dc295e1ff0e4c6ce15e4da42f0（PR CI #38269830272 SUCCESS：3817 pass / 5 skip / 0 fail；D2、Review Baseline SUCCESS）；先前 P04-PATH-01 专项 `9eec2311` 的 9/9 仍为有效历史证据；P05-S05 历史冻结代码 SHA 仍是 88b941337749028ae3c51ff0db117c44ceb4d7aa；后续已有交接文档提交，必须以 GitHub 当前 HEAD 为准；这只是参照，不代表当前 HEAD，必须从 GitHub 重新核验。
 
 开始前必须用 GitHub 连接器完整阅读下列 PR 分支内文档，不能只读 main：
 - docs/design/review-agent/27-background-review-session-proposal.md
@@ -19,9 +19,9 @@
 - docs/design/review-agent/31-background-session-continuation-prompts.md
 还要核对 PR 描述、最新 HEAD、实际 changed files 与 CI，针对下一批再阅读相关真实生产源码、测试和调用链。若文档与源码冲突，以当前源码/测试事实为准，同时指出并修正文档，不能凭记忆认定已实现。
 
-现状：P01/P02 与 P03-S01～S03 已有受控测试；P04-S01 桌面主路径 8/8、S02 Tab 恢复/重开 7/7、S03 删除后 tombstone 5/5、S04 桌面 IPC/早到预览/旧队列 8/8 受控 PASS（全仓 3768 pass / 5 skip / 0 fail；D2 与 Review Baseline SUCCESS），PR #21 保持 Draft。P04-PATH-01 旧 9/9 与追加实际磁盘变更 5/5 受控 PASS（非 Electron IPC E2E）、P04 整体仍因真实 Electron LIVE PARTIAL，P05-S01/S02/S03/S04/S05 已受控 PASS，P05 整体及 P06～P08 与真实后台 IPC/跨页 E2E 仍未完成。29 号文档 LIVE-01～LIVE-08 的八项实机验收均 NOT-RUN，必须留到最终统一验证，不可自动勾选。
+现状：P01/P02 与 P03-S01～S03 已有受控测试；P04-S01 桌面主路径 8/8、S02 Tab 恢复/重开 7/7、S03 删除后 tombstone 5/5、S04 桌面 IPC/早到预览/旧队列 8/8 受控 PASS（全仓 3768 pass / 5 skip / 0 fail；D2 与 Review Baseline SUCCESS），PR #21 保持 Draft。P04-PATH-01 旧 9/9 与追加磁盘变更 5/5 PASS；P04-TECHDEBT-01 缓存 Set 及规模基准新增 5/5 受控 PASS（安全留存不 GC，容量随历史删除数增长），P04 整体仍因真实 Electron LIVE PARTIAL，P05-S01/S02/S03/S04/S05 已受控 PASS，P05 整体及 P06～P08 与真实后台 IPC/跨页 E2E 仍未完成。29 号文档 LIVE-01～LIVE-08 的八项实机验收均 NOT-RUN，必须留到最终统一验证，不可自动勾选。
 
-本轮只执行 P05-S06：先从仓库确认中心 Relay 的多 viewer 消息路由协议/服务是否可测；专项验证 Relay 多 viewer 并发 command_result/requestId 定向、断线恢复及事件 payload 深层结构化 owner 引用。S05 已使用真实本地 LAN socket、模拟中心 Relay 与 mocked ticket 完成 8/8 受控 PASS，不重复已有工作。只能把真实运行证据标 PASS；无法接入生产或缺少中继端源代码需标 NOT-RUN/阻断。P04-PATH-01 的已枚举通用文件入口与四个 rename/move 最终目标路径受控 PASS（旧 9/9 + 新 5/5，共享生产变更函数实际操作测试；真实 Electron IPC NOT-RUN），但 A0、LIVE-01～08 真实 Electron/Pocket 仍待验；不做 Main IPC、P06/P07 或合并。
+P04-TECHDEBT-01 已完成本批受控性能修补与安全不 GC 决策；容量持续增长属已知风险，真实 LIVE 保持 NOT-RUN，详见 29 号。\n\n本轮只执行 P05-S06：先从仓库确认中心 Relay 的多 viewer 消息路由协议/服务是否可测；专项验证 Relay 多 viewer 并发 command_result/requestId 定向、断线恢复及事件 payload 深层结构化 owner 引用。S05 已使用真实本地 LAN socket、模拟中心 Relay 与 mocked ticket 完成 8/8 受控 PASS，不重复已有工作。只能把真实运行证据标 PASS；无法接入生产或缺少中继端源代码需标 NOT-RUN/阻断。P04-PATH-01 的已枚举通用文件入口与四个 rename/move 最终目标路径受控 PASS（旧 9/9 + 新 5/5，共享生产变更函数实际操作测试；真实 Electron IPC NOT-RUN），但 A0、LIVE-01～08 真实 Electron/Pocket 仍待验；不做 Main IPC、P06/P07 或合并。
 
 执行习惯：先看代码验证真实缺口，复用现有 owner、Session Manager、Tab/窗口现成机制，不另造会话系统。只改本批必要生产代码与测试，补已删除 owner 的异步事件/旧快照负例、可信 tombstone 的必要时序与普通会话不受影响的正反例。按实际冻结 SHA 查 GitHub CI（全仓、D2、Review baseline），失败必须修复后重跑，不能把未运行当 PASS。
 
