@@ -140,8 +140,9 @@ export function upsertAgentSession(
 export function mergeFetchedAgentSessions(
   prev: readonly AgentSessionMeta[],
   fetched: readonly AgentSessionMeta[],
+  revokedIds: ReadonlySet<string> = new Set<string>(),
 ): AgentSessionMeta[] {
-  const visibleFetched = fetched.filter((session) => !isReviewOwnedAgentSession(session))
+  const visibleFetched = fetched.filter((session) => !isReviewOwnedAgentSession(session) && !revokedIds.has(session.id))
   const fetchedIds = new Set(visibleFetched.map((session) => session.id))
   const snapshotWatermark = visibleFetched.reduce(
     (max, session) => Math.max(max, session.updatedAt),
@@ -150,6 +151,7 @@ export function mergeFetchedAgentSessions(
   const survivingLocalOnly = prev.filter(
     (session) =>
       !isReviewOwnedAgentSession(session)
+      && !revokedIds.has(session.id)
       && !fetchedIds.has(session.id) && session.updatedAt >= snapshotWatermark,
   )
   return sortAgentSessionsByUpdatedAtDesc([...visibleFetched, ...survivingLocalOnly])

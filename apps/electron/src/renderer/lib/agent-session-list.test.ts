@@ -313,3 +313,13 @@ describe('syncDraftSessionId — 草稿标记与持久化状态保持一致', ()
     expect(ids.has('a')).toBe(true)
   })
 })
+
+test('P04-S04: a delayed list snapshot cannot restore an ID revoked after delete event', () => {
+  const normal = makeSession('normal-after-delete', 90)
+  const remaining = makeSession('remaining', 100)
+  const delayedFetched = [remaining, normal]
+  const result = mergeFetchedAgentSessions([remaining], delayedFetched, new Set(['normal-after-delete']))
+  expect(result.map(s => s.id)).toEqual(['remaining'])
+  const kept = mergeFetchedAgentSessions([remaining], delayedFetched)
+  expect(kept.map(s => s.id)).toEqual(['remaining', 'normal-after-delete'])
+})

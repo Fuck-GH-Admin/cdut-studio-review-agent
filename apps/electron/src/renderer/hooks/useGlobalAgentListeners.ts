@@ -889,7 +889,7 @@ export function useGlobalAgentListeners(): void {
         const knownSessions = store.get(agentSessionsAtom)
         if (!knownSessions.some((s) => s.id === sessionId)) {
           window.electronAPI.listAgentSessions(store.get(sidebarViewModeAtom) === 'archived')
-            .then((sessions) => store.set(agentSessionsAtom, (prev) => mergeFetchedAgentSessions(prev, sessions)))
+            .then((sessions) => store.set(agentSessionsAtom, (prev) => mergeFetchedAgentSessions(prev, sessions, store.get(revokedAgentSessionIdsAtom))))
             .catch(console.error)
         }
 
@@ -1544,7 +1544,7 @@ export function useGlobalAgentListeners(): void {
           window.electronAPI
             .listAgentSessions(store.get(sidebarViewModeAtom) === 'archived')
             .then((sessions) => {
-              store.set(agentSessionsAtom, (prev) => mergeFetchedAgentSessions(prev, sessions))
+              store.set(agentSessionsAtom, (prev) => mergeFetchedAgentSessions(prev, sessions, store.get(revokedAgentSessionIdsAtom)))
               // 从持久化 meta 对齐 stoppedByUser 状态
               store.set(stoppedByUserSessionsAtom, new Set<string>(
                 sessions.filter((s) => s.stoppedByUser).map((s) => s.id)
@@ -1619,7 +1619,7 @@ export function useGlobalAgentListeners(): void {
       window.electronAPI
         .listAgentSessions(store.get(sidebarViewModeAtom) === 'archived')
         .then((sessions) => {
-          store.set(agentSessionsAtom, (prev) => mergeFetchedAgentSessions(prev, sessions))
+          store.set(agentSessionsAtom, (prev) => mergeFetchedAgentSessions(prev, sessions, store.get(revokedAgentSessionIdsAtom)))
         })
         .catch(console.error)
     })
