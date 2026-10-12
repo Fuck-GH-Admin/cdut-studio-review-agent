@@ -9,6 +9,7 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync }
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { performance } from 'node:perf_hooks'
+import { fileURLToPath } from 'node:url'
 import { getAgentSessionsIndexPath } from '../config-paths'
 import { writeJsonFileAtomic } from '../safe-file'
 import {
@@ -88,7 +89,8 @@ describe('P04-TECHDEBT-01 index-coupled owner membership', () => {
     deleteAgentSession(owned.id)
     const moduleUrl = new URL('../agent-session-manager.ts', import.meta.url).href
     const script = `import { isReviewOwnedOrDeletedAgentSessionId as hidden } from ${JSON.stringify(moduleUrl)}; if (!hidden(${JSON.stringify(owned.id)})) process.exit(13)`
-    const child = spawnSync(process.execPath, ['-e', script], {
+    const preload = fileURLToPath(new URL('../../../../../../test/preload-electron-mock.ts', import.meta.url))
+    const child = spawnSync(process.execPath, ['--preload', preload, '-e', script], {
       env: { ...process.env, PROFER_CONFIG_DIR: root }, encoding: 'utf8', timeout: 20_000,
     })
     if (child.status !== 0) {
