@@ -307,6 +307,7 @@ import type { AgentGoalContract, AgentGoalLimits, AgentGoalState } from '@profer
 import { getAgentPresetByReference, presetReferenceForId } from './lib/agent-preset-manager'
 import { AgentSessionDeletionCoordinator } from './lib/agent-session-deletion'
 import { permissionService } from './lib/agent-permission-service'
+import { filterOrdinaryPendingRequests, assertOrdinaryPendingRequestId } from './lib/agent-ordinary-pending-access'
 import { askUserService } from './lib/agent-ask-user-service'
 import { exitPlanService } from './lib/agent-exit-plan-service'
 import { assertMainWindowSender } from './lib/ipc-sender-guard'
@@ -1274,21 +1275,6 @@ function assertSensitiveAgentIpcSender(event: { sender: { isDestroyed(): boolean
   assertMainWindowSender(event, mainWindowGetter)
 }
 
-/** Ordinary UI must neither view nor resolve pending prompts owned by internal review runs. */
-function filterOrdinaryPendingRequests<T extends { sessionId: string }>(requests: readonly T[]): T[] {
-  return requests.filter((request) => {
-    try {
-      assertOrdinaryAgentSession(request.sessionId)
-      return true
-    } catch {
-      return false
-    }
-  })
-}
-function assertOrdinaryPendingRequestId(requestId: string, requests: readonly { requestId: string; sessionId: string }[]): void {
-  const pending = requests.find((request) => request.requestId === requestId)
-  if (pending) assertOrdinaryAgentSession(pending.sessionId)
-}
 
 
 let rendererReadyHandler: (() => void) | null = null
