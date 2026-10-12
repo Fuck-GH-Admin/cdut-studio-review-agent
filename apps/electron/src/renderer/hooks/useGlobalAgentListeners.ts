@@ -62,7 +62,8 @@ import {
 import { appModeAtom } from '@/atoms/app-mode'
 import { tabsAtom, activeTabIdAtom, activeSessionIdAtom, openTab, updateTabTitle } from '@/atoms/tab-atoms'
 import { planFollowWorkTab, tabGroupsAtom } from '@/atoms/tab-group-atoms'
-import { openFilePreviewTab } from '@/components/diff/preview-opener'
+import { openFilePreviewTabAuthorized } from '@/components/diff/preview-opener'
+import { canOpenOrdinaryWorkTab, ensureOrdinaryWorkTabOwner, markAgentSessionRevoked, revokedAgentSessionIdsAtom } from '@/lib/agent-tab-access'
 import type { AgentStreamState } from '@/atoms/agent-atoms'
 import { agentDiffUnseenChangesAtom, agentDiffUnseenFilesAtom, agentDiffPanelTabAtom, agentSidePanelOpenAtom } from '@/atoms/agent-atoms'
 import { autoPreviewEnabledAtom, previewFileMapAtom, agentInterruptionMapAtom } from '@/atoms/preview-atoms'
@@ -534,10 +535,15 @@ export function useGlobalAgentListeners(): void {
         })
       }
 
-      const knownSessions = store.get(agentSessionsAtom)
-      // 直接用当前列表 apply：applyActivation 内部会通过 upsertAgentSession
-      // 将 event 中的子 Agent 信息插入列表，无需等待 listAgentSessions() 异步返回。
-      applyActivation(knownSessions)
+      // External notification may precede list hydration, but an old review-owner
+      // event can also outlive deletion. Only Main-authorized unknown IDs may upsert.
+      if (!canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), event.sessionId)) {
+        void ensureOrdinaryWorkTabOwner(store, event.sessionId, window.electronAPI.getAgentSessionMeta,
+          () => effectActive && !store.get(revokedAgentSessionIdsAtom).has(event.sessionId),
+        ).then((authorized) => { if (authorized) applyActivation(store.get(agentSessionsAtom)) })
+        return
+      }
+      applyActivation(store.get(agentSessionsAtom))
     }
 
     /** 发送阻塞通知（带提示音 + 会话导航） */
@@ -647,8 +653,10 @@ export function useGlobalAgentListeners(): void {
       const seq = (autoPreviewSeq.get(sid) ?? 0) + 1
       autoPreviewSeq.set(sid, seq)
       return buildAutoPreviewFile(sid, targetPath)
-        .then((previewFile) => {
-          if (autoPreviewSeq.get(sid) !== seq) return null
+        .then(async (previewFile) => {
+          const stillCurrent = () => effectActive && autoPreviewSeq.get(sid) === seq
+          if (!stillCurrent() || !await ensureOrdinaryWorkTabOwner(store, sid,
+            window.electronAPI.getAgentSessionMeta, stillCurrent)) return null
           store.set(previewFileMapAtom, (prev) => {
             const m = new Map(prev)
             m.set(sid, previewFile)
@@ -657,7 +665,8 @@ export function useGlobalAgentListeners(): void {
           if (openSurface) {
             // Tab 化：后台开/更新该文件的预览 Tab，并让用户当前布局「跟随最新文件」
             // （对话左 + 预览右；用户自定义布局不打扰，焦点始终留在对话）。
-            const tabId = openFilePreviewTab(store, sid, previewFile, { activate: false })
+            const tabId = await openFilePreviewTabAuthorized(store, sid, previewFile, { activate: false }, stillCurrent)
+            if (!tabId) return null
             const next = planFollowWorkTab({
               groups: store.get(tabGroupsAtom),
               tabs: store.get(tabsAtom),
@@ -718,6 +727,8 @@ export function useGlobalAgentListeners(): void {
       (streamEvent: AgentStreamEvent) => {
         unstable_batchedUpdates(() => {
         const { sessionId, payload } = streamEvent
+        // A deletion already observed in this renderer cannot be undone by an older queued event.
+        if (store.get(revokedAgentSessionIdsAtom).has(sessionId)) return
 
         // 终态（run_complete / run_error）的语义由专用 IPC（STREAM_COMPLETE / STREAM_ERROR）
         // 统一承担：agent-service 在刷新恢复时会为终态 payload 补发同名 IPC，因此这里直接跳过。
@@ -728,22 +739,34 @@ export function useGlobalAgentListeners(): void {
 
         if (payload.kind === 'session_projection') {
           if (payload.operation === 'upsert') {
-            store.set(agentSessionsAtom, (previous) => upsertAgentSessionProjection(previous, payload.session))
-            // 草稿晋升后必须同步解除 renderer 的内存草稿标记：可见性判定同时看持久化
-            // draft 与内存标记，迟一步会话就会卡在「已跑起来但仍被当草稿隐藏」。
-            store.set(draftSessionIdsAtom, (previous) => syncDraftSessionId(previous, payload.session))
-            if (payload.session.permissionMode) {
-              store.set(agentPermissionModeMapAtom, (previous) => {
-                const next = new Map(previous)
-                next.set(payload.session.id, payload.session.permissionMode)
-                return next
-              })
-              store.set(agentPlanModeSessionsAtom, (previous) =>
-                updatePlanModeSessionSet(previous, payload.session.id, payload.session.permissionMode === 'plan')
-              )
+            const applyProjection = (): void => {
+              if (!effectActive || store.get(revokedAgentSessionIdsAtom).has(payload.session.id)) return
+              store.set(agentSessionsAtom, (previous) => upsertAgentSessionProjection(previous, payload.session))
+              store.set(draftSessionIdsAtom, (previous) => syncDraftSessionId(previous, payload.session))
+              if (payload.session.permissionMode) {
+                store.set(agentPermissionModeMapAtom, (previous) => {
+                  const next = new Map(previous)
+                  next.set(payload.session.id, payload.session.permissionMode)
+                  return next
+                })
+                store.set(agentPlanModeSessionsAtom, (previous) =>
+                  updatePlanModeSessionSet(previous, payload.session.id, payload.session.permissionMode === 'plan')
+                )
+              }
+              store.set(tabsAtom, (tabs) => updateTabTitle(tabs, payload.session.id, payload.session.title))
             }
-            store.set(tabsAtom, (tabs) => updateTabTitle(tabs, payload.session.id, payload.session.title))
+            // Legacy queued projection may arrive after owner deletion, stripped of owner.
+            // Unknown IDs MUST be resolved with Main before entering ordinary session atoms.
+            if (canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), payload.session.id)) {
+              applyProjection()
+            } else {
+              void ensureOrdinaryWorkTabOwner(store, payload.session.id,
+                window.electronAPI.getAgentSessionMeta,
+                () => effectActive && !store.get(revokedAgentSessionIdsAtom).has(payload.session.id),
+              ).then((authorized) => { if (authorized) applyProjection() })
+            }
           } else {
+            markAgentSessionRevoked(store, payload.sessionId)
             store.set(agentSessionsAtom, (previous) => previous.filter((session) => session.id !== payload.sessionId))
           }
           return
@@ -757,7 +780,7 @@ export function useGlobalAgentListeners(): void {
             const previewPath = proferEvent.filePath
             const sequence = (autoPreviewSeq.get(sessionId) ?? 0) + 1
             autoPreviewSeq.set(sessionId, sequence)
-            buildAutoPreviewFile(sessionId, previewPath).then((previewFile) => {
+            buildAutoPreviewFile(sessionId, previewPath).then(async (previewFile) => {
               if (!effectActive) return
               if (!previewFile || autoPreviewSeq.get(sessionId) !== sequence) {
                 void window.electronAPI.reportAgentFilePreview({
@@ -778,19 +801,17 @@ export function useGlobalAgentListeners(): void {
                 previewRequestId: proferEvent.requestId,
                 previewRevision: proferEvent.revision,
               }
-              store.set(previewFileMapAtom, (prev) => {
-                const next = new Map(prev)
-                next.set(sessionId, nextFile)
-                return next
-              })
+              // Office preview must not silently time out when a work tab was refused:
+              // a normal early event gets one Main-authenticated metadata lookup.
+              const opened = await openFilePreviewTabAuthorized(store, sessionId, nextFile, {},
+                () => effectActive && autoPreviewSeq.get(sessionId) === sequence
+                  && !store.get(revokedAgentSessionIdsAtom).has(sessionId))
+              if (!opened) throw new Error('会话已删除、无权限或无法创建正式预览 Tab')
               store.set(agentDiffRefreshVersionAtom, (prev) => {
                 const next = new Map(prev)
                 next.set(sessionId, (prev.get(sessionId) ?? 0) + 1)
                 return next
               })
-              // 正式预览（PPTX 回执链路）：开成预览 Tab 并激活——OfficePreview 必须在
-              // 可见 pane 里渲染并回执 ready/error，激活保证它落在当前渲染的 pane 上。
-              openFilePreviewTab(store, sessionId, nextFile)
             }).catch((error: unknown) => {
               if (!effectActive) return
               void window.electronAPI.reportAgentFilePreview({
@@ -847,6 +868,7 @@ export function useGlobalAgentListeners(): void {
             store.set(tabsAtom, (tabs) => updateTabTitle(tabs, incomingSession.id, incomingSession.title))
             // 委派子会话的后台 Tab 由会话列表与流指示统一补齐；本事件只负责收敛会话和权限状态。
           } else if (proferEvent.type === 'session_deleted') {
+            markAgentSessionRevoked(store, proferEvent.sessionId)
             store.set(agentSessionsAtom, (previous) => previous.filter((session) => session.id !== proferEvent.sessionId))
           }
         }
