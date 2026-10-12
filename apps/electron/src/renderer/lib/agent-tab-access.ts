@@ -1,5 +1,8 @@
 import { isReviewOwnedAgentSession, type AgentSessionMeta } from '@profer/shared'
 import type { TabItem } from '@/atoms/tab-atoms'
+import { agentSessionsAtom } from '@/atoms/agent-atoms'
+import { upsertAgentSession } from '@/lib/agent-session-list'
+import type { Store } from 'jotai'
 
 /** Historical settings are untrusted. Only persisted, still-existing ordinary Agent sessions can restore. */
 export function selectRestorableAgentTabs(
@@ -41,4 +44,27 @@ export async function resolveOrdinaryTabSession(
   } catch {
     return null
   }
+}
+
+/**
+ * Bounded compatibility fallback for an ordinary session whose browser/preview event
+ * outran renderer metadata hydration. Main GET_SESSION_META is the authority.
+ * Never authorize an unknown ID solely from a work-tab event/payload.
+ */
+export async function ensureOrdinaryWorkTabOwner(
+  store: Store,
+  sessionId: string,
+  load: (id: string) => Promise<AgentSessionMeta | null>,
+  isCurrent: () => boolean = () => true,
+): Promise<boolean> {
+  if (!isCurrent()) return false
+  if (canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), sessionId)) return true
+  if (store.get(agentSessionsAtom).some((item) => item.id === sessionId)) return false
+  const meta = await resolveOrdinaryTabSession(sessionId, load)
+  if (!meta || !isCurrent()) return false
+  // A newer local owner record must never be replaced by an older async Main response.
+  if (store.get(agentSessionsAtom).some((item) => item.id === sessionId
+    && isReviewOwnedAgentSession(item))) return false
+  store.set(agentSessionsAtom, (previous) => upsertAgentSession(previous, meta))
+  return canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), sessionId)
 }

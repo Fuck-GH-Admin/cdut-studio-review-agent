@@ -14,7 +14,7 @@ import * as React from 'react'
 import { getDefaultStore, useStore } from 'jotai'
 import { previewFileMapAtom, previewFilesByTabAtom, type PreviewFile } from '@/atoms/preview-atoms'
 import { agentSessionPathMapAtom, agentSessionsAtom } from '@/atoms/agent-atoms'
-import { canOpenOrdinaryWorkTab } from '@/lib/agent-tab-access'
+import { canOpenOrdinaryWorkTab, ensureOrdinaryWorkTabOwner } from '@/lib/agent-tab-access'
 import { isAbsoluteFilePath } from '@/lib/file-utils'
 import {
   activeTabIdAtom,
@@ -102,6 +102,20 @@ export function openFilePreviewTab(
   return tabId
 }
 
+/** Async version for early normal-session events: one Main-authorized lookup, never trust unknown event metadata. */
+export async function openFilePreviewTabAuthorized(
+  store: JotaiStore,
+  sessionId: string,
+  file: PreviewFile,
+  options: { activate?: boolean } = {},
+  isCurrent: () => boolean = () => true,
+): Promise<string> {
+  if (!await ensureOrdinaryWorkTabOwner(store, sessionId,
+    window.electronAPI.getAgentSessionMeta, isCurrent)) return ''
+  if (!isCurrent()) return ''
+  return openFilePreviewTab(store, sessionId, file, options)
+}
+
 /** 模块级入口（与 usePanelAutoLayout 的模块级函数同一模式），供非 React 上下文调用。 */
 export function openFilePreviewTabForSession(sessionId: string, file: PreviewFile, options?: { activate?: boolean }): string {
   return openFilePreviewTab(getDefaultStore(), sessionId, file, options)
@@ -112,7 +126,7 @@ export function useOpenPreview() {
 
   return React.useCallback(
     (sessionId: string, file: PreviewFile) => {
-      openFilePreviewTab(store, sessionId, file)
+      void openFilePreviewTabAuthorized(store, sessionId, file)
     },
     [store],
   )
