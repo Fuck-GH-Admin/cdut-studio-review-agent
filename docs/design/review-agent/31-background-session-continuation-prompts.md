@@ -44,6 +44,16 @@ P04-TECHDEBT-01 已完成本批受控性能修补与安全不 GC 决策；容量
 特别注意失败/取消/异步迟到、旧缓存恢复、缺失 owner 元数据、按 ID 绕过、跨窗口与普通 Agent 的正常路径。不要新造执行引擎、会话数据库或通用权限框架；不要开发未要求的 UI、模板/批量审核；不要合并或解除 Draft。完成 <小批次 ID> 后停止，向我汇报下一建议。
 ```
 
+## P03-MAIN-S01 后的下一批提示（2026-10-13）
+
+```text
+恢复 Draft PR #21 当前 HEAD，先读 docs/design/review-agent/29-background-session-preflight-audit.md 中的 P03-MAIN-S01 小节，以及 27/30 和 P05 的 32 号手册。上批只读业务态 IPC 和真实 onRunOwned ACK 标记已经受控通过；下一批只做 P03-MAIN-S02 的 Main-only 可信后台启动入口。
+
+先核对本地 Agent 验收记录是否已推送：没有冻结 SHA/实际步骤/日志时维持 P05 生产中心、Pocket、LIVE-01～08 的 NOT-RUN。不要把用户口头本地完成等同逐项签收。
+
+严格复用 createReviewOwnedAgentSession、preparePiReviewRunV2、admitPreparedPiReviewTurn、runAgent 与现有 Model/assignment 校验，不改通用 Agent 内核；验证成功、busy、重复、旧 binding、无 ACK 假 running、普通 Agent 正例。代码改动、CI 与 29 台账闭环后停止，不直接做 stop、Renderer、P06/P07/P08、合并 PR。
+```
+
 ## C｜最终统一实机验收时使用（不是现在运行）
 
 ```text

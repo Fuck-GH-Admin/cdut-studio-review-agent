@@ -132,6 +132,8 @@ Main 发起执行时仍需要现有窗口的 `webContents` 用于运行事件转
 
 **仍未完成的门禁**：P03 实际业务 Main IPC/会话启动/切页；P02 真实模型与原件视觉 E2E；P04 已知路径型桌面文件 IPC 的完整隔离证明与真实 Electron 回放、P05 Pocket/Feishu 的全面隔离、P06 迟到 stop、P07 重启与删除、P08 普通 Agent 真实回归。统一验收 LIVE-01～08 全部保持 NOT-RUN。
 
+**P03-MAIN-S01 只读业务状态小批（2026-10-13）**：冻结代码 [`5f786583`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/5f7865837c6321756c3bc779c5aad2fe793e8fd0)；[PR CI #38290676371](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38290676371)、[D2 #38290676419](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38290676419)、[Review Baseline #38290676426](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38290676426)、[Review batch focused #38290676413](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38290676413) **全部 SUCCESS**；新增 **7/7 PASS**，全仓 **3837 pass / 5 skip / 0 fail（3842 tests / 437 files）**，Typecheck / boundaries / Electron main, preload, renderer build PASS。新增 Main 业务态读取与真实 `onRunOwned` 受理标记，不再将 V2 的 `running` 当可切页 ACK；不对外返回内部 Agent sessionId/assignmentId。**这不代表 start/stop 或真实后台审核可用**；下一批 P03-MAIN-S02 做可信业务启动。用户表示本地已验收，但对应证据尚未同步到本 PR 分支的 29/32，保持 P05 外部端、A0/LIVE 的已有 NOT-RUN；详见 29 号新小节。P04-TECHDEBT-01 原记录不动。
+
 ## 6. 后续严格按这个顺序执行
 
 1. **P02 live E2E 合并到最终端到端验收**：白名单、权限闸门、案卷限定预览、V2 续审已经有受控证据；真实 provider Pi / 扫描 PDF Electron 视觉回放在完整 Main 后台链路接通后统一测试，之前仍标 P02-LIVE-E2E NOT-RUN。**允许按小批次开展 P03 接线/受控测试，但严禁在此之前合并、推出功能或宣称 P02 整体通过**。

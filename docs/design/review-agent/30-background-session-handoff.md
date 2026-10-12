@@ -66,7 +66,15 @@
 
 **P05 六批合并验收快照（2026-10-13）**：代码冻结 [`ce992f90`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/ce992f90880ecde1954e925b63585692a085f621)，三套 CI [PR #38284532497](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38284532497)、[D2 #38284532492](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38284532492)、[Baseline #38284532487](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38284532487) 均 SUCCESS；P05 六个文件 **43/43 PASS**（8+7+7+8+8+5），全仓 **3830 pass / 5 skip / 0 fail**（3835 tests，436 files）。S01～S06 专项 43/43 PASS；Pocket [固定上游补丁](patches/P05-POCKET-FIFO-01-Profer-pocket.patch) 准备就绪且 source diff 精确匹配，**未写入/测试独立 Pocket 仓库**；中心 route 强化夹具 2 项新增 socket PASS，**无生产中心部署证据**。完整逐项表、平台限制与用户本地验收详见 [32 号](32-p05-stage-acceptance-and-local-gates.md)。结论 **P05 CONTROLLED PASS / FULL P05 PARTIAL / PR MERGE NO-GO**；P04-TECHDEBT-01 已做性能优化但 tombstone 增长风险必须继续保留。
 
-## 下一阶段：P05 跨仓服务端+Pocket 真正应用与项目级 A0 之前的阻断收口（未执行）
+**P03-MAIN-S01 新一轮后端接线冻结（2026-10-13）**：冻结代码 [`5f786583`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/5f7865837c6321756c3bc779c5aad2fe793e8fd0)；[PR CI #38290676371](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38290676371)、[D2 #38290676419](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38290676419)、[Review Baseline #38290676426](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38290676426)、[Review batch focused #38290676413](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38290676413) **全部 SUCCESS**；新增 **7/7 PASS**，全仓 **3837 pass / 5 skip / 0 fail（3842 tests / 437 files）**，Typecheck / boundaries / Electron main, preload, renderer build PASS。这批只做 `getBackgroundPiReviewStateV2` 的只读 Main IPC/Preload/共享契约和 `onRunOwned` ACK gate；原 P01–P05 受控历史和 P04-TECHDEBT-01 的安全留存不变。真实后台审核 start/stop 与切页仍未实施，下一小批 `P03-MAIN-S02` 前请核对独立本地验收证据是否已同步远程；目前只能看到旧版 32 号 NOT-RUN，**不可擅自把 LIVE 表改 PASS**。继续 Draft/Open、不合并。
+
+## 当前下一小批：P03-MAIN-S02 可信 start 接线（未执行）
+
+- 在现有 Main 受理器和可信 owner factory 上做最小委托；入参必须验证 caseId、真实用户轮次/assignment、review-operator 预设及 Pi 模型，受控 ACK 前禁止切页；不复制 RunStore、不改通用执行内核。
+- 确保 busy、重复启动、同案旧轮次、准备失败与取消只有当前 binding 能收尾；旧普通 Agent 正例不回归。
+- 本批仅有**只读状态 IPC**，尚无真正 start/stop 或 Renderer 切换。完成 start 后才进入 stop 与 A0 实机。P05 生产中心 Relay/Pocket 的跨仓阻断仍独立保留。
+
+## 历史未解阻断：P05 跨仓服务端+Pocket 真正应用与项目级 A0 之前的阻断收口（未执行）
 
 1. 从 PR HEAD 与 27/29/30/31 恢复状态；独立核验中心 Relay 真实/等价协议的多 viewer command_result 路由、requestId/commandId 映射、同账户多端断线重连、事件 payload 深层结构化 ID 来源，不能仅重复本地 WS/RemoteRelayClient socket 测试。
 2. 有可执行生产协议测试则给出 fixture、普通会话正例与 hidden/deleted owner 负例；若中心 Relay 契约/服务不可达，要明示 NOT-RUN 或阻断，并决定 P05 是否仍 PARTIAL。P04-PATH-01 已受控 PASS 但真实 Electron LIVE-06/08、A0 与所有 LIVE 维持未验。
