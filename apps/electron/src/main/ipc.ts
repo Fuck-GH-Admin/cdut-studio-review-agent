@@ -4859,6 +4859,7 @@ export function registerIpcHandlers(): void {
       const { resolveTargetPath } = await import('./lib/file-preview-service')
 
       const resolvedPath = resolveTargetPath(filePath, candidateBasePaths?.length ? candidateBasePaths : undefined)
+      if (isReviewPrivateDesktopPath(resolvedPath)) return false
       if (!existsSync(resolvedPath)) {
         console.warn('[IPC] shell:show-item-in-folder 路径不存在:', resolvedPath)
         return false
@@ -5454,7 +5455,7 @@ export function registerIpcHandlers(): void {
         useAbsPath: boolean,
         source: 'session' | 'workspace',
       ): void {
-        if (depth > 10) return
+        if (depth > 10 || isReviewPrivateDesktopPath(dir)) return
         try {
           const items = readdirSync(dir, { withFileTypes: true })
           for (const item of items) {
@@ -5462,6 +5463,7 @@ export function registerIpcHandlers(): void {
             if (item.isDirectory() && ignoreDirs.has(item.name)) continue
 
             const fullPath = resolve(dir, item.name)
+            if (isReviewPrivateDesktopPath(fullPath)) continue
             const entryPath = useAbsPath ? fullPath : relative(baseRoot, fullPath)
             target.push({
               name: item.name,
@@ -5482,6 +5484,7 @@ export function registerIpcHandlers(): void {
       function addAttachedPath(pathValue: string, target: Entry[], source: 'session' | 'workspace'): void {
         try {
           const attachedPath = resolve(pathValue)
+          if (isReviewPrivateDesktopPath(attachedPath)) return
           const name = basename(attachedPath)
           if (ignoreFiles.has(name)) return
 
