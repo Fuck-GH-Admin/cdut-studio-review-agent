@@ -1,0 +1,254 @@
+{
+  "schema": "G02-E0-input-manifest-v1",
+  "date": "2026-10-13",
+  "auditor": "independent-G02-E-r01",
+  "scope": "G02 信息化与数据权限",
+  "scopeSource": "G02 A-v2.4 increment / G02 B unified freeze v2.4; A-v0.1 superseded for dispatch decisions",
+  "templates": [
+    {
+      "id": "G02-T01",
+      "name": "部门数据共享申请审核",
+      "source": "A-v2.4; B-v0.1+v0.2"
+    },
+    {
+      "id": "G02-T02",
+      "name": "部门公共邮箱申请审核",
+      "source": "A-v2.4; B-v0.2"
+    },
+    {
+      "id": "G02-T03",
+      "name": "专项网络访问授权审核",
+      "source": "A-v2.4; conditional research; B-v0.2"
+    }
+  ],
+  "repository": {
+    "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent",
+    "visibility": "public",
+    "baseBranch": "main",
+    "baseCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+    "auditBranch": "audit/g02-e-v1-r01",
+    "repositoryG02BusinessDirectoryPresent": false
+  },
+  "contract": {
+    "name": "05_E_GXX领域独立交叉验收_主会话_v1.0.md",
+    "sha256": "523eb0d52aef20122e299ea2b81100dace18a000ba8db905eb68d7a377cae7eb"
+  },
+  "archiveChecks": {
+    "method": "SHA-256 entire original archive; ZIP.testzip CRC; C inner mother bytes hashed without printing/reading semantics; D Gold answer text not extracted",
+    "zipCrc": "PASS for all 20 candidate archives",
+    "crossCheck": "G02 A-v2.4: three tested content bytes identical inside B unified freeze"
+  },
+  "inputs": [
+    {
+      "family": "A",
+      "id": "G02-A-v2.4",
+      "name": "G02_A阶段第二轮补充调研_v2.4_20261012.zip",
+      "sha256": "294d4b3c056a8c9ed3d7fd78124a2c2d35c6b74b4685f82c00f65e46c3c47431",
+      "bytes": 24808,
+      "record": "user Library archive; byte-verified",
+      "gitCommit": null
+    },
+    {
+      "family": "A",
+      "id": "G02-A/B-freeze-v2.4",
+      "name": "G02_B阶段_统一冻结基线_v2.4_20261012.zip",
+      "sha256": "ff60d67993176851284d504dddccdd2ad63a99d1cd30396d62f24e6639398ff1",
+      "bytes": 75926,
+      "record": "user Library archive; includes A-v2.4 authoritative copy",
+      "gitCommit": null
+    },
+    {
+      "family": "B",
+      "id": "G02-T01-B-v0.1",
+      "name": "G02-T01_B阶段深度调研_v0.1_20261012.zip",
+      "sha256": "e47641d842a8757608da3cfa2c02a28b3911a8e12dd7942767d1ed290a02ddd7",
+      "bytes": 50986,
+      "record": "user Library archive",
+      "gitCommit": null
+    },
+    {
+      "family": "B",
+      "id": "G02-T01-B-v0.2-supplement",
+      "name": "G02-T01_B阶段_校本补充核验_v0.2_20261012.zip",
+      "sha256": "acc61d5163fc00974bf74814c594b77cee9ec47dff3aaf44e23ad1411785ecee",
+      "bytes": 9332,
+      "record": "user Library supplemental archive",
+      "gitCommit": null
+    },
+    {
+      "family": "B",
+      "id": "G02-T02-B-v0.1",
+      "name": "G02-T02_B阶段深度调研_v0.1_20261012.zip",
+      "sha256": "9677dfdb390555320e900088ca712638c0b5196e83031709b87a89987decedef",
+      "bytes": 42614,
+      "record": "user Library archive",
+      "gitCommit": null
+    },
+    {
+      "family": "B",
+      "id": "G02-T02-B-v0.2",
+      "name": "G02-T02_B阶段深度调研_v0.2_校本补证_20261012.zip",
+      "sha256": "a69cbaaac9547797156a5a5c729d7027cd994da9d5ebc8cce29543103121a3ec",
+      "bytes": 48365,
+      "record": "user Library v0.2 archive",
+      "gitCommit": null
+    },
+    {
+      "family": "B",
+      "id": "G02-T03-B-v0.1",
+      "name": "G02-T03_B阶段深度调研_20261012.zip",
+      "sha256": "170194f4e0675a5183319196a8bfc2d58e9043721cebb3673335fe8d09e1dbac",
+      "bytes": 42774,
+      "record": "user Library archive",
+      "gitCommit": null
+    },
+    {
+      "family": "B",
+      "id": "G02-T03-B-v0.2",
+      "name": "G02-T03_B阶段深度调研_v0.2_校本补证_20261012.zip",
+      "sha256": "aa75a97aae97ffb32752f3332e36694bc24edb138a8b7c5d100977cdd552ea0e",
+      "bytes": 50791,
+      "record": "user Library v0.2 archive",
+      "gitCommit": null
+    },
+    {
+      "family": "C",
+      "id": "G02-T01-C-v0.1-v2.1handoff",
+      "name": "G02-T01_C_v2.0至v2.1_最小迁移交付包_20261012.zip",
+      "sha256": "ff16b25288465867e0fa2a5d19797087f6f85618e06059500825d32732bd78e5",
+      "bytes": 116804,
+      "mother_sha256": "9d16ba80053266dfee3c89e4fbccf1bbd8b408d58c4189e8f7f12bc0a7b235cb",
+      "record": "ZIP CRC and MD mother bytes verified; C body NOT read",
+      "gitCommit": null
+    },
+    {
+      "family": "C",
+      "id": "G02-T02-C-v0.1-v2.1handoff",
+      "name": "G02-T02_Cv2.1_阶段交付迁移核验_20261012.zip",
+      "sha256": "4b4302066bbfc4ac0d8ac4cf528b54d8e27e1ee339a19351022498bc7577c022",
+      "bytes": 57560,
+      "mother_sha256": "4494cfd81dfde4af1fdcb127b342ed0452be6a7704fe317a123cbe589fff78bc",
+      "record": "ZIP CRC and MD mother bytes verified; C body NOT read",
+      "gitCommit": null
+    },
+    {
+      "family": "C",
+      "id": "G02-T03-C-v0.1-v2.1handoff",
+      "name": "G02-T03_C_v2.1交付规范迁移_业务母版v0.1_20261012.zip",
+      "sha256": "821065f92a0ca294833cff6287bb57078bd496ea56e6702649d285355605d8cd",
+      "bytes": 126337,
+      "mother_sha256": "b4b3a859d4d85d322347189d253e0e1a7fe4f6003a2a01a4a0c36ea877fe6040",
+      "record": "ZIP CRC and MD mother bytes verified; C body NOT read",
+      "gitCommit": null
+    },
+    {
+      "family": "D",
+      "id": "G02-T01-D-v3-input",
+      "name": "G02-T01_INPUT_ONLY(1).zip",
+      "sha256": "5a4fd8f384c10ad96038ee8adf03537a53d24d85ddc1e382dd5808584e61f4cb",
+      "bytes": 1138127,
+      "record": "INPUT_ONLY v3, ZIP CRC verified",
+      "gitCommit": null
+    },
+    {
+      "family": "D",
+      "id": "G02-T01-D-v3-gold",
+      "name": "G02-T01_EVALUATION_ONLY(1).zip",
+      "sha256": "4fb0ae435251257d751461e4d34069d3938e3be9afb57ad8c2874f6cd0fb7210",
+      "bytes": 31862,
+      "record": "RESTRICTED Gold archive; byte hash/CRC only; no filenames or answers published",
+      "gitCommit": null,
+      "privacy": "RESTRICTED_NOT_FOR_PUBLICATION"
+    },
+    {
+      "family": "D",
+      "id": "G02-T01-D-v3-reports",
+      "name": "G02-T01_D_REPORTS(1).zip",
+      "sha256": "2eae987e651ffdbcde4cf4acdb5619a082bf2abcd61b1b8b2f6bd45f012e2d12",
+      "bytes": 6242,
+      "record": "reports archive, CRC only",
+      "gitCommit": null
+    },
+    {
+      "family": "D",
+      "id": "G02-T02-D-v1-input",
+      "name": "G02-T02_INPUT_ONLY.zip",
+      "sha256": "c1ec8087c94a922d23c401d51f59ed219dea2fd6cd65983c4db7a720cbe67ad7",
+      "bytes": 2224364,
+      "record": "INPUT_ONLY v1, ZIP CRC verified",
+      "gitCommit": null
+    },
+    {
+      "family": "D",
+      "id": "G02-T02-D-v1-gold",
+      "name": "G02-T02_EVALUATION_ONLY.zip",
+      "sha256": "9ba244eb1b884f7da4d8762d44a4b7bc168fde9d34fa3a58821625391d804b7a",
+      "bytes": 35619,
+      "record": "RESTRICTED Gold archive; byte hash/CRC only; no filenames or answers published",
+      "gitCommit": null,
+      "privacy": "RESTRICTED_NOT_FOR_PUBLICATION"
+    },
+    {
+      "family": "D",
+      "id": "G02-T02-D-v1-reports",
+      "name": "G02-T02_D_REPORTS.zip",
+      "sha256": "2a824988bea2ddaa42da77c715b3c28f4953ea21fbd1f589d1353e0db93e5702",
+      "bytes": 9421,
+      "record": "reports archive, CRC only",
+      "gitCommit": null
+    },
+    {
+      "family": "D",
+      "id": "G02-T03-D-input",
+      "name": "G02-T03_INPUT_ONLY.zip",
+      "sha256": "27fa687035bfad178d5052d237667fe7ff36c51872029f8a34f36533fe496238",
+      "bytes": 4117024,
+      "record": "INPUT_ONLY, ZIP CRC verified; formal Gold version unconfirmed",
+      "gitCommit": null
+    },
+    {
+      "family": "D",
+      "id": "G02-T03-D-gold",
+      "name": "G02-T03_EVALUATION_ONLY.zip",
+      "sha256": "daae981464f4945fe4a12f462a4791e86fe80b724dd329e4ea1cc62b07f4e2f5",
+      "bytes": 33549,
+      "record": "RESTRICTED Gold archive; byte hash/CRC only; formal Gold version unconfirmed",
+      "gitCommit": null,
+      "privacy": "RESTRICTED_NOT_FOR_PUBLICATION"
+    },
+    {
+      "family": "D",
+      "id": "G02-T03-D-reports",
+      "name": "G02-T03_D_REPORTS.zip",
+      "sha256": "58547f28373effed9b31f18b6788b6717f43c422ac1e3b0978b4cc5877305cd9",
+      "bytes": 9409,
+      "record": "reports archive, CRC only",
+      "gitCommit": null
+    }
+  ],
+  "legacyAlternatives": {
+    "D_T01": "An earlier T01 INPUT_ONLY/EVALUATION_ONLY/REPORTS bundle also exists; NOT selected. Selected bundle is independently matched to G02-T01_D_ASSET_HASHES.json FROZEN_GOLD_v3."
+  },
+  "isolation": {
+    "authorProductionVsAudit": "E independent conversational role; independent provenance not proved by repository commit",
+    "goldTextAccessed": false,
+    "expectedAnswerAccessed": false,
+    "cMotherRuleBodyAccessed": false,
+    "cHandoffSemanticsAccessed": true,
+    "blindness": "BLINDING_COMPROMISED",
+    "scope": "C v2.1 handoff explanatory sections for T01/T02/T03 were read before E1 freeze",
+    "goldAccessControl": "UNVERIFIED; T02 D summary explicitly says private_acl_storage_configured=false",
+    "e1Independence": "NOT_ESTABLISHED",
+    "publicGoldCommitted": false
+  },
+  "execution": {
+    "E0": "COMPLETED_WITH_BLOCKER",
+    "E1": "NOT_RUN",
+    "E2": "NOT_RUN",
+    "E3": "NOT_RUN",
+    "E4": "NOT_RUN",
+    "technicalTemplateRuntime": "NOT_RUN",
+    "onlineModelAccuracy": "NOT_RUN",
+    "administrativeAuthority": "NOT_VERIFIED"
+  }
+}
