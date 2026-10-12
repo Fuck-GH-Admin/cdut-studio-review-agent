@@ -138,12 +138,24 @@ const INDEX_VERSION = 1
  * Agent 运行期间会多次读取和更新会话元数据。索引随历史会话增长后，反复同步
  * readFile + JSON.parse 会直接阻塞主进程；用 mtime 和 size 校验可保留外部修改感知。
  */
-let indexCache: { data: AgentSessionsIndex; mtimeMs: number; size: number } | null = null
+type AgentIndexCache = {
+  data: AgentSessionsIndex
+  mtimeMs: number
+  size: number
+  /** Read-only derived membership; rebuilt from the SAME verified index snapshot. */
+  reviewOwnerIds: ReadonlySet<string>
+  deletedReviewOwnerIds: ReadonlySet<string>
+}
+let indexCache: AgentIndexCache | null = null
 
 function cacheIndex(data: AgentSessionsIndex): void {
   try {
     const stat = statSync(getAgentSessionsIndexPath())
-    indexCache = { data, mtimeMs: stat.mtimeMs, size: stat.size }
+    indexCache = {
+      data, mtimeMs: stat.mtimeMs, size: stat.size,
+      reviewOwnerIds: new Set(data.sessions.filter(isReviewOwnedAgentSession).map((session) => session.id)),
+      deletedReviewOwnerIds: new Set(data.reviewOwnerDeletionTombstones ?? []),
+    }
   } catch {
     // 无法确认磁盘版本时绝不复用内存数据，交给下次读取走恢复路径。
     indexCache = null
@@ -379,6 +391,12 @@ export function getAgentSessionMeta(id: string): AgentSessionMeta | undefined {
 export function isReviewOwnedOrDeletedAgentSessionId(sessionId: string): boolean {
   if (!sessionId) return false
   const index = readIndex()
+  // readIndex verifies the cache's on-disk mtime and size. Never keep a
+  // separately-lived Set: every successful index write and external reload
+  // rebuilds these IDs from the corresponding authoritative snapshot.
+  const lookup = indexCache?.data === index ? indexCache : null
+  if (lookup) return lookup.reviewOwnerIds.has(sessionId) || lookup.deletedReviewOwnerIds.has(sessionId)
+  // When the index cannot be safely cached, retain the original security check.
   return isReviewOwnedAgentSession(index.sessions.find((session) => session.id === sessionId))
     || (index.reviewOwnerDeletionTombstones?.includes(sessionId) ?? false)
 }
