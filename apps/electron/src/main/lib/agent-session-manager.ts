@@ -125,6 +125,8 @@ interface AgentSessionsIndex {
   version: number
   /** 会话元数据列表 */
   sessions: AgentSessionMeta[]
+  /** Deleted internal-review IDs; never exposed as ordinary sessions after owner metadata is removed. */
+  reviewOwnerDeletionTombstones?: string[]
 }
 
 /** 当前索引版本 */
@@ -303,6 +305,9 @@ export function createDelegatedChildSessionMeta(params: {
   const now = Date.now()
 
   // 检查是否已存在（幂等）
+  if (index.reviewOwnerDeletionTombstones?.includes(params.childSessionId)) {
+    throw new Error('已删除的内部审核会话 ID 不可重新用作普通会话')
+  }
   const existing = index.sessions.find((s) => s.id === params.childSessionId)
   if (existing) {
     return updateAgentSessionMeta(params.childSessionId, {
@@ -368,6 +373,14 @@ export function countArchivedAgentSessions(): number {
 export function getAgentSessionMeta(id: string): AgentSessionMeta | undefined {
   const index = readIndex()
   return index.sessions.find((s) => s.id === id)
+}
+
+/** Persistent ID-only ownership fence: protects late IPC/events after internal meta deletion. */
+export function isReviewOwnedOrDeletedAgentSessionId(sessionId: string): boolean {
+  if (!sessionId) return false
+  const index = readIndex()
+  return isReviewOwnedAgentSession(index.sessions.find((session) => session.id === sessionId))
+    || (index.reviewOwnerDeletionTombstones?.includes(sessionId) ?? false)
 }
 
 /**
@@ -527,7 +540,7 @@ export function createReviewOwnedAgentSession(input: {
 
 /** Fail closed for ordinary external/session UI entry points. */
 export function assertOrdinaryAgentSession(sessionId: string): void {
-  if (getAgentSessionMeta(sessionId)?.owner?.kind === 'review-case') {
+  if (isReviewOwnedOrDeletedAgentSessionId(sessionId)) {
     throw new Error('内部审核会话不可通过普通 Agent 入口访问')
   }
 }
@@ -1412,6 +1425,13 @@ export function deleteAgentSession(id: string, options?: { backgroundDiskCleanup
         updatedAt: Date.now(),
       }
     }
+  }
+  // Commit the tombstone atomically with index deletion. A removed owner must never
+  // look like an unknown ordinary ID to queued/replayed desktop or remote events.
+  if (isReviewOwnedAgentSession(removed)) {
+    index.reviewOwnerDeletionTombstones = [
+      ...new Set([...(index.reviewOwnerDeletionTombstones ?? []), id]),
+    ]
   }
   writeIndex(index)
 

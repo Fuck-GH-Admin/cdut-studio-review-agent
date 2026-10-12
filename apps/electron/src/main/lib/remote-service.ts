@@ -37,7 +37,7 @@ import { publishAgentSessionProjection, updateAgentSessionUiMeta } from './agent
 import { getUserProfile } from './user-profile-service'
 import {
   listAgentSessions,
-  getAgentSessionMeta,
+  getAgentSessionMeta, isReviewOwnedOrDeletedAgentSessionId,
   getAgentSessionDeletionOrder,
   getAgentSessionMessages,
   getAgentSessionSDKMessages,
@@ -198,7 +198,7 @@ function isPartialSdkPayload(payload: unknown): boolean {
 
 /** Preserve the remote replay-log boundary: hidden review streams are never written. */
 export function mayPublishAgentEventToRemote(sessionId: string): boolean {
-  return !isReviewOwnedAgentSession(getAgentSessionMeta(sessionId))
+  return !isReviewOwnedOrDeletedAgentSessionId(sessionId)
 }
 
 /** 真正把一条 agent_event 帧广播给所有已连接移动端客户端。 */
@@ -746,7 +746,7 @@ export async function handleRemoteCommand(
   const type = parsed?.type as string
   // Default-deny every normal remote command that names an internal review session.
   // Dedicated review APIs (if any) must be separately authorized in later stages.
-  if (typeof parsed.sessionId === 'string' && isReviewOwnedAgentSession(getAgentSessionMeta(parsed.sessionId))) {
+  if (typeof parsed.sessionId === 'string' && isReviewOwnedOrDeletedAgentSessionId(parsed.sessionId)) {
     return { ok: false, error: '会话不存在' }
   }
   // 旧 Pocket 的 FilePreviewDialog 没有把 sessionId 传给 WS 文件读取命令。
@@ -776,7 +776,7 @@ export async function handleRemoteCommand(
         ok: true,
         data: listActiveAgentRuntimeContexts(sessionIds)
           .filter((snapshot) => isAgentSessionActive(snapshot.sessionId)
-             && !isReviewOwnedAgentSession(getAgentSessionMeta(snapshot.sessionId))),
+             && !isReviewOwnedOrDeletedAgentSessionId(snapshot.sessionId)),
       }
     }
 

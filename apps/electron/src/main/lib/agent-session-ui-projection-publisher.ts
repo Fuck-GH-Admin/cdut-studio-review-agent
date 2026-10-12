@@ -1,6 +1,6 @@
 import { isReviewOwnedAgentSession, type AgentSessionMeta, type AgentStreamPayload } from '@profer/shared'
 import type { AgentEventBus } from './agent-event-bus'
-import { getAgentSessionMeta, updateAgentSessionMeta } from './agent-session-manager'
+import { isReviewOwnedOrDeletedAgentSessionId, updateAgentSessionMeta } from './agent-session-manager'
 import { buildAgentSessionUiProjection } from './agent-session-ui-projection'
 
 let projectionEventBus: AgentEventBus | null = null
@@ -40,7 +40,7 @@ export function updateAgentSessionUiMeta(
 export function publishAgentSessionDeletion(sessionId: string, revision: number): void {
   // Guard while the metadata still exists; deleted owners additionally cannot
   // be re-created through normal upserts, which are suppressed above.
-  if (isReviewOwnedAgentSession(getAgentSessionMeta(sessionId))) return
+  if (isReviewOwnedOrDeletedAgentSessionId(sessionId)) return
   emitProjection(sessionId, {
     kind: 'session_projection',
     operation: 'delete',

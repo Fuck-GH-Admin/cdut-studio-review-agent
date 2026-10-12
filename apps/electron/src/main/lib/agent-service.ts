@@ -15,7 +15,6 @@ import { writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { BrowserWindow } from 'electron'
 import type { WebContents } from 'electron'
 import { AGENT_IPC_CHANNELS, MAX_ATTACHMENT_SIZE } from '@profer/shared'
-import { isReviewOwnedAgentSession } from '@profer/shared'
 import type {
   AgentSendInput,
   AgentMessage,
@@ -38,7 +37,7 @@ import { AgentRunAlreadyActiveError } from './agent-orchestrator-p0-guards'
 import { createAgentRunOutcomeReporter } from './agent-run-outcome'
 import { forwardHeadlessAgentCompletion, setHeadlessAgentRunner, type HeadlessAgentRunCallbacks } from './agent-headless-runner-registry'
 import { getAgentSessionWorkspacePath, getWorkspaceFilesDir } from './config-paths'
-import { getAgentSessionMeta, setAgentSessionActiveChecker, updateAgentSessionMeta } from './agent-session-manager'
+import { getAgentSessionMeta, isReviewOwnedOrDeletedAgentSessionId, setAgentSessionActiveChecker, updateAgentSessionMeta } from './agent-session-manager'
 import {
   configureAgentSessionProjectionPublisher,
   publishAgentSessionProjection,
@@ -141,7 +140,7 @@ export function restoreActiveAgentStreams(webContents: WebContents): string[] {
   const snapshots = new Map([...completedStreamEventBacklogs, ...activeStreamEventBacklogs])
   for (const [sessionId, backlog] of snapshots) {
     if (!orchestrator.isActive(sessionId) && !completedStreamEventBacklogs.has(sessionId)) continue
-    if (isReviewOwnedAgentSession(getAgentSessionMeta(sessionId))) continue
+    if (isReviewOwnedOrDeletedAgentSessionId(sessionId)) continue
     registerWebContents(sessionId, webContents)
     if (orchestrator.isActive(sessionId)) restored.push(sessionId)
     for (const payload of backlog) {
@@ -199,7 +198,7 @@ eventBus.use((sessionId, payload, next) => {
 eventBus.use((sessionId, payload, next) => {
   // Keep internal case events on the Main bus for bookkeeping, but never
   // forward them to regular desktop tabs or resurrect them on reconnect.
-  if (isReviewOwnedAgentSession(getAgentSessionMeta(sessionId))) {
+  if (isReviewOwnedOrDeletedAgentSessionId(sessionId)) {
     next()
     return
   }
@@ -237,7 +236,7 @@ export function emitSessionStreamEvent(
   payload: AgentStreamPayload,
   fallbackSender?: WebContents | null,
 ): void {
-  const visibleToDesktop = !sessionId || !isReviewOwnedAgentSession(getAgentSessionMeta(sessionId))
+  const visibleToDesktop = !sessionId || !isReviewOwnedOrDeletedAgentSessionId(sessionId)
   fanoutSessionEvent(
     {
       // 模块内使用本地实例名 eventBus，对外通过 `export { eventBus as agentEventBus }` 暴露。
@@ -261,6 +260,11 @@ export function emitSessionStreamEvent(
     payload,
     visibleToDesktop ? fallbackSender : null,
   )
+}
+
+/** Terminal/title direct sends bypass the event bus; apply the same deleted-owner fence. */
+function sendOrdinarySessionDirect(sessionId: string, send: () => void): void {
+  if (!isReviewOwnedOrDeletedAgentSessionId(sessionId)) send()
 }
 
 // ===== IPC 薄包装函数 =====
@@ -303,7 +307,7 @@ export async function runAgent(
         outcomeReporter.onError(error)
         eventBus.emit(input.sessionId, { kind: 'run_error', error })
         const wc = sessionWebContents.get(input.sessionId)
-        if (wc && !wc.isDestroyed()) wc.send(AGENT_IPC_CHANNELS.STREAM_ERROR, { sessionId: input.sessionId, error })
+        if (wc && !wc.isDestroyed()) sendOrdinarySessionDirect(input.sessionId, () => wc.send(AGENT_IPC_CHANNELS.STREAM_ERROR, { sessionId: input.sessionId, error }))
       },
       onComplete: (messages, opts) => {
         outcomeReporter.onComplete(opts)
@@ -320,7 +324,7 @@ export async function runAgent(
         }
         eventBus.emit(input.sessionId, { kind: 'run_complete', completion })
         const wc = sessionWebContents.get(input.sessionId)
-        if (wc && !wc.isDestroyed()) wc.send(AGENT_IPC_CHANNELS.STREAM_COMPLETE, completion)
+        if (wc && !wc.isDestroyed()) sendOrdinarySessionDirect(input.sessionId, () => wc.send(AGENT_IPC_CHANNELS.STREAM_COMPLETE, completion))
       },
       onTitleUpdated: (title) => {
         eventBus.emit(input.sessionId, {
@@ -375,8 +379,8 @@ export async function runAgent(
     eventBus.emit(input.sessionId, { kind: 'run_complete', completion })
     const currentWc = sessionWebContents.get(input.sessionId)
     if (currentWc && !currentWc.isDestroyed()) {
-      currentWc.send(AGENT_IPC_CHANNELS.STREAM_ERROR, { sessionId: input.sessionId, error: errorMessage })
-      currentWc.send(AGENT_IPC_CHANNELS.STREAM_COMPLETE, completion)
+      sendOrdinarySessionDirect(input.sessionId, () => currentWc.send(AGENT_IPC_CHANNELS.STREAM_ERROR, { sessionId: input.sessionId, error: errorMessage }))
+      sendOrdinarySessionDirect(input.sessionId, () => currentWc.send(AGENT_IPC_CHANNELS.STREAM_COMPLETE, completion))
     }
   } finally {
     // 仅在 orchestrator 已完成此会话时清理映射
@@ -421,7 +425,7 @@ export async function runAgentHeadless(
         eventBus.emit(runInput.sessionId, { kind: 'run_error', error })
         const currentWc = sessionWebContents.get(runInput.sessionId)
         if (currentWc && !currentWc.isDestroyed()) {
-          currentWc.send(AGENT_IPC_CHANNELS.STREAM_ERROR, { sessionId: runInput.sessionId, error })
+          sendOrdinarySessionDirect(runInput.sessionId, () => currentWc.send(AGENT_IPC_CHANNELS.STREAM_ERROR, { sessionId: runInput.sessionId, error }))
         }
       },
       onComplete: (messages, opts) => {
@@ -444,7 +448,7 @@ export async function runAgentHeadless(
             eventBus.emit(runInput.sessionId, { kind: 'run_complete', completion })
             const currentWc = sessionWebContents.get(runInput.sessionId)
             if (currentWc && !currentWc.isDestroyed()) {
-              currentWc.send(AGENT_IPC_CHANNELS.STREAM_COMPLETE, completion)
+              sendOrdinarySessionDirect(input.sessionId, () => currentWc.send(AGENT_IPC_CHANNELS.STREAM_COMPLETE, completion))
             }
           },
         })
@@ -508,8 +512,8 @@ export async function runAgentHeadless(
     eventBus.emit(runInput.sessionId, { kind: 'run_complete', completion: terminal })
     const currentWc = sessionWebContents.get(runInput.sessionId)
     if (currentWc && !currentWc.isDestroyed()) {
-      currentWc.send(AGENT_IPC_CHANNELS.STREAM_ERROR, { sessionId: runInput.sessionId, error: errorMessage })
-      currentWc.send(AGENT_IPC_CHANNELS.STREAM_COMPLETE, terminal)
+      sendOrdinarySessionDirect(runInput.sessionId, () => currentWc.send(AGENT_IPC_CHANNELS.STREAM_ERROR, { sessionId: runInput.sessionId, error: errorMessage }))
+      sendOrdinarySessionDirect(input.sessionId, () => currentWc.send(AGENT_IPC_CHANNELS.STREAM_COMPLETE, terminal))
     }
   } finally {
     if (!orchestrator.isActive(runInput.sessionId)) {
