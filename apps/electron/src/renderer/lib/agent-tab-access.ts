@@ -2,10 +2,12 @@ import { isReviewOwnedAgentSession, type AgentSessionMeta } from '@profer/shared
 import type { TabItem } from '@/atoms/tab-atoms'
 import { agentSessionsAtom } from '@/atoms/agent-atoms'
 import { upsertAgentSession } from '@/lib/agent-session-list'
-import { atom, type Store } from 'jotai'
+import { atom, getDefaultStore } from 'jotai'
+
+type Store = ReturnType<typeof getDefaultStore>
 
 /** Renderer-local revocations stop queued events after a delete notification. */
-export const revokedAgentSessionIdsAtom = atom<ReadonlySet<string>>(new Set())
+export const revokedAgentSessionIdsAtom = atom<ReadonlySet<string>>(new Set<string>())
 
 export function markAgentSessionRevoked(store: Store, id: string): void {
   store.set(revokedAgentSessionIdsAtom, (previous) => new Set([...previous, id]))
