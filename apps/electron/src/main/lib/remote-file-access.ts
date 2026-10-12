@@ -101,7 +101,7 @@ export function isReviewPrivateConfigPath(
   const rel = relative(resolve(configDir), resolve(filePath))
   if (!rel || rel === '..' || rel.startsWith('..' + sep) || isAbsolute(rel)) return false
   const parts = rel.split(sep)
-  if (parts[0] === 'agent-workspaces' && parts.length >= 4) {
+  if (parts[0] === 'agent-workspaces' && parts.length >= 3) {
     // agent-workspaces/<workspaceSlug>/<sessionId>/...
     return isReviewOwnerId(parts[2]!)
   }
