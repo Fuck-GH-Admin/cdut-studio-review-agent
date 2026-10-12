@@ -1,6 +1,6 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
-> 更新基线：2026-10-12，Draft PR #21 **P05-S05 冻结代码 SHA** `88b941337749028ae3c51ff0db117c44ceb4d7aa`（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
+> 更新基线：2026-10-12，Draft PR #21 **P04-PATH-01 专项冻结代码 SHA** `9eec2311b9ed8f5637f8bf6fa281605040899c39`（P05-S05 代码仍保留）（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
 
 ## 一分钟读懂
 
@@ -28,7 +28,8 @@
 | **P05-S03** | Pocket Chat 附件根与普通工作区里 owner 私有文件路径排除，新增 **7/7 PASS** | 其它远程入口、真实 WS/relay/文件时序仍未验收 |
 | **P05-S04** | 搜索元数据私有根与队列嵌套 ID 隔离、新增 **8/8 PASS** | 真实 WS/Relay socket/多 viewer/网络仍 NOT-RUN |
 | **P05-S05** | 真正本地 LAN WS 双 viewer + 模拟 RelayClient socket 重连 8/8；stateless Relay 文件命令与结构化 owner payload 拒绝 | 生产中心 Relay、真实 Pocket/Feishu、多 viewer 定向路由未做 |
-| P05-S06+、P06～P08、P04-PATH-01 | **尚需继续按批次** | 可直接合并或对外发布 |
+| **P04-PATH-01** | 已枚举泛用文件 IPC/协议、工作区树、候选搜索私有路径隔离，新增 **9/9 PASS** | 真实 Electron 双窗口、文件预览/操作 LIVE-06/08 NOT-RUN |
+| P05-S06+、P06～P08、LIVE-01～08 | **尚需继续按批次** | 可直接合并或对外发布 |
 
 **当前已证实的 P04-S01 基线**：冻结代码 `3096ba6fc60c0d95a149f2279d5437a2dc0c548f`；[PR CI #38184686298](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686298) SUCCESS（P04-S01 8/8、全仓 3748 pass / 5 skip / 0 fail）；[D2 #38184686276](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686276)、[Review Baseline #38184686293](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184686293) SUCCESS。后续又做了 PR 文档更新，**最新 HEAD `cbdd0a8c...` 的三个 CI 也已核实 SUCCESS**。任何新提交需重新读取/确认当次 CI，不能沿用历史 PASS 作为新 HEAD 的证据。
 
@@ -42,7 +43,7 @@
 
 **P04-S04 冻结代码与证据**：P04-S04 冻结代码 `4c458d24bd73dc3221bc1d13333b50f7752d3054`：[PR CI #38194874977](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874977) **SUCCESS**（S04 新增 **8/8 PASS**、全仓 **3768 pass / 5 skip / 0 fail**，3773 tests / 428 files；Typecheck / boundaries / Electron main/preload/renderer build PASS），[D2 #38194874914](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874914)、[Review Baseline #38194874938](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38194874938) 均 **SUCCESS**。 受控 8 项覆盖 pending request、正常 Preview/Browser 早到、删除中撤销、旧快照 merge、孤儿健康列表。Main 其它有 sessionId 的文件/Graph/迁移/权限入口和 Browser state push 补 owner/tombstone/sender 检查；未知 SDK 流事件在 Main 认证前以有界队列顺序暂存，正式 PPTX 打不开 Tab 则回错误。**真实 Electron 双窗口未跑。**
 
-**仍需收口**：29 号 `P04-PATH-01`：泛用文件路径 IPC 不含 sessionId，其现有路径授权尚未在本项目被证明足以防止读取内部 review 沙箱。不能把本次受控 PASS 外推为桌面全攻击面 PASS。S03 的 tombstone 线性查找/安全 GC 另见 `P04-TECHDEBT-01`。LIVE-01～08 全部 NOT-RUN。
+**P04-PATH-01 现已代码级受控修补**：低层泛用文件 IPC、候选/工作区搜索、目录 token 经过 owner/tombstone + realpath deny；9 项受控 PASS，证据见 29 号新增专项小节。**仍需实机**真实 Electron/preload 双窗口、预览与普通文件操作兼容性 LIVE-06/08；P04 整体仍 PARTIAL，不能把 CI 当作现场 E2E。S03 tombstone 性能与 GC 另见 `P04-TECHDEBT-01`，LIVE-01～08 均 NOT-RUN。
 
 **P05-S01 受控代码与证据**：P05-S01 冻结代码 `2a08e439d19a0d2eea572003b6ad2d71d33ca3c0`：[PR CI #38198346287](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38198346287) **SUCCESS**（本批 **5/5 新增受控 PASS**、全仓 **3773 pass / 5 skip / 0 fail**，3778 tests / 429 files；Typecheck、包边界、Electron build PASS），[D2 #38198346297](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38198346297)、[Review Baseline #38198346361](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38198346361) **SUCCESS**。 Pocket 远程 `get_pending_interactions` 和三条 `respond_*` 的请求归属已核验；`access.sessionId` 与连接上下文文件预览拒绝已删/隐藏 owner；remote replay/queued event 在发给 Pocket 前再判定。**不能视为 P05 全量验收**。29 号已登记 `P05-S02` 飞书旧绑定、镜像群、Agent EventBus、stop/聊天触发及 `P05-REMOTE-PATH-01` 文件型远程入口。用户 A0 首次实机验收计划在 P05 + Main 业务接线后、P06/P07 前，当前仍 **NOT-RUN**。
 
@@ -54,10 +55,12 @@
 
 **P05-S05 真实本机 socket 受控冻结证据**：P05-S05 冻结代码 `88b941337749028ae3c51ff0db117c44ceb4d7aa`：[PR CI #38254196437](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38254196437) **SUCCESS**（新增 **8/8 real-loopback/受控 PASS**，全仓 **3803 pass / 5 skip / 0 fail**，3808 tests / 433 files；Typecheck、package boundaries、Electron main/preload/renderer build PASS）；[D2 #38254196484](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38254196484) 与 [Review Baseline #38254196442](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38254196442) 均 **SUCCESS**。 新增 8 项真实 localhost WS / 模拟 Relay server 对接测试，包含双 viewer 独立 replay gate、断线恢复与 ACK、owner/deleted 及 payload 嵌套 ID 拒绝、坏 cursor snapshot、LAN 旧客户端兼容、Relay stateless 显式 ID、RemoteRelayClient 真连接和重连。初次测试样板在 D2 类型校验失败 #38253917752，修补后全部绿。**不能替代生产中心 Relay 多 viewer 定向响应、手机 Pocket、真实飞书、用户实机 LIVE**；P05 整体 PARTIAL，P04-PATH-01、Main 业务 IPC、A0 未解决。
 
+**P04-PATH-01 专项证据**：P04-PATH-01 冻结代码 `9eec2311b9ed8f5637f8bf6fa281605040899c39`：[PR CI #38260093230](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38260093230) **SUCCESS**（新增 **9/9 受控 PASS**；全仓 **3812 pass / 5 skip / 0 fail**，3817 tests / 434 files；typecheck、边界、Electron main/preload/renderer 构建通过）；[D2 #38260092950](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38260092950) 与 [Review Baseline #38260093231](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38260093231) 均 **SUCCESS**。 直接/嵌套私有路径、符号链接、已删 tombstone、目录列表与递归、候选搜索、cdut-file 目录 token 的测试受控 PASS；原普通文件/外部只读预览正例保留。初次 CI #38259407202 因公共预览引入重型 Electron import 失败，已按需加载 Main owner 判定并在最终 HEAD 修复。**P04 已枚举 PATH 风险受控关闭，整阶段仍 PARTIAL**。P05-S06 原路线不变，P05 仍 PARTIAL。
+
 ## 下一阶段：P05-S06（中心 Relay 多 viewer 响应隔离与 P05 最终缺口，本轮不执行）
 
 1. 从 PR HEAD 与 27/29/30/31 恢复状态；独立核验中心 Relay 真实/等价协议的多 viewer command_result 路由、requestId/commandId 映射、同账户多端断线重连、事件 payload 深层结构化 ID 来源，不能仅重复本地 WS/RemoteRelayClient socket 测试。
-2. 有可执行生产协议测试则给出 fixture、普通会话正例与 hidden/deleted owner 负例；若中心 Relay 契约/服务不可达，要明示 NOT-RUN 或阻断，并决定 P05 是否仍 PARTIAL。P04-PATH-01、A0 与所有 LIVE 维持未验。
+2. 有可执行生产协议测试则给出 fixture、普通会话正例与 hidden/deleted owner 负例；若中心 Relay 契约/服务不可达，要明示 NOT-RUN 或阻断，并决定 P05 是否仍 PARTIAL。P04-PATH-01 已受控 PASS 但真实 Electron LIVE-06/08、A0 与所有 LIVE 维持未验。
 3. 未实现实际后台审核公共 IPC；不得越界做 P06、合并 PR 或解除 Draft。
 
 ### 需要重点阅读的当前文件（以 HEAD 为准）
