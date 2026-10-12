@@ -1,6 +1,6 @@
 # 29｜审核受控后台会话：开工前依赖审计与阻断门禁
 
-> **新会话/新负责人必读**：[30｜P04-S04 后的工程交接快照](30-background-session-handoff.md)、[31｜接手与每批次提示词](31-background-session-continuation-prompts.md)。P05-S01 的 Pocket 间接 requestId、旧版文件 ID 和迟到 replay **受控 PASS**；**下一小批 P05-S02 飞书镜像/绑定/EventBus 隔离**，P05 整体 PARTIAL。P04 路径型文件 IPC、真实双窗口行为与 LIVE-06/08 仍是开放门禁。
+> **新会话/新负责人必读**：[30｜P05-S02 后的工程交接快照](30-background-session-handoff.md)、[31｜接手与每批次提示词](31-background-session-continuation-prompts.md)。P05-S01 Pocket 与 P05-S02 飞书隔离均 **受控 PASS**；**下一小批 P05-S03 远程路径型文件/附件命令专项**，P05 整体 PARTIAL。P04 路径型文件 IPC、真实双窗口行为与 LIVE-06/08 仍是开放门禁。
 
 > 2026-10-12；初始源码审计基线 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；后续代码与受控探针仅在 Draft PR #21 分支实施。配套 [27 号实施规范](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。**文档中的 PASS 只对所附冻结提交、测试环境与覆盖范围有效；真实 Pi/Electron/Pocket 验收尚未完成，不得据此合并。**
 
@@ -106,7 +106,7 @@
 ### 跨会话交接校验（2026-10-12）
 
 - **当前交接基线**：截至制作 30/31 号文档前，Draft PR #21 HEAD 为 `cbdd0a8c86bafc6bff60781de466b0ba963d27e2`，对应 [PR CI #38184974138](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184974138)、[D2 #38184974152](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184974152)、[Review Baseline #38184974119](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38184974119) **三项均 SUCCESS**。此后交接文档提交产生更新的 HEAD；这三条历史 CI **不可冒称覆盖文档更新后的 HEAD**。接手者必须重新查询 PR 最新 HEAD 与当次 CI。
-- **阶段状态**：P04-S01/S02/S03/S04 均有受控验证（下节）；P04 整体 PARTIAL。S04 针对已知会话 ID 入口、未知流短队列及正常 Preview/Browser 早到时序有自动化门禁；通用路径 IPC、跨窗 sender 的真实 Electron 行为及正式预览回执的实机效果仍待专项和 LIVE-06/08。P05-S01 受控 PASS、P05 整体 PARTIAL；实际后台审核 IPC 未启用。**LIVE-01～08 均 NOT-RUN**。
+- **阶段状态**：P04-S01/S02/S03/S04 均有受控验证（下节）；P04 整体 PARTIAL。S04 针对已知会话 ID 入口、未知流短队列及正常 Preview/Browser 早到时序有自动化门禁；通用路径 IPC、跨窗 sender 的真实 Electron 行为及正式预览回执的实机效果仍待专项和 LIVE-06/08。P05-S01/S02 受控 PASS、P05 整体 PARTIAL；实际后台审核 IPC 未启用。**LIVE-01～08 均 NOT-RUN**。
 - **交接工作流**：新会话先读 [30｜交接指南](30-background-session-handoff.md)，复制 [31｜首轮提示词](31-background-session-continuation-prompts.md)；每批必须同步本文件及 27/30/PR，记录 PASS/FAIL/NOT-RUN、冻结 SHA 和 CI run ID，不得仅凭用户上一段聊天或历史 CI 放行。
 
 ### P04-S01 桌面主路径隔离与异步回填受控验证（2026-10-12）
@@ -173,10 +173,18 @@
 - **审计发现 / 定点修补**：`remote-service.ts` 原 `get_pending_interactions` 未按 owner 过滤权限、AskUser、ExitPlan 请求快照（不提供 sessionId 即可读所有）；三条 `respond_permission/respond_ask_user/respond_exit_plan_mode` 仅按 requestId 触发 Main 服务。现在先使用真实 pending request 的 sessionId 进行 owner/tombstone 筛选，再答复；已删 owner 同样无法响应，正常普通请求仍允许。Pocket 文件预览 `resolve_and_read_file` / `read_file_as_data_url` 的顶层 sessionId 已有旧守卫，但兼容分支 `access.sessionId` 与连接级 `activeSessionId` 原先未再次判定 owner，现在在取得 meta/读取路径前拒绝。旧事件在写日志前已有 S03 保护，但**删除后**历史内存 replay/正在等待握手的 queued live records 可能含旧 payload；新增 `selectOrdinaryRemoteReplayRecords` 并在 `sendAgentEventRecord` 发送前二次检查，同时保留普通事件 ID 顺序。进程内 replay log 本身不落盘。
 - **5 项新增受控测试**：① 三类全局/按普通会话待审请求快照只包含普通 owner；② 隐藏 permission requestId 不执行 respond，普通仍执行；③ 隐藏 AskUser 与 ExitPlan 不执行 respond，普通仍执行；④ 两个旧版文件命令别名、`access.sessionId`、连接上下文、live/deleted owner 拒绝而普通不被误拒；⑤ replay/queued owner 删除前后均拒绝、普通事件顺序保持。测试路径：`apps/electron/src/main/lib/review/review-remote-indirect-access.p05.test.ts`，使用合成会话/隔离 `PROFER_CONFIG_DIR` + Main service spy。
 - **中途 CI 记录**：`b827c869` 的首版测试因测试代码访问 `CommandResult` 联合类型未经 narrowing，D2 Typecheck FAIL；`2a08e439` 已修复，以上冻结 CI 三套全部 SUCCESS。不得把失败中途提交算作通过。
-- **P05-S02 下一小批次（明确未执行）**：`feishu-bridge-manager.ts` 的 `ensureSessionMirror`/`startSessionMirrorRun` 未主动拒绝 owner；`feishu-bridge.ts` 的旧 chat binding 恢复、`updateBinding`、`listBindings`、`handleAgentPayload` 及 stop/用户发消息路径需要按隐藏/删除 owner 逐条验证。飞书 `/list`/`/switch` 当前复用 `isVisibleAgentSession`，不可用此证明镜像和旧绑定安全。保持真实飞书连接 **NOT-RUN**。
+- **P05-S02 历史计划（现已执行，以下 S02 记录为准）**：`feishu-bridge-manager.ts` 的 `ensureSessionMirror`/`startSessionMirrorRun` 未主动拒绝 owner；`feishu-bridge.ts` 的旧 chat binding 恢复、`updateBinding`、`listBindings`、`handleAgentPayload` 及 stop/用户发消息路径需要按隐藏/删除 owner 逐条验证。飞书 `/list`/`/switch` 当前复用 `isVisibleAgentSession`，不可用此证明镜像和旧绑定安全。保持真实飞书连接 **NOT-RUN**。
 - **P05-REMOTE-PATH-01 待查**：远程 `chat_read_attachment` 的 `localPath` 为独立 Chat/附件读取入口；`resolve_and_read_file` 已加嵌套 ID 拒绝，但尚未验证所有路径型附件命令、软链接以及工作区共享根的 review 沙箱隔离。连同 `P04-PATH-01` 待后续专项审计，不能以本批覆盖。
 - **重放剩余风险**：`hello` / `agent_events_resumed` 的 cursor、oldest/latest Event ID、relay 与真实多客户端握手尚未建立整条端到端证据；当前按发送 ID 拦截主要防止 payload 泄漏，不宣称历史 cursor 元信息全部最小化。P05 仍 **PARTIAL**。
 - **验收安排**：用户已倾向 **P05 全部小批与 Main 真实后台审核 IPC 接通、安全门禁收口之后，P06/P07 前进行 A0 首次功能实机验收**；A0 只是计划，尚未运行或代签。29 号 LIVE-01～LIVE-08 全部 **NOT-RUN**，尤其 LIVE-06/08 不变。PR #21 保持 Draft / Open / NOT MERGED；本轮在 P05-S01 停止。
+
+### P05-S02 飞书旧绑定、镜像、事件及群消息 owner 隔离（2026-10-12）
+
+- **代码冻结 / 测试**：P05-S02 冻结代码 `ae8d6398b3f818abd2d648ea14876c6c5800e164`：[PR CI #38200646046](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38200646046) **SUCCESS**（本批 **7/7 新增受控 PASS**、全仓 **3780 pass / 5 skip / 0 fail**，3785 tests / 430 files；Typecheck、边界、Electron main/preload/renderer build 均通过），[D2 #38200646047](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38200646047)、[Review Baseline #38200646059](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38200646059) 均 **SUCCESS**。 新增测试 `apps/electron/src/main/lib/review/review-feishu-owner-boundary.p05.test.ts`。七项分别覆盖 ① 旧 chat 绑定落盘恢复 owner vs 普通，② 已删 owner 残留绑定对列表/状态不可见，③ 绑定设置更新拒绝隐形 owner 目标/源，④ 模拟连接正常普通会话可创建镜像而隐藏/已删 owner 不触发建群，⑤ 旧绑定禁止群内 `/stop`、启动 Agent、`/now`、`/model` 访问，⑥ Agent EventBus 的 live/deleted owner 消息拒绝，普通通知保留，⑦ manager 层镜像创建/启动/停止不向 Bridge 转发隐藏 owner。
+- **实际修补**：`feishu-bridge.ts` 在持久化绑定恢复、返回绑定快照与状态数、`updateBinding`、直接镜像创建及运行前、镜像停止、`findBindingBySessionId`、群消息入口、停止/状态/模型命令、EventBus、`handleFeishuSessionComplete`、`sendAgentReply`、主动通知 `sendCardToChat` 与镜像群名称更新处复用 `isReviewOwnedOrDeletedAgentSessionId`；`feishu-bridge-manager.ts` 在镜像创建/开始/停止入口同样先拒绝。**owner 元数据即使在调用方被剥去也不能绕过 ID/tombstone 门禁。** `/list`、`/switch` 原有 `isVisibleAgentSession` 守卫保留，不靠 Renderer 隐藏。
+- **范围与未证事实**：受控测试采用隔离 `PROFER_CONFIG_DIR`、合成案卷/工作区和虚拟连接桩，没有启动真实飞书 Bot 或网络回调。未测试真实飞书群创建、群成员权限、断线重连、卡片推流/完成、旧版群卡片 ACK、多个 Bot 同时在线，均 **NOT-RUN**。异步发送与删除同时发生的真实端到端时间窗仍待联调。P05-S02 是**局部受控 PASS，不是完整 P05 PASS**。
+- **P05-S03 下一小批次**：独立审计 `P05-REMOTE-PATH-01`：Pocket `chat_read_attachment` 等仅凭路径调用与旧版 `access.sessionId`、连接级回退、软链接/共享 workspace 根组合，确认正常普通会话可读、内部 review 沙箱不可越界。若需修补仅针对发现的边界。后续再核对 WS/relay/snapshot 全量重连、Feishu 真实 E2E；不得在 S03 偷跑 Main 审核 IPC。
+- **长期开放门禁**：`P04-PATH-01` 普通桌面无 sessionId 文件 IPC 尚未证实安全；`P04-TECHDEBT-01` tombstone 热路径/GC 未排期；LIVE-01～08 **全部 NOT-RUN**。用户同意的 A0 首次实机节点是 **P05 防护闭环 + Main 审核 IPC 接通后、P06/P07 前**；本轮未执行 A0，PR #21 **Draft / Open / 未合并**，本轮到 S02 即停。
 
 ## 最终统一实机验收清单（必须保留到合并前，当前均 NOT-RUN）
 
