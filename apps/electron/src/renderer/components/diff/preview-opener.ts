@@ -110,9 +110,10 @@ export async function openFilePreviewTabAuthorized(
   file: PreviewFile,
   options: { activate?: boolean } = {},
   isCurrent: () => boolean = () => true,
+  load: (id: string) => Promise<import('@profer/shared').AgentSessionMeta | null> =
+    (id) => window.electronAPI.getAgentSessionMeta(id),
 ): Promise<string> {
-  if (!await ensureOrdinaryWorkTabOwner(store, sessionId,
-    window.electronAPI.getAgentSessionMeta, isCurrent)) return ''
+  if (!await ensureOrdinaryWorkTabOwner(store, sessionId, load, isCurrent)) return ''
   if (!isCurrent()) return ''
   return openFilePreviewTab(store, sessionId, file, options)
 }
