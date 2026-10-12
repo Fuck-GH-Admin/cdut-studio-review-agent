@@ -91,7 +91,9 @@ describe('P04-TECHDEBT-01 index-coupled owner membership', () => {
     const child = spawnSync(process.execPath, ['-e', script], {
       env: { ...process.env, PROFER_CONFIG_DIR: root }, encoding: 'utf8', timeout: 20_000,
     })
-    expect(child.status).toBe(0)
+    if (child.status !== 0) {
+      throw new Error('Restart probe exited ' + child.status + ': ' + (child.stderr || child.stdout).slice(-2500))
+    }
     expect(child.signal).toBeNull()
   })
 
