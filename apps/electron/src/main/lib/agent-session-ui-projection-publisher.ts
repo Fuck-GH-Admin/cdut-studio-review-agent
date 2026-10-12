@@ -18,7 +18,7 @@ function emitProjection(sessionId: string, payload: AgentStreamPayload): void {
 /** Publish the canonical safe snapshot after a successful session metadata mutation. */
 export function publishAgentSessionProjection(meta: AgentSessionMeta): void {
   // A review owner never appears in the ordinary desktop projection event plane.
-  if (isReviewOwnedAgentSession(meta)) return
+  if (isReviewOwnedAgentSession(meta) || isReviewOwnedOrDeletedAgentSessionId(meta.id)) return
   emitProjection(meta.id, {
     kind: 'session_projection',
     operation: 'upsert',

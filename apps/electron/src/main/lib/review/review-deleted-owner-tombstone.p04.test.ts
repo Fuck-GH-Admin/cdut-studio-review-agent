@@ -76,6 +76,8 @@ describe('P04-S03 deleted internal review owner isolation', () => {
     const staleOwned = { ...owned }
     deleteAgentSession(owned.id)
     publishAgentSessionProjection(staleOwned)
+    // A delayed legacy/full-meta snapshot can lose owner after deletion: ID fence still wins.
+    publishAgentSessionProjection({ ...staleOwned, owner: undefined })
     publishAgentSessionDeletion(owned.id, 101)
     expect(emitted.some(x => x.id === owned.id)).toBe(false)
     deleteAgentSession(ordinary.id)
