@@ -142,7 +142,7 @@ import { listBookmarks, addBookmark, removeBookmark, listHistory, clearHistory }
 import { getUnstagedChanges, getFileDiff, getUntrackedContent, revertFile, getDiffContents, listWorktrees, getWorktreeChanges, getMainRepoRoot, invalidateGitDiffCache } from './lib/git-diff-service'
 import { registerProferDirectoryPath, registerProferFilePath } from './lib/local-file-protocol'
 import { isReadOnlyPreviewPathAllowed } from './lib/preview-path-policy'
-import { isReviewPrivateDesktopPath, isUnsafeAgentWorkspaceMutationPath, filterOrdinaryDesktopFileEntries } from './lib/review-private-file-access'
+import { isReviewPrivateDesktopPath, isUnsafeAgentWorkspaceMutationPath, filterOrdinaryDesktopFileEntries, renameOrdinaryAgentFileEntry } from './lib/review-private-file-access'
 import { CHANGELOG_IPC_CHANNELS, type ChangelogEntry } from '@profer/shared'
 import { getChangelog } from './lib/changelog-service'
 import { registerReviewIpc } from './lib/review/review-ipc'
@@ -5157,7 +5157,6 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.RENAME_FILE,
     async (_, filePath: string, newName: string): Promise<void> => {
-      const { renameSync } = await import('node:fs')
       const { resolve, dirname, join, sep } = await import('node:path')
 
       if (newName.includes('/') || newName.includes('\\') || newName.includes('..') || newName.includes(sep)) {
@@ -5168,8 +5167,9 @@ export function registerIpcHandlers(): void {
       assertInsideAgentWorkspaces(safePath)
 
       const newPath = join(dirname(safePath), newName)
+      assertInsideAgentWorkspaces(newPath)
       try {
-        renameSync(safePath, newPath)
+        renameOrdinaryAgentFileEntry(safePath, newPath)
         console.log(`[Agent 文件] 已重命名: ${safePath} → ${newPath}`)
       } catch (err) {
         throw new Error(await toFsErrorMessage(err, '重命名', safePath))
@@ -5181,7 +5181,6 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.MOVE_FILE,
     async (_, filePath: string, targetDir: string): Promise<void> => {
-      const { renameSync } = await import('node:fs')
       const { resolve, basename, join } = await import('node:path')
 
       const safePath = resolve(filePath)
@@ -5190,7 +5189,8 @@ export function registerIpcHandlers(): void {
       assertInsideAgentWorkspaces(safeTarget)
 
       const newPath = join(safeTarget, basename(safePath))
-      renameSync(safePath, newPath)
+      assertInsideAgentWorkspaces(newPath)
+      renameOrdinaryAgentFileEntry(safePath, newPath)
       console.log(`[Agent 文件] 已移动: ${safePath} → ${newPath}`)
     }
   )
@@ -5325,7 +5325,6 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.RENAME_ATTACHED_FILE,
     async (_, filePath: string, newName: string, access?: FileAccessOptions | string[]): Promise<void> => {
-      const { renameSync } = await import('node:fs')
       const { resolve, dirname, join, sep } = await import('node:path')
 
       if (newName.includes('/') || newName.includes('\\') || newName.includes('..') || newName.includes(sep)) {
@@ -5338,7 +5337,7 @@ export function registerIpcHandlers(): void {
         throw new Error('访问路径不在允许范围内')
       }
       const newPath = join(dirname(safePath), newName)
-      renameSync(safePath, newPath)
+      renameOrdinaryAgentFileEntry(safePath, newPath)
       console.log(`[附加目录] 已重命名: ${safePath} → ${newPath}`)
     }
   )
@@ -5347,7 +5346,6 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.MOVE_ATTACHED_FILE,
     async (_, filePath: string, targetDir: string, access?: FileAccessOptions | string[]): Promise<void> => {
-      const { renameSync } = await import('node:fs')
       const { resolve, basename, join } = await import('node:path')
 
       const safePath = resolve(filePath)
@@ -5358,7 +5356,7 @@ export function registerIpcHandlers(): void {
         throw new Error('访问路径不在允许范围内')
       }
       const newPath = join(safeTarget, basename(safePath))
-      renameSync(safePath, newPath)
+      renameOrdinaryAgentFileEntry(safePath, newPath)
       console.log(`[附加目录] 已移动: ${safePath} → ${newPath}`)
     }
   )
