@@ -208,27 +208,38 @@ export function mayPublishAgentEventToRemote(
 ): boolean {
   if (isReviewOwnedOrDeletedAgentSessionId(sessionId)) return false
   if (!payload || typeof payload !== 'object') return true
+  // Only structured control/metadata, not SDK user-authored message text.
+  // Projection upserts carry session.id rather than a *SessionId property.
+  const envelope = payload as { kind?: unknown; event?: unknown }
+  if (envelope.kind !== 'profer_event' && envelope.kind !== 'session_projection') return true
   const visited = new WeakSet<object>()
+  let objectsVisited = 0
   function containsPrivateId(value: unknown, depth = 0): boolean {
     if (!value || typeof value !== 'object') return false
+    // Fail closed on unusually deep/large structured control events.
+    // Previously depth > 12 returned false, silently allowing a hidden ID.
+    if (depth > 32 || ++objectsVisited > 12000) return true
     if (visited.has(value)) return false
     visited.add(value)
-    // Do not recursively inspect arbitrary large SDK text / tool result payloads.
-    if (depth > 12) return false
     if (Array.isArray(value)) return value.some((child) => containsPrivateId(child, depth + 1))
     for (const [key, child] of Object.entries(value)) {
-      const sessionIdentifier = /(?:^sessionId$|SessionId$|^sessionIds$|SessionIds$)/.test(key)
+      const sessionIdentifier = /(?:^sessionId$|SessionId$|^sessionIds$|SessionIds$|^session_id$|_session_id$|^session_ids$|_session_ids$)/.test(key)
       if (sessionIdentifier) {
         if (typeof child === 'string' && isReviewOwnedOrDeletedAgentSessionId(child)) return true
         if (Array.isArray(child) && child.some((id) => typeof id === 'string' && isReviewOwnedOrDeletedAgentSessionId(id))) return true
+      }
+      // ProferEvent.session_updated/delegation_session_updated and
+      // session_projection carry session metadata as { id, owner, ... }.
+      if (key === 'session' && child && typeof child === 'object' && !Array.isArray(child)) {
+        const meta = child as Partial<AgentSessionMeta>
+        if (typeof meta.id === 'string' && isReviewOwnedOrDeletedAgentSessionId(meta.id)) return true
+        if (isReviewOwnedAgentSession(meta as AgentSessionMeta)) return true
       }
       if (containsPrivateId(child, depth + 1)) return true
     }
     return false
   }
-  // Metadata events only; arbitrary SDK messages may contain large user-authored JSON.
-  const envelope = payload as { kind?: unknown; event?: unknown }
-  return envelope.kind !== 'profer_event' || !containsPrivateId(envelope.event)
+  return !containsPrivateId(envelope.kind === 'profer_event' ? envelope.event : envelope)
 }
 
 /** Recheck owner visibility at replay/send time: a session may be deleted while queued. */
