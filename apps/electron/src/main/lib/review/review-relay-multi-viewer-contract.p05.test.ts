@@ -219,6 +219,6 @@ describe('P05-S06 structured AgentStreamPayload integrity', () => {
       { sessionId: normal, payload: { kind: 'profer_event', event: { type: 'run_idle', sessionId: normal } } },
       { sessionId: hidden, payload: { kind: 'profer_event', event: { type: 'run_idle', sessionId: hidden } } },
     ]
-    expect(selectOrdinaryRemoteReplayRecords(records)).toEqual([records[1]])
+    expect(selectOrdinaryRemoteReplayRecords(records)).toEqual(records.slice(1, 2))
   })
 })
