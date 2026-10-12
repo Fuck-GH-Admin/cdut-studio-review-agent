@@ -3109,10 +3109,14 @@ export function registerIpcHandlers(): void {
   })
   ipcMain.handle(AGENT_IPC_CHANNELS.FILE_PREVIEW_REPORT, async (event, report: import('@profer/shared').AgentFilePreviewReport): Promise<boolean> => {
     assertSensitiveAgentIpcSender(event)
+    if (!report || typeof report.sessionId !== 'string') return false
+    assertOrdinaryAgentSession(report.sessionId)
     return agentFilePreviewSessionManager.reportReady(report)
   })
   ipcMain.handle(AGENT_IPC_CHANNELS.FILE_PREVIEW_INSPECTION_RESULT, async (event, result: import('@profer/shared').AgentFilePreviewInspectResult): Promise<boolean> => {
     assertSensitiveAgentIpcSender(event)
+    if (!result || typeof result.sessionId !== 'string') return false
+    assertOrdinaryAgentSession(result.sessionId)
     return agentFilePreviewSessionManager.reportInspection(result)
   })
 
