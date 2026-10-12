@@ -769,6 +769,14 @@ interface RemoteCommandContext {
   activeSessionId?: string
 }
 
+/**
+ * Relay transports multiple Pocket viewers on one desktop connection. A missing
+ * sessionId must never inherit a prior viewer's LAN-only legacy fallback.
+ */
+export function handleRemoteRelayCommand(message: string, requestId: unknown = null): Promise<CommandResult> {
+  return handleRemoteCommand(message, requestId)
+}
+
 /** 处理来自移动端客户端的一条 JSON 指令消息 */
 export async function handleRemoteCommand(
   message: string,
@@ -2014,7 +2022,7 @@ export function startRemoteService(): string | null {
         const requestId = parsed._cmdId ?? parsed.requestId ?? null
         // Relay multiplexes multiple viewers over one desktop socket. Never share a
         // connection-level legacy activeSessionId across viewers: require an explicit ID.
-        void handleRemoteCommand(raw, requestId).then((result) => {
+        void handleRemoteRelayCommand(raw, requestId).then((result) => {
           const commandId = typeof requestId === 'string' && requestId.length > 0 ? requestId : randomUUID()
           if (sink.isOpen()) sink.send(JSON.stringify({ kind: 'command_result', requestId, commandId, ...result }))
         })
@@ -2085,7 +2093,6 @@ export function stopRemoteService(): void {
   remoteRelayClient?.stop()
   remoteRelayClient = null
   remoteRelaySink = null
-  remoteRelayCommandContext = {}
   eventBusUnsubscribe?.()
   eventBusUnsubscribe = null
   chatBusUnsubscribe?.()
