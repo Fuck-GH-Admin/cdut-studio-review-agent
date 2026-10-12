@@ -146,6 +146,15 @@
 - **5 项针对性负例/普通回归**：删除后持久化 tombstone 且 no meta；普通删除/陌生 ID 不误判；迟到 ownerless 旧投影及删除事件受阻、普通删除投影保留；远程 replay-append gate/按 ID 访问拒绝已删 owner、普通 session_detail 不受影响；委派 ID 不得复用 tombstone。全仓普通 Agent 自动回归通过。**没跑真实 Pi、Electron、已投递的 renderer 队列。**
 - **遗留与阶段状态**：**P04-S03 受控 PASS，但 P04 全阶段 PARTIAL**。P04-S04 继续枚举剩余 desktop IPC、已投递/尚未消费的窗口队列与历史缓存、跨窗口 Sender/重绑及 `P04-S04-COMPAT-01`；P05 另审 Pocket/Feishu 全入口，P06/P07/P08 不前置。所有 LIVE-01～LIVE-08 **NOT-RUN**，尤其 LIVE-06/07/08 必须用户实机统一验证。
 
+### P04-TECHDEBT-01｜已删除内部审核会话 tombstone 容量、热路径与安全清理策略（待排期）
+
+- **状态 / 归属（2026-10-12）**：`OPEN / DESIGN-REVIEW REQUIRED`；**第一责任方为当前直接案卷审核 Pi 后台会话项目**（P04-S03 新增的 owner 隔离补丁），代码落在公共 `apps/electron/src/main/lib/agent-session-manager.ts`。若需要修改通用索引格式、全局会话生命周期或远程事件重放协议，再邀请 **Session Manager / Agent 平台维护者共同评审**；不应未经协调把新技术债解释为其他模块原有缺陷。
+- **当前客观事实**：`AgentSessionsIndex.reviewOwnerDeletionTombstones?: string[]` 仅在删除 `review-case` owner 时追加 UUID，没有自动过期、大小上限、压缩或清理机制。原 `agent-sessions.json` 与它一起原子写入。普通会话删除不会追加 tombstone，正常桌面小规模使用空间压力预计较低。
+- **容量与热路径风险**：永久数组使 JSON 索引按累计已删除内部会话数线性增长；索引读写会处理整份 JSON。门禁 `isReviewOwnedOrDeletedAgentSessionId` 调用 `readIndex()`（缓存命中仍同步 `statSync` 校验 mtime/size）、在活动会话数组 `find`，并在 tombstone 数组 `includes`，单次查找复杂度约 O(活动会话数 + tombstone 数)。该函数位于 Main stream EventBus、桌面/远程事件广播等**可高频触发**路径。**无真实规模 benchmark，不能据此声称已出现卡顿或容量故障**。
+- **为何不可直接 TTL**：tombstone 是阻断已删 review ID 被迟到投影、历史重放/队列及恢复路径误认为普通 ID 的安全凭据。仅靠 7/30/90 天过期不能证明最后一个旧事件已消失；若错误清理，将重引 P04-S03 泄漏。旧版本若未记录 tombstone 的历史删除身份也不能单凭现有索引恢复。
+- **建议验收方案**：① 合成 0 / 1k / 10k / 100k 个 UUID tombstone 测定索引体积、冷/热读取、主进程每事件 guard 耗时、写入/启动成本（记录环境、p50/p95、基线）；② 优先评估与现有索引版本同步失效/重建的内存 `Set` 或等效索引以降低热路径查找开销，禁止使用永不刷新的独立缓存；③ 评估是否确需 tombstone 删除/分段存档/压缩，只有证明所有存量重放及可恢复事件都无法再次命中旧 ID、且能回归核验后才考虑 GC，不允许未经证明按年龄自动删除；④ 覆盖原子写失败、进程重启、外部修改索引、旧索引缺字段、普通会话、新/旧 owner ID、伪造与远程重放安全回归。
+- **调度建议**：先保持 P04-S03 安全门禁，**不在 P04-S04 顺手重构公共 Session Manager**；安排一轮本项目独立的小批次评估（可在 P04-S04 后、解除 Draft 前决策是否实施），若规模基准暴露明显主线程阻塞则升级优先级并协调平台维护者。技术债记录不改变 P04 阶段 PARTIAL，也不改变 LIVE-01～08 **NOT-RUN**。
+
 ## 最终统一实机验收清单（必须保留到合并前，当前均 NOT-RUN）
 
 > 此表是**集中补测登记簿**，不要因为推进新的开发批次删除或自动勾选。全部使用隔离的 `PROFER_CONFIG_DIR` / `PROFER_USER_DATA_DIR`、非真实个人资料的合成案卷，固定测试提交 SHA；如涉及付费模型，使用获授权且受控的模型渠道。执行时在本表逐行填写 **PASS/FAIL/NOT-RUN、操作人、日期、测试数据版本、CI/日志/截图/录像链接、异常工单**。只有自动化测试通过而无对应真实操作证据时，本表仍为 NOT-RUN。
