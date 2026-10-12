@@ -994,6 +994,9 @@ export async function handleRemoteCommand(
             ...getWorkspaceAttachedDirectories(workspace.slug),
             ...getWorkspaceAttachedFiles(workspace.slug),
           ],
+          denyPath: (path) => isReviewPrivateConfigPath(
+            path, getConfigDir(), isReviewOwnedOrDeletedAgentSessionId,
+          ),
         }),
       }
     }
@@ -1454,6 +1457,11 @@ export async function handleRemoteCommand(
       const sessionId = parsed.sessionId as string
       const userMessage = typeof parsed.userMessage === 'string' ? parsed.userMessage : ''
       if (!sessionId || !userMessage) return { ok: false, error: '缺少 sessionId 或 userMessage' }
+      // A normal target session does not authorize nested references to private review sessions.
+      if (Array.isArray(parsed.mentionedSessionIds)
+        && parsed.mentionedSessionIds.some((id) => typeof id === 'string' && isReviewOwnedOrDeletedAgentSessionId(id))) {
+        return { ok: false, error: '会话不存在' }
+      }
       try {
         const uuid = await queueAgentMessage(
           {
