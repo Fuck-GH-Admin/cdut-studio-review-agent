@@ -193,6 +193,11 @@ export const REVIEW_DOCUMENT_ROLE_LABELS: Record<SourceDocument['role'], string>
 
 export type ReviewRunMode = 'update' | 'restart'
 
+/** Electron IPC 包装属于诊断信息，业务错误卡和底部提示使用同一可读原因。 */
+function reviewErrorMessage(error: unknown): string {
+  return (error instanceof Error ? error.message : String(error)).replace(/^Error invoking remote method '[^']+': (?:Error: )?/, '')
+}
+
 export function createReviewActionsController(
   store: JotaiStore,
   api: ReviewActionsApi,
@@ -218,7 +223,7 @@ export function createReviewActionsController(
 
   const reportError = (scope: string, error: unknown, options: { caseId?: string } = {}): void => {
     console.error('[审核专区]', scope, error)
-    const message = (error instanceof Error ? error.message : String(error)).replace(/^Error invoking remote method '[^']+': (?:Error: )?/, '')
+    const message = reviewErrorMessage(error)
     // 按案隔离：案卷已切走时错误只留日志，不污染当前案卷的错误条（K05）
     if (options.caseId === undefined || store.get(selectedCaseIdAtom) === options.caseId) {
       store.set(reviewErrorAtom, `${scope}：${message}`)
@@ -981,8 +986,8 @@ export function createReviewActionsController(
           })
           setError(run.status === 'failed' ? `审核未完成：${run.error ?? '审核运行失败'}` : null, { caseId })
         } catch (error) {
-          reportError('项目 Pi 审核未完成', error, { caseId })
-          update({ status: 'failed', stage: 'summary', message: '项目 Pi 审核未完成', error: error instanceof Error ? error.message : String(error) })
+          reportError('审核未完成', error, { caseId })
+          update({ status: 'failed', stage: 'summary', message: '本次审核未完成', error: reviewErrorMessage(error) })
         } finally {
           endTask(caseId, 'running')
         }

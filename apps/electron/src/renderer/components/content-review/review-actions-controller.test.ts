@@ -807,4 +807,19 @@ describe('Main 后台审核前台接线', () => {
     expect(target).toEqual({ caseId: fixture.source.id, runId: fixture.runningRun.id })
     expect(store.get(reviewExecutionByCaseAtom)[fixture.source.id]?.status).toBe('cancelled')
   })
+
+  test('预检失败的业务错误卡和提示只显示原因，不显示 IPC 包装', async () => {
+    const fixture = backgroundFixture()
+    const store = createStore()
+    const actions = createReviewActionsController(store, fixture.api, async () => {
+      throw new Error("Error invoking remote method 'review-v2:start-background-pi-review': Error: 审核渠道或模型未配置")
+    })
+    await actions.selectCase(fixture.source.id)
+    await actions.runFullReview()
+    const execution = store.get(reviewExecutionByCaseAtom)[fixture.source.id]
+    expect(execution?.status).toBe('failed')
+    expect(execution?.error).toBe('审核渠道或模型未配置')
+    expect(execution?.message).toBe('本次审核未完成')
+    expect(store.get(reviewErrorAtom)).toBe('审核未完成：审核渠道或模型未配置')
+  })
 })

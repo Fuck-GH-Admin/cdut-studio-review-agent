@@ -57,6 +57,11 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
   const [historyNonce, setHistoryNonce] = React.useState(0)
   const [sourcePreview, setSourcePreview] = React.useState<{ path: string; fileName: string } | null>(null)
   const [dialog, setDialog] = React.useState<{ title: string; description?: string; fields: ReviewActionDialogField[]; submit(values: Record<string, string>): Promise<void> } | null>(null)
+  // 操作回执只属于当前案卷和轮次，切案或重新启动不沿用上一轮的停止提示。
+  React.useEffect(() => {
+    setFeedback(null)
+    setNotice(null)
+  }, [legacyCase?.id, run?.id])
   const canRun = !!legacyCase
   const reviewBusy = running || execution.status === 'preparing' || execution.status === 'running' || run?.status === 'running'
   const nextAction = view?.pendingActions.find((item) => item.kind === 'material')
