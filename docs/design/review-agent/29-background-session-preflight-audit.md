@@ -1,6 +1,6 @@
 # 29｜审核受控后台会话：开工前依赖审计与阻断门禁
 
-> **新会话/新负责人必读**：[30｜P05-S05 后的工程交接快照](30-background-session-handoff.md)、[31｜接手与每批次提示词](31-background-session-continuation-prompts.md)。P05-S01～S05 各小批受控门禁均 **PASS**；**下一小批 P05-S06 中心 Relay 多 viewer 路由与剩余 P05 放行证据**，P05 整体 PARTIAL。P04 路径型文件 IPC、真实双窗口行为与 LIVE-06/08 仍是开放门禁。
+> **新会话/新负责人必读**：[30｜P05-S05 后的工程交接快照](30-background-session-handoff.md)、[31｜接手与每批次提示词](31-background-session-continuation-prompts.md)。P05-S01～S05 各小批受控门禁均 **PASS**；**下一小批 P05-S06 中心 Relay 多 viewer 路由与剩余 P05 放行证据**，P05 整体 PARTIAL。P04 路径型文件 IPC 原已枚举路径和本次最终目标变更均有受控补丁，但真实双窗口、IPC 与 LIVE-06/08 仍是开放门禁。
 
 > 2026-10-12；初始源码审计基线 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；后续代码与受控探针仅在 Draft PR #21 分支实施。配套 [27 号实施规范](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。**文档中的 PASS 只对所附冻结提交、测试环境与覆盖范围有效；真实 Pi/Electron/Pocket 验收尚未完成，不得据此合并。**
 
@@ -225,6 +225,16 @@
 - **回归与修正记录**：首次 [PR CI #38259407202](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38259407202) 出现 **1 error（3807 pass / 5 skip / 1 fail）**，原有 `ppt-style-pack-service.test.ts` 导入阶段因引入完整 Session Manager 而提示 `electron.safeStorage` 缺失；确认是公共预览模块的依赖回归，并已改为私有布局匹配时按需查询主进程索引。最终冻结 SHA 所有三套 CI 为 **SUCCESS**，没有将中途失败抹除。
 - **结论**：`P04-PATH-01` **已枚举的桌面通用路径入口受控 PASS，代码级风险从“未审/未证明”变为“已修并有正反例”**。仍不宣称真实 Electron/preload/多窗口主流程 E2E PASS；低层 FS 访问存在通常的文件变化/符号链接替换时间窗，运行时观察由 LIVE-06/08 检查。普通文件操作的 workspace 根目录整体删除被有意禁止，可能影响旧版手动管理方式，需实机复核；Native 用户主动通过系统选取目录的动作有独立用户选择信任边界，本批未替它造伪造 renderer 路径证明。P04 整体 **PARTIAL（仅实际桌面 LIVE 等未验）**。
 - **本轮停点**：27/29/30/31 + PR #21 同步，本轮仅关闭 `P04-PATH-01`，不推进已排定 `P05-S06`、Main 业务 IPC 或 P06/P07/P08。P05 **PARTIAL**，首次 A0 **NOT-RUN**，LIVE-01～LIVE-08 **全部 NOT-RUN**，PR 保持 Draft/Open/未合并。
+
+
+### P04-PATH-01 复核补丁：重命名／移动的最终目标路径门禁（2026-10-12）
+
+- **发现过程**：旧 9/9 PATH 测试及其 CI 均真实通过，但独立审计确认 `RENAME_FILE`、`MOVE_FILE`、`RENAME_ATTACHED_FILE`、`MOVE_ATTACHED_FILE` 的实际 `renameSync(source, destination)` 只覆盖源路径或目标目录授权，未统一检查**最终 destination 路径**是否属于 review owner/tombstone。旧测试主要断言 `isUnsafeAgentWorkspaceMutationPath`，没有真正执行上述变更后的文件系统结果。属于确认的代码门禁缺口；未声称已从真实 Electron 恶意 Renderer 复现攻击。
+- **修复与边界**：`review-private-file-access.ts` 新增 `renameOrdinaryAgentFileEntry(source, target)`，在**真实 renameSync 前**拒绝源／最终目标涉及 review owner、已删除 tombstone 或共享 workspace 容器；四个 IPC 统一调用。普通 Agent 的既有会话和目录授权仍由 IPC 保持，`RENAME_FILE`、`MOVE_FILE` 另对最终目标复用 `assertInsideAgentWorkspaces`。由于新目标常不存在，不强行对其施加要求目标文件已存在的只读授权。私有路径策略补上**最近已存在父目录的真实路径解析**，防止不存在目标文件的父级 symlink 指向审核私有目录。
+- **代码与 CI**：冻结代码 [`7c5e003c`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/7c5e003c5c1a01dc295e1ff0e4c6ce15e4da42f0)；[PR CI #38269830272](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38269830272)、[D2 #38269830328](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38269830328)、[Review Baseline #38269830273](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38269830273) **全部 SUCCESS**；新增 **5/5**，全仓 **3817 pass / 5 skip / 0 fail（3822 tests / 434 files）**，typecheck/边界/Electron build PASS。
+- **新增 5 项受控实际磁盘变更测试**：①普通文件不能覆盖已存在的内部审核 JSONL，而正常重命名可用；②不能在审核 workspace 新增文件；③父级 symlink 指向审核目录且最终文件不存在时仍拒绝，正常 workspace 移动可用；④删除 owner 后 tombstone 拒绝旧私有目标；⑤工作区整体容器不允许被移动。新增测试验证的是**四个 IPC 共同调用的真实生产文件变更函数及磁盘结果**，不是在 Electron BrowserWindow/preload 中直接驱动四个注册 IPC。
+- **余留门禁**：路径验证与文件系统调用之间仍有一般的符号链接/目录替换 TOCTOU 窗口，跨 OS 行为与真实 Electron IPC/普通旧工作流未实机验收；继续纳入 **LIVE-06/08 NOT-RUN**。不能将 CI 和共享函数测试写成真实攻防 E2E 完成；P04 仍 PARTIAL。原 9/9 历史证据保留，不抹除首次独立审计发现的遗漏。
+- **停点**：本轮只回补 P04-PATH-01 的 destination 缺口，不执行 P05-S06、Main 审核业务 IPC、P06/P07/P08，不解除 Draft，不合并 PR；A0 与 LIVE-01～08 全部 NOT-RUN。
 
 ## 最终统一实机验收清单（必须保留到合并前，当前均 NOT-RUN）
 
