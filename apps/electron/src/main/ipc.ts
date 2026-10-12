@@ -142,6 +142,7 @@ import { listBookmarks, addBookmark, removeBookmark, listHistory, clearHistory }
 import { getUnstagedChanges, getFileDiff, getUntrackedContent, revertFile, getDiffContents, listWorktrees, getWorktreeChanges, getMainRepoRoot, invalidateGitDiffCache } from './lib/git-diff-service'
 import { registerProferDirectoryPath, registerProferFilePath } from './lib/local-file-protocol'
 import { isReadOnlyPreviewPathAllowed } from './lib/preview-path-policy'
+import { isReviewPrivateDesktopPath, isUnsafeAgentWorkspaceMutationPath, filterOrdinaryDesktopFileEntries } from './lib/review-private-file-access'
 import { CHANGELOG_IPC_CHANNELS, type ChangelogEntry } from '@profer/shared'
 import { getChangelog } from './lib/changelog-service'
 import { registerReviewIpc } from './lib/review/review-ipc'
@@ -567,6 +568,7 @@ function isResolvedPathInsideRoot(targetPath: string, root: string): boolean {
 }
 
 function assertInsideAgentWorkspaces(targetPath: string): void {
+  if (isUnsafeAgentWorkspaceMutationPath(targetPath)) throw new Error('审核内部路径不可操作')
   if (!isResolvedPathInsideRoot(targetPath, getAgentWorkspacesDir())) {
     throw new Error('访问路径超出 Agent 工作区范围')
   }
@@ -736,6 +738,7 @@ function parseHttpUrl(rawUrl: string): string | null {
 }
 
 function isPathAllowed(filePath: string, options?: FileAccessOptions): boolean {
+  if (isReviewPrivateDesktopPath(filePath)) return false
   // deny-by-default：渲染进程不可信，未提供访问选项时拒绝越权访问。
   // 调用方必须显式传递 sessionId 或 workspaceSlug 来声明授权上下文；即使有 sessionId，
   // 也只能访问该上下文的显式授权根，不能把“普通文件”当成授权凭证。
@@ -769,6 +772,7 @@ function isPathAllowed(filePath: string, options?: FileAccessOptions): boolean {
  * 只用于只读预览类 handler；写操作与「用默认应用打开文件」必须继续使用 isPathAllowed。
  */
 function isPreviewPathAllowed(filePath: string, options?: FileAccessOptions): boolean {
+  if (isReviewPrivateDesktopPath(filePath)) return false
   if (options && isPathAllowed(filePath, options)) return true
   return isReadOnlyPreviewPathAllowed(filePath)
 }
@@ -4619,6 +4623,7 @@ export function registerIpcHandlers(): void {
       for (const item of items) {
         if (HIDDEN_FS_ENTRIES.has(item.name)) continue
         const fullPath = resolve(safePath, item.name)
+        if (isReviewPrivateDesktopPath(fullPath)) continue
         const isDirectory = item.isDirectory()
         const size = isDirectory ? undefined : statSync(fullPath).size
         entries.push({
@@ -4690,13 +4695,17 @@ export function registerIpcHandlers(): void {
       const { resolve, relative, join } = await import('node:path')
 
       const safePath = resolve(dirPath)
-      assertInsideAgentWorkspaces(safePath)
+      // Reading a workspace container is allowed, but its private descendants
+      // must never be enumerated. A direct private root request is rejected.
+      if (isReviewPrivateDesktopPath(safePath)) throw new Error('审核内部路径不可读取')
+      if (!isResolvedPathInsideRoot(safePath, getAgentWorkspacesDir())) throw new Error('访问路径超出 Agent 工作区范围')
 
       const results: Array<{ relativePath: string; data: Uint8Array }> = []
       const walk = (currentDir: string) => {
         const items = readdirSync(currentDir, { withFileTypes: true })
         for (const item of items) {
           const full = join(currentDir, item.name)
+          if (isReviewPrivateDesktopPath(full)) continue
           if (item.isDirectory()) {
             walk(full)
           } else {
@@ -4898,6 +4907,7 @@ export function registerIpcHandlers(): void {
       if (!input || typeof input.sessionId !== 'string' || typeof input.requestId !== 'string' || typeof input.targetName !== 'string') {
         throw new Error('文件搜索请求无效')
       }
+      assertOrdinaryAgentSession(input.sessionId)
       const roots = getFileSearchRoots(input.sessionId)
       if (roots.length === 0) throw new Error('Agent 会话不存在或没有授权搜索目录')
       if (activeFileSearches.has(input.requestId)) {
@@ -5197,6 +5207,7 @@ export function registerIpcHandlers(): void {
       for (const item of items) {
         if (HIDDEN_FS_ENTRIES.has(item.name)) continue
         const fullPath = resolve(safePath, item.name)
+        if (isReviewPrivateDesktopPath(fullPath)) continue
         const isDirectory = item.isDirectory()
         const size = isDirectory ? undefined : statSync(fullPath).size
         entries.push({
@@ -5235,6 +5246,11 @@ export function registerIpcHandlers(): void {
       const safePath = await realpath(resolve(filePath)).catch(() => {
         throw new Error(`文件不存在: ${filePath}`)
       })
+
+      if (isReviewPrivateDesktopPath(filePath) || isReviewPrivateDesktopPath(safePath)) {
+        throw new Error('审核内部路径不可读取')
+      }
+      if (sessionId) assertOrdinaryAgentSession(sessionId)
 
       // 收集所有允许的路径：会话/工作区附加目录、附加文件 + 工作区文件目录
       const allowedDirs: string[] = []
@@ -5310,6 +5326,7 @@ export function registerIpcHandlers(): void {
         throw new Error('文件名不能包含路径分隔符或 ".."')
       }
       const safePath = resolve(filePath)
+      if (isUnsafeAgentWorkspaceMutationPath(safePath)) throw new Error('审核内部或共享容器路径不可操作')
       const options = normalizeFileAccessOptions(access)
       if (!isPathAllowed(safePath, options)) {
         throw new Error('访问路径不在允许范围内')
@@ -5328,6 +5345,7 @@ export function registerIpcHandlers(): void {
       const { resolve, basename, join } = await import('node:path')
 
       const safePath = resolve(filePath)
+      if (isUnsafeAgentWorkspaceMutationPath(safePath)) throw new Error('审核内部或共享容器路径不可操作')
       const safeTarget = resolve(targetDir)
       const options = normalizeFileAccessOptions(access)
       if (!isPathAllowed(safePath, options) || !isPathAllowed(safeTarget, options)) {
@@ -5347,6 +5365,7 @@ export function registerIpcHandlers(): void {
       const { resolve } = await import('node:path')
 
       const safePath = resolve(filePath)
+      if (isUnsafeAgentWorkspaceMutationPath(safePath)) throw new Error('审核内部或共享容器路径不可操作')
       const options = normalizeFileAccessOptions(access)
       if (!isPathAllowed(safePath, options)) {
         throw new Error('访问路径不在允许范围内')
@@ -5366,6 +5385,7 @@ export function registerIpcHandlers(): void {
     async (_, filePath: string, access?: FileAccessOptions | string[]): Promise<void> => {
       const { resolve } = await import('node:path')
       const safePath = resolve(filePath)
+      if (isUnsafeAgentWorkspaceMutationPath(safePath)) throw new Error('审核内部或共享容器路径不可操作')
       const options = normalizeFileAccessOptions(access)
       if (!isPathAllowed(safePath, options)) {
         throw new Error('访问路径不在允许范围内')
@@ -5387,6 +5407,7 @@ export function registerIpcHandlers(): void {
       const directories: string[] = []
       const files: string[] = []
       for (const p of paths) {
+        if (isReviewPrivateDesktopPath(p)) continue
         try {
           const stat = statSync(p)
           if (stat.isDirectory()) {
