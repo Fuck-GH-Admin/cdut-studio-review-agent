@@ -1586,6 +1586,8 @@ export function findOrphanSessions(): SessionHealth[] {
   const results: SessionHealth[] = []
 
   for (const session of index.sessions) {
+    // Desktop health dialog is an ordinary Agent surface, not an internal case inventory.
+    if (isReviewOwnedAgentSession(session)) continue
     const health: SessionHealth = {
       sessionId: session.id,
       title: session.title,

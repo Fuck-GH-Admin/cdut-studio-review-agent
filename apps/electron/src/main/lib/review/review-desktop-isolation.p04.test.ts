@@ -14,6 +14,7 @@ import {
   appendAgentMessage,
   autoArchiveAgentSessions,
   countArchivedAgentSessions,
+  findOrphanSessions,
   createAgentSession,
   createReviewOwnedAgentSession,
   getAgentSessionMeta,
@@ -77,6 +78,14 @@ describe('P04-S01 Main search and projection desktop boundary', () => {
     expect(autoArchived).toBeGreaterThanOrEqual(0)
     expect(getAgentSessionMeta(owned.id)?.archived).toBe(false)
     expect(getAgentSessionMeta(ordinary.id)?.archived).toBe(true)
+  })
+
+  test('desktop orphan health inventory excludes review owner IDs and titles', () => {
+    const { owned, ordinary } = fixture()
+    const health = findOrphanSessions()
+    expect(health.some(item => item.sessionId === owned.id)).toBe(false)
+    expect(health.some(item => item.title === owned.title)).toBe(false)
+    expect(health.some(item => item.sessionId === ordinary.id)).toBe(true)
   })
 
   test('known review owner produces zero UI projection upserts; ordinary metadata updates remain visible', () => {
