@@ -40,6 +40,8 @@
 2. `P04-S04-COMPAT-01`：复现普通 Agent 会话列表尚未加载时 Preview/Browser 事件先到的顺序；考虑 Main 可信权限校验后的受限补偿/重试，保持隐藏 owner 无法借缓存开 Tab，并补正式预览失败回执及普通正例。
 3. **已投递但尚未被 Renderer 消费的旧事件**和完全删除案卷的生命周期、跨窗口在最终 LIVE-06/07/08 仍 NOT-RUN。P05 Pocket/Feishu 全量入口单独推进，实际后台审核公共 IPC 仍未开放。
 
+**另行登记、非 P04-S04 的独立技术债**：见 [29 号 `P04-TECHDEBT-01`](29-background-session-preflight-audit.md)。S03 新增的已删 review ID tombstone 目前永久保留在公共 `agent-sessions.json` 数组，且按 ID 守卫在流式/远程事件热路径进行同步索引状态检查和线性查找。**本项目拥有该新增安全策略的首要设计责任**；如需更改公共索引格式/生命周期，邀请 Session Manager 维护者共同评审。先基准测量和设计安全 GC 条件，不直接按时间删；P04-S04 不顺手扩成平台重构，LIVE-01～08 不受影响。
+
 ### 需要重点阅读的当前文件（以 HEAD 为准）
 
 - `packages/shared/src/types/agent.ts`：owner 类型及可见性判定。
