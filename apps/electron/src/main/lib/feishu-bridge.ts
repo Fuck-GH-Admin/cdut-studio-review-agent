@@ -2509,6 +2509,7 @@ class FeishuBridge {
     if (windows.length > 0 && !windows[0]!.isDestroyed()) {
       windows[0]!.webContents.send(FEISHU_IPC_CHANNELS.STATUS_CHANGED, {
         ...this.status,
+        activeBindings: this.listBindings().length,
         botId: this.botConfig.id,
         botName: this.botConfig.name,
       })
