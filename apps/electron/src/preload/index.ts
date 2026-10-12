@@ -3984,6 +3984,7 @@ const reviewAPI = {
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BATCH_GROUP_APPLY_V2, input) as Promise<import('@profer/shared').BatchGroupApplyResult>,
   runReviewV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, caseId) as Promise<import('@profer/shared').ReviewRunV2>,
   getPiReviewSessionV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_PI_REVIEW_SESSION_V2, caseId) as Promise<string | null>,
+  getBackgroundPiReviewStateV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_BACKGROUND_PI_REVIEW_STATE_V2, caseId) as Promise<import('@profer/shared').ReviewBackgroundPiRunState>,
   preparePiReviewV2: (input: { caseId: string; sessionId: string; turnId: string; resumeRunId?: string; inheritReadReceipts?: boolean }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.PREPARE_PI_REVIEW_V2, input) as Promise<{ assignmentId: string; runId: string; caseDirectory: string; userMessage: string; continuedRun?: boolean; inheritedReadDocumentNames?: string[] }>,
   abortPiReviewV2: (input: { caseId: string; sessionId: string; assignmentId: string; runId: string }) =>

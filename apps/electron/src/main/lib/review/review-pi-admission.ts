@@ -28,6 +28,21 @@ export type OwnedReviewExecutor = (input: AgentSendInput, onRunOwned: () => void
 
 /** Process-local duplicate admission fence, NOT another persisted task ledger. */
 const runningAssignments = new Set<string>()
+/** Process-local verified ACK; never an alternative persisted run ledger. */
+const admittedByCase = new Map<string, PiReviewBinding>()
+
+function forgetAdmitted(binding: PiReviewBinding): void {
+  const admitted = admittedByCase.get(binding.caseId)
+  if (admitted?.runId === binding.runId && admitted.assignmentId === binding.assignmentId) {
+    admittedByCase.delete(binding.caseId)
+  }
+}
+
+/** Persisted 'running' does not prove the orchestrator granted ownership. */
+export function isPiReviewRunAdmitted(caseId: string, runId: string): boolean {
+  const binding = admittedByCase.get(caseId)
+  return !!binding && binding.runId === runId && isCurrent(binding)
+}
 
 function isCurrent(binding: PiReviewBinding): boolean {
   const current = getPiReviewBindingForSession(binding.sessionId)
@@ -100,6 +115,7 @@ export function admitPreparedPiReviewTurn(
     if (finished || owned) return
     if (!isCurrent(binding)) return
     owned = true
+    admittedByCase.set(binding.caseId, binding)
     resolveAdmission({ caseId: binding.caseId, sessionId: binding.sessionId,
       runId: binding.runId, assignmentId: binding.assignmentId })
   })).then(
@@ -111,11 +127,13 @@ export function admitPreparedPiReviewTurn(
         closeIfCurrent(binding, 'Agent 未产生可信的完成回调')
       }
       runningAssignments.delete(binding.assignmentId)
+      forgetAdmitted(binding)
     },
     (error: unknown) => {
       finished = true
       fail(error)
       runningAssignments.delete(binding.assignmentId)
+      forgetAdmitted(binding)
     },
   )
   return admitted

@@ -666,6 +666,13 @@ export function registerReviewIpc(): void {
     const { getPiReviewSessionForCase } = require('./pi-case-review-service') as typeof import('./pi-case-review-service')
     return getPiReviewSessionForCase(caseId)
   })
+  // First backend bridge slice: read-only state. No renderer-created owner/run,
+  // no Agent tab, no start/stop command until their own guarded batches.
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_BACKGROUND_PI_REVIEW_STATE_V2, (_event, caseId: string) => {
+    assertSafeReviewStorageId(caseId, 'caseId')
+    const { getBackgroundPiReviewState } = require('./review-background-state') as typeof import('./review-background-state')
+    return getBackgroundPiReviewState(caseId)
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.ABORT_PI_REVIEW_V2, (_event, input: { caseId: string; sessionId: string; assignmentId: string; runId: string }) => {
     if (!input?.caseId || !input.sessionId || !input.assignmentId || !input.runId) throw new Error('审核取消参数不完整')
     const { getPiReviewBindingForSession, finishPiReviewRunV2 } = require('./pi-case-review-service') as typeof import('./pi-case-review-service')
