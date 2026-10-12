@@ -1,6 +1,6 @@
 # 29｜审核受控后台会话：开工前依赖审计与阻断门禁
 
-> **新会话/新负责人必读**：[30｜P05-S05 后的工程交接快照](30-background-session-handoff.md)、[31｜接手与每批次提示词](31-background-session-continuation-prompts.md)。P05-S01～S05 各小批受控门禁均 **PASS**；**P05-S06 桌面端与合成多 viewer 中继受控 PASS，生产中心转发及 Pocket 错配仍 BLOCKED/NOT-RUN**，P05 整体 PARTIAL。P04 路径型文件 IPC 原已枚举路径和本次最终目标变更均有受控补丁，但真实双窗口、IPC 与 LIVE-06/08 仍是开放门禁。
+> **新会话/新负责人必读**：[30｜项目交接快照](30-background-session-handoff.md)、[31｜接手提示词](31-background-session-continuation-prompts.md)、[32｜P05 阶段完整验收与本地手册](32-p05-stage-acceptance-and-local-gates.md)。**P05-S01～S06 六专项 43/43 受控 PASS；中心实际多 viewer 路由 BLOCKED、Pocket 上游补丁尚未应用/运行，P05 整体 PARTIAL、合并 NO-GO。**P04 路径型文件 IPC 原已枚举路径和本次最终目标变更均有受控补丁，但真实双窗口、IPC 与 LIVE-06/08 仍是开放门禁。
 
 > 2026-10-12；初始源码审计基线 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；后续代码与受控探针仅在 Draft PR #21 分支实施。配套 [27 号实施规范](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。**文档中的 PASS 只对所附冻结提交、测试环境与覆盖范围有效；真实 Pi/Electron/Pocket 验收尚未完成，不得据此合并。**
 
@@ -225,6 +225,14 @@
 - **服务端事实与协议缺口（P05-RELAY-ROUTE-01 / BLOCKED）**：当前本仓库仅发现 `remote-relay-client.ts` 的桌面 outbound WSS 与 `remote-service.ts` 适配层，无 `/remote/ws` 中心端 viewer 映射代码；桌面返回的 `command_result` 只有 `requestId/commandId`，**没有经过验证的 viewer 路由标识/绑定证明**。生产必须由中心服务端证明它将 viewer 的 socket/会话与 pending `_cmdId` 原子关联，只把响应发送到原 viewer，断线删除映射，禁止跨 viewer 广播及不同 viewer 同 `_cmdId` 碰撞导致混发。还必须验证 ticket 签发校验、重新登录、重连、重复/迟到回执、并发和 cursor；没有真实票据/服务端时保持 NOT-RUN，不伪造生产 PASS。
 - **客户端事实与阻断风险（P05-POCKET-FIFO-01 / OPEN）**：在独立公开仓库 [Profer-pocket `ws-client.ts` L387–412](https://github.com/Yuan-lai-ru-ci/Profer-pocket/blob/main/src/renderer/pocket/ws-client.ts#L387-L412)，`resolveCommandResult` 遇到**非空但不匹配**的 `commandId/requestId` 时仍可能进入 FIFO fallback，错误完成另一个 pending 命令。该逻辑可由源码确认，但**生产中心是否会把不匹配回执送错 viewer 未证实**；不能把条件风险写成已发生泄漏。客户端维护者应使 FIFO 仅在完全无关联 ID、且兼容性条件满足时允许，非匹配有 ID 回执不得消费任一 pending 或写入错误 Remote Store；中心端还需独立证明响应定向。此仓库无对 Profer-pocket 的写入权限，**未擅自改动另一个仓库**。
 - **验收下一步**：获取中心 Relay 服务端可执行协议测试/源码或安全的授权测试账户，且验证两个真实 viewer（含相同/冲突 `_cmdId`、不同业务 `requestId`、掉线旧回执、重连）及客户端错配回归，补来源、原始日志和精确 frozen SHA；否则 P05 保持 PARTIAL，不解除 Draft/不合并。真实 Electron/Pocket/Feishu、A0 与 LIVE-01～08 均 NOT-RUN，未开始 Main 业务 IPC、P06/P07/P08。保留 P04-TECHDEBT-01 之前的历史与容量追踪完整记录。
+
+### P05 阶段级独立复核与跨仓修复交付（2026-10-13）
+
+- **归档**：[32｜完整验收矩阵、两项阻断、补丁应用和实机清单](32-p05-stage-acceptance-and-local-gates.md)；代码冻结 [`ce992f90`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/ce992f90880ecde1954e925b63585692a085f621)，三套 CI [PR #38284532497](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38284532497)、[D2 #38284532492](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38284532492)、[Baseline #38284532487](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38284532487) 均 SUCCESS；P05 六个文件 **43/43 PASS**（8+7+7+8+8+5），全仓 **3830 pass / 5 skip / 0 fail**（3835 tests，436 files）。
+- **六批逐个结论**：S01 **5/5**、S02 **7/7**、S03 **7/7**、S04 **8/8**、S05 **8/8**、S06 **8/8**，合计 **43/43**，均由最终代码 CI 原始日志的测试文件分组逐条核对。新增中心 fixture 2 个受控真实本机 socket 反例：两 viewer **相同** `_cmdId` 时生成 center 内部唯一关联 ID 并回填 viewer 本地 ID；viewer 断线后遗留回复不得交给使用相同 ID 的新 viewer。fixture 只表示中心**必须满足的合同**，不是生产服务端实际实现。
+- **P05-POCKET-FIFO-01**：已提供 [Pocket 上游可应用补丁](patches/P05-POCKET-FIFO-01-Profer-pocket.patch) 与 3 项目标客户端测试，针对独立 [Profer-pocket@95e79f11](https://github.com/Yuan-lai-ru-ci/Profer-pocket/commit/95e79f11003006f4386b7f96540fa61f45bdd965) 固定版本。两处 diff hunk 对其实际源/测试文件逐行比对正确；**当前连接对上游 push=false，无法替用户写入独立 Pocket 仓库，未执行其 git apply、Bun test、真实 Pocket 构建或上游 CI，故 PATCH READY / TARGET NOT-RUN 而非 FIXED**。非匹配 ID 不进入 FIFO、Remote Store 回调，缺 ID 时仅一个 pending 才允许兼容，这些是补丁设计与静态检查结果，必须上游执行验收。
+- **P05-RELAY-ROUTE-01**：生产中心 `profer.cn/remote/ws` 服务端实现/测试授权仍不可得；本仓库的真实 desktop outbound WS + 合成中心局部协议验证 PASS，但中心部署 **BLOCKED/NOT-RUN**。生产中心必须使用**全局唯一内部 correlation + 每 viewer 身份/连接 epoch + 原 ID 恢复 + 断线删除**，防不同 viewer 碰撞/迟到回执。由中心维护者提交服务端和实机证据后方可变更状态。
+- **总体 verdict**：**CODE/CONTROLLED PASS / E2E BLOCKED / P05 PARTIAL / MERGE NO-GO**。不能声称 Pocket 与 Relay 两项问题在其生产代码里已解决，也不能声称 A0、LIVE-01～08 完成；保留项目现有 P06/P07/P08 和 Main IPC 阶段门禁。**P04-TECHDEBT-01 原始立项、容量表、TTL/GC 禁止策略和历史结论完整保留，下段不覆写**。
 
 ### P04-PATH-01 低层路径型桌面 IPC 审计、最小收口与补测（2026-10-12）
 
