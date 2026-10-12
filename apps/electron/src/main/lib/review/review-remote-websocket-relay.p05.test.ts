@@ -197,6 +197,7 @@ describe('P05-S05 actual RelayClient loopback transport (mocked ticket only)', (
   test('real socket sends relay_auth and reconnects after server close without carrying old sink', async () => {
     const ticket = spyOn(authService, 'getRemoteRelayTicket').mockResolvedValue({ ticket: 'synthetic-ticket', expiresAt: Date.now() + 120_000 })
     const relayServer = new WebSocketServer({ port: 0, host: '127.0.0.1' })
+    await new Promise<void>((resolve) => relayServer.once('listening', resolve))
     const address = relayServer.address()
     const relayPort = typeof address === 'object' && address ? address.port : 0
     const received: string[] = []
