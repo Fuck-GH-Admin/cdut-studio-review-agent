@@ -3,10 +3,10 @@ import { createStore } from 'jotai'
 import type { BrowserViewState } from '@profer/shared'
 import { agentSessionsAtom } from '@/atoms/agent-atoms'
 import { tabsAtom } from '@/atoms/tab-atoms'
-import { openFilePreviewTab } from '@/components/diff/preview-opener'
+import { openFilePreviewTab, openFilePreviewTabAuthorized } from '@/components/diff/preview-opener'
 import { reconcileBrowserTabs } from './browser-tab'
 import type { AgentSessionMeta } from '@profer/shared'
-import { canOpenOrdinaryWorkTab, resolveOrdinaryTabSession, selectRestorableAgentTabs } from './agent-tab-access'
+import { canOpenOrdinaryWorkTab, ensureOrdinaryWorkTabOwner, markAgentSessionRevoked, resolveOrdinaryTabSession, selectRestorableAgentTabs } from './agent-tab-access'
 
 const session = (id: string, extra: Partial<AgentSessionMeta> = {}): AgentSessionMeta => ({
   id, title: id, createdAt: 1, updatedAt: 1, agentRuntime: 'pi', ...extra,
@@ -75,4 +75,64 @@ test('Browser restore/push reconciliation refuses unknown review sessions withou
   expect(store.get(tabsAtom).some(t => t.type === 'browser' && t.sessionId === 'ordinary')).toBe(true)
   expect(reconcileBrowserTabs(store, makeState('deleted'))).toBeNull()
   expect(store.get(tabsAtom).some(t => t.sessionId === 'deleted')).toBe(false)
+})
+
+test('early ordinary Preview/Browser event gets a single Main-authorized hydration fallback', async () => {
+  const store = createStore()
+  let lookups = 0
+  const load = async (id: string) => {
+    lookups += 1
+    return id === ordinary.id ? ordinary : null
+  }
+  expect(store.get(agentSessionsAtom)).toHaveLength(0)
+  const preview = await openFilePreviewTabAuthorized(store, 'ordinary', { filePath: '/tmp/early.png' },
+    { activate: false }, () => true, load)
+  expect(preview).toContain('__preview__:ordinary:')
+  expect(lookups).toBe(1)
+  expect(store.get(agentSessionsAtom).map(s => s.id)).toEqual(['ordinary'])
+  const browser: BrowserViewState = {
+    sessionId: 'ordinary', activeTabId: 't',
+    tabs: [{ tabId: 't', url: 'https://example.org', title: 'Early Browser' }],
+  } as BrowserViewState
+  expect(reconcileBrowserTabs(store, browser)).toBe('__browser__:ordinary:t')
+  expect(lookups).toBe(1)
+})
+
+test('early internal/removed and forged Main session metadata cannot open work tabs', async () => {
+  const store = createStore()
+  for (const [id, load] of [
+    ['internal', async () => internal],
+    ['gone', async () => null],
+    ['mismatch', async () => ordinary],
+    ['throwing', async (): Promise<AgentSessionMeta | null> => { throw new Error('closed window') }],
+  ] as const) {
+    const result = await openFilePreviewTabAuthorized(store, id, { filePath: '/tmp/denied.png' },
+      {}, () => true, load)
+    expect(result).toBe('')
+  }
+  expect(store.get(agentSessionsAtom)).toEqual([])
+  expect(store.get(tabsAtom)).toEqual([])
+})
+
+test('deletion during pending Main authorization revokes the queued normal work tab', async () => {
+  const store = createStore()
+  let resume!: (meta: AgentSessionMeta | null) => void
+  const loading = new Promise<AgentSessionMeta | null>((resolve) => { resume = resolve })
+  const pending = openFilePreviewTabAuthorized(store, 'ordinary', { filePath: '/tmp/late.png' },
+    {}, () => true, () => loading)
+  markAgentSessionRevoked(store, 'ordinary')
+  resume(ordinary)
+  expect(await pending).toBe('')
+  expect(store.get(agentSessionsAtom)).toHaveLength(0)
+  expect(store.get(tabsAtom)).toHaveLength(0)
+  store.set(agentSessionsAtom, [ordinary])
+  expect(openFilePreviewTab(store, 'ordinary', { filePath: '/tmp/replayed.png' })).toBe('')
+  expect(await ensureOrdinaryWorkTabOwner(store, 'ordinary', async () => ordinary)).toBe(false)
+})
+
+test('Main-authorized work tabs preserve archived and draft normal session compatibility', async () => {
+  const store = createStore()
+  expect(await ensureOrdinaryWorkTabOwner(store, 'archived', async () => archived)).toBe(true)
+  expect(await ensureOrdinaryWorkTabOwner(store, 'draft', async () => draft)).toBe(true)
+  expect(store.get(agentSessionsAtom).map(s => s.id).sort()).toEqual(['archived', 'draft'])
 })
