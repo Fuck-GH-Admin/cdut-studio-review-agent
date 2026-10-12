@@ -1274,6 +1274,23 @@ function assertSensitiveAgentIpcSender(event: { sender: { isDestroyed(): boolean
   assertMainWindowSender(event, mainWindowGetter)
 }
 
+/** Ordinary UI must neither view nor resolve pending prompts owned by internal review runs. */
+function filterOrdinaryPendingRequests<T extends { sessionId: string }>(requests: readonly T[]): T[] {
+  return requests.filter((request) => {
+    try {
+      assertOrdinaryAgentSession(request.sessionId)
+      return true
+    } catch {
+      return false
+    }
+  })
+}
+function assertOrdinaryPendingRequestId(requestId: string, requests: readonly { requestId: string; sessionId: string }[]): void {
+  const pending = requests.find((request) => request.requestId === requestId)
+  if (pending) assertOrdinaryAgentSession(pending.sessionId)
+}
+
+
 let rendererReadyHandler: (() => void) | null = null
 
 /** 向仍存活的 renderer 广播工作区列表变化；与 preload 监听保持同一契约。 */
@@ -3077,7 +3094,10 @@ export function registerIpcHandlers(): void {
   // renderer 刷新后重新绑定所有仍活跃的 Agent 流，并回放本轮实时事件。
   ipcMain.handle(
     AGENT_IPC_CHANNELS.RESTORE_ACTIVE_STREAMS,
-    async (event): Promise<string[]> => restoreActiveAgentStreams(event.sender),
+    async (event): Promise<string[]> => {
+      assertSensitiveAgentIpcSender(event)
+      return restoreActiveAgentStreams(event.sender)
+    }
   )
   ipcMain.handle(AGENT_IPC_CHANNELS.FILE_PREVIEW_REVISION, async (event, filePath: string, access?: FileAccessOptions | string[]): Promise<string | null> => {
     assertSensitiveAgentIpcSender(event)
@@ -3950,6 +3970,7 @@ export function registerIpcHandlers(): void {
     async (event, response: PermissionResponse): Promise<void> => {
       assertSensitiveAgentIpcSender(event)
       const { requestId, behavior, alwaysAllow } = response
+      assertOrdinaryPendingRequestId(requestId, permissionService.getPendingRequests())
       const sessionId = permissionService.respondToPermission(requestId, behavior, alwaysAllow)
 
       // 发送 permission_resolved 事件给渲染进程
@@ -4215,6 +4236,7 @@ export function registerIpcHandlers(): void {
     async (event, response: AskUserResponse): Promise<void> => {
       assertSensitiveAgentIpcSender(event)
       const { requestId, answers } = response
+      assertOrdinaryPendingRequestId(requestId, askUserService.getPendingRequests())
       const sessionId = await askUserService.respondToAskUser(requestId, answers)
 
       if (sessionId) {
@@ -4236,6 +4258,7 @@ export function registerIpcHandlers(): void {
     AGENT_IPC_CHANNELS.EXIT_PLAN_MODE_RESPOND,
     async (event, response: ExitPlanModeResponse): Promise<void> => {
       assertSensitiveAgentIpcSender(event)
+      assertOrdinaryPendingRequestId(response.requestId, exitPlanService.getPendingRequests())
       const result = exitPlanService.respondToExitPlanMode(response)
 
       if (result) {
@@ -4283,9 +4306,9 @@ export function registerIpcHandlers(): void {
     async (event): Promise<import('@profer/shared').PendingRequestsSnapshot> => {
       assertSensitiveAgentIpcSender(event)
       return {
-        permissions: permissionService.getPendingRequests(),
-        askUsers: askUserService.getPendingRequests(),
-        exitPlans: exitPlanService.getPendingRequests(),
+        permissions: filterOrdinaryPendingRequests(permissionService.getPendingRequests()),
+        askUsers: filterOrdinaryPendingRequests(askUserService.getPendingRequests()),
+        exitPlans: filterOrdinaryPendingRequests(exitPlanService.getPendingRequests()),
       }
     }
   )
@@ -4298,6 +4321,7 @@ export function registerIpcHandlers(): void {
       if (!sessionId || typeof sessionId !== 'string' || sessionId.length > 128) {
         throw new Error('无效的会话标识')
       }
+      assertOrdinaryAgentSession(sessionId)
       const { loadGraph } = await import('./lib/project-graph-service')
       return loadGraph(sessionId)
     },
@@ -4310,6 +4334,7 @@ export function registerIpcHandlers(): void {
       if (!sessionId || typeof sessionId !== 'string' || sessionId.length > 128) {
         throw new Error('无效的会话标识')
       }
+      assertOrdinaryAgentSession(sessionId)
       const { getGraphSummary } = await import('./lib/project-graph-service')
       return getGraphSummary(sessionId)
     },
@@ -4325,6 +4350,7 @@ export function registerIpcHandlers(): void {
       if (!graphEvent || typeof graphEvent !== 'object' || !graphEvent.type) {
         throw new Error('无效的图事件')
       }
+      assertOrdinaryAgentSession(sessionId)
       const { appendGraphEvent } = await import('./lib/project-graph-service')
       appendGraphEvent(sessionId, graphEvent)
     },
@@ -4333,6 +4359,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.RUN_RETROSPECTIVE,
     async (_event, sessionId: string) => {
+      assertOrdinaryAgentSession(sessionId)
       const { runRetrospective } = await import('./lib/retrospective-service')
       return runRetrospective(sessionId)
     },
@@ -4344,6 +4371,8 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.SAVE_FILES_TO_SESSION,
     async (_, input: AgentSaveFilesInput): Promise<AgentSavedFile[]> => {
+      if (!input || typeof input.sessionId !== 'string') throw new Error('无效的会话标识')
+      assertOrdinaryAgentSession(input.sessionId)
       return saveFilesToAgentSession(input)
     }
   )
@@ -4388,6 +4417,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.ATTACH_DIRECTORY,
     async (_, input: AgentAttachDirectoryInput): Promise<string[]> => {
+      assertOrdinaryAgentSession(input.sessionId)
       const meta = getAgentSessionMeta(input.sessionId)
       if (!meta) throw new Error(`会话不存在: ${input.sessionId}`)
 
@@ -4422,6 +4452,7 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(
     AGENT_IPC_CHANNELS.ATTACH_FILE,
     async (_, input: AgentAttachFileInput): Promise<string[]> => {
+      assertOrdinaryAgentSession(input.sessionId)
       const meta = getAgentSessionMeta(input.sessionId)
       if (!meta) throw new Error(`会话不存在: ${input.sessionId}`)
 
