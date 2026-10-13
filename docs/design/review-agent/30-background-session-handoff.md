@@ -2,13 +2,13 @@
 
 ## 最新交接（2026-10-13；优先于下方历史快照）
 
-- 用户授权：补齐进入 P06 前的前置项，更新测试仓库，**先不合并**。本轮完成 Main-only start/read/stop、Renderer 业务状态及 A0，未执行 P06/P07/P08。
+- 用户已授权进入 P06。先前 Main-only start/read/stop、Renderer 业务状态及 A0 4/4 已完成；现 **P06-S01 3/3 受控 PASS**，P06-S02 真实 Electron 双轮/迟到控制仍 NOT-RUN，P06 整体 PARTIAL；P07/P08 未执行，**先不合并**。
 - 冻结应用/验收驱动：`14bc7d6c3625aaa6eec2675aa9ce4dc446475297`（Electron 0.15.156 / shared 0.1.66 / core 0.2.14）；历史 P05 本地报告已补录 [33](33-p05-local-automation-recheck-20261013.md)，本批命令/环境/结果/CI/截图见 [34](34-pre-p06-main-a0-acceptance-20261013.md)。文档归档后 HEAD 会变化，必须查询当次 CI。
 - Main 复用可信 owner factory、V2 prepare、既有 admission/runAgent/stopAgentAndWait；使用审核模块选择或持久全局模型，不猜测替代模型，不继承普通聊天工作区。真实 `onRunOwned` 后 ACK，Renderer 卸载只结束显示轮询。
 - **本地 A0 可进入 P06 工程验证**：真实 DeepSeek 文本案卷完成、关闭真实审核子页后写入带出处的结果；预检无孤儿；当前轮停止 cancelled；真实 Pi 对本机 HTTP 500 收口 failed。后者是受控 provider 故障，不是生产 DeepSeek 故障。
 - P05-RELAY-ROUTE-01 **BLOCKED / NOT-RUN**；P05-POCKET-FIFO-01 **PATCH READY / TARGET NOT-RUN**。P05 整体 PARTIAL、PR #21 Draft/Open/未合并、MERGE NO-GO。P04 永久 ID-only tombstone 不做 TTL/GC，容量增长风险原记录保留。
 - 原件预览曾在 dev 被 `ERR_BLOCKED_BY_CLIENT` 阻断；A0 文本回退完成，扫描 PDF/PNG 不能记 PASS。LIVE 表仅追加已实测子集为 PARTIAL，未完成项保留。
-- 下一批是 **P06：同案连续两轮、旧 run 迟到 stop/失败回调、停止释放后立即重启**；核验当前真实 Main 路径，不重做已完成接线，不借此解除跨仓阻断或合并。
+- 下一批为 **P06-S02：真实 Electron/Pi 复核同案连续 update/restart、旧 runId stop/旧失败回调、释放后重启和旧 UI 回执隔离**；先前 P06-S01 的 Main bridge 受控三项已 PASS。以 35 号实测清单为准，不重做 Main/A0，不借此解除 P05 跨仓阻断或合并。
 
 > 历史更新基线：2026-10-12，Draft PR #21 **P04-TECHDEBT-01 安全性能补丁冻结代码 SHA** `dccaf6ce96072eac9404c3957742555916bd62f1`（PATH-01 补丁 `7c5e003c` 证据保留）（先前专项 `9eec2311` 的 9 项证据保留）（P05-S05 代码仍保留）（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
 

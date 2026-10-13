@@ -2,7 +2,7 @@
 
 > 本文件的提示词用于 **Draft PR #21** 的连续工程工作。它不替代仓库源码、CI 或 [27](27-background-review-session-proposal.md)/[29](29-background-session-preflight-audit.md)/[30](30-background-session-handoff.md) 文档。任何阶段完成与否以**当次 PR HEAD、实际 GitHub CI 和证据**为准。
 
-## 当前接手提示（2026-10-13；进入 P06 前置项交付后）
+## 历史接手提示（2026-10-13；A0 后、P06-S01 前）
 
 ```text
 接手测试仓库 Draft PR #21 / feat/review-owned-background-sessions。
