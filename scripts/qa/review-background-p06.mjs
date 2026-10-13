@@ -6,7 +6,7 @@
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import WebSocket from 'ws'
-import { createServer } from 'node:http'
+import { providerWitness, roundOwnerId, verifyOwnerTransition } from './review-background-p06-contract.mjs'
 
 const reportDir = process.env.QA_REPORT_DIR
 if (!reportDir) throw new Error('QA_REPORT_DIR is required')
@@ -124,9 +124,28 @@ const sourcePath = process.env.QA_SOURCE_PATH
 if (!profileRoot || !sourcePath) throw new Error('QA_PROFILE_ROOT and QA_SOURCE_PATH are required')
 const originalSelection = JSON.parse(readFileSync(join(profileRoot, 'config/review-module-settings.json'), 'utf8')).agentModelSelection
 const readOwners = () => { const path=join(profileRoot,'config/agent-sessions.json'); return existsSync(path) ? JSON.parse(readFileSync(path,'utf8')).sessions.filter(session=>session.owner?.kind==='review-case') : [] }
+const readAssignments = () => JSON.parse(readFileSync(join(profileRoot,'config/review-agent-assignments.json'),'utf8')).assignments
+const readMessages = (id) => {
+  const path=join(profileRoot,'config/agent-sessions',id+'.jsonl')
+  return existsSync(path) ? readFileSync(path,'utf8').split('\n').filter(Boolean).map(line=>JSON.parse(line)) : []
+}
+if (readOwners().length || existsSync(join(profileRoot,'config/review-agent-assignments.json'))) {
+  throw new Error('P06 回放要求全新隔离 profile；拒绝复用历史审核数据')
+}
 let cases
-let fixtureRequests=0
-const providerFixture=createServer((_request,response)=>{fixtureRequests+=1;setTimeout(()=>{response.writeHead(500,{'Content-Type':'application/json'});response.end(JSON.stringify({error:{message:'A0 synthetic provider failure',type:'api_error'}}))},1500)})
+const timeline=[]
+const trace=(event,caseId,runId,details={})=>{timeline.push({at:new Date().toISOString(),event,caseId,runId,...details});writeFileSync(join(reportDir,'timeline.json'),JSON.stringify(timeline,null,2))}
+async function waitProvider(ownerId,offset,caseId,runId) {
+  const end=deadline(120000)
+  while(Date.now()<end) {
+    const witness=providerWitness(readMessages(ownerId).slice(offset))
+    if(witness.assistantReplies>0){trace('provider-reply-observed',caseId,runId,witness);return witness}
+    const state=await evaluate(stateExpression(caseId))
+    if(state.runId!==runId || state.phase!=='accepted') throw new Error('取得 provider 回执前运行已结束或发生变化')
+    await delay(200)
+  }
+  throw new Error('未观察到本轮真实 provider 回执；不能只凭 ACK 宣称模型双轮通过')
+}
 async function clickSelector(selector) {
   const rect = await evaluate(`(() => { const el=document.querySelector(${JSON.stringify(selector)}); if(!el) return null; const r=el.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2} })()`)
   if (!rect) throw new Error('Selector not found: ' + selector)
@@ -218,6 +237,10 @@ async function boot() {
     await send('Page.reload')
   }
   await eventually('Pi review preload', '!!window.reviewAPI?.stopBackgroundPiReviewV2', 120000)
+  const localSettings=JSON.parse(readFileSync(join(profileRoot,'config/settings.json'),'utf8'))
+  if(!localSettings.onboardingCompleted || !localSettings.tutorialBannerDismissed) {
+    throw new Error('CDP 实例未写入指定隔离 profile；在创建案卷前拒绝继续')
+  }
   await seed()
   await openReview()
 }
@@ -244,6 +267,11 @@ async function clickStop(caseId, expectedRunId) {
   if (stopped.runId !== expectedRunId || stopped.runStatus !== 'cancelled') {
     throw new Error('stop did not retire expected round: '+JSON.stringify({expectedRunId,stopped}))
   }
+  trace('stopped-ledger',caseId,expectedRunId,{status:stopped.runStatus})
+  await eventually('真实界面停止收尾并可重新审核', `(() => {
+    const buttons=[...document.querySelectorAll('button')].filter(b=>b.getClientRects().length&&!b.disabled);
+    return document.body.innerText.includes('本次审核已停止，可重新审核') && buttons.some(b=>b.textContent.trim()==='更新审核结果') && buttons.some(b=>b.textContent.trim()==='重新审核');
+  })()`)
   return stopped
 }
 async function ensureNoPriorStopFeedback() {
@@ -256,29 +284,37 @@ async function runTwice(key, mode) {
   const priorOwners=readOwners().filter(x=>x.owner?.caseId===target.id).map(x=>x.id)
   await clickText('开始审核')
   const first=await waitAccepted(target.id)
+  trace('accepted-first',target.id,first.runId)
   const firstOwners=readOwners().filter(x=>x.owner?.caseId===target.id)
   if(firstOwners.length===0)throw new Error('No actual atomically-persisted review owner')
-  const owner1=firstOwners.find(x=>!priorOwners.includes(x.id))?.id ?? firstOwners.at(-1).id
+  const owner1=roundOwnerId(target.id,first.runId,firstOwners,readAssignments())
+  if(priorOwners.includes(owner1))throw new Error('全新 fixture 的第一轮错误使用历史 owner')
+  const provider1=await waitProvider(owner1,0,target.id,first.runId)
   const stopped1=await clickStop(target.id,first.runId)
+  const messageOffset=readMessages(owner1).length
+  const beforeSecond=readOwners().filter(x=>x.owner?.caseId===target.id).map(x=>x.id)
   await clickText(mode==='update'?'更新审核结果':'重新审核')
   const second=await newAcceptance(target.id,first.runId)
+  trace('accepted-second',target.id,second.runId,{mode})
   const owners=readOwners().filter(x=>x.owner?.caseId===target.id)
-  const owner2=mode==='update'?owners.find(x=>x.id===owner1)?.id:owners.find(x=>x.id!==owner1)?.id
-  if(!owner2)throw new Error('Expected '+mode+' owner policy not met')
-  if(mode==='restart'&&owner2===owner1)throw new Error('restart reused the old owner')
-  if(mode==='update'&&owner2!==owner1)throw new Error('update failed to reuse owner')
+  const owner2=roundOwnerId(target.id,second.runId,owners,readAssignments())
+  verifyOwnerTransition(mode,owner1,owner2,beforeSecond,owners.map(x=>x.id))
+  const provider2=await waitProvider(owner2,mode==='update'?messageOffset:0,target.id,second.runId)
   const rejected=await tryOldStop(target.id,first.runId)
   if(rejected.allowed || !rejected.reason.includes('运行已变化'))throw new Error('Old run stop unexpectedly accepted: '+JSON.stringify(rejected))
   const active=await queryRun(target.id,second.runId)
   const historic=await queryRun(target.id,first.runId)
   if(active?.status!=='running'||historic?.status!=='cancelled')throw new Error('Old stop affected new round: '+JSON.stringify({active:active?.status,historic:historic?.status}))
   await ensureNoPriorStopFeedback()
+  trace('old-stop-denied-current-running',target.id,second.runId,{oldRunId:first.runId})
   await screenshot('p06-'+key+'-second-accepted')
   const stopped2=await clickStop(target.id,second.runId)
   const priorAfter=await queryRun(target.id,first.runId)
   if(priorAfter?.status!=='cancelled')throw new Error('Old ledger mutated after second completion')
   await screenshot('p06-'+key+'-both-retired')
-  return {caseId:target.id,mode,rounds:[{runId:first.runId,terminal:stopped1.runStatus},{runId:second.runId,terminal:stopped2.runStatus}],ownerPolicyVerified:true,oldStopDenied:rejected.reason,oldLedgerUnchanged:true,latestAckReal:true,guiButtonsClicked:true}
+  const grants=readAssignments().filter(a=>a.caseId===target.id&&[first.runId,second.runId].includes(a.activeRunId))
+  if(grants.length!==2 || grants.some(a=>!a.revokedAt))throw new Error('停止释放后两轮指派未全部撤销')
+  return {caseId:target.id,mode,rounds:[{runId:first.runId,terminal:stopped1.runStatus,providerWitness:provider1},{runId:second.runId,terminal:stopped2.runStatus,providerWitness:provider2}],ownerPolicyVerified:true,bindingsVerified:true,grantsRevoked:true,oldStopDenied:rejected.reason,oldLedgerUnchanged:true,latestAckReal:true,guiButtonsClicked:true}
 }
 try {
   await boot()
@@ -291,5 +327,4 @@ try {
   process.exitCode=1
 } finally {
   if (ws?.readyState===WebSocket.OPEN) ws.close()
-  providerFixture.close()
 }
