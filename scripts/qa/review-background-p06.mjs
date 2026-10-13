@@ -292,6 +292,19 @@ async function runTwice(key, mode) {
   if(priorOwners.includes(owner1))throw new Error('全新 fixture 的第一轮错误使用历史 owner')
   const provider1=await waitProvider(owner1,0,target.id,first.runId)
   const stopped1=await clickStop(target.id,first.runId)
+  const firstLedger=await queryRun(target.id,first.runId)
+  if(mode==='update') {
+    // update 必须处理本轮最新材料；替换合成版本，避免直接继承首轮读取后瞬间完成。
+    const nextPath=join(profileRoot,'p06-second-version.txt')
+    writeFileSync(nextPath,'P06 第二轮合成申请：读书交流活动总预算120元。此版本替换第一轮100元申请，需按当前版本核验。这是虚构测试材料。')
+    await evaluate(`(async()=>{
+      const a=await window.reviewAPI.getAggregateV2(${JSON.stringify(target.id)});
+      const old=a.caseV2.documents.find(d=>d.active!==false&&d.role==='application');
+      if(!old)throw new Error('没有可替换的合成材料');
+      await window.reviewAPI.registerMaterialPathV2({caseId:${JSON.stringify(target.id)},sourcePath:${JSON.stringify(nextPath)},role:'application',fileName:old.fileName,replacesVersionIds:[old.versionId]});
+    })()`)
+    trace('synthetic-material-replaced',target.id,first.runId)
+  }
   const messageOffset=readMessages(owner1).length
   const beforeSecond=readOwners().filter(x=>x.owner?.caseId===target.id).map(x=>x.id)
   await clickText(mode==='update'?'更新审核结果':'重新审核')
@@ -300,14 +313,17 @@ async function runTwice(key, mode) {
   const owners=readOwners().filter(x=>x.owner?.caseId===target.id)
   const owner2=roundOwnerId(target.id,second.runId,owners,readAssignments())
   verifyOwnerTransition(mode,owner1,owner2,beforeSecond,owners.map(x=>x.id))
-  const provider2=await waitProvider(owner2,mode==='update'?messageOffset:0,target.id,second.runId)
   const rejected=await tryOldStop(target.id,first.runId)
   if(rejected.allowed || !rejected.reason.includes('运行已变化'))throw new Error('Old run stop unexpectedly accepted: '+JSON.stringify(rejected))
   const active=await queryRun(target.id,second.runId)
   const historic=await queryRun(target.id,first.runId)
-  if(active?.status!=='running'||historic?.status!=='cancelled')throw new Error('Old stop affected new round: '+JSON.stringify({active:active?.status,historic:historic?.status}))
-  await ensureNoPriorStopFeedback()
+  if(active?.status!=='running'||historic?.status!=='cancelled')throw new Error('旧 stop 负例没有保持所需的当前 running/历史 cancelled 窗口：'+JSON.stringify({active:active?.status,historic:historic?.status}))
+  if(mode==='update'&&active.inputManifest.hash===firstLedger.inputManifest.hash)throw new Error('替换材料未进入第二轮输入快照')
+  if(historic.inputManifest.hash!==firstLedger.inputManifest.hash)throw new Error('旧轮次输入快照被改写')
   trace('old-stop-denied-current-running',target.id,second.runId,{oldRunId:first.runId})
+  const provider2=await waitProvider(owner2,mode==='update'?messageOffset:0,target.id,second.runId)
+  await eventually('当前轮已回显在真实 UI', 'document.body.innerText.includes("审核中，可切换页面") && [...document.querySelectorAll("button")].some(b=>b.getClientRects().length&&!b.disabled&&b.textContent.trim()==="停止审核")')
+  await ensureNoPriorStopFeedback()
   await screenshot('p06-'+key+'-second-accepted')
   const stopped2=await clickStop(target.id,second.runId)
   const priorAfter=await queryRun(target.id,first.runId)
@@ -315,7 +331,7 @@ async function runTwice(key, mode) {
   await screenshot('p06-'+key+'-both-retired')
   const grants=readAssignments().filter(a=>a.caseId===target.id&&[first.runId,second.runId].includes(a.activeRunId))
   if(grants.length!==2 || grants.some(a=>!a.revokedAt))throw new Error('停止释放后两轮指派未全部撤销')
-  return {caseId:target.id,mode,rounds:[{runId:first.runId,terminal:stopped1.runStatus,providerWitness:provider1},{runId:second.runId,terminal:stopped2.runStatus,providerWitness:provider2}],ownerPolicyVerified:true,bindingsVerified:true,grantsRevoked:true,oldStopDenied:rejected.reason,oldLedgerUnchanged:true,latestAckReal:true,guiButtonsClicked:true}
+  return {caseId:target.id,mode,rounds:[{runId:first.runId,terminal:stopped1.runStatus,providerWitness:provider1},{runId:second.runId,terminal:stopped2.runStatus,providerWitness:provider2}],ownerPolicyVerified:true,bindingsVerified:true,grantsRevoked:true,materialSnapshotChanged:mode==='update',oldStopDenied:rejected.reason,oldLedgerUnchanged:true,latestAckReal:true,guiButtonsClicked:true}
 }
 try {
   await boot()
