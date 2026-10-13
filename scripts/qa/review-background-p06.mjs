@@ -278,7 +278,7 @@ async function runTwice(key, mode) {
   const priorAfter=await queryRun(target.id,first.runId)
   if(priorAfter?.status!=='cancelled')throw new Error('Old ledger mutated after second completion')
   await screenshot('p06-'+key+'-both-retired')
-  return {caseId:target.id,mode,rounds:[{runId:first.runId,ownerId:owner1,terminal:stopped1.runStatus},{runId:second.runId,ownerId:owner2,terminal:stopped2.runStatus}],oldStopDenied:rejected.reason,oldLedgerUnchanged:true,latestAckReal:true,guiButtonsClicked:true}
+  return {caseId:target.id,mode,rounds:[{runId:first.runId,terminal:stopped1.runStatus},{runId:second.runId,terminal:stopped2.runStatus}],ownerPolicyVerified:true,oldStopDenied:rejected.reason,oldLedgerUnchanged:true,latestAckReal:true,guiButtonsClicked:true}
 }
 try {
   await boot()
