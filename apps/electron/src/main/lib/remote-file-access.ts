@@ -101,6 +101,9 @@ export function isReviewPrivateConfigPath(
   const rel = relative(resolve(configDir), resolve(filePath))
   if (!rel || rel === '..' || rel.startsWith('..' + sep) || isAbsolute(rel)) return false
   const parts = rel.split(sep)
+  // The monotonic owner deny journal contains only UUIDs, but its identities
+  // must not be exposed or mutated through ordinary file/preview entry points.
+  if (parts.length === 1 && parts[0] === 'review-owner-ids.log') return true
   if (parts[0] === 'agent-workspaces' && parts.length >= 3) {
     // agent-workspaces/<workspaceSlug>/<sessionId>/...
     return isReviewOwnerId(parts[2]!)

@@ -4,6 +4,8 @@
  * No production user data, provider, or actual socket is involved.
  */
 import { afterAll, describe, expect, test } from 'bun:test'
+import { spawnSync } from 'node:child_process'
+import { fileURLToPath } from 'node:url'
 import { randomUUID } from 'node:crypto'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, unlinkSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -85,6 +87,30 @@ describe('P06-FIX-01 owner identity survives index recovery', () => {
     if (existsSync(indexPath() + '.tmp')) unlinkSync(indexPath() + '.tmp')
     if (existsSync(indexPath() + '.bak')) unlinkSync(indexPath() + '.bak')
     expect(manager.isReviewOwnedOrDeletedAgentSessionId(owner.id)).toBeTrue()
+  })
+
+
+  test('a new Bun process still denies an orphaned owner after old index recovery', () => {
+    const review = owned()
+    const index = JSON.parse(readFileSync(indexPath(), 'utf8'))
+    index.sessions = index.sessions.filter((s: { id: string }) => s.id !== review.id)
+    writeFileSync(indexPath(), JSON.stringify(index, null, 2))
+    const source = new URL('./agent-session-manager.ts', import.meta.url).href
+    const preload = fileURLToPath(new URL('../../../../../test/preload-electron-mock.ts', import.meta.url))
+    const child = spawnSync(process.execPath, ['--preload', preload, '-e',
+      `import { isReviewOwnedOrDeletedAgentSessionId as deny } from ${JSON.stringify(source)}; if (!deny(${JSON.stringify(review.id)})) process.exit(13)`,
+    ], { env: { ...process.env, PROFER_CONFIG_DIR: root }, encoding: 'utf8', timeout: 20000 })
+    expect(child.status).toBe(0)
+    expect(child.signal).toBeNull()
+    expect(manager.isReviewOwnedOrDeletedAgentSessionId(review.id)).toBeTrue()
+  })
+
+  test('deny journal itself is private, while an ordinary workspace remains usable', () => {
+    const normal = ordinary()
+    expect(isReviewPrivateDesktopPath(fencePath())).toBeTrue()
+    expect(isReviewPrivateDesktopPath(privateFile(normal.id))).toBeFalse()
+    expect(() => manager.assertOrdinaryAgentSession(normal.id)).not.toThrow()
+    expect(mayPublishAgentEventToRemote(normal.id)).toBeTrue()
   })
 
   test('valid old index owners are backfilled before a later backup rollback', () => {
