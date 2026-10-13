@@ -193,6 +193,14 @@
       "bytes": 972,
       "sha256": "d58fef22d7a733585d067e2695ad4e5979f407bb7ca8510aea6a38a8d5c05de3"
     },
+    "audit/invalidated-ssr-pilot.note.txt": {
+      "bytes": 162,
+      "sha256": "26ed6d2e8ede4c11b1c97ee20c36762644a30f05a1a9d9dcc962402cc12d51e5"
+    },
+    "audit/settlement-standalone.log.redaction.json": {
+      "bytes": 374,
+      "sha256": "384837a09467313c693a5383082149e4abbcaa61de408278611c9551692edb26"
+    },
     "audit/settle-risk-standalone.log.redaction.json": {
       "bytes": 461,
       "sha256": "15fdd5bb9fad17a3df91158cf06b4e9a930a8e40bf69ab31d690f2afb09ba196"
@@ -200,6 +208,10 @@
     "audit/scope-risk-audit.probe.ts": {
       "bytes": 12151,
       "sha256": "fdf91f6f20367c43a05d5bcf7f7b3d76c612721dd869ed2ceb75a18126779cf2"
+    },
+    "audit/invalidated-ssr-pilot.log": {
+      "bytes": 4574,
+      "sha256": "544119f65e8567a1d91b3f3d1239b9d7b2542451579953c9d26fb7ce14485b8b"
     },
     "audit/cumulative-changed-files.txt": {
       "bytes": 3576,
@@ -213,13 +225,29 @@
       "bytes": 182,
       "sha256": "de77d1b5e88880457c79b2aab6ded06b4ea950f3bf318ae5d6e0caffa8421292"
     },
+    "audit/invalidated-ssr-pilot.log.redaction.json": {
+      "bytes": 362,
+      "sha256": "9753a26b46d58353311525feec391746c7b9836be1173d37f00a90c56fda14b5"
+    },
     "audit/settle-risk-standalone.log": {
       "bytes": 587,
       "sha256": "88f9a0c19dc59ace72a6320625a0cdb39b4998b5a52ae45221a8fc3d2819d9e1"
     },
+    "audit/settlement-standalone.log": {
+      "bytes": 587,
+      "sha256": "769a40e293395bf0e8cf4a1b789461d0080935fdfc12d8c7fec0097d39449898"
+    },
+    "audit/controlled-protection.log": {
+      "bytes": 5127,
+      "sha256": "1890c7cd6bc6948f8582acc7dce05bbbc170631e9ce595e51838adc3d7f4af4f"
+    },
     "audit/review-scope.json": {
       "bytes": 424,
       "sha256": "5e1644bd56ecd5a0666753fa52cca66ed123937674405acd4b2a80010c944ba8"
+    },
+    "audit/controlled-protection.log.redaction.json": {
+      "bytes": 374,
+      "sha256": "408dfc4acdfb16ee577aef5f91c36d2071d0ffa3ac44618eb2000219bba88a92"
     },
     "audit/probe-commands.json": {
       "bytes": 1617,
@@ -256,6 +284,22 @@
     "attempts/de131-original/p06-summary.json": {
       "bytes": 4710,
       "sha256": "bb7b3d4dffe1c0d852dbefdef550f42b4803c85e042142904a1daf69a49978d4"
+    },
+    "attempts/supplement-setup/note.txt": {
+      "bytes": 161,
+      "sha256": "4603add9c068fcbefc32b262d5429ca2a2f0c763b9d4c743233e255a59238e58"
+    },
+    "attempts/supplement-setup/driver.log.redaction.json": {
+      "bytes": 360,
+      "sha256": "871526ef52d91e73b9d8a8832e0c08578575fd81a65cc2ff802b134c0e716b35"
+    },
+    "attempts/supplement-setup/result.json": {
+      "bytes": 223,
+      "sha256": "27424231619d5a45a81c73b21b78b0e97731c40ce36bf4c57d6858f728ec587f"
+    },
+    "attempts/supplement-setup/driver.log": {
+      "bytes": 51,
+      "sha256": "37ca85e31a1e33fc9c1aec9dc93ad4c98c0d39fb6c93329de55bb29f65036be2"
     },
     "attempts/3d2-reload/expected_scope.txt": {
       "bytes": 99,
