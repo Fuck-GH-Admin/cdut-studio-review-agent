@@ -3,19 +3,12 @@
  * Real on-disk index, real SDK JSONL getter, event & path predicates.
  * No production user data, provider, or actual socket is involved.
  */
-import { afterAll, describe, expect, mock, test } from 'bun:test'
+import { afterAll, describe, expect, test } from 'bun:test'
 import { randomUUID } from 'node:crypto'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, unlinkSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-mock.module('electron', () => ({
-  BrowserWindow: { getAllWindows: () => [], fromWebContents: () => undefined },
-  app: { getPath: () => '', isPackaged: false },
-  clipboard: { readText: () => '', writeText: () => undefined }, dialog: {}, nativeImage: {},
-  nativeTheme: {}, Notification: class {}, powerMonitor: {}, powerSaveBlocker: {},
-  safeStorage: {}, screen: {}, shell: {}, systemPreferences: {},
-}))
 const root = mkdtempSync(join(tmpdir(), 'p06-owner-recovery-'))
 process.env.PROFER_CONFIG_DIR = root
 afterAll(() => rmSync(root, { recursive: true, force: true }))
