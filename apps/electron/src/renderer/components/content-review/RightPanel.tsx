@@ -51,6 +51,13 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
   const workspaceActions = useReviewWorkspaceActions()
   const view = aggregate ? buildReviewWorkspaceViewModel(aggregate, run, runStale, extractedObservations, template) : null
   const [busyKey, setBusyKey] = React.useState<string | null>(null)
+  const feedbackScope = `${legacyCase?.id ?? ''}:${run?.id ?? ''}`
+  const activeFeedbackScopeRef = React.useRef(feedbackScope)
+  const feedbackOperationRef = React.useRef(0)
+  if (activeFeedbackScopeRef.current !== feedbackScope) {
+    activeFeedbackScopeRef.current = feedbackScope
+    feedbackOperationRef.current += 1
+  }
   const [notice, setNotice] = React.useState<string | null>(null)
   const [feedback, setFeedback] = React.useState<string | null>(null)
   const [showResolved, setShowResolved] = React.useState(false)
@@ -61,6 +68,7 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
   React.useEffect(() => {
     setFeedback(null)
     setNotice(null)
+    setBusyKey(null)
   }, [legacyCase?.id, run?.id])
   const canRun = !!legacyCase
   const reviewBusy = running || execution.status === 'preparing' || execution.status === 'running' || run?.status === 'running'
@@ -71,19 +79,25 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
     ?? view?.pendingActions.find((item) => item.kind === 'adjudication')
 
   const perform = async (key: string, action: () => Promise<void>, successMessage = '操作已保存，待办列表已更新。', revealResolved = false): Promise<void> => {
+    const scopedOperation = ++feedbackOperationRef.current
+    const issuedScope = activeFeedbackScopeRef.current
+    const stillCurrent = (): boolean => scopedOperation === feedbackOperationRef.current
+      && issuedScope === activeFeedbackScopeRef.current
     setBusyKey(key)
     setNotice(null)
     setFeedback(null)
     try {
       await action()
+      if (!stillCurrent()) return
       await workspaceActions.refresh()
+      if (!stillCurrent()) return
       setHistoryNonce((value) => value + 1)
       setFeedback(successMessage)
       if (revealResolved) setShowResolved(true)
     } catch (error) {
-      setNotice(error instanceof Error ? error.message : String(error))
+      if (stillCurrent()) setNotice(error instanceof Error ? error.message : String(error))
     } finally {
-      setBusyKey(null)
+      if (stillCurrent()) setBusyKey(null)
     }
   }
 

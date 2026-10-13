@@ -808,6 +808,59 @@ describe('Main 后台审核前台接线', () => {
     expect(store.get(reviewExecutionByCaseAtom)[fixture.source.id]?.status).toBe('cancelled')
   })
 
+
+  test('P06-S02 a slow first snapshot cannot repaint the newer run of the same case', async () => {
+    const fixture = backgroundFixture()
+    const previous = { ...fixture.runningRun, id: 'run-pi-previous', status: 'failed' as const, error: 'old error' }
+    const next = { ...fixture.runningRun, id: 'run-pi-next' }
+    fixture.setRun(previous)
+    const store = createStore()
+    const actions = createReviewActionsController(store, fixture.api)
+    await actions.selectCase(fixture.source.id)
+    const delayed = new Deferred()
+    let listReads = 0
+    fixture.api.listRunsV2 = async () => {
+      listReads++
+      return listReads === 1 ? delayed.promise as Promise<ReviewRunV2[]> : [next]
+    }
+    fixture.api.getBackgroundPiReviewStateV2 = async () => ({ caseId: fixture.source.id, runId: next.id, runStatus: next.status, phase: 'accepted' })
+    const oldRefresh = actions.refreshBackgroundReview(fixture.source.id)
+    while (listReads === 0) await Bun.sleep(0)
+    await actions.refreshBackgroundReview(fixture.source.id)
+    expect(store.get(reviewWorkspaceRunsByCaseAtom)[fixture.source.id]?.id).toBe(next.id)
+    expect(store.get(reviewExecutionByCaseAtom)[fixture.source.id]?.status).toBe('running')
+    delayed.resolve([previous])
+    await oldRefresh
+    expect(store.get(reviewWorkspaceRunsByCaseAtom)[fixture.source.id]?.id).toBe(next.id)
+    expect(store.get(reviewExecutionByCaseAtom)[fixture.source.id]?.status).toBe('running')
+  })
+
+  test('P06-S02 late first acceptance response cannot replace second round UI status', async () => {
+    const fixture = backgroundFixture()
+    const first = { ...fixture.runningRun, id: 'run-pi-first' }
+    const second = { ...fixture.runningRun, id: 'run-pi-second' }
+    fixture.setRun(first)
+    const store = createStore()
+    const actions = createReviewActionsController(store, fixture.api)
+    await actions.selectCase(fixture.source.id)
+    const delayed = new Deferred()
+    let read = 0
+    fixture.api.getBackgroundPiReviewStateV2 = async () => {
+      read++
+      return read === 1 ? delayed.promise as Promise<import('@profer/shared').ReviewBackgroundPiRunState>
+        : { caseId: fixture.source.id, runId: second.id, runStatus: second.status, phase: 'accepted' }
+    }
+    fixture.api.listRunsV2 = async () => read === 0 ? [first] : [second]
+    const oldRefresh = actions.refreshBackgroundReview(fixture.source.id)
+    while (read === 0) await Bun.sleep(0)
+    await actions.refreshBackgroundReview(fixture.source.id)
+    expect(store.get(reviewWorkspaceRunsByCaseAtom)[fixture.source.id]?.id).toBe(second.id)
+    delayed.resolve({ caseId: fixture.source.id, runId: first.id, runStatus: first.status, phase: 'accepted' })
+    await oldRefresh
+    expect(store.get(reviewWorkspaceRunsByCaseAtom)[fixture.source.id]?.id).toBe(second.id)
+    expect(store.get(reviewExecutionByCaseAtom)[fixture.source.id]?.status).toBe('running')
+  })
+
   test('预检失败的业务错误卡和提示只显示原因，不显示 IPC 包装', async () => {
     const fixture = backgroundFixture()
     const store = createStore()

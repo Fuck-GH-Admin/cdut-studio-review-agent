@@ -220,6 +220,8 @@ export function createReviewActionsController(
   }
   /** 同案操作代次：key = `${caseId}:${kind}`，新发起递增；旧返回代次不符即丢弃 */
   const operationGenerations = new Map<string, number>()
+  /** Per-case latest refresh wins: a slow prior run snapshot cannot repaint a new round. */
+  const workspaceRefreshGenerations = new Map<string, number>()
 
   const reportError = (scope: string, error: unknown, options: { caseId?: string } = {}): void => {
     console.error('[审核专区]', scope, error)
@@ -254,21 +256,31 @@ export function createReviewActionsController(
 
   /** 当前 workspace caseId 与 V2 aggregateId 一致；选择/写入后从持久层重读。 */
   const refreshWorkspaceV2 = async (caseId: string): Promise<void> => {
-    if (api.migrateCaseV2) await api.migrateCaseV2(caseId)
+    const generation = (workspaceRefreshGenerations.get(caseId) ?? 0) + 1
+    workspaceRefreshGenerations.set(caseId, generation)
+    const isLatest = (): boolean => workspaceRefreshGenerations.get(caseId) === generation
+    if (api.migrateCaseV2) {
+      await api.migrateCaseV2(caseId)
+      if (!isLatest()) return
+    }
     if (api.getAggregateV2) {
       const aggregate = await api.getAggregateV2(caseId)
+      if (!isLatest()) return
       store.set(reviewWorkspaceAggregatesByCaseAtom, { ...store.get(reviewWorkspaceAggregatesByCaseAtom), [caseId]: aggregate ?? null })
       if (aggregate && api.getTemplateV2) {
         const template = await api.getTemplateV2(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+        if (!isLatest()) return
         store.set(reviewWorkspaceTemplatesByCaseAtom, { ...store.get(reviewWorkspaceTemplatesByCaseAtom), [caseId]: template ?? null })
       }
     }
     if (api.listRunsV2) {
       const runs = await api.listRunsV2(caseId)
+      if (!isLatest()) return
       const latest = runs[0] ?? null
       store.set(reviewWorkspaceRunsByCaseAtom, { ...store.get(reviewWorkspaceRunsByCaseAtom), [caseId]: latest })
       if (latest && api.getWorkspaceRunValidityV2) {
         const stale = await api.getWorkspaceRunValidityV2({ caseId, runId: latest.id })
+        if (!isLatest()) return
         store.set(reviewWorkspaceRunStaleByCaseAtom, { ...store.get(reviewWorkspaceRunStaleByCaseAtom), [caseId]: stale })
       } else if (!latest) {
         store.set(reviewWorkspaceRunStaleByCaseAtom, { ...store.get(reviewWorkspaceRunStaleByCaseAtom), [caseId]: false })
@@ -276,6 +288,7 @@ export function createReviewActionsController(
     }
     if (api.getRunObservationsV2) {
       const observations = await api.getRunObservationsV2(caseId)
+      if (!isLatest()) return
       store.set(reviewWorkspaceExtractedObservationsByCaseAtom, { ...store.get(reviewWorkspaceExtractedObservationsByCaseAtom), [caseId]: observations })
     }
     const tasks = store.get(reviewTasksByCaseAtom)[caseId]
@@ -287,7 +300,7 @@ export function createReviewActionsController(
         store.get(reviewWorkspaceExtractedObservationsByCaseAtom)[caseId] ?? [],
         store.get(reviewWorkspaceTemplatesByCaseAtom)[caseId],
       )
-      if (state) store.set(reviewExecutionByCaseAtom, { ...store.get(reviewExecutionByCaseAtom), [caseId]: state })
+      if (isLatest() && state) store.set(reviewExecutionByCaseAtom, { ...store.get(reviewExecutionByCaseAtom), [caseId]: state })
     }
   }
 
@@ -331,7 +344,7 @@ export function createReviewActionsController(
             store.get(reviewWorkspaceExtractedObservationsByCaseAtom)[caseId] ?? [],
             store.get(reviewWorkspaceTemplatesByCaseAtom)[caseId],
           )
-          if (workspaceState) store.set(reviewExecutionByCaseAtom, { ...store.get(reviewExecutionByCaseAtom), [caseId]: workspaceState })
+          if (generation === selectionGeneration && workspaceState) store.set(reviewExecutionByCaseAtom, { ...store.get(reviewExecutionByCaseAtom), [caseId]: workspaceState })
         }
       } catch (restoreError) {
         console.error('[审核专区] 恢复最近运行失败', restoreError)
