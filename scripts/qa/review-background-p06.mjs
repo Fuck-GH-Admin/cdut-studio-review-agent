@@ -232,7 +232,8 @@ async function boot() {
     await window.electronAPI.updateSettings({onboardingCompleted:true,tutorialBannerDismissed:true,coachTourVersion:CURRENT_COACH_TOUR_VERSION});return true
   })()`)
   if (guide) await send('Page.reload')
-  if (await evaluate('document.body.innerText.includes("欢迎使用 CDUT Studio")')) {
+  await eventually('reload document ready', '!!document.body && !!window.electronAPI && !!window.reviewAPI', 120000)
+  if (await evaluate('document.body?.innerText.includes("欢迎使用 CDUT Studio")')) {
     await evaluate('window.electronAPI.updateSettings({onboardingCompleted:true})')
     await send('Page.reload')
   }
