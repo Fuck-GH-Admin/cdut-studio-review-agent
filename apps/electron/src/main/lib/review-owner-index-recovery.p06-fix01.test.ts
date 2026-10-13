@@ -81,8 +81,9 @@ describe('P06-FIX-01 owner identity survives index recovery', () => {
     expect(isReviewPrivateDesktopPath(privateFile(owner.id))).toBeTrue()
     expect(() => manager.getAgentSessionMeta(randomUUID())).toThrow('索引损坏')
     writeFileSync(indexPath(), before)
-    unlinkSync(indexPath() + '.tmp')
-    unlinkSync(indexPath() + '.bak')
+    // readJsonFileSafe intentionally removes corrupt .tmp during recovery.
+    if (existsSync(indexPath() + '.tmp')) unlinkSync(indexPath() + '.tmp')
+    if (existsSync(indexPath() + '.bak')) unlinkSync(indexPath() + '.bak')
     expect(manager.isReviewOwnedOrDeletedAgentSessionId(owner.id)).toBeTrue()
   })
 
