@@ -61,7 +61,11 @@ describe('P04-TECHDEBT-01 index-coupled owner membership', () => {
     writeJsonFileAtomic(path, ownerIndex)
     expect(isReviewOwnedOrDeletedAgentSessionId(activeId)).toBe(true)
     writeJsonFileAtomic(path, imported)
-    expect(isReviewOwnedOrDeletedAgentSessionId(activeId)).toBe(false)
+    // P06-FIX-01: removing a live owner from an externally restored index must
+    // not silently demote it into an ordinary session. The independent ID-only
+    // deny journal is monotonic, just like deletion tombstones.
+    expect(isReviewOwnedOrDeletedAgentSessionId(activeId)).toBe(true)
+    expect(() => assertOrdinaryAgentSession(activeId)).toThrow('内部审核会话')
     expect(isReviewOwnedOrDeletedAgentSessionId(deletedId)).toBe(true)
   })
 
