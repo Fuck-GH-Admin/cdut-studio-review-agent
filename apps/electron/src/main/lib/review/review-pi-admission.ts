@@ -126,12 +126,18 @@ export function admitPreparedPiReviewTurn(
       } else if (!terminalReported && getRunV2(binding.caseId, binding.runId)?.status === 'running') {
         closeIfCurrent(binding, 'Agent 未产生可信的完成回调')
       }
+      // Retire the released turn's grant. Historical grants remain in the
+      // persisted audit timeline but cannot authorize delayed tool calls.
+      revokeAssignment(binding.assignmentId)
       runningAssignments.delete(binding.assignmentId)
       forgetAdmitted(binding)
     },
     (error: unknown) => {
       finished = true
       fail(error)
+      // Retire the released turn's grant. Historical grants remain in the
+      // persisted audit timeline but cannot authorize delayed tool calls.
+      revokeAssignment(binding.assignmentId)
       runningAssignments.delete(binding.assignmentId)
       forgetAdmitted(binding)
     },

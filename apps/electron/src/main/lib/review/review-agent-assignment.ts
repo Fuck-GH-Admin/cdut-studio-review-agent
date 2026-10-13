@@ -175,13 +175,13 @@ export function listAssignments(sessionId?: string): ReviewAgentAssignment[] {
 
 /** 读取会话最近一条有效的直接审核指派。 */
 export function findActivePiReviewAssignment(sessionId: string): ReviewAgentAssignment | undefined {
-  return readAll()
-    .filter((item) => item.sessionId === sessionId
-      && !item.revokedAt
-      && item.caseId
-      && item.activeRunId
-      && item.actions.includes('submit-result'))
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0]
+  // createAssignment appends to disk. Millisecond timestamps can tie
+  // during consecutive runs; use persisted insertion order, newest first.
+  return readAll().reverse().find((item) => item.sessionId === sessionId
+    && !item.revokedAt
+    && item.caseId
+    && item.activeRunId
+    && item.actions.includes('submit-result'))
 }
 
 /** 由指派构造工具 actor（role 来自指派工作角色，不由模型声明；actorId 保留完整会话身份） */

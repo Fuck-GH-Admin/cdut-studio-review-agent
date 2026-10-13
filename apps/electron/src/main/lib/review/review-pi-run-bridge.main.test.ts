@@ -1,7 +1,7 @@
 /** Main 薄接线：真实 V2/会话/IPC，受控执行器；Electron A0 另行记录。 */
 import { afterAll, describe, expect, mock, test } from 'bun:test'
 import { randomUUID } from 'node:crypto'
-import { mkdtempSync, rmSync } from 'node:fs'
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { AgentSendInput, TemplateVersion } from '@profer/shared'
@@ -13,6 +13,7 @@ process.env.PROFER_CONFIG_DIR = configDir
 afterAll(() => rmSync(configDir, { recursive: true, force: true }))
 const executions: Array<{ input: AgentSendInput; owned(): void; end(status: 'completed' | 'failed' | 'stopped'): void }> = []
 const active = new Set<string>()
+let stopGate: Promise<void> | null = null
 mock.module('../agent-service', () => ({
   isAgentSessionActive: (id: string) => active.has(id),
   runAgent: (input: AgentSendInput, _wc: WebContents, _promotion: unknown, owned: () => void) => new Promise<void>((resolve) => {
@@ -22,7 +23,10 @@ mock.module('../agent-service', () => ({
       resolve()
     } })
   }),
-  stopAgentAndWait: async (id: string) => { executions.findLast((run) => run.input.sessionId === id)?.end('stopped') },
+  stopAgentAndWait: async (id: string) => {
+    if (stopGate) await stopGate
+    executions.findLast((run) => run.input.sessionId === id)?.end('stopped')
+  },
 }))
 const { startBackgroundPiReview, stopBackgroundPiReview } = await import('./review-pi-run-bridge')
 const { createChannel, updateChannel } = await import('../channel-manager')
@@ -34,6 +38,8 @@ const { listAgentSessions, getAgentSessionMeta, updateAgentSessionMeta } = await
 const { saveReviewModuleSettings } = await import('./module-settings-store')
 const { getRunV2 } = await import('./run-store-v2')
 const { getPiReviewBindingForSession } = await import('./pi-case-review-service')
+const { createAssignment, bindRunToAssignment, findActivePiReviewAssignment, checkAssignment } = await import('./review-agent-assignment')
+const { getConfigDir } = await import('../config-paths')
 const { registerReviewIpc } = await import('./review-ipc')
 const { setMainWindow } = await import('../main-window-state')
 const windowContents = { isDestroyed: () => false, send() {} } as unknown as WebContents
@@ -153,6 +159,84 @@ describe('后台 Main 入口与受理边界', () => {
     expect(context.execution.input.channelId).toBe(selected.id)
     expect(context.execution.input.modelId).toBe('selected-model')
     context.execution.end('completed')
+    await Bun.sleep(0)
+  })
+
+
+  test('P06-S01 newest active assignment wins an exact-millisecond tie', () => {
+    const sessionId = 'p06-tie-' + randomUUID()
+    const caseId = 'p06-case-' + randomUUID()
+    const previous = createAssignment({ sessionId, turnId: 'old-turn', caseId, actions: ['submit-result'] })
+    bindRunToAssignment(previous.id, 'run-pi-previous')
+    const current = createAssignment({ sessionId, turnId: 'new-turn', caseId, actions: ['submit-result'] })
+    bindRunToAssignment(current.id, 'run-pi-current')
+    const file = join(getConfigDir(), 'review-agent-assignments.json')
+    const data = JSON.parse(readFileSync(file, 'utf8')) as { assignments: Array<{ id: string; createdAt: string }> }
+    for (const entry of data.assignments) {
+      if (entry.id === previous.id || entry.id === current.id) entry.createdAt = '2026-10-13T00:00:00.000Z'
+    }
+    writeFileSync(file, JSON.stringify(data) + '\n')
+    expect(findActivePiReviewAssignment(sessionId)?.id).toBe(current.id)
+  })
+
+  test('P06-S01 same case reused owner: old failure, stop and revoked grant cannot affect second run', async () => {
+    const first = await pendingExecution()
+    first.execution.owned()
+    const firstAck = await first.admission
+    const prior = getPiReviewBindingForSession(first.execution.input.sessionId)!
+    first.execution.end('failed')
+    await Bun.sleep(0)
+    expect(checkAssignment({ assignmentId: prior.assignmentId, sessionId: prior.sessionId, action: 'submit-result' }).code).toBe('ASSIGNMENT_REVOKED')
+    const count = executions.length
+    const secondPromise = startBackgroundPiReview({ caseId: first.caseId, mode: 'update' }, windowContents)
+    while (executions.length === count) await Bun.sleep(0)
+    const second = executions.at(-1)!
+    expect(second.input.sessionId).toBe(first.execution.input.sessionId)
+    second.owned()
+    const secondAck = await secondPromise
+    expect(secondAck.runId).not.toBe(firstAck.runId)
+    expect(secondAck.phase).toBe('accepted')
+    await expect(stopBackgroundPiReview({ caseId: first.caseId, runId: firstAck.runId! })).rejects.toThrow('运行已变化')
+    first.execution.input.onRunOutcome?.({ status: 'failed', error: '迟到旧轮失败' })
+    expect(getRunV2(first.caseId, firstAck.runId!)?.error).toBe('合成执行失败')
+    expect(getRunV2(first.caseId, secondAck.runId!)?.status).toBe('running')
+    expect(active.has(second.input.sessionId)).toBeTrue()
+    second.end('completed')
+    await Bun.sleep(0)
+    expect(getRunV2(first.caseId, secondAck.runId!)?.status).toBe('partially-completed')
+  })
+
+  test('P06-S01 stop must release before restart; late callback never mutates new owner', async () => {
+    const first = await pendingExecution()
+    first.execution.owned()
+    const firstAck = await first.admission
+    let release!: () => void
+    stopGate = new Promise<void>((resolve) => { release = resolve })
+    try {
+      const stopping = stopBackgroundPiReview({ caseId: first.caseId, runId: firstAck.runId! })
+      await expect(startBackgroundPiReview({ caseId: first.caseId, mode: 'restart' }, windowContents)).rejects.toThrow('正在启动或停止')
+      expect(getRunV2(first.caseId, firstAck.runId!)?.status).toBe('running')
+      release()
+      expect((await stopping).runStatus).toBe('cancelled')
+      expect(active.has(first.execution.input.sessionId)).toBeFalse()
+    } finally {
+      release()
+      stopGate = null
+    }
+    const count = executions.length
+    const secondPromise = startBackgroundPiReview({ caseId: first.caseId, mode: 'restart' }, windowContents)
+    while (executions.length === count) await Bun.sleep(0)
+    const second = executions.at(-1)!
+    expect(second.input.sessionId).not.toBe(first.execution.input.sessionId)
+    second.owned()
+    const secondAck = await secondPromise
+    expect(secondAck.runId).not.toBe(firstAck.runId)
+    await expect(stopBackgroundPiReview({ caseId: first.caseId, runId: firstAck.runId! })).rejects.toThrow('运行已变化')
+    first.execution.input.onRunOutcome?.({ status: 'failed', error: '迟到旧轮异常' })
+    expect(getRunV2(first.caseId, firstAck.runId!)?.status).toBe('cancelled')
+    expect(getRunV2(first.caseId, secondAck.runId!)?.status).toBe('running')
+    expect(active.has(second.input.sessionId)).toBeTrue()
+    second.end('completed')
     await Bun.sleep(0)
   })
 
