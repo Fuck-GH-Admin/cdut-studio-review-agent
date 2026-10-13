@@ -6,6 +6,8 @@
 
 ## 结论
 
+**P06-FIX-01 本批最新（2026-10-13）**：[代码 `c8c84681`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/c8c84681f201f8911731b50b9f991bd51cddb9fa)：新增 **9/9 PASS**；全仓 **3869 pass / 5 skip / 0 fail**（3874 tests、440 files），Typecheck、边界和 Electron main/preload/renderer 构建通过。四套 CI **SUCCESS**：[PR #38421280083](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38421280083)、[D2 #38421280011](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38421280011)、[Baseline #38421280010](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38421280010)、[focused #38421279980](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38421279980)。原 `AUDIT-P03-P05-INDEX-01` = **CODE FIX / FORMAL CONTROLLED 9/9 PASS / 原审计脚本精确复跑与真实恢复 E2E NOT-RUN**，详见 [39 号](39-p06-fix01-owner-index-recovery-20261013.md)。修复为 UUID-only 单调安全日志（先 fsync 后索引，旧 owner/tombstone 回填，坏索引/坏日志 fail-closed）；其他三个审计缺口仍 OPEN，旧 E05 FAIL 与 LIVE 原状态不变。P04 永久 tombstone 不 GC，新增 journal 引入额外永久容量和首次冷回填成本。S02 NOT ACCEPTED / PR MERGE NO-GO。
+
 **2026-10-13 最新：P06-S02 本地验收已执行，E01/E02 PASS、E05 FAIL；P01～P06-S02 累计复核确认四项 OPEN 缺口。P06 整体 PARTIAL、S02 NOT ACCEPTED、合并发布 NO-GO。** 证据见 [37｜实机验收](37-p06-s02-local-acceptance-20261013.md)、[38｜累计风险与返工](38-p01-p06-s02-cumulative-risk-audit-20261013.md)。只更新公开测试仓库，保持 Draft；P05 外部端原阻断不变。Main/A0 与历史受控证据保留，优先修复新反例再补 E03/E04/完整 E06，不自动进入 P07/P08。27 号 v1 的复用边界不变。
 
 目标：前台只呈现“可开始审核 / 审核中 / 需要你处理 / 审核已结束 / 本次审核未完成”及原有业务结果、依据、人工补件/确认；技术步骤和原始 transcript 仅供授权诊断，不暴露给普通用户。审核分析结束 **不代表业务审批通过**。
@@ -316,6 +318,10 @@
 - E03 真实并发 stop/restart 尝试未命中重叠窗口，维持 NOT-RUN；E04 实际旧 executor 回调未注入，NOT-RUN。E05 实际关闭审核子页/重新进入后投递旧 Controller 回复，**UI 回到旧 run/preparing 而 Main 新 run 仍 accepted/running：FAIL**，已停止清理。普通 Pi create/list/meta/send/SDK/provider 局部正例 PASS，E06 完整产品矩阵 PARTIAL。
 - 四项生产逻辑缺口 **CONFIRMED/OPEN**：`AUDIT-P03-P05-INDEX-01` 旧备份恢复丢 owner 后普通读/事件/路径放行；`AUDIT-P06-REMOUNT-01` Controller 实例局部 generation 无法守住卸载重进；`AUDIT-P06-WORKSPACE-WRITER-01` Workspace refresh 是另一条无屏障缓存写入；`AUDIT-P01-P06-SETTLE-01` 授权撤销 EACCES 导致未捕获 rejection/清理跳过。独立保护断言 **0 pass / 4 fail、exit 1**，独立 I/O 进程复核也是 exit 1。
 - **判定：验收执行完成，S02 NOT ACCEPTED / P06 PARTIAL / MERGE NO-GO。** 本批仅加强驱动/断言与归档，四项生产问题未修；后续必须把正确保护断言纳入 CI 并复验 E05，不能依全绿关闭风险。P05 Relay BLOCKED、Pocket PATCH READY/TARGET NOT-RUN、P04 永久 tombstone/不 GC/容量风险均保留，P07/P08 未推进。归档 HEAD 的 CI 需单独核验并记 PR，不沿用冻结历史。
+
+### P06-FIX-01｜审核 owner 旧索引恢复安全加固（2026-10-13）
+
+[代码 `c8c84681`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/c8c84681f201f8911731b50b9f991bd51cddb9fa)：新增 **9/9 PASS**；全仓 **3869 pass / 5 skip / 0 fail**（3874 tests、440 files），Typecheck、边界和 Electron main/preload/renderer 构建通过。四套 CI **SUCCESS**：[PR #38421280083](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38421280083)、[D2 #38421280011](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38421280011)、[Baseline #38421280010](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38421280010)、[focused #38421279980](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38421279980)。正式 9 项 `review-owner-index-recovery.p06-fix01.test.ts` 覆盖旧备份、旧 tombstone、owner 字段丢失、三副本损坏、跨进程、日志路径、自带身份回填、写入故障、截断失败；原普通 Agent 正例及 P04 100k 回归通过。详见 [39｜FIX-01 报告](39-p06-fix01-owner-index-recovery-20261013.md)。**原 38 号失败证据不改写、原 `replay-risk-probes.py` 精确复跑和真实 Electron 索引恢复 NOT-RUN；其余三个审计 OPEN、LIVE-07 PARTIAL、真实 E05 FAIL、P05 外部阻断与整个 PR NO-GO 均保留。**
 
 ## 最终统一实机验收清单（必须保留到合并前；仅补入实际证据）
 

@@ -1,5 +1,13 @@
 # 31｜后台案卷审核：新会话接手和小批次执行提示词
 
+## 当前接手提示：P06-FIX-01 之后（2026-10-13）
+
+```text
+先查 Draft PR #21 的 HEAD/CI，读 39-p06-fix01-owner-index-recovery-20261013.md、38 号原审计、37 号真实 P06-S02 失败、29 号验收台账与 30 号交接。
+P06-FIX-01 代码冻结 c8c84681f201f8911731b50b9f991bd51cddb9fa，新增审核 owner 永久 UUID-only deny journal、先持久后索引、坏备份/缺 owner/tombstone 仍 fail-closed。9/9 正式受控 PASS，PR CI #38421280083、D2 #38421280011、Baseline #38421280010、focused #38421279980 SUCCESS，全仓 3869 pass/5 skip/0 fail。原 38 号 0/4 FAIL 是旧冻结版历史，原离线脚本和真实 Electron 恢复尚未重新验收；三个剩余风险 OPEN。
+下一小批 P06-FIX-02 只解决跨卸载 Controller 与 Workspace Hook 共享 Jotai 写入资格，复现 REMOUNT 与 WORKSPACE-WRITER 两条旧反例并加入默认 CI，实机 E05 复核。其后 P06-FIX-03 修收尾授权异常。保留 P04 永久 tombstone/journal 的额外容量风险、P05 中心 Relay/Pocket 阻断及 E03/E04/E06 未完成。不要重造执行器，不执行 P07/P08，不解除 Draft、不合并。
+```
+
 ## 当前接手提示：P06-S02 本地实测与累计风险之后
 
 ```text

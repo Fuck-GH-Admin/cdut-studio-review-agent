@@ -1,5 +1,9 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
+## 最新安全返工：P06-FIX-01 受控通过（2026-10-13）
+
+[代码 `c8c84681`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/c8c84681f201f8911731b50b9f991bd51cddb9fa)：新增 **9/9 PASS**；全仓 **3869 pass / 5 skip / 0 fail**（3874 tests、440 files），Typecheck、边界和 Electron main/preload/renderer 构建通过。四套 CI **SUCCESS**：[PR #38421280083](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38421280083)、[D2 #38421280011](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38421280011)、[Baseline #38421280010](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38421280010)、[focused #38421279980](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38421279980)。原索引恢复身份漏判经 UUID-only 单调安全记录修复并纳入默认 CI，详情 [39](39-p06-fix01-owner-index-recovery-20261013.md)。**本批仅代码/受控 PASS；原独立负例重新跑和真实 Electron 破坏索引未执行。** E05 FAIL、另外三项 AUDIT OPEN、P05 Relay/Pocket、P04 安全不 GC、P06-S02 NOT ACCEPTED、Draft/NO-GO 仍有效。下一批 **P06-FIX-02** 修 Controller 跨卸载 + Workspace Hook 旧写入，不误入 P07/P08。
+
 ## 最新停点：本地 S02 已验收但不合格，累计风险待返工
 
 用户本轮进一步明确复核 P01～P06-S02，只向公开 `Fuck-GH-Admin/cdut-studio-review-agent` 推送，不写原项目。应用/驱动 `ef9074e367d2e7fda5955d8b0d6d9a4812836a6d`，0.15.157；[37](37-p06-s02-local-acceptance-20261013.md)记录真实双轮 **E01/E02 2/2 PASS**、E05 关页重进旧回复覆盖新 UI **FAIL**、E03 未命中停止重叠/E04 未注入、普通 Pi IPC/provider 局部正例。类型/边界/构建及全仓 **3860 pass / 5 skip / 0 fail**；独立保护反例 **0 pass / 4 fail**。
