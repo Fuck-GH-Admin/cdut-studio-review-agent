@@ -14,6 +14,14 @@ LIVE 表中 A0 子集仅 PARTIAL；扫描 PDF、完整工具/PNG、压缩、跨�
 每批记录实际 SHA/命令/环境/退出码/日志/CI，更新 29/30/34 与 PR。保持 Draft/Open，不合并。
 ```
 
+## P06-S01 之后接手（2026-10-13）
+
+```text
+接手 Draft PR #21 当前 HEAD，先核实 35-p06-s01-consecutive-rounds-acceptance-20261013.md、34 号 Main/A0、29 号唯一台账和 30 号交接。P06-S01 已受控通过：冻结代码 9851998a1b157c9d5924b9c6387b062838aa4475，三项新测试，PR CI #38358640242、D2 #38358640258、Baseline #38358640275、focused #38358640240 均 SUCCESS，全仓 3852 pass/5 skip/0 fail。
+下一小批只做 P06-S02：在隔离的真实 Electron/Pi/合成案卷中逐项验证同案连续 update/restart、旧 runId stop、停止阻塞后释放、迟到旧错误/旧状态不能覆盖新轮；复核 Main/V2 ledger 与 UI 旧提示、普通 Agent 正例。无法授权安全模拟迟到回调的，明确 NOT-RUN，不声称生产 E2E 通过。针对实测缺陷最小修复，再跑新 HEAD CI。
+保留 P05 中心 Relay BLOCKED 与 Pocket patch TARGET NOT-RUN，P04 tombstone 永久 ID-only 不 GC，LIVE-07 目前 PARTIAL。P06/P07/P08 和整 PR 未完全通过；不进行 P07、不解除 Draft、不合并。
+```
+
 ## A｜历史首次接手提示（以当前接手提示与最新账本为准）
 
 ```text

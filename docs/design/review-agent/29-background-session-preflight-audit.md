@@ -294,6 +294,14 @@
 - **冻结 CI SUCCESS**：[PR #38305239415](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38305239415)、[D2 #38305239388](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38305239388)、[Baseline #38305239392](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38305239392)、[batch #38305239385](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38305239385)。
 - **原阻断保留**：Relay BLOCKED / NOT-RUN；独立 Pocket PATCH READY / TARGET NOT-RUN，本轮未验证或应用 patch。P05 PARTIAL；P04 永久 ID-only tombstone、容量增长风险不变；PR #21 Draft/Open/未合并。LIVE 子集只追加 PARTIAL，下一批 P06 验证同案两轮、旧控制及释放后重启。
 
+### P06-S01｜同案连续轮次的旧指派、迟到回调与停止屏障（2026-10-13）
+
+- **验收结论**：**CONTROLLED PASS / P06 E2E PARTIAL / MERGE NO-GO**；详情 [35｜P06-S01 独立验收](35-p06-s01-consecutive-rounds-acceptance-20261013.md)。冻结代码 [`9851998a`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/9851998a1b157c9d5924b9c6387b062838aa4475)；[PR CI #38358640242](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38358640242)、[D2 #38358640258](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38358640258)、[Review Baseline #38358640275](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38358640275)、[Review batch focused #38358640240](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38358640240) **全部 SUCCESS**；新增 **3/3 PASS**，全仓 **3852 pass / 5 skip / 0 fail（3857 tests / 438 files）**，Typecheck、边界、Electron main/preload/renderer build PASS。
+- **实现修复**：最新有效直接 Pi 指派选取使用既有持久追加顺序，禁止相同毫秒时间戳选回旧一轮；`review-pi-admission` 在 Promise 正常或异常收尾时撤销**原 assignmentId**，历史授权留下 `revokedAt` 记录且不删除，与 `isCurrent`/runId/assignmentId 并行守卫。保留现有 Main `busyCases` 阻挡 stop 尚未释放时启动新轮，不改通用 Agent runner/数据库。
+- **新增 3/3**：真实持久 assignments 同毫秒冲突；同案同 owner 先失败再 `update`，旧 runId stop 拒绝、旧回调迟到不覆盖新 run；延迟 stop 期间 `restart` 拒绝，释放后新 owner/run 可启动，旧错误及旧 stop 不误伤。测试调用真实 V2/Main bridge，**Agent 执行器为可控 mock**，不是生产 provider/真实 GUI E2E。
+- **LIVE 与外部状态**：34 号真实 A0 4/4 保留；29 号 LIVE-07 仍只有 A0 当前轮停止的 **PARTIAL**，真实两轮及迟到回调未执行；LIVE-01/04/05/06 仍 PARTIAL，LIVE-02/03/08 仍 NOT-RUN。生产中心 Relay 与独立 Pocket 阻断未改变；P04-TECHDEBT-01 容量/不做不安全 GC 的原证据未改变。
+- **下一批**：`P06-S02` 使用隔离 Electron + 合成案卷实测双轮和迟到停止/回调、切案显示，同时做普通 Agent 正例；据真实 Main event/V2 ledger/时间线复核。不得因本批本机 Main mock PASS 自动将 P06、LIVE-07 或 PR 标 PASS。
+
 ## 最终统一实机验收清单（必须保留到合并前；A0 只补入已实测子集）
 
 > 此表是**集中补测登记簿**，不要因为推进新的开发批次删除或自动勾选。全部使用隔离的 `PROFER_CONFIG_DIR` / `PROFER_USER_DATA_DIR`、非真实个人资料的合成案卷，固定测试提交 SHA；如涉及付费模型，使用获授权且受控的模型渠道。执行时在本表逐行填写 **PASS/FAIL/NOT-RUN、操作人、日期、测试数据版本、CI/日志/截图/录像链接、异常工单**。只有自动化测试通过而无对应真实操作证据时，本表仍为 NOT-RUN。

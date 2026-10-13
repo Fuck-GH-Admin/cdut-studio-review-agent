@@ -12,6 +12,8 @@
 
 > 历史更新基线：2026-10-12，Draft PR #21 **P04-TECHDEBT-01 安全性能补丁冻结代码 SHA** `dccaf6ce96072eac9404c3957742555916bd62f1`（PATH-01 补丁 `7c5e003c` 证据保留）（先前专项 `9eec2311` 的 9 项证据保留）（P05-S05 代码仍保留）（文档提交将产生更新 HEAD，须再次核验）。本文件是**导航/交接快照**，不是替代 27 号规范和 29 号门禁；每次继续开发前重新读取 PR 实际 HEAD、检查 CI 与文档是否过时。不能假设 main 已有这些实现。
 
+**P06-S01 最近进度（2026-10-13，优先于以下历史）**：冻结代码 [`9851998a`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/9851998a1b157c9d5924b9c6387b062838aa4475)；[PR CI #38358640242](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38358640242)、[D2 #38358640258](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38358640258)、[Review Baseline #38358640275](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38358640275)、[Review batch focused #38358640240](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38358640240) **全部 SUCCESS**；新增 **3/3 PASS**，全仓 **3852 pass / 5 skip / 0 fail（3857 tests / 438 files）**，Typecheck、边界、Electron main/preload/renderer build PASS。修复同毫秒指派顺序与执行器释放后旧授权撤销，Main bridge 三项受控真实 V2/可控 Agent 竞态测试通过；**P06-S01 CONTROLLED PASS、P06 整体 PARTIAL**。详细 [35 号](35-p06-s01-consecutive-rounds-acceptance-20261013.md)；下一批 **P06-S02 真实 Electron 双轮/迟到控制**。34 号 Main/A0 四项实机 PASS 保留，P05 生产 Relay/Pocket 阻断及其它 LIVE/合并门禁不变。PR 持续 Draft/Open。
+
 ## 一分钟读懂
 
 - 仓库：https://github.com/Fuck-GH-Admin/cdut-studio-review-agent

@@ -8,6 +8,8 @@
 > 代码核对：`main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`。本文件是 **v1 目标与允许改动范围**，不是实现完成声明。
 > 开工门槛、遗漏风险与证据状态以 [29 号开工前审计](29-background-session-preflight-audit.md) 为准；现有业务成果以 [28 号交付状态](28-review-stage-delivery-status.md) 为准。
 
+**P06-S01 受控小批（2026-10-13）**：冻结代码 [`9851998a`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/9851998a1b157c9d5924b9c6387b062838aa4475)；[PR CI #38358640242](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38358640242)、[D2 #38358640258](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38358640258)、[Review Baseline #38358640275](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38358640275)、[Review batch focused #38358640240](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38358640240) **全部 SUCCESS**；新增 **3/3 PASS**，全仓 **3852 pass / 5 skip / 0 fail（3857 tests / 438 files）**，Typecheck、边界、Electron main/preload/renderer build PASS。修复旧轮次授权存活与同毫秒指派选择，新增三项 Main bridge 竞态负例；**P06-S01 CONTROLLED PASS、P06 完整 E2E PARTIAL**。详见 [35｜P06-S01 验收](35-p06-s01-consecutive-rounds-acceptance-20261013.md)，真实 Electron 双轮与 LIVE-07 尚待运行，PR Draft/NO-GO。历史目标与 A0 证据仍保留。
+
 ## 1. 要解决的唯一问题
 
 原 main 基线的直接案卷审核从 `use-review-actions.ts` 创建普通 Agent 会话，把它插入 `agentSessionsAtom`，随后调用 `openSession('agent', ...)` 并通过普通 `SEND_MESSAGE` 启动 Pi。该历史路径会使用户进入普通聊天界面。当前 Draft 分支已改由 Main 可信后台入口启动；旧普通审核聊天保留历史，不自动迁移。
