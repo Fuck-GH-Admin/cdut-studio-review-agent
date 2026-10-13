@@ -1,5 +1,13 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
+## 最新停点：本地 S02 已验收但不合格，累计风险待返工
+
+用户本轮进一步明确复核 P01～P06-S02，只向公开 `Fuck-GH-Admin/cdut-studio-review-agent` 推送，不写原项目。应用/驱动 `ef9074e367d2e7fda5955d8b0d6d9a4812836a6d`，0.15.157；[37](37-p06-s02-local-acceptance-20261013.md)记录真实双轮 **E01/E02 2/2 PASS**、E05 关页重进旧回复覆盖新 UI **FAIL**、E03 未命中停止重叠/E04 未注入、普通 Pi IPC/provider 局部正例。类型/边界/构建及全仓 **3860 pass / 5 skip / 0 fail**；独立保护反例 **0 pass / 4 fail**。
+
+[38](38-p01-p06-s02-cumulative-risk-audit-20261013.md)登记四项 CONFIRMED/OPEN：索引旧备份恢复丢 owner 后隔离失效、旧 Controller 跨卸载写新页面、Workspace Hook 无屏障写缓存、撤销授权写盘异常越出收尾 Promise。生产逻辑尚未修，本批只补严驱动与归档。**S02 NOT ACCEPTED，P06 PARTIAL，PR Draft/Open/MERGE NO-GO。** 下一批优先修这四项并将保护断言加入正式 CI，再补 E03/E04/完整 E06；不自动进入 P07/P08。
+
+P05 Relay BLOCKED、独立 Pocket PATCH READY/TARGET NOT-RUN 和 P04 永久 ID-only tombstone 不 GC/容量风险保持原状态。以下较早交接为历史，不能再将 E01/E02 全写 NOT-RUN，也不能凭双轮通过关闭 E05 和累计风险。归档后的 HEAD/CI 以实际 PR 为准。
+
 ## 最新交接（2026-10-13；优先于下方历史快照）
 
 - 用户已授权进入 P06。先前 Main-only start/read/stop、Renderer 业务状态及 A0 4/4 已完成；现 **P06-S01 3/3 受控 PASS**，P06-S02 真实 Electron 双轮/迟到控制仍 NOT-RUN，P06 整体 PARTIAL；P07/P08 未执行，**先不合并**。

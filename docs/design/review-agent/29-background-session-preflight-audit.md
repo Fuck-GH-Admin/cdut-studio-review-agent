@@ -6,7 +6,7 @@
 
 ## 结论
 
-**2026-10-13：GO（P06 前置 A0 已通过，P06-S01 受控已通过，可进入 P06-S02 真实双轮验证）；NO-GO（P06 整体/LIVE-07/合并发布）。** 用户授权本轮补齐 Main 接线、最小前台与 A0，产物只更新测试分支。Main start/read/stop 已落地，详见本文件的新台账和 [34 号验收](34-pre-p06-main-a0-acceptance-20261013.md)。P05 外部端保持原阻断；P06/P07/P08 及 LIVE 剩余门禁仍须逐项验证。27 号“复用既有 Pi + 薄 Main bridge + 普通入口守卫”的 v1 方案不变。执行器、事件、权限与会话元数据仍为共享基础设施，禁止扩大为执行框架重构。
+**2026-10-13 最新：P06-S02 本地验收已执行，E01/E02 PASS、E05 FAIL；P01～P06-S02 累计复核确认四项 OPEN 缺口。P06 整体 PARTIAL、S02 NOT ACCEPTED、合并发布 NO-GO。** 证据见 [37｜实机验收](37-p06-s02-local-acceptance-20261013.md)、[38｜累计风险与返工](38-p01-p06-s02-cumulative-risk-audit-20261013.md)。只更新公开测试仓库，保持 Draft；P05 外部端原阻断不变。Main/A0 与历史受控证据保留，优先修复新反例再补 E03/E04/完整 E06，不自动进入 P07/P08。27 号 v1 的复用边界不变。
 
 目标：前台只呈现“可开始审核 / 审核中 / 需要你处理 / 审核已结束 / 本次审核未完成”及原有业务结果、依据、人工补件/确认；技术步骤和原始 transcript 仅供授权诊断，不暴露给普通用户。审核分析结束 **不代表业务审批通过**。
 
@@ -308,7 +308,16 @@
 - **实机真实状态**：本环境没有 Bun、隔离 Electron 应用工作树/授权模型，不能运行 A0 风格 CDP；**P06-S02 E01/E02/E03/E04/E05 真实 UI 和 E06 普通 Agent 实机 = NOT-RUN**。已提供 `scripts/qa/review-background-p06.mjs`，需在已配置授权模型的隔离 profile 中运行，并上传脱敏 `p06-summary.json`、run ledger/截图与哈希后才可签收。34 号 A0 原有 4/4 PASS 不能代替这轮双轮。
 - **状态**：**P06-S02 CODE/CONTROLLED PASS / REAL E2E NOT-RUN；P06 整体 PARTIAL；LIVE-07 仍仅 A0 子集 PARTIAL**。P05 Relay/Pocket、P04-TECHDEBT-01 与其它 LIVE 原判定不变；Draft PR 不合并。
 
-## 最终统一实机验收清单（必须保留到合并前；A0 只补入已实测子集）
+### P06-S02 本地实机及 P01～P06-S02 累计独立复核（2026-10-13）
+
+- 用户授权本地验收 S02，并明确风险审查覆盖 P01～P06-S02；最终仅推送公开 `Fuck-GH-Admin/cdut-studio-review-agent`，不写原项目、不合并。实际接手云端 `de1318c5`；最终应用/驱动冻结 `ef9074e367d2e7fda5955d8b0d6d9a4812836a6d`，应用 0.15.157。环境/SHA/命令/日志/截图/时序见 [37](37-p06-s02-local-acceptance-20261013.md)，全部风险和保护负例见 [38](38-p01-p06-s02-cumulative-risk-audit-20261013.md)。
+- 九步本地门禁 exit 0：P06 三文件 48/48，累计相关 20 文件 194/194，全仓 **3860 pass / 5 skip / 0 fail（3865 tests / 439 files）**；类型、边界、皮肤、三段构建通过。这些正常回归不包括独立四个失败反例。
+- 真 Electron/Pi/DeepSeek 的 E01/E02 **2/2 PASS、四轮 provider 回执**：update 实际复用本轮指派 owner、替换合成材料进入新快照；restart 实际新 owner；旧 run stop 拒绝且当前 running、两轮最终 GUI cancelled/授权撤销，旧 ledger 未改。原驱动 owner 假正例、界面未就绪、reload body 为 null、自然完成误归因都已修补并保留首败。
+- E03 真实并发 stop/restart 尝试未命中重叠窗口，维持 NOT-RUN；E04 实际旧 executor 回调未注入，NOT-RUN。E05 实际关闭审核子页/重新进入后投递旧 Controller 回复，**UI 回到旧 run/preparing 而 Main 新 run 仍 accepted/running：FAIL**，已停止清理。普通 Pi create/list/meta/send/SDK/provider 局部正例 PASS，E06 完整产品矩阵 PARTIAL。
+- 四项生产逻辑缺口 **CONFIRMED/OPEN**：`AUDIT-P03-P05-INDEX-01` 旧备份恢复丢 owner 后普通读/事件/路径放行；`AUDIT-P06-REMOUNT-01` Controller 实例局部 generation 无法守住卸载重进；`AUDIT-P06-WORKSPACE-WRITER-01` Workspace refresh 是另一条无屏障缓存写入；`AUDIT-P01-P06-SETTLE-01` 授权撤销 EACCES 导致未捕获 rejection/清理跳过。独立保护断言 **0 pass / 4 fail、exit 1**，独立 I/O 进程复核也是 exit 1。
+- **判定：验收执行完成，S02 NOT ACCEPTED / P06 PARTIAL / MERGE NO-GO。** 本批仅加强驱动/断言与归档，四项生产问题未修；后续必须把正确保护断言纳入 CI 并复验 E05，不能依全绿关闭风险。P05 Relay BLOCKED、Pocket PATCH READY/TARGET NOT-RUN、P04 永久 tombstone/不 GC/容量风险均保留，P07/P08 未推进。归档 HEAD 的 CI 需单独核验并记 PR，不沿用冻结历史。
+
+## 最终统一实机验收清单（必须保留到合并前；仅补入实际证据）
 
 > 此表是**集中补测登记簿**，不要因为推进新的开发批次删除或自动勾选。全部使用隔离的 `PROFER_CONFIG_DIR` / `PROFER_USER_DATA_DIR`、非真实个人资料的合成案卷，固定测试提交 SHA；如涉及付费模型，使用获授权且受控的模型渠道。执行时在本表逐行填写 **PASS/FAIL/NOT-RUN、操作人、日期、测试数据版本、CI/日志/截图/录像链接、异常工单**。只有自动化测试通过而无对应真实操作证据时，本表仍为 NOT-RUN。
 
@@ -319,9 +328,9 @@
 | LIVE-03 | P02 | 真实 Pi 长轮次分批提交，触发 `CompactContext` 或空闲压缩，同 runId 续交/重新进入后恢复事实、缺项和证据引用，未读材料不能伪装已读取 | **NOT-RUN** |
 | LIVE-04 | P03 | 真实 Electron 中验证 HTML/EML 修复与逐事项识别仍在准备阶段；准备结束但尚未获取 `onRunOwned` 时不得显示“后台已受理”；模型预检/忙碌拒绝时不留下孤儿 running，重复点击不影响原 run | **PARTIAL**：A0 预检拒绝无新 owner/run；HTML/EML、事项准备及实机 busy/重复 NOT-RUN，见 34 |
 | LIVE-05 | P03 | 真正收到 Main ACK 后关闭/切换审核工作台、打开其他页面并返回，Pi 继续运行；刷新案卷从 V2 重取状态，完成/部分完成/失败一致，不靠 React Hook 长轮询保持执行 | **PARTIAL**：真实 ACK、关闭审核子页后完成/重进回读及受理后 failed 已验证；部分完成续审与完整矩阵 NOT-RUN，见 34 |
-| LIVE-06 | P04/P05 | 内部 review owner 会话对桌面侧栏/搜索/归档/Tab 恢复/异步事件及 Pocket 按 ID 操作、消息检索、WS 实时与重放日志全不可见；旧普通 Agent 会话照常可用 | **PARTIAL**：A0 普通 list/meta/新聊天 Tab 隔离已验证；搜索/归档/历史恢复/多窗口/Pocket/飞书实机 NOT-RUN，见 34 |
-| LIVE-07 | P06/P07 | 同案更新、从头重审、旧轮次迟到取消与异常回调、停止后立即重启、应用重启/强杀、删除案卷、切换工作区和模型停用；无旧 run 误伤新 run、永久 running、幽灵权限或孤儿会话 | **PARTIAL**：A0 当前轮停止保存 cancelled；P06 旧轮竞态与 P07 重启/强杀/删案等 NOT-RUN，见 34 |
-| LIVE-08 | P08 | 普通 Pi/Claude Agent 发送、权限、工具、预览、停止、fork、Pocket、原批量 A/B/C 审核保持原行为；冻结版 CI（类型、边界、所有单测与构建）及桌面操作日志均可复验 | **NOT-RUN** |
+| LIVE-06 | P04/P05 | 内部 review owner 会话对桌面侧栏/搜索/归档/Tab 恢复/异步事件及 Pocket 按 ID 操作、消息检索、WS 实时与重放日志全不可见；旧普通 Agent 会话照常可用 | **PARTIAL / 新反例 OPEN**：A0 实机子集保留；旧索引备份恢复后的分类隔离受控 FAIL，见 38；完整跨端/多窗仍未验 |
+| LIVE-07 | P06/P07 | 同案更新、从头重审、旧轮次迟到取消与异常回调、停止后立即重启、应用重启/强杀、删除案卷、切换工作区和模型停用；无旧 run 误伤新 run、永久 running、幽灵权限或孤儿会话 | **PARTIAL / E05 FAIL**：E01/E02 双轮实机 PASS；关页重进旧回复回退 UI 已复现；E03/E04、P07 和 I/O 故障保护尚未通过，见 37/38 |
+| LIVE-08 | P08 | 普通 Pi/Claude Agent 发送、权限、工具、预览、停止、fork、Pocket、原批量 A/B/C 审核保持原行为；冻结版 CI（类型、边界、所有单测与构建）及桌面操作日志均可复验 | **PARTIAL（局部证据）**：普通 Pi 的真实 IPC/provider 正例及 CI 通过；完整 UI/权限/工具/Claude/批量/Pocket/平台矩阵 NOT-RUN，P08 未推进，见 37 |
 
 **统一验收记录模板（每项填写）**：`编号=LIVE-XX；结果=NOT-RUN/PASS/FAIL；执行日期=；操作者=；应用提交 SHA=；虚构案卷数据集版本=；步骤和预期=；实际结果=；日志/截图/录像/CI=；缺陷与复测=。`
 

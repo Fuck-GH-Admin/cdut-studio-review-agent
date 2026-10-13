@@ -1,5 +1,17 @@
 # 31｜后台案卷审核：新会话接手和小批次执行提示词
 
+## 当前接手提示：P06-S02 本地实测与累计风险之后
+
+```text
+接手公开仓库 Fuck-GH-Admin/cdut-studio-review-agent 的 Draft PR #21。
+先读 37-p06-s02-local-acceptance-20261013.md、38-p01-p06-s02-cumulative-risk-audit-20261013.md 及 29/30，核对真实 HEAD/CI。不要只读 main 或复用旧 A0 当双轮证据。
+最终应用/驱动冻结 ef9074e367d2e7fda5955d8b0d6d9a4812836a6d，E01/E02 真实双轮 PASS，E05 关页重进旧回复覆盖新 UI FAIL；E03 未命中重叠、E04 没有实际 SDK 注入，普通 Pi 只有 IPC/provider 局部正例。
+P01～P06-S02 累计复核有四项 CONFIRMED/OPEN：索引备份恢复缺 owner 后普通读/路径/事件放行；旧 Controller 跨卸载覆盖新页；Workspace Hook 另一路无屏障写缓存；收尾撤销写盘 EACCES 越出 Promise 且跳过清理。38 号有真正失败的可复跑保护断言，不把它们写成已知问题 PASS。
+当前验收动作完成、S02 NOT ACCEPTED/P06 PARTIAL。后续按用户授权先最小修复四项，把正确保护断言加入 CI，复验 E05，再取得 E03/E04/完整 E06 证据。不重造执行框架，不自动推进 P07/P08。
+只推送我们的公开仓库测试分支；不写 Nya-Angle/CDUT-Studio、不合并、不解除 Draft。P05 Relay BLOCKED、Pocket PATCH READY/TARGET NOT-RUN 保留；验证独立 Pocket 前额外读 patch 并核对目标 SHA。P04 tombstone 永久保留和容量风险不变。
+每项记录真实 SHA、环境、命令、退出码、时序和日志哈希，保留首败；既有回归绿灯不能关闭新审计失败项。
+```
+
 > 本文件的提示词用于 **Draft PR #21** 的连续工程工作。它不替代仓库源码、CI 或 [27](27-background-review-session-proposal.md)/[29](29-background-session-preflight-audit.md)/[30](30-background-session-handoff.md) 文档。任何阶段完成与否以**当次 PR HEAD、实际 GitHub CI 和证据**为准。
 
 ## 历史接手提示（2026-10-13；A0 后、P06-S01 前）

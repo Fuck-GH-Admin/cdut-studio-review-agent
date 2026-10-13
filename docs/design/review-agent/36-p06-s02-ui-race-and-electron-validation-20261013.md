@@ -1,5 +1,7 @@
 # 36｜P06-S02 双轮前台时序修复、实机驱动与执行门禁（2026-10-13）
 
+> **后续本地实机已执行**：见 [37｜逐项验收](37-p06-s02-local-acceptance-20261013.md)、[38｜P01～P06-S02 累计风险](38-p01-p06-s02-cumulative-risk-audit-20261013.md)。E01/E02 PASS；E05 FAIL；E03/E04 尚未签收、完整 E06 PARTIAL；S02 NOT ACCEPTED / P06 PARTIAL。原“环境不可运行”是本文件冻结批次的历史事实，现已获得独立本地证据，不用旧 A0 或静态合同替代。以下历史记录和首败均保留。
+
 > **本次判定：CODE/CONTROLLED PASS；REAL ELECTRON/PI = NOT-RUN；P06 整体 PARTIAL；PR MERGE NO-GO。** P06-S01 的 Main/V2 旧授权/旧 run 竞态见 [35 号](35-p06-s01-consecutive-rounds-acceptance-20261013.md)；A0 真实 Electron/Pi 4/4 见 [34 号](34-pre-p06-main-a0-acceptance-20261013.md)。不能把 A0、P06-S01 mock 证明或本次脚本“语法 PASS”冒充本次 P06-S02 双轮实机通过。
 
 ## 1. 实际代码改动、提交及 CI
