@@ -1,5 +1,7 @@
 # 35｜P06-S01 连续审核轮次、旧授权与迟到回调受控验收（2026-10-13）
 
+> **后续增量（2026-10-13）**：P06-S02 UI 时序受控修补、真实 Electron 双轮驱动已交付，实际双轮运行尚未在当前环境执行，最新边界和本地执行说明见 [36 号](36-p06-s02-ui-race-and-electron-validation-20261013.md)。本文件的 P06-S01 PASS 与下述原定 P06-S02 计划属于历史冻结证据，不代表 E2E PASS。
+
 > **阶段定位**：P06 第一个最小批次，在 PR #21 `feat/review-owned-background-sessions` Draft 分支。复用已由 [34 号](34-pre-p06-main-a0-acceptance-20261013.md) 验证的 Main start/read/stop 与 A0 Electron/Pi，不重建 Runner、SDK 或 V2 数据库。**P06-S01 CONTROLLED PASS / P06 E2E PARTIAL / PR MERGE NO-GO**。本文件与 [29 号主验收台账](29-background-session-preflight-audit.md) 一同读取。
 
 ## 1. 冻结提交与可追溯 CI

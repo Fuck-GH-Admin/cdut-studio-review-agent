@@ -302,6 +302,12 @@
 - **LIVE 与外部状态**：34 号真实 A0 4/4 保留；29 号 LIVE-07 仍只有 A0 当前轮停止的 **PARTIAL**，真实两轮及迟到回调未执行；LIVE-01/04/05/06 仍 PARTIAL，LIVE-02/03/08 仍 NOT-RUN。生产中心 Relay 与独立 Pocket 阻断未改变；P04-TECHDEBT-01 容量/不做不安全 GC 的原证据未改变。
 - **下一批**：`P06-S02` 使用隔离 Electron + 合成案卷实测双轮和迟到停止/回调、切案显示，同时做普通 Agent 正例；据真实 Main event/V2 ledger/时间线复核。不得因本批本机 Main mock PASS 自动将 P06、LIVE-07 或 PR 标 PASS。
 
+### P06-S02｜前台慢返回隔离与真实 Electron 双轮驱动（2026-10-13）
+
+- **代码/受控通过，实机阻断**：代码冻结 [`5d5e25e5`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/5d5e25e5db20bbe90a5f367481f3ca982b3162ad)；[PR CI #38361717837](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38361717837)、[D2 #38361717930](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38361717930)、[Review Baseline #38361717713](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38361717713)、[focused #38361717452](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38361717452) **全部 SUCCESS**；**3855 pass / 5 skip / 0 fail（3860 tests / 439 files）**，Typecheck、边界、Electron main/preload/renderer 构建通过。新增 **2/2 前台乱序回调测试 PASS + 1/1 真机脚本静态语法合同 PASS**，不是实际 Electron/Pi E2E。代码见 `review-actions-controller.ts`（同案每轮刷新 generation + 异步查询后守卫）、`RightPanel.tsx`（停止/反馈按 caseId+runId+操作代次隔离），2/2 前台时序测试 PASS，`node --check` QA 脚本合同 1/1 PASS。完整报告与真机命令见 [36｜P06-S02 实机验收指南](36-p06-s02-ui-race-and-electron-validation-20261013.md)。
+- **实机真实状态**：本环境没有 Bun、隔离 Electron 应用工作树/授权模型，不能运行 A0 风格 CDP；**P06-S02 E01/E02/E03/E04/E05 真实 UI 和 E06 普通 Agent 实机 = NOT-RUN**。已提供 `scripts/qa/review-background-p06.mjs`，需在已配置授权模型的隔离 profile 中运行，并上传脱敏 `p06-summary.json`、run ledger/截图与哈希后才可签收。34 号 A0 原有 4/4 PASS 不能代替这轮双轮。
+- **状态**：**P06-S02 CODE/CONTROLLED PASS / REAL E2E NOT-RUN；P06 整体 PARTIAL；LIVE-07 仍仅 A0 子集 PARTIAL**。P05 Relay/Pocket、P04-TECHDEBT-01 与其它 LIVE 原判定不变；Draft PR 不合并。
+
 ## 最终统一实机验收清单（必须保留到合并前；A0 只补入已实测子集）
 
 > 此表是**集中补测登记簿**，不要因为推进新的开发批次删除或自动勾选。全部使用隔离的 `PROFER_CONFIG_DIR` / `PROFER_USER_DATA_DIR`、非真实个人资料的合成案卷，固定测试提交 SHA；如涉及付费模型，使用获授权且受控的模型渠道。执行时在本表逐行填写 **PASS/FAIL/NOT-RUN、操作人、日期、测试数据版本、CI/日志/截图/录像链接、异常工单**。只有自动化测试通过而无对应真实操作证据时，本表仍为 NOT-RUN。

@@ -22,6 +22,14 @@ LIVE 表中 A0 子集仅 PARTIAL；扫描 PDF、完整工具/PNG、压缩、跨�
 保留 P05 中心 Relay BLOCKED 与 Pocket patch TARGET NOT-RUN，P04 tombstone 永久 ID-only 不 GC，LIVE-07 目前 PARTIAL。P06/P07/P08 和整 PR 未完全通过；不进行 P07、不解除 Draft、不合并。
 ```
 
+## P06-S02 受控修补后的实机接手（2026-10-13）
+
+```text
+接手 Draft PR #21 当前 HEAD，先读 36-p06-s02-ui-race-and-electron-validation-20261013.md、35 号 P06-S01、34 号 A0、29 号唯一 LIVE 台账及 30 号交接。P06-S02 已完成 UI 异步状态 generation 守卫、旧 stop 迟到回执隔离和真实 CDP 双轮驱动，代码冻结 5d5e25e5db20bbe90a5f367481f3ca982b3162ad，新增 2/2 时序及 1/1 脚本静态合同 PASS，全仓 3855 pass / 5 skip / 0 fail，四套 CI SUCCESS。
+本次没有真实 Electron/Pi 运行权；在本地全新隔离 profile 用已授权模型运行 scripts/qa/review-background-p06.mjs 的 E01（同 owner update）/E02（新 owner restart），并以日志、业务账本和截图逐项验收。真实 stop 释放期间 busy 竞态、迟到旧 onRunOutcome 与普通 Agent 实机矩阵需另外明确证据，不能从 mock 或脚本语法推断。
+真实测试后按 29 号台账记录 PASS/FAIL/NOT-RUN、确切 SHA、时间/环境、失败根因及脱敏证据。继续保留 LIVE-07 PARTIAL、P05 中心 Relay/Pocket 阻断、P04 tombstone 安全留存；不自动转 P07/P08、不解除 Draft、不合并 PR。
+```
+
 ## A｜历史首次接手提示（以当前接手提示与最新账本为准）
 
 ```text
