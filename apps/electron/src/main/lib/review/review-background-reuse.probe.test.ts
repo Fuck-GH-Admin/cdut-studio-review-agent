@@ -20,7 +20,7 @@ import { AgentRunAlreadyActiveError } from '../agent-orchestrator-p0-guards'
 import { createCaseFromTemplate } from './application-service'
 import { readAggregate } from './case-store-v2'
 import { registerMaterial } from './material-service'
-import { finishPiReviewRunV2, preparePiReviewRunV2, submitPiReviewResultV2 } from './pi-case-review-service'
+import { finishPiReviewRunV2, preparePiReviewRunV2, submitPiReviewResultV2, getPiReviewBindingForSession } from './pi-case-review-service'
 import { admitPreparedPiReviewTurn, isPiReviewRunAdmitted } from './review-pi-admission'
 import { checkAssignment, createAssignment, findActivePiReviewAssignment, revokeAssignment } from './review-agent-assignment'
 import { getRunV2 } from './run-store-v2'
@@ -381,7 +381,10 @@ describe('P06-FIX-03 durable revoke-failure containment', () => {
     expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).ok).toBeTrue()
     finishPiReviewRunV2(binding, { status: 'failed', error: '合成终态' })
     expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).code).toBe('ASSIGNMENT_REVOKED')
-    expect(findActivePiReviewAssignment(binding.sessionId)).toBeUndefined()
+    // The durable assignment remains auditable until its revoke is written.
+    // The Pi binding lookup is the actual live-run authorization gate.
+    expect(findActivePiReviewAssignment(binding.sessionId)?.id).toBe(binding.assignmentId)
+    expect(getPiReviewBindingForSession(binding.sessionId)).toBeUndefined()
   })
 
   test('a malformed persistent assignment file cannot be overwritten by new grants or authorize old tools', async () => {
