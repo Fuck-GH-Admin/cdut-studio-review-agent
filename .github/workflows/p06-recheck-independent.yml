@@ -12,7 +12,7 @@ permissions:
 jobs:
   independent-replay:
     name: Four original probes and controlled protection witnesses
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64]
     timeout-minutes: 25
     env:
       ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
