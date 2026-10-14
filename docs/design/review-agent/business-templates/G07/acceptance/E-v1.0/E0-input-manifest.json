@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "E-v1.0/E0-r01",
+  "domainId": "G07",
+  "domainName": "经费与项目执行",
+  "auditDate": "2026-10-14",
+  "auditor": "independent-E-G07-session",
+  "repo": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "publicRepo": true,
+  "baseBranch": "main",
+  "baseCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+  "auditBranch": "audit/g07-e-v1-r01",
+  "inputPolicy": "A/B may be read for source planning. C/D business text and D Gold correct answers MUST NOT be read before independent E1 evidence-lock.",
+  "stage": "E0",
+  "decision": "BLOCKED_INPUT",
+  "blinding": "INTACT_C_D_UNREAD",
+  "auditInstruction": {
+    "filename": "05_E_GXX领域独立交叉验收_主会话_v1.0.md",
+    "sha256": "523eb0d52aef20122e299ea2b81100dace18a000ba8db905eb68d7a377cae7eb",
+    "source": "conversation attachment",
+    "version": "E v1.0 (2026-10-12)"
+  },
+  "projectDocs": [
+    {
+      "path": "AGENTS.md",
+      "blobSha": "763e9fd034540686ef87405f7c88ef7aa647db36"
+    },
+    {
+      "path": "docs/design/review-agent/11-scope-and-boundary.md",
+      "blobSha": "828caa97917023d83499a97ac8a32240a9a96fa6"
+    },
+    {
+      "path": "docs/design/review-agent/15-template-modules-and-runtime-boundary-spec.md",
+      "blobSha": "13892a65256b61d20bc49fdb314cdd393c14d234"
+    },
+    {
+      "path": "docs/design/review-agent/04-acceptance-and-evaluation.md",
+      "blobSha": "35c4a54469334b95b82a6b94e2a6a55d741076e2"
+    }
+  ],
+  "domainA": {
+    "title": "G07_02_统一模板目录与边界.md",
+    "location": "ChatGPT Library, not frozen as Git input",
+    "version": "1",
+    "sha256": "64a771d60e7ea68a040c4d7fd551c246bf3cd123e0ca60a8f7d9d4ea245ee4c4",
+    "status": "READ_FOR_E0_PLANNING_ONLY",
+    "sourceIndex": "NOT_FROZEN",
+    "commitSha": null
+  },
+  "templateIds": [
+    "G07-T01",
+    "G07-T02",
+    "G07-T03",
+    "G07-T04",
+    "G07-T05",
+    "G07-T06",
+    "G07-T07"
+  ],
+  "observedB": [
+    {
+      "template": "G07-T04",
+      "title": "G07-T04_00_独立业务深调研.md",
+      "sha256": "2477c5656f58af0d0406772e60b24d29b7886f96c52c7ee24b6e936a9a20d5c8",
+      "location": "ChatGPT Library",
+      "version": "1",
+      "commitSha": null
+    },
+    {
+      "template": "G07-T05",
+      "title": "G07-T05_00_独立业务深调研.md",
+      "sha256": "f261ff47209b082cfbed49ae0b8cab5fdde968e4f50298f77c9c2a466a6daca9",
+      "location": "ChatGPT Library",
+      "version": "1",
+      "commitSha": null
+    },
+    {
+      "template": "G07-T07",
+      "title": "G07-T07_00_独立业务深调研.md",
+      "sha256": "3971dc75decc13617f959bdcdcd65ff350dfcee89091ba60a8d2fdcb6c5f1655",
+      "location": "ChatGPT Library",
+      "version": "1",
+      "commitSha": null
+    }
+  ],
+  "candidateMetadataOnly": {
+    "C": [
+      "G07-T01_Cv2.1_迁移核验报告.md",
+      "G07-T01_规则追踪矩阵.md",
+      "G07-T02_规则追踪矩阵.md",
+      "G07-T03_规则追踪矩阵.md",
+      "G07-T03_Cv2.1_SHA256_交付清单.json",
+      "G07-T04_规则追踪矩阵.md",
+      "G07-T05_Cv2.1_迁移核验结论.md",
+      "G07-T05_规则追踪矩阵.md",
+      "G07-T06_Cv2.1_迁移核验报告.md",
+      "G07-T06_规则追踪矩阵.md",
+      "G07-T07_Cv2.1_迁移核验报告.md",
+      "G07-T07_规则追踪矩阵.md"
+    ],
+    "D": [
+      "G07-T02_D0-D4_验收摘要.md",
+      "G07-T03_D_SHA256SUMS.txt",
+      "G07-T04_D21_CHECKSUMS.json",
+      "G07-T05_D_SHA256SUMS.txt",
+      "G07-T07_06_C与D双向交接卡.md"
+    ],
+    "meaning": "Existence of a named metadata file is NOT confirmation that the complete C mother template, sealed Gold, blind inputs, coverage, self-checks and handoffs are available. No C/D contents opened.",
+    "gitCommitShas": null,
+    "fileSha256s": null
+  },
+  "missingForGate": [
+    "Git-replayable fixed A/B/C/D input SHAs and paths",
+    "complete A source index and official originals",
+    "all seven B complete deliverables and handoff cards",
+    "all seven C mothers/self-checks/rule matrices/versioned E handoff",
+    "all seven D Gold/inputs/coverage/offline checks/handoff",
+    "controlled Gold-access and test-input isolation attestation",
+    "per-artifact sha256 / source-to-downstream dependency chain"
+  ],
+  "releaseStatus": {
+    "E0": "BLOCKED_INPUT",
+    "E1": "NOT_STARTED",
+    "E2": "NOT_STARTED",
+    "E3": "NOT_STARTED",
+    "E4": "NOT_STARTED",
+    "technicalTemplateRuntime": "NOT_RUN",
+    "onlineModelAccuracy": "NOT_RUN",
+    "administrativeAuthority": "NOT_VERIFIED"
+  },
+  "privacy": "No hidden Gold, expected answers, controlled ledgers or sensitive student data included in this public branch."
+}
