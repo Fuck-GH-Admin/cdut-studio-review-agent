@@ -376,6 +376,32 @@ describe('P03-S02 Main admission ACK and single-owner lifecycle', () => {
 
 
 describe('P06-FIX-03 durable revoke-failure containment', () => {
+  test('终态和撤销同时失写时，outcome 回调返回前即拒绝旧授权，不等待 executor Promise 收尾', async () => {
+    const { binding, input } = await caseFixture()
+    const runPath = join(CONFIG_DIR, 'review-cases', binding.caseId, 'runs-v2', `${binding.runId}.json`)
+    const assignmentPath = join(CONFIG_DIR, 'review-agent-assignments.json')
+    let callback!: NonNullable<AgentSendInput['onRunOutcome']>
+    let release!: () => void
+    const gate = new Promise<void>(resolve => { release = resolve })
+    await admitPreparedPiReviewTurn({ ...input, onRunOutcome: undefined }, binding, async (runInput, owned) => {
+      callback = runInput.onRunOutcome!
+      owned()
+      await gate
+    })
+    mkdirSync(runPath + '.tmp'); mkdirSync(assignmentPath + '.tmp')
+    try {
+      callback({ status: 'failed', error: '合成双持久化故障' })
+      expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).ok).toBeFalse()
+      expect(isPiReviewRunAdmitted(binding.caseId, binding.runId)).toBeFalse()
+      expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('running')
+      const disk = JSON.parse(readFileSync(assignmentPath, 'utf8')) as { assignments: Array<{ id: string; revokedAt?: string }> }
+      expect(disk.assignments.find(a => a.id === binding.assignmentId)?.revokedAt).toBeUndefined()
+    } finally {
+      rmdirSync(runPath + '.tmp'); rmdirSync(assignmentPath + '.tmp'); release()
+      await Bun.sleep(0)
+    }
+  })
+
   test('a live direct Pi grant becomes unusable when its V2 run is already terminal, even with an unrevoked disk row', async () => {
     const { binding } = await caseFixture()
     expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).ok).toBeTrue()

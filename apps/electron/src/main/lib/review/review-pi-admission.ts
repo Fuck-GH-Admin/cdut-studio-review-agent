@@ -172,6 +172,15 @@ export function admitPreparedPiReviewTurn(
       } catch (error) {
         terminalWriteFailure = error
         reportSettlementError('可信运行回调落盘', error)
+        // 回调已报告终态但落盘失败时，不能等 executor Promise 后续收尾
+        // 才拒止工具；旧磁盘 running 在这段窗口内不再具有授权效力。
+        try {
+          revokeAssignment(binding.assignmentId)
+        } catch (revokeError) {
+          reportSettlementError('终态未确认后的指派撤销未持久化（已进程内隔离）', revokeError)
+        } finally {
+          forgetAdmitted(binding)
+        }
       }
     },
   }, () => {
