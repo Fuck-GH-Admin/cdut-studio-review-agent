@@ -1,5 +1,12 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
+## 最新接手：P06-RECHECK R0/R1 独立复演（2026-10-14）
+
+[44｜独立复演报告](44-p06-recheck-independent-acceptance-20261014.md) 登记当前源码冻结 `960163c785d7ccf0eb2b6a6a6ca51161bfc547c4` 的真实结果：原 38 号四项审计探针 **3 PASS / 1 FAIL，整体 exit 1**；WORKSPACE-WRITER 原始裸 `store.set` 绕过 FIX-02 新写入资格，因此其 FAIL 保留但不等价于生产新 Controller/Hook 写入，新增真实 Hook→Controller、Hook→Hook 两项等效回归 2/2 PASS。SETTLE 旧只读授权文件的注入不再命中新原子临时写入；正式 FIX-03 用目录级 EACCES 实际命中 `.tmp` 并受控 fail-closed。聚焦 **36/36 PASS**、全仓 **3883 pass / 5 skip / 0 fail**，四套标准 CI SUCCESS。独立 [R1 原脚本 CI #38538200712](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38538200712) 仍诚实 FAILURE，完整 JSON/退出码/原日志/SHA256 artifact 可下载。
+
+真实 Electron E05、E03/E04/完整 E06、本地 ENOSPC/双持久化失败重启恢复 **NOT-RUN**，旧 37 号 E05 FAIL、38 号原四项 FAIL 继续作为历史证据保留。**P06-S02 NOT ACCEPTED、P06 PARTIAL、LIVE-07 PARTIAL、PR Draft/Open/MERGE NO-GO**。P05 Relay BLOCKED、Pocket PATCH READY/TARGET NOT-RUN、P04 tombstone 与 owner UUID journal 永久留存不 GC；不进入 P07/P08。下一独立执行编号 `P06-RECHECK-LIVE`，实际方法与缺失证据见 44 号。
+
+
 ## 交接优先入口：P06-RECHECK（2026-10-14）
 
 **本会话只做交接，不实施源码修复或新的实机运行。** 最新独立接手书：[42｜P06-RECHECK 交接](42-p06-recheck-independent-takeover-handoff-20261014.md)；可直接复制的正式提示：[43｜下一会话提示词](43-p06-recheck-next-session-prompt-20261014.md)。生成时云端 HEAD `f7562c0bb825e87c7f3123dc0530b5df2b751439`，四套 CI SUCCESS；FIX-01 9/9、FIX-02 5/5、FIX-03 7/7 正式受控 PASS，但原 38 号四项保护探针在**当前 HEAD**尚未精确重放，真实 E05 仍沿用 37 号首败，E03/E04/完整 E06 未签收。**P06-S02 NOT ACCEPTED / P06 PARTIAL / MERGE NO-GO**。以下原有历史交接保留。
