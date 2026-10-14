@@ -9,8 +9,7 @@
  * - 落盘：review-agent-assignments.json（轻量 JSON，无数据库）
  */
 import { randomUUID } from 'node:crypto'
-import { existsSync, readFileSync } from 'node:fs'
-import { writeJsonFileAtomic } from '../safe-file'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { getConfigDir } from '../config-paths'
 import { getRunV2 } from './run-store-v2'
@@ -88,7 +87,7 @@ function writeAll(assignments: ReviewAgentAssignment[]): void {
   const persisted = assignments.map((assignment) => pendingRevocations.has(assignment.id) && !assignment.revokedAt
     ? { ...assignment, revokedAt: new Date().toISOString() }
     : assignment)
-  writeJsonFileAtomic(assignmentsPath(), { assignments: persisted })
+  writeFileSync(assignmentsPath(), `${JSON.stringify({ assignments: persisted }, null, 2)}\n`, 'utf-8')
   // Only clear process-local quarantine after the complete file was committed.
   for (const assignment of persisted) {
     if (assignment.revokedAt) pendingRevocations.delete(assignment.id)
