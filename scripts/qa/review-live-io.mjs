@@ -70,6 +70,8 @@ try {
       result.persisted = { runStatus: JSON.parse(readFileSync(join(runDir, f.runId + '.json'), 'utf8')).status, revokedAtPersisted: !!disk.revokedAt }
       check('双持久状态失写事实保留', result.persisted.runStatus === 'running' && !result.persisted.revokedAtPersisted)
       check('故障中当前 Main 工具 fail-closed', !await main.evaluate(permission(f)))
+      await main.poll(`!__p06Live.isAgentSessionActive(${q(f.sessionId)})`, 60000)
+      trace('actual-executor-inactive-observed')
       check('executor 已真正停止', !await main.evaluate(`__p06Live.isAgentSessionActive(${q(f.sessionId)})`))
       trace('ready-for-real-process-restart-with-fault-held', result.persisted)
       result.status = 'PASS' // 只签收当前进程部分，重启由独立命令另验。

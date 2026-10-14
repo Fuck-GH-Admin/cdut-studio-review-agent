@@ -1,5 +1,6 @@
 /** 只在隔离 profile 中的诊断入口；导入真实应用，不替换 Pi/provider。 */
 import '../../apps/electron/src/main/index'
+import { PiAgentAdapter } from '../../apps/electron/src/main/lib/adapters/pi-agent-adapter'
 import { AgentOrchestrator } from '../../apps/electron/src/main/lib/agent-orchestrator'
 import * as assignments from '../../apps/electron/src/main/lib/review/review-agent-assignment'
 import * as sessions from '../../apps/electron/src/main/lib/agent-session-manager'
@@ -21,6 +22,17 @@ const qa = {
   releaseStop: undefined as undefined | (() => void),
   actualStopFinished: false,
   versions: process.versions,
+}
+const originalQuery = PiAgentAdapter.prototype.query
+PiAgentAdapter.prototype.query = async function* (...args: Parameters<PiAgentAdapter['query']>) {
+  events.push({ at: new Date().toISOString(), event: 'real-pi-query-entered' })
+  for await (const message of originalQuery.apply(this, args)) {
+    if (message.type === 'assistant') {
+      const usage = message.message?.usage
+      events.push({ at: new Date().toISOString(), event: 'real-pi-assistant-received', inputTokens: usage?.input_tokens ?? 0, outputTokens: usage?.output_tokens ?? 0 })
+    }
+    yield message
+  }
 }
 const originalSend = AgentOrchestrator.prototype.sendMessage
 AgentOrchestrator.prototype.sendMessage = function (input, callbacks) {

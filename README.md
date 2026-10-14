@@ -344,3 +344,5 @@ graph TD
   <br/><br/>
   <a href="#cdut-studio-">⬆ 返回顶部</a>
 </div>
+
+P06 实机批量补修：case/group 级检查不依赖非空 subjectIds 判定有效工具结果；无有效提交继续生成 execution-failed。真实验收状态仍见 docs/design/review-agent/29-background-session-preflight-audit.md。

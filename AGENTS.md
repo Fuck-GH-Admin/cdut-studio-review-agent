@@ -354,3 +354,5 @@ CDUT 内网青果教务系统部署有瑞数（RuiShu）动态安全反爬 WAF�
 - **macOS arm64 验收**：`.github/workflows/macos-package.yml` 手动触发，仅产出无签名、无公证的 arm64 验收包（Actions Artifact），需用户明确确认后方可作为测试资产加入 Pre-release，不进入 Windows 国内更新源。
 - **构建验证 workflow**：`release.yml` 为仅手动触发的构建验证，绝不因 tag 自动构建或写入 GitHub Release。
 - **辅助脚本/校验**：`scripts/verify-release-preflight.cjs`（发版预检）、`scripts/release-asset-contract.cjs`（资产契约）、`scripts/build-releases-json.cjs`（`release:releases-json`）、`scripts/push-mac-release.cjs`（`release:mac`）。
+
+P06 实机批量补修：case/group 级检查不依赖非空 subjectIds 判定有效工具结果；无有效提交继续生成 execution-failed。真实验收状态仍见 docs/design/review-agent/29-background-session-preflight-audit.md。
