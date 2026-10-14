@@ -59,7 +59,8 @@ jobs:
           capture focused bun test --isolate --timeout 30000 \
             apps/electron/src/main/lib/review-owner-index-recovery.p06-fix01.test.ts \
             apps/electron/src/renderer/components/content-review/review-workspace-write-fence.p06-fix02.test.ts \
-            apps/electron/src/main/lib/review/review-background-reuse.probe.test.ts
+            apps/electron/src/main/lib/review/review-background-reuse.probe.test.ts \
+            apps/electron/src/renderer/components/content-review/review-workspace-recheck-independent.test.ts
           capture original-risk-replay python3 docs/design/review-agent/acceptance/p06-s02-local-20261013/replay-risk-probes.py
           python3 - <<'PY'
           import hashlib, json, pathlib
