@@ -17,11 +17,11 @@ export async function connect(port = 9222, select = p => p.url.startsWith('http:
     const r = JSON.parse(data)
     if (pending.has(r.id)) { pending.get(r.id)(r); pending.delete(r.id) }
   }
-  const call = (method, params = {}) => new Promise((resolve, reject) => {
+  const call = (method, params = {}, sessionId) => new Promise((resolve, reject) => {
     const id = ++sequence
     const timer = setTimeout(() => { pending.delete(id); reject(new Error(`CDP 超时 ${method}`)) }, 120000)
     pending.set(id, r => { clearTimeout(timer); r.error ? reject(new Error(r.error.message)) : resolve(r.result) })
-    ws.send(JSON.stringify({ id, method, params }))
+    ws.send(JSON.stringify({ id, method, params, ...(sessionId ? {sessionId} : {}) }))
   })
   const evaluate = async expression => {
     const r = await call('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true, userGesture: true })

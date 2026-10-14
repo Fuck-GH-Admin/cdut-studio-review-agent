@@ -1,6 +1,27 @@
 # 29｜审核受控后台会话：开工前依赖审计与阻断门禁
 
-## 2026-10-15｜P06-RECHECK-R1B：旧探针归档与有效生产写入者门禁
+> **新会话/新负责人必读**：[30｜项目交接快照](30-background-session-handoff.md)、[31｜接手提示词](31-background-session-continuation-prompts.md)、[32｜P05 阶段完整验收与本地手册](32-p05-stage-acceptance-and-local-gates.md)。**P05-S01～S06 六专项 43/43 受控 PASS；中心实际多 viewer 路由 BLOCKED、Pocket 上游补丁尚未应用/运行，P05 整体 PARTIAL、合并 NO-GO。**P04 路径型文件 IPC 原已枚举路径和本次最终目标变更均有受控补丁，但真实双窗口、IPC 与 LIVE-06/08 仍是开放门禁。
+
+> 2026-10-12；初始源码审计基线 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；后续代码与受控探针仅在 Draft PR #21 分支实施。配套 [27 号实施规范](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。**文档中的 PASS 只对所附冻结提交、测试环境与覆盖范围有效；真实 Pi/Electron/Pocket 验收尚未完成，不得据此合并。**
+
+## 结论
+
+### P06-RECHECK-LIVE 本地实机最新（2026-10-14～15）
+
+并发7132新增两项正式写入者测试完整保留后，本地整合 `9cc92bb0e6cec8d2698f5d712a71ecc8b77256e4` 全套22门禁再次exit0：**全仓3894pass/5skip/0fail（3899tests、445files、16161expect）、聚焦89/89（345expect）、batch143/143**；生产与实测b95无差异。最终发布HEAD CI按PR最后验收评论查询，新版current gate可SUCCESS而原legacy脚本依旧exit1，两者分开登记。
+
+[46｜本地独立实机验收](46-p06-recheck-live-local-acceptance-20261014.md) 为本轮证据说明；**本文件29仍是唯一正式台账**。开工重新 fetch 确认 `4ba61fad77b18f8fa9a25babeb25e9c08d5304fe`，保留并发 `d39857e7` workflow 路由变更；最终生产源码 `b95b44f7a06bb1e1ae21a985b5bb4cd9f5581027`（0.15.161）。真实 Electron43.7.7/Main Node24.21.0/Pi provider，独立 profile/合成资料、Xvfb1600×1000/localhost5176/CDP9222/诊断9230。
+
+- **E05 PASS，9断言**：真实旧 listRunsV2 响应已交付到生产 Controller，实际关页/页面外新 ACK/重进，新 Main/Jotai runId 与状态未回退，旧错误/stop反馈不复活，新轮操作正常。
+- **E03 PASS，8断言**：真实 stop Promise 显式闸门保持 pending，restart busy 真拒绝，释放后立即受理，新旧 assignment 与 V2 一致。**E04 PASS，7断言**：捕获并实际调用真实旧 executor outcome 闭包 completed/failed，新轮不回退/旧工具拒止。两项范围为隔离真实环境的可控闸门/闭包复演，不冒称自然 SDK 网络迟到。
+- **真实 ENOSPC / 双持久化+owner失写 / 故障保持重启 / 可写恢复重启均 PASS（8/5/2/3断言）**：8MiB tmpfs 实际原子tmp write=-ENOSPC，assignment原件保留、当前进程deny、恢复后后补revokedAt；run和assignment同时失写时内存deny，故障保持新进程仍拒止，恢复可写再次新进程将中断failed原子落盘。磁盘仍running阶段没有冒称持久撤销。
+- **E06 PARTIAL**：普通Pi create/list/meta/send/stop、Read、Write权限拒绝/恢复、文本/Office/扫描PDF真实Renderer、普通会话跨进程恢复/页面切换均有子集PASS；真实三案批次队列/B过期组/C未授权代批拒止子集PASS。完整原A/B/C人工处置/补件回流/正向审批/幂等、Claude、双窗/fork/自动Tab恢复、严格审核扫描视觉原件回执、Pocket/Relay及跨平台仍未签收。三案资料C仍execution-failed/技术异常，绝不写成业务审核成功。
+- **最终选定可执行实机16/16 PASS、77显式断言/0失败，另普通Pi5布尔判词**；这不含NOT-RUN/BLOCKED/历史失败。四个真实新反例均先保留首败后最小修：启动失写授权复活、canUseTool漏接、同步outcome失写授权窗口、case/group无subject错误fallback。本轮新增唯一正式用例9条；聚焦87/87（334expect）、全仓3892pass/5skip/0fail（3897tests/445files/16150expect）、batch143/143。全部原始输出/退出码/脱敏状态/截图/native I/O与raw/public哈希见46和独立证据目录。
+- `b95b44f7a06bb1e1ae21a985b5bb4cd9f5581027` [PR CI #38597805963](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38597805963)、[D2 #38597806005](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38597806005)、[Baseline #38597805953](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38597805953)、[batch #38597805971](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38597805971) SUCCESS。本地22标准命令及补聚焦exit0。**原38四探针仍3PASS/1FAIL、exit1；[独立workflow #38597799385](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38597799385) FAILURE**，裸store失败和旧无效chmod注入事实保留，不删检测。最终文档HEAD CI另在PR最终评论核对。
+
+**P06-S02 NOT ACCEPTED / P06 PARTIAL / LIVE-07 PARTIAL / Draft/Open/MERGE NO-GO。** E05原37首败保留，当前复验新增PASS；不将此细项通过升级为P06全验收。下一步 `P06-RECHECK-LIVE-02` 只补剩余矩阵与LIVE证据。P05-RELAY-ROUTE-01 BLOCKED、P05-POCKET-FIFO-01 PATCH READY/TARGET NOT-RUN、P04-TECHDEBT-01永久tombstone/journal不安全TTL/GC禁令不变；P07/P08未进入。下方带旧日期的段落均为冻结历史事实。
+
+### 并发受控历史快照（实机最新见46）｜P06-RECHECK-R1B：旧探针归档与有效生产写入者门禁
 
 见 [45｜现行独立写入者矩阵和 CI 分流验收](45-p06-current-writer-probes-and-live-gates-20261015.md)。2026-10-15 接手分支 `b95b44f7a06bb1e1ae21a985b5bb4cd9f5581027`，此前新增本地真实 Electron/Pi 专项驱动和三笔生产安全补丁，勿因旧 44 号的历史 SHA 覆盖最新代码。
 
@@ -11,14 +32,8 @@
 - 状态不变：**P06-S02 NOT ACCEPTED；P06 PARTIAL；LIVE-07 PARTIAL；PR #21 Draft/Open、MERGE NO-GO。** P05 Relay/Pocket 外部阻断、P04 owner/tombstone UUID 永久保留（不安全 GC 禁止）、P07/P08 未启动。
 
 
-> **新会话/新负责人必读**：[30｜项目交接快照](30-background-session-handoff.md)、[31｜接手提示词](31-background-session-continuation-prompts.md)、[32｜P05 阶段完整验收与本地手册](32-p05-stage-acceptance-and-local-gates.md)。**P05-S01～S06 六专项 43/43 受控 PASS；中心实际多 viewer 路由 BLOCKED、Pocket 上游补丁尚未应用/运行，P05 整体 PARTIAL、合并 NO-GO。**P04 路径型文件 IPC 原已枚举路径和本次最终目标变更均有受控补丁，但真实双窗口、IPC 与 LIVE-06/08 仍是开放门禁。
-
-> 2026-10-12；初始源码审计基线 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；后续代码与受控探针仅在 Draft PR #21 分支实施。配套 [27 号实施规范](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。**文档中的 PASS 只对所附冻结提交、测试环境与覆盖范围有效；真实 Pi/Electron/Pocket 验收尚未完成，不得据此合并。**
 
 **R1B 自托管实测确认（受控代码 `7132ca658ffc64c1f3bc44146ef9bddedae950e5`）：** [独立 CI #38600843457](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38600843457) **SUCCESS**，本地 `ghrunner-cdut-studio-review-agent`；`typecheck=0`、`focused=0`（**39 pass/0 fail**）、`current-writers=0`（**4 pass/0 fail，4 个 witness 均到达**）、未改原 38 号 `original-risk-replay=1`（**3 PASS/1 FAIL**，WORKSPACE-WRITER 仍得旧 run，与原始注入一致）。旧 SETTLE `chmod` 原脚本 PASS 但**注入 INVALID**。校验源 SHA、原 verdict/exit、一致性和工件全部保存：[artifact #11913746159](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38600843457/artifacts/11913746159)，`current-writers.log` SHA256 `33dc2e1e8c51505b37dc096a0b75e677ff982b7c2a5c3fe16017b07ca2b90496`，`focused.log` SHA256 `b1b092720e60ec646d8fba4de23faf0c1c24433344592a0204781f480045b23a`。首次 [CI #38600505432](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38600505432) **FAILURE 保留**：新增 Controller→Hook 用例错误要求 Hook 写 executionAtom，实际 Hook 只写 workspace 投影；后在 `7132ca65` 更正为旧 Controller 不能复活旧 execution，未修改生产实现。**标准六套 CI 对这次代码 SHA 仍逐项核对，未完不记全绿。真正 E05/E03/E04/E06 与 ENOSPC、双故障重启本轮 NOT-RUN；P06-S02 NOT ACCEPTED、P06 PARTIAL、PR Draft/MERGE NO-GO。**
-
-## 结论
-
 ### P06-RECHECK 独立复演（2026-10-14；R0/R1 受控已执行，真实 R2/R3 NOT-RUN）
 
 本轮 [44｜独立风险复演与实机门禁](44-p06-recheck-independent-acceptance-20261014.md) 在代码 `960163c785d7ccf0eb2b6a6a6ca51161bfc547c4` 精确执行 38 号原脚本：**3 PASS / 1 FAIL，脚本 exit 1**。原 WORKSPACE-WRITER-01 的旧裸 Jotai store 写入绕过新写令牌，FAIL 保留，两个实际 Hook/Controller 等效写入者回归 **2/2 PASS**；SETTLE 原只读单文件注入未命中新的原子 tmp 写，旧 PASS 对故障场景 **INVALID**，但正式 7 项里目录级 `.tmp` EACCES 真正命中并 fail-closed。独立聚焦 **36/36 PASS**，原风险 workflow [#38538200712](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38538200712) **FAILURE 且已归档原日志/退出码/JSON/SHA-256**；四套标准 CI `960163c785d7ccf0eb2b6a6a6ca51161bfc547c4` 全 SUCCESS，全仓 3883 pass / 5 skip / 0 fail（3888 tests / 442 files）。
@@ -370,9 +385,9 @@
 | LIVE-03 | P02 | 真实 Pi 长轮次分批提交，触发 `CompactContext` 或空闲压缩，同 runId 续交/重新进入后恢复事实、缺项和证据引用，未读材料不能伪装已读取 | **NOT-RUN** |
 | LIVE-04 | P03 | 真实 Electron 中验证 HTML/EML 修复与逐事项识别仍在准备阶段；准备结束但尚未获取 `onRunOwned` 时不得显示“后台已受理”；模型预检/忙碌拒绝时不留下孤儿 running，重复点击不影响原 run | **PARTIAL**：A0 预检拒绝无新 owner/run；HTML/EML、事项准备及实机 busy/重复 NOT-RUN，见 34 |
 | LIVE-05 | P03 | 真正收到 Main ACK 后关闭/切换审核工作台、打开其他页面并返回，Pi 继续运行；刷新案卷从 V2 重取状态，完成/部分完成/失败一致，不靠 React Hook 长轮询保持执行 | **PARTIAL**：真实 ACK、关闭审核子页后完成/重进回读及受理后 failed 已验证；部分完成续审与完整矩阵 NOT-RUN，见 34 |
-| LIVE-06 | P04/P05 | 内部 review owner 会话对桌面侧栏/搜索/归档/Tab 恢复/异步事件及 Pocket 按 ID 操作、消息检索、WS 实时与重放日志全不可见；旧普通 Agent 会话照常可用 | **PARTIAL / 新反例 OPEN**：A0 实机子集保留；旧索引备份恢复后的分类隔离受控 FAIL，见 38；完整跨端/多窗仍未验 |
-| LIVE-07 | P06/P07 | 同案更新、从头重审、旧轮次迟到取消与异常回调、停止后立即重启、应用重启/强杀、删除案卷、切换工作区和模型停用；无旧 run 误伤新 run、永久 running、幽灵权限或孤儿会话 | **PARTIAL / E05 FAIL**：E01/E02 双轮实机 PASS；关页重进旧回复回退 UI 已复现；E03/E04、P07 和 I/O 故障保护尚未通过，见 37/38 |
-| LIVE-08 | P08 | 普通 Pi/Claude Agent 发送、权限、工具、预览、停止、fork、Pocket、原批量 A/B/C 审核保持原行为；冻结版 CI（类型、边界、所有单测与构建）及桌面操作日志均可复验 | **PARTIAL（局部证据）**：普通 Pi 的真实 IPC/provider 正例及 CI 通过；完整 UI/权限/工具/Claude/批量/Pocket/平台矩阵 NOT-RUN，P08 未推进，见 37 |
+| LIVE-06 | P04/P05 | 内部 review owner 会话对桌面侧栏/搜索/归档/Tab 恢复/异步事件及 Pocket 按 ID 操作、消息检索、WS 实时与重放日志全不可见；旧普通 Agent 会话照常可用 | **PARTIAL**：46号真实 owner 路径拒止与故障恢复拒止子集PASS，FIX-01受控9/9及历史索引反例保留；完整跨端/多窗/事件可见性仍未验 |
+| LIVE-07 | P06/P07 | 同案更新、从头重审、旧轮次迟到取消与异常回调、停止后立即重启、应用重启/强杀、删除案卷、切换工作区和模型停用；无旧 run 误伤新 run、永久 running、幽灵权限或孤儿会话 | **PARTIAL**：历史E01/E02与当前E05/E03/E04、真实ENOSPC/双持久化及重启拒止/恢复子集PASS，范围见46；其他原门禁未验，P06-S02仍NOT ACCEPTED，不进入P07 |
+| LIVE-08 | P08 | 普通 Pi/Claude Agent 发送、权限、工具、预览、停止、fork、Pocket、原批量 A/B/C 审核保持原行为；冻结版 CI（类型、边界、所有单测与构建）及桌面操作日志均可复验 | **PARTIAL（局部实机证据）**：46号普通Pi工具/权限/停止、文本Office扫描PDF预览、普通会话重启和真实批次队列/B-C拒止子集PASS；完整A/B/C、Claude、fork/双窗/Pocket/平台矩阵未验，P08未推进 |
 
 **统一验收记录模板（每项填写）**：`编号=LIVE-XX；结果=NOT-RUN/PASS/FAIL；执行日期=；操作者=；应用提交 SHA=；虚构案卷数据集版本=；步骤和预期=；实际结果=；日志/截图/录像/CI=；缺陷与复测=。`
 

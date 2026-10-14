@@ -1,5 +1,17 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
+## 最新接手：P06-RECHECK-LIVE 本地已执行（2026-10-14～15）
+
+并发7132新增两项正式写入者测试完整保留后，本地整合 `9cc92bb0e6cec8d2698f5d712a71ecc8b77256e4` 全套22门禁再次exit0：**全仓3894pass/5skip/0fail（3899tests、445files、16161expect）、聚焦89/89（345expect）、batch143/143**；生产与实测b95无差异。最终发布HEAD CI按PR最后验收评论查询，新版current gate可SUCCESS而原legacy脚本依旧exit1，两者分开登记。
+
+先读 [46｜实机验收](46-p06-recheck-live-local-acceptance-20261014.md) 与29唯一台账，当前生产源码 `b95b44f7a06bb1e1ae21a985b5bb4cd9f5581027`（0.15.161）；最终文档提交SHA与对应CI由PR最后验收评论提供，开工必须重新fetch。E05真实迟到响应交付后新Main/Jotai不回退PASS；E03真正stop pending busy/释放后restart PASS；E04真实旧outcome闭包实际完成/失败迟到复演PASS。真实8MiB tmpfs ENOSPC、双assignment/V2与owner失写当前deny、故障保持重启deny、可写再重启中断终态落盘PASS。
+
+最终选定实机16场景/77断言全PASS（普通Pi另5布尔判词），**完整E06仍PARTIAL**：普通Pi工具/权限/停止、文本Office扫描PDF预览、普通会话重启恢复及批次队列/拒止子集已验；原完整批量人工处置/补件回流/正向代批/幂等、Claude、双窗口/fork、严格审核PDF模型原件回执、Pocket/Relay与跨平台尚未验。三案C真实execution-failed如实保留。四处最小生产修复与首败见46，新增唯一正式用例9条；聚焦87/87、全仓3892pass/5skip/0fail（3897tests、16150expect）。b95四套标准CI SUCCESS，独立原风险workflow #38597799385 FAILURE；原脚本3PASS/1FAIL、exit1不掩盖。
+
+只在独立共享clone提交本测试分支，已保留其他Agent并发workflow路由；未改上游/main/其他工作树，未force push/undraft/merge。全部原始日志留 `p06-recheck-live-20261014-private`，公开证据位于独立acceptance目录，有raw/public哈希和脱敏规则。测试进程已停止、独立8MiB卷已卸载；继续时建立新profile，不能假设9222/9230仍运行，不能上传opaque渠道/device/SDK transcript/private binding。
+
+下一步仅 **`P06-RECHECK-LIVE-02`**：按46第7节剩余矩阵补真实证据，尤其原A/B/C完整业务流程、Claude合法配置、PDF严格原件回执/压缩、双窗/fork/自动恢复与其他LIVE。没有外部条件时分别NOT-RUN/BLOCKED。**P06-S02 NOT ACCEPTED / P06 PARTIAL / LIVE-07 PARTIAL / PR Draft/Open/MERGE NO-GO**。P05 Relay BLOCKED、Pocket PATCH READY/TARGET NOT-RUN与永久tombstone/journal无不安全GC禁令不变；不推进P07/P08。下面历史停点不作为现在未运行状态。
+
 ## 2026-10-15｜P06-RECHECK-R1B：旧探针归档与有效生产写入者门禁
 
 见 [45｜现行独立写入者矩阵和 CI 分流验收](45-p06-current-writer-probes-and-live-gates-20261015.md)。2026-10-15 接手分支 `b95b44f7a06bb1e1ae21a985b5bb4cd9f5581027`，此前新增本地真实 Electron/Pi 专项驱动和三笔生产安全补丁，勿因旧 44 号的历史 SHA 覆盖最新代码。

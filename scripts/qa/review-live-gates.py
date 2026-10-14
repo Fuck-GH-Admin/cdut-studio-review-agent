@@ -26,6 +26,7 @@ steps += [(name, root / 'apps/electron', ['bun', 'run', command]) for name, comm
     ('06-preload', 'build:preload'), ('07-renderer', 'build:renderer')]]
 steps += [('08-focused', root, ['bun', 'test', '--isolate', '--timeout', '30000',
     'apps/electron/src/main/lib/review/review-startup-io-recovery.p06.test.ts',
+    'apps/electron/src/main/lib/review/review-batch-case-fallback.p06.test.ts',
     'apps/electron/src/main/lib/agent-orchestrator-permission-wiring.p06.test.ts',
     'apps/electron/src/main/lib/review-owner-index-recovery.p06-fix01.test.ts',
     'apps/electron/src/main/lib/review/review-background-reuse.probe.test.ts',

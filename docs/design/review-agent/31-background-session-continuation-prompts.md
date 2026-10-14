@@ -1,5 +1,20 @@
 # 31｜后台案卷审核：新会话接手和小批次执行提示词
 
+## 最新继续提示：P06-RECHECK-LIVE-02（本地实机之后）
+
+并发7132新增两项正式写入者测试完整保留后，本地整合 `9cc92bb0e6cec8d2698f5d712a71ecc8b77256e4` 全套22门禁再次exit0：**全仓3894pass/5skip/0fail（3899tests、445files、16161expect）、聚焦89/89（345expect）、batch143/143**；生产与实测b95无差异。最终发布HEAD CI按PR最后验收评论查询，新版current gate可SUCCESS而原legacy脚本依旧exit1，两者分开登记。
+
+```text
+接手 cdut-studio-review-agent Draft PR #21 的 feat/review-owned-background-sessions；先查最新远程HEAD、工作树和真实CI，优先隔离checkout。读取46本地实机报告、29唯一台账、30交接与本节；旧37/38/44首败保留。
+本轮最终生产源码 b95b44f7a06bb1e1ae21a985b5bb4cd9f5581027，0.15.161。E05真实旧IPC响应确实交付、新Main/Jotai不回退9断言PASS；E03真实stop Promise闸门pending/busy/释放restart8断言PASS；E04真正旧outcome闭包两次迟到调用7断言PASS。真实ENOSPC/双持久化+owner失写/故障保持真实重启拒止/可写再重启failed落盘8/5/2/3断言PASS，不用再重新开发FIX-01～03。
+实机选定16场景77断言PASS，普通Pi5布尔判词；全仓3892pass/5skip/0fail（3897tests、16150expect）、聚焦87/87、batch143/143；b95四套标准CI SUCCESS，独立原风险 #38597799385 FAILURE（裸store旧探针仍FAIL，脚本exit1）。最终证据文档HEAD与其CI必须另查PR最终评论，不借不同SHA绿灯。
+生产已最小修四个真实反例：启动失写后的旧授权恢复、Pi遗漏canUseTool、outcome终态失写立即隔离、case/group无subject的错误fallback。公开raw/public哈希在独立acceptance目录，真实原日志在本机private目录；密钥/profile/transcript/private binding未上传。Main/daemon已停止，8MiB卷已卸载，新会话重新建隔离环境。
+下一批仅P06-RECHECK-LIVE-02：完整E06原A/B/C正式人工处置/补件回流/代批正向与幂等、Claude授权配置、严格扫描PDF模型原件回执/PNG/压缩、双窗口/fork/自动恢复与其他未验LIVE。当前普通PDF/Office预览、普通会话跨进程恢复、批量队列与B/C拒止子集PASS不能扩展为完整E06；三案C真实execution-failed需如实保留/重试，不放宽工具或引用门禁。
+P06-S02 NOT ACCEPTED、P06 PARTIAL、LIVE-07 PARTIAL、Draft/Open/MERGE NO-GO。P05-RELAY-ROUTE-01 BLOCKED、P05-POCKET-FIFO-01 PATCH READY/TARGET NOT-RUN，P04永久tombstone/FIX-01 owner UUID journal禁止无安全证明TTL/GC。只改本PR分支，保留并发提交，不force push、不undraft/merge、不进入P07/P08、不写独立上游Pocket或原项目。
+```
+
+下面提示为相应日期的历史事实；当前以46/29和最新HEAD/CI为准。
+
 ## 2026-10-15｜P06-RECHECK-R1B：旧探针归档与有效生产写入者门禁
 
 见 [45｜现行独立写入者矩阵和 CI 分流验收](45-p06-current-writer-probes-and-live-gates-20261015.md)。2026-10-15 接手分支 `b95b44f7a06bb1e1ae21a985b5bb4cd9f5581027`，此前新增本地真实 Electron/Pi 专项驱动和三笔生产安全补丁，勿因旧 44 号的历史 SHA 覆盖最新代码。

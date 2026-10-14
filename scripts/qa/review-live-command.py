@@ -26,6 +26,8 @@ entry = dict(name=a.name, sourceSha=sha, cwd=a.cwd, argv=argv, startedAt=now(),
                  'PROFER_VITE_PORT', 'ELECTRON_OVERRIDE_DIST_PATH', 'QA_PROFILE_ROOT',
                  'QA_REPORT_DIR', 'QA_APPLICATION_SHA', 'QA_SOURCE_PATH', 'REVIEW_RISK_OUT',
                  'REVIEW_ACCEPTANCE_ROOT', 'CI', 'NO_COLOR'}})
+entry['workingTreeDirty'] = bool(subprocess.check_output(['git','status','--porcelain'],cwd=a.cwd,text=True).strip())
+entry['qaSourceSha256'] = {f.relative_to(Path(a.cwd)).as_posix():hashlib.sha256(f.read_bytes()).hexdigest() for f in (Path(a.cwd)/'scripts/qa').glob('review-live-*') if f.is_file()}
 with (out / (a.name + '.stdout.log')).open('wb') as stdout, (out / (a.name + '.stderr.log')).open('wb') as stderr:
     result = subprocess.run(argv, cwd=a.cwd, stdout=stdout, stderr=stderr)
 entry.update(finishedAt=now(), exitCode=result.returncode)

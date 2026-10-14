@@ -13,7 +13,7 @@ const r=await connect();let id,workspace
 const privatePath=join(dir,'preview-private-session.json')
 async function open(name){return r.evaluate(`(async()=>{${storeAccess}const p=await import('/components/diff/preview-opener.ts');const a=await import('/atoms/active-view.ts');store.set(a.activeViewAtom,'conversations');return !!await p.openFilePreviewTabAuthorized(store,${q(id)},{filePath:${q(join(workspace,name))},previewOnly:true,readOnly:true})})()`)}
 try{
- if(mode==='prepare'){
+ if(mode==='prepare'||mode==='prepare-office'){
   const m=JSON.parse(readFileSync(join(profile,'config/review-module-settings.json'))).agentModelSelection
   const s=await r.evaluate(`window.electronAPI.createAgentSession('P06 合成预览恢复',${q(m.channelId)},undefined,${q(m.modelId)})`);id=s.id;workspace=join(profile,'config/agent-workspaces/default',id);mkdirSync(workspace,{recursive:true})
   writeFileSync(privatePath,JSON.stringify({id,workspace}))
@@ -30,6 +30,7 @@ with zipfile.ZipFile(p/'office-fixture.docx','w') as z:
   const owned=join(profile,'config/agent-workspaces/default',f.sessionId,'p06-owned-deny.txt');writeFileSync(owned,'P06_REVIEW_OWNED_SYNTHETIC_ONLY')
   const actual=await r.evaluate(`window.electronAPI.resolveAndReadFile(${q(owned)},{sessionId:${q(id)}})`)
   check('真实审核 owner 工作区合成文件被普通会话拒止',actual===null)
+  if(mode!=='prepare-office'){
   check('真实扫描 PDF 已打开授权预览 Tab',await open('scan-fixture.pdf'))
   const frameTree=await r.call('Page.getFrameTree');const frames=frameTree.frameTree.childFrames??[]
   const frame=frames.find(f=>f.frame.url.includes('pdf')||f.frame.url.includes('preview'))?.frame
@@ -39,6 +40,7 @@ with zipfile.ZipFile(p/'office-fixture.docx','w') as z:
   while(Date.now()<deadline){const v=await r.call('Runtime.evaluate',{contextId:world.executionContextId,expression:'(()=>{const c=document.querySelector("canvas");return {width:c?.width,height:c?.height,rendered:!!c&&c.width>0&&c.height>0}})()',returnByValue:true});pdf=v.result?.value;if(pdf?.rendered)break;await new Promise(a=>setTimeout(a,100))}
   row.pdf=pdf;check('真实 PDF iframe Renderer 已绘制页面 canvas',pdf?.rendered)
   await r.screenshot(dir,'e06-scan-pdf-cropped',{x:315,y:82,width:1270,height:780,scale:1})
+  }
   check('真实 Office 已打开授权预览 Tab',await open('office-fixture.docx'))
   await r.poll('document.body.innerText.includes("P06_OFFICE_SYNTHETIC_ONLY")',60000)
   check('真实 Office Renderer 显示合成内容',await r.evaluate('document.body.innerText.includes("P06_OFFICE_SYNTHETIC_ONLY")'))
