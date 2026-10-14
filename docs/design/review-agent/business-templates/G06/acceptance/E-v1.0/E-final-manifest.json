@@ -1,0 +1,142 @@
+{
+  "schema": "G06-E-v1.0-r01-interim-final-manifest-v1",
+  "verdict": "BLOCKED_SOURCE",
+  "signingDate": "2026-10-14",
+  "auditor": "independent-g06-e-session-r01",
+  "repo": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "auditBranch": "audit/g06-e-v1-r01",
+  "auditBaseSha": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+  "sourceArchives": {
+    "frozenInputIndex": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E0-input-manifest.json",
+    "count": 46,
+    "source": "User Library asset sha256; no single production Git commit",
+    "t08SupplementB02_sha256": "a3e58f2514c7348b48953ee7f0b92db3c9c900a1913def4c6b4482"
+  },
+  "sourceReferenceVersions": {
+    "aIndex": "A-2026-10-11-B01",
+    "aSupplement": "2026-10-12",
+    "bArchives": "specific file sha in E0-input-manifest.json",
+    "independentOriginalEvidence": "E1-official-fact-register.md plus E1-supplementary-evidence-20261014.md"
+  },
+  "stageStatus": {
+    "E0": "READY_WITH_DECLARED_GAPS",
+    "E1": "E1_PARTIAL_SOURCE_BLOCKED: evidence frozen",
+    "E2": "BLOCKED_SOURCE_NOT_STARTED",
+    "E3": "NOT_STARTED",
+    "E4": "NOT_STARTED; blockers only"
+  },
+  "scope": {
+    "templateIds": [
+      "G06-T01",
+      "G06-T02",
+      "G06-T03",
+      "G06-T04",
+      "G06-T05",
+      "G06-T06",
+      "G06-T07",
+      "G06-T08",
+      "G06-T09"
+    ],
+    "temporarilyDeferred": [
+      "G06-T10"
+    ],
+    "candidateSourceDuties": {
+      "total": 159,
+      "H": 142,
+      "M": 17,
+      "L": 0
+    },
+    "baselineVerifiedLimited": {
+      "H": 51,
+      "M": 1
+    },
+    "baselinePending": {
+      "H": 91,
+      "M": 16
+    },
+    "originalSourceFindings": 25,
+    "adversarialHypotheses": 24
+  },
+  "issueLedger": {
+    "dependencyBlockers": 10,
+    "open": 10,
+    "remediationPassed": 0,
+    "formalP0P1P2": "NOT_ASSESSED; E2/E3 blocked"
+  },
+  "independence": {
+    "cRuleBodyRead": false,
+    "dGoldAnswersRead": false,
+    "publicGoldLeakKnown": false,
+    "aclAudit": "NOT_VERIFIED"
+  },
+  "notPerformed": {
+    "CAndGoldCrosscheck": true,
+    "engineeringD4": true,
+    "onlineModelAccuracy": true,
+    "universityAuthority": true
+  },
+  "artifacts": [
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E0-input-manifest.json",
+      "sha256": "4e7fd9cd77399421ecf6e764319852572ed419d565e6f205a4fdadf33a299d96",
+      "gitBlob": "dc80820744f61a4683de79d270ddd22253badd5d"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E0-coverage-and-isolation.md",
+      "sha256": "ac70577834c9b4a1d102cfe8045488267089c1170727de2490a52a760616a3bf",
+      "gitBlob": "c09d8b37c128f6531adb545121c4ccd77b6adf80"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E0-decision.md",
+      "sha256": "13e8f6e58e174c49227e9edc59342b0723d5b4d46fd8951c20f1d21a344c7699",
+      "gitBlob": "ac15842d2eeede5ae4bb9906c66d0bf4b156a440"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E0-addendum-T08-B02.md",
+      "sha256": "d67fc3dd57cb768f149e8bd714de8ef8cd0f66bc61bfdc453ab6925b0084faf7",
+      "gitBlob": "2b572b48d9f576b62b5286d8c6bb0fb88517449a"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E1-official-fact-register.md",
+      "sha256": "ea466d2fbe1f4bd33d8fc5eda3fe15a9827949c41b5a3587c17310a3001b9795",
+      "gitBlob": "472012639562d7786e1477676046c2d34dcf557c"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E1-adversarial-hypotheses.md",
+      "sha256": "f2a9b7b72fd758fb8545fed9f3e7151182e2aae6b3ef0b5a7fc56a7a7c399f70",
+      "gitBlob": "1edee8bb2e1bd946d7d8a676061941a2dcf75854"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E1-supplementary-evidence-20261014.md",
+      "sha256": "b6f78b8b0981c85195f297a9df438450dfd4772bd09c8148922c20f00f4f603c",
+      "gitBlob": "f06c632f6c5a42bbdc9f36f23153f94163924982"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E1-evidence-lock.json",
+      "sha256": "70b8a14de51542bf604e23c7578f7d7da4cb0d53620d5f2f88fde59319d956d8",
+      "gitBlob": "d40a5e393f7f1d77cb0f14c1536baf92a3485556"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/README.md",
+      "sha256": "6702914619f31621329d84e05910ad0c862d1b790bfaa9c85bb6066001337619",
+      "gitBlob": "262b33f4b66fff3bdf8c292d8a6095cd55042e22"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E4-issue-ledger.md",
+      "sha256": "b93de73c1e9638f0746f21bfb1daafa6efce4770e4eb22bc377bd173eed3b38e",
+      "gitBlob": "a7331f3613841d29ddb25a395beb6e71b8dd5720"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E4-retest-ledger.md",
+      "sha256": "13e162f5cace2560518dd6f7e8ed9da97f5069d7bccb5f7d140d0990371c1eec",
+      "gitBlob": "e1b074ea48125ff14e76526a6d1e68a192fd2808"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E-final-verdict.md",
+      "sha256": "e67ecdc383ddbc628e92ad8d43bd79383b58e07adc9e151ceb917065b9604a9b",
+      "gitBlob": "1ebdadaa9e97aab706ceb4ea0588ed906c348c6d"
+    }
+  ],
+  "manifestHashRule": "This manifest intentionally does not include its own SHA-256 to avoid self-reference; freeze its Git blob and SHA in the Draft PR/next independent ledger.",
+  "safety": "No hidden Gold, identifiable user data, or restricted trusted ground truth is committed."
+}
