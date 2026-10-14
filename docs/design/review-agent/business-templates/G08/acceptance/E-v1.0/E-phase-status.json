@@ -1,0 +1,32 @@
+{
+  "schema": "E-phase-status-v1",
+  "domain": "G08",
+  "auditBranch": "audit/g08-e-v1-r01",
+  "baseCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+  "E0": {
+    "status": "COMPLETE",
+    "decision": "READY_WITH_DECLARED_GAPS",
+    "blindC": false,
+    "goldOpened": false
+  },
+  "E1": {
+    "status": "NOT_STARTED",
+    "next": "Independent official evidence verification, H22 M8 L4",
+    "canOpenC": false,
+    "canOpenGold": false
+  },
+  "E2": {
+    "status": "NOT_STARTED"
+  },
+  "E3": {
+    "status": "NOT_STARTED"
+  },
+  "E4": {
+    "status": "NOT_STARTED"
+  },
+  "technicalRuntime": "NOT_RUN",
+  "onlineModelAccuracy": "NOT_RUN",
+  "administrativeAuthority": "NOT_VERIFIED",
+  "safeToPublish": true,
+  "updatedAt": "2026-10-14"
+}
