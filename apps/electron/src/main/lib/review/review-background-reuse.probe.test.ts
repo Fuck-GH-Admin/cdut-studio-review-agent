@@ -10,7 +10,7 @@
  */
 import { afterAll, describe, expect, test } from 'bun:test'
 import { randomUUID } from 'node:crypto'
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, rmdirSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Actor, AgentSendInput, AgentStreamPayload, TemplateVersion } from '@profer/shared'
@@ -22,7 +22,7 @@ import { readAggregate } from './case-store-v2'
 import { registerMaterial } from './material-service'
 import { finishPiReviewRunV2, preparePiReviewRunV2, submitPiReviewResultV2 } from './pi-case-review-service'
 import { admitPreparedPiReviewTurn, isPiReviewRunAdmitted } from './review-pi-admission'
-import { findActivePiReviewAssignment } from './review-agent-assignment'
+import { checkAssignment, createAssignment, findActivePiReviewAssignment, revokeAssignment } from './review-agent-assignment'
 import { getRunV2 } from './run-store-v2'
 import { publishTemplate, saveDraft } from './template-store'
 
@@ -371,5 +371,109 @@ describe('P03-S02 Main admission ACK and single-owner lifecycle', () => {
       binding, fakeRun)).rejects.toThrow('指派已失效')
     expect(invoked).toBeFalse()
     expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('running')
+  })
+})
+
+
+describe('P06-FIX-03 durable revoke-failure containment', () => {
+  test('a live direct Pi grant becomes unusable when its V2 run is already terminal, even with an unrevoked disk row', async () => {
+    const { binding } = await caseFixture()
+    expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).ok).toBeTrue()
+    finishPiReviewRunV2(binding, { status: 'failed', error: '合成终态' })
+    expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).code).toBe('ASSIGNMENT_REVOKED')
+    expect(findActivePiReviewAssignment(binding.sessionId)).toBeUndefined()
+  })
+
+  test('a malformed persistent assignment file cannot be overwritten by new grants or authorize old tools', async () => {
+    const { binding } = await caseFixture()
+    const path = join(CONFIG_DIR, 'review-agent-assignments.json')
+    const intact = readFileSync(path, 'utf8')
+    try {
+      writeFileSync(path, '{incomplete')
+      expect(() => createAssignment({ sessionId: 'ordinary-test', turnId: 'new-turn', caseId: 'test-case', actions: ['submit-result'] })).toThrow()
+      expect(readFileSync(path, 'utf8')).toBe('{incomplete')
+      expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).ok).toBeFalse()
+    } finally {
+      writeFileSync(path, intact)
+    }
+  })
+
+  test('failed revoke write after true ACK is observed: no unhandled rejection, Main ACK clears, grant locally denied', async () => {
+    const { binding, input } = await caseFixture()
+    const path = join(CONFIG_DIR, 'review-agent-assignments.json')
+    const backup = `${path}.fix03-${randomUUID()}`
+    let release!: () => void
+    const gate = new Promise<void>((resolve) => { release = resolve })
+    const receipt = await admitPreparedPiReviewTurn({ ...input, onRunOutcome: undefined }, binding, async (runInput, owned) => {
+      owned()
+      await gate
+      runInput.onRunOutcome?.({ status: 'failed', error: '合成执行终态' })
+    })
+    expect(receipt).toEqual(binding)
+    expect(isPiReviewRunAdmitted(binding.caseId, binding.runId)).toBeTrue()
+    let unhandled = false
+    const observe = () => { unhandled = true }
+    process.on('unhandledRejection', observe)
+    renameSync(path, backup)
+    mkdirSync(path) // deterministic EISDIR write failure on all operating systems
+    try {
+      release()
+      await Bun.sleep(40)
+      expect(isPiReviewRunAdmitted(binding.caseId, binding.runId)).toBeFalse()
+      expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('failed')
+      expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).code).toBe('ASSIGNMENT_REVOKED')
+      expect(unhandled).toBeFalse()
+    } finally {
+      process.off('unhandledRejection', observe)
+      rmdirSync(path)
+      renameSync(backup, path)
+    }
+    const persisted = JSON.parse(readFileSync(path, 'utf8')) as { assignments: Array<{ id: string; revokedAt?: string }> }
+    expect(persisted.assignments.find(x => x.id === binding.assignmentId)?.revokedAt).toBeUndefined()
+    // Never confuse a process-local quarantine with a durable revokedAt.
+    expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).code).toBe('ASSIGNMENT_REVOKED')
+  })
+
+  test('pre-ACK executor rejection under corrupt assignment storage settles the caller and releases the duplicate fence', async () => {
+    const { binding, input } = await caseFixture()
+    const path = join(CONFIG_DIR, 'review-agent-assignments.json')
+    const original = readFileSync(path, 'utf8')
+    let entered!: () => void
+    let release!: () => void
+    const arrived = new Promise<void>((resolve) => { entered = resolve })
+    const gate = new Promise<void>((resolve) => { release = resolve })
+    const admission = admitPreparedPiReviewTurn({ ...input, onRunOutcome: undefined }, binding, async () => {
+      entered()
+      await gate
+      throw new Error('synthetic executor pre-ACK rejection')
+    })
+    await arrived
+    let unhandled = false
+    const observe = () => { unhandled = true }
+    process.on('unhandledRejection', observe)
+    try {
+      writeFileSync(path, '{broken authorization json')
+      release()
+      await expect(admission).rejects.toThrow('synthetic executor pre-ACK rejection')
+      await Bun.sleep(30)
+      expect(isPiReviewRunAdmitted(binding.caseId, binding.runId)).toBeFalse()
+      expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).ok).toBeFalse()
+      expect(unhandled).toBeFalse()
+    } finally {
+      process.off('unhandledRejection', observe)
+      writeFileSync(path, original)
+    }
+    expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).code).toBe('ASSIGNMENT_REVOKED')
+  })
+
+  test('a successful durable revoke still reports revokedAt and leaves an ordinary independent grant working', async () => {
+    const { binding } = await caseFixture()
+    const ordinary = createAssignment({ sessionId: 'normal-' + randomUUID(), turnId: 'user-turn', caseId: binding.caseId, actions: ['list'] })
+    expect(revokeAssignment(binding.assignmentId)).toBeTrue()
+    expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).code).toBe('ASSIGNMENT_REVOKED')
+    expect(checkAssignment({ assignmentId: ordinary.id, sessionId: ordinary.sessionId, action: 'list' }).ok).toBeTrue()
+    const path = join(CONFIG_DIR, 'review-agent-assignments.json')
+    const entries = JSON.parse(readFileSync(path, 'utf8')) as { assignments: Array<{ id: string; revokedAt?: string }> }
+    expect(entries.assignments.find(x => x.id === binding.assignmentId)?.revokedAt).toBeTruthy()
   })
 })
