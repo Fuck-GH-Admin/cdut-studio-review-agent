@@ -9,7 +9,8 @@
  * - 落盘：review-agent-assignments.json（轻量 JSON，无数据库）
  */
 import { randomUUID } from 'node:crypto'
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
+import { writeJsonFileAtomic } from '../safe-file'
 import { join } from 'node:path'
 import { getConfigDir } from '../config-paths'
 import { getRunV2 } from './run-store-v2'
@@ -81,7 +82,17 @@ function readAll(): ReviewAgentAssignment[] {
 }
 
 function writeAll(assignments: ReviewAgentAssignment[]): void {
-  writeFileSync(assignmentsPath(), `${JSON.stringify({ assignments }, null, 2)}\n`, 'utf-8')
+  // A previous revoke may have failed with EACCES/ENOSPC. Any subsequent
+  // successful write MUST make that pending deny durable as well, otherwise
+  // an unrelated grant could preserve a stale authorized row across restart.
+  const persisted = assignments.map((assignment) => pendingRevocations.has(assignment.id) && !assignment.revokedAt
+    ? { ...assignment, revokedAt: new Date().toISOString() }
+    : assignment)
+  writeJsonFileAtomic(assignmentsPath(), { assignments: persisted })
+  // Only clear process-local quarantine after the complete file was committed.
+  for (const assignment of persisted) {
+    if (assignment.revokedAt) pendingRevocations.delete(assignment.id)
+  }
 }
 
 export interface CreateAssignmentInput {

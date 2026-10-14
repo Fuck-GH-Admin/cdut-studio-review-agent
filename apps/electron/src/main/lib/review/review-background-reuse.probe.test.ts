@@ -432,6 +432,14 @@ describe('P06-FIX-03 durable revoke-failure containment', () => {
     expect(persisted.assignments.find(x => x.id === binding.assignmentId)?.revokedAt).toBeUndefined()
     // Never confuse a process-local quarantine with a durable revokedAt.
     expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).code).toBe('ASSIGNMENT_REVOKED')
+    // Once disk writes resume, a subsequent unrelated legitimate grant must
+    // automatically persist the quarantined revocation before it can be reused
+    // by a new process. It must not silently copy the old live row unchanged.
+    const independent = createAssignment({ sessionId: 'fix03-independent-' + randomUUID(),
+      turnId: 'independent-turn', caseId: binding.caseId, actions: ['list'] })
+    const recovered = JSON.parse(readFileSync(path, 'utf8')) as { assignments: Array<{ id: string; revokedAt?: string }> }
+    expect(recovered.assignments.find(x => x.id === binding.assignmentId)?.revokedAt).toBeTruthy()
+    expect(checkAssignment({ assignmentId: independent.id, sessionId: independent.sessionId, action: 'list' }).ok).toBeTrue()
   })
 
   test('pre-ACK executor rejection under corrupt assignment storage settles the caller and releases the duplicate fence', async () => {
