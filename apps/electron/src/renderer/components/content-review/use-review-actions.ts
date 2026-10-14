@@ -39,7 +39,11 @@ export function useReviewActions() {
       timer = setTimeout(refresh, status === 'running' || status === 'preparing' ? 1500 : 5000)
     }
     void refresh()
-    return () => { disposed = true; if (timer) clearTimeout(timer) }
+    return () => {
+      disposed = true
+      if (timer) clearTimeout(timer)
+      actions.invalidateRefresh(caseId)
+    }
   }, [actions, caseId, store])
   return actions
 }

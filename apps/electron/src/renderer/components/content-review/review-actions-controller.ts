@@ -65,6 +65,7 @@ import {
 import type { ReviewCaseTasks } from '@/atoms/review-atoms'
 import type { ReviewExecutionViewState, ReviewFocus } from '@/atoms/review-atoms'
 import { buildReviewWorkspaceViewModel } from './review-workspace-view-model'
+import { beginWorkspaceCaseWrite, invalidateWorkspaceCaseWrites } from './review-workspace-write-fence'
 
 /** focus/locate 联动 nonce（每次点击 +1 驱动 useEffect 重放） */
 let focusNonce = 0
@@ -220,8 +221,7 @@ export function createReviewActionsController(
   }
   /** 同案操作代次：key = `${caseId}:${kind}`，新发起递增；旧返回代次不符即丢弃 */
   const operationGenerations = new Map<string, number>()
-  /** Per-case latest refresh wins: a slow prior run snapshot cannot repaint a new round. */
-  const workspaceRefreshGenerations = new Map<string, number>()
+  // Main owns the Pi run; shared store/case tokens fence only stale UI commits.
 
   const reportError = (scope: string, error: unknown, options: { caseId?: string } = {}): void => {
     console.error('[审核专区]', scope, error)
@@ -256,9 +256,7 @@ export function createReviewActionsController(
 
   /** 当前 workspace caseId 与 V2 aggregateId 一致；选择/写入后从持久层重读。 */
   const refreshWorkspaceV2 = async (caseId: string): Promise<void> => {
-    const generation = (workspaceRefreshGenerations.get(caseId) ?? 0) + 1
-    workspaceRefreshGenerations.set(caseId, generation)
-    const isLatest = (): boolean => workspaceRefreshGenerations.get(caseId) === generation
+    const isLatest = beginWorkspaceCaseWrite(store, caseId)
     if (api.migrateCaseV2) {
       await api.migrateCaseV2(caseId)
       if (!isLatest()) return
@@ -432,6 +430,10 @@ export function createReviewActionsController(
   }
 
   return {
+    /** On unmount / case switch, revoke pending display reads, not background Pi. */
+    invalidateRefresh(caseId: string): void {
+      invalidateWorkspaceCaseWrites(store, caseId)
+    },
     /** 仅刷新本案 V2 投影，执行仍由 Main 持有。 */
     async refreshBackgroundReview(caseId: string): Promise<void> {
       await refreshWorkspaceV2(caseId)
