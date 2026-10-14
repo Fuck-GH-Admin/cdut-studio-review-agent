@@ -29,6 +29,7 @@ jobs:
       - name: Replay without mutating the original audit
         shell: bash
         run: |
+          set +e
           set -uo pipefail
           OUT="$PWD/p06-recheck-artifacts"
           mkdir -p "$OUT/original"
