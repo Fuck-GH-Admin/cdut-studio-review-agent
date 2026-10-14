@@ -152,7 +152,19 @@ export function admitPreparedPiReviewTurn(
     ...input,
     onRunOutcome: (outcome) => {
       try {
-        if (isCurrent(binding)) finishPiReviewRunV2(binding, outcome)
+        const persisted = getRunV2(binding.caseId, binding.runId)
+        const active = admittedByCase.get(binding.caseId)
+        const ownsThisRun = active?.runId === binding.runId && active.assignmentId === binding.assignmentId
+        // The tool may have already completed V2. A late callback must not
+        // reopen a terminal run or mutate a newer assignment.
+        if (ownsThisRun && (!persisted || persisted.status === 'running' || persisted.status === 'queued')) {
+          if (!persisted || !isCurrent(binding)) throw new Error('无法确认当前审核轮次及 V2 持久运行状态')
+          finishPiReviewRunV2(binding, outcome)
+          const after = getRunV2(binding.caseId, binding.runId)
+          if (!after || after.status === 'running' || after.status === 'queued') {
+            throw new Error('V2 终态未成功持久化，不能视为已完成')
+          }
+        }
         terminalReported = true
       } catch (error) {
         terminalWriteFailure = error

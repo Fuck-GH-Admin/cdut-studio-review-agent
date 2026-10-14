@@ -10,7 +10,7 @@
  */
 import { afterAll, describe, expect, test } from 'bun:test'
 import { randomUUID } from 'node:crypto'
-import { mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, rmdirSync, writeFileSync } from 'node:fs'
+import { chmodSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, rmdirSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Actor, AgentSendInput, AgentStreamPayload, TemplateVersion } from '@profer/shared'
@@ -464,6 +464,65 @@ describe('P06-FIX-03 durable revoke-failure containment', () => {
       writeFileSync(path, original)
     }
     expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).code).toBe('ASSIGNMENT_REVOKED')
+  })
+
+
+  test('EACCES from a readonly grants file leaves persistent revokedAt unconfirmed and denies the local grant', async () => {
+    // This reproduces the original reported POSIX EACCES condition on the
+    // non-root CI runner. Under root, leave it to the deterministic EISDIR test.
+    if (process.getuid?.() === 0) return
+    const { binding, input } = await caseFixture()
+    const path = join(CONFIG_DIR, 'review-agent-assignments.json')
+    let release!: () => void
+    const gate = new Promise<void>(resolve => { release = resolve })
+    await admitPreparedPiReviewTurn({ ...input, onRunOutcome: undefined }, binding, async (runInput, owned) => {
+      owned()
+      await gate
+      runInput.onRunOutcome?.({ status: 'failed', error: 'EACCES synthetic run' })
+    })
+    let unhandled = false
+    const listener = () => { unhandled = true }
+    process.on('unhandledRejection', listener)
+    try {
+      chmodSync(path, 0o400)
+      release()
+      await Bun.sleep(50)
+      expect(isPiReviewRunAdmitted(binding.caseId, binding.runId)).toBeFalse()
+      expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).code).toBe('ASSIGNMENT_REVOKED')
+      expect(unhandled).toBeFalse()
+    } finally {
+      chmodSync(path, 0o600)
+      process.off('unhandledRejection', listener)
+    }
+    const data = JSON.parse(readFileSync(path, 'utf8')) as { assignments: Array<{ id: string; revokedAt?: string }> }
+    expect(data.assignments.find(x => x.id === binding.assignmentId)?.revokedAt).toBeUndefined()
+  })
+
+  test('invalid V2 final-state persistence is not accepted as terminal and cannot leave a stale ACK', async () => {
+    const { binding, input } = await caseFixture()
+    const path = join(CONFIG_DIR, 'review-cases', binding.caseId, 'runs-v2', `${binding.runId}.json`)
+    const backup = `${path}.fix03-backup`
+    let release!: () => void
+    const gate = new Promise<void>(resolve => { release = resolve })
+    await admitPreparedPiReviewTurn({ ...input, onRunOutcome: undefined }, binding, async (runInput, owned) => {
+      owned()
+      await gate
+      runInput.onRunOutcome?.({ status: 'failed', error: 'simulated V2 write interruption' })
+    })
+    renameSync(path, backup)
+    mkdirSync(path)
+    try {
+      release()
+      await Bun.sleep(40)
+      expect(isPiReviewRunAdmitted(binding.caseId, binding.runId)).toBeFalse()
+      expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).code).toBe('ASSIGNMENT_REVOKED')
+    } finally {
+      rmdirSync(path)
+      renameSync(backup, path)
+    }
+    // The V2 record is STILL running on disk. This is an OPEN persistence
+    // incident for startup recovery, not a falsely reported successful finish.
+    expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('running')
   })
 
   test('a successful durable revoke still reports revokedAt and leaves an ordinary independent grant working', async () => {
