@@ -1,5 +1,13 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
+## 最新安全返工：P06-FIX-03 受控通过（2026-10-14）
+
+[代码 `b5f9db17`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/b5f9db179b358d0405a1d0868133f11064edc93a)；[PR CI #38524782294](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38524782294)、[D2 #38524782315](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38524782315)、[Baseline #38524782350](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38524782350)、[focused #38524782373](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38524782373) **四套 SUCCESS**，全仓 **3881 pass / 5 skip / 0 fail（3886 tests / 441 files）**，类型、包边界、Electron main/preload/renderer build PASS。
+
+已修 `AUDIT-P01-P06-SETTLE-01` 的受控故障路径：Main executor 收尾 Promise 无未观察 rejection，持久指派撤销失败后本进程 fail-closed + 在后续成功写盘时原子补录撤销，V2 终态未确认绝不伪装为已成功持久化。新增 **7/7 PASS**，详情 [41 号](41-p06-fix03-settlement-io-resilience-20261014.md)。首轮 CI FAIL #38523276636（两个新测试预期/查找层级错误）和第二轮 FAIL #38524287740（一个同类误判）均留存，最新代码/CI 已成功。FIX-01 的 9/9、FIX-02 的 5/5 旧受控证据不变；**原四项 38 号独立脚本精确重放、真实 Electron E05 和双持久化故障恢复仍 NOT-RUN，P06-S02 NOT ACCEPTED、P06 PARTIAL**。P04 终身 tombstone/owner deny journal 无 GC；P05 Relay/Pocket 外部阻断；P07/P08 未执行，PR 仍 Draft/Open/MERGE NO-GO。
+
+**下一批 P06-RECHECK**：隔离环境重新跑原 `replay-risk-probes.py`，按四项 ID 对照新旧证据；真实 Electron 再做 E05 关页/重进乱序和 E03/E04/完整 E06。未取得证据不得由受控 PASS 推断 LIVE PASS。
+
 ## 最新安全返工：P06-FIX-02 受控通过（2026-10-14）
 
 代码冻结 [`414f2066`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/414f20669b06513064ff9f84e9ccfb92f7a9001e)；[PR CI #38496467696](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38496467696)、[D2 #38496467716](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38496467716)、[Baseline #38496467778](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38496467778)、[focused #38496467754](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38496467754) **全部 SUCCESS**；新增 **5/5 PASS**（PR CI 日志逐项可见），全仓 **3874 pass / 5 skip / 0 fail（3879 tests / 441 files）**，typecheck、边界和 Electron main/preload/renderer 构建均通过。共享 Jotai store+case 写入资格解决了旧 Controller 跨卸载和 Workspace Hook `refresh/apply` 两个 P1 前台缓存回退通道；新增真实 React/Jotai Hook 路径 5/5 测试全部通过，详细 [40｜P06-FIX-02 验收](40-p06-fix02-renderer-write-fence-20261014.md)。**原 38 号失败事实和 37 号真实 Electron E05 FAIL 仍保留，旧反例当前 HEAD 的精确重放与 E05 真机重试 NOT-RUN**。FIX-01 历史 9/9 依旧 PASS，FIX-03 持久撤销 I/O 异常仍 OPEN；P06-S02 NOT ACCEPTED、P06 PARTIAL、P05 Relay/Pocket 阻断、LIVE 和 Draft/MERGE NO-GO 不变。下一独立批次 **P06-FIX-03**，不得误入 P07/P08。

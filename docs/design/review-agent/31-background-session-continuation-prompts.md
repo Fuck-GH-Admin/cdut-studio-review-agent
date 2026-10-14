@@ -1,5 +1,14 @@
 # 31｜后台案卷审核：新会话接手和小批次执行提示词
 
+## 当前接手提示：P06-FIX-03 之后（2026-10-14）
+
+```text
+接手 Draft PR #21 最新 HEAD，先读 41-p06-fix03-settlement-io-resilience-20261014.md，再读 40 号 FIX-02、39 号 FIX-01、38 号原独立失败、37 号 E05 真机首败和 29/30 号台账。FIX-03 冻结 b5f9db179b358d0405a1d0868133f11064edc93a；正式 7/7 受控 PASS，全仓 3881 pass / 5 skip / 0 fail，PR #38524782294、D2 #38524782315、Baseline #38524782350、focused #38524782373 SUCCESS。
+权限撤销异常分三态：持久 revokedAt、仅进程内 pendingRevocations、V2 终态未确认。绝不把后两者写成持久化 PASS；EACCES 本地受控故障与 EISDIR、坏 JSON、ACK 前拒绝有正式回归，真实 ENOSPC/同时损坏/重启验证不充分。
+下一批 P06-RECHECK，先精确执行 38 号原独立审计四项探针，保存当前 HEAD/环境/逐项原始报告与新旧差异；再在真实 Electron 隔离 profile 重跑 E05 及 E03/E04/完整 E06。不得仅拿 FIX-01 9/9、FIX-02 5/5、FIX-03 7/7 受控通过宣称 P06-S02 验收通过。
+P05 中心 Relay BLOCKED、Pocket PATCH READY/TARGET NOT-RUN 不动，P04 tombstone/journal 不执行危险 GC，LIVE-07 PARTIAL、P06-S02 NOT ACCEPTED、PR Draft/Open/未合并、P07/P08 未启动。
+```
+
 ## 当前接手提示：P06-FIX-02 之后（2026-10-14）
 
 ```text
