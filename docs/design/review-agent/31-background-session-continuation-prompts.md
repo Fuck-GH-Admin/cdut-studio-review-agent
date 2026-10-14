@@ -1,5 +1,11 @@
 # 31｜后台案卷审核：新会话接手和小批次执行提示词
 
+## 最新执行停点：P06-RECHECK R1 独立复演后（2026-10-14）
+
+以 [44 号](44-p06-recheck-independent-acceptance-20261014.md) 和 29 号唯一台账为准。独立执行代码 SHA `960163c785d7ccf0eb2b6a6a6ca51161bfc547c4`，原 38 脚本 3 PASS / 1 FAIL、exit1（旧 WORKSPACE-WRITER 用裸 Jotai store.set，现已非生产写入者）；修正证据采集完整保留原 FAIL。新增真实 Hook 对 Controller/Hook 回归 2/2 PASS，聚焦 36/36 PASS；FIX-03 已有原子写 `.tmp` 目录 EACCES 真故障断言通过，原 chmod 文件本体旧 SETTLE 注入不再有效。标准四套 CI SUCCESS、全仓 3883 pass / 5 skip / 0 fail；独立原审计 CI #38538200712 保持真实 FAILURE。**不可以根据这些受控证据宣布真实 E05 PASS**。
+
+下一步仅 `P06-RECHECK-LIVE`：在有授权真实 Pi 和隔离 Electron profile 的设备按 37/44 号复演 E05 → E03（真正 stop pending 时 busy）→ E04（授权可控迟到 outcome）→ E06 完整 Pi/Claude/批量/预览/Pocket 矩阵，并在可控设施验证真实 ENOSPC、双持久化失败后重启恢复；没有条件就 NOT-RUN。每项将 SHA、原日志、exit code、Main/Jotai V2 与证据 SHA256 追加 29 号。37 的 E05 FAIL 及 38 老 FAIL 保留；P05 Relay/Pocket、P04 tombstone+UUID journal 不安全 GC 禁令、LIVE、PR Draft/Open/MERGE NO-GO、P07/P08 不启动不变。
+
 ## 当前最新接手提示：P06-RECHECK（2026-10-14）
 
 请优先使用 [43｜P06-RECHECK 正式提示](43-p06-recheck-next-session-prompt-20261014.md) 和 [42｜独立接手交接书](42-p06-recheck-independent-takeover-handoff-20261014.md)，再读 41/40/39/38/37/29。**不是重新实施 FIX-01**；当前云端已经完成 FIX-01～03 受控代码修复，下一步是独立复演与真实 E05/E03/E04/E06。历史下面的小批次提示仍为各冻结时间的实况，不代表现在的最新 HEAD。
