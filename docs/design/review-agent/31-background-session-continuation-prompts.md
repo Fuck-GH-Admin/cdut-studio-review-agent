@@ -1,5 +1,15 @@
 # 31｜后台案卷审核：新会话接手和小批次执行提示词
 
+## 当前接手提示：P06-FIX-02 之后（2026-10-14）
+
+```text
+先核对 Draft PR #21 最新 HEAD、四套 CI，读取 40-p06-fix02-renderer-write-fence-20261014.md、39 号 FIX-01、38 号原失败审计、37 号真实 E05 首败，以及 29/30 号台账。P06-FIX-02 冻结代码 414f20669b06513064ff9f84e9ccfb92f7a9001e，新增跨 Controller/卸载/真实 React-Jotai Workspace Hook refresh/apply 保护断言 5/5 PASS，PR #38496467696、D2 #38496467716、Baseline #38496467778、focused #38496467754 均 SUCCESS，全仓 3874 pass / 5 skip / 0 fail。
+本轮代码级修复了 REMOUNT-01 与 WORKSPACE-WRITER-01 的已知路径，但原独立 replay-risk-probes.py 当前 HEAD 精确运行和真实 Electron E05 新轮次未复测，不可把旧 E05 FAIL 改为 PASS。FIX-01 已受控 9/9，但真实索引故障恢复尚未签收。
+下个独立批次 P06-FIX-03：只修 review-pi-admission 中 revokeAssignment 写盘失败导致的未观察 Promise rejection / 后续内存清理跳过和授权未持久撤销；补 EACCES、ENOSPC、损坏 JSON、finish 故障与旧/新轮次权限准入负例。修前先阅读原 AUDIT-P01-P06-SETTLE-01 证据和真实调用链，先做故障注入，再最小修。勿放宽安全守卫、勿吞掉 durable failure、勿重建 Runner。
+继续保留 P05 Relay/Pocket 外部阻断、P04 永久 tombstone/owner journal 容量与无不安全 GC 规则、LIVE-07 PARTIAL、P06-S02 NOT ACCEPTED、P07/P08 未启动、PR Draft/Open 不合并。
+```
+
+
 ## 当前接手提示：P06-FIX-01 之后（2026-10-13）
 
 ```text

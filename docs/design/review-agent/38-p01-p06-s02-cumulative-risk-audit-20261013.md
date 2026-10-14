@@ -4,6 +4,8 @@
 
 > **后续修复，保留本报告旧版本事实**：2026-10-13 [39｜P06-FIX-01](39-p06-fix01-owner-index-recovery-20261013.md) 已在 `c8c84681` 加入独立 owner UUID deny journal，默认受控 **9/9 PASS**、全仓 3869/5/0。原文 `ef9074e3` 的四项 FAIL **不得改写**；原脚本当前 SHA 精确复跑与真实 Electron 恢复未执行，另三项仍 OPEN，P06-S02 NOT ACCEPTED。新日志容量/冷迁移风险新增，不改变 P04 原安全留存决策。
 
+> **第二批后续修复，保持原始证据不动（2026-10-14）**：[40｜P06-FIX-02](40-p06-fix02-renderer-write-fence-20261014.md) 针对本报告的 `AUDIT-P06-REMOUNT-01` 与 `AUDIT-P06-WORKSPACE-WRITER-01` 补共享 Jotai 写入屏障，真实 Controller/React Hook 受控新增 **5/5 PASS**、全仓 3874/5/0，代码冻结 `414f2066`。以下表格与负例是早先 `ef9074e3` 时点的事实，**不改写**。原独立探针当前 HEAD 精确复跑及实际 Electron E05 复测未执行，E05 FAIL 仍属有效历史，P06-S02 NOT ACCEPTED；`SETTLE-01` 仍 OPEN，先前 FIX-01 真实恢复仍待验。
+
 ## 1. 范围与方法
 
 - 原 main 对照 `dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；接手云端 `de1318c5d0d502b66e030e3500e83cc518d389e6`；最终应用/驱动 `ef9074e367d2e7fda5955d8b0d6d9a4812836a6d`。
