@@ -494,14 +494,16 @@ describe('P06-FIX-03 durable revoke-failure containment', () => {
     const listener = () => { unhandled = true }
     process.on('unhandledRejection', listener)
     try {
-      chmodSync(path, 0o400)
+      // Atomic replacement writes a sibling .tmp; a readonly target alone
+      // can be renamed on POSIX. Deny directory writes for a true EACCES.
+      chmodSync(CONFIG_DIR, 0o500)
       release()
       await Bun.sleep(50)
       expect(isPiReviewRunAdmitted(binding.caseId, binding.runId)).toBeFalse()
       expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).code).toBe('ASSIGNMENT_REVOKED')
       expect(unhandled).toBeFalse()
     } finally {
-      chmodSync(path, 0o600)
+      chmodSync(CONFIG_DIR, 0o700)
       process.off('unhandledRejection', listener)
     }
     const data = JSON.parse(readFileSync(path, 'utf8')) as { assignments: Array<{ id: string; revokedAt?: string }> }
