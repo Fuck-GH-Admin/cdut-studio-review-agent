@@ -1,0 +1,42 @@
+{
+  "schema": "E1-evidence-lock-v1",
+  "auditDate": "2026-10-14",
+  "auditor": "G08-E-independent-session",
+  "domain": "G08",
+  "baseCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+  "blindness": "C template business-rule body and D Gold expected answers were NOT opened before this lock; only C/D metadata and D21 public handoff reviewed",
+  "documents": [
+    {
+      "path": "docs/design/review-agent/business-templates/G08/acceptance/E-v1.0/E1-official-fact-register.md",
+      "gitBlobSha": "872ab7aea3f46f88560c95161cdd93deee1072e6"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G08/acceptance/E-v1.0/E1-adversarial-hypotheses.md",
+      "gitBlobSha": "10017bba769edc86da7a09dbb94570eca36ee2e4"
+    }
+  ],
+  "riskH": {
+    "planned": 22,
+    "reviewed": 22,
+    "fullyCurrentCDUTConfirmed": "PARTIAL; POLICY_PENDING exists"
+  },
+  "riskM": {
+    "plannedMechanisms": 8,
+    "reviewedMechanisms": 8,
+    "confirmedSchoolPolicy": "PARTIAL"
+  },
+  "riskL": {
+    "plannedMechanisms": 4,
+    "reviewedMechanisms": 4,
+    "sourceDutyDenominator": "UNVERIFIED"
+  },
+  "sourceReviewOutcome": "E1_LOCKED_WITH_SOURCE_LIMITATIONS",
+  "e2ExposureAllowedAfterThisCommit": true,
+  "unresolved": [
+    "2026 CDUT noncard custody/proxy/release rule",
+    "CDUT continuing-complaint workflow and trusted case interface",
+    "college and school mailbox update status",
+    "school live authorizations"
+  ],
+  "note": "SHA entries are actual Git blob object IDs of locked text; author source input SHA256 is frozen in E0 manifest. No Gold contents are public."
+}
