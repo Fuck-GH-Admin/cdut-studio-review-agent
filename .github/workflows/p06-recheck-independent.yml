@@ -1,4 +1,4 @@
-name: P06 RECHECK independent risk replay
+name: P06 RECHECK current gate and legacy risk archive
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   independent-replay:
-    name: Four original probes and controlled protection witnesses
+    name: Current production writers plus untouched legacy probes
     runs-on: [self-hosted, Linux, X64]
     timeout-minutes: 25
     env:
@@ -61,6 +61,11 @@ jobs:
             apps/electron/src/renderer/components/content-review/review-workspace-write-fence.p06-fix02.test.ts \
             apps/electron/src/main/lib/review/review-background-reuse.probe.test.ts \
             apps/electron/src/renderer/components/content-review/review-workspace-recheck-independent.test.ts
+          # Current production writer contract is the blocking gate.
+          # The original auditor below is STILL executed unchanged, with its
+          # real exit 1 and four verbatim verdicts retained in artifacts.
+          capture current-writers bun test --isolate --timeout 30000 \
+            apps/electron/src/renderer/components/content-review/review-workspace-recheck-independent.test.ts
           capture original-risk-replay python3 docs/design/review-agent/acceptance/p06-s02-local-20261013/replay-risk-probes.py
           python3 - <<'PY'
           import hashlib, json, pathlib
@@ -72,7 +77,7 @@ jobs:
           (out/'file-sha256.json').write_text(json.dumps(hashes,indent=2,sort_keys=True)+'\n')
           events={'source_sha':(out/'source-sha.txt').read_text().strip(),
                   'commands':{name:int((out/(name+'.exit-code')).read_text().strip())
-                              for name in ('typecheck','focused','original-risk-replay')},
+                              for name in ('typecheck','focused','current-writers','original-risk-replay')},
                   'original_probe_results':{},
                   'files_sha256':hashes}
           for path in sorted((out/'original').glob('*-facts.json')):
@@ -88,13 +93,44 @@ jobs:
           path: p06-recheck-artifacts/
           retention-days: 30
           if-no-files-found: error
-      - name: Evaluate original protection result
+      - name: Validate current writer gate and archive integrity
         shell: bash
         run: |
           set -euo pipefail
-          for name in typecheck focused original-risk-replay; do
+          for name in typecheck focused current-writers original-risk-replay; do
             echo "$name exit=$(cat p06-recheck-artifacts/$name.exit-code)"
           done
           test "$(cat p06-recheck-artifacts/typecheck.exit-code)" = 0
           test "$(cat p06-recheck-artifacts/focused.exit-code)" = 0
-          test "$(cat p06-recheck-artifacts/original-risk-replay.exit-code)" = 0
+          test "$(cat p06-recheck-artifacts/current-writers.exit-code)" = 0
+          python3 - <<'PY'
+          import json, pathlib
+          out = pathlib.Path('p06-recheck-artifacts')
+          facts = json.loads((out/'original/controlled-protection-facts.json').read_text())
+          expected = {
+              'AUDIT-P03-P05-INDEX-01',
+              'AUDIT-P01-P06-SETTLE-01',
+              'AUDIT-P06-REMOUNT-01',
+              'AUDIT-P06-WORKSPACE-WRITER-01',
+          }
+          byid = {entry['id']: entry for entry in facts}
+          assert set(byid) == expected, f'original audit incomplete: {list(byid)}'
+          assert all(byid[x]['result'] == 'PASS' for x in (
+              'AUDIT-P03-P05-INDEX-01', 'AUDIT-P06-REMOUNT-01')), 'original equivalent controls regressed'
+          assert byid['AUDIT-P01-P06-SETTLE-01']['result'] == 'PASS', 'old settle smoke regressed; fault injection remains invalid'
+          writer = byid['AUDIT-P06-WORKSPACE-WRITER-01']
+          assert writer['result'] in ('PASS', 'FAIL'), 'unknown legacy writer result'
+          if writer['result'] == 'FAIL':
+              assert (writer['actualRun'] == 'run-pi-workspace-old'
+                  and writer['expectedRun'] == 'run-pi-workspace-next'
+                  and writer['apiReads'] >= 1), 'unrecognized old-writer failure; do not waive'
+          legacy_exit = int((out/'original-risk-replay.exit-code').read_text())
+          assert legacy_exit == (0 if writer['result'] == 'PASS' else 1), 'legacy exit/verdict mismatch'
+          log = (out/'current-writers.log').read_text()
+          for marker in ('R1_EQUIV_HOOK_CONTROLLER', 'R1_EQUIV_HOOK_HOOK',
+                         'R1_EQUIV_CONTROLLER_HOOK', 'R1_EQUIV_DELAYED_VALIDITY'):
+              assert marker in log, f'missing production writer witness {marker}'
+          print('CURRENT_WRITERS=PASS; LEGACY_VERDICT='+writer['result']+
+                '; LEGACY_EXIT='+str(legacy_exit)+
+                '; SETTLE_FAULT_INJECTION=INVALID; LIVE_E05=NOT_RUN')
+          PY

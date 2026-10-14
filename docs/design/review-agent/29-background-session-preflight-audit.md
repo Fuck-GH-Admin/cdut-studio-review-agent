@@ -1,5 +1,16 @@
 # 29｜审核受控后台会话：开工前依赖审计与阻断门禁
 
+## 2026-10-15｜P06-RECHECK-R1B：旧探针归档与有效生产写入者门禁
+
+见 [45｜现行独立写入者矩阵和 CI 分流验收](45-p06-current-writer-probes-and-live-gates-20261015.md)。2026-10-15 接手分支 `b95b44f7a06bb1e1ae21a985b5bb4cd9f5581027`，此前新增本地真实 Electron/Pi 专项驱动和三笔生产安全补丁，勿因旧 44 号的历史 SHA 覆盖最新代码。
+
+本批 **仅进行真实 Controller/Hook 独立竞争矩阵增强（原独立 2 例→4 例），及 CI 原审计证据/现行安全门禁分流**：
+- 原 `docs/design/review-agent/acceptance/p06-s02-local-20261013/audit/*`、`replay-risk-probes.py` **不修改**；仍完整运行、保存真实 JSON/verdict/exit/log/hash。其裸 Jotai `store.set` 导致 WORKSPACE-WRITER FAIL 是 **历史原脚本失败，不自动推断生产写入失败**；其 SETTLE `chmod` 探针未命中原子 tmp 故障，原 PASS **故障注入无效**。
+- 有效当代门禁要求独立真实 Hook→Controller、Hook→Hook、Controller→Hook，及旧 Hook `getWorkspaceRunValidityV2` 迟到这 **4 个生产写入者/双异步边界** 的显式见证标记和 PASS；另严格要求 typecheck/focused PASS、原四条事实 ID 完整且原 exit/verdict 一致。未知原脚本失败不能放行。
+- 上述验收的 **本批代码/CI 结果以新提交与真实 run 为准**；若尚未取得，仍记 `PENDING`，不得预记 PASS。旧 37 E05 实机 FAIL、E03/E04/E06 不完整，真正授权 Electron 重跑仍 **NOT-RUN**；新 `scripts/qa/review-live-*` 已入仓但**存在脚本不等于获得执行证据**。禁止未经授权将 provider/用户密钥复制到公共工件或通用 CI；现场执行应使用独立本机 profile、脱敏日志、真实 CDP/主进程与 provider witness。
+- 状态不变：**P06-S02 NOT ACCEPTED；P06 PARTIAL；LIVE-07 PARTIAL；PR #21 Draft/Open、MERGE NO-GO。** P05 Relay/Pocket 外部阻断、P04 owner/tombstone UUID 永久保留（不安全 GC 禁止）、P07/P08 未启动。
+
+
 > **新会话/新负责人必读**：[30｜项目交接快照](30-background-session-handoff.md)、[31｜接手提示词](31-background-session-continuation-prompts.md)、[32｜P05 阶段完整验收与本地手册](32-p05-stage-acceptance-and-local-gates.md)。**P05-S01～S06 六专项 43/43 受控 PASS；中心实际多 viewer 路由 BLOCKED、Pocket 上游补丁尚未应用/运行，P05 整体 PARTIAL、合并 NO-GO。**P04 路径型文件 IPC 原已枚举路径和本次最终目标变更均有受控补丁，但真实双窗口、IPC 与 LIVE-06/08 仍是开放门禁。
 
 > 2026-10-12；初始源码审计基线 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；后续代码与受控探针仅在 Draft PR #21 分支实施。配套 [27 号实施规范](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。**文档中的 PASS 只对所附冻结提交、测试环境与覆盖范围有效；真实 Pi/Electron/Pocket 验收尚未完成，不得据此合并。**

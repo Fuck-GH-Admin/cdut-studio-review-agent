@@ -1,5 +1,16 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
+## 2026-10-15｜P06-RECHECK-R1B：旧探针归档与有效生产写入者门禁
+
+见 [45｜现行独立写入者矩阵和 CI 分流验收](45-p06-current-writer-probes-and-live-gates-20261015.md)。2026-10-15 接手分支 `b95b44f7a06bb1e1ae21a985b5bb4cd9f5581027`，此前新增本地真实 Electron/Pi 专项驱动和三笔生产安全补丁，勿因旧 44 号的历史 SHA 覆盖最新代码。
+
+本批 **仅进行真实 Controller/Hook 独立竞争矩阵增强（原独立 2 例→4 例），及 CI 原审计证据/现行安全门禁分流**：
+- 原 `docs/design/review-agent/acceptance/p06-s02-local-20261013/audit/*`、`replay-risk-probes.py` **不修改**；仍完整运行、保存真实 JSON/verdict/exit/log/hash。其裸 Jotai `store.set` 导致 WORKSPACE-WRITER FAIL 是 **历史原脚本失败，不自动推断生产写入失败**；其 SETTLE `chmod` 探针未命中原子 tmp 故障，原 PASS **故障注入无效**。
+- 有效当代门禁要求独立真实 Hook→Controller、Hook→Hook、Controller→Hook，及旧 Hook `getWorkspaceRunValidityV2` 迟到这 **4 个生产写入者/双异步边界** 的显式见证标记和 PASS；另严格要求 typecheck/focused PASS、原四条事实 ID 完整且原 exit/verdict 一致。未知原脚本失败不能放行。
+- 上述验收的 **本批代码/CI 结果以新提交与真实 run 为准**；若尚未取得，仍记 `PENDING`，不得预记 PASS。旧 37 E05 实机 FAIL、E03/E04/E06 不完整，真正授权 Electron 重跑仍 **NOT-RUN**；新 `scripts/qa/review-live-*` 已入仓但**存在脚本不等于获得执行证据**。禁止未经授权将 provider/用户密钥复制到公共工件或通用 CI；现场执行应使用独立本机 profile、脱敏日志、真实 CDP/主进程与 provider witness。
+- 状态不变：**P06-S02 NOT ACCEPTED；P06 PARTIAL；LIVE-07 PARTIAL；PR #21 Draft/Open、MERGE NO-GO。** P05 Relay/Pocket 外部阻断、P04 owner/tombstone UUID 永久保留（不安全 GC 禁止）、P07/P08 未启动。
+
+
 ## 最新接手：P06-RECHECK R0/R1 独立复演（2026-10-14）
 
 [44｜独立复演报告](44-p06-recheck-independent-acceptance-20261014.md) 登记当前源码冻结 `960163c785d7ccf0eb2b6a6a6ca51161bfc547c4` 的真实结果：原 38 号四项审计探针 **3 PASS / 1 FAIL，整体 exit 1**；WORKSPACE-WRITER 原始裸 `store.set` 绕过 FIX-02 新写入资格，因此其 FAIL 保留但不等价于生产新 Controller/Hook 写入，新增真实 Hook→Controller、Hook→Hook 两项等效回归 2/2 PASS。SETTLE 旧只读授权文件的注入不再命中新原子临时写入；正式 FIX-03 用目录级 EACCES 实际命中 `.tmp` 并受控 fail-closed。聚焦 **36/36 PASS**、全仓 **3883 pass / 5 skip / 0 fail**，四套标准 CI SUCCESS。独立 [R1 原脚本 CI #38538200712](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38538200712) 仍诚实 FAILURE，完整 JSON/退出码/原日志/SHA256 artifact 可下载。

@@ -10,7 +10,7 @@ import { createStore, Provider } from 'jotai'
 import type { CaseAggregateV2, ReviewRunV2 } from '@profer/shared'
 import { createReviewActionsController, type ReviewActionsApi } from './review-actions-controller'
 import { useReviewWorkspaceActions } from './use-review-workspace-actions'
-import { selectedCaseIdAtom, reviewWorkspaceRunsByCaseAtom, reviewExecutionByCaseAtom } from '@/atoms/review-atoms'
+import { selectedCaseIdAtom, reviewWorkspaceRunsByCaseAtom, reviewExecutionByCaseAtom, reviewWorkspaceRunStaleByCaseAtom } from '@/atoms/review-atoms'
 
 function deferred<T>() {
   let resolve!: (value: T) => void
@@ -104,4 +104,58 @@ describe('P06-RECHECK equivalent real writer witnesses', () => {
       console.log('R1_EQUIV_HOOK_HOOK witness_reads='+reads()+' stale_rejected=true')
     } finally { Object.assign(globalThis, { window: originalWindow }) }
   })
+  test('old Controller response cannot supersede a new real Workspace Hook writer', async () => {
+    const caseId = 'r1-controller-hook'
+    const { old, fresh, gate, api, reads } = fixture(caseId)
+    const store = createStore()
+    store.set(selectedCaseIdAtom, caseId)
+    const originalWindow = globalThis.window
+    Object.assign(globalThis, { window: { reviewAPI: api } })
+    try {
+      const oldController = createReviewActionsController(store, api)
+      const pending = oldController.refreshBackgroundReview(caseId)
+      await until(() => reads() === 1)
+      const newHook = mount(store)
+      await newHook.refresh()
+      expect(reads()).toBe(2)
+      expect(store.get(reviewWorkspaceRunsByCaseAtom)[caseId]?.id).toBe(fresh.id)
+      gate.resolve([old])
+      await pending
+      expect(store.get(reviewWorkspaceRunsByCaseAtom)[caseId]?.id).toBe(fresh.id)
+      expect(store.get(reviewExecutionByCaseAtom)[caseId]?.status).toBe('running')
+      console.log('R1_EQUIV_CONTROLLER_HOOK witness_reads='+reads()+' stale_rejected=true')
+    } finally { Object.assign(globalThis, { window: originalWindow }) }
+  })
+
+  test('old Hook delayed run-validity result cannot overwrite the later Controller projection', async () => {
+    const caseId = 'r1-hook-delayed-validity'
+    const { old, fresh, api } = fixture(caseId)
+    const store = createStore()
+    store.set(selectedCaseIdAtom, caseId)
+    const validityGate = deferred<boolean>()
+    let runReads = 0
+    let validityReads = 0
+    api.listRunsV2 = async () => (++runReads === 1 ? [old] : [fresh])
+    api.getWorkspaceRunValidityV2 = async () => (++validityReads === 1 ? validityGate.promise : false)
+    const originalWindow = globalThis.window
+    Object.assign(globalThis, { window: { reviewAPI: api } })
+    try {
+      const oldHook = mount(store)
+      const pending = oldHook.refresh()
+      await until(() => validityReads === 1)
+      const controller = createReviewActionsController(store, api)
+      await controller.refreshBackgroundReview(caseId)
+      expect(runReads).toBe(2)
+      expect(validityReads).toBe(2)
+      expect(store.get(reviewWorkspaceRunsByCaseAtom)[caseId]?.id).toBe(fresh.id)
+      expect(store.get(reviewWorkspaceRunStaleByCaseAtom)[caseId]).toBe(false)
+      validityGate.resolve(true)
+      await pending
+      expect(store.get(reviewWorkspaceRunsByCaseAtom)[caseId]?.id).toBe(fresh.id)
+      expect(store.get(reviewWorkspaceRunStaleByCaseAtom)[caseId]).toBe(false)
+      expect(store.get(reviewExecutionByCaseAtom)[caseId]?.status).toBe('running')
+      console.log('R1_EQUIV_DELAYED_VALIDITY validity_reads='+validityReads+' stale_rejected=true')
+    } finally { Object.assign(globalThis, { window: originalWindow }) }
+  })
+
 })
