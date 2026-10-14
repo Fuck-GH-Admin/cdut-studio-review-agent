@@ -15,6 +15,8 @@
 
 > 2026-10-12；初始源码审计基线 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；后续代码与受控探针仅在 Draft PR #21 分支实施。配套 [27 号实施规范](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。**文档中的 PASS 只对所附冻结提交、测试环境与覆盖范围有效；真实 Pi/Electron/Pocket 验收尚未完成，不得据此合并。**
 
+**R1B 自托管实测确认（受控代码 `7132ca658ffc64c1f3bc44146ef9bddedae950e5`）：** [独立 CI #38600843457](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38600843457) **SUCCESS**，本地 `ghrunner-cdut-studio-review-agent`；`typecheck=0`、`focused=0`（**39 pass/0 fail**）、`current-writers=0`（**4 pass/0 fail，4 个 witness 均到达**）、未改原 38 号 `original-risk-replay=1`（**3 PASS/1 FAIL**，WORKSPACE-WRITER 仍得旧 run，与原始注入一致）。旧 SETTLE `chmod` 原脚本 PASS 但**注入 INVALID**。校验源 SHA、原 verdict/exit、一致性和工件全部保存：[artifact #11913746159](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38600843457/artifacts/11913746159)，`current-writers.log` SHA256 `33dc2e1e8c51505b37dc096a0b75e677ff982b7c2a5c3fe16017b07ca2b90496`，`focused.log` SHA256 `b1b092720e60ec646d8fba4de23faf0c1c24433344592a0204781f480045b23a`。首次 [CI #38600505432](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38600505432) **FAILURE 保留**：新增 Controller→Hook 用例错误要求 Hook 写 executionAtom，实际 Hook 只写 workspace 投影；后在 `7132ca65` 更正为旧 Controller 不能复活旧 execution，未修改生产实现。**标准六套 CI 对这次代码 SHA 仍逐项核对，未完不记全绿。真正 E05/E03/E04/E06 与 ENOSPC、双故障重启本轮 NOT-RUN；P06-S02 NOT ACCEPTED、P06 PARTIAL、PR Draft/MERGE NO-GO。**
+
 ## 结论
 
 ### P06-RECHECK 独立复演（2026-10-14；R0/R1 受控已执行，真实 R2/R3 NOT-RUN）

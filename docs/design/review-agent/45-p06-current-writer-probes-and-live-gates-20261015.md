@@ -33,13 +33,12 @@
 4. 四个明确 `R1_EQUIV_*` witness 必须在独立当前测试日志中出现。缺失任何一个则 workflow FAIL。最终测试工件清楚区分 `CURRENT_WRITERS=PASS` 与 `LEGACY_VERDICT=FAIL`、`SETTLE_FAULT_INJECTION=INVALID`。
 5. 该安全门禁若 SUCCESS，**仅代表现行独立写入者受控通过与历史审计完整归档**，绝不意味着原 38 号审计全 PASS 或 E05 实机 PASS。不得篡改 37/38 首败归档。
 
-CI 结果登记（**待按提交和真实 Actions 日志完成，不预填成功**）：
-- 新 commit SHA：PENDING；
-- 当前 writer 四项独立：PENDING；
-- `typecheck/focused`：PENDING；
-- 原始 38 四 verdict：PENDING；
-- 自托管 runner、run id、artifact SHA256：PENDING；
-- 四套标准 CI：PENDING。
+CI 结果登记（**在代码提交 `7132ca65` 上已精确复核，见下方原日志和 PR**）：
+- 初次新增独立用例版本 `3227bc715fc99005d54495967dbcbe8b277c8295`：独立 [CI #38600505432](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38600505432) **FAILURE**，`typecheck=0`，`focused=1`（38 pass/1 fail），`current-writers=1`（3 pass/1 fail）。新增 Controller→Hook 错误预期 `executionByCase.status=running`，但 Hook 不写这个槽；当时 **新 run 已正确保持**。这是探针职责误判，未改生产代码。
+- 新代码 SHA：`7132ca658ffc64c1f3bc44146ef9bddedae950e5`；[自托管 CI #38600843457](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38600843457) **SUCCESS**；`typecheck=0`；`focused=0`，**39 pass/0 fail/4 files**；`current-writers=0`，**4 pass/0 fail/1 file**，四个 `R1_EQUIV_*` 真实 Hook/Controller witness 均到达。
+- 原 38 号旧脚本 **不变**，三项原 PASS、一项原 FAIL，`original-risk-replay=1`，完整原始 verdict/exit 精确一致。原 `SETTLE` PASS 故障注入无效（只 chmod 本体），独立真实目录级 tmp EACCES 仍由正式测试覆盖。
+- 工件：[artifact #11913746159](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38600843457/artifacts/11913746159)；`current-writers.log` SHA256 `33dc2e1e8c51505b37dc096a0b75e677ff982b7c2a5c3fe16017b07ca2b90496`；`focused.log` SHA256 `b1b092720e60ec646d8fba4de23faf0c1c24433344592a0204781f480045b23a`。
+- 标准六套 CI 对 `7132ca65` 状态：**PENDING（不预记 SUCCESS）**；待逐项核验。真实 E05/E03/E04/E06/ENOSPC/双 I/O+重启仍 **NOT-RUN**。
 
 ## 4. R2/R3 真实门禁与风险限制
 
