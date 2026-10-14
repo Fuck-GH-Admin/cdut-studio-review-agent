@@ -1,5 +1,9 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
+## 交接优先入口：P06-RECHECK（2026-10-14）
+
+**本会话只做交接，不实施源码修复或新的实机运行。** 最新独立接手书：[42｜P06-RECHECK 交接](42-p06-recheck-independent-takeover-handoff-20261014.md)；可直接复制的正式提示：[43｜下一会话提示词](43-p06-recheck-next-session-prompt-20261014.md)。生成时云端 HEAD `f7562c0bb825e87c7f3123dc0530b5df2b751439`，四套 CI SUCCESS；FIX-01 9/9、FIX-02 5/5、FIX-03 7/7 正式受控 PASS，但原 38 号四项保护探针在**当前 HEAD**尚未精确重放，真实 E05 仍沿用 37 号首败，E03/E04/完整 E06 未签收。**P06-S02 NOT ACCEPTED / P06 PARTIAL / MERGE NO-GO**。以下原有历史交接保留。
+
 ## 最新安全返工：P06-FIX-03 受控通过（2026-10-14）
 
 [代码 `b5f9db17`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/b5f9db179b358d0405a1d0868133f11064edc93a)；[PR CI #38524782294](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38524782294)、[D2 #38524782315](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38524782315)、[Baseline #38524782350](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38524782350)、[focused #38524782373](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38524782373) **四套 SUCCESS**，全仓 **3881 pass / 5 skip / 0 fail（3886 tests / 441 files）**，类型、包边界、Electron main/preload/renderer build PASS。
