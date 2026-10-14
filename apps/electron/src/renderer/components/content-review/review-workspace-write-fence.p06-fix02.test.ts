@@ -98,7 +98,8 @@ describe('P06-FIX-02 shared Jotai commit identity', () => {
     const oldPage = createReviewActionsController(store, api)
     const late = oldPage.refreshBackgroundReview(caseId)
     await witness(() => reads >= 1)
-    oldPage.invalidateRefresh(caseId)
+    // Intentionally do NOT dispose the old controller: a newly mounted
+    // controller must supersede it via the shared store/case generation.
     const newPage = createReviewActionsController(store, api)
     await newPage.refreshBackgroundReview(caseId)
     expect(store.get(reviewWorkspaceRunsByCaseAtom)[caseId]?.id).toBe(next.id)
@@ -107,6 +108,23 @@ describe('P06-FIX-02 shared Jotai commit identity', () => {
     await late
     expect(store.get(reviewWorkspaceRunsByCaseAtom)[caseId]?.id).toBe(next.id)
     expect(store.get(reviewExecutionByCaseAtom)[caseId]?.status).toBe('running')
+  })
+
+  test('unmount without replacement revokes old pending display reads', async () => {
+    const caseId = 'p06-unmount-without-replacement'
+    const { old, api } = setup(caseId)
+    const store = createStore()
+    const gate = deferred<ReviewRunV2[]>()
+    let reads = 0
+    api.listRunsV2 = async () => { reads++; return gate.promise }
+    const page = createReviewActionsController(store, api)
+    const late = page.refreshBackgroundReview(caseId)
+    await witness(() => reads === 1)
+    page.invalidateRefresh(caseId)
+    gate.resolve([old])
+    await late
+    expect(store.get(reviewWorkspaceRunsByCaseAtom)[caseId]).toBeUndefined()
+    expect(store.get(reviewExecutionByCaseAtom)[caseId]).toBeUndefined()
   })
 
   test('real React/Jotai Workspace Hook refresh cannot commit a late cancelled snapshot after next Controller run', async () => {
