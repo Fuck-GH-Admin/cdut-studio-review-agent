@@ -72,7 +72,10 @@ export function admitPreparedPiReviewTurn(
     return Promise.reject(new Error('审核受理参数与可信 Pi 用户轮次不一致'))
   }
   const assignment = findActivePiReviewAssignment(binding.sessionId)
-  if (!isCurrent(binding) || !assignment || assignment.id !== binding.assignmentId
+  // Bind lookup and permission check have different semantics: only an
+  // admission needs proof that its V2 run is still currently running.
+  if (getRunV2(binding.caseId, binding.runId)?.status !== 'running'
+    || !isCurrent(binding) || !assignment || assignment.id !== binding.assignmentId
     || assignment.turnId !== input.uuid || assignment.activeRunId !== binding.runId) {
     return Promise.reject(new Error('审核指派已失效，不能启动后台审核'))
   }

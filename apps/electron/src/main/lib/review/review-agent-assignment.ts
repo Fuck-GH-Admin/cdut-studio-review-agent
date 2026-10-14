@@ -230,7 +230,7 @@ export function findActivePiReviewAssignment(sessionId: string): ReviewAgentAssi
   // createAssignment appends to disk. Millisecond timestamps can tie
   // during consecutive runs; use persisted insertion order, newest first.
   return readAll().reverse().find((item) => item.sessionId === sessionId
-    && !item.revokedAt && !pendingRevocations.has(item.id) && isLiveDirectPiRun(item)
+    && !item.revokedAt && !pendingRevocations.has(item.id)
     && item.caseId
     && item.activeRunId
     && item.actions.includes('submit-result'))

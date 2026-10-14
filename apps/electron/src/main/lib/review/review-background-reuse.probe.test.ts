@@ -420,7 +420,9 @@ describe('P06-FIX-03 durable revoke-failure containment', () => {
       release()
       await Bun.sleep(40)
       expect(isPiReviewRunAdmitted(binding.caseId, binding.runId)).toBeFalse()
-      expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('failed')
+      // Revocation I/O failure can prevent a trusted V2 finish: retain the
+      // unconfirmed running row for recovery, but never retain the grant/ACK.
+      expect(getRunV2(binding.caseId, binding.runId)?.status).toBe('running')
       expect(checkAssignment({ assignmentId: binding.assignmentId, sessionId: binding.sessionId, action: 'submit-result' }).code).toBe('ASSIGNMENT_REVOKED')
       expect(unhandled).toBeFalse()
     } finally {
