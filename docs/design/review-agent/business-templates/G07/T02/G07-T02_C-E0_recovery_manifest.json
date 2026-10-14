@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "G07-T02-C-E0-restore-r01",
+  "domainId": "G07",
+  "templateId": "G07-T02",
+  "formalName": "因公与学术交流差旅费用核销预审",
+  "audit": {
+    "branch": "audit/g07-e-v1-r01",
+    "head": "ccbf9bd6b16c9472bb35b03cd8b676d87c6cd6ab",
+    "decision": "BLOCKED_INPUT",
+    "mutated": false
+  },
+  "sourceMainCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+  "restorationBranch": "restore/g07-t02-c-e0-r01",
+  "createdOn": "2026-10-14",
+  "businessVersion": "v0.1",
+  "authorDeliverableSpec": "C v2.1",
+  "businessStatus": "BUSINESS_MD_DRAFT_WITH_GAPS",
+  "originalCAuthorCommit": "NOT_AVAILABLE",
+  "restorationCommitNotOriginalAuthorship": true,
+  "publishedCFiles": [
+    {
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md",
+      "sha256": "543f73ead9bb77e86d951e2ef29dbdf3832aea5270bba91fede45c046e5ef556",
+      "gitBlobSha1": "46c48f80df90e99274986633ae29d7d407ed84b9",
+      "bytes": 98555,
+      "originalAuthorCommit": "NOT_AVAILABLE"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_规则追踪矩阵.md",
+      "sha256": "27197c83f96815c365799d20c79457b7e49656eed76277ae265967ca33074120",
+      "gitBlobSha1": "24ef3287908ed21d1bbcfdaeb58143c6d1d038cf",
+      "bytes": 17265,
+      "originalAuthorCommit": "NOT_AVAILABLE"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_规则追踪矩阵.csv",
+      "sha256": "8d0002299392f29199d1a2b4ff35f873859db42c5bb94afa712a7985fdb4d18b",
+      "gitBlobSha1": "41572f2d2920f3ebd7ee85fc6bd9058a06cb19a0",
+      "bytes": 15543,
+      "originalAuthorCommit": "NOT_AVAILABLE"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_作者自检与问题修订记录.md",
+      "sha256": "8f2910e0d8d0ae86c673da3d87ce73cd60ec3a36dc8c12a8cc5646cab0924d7a",
+      "gitBlobSha1": "ab791bc4f10321de05c78b0a6d3a79997a3aa7bd",
+      "bytes": 9332,
+      "originalAuthorCommit": "NOT_AVAILABLE"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_编辑器共性模块候选.md",
+      "sha256": "80d89e4852afb670081a40c509fb36bdb16cdad11b5a09289a6f8667a5ec5eec",
+      "gitBlobSha1": "b2511da2af956f1908560118eedc17daea0fd20d",
+      "bytes": 5843,
+      "originalAuthorCommit": "NOT_AVAILABLE"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_验收对接说明.md",
+      "sha256": "78cf8176cb853fa836822a61aeda75011249250c295cd63c1642c6b6768d668d",
+      "gitBlobSha1": "78524b9cf82535a49966cd53af572a0a318f5524",
+      "bytes": 8103,
+      "originalAuthorCommit": "NOT_AVAILABLE"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_Cv2.0至v2.1_迁移核验记录.md",
+      "sha256": "dc28ce4538fb7f5ffbaf88fd02a31f1b712761e1daae1b63c81df330d1280197",
+      "gitBlobSha1": "f295a4677c994bcb41f6a9ec433d81c8553b0143",
+      "bytes": 5197,
+      "originalAuthorCommit": "NOT_AVAILABLE"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_旧版追踪与哈希最小勘误.md",
+      "sha256": "05a4e7873588b3297224da49535e0fa6a882b3f66944702cdcc32767fc566f9f",
+      "gitBlobSha1": "417af5f3358895d45aac5af7da2e9ed58f757338",
+      "bytes": 4906,
+      "originalAuthorCommit": "NOT_AVAILABLE"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_测试对接说明.md",
+      "sha256": "0a077c28d6535fba0aeb3a961b334ca1ca468e38b4776e791d130f09ec49237c",
+      "gitBlobSha1": "8a0859b11595d952afbf5a3e72165f33ca2de198",
+      "bytes": 3047,
+      "originalAuthorCommit": "NOT_AVAILABLE"
+    }
+  ],
+  "publishedAReference": [
+    {
+      "path": "docs/design/review-agent/business-templates/G07/T02/A-reference/G07_02_统一模板目录与边界.md",
+      "sha256": "64a771d60e7ea68a040c4d7fd551c246bf3cd123e0ca60a8f7d9d4ea245ee4c4",
+      "gitBlobSha1": "f31d75d278ec1b4c4242eb955f58a8b9a395616d",
+      "bytes": 10555,
+      "originalAuthorCommit": "NOT_AVAILABLE"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/T02/A-reference/G07_03_来源索引.md",
+      "sha256": "17583564d18b1561b05ce6fd9104df86e132b6d34047ca78f85d1af75f8b3245",
+      "gitBlobSha1": "438f109db118af95e8f77c7f36d6b7ecc8478dbd",
+      "bytes": 16950,
+      "originalAuthorCommit": "NOT_AVAILABLE"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/T02/A-reference/G07_07_成都理工大学校本规则专项核验.md",
+      "sha256": "2bbad8fd845cf22ab3029c683ad760c86c6847f4d9c56cbf34fc1099e9e1f70f",
+      "gitBlobSha1": "a057335ef12235e1774a1ab89d0bddec5f30d9ca",
+      "bytes": 19463,
+      "originalAuthorCommit": "NOT_AVAILABLE"
+    }
+  ],
+  "unpublishedB": {
+    "workspaceArchive": "G07-T02_B阶段独立业务深度调研_v0.2_含校本二轮补证.zip",
+    "workspaceArchiveSha256": "e0e75f79d3eb307123b2ddcfb29fc643d1a882ae8215802ca0e9c1d966a86956",
+    "authorGitCommit": "NOT_AVAILABLE",
+    "gitFrozen": false,
+    "note": "Original v0.2 B package recovered in C author workspace; not claimed independently available to E from Git"
+  },
+  "originalCAuthorArchive": {
+    "name": "G07-T02_C阶段完整Markdown模板_v0.1_交接包.zip",
+    "sha256": "8c87b72596750c84946f9e21726613c7062a4472cfc79e16633ffe35c1ebc964"
+  },
+  "originalCv21Archive": {
+    "name": "G07-T02_C阶段v2.1迁移核验及E验收对接包.zip",
+    "sha256": "07390d5eb57769c9f817ba40a0b7caa59360915f3431e02bf3379e685846d52d"
+  },
+  "scope": {
+    "completed": "T02 C originals and A reference snapshot available at fixed Git paths",
+    "notCompleted": "G07 all-seven B/C/D gate or D Gold storage access",
+    "eStages": "E0 original decision retained; E1/E2/E3/E4 NOT_RUN"
+  },
+  "privacy": {
+    "includesHiddenGold": false,
+    "includesExpectedAnswers": false,
+    "includesSensitiveLedger": false
+  },
+  "sourceGaps": [
+    "SOURCE_PENDING: 2025 CDUT travel-management full normative text",
+    "SOURCE_PENDING: student allowance eligibility and source-fund policy",
+    "SOURCE_PENDING: 2026 intelligent reimbursement fields and approval permissions"
+  ]
+}
