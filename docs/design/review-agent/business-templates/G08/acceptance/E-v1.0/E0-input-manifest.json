@@ -1,0 +1,167 @@
+{
+  "schema": "E-v1.0-E0-INPUT-20261014",
+  "domain": "G08",
+  "domainName": "高校公共事务与申请流程",
+  "scope": [
+    "G08-T02 校园失物领回权属核验",
+    "G08-T03 公共诉求受理与再次办理程序核验"
+  ],
+  "excluded": [
+    {
+      "id": "G08-T01",
+      "disposition": "A v0.2.1 merged into G01 special-proof-and-seal, requires E3 verification"
+    },
+    {
+      "id": "G08-04",
+      "disposition": "service orders or other-domain work, requires E3 verification"
+    }
+  ],
+  "repo": {
+    "fullName": "Fuck-GH-Admin/cdut-studio-review-agent",
+    "defaultBranch": "main",
+    "baseCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+    "G08T02D21Branch": "docs/g08-t02-d21-migration-20261013",
+    "G08T02D21Commit": "4c04a4ec02e104c573b601000c054dcfb8bba409",
+    "auditBranch": "audit/g08-e-v1-r01"
+  },
+  "inputs": [
+    {
+      "role": "A/current",
+      "name": "G08_A_领域总调研_B阶段准入核验版_v0.2.1.zip",
+      "sha256": "dbbf96217a85726c47f3303de4d094bf56a3edfc9ba26cea8b7e8a5916772def",
+      "members": 22,
+      "version": "v0.2.1",
+      "storage": "user_library",
+      "access": "readable"
+    },
+    {
+      "role": "B/T02",
+      "name": "G08-T02_B_单模板深度调研_v1.1_校本补查交接包.zip",
+      "sha256": "ba8bd846f2f9c15c21f36b9709b4e92b7d64458f90d74f46c82478804d7c002e",
+      "members": 11,
+      "version": "v1.1",
+      "storage": "user_library",
+      "access": "readable"
+    },
+    {
+      "role": "B/T03",
+      "name": "G08-T03_B阶段深度调研_校本补证_v1.1_20261012.zip",
+      "sha256": "6af5301c5c0938148b3e7a0beb6daa43fad2e150ee5491a5629ad6a8ea67efed",
+      "members": 9,
+      "version": "v1.1",
+      "storage": "user_library",
+      "access": "readable"
+    },
+    {
+      "role": "C/T02",
+      "name": "G08-T02_C_v2.1_迁移核验交接包_20261012.zip",
+      "sha256": "c501c7cea87be795f81b4d615155e5bee0b3c9a6a7cd15fc95b21a69b4fbd665",
+      "members": 11,
+      "version": "C v2.1 migration / MD v0.1",
+      "storage": "user_library",
+      "access": "readable; not opened before E1 lock"
+    },
+    {
+      "role": "C/T03",
+      "name": "G08-T03_C_v2.1_迁移核验交接包_20261012.zip",
+      "sha256": "a2fba3450964c5f75128c17a3e0fd9399ab0525f4f4fc2ddfb879109b1bb088e",
+      "members": 10,
+      "version": "C v2.1 migration / MD v0.1",
+      "storage": "user_library",
+      "access": "readable; not opened before E1 lock"
+    },
+    {
+      "role": "D/T02 blind",
+      "name": "G08-T02_INPUT_ONLY.zip",
+      "sha256": "86d3ac2c002cdf24d362caa4fc28199e492bc32f04b8067917a3b083791c1d14",
+      "members": 201,
+      "version": "D frozen original",
+      "storage": "user_library",
+      "access": "readable; internal semantic content not opened"
+    },
+    {
+      "role": "D/T02 hidden",
+      "name": "G08-T02_EVALUATION_ONLY.zip",
+      "sha256": "cf3fe933ea19e66bae209df4c858d70860358d75dbf9250cde501602b1c3b8ed",
+      "members": 78,
+      "version": "D original Gold",
+      "storage": "private_user_library_NOT_GIT",
+      "access": "readable; expected answers NOT opened"
+    },
+    {
+      "role": "D/T02 overlay",
+      "name": "G08-T02_D21_EVALUATION_OVERLAY_PRIVATE.zip",
+      "sha256": "8e7c4caa9241612c1adc3ec6e2361469c29c89b3d40385887bccda834680878d",
+      "members": 7,
+      "version": "D v2.1 private overlay",
+      "storage": "private_user_library_NOT_GIT",
+      "access": "readable; contents NOT opened"
+    },
+    {
+      "role": "D/T02 reports",
+      "name": "G08-T02_TEST_REPORTS.zip",
+      "sha256": "38a8fa28a4e0d011ec41883f09355d14fd91ab13acbe0d80c1395c039a2995e3",
+      "members": 6,
+      "version": "historical D",
+      "storage": "user_library",
+      "access": "readable; only archive metadata accessed"
+    },
+    {
+      "role": "D/T03 blind",
+      "name": "G08-T03_INPUT_ONLY.zip",
+      "sha256": "68bc0982ec86efa3a61a4665ee3b3b910258e4ca0563fc94ff9d9a8da94c0fd7",
+      "members": 164,
+      "version": "D frozen original",
+      "storage": "user_library",
+      "access": "readable; internal semantic content not opened"
+    },
+    {
+      "role": "D/T03 hidden",
+      "name": "G08-T03_EVALUATION_ONLY.zip",
+      "sha256": "fabc24f42aef9cb1f444a082912c5e7ae23f512de266b4baa58dd183220f4b94",
+      "members": 78,
+      "version": "D original Gold",
+      "storage": "private_user_library_NOT_GIT",
+      "access": "readable; expected answers NOT opened"
+    },
+    {
+      "role": "D/T03 reports",
+      "name": "G08-T03_TEST_REPORTS.zip",
+      "sha256": "c3890d1e91d30974f9f4ba61ca05ca24af64cd8b3a910e41b800523e9da07eef",
+      "members": 7,
+      "version": "historical D",
+      "storage": "user_library",
+      "access": "readable; only archive metadata accessed"
+    }
+  ],
+  "publicD21Files": [
+    {
+      "path": "docs/design/review-agent/business-templates/G08/T02/D/README.md",
+      "blobSHA": "cd432a7ccd45ea86d7649443ac19abe3c3b6eb79"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G08/T02/D/00_D0-D4_迁移核验.md",
+      "blobSHA": "bb03b99ebe1683124e2fb4817cdea27aaf3bb97b"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G08/T02/D/01_E阶段交接与风险.md",
+      "blobSHA": "37978320456be73de5f4b08bb21a08fb3a9193f6"
+    }
+  ],
+  "contract": {
+    "name": "05_E_GXX领域独立交叉验收_主会话_v1.0.md",
+    "sha256": "523eb0d52aef20122e299ea2b81100dace18a000ba8db905eb68d7a377cae7eb"
+  },
+  "freezeMethod": "independent per-archive SHA256; metadata only for C and D, no artificial mixed candidate commit",
+  "hashMethod": "raw-archive SHA256 + ZIP CRC sanity test + entry enumeration; member contents not inspected for C or D",
+  "keyKnownGaps": [
+    "A/B/C/D original binary payloads live in user Library and are not versioned as single immutable Git candidate",
+    "T02 historical Gold has no externally trusted absolute freeze timestamp",
+    "independent semantic/visual leakage assessment of blind inputs deferred; no Gold opened in E0",
+    "G08 is absent from main; isolated public D21 handoff branch only"
+  ],
+  "e1BlindUncompromised": true,
+  "decision": "READY_WITH_DECLARED_GAPS",
+  "checkedDate": "2026-10-14",
+  "auditor": "G08-E-independent-session"
+}
