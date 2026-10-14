@@ -93,23 +93,71 @@ export function admitPreparedPiReviewTurn(
   let owned = false
   let finished = false
   let terminalReported = false
+  let terminalWriteFailure: unknown
 
-  const fail = (error: unknown): void => {
+  const reportSettlementError = (stage: string, error: unknown): void => {
+    // Explicit diagnostic. Never log input.userMessage, model transcript or
+    // credentials. Failing a durable write must NOT be reported as success.
+    console.error(`[审核后台] ${stage}失败: case=${binding.caseId}, run=${binding.runId}, assignment=${binding.assignmentId}`, error)
+  }
+
+  const closeSafely = (error: unknown): void => {
     const message = error instanceof Error ? error.message : String(error)
-    closeIfCurrent(binding, message || 'Agent 未获得执行权')
-    if (!owned) {
-      revokeAssignment(binding.assignmentId)
-      rejectAdmission(error instanceof Error ? error : new Error(message))
+    try {
+      closeIfCurrent(binding, message || 'Agent 未获得执行权')
+    } catch (writeError) {
+      terminalWriteFailure = writeError
+      reportSettlementError('V2 运行状态持久化', writeError)
     }
   }
 
-  // The Main process intentionally owns this Promise. It is always observed,
-  // so no unhandled rejection or page-unmount dependency is introduced.
+  const finishExecution = (executionError?: unknown): void => {
+    finished = true
+    try {
+      if (executionError !== undefined) {
+        closeSafely(executionError)
+      } else if (!owned) {
+        closeSafely(new Error('Agent 未获得执行权，启动已结束'))
+      } else if (terminalWriteFailure !== undefined) {
+        closeSafely(new Error('可信运行回调持久化失败'))
+      } else if (!terminalReported && getRunV2(binding.caseId, binding.runId)?.status === 'running') {
+        closeSafely(new Error('Agent 未产生可信的完成回调'))
+      }
+    } catch (error) {
+      reportSettlementError('运行状态收尾', error)
+    } finally {
+      try {
+        // The assignment layer quarantines this ID BEFORE attempting disk I/O.
+        // If write fails the persistent state stays unconfirmed, but tools
+        // remain denied for this Main process (and terminal V2 runs on reboot).
+        revokeAssignment(binding.assignmentId)
+      } catch (error) {
+        reportSettlementError('指派撤销未持久化（已进程内隔离）', error)
+      } finally {
+        // These fences MUST be released even if finish/revoke throws.
+        runningAssignments.delete(binding.assignmentId)
+        forgetAdmitted(binding)
+      }
+      if (!owned) {
+        const error = executionError ?? terminalWriteFailure ?? new Error('Agent 未获得执行权，启动已结束')
+        rejectAdmission(error instanceof Error ? error : new Error(String(error)))
+      }
+    }
+  }
+
+  // The Main process owns and OBSERVES both the executor's rejection and its
+  // settlement callback. No discarded .then() chain may surface as an
+  // unhandledRejection or keep an admission promise pending.
   void Promise.resolve().then(() => execute({
     ...input,
     onRunOutcome: (outcome) => {
-      terminalReported = true
-      if (isCurrent(binding)) finishPiReviewRunV2(binding, outcome)
+      try {
+        if (isCurrent(binding)) finishPiReviewRunV2(binding, outcome)
+        terminalReported = true
+      } catch (error) {
+        terminalWriteFailure = error
+        reportSettlementError('可信运行回调落盘', error)
+      }
     },
   }, () => {
     if (finished || owned) return
@@ -119,28 +167,14 @@ export function admitPreparedPiReviewTurn(
     resolveAdmission({ caseId: binding.caseId, sessionId: binding.sessionId,
       runId: binding.runId, assignmentId: binding.assignmentId })
   })).then(
-    () => {
-      finished = true
-      if (!owned) {
-        fail(new Error('Agent 未获得执行权，启动已结束'))
-      } else if (!terminalReported && getRunV2(binding.caseId, binding.runId)?.status === 'running') {
-        closeIfCurrent(binding, 'Agent 未产生可信的完成回调')
-      }
-      // Retire the released turn's grant. Historical grants remain in the
-      // persisted audit timeline but cannot authorize delayed tool calls.
-      revokeAssignment(binding.assignmentId)
-      runningAssignments.delete(binding.assignmentId)
-      forgetAdmitted(binding)
-    },
-    (error: unknown) => {
-      finished = true
-      fail(error)
-      // Retire the released turn's grant. Historical grants remain in the
-      // persisted audit timeline but cannot authorize delayed tool calls.
-      revokeAssignment(binding.assignmentId)
-      runningAssignments.delete(binding.assignmentId)
-      forgetAdmitted(binding)
-    },
-  )
+    () => finishExecution(),
+    (error: unknown) => finishExecution(error),
+  ).catch((error: unknown) => {
+    // Defensive last resort if a future settlement branch adds new throws.
+    reportSettlementError('最终 Promise 收尾', error)
+    runningAssignments.delete(binding.assignmentId)
+    forgetAdmitted(binding)
+    if (!owned) rejectAdmission(error instanceof Error ? error : new Error(String(error)))
+  })
   return admitted
 }
