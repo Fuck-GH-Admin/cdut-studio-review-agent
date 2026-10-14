@@ -10,6 +10,7 @@
 Draft PR：https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/21
 本次只读交接分支：handoff/p06-recheck-20261015
 本次会话交接入口：docs/design/review-agent/46-p06-recheck-live-running-handoff-20261015.md
+交接编写期间 PR 又前进到 7132ca658ffc64c1f3bc44146ef9bddedae950e5；须看 46 号最后的并行增量，开工仍先查最新 HEAD。
 正式提示词：docs/design/review-agent/47-p06-recheck-next-session-prompt-20261015.md
 
 第一步：先打开交接分支 46/47，再在实际开发分支阅读 45、44、29、30、31。查 FIX-01～03 细节读 39/40/41，查真实失败读 37/38。文件路径均在 docs/design/review-agent/ 下。先获取当前远程 PR HEAD/最近提交/对应 Actions 和独立自托管 workflow 的真实状态；交接快照是 3227bc715fc99005d54495967dbcbe8b277c8295，绝对不能假设仍是最新。

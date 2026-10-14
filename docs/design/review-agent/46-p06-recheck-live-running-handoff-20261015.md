@@ -50,4 +50,9 @@
 2. 随后读开发分支的 45、44、29、30/31，只有需要追溯底层实现或历史失败时再按 41→40→39→38→37 查看。完成本地验收之前不要改 29 中的 LIVE 状态。
 3. 如果要同步文档，先基于最新 PR 分支比较这份 handoff；仅移植需要的交接文字，避免覆盖随后发生的工作。此次 handoff 是**文档提交**，不代表新增受控/真机 PASS。
 
+## 7. 交接写入期间的并行增量（最后观测，不是最终完工验收）
+
+- 写入 handoff 文档期间，PR #21 的工作 HEAD 已从 `3227bc715fc99005d54495967dbcbe8b277c8295` 前进 **1 个提交**到 `7132ca658ffc64c1f3bc44146ef9bddedae950e5`：`test(review): assert Hook-owned projection without fabricating execution state`。涉及 `review-workspace-recheck-independent.test.ts` 与 45 号 R1B 文档；**不能把 3227 的测试数字或状态直接沿用给 7132**。
+- 查询该新 SHA 的 Actions：D0.5 #38600849873 **SUCCESS**、Review focused #38600849984 **SUCCESS**；PR CI #38600849944、Baseline #38600849943、D2 #38600849906、D1 #38600849927 当时均 **QUEUED**。这些是该时点的实际快照，不预言最终结果。此前 SHA `3227` 的 PR/focused 取消记录不能解释为本次功能缺陷。
+- PR #21 实际仍 **Draft/Open/未合并**。交接独立分支基于 `3227` 建立，新增文档不包含 `7132` 的源码修改；**下一个 agent 必须从 PR 真实新 HEAD 而不是本 handoff 分支执行代码和本地复验**，并先确认是否又有后续提交。
 **交接结论：已准备好让新会话接续当前本地验收和 RECHECK，而不是重做 P06-FIX-01；当前仍 NO-GO。**
