@@ -12,7 +12,7 @@ import { buildDeterministicRuleChecks } from './v2-executor-factory'
 import { combineCoverage } from './coverage-ledger'
 import { hashEffectiveRuleSet, resolveEffectiveRules } from './effective-rules'
 import { getTemplate, isAuthoringCandidateDraft } from './template-store'
-import { getRunV2, listRunsV2, readArtifact, saveArtifact, saveRunV2 } from './run-store-v2'
+import { getRunV2, isInterruptedRunV2, listRunsV2, readArtifact, saveArtifact, saveRunV2 } from './run-store-v2'
 import { recordObservation } from './evidence-service'
 import { actorOfAssignment, bindRunToAssignment, checkAssignment, createAssignment, findActivePiReviewAssignment, listAssignments, revokeAssignment, type ReviewAgentAssignment } from './review-agent-assignment'
 import { DocumentCapabilityLibrary } from './document-capability-library'
@@ -526,6 +526,7 @@ export function preparePiReviewRunV2(input: { caseId: string; sessionId: string;
 export function getPiReviewBindingForSession(sessionId: string): PiReviewBinding | undefined {
   const assignment = findActivePiReviewAssignment(sessionId)
   if (!assignment?.caseId || !assignment.activeRunId) return undefined
+  if (isInterruptedRunV2(assignment.caseId, assignment.activeRunId)) return undefined
   const run = getRunV2(assignment.caseId, assignment.activeRunId)
   if (!run || run.status !== 'running') return undefined
   return { assignmentId: assignment.id, sessionId, caseId: assignment.caseId, runId: run.id }

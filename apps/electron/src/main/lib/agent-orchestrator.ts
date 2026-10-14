@@ -1991,6 +1991,7 @@ ${dynamicCtx}`
         }),
         ...(maxTurns != null && { maxTurns }),
         // Pi 使用 permissionMode/canUseTool；不再传 Claude SDK 专属权限字段。
+        canUseTool,
         systemPrompt: piSystemPrompt,
         resumeSessionId: existingSdkSessionId,
         onRuntimeMessage: input.onRuntimeMessage,

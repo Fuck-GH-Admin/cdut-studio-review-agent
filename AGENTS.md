@@ -168,6 +168,10 @@ cmd.exe /c ".\apps\electron\out\win-unpacked\CDUT Studio.exe --enable-logging"
 
 批量审核复验入口见 [24 号独立验收](docs/design/review-agent/24-batch-review-independent-final-acceptance.md)。队列失败提示须保留失败数量；无已完成案卷时待人工分流明确为零。Electron 回放的缺模型负例须核对持久化错误原因，不能仅检查 `failed` 状态。
 
+直接审核的启动恢复先隔离旧 `queued/running` 轮次授权，再原子写入中断终态。恢复 I/O 失败时，磁盘状态仍须如实记录为未确认，旧工具、binding 与 admission 不得放行；恢复写盘成功也不代表完整 LIVE 验收完成。当前实机证据与门禁以 [29 号台账](docs/design/review-agent/29-background-session-preflight-audit.md) 为准。
+
+Pi 查询必须携带既有 `canUseTool` 回调，普通 auto/plan/bypass 与直接审核的受控工具校验都在这个 Main 回调中执行。`permissionMode` 字段本身不能代替实际工具审批；需见证真实工具与权限请求。
+
 上游整合基线与冲突处理见 [25 号整合记录](docs/design/review-agent/25-upstream-review-integration.md)，后续同步与真实 dev 记录见 [26 号复验](docs/design/review-agent/26-upstream-refresh-dev-acceptance.md)。PDF 走上游高精解析引擎，同时保留审核的 DOCX/Excel 结构与 HTML/EML 读取。Pi 自动压缩统一在任务结束、会话空闲后执行；审核会话保留约 70% 阈值、运行账本与审核压缩指令，普通会话按共享阈值处理。
 
 2026-10-11 使用者已授权向上游提交当前阶段成果的 Draft PR，取代此前不提交 PR 的安排。模板与解析保留项见 [28 号交付状态](docs/design/review-agent/28-review-stage-delivery-status.md)。后台会话继续在测试仓库 Draft PR #21 的 `feat/review-owned-background-sessions` 开发，按 [27 号最小规范](docs/design/review-agent/27-background-review-session-proposal.md)复用既有 Pi 和 V2。

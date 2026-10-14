@@ -13,7 +13,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { writeJsonFileAtomic } from '../safe-file'
 import { join } from 'node:path'
 import { getConfigDir } from '../config-paths'
-import { getRunV2 } from './run-store-v2'
+import { getRunV2, isInterruptedRunV2 } from './run-store-v2'
 
 /** 指派允许的动作范围（C1：操作类全量；C2 增加决定类动作受代批开关二次约束） */
 export type ReviewAssignmentAction =
@@ -59,7 +59,8 @@ function isLiveDirectPiRun(assignment: ReviewAgentAssignment): boolean {
   try {
     // Even after process restart, a terminal or missing V2 run must never
     // resurrect a grant whose revokedAt write failed.
-    return getRunV2(assignment.caseId, assignment.activeRunId)?.status === 'running'
+    return !isInterruptedRunV2(assignment.caseId, assignment.activeRunId)
+      && getRunV2(assignment.caseId, assignment.activeRunId)?.status === 'running'
   } catch {
     return false
   }
