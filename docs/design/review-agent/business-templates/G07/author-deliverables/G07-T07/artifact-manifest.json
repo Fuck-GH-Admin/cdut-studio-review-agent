@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "G07-T07-C-author-E0-recovery-r01",
+  "templateId": "G07-T07",
+  "formalName": "项目借款与事后冲账结清预审",
+  "scope": "C-author artifact recovery only; not E acceptance",
+  "cBusinessVersion": "v0.1",
+  "cDeliverySpec": "v2.1",
+  "cAuthorStatus": "BUSINESS_MD_DRAFT_WITH_GAPS",
+  "originalCAuthoredGitCommit": "NOT_COMMITTED",
+  "originalCZipSha256": "9137f2927476a759d8fd3646c215e6df9665e68eeadc1416e146449a50010523",
+  "originalCv21ZipSha256": "29861b27482df8344db1020cc6123fd1286c553f022b3537ae4660577299eb26",
+  "originalBv02ZipSha256": "a3280f95bf62c35cd1568925dc7f807eac5849f842c262900297c0f8c89690bc",
+  "archiveGitCommits": {
+    "C": "ee36fdb7a46defe07ab14337f5d887f11616160c",
+    "B": "a177ee3fa2b1f07cf9e87e03a8eea68bddc89262",
+    "A": "bf21b2b1dcc5fc2d18fb86ac6ac2a4186c82fba8",
+    "readmes": "119fd26e2ab6090b30752652855aec88f09b84bc"
+  },
+  "sourceFiles": [
+    {
+      "stage": "C",
+      "version": "v0.1",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/G07-T07_正式业务模板_MD_v0.1.md",
+      "sha256": "cafc5406ec97a6a282cae2e297ce6727567db37c4b1b7e7ca24ab2f32701586e",
+      "gitBlobSha": "f6d9c8c2820b165b6010fecddc1dde5a478a9ac2"
+    },
+    {
+      "stage": "C",
+      "version": "v0.1",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/G07-T07_规则追踪矩阵.md",
+      "sha256": "420b66692a013c6e0ef76f5f6fad7d353160f2bd17f0ae515374c6032c6ce374",
+      "gitBlobSha": "d60657a3aa940349103a6bb2a53275a76ac0f54d"
+    },
+    {
+      "stage": "C",
+      "version": "v0.1",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/G07-T07_规则追踪矩阵.csv",
+      "sha256": "58e63e4b54d547cb8f65e010da380f40b8838b6e2db07057a7a16ab5a0e5e3f5",
+      "gitBlobSha": "2a3e4cd69be4def552ec6cb2daf32cb35c81f71b"
+    },
+    {
+      "stage": "C",
+      "version": "v0.1",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/G07-T07_作者自检与问题修订记录.md",
+      "sha256": "e9dfea643c5fab7c3a13c659b93e7ad9cb0ca8c7e216d3dd32bb835e6d274307",
+      "gitBlobSha": "31431031756a463f97adfe290b766153ab9cbf73"
+    },
+    {
+      "stage": "C",
+      "version": "v0.1",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/G07-T07_编辑器共性模块候选.md",
+      "sha256": "68723633a5331b8cbf96245e9226c990da2563e93ddded44adffdddf1681a709",
+      "gitBlobSha": "a273acaf2fea98332776eda160bca969eda9c345"
+    },
+    {
+      "stage": "C",
+      "version": "v0.1",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/G07-T07_测试对接说明.md",
+      "sha256": "41cfe19c440f822afa25511405c8ac9eaabeea41d6044ce7b8c932b97c7807e2",
+      "gitBlobSha": "e9e76d80d99449833dd8dbeb3324668d5ded253c"
+    },
+    {
+      "stage": "C",
+      "version": "v0.1",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/G07-T07_验收对接说明.md",
+      "sha256": "efd4f66de29b737f3d5ab21114af4936103ddf31dc86e321fc9e899930bb1df0",
+      "gitBlobSha": "10c2a9b0d0e5b36090cfcacc1f24fe783b47f4d7"
+    },
+    {
+      "stage": "C",
+      "version": "v0.1",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/G07-T07_Cv2.1_迁移核验报告.md",
+      "sha256": "eb93ae4c372f8c9668181b8615f3717c9e1c6a51180985112412a0ac77089f76",
+      "gitBlobSha": "788db0ee69b43f50fecc6623efc2e9ccf5d60bb5"
+    },
+    {
+      "stage": "C",
+      "version": "v0.1",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/README_阅读顺序.md",
+      "sha256": "84115b5d86b5642f07732edc425cb054601cc4f90ca0a77efd52ac0481cf7562",
+      "gitBlobSha": "958649a353488aec0dfe67dcbf756aa01c0c9b4c"
+    },
+    {
+      "stage": "C",
+      "version": "v0.1",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/README_Cv2.1_阅读顺序.md",
+      "sha256": "f53869709edf663756ef66189d512dcc07579ac28b758afe867faeecb597d8ce",
+      "gitBlobSha": "9960590373a3f2f16d94889ca793d847c9e792ec"
+    },
+    {
+      "stage": "B",
+      "version": "v0.2",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/B-v0.2/G07-T07_00_独立业务深调研.md",
+      "sha256": "3971dc75decc13617f959bdcdcd65ff350dfcee89091ba60a8d2fdcb6c5f1655"
+    },
+    {
+      "stage": "B",
+      "version": "v0.2",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/B-v0.2/G07-T07_01_办理情景与条件轴.md",
+      "sha256": "0be31b75fe1fe77d407ab95f880e1b1f1e4fd796d5f655ac24e53fb31ab4b449"
+    },
+    {
+      "stage": "B",
+      "version": "v0.2",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/B-v0.2/G07-T07_02_字段材料证据矩阵.md",
+      "sha256": "8042edb005852b30bf9cc4551e8ad2bd863872f352700b022587db79606b2af8"
+    },
+    {
+      "stage": "B",
+      "version": "v0.2",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/B-v0.2/G07-T07_03_候选审核规则与权限边界.md",
+      "sha256": "552f3cb190fb6459ba2011a2df83acfc4aeef74ea2a3526824c4200890ddc715"
+    },
+    {
+      "stage": "B",
+      "version": "v0.2",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/B-v0.2/G07-T07_04_官方来源与差异登记.md",
+      "sha256": "c8d75db8a1955df9c30325d7f9c917bb627b79d996c850357259f5b4d987d9ef"
+    },
+    {
+      "stage": "B",
+      "version": "v0.2",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/B-v0.2/G07-T07_05_缺口及质量自审.md",
+      "sha256": "2d53150a4cdca509012cc55d04c0ef28d92e2193d812fdccbf1f63e058426d82"
+    },
+    {
+      "stage": "B",
+      "version": "v0.2",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/B-v0.2/G07-T07_06_C与D双向交接卡.md",
+      "sha256": "64278b811ba58f2a370c21c36238f39471b3c2f63b3e0a125f7dd4d8d4ee4028"
+    },
+    {
+      "stage": "B",
+      "version": "v0.2",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/B-v0.2/G07-T07_07_本校第二轮补查_校本证据与修订建议.md",
+      "sha256": "3b83550b2e65bef2ad648bc3d0f8c206748c60ac6f259b1992b98e3968"
+    },
+    {
+      "stage": "A",
+      "version": "v0.1",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/A-reference/G07_02_统一模板目录与边界.md",
+      "sha256": "64a771d60e7ea68a040c4d7fd551c246bf3cd123e0ca60a8f7d9d4ea245ee4c4"
+    },
+    {
+      "stage": "A",
+      "version": "v0.1",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/A-reference/G07_03_来源索引.md",
+      "sha256": "17583564d18b1561b05ce6fd9104df86e132b6d34047ca78f85d1af75f8b3245"
+    }
+  ],
+  "notFrozenInThisBranch": [
+    "B-v0.2 supplemental CSV and README (still in original ZIP)",
+    "A full domain working tree and T07 A subtask card",
+    "other six G07 C templates",
+    "all D hidden Gold and blind sets"
+  ],
+  "goldHandling": "NO_GOLD_INCLUDED; D Gold location/ACL must be attested by authorized owner to independent E after E1 lock",
+  "originalAudit": {
+    "branch": "audit/g07-e-v1-r01",
+    "freezeHead": "ccbf9bd6b16c9472bb35b03cd8b676d87c6cd6ab",
+    "r01Decision": "BLOCKED_INPUT",
+    "decisionUnchanged": true
+  },
+  "phaseStatus": {
+    "C": "AUTHOR_CONTENT_UNCHANGED_AND_GIT_REPLAYABLE",
+    "D": "NOT_ACCESSED_BY_C",
+    "E": "NOT_RUN_BY_C",
+    "realRuntime": "NOT_RUN"
+  }
+}
