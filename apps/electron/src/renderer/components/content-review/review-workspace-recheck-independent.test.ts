@@ -122,7 +122,9 @@ describe('P06-RECHECK equivalent real writer witnesses', () => {
       gate.resolve([old])
       await pending
       expect(store.get(reviewWorkspaceRunsByCaseAtom)[caseId]?.id).toBe(fresh.id)
-      expect(store.get(reviewExecutionByCaseAtom)[caseId]?.status).toBe('running')
+      // Workspace Hook owns the workspace projection, not executionByCase.
+      // The delayed old Controller must NOT revive an old execution state.
+      expect(store.get(reviewExecutionByCaseAtom)[caseId]).toBeUndefined()
       console.log('R1_EQUIV_CONTROLLER_HOOK witness_reads='+reads()+' stale_rejected=true')
     } finally { Object.assign(globalThis, { window: originalWindow }) }
   })

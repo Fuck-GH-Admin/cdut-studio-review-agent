@@ -18,7 +18,7 @@
 | --- | --- | --- |
 | `R1_EQUIV_HOOK_CONTROLLER` | 旧 React Hook 慢 `refresh` → 新 Controller `refreshBackgroundReview` | Jotai 新 run、execution=running；旧返回不可覆盖 |
 | `R1_EQUIV_HOOK_HOOK` | 旧 Hook → 新 Hook，两者使用同一 Jotai Store | 新 run 保留，两个实际 IPC reads |
-| `R1_EQUIV_CONTROLLER_HOOK` | 旧 Controller → 新 Hook | 新 run + running 保留，不让旧 Controller 反写 |
+| `R1_EQUIV_CONTROLLER_HOOK` | 旧 Controller → 新 Hook | 新 run 保留；Hook 自身不写 execution 槽，旧 Controller 迟到也不得复活旧 execution 状态 |
 | `R1_EQUIV_DELAYED_VALIDITY` | 旧 Hook 已取得旧 run，但卡在 `getWorkspaceRunValidityV2` → 新 Controller 完整提交 → 旧 stale 迟到 | 新 run/status 与 `runStale=false` 不被旧结果污染，验证第二个异步竞态边界 |
 
 这些是 **真实代码函数体/Jotai + 合成可控 IPC**，不是 Electron GUI/真实 Pi provider。
