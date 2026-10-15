@@ -1,0 +1,89 @@
+{
+  "runDate": "2026-10-16",
+  "environment": {
+    "node": "v22.16.0",
+    "bun": "NOT_INSTALLED",
+    "gitClone": "BLOCKED_DNS"
+  },
+  "target": {
+    "repo": "Fuck-GH-Admin/cdut-studio-review-agent",
+    "mainSha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+    "path": "apps/electron/src/main/lib/document-parse-tools.ts",
+    "upstreamBlobIdentical": true
+  },
+  "scope": "source-derived, dependency-free identity/cache/side-effect reproduction; not actual imported module or production Electron",
+  "command": "node repro-office-identity.cjs observations.json",
+  "exitCode": 0,
+  "status": "HARNESS_ASSERTIONS_PASS",
+  "cases": [
+    {
+      "case": "CONTROL_DIFFERENT_STEMS",
+      "outcome": "PASS",
+      "actual": [
+        "f1",
+        "f2"
+      ]
+    },
+    {
+      "case": "COLLISION_SAME_STEM_DIFFERENT_REVISIONS",
+      "outcome": "PASS",
+      "actual": {
+        "fileIds": [
+          "f1",
+          "f1"
+        ],
+        "firstIndexOverwritten": true,
+        "cleanMarkdownOverwritten": true
+      }
+    },
+    {
+      "case": "CACHE_SAME_STEM_SAME_REVISION_STALE_SOURCE",
+      "outcome": "PASS",
+      "actual": {
+        "requested": "directory-b/proof.docx",
+        "returnedSource": "directory-a/proof.docx",
+        "contentsIdentical": true
+      }
+    },
+    {
+      "case": "COLLISION_CROSS_FORMAT_SAME_STEM",
+      "outcome": "PASS",
+      "actual": {
+        "formats": [
+          "docx",
+          "xlsx"
+        ],
+        "fileIds": [
+          "f1",
+          "f1"
+        ],
+        "firstIndexOverwritten": true
+      }
+    },
+    {
+      "case": "CONTROL_SAME_SOURCE_NEW_REVISION",
+      "outcome": "PASS",
+      "actual": {
+        "sameFileId": true,
+        "revisionUpdated": true
+      }
+    }
+  ],
+  "miniRepro": {
+    "command": "node repro-minimal.cjs",
+    "exitCode": 0,
+    "stdout": "{\"status\":\"COLLISION_REPRODUCED\",\"firstId\":\"f1\",\"secondId\":\"f1\",\"indexOverwritten\":true,\"cachedWrongSource\":true,\"note\":\"Source-derived minimal harness; NOT a full Office/Electron test\"}",
+    "sha256Script": "b9047108b470c5358cf36df65a4bf456a2c60a6210b160577e0f343240c61da9",
+    "sha256Stdout": "b25df05d0ceeb95fbe67ff2c5556f4263884b2ccdaaba24b7b1f1e2f3e933756"
+  },
+  "localFiveCaseEvidence": {
+    "sha256Harness": "54f365fe7554bf5576a1b9bd12a05b96e7bc346869419248f19e8c422270a127",
+    "sha256Observations": "97f48576124a4baf40fd23ba872d18516be885d6ac058a1731afb5b85cef5a72"
+  },
+  "classification": {
+    "upstreamOfficeIndex": "REPRODUCED_IN_SOURCE_DERIVED_HARNESS",
+    "reviewSourceRef": "NOT_TESTED",
+    "fullOfficeEngine": "NOT_TESTED",
+    "mainElectron": "NOT_TESTED"
+  }
+}
