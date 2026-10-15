@@ -1,0 +1,70 @@
+{
+  "schema": "cdut/G02/E-v1.1-research-r03-evidence-lock/1",
+  "issue_date_local": "2026-10-16",
+  "scope": "RESEARCH_CROSSCHECK_ONLY",
+  "original_source_lock": {
+    "git_index_commit": "3b1ccc743beac91c6bb48335c42d3f05148e1ad9",
+    "git_index_created_at_utc": "2026-10-15T14:21:37Z",
+    "original_files_in_public_repo": false,
+    "content_sha256": {
+      "independent-source-register.md": "bcb709d7720b0b19eec526a61daeb486d13cba52f66cab5310e0b6adcc719ff1",
+      "adversarial-cases.md": "d952431003e8090863999feb87267ebb50158b73b5383539452312ba315afdf3",
+      "source-lock.json": "960ddc4d992f8ca3d2628b730983e52d5c67c2ee08aab940904ebe47cf03b0f7"
+    },
+    "integrity_validation": "all 3 local source-lock SHA256 match earlier committed README hashes; local mount birthtime not used as historical timing"
+  },
+  "historical_audits": {
+    "r01": {
+      "commit": "49a14db3abb53e2ba6164af15537c4537b8f15fc",
+      "draft_pr": 23,
+      "e0_input_manifest_blob": "dde5a348badb0fa00578bb1f4c606c45d54adb3c"
+    },
+    "r02": {
+      "commit": "345666f1d2a60c93a3ea4525663aba4ba03112a0",
+      "draft_pr": 63,
+      "high_risk_precheck": 23,
+      "old_counterexamples": 17,
+      "formal_e1_signable": false
+    }
+  },
+  "c_mothers_sha256_observed": {
+    "T01": "9d16ba80053266dfee3c89e4fbccf1bbd8b408d58c4189e8f7f12bc0a7b235cb",
+    "T02": "4494cfd81dfde4af1fdcb127b342ed0452be6a7704fe317a123cbe589fff78bc",
+    "T03": "b4b3a859d4d85d322347189d253e0e1a7fe4f6003a2a01a4a0c36ea877fe6040"
+  },
+  "published_file_blobs": {
+    "research-difference-map.md": "bc65e120da739b2ec900d266bda65de00ce7d963",
+    "reproducible-adversarial-cases.md": "19f1620477c3c05c739da115013ae0d0264cd0f7",
+    "research-verdict.md": "eb3a01c8f4562d068a69285746ac34536b4e8c2c"
+  },
+  "sources": {
+    "CDUT_2024_official_teacher_email_pdf": "https://wxc.cdut.edu.cn/__local/2/F7/A1/0E8EDEF68218B83FB5757A2F506_98ED2073_393AC4.pdf",
+    "CDUT_security_trial_official_pdf": "https://wxc.cdut.edu.cn/__local/9/8F/4D/EDCE5568A88F519606DEA2F2537_C718DC5C_C843B.pdf",
+    "CDUT_2026_vpn_service": "https://wxc.cdut.edu.cn/info/1006/3954.htm",
+    "CDUT_2020_data_rule": "https://wxc.cdut.edu.cn/__local/4/16/0D/B676B386C2C23526DE6611153D0_6D51DC3A_81133.pdf",
+    "CDUT_2022_portal_manual_unverified_image_fields": "https://bsdt.cdut.edu.cn/EIP/%E7%A0%9A%E6%B9%96%E6%98%93%E5%8A%9E2.0%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.pdf"
+  },
+  "metrics": {
+    "newly_verified_fact_groups_vs_first_lock": 3,
+    "distinguishing_counterexamples": 5,
+    "reproduced_real_business_failures": 0,
+    "ruled_out_C_text_hypotheses": 3,
+    "bounded_unknowns": 6,
+    "found_C_static_ambiguities": 1,
+    "D_Gold_anchor_semantic_verification": "NOT_RUN",
+    "system_D4": "NOT_RUN",
+    "Pi_online_accuracy": "NOT_RUN"
+  },
+  "formal_gate": {
+    "E1_FULL_PASS": false,
+    "E2_ALLOWED": false,
+    "E3_RUN": false,
+    "E4_RUN": false,
+    "admin_permission": "NOT_VERIFIED",
+    "gold_acl": "NOT_VERIFIED",
+    "gold_opened": false
+  },
+  "provenance_warning": "Audit SHA is not an A/B/C/D author SHA; first-source-lock labels S refer to external-school/general sources and are NOT equivalent to the strict S-CLOSED simulation label in this post-lock record.",
+  "safety": "Public-safe only; synthetic subject identifiers; no hidden Gold or restricted paths",
+  "stop_point": "Do not open D Gold without independent controlled ACL and lawful formal E2 prerequisites."
+}
