@@ -1,0 +1,218 @@
+{
+  "schema": "G06-E-v1p1-RESEARCH-CASES/v1",
+  "purpose": "Public independent falsification inputs only; NOT D Gold or scored results",
+  "evidence_scope": "Research static C crosscheck, no hidden Gold; synthetic applicant details",
+  "cases": [
+    {
+      "caseId": "G06-R03-C01",
+      "novelty": "NEW_ATOMIC_ART8_CROSSWALK",
+      "classification": "F",
+      "dutyId": "G06-T01-H03 / G06-E1-CNIPA85-ART8-02",
+      "sourceLocator": {
+        "url": "https://www.cnipa.gov.cn/art/2026/7/30/art_74_207457.html",
+        "section": "第4条、第8条（二）（一般不予）、第13—14条"
+      },
+      "applicability": {
+        "institution": "国家知识产权局制度；本校学生或教师申请也按法定范围",
+        "date": "2026-09-01之后",
+        "subject": "发明专利申请优先审查请求",
+        "stage": "实质审查尚未首次处理",
+        "action": "国家专利优先审查请求，不是普通申请"
+      },
+      "changedFact": {
+        "control": "法定其他资格相同，未同日重复申请实用新型",
+        "counterexample": "申请人同日就同样发明创造另申请实用新型"
+      },
+      "expectedDecision": {
+        "control": "仅可继续其他形式审查；国家局有最终决定权",
+        "counterexample": "提示第8条一般不予的额外风险和适用性，不能自动断定普通专利无效或冒称CNIPA已拒绝"
+      },
+      "admissibleAlternatives": [
+        "国知局可核专利申请/申请日及同一发明创造证据",
+        "申请人说明仅作事实线索，不取代法定记录",
+        "对同一创造的同一性难定时由专利专业人员核实"
+      ],
+      "evidenceAnchors": [
+        "C-T01-L103 AX-08",
+        "C-T01-L155 F-22",
+        "C-T01-L238 FC-09 inputs exclude F-22",
+        "C-T01-L484-L522 R-30 to R-34"
+      ],
+      "failureMode": "第8条排除标志存在但不进入最终FC-09判定；或把“一般不予”误作普通申请绝对不合法",
+      "confidence": "F_HIGH_NORMATIVE; STATIC_GAP_CONFIRMED; RUNTIME_UNKNOWN",
+      "unresolved": [
+        "FC-09实际如何消费AX-08和F-22",
+        "国家局裁量/有权决定无法由AI替代"
+      ],
+      "reviewStatus": "RESEARCH_CROSSCHECK_NO_GOLD"
+    },
+    {
+      "caseId": "G06-R03-C02",
+      "novelty": "NEW_REAL_CONFLICT",
+      "classification": "F",
+      "dutyId": "G06-T09-H23 / G06-R03-N02",
+      "sourceLocator": {
+        "url": "https://kjy.cdut.edu.cn/info/1004/1957.htm",
+        "section": "公示2025-11-10正文勾选栏及第一部分成果信息；网页行47和55"
+      },
+      "applicability": {
+        "institution": "成都理工大学科技园",
+        "subject": "该具体成果转化公示，不推广其他公示",
+        "stage": "拟交易和公示；尚未见合同或登记",
+        "action": "转让还是许可的归类"
+      },
+      "changedFact": {
+        "control": "公示勾选许可且成果信息也写普通许可",
+        "counterexample": "真实页面勾选许可而成果信息写转让许可"
+      },
+      "expectedDecision": {
+        "control": "可记公示内部一致，正式法律状态仍待合同核证",
+        "counterexample": "源内表述冲突，标记冲突/待有权校核；不得推断已转让所有权或将一处当权威解释"
+      },
+      "admissibleAlternatives": [
+        "真实合同以及授权的审批记录",
+        "有权科技园/学校发布的更正公告",
+        "权利登记机关正式变更记录（仅适用相应权利）"
+      ],
+      "evidenceAnchors": [
+        "OFFICIAL-1957-L47 selected license",
+        "OFFICIAL-1957-L55 field states 转让许可",
+        "C-T09-L58-L65 branch difference",
+        "C-T09-L336-L369 R-11, R-12, R-13"
+      ],
+      "failureMode": "官网内部标签冲突时静默选一项并给出转让/所有权已变更终局判断",
+      "confidence": "F_HIGH_SOURCE_TEXT; U_TRANSACTION_LEGAL_EFFECT",
+      "unresolved": [
+        "底层合同",
+        "本校有权更正/解释",
+        "专利外部权利状态"
+      ],
+      "reviewStatus": "RESEARCH_CROSSCHECK_NO_GOLD",
+      "unresolvedClassification": "U"
+    },
+    {
+      "caseId": "G06-R03-C03",
+      "novelty": "REFINED_PREVIOUS_AC02",
+      "classification": "F",
+      "dutyId": "G06-T01-H02",
+      "sourceLocator": {
+        "url": "https://www.cnipa.gov.cn/art/2026/7/30/art_74_207457.html",
+        "section": "第4条末段；另本校2021快速预审试行细则第1—10条 https://kjc.cdut.edu.cn/__local/6/E6/77/C6E94DC62E18344E031B3DEEF25_EACB8B3A_61F04.pdf"
+      },
+      "applicability": {
+        "subject": "高校参与的专利申请",
+        "stage": "校内前审/快速预审前置与国家优审请求的不同阶段",
+        "action": "普通申请和保护中心快速预审区分"
+      },
+      "changedFact": {
+        "control": "选择学校保护中心快速预审，且2021校内规则经校方确认现行有效",
+        "counterexample": "同一技术正常普通专利申请，不请求保护中心快速预审"
+      },
+      "expectedDecision": {
+        "control": "限定激活有权核实后的校本快速预审资格及审批材料；仍不得AI签审",
+        "counterexample": "不以快预审月度窗口、配额、申报表作普通申请的强制拒件门槛"
+      },
+      "admissibleAlternatives": [
+        "正式普通专利申报渠道",
+        "有权学校确认快速预审制度和替代电子申报"
+      ],
+      "evidenceAnchors": [
+        "CNIPA-85-ART4",
+        "C-T01-L721-L733",
+        "C-T01-L759-L761"
+      ],
+      "failureMode": "三个渠道条件共用，要求普通申请也满足快预审特定资格",
+      "confidence": "F_CHANNEL_SEPARATION; U_CURRENT_2021_EFFECT",
+      "unresolved": [
+        "2021快速预审校规当前有效性和修订"
+      ],
+      "reviewStatus": "STATIC_HYPOTHESIS_REJECTED_FOR_C_V01",
+      "unresolvedClassification": "U"
+    },
+    {
+      "caseId": "G06-R03-C04",
+      "novelty": "REFINED_PREVIOUS_AC12",
+      "classification": "F",
+      "dutyId": "G06-T05-H12 / CDUT-CLASSIFIED-GRAD-ART10",
+      "sourceLocator": {
+        "url": "https://cnae.cdut.edu.cn/__local/6/00/E3/65182F44988453DBC26FEB60E83_8824077E_36E1D.pdf",
+        "section": "成理校研〔2024〕22号第2、第5、第10条；PDF页2—4文字；网页截图工具cache miss"
+      },
+      "applicability": {
+        "institution": "成都理工大学",
+        "subject": "正式适用该制度的涉密博士硕士研究生",
+        "stage": "公开发表或公布本人科研信息之前",
+        "action": "导师同意、业务学院/部门审批"
+      },
+      "changedFact": {
+        "control": "属于有可信校方审批记录的涉密研究生",
+        "counterexample": "普通非涉密研究生发表非涉密论文，同一制度的涉密身份条件明确不成立"
+      },
+      "expectedDecision": {
+        "control": "论文公开前应核导师同意/业务学院批准，AI不出审批结果",
+        "counterexample": "该校规第10条本身不适用；其他独立涉密项目或有效校规存在性仍单查"
+      },
+      "admissibleAlternatives": [
+        "授权校方涉密身份确认记录",
+        "制度适用对象确证",
+        "其他实际适用校规另行核证"
+      ],
+      "evidenceAnchors": [
+        "CDUT-PDF-Art2",
+        "CDUT-PDF-Art10",
+        "C-T05-L403-L418 R-10",
+        "C-T05-L658-L673 R-25",
+        "C-T05-L824-L827"
+      ],
+      "failureMode": "用涉密研究生的义务一律拒收普通学生非涉密投稿，或反向遗漏真正涉密研究生审批",
+      "confidence": "F_HIGH_TEXT_ONLY_PDF_SCREEN_UNAVAILABLE",
+      "unresolved": [
+        "涉密身份有权验证，不在公开案例写真实身份"
+      ],
+      "reviewStatus": "STATIC_HYPOTHESIS_REJECTED_FOR_C_V01"
+    },
+    {
+      "caseId": "G06-R03-C05",
+      "novelty": "REFINED_PREVIOUS_AC20",
+      "classification": "F",
+      "dutyId": "G06-T08-H20",
+      "sourceLocator": {
+        "url": "https://www.most.gov.cn/xxgk/xinxifenlei/fdzdgknr/fgzc/gfxwj/gfxwj2023/202310/t20231008_188309.html",
+        "section": "《科技伦理审查办法（试行）》第2条（二）、第9—20条及3R审查条款"
+      },
+      "applicability": {
+        "institution": "依法开展动物研究的机构及适用科技活动",
+        "subject": "含实验动物的研究方案",
+        "stage": "实际实验实施前及风险改变时",
+        "action": "伦理审查与实验室安全分别核实"
+      },
+      "changedFact": {
+        "control": "有可核验、覆盖本方案的正式有权伦理决定，并有实验室安全审查记录",
+        "counterexample": "相同方案仅完成实验室设施消防/安全准入，无适用范围内的动物伦理决定"
+      },
+      "expectedDecision": {
+        "control": "按伦理批件范围与有效性核证，不因此代发实施许可",
+        "counterexample": "安全通过不能推出伦理批准；标伦理决定缺证/待机构核实，不由Agent签发"
+      },
+      "admissibleAlternatives": [
+        "有权伦理委员会的真实电子决定",
+        "经授权可验证的正式伦理批件",
+        "若依法可委托合格委员会，核实实际正式委托与其决定"
+      ],
+      "evidenceAnchors": [
+        "MOST-167-Art2(2)",
+        "C-T08-L153-L159 EV-09 vs EV-12",
+        "C-T08-L164-L180 CL-03/13",
+        "C-T08-L301-L315"
+      ],
+      "failureMode": "把实验室安全批件当动物伦理审批，或把基金用途证明无条件提升为动物实验实施资格",
+      "confidence": "F_HIGH_NATIONAL; U_CDUT_PROCESS_DETAIL",
+      "unresolved": [
+        "本校具体委员会及授权",
+        "本校不同阶段表单未独立核原件"
+      ],
+      "reviewStatus": "STATIC_HYPOTHESIS_REJECTED_FOR_C_V01",
+      "unresolvedClassification": "U"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "schema_version": "G06_RESEARCH_CROSSCHECK_R03_LOCK/v1",
+  "research_day": "2026-10-16",
+  "scope": "Research study only; partial F/U source-to-C static crosscheck; not E1 PASS/E2/GOLD",
+  "old_source_lock_attachments_before_current_user_message": true,
+  "original_source_lock_evidence": {
+    "independent_source_register_sha256": "db700886d6714d1ca785bf5b59c687f95c4385c4d633cc5292ffdd34db84bbfe",
+    "adversarial_cases_sha256": "11b2b615a690b2d608033828fe34d665d7a559b354d72b21a20ddf59861fb3bf",
+    "source_lock_json_sha256": "38b94e85fdadee6da54dcb2ba81fd1708019b93f6c2d36ed20a0e7f794f3d5d7",
+    "zip_sha256": "8ac84f82963dccc8facabc9b161db49ae00de9a268c425850ea2b91c969bd3e9",
+    "note": "Git commit before current user message: none; container mount mtime was not treated as historical writing proof."
+  },
+  "previous_audit": {
+    "r01_sha": "1dcf4033256121efd3dea62b1153592df1facd7c",
+    "r01_pr": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/28",
+    "r02_sha": "1eabfb9490257f77f81a2401430bb71c76e0c683",
+    "r02_pr": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/70",
+    "r01_h_denominator": 142,
+    "r01_h_bounded": 51,
+    "r01_h_pending": 91
+  },
+  "branch": "research/g06-e-v1p1-r03",
+  "base_sha": "1eabfb9490257f77f81a2401430bb71c76e0c683",
+  "last_verified_commit_before_lock": "73cb39cad09e932db7e2ef725435a021bdaadc5f",
+  "c_readonly_library_copies": [
+    {
+      "template": "G06-T01",
+      "sha256": "e3bb29673e317bf65b00b9b20f5af56a69d8fb2d87f42e2c3aab0473d7e9f727",
+      "source": "Library copy, not an independently verified production Git commit"
+    },
+    {
+      "template": "G06-T05",
+      "sha256": "d0062108a34b73e4c21e56f6d164d147de8a5731e876f10a08612ac370838ec1"
+    },
+    {
+      "template": "G06-T08",
+      "sha256": "95d82865daec9494e08510592450b98a7baa673980a90451d21c66ef04df7882"
+    },
+    {
+      "template": "G06-T09",
+      "sha256": "aaf92ece906710162dc48e2805f38db56cc6e172e6ba5971c06f5fbce65422aa"
+    }
+  ],
+  "public_evidence_files": [
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.1/research-r03/research-findings.md",
+      "git_blob_sha": "dfe9e8e9fad19436fc2db21e0df3dc8578da1015",
+      "visible_browser_url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/research/g06-e-v1p1-r03/docs/design/review-agent/business-templates/G06/acceptance/E-v1.1/research-r03/research-findings.md"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.1/research-r03/discriminating-cases.json",
+      "git_blob_sha": "7fde7caf60cc0a1c172ce711bc7f1290e858ce73",
+      "visible_browser_url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/research/g06-e-v1p1-r03/docs/design/review-agent/business-templates/G06/acceptance/E-v1.1/research-r03/discriminating-cases.json"
+    }
+  ],
+  "counted": {
+    "newly_verified_atomic_source_facts": 2,
+    "discriminating_cases": 5,
+    "novel_case_structures": 2,
+    "reproduced_model_or_business_defects": 0,
+    "confirmed_static_trace_gaps": 1,
+    "source_evidence_rejected_static_C_error_hypotheses": 4,
+    "unresolved_bounded_issues": 3
+  },
+  "classification_note": "9 old S markers in prelocked source register meant bounded sources, NOT closed simulation; not used as simulated ground truth. New cases classification F, with separate U uncertainty where necessary; S cases 0.",
+  "access_declaration": {
+    "saw_D_hidden_gold": false,
+    "read_D_expected_answers": false,
+    "read_school_sensitive_ledgers": false,
+    "changed_ABCD_sources": false,
+    "ran_model": false,
+    "ran_D4": false,
+    "checked_public_C_text": true
+  },
+  "restrictions": {
+    "formal_E1": "NOT_PASSED",
+    "formal_E2": "NOT_STARTED",
+    "gold_ACL": "NOT_VERIFIED",
+    "model_accuracy": "NOT_RUN",
+    "D4": "NOT_RUN",
+    "school_administrative_authority": "NOT_VERIFIED"
+  }
+}
