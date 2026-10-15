@@ -1,0 +1,36 @@
+{
+  "schema": "g06-t05-d-remediation-provenance-v1",
+  "issued_date": "2026-10-15",
+  "responsibility": "G06-T05 D original asset author incremental evidence only",
+  "audit_ref": "audit/g06-e-v1-r01@1dcf4033256121efd3dea62b1153592df1facd7c",
+  "production_git_commit": "NOT_AVAILABLE",
+  "independent_event_log": "NOT_AVAILABLE",
+  "gold_acl_verified": false,
+  "private_storage_id": "NOT_AVAILABLE",
+  "original_sha256": {
+    "A_base": "60e13c8f6805e65fa4bbec89f00f30e31bc4825884da298ffded0f096795b72b",
+    "B_base": "1acaec6c0b773ab7c1143619f49f5533334232334a46ac217b69fc1c0266911e",
+    "D_instruction": "04ee6462aa2eeff7971a9f7d2617c8f16fc410aee92a3b0998c4b907434263a1",
+    "D_input": "251e5edc380fe1115533baa42c2fd0db98c2edef91b6c93ba68c96aa741e7207",
+    "D_evaluation": "732e9e36b93e4058f1ca23632128d2c07c84d17b2a83644c061d016d10342047",
+    "D_reports": "223ed6f0dea244f4edec2c0d39197e18d699783d71dd7e897eed4b5c338fa3d4",
+    "D_delivery_index": "ae8cf738a5dc720df2559c53b59aa8a80c291194b71137518077706ee1f58911"
+  },
+  "frozen_gold_label": "FROZEN_GOLD_v1.1",
+  "frozen_manifest_sha256": "6e1cccd40bf95d3aafedaee23eb121278bccd2fc4bbbbfd351c1023081dd16dd",
+  "unchanged_originals": true,
+  "changed_gold": false,
+  "case_count": 18,
+  "input_pdf_count": 73,
+  "pdf_page_count": 90,
+  "raster_evidence_pages": 18,
+  "replayed_sha256": {
+    "controlled_files": 43,
+    "input_files": 94,
+    "mismatch_count": 0
+  },
+  "review_status": "RECHECK_AFTER_SOURCE_FIX",
+  "e1_application_scope": "2024 classified graduate student specific only; ordinary paper applicability SOURCE_PENDING",
+  "e_acceptance": "NOT_RUN",
+  "runtime_accuracy": "NOT_RUN"
+}
