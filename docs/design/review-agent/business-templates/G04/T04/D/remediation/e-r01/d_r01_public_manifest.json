@@ -16,6 +16,9 @@
     },
     "gold_provenance_and_acl_status.md": {
       "sha256": "8927a5fc009fc0200dd208d3251260d33437148848f0a612c0477d92e5bb5f35"
+    },
+    "verify_original_d_assets.py": {
+      "sha256": "c14245a1b1e0938a9c7261cb2cbb2693838ff2fbf9d9aa2ebe9226cbda9b7262"
     }
   },
   "original_assets": {
