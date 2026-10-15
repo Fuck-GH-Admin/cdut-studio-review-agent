@@ -6,6 +6,11 @@
 
 ## 结论
 
+### 2026-10-15｜实测驱动的P06-RECHECK-LIVE-02新顺序（PLANNED）
+
+[47｜L02-00～04修订计划](47-p06-evidence-driven-followup-plan-20261015.md)只改变**工作排序/证据细则**，本文件LIVE-01～08仍是**唯一验收状态台账**：`L02-00`先归因A/B/C尤其C的`execution-failed`，`L02-01`既有A/B/C完整业务闭环，`L02-02`真实审核PDF/PNG原件及压缩，`L02-03`普通Agent/多窗/平台，`L02-04`跨仓条件可并行协调后统一签收。五批仅**PLANNED**，不得改动下方8行LIVE状态。46号 E05/E03/E04及ENOSPC/双失写/两次重启实机PASS仅对已验范围有效；E06仍PARTIAL，旧38号原FAIL仍保留。冻结`f716d2efaed0dcd8924d5acc30cd3012eb093348`的7条自托管CI全SUCCESS、[PR CI #38602829396](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38602829396) 3894pass/5skip/0fail，不代表新文档HEAD。**P06-S02 NOT ACCEPTED / P06 PARTIAL / LIVE-07 PARTIAL / Draft/Open/MERGE NO-GO**；P04不安全GC禁令、P05 Relay BLOCKED/Pocket TARGET NOT-RUN、不进入P07/P08全部保留。
+
+
 ### P06-RECHECK-LIVE 本地实机最新（2026-10-14～15）
 
 并发7132新增两项正式写入者测试完整保留后，本地整合 `9cc92bb0e6cec8d2698f5d712a71ecc8b77256e4` 全套22门禁再次exit0：**全仓3894pass/5skip/0fail（3899tests、445files、16161expect）、聚焦89/89（345expect）、batch143/143**；生产与实测b95无差异。最终发布HEAD CI按PR最后验收评论查询，新版current gate可SUCCESS而原legacy脚本依旧exit1，两者分开登记。

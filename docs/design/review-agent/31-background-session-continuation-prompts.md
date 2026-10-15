@@ -1,5 +1,16 @@
 # 31｜后台案卷审核：新会话接手和小批次执行提示词
 
+## 当前正式下一批：P06-RECHECK-LIVE-02 / L02-00（2026-10-15）
+
+以 [47｜实测驱动方案](47-p06-evidence-driven-followup-plan-20261015.md) 为顺序合同，[27](27-background-review-session-proposal.md)为架构边界，[29](29-background-session-preflight-audit.md)为唯一LIVE台账，[46](46-p06-recheck-live-local-acceptance-20261014.md)为已完成实机证据。历史下方“下一批P06-RECHECK-LIVE-02”是46号完成时的快照，不优先于本节。
+
+```text
+宝宝，接手CDUT Studio后台审核Draft PR #21的P06-RECHECK-LIVE-02 / L02-00。先查远端HEAD、自托管CI、并发worktree，完整读47实测驱动计划、46实机报告、29 LIVE-01～08、27架构边界与28历史产品路线。
+本批唯一任务：独立恢复A/B/C尤其三案C的execution-failed所对应的真实V2、assignment、模型回执、工具、材料版本、批次账本，区分CORRECT_DENIAL/BUSINESS_INCOMPLETE/EXECUTION_FAILURE/HARNESS_INVALID/UNDETERMINED。创建可追溯逐案事实与缺口矩阵、初始失败证据、raw/public哈希及L02-01～04准入条件，不猜根因、不改Gold/权限/SourceRef，不修改生产代码。
+已通过的E05/E03/E04/ENOSPC/两次真实重启子集不作为本批再次完整重跑的成绩，不重复实现FIX-01～03。同步29台账、30/31交接及PR；缺证据用NOT-RUN或UNKNOWN。P05 Relay BLOCKED、Pocket TARGET NOT-RUN、P04永久tombstone/journal禁止无证明GC，P06-S02 NOT ACCEPTED / P06 PARTIAL / Draft/MERGE NO-GO，不进入L02-01/P07/P08。
+```
+
+
 ## 最新继续提示：P06-RECHECK-LIVE-02（本地实机之后）
 
 并发7132新增两项正式写入者测试完整保留后，本地整合 `9cc92bb0e6cec8d2698f5d712a71ecc8b77256e4` 全套22门禁再次exit0：**全仓3894pass/5skip/0fail（3899tests、445files、16161expect）、聚焦89/89（345expect）、batch143/143**；生产与实测b95无差异。最终发布HEAD CI按PR最后验收评论查询，新版current gate可SUCCESS而原legacy脚本依旧exit1，两者分开登记。

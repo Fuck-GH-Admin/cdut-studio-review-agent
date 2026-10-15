@@ -1,5 +1,8 @@
 # 32｜P05 阶段独立验收、跨仓阻断与本地实测交接（2026-10-13）
 
+> **2026-10-15 P06依赖更新**：根据 [47｜L02-04](47-p06-evidence-driven-followup-plan-20261015.md)，中心 `P05-RELAY-ROUTE-01` 仍**BLOCKED**，独立Pocket `P05-POCKET-FIFO-01` 仍**PATCH READY / TARGET NOT-RUN**。允许与L02-00～03的本地可执行验证并行协调，但外部未真正验收前不得把LIVE-06/08或PR合并门禁改PASS；原43/43受控结果及补丁仍为历史有效证据。
+
+
 > **本地执行补录**：本手册 §4 已在 `df0c0d57` 执行九步全部通过，完整证据见 [33｜P05 本地复验](33-p05-local-automation-recheck-20261013.md)。用户随后授权补齐 Main/A0，见 [34｜P06 前置验收](34-pre-p06-main-a0-acceptance-20261013.md)。下方是原 P05 冻结批次记录；“不执行 Main”属于当时停点，现已由新授权推进。本轮依旧不合并、不解除 Draft，生产中心和独立 Pocket 状态原样保留。
 
 > 范围：Draft PR #21 / `feat/review-owned-background-sessions`，本文件只总结 P05-S01～S06 的可核验证据与合并门禁。**受控 PASS 不等于真实 Pocket/中心 Relay/飞书/Electron LIVE PASS。** 必须同时阅读 [29 号证据台账](29-background-session-preflight-audit.md) 和 [30 号项目交接](30-background-session-handoff.md)。P04-TECHDEBT-01 的永久保留 tombstone 与性能数据以 29 号为准，不因本次 P05 批次而删除或改写。

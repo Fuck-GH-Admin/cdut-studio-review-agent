@@ -1,5 +1,10 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
+## 当前优先接手：47号实测驱动计划（2026-10-15）
+
+先读 [47｜新批次顺序](47-p06-evidence-driven-followup-plan-20261015.md) → [46｜本地实机原证据](46-p06-recheck-live-local-acceptance-20261014.md) → [29｜唯一验收台账](29-background-session-preflight-audit.md) → [31｜L02-00正式执行提示](31-background-session-continuation-prompts.md)。架构仍遵守27，28是历史整体产品快照。先L02-00调查三案C的`execution-failed`与E06覆盖矩阵，再按L02-01～04分别收口业务、模型原件、普通兼容和外部依赖。五批均PLANNED，不重开发已通过的FIX-01～03；P06-S02 NOT ACCEPTED / P06 PARTIAL / Draft/MERGE NO-GO。只在本PR隔离工作树写入，先对比最新HEAD，避免覆盖并发提交。
+
+
 ## 最新接手：P06-RECHECK-LIVE 本地已执行（2026-10-14～15）
 
 并发7132新增两项正式写入者测试完整保留后，本地整合 `9cc92bb0e6cec8d2698f5d712a71ecc8b77256e4` 全套22门禁再次exit0：**全仓3894pass/5skip/0fail（3899tests、445files、16161expect）、聚焦89/89（345expect）、batch143/143**；生产与实测b95无差异。最终发布HEAD CI按PR最后验收评论查询，新版current gate可SUCCESS而原legacy脚本依旧exit1，两者分开登记。
