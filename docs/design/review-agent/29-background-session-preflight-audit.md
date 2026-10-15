@@ -6,6 +6,13 @@
 
 ## 结论
 
+### 2026-10-15｜原项目新 `main` 后新增的前置兼容批次（PLANNED）
+
+根据 [49｜上游影响与批次重排](49-upstream-impact-replan-20261015.md)，当前优先 `P06-RECHECK-LIVE-02/L02-U0`（主分支/审核分支/上游源码差异与可用候选基线冻结）→ `L02-U1`（Office 索引 v2、SourceRef、严格工具权限、只读预览与 owner/迟到恢复**差分**测试）→ [47](47-p06-evidence-driven-followup-plan-20261015.md) 的 `L02-00～04`。**U0/U1 均 PLANNED、没有新实机结果**。上一轮 46 实测源码的 16/16 PASS 不自动承接新版 `main`；`main@8989941b` 与 PR #21 `60e805cf` 虽都曾 CI SUCCESS，但两 SHA 未完成集成 E2E。原 38 号旧探针 FAIL 原样保留、E06 PARTIAL 与所有 LIVE-01～08 单行判词**逐字不变**。
+
+当前 `main` 已将审核分支内容进行受控**文件树整合**，但 **PR #21 并未 Git merge，仍 Draft/Open**；不得盲目 rebase/重复回填旧 Office/旧预览，或将两个不同分支的 CI 当一轮完整验收。29 号仍是唯一 LIVE 状态台账。P04 永久 tombstone/owner UUID journal 无不安全 GC，P05 Relay BLOCKED/Pocket TARGET NOT-RUN；**P06-S02 NOT ACCEPTED / P06 PARTIAL / LIVE-07 PARTIAL / MERGE NO-GO**，不得进入 P07/P08。
+
+
 ### 2026-10-15｜实测驱动的P06-RECHECK-LIVE-02新顺序（PLANNED）
 
 [47｜L02-00～04修订计划](47-p06-evidence-driven-followup-plan-20261015.md)只改变**工作排序/证据细则**，本文件LIVE-01～08仍是**唯一验收状态台账**：`L02-00`先归因A/B/C尤其C的`execution-failed`，`L02-01`既有A/B/C完整业务闭环，`L02-02`真实审核PDF/PNG原件及压缩，`L02-03`普通Agent/多窗/平台，`L02-04`跨仓条件可并行协调后统一签收。五批仅**PLANNED**，不得改动下方8行LIVE状态。46号 E05/E03/E04及ENOSPC/双失写/两次重启实机PASS仅对已验范围有效；E06仍PARTIAL，旧38号原FAIL仍保留。冻结`f716d2efaed0dcd8924d5acc30cd3012eb093348`的7条自托管CI全SUCCESS、[PR CI #38602829396](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38602829396) 3894pass/5skip/0fail，不代表新文档HEAD。**P06-S02 NOT ACCEPTED / P06 PARTIAL / LIVE-07 PARTIAL / Draft/Open/MERGE NO-GO**；P04不安全GC禁令、P05 Relay BLOCKED/Pocket TARGET NOT-RUN、不进入P07/P08全部保留。

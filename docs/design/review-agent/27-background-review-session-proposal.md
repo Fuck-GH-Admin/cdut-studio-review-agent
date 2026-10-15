@@ -1,5 +1,8 @@
 # 27｜直接案卷审核：复用现有 Pi 的后台会话最小实施规范
 
+> **2026-10-15 上游整合后的新前置门禁**：我方 `main` 已合入原项目新版 Office engine / 只读侧栏 / Pi 提示词；当前审核 Draft 分支尚未迁移这些接口。执行顺序由 [49｜上游影响与基线兼容重排](49-upstream-impact-replan-20261015.md) 的 `L02-U0 → L02-U1` 优先，再按 [47](47-p06-evidence-driven-followup-plan-20261015.md) 做业务闭环。**本文件仍是架构/安全合同**，不因上游增加普通工具放松审核严格白名单。
+
+
 > **现行执行补充（2026-10-15）**：本文件仍是后台Pi/Main ACK/owner/V2的**架构和允许改动范围**；§6旧顺序属于历史阶段快照。46号已在选定16场景得到实机PASS但完整E06仍PARTIAL，后续排序与取证细则按 [47｜实测驱动调整](47-p06-evidence-driven-followup-plan-20261015.md)；[29](29-background-session-preflight-audit.md)继续是唯一LIVE验收台账。27号“本PR不新增批量产品能力”规则不变。
 
 

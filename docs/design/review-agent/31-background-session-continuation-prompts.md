@@ -1,5 +1,16 @@
 # 31｜后台案卷审核：新会话接手和小批次执行提示词
 
+## 最新执行入口：P06-RECHECK-LIVE-02 / L02-U0（2026-10-15 上游整合后）
+
+以 [49｜新版代码影响与实施前置](49-upstream-impact-replan-20261015.md) 为权威的执行优先级。**下面的 `L02-00` 旧提示仍是 47 号产生时的历史建议；此刻不得跳过 `L02-U0` 和 `L02-U1`。**
+
+```text
+宝宝，启动 CDUT Studio 后台审核 P06-RECHECK-LIVE-02/L02-U0，只做最新上游兼容差分调查和候选集成基线设计，不是立即重跑 L02-00 或写业务代码。先对比当前 main、feat/review-owned-background-sessions、Nya-Angle/CDUT-Studio 上游冻结 SHA，阅读 49、48、47、46、29、27、30 号文档和真实 CI。
+本批重点：Office engine 的 v2 双态索引、文件版本/SourceRef 兼容，通用 Kernel Document Engine 与严格 review 五工具权限差异；新的只读侧栏文件预览与普通/内部 owner 事件隔离，Pi prompt、文档上下文/压缩恢复及案卷证据链。逐项列变更文件/API、需淘汰的旧 Preview Tab/officeparser 断言、已有实测在哪个 SHA 有效，以及定向实机/受控新反例。
+仓库 main 已内容整合原审核分支但不含相同 Git 祖先；PR #21 仍 Draft，禁止在本批盲目 rebase、merge、force push 或写上游。冻结候选 tree/hash，用户批准后才能另行选择更新哪条生产分支。先交付可审计差分矩阵及 L02-U1 的精确测试入口与安全负例，不在没有证据时调模型、放宽权限或重做旧 E05/E03/E04 完整矩阵。29 LIVE-01～08 仍为唯一验收台账，U0/U1 均 PLANNED，P06-S02 NOT ACCEPTED，P05 外部阻断与 P04 不安全 GC 禁令保留，P07/P08 与合并 NO-GO。
+```
+
+
 ## 当前正式下一批：P06-RECHECK-LIVE-02 / L02-00（2026-10-15）
 
 以 [47｜实测驱动方案](47-p06-evidence-driven-followup-plan-20261015.md) 为顺序合同，[27](27-background-review-session-proposal.md)为架构边界，[29](29-background-session-preflight-audit.md)为唯一LIVE台账，[46](46-p06-recheck-live-local-acceptance-20261014.md)为已完成实机证据。历史下方“下一批P06-RECHECK-LIVE-02”是46号完成时的快照，不优先于本节。
