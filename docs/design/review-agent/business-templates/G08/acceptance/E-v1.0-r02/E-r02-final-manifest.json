@@ -1,0 +1,148 @@
+{
+  "schema": "G08-E-v1-r02-final-manifest",
+  "signedAt": "2026-10-15",
+  "auditor": "G08-E-r02",
+  "scope": [
+    "G08-T02",
+    "G08-T03"
+  ],
+  "r01": {
+    "branch": "audit/g08-e-v1-r01",
+    "auditHead": "d5901f1d6ed03454fe1c00201e20d4a373834b75",
+    "draftPR": 29,
+    "e1PreGoldLockCommit": "5a24a0197d4b6d8260097da17be64e18346b511b",
+    "unchanged": true
+  },
+  "r02": {
+    "branch": "audit/g08-e-v1-r02",
+    "base": "main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+    "draftPR": 66,
+    "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/66",
+    "merged": false
+  },
+  "originalInputVersionPointer": "r01 acceptance/E-v1.0/E0-input-manifest.json (12 unchanged, 12/12 rehashed)",
+  "newInputVersionPointer": "E0-delta-manifest.json (six new archive bytes/SHA)",
+  "newAuthorGitBranches": [
+    {
+      "scope": "D/T02 public remediation only",
+      "branch": "docs/g08-t02-d-e-r01-targeted-fix-20261015",
+      "commit": "1c90df1af4c8f883201128127eabb1fe972062b5",
+      "draftPR": 64
+    },
+    {
+      "scope": "D/T03 actual author ZIPs",
+      "commit": "NOT_AVAILABLE; immutable source tracked by actual ZIP SHA256 in user Library"
+    }
+  ],
+  "newEvidence": {
+    "newPublicInputCases": 42,
+    "newPublicInputMembers": 220,
+    "publicCRCPassed": true,
+    "T03CoverageCountSelfCheck": "52/52 rows positive after 8 new; 28 added cases; not source-duty correctness",
+    "newPrivateGoldContentOpened": false,
+    "orgACL": "NOT_VERIFIED",
+    "oldGoldEdited": false
+  },
+  "issues": {
+    "r01P1Remaining": 4,
+    "newP1": 1,
+    "totalP1Open": 5,
+    "blockedSource": 2,
+    "blockedInput": 2,
+    "totalOpen": 9,
+    "closedByIndependentE": 0,
+    "p0Confirmed": 0
+  },
+  "r02Verdict": {
+    "overall": "NEEDS_REWORK",
+    "E0": "DELTA_INPUTS_HASHED_WITH_ACL_BLOCK",
+    "E1": "R01_FACT_LOCK_INHERITED_NEW_CROSSCHECK_NOT_BLIND",
+    "E2": "PUBLIC_CASE_STRUCTURE_ONLY_PRIVATE_GOLD_BLOCKED",
+    "E3": "R01_PARTIAL_INHERITED",
+    "E4": "NINE_TICKETS_OPEN",
+    "T02": {
+      "sourceValidity": "PARTIAL/BLOCKED_SOURCE",
+      "templateFidelity": "PARTIAL",
+      "goldValidity": "PARTIAL",
+      "crossTemplate": "PARTIAL",
+      "provenanceIntegrity": "BLOCKED_INPUT"
+    },
+    "T03": {
+      "sourceValidity": "PARTIAL/BLOCKED_SOURCE",
+      "templateFidelity": "PARTIAL",
+      "goldValidity": "PARTIAL",
+      "crossTemplate": "PARTIAL",
+      "provenanceIntegrity": "PARTIAL/BLOCKED_INPUT"
+    }
+  },
+  "external": {
+    "technicalTemplateRuntime": "NOT_RUN",
+    "onlineModelAccuracy": "NOT_RUN",
+    "productEndToEnd": "NOT_RUN",
+    "administrativeAuthority": "NOT_VERIFIED"
+  },
+  "publicFiles": [
+    {
+      "name": "README.md",
+      "sha256": "1190e831ceacd801e1408470c246153478596220dc05ef8f39923081db132b03",
+      "gitBlobSHA": "53e24f50427bfb30894129fe26d7923250ab67f1",
+      "chars": 1267
+    },
+    {
+      "name": "E0-delta-manifest.json",
+      "sha256": "e07e6dd79a38973b525844d248cfe1306b31fbff5e8e3a3d293cfcb4721f27f1",
+      "gitBlobSHA": "76f2627f3c26d58faa7c8c0dd15ada6179d09dd3",
+      "chars": 4700
+    },
+    {
+      "name": "E1-r02-source-delta.md",
+      "sha256": "b33442abbb7c67dbee160adc872f9abee930dfc218702aadf338ec2a3d20dabd",
+      "gitBlobSHA": "41415e3808c6bc5471a7c550f98ce4625e5ad092",
+      "chars": 1138
+    },
+    {
+      "name": "E2-r02-public-input-audit.md",
+      "sha256": "d198ebdf4374cb414aacad04b7d842162b07e9e2b5e4abc61d8324e8551a69cc",
+      "gitBlobSHA": "dc5a4be4fb1d48af4e0b7b29a822a6af50937e6b",
+      "chars": 1733
+    },
+    {
+      "name": "E3-r02-domain-delta.md",
+      "sha256": "53ad29f0b6c03adcc9c63fd9a5becff7d5a41abddae64e22dff1be121cc9662a",
+      "gitBlobSHA": "886f8a8a2e31a106b4eee7fef2b0c2a8be1853ab",
+      "chars": 619
+    },
+    {
+      "name": "E4-r02-issue-delta.md",
+      "sha256": "306c4769b5da81e4f9d7f568045d642b9c6ba436586085846090735cb23645aa",
+      "gitBlobSHA": "8f78310ccdc936d62560a1fbf13a910261074a8b",
+      "chars": 5178
+    },
+    {
+      "name": "E4-r02-retest-ledger.md",
+      "sha256": "fd6e64a099cf443ef60d0776eee1ea5d67407f7bf071478afaeac5cfe1e931e7",
+      "gitBlobSHA": "66c1df45cf288d53756c13fe67fa9639b901eea0",
+      "chars": 1393
+    },
+    {
+      "name": "E-r02-final-verdict.md",
+      "sha256": "70c3ca4e567b02636ce412536e40229cff4574a42adc25026fd3732e079cc96b",
+      "gitBlobSHA": "06d568a1bacb42efdeac8651650b7bcc38747619",
+      "chars": 5062
+    },
+    {
+      "name": "E-r02-status.json",
+      "sha256": "6a7470bd5dc341aeeed04de45191628328abbaf0c55bae73c79b99daba720bef",
+      "gitBlobSHA": "3e0b09afbb41463a578f8716f2e9392871056c34",
+      "chars": 1847
+    }
+  ],
+  "manifestSelfHash": "intentionally omitted to avoid circular hash; all other audit outputs SHA-256 and Git blob SHA recorded",
+  "privacy": "No private Gold contents, case-to-answer mapping, trusted fixtures or scoring output committed to public Git",
+  "nextSession": [
+    "E4-r02-issue-delta.md",
+    "E4-r02-retest-ledger.md",
+    "E0-delta-manifest.json",
+    "E-r02-final-verdict.md"
+  ]
+}
