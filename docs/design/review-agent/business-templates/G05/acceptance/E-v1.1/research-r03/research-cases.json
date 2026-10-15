@@ -1,0 +1,224 @@
+{
+  "schema": "G05_E_v1p1_research_cases/v1",
+  "source_lock_commit": "b122256cf09e181bf5befe0a88a243af389b48ff",
+  "research_only": true,
+  "case_count": 4,
+  "cases": [
+    {
+      "caseId": "G05-R03-F01",
+      "dutyId": "G05-T06-H-COUNTRY-ELIGIBLE",
+      "category": "F",
+      "stage": "RESEARCH_CROSSCHECK",
+      "sourceLocator": {
+        "url": "https://dice.cdut.edu.cn/info/1030/1101.htm",
+        "section": "第二条（2017-10-08落款；2018-09-01公开）",
+        "temporalScope": "历史条文定义已核；2026当前适用性U"
+      },
+      "applicability": "以成都理工大学或院属单位名义在中国内地举办且假设适用2017国际会议专项定义的申办范围判定",
+      "baseline": "假设有两名与学校/院属单位无聘用或任职关系的与会者分别来自中国、日本，另有来自德国的与会者属于该校聘用的教师。其余会议条件相同。",
+      "changedFact": "仅将德国与会者的身份由'学校聘用教师'改为'不与学校或院属单位存在聘用、任职关系的德国高校访问教授'",
+      "expectedDecision": {
+        "baseline": "在2017专项第二条口径下，仅两个合格的国家/地区来源，不能仅凭这3人的国籍将该会议认定为专项定义下的三国国际会议；仍需按适用的一般或其他规则路由。",
+        "afterChange": "在2017专项第二条口径下，合格国家/地区来源由2增至3，可命中该定义的三国条件；是否具体许可仍取决于其他法定要件和有权审批。",
+        "current2026": "U：须核2017规定效力、更新定义、校方适用解释。不可据此自动批准或拒绝2026真实申请。"
+      },
+      "admissibleAlternatives": [
+        "学校正式现行定义或修订通知改变适用范围，则依有权新版本重新计数",
+        "学校或院属单位正式人员关系已被有权记录纠正",
+        "已满足其他现行校内会议报批路径，不因不适用2017第二条而免一切审批"
+      ],
+      "evidenceAnchors": [
+        {
+          "type": "official",
+          "id": "INTL-2017-ARTICLE-2",
+          "url": "https://dice.cdut.edu.cn/info/1030/1101.htm",
+          "locator": "第二条，括号中的与我校或院属单位无聘用或任职关系"
+        },
+        {
+          "type": "B",
+          "document": "G05-T06_03_候选审核规则与权限边界.md",
+          "locator": "R-04、R-17；未显式编码本校雇佣/任职排除"
+        },
+        {
+          "type": "C",
+          "document": "G05-T06_正式业务模板_MD_v0.1.md",
+          "locator": "BR-04、F-24~F-28、R-04、R-17、R-46；缺可定位的聘用/任职关系计数条件"
+        }
+      ],
+      "failureMode": "三国计数未区分符合定义的外部与会者与受聘/任职人员，可能将源规则适用范围误判；静态字段/规则欠指定。未证实实际系统产生错判。",
+      "confidence": "HIGH_FOR_HISTORICAL_TEXT_AND_STATIC_C_GAP; LOW_FOR_2026_APPLICABILITY",
+      "unresolved": [
+        "2017专项在2026的当前效力及定义是否修订",
+        "‘来自国家/地区’的认定资料与有权学校人员关系台账",
+        "C有没有未归档新版和外部规则引擎补充这一条件"
+      ],
+      "attribution": {
+        "primary": "B",
+        "secondary": [
+          "C",
+          "school-source"
+        ],
+        "impact": "G05-T06 国际会议资格归类及可能相关的其他国际会议分流",
+        "researchFinding": "STATIC_SEMANTIC_GAP",
+        "formalE2": "NOT_RUN"
+      }
+    },
+    {
+      "caseId": "G05-R03-F02",
+      "dutyId": "G05-T06-H-HOSTING-CAPACITY",
+      "category": "F",
+      "stage": "RESEARCH_CROSSCHECK",
+      "sourceLocator": {
+        "url": "https://kjc.cdut.edu.cn/__local/4/8B/F5/215698571B2D5ED2946921CC3A2_D50922B2_32715.pdf",
+        "section": "成理校发〔2025〕1号《成都理工大学会议管理办法（试行）》第五条（三），PDF第4-5页/零起P3-P4",
+        "temporalScope": "2025正式发布文件的文字义务已核；2026有无更替版本待查"
+      },
+      "applicability": "在本校举办的区域性、全国性学术会议之归口审批或备案；学术属性、预算经费等其他条件固定",
+      "baseline": "本校自然科学类、区域性学术会议，预计900名参会者，以一个二级学院名义主办，不涉及会议的其他专项外事批准。",
+      "changedFact": "保持人员、会期、学科等均不变，仅把正式主办单位名义由'二级学院名义'改为'成都理工大学学校名义'",
+      "expectedDecision": {
+        "baseline": "按2025第五条（三），二级单位名义且不足1000人，向科技归口部门备案（另有其他审批义务时仍分别处理）。",
+        "afterChange": "按2025第五条（三），以学校名义主办/承办区域性、全国性学术类会议，科技归口部门应审批；不能因为只有900人便只备案。",
+        "current2026": "2025条文已确证，2026是否另有后续替换需要确认；不得以研究轨代替正式学校办会许可。"
+      },
+      "admissibleAlternatives": [
+        "若该会议并非区域性/全国性学术类会议，需改按实际业务会议类型路由",
+        "学校主管部门有明确生效的授权或修订制度，则按该制度处理",
+        "社科类会议对应社会科学处，且可能另触宣传审批"
+      ],
+      "evidenceAnchors": [
+        {
+          "type": "official",
+          "id": "MEET-2025-A5-3",
+          "url": "https://kjc.cdut.edu.cn/__local/4/8B/F5/215698571B2D5ED2946921CC3A2_D50922B2_32715.pdf",
+          "locator": "PDF零起P3行70~75、P4行76~79；学校名义与二级单位名义分别规定"
+        },
+        {
+          "type": "B",
+          "document": "G05-T06_03_候选审核规则与权限边界.md",
+          "locator": "R-05仅列1000人阈值，未把主办名义作为差异触发事实"
+        },
+        {
+          "type": "C",
+          "document": "G05-T06_正式业务模板_MD_v0.1.md",
+          "locator": "R-05、R-25（规模阈值和学科归口）；没有可定位的学校名义区域/全国会议不论900人都须专业归口审批的独立条件分支"
+        },
+        {
+          "type": "C",
+          "document": "G05-T06_规则追踪矩阵.md",
+          "locator": "R-05、R-25，规模/学科维度有，办会名义改变审批或备案分流欠明确"
+        }
+      ],
+      "failureMode": "若按R-05的999/1000单一阈值推断审批节点，可能把学校名义900人区域性学术会误走二级单位‘备案’路径。C概述中虽出现学校名义，但未形成可核审查分支；静态规则覆盖缺口，不代表运行错批已发生。",
+      "confidence": "HIGH_FOR_2025_POLICY; HIGH_FOR_STATIC_B_C_GAP; UNVERIFIED_FOR_RUNTIME",
+      "unresolved": [
+        "2026现行版本与归口部门流程是否有更新",
+        "已授权规则配置或OA里是否另有主办名义条件",
+        "对同一会议是否触发其他并行审批"
+      ],
+      "attribution": {
+        "primary": "B",
+        "secondary": [
+          "C",
+          "school-source"
+        ],
+        "impact": "G05-T06组织名义/科研学术会议审批-备案分流",
+        "researchFinding": "STATIC_SEMANTIC_GAP",
+        "formalE2": "NOT_RUN"
+      }
+    },
+    {
+      "caseId": "G05-R03-F03",
+      "dutyId": "G05-T05-H-FIELD-VISIT",
+      "category": "F",
+      "stage": "RESEARCH_CROSSCHECK",
+      "sourceLocator": {
+        "url": "https://dice.cdut.edu.cn/info/1020/1103.htm",
+        "section": "第三部分‘工作程序’第1、2项（历史2017/2018）",
+        "temporalScope": "历史条文核实；2026现行效力U"
+      },
+      "applicability": "涉外专家短期来访 vs 专业野外科学考查；只在该旧规适用历史profile内判断",
+      "baseline": "外国高校学者受学院邀请，仅到校内会议室开展一次普通学术讲座。",
+      "changedFact": "保持访客、主办单位、日期不变，仅增加野外专业科学考查及采样日程",
+      "expectedDecision": {
+        "baseline": "按旧规普通短期学术访问路径；不因无野外科考批件而判不得进行普通讲座。",
+        "afterChange": "野外科考子项触发专项提前申报、学校及上级批准；一般访问备案不能自动放行野外采样。",
+        "current2026": "具体机构和3个月时限需核2026有效文件；无对应权威批准不能将专业风险事项直接放行。"
+      },
+      "admissibleAlternatives": [
+        "仅在校园草地讲解、不进行专业野外调查或采样，需先有权定性",
+        "专业活动取消但讲座保留，应分项记录，不株连已批准的非涉外野外事项"
+      ],
+      "evidenceAnchors": [
+        {
+          "type": "official",
+          "url": "https://dice.cdut.edu.cn/info/1020/1103.htm",
+          "locator": "第三部分第1、2项"
+        },
+        {
+          "type": "C",
+          "document": "G05-T05_正式业务模板_MD_v0.1.md",
+          "locator": "R-21、R-22、§13明确野外子项和2026未知"
+        }
+      ],
+      "failureMode": "反证被排除：未找到C漏掉野外专项路径的证据；反而静态规则包含并行的专项审批，仍未验证运行。",
+      "confidence": "HIGH_FOR_OLD_RULE_AND_STATIC_C; CURRENT_U",
+      "unresolved": [
+        "2026旧规效力、现行机关及真实系统批件权限"
+      ],
+      "attribution": {
+        "primary": "none",
+        "secondary": [],
+        "impact": "G05-T05 已写入明确独立路径",
+        "researchFinding": "HYPOTHESIS_EXCLUDED",
+        "formalE2": "NOT_RUN"
+      }
+    },
+    {
+      "caseId": "G05-R03-F04",
+      "dutyId": "G05-T06-H-SEQUENTIAL-APPROVAL",
+      "category": "F",
+      "stage": "RESEARCH_CROSSCHECK",
+      "sourceLocator": {
+        "url": "https://kjc.cdut.edu.cn/__local/4/8B/F5/215698571B2D5ED2946921CC3A2_D50922B2_32715.pdf",
+        "section": "第五条（三），PDF零起P3",
+        "temporalScope": "2025校级正式文本"
+      },
+      "applicability": "拟主办国际会议，在校内正式审批阶段已由国际处审核/备案但尚待分管外事校领导审批",
+      "baseline": "国际交流与合作处已有正式审核备案记录，分管外事校领导的真实审批尚未形成。",
+      "changedFact": "仅增加可核验、有效且覆盖该申请的分管外事校领导审批记录",
+      "expectedDecision": {
+        "baseline": "国际处的前段审查不能代表校领导已批准，后段节点仍待有权审批。",
+        "afterChange": "校内两节点符合条文先后要求，但若依法仍需上级批件，不能据此擅自宣称整体可举办。"
+      },
+      "admissibleAlternatives": [
+        "校领导明确否决则保留有权拒批",
+        "当前确有上级许可条件时，应单独核对真实上级批文"
+      ],
+      "evidenceAnchors": [
+        {
+          "type": "official",
+          "url": "https://kjc.cdut.edu.cn/__local/4/8B/F5/215698571B2D5ED2946921CC3A2_D50922B2_32715.pdf",
+          "locator": "第五条（三）国际处审核、备案后，再报校领导审批"
+        },
+        {
+          "type": "C",
+          "document": "G05-T06_正式业务模板_MD_v0.1.md",
+          "locator": "R-27及R-28把两种权限拆开"
+        }
+      ],
+      "failureMode": "反证被排除：静态C没有把国际处备案等同学校正式批准，反而正确拆分了审批事件。",
+      "confidence": "HIGH_FOR_2025_RULE_AND_STATIC_C; NOT_RUN",
+      "unresolved": [
+        "当前校内OA可核授权和2026最终版本"
+      ],
+      "attribution": {
+        "primary": "none",
+        "secondary": [],
+        "impact": "G05-T06已有程序顺序建模",
+        "researchFinding": "HYPOTHESIS_EXCLUDED",
+        "formalE2": "NOT_RUN"
+      }
+    }
+  ]
+}
