@@ -23,7 +23,7 @@
 | G07-T06 | 主办会议与培训经费结算 | [author/g07-t06-c-r01-e0-input-recovery](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/tree/author%2Fg07-t06-c-r01-e0-input-recovery) @ `0fbd811f9f` | `c3be13c801a56300e71e2a468632d263f8fa2de8` | D证据@ `9ead5d8034` | 输入ZIP独立hash/CRC相符 | ACL未核 |
 | G07-T07 | 项目借款与事后冲账 | [author/g07-t07-c-e0-input-recovery-20261014](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/tree/author%2Fg07-t07-c-e0-input-recovery-20261014) @ `41b88bab6f` | `f6d9c8c2820b165b6010fecddc1dde5a478a9ac2` | D证据@ `5c43a7058c` | D仍为作者单方报告 | ACL未核 |
 
-- **C**：七份 `正式业务模板_MD_v0.1.md` 均已经在各自分支上定位，并从 Git contents API 获取不可变 Git blob SHA。业务正文仍未阅读。七份“SHA256”来自作者源 manifest，本 E 独立核验的是 *Git blob 路径存在和 blob SHA*，**未把作者所报 SHA256 伪称本 E 已独立重算**。旧 r01 没有同一 C 文件已冻结 SHA，无法计算真正的“旧C→新C”语义 diff；本轮实质是 **E0 再现性恢复，不是 C 规则整改已合格**。
+- **C**：七份 `正式业务模板_MD_v0.1.md` 均已经在各自分支上定位，并从 Git contents API 获取不可变 Git blob SHA。业务正文仍未阅读。七份母版的 SHA-256 与作者源 manifest **已经由本 E 通过纯字节哈希复算，7/7 精确一致**，且各自的 Git blob 也独立核对；本操作仅进行机器哈希，未分析 C 规则正文。旧 r01 没有同一 C 文件已冻结 SHA，无法计算真正的“旧C→新C”语义 diff；本轮实质是 **E0 再现性恢复，不是 C 规则整改已合格**。
 - **D**：全部七套有公开补证提交；均写明原作者 D Git SHA `NOT_AVAILABLE` 或同义。外层 `EVALUATION_ONLY.zip` 作者 SHA 放在 `E0-r02-delta-manifest.json`，本 E 仅作 **AUTHOR_REPORTED**，绝不打开 Gold。
 - **本 E 实测**：T02 INPUT `9d51bd46…`、T03 INPUT `ab00deb7…`、T04 INPUT `2b4e2a4e…`、T06 INPUT `1baecde6…`，均逐字节 SHA-256 与 D 作者公开 manifest 相符，CRC PASS，ZIP 条目数分别 **433 / 218 / 329 / 206**；对文件路径做 traversal 与敏感名称初筛均零触发。仅是包级检查，**没有逐案结论、Gold 检验、OCR 或模型运行**。
 - T02 B v0.2 ZIP `e0e75f79d3eb307123b2ddcfb29fc643d1a882ae8215802ca0e9c1d966a86956` 由本 E 独立算出，CRC PASS、11条成员。
