@@ -1,0 +1,69 @@
+{
+  "schema": "cdut-studio/g02-e-r02/e1-evidence-lock-v1",
+  "dateChecked": "2026-10-15",
+  "upstreamAudit": {
+    "r01Commit": "49a14db3abb53e2ba6164af15537c4537b8f15fc",
+    "r01ManifestBlob": "dde5a348badb0fa00578bb1f4c606c45d54adb3c",
+    "r01ArchiveCount": 20,
+    "archiveHashesIndependentlyRecomputedInR02": false
+  },
+  "r02InitialCommit": "49a14db3abb53e2ba6164af15537c4537b8f15fc",
+  "e1Materials": [
+    {
+      "path": "docs/design/review-agent/business-templates/G02/acceptance/E-v1.0/r02/E0-r02-delta-and-isolation.md",
+      "gitBlobSha": "1af6d2216f26c445ac029e90a43fb5b2b6f54c72"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G02/acceptance/E-v1.0/r02/E1-official-fact-register.md",
+      "gitBlobSha": "e7b49db912cc6ae7912d7ebdac4b509a1b2d537a"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G02/acceptance/E-v1.0/r02/E1-adversarial-hypotheses.md",
+      "gitBlobSha": "3a88ffa9c1364cb1d29de4faca9af0c79262e417"
+    }
+  ],
+  "count": {
+    "highRiskSourceChecksRecorded": 23,
+    "completeHighRiskDenominatorVerified": false,
+    "adversarialChallengesRecorded": 17,
+    "mediumLowSamplingDenominatorVerified": false
+  },
+  "blinding": {
+    "openedFullCMotherFile": false,
+    "openedDGold": false,
+    "readDExpectedAnswers": false,
+    "accidentalCSearchSnippets": true,
+    "affected": [
+      "G02-T01",
+      "G02-T03"
+    ],
+    "independentE1SignatureAllowed": false,
+    "reason": "Library semantic search surfaced short excerpts of C authored material before E1 independent lock"
+  },
+  "e1Status": "SOURCE_PRECHECK_FROZEN_NON_SIGNABLE",
+  "goldAcl": "ACL_UNVERIFIED",
+  "t02PriorAclEvidence": "private_acl_storage_configured=false (r01)",
+  "e2Admission": {
+    "T01": false,
+    "T02": false,
+    "T03": false
+  },
+  "release": "NO_PASS",
+  "technicalRuntime": "NOT_RUN",
+  "e3": "NOT_RUN",
+  "e4": "NOT_RUN",
+  "recordsImmutableByPolicy": "Any amendment must be a new lock with old and new Git blob references; do not silently replace E1 artifacts.",
+  "officialSourceRefs": [
+    "https://wxc.cdut.edu.cn/__local/4/16/0D/B676B386C2C23526DE6611153D0_6D51DC3A_81133.pdf",
+    "https://wxc.cdut.edu.cn/info/1010/1282.htm",
+    "https://wxc.cdut.edu.cn/info/1006/3954.htm",
+    "https://wxc.cdut.edu.cn/info/1012/1169.htm",
+    "https://wxc.cdut.edu.cn/info/1006/1030.htm",
+    "https://wxc.cdut.edu.cn/info/1012/3873.htm",
+    "https://wxc.cdut.edu.cn/__local/9/8F/4D/EDCE5568A88F519606DEA2F2537_C718DC5C_C843B.pdf",
+    "https://wxc.cdut.edu.cn/info/1012/1161.htm",
+    "https://www.cac.gov.cn/2021-08/20/c_1631050028355286.htm",
+    "https://www.cac.gov.cn/2021-06/11/c_1624994566919140.htm",
+    "https://wxc.cdut.edu.cn/bmgk/bmjs.htm"
+  ]
+}
