@@ -1,0 +1,84 @@
+{
+  "schema_version": "G07-T02-D-E0-r02-public-1",
+  "generated_at": "2026-10-15",
+  "template_id": "G07-T02",
+  "template_name": "因公与学术交流差旅费用核销预审",
+  "purpose": "D original asset hashes and E0 recovery evidence only; does not contain Gold predictions",
+  "audit_original_branch": "audit/g07-e-v1-r01",
+  "audit_original_head": "ccbf9bd6b16c9472bb35b03cd8b676d87c6cd6ab",
+  "audit_original_decision": "BLOCKED_INPUT",
+  "d_original_author_commit": "NOT_AVAILABLE",
+  "current_git_commit_scope": "PUBLIC_METADATA_RECOVERY_ONLY",
+  "original_assets": [
+    {
+      "filename": "G07-T02_INPUT_ONLY.zip",
+      "sha256": "9d51bd46d5ebdd0b0d130df7aca4373baa6109fd2a71a9907134e02b92e84873",
+      "bytes": 15116245,
+      "storage": "conversation_attachment_not_git_fixed",
+      "changed": false
+    },
+    {
+      "filename": "G07-T02_EVALUATION_ONLY.zip",
+      "sha256": "0cd84b95b0f642b8bc2c6cec0205c9f3dbd7774acddf67b2ffc13ec3d751e495",
+      "bytes": 16430,
+      "storage": "conversation_attachment_acl_unverified_do_not_publish",
+      "changed": false
+    },
+    {
+      "filename": "G07-T02_D_REPORTS.zip",
+      "sha256": "b137c2f6f484654359ac0141471f2dc79fda100ceefc6fbd06af40bb871a75c4",
+      "bytes": 12378,
+      "storage": "conversation_attachment_not_git_fixed",
+      "changed": false
+    },
+    {
+      "filename": "G07-T02_D0-D4_验收摘要.md",
+      "sha256": "1e7be897470a9e278605bf41850aa9aeaf1edbb6af1f8ac9a71d8a1961a0a24c",
+      "bytes": 2188,
+      "storage": "conversation_attachment_not_git_fixed",
+      "changed": false
+    }
+  ],
+  "gold": {
+    "sealed_zip_not_in_public_git": true,
+    "version": "FROZEN_GOLD_v1",
+    "sha256": "754c9eb738beda5e0561edfaca3c516fdfe3ae92d15dc33e3d107660196f9591",
+    "historical_freeze_record": "AUTHOR_SELF_REPORT_ONLY",
+    "acl": "ACL_UNVERIFIED"
+  },
+  "verified_input_counts": {
+    "cases": 37,
+    "files": 433,
+    "pdfs": 202,
+    "pages": 241,
+    "text_layer_pages": 0,
+    "case_file_sha256_verified": true
+  },
+  "source_frozen_local_sha_match": true,
+  "source_baseline_local_files": 5,
+  "source_external_urls_without_stable_snapshot": 4,
+  "source_missing_sections": [
+    "A T02 standalone card",
+    "B 00",
+    "B 01",
+    "B 04",
+    "B 05"
+  ],
+  "source_status": "SOURCE_PENDING",
+  "D0": "PARTIAL",
+  "D1": "PASS_OFFLINE_ORIGINAL",
+  "D2": "PASS_OFFLINE_ORIGINAL",
+  "D3": "PASS_OFFLINE_RECHECKED",
+  "D4": "PASS_OFFLINE_RECHECKED",
+  "E_r01": "BLOCKED_INPUT_UNCHANGED",
+  "E_r02": "NOT_RUN",
+  "E1": "NOT_RUN",
+  "E2": "NOT_RUN",
+  "E3": "NOT_RUN",
+  "E4": "NOT_RUN",
+  "C_rules_read": false,
+  "product_runtime_run": false,
+  "trusted_ledger_in_public_repo": false,
+  "case_gold_in_public_repo": false,
+  "required_storage_admin_action": "Create independent restricted storage, upload original sealed Evaluation ZIP, record object ID/version/sha256 and tested allow/deny ACL before E Gold access"
+}
