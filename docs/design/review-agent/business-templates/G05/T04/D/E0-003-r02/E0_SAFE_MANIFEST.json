@@ -1,0 +1,47 @@
+{
+  "version": "G05-T04_E0_SAFE_MANIFEST_r02",
+  "assets": [
+    {
+      "version": "A_v0.1",
+      "path": "G05_A_领域总调研_v0.1_交接包.zip",
+      "sha256": "a7c749c1702c573fc1459344d5885a5928393a629d170ffe384b2f25e37bbf42",
+      "accessibility": "AUTHOR_SESSION_VERIFIED; GIT_AUTHOR_COMMIT_NOT_AVAILABLE"
+    },
+    {
+      "version": "B_v0.2",
+      "path": "G05-T04_B阶段深度调研_v0.2_校本补查完整包.zip",
+      "sha256": "a41864f3cb187544185ce658371374d4dbe2c15f3c4f3c97da70164b1a6b4172",
+      "accessibility": "AUTHOR_SESSION_VERIFIED; GIT_AUTHOR_COMMIT_NOT_AVAILABLE"
+    },
+    {
+      "version": "D_INPUT_v2.1",
+      "path": "G05-T04_INPUT_ONLY.zip",
+      "sha256": "b2f0dbc3daf9de573fe24ba71e51d4fec274b5d5bab40f26f22427a24c8cd5e1",
+      "accessibility": "AUTHOR_SESSION_VERIFIED; PUBLIC_ELIGIBLE_NOT_ARCHIVED"
+    },
+    {
+      "version": "D_EVALUATION_v2.1",
+      "path": "G05-T04_EVALUATION_ONLY.zip",
+      "sha256": "e9fa8f75e714fb6d946a19bd0fde247e583e1cac8ac1456ec40be8d97a9388ff",
+      "accessibility": "AUTHOR_SESSION_VERIFIED; RESTRICTED_STORAGE_ACL_NOT_CONFIGURED"
+    },
+    {
+      "version": "FROZEN_GOLD_v1",
+      "path": "G05-T04_EVALUATION_ONLY.zip::gold/FROZEN_GOLD_v1.json",
+      "sha256": "5745b8635d743754751a3c9e07d83116f941e10209614b4921a82a454dee51f9",
+      "accessibility": "INSIDE_RESTRICTED_EVALUATION; ACL_NOT_CONFIGURED"
+    },
+    {
+      "version": "D_REPORTS_v2.1_LEGACY",
+      "path": "G05-T04_D_REPORTS.zip",
+      "sha256": "3362b39eae786807dedf859381e23fc6876105a268f3025498de49fa9da58574",
+      "accessibility": "LEGACY_EXPOSED_METADATA; QUARANTINE_FOR_E0_E1"
+    },
+    {
+      "version": "D_LEGACY_MANIFEST_v2.1",
+      "path": "G05-T04_D_REPORTS.zip::frozen_manifest.json",
+      "sha256": "b93043f4da166a4946a105f8af0e60f63776502634c1ab5ba7b9a48de7a7e11a",
+      "accessibility": "LEGACY_EXPOSED_METADATA; QUARANTINE_FOR_E0_E1"
+    }
+  ]
+}
