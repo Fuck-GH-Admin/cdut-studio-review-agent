@@ -1,0 +1,343 @@
+{
+  "schema": "G07-E-v1.0-r02-delta-v1",
+  "recordDate": "2026-10-15",
+  "researchDomain": "G07 经费与项目执行",
+  "auditBranch": "audit/g07-e-v1-r02",
+  "r01": {
+    "branch": "audit/g07-e-v1-r01",
+    "head": "ccbf9bd6b16c9472bb35b03cd8b676d87c6cd6ab",
+    "draftPR": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/26",
+    "decision": "E0_BLOCKED_INPUT",
+    "E1": "NOT_STARTED",
+    "E2": "NOT_STARTED",
+    "E3": "NOT_STARTED",
+    "E4": "NOT_STARTED",
+    "files": [
+      "README.md",
+      "E0-input-manifest.json",
+      "E0-coverage-and-isolation.md",
+      "E0-decision.md"
+    ],
+    "identity": "E AUDIT COMMIT ONLY"
+  },
+  "repoBase": {
+    "branch": "main",
+    "head": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+    "stillSame": true
+  },
+  "method": {
+    "blind": "C BUSINESS CONTENT AND D GOLD ANSWERS NOT READ",
+    "C": "Only Git paths/blob IDs and automatic byte-level SHA256 for each C mother; C rule content never semantically inspected or used for business judgment",
+    "D": "Public metadata and E0 author statements read; EVALUATION_ONLY/PRIVATE/CONTROLLED assets NOT OPENED",
+    "src": "No E1 independent primary-source validity ruling",
+    "independentGoldAccess": "NOT_AUTHORIZED_OR_ATTESTED"
+  },
+  "inheritedVerified": {
+    "A目录": "G07_02_统一模板目录与边界.md",
+    "Asha256": "64a771d60e7ea68a040c4d7fd551c246bf3cd123e0ca60a8f7d9d4ea245ee4c4",
+    "Bfiles": [
+      {
+        "template": "G07-T04",
+        "sha256": "2477c5656f58af0d0406772e60b24d29b7886f96c52c7ee24b6e936a9a20d5c8"
+      },
+      {
+        "template": "G07-T05",
+        "sha256": "f261ff47209b082cfbed49ae0b8cab5fdde968e4f50298f77c9c2a466a6daca9"
+      },
+      {
+        "template": "G07-T07",
+        "sha256": "3971dc75decc13617f959bdcdcd65ff350dfcee89091ba60a8d2fdcb6c5f1655"
+      }
+    ]
+  },
+  "newFixedSource": {
+    "A来源索引": {
+      "sha256Claim": "17583564d18b1561b05ce6fd9104df86e132b6d34047ca78f85d1af75f8b3245",
+      "gitBlob": "438f109db118af95e8f77c7f36d6b7ecc8478dbd",
+      "availableCopies": [
+        "C-T01 author branch",
+        "C-T02 author branch",
+        "C-T05 author branch"
+      ],
+      "r01HadAuthorGitCommit": false
+    },
+    "B_T02_v0_2_zip": {
+      "sha256": "e0e75f79d3eb307123b2ddcfb29fc643d1a882ae8215802ca0e9c1d966a86956",
+      "EindependentCheck": "SHA256_AND_ZIP_CRC_PASS",
+      "members": 11,
+      "originalBAuthorCommit": "NOT_AVAILABLE"
+    }
+  },
+  "newCRecovered": [
+    {
+      "id": "G07-T01",
+      "branch": "author/g07-t01-c-e0-recovery-r01",
+      "head": "0fff12c5b5330b72566d33d81283da603f687793",
+      "path": "docs/design/review-agent/business-templates/G07/C/G07-T01/originals/G07-T01_正式业务模板_MD_v0.1.md",
+      "blob": "8a998496a49fff82fbb57bd8894c2f7bf646ec6f",
+      "sha256": "392e63fd9d7e7da3926325682db65007daff44cc04e736791b1cabf065efdf2d",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
+      "originalCAuthorCommit": "NOT_AVAILABLE",
+      "r01PriorCsha256": null,
+      "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
+    },
+    {
+      "id": "G07-T02",
+      "branch": "restore/g07-t02-c-e0-r01",
+      "head": "1564a20fb99c5ff13fd78ce3162d0ac93005e65c",
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md",
+      "blob": "46c48f80df90e99274986633ae29d7d407ed84b9",
+      "sha256": "543f73ead9bb77e86d951e2ef29dbdf3832aea5270bba91fede45c046e5ef556",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
+      "originalCAuthorCommit": "NOT_AVAILABLE",
+      "r01PriorCsha256": null,
+      "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
+    },
+    {
+      "id": "G07-T03",
+      "branch": "fix/g07-t03-c-e0-r02-handoff",
+      "head": "e9f4db82176e235b87808787ddf12bd0806fa5ca",
+      "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/G07-T03_正式业务模板_MD_v0.1.md",
+      "blob": "734f9fdeb16ee25c8b4e5b339b02a2af9baf1aee",
+      "sha256": "fec6ee135ad9b5f644dfe8415440e34f633e851c690deba678a2097f2fc98d98",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
+      "originalCAuthorCommit": "NOT_AVAILABLE",
+      "r01PriorCsha256": null,
+      "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
+    },
+    {
+      "id": "G07-T04",
+      "branch": "handoff/g07-t04-c-e0-r02",
+      "head": "4f914de38ec971d119fbeef20f44d82939aa70de",
+      "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v0.1-original/G07-T04_正式业务模板_MD_v0.1.md",
+      "blob": "9a629e8c6e6e9bf4c348fe413c32b564e50f580d",
+      "sha256": "009a13599a34a5a78407a953d19810637636ee2f4dd4821d12cb9a44bad54bb5",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
+      "originalCAuthorCommit": "NOT_AVAILABLE",
+      "r01PriorCsha256": null,
+      "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
+    },
+    {
+      "id": "G07-T05",
+      "branch": "author/g07-t05-e0-r02-input-recovery",
+      "head": "780cd209cecd6b90cd568997530b47ddde32aa2a",
+      "path": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/original_v0.1/G07-T05_正式业务模板_MD_v0.1.md",
+      "blob": "6a7ef0cdd10ecaa7e851d6dc43a728a669484106",
+      "sha256": "1be277aa5387b2995a5d7a606885706848bc7fb68426efce1c4ea61a695e7abf",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
+      "originalCAuthorCommit": "NOT_AVAILABLE",
+      "r01PriorCsha256": null,
+      "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
+    },
+    {
+      "id": "G07-T06",
+      "branch": "author/g07-t06-c-r01-e0-input-recovery",
+      "head": "0fbd811f9f6e8170c37b381e1b127ceab8fda348",
+      "path": "docs/design/review-agent/business-templates/G07/C/G07-T06/G07-T06_正式业务模板_MD_v0.1.md",
+      "blob": "c3be13c801a56300e71e2a468632d263f8fa2de8",
+      "sha256": "59f0e1cc0ef4232d8a3f5c8c8c6a6cb1413695c0ff8bed94fd8539d35bd95c13",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
+      "originalCAuthorCommit": "NOT_AVAILABLE",
+      "r01PriorCsha256": null,
+      "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
+    },
+    {
+      "id": "G07-T07",
+      "branch": "author/g07-t07-c-e0-input-recovery-20261014",
+      "head": "41b88bab6f84363e1d111f8c464cbe37cffddbcd",
+      "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/G07-T07_正式业务模板_MD_v0.1.md",
+      "blob": "f6d9c8c2820b165b6010fecddc1dde5a478a9ac2",
+      "sha256": "cafc5406ec97a6a282cae2e297ce6727567db37c4b1b7e7ca24ab2f32701586e",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
+      "originalCAuthorCommit": "NOT_AVAILABLE",
+      "r01PriorCsha256": null,
+      "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
+    }
+  ],
+  "newDRecovered": [
+    {
+      "id": "G07-T01",
+      "branch": "author/g07-t01-d-e0-r02-evidence",
+      "head": "d5ebbf133b74a2e1c7ff6977c42f7e4f34c22b89",
+      "inputSha": "d3194bd24fa5b8902ba04d395a400b2d3d1d54eaff86986a70b5baf1c26284cf",
+      "evaluationSha": "bc1f91c0d4789952d5178d2bea51573b6801378393b6d8748aa00007c81188e4",
+      "EindependentInputCheck": "NOT_AVAILABLE_IN_E_LIBRARY",
+      "acl": "UNVERIFIED",
+      "evaluationShaStatus": "AUTHOR_REPORTED_NOT_E_INDEPENDENTLY_VERIFIED",
+      "originalDAuthorCommit": "NOT_AVAILABLE",
+      "originalGoldFreezeTime": "AUTHOR_ONLY_NOT_EXTERNAL_ATTESTATION",
+      "r01PriorDsha256": null,
+      "GoldContentRead": false
+    },
+    {
+      "id": "G07-T02",
+      "branch": "author/g07-t02-d-e0-evidence-r02-20261015",
+      "head": "75172204f0c13167108c3359e41ea488af51f281",
+      "inputSha": "9d51bd46d5ebdd0b0d130df7aca4373baa6109fd2a71a9907134e02b92e84873",
+      "evaluationSha": "0cd84b95b0f642b8bc2c6cec0205c9f3dbd7774acddf67b2ffc13ec3d751e495",
+      "EindependentInputCheck": "SHA256_AND_ZIP_CRC_PASS",
+      "entries": 433,
+      "acl": "UNVERIFIED",
+      "evaluationShaStatus": "AUTHOR_REPORTED_NOT_E_INDEPENDENTLY_VERIFIED",
+      "originalDAuthorCommit": "NOT_AVAILABLE",
+      "originalGoldFreezeTime": "AUTHOR_ONLY_NOT_EXTERNAL_ATTESTATION",
+      "r01PriorDsha256": null,
+      "GoldContentRead": false
+    },
+    {
+      "id": "G07-T03",
+      "branch": "author/g07-t03-d-e0-r02-evidence-recovery",
+      "head": "6423f658c4b3b7c94962550a8b552db4b2119661",
+      "inputSha": "ab00deb7ab6f01e22fdb383ac6cb4f9ca937677d6534c022f19d521b97f8e14a",
+      "evaluationSha": "e0c87f5de33929be90992682eb19ef80df71876a203efaacab98d4bceaaa110e",
+      "EindependentInputCheck": "SHA256_AND_ZIP_CRC_PASS",
+      "entries": 218,
+      "acl": "UNVERIFIED",
+      "warning": "R02-derived Gold digest is not the original D1 freeze",
+      "evaluationShaStatus": "AUTHOR_REPORTED_NOT_E_INDEPENDENTLY_VERIFIED",
+      "originalDAuthorCommit": "NOT_AVAILABLE",
+      "originalGoldFreezeTime": "AUTHOR_ONLY_NOT_EXTERNAL_ATTESTATION",
+      "r01PriorDsha256": null,
+      "GoldContentRead": false
+    },
+    {
+      "id": "G07-T04",
+      "branch": "evidence/g07-t04-d21-e0-r02-20261015",
+      "head": "759c8f0aa088ae66b885405695b598fd43bd3f8b",
+      "inputSha": "2b4e2a4e9d46358263104b451f753b38ba63be72e6df108a491c1d1bf4fe0a8f",
+      "evaluationSha": "75e2f5a0203ef9b2df14e4f86611ee0cbee1fa7830d692ba0b6d29113dce36a1",
+      "EindependentInputCheck": "SHA256_AND_ZIP_CRC_PASS",
+      "entries": 329,
+      "acl": "UNVERIFIED",
+      "evaluationShaStatus": "AUTHOR_REPORTED_NOT_E_INDEPENDENTLY_VERIFIED",
+      "originalDAuthorCommit": "NOT_AVAILABLE",
+      "originalGoldFreezeTime": "AUTHOR_ONLY_NOT_EXTERNAL_ATTESTATION",
+      "r01PriorDsha256": null,
+      "GoldContentRead": false
+    },
+    {
+      "id": "G07-T05",
+      "branch": "evidence/g07-t05-d-e0-r02",
+      "head": "7930ec3104902da3c546c15a660931c9cb67c6d5",
+      "inputSha": "dda09b0c8028d6dea6cfdca602cd2ec91badd83c268389fa4c93068cfbce2b9b",
+      "evaluationSha": "8be556e4cb8568b2da3203d632d33f3ba0377fa5508fe4873c484478f1a56486",
+      "EindependentInputCheck": "NOT_AVAILABLE_IN_E_LIBRARY",
+      "acl": "UNVERIFIED",
+      "evaluationShaStatus": "AUTHOR_REPORTED_NOT_E_INDEPENDENTLY_VERIFIED",
+      "originalDAuthorCommit": "NOT_AVAILABLE",
+      "originalGoldFreezeTime": "AUTHOR_ONLY_NOT_EXTERNAL_ATTESTATION",
+      "r01PriorDsha256": null,
+      "GoldContentRead": false
+    },
+    {
+      "id": "G07-T06",
+      "branch": "author/g07-t06-d-e0-r02-evidence",
+      "head": "9ead5d8034ddade1bb72ff55d3370c537e4b77ee",
+      "inputSha": "1baecde6b48202c12642e2589e02435de5a8ca41cafb48cd5283ddd3be9d69f4",
+      "evaluationSha": "c26e8aeb8ff3c1bc8bc35532386c75d38ef9007fceb2784862ee6fe6959e39b7",
+      "EindependentInputCheck": "SHA256_AND_ZIP_CRC_PASS",
+      "entries": 206,
+      "acl": "UNVERIFIED",
+      "warning": "D author reports legacy D_REPORTS discrepancies 21 vs 23 case counts; not independently adjudicated",
+      "evaluationShaStatus": "AUTHOR_REPORTED_NOT_E_INDEPENDENTLY_VERIFIED",
+      "originalDAuthorCommit": "NOT_AVAILABLE",
+      "originalGoldFreezeTime": "AUTHOR_ONLY_NOT_EXTERNAL_ATTESTATION",
+      "r01PriorDsha256": null,
+      "GoldContentRead": false
+    },
+    {
+      "id": "G07-T07",
+      "branch": "evidence/g07-t07-d21-e0-r02-20261015",
+      "head": "5c43a7058cf3b829ee484207017f55caaa230c6e",
+      "inputSha": "52177215fe752f398a05a9370281be7b2935891a7831de8c9af85e0b5b9c99d5",
+      "evaluationSha": "fb5f030cb44afae2e8fdaee45c78e6ad51589462e0919006dd849fb301a9064b",
+      "EindependentInputCheck": "NOT_AVAILABLE_IN_E_LIBRARY",
+      "acl": "UNVERIFIED",
+      "evaluationShaStatus": "AUTHOR_REPORTED_NOT_E_INDEPENDENTLY_VERIFIED",
+      "originalDAuthorCommit": "NOT_AVAILABLE",
+      "originalGoldFreezeTime": "AUTHOR_ONLY_NOT_EXTERNAL_ATTESTATION",
+      "r01PriorDsha256": null,
+      "GoldContentRead": false
+    }
+  ],
+  "archiveValidation": {
+    "inputOnlyZipResults": {
+      "T02": {
+        "hashMatches": true,
+        "crc": true,
+        "namesGoldKeywordHits": 0
+      },
+      "T03": {
+        "hashMatches": true,
+        "crc": true,
+        "namesGoldKeywordHits": 0
+      },
+      "T04": {
+        "hashMatches": true,
+        "crc": true,
+        "namesGoldKeywordHits": 0
+      },
+      "T06": {
+        "hashMatches": true,
+        "crc": true,
+        "namesGoldKeywordHits": 0
+      }
+    },
+    "scope": "Safe zip entry-name/CRC/SHA only; no semantic leak scan, OCR or business validation"
+  },
+  "resolvedAtSubtaskLevel": [
+    "All seven C mother-template Git blob locations now exist on separate author/recovery branches",
+    "G07 A source-index bytes available on archived author branches",
+    "T02 B archive hash independently confirmed",
+    "Four blind INPUT_ONLY zip outer SHA and CRC independently confirmed"
+  ],
+  "stillMissing": [
+    "Complete B independent author-origin evidence and remaining source parts for some TXX",
+    "All seven restricted Gold object IDs and independent allow/deny ACL, access logs, immutable storage evidence",
+    "Independent original D gold-creation chronology and C non-access provenance",
+    "Actual independent SHA and secure access for private evaluation ZIPs",
+    "E1 prior risk register H/M/L complete denominator and official raw-source validity",
+    "Independent C contents/Gold meaning assessment after E1 lock"
+  ],
+  "stages": {
+    "E0": "BLOCKED_INPUT_WITH_VERIFIED_DELTA",
+    "E1": "NOT_STARTED",
+    "E2": "NOT_STARTED",
+    "E3": "NOT_STARTED",
+    "E4": "DEPENDENCY_LEDGER_ONLY"
+  },
+  "dimensions": {
+    "sourceValidity": "BLOCKED_SOURCE",
+    "templateFidelity": "BLOCKED_INPUT",
+    "goldValidity": "BLOCKED_INPUT",
+    "crossTemplate": "PARTIAL",
+    "provenanceIntegrity": "BLOCKED_INPUT",
+    "technicalTemplateRuntime": "NOT_RUN",
+    "onlineModelAccuracy": "NOT_RUN",
+    "administrativeAuthority": "NOT_VERIFIED"
+  },
+  "verdict": "BLOCKED_INPUT",
+  "originProtection": "r01 files and PR unchanged, no author files modified or merged",
+  "privacy": "No Gold, trusted ledgers, expected results or private downloads committed.",
+  "newIndependentCChecks": {
+    "count": 7,
+    "exactSha256Matches": 7,
+    "mismatches": 0,
+    "source": "GitHub fetch_file content hashed programmatically inside isolated tool step; no rule-text output",
+    "scope": "E0 byte-integrity only"
+  }
+}

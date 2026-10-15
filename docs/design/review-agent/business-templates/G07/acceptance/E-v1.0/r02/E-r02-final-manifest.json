@@ -1,0 +1,70 @@
+{
+  "schema": "G07-E-v1.0-r02-public-audit-manifest",
+  "timestampDate": "2026-10-15",
+  "auditor": "G07 independent E r02 continuation",
+  "branch": "audit/g07-e-v1-r02",
+  "r01AuditHead": "ccbf9bd6b16c9472bb35b03cd8b676d87c6cd6ab",
+  "r01PR": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/26",
+  "gitMainBase": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+  "completion": "E0_DELTA_VERIFIED_BUT_BLOCKED_INPUT",
+  "stages": {
+    "E0": "BLOCKED_INPUT",
+    "E1": "NOT_STARTED",
+    "E2": "NOT_STARTED",
+    "E3": "NOT_STARTED",
+    "E4": "DEPENDENCY_LEDGER_ONLY"
+  },
+  "outputs": [
+    {
+      "path": "docs/design/review-agent/business-templates/G07/acceptance/E-v1.0/r02/README.md",
+      "gitBlobSha1": "ee2539eac2f430b6368a0948f1bb5cc56513250d",
+      "sha256": "f06bf9bb8d2f88bc4c3829905684b0bcd0c0b92350828eb200c7ef1c2ea08c45"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/acceptance/E-v1.0/r02/E0-r02-delta-manifest.json",
+      "gitBlobSha1": "3795b268a96bd6e230b52a4dd3f16d84ef466c84",
+      "sha256": "8cdddacbad75b9053ed0d8dcb662030af86da5b3e12a0058b6b816f3e111317b"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/acceptance/E-v1.0/r02/E0-r02-evidence-audit.md",
+      "gitBlobSha1": "575da6a30df874e676afd7686d1ff0287b558a38",
+      "sha256": "07db754e4711f2383377fc2b03b85d546602881ded5bc4e80c5383bf965fd453"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/acceptance/E-v1.0/r02/E0-r02-isolation-and-gate.md",
+      "gitBlobSha1": "ec696be56884c249870f03cc996e02156fb05989",
+      "sha256": "a47e38a21644e734122745ee065f59a67c9c0a5d8202c01f2109fb0db91e3456"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/acceptance/E-v1.0/r02/E4-r02-issue-ledger.md",
+      "gitBlobSha1": "e829283a01a32fc49b780b14f5cbb9878ef313e8",
+      "sha256": "e57bc9ce6d87dc49f445ffc00b7765c9903bfc8021fa2e68841be69731687829"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/acceptance/E-v1.0/r02/E-r02-stage-status-and-verdict.md",
+      "gitBlobSha1": "a0c4510301280870fd367ffb2f33b5e0b1b6137b",
+      "sha256": "ecc7c8b05e8b416f407b638ed9888a269c6d234fe702b9707217dcc4f21a6d71"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/acceptance/E-v1.0/r02/E-r02-handoff.md",
+      "gitBlobSha1": "d758fa97ca07d7f3da4f06733468ea89c2d76107",
+      "sha256": "ce91c03d0f896ae394129152eadc93c51f7ff296ddd772519f65b5f589d02ed7"
+    }
+  ],
+  "referenceToR02Evidence": "E0-r02-delta-manifest.json",
+  "issuesCount": {
+    "inheritedE0DependencyCategories": 3,
+    "r02NewUntriagedObservations": 2,
+    "businessP0": 0,
+    "businessP1": 0,
+    "businessP2": 0
+  },
+  "sourceOfficialIndependentE1": "NOT_RUN",
+  "goldPrivateACL": "UNVERIFIED_SEVEN_OF_SEVEN",
+  "actualBusinessGoldOpened": false,
+  "runtime": "NOT_RUN",
+  "onlineModel": "NOT_RUN",
+  "universityAuthority": "NOT_VERIFIED",
+  "selfSha256": "excluded to avoid self-reference; file fixed by Git blob & final audit HEAD",
+  "privacy": "No case expected answers or restricted gold in this public manifest."
+}
