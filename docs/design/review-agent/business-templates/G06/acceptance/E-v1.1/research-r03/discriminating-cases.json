@@ -49,7 +49,7 @@
     {
       "caseId": "G06-R03-C02",
       "novelty": "NEW_REAL_CONFLICT",
-      "classification": "F+U",
+      "classification": "F",
       "dutyId": "G06-T09-H23 / G06-R03-N02",
       "sourceLocator": {
         "url": "https://kjy.cdut.edu.cn/info/1004/1957.htm",
@@ -87,12 +87,13 @@
         "本校有权更正/解释",
         "专利外部权利状态"
       ],
-      "reviewStatus": "RESEARCH_CROSSCHECK_NO_GOLD"
+      "reviewStatus": "RESEARCH_CROSSCHECK_NO_GOLD",
+      "unresolvedClassification": "U"
     },
     {
       "caseId": "G06-R03-C03",
       "novelty": "REFINED_PREVIOUS_AC02",
-      "classification": "F+U",
+      "classification": "F",
       "dutyId": "G06-T01-H02",
       "sourceLocator": {
         "url": "https://www.cnipa.gov.cn/art/2026/7/30/art_74_207457.html",
@@ -125,7 +126,8 @@
       "unresolved": [
         "2021快速预审校规当前有效性和修订"
       ],
-      "reviewStatus": "STATIC_HYPOTHESIS_REJECTED_FOR_C_V01"
+      "reviewStatus": "STATIC_HYPOTHESIS_REJECTED_FOR_C_V01",
+      "unresolvedClassification": "U"
     },
     {
       "caseId": "G06-R03-C04",
@@ -172,7 +174,7 @@
     {
       "caseId": "G06-R03-C05",
       "novelty": "REFINED_PREVIOUS_AC20",
-      "classification": "F+U",
+      "classification": "F",
       "dutyId": "G06-T08-H20",
       "sourceLocator": {
         "url": "https://www.most.gov.cn/xxgk/xinxifenlei/fdzdgknr/fgzc/gfxwj/gfxwj2023/202310/t20231008_188309.html",
@@ -209,7 +211,8 @@
         "本校具体委员会及授权",
         "本校不同阶段表单未独立核原件"
       ],
-      "reviewStatus": "STATIC_HYPOTHESIS_REJECTED_FOR_C_V01"
+      "reviewStatus": "STATIC_HYPOTHESIS_REJECTED_FOR_C_V01",
+      "unresolvedClassification": "U"
     }
   ]
 }
