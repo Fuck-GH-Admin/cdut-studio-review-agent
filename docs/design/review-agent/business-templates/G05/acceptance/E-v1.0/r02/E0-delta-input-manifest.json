@@ -1,0 +1,228 @@
+{
+  "schema": "G05-E-v1-r02-differential-v1",
+  "date": "2026-10-15",
+  "repo": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "originalAudit": {
+    "branch": "audit/g05-e-v1-r01",
+    "head": "0d5a1f493b2aeadcc6d65503a433e19a052ae539",
+    "baseCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+    "pr": 25,
+    "state": "BLOCKED_INPUT",
+    "e1": "NOT_STARTED",
+    "e2": "NOT_STARTED",
+    "e3": "NOT_STARTED",
+    "e4": "NOT_STARTED"
+  },
+  "r02Audit": {
+    "branch": "audit/g05-e-v1-r02",
+    "baseFromR01": "0d5a1f493b2aeadcc6d65503a433e19a052ae539",
+    "authorArchivesUntouched": true
+  },
+  "originalABMainSha": "NOT_AVAILABLE",
+  "A_standalone_library_byte_hashes": [
+    {
+      "file": "G05_00_领域总论.md",
+      "source": "LIBRARY_VERSION_1",
+      "sha256": "5cfcb43fd9aae9df1e53584481c0619a53b688093214f871c7746bccb8a4a764"
+    },
+    {
+      "file": "G05_06_领域审计与阶段结论.md",
+      "source": "LIBRARY_VERSION_1",
+      "sha256": "e21496789f6d2df4476f771b102f0a90530107dc75ab933456e23957ff204201"
+    }
+  ],
+  "B_standalone_library_byte_hashes": [
+    {
+      "templateId": "G05-T01",
+      "libraryVersion": "1",
+      "filename": "G05-T01_00_独立业务深调研.md",
+      "sha256": "7917f37dd7cadca95947e7afe3b154446bb1300f3ba13fcba7f7fda772f5d7ff",
+      "notEqualFullBAuthorZip": true
+    },
+    {
+      "templateId": "G05-T02",
+      "libraryVersion": "1",
+      "filename": "G05-T02_00_独立业务深调研.md",
+      "sha256": "1fcd9b7ff19f9be20482db8ee7c6ce91b88e2437184bd64d87af4db9bee2a46c",
+      "notEqualFullBAuthorZip": true
+    },
+    {
+      "templateId": "G05-T03",
+      "libraryVersion": "1",
+      "filename": "G05-T03_00_独立业务深调研.md",
+      "sha256": "97a44ab17d901ff872576e4b7f3f3d2b86d0784fe6c015c3e098830185ba0b91",
+      "notEqualFullBAuthorZip": true
+    },
+    {
+      "templateId": "G05-T04",
+      "libraryVersion": "1",
+      "filename": "G05-T04_00_独立业务深调研.md",
+      "sha256": "2f2d4228c6c2649055eaec68b5d0ae918f4c42859879b266cc3086c7b6ca7861",
+      "notEqualFullBAuthorZip": true
+    },
+    {
+      "templateId": "G05-T05",
+      "libraryVersion": "1",
+      "filename": "G05-T05_00_独立业务深调研.md",
+      "sha256": "752ab1c928e75c2f98b6067b4a3d3d5a8dff7414f39cb2e2e1031bf87352bcd1",
+      "notEqualFullBAuthorZip": true
+    },
+    {
+      "templateId": "G05-T06",
+      "libraryVersion": "1",
+      "filename": "G05-T06_00_独立业务深调研.md",
+      "sha256": "e56d41290a0b64c9d5610dc97757dd7fd0fe1a94118018bfa5befe9dd9a2ddbf",
+      "notEqualFullBAuthorZip": true
+    }
+  ],
+  "C_unchanged_library_byte_hashes": [
+    {
+      "templateId": "G05-T01",
+      "filename": "G05-T01_正式业务模板_MD_v0.1.md",
+      "sha256": "e96890784840f542b72e907885945a9488ce18fda4c5058585994dc0a12446bb",
+      "revision": "NO_NEW_C_VERSION_VERIFIED"
+    },
+    {
+      "templateId": "G05-T02",
+      "filename": "G05-T02_正式业务模板_MD_v0.1.md",
+      "sha256": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+      "revision": "NO_NEW_C_VERSION_VERIFIED"
+    },
+    {
+      "templateId": "G05-T03",
+      "filename": "G05-T03_正式业务模板_MD_v0.1.md",
+      "sha256": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+      "revision": "NO_NEW_C_VERSION_VERIFIED"
+    },
+    {
+      "templateId": "G05-T04",
+      "filename": "G05-T04_正式业务模板_MD_v0.1.md",
+      "sha256": "7af449ccd825a514c9e5454c2ce481481323821324bd4765ea462c46811eb54d",
+      "revision": "NO_NEW_C_VERSION_VERIFIED"
+    },
+    {
+      "templateId": "G05-T05",
+      "filename": "G05-T05_正式业务模板_MD_v0.1.md",
+      "sha256": "4459b4a3c34dae26545c12546368156e1c6b5864a155bb0f36987992e36f18e3",
+      "revision": "NO_NEW_C_VERSION_VERIFIED"
+    },
+    {
+      "templateId": "G05-T06",
+      "filename": "G05-T06_正式业务模板_MD_v0.1.md",
+      "sha256": "0775e73d1ce248b735fc963e93583e765d89eb4e810d27b48c1d803f784b7bcb",
+      "revision": "NO_NEW_C_VERSION_VERIFIED"
+    }
+  ],
+  "D_author_new_metadata": [
+    {
+      "id": "T01",
+      "branch": "evidence/g05-t01-d-e0-002-r01",
+      "head": "d1924b40e782051c9e158428e99fce77fc158efc",
+      "pr": 53,
+      "oldD": {
+        "input": "5fe9ba49dc79df027e3dd3dadac61a6f7d3c79547368ea305d1e61b612e43c1d",
+        "evaluation": "d835cf1d0592d161612c7d8d074c33dcc9ddb6e2fe1ace36425985af9eb722bb",
+        "reports": "82aaf90a52e835594ce2e77ed7771112505e9c1cc515bc72df0b24643112c73b"
+      },
+      "detail": "28 Gold；旧字节作者自核；独立性仅自述；私有 object/ACL/第三方读取均无",
+      "originalDAuthorGitCommit": "NOT_AVAILABLE",
+      "oldDHashOrigin": "AUTHOR_RECOMPUTED_UNVERIFIED_BY_E_ACCESS",
+      "newOldZipDiff": "NOT_DEMONSTRATED_CHANGED",
+      "adminAcl": "UNVERIFIED",
+      "evaluationDownloadedByE": false
+    },
+    {
+      "id": "T02",
+      "branch": "audit/g05-t02-d-e0-004-evidence-r01",
+      "head": "ce26784a654276ead0523444972b3095b2800fdc",
+      "pr": 52,
+      "oldD": {
+        "input": "08e3fc3c36248f314aac451c1e23bdb268c60166d6c10a6f268a478ddf94dfc7",
+        "evaluation": "a5c4af6868cc7fe63c39ead6f2dac4c6d5a425830fe4284ffbe08e4e8d510ad6",
+        "reports": "026dd84ad3504c0e23b3b10e2a10761aa205ed14f1113de689d48a9f92bed732"
+      },
+      "detail": "18案42项，旧D先接触C规则；原作者明确限定旧Gold独立性；新D/ACL未提供",
+      "originalDAuthorGitCommit": "NOT_AVAILABLE",
+      "oldDHashOrigin": "AUTHOR_RECOMPUTED_UNVERIFIED_BY_E_ACCESS",
+      "newOldZipDiff": "NOT_DEMONSTRATED_CHANGED",
+      "adminAcl": "UNVERIFIED",
+      "evaluationDownloadedByE": false
+    },
+    {
+      "id": "T03",
+      "branch": "evidence/g05-t03-d-e0-002-20261015",
+      "head": "8fa04da417c8e646f583e756d00eac78d3b0cde3",
+      "pr": 55,
+      "oldD": {
+        "input": "0345691064a0f0487dead197fe73d8035e05b0b091813cb326decce0b92c2f08",
+        "evaluation": "5f7fbdc3411d258f157a72c1345e5e50bbf3d06d929cf92b46b00671f09677b7",
+        "reports": "a0a4d6159cdca31267a43d366e5add424165fcfbf991ec9a55601d3c96025535"
+      },
+      "detail": "28 Gold，C先于D在同会话制作，非严格独立；原ZIP作者自核，ACL未配置",
+      "originalDAuthorGitCommit": "NOT_AVAILABLE",
+      "oldDHashOrigin": "AUTHOR_RECOMPUTED_UNVERIFIED_BY_E_ACCESS",
+      "newOldZipDiff": "NOT_DEMONSTRATED_CHANGED",
+      "adminAcl": "UNVERIFIED",
+      "evaluationDownloadedByE": false
+    },
+    {
+      "id": "T04",
+      "branch": "fix/g05-t04-d-e0safe-r02",
+      "head": "4be7e095f0a5c8f1bc84f1426b3c3bd05db4f3d8",
+      "pr": null,
+      "oldD": {
+        "input": "b2f0dbc3daf9de573fe24ba71e51d4fec274b5d5bab40f26f22427a24c8cd5e1",
+        "evaluation": "e9fa8f75e714fb6d946a19bd0fde247e583e1cac8ac1456ec40be8d97a9388ff",
+        "reports": "3362b39eae786807dedf859381e23fc6876105a268f3025498de49fa9da58574"
+      },
+      "detail": "新无答案 E0_SAFE_MANIFEST 与泄漏自审；旧结果统计仍曾被E r01看到，ACL未配置",
+      "originalDAuthorGitCommit": "NOT_AVAILABLE",
+      "oldDHashOrigin": "AUTHOR_RECOMPUTED_UNVERIFIED_BY_E_ACCESS",
+      "newOldZipDiff": "NOT_DEMONSTRATED_CHANGED",
+      "adminAcl": "UNVERIFIED",
+      "evaluationDownloadedByE": false
+    },
+    {
+      "id": "T05",
+      "branch": "docs/g05-t05-d-e0-002-access-evidence-r01",
+      "head": "3dd1ed4ddb0b319c5bd326f7eedce3cf5b612e2e",
+      "pr": 54,
+      "oldD": {
+        "input": "786004326e9d2160496d2deebe0c823368b079f8378db122f67b71d9a564cb4e",
+        "evaluation": "11de73c4e2755fc7ff3da0dd81e0e1f92c18e373b170c5086441a02e900e6c42",
+        "reports": "196c53e7a4f145d7ad7ce1e5fc2a259578a3689c32c613f3fc866888e4496959"
+      },
+      "detail": "24 Gold，作者自核旧包，承认搜索偶见C摘要；ACL无",
+      "originalDAuthorGitCommit": "NOT_AVAILABLE",
+      "oldDHashOrigin": "AUTHOR_RECOMPUTED_UNVERIFIED_BY_E_ACCESS",
+      "newOldZipDiff": "NOT_DEMONSTRATED_CHANGED",
+      "adminAcl": "UNVERIFIED",
+      "evaluationDownloadedByE": false
+    },
+    {
+      "id": "T06",
+      "branch": "fix/g05-t06-d-e0-002-author-evidence-20261015",
+      "head": "bae767d162672f54d7b769c74ae39f00621b0b0d",
+      "pr": null,
+      "oldD": {
+        "input": "922e3ac6fb20a1314594728cf7cec5cc5bc6fd0b4ec8cec9f27c10f123ddba60",
+        "evaluation": "5b5276df379ed79ba03c8d5d6ae49b840736543fa11d536c92407cac0566c810",
+        "reports": "03d3a66f5d84c88b0c9d0055414084907d35788fe8b817f20211102179232b2d"
+      },
+      "detail": "22 Gold，作者自核旧包；ACL无，原D独立性仅作者声明",
+      "originalDAuthorGitCommit": "NOT_AVAILABLE",
+      "oldDHashOrigin": "AUTHOR_RECOMPUTED_UNVERIFIED_BY_E_ACCESS",
+      "newOldZipDiff": "NOT_DEMONSTRATED_CHANGED",
+      "adminAcl": "UNVERIFIED",
+      "evaluationDownloadedByE": false
+    }
+  ],
+  "publicRepositoryMainDelta": "main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e remains identical",
+  "E1Blindness": "PRIOR_C_AUTHOR_HANDOFF_CONTENT_SEEN_BY_CURRENT_E_SESSION; FRESH_UNEXPOSED_REVIEWER_REQUIRED_TO_CERTIFY_FIRST_BLIND_JUDGMENTS",
+  "T04SafeMetadata": {
+    "newGitBlobSha256": null,
+    "gitBlobSha": "98e3851531f8b8df4283de5ed22780cfbce71cba",
+    "finding": "NO_AGGREGATE_OUTCOME_COUNTS_IN_NEW_SAFE_MANIFEST; HISTORICAL_EXPOSURE_NOT_ERASED"
+  },
+  "status": "BLOCKED_INPUT__E0_PARTIAL_DELTA_ONLY"
+}
