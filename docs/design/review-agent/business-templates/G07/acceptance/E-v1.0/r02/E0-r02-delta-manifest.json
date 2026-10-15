@@ -27,7 +27,7 @@
   },
   "method": {
     "blind": "C BUSINESS CONTENT AND D GOLD ANSWERS NOT READ",
-    "C": "Only source manifests, file-path metadata and Git blob IDs inspected; C business templates opened only with a one-line metadata fetch, not rule bodies",
+    "C": "Only Git paths/blob IDs and automatic byte-level SHA256 for each C mother; C rule content never semantically inspected or used for business judgment",
     "D": "Public metadata and E0 author statements read; EVALUATION_ONLY/PRIVATE/CONTROLLED assets NOT OPENED",
     "src": "No E1 independent primary-source validity ruling",
     "independentGoldAccess": "NOT_AUTHORIZED_OR_ATTESTED"
@@ -76,11 +76,12 @@
       "path": "docs/design/review-agent/business-templates/G07/C/G07-T01/originals/G07-T01_正式业务模板_MD_v0.1.md",
       "blob": "8a998496a49fff82fbb57bd8894c2f7bf646ec6f",
       "sha256": "392e63fd9d7e7da3926325682db65007daff44cc04e736791b1cabf065efdf2d",
-      "sourceSha256Verification": "AUTHOR_DECLARATION; E VERIFIED GIT BLOB EXISTENCE",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
       "originalCAuthorCommit": "NOT_AVAILABLE",
       "r01PriorCsha256": null,
       "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
-      "E2ContentRead": false
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
     },
     {
       "id": "G07-T02",
@@ -89,11 +90,12 @@
       "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md",
       "blob": "46c48f80df90e99274986633ae29d7d407ed84b9",
       "sha256": "543f73ead9bb77e86d951e2ef29dbdf3832aea5270bba91fede45c046e5ef556",
-      "sourceSha256Verification": "AUTHOR_DECLARATION; E VERIFIED GIT BLOB EXISTENCE",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
       "originalCAuthorCommit": "NOT_AVAILABLE",
       "r01PriorCsha256": null,
       "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
-      "E2ContentRead": false
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
     },
     {
       "id": "G07-T03",
@@ -102,11 +104,12 @@
       "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/G07-T03_正式业务模板_MD_v0.1.md",
       "blob": "734f9fdeb16ee25c8b4e5b339b02a2af9baf1aee",
       "sha256": "fec6ee135ad9b5f644dfe8415440e34f633e851c690deba678a2097f2fc98d98",
-      "sourceSha256Verification": "AUTHOR_DECLARATION; E VERIFIED GIT BLOB EXISTENCE",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
       "originalCAuthorCommit": "NOT_AVAILABLE",
       "r01PriorCsha256": null,
       "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
-      "E2ContentRead": false
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
     },
     {
       "id": "G07-T04",
@@ -115,11 +118,12 @@
       "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v0.1-original/G07-T04_正式业务模板_MD_v0.1.md",
       "blob": "9a629e8c6e6e9bf4c348fe413c32b564e50f580d",
       "sha256": "009a13599a34a5a78407a953d19810637636ee2f4dd4821d12cb9a44bad54bb5",
-      "sourceSha256Verification": "AUTHOR_DECLARATION; E VERIFIED GIT BLOB EXISTENCE",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
       "originalCAuthorCommit": "NOT_AVAILABLE",
       "r01PriorCsha256": null,
       "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
-      "E2ContentRead": false
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
     },
     {
       "id": "G07-T05",
@@ -128,11 +132,12 @@
       "path": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/original_v0.1/G07-T05_正式业务模板_MD_v0.1.md",
       "blob": "6a7ef0cdd10ecaa7e851d6dc43a728a669484106",
       "sha256": "1be277aa5387b2995a5d7a606885706848bc7fb68426efce1c4ea61a695e7abf",
-      "sourceSha256Verification": "AUTHOR_DECLARATION; E VERIFIED GIT BLOB EXISTENCE",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
       "originalCAuthorCommit": "NOT_AVAILABLE",
       "r01PriorCsha256": null,
       "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
-      "E2ContentRead": false
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
     },
     {
       "id": "G07-T06",
@@ -141,11 +146,12 @@
       "path": "docs/design/review-agent/business-templates/G07/C/G07-T06/G07-T06_正式业务模板_MD_v0.1.md",
       "blob": "c3be13c801a56300e71e2a468632d263f8fa2de8",
       "sha256": "59f0e1cc0ef4232d8a3f5c8c8c6a6cb1413695c0ff8bed94fd8539d35bd95c13",
-      "sourceSha256Verification": "AUTHOR_DECLARATION; E VERIFIED GIT BLOB EXISTENCE",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
       "originalCAuthorCommit": "NOT_AVAILABLE",
       "r01PriorCsha256": null,
       "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
-      "E2ContentRead": false
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
     },
     {
       "id": "G07-T07",
@@ -154,11 +160,12 @@
       "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/G07-T07_正式业务模板_MD_v0.1.md",
       "blob": "f6d9c8c2820b165b6010fecddc1dde5a478a9ac2",
       "sha256": "cafc5406ec97a6a282cae2e297ce6727567db37c4b1b7e7ca24ab2f32701586e",
-      "sourceSha256Verification": "AUTHOR_DECLARATION; E VERIFIED GIT BLOB EXISTENCE",
+      "sourceSha256Verification": "E_INDEPENDENT_SHA256_EXACT_MATCH_AUTHOR_MANIFEST",
       "originalCAuthorCommit": "NOT_AVAILABLE",
       "r01PriorCsha256": null,
       "semanticDiffFromR01": "NOT_POSSIBLE_NO_PRIOR_FROZEN_C",
-      "E2ContentRead": false
+      "E2ContentRead": false,
+      "EbusinessTextSemanticallyRead": false
     }
   ],
   "newDRecovered": [
@@ -317,7 +324,7 @@
     "sourceValidity": "BLOCKED_SOURCE",
     "templateFidelity": "BLOCKED_INPUT",
     "goldValidity": "BLOCKED_INPUT",
-    "crossTemplate": "PARTIAL_SCOPE_MAPPING_ONLY",
+    "crossTemplate": "PARTIAL",
     "provenanceIntegrity": "BLOCKED_INPUT",
     "technicalTemplateRuntime": "NOT_RUN",
     "onlineModelAccuracy": "NOT_RUN",
@@ -325,5 +332,12 @@
   },
   "verdict": "BLOCKED_INPUT",
   "originProtection": "r01 files and PR unchanged, no author files modified or merged",
-  "privacy": "No Gold, trusted ledgers, expected results or private downloads committed."
+  "privacy": "No Gold, trusted ledgers, expected results or private downloads committed.",
+  "newIndependentCChecks": {
+    "count": 7,
+    "exactSha256Matches": 7,
+    "mismatches": 0,
+    "source": "GitHub fetch_file content hashed programmatically inside isolated tool step; no rule-text output",
+    "scope": "E0 byte-integrity only"
+  }
 }
