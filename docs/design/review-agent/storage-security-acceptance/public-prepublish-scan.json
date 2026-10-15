@@ -20,15 +20,18 @@
     }
   ],
   "guard_local_synthetic_tests": {
-    "guard_source_local_sha256": "702f1dfe43d0f4524a197634ffcee68fb5747c4c2bb88338abcf8cf713ee2266",
-    "remote_source_matches_local_git_blob": "e0633b7d36edba05b4b922529ab2273a91719830",
+    "guard_source_local_sha256": "b3c1bf905e6f648c1a7c6b1a79b32e9204840e2e97c678506a1967743f0290b8",
+    "remote_source_matches_local_git_blob": "4929ff2ff11b0fd50b7527bd504fae631b389f69",
     "clean_json_result": "PASS; exit=0",
     "synthetic_leaky_json_result": "FAIL; exit=1",
     "forbidden_keys_identified": [
       "status_counts",
-      "private_object_url"
+      "private_object_url",
+      "case_result_distribution",
+      "private_storage_location"
     ],
-    "scope": "Synthetic-only fixtures. No real Gold metadata used."
+    "scope": "Synthetic-only fixtures. No real Gold metadata used.",
+    "extended_synthetic_leaky_json_result": "FAIL; exit=1"
   },
   "historical_exposure_review": "INCOMPLETE; G05-T04 previously exposed aggregated outcome statistics in old public artifacts per PR #65. This scan does not erase them or prove old Git/PR/Library/forks are clean.",
   "storage_provider_public_link_scan": "NOT_RUN_NO_PROVIDER_ACCESS",
