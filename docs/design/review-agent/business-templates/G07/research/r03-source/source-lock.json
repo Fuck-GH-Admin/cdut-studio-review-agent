@@ -1,0 +1,227 @@
+{
+  "status": "RESEARCH_SOURCE_LOCK",
+  "date_local": "2026-10-15",
+  "timezone": "UTC+08:00",
+  "scope": "G07-T01..T07; partial independent source research only",
+  "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "base_branch": "main",
+  "base_commit_sha40": "6ff93be71399683fb21c9b5e36cedce05d1945b8",
+  "prior_audit_metadata_only": {
+    "audit/g07-e-v1-r01": "ccbf9bd6b16c9472bb35b03cd8b676d87c6cd6ab",
+    "audit/g07-e-v1-r02": "ff8d55026f45b09d3d4955167a6cbc4b4e8e409e"
+  },
+  "research_target_branch": "research/g07-e-v1p1-r03-source",
+  "research_target_preexisting": false,
+  "blinding_statement": "I independently used only public base project contracts, A formal directory and source indexes, B original research T04/T05/T07, and official public source text. I did NOT view C rule body, C author business handoff, D hidden Gold/reports, prior E r01/r02 report body, ledger, source rulings; no leaked-article scope identified. Prior audit trees/commit names metadata only.",
+  "exposure": {
+    "C_substantive": false,
+    "D_Gold_or_report_results": false,
+    "old_E_substantive": false,
+    "affected_terms": []
+  },
+  "files_accessed": [
+    {
+      "name": "05_E_GXX领域独立交叉验收_主会话_v1.0.md",
+      "sha256": "523eb0d52aef20122e299ea2b81100dace18a000ba8db905eb68d7a377cae7eb",
+      "bytes": 26662,
+      "role": "whitelist-only-A-B-or-E-normative",
+      "source": "library_materialized"
+    },
+    {
+      "name": "G07-T04_00_独立业务深调研.md",
+      "sha256": "2477c5656f58af0d0406772e60b24d29b7886f96c52c7ee24b6e936a9a20d5c8",
+      "bytes": 9366,
+      "role": "whitelist-only-A-B-or-E-normative",
+      "source": "library_materialized"
+    },
+    {
+      "name": "G07-T05_00_独立业务深调研.md",
+      "sha256": "f261ff47209b082cfbed49ae0b8cab5fdde968e4f50298f77c9c2a466a6daca9",
+      "bytes": 13461,
+      "role": "whitelist-only-A-B-or-E-normative",
+      "source": "library_materialized"
+    },
+    {
+      "name": "G07-T07_00_独立业务深调研.md",
+      "sha256": "3971dc75decc13617f959bdcdcd65ff350dfcee89091ba60a8d2fdcb6c5f1655",
+      "bytes": 12963,
+      "role": "whitelist-only-A-B-or-E-normative",
+      "source": "library_materialized"
+    },
+    {
+      "name": "G07_02_统一模板目录与边界.md",
+      "sha256": "64a771d60e7ea68a040c4d7fd551c246bf3cd123e0ca60a8f7d9d4ea245ee4c4",
+      "bytes": 10555,
+      "role": "whitelist-only-A-B-or-E-normative",
+      "source": "library_materialized"
+    },
+    {
+      "name": "G07_03_来源索引.md",
+      "sha256": "17583564d18b1561b05ce6fd9104df86e132b6d34047ca78f85d1af75f8b3245",
+      "bytes": 16950,
+      "role": "whitelist-only-A-B-or-E-normative",
+      "source": "library_materialized"
+    },
+    {
+      "name": "G07_07_成都理工大学校本规则专项核验.md",
+      "sha256": "2bbad8fd845cf22ab3029c683ad760c86c6847f4d9c56cbf34fc1099e9e1f70f",
+      "bytes": 19463,
+      "role": "whitelist-only-A-B-or-E-normative",
+      "source": "library_materialized"
+    }
+  ],
+  "B_original_presence": {
+    "G07-T01": "not found by constrained file-title search",
+    "G07-T02": "not found by constrained file-title search",
+    "G07-T03": "not found by constrained file-title search",
+    "G07-T04": "read and sha256 pinned",
+    "G07-T05": "read and sha256 pinned",
+    "G07-T06": "not found by constrained file-title search",
+    "G07-T07": "read and sha256 pinned"
+  },
+  "official_sources": [
+    {
+      "source_id": "O01",
+      "name": "成都理工大学财务处《只跑一次财务事项清单》2025-04，17 PDF页",
+      "url": "https://jcc.cdut.edu.cn/__local/8/A8/96/748E97CB5061A750C78C9A841EF_9631E851_E5400.pdf",
+      "inspection": "PDF全文与局部页面目视核对；2025操作清单，非2026系统字段法定清单",
+      "remote_file_sha256": null,
+      "sha_note": "Not downloaded as raw official source bytes; no SHA-256 claim"
+    },
+    {
+      "source_id": "O02",
+      "name": "成都理工大学《采购验收管理办法》成理校发〔2023〕11号",
+      "url": "https://gz.cdut.edu.cn/__local/2/CC/13/647DE095C814922158068435485_A6347BE6_67024.pdf",
+      "inspection": "官方PDF的搜索原文可读部分，全文本轮未独立下载；第2-7条定位以搜索片段为准",
+      "remote_file_sha256": null,
+      "sha_note": "Not downloaded as raw official source bytes; no SHA-256 claim"
+    },
+    {
+      "source_id": "O03",
+      "name": "成都理工大学财务处《2026年度财务开账通知》2026-01-13",
+      "url": "https://jcc.cdut.edu.cn/info/1012/2656.htm",
+      "inspection": "官网公开正文可读；网页页脚落款写2025与发布日期2026矛盾，按网站公布日期说明",
+      "remote_file_sha256": null,
+      "sha_note": "Not downloaded as raw official source bytes; no SHA-256 claim"
+    },
+    {
+      "source_id": "O04",
+      "name": "成都理工大学财务处《经费支出风险防范提示》2026-05-19",
+      "url": "https://jcc.cdut.edu.cn/info/1034/2701.htm",
+      "inspection": "官网HTML全文已核，风险提示不自动替代专门制度",
+      "remote_file_sha256": null,
+      "sha_note": "Not downloaded as raw official source bytes; no SHA-256 claim"
+    },
+    {
+      "source_id": "O05",
+      "name": "成都理工大学财务处《2026年度采购工作推进通知》2026-03-24",
+      "url": "https://jcc.cdut.edu.cn/tzgg.htm",
+      "inspection": "官方通知列表摘要可读；具体完整附件/规则需另行核对",
+      "remote_file_sha256": null,
+      "sha_note": "Not downloaded as raw official source bytes; no SHA-256 claim"
+    },
+    {
+      "source_id": "O06",
+      "name": "成都理工大学财务处学校规章制度目录",
+      "url": "https://jcc.cdut.edu.cn/cwzd/xxgzzd.htm",
+      "inspection": "仅确认2025差旅第33号、2022借款第39号文件存在；条文全文未取得",
+      "remote_file_sha256": null,
+      "sha_note": "Not downloaded as raw official source bytes; no SHA-256 claim"
+    },
+    {
+      "source_id": "O07",
+      "name": "成都理工大学财务处《智能报销审批人员选择操作须知》2026-01-15",
+      "url": "https://jcc.cdut.edu.cn/ssjg.jsp?currentnum=3&newskeycode2=&searchScope=0&wbtreeid=1033",
+      "inspection": "官方站内搜索片段，可核项目负责人自身借款或酬金互签；正文URL/全段本轮无法展开",
+      "remote_file_sha256": null,
+      "sha_note": "Not downloaded as raw official source bytes; no SHA-256 claim"
+    },
+    {
+      "source_id": "O08",
+      "name": "成都理工大学财务处科研经费酬金发放标准流程 2024-04-19",
+      "url": "https://jcc.cdut.edu.cn/info/1016/2233.htm",
+      "inspection": "旧操作指南搜索全文可读，2026技术流程不能直接沿用",
+      "remote_file_sha256": null,
+      "sha_note": "Not downloaded as raw official source bytes; no SHA-256 claim"
+    },
+    {
+      "source_id": "O09",
+      "name": "成都理工大学财务处非科研差旅事项标准流程 2024-04-17",
+      "url": "https://jcc.cdut.edu.cn/info/1016/2201.htm",
+      "inspection": "旧指南HTML检索全文可读；2025差旅新版优先",
+      "remote_file_sha256": null,
+      "sha_note": "Not downloaded as raw official source bytes; no SHA-256 claim"
+    },
+    {
+      "source_id": "O10",
+      "name": "成都理工大学采购与招标管理中心2023年试行补充说明",
+      "url": "https://cg.cdut.edu.cn/info/1008/3280.htm",
+      "inspection": "官网全文片段，后续实施细则效力关系未知",
+      "remote_file_sha256": null,
+      "sha_note": "Not downloaded as raw official source bytes; no SHA-256 claim"
+    },
+    {
+      "source_id": "O11",
+      "name": "成都理工大学财务处科研经费测试化验加工标准流程 2024-04-19",
+      "url": "https://jcc.cdut.edu.cn/info/1016/2231.htm",
+      "inspection": "旧流程官网索引/搜索片段，2026逐条件尚待核",
+      "remote_file_sha256": null,
+      "sha_note": "Not downloaded as raw official source bytes; no SHA-256 claim"
+    },
+    {
+      "source_id": "O12",
+      "name": "成都理工大学财务处常用信息 差旅与会议培训标准",
+      "url": "https://jcc.cdut.edu.cn/cyxx.htm",
+      "inspection": "2025-07目录及部分标准可读；非科研与科研不同，人员适用须核细则",
+      "remote_file_sha256": null,
+      "sha_note": "Not downloaded as raw official source bytes; no SHA-256 claim"
+    },
+    {
+      "source_id": "O13",
+      "name": "成都理工大学国资与实验室管理处校级政策索引",
+      "url": "https://gz.cdut.edu.cn/zcfg/xjzc.htm",
+      "inspection": "确认2023采购验收制度索引，不代表更新补充细则全文",
+      "remote_file_sha256": null,
+      "sha_note": "Not downloaded as raw official source bytes; no SHA-256 claim"
+    }
+  ],
+  "high_risk_population": 38,
+  "high_risk_by_template": {
+    "T01": 5,
+    "T02": 5,
+    "T03": 5,
+    "T04": 6,
+    "T05": 6,
+    "T06": 5,
+    "T07": 6
+  },
+  "high_risk_by_source_status": {
+    "F": 8,
+    "S": 21,
+    "U": 9
+  },
+  "partially_localized_F_and_S": 29,
+  "unresolved_U": 9,
+  "adversarial_case_pairs": 20,
+  "M_L_population": "not yet established; not counted",
+  "E1_formal_gate": "NOT_RUN",
+  "C_D_crosscheck": "NOT_RUN",
+  "read_files_sha256": {
+    "independent-source-register.md": "d357e1c648d065351e62a8f54487a2dd9c1eed3fbfe970b1acc1523dd7f35d59",
+    "adversarial-cases.md": "bd6efffb14728a03e1e7d356d5ba0043899efc0c70b39b49e4c42e7c8b8d14d0"
+  },
+  "hash_algorithm": "SHA-256, raw container bytes; Git blob SHA-1 is not substituted for SHA-256",
+  "next_step": "STOP; await user source-lock-followup instruction",
+  "github_published_files": [
+    {
+      "path": "docs/design/review-agent/business-templates/G07/research/r03-source/independent-source-register.md",
+      "blob_sha1": "70c0b2923f31c828fbfd72eaf74623654b88737f",
+      "commit_sha": "4fe39c0474462c8e7cbeb5fbebf1108998739a3f"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/research/r03-source/adversarial-cases.md",
+      "blob_sha1": "7ae86de90a398414cca40955a5f7644aa2864463",
+      "commit_sha": "4323d600f300c820749da2210bd7d224122ef60b"
+    }
+  ]
+}
