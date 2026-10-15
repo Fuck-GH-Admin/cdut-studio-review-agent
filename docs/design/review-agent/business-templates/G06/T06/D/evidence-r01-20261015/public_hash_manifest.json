@@ -1,0 +1,56 @@
+{
+  "template": "G06-T06",
+  "title": "科研成果官方宣传发布审签",
+  "record_type": "posthoc_evidence_only",
+  "evidence_record_date": "2026-10-15",
+  "original_d_author_git_commit": "NOT_AVAILABLE",
+  "e_r01_frozen_audit_commit_not_d_author": "1dcf4033256121efd3dea62b1153592df1facd7c",
+  "archives": {
+    "input": {
+      "name": "G06-T06_INPUT_ONLY.zip",
+      "sha256": "24f6f34f3ae8b81ae15c034e282ca5850c5d0c6d0e9d299fadd03faef024e5cd",
+      "files": 107,
+      "cases": 20
+    },
+    "evaluation": {
+      "name": "G06-T06_EVALUATION_ONLY.zip",
+      "sha256": "97fe69de4aceb2493a3d021a1e2c068774e13b80a96177fe3867b932b062137d",
+      "storage_class": "PRIVATE_NOT_PUBLISHED"
+    },
+    "reports": {
+      "name": "G06-T06_D_REPORTS.zip",
+      "sha256": "29c37eab5fbe17ffbfa6015e6b3a3f8b56d4d43039af49dd756649ce99368b64",
+      "files": 6
+    }
+  },
+  "gold": {
+    "version": "FROZEN_GOLD_v1",
+    "sha256": "c0901b8269a4f09552709d1296388e7bd7edb8665900e8dd18fd269d3251cf3e",
+    "modified": false,
+    "acl": "ACL_UNVERIFIED"
+  },
+  "integrity": {
+    "input_member_sha256_match": "107/107",
+    "source_snapshot_match": "4/4",
+    "zip_crc": "ALL_PASS",
+    "pdfs": 24,
+    "pdf_pages": 34,
+    "docx_files": 20,
+    "pdf_extracted_text_chars": 0
+  },
+  "provenance": {
+    "original_process_log": "NOT_AVAILABLE",
+    "archived_b_v01_00_to_06": "NOT_AVAILABLE",
+    "source_reference_verification": "A_3_PLUS_B07_1",
+    "no_c_rules_opened_during_current_remediation": true
+  },
+  "audit": {
+    "issue": "E-G06-ALL-0001",
+    "t06_source_issue": "E-G06-T06-0001",
+    "source_status": "SOURCE_PENDING",
+    "review_status": "RECHECK_AFTER_SOURCE_FIX",
+    "e_r01_unmodified": true,
+    "e_r02_not_run": true
+  },
+  "package_policy": "PUBLIC_METADATA_ONLY_NO_GOLD_CONTENT_NO_TRUSTED_FIXTURES"
+}
