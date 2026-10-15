@@ -45,9 +45,9 @@
     },
     {
       "path": "docs/design/review-agent/business-templates/G05/acceptance/E-v1.0/r02/E-final-verdict.md",
-      "sha256": "85dd1a524c1703d192b6cf10ef06077db2543791ed96e322fbb63b72a90505ec",
-      "gitBlobSha": "e96d04af2102dd5aa78dfc6db04b49ba0f94c8bc",
-      "bytesUtf8": 3899
+      "sha256": "07501418cf0e6ae100caa57e6ee946ecfb1dfe65c7d69297f5284396baf87225",
+      "gitBlobSha": "fe2c2692b704302accb7a6b28fa0b249faa3714b",
+      "bytesUtf8": 3724
     }
   ],
   "evidenceSource": "GitHub branch file exact bytes / E reviewer SHA-256 calculation",
