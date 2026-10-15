@@ -52,7 +52,8 @@
 2. **新增双重读图边界**：普通 `@profer/core/office-engine` 的 `fileId/revision/anchor` 是可检索数据索引；审核 V2 的 `documentVersionId/SourceRef/runId/assignmentId` 是可提交证据授权，两者必须有明确映射/独立校验。跨案、版本变化、路径越界、权限撤销、新旧缓存混读须有负例。
 3. **候选版本覆盖矩阵**：记录差异文件/接口、旧证据适用性、需要跑的定向历史反例、expected/observed、操作主体、退出码、公开脱敏 SHA。必须保留原 37/38/44 首败，旧裸 `store.set` 仍独立归档，不改变旧 Gold。
 4. **安全优先**：owner不等于授权，`runAgent`/RunStore变更需检查永久 deny/tombstone、原子写/重启；受控工具新增时禁止自动放宽审核白名单。模型 C 的质量调查不能在未锁定 U0/U1 合同前决定“调 prompt 或换模型”。
-5. **历史与 PR 归属**：本增补只写我们的审核 Draft 分支文档，`main@8989941b` 和上游 `Nya-Angle/CDUT-Studio` 都**只读**。未来是否将审核 PR #21 关闭、改基线或以新 PR 推进须由用户批准；现有 PR 保留 Draft，不强推、不合并、不启动 P07/P08。
+5. **P05 外部事实不能推断改变**：`P05-RELAY-ROUTE-01 = BLOCKED`；`P05-POCKET-FIFO-01 = PATCH READY / TARGET NOT-RUN`，继续禁止借普通文件/工具更新宣称它们已部署或通过真实验收。
+6. **历史与 PR 归属**：本增补只写我们的审核 Draft 分支文档，`main@8989941b` 和上游 `Nya-Angle/CDUT-Studio` 都**只读**。未来是否将审核 PR #21 关闭、改基线或以新 PR 推进须由用户批准；现有 PR 保留 Draft，不强推、不合并、不启动 P07/P08。
 
 ## 5. 文档依赖与下一步交接
 

@@ -1,5 +1,8 @@
 # 47｜P06 实测驱动的后续顺序与验收细则调整（2026-10-15）
 
+> **2026-10-15 新上游合入后的覆盖提示**：本 47 号的 `L02-00 → L02-01` 是上游整合前的原定优先顺序。**当前应先执行 [49｜L02-U0、L02-U1 基线与新 Office/预览/工具边界检查](49-upstream-impact-replan-20261015.md)，两批签收后才恢复本页 L02-00～04。** 本页作为业务质量/证据规则和历史设计决策保留，不从旧 SHA 自动推导新版 E2E PASS。29 LIVE 状态和 PR Draft/MERGE NO-GO 不变。
+
+
 > 本文是**设计增补与执行计划**，不是新一轮测试 PASS。基线：`feat/review-owned-background-sessions@f716d2efaed0dcd8924d5acc30cd3012eb093348`，Draft PR #21。先读 [27｜v1架构规范](27-background-review-session-proposal.md)、[28｜原阶段快照](28-review-stage-delivery-status.md)、[29｜唯一LIVE台账](29-background-session-preflight-audit.md)、[32｜P05跨仓门禁](32-p05-stage-acceptance-and-local-gates.md)、[46｜独立实机原证据](46-p06-recheck-live-local-acceptance-20261014.md)。基线自托管 7/7 CI SUCCESS，[PR CI #38602829396](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38602829396) 3894 pass / 5 skip / 0 fail、3899 tests / 445 files；**此数字不是未来新文档 HEAD 的测试结果**。
 
 ## 一、目标和实测事实
