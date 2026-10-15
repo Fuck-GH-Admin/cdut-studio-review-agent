@@ -110,6 +110,11 @@
       "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/E-r02-final-verdict.md",
       "sha256": "2c1292f772050e86e7dc71da94eb3afd8f9e0b4a50759ed37a94aebff2b73f94",
       "gitBlob": "807929a28c7104d36407d6f00e6a08a77d822f44"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/E1-r02-T01-new-official-lead.md",
+      "sha256": "46345d981234114a244037156b911e46890dc75654c5bb7692619cc5caaaaa04",
+      "gitBlob": "d97c780f38d652832301e29b0af2ee192e1fec19"
     }
   ],
   "auditBoundary": {
@@ -127,5 +132,11 @@
     "New ZIP hashes are posthoc evidence archives, not Gold version replacements",
     "r01 old SHA authoritative at original version; no consolidation into synthetic Git commit",
     "No public attachment contains any Gold answer or controlled trusted fixture; manifest lists metadata only"
-  ]
+  ],
+  "additionalAfterInitialE1Lock": {
+    "artifact": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/E1-r02-T01-new-official-lead.md",
+    "classification": "E1_NEW_SOURCE_LEAD_NOT_YET_ADMITTED_TO_R02_E1_LOCK",
+    "effect": "A targeted school-source candidate for prohibited agency; no full high-risk duty closure, no change to 91 pending",
+    "policy": "Additive only: do not overwrite r01 or earlier r02 E1 lock"
+  }
 }
