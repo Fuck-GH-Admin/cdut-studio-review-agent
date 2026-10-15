@@ -1,0 +1,42 @@
+{
+  "schema": "G06-E-r02-partial-E1-source-differential-lock-v1",
+  "date": "2026-10-15",
+  "scope": "T02,T05,T09, T07/T08 and selected T01/T03/T04/T06 source checks only",
+  "r01": {
+    "branch": "audit/g06-e-v1-r01",
+    "commit": "1dcf4033256121efd3dea62b1153592df1facd7c",
+    "e1LockSha256": "70b8a14de51542bf604e23c7578f7d7da4cb0d53620d5f2f88fde59319d956d8",
+    "originalH": 142,
+    "originalHBounded": 51,
+    "originalHPending": 91,
+    "originalM": 17,
+    "originalMPending": 16
+  },
+  "r02": {
+    "result": "E1_PARTIAL_SOURCE_BLOCKED",
+    "reviewedEvidenceFile": {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/E1-differential-source-audit.md",
+      "sha256": "3fbceb52639fd697230b3234c3ccd02f3940a6f9a4fa2dd3d502fa00372b1b19",
+      "gitBlob": "fa827ff61075467b301d01b865f66ba32e8466df",
+      "bytes": 4160
+    },
+    "newFullyClosedHighRiskDuties": 0,
+    "note": "No new sources sufficient to close original unresolved duties; 91 is inherited source gap, not a claim that all 91 were re-reviewed this round"
+  },
+  "independence": {
+    "cRuleBodyRead": false,
+    "dGoldAnswersRead": false,
+    "sourceJudgmentsDoNotRelyOnCD": true
+  },
+  "nextGate": {
+    "wholeDomainE2": "BLOCKED_SOURCE_AND_GOLD_ACL",
+    "limitedE2": "NO_SCOPE_AUTHORIZED_OR_STARTED",
+    "newIndependentE1ReviewerNeededIfCOrDContentExposed": "yes"
+  },
+  "sourceReadingBoundaries": [
+    "Official 2026 software registration web notice verified but original docx not retrieved",
+    "2026-07 confidentiality form only in CDUT download index",
+    "2023/2026 technology transfer policies only in CDUT policy index",
+    "No official CDUT human/animal ethics committee workflow originals obtained"
+  ]
+}
