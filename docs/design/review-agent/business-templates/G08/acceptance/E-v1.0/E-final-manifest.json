@@ -1,0 +1,302 @@
+{
+  "schema": "E-final-manifest-v1",
+  "domain": "G08",
+  "auditor": "G08-E-independent-session",
+  "signedAt": "2026-10-14",
+  "git": {
+    "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+    "base": "main",
+    "baseCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+    "auditBranch": "audit/g08-e-v1-r01",
+    "draftPR": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/29",
+    "prNumber": 29,
+    "merged": false
+  },
+  "scope": [
+    "G08-T02",
+    "G08-T03"
+  ],
+  "e1BlindLock": {
+    "commit": "5a24a0197d4b6d8260097da17be64e18346b511b",
+    "factBlobSHA": "872ab7aea3f46f88560c95161cdd93deee1072e6",
+    "hypothesesBlobSHA": "10017bba769edc86da7a09dbb94570eca36ee2e4"
+  },
+  "frozenInputs": [
+    {
+      "role": "A/current",
+      "name": "G08_A_领域总调研_B阶段准入核验版_v0.2.1.zip",
+      "sha256": "dbbf96217a85726c47f3303de4d094bf56a3edfc9ba26cea8b7e8a5916772def",
+      "members": 22,
+      "version": "v0.2.1",
+      "storage": "user_library",
+      "access": "readable"
+    },
+    {
+      "role": "B/T02",
+      "name": "G08-T02_B_单模板深度调研_v1.1_校本补查交接包.zip",
+      "sha256": "ba8bd846f2f9c15c21f36b9709b4e92b7d64458f90d74f46c82478804d7c002e",
+      "members": 11,
+      "version": "v1.1",
+      "storage": "user_library",
+      "access": "readable"
+    },
+    {
+      "role": "B/T03",
+      "name": "G08-T03_B阶段深度调研_校本补证_v1.1_20261012.zip",
+      "sha256": "6af5301c5c0938148b3e7a0beb6daa43fad2e150ee5491a5629ad6a8ea67efed",
+      "members": 9,
+      "version": "v1.1",
+      "storage": "user_library",
+      "access": "readable"
+    },
+    {
+      "role": "C/T02",
+      "name": "G08-T02_C_v2.1_迁移核验交接包_20261012.zip",
+      "sha256": "c501c7cea87be795f81b4d615155e5bee0b3c9a6a7cd15fc95b21a69b4fbd665",
+      "members": 11,
+      "version": "C v2.1 migration / MD v0.1",
+      "storage": "user_library",
+      "access": "readable; not opened before E1 lock"
+    },
+    {
+      "role": "C/T03",
+      "name": "G08-T03_C_v2.1_迁移核验交接包_20261012.zip",
+      "sha256": "a2fba3450964c5f75128c17a3e0fd9399ab0525f4f4fc2ddfb879109b1bb088e",
+      "members": 10,
+      "version": "C v2.1 migration / MD v0.1",
+      "storage": "user_library",
+      "access": "readable; not opened before E1 lock"
+    },
+    {
+      "role": "D/T02 blind",
+      "name": "G08-T02_INPUT_ONLY.zip",
+      "sha256": "86d3ac2c002cdf24d362caa4fc28199e492bc32f04b8067917a3b083791c1d14",
+      "members": 201,
+      "version": "D frozen original",
+      "storage": "user_library",
+      "access": "readable; internal semantic content not opened"
+    },
+    {
+      "role": "D/T02 hidden",
+      "name": "G08-T02_EVALUATION_ONLY.zip",
+      "sha256": "cf3fe933ea19e66bae209df4c858d70860358d75dbf9250cde501602b1c3b8ed",
+      "members": 78,
+      "version": "D original Gold",
+      "storage": "private_user_library_NOT_GIT",
+      "access": "readable; expected answers NOT opened"
+    },
+    {
+      "role": "D/T02 overlay",
+      "name": "G08-T02_D21_EVALUATION_OVERLAY_PRIVATE.zip",
+      "sha256": "8e7c4caa9241612c1adc3ec6e2361469c29c89b3d40385887bccda834680878d",
+      "members": 7,
+      "version": "D v2.1 private overlay",
+      "storage": "private_user_library_NOT_GIT",
+      "access": "readable; contents NOT opened"
+    },
+    {
+      "role": "D/T02 reports",
+      "name": "G08-T02_TEST_REPORTS.zip",
+      "sha256": "38a8fa28a4e0d011ec41883f09355d14fd91ab13acbe0d80c1395c039a2995e3",
+      "members": 6,
+      "version": "historical D",
+      "storage": "user_library",
+      "access": "readable; only archive metadata accessed"
+    },
+    {
+      "role": "D/T03 blind",
+      "name": "G08-T03_INPUT_ONLY.zip",
+      "sha256": "68bc0982ec86efa3a61a4665ee3b3b910258e4ca0563fc94ff9d9a8da94c0fd7",
+      "members": 164,
+      "version": "D frozen original",
+      "storage": "user_library",
+      "access": "readable; internal semantic content not opened"
+    },
+    {
+      "role": "D/T03 hidden",
+      "name": "G08-T03_EVALUATION_ONLY.zip",
+      "sha256": "fabc24f42aef9cb1f444a082912c5e7ae23f512de266b4baa58dd183220f4b94",
+      "members": 78,
+      "version": "D original Gold",
+      "storage": "private_user_library_NOT_GIT",
+      "access": "readable; expected answers NOT opened"
+    },
+    {
+      "role": "D/T03 reports",
+      "name": "G08-T03_TEST_REPORTS.zip",
+      "sha256": "c3890d1e91d30974f9f4ba61ca05ca24af64cd8b3a910e41b800523e9da07eef",
+      "members": 7,
+      "version": "historical D",
+      "storage": "user_library",
+      "access": "readable; only archive metadata accessed"
+    }
+  ],
+  "baseModel": {
+    "A": "v0.2.1",
+    "B_T02": "v1.1",
+    "B_T03": "v1.1",
+    "C_T02": "MD v0.1 + C v2.1 migration",
+    "C_T03": "MD v0.1 + C v2.1 migration",
+    "D_T02": "32 Gold + 201 input files + controlled private v1.1 overlay",
+    "D_T03": "30 Gold +164 input files"
+  },
+  "reviewCounts": {
+    "A26Reviewed": 26,
+    "H22Reviewed": 22,
+    "M8MechanismsReviewed": 8,
+    "L4MechanismsReviewed": 4,
+    "C_T02_Rules": 51,
+    "C_T03_Rules": 52,
+    "GoldStructurallyInspected": 62,
+    "independentVisualPages": 3,
+    "GoldSemanticsAllIndependentlyVerified": false
+  },
+  "issues": {
+    "P0": 0,
+    "P1Open": 4,
+    "P2": 0,
+    "BLOCKED_SOURCE": 2,
+    "BLOCKED_INPUT": 1,
+    "CONFIRMED_COMMON_MODE": 0,
+    "fixedRetestedClosed": 0,
+    "hashOnlyRetests": 5
+  },
+  "verdict": {
+    "E0": "READY_WITH_DECLARED_GAPS",
+    "E1": "LOCKED_WITH_SOURCE_LIMITATIONS",
+    "E2": "PARTIAL",
+    "E3": "PARTIAL",
+    "E4": "FINDINGS_RECORDED_RETESTS_OPEN",
+    "overall": "NEEDS_REWORK",
+    "sourceValidity": "PARTIAL/BLOCKED_SOURCE",
+    "templateFidelity": "PARTIAL",
+    "goldValidity": "PARTIAL",
+    "crossTemplate": "PARTIAL",
+    "provenanceIntegrity": "BLOCKED_INPUT on T02 historical freeze"
+  },
+  "technology": {
+    "technicalTemplateRuntime": "NOT_RUN",
+    "onlineModelAccuracy": "NOT_RUN",
+    "productEndToEnd": "NOT_RUN",
+    "administrativeAuthority": "NOT_VERIFIED"
+  },
+  "archiveFiles": [
+    {
+      "path": "README.md",
+      "sha256": "5eba72baf3735a7c1b1f7f67ecb8a567df86deaa83f9c3f72d04e60f479f170e",
+      "gitBlobSha": "9c065fd89229723dd97daf0021a21a18bad447ee",
+      "characters": 911
+    },
+    {
+      "path": "E0-input-manifest.json",
+      "sha256": "101a1e9fcfe8b4fc1bbc48198e533c3b6e286e35573625b11b026839eb69e8f3",
+      "gitBlobSha": "af9aea6491b1e2f71b1ac78c7944213d1d2ef21e",
+      "characters": 6008
+    },
+    {
+      "path": "E0-coverage-and-isolation.md",
+      "sha256": "8d1d210f864a713a09af0d1774ea5aa3d5073920b15f73500fbf2cb0cbf9eb26",
+      "gitBlobSha": "3e4d9dc33a482bd5109317b07c1008fb08538aeb",
+      "characters": 1929
+    },
+    {
+      "path": "E0-decision.md",
+      "sha256": "254c9a2c8287b01301948340f8cc1c54202a06af92ae697194be5e9a98cc5301",
+      "gitBlobSha": "be2139fc2f7e579f46ba26f70a235d7ef7fa96df",
+      "characters": 488
+    },
+    {
+      "path": "E-phase-status.json",
+      "sha256": "c2bc071a634a0aa5429c1974b36434acd7b465db13eecbe38af70a5a45baa31f",
+      "gitBlobSha": "43db1d5625c5958816cbe799da5c3ced82d1eecb",
+      "characters": 2077
+    },
+    {
+      "path": "E1-official-fact-register.md",
+      "sha256": "2fe44c8924fd9c2047cd4ba26abafd877c963221f09a3498bd2db0797ddca520",
+      "gitBlobSha": "872ab7aea3f46f88560c95161cdd93deee1072e6",
+      "characters": 5720
+    },
+    {
+      "path": "E1-adversarial-hypotheses.md",
+      "sha256": "fc313cf29b464aeef5cc729fc04093ade22657b3f5fead2cacdcd282ae280731",
+      "gitBlobSha": "10017bba769edc86da7a09dbb94570eca36ee2e4",
+      "characters": 1282
+    },
+    {
+      "path": "E1-evidence-lock.json",
+      "sha256": "1b6db3cdff5981a6d14b8673828f9b24eca5507199c86e6e9094513204d054e1",
+      "gitBlobSha": "5dd758415bfb85b0bcbcb77242a20591851221ab",
+      "characters": 1584
+    },
+    {
+      "path": "E2-duty-crosswalk.csv",
+      "sha256": "7ae5143bebcb1d9743cd4f9d6d119cc6e8a65de516a015ad14932eefd345f6fc",
+      "gitBlobSha": "94a73edb3a2e4da04d062d21a3e562b71a435621",
+      "characters": 3107
+    },
+    {
+      "path": "E2-case-audit.md",
+      "sha256": "3f9369abe65e5400c290e58a298ef1c20221333820c0648e04d7fba5148ae401",
+      "gitBlobSha": "ab8c285de7d32cc17825c03640f95dc1ff7f142a",
+      "characters": 1992
+    },
+    {
+      "path": "E2-TXX-verdicts/G08-T02.md",
+      "sha256": "7ff641fe32068b621c0d8cd330a50efa68a85968e13d41422d1ada2b8ea610d1",
+      "gitBlobSha": "8c55fab75e517dfb00668d0bb1d41f9a00ebfe4b",
+      "characters": 751
+    },
+    {
+      "path": "E2-TXX-verdicts/G08-T03.md",
+      "sha256": "e55f0bf1570f4a5686fba72b61ad25956f64a751cdbbae267e198f726d7648e0",
+      "gitBlobSha": "4ccf5ea277964aea43b7117cc43728723be1502b",
+      "characters": 656
+    },
+    {
+      "path": "E3-domain-coverage.md",
+      "sha256": "a2703093f19a88c7b0ca85ab9a36ffaafc6c6bac3355d2ca190891c309332f11",
+      "gitBlobSha": "41cac6917051962839f63eb3d9335a47bcc4c0df",
+      "characters": 1733
+    },
+    {
+      "path": "E3-cross-template-matrix.md",
+      "sha256": "76943223d374d5d4cdbdf95cd122c953fdd44cfdf33a2888968aacbc9df7aebe",
+      "gitBlobSha": "13be9d8bc099866d3d91b5c49ed8d3ccb4847675",
+      "characters": 1339
+    },
+    {
+      "path": "E3-domain-verdict.md",
+      "sha256": "fd52d20893f6d60a7bd36df3e58e1b01530ca12655755f2e1f107c6330768a9e",
+      "gitBlobSha": "c499dbb9b8d622b52144bb2ecddb2a089e5e9dbc",
+      "characters": 393
+    },
+    {
+      "path": "E4-issue-ledger.md",
+      "sha256": "8c04c8329d385bb3fb0113613535d4aeac17fcf0724c025d6b38d98085b3b0b6",
+      "gitBlobSha": "ee77b55742a995e771561585b6ecfae2475b7684",
+      "characters": 7210
+    },
+    {
+      "path": "E4-retest-ledger.md",
+      "sha256": "595ab3012872379819963e563423d58fb4b908765177889dd80b2bfa3927cf62",
+      "gitBlobSha": "876704b5ef1a656a0a297b423382b9cbe5f24199",
+      "characters": 1182
+    },
+    {
+      "path": "E-final-verdict.md",
+      "sha256": "f071b56271f48d72ad15a713eae77cabe1750a0438f1a6098328e078ed0a18b7",
+      "gitBlobSha": "11d979b66f98634da9f907695e2fdb55e2d0a8d8",
+      "characters": 3701
+    }
+  ],
+  "selfHashPolicy": "SHA256 of all existing E-v1.0 artifacts; this manifest itself intentionally excluded from its own manifest to avoid circular digest",
+  "publicDataBoundary": "No Gold expected results, fixtures, scoring inputs or personal data in Git audit branch",
+  "nextSession": [
+    "E4-issue-ledger.md",
+    "E4-retest-ledger.md",
+    "E-final-verdict.md",
+    "E-phase-status.json"
+  ],
+  "approval": false
+}

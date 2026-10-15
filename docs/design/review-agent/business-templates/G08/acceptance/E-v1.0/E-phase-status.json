@@ -1,0 +1,80 @@
+{
+  "schema": "E-phase-status-v1",
+  "domain": "G08",
+  "updatedAt": "2026-10-14",
+  "auditor": "G08-E-independent-session",
+  "branch": "audit/g08-e-v1-r01",
+  "baseCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+  "E0": {
+    "status": "COMPLETE",
+    "decision": "READY_WITH_DECLARED_GAPS",
+    "blindnessUncompromisedBeforeE1": true
+  },
+  "E1": {
+    "status": "COMPLETE_WITH_POLICY_PENDING",
+    "preAnswerLockCommit": "5a24a0197d4b6d8260097da17be64e18346b511b",
+    "H": {
+      "reviewed": 22,
+      "planned": 22
+    },
+    "M": {
+      "mechanismsReviewed": 8,
+      "planned": 8
+    },
+    "L": {
+      "mechanismsReviewed": 4,
+      "planned": 4,
+      "fullDenominator": "UNKNOWN"
+    },
+    "CAndGoldOpenedOnlyAfterLock": true
+  },
+  "E2": {
+    "status": "COMPLETE_WITH_UNCLOSED_P1_AND_SEMANTIC_LIMITS",
+    "templates": [
+      "G08-T02",
+      "G08-T03"
+    ],
+    "cRules": 103,
+    "structuralGoldCases": 62,
+    "fullyRecalculatedSemantically": "NOT_ALL",
+    "uncoveredBRuleCandidates": {
+      "T02": 13,
+      "T03": 8
+    },
+    "reports": [
+      "E2-case-audit.md",
+      "E2-duty-crosswalk.csv",
+      "E2-TXX-verdicts/G08-T02.md",
+      "E2-TXX-verdicts/G08-T03.md"
+    ]
+  },
+  "E3": {
+    "status": "COMPLETE_PARTIAL",
+    "ACandidatesMapped": 26,
+    "ACandidateTotal": 26,
+    "crossDomainTargetIDs": "PENDING"
+  },
+  "E4": {
+    "status": "VERDICT_SIGNED_FIXES_AND_RETESTS_OPEN",
+    "verdict": "NEEDS_REWORK",
+    "P0Confirmed": 0,
+    "P1Open": 4,
+    "blockedSource": 2,
+    "blockedInput": 1,
+    "commonModeConfirmed": 0,
+    "retestedFullGold": "NOT_RUN",
+    "retestNext": "r02 after authors and official source owners deliver revised immutable SHA"
+  },
+  "technicalTemplateRuntime": "NOT_RUN",
+  "onlineModelAccuracy": "NOT_RUN",
+  "administrativeAuthority": "NOT_VERIFIED",
+  "productEndToEnd": "NOT_RUN",
+  "mainMerged": false,
+  "publicSafe": "No hidden Gold contents/answers/fixtures committed",
+  "nextEntry": [
+    "E4-issue-ledger.md",
+    "E4-retest-ledger.md",
+    "E-final-verdict.md",
+    "E-final-manifest.json"
+  ]
+}
