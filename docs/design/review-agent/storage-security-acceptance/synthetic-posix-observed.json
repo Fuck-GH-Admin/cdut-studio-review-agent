@@ -1,0 +1,172 @@
+{
+  "schema": "cdut-storage-acl-posix-synthetic-probe-public-transcript-v1",
+  "evidence_kind": "TRANSCRIBED_PUBLIC_SUMMARY_OF_ACTUAL_LOCAL_SUBPROCESS_RESULTS; NOT_PROVIDER_SERVER_AUDIT_LOG",
+  "executed_at_utc": "2026-10-15T19:36:15.232572+00:00",
+  "execution_environment": "ephemeral Linux container, root administrator, setpriv, actual distinct unprivileged UID subprocesses",
+  "scope": "SYNTHETIC_ONLY; NO_GOLD; NO_REAL_PRIVATE_PROVIDER",
+  "pilot_status": "ACL_PARTIAL",
+  "real_gold_provider_status": "NOT_CONFIGURED",
+  "source_script_local_sha256": "c02e3c0ee66c67d05f204062808d703613027335694ac232ce5cd2f1d419718b",
+  "snapshot": {
+    "private_dir_mode_before": "0750",
+    "private_dir_owner_before": "root:E_REVIEWER_test_gid",
+    "private_file_mode": "0440",
+    "private_file_owner": "root:E_REVIEWER_test_gid",
+    "private_dir_mode_after": "0700",
+    "private_dir_owner_after": "root:root",
+    "public_dir_mode": "0755",
+    "public_file_mode": "0444",
+    "public_sharing_links": "NOT_APPLICABLE_LOCAL_POSIX; CLOUD_PUBLIC_LINKS_NOT_TESTED"
+  },
+  "synthetic_versions": {
+    "v0001": {
+      "sha256": "b4e7b9b8c58bc2163b7e217b1854ca0420f052d28331cca6c76ca74948ab5b86"
+    },
+    "v0002": {
+      "sha256": "2086646228e9abd62737a3db4a0b40b1296b14b94d0abca5acc8d5e1f5f49cf5"
+    }
+  },
+  "real_archive_sha256": "NOT_APPLICABLE",
+  "historical_independence": "NOT_ASSESSED",
+  "events": [
+    {
+      "principal": "E_REVIEWER",
+      "uid": 24101,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0001",
+      "phase": "before_revocation",
+      "observed": "ALLOW"
+    },
+    {
+      "principal": "C_AUTHOR",
+      "uid": 24102,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0001",
+      "phase": "before_revocation",
+      "observed": "DENY_PERMISSION"
+    },
+    {
+      "principal": "D_AUTHOR",
+      "uid": 24103,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0001",
+      "phase": "before_revocation",
+      "observed": "DENY_PERMISSION"
+    },
+    {
+      "principal": "PUBLIC_CI",
+      "uid": 24104,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0001",
+      "phase": "before_revocation",
+      "observed": "DENY_PERMISSION"
+    },
+    {
+      "principal": "REPO_READER",
+      "uid": 24105,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0001",
+      "phase": "before_revocation",
+      "observed": "DENY_PERMISSION"
+    },
+    {
+      "principal": "E_REVIEWER",
+      "uid": 24101,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0002",
+      "phase": "before_revocation",
+      "observed": "ALLOW"
+    },
+    {
+      "principal": "C_AUTHOR",
+      "uid": 24102,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0002",
+      "phase": "before_revocation",
+      "observed": "DENY_PERMISSION"
+    },
+    {
+      "principal": "D_AUTHOR",
+      "uid": 24103,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0002",
+      "phase": "before_revocation",
+      "observed": "DENY_PERMISSION"
+    },
+    {
+      "principal": "PUBLIC_CI",
+      "uid": 24104,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0002",
+      "phase": "before_revocation",
+      "observed": "DENY_PERMISSION"
+    },
+    {
+      "principal": "REPO_READER",
+      "uid": 24105,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0002",
+      "phase": "before_revocation",
+      "observed": "DENY_PERMISSION"
+    },
+    {
+      "principal": "PUBLIC_CI",
+      "uid": 24104,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "public-input-v1",
+      "phase": "before_revocation",
+      "observed": "ALLOW"
+    },
+    {
+      "principal": "REPO_READER",
+      "uid": 24105,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "public-input-v1",
+      "phase": "before_revocation",
+      "observed": "ALLOW"
+    },
+    {
+      "principal": "E_REVIEWER",
+      "uid": 24101,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0001",
+      "phase": "after_revocation",
+      "observed": "DENY_PERMISSION"
+    },
+    {
+      "principal": "E_REVIEWER",
+      "uid": 24101,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0002",
+      "phase": "after_revocation",
+      "observed": "DENY_PERMISSION"
+    },
+    {
+      "principal": "C_AUTHOR",
+      "uid": 24102,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0001",
+      "phase": "after_revocation",
+      "observed": "DENY_PERMISSION"
+    },
+    {
+      "principal": "C_AUTHOR",
+      "uid": 24102,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "v0002",
+      "phase": "after_revocation",
+      "observed": "DENY_PERMISSION"
+    },
+    {
+      "principal": "PUBLIC_CI",
+      "uid": 24104,
+      "operation": "read_by_actual_unprivileged_process",
+      "version": "public-input-v1",
+      "phase": "after_revocation",
+      "observed": "ALLOW"
+    }
+  ],
+  "total": 17,
+  "observed_matches_expected": 17,
+  "caveat": "These are actual local permission trial outcomes, not the provider-side logs required for ACL_VERIFIED. No real Gold, provider audit, share links or historical timestamps were tested."
+}
