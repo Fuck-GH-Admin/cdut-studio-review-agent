@@ -1,0 +1,227 @@
+{
+  "schema": "cdut-g05-e-v1p1-source-lock/v1",
+  "status": "RESEARCH_SOURCE_LOCK",
+  "research_date": "2026-10-15",
+  "scope": "G05 T01-T06 candidate labels from user; A/B identity pending",
+  "e1_gate": "NOT_ASSESSED",
+  "e1_pass": false,
+  "independence_attestation": {
+    "this_session_read_c_rule_body": false,
+    "this_session_read_c_author_business_handoff": false,
+    "this_session_read_d_gold_or_result": false,
+    "this_session_read_old_e_defect_or_source_verdict": false,
+    "checked_old_e_only_metadata": true,
+    "unrelated_prior_session_exposure": "not independently verifiable; this new session did not query it",
+    "contamination_events": [],
+    "historical_nonexposure_proof": "not claimed"
+  },
+  "denominators": {
+    "independently_generated_candidates": 25,
+    "high_priority_sampled": 0,
+    "formal_a_b_rule_denominator": null,
+    "formal_e1_full_denominator": null,
+    "by_status_all": {
+      "U": 5,
+      "F": 12,
+      "S": 8
+    },
+    "by_status_sampled": {}
+  },
+  "github": {
+    "repo": "Fuck-GH-Admin/cdut-studio-review-agent",
+    "branch": "research/g05-e-v1p1-r03-source",
+    "main_snapshot_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+    "source_a_manifest": {
+      "found": false,
+      "sha": null
+    },
+    "source_b_t01_to_t06": {
+      "found": false,
+      "sha": null
+    },
+    "read_only_repo_files": [
+      {
+        "path": "README.md",
+        "git_blob_sha": "b8e00b128c53c65c10cb1620a69bf626d7ed85a0"
+      },
+      {
+        "path": "AGENTS.md",
+        "git_blob_sha": "32011892791a7a146d700e5b9ca752026f0a74b8"
+      }
+    ],
+    "prior_audit_metadata_only": [
+      {
+        "ref": "audit/g05-e-v1-r01",
+        "head_sha": "0d5a1f493b2aeadcc6d65503a433e19a052ae539",
+        "reports_opened": false
+      },
+      {
+        "ref": "audit/g05-e-v1-r02",
+        "head_sha": "20a65e5f47626e438a050852b19bf0643eeed3be",
+        "reports_opened": false
+      }
+    ],
+    "published_files": [
+      {
+        "path": "docs/design/review-agent/business-templates/G05/research/E-v1p1-r03-source/independent-source-register.md",
+        "git_blob_sha": "a87c979a4220abd938b1a911aa5ea045bb81e270",
+        "commit_sha": "f1f43c6080af1408e19540e8cc9e28638ec885eb"
+      },
+      {
+        "path": "docs/design/review-agent/business-templates/G05/research/E-v1p1-r03-source/adversarial-cases.md",
+        "git_blob_sha": "4d76d362441ed80edb1a093cf027696ca2a01889",
+        "commit_sha": "70582eceb03db33d6b99b718898c8344a4964ca9"
+      }
+    ]
+  },
+  "official_sources": [
+    {
+      "id": "S01",
+      "title": "成都理工大学会议管理办法（试行），成理校发〔2025〕1号",
+      "date_label": "2025-01-02",
+      "url": "https://kjc.cdut.edu.cn/__local/4/8B/F5/215698571B2D5ED2946921CC3A2_D50922B2_32715.pdf",
+      "location": "第2、5、7、8、15条；PDF第2、4-8页",
+      "verification_note": "校级PDF文本可检索；网页截图工具未能获得页面图片，视觉校验未完成",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    },
+    {
+      "id": "S02",
+      "title": "成都理工大学举办（承办）国际会议管理规定（试行）",
+      "date_label": "2017-10-08（网页2018-09-01发布）",
+      "url": "https://dice.cdut.edu.cn/info/1030/1101.htm",
+      "location": "第2、7-16、20条",
+      "verification_note": "校国际交流与合作处网页完整正文",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    },
+    {
+      "id": "S03",
+      "title": "财务报销应知应会手册",
+      "date_label": "2025-04",
+      "url": "https://jcc.cdut.edu.cn/__local/D/23/C5/05E72CFA4532D2A2946EBEBE258_FFC48E39_8EEE3.pdf",
+      "location": "PDF第9、11、14-16页（页面索引P8/P10/P13-P15）",
+      "verification_note": "官方PDF文本可检索；截图缓存失败；属办理口径/指南，不能单独代替发文",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    },
+    {
+      "id": "S04",
+      "title": "关于进一步完善科研项目和经费管理的实施办法，成理校发〔2024〕20号",
+      "date_label": "2024",
+      "url": "https://kjc.cdut.edu.cn/__local/0/81/F8/F213AF25A8DDE36DF9DC104CDD7_3BB8AB3B_3BB05.pdf",
+      "location": "第8、9条（特别是出国经费类别、校内科研会议报销）",
+      "verification_note": "PDF搜索片段与S03交叉支持；全篇读取超时，具体细目降级S",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    },
+    {
+      "id": "S05",
+      "title": "成都理工大学邀请国（境）外人员访问管理规定（试行）",
+      "date_label": "2017-10-06（网页2018-09-01发布）",
+      "url": "https://dice.cdut.edu.cn/info/1020/1103.htm",
+      "location": "第二、三、四、五、六部分",
+      "verification_note": "校国际交流与合作处公开正文；未找到明确废止公告",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    },
+    {
+      "id": "S06",
+      "title": "成都理工大学教职工出国（境）进修管理办法实施细则（试行）",
+      "date_label": "网页2018-09-01发布",
+      "url": "https://dice.cdut.edu.cn/info/1034/1085.htm",
+      "location": "二、申报准备；三、审签；四、派出手续",
+      "verification_note": "校外事主管部门网页；需核对现在执行版本",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    },
+    {
+      "id": "S07",
+      "title": "2025年国家留学基金资助出国留学人员选派指南",
+      "date_label": "2025-01-08",
+      "url": "https://cie.cdut.edu.cn/info/1048/1353.htm",
+      "location": "第2、3条",
+      "verification_note": "校官网转载国家留学基金委年度选派指南；只用于2025项目分类举例，不推及2026",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    },
+    {
+      "id": "S08",
+      "title": "关于开展2025年大学生寒假返家乡社会实践活动的通知",
+      "date_label": "2025-01-06",
+      "url": "https://youth.cdut.edu.cn/info/1006/2821.htm",
+      "location": "七、工作要求",
+      "verification_note": "校团委特定项目通知，不是所有外出活动的普遍规程",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    },
+    {
+      "id": "S09",
+      "title": "成都理工大学本科学生实习管理办法（官网PDF搜索可见）",
+      "date_label": "PDF搜索显示2022年前后公开",
+      "url": "https://cnae.cdut.edu.cn/__local/B/CD/55/1347E45BA0243810CF9A9F4D250_EAEE3C55_77A641.pdf",
+      "location": "第9-13条",
+      "verification_note": "仅检索到相关条文片段；全篇/效力未核，降级S",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    },
+    {
+      "id": "S10",
+      "title": "四川省因公临时出国经费管理办法（学校财务处转载）",
+      "date_label": "官网旧版页面",
+      "url": "https://jcc.cdut.edu.cn/info/1033/1661.htm",
+      "location": "任务及预算审批、经费管理章节",
+      "verification_note": "上位省级经费规则；执行具体版本须复查川财行〔2019〕80号",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    },
+    {
+      "id": "S11",
+      "title": "成都理工大学国际交流与合作处部门简介",
+      "date_label": "未载明确制定日期",
+      "url": "https://dice.cdut.edu.cn/bmgk/bmjj.htm",
+      "location": "职责第4-7项",
+      "verification_note": "职责是路由线索，不等于完整审批义务",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    },
+    {
+      "id": "S12",
+      "title": "教育部令第41号普通高等学校学生管理规定（学校转载）",
+      "date_label": "教育部令第41号",
+      "url": "https://mee.cdut.edu.cn/info/1033/1104.htm",
+      "location": "第44-46条",
+      "verification_note": "国家层面学生团体原则，不代表本校每种活动提交清单",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    },
+    {
+      "id": "S13",
+      "title": "2026年度博士后国（境）外交流项目申报通知",
+      "date_label": "2026",
+      "url": "https://rsc.cdut.edu.cn/info/1031/4050.htm",
+      "location": "（四）学术交流项目、申报条件与工作安排",
+      "verification_note": "仅博士后项目，不能作为全校师生普适资助",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    },
+    {
+      "id": "S14",
+      "title": "学校科研会议专项制度官网索引：成理校发〔2017〕19号",
+      "date_label": "索引2017-07-31",
+      "url": "https://kjc.cdut.edu.cn/zczd/xxkjzc/2.htm",
+      "location": "学校科技政策目录相应条目",
+      "verification_note": "确认发文存在；原正文及废止条款尚未完整获取",
+      "original_content_sha256": null,
+      "original_content_sha_reason": "No original byte-level download freeze; URL+section only, do not substitute search excerpt SHA"
+    }
+  ],
+  "evidence_limitations": [
+    "A unified directory and all G05 B original reports/source manifests not accessible; do not claim A/B official mapping or source SHA.",
+    "PDF screenshot attempts failed with cache-miss; extracted text is cross-checked only where official secondary source exists.",
+    "Source validity and revocation evidence for 2017/2018 policies remain unverified.",
+    "No C/D answer content or prior E defect body was used to design candidates/cases.",
+    "This freeze does not satisfy the formal independent E1 gate."
+  ],
+  "stop": "STOP_AFTER_SOURCE_LOCK_AND_WAIT_FOR_SECOND_USER_INSTRUCTION"
+}
