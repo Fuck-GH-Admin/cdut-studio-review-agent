@@ -14,7 +14,7 @@
 
 - `technicalTemplateRuntime=NOT_RUN`；`onlineModelAccuracy=NOT_RUN`；`administrativeAuthority=NOT_VERIFIED`。无真实业务 D4 / 产品 E2E / 校方正式权限的通过宣称。
 - 继承的 r01：E0 的 `BLOCKED_INPUT`、尚未开展 E1–E4 的真实状态、G07 七模板 A 母集。
-- r02 新验证：七份 C MD Git blob 实际可查；四份 INPUT_ONLY ZIP 和 T02 B 研究 ZIP 的 **本 E SHA256/CRC 一致**；作者单方面 D 原包摘要及其 ACL 缺口已追踪，不作为独立验收通过。
+- r02 新验证：七份 C MD Git blob 实际可查，7/7 母版 SHA-256 与作者报告精确匹配；四份 INPUT_ONLY ZIP 和 T02 B 研究 ZIP 的 **本 E SHA256/CRC 一致**；作者单方面 D 原包摘要及其 ACL 缺口已追踪，不作为独立验收通过。
 - r02 未验证：任何 Gold 答案或正确性；当前成都理工相关制度的原文效力；C 规则完整性；金标制作初始独立性；跨模板冲突；P0/P1/P2 业务缺陷复验。
 - 若把 `PARTIAL` 横向状态误解为 E3 已完成，应以 **`E3 NOT_STARTED`** 为准；这一 `PARTIAL` 仅描述母集存在且可列举。
 
