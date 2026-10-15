@@ -9,7 +9,7 @@ import re
 import sys
 
 FORBIDDEN_JSON_KEY = re.compile(
-    r"(^|_)(status_counts|gold_counts|label_distribution|case_distribution|expected_?(label|answer|decision|outcome)|gold_?(answer|label|outcome)|presigned_url|trusted_mock)(_|$)|(^|_)(private|restricted|gold)(_[a-z0-9]+)*_(url|uri|path|link|token|key)(_|$)", re.I)
+    r"(^|_)(status_counts|gold_counts|label_distribution|case_distribution|case_result_distribution|expected_?(label|answer|decision|outcome)|gold_?(answer|label|outcome)|presigned_url|trusted_mock)(_|$)|(^|_)(status|label|expected|gold|case_result|outcome|decision)(_[a-z0-9]+)*_(count|counts|distribution|histogram|frequency|breakdown|answers|labels)(_|$)|(^|_)(private|restricted|gold)(_[a-z0-9]+)*_(url|uri|path|link|token|key|location|locator|bucket)(_|$)", re.I)
 SENSITIVE_TEXT = [
     ("SIGNED_URL", re.compile(r"(?:X-Amz-(?:Signature|Credential)|X-Goog-Signature|sig=)[^\s\"'<>]*", re.I)),
     ("JWT_LIKE", re.compile(r"\beyJ[A-Za-z0-9_-]{15,}\.eyJ[A-Za-z0-9_-]{15,}\.[A-Za-z0-9_-]{12,}\b")),
