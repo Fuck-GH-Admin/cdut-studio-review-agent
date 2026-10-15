@@ -1,5 +1,10 @@
 # 30｜后台案卷审核：跨会话接手指南（PR #21）
 
+## 最新跨会话入口：50 总交接与 51 新会话提示（2026-10-15）
+
+请先读 [50｜完整历史、分支差异与验证交接](50-p06-current-version-handoff-20261015.md)，直接使用 [51｜当前版本验证新会话提示](51-p06-current-version-validation-new-session-prompt-20261015.md)。50/51 已根据最新版 main@8989941b、审核PR@d9c22c40 和上游@c179f257 对齐现行49号 L02-U0→U1；下一会话先重新查远端 HEAD/CI/ancestry，再开展候选版本兼容性审计，不直接从47号L02-00的旧业务顺序开始。本次仅交接，无新的U0/U1实测。P06-S02 NOT ACCEPTED / P06 PARTIAL / Draft/MERGE NO-GO；P05外部阻断与P04永久安全记录保留。
+
+
 ## 最新接手入口：49 号上游整合后基线兼容（2026-10-15）
 
 **先读 [49｜上游影响与新执行顺序](49-upstream-impact-replan-20261015.md) → [48｜main 整合原始报告](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/8989941b6fb5651564e32d11c4215b6a6d5a5209/docs/design/review-agent/48-upstream-cloud-main-integration-20261015.md) → [47｜实测后业务细则](47-p06-evidence-driven-followup-plan-20261015.md) → [46｜旧实机证据](46-p06-recheck-live-local-acceptance-20261014.md) → [29｜唯一 LIVE 状态](29-background-session-preflight-audit.md) → [31｜L02-U0 执行提示](31-background-session-continuation-prompts.md)**。最新版 `main@8989941b` 是新集成技术目标，审核 Draft 分支 `60e805cf` 尚未纳入新 Office 索引与只读侧栏。先进行 `L02-U0` / `L02-U1`，再调查 E06-C 失败与现有 A/B/C；不把 46 号实机旧 SHA 视为更新后版本的通过证明，不重复迁移已完成代码、不得盲目 merge/rebase。当前新批次 PLANNED，PR #21 Draft/MERGE NO-GO，不修改上游项目。

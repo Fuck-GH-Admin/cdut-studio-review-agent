@@ -1,5 +1,8 @@
 # 29｜审核受控后台会话：开工前依赖审计与阻断门禁
 
+> **2026-10-15 跨会话交接入口（仅索引，不是新验收）**：[50｜当前版本与历史总交接](50-p06-current-version-handoff-20261015.md)、[51｜下一会话可复制任务提示](51-p06-current-version-validation-new-session-prompt-20261015.md)。优先仍为49号的 L02-U0→L02-U1，旧47的L02-00在其后。**本文件LIVE-01～08表是唯一判词；本次文档更新不改变任何行、任何P04/P05风险或PR Draft/MERGE NO-GO状态。**
+
+
 > **新会话/新负责人必读**：[30｜项目交接快照](30-background-session-handoff.md)、[31｜接手提示词](31-background-session-continuation-prompts.md)、[32｜P05 阶段完整验收与本地手册](32-p05-stage-acceptance-and-local-gates.md)。**P05-S01～S06 六专项 43/43 受控 PASS；中心实际多 viewer 路由 BLOCKED、Pocket 上游补丁尚未应用/运行，P05 整体 PARTIAL、合并 NO-GO。**P04 路径型文件 IPC 原已枚举路径和本次最终目标变更均有受控补丁，但真实双窗口、IPC 与 LIVE-06/08 仍是开放门禁。
 
 > 2026-10-12；初始源码审计基线 `main@dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`；后续代码与受控探针仅在 Draft PR #21 分支实施。配套 [27 号实施规范](27-background-review-session-proposal.md)、[28 号阶段交付](28-review-stage-delivery-status.md)。**文档中的 PASS 只对所附冻结提交、测试环境与覆盖范围有效；真实 Pi/Electron/Pocket 验收尚未完成，不得据此合并。**
