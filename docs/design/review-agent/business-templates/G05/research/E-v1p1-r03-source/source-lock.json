@@ -17,7 +17,7 @@
   },
   "denominators": {
     "independently_generated_candidates": 25,
-    "high_priority_sampled": 0,
+    "high_priority_sampled": 21,
     "formal_a_b_rule_denominator": null,
     "formal_e1_full_denominator": null,
     "by_status_all": {
@@ -25,7 +25,11 @@
       "F": 12,
       "S": 8
     },
-    "by_status_sampled": {}
+    "by_status_sampled": {
+      "F": 12,
+      "S": 5,
+      "U": 4
+    }
   },
   "github": {
     "repo": "Fuck-GH-Admin/cdut-studio-review-agent",
@@ -64,8 +68,8 @@
     "published_files": [
       {
         "path": "docs/design/review-agent/business-templates/G05/research/E-v1p1-r03-source/independent-source-register.md",
-        "git_blob_sha": "a87c979a4220abd938b1a911aa5ea045bb81e270",
-        "commit_sha": "f1f43c6080af1408e19540e8cc9e28638ec885eb"
+        "git_blob_sha": "986d2c431442c4aaa487b0408d5eddb6030eb186",
+        "commit_sha": "2f23f1cba55b28252b5dd0ebf9861bd36a528fa0"
       },
       {
         "path": "docs/design/review-agent/business-templates/G05/research/E-v1p1-r03-source/adversarial-cases.md",
@@ -223,5 +227,6 @@
     "No C/D answer content or prior E defect body was used to design candidates/cases.",
     "This freeze does not satisfy the formal independent E1 gate."
   ],
-  "stop": "STOP_AFTER_SOURCE_LOCK_AND_WAIT_FOR_SECOND_USER_INSTRUCTION"
+  "stop": "STOP_AFTER_SOURCE_LOCK_AND_WAIT_FOR_SECOND_USER_INSTRUCTION",
+  "revision_note": "Fixed independent-source-register.md sampled denominator and field alignment before freeze finalization."
 }
