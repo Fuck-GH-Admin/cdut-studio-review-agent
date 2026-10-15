@@ -1,0 +1,91 @@
+{
+  "schema": "G05_E_v1p1_r03_research_manifest/v1",
+  "status": "RESEARCH_CROSSCHECK",
+  "generated_for": "r03 targeted G05 high-value research",
+  "root": "docs/design/review-agent/business-templates/G05/acceptance/E-v1.1/research-r03",
+  "branch": "research/g05-e-v1p1-r03",
+  "source_lock": {
+    "pre_existing_commit": "b122256cf09e181bf5befe0a88a243af389b48ff",
+    "committed_at_utc": "2026-10-15T14:24:41Z",
+    "blobs": {
+      "independent-source-register.md": "986d2c431442c4aaa487b0408d5eddb6030eb186",
+      "adversarial-cases.md": "4d76d362441ed80edb1a093cf027696ca2a01889",
+      "source-lock.json": "db4174b4881a026cce031bb438c9fde833c4e777"
+    }
+  },
+  "audits": [
+    {
+      "kind": "r01",
+      "sha": "0d5a1f493b2aeadcc6d65503a433e19a052ae539",
+      "pr": 25,
+      "draft": true
+    },
+    {
+      "kind": "r02",
+      "sha": "20a65e5f47626e438a050852b19bf0643eeed3be",
+      "pr": 65,
+      "draft": true
+    }
+  ],
+  "c_reference": {
+    "library_file_name": "G05-T06_正式业务模板_MD_v0.1.md",
+    "r02_historical_sha256": "0775e73d1ce248b735fc963e93583e765d89eb4e810d27b48c1d803f784b7bcb",
+    "current_library_bytes_rehashed": false,
+    "author_production_commit": "NOT_VERIFIED"
+  },
+  "source_records": [
+    {
+      "id": "INTL-2017-ARTICLE-2",
+      "url": "https://dice.cdut.edu.cn/info/1030/1101.htm",
+      "locator": "Article 2",
+      "verified_historical_text": true,
+      "effectiveness_2026": "U"
+    },
+    {
+      "id": "MEET-2025-A5-3",
+      "url": "https://kjc.cdut.edu.cn/__local/4/8B/F5/215698571B2D5ED2946921CC3A2_D50922B2_32715.pdf",
+      "locator": "Art5 para3 pdf P3-P4",
+      "verified_document_text": true,
+      "latest_2026_revision_check": "U",
+      "pdf_screenshot": "CACHE_MISS"
+    },
+    {
+      "id": "VISIT-2017-SECTION-3",
+      "url": "https://dice.cdut.edu.cn/info/1020/1103.htm",
+      "locator": "Section III paragraphs 1-3",
+      "verified_historical_text": true,
+      "effectiveness_2026": "U"
+    }
+  ],
+  "counts": {
+    "new_source_fact_count": 2,
+    "discriminating_case_count": 2,
+    "static_reproducible_business_mapping_gaps": 2,
+    "actual_runtime_business_defects_verified": 0,
+    "excluded_hypotheses": 2,
+    "bounded_unknowns": 5
+  },
+  "case_ids": [
+    "G05-R03-F01",
+    "G05-R03-F02",
+    "G05-R03-F03",
+    "G05-R03-F04"
+  ],
+  "security": {
+    "hidden_gold_read": false,
+    "old_gold_access": false,
+    "private_school_systems_used": false,
+    "C_read_only": true,
+    "B_read_only": true,
+    "no_A_B_C_D_modified": true
+  },
+  "gates": {
+    "formal_E1": "NOT_PASSED",
+    "formal_E2": "NOT_RUN",
+    "research_crosscheck": "COMPLETED",
+    "d4": "NOT_RUN",
+    "pi": "NOT_RUN",
+    "online_model_accuracy": "NOT_RUN",
+    "university_administrative_authority": "NOT_VERIFIED"
+  }
+}
