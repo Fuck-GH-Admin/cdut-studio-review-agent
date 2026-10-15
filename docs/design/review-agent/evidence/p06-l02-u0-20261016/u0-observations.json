@@ -1,0 +1,60 @@
+{
+  "stage": "P06-RECHECK-LIVE-02/L02-U0",
+  "asOf": "2026-10-16",
+  "status": "PARTIAL/BLOCKED_ENV",
+  "candidate": {
+    "commit": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+    "tree": "b3df4773afc20ee46facd2366f35c5a78ee99e98",
+    "localCheckout": false,
+    "localInstall": "NOT-RUN",
+    "localBuild": "NOT-RUN",
+    "localTests": "NOT-RUN"
+  },
+  "reviewBranchBeforeEvidence": "ad92e3965d43f551849d5e490a4c8e5a134d1ad8",
+  "upstream": "c179f2575d5bb5abdc883268fb885d1a6449325e",
+  "pr": {
+    "draft": true,
+    "merged": false
+  },
+  "ci": [
+    {
+      "head": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "run": 38749615086,
+      "result": "SUCCESS"
+    },
+    {
+      "head": "6ff93be71399683fb21c9b5e36cedce05d1945b8",
+      "run": 38748810136,
+      "result": "FAILURE_FIRST_INTEGRATION"
+    },
+    {
+      "head": "ad92e3965d43f551849d5e490a4c8e5a134d1ad8",
+      "run": 38764024870,
+      "result": "SUCCESS_CURRENT_GATE_ONLY"
+    }
+  ],
+  "local": {
+    "firstFailure": "00-clone",
+    "exit": 128,
+    "reason": "DNS_CANNOT_RESOLVE_GITHUB",
+    "stderrSha256": "6c6f96c3bc6d34f5acaab99d74595a196f830d8563beae90060397b80f75519d"
+  },
+  "findings": [
+    {
+      "id": "D-U0-01",
+      "ownership": "UPSTREAM_COMMON",
+      "runtime": "NOT-RUN"
+    },
+    {
+      "id": "D-U0-02",
+      "ownership": "REVIEW_INTEGRATION",
+      "status": "UNPROVEN_MAPPING"
+    },
+    {
+      "id": "D-U0-03",
+      "ownership": "REVIEW_SECURITY",
+      "runtime": "NOT-RUN"
+    }
+  ],
+  "u1Admitted": false
+}
