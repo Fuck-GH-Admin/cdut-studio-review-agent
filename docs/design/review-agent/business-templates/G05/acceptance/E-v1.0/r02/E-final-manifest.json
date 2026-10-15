@@ -1,0 +1,68 @@
+{
+  "schema": "G05-E-r02-final-manifest-v1",
+  "snapshotAt": "2026-10-15",
+  "auditor": "G05-E-r02-independent-review-session",
+  "repo": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "r01ImmutableHead": "0d5a1f493b2aeadcc6d65503a433e19a052ae539",
+  "r01PR": 25,
+  "r02Branch": "audit/g05-e-v1-r02",
+  "r02Files": [
+    {
+      "path": "docs/design/review-agent/business-templates/G05/acceptance/E-v1.0/r02/README.md",
+      "sha256": "c27b16926d7b0c6ce280541bc7bc26a77419088da0a775011aa1da129641f4ed",
+      "gitBlobSha": "d2e89372633b7474479fe343e54cb41db205da44",
+      "bytesUtf8": 1198
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G05/acceptance/E-v1.0/r02/E0-delta-input-manifest.json",
+      "sha256": "beec24b60f06d7e5e3cc2c62cfb8c0e0253fa5c6609c4ae2691142b9311c32e0",
+      "gitBlobSha": "7513212105ef610287096205b6718f1fa75f7453",
+      "bytesUtf8": 9342
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G05/acceptance/E-v1.0/r02/E0-delta-audit.md",
+      "sha256": "96eff561c0af8efd097fbf46257c582b94676dc2260da05bdfc4f7015a9f3041",
+      "gitBlobSha": "dd640847a10c93eaf47e8e1512fd586ca06c4b5e",
+      "bytesUtf8": 4349
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G05/acceptance/E-v1.0/r02/E1-independent-source-precheck.md",
+      "sha256": "d8766ceab54bf9425cc719c0cd19dbaa092f454907bcd9996095dbda98cbed95",
+      "gitBlobSha": "d3525d8b75de08811d10b1db73d0d634d282a4f2",
+      "bytesUtf8": 2354
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G05/acceptance/E-v1.0/r02/E1-blind-handoff.md",
+      "sha256": "26d8bc8cec99c609f86e373ec47bc78d9d31b6791cafdd59fadd1ea1bf31c6b6",
+      "gitBlobSha": "33bcba0d4612dee2ee2456e838a5ffac7770adae",
+      "bytesUtf8": 2355
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G05/acceptance/E-v1.0/r02/E4-issue-ledger-delta.md",
+      "sha256": "f16eb076045208aa0ed0ed1a7524c0440f384cc518432c3f893fbd4076f6b02b",
+      "gitBlobSha": "45be94bbb175d61b48edc4cc47b2c034e404f0b7",
+      "bytesUtf8": 3092
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G05/acceptance/E-v1.0/r02/E-final-verdict.md",
+      "sha256": "07501418cf0e6ae100caa57e6ee946ecfb1dfe65c7d69297f5284396baf87225",
+      "gitBlobSha": "fe2c2692b704302accb7a6b28fa0b249faa3714b",
+      "bytesUtf8": 3724
+    }
+  ],
+  "evidenceSource": "GitHub branch file exact bytes / E reviewer SHA-256 calculation",
+  "issueLedger": {
+    "inheritedOpen": 5,
+    "newOpen": 1,
+    "closed": 0
+  },
+  "statuses": {
+    "E0": "PARTIAL_BLOCKED_INPUT",
+    "E1": "NOT_LOCKED_FRESH_REVIEWER_REQUIRED",
+    "E2": "NOT_RUN",
+    "E3": "NOT_RUN",
+    "E4": "ISSUE_TRIAGE_ONLY"
+  },
+  "security": "PUBLIC_NON_GOLD_METADATA_ONLY",
+  "selfHash": "NOT_SELF_REFERENTIAL; Git blob SHA on created final-manifest file provides immutable Git identity"
+}
