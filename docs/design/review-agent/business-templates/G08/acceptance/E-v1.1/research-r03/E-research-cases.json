@@ -1,0 +1,147 @@
+{
+  "schema": "G08-E-v1.1-r03-research-cases-v1",
+  "date": "2026-10-16",
+  "reference": {
+    "sourceLockGitCommit": "0404c261af59b42d548dde300b6152e698c34e58",
+    "r01": "d5901f1d6ed03454fe1c00201e20d4a373834b75",
+    "r02": "f44f91c2cea545176d87bcc3ec517be7678ad779",
+    "cFrozenZipT03Sha256": "a2fba3450964c5f75128c17a3e0fd9399ab0525f4f4fc2ddfb879109b1bb088e",
+    "bFrozenZipT03Sha256": "6af5301c5c0938148b3e7a0beb6daa43fad2e150ee5491a5629ad6a8ea67efed"
+  },
+  "caseRecords": [
+    {
+      "dutyId": "R03-SD-01",
+      "sourceLocator": "https://www.sdaeu.edu.cn/bgs/info/1008/1912.htm#评价（第五部分）",
+      "applicability": "F only for Shandong Agriculture and Engineering University's integrated complaint platform; S if explicitly copied to hypothetical simulator; NOT CDUT",
+      "changedFact": "Second-round satisfaction rating=一般 -> 不满意, holding case stage=second feedback, user and all other facts fixed",
+      "expectedDecision": "一般 -> resolved/close; 不满意 -> ask reason and school provides final result; neither implies infinite automated third round",
+      "admissibleAlternatives": "AI recommendation only; authorized human/platform executes after trusted status check",
+      "evidenceAnchors": [
+        "original platform response and second-round phase from trusted backend",
+        "rating plus reasons",
+        "authorized workflow log"
+      ],
+      "failureMode": "Treat all not-satisfied options as an automatically reopenable third cycle",
+      "confidence": "HIGH_OFFICIAL_TEXT",
+      "unresolved": "Actual platform/API, role and response logs unavailable; not a CDUT mandate",
+      "factType": "F+S",
+      "validation": "SOURCE_CONFIRMED; ENGINE_NOT_RUN"
+    },
+    {
+      "dutyId": "R03-SD-02",
+      "sourceLocator": "https://www.sdaeu.edu.cn/bgs/info/1008/1912.htm#评价（第五部分）",
+      "applicability": "F Shandong platform; S explicit simulation only",
+      "changedFact": "Elapsed 10 days after application submission vs elapsed 10 days after formally recorded response",
+      "expectedDecision": "Only ten days after response feedback and without rating may trigger that platform's default closure; application date alone insufficient",
+      "admissibleAlternatives": "Cannot infer delivery date; recommend verification if backend timer missing",
+      "evidenceAnchors": [
+        "submitted_at",
+        "trusted_feedback_at",
+        "trusted_unrated_status",
+        "policy_version"
+      ],
+      "failureMode": "Start 7/10-day timer from initial filing date or apply to CDUT mailbox",
+      "confidence": "HIGH_OFFICIAL_TEXT",
+      "unresolved": "Actual response delivery event/trusted timer configuration not available",
+      "factType": "F+S",
+      "validation": "SOURCE_CONFIRMED; ENGINE_NOT_RUN"
+    },
+    {
+      "dutyId": "R03-XAWL-01",
+      "sourceLocator": "https://baoweichu.xawl.edu.cn/info/1031/1161.htm §12",
+      "applicability": "F only Xi'an University of Arts and Science nonclaimed valuable lost items; upper Civil Code caveat distinct",
+      "changedFact": "Beyond 6 months without valid year-from-notice and approval -> valid later stage with requisite authorization; holding owner/legal facts fixed",
+      "expectedDecision": "At >6 months continue safekeeping; cannot auto-transmit title/erase; later legal disposal still requires competent authorization and procedure",
+      "admissibleAlternatives": "Flag legal/competent custodian check, no auto-disposal",
+      "evidenceAnchors": [
+        "official notice date",
+        "elapsed periods",
+        "written school approval",
+        "disposition notice",
+        "actual custody log"
+      ],
+      "failureMode": "Treat 30/90/180 days from check-in as automatic state ownership",
+      "confidence": "HIGH_OFFICIAL_TEXT",
+      "unresolved": "CDUT-specific noncard retention/release rules unverified",
+      "factType": "F",
+      "validation": "SOURCE_CONFIRMED; ENGINE_NOT_RUN"
+    },
+    {
+      "dutyId": "R03-EDU-01",
+      "sourceLocator": "https://www.moe.gov.cn/jyb_xxgk/xxgk/zhengce/guizhang/202112/t20211206_585064.html §§59–61",
+      "applicability": "F Chinese university student administrative disciplinary appeal within regulation; not generic complaint mailbox",
+      "changedFact": "Complaint email received vs signed written appeal actually received by student appeal committee",
+      "expectedDecision": "Ten-day written appeal window runs from delivery of treatment/discipline decision; committee fifteen-day review from receiving actual written appeal; email reception alone cannot certify legal acceptance",
+      "admissibleAlternatives": "Guide to valid formal recipient and verify authoritative official acknowledgment",
+      "evidenceAnchors": [
+        "decision-service confirmation",
+        "written appeal original",
+        "committee receipt",
+        "review decision/extension authorization"
+      ],
+      "failureMode": "Treat regular mailbox complaint as statutory formal appeal or swap filing and review clocks",
+      "confidence": "HIGH_OFFICIAL_TEXT",
+      "unresolved": "CDUT actual competent template stable ID and current intake route not verified",
+      "factType": "F",
+      "validation": "SOURCE_CONFIRMED; ENGINE_NOT_RUN"
+    },
+    {
+      "dutyId": "R03-CDUT-01",
+      "sourceLocator": "https://www.cdut.edu.cn/index/sjxxxzxx.htm; https://dbxb.cdut.edu.cn/jgsz.htm",
+      "applicability": "U CDUT mailbox backend auto-reopen privilege, F mailbox is feedback channel and party office handles mail",
+      "changedFact": "Person references an alleged past case number but no trusted access to old case status",
+      "expectedDecision": "May record/route request or ask officials to check, may NOT output system reopened/officially processed",
+      "admissibleAlternatives": "Pending verification/manual confirmation; no automatic legal-status changes",
+      "evidenceAnchors": [
+        "mail original",
+        "office permissions",
+        "authentic case ID and event log"
+      ],
+      "failureMode": "Turn user text into authorized case transition",
+      "confidence": "HIGH_BOUNDARY_WITH_U",
+      "unresolved": "No institutionally approved API/roles/version/current process",
+      "factType": "U",
+      "validation": "SOURCE_BOUNDARY_CONFIRMED; AUTHORIZATION_NOT_VERIFIED"
+    },
+    {
+      "dutyId": "R03-CDUT-02",
+      "sourceLocator": "https://www.cdut.edu.cn/index/sjxxxzxx.htm; https://cece.cdut.edu.cn/info/1063/8771.htm",
+      "applicability": "F only different CDUT school-level vs Environment & Civil Engineering college channels; effectiveness currently bounded by page age",
+      "changedFact": "Same anonymous well-formed advice sent to school-level mailbox vs faculty mailbox, unchanged identity/contact/body",
+      "expectedDecision": "School-level `建议尽量` real name is NOT automatic reject; college `匿名原则上不予回复` concerns personalized response, not proved ban on registration",
+      "admissibleAlternatives": "Intake with reply limitations and personal-data protection; manual channel confirmation",
+      "evidenceAnchors": [
+        "actual target email/channel",
+        "official notices",
+        "anonymous author/contact fields"
+      ],
+      "failureMode": "Promote a faculty reply default into school-wide mandatory refusal",
+      "confidence": "HIGH_TEXT_SCOPE",
+      "unresolved": "School and college current amendments or actual mailbox process not checked",
+      "factType": "F+U",
+      "validation": "SOURCE_SCOPE_CONFIRMED; ENGINE_NOT_RUN"
+    },
+    {
+      "dutyId": "R03-CROSSCHECK-T03-R31",
+      "sourceLocator": "https://www.sdaeu.edu.cn/bgs/info/1008/1912.htm §（五）评价; B/T03 v1.1 `G08-T03_03_候选审核规则与权限边界.md`:48; frozen C/T03 v2.1 `原C作者产物_v0.1/G08-T03_正式业务模板_MD_v0.1.md`:232,277–278",
+      "applicability": "F Shandong integrated platform / C SHANDONG_PLATFORM profile only; not CDUT",
+      "changedFact": "At FIRST feedback for a trusted responded case, rating=不满意 vs rating=一般 while user separately chooses 继续办理",
+      "expectedDecision": "Both choices can proceed to second submission under Shandong source; not only `不满意+继续`",
+      "admissibleAlternatives": "Any state recommendation contingent on trusted case and authorized system; C R30 and REL-06 already allow 一般+继续",
+      "evidenceAnchors": [
+        "original platform §（五）",
+        "frozen B file R30 and R31",
+        "frozen C lines 232,277,278",
+        "first-round trusted reply",
+        "rating and separate continue choice"
+      ],
+      "failureMode": "B/C R31 incorrectly narrows available valid path; wrong denial or no second-round branch to generally-rated continue",
+      "confidence": "HIGH_SOURCE_AND_STATIC_TEXT",
+      "unresolved": "Engine behavior not executed; C source static contradiction does not establish actual Pi error or Gold invalidity",
+      "factType": "F+S",
+      "validation": "RESEARCH_CROSSCHECK_STATIC_REPRODUCED; ENGINE_NOT_RUN",
+      "issue": "R03-G08-T03-CM-01",
+      "severityCandidate": "P1_RESEARCH_CANDIDATE_NOT_FORMAL"
+    }
+  ]
+}
