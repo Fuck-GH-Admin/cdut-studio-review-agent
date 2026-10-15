@@ -1,0 +1,190 @@
+{
+  "schema": "G03-E-v1.0-r02-delta-manifest-v1",
+  "recordDate": "2026-10-15",
+  "domain": "G03",
+  "name": "场地、设备与公共资源",
+  "r01": {
+    "auditBranch": "audit/g03-e-v1-r01",
+    "auditCommit": "1be43d8bacc015e1fd21949796defcdd3ecb96fc",
+    "auditPr": 24,
+    "e0OriginalFileCount": 51,
+    "originalSourceManifest": "docs/design/review-agent/business-templates/G03/acceptance/E-v1.0/E0-input-manifest.json",
+    "e1Lock": "PARTIAL_SOURCE_SNAPSHOT_ONLY",
+    "e2E3E4": "NOT_STARTED"
+  },
+  "r02": {
+    "branch": "audit/g03-e-v1-r02",
+    "baseCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+    "method": "Incremental only; no overwrite of original A/B/C/D or r01",
+    "checkedAt": "2026-10-15",
+    "metadataOnly": true,
+    "authorBranches": [
+      {
+        "id": "G03-T01",
+        "authorEvidenceBranch": "fix/g03-t01-d-dep001-20261015",
+        "incrementalGitCommit": "a0c77ab0d0903818c5f5dad82d714a0708e3b0d1",
+        "incrementalGitCommitIsOriginalDProductionCommit": false,
+        "libraryPublicArchive": "G03-T01_D_E-r01_DEP-001_增量整改_公开资料包_20261015.zip",
+        "newPublicArchiveSha256": "13fbdac59e3042541fdeae53189a278f5f2872bb1d4eafe1d24597efbb21d662",
+        "sizeBytes": 15022,
+        "crcCheck": "PASS",
+        "publicArchiveForbiddenGoldPathCheck": "NO_GOLD_PAYLOAD_PATHS_FOUND",
+        "originalDContentReplaced": false,
+        "conclusion": "PUBLIC_EVIDENCE_ONLY_NOT_ACL_PROOF"
+      },
+      {
+        "id": "G03-T02",
+        "authorEvidenceBranch": "docs/g03-t02-d-author-e-r01-20261015",
+        "incrementalGitCommit": "6dbdecba4d5413b73d682bdb2526c32ee0dc86f8",
+        "incrementalGitCommitIsOriginalDProductionCommit": false,
+        "libraryPublicArchive": "G03-T02_E-r01_D作者非敏感补证包_20261015.zip",
+        "newPublicArchiveSha256": "fbcae017020ec9bf4134437bb8af5c1cb498422fa90a17e35476c80a6d1c6a6e",
+        "sizeBytes": 10962,
+        "crcCheck": "PASS",
+        "publicArchiveForbiddenGoldPathCheck": "NO_GOLD_PAYLOAD_PATHS_FOUND",
+        "originalDContentReplaced": false,
+        "conclusion": "PUBLIC_EVIDENCE_ONLY_NOT_ACL_PROOF"
+      },
+      {
+        "id": "G03-T03",
+        "authorEvidenceBranch": "fix/g03-t03-d-freeze-selection-20261015",
+        "incrementalGitCommit": "4ee56021ed1918852d46203582ee84fb58c4fb14",
+        "incrementalGitCommitIsOriginalDProductionCommit": false,
+        "libraryPublicArchive": "G03-T03_D_r01_author_freeze_selection_PUBLIC_METADATA.zip",
+        "newPublicArchiveSha256": "1b10428149db28726f1d57a6152ce9736c0484bd4ed9fe14f4a170ce58280991",
+        "sizeBytes": 10979,
+        "crcCheck": "PASS",
+        "publicArchiveForbiddenGoldPathCheck": "NO_GOLD_PAYLOAD_PATHS_FOUND",
+        "originalDContentReplaced": false,
+        "conclusion": "PUBLIC_EVIDENCE_ONLY_NOT_ACL_PROOF"
+      },
+      {
+        "id": "G03-T06",
+        "authorEvidenceBranch": "repair/g03-t06-d-provenance-20261015",
+        "incrementalGitCommit": "8dd230366041ab0695d99b332fdd4f2778fb46ad",
+        "incrementalGitCommitIsOriginalDProductionCommit": false,
+        "libraryPublicArchive": "G03-T06_D_Er01_定向补证公开对接包_20261015.zip",
+        "newPublicArchiveSha256": "9f702c132ae9181326a0500dff007c041e607a6fd0f06ec8b878f15a9a6eca55",
+        "sizeBytes": 11590,
+        "crcCheck": "PASS",
+        "publicArchiveForbiddenGoldPathCheck": "NO_GOLD_PAYLOAD_PATHS_FOUND",
+        "originalDContentReplaced": false,
+        "conclusion": "PUBLIC_EVIDENCE_ONLY_NOT_ACL_PROOF"
+      },
+      {
+        "id": "G03-T07",
+        "authorEvidenceBranch": "fix/g03-t07-d-dep001-003-provenance-20261015",
+        "incrementalGitCommit": "d829114536c3a90b6a4e897ad043c6de987e1af6",
+        "incrementalGitCommitIsOriginalDProductionCommit": false,
+        "libraryPublicArchive": "G03-T07_D_E-r01_DEP001-003_增量证据补齐_20261015.zip",
+        "newPublicArchiveSha256": "cb4b62d761f0b045c8ab76ab325d0358cc90fc37ee056c019e9b3844a5c39fda",
+        "sizeBytes": 12476,
+        "crcCheck": "PASS",
+        "publicArchiveForbiddenGoldPathCheck": "NO_GOLD_PAYLOAD_PATHS_FOUND",
+        "originalDContentReplaced": false,
+        "conclusion": "PUBLIC_EVIDENCE_ONLY_NOT_ACL_PROOF"
+      },
+      {
+        "id": "G03-T08",
+        "authorEvidenceBranch": "docs/g03-t08-d-e-r01-evidence-20261015",
+        "incrementalGitCommit": "89c355d3ebbc286596444ddd4c239d97bf90d5d2",
+        "incrementalGitCommitIsOriginalDProductionCommit": false,
+        "libraryPublicArchive": "G03-T08_Er01_定向补证与Er02交接_非Gold包.zip",
+        "newPublicArchiveSha256": "115e10e4acd67e35cab0799fe642da35cd41eeb3c5192a98759ac7531946201b",
+        "sizeBytes": 10948,
+        "crcCheck": "PASS",
+        "publicArchiveForbiddenGoldPathCheck": "NO_GOLD_PAYLOAD_PATHS_FOUND",
+        "originalDContentReplaced": false,
+        "conclusion": "PUBLIC_EVIDENCE_ONLY_NOT_ACL_PROOF"
+      },
+      {
+        "id": "G03-T09",
+        "authorEvidenceBranch": "fix/g03-t09-d-dep001-003-20261015",
+        "incrementalGitCommit": "edbed534575bd94758b4d5ba13da061f5d8312a9",
+        "incrementalGitCommitIsOriginalDProductionCommit": false,
+        "libraryPublicArchive": "G03-T09_D_r01_DEP001_DEP003_定向补证与E_r02交接_20261015.zip",
+        "newPublicArchiveSha256": "b5936aba9c169e82297108840a31c67e9ea7c47b2421b5d2a2e84b641dc7173f",
+        "sizeBytes": 13539,
+        "crcCheck": "PASS",
+        "publicArchiveForbiddenGoldPathCheck": "NO_GOLD_PAYLOAD_PATHS_FOUND",
+        "originalDContentReplaced": false,
+        "conclusion": "PUBLIC_EVIDENCE_ONLY_NOT_ACL_PROOF"
+      },
+      {
+        "id": "G03-T10",
+        "authorEvidenceBranch": "audit/g03-t10-d-er01-provenance-20261015",
+        "incrementalGitCommit": "0658c43174539fed80e43b6cf5922c0fb78f4787",
+        "incrementalGitCommitIsOriginalDProductionCommit": false,
+        "libraryPublicArchive": "G03-T10_D_Er01_定向补证_公开安全包_20261015.zip",
+        "newPublicArchiveSha256": "6df6d628744ef97592f7c48ee8629bf19c0d0a019e8a3092d2ccb4d8179e6c79",
+        "sizeBytes": 11843,
+        "crcCheck": "PASS",
+        "publicArchiveForbiddenGoldPathCheck": "NO_GOLD_PAYLOAD_PATHS_FOUND",
+        "originalDContentReplaced": false,
+        "conclusion": "PUBLIC_EVIDENCE_ONLY_NOT_ACL_PROOF"
+      },
+      {
+        "id": "G03-T11",
+        "authorEvidenceBranch": "evidence/g03-t11-d-owner-e-r01-20261015",
+        "incrementalGitCommit": "19148a3dbc1379d0cc56fae75031e4c3d8ca2356",
+        "incrementalGitCommitIsOriginalDProductionCommit": false,
+        "libraryPublicArchive": "G03-T11_E-r01_定向证据补齐与E-r02对接_20261015.zip",
+        "newPublicArchiveSha256": "174db78811223e2f8f3de9fb013784e10a4094d4e8f074fdcf15e318258fa8a6",
+        "sizeBytes": 15583,
+        "crcCheck": "PASS",
+        "publicArchiveForbiddenGoldPathCheck": "NO_GOLD_PAYLOAD_PATHS_FOUND",
+        "originalDContentReplaced": false,
+        "conclusion": "PUBLIC_EVIDENCE_ONLY_NOT_ACL_PROOF"
+      }
+    ],
+    "noNewPublicDArchiveObservedFor": [
+      "G03-T12"
+    ],
+    "sameOldGoldShaInherited": true
+  },
+  "specialDelta": {
+    "T03": {
+      "authorSelected": "(1) trio",
+      "selectionEvidenceCommit": "4ee56021ed1918852d46203582ee84fb58c4fb14",
+      "oldInputSha256": "833a0016523d148877d5eb644c68a82970c4a736d33d9b4af060deedcea9942a",
+      "newInputSha256": "6e95303fd24981590ece11806bda95767e201c4a9537bfdf2d5ac8d790f1e61a",
+      "oldInputSize": 3622801,
+      "newInputSize": 5956004,
+      "oldInputCount": 131,
+      "newInputCount": 143,
+      "oldReportSha256": "e516603bfe0a52ffae078e8a0fdda486f78042ddccad5416baa73e583601e602",
+      "newReportSha256": "0e4a1c26bc44d3697531b012c7c70a0cf1d9248420225165ddc5127b3c59eb98",
+      "newGoldArchiveSha256InheritedFromR01": "00e467e3d24bb6adf8d3bb57fef8090b4b92a4987c44dea5f8a24db0ed321980",
+      "oldGoldArchiveSha256FromAuthorEvidenceOnly": "45180a3e53bbde3374718f47b435fe5f559a330279d2e3f56ff216f284e1d1d8",
+      "unprivilegedGoldContentRetested": false,
+      "acl": "UNVERIFIED"
+    },
+    "T06": {
+      "originalGoldLabel": "FROZEN_GOLD_v0_PROVISIONAL_CONTAMINATED",
+      "authorAdmittedPriorSubstantiveCExposure": true,
+      "independentGoldUsability": "INVALID_FOR_STRICT_INDEPENDENT_GOLD",
+      "requiredAction": "REBUILD_BY_UNEXPOSED_D_AUTHOR; KEEP_OLD_READ_ONLY",
+      "scope": "T06 ONLY",
+      "goldSha256Inherited": "f5b7a676e100e6c4c3d4fe3d661846da5bb5e04eaa29e8c7dd218e9dbc2aaa38"
+    },
+    "T10": {
+      "qaHistoricalGold": "v1",
+      "declaredCurrentGold": "FROZEN_GOLD_v2",
+      "originalReportReplaced": false,
+      "qaVersionPointerContradiction": "AUTHOR_DOCUMENTED; INDEPENDENT_RUNTIME_CONSUMPTION_NOT_TESTED",
+      "cSummaryExposure": "AUTHOR_DISCLOSED_PARTIAL",
+      "bVariantFiles": 4
+    },
+    "T01": {
+      "bVariantFiles": 2,
+      "originalGoldReplaced": false
+    },
+    "global": {
+      "goldAcl": "ALL_TXX_UNVERIFIED",
+      "originalAuthorGitSHAs": "NOT_AVAILABLE",
+      "newCOriginalAuthorVersion": "NOT_FOUND_IN_G03_AUTHOR_DELTA_BRANCHES",
+      "currentSchoolOAAndApprovalMaps": "NOT_PROVIDED",
+      "policy2023Number13FullText": "NOT_RETRIEVED"
+    }
+  }
+}
