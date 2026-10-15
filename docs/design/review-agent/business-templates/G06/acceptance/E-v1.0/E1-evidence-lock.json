@@ -1,0 +1,84 @@
+{
+  "schema": "CDUT-G06-E1-evidence-lock-v1",
+  "audit": "G06 E-v1.0 r01",
+  "checkedAt": "2026-10-14",
+  "auditor": "independent-g06-e-session-r01",
+  "entryState": "E1_PARTIAL_SOURCE_BLOCKED",
+  "scope": {
+    "templates": [
+      "G06-T01",
+      "G06-T02",
+      "G06-T03",
+      "G06-T04",
+      "G06-T05",
+      "G06-T06",
+      "G06-T07",
+      "G06-T08",
+      "G06-T09"
+    ],
+    "aDomainStatus": "DOMAIN_PARTIAL",
+    "hDutyDenominator": 142,
+    "mDutyDenominator": 17,
+    "lDutyDenominatorInB03": 0,
+    "totalBCandidateDuties": 159,
+    "firstRegister": {
+      "boundedVerifiedH": 51,
+      "pendingH": 91,
+      "boundedVerifiedM": 1,
+      "pendingM": 16
+    },
+    "supplement": "Two additional primary-source findings E1-24/E1-25, with only route-limited confirmation for T05 CR03/CR04; no claim of full-rule confirmation",
+    "sourceFacts": 25,
+    "adversarialHypotheses": 24
+  },
+  "lockedArtifacts": [
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E1-official-fact-register.md",
+      "sha256": "ea466d2fbe1f4bd33d8fc5eda3fe15a9827949c41b5a3587c17310a3001b9795",
+      "gitBlob": "472012639562d7786e1477676046c2d34dcf557c",
+      "bytes": 27624
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E1-adversarial-hypotheses.md",
+      "sha256": "f2a9b7b72fd758fb8545fed9f3e7151182e2aae6b3ef0b5a7fc56a7a7c399f70",
+      "gitBlob": "1edee8bb2e1bd946d7d8a676061941a2dcf75854",
+      "bytes": 7850
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E1-supplementary-evidence-20261014.md",
+      "sha256": "b6f78b8b0981c85195f297a9df438450dfd4772bd09c8148922c20f00f4f603c",
+      "gitBlob": "f06c632f6c5a42bbdc9f36f23153f94163924982",
+      "bytes": 3390
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E0-addendum-T08-B02.md",
+      "sha256": "d67fc3dd57cb768f149e8bd714de8ef8cd0f66bc61bfdc453ab6925b0084faf7",
+      "gitBlob": "2b572b48d9f576b62b5286d8c6bb0fb88517449a",
+      "bytes": 1014
+    }
+  ],
+  "inputBaseline": {
+    "e0Manifest": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E0-input-manifest.json",
+    "mainCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+    "g06ProductionOrigins": "User Library archive SHA256; producer Git commits unavailable",
+    "cRuleBodyRead": false,
+    "dGoldAnswerRead": false,
+    "blindJudgmentIndependentOfCAndD": true
+  },
+  "gate": {
+    "openWholeDomainE2": false,
+    "reason": "91/142 high-risk B rules not adequately confirmed; current school source and authorization documents missing; remaining policy-sensitive rules cannot be signed off",
+    "needed": "Official source originals + applicability and authority evidence, then additively freeze E1 new round before C/D crosswalk",
+    "E2": "BLOCKED_SOURCE",
+    "E3": "NOT_STARTED",
+    "E4": "NOT_STARTED"
+  },
+  "nonClaims": {
+    "CAndDCompared": false,
+    "GoldCorrect": false,
+    "engineeringD4": "NOT_RUN",
+    "onlineModel": "NOT_RUN",
+    "universityAuthorization": "NOT_VERIFIED"
+  },
+  "changePolicy": "Do not overwrite r01 judgement or reinterpret restricted route as universal rule; supplement or rerun with new round and SHA."
+}
