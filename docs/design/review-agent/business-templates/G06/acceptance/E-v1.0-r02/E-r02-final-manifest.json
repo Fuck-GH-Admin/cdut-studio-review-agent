@@ -1,0 +1,131 @@
+{
+  "schema": "G06-E-v1.0-r02-final-differential-manifest",
+  "freezeDate": "2026-10-15",
+  "audit": "G06-r02-independent-E",
+  "r01": {
+    "head": "1dcf4033256121efd3dea62b1153592df1facd7c",
+    "pr": 28,
+    "manifest": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0/E-final-manifest.json",
+    "baseRepoSha": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e"
+  },
+  "r02": {
+    "branch": "audit/g06-e-v1-r02",
+    "base": "1dcf4033256121efd3dea62b1153592df1facd7c",
+    "head": "TO_BE_RESOLVED_FROM_GIT_REF_AFTER_MANIFEST_COMMIT",
+    "pr": "TO_BE_RESOLVED_AFTER_DRAFT_PR_CREATED",
+    "manifestSelfHash": "omit-to-prevent-circular-hash"
+  },
+  "scope": {
+    "templates": [
+      "G06-T01",
+      "G06-T02",
+      "G06-T03",
+      "G06-T04",
+      "G06-T05",
+      "G06-T06",
+      "G06-T07",
+      "G06-T08",
+      "G06-T09"
+    ],
+    "deferred": [
+      "G06-T10"
+    ],
+    "inheritedE1HighRisk": 142,
+    "inheritedHPartialVerifiedLimited": 51,
+    "inheritedHPending": 91,
+    "newHClosedByR02": 0
+  },
+  "stages": {
+    "E0": "INCREMENTAL_SHA_VERIFIED; GOLD_ACL_AND_PRODUCTION_HISTORY_BLOCKED",
+    "E1": "PARTIAL_SOURCE_BLOCKED; LIMITED_INCREMENTAL_SOURCE_LOCK_CREATED",
+    "E2": "NOT_STARTED; C_AND_GOLD_NOT_OPENED",
+    "E3": "METADATA_SCOPE_ONLY; SEMANTIC_AUDIT_NOT_STARTED",
+    "E4": "NOT_STARTED; PRELIMINARY_OPEN_ISSUE_LEDGER_UPDATED"
+  },
+  "deltas": {
+    "newDAuthorEvidenceBranches": 9,
+    "newDPublicArchiveZips": 9,
+    "restrictedMixedLocalArchiveZips": 1,
+    "newDProductionVersions": 0,
+    "oldDZipHashesCitedAndMatched": 27,
+    "newZipCRCVerified": 10,
+    "legacyIssues": 10,
+    "closedIssues": 0,
+    "p0p1p2Adjudicated": "NOT_ASSESSED",
+    "originalAuthorProductionCommit": "UNVERIFIED",
+    "goldAcl": "NOT_VERIFIED",
+    "goldExposure": "NOT_PROVEN",
+    "cMetadataExposure": [
+      "T01",
+      "T03"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/E0-delta-manifest.json",
+      "sha256": "187bf92d0b9664a4ac966a71477e067829b2e4aac253af52d35d9416db000d00",
+      "gitBlob": "8ffb0b9c2332283105dbd6573f90ad8b2774b161"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/E0-differential-evidence-audit.md",
+      "sha256": "d686befeaf28d9c256f1d2cc0dad5ab4c26411adc03b7a1fc438ae8f224910ac",
+      "gitBlob": "46147c1598279a1e4146f9c3dbefc142b51072b9"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/E1-differential-source-audit.md",
+      "sha256": "3fbceb52639fd697230b3234c3ccd02f3940a6f9a4fa2dd3d502fa00372b1b19",
+      "gitBlob": "fa827ff61075467b301d01b865f66ba32e8466df"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/E1-delta-evidence-lock.json",
+      "sha256": "12005b46aec85b880b26255b9f3305f3c8ccc97a2db8c1d4c34dc7fcab47828b",
+      "gitBlob": "f354164612eeb1285c3023a39b60800781bed749"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/E2-gate-and-case-scope.md",
+      "sha256": "8dd9d7aaee50b2ce25f0158504e75056c11c5752677bce46c6982205715af135",
+      "gitBlob": "598ec32f7d0f28b26456418d0bd00e3030d4d9e9"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/E3-delta-impact-boundary.md",
+      "sha256": "9f1d4ee2d197c0d0f0672e840945e4f58def22d4e8a6a0d88c26bc289d47d695",
+      "gitBlob": "e04252e516e5f350468295a0e0f88418ddabfc65"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/E4-r02-issue-diff.md",
+      "sha256": "d0f8a07e2f495d3cc005662601db0dce44b42d9f80f922ef7b45e3b9c3eb8bed",
+      "gitBlob": "be63e0b008468e13d7c0bb8788b1f2b894da759b"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/E4-r02-retest-register.md",
+      "sha256": "b4e6213b3bed63a753bc8fb9c86f8d62ab99148e113bd3651170ec03ba02da4f",
+      "gitBlob": "35e408355072153472c3b714b9d39d1dd3de63a4"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/README.md",
+      "sha256": "94bf2ecc4a65bb69737892464df2226593306f82b40d4c59664cfe52be7bb0ec",
+      "gitBlob": "58b91ef2e3d9edb2ee8abe5eb3c7a7098682c723"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G06/acceptance/E-v1.0-r02/E-r02-final-verdict.md",
+      "sha256": "2c1292f772050e86e7dc71da94eb3afd8f9e0b4a50759ed37a94aebff2b73f94",
+      "gitBlob": "807929a28c7104d36407d6f00e6a08a77d822f44"
+    }
+  ],
+  "auditBoundary": {
+    "CPolicyRulesRead": false,
+    "DGoldAnswersRead": false,
+    "restrictedT08LocalContentsRead": false,
+    "technicalD4": "NOT_RUN",
+    "onlineModel": "NOT_RUN",
+    "productEndToEnd": "NOT_RUN",
+    "administrativeAuthority": "NOT_VERIFIED"
+  },
+  "verdict": "BLOCKED_SOURCE_AND_INPUT",
+  "next": "A/B/CDUT office provide official procedures and authorization; storage admin provide real private Gold ACL + historical evidence; independent E signs a new bounded E1 then E2/E3/E4",
+  "notes": [
+    "New ZIP hashes are posthoc evidence archives, not Gold version replacements",
+    "r01 old SHA authoritative at original version; no consolidation into synthetic Git commit",
+    "No public attachment contains any Gold answer or controlled trusted fixture; manifest lists metadata only"
+  ]
+}
