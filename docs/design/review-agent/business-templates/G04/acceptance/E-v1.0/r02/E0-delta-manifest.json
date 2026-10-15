@@ -1,0 +1,101 @@
+{
+  "schema": "G04-E-r02-E0-delta",
+  "date": "2026-10-15",
+  "r01AuditSHA": "fc2ace5c874454ddbcfca731be7aa093416dab12",
+  "r01PR": 27,
+  "originalMainSHA": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+  "r01E1LockedSHA": "8466534655138224480e9f4ba15c40c7adf9eea2",
+  "r01E1FactSHA256": "f9d66e46c686f8176a8907b9c1b493bed089474f1d893c82c3822a02dd82b9c9",
+  "T01C": {
+    "oldE0": "NOT_FOUND",
+    "r02": "RESTORED_SAME_ORIGINAL_C_v0.1",
+    "zip": "d9aa139ecc9e7630d2b73f370183cf0332fd323170564ad5549cf30ab03f92bd",
+    "recoveryZip": "d925d7a9e2fc4f385a27921241ca8847e9e8be5e690e2bd003910ea6386c21aa",
+    "masterSHA256": "54ce879cacd4895da0dd746a65579098569b513c1166e0f8fd828dd39bf17efb",
+    "files": 9,
+    "crc": "PASS",
+    "rows": 40,
+    "branches": 13,
+    "sources": 29,
+    "authorOriginalGitCommit": "NOT_AVAILABLE"
+  },
+  "T06C": {
+    "oldMasterSHA256": "1dba3e36f83efe3553ff1103aa199e4d7dc17acf2b196707a43289a981e2a9da",
+    "newMasterSHA256": "d9c459f23bfdae097b6fa2a71700f0c10391bd9ffa63e8b387325db08cece0c2",
+    "patchZipSHA256": "fc5aa05bd8f3a400f832cd67d75dd8857ee4f9621f6e00b1d2290b830651dc7d",
+    "B02SHA256": "8da4993e4ce4eb9f32498fcd63830f9069d116f467623c17912036c83a996fb6",
+    "changedLines": [
+      1023,
+      1024,
+      1025,
+      1026,
+      1027,
+      1028,
+      1029
+    ],
+    "matchedBOriginalURLs": 7,
+    "otherChangedLines": 0,
+    "CD06": "DIRECT_OPEN_ERROR",
+    "CD04": "TEXT_RETRIEVABLE_VISUAL_UNVERIFIED",
+    "otherURLs": "HTML_RETRIEVABLE",
+    "oldAuthorGitCommit": "NOT_AVAILABLE"
+  },
+  "D": {
+    "authorNewEvidenceCommits": {
+      "T01": {
+        "commit": "28df03840fda456743f5580f51a07f99acb4c86e",
+        "metadataBlobSHA1": "e8c9555f25b9a7b463047bca78dc5c6b6c5d75b4"
+      },
+      "T02": {
+        "commit": "fa71a827563bf29dfe53d6ac2d5607552973778f",
+        "metadataBlobSHA1": "0af1a688fb8424043c9262b3231a51462e458f7b"
+      },
+      "T03": {
+        "commit": "47673bad23afb0fcf9bcce1c4b7474b8ceb4aec6",
+        "metadataBlobSHA1": "87482ab4d21e37ada828231fa6c028a0b4cbc80e"
+      },
+      "T04": {
+        "commit": "4441b402d18907d356271afe624dcacc425d53c6",
+        "metadataBlobSHA1": "4517a96f246a31bf5baefe0ebb504ab4188795e6"
+      },
+      "T05": {
+        "commit": "9d4ffcc82a9b48a0dd1ac1ef38a5b632465ee659",
+        "metadataBlobSHA1": "aef0f2630ed6048bb6e5d180aa7a07d053934c47"
+      },
+      "T06": {
+        "commit": "6a1ff22f2a6b65eb717dd21f0e803caa246e7529",
+        "metadataBlobSHA1": "165c5a7060f4b369dbb12fb77f9891ff2341005d"
+      },
+      "T07": {
+        "commit": "4b3aff5d03bd658dcbe77cb22146aa22e1859173",
+        "metadataBlobSHA1": "b84226962c733eb2a2dc09f6245ff755f5b89906"
+      },
+      "T08": {
+        "commit": "b9a8fe40b01afc6ff9d683420bceafe5a1f5eef2",
+        "metadataBlobSHA1": "1abe1bd4dc8456d687232fd6b071e8a7258848c3"
+      }
+    },
+    "oldArchivesChecked": 24,
+    "oldArchiveSHA256Matches": 24,
+    "originalDGoldAndCasesChangedInR02": false,
+    "historicalAuthorCommits": "NOT_AVAILABLE",
+    "GoldACL": "UNVERIFIED",
+    "GoldFirstBuildAttestation": "NOT_AVAILABLE",
+    "knownConfirmedLeak": "NONE_OBSERVED_NOT_NO_LEAK_PROVEN",
+    "versionHistoryWarnings": [
+      "T05 changed 26 cases under same FROZEN_GOLD_v1 label across S1-S4 as reported by author",
+      "T06 five snapshots altered assertion counts 28 to 148 with reused FROZEN_GOLD_v1 label as reported by author",
+      "T08 final Gold v2 differs from v1 in one old D report"
+    ]
+  },
+  "A": {
+    "originalZipSHA256": "1da05eb89bcbc4116cb0afd79f496ba1eb38a4b6a8c2b0b139898144abd37a50",
+    "newCorrectedSourceIndex": "NOT_FOUND"
+  },
+  "limitations": [
+    "No r02 Gold answer content was opened",
+    "C/D original author commit not reconstructed from E audit HEAD",
+    "Current r02 E has seen r01 C and Gold discussions; no new first-time blind E1 verdict by same reviewer",
+    "No full Gold semantic regrade, no university administrative permissions verified"
+  ]
+}

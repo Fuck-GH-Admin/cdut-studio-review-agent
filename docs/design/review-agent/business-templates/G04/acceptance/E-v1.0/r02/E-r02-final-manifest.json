@@ -1,0 +1,100 @@
+{
+  "schema": "G04-E-v1.0-r02-final-manifest",
+  "checkedAt": "2026-10-15",
+  "reviewer": "G04-independent-E-r02-continuation",
+  "repo": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "baseline": {
+    "mainCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+    "r01AuditBranch": "audit/g04-e-v1-r01",
+    "r01AuditHEAD": "fc2ace5c874454ddbcfca731be7aa093416dab12",
+    "r01PR": 27,
+    "r01OfficialVerdict": "BLOCKED_INPUT, additional BLOCKED_SOURCE",
+    "r01E1LockSHA": "8466534655138224480e9f4ba15c40c7adf9eea2",
+    "r01E1FactSHA256": "f9d66e46c686f8176a8907b9c1b493bed089474f1d893c82c3822a02dd82b9c9"
+  },
+  "r02": {
+    "branch": "audit/g04-e-v1-r02",
+    "basedOn": "fc2ace5c874454ddbcfca731be7aa093416dab12",
+    "path": "docs/design/review-agent/business-templates/G04/acceptance/E-v1.0/r02/",
+    "commits": {
+      "E0": "2d2ee9a018312fbebae39a7c0856f33d123824a8",
+      "E1_E2": "3c6dba32092235b758cb90c80ddb78be9cb4456c",
+      "E3_E4": "30fb1e4dc80f6679814d441091f61b68bc49ac2c",
+      "finalVerdict": "8bbd60ee8e854298c3114b7b9e5b20108d08e2b5"
+    },
+    "T01C": {
+      "originalZipSHA256": "d9aa139ecc9e7630d2b73f370183cf0332fd323170564ad5549cf30ab03f92bd",
+      "recoveryZipSHA256": "d925d7a9e2fc4f385a27921241ca8847e9e8be5e690e2bd003910ea6386c21aa",
+      "originalMasterSHA256": "54ce879cacd4895da0dd746a65579098569b513c1166e0f8fd828dd39bf17efb",
+      "CRC": "PASS",
+      "originalCCommit": "NOT_AVAILABLE",
+      "source": "ChatGPT Library"
+    },
+    "T06C": {
+      "oldMasterSHA256": "1dba3e36f83efe3553ff1103aa199e4d7dc17acf2b196707a43289a981e2a9da",
+      "newMasterSHA256": "d9c459f23bfdae097b6fa2a71700f0c10391bd9ffa63e8b387325db08cece0c2",
+      "patchZipSHA256": "fc5aa05bd8f3a400f832cd67d75dd8857ee4f9621f6e00b1d2290b830651dc7d",
+      "changedLines": [
+        1023,
+        1024,
+        1025,
+        1026,
+        1027,
+        1028,
+        1029
+      ],
+      "sourceIdsExactMatchToB": 7,
+      "originalCCommit": "NOT_AVAILABLE",
+      "source": "ChatGPT Library"
+    },
+    "DnewMetadataBranches": 8,
+    "oldDArchiveSHA256Verified": "24/24 equals r01 E0",
+    "DoriginalProductionGitSHA": "NOT_AVAILABLE",
+    "GoldACL": "NOT_VERIFIED",
+    "GoldSemanticRecheck": "NOT_RUN",
+    "newP1VersionLineage": "E-G04-GOLD-LINEAGE-0008_OPEN"
+  },
+  "r01Issues": 7,
+  "r02NewIssues": 1,
+  "issuesTotal": 8,
+  "issuesClosedScoped": 1,
+  "issuesOutstanding": 7,
+  "issueStatus": {
+    "E-G04-T01-0001": "fixed-awaiting-retest",
+    "E-G04-GLOBAL-0002": "open",
+    "E-G04-GLOBAL-0003": "open",
+    "E-G04-T06-0004": "retested-closed-format-only",
+    "E-G04-A-0005": "open",
+    "E-G04-SOURCE-0006": "open",
+    "E-G04-DOMAIN-0007": "open",
+    "E-G04-GOLD-LINEAGE-0008": "open-P1-awaiting-original-snapshot-replay"
+  },
+  "finalVerdict": "BLOCKED_INPUT",
+  "additionalSourceVerdict": "BLOCKED_SOURCE",
+  "knownIssues": "1 P1 (version lineage), 2 original P2 (one scoped closed), 3 original BLOCKED_INPUT, 2 original BLOCKED_SOURCE",
+  "stageStatus": {
+    "E0": "DIFFERENTIAL_VERIFIED_WITH_ACL_GAPS",
+    "E1": "R01_FACTS_INHERITED_NEW_BLIND_JUDGMENT_NOT_PERFORMED",
+    "E2": "T01_C_STRUCTURE_PARTIAL_T06_LINK_FORMAT_CLOSED_GOLD_NOT_RETESTED",
+    "E3": "SCOPED_CROSS_TEMPLATE_PARTIAL",
+    "E4": "DIFFERENTIAL_VERDICT_COMPLETED_REPAIRS_STILL_BLOCKED"
+  },
+  "externalEReviews": "NEW_UNEXPOSED_REVIEWER_NEEDED_FOR_NEW_DISPUTED_SOURCE_FACTS",
+  "technicalTemplateRuntime": "NOT_RUN",
+  "onlineModelAccuracy": "NOT_RUN",
+  "productEndToEnd": "NOT_RUN",
+  "administrativeAuthority": "NOT_VERIFIED",
+  "publicReportSHA256": {
+    "README.md": "332747b014bcd91ccc9314956dacf3b53d833aea04e5be29e73bca517209433f",
+    "E0-delta-manifest.json": "c790a35e6b729778e41a926162e5a3a2c8991a6868d562456f3933a37f097777",
+    "E0-delta-decision.md": "14c2bf274dfd9e7f204b4e0eb53513bc5e116a8a1c4249d747880939aeb1957f",
+    "E1-inheritance.md": "c3df35fb18bac8f227c2a779daed55f3622a2684fe24a56d5b19523526f6559f",
+    "E2-targeted-recheck.md": "33856d5d6ac31aa888fed5a18c55609af756c7955a6f3d4434ff0279f69f5753",
+    "E3-domain-delta.md": "51691bbf8b938b446c3c05001487239a2e5223b264cd4e2c40801890c158926e",
+    "E4-issue-ledger-r02.md": "f8c311d3742ace70d65375bbc049873d87b2e0228b6aecd08772f84b7cd0eb62",
+    "E4-retest-ledger-r02.md": "37d20c9d7246c8652b9ebf83811055b63aa1407f83a72fc70191b9e334cd3159",
+    "E-r02-final-verdict.md": "97839f4265bf8626eda6c4488eedd0651b3449aabcf14b9589b0fb9c413c2e65"
+  },
+  "manifestSelfHashRule": "The manifest cannot hash itself without recursion; use Git blob SHA of E-r02-final-manifest.json and final Git commit as identifier.",
+  "safety": "No evaluation zip, Gold answer, trusted fixtures, private ACL details or sensitive records in public branch."
+}
