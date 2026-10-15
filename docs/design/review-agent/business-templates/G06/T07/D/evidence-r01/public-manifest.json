@@ -1,0 +1,34 @@
+{
+  "schema": "cdut-g06-t07-d-r01-public-evidence-v1",
+  "evidence_created_on": "2026-10-15",
+  "business": "G06-T07",
+  "author_legacy_commit": "NOT_AVAILABLE",
+  "evidence_branch_base": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+  "reference_E_r01_audit_head": "1dcf4033256121efd3dea62b1153592df1facd7c",
+  "old_archive_sha256": {
+    "input": "7be99c240cf06fa3c9faee65bb3cf4737b215456d6876a0ca1ff0e62d23c9f8d",
+    "evaluation": "a2346867d94b9b07fba26a11e8926f2b819e6e609626e694a88fe4bb6fe69264",
+    "reports": "7b586c9eeae46684f7b5d5daa1ec1bad40195ba7bb0abd5bb4c970183a7c6893",
+    "index": "a57fd33fb7ca6ee271e1af4e5bcb8d1b1ecd0dd0e208462d7e5380ef643f6120",
+    "frozen_manifest": "d58acfac446681159375502c69fcbc951ad4fecafacd336dbe4ade90b55bcefc"
+  },
+  "original_unchanged": true,
+  "gold_version": "FROZEN_GOLD_v1.0",
+  "gold_contents_publicly_archived": false,
+  "private_storage_acl": "NOT_AVAILABLE",
+  "pre_freeze_independent_process_log": "NOT_AVAILABLE",
+  "recovered_research_sha256": {
+    "A00": "67094b439d1a3d480655c3c6186dd317133b4bc0f6d391668ee5ece1a3ed8689",
+    "A02": "f2f64257356d1919c9a28d6fe1547c47cefdd0261645ce7e5b1976c1b0d056e6",
+    "B07": "be54ecba13fd63fc02305cb7634db6d4848adf66bcb529f257f64fe4f0457625"
+  },
+  "unavailable_research_original": "G06-T07 B0-B6 original MD files were not recovered",
+  "source_status": "SOURCE_PENDING; RECHECK_AFTER_SOURCE_FIX",
+  "E_r02": "NOT_RUN",
+  "new_incremental_local_files_sha256": {
+    "G06-T07_D_r01_author_provenance.md": "fda5dc201c666fbb163b117bcdc5fc0fb74811bb1b916ace1c992111e329e8fe",
+    "G06-T07_D_r01_source_and_acl_actions.md": "fbc14932199bd21986105870299a8b17effd79fedfbbe06a078c6ff89f45cd44",
+    "G06-T07_D_r01_Er02_handoff.md": "394ab78397f8622955ccd904cfbaefc39c19e53e1879541a25804b40826bba85",
+    "G06-T07_r01_public_integrity_verification.json": "63aac5d0cf697f57dafe171ee7fc1de241be77cfd74ddc261c0298f30fe60e33"
+  }
+}
