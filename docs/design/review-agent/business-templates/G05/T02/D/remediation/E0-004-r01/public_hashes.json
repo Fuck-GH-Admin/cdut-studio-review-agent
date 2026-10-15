@@ -1,0 +1,22 @@
+{
+  "schema": "G05-T02-E0-004-PUBLIC-FREEZE-v1",
+  "date": "2026-10-15",
+  "e_r01_audit_sha_not_d_author": "0d5a1f493b2aeadcc6d65503a433e19a052ae539",
+  "original_d_author_commit": "NOT_AVAILABLE",
+  "old_assets": {
+    "G05-T02_INPUT_ONLY.zip": "08e3fc3c36248f314aac451c1e23bdb268c60166d6c10a6f268a478ddf94dfc7",
+    "G05-T02_EVALUATION_ONLY_RESTRICTED.zip": "a5c4af6868cc7fe63c39ead6f2dac4c6d5a425830fe4284ffbe08e4e8d510ad6",
+    "G05-T02_D_REPORTS.zip": "026dd84ad3504c0e23b3b10e2a10761aa205ed14f1113de689d48a9f92bed732",
+    "G05-T02_D_交付索引.md": "36e327feb2121624920c69dc78d1dcc6535fc38fd8301f8845090263ea76d547"
+  },
+  "old_baseline_10_files_verified": true,
+  "old_gold_entries_verified": 18,
+  "old_trusted_fixture_entries_verified": 18,
+  "old_gold_claims_at_independence_risk": 42,
+  "original_gold_version": "FROZEN_GOLD_v1",
+  "original_gold_business_wrongness": "NOT_ASSESSED",
+  "original_restricted_acl": "UNVERIFIED",
+  "new_independent_d_gold": "PENDING",
+  "e_r02_status": "NOT_RUN",
+  "public_only": true
+}
