@@ -13,7 +13,8 @@
 import * as React from 'react'
 import { getDefaultStore, useStore } from 'jotai'
 import { previewFileMapAtom, previewFilesByTabAtom, type PreviewFile } from '@/atoms/preview-atoms'
-import { agentSessionPathMapAtom } from '@/atoms/agent-atoms'
+import { agentSessionPathMapAtom, agentSessionsAtom } from '@/atoms/agent-atoms'
+import { canOpenOrdinaryWorkTab, ensureOrdinaryWorkTabOwner, revokedAgentSessionIdsAtom } from '@/lib/agent-tab-access'
 import { isAbsoluteFilePath } from '@/lib/file-utils'
 import {
   activeTabIdAtom,
@@ -73,6 +74,8 @@ export function openFilePreviewTab(
   file: PreviewFile,
   options: { activate?: boolean } = {},
 ): string {
+  if (store.get(revokedAgentSessionIdsAtom).has(sessionId)
+    || !canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), sessionId)) return ''
   const normalizedFile = normalizePreviewFile(store, sessionId, file)
   store.set(previewFileMapAtom, (prev) => {
     const m = new Map(prev)
@@ -100,6 +103,21 @@ export function openFilePreviewTab(
   return tabId
 }
 
+/** Async version for early normal-session events: one Main-authorized lookup, never trust unknown event metadata. */
+export async function openFilePreviewTabAuthorized(
+  store: JotaiStore,
+  sessionId: string,
+  file: PreviewFile,
+  options: { activate?: boolean } = {},
+  isCurrent: () => boolean = () => true,
+  load: (id: string) => Promise<import('@profer/shared').AgentSessionMeta | null> =
+    (id) => window.electronAPI.getAgentSessionMeta(id),
+): Promise<string> {
+  if (!await ensureOrdinaryWorkTabOwner(store, sessionId, load, isCurrent)) return ''
+  if (!isCurrent()) return ''
+  return openFilePreviewTab(store, sessionId, file, options)
+}
+
 /** 模块级入口（与 usePanelAutoLayout 的模块级函数同一模式），供非 React 上下文调用。 */
 export function openFilePreviewTabForSession(sessionId: string, file: PreviewFile, options?: { activate?: boolean }): string {
   return openFilePreviewTab(getDefaultStore(), sessionId, file, options)
@@ -110,7 +128,7 @@ export function useOpenPreview() {
 
   return React.useCallback(
     (sessionId: string, file: PreviewFile) => {
-      openFilePreviewTab(store, sessionId, file)
+      void openFilePreviewTabAuthorized(store, sessionId, file)
     },
     [store],
   )
