@@ -1,0 +1,47 @@
+{
+  "schema": "independent-e1-source-lock/v1",
+  "field": "G05-T06",
+  "research_kind": "FIRST_INDEPENDENT_BUSINESS_SOURCE_VERIFICATION",
+  "research_date_local": "2026-10-16",
+  "evidence_time_authority": "GitHub server commit timestamps; no backdated time claims",
+  "before_author_comparison": true,
+  "forbidden_materials_read": false,
+  "forbidden_materials": [
+    "C templates",
+    "D Gold",
+    "E r01/r02/r03 semantic findings, defect positions or test answers"
+  ],
+  "branch": "research/g05-t06-independent-e1-20261016-r01",
+  "repository": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent",
+  "freeze_mode": "three sequential commits, source register then adversarial cases then lock; inspect immutable commit SHA when verifying",
+  "documents": [
+    {
+      "path": "research/e1-independent/G05-T06/independent-source-register.md",
+      "git_blob_sha1": "a19dcaad414da9aab58cffc9d87d22e368e84c06",
+      "file_sha256": "bbf34513b07fae3fc0a25c72313ef44975319cc7fa7c36b94427deec418acd6a",
+      "first_create_commit": "bc7ee6ea5168fc56fc3d7e42b8bd53368139d343"
+    },
+    {
+      "path": "research/e1-independent/G05-T06/adversarial-cases.md",
+      "git_blob_sha1": "6b8ca0a77b51f4bef0649fd934306b94c0eebea2",
+      "file_sha256": "c562ab3d12b0f5492be036c8a814319273136befd06a6360b487ec8168511dd2",
+      "first_create_commit": "af57711dbfed8685ce0fe29f9d6d9c31d23c7154"
+    }
+  ],
+  "source_urls": [
+    "https://kjc.cdut.edu.cn/__local/4/8B/F5/215698571B2D5ED2946921CC3A2_D50922B2_32715.pdf",
+    "https://dice.cdut.edu.cn/info/1030/1101.htm",
+    "https://dice.cdut.edu.cn/info/1020/1103.htm",
+    "https://dice.cdut.edu.cn/bmgk/bmjj.htm",
+    "https://flc.cdut.edu.cn/info/1099/7825.htm"
+  ],
+  "source_limitations": [
+    "2017 school pages have indexed source text; direct open failed HTTP 412; no raw HTTP file hash obtained",
+    "2025 school official PDF is directly accessible and renders verified",
+    "old school policy validity after 2025 remains U; no unsupported inference of repeal or unchanged effect",
+    "no other schools' implementation thresholds used as applicable to CDUT",
+    "rule statuses represent research routing, not actual approvals or live system test results"
+  ],
+  "lock_file_self_hash": "reported by post-commit fetch verification; not embedded to avoid self-reference",
+  "release_scope": "RESEARCH_ONLY_NOT_FORMAL_E_PASS"
+}
