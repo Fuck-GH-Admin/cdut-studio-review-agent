@@ -1,0 +1,18 @@
+{
+  "schema": "G05_E_r04_public_synthetic_fixtures_v1",
+  "research_only": true,
+  "policy_profiles": {
+    "L01": "2017_historical_text_only_2026_effectiveness_U",
+    "L02": "2025_published_text_only_2026_revisions_U"
+  },
+  "cases": [
+    {"id":"R04-01A", "rule":"L01-Art2", "participants":[["CN",false],["BE",false],["DE",true]]},
+    {"id":"R04-01B", "rule":"L01-Art2", "participants":[["CN",false],["BE",false],["DE",false]]},
+    {"id":"R04-01U", "rule":"L01-Art2", "participants":[["CN",false],["BE",false],["DE",null]]},
+    {"id":"R04-02A", "rule":"L02-Art5-3", "academic":true, "discipline":"natural_science", "participants_count":900, "meeting_reach":"regional", "nominal_organizer":"secondary_unit", "international":false},
+    {"id":"R04-02B", "rule":"L02-Art5-3", "academic":true, "discipline":"natural_science", "participants_count":900, "meeting_reach":"regional", "nominal_organizer":"university", "international":false},
+    {"id":"R04-02U", "rule":"L02-Art5-3", "academic":true, "discipline":"natural_science", "participants_count":900, "meeting_reach":"regional", "nominal_organizer":null, "international":false},
+    {"id":"R04-02C", "rule":"L02-Art5-3", "academic":true, "discipline":"natural_science", "participants_count":1000, "meeting_reach":"regional", "nominal_organizer":"secondary_unit", "international":false},
+    {"id":"R04-02I", "rule":"L02-Art5-3", "academic":true, "discipline":"natural_science", "participants_count":900, "meeting_reach":"regional", "nominal_organizer":"university", "international":true}
+  ]
+}
