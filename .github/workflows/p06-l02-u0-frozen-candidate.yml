@@ -78,17 +78,22 @@ jobs:
           if ! grep -q $'^01-identity\t0\t' "$OUT/commands.tsv"; then finish 'BLOCKED_SHA_TREE_MISMATCH'; exit 2; fi
           record 02-versions bash -c 'git --version; node --version; bun --version; python3 --version'
           record 03-install bash -c 'cd "$1" && bun install --frozen-lockfile' _ "$CANDIDATE"
+          record 03a-cli-status git -C "$CANDIDATE" status --porcelain -- apps/cli/src/index.ts
           if ! grep -q $'^03-install\t0\t' "$OUT/commands.tsv"; then finish 'BLOCKED_FROZEN_INSTALL'; exit 1; fi
           record 04-typecheck bash -c 'cd "$1" && bun run typecheck' _ "$CANDIDATE"
+          record 04a-cli-status git -C "$CANDIDATE" status --porcelain -- apps/cli/src/index.ts
           record 05-boundaries bash -c 'cd "$1" && bun run check:boundaries' _ "$CANDIDATE"
           record 06-skin bash -c 'cd "$1/apps/electron" && bun run check:skin-contract' _ "$CANDIDATE"
           record 07-main-build bash -c 'cd "$1/apps/electron" && bun run build:main' _ "$CANDIDATE"
           record 08-preload-build bash -c 'cd "$1/apps/electron" && bun run build:preload' _ "$CANDIDATE"
           record 09-renderer-build bash -c 'cd "$1/apps/electron" && bun run build:renderer' _ "$CANDIDATE"
+          record 09a-cli-status git -C "$CANDIDATE" status --porcelain -- apps/cli/src/index.ts
           record 10-focused bash -c 'cd "$1" && bun test --isolate --timeout 30000 packages/core/src/office-engine/office-engine.test.ts apps/electron/src/main/lib/document-parse-tools.test.ts apps/electron/src/main/lib/review/document-service.test.ts apps/electron/src/main/lib/review/review-strict-profile.p02.probe.test.ts apps/electron/src/main/lib/review/review-pi-run-bridge.main.test.ts apps/electron/src/main/lib/review/pi-case-review-service.test.ts apps/electron/src/renderer/lib/agent-tab-access.test.ts apps/electron/src/renderer/components/content-review/review-workspace-recheck-independent.test.ts' _ "$CANDIDATE"
+          record 10a-cli-status git -C "$CANDIDATE" status --porcelain -- apps/cli/src/index.ts
           record 11-full bash -c 'cd "$1" && bun test --isolate --timeout 30000' _ "$CANDIDATE"
+          record 11a-cli-status git -C "$CANDIDATE" status --porcelain -- apps/cli/src/index.ts
           record 12-git-status git -C "$CANDIDATE" status --porcelain
-          record 13-tracked-diff git -C "$CANDIDATE" diff --name-status
+          record 13-tracked-diff git -C "$CANDIDATE" diff -- apps/cli/src/index.ts
           record 14-clean-gate bash -c 'cd "$1"; test -z "$(git status --porcelain)"' _ "$CANDIDATE"
           if test -s "$OUT/first-failure.txt"; then finish 'FAIL_KEEP_FIRST_FAILURE'; exit 1; fi
           finish 'EXACT_MAIN_BUILD_AND_TEST_GATES_PASS_U1_NOT_RUN'
