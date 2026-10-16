@@ -20,7 +20,7 @@ const run=(script:string,args:string[],config=cfg1)=>{
  const out=p.stdout.toString(),err=p.stderr.toString()
  if(p.exitCode!==0)throw new Error(script+' '+args.join(' ')+' exit '+p.exitCode+' stderr='+err+' stdout='+out)
  // CLI 的 config-paths 在首行可能输出中文配置路径日志；只截取顶格开始的最后一个 JSON 根对象。
- const roots=[...out.matchAll(/^[\\{\\[]/gm)]
+ const roots=[...out.matchAll(/^{/gm)]
  const start=roots.at(-1)?.index
  if(start===undefined)throw new Error('CLI 未输出 JSON：'+out.slice(0,1200))
  return JSON.parse(out.slice(start).trim()) as Record<string,any>
