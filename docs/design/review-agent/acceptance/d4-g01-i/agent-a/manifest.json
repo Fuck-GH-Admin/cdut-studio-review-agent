@@ -78,5 +78,7 @@
     "portableReimport": "NOT-RUN",
     "piLive": "NOT-RUN",
     "independentGold": "NOT-RUN"
-  }
+  },
+  "executionGateCount": 1,
+  "executionGateScope": "P7: only built-in decided/archived stages; authority-owned receipt cannot be applicant missing; not same as full school P0-P7 mapping"
 }
