@@ -32,6 +32,8 @@ test('真实 CLI validate/save/read/preview/export/import/repreview',()=>{
  const plan=run(paths.d2,['preview',workspace,selection,casePath])
  expect(plan.mapping).toHaveLength(49);expect(plan.rules).toHaveLength(49)
  expect(plan.publicationAllowed).toBe(false)
+ // 已由真实 D2 CLI 生成的合成计划，用于将 CI 输出回填为可审计静态工件。
+ console.log('G01I_ACTUAL_PLAN_B64:'+Buffer.from(JSON.stringify(plan),'utf8').toString('base64'))
  const registration=run(paths.d2,['register',workspace,selection]);expect(registration.registered).toBe(true)
  const caseCreated=run(paths.d2,['create',workspace,selection,'g01i-case-synthetic','G01-I 合成技术预审','g01i-local-reviewer'])
  expect(caseCreated.created).toBe(true);expect(caseCreated.publicationAllowed).toBe(false)
@@ -43,7 +45,7 @@ test('真实 CLI validate/save/read/preview/export/import/repreview',()=>{
  expect(replay.fingerprint).toBe(plan.fingerprint)
  const recovered=JSON.parse(readFileSync(out,'utf8'))
  expect(recovered).toEqual(JSON.parse(readFileSync(workspace,'utf8')))
- console.log('G01-I CLI D1 D3 D2 roundtrip fingerprint',plan.fingerprint)
+ console.log('G01I_ACTUAL_CLI_RECEIPT:'+JSON.stringify({d1Validated:d1.ok,d3Validated:d3.ok,revisionSaved:first.saved,d2Registered:registration.registered,d2CaseCreated:caseCreated.created,caseId:'g01i-case-synthetic',checkCount:plan.mapping.length,planFingerprint:plan.fingerprint,portableExported:exported.exported,portableImported:imported.imported,portableFingerprint:replay.fingerprint,b02SharedReuseInG01:false}))
 })
 
 test('D3 B02 冻结机制只作隔离试验，不假装 G01-I 已复用 B02',()=>{
