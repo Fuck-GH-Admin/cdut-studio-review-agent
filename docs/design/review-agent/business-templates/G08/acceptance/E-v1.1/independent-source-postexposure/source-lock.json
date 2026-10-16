@@ -1,0 +1,95 @@
+{
+  "schema": "G08-T03-source-lock-post-exposure-v1",
+  "dateLocal": "2026-10-16",
+  "referenceTimeZone": "Asia/Shanghai",
+  "purpose": "G08-T03 source-only factual review, NOT independent blind E1",
+  "track": "POST_EXPOSURE_SOURCE_REVIEW",
+  "independence": {
+    "status": "BLINDING_COMPROMISED",
+    "reason": "This chat previously saw G08 C template content and r03 E audit defect comparison before receiving the independent E1 subchat prompt. A genuinely first-time unexposed E1 decision cannot be signed or retroactively frozen here.",
+    "currentTurnAccess": "Only permitted original official sources; C/D/Gold and prior E semantic defect material were NOT opened afresh in this turn.",
+    "formalIndependentE1Eligible": false,
+    "sourceLockSemantics": "The git commits genuinely document creation of these post-exposure documents, not prior blind findings or author A/B/C/D production timestamps.",
+    "requiredFreshReviewer": "A newly isolated reviewer, unexposed to C/D/E defect descriptions, must independently create and lock its own source register, adversarial cases and source lock before any comparisons."
+  },
+  "repository": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent",
+  "branch": "research/g08-t03-source-postexposure-20261016",
+  "baseBranch": "main",
+  "artifacts": [
+    {
+      "path": "docs/design/review-agent/business-templates/G08/acceptance/E-v1.1/independent-source-postexposure/independent-source-register.md",
+      "sha256": "9e44dea5d2e71c6293697e18a39ca7dc3969c29cc5ddfc9870a4dea57ee2f136",
+      "gitBlobSha1": "1cd4c02a2abcf0d4d93255979031899817c29e19",
+      "gitCommit": "06e4b1bbc1a0cc6aaeb75121c29865ba968ecdc7",
+      "contentStatus": "ACTUAL_REMOTE_RETRIEVAL_AND_SHA256_VERIFIED"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G08/acceptance/E-v1.1/independent-source-postexposure/adversarial-cases.md",
+      "sha256": "1a8c7b6471a3f33013980a6ae32332b17f1d9756e60b0265080bf9fc406a58c4",
+      "gitBlobSha1": "da46d8b95479a2d5722f14f495fdcb3da658f5ae",
+      "gitCommit": "6bb7c465390b2dc666cba57b46c7795ec4023175",
+      "contentStatus": "ACTUAL_REMOTE_RETRIEVAL_AND_SHA256_VERIFIED"
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "url": "https://www.sdaeu.edu.cn/bgs/info/1008/1912.htm",
+      "access": "DIRECT_HTML_OPEN_SUCCESS",
+      "published": "2025-08-20",
+      "scope": "Shandong Agriculture and Engineering University integrated complaint platform"
+    },
+    {
+      "url": "https://www.cdut.edu.cn/index/sjxxxzxx.htm",
+      "access": "OFFICIAL_SEARCH_INDEX_FULL_TEXT; DIRECT_OPEN_412",
+      "published": "UNKNOWN",
+      "scope": "CDUT school leader mailboxes"
+    },
+    {
+      "url": "https://cece.cdut.edu.cn/info/1063/8771.htm",
+      "access": "OFFICIAL_SEARCH_INDEX_FULL_TEXT; DIRECT_OPEN_412",
+      "published": "2024-09-14",
+      "scope": "CDUT Environment and Civil Engineering dean mailbox"
+    },
+    {
+      "url": "https://aao.cdut.edu.cn/czxx.htm",
+      "access": "OFFICIAL_SEARCH_INDEX_FULL_TEXT; DIRECT_OPEN_412",
+      "published": "UNKNOWN",
+      "scope": "CDUT Academic Affairs director mailbox"
+    },
+    {
+      "url": "https://www.moe.gov.cn/srcsite/A02/s5911/moe_621/201702/t20170216_296385.html",
+      "access": "OFFICIAL_SEARCH_INDEX_LONG_TEXT; DIRECT_OPEN_TIMEOUT",
+      "published": "2017-02-16",
+      "scope": "Ministry of Education Order No.41 appeal clauses"
+    },
+    {
+      "url": "https://www.moe.gov.cn/jyb_hygq/hygq_zczx/moe_1346/moe_1347/202309/t20230922_1082027.html",
+      "access": "OFFICIAL_SEARCH_INDEX; DIRECT_OPEN_TIMEOUT",
+      "published": "2023-09-20",
+      "scope": "Ministry clarification calendar days"
+    },
+    {
+      "url": "https://www.gjxfj.gov.cn/2022-04/08/c_1310549186.htm",
+      "access": "DIRECT_HTML_OPEN_SUCCESS",
+      "published": "2022-04-08",
+      "scope": "Regulations on Letters and Visits, applicability per art.2"
+    }
+  ],
+  "classification": "F=official source scoped to actual jurisdiction/channel; S=closed synthetic scenario; U=unverified live CDUT policy/authorization",
+  "adversarialCaseCount": 9,
+  "caseExecution": "NOT_RUN",
+  "goldSemanticReview": "NOT_RUN_NO_ACL",
+  "onlineModelAccuracy": "NOT_RUN",
+  "systemD4": "NOT_RUN",
+  "schoolAuthorization": "NOT_VERIFIED",
+  "claimsNotMade": [
+    "FORMAL_E1_PASS",
+    "FIRST_TIME_BLIND_E1",
+    "FORMAL_E2_PASS",
+    "GOLD_VALIDITY",
+    "ACTUAL_CDUT_AUTOMATIC_REOPEN",
+    "REAL_ADMINISTRATIVE_ACCEPTANCE"
+  ],
+  "priorHistoryPreserved": true,
+  "seal": "This lock file is saved after two source documents have already been independently committed. Its own immutable checksum must be verified from the commit artifact; it cannot include its own SHA-256 without a self-reference paradox."
+}
