@@ -1,0 +1,29 @@
+{
+  "schema": "g04-independent-e1-source-lock-v1",
+  "time_utc": "2026-10-16T15:47:14.510Z",
+  "project": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "base_commit": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+  "target_branch": "research/g04-independent-e1-source-20261016",
+  "target_path": "research/g04-independent-e1-source-20261016",
+  "scope": "original order 28, order 505 and CDUT official institutional sources only",
+  "provenance": "Pre-comparison independent research; no C/D Gold/old E defect answers accessed",
+  "levels": {
+    "F": "verified official-source-scope",
+    "S": "closed hypothetical case, not school fact",
+    "U": "real-world unknown"
+  },
+  "entries": [
+    {
+      "path": "research/g04-independent-e1-source-20261016/independent-source-register.md",
+      "sha256": "bac71070aaa8fc0e4bd372aabd77aefab823e9a4c24ec674e2bf6e660139592f",
+      "utf8_bytes": 17065
+    },
+    {
+      "path": "research/g04-independent-e1-source-20261016/adversarial-cases.md",
+      "sha256": "a8ef94b7bddc83c7115d56bdf639cf5c9a9bd11e0f5d2be852094a90b8c06daf",
+      "utf8_bytes": 7874
+    }
+  ],
+  "self_hash_policy": "source-lock.json SHA-256 is reported externally with the immutable Git commit to avoid self-referential hash",
+  "release_state": "RESEARCH_ONLY_NOT_E_PASS"
+}
