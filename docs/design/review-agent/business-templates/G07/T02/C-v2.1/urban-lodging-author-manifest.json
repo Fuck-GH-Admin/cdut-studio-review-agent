@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "G07-T02/C-author-urban-lodging-r01",
+  "date": "2026-10-16",
+  "businessId": "G07-T02",
+  "businessName": "因公与学术交流差旅费用核销预审",
+  "authorBranch": "author/g07-t02-c-urban-no-invoice-r01",
+  "baseCommit": "1564a20fb99c5ff13fd78ce3162d0ac93005e65c",
+  "originalAuthorGitCommit": "NOT_AVAILABLE",
+  "oldVersion": "v0.1",
+  "newVersion": "v0.1.1",
+  "sourceStatus": "SOURCE_PENDING",
+  "CauthorOnly": true,
+  "independentDECompleted": false,
+  "financeRuntimeExecuted": false,
+  "changedRules": [
+    "BR-07 subcase BR-07-U",
+    "MS-06",
+    "MS-16",
+    "EV-07",
+    "R-14",
+    "R-17",
+    "R-34",
+    "section 11 and source note"
+  ],
+  "preservedCounts": {
+    "fields": 55,
+    "materials": 31,
+    "evidenceGroups": 16,
+    "conditionAxes": 14,
+    "rules": 36
+  },
+  "files": [
+    {
+      "kind": "old",
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md",
+      "sha256": "543f73ead9bb77e86d951e2ef29dbdf3832aea5270bba91fede45c046e5ef556",
+      "gitBlob": "46c48f80df90e99274986633ae29d7d407ed84b9"
+    },
+    {
+      "kind": "new",
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.1.md",
+      "sha256": "1e5a2e0b950c52a848e4d804a2e83cb4a1ec717e161a4f61ed8ca805eaad240e",
+      "gitBlob": "e57a5877474ab0c45abfadbfda1a13dd34a813aa"
+    },
+    {
+      "kind": "old",
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_规则追踪矩阵.md",
+      "sha256": "27197c83f96815c365799d20c79457b7e49656eed76277ae265967ca33074120",
+      "gitBlob": "24ef3287908ed21d1bbcfdaeb58143c6d1d038cf"
+    },
+    {
+      "kind": "new",
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_规则追踪矩阵_v0.1.1.md",
+      "sha256": "ddf62acdc2235985a41217d46021cb2e8a285255a3bf93b2fb2adc4f816841d9",
+      "gitBlob": "79962eb11aed313e91a8d85c58f7f4bfabfc5c70"
+    },
+    {
+      "kind": "old",
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_规则追踪矩阵.csv",
+      "sha256": "8d0002299392f29199d1a2b4ff35f873859db42c5bb94afa712a7985fdb4d18b",
+      "gitBlob": "41572f2d2920f3ebd7ee85fc6bd9058a06cb19a0"
+    },
+    {
+      "kind": "new",
+      "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_规则追踪矩阵_v0.1.1.csv",
+      "sha256": "2b7aac4cb93fe05f9c9e0e75601890d5b2f6cbccdadc08db0e6ddb72b6c9726c",
+      "gitBlob": "a6ca5ae9f3f67a6735e607132d79d33ea27bc2f3"
+    },
+    {
+      "kind": "new-doc",
+      "path": "docs/design/review-agent/business-templates/G07/T02/source-and-rules-delta.md",
+      "gitBlob": "58a820ba4e224e554e6ebe680ef94ec943969a18"
+    }
+  ],
+  "confidentiality": "No D hidden Gold, real bank records, expected case answers, private source URLs, or independent E score used",
+  "limits": [
+    "2026 scope of urban paid receiptless research lodging still unknown",
+    "2025 short checklist is not proof of an expanded normative exception",
+    "Outcomes are author static traces, not engine execution or finance payments"
+  ]
+}
