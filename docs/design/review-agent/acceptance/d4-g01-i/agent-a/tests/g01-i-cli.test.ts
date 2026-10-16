@@ -1,6 +1,6 @@
 /** 使用真正 D1/D3/D2 CLI，隔离合成技术预审；不宣称业务或行政 PASS。 */
 import { afterAll, expect, test } from 'bun:test'
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 const root=resolve(import.meta.dir,'../../../../../../../')
@@ -55,5 +55,8 @@ test('D3 B02 冻结机制只作隔离试验，不假装 G01-I 已复用 B02',()=
  expect(frozen.module.moduleId).toBe('evidence-source-boundary')
  const inspected=run(paths.d3,['inspect','evidence-source-boundary','1'],cfg2)
  expect(inspected.digest).toBe(frozen.digest)
- expect(()=>run(paths.d3,['freeze',modulePath,examples],cfg2)).toThrow()
+ const repeated=run(paths.d3,['freeze',modulePath,examples],cfg2);expect(repeated.digest).toBe(frozen.digest)
+ const altered=JSON.parse(readFileSync(modulePath,'utf8'));altered.tasks[0].requirement+=' 合成不兼容修订'
+ const changedPath=join(temp,'changed-b02.json');writeFileSync(changedPath,JSON.stringify(altered),'utf8')
+ expect(()=>run(paths.d3,['freeze',changedPath,examples],cfg2)).toThrow('D3_FROZEN_CONFLICT')
 })
