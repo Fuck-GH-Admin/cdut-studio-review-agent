@@ -1,0 +1,73 @@
+{
+  "template_id": "G08-T03",
+  "type": "B/C author-targeted-r31",
+  "created_on": "2026-10-16",
+  "branch": "author/g08-t03-bc-r31-r01-20261016",
+  "repo": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "source_site": "https://www.sdaeu.edu.cn/bgs/info/1008/1912.htm",
+  "revision": "R31-r01",
+  "sha256_computed_from": "GitHub fetched full UTF-8 contents, verified against original C source",
+  "files": [
+    {
+      "path": "B/G08-T03_01_办理情景与条件轴.md",
+      "sha256": "4b6ccfc568a0af2d34dd9c7fe8b4c9b1c20c4f67520422501eec49420ebc013a",
+      "git_blob_sha1": "6f031d8e6e2bc20a8106440c0f2d28453be749bb",
+      "utf8_bytes": 9749
+    },
+    {
+      "path": "B/G08-T03_03_候选审核规则与权限边界.md",
+      "sha256": "dc360b1c7bbec87481408729df7e4e083fa81c3f3066bc6949b857569b3de1c4",
+      "git_blob_sha1": "b339895ea1cf4f3f79fbbad6c437e0c426fc1e5c",
+      "utf8_bytes": 18383
+    },
+    {
+      "path": "B/G08-T03_04_官方来源与差异登记.md",
+      "sha256": "48be04635471f2d2c6151b18a3655d3a7da1d012d40fc8714e18399a5ae2e248",
+      "git_blob_sha1": "b635ddd81511e087b940461210219fc402e93d9b",
+      "utf8_bytes": 13566
+    },
+    {
+      "path": "C/G08-T03_正式业务模板_MD_v0.1.1_R31修订.md",
+      "sha256": "f8acf03994262e621d4afac6e608d34d90b114b7103372bef25fc7a4b50f88ec",
+      "git_blob_sha1": "060825bc56744d25adff1310a58239bac0456b6b",
+      "utf8_bytes": 94850
+    },
+    {
+      "path": "C/G08-T03_规则追踪矩阵_R31修订.md",
+      "sha256": "7e85b9b3374a4fa88e8ae219b79e58427251fa91fea5904943003873f902d993",
+      "git_blob_sha1": "df59246c3eedbd51a5b7f6e2c1d5373bb5ac85ec",
+      "utf8_bytes": 15177
+    },
+    {
+      "path": "C/G08-T03_验收对接说明_R31修订.md",
+      "sha256": "20a73cd1aa09f3a61efde0a401c4e9617775363057cda162dfca48e833e0af49",
+      "git_blob_sha1": "b37a128123a1f8c98eea96cdfca01253ad2cdb55",
+      "utf8_bytes": 9066
+    },
+    {
+      "path": "originals/B/G08-T03_03_候选审核规则与权限边界.md",
+      "sha256": "fcfb18883c1bbc780b237ce04fc14e62649c1e0972ef5f94b121bc93f6f0eed6",
+      "git_blob_sha1": "6f8f1f064f1232a12f900b0a5320a4b3a4797810",
+      "utf8_bytes": 17742
+    },
+    {
+      "path": "originals/C/G08-T03_正式业务模板_MD_v0.1.md",
+      "sha256": "53ee6a8dd1931ba9fe193289ce1a41b07bb35489325ad19d07dcfb02cccf00af",
+      "git_blob_sha1": "1fc46546a6bc81f06cf5f9d7a10c4968f6d5d2cf",
+      "utf8_bytes": 92390
+    },
+    {
+      "path": "originals/C/G08-T03_规则追踪矩阵.md",
+      "sha256": "79f370bd6047654153ea908216fa4357a6af3d0a20d1dd3a71a3e5fe23eceef0",
+      "git_blob_sha1": "9a36992b8bfb1bb87bb1d26f728688fe11006945",
+      "utf8_bytes": 14930
+    }
+  ],
+  "original_unchanged_assertions": {
+    "C_v0_1_sha256": "53ee6a8dd1931ba9fe193289ce1a41b07bb35489325ad19d07dcfb02cccf00af",
+    "B_R31_old_sha256": "fcfb18883c1bbc780b237ce04fc14e62649c1e0972ef5f94b121bc93f6f0eed6",
+    "C_matrix_old_sha256": "79f370bd6047654153ea908216fa4357a6af3d0a20d1dd3a71a3e5fe23eceef0"
+  },
+  "private_gold_read": false,
+  "E_signoff": false
+}
