@@ -1,0 +1,36 @@
+{
+  "schema": "independent-source-lock/v1",
+  "domain": "G02",
+  "template": "G02-T03",
+  "scope": "first independent E1 source-fact pass; research only",
+  "created_utc": "2026-10-16T15:48:10.508Z",
+  "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "base_commit": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+  "branch": "research/g02-t03-e1-independent-20261016",
+  "read_allowlist": [
+    "A:G02_00_领域总论.md",
+    "A:G02_01_候选事项处置矩阵.md",
+    "B:G02-T03_00_独立业务深调研.md",
+    "official source pages explicitly enumerated in independent-source-register.md"
+  ],
+  "excluded": [
+    "C template authoring",
+    "D Gold and simulation answers",
+    "old E r01/r02/r03 defects and matching answers"
+  ],
+  "sampling_locked_before_counterexample_selection": true,
+  "sampling_note": "Locked after broad official-source discovery; not misrepresented as before initial search",
+  "file_sha256": {
+    "independent-source-register.md": "dae174b304eaa27948e1529f77438506c18b87b81119a1b03b2853ba7d016100",
+    "adversarial-cases.md": "05f96f23b498f7da6c7292e0ea333364a4bfbce1cfce88b81fa5f7b9a6ef22f8"
+  },
+  "source_count_official": 12,
+  "actual_cdut_special_application_rule_status": "U",
+  "limitations": [
+    "ECNU attached docx not independently byte-reviewed",
+    "CQNU 2020 PDF direct screenshot/fetch unsuccessful",
+    "JNU 2018 page direct open unsuccessful",
+    "No institution-specific CDUT special network application current form obtained"
+  ],
+  "verdict": "RESEARCH_SOURCE_LOCK_ONLY; NOT_E_PASS"
+}
