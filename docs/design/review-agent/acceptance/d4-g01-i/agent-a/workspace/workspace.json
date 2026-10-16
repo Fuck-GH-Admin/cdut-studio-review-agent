@@ -1071,7 +1071,26 @@
       "sourceIds": [
         "md-original"
       ],
-      "applicabilityNote": "对应业务原文责任，需运行时证据确认"
+      "applicabilityNote": "对应业务原文责任，需运行时证据确认",
+      "gate": {
+        "when": {
+          "kind": "case-stage",
+          "stages": [
+            "decided",
+            "archived"
+          ]
+        },
+        "material": {
+          "provider": "authority",
+          "dueStages": [
+            "decided",
+            "archived"
+          ],
+          "alternatives": [
+            "official-registration-receipt"
+          ]
+        }
+      }
     },
     {
       "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix",
