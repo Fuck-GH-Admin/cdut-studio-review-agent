@@ -1,0 +1,1138 @@
+{
+  "schemaVersion": 1,
+  "templateId": "g01-student-identity-correction",
+  "originalSha256": "52ae0cdc27a16bb46659cd43d3e78632c44d8b5ccc86a18559b263512f51f329",
+  "entries": [
+    {
+      "id": "R001",
+      "sourceLocator": "L296",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-01/r001"
+        }
+      ],
+      "sourceNature": [
+        "N02",
+        "H01"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R002",
+      "sourceLocator": "L297",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-02/r002"
+        }
+      ],
+      "sourceNature": [
+        "C01",
+        "C02",
+        "C03"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R003",
+      "sourceLocator": "L298",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-02/r003"
+        }
+      ],
+      "sourceNature": [
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R004",
+      "sourceLocator": "L299",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-03/r004"
+        }
+      ],
+      "sourceNature": [
+        "N01",
+        "C01"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R005",
+      "sourceLocator": "L300",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-03/r005"
+        }
+      ],
+      "sourceNature": [
+        "N01",
+        "C01"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R006",
+      "sourceLocator": "L301",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-03/r006"
+        }
+      ],
+      "sourceNature": [
+        "N01"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R007",
+      "sourceLocator": "L302",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-04/r007"
+        }
+      ],
+      "sourceNature": [
+        "N01",
+        "C01",
+        "C02"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R008",
+      "sourceLocator": "L303",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-03/r008"
+        }
+      ],
+      "sourceNature": [
+        "N02"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R009",
+      "sourceLocator": "L304",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-04/r009"
+        }
+      ],
+      "sourceNature": [
+        "N01"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R010",
+      "sourceLocator": "L305",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-04/r010"
+        }
+      ],
+      "sourceNature": [
+        "N01",
+        "E02"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R011",
+      "sourceLocator": "L306",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-02/r011"
+        }
+      ],
+      "sourceNature": [
+        "C01"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R012",
+      "sourceLocator": "L307",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-02/r012"
+        }
+      ],
+      "sourceNature": [
+        "C02"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R013",
+      "sourceLocator": "L308",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-02/r013"
+        }
+      ],
+      "sourceNature": [
+        "C03",
+        "C04"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R014",
+      "sourceLocator": "L309",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-04/r014"
+        }
+      ],
+      "sourceNature": [
+        "N01",
+        "E01",
+        "E02"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R015",
+      "sourceLocator": "L310",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-04/r015"
+        }
+      ],
+      "sourceNature": [
+        "E01",
+        "E02"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R016",
+      "sourceLocator": "L311",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-04/r016"
+        }
+      ],
+      "sourceNature": [
+        "E01"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R017",
+      "sourceLocator": "L312",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-05/r017"
+        }
+      ],
+      "sourceNature": [
+        "N02",
+        "E02"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R018",
+      "sourceLocator": "L313",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-05/r018"
+        }
+      ],
+      "sourceNature": [
+        "N02",
+        "E02"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R019",
+      "sourceLocator": "L314",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-04/r019"
+        }
+      ],
+      "sourceNature": [
+        "N01",
+        "E01"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R020",
+      "sourceLocator": "L315",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-04/r020"
+        }
+      ],
+      "sourceNature": [
+        "E01",
+        "E03"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R021",
+      "sourceLocator": "L316",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-02/r021"
+        }
+      ],
+      "sourceNature": [
+        "E01",
+        "E03"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R022",
+      "sourceLocator": "L317",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-02/r022"
+        }
+      ],
+      "sourceNature": [
+        "E01",
+        "E02"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R023",
+      "sourceLocator": "L318",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-02/r023"
+        }
+      ],
+      "sourceNature": [
+        "C02",
+        "N02"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R024",
+      "sourceLocator": "L319",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-01/r024"
+        }
+      ],
+      "sourceNature": [
+        "E04"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R025",
+      "sourceLocator": "L320",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-06/r025"
+        }
+      ],
+      "sourceNature": [
+        "C01",
+        "C02"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R026",
+      "sourceLocator": "L321",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-01/r026"
+        }
+      ],
+      "sourceNature": [
+        "N02",
+        "H01"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R027",
+      "sourceLocator": "L322",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-06/r027"
+        }
+      ],
+      "sourceNature": [
+        "N01",
+        "N02"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "R028",
+      "sourceLocator": "L323",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "D1-D2-check",
+          "checkId": "g01-student-identity-correction@1:module/part-06/r028"
+        }
+      ],
+      "sourceNature": [
+        "N01",
+        "N02",
+        "C01"
+      ],
+      "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+    },
+    {
+      "id": "S01",
+      "sourceLocator": "L110",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "descriptive-check-only",
+          "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+        }
+      ],
+      "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+    },
+    {
+      "id": "S02",
+      "sourceLocator": "L111",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "descriptive-check-only",
+          "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+        }
+      ],
+      "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+    },
+    {
+      "id": "S03",
+      "sourceLocator": "L112",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "descriptive-check-only",
+          "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+        }
+      ],
+      "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+    },
+    {
+      "id": "S04",
+      "sourceLocator": "L113",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "descriptive-check-only",
+          "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+        }
+      ],
+      "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+    },
+    {
+      "id": "S05",
+      "sourceLocator": "L114",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "descriptive-check-only",
+          "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+        }
+      ],
+      "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+    },
+    {
+      "id": "S06",
+      "sourceLocator": "L115",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "descriptive-check-only",
+          "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+        }
+      ],
+      "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+    },
+    {
+      "id": "S07",
+      "sourceLocator": "L116",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "descriptive-check-only",
+          "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+        }
+      ],
+      "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+    },
+    {
+      "id": "S08",
+      "sourceLocator": "L117",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "descriptive-check-only",
+          "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+        }
+      ],
+      "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+    },
+    {
+      "id": "S09",
+      "sourceLocator": "L118",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "descriptive-check-only",
+          "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+        }
+      ],
+      "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+    },
+    {
+      "id": "S10",
+      "sourceLocator": "L119",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "descriptive-check-only",
+          "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+        }
+      ],
+      "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+    },
+    {
+      "id": "S11",
+      "sourceLocator": "L120",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "descriptive-check-only",
+          "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+        }
+      ],
+      "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+    },
+    {
+      "id": "S12",
+      "sourceLocator": "L121",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "descriptive-check-only",
+          "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+        }
+      ],
+      "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+    },
+    {
+      "id": "S13",
+      "sourceLocator": "L122",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "descriptive-check-only",
+          "checkId": "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+        }
+      ],
+      "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+    },
+    {
+      "id": "F01",
+      "sourceLocator": "L185",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/subject-and-request"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F02",
+      "sourceLocator": "L186",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/subject-and-request"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F03",
+      "sourceLocator": "L187",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/subject-and-request"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F04",
+      "sourceLocator": "L188",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/subject-and-request"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F05",
+      "sourceLocator": "L189",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/subject-and-request"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F06",
+      "sourceLocator": "L190",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/subject-and-request"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F07",
+      "sourceLocator": "L191",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/identity-continuity"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F08",
+      "sourceLocator": "L192",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/identity-continuity"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F09",
+      "sourceLocator": "L193",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/identity-continuity"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F10",
+      "sourceLocator": "L194",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/identity-continuity"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F11",
+      "sourceLocator": "L195",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/identity-continuity"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F12",
+      "sourceLocator": "L196",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/identity-continuity"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F13",
+      "sourceLocator": "L197",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/identity-continuity"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F14",
+      "sourceLocator": "L198",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/identity-continuity"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F15",
+      "sourceLocator": "L199",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F16",
+      "sourceLocator": "L200",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F17",
+      "sourceLocator": "L201",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F18",
+      "sourceLocator": "L202",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F19",
+      "sourceLocator": "L203",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F20",
+      "sourceLocator": "L204",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F21",
+      "sourceLocator": "L205",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F22",
+      "sourceLocator": "L206",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F23",
+      "sourceLocator": "L207",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/decision-and-temporal"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F24",
+      "sourceLocator": "L208",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/decision-and-temporal"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F25",
+      "sourceLocator": "L209",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/decision-and-temporal"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F26",
+      "sourceLocator": "L210",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/decision-and-temporal"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F27",
+      "sourceLocator": "L211",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/decision-and-temporal"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "F28",
+      "sourceLocator": "L212",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "textual-field-contract",
+          "checkId": "g01-student-identity-correction@1:module/part-10/decision-and-temporal"
+        }
+      ],
+      "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+    },
+    {
+      "id": "M01",
+      "sourceLocator": "L152",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "material-purpose-check",
+          "checkId": "g01-student-identity-correction@1:module/part-07/m01"
+        }
+      ],
+      "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
+    },
+    {
+      "id": "M02",
+      "sourceLocator": "L153",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "material-purpose-check",
+          "checkId": "g01-student-identity-correction@1:module/part-07/m02"
+        }
+      ],
+      "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
+    },
+    {
+      "id": "M03",
+      "sourceLocator": "L154",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "material-purpose-check",
+          "checkId": "g01-student-identity-correction@1:module/part-07/m03"
+        }
+      ],
+      "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
+    },
+    {
+      "id": "M04",
+      "sourceLocator": "L155",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "material-purpose-check",
+          "checkId": "g01-student-identity-correction@1:module/part-07/m04"
+        }
+      ],
+      "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
+    },
+    {
+      "id": "M05",
+      "sourceLocator": "L156",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "material-purpose-check",
+          "checkId": "g01-student-identity-correction@1:module/part-07/m05"
+        }
+      ],
+      "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
+    },
+    {
+      "id": "M06",
+      "sourceLocator": "L157",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "material-purpose-check",
+          "checkId": "g01-student-identity-correction@1:module/part-07/m06"
+        }
+      ],
+      "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
+    },
+    {
+      "id": "P0",
+      "sourceLocator": "L257",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "stage-advice-check",
+          "checkId": "g01-student-identity-correction@1:module/part-08/p0"
+        }
+      ],
+      "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+    },
+    {
+      "id": "P1",
+      "sourceLocator": "L258",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "stage-advice-check",
+          "checkId": "g01-student-identity-correction@1:module/part-08/p1"
+        }
+      ],
+      "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+    },
+    {
+      "id": "P2",
+      "sourceLocator": "L259",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "stage-advice-check",
+          "checkId": "g01-student-identity-correction@1:module/part-08/p2"
+        }
+      ],
+      "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+    },
+    {
+      "id": "P3",
+      "sourceLocator": "L260",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "stage-advice-check",
+          "checkId": "g01-student-identity-correction@1:module/part-08/p3"
+        }
+      ],
+      "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+    },
+    {
+      "id": "P4",
+      "sourceLocator": "L261",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "stage-advice-check",
+          "checkId": "g01-student-identity-correction@1:module/part-08/p4"
+        }
+      ],
+      "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+    },
+    {
+      "id": "P5",
+      "sourceLocator": "L262",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "stage-advice-check",
+          "checkId": "g01-student-identity-correction@1:module/part-08/p5"
+        }
+      ],
+      "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+    },
+    {
+      "id": "P6",
+      "sourceLocator": "L263",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "stage-advice-check",
+          "checkId": "g01-student-identity-correction@1:module/part-08/p6"
+        }
+      ],
+      "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+    },
+    {
+      "id": "P7",
+      "sourceLocator": "L264",
+      "status": "implemented-not-tested",
+      "destinations": [
+        {
+          "kind": "stage-advice-check",
+          "checkId": "g01-student-identity-correction@1:module/part-08/p7"
+        }
+      ],
+      "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+    },
+    {
+      "id": "OUTPUT_STATES",
+      "sourceLocator": "L344-L385",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "advisory-check",
+          "checkId": "g01-student-identity-correction@1:local/output-state-contract"
+        }
+      ],
+      "limitation": "十业务状态和并发问题聚合没有完整 D2 机器枚举与裁决器"
+    },
+    {
+      "id": "EXCEPTIONS",
+      "sourceLocator": "L224-L249,L420-L440",
+      "status": "tooling-blocked",
+      "destinations": [
+        {
+          "kind": "advisory-check",
+          "checkId": "g01-student-identity-correction@1:local/exceptions-and-safe-alternatives"
+        }
+      ],
+      "limitation": "等效证据效力、来源可信度、跨材料视觉冲突需权威/人工核实"
+    }
+  ]
+}

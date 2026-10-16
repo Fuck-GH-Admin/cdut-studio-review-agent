@@ -1,0 +1,1617 @@
+{
+  "schemaVersion": 1,
+  "mode": "technical-pre-review",
+  "publicationAllowed": false,
+  "workspaceId": "d4-g01-i-v17-r01",
+  "revision": 1,
+  "templateId": "g01-student-identity-correction",
+  "templateVersion": 1,
+  "authoringDigest": "79339335fcd28ab7f175e0a6b86db451085d93cabc53b10aa7a2aa7c0c1e2e50",
+  "previewFingerprint": "e869c08465b742a0ea82f1689c1e620d7f815023f7dc726f2ef9994c4739035f",
+  "targets": [],
+  "subjects": [],
+  "rules": [
+    {
+      "id": "d2-4900a1b6601913135725",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "多问题结论与权限边界",
+      "requirement": "适用范围：对在籍学生法定身份登记更正申请作事实、证据、来源适用、程序和分流预审；输出有界意见\n输出 ROUTE、CLARIFY、POLICY_HOLD、NEED_EVIDENCE、READABILITY_HOLD、DATA_CONFLICT、VERIFY_AUTH、AUTHORITY_REJECTED、NOT_APPLICABLE、PRECHECK_READY 必须区分；not-executed/execution-failed/unknown 不可折叠为就绪。每条异常包含触发规则、字段、证据位置、源版本、事实差异、下一责任方；已生效正式决定不可被模型重评覆盖。\n完成标准：输出范围、政策门禁、事实证据、并发问题、真实流程、主状态及后续动作六层；不得出具行政批准\n责任边界：不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n本任务为文本规范检查而非系统已实现的枚举聚合器\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50000,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-ee563a7221234d27673d",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "合法替代、矛盾与不可读例外",
+      "requirement": "适用范围：对在籍学生法定身份登记更正申请作事实、证据、来源适用、程序和分流预审；输出有界意见\n核验 v1.7 §6.1 和 §11：旧件被收回可用认可等效关系；一证多事实；不可取得招生内部底账应由有权部门核；签发日在变更后不当然矛盾；扫描与隐藏文字层冲突不能静默选文本；同名不等于同一人；外校额外声明不对本校生效；正式否决不可覆写。\n完成标准：每个例外必须说明事实依据、认可权限及核验边界；不可推断已犯罪、伪造或已获得审批\n责任边界：不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n等效证据关系及来源可信度尚不能在当前 G01-I D2 中完整结构化校验\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50001,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-b80bbcb241098b1ea1c1",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R001 业务目标分流",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R001（L296）。触发及核验：全案先判断在校身份更正 vs 账号、通信资料、毕业后学历勘误、字符显示问题。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：已确认范围外→`ROUTE`并给正确入口；意图不清→`CLARIFY`。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N02 H01` +设计；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n02/policy-candidate/unknown；h01/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n02",
+        "h01"
+      ],
+      "priority": 50002,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-db435b66b59732861939",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R024 生僻字及编码差错",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R024（L319）。触发及核验：`S10`辨识源记录错误与仅显示/转换异常。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：编码问题优先`ROUTE`数据修复；真实登记源错误再审更正。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`E04`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；e04/cross-school-reference/reference-only\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "e04"
+      ],
+      "priority": 50003,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-2aa6df585589b0489d58",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R026 毕业后历史注册勘误",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R026（L321）。触发及核验：`S12`区分毕业前原记录错与毕业后新发生变更。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：确属历史勘误→`ROUTE`至相应流程，不声称全无办理可能。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N02 H01`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n02/policy-candidate/unknown；h01/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n02",
+        "h01"
+      ],
+      "priority": 50004,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-beaa232c4c721465bccf",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R002 学生类别与校规匹配",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R002（L297）。触发及核验：按学校、层次、在校阶段、来华身份与证件制度选择适用制度；识别交叉适用。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：无法证明哪套现行规则生效→`POLICY_HOLD`。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`C01 C02 C03` +设计；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；c01/policy-candidate/unknown；c02/policy-candidate/unknown；c03/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "c01",
+        "c02",
+        "c03"
+      ],
+      "priority": 50005,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-a4f671687f96bcb7e02d",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R003 制度版本与授权来源",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R003（L298）。触发及核验：每条强制条件检查来源、版本、适用人员、有效性；不把旧版强制叠加。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：当前版本未知/互相冲突→`POLICY_HOLD`。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`C01 C02 C03 C04`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；c01/policy-candidate/unknown；c02/policy-candidate/unknown；c03/policy-candidate/unknown；c04/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "c01",
+        "c02",
+        "c03",
+        "c04"
+      ],
+      "priority": 50006,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-38b4582cfa32c07cf97f",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R011 本科校本申请形式",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R011（L306）。触发及核验：仅当成都理工本科`C01`被确认现行适用时核相应表单或合法电子等效申请。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：版本/是否允许电子等效不明→`POLICY_HOLD`，不虚构必填栏目。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`C01`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；c01/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "c01"
+      ],
+      "priority": 50007,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-d67a90da1f7ffaf6ed0f",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R012 来华留学生校本表单",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R012（L307）。触发及核验：仅当`C02`确定适用时核留学生专表及其有效流程。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：国际研究生与研究生规定冲突→`POLICY_HOLD`；不要求内地户口。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`C02`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；c02/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "c02"
+      ],
+      "priority": 50008,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-6052d96ff15a45378128",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R013 研究生规则缺口保护",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R013（L308）。触发及核验：研究生按实际现行2024版校规检查；在全文/权责未知时保留缺口。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：不根据2021版旧部门链拒件；需部门确认→`POLICY_HOLD`。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`C03 C04`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；c03/policy-candidate/unknown；c04/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "c03",
+        "c04"
+      ],
+      "priority": 50009,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-20056a1d9e0245727c41",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R021 外校特殊附件隔离",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R021（L316）。触发及核验：仅当学校、有效版本、情形均符合特定高校的正式要求才激活真实性声明/历史档案等。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：对成都理工或其他未启用的学校为`NOT_APPLICABLE`。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`E01 E03` +设计；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；e01/cross-school-reference/reference-only；e03/cross-school-reference/reference-only\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "e01",
+        "e03"
+      ],
+      "priority": 50010,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-6982f5216b3d5c65fb0c",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R022 其他关键字段范围控制",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R022（L317）。触发及核验：`S08`先核受理学校是否明确允许修改对应登记字段。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：无适用制度→`POLICY_HOLD`/人工确认；禁止敏感属性推断。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`E01 E02` +设计；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；e01/cross-school-reference/reference-only；e02/cross-school-reference/reference-only\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "e01",
+        "e02"
+      ],
+      "priority": 50011,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-d3ae9743f5dc56ff7602",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R023 境外合法证件与姓名",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R023（L318）。触发及核验：`S09`按被认可的境外证件、法定姓名和历史身份链核验。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：不套内地户籍/高考材料；适用制度交叉不明→`POLICY_HOLD`。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`C02 N02`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；c02/policy-candidate/unknown；n02/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "c02",
+        "n02"
+      ],
+      "priority": 50012,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-9305964053deb81987a4",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R004 申请人与学籍主体关联",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R004（L299）。触发及核验：核验实际申请人、身份断言或授权人与被修改学籍记录同一人。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：主体不清/委托授权待核→`VERIFY_AUTH`；不能仅凭表中自述通过。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N01 C01` +设计；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n01/policy-candidate/unknown；c01/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n01",
+        "c01"
+      ],
+      "priority": 50013,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-58750079a7c87d1185a9",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R005 旧值、新值和目标字段完整性",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R005（L300）。触发及核验：对每个申报更正字段列原值、目标值、变更理由及证据位置。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：缺明确目标→`CLARIFY`/`NEED_EVIDENCE`；与权威源不一致单列。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N01 C01`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n01/policy-candidate/unknown；c01/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n01",
+        "c01"
+      ],
+      "priority": 50014,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-83cd3dec368ed25c21d6",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R006 更正理由对应性",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R006（L301）。触发及核验：存在合理说明，并且该说明可对应声称发生的变更事实。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：理由未提供→补说明；理由是否最终“充分”由有权部门认定。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N01`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n01/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n01"
+      ],
+      "priority": 50015,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-fb888bc4d77cfbb619e5",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R008 权威学籍底账优先",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R008（L303）。触发及核验：对照已授权学籍原值及数据源时间；区分学校值和申请自述。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：无可信底账→`VERIFY_AUTH`；真实源冲突→`DATA_CONFLICT`。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N02` +设计；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n02/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n02"
+      ],
+      "priority": 50016,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-8e1d4ee1c15f75d8d874",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R007 法定证明事实覆盖",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R007（L302）。触发及核验：逐项检查证据出具者、事项、原新事实、日期和可验性；允许一证多事实。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：事实不覆盖→`NEED_EVIDENCE`；真实性无法鉴定→`VERIFY_AUTH`。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N01 C01 C02`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n01/policy-candidate/unknown；c01/policy-candidate/unknown；c02/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n01",
+        "c01",
+        "c02"
+      ],
+      "priority": 50017,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-4e716bad75c3bd0c2d6a",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R009 证据异常分类",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R009（L304）。触发及核验：将没提交、已交但不清晰、不一致、真伪未证实、规则不适用分别归类。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：不能用`缺件`覆盖全部异常；输出问题详情及可执行动作。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N01` +设计；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n01/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n01"
+      ],
+      "priority": 50018,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-eddee4be2fcc306b62eb",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R010 时间关系与证明时点",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R010（L305）。触发及核验：区分身份变更事实日、机关登记日、证明签发日、学籍底账时间及申请日。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：可解释补发不视为冲突；真实不可能时序→核对/`DATA_CONFLICT`。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N01 E02`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n01/policy-candidate/unknown；e02/cross-school-reference/reference-only\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n01",
+        "e02"
+      ],
+      "priority": 50019,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-1b3dfbeb8462c910f342",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R014 法定更名身份连续性",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R014（L309）。触发及核验：`S01`检查旧姓名、现姓名与官方更名事实能否对应同一自然人。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：缺对应证明→补事实证据；可合法替代旧身份证不误杀。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N01 E01 E02`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n01/policy-candidate/unknown；e01/cross-school-reference/reference-only；e02/cross-school-reference/reference-only\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n01",
+        "e01",
+        "e02"
+      ],
+      "priority": 50020,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-7b23d352b01ddc5cc7e8",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R015 公安证号更正连续性",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R015（L310）。触发及核验：`S02`检查原号、新号、公安纠错来源及同一主体关系。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：原新号无合法关联→补证；机关真实性未知→授权核验。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`E01 E02`（外校形式范本）；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；e01/cross-school-reference/reference-only；e02/cross-school-reference/reference-only\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "e01",
+        "e02"
+      ],
+      "priority": 50021,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-59529ce5d5ab3652b3b7",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R016 15位升18位技术边界",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R016（L311）。触发及核验：`S03`可检查格式与计算对应性，同时另核身份法律事实。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：算法形式异常只提示格式核查；算法通过不等于法律认可。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`E01` +设计；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；e01/cross-school-reference/reference-only\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "e01"
+      ],
+      "priority": 50022,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-9589813e017cad2a4f61",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R019 出生日期差异原因",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R019（L314）。触发及核验：`S06`将事实原因与出生日期字段更正相连，按合法证据判断。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：原因不明→`CLARIFY`；不从身份证号生日位自动认定法律纠错。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N01 E01`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n01/policy-candidate/unknown；e01/cross-school-reference/reference-only\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n01",
+        "e01"
+      ],
+      "priority": 50023,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-1efbe17caeb221cb9db4",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R020 复合关键字段更正",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R020（L315）。触发及核验：`S07`逐项建立需要证明的事实并核整个身份连续链，允许共用证明。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：部分事实未覆盖→仅提示具体缺失；不强制文件份数取并集。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`E01 E03` +设计；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；e01/cross-school-reference/reference-only；e03/cross-school-reference/reference-only\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "e01",
+        "e03"
+      ],
+      "priority": 50024,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-f29b63b1ae96f7c313c3",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R017 报考时本人登记错误",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R017（L312）。触发及核验：`S04`核原始报名时登记值、法定身份、出错阶段。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：缺有权源→`VERIFY_AUTH`；不能由个人陈述直接改招生源。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N02 E02`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n02/policy-candidate/unknown；e02/cross-school-reference/reference-only\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n02",
+        "e02"
+      ],
+      "priority": 50025,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-88e3095de6b050832dec",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R018 招生部门录入错误",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R018（L313）。触发及核验：`S05`核原报名正确、后续录取/上报误录的源头及授权核查。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：无法访问招生底账→`VERIFY_AUTH`；不强迫学生上传内网底账。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N02 E02`；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n02/policy-candidate/unknown；e02/cross-school-reference/reference-only\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n02",
+        "e02"
+      ],
+      "priority": 50026,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-884f16fd63ca5cf32b73",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R025 审批阶段与正式决定",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R025（L320）。触发及核验：只核已经到达的节点，读取可信学院/教务/国际处等正式决定。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：未到节点→`NOT_APPLICABLE`；可信正式否决→`AUTHORITY_REJECTED`。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`C01 C02` +设计；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；c01/policy-candidate/unknown；c02/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "c01",
+        "c02"
+      ],
+      "priority": 50027,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-c5309ba72432973e7aab",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R027 身份冒用/虚假材料风险",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R027（L322）。触发及核验：有可定位的明显事实冲突或真实性疑点时形成异常记录。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：仅指出客观问题和核验事项；不可直接宣布犯罪或伪造成立。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N01 N02` +设计；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n01/policy-candidate/unknown；n02/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n01",
+        "n02"
+      ],
+      "priority": 50028,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-da30710c488e6f234975",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "R028 结果权限与发布门控",
+      "requirement": "适用范围：只对 G01-I 本人身份与在校学籍更正预审适用；非匹配条件必须标明不适用\n原件 R028（L323）。触发及核验：全案核对问题集合、适用规则确认、最终职责、结论来源。无论能否判断，都要说明适用性及已执行/未执行/不能执行的缘由；不能把自然语言条件冒充已结构化生效。\n完成标准：不满足/待核处理：只给程序预审建议，不能自动审批或改写电子注册记录。输出具体待证事实、对应材料位置、制度状态、下一责任方；未确认行政规则不得作为强制拒件依据。\n责任边界：所有校本附件与审批节点须现行有效、明确适用；缺乏可信系统源不得视为已通过；AI 不作行政决定\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原件来源：`N01 N02 C01` +设计；仅技术预审，涉及法定事实和有权决定时保留待核。\nD2 技术预审来源：md-original/user-request/request-scope；n01/policy-candidate/unknown；n02/policy-candidate/unknown；c01/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original",
+        "n01",
+        "n02",
+        "c01"
+      ],
+      "priority": 50029,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-567e3cc5909f22ad2f11",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "M01 身份信息更正申请",
+      "requirement": "适用范围：在适用的申请事实和办理阶段内核验用途\n原文 L152：出现条件 在校核心身份更正；核验重点 申请主体、旧值、新值、理由、申请时间、本人申请事实；是否可共用 全案共用。\n完成标准：提交阶段与权责：**必须能获取申请事实**；载体可为学校认可的纸表或电子表。未知认可替代须保留人工/制度待核。\n责任边界：一证可覆多事实；不规定统一 PDF 份数；后台材料不强迫学生上传\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n仅用途检查，不推出固定文件名、制度已经有效或审批已生效\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50030,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-e3362a84d08c87dbb1f7",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "M02 当前有效身份凭据",
+      "requirement": "适用范围：在适用的申请事实和办理阶段内核验用途\n原文 L153：出现条件 需凭证确认本人合法身份时；核验重点 当前姓名、证号或护照号、签发来源、证件类型、有效状态；是否可共用 可以证明多个新字段。\n完成标准：提交阶段与权责：**需有可确认的合法身份事实**；是否必须独立上传按适用校规。未知认可替代须保留人工/制度待核。\n责任边界：一证可覆多事实；不规定统一 PDF 份数；后台材料不强迫学生上传\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n仅用途检查，不推出固定文件名、制度已经有效或审批已生效\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50031,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-a102d77d59b41cddf857",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "M03 变更事实及原新关系证明",
+      "requirement": "适用范围：在适用的申请事实和办理阶段内核验用途\n原文 L154：出现条件 更名、更号、更生日、其他关键字段更正；核验重点 何种事实变化、哪项旧值与哪项新值、发生时间、出具机关；是否可共用 **允许一份材料覆盖多项更正事实**。\n完成标准：提交阶段与权责：需要有法定效力证据链；不得全校统一强制某种特定文件名。未知认可替代须保留人工/制度待核。\n责任边界：一证可覆多事实；不规定统一 PDF 份数；后台材料不强迫学生上传\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n仅用途检查，不推出固定文件名、制度已经有效或审批已生效\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50032,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-80da657c24b9f64f2ffd",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "M04 报名、录取与历史学籍依据",
+      "requirement": "适用范围：在适用的申请事实和办理阶段内核验用途\n原文 L155：出现条件 原始录取/报名错误或身份源冲突；核验重点 原始报名值、录取上报值、法定身份、错误发生在哪一环节；是否可共用 仅支持其覆盖的原始事实。\n完成标准：提交阶段与权责：优先由校内有权部门/接口提取；申请人无权取得则转授权核验。未知认可替代须保留人工/制度待核。\n责任边界：一证可覆多事实；不规定统一 PDF 份数；后台材料不强迫学生上传\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n仅用途检查，不推出固定文件名、制度已经有效或审批已生效\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50033,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-d093d493c18fc7b8ffd6",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "M05 校本专用补充表单/声明",
+      "requirement": "适用范围：在适用的申请事实和办理阶段内核验用途\n原文 L156：出现条件 有效学校规定 + 对应身份/原因触发；核验重点 该校规定的专表、真实性声明、特定历史文件；是否可共用 根据制度许可。\n完成标准：提交阶段与权责：**仅对本案适用且已确认有效**时才成为条件必交。未知认可替代须保留人工/制度待核。\n责任边界：一证可覆多事实；不规定统一 PDF 份数；后台材料不强迫学生上传\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n仅用途检查，不推出固定文件名、制度已经有效或审批已生效\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50034,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-7769bfe6f5921bc232c2",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "M06 审批及电子注册执行记录",
+      "requirement": "适用范围：在适用的申请事实和办理阶段内核验用途\n原文 L157：出现条件 流程进入对应阶段后；核验重点 学院、学籍主管部门正式意见及最终操作回执；是否可共用 阶段状态源，不是通用附件。\n完成标准：提交阶段与权责：**初次提交绝不预先要求**；有权接口产生后才检查。未知认可替代须保留人工/制度待核。\n责任边界：一证可覆多事实；不规定统一 PDF 份数；后台材料不强迫学生上传\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n仅用途检查，不推出固定文件名、制度已经有效或审批已生效\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50035,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-5e8ce89e062d25f7c345",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "`P0` 业务识别与路由",
+      "requirement": "适用范围：事实存在的实际办理阶段，不假设学校节点已授权\n原文 L257：进入条件 收到用户申请；本阶段核查 当前目标是否为在校学籍身份更正；学籍阶段是否匹配。\n完成标准：状态/动作 `ROUTE`/`CLARIFY`/进入下一步；责任边界 避免无关事项进入本模板。阶段未发生时不得误标申请人缺件。\n责任边界：学院/主管部门正式决定与电子注册执行仅由有权人员及系统操作\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原文 P0-P7 与软件 CaseStage 不是一一映射，必须人工确认当前节点\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50036,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-475b2605d39a111fa225",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "`P1` 有效依据选择",
+      "requirement": "适用范围：事实存在的实际办理阶段，不假设学校节点已授权\n原文 L258：进入条件 已明确学校、学生类别、办理事实；本阶段核查 国家原则、校本有效版本、跨制度适用关系。\n完成标准：状态/动作 确定适用规则或`POLICY_HOLD`；责任边界 不允许私自采用外校附件要求。阶段未发生时不得误标申请人缺件。\n责任边界：学院/主管部门正式决定与电子注册执行仅由有权人员及系统操作\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原文 P0-P7 与软件 CaseStage 不是一一映射，必须人工确认当前节点\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50037,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-edfa3ae10c232bfade15",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "`P2` 初次材料登记",
+      "requirement": "适用范围：事实存在的实际办理阶段，不假设学校节点已授权\n原文 L259：进入条件 申请表、已上传证明或系统申请数据到达；本阶段核查 申请主体、变更字段原新值、理由、材料可读性。\n完成标准：状态/动作 材料清单、缺项、`READABILITY_HOLD`；责任边界 此时学院/主管部门后续审批不可能是“必交材料”。阶段未发生时不得误标申请人缺件。\n责任边界：学院/主管部门正式决定与电子注册执行仅由有权人员及系统操作\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原文 P0-P7 与软件 CaseStage 不是一一映射，必须人工确认当前节点\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50038,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-e33d1c60d6228dd5cbf1",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "`P3` 事实与证据审查",
+      "requirement": "适用范围：事实存在的实际办理阶段，不假设学校节点已授权\n原文 L260：进入条件 材料可读且范围明确；本阶段核查 合法变更事实、旧新身份连续性、证据覆盖、招生底账和时间关系。\n完成标准：状态/动作 `NEED_EVIDENCE`/`DATA_CONFLICT`/`VERIFY_AUTH`或事实检查满足；责任边界 不能用申报旧值冒充可信底账。阶段未发生时不得误标申请人缺件。\n责任边界：学院/主管部门正式决定与电子注册执行仅由有权人员及系统操作\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原文 P0-P7 与软件 CaseStage 不是一一映射，必须人工确认当前节点\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50039,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-5bd3a5c31244b5e486ed",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "`P4` 汇总预审意见",
+      "requirement": "适用范围：事实存在的实际办理阶段，不假设学校节点已授权\n原文 L261：进入条件 已执行适用的客观检查；本阶段核查 汇总所有并发问题及其证据、提示补正与移交方向。\n完成标准：状态/动作 `PRECHECK_READY`或阻断/待核状态；责任边界 “可移交”不是“批准”。阶段未发生时不得误标申请人缺件。\n责任边界：学院/主管部门正式决定与电子注册执行仅由有权人员及系统操作\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原文 P0-P7 与软件 CaseStage 不是一一映射，必须人工确认当前节点\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50040,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-edd475d9679a1ccdef02",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "`P5` 学院受理/初审",
+      "requirement": "适用范围：事实存在的实际办理阶段，不假设学校节点已授权\n原文 L262：进入条件 进入学校配置的该节点；本阶段核查 由正式人员依据当期流程判断；需要补正则发回。\n完成标准：状态/动作 可信流程中的待办/补件/通过/否决；责任边界 AI只读取与辅助，不代签。阶段未发生时不得误标申请人缺件。\n责任边界：学院/主管部门正式决定与电子注册执行仅由有权人员及系统操作\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原文 P0-P7 与软件 CaseStage 不是一一映射，必须人工确认当前节点\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50041,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-83caa635cdd96eeb5ed1",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "`P6` 学籍主管部门审查",
+      "requirement": "适用范围：事实存在的实际办理阶段，不假设学校节点已授权\n原文 L263：进入条件 学院或其他合法前置节点符合流程；本阶段核查 正式审查、必要的其他层级核定。\n完成标准：状态/动作 正式批准/否决及具体理由；责任边界 由学校/行政授权主体作出。阶段未发生时不得误标申请人缺件。\n责任边界：学院/主管部门正式决定与电子注册执行仅由有权人员及系统操作\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原文 P0-P7 与软件 CaseStage 不是一一映射，必须人工确认当前节点\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50042,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-d9ce310f71e77ed8d644",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "`P7` 电子注册处理与回执",
+      "requirement": "适用范围：事实存在的实际办理阶段，不假设学校节点已授权\n原文 L264：进入条件 正式批准且符合办理条件；本阶段核查 学籍/招生/电子注册源数据处理结果、回执核对。\n完成标准：状态/动作 已办理、待同步、失败待处理；责任边界 AI不得调用未授权数据更正行为。阶段未发生时不得误标申请人缺件。\n责任边界：学院/主管部门正式决定与电子注册执行仅由有权人员及系统操作\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n原文 P0-P7 与软件 CaseStage 不是一一映射，必须人工确认当前节点\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n结构化执行条件（D2 强制门禁，不是行政制度已生效证明）：{\"when\":{\"kind\":\"case-stage\",\"stages\":[\"decided\",\"archived\"]},\"material\":{\"provider\":\"authority\",\"dueStages\":[\"decided\",\"archived\"],\"alternatives\":[\"official-registration-receipt\"]}}\n执行规则：条件未知一律 awaiting-confirmation；阶段未到不得报申请人缺件；电子/纸质替代须有本对象当前版本的审核员证据确认。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50043,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-2e27db126486f1b82e0c",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "S01-S13 业务适用与互斥关系",
+      "requirement": "适用范围：学校×在校类别×变更原因×字段×办理阶段\n逐项确认实际原因与学生身份，S12/S13 已明确范围外时先分流；S11 与 S09 可叠加；S07 必须分别核每项法定事实并允许共用证明。具体原文分支：\nS01：依法更改姓名；事实 法定姓名发生变更，原学籍姓名与现姓名不同；证明 旧姓名→合法更名事实→现姓名，属于同一人；禁止 未必必须有旧身份证原件；不因更名发生在入学前就一律排除\nS02：公安机关纠正证件号错号/重号；事实 法定证号经有权机关纠正；证明 原证号→官方纠错记录→现证号，主体连续；禁止 不因证件号变化就强制查所有招生报名错误材料\nS03：居民身份证号码15位升18位；事实 旧码与新码符合适用的号码升级情形；证明 技术对应与官方身份关系一致；禁止 算法校验通过≠公安机关承认同一人\nS04：报考时本人填报错误；事实 原始报名表填写有误；证明 原报名记录、真实法定身份与差错原因对应；禁止 不擅自修改招生原始数据库\nS05：招生或录取数据录入错误；事实 报名信息正确、后续上报/录取数据错；证明 有权原始报名数据与录取数据发生源头差错；禁止 不要求学生无权取得的教育部门内部源数据\nS06：出生日期更正；事实 法定出生日期与学籍记录不同；证明 错误来源、法定生日及应改字段对应；禁止 身份证号含生日数字变化≠当然申请了生日更正\nS07：两个或多个关键字段同改；事实 一个申请中实际改变至少两项关键身份字段；证明 每项变更原因均获证据支持，整体身份仍连续；禁止 不默认把更名+公安更号+招生错误三套文件都要齐\nS08：性别、民族等其他关键登记字段；事实 学校确实受理该字段的法定登记更正；证明 依法登记的事实、对应学籍源头及学校认可的证明；禁止 不由模型从外貌、姓名、地域推断敏感属性\nS09：来华留学生合法姓名/证件变动；事实 适用外籍合法证件与学校登记不一致；证明 护照或认可合法凭据及历史身份连续性；禁止 不强制居民户口簿、高考准考证等内地特有材料\nS10：生僻字、乱码、字形或转写异常；事实 原始法定姓名可能未变，仅编码或显示异常；证明 登记源文字与渲染/数据库存储之间的差别；禁止 不把字符显示错误直接定性为改名或非法身份\nS11：研究生申请；事实 学籍层次为研究生；证明 通用变更事实+现行研究生管理制度；禁止 不凭2021历史办法套用2026审批岗位\nS12：毕业后已注册学历的历史原错；事实 当前不是在籍学籍更正，目标为历史注册勘误；证明 原毕业记录错误与现申请的关系；禁止 不直接判“学历信息永远不能改”\nS13：学信网账号/联系方式改动；事实 目标为用户账号或普通通信信息；证明 判断正确服务入口；禁止 不运行学籍身份更正的必交证据检查\n完成标准：对每个 S 说明已知命中/不命中/待确认；不得以自然语言规则声称 D2 已自动激活或跳过特定 Check\n责任边界：D2 目前仅能将 scenario 绑定到 campus-card，不能把这段文字当作已执行条件树\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n受限于当前 D2 target/scenario 合约，分支判断尚未结构化执行\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50044,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-9b28df140117a1ee2b64",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "F01、F02、F03、F04、F05、F06 所需事实",
+      "requirement": "适用范围：仅当前实际更正字段、最少必要个人资料\nF01（L185）受理学校及有效校规版本；B；全部；学校ID、受理时间、适用版本及确认记录；由系统/规则管理人提供；未确认相关强制规则→`POLICY_HOLD`；不要求学生填“政策版本”\nF02（L186）学籍类别与在校状态；S；全部；本科/研究生/留学生及在校、毕业、注册状态；可信学籍系统；目标不属于在校更正→`ROUTE`；系统不可读→`VERIFY_AUTH`\nF03（L187）申请主体及本人关系；B；全部；申请人身份、校内ID、登录主体与被更正者的关系；授权不明→`VERIFY_AUTH`；不可凭申请表自述取得他人操作权限\nF04（L188）当前权威学籍原值；S；全部；学籍或授权历史底账中的旧姓名、证号、生日等，记录时间与源系统；缺可信底账→`VERIFY_AUTH`；不能拿学生填的旧值冒充\nF05（L189）拟更正字段集、新值；B；全部；逐字段`字段名/原值/新值/理由`，存在明确变更目标；缺字段或歧义→`CLARIFY`/补正；不以证号派生生日自动新增字段\nF06（L190）变更原因与发生阶段；B；全部；更名、公安纠错、报考差错、录取误录、升位、其他及实际发生时间；原因未定→`CLARIFY`，不得按所有原因合并材料\n完成标准：分别标示来源真值/申请自述/待核；保留原始值、规范值、记录时间、材料定位及最小化采集边界\n责任边界：不得以用户声明替代学籍真值，不推断敏感特征，未实现 typed 字段对齐时保留阻断\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n当前为任务说明，不宣称已构建可机读、可自动分流的 F 字段 Schema\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50045,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-52dc3fe600799b7c11d4",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "F07、F08、F09、F10、F11、F12、F13、F14 所需事实",
+      "requirement": "适用范围：仅当前实际更正字段、最少必要个人资料\nF07（L191）法定证明所覆盖的事实；B；更正关键字段；出具机关、证明事实、原新关联、日期、可核验性；事实无法覆盖→`NEED_EVIDENCE`；真实性暂不可验→`VERIFY_AUTH`\nF08（L192）当前合法身份凭据；S/Q；需要身份校验；适用居民证件、护照或其他认可凭据，证件类型和状态；证件制度不同，不统一要求内地身份证双面\nF09（L193）同一自然人身份连续性；B；变更任何关键字段；法定旧值↔变更事件↔新值↔可信底账的关联；无关联证据→补证/核验；复杂矛盾→`DATA_CONFLICT`\nF10（L194）本科身份更正申请表；Q；成都理工本科且`C01`已确认适用；当前认可表/电子等效申请及其信息；最新表格栏位不明，不得自行加必填字段\nF11（L195）留学生身份更正申请表；Q；成都理工来华留学生且`C02`已确认适用；当前认可留学生专表/电子等效；研究生交叉制度不明时→`POLICY_HOLD`\nF12（L196）研究生校规表及主管部门配置；X；成都理工研究生；2024版更正条款、表单与签批部门；现阶段配置待核，不得从2021版自动继承\nF13（L197）曾用名及户籍更名记录；Q；实际发生依法更名；旧名、新名、事实发生日、证明机关；仅按适用学校认可的形式；旧证件不可获得时允许等效材料\nF14（L198）公安错号/重号更正材料；Q；真实公安证号纠错；原号码、新号码、纠错原因、机关与日期；招生录入错误不能自动要求公安错号证明\n完成标准：分别标示来源真值/申请自述/待核；保留原始值、规范值、记录时间、材料定位及最小化采集边界\n责任边界：不得以用户声明替代学籍真值，不推断敏感特征，未实现 typed 字段对齐时保留阻断\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n当前为任务说明，不宣称已构建可机读、可自动分流的 F 字段 Schema\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50046,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-565df8c9951837d0a09f",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "F15、F16、F17、F18、F19、F20、F21、F22 所需事实",
+      "requirement": "适用范围：仅当前实际更正字段、最少必要个人资料\nF15（L199）原始报名/报考记录；S；报名源差错；学生原始报名信息、考生标识、时间；优先有权招生系统；无法取底账→授权核验\nF16（L200）招生录取/上报记录；S；录取源差错；招生录取记录、源头上报值、年份；不凭学生陈述修改省级招生源记录\nF17（L201）招生主管部门核查结论；Q；正式校规要求招生源确认；有权部门对错误发生环节与正确值的确认；省级核准等流程只在适用法律与当期政策下启用\nF18（L202）15位/18位证号升级对应关系；Q；`S03`；技术形式检查、合法身份凭证与权威对应链；算法合法不是同一人合法证明；错误先标格式异常\nF19（L203）出生日期更正依据；Q；`S06`；现法定生日、旧注册生日、造成差错的来源；需按公安/招生等实际原因选择证明，不一概要求出生医学证明\nF20（L204）多字段复合更正清单；B；两个或更多字段；各字段变更事实及交叉身份链；证据覆盖映射；多字段不等于强制多文件，支持一证多用\nF21（L205）外籍/特殊证件与合法姓名；S/Q；来华留学生/特殊身份；适用护照/居留/其他认可证件、法定姓名和转换依据；不强制内地户口、居民身份证、高考档案\nF22（L206）字形编码与原始显示来源；A；`S10`或字段疑似乱码；字符码点、原始登记、证件合法字形、渲染差异；单纯显示错误先转数据维护\n完成标准：分别标示来源真值/申请自述/待核；保留原始值、规范值、记录时间、材料定位及最小化采集边界\n责任边界：不得以用户声明替代学籍真值，不推断敏感特征，未实现 typed 字段对齐时保留阻断\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n当前为任务说明，不宣称已构建可机读、可自动分流的 F 字段 Schema\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50047,
+      "confirmation": "confirmed"
+    },
+    {
+      "id": "d2-7f1a3bd41be4e4aadb83",
+      "policyVersionId": "workspace:d2-d4-g01-i-v17-r01@1",
+      "title": "F23、F24、F25、F26、F27、F28 所需事实",
+      "requirement": "适用范围：仅当前实际更正字段、最少必要个人资料\nF23（L207）学院初审结果；V；流程实际进入学院节点后；由可信审批系统提供负责人、结果、时间；首次申请尚无此记录→`NOT_APPLICABLE`\nF24（L208）教务处复审结果；V；适用的本科校规且节点已发生；由可信流程读取结果；正式否决不得由AI重评消除\nF25（L209）留学生主管部门复审结果；V；适用留学生专规且节点已发生；有权部门决定、时间、签批状态；交叉制度未知先`POLICY_HOLD`\nF26（L210）学籍电子注册处理回执；V；正式批准并进入数据登记后；有权系统的登记时间、结果、对照值；材料审核通过不等于登记完成\nF27（L211）真实性声明或特定历史附件；Q；**只有**学校当期明确要求；该校规定的承诺、历史档案等；山东科技大学实例不能成为成都理工普遍必交\nF28（L212）变更事实与签发时间关系；B/A；出现多时间性证据时；事件日、登记日、证明签发日、申请日、旧底账时间；补发证件晚于事实发生日≠伪造；异常要说明哪两个时间冲突\n完成标准：分别标示来源真值/申请自述/待核；保留原始值、规范值、记录时间、材料定位及最小化采集边界\n责任边界：不得以用户声明替代学籍真值，不推断敏感特征，未实现 typed 字段对齐时保留阻断\n不自动审批、注册更正、推断犯罪或将外校/历史政策升级为本校强制要求；所有技术 Check 无法单独完成行政判断\n当前为任务说明，不宣称已构建可机读、可自动分流的 F 字段 Schema\nD2 技术预审来源：md-original/user-request/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。",
+      "when": {
+        "all": []
+      },
+      "targetScope": "case",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "md-original"
+      ],
+      "priority": 50048,
+      "confirmation": "confirmed"
+    }
+  ],
+  "mapping": [
+    {
+      "checkId": "local/output-state-contract",
+      "ruleId": "d2-4900a1b6601913135725",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "local/exceptions-and-safe-alternatives",
+      "ruleId": "d2-ee563a7221234d27673d",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-01/r001",
+      "ruleId": "d2-b80bbcb241098b1ea1c1",
+      "sourceIds": [
+        "md-original",
+        "n02",
+        "h01"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-01/r024",
+      "ruleId": "d2-db435b66b59732861939",
+      "sourceIds": [
+        "md-original",
+        "e04"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-01/r026",
+      "ruleId": "d2-2aa6df585589b0489d58",
+      "sourceIds": [
+        "md-original",
+        "n02",
+        "h01"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-02/r002",
+      "ruleId": "d2-beaa232c4c721465bccf",
+      "sourceIds": [
+        "md-original",
+        "c01",
+        "c02",
+        "c03"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-02/r003",
+      "ruleId": "d2-a4f671687f96bcb7e02d",
+      "sourceIds": [
+        "md-original",
+        "c01",
+        "c02",
+        "c03",
+        "c04"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-02/r011",
+      "ruleId": "d2-38b4582cfa32c07cf97f",
+      "sourceIds": [
+        "md-original",
+        "c01"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-02/r012",
+      "ruleId": "d2-d67a90da1f7ffaf6ed0f",
+      "sourceIds": [
+        "md-original",
+        "c02"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-02/r013",
+      "ruleId": "d2-6052d96ff15a45378128",
+      "sourceIds": [
+        "md-original",
+        "c03",
+        "c04"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-02/r021",
+      "ruleId": "d2-20056a1d9e0245727c41",
+      "sourceIds": [
+        "md-original",
+        "e01",
+        "e03"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-02/r022",
+      "ruleId": "d2-6982f5216b3d5c65fb0c",
+      "sourceIds": [
+        "md-original",
+        "e01",
+        "e02"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-02/r023",
+      "ruleId": "d2-d3ae9743f5dc56ff7602",
+      "sourceIds": [
+        "md-original",
+        "c02",
+        "n02"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-03/r004",
+      "ruleId": "d2-9305964053deb81987a4",
+      "sourceIds": [
+        "md-original",
+        "n01",
+        "c01"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-03/r005",
+      "ruleId": "d2-58750079a7c87d1185a9",
+      "sourceIds": [
+        "md-original",
+        "n01",
+        "c01"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-03/r006",
+      "ruleId": "d2-83cd3dec368ed25c21d6",
+      "sourceIds": [
+        "md-original",
+        "n01"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-03/r008",
+      "ruleId": "d2-fb888bc4d77cfbb619e5",
+      "sourceIds": [
+        "md-original",
+        "n02"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-04/r007",
+      "ruleId": "d2-8e1d4ee1c15f75d8d874",
+      "sourceIds": [
+        "md-original",
+        "n01",
+        "c01",
+        "c02"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-04/r009",
+      "ruleId": "d2-4e716bad75c3bd0c2d6a",
+      "sourceIds": [
+        "md-original",
+        "n01"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-04/r010",
+      "ruleId": "d2-eddee4be2fcc306b62eb",
+      "sourceIds": [
+        "md-original",
+        "n01",
+        "e02"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-04/r014",
+      "ruleId": "d2-1b3dfbeb8462c910f342",
+      "sourceIds": [
+        "md-original",
+        "n01",
+        "e01",
+        "e02"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-04/r015",
+      "ruleId": "d2-7b23d352b01ddc5cc7e8",
+      "sourceIds": [
+        "md-original",
+        "e01",
+        "e02"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-04/r016",
+      "ruleId": "d2-59529ce5d5ab3652b3b7",
+      "sourceIds": [
+        "md-original",
+        "e01"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-04/r019",
+      "ruleId": "d2-9589813e017cad2a4f61",
+      "sourceIds": [
+        "md-original",
+        "n01",
+        "e01"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-04/r020",
+      "ruleId": "d2-1efbe17caeb221cb9db4",
+      "sourceIds": [
+        "md-original",
+        "e01",
+        "e03"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-05/r017",
+      "ruleId": "d2-f29b63b1ae96f7c313c3",
+      "sourceIds": [
+        "md-original",
+        "n02",
+        "e02"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-05/r018",
+      "ruleId": "d2-88e3095de6b050832dec",
+      "sourceIds": [
+        "md-original",
+        "n02",
+        "e02"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-06/r025",
+      "ruleId": "d2-884f16fd63ca5cf32b73",
+      "sourceIds": [
+        "md-original",
+        "c01",
+        "c02"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-06/r027",
+      "ruleId": "d2-c5309ba72432973e7aab",
+      "sourceIds": [
+        "md-original",
+        "n01",
+        "n02"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-06/r028",
+      "ruleId": "d2-da30710c488e6f234975",
+      "sourceIds": [
+        "md-original",
+        "n01",
+        "n02",
+        "c01"
+      ],
+      "authority": "unverified-policy"
+    },
+    {
+      "checkId": "module/part-07/m01",
+      "ruleId": "d2-567e3cc5909f22ad2f11",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-07/m02",
+      "ruleId": "d2-e3362a84d08c87dbb1f7",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-07/m03",
+      "ruleId": "d2-a102d77d59b41cddf857",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-07/m04",
+      "ruleId": "d2-80da657c24b9f64f2ffd",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-07/m05",
+      "ruleId": "d2-d093d493c18fc7b8ffd6",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-07/m06",
+      "ruleId": "d2-7769bfe6f5921bc232c2",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-08/p0",
+      "ruleId": "d2-5e8ce89e062d25f7c345",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-08/p1",
+      "ruleId": "d2-475b2605d39a111fa225",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-08/p2",
+      "ruleId": "d2-edfa3ae10c232bfade15",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-08/p3",
+      "ruleId": "d2-e33d1c60d6228dd5cbf1",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-08/p4",
+      "ruleId": "d2-5bd3a5c31244b5e486ed",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-08/p5",
+      "ruleId": "d2-edd475d9679a1ccdef02",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-08/p6",
+      "ruleId": "d2-83caa635cdd96eeb5ed1",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-08/p7",
+      "ruleId": "d2-d9ce310f71e77ed8d644",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope",
+      "gate": {
+        "when": {
+          "kind": "case-stage",
+          "stages": [
+            "decided",
+            "archived"
+          ]
+        },
+        "material": {
+          "provider": "authority",
+          "dueStages": [
+            "decided",
+            "archived"
+          ],
+          "alternatives": [
+            "official-registration-receipt"
+          ]
+        }
+      }
+    },
+    {
+      "checkId": "module/part-09/s01-s13-conditional-matrix",
+      "ruleId": "d2-2e27db126486f1b82e0c",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-10/subject-and-request",
+      "ruleId": "d2-9b28df140117a1ee2b64",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-10/identity-continuity",
+      "ruleId": "d2-52dc3fe600799b7c11d4",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-10/admission-and-changes",
+      "ruleId": "d2-565df8c9951837d0a09f",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    },
+    {
+      "checkId": "module/part-10/decision-and-temporal",
+      "ruleId": "d2-7f1a3bd41be4e4aadb83",
+      "sourceIds": [
+        "md-original"
+      ],
+      "authority": "request-scope"
+    }
+  ],
+  "fingerprint": "31b1240de64e4f2038790c7f7cdbdb7f139b14ce9db8e9689620fafdcce472ef"
+}
