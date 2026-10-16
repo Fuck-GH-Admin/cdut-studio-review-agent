@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "study": "G01 D4 offline agent blind tests V1-V3",
+  "createdDate": "2026-10-17",
+  "archiveName": "V1-V3_离线测试完整证据归档.zip",
+  "archiveSha256": "ba12bc0400a80d7c7d2c69a8f0fdb29d092cc69499242917b3454938c5051a8d",
+  "componentCount": 21,
+  "security": "HIDDEN GOLD and private agent transcripts are stored in owner-side offline archive only. Do not upload to public GitHub or the tested Agent workspace.",
+  "availability": "Operator-held evidence archive; not embedded in public repository. Request raw archive and verify digest for reproduction.",
+  "artifacts": [
+    {
+      "archivePath": "V1/输入与Gold/离线测试_A_完整隔离包.zip",
+      "bytes": 14826,
+      "sha256": "8052429581792a7edc1f69c26e4f24aae3b86e5c3a11dd156bde5d0721f27659"
+    },
+    {
+      "archivePath": "V1/输入与Gold/离线测试_B_完整隔离包.zip",
+      "bytes": 15674,
+      "sha256": "ba7d12d04202d6909ff21bfd91fddca1d92d04fd84c9628b3c7da5e5e1780b28"
+    },
+    {
+      "archivePath": "V1/Agent实际提交/测试A&B.zip",
+      "bytes": 47122,
+      "sha256": "d21a7781858d5867cb18770dd4136d966bba0001cbfcf91341f477541694570d"
+    },
+    {
+      "archivePath": "V1/评分结果/scoreA.json",
+      "bytes": 3347,
+      "sha256": "dea53d2340509446b908b6ce1ff48d67aedc0f2998f9c1e754cc1b6d437cfad8"
+    },
+    {
+      "archivePath": "V1/评分结果/scoreB.json",
+      "bytes": 4490,
+      "sha256": "ecc4de3423a1da198ec7914bf2b8b7a96200f27978af43415fc43361748cd64d"
+    },
+    {
+      "archivePath": "V2/Agent输入/离线盲测V2_A_Agent输入.zip",
+      "bytes": 7838,
+      "sha256": "401a544bfcff26b547543f665fe4eac77dfa5cd43173a02644b2a2aa052af6de"
+    },
+    {
+      "archivePath": "V2/Agent输入/离线盲测V2_B_Agent输入.zip",
+      "bytes": 7619,
+      "sha256": "6c1d28a5cb9e79c3837242041918a3cba97f1ec97f74aec2b7348b5232de8a74"
+    },
+    {
+      "archivePath": "V2/隐藏Gold与评测/离线盲测V2_A_答案与评测.zip",
+      "bytes": 4201,
+      "sha256": "033774f44095d4b6cae248322bb6bd0890ea8974a92d83d985f56107f4401633"
+    },
+    {
+      "archivePath": "V2/隐藏Gold与评测/离线盲测V2_B_答案与评测.zip",
+      "bytes": 4171,
+      "sha256": "60070bee41d19d007c39558b9ed08e55f90dc15b024da0dc89946a72859ff9e7"
+    },
+    {
+      "archivePath": "V2/Agent实际提交/测试A&B-V2.zip",
+      "bytes": 69198,
+      "sha256": "bb1e93ee07b51e7cdc0d1ba7c052682ab401c09281921612f1d178c36ab4c7d8"
+    },
+    {
+      "archivePath": "V2/复核报告/V2_双Agent独立审查报告.md",
+      "bytes": 6884,
+      "sha256": "420b5b1de5eb563a680c7edce0d5c5e8b3c1c47ce3a46c704ce23560d0029fa2"
+    },
+    {
+      "archivePath": "V2/执行说明/离线盲测V2_实验实施说明.md",
+      "bytes": 2822,
+      "sha256": "125d246aa641bca284429ee532d0cc9bd1dfb24ba90c8bfb4f2621b0251474dd"
+    },
+    {
+      "archivePath": "V3/Agent输入/V3_A_Agent输入.zip",
+      "bytes": 9820,
+      "sha256": "37631afe455c631499ba408e78cb20c2034059b8206aeabb53aa917dc517fc26"
+    },
+    {
+      "archivePath": "V3/Agent输入/V3_B_Agent输入.zip",
+      "bytes": 9799,
+      "sha256": "8ba0ddaba2603668668a6e5481781615b56f99b12eb0d57890f2c0f7babd5827"
+    },
+    {
+      "archivePath": "V3/隐藏Gold与评测/V3_A_隐藏答案与评测.zip",
+      "bytes": 11344,
+      "sha256": "817506c7ca4d77e1346910f996d533f48ae8642094c1367b4d9cfc1a3d3484f7"
+    },
+    {
+      "archivePath": "V3/隐藏Gold与评测/V3_B_隐藏答案与评测.zip",
+      "bytes": 11797,
+      "sha256": "33bbdbcf5cb44fd574ddfd719e9f6716ba7ea5b2430c81ab4e5549d56558c9a6"
+    },
+    {
+      "archivePath": "V3/Agent实际提交/测试A&B-V3.zip",
+      "bytes": 119571,
+      "sha256": "1f23c12e7faebd884baac8fe4ee08992058c402a6714799c39c1d4933914e7fb"
+    },
+    {
+      "archivePath": "V3/复核报告/V3_双Agent独立复核与评测器诊断报告.md",
+      "bytes": 8749,
+      "sha256": "102f735a238d7601b9856138a64110a014c09fe0eaf6b4a72072c65ff773cf5c"
+    },
+    {
+      "archivePath": "V3/执行说明/V3_实施说明.md",
+      "bytes": 2525,
+      "sha256": "535ff6f22bcc597f2d202957d1e318b11d2e3172a41ca9ed5a3d05ca9ecc3301"
+    },
+    {
+      "archivePath": "V3/评分结果/grade_A.json",
+      "bytes": 1625,
+      "sha256": "b1a24ab767ff9dcdcc97c16073407ae0e780a704fc4df2a6d0696a2fe09e8f5e"
+    },
+    {
+      "archivePath": "V3/评分结果/grade_B.json",
+      "bytes": 1325,
+      "sha256": "7039e4646ed7e51423212b7e1b38c09e817f916658316e0739c06db8e19b2ebb"
+    }
+  ]
+}
