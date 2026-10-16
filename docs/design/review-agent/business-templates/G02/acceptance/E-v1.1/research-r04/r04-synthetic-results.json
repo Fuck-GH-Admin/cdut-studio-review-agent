@@ -1,0 +1,144 @@
+{
+  "scope": "S-CLOSED independent executable oracle, not product code",
+  "projectRuntime": false,
+  "goldOpened": false,
+  "formalGatePassed": false,
+  "passCount": 8,
+  "totalCount": 8,
+  "results": [
+    {
+      "caseId": "T00",
+      "subject": "Contractor-Q",
+      "resource": "R1",
+      "facts": {
+        "sponsor": false,
+        "resourceOwner": false,
+        "channel": true,
+        "formalApproval": false,
+        "provisioned": false
+      },
+      "expected": "PENDING_ROLE_CONFIRMATION + PENDING_RESOURCE_OWNER + PENDING_APPROVAL",
+      "actual": "PENDING_ROLE_CONFIRMATION + PENDING_RESOURCE_OWNER + PENDING_APPROVAL",
+      "implementationAllowed": false,
+      "pass": true
+    },
+    {
+      "caseId": "T01",
+      "subject": "Contractor-Q",
+      "resource": "R1",
+      "facts": {
+        "sponsor": false,
+        "resourceOwner": true,
+        "channel": true,
+        "formalApproval": false,
+        "provisioned": false
+      },
+      "expected": "PENDING_ROLE_CONFIRMATION + PENDING_APPROVAL",
+      "actual": "PENDING_ROLE_CONFIRMATION + PENDING_APPROVAL",
+      "implementationAllowed": false,
+      "pass": true
+    },
+    {
+      "caseId": "T10-RC04",
+      "subject": "Contractor-Q",
+      "resource": "R1",
+      "facts": {
+        "sponsor": true,
+        "resourceOwner": false,
+        "channel": true,
+        "formalApproval": false,
+        "provisioned": false
+      },
+      "expected": "PENDING_RESOURCE_OWNER + PENDING_APPROVAL",
+      "actual": "PENDING_RESOURCE_OWNER + PENDING_APPROVAL",
+      "implementationAllowed": false,
+      "pass": true
+    },
+    {
+      "caseId": "T11",
+      "subject": "Contractor-Q",
+      "resource": "R1",
+      "facts": {
+        "sponsor": true,
+        "resourceOwner": true,
+        "channel": true,
+        "formalApproval": false,
+        "provisioned": false
+      },
+      "expected": "PENDING_APPROVAL",
+      "actual": "PENDING_APPROVAL",
+      "implementationAllowed": false,
+      "pass": true
+    },
+    {
+      "caseId": "P-yes-T-no",
+      "subject": "Contractor-Q",
+      "resource": "R1",
+      "facts": {
+        "sponsor": true,
+        "resourceOwner": true,
+        "channel": true,
+        "formalApproval": true,
+        "provisioned": false
+      },
+      "expected": "APPROVED_NOT_PROVISIONED",
+      "actual": "APPROVED_NOT_PROVISIONED",
+      "implementationAllowed": false,
+      "pass": true
+    },
+    {
+      "caseId": "P-yes-T-yes",
+      "subject": "Contractor-Q",
+      "resource": "R1",
+      "facts": {
+        "sponsor": true,
+        "resourceOwner": true,
+        "channel": true,
+        "formalApproval": true,
+        "provisioned": true
+      },
+      "expected": "PROVISIONED_NETWORK_ONLY",
+      "actual": "PROVISIONED_NETWORK_ONLY",
+      "implementationAllowed": true,
+      "pass": true
+    },
+    {
+      "caseId": "P-yes-T-yes-but-owner-missing",
+      "subject": "Contractor-Q",
+      "resource": "R1",
+      "facts": {
+        "sponsor": true,
+        "resourceOwner": false,
+        "channel": true,
+        "formalApproval": true,
+        "provisioned": true
+      },
+      "expected": "PENDING_RESOURCE_OWNER",
+      "actual": "PENDING_RESOURCE_OWNER",
+      "implementationAllowed": false,
+      "pass": true
+    },
+    {
+      "caseId": "explicit-denial",
+      "subject": "Contractor-Q",
+      "resource": "R1",
+      "facts": {
+        "sponsor": true,
+        "resourceOwner": false,
+        "channel": true,
+        "formalApproval": false,
+        "provisioned": false,
+        "ownerDenied": true
+      },
+      "expected": "FORMALLY_DENIED",
+      "actual": "FORMALLY_DENIED",
+      "implementationAllowed": false,
+      "pass": true
+    }
+  ],
+  "naiveOrError": {
+    "caseId": "T10-RC04",
+    "naiveIdentityOrOwnerDecision": true,
+    "requiredConjunctionDecision": false
+  }
+}
