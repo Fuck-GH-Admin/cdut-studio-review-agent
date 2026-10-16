@@ -1,0 +1,38 @@
+{
+  "schema": "G08-T03/e1-source-lock/v1",
+  "status": "LOCKED_INDEPENDENT_BEFORE_AUTHOR_COMPARE",
+  "frozen_at_utc": "2026-10-16T15:47:15.851Z",
+  "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "branch": "audit/g08-e1-independent-source-20261016",
+  "path_prefix": "research/g08-t03/e1-independent-source-20261016/",
+  "scope": "G08-T03 山东接诉即办二次办理 / 成都理工信箱 / 上位申诉与信访分类",
+  "independence_statement": "Only original official public sources; no C/D/old E business-semantic answers read.",
+  "source_classes": {
+    "F": "verified within named official institutional scope",
+    "S": "closed synthetic example",
+    "U": "unverified real-world applicability"
+  },
+  "files_sha256": {
+    "independent-source-register.md": "899acc1468c5a263428332ad046653f80ec1fda9e284be31eff90b2ceba471a2",
+    "adversarial-cases.md": "52bb0338337db88c26cf7d3f0c71e719563b36cd7cb6830272b049b204ab731e"
+  },
+  "official_source_urls": [
+    "https://www.ytvc.edu.cn/info/1011/4276.htm",
+    "https://zhongyixi.sdctcm.edu.cn/info/1154/3404.htm",
+    "https://dis.dykj.edu.cn/info/1044/1666.htm",
+    "https://dis.dykj.edu.cn/__local/4/AC/4B/C46D9852FDA1A155703C71637C5_FB70262F_679E7.pdf",
+    "https://www.cdut.edu.cn/index/sjxxxzxx.htm",
+    "https://dbxb.cdut.edu.cn/jgsz.htm",
+    "https://www.cdut.edu.cn/info/1366/7658.htm",
+    "https://math.cdut.edu.cn/__local/4/9C/15/38D10F19B1C22803A1BAEA5EEFB_276B35A2_96F36.pdf",
+    "https://www.moe.gov.cn/srcsite/A02/s5911/moe_621/201702/t20170216_296385.html",
+    "https://www.moe.gov.cn/jyb_hygq/hygq_zczx/moe_1346/moe_1347/202309/t20230922_1082027.html",
+    "https://www.gjxfj.gov.cn/2022-04/08/c_1310549186.htm"
+  ],
+  "limits": [
+    "not a 2026 Shandong province-wide current operation certification",
+    "not a 2026 成都理工学校内部申诉办法认证",
+    "not a formal E PASS"
+  ],
+  "lock_rule": "No edit to these three frozen paths after final commit. Follow-up fixes use new files/revision branches."
+}
