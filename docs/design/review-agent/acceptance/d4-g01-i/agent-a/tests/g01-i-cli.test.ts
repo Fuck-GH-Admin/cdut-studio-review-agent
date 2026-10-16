@@ -37,9 +37,7 @@ test('真实 CLI validate/save/read/preview/export/import/repreview',()=>{
  expect(plan.mapping).toHaveLength(49);expect(plan.rules).toHaveLength(49)
  expect(plan.publicationAllowed).toBe(false)
  // 已由真实 D2 CLI 生成的合成计划，用于将 CI 输出回填为可审计静态工件。
- const encodedPlan=Buffer.from(JSON.stringify(plan),'utf8').toString('base64')
- for(let i=0;i<encodedPlan.length;i+=12000)console.log('G01I_PLAN_PART_'+String(i/12000)+':'+encodedPlan.slice(i,i+12000))
- console.log('G01I_PLAN_PART_COUNT:'+Math.ceil(encodedPlan.length/12000))
+ // 真实计划快照由四个隔离小输出测试分片留存，避免 stdout 单文件裁切
  const registration=run(paths.d2,['register',workspace,selection]);expect(registration.registered).toBe(true)
  const caseCreated=run(paths.d2,['create',workspace,selection,'g01i-case-synthetic','G01-I 合成技术预审','g01i-local-reviewer'])
  expect(caseCreated.created).toBe(true);expect(caseCreated.publicationAllowed).toBe(false)
