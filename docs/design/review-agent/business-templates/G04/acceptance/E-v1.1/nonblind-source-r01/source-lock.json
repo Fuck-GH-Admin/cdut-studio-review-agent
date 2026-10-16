@@ -1,0 +1,38 @@
+{
+  "schema": "G04-source-verification-lock-nonblind-v1",
+  "reviewDate": "2026-10-16",
+  "writtenAt": "2026-10-16T15:32:13.612Z",
+  "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "branch": "research/g04-e1-source-nonblind-r01",
+  "baseMainCommit": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+  "qualification": "BLINDING_COMPROMISED",
+  "qualifiesAsFirstIndependentE1": false,
+  "disclosure": "Prior messages in the same conversation already included C source content and old E r01/r02/r03 semantic comparisons before this instruction; the required first-blind condition cannot be restored by hashing/committing.",
+  "authorsOwnCDAccessDuringThisSourceReread": "NOT_REOPENED_IN_THIS_TURN_BUT_PRIOR_EXPOSURE_EXISTS",
+  "originalGoldPrivateBytesRead": "NOT_RUN_NO_ACL",
+  "corpusRestrictions": "Only Order 28, Order 505 and official CDUT public sources used in this new retrieval; no S fictional rules introduced.",
+  "sourceRegisterEntriesF": 10,
+  "sourceRegisterEntriesU": 6,
+  "simulatedEntriesS": 0,
+  "counterexamplePairs": 4,
+  "reproducedCDDefects": 0,
+  "sourceBaselineCommit": "8393ca475e54a998d2ea5678377986d0afd56588",
+  "counterexampleFinalCommit": "4b4e4408c9540845ac44d72f4041545d526fcb21",
+  "files": {
+    "independent-source-register.md": {
+      "sha256": "94b79c6dcce4ffc6022964da3248137650e5046982dcde2790124d27c5db662b",
+      "gitBlobSha1": "14b2f7badd380d1aa1868f5922f87114e4534a7c",
+      "bytesUtf8": 10320,
+      "gitFileUrl": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/research/g04-e1-source-nonblind-r01/docs/design/review-agent/business-templates/G04/acceptance/E-v1.1/nonblind-source-r01/independent-source-register.md"
+    },
+    "adversarial-cases.md": {
+      "sha256": "b599372943bd0532ecb7b528cb22dbb8fd772774ce499040d035a676fa45165d",
+      "gitBlobSha1": "09525ff7aa69f2ad01f5c65c645e8c80f03d7b04",
+      "bytesUtf8": 9402,
+      "gitFileUrl": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/research/g04-e1-source-nonblind-r01/docs/design/review-agent/business-templates/G04/acceptance/E-v1.1/nonblind-source-r01/adversarial-cases.md"
+    }
+  },
+  "formalReviewUse": "NOT_ACCEPTABLE_AS_INDEPENDENT_SOURCE_LOCK",
+  "release": "NOT_AUTHORIZED",
+  "requiredNextStep": "Use a genuinely fresh conversation/reviewer with only original 28/505 legal text and current CDUT original official source index; do not show this auxiliary report or C/D/E defect knowledge prior to that reviewer's own independent source lock."
+}
