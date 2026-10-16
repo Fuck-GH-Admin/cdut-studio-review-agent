@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS_TECHNICAL_ONLY",
+  "gitHeadTested": "5ec5258f3f4d5c533203ad7ad09ad6159498951e",
+  "ciRunId": 38978918519,
+  "ciJobId": 117234916998,
+  "ciRunUrl": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38978918519",
+  "testCounts": {
+    "total": 3624,
+    "passed": 3618,
+    "skipped": 6,
+    "failed": 0
+  },
+  "workflowChecks": {
+    "typecheck": "PASS",
+    "boundaries": "PASS",
+    "skinContract": "PASS",
+    "build": "PASS",
+    "unitRegression": "PASS"
+  },
+  "checks": {
+    "d1SaveReadRevision": "PASS_SYNTHETIC",
+    "d3ValidatePortableExportImport": "PASS_SYNTHETIC",
+    "d3SharedFreezeImmutability": "PASS_SYNTHETIC_TEST_ONLY_NOT_G01_USE",
+    "d2PreviewCompile": "PASS_SYNTHETIC",
+    "d2Register": "PASS_SYNTHETIC",
+    "d2CreateTechnicalCase": "PASS_SYNTHETIC",
+    "d2StageGate": "PASS_SYNTHETIC",
+    "genericD2EvidencePositiveNegative": "PASS_SYNTHETIC_NOT_G01_TYPED_EVIDENCE",
+    "g01StudentConditionalInstances": "BLOCKED_ENGINE",
+    "g01ClaimGraph": "BLOCKED_ENGINE",
+    "piOnline": "NOT-RUN",
+    "businessGold": "NOT-RUN"
+  },
+  "source": "Actually compiled 4 D2 snapshot fragments from GitHub Action job log, reconstructed byte-identically as UTF-8 JSON and asserted original emitted compiler fingerprint.",
+  "planFingerprint": "31b1240de64e4f2038790c7f7cdbdb7f139b14ce9db8e9689620fafdcce472ef",
+  "planRuleCount": 49,
+  "planMappingCount": 49,
+  "planSubjectCount": 0,
+  "publicationAllowed": false,
+  "cliReceipt": {
+    "d1Validated": true,
+    "d3Validated": true,
+    "revisionSaved": true,
+    "d2Registered": true,
+    "d2CaseCreated": true,
+    "caseId": "g01i-case-synthetic",
+    "checkCount": 49,
+    "planFingerprint": "31b1240de64e4f2038790c7f7cdbdb7f139b14ce9db8e9689620fafdcce472ef",
+    "portableExported": true,
+    "portableImported": true,
+    "portableFingerprint": "31b1240de64e4f2038790c7f7cdbdb7f139b14ce9db8e9689620fafdcce472ef",
+    "b02SharedReuseInG01": false
+  }
+}

@@ -9,3 +9,14 @@
 工作方式：`workspace/workspace.json` 为符合当前类型字段的 D1 输入候选，`workspace/selection.json` 为只按全案范围编译的 D2 选择；`tests/g01-i-technical.test.ts` 为只使用合成数据的实际服务测试，不是隐藏 Gold。需以 Bun 环境运行 `bun test --isolate ...`，而不是报告脚本存在即已通过。
 
 当前不可声称：G01-I 两业务条件实际产生不同任务实例；一证多事实得到真实来源授权；业务状态汇总器已完整运行；Pi 在线业务准确率；CDUT 现行政策适用已核；任何行政批准。关键阻断详见 `issues/tooling-gates.md`。
+
+
+## 实际 CI 回归与完整运行快照（追加）
+
+- 完成并检查的 PR CI：<https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/38978918519>，测试对应提交 `5ec5258f3f4d5c533203ad7ad09ad6159498951e`。
+- Bun 1.4.0 / Node 22；类型检查、边界检查、界面契约、构建均 PASS。全仓 3624 测试：**3618 PASS、6 SKIP、0 FAIL**。
+- 新增的 D1 CLI validate/save/read、D3 validate/freeze/inspect/export/import、D2 preview/register/create 已在隔离配置内真实执行；`g01i-case-synthetic` 是实际创建的合成技术预审案卷，绝非正式学籍审批。
+- 经四份 CI 独立真实引擎快照重组并校验的 D2 plan：`runtime/actual-d2-draft-plan.json`。精确 `RuleSpec=49`、`mapping=49`、`subjects=0`；指纹 `31b1240de64e4f2038790c7f7cdbdb7f139b14ce9db8e9689620fafdcce472ef`，`publicationAllowed=false`。
+- 携包导出/换隔离配置重导入后 D2 指纹仍与原值一致；命令回执详见 `runtime/ci-cli-receipt.json`，工作流汇总 `runtime/verification.json`。
+- **未解决的成功门槛**：两组真正不同的 G01-I 身份业务条件无法无损形成各自独立、结构化的 D2 有效任务；一证多事实的 G01-I 主体/法定效力图不能运行编译。对应主开发问题依旧 OPEN，不能将语义 Check 存在误报为全业务 PASS。
+- 线上 Pi、学校现行制度授权、行政批准及独立隐藏 Gold 均未执行/未取得；本次成功范围仅为合成技术验证。

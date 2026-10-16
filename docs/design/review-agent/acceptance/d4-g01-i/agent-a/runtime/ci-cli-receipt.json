@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "sourceCiRunId": 38978918519,
+  "sourceCiJobId": 117234916998,
+  "headTested": "5ec5258f3f4d5c533203ad7ad09ad6159498951e",
+  "syntheticTechnicalOnly": true,
+  "d1Validated": true,
+  "d3Validated": true,
+  "revisionSaved": true,
+  "d2Registered": true,
+  "d2CaseCreated": true,
+  "caseId": "g01i-case-synthetic",
+  "checkCount": 49,
+  "planFingerprint": "31b1240de64e4f2038790c7f7cdbdb7f139b14ce9db8e9689620fafdcce472ef",
+  "portableExported": true,
+  "portableImported": true,
+  "portableFingerprint": "31b1240de64e4f2038790c7f7cdbdb7f139b14ce9db8e9689620fafdcce472ef",
+  "b02SharedReuseInG01": false
+}

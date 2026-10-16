@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "project": "CDUT Studio D4 G01-I v1.7",
-  "status": "CANDIDATE_UNVERIFIED_EXECUTION",
+  "status": "TECHNICAL_CANDIDATE_VERIFIED_WITH_RECORDED_BLOCKERS",
   "technicalBaseSha": "4b191c729f3d5f8135c73b87c17642023f6c3986",
   "originCommit": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
   "originPath": "docs/design/review-agent/business-templates/G01/originals/g01_student_identity_complete_template_v1.7.md",
@@ -72,13 +72,31 @@
   "verification": {
     "sourceSha256": "PASS",
     "sourceTables": "PASS",
-    "liveD1": "NOT-RUN",
-    "liveD3": "NOT-RUN",
-    "liveD2": "NOT-RUN",
-    "portableReimport": "NOT-RUN",
+    "liveD1": "PASS_CI_SYNTHETIC",
+    "liveD3": "PASS_CI_SYNTHETIC",
+    "liveD2": "PASS_CI_SYNTHETIC",
+    "portableReimport": "PASS_CI_SYNTHETIC",
     "piLive": "NOT-RUN",
-    "independentGold": "NOT-RUN"
+    "independentGold": "NOT-RUN",
+    "studentMultiAxisConditionCompilation": "TOOLING_BLOCKED",
+    "studentClaimEvidenceGraph": "TOOLING_BLOCKED",
+    "cdutCurrentSchoolPolicy": "POLICY_HOLD"
   },
   "executionGateCount": 1,
-  "executionGateScope": "P7: only built-in decided/archived stages; authority-owned receipt cannot be applicant missing; not same as full school P0-P7 mapping"
+  "executionGateScope": "P7: only built-in decided/archived stages; authority-owned receipt cannot be applicant missing; not same as full school P0-P7 mapping",
+  "executionEvidence": {
+    "ciRunId": 38978918519,
+    "ciJobId": 117234916998,
+    "verifiedCiHead": "5ec5258f3f4d5c533203ad7ad09ad6159498951e",
+    "totalTests": 3624,
+    "passed": 3618,
+    "skipped": 6,
+    "failed": 0,
+    "compiledPlanPath": "runtime/actual-d2-draft-plan.json",
+    "compiledPlanFingerprint": "31b1240de64e4f2038790c7f7cdbdb7f139b14ce9db8e9689620fafdcce472ef",
+    "actualD2Rules": 49,
+    "actualD2Mappings": 49,
+    "actualSubjects": 0,
+    "syntheticCaseCreated": "g01i-case-synthetic"
+  }
 }
