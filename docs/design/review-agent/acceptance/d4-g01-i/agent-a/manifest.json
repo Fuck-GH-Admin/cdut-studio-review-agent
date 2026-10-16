@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "project": "CDUT Studio D4 G01-I v1.7",
+  "status": "CANDIDATE_UNVERIFIED_EXECUTION",
+  "technicalBaseSha": "4b191c729f3d5f8135c73b87c17642023f6c3986",
+  "originCommit": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+  "originPath": "docs/design/review-agent/business-templates/G01/originals/g01_student_identity_complete_template_v1.7.md",
+  "originSha256": "52ae0cdc27a16bb46659cd43d3e78632c44d8b5ccc86a18559b263512f51f329",
+  "branch": "test/d4-g01-i-template-r01",
+  "templateId": "g01-student-identity-correction",
+  "templateVersion": 1,
+  "authoringWorkspaceId": "d4-g01-i-v17-r01",
+  "authoringRevision": 1,
+  "moduleVersions": [
+    {
+      "id": "g01i-scope-routing",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "id": "g01i-policy-applicability",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "id": "g01i-applicant-record",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "id": "g01i-identity-evidence",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "id": "g01i-admissions-sources",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "id": "g01i-authority-and-output",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "id": "g01i-material-purpose",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "id": "g01i-workflow",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "id": "g01i-branch-router",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "id": "g01i-fact-catalog",
+      "version": 1,
+      "scope": "workspace-local"
+    }
+  ],
+  "sharedModuleLocks": [],
+  "checkBindingCount": 49,
+  "conversionLedgerEntries": 85,
+  "finalCommit": "See GitHub branch/PR HEAD; hash cannot self-reference manifest",
+  "publicReleaseAllowed": false,
+  "administrativeDecisionAllowed": false,
+  "verification": {
+    "sourceSha256": "PASS",
+    "sourceTables": "PASS",
+    "liveD1": "NOT-RUN",
+    "liveD3": "NOT-RUN",
+    "liveD2": "NOT-RUN",
+    "portableReimport": "NOT-RUN",
+    "piLive": "NOT-RUN",
+    "independentGold": "NOT-RUN"
+  }
+}

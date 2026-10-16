@@ -1,0 +1,14 @@
+{
+  "id": "d4-g01-i-synthetic-initial",
+  "templateId": "g01-student-identity-correction",
+  "templateVersion": 1,
+  "title": "G01-I 合成技术申请（无真人数据）",
+  "objectType": "document",
+  "caseFields": {},
+  "subjects": [],
+  "documents": [],
+  "stage": "draft",
+  "revision": 0,
+  "createdAt": "2026-10-17T00:00:00.000Z",
+  "updatedAt": "2026-10-17T00:00:00.000Z"
+}
