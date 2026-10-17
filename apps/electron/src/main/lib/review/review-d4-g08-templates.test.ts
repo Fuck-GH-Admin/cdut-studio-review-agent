@@ -107,7 +107,7 @@ describe('D4 G08 actual modular business templates at COMMON fixed base',()=>{
     expect(()=>compileD2RuntimePlan(x.w,injected,x.cas)).toThrow('D2_GENERIC_PRIMARY_INVALID')
     const plan=compileD2RuntimePlan(x.w,x.selection,x.cas)
     const unknown=plan.mapping.find(m=>m.applicability==='unknown')!
-    const agg={caseV2:x.cas,d2RuntimePlan:plan,observations:[],evidenceLinks:[]} as CaseAggregateV2
+    const agg={caseV2:x.cas,d2RuntimePlan:plan,observations:[],evidenceLinks:[]} as unknown as CaseAggregateV2
     expect(validateD2GuardSubmission(agg,unknown,'compliant',[])).toContain('APPLICABILITY_UNKNOWN')
     expect(validateD2GuardSubmission(agg,unknown,'awaiting-confirmation',[])).toBeUndefined()
     const active=plan.mapping.find(m=>m.applicability==='applicable')!
