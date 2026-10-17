@@ -1,0 +1,77 @@
+name: D4 G06 business templates technical acceptance
+on:
+  push:
+    branches: [feat/d4-g06-modular-templates-r01]
+    paths:
+      - 'docs/design/review-agent/acceptance/d4-g06-build/**'
+      - 'apps/electron/src/main/lib/review/review-d4-g06.test.ts'
+      - '.github/workflows/review-d4-g06.yml'
+    paths-ignore:
+      - 'docs/design/review-agent/acceptance/d4-g06-build/runtime/**'
+  pull_request:
+    branches: [feat/d4-common-object-scenario-r01]
+    paths:
+      - 'docs/design/review-agent/acceptance/d4-g06-build/**'
+      - 'apps/electron/src/main/lib/review/review-d4-g06.test.ts'
+      - '.github/workflows/review-d4-g06.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  real-g06:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - name: Install pinned dependencies
+        run: bun install --frozen-lockfile
+      - name: Typecheck
+        run: bun run typecheck
+      - name: D1-D3-D2-Pi nine templates and negative guards
+        env:
+          D4_G06_RUNTIME_DIR: ${{ runner.temp }}/d4-g06-real-runtime
+        run: |
+          mkdir -p "$D4_G06_RUNTIME_DIR"
+          bun test apps/electron/src/main/lib/review/review-d4-g06.test.ts 2>&1 | tee "$D4_G06_RUNTIME_DIR/test-raw.log"
+      - name: Verify that all nine actual plans and receipts exist
+        env:
+          D4_G06_RUNTIME_DIR: ${{ runner.temp }}/d4-g06-real-runtime
+        run: |
+          python3 - <<'PY'
+          import pathlib,json,os
+          d=pathlib.Path(os.environ['D4_G06_RUNTIME_DIR'])
+          for n in range(1,10):
+              t=d/f'G06-T{n:02d}'
+              p=json.loads((t/'d2-actual-plan.json').read_text())
+              q=json.loads((t/'technical-receipt.json').read_text())
+              r=json.loads((t/'pi-actual-run.json').read_text())
+              assert p['schemaVersion']==3 and len(p['subjects'])==2 and len(p['mapping'])>0
+              assert q['verification']=={'complete':True,'problems':[]} and q['planFingerprint']==p['fingerprint']
+              assert q['publicationAllowed'] is False and q['evidence']['bRejectedEvidenceGuard']
+              assert r['checks'] and all(v['status']=='awaiting-confirmation' for v in r['checks'])
+          print('G06_NINE_REAL_RUNS_PASS: 9/9')
+          PY
+      - name: Upload exact raw runtime evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: d4-g06-runtime-${{ github.sha }}
+          path: ${{ runner.temp }}/d4-g06-real-runtime/
+          retention-days: 90
+      - name: Save immutable same-run runtime JSON under G06 domain directory
+        if: ${{ github.event_name == 'push' && github.ref_name == 'feat/d4-g06-modular-templates-r01' }}
+        run: |
+          cp -r "${{ runner.temp }}/d4-g06-real-runtime/" docs/design/review-agent/acceptance/d4-g06-build/runtime/
+          git add docs/design/review-agent/acceptance/d4-g06-build/runtime
+          if git diff --cached --quiet; then
+            echo "No new runtime bytes"
+          else
+            git -c user.name='cdut-d4-g06-ci' -c user.email='actions@users.noreply.github.com' commit -m "test(d4-g06): store actual nine-template D2/Pi runtime snapshots"
+            git push origin HEAD:feat/d4-g06-modular-templates-r01
+          fi
