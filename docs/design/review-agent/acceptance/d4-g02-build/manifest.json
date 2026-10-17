@@ -11,7 +11,13 @@
       "coverage": 158,
       "bytes": 148874,
       "axes": 13,
-      "caseCount": 2
+      "caseCount": 2,
+      "status": "PARTIAL",
+      "syntheticSubjects": 2,
+      "syntheticChecks": 106,
+      "planFingerprint": "67a401f5e9ecfe5e9bd2f7afee5e32f0d9d5f6f8a596a5731bc6aae7888bb145",
+      "planFile": "T01/runtime-plan.json",
+      "piReceiptFile": "T01/pi-receipt.json"
     },
     {
       "id": "T02",
@@ -22,7 +28,13 @@
       "coverage": 151,
       "bytes": 132519,
       "axes": 10,
-      "caseCount": 2
+      "caseCount": 2,
+      "status": "PARTIAL",
+      "syntheticSubjects": 2,
+      "syntheticChecks": 100,
+      "planFingerprint": "c6001a718aa5b740d784a8c569f1a9efe5ce844f26f8bc91f13e30b4a891df9a",
+      "planFile": "T02/runtime-plan.json",
+      "piReceiptFile": "T02/pi-receipt.json"
     },
     {
       "id": "T03",
@@ -33,10 +45,19 @@
       "coverage": 155,
       "bytes": 138813,
       "axes": 11,
-      "caseCount": 2
+      "caseCount": 2,
+      "status": "PARTIAL",
+      "syntheticSubjects": 2,
+      "syntheticChecks": 114,
+      "planFingerprint": "577a112f2df7ef93f76503e34e4e45e9f03e6dd676fb77b537a06bf6d9dfdf7b",
+      "planFile": "T03/runtime-plan.json",
+      "piReceiptFile": "T03/pi-receipt.json"
     }
   ],
   "sourceDecision": "T01/T02 C v0.1 byte matched; T03 C v0.1.1 e3d1... chosen; old frozen T03 v0.1 b4b3... remains separate",
   "meaning": "research technical candidates only, no admin publishing, no historical Gold reread",
-  "testStatus": "NOT_RUN_PENDING_CI"
+  "testStatus": "GREEN_13_PASS_0_FAIL_SYNTHETIC_D1_D3_D2_PI",
+  "ciRun": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39050708080",
+  "runtimeEvidenceArtifact": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39050708080/artifacts/12107312149",
+  "techVerification": "D1/D3/D2/Pi synthetic technical tests passed at same code; school authority and independent Gold NOT_RUN"
 }

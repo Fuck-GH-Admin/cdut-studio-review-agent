@@ -100,7 +100,30 @@
     "真实 Gold 未读",
     "T03 v0.1.1 不继承旧 v0.1 E/D 签署"
   ],
-  "status": "NOT_RUN",
+  "status": "PARTIAL",
   "syntheticOnly": true,
-  "publicationAllowed": false
+  "publicationAllowed": false,
+  "technicalVerification": {
+    "sourceSHA256Verified": true,
+    "authoringValidation": "PASS",
+    "d3TransferRoundTrip": "PASS",
+    "d2Plan": "PASS",
+    "d2Subjects": 2,
+    "d2Checks": 100,
+    "d2Fingerprint": "c6001a718aa5b740d784a8c569f1a9efe5ce844f26f8bc91f13e30b4a891df9a",
+    "d2PlanFile": "runtime-plan.json",
+    "d2Cli": "PASS",
+    "syntheticMaterialAndScopedEvidenceLink": "PASS",
+    "piPreparedSubmittedVerified": "PASS",
+    "piReceiptFile": "pi-receipt.json",
+    "testRunUrl": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39050708080",
+    "testCount": "13 total over G02 / 0 failures",
+    "evidenceArtifact": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39050708080/artifacts/12107312149"
+  },
+  "incompleteResponsibilities": [
+    "2026年校本政策适用版本与审批角色未由学校权威来源核实",
+    "正式部门审批与系统执行事件未接入可信学校端接口",
+    "复杂跨文书合法替代关系及校务阶段状态依赖人审/外部来源",
+    "尚未开展独立Gold及在线模型准确率验证"
+  ]
 }

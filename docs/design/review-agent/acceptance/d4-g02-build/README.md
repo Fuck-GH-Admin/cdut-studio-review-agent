@@ -53,3 +53,17 @@ bun apps/electron/scripts/review-d2-plan.ts preview "$PROFER_CONFIG_DIR/imported
 5. 只允许在统一集成负责人明确接受冻结源码和技术结果后转下一轮，不在此 PR 合并 COMMON、创建官方模板或宣布 D5 准入。
 
 **报告状态由真实 Actions 结论决定。** 历史首次 G02 专项 CI #39050473411 的 D1/D3/D2 部分为绿、Pi case-scope 回执目标集合错误导致 10/13 测试通过；随后已按真实 `ruleTargets` 契约修订 G02 测试而未修改公共引擎。复验必须读取**最新 HEAD** 的工作流结果；不得沿用旧运行冒充完成。
+
+## 已冻结的实测运行结果与文件（追加，不覆盖历史失败记录）
+
+在 PR #89 分支上，**工程执行代码与三套作者工作区**于 [G02 专项 CI #39050708080](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39050708080) 全部通过：**13 PASS / 0 FAIL**，Bun 1.4.0 冻结安装、全仓 typecheck、check:boundaries 同为成功。原始运行 [Artifact #12107312149](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39050708080/artifacts/12107312149) 提供可复验的 CLI Plan、D3 Transfer 与 Pi 回执。
+
+| ID | 现已真实编译的 Schema 3 Plan（入仓 `TXX/runtime-plan.json`） | Check | Subject | 已验证 Pi 收据（入仓 `TXX/pi-receipt.json`） |
+|---|---|---:|---:|---|
+| T01 | `67a401f5e9ecfe5e9bd2f7afee5e32f0d9d5f6f8a596a5731bc6aae7888bb145` | 106 | 2 | 合成材料登记+Reviewer EvidenceLink+逐对象拒绝继承+Pi COMPLETE |
+| T02 | `c6001a718aa5b740d784a8c569f1a9efe5ce844f26f8bc91f13e30b4a891df9a` | 100 | 2 | 同上 |
+| T03 | `577a112f2df7ef93f76503e34e4e45e9f03e6dd676fb77b537a06bf6d9dfdf7b` | 114 | 2 | 同上 |
+
+这 320 条是**两份合成实例上的 Check 数**，不是 320 条不同校规，也不是所有原文业务命题已被在线模型准确识别。所有 Pi 检查在缺乏现行权威制度/正式审批来源时仍提交 `awaiting-confirmation`：这是保守、合法的技术运行，不是业务判断 PASS。
+
+**模板最终分项状态（统一集成口径）：** T01 / T02 / T03 均 `PARTIAL`，原因是当前的校方现行政策认证、正式审批/实施受控接口、任意复杂证据关系和独立 Gold/在线 LLM 业务准确率尚未完成；但三套**模块制作及合成 D1/D3/D2/Pi 技术链已经实测可执行**。后续不应为这些 SOURCE/POLICY/EXTERNAL 缺口重做 A/B/C/D/E，也不能把没有全部硬编码解释为 ENGINE_GAP。
