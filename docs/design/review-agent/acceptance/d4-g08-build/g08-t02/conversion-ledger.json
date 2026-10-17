@@ -1,0 +1,800 @@
+[
+  {
+    "responsibilityId": "R-01",
+    "sourceLocator": "§9 lines 275-284",
+    "checkIds": [
+      "g08-t02@1:module/use-custody-base/r01"
+    ],
+    "sourceIds": [
+      "g08-t02-r01-src"
+    ],
+    "moduleId": "g08-t02-custody-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-02",
+    "sourceLocator": "§9 lines 285-294",
+    "checkIds": [
+      "g08-t02@1:module/use-custody-base/r02"
+    ],
+    "sourceIds": [
+      "g08-t02-r02-src"
+    ],
+    "moduleId": "g08-t02-custody-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-03",
+    "sourceLocator": "§9 lines 295-304",
+    "checkIds": [
+      "g08-t02@1:module/use-features-base/r03"
+    ],
+    "sourceIds": [
+      "g08-t02-r03-src"
+    ],
+    "moduleId": "g08-t02-features-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-04",
+    "sourceLocator": "§9 lines 305-314",
+    "checkIds": [
+      "g08-t02@1:module/use-ownership-valuable/r04"
+    ],
+    "sourceIds": [
+      "g08-t02-r04-src"
+    ],
+    "moduleId": "g08-t02-ownership-valuable",
+    "status": "implemented-not-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-05",
+    "sourceLocator": "§9 lines 315-324",
+    "checkIds": [
+      "g08-t02@1:module/use-identity-self/r05"
+    ],
+    "sourceIds": [
+      "g08-t02-r05-src"
+    ],
+    "moduleId": "g08-t02-identity-self",
+    "status": "implemented-not-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-06",
+    "sourceLocator": "§9 lines 325-334",
+    "checkIds": [
+      "g08-t02@1:module/use-ownership-base/r06"
+    ],
+    "sourceIds": [
+      "g08-t02-r06-src"
+    ],
+    "moduleId": "g08-t02-ownership-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-07",
+    "sourceLocator": "§9 lines 335-344",
+    "checkIds": [
+      "g08-t02@1:module/use-features-base/r07"
+    ],
+    "sourceIds": [
+      "g08-t02-r07-src"
+    ],
+    "moduleId": "g08-t02-features-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-08",
+    "sourceLocator": "§9 lines 345-354",
+    "checkIds": [
+      "g08-t02@1:module/use-features-base/r08"
+    ],
+    "sourceIds": [
+      "g08-t02-r08-src"
+    ],
+    "moduleId": "g08-t02-features-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-09",
+    "sourceLocator": "§9 lines 355-364",
+    "checkIds": [
+      "g08-t02@1:module/use-custody-base/r09"
+    ],
+    "sourceIds": [
+      "g08-t02-r09-src"
+    ],
+    "moduleId": "g08-t02-custody-base",
+    "status": "implemented-not-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-10",
+    "sourceLocator": "§9 lines 365-374",
+    "checkIds": [
+      "g08-t02@1:module/use-scope-base/r10"
+    ],
+    "sourceIds": [
+      "g08-t02-r10-src"
+    ],
+    "moduleId": "g08-t02-scope-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-11",
+    "sourceLocator": "§9 lines 375-384",
+    "checkIds": [
+      "g08-t02@1:module/use-exceptions-card/r11"
+    ],
+    "sourceIds": [
+      "g08-t02-r11-src"
+    ],
+    "moduleId": "g08-t02-exceptions-card",
+    "status": "implemented-not-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-12",
+    "sourceLocator": "§9 lines 385-394",
+    "checkIds": [
+      "g08-t02@1:module/use-proxy-proxy/r12"
+    ],
+    "sourceIds": [
+      "g08-t02-r12-src"
+    ],
+    "moduleId": "g08-t02-proxy-proxy",
+    "status": "implemented-not-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-13",
+    "sourceLocator": "§9 lines 395-404",
+    "checkIds": [
+      "g08-t02@1:module/use-proxy-proxy/r13"
+    ],
+    "sourceIds": [
+      "g08-t02-r13-src"
+    ],
+    "moduleId": "g08-t02-proxy-proxy",
+    "status": "implemented-not-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-14",
+    "sourceLocator": "§9 lines 405-414",
+    "checkIds": [
+      "g08-t02@1:module/use-proxy-proxy/r14"
+    ],
+    "sourceIds": [
+      "g08-t02-r14-src"
+    ],
+    "moduleId": "g08-t02-proxy-proxy",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-15",
+    "sourceLocator": "§9 lines 415-424",
+    "checkIds": [
+      "g08-t02@1:module/use-proxy-proxy/r15"
+    ],
+    "sourceIds": [
+      "g08-t02-r15-src"
+    ],
+    "moduleId": "g08-t02-proxy-proxy",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-16",
+    "sourceLocator": "§9 lines 425-434",
+    "checkIds": [
+      "g08-t02@1:module/use-disputes-dispute/r16"
+    ],
+    "sourceIds": [
+      "g08-t02-r16-src"
+    ],
+    "moduleId": "g08-t02-disputes-dispute",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-17",
+    "sourceLocator": "§9 lines 435-444",
+    "checkIds": [
+      "g08-t02@1:module/use-identity-self/r17"
+    ],
+    "sourceIds": [
+      "g08-t02-r17-src"
+    ],
+    "moduleId": "g08-t02-identity-self",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-18",
+    "sourceLocator": "§9 lines 445-454",
+    "checkIds": [
+      "g08-t02@1:module/use-ownership-valuable/r18"
+    ],
+    "sourceIds": [
+      "g08-t02-r18-src"
+    ],
+    "moduleId": "g08-t02-ownership-valuable",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-19",
+    "sourceLocator": "§9 lines 455-464",
+    "checkIds": [
+      "g08-t02@1:module/use-ownership-valuable/r19"
+    ],
+    "sourceIds": [
+      "g08-t02-r19-src"
+    ],
+    "moduleId": "g08-t02-ownership-valuable",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-20",
+    "sourceLocator": "§9 lines 465-474",
+    "checkIds": [
+      "g08-t02@1:module/use-features-sensitive/r20"
+    ],
+    "sourceIds": [
+      "g08-t02-r20-src"
+    ],
+    "moduleId": "g08-t02-features-sensitive",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-21",
+    "sourceLocator": "§9 lines 475-484",
+    "checkIds": [
+      "g08-t02@1:module/use-privacy-sensitive/r21"
+    ],
+    "sourceIds": [
+      "g08-t02-r21-src"
+    ],
+    "moduleId": "g08-t02-privacy-sensitive",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-22",
+    "sourceLocator": "§9 lines 485-494",
+    "checkIds": [
+      "g08-t02@1:module/use-privacy-base/r22"
+    ],
+    "sourceIds": [
+      "g08-t02-r22-src"
+    ],
+    "moduleId": "g08-t02-privacy-base",
+    "status": "implemented-not-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-23",
+    "sourceLocator": "§9 lines 495-504",
+    "checkIds": [
+      "g08-t02@1:module/use-exceptions-venue/r23"
+    ],
+    "sourceIds": [
+      "g08-t02-r23-src"
+    ],
+    "moduleId": "g08-t02-exceptions-venue",
+    "status": "implemented-not-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-24",
+    "sourceLocator": "§9 lines 505-514",
+    "checkIds": [
+      "g08-t02@1:module/use-custody-venue/r24"
+    ],
+    "sourceIds": [
+      "g08-t02-r24-src"
+    ],
+    "moduleId": "g08-t02-custody-venue",
+    "status": "implemented-not-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-25",
+    "sourceLocator": "§9 lines 515-524",
+    "checkIds": [
+      "g08-t02@1:module/use-custody-base/r25"
+    ],
+    "sourceIds": [
+      "g08-t02-r25-src"
+    ],
+    "moduleId": "g08-t02-custody-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-26",
+    "sourceLocator": "§9 lines 525-534",
+    "checkIds": [
+      "g08-t02@1:module/use-disputes-dispute/r26"
+    ],
+    "sourceIds": [
+      "g08-t02-r26-src"
+    ],
+    "moduleId": "g08-t02-disputes-dispute",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-27",
+    "sourceLocator": "§9 lines 535-544",
+    "checkIds": [
+      "g08-t02@1:module/use-handover-handover/r27"
+    ],
+    "sourceIds": [
+      "g08-t02-r27-src"
+    ],
+    "moduleId": "g08-t02-handover-handover",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-28",
+    "sourceLocator": "§9 lines 545-554",
+    "checkIds": [
+      "g08-t02@1:module/use-handover-handover/r28"
+    ],
+    "sourceIds": [
+      "g08-t02-r28-src"
+    ],
+    "moduleId": "g08-t02-handover-handover",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-29",
+    "sourceLocator": "§9 lines 555-564",
+    "checkIds": [
+      "g08-t02@1:module/use-handover-handover/r29"
+    ],
+    "sourceIds": [
+      "g08-t02-r29-src"
+    ],
+    "moduleId": "g08-t02-handover-handover",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-30",
+    "sourceLocator": "§9 lines 565-574",
+    "checkIds": [
+      "g08-t02@1:module/use-scope-base/r30"
+    ],
+    "sourceIds": [
+      "g08-t02-r30-src"
+    ],
+    "moduleId": "g08-t02-scope-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-31",
+    "sourceLocator": "§9 lines 575-584",
+    "checkIds": [
+      "g08-t02@1:module/use-custody-base/r31"
+    ],
+    "sourceIds": [
+      "g08-t02-r31-src"
+    ],
+    "moduleId": "g08-t02-custody-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-32",
+    "sourceLocator": "§9 lines 585-594",
+    "checkIds": [
+      "g08-t02@1:module/use-custody-base/r32"
+    ],
+    "sourceIds": [
+      "g08-t02-r32-src"
+    ],
+    "moduleId": "g08-t02-custody-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-33",
+    "sourceLocator": "§9 lines 595-604",
+    "checkIds": [
+      "g08-t02@1:module/use-policy-base/r33"
+    ],
+    "sourceIds": [
+      "g08-t02-r33-src"
+    ],
+    "moduleId": "g08-t02-policy-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-34",
+    "sourceLocator": "§9 lines 605-614",
+    "checkIds": [
+      "g08-t02@1:module/use-policy-base/r34"
+    ],
+    "sourceIds": [
+      "g08-t02-r34-src"
+    ],
+    "moduleId": "g08-t02-policy-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-35",
+    "sourceLocator": "§9 lines 615-624",
+    "checkIds": [
+      "g08-t02@1:module/use-policy-base/r35"
+    ],
+    "sourceIds": [
+      "g08-t02-r35-src"
+    ],
+    "moduleId": "g08-t02-policy-base",
+    "status": "implemented-not-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-36",
+    "sourceLocator": "§9 lines 625-634",
+    "checkIds": [
+      "g08-t02@1:module/use-policy-base/r36"
+    ],
+    "sourceIds": [
+      "g08-t02-r36-src"
+    ],
+    "moduleId": "g08-t02-policy-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-37",
+    "sourceLocator": "§9 lines 635-644",
+    "checkIds": [
+      "g08-t02@1:module/use-proxy-proxy/r37"
+    ],
+    "sourceIds": [
+      "g08-t02-r37-src"
+    ],
+    "moduleId": "g08-t02-proxy-proxy",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-38",
+    "sourceLocator": "§9 lines 645-654",
+    "checkIds": [
+      "g08-t02@1:module/use-custody-base/r38"
+    ],
+    "sourceIds": [
+      "g08-t02-r38-src"
+    ],
+    "moduleId": "g08-t02-custody-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-39",
+    "sourceLocator": "§9 lines 655-664",
+    "checkIds": [
+      "g08-t02@1:module/use-custody-base/r39"
+    ],
+    "sourceIds": [
+      "g08-t02-r39-src"
+    ],
+    "moduleId": "g08-t02-custody-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-40",
+    "sourceLocator": "§9 lines 665-674",
+    "checkIds": [
+      "g08-t02@1:module/use-exceptions-venue/r40"
+    ],
+    "sourceIds": [
+      "g08-t02-r40-src"
+    ],
+    "moduleId": "g08-t02-exceptions-venue",
+    "status": "implemented-not-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-41",
+    "sourceLocator": "§9 lines 675-684",
+    "checkIds": [
+      "g08-t02@1:module/use-disputes-dispute/r41"
+    ],
+    "sourceIds": [
+      "g08-t02-r41-src"
+    ],
+    "moduleId": "g08-t02-disputes-dispute",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-42",
+    "sourceLocator": "§9 lines 685-694",
+    "checkIds": [
+      "g08-t02@1:module/use-handover-handover/r42"
+    ],
+    "sourceIds": [
+      "g08-t02-r42-src"
+    ],
+    "moduleId": "g08-t02-handover-handover",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-43",
+    "sourceLocator": "§9 lines 695-704",
+    "checkIds": [
+      "g08-t02@1:module/use-handover-handover/r43"
+    ],
+    "sourceIds": [
+      "g08-t02-r43-src"
+    ],
+    "moduleId": "g08-t02-handover-handover",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-44",
+    "sourceLocator": "§9 lines 705-714",
+    "checkIds": [
+      "g08-t02@1:module/use-features-base/r44"
+    ],
+    "sourceIds": [
+      "g08-t02-r44-src"
+    ],
+    "moduleId": "g08-t02-features-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-45",
+    "sourceLocator": "§9 lines 715-724",
+    "checkIds": [
+      "g08-t02@1:module/use-privacy-base/r45"
+    ],
+    "sourceIds": [
+      "g08-t02-r45-src"
+    ],
+    "moduleId": "g08-t02-privacy-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-46",
+    "sourceLocator": "§9 lines 725-734",
+    "checkIds": [
+      "g08-t02@1:module/use-privacy-sensitive/r46"
+    ],
+    "sourceIds": [
+      "g08-t02-r46-src"
+    ],
+    "moduleId": "g08-t02-privacy-sensitive",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-47",
+    "sourceLocator": "§9 lines 735-744",
+    "checkIds": [
+      "g08-t02@1:module/use-privacy-base/r47"
+    ],
+    "sourceIds": [
+      "g08-t02-r47-src"
+    ],
+    "moduleId": "g08-t02-privacy-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-48",
+    "sourceLocator": "§9 lines 745-754",
+    "checkIds": [
+      "g08-t02@1:module/use-custody-base/r48"
+    ],
+    "sourceIds": [
+      "g08-t02-r48-src"
+    ],
+    "moduleId": "g08-t02-custody-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-49",
+    "sourceLocator": "§9 lines 755-764",
+    "checkIds": [
+      "g08-t02@1:module/use-disputes-dispute/r49"
+    ],
+    "sourceIds": [
+      "g08-t02-r49-src"
+    ],
+    "moduleId": "g08-t02-disputes-dispute",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-50",
+    "sourceLocator": "§9 lines 765-774",
+    "checkIds": [
+      "g08-t02@1:module/use-ownership-base/r50"
+    ],
+    "sourceIds": [
+      "g08-t02-r50-src"
+    ],
+    "moduleId": "g08-t02-ownership-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "R-51",
+    "sourceLocator": "§9 lines 775-784",
+    "checkIds": [
+      "g08-t02@1:module/use-handover-handover/r51"
+    ],
+    "sourceIds": [
+      "g08-t02-r51-src"
+    ],
+    "moduleId": "g08-t02-handover-handover",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "INV-scope",
+    "sourceLocator": "§1—2 (7bd277cc2488)",
+    "checkIds": [
+      "g08-t02@1:module/use-invariant-base/inv-scope"
+    ],
+    "sourceIds": [
+      "g08-t02-inv-scope-src"
+    ],
+    "moduleId": "g08-t02-invariant-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "INV-timing",
+    "sourceLocator": "§3—4 (7bd277cc2488)",
+    "checkIds": [
+      "g08-t02@1:module/use-invariant-base/inv-timing"
+    ],
+    "sourceIds": [
+      "g08-t02-inv-timing-src"
+    ],
+    "moduleId": "g08-t02-invariant-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "INV-fields",
+    "sourceLocator": "§5—8 (7bd277cc2488)",
+    "checkIds": [
+      "g08-t02@1:module/use-invariant-base/inv-fields"
+    ],
+    "sourceIds": [
+      "g08-t02-inv-fields-src"
+    ],
+    "moduleId": "g08-t02-invariant-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "INV-output",
+    "sourceLocator": "§10 (7bd277cc2488)",
+    "checkIds": [
+      "g08-t02@1:module/use-invariant-base/inv-output"
+    ],
+    "sourceIds": [
+      "g08-t02-inv-output-src"
+    ],
+    "moduleId": "g08-t02-invariant-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "INV-lifecycle",
+    "sourceLocator": "§11—13 (7bd277cc2488)",
+    "checkIds": [
+      "g08-t02@1:module/use-invariant-base/inv-lifecycle"
+    ],
+    "sourceIds": [
+      "g08-t02-inv-lifecycle-src"
+    ],
+    "moduleId": "g08-t02-invariant-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  },
+  {
+    "responsibilityId": "INV-privacy",
+    "sourceLocator": "§12 (7bd277cc2488)",
+    "checkIds": [
+      "g08-t02@1:module/use-invariant-base/inv-privacy"
+    ],
+    "sourceIds": [
+      "g08-t02-inv-privacy-src"
+    ],
+    "moduleId": "g08-t02-invariant-base",
+    "status": "implemented-not-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "pending actual D2/Pi execution"
+  }
+]
