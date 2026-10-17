@@ -1,0 +1,1031 @@
+{
+  "schema": "d4-g03-source-coverage-v1",
+  "templateId": "g03-t12",
+  "sourceSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
+  "originalRuleCount": 27,
+  "ruleIds": [
+    "R-01",
+    "R-02",
+    "R-03",
+    "R-04",
+    "R-05",
+    "R-06",
+    "R-07",
+    "R-08",
+    "R-09",
+    "R-10",
+    "R-11",
+    "R-12",
+    "R-13",
+    "R-14",
+    "R-15",
+    "R-16",
+    "R-17",
+    "R-18",
+    "R-19",
+    "R-20",
+    "R-21",
+    "R-22",
+    "R-23",
+    "R-24",
+    "R-25",
+    "R-26",
+    "R-27"
+  ],
+  "authoredChecks": 57,
+  "entries": [
+    {
+      "sourceId": "R-01",
+      "locator": "§9/R-01",
+      "technicalCheckId": "g03-t12@1:module/use-identity/r01",
+      "moduleId": "g03-t12-identity",
+      "sourceBinding": "source-r01",
+      "evidenceFact": "d2:object:g03-sports-slot:r01",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-02",
+      "locator": "§9/R-02",
+      "technicalCheckId": "g03-t12@1:module/use-identity/r02",
+      "moduleId": "g03-t12-identity",
+      "sourceBinding": "source-r02",
+      "evidenceFact": "d2:object:g03-sports-slot:r02",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-10",
+      "locator": "§9/R-10",
+      "technicalCheckId": "g03-t12@1:module/use-identity/r10",
+      "moduleId": "g03-t12-identity",
+      "sourceBinding": "source-r10",
+      "evidenceFact": "d2:object:g03-sports-slot:r10",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-03",
+      "locator": "§9/R-03",
+      "technicalCheckId": "g03-t12@1:module/use-evidence/r03",
+      "moduleId": "g03-t12-evidence",
+      "sourceBinding": "source-r03",
+      "evidenceFact": "d2:object:g03-sports-slot:r03",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": {
+        "when": {
+          "kind": "case-stage",
+          "stages": [
+            "submitted",
+            "reviewing",
+            "awaiting-supplement"
+          ]
+        },
+        "material": {
+          "provider": "applicant",
+          "dueStages": [
+            "submitted",
+            "reviewing"
+          ],
+          "alternatives": [
+            "d2:object:g03-sports-slot:r03"
+          ]
+        }
+      }
+    },
+    {
+      "sourceId": "R-24",
+      "locator": "§9/R-24",
+      "technicalCheckId": "g03-t12@1:module/use-evidence/r24",
+      "moduleId": "g03-t12-evidence",
+      "sourceBinding": "source-r24",
+      "evidenceFact": "d2:object:g03-sports-slot:r24",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-25",
+      "locator": "§9/R-25",
+      "technicalCheckId": "g03-t12@1:module/use-evidence/r25",
+      "moduleId": "g03-t12-evidence",
+      "sourceBinding": "source-r25",
+      "evidenceFact": "d2:object:g03-sports-slot:r25",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-26",
+      "locator": "§9/R-26",
+      "technicalCheckId": "g03-t12@1:module/use-evidence/r26",
+      "moduleId": "g03-t12-evidence",
+      "sourceBinding": "source-r26",
+      "evidenceFact": "d2:object:g03-sports-slot:r26",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-04",
+      "locator": "§9/R-04",
+      "technicalCheckId": "g03-t12@1:module/use-resource/r04",
+      "moduleId": "g03-t12-resource",
+      "sourceBinding": "source-r04",
+      "evidenceFact": "d2:object:g03-sports-slot:r04",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-05",
+      "locator": "§9/R-05",
+      "technicalCheckId": "g03-t12@1:module/use-resource/r05",
+      "moduleId": "g03-t12-resource",
+      "sourceBinding": "source-r05",
+      "evidenceFact": "d2:object:g03-sports-slot:r05",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-06",
+      "locator": "§9/R-06",
+      "technicalCheckId": "g03-t12@1:module/use-resource/r06",
+      "moduleId": "g03-t12-resource",
+      "sourceBinding": "source-r06",
+      "evidenceFact": "d2:object:g03-sports-slot:r06",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-07",
+      "locator": "§9/R-07",
+      "technicalCheckId": "g03-t12@1:module/use-resource/r07",
+      "moduleId": "g03-t12-resource",
+      "sourceBinding": "source-r07",
+      "evidenceFact": "d2:object:g03-sports-slot:r07",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-08",
+      "locator": "§9/R-08",
+      "technicalCheckId": "g03-t12@1:module/use-resource/r08",
+      "moduleId": "g03-t12-resource",
+      "sourceBinding": "source-r08",
+      "evidenceFact": "d2:object:g03-sports-slot:r08",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-09",
+      "locator": "§9/R-09",
+      "technicalCheckId": "g03-t12@1:module/use-resource/r09",
+      "moduleId": "g03-t12-resource",
+      "sourceBinding": "source-r09",
+      "evidenceFact": "d2:object:g03-sports-slot:r09",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-20",
+      "locator": "§9/R-20",
+      "technicalCheckId": "g03-t12@1:module/use-resource/r20",
+      "moduleId": "g03-t12-resource",
+      "sourceBinding": "source-r20",
+      "evidenceFact": "d2:object:g03-sports-slot:r20",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-22",
+      "locator": "§9/R-22",
+      "technicalCheckId": "g03-t12@1:module/use-resource/r22",
+      "moduleId": "g03-t12-resource",
+      "sourceBinding": "source-r22",
+      "evidenceFact": "d2:object:g03-sports-slot:r22",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-11",
+      "locator": "§9/R-11",
+      "technicalCheckId": "g03-t12@1:module/use-safety/r11",
+      "moduleId": "g03-t12-safety",
+      "sourceBinding": "source-r11",
+      "evidenceFact": "d2:object:g03-sports-slot:r11",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-12",
+      "locator": "§9/R-12",
+      "technicalCheckId": "g03-t12@1:module/use-safety/r12",
+      "moduleId": "g03-t12-safety",
+      "sourceBinding": "source-r12",
+      "evidenceFact": "d2:object:g03-sports-slot:r12",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-13",
+      "locator": "§9/R-13",
+      "technicalCheckId": "g03-t12@1:module/use-safety/r13",
+      "moduleId": "g03-t12-safety",
+      "sourceBinding": "source-r13",
+      "evidenceFact": "d2:object:g03-sports-slot:r13",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-14",
+      "locator": "§9/R-14",
+      "technicalCheckId": "g03-t12@1:module/use-safety/r14",
+      "moduleId": "g03-t12-safety",
+      "sourceBinding": "source-r14",
+      "evidenceFact": "d2:object:g03-sports-slot:r14",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": {
+        "when": {
+          "kind": "case-stage",
+          "stages": [
+            "reviewing",
+            "awaiting-final",
+            "decided"
+          ]
+        },
+        "material": {
+          "provider": "authority",
+          "dueStages": [
+            "awaiting-final",
+            "decided"
+          ],
+          "alternatives": [
+            "d2:object:g03-sports-slot:r14"
+          ]
+        }
+      }
+    },
+    {
+      "sourceId": "R-15",
+      "locator": "§9/R-15",
+      "technicalCheckId": "g03-t12@1:module/use-safety/r15",
+      "moduleId": "g03-t12-safety",
+      "sourceBinding": "source-r15",
+      "evidenceFact": "d2:object:g03-sports-slot:r15",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-16",
+      "locator": "§9/R-16",
+      "technicalCheckId": "g03-t12@1:module/use-safety/r16",
+      "moduleId": "g03-t12-safety",
+      "sourceBinding": "source-r16",
+      "evidenceFact": "d2:object:g03-sports-slot:r16",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-17",
+      "locator": "§9/R-17",
+      "technicalCheckId": "g03-t12@1:module/use-safety/r17",
+      "moduleId": "g03-t12-safety",
+      "sourceBinding": "source-r17",
+      "evidenceFact": "d2:object:g03-sports-slot:r17",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-18",
+      "locator": "§9/R-18",
+      "technicalCheckId": "g03-t12@1:module/use-lifecycle/r18",
+      "moduleId": "g03-t12-lifecycle",
+      "sourceBinding": "source-r18",
+      "evidenceFact": "d2:object:g03-sports-slot:r18",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-19",
+      "locator": "§9/R-19",
+      "technicalCheckId": "g03-t12@1:module/use-lifecycle/r19",
+      "moduleId": "g03-t12-lifecycle",
+      "sourceBinding": "source-r19",
+      "evidenceFact": "d2:object:g03-sports-slot:r19",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-21",
+      "locator": "§9/R-21",
+      "technicalCheckId": "g03-t12@1:module/use-lifecycle/r21",
+      "moduleId": "g03-t12-lifecycle",
+      "sourceBinding": "source-r21",
+      "evidenceFact": "d2:object:g03-sports-slot:r21",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-23",
+      "locator": "§9/R-23",
+      "technicalCheckId": "g03-t12@1:module/use-lifecycle/r23",
+      "moduleId": "g03-t12-lifecycle",
+      "sourceBinding": "source-r23",
+      "evidenceFact": "d2:object:g03-sports-slot:r23",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-27",
+      "locator": "§9/R-27",
+      "technicalCheckId": "g03-t12@1:module/use-lifecycle/r27",
+      "moduleId": "g03-t12-lifecycle",
+      "sourceBinding": "source-r27",
+      "evidenceFact": "d2:object:g03-sports-slot:r27",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§1-1",
+      "locator": "§1 元信息、政策边界和适用范围",
+      "technicalCheckId": "g03-t12@1:module/use-section-01/part-01",
+      "moduleId": "g03-t12-section-01",
+      "sourceBinding": "source-section-01",
+      "evidenceFact": "d2:object:g03-sports-slot:section-01-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§2-1",
+      "locator": "§2 独立审核目的与相邻业务边界",
+      "technicalCheckId": "g03-t12@1:module/use-section-02/part-01",
+      "moduleId": "g03-t12-section-02",
+      "sourceBinding": "source-section-02",
+      "evidenceFact": "d2:object:g03-sports-slot:section-02-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§3-1",
+      "locator": "§3 术语、主体、阶段与权责",
+      "technicalCheckId": "g03-t12@1:module/use-section-03/part-01",
+      "moduleId": "g03-t12-section-03",
+      "sourceBinding": "source-section-03",
+      "evidenceFact": "d2:object:g03-sports-slot:section-03-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§4-1",
+      "locator": "§4 内部分支与三值条件",
+      "technicalCheckId": "g03-t12@1:module/use-section-04/part-01",
+      "moduleId": "g03-t12-section-04",
+      "sourceBinding": "source-section-04",
+      "evidenceFact": "d2:object:g03-sports-slot:section-04-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§5-1",
+      "locator": "§5 审核输入契约：三类材料与第四类权威事实",
+      "technicalCheckId": "g03-t12@1:module/use-section-05/part-01",
+      "moduleId": "g03-t12-section-05",
+      "sourceBinding": "source-section-05",
+      "evidenceFact": "d2:object:g03-sports-slot:section-05-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§6-1",
+      "locator": "§6 F01–F50字段字典（复用B编号，字段存在≠任一阶段必填）",
+      "technicalCheckId": "g03-t12@1:module/use-section-06/part-01",
+      "moduleId": "g03-t12-section-06",
+      "sourceBinding": "source-section-06",
+      "evidenceFact": "d2:object:g03-sports-slot:section-06-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§6-2",
+      "locator": "§6 F01–F50字段字典（复用B编号，字段存在≠任一阶段必填）",
+      "technicalCheckId": "g03-t12@1:module/use-section-06/part-02",
+      "moduleId": "g03-t12-section-06",
+      "sourceBinding": "source-section-06",
+      "evidenceFact": "d2:object:g03-sports-slot:section-06-2",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§7-1",
+      "locator": "§7 M01–M18材料槽及替代证据组",
+      "technicalCheckId": "g03-t12@1:module/use-section-07/part-01",
+      "moduleId": "g03-t12-section-07",
+      "sourceBinding": "source-section-07",
+      "evidenceFact": "d2:object:g03-sports-slot:section-07-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§8-1",
+      "locator": "§8 审核事实、逐资源关系及时间/版本一致性",
+      "technicalCheckId": "g03-t12@1:module/use-section-08/part-01",
+      "moduleId": "g03-t12-section-08",
+      "sourceBinding": "source-section-08",
+      "evidenceFact": "d2:object:g03-sports-slot:section-08-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§10-1",
+      "locator": "§10 分项状态、整体聚合和标准化输出",
+      "technicalCheckId": "g03-t12@1:module/use-section-10/part-01",
+      "moduleId": "g03-t12-section-10",
+      "sourceBinding": "source-section-10",
+      "evidenceFact": "d2:object:g03-sports-slot:section-10-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§11-1",
+      "locator": "§11 补件、重审、撤回、正式审批与执行生命周期",
+      "technicalCheckId": "g03-t12@1:module/use-section-11/part-01",
+      "moduleId": "g03-t12-section-11",
+      "sourceBinding": "source-section-11",
+      "evidenceFact": "d2:object:g03-sports-slot:section-11-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§12-1",
+      "locator": "§12 合法例外和人工复核底线",
+      "technicalCheckId": "g03-t12@1:module/use-section-12/part-01",
+      "moduleId": "g03-t12-section-12",
+      "sourceBinding": "source-section-12",
+      "evidenceFact": "d2:object:g03-sports-slot:section-12-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§13-1",
+      "locator": "§13 校本规则配置、版本优先级及未闭合缺口",
+      "technicalCheckId": "g03-t12@1:module/use-section-13/part-01",
+      "moduleId": "g03-t12-section-13",
+      "sourceBinding": "source-section-13",
+      "evidenceFact": "d2:object:g03-sports-slot:section-13-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§14-1",
+      "locator": "§14 官方来源与可信程度索引（B阶段S01—S24）",
+      "technicalCheckId": "g03-t12@1:module/use-section-14/part-01",
+      "moduleId": "g03-t12-section-14",
+      "sourceBinding": "source-section-14",
+      "evidenceFact": "d2:object:g03-sports-slot:section-14-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§15-1",
+      "locator": "§15 作者流程推演（不是D金标）",
+      "technicalCheckId": "g03-t12@1:module/use-section-15/part-01",
+      "moduleId": "g03-t12-section-15",
+      "sourceBinding": "source-section-15",
+      "evidenceFact": "d2:object:g03-sports-slot:section-15-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§16-1",
+      "locator": "§16 共性模块候选与T12特有逻辑",
+      "technicalCheckId": "g03-t12@1:module/use-section-16/part-01",
+      "moduleId": "g03-t12-section-16",
+      "sourceBinding": "source-section-16",
+      "evidenceFact": "d2:object:g03-sports-slot:section-16-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§17-1",
+      "locator": "§17 当前编辑器/运行时可表达性与不可删除的缺口",
+      "technicalCheckId": "g03-t12@1:module/use-section-17/part-01",
+      "moduleId": "g03-t12-section-17",
+      "sourceBinding": "source-section-17",
+      "evidenceFact": "d2:object:g03-sports-slot:section-17-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§18-1",
+      "locator": "§18 完整性、自审风险、版本交接",
+      "technicalCheckId": "g03-t12@1:module/use-section-18/part-01",
+      "moduleId": "g03-t12-section-18",
+      "sourceBinding": "source-section-18",
+      "evidenceFact": "d2:object:g03-sports-slot:section-18-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-p-indoor",
+      "locator": "§4/p-indoor",
+      "technicalCheckId": "g03-t12@1:module/use-axis-p-indoor/verify",
+      "moduleId": "g03-t12-axis-p-indoor",
+      "sourceBinding": "source-axis-p-indoor",
+      "evidenceFact": "d2:object:g03-sports-slot:axis-p-indoor",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-p-outdoor",
+      "locator": "§4/p-outdoor",
+      "technicalCheckId": "g03-t12@1:module/use-axis-p-outdoor/verify",
+      "moduleId": "g03-t12-axis-p-outdoor",
+      "sourceBinding": "source-axis-p-outdoor",
+      "evidenceFact": "d2:object:g03-sports-slot:axis-p-outdoor",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-p-specialized",
+      "locator": "§4/p-specialized",
+      "technicalCheckId": "g03-t12@1:module/use-axis-p-specialized/verify",
+      "moduleId": "g03-t12-axis-p-specialized",
+      "sourceBinding": "source-axis-p-specialized",
+      "evidenceFact": "d2:object:g03-sports-slot:axis-p-specialized",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-student-group",
+      "locator": "§4/c-student-group",
+      "technicalCheckId": "g03-t12@1:module/use-axis-c-student-group/verify",
+      "moduleId": "g03-t12-axis-c-student-group",
+      "sourceBinding": "source-axis-c-student-group",
+      "evidenceFact": "d2:object:g03-sports-slot:axis-c-student-group",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-paid-event",
+      "locator": "§4/c-paid-event",
+      "technicalCheckId": "g03-t12@1:module/use-axis-c-paid-event/verify",
+      "moduleId": "g03-t12-axis-c-paid-event",
+      "sourceBinding": "source-axis-c-paid-event",
+      "evidenceFact": "d2:object:g03-sports-slot:axis-c-paid-event",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-multiple-slots",
+      "locator": "§4/c-multiple-slots",
+      "technicalCheckId": "g03-t12@1:module/use-axis-c-multiple-slots/verify",
+      "moduleId": "g03-t12-axis-c-multiple-slots",
+      "sourceBinding": "source-axis-c-multiple-slots",
+      "evidenceFact": "d2:object:g03-sports-slot:axis-c-multiple-slots",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-high-risk",
+      "locator": "§4/c-high-risk",
+      "technicalCheckId": "g03-t12@1:module/use-axis-c-high-risk/verify",
+      "moduleId": "g03-t12-axis-c-high-risk",
+      "sourceBinding": "source-axis-c-high-risk",
+      "evidenceFact": "d2:object:g03-sports-slot:axis-c-high-risk",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-revised",
+      "locator": "§4/c-revised",
+      "technicalCheckId": "g03-t12@1:module/use-axis-c-revised/verify",
+      "moduleId": "g03-t12-axis-c-revised",
+      "sourceBinding": "source-axis-c-revised",
+      "evidenceFact": "d2:object:g03-sports-slot:axis-c-revised",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-external",
+      "locator": "§4/c-external",
+      "technicalCheckId": "g03-t12@1:module/use-axis-c-external/verify",
+      "moduleId": "g03-t12-axis-c-external",
+      "sourceBinding": "source-axis-c-external",
+      "evidenceFact": "d2:object:g03-sports-slot:axis-c-external",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-delegated",
+      "locator": "§4/c-delegated",
+      "technicalCheckId": "g03-t12@1:module/use-axis-c-delegated/verify",
+      "moduleId": "g03-t12-axis-c-delegated",
+      "sourceBinding": "source-axis-c-delegated",
+      "evidenceFact": "d2:object:g03-sports-slot:axis-c-delegated",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-training",
+      "locator": "§4/c-training",
+      "technicalCheckId": "g03-t12@1:module/use-axis-c-training/verify",
+      "moduleId": "g03-t12-axis-c-training",
+      "sourceBinding": "source-axis-c-training",
+      "evidenceFact": "d2:object:g03-sports-slot:axis-c-training",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    }
+  ],
+  "nonNumberedSections": [
+    {
+      "section": 1,
+      "title": "元信息、政策边界和适用范围",
+      "sourceLocator": "§1",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-01/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 2,
+      "title": "独立审核目的与相邻业务边界",
+      "sourceLocator": "§2",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-02/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 3,
+      "title": "术语、主体、阶段与权责",
+      "sourceLocator": "§3",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-03/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 4,
+      "title": "内部分支与三值条件",
+      "sourceLocator": "§4",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-04/part-01"
+      ],
+      "ids": [
+        "BR-01",
+        "BR-02",
+        "BR-03",
+        "BR-04",
+        "BR-05",
+        "BR-06",
+        "BR-07",
+        "BR-08"
+      ]
+    },
+    {
+      "section": 5,
+      "title": "审核输入契约：三类材料与第四类权威事实",
+      "sourceLocator": "§5",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-05/part-01"
+      ],
+      "ids": [
+        "M-01",
+        "M-02",
+        "M-07",
+        "M-05",
+        "M-03",
+        "M-17",
+        "M-04",
+        "M-06",
+        "M-09",
+        "M-10",
+        "M-12",
+        "M-13",
+        "M-14",
+        "M-16"
+      ]
+    },
+    {
+      "section": 6,
+      "title": "F01–F50字段字典（复用B编号，字段存在≠任一阶段必填）",
+      "sourceLocator": "§6",
+      "parts": 2,
+      "checks": [
+        "g03-t12@1:module/use-section-06/part-01",
+        "g03-t12@1:module/use-section-06/part-02"
+      ],
+      "ids": [
+        "F-01",
+        "F-50",
+        "F-02",
+        "F-03",
+        "F-04",
+        "F-05",
+        "F-06",
+        "F-07",
+        "F-08",
+        "F-09",
+        "F-10",
+        "F-11",
+        "F-12",
+        "F-13",
+        "F-14",
+        "F-15",
+        "F-16",
+        "F-17",
+        "F-18",
+        "F-19",
+        "F-20",
+        "F-21",
+        "F-22",
+        "F-23",
+        "F-24",
+        "F-25",
+        "F-26",
+        "F-27",
+        "F-28",
+        "F-29",
+        "F-30",
+        "F-31",
+        "F-32",
+        "F-33",
+        "F-34",
+        "F-35",
+        "F-36",
+        "F-37",
+        "F-38",
+        "F-39",
+        "F-40",
+        "F-41",
+        "F-42",
+        "F-43",
+        "F-44",
+        "F-45",
+        "F-46",
+        "F-47",
+        "F-48",
+        "F-49"
+      ]
+    },
+    {
+      "section": 7,
+      "title": "M01–M18材料槽及替代证据组",
+      "sourceLocator": "§7",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-07/part-01"
+      ],
+      "ids": [
+        "M-01",
+        "M-18",
+        "M-02",
+        "M-03",
+        "M-04",
+        "M-05",
+        "M-06",
+        "M-07",
+        "M-08",
+        "M-09",
+        "M-10",
+        "M-11",
+        "M-12",
+        "M-13",
+        "M-14",
+        "M-15",
+        "M-16",
+        "M-17"
+      ]
+    },
+    {
+      "section": 8,
+      "title": "审核事实、逐资源关系及时间/版本一致性",
+      "sourceLocator": "§8",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-08/part-01"
+      ],
+      "ids": [
+        "F-05",
+        "F-07",
+        "F-08",
+        "F-12",
+        "F-13",
+        "M-17",
+        "F-14",
+        "F-15",
+        "F-20",
+        "M-01",
+        "M-12",
+        "F-16",
+        "F-17",
+        "F-18",
+        "M-02",
+        "F-21",
+        "F-22",
+        "F-38",
+        "F-40",
+        "F-19",
+        "F-23",
+        "M-05",
+        "F-04",
+        "F-28",
+        "F-33",
+        "F-37",
+        "F-50",
+        "M-07",
+        "M-09",
+        "M-18",
+        "F-10",
+        "F-11",
+        "F-24",
+        "F-27",
+        "F-29",
+        "F-30",
+        "F-31",
+        "M-03",
+        "M-04",
+        "M-06",
+        "F-34",
+        "F-35",
+        "F-36",
+        "M-10",
+        "M-14",
+        "F-25",
+        "F-26",
+        "F-49",
+        "M-13",
+        "M-16",
+        "F-41",
+        "F-46",
+        "M-11",
+        "M-15"
+      ]
+    },
+    {
+      "section": 10,
+      "title": "分项状态、整体聚合和标准化输出",
+      "sourceLocator": "§10",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-10/part-01"
+      ],
+      "ids": [
+        "ST-01",
+        "ST-02",
+        "ST-03",
+        "ST-04",
+        "ST-05",
+        "ST-06",
+        "ST-07",
+        "ST-08"
+      ]
+    },
+    {
+      "section": 11,
+      "title": "补件、重审、撤回、正式审批与执行生命周期",
+      "sourceLocator": "§11",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-11/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 12,
+      "title": "合法例外和人工复核底线",
+      "sourceLocator": "§12",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-12/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 13,
+      "title": "校本规则配置、版本优先级及未闭合缺口",
+      "sourceLocator": "§13",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-13/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 14,
+      "title": "官方来源与可信程度索引（B阶段S01—S24）",
+      "sourceLocator": "§14",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-14/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 15,
+      "title": "作者流程推演（不是D金标）",
+      "sourceLocator": "§15",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-15/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 16,
+      "title": "共性模块候选与T12特有逻辑",
+      "sourceLocator": "§16",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-16/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 17,
+      "title": "当前编辑器/运行时可表达性与不可删除的缺口",
+      "sourceLocator": "§17",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-17/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 18,
+      "title": "完整性、自审风险、版本交接",
+      "sourceLocator": "§18",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-section-18/part-01"
+      ],
+      "ids": [
+        "F-01",
+        "F-50",
+        "M-01",
+        "M-18"
+      ]
+    }
+  ],
+  "semanticIndependentlyVerified": false,
+  "schoolPolicyVerified": false,
+  "goldRegenerated": false
+}
