@@ -16,21 +16,91 @@
       },
       "conditions": [
         {
-          "id": "overnight",
+          "id": "br03",
           "applicability": "applicable",
           "sourceId": "src-synthetic",
           "sourceVersionId": "g05-t02-synthetic-v1",
           "decidedBy": "reviewer"
         },
         {
-          "id": "transport-special",
+          "id": "br04",
           "applicability": "not-applicable",
           "sourceId": "src-synthetic",
           "sourceVersionId": "g05-t02-synthetic-v1",
           "decidedBy": "reviewer"
         },
         {
-          "id": "high-risk",
+          "id": "br05",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br06",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br07",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br08",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br09",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br10",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br11",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br12",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br13",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br14",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br15",
           "applicability": "not-applicable",
           "sourceId": "src-synthetic",
           "sourceVersionId": "g05-t02-synthetic-v1",
@@ -52,21 +122,91 @@
       },
       "conditions": [
         {
-          "id": "overnight",
+          "id": "br03",
           "applicability": "unknown",
           "sourceId": "src-synthetic",
           "sourceVersionId": "g05-t02-synthetic-v1",
           "decidedBy": "undetermined"
         },
         {
-          "id": "transport-special",
+          "id": "br04",
           "applicability": "not-applicable",
           "sourceId": "src-synthetic",
           "sourceVersionId": "g05-t02-synthetic-v1",
           "decidedBy": "reviewer"
         },
         {
-          "id": "high-risk",
+          "id": "br05",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br06",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br07",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br08",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br09",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br10",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br11",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br12",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br13",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br14",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br15",
           "applicability": "not-applicable",
           "sourceId": "src-synthetic",
           "sourceVersionId": "g05-t02-synthetic-v1",

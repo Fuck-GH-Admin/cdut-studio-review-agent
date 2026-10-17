@@ -579,65 +579,275 @@
         ]
       },
       {
-        "moduleId": "g05-t02-axis-overnight",
+        "moduleId": "g05-t02-axis-br03",
         "version": 1,
-        "name": "g05-t02 业务条件 overnight",
-        "purpose": "保留overnight适用、排除和未知处理",
-        "scope": "每个所选业务对象的显式条件",
-        "limits": "本技术例的reviewer选择不等于真实校务事实已获认证",
+        "name": "g05-t02 BR-03 条件模块",
+        "purpose": "保留BR-03的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
         "source": {
           "kind": "user-request",
-          "note": "C v0.1作者侧冻结候选业务原文，仅按本次制作请求执行技术预审，不构成现行校规或行政批准"
+          "note": "C v0.1业务原文，待校方核权"
         },
         "tasks": [
           {
             "id": "scope",
-            "title": "overnight 主/附条件适用范围核对",
-            "requirement": "本责任仅在对象条件 'overnight' 对应路径出现。核对 C 原文条件章节是否适用于本对象；对于UNKNOWN保留需核结果，不应用其他学校阈值推断。目标业务：集体校外交流实践活动组织与安全",
-            "completion": "输出本对象适用/不适用/待确认、条件来源版本及理由；核对附件到期和权限边界",
-            "limits": "不得根据 AI 猜测选择场景或将未到期有权材料当申请者缺件"
+            "title": "BR-03 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-03；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-03 | 组织身份 | organizer_type∈{department,authorized_club,authorized_student_team,staff_unit,unauthorized_person} | 互斥组织主体且经办代理是独立布尔 | 组织类别不可判→资格待核；无授权不得执行 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
           }
         ]
       },
       {
-        "moduleId": "g05-t02-axis-transport-special",
+        "moduleId": "g05-t02-axis-br04",
         "version": 1,
-        "name": "g05-t02 业务条件 transport-special",
-        "purpose": "保留transport-special适用、排除和未知处理",
-        "scope": "每个所选业务对象的显式条件",
-        "limits": "本技术例的reviewer选择不等于真实校务事实已获认证",
+        "name": "g05-t02 BR-04 条件模块",
+        "purpose": "保留BR-04的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
         "source": {
           "kind": "user-request",
-          "note": "C v0.1作者侧冻结候选业务原文，仅按本次制作请求执行技术预审，不构成现行校规或行政批准"
+          "note": "C v0.1业务原文，待校方核权"
         },
         "tasks": [
           {
             "id": "scope",
-            "title": "transport-special 主/附条件适用范围核对",
-            "requirement": "本责任仅在对象条件 'transport-special' 对应路径出现。核对 C 原文条件章节是否适用于本对象；对于UNKNOWN保留需核结果，不应用其他学校阈值推断。目标业务：集体校外交流实践活动组织与安全",
-            "completion": "输出本对象适用/不适用/待确认、条件来源版本及理由；核对附件到期和权限边界",
-            "limits": "不得根据 AI 猜测选择场景或将未到期有权材料当申请者缺件"
+            "title": "BR-04 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-04；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-04 | 目的及相邻许可 | purpose∈{social_practice,visit,academic_research,teaching_practicum,personal_trip,special_fieldwork} | 主目的互斥；同案可关联其他审批目的 | 教学实践并行安全检查由真实校规决定；关联财务不能替安全 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
           }
         ]
       },
       {
-        "moduleId": "g05-t02-axis-high-risk",
+        "moduleId": "g05-t02-axis-br05",
         "version": 1,
-        "name": "g05-t02 业务条件 high-risk",
-        "purpose": "保留high-risk适用、排除和未知处理",
-        "scope": "每个所选业务对象的显式条件",
-        "limits": "本技术例的reviewer选择不等于真实校务事实已获认证",
+        "name": "g05-t02 BR-05 条件模块",
+        "purpose": "保留BR-05的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
         "source": {
           "kind": "user-request",
-          "note": "C v0.1作者侧冻结候选业务原文，仅按本次制作请求执行技术预审，不构成现行校规或行政批准"
+          "note": "C v0.1业务原文，待校方核权"
         },
         "tasks": [
           {
             "id": "scope",
-            "title": "high-risk 主/附条件适用范围核对",
-            "requirement": "本责任仅在对象条件 'high-risk' 对应路径出现。核对 C 原文条件章节是否适用于本对象；对于UNKNOWN保留需核结果，不应用其他学校阈值推断。目标业务：集体校外交流实践活动组织与安全",
-            "completion": "输出本对象适用/不适用/待确认、条件来源版本及理由；核对附件到期和权限边界",
-            "limits": "不得根据 AI 猜测选择场景或将未到期有权材料当申请者缺件"
+            "title": "BR-05 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-05；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-05 | 地域及跨单位范围 | domestic/local/cross_city/cross_province/overseas; inter_department∈{T,F,U} | 地域有从属层级；跨单位可以叠加 | 由目标学校profile确定审批升级；国际出访转G05-T04 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t02-axis-br06",
+        "version": 1,
+        "name": "g05-t02 BR-06 条件模块",
+        "purpose": "保留BR-06的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-06 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-06；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-06 | 规模门槛 | headcount_satisfies(profile,member_roster)=T/F/U | 按同一正式名单统计; 仅当profile提供阈值 | U→POLICY_UNKNOWN / DATA_CONFLICT；不能以最低外校门槛兜底 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t02-axis-br07",
+        "version": 1,
+        "name": "g05-t02 BR-07 条件模块",
+        "purpose": "保留BR-07的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-07 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-07；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-07 | 出行交通 | transport_mode∈{walk,public_transit,school_vehicle,charter,ship,other,unknown} | 互斥主运输方式，多段行程可为数组叠加 | 包车/船/学校派车各自开启不同材料；未知路线→待补 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t02-axis-br08",
+        "version": 1,
+        "name": "g05-t02 BR-08 条件模块",
+        "purpose": "保留BR-08的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-08 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-08；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-08 | 外包承办 | third_party_organizer∈{T,F,U} | 与交通选择、过夜可叠加 | T要求对应委托合同；U不得自动当F |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t02-axis-br09",
+        "version": 1,
+        "name": "g05-t02 BR-09 条件模块",
+        "purpose": "保留BR-09的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-09 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-09；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-09 | 住宿 | overnight∈{T,F,U} | 与跨省、保险叠加 | T依profile启用夜间住宿和应急信息；U待补 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t02-axis-br10",
+        "version": 1,
+        "name": "g05-t02 BR-10 条件模块",
+        "purpose": "保留BR-10的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-10 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-10；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-10 | 保险及承诺 | require_insurance/require_commitment/require_parent_consent∈{T,F,U} | 三条件独立并可叠加，必须由profile给出 | U→不可把材料当作N/A或无条件强制；先查政策 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t02-axis-br11",
+        "version": 1,
+        "name": "g05-t02 BR-11 条件模块",
+        "purpose": "保留BR-11的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-11 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-11；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-11 | 特殊风险 | risk_category∈{ordinary,elevated,high,unknown}; real_time_warning∈{T,F,U} | 与所有场景叠加，风险升级优先级最高 | high或预警T→MANUAL_REQUIRED并阻断自动放行 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t02-axis-br12",
+        "version": 1,
+        "name": "g05-t02 BR-12 条件模块",
+        "purpose": "保留BR-12的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-12 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-12；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-12 | 动作与版本 | action∈{create,supplement,amend,withdraw,cancel,predeparture,execute,incident,return_close} | 动作互斥，同一activity可有多次事件；amend引用原批准版本 | 原批件不自动覆盖新快照 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t02-axis-br13",
+        "version": 1,
+        "name": "g05-t02 BR-13 条件模块",
+        "purpose": "保留BR-13的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-13 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-13；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-13 | 阶段判定 | ST-01..ST-10，按有权事件单调推进/撤销可逆 | 事件流水并非只看当前上传文件 | 缺少未来阶段材料→NOT_APPLICABLE |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t02-axis-br14",
+        "version": 1,
+        "name": "g05-t02 BR-14 条件模块",
+        "purpose": "保留BR-14的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-14 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-14；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-14 | 成员及分组 | group_members[] × participation_window[] × insurance_window[] | 每人/分组并列可混合 | 部分匹配可分项记录；不可自动删除成员生成新许可 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t02-axis-br15",
+        "version": 1,
+        "name": "g05-t02 BR-15 条件模块",
+        "purpose": "保留BR-15的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-15 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-15；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-15 | 数据/签署来源 | evidence_kind∈{official_system,issuer_original,authorized_digital,applicant_upload,hearsay,unknown} | 同一事实多来源可并存 | 必须保留原文件引用与矛盾，正式系统高于个人自述；来源U不装作真 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
           }
         ]
       }
@@ -656,9 +866,19 @@
         "scenarios": [
           "student-team",
           "department-team",
-          "overnight",
-          "transport-special",
-          "high-risk"
+          "br03",
+          "br04",
+          "br05",
+          "br06",
+          "br07",
+          "br08",
+          "br09",
+          "br10",
+          "br11",
+          "br12",
+          "br13",
+          "br14",
+          "br15"
         ],
         "genericScenarioAxes": {
           "primary": [
@@ -666,9 +886,19 @@
             "department-team"
           ],
           "conditions": [
-            "overnight",
-            "transport-special",
-            "high-risk"
+            "br03",
+            "br04",
+            "br05",
+            "br06",
+            "br07",
+            "br08",
+            "br09",
+            "br10",
+            "br11",
+            "br12",
+            "br13",
+            "br14",
+            "br15"
           ]
         },
         "modules": [
@@ -745,22 +975,82 @@
             "scenario": "department-team"
           },
           {
-            "id": "axis-overnight",
-            "moduleId": "g05-t02-axis-overnight",
+            "id": "axis-br03",
+            "moduleId": "g05-t02-axis-br03",
             "version": 1,
-            "scenario": "overnight"
+            "scenario": "br03"
           },
           {
-            "id": "axis-transport-special",
-            "moduleId": "g05-t02-axis-transport-special",
+            "id": "axis-br04",
+            "moduleId": "g05-t02-axis-br04",
             "version": 1,
-            "scenario": "transport-special"
+            "scenario": "br04"
           },
           {
-            "id": "axis-high-risk",
-            "moduleId": "g05-t02-axis-high-risk",
+            "id": "axis-br05",
+            "moduleId": "g05-t02-axis-br05",
             "version": 1,
-            "scenario": "high-risk"
+            "scenario": "br05"
+          },
+          {
+            "id": "axis-br06",
+            "moduleId": "g05-t02-axis-br06",
+            "version": 1,
+            "scenario": "br06"
+          },
+          {
+            "id": "axis-br07",
+            "moduleId": "g05-t02-axis-br07",
+            "version": 1,
+            "scenario": "br07"
+          },
+          {
+            "id": "axis-br08",
+            "moduleId": "g05-t02-axis-br08",
+            "version": 1,
+            "scenario": "br08"
+          },
+          {
+            "id": "axis-br09",
+            "moduleId": "g05-t02-axis-br09",
+            "version": 1,
+            "scenario": "br09"
+          },
+          {
+            "id": "axis-br10",
+            "moduleId": "g05-t02-axis-br10",
+            "version": 1,
+            "scenario": "br10"
+          },
+          {
+            "id": "axis-br11",
+            "moduleId": "g05-t02-axis-br11",
+            "version": 1,
+            "scenario": "br11"
+          },
+          {
+            "id": "axis-br12",
+            "moduleId": "g05-t02-axis-br12",
+            "version": 1,
+            "scenario": "br12"
+          },
+          {
+            "id": "axis-br13",
+            "moduleId": "g05-t02-axis-br13",
+            "version": 1,
+            "scenario": "br13"
+          },
+          {
+            "id": "axis-br14",
+            "moduleId": "g05-t02-axis-br14",
+            "version": 1,
+            "scenario": "br14"
+          },
+          {
+            "id": "axis-br15",
+            "moduleId": "g05-t02-axis-br15",
+            "version": 1,
+            "scenario": "br15"
           }
         ],
         "localTasks": []
@@ -1404,6 +1694,175 @@
       "verification": "content-checked",
       "applicability": "request-scope",
       "note": "逐R原文定位；制作技术预审义务，不将C研究规则自身当作已核校规"
+    },
+    {
+      "sourceId": "src-br03",
+      "kind": "user-request",
+      "label": "g05-t02 BR-03 条件原文",
+      "reference": {
+        "documentVersionId": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "locator": "source/G05-T02_正式业务模板_MD_v0.1.md#L50",
+        "excerpt": "| BR-03 | 组织身份 | organizer_type∈{department,authorized_club,authorized_student_team,staff_unit,unauthorized_person} | 互斥组织主体且经办代理是独立布尔 | 组织类别不可判→资格待核；无授权不得执行 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br04",
+      "kind": "user-request",
+      "label": "g05-t02 BR-04 条件原文",
+      "reference": {
+        "documentVersionId": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "locator": "source/G05-T02_正式业务模板_MD_v0.1.md#L51",
+        "excerpt": "| BR-04 | 目的及相邻许可 | purpose∈{social_practice,visit,academic_research,teaching_practicum,personal_trip,special_fieldwork} | 主目的互斥；同案可关联其他审批目的 | 教学实践并行安全检查由真实校规决定；关联财务不能替安全"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br05",
+      "kind": "user-request",
+      "label": "g05-t02 BR-05 条件原文",
+      "reference": {
+        "documentVersionId": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "locator": "source/G05-T02_正式业务模板_MD_v0.1.md#L52",
+        "excerpt": "| BR-05 | 地域及跨单位范围 | domestic/local/cross_city/cross_province/overseas; inter_department∈{T,F,U} | 地域有从属层级；跨单位可以叠加 | 由目标学校profile确定审批升级；国际出访转G05-T04 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br06",
+      "kind": "user-request",
+      "label": "g05-t02 BR-06 条件原文",
+      "reference": {
+        "documentVersionId": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "locator": "source/G05-T02_正式业务模板_MD_v0.1.md#L53",
+        "excerpt": "| BR-06 | 规模门槛 | headcount_satisfies(profile,member_roster)=T/F/U | 按同一正式名单统计; 仅当profile提供阈值 | U→POLICY_UNKNOWN / DATA_CONFLICT；不能以最低外校门槛兜底 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br07",
+      "kind": "user-request",
+      "label": "g05-t02 BR-07 条件原文",
+      "reference": {
+        "documentVersionId": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "locator": "source/G05-T02_正式业务模板_MD_v0.1.md#L54",
+        "excerpt": "| BR-07 | 出行交通 | transport_mode∈{walk,public_transit,school_vehicle,charter,ship,other,unknown} | 互斥主运输方式，多段行程可为数组叠加 | 包车/船/学校派车各自开启不同材料；未知路线→待补 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br08",
+      "kind": "user-request",
+      "label": "g05-t02 BR-08 条件原文",
+      "reference": {
+        "documentVersionId": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "locator": "source/G05-T02_正式业务模板_MD_v0.1.md#L55",
+        "excerpt": "| BR-08 | 外包承办 | third_party_organizer∈{T,F,U} | 与交通选择、过夜可叠加 | T要求对应委托合同；U不得自动当F |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br09",
+      "kind": "user-request",
+      "label": "g05-t02 BR-09 条件原文",
+      "reference": {
+        "documentVersionId": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "locator": "source/G05-T02_正式业务模板_MD_v0.1.md#L56",
+        "excerpt": "| BR-09 | 住宿 | overnight∈{T,F,U} | 与跨省、保险叠加 | T依profile启用夜间住宿和应急信息；U待补 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br10",
+      "kind": "user-request",
+      "label": "g05-t02 BR-10 条件原文",
+      "reference": {
+        "documentVersionId": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "locator": "source/G05-T02_正式业务模板_MD_v0.1.md#L57",
+        "excerpt": "| BR-10 | 保险及承诺 | require_insurance/require_commitment/require_parent_consent∈{T,F,U} | 三条件独立并可叠加，必须由profile给出 | U→不可把材料当作N/A或无条件强制；先查政策 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br11",
+      "kind": "user-request",
+      "label": "g05-t02 BR-11 条件原文",
+      "reference": {
+        "documentVersionId": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "locator": "source/G05-T02_正式业务模板_MD_v0.1.md#L58",
+        "excerpt": "| BR-11 | 特殊风险 | risk_category∈{ordinary,elevated,high,unknown}; real_time_warning∈{T,F,U} | 与所有场景叠加，风险升级优先级最高 | high或预警T→MANUAL_REQUIRED并阻断自动放行 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br12",
+      "kind": "user-request",
+      "label": "g05-t02 BR-12 条件原文",
+      "reference": {
+        "documentVersionId": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "locator": "source/G05-T02_正式业务模板_MD_v0.1.md#L59",
+        "excerpt": "| BR-12 | 动作与版本 | action∈{create,supplement,amend,withdraw,cancel,predeparture,execute,incident,return_close} | 动作互斥，同一activity可有多次事件；amend引用原批准版本 | 原批件不自动覆盖新快照 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br13",
+      "kind": "user-request",
+      "label": "g05-t02 BR-13 条件原文",
+      "reference": {
+        "documentVersionId": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "locator": "source/G05-T02_正式业务模板_MD_v0.1.md#L60",
+        "excerpt": "| BR-13 | 阶段判定 | ST-01..ST-10，按有权事件单调推进/撤销可逆 | 事件流水并非只看当前上传文件 | 缺少未来阶段材料→NOT_APPLICABLE |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br14",
+      "kind": "user-request",
+      "label": "g05-t02 BR-14 条件原文",
+      "reference": {
+        "documentVersionId": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "locator": "source/G05-T02_正式业务模板_MD_v0.1.md#L61",
+        "excerpt": "| BR-14 | 成员及分组 | group_members[] × participation_window[] × insurance_window[] | 每人/分组并列可混合 | 部分匹配可分项记录；不可自动删除成员生成新许可 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br15",
+      "kind": "user-request",
+      "label": "g05-t02 BR-15 条件原文",
+      "reference": {
+        "documentVersionId": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "locator": "source/G05-T02_正式业务模板_MD_v0.1.md#L62",
+        "excerpt": "| BR-15 | 数据/签署来源 | evidence_kind∈{official_system,issuer_original,authorized_digital,applicant_upload,hearsay,unknown} | 同一事实多来源可并存 | 必须保留原文件引用与矛盾，正式系统高于个人自述；来源U不装作真 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
     }
   ],
   "sourceBindings": [
@@ -2180,9 +2639,11 @@
       }
     },
     {
-      "checkId": "g05-t02@1:module/axis-overnight/scope",
+      "checkId": "g05-t02@1:module/axis-br03/scope",
       "sourceIds": [
         "src-c",
+        "src-br03",
+        "src-policy",
         "src-synthetic"
       ],
       "genericScope": {
@@ -2197,9 +2658,11 @@
       }
     },
     {
-      "checkId": "g05-t02@1:module/axis-transport-special/scope",
+      "checkId": "g05-t02@1:module/axis-br04/scope",
       "sourceIds": [
         "src-c",
+        "src-br04",
+        "src-policy",
         "src-synthetic"
       ],
       "genericScope": {
@@ -2214,9 +2677,201 @@
       }
     },
     {
-      "checkId": "g05-t02@1:module/axis-high-risk/scope",
+      "checkId": "g05-t02@1:module/axis-br05/scope",
       "sourceIds": [
         "src-c",
+        "src-br05",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t02-activity",
+          "g05-t02-member"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t02@1:module/axis-br06/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br06",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t02-activity",
+          "g05-t02-member"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t02@1:module/axis-br07/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br07",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t02-activity",
+          "g05-t02-member"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t02@1:module/axis-br08/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br08",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t02-activity",
+          "g05-t02-member"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t02@1:module/axis-br09/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br09",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t02-activity",
+          "g05-t02-member"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t02@1:module/axis-br10/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br10",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t02-activity",
+          "g05-t02-member"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t02@1:module/axis-br11/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br11",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t02-activity",
+          "g05-t02-member"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t02@1:module/axis-br12/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br12",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t02-activity",
+          "g05-t02-member"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t02@1:module/axis-br13/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br13",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t02-activity",
+          "g05-t02-member"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t02@1:module/axis-br14/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br14",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t02-activity",
+          "g05-t02-member"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t02@1:module/axis-br15/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br15",
+        "src-policy",
         "src-synthetic"
       ],
       "genericScope": {
