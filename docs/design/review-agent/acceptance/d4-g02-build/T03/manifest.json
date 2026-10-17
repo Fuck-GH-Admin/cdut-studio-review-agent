@@ -103,12 +103,13 @@
   ],
   "sharedModuleLocks": [],
   "ruleSourceCount": 36,
-  "coverageEntries": 154,
+  "coverageEntries": 155,
   "notes": [
     "C原文不是学校现行校规",
     "技术预审不自动批准",
     "真实 Gold 未读",
-    "T03 v0.1.1 不继承旧 v0.1 E/D 签署"
+    "T03 v0.1.1 不继承旧 v0.1 E/D 签署",
+    "补登记母版§14政策版本与时点独立整案责任"
   ],
   "status": "NOT_RUN",
   "syntheticOnly": true,

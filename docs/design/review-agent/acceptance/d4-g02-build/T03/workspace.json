@@ -795,6 +795,13 @@
             "requirement": "## 1. 审核目的、边界及独立必要性\n\n**唯一业务问题：**有合法职责的单位或授权经办人为实际使用者，申请在指定期间，以指定网络方式**访问既存、受访问策略限制的学校网络资源**。系统只为每一“使用者×资源×访问动作×时间窗口”核实申报事实、必要证据和适用审批节点，输出有出处的**材料核验/转办建议**；是否准许访问由有权学校机构决定，访问能否真正生效以技术平台可信日志为准。\n\n- **纳入**：已有资源特许访问绑定、数据中心专用网络通道、经单位认可的教职工/学生/外协维护人员临时网络准入、同批多名使用者及多资源、变更/续期/暂停/撤权流程中的材料核验（适用学校规定存在相应手续才启用）。\n- **排除**：成都理工大学普通在籍师生WebVPN/SSLVPN自助使用；个人/部门邮箱；G02-T01指定数据集字段与用途许可；业务系统内录入/审批/导出角色；物理机房门禁；新系统备案上线、域名注册、服务器托管、向公网开放端口及等保/测评；堡垒机**操作授权本身**。后者可作为后置依赖，不自动由T03生成。\n- **独立性保留意见**：跨校原始申请足以形成单独材料审核语义，但东南大学还存在一份覆盖VPN与域名等多种资源的复合审批。T03可能作为未来广义“信息化资源申请”的受限访问分支或既有学校OA预审模块，不因本Markdown完成而必须新增用户可见模板。[S04,S05,S06,S07,S08,S09]\n- **本校保守处理**：成都理工大学2026普通VPN路径真实存在；学校旧《网络安全管理办法（试行）》和系统备案表支持资源管理、外协高权最小授权原则，**但2026专项VPN申请表、受理入口、正式人员角色链并未获得**，不得将外校身份证收集、最长365天、纸章数、IP格式或项目建设承诺强行适用CDUT。[S01,CDUT-B2-01,CDUT-B2-02]",
             "completion": "逐条保留本节明确条件、字段定义、阶段、等价证据、例外和输出语义；对每项适用性和权限不足单独给出待核，不得用整案PASS替代。",
             "limits": "编号字段/材料槽并非无条件全部必填；未来审批材料不是本期申请人缺件；学校制度来源未授权不得升级。"
+          },
+          {
+            "id": "section-14",
+            "title": "§14｜学校配置与生效制度优先级",
+            "requirement": "## 14. 学校配置与生效制度优先级\n\n一个合法、可评分的规则配置至少具备：`school_id`, `policy_id`, `policy_version`, `effective_from/through`, `official_source_url`, `applicant_role`, `beneficiary_role`, `resource_type`, `action_type`, `stage_id`, `approver_role`, `required_fields`, `accepted_evidence`, `scope`, `privacy_classification`。\n\n- **制度优先级**：先匹配目标学校及在本案适用时间真实有效的制度；若存在不同制度授权范围交叉/冲突，暂停该规则并人工确认，**不得以最后加载、较新外校制度或模型主观判断自动覆盖**。\n- **CDUT已核事实**：2026普通VPN自助；《网络安全管理办法（试行）》提供安全责任与资产备案；其第十一条（四）项涉及系统高权和外协管理账号控制；学位论文提交需独立业务登录。**但旧制度现行有效性、2026专项VPN实际表、办事主体及每节点要求均未核实**，`CDUT_T03_SPECIFIC_APPLICATION_VERIFIED=false`，相关强制材料配置保持禁用/待核。[CDUT-B2-01,CDUT-B2-02,CDUT-B2-05]\n- **其他高校示例**：西南大学本流程外协最长365天、暨南专用VPN仅在职教工、昆明理工旧纸表含身份证字段、东南特殊建设材料，都只能在对应学校有效版本使用。[S05,S08,S07,S09]\n- **缺校规三值策略**：适用学校未知→`POLICY_UNKNOWN`；材料强制性未核实→`NOT_ENFORCEABLE`（非一项默认缺件）；入口不可证→转该校权威服务目录/部门确认；不能因为校本材料清单尚未公开就无限放行专项访问。",
+            "completion": "锁定学校、事项、制度版本与生效时点；未知保持 POLICY_UNKNOWN，跨校规则不得直接适用成都理工；不擅自签发权限。",
+            "limits": "不是实际制度签署；学校适用规则由有权校方和来源治理者认证"
           }
         ]
       }
@@ -1579,6 +1586,19 @@
       "verification": "content-checked",
       "applicability": "unknown",
       "note": "C阶段业务语义原件；内容来自固定MD，不等于2026成都理工现行制度或正式行政批准。"
+    },
+    {
+      "sourceId": "origin-section-14",
+      "kind": "policy-candidate",
+      "label": "业务母版第14节 学校配置与生效制度优先级",
+      "reference": {
+        "documentVersionId": "md-sha256-e3d1d01555d49564931ac38892567ea23eab5ecd898afc3b67a8e4a26abe7380",
+        "locator": "L616 / §14",
+        "excerpt": "## 14. 学校配置与生效制度优先级\n\n一个合法、可评分的规则配置至少具备：`school_id`, `policy_id`, `policy_version`, `effective_from/through`, `official_source_url`, `applicant_role`, `beneficiary_role`, `resource_type`, `action_type`, `stage_id`, `approver_role`, `required_fields`, `accepted_evidence`, `scope`, `privacy_classification`。\n\n- **制度优先级**：先匹配目标学校及在本案适用时间真实有效的制"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "完整C v0.1.1业务母版原文；不证明CDUT2026专项VPN现行办事规则"
     }
   ],
   "sourceBindings": [
@@ -2458,6 +2478,13 @@
         ]
       },
       "applicabilityNote": "原MD §14 school applicability；当前目标的 scenarioSource/conditions 显式决定状态；未知不可当 FALSE"
+    },
+    {
+      "checkId": "g02-t03-review@1:local/section-14",
+      "sourceIds": [
+        "origin-section-14"
+      ],
+      "caseScopeJustification": "学校制度版本属于整案适用性审核，不能替代每个资源和访问用户独立 Check"
     }
   ],
   "sharedModuleLocks": []

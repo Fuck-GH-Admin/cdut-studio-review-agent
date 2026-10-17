@@ -2000,5 +2000,15 @@
     ],
     "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
     "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "SECTION-14",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L616",
+    "sourceHeading": "§14 学校配置与生效制度优先级",
+    "sourceId": "origin-section-14",
+    "checkId": "g02-t03-review@1:local/section-14",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "case"
   }
 ]
