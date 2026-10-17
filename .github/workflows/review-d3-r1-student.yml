@@ -1,0 +1,83 @@
+name: D3-R1 G01-I typed runtime evidence
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/review-d3-r1-student.yml'
+      - 'packages/shared/src/types/review-*.ts'
+      - 'apps/electron/src/main/lib/review/**'
+      - 'apps/electron/scripts/review-d2-plan.ts'
+      - 'docs/design/review-agent/acceptance/d3-r1-g01-runtime/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  scoped-r1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      R1_RUNTIME_EVIDENCE_DIR: ${{ github.workspace }}/r1-evidence
+      R1_FROZEN_A_ACCEPTANCE_ROOT: ${{ github.workspace }}/frozen-agent-a/docs/design/review-agent/acceptance/d4-g01-i/agent-a
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: e3321add7322fba29169f0faeac9bc66571067e0
+          path: frozen-agent-a
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: |
+          mkdir -p r1-evidence
+          printf '%s\n' "${{ github.event.pull_request.head.sha || github.sha }}" > r1-evidence/source-head-sha.txt
+          git rev-parse HEAD > r1-evidence/checkout-sha.txt
+      - name: Verify read-only fixed A provenance
+        run: |
+          set -euo pipefail
+          test "$(git -C frozen-agent-a rev-parse HEAD)" = e3321add7322fba29169f0faeac9bc66571067e0
+          sha256sum frozen-agent-a/docs/design/review-agent/acceptance/d4-g01-i/agent-a/workspace/workspace.json > r1-evidence/frozen-A-workspace-sha256.txt
+      - name: Install frozen dependencies
+        run: |
+          set -o pipefail
+          bun install --frozen-lockfile 2>&1 | tee r1-evidence/install.log
+      - name: Check fixed D3-R0 handoff module locks
+        run: |
+          set -o pipefail
+          node apps/electron/scripts/review-d3-r0-verify.cjs 2>&1 | tee r1-evidence/d3-r0-locks.log
+      - name: R1 typed field real engine & Pi service
+        run: |
+          set -o pipefail
+          bun test --isolate --timeout 60000 apps/electron/src/main/lib/review/review-d3-r1-student.test.ts 2>&1 | tee r1-evidence/student-tests.log
+      - name: Typecheck all workspaces
+        if: always()
+        run: |
+          set -o pipefail
+          bun run typecheck 2>&1 | tee r1-evidence/typecheck.log
+      - name: Enforce shared package architecture boundaries
+        if: always()
+        run: |
+          set -o pipefail
+          bun run check:boundaries 2>&1 | tee r1-evidence/boundaries.log
+      - name: Original D1/D2/D3/Pi gates regression
+        if: always()
+        run: |
+          set -o pipefail
+          bun test --isolate --timeout 60000 \
+            apps/electron/src/main/lib/review/review-d2-runtime.test.ts \
+            apps/electron/src/main/lib/review/review-d2-execution-gates.test.ts \
+            apps/electron/src/main/lib/review/review-authoring-v1.test.ts \
+            apps/electron/src/main/lib/review/review-d3-handoff.test.ts \
+            apps/electron/src/main/lib/review/review-d3-handoff-cli.test.ts \
+            apps/electron/src/main/lib/review/review-d3-pi-integration.test.ts \
+            apps/electron/src/main/lib/review/pi-case-review-service.test.ts \
+            2>&1 | tee r1-evidence/regression.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: d3-r1-g01-probes-${{ github.run_id }}-${{ github.run_attempt }}
+          path: r1-evidence/
+          retention-days: 30

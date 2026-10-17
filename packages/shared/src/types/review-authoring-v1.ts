@@ -82,6 +82,10 @@ export interface ReviewAuthoringSourceBindingV1 {
   applicabilityNote?: string
   /** Optional executable fail-closed gate attached to this EXACT instance Check. */
   gate?: import('./review-d2').D2ExecutionGateV1
+  /** Explicit per-requested-field Check selection; unused on legacy templates. */
+  studentScope?: import('./review-d2').D2StudentScopeV1
+  /** A deliberate exception to field scoping for a genuine case-level student rule. */
+  caseScopeJustification?: string
 }
 
 /**

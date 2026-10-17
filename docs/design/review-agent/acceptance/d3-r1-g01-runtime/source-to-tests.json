@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "fixedInputs": {
+    "r0": "4b191c729f3d5f8135c73b87c17642023f6c3986",
+    "aHead": "e3321add7322fba29169f0faeac9bc66571067e0",
+    "cHead": "3018efc4aa6ae043eddaff63fef590b53134b92a",
+    "g01OriginalCommit": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+    "g01OriginalSha256": "52ae0cdc27a16bb46659cd43d3e78632c44d8b5ccc86a18559b263512f51f329"
+  },
+  "publicTests": "apps/electron/src/main/lib/review/review-d3-r1-student.test.ts",
+  "legacyTests": [
+    "apps/electron/src/main/lib/review/review-d2-runtime.test.ts",
+    "apps/electron/src/main/lib/review/review-d2-execution-gates.test.ts",
+    "apps/electron/src/main/lib/review/review-authoring-v1.test.ts",
+    "apps/electron/src/main/lib/review/review-d3-handoff.test.ts",
+    "apps/electron/src/main/lib/review/review-d3-handoff-cli.test.ts",
+    "apps/electron/src/main/lib/review/review-d3-pi-integration.test.ts",
+    "apps/electron/src/main/lib/review/pi-case-review-service.test.ts"
+  ],
+  "requirements": [
+    {
+      "source": "G01 original §3 S01/S02/S07, §10 example2",
+      "assertion": "two fields and scenarios genuinely instantiate separate Subjects and exact Check/Source mapping",
+      "testIds": [
+        "two independently scoped",
+        "multi-axis same-template"
+      ]
+    },
+    {
+      "source": "G01 original §3 routing, §4/5 field dictionary",
+      "assertion": "select one field or other intent/status changes applicable check or explicit unknown",
+      "testIds": [
+        "remove one requested field",
+        "different request intent",
+        "trusted fixture"
+      ]
+    },
+    {
+      "source": "G01 original §4.4/6 one document multiple facts",
+      "assertion": "one reviewer-confirmed document version can bind two facts but not wrong subject/version/fact",
+      "testIds": [
+        "document may cover two exact fields",
+        "real D2 create"
+      ]
+    },
+    {
+      "source": "C-ENGINE-01 / legacy A 49 checks 0 target",
+      "assertion": "unscoped 49-rule fallback is rejected, true case-level tasks must explicitly justify",
+      "testIds": [
+        "student case-level rule"
+      ]
+    },
+    {
+      "source": "C-ENGINE-03 trusted origin, G01 §4.1",
+      "assertion": "applicant caseFields cannot impersonate registry, synthetic controlled fixture gated",
+      "testIds": [
+        "unknown independent registry",
+        "trusted fixture",
+        "isolated CLIs"
+      ]
+    },
+    {
+      "source": "C-ENGINE-02, G01 §6",
+      "assertion": "illegal cross-field alternatives denied, advanced graph remains blocked",
+      "testIds": [
+        "invalid cross-field evidence",
+        "legacy text schema1"
+      ]
+    },
+    {
+      "source": "G01 §7/8/9 authority, policy and later obligations",
+      "assertion": "no automatic authority approval or applicant missing material before due",
+      "testIds": [
+        "existing D2 execution gates",
+        "existing Pi D2 tests"
+      ]
+    },
+    {
+      "source": "R0 technology compatibility",
+      "assertion": "D1/D3 portable and campus/archive regressions remain green",
+      "testIds": [
+        "existing legacy text",
+        "original 7 suites",
+        "isolated CLIs"
+      ]
+    }
+  ],
+  "limits": {
+    "BGold": "NOT_ACCESSED",
+    "officialStudentData": "NOT_CONNECTED",
+    "onlineModel": "NOT_RUN",
+    "officialApproval": "NOT_ALLOWED"
+  }
+}

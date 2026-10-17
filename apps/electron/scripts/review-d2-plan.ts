@@ -7,7 +7,7 @@
  * 任何写操作必须显式设置 PROFER_CONFIG_DIR。
  */
 import { readFileSync } from 'node:fs'
-import type { D2ScenarioSelection, ReviewAuthoringWorkspaceV1, ReviewCaseV2 } from '@profer/shared'
+import type { D2ScenarioSelection, D2TrustedStudentSnapshotV1, ReviewAuthoringWorkspaceV1, ReviewCaseV2 } from '@profer/shared'
 import { compileD2RuntimePlan, attachD2RuntimePlan, createD2TechnicalCase, makeD2CandidateShell } from '../src/main/lib/review/review-d2-runtime'
 import { saveAuthoringCandidateDraft } from '../src/main/lib/review/template-store'
 import { readAggregate } from '../src/main/lib/review/case-store-v2'
@@ -19,9 +19,13 @@ async function main(): Promise<void> {
   if (!workspacePath || !selectionPath) throw new Error('用法：preview|register|create|attach <workspace.json> <selection.json> [case.json|caseId] [title|revision] [actorId]')
   const workspace = json<ReviewAuthoringWorkspaceV1>(workspacePath)
   const selection = json<D2ScenarioSelection>(selectionPath)
+  // Explicit fixture-only side channel; ordinary case JSON and caseFields cannot impersonate registry facts.
+  const fixturePath = process.env.D2_SYNTHETIC_TRUSTED_FIXTURE_PATH
+  if (fixturePath && process.env.D2_ALLOW_SYNTHETIC_REGISTRY !== '1') throw new Error('D2_TRUSTED_SOURCE_DISABLED')
+  const trustedStudentSnapshot = fixturePath ? json<D2TrustedStudentSnapshotV1>(fixturePath) : undefined
   if (command === 'preview') {
     if (!target) throw new Error('preview 缺少合成案卷 JSON 路径')
-    const plan = compileD2RuntimePlan(workspace, selection, json<ReviewCaseV2>(target))
+    const plan = compileD2RuntimePlan(workspace, selection, json<ReviewCaseV2>(target), trustedStudentSnapshot)
     process.stdout.write(JSON.stringify(plan, null, 2) + '\n')
     return
   }
@@ -36,7 +40,7 @@ async function main(): Promise<void> {
     if (!target || !revisionArg?.trim() || !actorId?.trim()) throw new Error('create 缺少案卷 ID、案卷标题或操作者')
     const created = await createD2TechnicalCase({
       caseId: target, title: revisionArg, actor: { actorId, actorSource: 'local', role: 'reviewer' },
-      workspace, selection,
+      workspace, selection, trustedStudentSnapshot,
     })
     if (!created.ok) throw new Error(created.code + ': ' + created.message)
     process.stdout.write(JSON.stringify({ created: true, caseId: target, revision: created.aggregate.caseV2.revision, fingerprint: created.entity?.fingerprint, publicationAllowed: false }, null, 2) + '\n')
@@ -52,7 +56,7 @@ async function main(): Promise<void> {
     const result = await attachD2RuntimePlan({
       caseId: target, requestId: 'd2-attach-' + target + '-rev-' + version,
       actor: { actorId, actorSource: 'local', role: 'reviewer' },
-      expectedRevision: version, workspace, selection,
+      expectedRevision: version, workspace, selection, trustedStudentSnapshot,
     })
     if (!result.ok) throw new Error(result.code + ': ' + result.message)
     process.stdout.write(JSON.stringify({ attached: true, caseId: target, revision: result.aggregate.caseV2.revision, fingerprint: result.entity?.fingerprint, publicationAllowed: false }, null, 2) + '\n')
