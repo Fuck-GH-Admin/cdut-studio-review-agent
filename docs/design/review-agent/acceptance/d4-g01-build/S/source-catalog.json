@@ -1,0 +1,566 @@
+{
+  "schemaVersion": 1,
+  "templateId": "g01-special-proof-seal",
+  "source": {
+    "file": "G01_special_proof_seal_review_template_v1.4.md",
+    "version": "v1.4",
+    "sha256": "bb9b11b7963e0cd7661afe12bb3a23eec1655153de2d122ffb59b26f10190c15",
+    "gitBlobSha": "6b931fb5f7d00482cb551f58d4fbb9349bd33cd2",
+    "archivePath": "docs/design/review-agent/business-templates/G01/originals/G01_special_proof_seal_review_template_v1.4.md"
+  },
+  "scope": "full",
+  "catalog": [
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule/rule-sp-01",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L278",
+      "sourceText": "| SP-01 | 已有可用的可信标准证明 | 先确认现成证明是否满足申请用途 | 引导自助或继续核验特殊要求 | CDUT 2021教务范围，现行性待核；CD01 | 入口 | 需要指定额外章或密封时允许继续本模板 |",
+      "sourceId": "src-s-rule-sp-01"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule/rule-sp-02",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L279",
+      "sourceText": "| SP-02 | 申请目标为合同/财务票据/项目实质审批 | 识别文件法律/财务/科研责任是否独立 | 分流对应审批，不代审 | 通用业务边界；EX03;EX07 | 入口 | 已由其原业务批准的末端用印手续仍可核形式 |",
+      "sourceId": "src-s-rule-sp-02"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule/rule-sp-03",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L280",
+      "sourceText": "| SP-03 | 用途=政审意见或组织鉴定 | 识别是否需要组织作评价结论 | 转政审专属流程 | 本模板与G01其他模板边界；EX07 | 入口 | 纯形式用印可在得到有权结论后执行 |",
+      "sourceId": "src-s-rule-sp-03"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule/rule-sp-04",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L284",
+      "sourceText": "| SP-04 | 实际拟用印文书不可取得 | 缺失核心审核对象，不允许仅凭标题宣称合规 | 材料不充分→补交可审核正文 | 通用审查结构；本地提交形式可不同；EX01;EX02 | 预审 | 系统可生成可信定稿时无需单独上传附件 |",
+      "sourceId": "src-s-rule-sp-04"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule/rule-sp-05",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L285",
+      "sourceText": "| SP-05 | 文书事实与申请事项显著不符 | 逐项指明主体/用途/时间/材料不一致处 | 事实冲突→待核或更正 | 通用可复用核验；EX01;EX03 | 预审 | 学校权威数据本身冲突则人工核实 |",
+      "sourceId": "src-s-rule-sp-05"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule/rule-sp-06",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L289",
+      "sourceText": "| SP-06 | 请求非本单位/不具授权印章 | 检查申请单位、材料责任部门、拟签印章权责 | 权限待核/主管路由 | 按学校章权清单启用；EX02;EX03;EX07 | 预审 | 不能凭外校章种直接拒CDUT |",
+      "sourceId": "src-s-rule-sp-06"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-delegated/rule-sp-07",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L290",
+      "sourceText": "| SP-07 | 经办人与文书主体不同 | 检查该情形是否需要明确委托和代理范围 | 条件缺件/转核授权 | 办理学校的委托条款；EX04;EX05 | 预审 | 授权校内单位经办不一定等同个人代办 |",
+      "sourceId": "src-s-rule-sp-07"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-proof/rule-sp-08",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L294",
+      "sourceText": "| SP-08 | 拟证明在读/任职/获奖等客观事实 | 只提取该事项相关的可信记录比对 | 一致/不一致/不可验证分开 | 仅证明主体所在学校或其授权事实库；EX01;CD01 | 预审 | 不得因未链接系统便推断事实为假 |",
+      "sourceId": "src-s-rule-sp-08"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-proof/rule-sp-09",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L295",
+      "sourceText": "| SP-09 | 事实管理权限不在拟盖章部门 | 核学校管理分工并寻找有权主管 | 转主管部门而不是自动拒所有章 | 本校部门授权清单待接入；EX02;EX03 | 预审 | 分管业务存在联合批准例外，依流程处理 |",
+      "sourceId": "src-s-rule-sp-09"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-form/rule-sp-10",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L299",
+      "sourceText": "| SP-10 | 表格有预留学校意见或校方盖章位 | 按当前阶段区分应填与待签栏目 | 合法留白，不能因空栏拒件 | 通用阶段判断；EX01;EX03 | 预审 | 申请人本人应填的信息仍需按接收方要求完整 |",
+      "sourceId": "src-s-rule-sp-10"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-form/rule-sp-11",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L300",
+      "sourceText": "| SP-11 | 存在本人/作者签名框且处于本人签字阶段 | 检查实际要求签名的位置与签署人 | 需补本人签名或满足 | 按具体学校及当期表格；EX01 | 预审 | 尚未到老师/主管单位签字阶段不强求 |",
+      "sourceId": "src-s-rule-sp-11"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-form/rule-sp-12",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L301",
+      "sourceText": "| SP-12 | 受文单位规定特殊文书版本/批次 | 核表单版本、有效通知以及对应栏目 | 错误版本→补正 | 接收方公开规定且签发方允许该内容；EX01;EX03 | 预审 | 未能取得接收方版本不自动套去年的 |",
+      "sourceId": "src-s-rule-sp-12"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-translation/rule-sp-13",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L305",
+      "sourceText": "| SP-13 | 选择中外文对照 | 取得中文可信源与译文，比较人员、日期、课程、成绩等 | 逐项差异→标位置待更正 | 对照能力通用，接受标准按校规；EX04;EX05 | 预审 | 官方标准英文版可直接自助时应引导 |",
+      "sourceId": "src-s-rule-sp-13"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-translation/rule-sp-14",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L306",
+      "sourceText": "| SP-14 | 译文有课程顺序、符号遗漏 | 逐行检查不随意增删/遗漏标识 | 形式/内容不一致→待修订 | 对需要此项的学校/成绩类材料；EX04;EX05 | 预审 | 不同语言语序可不同；不能要求机械逐字相等 |",
+      "sourceId": "src-s-rule-sp-14"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-translation/rule-sp-15",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L307",
+      "sourceText": "| SP-15 | 译文制作方式不符合目标学校规定 | 查明学校明确接受自译/机构翻译的条件 | 仅该校触发补正 | 学校+日期+具体材料类型；EX04;EX05 | 预审 | 不能全局要求专业翻译公司 |",
+      "sourceId": "src-s-rule-sp-15"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-translation/rule-sp-16",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L308",
+      "sourceText": "| SP-16 | 有学校规定中文原件先用印 | 检查中文原件既有盖章/可信签章状态 | 先补中文前置步骤 | 仅该校限定流程；EX05 | 预审 | 其他学校可能只需现场对照 |",
+      "sourceId": "src-s-rule-sp-16"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-delegated/rule-sp-17",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L309",
+      "sourceText": "| SP-17 | 代办且学校明确要求委托书 | 核双方身份与签字、授权业务是否覆盖 | 不完整→补正 | 对应学校委托制度；EX04;EX05 | 预审 | 普通本人办理不触发 |",
+      "sourceId": "src-s-rule-sp-17"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-copy-seal/rule-sp-18",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L313",
+      "sourceText": "| SP-18 | 请求复印件与原件一致性章 | 检查复制件与可核原件关键内容 | 一致/差异/待现场核原件 | 按具体学校的原件核验渠道；EX06 | 预审 | 可信电子原件可能通过验证替代现场 |",
+      "sourceId": "src-s-rule-sp-18"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-copy-seal/rule-sp-19",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L317",
+      "sourceText": "| SP-19 | 申请包含材料密封或骑缝章 | 核拟封清单、原件、信封及程序阶段 | 资料缺漏→补正；封装状态待执行 | 校本2021及其他高校对照；CD01;EX04;EX06 | 预审 | 申请时不要求已密封照片 |",
+      "sourceId": "src-s-rule-sp-19"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-copy-seal/rule-sp-20",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L318",
+      "sourceText": "| SP-20 | 学校要求工作人员现场密封 | 发现申请人提前封口且无法核清单 | 提示重新现场封装 | 仅学校有明确规定时；EX06 | 预审 | 其他学校不当然禁止提前封口 |",
+      "sourceId": "src-s-rule-sp-20"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule/rule-sp-21",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L322",
+      "sourceText": "| SP-21 | 主管部门节点尚未走到 | 区分未到期节点与已要求完成的前置节点 | 不提前认定缺签 | 按学校/事项/阶段配置；EX02;EX03 | 预审 | 提交之初学校公章缺失是正常状态 |",
+      "sourceId": "src-s-rule-sp-21"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule/rule-sp-22",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L323",
+      "sourceText": "| SP-22 | 校规明确审批层级而实际缺少已到的前置节点 | 核当前节点是否已授权/签字及权限 | 材料程序待补/转审批 | 仅适用审批链；CD01;EX02;EX03 | 预审 | 不能对所有申请一律要求校领导 |",
+      "sourceId": "src-s-rule-sp-22"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule/rule-sp-23",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L324",
+      "sourceText": "| SP-23 | 印章名称与落款不匹配 | 比对拟盖章单位名、印章类型和文书落款 | 疑似越权或形式冲突→核查 | 按对应学校印章管理办法；EX03;EX07 | 预审 | 有合法联合用印/受权情形则需按规则处理 |",
+      "sourceId": "src-s-rule-sp-23"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-post-approval/rule-sp-24",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L328",
+      "sourceText": "| SP-24 | 批准版本与执行版本均可取 | 关键事实、正文、页表、签署栏发生实质差异 | 实质变更→重新批准/人工核 | 西安交大明确，建议抽象核心能力；EX01 | 执行前 | 同一文书无害格式重排不能机械按哈希差异拒绝 |",
+      "sourceId": "src-s-rule-sp-24"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-post-approval/rule-sp-25",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L329",
+      "sourceText": "| SP-25 | 只有文件哈希变化，正文语义一致 | 区分重导出、盖电子章产生的预期字节变化 | 需语义对比，不直接判换稿 | 设计解释，不能以哈希作为唯一结论；EX01 | 执行前 | 批准后实体章操作会自然改变PDF字节 |",
+      "sourceId": "src-s-rule-sp-25"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule/rule-sp-26",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L333",
+      "sourceText": "| SP-26 | 申请或审批尚未完成 | 不得要求已经盖章的成果、监印记录 | 输出预审/待审批，不输出用印完成 | 阶段性规则；CD01;EX01 | 申请/审批中 | 已盖章文件作为其他前序用印证明的例外 |",
+      "sourceId": "src-s-rule-sp-26"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-post-approval/rule-sp-27",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L334",
+      "sourceText": "| SP-27 | 完成用印后状态回写 | 根据有权印章系统/人工记录确认 | 记录已用印；否则状态未知 | 实际出件须来自可信履历；EX03;EX07 | 执行后 | 图片识别“有红章”不等于验章通过 |",
+      "sourceId": "src-s-rule-sp-27"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule-form/rule-sp-28",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L338",
+      "sourceText": "| SP-28 | 申请正文几乎全部空白 | 识别完全空白实质文件 vs 待机关签章位 | 建议补齐文书正文或人工判断 | 有学校明确禁止空白用印；EX03;EX07 | 预审 | 已填完的制式文书仅学校意见栏空白属于正常 |",
+      "sourceId": "src-s-rule-sp-28"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-rule/rule-sp-29",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L342",
+      "sourceText": "| SP-29 | 校本表单未获取或官网旧版本 | 标记规则来源/版本不确定 | 待确认，不能自动判拒 | 成都理工CD02原表未取得；CD02 | 预审 | 不因接口未建而禁止通用规则设计 |",
+      "sourceId": "src-s-rule-sp-29"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s0-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L3",
+      "sourceText": "> **模板标准中文名称**：专项证明与用印审核 > > **模板类型**：高校材料审核／用印前预审／阶段性权限与执行核验；**一个模板，多种组合条件分支**。 > > **文档性质**：供模板编辑器建模、审核规则配置、后续实施与审计使用的**单文件业务模板规范**。这份文件不是成都理工大学现行校规的完整复刻，也不是已经部署的机器可执行规则包。 > > **",
+      "sourceId": "src-s-narrative-s0-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s1-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L55",
+      "sourceText": "**组合方式**：同一案例允许选择若干动作，例如“中文成绩单译文核对 + 复印件一致性 + 密封 + 骑缝章”；动作可以组合，但各动作的核验结论和授权**互不继承**。 - 标准可信成绩单、在读/在职事实证明的**普通自助下载或打印**，不应额外制造上传材料审批。 - 合同、采购、财务凭证、科研项目等**实质审查与授权**；仅在相应主业务完成后，允许处理本模",
+      "sourceId": "src-s-narrative-s1-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s2-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L67",
+      "sourceText": "**区分**：`通用`表示其他高校审核模板可能复用的基础模块，`专项`表示本用印模板特有的字段与业务规则，`条件复用`表示只有需要该类动作的模板才安装。此分类是**编辑器设计建议**，不是来源文件里已有的程序架构。 1. **可重复实例**：一个申请可以含多份`DocumentItem`，每份有多个`SealItem`；模块支持数组/实例级绑定，而非所有字段",
+      "sourceId": "src-s-narrative-s2-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s3-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L116",
+      "sourceText": "- **对象完整性（运行层）**：能识别业务和一份可审核的正文、申请主体、学校上下文等，否则无法开展相应审查；不等于学校要求用户额外上传证件影像。 - **学校正式要求（制度层）**：经学校制度、适用事项及版本确认后，才将所需签字、附件、译件资质、印章等设为可强制补正的条件。 - **阶段到期（流程层）**：签章人尚未轮到的栏目、尚未完成的用印或现场封装，在",
+      "sourceId": "src-s-narrative-s3-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s4-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L151",
+      "sourceText": "**用户或文档来源**：用户填写的目的、申请说明、拟印正文、上传附件、扫描件及其OCR结果。它们是**待审核事实或待验材料**，不能作为学校已经批准的证明。 **学校可信系统来源**：登录身份、学籍/任职/奖惩等业务事实接口、正式章权清单、OA审批事件及批准版本、已执行用印日志、受控人工核验记录。这些由可信后端适配器获取，必须记录来源身份、访问权限、时间和数",
+      "sourceId": "src-s-narrative-s4-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s5-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L179",
+      "sourceText": "**阅读说明**：下表忠实保留现有51项字段含义、触发情形、候选要求性质、输入证据、核验目标、办理阶段及合理例外。`必需`仅指在其描述的情形及适用学校规则生效时需要该审核事实，**不等于每条都要求用户上传文件**。字段编号是本项目追溯标识，未成为生产编辑器字段ID。 - `F01—F17`是定位和主体相关的字段族，但各项`trigger`并不一致；例如是否为",
+      "sourceId": "src-s-narrative-s5-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s6-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L263",
+      "sourceText": "在每条`SP-xx`被用作某校**强制补正、违规结论、拒回**之前，必须检查： 1. 该规则**是否触发**（适用业务、材料类型、动作及当前阶段），未触发即`NOT_APPLICABLE`。 2. 是否存在**学校/签发部门现行有效的制度或经授权的规则配置**；只有外校实例的，针对成都理工仅能给出候选检查建议，不能强制否决。 3. 特定字段是否**已到应填或",
+      "sourceId": "src-s-narrative-s6-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s7-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L371",
+      "sourceText": "**注意**：这是一条正常办理的**参考正向路径**，并非生产系统全部状态图。退回补正、取消、部分用印、审批撤销、授权失效、审批后重新递交，须由校内OA配置合法的回退/重新审批迁移；模型不能只靠更改`stage`字段跨越节点。 - 每条OA流程事件必须具有唯一事件标识、case归属、签发服务来源、前后阶段、操作人角色与权限、发生时间及生效/撤销状态。 - 事",
+      "sourceId": "src-s-narrative-s7-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s8-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L392",
+      "sourceText": "对每一项批准，明确记录：`case_id`、可信审批事件ID、受控文书ID、批准时文书版本或完整快照、批准时关键正文/附件、文书用途、收件对象（若适用）、应使用的章种及签发机构、批准份数、批准期限、批准操作者及角色。 - **不可只批准一个文件名**：同名不同正文的文件不共享批准结论。 - **不可只批准整个申请单**：一个申请包含多份不同证明时，未在批准范",
+      "sourceId": "src-s-narrative-s8-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s9-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L450",
+      "sourceText": "一条`Issue`应能够回答： - `rule_id`（例如SP-24）与是否已正式激活；`policy_id`、签发学校、部门、版次、生效区间；当前办理阶段。 - 触发了什么条件，在哪份文书／哪一页／哪一区域／哪个字段观察到了什么。 - 哪个系统或附件支持观察值，信任状态为何；与哪个批准快照或权威记录比对。 - 发现的是缺件、实质冲突、未知、权限不足还是未",
+      "sourceId": "src-s-narrative-s9-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s10-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L478",
+      "sourceText": "匹配规则包必须至少考虑**签发学校、主管部门、办理事项、申请者身份/角色、处理动作集、当前办理阶段、有效制度版本及时间**（最后一组同时校验时间范围）。候选规则先核授权来源与生效区间，再做**唯一性匹配**；无命中、两个互不兼容的命中或已过期，一律`HOLD_POLICY`。不通过任意“最新文件优先”或“谁要求更严格”进行自动覆盖。 **签发方权限**与**",
+      "sourceId": "src-s-narrative-s10-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s11-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L494",
+      "sourceText": "> 以下为**合成案例**，不代表成都理工大学2026年规则，也不包含学校真实公章。目的只是展示各模块如何装配，不向材料内写入“这里有错误/预期拒绝”等答案提示。 **申请目标**：学生请求英文奖学金证明、对应中文凭据、两份学校行政用印文件，并将文件由有权人员密封后盖信封封口章。 **动作与模块**：`FACT_PROOF` → `TRANSLATION_C",
+      "sourceId": "src-s-narrative-s11-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s12-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L531",
+      "sourceText": "---",
+      "sourceId": "src-s-narrative-s12-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s13-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L537",
+      "sourceText": "已有**51个候选字段、29条条件规则、19项设计/接入问题**；v1.2离线参考审核器有**70项预设断言**，后续为11条此前缺专项测试的规则增加**33项逐条断言及5项组合断言**，合计**108项结构化参考断言**。另外已构造**38个合成案例、231份图像型PDF**作为可送解析器的试验输入；金标答案与申请材料分离。 **它们不是**真实OCR准确",
+      "sourceId": "src-s-narrative-s13-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s14-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L578",
+      "sourceText": "---",
+      "sourceId": "src-s-narrative-s14-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s15-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L582",
+      "sourceText": "下表只是**风险闭环映射**：`设计约束已定义`不意味着真实学校环境已经接入、通过安全验收。尤其B17—B19属于实施前核实事项。",
+      "sourceId": "src-s-narrative-s15-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s16-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L606",
+      "sourceText": "> 本文仅按已有第一、二阶段核实记录引用官方来源，没有把其他学校细则重解释为成都理工强制条款，也没有声称现在已取得2025版用印批办单具体原文。以下网址是业务要求与差异的原始核对入口；生产部署前须再次校验现行性。 **另有第一阶段扩展参考（用于识别边界、非本模板硬规则）**： - 成都理工大学科研业务的材料版本一致性实例：<https://kjc.cdut.",
+      "sourceId": "src-s-narrative-s16-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-narrative/narrative-s17-p1",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L628",
+      "sourceText": "下表不是另外设立模板，而是帮助研发阶段确认**共性模块切分边界**： **优先实现的共性能力**：模板身份/版本、字段条件表达式、材料对象和证据引用、学校规则包作用域、审核状态/异常输出、受控人工复核。它们可以服务未来多套高校审核模板。 **本模板专项依赖能力**：一单多文书、多章种多份数、阶段性栏目签署、批准快照与送印稿比对、真实章权校验、现场执行记录。若",
+      "sourceId": "src-s-narrative-s17-p1"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-36",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L36-L44",
+      "sourceText": "| 唯一标准名称 | 专项证明与用印审核 | | 核心用户目的 | 为学校、学院或获授权部门将要出具、确认或用印的特定文书，完成其适用阶段的材料和权限预审 | | 核心审核对象 | **某份明确版本的待审文书及其申请事由、客观证据、签批范围、拟用章种和份数**；有多份则逐份审 | | 可申请角色 | 学生、教职工、符合学校规定的校友、单位经办人或经授权受托人",
+      "sourceId": "src-s-supplement-table-36"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-48",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L48-L48",
+      "sourceText": "| 情形/条件分支 | 什么时候触发 | 审核重点 | 不应强制的无关材料 |",
+      "sourceId": "src-s-supplement-table-48"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-50",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L50-L53",
+      "sourceText": "| 非标准事实证明 | 待印文书证明在读、任职、奖励或其他有权部门可核事实，现成电子凭证不满足要求 | 证明内容 ↔ 权威事实 ↔ 出具部门权限 | 没有译文时不要求翻译机构、中文对照表和信封 | | 制式申请材料 | 接收方指定填写申请表、推荐表、就业升学表等，并需要学校的某个节点签字用印 | 当期表版本、当前节点应填栏、前序签批、所需章种 | 申请预审时",
+      "sourceId": "src-s-supplement-table-50"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-69",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L69-L69",
+      "sourceText": "| 模块标识 | 模块名称 | 类别 | 输入 | 输出/规则职责 | 启用时机 |",
+      "sourceId": "src-s-supplement-table-69"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-71",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L71-L88",
+      "sourceText": "| M-01 | 模板身份与版本 | 通用 | 模板名称、业务目的、模板修订号 | 唯一模板定位、兼容标识 | 始终 | | M-02 | 机构规则与适用范围 | 通用 | 学校、部门、角色、事项、动作、阶段、有效期 | 唯一有效规则包／`HOLD_POLICY` | 始终 | | M-03 | 办理主体与授权关系 | 通用 | 申请人、事实主体、受托人、经",
+      "sourceId": "src-s-supplement-table-71"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-105",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L105-L105",
+      "sourceText": "| 轴 | 典型值 | 用途与影响 |",
+      "sourceId": "src-s-supplement-table-105"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-107",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L107-L112",
+      "sourceText": "| 事项 `business_kind` | `FACT_PROOF`（事实证明）、`FORM_DOCUMENT`（制式材料）、由学校授权的其他个人/制式文书 | 决定事实或栏目检查 | | 动作 `actions[]` | `SEAL_DOCUMENT`、`TRANSLATION_CHECK`、`ORIGINAL_COPY_CHECK`、`DOCUMENT",
+      "sourceId": "src-s-supplement-table-107"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-124",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L124-L124",
+      "sourceText": "| 状态（建议） | 可以做什么 | 不能做什么 |",
+      "sourceId": "src-s-supplement-table-124"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-126",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L126-L129",
+      "sourceText": "| `candidate` | 为模板编辑器提供候选审核点、供研发模拟 | 不得因候选规则直接驳回成都理工申请 | | `researched` | 表示查得某校官方资料、保留原文链接、时效及适用范围 | 未获学校配置确认前不可假定现行有效 | | `enforceable` | 经校方/有权配置管理核验正式生效、适用范围唯一，可用于当前阶段条件必需与程序性",
+      "sourceId": "src-s-supplement-table-126"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-136",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L136-L136",
+      "sourceText": "| 对象 | 字段/关系（概念性结构） | 可信来源与约束 |",
+      "sourceId": "src-s-supplement-table-136"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-138",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L138-L147",
+      "sourceText": "| `ReviewCase` | `case_id`、模板名、`school_id`、`matter`、`policy_version`、`business_kind`、`actions[]`、当前阶段、创建时间 | `case_id`与阶段在服务端管理；客户端的学校/版本仅是待核请求 | | `ActorSet` | `requester`、`subjec",
+      "sourceId": "src-s-supplement-table-138"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-161",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L161-L171",
+      "sourceText": "| `id`、`semantic_key` | 稳定引用与规则间跨版本迁移 | 字段与规则 | | `label`、`help_text`、`input_type` | 表单渲染与解释 | 字段 | | `scope`、`visible_when`、`required_when` | 控制显示与条件必需 | 字段/分支 | | `required_at_st",
+      "sourceId": "src-s-supplement-table-161"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-181",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L181-L181",
+      "sourceText": "| 字段ID及名称 | 触发条件 | 候选性质/取证线索 | 要核的关系 | 阶段 | 来源 | 例外与限制 |",
+      "sourceId": "src-s-supplement-table-181"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-183",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L183-L199",
+      "sourceText": "| F01 所属学校/适用校规版本 | 所有申请 | 核验上下文必需；统一入口的学校代码、制度生效区间 | 确定具体规则是否适用 | 入口/预审 | CD02;EX01 | 未找到有效版本→待校内确认，不得套其他学校规则 | | F02 办理阶段 | 所有申请 | 核验上下文必需；发起、预审、部门审批、获批待用印、执行后 | 阶段决定哪些签字/章/附件此时必",
+      "sourceId": "src-s-supplement-table-183"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-201",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L201-L201",
+      "sourceText": "| 字段ID及名称 | 触发条件 | 候选性质/取证线索 | 要核的关系 | 阶段 | 来源 | 例外与限制 |",
+      "sourceId": "src-s-supplement-table-201"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-203",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L203-L206",
+      "sourceText": "| F18 需证明的事实类别 | 业务=非标准事实证明 | 条件必需；在读/在职/任职/获奖/学业等 | 只激活与这一事实相关的数据核对 | 预审 | EX01;CD01 | 特殊事实不等于学校有权证明 | | F19 事实发生时间/身份有效期 | 正文含时点或区间 | 条件必需；起止时间、获奖年度、学籍状态时点 | 文书的时点与权威数据一致 | 预审 | ",
+      "sourceId": "src-s-supplement-table-203"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-208",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L208-L208",
+      "sourceText": "| 字段ID及名称 | 触发条件 | 候选性质/取证线索 | 要核的关系 | 阶段 | 来源 | 例外与限制 |",
+      "sourceId": "src-s-supplement-table-208"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-210",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L210-L214",
+      "sourceText": "| F22 受文方当期表格版本 | 业务=制式材料 | 条件必需；申报通知、指定表格文件/版本 | 判断申请人是否使用目标批次与接收方模板 | 预审 | EX01;EX03 | 若无官方指定版本，不应强制套旧表 | | F23 申请人应填写的正文栏目 | 业务=制式材料 | 条件必需；姓名、学校、专业、资格类别等 | 仅检查当前节点应填且可客观验证的栏目 |",
+      "sourceId": "src-s-supplement-table-210"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-216",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L216-L216",
+      "sourceText": "| 字段ID及名称 | 触发条件 | 候选性质/取证线索 | 要核的关系 | 阶段 | 来源 | 例外与限制 |",
+      "sourceId": "src-s-supplement-table-216"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-218",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L218-L226",
+      "sourceText": "| F27 中文原件/可信中文证明 | 动作包括译文核对 | 条件必需；中文成绩单、中文在读/证书及其可信来源 | 中文权威底稿与译文逐项比对 | 预审 | EX04;EX05 | 认可可信电子件还是必须纸质原件按校配置 | | F28 译文或待盖章外文材料 | 动作包括译文核对 | 条件必需；外文正文、英文成绩、证书译稿 | 按中文事实核对，不根据语气直接",
+      "sourceId": "src-s-supplement-table-218"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-228",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L228-L228",
+      "sourceText": "| 字段ID及名称 | 触发条件 | 候选性质/取证线索 | 要核的关系 | 阶段 | 来源 | 例外与限制 |",
+      "sourceId": "src-s-supplement-table-228"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-230",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L230-L235",
+      "sourceText": "| F36 原件一致性处理标识 | 动作=复印件与原件一致 | 条件必需；申请文件类型与待核对复印件 | 要求做事实上的原复印对照而非另制新证 | 预审 | EX06 | 某些可信电子证件的验真可以替代人工纸件核对 | | F37 证书或材料原件 | 校规要求现场原件核对 | 学校条件必需；毕业证/学位证等原件或可验证的电子原件 | 人工/可信验真确认复印件",
+      "sourceId": "src-s-supplement-table-230"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-237",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L237-L237",
+      "sourceText": "| 字段ID及名称 | 触发条件 | 候选性质/取证线索 | 要核的关系 | 阶段 | 来源 | 例外与限制 |",
+      "sourceId": "src-s-supplement-table-237"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-239",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L239-L248",
+      "sourceText": "| F42 责任教师/项目负责人 | 特定学校材料类型需要该角色 | 学校条件必需；负责人身份与联系方式、在职状态 | 人员与业务管理权限匹配 | 审批前 | EX02 | 该校规定不能全局应用到CDUT | | F43 申请单位负责人审核 | 校规要求所在单位先审批 | 学校条件必需；单位责任人、审核意见与时间 | 本次事项授权链起始节点完成 | 审批中 ",
+      "sourceId": "src-s-supplement-table-239"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-361",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L361-L361",
+      "sourceText": "| 阶段 | 最重要的输入 | 当期允许检查 | 不得要求的未来证据 | 阶段结束的正确语义 |",
+      "sourceId": "src-s-supplement-table-361"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-363",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L363-L369",
+      "sourceText": "| `INTAKE` 入口 | 申请目的、主体关系、办理动作、文书类别 | 识别自助/越界业务、校方办理权限、规则版本 | 获批稿、已经盖章或封口 | 分流／进入预审／待校规确认 | | `PRECHECK` 材料预审 | 待审文书、申办事实与附件、条件分支 | 当前应填字段、事实一致性、代办、译文与拟封清单 | 未轮到的组织签字、现场核原件、用印完成日志 ",
+      "sourceId": "src-s-supplement-table-363"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-420",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L420-L420",
+      "sourceText": "| 局部状态 | 含义 | 典型处理 |",
+      "sourceId": "src-s-supplement-table-420"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-422",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L422-L427",
+      "sourceText": "| `NOT_APPLICABLE` | 条件未触发、不属于此业务/阶段 | 不要求材料，不视为缺件 | | `SATISFIED` | 在适用、当前到期和可信证据条件下核验满足 | 保留依据与证据位置 | | `MISSING_REQUIRED` | 该校正式适用且当前应提供的材料缺失 | `NEED_CORRECTION` | | `CONTRADICT",
+      "sourceId": "src-s-supplement-table-422"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-431",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L431-L431",
+      "sourceText": "| 下一动作 | 何时选用 | 核心防误判 |",
+      "sourceId": "src-s-supplement-table-431"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-433",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L433-L446",
+      "sourceText": "| `ROUTE_SELF_SERVICE` | 可直接从可信学校服务取得符合用途的成品，且无额外用印要求 | 自助可用前先核用途和可使用范围 | | `ROUTE_OUT` | 合同/财务/科研实质审批、组织政审等已超出本模板 | 不是“材料审核拒绝” | | `HOLD_POLICY` | 找不到唯一有效规则包；规则已过期或互相冲突 | 不能默认套外校规",
+      "sourceId": "src-s-supplement-table-433"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-500",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L500-L500",
+      "sourceText": "| 步骤 | 观察或事实 | 模板应当做的事 | 不可提前做的事 |",
+      "sourceId": "src-s-supplement-table-500"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-502",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L502-L509",
+      "sourceText": "| 1. 受理 | 申请人声明就读学校、具体证明用途、需要英文和密封 | 确定唯一合法规则包，查有无现成可满足需求的可信英文证明 | 未确认学校具体规则就设专业翻译公司必交 | | 2. 取证 | 中文可信记录显示某学年奖学金，与英文稿学年不符 | 通过SP-08、SP-13、SP-14定位不同字段，提示补正 | 把不一致直接指控为“造假” | | 3. 修",
+      "sourceId": "src-s-supplement-table-502"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-515",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L515-L515",
+      "sourceText": "| 异常/例外 | 应如何处理 | 为什么不能一刀切 |",
+      "sourceId": "src-s-supplement-table-515"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-517",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L517-L529",
+      "sourceText": "| 学校可自助获取现成证明，但接收方还要求另行密封 | 不强制分流；判断额外用印/密封是否合法必要 | 自助证明不能替代全部动作 | | 申请人为单位经办而非证明主体 | 先核是否有单位授权和适用代理范围 | 不一定是个人委托书，也不能假定本人可直接审批 | | 本人应填栏完整，学校以后盖章栏空白 | `WAIT_FUTURE_STAGE`；不能按缺件拒绝 ",
+      "sourceId": "src-s-supplement-table-517"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-543",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L543-L543",
+      "sourceText": "| 层次 | 输入 | 评估重点 | 当前状态 |",
+      "sourceId": "src-s-supplement-table-543"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-545",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L545-L549",
+      "sourceText": "| 规则结构一致性 | 已抽取好的结构化事实/虚构规则包 | 触发、适用、不适用、局部状态、整体动作 | 已有离线参考断言，不是外部盲测 | | 文件解析层 | 原始扫描图片、PDF、制式表及译文 | OCR/表格/文本定位与跨页对应 | 已有合成文件，实际系统OCR效果未验收 | | 规则解释与审核层 | 来自解析器的客观证据 + 学校适用规则 | 模型是",
+      "sourceId": "src-s-supplement-table-545"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-568",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L568-L568",
+      "sourceText": "| 类别 | 当前缺少什么 | 对编辑器的要求 | 对实际审核的影响 |",
+      "sourceId": "src-s-supplement-table-568"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-570",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L570-L576",
+      "sourceText": "| 成都理工校级用印申请 | 《用印批办单2025》原件、相关OA字段及审批流程 | 允许补充学校专属字段/审批节点，不另建模板 | 暂不能启用相关本校强制条件 | | 签章权限 | 校级、院级、党委/行政/教务等章权及代理授权 | 支持按学校、部门、业务事项绑定章种 | 未核章权不能自动放行 | | 事实权威源 | 学籍、任职、奖项、历史材料及其访问权限 ",
+      "sourceId": "src-s-supplement-table-570"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-583",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L583-L583",
+      "sourceText": "| 审计ID | 严重度 | 问题 | 对应本模板设计措施 | 真实接入限制 |",
+      "sourceId": "src-s-supplement-table-583"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-585",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L585-L603",
+      "sourceText": "| B01 | 阻断上线 | 缺乏确定性规则包选择器 | 先以签发学校/单位、材料类别、处理动作、申请主体、阶段、制度版本七键解析；无法唯一选出规则则HOLD_POLICY | pending_authenticated_real_adapter_and_OA/institution_integration | | B02 | 阻断上线 | 缺乏受保护的审批",
+      "sourceId": "src-s-supplement-table-585"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-607",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L607-L607",
+      "sourceText": "| 索引 | 学校与来源 | 支持什么 | 网页 |",
+      "sourceId": "src-s-supplement-table-607"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-609",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L609-L617",
+      "sourceText": "| CD01 | 成都理工大学｜2021 教务处印章用印流程 | 本科常规证明自助、其他材料主管审核、出国材料密封、登记 | [CD01](https://aao.cdut.edu.cn/info/1224/3633.htm) | | CD02 | 成都理工大学｜党政办公室下载专区：用印批办单2025及OA教程 | 仅证实附件/教程目录，未见可核对原表字段 ",
+      "sourceId": "src-s-supplement-table-609"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-630",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L630-L630",
+      "sourceText": "| 候选共性能力 | 为什么值得抽象 | 哪些一定不能共享成一个结论 |",
+      "sourceId": "src-s-supplement-table-630"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-supplement/supplement-table-632",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L632-L640",
+      "sourceText": "| 条件字段显示与强制性 | 几乎所有材料审核都有“特定角色/事项才需要某项材料” | 必交材料不能在不同学校直接继承 | | 证据引用与跨文书一致性 | OCR/表格/图片及可信系统字段可以复用解析与定位 | “内容一致”不等于事实真实，也不等于审批被授权 | | 学校规则包适用性选择 | 同一审核目的随学校和版本变化 | 不能依据“严格程度”合并冲突规则",
+      "sourceId": "src-s-supplement-table-632"
+    },
+    {
+      "id": "g01-special-proof-seal@1:module/use-g01-s-case-boundary/scope",
+      "sourceAnchor": "G01_special_proof_seal_review_template_v1.4.md:L1",
+      "sourceText": "完整业务审核模板，不是正式行政审批",
+      "sourceId": "src-s-boundary"
+    }
+  ]
+}
