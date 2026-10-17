@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "G07-T01-C-author-E0-r01-recovery",
+  "templateId": "G07-T01",
+  "businessName": "活动、竞赛与科研直接费用报销预审",
+  "repo": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "archiveBranch": "author/g07-t01-c-e0-recovery-r01",
+  "baseCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+  "recoveredContentCommit": "5359d93670339bc5cfb379b9e67ffc40da12b3fa",
+  "originalAuthorCommit": "NOT_AVAILABLE",
+  "auditRef": "audit/g07-e-v1-r01@ccbf9bd6b16c9472bb35b03cd8b676d87c6cd6ab",
+  "auditOriginalDecision": "BLOCKED_INPUT",
+  "cAuthorMaturity": "BUSINESS_MD_DRAFT_WITH_GAPS",
+  "canonicalBusinessVersion": "v0.1",
+  "layoutOnlyVersion": "v0.1.1",
+  "rules": {
+    "first": "R-01",
+    "last": "R-32",
+    "count": 32
+  },
+  "verifiedOldZipSHA256": "3affab48b2ccf61040056455754c4e7830aa246810495375fd725d99719d05c4",
+  "verifiedMigrationZipSHA256": "fa82cff4d40d1db1a8d35bed93bb5f8eb435b0055245768cd2069cfb20f639df",
+  "files": [
+    {
+      "path": "originals/G07-T01_正式业务模板_MD_v0.1.md",
+      "sha256": "392e63fd9d7e7da3926325682db65007daff44cc04e736791b1cabf065efdf2d"
+    },
+    {
+      "path": "originals/G07-T01_规则追踪矩阵.md",
+      "sha256": "03611e2c4d5bd90f0210dcf2554d359a47b67dcc45f4a88e50f60b69dd80286c"
+    },
+    {
+      "path": "originals/G07-T01_作者自检与问题修订记录.md",
+      "sha256": "6565946270f9b5876751e4db07c454214adeb73fe2d68361c834dc6cd7858dd9"
+    },
+    {
+      "path": "originals/G07-T01_编辑器共性模块候选.md",
+      "sha256": "0682d2bf73f42079bff56fe72147c07e7e1cd557310419e7c6e00ca12b088643"
+    },
+    {
+      "path": "originals/G07-T01_测试对接说明.md",
+      "sha256": "d572ba184708b1484751c72e7d69428dc0468a04b2c998653d8addcbabc772f0"
+    },
+    {
+      "path": "G07-T01_验收对接说明.md",
+      "sha256": "bb60b208d5a711eca25cc188094b4ddd790b6d502204bd9e78ef67dafb698129"
+    },
+    {
+      "path": "migration/G07-T01_Cv2.1_迁移核验报告.md",
+      "sha256": "a2206df8f9159f736798a942af45e536d1894816d3d742d4e8801d21ef4e61e8"
+    },
+    {
+      "path": "layout_fix/G07-T01_正式业务模板_MD_v0.1.1_仅表格排版修补.md",
+      "sha256": "39cdd8f00efb51fd54ea1dc728fb1bde924f084f459b6a40d37dd2cafc312def"
+    },
+    {
+      "path": "upstream/B-v0.2/G07-T01_00_独立业务深调研.md",
+      "sha256": "bd47dabc15cbd5eeb78211c15f4bff4555f52544e1dd7645c5fc4cc8bd2735f1"
+    },
+    {
+      "path": "upstream/B-v0.2/G07-T01_01_办理情景与条件轴.md",
+      "sha256": "bc6880573d5d8e90f4edf91c4d837225c1494cea27a922b4f8beb9f1710b3561"
+    },
+    {
+      "path": "upstream/B-v0.2/G07-T01_02_字段材料证据矩阵.md",
+      "sha256": "bddcb577c4d3bf3e394e811cd5a5df75fb554089f70bef31882c13fe768c0da7"
+    },
+    {
+      "path": "upstream/B-v0.2/G07-T01_02_字段字典.csv",
+      "sha256": "df9236f11eb157410fc5e8ae86054fff205dc61e25a6c4fe755741b1d9c96ca7"
+    },
+    {
+      "path": "upstream/B-v0.2/G07-T01_02_字段材料证据矩阵.csv",
+      "sha256": "bfdb73fdfa71ccc7b3984a643e1ac509fb613bd54c270998bc9b40289fbcaef5"
+    },
+    {
+      "path": "upstream/B-v0.2/G07-T01_03_候选审核规则与权限边界.md",
+      "sha256": "892dd7c9c39339238db773c86e16d88890385d6831f6f28c48517d44944d42cd"
+    },
+    {
+      "path": "upstream/B-v0.2/G07-T01_04_官方来源与差异登记.md",
+      "sha256": "017b71753c4a48ad1d9692a3baa62e30acb7daeec989f950dbdbc177c624fbc7"
+    },
+    {
+      "path": "upstream/B-v0.2/G07-T01_05_缺口及质量自审.md",
+      "sha256": "61b8c1ad0e353965b0cbd2d153766ceba79b59c6dcf5effe3244f3efd1f2f3a2"
+    },
+    {
+      "path": "upstream/B-v0.2/G07-T01_06_C与D双向交接卡.md",
+      "sha256": "47654652620979286f03a729535b7f6a2411debb7d93a292bff3f8782015caf4"
+    },
+    {
+      "path": "upstream/B-v0.2/G07-T01_07_校本二轮补查与规则增量.md",
+      "sha256": "5ba9e3b338eb8e7c54151c4029bd564f6a82298c24d27e2f3822e0bff8121933"
+    },
+    {
+      "path": "upstream/A-v0.2/G07_00_领域总论.md",
+      "sha256": "8de7546f98cf43b768701bba0e5d909345f4249e53cf760338eda4d6cda48639"
+    },
+    {
+      "path": "upstream/A-v0.2/G07_01_候选事项处置矩阵.md",
+      "sha256": "4d6f4f90cd6a42370bd1c26eb939a87ffb1b185731815fed9a9ea8be9150a2a5"
+    },
+    {
+      "path": "upstream/A-v0.2/G07_02_统一模板目录与边界.md",
+      "sha256": "64a771d60e7ea68a040c4d7fd551c246bf3cd123e0ca60a8f7d9d4ea245ee4c4"
+    },
+    {
+      "path": "upstream/A-v0.2/G07_03_来源索引.md",
+      "sha256": "17583564d18b1561b05ce6fd9104df86e132b6d34047ca78f85d1af75f8b3245"
+    },
+    {
+      "path": "upstream/A-v0.2/G07_05_缺口与争议.md",
+      "sha256": "842364f2c2b96903bb54bc0213d29080552b299cd84532e595dc25fedaac75e8"
+    },
+    {
+      "path": "upstream/A-v0.2/G07_06_领域审计与阶段结论.md",
+      "sha256": "27cfd3dfe0d7c0a3de803b69d2437f9b9adc01850958fd9df54e5d855e951043"
+    },
+    {
+      "path": "upstream/A-v0.2/G07_07_成都理工大学校本规则专项核验.md",
+      "sha256": "2bbad8fd845cf22ab3029c683ad760c86c6847f4d9c56cbf34fc1099e9e1f70f"
+    },
+    {
+      "path": "upstream/A-v0.2/G07-T01_研究交接卡.md",
+      "sha256": "57cd69a8b00a3abc810044d9aaf7af929e76b00a7f50075f062e9f279f465ce6"
+    }
+  ],
+  "sourcePending": [
+    "2026智能报销角色及审批权限",
+    "无票报销现行强制校规原文",
+    "财务台账与税票查验授权接口"
+  ],
+  "isolation": {
+    "thisCContainsHiddenGold": false,
+    "thisCModifiedD": false,
+    "DGoldStorageACL": "UNVERIFIED_BY_C"
+  },
+  "status": "C_T01_INPUT_RECOVERED_PENDING_INDEPENDENT_E0_R02",
+  "restDomainE0DecisionUnchanged": "BLOCKED_INPUT"
+}
