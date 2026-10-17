@@ -440,49 +440,147 @@
       "notes": "含章节合同统一状态、分项结果、问题码与聚合算法、合法例外与禁止自动化判断、校本profile及强制规则生效配置;详细所有稳定 F/M/BR/EV/ST ID 另见 ID 目录"
     },
     {
-      "sourceId": "AXIS-single",
-      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#条件分支",
-      "moduleId": "g05-t05-axis-single",
+      "sourceId": "BR-02",
+      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#L58",
+      "moduleId": "g05-t05-axis-br02",
       "taskId": "scope",
-      "checkId": "g05-t05@1:module/axis-single/scope",
-      "status": "implemented-not-tested",
-      "notes": "具体条件原文分类请见完整C MD；选择值来自合成测试审核人"
+      "checkId": "g05-t05@1:module/axis-br02/scope",
+      "targetBusinessType": [
+        "g05-t05-visitor",
+        "g05-t05-visit"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "notes": "完整BR多值/互斥/叠加规则保存在局部语义任务；COMMON处理三值适用与实例边界"
     },
     {
-      "sourceId": "AXIS-delegation",
-      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#条件分支",
-      "moduleId": "g05-t05-axis-delegation",
+      "sourceId": "BR-03",
+      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#L59",
+      "moduleId": "g05-t05-axis-br03",
       "taskId": "scope",
-      "checkId": "g05-t05@1:module/axis-delegation/scope",
-      "status": "implemented-not-tested",
-      "notes": "具体条件原文分类请见完整C MD；选择值来自合成测试审核人"
+      "checkId": "g05-t05@1:module/axis-br03/scope",
+      "targetBusinessType": [
+        "g05-t05-visitor",
+        "g05-t05-visit"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "notes": "完整BR多值/互斥/叠加规则保存在局部语义任务；COMMON处理三值适用与实例边界"
     },
     {
-      "sourceId": "AXIS-field-research",
-      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#条件分支",
-      "moduleId": "g05-t05-axis-field-research",
+      "sourceId": "BR-04",
+      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#L60",
+      "moduleId": "g05-t05-axis-br04",
       "taskId": "scope",
-      "checkId": "g05-t05@1:module/axis-field-research/scope",
-      "status": "implemented-not-tested",
-      "notes": "具体条件原文分类请见完整C MD；选择值来自合成测试审核人"
+      "checkId": "g05-t05@1:module/axis-br04/scope",
+      "targetBusinessType": [
+        "g05-t05-visitor",
+        "g05-t05-visit"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "notes": "完整BR多值/互斥/叠加规则保存在局部语义任务；COMMON处理三值适用与实例边界"
     },
     {
-      "sourceId": "AXIS-special-risk",
-      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#条件分支",
-      "moduleId": "g05-t05-axis-special-risk",
+      "sourceId": "BR-05",
+      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#L61",
+      "moduleId": "g05-t05-axis-br05",
       "taskId": "scope",
-      "checkId": "g05-t05@1:module/axis-special-risk/scope",
-      "status": "implemented-not-tested",
-      "notes": "具体条件原文分类请见完整C MD；选择值来自合成测试审核人"
+      "checkId": "g05-t05@1:module/axis-br05/scope",
+      "targetBusinessType": [
+        "g05-t05-visitor",
+        "g05-t05-visit"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "notes": "完整BR多值/互斥/叠加规则保存在局部语义任务；COMMON处理三值适用与实例边界"
     },
     {
-      "sourceId": "AXIS-amended",
-      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#条件分支",
-      "moduleId": "g05-t05-axis-amended",
+      "sourceId": "BR-06",
+      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#L62",
+      "moduleId": "g05-t05-axis-br06",
       "taskId": "scope",
-      "checkId": "g05-t05@1:module/axis-amended/scope",
-      "status": "implemented-not-tested",
-      "notes": "具体条件原文分类请见完整C MD；选择值来自合成测试审核人"
+      "checkId": "g05-t05@1:module/axis-br06/scope",
+      "targetBusinessType": [
+        "g05-t05-visitor",
+        "g05-t05-visit"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "notes": "完整BR多值/互斥/叠加规则保存在局部语义任务；COMMON处理三值适用与实例边界"
+    },
+    {
+      "sourceId": "BR-07",
+      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#L63",
+      "moduleId": "g05-t05-axis-br07",
+      "taskId": "scope",
+      "checkId": "g05-t05@1:module/axis-br07/scope",
+      "targetBusinessType": [
+        "g05-t05-visitor",
+        "g05-t05-visit"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "notes": "完整BR多值/互斥/叠加规则保存在局部语义任务；COMMON处理三值适用与实例边界"
+    },
+    {
+      "sourceId": "BR-08",
+      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#L64",
+      "moduleId": "g05-t05-axis-br08",
+      "taskId": "scope",
+      "checkId": "g05-t05@1:module/axis-br08/scope",
+      "targetBusinessType": [
+        "g05-t05-visitor",
+        "g05-t05-visit"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "notes": "完整BR多值/互斥/叠加规则保存在局部语义任务；COMMON处理三值适用与实例边界"
+    },
+    {
+      "sourceId": "BR-09",
+      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#L65",
+      "moduleId": "g05-t05-axis-br09",
+      "taskId": "scope",
+      "checkId": "g05-t05@1:module/axis-br09/scope",
+      "targetBusinessType": [
+        "g05-t05-visitor",
+        "g05-t05-visit"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "notes": "完整BR多值/互斥/叠加规则保存在局部语义任务；COMMON处理三值适用与实例边界"
+    },
+    {
+      "sourceId": "BR-10",
+      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#L66",
+      "moduleId": "g05-t05-axis-br10",
+      "taskId": "scope",
+      "checkId": "g05-t05@1:module/axis-br10/scope",
+      "targetBusinessType": [
+        "g05-t05-visitor",
+        "g05-t05-visit"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "notes": "完整BR多值/互斥/叠加规则保存在局部语义任务；COMMON处理三值适用与实例边界"
+    },
+    {
+      "sourceId": "BR-11",
+      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#L67",
+      "moduleId": "g05-t05-axis-br11",
+      "taskId": "scope",
+      "checkId": "g05-t05@1:module/axis-br11/scope",
+      "targetBusinessType": [
+        "g05-t05-visitor",
+        "g05-t05-visit"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "notes": "完整BR多值/互斥/叠加规则保存在局部语义任务；COMMON处理三值适用与实例边界"
+    },
+    {
+      "sourceId": "BR-12",
+      "sourceLocator": "G05-T05_正式业务模板_MD_v0.1.md#L68",
+      "moduleId": "g05-t05-axis-br12",
+      "taskId": "scope",
+      "checkId": "g05-t05@1:module/axis-br12/scope",
+      "targetBusinessType": [
+        "g05-t05-visitor",
+        "g05-t05-visit"
+      ],
+      "status": "policy-awaiting-confirmation",
+      "notes": "完整BR多值/互斥/叠加规则保存在局部语义任务；COMMON处理三值适用与实例边界"
     }
   ],
   "nonRuleIds": {

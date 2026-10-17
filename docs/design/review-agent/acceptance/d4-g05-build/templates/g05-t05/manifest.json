@@ -9,10 +9,10 @@
   "selection": "templates/g05-t05/synthetic-selection.json",
   "case": "templates/g05-t05/synthetic-case.json",
   "coverage": "templates/g05-t05/coverage.json",
-  "moduleCount": 16,
-  "moduleUses": 16,
-  "sourceBindingCount": 49,
-  "sourceCount": 41,
+  "moduleCount": 24,
+  "moduleUses": 24,
+  "sourceBindingCount": 57,
+  "sourceCount": 52,
   "rawRuleCount": 38,
   "rawNonRuleIdCount": 157,
   "sharedFrozenModuleReuse": [],
@@ -23,5 +23,25 @@
   "pi": "NOT_RUN",
   "status": "NOT_RUN",
   "policy": "POLICY_HOLD",
-  "gold": "NOT_ACCESSED"
+  "gold": "NOT_ACCESSED",
+  "branchAxes": {
+    "primary": [
+      "single",
+      "delegation"
+    ],
+    "conditions": [
+      "br02",
+      "br03",
+      "br04",
+      "br05",
+      "br06",
+      "br07",
+      "br08",
+      "br09",
+      "br10",
+      "br11",
+      "br12"
+    ]
+  },
+  "branchNote": "BR applicable/unknown is a guard; original multi-value enums remain semantic and current school authority is POLICY_HOLD"
 }
