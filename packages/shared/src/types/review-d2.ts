@@ -51,6 +51,8 @@ export interface D2ScenarioSelection {
   version: number
   /** 有情景的模板必须显式选择，不得把未知默认为 false。 */
   scenario?: string
+  /** Multiple concurrently true synthetic branch axes; explicit, not inferred from caseFields. */
+  scenarios?: string[]
   /** 仅供校园卡等「模块实例无 objectKey」的分支对象绑定。 */
   scenarioObjectKey?: string
   targets: D2TargetBinding[]
@@ -102,6 +104,7 @@ export interface D2RuntimePlan {
   templateId: string
   templateVersion: number
   scenario?: string
+  scenarios?: string[]
   authoringDigest: string
   previewFingerprint: string
   targets: D2TargetBinding[]

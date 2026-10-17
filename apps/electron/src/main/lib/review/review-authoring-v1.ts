@@ -38,7 +38,7 @@ const STRUCTURE_KEYS = {
   source: ['sourceId', 'kind', 'label', 'reference', 'verification', 'applicability', 'note'],
   inlineSource: ['kind', 'note'],
   documentReference: ['documentVersionId', 'locator', 'excerpt'],
-  binding: ['checkId', 'sourceIds', 'applicabilityNote', 'gate', 'studentScope'],
+  binding: ['checkId', 'sourceIds', 'applicabilityNote', 'gate', 'studentScope', 'caseScopeJustification'],
   advanced: ['objectRoleKeys', 'claimKeys', 'evidenceRelations'],
   evidenceRelation: ['claimKey', 'requiredSourceIds'],
 } as const
@@ -86,6 +86,9 @@ export function validateReviewAuthoringV1(workspace: ReviewAuthoringWorkspaceV1)
   for (const link of workspace.sourceBindings) {
     checkKnownFields(link, STRUCTURE_KEYS.binding, link.checkId, issues)
     if (link.gate) issues.push(...validateD2ExecutionGate(link.gate).map(msg => link.checkId + ': ' + msg))
+    if (link.caseScopeJustification !== undefined && (typeof link.caseScopeJustification !== 'string' || link.caseScopeJustification.trim().length < 12 || link.studentScope)) {
+      issues.push(link.checkId + ': D2_STUDENT_CASE_SCOPE_INVALID')
+    }
     if (link.studentScope) {
       const scope = link.studentScope
       checkKnownFields(scope, ['fieldKeys', 'intents', 'enrollmentStatuses'], link.checkId + '.studentScope', issues)

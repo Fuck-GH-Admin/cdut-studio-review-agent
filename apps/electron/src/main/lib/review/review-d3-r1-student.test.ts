@@ -113,7 +113,7 @@ describe('D3-R1 typed G01-I runtime: R0 red-to-green',()=>{
  })
  test('trusted fixture is a separate controlled versioned input, not applicant attestation',()=>{
   const yes=compileD2RuntimePlan(scoped(),chosen(),draft(),trusted())
-  const another=trusted();another.enrollmentStatus='graduated'
+  const another=trusted();another.enrollmentStatus='graduated';another.fields['enrollment-status']='graduated'
   const no=compileD2RuntimePlan(scoped(),chosen(),draft(),another)
   expect(yes.mapping[0]?.applicability).toBe('applicable')
   expect(no.mapping[0]?.applicability).toBe('not-applicable')
@@ -145,6 +145,39 @@ describe('D3-R1 typed G01-I runtime: R0 red-to-green',()=>{
   expect(validateD2GuardSubmission(noEvidence,plan.mapping[0]!,'compliant',[])).toContain('D2_MATERIAL_ALTERNATIVE_UNVERIFIED')
   const third={...plan.mapping[0]!,gate:{...plan.mapping[0]!.gate!,material:{...plan.mapping[0]!.gate!.material!,alternatives:['d2:student:full-name:unrelated-claim']}}}
   expect(validateD2GuardSubmission(a,third,'compliant',['doc-v1'])).toContain('D2_MATERIAL_ALTERNATIVE_UNVERIFIED')
+ })
+ test('multi-axis same-template scenarios preserve independently scoped field checks',()=>{
+  const w=scoped()
+  const template=w.definitions.templates.find(t=>t.templateId==='text-review')!
+  template.scenarios=['legal-name-change','credential-correction']
+  template.modules[0]!.scenario='legal-name-change'
+  template.modules[1]!.scenario='credential-correction'
+  const s=chosen();s.scenarios=['legal-name-change','credential-correction']
+  const both=compileD2RuntimePlan(w,s,draft(),trusted())
+  expect(both.mapping).toHaveLength(2)
+  expect(both.scenarios).toEqual(['legal-name-change','credential-correction'])
+  expect(both.mapping.map(x=>x.subjectId)).toEqual(['student-name-check','student-credential-check'])
+  s.scenarios=['legal-name-change']
+  // A declared target without an applicable branch cannot silently disappear.
+  expect(()=>compileD2RuntimePlan(w,s,draft(),trusted())).toThrow('D2_UNUSED_TARGET')
+  s.scenarios=['unknown']
+  expect(()=>compileD2RuntimePlan(w,s,draft(),trusted())).toThrow('D2_SCENARIO_REQUIRED')
+ })
+ test('student case-level rule cannot bypass the dynamic scope through an unannotated 49-rule fallback',()=>{
+  expect(()=>compileD2RuntimePlan(workspace(),chosen(),draft(),trusted())).toThrow('D2_STUDENT_UNSCOPED_CHECK')
+  const w=scoped()
+  const template=w.definitions.templates.find(t=>t.templateId==='text-review')!
+  template.localTasks.push({id:'policy-verification',title:'policy pending',requirement:'current policy must be checked',completion:'review pending'})
+  w.sourceBindings.push({checkId:'text-review@1:local/policy-verification',sourceIds:['school-policy-unverified']})
+  expect(()=>compileD2RuntimePlan(w,chosen(),draft(),trusted())).toThrow('D2_STUDENT_UNSCOPED_CHECK')
+  w.sourceBindings.at(-1)!.caseScopeJustification='Policy applicability genuinely covers the entire case and remains pending'
+  const plan=compileD2RuntimePlan(w,chosen(),draft(),trusted())
+  expect(plan.mapping).toHaveLength(3)
+  expect(plan.mapping.filter(x=>!x.subjectId)).toHaveLength(1)
+  expect(plan.mapping.find(x=>!x.subjectId)?.authority).toBe('unverified-policy')
+  const bad=w.sourceBindings.at(-1)!
+  bad.caseScopeJustification=''
+  expect(()=>compileD2RuntimePlan(w,chosen(),draft(),trusted())).toThrow('D2_AUTHORING_INVALID')
  })
  test('invalid cross-field evidence alternatives and malformed student targets remain rejected',()=>{
   const bad=scoped();bad.sourceBindings.find(x=>x.checkId==='text-review@1:module/text/structure')!.gate!.material!.alternatives=['d2:student:credential-id:legal-document']

@@ -116,7 +116,8 @@ function validateTrustedSnapshot(snapshot: D2TrustedStudentSnapshotV1 | undefine
       !safe(snapshot.enrollmentStatus) || !snapshot.fields ||
       typeof snapshot.fields !== 'object' || Array.isArray(snapshot.fields) ||
       Object.keys(snapshot.fields).length > 32 ||
-      Object.entries(snapshot.fields).some(([key, value]) => !safe(key) || typeof value !== 'string' || value.length > 200)) {
+      Object.entries(snapshot.fields).some(([key, value]) => !safe(key) || typeof value !== 'string' || value.length > 200) ||
+      (snapshot.fields['enrollment-status'] !== undefined && snapshot.fields['enrollment-status'] !== snapshot.enrollmentStatus)) {
     throw new Error('D2_TRUSTED_SOURCE_INVALID: 仅接受独立受控、现行的合成学籍快照')
   }
 }
@@ -142,15 +143,27 @@ export function compileD2RuntimePlan(
   if (!template || caseV2.templateId !== selection.templateId || caseV2.templateVersion !== selection.version) {
     throw new Error('D2_TEMPLATE_MISMATCH: 案卷模板与作者态不一致')
   }
-  if (template.scenarios?.length && (!selection.scenario || !template.scenarios.includes(selection.scenario))) {
+  const multi = selection.scenarios
+  if (multi !== undefined && (!Array.isArray(multi) || !multi.length || multi.length > 13 ||
+      new Set(multi).size !== multi.length || multi.some(s=>typeof s!=='string'||!safe(s)) || selection.scenario)) {
+    throw new Error('D2_SCENARIOS_INVALID: 复合分支必须显式且不能与旧单分支并存')
+  }
+  const selectedScenarios = multi ?? (selection.scenario ? [selection.scenario] : [])
+  if (template.scenarios?.length && (!selectedScenarios.length ||
+      selectedScenarios.some(s => !template.scenarios!.includes(s)))) {
     throw new Error('D2_SCENARIO_REQUIRED: 未知分支不能当作不适用')
   }
-  if (!template.scenarios?.length && selection.scenario) throw new Error('D2_SCENARIO_INVALID: 无条件模板不接受分支')
+  if (!template.scenarios?.length && selectedScenarios.length) throw new Error('D2_SCENARIO_INVALID: 无条件模板不接受分支')
   if (template.scenarios?.length) {
-    if (!selection.scenarioObjectKey || selection.targets.length !== 1 ||
+    const studentSelection = selection.targets.length > 0 && selection.targets.every(t => t.kind === 'student-field')
+    if (!studentSelection && (!selection.scenario || selection.scenarios ||
+        !selection.scenarioObjectKey || selection.targets.length !== 1 ||
         selection.targets[0]?.kind !== 'campus-card' ||
-        selection.targets[0].objectKey !== selection.scenarioObjectKey) {
-      throw new Error('D2_SCENARIO_SCOPE_REQUIRED: 当前 D2 校园卡分支必须绑定唯一的申请主体，不能降级成整案规则或档案操作')
+        selection.targets[0].objectKey !== selection.scenarioObjectKey)) {
+      throw new Error('D2_SCENARIO_SCOPE_REQUIRED: 校园卡仍须单一主体；学籍多轴须使用实际字段目标')
+    }
+    if (studentSelection && selection.scenarioObjectKey) {
+      throw new Error('D2_SCENARIO_SCOPE_INVALID: 学籍目标不允许伪装校园卡对象键')
     }
   } else if (selection.scenarioObjectKey) {
     throw new Error('D2_SCENARIO_SCOPE_INVALID: 无分支模板不能声明校园卡情景主体')
@@ -164,8 +177,14 @@ export function compileD2RuntimePlan(
   if (studentTargets.length && studentTargets.length!==selection.targets.length) {
     throw new Error('D2_STUDENT_OBJECT_MIXED: 学籍字段审核必须使用一致的对象种类')
   }
-  const preview = previewDemo(toDemo(workspace), selection.templateId, selection.version, selection.scenario)
-  if (preview.blocked || !preview.tasks.length) throw new Error('D2_PREVIEW_BLOCKED: ' + preview.issues.join('；'))
+  const previews=selectedScenarios.length>1 ?
+    selectedScenarios.map(s=>previewDemo(toDemo(workspace), selection.templateId, selection.version, s)) :
+    [previewDemo(toDemo(workspace), selection.templateId, selection.version, selection.scenario)]
+  if(previews.some(v=>v.blocked))throw new Error('D2_PREVIEW_BLOCKED: '+previews.flatMap(v=>v.issues).join('；'))
+  const uniqueTasks=new Map(previews.flatMap(v=>v.tasks).map(task=>[task.checkId,task]))
+  const preview={tasks:[...uniqueTasks.values()],fingerprint:previews.length===1?previews[0]!.fingerprint:
+    sha({scenarios:selectedScenarios,fingerprints:previews.map(v=>v.fingerprint),checks:[...uniqueTasks.keys()]})}
+  if (!preview.tasks.length)throw new Error('D2_PREVIEW_BLOCKED: 无任何已激活责任')
   const registry = new Map(selection.targets.map((target) => [target.objectKey, target]))
   if (selection.scenarioObjectKey && !registry.has(selection.scenarioObjectKey)) {
     throw new Error('D2_SCOPE_MISSING: 分支对象未登记')
@@ -176,8 +195,13 @@ export function compileD2RuntimePlan(
   const usedKeys = new Set<string>()
   // The D1 preview remains an immutable authoring task; D2 expands only explicitly
   // scoped student responsibilities into separate real Pi Check/Subject instances.
+  const hasStudentScope=preview.tasks.some(task=>links.get(selection.templateId+'@'+selection.version+':'+task.checkId)?.studentScope)
+  if(hasStudentScope && !studentTargets.length)throw new Error('D2_STUDENT_SCOPE_REQUIRED: 字段条件责任不能以零学生对象生成整案假成功')
   const expanded=preview.tasks.flatMap(task=>{
     const source=links.get(selection.templateId+'@'+selection.version+':'+task.checkId)
+    if (studentTargets.length && !source?.studentScope && !task.objectKey && !source?.caseScopeJustification) {
+      throw new Error('D2_STUDENT_UNSCOPED_CHECK: 学籍模板责任缺少字段约束或明示整案例外 '+task.checkId)
+    }
     if (!studentTargets.length || !source?.studentScope) return [{task,instanceCheckId:task.checkId,applicability:undefined as D2RuleBinding['applicability']}]
     if(task.objectKey)throw new Error('D2_STUDENT_OBJECT_MIXED: 同一责任不能同时绑定档案键和学生字段')
     return studentTargets.filter(t=>source.studentScope!.fieldKeys.includes(t.fieldKey!)).map(target=>{
@@ -258,6 +282,7 @@ export function compileD2RuntimePlan(
     workspaceId: workspace.workspaceId, revision: workspace.revision,
     templateId: selection.templateId, templateVersion: selection.version,
     ...(selection.scenario ? { scenario: selection.scenario } : {}),
+    ...(selection.scenarios ? { scenarios: [...selection.scenarios] } : {}),
     authoringDigest: sha(workspace), previewFingerprint: preview.fingerprint,
     targets: structuredClone(selection.targets), subjects: selection.targets.map(scopeRef),
     rules, mapping,
