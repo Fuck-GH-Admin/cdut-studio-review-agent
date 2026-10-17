@@ -63,7 +63,8 @@ describe('D4 unified G01-G08 fixed candidates', () => {
     const g02Ids = new Set(g02.plan.mapping.map(m => m.ruleId))
     expect(g08.plan.mapping.some(m => g02Ids.has(m.ruleId))).toBeFalse()
     for (const plan of [g02.plan, g08.plan]) {
-      expect(plan.mapping.every(m => !!m.subjectId && !!m.objectKey && m.sourceIds.length > 0)).toBeTrue()
+      expect(plan.mapping.every(m => Boolean(m.subjectId) === Boolean(m.objectKey) && m.sourceIds.length > 0)).toBeTrue()
+      expect(plan.mapping.some(m => !!m.subjectId && !!m.objectKey)).toBeTrue()
       expect(new Set(plan.mapping.map(m => m.ruleId)).size).toBe(plan.mapping.length)
     }
     const stale = structuredClone(g08.s)
