@@ -26,16 +26,13 @@ links.push({checkId,sourceIds:[sid],applicabilityNote:'三态未知不得按假�
 entries.push({sourceId,locator,technicalCheckId:checkId,moduleId:s.templateId+'-'+name,sourceBinding:sid,evidenceFact:fact,disposition:'implemented-not-tested',policy:'POLICY_HOLD',gate});
 return checkId;}
 const makeTask=(id,title,requirement)=>({id,title,requirement,completion:'逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项',limits:'不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出'});
-const applicants={ '01':4,'02':4,'03':3,'06':1,'07':3,'08':2,'09':8,'10':3,'11':3,'12':3};
-const authorities={'01':15,'02':19,'03':8,'06':3,'07':6,'08':19,'09':29,'10':16,'11':12,'12':14};
-const kind=s.id.slice(-2);
+// No stage/material gate is inferred from a numbered rule alone: school workflow stages
+// must be explicitly proven compatible with the D2 global CaseStage. Until then
+// preserve original due/provider semantics in the complete source task and POLICY_HOLD.
 for(const g of s.groups){const tasks=[];
  for(const rid of g.rules){const n=+rid.slice(2),r=rm.get(n),tid='r'+String(n).padStart(2,'0'),sid='source-'+tid,fact='d2:object:'+s.businessType+':'+tid;
   source(sid,s.id+' '+rid+' '+r.title,'§'+ruleSec.n+'/'+rid);
-  let gate=null;if(applicants[kind]===n||authorities[kind]===n){
-   const provider=applicants[kind]===n?'applicant':'authority';
-   gate={when:{kind:'case-stage',stages:provider==='applicant'?['submitted','reviewing','awaiting-supplement']:['reviewing','awaiting-final','decided']},material:{provider,dueStages:provider==='applicant'?['submitted','reviewing']:['awaiting-final','decided'],alternatives:[fact]}};
-  }
+  const gate=null; // Source policy/workflow stage not independently confirmed; no speculative hard gate.
   add(g.name,tid,sid,fact,rid,'§'+ruleSec.n+'/'+rid,gate);tasks.push(makeTask(tid,r.title.slice(0,110),r.body));
  }module(g.name,tasks);
 }
