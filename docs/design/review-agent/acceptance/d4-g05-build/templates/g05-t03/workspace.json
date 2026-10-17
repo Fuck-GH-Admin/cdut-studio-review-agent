@@ -565,65 +565,275 @@
         ]
       },
       {
-        "moduleId": "g05-t03-axis-csc",
+        "moduleId": "g05-t03-axis-br01",
         "version": 1,
-        "name": "g05-t03 业务条件 csc",
-        "purpose": "保留csc适用、排除和未知处理",
-        "scope": "每个所选业务对象的显式条件",
-        "limits": "本技术例的reviewer选择不等于真实校务事实已获认证",
+        "name": "g05-t03 BR-01 条件模块",
+        "purpose": "保留BR-01的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
         "source": {
           "kind": "user-request",
-          "note": "C v0.1作者侧冻结候选业务原文，仅按本次制作请求执行技术预审，不构成现行校规或行政批准"
+          "note": "C v0.1业务原文，待校方核权"
         },
         "tasks": [
           {
             "id": "scope",
-            "title": "csc 主/附条件适用范围核对",
-            "requirement": "本责任仅在对象条件 'csc' 对应路径出现。核对 C 原文条件章节是否适用于本对象；对于UNKNOWN保留需核结果，不应用其他学校阈值推断。目标业务：校际交流及公派研修项目选拔推荐",
-            "completion": "输出本对象适用/不适用/待确认、条件来源版本及理由；核对附件到期和权限边界",
-            "limits": "不得根据 AI 猜测选择场景或将未到期有权材料当申请者缺件"
+            "title": "BR-01 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-01；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-01 | 常规本科/研究生校际交换 | formal_program_family=SEMESTER_EXCHANGE | TRUE→课业与交换规则；FALSE→不适用；UNKNOWN→CONFIG_REQUIRED | E01,E02,E03,L07 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
           }
         ]
       },
       {
-        "moduleId": "g05-t03-axis-external-admission",
+        "moduleId": "g05-t03-axis-br02",
         "version": 1,
-        "name": "g05-t03 业务条件 external-admission",
-        "purpose": "保留external-admission适用、排除和未知处理",
-        "scope": "每个所选业务对象的显式条件",
-        "limits": "本技术例的reviewer选择不等于真实校务事实已获认证",
+        "name": "g05-t03 BR-02 条件模块",
+        "purpose": "保留BR-02的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
         "source": {
           "kind": "user-request",
-          "note": "C v0.1作者侧冻结候选业务原文，仅按本次制作请求执行技术预审，不构成现行校规或行政批准"
+          "note": "C v0.1业务原文，待校方核权"
         },
         "tasks": [
           {
             "id": "scope",
-            "title": "external-admission 主/附条件适用范围核对",
-            "requirement": "本责任仅在对象条件 'external-admission' 对应路径出现。核对 C 原文条件章节是否适用于本对象；对于UNKNOWN保留需核结果，不应用其他学校阈值推断。目标业务：校际交流及公派研修项目选拔推荐",
-            "completion": "输出本对象适用/不适用/待确认、条件来源版本及理由；核对附件到期和权限边界",
-            "limits": "不得根据 AI 猜测选择场景或将未到期有权材料当申请者缺件"
+            "title": "BR-02 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-02；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-02 | 研究生联合培养／CSC高水平 | program_family=CSC_HIGHLEVEL;track∈JOINT_PHD,DEGREE_PHD | 确认轨道后应用相应U06材料表；UNKNOWN→停资质否决 | U01,U06 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
           }
         ]
       },
       {
-        "moduleId": "g05-t03-axis-revision",
+        "moduleId": "g05-t03-axis-br03",
         "version": 1,
-        "name": "g05-t03 业务条件 revision",
-        "purpose": "保留revision适用、排除和未知处理",
-        "scope": "每个所选业务对象的显式条件",
-        "limits": "本技术例的reviewer选择不等于真实校务事实已获认证",
+        "name": "g05-t03 BR-03 条件模块",
+        "purpose": "保留BR-03的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
         "source": {
           "kind": "user-request",
-          "note": "C v0.1作者侧冻结候选业务原文，仅按本次制作请求执行技术预审，不构成现行校规或行政批准"
+          "note": "C v0.1业务原文，待校方核权"
         },
         "tasks": [
           {
             "id": "scope",
-            "title": "revision 主/附条件适用范围核对",
-            "requirement": "本责任仅在对象条件 'revision' 对应路径出现。核对 C 原文条件章节是否适用于本对象；对于UNKNOWN保留需核结果，不应用其他学校阈值推断。目标业务：校际交流及公派研修项目选拔推荐",
-            "completion": "输出本对象适用/不适用/待确认、条件来源版本及理由；核对附件到期和权限边界",
-            "limits": "不得根据 AI 猜测选择场景或将未到期有权材料当申请者缺件"
+            "title": "BR-03 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-03；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-03 | 2026CDUT创新项目制联培博士 | project=CDUT_INNOV_2026_R2;role=JOINT_PHD | 额外激活L01本校要求；U03网报规则另在ST-06 | L01,U02,U03 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t03-axis-br04",
+        "version": 1,
+        "name": "g05-t03 BR-04 条件模块",
+        "purpose": "保留BR-04的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-04 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-04；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-04 | 2026CDUT创新项目制教师访问学者 | project=CDUT_INNOV_2026_R2;role=VISITING_SCHOLAR | L01教师表、院人事签批；U04允许网报的意向邀请例外不回溯 | L01,U02,U04 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t03-axis-br05",
+        "version": 1,
+        "name": "g05-t03 BR-05 条件模块",
+        "purpose": "保留BR-05的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-05 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-05；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-05 | 教师国内派出访学 | program_family=DOMESTIC_FACULTY | 项目/学校人事制度存在才启用年限考核；本校未知→待配置 | E06,E07,E09 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t03-axis-br06",
+        "version": 1,
+        "name": "g05-t03 BR-06 条件模块",
+        "purpose": "保留BR-06的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-06 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-06；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-06 | 教师境外公派访问学者 | program_family=CSC_VISITING_SCHOLAR && role=STAFF | CSC当年材料、校内推荐、外方访学信息 | U01,U04,E08 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t03-axis-br07",
+        "version": 1,
+        "name": "g05-t03 BR-07 条件模块",
+        "purpose": "保留BR-07的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-07 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-07；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-07 | 成都理工大学2026江原大学法学院交换 | project_profile=CDUT_WF_KANGWON_2026_FALL | L07学校学院项目限额、成绩、年级、表格及面试阶段 | L07 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t03-axis-br08",
+        "version": 1,
+        "name": "g05-t03 BR-08 条件模块",
+        "purpose": "保留BR-08的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-08 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-08；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-08 | 短期课程/访学项目的暂未定选派资格 | program_family=SHORT_TERM && officially_nominated=UNKNOWN | 不凭宣传页视为遴选；证据不足转规则判定/其他报名业务 | L08 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t03-axis-br09",
+        "version": 1,
+        "name": "g05-t03 BR-09 条件模块",
+        "purpose": "保留BR-09的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-09 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-09；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-09 | 语言延后或等价证据覆盖 | language_substitution=allowed_by_project | TRUE→检查等价或截止；UNKNOWN→不默认可延后 | U05,E01 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t03-axis-br10",
+        "version": 1,
+        "name": "g05-t03 BR-10 条件模块",
+        "purpose": "保留BR-10的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-10 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-10；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-10 | 项目多志愿／限额与推荐排序 | quota_selection=TRUE | 启用志愿、排序与多人逐对象审核，评审结果须来自有权部门 | E01,E02,L07 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t03-axis-br11",
+        "version": 1,
+        "name": "g05-t03 BR-11 条件模块",
+        "purpose": "保留BR-11的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-11 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-11；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-11 | 海外申请者CSC专用 | CSC_overseas_applicant=TRUE | U07限定海外申请者；不能给本校境内申请者强制驻外材料 | U07 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t03-axis-br12",
+        "version": 1,
+        "name": "g05-t03 BR-12 条件模块",
+        "purpose": "保留BR-12的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-12 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-12；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-12 | 调整/撤回/取消／更正 | change_event=TRUE | 按事件、授权、版本逐步重审，保留历史，不跨项目污染 | U01,E02 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
+          }
+        ]
+      },
+      {
+        "moduleId": "g05-t03-axis-br13",
+        "version": 1,
+        "name": "g05-t03 BR-13 条件模块",
+        "purpose": "保留BR-13的多值、互斥与叠加语义",
+        "scope": "逐对象业务条件适用",
+        "limits": "三值适用不代替原BR内部多值/专业认定",
+        "source": {
+          "kind": "user-request",
+          "note": "C v0.1业务原文，待校方核权"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "BR-13 原文分支适用",
+            "requirement": "先核本对象是否触发 BR-13；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-13 | 跨模板的行前事项 | stage=ST-08 | 只做选拔结果关联，真正出境许可归G05-T04，学分归S02 | L01,E01 |",
+            "completion": "逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承",
+            "limits": "候选校规未核时保持待确认，不能自动批准或强制拒件"
           }
         ]
       }
@@ -642,9 +852,19 @@
         "scenarios": [
           "student",
           "staff",
-          "csc",
-          "external-admission",
-          "revision"
+          "br01",
+          "br02",
+          "br03",
+          "br04",
+          "br05",
+          "br06",
+          "br07",
+          "br08",
+          "br09",
+          "br10",
+          "br11",
+          "br12",
+          "br13"
         ],
         "genericScenarioAxes": {
           "primary": [
@@ -652,9 +872,19 @@
             "staff"
           ],
           "conditions": [
-            "csc",
-            "external-admission",
-            "revision"
+            "br01",
+            "br02",
+            "br03",
+            "br04",
+            "br05",
+            "br06",
+            "br07",
+            "br08",
+            "br09",
+            "br10",
+            "br11",
+            "br12",
+            "br13"
           ]
         },
         "modules": [
@@ -731,22 +961,82 @@
             "scenario": "staff"
           },
           {
-            "id": "axis-csc",
-            "moduleId": "g05-t03-axis-csc",
+            "id": "axis-br01",
+            "moduleId": "g05-t03-axis-br01",
             "version": 1,
-            "scenario": "csc"
+            "scenario": "br01"
           },
           {
-            "id": "axis-external-admission",
-            "moduleId": "g05-t03-axis-external-admission",
+            "id": "axis-br02",
+            "moduleId": "g05-t03-axis-br02",
             "version": 1,
-            "scenario": "external-admission"
+            "scenario": "br02"
           },
           {
-            "id": "axis-revision",
-            "moduleId": "g05-t03-axis-revision",
+            "id": "axis-br03",
+            "moduleId": "g05-t03-axis-br03",
             "version": 1,
-            "scenario": "revision"
+            "scenario": "br03"
+          },
+          {
+            "id": "axis-br04",
+            "moduleId": "g05-t03-axis-br04",
+            "version": 1,
+            "scenario": "br04"
+          },
+          {
+            "id": "axis-br05",
+            "moduleId": "g05-t03-axis-br05",
+            "version": 1,
+            "scenario": "br05"
+          },
+          {
+            "id": "axis-br06",
+            "moduleId": "g05-t03-axis-br06",
+            "version": 1,
+            "scenario": "br06"
+          },
+          {
+            "id": "axis-br07",
+            "moduleId": "g05-t03-axis-br07",
+            "version": 1,
+            "scenario": "br07"
+          },
+          {
+            "id": "axis-br08",
+            "moduleId": "g05-t03-axis-br08",
+            "version": 1,
+            "scenario": "br08"
+          },
+          {
+            "id": "axis-br09",
+            "moduleId": "g05-t03-axis-br09",
+            "version": 1,
+            "scenario": "br09"
+          },
+          {
+            "id": "axis-br10",
+            "moduleId": "g05-t03-axis-br10",
+            "version": 1,
+            "scenario": "br10"
+          },
+          {
+            "id": "axis-br11",
+            "moduleId": "g05-t03-axis-br11",
+            "version": 1,
+            "scenario": "br11"
+          },
+          {
+            "id": "axis-br12",
+            "moduleId": "g05-t03-axis-br12",
+            "version": 1,
+            "scenario": "br12"
+          },
+          {
+            "id": "axis-br13",
+            "moduleId": "g05-t03-axis-br13",
+            "version": 1,
+            "scenario": "br13"
           }
         ],
         "localTasks": []
@@ -1364,6 +1654,175 @@
       "verification": "content-checked",
       "applicability": "request-scope",
       "note": "逐R原文定位；制作技术预审义务，不将C研究规则自身当作已核校规"
+    },
+    {
+      "sourceId": "src-br01",
+      "kind": "user-request",
+      "label": "g05-t03 BR-01 条件原文",
+      "reference": {
+        "documentVersionId": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "locator": "source/G05-T03_正式业务模板_MD_v0.1.md#L52",
+        "excerpt": "| BR-01 | 常规本科/研究生校际交换 | formal_program_family=SEMESTER_EXCHANGE | TRUE→课业与交换规则；FALSE→不适用；UNKNOWN→CONFIG_REQUIRED | E01,E02,E03,L07 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br02",
+      "kind": "user-request",
+      "label": "g05-t03 BR-02 条件原文",
+      "reference": {
+        "documentVersionId": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "locator": "source/G05-T03_正式业务模板_MD_v0.1.md#L53",
+        "excerpt": "| BR-02 | 研究生联合培养／CSC高水平 | program_family=CSC_HIGHLEVEL;track∈JOINT_PHD,DEGREE_PHD | 确认轨道后应用相应U06材料表；UNKNOWN→停资质否决 | U01,U06 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br03",
+      "kind": "user-request",
+      "label": "g05-t03 BR-03 条件原文",
+      "reference": {
+        "documentVersionId": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "locator": "source/G05-T03_正式业务模板_MD_v0.1.md#L54",
+        "excerpt": "| BR-03 | 2026CDUT创新项目制联培博士 | project=CDUT_INNOV_2026_R2;role=JOINT_PHD | 额外激活L01本校要求；U03网报规则另在ST-06 | L01,U02,U03 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br04",
+      "kind": "user-request",
+      "label": "g05-t03 BR-04 条件原文",
+      "reference": {
+        "documentVersionId": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "locator": "source/G05-T03_正式业务模板_MD_v0.1.md#L55",
+        "excerpt": "| BR-04 | 2026CDUT创新项目制教师访问学者 | project=CDUT_INNOV_2026_R2;role=VISITING_SCHOLAR | L01教师表、院人事签批；U04允许网报的意向邀请例外不回溯 | L01,U02,U04 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br05",
+      "kind": "user-request",
+      "label": "g05-t03 BR-05 条件原文",
+      "reference": {
+        "documentVersionId": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "locator": "source/G05-T03_正式业务模板_MD_v0.1.md#L56",
+        "excerpt": "| BR-05 | 教师国内派出访学 | program_family=DOMESTIC_FACULTY | 项目/学校人事制度存在才启用年限考核；本校未知→待配置 | E06,E07,E09 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br06",
+      "kind": "user-request",
+      "label": "g05-t03 BR-06 条件原文",
+      "reference": {
+        "documentVersionId": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "locator": "source/G05-T03_正式业务模板_MD_v0.1.md#L57",
+        "excerpt": "| BR-06 | 教师境外公派访问学者 | program_family=CSC_VISITING_SCHOLAR && role=STAFF | CSC当年材料、校内推荐、外方访学信息 | U01,U04,E08 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br07",
+      "kind": "user-request",
+      "label": "g05-t03 BR-07 条件原文",
+      "reference": {
+        "documentVersionId": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "locator": "source/G05-T03_正式业务模板_MD_v0.1.md#L58",
+        "excerpt": "| BR-07 | 成都理工大学2026江原大学法学院交换 | project_profile=CDUT_WF_KANGWON_2026_FALL | L07学校学院项目限额、成绩、年级、表格及面试阶段 | L07 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br08",
+      "kind": "user-request",
+      "label": "g05-t03 BR-08 条件原文",
+      "reference": {
+        "documentVersionId": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "locator": "source/G05-T03_正式业务模板_MD_v0.1.md#L59",
+        "excerpt": "| BR-08 | 短期课程/访学项目的暂未定选派资格 | program_family=SHORT_TERM && officially_nominated=UNKNOWN | 不凭宣传页视为遴选；证据不足转规则判定/其他报名业务 | L08 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br09",
+      "kind": "user-request",
+      "label": "g05-t03 BR-09 条件原文",
+      "reference": {
+        "documentVersionId": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "locator": "source/G05-T03_正式业务模板_MD_v0.1.md#L60",
+        "excerpt": "| BR-09 | 语言延后或等价证据覆盖 | language_substitution=allowed_by_project | TRUE→检查等价或截止；UNKNOWN→不默认可延后 | U05,E01 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br10",
+      "kind": "user-request",
+      "label": "g05-t03 BR-10 条件原文",
+      "reference": {
+        "documentVersionId": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "locator": "source/G05-T03_正式业务模板_MD_v0.1.md#L61",
+        "excerpt": "| BR-10 | 项目多志愿／限额与推荐排序 | quota_selection=TRUE | 启用志愿、排序与多人逐对象审核，评审结果须来自有权部门 | E01,E02,L07 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br11",
+      "kind": "user-request",
+      "label": "g05-t03 BR-11 条件原文",
+      "reference": {
+        "documentVersionId": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "locator": "source/G05-T03_正式业务模板_MD_v0.1.md#L62",
+        "excerpt": "| BR-11 | 海外申请者CSC专用 | CSC_overseas_applicant=TRUE | U07限定海外申请者；不能给本校境内申请者强制驻外材料 | U07 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br12",
+      "kind": "user-request",
+      "label": "g05-t03 BR-12 条件原文",
+      "reference": {
+        "documentVersionId": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "locator": "source/G05-T03_正式业务模板_MD_v0.1.md#L63",
+        "excerpt": "| BR-12 | 调整/撤回/取消／更正 | change_event=TRUE | 按事件、授权、版本逐步重审，保留历史，不跨项目污染 | U01,E02 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
+    },
+    {
+      "sourceId": "src-br13",
+      "kind": "user-request",
+      "label": "g05-t03 BR-13 条件原文",
+      "reference": {
+        "documentVersionId": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "locator": "source/G05-T03_正式业务模板_MD_v0.1.md#L64",
+        "excerpt": "| BR-13 | 跨模板的行前事项 | stage=ST-08 | 只做选拔结果关联，真正出境许可归G05-T04，学分归S02 | L01,E01 |"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "原BR多值逻辑属于候选业务语义，测试条件值不代表已获校务授权"
     }
   ],
   "sourceBindings": [
@@ -2110,9 +2569,11 @@
       }
     },
     {
-      "checkId": "g05-t03@1:module/axis-csc/scope",
+      "checkId": "g05-t03@1:module/axis-br01/scope",
       "sourceIds": [
         "src-c",
+        "src-br01",
+        "src-policy",
         "src-synthetic"
       ],
       "genericScope": {
@@ -2127,9 +2588,11 @@
       }
     },
     {
-      "checkId": "g05-t03@1:module/axis-external-admission/scope",
+      "checkId": "g05-t03@1:module/axis-br02/scope",
       "sourceIds": [
         "src-c",
+        "src-br02",
+        "src-policy",
         "src-synthetic"
       ],
       "genericScope": {
@@ -2144,9 +2607,201 @@
       }
     },
     {
-      "checkId": "g05-t03@1:module/axis-revision/scope",
+      "checkId": "g05-t03@1:module/axis-br03/scope",
       "sourceIds": [
         "src-c",
+        "src-br03",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t03-applicant",
+          "g05-t03-project"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t03-applicant:scope",
+          "d2:object:g05-t03-project:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t03@1:module/axis-br04/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br04",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t03-applicant",
+          "g05-t03-project"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t03-applicant:scope",
+          "d2:object:g05-t03-project:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t03@1:module/axis-br05/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br05",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t03-applicant",
+          "g05-t03-project"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t03-applicant:scope",
+          "d2:object:g05-t03-project:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t03@1:module/axis-br06/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br06",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t03-applicant",
+          "g05-t03-project"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t03-applicant:scope",
+          "d2:object:g05-t03-project:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t03@1:module/axis-br07/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br07",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t03-applicant",
+          "g05-t03-project"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t03-applicant:scope",
+          "d2:object:g05-t03-project:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t03@1:module/axis-br08/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br08",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t03-applicant",
+          "g05-t03-project"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t03-applicant:scope",
+          "d2:object:g05-t03-project:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t03@1:module/axis-br09/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br09",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t03-applicant",
+          "g05-t03-project"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t03-applicant:scope",
+          "d2:object:g05-t03-project:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t03@1:module/axis-br10/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br10",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t03-applicant",
+          "g05-t03-project"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t03-applicant:scope",
+          "d2:object:g05-t03-project:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t03@1:module/axis-br11/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br11",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t03-applicant",
+          "g05-t03-project"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t03-applicant:scope",
+          "d2:object:g05-t03-project:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t03@1:module/axis-br12/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br12",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g05-t03-applicant",
+          "g05-t03-project"
+        ],
+        "evidenceFacts": [
+          "d2:object:g05-t03-applicant:scope",
+          "d2:object:g05-t03-project:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "g05-t03@1:module/axis-br13/scope",
+      "sourceIds": [
+        "src-c",
+        "src-br13",
+        "src-policy",
         "src-synthetic"
       ],
       "genericScope": {
