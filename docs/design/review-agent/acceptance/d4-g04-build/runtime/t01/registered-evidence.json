@@ -1,0 +1,17 @@
+{
+  "caseId": "g04-t01-tech",
+  "documentVersionId": "doc-1-mvcmyb36-v1",
+  "links": [
+    {
+      "id": "evl-doc-1-mvcmyb36-v1-subject-a-1792256008876-oqv0",
+      "documentVersionId": "doc-1-mvcmyb36-v1",
+      "subjectId": "subject-a",
+      "supportsFact": "d2:object:g04-door-action:r01",
+      "status": "confirmed",
+      "linkedBy": "user"
+    }
+  ],
+  "objectAHasConfirmedSyntheticFact": true,
+  "objectBHasConfirmedSyntheticFact": false,
+  "materialOnlyNotPermission": true
+}
