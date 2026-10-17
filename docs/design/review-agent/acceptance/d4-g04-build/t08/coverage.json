@@ -1,0 +1,637 @@
+{
+  "templateId": "d4-g04-t08",
+  "sourceSha": "715ca07edd4934245e0c9f3774eb12302baf03a292b1fd635444fd10ba8f328a",
+  "rules": [
+    {
+      "id": "R-01",
+      "sourceId": "src-r01",
+      "line": 258,
+      "title": "载入校本当期可申主体/校区/车证类型",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-02",
+      "sourceId": "src-r02",
+      "line": 269,
+      "title": "依据校本名单对申请人身份分流",
+      "moduleId": "g04-t08-identity",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-03",
+      "sourceId": "src-r03",
+      "line": 280,
+      "title": "代办人与被办证受益人明确区别",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-04",
+      "sourceId": "src-r04",
+      "line": 291,
+      "title": "车型按该校可办范围判断",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-05",
+      "sourceId": "src-r05",
+      "line": 302,
+      "title": "车辆登记证与牌号一致",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-06",
+      "sourceId": "src-r06",
+      "line": 313,
+      "title": "本人车允许使用申请人车属凭证",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-07",
+      "sourceId": "src-r07",
+      "line": 324,
+      "title": "配偶车有关系证明或认可等效",
+      "moduleId": "g04-t08-material",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-08",
+      "sourceId": "src-r08",
+      "line": 335,
+      "title": "直系亲属车辆满足代办和类别规则",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-09",
+      "sourceId": "src-r09",
+      "line": 346,
+      "title": "旁系亲属走书面申请与校本指定证别",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-10",
+      "sourceId": "src-r10",
+      "line": 357,
+      "title": "客座/兼职/劳务合同人员资格有效",
+      "moduleId": "g04-t08-identity",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-11",
+      "sourceId": "src-r11",
+      "line": 368,
+      "title": "合同合作企业长期业务关系完整",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-12",
+      "sourceId": "src-r12",
+      "line": 379,
+      "title": "公务D类需单位盖章说明",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-13",
+      "sourceId": "src-r13",
+      "line": 390,
+      "title": "住户租户资格及有效期限核验",
+      "moduleId": "g04-t08-identity",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-14",
+      "sourceId": "src-r14",
+      "line": 401,
+      "title": "学生固定车资格必须显式校本开放",
+      "moduleId": "g04-t08-identity",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-15",
+      "sourceId": "src-r15",
+      "line": 412,
+      "title": "不得把驾驶证无条件设为CDUT2022必传",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-16",
+      "sourceId": "src-r16",
+      "line": 423,
+      "title": "申报材料槽与办理方式差异",
+      "moduleId": "g04-t08-material",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-17",
+      "sourceId": "src-r17",
+      "line": 434,
+      "title": "既有已核资料可依政策复用",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-18",
+      "sourceId": "src-r18",
+      "line": 445,
+      "title": "车辆信息变更需重新审核相关变更字段",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-19",
+      "sourceId": "src-r19",
+      "line": 456,
+      "title": "个体车辆重复与配额须校本限制",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-20",
+      "sourceId": "src-r20",
+      "line": 467,
+      "title": "单位汇总表不能代替每车独立证据",
+      "moduleId": "g04-t08-material",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-21",
+      "sourceId": "src-r21",
+      "line": 478,
+      "title": "历史违规限制须正式生效记录",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-22",
+      "sourceId": "src-r22",
+      "line": 489,
+      "title": "车证类别和收费标准只来自本校年度版本",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-23",
+      "sourceId": "src-r23",
+      "line": 500,
+      "title": "申请通过与缴费到账分开",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-24",
+      "sourceId": "src-r24",
+      "line": 511,
+      "title": "审批通过与车牌白名单生效分开",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-25",
+      "sourceId": "src-r25",
+      "line": 522,
+      "title": "自然年度/证期/合同期限分别计算",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-26",
+      "sourceId": "src-r26",
+      "line": 533,
+      "title": "到期离校退证/换车触发权限清理",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-27",
+      "sourceId": "src-r27",
+      "line": 544,
+      "title": "未明列特殊年卡提交有权机关处理",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-28",
+      "sourceId": "src-r28",
+      "line": 555,
+      "title": "车辆通行权限与校内停车权区分",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-29",
+      "sourceId": "src-r29",
+      "line": 566,
+      "title": "临时访客车与长期年卡路线互斥",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-30",
+      "sourceId": "src-r30",
+      "line": 577,
+      "title": "非机动车证照不得套进机动车车证",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-31",
+      "sourceId": "src-r31",
+      "line": 588,
+      "title": "数据可识别不等于真实性已核验",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-32",
+      "sourceId": "src-r32",
+      "line": 599,
+      "title": "历史政策缺失/后台不可达要区分",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-33",
+      "sourceId": "src-r33",
+      "line": 610,
+      "title": "单位签章及最终批准必须有权",
+      "moduleId": "g04-t08-authority",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-34",
+      "sourceId": "src-r34",
+      "line": 621,
+      "title": "准入与单独停车付费额度独立",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-35",
+      "sourceId": "src-r35",
+      "line": 632,
+      "title": "原始证件过期/合同超期的处理",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-36",
+      "sourceId": "src-r36",
+      "line": 643,
+      "title": "审查工作节点与申报截止分类",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-37",
+      "sourceId": "src-r37",
+      "line": 654,
+      "title": "校区政策覆盖及跨校区互认",
+      "moduleId": "g04-t08-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-38",
+      "sourceId": "src-r38",
+      "line": 665,
+      "title": "动态入口/道路限制与年度资格分离",
+      "moduleId": "g04-t08-identity",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-39",
+      "sourceId": "src-r39",
+      "line": 676,
+      "title": "当前黑名单效力、解除与资格审批分离",
+      "moduleId": "g04-t08-identity",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "§sec01",
+      "line": 6,
+      "title": "模板元信息、适用范围与政策边界",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec01",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec02",
+      "line": 29,
+      "title": "唯一审核目的、主体与相邻领域",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec02",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec03",
+      "line": 44,
+      "title": "条件维度、子分支与三值触发",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec03",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec04",
+      "line": 88,
+      "title": "输入契约：申报事项、申报材料、证明材料与可信数据",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec04",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec05",
+      "line": 102,
+      "title": "完整字段字典：50项 B字段逐条保留并稳定编号",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec05",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec06",
+      "line": 159,
+      "title": "材料槽、等效证据组及可信等级",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec06",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec07",
+      "line": 225,
+      "title": "审核事实、跨文件关系及版本时点",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec07",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec08",
+      "line": 252,
+      "title": "逐条可复核原子规则——39条（B36条扩展与v0.2三条）",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec08",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec10",
+      "line": 839,
+      "title": "生命周期：补正、重审、换车、撤权与执行",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec10",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec11",
+      "line": 850,
+      "title": "例外与人工边界",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec11",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec12",
+      "line": 860,
+      "title": "校本配置、来源权威与剩余缺口",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec12",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec13",
+      "line": 874,
+      "title": "来源追溯语义（完整来源索引见B-v0.2第四/第七文件）",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec13",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec14",
+      "line": 917,
+      "title": "作者流程推演（详见辅助自检文件）",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec14",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec15",
+      "line": 921,
+      "title": "共性模块与业务专属模块（契约详见辅助文件）",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec15",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec16",
+      "line": 925,
+      "title": "编辑器/运行时能力映射（仓库 main 截至本轮读取）",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec16",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec17",
+      "line": 935,
+      "title": "完整性审计、冻结与E对接",
+      "moduleId": "g04-t08-section",
+      "sourceId": "src-sec17",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    }
+  ],
+  "markers": {
+    "F": [
+      "F-01",
+      "F-02",
+      "F-03",
+      "F-04",
+      "F-05",
+      "F-06",
+      "F-07",
+      "F-08",
+      "F-09",
+      "F-10",
+      "F-11",
+      "F-12",
+      "F-13",
+      "F-14",
+      "F-15",
+      "F-16",
+      "F-17",
+      "F-18",
+      "F-19",
+      "F-20",
+      "F-21",
+      "F-22",
+      "F-23",
+      "F-24",
+      "F-25",
+      "F-26",
+      "F-27",
+      "F-28",
+      "F-29",
+      "F-30",
+      "F-31",
+      "F-32",
+      "F-33",
+      "F-34",
+      "F-35",
+      "F-36",
+      "F-37",
+      "F-38",
+      "F-39",
+      "F-40",
+      "F-41",
+      "F-42",
+      "F-43",
+      "F-44",
+      "F-45",
+      "F-46",
+      "F-47",
+      "F-48",
+      "F-49",
+      "F-50"
+    ],
+    "MS": [
+      "MS-01",
+      "MS-02",
+      "MS-03",
+      "MS-04",
+      "MS-05",
+      "MS-06",
+      "MS-07",
+      "MS-08",
+      "MS-09",
+      "MS-10",
+      "MS-11",
+      "MS-12",
+      "MS-13",
+      "MS-14",
+      "MS-15",
+      "MS-16",
+      "MS-17",
+      "MS-18",
+      "MS-19",
+      "MS-20",
+      "MS-21",
+      "MS-22",
+      "MS-23",
+      "MS-24",
+      "MS-25",
+      "MS-26",
+      "MS-27",
+      "MS-28",
+      "MS-29",
+      "MS-30",
+      "MS-31",
+      "MS-32",
+      "MS-33"
+    ],
+    "M": [
+      "M-01",
+      "M-09",
+      "M-33"
+    ],
+    "BR": [
+      "BR-01",
+      "BR-02",
+      "BR-03",
+      "BR-04",
+      "BR-05",
+      "BR-06",
+      "BR-07",
+      "BR-08",
+      "BR-09",
+      "BR-10",
+      "BR-11",
+      "BR-12",
+      "BR-13",
+      "BR-14",
+      "BR-15",
+      "BR-16",
+      "BR-17",
+      "BR-18"
+    ],
+    "EV": [
+      "EV-01",
+      "EV-02",
+      "EV-03",
+      "EV-04",
+      "EV-05",
+      "EV-06",
+      "EV-07",
+      "EV-08"
+    ],
+    "Q": [],
+    "ST": [
+      "ST-01",
+      "ST-02",
+      "ST-03",
+      "ST-04",
+      "ST-05",
+      "ST-06",
+      "ST-07",
+      "ST-08"
+    ]
+  },
+  "scope": "ALL_R_AND_MAIN_SECTIONS_WITH_ORIGINAL_RAW_TEXT"
+}
