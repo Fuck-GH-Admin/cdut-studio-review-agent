@@ -27,7 +27,7 @@
     "R-21",
     "R-22"
   ],
-  "authoredChecks": 53,
+  "authoredChecks": 55,
   "entries": [
     {
       "sourceId": "R-01",
@@ -503,6 +503,28 @@
       "moduleId": "g03-t06-section-18",
       "sourceBinding": "source-section-18",
       "evidenceFact": "d2:object:g03-group-member:section-18-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "EXTRA-front",
+      "locator": "front-matter",
+      "technicalCheckId": "g03-t06@1:module/use-extra-front/full",
+      "moduleId": "g03-t06-extra-front",
+      "sourceBinding": "source-extra-front",
+      "evidenceFact": "d2:object:g03-group-member:extra-front",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "EXTRA-rule-envelope",
+      "locator": "§9/shared-invariants",
+      "technicalCheckId": "g03-t06@1:module/use-extra-rule-envelope/full",
+      "moduleId": "g03-t06-extra-rule-envelope",
+      "sourceBinding": "source-extra-rule-envelope",
+      "evidenceFact": "d2:object:g03-group-member:extra-rule-envelope",
       "disposition": "implemented-not-tested",
       "policy": "POLICY_HOLD",
       "gate": null
@@ -1026,6 +1048,26 @@
       "parts": 1,
       "checks": [
         "g03-t06@1:module/use-section-18/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": "front",
+      "title": "业务母版原始头部/版本/权威声明",
+      "sourceLocator": "front-matter",
+      "parts": 1,
+      "checks": [
+        "g03-t06@1:module/use-extra-front/full"
+      ],
+      "ids": []
+    },
+    {
+      "section": "rule-envelope",
+      "title": "§9 规则共同前提与表格注释",
+      "sourceLocator": "§9/shared-invariants",
+      "parts": 1,
+      "checks": [
+        "g03-t06@1:module/use-extra-rule-envelope/full"
       ],
       "ids": []
     }

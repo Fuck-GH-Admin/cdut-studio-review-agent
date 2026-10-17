@@ -663,6 +663,48 @@
         ]
       },
       {
+        "moduleId": "g03-t07-extra-front",
+        "version": 1,
+        "name": "指定仪器培训考核与独立操作资格｜extra-front",
+        "purpose": "逐对象审核extra-front",
+        "scope": "当前g03-instrument-qualification",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "业务母版原始头部/版本/权威声明",
+            "requirement": "# G03-T07｜指定仪器培训、考核与独立操作资格申请——正式业务 Markdown 模板母版（v0.1）\n\n> **模板稳定 ID** `G03-T07` · 分类 `师生共有/G03-03 共享仪器` · **制作阶段 C** · 制作日 2026-10-11 · 研究基线：B v0.2 · 状态：`BUSINESS_MD_DRAFT_WITH_GAPS`。  \n> **文档法律地位**：模板业务语义草案，**未发布、未真实校方审批、未通过独立D金标验收**。政策引用仅限已核实范围；本校设备级规则和动态资格库尚未拿到。  \n> **禁止**：把外校案例直接变成成都理工大学强制要求；让模型独立考察真实仪器实操技能、签发权限或判定高风险仪器安全。  \n> **来源约定**：`CD01–CD13, EX01–EX10` 为 B 阶段已登记的 23 个来源编号，原始 URL 见本文件来源节；强制校规要求须在适用政策版本与设备配置确认后启用。`设计` 表示系统表达的工程规范而非校方新制度。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
+        "moduleId": "g03-t07-extra-rule-envelope",
+        "version": 1,
+        "name": "指定仪器培训考核与独立操作资格｜extra-rule-envelope",
+        "purpose": "逐对象审核extra-rule-envelope",
+        "scope": "当前g03-instrument-qualification",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "§11 规则共同前提与表格注释",
+            "requirement": "## 11. 审核规则表述约定及冲突次序\n\n每条规则都有一项**可解释的事实判断**；若依赖的适用规则或权威值未知，则输出`AWAIT_POLICY_CONFIG`或`AWAIT_LOOKUP`，不臆造FAIL。`缺件`仅指当前阶段真正必需且未被合法等价证据覆盖，输出`NEEDS_SUPPLEMENT`。`真不符合`需要有生效校规与明确事实，且仅对当次目标动作作拒绝建议或呈现**已有的正式否决**，不由AI作最终资格处分。\n\n**优先层级**：适用规则选择/身份与目标对象 → 已生效停权与禁止 → 本阶段条件材料/上游批准 → 培训和考核事件 → 有权资格决定 → 资格写入/门禁实际状态；同一分项保留所有并存问题。证据冲突按签发角色、记录生效时间、撤销与更正事件确定权威链，不以“最后上传的图片”覆盖平台真实状态。\n\n### 11.1 逐条原子规则（全部32条，保留B编号）",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
         "moduleId": "g03-t07-axis-p-first-training",
         "version": 1,
         "name": "指定仪器培训考核与独立操作资格｜axis-p-first-training",
@@ -1067,6 +1109,16 @@
           {
             "id": "use-section-18",
             "moduleId": "g03-t07-section-18",
+            "version": 1
+          },
+          {
+            "id": "use-extra-front",
+            "moduleId": "g03-t07-extra-front",
+            "version": 1
+          },
+          {
+            "id": "use-extra-rule-envelope",
+            "moduleId": "g03-t07-extra-rule-envelope",
             "version": 1
           },
           {
@@ -1750,6 +1802,30 @@
       "reference": {
         "documentVersionId": "md-g03-t07-d166e3f118b63e54",
         "locator": "§18"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-front",
+      "kind": "policy-candidate",
+      "label": "G03-T07 业务母版原始头部/版本/权威声明",
+      "reference": {
+        "documentVersionId": "md-g03-t07-d166e3f118b63e54",
+        "locator": "front-matter"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-rule-envelope",
+      "kind": "policy-candidate",
+      "label": "G03-T07 §11 规则共同前提与表格注释",
+      "reference": {
+        "documentVersionId": "md-g03-t07-d166e3f118b63e54",
+        "locator": "§11/shared-invariants"
       },
       "verification": "content-checked",
       "applicability": "unknown",
@@ -2688,6 +2764,36 @@
         ],
         "evidenceFacts": [
           "d2:object:g03-instrument-qualification:section-18-1"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t07@1:module/use-extra-front/full",
+      "sourceIds": [
+        "source-extra-front"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-instrument-qualification"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-instrument-qualification:extra-front"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t07@1:module/use-extra-rule-envelope/full",
+      "sourceIds": [
+        "source-extra-rule-envelope"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-instrument-qualification"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-instrument-qualification:extra-rule-envelope"
         ]
       }
     },

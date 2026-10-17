@@ -579,6 +579,48 @@
         ]
       },
       {
+        "moduleId": "g03-t06-extra-front",
+        "version": 1,
+        "name": "共享仪器平台课题组加入与账号授权｜extra-front",
+        "purpose": "逐对象审核extra-front",
+        "scope": "当前g03-group-member",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "业务母版原始头部/版本/权威声明",
+            "requirement": "# G03-T06｜共享仪器平台课题组加入与账号授权——正式业务模板母版（C阶段）\n\n> **模板稳定ID**：`G03-T06`　**母版版本**：`C-v0.1`　**制作日期**：2026-10-11　**状态**：`BUSINESS_MD_DRAFT_WITH_GAPS`。\n>\n> 本文件是**自包含纯 Markdown 业务母版**，不是成都理工大学2026现行入组表、不是已发布 TemplateVersion、不是D阶段金标，也不是运行验收通过。来源使用 B 阶段 `A01`、`L01–L09`、`X01–X08`；凡外校流程或工程设计增强均保留出处/适用前提，不直接作为本校拒件依据。\n>\n> **核心禁令**：未经平台正式权限链，不得把“已提交”“导师微信同意”“仪器组标签”“材料审查符合”写作`成员已批准/已激活/可支付/可上机`。**课题组成员、科研经费授权、单机操作资格是不同事实和审批对象。**",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
+        "moduleId": "g03-t06-extra-rule-envelope",
+        "version": 1,
+        "name": "共享仪器平台课题组加入与账号授权｜extra-rule-envelope",
+        "purpose": "逐对象审核extra-rule-envelope",
+        "scope": "当前g03-group-member",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "§9 规则共同前提与表格注释",
+            "requirement": "## 9. 原子规则（R-01—R-22）：每条包含条件、证据、失败路径和人工边界\n\n通用适用域：`school_policy_profile`和`effective_at`经验证有效，规则作用到**逐成员/逐组/逐资金项目/逐操作**，只有实际适用的已知条件才可形成确定性不符合。规则先返回事实/问题，不自行写ACL或伪造审批决定。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
         "moduleId": "g03-t06-axis-p-self-join",
         "version": 1,
         "name": "共享仪器平台课题组加入与账号授权｜axis-p-self-join",
@@ -978,6 +1020,16 @@
           {
             "id": "use-section-18",
             "moduleId": "g03-t06-section-18",
+            "version": 1
+          },
+          {
+            "id": "use-extra-front",
+            "moduleId": "g03-t06-extra-front",
+            "version": 1
+          },
+          {
+            "id": "use-extra-rule-envelope",
+            "moduleId": "g03-t06-extra-rule-envelope",
             "version": 1
           },
           {
@@ -1541,6 +1593,30 @@
       "reference": {
         "documentVersionId": "md-g03-t06-8bc189af1d531250",
         "locator": "§18"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-front",
+      "kind": "policy-candidate",
+      "label": "G03-T06 业务母版原始头部/版本/权威声明",
+      "reference": {
+        "documentVersionId": "md-g03-t06-8bc189af1d531250",
+        "locator": "front-matter"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-rule-envelope",
+      "kind": "policy-candidate",
+      "label": "G03-T06 §9 规则共同前提与表格注释",
+      "reference": {
+        "documentVersionId": "md-g03-t06-8bc189af1d531250",
+        "locator": "§9/shared-invariants"
       },
       "verification": "content-checked",
       "applicability": "unknown",
@@ -2329,6 +2405,36 @@
         ],
         "evidenceFacts": [
           "d2:object:g03-group-member:section-18-1"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t06@1:module/use-extra-front/full",
+      "sourceIds": [
+        "source-extra-front"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-group-member"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-group-member:extra-front"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t06@1:module/use-extra-rule-envelope/full",
+      "sourceIds": [
+        "source-extra-rule-envelope"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-group-member"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-group-member:extra-rule-envelope"
         ]
       }
     },
