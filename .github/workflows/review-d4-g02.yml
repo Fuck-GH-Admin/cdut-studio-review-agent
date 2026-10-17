@@ -1,0 +1,35 @@
+name: D4 G02 three-template modular authoring CI
+on:
+  pull_request:
+    paths:
+      - 'docs/design/review-agent/acceptance/d4-g02-build/**'
+      - 'apps/electron/src/main/lib/review/review-d4-g02-build.test.ts'
+      - '.github/workflows/review-d4-g02.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  g02:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      D4_G02_EVIDENCE_DIR: ${{ github.workspace }}/d4-g02-evidence
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - run: bun run check:boundaries
+      - run: bun test --isolate --timeout 60000 apps/electron/src/main/lib/review/review-d4-g02-build.test.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: d4-g02-plans-pi-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: d4-g02-evidence/
+          retention-days: 30
