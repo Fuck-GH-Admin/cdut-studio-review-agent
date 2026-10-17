@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "phase": "C0_PRE_GOLD",
+  "frozenAtUtc": "2026-10-17T00:49:12.637945+00:00",
+  "aCommit": "e3321add7322fba29169f0faeac9bc66571067e0",
+  "sourceCommit": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+  "d3Commit": "4b191c729f3d5f8135c73b87c17642023f6c3986",
+  "bInputSha256": "33ad9e1fe5104cae91463218293ae58ccd27c934ff091b0687b20c64d699b26c",
+  "privateInputValidationSha256": "40e125e104938027bcf2082e06491c6ed80b3a27d41ddb3a3a809bf2e6ceb238",
+  "privateFreezeRecordSha256": "50b2a67cfe83e01380ed3ea77eac20ae1e490e5ba7ea501ea33323e6973e6eba",
+  "executed": [
+    {
+      "command": "python3 public/tests/verify_input_zip.py d4-g01-i-test-input-r02.zip --output private/input-validation-full.json",
+      "exitCode": 0,
+      "result": "PASS_ZIP_SHA_CRC_MANIFEST_INDEX_CASE_LINKS"
+    }
+  ],
+  "unexecuted": [
+    "Bun D1/D2/D3 C own CLI",
+    "28 B mapped business case runs",
+    "Pi online",
+    "Gold comparison"
+  ],
+  "sourceDerivedBlockers": [
+    "D2_SCENARIO_SCOPE_REQUIRED",
+    "D2_UNMAPPED_ADVANCED",
+    "no typed G01 target or case-specific trusted fact mapping"
+  ],
+  "goldRead": false,
+  "goldCompared": false,
+  "permissionClaim": "NOT_VERIFIED",
+  "disclosure": "No Gold, no case answers, no complete test input. C0 evidence hash and limitations only."
+}
