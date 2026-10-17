@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "stage": "C_PRIME_0_STATIC_ONLY",
+  "status": "C0_TO_C1_STAGED",
+  "r1Sha": "94d5ec32b6de1ac0c185b63b4aabfddaa29b1649",
+  "aprimeSha": "38277ce925347284d03347cef85ee59c6f30ec26",
+  "inputZipSha256": "33ad9e1fe5104cae91463218293ae58ccd27c934ff091b0687b20c64d699b26c",
+  "inputCheck": {
+    "zipMembers": 120,
+    "crc": "PASS",
+    "manifestMembers": 119,
+    "caseCount": 28,
+    "materialIndexCount": 59,
+    "syntheticFixtures": 28,
+    "errors": 0
+  },
+  "execution": {
+    "bCasesTotal": 28,
+    "bCasesRun": 0,
+    "bCasesNotRun": 28,
+    "goldComparable": 0,
+    "misroutes": "NOT_MEASURED",
+    "falseRejections": "NOT_MEASURED",
+    "blindACL": "UNVERIFIED",
+    "goldOpened": false
+  },
+  "privateFreeze": {
+    "frozenAtUtc": "2026-10-17T06:53:54.585793+00:00",
+    "runtimeResultsSha256": "31e267557e68d6eaae813ac62d7e97e21593a0fb27b6e664728bd5f770bff247",
+    "freezeFileSha256": "6ed50ccc918d555fbb6a300ab1a15eeb40f6e2789bc6936679f3f065794a93aa"
+  },
+  "scope": "Only input preflight. CI technical synthetic runs are separate; no B business acceptance or Gold.",
+  "public": false
+}

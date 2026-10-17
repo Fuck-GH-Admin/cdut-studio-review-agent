@@ -1,0 +1,53 @@
+name: D4 G01-I C-prime independent synthetic runtime
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/d4-g01-cprime.yml'
+      - 'apps/electron/src/main/lib/review/review-d4-g01-cprime.test.ts'
+      - 'docs/design/review-agent/acceptance/d4-g01-i/agent-cprime/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cprime-technical:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      CPRIME_EVIDENCE_DIR: cprime-evidence
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Record exact checkout
+        run: |
+          mkdir -p cprime-evidence
+          git rev-parse HEAD | tee cprime-evidence/checkout-sha.txt
+      - name: Frozen dependencies
+        run: |
+          set -o pipefail
+          bun install --frozen-lockfile 2>&1 | tee cprime-evidence/install.log
+      - name: Independent synthetic C-prime tests (NOT B cases)
+        run: |
+          set -o pipefail
+          bun test --isolate --timeout 60000 apps/electron/src/main/lib/review/review-d4-g01-cprime.test.ts 2>&1 | tee cprime-evidence/cprime-tests.log
+      - name: Typecheck
+        if: always()
+        run: |
+          set -o pipefail
+          bun run typecheck 2>&1 | tee cprime-evidence/typecheck.log
+      - name: R1 and old execution-gate regressions
+        if: always()
+        run: |
+          set -o pipefail
+          bun test --isolate --timeout 60000 apps/electron/src/main/lib/review/review-d3-r1-student.test.ts apps/electron/src/main/lib/review/review-d2-execution-gates.test.ts 2>&1 | tee cprime-evidence/r1-legacy.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: g01-cprime-independent-technical
+          path: cprime-evidence/
+          retention-days: 30
