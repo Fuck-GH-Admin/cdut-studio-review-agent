@@ -1,0 +1,823 @@
+{
+  "schema": "d4-g03-author-spec-v1",
+  "technicalSha": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "templates": [
+    {
+      "id": "G03-T01",
+      "templateId": "g03-t01",
+      "sourceFile": "G03-T01_正式业务模板_MD_v0.1.md",
+      "title": "公共教学教室临时借用",
+      "businessType": "g03-classroom-slot",
+      "sourceSha256": "5dd90cd20cb814c7dfedfb8a95e292c8372c801c74e62d83f8e937e37ce52273",
+      "sourceVersion": "business-md-v0.1",
+      "expectedRules": 22,
+      "groups": [
+        {
+          "name": "identity",
+          "rules": [
+            "R-02",
+            "R-03",
+            "R-11"
+          ]
+        },
+        {
+          "name": "evidence",
+          "rules": [
+            "R-04",
+            "R-17",
+            "R-20"
+          ]
+        },
+        {
+          "name": "resource",
+          "rules": [
+            "R-01",
+            "R-05",
+            "R-06",
+            "R-07",
+            "R-08",
+            "R-09",
+            "R-10",
+            "R-21"
+          ]
+        },
+        {
+          "name": "permission",
+          "rules": [
+            "R-12",
+            "R-13",
+            "R-14",
+            "R-15",
+            "R-18"
+          ]
+        },
+        {
+          "name": "change",
+          "rules": [
+            "R-16",
+            "R-19",
+            "R-22"
+          ]
+        }
+      ],
+      "axes": {
+        "primary": [
+          "p-public-classroom",
+          "p-graduate-classroom",
+          "p-delegated-classroom"
+        ],
+        "conditions": [
+          "c-exam-period",
+          "c-holiday",
+          "c-multiple-slots",
+          "c-multimedia",
+          "c-lecture",
+          "c-student-club",
+          "c-delegated",
+          "c-change"
+        ]
+      }
+    },
+    {
+      "id": "G03-T02",
+      "templateId": "g03-t02",
+      "sourceFile": "G03-T02_正式业务模板_MD_v0.1.md",
+      "title": "部门会议室与会议用途预约",
+      "businessType": "g03-meeting-slot",
+      "sourceSha256": "ccc47640de8023e4b258abdcd6cd17603b99a43f501e14fea7712655de3652ae",
+      "sourceVersion": "business-md-v0.1",
+      "expectedRules": 28,
+      "groups": [
+        {
+          "name": "identity",
+          "rules": [
+            "R-02",
+            "R-03",
+            "R-17",
+            "R-18"
+          ]
+        },
+        {
+          "name": "evidence",
+          "rules": [
+            "R-04",
+            "R-27"
+          ]
+        },
+        {
+          "name": "resource",
+          "rules": [
+            "R-01",
+            "R-05",
+            "R-06",
+            "R-07",
+            "R-08",
+            "R-09",
+            "R-23",
+            "R-24"
+          ]
+        },
+        {
+          "name": "meeting",
+          "rules": [
+            "R-10",
+            "R-11",
+            "R-12",
+            "R-13",
+            "R-14",
+            "R-15",
+            "R-16",
+            "R-20",
+            "R-28"
+          ]
+        },
+        {
+          "name": "approval",
+          "rules": [
+            "R-19",
+            "R-21",
+            "R-22",
+            "R-25",
+            "R-26"
+          ]
+        }
+      ],
+      "axes": {
+        "primary": [
+          "p-school-office",
+          "p-department",
+          "p-employment-office"
+        ],
+        "conditions": [
+          "c-international",
+          "c-classified",
+          "c-leader-attends",
+          "c-social-science",
+          "c-high-risk",
+          "c-hybrid",
+          "c-multiple-slots",
+          "c-revision",
+          "c-fee",
+          "c-delegated"
+        ]
+      }
+    },
+    {
+      "id": "G03-T03",
+      "templateId": "g03-t03",
+      "sourceFile": "G03-T03_正式业务模板_MD_v0.1.md",
+      "title": "校园公共活动场地借用",
+      "businessType": "g03-activity-site",
+      "sourceSha256": "419ef4ad231b51f9caba9b2d9f82b42a83a1ebda8559dd24de10056e948ba9a8",
+      "sourceVersion": "business-md-v0.1",
+      "expectedRules": 30,
+      "groups": [
+        {
+          "name": "identity",
+          "rules": [
+            "R-02",
+            "R-14"
+          ]
+        },
+        {
+          "name": "evidence",
+          "rules": [
+            "R-03",
+            "R-27",
+            "R-28",
+            "R-29"
+          ]
+        },
+        {
+          "name": "resource",
+          "rules": [
+            "R-01",
+            "R-04",
+            "R-05",
+            "R-06",
+            "R-07",
+            "R-26",
+            "R-30"
+          ]
+        },
+        {
+          "name": "safety",
+          "rules": [
+            "R-08",
+            "R-09",
+            "R-10",
+            "R-11",
+            "R-12",
+            "R-13",
+            "R-15",
+            "R-16",
+            "R-17",
+            "R-18",
+            "R-19",
+            "R-20",
+            "R-21"
+          ]
+        },
+        {
+          "name": "change",
+          "rules": [
+            "R-22",
+            "R-23",
+            "R-24",
+            "R-25"
+          ]
+        }
+      ],
+      "axes": {
+        "primary": [
+          "p-indoor-room",
+          "p-hall",
+          "p-plaza"
+        ],
+        "conditions": [
+          "c-public",
+          "c-external-organizer",
+          "c-tickets",
+          "c-temporary-power",
+          "c-temporary-structure",
+          "c-sponsor",
+          "c-loan",
+          "c-publicity",
+          "c-guest",
+          "c-change",
+          "c-multiple-sites",
+          "c-site-policy",
+          "c-professional-risk"
+        ]
+      }
+    },
+    {
+      "id": "G03-T12",
+      "templateId": "g03-t12",
+      "sourceFile": "G03-T12_正式业务模板_MD_v0.1.md",
+      "title": "体育场馆集体活动借用",
+      "businessType": "g03-sports-slot",
+      "sourceSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
+      "sourceVersion": "business-md-v0.1",
+      "expectedRules": 27,
+      "groups": [
+        {
+          "name": "identity",
+          "rules": [
+            "R-01",
+            "R-02",
+            "R-10"
+          ]
+        },
+        {
+          "name": "evidence",
+          "rules": [
+            "R-03",
+            "R-24",
+            "R-25",
+            "R-26"
+          ]
+        },
+        {
+          "name": "resource",
+          "rules": [
+            "R-04",
+            "R-05",
+            "R-06",
+            "R-07",
+            "R-08",
+            "R-09",
+            "R-20",
+            "R-22"
+          ]
+        },
+        {
+          "name": "safety",
+          "rules": [
+            "R-11",
+            "R-12",
+            "R-13",
+            "R-14",
+            "R-15",
+            "R-16",
+            "R-17"
+          ]
+        },
+        {
+          "name": "lifecycle",
+          "rules": [
+            "R-18",
+            "R-19",
+            "R-21",
+            "R-23",
+            "R-27"
+          ]
+        }
+      ],
+      "axes": {
+        "primary": [
+          "p-indoor",
+          "p-outdoor",
+          "p-specialized"
+        ],
+        "conditions": [
+          "c-student-group",
+          "c-paid-event",
+          "c-multiple-slots",
+          "c-high-risk",
+          "c-revised",
+          "c-external",
+          "c-delegated",
+          "c-training"
+        ]
+      }
+    },
+    {
+      "id": "G03-T06",
+      "templateId": "g03-t06",
+      "sourceFile": "G03-T06_正式业务模板_MD_v0.1.md",
+      "title": "共享仪器平台课题组加入与账号授权",
+      "businessType": "g03-group-member",
+      "sourceSha256": "8bc189af1d53125023b5e93ecd78cb07b4148abb5098921ccc0c02dae1bbaa88",
+      "sourceVersion": "business-md-v0.1",
+      "expectedRules": 22,
+      "groups": [
+        {
+          "name": "identity",
+          "rules": [
+            "R-01",
+            "R-02",
+            "R-04",
+            "R-10",
+            "R-11",
+            "R-15",
+            "R-22"
+          ]
+        },
+        {
+          "name": "evidence",
+          "rules": [
+            "R-17",
+            "R-21"
+          ]
+        },
+        {
+          "name": "membership",
+          "rules": [
+            "R-03",
+            "R-05",
+            "R-06",
+            "R-07",
+            "R-08",
+            "R-09",
+            "R-16",
+            "R-18",
+            "R-19"
+          ]
+        },
+        {
+          "name": "lifecycle",
+          "rules": [
+            "R-12",
+            "R-13",
+            "R-14",
+            "R-20"
+          ]
+        }
+      ],
+      "axes": {
+        "primary": [
+          "p-self-join",
+          "p-pi-add",
+          "p-proxy-join",
+          "p-exit",
+          "p-role-change",
+          "p-pi-activation"
+        ],
+        "conditions": [
+          "c-cross-group",
+          "c-finance-request",
+          "c-cross-pi",
+          "c-batch",
+          "c-reactivate",
+          "c-personal-balance"
+        ]
+      }
+    },
+    {
+      "id": "G03-T07",
+      "templateId": "g03-t07",
+      "sourceFile": "G03-T07_正式业务模板_MD_v0.1.md",
+      "title": "指定仪器培训考核与独立操作资格",
+      "businessType": "g03-instrument-qualification",
+      "sourceSha256": "d166e3f118b63e54ead87e82a38e6684e42dd83cd3d57b3684ddc29cea4da862",
+      "sourceVersion": "business-md-v0.1",
+      "expectedRules": 32,
+      "groups": [
+        {
+          "name": "identity",
+          "rules": [
+            "R-02",
+            "R-03",
+            "R-21",
+            "R-22"
+          ]
+        },
+        {
+          "name": "evidence",
+          "rules": [
+            "R-09",
+            "R-17",
+            "R-20",
+            "R-23",
+            "R-30"
+          ]
+        },
+        {
+          "name": "training",
+          "rules": [
+            "R-01",
+            "R-04",
+            "R-05",
+            "R-07",
+            "R-08",
+            "R-10",
+            "R-18",
+            "R-19",
+            "R-24",
+            "R-31"
+          ]
+        },
+        {
+          "name": "qualification",
+          "rules": [
+            "R-06",
+            "R-11",
+            "R-12",
+            "R-13",
+            "R-14",
+            "R-15",
+            "R-16",
+            "R-25",
+            "R-27"
+          ]
+        },
+        {
+          "name": "lifecycle",
+          "rules": [
+            "R-26",
+            "R-28",
+            "R-29",
+            "R-32"
+          ]
+        }
+      ],
+      "axes": {
+        "primary": [
+          "p-first-training",
+          "p-exam",
+          "p-renew",
+          "p-reinstate",
+          "p-scope-change"
+        ],
+        "conditions": [
+          "c-multi-device",
+          "c-delegation",
+          "c-safety",
+          "c-fee",
+          "c-outside-cert",
+          "c-retraining",
+          "c-high-risk"
+        ]
+      }
+    },
+    {
+      "id": "G03-T08",
+      "templateId": "g03-t08",
+      "sourceFile": "G03-T08_正式业务模板_MD_v0.1.md",
+      "title": "仪器自主上机机时预约",
+      "businessType": "g03-instrument-slot",
+      "sourceSha256": "c807cc90a3e6fd2d083abba5bcc828348555d18b65d396e7fa909b30c4692662",
+      "sourceVersion": "business-md-v0.1",
+      "expectedRules": 36,
+      "groups": [
+        {
+          "name": "identity",
+          "rules": [
+            "R-02",
+            "R-03",
+            "R-06",
+            "R-07",
+            "R-22"
+          ]
+        },
+        {
+          "name": "evidence",
+          "rules": [
+            "R-28",
+            "R-29",
+            "R-30"
+          ]
+        },
+        {
+          "name": "safety",
+          "rules": [
+            "R-01",
+            "R-04",
+            "R-05",
+            "R-09",
+            "R-10",
+            "R-11",
+            "R-16",
+            "R-17",
+            "R-18",
+            "R-31",
+            "R-32",
+            "R-33",
+            "R-34",
+            "R-35",
+            "R-36"
+          ]
+        },
+        {
+          "name": "booking",
+          "rules": [
+            "R-12",
+            "R-13",
+            "R-14",
+            "R-15",
+            "R-19",
+            "R-20",
+            "R-23",
+            "R-24",
+            "R-27"
+          ]
+        },
+        {
+          "name": "fee",
+          "rules": [
+            "R-08",
+            "R-21",
+            "R-25",
+            "R-26"
+          ]
+        }
+      ],
+      "axes": {
+        "primary": [
+          "p-self-operation",
+          "p-sample-redirect"
+        ],
+        "conditions": [
+          "c-after-hours",
+          "c-whitelist",
+          "c-fee",
+          "c-pi-approval",
+          "c-hazard",
+          "c-professional-safety",
+          "c-training",
+          "c-change",
+          "c-multiple-slots",
+          "c-closed"
+        ]
+      }
+    },
+    {
+      "id": "G03-T09",
+      "templateId": "g03-t09",
+      "sourceFile": "G03-T09_正式业务模板_MD_v0.1.md",
+      "title": "仪器送样检测委托",
+      "businessType": "g03-sample-service",
+      "sourceSha256": "ca3195c16f7be049adbba5455393d1eb92bc7deda484721324784be7a1e720d0",
+      "sourceVersion": "business-md-v0.1",
+      "expectedRules": 30,
+      "groups": [
+        {
+          "name": "identity",
+          "rules": [
+            "R-02",
+            "R-03",
+            "R-04",
+            "R-05",
+            "R-13",
+            "R-15",
+            "R-22"
+          ]
+        },
+        {
+          "name": "evidence",
+          "rules": [
+            "R-08",
+            "R-27",
+            "R-28"
+          ]
+        },
+        {
+          "name": "sample",
+          "rules": [
+            "R-01",
+            "R-06",
+            "R-07",
+            "R-09",
+            "R-10",
+            "R-11",
+            "R-12",
+            "R-14",
+            "R-16",
+            "R-17",
+            "R-18",
+            "R-23",
+            "R-24",
+            "R-26",
+            "R-30"
+          ]
+        },
+        {
+          "name": "fee",
+          "rules": [
+            "R-19",
+            "R-20"
+          ]
+        },
+        {
+          "name": "events",
+          "rules": [
+            "R-21",
+            "R-25",
+            "R-29"
+          ]
+        }
+      ],
+      "axes": {
+        "primary": [
+          "p-internal-entrust",
+          "p-external-entrust",
+          "p-self-redirect"
+        ],
+        "conditions": [
+          "c-multiple-samples",
+          "c-hazard",
+          "c-proxy",
+          "c-accredited-report",
+          "c-fee",
+          "c-attachment",
+          "c-auto-approval",
+          "c-confidential",
+          "c-partial-acceptance",
+          "c-change"
+        ]
+      }
+    },
+    {
+      "id": "G03-T10",
+      "templateId": "g03-t10",
+      "sourceFile": "G03-T10_正式业务模板_MD_v0.1.md",
+      "title": "实体宣传品布设与公共位置使用",
+      "businessType": "g03-publicity-placement",
+      "sourceSha256": "80ae0ba9c29cb1f2b3f04799743b498fe56b08ea3f3ee565ef8e120bac9e5552",
+      "sourceVersion": "business-md-v0.1",
+      "expectedRules": 26,
+      "groups": [
+        {
+          "name": "identity",
+          "rules": [
+            "R-02",
+            "R-05",
+            "R-15"
+          ]
+        },
+        {
+          "name": "evidence",
+          "rules": [
+            "R-03",
+            "R-04",
+            "R-13",
+            "R-19",
+            "R-23",
+            "R-24",
+            "R-25"
+          ]
+        },
+        {
+          "name": "placement",
+          "rules": [
+            "R-01",
+            "R-07",
+            "R-08",
+            "R-09",
+            "R-10",
+            "R-11",
+            "R-12",
+            "R-14",
+            "R-18",
+            "R-21",
+            "R-26"
+          ]
+        },
+        {
+          "name": "approval",
+          "rules": [
+            "R-06",
+            "R-16",
+            "R-17",
+            "R-20",
+            "R-22"
+          ]
+        }
+      ],
+      "axes": {
+        "primary": [
+          "p-poster",
+          "p-banner",
+          "p-board",
+          "p-other-physical"
+        ],
+        "conditions": [
+          "c-commercial",
+          "c-physical-risk",
+          "c-linked-event",
+          "c-change",
+          "c-restricted-site",
+          "c-external",
+          "c-multiple-points",
+          "c-dynamic-qr",
+          "c-sponsor"
+        ]
+      }
+    },
+    {
+      "id": "G03-T11",
+      "templateId": "g03-t11",
+      "sourceFile": "G03-T11_正式业务模板_MD_v0.1.md",
+      "title": "校园电子屏内容与播放版位申请",
+      "businessType": "g03-screen-window",
+      "sourceSha256": "bd051a6332d9c557fec3103d486747f3ceca042d928c3758ace6f35966f2eb98",
+      "sourceVersion": "business-md-v0.1",
+      "expectedRules": 24,
+      "groups": [
+        {
+          "name": "identity",
+          "rules": [
+            "R-02",
+            "R-04"
+          ]
+        },
+        {
+          "name": "evidence",
+          "rules": [
+            "R-03",
+            "R-07",
+            "R-08",
+            "R-17",
+            "R-19",
+            "R-20",
+            "R-21",
+            "R-22",
+            "R-23"
+          ]
+        },
+        {
+          "name": "screen",
+          "rules": [
+            "R-01",
+            "R-05",
+            "R-06",
+            "R-09",
+            "R-10",
+            "R-11",
+            "R-14",
+            "R-15"
+          ]
+        },
+        {
+          "name": "approval",
+          "rules": [
+            "R-12",
+            "R-13",
+            "R-16",
+            "R-18",
+            "R-24"
+          ]
+        }
+      ],
+      "axes": {
+        "primary": [
+          "p-central-screen",
+          "p-department-screen",
+          "p-venue-screen"
+        ],
+        "conditions": [
+          "c-video",
+          "c-plain-text",
+          "c-change",
+          "c-emergency",
+          "c-brand",
+          "c-multiple-screens",
+          "c-confidential",
+          "c-withdraw",
+          "c-partial"
+        ]
+      }
+    }
+  ]
+}
