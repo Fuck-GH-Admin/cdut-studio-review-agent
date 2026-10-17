@@ -95,8 +95,9 @@ describe('G03 D4 complete-source modular technical candidates',()=>{
    expect(registered.ok).toBe(true)
    if(!registered.ok)throw Error(registered.message)
    const version=readAggregate(caseId)!.caseV2.documents[0]!.versionId
-   const factA=created.entity!.mapping.find(x=>x.objectKey==='item-a'&&x.checkId.includes('/r01#'))!
-   const factB=created.entity!.mapping.find(x=>x.objectKey==='item-b'&&x.checkId.includes('/r01#'))!
+   const isolationRule=spec.id==='G03-T06'?'/r02#':'/r01#'
+   const factA=created.entity!.mapping.find(x=>x.objectKey==='item-a'&&x.checkId.includes(isolationRule))!
+   const factB=created.entity!.mapping.find(x=>x.objectKey==='item-b'&&x.checkId.includes(isolationRule))!
    expect(factA).toBeDefined();expect(factB).toBeDefined()
    const prior=readAggregate(caseId)!
    const linked=await setEvidenceLink(caseId,{requestId:spec.templateId+'-link-a',
