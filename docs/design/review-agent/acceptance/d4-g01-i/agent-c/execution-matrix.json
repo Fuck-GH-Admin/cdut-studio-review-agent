@@ -1,0 +1,668 @@
+{
+  "schemaVersion": 1,
+  "phase": "C0_NO_GOLD",
+  "aCommit": "e3321add7322fba29169f0faeac9bc66571067e0",
+  "inputZipSha256": "33ad9e1fe5104cae91463218293ae58ccd27c934ff091b0687b20c64d699b26c",
+  "aGenericPlan": {
+    "rules": 49,
+    "mapping": 49,
+    "targets": 0,
+    "subjects": 0,
+    "fingerprint": "31b1240de64e4f2038790c7f7cdbdb7f139b14ce9db8e9689620fafdcce472ef",
+    "provenance": "A frozen artifact; independently read by C; C did not rerun Bun"
+  },
+  "count": 28,
+  "summary": {
+    "inputIntegrity": "28 PASS",
+    "caseSpecificBusinessRun": "28 NOT_RUN",
+    "dynamicScope": "28 BLOCKED_ENGINE (source-derived, not runtime execution)",
+    "goldComparison": "28 NOT_RUN"
+  },
+  "cases": [
+    {
+      "caseId": "C01",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C02",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name",
+        "id_number"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C03",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C04",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name",
+        "id_number"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C05",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C06",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C07",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name",
+        "id_number"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C08",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "GRADUATE",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C09",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "GRADUATE_INTERNATIONAL",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C10",
+      "intent": "HISTORICAL_REGISTRATION_ERROR",
+      "applicantClass": "GRADUATED",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C11",
+      "intent": "POST_GRADUATION_NEW_CHANGE",
+      "applicantClass": "GRADUATED",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C12",
+      "intent": "ACCOUNT_PROFILE_ONLY",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C13",
+      "intent": "DISPLAY_ENCODING_ONLY",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C14",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C15",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C16",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name",
+        "id_number"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C17",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "id_number"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C18",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C19",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C20",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "birth_date"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C21",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "other_key_field"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "C22",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P6_AUTHORITY_DECISION",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "V01",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "V02",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name",
+        "id_number"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "V03",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "V04",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "GRADUATED",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "V05",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    },
+    {
+      "caseId": "V06",
+      "intent": "CURRENT_ENROLLMENT_CORRECTION",
+      "applicantClass": "UNDERGRAD",
+      "stage": "P2_INITIAL",
+      "fields": [
+        "name"
+      ],
+      "inputValidation": "PASS_INPUT_INTEGRITY",
+      "dynamicCompatibility": "BLOCKED_ENGINE",
+      "runtimeStatus": "NOT_RUN",
+      "goldComparison": "NOT_RUN",
+      "caseIdCreated": null,
+      "runId": null,
+      "usedPlanFingerprint": null,
+      "actualCommand": null,
+      "actualExitCode": null,
+      "reasonCodes": [
+        "C-ENGINE-01",
+        "C-ENGINE-03"
+      ],
+      "note": "No lossless typed G01 student/field target. Generic 49-rule A plan is not this case's executed business review."
+    }
+  ]
+}
