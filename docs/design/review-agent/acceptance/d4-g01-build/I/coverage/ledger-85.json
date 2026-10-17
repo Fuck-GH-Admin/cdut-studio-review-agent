@@ -1,0 +1,1035 @@
+[
+  {
+    "id": "R001",
+    "sourceLocator": "L296",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-01/r001"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-01/r001"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R002",
+    "sourceLocator": "L297",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-02/r002"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-02/r002"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R003",
+    "sourceLocator": "L298",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-02/r003"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-02/r003"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R004",
+    "sourceLocator": "L299",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-03/r004"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-03/r004"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R005",
+    "sourceLocator": "L300",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-03/r005"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-03/r005"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R006",
+    "sourceLocator": "L301",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-03/r006"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-03/r006"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R007",
+    "sourceLocator": "L302",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-04/r007"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-04/r007"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R008",
+    "sourceLocator": "L303",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-03/r008"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-03/r008"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R009",
+    "sourceLocator": "L304",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-04/r009"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-04/r009"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R010",
+    "sourceLocator": "L305",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-04/r010"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-04/r010"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R011",
+    "sourceLocator": "L306",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-02/r011"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-02/r011"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R012",
+    "sourceLocator": "L307",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-02/r012"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-02/r012"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R013",
+    "sourceLocator": "L308",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-02/r013"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/branch-s11/r013"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R014",
+    "sourceLocator": "L309",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-04/r014"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/branch-s01/r014"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R015",
+    "sourceLocator": "L310",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-04/r015"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/branch-s02/r015"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R016",
+    "sourceLocator": "L311",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-04/r016"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/branch-s03/r016"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R017",
+    "sourceLocator": "L312",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-05/r017"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/branch-s04/r017"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R018",
+    "sourceLocator": "L313",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-05/r018"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/branch-s05/r018"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R019",
+    "sourceLocator": "L314",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-04/r019"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/branch-s06/r019"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R020",
+    "sourceLocator": "L315",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-04/r020"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/branch-s07/r020"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R021",
+    "sourceLocator": "L316",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-02/r021"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-02/r021"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R022",
+    "sourceLocator": "L317",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-02/r022"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/branch-s08/r022"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R023",
+    "sourceLocator": "L318",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-02/r023"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/branch-s09/r023"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R024",
+    "sourceLocator": "L319",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-01/r024"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/branch-s10/r024"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R025",
+    "sourceLocator": "L320",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-06/r025"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-06/r025"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R026",
+    "sourceLocator": "L321",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-01/r026"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/branch-s12/r026"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R027",
+    "sourceLocator": "L322",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-06/r027"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-06/r027"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "R028",
+    "sourceLocator": "L323",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-06/r028"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-06/r028"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
+  },
+  {
+    "id": "S01",
+    "sourceLocator": "L110",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "scenarioCheck": "g01-student-identity-correction@2:module/branch-s01/trigger-s01",
+    "status": "CONDITIONAL_SCENARIO_SEMANTIC_ONLY",
+    "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+  },
+  {
+    "id": "S02",
+    "sourceLocator": "L111",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "scenarioCheck": "g01-student-identity-correction@2:module/branch-s02/trigger-s02",
+    "status": "CONDITIONAL_SCENARIO_SEMANTIC_ONLY",
+    "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+  },
+  {
+    "id": "S03",
+    "sourceLocator": "L112",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "scenarioCheck": "g01-student-identity-correction@2:module/branch-s03/trigger-s03",
+    "status": "CONDITIONAL_SCENARIO_SEMANTIC_ONLY",
+    "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+  },
+  {
+    "id": "S04",
+    "sourceLocator": "L113",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "scenarioCheck": "g01-student-identity-correction@2:module/branch-s04/trigger-s04",
+    "status": "CONDITIONAL_SCENARIO_SEMANTIC_ONLY",
+    "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+  },
+  {
+    "id": "S05",
+    "sourceLocator": "L114",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "scenarioCheck": "g01-student-identity-correction@2:module/branch-s05/trigger-s05",
+    "status": "CONDITIONAL_SCENARIO_SEMANTIC_ONLY",
+    "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+  },
+  {
+    "id": "S06",
+    "sourceLocator": "L115",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "scenarioCheck": "g01-student-identity-correction@2:module/branch-s06/trigger-s06",
+    "status": "CONDITIONAL_SCENARIO_SEMANTIC_ONLY",
+    "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+  },
+  {
+    "id": "S07",
+    "sourceLocator": "L116",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "scenarioCheck": "g01-student-identity-correction@2:module/branch-s07/trigger-s07",
+    "status": "CONDITIONAL_SCENARIO_SEMANTIC_ONLY",
+    "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+  },
+  {
+    "id": "S08",
+    "sourceLocator": "L117",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "scenarioCheck": "g01-student-identity-correction@2:module/branch-s08/trigger-s08",
+    "status": "CONDITIONAL_SCENARIO_SEMANTIC_ONLY",
+    "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+  },
+  {
+    "id": "S09",
+    "sourceLocator": "L118",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "scenarioCheck": "g01-student-identity-correction@2:module/branch-s09/trigger-s09",
+    "status": "CONDITIONAL_SCENARIO_SEMANTIC_ONLY",
+    "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+  },
+  {
+    "id": "S10",
+    "sourceLocator": "L119",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "scenarioCheck": "g01-student-identity-correction@2:module/branch-s10/trigger-s10",
+    "status": "CONDITIONAL_SCENARIO_SEMANTIC_ONLY",
+    "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+  },
+  {
+    "id": "S11",
+    "sourceLocator": "L120",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "scenarioCheck": "g01-student-identity-correction@2:module/branch-s11/trigger-s11",
+    "status": "CONDITIONAL_SCENARIO_SEMANTIC_ONLY",
+    "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+  },
+  {
+    "id": "S12",
+    "sourceLocator": "L121",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "scenarioCheck": "g01-student-identity-correction@2:module/branch-s12/trigger-s12",
+    "status": "CONDITIONAL_SCENARIO_SEMANTIC_ONLY",
+    "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+  },
+  {
+    "id": "S13",
+    "sourceLocator": "L122",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix"
+    ],
+    "scenarioCheck": "g01-student-identity-correction@2:module/branch-s13/trigger-s13",
+    "status": "CONDITIONAL_SCENARIO_SEMANTIC_ONLY",
+    "limitation": "G01-I 多轴条件组合不能由现有 D2 scenario/target 独立实例化；编译包括说明任务但不会条件剪枝"
+  },
+  {
+    "id": "F01",
+    "sourceLocator": "L185",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/subject-and-request"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/subject-and-request"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F02",
+    "sourceLocator": "L186",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/subject-and-request"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/subject-and-request"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F03",
+    "sourceLocator": "L187",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/subject-and-request"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/subject-and-request"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F04",
+    "sourceLocator": "L188",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/subject-and-request"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/subject-and-request"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F05",
+    "sourceLocator": "L189",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/subject-and-request"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/subject-and-request"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F06",
+    "sourceLocator": "L190",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/subject-and-request"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/subject-and-request"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F07",
+    "sourceLocator": "L191",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/identity-continuity"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/identity-continuity"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F08",
+    "sourceLocator": "L192",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/identity-continuity"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/identity-continuity"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F09",
+    "sourceLocator": "L193",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/identity-continuity"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/identity-continuity"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F10",
+    "sourceLocator": "L194",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/identity-continuity"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/identity-continuity"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F11",
+    "sourceLocator": "L195",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/identity-continuity"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/identity-continuity"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F12",
+    "sourceLocator": "L196",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/identity-continuity"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/identity-continuity"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F13",
+    "sourceLocator": "L197",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/identity-continuity"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/identity-continuity"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F14",
+    "sourceLocator": "L198",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/identity-continuity"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/identity-continuity"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F15",
+    "sourceLocator": "L199",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/admission-and-changes"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F16",
+    "sourceLocator": "L200",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/admission-and-changes"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F17",
+    "sourceLocator": "L201",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/admission-and-changes"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F18",
+    "sourceLocator": "L202",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/admission-and-changes"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F19",
+    "sourceLocator": "L203",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/admission-and-changes"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F20",
+    "sourceLocator": "L204",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/admission-and-changes"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F21",
+    "sourceLocator": "L205",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/admission-and-changes"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F22",
+    "sourceLocator": "L206",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/admission-and-changes"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/admission-and-changes"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F23",
+    "sourceLocator": "L207",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/decision-and-temporal"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/decision-and-temporal"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F24",
+    "sourceLocator": "L208",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/decision-and-temporal"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/decision-and-temporal"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F25",
+    "sourceLocator": "L209",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/decision-and-temporal"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/decision-and-temporal"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F26",
+    "sourceLocator": "L210",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/decision-and-temporal"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/decision-and-temporal"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F27",
+    "sourceLocator": "L211",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/decision-and-temporal"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/decision-and-temporal"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "F28",
+    "sourceLocator": "L212",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-10/decision-and-temporal"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-10/decision-and-temporal"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
+  },
+  {
+    "id": "M01",
+    "sourceLocator": "L152",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-07/m01"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-07/m01"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
+  },
+  {
+    "id": "M02",
+    "sourceLocator": "L153",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-07/m02"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-07/m02"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
+  },
+  {
+    "id": "M03",
+    "sourceLocator": "L154",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-07/m03"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-07/m03"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
+  },
+  {
+    "id": "M04",
+    "sourceLocator": "L155",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-07/m04"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-07/m04"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
+  },
+  {
+    "id": "M05",
+    "sourceLocator": "L156",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-07/m05"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-07/m05"
+    ],
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
+    "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
+  },
+  {
+    "id": "M06",
+    "sourceLocator": "L157",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-07/m06"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-07/m06"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
+  },
+  {
+    "id": "P0",
+    "sourceLocator": "L257",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-08/p0"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-08/p0"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+  },
+  {
+    "id": "P1",
+    "sourceLocator": "L258",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-08/p1"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-08/p1"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+  },
+  {
+    "id": "P2",
+    "sourceLocator": "L259",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-08/p2"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-08/p2"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+  },
+  {
+    "id": "P3",
+    "sourceLocator": "L260",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-08/p3"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-08/p3"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+  },
+  {
+    "id": "P4",
+    "sourceLocator": "L261",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-08/p4"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-08/p4"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+  },
+  {
+    "id": "P5",
+    "sourceLocator": "L262",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-08/p5"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-08/p5"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+  },
+  {
+    "id": "P6",
+    "sourceLocator": "L263",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-08/p6"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-08/p6"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+  },
+  {
+    "id": "P7",
+    "sourceLocator": "L264",
+    "oldChecks": [
+      "g01-student-identity-correction@1:module/part-08/p7"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:module/part-08/p7"
+    ],
+    "status": "CASE_SEMANTIC_ONLY",
+    "limitation": "原件 P0-P7 与 CaseStage 枚举不同；技术语义提醒存在但未获得权威流程映射"
+  },
+  {
+    "id": "OUTPUT_STATES",
+    "sourceLocator": "L344-L385",
+    "oldChecks": [
+      "g01-student-identity-correction@1:local/output-state-contract"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:local/output-state-contract"
+    ],
+    "status": "TOOLING_BLOCKED_SEMANTIC",
+    "limitation": "十业务状态和并发问题聚合没有完整 D2 机器枚举与裁决器"
+  },
+  {
+    "id": "EXCEPTIONS",
+    "sourceLocator": "L224-L249,L420-L440",
+    "oldChecks": [
+      "g01-student-identity-correction@1:local/exceptions-and-safe-alternatives"
+    ],
+    "newChecks": [
+      "g01-student-identity-correction@2:local/exceptions-and-safe-alternatives"
+    ],
+    "status": "TOOLING_BLOCKED_SEMANTIC",
+    "limitation": "等效证据效力、来源可信度、跨材料视觉冲突需权威/人工核实"
+  }
+]
