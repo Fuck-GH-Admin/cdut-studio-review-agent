@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "domain": "G07",
+  "publicCommonBaseSha": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "draftPr": 90,
+  "status": "PARTIAL",
+  "completedAuthoringTemplates": 7,
+  "readyForIntegration": 0,
+  "verifiedSyntheticTechCases": 7,
+  "allCOriginalsAvailable": true,
+  "sourceRules": 260,
+  "authoredTasks": 466,
+  "sourceBindings": 466,
+  "workspaceLocalModules": 105,
+  "structuredScenarioConditionsPerTemplate": 12,
+  "onlineModelAccuracyVerified": false,
+  "universityPublicationAllowed": false,
+  "technicalCiRunId": 39051441393,
+  "templates": [
+    {
+      "id": "T01",
+      "original": {
+        "branchCommit": "0fff12c5b5330b72566d33d81283da603f687793",
+        "gitBlobSha1": "8a998496a49fff82fbb57bd8894c2f7bf646ec6f",
+        "path": "docs/design/review-agent/business-templates/G07/C/G07-T01/originals/G07-T01_正式业务模板_MD_v0.1.md",
+        "version": "C-v0.1",
+        "contentBytesUtf8": 71809,
+        "sha256": "392e63fd9d7e7da3926325682db65007daff44cc04e736791b1cabf065efdf2d",
+        "sha256VerifiedBy": "G07 GitHub Actions technical test"
+      },
+      "technicalEvidence": {
+        "workflowRunId": 39051441393,
+        "workflowStatus": "SUCCESS",
+        "runtimePlan": "runtime/T01/d2-plan.json",
+        "piRun": "runtime/T01/pi-run.json",
+        "d3Export": "runtime/T01/d3-export.json",
+        "verdict": "runtime/T01/technical-verdict.json",
+        "subjects": 2,
+        "checks": 122,
+        "ruleChecks": 64,
+        "d3Fingerprint": "3d58efff372dcc35ca4398594f0c10b744c2919152e4233d3f3806c8d0a82617",
+        "d2Fingerprint": "6411210a0dfe57195f43b9cbfc1fe2f61a10db7590c5fb5e8ba50d88a1314630",
+        "piComplete": true,
+        "onlineModelAccuracyVerified": false
+      },
+      "status": "PARTIAL"
+    },
+    {
+      "id": "T02",
+      "original": {
+        "branchCommit": "1564a20fb99c5ff13fd78ce3162d0ac93005e65c",
+        "gitBlobSha1": "46c48f80df90e99274986633ae29d7d407ed84b9",
+        "path": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md",
+        "version": "C-v0.1",
+        "contentBytesUtf8": 51531,
+        "sha256": "543f73ead9bb77e86d951e2ef29dbdf3832aea5270bba91fede45c046e5ef556",
+        "sha256VerifiedBy": "G07 GitHub Actions technical test"
+      },
+      "technicalEvidence": {
+        "workflowRunId": 39051441393,
+        "workflowStatus": "SUCCESS",
+        "runtimePlan": "runtime/T02/d2-plan.json",
+        "piRun": "runtime/T02/pi-run.json",
+        "d3Export": "runtime/T02/d3-export.json",
+        "verdict": "runtime/T02/technical-verdict.json",
+        "subjects": 2,
+        "checks": 130,
+        "ruleChecks": 72,
+        "d3Fingerprint": "0dd3c5a6f1ad7521e79202384851cd290ba6b0f59dd8646447162b15048df87f",
+        "d2Fingerprint": "b6f84c7bb242b6ad9754cf46a0216d75a578f212222f1f3d95265832cd82549a",
+        "piComplete": true,
+        "onlineModelAccuracyVerified": false
+      },
+      "status": "PARTIAL"
+    },
+    {
+      "id": "T03",
+      "original": {
+        "branchCommit": "e9f4db82176e235b87808787ddf12bd0806fa5ca",
+        "gitBlobSha1": "734f9fdeb16ee25c8b4e5b339b02a2af9baf1aee",
+        "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/G07-T03_正式业务模板_MD_v0.1.md",
+        "version": "C-v0.1",
+        "contentBytesUtf8": 66381,
+        "sha256": "fec6ee135ad9b5f644dfe8415440e34f633e851c690deba678a2097f2fc98d98",
+        "sha256VerifiedBy": "G07 GitHub Actions technical test"
+      },
+      "technicalEvidence": {
+        "workflowRunId": 39051441393,
+        "workflowStatus": "SUCCESS",
+        "runtimePlan": "runtime/T03/d2-plan.json",
+        "piRun": "runtime/T03/pi-run.json",
+        "d3Export": "runtime/T03/d3-export.json",
+        "verdict": "runtime/T03/technical-verdict.json",
+        "subjects": 2,
+        "checks": 124,
+        "ruleChecks": 66,
+        "d3Fingerprint": "af3a1dfc829b70df94aae745fbf2ba6e129818543aeaffa11f75caa68b5ada39",
+        "d2Fingerprint": "d0d74471470c8cbe2ad3968ba0d5b4f911d80bf7643a757fd7531e9af724693b",
+        "piComplete": true,
+        "onlineModelAccuracyVerified": false
+      },
+      "status": "PARTIAL"
+    },
+    {
+      "id": "T04",
+      "original": {
+        "branchCommit": "4f914de38ec971d119fbeef20f44d82939aa70de",
+        "gitBlobSha1": "9a629e8c6e6e9bf4c348fe413c32b564e50f580d",
+        "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v0.1-original/G07-T04_正式业务模板_MD_v0.1.md",
+        "version": "C-v0.1",
+        "contentBytesUtf8": 81721,
+        "sha256": "009a13599a34a5a78407a953d19810637636ee2f4dd4821d12cb9a44bad54bb5",
+        "sha256VerifiedBy": "G07 GitHub Actions technical test"
+      },
+      "technicalEvidence": {
+        "workflowRunId": 39051441393,
+        "workflowStatus": "SUCCESS",
+        "runtimePlan": "runtime/T04/d2-plan.json",
+        "piRun": "runtime/T04/pi-run.json",
+        "d3Export": "runtime/T04/d3-export.json",
+        "verdict": "runtime/T04/technical-verdict.json",
+        "subjects": 2,
+        "checks": 132,
+        "ruleChecks": 72,
+        "d3Fingerprint": "33dfd7491cfe8cedd9421791a1d99b6fbb678d4d2be5668c9381586f40319176",
+        "d2Fingerprint": "69888173cf49fe73d0e4458ba632a46ac5358f48b00526b8cfc3391719895971",
+        "piComplete": true,
+        "onlineModelAccuracyVerified": false
+      },
+      "status": "PARTIAL"
+    },
+    {
+      "id": "T05",
+      "original": {
+        "branchCommit": "780cd209cecd6b90cd568997530b47ddde32aa2a",
+        "gitBlobSha1": "6a7ef0cdd10ecaa7e851d6dc43a728a669484106",
+        "path": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/original_v0.1/G07-T05_正式业务模板_MD_v0.1.md",
+        "version": "C-v0.1",
+        "contentBytesUtf8": 48691,
+        "sha256": "1be277aa5387b2995a5d7a606885706848bc7fb68426efce1c4ea61a695e7abf",
+        "sha256VerifiedBy": "G07 GitHub Actions technical test"
+      },
+      "technicalEvidence": {
+        "workflowRunId": 39051441393,
+        "workflowStatus": "SUCCESS",
+        "runtimePlan": "runtime/T05/d2-plan.json",
+        "piRun": "runtime/T05/pi-run.json",
+        "d3Export": "runtime/T05/d3-export.json",
+        "verdict": "runtime/T05/technical-verdict.json",
+        "subjects": 2,
+        "checks": 148,
+        "ruleChecks": 90,
+        "d3Fingerprint": "281ac81534b15292fa345477d41a16f405a7ce44c519acb8f819ea0a3f0cd7f8",
+        "d2Fingerprint": "c5d8e3dba5b8d212a6556e22d28b323232bf8855b91cb74720f8aec261dbfb27",
+        "piComplete": true,
+        "onlineModelAccuracyVerified": false
+      },
+      "status": "PARTIAL"
+    },
+    {
+      "id": "T06",
+      "original": {
+        "branchCommit": "0fbd811f9f6e8170c37b381e1b127ceab8fda348",
+        "gitBlobSha1": "c3be13c801a56300e71e2a468632d263f8fa2de8",
+        "path": "docs/design/review-agent/business-templates/G07/C/G07-T06/G07-T06_正式业务模板_MD_v0.1.md",
+        "version": "C-v0.1",
+        "contentBytesUtf8": 88730,
+        "sha256": "59f0e1cc0ef4232d8a3f5c8c8c6a6cb1413695c0ff8bed94fd8539d35bd95c13",
+        "sha256VerifiedBy": "G07 GitHub Actions technical test"
+      },
+      "technicalEvidence": {
+        "workflowRunId": 39051441393,
+        "workflowStatus": "SUCCESS",
+        "runtimePlan": "runtime/T06/d2-plan.json",
+        "piRun": "runtime/T06/pi-run.json",
+        "d3Export": "runtime/T06/d3-export.json",
+        "verdict": "runtime/T06/technical-verdict.json",
+        "subjects": 2,
+        "checks": 134,
+        "ruleChecks": 72,
+        "d3Fingerprint": "88ab5d2c00d42e2f12110fe34840eb445b00f48818af513c6b7cf1932f824bec",
+        "d2Fingerprint": "c9d21d00fe20948a4db6ba9d50141d5ed92d7c1cf97d485a8981de444927b3bf",
+        "piComplete": true,
+        "onlineModelAccuracyVerified": false
+      },
+      "status": "PARTIAL"
+    },
+    {
+      "id": "T07",
+      "original": {
+        "branchCommit": "41b88bab6f84363e1d111f8c464cbe37cffddbcd",
+        "gitBlobSha1": "f6d9c8c2820b165b6010fecddc1dde5a478a9ac2",
+        "path": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/G07-T07_正式业务模板_MD_v0.1.md",
+        "version": "C-v0.1",
+        "contentBytesUtf8": 60867,
+        "sha256": "cafc5406ec97a6a282cae2e297ce6727567db37c4b1b7e7ca24ab2f32701586e",
+        "sha256VerifiedBy": "G07 GitHub Actions technical test"
+      },
+      "technicalEvidence": {
+        "workflowRunId": 39051441393,
+        "workflowStatus": "SUCCESS",
+        "runtimePlan": "runtime/T07/d2-plan.json",
+        "piRun": "runtime/T07/pi-run.json",
+        "d3Export": "runtime/T07/d3-export.json",
+        "verdict": "runtime/T07/technical-verdict.json",
+        "subjects": 2,
+        "checks": 142,
+        "ruleChecks": 84,
+        "d3Fingerprint": "93bf249a7e8670f77d364d1724a24fa1d8d3c5a537cbcd44273da1dadeecedb2",
+        "d2Fingerprint": "6d0504ee53ddcc20facad93fa755d3c706aba4485def88586cb8897ef9c11ec3",
+        "piComplete": true,
+        "onlineModelAccuracyVerified": false
+      },
+      "status": "PARTIAL"
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "domain": "G07",
+  "status": "OPEN",
+  "issues": [
+    {
+      "id": "G07-T01-ENG-01",
+      "template": "T01",
+      "category": "ENGINE",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "issue": "13-axis limit and no generalized independent BR exclusivity proof; all beyond bounded axes retained as semantic and frozen original",
+      "affected": [
+        "BR-13",
+        "BR-14",
+        "BR-15",
+        "BR-16",
+        "BR-17",
+        "BR-18",
+        "BR-19",
+        "BR-20",
+        "BR-21",
+        "BR-22"
+      ],
+      "source": "T01/source/frozen-C-v0.1.md",
+      "minimalFix": "Verified branch-specific mapping/grouping under current common axis contract, or separate COMMON extension approved by owner; no silent BR removal"
+    },
+    {
+      "id": "G07-T02-ENG-01",
+      "template": "T02",
+      "category": "ENGINE",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "issue": "13-axis limit and no generalized independent BR exclusivity proof; all beyond bounded axes retained as semantic and frozen original",
+      "affected": [
+        "BR-13",
+        "BR-14"
+      ],
+      "source": "T02/source/frozen-C-v0.1.md",
+      "minimalFix": "Verified branch-specific mapping/grouping under current common axis contract, or separate COMMON extension approved by owner; no silent BR removal"
+    },
+    {
+      "id": "G07-T03-ENG-01",
+      "template": "T03",
+      "category": "ENGINE",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "issue": "13-axis limit and no generalized independent BR exclusivity proof; all beyond bounded axes retained as semantic and frozen original",
+      "affected": [
+        "BR-13",
+        "BR-14"
+      ],
+      "source": "T03/source/frozen-C-v0.1.md",
+      "minimalFix": "Verified branch-specific mapping/grouping under current common axis contract, or separate COMMON extension approved by owner; no silent BR removal"
+    },
+    {
+      "id": "G07-T04-ENG-01",
+      "template": "T04",
+      "category": "ENGINE",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "issue": "13-axis limit and no generalized independent BR exclusivity proof; all beyond bounded axes retained as semantic and frozen original",
+      "affected": [
+        "BR-13",
+        "BR-14",
+        "BR-15",
+        "BR-16",
+        "BR-17",
+        "BR-18"
+      ],
+      "source": "T04/source/frozen-C-v0.1.md",
+      "minimalFix": "Verified branch-specific mapping/grouping under current common axis contract, or separate COMMON extension approved by owner; no silent BR removal"
+    },
+    {
+      "id": "G07-T05-ENG-01",
+      "template": "T05",
+      "category": "ENGINE",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "issue": "13-axis limit and no generalized independent BR exclusivity proof; all beyond bounded axes retained as semantic and frozen original",
+      "affected": [
+        "BR-13",
+        "BR-14",
+        "BR-15"
+      ],
+      "source": "T05/source/frozen-C-v0.1.md",
+      "minimalFix": "Verified branch-specific mapping/grouping under current common axis contract, or separate COMMON extension approved by owner; no silent BR removal"
+    },
+    {
+      "id": "G07-T06-ENG-01",
+      "template": "T06",
+      "category": "ENGINE",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "issue": "13-axis limit and no generalized independent BR exclusivity proof; all beyond bounded axes retained as semantic and frozen original",
+      "affected": [
+        "BR-13",
+        "BR-14",
+        "BR-15",
+        "BR-16"
+      ],
+      "source": "T06/source/frozen-C-v0.1.md",
+      "minimalFix": "Verified branch-specific mapping/grouping under current common axis contract, or separate COMMON extension approved by owner; no silent BR removal"
+    },
+    {
+      "id": "G07-T07-ENG-01",
+      "template": "T07",
+      "category": "ENGINE",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "issue": "13-axis limit and no generalized independent BR exclusivity proof; all beyond bounded axes retained as semantic and frozen original",
+      "affected": [
+        "BR-13",
+        "BR-14",
+        "BR-15",
+        "BR-16",
+        "BR-17",
+        "BR-18"
+      ],
+      "source": "T07/source/frozen-C-v0.1.md",
+      "minimalFix": "Verified branch-specific mapping/grouping under current common axis contract, or separate COMMON extension approved by owner; no silent BR removal"
+    },
+    {
+      "id": "G07-POLICY-ALL",
+      "category": "POLICY",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "affected": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07"
+      ],
+      "issue": "No authoritative confirmation of present CDUT policy validity; C sources remain policy-candidate"
+    },
+    {
+      "id": "G07-EXTERNAL-ALL",
+      "category": "EXTERNAL",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "affected": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07"
+      ],
+      "issue": "No authorized live OA, finance, tax invoice, bank or ledger readonly integration"
+    },
+    {
+      "id": "G07-TEST-ALL",
+      "category": "TEST",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "affected": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07"
+      ],
+      "issue": "Independent hidden Gold/online model business accuracy NOT_RUN"
+    },
+    {
+      "id": "G07-AUTHORING-BR",
+      "category": "AUTHORING",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "affected": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07"
+      ],
+      "issue": "D4 semantic task decomposition and BR axis equivalence requires independent business reviewer signoff"
+    }
+  ]
+}

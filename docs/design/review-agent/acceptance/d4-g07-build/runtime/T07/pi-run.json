@@ -1,0 +1,2337 @@
+{
+  "id": "run-pi-mvcn3wnu-ibr86",
+  "caseId": "g07-t07-synthetic-case",
+  "templateId": "g07-t07",
+  "templateVersion": 1,
+  "inputManifest": {
+    "hash": "947ae1baf71cf6435b25a81e1a51ba1e84de275b51a3e01aa6ddfd991e2e3613",
+    "templateVersion": 1,
+    "policyVersions": [],
+    "documentVersions": [
+      {
+        "documentId": "doc-1-mvcn3wn3",
+        "versionId": "doc-1-mvcn3wn3-v1",
+        "contentHash": "e6ff0826646c9cc5b1b3710f94b5e1ac167cc6e6b59b1bf8bf245899e1410568"
+      }
+    ],
+    "observationIds": [],
+    "evidenceLinkIds": [
+      "evl-doc-1-mvcn3wn3-v1-g07-t07-subject-a-1792256270092-i425"
+    ],
+    "effectiveRuleIds": [
+      "d2-3efe617eaa9f6c4d422a",
+      "d2-c0393a23bb74045286c5",
+      "d2-3ca6ddc9bd4c7021417b",
+      "d2-88081a82ea6ee8b5f310",
+      "d2-39da6f7146be9d367a45",
+      "d2-70ea9ac060258a079fe0",
+      "d2-17090a0badccc589b922",
+      "d2-eb5e49ac9535b3b8481b",
+      "d2-02d2910e48af44b454bb",
+      "d2-9b9f6f89b1e07310ee38",
+      "d2-ceb3661eba8bd0c520e8",
+      "d2-3a1060e75bf00072570a",
+      "d2-d02b1bba5eb5b02a25e4",
+      "d2-308244a67a8213f234be",
+      "d2-9edc986689a1bc358f0a",
+      "d2-5c3ea06ddf884e34ac1c",
+      "d2-7b49f29c25c5bc6b9651",
+      "d2-261dc9433380d1f1c606",
+      "d2-c612f0a41ce4c2d40002",
+      "d2-78175b26afb3a87e8c9f",
+      "d2-76851ca5a3a58910e0a6",
+      "d2-6e905d3e7256a020e965",
+      "d2-2ea054ad31f76a3d52a7",
+      "d2-8ddeb6af4d4697047035",
+      "d2-e7e154a47a7ce0a4e25d",
+      "d2-28470e033149b2eae4f6",
+      "d2-58eb9ed889a8b41a8b9e",
+      "d2-d5aefa955275529bca91",
+      "d2-df74a5841df2fd7981f6",
+      "d2-8948dd99f1ba160b4a4b",
+      "d2-be5ee06f354533a219b0",
+      "d2-1570639da92dbcda8242",
+      "d2-5715d7e6619bb8160179",
+      "d2-c466c3ed64f4a78a25bd",
+      "d2-1e8d1e15b5f83f270b97",
+      "d2-7f360fb8e40c59816e4f",
+      "d2-aaeac9082270b4a98b72",
+      "d2-92e7dfa9e28af9cb1bf7",
+      "d2-0fa9717e7a2c5df5bbc4",
+      "d2-f4a83876e98f9196f3bd",
+      "d2-1ad32e9eb6df64a427a6",
+      "d2-75261064f82d774832cb",
+      "d2-f79a02a5865cb9df5109",
+      "d2-93c042c25ad33f2374a8",
+      "d2-2a6b1a6a51bdba38633c",
+      "d2-735cec226a042d3756a0",
+      "d2-6bc954135136189dc2a3",
+      "d2-9fb702adafdb73d0a78a",
+      "d2-3063607ce0e10a3577b3",
+      "d2-9bd53474870af4cae98b",
+      "d2-87b7a1f2f6fae09ca435",
+      "d2-a94e8d0cf7242ae8ede4",
+      "d2-d370b744dc354d645a8b",
+      "d2-03c6872cbe785ef6d2ac",
+      "d2-df379fc37ba08120532c",
+      "d2-e2166939c98e9eb41b73",
+      "d2-848a026ef35490b6898c",
+      "d2-7c1357a6225814c35173",
+      "d2-25cee600ebc6dc98c0da",
+      "d2-fb8db436550eeb78d870",
+      "d2-e34ecd4f8ebcf7a7fde0",
+      "d2-bf82fe24f0ed63823585",
+      "d2-d668d58d1b23829b40c7",
+      "d2-0fec7e322818d0cda591",
+      "d2-42339e4dbed1c292330c",
+      "d2-3af2206cd70bc974c104",
+      "d2-497ac29ee30703fcd043",
+      "d2-4856aaa77f53ea5d7313",
+      "d2-0e3f4ebbc66fd774f6e2",
+      "d2-e8640de97ea44fb8cb9b",
+      "d2-b3ba9b4ad03edf1df8f9",
+      "d2-580014782d386643ce50",
+      "d2-1dc13a0fe61023df90ca",
+      "d2-b3acec5ba0723e20cc21",
+      "d2-0523e5225d1875c25c73",
+      "d2-a1da978a13a6e6b231e4",
+      "d2-44375a521afe58d58339",
+      "d2-17bc029e50898135ca17",
+      "d2-76962257dccc992b2056",
+      "d2-de076adafacd7c2b0eac",
+      "d2-732d9a621c1ab5587a55",
+      "d2-8034c140880ce61598fd",
+      "d2-dd4a54164d267492382b",
+      "d2-f6ad5279027ce856bda2",
+      "d2-67fb51a2b89b4f1e3f38",
+      "d2-5cc8ee9d84e1653d060f",
+      "d2-0f5a0e4ba0a2d5585bed",
+      "d2-4f3d71f64d87802d4c7c",
+      "d2-f123c7cb6608750783fe",
+      "d2-47c6800aebc66a5ef515",
+      "d2-1978cada9f614565f07e",
+      "d2-385afe88e8cfb4487b08",
+      "d2-c86a5fffa0f6c9053f1b",
+      "d2-0e8d7ebd09449132b3ca",
+      "d2-bdb65c97736f84d192c1",
+      "d2-7f86b1b657fc2fca3c8f",
+      "d2-583b9a604dd5b670c19c",
+      "d2-5914ccd22fde8c5c2b8e",
+      "d2-8ec26931512fb02a57e1",
+      "d2-c1312b919628313ca293",
+      "d2-08a7c4d6ceeadf44765e",
+      "d2-fdb7f515dc50cf777ce4",
+      "d2-fad38882f34b8c7c5026",
+      "d2-f9d4b8bf33d64e8413af",
+      "d2-144be09e7273f2f47b4c",
+      "d2-c2d677dcac1b7e788e29",
+      "d2-c181828408d9fafac53d",
+      "d2-835f8dfc347aa56098c7",
+      "d2-577647b97f4d05c4bac0",
+      "d2-a0f7e908597663b1bbb6",
+      "d2-d345e3bf179a897b20d1",
+      "d2-0e182d015c15a8d59a4e",
+      "d2-c87dd55f97e820334192",
+      "d2-3fea730f5cbe8a18d7d3",
+      "d2-01adc3da5ece2f8b7b57",
+      "d2-906402dc64d732823057",
+      "d2-36379b1912b2bb671fc5",
+      "d2-41a40f6b807e630ffae0",
+      "d2-dc5da2d205252bd1e598",
+      "d2-005562ae31789df61c27",
+      "d2-df049a4372391a86a6b8",
+      "d2-bb93e2a656f786e74c31",
+      "d2-b862b17b4c9759812032",
+      "d2-cdd1b5014a01ce0fc96d",
+      "d2-5a82029c3a352dff9597",
+      "d2-d7d32f7c35a5e35b74a2",
+      "d2-9b2fc76954364e71dcc1",
+      "d2-d0e399cd27a6bcd9ac48",
+      "d2-7b88077e9e656011d31a",
+      "d2-c2ce8bfb127691161e06",
+      "d2-f14e30a9d38a62137a6d",
+      "d2-bf1597d78bfb31903489",
+      "d2-4c6045a9b200795007f9",
+      "d2-0390aa395238d49e73fb",
+      "d2-21da6137e4d3d80f7897",
+      "d2-26beb8f2151a020ff6cd",
+      "d2-cc084c00252c230066a9",
+      "d2-e404e5abf0bfbea86651",
+      "d2-7466056141b9b39df22a",
+      "d2-60fe9a4b49e13f5aeb86",
+      "d2-d2ff39ab2937df57a4ea",
+      "d2-377ac7988301cc4f92b0"
+    ],
+    "effectiveRuleSetHash": "d56d0002b311ac00700ce79a5b743ddc8d931716caea6647dd3d24db9b4a8f49"
+  },
+  "status": "completed",
+  "checkpoints": [],
+  "checks": [
+    {
+      "checkId": "check-d2-3efe617eaa9f6c4d422a-subject-g07-t07-subject-a",
+      "ruleId": "d2-3efe617eaa9f6c4d422a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-c0393a23bb74045286c5-subject-g07-t07-subject-a",
+      "ruleId": "d2-c0393a23bb74045286c5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-3ca6ddc9bd4c7021417b-subject-g07-t07-subject-a",
+      "ruleId": "d2-3ca6ddc9bd4c7021417b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-88081a82ea6ee8b5f310-subject-g07-t07-subject-a",
+      "ruleId": "d2-88081a82ea6ee8b5f310",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-39da6f7146be9d367a45-subject-g07-t07-subject-a",
+      "ruleId": "d2-39da6f7146be9d367a45",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-70ea9ac060258a079fe0-subject-g07-t07-subject-a",
+      "ruleId": "d2-70ea9ac060258a079fe0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-17090a0badccc589b922-subject-g07-t07-subject-a",
+      "ruleId": "d2-17090a0badccc589b922",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-eb5e49ac9535b3b8481b-subject-g07-t07-subject-a",
+      "ruleId": "d2-eb5e49ac9535b3b8481b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-02d2910e48af44b454bb-subject-g07-t07-subject-a",
+      "ruleId": "d2-02d2910e48af44b454bb",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-9b9f6f89b1e07310ee38-subject-g07-t07-subject-a",
+      "ruleId": "d2-9b9f6f89b1e07310ee38",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-ceb3661eba8bd0c520e8-subject-g07-t07-subject-a",
+      "ruleId": "d2-ceb3661eba8bd0c520e8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-3a1060e75bf00072570a-subject-g07-t07-subject-a",
+      "ruleId": "d2-3a1060e75bf00072570a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-d02b1bba5eb5b02a25e4-subject-g07-t07-subject-a",
+      "ruleId": "d2-d02b1bba5eb5b02a25e4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-308244a67a8213f234be-subject-g07-t07-subject-a",
+      "ruleId": "d2-308244a67a8213f234be",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-9edc986689a1bc358f0a-subject-g07-t07-subject-a",
+      "ruleId": "d2-9edc986689a1bc358f0a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-5c3ea06ddf884e34ac1c-subject-g07-t07-subject-a",
+      "ruleId": "d2-5c3ea06ddf884e34ac1c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-7b49f29c25c5bc6b9651-subject-g07-t07-subject-a",
+      "ruleId": "d2-7b49f29c25c5bc6b9651",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-261dc9433380d1f1c606-subject-g07-t07-subject-a",
+      "ruleId": "d2-261dc9433380d1f1c606",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-c612f0a41ce4c2d40002-subject-g07-t07-subject-a",
+      "ruleId": "d2-c612f0a41ce4c2d40002",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-78175b26afb3a87e8c9f-subject-g07-t07-subject-a",
+      "ruleId": "d2-78175b26afb3a87e8c9f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-76851ca5a3a58910e0a6-subject-g07-t07-subject-a",
+      "ruleId": "d2-76851ca5a3a58910e0a6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-6e905d3e7256a020e965-subject-g07-t07-subject-a",
+      "ruleId": "d2-6e905d3e7256a020e965",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-2ea054ad31f76a3d52a7-subject-g07-t07-subject-a",
+      "ruleId": "d2-2ea054ad31f76a3d52a7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-8ddeb6af4d4697047035-subject-g07-t07-subject-a",
+      "ruleId": "d2-8ddeb6af4d4697047035",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-e7e154a47a7ce0a4e25d-subject-g07-t07-subject-a",
+      "ruleId": "d2-e7e154a47a7ce0a4e25d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-28470e033149b2eae4f6-subject-g07-t07-subject-a",
+      "ruleId": "d2-28470e033149b2eae4f6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-58eb9ed889a8b41a8b9e-subject-g07-t07-subject-a",
+      "ruleId": "d2-58eb9ed889a8b41a8b9e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-d5aefa955275529bca91-subject-g07-t07-subject-a",
+      "ruleId": "d2-d5aefa955275529bca91",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-df74a5841df2fd7981f6-subject-g07-t07-subject-a",
+      "ruleId": "d2-df74a5841df2fd7981f6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-8948dd99f1ba160b4a4b-subject-g07-t07-subject-a",
+      "ruleId": "d2-8948dd99f1ba160b4a4b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-be5ee06f354533a219b0-subject-g07-t07-subject-a",
+      "ruleId": "d2-be5ee06f354533a219b0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-1570639da92dbcda8242-subject-g07-t07-subject-a",
+      "ruleId": "d2-1570639da92dbcda8242",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-5715d7e6619bb8160179-subject-g07-t07-subject-a",
+      "ruleId": "d2-5715d7e6619bb8160179",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-c466c3ed64f4a78a25bd-subject-g07-t07-subject-a",
+      "ruleId": "d2-c466c3ed64f4a78a25bd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-1e8d1e15b5f83f270b97-subject-g07-t07-subject-a",
+      "ruleId": "d2-1e8d1e15b5f83f270b97",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-7f360fb8e40c59816e4f-subject-g07-t07-subject-a",
+      "ruleId": "d2-7f360fb8e40c59816e4f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-aaeac9082270b4a98b72-subject-g07-t07-subject-a",
+      "ruleId": "d2-aaeac9082270b4a98b72",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-92e7dfa9e28af9cb1bf7-subject-g07-t07-subject-a",
+      "ruleId": "d2-92e7dfa9e28af9cb1bf7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-0fa9717e7a2c5df5bbc4-subject-g07-t07-subject-a",
+      "ruleId": "d2-0fa9717e7a2c5df5bbc4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-f4a83876e98f9196f3bd-subject-g07-t07-subject-a",
+      "ruleId": "d2-f4a83876e98f9196f3bd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-1ad32e9eb6df64a427a6-subject-g07-t07-subject-a",
+      "ruleId": "d2-1ad32e9eb6df64a427a6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-75261064f82d774832cb-subject-g07-t07-subject-a",
+      "ruleId": "d2-75261064f82d774832cb",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-f79a02a5865cb9df5109-subject-g07-t07-subject-a",
+      "ruleId": "d2-f79a02a5865cb9df5109",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-93c042c25ad33f2374a8-subject-g07-t07-subject-a",
+      "ruleId": "d2-93c042c25ad33f2374a8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-2a6b1a6a51bdba38633c-subject-g07-t07-subject-a",
+      "ruleId": "d2-2a6b1a6a51bdba38633c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-735cec226a042d3756a0-subject-g07-t07-subject-a",
+      "ruleId": "d2-735cec226a042d3756a0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-6bc954135136189dc2a3-subject-g07-t07-subject-a",
+      "ruleId": "d2-6bc954135136189dc2a3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-9fb702adafdb73d0a78a-subject-g07-t07-subject-a",
+      "ruleId": "d2-9fb702adafdb73d0a78a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-3063607ce0e10a3577b3-subject-g07-t07-subject-a",
+      "ruleId": "d2-3063607ce0e10a3577b3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-9bd53474870af4cae98b-subject-g07-t07-subject-a",
+      "ruleId": "d2-9bd53474870af4cae98b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-87b7a1f2f6fae09ca435-subject-g07-t07-subject-a",
+      "ruleId": "d2-87b7a1f2f6fae09ca435",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-a94e8d0cf7242ae8ede4-subject-g07-t07-subject-a",
+      "ruleId": "d2-a94e8d0cf7242ae8ede4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-d370b744dc354d645a8b-subject-g07-t07-subject-a",
+      "ruleId": "d2-d370b744dc354d645a8b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-03c6872cbe785ef6d2ac-subject-g07-t07-subject-a",
+      "ruleId": "d2-03c6872cbe785ef6d2ac",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-df379fc37ba08120532c-subject-g07-t07-subject-a",
+      "ruleId": "d2-df379fc37ba08120532c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-e2166939c98e9eb41b73-subject-g07-t07-subject-a",
+      "ruleId": "d2-e2166939c98e9eb41b73",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-848a026ef35490b6898c-subject-g07-t07-subject-a",
+      "ruleId": "d2-848a026ef35490b6898c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-7c1357a6225814c35173-subject-g07-t07-subject-a",
+      "ruleId": "d2-7c1357a6225814c35173",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-25cee600ebc6dc98c0da-subject-g07-t07-subject-a",
+      "ruleId": "d2-25cee600ebc6dc98c0da",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-fb8db436550eeb78d870-subject-g07-t07-subject-a",
+      "ruleId": "d2-fb8db436550eeb78d870",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-e34ecd4f8ebcf7a7fde0-subject-g07-t07-subject-a",
+      "ruleId": "d2-e34ecd4f8ebcf7a7fde0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-bf82fe24f0ed63823585-subject-g07-t07-subject-a",
+      "ruleId": "d2-bf82fe24f0ed63823585",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-d668d58d1b23829b40c7-subject-g07-t07-subject-a",
+      "ruleId": "d2-d668d58d1b23829b40c7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-0fec7e322818d0cda591-subject-g07-t07-subject-a",
+      "ruleId": "d2-0fec7e322818d0cda591",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-42339e4dbed1c292330c-subject-g07-t07-subject-a",
+      "ruleId": "d2-42339e4dbed1c292330c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-3af2206cd70bc974c104-subject-g07-t07-subject-a",
+      "ruleId": "d2-3af2206cd70bc974c104",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-497ac29ee30703fcd043-subject-g07-t07-subject-a",
+      "ruleId": "d2-497ac29ee30703fcd043",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-4856aaa77f53ea5d7313-subject-g07-t07-subject-a",
+      "ruleId": "d2-4856aaa77f53ea5d7313",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-0e3f4ebbc66fd774f6e2-subject-g07-t07-subject-a",
+      "ruleId": "d2-0e3f4ebbc66fd774f6e2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-e8640de97ea44fb8cb9b-subject-g07-t07-subject-a",
+      "ruleId": "d2-e8640de97ea44fb8cb9b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-b3ba9b4ad03edf1df8f9-subject-g07-t07-subject-a",
+      "ruleId": "d2-b3ba9b4ad03edf1df8f9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-580014782d386643ce50-subject-g07-t07-subject-b",
+      "ruleId": "d2-580014782d386643ce50",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-1dc13a0fe61023df90ca-subject-g07-t07-subject-b",
+      "ruleId": "d2-1dc13a0fe61023df90ca",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-b3acec5ba0723e20cc21-subject-g07-t07-subject-b",
+      "ruleId": "d2-b3acec5ba0723e20cc21",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-0523e5225d1875c25c73-subject-g07-t07-subject-b",
+      "ruleId": "d2-0523e5225d1875c25c73",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-a1da978a13a6e6b231e4-subject-g07-t07-subject-b",
+      "ruleId": "d2-a1da978a13a6e6b231e4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-44375a521afe58d58339-subject-g07-t07-subject-b",
+      "ruleId": "d2-44375a521afe58d58339",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-17bc029e50898135ca17-subject-g07-t07-subject-b",
+      "ruleId": "d2-17bc029e50898135ca17",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-76962257dccc992b2056-subject-g07-t07-subject-b",
+      "ruleId": "d2-76962257dccc992b2056",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-de076adafacd7c2b0eac-subject-g07-t07-subject-b",
+      "ruleId": "d2-de076adafacd7c2b0eac",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-732d9a621c1ab5587a55-subject-g07-t07-subject-b",
+      "ruleId": "d2-732d9a621c1ab5587a55",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-8034c140880ce61598fd-subject-g07-t07-subject-b",
+      "ruleId": "d2-8034c140880ce61598fd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-dd4a54164d267492382b-subject-g07-t07-subject-b",
+      "ruleId": "d2-dd4a54164d267492382b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-f6ad5279027ce856bda2-subject-g07-t07-subject-b",
+      "ruleId": "d2-f6ad5279027ce856bda2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-67fb51a2b89b4f1e3f38-subject-g07-t07-subject-b",
+      "ruleId": "d2-67fb51a2b89b4f1e3f38",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-5cc8ee9d84e1653d060f-subject-g07-t07-subject-b",
+      "ruleId": "d2-5cc8ee9d84e1653d060f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-0f5a0e4ba0a2d5585bed-subject-g07-t07-subject-b",
+      "ruleId": "d2-0f5a0e4ba0a2d5585bed",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-4f3d71f64d87802d4c7c-subject-g07-t07-subject-b",
+      "ruleId": "d2-4f3d71f64d87802d4c7c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-f123c7cb6608750783fe-subject-g07-t07-subject-b",
+      "ruleId": "d2-f123c7cb6608750783fe",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-47c6800aebc66a5ef515-subject-g07-t07-subject-b",
+      "ruleId": "d2-47c6800aebc66a5ef515",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-1978cada9f614565f07e-subject-g07-t07-subject-b",
+      "ruleId": "d2-1978cada9f614565f07e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-385afe88e8cfb4487b08-subject-g07-t07-subject-b",
+      "ruleId": "d2-385afe88e8cfb4487b08",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-c86a5fffa0f6c9053f1b-subject-g07-t07-subject-b",
+      "ruleId": "d2-c86a5fffa0f6c9053f1b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-0e8d7ebd09449132b3ca-subject-g07-t07-subject-b",
+      "ruleId": "d2-0e8d7ebd09449132b3ca",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-bdb65c97736f84d192c1-subject-g07-t07-subject-b",
+      "ruleId": "d2-bdb65c97736f84d192c1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-7f86b1b657fc2fca3c8f-subject-g07-t07-subject-b",
+      "ruleId": "d2-7f86b1b657fc2fca3c8f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-583b9a604dd5b670c19c-subject-g07-t07-subject-b",
+      "ruleId": "d2-583b9a604dd5b670c19c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-5914ccd22fde8c5c2b8e-subject-g07-t07-subject-b",
+      "ruleId": "d2-5914ccd22fde8c5c2b8e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-8ec26931512fb02a57e1-subject-g07-t07-subject-b",
+      "ruleId": "d2-8ec26931512fb02a57e1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-c1312b919628313ca293-subject-g07-t07-subject-b",
+      "ruleId": "d2-c1312b919628313ca293",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-08a7c4d6ceeadf44765e-subject-g07-t07-subject-b",
+      "ruleId": "d2-08a7c4d6ceeadf44765e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-fdb7f515dc50cf777ce4-subject-g07-t07-subject-b",
+      "ruleId": "d2-fdb7f515dc50cf777ce4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-fad38882f34b8c7c5026-subject-g07-t07-subject-b",
+      "ruleId": "d2-fad38882f34b8c7c5026",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-f9d4b8bf33d64e8413af-subject-g07-t07-subject-b",
+      "ruleId": "d2-f9d4b8bf33d64e8413af",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-144be09e7273f2f47b4c-subject-g07-t07-subject-b",
+      "ruleId": "d2-144be09e7273f2f47b4c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-c2d677dcac1b7e788e29-subject-g07-t07-subject-b",
+      "ruleId": "d2-c2d677dcac1b7e788e29",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-c181828408d9fafac53d-subject-g07-t07-subject-b",
+      "ruleId": "d2-c181828408d9fafac53d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-835f8dfc347aa56098c7-subject-g07-t07-subject-b",
+      "ruleId": "d2-835f8dfc347aa56098c7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-577647b97f4d05c4bac0-subject-g07-t07-subject-b",
+      "ruleId": "d2-577647b97f4d05c4bac0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-a0f7e908597663b1bbb6-subject-g07-t07-subject-b",
+      "ruleId": "d2-a0f7e908597663b1bbb6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-d345e3bf179a897b20d1-subject-g07-t07-subject-b",
+      "ruleId": "d2-d345e3bf179a897b20d1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-0e182d015c15a8d59a4e-subject-g07-t07-subject-b",
+      "ruleId": "d2-0e182d015c15a8d59a4e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-c87dd55f97e820334192-subject-g07-t07-subject-b",
+      "ruleId": "d2-c87dd55f97e820334192",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-3fea730f5cbe8a18d7d3-subject-g07-t07-subject-b",
+      "ruleId": "d2-3fea730f5cbe8a18d7d3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-01adc3da5ece2f8b7b57-subject-g07-t07-subject-b",
+      "ruleId": "d2-01adc3da5ece2f8b7b57",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-906402dc64d732823057-subject-g07-t07-subject-b",
+      "ruleId": "d2-906402dc64d732823057",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-36379b1912b2bb671fc5-subject-g07-t07-subject-b",
+      "ruleId": "d2-36379b1912b2bb671fc5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-41a40f6b807e630ffae0-subject-g07-t07-subject-b",
+      "ruleId": "d2-41a40f6b807e630ffae0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-dc5da2d205252bd1e598-subject-g07-t07-subject-b",
+      "ruleId": "d2-dc5da2d205252bd1e598",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-005562ae31789df61c27-subject-g07-t07-subject-b",
+      "ruleId": "d2-005562ae31789df61c27",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-df049a4372391a86a6b8-subject-g07-t07-subject-b",
+      "ruleId": "d2-df049a4372391a86a6b8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-bb93e2a656f786e74c31-subject-g07-t07-subject-b",
+      "ruleId": "d2-bb93e2a656f786e74c31",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-b862b17b4c9759812032-subject-g07-t07-subject-b",
+      "ruleId": "d2-b862b17b4c9759812032",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-cdd1b5014a01ce0fc96d-subject-g07-t07-subject-b",
+      "ruleId": "d2-cdd1b5014a01ce0fc96d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-5a82029c3a352dff9597-subject-g07-t07-subject-b",
+      "ruleId": "d2-5a82029c3a352dff9597",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.115Z"
+    },
+    {
+      "checkId": "check-d2-d7d32f7c35a5e35b74a2-subject-g07-t07-subject-b",
+      "ruleId": "d2-d7d32f7c35a5e35b74a2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-9b2fc76954364e71dcc1-subject-g07-t07-subject-b",
+      "ruleId": "d2-9b2fc76954364e71dcc1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-d0e399cd27a6bcd9ac48-subject-g07-t07-subject-b",
+      "ruleId": "d2-d0e399cd27a6bcd9ac48",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-7b88077e9e656011d31a-subject-g07-t07-subject-b",
+      "ruleId": "d2-7b88077e9e656011d31a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-c2ce8bfb127691161e06-subject-g07-t07-subject-b",
+      "ruleId": "d2-c2ce8bfb127691161e06",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-f14e30a9d38a62137a6d-subject-g07-t07-subject-b",
+      "ruleId": "d2-f14e30a9d38a62137a6d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-bf1597d78bfb31903489-subject-g07-t07-subject-b",
+      "ruleId": "d2-bf1597d78bfb31903489",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-4c6045a9b200795007f9-subject-g07-t07-subject-b",
+      "ruleId": "d2-4c6045a9b200795007f9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-0390aa395238d49e73fb-subject-g07-t07-subject-b",
+      "ruleId": "d2-0390aa395238d49e73fb",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-21da6137e4d3d80f7897-subject-g07-t07-subject-b",
+      "ruleId": "d2-21da6137e4d3d80f7897",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-26beb8f2151a020ff6cd-subject-g07-t07-subject-b",
+      "ruleId": "d2-26beb8f2151a020ff6cd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-cc084c00252c230066a9-subject-g07-t07-subject-b",
+      "ruleId": "d2-cc084c00252c230066a9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-e404e5abf0bfbea86651-subject-g07-t07-subject-b",
+      "ruleId": "d2-e404e5abf0bfbea86651",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-7466056141b9b39df22a-subject-g07-t07-subject-b",
+      "ruleId": "d2-7466056141b9b39df22a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-60fe9a4b49e13f5aeb86-subject-g07-t07-subject-b",
+      "ruleId": "d2-60fe9a4b49e13f5aeb86",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-d2ff39ab2937df57a4ea-subject-g07-t07-subject-b",
+      "ruleId": "d2-d2ff39ab2937df57a4ea",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    },
+    {
+      "checkId": "check-d2-377ac7988301cc4f92b0-subject-g07-t07-subject-b",
+      "ruleId": "d2-377ac7988301cc4f92b0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g07-t07-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:57:50.116Z"
+    }
+  ],
+  "opinions": [
+    {
+      "id": "opinion-run-pi-mvcn3wnu-ibr86",
+      "kind": "summary",
+      "severity": "yellow",
+      "title": "Pi 审核意见",
+      "detail": "Synthetic policy-hold review. No official CDUT authority verified.",
+      "suggestion": "manual-review",
+      "suggestionText": "分析结果不代表正式决定，请按业务权限办理认定或审批。",
+      "sourceRefs": [],
+      "verification": "unverified"
+    }
+  ],
+  "coverage": {
+    "documents": [
+      {
+        "documentVersionId": "doc-1-mvcn3wn3-v1",
+        "status": "unread",
+        "reason": "本次运行没有可追溯的读取记录"
+      }
+    ],
+    "plannedChecks": 142,
+    "completedChecks": 142,
+    "effectiveVerdicts": 0,
+    "pendingChecks": 142
+  },
+  "diagnostics": [
+    "由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。"
+  ],
+  "startedAt": "2026-10-17T16:57:50.107Z",
+  "initiatedBy": {
+    "actorId": "agent-g07-session-T07",
+    "actorSource": "agent",
+    "role": "reviewer"
+  },
+  "completedAt": "2026-10-17T16:57:50.116Z"
+}
