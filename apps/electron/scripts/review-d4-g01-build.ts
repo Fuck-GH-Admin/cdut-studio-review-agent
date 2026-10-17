@@ -19,7 +19,7 @@ import {setEvidenceLink} from '../src/main/lib/review/application-service'
 import {validateD2GuardSubmission} from '../src/main/lib/review/review-d2-execution-gates'
 
 if(!process.env.PROFER_CONFIG_DIR)throw Error('D4_ISOLATED_CONFIG_REQUIRED: PROFER_CONFIG_DIR')
-const repoRoot=resolve(import.meta.dir,'../../../..')
+const repoRoot=resolve(import.meta.dir,'../../..')
 const root=resolve(repoRoot,'docs/design/review-agent/acceptance/d4-g01-build')
 const logRoot=process.env.D4_G01_EVIDENCE_DIR||resolve(root,'runtime-evidence')
 mkdirSync(logRoot,{recursive:true})
