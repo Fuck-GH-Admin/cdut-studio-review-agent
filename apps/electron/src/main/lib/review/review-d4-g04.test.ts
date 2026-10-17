@@ -80,6 +80,34 @@ describe('G04 eight modular business templates on fixed COMMON-01/02',()=>{
    const real=await createD2TechnicalCase({caseId:'g04-'+id+'-tech',title:'G04 controlled synthetic '+id,actor,workspace:roundtrip,selection:s})
    expect(real.ok).toBe(true)
    if(!real.ok)throw Error(real.message)
+   // A real material-service transaction and human-confirmed fact linkage.
+   // This is only controlled synthetic evidence, never a university permit.
+   const materialPath=join(home,'g04-'+id+'-sample.txt')
+   writeFileSync(materialPath,'SYNTHETIC ONLY / '+id+' / material for object A; no real identity or school authorization')
+   const caseId='g04-'+id+'-tech'
+   const previous=readAggregate(caseId)!
+   const material=await registerMaterial(caseId,{requestId:'g04-mat-'+id,actor,
+     expectedRevision:previous.caseV2.revision,payload:{sourcePath:materialPath,role:'evidence'}})
+   expect(material.ok).toBe(true)
+   if(!material.ok)throw Error(material.message)
+   const afterMaterial=readAggregate(caseId)!
+   const documentVersionId=afterMaterial.caseV2.documents[0]!.versionId
+   const linkA=real.entity!.mapping.find(m=>m.objectKey==='object-a'&&/\\/r01#/.test(m.checkId))!
+   const linkB=real.entity!.mapping.find(m=>m.objectKey==='object-b'&&/\\/r01#/.test(m.checkId))!
+   const setLink=await setEvidenceLink(caseId,{requestId:'g04-link-'+id,actor,
+     expectedRevision:afterMaterial.caseV2.revision,payload:{documentVersionId,subjectIds:['subject-a'],
+       supportsFact:linkA.evidenceCoverage!.supportsFacts[0],linkedBy:'user'}})
+   expect(setLink.ok).toBe(true)
+   if(!setLink.ok)throw Error(setLink.message)
+   const afterLink=readAggregate(caseId)!
+   expect(afterLink.evidenceLinks).toHaveLength(1)
+   expect(validateD2GuardSubmission(afterLink,linkA,'compliant',[documentVersionId])).toBeUndefined()
+   expect(validateD2GuardSubmission(afterLink,linkB,'compliant',[documentVersionId]))
+     .toContain('D2_GENERIC_EVIDENCE_SCOPE_MISSING')
+   expect(validateD2GuardSubmission(afterLink,linkA,'compliant',['wrong-or-stale-version']))
+     .toContain('D2_GENERIC_EVIDENCE_SCOPE_MISSING')
+   emit(id,'registered-evidence.json',{caseId,documentVersionId,links:afterLink.evidenceLinks,
+     objectAHasConfirmedSyntheticFact:true,objectBHasConfirmedSyntheticFact:false,materialOnlyNotPermission:true})
    const prep=preparePiReviewRunV2({caseId:'g04-'+id+'-tech',sessionId:'g04-session-'+id,turnId:'g04-turn-'+id})
    const out=submitPiReviewResultV2({binding:{assignmentId:prep.assignmentId,
      sessionId:'g04-session-'+id,caseId:'g04-'+id+'-tech',runId:prep.runId},
