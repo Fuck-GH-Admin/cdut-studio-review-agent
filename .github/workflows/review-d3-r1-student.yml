@@ -32,6 +32,10 @@ jobs:
         run: |
           set -o pipefail
           bun install --frozen-lockfile 2>&1 | tee r1-evidence/install.log
+      - name: Check fixed D3-R0 handoff module locks
+        run: |
+          set -o pipefail
+          node apps/electron/scripts/review-d3-r0-verify.cjs 2>&1 | tee r1-evidence/d3-r0-locks.log
       - name: R1 typed field real engine & Pi service
         run: |
           set -o pipefail

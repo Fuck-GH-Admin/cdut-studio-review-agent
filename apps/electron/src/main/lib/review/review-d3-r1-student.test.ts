@@ -242,4 +242,59 @@ describe('D3-R1 typed G01-I runtime: R0 red-to-green',()=>{
   expect(run.checks.map(x=>x.target.subjectIds[0]).sort()).toEqual(['student-credential-check','student-name-check'])
   expect(verifyD2PiRun(final,run).complete).toBeTrue()
  })
+ test('D1 validate/save/read/diff → D3 export/import → D2 preview/register/create through real isolated CLIs',()=>{
+  const cliHome=join(config,'r1-cli-home')
+  mkdirSync(cliHome,{recursive:true})
+  const io=join(config,'r1-cli-io')
+  mkdirSync(io,{recursive:true})
+  const workspaceFile=join(io,'workspace.json'),selectionFile=join(io,'selection.json'),
+    draftFile=join(io,'draft.json'),trustedFile=join(io,'trusted.json'),
+    bundleFile=join(io,'bundle.json'),importedFile=join(io,'imported.json'),revisedFile=join(io,'revised.json')
+  const w=scoped()
+  writeFileSync(workspaceFile,JSON.stringify(w))
+  writeFileSync(selectionFile,JSON.stringify(chosen()))
+  writeFileSync(draftFile,JSON.stringify(draft('r1-cli-typed')))
+  writeFileSync(trustedFile,JSON.stringify(trusted()))
+  const revised=structuredClone(w);revised.revision=2
+  revised.definitions.modules[0]!.tasks[0]!.requirement+=' synthetic revision'
+  writeFileSync(revisedFile,JSON.stringify(revised))
+  const scripts=resolve(import.meta.dir,'../../../../scripts')
+  const env={...process.env,PROFER_CONFIG_DIR:cliHome,
+    D2_ALLOW_SYNTHETIC_REGISTRY:'1',D2_SYNTHETIC_TRUSTED_FIXTURE_PATH:trustedFile}
+  const run=(script:string,args:string[],expectedExit=0):{[key:string]:any}=>{
+    const result=Bun.spawnSync({cmd:[process.execPath,resolve(scripts,script),...args],env})
+    expect(result.exitCode).toBe(expectedExit)
+    if(result.exitCode!==expectedExit)throw new Error(args.join(' ')+' exit '+result.exitCode+' '+result.stderr.toString())
+    return JSON.parse(result.stdout.toString()) as Record<string,any>
+  }
+  const d1='review-authoring-v1.ts',d3='review-d3-library.ts',d2='review-d2-plan.ts'
+  expect(run(d1,['validate',workspaceFile]).ok).toBeTrue()
+  expect(run(d1,['save',workspaceFile,'0','r1-test-agent']).saved).toBeTrue()
+  expect(run(d1,['read',w.workspaceId]).workspace.revision).toBe(1)
+  const diff=run(d1,['diff',workspaceFile,revisedFile])
+  expect(diff).toBeDefined()
+  const exported=run(d3,['export',workspaceFile,bundleFile])
+  expect(exported.fingerprint).toHaveLength(64)
+  expect(run(d3,['import',bundleFile,importedFile]).imported).toBeTrue()
+  const plan=run(d2,['preview',importedFile,selectionFile,draftFile])
+  expect(plan.targets).toHaveLength(2)
+  expect(plan.mapping).toHaveLength(2)
+  expect(plan.schemaVersion).toBe(2)
+  expect(plan.publicationAllowed).toBeFalse()
+  expect(run(d2,['register',importedFile,selectionFile]).registered).toBeTrue()
+  const created=run(d2,['create',importedFile,selectionFile,'r1-cli-typed','synthetic CLI case','r1-test-agent'])
+  expect(created.created).toBeTrue()
+  expect(created.fingerprint).toBe(plan.fingerprint)
+  // Synthetic fixture is an explicitly gated independent CLI side channel.
+  const denied=Bun.spawnSync({cmd:[process.execPath,resolve(scripts,d2),'preview',importedFile,selectionFile,draftFile],
+    env:{...env,D2_ALLOW_SYNTHETIC_REGISTRY:'0'}})
+  expect(denied.exitCode).not.toBe(0)
+  expect(denied.stderr.toString()).toContain('D2_TRUSTED_SOURCE_DISABLED')
+  console.log('[R1_CLI_EVIDENCE]',JSON.stringify({
+    caseId:'r1-cli-typed',workspaceId:w.workspaceId,revision:1,
+    transferFingerprint:exported.fingerprint,planFingerprint:plan.fingerprint,
+    subjects:plan.subjects.length,checks:plan.mapping.length,publicationAllowed:false,
+  }))
+ })
+
 })
