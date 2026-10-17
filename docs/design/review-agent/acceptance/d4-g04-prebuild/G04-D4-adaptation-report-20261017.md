@@ -12,7 +12,7 @@
 
 ## 1. 核验对象、原件、固定性和来源
 
-**统一目录**：Library `G04_02_统一模板目录与边界.md`（A-v0.1），与 [E r01 的 A 母集 40/40 处置表](../../business-templates/G04/acceptance/E-v1.0/E3-domain-coverage.md)（审计分支 `audit/g04-e-v1-r01`）交叉核对。A 的 O01–O04/N01–N36 并非 40 套模板：T01门禁、T02临时访客、T03人员准入、T04项目风险、T05专项高危实验作业、T06活动安全、T07动火、T08机动车长期资格。N08应急报告、N09危化采购、N19场地预约（G03）、N30单纯缴费、N34投诉等按旧 A 归类排除、相邻路由或人工，不造新模板。N18长期驻场访客、N26教学焊接和N22公安许可保留相邻/校本有权分流。
+**统一目录**：Library `G04_02_统一模板目录与边界.md`（A-v0.1），与 [E r01 的 A 母集 40/40 处置表](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/audit/g04-e-v1-r01/docs/design/review-agent/business-templates/G04/acceptance/E-v1.0/E3-domain-coverage.md)（审计分支 `audit/g04-e-v1-r01`）交叉核对。A 的 O01–O04/N01–N36 并非 40 套模板：T01门禁、T02临时访客、T03人员准入、T04项目风险、T05专项高危实验作业、T06活动安全、T07动火、T08机动车长期资格。N08应急报告、N09危化采购、N19场地预约（G03）、N30单纯缴费、N34投诉等按旧 A 归类排除、相邻路由或人工，不造新模板。N18长期驻场访客、N26教学焊接和N22公安许可保留相邻/校本有权分流。
 
 **原 C 完整母版实际存在于用户 Library（不向公开 PR 复制全部字节）**。以下 SHA-256 是本轮对已读取原始文件字节重新计算的值；文件名、§规则/R-nn 和 Lnn 组成可复取定位。公开仓并没有这些原作者历史 C commit，故 **“Library 字节可固定、可定位”≠“原作者原始 Git 提交已证”**。
 
@@ -28,9 +28,9 @@
 | T08 校园机动车长期通行资格审核 | `G04-T08_正式业务模板_MD_v0.1.md` | `715ca07edd4934245e0c9f3774eb12302baf03a292b1fd635444fd10ba8f328a` | 39 | READY_TO_BUILD / per-car GAP |
 | **合计** | **8 套实际完整原文** |  | **343** | **8 READY_TO_BUILD，8 局部 GAP** |
 
-T01 原母版 SHA 与 [E r02 恢复包登记](../../business-templates/G04/acceptance/E-v1.0/r02/E0-delta-manifest.json) 中 `masterSHA256` 一致；T06 使用 E r02 **七条来源 URL 限域修正**后的 v0.1.1 SHA，不把旧 v0.1 误称现行。其余 T02/T03/T04/T05/T07/T08 用本轮真实 Library 文件摘要作制作输入固定指纹，**尚未有 C 原作者 Git commit 的独立性签署**。
+T01 原母版 SHA 与 [E r02 恢复包登记](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/audit/g04-e-v1-r02/docs/design/review-agent/business-templates/G04/acceptance/E-v1.0/r02/E0-delta-manifest.json) 中 `masterSHA256` 一致；T06 使用 E r02 **七条来源 URL 限域修正**后的 v0.1.1 SHA，不把旧 v0.1 误称现行。其余 T02/T03/T04/T05/T07/T08 用本轮真实 Library 文件摘要作制作输入固定指纹，**尚未有 C 原作者 Git commit 的独立性签署**。
 
-**A/B/C/D/E 历史交付已定位、未重做**：A-v0.1 统一目录/40项处置；B 八套二轮 ZIP（SHA 登在 [E0 r01](../../business-templates/G04/acceptance/E-v1.0/E0-input-manifest.json)）；C 八套完整 MD（T01 经 E r02 找回，T06 URL 修正版）；D 八套分别有 reports / INPUT / evaluation 三包共 24 个历史归档、212 个编号案例（这里只读公开元数据，**没有读隐藏 Gold**）；E r01 [PR #27](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/27)、r02 [PR #68](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/68)，r02 `BLOCKED_INPUT`、`BLOCKED_SOURCE`，T05/T06/T08 Gold lineage P1、无已证私有 ACL 或 212 案答案全复核。**这些是版本/制度/验收治理限制，不是本次 D3 模块能力 GAP。**
+**A/B/C/D/E 历史交付已定位、未重做**：A-v0.1 统一目录/40项处置；B 八套二轮 ZIP（SHA 登在 [E0 r01](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/audit/g04-e-v1-r01/docs/design/review-agent/business-templates/G04/acceptance/E-v1.0/E0-input-manifest.json)）；C 八套完整 MD（T01 经 E r02 找回，T06 URL 修正版）；D 八套分别有 reports / INPUT / evaluation 三包共 24 个历史归档、212 个编号案例（这里只读公开元数据，**没有读隐藏 Gold**）；E r01 [PR #27](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/27)、r02 [PR #68](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/68)，r02 `BLOCKED_INPUT`、`BLOCKED_SOURCE`，T05/T06/T08 Gold lineage P1、无已证私有 ACL 或 212 案答案全复核。**这些是版本/制度/验收治理限制，不是本次 D3 模块能力 GAP。**
 
 ## 2. 已读源码：D3 什么已支持、什么未支持
 
