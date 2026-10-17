@@ -96,6 +96,10 @@ export function registerReviewIpc(): void {
   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_CASES, () => {
     return listCases()
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_D4_TEMPLATES, () => {
+    const { listD4ClientTemplates } = require('./review-d4-client') as typeof import('./review-d4-client')
+    return listD4ClientTemplates()
+  })
 
   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_RUNS, (_event, caseId: string): ReviewRun[] => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
@@ -119,10 +123,15 @@ export function registerReviewIpc(): void {
         academicYear: string
         domainPackId?: string
         reviewTemplate?: { templateId: string; version: number }
+        d4?: import('@profer/shared').D4ClientSelection
       },
     ): Promise<ReviewCase> => {
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
       if (!CASE_TYPES.has(input.type)) throw new Error(`参数 type 非法：${String(input.type)}`)
+      if (input.d4) {
+        const { createD4ClientCase } = require('./review-d4-client') as typeof import('./review-d4-client')
+        return createD4ClientCase(input as Parameters<typeof createD4ClientCase>[0])
+      }
       // 领域包 ID 只做存在性判断：未知 ID 回落缺省包由 resolveDomainPack 负责，不因拼错而拒绝建卷
       if (input.domainPackId !== undefined && typeof input.domainPackId !== 'string') {
         throw new Error('参数 domainPackId 类型非法')
@@ -157,6 +166,10 @@ export function registerReviewIpc(): void {
       const caseId = requireString(input.caseId, 'caseId')
       const reviewCase = getCase(caseId)
       if (!reviewCase) throw new Error(`案卷不存在: ${caseId}`)
+      const { readAggregate } = require('./case-store-v2') as typeof import('./case-store-v2')
+      if (readAggregate(caseId)?.d2RuntimePlan && (input.reviewTemplate !== undefined || input.domainPackId !== undefined)) {
+        throw new Error('D4 固定计划不能切换模板或领域；修改条件请新建技术预审案卷')
+      }
       if (input.type !== undefined && !CASE_TYPES.has(input.type)) {
         throw new Error(`参数 type 非法：${String(input.type)}`)
       }

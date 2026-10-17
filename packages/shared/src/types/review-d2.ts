@@ -4,6 +4,24 @@
  */
 import type { ReviewSubject, RuleSpec } from './review-v2'
 
+/** 固定 D4 候选的最小客户端入口，不提供模板编辑/发布权限。 */
+export interface D4ClientTemplate {
+  templateId: string
+  version: number
+  domain: string
+  name: string
+  workspaceGitBlobSha: string
+  primary: string[]
+  conditions: string[]
+  selection: D2ScenarioSelection
+  controlledStudentFixture: boolean
+}
+export interface D4ClientSelection {
+  selection: D2ScenarioSelection
+  /** 仅启用随包 G01-I 合成学籍快照；不接受 Renderer 提交的学籍事实。 */
+  useControlledStudentFixture?: boolean
+}
+
 export type D2TargetKind = 'campus-card' | 'archive-item' | 'archive-operation' | 'student-field' | 'generic-object'
 
 /** Explicit case-side condition selection; NOT a trusted school record or policy authorization. */

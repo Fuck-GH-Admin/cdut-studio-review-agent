@@ -1,0 +1,336 @@
+﻿2026-10-17T21:56:45.6772332Z Current runner version: '2.337.0'
+2026-10-17T21:56:45.6800072Z ##[group]Runner Image Provisioner
+2026-10-17T21:56:45.6801170Z Hosted Compute Agent
+2026-10-17T21:56:45.6801905Z Version: 20261012.601
+2026-10-17T21:56:45.6802596Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-17T21:56:45.6803395Z Build Date: 2026-10-12T17:48:21Z
+2026-10-17T21:56:45.6804120Z Worker ID: {7777afae-cced-45ae-9c26-63871e26ed32}
+2026-10-17T21:56:45.6804935Z Region: eastus
+2026-10-17T21:56:45.6805574Z Cloud: Azure
+2026-10-17T21:56:45.6806227Z ##[endgroup]
+2026-10-17T21:56:45.6807845Z ##[group]Operating System
+2026-10-17T21:56:45.6808543Z Ubuntu
+2026-10-17T21:56:45.6809080Z 24.04.5
+2026-10-17T21:56:45.6809725Z LTS
+2026-10-17T21:56:45.6810321Z ##[endgroup]
+2026-10-17T21:56:45.6811146Z ##[group]Runner Image
+2026-10-17T21:56:45.6811839Z Image: ubuntu-24.04
+2026-10-17T21:56:45.6812454Z Version: 20261012.334.1
+2026-10-17T21:56:45.6813964Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-17T21:56:45.6815768Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-17T21:56:45.6816798Z ##[endgroup]
+2026-10-17T21:56:45.6817979Z ##[group]GITHUB_TOKEN Permissions
+2026-10-17T21:56:45.6819994Z Contents: read
+2026-10-17T21:56:45.6821099Z Metadata: read
+2026-10-17T21:56:45.6821874Z ##[endgroup]
+2026-10-17T21:56:45.6824172Z Secret source: Actions
+2026-10-17T21:56:45.6825202Z Cache mode: write
+2026-10-17T21:56:45.6825991Z Prepare workflow directory
+2026-10-17T21:56:45.7230994Z Prepare all required actions
+2026-10-17T21:56:45.7281607Z Getting action download info
+2026-10-17T21:56:45.9458425Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-17T21:56:46.0341848Z Download action repository 'oven-sh/setup-bun@v2' (SHA:0c5077e51419868618aeaa5fe8019c62421857d6)
+2026-10-17T21:56:46.1756250Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-17T21:56:46.4236319Z Complete job name: review-baseline
+2026-10-17T21:56:46.5039282Z ##[group]Run actions/checkout@v4
+2026-10-17T21:56:46.5040208Z with:
+2026-10-17T21:56:46.5041023Z   repository: Fuck-GH-Admin/cdut-studio-review-agent
+2026-10-17T21:56:46.5045600Z   token: ***
+2026-10-17T21:56:46.5046063Z   ssh-strict: true
+2026-10-17T21:56:46.5046573Z   ssh-user: git
+2026-10-17T21:56:46.5047046Z   persist-credentials: true
+2026-10-17T21:56:46.5047564Z   clean: true
+2026-10-17T21:56:46.5048043Z   sparse-checkout-cone-mode: true
+2026-10-17T21:56:46.5048596Z   fetch-depth: 1
+2026-10-17T21:56:46.5049060Z   fetch-tags: false
+2026-10-17T21:56:46.5049521Z   show-progress: true
+2026-10-17T21:56:46.5049991Z   lfs: false
+2026-10-17T21:56:46.5050423Z   submodules: false
+2026-10-17T21:56:46.5051049Z   set-safe-directory: true
+2026-10-17T21:56:46.5051591Z   allow-unsafe-pr-checkout: false
+2026-10-17T21:56:46.5052421Z env:
+2026-10-17T21:56:46.5052878Z   ELECTRON_SKIP_BINARY_DOWNLOAD: 1
+2026-10-17T21:56:46.5053454Z ##[endgroup]
+2026-10-17T21:56:46.6179745Z Syncing repository: Fuck-GH-Admin/cdut-studio-review-agent
+2026-10-17T21:56:46.6183140Z ##[group]Getting Git version info
+2026-10-17T21:56:46.6184622Z Working directory is '/home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent'
+2026-10-17T21:56:46.6186709Z [command]/usr/bin/git version
+2026-10-17T21:56:46.6237975Z git version 2.55.0
+2026-10-17T21:56:46.6263453Z ##[endgroup]
+2026-10-17T21:56:46.6281079Z Temporarily overriding HOME='/home/runner/work/_temp/4e081dc1-50e9-476f-b848-428dad3cc9b5' before making global git config changes
+2026-10-17T21:56:46.6283583Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-17T21:56:46.6288065Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent
+2026-10-17T21:56:46.6372576Z Deleting the contents of '/home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent'
+2026-10-17T21:56:46.6375069Z ##[group]Initializing the repository
+2026-10-17T21:56:46.6376967Z [command]/usr/bin/git init /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent
+2026-10-17T21:56:46.6501141Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-17T21:56:46.6518925Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-17T21:56:46.6529520Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-17T21:56:46.6531615Z hint: call:
+2026-10-17T21:56:46.6532672Z hint:
+2026-10-17T21:56:46.6533892Z hint: 	git config --global init.defaultBranch <name>
+2026-10-17T21:56:46.6534830Z hint:
+2026-10-17T21:56:46.6535444Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-17T21:56:46.6536388Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-17T21:56:46.6537498Z hint:
+2026-10-17T21:56:46.6538286Z hint: 	git branch -m <name>
+2026-10-17T21:56:46.6539158Z hint:
+2026-10-17T21:56:46.6540229Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-17T21:56:46.6541860Z Initialized empty Git repository in /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/.git/
+2026-10-17T21:56:46.6543946Z [command]/usr/bin/git remote add origin https://github.com/Fuck-GH-Admin/cdut-studio-review-agent
+2026-10-17T21:56:46.6580558Z ##[endgroup]
+2026-10-17T21:56:46.6582109Z ##[group]Disabling automatic garbage collection
+2026-10-17T21:56:46.6585238Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-17T21:56:46.6622948Z ##[endgroup]
+2026-10-17T21:56:46.6624740Z ##[group]Setting up auth
+2026-10-17T21:56:46.6633328Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-17T21:56:46.6675656Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-17T21:56:46.7101679Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-17T21:56:46.7156839Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-17T21:56:46.7449197Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-17T21:56:46.7488156Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-17T21:56:46.7742985Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-17T21:56:46.7791492Z ##[endgroup]
+2026-10-17T21:56:46.7792476Z ##[group]Fetching the repository
+2026-10-17T21:56:46.7804394Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +99d17c33a1099d313a6a8385015f95b4e42587ac:refs/remotes/pull/100/merge
+2026-10-17T21:56:49.3277106Z From https://github.com/Fuck-GH-Admin/cdut-studio-review-agent
+2026-10-17T21:56:49.3278666Z  * [new ref]         99d17c33a1099d313a6a8385015f95b4e42587ac -> pull/100/merge
+2026-10-17T21:56:49.3282687Z ##[endgroup]
+2026-10-17T21:56:49.3284214Z ##[group]Determining the checkout info
+2026-10-17T21:56:49.3285945Z ##[endgroup]
+2026-10-17T21:56:49.3312462Z [command]/usr/bin/git sparse-checkout disable
+2026-10-17T21:56:49.3364554Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-17T21:56:49.3407278Z ##[group]Checking out the ref
+2026-10-17T21:56:49.3412081Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/100/merge
+2026-10-17T21:56:49.8501871Z Note: switching to 'refs/remotes/pull/100/merge'.
+2026-10-17T21:56:49.8502598Z 
+2026-10-17T21:56:49.8503080Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-17T21:56:49.8504164Z changes and commit them, and you can discard any commits you make in this
+2026-10-17T21:56:49.8505729Z state without impacting any branches by switching back to a branch.
+2026-10-17T21:56:49.8506381Z 
+2026-10-17T21:56:49.8506863Z If you want to create a new branch to retain commits you create, you may
+2026-10-17T21:56:49.8507907Z do so (now or later) by using -c with the switch command. Example:
+2026-10-17T21:56:49.8508476Z 
+2026-10-17T21:56:49.8508747Z   git switch -c <new-branch-name>
+2026-10-17T21:56:49.8509171Z 
+2026-10-17T21:56:49.8509446Z Or undo this operation with:
+2026-10-17T21:56:49.8509828Z 
+2026-10-17T21:56:49.8510067Z   git switch -
+2026-10-17T21:56:49.8510422Z 
+2026-10-17T21:56:49.8511356Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-17T21:56:49.8512604Z 
+2026-10-17T21:56:49.8513463Z HEAD is now at 99d17c3 Merge ab3716f1e39f19b8581b025909ba184bfec145a2 into b68443b23293b4714e61a3b81383d3d3a56434fc
+2026-10-17T21:56:49.8535465Z ##[endgroup]
+2026-10-17T21:56:49.8592126Z [command]/usr/bin/git log -1 --format=%H
+2026-10-17T21:56:49.8623633Z 99d17c33a1099d313a6a8385015f95b4e42587ac
+2026-10-17T21:56:49.8998341Z ##[group]Run oven-sh/setup-bun@v2
+2026-10-17T21:56:49.8998773Z with:
+2026-10-17T21:56:49.8999076Z   bun-version: 1.4.0
+2026-10-17T21:56:49.8999391Z   no-cache: false
+2026-10-17T21:56:49.9002661Z   token: ***
+2026-10-17T21:56:49.9002950Z env:
+2026-10-17T21:56:49.9003233Z   ELECTRON_SKIP_BINARY_DOWNLOAD: 1
+2026-10-17T21:56:49.9003608Z ##[endgroup]
+2026-10-17T21:56:50.1411592Z Cache hit for: bun-tw6RmwqZSA0Bnj0yIUzvSupv0Nk=
+2026-10-17T21:56:50.5071397Z Received 35658630 of 35658630 (100.0%), 116.5 MBs/sec
+2026-10-17T21:56:50.5073194Z Cache Size: ~34 MB (35658630 B)
+2026-10-17T21:56:50.5112983Z [command]/usr/bin/tar -xf /home/runner/work/_temp/a7d725cb-fae4-433c-8fde-12fb053e7f15/cache.tzst -P -C /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent --use-compress-program unzstd
+2026-10-17T21:56:50.6515871Z Cache restored successfully
+2026-10-17T21:56:50.6542845Z [command]/home/runner/.bun/bin/bun --revision
+2026-10-17T21:56:50.6625333Z 1.4.0+34cbb9a40
+2026-10-17T21:56:50.6626139Z Using a cached version of Bun: 1.4.0+34cbb9a40
+2026-10-17T21:56:50.6835919Z ##[group]Run actions/setup-node@v4
+2026-10-17T21:56:50.6836242Z with:
+2026-10-17T21:56:50.6836466Z   node-version: 22
+2026-10-17T21:56:50.6836699Z   always-auth: false
+2026-10-17T21:56:50.6836943Z   check-latest: false
+2026-10-17T21:56:50.6839883Z   token: ***
+2026-10-17T21:56:50.6840106Z env:
+2026-10-17T21:56:50.6840347Z   ELECTRON_SKIP_BINARY_DOWNLOAD: 1
+2026-10-17T21:56:50.6840640Z ##[endgroup]
+2026-10-17T21:56:50.8559997Z Found in cache @ /opt/hostedtoolcache/node/22.23.3/x64
+2026-10-17T21:56:50.8565437Z (node:2374) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-17T21:56:50.8566382Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-17T21:56:50.8568609Z ##[group]Environment details
+2026-10-17T21:56:53.3991081Z node: v22.23.3
+2026-10-17T21:56:53.3991999Z npm: 10.9.9
+2026-10-17T21:56:53.3992395Z yarn: 1.22.22
+2026-10-17T21:56:53.3993352Z ##[endgroup]
+2026-10-17T21:56:53.4158025Z ##[group]Run bun install --frozen-lockfile
+2026-10-17T21:56:53.4158549Z [36;1mbun install --frozen-lockfile[0m
+2026-10-17T21:56:53.4452405Z shell: /usr/bin/bash -e {0}
+2026-10-17T21:56:53.4452923Z env:
+2026-10-17T21:56:53.4453309Z   ELECTRON_SKIP_BINARY_DOWNLOAD: 1
+2026-10-17T21:56:53.4453840Z ##[endgroup]
+2026-10-17T21:56:53.4617723Z bun install v1.4.0 (34cbb9a40)
+2026-10-17T21:56:53.4734209Z Resolving dependencies
+2026-10-17T21:56:53.4751904Z Resolved, downloaded and extracted [2]
+2026-10-17T21:57:01.8091711Z 
+2026-10-17T21:57:01.8092509Z + @types/bun@1.4.2
+2026-10-17T21:57:01.8093178Z + @types/dompurify@3.2.0
+2026-10-17T21:57:01.8093711Z + @types/node@20.19.43
+2026-10-17T21:57:01.8094153Z + @types/react@18.3.31
+2026-10-17T21:57:01.8094616Z + @types/react-dom@18.3.7
+2026-10-17T21:57:01.8095081Z + dompurify@3.4.15
+2026-10-17T21:57:01.8095484Z + jszip@3.10.1
+2026-10-17T21:57:01.8096308Z + rcedit@5.0.2
+2026-10-17T21:57:01.8096725Z + typescript@5.9.3
+2026-10-17T21:57:01.8097125Z + jotai@2.20.3
+2026-10-17T21:57:01.8097437Z + source-map@0.7.6
+2026-10-17T21:57:01.8097628Z 
+2026-10-17T21:57:01.8097839Z 1263 packages installed [8.35s]
+2026-10-17T21:57:01.8213949Z ##[group]Run bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/single-case-workspace.e2e.test.ts
+2026-10-17T21:57:01.8215139Z [36;1mbun test --isolate --timeout 30000 apps/electron/src/main/lib/review/single-case-workspace.e2e.test.ts[0m
+2026-10-17T21:57:01.8216172Z [36;1mbun test --isolate --timeout 30000 apps/electron/src/main/lib/review/run-service-v2.artifacts.test.ts[0m
+2026-10-17T21:57:01.8217119Z [36;1mbun test --isolate --timeout 30000 apps/electron/src/main/lib/review/boot-check.test.ts[0m
+2026-10-17T21:57:01.8218005Z [36;1mbun test --isolate --timeout 30000 apps/electron/src/main/lib/review/fixtures/all-templates-fixture.test.ts[0m
+2026-10-17T21:57:01.8218876Z [36;1mbun test --isolate --timeout 30000 apps/electron/scripts/packaging-guards.test.ts[0m
+2026-10-17T21:57:01.8219700Z [36;1mbun test --isolate --timeout 30000 apps/electron/src/main/lib/skin-manager-service.test.ts[0m
+2026-10-17T21:57:01.8220629Z [36;1mbun test --isolate --timeout 30000 apps/electron/src/main/lib/agent-workspace-profile.test.ts[0m
+2026-10-17T21:57:01.8291272Z shell: /usr/bin/bash -e {0}
+2026-10-17T21:57:01.8291658Z env:
+2026-10-17T21:57:01.8291990Z   ELECTRON_SKIP_BINARY_DOWNLOAD: 1
+2026-10-17T21:57:01.8292412Z ##[endgroup]
+2026-10-17T21:57:01.8442078Z bun test v1.4.0 (34cbb9a40)
+2026-10-17T21:57:01.8708145Z 
+2026-10-17T21:57:01.8710367Z ##[group]apps/electron/src/main/lib/review/single-case-workspace.e2e.test.ts:
+2026-10-17T21:57:02.1878400Z [审核模板] 已发布: comprehensive-assessment-v2@3
+2026-10-17T21:57:02.1932105Z [审核专区] 已创建案卷: case-1792274222192-wx8qe7（青禾竞赛单案审核）
+2026-10-17T21:57:02.2016303Z [审核专区] 案卷已更新(rev=1): case-1792274222192-wx8qe7 — 导入材料 竞赛细则.txt（parsed）
+2026-10-17T21:57:02.2038612Z [审核专区] 已导入材料: 竞赛细则.txt → case-1792274222192-wx8qe7/doc-1792274222199-3bmyi0（解析 parsed，已登记规则包）
+2026-10-17T21:57:02.2051081Z [审核专区] 规则大纲 AI 生成成功: 2 条
+2026-10-17T21:57:02.2054801Z [审核专区] 案卷已更新(rev=2): case-1792274222192-wx8qe7 — 规则大纲写回（2 条）
+2026-10-17T21:57:02.2061934Z [审核专区] 案卷已更新(rev=3): case-1792274222192-wx8qe7 — 审核员确认依据 pack-1792274222201-0exkcr
+2026-10-17T21:57:02.2100351Z [审核专区] 案卷已更新(rev=4): case-1792274222192-wx8qe7 — 导入材料 申报表.txt（parsed）
+2026-10-17T21:57:02.2122349Z [审核专区] 已导入材料: 申报表.txt → case-1792274222192-wx8qe7/doc-1792274222208-ju94fe（解析 parsed）
+2026-10-17T21:57:02.2134336Z [审核专区] 条目识别 AI 成功: 1 条
+2026-10-17T21:57:02.2135835Z [审核专区] 案卷已更新(rev=5): case-1792274222192-wx8qe7 — 条目识别写回（1 条）
+2026-10-17T21:57:02.2461545Z [审核专区] 案卷已更新(rev=6): case-1792274222192-wx8qe7 — 导入材料 获奖证书.txt（parsed）
+2026-10-17T21:57:02.2493665Z [审核专区] 已导入材料: 获奖证书.txt → case-1792274222192-wx8qe7/doc-1792274222245-fn7gam（解析 parsed）
+2026-10-17T21:57:02.2585590Z [审核专区] 案卷已更新(rev=7): case-1792274222192-wx8qe7 — 导入材料 补充说明.txt（parsed）
+2026-10-17T21:57:02.2617833Z [审核专区] 已导入材料: 补充说明.txt → case-1792274222192-wx8qe7/doc-1792274222257-axsj83（解析 parsed）
+2026-10-17T21:57:02.2758382Z (pass) 普通审核工作台单案完整链路 > 从 V1 建卷到补件与人工认定，额外模板职责未覆盖时拒绝整案通过并持久恢复 [92.15ms]
+2026-10-17T21:57:02.2800244Z 
+2026-10-17T21:57:02.2801955Z ##[endgroup]
+2026-10-17T21:57:02.2802378Z 
+2026-10-17T21:57:02.2802749Z  1 pass
+2026-10-17T21:57:02.2803318Z  0 fail
+2026-10-17T21:57:02.2803831Z  29 expect() calls
+2026-10-17T21:57:02.2804340Z Ran 1 test across 1 file. [439.00ms]
+2026-10-17T21:57:02.2937921Z bun test v1.4.0 (34cbb9a40)
+2026-10-17T21:57:02.3183167Z 
+2026-10-17T21:57:02.3184070Z ##[group]apps/electron/src/main/lib/review/run-service-v2.artifacts.test.ts:
+2026-10-17T21:57:02.3385361Z [配置] 已创建配置目录: /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/work/tmp/profer-test-art-1792274222337
+2026-10-17T21:57:02.3412789Z [审核模板] 已发布: comprehensive-assessment-v2@3
+2026-10-17T21:57:02.3539581Z (pass) N2b 节点产物与事件（R03） > Given 正常运行 When 执行 Then 每节点产物落盘且事件即时回调（修正误判 1） [7.09ms]
+2026-10-17T21:57:02.3571040Z (pass) N2b 节点产物与事件（R03） > Given 中途失败 When 运行 Then 已完成节点产物保留（崩溃可续） [3.21ms]
+2026-10-17T21:57:02.3616775Z (pass) N2b 节点产物与事件（R03） > Given 产物被删 When 恢复 Then 该节点重做（R03 恢复核验） [4.62ms]
+2026-10-17T21:57:02.3618460Z (pass) N2b 输入快照完整性（R04，修正误判 3） > Given caseFields 变化 When 计算 hash Then 变化（旧实现不包含 caseFields） [0.11ms]
+2026-10-17T21:57:02.3676978Z (pass) coverage 由产物账本装配（G12） > Given 模板无政策规则 When 运行 Then coverage 由材料账本如实给出（plannedChecks=0） [5.85ms]
+2026-10-17T21:57:02.3708160Z 
+2026-10-17T21:57:02.3709848Z ##[endgroup]
+2026-10-17T21:57:02.3710376Z 
+2026-10-17T21:57:02.3711528Z  5 pass
+2026-10-17T21:57:02.3712271Z  0 fail
+2026-10-17T21:57:02.3713043Z  12 expect() calls
+2026-10-17T21:57:02.3714036Z Ran 5 tests across 1 file. [77.00ms]
+2026-10-17T21:57:02.3797598Z bun test v1.4.0 (34cbb9a40)
+2026-10-17T21:57:02.4158120Z 
+2026-10-17T21:57:02.4159684Z ##[group]apps/electron/src/main/lib/review/boot-check.test.ts:
+2026-10-17T21:57:02.4473931Z [配置] 已创建配置目录: /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/work/tmp/profer-test-boot-1792274222445
+2026-10-17T21:57:02.4514086Z [审核模板] 已发布: comprehensive-assessment-v2@3
+2026-10-17T21:57:02.4619517Z (pass) runBootCheckV2（M5） > Given 首次启动 When 检查 Then 注入当前默认模板并提示发布 [16.16ms]
+2026-10-17T21:57:02.4684199Z (pass) runBootCheckV2（M5） > Given 二次启动 When 检查 Then 幂等（不再注入） [6.48ms]
+2026-10-17T21:57:02.4748501Z (pass) runBootCheckV2（M5） > Given V1 案卷无 v2 文件 When 检查 Then 列入可迁移 [6.45ms]
+2026-10-17T21:57:02.4807616Z (pass) runBootCheckV2（M5） > Given 内置草稿已存在 When ensureBuiltinTemplateDrafts Then 不覆盖 [5.89ms]
+2026-10-17T21:57:02.4840896Z 
+2026-10-17T21:57:02.4842329Z ##[endgroup]
+2026-10-17T21:57:02.4852663Z 
+2026-10-17T21:57:02.4853245Z  4 pass
+2026-10-17T21:57:02.4854471Z  0 fail
+2026-10-17T21:57:02.4855100Z  8 expect() calls
+2026-10-17T21:57:02.4855770Z Ran 4 tests across 1 file. [105.00ms]
+2026-10-17T21:57:02.4922197Z bun test v1.4.0 (34cbb9a40)
+2026-10-17T21:57:02.5298054Z 
+2026-10-17T21:57:02.5300021Z ##[group]apps/electron/src/main/lib/review/fixtures/all-templates-fixture.test.ts:
+2026-10-17T21:57:02.5593072Z [配置] 已创建配置目录: /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/apps/work/tmp/profer-test-n4-1792274222557
+2026-10-17T21:57:02.5625124Z [政策仓库] 已发布: policy-comprehensive-assessment-demo@1
+2026-10-17T21:57:02.5626676Z [政策仓库] 已发布: policy-scholarship-demo@1
+2026-10-17T21:57:02.5641380Z (pass) 当前核心内置模板完整政策（N4/R02） > Given 六套虚构政策+精确引用 When 发布后校验 Then 全部 error 清零 [5.99ms]
+2026-10-17T21:57:02.5664208Z [审核模板] 已发布: comprehensive-assessment-v2@3
+2026-10-17T21:57:02.5671219Z [审核模板] 已发布: scholarship-v2@2
+2026-10-17T21:57:02.5676139Z (pass) 当前核心内置模板完整政策（N4/R02） > Given seed+publish When 检查 Then 六政策与六模板全部 published [3.56ms]
+2026-10-17T21:57:02.5688612Z (pass) 当前核心内置模板完整政策（N4/R02） > Given 重复 seed When 再执行 Then 幂等不覆盖 [1.23ms]
+2026-10-17T21:57:02.5693936Z (pass) 当前核心内置模板完整政策（N4/R02） > Given 政策内容 When 校验 Then 含虚构声明（不冒充真实校规） [0.08ms]
+2026-10-17T21:57:02.5701631Z 
+2026-10-17T21:57:02.5702538Z ##[endgroup]
+2026-10-17T21:57:02.5702933Z 
+2026-10-17T21:57:02.5703250Z  4 pass
+2026-10-17T21:57:02.5704052Z  0 fail
+2026-10-17T21:57:02.5704552Z  10 expect() calls
+2026-10-17T21:57:02.5705207Z Ran 4 tests across 1 file. [78.00ms]
+2026-10-17T21:57:02.5792163Z bun test v1.4.0 (34cbb9a40)
+2026-10-17T21:57:02.6035459Z 
+2026-10-17T21:57:02.6037786Z ##[group]apps/electron/scripts/packaging-guards.test.ts:
+2026-10-17T21:57:02.6222464Z (pass) Windows 打包宿主门禁 > Given macOS 或 Linux 宿主 When 请求 Windows 打包 Then 在构建前明确失败 [0.13ms]
+2026-10-17T21:57:02.6224701Z (pass) Windows 打包宿主门禁 > Given Windows 宿主 When 请求 Windows 打包 Then 允许继续 [0.36ms]
+2026-10-17T21:57:02.6226573Z (pass) Windows 打包宿主门禁 > Given 组合平台参数 When 其中包含 Windows Then 不允许用参数顺序绕过门禁 [0.18ms]
+2026-10-17T21:57:02.6234733Z (pass) Windows 随包 CLI 契约 > Given 目录只有非空 profer.exe When 验证 Then 通过 [0.74ms]
+2026-10-17T21:57:02.6239109Z (pass) Windows 随包 CLI 契约 > Given CLI 缺失或只有无扩展名文件 When 验证 Then 拒绝 [0.50ms]
+2026-10-17T21:57:02.6246219Z (pass) Windows 随包 CLI 契约 > Given 两种宿主 CLI 并存或 exe 为空 When 验证 Then 拒绝 [0.63ms]
+2026-10-17T21:57:02.6251992Z (pass) 平台打包入口配置 > Given 当前品牌打包配置 When Windows workflow 检查主程序和安装包 Then 文件名与实际产物一致 [0.52ms]
+2026-10-17T21:57:02.6253537Z (pass) 平台打包入口配置 > Given electron-builder 配置 When 选择平台 Then 只复制对应 CLI 文件名 [0.16ms]
+2026-10-17T21:57:02.6255295Z (pass) 平台打包入口配置 > Given electron-builder 配置 When 打包 macOS Then 挂上签名补签钩子 [0.10ms]
+2026-10-17T21:57:02.6261922Z 175 |     expect(pushScript).toContain('zip.blockmap')
+2026-10-17T21:57:02.6263267Z 176 |     expect(packageJson.scripts['verify:mac-signature']).toBe('node scripts/verify-macos-signature.cjs')
+2026-10-17T21:57:02.6264376Z 177 |     const changelog = JSON.parse(
+2026-10-17T21:57:02.6265259Z 178 |       readFileSync(join(appDir, 'resources', 'CHANGELOG.json'), 'utf8'),
+2026-10-17T21:57:02.6266176Z 179 |     ) as { releases: Array<{ version: string }> }
+2026-10-17T21:57:02.6267154Z 180 |     expect(changelog.releases[0].version).toBe(packageJson.version)
+2026-10-17T21:57:02.6268018Z                                                 ^
+2026-10-17T21:57:02.6268646Z error: expect(received).toBe(expected)
+2026-10-17T21:57:02.6269032Z 
+2026-10-17T21:57:02.6269228Z Expected: "0.15.151"
+2026-10-17T21:57:02.6269644Z Received: "0.15.150"
+2026-10-17T21:57:02.6269880Z 
+2026-10-17T21:57:02.6271200Z       at <anonymous> (/home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/apps/electron/scripts/packaging-guards.test.ts:180:43)
+2026-10-17T21:57:02.6272293Z 
+2026-10-17T21:57:02.6304292Z ##[error]Expected: "0.15.151"
+Received: "0.15.150"
+
+      at <anonymous> (/home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent/apps/electron/scripts/packaging-guards.test.ts:180:43)
+2026-10-17T21:57:02.6316241Z (fail) 平台打包入口配置 > Given 发布脚本 When 校验 macOS 产物 Then 使用共享签名契约而非 spctl [0.78ms]
+2026-10-17T21:57:02.6317384Z (pass) 平台打包入口配置 > Given Windows 发布脚本 When 启动构建 Then 宿主门禁总是最先执行 [0.19ms]
+2026-10-17T21:57:02.6318559Z (pass) macOS 签名契约 > Given 改名后 App 和旧品牌残留 When 查找解包目录 Then 只选当前产品且支持嵌套目录 [0.55ms]
+2026-10-17T21:57:02.6319892Z (pass) macOS 签名契约 > Given bundle id When 构造 designated requirement Then 只锚定 identifier [0.08ms]
+2026-10-17T21:57:02.6321523Z (pass) macOS 签名契约 > Given codesign 输出 When 解析 Then 兼容显式与缺省派生两种 DR 写法 [0.13ms]
+2026-10-17T21:57:02.6322656Z (pass) macOS 签名契约 > Given 未签名的 App 产物 When 断言契约 Then 失败并指出 DR 不符 [0.07ms]
+2026-10-17T21:57:02.6324213Z (pass) 核心静态资产与打包配置完整性门禁 > Given 应用打包依赖 When 检查核心打包配置与关键资源 Then 配置文件和图标必须存在且非空 [0.95ms]
+2026-10-17T21:57:02.6325837Z (pass) 内置技能库（default-skills）完整性与安全水位门禁 > Given 内置技能库 When 检查 default-skills 目录 Then 17 个关键技能及其 SKILL.md 必须完整存在且非空 [0.80ms]
+2026-10-17T21:57:02.6327571Z (pass) 内置技能库（default-skills）完整性与安全水位门禁 > Given 重型文档技能 When 检查核心执行脚本与 XML 规范 Then 核心脚本与 Schemas 必须完整存在 [0.19ms]
+2026-10-17T21:57:02.6329236Z (pass) 内置技能库（default-skills）完整性与安全水位门禁 > Given 技能同步源 When 统计 default-skills 资源文件数 Then 文件总数必须达到安全水位（>=200） [1.12ms]
+2026-10-17T21:57:02.6329971Z 
+2026-10-17T21:57:02.6330523Z ##[endgroup]
+2026-10-17T21:57:02.6331128Z 
+2026-10-17T21:57:02.6331298Z  18 pass
+2026-10-17T21:57:02.6331628Z  1 fail
+2026-10-17T21:57:02.6331983Z  152 expect() calls
+2026-10-17T21:57:02.6332472Z Ran 19 tests across 1 file. [53.00ms]
+2026-10-17T21:57:02.6354600Z ##[error]Process completed with exit code 1.
+2026-10-17T21:57:02.6550063Z Post job cleanup.
+2026-10-17T21:57:02.7532139Z [command]/usr/bin/git version
+2026-10-17T21:57:02.7584382Z git version 2.55.0
+2026-10-17T21:57:02.7636086Z Temporarily overriding HOME='/home/runner/work/_temp/651c04fa-cd00-4a2e-92dc-6258c67aa74c' before making global git config changes
+2026-10-17T21:57:02.7638319Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-17T21:57:02.7646254Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/cdut-studio-review-agent/cdut-studio-review-agent
+2026-10-17T21:57:02.7709101Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-17T21:57:02.7767607Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-17T21:57:02.8097556Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-17T21:57:02.8134816Z http.https://github.com/.extraheader
+2026-10-17T21:57:02.8159962Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-17T21:57:02.8201479Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-17T21:57:02.8629706Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-17T21:57:02.8698628Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-17T21:57:02.9178483Z Cleaning up orphan processes
+2026-10-17T21:57:02.9486862Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+

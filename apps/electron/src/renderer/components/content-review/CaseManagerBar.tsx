@@ -27,7 +27,7 @@ import {
 } from '@profer/ui/primitives/dropdown-menu'
 import { DEFAULT_DOMAIN_PACK_ID, BUILTIN_DOMAIN_PACKS, resolveDomainPack } from '@profer/shared'
 import type { ReviewCaseSummary } from '@profer/shared'
-import { reviewCaseAtom, reviewCaseListAtom, reviewExecutionAtom, reviewWorkspaceSectionAtom, reviewWorkspaceTemplateAtom } from '@/atoms/review-atoms'
+import { reviewCaseAtom, reviewCaseListAtom, reviewExecutionAtom, reviewWorkspaceSectionAtom, reviewWorkspaceTemplateAtom, reviewWorkspaceAggregateAtom } from '@/atoms/review-atoms'
 import { cn } from '@/lib/utils'
 import { CreateCaseDialog } from './CreateCaseDialog'
 import { templatesRefreshAtom } from './V2CasePanel'
@@ -51,6 +51,7 @@ export function ReviewContextBar({ actions }: CaseManagerBarProps): React.ReactE
   const caseList = useAtomValue(reviewCaseListAtom)
   const execution = useAtomValue(reviewExecutionAtom)
   const activeTemplate = useAtomValue(reviewWorkspaceTemplateAtom)
+  const d4Plan = useAtomValue(reviewWorkspaceAggregateAtom)?.d2RuntimePlan
   const templateRefresh = useAtomValue(templatesRefreshAtom)
   const setWorkspaceSection = useSetAtom(reviewWorkspaceSectionAtom)
 
@@ -201,7 +202,7 @@ export function ReviewContextBar({ actions }: CaseManagerBarProps): React.ReactE
           <select
             id="review-case-template"
             aria-label="载入审核模板到本案"
-            disabled={!currentCase || savingReviewSetup}
+            disabled={!currentCase || savingReviewSetup || !!d4Plan}
             value={selectedTemplate}
             onChange={(event) => void handleTemplateChange(event.target.value)}
             className="min-w-48 flex-1 rounded-md border border-input bg-background px-2.5 py-1.5 text-xs text-foreground"
@@ -210,12 +211,12 @@ export function ReviewContextBar({ actions }: CaseManagerBarProps): React.ReactE
             {publishedTemplates.length > 0 && <optgroup label="已发布 · 可载入">{publishedTemplates.map((template) => (
               <option key={`${template.templateId}@${template.version}`} value={`${template.templateId}@${template.version}`}>{template.name} · v{template.version}</option>
             ))}</optgroup>}
-            {activeTemplate && !activeTemplateIsInLatestList && <optgroup label="本案当前版本 · 仅保留在此案"><option value={`${activeTemplate.templateId}@${activeTemplate.version}`}>{activeTemplate.name} · v{activeTemplate.version}（历史版本）</option></optgroup>}
+            {activeTemplate && !activeTemplateIsInLatestList && <optgroup label="本案当前版本 · 仅保留在此案"><option value={`${activeTemplate.templateId}@${activeTemplate.version}`}>{activeTemplate.name} · v{activeTemplate.version}（{d4Plan ? '技术候选' : '历史版本'}）</option></optgroup>}
           </select>
           <Button type="button" size="sm" variant="outline" className="h-7 shrink-0 px-2 text-xs" onClick={() => setWorkspaceSection('templates')}>模板库</Button>
         </div>
         <p className="mt-1 text-xs leading-4 text-muted-foreground">
-          {currentCase
+          {d4Plan ? `D4 技术预审 · ${d4Plan.subjects.length} 个对象 · ${d4Plan.mapping.length} 项责任。修改条件请新建案卷。` : currentCase
             ? `已发布 ${publishedTemplates.length} 套可载入 · ${draftTemplateCount} 套草稿/范本需先配置并发布。模板规则按本案固定版本执行。`
             : '请先选择或新建审核任务；草稿和参考范本需配置并发布后才会出现在这里。'}
         </p>

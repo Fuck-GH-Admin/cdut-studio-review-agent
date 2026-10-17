@@ -19,7 +19,7 @@ function text(value: string): FieldValue {
   return { kind: 'text', value }
 }
 
-function projectedCase(v1: ReviewCase, current: ReviewCaseV2): ReviewCaseV2 {
+function projectedCase(v1: ReviewCase, current: ReviewCaseV2, fixedD2 = false): ReviewCaseV2 {
   const mapping = mapDomainToTemplate(v1.domainPackId)
   if (!mapping.templateId) throw new Error(mapping.note ?? `审核领域未映射到 V2 模板: ${v1.domainPackId ?? '(默认)'}`)
   const selectedTemplateId = v1.reviewTemplate?.templateId ?? mapping.templateId
@@ -27,6 +27,9 @@ function projectedCase(v1: ReviewCase, current: ReviewCaseV2): ReviewCaseV2 {
     ?? (current.templateId === selectedTemplateId ? current.templateVersion : undefined)
   const template = getTemplate(selectedTemplateId, selectedTemplateVersion)
   if (!template) throw new Error(`V2 模板不存在或未初始化: ${selectedTemplateId}`)
+  if (fixedD2 && (template.templateId !== current.templateId || template.version !== current.templateVersion)) {
+    throw new Error('D4 固定计划不能切换模板；修改对象或条件请创建新的技术预审案卷')
+  }
 
   const previousSubjects = new Map(current.subjects.map((subject) => [subject.id, subject]))
   const subjects = v1.items.map((item) => {
@@ -109,8 +112,8 @@ function projectedCase(v1: ReviewCase, current: ReviewCaseV2): ReviewCaseV2 {
       applicant: text(v1.applicant),
       academicYear: text(v1.academicYear),
     },
-    subjects,
-    reviewRules,
+    subjects: fixedD2 ? current.subjects : subjects,
+    reviewRules: fixedD2 ? current.reviewRules : reviewRules,
     documents: [...projectedActiveDocuments, ...archivedDocuments, ...v2OnlyDocuments],
   }
 }
@@ -169,7 +172,7 @@ export async function syncWorkspaceProjectionV2(caseId: string): Promise<CaseAgg
   for (let attempt = 0; attempt < 3; attempt += 1) {
     const legacy = getCase(caseId)
     if (!legacy) throw new Error(`辅助审核案卷不存在: ${caseId}`)
-    const projection = projectedCase(legacy, current.caseV2)
+    const projection = projectedCase(legacy, current.caseV2, !!current.d2RuntimePlan)
     const archivedVersionIds = new Set((legacy.archivedDocuments ?? []).map((document) => `${document.id}-v1`))
     if (projectionFingerprint(projection) === projectionFingerprint(current.caseV2)) return current
     const digest = createHash('sha256').update(projectionFingerprint(projection)).digest('hex')
@@ -189,7 +192,7 @@ export async function syncWorkspaceProjectionV2(caseId: string): Promise<CaseAgg
             : link)
         }
         // 来自 V1 识别的关联先作为 AI 候选；审核员可在工作台确认、拒绝或改绑。
-        for (const item of legacy.items) {
+        for (const item of draft.d2RuntimePlan ? [] : legacy.items) {
           const versionIds = item.evidenceDocumentIds.map((documentId) => `${documentId}-v1`)
           for (const documentVersionId of versionIds) {
             if (!draft.caseV2.documents.some((document) => document.versionId === documentVersionId)) continue

@@ -1,0 +1,117 @@
+{
+  "result": "PASS",
+  "scope": "G08-T02 selected technical pre-review loop only; not 50-template business accuracy or school approval",
+  "fixedInputHead": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "pr97HeadAtStart": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "pr97HeadAtDeliveryCheck": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "environment": {
+    "node": "v22.23.2",
+    "bun": "1.4.0",
+    "os": "Linux 7.0.0-38-generic #38-Ubuntu SMP PREEMPT_DYNAMIC Fri Sep  4 09:10:14 UTC 2026 x86_64 GNU/Linux",
+    "electron": "43.7.7",
+    "pi": "0.86.1",
+    "display": ":108 Xvfb 1600x1000x24"
+  },
+  "model": {
+    "name": "deepseek-flash",
+    "provider": "deepseek",
+    "sponsoredConfigFound": false,
+    "online": true,
+    "sessionId": "effe0738-1012-4b59-a61f-758c83dbfc6e",
+    "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+    "runId": "run-pi-mvcx42ca-kvopy",
+    "startedAt": "2026-10-17T21:37:53.627Z",
+    "completedAt": "2026-10-17T21:40:43.364Z",
+    "calls": {
+      "review_read_documents": 1,
+      "review_submit_result": 6
+    },
+    "usage": {
+      "input_tokens": 105996,
+      "output_tokens": 43594,
+      "cache_read_input_tokens": 845568
+    },
+    "note": "usage values are provider SDK fields; input and cache-read recorded separately, not currency"
+  },
+  "coverage": {
+    "documents": [
+      {
+        "documentVersionId": "doc-1792273026701-gs1rha-v1",
+        "status": "read"
+      },
+      {
+        "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+        "status": "read"
+      }
+    ],
+    "plannedChecks": 107,
+    "completedChecks": 107,
+    "effectiveVerdicts": 2,
+    "pendingChecks": 84
+  },
+  "statuses": {
+    "compliant": 1,
+    "awaiting-confirmation": 74,
+    "awaiting-supplement": 10,
+    "non-compliant": 1,
+    "not-applicable": 21
+  },
+  "allChecksHaveSourceRefs": true,
+  "unknownConditionCheckCount": 13,
+  "unknownConditionsRemainAwaitingConfirmation": true,
+  "crossObjectSourceRefs": [],
+  "finalSubmission": {
+    "accepted": 0,
+    "rejected": [],
+    "missingChecks": [],
+    "status": "completed",
+    "message": "审核结果已保存；分析完成不代表正式批准。"
+  },
+  "checks": {
+    "targetedTests": {
+      "pass": 74,
+      "fail": 0,
+      "files": 8
+    },
+    "typecheck": "PASS",
+    "boundaries": "PASS",
+    "rendererBuild": "PASS",
+    "mainPreloadResources": "PASS",
+    "catalog": {
+      "expected": 50,
+      "candidateHeld": 50,
+      "visible": 50,
+      "missing": []
+    },
+    "runVerification": {
+      "complete": true,
+      "problems": []
+    },
+    "packagingGuardsRetry": {
+      "pass": 19,
+      "fail": 0
+    }
+  },
+  "modelRunProvenance": "Online run executed against fixed input plus this change before publishing the final Git commit. Main review runtime source hashes are recorded below; final delivery also verifies the persisted real run. Package-only patch bump and final Renderer evidence controls do not change the executed Pi/D2 service code.",
+  "runtimeSourceSha256": {
+    "apps/electron/src/main/lib/review/review-d4-client.ts": "3938877961bda98dad4de7bdc44d9ef755048f88726dc84002d77e858f7c4f9a",
+    "apps/electron/src/main/lib/review/review-d4-catalog.ts": "c7940945a248b01d1d4514f8da4692f206f403dc6921c61f9e58fd69c613c301",
+    "apps/electron/src/main/lib/review/review-d4-common.ts": "3a4299c4c16e5739be597aa58a4dd32a99221d51108192ba6bd89ca783cdfb28",
+    "apps/electron/src/main/lib/review/pi-case-review-service.ts": "c0669d624a5811f922b1c0132c6e1a3888f6013d9b732d7e60aac6f1a341f8ba",
+    "apps/electron/src/main/lib/review/review-d2-runtime.ts": "31dc646f4eaa81192dab243b637b354930eff2ae081fe1b9dd70af14e736516b",
+    "apps/electron/src/main/lib/review/workspace-service-v2.ts": "b5c4518a94749427c09b2692d4ace4f0986be78d3aa169b283b8113b8653de7d",
+    "apps/electron/src/preload/index.ts": "a6c9e4092261d6c889e45af3911dca36124f3f25b6d2378883c5ecc01d489a16"
+  },
+  "firstRemoteCI": {
+    "sha": "ab3716f1e39f19b8581b025909ba184bfec145a2",
+    "unified": {
+      "pass": 3717,
+      "skip": 6,
+      "fail": 1,
+      "failure": "CHANGELOG first version 0.15.150 did not match package 0.15.151"
+    },
+    "g04": "SUCCESS - Artifact only, no competing git push",
+    "baselineRunId": 39073027029,
+    "unifiedRunId": 39073026922
+  }
+}

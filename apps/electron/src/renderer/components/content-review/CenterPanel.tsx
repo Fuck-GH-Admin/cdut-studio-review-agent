@@ -178,7 +178,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
           <h2 className="text-sm font-semibold text-foreground">申请与证明</h2>
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          {items.length} 条 / {documentsByRole.evidence.length} 份证明
+          {aggregate?.d2RuntimePlan ? aggregate.caseV2.subjects.length : items.length} 条 / {documentsByRole.evidence.length} 份证明
         </p>
       </header>
 
@@ -254,7 +254,12 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
           </p>
         </div>
 
-        {items.length === 0 ? (
+        {aggregate?.d2RuntimePlan ? <div className="space-y-2">
+          {aggregate.caseV2.subjects.map(subject => <div id={`review-subject-${encodeURIComponent(subject.id)}`} key={subject.id} className="rounded-xl bg-muted/40 p-3 text-xs">
+            <p className="font-medium">{subject.title}</p>
+            <p className="mt-1 text-muted-foreground">{subject.id} · {aggregate.d2RuntimePlan!.mapping.filter(m => m.subjectId === subject.id).length} 项固定责任</p>
+          </div>)}
+        </div> : items.length === 0 ? (
           <p className="rounded-lg border border-dashed border-border/60 px-3 py-6 text-center text-xs text-muted-foreground">
             导入待审材料后，系统会在开始审核时自动识别申报事项。
           </p>
@@ -750,10 +755,13 @@ function EvidenceLinkControls({
   actions: ReturnType<typeof useReviewWorkspaceActions>
 }): React.ReactElement {
   const [subjectId, setSubjectId] = React.useState(aggregate.caseV2.subjects[0]?.id ?? '')
+  const [selectedFact, setSelectedFact] = React.useState('')
   const [busy, setBusy] = React.useState(false)
   const links = aggregate.evidenceLinks.filter((link) => link.documentVersionId === documentVersionId)
   const doc = aggregate.caseV2.documents.find((item) => item.versionId === documentVersionId)
   const titles = new Map(aggregate.caseV2.subjects.map((subject) => [subject.id, subject.title]))
+  const facts = [...new Set(aggregate.d2RuntimePlan?.mapping.filter(m => m.subjectId === subjectId).flatMap(m => m.evidenceCoverage?.supportsFacts ?? []) ?? [])]
+  const supportsFact = facts.includes(selectedFact) ? selectedFact : facts[0]
   const update = async (input: Parameters<typeof actions.transitionEvidenceLink>[0]): Promise<void> => {
     setBusy(true)
     try { await actions.transitionEvidenceLink(input) } catch (error) { console.error('[审核工作台] 更新证明关联失败', error) } finally { setBusy(false) }
@@ -770,8 +778,18 @@ function EvidenceLinkControls({
         <select value={subjectId} onChange={(event) => setSubjectId(event.target.value)} className="min-w-0 flex-1 rounded border bg-background px-1.5 py-1" aria-label="关联到申报事项">
           {aggregate.caseV2.subjects.map((subject) => <option key={subject.id} value={subject.id}>{subject.title}</option>)}
         </select>
-        <button disabled={busy || !subjectId || !doc} onClick={() => void update({ documentVersionId, subjectId, supportsFact: doc?.fileName ?? '人工关联证明', status: 'confirmed' })} className="inline-flex shrink-0 items-center gap-1 rounded border px-2 py-1 hover:bg-muted disabled:opacity-50"><Link2 size={12} />添加证明</button>
+        <button disabled={busy || !subjectId || !doc || (!!aggregate.d2RuntimePlan && !supportsFact)} onClick={() => void update({ documentVersionId, subjectId, supportsFact: supportsFact ?? doc?.fileName ?? '人工关联证明', status: 'confirmed' })} className="inline-flex shrink-0 items-center gap-1 rounded border px-2 py-1 hover:bg-muted disabled:opacity-50"><Link2 size={12} />添加证明</button>
       </div>
+      {aggregate.d2RuntimePlan && <label className="mt-2 block">本对象证明责任
+        <select aria-label="D4 证明责任" value={supportsFact ?? ''} onChange={e => setSelectedFact(e.target.value)} className="mt-1 w-full rounded border bg-background p-1">
+          {facts.map(fact => {
+            const mapping = aggregate.d2RuntimePlan!.mapping.find(m => m.subjectId === subjectId && m.evidenceCoverage?.supportsFacts.includes(fact))
+            const title = aggregate.d2RuntimePlan!.rules.find(r => r.id === mapping?.ruleId)?.title
+            return <option key={fact} value={fact}>{title ?? fact}</option>
+          })}
+        </select>
+        <span className="text-muted-foreground">仅确认这份材料与当前对象的关联，材料是否充分由本次审核判断。</span>
+      </label>}
     </div>
   )
 }
