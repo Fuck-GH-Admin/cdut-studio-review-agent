@@ -6,8 +6,8 @@
   "revision": 1,
   "templateId": "g07-t07",
   "templateVersion": 1,
-  "authoringDigest": "9757fa889c94485321cbc8a503d7895598976b1ce82389a6c1476f654256df61",
-  "previewFingerprint": "ebf715654e6a586f64c0931948c63e663a283cb4e243362790a859bfefef8c2d",
+  "authoringDigest": "e7aed7043cab844162b947a2d7967ffbec00926f9232d665ec15c93e5192b770",
+  "previewFingerprint": "76d66a6839a695c5508a6e51cd60b80777f0a2f481c81e579395dced43f2c724",
   "targets": [
     {
       "kind": "generic-object",
@@ -1416,6 +1416,213 @@
       "confirmation": "unconfirmed"
     },
     {
+      "id": "d2-87b7a1f2f6fae09ca435",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 6. 字段字典（60项，沿用B阶段稳定F-ID）",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第121行】\n## 6. 字段字典（60项，沿用B阶段稳定F-ID）\n\n**义务规则**：B阶段“总是”表示**该业务阶段需要有此事实或校方可取得的等价事实**，并不要求上传60张证据或在所有阶段填60栏。字段所属类型：`操作/经办（F01—F04,F11—18）`、`预算/权限（F05—10）`、`用途/预计支付（F19—34）`、`财务状态/冲账/还款（F35—57）`、`外币/访问（F58—60）`。空、0、未知、未触发、未取得接口必须分开。\n\n| 字段ID | 字段/事实 | 来源输入与格式/范围 | 生效阶段与必需条件 | 允许的替代取证 | 缺失或冲突时动作 | 来源 |\n|---|---|---|---|---|---|---|\n| F-01 | 本次操作类型 | 申报事项；枚举；先判生命周期 | 各阶段；总是 | 业务入口+系统动作 | 不明→澄清/分流 | L01,E01,E09 |\n| F-02 | 借款业务编号 | 可信底账；不可只用提交文件名 | 已建单/冲账；已形成借款 | 借款核销号+项目号组合 | 查无→核账，不判造假 | L02,L01,E09 |\n| F-03 | 提交单据编号 | 申报材料；字符串及版本 | 提交以后；系统生成 | 官方关联编号 | 缺则系统验证 | L01,L04 |\n| F-04 | 申请学校与校区 | 可信配置；编码、校区 | 全部；总是 | 身份接口 | 未知→禁止硬编码校规 | L05,E01 |\n| F-05 | 经费来源类别 | 申报事项；枚举+可配置 | 借入及冲账；总是 | 预算台账 | 未知→待权威查账 | L01,E04 |\n| F-06 | 经费项目号 | 申报事项；不得以相似项目名代替 | 借入及冲账；总是 | 预算系统准确项目ID | 不明→补证/查账 | L01,E01 |\n| F-07 | 经费项目名称 | 申报材料；名称/缩写映射 | 借入及冲账；总是 | 项目ID映射 | 冲突→按系统项目号核 | E03,E06 |\n| F-08 | 项目预算科目 | 可信底账；期间、冻结、限制 | 借入及冲账；按制度预算控制 | 核对系统限制指标 | 不可达→外部未验 | E01,E04,E05 |\n| F-09 | 可借预算余额 | 可信底账；金额：整数分 | 借款审批；借款需经费保障 | 当前余额签名快照 | 不可达→待系统 | E01,E02,E04 |\n| F-10 | 是否有应清未清旧借款 | 可信底账；记录集合+状态 | 借款审批；再次借款 | 历史核销/批准延期 | 无接口→不得默判无欠款 | L02,E01,E03,E04 |\n| F-11 | 申请填报账号 | 申报事项；账号别名、时间 | 提交；总是 | 权限日志 | 缺→核系统日志 | L02,E09 |\n| F-12 | 实际借款责任人ID | 申报事项；教职工身份及唯一ID | 借款；总是 | 人事系统 | 学生当责→CDUT旧禁，现行继续核 | L02,E01 |\n| F-13 | 受益人/活动参与人 | 证明材料；多对多关系 | 按业务；有人出差/实习/竞赛 | 活动或差旅审批 | 与借款人不同通常允许 | E01,L01 |\n| F-14 | 经办代理人ID | 申报事项；区分borrower/agent | 提交；学生或他人代录 | 委托记录 | 无授权→转审核/补授权 | L02,E09 |\n| F-15 | 有效委托授权 | 证明材料/可信底账；范围+起止时间 | 提交；代理存在 | 校内授权记录 | 无权→不可冒名最终提交 | L02,E01,E09 |\n| F-16 | 项目负责人ID | 可信底账；人事唯一ID | 审批；总是 | 有效任职变更记录 | 不明→待校本权限 | L02,E01 |\n| F-17 | 单位负责人/替代审批人ID | 可信底账；部门+职务+生效期 | 审批；借款人与负责人同一人或本人利益回避 | 授权代理记录 | 缺→审批待形成/退回 | L02,E01,E04 |\n| F-18 | 申报人、借款人签署 | 申报材料；本人签+时间与文件版本 | 借款申请；借款单要求签字时 | 合法电子签名/系统身份确认 | 未形成→待审；代签→风险 | L02,E01,E03 |\n| F-19 | 事由分类 | 申报事项；受控枚举 | 借款；总是 | 可映射业务证明 | 不明→需说明 | L01 |\n| F-20 | 具体借款用途说明 | 申报材料；自由文本与费用行 | 借款；总是 | 付款通知/合同 | 含糊→补说明 | E01,E02,L01 |\n| F-21 | 资金需用起止日 | 申报材料；日期区间 | 借款；有确定资金使用日期 | 会议/出差/合同计划 | 无→补确定目的日期 | E03,E01 |\n| F-22 | 预计冲账日期 | 申报材料；日期与截止期两字段 | 借款；校规要求承诺时 | 学校规则配置 | 未配置校本期限不拒 | E02,E06,E03 |\n| F-23 | 借款申请金额 | 申报事项；人民币元/分/外币另列 | 借款；总是 | M-02预算余额+费用明细 | 不明→无法金额预审 | L01,E04 |\n| F-24 | 借款费用明细/预计支出 | 申报材料；项目、单价、数量、金额 | 借款；金额/用途要求明细 | 校本>50000差旅借款历史触发 | 校本数字未核现行→配置 | L01 |\n| F-25 | 拟支付方式 | 申报事项；枚举+合法性 | 借款；申请时可选择 | 财务政策/银行确认 | 非法支付→待财务核 | E01,E02 |\n| F-26 | 拟收款法人/个人 | 申报材料；主体代码或匿名token | 借款；选择外部支付 | 合同/收费通知 | 无协议非同名→补委托 | E01,E06 |\n| F-27 | 实际收款账号安全引用 | 可信底账；token不得明文展示 | 支付；转账 | 财务收款主数据 | 不可达→待支付核验 | E01,E06 |\n| F-28 | 用款批准时间 | 可信底账；时点+有效性 | 审批；业务有前置批准 | 可验证审批编号 | 缺→等待审批 | L01,E01 |\n| F-29 | 国内差旅事前审批编号 | 证明材料；有效、对应人行程 | 借款；F19=国内差旅 | 本校两种差旅审批表 | 缺→申请阶段补件 | L01 |\n| F-30 | 实习事前审批编号 | 证明材料；团组、起止日、批准 | 借款；F19=实习 | 实习经费事前审批 | 缺→补实习批准 | L01 |\n| F-31 | 论文录用证明 | 证明材料；文章名、作者、通知日期 | 借款；F19=版面费 | 正式出版社通知 | 缺→补证 | L01,E01 |\n| F-32 | 国际出国经费协议 | 证明材料；批准人、金额、国家 | 借款；F19=国际差旅 | 外事审批有效记录 | 未获批→不能预支 | L01,E01 |\n| F-33 | 国际借款事项说明 | 申报材料；经办/负责人/外事审批 | 借款；F19=国际差旅 | 正式OA可替代签纸 | 缺→补件（历史） | L01 |\n| F-34 | 其他借款合同/付款通知 | 证明材料；交易标的、付款节点和金额 | 借款；F19=其他 | 授权协议、收费函 | 缺→付款义务待核 | L01,E01 |\n| F-35 | 历史借款发放流水 | 可信底账；borrow_id+value_date+金额 | 借款后；已实际发放 | 银行回单与会计凭证 | 无记录→不能宣称欠款 | E01,E08 |\n| F-36 | 已冲账累计金额 | 可信底账；金额整分，账务批次 | 冲账；已有历史核销 | 历史凭证 | 无系统→待核账 | L02,E08 |\n| F-37 | 本次拟冲账金额 | 申报事项；非负金额、按借款分配 | 冲账；选择借款凭证时 | 费用审核输出 | 超余额→拒超额部分 | E09,E12 |\n| F-38 | 本次合规支出及费用行 | 证明材料；费用id/金额/审核状态 | 冲账；凭票冲账 | 邻域经费审核结果 | 不完整→可补/待审核 | L01,E07 |\n| F-39 | 票据/收据编号与状态 | 证明材料/可信底账；票种、税号、金额、票号 | 冲账；实际费用需票据 | 税务/财务历史台账 | 不可验→待系统；不凭图片判伪 | E01,E09 |\n| F-40 | 冲账用途与原借款用途比对 | 派生输出；归一化业务实体 | 冲账；凭票冲账 | 有权变更审批记录 | 不符→拒该部分或复核 | E01,E02,E03 |\n| F-41 | 原交易已退款/撤销 | 证明材料/可信底账；refund amount/date/id | 冲账；退票/取消活动 | 银行/税务回退系统 | 无信息→要求证明或核系统 | E01,E09 |\n| F-42 | 现金/银行归还金额 | 申报事项；元分+受益借款ID | 还款；以现金归还借款 | 银行到账台账 | 仅截图不能宣称到账 | L01,E09 |\n| F-43 | 退还款支付回单 | 证明材料；户名、时间、金额、用途 | 还款；F01含现金归还 | 银行回单核验 | 缺→待收款凭证 | L01 |\n| F-44 | 学校到账确认 | 可信底账；transaction_id+入账日 | 还款入账；现金返还 | 银行入账/会计确认 | 无→不可结案 | L01,E08 |\n| F-45 | 延期申请原因和签批 | 申报材料/可信底账；原因、批准期限及审批方 | 延期；预计超期 | 期限豁免配置 | 无校规→只标待配置 | E03,E08 |\n| F-46 | 逾期基准事件 | 可信底账；日期+事件种类 | 逾期监测；需按校规计算 | 类型专属制度 | 学校未知期限→不判逾期 | E01,E03 |\n| F-47 | 逾期清理通知和处理记录 | 可信底账；通知号、生效状态 | 清理；逾期已由财务认定 | 财务实际通知与生效时间 | 不能以用户自述“已解冻”代替 | E01,E08,L07 |\n| F-48 | 项目结题/离职状态 | 可信底账；审批/结题状态日期 | 清理；关联行为发生 | 权责机关结论 | 未知→提示核相关部门 | E01,E03 |\n| F-49 | 借款/冲账的审核状态 | 可信底账；多状态枚举 | 全部；总是 | 分别读状态源 | 提交≠已放款 | L04,E07 |\n| F-50 | 会计凭证编号 | 可信底账；唯一代码/入账日期 | 结清；财务已记账 | 会计账簿 | 缺不能称结清 | E01,E09 |\n| F-51 | 应退还余额 | 派生输出；精确到分 | 冲账；有欠款余额 | 与台账重算 | 冲突→人工对账 | E01,E09 |\n| F-52 | 超额合规支出差额 | 派生输出；金额可分配 | 冲账；报销金额高于可冲借金额 | 独立T01/02/04/06支付 | 不得把多报销误当借款负债 | E09 |\n| F-53 | 关闭与归档时间 | 可信底账；时点+凭证 | 结清；余额已归零 | 最后一次会计冲销 | 时间未知不能预填 | E01,E08 |\n| F-54 | 审批规则生效版本 | 可信配置；版本、起止、覆盖对象 | 全部；总是 | L05全文若可取得 | 版本无效→转配置，不判违纪 | L04,L05,E04 |\n| F-55 | 例外授权与豁免适用域 | 证明材料/可信底账；授权人、时点、范围 | 按需；变更/延期/特殊付款 | 特定规则豁免 | 自制说明不能擅自豁免 | E01,E03 |\n| F-56 | 多项目/多借款冲账分配 | 申报事项；borrow_id,expense_id,amount | 冲账；一份报销涉及多借款/预算 | 两维分配+去重 | 配额超出→不合格部分 | E09,E12 |\n| F-57 | 历史退款或冲账撤销记录 | 可信底账；原凭证号/冲正单号 | 冲账及关闭；出现冲正 | 必须指向原记录 | 未经财务记录→不自行改账 | E01,E09 |\n| F-58 | 原借款支付币种与汇率 | 申报材料/可信底账；币种+金额+汇率日期 | 借入/结算；国际付款 | 外事与财务核算 | 无汇率不自作人民币结算 | L01,E01 |\n| F-59 | 币种折算与手续费 | 证明材料/可信底账；外币值、人民币等值 | 冲账；国际支出 | 国际经费协议、银行单 | 汇率证据不全→人工会计核算 | L01,E05 |\n| F-60 | 数据访问与脱敏级别 | 可信配置；role,scope,expiry | 全部；涉及银行/人员 | 用脱敏令牌标识银行账号 | 权限不可得→阻断访问 | L02,E09 |\n\n**补充（不修改F01—60）：** `application_channel`/`created_at`/`work_date`/`policy_effective_at`/`accounting_event_id`/`loan_purpose_line_id`/`bank_transfer_failed`/`historical_debt_flag`/`cosign_state`/`approval_snapshot_revision`属于 C 阶段**派生事实（DF）**，不把它们虚称为B阶段已确认校方页面字段。新增字段必须在后续系统实现时申请稳定ID，避免与现有F冲突。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s06/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-0b59455ed5d11d76",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s06"
+      ],
+      "priority": 50050,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-a94e8d0cf7242ae8ede4",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 8. 审核事实与关系约束",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第244行】\n## 8. 审核事实与关系约束\n\n**事实对象**：借款责任（`borrower_id,borrow_id,project_id`）、权限链（`actor_id,role,valid_from/to`）、预算、放款事件、用途/受益人、逐行费用、会计抵借分配、实际银行归还、过账、冲正。对来源存在冲突时**不挑选对用户最不利或最有利的那个值自动裁决**；列出冲突对和权威核验任务。\n\n- 身份连续性：教师工号变更、更名、离退休、历史学生债务均以合法原账和有权管理单位确认进行主键映射；当前身份不是自动清债依据；身份冲突→`IDENTITY_REVIEW`，禁止混账。\n- 金额方向与精度：所有金额最小分存储为整数 `amount_cents`；币种、财务汇率、入账币种各有标识。**不能对人民币/外币直接相加**，银行手续费是否计入预算/借款由制度决定，未知待核。\n- **已生效债务余额（参考计算）**：`posted_balance = posted_disbursements - posted_offsets - posted_bank_returns + posted_reversal_additions - posted_reversal_reductions`。实际应采用财务会计事件中显式的借贷方向和当前余额快照校对；公式仅是**独立一致性校验**，不能代替会计规则引擎。\n- `proposed_offset` 只是申请分配； `posted_offset` 必须关联**正式会计凭证**。同一费用行的**所有**借款分配累计不得超过费种有效核准净额；同一借款分配累计不得超当前有效未清余额；重复付款/冲销要从系统事件ID识别，不能只以PDF哈希判断。\n- 可能出现**合法部分成功**：三笔费用行中一笔待补，其余两笔可以形成各自的材料预审结果；未通过的那笔不能被“总单通过”掩盖；财务是否允许同单拆开支付由学校财务有权部门决定。\n- 并发：财务主账在预审与提交间可能变化。核准前再次以相同`ledger_revision`检查并锁定分配，若revision变化则标`REVALIDATION_REQUIRED`，不能沿用旧余额。\n\n### 8.1 事件不变量\n\n1. `paid`需要真实付款事件； `posted`需要会计凭证； `settled`需要会计事实和余额为零；任何已提交截图都不能取代这些事件。\n2. 同一唯一 `accounting_event_id` 不得重复入账；冲正/更正以追加事件与其原始事件关联，不可覆写原值。\n3. 对任一费用行 `0 ≤ Σ有效拟分配 ≤ 费种可核准净额 - 已占用净额`；对任一借款 `0 ≤ Σ本次拟抵借 ≤ 账面剩余额`（待冲正时先核实际状态）。\n4. `current_policy_version`不能用文件上传时点替代：借款资格通常依申请/批准时点、金额控制依申请时点、冲账费种依费用发生/审批当时有效版本、清账临时通告依办理日期；确切适用时间归学校规章确认。\n5. 对于不存在正式预算/借款/银行接口的离线测试，应提供**由试验设计者明示的虚构可信台账**或输出未核；不得捏造现实学校联网成功。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s08/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-0b59455ed5d11d76",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s08"
+      ],
+      "priority": 50051,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-d370b744dc354d645a8b",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 11. 工作流、补件、撤回、版本与权限变更",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第714行】\n## 11. 工作流、补件、撤回、版本与权限变更\n\n- **提交与补件**：新材料建立 `documentVersionId` 和解析 `parseRevision`，旧版本保留；对关联字段、材料组和规则重新判定，不能只把缺项消除而不重新检查金额、主体及日期。\n- **主体/用途/预算变更**：新版本须标明变更原因、批准者、项目生效日期；已拨本金不随修改申请表自动改变。用途改变属于BR-04另一个操作。\n- **撤回**：未放款可按平台撤回申请；已放款则必须转归还/费用冲账/正式会计冲正，不能删除既有债务记录。\n- **同案重复清账**：在单借款新入账事件发生后，根据更新后的`ledger_revision`重新计算余款和分配；并发冲账采用服务端幂等/版本锁定建议，文档不宣称现有实现已提供这些能力。\n- **政策变更**：发布政策修订后仅将适用范围内未完成操作标记待重判；对已完成凭证保留其当时政策快照和真实会计历史。若新规溯及既往，应附权威条款，否则不能事后推定无效。\n- **权限撤销**：委托和借款/预算授权一旦失效，只阻断失效时点后的新操作，不抹销过去已合法形成的债务；正在执行中的结算按有权单位核实。\n- **放款失败**：银行退汇错误不等于“借款人资格失败”，`PAYMENT_FAILED`保留申请及审批历史，不建立已拨本金。\n- **清账完成后冲正**：追加负向/反向会计事件，重建开放余额及关联审核结果，触发`ISS-15`重审；保留原“当时曾结清”的时间线。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s11/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-0b59455ed5d11d76",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s11"
+      ],
+      "priority": 50052,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-03c6872cbe785ef6d2ac",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 13. 校本参数与政策版本登记（不能凭猜测填数字）",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第736行】\n## 13. 校本参数与政策版本登记（不能凭猜测填数字）\n\n| 配置ID | 具体参数 | 本校依据与已知性 | 必须采取的动作 |\n|---|---|---|---|\n| CFG-01 | 2026借款人真实资格与可代录权限 | 2022全文未取得[L05/CL17]；2017FAQ为历史事实 | **未核实，校本禁止自动作资格裁决** |\n| CFG-02 | 经费负责人本人借款互签条件及节点 | CL10**官方搜索摘要**有明确分支，原文未读 | 预审中标风险/待OA；上线前取原文及节点配置 |\n| CFG-03 | 国内差旅借款>50000元负责人明细 | L01/CL18 的**2025清单**；2026变化未知 | 在2025适用范围按严格大于判断；2026未知则待核 |\n| CFG-04 | 允许借款额度/校长或财务审批门槛 | 2022制度全文未取得 | 不从河海、湖南人文等学校复制 |\n| CFG-05 | 允许二次借款与未清旧借款的限制 | 其他高校制度有分歧，CDUT缺现行全文 | 保留现行规则查询条件，未知不作拒件 |\n| CFG-06 | 到期起算事件、冲账期限、延期审批 | CDUT 2022正式制度未知 | `POLICY_UNRESOLVED`，不能默认三个月 |\n| CFG-07 | 2026智能报销借款/还款页面材料及权限 | CL11手册存在但正文未得，L04新平台入口已证 | 待手册和有权实机核验 |\n| CFG-08 | 2025年末关账期限 | CL13正式通知已读，限2025年特定区间 | 严格以公告期间触发，不复制给2026 |\n| CFG-09 | 2026暑期临时预约规则 | CL12正式通知已读，2026-07-13—08-26每周二、四办公 | 仅非值班日紧急办理触发预约，不等于借款资格失效 |\n| CFG-10 | 历史借款遗失原票及预算恢复 | CL14/CL20历史清理规程，2025报告表全文未取得 | 对存量特例可提出人工处理路径，不扩成普通申请 |\n| CFG-11 | 预算余额/既有借款/银行真实到账 | 必须读取有权TR-02/03/05 | 不可访问则`EXTERNAL_UNVERIFIED`，不让上传者代替后台 |\n| CFG-12 | 外币和国际银行汇费折算 | 项目/合同/财务口径未知 | 原币、记账币分存；财务确认汇率与税务 |\n| CFG-13 | 2026特定临时窗口/寒暑假后续更改 | 仅按当期公告更新 | 公告版本、范围、失效时点必须锁定 |\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s13/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-0b59455ed5d11d76",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s13"
+      ],
+      "priority": 50053,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-df379fc37ba08120532c",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 14. 官方来源与设计命题的区分",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第754行】\n## 14. 官方来源与设计命题的区分\n\n本母版的判断分成三类：**原有校本文件明确记载的可查事实**（例如2025用途清单[CL18]、2026借款仍办理[CL12]）；**跨校有现实样例但仅作为建模参考**（[E01]—[E14]）及**作者推导的产品语义**（如把待冲金额与已过账金额分字段）。每条原子规则的具体B来源在§9与辅文件矩阵中列示，不能将作者公式标注为“CDUT正式制度条文”。\n\n重点原始入口：\n\n- [L01 / CL18：CDUT 2025《只跑一次》17页PDF](https://jcc.cdut.edu.cn/__local/8/A8/96/748E97CB5061A750C78C9A841EF_9631E851_E5400.pdf)\n- [L02 / CL16：CDUT 2017财务问答](https://jcc.cdut.edu.cn/info/1049/1841.htm)\n- [L04 / CL19：CDUT 2026开账通知](https://jcc.cdut.edu.cn/info/1012/2656.htm)\n- [L05 / CL17：CDUT 借款办法（2022文号）官方制度索引，未得全文](https://jcc.cdut.edu.cn/cwzd/xxgzzd.htm)\n- [CL10 / CL11：2026互签与新版手册官方搜索列表，未得完整文章](https://jcc.cdut.edu.cn/ssjg.jsp?currentnum=3&newskeycode2=&searchScope=0&wbtreeid=1033)\n- [CL12：2026暑假财务借款与冲账通知全文](https://jcc.cdut.edu.cn/info/1012/2731.htm)\n- [CL13：2025年终财务清账通知](https://jcc.cdut.edu.cn/info/1012/2615.htm)\n- [CL14 / L07：2017历史借款清理规程](https://jcc.cdut.edu.cn/info/1012/1167.htm)\n- [CL20：2016历史未冲销借款处理方案](https://jcc.cdut.edu.cn/info/1012/1129.htm)\n- [E01：河海大学2019《因公借款管理暂行办法》原PDF](https://cwc.hhu.edu.cn/_upload/article/files/4f/85/684ae82641fe98eb0934eb9eec16/4653ca70-2d67-4e21-80cb-00d12c2d7d11.pdf)\n- [E04：湖南人文科技学院2025财务报销办法](https://www.huhst.edu.cn/contents/109/77788.html)（B阶段已收录，需就具体阈值复核）。\n\n**适用性审计提醒**：来源列了具体时间，用户手头的2025文件与2026新系统流程冲突时，以具有同业务效力的新规定/有权解释为准；不得将只从搜索摘要看到的条款冒充完整政策文本。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s14/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-0b59455ed5d11d76",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s14"
+      ],
+      "priority": 50054,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-e2166939c98e9eb41b73",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 15. 作者流程推演与自检入口（不构成D独立金标）",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第774行】\n## 15. 作者流程推演与自检入口（不构成D独立金标）\n\n每条只说明触发事实及按本模板推出的**审核建议/待办**；没有运行审核模型或校方真实系统，不宣称已获得实际数据或审批结果。详细问题和修订记录见单独作者自检文件。\n\n| 走查ID | 场景 | 关键路径/输入 | 预期分项与整体行为 | 相关规则 |\n|---|---|---|---|---|\n| C7-01 | 教师本人正常国内差旅预借 | ST-01→ST-02→ST-03；BR-01+BR-05；M-01/02/03，TR-02有有效预算；不出现票据M-12 | 材料事实可形成 DOCUMENTED_PRECHECK；随后仍须有权审批与拨款；尚无放款则NOT_DISBURSED | R-05,R-06,R-08,R-09,R-16,R-17 |\n| C7-02 | 学生受托代录教师借款 | ST-01→ST-02；BR-10；学生填报人、教师借款人、OA授权有效 | 不因filler为学生驳回；真实借款责任归教师，阶段预审可继续 | R-02,R-03,R-40 |\n| C7-03 | 学生自列本人为2026新借款责任人 | ST-02；2017规则历史存在，但2022现行正式办法全文未得、2026平台权限未知 | POLICY_UNRESOLVED并核TR-01当前资格，不能把2017历史结论自动当2026正式驳回 | R-02,R-42 |\n| C7-04 | 2026经费负责人本人借款互签尚在途 | ST-03；BR-11，CL10专属分支；领导互签记录为IN_REVIEW | AUTHORIZATION_PENDING；禁止称“伪章”或“正式批准”；若正式拒绝再FORMALLY_REJECTED | R-04,R-16,R-41 |\n| C7-05 | 2025年国内差旅恰50000元 | ST-02；BR-05；2025清单旧要求为 >50000，不触发M-07 | 同金额边界M-07为NOT_APPLICABLE；其余差旅必需材料仍审核 | R-09,R-10 |\n| C7-06 | 2025年国内差旅50000.01元 | ST-02；同一2025制度且要求负责人签字明细但本次未提供 | BR-12触发SUPPLEMENT_REQUIRED；允许补M-07，不因为该附件缺失否决借款人身份 | R-10 |\n| C7-07 | 2026国内差旅50000.01元、学校新门槛未明 | ST-02；2025清单存在，但2026对应制度版本尚未确认 | POLICY_UNRESOLVED；要求校本参数，不能按旧规则硬拒 | R-10,R-42 |\n| C7-08 | 版面费预借已有论文录用与收费通知 | ST-02；BR-07 EV-04，未来发票尚不存在 | 不以没有实际付款发票拒绝，等待正式资金审批和放款 | R-08,R-12 |\n| C7-09 | 借款已批但银行退汇 | ST-04；TR-06审批通过，TR-03/05支付失败 | PAYMENT_FAILED，不得生成已拨本金；由财务结算更正收款信息 | R-16,R-17,R-38 |\n| C7-10 | 借款10000，其中两笔费用7000合格，第三笔3000待补 | ST-06；逐费用行费种合法性，两个已审、另一个未审；会计暂未过账 | 有效7000可材料预审，待补3000独立阻断；账面本金仍10000，不能称已结清 | R-20,R-23,R-26 |\n| C7-11 | 同笔借款5000，核准费用6000 | ST-06；TR-04费用合法净额6000，TR-03借款可用余额5000 | 最多拟抵借5000；另1000转所属费用正常付款，不产生借款负余额 | R-23,R-27 |\n| C7-12 | 同一发票费用行向两笔借款各冲全部金额 | ST-06；BR-17两借一费，TR-04核准净额少于合计拟冲 | 逐分配行指出超额重复，占用不得超净额；其余独立分项可继续 | R-24,R-25 |\n| C7-13 | 余款通过银行转出但校方尚未认领 | ST-07→ST-09；M-13真实转出，TR-05未入账 | RETURN_SENT/RETURN_NOT_POSTED，不能SETTLED；申请人已经行动不等于申请人违规 | R-29,R-30,R-39 |\n| C7-14 | 合格部分冲账与现金到账混合结清 | ST-06+ST-07→ST-09；TR-03借款本金，TR-04净额，TR-05确已抵账/到款/零余额 | 仅权威过账+余额0可SETTLED；防同金额重复冲销 | R-23,R-24,R-30 |\n| C7-15 | 2025年12月暂停受理与2026非年终借款 | ST-02；CL13的2025窗口与2026普通月份两案 | 2025窗口只影响该日期是否可受理；2026不得套2025-12-15禁止 | R-31,R-32,R-42 |\n| C7-16 | 历史借款责任人已退休且原票遗失 | ST-08；BR-14+BR-18，CL14历史例外、历史账单、出具方补证或正式替代批准 | 转有权财务/归口历史清理；不得仅按当前在职资格销掉旧债，也不随意无票抵账 | R-30,R-34,R-35 |\n| C7-17 | 结清后正式冲正重新出现余额 | ST-10→ST-09；TR-05正式冲正事件关联原凭证，借款账版本变化 | REVALIDATION_REQUIRED、重算余额；原结清事实保留时间线，不覆盖历史 | R-36,R-37 |\n| C7-18 | 登录者请求读取无授权教师的全部借款 | ST-01；授权系统拒绝，申请者只具某单材料经办权 | ISS-13拒绝数据查询，不能把“不知道老师别的借款”作为学生提交失误 | R-39,R-40 |\n| C7-19 | 纯用户聊天截图声称延期获批准 | ST-08；延期申请有，但无有权审批；相同日期存在正式批复版本时另判 | EXTENSION_PENDING；不得凭聊天创建新到期日 | R-32,R-33 |\n| C7-20 | 补件后费用净额已改变 | ST-06→补件重审；新正式票据版本及TR-04核定净额，TR-03余额revision更新 | 重跑关联R22—R28，不沿旧分配金额冲账，保留原审查快照 | R-22,R-23,R-24,R-42 |\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s15/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-0b59455ed5d11d76",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s15"
+      ],
+      "priority": 50055,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-848a026ef35490b6898c",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 16. 编辑器共性模块候选（不把业务规则偷换成通用字段校验）",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第801行】\n## 16. 编辑器共性模块候选（不把业务规则偷换成通用字段校验）\n\n| 模块ID | 名称与最小契约 | 复用性 | 失败/未知路径 |\n|---|---|---|---|\n| MOD-01 | 条件适用选择：输入三态条件与生效政策范围，输出TRUE/FALSE/UNKNOWN和来源 | 复用 G01—G08 | UNKNOWN不默认为FALSE |\n| MOD-02 | 分阶段条件材料：输入阶段、用途、材料槽和等价组，输出每对象所欠材料 | 复用 | 后续才生成的材料不触发缺件 |\n| MOD-03 | 多角色授权和利益冲突：输入fill/borrower/controller/approver、有效期、OA | 复用身份/权限层 | 无权不能造成人事实上的新借款资格 |\n| MOD-04 | 政策版本锁定与校本参数：按业务时点选择，记录来源类型、有效期、正文hash | 复用 | 文本没取到→POLICY_UNRESOLVED |\n| MOD-05 | 文档证据组+替代关系：AND/OR、可信底账、影像位置、权威程度 | 复用 | 证据源冲突→FACT_CONFLICT |\n| MOD-06 | 跨文书一致性与范围性重审：Identity/Activity/Contract/Amount | 复用 | OCR损坏不能定性造假 |\n| MOD-07 | 逐行分配+确定性金额校验：多 `expense_line ↔ borrow_id`、已占用净额/余额 | 本业务语义组件，底层计算可复用 | 台账revision不一致→重算而非沿旧额度 |\n| MOD-08 | 业务审批/资金执行隔离：审批、放款、银行入账、会计过账事件源区分 | 高度可复用 | 截图仅能证明申请/转款声明 |\n| MOD-09 | 多项结果聚合：分配行→操作→案卷；允许部分通过与多问题共存 | 复用 | 单行失败不可抹掉其他合法行 |\n| MOD-10 | 补证/版本化/审计快照：证据版、政策版、台账版和重审触发 | 复用 | 版本失配触发REVALIDATION_REQUIRED |\n| MOD-11 | 主账债务重算/会计冲正关联（本业务专有） | 专有（债务余额与反向会计凭证） | 无财务事件不可宣称SETTLED |\n| MOD-12 | 历史借款特殊清理（本业务专有） | 专有 | 旧年度条例不能自动判2026申请 |\n\n共性模块是**可复用审核语义的候选**，不是要求每个Agent按12个固定工具步骤执行；模块输入/输出详见《编辑器共性模块候选.md》。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s16/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-0b59455ed5d11d76",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s16"
+      ],
+      "priority": 50056,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-7c1357a6225814c35173",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 17. 现有编辑器/运行时映射（C6，对仓库 `main` 只读核验）",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第820行】\n## 17. 现有编辑器/运行时映射（C6，对仓库 `main` 只读核验）\n\n本轮只读了GitHub公开仓库 `Fuck-GH-Admin/cdut-studio-review-agent` 的 `main` 分支，树HEAD `dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`，其中:\n\n- [`packages/shared/src/types/review-v2.ts`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/main/packages/shared/src/types/review-v2.ts)，本轮取得 blob SHA `ccf7525f0f21cc0372af930c826d3eba828a93c0`：**代码中确有** `TemplateVersion`、`FieldSpec.conditionRequired`、`MaterialSlotSpec.requiredWhen/requiredAt`、`RuleSpec.when/onUnknown/confirmation`、三态`ConditionAST`、`WorkflowStageSpec`及`ReviewCaseV2.subjects`。\n- [`apps/electron/src/main/lib/review/template-store.ts`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/main/apps/electron/src/main/lib/review/template-store.ts)，blob SHA `ff57065307f09be5c7e7aee65038d9aa13166171`：**代码中确有**模板字段/槽/分项ID查重、条件引用、政策引用与工作流结构静态校验。\n- [`docs/design/review-agent/15-template-modules-and-runtime-boundary-spec.md`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/main/docs/design/review-agent/15-template-modules-and-runtime-boundary-spec.md)，blob SHA `13892a65256b61d20bc49fdb314cdd393c14d234`：明确模块库、组合解析器、新作者工具**不代表已开发**。\n- [`docs/design/review-agent/16-template-editor-five-g01-gap-and-module-extraction-v0.1.md`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/main/docs/design/review-agent/16-template-editor-five-g01-gap-and-module-extraction-v0.1.md)，blob SHA `aba0201e8b110e4c6456da22a820c35473816071`：设计研究状态、编辑器 `TemplateCriterionSpec` 与政策 `RuleSpec` 的语义不对称及待解决的“双重真相”。\n\n**支持等级**：\n\n| 业务能力 | 代码/文档查证 | C阶段映射结论 |\n|---|---|---|\n| 基础模板、字段、材料槽、发布校验 | 类型定义和验证代码存在 | **已有代码结构，未对G07-T07作运行测试** |\n| 条件AST三态、规则未知待确认、政策来源 | 类型定义与设计规范存在 | **有表达基础，不等于完整审批环节已执行验证** |\n| `requiredAt`阶段 | 实际仅 `submission | decision` | **不足以表达借款拨款后/银行归还后/会计过账后**的全部时间节点 |\n| `FieldSpec.scope` | 只有 `case | subject` | **不足以自然表示借款/费用行/分配/偿付事件四层业务对象的关系** |\n| 规则和编辑器条件 | `TemplateCriterionSpec`不带RuleSpec全部条件/来源/未知语义 | **存在规则双重真相风险，禁止导出时丢失约束** |\n| 费用行多借款分配、财务事件幂等、会计冲正 | 未从本轮已读代码证明完整实现 | **尚未验证/需要业务专有适配与确定性数据源** |\n| OA/预算/银行/真实财务主账读取 | 本轮未取得任何学校账号或授权接口 | **需要有权学校接口**，不可宣称可用 |\n| 借款风险、延期、坏账及正式财务处分 | 业务上必须由实际机构决定 | **需要人工/正式审批**，不允许AI自动执行 |\n\n**不实施任何 GitHub 写操作**；没有创建JSON运行模板、没有跑出真实业务审核结果。源码与文档的存在性是静态确认，非产品完工证明。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s17/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-0b59455ed5d11d76",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s17"
+      ],
+      "priority": 50057,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-25cee600ebc6dc98c0da",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 18. 完整性审计、版本与交接",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第844行】\n## 18. 完整性审计、版本与交接\n\n- 稳定ID：F01—60、M01—20、R01—42全部与B对应，C增加BR-01—18、EV-01—14、ST-01—10、ISS-01—17、TR-01—07、MOD-01—12等**独立命名空间**。\n- 不混四类输入，不把申报材料单张发票当正式会计结果；允许学生代办、阶段条件、合法替代、部分冲账、对外费种路由、历史冲账和人工复核。\n- **未关闭的关键校本缺口**：2022借款管理办法全文、2026新版操作手册和互签原文、借款人现行资格及通用期限、校方台账权限；因此状态 `BUSINESS_MD_DRAFT_WITH_GAPS`。\n- 作者静态检查和20个推演由辅助《作者自检与问题修订记录》给出。**这不是对D案例或系统真实执行的验收**。\n- B的42条规则此版转成可读原子命题，最终上线仍需绑定经过政策确认的 `RuleSpec`、`PolicyVersion` 和 `TemplateCriterionSpec`，避免作者文字和运行规则“双重真相”。\n- 与独立D对接仅公开此模板母版、规则ID、材料与结果语义，**不得向D复制作者推演当作隐藏答案**；D保留独立金标与测试生产过程。\n\n**完成状态：BUSINESS_MD_DRAFT_WITH_GAPS**。后续等待独立D交叉验收结果与学校有效制度补证，再有针对性修订；未发布或更改系统代码。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s18/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-0b59455ed5d11d76",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s18"
+      ],
+      "priority": 50058,
+      "confirmation": "unconfirmed"
+    },
+    {
       "id": "d2-fb8db436550eeb78d870",
       "policyVersionId": "workspace:d2-d4-g07-t07@1",
       "title": "BR-01 条件性审核",
@@ -1435,7 +1642,7 @@
       "sourceRefIds": [
         "g07-t07-b01"
       ],
-      "priority": 50050,
+      "priority": 50059,
       "confirmation": "unconfirmed"
     },
     {
@@ -1458,7 +1665,7 @@
       "sourceRefIds": [
         "g07-t07-b02"
       ],
-      "priority": 50051,
+      "priority": 50060,
       "confirmation": "unconfirmed"
     },
     {
@@ -1481,7 +1688,7 @@
       "sourceRefIds": [
         "g07-t07-b03"
       ],
-      "priority": 50052,
+      "priority": 50061,
       "confirmation": "unconfirmed"
     },
     {
@@ -1504,7 +1711,7 @@
       "sourceRefIds": [
         "g07-t07-b04"
       ],
-      "priority": 50053,
+      "priority": 50062,
       "confirmation": "unconfirmed"
     },
     {
@@ -1527,7 +1734,7 @@
       "sourceRefIds": [
         "g07-t07-b05"
       ],
-      "priority": 50054,
+      "priority": 50063,
       "confirmation": "unconfirmed"
     },
     {
@@ -1550,7 +1757,7 @@
       "sourceRefIds": [
         "g07-t07-b06"
       ],
-      "priority": 50055,
+      "priority": 50064,
       "confirmation": "unconfirmed"
     },
     {
@@ -1573,7 +1780,7 @@
       "sourceRefIds": [
         "g07-t07-b07"
       ],
-      "priority": 50056,
+      "priority": 50065,
       "confirmation": "unconfirmed"
     },
     {
@@ -1596,7 +1803,7 @@
       "sourceRefIds": [
         "g07-t07-b08"
       ],
-      "priority": 50057,
+      "priority": 50066,
       "confirmation": "unconfirmed"
     },
     {
@@ -1619,7 +1826,7 @@
       "sourceRefIds": [
         "g07-t07-b09"
       ],
-      "priority": 50058,
+      "priority": 50067,
       "confirmation": "unconfirmed"
     },
     {
@@ -1642,7 +1849,7 @@
       "sourceRefIds": [
         "g07-t07-b10"
       ],
-      "priority": 50059,
+      "priority": 50068,
       "confirmation": "unconfirmed"
     },
     {
@@ -1665,7 +1872,7 @@
       "sourceRefIds": [
         "g07-t07-b11"
       ],
-      "priority": 50060,
+      "priority": 50069,
       "confirmation": "unconfirmed"
     },
     {
@@ -1688,7 +1895,7 @@
       "sourceRefIds": [
         "g07-t07-b12"
       ],
-      "priority": 50061,
+      "priority": 50070,
       "confirmation": "unconfirmed"
     },
     {
@@ -1711,7 +1918,7 @@
       "sourceRefIds": [
         "g07-t07-r01"
       ],
-      "priority": 50062,
+      "priority": 50071,
       "confirmation": "unconfirmed"
     },
     {
@@ -1734,7 +1941,7 @@
       "sourceRefIds": [
         "g07-t07-r02"
       ],
-      "priority": 50063,
+      "priority": 50072,
       "confirmation": "unconfirmed"
     },
     {
@@ -1757,7 +1964,7 @@
       "sourceRefIds": [
         "g07-t07-r03"
       ],
-      "priority": 50064,
+      "priority": 50073,
       "confirmation": "unconfirmed"
     },
     {
@@ -1780,7 +1987,7 @@
       "sourceRefIds": [
         "g07-t07-r04"
       ],
-      "priority": 50065,
+      "priority": 50074,
       "confirmation": "unconfirmed"
     },
     {
@@ -1803,7 +2010,7 @@
       "sourceRefIds": [
         "g07-t07-r05"
       ],
-      "priority": 50066,
+      "priority": 50075,
       "confirmation": "unconfirmed"
     },
     {
@@ -1826,7 +2033,7 @@
       "sourceRefIds": [
         "g07-t07-r06"
       ],
-      "priority": 50067,
+      "priority": 50076,
       "confirmation": "unconfirmed"
     },
     {
@@ -1849,7 +2056,7 @@
       "sourceRefIds": [
         "g07-t07-r07"
       ],
-      "priority": 50068,
+      "priority": 50077,
       "confirmation": "unconfirmed"
     },
     {
@@ -1872,7 +2079,7 @@
       "sourceRefIds": [
         "g07-t07-r08"
       ],
-      "priority": 50069,
+      "priority": 50078,
       "confirmation": "unconfirmed"
     },
     {
@@ -1895,7 +2102,7 @@
       "sourceRefIds": [
         "g07-t07-r09"
       ],
-      "priority": 50070,
+      "priority": 50079,
       "confirmation": "unconfirmed"
     },
     {
@@ -1918,7 +2125,7 @@
       "sourceRefIds": [
         "g07-t07-r10"
       ],
-      "priority": 50071,
+      "priority": 50080,
       "confirmation": "unconfirmed"
     },
     {
@@ -1941,7 +2148,7 @@
       "sourceRefIds": [
         "g07-t07-r11"
       ],
-      "priority": 50072,
+      "priority": 50081,
       "confirmation": "unconfirmed"
     },
     {
@@ -1964,7 +2171,7 @@
       "sourceRefIds": [
         "g07-t07-r12"
       ],
-      "priority": 50073,
+      "priority": 50082,
       "confirmation": "unconfirmed"
     },
     {
@@ -1987,7 +2194,7 @@
       "sourceRefIds": [
         "g07-t07-r13"
       ],
-      "priority": 50074,
+      "priority": 50083,
       "confirmation": "unconfirmed"
     },
     {
@@ -2010,7 +2217,7 @@
       "sourceRefIds": [
         "g07-t07-r14"
       ],
-      "priority": 50075,
+      "priority": 50084,
       "confirmation": "unconfirmed"
     },
     {
@@ -2033,7 +2240,7 @@
       "sourceRefIds": [
         "g07-t07-r15"
       ],
-      "priority": 50076,
+      "priority": 50085,
       "confirmation": "unconfirmed"
     },
     {
@@ -2056,7 +2263,7 @@
       "sourceRefIds": [
         "g07-t07-r16"
       ],
-      "priority": 50077,
+      "priority": 50086,
       "confirmation": "unconfirmed"
     },
     {
@@ -2079,7 +2286,7 @@
       "sourceRefIds": [
         "g07-t07-r17"
       ],
-      "priority": 50078,
+      "priority": 50087,
       "confirmation": "unconfirmed"
     },
     {
@@ -2102,7 +2309,7 @@
       "sourceRefIds": [
         "g07-t07-r18"
       ],
-      "priority": 50079,
+      "priority": 50088,
       "confirmation": "unconfirmed"
     },
     {
@@ -2125,7 +2332,7 @@
       "sourceRefIds": [
         "g07-t07-r19"
       ],
-      "priority": 50080,
+      "priority": 50089,
       "confirmation": "unconfirmed"
     },
     {
@@ -2148,7 +2355,7 @@
       "sourceRefIds": [
         "g07-t07-r20"
       ],
-      "priority": 50081,
+      "priority": 50090,
       "confirmation": "unconfirmed"
     },
     {
@@ -2171,7 +2378,7 @@
       "sourceRefIds": [
         "g07-t07-r21"
       ],
-      "priority": 50082,
+      "priority": 50091,
       "confirmation": "unconfirmed"
     },
     {
@@ -2194,7 +2401,7 @@
       "sourceRefIds": [
         "g07-t07-r22"
       ],
-      "priority": 50083,
+      "priority": 50092,
       "confirmation": "unconfirmed"
     },
     {
@@ -2217,7 +2424,7 @@
       "sourceRefIds": [
         "g07-t07-r23"
       ],
-      "priority": 50084,
+      "priority": 50093,
       "confirmation": "unconfirmed"
     },
     {
@@ -2240,7 +2447,7 @@
       "sourceRefIds": [
         "g07-t07-r24"
       ],
-      "priority": 50085,
+      "priority": 50094,
       "confirmation": "unconfirmed"
     },
     {
@@ -2263,7 +2470,7 @@
       "sourceRefIds": [
         "g07-t07-r25"
       ],
-      "priority": 50086,
+      "priority": 50095,
       "confirmation": "unconfirmed"
     },
     {
@@ -2286,7 +2493,7 @@
       "sourceRefIds": [
         "g07-t07-r26"
       ],
-      "priority": 50087,
+      "priority": 50096,
       "confirmation": "unconfirmed"
     },
     {
@@ -2309,7 +2516,7 @@
       "sourceRefIds": [
         "g07-t07-r27"
       ],
-      "priority": 50088,
+      "priority": 50097,
       "confirmation": "unconfirmed"
     },
     {
@@ -2332,7 +2539,7 @@
       "sourceRefIds": [
         "g07-t07-r28"
       ],
-      "priority": 50089,
+      "priority": 50098,
       "confirmation": "unconfirmed"
     },
     {
@@ -2355,7 +2562,7 @@
       "sourceRefIds": [
         "g07-t07-r29"
       ],
-      "priority": 50090,
+      "priority": 50099,
       "confirmation": "unconfirmed"
     },
     {
@@ -2378,7 +2585,7 @@
       "sourceRefIds": [
         "g07-t07-r30"
       ],
-      "priority": 50091,
+      "priority": 50100,
       "confirmation": "unconfirmed"
     },
     {
@@ -2401,7 +2608,7 @@
       "sourceRefIds": [
         "g07-t07-r31"
       ],
-      "priority": 50092,
+      "priority": 50101,
       "confirmation": "unconfirmed"
     },
     {
@@ -2424,7 +2631,7 @@
       "sourceRefIds": [
         "g07-t07-r32"
       ],
-      "priority": 50093,
+      "priority": 50102,
       "confirmation": "unconfirmed"
     },
     {
@@ -2447,7 +2654,7 @@
       "sourceRefIds": [
         "g07-t07-r33"
       ],
-      "priority": 50094,
+      "priority": 50103,
       "confirmation": "unconfirmed"
     },
     {
@@ -2470,7 +2677,7 @@
       "sourceRefIds": [
         "g07-t07-r34"
       ],
-      "priority": 50095,
+      "priority": 50104,
       "confirmation": "unconfirmed"
     },
     {
@@ -2493,7 +2700,7 @@
       "sourceRefIds": [
         "g07-t07-r35"
       ],
-      "priority": 50096,
+      "priority": 50105,
       "confirmation": "unconfirmed"
     },
     {
@@ -2516,7 +2723,7 @@
       "sourceRefIds": [
         "g07-t07-r36"
       ],
-      "priority": 50097,
+      "priority": 50106,
       "confirmation": "unconfirmed"
     },
     {
@@ -2539,7 +2746,7 @@
       "sourceRefIds": [
         "g07-t07-r37"
       ],
-      "priority": 50098,
+      "priority": 50107,
       "confirmation": "unconfirmed"
     },
     {
@@ -2562,7 +2769,7 @@
       "sourceRefIds": [
         "g07-t07-r38"
       ],
-      "priority": 50099,
+      "priority": 50108,
       "confirmation": "unconfirmed"
     },
     {
@@ -2585,7 +2792,7 @@
       "sourceRefIds": [
         "g07-t07-r39"
       ],
-      "priority": 50100,
+      "priority": 50109,
       "confirmation": "unconfirmed"
     },
     {
@@ -2608,7 +2815,7 @@
       "sourceRefIds": [
         "g07-t07-r40"
       ],
-      "priority": 50101,
+      "priority": 50110,
       "confirmation": "unconfirmed"
     },
     {
@@ -2631,7 +2838,7 @@
       "sourceRefIds": [
         "g07-t07-r41"
       ],
-      "priority": 50102,
+      "priority": 50111,
       "confirmation": "unconfirmed"
     },
     {
@@ -2654,7 +2861,7 @@
       "sourceRefIds": [
         "g07-t07-r42"
       ],
-      "priority": 50103,
+      "priority": 50112,
       "confirmation": "unconfirmed"
     },
     {
@@ -2677,7 +2884,7 @@
       "sourceRefIds": [
         "g07-t07-sscope"
       ],
-      "priority": 50104,
+      "priority": 50113,
       "confirmation": "unconfirmed"
     },
     {
@@ -2700,7 +2907,7 @@
       "sourceRefIds": [
         "g07-t07-sactor"
       ],
-      "priority": 50105,
+      "priority": 50114,
       "confirmation": "unconfirmed"
     },
     {
@@ -2723,7 +2930,7 @@
       "sourceRefIds": [
         "g07-t07-sbranch"
       ],
-      "priority": 50106,
+      "priority": 50115,
       "confirmation": "unconfirmed"
     },
     {
@@ -2746,7 +2953,7 @@
       "sourceRefIds": [
         "g07-t07-sstage"
       ],
-      "priority": 50107,
+      "priority": 50116,
       "confirmation": "unconfirmed"
     },
     {
@@ -2769,7 +2976,7 @@
       "sourceRefIds": [
         "g07-t07-sfields"
       ],
-      "priority": 50108,
+      "priority": 50117,
       "confirmation": "unconfirmed"
     },
     {
@@ -2792,7 +2999,7 @@
       "sourceRefIds": [
         "g07-t07-smaterial"
       ],
-      "priority": 50109,
+      "priority": 50118,
       "confirmation": "unconfirmed"
     },
     {
@@ -2815,7 +3022,7 @@
       "sourceRefIds": [
         "g07-t07-soutput"
       ],
-      "priority": 50110,
+      "priority": 50119,
       "confirmation": "unconfirmed"
     },
     {
@@ -2838,7 +3045,214 @@
       "sourceRefIds": [
         "g07-t07-sexception"
       ],
-      "priority": 50111,
+      "priority": 50120,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-bb93e2a656f786e74c31",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 6. 字段字典（60项，沿用B阶段稳定F-ID）",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第121行】\n## 6. 字段字典（60项，沿用B阶段稳定F-ID）\n\n**义务规则**：B阶段“总是”表示**该业务阶段需要有此事实或校方可取得的等价事实**，并不要求上传60张证据或在所有阶段填60栏。字段所属类型：`操作/经办（F01—F04,F11—18）`、`预算/权限（F05—10）`、`用途/预计支付（F19—34）`、`财务状态/冲账/还款（F35—57）`、`外币/访问（F58—60）`。空、0、未知、未触发、未取得接口必须分开。\n\n| 字段ID | 字段/事实 | 来源输入与格式/范围 | 生效阶段与必需条件 | 允许的替代取证 | 缺失或冲突时动作 | 来源 |\n|---|---|---|---|---|---|---|\n| F-01 | 本次操作类型 | 申报事项；枚举；先判生命周期 | 各阶段；总是 | 业务入口+系统动作 | 不明→澄清/分流 | L01,E01,E09 |\n| F-02 | 借款业务编号 | 可信底账；不可只用提交文件名 | 已建单/冲账；已形成借款 | 借款核销号+项目号组合 | 查无→核账，不判造假 | L02,L01,E09 |\n| F-03 | 提交单据编号 | 申报材料；字符串及版本 | 提交以后；系统生成 | 官方关联编号 | 缺则系统验证 | L01,L04 |\n| F-04 | 申请学校与校区 | 可信配置；编码、校区 | 全部；总是 | 身份接口 | 未知→禁止硬编码校规 | L05,E01 |\n| F-05 | 经费来源类别 | 申报事项；枚举+可配置 | 借入及冲账；总是 | 预算台账 | 未知→待权威查账 | L01,E04 |\n| F-06 | 经费项目号 | 申报事项；不得以相似项目名代替 | 借入及冲账；总是 | 预算系统准确项目ID | 不明→补证/查账 | L01,E01 |\n| F-07 | 经费项目名称 | 申报材料；名称/缩写映射 | 借入及冲账；总是 | 项目ID映射 | 冲突→按系统项目号核 | E03,E06 |\n| F-08 | 项目预算科目 | 可信底账；期间、冻结、限制 | 借入及冲账；按制度预算控制 | 核对系统限制指标 | 不可达→外部未验 | E01,E04,E05 |\n| F-09 | 可借预算余额 | 可信底账；金额：整数分 | 借款审批；借款需经费保障 | 当前余额签名快照 | 不可达→待系统 | E01,E02,E04 |\n| F-10 | 是否有应清未清旧借款 | 可信底账；记录集合+状态 | 借款审批；再次借款 | 历史核销/批准延期 | 无接口→不得默判无欠款 | L02,E01,E03,E04 |\n| F-11 | 申请填报账号 | 申报事项；账号别名、时间 | 提交；总是 | 权限日志 | 缺→核系统日志 | L02,E09 |\n| F-12 | 实际借款责任人ID | 申报事项；教职工身份及唯一ID | 借款；总是 | 人事系统 | 学生当责→CDUT旧禁，现行继续核 | L02,E01 |\n| F-13 | 受益人/活动参与人 | 证明材料；多对多关系 | 按业务；有人出差/实习/竞赛 | 活动或差旅审批 | 与借款人不同通常允许 | E01,L01 |\n| F-14 | 经办代理人ID | 申报事项；区分borrower/agent | 提交；学生或他人代录 | 委托记录 | 无授权→转审核/补授权 | L02,E09 |\n| F-15 | 有效委托授权 | 证明材料/可信底账；范围+起止时间 | 提交；代理存在 | 校内授权记录 | 无权→不可冒名最终提交 | L02,E01,E09 |\n| F-16 | 项目负责人ID | 可信底账；人事唯一ID | 审批；总是 | 有效任职变更记录 | 不明→待校本权限 | L02,E01 |\n| F-17 | 单位负责人/替代审批人ID | 可信底账；部门+职务+生效期 | 审批；借款人与负责人同一人或本人利益回避 | 授权代理记录 | 缺→审批待形成/退回 | L02,E01,E04 |\n| F-18 | 申报人、借款人签署 | 申报材料；本人签+时间与文件版本 | 借款申请；借款单要求签字时 | 合法电子签名/系统身份确认 | 未形成→待审；代签→风险 | L02,E01,E03 |\n| F-19 | 事由分类 | 申报事项；受控枚举 | 借款；总是 | 可映射业务证明 | 不明→需说明 | L01 |\n| F-20 | 具体借款用途说明 | 申报材料；自由文本与费用行 | 借款；总是 | 付款通知/合同 | 含糊→补说明 | E01,E02,L01 |\n| F-21 | 资金需用起止日 | 申报材料；日期区间 | 借款；有确定资金使用日期 | 会议/出差/合同计划 | 无→补确定目的日期 | E03,E01 |\n| F-22 | 预计冲账日期 | 申报材料；日期与截止期两字段 | 借款；校规要求承诺时 | 学校规则配置 | 未配置校本期限不拒 | E02,E06,E03 |\n| F-23 | 借款申请金额 | 申报事项；人民币元/分/外币另列 | 借款；总是 | M-02预算余额+费用明细 | 不明→无法金额预审 | L01,E04 |\n| F-24 | 借款费用明细/预计支出 | 申报材料；项目、单价、数量、金额 | 借款；金额/用途要求明细 | 校本>50000差旅借款历史触发 | 校本数字未核现行→配置 | L01 |\n| F-25 | 拟支付方式 | 申报事项；枚举+合法性 | 借款；申请时可选择 | 财务政策/银行确认 | 非法支付→待财务核 | E01,E02 |\n| F-26 | 拟收款法人/个人 | 申报材料；主体代码或匿名token | 借款；选择外部支付 | 合同/收费通知 | 无协议非同名→补委托 | E01,E06 |\n| F-27 | 实际收款账号安全引用 | 可信底账；token不得明文展示 | 支付；转账 | 财务收款主数据 | 不可达→待支付核验 | E01,E06 |\n| F-28 | 用款批准时间 | 可信底账；时点+有效性 | 审批；业务有前置批准 | 可验证审批编号 | 缺→等待审批 | L01,E01 |\n| F-29 | 国内差旅事前审批编号 | 证明材料；有效、对应人行程 | 借款；F19=国内差旅 | 本校两种差旅审批表 | 缺→申请阶段补件 | L01 |\n| F-30 | 实习事前审批编号 | 证明材料；团组、起止日、批准 | 借款；F19=实习 | 实习经费事前审批 | 缺→补实习批准 | L01 |\n| F-31 | 论文录用证明 | 证明材料；文章名、作者、通知日期 | 借款；F19=版面费 | 正式出版社通知 | 缺→补证 | L01,E01 |\n| F-32 | 国际出国经费协议 | 证明材料；批准人、金额、国家 | 借款；F19=国际差旅 | 外事审批有效记录 | 未获批→不能预支 | L01,E01 |\n| F-33 | 国际借款事项说明 | 申报材料；经办/负责人/外事审批 | 借款；F19=国际差旅 | 正式OA可替代签纸 | 缺→补件（历史） | L01 |\n| F-34 | 其他借款合同/付款通知 | 证明材料；交易标的、付款节点和金额 | 借款；F19=其他 | 授权协议、收费函 | 缺→付款义务待核 | L01,E01 |\n| F-35 | 历史借款发放流水 | 可信底账；borrow_id+value_date+金额 | 借款后；已实际发放 | 银行回单与会计凭证 | 无记录→不能宣称欠款 | E01,E08 |\n| F-36 | 已冲账累计金额 | 可信底账；金额整分，账务批次 | 冲账；已有历史核销 | 历史凭证 | 无系统→待核账 | L02,E08 |\n| F-37 | 本次拟冲账金额 | 申报事项；非负金额、按借款分配 | 冲账；选择借款凭证时 | 费用审核输出 | 超余额→拒超额部分 | E09,E12 |\n| F-38 | 本次合规支出及费用行 | 证明材料；费用id/金额/审核状态 | 冲账；凭票冲账 | 邻域经费审核结果 | 不完整→可补/待审核 | L01,E07 |\n| F-39 | 票据/收据编号与状态 | 证明材料/可信底账；票种、税号、金额、票号 | 冲账；实际费用需票据 | 税务/财务历史台账 | 不可验→待系统；不凭图片判伪 | E01,E09 |\n| F-40 | 冲账用途与原借款用途比对 | 派生输出；归一化业务实体 | 冲账；凭票冲账 | 有权变更审批记录 | 不符→拒该部分或复核 | E01,E02,E03 |\n| F-41 | 原交易已退款/撤销 | 证明材料/可信底账；refund amount/date/id | 冲账；退票/取消活动 | 银行/税务回退系统 | 无信息→要求证明或核系统 | E01,E09 |\n| F-42 | 现金/银行归还金额 | 申报事项；元分+受益借款ID | 还款；以现金归还借款 | 银行到账台账 | 仅截图不能宣称到账 | L01,E09 |\n| F-43 | 退还款支付回单 | 证明材料；户名、时间、金额、用途 | 还款；F01含现金归还 | 银行回单核验 | 缺→待收款凭证 | L01 |\n| F-44 | 学校到账确认 | 可信底账；transaction_id+入账日 | 还款入账；现金返还 | 银行入账/会计确认 | 无→不可结案 | L01,E08 |\n| F-45 | 延期申请原因和签批 | 申报材料/可信底账；原因、批准期限及审批方 | 延期；预计超期 | 期限豁免配置 | 无校规→只标待配置 | E03,E08 |\n| F-46 | 逾期基准事件 | 可信底账；日期+事件种类 | 逾期监测；需按校规计算 | 类型专属制度 | 学校未知期限→不判逾期 | E01,E03 |\n| F-47 | 逾期清理通知和处理记录 | 可信底账；通知号、生效状态 | 清理；逾期已由财务认定 | 财务实际通知与生效时间 | 不能以用户自述“已解冻”代替 | E01,E08,L07 |\n| F-48 | 项目结题/离职状态 | 可信底账；审批/结题状态日期 | 清理；关联行为发生 | 权责机关结论 | 未知→提示核相关部门 | E01,E03 |\n| F-49 | 借款/冲账的审核状态 | 可信底账；多状态枚举 | 全部；总是 | 分别读状态源 | 提交≠已放款 | L04,E07 |\n| F-50 | 会计凭证编号 | 可信底账；唯一代码/入账日期 | 结清；财务已记账 | 会计账簿 | 缺不能称结清 | E01,E09 |\n| F-51 | 应退还余额 | 派生输出；精确到分 | 冲账；有欠款余额 | 与台账重算 | 冲突→人工对账 | E01,E09 |\n| F-52 | 超额合规支出差额 | 派生输出；金额可分配 | 冲账；报销金额高于可冲借金额 | 独立T01/02/04/06支付 | 不得把多报销误当借款负债 | E09 |\n| F-53 | 关闭与归档时间 | 可信底账；时点+凭证 | 结清；余额已归零 | 最后一次会计冲销 | 时间未知不能预填 | E01,E08 |\n| F-54 | 审批规则生效版本 | 可信配置；版本、起止、覆盖对象 | 全部；总是 | L05全文若可取得 | 版本无效→转配置，不判违纪 | L04,L05,E04 |\n| F-55 | 例外授权与豁免适用域 | 证明材料/可信底账；授权人、时点、范围 | 按需；变更/延期/特殊付款 | 特定规则豁免 | 自制说明不能擅自豁免 | E01,E03 |\n| F-56 | 多项目/多借款冲账分配 | 申报事项；borrow_id,expense_id,amount | 冲账；一份报销涉及多借款/预算 | 两维分配+去重 | 配额超出→不合格部分 | E09,E12 |\n| F-57 | 历史退款或冲账撤销记录 | 可信底账；原凭证号/冲正单号 | 冲账及关闭；出现冲正 | 必须指向原记录 | 未经财务记录→不自行改账 | E01,E09 |\n| F-58 | 原借款支付币种与汇率 | 申报材料/可信底账；币种+金额+汇率日期 | 借入/结算；国际付款 | 外事与财务核算 | 无汇率不自作人民币结算 | L01,E01 |\n| F-59 | 币种折算与手续费 | 证明材料/可信底账；外币值、人民币等值 | 冲账；国际支出 | 国际经费协议、银行单 | 汇率证据不全→人工会计核算 | L01,E05 |\n| F-60 | 数据访问与脱敏级别 | 可信配置；role,scope,expiry | 全部；涉及银行/人员 | 用脱敏令牌标识银行账号 | 权限不可得→阻断访问 | L02,E09 |\n\n**补充（不修改F01—60）：** `application_channel`/`created_at`/`work_date`/`policy_effective_at`/`accounting_event_id`/`loan_purpose_line_id`/`bank_transfer_failed`/`historical_debt_flag`/`cosign_state`/`approval_snapshot_revision`属于 C 阶段**派生事实（DF）**，不把它们虚称为B阶段已确认校方页面字段。新增字段必须在后续系统实现时申请稳定ID，避免与现有F冲突。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s06/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3148587ce3eb8b5c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s06"
+      ],
+      "priority": 50121,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-b862b17b4c9759812032",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 8. 审核事实与关系约束",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第244行】\n## 8. 审核事实与关系约束\n\n**事实对象**：借款责任（`borrower_id,borrow_id,project_id`）、权限链（`actor_id,role,valid_from/to`）、预算、放款事件、用途/受益人、逐行费用、会计抵借分配、实际银行归还、过账、冲正。对来源存在冲突时**不挑选对用户最不利或最有利的那个值自动裁决**；列出冲突对和权威核验任务。\n\n- 身份连续性：教师工号变更、更名、离退休、历史学生债务均以合法原账和有权管理单位确认进行主键映射；当前身份不是自动清债依据；身份冲突→`IDENTITY_REVIEW`，禁止混账。\n- 金额方向与精度：所有金额最小分存储为整数 `amount_cents`；币种、财务汇率、入账币种各有标识。**不能对人民币/外币直接相加**，银行手续费是否计入预算/借款由制度决定，未知待核。\n- **已生效债务余额（参考计算）**：`posted_balance = posted_disbursements - posted_offsets - posted_bank_returns + posted_reversal_additions - posted_reversal_reductions`。实际应采用财务会计事件中显式的借贷方向和当前余额快照校对；公式仅是**独立一致性校验**，不能代替会计规则引擎。\n- `proposed_offset` 只是申请分配； `posted_offset` 必须关联**正式会计凭证**。同一费用行的**所有**借款分配累计不得超过费种有效核准净额；同一借款分配累计不得超当前有效未清余额；重复付款/冲销要从系统事件ID识别，不能只以PDF哈希判断。\n- 可能出现**合法部分成功**：三笔费用行中一笔待补，其余两笔可以形成各自的材料预审结果；未通过的那笔不能被“总单通过”掩盖；财务是否允许同单拆开支付由学校财务有权部门决定。\n- 并发：财务主账在预审与提交间可能变化。核准前再次以相同`ledger_revision`检查并锁定分配，若revision变化则标`REVALIDATION_REQUIRED`，不能沿用旧余额。\n\n### 8.1 事件不变量\n\n1. `paid`需要真实付款事件； `posted`需要会计凭证； `settled`需要会计事实和余额为零；任何已提交截图都不能取代这些事件。\n2. 同一唯一 `accounting_event_id` 不得重复入账；冲正/更正以追加事件与其原始事件关联，不可覆写原值。\n3. 对任一费用行 `0 ≤ Σ有效拟分配 ≤ 费种可核准净额 - 已占用净额`；对任一借款 `0 ≤ Σ本次拟抵借 ≤ 账面剩余额`（待冲正时先核实际状态）。\n4. `current_policy_version`不能用文件上传时点替代：借款资格通常依申请/批准时点、金额控制依申请时点、冲账费种依费用发生/审批当时有效版本、清账临时通告依办理日期；确切适用时间归学校规章确认。\n5. 对于不存在正式预算/借款/银行接口的离线测试，应提供**由试验设计者明示的虚构可信台账**或输出未核；不得捏造现实学校联网成功。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s08/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3148587ce3eb8b5c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s08"
+      ],
+      "priority": 50122,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-cdd1b5014a01ce0fc96d",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 11. 工作流、补件、撤回、版本与权限变更",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第714行】\n## 11. 工作流、补件、撤回、版本与权限变更\n\n- **提交与补件**：新材料建立 `documentVersionId` 和解析 `parseRevision`，旧版本保留；对关联字段、材料组和规则重新判定，不能只把缺项消除而不重新检查金额、主体及日期。\n- **主体/用途/预算变更**：新版本须标明变更原因、批准者、项目生效日期；已拨本金不随修改申请表自动改变。用途改变属于BR-04另一个操作。\n- **撤回**：未放款可按平台撤回申请；已放款则必须转归还/费用冲账/正式会计冲正，不能删除既有债务记录。\n- **同案重复清账**：在单借款新入账事件发生后，根据更新后的`ledger_revision`重新计算余款和分配；并发冲账采用服务端幂等/版本锁定建议，文档不宣称现有实现已提供这些能力。\n- **政策变更**：发布政策修订后仅将适用范围内未完成操作标记待重判；对已完成凭证保留其当时政策快照和真实会计历史。若新规溯及既往，应附权威条款，否则不能事后推定无效。\n- **权限撤销**：委托和借款/预算授权一旦失效，只阻断失效时点后的新操作，不抹销过去已合法形成的债务；正在执行中的结算按有权单位核实。\n- **放款失败**：银行退汇错误不等于“借款人资格失败”，`PAYMENT_FAILED`保留申请及审批历史，不建立已拨本金。\n- **清账完成后冲正**：追加负向/反向会计事件，重建开放余额及关联审核结果，触发`ISS-15`重审；保留原“当时曾结清”的时间线。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s11/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3148587ce3eb8b5c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s11"
+      ],
+      "priority": 50123,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-5a82029c3a352dff9597",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 13. 校本参数与政策版本登记（不能凭猜测填数字）",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第736行】\n## 13. 校本参数与政策版本登记（不能凭猜测填数字）\n\n| 配置ID | 具体参数 | 本校依据与已知性 | 必须采取的动作 |\n|---|---|---|---|\n| CFG-01 | 2026借款人真实资格与可代录权限 | 2022全文未取得[L05/CL17]；2017FAQ为历史事实 | **未核实，校本禁止自动作资格裁决** |\n| CFG-02 | 经费负责人本人借款互签条件及节点 | CL10**官方搜索摘要**有明确分支，原文未读 | 预审中标风险/待OA；上线前取原文及节点配置 |\n| CFG-03 | 国内差旅借款>50000元负责人明细 | L01/CL18 的**2025清单**；2026变化未知 | 在2025适用范围按严格大于判断；2026未知则待核 |\n| CFG-04 | 允许借款额度/校长或财务审批门槛 | 2022制度全文未取得 | 不从河海、湖南人文等学校复制 |\n| CFG-05 | 允许二次借款与未清旧借款的限制 | 其他高校制度有分歧，CDUT缺现行全文 | 保留现行规则查询条件，未知不作拒件 |\n| CFG-06 | 到期起算事件、冲账期限、延期审批 | CDUT 2022正式制度未知 | `POLICY_UNRESOLVED`，不能默认三个月 |\n| CFG-07 | 2026智能报销借款/还款页面材料及权限 | CL11手册存在但正文未得，L04新平台入口已证 | 待手册和有权实机核验 |\n| CFG-08 | 2025年末关账期限 | CL13正式通知已读，限2025年特定区间 | 严格以公告期间触发，不复制给2026 |\n| CFG-09 | 2026暑期临时预约规则 | CL12正式通知已读，2026-07-13—08-26每周二、四办公 | 仅非值班日紧急办理触发预约，不等于借款资格失效 |\n| CFG-10 | 历史借款遗失原票及预算恢复 | CL14/CL20历史清理规程，2025报告表全文未取得 | 对存量特例可提出人工处理路径，不扩成普通申请 |\n| CFG-11 | 预算余额/既有借款/银行真实到账 | 必须读取有权TR-02/03/05 | 不可访问则`EXTERNAL_UNVERIFIED`，不让上传者代替后台 |\n| CFG-12 | 外币和国际银行汇费折算 | 项目/合同/财务口径未知 | 原币、记账币分存；财务确认汇率与税务 |\n| CFG-13 | 2026特定临时窗口/寒暑假后续更改 | 仅按当期公告更新 | 公告版本、范围、失效时点必须锁定 |\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s13/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3148587ce3eb8b5c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s13"
+      ],
+      "priority": 50124,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-d7d32f7c35a5e35b74a2",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 14. 官方来源与设计命题的区分",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第754行】\n## 14. 官方来源与设计命题的区分\n\n本母版的判断分成三类：**原有校本文件明确记载的可查事实**（例如2025用途清单[CL18]、2026借款仍办理[CL12]）；**跨校有现实样例但仅作为建模参考**（[E01]—[E14]）及**作者推导的产品语义**（如把待冲金额与已过账金额分字段）。每条原子规则的具体B来源在§9与辅文件矩阵中列示，不能将作者公式标注为“CDUT正式制度条文”。\n\n重点原始入口：\n\n- [L01 / CL18：CDUT 2025《只跑一次》17页PDF](https://jcc.cdut.edu.cn/__local/8/A8/96/748E97CB5061A750C78C9A841EF_9631E851_E5400.pdf)\n- [L02 / CL16：CDUT 2017财务问答](https://jcc.cdut.edu.cn/info/1049/1841.htm)\n- [L04 / CL19：CDUT 2026开账通知](https://jcc.cdut.edu.cn/info/1012/2656.htm)\n- [L05 / CL17：CDUT 借款办法（2022文号）官方制度索引，未得全文](https://jcc.cdut.edu.cn/cwzd/xxgzzd.htm)\n- [CL10 / CL11：2026互签与新版手册官方搜索列表，未得完整文章](https://jcc.cdut.edu.cn/ssjg.jsp?currentnum=3&newskeycode2=&searchScope=0&wbtreeid=1033)\n- [CL12：2026暑假财务借款与冲账通知全文](https://jcc.cdut.edu.cn/info/1012/2731.htm)\n- [CL13：2025年终财务清账通知](https://jcc.cdut.edu.cn/info/1012/2615.htm)\n- [CL14 / L07：2017历史借款清理规程](https://jcc.cdut.edu.cn/info/1012/1167.htm)\n- [CL20：2016历史未冲销借款处理方案](https://jcc.cdut.edu.cn/info/1012/1129.htm)\n- [E01：河海大学2019《因公借款管理暂行办法》原PDF](https://cwc.hhu.edu.cn/_upload/article/files/4f/85/684ae82641fe98eb0934eb9eec16/4653ca70-2d67-4e21-80cb-00d12c2d7d11.pdf)\n- [E04：湖南人文科技学院2025财务报销办法](https://www.huhst.edu.cn/contents/109/77788.html)（B阶段已收录，需就具体阈值复核）。\n\n**适用性审计提醒**：来源列了具体时间，用户手头的2025文件与2026新系统流程冲突时，以具有同业务效力的新规定/有权解释为准；不得将只从搜索摘要看到的条款冒充完整政策文本。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s14/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3148587ce3eb8b5c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s14"
+      ],
+      "priority": 50125,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-9b2fc76954364e71dcc1",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 15. 作者流程推演与自检入口（不构成D独立金标）",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第774行】\n## 15. 作者流程推演与自检入口（不构成D独立金标）\n\n每条只说明触发事实及按本模板推出的**审核建议/待办**；没有运行审核模型或校方真实系统，不宣称已获得实际数据或审批结果。详细问题和修订记录见单独作者自检文件。\n\n| 走查ID | 场景 | 关键路径/输入 | 预期分项与整体行为 | 相关规则 |\n|---|---|---|---|---|\n| C7-01 | 教师本人正常国内差旅预借 | ST-01→ST-02→ST-03；BR-01+BR-05；M-01/02/03，TR-02有有效预算；不出现票据M-12 | 材料事实可形成 DOCUMENTED_PRECHECK；随后仍须有权审批与拨款；尚无放款则NOT_DISBURSED | R-05,R-06,R-08,R-09,R-16,R-17 |\n| C7-02 | 学生受托代录教师借款 | ST-01→ST-02；BR-10；学生填报人、教师借款人、OA授权有效 | 不因filler为学生驳回；真实借款责任归教师，阶段预审可继续 | R-02,R-03,R-40 |\n| C7-03 | 学生自列本人为2026新借款责任人 | ST-02；2017规则历史存在，但2022现行正式办法全文未得、2026平台权限未知 | POLICY_UNRESOLVED并核TR-01当前资格，不能把2017历史结论自动当2026正式驳回 | R-02,R-42 |\n| C7-04 | 2026经费负责人本人借款互签尚在途 | ST-03；BR-11，CL10专属分支；领导互签记录为IN_REVIEW | AUTHORIZATION_PENDING；禁止称“伪章”或“正式批准”；若正式拒绝再FORMALLY_REJECTED | R-04,R-16,R-41 |\n| C7-05 | 2025年国内差旅恰50000元 | ST-02；BR-05；2025清单旧要求为 >50000，不触发M-07 | 同金额边界M-07为NOT_APPLICABLE；其余差旅必需材料仍审核 | R-09,R-10 |\n| C7-06 | 2025年国内差旅50000.01元 | ST-02；同一2025制度且要求负责人签字明细但本次未提供 | BR-12触发SUPPLEMENT_REQUIRED；允许补M-07，不因为该附件缺失否决借款人身份 | R-10 |\n| C7-07 | 2026国内差旅50000.01元、学校新门槛未明 | ST-02；2025清单存在，但2026对应制度版本尚未确认 | POLICY_UNRESOLVED；要求校本参数，不能按旧规则硬拒 | R-10,R-42 |\n| C7-08 | 版面费预借已有论文录用与收费通知 | ST-02；BR-07 EV-04，未来发票尚不存在 | 不以没有实际付款发票拒绝，等待正式资金审批和放款 | R-08,R-12 |\n| C7-09 | 借款已批但银行退汇 | ST-04；TR-06审批通过，TR-03/05支付失败 | PAYMENT_FAILED，不得生成已拨本金；由财务结算更正收款信息 | R-16,R-17,R-38 |\n| C7-10 | 借款10000，其中两笔费用7000合格，第三笔3000待补 | ST-06；逐费用行费种合法性，两个已审、另一个未审；会计暂未过账 | 有效7000可材料预审，待补3000独立阻断；账面本金仍10000，不能称已结清 | R-20,R-23,R-26 |\n| C7-11 | 同笔借款5000，核准费用6000 | ST-06；TR-04费用合法净额6000，TR-03借款可用余额5000 | 最多拟抵借5000；另1000转所属费用正常付款，不产生借款负余额 | R-23,R-27 |\n| C7-12 | 同一发票费用行向两笔借款各冲全部金额 | ST-06；BR-17两借一费，TR-04核准净额少于合计拟冲 | 逐分配行指出超额重复，占用不得超净额；其余独立分项可继续 | R-24,R-25 |\n| C7-13 | 余款通过银行转出但校方尚未认领 | ST-07→ST-09；M-13真实转出，TR-05未入账 | RETURN_SENT/RETURN_NOT_POSTED，不能SETTLED；申请人已经行动不等于申请人违规 | R-29,R-30,R-39 |\n| C7-14 | 合格部分冲账与现金到账混合结清 | ST-06+ST-07→ST-09；TR-03借款本金，TR-04净额，TR-05确已抵账/到款/零余额 | 仅权威过账+余额0可SETTLED；防同金额重复冲销 | R-23,R-24,R-30 |\n| C7-15 | 2025年12月暂停受理与2026非年终借款 | ST-02；CL13的2025窗口与2026普通月份两案 | 2025窗口只影响该日期是否可受理；2026不得套2025-12-15禁止 | R-31,R-32,R-42 |\n| C7-16 | 历史借款责任人已退休且原票遗失 | ST-08；BR-14+BR-18，CL14历史例外、历史账单、出具方补证或正式替代批准 | 转有权财务/归口历史清理；不得仅按当前在职资格销掉旧债，也不随意无票抵账 | R-30,R-34,R-35 |\n| C7-17 | 结清后正式冲正重新出现余额 | ST-10→ST-09；TR-05正式冲正事件关联原凭证，借款账版本变化 | REVALIDATION_REQUIRED、重算余额；原结清事实保留时间线，不覆盖历史 | R-36,R-37 |\n| C7-18 | 登录者请求读取无授权教师的全部借款 | ST-01；授权系统拒绝，申请者只具某单材料经办权 | ISS-13拒绝数据查询，不能把“不知道老师别的借款”作为学生提交失误 | R-39,R-40 |\n| C7-19 | 纯用户聊天截图声称延期获批准 | ST-08；延期申请有，但无有权审批；相同日期存在正式批复版本时另判 | EXTENSION_PENDING；不得凭聊天创建新到期日 | R-32,R-33 |\n| C7-20 | 补件后费用净额已改变 | ST-06→补件重审；新正式票据版本及TR-04核定净额，TR-03余额revision更新 | 重跑关联R22—R28，不沿旧分配金额冲账，保留原审查快照 | R-22,R-23,R-24,R-42 |\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s15/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3148587ce3eb8b5c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s15"
+      ],
+      "priority": 50126,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-d0e399cd27a6bcd9ac48",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 16. 编辑器共性模块候选（不把业务规则偷换成通用字段校验）",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第801行】\n## 16. 编辑器共性模块候选（不把业务规则偷换成通用字段校验）\n\n| 模块ID | 名称与最小契约 | 复用性 | 失败/未知路径 |\n|---|---|---|---|\n| MOD-01 | 条件适用选择：输入三态条件与生效政策范围，输出TRUE/FALSE/UNKNOWN和来源 | 复用 G01—G08 | UNKNOWN不默认为FALSE |\n| MOD-02 | 分阶段条件材料：输入阶段、用途、材料槽和等价组，输出每对象所欠材料 | 复用 | 后续才生成的材料不触发缺件 |\n| MOD-03 | 多角色授权和利益冲突：输入fill/borrower/controller/approver、有效期、OA | 复用身份/权限层 | 无权不能造成人事实上的新借款资格 |\n| MOD-04 | 政策版本锁定与校本参数：按业务时点选择，记录来源类型、有效期、正文hash | 复用 | 文本没取到→POLICY_UNRESOLVED |\n| MOD-05 | 文档证据组+替代关系：AND/OR、可信底账、影像位置、权威程度 | 复用 | 证据源冲突→FACT_CONFLICT |\n| MOD-06 | 跨文书一致性与范围性重审：Identity/Activity/Contract/Amount | 复用 | OCR损坏不能定性造假 |\n| MOD-07 | 逐行分配+确定性金额校验：多 `expense_line ↔ borrow_id`、已占用净额/余额 | 本业务语义组件，底层计算可复用 | 台账revision不一致→重算而非沿旧额度 |\n| MOD-08 | 业务审批/资金执行隔离：审批、放款、银行入账、会计过账事件源区分 | 高度可复用 | 截图仅能证明申请/转款声明 |\n| MOD-09 | 多项结果聚合：分配行→操作→案卷；允许部分通过与多问题共存 | 复用 | 单行失败不可抹掉其他合法行 |\n| MOD-10 | 补证/版本化/审计快照：证据版、政策版、台账版和重审触发 | 复用 | 版本失配触发REVALIDATION_REQUIRED |\n| MOD-11 | 主账债务重算/会计冲正关联（本业务专有） | 专有（债务余额与反向会计凭证） | 无财务事件不可宣称SETTLED |\n| MOD-12 | 历史借款特殊清理（本业务专有） | 专有 | 旧年度条例不能自动判2026申请 |\n\n共性模块是**可复用审核语义的候选**，不是要求每个Agent按12个固定工具步骤执行；模块输入/输出详见《编辑器共性模块候选.md》。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s16/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3148587ce3eb8b5c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s16"
+      ],
+      "priority": 50127,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-7b88077e9e656011d31a",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 17. 现有编辑器/运行时映射（C6，对仓库 `main` 只读核验）",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第820行】\n## 17. 现有编辑器/运行时映射（C6，对仓库 `main` 只读核验）\n\n本轮只读了GitHub公开仓库 `Fuck-GH-Admin/cdut-studio-review-agent` 的 `main` 分支，树HEAD `dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e`，其中:\n\n- [`packages/shared/src/types/review-v2.ts`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/main/packages/shared/src/types/review-v2.ts)，本轮取得 blob SHA `ccf7525f0f21cc0372af930c826d3eba828a93c0`：**代码中确有** `TemplateVersion`、`FieldSpec.conditionRequired`、`MaterialSlotSpec.requiredWhen/requiredAt`、`RuleSpec.when/onUnknown/confirmation`、三态`ConditionAST`、`WorkflowStageSpec`及`ReviewCaseV2.subjects`。\n- [`apps/electron/src/main/lib/review/template-store.ts`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/main/apps/electron/src/main/lib/review/template-store.ts)，blob SHA `ff57065307f09be5c7e7aee65038d9aa13166171`：**代码中确有**模板字段/槽/分项ID查重、条件引用、政策引用与工作流结构静态校验。\n- [`docs/design/review-agent/15-template-modules-and-runtime-boundary-spec.md`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/main/docs/design/review-agent/15-template-modules-and-runtime-boundary-spec.md)，blob SHA `13892a65256b61d20bc49fdb314cdd393c14d234`：明确模块库、组合解析器、新作者工具**不代表已开发**。\n- [`docs/design/review-agent/16-template-editor-five-g01-gap-and-module-extraction-v0.1.md`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/main/docs/design/review-agent/16-template-editor-five-g01-gap-and-module-extraction-v0.1.md)，blob SHA `aba0201e8b110e4c6456da22a820c35473816071`：设计研究状态、编辑器 `TemplateCriterionSpec` 与政策 `RuleSpec` 的语义不对称及待解决的“双重真相”。\n\n**支持等级**：\n\n| 业务能力 | 代码/文档查证 | C阶段映射结论 |\n|---|---|---|\n| 基础模板、字段、材料槽、发布校验 | 类型定义和验证代码存在 | **已有代码结构，未对G07-T07作运行测试** |\n| 条件AST三态、规则未知待确认、政策来源 | 类型定义与设计规范存在 | **有表达基础，不等于完整审批环节已执行验证** |\n| `requiredAt`阶段 | 实际仅 `submission | decision` | **不足以表达借款拨款后/银行归还后/会计过账后**的全部时间节点 |\n| `FieldSpec.scope` | 只有 `case | subject` | **不足以自然表示借款/费用行/分配/偿付事件四层业务对象的关系** |\n| 规则和编辑器条件 | `TemplateCriterionSpec`不带RuleSpec全部条件/来源/未知语义 | **存在规则双重真相风险，禁止导出时丢失约束** |\n| 费用行多借款分配、财务事件幂等、会计冲正 | 未从本轮已读代码证明完整实现 | **尚未验证/需要业务专有适配与确定性数据源** |\n| OA/预算/银行/真实财务主账读取 | 本轮未取得任何学校账号或授权接口 | **需要有权学校接口**，不可宣称可用 |\n| 借款风险、延期、坏账及正式财务处分 | 业务上必须由实际机构决定 | **需要人工/正式审批**，不允许AI自动执行 |\n\n**不实施任何 GitHub 写操作**；没有创建JSON运行模板、没有跑出真实业务审核结果。源码与文档的存在性是静态确认，非产品完工证明。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s17/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3148587ce3eb8b5c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s17"
+      ],
+      "priority": 50128,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-c2ce8bfb127691161e06",
+      "policyVersionId": "workspace:d2-d4-g07-t07@1",
+      "title": "## 18. 完整性审计、版本与交接",
+      "requirement": "适用范围：g07-loan-operation\n【C母版 第844行】\n## 18. 完整性审计、版本与交接\n\n- 稳定ID：F01—60、M01—20、R01—42全部与B对应，C增加BR-01—18、EV-01—14、ST-01—10、ISS-01—17、TR-01—07、MOD-01—12等**独立命名空间**。\n- 不混四类输入，不把申报材料单张发票当正式会计结果；允许学生代办、阶段条件、合法替代、部分冲账、对外费种路由、历史冲账和人工复核。\n- **未关闭的关键校本缺口**：2022借款管理办法全文、2026新版操作手册和互签原文、借款人现行资格及通用期限、校方台账权限；因此状态 `BUSINESS_MD_DRAFT_WITH_GAPS`。\n- 作者静态检查和20个推演由辅助《作者自检与问题修订记录》给出。**这不是对D案例或系统真实执行的验收**。\n- B的42条规则此版转成可读原子命题，最终上线仍需绑定经过政策确认的 `RuleSpec`、`PolicyVersion` 和 `TemplateCriterionSpec`，避免作者文字和运行规则“双重真相”。\n- 与独立D对接仅公开此模板母版、规则ID、材料与结果语义，**不得向D复制作者推演当作隐藏答案**；D保留独立金标与测试生产过程。\n\n**完成状态：BUSINESS_MD_DRAFT_WITH_GAPS**。后续等待独立D交叉验收结果与学校有效制度补证，再有针对性修订；未发布或更改系统代码。\n完成标准：独立保留该章节的材料、阶段、例外、来源、权限及输出责任，未知须待核。\n责任边界：政策未核不自动决定\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不能正式批准、核销或付款。\nD2 技术预审来源：g07-t07-nonnum-s18/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3148587ce3eb8b5c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t07-nonnum-s18"
+      ],
+      "priority": 50129,
       "confirmation": "unconfirmed"
     },
     {
@@ -2861,7 +3275,7 @@
       "sourceRefIds": [
         "g07-t07-b01"
       ],
-      "priority": 50112,
+      "priority": 50130,
       "confirmation": "unconfirmed"
     },
     {
@@ -2884,7 +3298,7 @@
       "sourceRefIds": [
         "g07-t07-b02"
       ],
-      "priority": 50113,
+      "priority": 50131,
       "confirmation": "unconfirmed"
     },
     {
@@ -2907,7 +3321,7 @@
       "sourceRefIds": [
         "g07-t07-b03"
       ],
-      "priority": 50114,
+      "priority": 50132,
       "confirmation": "unconfirmed"
     },
     {
@@ -2930,7 +3344,7 @@
       "sourceRefIds": [
         "g07-t07-b04"
       ],
-      "priority": 50115,
+      "priority": 50133,
       "confirmation": "unconfirmed"
     },
     {
@@ -2953,7 +3367,7 @@
       "sourceRefIds": [
         "g07-t07-b05"
       ],
-      "priority": 50116,
+      "priority": 50134,
       "confirmation": "unconfirmed"
     },
     {
@@ -2976,7 +3390,7 @@
       "sourceRefIds": [
         "g07-t07-b06"
       ],
-      "priority": 50117,
+      "priority": 50135,
       "confirmation": "unconfirmed"
     },
     {
@@ -2999,7 +3413,7 @@
       "sourceRefIds": [
         "g07-t07-b07"
       ],
-      "priority": 50118,
+      "priority": 50136,
       "confirmation": "unconfirmed"
     },
     {
@@ -3022,7 +3436,7 @@
       "sourceRefIds": [
         "g07-t07-b08"
       ],
-      "priority": 50119,
+      "priority": 50137,
       "confirmation": "unconfirmed"
     },
     {
@@ -3045,7 +3459,7 @@
       "sourceRefIds": [
         "g07-t07-b09"
       ],
-      "priority": 50120,
+      "priority": 50138,
       "confirmation": "unconfirmed"
     },
     {
@@ -3068,7 +3482,7 @@
       "sourceRefIds": [
         "g07-t07-b10"
       ],
-      "priority": 50121,
+      "priority": 50139,
       "confirmation": "unconfirmed"
     },
     {
@@ -3091,7 +3505,7 @@
       "sourceRefIds": [
         "g07-t07-b11"
       ],
-      "priority": 50122,
+      "priority": 50140,
       "confirmation": "unconfirmed"
     },
     {
@@ -3114,7 +3528,7 @@
       "sourceRefIds": [
         "g07-t07-b12"
       ],
-      "priority": 50123,
+      "priority": 50141,
       "confirmation": "unconfirmed"
     }
   ],
@@ -3966,6 +4380,159 @@
         "fieldKey": "g07-loan-operation",
         "supportsFacts": [
           "d2:object:g07-loan-operation:sexception"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s06#g07-t07-item-a",
+      "ruleId": "d2-87b7a1f2f6fae09ca435",
+      "objectKey": "g07-t07-item-a",
+      "subjectId": "g07-t07-subject-a",
+      "sourceIds": [
+        "g07-t07-nonnum-s06"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums06"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s08#g07-t07-item-a",
+      "ruleId": "d2-a94e8d0cf7242ae8ede4",
+      "objectKey": "g07-t07-item-a",
+      "subjectId": "g07-t07-subject-a",
+      "sourceIds": [
+        "g07-t07-nonnum-s08"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums08"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s11#g07-t07-item-a",
+      "ruleId": "d2-d370b744dc354d645a8b",
+      "objectKey": "g07-t07-item-a",
+      "subjectId": "g07-t07-subject-a",
+      "sourceIds": [
+        "g07-t07-nonnum-s11"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums11"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s13#g07-t07-item-a",
+      "ruleId": "d2-03c6872cbe785ef6d2ac",
+      "objectKey": "g07-t07-item-a",
+      "subjectId": "g07-t07-subject-a",
+      "sourceIds": [
+        "g07-t07-nonnum-s13"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums13"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s14#g07-t07-item-a",
+      "ruleId": "d2-df379fc37ba08120532c",
+      "objectKey": "g07-t07-item-a",
+      "subjectId": "g07-t07-subject-a",
+      "sourceIds": [
+        "g07-t07-nonnum-s14"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums14"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s15#g07-t07-item-a",
+      "ruleId": "d2-e2166939c98e9eb41b73",
+      "objectKey": "g07-t07-item-a",
+      "subjectId": "g07-t07-subject-a",
+      "sourceIds": [
+        "g07-t07-nonnum-s15"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums15"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s16#g07-t07-item-a",
+      "ruleId": "d2-848a026ef35490b6898c",
+      "objectKey": "g07-t07-item-a",
+      "subjectId": "g07-t07-subject-a",
+      "sourceIds": [
+        "g07-t07-nonnum-s16"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums16"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s17#g07-t07-item-a",
+      "ruleId": "d2-7c1357a6225814c35173",
+      "objectKey": "g07-t07-item-a",
+      "subjectId": "g07-t07-subject-a",
+      "sourceIds": [
+        "g07-t07-nonnum-s17"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums17"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s18#g07-t07-item-a",
+      "ruleId": "d2-25cee600ebc6dc98c0da",
+      "objectKey": "g07-t07-item-a",
+      "subjectId": "g07-t07-subject-a",
+      "sourceIds": [
+        "g07-t07-nonnum-s18"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums18"
         ]
       }
     },
@@ -5024,6 +5591,159 @@
       }
     },
     {
+      "checkId": "module/use-non-numbered/s06#g07-t07-item-b",
+      "ruleId": "d2-bb93e2a656f786e74c31",
+      "objectKey": "g07-t07-item-b",
+      "subjectId": "g07-t07-subject-b",
+      "sourceIds": [
+        "g07-t07-nonnum-s06"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums06"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s08#g07-t07-item-b",
+      "ruleId": "d2-b862b17b4c9759812032",
+      "objectKey": "g07-t07-item-b",
+      "subjectId": "g07-t07-subject-b",
+      "sourceIds": [
+        "g07-t07-nonnum-s08"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums08"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s11#g07-t07-item-b",
+      "ruleId": "d2-cdd1b5014a01ce0fc96d",
+      "objectKey": "g07-t07-item-b",
+      "subjectId": "g07-t07-subject-b",
+      "sourceIds": [
+        "g07-t07-nonnum-s11"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums11"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s13#g07-t07-item-b",
+      "ruleId": "d2-5a82029c3a352dff9597",
+      "objectKey": "g07-t07-item-b",
+      "subjectId": "g07-t07-subject-b",
+      "sourceIds": [
+        "g07-t07-nonnum-s13"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums13"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s14#g07-t07-item-b",
+      "ruleId": "d2-d7d32f7c35a5e35b74a2",
+      "objectKey": "g07-t07-item-b",
+      "subjectId": "g07-t07-subject-b",
+      "sourceIds": [
+        "g07-t07-nonnum-s14"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums14"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s15#g07-t07-item-b",
+      "ruleId": "d2-9b2fc76954364e71dcc1",
+      "objectKey": "g07-t07-item-b",
+      "subjectId": "g07-t07-subject-b",
+      "sourceIds": [
+        "g07-t07-nonnum-s15"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums15"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s16#g07-t07-item-b",
+      "ruleId": "d2-d0e399cd27a6bcd9ac48",
+      "objectKey": "g07-t07-item-b",
+      "subjectId": "g07-t07-subject-b",
+      "sourceIds": [
+        "g07-t07-nonnum-s16"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums16"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s17#g07-t07-item-b",
+      "ruleId": "d2-7b88077e9e656011d31a",
+      "objectKey": "g07-t07-item-b",
+      "subjectId": "g07-t07-subject-b",
+      "sourceIds": [
+        "g07-t07-nonnum-s17"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums17"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s18#g07-t07-item-b",
+      "ruleId": "d2-c2ce8bfb127691161e06",
+      "objectKey": "g07-t07-item-b",
+      "subjectId": "g07-t07-subject-b",
+      "sourceIds": [
+        "g07-t07-nonnum-s18"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-loan-operation",
+        "supportsFacts": [
+          "d2:object:g07-loan-operation:nonnums18"
+        ]
+      }
+    },
+    {
       "checkId": "module/use-branch01/br01#g07-t07-item-b",
       "ruleId": "d2-f14e30a9d38a62137a6d",
       "objectKey": "g07-t07-item-b",
@@ -5228,5 +5948,5 @@
       }
     }
   ],
-  "fingerprint": "091afc371409e8e6608c0537be577f65b49767ef31aabaf2083e664611e653fe"
+  "fingerprint": "6d0504ee53ddcc20facad93fa755d3c706aba4485def88586cb8897ef9c11ec3"
 }
