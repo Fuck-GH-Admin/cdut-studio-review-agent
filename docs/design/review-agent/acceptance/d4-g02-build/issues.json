@@ -1,0 +1,94 @@
+{
+  "schema": "g02-d4-issue-ledger-v1",
+  "commonSha": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "issues": [
+    {
+      "id": "G02-POLICY-01",
+      "class": "Policy",
+      "templates": [
+        "T01",
+        "T02",
+        "T03"
+      ],
+      "state": "OPEN",
+      "impact": "2026成都理工现行制度与审批角色无权认证；原业务MD为policy-candidate，非强制发布依据",
+      "minimum": "学校制度管理者明确生效版本、适用范围与撤销/替代链，独立E按旧门槛验收"
+    },
+    {
+      "id": "G02-EXTERNAL-01",
+      "class": "External",
+      "templates": [
+        "T01"
+      ],
+      "state": "OPEN",
+      "impact": "组织目录、逐数据源审批、权威分类与交付日志未获校方接口",
+      "minimum": "受控版本化组织/数据源/审批/交付事实，允许不可达状态，禁止用户截图冒充"
+    },
+    {
+      "id": "G02-EXTERNAL-02",
+      "class": "External",
+      "templates": [
+        "T02"
+      ],
+      "state": "OPEN",
+      "impact": "部门邮箱目录、旧账号与成员权限、OA审批和真实开通事件没有受控接口",
+      "minimum": "授权账号及组织管理员版本、审批和实施事件独立读取"
+    },
+    {
+      "id": "G02-EXTERNAL-03",
+      "class": "External",
+      "templates": [
+        "T03"
+      ],
+      "state": "OPEN",
+      "impact": "专项VPN办理入口、资源属主、VPN与堡垒机/应用层许可缺真实受控核查",
+      "minimum": "按访问对象提供最小可验证平台记录；未授权接口时 WAIT_SOURCE"
+    },
+    {
+      "id": "G02-ENGINE-01",
+      "class": "Engine",
+      "templates": [
+        "T01",
+        "T02",
+        "T03"
+      ],
+      "state": "KNOWN_LIMIT",
+      "impact": "COMMON支持精确逐对象 EvidenceLink，仍不支持多实体任意复杂法律 Claim 依赖图、真实审批阶段状态机",
+      "minimum": "只对无法用语义及人审表达且必须确定性守卫的关系提交新最小复现；不能在G02私改引擎"
+    },
+    {
+      "id": "G02-SOURCE-T03",
+      "class": "Source",
+      "templates": [
+        "T03"
+      ],
+      "state": "VERSION_PINNED_CONDITIONAL",
+      "impact": "本轮采用新增业务 v0.1.1 SHA e3d1...，不能混用旧v0.1 E0或D原Gold",
+      "minimum": "原业务作者与独立E另行确认新旧版差分及验收基础；不重生成Gold"
+    },
+    {
+      "id": "G02-TEST-01",
+      "class": "Test",
+      "templates": [
+        "T01",
+        "T02",
+        "T03"
+      ],
+      "state": "NOT_RUN",
+      "impact": "在线模型/独立Gold/正式行政制度场景并未执行",
+      "minimum": "统一集成后在真实授权条件下由独立验收执行"
+    },
+    {
+      "id": "G02-HUMAN-01",
+      "class": "Human",
+      "templates": [
+        "T01",
+        "T02",
+        "T03"
+      ],
+      "state": "MANUAL_ONLY",
+      "impact": "数据共享决定、公邮开户、VPN访问权、法律处理基础和行政实施不可由模型宣布生效",
+      "minimum": "有权人审批及独立可信实施状态"
+    }
+  ]
+}
