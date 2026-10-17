@@ -77,6 +77,45 @@ describe('D4 G05 six complete C-source modular candidates / locked COMMON',()=>{
     })
   }
   for(const id of ids){
+    test(id+' D1 immutable edit history and D3/D2 actual CLI transactions',()=>{
+      const folder=join(home,id+'-cli')
+      mkdirSync(folder,{recursive:true})
+      const cliConfig=join(folder,'config')
+      mkdirSync(cliConfig,{recursive:true})
+      const scripts=resolve(import.meta.dir,'../../../../scripts')
+      const env={...process.env,PROFER_CONFIG_DIR:cliConfig}
+      function execute(script:string,args:string[]){
+        const result=Bun.spawnSync({cmd:[process.execPath,join(scripts,script),...args],env})
+        if(result.exitCode!==0)throw Error(script+' '+args[0]+': '+result.stderr.toString())
+        return JSON.parse(result.stdout.toString()) as Record<string,any>
+      }
+      const ws=load<ReviewAuthoringWorkspaceV1>(id,'workspace.json')
+      const work=join(root,'templates',id,'workspace.json')
+      const selection=join(root,'templates',id,'synthetic-selection.json')
+      const cse=join(root,'templates',id,'synthetic-case.json')
+      const next=structuredClone(ws);next.revision=ws.revision+1
+      const revised=join(folder,'revision2.json')
+      writeFileSync(revised,JSON.stringify(next,null,2))
+      expect(execute('review-authoring-v1.ts',['validate',work]).ok).toBeTrue()
+      expect(execute('review-authoring-v1.ts',['save',work,'0',id+'-author']).saved).toBeTrue()
+      expect(execute('review-authoring-v1.ts',['read',ws.workspaceId]).workspace.revision).toBe(1)
+      expect(execute('review-authoring-v1.ts',['diff',work,revised])).toBeDefined()
+      const bundle=join(folder,'portable-bundle.json'),imported=join(folder,'roundtrip-workspace.json')
+      expect(execute('review-d3-library.ts',['export',work,bundle]).fingerprint).toHaveLength(64)
+      expect(execute('review-d3-library.ts',['import',bundle,imported]).imported).toBeTrue()
+      const plan=execute('review-d2-plan.ts',['preview',imported,selection,cse])
+      expect(plan.schemaVersion).toBe(3)
+      expect(plan.subjects).toHaveLength(2)
+      expect(plan.mapping.length).toBeGreaterThan(30)
+      evidence(id,'d1-d3-cli-record.json',{workspaceId:ws.workspaceId,savedRevision:1,
+        subsequentRevision:2,exportImported:true,planFingerprint:plan.fingerprint,
+        ruleCount:plan.rules.length,subjectCount:plan.subjects.length,
+        source:"original SHA-verified C-v0.1",policyCertified:false})
+      console.log('[G05_D1_D3_D2_CLI]',JSON.stringify({id,checks:plan.mapping.length,
+        fingerprint:plan.fingerprint,revision:ws.revision}))
+    })
+  }
+  for(const id of ids){
     test(id+' real synthetic material -> scoped EvidenceLink -> Pi service receipt',async()=>{
       const w=load<ReviewAuthoringWorkspaceV1>(id,'workspace.json')
       const s=load<D2ScenarioSelection>(id,'synthetic-selection.json')
