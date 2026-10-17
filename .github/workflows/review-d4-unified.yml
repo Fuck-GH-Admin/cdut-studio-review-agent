@@ -14,6 +14,9 @@ jobs:
   unified:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
     env:
       ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
     steps:
@@ -30,11 +33,16 @@ jobs:
       - name: Module boundaries
         run: bun run check:boundaries
       - name: Full unified regression including all eight domains
-        run: bun test --isolate --timeout 120000 2>&1 | tee "$RUNNER_TEMP/d4-bun-test.log"
+        run: |
+          set -euo pipefail
+          bun test --isolate --timeout 120000 2>&1 | tee "$RUNNER_TEMP/d4-bun-test.log"
       - name: Verify candidate integrity D1 D3 and D2 plans
-        run: bun apps/electron/scripts/review-d4-unified.ts verify | tee "$RUNNER_TEMP/d4-unified-verify.json"
+        run: |
+          set -euo pipefail
+          bun apps/electron/scripts/review-d4-unified.ts verify | tee "$RUNNER_TEMP/d4-unified-verify.json"
       - name: Install exactly fifty held candidates into isolated existing template store
         run: |
+          set -euo pipefail
           export PROFER_CONFIG_DIR="$(mktemp -d)"
           bun apps/electron/scripts/review-d4-unified.ts install > "$RUNNER_TEMP/d4-install.json"
           bun apps/electron/scripts/review-d4-unified.ts installed | tee "$RUNNER_TEMP/d4-installed.json"
