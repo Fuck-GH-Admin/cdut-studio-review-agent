@@ -24,7 +24,7 @@ jobs:
     timeout-minutes: 35
     env:
       ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
-      PROFER_CONFIG_DIR: ${{ runner.temp }}/d4-g01-synthetic
+      PROFER_CONFIG_DIR: ${{ github.workspace }}/d4-g01-synthetic
       D4_G01_EVIDENCE_DIR: ${{ github.workspace }}/docs/design/review-agent/acceptance/d4-g01-build/runtime-evidence
     steps:
       - uses: actions/checkout@v4
