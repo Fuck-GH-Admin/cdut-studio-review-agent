@@ -4,7 +4,17 @@
  */
 import type { ReviewSubject, RuleSpec } from './review-v2'
 
-export type D2TargetKind = 'campus-card' | 'archive-item' | 'archive-operation' | 'student-field'
+export type D2TargetKind = 'campus-card' | 'archive-item' | 'archive-operation' | 'student-field' | 'generic-object'
+
+/** Explicit case-side condition selection; NOT a trusted school record or policy authorization. */
+export interface D2ObjectConditionV1 {
+  id: string
+  applicability: 'applicable' | 'not-applicable' | 'unknown'
+  sourceId: string
+  sourceVersionId: string
+  /** Definitive branch choices require a reviewer-confirmed selection, not LLM inference. */
+  decidedBy: 'reviewer' | 'undetermined'
+}
 
 /** 同一档案件每个操作必须拥有独立 objectKey/subjectId。 */
 export interface D2TargetBinding {
@@ -12,7 +22,12 @@ export interface D2TargetBinding {
   subjectId: string
   title: string
   kind: D2TargetKind
+  /** Namespaced bounded generic type, e.g. g03-resource-slot or g08-lost-item. */
+  businessType?: string
+  /** Explicit per-object primary scenario (generic-object only). */
   scenario?: string
+  /** All declared additive condition axes must appear, including unknown/false ones. */
+  conditions?: D2ObjectConditionV1[]
   itemId?: string
   operation?: 'read' | 'copy' | 'excerpt' | 'borrow' | 'certified_copy'
   /** Optional stable per-request operation identity; disambiguates same-kind operations. */
@@ -94,7 +109,7 @@ export interface D2ExecutionGateV1 {
   }
 }
 export interface D2RuntimePlan {
-  schemaVersion: 1 | 2
+  schemaVersion: 1 | 2 | 3
   /** Optional independent, controlled synthetic fixture, hashed into the fixed technical plan. */
   trustedStudentSnapshot?: D2TrustedStudentSnapshotV1
   mode: 'technical-pre-review'
