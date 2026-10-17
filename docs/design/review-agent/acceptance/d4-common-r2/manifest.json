@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "kind": "D4_COMMON_R2_DRAFT",
+  "parentSha": "94d5ec32b6de1ac0c185b63b4aabfddaa29b1649",
+  "r0Sha": "4b191c729f3d5f8135c73b87c17642023f6c3986",
+  "requirementsPr": 87,
+  "deliveryPr": 88,
+  "branch": "feat/d4-common-object-scenario-r01",
+  "technicalPlanSchema": 3,
+  "authoringSchema": 1,
+  "syntheticExamples": [
+    "G03:two resource slots",
+    "G08:two lost items"
+  ],
+  "tests": [
+    "review-d4-common.test.ts",
+    "review-d3-r1-student.test.ts",
+    "PR CI"
+  ],
+  "status": "DRAFT_PENDING_CI",
+  "handoffReady": false,
+  "files": [
+    "baseline-and-design.md",
+    "README.md",
+    "authoring-contract.md",
+    "migration-guide.md",
+    "test-evidence.md",
+    "known-gaps.md",
+    "examples/g03-workspace.json",
+    "examples/g03-selection.json",
+    "examples/g03-case.json"
+  ]
+}

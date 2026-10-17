@@ -1,0 +1,14 @@
+{
+  "id": "d4-example-case",
+  "templateId": "d4-g03-example",
+  "templateVersion": 1,
+  "title": "G03合成资源核对",
+  "objectType": "document",
+  "caseFields": {},
+  "subjects": [],
+  "documents": [],
+  "stage": "draft",
+  "revision": 0,
+  "createdAt": "2026-10-17T00:00:00Z",
+  "updatedAt": "2026-10-17T00:00:00Z"
+}
