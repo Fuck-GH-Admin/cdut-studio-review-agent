@@ -1,0 +1,833 @@
+{
+  "sourceFile": "G06-T03_正式业务模板_MD_v0.1.md",
+  "sourceSha256": "925ce8215d138bed2558efb004d9d30e2ce318a9376207df18d60a5ae0964d9f",
+  "version": "v0.1",
+  "scope": "full",
+  "atomicRules": [
+    {
+      "sourceId": "R-01",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L337",
+      "sourceAnchor": "### R-01｜业务目的与旧记录路由",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r01/check",
+      "moduleId": "g06-t03-r01",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-02",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L347",
+      "sourceAnchor": "### R-02｜四类成果先检索",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r02/check",
+      "moduleId": "g06-t03-r02",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-03",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L357",
+      "sourceAnchor": "### R-03｜认领本人身份及署名位",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r03/check",
+      "moduleId": "g06-t03-r03",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-04",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L367",
+      "sourceAnchor": "### R-04｜非本人选择的独立正确结果",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r04/check",
+      "moduleId": "g06-t03-r04",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-05",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L377",
+      "sourceAnchor": "### R-05｜作者原始顺序与贡献类型",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r05/check",
+      "moduleId": "g06-t03-r05",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-06",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L387",
+      "sourceAnchor": "### R-06｜一个署名位一次真实归属",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r06/check",
+      "moduleId": "g06-t03-r06",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-07",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L397",
+      "sourceAnchor": "### R-07｜CDUT四类未命中的补报文件",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r07/check",
+      "moduleId": "g06-t03-r07",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-08",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L407",
+      "sourceAnchor": "### R-08｜其他成果类型按类型适配",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r08/check",
+      "moduleId": "g06-t03-r08",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-09",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L417",
+      "sourceAnchor": "### R-09｜外部论文与收录相区分",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r09/check",
+      "moduleId": "g06-t03-r09",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-10",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L427",
+      "sourceAnchor": "### R-10｜专利受理不等于授权",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r10/check",
+      "moduleId": "g06-t03-r10",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-11",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L437",
+      "sourceAnchor": "### R-11｜论文录用不等于正式发表",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r11/check",
+      "moduleId": "g06-t03-r11",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-12",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L447",
+      "sourceAnchor": "### R-12｜强标识去重与弱候选",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r12/check",
+      "moduleId": "g06-t03-r12",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-13",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L457",
+      "sourceAnchor": "### R-13｜学生参与和申请操作权限分离",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r13/check",
+      "moduleId": "g06-t03-r13",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-14",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L467",
+      "sourceAnchor": "### R-14｜学院与校级审核程序分层",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r14/check",
+      "moduleId": "g06-t03-r14",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-15",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L477",
+      "sourceAnchor": "### R-15｜学科类型自动归类可核修正",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r15/check",
+      "moduleId": "g06-t03-r15",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-16",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L487",
+      "sourceAnchor": "### R-16｜证据针对具体事实分权威",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r16/check",
+      "moduleId": "g06-t03-r16",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-17",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L497",
+      "sourceAnchor": "### R-17｜合法替代证据和按条件缺件",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r17/check",
+      "moduleId": "g06-t03-r17",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-18",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L507",
+      "sourceAnchor": "### R-18｜成果事实与科研绩效隔离",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r18/check",
+      "moduleId": "g06-t03-r18",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-19",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L517",
+      "sourceAnchor": "### R-19｜工作事实与个人认领部分结果",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r19/check",
+      "moduleId": "g06-t03-r19",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-20",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L527",
+      "sourceAnchor": "### R-20｜发表/索引/校内审核事件时间",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r20/check",
+      "moduleId": "g06-t03-r20",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-21",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L537",
+      "sourceAnchor": "### R-21｜可信系统失败与政策未知",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r21/check",
+      "moduleId": "g06-t03-r21",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-22",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L547",
+      "sourceAnchor": "### R-22｜同作品不同署名位合法分别认领",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r22/check",
+      "moduleId": "g06-t03-r22",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-23",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L557",
+      "sourceAnchor": "### R-23｜已声明类型证据与申报阶段对应",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r23/check",
+      "moduleId": "g06-t03-r23",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-24",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L567",
+      "sourceAnchor": "### R-24｜资料不同版本与外部正式更正",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r24/check",
+      "moduleId": "g06-t03-r24",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-25",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L577",
+      "sourceAnchor": "### R-25｜提交动作权限和自然/社科数据责任",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r25/check",
+      "moduleId": "g06-t03-r25",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-26",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L587",
+      "sourceAnchor": "### R-26｜非授权登录和操作留痕",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r26/check",
+      "moduleId": "g06-t03-r26",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-27",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L597",
+      "sourceAnchor": "### R-27｜多作品批次拆开核验",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r27/check",
+      "moduleId": "g06-t03-r27",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-28",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L607",
+      "sourceAnchor": "### R-28｜退回补正与再次提交",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r28/check",
+      "moduleId": "g06-t03-r28",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-29",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L617",
+      "sourceAnchor": "### R-29｜正式否决/撤回与执行结果隔离",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r29/check",
+      "moduleId": "g06-t03-r29",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-30",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L627",
+      "sourceAnchor": "### R-30｜一数一源与可信数据错误分流",
+      "type": "rule",
+      "checkId": "g06-t03@1:module/use-r30/check",
+      "moduleId": "g06-t03-r30",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    }
+  ],
+  "otherResponsibilities": [
+    {
+      "sourceId": "SECTION-01",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L9",
+      "sourceAnchor": "## 1. 独立目的、适用范围与成功标准",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section01/check",
+      "moduleId": "g06-t03-section01",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-02",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L36",
+      "sourceAnchor": "## 2. 角色、审批权责、对象与权限",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section02/check",
+      "moduleId": "g06-t03-section02",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-03",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L51",
+      "sourceAnchor": "## 3. 业务条件轴、优先级与一套模板的内部路径",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section03/check",
+      "moduleId": "g06-t03-section03",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-04",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L101",
+      "sourceAnchor": "## 4. 四层输入契约（严守申报事项、申报材料、证明材料、可信底账分离）",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section04/check",
+      "moduleId": "g06-t03-section04",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-05",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L125",
+      "sourceAnchor": "## 5. 材料槽、合法替代、作用阶段",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section05/check",
+      "moduleId": "g06-t03-section05",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-06",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L130",
+      "sourceAnchor": "## 6. 完整字段字典：存在不等于本阶段必填",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section06/check",
+      "moduleId": "g06-t03-section06",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-07",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L248",
+      "sourceAnchor": "## 7. 材料槽、阶段要求、等效证据组与可信来源",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section07/check",
+      "moduleId": "g06-t03-section07",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-08",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L318",
+      "sourceAnchor": "## 8. 核心审核事实（Fact）与关系约束",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section08/check",
+      "moduleId": "g06-t03-section08",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-09",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L333",
+      "sourceAnchor": "## 9. 原子规则详表（C版R-01—R-30）",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section09/check",
+      "moduleId": "g06-t03-section09",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-10",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L637",
+      "sourceAnchor": "## 10. 结果契约：逐作品、逐认领、逐阶段与总体聚合",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section10/check",
+      "moduleId": "g06-t03-section10",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-11",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L687",
+      "sourceAnchor": "## 11. 全生命周期、补件、重审、正式执行与历史审计",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section11/check",
+      "moduleId": "g06-t03-section11",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-12",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L705",
+      "sourceAnchor": "## 12. 合法例外、外校差异、不能自动判定的情形",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section12/check",
+      "moduleId": "g06-t03-section12",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-13",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L721",
+      "sourceAnchor": "## 13. 学校政策配置、确认等级与仍待补缺口",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section13/check",
+      "moduleId": "g06-t03-section13",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-14",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L746",
+      "sourceAnchor": "## 14. 官方与研究来源索引（自包含）",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section14/check",
+      "moduleId": "g06-t03-section14",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-15",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L767",
+      "sourceAnchor": "## 15. 作者流程推演（不是D独立测试金标）",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section15/check",
+      "moduleId": "g06-t03-section15",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-16",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L783",
+      "sourceAnchor": "## 16. 跨模板共用候选与T03独有审核语义",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section16/check",
+      "moduleId": "g06-t03-section16",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-17",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L799",
+      "sourceAnchor": "## 17. 与当前仓库编辑器及运行态的表达映射（静态核对）",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section17/check",
+      "moduleId": "g06-t03-section17",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-18",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L818",
+      "sourceAnchor": "## 18. 完整性审计、风险、版本与交接",
+      "type": "context",
+      "checkId": "g06-t03@1:module/use-section18/check",
+      "moduleId": "g06-t03-section18",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-01",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L66",
+      "sourceAnchor": "| `BR-01` | **高确定性自动归属**：校园成果库将可识别作品归于某学者 | 核实/确认现有自动关联 | 已有`Work`和初始归属；可仅需确认或要求学校规定的补充证明，不自动全量上传 | 发现误归属时转待核/管理员，不静默篡改已审记录 | S01,S02 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t03@1:module/use-axis-br-01/check",
+      "moduleId": "g06-t03-axis-br-01",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-02",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L67",
+      "sourceAnchor": "| `BR-02` | **网推待认领**：来源记录已有，个人归属不确定；本人选择认领 | 验证本人和原始署名位 | 网推主记录、论文/成果源、校内身份/人员映射 | 姓名同音不能直接认领，冲突时由学院核实 | S01,S02 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t03@1:module/use-axis-br-02/check",
+      "moduleId": "g06-t03-axis-br-02",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-03",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L68",
+      "sourceAnchor": "| `BR-03` | **非本人**：对某候选主动否认归属 | 记录`not_mine`，不要求找出真正作者 | 候选记录ID+提交人确认动作/系统记录 | 不为提交人建立作品归属；若已审更正应转T04 | S01 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t03@1:module/use-axis-br-03/check",
+      "moduleId": "g06-t03-axis-br-03",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-04",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "| `BR-04` | **库内搜索命中**：四类优先搜索的成果在全校成果库有匹配 | 添加关联/认领署名位 | 检索记录、原作品ID、作者位次及身份 | 不再手工创建第二条同作品主记录 | S01 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t03@1:module/use-axis-br-04/check",
+      "moduleId": "g06-t03-axis-br-04",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-05",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "| `BR-05` | **全校搜索未命中，提交补报**：按本校四类路径 | 补充可信来源数据，再认领 | 提供校本信息表、封面/目录/正文与其他证明；检索报告为“如有”；记录查询条件与时间 | 不能把“未查到”当“不存在”；校方补录成功前为待核/待更新 | S01,S03 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t03@1:module/use-axis-br-05/check",
+      "moduleId": "g06-t03-axis-br-05",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-06",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L71",
+      "sourceAnchor": "| `BR-06` | **其他成果按类别单篇新增**：图书、软著、获奖、服务等 | 申报新作品记录和申请人署名归属 | 按成果类型使用对应申报字段、正式附件，校本星号字段尚未完全取得 | 如果发现已有同作品必须改为认领而非新建 | S01,S05 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t03@1:module/use-axis-br-06/check",
+      "moduleId": "g06-t03-axis-br-06",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-07",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L72",
+      "sourceAnchor": "| `BR-07` | **首次申报退回重填**：学校尚未最终认定该新记录 | 同一 case 的补正后重新提交 | 旧材料、退回意见、新版证据、仍有效的事实/权限 | 已正式入库/锁定记录的**事后更正**转T04 | S01,S02 |",
+      "type": "additive-condition",
+      "checkId": "g06-t03@1:module/use-axis-br-07/check",
+      "moduleId": "g06-t03-axis-br-07",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-08",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L80",
+      "sourceAnchor": "| `BR-08` | 论文online先发表、数据库尚未收录或引证信息未定 | 核真正公开时间、外部来源及数据库索引时滞；不直接用未索引拒绝 | 没有卷期/检索报告不自动拒绝真正online发表 [S03,S05] |",
+      "type": "additive-condition",
+      "checkId": "g06-t03@1:module/use-axis-br-08/check",
+      "moduleId": "g06-t03-axis-br-08",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-09",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L81",
+      "sourceAnchor": "| `BR-09` | 一篇作品存在多位校内作者/共同第一/通讯作者 | 保留原作者列表和每个署名位，一个`Work`多条`Claim`；可各自不同结果 | 不每名作者重复要求全文PDF上传 [S01,S02,S09] |",
+      "type": "additive-condition",
+      "checkId": "g06-t03@1:module/use-axis-br-09/check",
+      "moduleId": "g06-t03-axis-br-09",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-10",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L82",
+      "sourceAnchor": "| `BR-10` | 投稿/录用/受理等阶段性成果 | 先查**该校该类是否准许该阶段入库**，并保留真实阶段标签 | 不以录用函证明正式见刊、不以专利受理证明授权 [S05,S10] |",
+      "type": "additive-condition",
+      "checkId": "g06-t03@1:module/use-axis-br-10/check",
+      "moduleId": "g06-t03-axis-br-10",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-11",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L83",
+      "sourceAnchor": "| `BR-11` | 同一批提交多个不同成果 | 每个`Work`独立类型证据、查重和身份结果，批次聚合但不合并成一个作品 | 不用一篇论文的附件替代另一个软著证书 [S01] |",
+      "type": "additive-condition",
+      "checkId": "g06-t03@1:module/use-axis-br-11/check",
+      "moduleId": "g06-t03-axis-br-11",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-12",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L84",
+      "sourceAnchor": "| `BR-12` | 数据来源存疑、官方更正或归属冲突 | 检查校内权威部门、原记录版本、外部更正效力及校内更正权限 | 不由T03直接改已锁定记录 [S02,S14] |",
+      "type": "additive-condition",
+      "checkId": "g06-t03@1:module/use-axis-br-12/check",
+      "moduleId": "g06-t03-axis-br-12",
+      "scope": "g06-research-work-claim",
+      "requiresHumanDecision": false
+    }
+  ],
+  "fieldMaterialEvidenceStageAndQuestionIndex": [
+    {
+      "id": "BR-01",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L62",
+      "sourceExcerpt": "### 3.2 主要路径（BR-01—BR-07）；同一动作选一个，跨阶段可转移"
+    },
+    {
+      "id": "BR-07",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L62",
+      "sourceExcerpt": "### 3.2 主要路径（BR-01—BR-07）；同一动作选一个，跨阶段可转移"
+    },
+    {
+      "id": "BR-02",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L67",
+      "sourceExcerpt": "| `BR-02` | **网推待认领**：来源记录已有，个人归属不确定；本人选择认领 | 验证本人和原始署名位 | 网推主记录、论文/成果源、校内身份/人员映射 | 姓名同音不能直接认领，冲突时由学院核实 | S01,S02 |"
+    },
+    {
+      "id": "BR-03",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L68",
+      "sourceExcerpt": "| `BR-03` | **非本人**：对某候选主动否认归属 | 记录`not_mine`，不要求找出真正作者 | 候选记录ID+提交人确认动作/系统记录 | 不为提交人建立作品归属；若已审更正应转T04 | S01 |"
+    },
+    {
+      "id": "BR-04",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "| `BR-04` | **库内搜索命中**：四类优先搜索的成果在全校成果库有匹配 | 添加关联/认领署名位 | 检索记录、原作品ID、作者位次及身份 | 不再手工创建第二条同作品主记录 | S01 |"
+    },
+    {
+      "id": "BR-05",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "| `BR-05` | **全校搜索未命中，提交补报**：按本校四类路径 | 补充可信来源数据，再认领 | 提供校本信息表、封面/目录/正文与其他证明；检索报告为“如有”；记录查询条件与时间 | 不能把“未查到”当“不存在”；校方补录成功前为待核/待更新 | S01,S03 |"
+    },
+    {
+      "id": "BR-06",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L71",
+      "sourceExcerpt": "| `BR-06` | **其他成果按类别单篇新增**：图书、软著、获奖、服务等 | 申报新作品记录和申请人署名归属 | 按成果类型使用对应申报字段、正式附件，校本星号字段尚未完全取得 | 如果发现已有同作品必须改为认领而非新建 | S01,S05 |"
+    },
+    {
+      "id": "BR-08",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L76",
+      "sourceExcerpt": "### 3.3 可叠加事实轴（BR-08—BR-12）"
+    },
+    {
+      "id": "BR-12",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L76",
+      "sourceExcerpt": "### 3.3 可叠加事实轴（BR-08—BR-12）"
+    },
+    {
+      "id": "BR-09",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L81",
+      "sourceExcerpt": "| `BR-09` | 一篇作品存在多位校内作者/共同第一/通讯作者 | 保留原作者列表和每个署名位，一个`Work`多条`Claim`；可各自不同结果 | 不每名作者重复要求全文PDF上传 [S01,S02,S09] |"
+    },
+    {
+      "id": "BR-10",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L82",
+      "sourceExcerpt": "| `BR-10` | 投稿/录用/受理等阶段性成果 | 先查**该校该类是否准许该阶段入库**，并保留真实阶段标签 | 不以录用函证明正式见刊、不以专利受理证明授权 [S05,S10] |"
+    },
+    {
+      "id": "BR-11",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L83",
+      "sourceExcerpt": "| `BR-11` | 同一批提交多个不同成果 | 每个`Work`独立类型证据、查重和身份结果，批次聚合但不合并成一个作品 | 不用一篇论文的附件替代另一个软著证书 [S01] |"
+    },
+    {
+      "id": "MS-01",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L127",
+      "sourceExcerpt": "**材料槽 ID 对照 B**：`MS-01—MS-12` 与 B 的 `M01—M12` 一一对应；名称和需求基于 B 阶段材料矩阵。`MS`表示需要满足的一种材料/记录目的，**不是12个上传控件**。一个正式出版物可同时证明题目、作者、单位和发表阶段；可信校内记录能够证明的事实不强制申请人再截图上传。"
+    },
+    {
+      "id": "MS-12",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L127",
+      "sourceExcerpt": "**材料槽 ID 对照 B**：`MS-01—MS-12` 与 B 的 `M01—M12` 一一对应；名称和需求基于 B 阶段材料矩阵。`MS`表示需要满足的一种材料/记录目的，**不是12个上传控件**。一个正式出版物可同时证明题目、作者、单位和发表阶段；可信校内记录能够证明的事实不强制申请人再截图上传。"
+    },
+    {
+      "id": "MS-02",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L255",
+      "sourceExcerpt": "| `MS-02`（M02） | 正式论文全文或期刊封面目录正文 | 证明材料 | 论文补报/证明缺乏时；按当前stage判义务 | 论文发表与作者单位 | 期刊官方电子版本、可核正式数据库记录、纸刊扫描等效组；期刊未收录不能直接拒绝已正式发表 | S01,S05,S08 |"
+    },
+    {
+      "id": "MS-03",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L256",
+      "sourceExcerpt": "| `MS-03`（M03） | 成果检索报告或数据库检索证明 | 证明材料 | CDUT：如有；某校考核专项必交；按当前stage判义务 | 收录、分区等事实 | 可信检索接口、官方数据库页面按校；不得把“如有”改为普遍强制 | S01,S05,S08 |"
+    },
+    {
+      "id": "MS-04",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L257",
+      "sourceExcerpt": "| `MS-04`（M04） | 图书/著作封面、版权页、目录、章节 | 证明材料 | 图书著作手工登记；按当前stage判义务 | 书名ISBN、出版及贡献 | 正式出版社记录/原书核对；仅著作类型触发 | S01,S05,S08 |"
+    },
+    {
+      "id": "MS-05",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L258",
+      "sourceExcerpt": "| `MS-05`（M05） | 专利授权或受理法律状态文件 | 证明材料 | 专利事实登记；按当前stage判义务 | 申请/授权对应阶段 | 国家官方检索/申请通知/授权证书分别处理；不可以受理通知证明已授权 | S01,S05 |"
+    },
+    {
+      "id": "MS-06",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L259",
+      "sourceExcerpt": "| `MS-06`（M06） | 计算机软件著作权登记证书 | 证明材料 | 软著作为已形成成果入库；按当前stage判义务 | 登记号与著作权人 | 登记机关可信查询；不需要代码交存包，后者属于T02 | S01,S05 |"
+    },
+    {
+      "id": "MS-07",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L260",
+      "sourceExcerpt": "| `MS-07`（M07） | 获奖正式证书、公示或正式发文 | 证明材料 | 奖励成果登记；按当前stage判义务 | 颁发主体、获奖人、日期 | 授奖单位正式文件；证书尚未发可按学校允许代替；非本校制度不得通用接受公示取代证书 | S01,S05 |"
+    },
+    {
+      "id": "MS-08",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L261",
+      "sourceExcerpt": "| `MS-08`（M08） | 标准/报纸/智库/艺术体育服务对应正式发布证明 | 证明材料 | 类型匹配时；按当前stage判义务 | 特定成果形式已形成 | 发布文本/标准登记/采纳函/主办单位文件；不要求全部成果交同一种论文PDF | S01,S05 |"
+    },
+    {
+      "id": "MS-09",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L262",
+      "sourceExcerpt": "| `MS-09`（M09） | 自提交论文成果信息表与补报邮件 | 申报材料 | 本校四类库检索未命中；按当前stage判义务 | 向校方补充数据的明确请求 | 真实校本信息表（本轮原件未取）；邮件受理记录；不能臆测该表具体必填栏位 | S01 |"
+    },
+    {
+      "id": "MS-10",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L263",
+      "sourceExcerpt": "| `MS-10`（M10） | 院系管理员审核意见 | 学校底账/仅输出 | 学院审核后；按当前stage判义务 | 已进行审核及归属修正 | 系统审批流，不是申请时上传证明；申请时绝不必交 | S02 |"
+    },
+    {
+      "id": "MS-11",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L264",
+      "sourceExcerpt": "| `MS-11`（M11） | 校级二审审批记录 | 学校底账/仅输出 | 学院审核通过后；按当前stage判义务 | 校内成果入库终态 | 校级系统日志；申请时绝不必交 | S01,S02 |"
+    },
+    {
+      "id": "EV-01",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L271",
+      "sourceExcerpt": "| `EV-01` 已发表论文事实 | 出版方正式全文PDF **OR** 出版方可核公开页面 **OR** 完整纸刊封面＋目录＋正文/期刊信息 | 需能定位同一作品、作者、单位及真正发表阶段；合法online first不得因卷期未定拒绝 | 接收通知只能证明录用，数据库未收录不等于论文不存在 [S03,S05] |"
+    },
+    {
+      "id": "EV-02",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L272",
+      "sourceExcerpt": "| `EV-02` 本人认领位 | 原文署名位置 + `TR-02`真实人员身份/历史关系 + `TR-01`源关联状态，或经校方授权核验的等效身份连续性 | 对单人分别判断；真实同名不同人交有权学院核对 | 仅申请人自己勾“我是作者”或同名不能证明 [S02] |"
+    },
+    {
+      "id": "EV-03",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L273",
+      "sourceExcerpt": "| `EV-03` 专利阶段 | 本阶段为申请/受理→相应官方受理证据；声明已授权→授权公告/证书或可核官方法律状态 | 两种阶段凭证不能互相升级替换 [S05] | 单个代理人邮件不等于已授权 |"
+    },
+    {
+      "id": "EV-04",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L274",
+      "sourceExcerpt": "| `EV-04` 软著登记成果 | 软件登记证书 **OR** 可信登记机关查询 + 对应软件名、版本、著作权人 | 无需重复提交初次软著登记的源代码、软件使用说明书 [S01,S05] | 著作权登记申请表≠已经登记成功 |"
+    },
+    {
+      "id": "EV-05",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L275",
+      "sourceExcerpt": "| `EV-05` 著作/书籍 | 版权页＋封面目录/正文相关页的组合 **OR** 正式出版社可核目录且有对应著作人证据 | ISBN/书名/出版者与作者或章节对应 | 网店商品简介不足以证明个人作者归属 [S05] |"
+    },
+    {
+      "id": "EV-06",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L276",
+      "sourceExcerpt": "| `EV-06` 科研获奖 | 正式证书 **OR** 授奖机构有效获奖文件；公示是否可以暂代需校规条件为TRUE | 核奖项、颁发人、正式名单、日期与阶段 | 宣传海报/自述不等于正式获奖 [S05] |"
+    },
+    {
+      "id": "EV-07",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L277",
+      "sourceExcerpt": "| `EV-07` 标准报纸及其他成果 | 对应正式标准文本/报纸版面/权威采纳或服务验收证明，按类别适配 | 校本服务类字段未见全量原表时不可设统一硬性材料 | 不强迫提交论文DOI |"
+    },
+    {
+      "id": "EV-08",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L278",
+      "sourceExcerpt": "| `EV-08` 可信来源已覆盖材料 | 可验证校园主数据`TR-01/TR-02/TR-04`及其证据坐标与时间，允许代替相同事实的用户截图 | 信息部门“一数一源”，不重复向个人索要学校已有权威数据 [S14] | 校内“已认领”不证明外部文章原创性/最终专利授权 |"
+    },
+    {
+      "id": "EV-09",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L279",
+      "sourceExcerpt": "| `EV-09` 搜索未命中补报 | `TR-01`成功查询未命中 + 规定的校本自提交信息表 + 支持成果存在的正式出版原件/扫描件；检索报告**如有** | 能代替实体扫描的官方电子原件需校方允许后生效 | 搜索接口故障/权限失败不是合法“未命中” [S01] |"
+    },
+    {
+      "id": "EV-10",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L280",
+      "sourceExcerpt": "| `EV-10` 代理与历史身份 | 校方已授权代填记录 OR 在权责部门认可条件下的书面授权＋人员连续性底账 | 未授权使用教师账户绝不被视为合法代理 [S14] | 学生作者身份本身不是登录操作权 |"
+    },
+    {
+      "id": "ST-01",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L286",
+      "sourceExcerpt": "| `ST-01` 草稿/路径选择 | 作品或待认领对象、申请操作、必要题录 | 学院签批、校级已通过日志 | S01,S02 |"
+    },
+    {
+      "id": "ST-02",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L287",
+      "sourceExcerpt": "| `ST-02` 来源检索/认领准备 | 完成的查重结果、证明组合或未命中补报要求 | 已经成功入库的校级结果 | S01,S03 |"
+    },
+    {
+      "id": "ST-03",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L288",
+      "sourceExcerpt": "| `ST-03` 申请已提交 | 当前校规要求的申报材料与补报凭证 | 此后才产生的审批章 | S01 |"
+    },
+    {
+      "id": "ST-04",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L289",
+      "sourceExcerpt": "| `ST-04` 学院审核 | 可要求纠正错误署名归属/增补已明确证明 | 校级二审完成凭证 | S02 |"
+    },
+    {
+      "id": "ST-05",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L290",
+      "sourceExcerpt": "| `ST-05` 校级审核 | 以学院已通过记录、身份关系、作品证据为依据 | 外部科研绩效批复、稿件发表结果 | S02 |"
+    },
+    {
+      "id": "ST-06",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L291",
+      "sourceExcerpt": "| `ST-06` 校方有权入库确认 | 只记录可靠校级状态和生效时间 | 将材料建议冒称国家/出版社授权 | S01,S02 |"
+    },
+    {
+      "id": "ST-07",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L292",
+      "sourceExcerpt": "| `ST-07` 退回待补正 | 缺件/冲突所指的**新版本**和说明 | 重新创建第二条作品主记录 | S01,S02 |"
+    },
+    {
+      "id": "ST-08",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L293",
+      "sourceExcerpt": "| `ST-08` 有权正式拒绝 | 只承认校方有权部门真实决定及原因 | 由AI单方生成拒绝决议 | S02 |"
+    },
+    {
+      "id": "ST-09",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L294",
+      "sourceExcerpt": "| `ST-09` 撤回/取消未终审申请 | 依校规支持的撤回操作与记录；本校按钮尚未核证 | 把合法撤回解释为学术失信 | S04外校实例，P校本待配 |"
+    },
+    {
+      "id": "ST-10",
+      "locator": "G06-T03_正式业务模板_MD_v0.1.md:L295",
+      "sourceExcerpt": "| `ST-10` 转T04或其他业务 | 输出目标业务ID、原案关联及不做修改的理由 | 直接覆盖旧库主记录 | S02,S14 |"
+    }
+  ],
+  "unmappedAxes": []
+}

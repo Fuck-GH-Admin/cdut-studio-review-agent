@@ -1,0 +1,1184 @@
+{
+  "sourceFile": "G06-T09_正式业务模板_MD_v0.1.md",
+  "sourceSha256": "aaf92ece906710162dc48e2805f38db56cc6e172e6ba5971c06f5fbce65422aa",
+  "version": "v0.1",
+  "scope": "full",
+  "atomicRules": [
+    {
+      "sourceId": "R-01",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L216",
+      "sourceAnchor": "### `R-01`｜动作分流与单元唯一性",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r01/check",
+      "moduleId": "g06-t09-r01",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-02",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L228",
+      "sourceAnchor": "### `R-02`｜场景/学校政策的适用性",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r02/check",
+      "moduleId": "g06-t09-r02",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-03",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L240",
+      "sourceAnchor": "### `R-03`｜申请人、完成人、受益人、权利人角色分离",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r03/check",
+      "moduleId": "g06-t09-r03",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-04",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L252",
+      "sourceAnchor": "### `R-04`｜学校处分权限与代理范围",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r04/check",
+      "moduleId": "g06-t09-r04",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-05",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L264",
+      "sourceAnchor": "### `R-05`｜标的可识别且当前合法权利状态",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r05/check",
+      "moduleId": "g06-t09-r05",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-06",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L276",
+      "sourceAnchor": "### `R-06`｜共同权利人与合同限制",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r06/check",
+      "moduleId": "g06-t09-r06",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-07",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L288",
+      "sourceAnchor": "### `R-07`｜实际权利与拟处分份额范围匹配",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r07/check",
+      "moduleId": "g06-t09-r07",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-08",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L300",
+      "sourceAnchor": "### `R-08`｜赋权所有权和长期使用权区分",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r08/check",
+      "moduleId": "g06-t09-r08",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-09",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L312",
+      "sourceAnchor": "### `R-09`｜赋权团队意见及代表权",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r09/check",
+      "moduleId": "g06-t09-r09",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-10",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L324",
+      "sourceAnchor": "### `R-10`｜赋权方案的权利范围及后续登记",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r10/check",
+      "moduleId": "g06-t09-r10",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-11",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L336",
+      "sourceAnchor": "### `R-11`｜转让与许可的权利效果区分",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r11/check",
+      "moduleId": "g06-t09-r11",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-12",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L348",
+      "sourceAnchor": "### `R-12`｜许可模式、期限、地域及已有排他限制",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r12/check",
+      "moduleId": "g06-t09-r12",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-13",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L360",
+      "sourceAnchor": "### `R-13`｜交易相对方与法律主体一致",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r13/check",
+      "moduleId": "g06-t09-r13",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-14",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L372",
+      "sourceAnchor": "### `R-14`｜定价路径正确选择证据",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r14/check",
+      "moduleId": "g06-t09-r14",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-15",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L384",
+      "sourceAnchor": "### `R-15`｜协议定价公示的内容与时点",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r15/check",
+      "moduleId": "g06-t09-r15",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-16",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L396",
+      "sourceAnchor": "### `R-16`｜公告用途分离与时间证据",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r16/check",
+      "moduleId": "g06-t09-r16",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-17",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L408",
+      "sourceAnchor": "### `R-17`｜公示异议及正式否决阻断执行",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r17/check",
+      "moduleId": "g06-t09-r17",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-18",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L420",
+      "sourceAnchor": "### `R-18`｜多标的定价与金额口径校验",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r18/check",
+      "moduleId": "g06-t09-r18",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-19",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L432",
+      "sourceAnchor": "### `R-19`｜作价投资成果、折股与退出条款",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r19/check",
+      "moduleId": "g06-t09-r19",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-20",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L444",
+      "sourceAnchor": "### `R-20`｜主动放弃的专利客体与适格性",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r20/check",
+      "moduleId": "g06-t09-r20",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-21",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L456",
+      "sourceAnchor": "### `R-21`｜主动放弃整件、无条件与全权利人同意",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r21/check",
+      "moduleId": "g06-t09-r21",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-22",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L468",
+      "sourceAnchor": "### `R-22`｜主动放弃的内审与外部生效分离",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r22/check",
+      "moduleId": "g06-t09-r22",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-23",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L480",
+      "sourceAnchor": "### `R-23`｜既有项目/保密与特定处分约束",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r23/check",
+      "moduleId": "g06-t09-r23",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-24",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L492",
+      "sourceAnchor": "### `R-24`｜收益分配人员、比例和合计核对",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r24/check",
+      "moduleId": "g06-t09-r24",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-25",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L504",
+      "sourceAnchor": "### `R-25`｜合同与批准范围的一致性",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r25/check",
+      "moduleId": "g06-t09-r25",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-26",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L516",
+      "sourceAnchor": "### `R-26`｜对外登记手续和许可方式匹配",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r26/check",
+      "moduleId": "g06-t09-r26",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-27",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L528",
+      "sourceAnchor": "### `R-27`｜实际到账和奖励支付状态核实",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r27/check",
+      "moduleId": "g06-t09-r27",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-28",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L540",
+      "sourceAnchor": "### `R-28`｜多标的逐项结果与联动执行",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r28/check",
+      "moduleId": "g06-t09-r28",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-29",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L552",
+      "sourceAnchor": "### `R-29`｜重大变更、旧批准作废与补件重审",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r29/check",
+      "moduleId": "g06-t09-r29",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-30",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L564",
+      "sourceAnchor": "### `R-30`｜校本规则/接口不可达的保守行为",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r30/check",
+      "moduleId": "g06-t09-r30",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-31",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L576",
+      "sourceAnchor": "### `R-31`｜不把技术价格/公平/法律争议交给自动判决",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r31/check",
+      "moduleId": "g06-t09-r31",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-32",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L588",
+      "sourceAnchor": "### `R-32`｜权利主体更名、事实纠错与真正转移区别",
+      "type": "rule",
+      "checkId": "g06-t09@1:module/use-r32/check",
+      "moduleId": "g06-t09-r32",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    }
+  ],
+  "otherResponsibilities": [
+    {
+      "sourceId": "SECTION-01",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L9",
+      "sourceAnchor": "## 0. 阅读方法、依据等级、作者责任边界",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section01/check",
+      "moduleId": "g06-t09-section01",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-02",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L23",
+      "sourceAnchor": "## 1. 模板身份、审核目的、独立性与路由",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section02/check",
+      "moduleId": "g06-t09-section02",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-03",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L35",
+      "sourceAnchor": "## 2. 主体关系、权责与业务范围",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section03/check",
+      "moduleId": "g06-t09-section03",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-04",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L56",
+      "sourceAnchor": "## 3. 办理条件轴和子分支（互斥、叠加、三值）",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section04/check",
+      "moduleId": "g06-t09-section04",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-05",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L77",
+      "sourceAnchor": "## 4. 输入契约：申报事项、申报材料、证明材料、可信底账",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section05/check",
+      "moduleId": "g06-t09-section05",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-06",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L93",
+      "sourceAnchor": "## 5. 统一字段字典（非一案40项全部必填）",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section06/check",
+      "moduleId": "g06-t09-section06",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-07",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L141",
+      "sourceAnchor": "## 6. 材料槽与条件性必交/合法替代（按阶段）",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section07/check",
+      "moduleId": "g06-t09-section07",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-08",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L170",
+      "sourceAnchor": "## 7. 等价证据组、真实性层级与源访问故障",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section08/check",
+      "moduleId": "g06-t09-section08",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-09",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L187",
+      "sourceAnchor": "## 8. 审核事实与跨文件关系",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section09/check",
+      "moduleId": "g06-t09-section09",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-10",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L211",
+      "sourceAnchor": "## 9. 按逐对象×动作的原子审核规则（C阶段正式母版）",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section10/check",
+      "moduleId": "g06-t09-section10",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-11",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L600",
+      "sourceAnchor": "## 10. 审核状态、分项结果、问题与聚合契约",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section11/check",
+      "moduleId": "g06-t09-section11",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-12",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L665",
+      "sourceAnchor": "## 11. 生命周期、状态转移和重审触发",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section12/check",
+      "moduleId": "g06-t09-section12",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-13",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L684",
+      "sourceAnchor": "## 12. 合法例外、人工复核与终局边界",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section13/check",
+      "moduleId": "g06-t09-section13",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-14",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L698",
+      "sourceAnchor": "## 13. 校本规则配置层与缺口",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section14/check",
+      "moduleId": "g06-t09-section14",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-15",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L714",
+      "sourceAnchor": "## 14. 官方来源、规则追溯与适用限制（B阶段索引）",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section15/check",
+      "moduleId": "g06-t09-section15",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-16",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L744",
+      "sourceAnchor": "## 15. 按真实路径进行作者侧流程推演（非D独立测试）",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section16/check",
+      "moduleId": "g06-t09-section16",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-17",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L763",
+      "sourceAnchor": "## 16. 跨模板可复用模块与T09专有逻辑",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section17/check",
+      "moduleId": "g06-t09-section17",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-18",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L769",
+      "sourceAnchor": "## 17. 当前编辑器/运行时表达映射（**代码静态阅读，非运行验收**）",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section18/check",
+      "moduleId": "g06-t09-section18",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-19",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L788",
+      "sourceAnchor": "## 18. 完整性审计、遗留风险、C→D交接与版本说明",
+      "type": "context",
+      "checkId": "g06-t09@1:module/use-section19/check",
+      "moduleId": "g06-t09-section19",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "BR-01",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L60",
+      "sourceAnchor": "| `BR-01 / EMP_OWN` | 对职务成果赋予部分或全部所有权 | 单个动作与BR-02不同；可在后续合法交易前出现 | 团队约定、赋权方案、最终协议/权属变更（后置）[S09][S10] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t09@1:module/use-axis-br-01/check",
+      "moduleId": "g06-t09-axis-br-01",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-02",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L60",
+      "sourceAnchor": "| `BR-01 / EMP_OWN` | 对职务成果赋予部分或全部所有权 | 单个动作与BR-02不同；可在后续合法交易前出现 | 团队约定、赋权方案、最终协议/权属变更（后置）[S09][S10] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t09@1:module/use-axis-br-02/check",
+      "moduleId": "g06-t09-axis-br-02",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-03",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L62",
+      "sourceAnchor": "| `BR-03 / COMM_TRANSFER` | 有权持有人向相对方转让成果权利 | 与许可不等价；需交易定价/合同与权属后续手续 | 转让方案、拟价格、合同、公示（适用时）[S04][S06] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t09@1:module/use-axis-br-03/check",
+      "moduleId": "g06-t09-axis-br-03",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-04",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L63",
+      "sourceAnchor": "| `BR-04 / COMM_LICENSE` | 有权主体许可相对方实施成果 | 普通/排他/独占为内部条件，不自动等同转让 | 许可范围、期限、已许可负担、交易/收益[S05][S06] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t09@1:module/use-axis-br-04/check",
+      "moduleId": "g06-t09-axis-br-04",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-05",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L64",
+      "sourceAnchor": "| `BR-05 / COMM_EQUITY` | 以成果作价投资、折成股份或出资比例 | 不是仅签技术转让合同 | 权利、作价、股权、退出和专业资产决策[S07] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t09@1:module/use-axis-br-05/check",
+      "moduleId": "g06-t09-axis-br-05",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-06",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L65",
+      "sourceAnchor": "| `BR-06 / REL_WAIVE` | 主动放弃**已授权有效专利的全部权利** | 不应自动要求转让价格/交易相对方/商业合同 | 放弃申请、全体权利人签章、完整无条件声明、外部程序[S03][S11] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t09@1:module/use-axis-br-06/check",
+      "moduleId": "g06-t09-axis-br-06",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "AX-02",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bundle`；`AX-10=governing_policy / event_date`；`AX-11=public_notice_type`（交易拟公示/收益拟分配/已交易后的收益公示）；`AX-12=real student beneficiary`。",
+      "type": "additive-condition",
+      "checkId": "g06-t09@1:module/use-axis-ax-02/check",
+      "moduleId": "g06-t09-axis-ax-02",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-03",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bundle`；`AX-10=governing_policy / event_date`；`AX-11=public_notice_type`（交易拟公示/收益拟分配/已交易后的收益公示）；`AX-12=real student beneficiary`。",
+      "type": "additive-condition",
+      "checkId": "g06-t09@1:module/use-axis-ax-03/check",
+      "moduleId": "g06-t09-axis-ax-03",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-04",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bundle`；`AX-10=governing_policy / event_date`；`AX-11=public_notice_type`（交易拟公示/收益拟分配/已交易后的收益公示）；`AX-12=real student beneficiary`。",
+      "type": "additive-condition",
+      "checkId": "g06-t09@1:module/use-axis-ax-04/check",
+      "moduleId": "g06-t09-axis-ax-04",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-05",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bundle`；`AX-10=governing_policy / event_date`；`AX-11=public_notice_type`（交易拟公示/收益拟分配/已交易后的收益公示）；`AX-12=real student beneficiary`。",
+      "type": "additive-condition",
+      "checkId": "g06-t09@1:module/use-axis-ax-05/check",
+      "moduleId": "g06-t09-axis-ax-05",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-06",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bundle`；`AX-10=governing_policy / event_date`；`AX-11=public_notice_type`（交易拟公示/收益拟分配/已交易后的收益公示）；`AX-12=real student beneficiary`。",
+      "type": "additive-condition",
+      "checkId": "g06-t09@1:module/use-axis-ax-06/check",
+      "moduleId": "g06-t09-axis-ax-06",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-07",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bundle`；`AX-10=governing_policy / event_date`；`AX-11=public_notice_type`（交易拟公示/收益拟分配/已交易后的收益公示）；`AX-12=real student beneficiary`。",
+      "type": "additive-condition",
+      "checkId": "g06-t09@1:module/use-axis-ax-07/check",
+      "moduleId": "g06-t09-axis-ax-07",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-08",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bundle`；`AX-10=governing_policy / event_date`；`AX-11=public_notice_type`（交易拟公示/收益拟分配/已交易后的收益公示）；`AX-12=real student beneficiary`。",
+      "type": "additive-condition",
+      "checkId": "g06-t09@1:module/use-axis-ax-08/check",
+      "moduleId": "g06-t09-axis-ax-08",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-09",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bundle`；`AX-10=governing_policy / event_date`；`AX-11=public_notice_type`（交易拟公示/收益拟分配/已交易后的收益公示）；`AX-12=real student beneficiary`。",
+      "type": "additive-condition",
+      "checkId": "g06-t09@1:module/use-axis-ax-09/check",
+      "moduleId": "g06-t09-axis-ax-09",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-10",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bundle`；`AX-10=governing_policy / event_date`；`AX-11=public_notice_type`（交易拟公示/收益拟分配/已交易后的收益公示）；`AX-12=real student beneficiary`。",
+      "type": "additive-condition",
+      "checkId": "g06-t09@1:module/use-axis-ax-10/check",
+      "moduleId": "g06-t09-axis-ax-10",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-11",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bundle`；`AX-10=governing_policy / event_date`；`AX-11=public_notice_type`（交易拟公示/收益拟分配/已交易后的收益公示）；`AX-12=real student beneficiary`。",
+      "type": "additive-condition",
+      "checkId": "g06-t09@1:module/use-axis-ax-11/check",
+      "moduleId": "g06-t09-axis-ax-11",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-12",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bundle`；`AX-10=governing_policy / event_date`；`AX-11=public_notice_type`（交易拟公示/收益拟分配/已交易后的收益公示）；`AX-12=real student beneficiary`。",
+      "type": "additive-condition",
+      "checkId": "g06-t09@1:module/use-axis-ax-12/check",
+      "moduleId": "g06-t09-axis-ax-12",
+      "scope": "g06-ip-transaction",
+      "requiresHumanDecision": false
+    }
+  ],
+  "fieldMaterialEvidenceStageAndQuestionIndex": [
+    {
+      "id": "BR-06",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L33",
+      "sourceExcerpt": "**候选保留判断**：`BR-06`主动放弃专利权的法律后果与商业交易显著不同，B阶段已建议主会话将其作为未来拆分候选；v0.1仍保留同一T09编号，但实行**严格独立的放弃规则集**，不得因共用材料而混用交易规则。[S03][S11]"
+    },
+    {
+      "id": "BR-01",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L60",
+      "sourceExcerpt": "| `BR-01 / EMP_OWN` | 对职务成果赋予部分或全部所有权 | 单个动作与BR-02不同；可在后续合法交易前出现 | 团队约定、赋权方案、最终协议/权属变更（后置）[S09][S10] |"
+    },
+    {
+      "id": "BR-02",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L60",
+      "sourceExcerpt": "| `BR-01 / EMP_OWN` | 对职务成果赋予部分或全部所有权 | 单个动作与BR-02不同；可在后续合法交易前出现 | 团队约定、赋权方案、最终协议/权属变更（后置）[S09][S10] |"
+    },
+    {
+      "id": "BR-03",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L62",
+      "sourceExcerpt": "| `BR-03 / COMM_TRANSFER` | 有权持有人向相对方转让成果权利 | 与许可不等价；需交易定价/合同与权属后续手续 | 转让方案、拟价格、合同、公示（适用时）[S04][S06] |"
+    },
+    {
+      "id": "BR-04",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L63",
+      "sourceExcerpt": "| `BR-04 / COMM_LICENSE` | 有权主体许可相对方实施成果 | 普通/排他/独占为内部条件，不自动等同转让 | 许可范围、期限、已许可负担、交易/收益[S05][S06] |"
+    },
+    {
+      "id": "BR-05",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L64",
+      "sourceExcerpt": "| `BR-05 / COMM_EQUITY` | 以成果作价投资、折成股份或出资比例 | 不是仅签技术转让合同 | 权利、作价、股权、退出和专业资产决策[S07] |"
+    },
+    {
+      "id": "AX-01",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bun"
+    },
+    {
+      "id": "AX-02",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bun"
+    },
+    {
+      "id": "AX-03",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bun"
+    },
+    {
+      "id": "AX-04",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bun"
+    },
+    {
+      "id": "AX-05",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bun"
+    },
+    {
+      "id": "AX-06",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bun"
+    },
+    {
+      "id": "AX-07",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bun"
+    },
+    {
+      "id": "AX-08",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bun"
+    },
+    {
+      "id": "AX-09",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bun"
+    },
+    {
+      "id": "AX-10",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bun"
+    },
+    {
+      "id": "AX-11",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bun"
+    },
+    {
+      "id": "AX-12",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bun"
+    },
+    {
+      "id": "F-01",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L95",
+      "sourceExcerpt": "以下`F-01`—`F-40`含共享字段与T09专属字段。**每项的证据对象、阶段与隐私分类均独立；没有单纯“字段表存在→任何申请必交”的规则。**"
+    },
+    {
+      "id": "F-40",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L95",
+      "sourceExcerpt": "以下`F-01`—`F-40`含共享字段与T09专属字段。**每项的证据对象、阶段与隐私分类均独立；没有单纯“字段表存在→任何申请必交”的规则。**"
+    },
+    {
+      "id": "ST-00",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L100",
+      "sourceExcerpt": "| `F-01` | 申请学校/组织 | school_id:机构ID | 全部/ST-00 | 可信组织档案或人工确认 | 内部；非校本未知自动拒件 |"
+    },
+    {
+      "id": "F-02",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L101",
+      "sourceExcerpt": "| `F-02` | 政策版本与适用日 | policy_ref + effective_from/to + verified | 全部/ST-00起 | 已核法规/有权校规 | 内部；政策未知PENDING_POLICY |"
+    },
+    {
+      "id": "F-03",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L102",
+      "sourceExcerpt": "| `F-03` | 申请人及身份角色 | submitter_id, role, affiliation, current_status | 全部/ST-01 | 申报+可信身份库TD-01 | 个人信息；签约权另行验证 |"
+    },
+    {
+      "id": "ST-01",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L102",
+      "sourceExcerpt": "| `F-03` | 申请人及身份角色 | submitter_id, role, affiliation, current_status | 全部/ST-01 | 申报+可信身份库TD-01 | 个人信息；签约权另行验证 |"
+    },
+    {
+      "id": "F-04",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L103",
+      "sourceExcerpt": "| `F-04` | 申请代表与授权范围 | agent_id, authorization_scope, valid_range | 代办/签约代理，按阶段 | MS-08或TD-01 | 个人信息；未证授权WAIT_AUTH |"
+    },
+    {
+      "id": "MS-08",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L103",
+      "sourceExcerpt": "| `F-04` | 申请代表与授权范围 | agent_id, authorization_scope, valid_range | 代办/签约代理，按阶段 | MS-08或TD-01 | 个人信息；未证授权WAIT_AUTH |"
+    },
+    {
+      "id": "F-05",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L104",
+      "sourceExcerpt": "| `F-05` | 事项标识与单元 | case_id; item_id; action_id | 全部/ST-01 | 受理记录MS-01 | 内部；稳定主键 |"
+    },
+    {
+      "id": "MS-01",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L104",
+      "sourceExcerpt": "| `F-05` | 事项标识与单元 | case_id; item_id; action_id | 全部/ST-01 | 受理记录MS-01 | 内部；稳定主键 |"
+    },
+    {
+      "id": "F-06",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L105",
+      "sourceExcerpt": "| `F-06` | 处分动作类别 | enum BR-01..BR-06 | 各单元/ST-01 | MS-01 | 内；未知NEED_CLARIFICATION |"
+    },
+    {
+      "id": "F-07",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L106",
+      "sourceExcerpt": "| `F-07` | 成果权利种类 | patent/soft_copyright/tech_secret/other | 全部/ST-01 | MS-05与TD-02 | 一般；关系到后续手续 |"
+    },
+    {
+      "id": "MS-05",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L106",
+      "sourceExcerpt": "| `F-07` | 成果权利种类 | patent/soft_copyright/tech_secret/other | 全部/ST-01 | MS-05与TD-02 | 一般；关系到后续手续 |"
+    },
+    {
+      "id": "F-08",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L107",
+      "sourceExcerpt": "| `F-08` | 成果标识与名称 | asset_id, registration_no, original_title, aliases | 全部/ST-01 | MS-01/MS-05/TD-02 | 一般；官方状态优先 |"
+    },
+    {
+      "id": "F-09",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L108",
+      "sourceExcerpt": "| `F-09` | 本次处分范围 | right_scope: owner_share, term, geography, field, exclusivity | 每动作/ST-01至03 | MS-01/MS-06/MS-13 | 敏感商业；不可擅自推定 |"
+    },
+    {
+      "id": "MS-06",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L108",
+      "sourceExcerpt": "| `F-09` | 本次处分范围 | right_scope: owner_share, term, geography, field, exclusivity | 每动作/ST-01至03 | MS-01/MS-06/MS-13 | 敏感商业；不可擅自推定 |"
+    },
+    {
+      "id": "MS-13",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L108",
+      "sourceExcerpt": "| `F-09` | 本次处分范围 | right_scope: owner_share, term, geography, field, exclusivity | 每动作/ST-01至03 | MS-01/MS-06/MS-13 | 敏感商业；不可擅自推定 |"
+    },
+    {
+      "id": "F-10",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L109",
+      "sourceExcerpt": "| `F-10` | 拟处分权利人集合 | rights_holders[] with fractions and source_date | 全部/ST-02 | TD-02或MS-05 | 敏感；法律登记时点重要 |"
+    },
+    {
+      "id": "ST-02",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L109",
+      "sourceExcerpt": "| `F-10` | 拟处分权利人集合 | rights_holders[] with fractions and source_date | 全部/ST-02 | TD-02或MS-05 | 敏感；法律登记时点重要 |"
+    },
+    {
+      "id": "F-11",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L110",
+      "sourceExcerpt": "| `F-11` | 权利当前状态 | active/expired/terminated/unknown + asof | 全部/ST-02 | TD-02或MS-05 | 法律事实；系统不可达UNKNOWN |"
+    },
+    {
+      "id": "F-12",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L111",
+      "sourceExcerpt": "| `F-12` | 原始项目/成果来源 | project_id, funding, contract_refs | 有合同约束时/ST-02 | MS-07/TD-03 | 内部合同；字段级访问控制 |"
+    },
+    {
+      "id": "MS-07",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L111",
+      "sourceExcerpt": "| `F-12` | 原始项目/成果来源 | project_id, funding, contract_refs | 有合同约束时/ST-02 | MS-07/TD-03 | 内部合同；字段级访问控制 |"
+    },
+    {
+      "id": "F-13",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L112",
+      "sourceExcerpt": "| `F-13` | 既有处分/许可负担 | licenses, pledge, coownership, restrictions, unknown | 全部需查无负担或承认未知/ST-02 | TD-03/TD-04/MS-07 | 敏感；空清单≠查无 |"
+    },
+    {
+      "id": "F-14",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L113",
+      "sourceExcerpt": "| `F-14` | 完成人与发明人清单 | contributors[] with person_id, order, contribution | EMP/奖励时/ST-03或08 | MS-09/TD-03 | 个人信息；顺序≠收益份额 |"
+    },
+    {
+      "id": "ST-03",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L113",
+      "sourceExcerpt": "| `F-14` | 完成人与发明人清单 | contributors[] with person_id, order, contribution | EMP/奖励时/ST-03或08 | MS-09/TD-03 | 个人信息；顺序≠收益份额 |"
+    },
+    {
+      "id": "MS-09",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L113",
+      "sourceExcerpt": "| `F-14` | 完成人与发明人清单 | contributors[] with person_id, order, contribution | EMP/奖励时/ST-03或08 | MS-09/TD-03 | 个人信息；顺序≠收益份额 |"
+    },
+    {
+      "id": "F-15",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L114",
+      "sourceExcerpt": "| `F-15` | 受益人及身份 | beneficiaries[] with teacher/student/other | EMP/奖励时/ST-03或08 | MS-09/MS-18/TD-03 | 个人信息；学生可为受益人 |"
+    },
+    {
+      "id": "MS-18",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L114",
+      "sourceExcerpt": "| `F-15` | 受益人及身份 | beneficiaries[] with teacher/student/other | EMP/奖励时/ST-03或08 | MS-09/MS-18/TD-03 | 个人信息；学生可为受益人 |"
+    },
+    {
+      "id": "F-16",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L115",
+      "sourceExcerpt": "| `F-16` | 团队意见/代表授权 | consensus_status, dissenters, mandate | EMP与规定情形/ST-03 | MS-09/MS-08 | 个人；不推断全体同意 |"
+    },
+    {
+      "id": "F-17",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L116",
+      "sourceExcerpt": "| `F-17` | 赋权权利类型 | owner_fraction / long_term_use | BR-01/02-ST-03 | MS-03/MS-09 | 商业敏感；不等同转让 |"
+    },
+    {
+      "id": "MS-03",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L116",
+      "sourceExcerpt": "| `F-17` | 赋权权利类型 | owner_fraction / long_term_use | BR-01/02-ST-03 | MS-03/MS-09 | 商业敏感；不等同转让 |"
+    },
+    {
+      "id": "F-18",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L117",
+      "sourceExcerpt": "| `F-18` | 赋权期限与实施方案 | term, use_plan, milestones | BR-02及校规激活BR-01/ST-03 | MS-03 | 敏感；不硬填试点5年 |"
+    },
+    {
+      "id": "F-19",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L118",
+      "sourceExcerpt": "| `F-19` | 交易相对方身份 | counterparty_id/name/uscc | BR-03/04/05且已确定/ST-03 | MS-10或TD-05 | 机构信息；早期意向可未定 |"
+    },
+    {
+      "id": "MS-10",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L118",
+      "sourceExcerpt": "| `F-19` | 交易相对方身份 | counterparty_id/name/uscc | BR-03/04/05且已确定/ST-03 | MS-10或TD-05 | 机构信息；早期意向可未定 |"
+    },
+    {
+      "id": "F-20",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L119",
+      "sourceExcerpt": "| `F-20` | 交易/许可方式 | transfer/license/equity; license_mode | BR-03/04/05-ST-03 | MS-06 | 商业敏感；许可≠所有权转移 |"
+    },
+    {
+      "id": "F-21",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L120",
+      "sourceExcerpt": "| `F-21` | 许可范围与排他性 | license_scope, exclusive/sole/nonexclusive, term | BR-04/ST-03 | MS-06/MS-07 | 商业敏感；已有许可核冲突 |"
+    },
+    {
+      "id": "F-22",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L121",
+      "sourceExcerpt": "| `F-22` | 定价方式 | negotiated/listing/auction/other | BR-03/04/05定价阶段 | MS-11 | 商业敏感；按方法启用材料 |"
+    },
+    {
+      "id": "MS-11",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L121",
+      "sourceExcerpt": "| `F-22` | 定价方式 | negotiated/listing/auction/other | BR-03/04/05定价阶段 | MS-11 | 商业敏感；按方法启用材料 |"
+    },
+    {
+      "id": "F-23",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L122",
+      "sourceExcerpt": "| `F-23` | 拟交易金额与币种 | amount, currency, tax_basis, amount_chinese | BR-03/04/05定价阶段 | MS-11/MS-06 | 财务；必须明确金额口径 |"
+    },
+    {
+      "id": "F-24",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L123",
+      "sourceExcerpt": "| `F-24` | 打包交易与分项价格 | bundle_total, item_prices_or_null, allocation_method | 多标的交易/ST-03 | MS-11/MS-06 | 财务；不得擅自均分 |"
+    },
+    {
+      "id": "F-25",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L124",
+      "sourceExcerpt": "| `F-25` | 收益规则依据及适用期 | reward_basis, policy_version, date | 有收益分配时/ST-08 | MS-09/MS-18/TD-06 | 财务/个人；勿套公示80% |"
+    },
+    {
+      "id": "ST-08",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L124",
+      "sourceExcerpt": "| `F-25` | 收益规则依据及适用期 | reward_basis, policy_version, date | 有收益分配时/ST-08 | MS-09/MS-18/TD-06 | 财务/个人；勿套公示80% |"
+    },
+    {
+      "id": "F-26",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L125",
+      "sourceExcerpt": "| `F-26` | 收益人员明细 | reward_lines amount, persons, role, rationale | 有奖励时/ST-08 | MS-18/TD-06 | 个人财务；学生也可受益 |"
+    },
+    {
+      "id": "F-27",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L126",
+      "sourceExcerpt": "| `F-27` | 作价投资折股条款 | valuation, shares, equity_ratio, exit_terms | BR-05/ST-03或04 | MS-12 | 敏感；专业人工判断 |"
+    },
+    {
+      "id": "MS-12",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L126",
+      "sourceExcerpt": "| `F-27` | 作价投资折股条款 | valuation, shares, equity_ratio, exit_terms | BR-05/ST-03或04 | MS-12 | 敏感；专业人工判断 |"
+    },
+    {
+      "id": "F-28",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L127",
+      "sourceExcerpt": "| `F-28` | 主动放弃标识 | patent_no, full_right, unconditional | BR-06/ST-03 | MS-04/MS-05 | 法律；必须整件无条件 |"
+    },
+    {
+      "id": "MS-04",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L127",
+      "sourceExcerpt": "| `F-28` | 主动放弃标识 | patent_no, full_right, unconditional | BR-06/ST-03 | MS-04/MS-05 | 法律；必须整件无条件 |"
+    },
+    {
+      "id": "F-29",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L128",
+      "sourceExcerpt": "| `F-29` | 放弃权利人同意 | owner_signatures[], verified_scope | BR-06/ST-03/06 | MS-08/MS-04/TD-02 | 法律；国家程序必须 |"
+    },
+    {
+      "id": "F-30",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L129",
+      "sourceExcerpt": "| `F-30` | 定价公示事项 | notice_type, date_start/end, subject, price | 协议定价适用/ST-05 | MS-14/TD-06 | 公开或内部；区别收益公示 |"
+    },
+    {
+      "id": "ST-05",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L129",
+      "sourceExcerpt": "| `F-30` | 定价公示事项 | notice_type, date_start/end, subject, price | 协议定价适用/ST-05 | MS-14/TD-06 | 公开或内部；区别收益公示 |"
+    },
+    {
+      "id": "MS-14",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L129",
+      "sourceExcerpt": "| `F-30` | 定价公示事项 | notice_type, date_start/end, subject, price | 协议定价适用/ST-05 | MS-14/TD-06 | 公开或内部；区别收益公示 |"
+    },
+    {
+      "id": "F-31",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L130",
+      "sourceExcerpt": "| `F-31` | 异议及处理记录 | objections[], resolution_status, authorized_by | 有公示且异议/ST-05 | MS-14/TD-06 | 人员敏感；未结案暂停执行 |"
+    },
+    {
+      "id": "F-32",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L131",
+      "sourceExcerpt": "| `F-32` | 校内审批意见 | decision, authority, scope, dated, version | ST-04起（后置） | MS-15/TD-06 | 内部；审批前必须为空或PENDING |"
+    },
+    {
+      "id": "ST-04",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L131",
+      "sourceExcerpt": "| `F-32` | 校内审批意见 | decision, authority, scope, dated, version | ST-04起（后置） | MS-15/TD-06 | 内部；审批前必须为空或PENDING |"
+    },
+    {
+      "id": "MS-15",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L131",
+      "sourceExcerpt": "| `F-32` | 校内审批意见 | decision, authority, scope, dated, version | ST-04起（后置） | MS-15/TD-06 | 内部；审批前必须为空或PENDING |"
+    },
+    {
+      "id": "F-33",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L132",
+      "sourceExcerpt": "| `F-33` | 正式合同版本 | contract_no, parties, signed_at, signed_version | ST-06起（后置） | MS-16/TD-04 | 合同敏感；初申不得必交 |"
+    },
+    {
+      "id": "ST-06",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L132",
+      "sourceExcerpt": "| `F-33` | 正式合同版本 | contract_no, parties, signed_at, signed_version | ST-06起（后置） | MS-16/TD-04 | 合同敏感；初申不得必交 |"
+    },
+    {
+      "id": "MS-16",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L132",
+      "sourceExcerpt": "| `F-33` | 正式合同版本 | contract_no, parties, signed_at, signed_version | ST-06起（后置） | MS-16/TD-04 | 合同敏感；初申不得必交 |"
+    },
+    {
+      "id": "F-34",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L133",
+      "sourceExcerpt": "| `F-34` | 外部变更/终止事实 | registry_action, legal_effective_at, status | ST-07起（后置） | MS-17/TD-02 | 外部决定；AI不可创造 |"
+    },
+    {
+      "id": "ST-07",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L133",
+      "sourceExcerpt": "| `F-34` | 外部变更/终止事实 | registry_action, legal_effective_at, status | ST-07起（后置） | MS-17/TD-02 | 外部决定；AI不可创造 |"
+    },
+    {
+      "id": "MS-17",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L133",
+      "sourceExcerpt": "| `F-34` | 外部变更/终止事实 | registry_action, legal_effective_at, status | ST-07起（后置） | MS-17/TD-02 | 外部决定；AI不可创造 |"
+    },
+    {
+      "id": "F-35",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L134",
+      "sourceExcerpt": "| `F-35` | 资金实收事实 | receipt_amount, posted_at, reference | ST-08/09后置 | TD-07/MS-18 | 个人/财务；公示≠到账 |"
+    },
+    {
+      "id": "F-36",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L135",
+      "sourceExcerpt": "| `F-36` | 实际收益发放 | payee, amount, disbursed_at | ST-09后置 | TD-07/MS-18 | 高度敏感；不以拟公示冒充付款 |"
+    },
+    {
+      "id": "ST-09",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L135",
+      "sourceExcerpt": "| `F-36` | 实际收益发放 | payee, amount, disbursed_at | ST-09后置 | TD-07/MS-18 | 高度敏感；不以拟公示冒充付款 |"
+    },
+    {
+      "id": "F-37",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L136",
+      "sourceExcerpt": "| `F-37` | 敏感合规类别 | secrecy/export/security/data restrictions | 技术秘密或管制触发/ST-02 | MS-19/TD-03 | 严格访问权限+人工决定 |"
+    },
+    {
+      "id": "MS-19",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L136",
+      "sourceExcerpt": "| `F-37` | 敏感合规类别 | secrecy/export/security/data restrictions | 技术秘密或管制触发/ST-02 | MS-19/TD-03 | 严格访问权限+人工决定 |"
+    },
+    {
+      "id": "F-38",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L137",
+      "sourceExcerpt": "| `F-38` | 修改/撤回与版本 | request_revision, replaced_by, withdrawn_at | 版本更新或撤回/ST-01至09 | MS-20/TD-06 | 内部；旧审批不能自动继承 |"
+    },
+    {
+      "id": "MS-20",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L137",
+      "sourceExcerpt": "| `F-38` | 修改/撤回与版本 | request_revision, replaced_by, withdrawn_at | 版本更新或撤回/ST-01至09 | MS-20/TD-06 | 内部；旧审批不能自动继承 |"
+    },
+    {
+      "id": "F-39",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L138",
+      "sourceExcerpt": "| `F-39` | 证据状态 | source, issue_date, verification, page_region | 所有关键结论贯穿阶段 | 每个证据索引 | 内部；OCR≠可信权威核验 |"
+    },
+    {
+      "id": "MS-02",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L149",
+      "sourceExcerpt": "| `MS-02` | 申报材料 | 校内对应动作的申请/审批表 | 校本制度激活具体表 | ST-01 | 具有同等效力的学校线上表单 | 内部 | S02,S03 |"
+    },
+    {
+      "id": "EV-01",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L152",
+      "sourceExcerpt": "| `MS-05` | 证明材料 | 现有专利/软著/成果权利证明 | 全部须核权 | ST-02 | EV-01：官方登记簿或可信系统记录优先于纸质证书 | 内部/可公开 | S06,S11 |"
+    },
+    {
+      "id": "EV-02",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L154",
+      "sourceExcerpt": "| `MS-07` | 证明材料 | 科研合作合同/既有许可质押等权利负担 | 存在/疑似第三方权利或项目限制 | ST-02 | EV-02：校科研合同库/合法授权查询 | 合同敏感 | S06,S09 |"
+    },
+    {
+      "id": "EV-03",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L155",
+      "sourceExcerpt": "| `MS-08` | 证明材料 | 有权代表和共有人同意/代理授权 | 代理/共有；放弃时全体专利权人同意 | ST-03；对外提交ST-06 | EV-03：有权机构签章授权/系统签署记录 | 个人/法律敏感 | S09,S11 |"
+    },
+    {
+      "id": "EV-04",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L156",
+      "sourceExcerpt": "| `MS-09` | 申报材料/证明材料 | 团队完成人名单、协商或收益分配方案 | 赋权或拟奖励且真实制度要求 | ST-03或08 | EV-04：团队一致意见＋单位确认/可信成果记录组合 | 个人/财务 | S04,S09,S10,L14 |"
+    },
+    {
+      "id": "EV-05",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L157",
+      "sourceExcerpt": "| `MS-10` | 证明材料 | 交易相对方资格证明 | 已确定受让/被许可/投资相对方 | ST-03 | EV-05：可信登记查询代重复证照上传 | 机构信息 | S04,S05 |"
+    },
+    {
+      "id": "EV-06",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L161",
+      "sourceExcerpt": "| `MS-14` | 可信事件/证明材料 | 交易公示、收益公示与异议处理记录 | 适用公示节点 | ST-05或08 | EV-06：学校官网存证/可核对公示日志；公告目的分别记录 | 公开/人员敏感 | S04,S07,L15 |"
+    },
+    {
+      "id": "EV-07",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L162",
+      "sourceExcerpt": "| `MS-15` | 可信审批记录 | 学校有权机构正式审查决定 | 进入审批后 | ST-04；不是ST-01必交 | EV-07：学校受控OA审批流/正式决议 | 内部 | S01,S04 |"
+    },
+    {
+      "id": "EV-08",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L165",
+      "sourceExcerpt": "| `MS-18` | 后置执行记录 | 资金入账和实际奖励支付凭证 | 合同付款、收益分配实际发生后 | ST-08/09 | EV-08：有权财务收款及支付台账；拟公示不等于已支付 | 财务/个人 | S04,L14,L15 |"
+    },
+    {
+      "id": "MS-21",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L168",
+      "sourceExcerpt": "| `MS-21` | 条件证明材料 | 学校无形资产处置技术鉴定及关联资产审批 | 仅校本制度证明对该动作触发 | ST-03至04 | EV-07：资产管理有权系统记录；未核规不得默认为必交 | 校本待核 | L18 |"
+    }
+  ],
+  "unmappedAxes": [
+    {
+      "id": "AX-01",
+      "locator": "G06-T09_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "`AX-01=action_kind`（每个单元**恰好一个**主动作，可一案多单元）；`AX-02=asset_type`；`AX-03=current_holders and scope`；`AX-04=submitter/representative capacity`；`AX-05=pricing_method`（协议、挂牌、拍卖、其他）；`AX-06=counterparty_known`；`AX-07=existing_license/pledge/collaboration/confidentiality`；`AX-08=stage`；`AX-09=multi_asset_bun"
+    }
+  ]
+}
