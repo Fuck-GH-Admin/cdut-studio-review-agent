@@ -180,12 +180,12 @@ export function compileD2RuntimePlan(
     const source=links.get(selection.templateId+'@'+selection.version+':'+task.checkId)
     if (!studentTargets.length || !source?.studentScope) return [{task,instanceCheckId:task.checkId,applicability:undefined as D2RuleBinding['applicability']}]
     if(task.objectKey)throw new Error('D2_STUDENT_OBJECT_MIXED: 同一责任不能同时绑定档案键和学生字段')
-    return studentTargets.filter(t=>source.studentScope!.fieldKeys.includes(t.fieldKey!)&&
-        source.studentScope!.intents.includes(t.intent!)).map(target=>{
+    return studentTargets.filter(t=>source.studentScope!.fieldKeys.includes(t.fieldKey!)).map(target=>{
       const restricted=source.studentScope!.enrollmentStatuses
       const snapshot=trustedStudentSnapshot?.studentId===target.studentId ? trustedStudentSnapshot : undefined
-      const applicability:D2RuleBinding['applicability']=!restricted?.length ? 'applicable' :
-        !snapshot ? 'unknown' : restricted.includes(snapshot.enrollmentStatus)?'applicable':'not-applicable'
+      const applicability:D2RuleBinding['applicability']=!source.studentScope!.intents.includes(target.intent!) ? 'unknown' :
+        !restricted?.length ? 'applicable' : !snapshot ? 'unknown' :
+        restricted.includes(snapshot.enrollmentStatus)?'applicable':'not-applicable'
       return {task:{...task,objectKey:target.objectKey},instanceCheckId:task.checkId+'#'+target.objectKey,applicability}
     })
   })

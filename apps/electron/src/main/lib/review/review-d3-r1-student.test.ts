@@ -12,6 +12,7 @@ import { evaluateD2GateExpression, validateD2GuardSubmission } from './review-d2
 import { saveAuthoringCandidateDraft } from './template-store'
 import { readAggregate } from './case-store-v2'
 import { registerMaterial } from './material-service'
+import { setEvidenceLink } from './application-service'
 import { preparePiReviewRunV2, submitPiReviewResultV2 } from './pi-case-review-service'
 import { getRunV2 } from './run-store-v2'
 const dir = resolve(import.meta.dir, '../../../../../../docs/design/review-agent/fixtures')
@@ -92,11 +93,14 @@ describe('D3-R1 typed G01-I runtime: R0 red-to-green',()=>{
  test('one different request intent cannot trigger the wrong Check or give a 0-target fake success',()=>{
   const changed=chosen();changed.targets[0]!.intent='unrelated'
   const plan=compileD2RuntimePlan(scoped(),changed,draft(),trusted())
-  expect(plan.mapping).toHaveLength(1)
-  expect(plan.mapping[0]?.subjectId).toBe('student-credential-check')
-  // A wholly unrecognized request cannot create a successful empty student plan.
+  expect(plan.mapping).toHaveLength(2)
+  expect(plan.mapping[0]?.applicability).toBe('unknown')
+  expect(plan.mapping[1]?.applicability).toBe('applicable')
+  expect(validateD2GuardSubmission(aggregate(plan),plan.mapping[0]!,'compliant',[])).toContain('D2_STUDENT_APPLICABILITY_UNKNOWN')
   changed.targets[1]!.intent='unrelated'
-  expect(()=>compileD2RuntimePlan(scoped(),changed,draft(),trusted())).toThrow('D2_STUDENT_SCOPE_REQUIRED')
+  const allUnknown=compileD2RuntimePlan(scoped(),changed,draft(),trusted())
+  expect(allUnknown.mapping.map(x=>x.applicability)).toEqual(['unknown','unknown'])
+  expect(allUnknown.mapping).toHaveLength(2)
  })
  test('unknown independent registry is pending; applicant caseFields cannot supply trusted status',()=>{
   const c=draft();c.caseFields={'enrollment-status':{kind:'text',value:'enrolled'}}
@@ -160,6 +164,7 @@ describe('D3-R1 typed G01-I runtime: R0 red-to-green',()=>{
   saveAuthoringCandidateDraft(makeD2CandidateShell(w,'text-review',1))
   const created=await createD2TechnicalCase({caseId:id,title:'synthetic scoped request',actor,workspace:w,selection,trustedStudentSnapshot:trusted()})
   expect(created.ok).toBeTrue()
+  if(!created.ok)throw new Error(created.message)
   expect(created.entity?.mapping).toHaveLength(2)
   expect(verifyD2InstalledPlan(readAggregate(id)!)).toEqual([])
   const evidenceDir=join(config,'source-input');mkdirSync(evidenceDir,{recursive:true})
@@ -168,6 +173,24 @@ describe('D3-R1 typed G01-I runtime: R0 red-to-green',()=>{
   const agg=readAggregate(id)!
   const material=await registerMaterial(id,{requestId:'r1-register-material',actor,expectedRevision:agg.caseV2.revision,payload:{sourcePath:file,role:'evidence'}})
   expect(material.ok).toBeTrue()
+  if(!material.ok)throw new Error(material.message)
+  // Two reviewer-confirmed fact edges share ONE registered document version, not a global grant.
+  const versionId=readAggregate(id)!.caseV2.documents[0]!.versionId
+  for(const [index,scope] of [
+    {subjectId:'student-name-check',fact:'d2:student:full-name:legal-document'},
+    {subjectId:'student-credential-check',fact:'d2:student:credential-id:legal-document'},
+  ].entries()){
+    const current=readAggregate(id)!
+    const result=await setEvidenceLink(id,{requestId:'r1-link-'+index,actor,expectedRevision:current.caseV2.revision,
+      payload:{documentVersionId:versionId,subjectIds:[scope.subjectId],supportsFact:scope.fact,linkedBy:'user'}})
+    expect(result.ok).toBeTrue()
+    if(!result.ok)throw new Error(result.message)
+  }
+  const links=readAggregate(id)!.evidenceLinks
+  expect(links).toHaveLength(2)
+  expect(new Set(links.map(x=>x.documentVersionId)).size).toBe(1)
+  expect(new Set(links.map(x=>x.subjectId)).size).toBe(2)
+  expect(created.entity!.mapping.every(m=>validateD2GuardSubmission(readAggregate(id)!,m,'compliant',[versionId])===undefined)).toBeTrue()
   const prepared=preparePiReviewRunV2({caseId:id,sessionId:'r1-synthetic-session',turnId:'r1-synthetic-turn'})
   expect(prepared.userMessage).toContain('D2 固定技术预审包')
   const result=submitPiReviewResultV2({

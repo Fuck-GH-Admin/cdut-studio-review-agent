@@ -120,8 +120,9 @@ export function validateD2GuardSubmission(
 ):string|undefined {
   if(mapping.applicability==='unknown'&&status!=='awaiting-confirmation')
     return 'D2_STUDENT_APPLICABILITY_UNKNOWN: 受控学籍条件未知，只能待核'
-  if(mapping.applicability==='not-applicable'&&!['not-applicable','awaiting-confirmation'].includes(status))
-    return 'D2_STUDENT_NOT_APPLICABLE: 已核条件不触发该字段责任'
+  if(mapping.applicability==='not-applicable')
+    return ['not-applicable','awaiting-confirmation'].includes(status) ? undefined :
+      'D2_STUDENT_NOT_APPLICABLE: 已核条件不触发该字段责任'
   if(mapping.applicability==='applicable'&&status==='not-applicable')
     return 'D2_STUDENT_APPLICABLE: 该字段责任已触发，不能标记不适用'
   const gate=mapping.gate
