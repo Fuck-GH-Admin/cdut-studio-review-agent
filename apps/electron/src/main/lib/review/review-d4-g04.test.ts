@@ -5,6 +5,7 @@ import {join,resolve} from 'node:path'
 import {tmpdir} from 'node:os'
 import type {ReviewAuthoringWorkspaceV1,D2ScenarioSelection,ReviewCaseV2,CaseAggregateV2,Actor} from '@profer/shared'
 import {validateReviewAuthoringV1} from './review-authoring-v1'
+import {saveReviewAuthoringRevisionV1,getReviewAuthoringRevisionV1,diffReviewAuthoringRevisionsV1} from './review-authoring-store-v1'
 import {exportD3Bundle,importD3Bundle} from './review-d3-module-library'
 import {compileD2RuntimePlan,makeD2CandidateShell,createD2TechnicalCase,verifyD2PiRun} from './review-d2-runtime'
 import {validateD2GuardSubmission} from './review-d2-execution-gates'
@@ -38,6 +39,20 @@ describe('G04 eight modular business templates on fixed COMMON-01/02',()=>{
    expect(manifest.commonSha).toBe('a7a6a11d4840ad64cfc858c17b35f35180adf063')
    expect(manifest.ruleCount).toBe(count)
    expect(validateReviewAuthoringV1(w)).toEqual([])
+   const originalSave=saveReviewAuthoringRevisionV1(w,0,'g04-author-test')
+   const originalRead=getReviewAuthoringRevisionV1(w.workspaceId,1)!
+   expect(originalRead.digest).toBe(originalSave.digest)
+   const edited=structuredClone(w)
+   edited.revision=2
+   edited.definitions.modules[0]!.tasks[0]!.completion+='（合成 D1 编辑与版本追踪验证）'
+   const diff=diffReviewAuthoringRevisionsV1(w,edited)
+   expect(diff.changedModules).toContain(edited.definitions.modules[0]!.moduleId+'@1')
+   const secondSave=saveReviewAuthoringRevisionV1(edited,1,'g04-author-test')
+   expect(secondSave.parentDigest).toBe(originalSave.digest)
+   expect(getReviewAuthoringRevisionV1(w.workspaceId,1)!.digest).toBe(originalSave.digest)
+   emit(id,'d1-revisions.json',{revision1:originalSave.digest,revision2:secondSave.digest,
+      parentDigest:secondSave.parentDigest,changedModules:diff.changedModules,
+      originalUntouched:true,sourceSHA256:manifest.fullBusinessMd.sha256})
    const exported=exportD3Bundle(w)
    const roundtrip=importD3Bundle(exported)
    expect(validateReviewAuthoringV1(roundtrip)).toEqual([])
@@ -96,7 +111,7 @@ describe('G04 eight modular business templates on fixed COMMON-01/02',()=>{
    const linkB=real.entity!.mapping.find(m=>m.objectKey==='object-b'&&m.checkId.includes('/r01#'))!
    const setLink=await setEvidenceLink(caseId,{requestId:'g04-link-'+id,actor,
      expectedRevision:afterMaterial.caseV2.revision,payload:{documentVersionId,subjectIds:['subject-a'],
-       supportsFact:linkA.evidenceCoverage!.supportsFacts[0],linkedBy:'user'}})
+       supportsFact:linkA.evidenceCoverage!.supportsFacts[0]!,linkedBy:'user'}})
    expect(setLink.ok).toBe(true)
    if(!setLink.ok)throw Error(setLink.message)
    const afterLink=readAggregate(caseId)!
