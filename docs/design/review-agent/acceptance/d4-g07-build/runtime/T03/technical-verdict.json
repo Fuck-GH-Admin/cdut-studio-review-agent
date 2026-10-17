@@ -1,0 +1,49 @@
+{
+  "template": "T03",
+  "status": "PARTIAL",
+  "sourceSha256": "fec6ee135ad9b5f644dfe8415440e34f633e851c690deba678a2097f2fc98d98",
+  "sourceGitBlob": "734f9fdeb16ee25c8b4e5b339b02a2af9baf1aee",
+  "technicalParent": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "authoringValidation": [],
+  "subjects": 2,
+  "checks": 106,
+  "ruleChecks": 66,
+  "d3Fingerprint": "e11032d60a4f85f5db8ba146a7836e1d093a32fea52dd0eda75d16647bddd682",
+  "d2Fingerprint": "76a8bdea829283fc389dc13b0d309905f63744da22ba71be52f2f871b199f191",
+  "piComplete": true,
+  "unverifiedPolicy": true,
+  "modelAccuracyVerified": false,
+  "publicationAllowed": false,
+  "counterexamples": {
+    "duplicateSubject": true,
+    "missingConditions": true,
+    "staleSource": true,
+    "evidenceCrossSubjectDenied": true,
+    "staleEvidenceDenied": true,
+    "unknownConditionDenied": true
+  },
+  "remaining": [
+    {
+      "type": "SEMANTIC_ONLY_CONDITION",
+      "anchor": "BR-13",
+      "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+      "owner": "ENGINE_OR_AUTHORING"
+    },
+    {
+      "type": "SEMANTIC_ONLY_CONDITION",
+      "anchor": "BR-14",
+      "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+      "owner": "ENGINE_OR_AUTHORING"
+    },
+    {
+      "type": "POLICY",
+      "detail": "校本现行制度、授权与资金/预算/税票/银行权威事实缺少有权认证；源以 policy-candidate/unknown 进入 D2，不能输出正式符合或付款",
+      "owner": "POLICY_EXTERNAL"
+    },
+    {
+      "type": "HUMAN_ONLY",
+      "detail": "自动可付净额、实付、会计冲销或结清非默认能力；只生成待财务核实建议，不直接算账",
+      "owner": "HUMAN_EXTERNAL"
+    }
+  ]
+}

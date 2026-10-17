@@ -1,0 +1,97 @@
+{
+  "template": "T01",
+  "status": "PARTIAL",
+  "sourceSha256": "392e63fd9d7e7da3926325682db65007daff44cc04e736791b1cabf065efdf2d",
+  "sourceGitBlob": "8a998496a49fff82fbb57bd8894c2f7bf646ec6f",
+  "technicalParent": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "authoringValidation": [],
+  "subjects": 2,
+  "checks": 104,
+  "ruleChecks": 64,
+  "d3Fingerprint": "215a8229a1b0aca68e769c78e724c4f301991095a4b71897a7b1bca4c55787c0",
+  "d2Fingerprint": "8aac9b1de44f0e3741d8ad986798d57c2fdabe3b5179973eac7008b39aaeec10",
+  "piComplete": true,
+  "unverifiedPolicy": true,
+  "modelAccuracyVerified": false,
+  "publicationAllowed": false,
+  "counterexamples": {
+    "duplicateSubject": true,
+    "missingConditions": true,
+    "staleSource": true,
+    "evidenceCrossSubjectDenied": true,
+    "staleEvidenceDenied": true,
+    "unknownConditionDenied": true
+  },
+  "remaining": [
+    {
+      "type": "SEMANTIC_ONLY_CONDITION",
+      "anchor": "BR-13",
+      "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+      "owner": "ENGINE_OR_AUTHORING"
+    },
+    {
+      "type": "SEMANTIC_ONLY_CONDITION",
+      "anchor": "BR-14",
+      "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+      "owner": "ENGINE_OR_AUTHORING"
+    },
+    {
+      "type": "SEMANTIC_ONLY_CONDITION",
+      "anchor": "BR-15",
+      "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+      "owner": "ENGINE_OR_AUTHORING"
+    },
+    {
+      "type": "SEMANTIC_ONLY_CONDITION",
+      "anchor": "BR-16",
+      "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+      "owner": "ENGINE_OR_AUTHORING"
+    },
+    {
+      "type": "SEMANTIC_ONLY_CONDITION",
+      "anchor": "BR-17",
+      "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+      "owner": "ENGINE_OR_AUTHORING"
+    },
+    {
+      "type": "SEMANTIC_ONLY_CONDITION",
+      "anchor": "BR-18",
+      "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+      "owner": "ENGINE_OR_AUTHORING"
+    },
+    {
+      "type": "SEMANTIC_ONLY_CONDITION",
+      "anchor": "BR-19",
+      "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+      "owner": "ENGINE_OR_AUTHORING"
+    },
+    {
+      "type": "SEMANTIC_ONLY_CONDITION",
+      "anchor": "BR-20",
+      "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+      "owner": "ENGINE_OR_AUTHORING"
+    },
+    {
+      "type": "SEMANTIC_ONLY_CONDITION",
+      "anchor": "BR-21",
+      "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+      "owner": "ENGINE_OR_AUTHORING"
+    },
+    {
+      "type": "SEMANTIC_ONLY_CONDITION",
+      "anchor": "BR-22",
+      "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+      "owner": "ENGINE_OR_AUTHORING"
+    },
+    {
+      "type": "POLICY",
+      "detail": "校本现行制度、授权与资金/预算/税票/银行权威事实缺少有权认证；源以 policy-candidate/unknown 进入 D2，不能输出正式符合或付款",
+      "owner": "POLICY_EXTERNAL"
+    },
+    {
+      "type": "HUMAN_ONLY",
+      "detail": "自动可付净额、实付、会计冲销或结清非默认能力；只生成待财务核实建议，不直接算账",
+      "owner": "HUMAN_EXTERNAL"
+    }
+  ]
+}
