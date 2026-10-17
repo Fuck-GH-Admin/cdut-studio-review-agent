@@ -6,8 +6,8 @@
   "revision": 1,
   "templateId": "g05-t02",
   "templateVersion": 1,
-  "authoringDigest": "beb21867097a48cd05a62ca967136ee7b6bc74097a133fc5bc491eb49fc9d9f1",
-  "previewFingerprint": "83a962e744e6ecc28bc9ca0bb11e88d017cf681ae85d624956f9be0e03e1b6ef",
+  "authoringDigest": "fe1c778096fb189270cb349ea0d634c67092008b2157f90713d8e18b477a4907",
+  "previewFingerprint": "55facefa45e58a515c9a8a00fd80b58238a55c8e23983f3a229c4d1d73526c55",
   "targets": [
     {
       "kind": "generic-object",
@@ -23,21 +23,91 @@
       },
       "conditions": [
         {
-          "id": "overnight",
+          "id": "br03",
           "applicability": "applicable",
           "sourceId": "src-synthetic",
           "sourceVersionId": "g05-t02-synthetic-v1",
           "decidedBy": "reviewer"
         },
         {
-          "id": "transport-special",
+          "id": "br04",
           "applicability": "not-applicable",
           "sourceId": "src-synthetic",
           "sourceVersionId": "g05-t02-synthetic-v1",
           "decidedBy": "reviewer"
         },
         {
-          "id": "high-risk",
+          "id": "br05",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br06",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br07",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br08",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br09",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br10",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br11",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br12",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br13",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br14",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br15",
           "applicability": "not-applicable",
           "sourceId": "src-synthetic",
           "sourceVersionId": "g05-t02-synthetic-v1",
@@ -59,21 +129,91 @@
       },
       "conditions": [
         {
-          "id": "overnight",
+          "id": "br03",
           "applicability": "unknown",
           "sourceId": "src-synthetic",
           "sourceVersionId": "g05-t02-synthetic-v1",
           "decidedBy": "undetermined"
         },
         {
-          "id": "transport-special",
+          "id": "br04",
           "applicability": "not-applicable",
           "sourceId": "src-synthetic",
           "sourceVersionId": "g05-t02-synthetic-v1",
           "decidedBy": "reviewer"
         },
         {
-          "id": "high-risk",
+          "id": "br05",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br06",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br07",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br08",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br09",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br10",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br11",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br12",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br13",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br14",
+          "applicability": "not-applicable",
+          "sourceId": "src-synthetic",
+          "sourceVersionId": "g05-t02-synthetic-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br15",
           "applicability": "not-applicable",
           "sourceId": "src-synthetic",
           "sourceVersionId": "g05-t02-synthetic-v1",
@@ -99,7 +239,7 @@
         },
         "d2Conditions": {
           "kind": "text",
-          "value": "[{\"id\":\"overnight\",\"applicability\":\"applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"transport-special\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"high-risk\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"}]"
+          "value": "[{\"id\":\"br03\",\"applicability\":\"applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br04\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br05\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br06\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br07\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br08\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br09\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br10\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br11\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br12\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br13\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br14\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br15\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"}]"
         },
         "d2Scenario": {
           "kind": "text",
@@ -126,7 +266,7 @@
         },
         "d2Conditions": {
           "kind": "text",
-          "value": "[{\"id\":\"overnight\",\"applicability\":\"unknown\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"undetermined\"},{\"id\":\"transport-special\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"high-risk\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"}]"
+          "value": "[{\"id\":\"br03\",\"applicability\":\"unknown\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"undetermined\"},{\"id\":\"br04\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br05\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br06\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br07\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br08\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br09\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br10\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br11\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br12\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br13\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br14\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"},{\"id\":\"br15\",\"applicability\":\"not-applicable\",\"sourceId\":\"src-synthetic\",\"sourceVersionId\":\"g05-t02-synthetic-v1\",\"decidedBy\":\"reviewer\"}]"
         },
         "d2Scenario": {
           "kind": "text",
@@ -1166,10 +1306,10 @@
       "confirmation": "confirmed"
     },
     {
-      "id": "d2-a243bd4038b6194f9023",
+      "id": "d2-41b106df69386a95a2ae",
       "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
-      "title": "overnight 主/附条件适用范围核对",
-      "requirement": "适用范围：每个所选业务对象的显式条件\n本责任仅在对象条件 'overnight' 对应路径出现。核对 C 原文条件章节是否适用于本对象；对于UNKNOWN保留需核结果，不应用其他学校阈值推断。目标业务：集体校外交流实践活动组织与安全\n完成标准：输出本对象适用/不适用/待确认、条件来源版本及理由；核对附件到期和权限边界\n责任边界：本技术例的reviewer选择不等于真实校务事实已获认证\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n不得根据 AI 猜测选择场景或将未到期有权材料当申请者缺件\nD2 技术预审来源：src-c/user-request/request-scope；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "title": "BR-03 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-03；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-03 | 组织身份 | organizer_type∈{department,authorized_club,authorized_student_team,staff_unit,unauthorized_person} | 互斥组织主体且经办代理是独立布尔 | 组织类别不可判→资格待核；无授权不得执行 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br03/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
       "when": {
         "all": []
       },
@@ -1184,16 +1324,18 @@
       "onUnknown": "needs-confirmation",
       "sourceRefIds": [
         "src-c",
+        "src-br03",
+        "src-policy",
         "src-synthetic"
       ],
       "priority": 50043,
-      "confirmation": "confirmed"
+      "confirmation": "unconfirmed"
     },
     {
-      "id": "d2-e4dec789bd6bb6ce0d25",
+      "id": "d2-2f87112439c0f4452be7",
       "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
-      "title": "transport-special 主/附条件适用范围核对",
-      "requirement": "适用范围：每个所选业务对象的显式条件\n本责任仅在对象条件 'transport-special' 对应路径出现。核对 C 原文条件章节是否适用于本对象；对于UNKNOWN保留需核结果，不应用其他学校阈值推断。目标业务：集体校外交流实践活动组织与安全\n完成标准：输出本对象适用/不适用/待确认、条件来源版本及理由；核对附件到期和权限边界\n责任边界：本技术例的reviewer选择不等于真实校务事实已获认证\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n不得根据 AI 猜测选择场景或将未到期有权材料当申请者缺件\nD2 技术预审来源：src-c/user-request/request-scope；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "title": "BR-04 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-04；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-04 | 目的及相邻许可 | purpose∈{social_practice,visit,academic_research,teaching_practicum,personal_trip,special_fieldwork} | 主目的互斥；同案可关联其他审批目的 | 教学实践并行安全检查由真实校规决定；关联财务不能替安全 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br04/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
       "when": {
         "all": []
       },
@@ -1208,16 +1350,18 @@
       "onUnknown": "needs-confirmation",
       "sourceRefIds": [
         "src-c",
+        "src-br04",
+        "src-policy",
         "src-synthetic"
       ],
       "priority": 50044,
-      "confirmation": "confirmed"
+      "confirmation": "unconfirmed"
     },
     {
-      "id": "d2-996e7095327031a86614",
+      "id": "d2-452231c1f4cbdb13cabb",
       "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
-      "title": "high-risk 主/附条件适用范围核对",
-      "requirement": "适用范围：每个所选业务对象的显式条件\n本责任仅在对象条件 'high-risk' 对应路径出现。核对 C 原文条件章节是否适用于本对象；对于UNKNOWN保留需核结果，不应用其他学校阈值推断。目标业务：集体校外交流实践活动组织与安全\n完成标准：输出本对象适用/不适用/待确认、条件来源版本及理由；核对附件到期和权限边界\n责任边界：本技术例的reviewer选择不等于真实校务事实已获认证\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n不得根据 AI 猜测选择场景或将未到期有权材料当申请者缺件\nD2 技术预审来源：src-c/user-request/request-scope；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "title": "BR-05 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-05；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-05 | 地域及跨单位范围 | domestic/local/cross_city/cross_province/overseas; inter_department∈{T,F,U} | 地域有从属层级；跨单位可以叠加 | 由目标学校profile确定审批升级；国际出访转G05-T04 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br05/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
       "when": {
         "all": []
       },
@@ -1232,10 +1376,272 @@
       "onUnknown": "needs-confirmation",
       "sourceRefIds": [
         "src-c",
+        "src-br05",
+        "src-policy",
         "src-synthetic"
       ],
       "priority": 50045,
-      "confirmation": "confirmed"
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-f0818697f1567f043e53",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-06 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-06；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-06 | 规模门槛 | headcount_satisfies(profile,member_roster)=T/F/U | 按同一正式名单统计; 仅当profile提供阈值 | U→POLICY_UNKNOWN / DATA_CONFLICT；不能以最低外校门槛兜底 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br06/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-c64ab0db8062d772",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br06",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50046,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-bb8a521ec9b14159938f",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-07 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-07；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-07 | 出行交通 | transport_mode∈{walk,public_transit,school_vehicle,charter,ship,other,unknown} | 互斥主运输方式，多段行程可为数组叠加 | 包车/船/学校派车各自开启不同材料；未知路线→待补 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br07/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-c64ab0db8062d772",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br07",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50047,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-ffb371641e6a43eed168",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-08 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-08；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-08 | 外包承办 | third_party_organizer∈{T,F,U} | 与交通选择、过夜可叠加 | T要求对应委托合同；U不得自动当F |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br08/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-c64ab0db8062d772",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br08",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50048,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-51e9e9352349529207c7",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-09 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-09；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-09 | 住宿 | overnight∈{T,F,U} | 与跨省、保险叠加 | T依profile启用夜间住宿和应急信息；U待补 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br09/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-c64ab0db8062d772",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br09",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50049,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-ccee8ddb5c188614f208",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-10 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-10；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-10 | 保险及承诺 | require_insurance/require_commitment/require_parent_consent∈{T,F,U} | 三条件独立并可叠加，必须由profile给出 | U→不可把材料当作N/A或无条件强制；先查政策 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br10/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-c64ab0db8062d772",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br10",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50050,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-cdeb3f3b9193ff9e266a",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-11 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-11；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-11 | 特殊风险 | risk_category∈{ordinary,elevated,high,unknown}; real_time_warning∈{T,F,U} | 与所有场景叠加，风险升级优先级最高 | high或预警T→MANUAL_REQUIRED并阻断自动放行 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br11/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-c64ab0db8062d772",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br11",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50051,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-d1bc61a4a7edf83854c0",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-12 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-12；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-12 | 动作与版本 | action∈{create,supplement,amend,withdraw,cancel,predeparture,execute,incident,return_close} | 动作互斥，同一activity可有多次事件；amend引用原批准版本 | 原批件不自动覆盖新快照 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br12/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-c64ab0db8062d772",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br12",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50052,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-ab38e5b3a8955432ae12",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-13 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-13；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-13 | 阶段判定 | ST-01..ST-10，按有权事件单调推进/撤销可逆 | 事件流水并非只看当前上传文件 | 缺少未来阶段材料→NOT_APPLICABLE |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br13/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-c64ab0db8062d772",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br13",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50053,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-0dbaa7b0401506f7c024",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-14 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-14；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-14 | 成员及分组 | group_members[] × participation_window[] × insurance_window[] | 每人/分组并列可混合 | 部分匹配可分项记录；不可自动删除成员生成新许可 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br14/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-c64ab0db8062d772",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br14",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50054,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-f2ab760acdb44f71250d",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-15 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-15；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-15 | 数据/签署来源 | evidence_kind∈{official_system,issuer_original,authorized_digital,applicant_upload,hearsay,unknown} | 同一事实多来源可并存 | 必须保留原文件引用与矛盾，正式系统高于个人自述；来源U不装作真 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br15/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-c64ab0db8062d772",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br15",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50055,
+      "confirmation": "unconfirmed"
     },
     {
       "id": "d2-4db1cd1d7e1e0eed4c1a",
@@ -1258,7 +1664,7 @@
         "s-r10",
         "src-c"
       ],
-      "priority": 50046,
+      "priority": 50056,
       "confirmation": "confirmed"
     },
     {
@@ -1282,7 +1688,7 @@
         "s-r11",
         "src-c"
       ],
-      "priority": 50047,
+      "priority": 50057,
       "confirmation": "confirmed"
     },
     {
@@ -1306,7 +1712,7 @@
         "s-r12",
         "src-c"
       ],
-      "priority": 50048,
+      "priority": 50058,
       "confirmation": "confirmed"
     },
     {
@@ -1330,7 +1736,7 @@
         "s-r21",
         "src-c"
       ],
-      "priority": 50049,
+      "priority": 50059,
       "confirmation": "confirmed"
     },
     {
@@ -1354,7 +1760,7 @@
         "s-r22",
         "src-c"
       ],
-      "priority": 50050,
+      "priority": 50060,
       "confirmation": "confirmed"
     },
     {
@@ -1378,7 +1784,7 @@
         "s-r23",
         "src-c"
       ],
-      "priority": 50051,
+      "priority": 50061,
       "confirmation": "confirmed"
     },
     {
@@ -1402,7 +1808,7 @@
         "s-r24",
         "src-c"
       ],
-      "priority": 50052,
+      "priority": 50062,
       "confirmation": "confirmed"
     },
     {
@@ -1426,7 +1832,7 @@
         "s-r25",
         "src-c"
       ],
-      "priority": 50053,
+      "priority": 50063,
       "confirmation": "confirmed"
     },
     {
@@ -1450,7 +1856,7 @@
         "s-r30",
         "src-c"
       ],
-      "priority": 50054,
+      "priority": 50064,
       "confirmation": "confirmed"
     },
     {
@@ -1474,7 +1880,7 @@
         "s-r39",
         "src-c"
       ],
-      "priority": 50055,
+      "priority": 50065,
       "confirmation": "confirmed"
     },
     {
@@ -1498,14 +1904,14 @@
         "src-c",
         "src-synthetic"
       ],
-      "priority": 50056,
+      "priority": 50066,
       "confirmation": "confirmed"
     },
     {
-      "id": "d2-6b9b2c3ad4deb4d1a014",
+      "id": "d2-e9cb166467963f53ffe7",
       "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
-      "title": "overnight 主/附条件适用范围核对",
-      "requirement": "适用范围：每个所选业务对象的显式条件\n本责任仅在对象条件 'overnight' 对应路径出现。核对 C 原文条件章节是否适用于本对象；对于UNKNOWN保留需核结果，不应用其他学校阈值推断。目标业务：集体校外交流实践活动组织与安全\n完成标准：输出本对象适用/不适用/待确认、条件来源版本及理由；核对附件到期和权限边界\n责任边界：本技术例的reviewer选择不等于真实校务事实已获认证\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n不得根据 AI 猜测选择场景或将未到期有权材料当申请者缺件\nD2 技术预审来源：src-c/user-request/request-scope；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n学籍字段条件：unknown；申请陈述不等于可信学籍快照。",
+      "title": "BR-03 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-03；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-03 | 组织身份 | organizer_type∈{department,authorized_club,authorized_student_team,staff_unit,unauthorized_person} | 互斥组织主体且经办代理是独立布尔 | 组织类别不可判→资格待核；无授权不得执行 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br03/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：unknown；申请陈述不等于可信学籍快照。",
       "when": {
         "all": []
       },
@@ -1520,16 +1926,18 @@
       "onUnknown": "needs-confirmation",
       "sourceRefIds": [
         "src-c",
+        "src-br03",
+        "src-policy",
         "src-synthetic"
       ],
-      "priority": 50057,
-      "confirmation": "confirmed"
+      "priority": 50067,
+      "confirmation": "unconfirmed"
     },
     {
-      "id": "d2-a679753e50dfdef0c782",
+      "id": "d2-e2425f636063c7fb0b41",
       "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
-      "title": "transport-special 主/附条件适用范围核对",
-      "requirement": "适用范围：每个所选业务对象的显式条件\n本责任仅在对象条件 'transport-special' 对应路径出现。核对 C 原文条件章节是否适用于本对象；对于UNKNOWN保留需核结果，不应用其他学校阈值推断。目标业务：集体校外交流实践活动组织与安全\n完成标准：输出本对象适用/不适用/待确认、条件来源版本及理由；核对附件到期和权限边界\n责任边界：本技术例的reviewer选择不等于真实校务事实已获认证\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n不得根据 AI 猜测选择场景或将未到期有权材料当申请者缺件\nD2 技术预审来源：src-c/user-request/request-scope；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "title": "BR-04 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-04；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-04 | 目的及相邻许可 | purpose∈{social_practice,visit,academic_research,teaching_practicum,personal_trip,special_fieldwork} | 主目的互斥；同案可关联其他审批目的 | 教学实践并行安全检查由真实校规决定；关联财务不能替安全 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br04/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
       "when": {
         "all": []
       },
@@ -1544,16 +1952,18 @@
       "onUnknown": "needs-confirmation",
       "sourceRefIds": [
         "src-c",
+        "src-br04",
+        "src-policy",
         "src-synthetic"
       ],
-      "priority": 50058,
-      "confirmation": "confirmed"
+      "priority": 50068,
+      "confirmation": "unconfirmed"
     },
     {
-      "id": "d2-ec0da0a5b2b83f94db8a",
+      "id": "d2-dc8c8a7b2b6d82fc56af",
       "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
-      "title": "high-risk 主/附条件适用范围核对",
-      "requirement": "适用范围：每个所选业务对象的显式条件\n本责任仅在对象条件 'high-risk' 对应路径出现。核对 C 原文条件章节是否适用于本对象；对于UNKNOWN保留需核结果，不应用其他学校阈值推断。目标业务：集体校外交流实践活动组织与安全\n完成标准：输出本对象适用/不适用/待确认、条件来源版本及理由；核对附件到期和权限边界\n责任边界：本技术例的reviewer选择不等于真实校务事实已获认证\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n不得根据 AI 猜测选择场景或将未到期有权材料当申请者缺件\nD2 技术预审来源：src-c/user-request/request-scope；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "title": "BR-05 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-05；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-05 | 地域及跨单位范围 | domestic/local/cross_city/cross_province/overseas; inter_department∈{T,F,U} | 地域有从属层级；跨单位可以叠加 | 由目标学校profile确定审批升级；国际出访转G05-T04 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br05/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
       "when": {
         "all": []
       },
@@ -1568,10 +1978,272 @@
       "onUnknown": "needs-confirmation",
       "sourceRefIds": [
         "src-c",
+        "src-br05",
+        "src-policy",
         "src-synthetic"
       ],
-      "priority": 50059,
-      "confirmation": "confirmed"
+      "priority": 50069,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-11bac2c3957dc2489031",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-06 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-06；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-06 | 规模门槛 | headcount_satisfies(profile,member_roster)=T/F/U | 按同一正式名单统计; 仅当profile提供阈值 | U→POLICY_UNKNOWN / DATA_CONFLICT；不能以最低外校门槛兜底 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br06/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-13ca8384a3abcd9c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br06",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50070,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-469c18d4f08cdb5a4e1e",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-07 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-07；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-07 | 出行交通 | transport_mode∈{walk,public_transit,school_vehicle,charter,ship,other,unknown} | 互斥主运输方式，多段行程可为数组叠加 | 包车/船/学校派车各自开启不同材料；未知路线→待补 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br07/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-13ca8384a3abcd9c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br07",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50071,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-37f15361cbc5f43a5c9d",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-08 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-08；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-08 | 外包承办 | third_party_organizer∈{T,F,U} | 与交通选择、过夜可叠加 | T要求对应委托合同；U不得自动当F |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br08/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-13ca8384a3abcd9c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br08",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50072,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-cd4b2beed31ed3b25255",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-09 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-09；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-09 | 住宿 | overnight∈{T,F,U} | 与跨省、保险叠加 | T依profile启用夜间住宿和应急信息；U待补 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br09/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-13ca8384a3abcd9c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br09",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50073,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-465fab249238685c0bbe",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-10 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-10；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-10 | 保险及承诺 | require_insurance/require_commitment/require_parent_consent∈{T,F,U} | 三条件独立并可叠加，必须由profile给出 | U→不可把材料当作N/A或无条件强制；先查政策 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br10/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-13ca8384a3abcd9c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br10",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50074,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-8579116e4bbcd3790ed9",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-11 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-11；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-11 | 特殊风险 | risk_category∈{ordinary,elevated,high,unknown}; real_time_warning∈{T,F,U} | 与所有场景叠加，风险升级优先级最高 | high或预警T→MANUAL_REQUIRED并阻断自动放行 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br11/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-13ca8384a3abcd9c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br11",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50075,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-e4722eb538e1b9fb993a",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-12 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-12；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-12 | 动作与版本 | action∈{create,supplement,amend,withdraw,cancel,predeparture,execute,incident,return_close} | 动作互斥，同一activity可有多次事件；amend引用原批准版本 | 原批件不自动覆盖新快照 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br12/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-13ca8384a3abcd9c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br12",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50076,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-e8d6f93ebb7c206f1d59",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-13 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-13；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-13 | 阶段判定 | ST-01..ST-10，按有权事件单调推进/撤销可逆 | 事件流水并非只看当前上传文件 | 缺少未来阶段材料→NOT_APPLICABLE |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br13/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-13ca8384a3abcd9c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br13",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50077,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-2f89afc10071b24fc188",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-14 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-14；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-14 | 成员及分组 | group_members[] × participation_window[] × insurance_window[] | 每人/分组并列可混合 | 部分匹配可分项记录；不可自动删除成员生成新许可 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br14/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-13ca8384a3abcd9c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br14",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50078,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-99107e88b1f718765721",
+      "policyVersionId": "workspace:d2-d4-g05-t02-workspace@1",
+      "title": "BR-15 原文分支适用",
+      "requirement": "适用范围：逐对象业务条件适用\n先核本对象是否触发 BR-15；触发后还须完整检查内部枚举、互斥、叠加和例外，不能以布尔适用替代其真实业务判断：\n| BR-15 | 数据/签署来源 | evidence_kind∈{official_system,issuer_original,authorized_digital,applicant_upload,hearsay,unknown} | 同一事实多来源可并存 | 必须保留原文件引用与矛盾，正式系统高于个人自述；来源U不装作真 |\n完成标准：逐对象保留条件来源、选项、有效时点、缺证与UNKNOWN状态；不得跨对象继承\n责任边界：三值适用不代替原BR内部多值/专业认定\n只提供原始C-v0.1责任的合成技术审核/问题清单；不得宣称制度合规最终批准\n候选校规未核时保持待确认，不能自动批准或强制拒件\nD2 技术预审来源：src-c/user-request/request-scope；src-br15/user-request/request-scope；src-policy/policy-candidate/unknown；src-synthetic/synthetic/request-scope\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：not-applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-13ca8384a3abcd9c",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "src-c",
+        "src-br15",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "priority": 50079,
+      "confirmation": "unconfirmed"
     }
   ],
   "mapping": [
@@ -2297,15 +2969,17 @@
       }
     },
     {
-      "checkId": "module/axis-overnight/scope#g05-t02-activity-alpha",
-      "ruleId": "d2-a243bd4038b6194f9023",
+      "checkId": "module/axis-br03/scope#g05-t02-activity-alpha",
+      "ruleId": "d2-41b106df69386a95a2ae",
       "objectKey": "g05-t02-activity-alpha",
       "subjectId": "g05-t02-subject-alpha",
       "sourceIds": [
         "src-c",
+        "src-br03",
+        "src-policy",
         "src-synthetic"
       ],
-      "authority": "request-scope",
+      "authority": "unverified-policy",
       "applicability": "applicable",
       "evidenceCoverage": {
         "fieldKey": "g05-t02-activity",
@@ -2316,15 +2990,17 @@
       }
     },
     {
-      "checkId": "module/axis-transport-special/scope#g05-t02-activity-alpha",
-      "ruleId": "d2-e4dec789bd6bb6ce0d25",
+      "checkId": "module/axis-br04/scope#g05-t02-activity-alpha",
+      "ruleId": "d2-2f87112439c0f4452be7",
       "objectKey": "g05-t02-activity-alpha",
       "subjectId": "g05-t02-subject-alpha",
       "sourceIds": [
         "src-c",
+        "src-br04",
+        "src-policy",
         "src-synthetic"
       ],
-      "authority": "request-scope",
+      "authority": "unverified-policy",
       "applicability": "not-applicable",
       "evidenceCoverage": {
         "fieldKey": "g05-t02-activity",
@@ -2335,15 +3011,227 @@
       }
     },
     {
-      "checkId": "module/axis-high-risk/scope#g05-t02-activity-alpha",
-      "ruleId": "d2-996e7095327031a86614",
+      "checkId": "module/axis-br05/scope#g05-t02-activity-alpha",
+      "ruleId": "d2-452231c1f4cbdb13cabb",
       "objectKey": "g05-t02-activity-alpha",
       "subjectId": "g05-t02-subject-alpha",
       "sourceIds": [
         "src-c",
+        "src-br05",
+        "src-policy",
         "src-synthetic"
       ],
-      "authority": "request-scope",
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-activity",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br06/scope#g05-t02-activity-alpha",
+      "ruleId": "d2-f0818697f1567f043e53",
+      "objectKey": "g05-t02-activity-alpha",
+      "subjectId": "g05-t02-subject-alpha",
+      "sourceIds": [
+        "src-c",
+        "src-br06",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-activity",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br07/scope#g05-t02-activity-alpha",
+      "ruleId": "d2-bb8a521ec9b14159938f",
+      "objectKey": "g05-t02-activity-alpha",
+      "subjectId": "g05-t02-subject-alpha",
+      "sourceIds": [
+        "src-c",
+        "src-br07",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-activity",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br08/scope#g05-t02-activity-alpha",
+      "ruleId": "d2-ffb371641e6a43eed168",
+      "objectKey": "g05-t02-activity-alpha",
+      "subjectId": "g05-t02-subject-alpha",
+      "sourceIds": [
+        "src-c",
+        "src-br08",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-activity",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br09/scope#g05-t02-activity-alpha",
+      "ruleId": "d2-51e9e9352349529207c7",
+      "objectKey": "g05-t02-activity-alpha",
+      "subjectId": "g05-t02-subject-alpha",
+      "sourceIds": [
+        "src-c",
+        "src-br09",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-activity",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br10/scope#g05-t02-activity-alpha",
+      "ruleId": "d2-ccee8ddb5c188614f208",
+      "objectKey": "g05-t02-activity-alpha",
+      "subjectId": "g05-t02-subject-alpha",
+      "sourceIds": [
+        "src-c",
+        "src-br10",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-activity",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br11/scope#g05-t02-activity-alpha",
+      "ruleId": "d2-cdeb3f3b9193ff9e266a",
+      "objectKey": "g05-t02-activity-alpha",
+      "subjectId": "g05-t02-subject-alpha",
+      "sourceIds": [
+        "src-c",
+        "src-br11",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-activity",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br12/scope#g05-t02-activity-alpha",
+      "ruleId": "d2-d1bc61a4a7edf83854c0",
+      "objectKey": "g05-t02-activity-alpha",
+      "subjectId": "g05-t02-subject-alpha",
+      "sourceIds": [
+        "src-c",
+        "src-br12",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-activity",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br13/scope#g05-t02-activity-alpha",
+      "ruleId": "d2-ab38e5b3a8955432ae12",
+      "objectKey": "g05-t02-activity-alpha",
+      "subjectId": "g05-t02-subject-alpha",
+      "sourceIds": [
+        "src-c",
+        "src-br13",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-activity",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br14/scope#g05-t02-activity-alpha",
+      "ruleId": "d2-0dbaa7b0401506f7c024",
+      "objectKey": "g05-t02-activity-alpha",
+      "subjectId": "g05-t02-subject-alpha",
+      "sourceIds": [
+        "src-c",
+        "src-br14",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-activity",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br15/scope#g05-t02-activity-alpha",
+      "ruleId": "d2-f2ab760acdb44f71250d",
+      "objectKey": "g05-t02-activity-alpha",
+      "subjectId": "g05-t02-subject-alpha",
+      "sourceIds": [
+        "src-c",
+        "src-br15",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
       "applicability": "not-applicable",
       "evidenceCoverage": {
         "fieldKey": "g05-t02-activity",
@@ -2553,15 +3441,17 @@
       }
     },
     {
-      "checkId": "module/axis-overnight/scope#g05-t02-member-beta",
-      "ruleId": "d2-6b9b2c3ad4deb4d1a014",
+      "checkId": "module/axis-br03/scope#g05-t02-member-beta",
+      "ruleId": "d2-e9cb166467963f53ffe7",
       "objectKey": "g05-t02-member-beta",
       "subjectId": "g05-t02-subject-beta",
       "sourceIds": [
         "src-c",
+        "src-br03",
+        "src-policy",
         "src-synthetic"
       ],
-      "authority": "request-scope",
+      "authority": "unverified-policy",
       "applicability": "unknown",
       "evidenceCoverage": {
         "fieldKey": "g05-t02-member",
@@ -2572,15 +3462,17 @@
       }
     },
     {
-      "checkId": "module/axis-transport-special/scope#g05-t02-member-beta",
-      "ruleId": "d2-a679753e50dfdef0c782",
+      "checkId": "module/axis-br04/scope#g05-t02-member-beta",
+      "ruleId": "d2-e2425f636063c7fb0b41",
       "objectKey": "g05-t02-member-beta",
       "subjectId": "g05-t02-subject-beta",
       "sourceIds": [
         "src-c",
+        "src-br04",
+        "src-policy",
         "src-synthetic"
       ],
-      "authority": "request-scope",
+      "authority": "unverified-policy",
       "applicability": "not-applicable",
       "evidenceCoverage": {
         "fieldKey": "g05-t02-member",
@@ -2591,15 +3483,227 @@
       }
     },
     {
-      "checkId": "module/axis-high-risk/scope#g05-t02-member-beta",
-      "ruleId": "d2-ec0da0a5b2b83f94db8a",
+      "checkId": "module/axis-br05/scope#g05-t02-member-beta",
+      "ruleId": "d2-dc8c8a7b2b6d82fc56af",
       "objectKey": "g05-t02-member-beta",
       "subjectId": "g05-t02-subject-beta",
       "sourceIds": [
         "src-c",
+        "src-br05",
+        "src-policy",
         "src-synthetic"
       ],
-      "authority": "request-scope",
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-member",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br06/scope#g05-t02-member-beta",
+      "ruleId": "d2-11bac2c3957dc2489031",
+      "objectKey": "g05-t02-member-beta",
+      "subjectId": "g05-t02-subject-beta",
+      "sourceIds": [
+        "src-c",
+        "src-br06",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-member",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br07/scope#g05-t02-member-beta",
+      "ruleId": "d2-469c18d4f08cdb5a4e1e",
+      "objectKey": "g05-t02-member-beta",
+      "subjectId": "g05-t02-subject-beta",
+      "sourceIds": [
+        "src-c",
+        "src-br07",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-member",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br08/scope#g05-t02-member-beta",
+      "ruleId": "d2-37f15361cbc5f43a5c9d",
+      "objectKey": "g05-t02-member-beta",
+      "subjectId": "g05-t02-subject-beta",
+      "sourceIds": [
+        "src-c",
+        "src-br08",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-member",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br09/scope#g05-t02-member-beta",
+      "ruleId": "d2-cd4b2beed31ed3b25255",
+      "objectKey": "g05-t02-member-beta",
+      "subjectId": "g05-t02-subject-beta",
+      "sourceIds": [
+        "src-c",
+        "src-br09",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-member",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br10/scope#g05-t02-member-beta",
+      "ruleId": "d2-465fab249238685c0bbe",
+      "objectKey": "g05-t02-member-beta",
+      "subjectId": "g05-t02-subject-beta",
+      "sourceIds": [
+        "src-c",
+        "src-br10",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-member",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br11/scope#g05-t02-member-beta",
+      "ruleId": "d2-8579116e4bbcd3790ed9",
+      "objectKey": "g05-t02-member-beta",
+      "subjectId": "g05-t02-subject-beta",
+      "sourceIds": [
+        "src-c",
+        "src-br11",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-member",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br12/scope#g05-t02-member-beta",
+      "ruleId": "d2-e4722eb538e1b9fb993a",
+      "objectKey": "g05-t02-member-beta",
+      "subjectId": "g05-t02-subject-beta",
+      "sourceIds": [
+        "src-c",
+        "src-br12",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-member",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br13/scope#g05-t02-member-beta",
+      "ruleId": "d2-e8d6f93ebb7c206f1d59",
+      "objectKey": "g05-t02-member-beta",
+      "subjectId": "g05-t02-subject-beta",
+      "sourceIds": [
+        "src-c",
+        "src-br13",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-member",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br14/scope#g05-t02-member-beta",
+      "ruleId": "d2-2f89afc10071b24fc188",
+      "objectKey": "g05-t02-member-beta",
+      "subjectId": "g05-t02-subject-beta",
+      "sourceIds": [
+        "src-c",
+        "src-br14",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g05-t02-member",
+        "supportsFacts": [
+          "d2:object:g05-t02-activity:scope",
+          "d2:object:g05-t02-member:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/axis-br15/scope#g05-t02-member-beta",
+      "ruleId": "d2-99107e88b1f718765721",
+      "objectKey": "g05-t02-member-beta",
+      "subjectId": "g05-t02-subject-beta",
+      "sourceIds": [
+        "src-c",
+        "src-br15",
+        "src-policy",
+        "src-synthetic"
+      ],
+      "authority": "unverified-policy",
       "applicability": "not-applicable",
       "evidenceCoverage": {
         "fieldKey": "g05-t02-member",
@@ -2610,5 +3714,5 @@
       }
     }
   ],
-  "fingerprint": "fa62ff7447015bf52871ced582c08f7791ed2f0da73aea40562ee125b571af71"
+  "fingerprint": "6de46645911542b0d6a1dfef1a99eebdce23a90af188c4dc4c3c386d79f49c89"
 }

@@ -1,7 +1,7 @@
 {
-  "bundleFingerprint": "7e342267c47a110923011a5ad3a53f5a8d8f8d630bc4e0c29de4fd246ce697fe",
+  "bundleFingerprint": "c76a31a850f37cde2ae0151fcfa5745d569a16e6f333b814c181b67d9083084b",
   "sourceSha256": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
-  "moduleCount": 17,
+  "moduleCount": 27,
   "imported": true,
   "d1Valid": true
 }
