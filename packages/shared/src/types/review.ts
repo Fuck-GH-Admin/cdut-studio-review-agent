@@ -484,6 +484,7 @@ export const REVIEW_IPC_CHANNELS = {
   GET_CASE: 'review:get-case',
   /** 创建空案卷 */
   CREATE_CASE: 'review:create-case',
+  LIST_D4_TEMPLATES: 'review:list-d4-templates',
   /** 多选导入文件到案卷（逐文件返回解析结果与失败项） */
   IMPORT_DOCUMENT: 'review:import-document',
   /** 多文件导入进度事件，按 requestId 关联到发起导入的界面。 */

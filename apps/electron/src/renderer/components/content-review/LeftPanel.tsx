@@ -19,6 +19,7 @@ import {
   reviewCaseAtom,
   reviewRuleLocateAtom,
   reviewWorkspaceTemplateAtom,
+  reviewWorkspaceAggregateAtom,
 } from '@/atoms/review-atoms'
 import type { ReviewActions } from './use-review-actions'
 import { RuleOutlineList } from './RuleOutlineList'
@@ -30,6 +31,7 @@ interface LeftPanelProps {
 }
 
 export function LeftPanel({ actions }: LeftPanelProps): React.ReactElement {
+  const d4Plan = useAtomValue(reviewWorkspaceAggregateAtom)?.d2RuntimePlan
   const reviewCase = useAtomValue(reviewCaseAtom)
   const documentsByRole = useAtomValue(documentsByRoleAtom)
   const ruleLocate = useAtomValue(reviewRuleLocateAtom)
@@ -152,6 +154,19 @@ export function LeftPanel({ actions }: LeftPanelProps): React.ReactElement {
         </p>
       </header>
 
+      {d4Plan && <section className="space-y-2 px-3 pt-3 text-xs" aria-label="D4 固定审核责任">
+        <p className="rounded-lg bg-amber-500/10 p-2">D4 技术预审 · {d4Plan.templateId} · {d4Plan.mapping.length} 项责任。制度及批准权限仍需有权人员确认。</p>
+        {d4Plan.subjects.map(subject => <details key={subject.id} className="rounded-lg bg-muted/40 p-2">
+          <summary className="cursor-pointer font-medium">{subject.title} · {d4Plan.mapping.filter(m => m.subjectId === subject.id).length} 项责任</summary>
+          <ul className="mt-2 space-y-2">{d4Plan.mapping.filter(m => m.subjectId === subject.id).map(m => <li key={m.ruleId}>
+            {d4Plan.rules.find(r => r.id === m.ruleId)?.title} · {m.applicability === 'unknown' ? '未知 · 待核' : m.applicability === 'not-applicable' ? '不适用' : '适用'}
+          </li>)}</ul>
+        </details>)}
+        {d4Plan.mapping.some(m => !m.subjectId) && <details className="rounded-lg bg-muted/40 p-2">
+          <summary className="cursor-pointer font-medium">整案责任 · {d4Plan.mapping.filter(m => !m.subjectId).length} 项</summary>
+          <ul className="mt-2 space-y-2">{d4Plan.mapping.filter(m => !m.subjectId).map(m => <li key={m.ruleId}>{d4Plan.rules.find(r => r.id === m.ruleId)?.title}</li>)}</ul>
+        </details>}
+      </section>}
       {template && (template.sections ?? []).some((section) => section.criteria.length > 0) && (
         <section className="shrink-0 px-3 pt-3">
           <details className="rounded-lg border border-primary/20 bg-primary/[0.025]">

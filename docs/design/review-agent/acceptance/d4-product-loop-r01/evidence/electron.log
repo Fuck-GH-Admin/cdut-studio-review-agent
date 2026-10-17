@@ -1,0 +1,313 @@
+[协作工具] EventBus 阻塞事件监听已注册
+[启动] 开发隔离实例: d4-product-loop，userData=/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/.local-evidence/profile/user-data
+[516497:1018/053351.171452:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+
+DevTools listening on ws://127.0.0.1:9238/devtools/browser/2fc882eb-37bd-4c0c-ad91-a23e72db91c9
+[运行时初始化] 开始初始化运行时环境...
+[Node.js 检测] 开始检测 Node.js 运行时...
+[Node.js 检测] 找到 Node.js: /home/miku/.nvm/versions/node/v22.23.2/bin/node (22.23.2)
+[Bun 检测] 开始检测 Bun 运行时（可选组件）...
+[Bun 检测] 找到 Bun (system): /home/miku/.nvm/versions/node/v22.23.2/bin/bun (1.4.0)
+[Git 检测] 开始检测 Git 运行时...
+[Git 检测] 找到 Git: /usr/bin/git (2.53.0)
+[运行时初始化] 已写入磁盘缓存
+[运行时初始化] 初始化完成 (耗时 41ms)
+[运行时初始化] 状态: {
+  node: '✅ 22.23.2',
+  bun: '✅ 1.4.0 (system)',
+  git: '✅ 2.53.0',
+  shell: '⏭️ 跳过（非 Windows）',
+  envLoaded: '✅'
+}
+[IPC] 正在注册 IPC 处理器...
+[配置] 已创建 Agent 工作区目录: /home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/.local-evidence/profile/config/agent-workspaces
+[配置] 已创建 Agent 工作区: /home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/.local-evidence/profile/config/agent-workspaces/default
+[Agent 工作区] 已创建 plugin manifest: default
+[Agent 工作区] 已创建默认工作区
+[IPC] IPC 处理器注册完成
+[审核专区] IPC 处理器注册完成
+[Remote] 未启用（设置页未开启移动模式，且 PROFER_REMOTE 未设置）
+[配置] 默认配置目录名: ~/.cdutai-dev/（开发模式）；实际路径可由 PROFER_CONFIG_DIR 覆盖
+[AgentFabric] 未启用（设置 PROFER_AGENT_FABRIC=1 或 agent-fabric.json enabled=true）
+[516497:1018/053351.308647:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053351.330481:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053351.341226:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+System tray created
+[启动] 开机自启动: 已关闭
+[工作区监听] 已启动文件监听: /home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/.local-evidence/profile/config/agent-workspaces
+[全局快捷键] 注册成功: show-main-window → CommandOrControl+Shift+P
+[516497:1018/053351.363922:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/053351.364003:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[Bridge Registry] 自愈守护已启动
+[定时任务] 调度器已启动，tick 周期 30s
+[设置] 系统主题变化: 浅色
+[516497:1018/053351.577459:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[CdutAuthManager] 启动已清空特区账户分区存储，登录态复位为未登录
+[设置] 已更新 keys: mainWindowState
+(electron) 'console-message' arguments are deprecated and will be removed. Please use Event<WebContentsConsoleMessageEventParams> object instead.
+[renderer:verbose] http://localhost:5188/@vite/client:789 [vite] connecting...
+[renderer:verbose] http://localhost:5188/@vite/client:912 [vite] connected.
+[renderer:info] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=4bbe14e9:21609 %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+[renderer:warning] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/jotai_utils.js?v=e805482b:36 [DEPRECATED] atomFamily is deprecated and will be removed in v3. Please use the `jotai-family` package instead: https://github.com/jotaijs/jotai-family
+[皮肤] 注册表: forest-dark(dark,内置), forest-light(light,内置), mist-paper-dark(dark,内置), ocean-dark(dark,内置), ocean-light(light,内置), slate-dark(dark,内置), slate-light(light,内置), terminal-dark(dark,内置)
+
+(electron:516497): libunity-CRITICAL **: 05:33:58.969: unity-inspector.vala:96: Unable to connect to session bus: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:516497): libunity-CRITICAL **: 05:33:58.969: unity-launcher.vala:157: Unable to connect to session bus: Unknown or unsupported transport “disabled” for address “disabled:”
+[renderer:info] http://localhost:5188/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[renderer:info] http://localhost:5188/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[配置] 已同步默认 Skill: automation
+[配置] 已同步默认 Skill: brainstorming
+[配置] 已同步默认 Skill: docx
+[配置] 已同步默认 Skill: executing-plans
+[配置] 已同步默认 Skill: find-skills
+[配置] 已同步默认 Skill: guizang-ppt-skill
+[配置] 已同步默认 Skill: in-app-browser
+[配置] 已同步默认 Skill: lark-delivery
+[配置] 已同步默认 Skill: pdf
+[配置] 已同步默认 Skill: pptx
+[配置] 已同步默认 Skill: profer-coach
+[配置] 已同步默认 Skill: session-cleaner
+[配置] 已同步默认 Skill: skill-creator
+[配置] 已同步默认 Skill: tool-builder
+[配置] 已同步默认 Skill: user-sense
+[配置] 已同步默认 Skill: writing-plans
+[配置] 已同步默认 Skill: xlsx
+[设置] 已更新 keys: tabState
+[设置] 已更新 keys: mainWindowState
+[516497:1018/053412.678778:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053412.678823:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/053412.678849:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053412.678862:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[设置] 已更新 keys: onboardingCompleted
+[配置] 已创建 Agent 会话目录: /home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/.local-evidence/profile/config/agent-sessions
+[配置] 已创建 Agent 会话工作目录: /home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/.local-evidence/profile/config/agent-workspaces/default/09f63df1-dad4-410e-9bad-0afa1eb2589e
+[Agent 会话] 已创建会话: 新 Agent 会话 (09f63df1-dad4-410e-9bad-0afa1eb2589e)
+[设置] 已更新 keys: scratchPadActive
+[设置] 已更新 keys: agentWorkspaceId
+[设置] 已更新 keys: agentChannelId, agentModelId
+[Agent 会话] 已更新会话: 新 Agent 会话 (09f63df1-dad4-410e-9bad-0afa1eb2589e)
+[设置] 已更新 keys: agentChannelId, agentModelId
+[Agent 会话] 已更新会话: 新 Agent 会话 (09f63df1-dad4-410e-9bad-0afa1eb2589e)
+[身份] 设备身份: Linux (Bot) (06956d6c-ac7f-49e5-9f5e-fe15a735e790)
+[代理配置] 使用手动配置代理: http://127.0.0.1:7890
+[设置] 已更新 keys: tabState
+[设置] 已更新 keys: tutorialBannerDismissed
+[CdutDemo] 命中演示账户，进入离线演示态（不保活、不落盘）
+[设置] 已更新 keys: coachTourVersion
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /components/content-review/ContentReviewView.tsx
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /styles/globals.css
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /components/content-review/LeftPanel.tsx
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /styles/globals.css
+[设置] 已更新 keys: tabState
+[renderer:verbose] http://localhost:5188/@vite/client:789 [vite] connecting...
+[renderer:verbose] http://localhost:5188/@vite/client:912 [vite] connected.
+[renderer:info] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=4bbe14e9:21609 %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+[renderer:warning] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/jotai_utils.js?v=e805482b:36 [DEPRECATED] atomFamily is deprecated and will be removed in v3. Please use the `jotai-family` package instead: https://github.com/jotaijs/jotai-family
+[设置] 已更新 keys: agentChannelIds
+[设置] 已更新 keys: agentChannelIds
+[设置] 已更新 keys: scratchPadActive
+[renderer:info] http://localhost:5188/main.tsx?t=1792272963203:715 [TabRestore] 已恢复 1 个标签页
+[renderer:info] http://localhost:5188/main.tsx?t=1792272963203:802 [ScratchPad] 初始化完成，已加载内容: false
+[设置] 已更新 keys: agentChannelIds
+[设置] 已更新 keys: agentChannelIds
+[renderer:info] http://localhost:5188/main.tsx?t=1792272963203:715 [TabRestore] 已恢复 1 个标签页
+[renderer:info] http://localhost:5188/main.tsx?t=1792272963203:802 [ScratchPad] 初始化完成，已加载内容: false
+[代理配置] 使用手动配置代理: http://127.0.0.1:7890
+[设置] 已更新 keys: tabState
+[516497:1018/053640.517306:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053640.517367:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/053640.517402:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053640.517424:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[审核模板] 已发布: comprehensive-assessment-v2@3
+[516497:1018/053647.684512:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053647.684567:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/053647.684601:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053647.684622:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[审核专区] 案卷已更新(rev=1): d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024 — 导入材料 A-电子购买凭证.md（parsed）
+[审核专区] 已导入材料: A-电子购买凭证.md → d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024/doc-1792273026701-gs1rha（解析 parsed）
+[审核专区] 案卷已更新(rev=2): d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024 — 导入材料 B-申报与登记冲突.md（parsed）
+[审核专区] 已导入材料: B-申报与登记冲突.md → d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024/doc-1792273026724-dw6m1o（解析 parsed）
+[设置] 已更新 keys: tabState
+[renderer:verbose] http://localhost:5188/@vite/client:789 [vite] connecting...
+[renderer:verbose] http://localhost:5188/@vite/client:912 [vite] connected.
+[renderer:info] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=4bbe14e9:21609 %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+[renderer:warning] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/jotai_utils.js?v=e805482b:36 [DEPRECATED] atomFamily is deprecated and will be removed in v3. Please use the `jotai-family` package instead: https://github.com/jotaijs/jotai-family
+[设置] 已更新 keys: scratchPadActive
+[renderer:info] http://localhost:5188/main.tsx?t=1792272963203:715 [TabRestore] 已恢复 1 个标签页
+[renderer:info] http://localhost:5188/main.tsx?t=1792272963203:802 [ScratchPad] 初始化完成，已加载内容: false
+[renderer:info] http://localhost:5188/main.tsx?t=1792272963203:715 [TabRestore] 已恢复 1 个标签页
+[renderer:info] http://localhost:5188/main.tsx?t=1792272963203:802 [ScratchPad] 初始化完成，已加载内容: false
+[代理配置] 使用手动配置代理: http://127.0.0.1:7890
+[设置] 已更新 keys: tabState
+[516497:1018/053734.795305:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053734.795358:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/053734.795385:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053734.795397:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/053743.251168:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053743.251213:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/053743.251246:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053743.251268:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[配置] 已创建 Agent 会话工作目录: /home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/.local-evidence/profile/config/agent-workspaces/default/effe0738-1012-4b59-a61f-758c83dbfc6e
+[Agent 会话] 已创建会话: 审核：D4 G08 失物领回 · 双对象在线技术预审 (effe0738-1012-4b59-a61f-758c83dbfc6e)
+[Agent 会话] 已更新会话: 审核：D4 G08 失物领回 · 双对象在线技术预审 (effe0738-1012-4b59-a61f-758c83dbfc6e)
+[附加目录监听] 已启动: /home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/.local-evidence/profile/config/review-cases/d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024/source-docs
+[设置] 已更新 keys: scratchPadActive
+[Agent 会话] 已更新会话: 审核：D4 G08 失物领回 · 双对象在线技术预审 (effe0738-1012-4b59-a61f-758c83dbfc6e)
+[Agent 会话] 已更新会话: 审核：D4 G08 失物领回 · 双对象在线技术预审 (effe0738-1012-4b59-a61f-758c83dbfc6e)
+[Agent 编排] 请求路由: {
+  sessionId: 'effe0738-1012-4b59-a61f-758c83dbfc6e',
+  requestSource: 'agent-message',
+  channelId: '8d50aec8-effc-4dec-ab9f-22773fa7e2b8',
+  modelId: 'deepseek-flash',
+  provider: 'deepseek'
+}
+[Agent 编排] Resume 状态: sdkSessionId=无, proma sessionId=effe0738-1012-4b59-a61f-758c83dbfc6e
+[Agent 编排] 启动 Pi runtime，模型: deepseek-flash, resume: 无
+[Agent 编排] 使用 session 级别 cwd: /home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/.local-evidence/profile/config/agent-workspaces/default/effe0738-1012-4b59-a61f-758c83dbfc6e (默认工作区/effe0738-1012-4b59-a61f-758c83dbfc6e)
+[Agent 编排] 无 sdkSessionId，将作为新会话启动（回填历史上下文）
+[Agent 会话] 已更新会话: 审核：D4 G08 失物领回 · 双对象在线技术预审 (effe0738-1012-4b59-a61f-758c83dbfc6e)
+[Pi 桥接] 已挂载 24 个工具（激活组: cdut-tools, collaboration）
+[Agent 编排] 权限模式: bypassPermissions
+[设置] 已更新 keys: agentWorkspaceId
+[设置] 已更新 keys: tabState
+[Skill 路由] {"sessionId":"effe0738-1012-4b59-a61f-758c83dbfc6e","allowed":["brainstorming","docx","executing-plans","find-skills","lark-delivery","pdf","profer-coach","session-cleaner","skill-creator","tool-builder","user-sense","writing-plans","xlsx"],"blocked":[{"slug":"automation","code":"tool-group-disabled"},{"slug":"guizang-ppt-skill","code":"tool-group-disabled"},{"slug":"in-app-browser","code":"tool-group-disabled"},{"slug":"pptx","code":"tool-group-disabled"}],"selected":[{"slug":"pdf","reason":"pdf-artifact"}],"diagnostics":[]}
+[代理配置] 使用手动配置代理: http://127.0.0.1:7890
+[配置] 已创建 Pi 检查点目录: /home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/.local-evidence/profile/config/agent-checkpoints
+[Agent 编排] 开始通过 Adapter 遍历事件流...
+[Agent 编排] SDK 路由输入: {
+  sessionId: 'effe0738-1012-4b59-a61f-758c83dbfc6e',
+  channelId: '8d50aec8-effc-4dec-ab9f-22773fa7e2b8',
+  provider: 'deepseek',
+  configuredModelId: 'deepseek-flash',
+  effectiveSdkModelId: 'deepseek-flash',
+  oneMillionContextEnabled: false,
+  betaCount: 0,
+  authMode: 'api-key',
+  agentUrlOrigin: 'https://api.deepseek.com',
+  agentUrlPathname: '/anthropic',
+  appProxyEnabled: true
+}
+[Agent 会话] 已更新会话: 审核：D4 G08 失物领回 · 双对象在线技术预审 (effe0738-1012-4b59-a61f-758c83dbfc6e)
+[Agent 编排] 已保存 SDK session_id: 01a14bcc-c97e-76a6-93a4-7928839fa3e1
+[Agent 会话] 已更新会话: 审核：D4 G08 失物领回 · 双对象在线技术预审 (effe0738-1012-4b59-a61f-758c83dbfc6e)
+[Agent 编排] SDK 确认模型: deepseek-flash
+[Agent 编排] 缓存 contextWindow: 400000
+[516497:1018/053754.844564:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053754.844628:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/053754.844656:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/053754.844663:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[renderer:error] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=4bbe14e9:521 Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[renderer:info] http://localhost:5188/@vite/client:964 [vite] server connection lost. Polling for restart...
+[设置] 已更新 keys: tabState
+[renderer:verbose] http://localhost:5188/@vite/client:789 [vite] connecting...
+[renderer:verbose] http://localhost:5188/@vite/client:912 [vite] connected.
+[renderer:info] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=8ccf375d:21609 %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+[renderer:warning] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/jotai_utils.js?v=8ccf375d:36 [DEPRECATED] atomFamily is deprecated and will be removed in v3. Please use the `jotai-family` package instead: https://github.com/jotaijs/jotai-family
+[设置] 已更新 keys: scratchPadActive
+[renderer:info] http://localhost:5188/main.tsx:715 [TabRestore] 已恢复 2 个标签页
+[renderer:info] http://localhost:5188/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[renderer:info] http://localhost:5188/main.tsx:715 [TabRestore] 已恢复 2 个标签页
+[renderer:info] http://localhost:5188/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[代理配置] 使用手动配置代理: http://127.0.0.1:7890
+[设置] 已更新 keys: tabState
+[renderer:error] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=8ccf375d:521 Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /components/content-review/CenterPanel.tsx
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /styles/globals.css
+[renderer:error] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=8ccf375d:521 Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /components/content-review/CreateCaseDialog.tsx
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /styles/globals.css
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /components/content-review/D4CaseSetup.tsx
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /styles/globals.css
+[Agent 会话] 已更新会话: 审核：D4 G08 失物领回 · 双对象在线技术预审 (effe0738-1012-4b59-a61f-758c83dbfc6e)
+[Agent 编排] result 到达: sessionId=effe0738-1012-4b59-a61f-758c83dbfc6e, subtype=success, terminal_reason=completed, keepChannelOpen=false
+[Agent 会话] 已更新会话: 审核：D4 G08 失物领回 · 双对象在线技术预审 (effe0738-1012-4b59-a61f-758c83dbfc6e)
+[Agent 会话] 已更新会话: 审核：D4 G08 失物领回 · 双对象在线技术预审 (effe0738-1012-4b59-a61f-758c83dbfc6e)
+
+(electron:516497): libnotify-WARNING **: 05:40:47.442: Failed to connect to proxy
+
+(electron:516497): libnotify-WARNING **: 05:40:47.442: Failed to connect to proxy
+
+(electron:516497): libnotify-WARNING **: 05:40:47.442: Failed to connect to proxy
+[516497:1018/054047.442357:ERROR:electron/shell/browser/notifications/linux/libnotify_notification.cc:63] notify_notification_show: domain=759 code=13 message="Unknown or unsupported transport “disabled” for address “disabled:”"
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /components/content-review/CaseManagerBar.tsx
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /styles/globals.css
+[550101:1018/054048.199058:ERROR:media/audio/alsa/alsa_util.cc:204] PcmOpen: default,Host is down
+[550101:1018/054048.202989:ERROR:media/audio/alsa/alsa_util.cc:204] PcmOpen: plug:default,Host is down
+[516497:1018/054048.805671:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054048.805726:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054048.805756:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054048.805782:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054126.366093:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054126.366141:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054126.366177:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054126.366202:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054140.540842:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054140.540890:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054140.540917:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054140.540925:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054147.890632:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054147.890683:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054147.890707:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054147.890718:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054200.464376:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054200.464432:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054200.464464:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054200.464484:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /components/content-review/SourceBlockView.tsx
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /styles/globals.css
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /components/content-review/RightPanel.tsx
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /styles/globals.css
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /components/content-review/RightPanel.tsx
+[renderer:verbose] http://localhost:5188/@vite/client:883 [vite] hot updated: /styles/globals.css
+[516497:1018/054255.724026:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054255.724179:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054255.724280:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054255.724307:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054311.310177:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054311.310231:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054311.310258:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054311.310271:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054340.842641:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054340.842702:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054340.842731:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054340.842743:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054342.772728:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054342.772788:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054342.772820:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054342.772837:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054359.983529:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054359.983579:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054359.983609:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054359.983616:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[审核专区] 案卷已更新(rev=1): d4-6551c941-d310-40ac-bca3-f36bf3cb7562 — 导入材料 G01-双字段证明.md（parsed）
+[审核专区] 已导入材料: G01-双字段证明.md → d4-6551c941-d310-40ac-bca3-f36bf3cb7562/doc-1792273452271-47oklx（解析 parsed）
+[516497:1018/054413.146906:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054413.146948:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[516497:1018/054413.146978:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[516497:1018/054413.147003:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[设置] 已更新 keys: tabState
+[设置] 已更新 keys: tabState
+[renderer:verbose] http://localhost:5188/@vite/client:789 [vite] connecting...
+[renderer:verbose] http://localhost:5188/@vite/client:912 [vite] connected.
+[renderer:info] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=8ccf375d:21609 %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+[renderer:warning] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/jotai_utils.js?v=8ccf375d:36 [DEPRECATED] atomFamily is deprecated and will be removed in v3. Please use the `jotai-family` package instead: https://github.com/jotaijs/jotai-family
+[设置] 已更新 keys: scratchPadActive
+[renderer:info] http://localhost:5188/main.tsx?t=1792273514986:715 [TabRestore] 已恢复 2 个标签页
+[renderer:info] http://localhost:5188/main.tsx?t=1792273514986:802 [ScratchPad] 初始化完成，已加载内容: false
+[renderer:info] http://localhost:5188/main.tsx?t=1792273514986:715 [TabRestore] 已恢复 2 个标签页
+[renderer:info] http://localhost:5188/main.tsx?t=1792273514986:802 [ScratchPad] 初始化完成，已加载内容: false
+[代理配置] 使用手动配置代理: http://127.0.0.1:7890
+[设置] 已更新 keys: tabState
+[设置] 已更新 keys: tabState
+[renderer:verbose] http://localhost:5188/@vite/client:789 [vite] connecting...
+[renderer:verbose] http://localhost:5188/@vite/client:912 [vite] connected.
+[renderer:info] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=8ccf375d:21609 %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+[renderer:warning] http://localhost:5188/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/jotai_utils.js?v=8ccf375d:36 [DEPRECATED] atomFamily is deprecated and will be removed in v3. Please use the `jotai-family` package instead: https://github.com/jotaijs/jotai-family
+[设置] 已更新 keys: scratchPadActive
+[renderer:info] http://localhost:5188/main.tsx?t=1792273595412:715 [TabRestore] 已恢复 2 个标签页
+[renderer:info] http://localhost:5188/main.tsx?t=1792273595412:802 [ScratchPad] 初始化完成，已加载内容: false
+[renderer:info] http://localhost:5188/main.tsx?t=1792273595412:715 [TabRestore] 已恢复 2 个标签页
+[renderer:info] http://localhost:5188/main.tsx?t=1792273595412:802 [ScratchPad] 初始化完成，已加载内容: false
+[代理配置] 使用手动配置代理: http://127.0.0.1:7890
+[设置] 已更新 keys: tabState

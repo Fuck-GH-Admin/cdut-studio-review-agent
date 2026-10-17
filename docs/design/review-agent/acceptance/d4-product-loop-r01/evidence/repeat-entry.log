@@ -1,0 +1,165 @@
+D4 技术预审隔离目录：/tmp/cdut-d4-product-loop-rWSKWW
+模型配置来源：/home/miku/.cdutai-dev
+合成材料：/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/docs/design/review-agent/acceptance/d4-product-loop-r01/fixtures
+$ tsc --noEmit
+$ esbuild src/main/index.ts --bundle --platform=node --format=cjs --outfile=dist/main.cjs --external:electron --external:@earendil-works/pi-coding-agent --external:@earendil-works/pi-agent-core --external:@earendil-works/pi-ai --define:__PROFER_BUILD_TARGET__='"oss"' --minify-whitespace --minify-identifiers
+▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+
+    src/main/lib/study/study-document-indexer.ts:182:70:
+      182 │ ...L(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+          ╵                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+
+    src/main/lib/document-parser.ts:773:70:
+      773 │ ...L(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+          ╵                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+
+    src/main/lib/review/case-import.ts:49:70:
+      49 │ ...RL(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+         ╵                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3 warnings
+
+  dist/main.cjs  9.2mb ⚠️
+
+⚡ Done in 489ms
+$ bun run build:app-preload
+$ esbuild src/preload/index.ts --bundle --platform=node --format=cjs --outfile=dist/preload.cjs --external:electron
+
+  dist/preload.cjs  205.1kb
+
+⚡ Done in 14ms
+$ bun run scripts/copy-resources.ts
+resources → dist/resources
+$ node scripts/build-ooxml.mjs
+[ooxml] copied 25 files to src/renderer/public/vendor/ooxml
+[ooxml] wasm manifest: {"docx":"docx_parser_bg.b03d7042070b8f7d.wasm","xlsx":"xlsx_parser_bg.72cc0f2c2c001587.wasm","pptx":"pptx_parser_bg.6d87be4bc539a1f7.wasm"}
+$ bun run build:ooxml && vite dev
+$ node scripts/build-ooxml.mjs
+[ooxml] copied 25 files to src/renderer/public/vendor/ooxml
+[ooxml] wasm manifest: {"docx":"docx_parser_bg.b03d7042070b8f7d.wasm","xlsx":"xlsx_parser_bg.72cc0f2c2c001587.wasm","pptx":"pptx_parser_bg.6d87be4bc539a1f7.wasm"}
+
+  VITE v6.4.3  ready in 153 ms
+
+  ➜  Local:   http://localhost:39085/
+  ➜  Network: use --host to expose
+客户端入口：CDUT 专区 → 材料审核 → 新建审核项目 → 使用 D4 候选模板 · 技术预审
+条件改变请新建案卷；候选不能发布。退出后保留隔离目录供核验。
+[配置] 已创建 SDK 配置目录: /tmp/cdut-d4-product-loop-rWSKWW/config/sdk-config
+[协作工具] EventBus 阻塞事件监听已注册
+[启动] 开发隔离实例: d4-1792273621483，userData=/tmp/cdut-d4-product-loop-rWSKWW/user-data
+[581257:1018/054735.187266:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+
+DevTools listening on ws://127.0.0.1:9239/devtools/browser/68fa3a22-1f95-4187-bfba-04236109a5ca
+[运行时初始化] 开始初始化运行时环境...
+[Node.js 检测] 开始检测 Node.js 运行时...
+[Node.js 检测] 找到 Node.js: /home/miku/.nvm/versions/node/v22.23.2/bin/node (22.23.2)
+[Bun 检测] 开始检测 Bun 运行时（可选组件）...
+[Bun 检测] 找到 Bun (system): /home/miku/.nvm/versions/node/v22.23.2/bin/bun (1.4.0)
+[Git 检测] 开始检测 Git 运行时...
+[Git 检测] 找到 Git: /usr/bin/git (2.53.0)
+[运行时初始化] 已写入磁盘缓存
+[运行时初始化] 初始化完成 (耗时 59ms)
+[运行时初始化] 状态: {
+  node: '✅ 22.23.2',
+  bun: '✅ 1.4.0 (system)',
+  git: '✅ 2.53.0',
+  shell: '⏭️ 跳过（非 Windows）',
+  envLoaded: '✅'
+}
+[IPC] 正在注册 IPC 处理器...
+[配置] 已创建 Agent 工作区目录: /tmp/cdut-d4-product-loop-rWSKWW/config/agent-workspaces
+[配置] 已创建 Agent 工作区: /tmp/cdut-d4-product-loop-rWSKWW/config/agent-workspaces/default
+[Agent 工作区] 已创建 plugin manifest: default
+[Agent 工作区] 已创建默认工作区
+[IPC] IPC 处理器注册完成
+[审核专区] IPC 处理器注册完成
+[Remote] 未启用（设置页未开启移动模式，且 PROFER_REMOTE 未设置）
+[配置] 默认配置目录名: ~/.cdutai-dev/（开发模式）；实际路径可由 PROFER_CONFIG_DIR 覆盖
+[AgentFabric] 未启用（设置 PROFER_AGENT_FABRIC=1 或 agent-fabric.json enabled=true）
+[581257:1018/054735.323892:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[581257:1018/054735.354120:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[581257:1018/054735.362472:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+System tray created
+[启动] 开机自启动: 已关闭
+[工作区监听] 已启动文件监听: /tmp/cdut-d4-product-loop-rWSKWW/config/agent-workspaces
+[全局快捷键] 注册失败（可能被占用）: show-main-window → CommandOrControl+Shift+P
+[581257:1018/054735.386542:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[581257:1018/054735.386618:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[Bridge Registry] 自愈守护已启动
+[定时任务] 调度器已启动，tick 周期 30s
+[设置] 系统主题变化: 浅色
+[581257:1018/054735.430921:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[CdutAuthManager] 启动已清空特区账户分区存储，登录态复位为未登录
+[581359:1018/054735.598957:ERROR:gpu/command_buffer/service/context_group.cc:140] ContextResult::kFatalFailure: WebGL1 blocklisted
+[581393:1018/054735.639164:ERROR:cc/raster/one_copy_raster_buffer_provider.cc:290] Creation of StagingBuffer's SharedImage failed.
+[581393:1018/054735.639318:ERROR:cc/raster/one_copy_raster_buffer_provider.cc:290] Creation of StagingBuffer's SharedImage failed.
+[581393:1018/054735.639318:ERROR:cc/raster/one_copy_raster_buffer_provider.cc:290] Creation of StagingBuffer's SharedImage failed.
+[设置] 已更新 keys: mainWindowState
+(electron) 'console-message' arguments are deprecated and will be removed. Please use Event<WebContentsConsoleMessageEventParams> object instead.
+[renderer:verbose] http://localhost:39085/@vite/client:789 [vite] connecting...
+[renderer:verbose] http://localhost:39085/@vite/client:912 [vite] connected.
+[renderer:info] http://localhost:39085/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=8ccf375d:21609 %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+[renderer:warning] http://localhost:39085/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/jotai_utils.js?v=8ccf375d:36 [DEPRECATED] atomFamily is deprecated and will be removed in v3. Please use the `jotai-family` package instead: https://github.com/jotaijs/jotai-family
+[皮肤] 注册表: forest-dark(dark,内置), forest-light(light,内置), mist-paper-dark(dark,内置), ocean-dark(dark,内置), ocean-light(light,内置), slate-dark(dark,内置), slate-light(light,内置), terminal-dark(dark,内置)
+
+(electron:581257): libunity-CRITICAL **: 05:47:41.593: unity-inspector.vala:96: Unable to connect to session bus: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:581257): libunity-CRITICAL **: 05:47:41.593: unity-launcher.vala:157: Unable to connect to session bus: Unknown or unsupported transport “disabled” for address “disabled:”
+[配置] 已同步默认 Skill: automation
+[配置] 已同步默认 Skill: brainstorming
+[配置] 已同步默认 Skill: docx
+[配置] 已同步默认 Skill: executing-plans
+[配置] 已同步默认 Skill: find-skills
+[配置] 已同步默认 Skill: guizang-ppt-skill
+[配置] 已同步默认 Skill: in-app-browser
+[配置] 已同步默认 Skill: lark-delivery
+[配置] 已同步默认 Skill: pdf
+[581359:1018/054741.685901:ERROR:gpu/command_buffer/service/context_group.cc:140] ContextResult::kFatalFailure: WebGL1 blocklisted
+[581359:1018/054741.686950:ERROR:gpu/command_buffer/service/context_group.cc:140] ContextResult::kFatalFailure: WebGL1 blocklisted
+[配置] 已同步默认 Skill: pptx
+[配置] 已同步默认 Skill: profer-coach
+[配置] 已同步默认 Skill: session-cleaner
+[配置] 已同步默认 Skill: skill-creator
+[配置] 已同步默认 Skill: tool-builder
+[配置] 已同步默认 Skill: user-sense
+[配置] 已同步默认 Skill: writing-plans
+[配置] 已同步默认 Skill: xlsx
+[renderer:info] http://localhost:39085/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[renderer:info] http://localhost:39085/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[设置] 已更新 keys: tabState
+[设置] 已更新 keys: mainWindowState
+5:51:25 AM [vite] (client) hmr update /components/content-review/LeftPanel.tsx, /styles/globals.css
+[renderer:verbose] http://localhost:39085/@vite/client:883 [vite] hot updated: /components/content-review/LeftPanel.tsx
+[renderer:verbose] http://localhost:39085/@vite/client:883 [vite] hot updated: /styles/globals.css
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/docx-B84Lzf0A.js
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/find-cursor-DgyGlCIw.js
+[设置] 已更新 keys: tabState
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/highlight-rect-CBqVAarx.js
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/mathjax-BRfWlbSJ.js
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/mathjax-stix2.js
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/pptx-C2qCkfTT.js
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/render-worker-host-B_mY9aaj.js
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/render-worker-host-CSA5bTZW.js
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/render-worker-host-DL0cvjox.js
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/segments-BLmJVJRb.js
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/types/docx.d.ts
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/types/index.d.ts
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/types/math.d.ts
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/types/pptx.d.ts
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/types/xlsx.d.ts
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/visible-index-C4c37k-n.js
+5:52:33 AM [vite] (client) page reload public/vendor/ooxml/xlsx-1PnsOb7Z.js
+[设置] 已更新 keys: tabState
+[renderer:verbose] http://localhost:39085/@vite/client:789 [vite] connecting...
+[renderer:verbose] http://localhost:39085/@vite/client:912 [vite] connected.
+[renderer:info] http://localhost:39085/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=8ccf375d:21609 %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+[renderer:warning] http://localhost:39085/@fs/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/node_modules/.vite/deps/jotai_utils.js?v=8ccf375d:36 [DEPRECATED] atomFamily is deprecated and will be removed in v3. Please use the `jotai-family` package instead: https://github.com/jotaijs/jotai-family
+[renderer:info] http://localhost:39085/main.tsx?t=1792273953742:802 [ScratchPad] 初始化完成，已加载内容: false
+[renderer:info] http://localhost:39085/main.tsx?t=1792273953742:802 [ScratchPad] 初始化完成，已加载内容: false
+[581359:1018/055235.638010:ERROR:gpu/command_buffer/service/context_group.cc:140] ContextResult::kFatalFailure: WebGL1 blocklisted
+[581359:1018/055235.639269:ERROR:gpu/command_buffer/service/context_group.cc:140] ContextResult::kFatalFailure: WebGL1 blocklisted
+[设置] 已更新 keys: tabState

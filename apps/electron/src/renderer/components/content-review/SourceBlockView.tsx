@@ -118,6 +118,12 @@ export function SourceBlockView({
 
   React.useEffect(() => {
     if (!focusHitAnchor && !ruleHitAnchor && !sourceRefHit) return
+    // 引文可能位于折叠原文中；先展开父级，滚动和高亮才能实际可见。
+    let parent = rootRef.current?.parentElement
+    while (parent) {
+      if (parent instanceof HTMLDetailsElement) parent.open = true
+      parent = parent.parentElement
+    }
 
     // M0/H07：问题卡命中的"依据侧"锚点恒为蓝色（设计 §8：左栏校规定位始终蓝）；
     // 仅申报/证明侧锚点按问题严重度红/黄

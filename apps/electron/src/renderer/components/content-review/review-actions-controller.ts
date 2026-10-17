@@ -93,6 +93,7 @@ export interface ReviewActionsApi {
     academicYear: string
     domainPackId?: ReviewDomainPackId
     reviewTemplate?: { templateId: string; version: number }
+    d4?: import('@profer/shared').D4ClientSelection
   }): Promise<ReviewCase>
   importDocument(input: { caseId: string; role: SourceDocument['role']; requestId?: string }): Promise<ImportDocumentsResult>
   importDocumentFromPath?(input: { caseId: string; sourcePath: string; role: SourceDocument['role']; requestId?: string }): Promise<SourceDocument>
@@ -135,6 +136,7 @@ export interface CreateCaseInput {
   academicYear: string
   domainPackId?: ReviewDomainPackId
   reviewTemplate?: { templateId: string; version: number }
+  d4?: import('@profer/shared').D4ClientSelection
 }
 
 function buildFocus(finding: ReviewFinding): ReviewFocus {
@@ -482,6 +484,7 @@ export function createReviewActionsController(
           academicYear: input.academicYear,
           ...(input.domainPackId ? { domainPackId: input.domainPackId } : {}),
           ...(input.reviewTemplate ? { reviewTemplate: input.reviewTemplate } : {}),
+          ...(input.d4 ? { d4: input.d4 } : {}),
         })
         await refreshWorkspaceV2(created.id).catch((error) => reportError('初始化单案业务记录失败', error))
         await refreshCaseList()

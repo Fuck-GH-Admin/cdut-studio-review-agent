@@ -32,6 +32,7 @@ import { BUILTIN_DOMAIN_PACKS, DEFAULT_DOMAIN_PACK_ID, resolveDomainPack } from 
 import type { ReviewCase, ReviewCaseType, TemplateVersion } from '@profer/shared'
 import { cn } from '@/lib/utils'
 import type { CreateCaseInput } from './use-review-actions'
+import { D4CaseSetup } from './D4CaseSetup'
 
 /** 审核类型选项（与主进程 CASE_TYPES 白名单一致） */
 const CASE_TYPE_OPTIONS: ReviewCaseType[] = ['综合测评', '活动申请', '自定义审核']
@@ -59,6 +60,8 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
   const [domainPackId, setDomainPackId] = React.useState<string>(DEFAULT_DOMAIN_PACK_ID)
   const [templateKey, setTemplateKey] = React.useState('')
   const [submitting, setSubmitting] = React.useState(false)
+  const [d4Mode, setD4Mode] = React.useState(false)
+  const [d4, setD4] = React.useState<import('@profer/shared').D4ClientSelection>()
 
   const selectedTemplate = templates.find((template) => `${template.templateId}@${template.version}` === templateKey)
 
@@ -72,6 +75,8 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
     setDomainPackId(DEFAULT_DOMAIN_PACK_ID)
     setTemplateKey('')
     setSubmitting(false)
+    setD4Mode(false)
+    setD4(undefined)
   }, [open])
 
   React.useEffect(() => {
@@ -82,7 +87,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
   }, [open, templateKey, templates])
 
   const selectedPack = resolveDomainPack(domainPackId)
-  const canSubmit = title.trim().length > 0 && applicant.trim().length > 0 && !!selectedTemplate && !submitting
+  const canSubmit = title.trim().length > 0 && applicant.trim().length > 0 && (d4Mode ? !!d4 : !!selectedTemplate) && !submitting
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
@@ -91,11 +96,12 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
     try {
       const created = await onCreate({
         title: title.trim(),
-        type: caseType,
+        type: d4Mode ? '自定义审核' : caseType,
         applicant: applicant.trim(),
         academicYear: academicYear.trim() || defaultAcademicYear(),
         domainPackId,
-        reviewTemplate: selectedTemplate ? { templateId: selectedTemplate.templateId, version: selectedTemplate.version } : undefined,
+        reviewTemplate: !d4Mode && selectedTemplate ? { templateId: selectedTemplate.templateId, version: selectedTemplate.version } : undefined,
+        ...(d4Mode && d4 ? { d4 } : {}),
       })
       if (!created) return
       toast.success(`已创建审核项目：${created.title}`, {
@@ -109,15 +115,16 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-xl">
+      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle>新建审核项目</DialogTitle>
           <DialogDescription>
-            先建立项目并选择已发布模板；创建后进入三栏工作台，按审核依据、申报材料和证明材料拖入文件。
+            选择已发布模板或受控 D4 技术预审候选，建立项目后导入材料并执行审核。
           </DialogDescription>
         </DialogHeader>
 
         <form className="space-y-4" onSubmit={(event) => void handleSubmit(event)}>
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" aria-label="使用 D4 技术预审" checked={d4Mode} onChange={e => setD4Mode(e.target.checked)} />使用 D4 候选模板 · 技术预审</label>
           <div className="space-y-1.5">
             <Label htmlFor="review-case-title">案卷标题</Label>
             <Input
@@ -129,7 +136,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
             />
           </div>
 
-          <div className="space-y-1.5">
+          {d4Mode ? <D4CaseSetup onChange={setD4} /> : <div className="space-y-1.5">
             <Label htmlFor="review-case-template">审核模板</Label>
             <select
               id="review-case-template"
@@ -149,7 +156,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
             {selectedTemplate
               ? <p className="text-xs text-muted-foreground">{selectedTemplate.description || '项目创建后将按此模板加载审核标准、分项和材料要求。'}</p>
               : <p className="text-xs text-amber-600 dark:text-amber-400">{templates.length === 0 ? '目前没有已发布模板，请先到“审核模板”创建并发布。' : '创建项目必须选择一个已发布模板。'}</p>}
-          </div>
+          </div>}
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
@@ -172,7 +179,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
             </div>
           </div>
 
-          <div className="space-y-1.5">
+          {!d4Mode && <div className="space-y-1.5">
             <Label htmlFor="review-case-type">审核类型</Label>
             <Select value={caseType} onValueChange={(value) => setCaseType(value as ReviewCaseType)}>
               <SelectTrigger id="review-case-type">
@@ -186,9 +193,9 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
                 ))}
               </SelectContent>
             </Select>
-          </div>
+          </div>}
 
-          <div className="space-y-1.5">
+          {!d4Mode && <div className="space-y-1.5">
             <Label>审核领域包</Label>
             {/* 用下拉菜单而非 Select：需要在选项里同时展示包名与一句话说明 */}
             <DropdownMenu>
@@ -222,7 +229,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
               </DropdownMenuContent>
             </DropdownMenu>
             <p className="text-xs leading-4 text-muted-foreground">{selectedPack.description}</p>
-          </div>
+          </div>}
 
           <DialogFooter className="gap-2 pt-2">
             <Button type="button" variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>
@@ -233,7 +240,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
             </Button>
           </DialogFooter>
           {!canSubmit && !submitting && (
-            <p className="text-right text-xs text-muted-foreground">项目标题、申请人与已发布模板为必填项</p>
+            <p className="text-right text-xs text-muted-foreground">{d4Mode ? '填写标题、申请人并确认 D4 对象和条件' : '项目标题、申请人与已发布模板为必填项'}</p>
           )}
         </form>
       </DialogContent>

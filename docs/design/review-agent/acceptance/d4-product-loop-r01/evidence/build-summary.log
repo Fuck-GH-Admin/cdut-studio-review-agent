@@ -1,0 +1,60 @@
+文件：build-main.log
+$ esbuild src/main/index.ts --bundle --platform=node --format=cjs --outfile=dist/main.cjs --external:electron --external:@earendil-works/pi-coding-agent --external:@earendil-works/pi-agent-core --external:@earendil-works/pi-ai --define:__PROFER_BUILD_TARGET__='"oss"' --minify-whitespace --minify-identifiers
+▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+
+    src/main/lib/study/study-document-indexer.ts:182:70:
+      182 │ ...L(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+          ╵                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+
+    src/main/lib/document-parser.ts:773:70:
+      773 │ ...L(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+          ╵                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+
+    src/main/lib/review/case-import.ts:49:70:
+      49 │ ...RL(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+         ╵                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3 warnings
+
+  dist/main.cjs  9.2mb ⚠️
+
+⚡ Done in 450ms
+文件：build-preload.log
+$ bun run build:app-preload
+$ esbuild src/preload/index.ts --bundle --platform=node --format=cjs --outfile=dist/preload.cjs --external:electron
+
+  dist/preload.cjs  205.1kb
+
+⚡ Done in 14ms
+文件：build-resources.log
+$ bun run scripts/copy-resources.ts
+resources → dist/resources
+文件：build-renderer.log
+../../dist/renderer/assets/mermaid.core-tN71RKy0.js                               568.50 kB │ gzip:   128.77 kB
+../../dist/renderer/assets/hls-bsuTaLC4.js                                        595.07 kB │ gzip:   185.87 kB
+../../dist/renderer/assets/wasm-CG6Dc4jp.js                                       622.34 kB │ gzip:   230.29 kB
+../../dist/renderer/assets/wasm-Ck_ssClF.js                                       622.34 kB │ gzip:   230.29 kB
+../../dist/renderer/assets/cpp-CofmeUqb.js                                        626.08 kB │ gzip:    44.82 kB
+../../dist/renderer/assets/cynefin-OW5HDTMX-DlGyrupl.js                           691.11 kB │ gzip:   155.13 kB
+../../dist/renderer/assets/SettingsDialog-CjGQCWqv.js                             708.72 kB │ gzip:   169.23 kB
+../../dist/renderer/assets/three.module-BTt32e3U.js                               732.83 kB │ gzip:   189.32 kB
+../../dist/renderer/assets/emacs-lisp-C9XAeP06.js                                 779.85 kB │ gzip:   196.03 kB
+../../dist/renderer/assets/cpp-BMRokrvK.js                                        785.49 kB │ gzip:    53.20 kB
+../../dist/renderer/assets/emacs-lisp-DaIrSCgJ.js                                 790.02 kB │ gzip:   198.84 kB
+../../dist/renderer/assets/ofv-profer-theme-Tut3tumr.js                           821.14 kB │ gzip:   263.24 kB
+../../dist/renderer/assets/aiden0z-pptx-renderer.es-DdRrGu_d.js                 1,160.78 kB │ gzip:   360.38 kB
+../../dist/renderer/assets/heic2any-LpsE4HIL.js                                 1,352.91 kB │ gzip:   341.26 kB
+../../dist/renderer/assets/render-X3XFXER2-DEFh57o4.js                          1,456.03 kB │ gzip:   445.74 kB
+../../dist/renderer/assets/index-CZmtM8pg.js                                    1,614.16 kB │ gzip:   492.25 kB
+../../dist/renderer/assets/zenuml-definition-ZCSB3OVJ-CY_OxY5z.js               3,262.99 kB │ gzip:   804.28 kB
+../../dist/renderer/assets/main-ul7bW5-V.js                                     4,391.91 kB │ gzip: 1,328.45 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1m 8s

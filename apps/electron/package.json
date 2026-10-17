@@ -1,6 +1,6 @@
 {
   "name": "@profer/electron",
-  "version": "0.15.150",
+  "version": "0.15.151",
   "description": "CDUT Studio",
   "main": "dist/main.cjs",
   "author": "CDUT Studio Devs",
@@ -59,7 +59,8 @@
     "verify:mac-signature": "node scripts/verify-macos-signature.cjs",
     "dist:visual": "bun run scripts/dist.ts",
     "dist:fast": "bun run scripts/dist.ts --current-arch",
-    "dist:debug": "bun run scripts/dist.ts --current-arch --verbose"
+    "dist:debug": "bun run scripts/dist.ts --current-arch --verbose",
+    "review:d4:dev": "bun run scripts/review-d4-product-loop.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.93.0",

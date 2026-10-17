@@ -1,0 +1,63 @@
+/** D4 候选 → 原 D2 建案 → 原工作台材料投影，复用现有 Pi 与权限门禁。 */
+import { randomUUID } from 'node:crypto'
+import { existsSync, readFileSync } from 'node:fs'
+import type { D2ScenarioSelection, D2TrustedStudentSnapshotV1, D4ClientTemplate, D4ClientSelection, ReviewCase } from '@profer/shared'
+import { loadD4UnifiedCatalog, loadD4UnifiedWorkspace, resolveD4SourcePath } from './review-d4-catalog'
+import { createD2TechnicalCase, makeD2CandidateShell } from './review-d2-runtime'
+import { getTemplate, isAuthoringCandidateDraft, saveAuthoringCandidateDraft } from './template-store'
+import { saveCase } from './case-store'
+import { ensureWorkspaceAggregateV2 } from './workspace-service-v2'
+
+const json = <T>(path: string): T => JSON.parse(readFileSync(resolveD4SourcePath(path), 'utf8')) as T
+const basePath = (path: string): string => path.replace(/\/workspace(?:\/workspace)?\.json$/, '')
+
+export function listD4ClientTemplates(): D4ClientTemplate[] {
+  return loadD4UnifiedCatalog().templates.map(entry => {
+    const workspace = loadD4UnifiedWorkspace(entry)
+    const template = workspace.definitions.templates[0]!
+    const base = basePath(entry.workspacePath)
+    const controlledStudentFixture = entry.templateId === 'g01-student-identity-correction'
+    const fixture = ['selection.json', 'synthetic-selection.json', 'fixtures/selection.json']
+      .map(name => `${base}/${name}`).find(path => existsSync(resolveD4SourcePath(path)))
+    const selection = controlledStudentFixture
+      ? json<{ two: D2ScenarioSelection }>(`${base}/fixtures/selections.json`).two
+      : fixture ? json<D2ScenarioSelection>(fixture) : { templateId: entry.templateId, version: entry.templateVersion, targets: [] }
+    return { templateId: entry.templateId, version: entry.templateVersion, domain: entry.domain,
+      name: template.name, workspaceGitBlobSha: entry.workspaceGitBlobSha,
+      primary: template.genericScenarioAxes?.primary ?? [], conditions: template.genericScenarioAxes?.conditions ?? [],
+      selection, controlledStudentFixture }
+  })
+}
+
+export async function createD4ClientCase(input: {
+  title: string; applicant: string; academicYear: string; d4: D4ClientSelection
+}): Promise<ReviewCase> {
+  const selection = input.d4?.selection
+  if (!selection || !input.title?.trim() || !input.applicant?.trim() || !input.academicYear?.trim()) {
+    throw new Error('D4 技术预审需要标题、申请人和明确的对象/场景选择')
+  }
+  const entry = loadD4UnifiedCatalog().templates.find(e => e.templateId === selection.templateId && e.templateVersion === selection.version)
+  if (!entry) throw new Error('D4_TEMPLATE_NOT_IN_CATALOG')
+  const workspace = loadD4UnifiedWorkspace(entry)
+  let trustedStudentSnapshot: D2TrustedStudentSnapshotV1 | undefined
+  if (input.d4.useControlledStudentFixture) {
+    if (entry.templateId !== 'g01-student-identity-correction') throw new Error('D4_SYNTHETIC_REGISTRY_SCOPE_INVALID')
+    trustedStudentSnapshot = json<D2TrustedStudentSnapshotV1>(`${basePath(entry.workspacePath)}/fixtures/controlled-registry.json`)
+  }
+  const old = getTemplate(entry.templateId, entry.templateVersion)
+  if (old && !isAuthoringCandidateDraft(entry.templateId, entry.templateVersion)) throw new Error('D4_EXISTING_TEMPLATE_NOT_CANDIDATE')
+  if (!old) saveAuthoringCandidateDraft(makeD2CandidateShell(workspace, entry.templateId, entry.templateVersion))
+  const caseId = `d4-${randomUUID()}`
+  const result = await createD2TechnicalCase({ caseId, title: input.title,
+    actor: { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' },
+    workspace, selection, trustedStudentSnapshot })
+  if (!result.ok) throw new Error(`${result.code}: ${result.message}`)
+  const now = new Date().toISOString()
+  const reviewCase: ReviewCase = { id: caseId, title: input.title.trim(), type: '自定义审核',
+    applicant: input.applicant.trim(), academicYear: input.academicYear.trim(), createdAt: now, updatedAt: now,
+    documents: [], rulePacks: [], items: [], evidences: [], isDemo: false,
+    reviewTemplate: { templateId: entry.templateId, version: entry.templateVersion } }
+  saveCase(reviewCase)
+  await ensureWorkspaceAggregateV2(caseId)
+  return reviewCase
+}

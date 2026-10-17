@@ -55,6 +55,7 @@ import { reviewV2AggregateAtom, V2CasePanel } from './V2CasePanel'
 import { TemplateWizardPanel } from './TemplateWizardPanel'
 import { BatchPanel } from './BatchPanel'
 import { useReviewActions } from './use-review-actions'
+import { ReviewContextBar } from './ReviewContextBar'
 
 /** 窄屏单栏切换的栏目标识 */
 type Pane = 'left' | 'center' | 'right'
@@ -200,6 +201,8 @@ export function ContentReviewView(): React.ReactElement {
           </Button>
         </div>
       </header>
+
+      {section === 'workbench' && <ReviewContextBar actions={actions} />}
 
       {/* ===== 窄屏：顶部三按钮切换栏 ===== */}
       {narrow && section === 'workbench' && (

@@ -1,0 +1,151 @@
+bun test v1.4.0 (34cbb9a40)
+
+apps/electron/src/main/lib/review/workspace-service-v2.test.ts:
+[配置] 已创建配置目录: /home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/work/tmp/profer-test-workspace-v2-1792273545963
+[审核模板] 已发布: comprehensive-assessment-v2@3
+(pass) 单一工作台案卷映射到 V2 聚合 > 首次打开时以同一 caseId 建立聚合，并投影材料、申报项与来源 [27.29ms]
+(pass) 单一工作台案卷映射到 V2 聚合 > 同步新申报输入时保留人工事实与操作回执 [16.55ms]
+(pass) 单一工作台案卷映射到 V2 聚合 > 同步 V1 投影时保留 V2 工作台直接登记的新材料版本 [20.99ms]
+(pass) 单一工作台案卷映射到 V2 聚合 > 辅助审核页保存的模板版本与手写规则会和文件依据一起投影到审核输入 [10.57ms]
+[审核模板] 已发布: comprehensive-assessment-v2@2
+[审核专区] 案卷已更新(rev=1): demo-zhangsan-2026 — 升级空规则内置综测模板 v2 → v3（保留历史运行）
+(pass) 单一工作台案卷映射到 V2 聚合 > 旧版空规则综测案卷升级到有整案检查的新版本并保留旧运行引用 [10.28ms]
+(pass) 单一工作台案卷映射到 V2 聚合 > 重新投影新申报材料时保留已读状态、确认的证明关联与人工事实 [17.89ms]
+[审核专区] 案卷已更新(rev=1): demo-zhangsan-2026 — 从当前审核中移除证明材料
+(pass) 单一工作台案卷映射到 V2 聚合 > 从证明栏移除材料时清理当前关联并保留不可用的版本与历史关联 [15.97ms]
+[审核专区] 案卷已更新(rev=1): demo-zhangsan-2026 — 调整证明材料顺序
+(pass) 单一工作台案卷映射到 V2 聚合 > 重排证明材料后 V1 与 V2 保持同一来源顺序 [9.45ms]
+(pass) 单一工作台案卷映射到 V2 聚合 > 审核依据按约束结构化编译，未确认内容仍保持人工检查 [13.10ms]
+
+apps/electron/src/main/lib/review/pi-review-agent-client.test.ts:
+(pass) Pi 审核 Agent 客户端 > 批量调用中检查被拒绝时不结束 Pi 工具轮 [7.68ms]
+(pass) Pi 审核 Agent 客户端 > 多条计划检查只在必需目标全部接受后提前结束 [1.60ms]
+(pass) Pi 审核 Agent 客户端 > 总结阶段未授权提前结束时不把事实记录误认为检查完成 [1.18ms]
+(pass) Pi 审核 Agent 客户端 > 文本审核遇到服务超时后返回明确人工待办，不丢弃整案运行 [0.58ms]
+(pass) Pi 审核 Agent 客户端 > 图片请求遇到 502: upstream service temporarily unavailable 时以纯文本重试并要求人工核对图片 [1.24ms]
+(pass) Pi 审核 Agent 客户端 > 图片请求遇到 Internal server error 时以纯文本重试并要求人工核对图片 [0.64ms]
+(pass) Pi 审核 Agent 客户端 > 图片请求遇到 Pi 审核 Agent 超时（150000 ms） 时以纯文本重试并要求人工核对图片 [0.74ms]
+(pass) Pi 审核 Agent 客户端 > 按需视觉能力失败时不再重复发送纯文本请求 [0.54ms]
+(pass) Pi 审核 Agent 客户端 > 通过项目 Pi review profile 注册受控审核工具并传递视觉输入 [0.76ms]
+(pass) Pi 审核 Agent 客户端 > Pi query 无事件时总时限仍能结束并取消上游会话 [16.19ms]
+
+apps/electron/src/main/lib/review/review-d4-common.test.ts:
+(pass) COMMON-01/02 BDD technical regression > two G03 resources and two G08 lost items each expand independent Subject/Check/RuleSpec [12.34ms]
+(pass) COMMON-01/02 BDD technical regression > UNKNOWN preserves the Check, cannot become false or passed; evidence is isolated by subject and version [2.91ms]
+(pass) COMMON-01/02 BDD technical regression > invalid IDs, false authority, omitted conditions, ambiguous primary and stale source fail closed [22.33ms]
+[D4_COMMON_CLI_EVIDENCE] {"head":"local","planFingerprint":"6d8c18799b6bfa46c7c76acc401af87d4cb9ba8899a74488c70ef624e9daf095","transferFingerprint":"086a6111c8be44e3d11610f39cb1ee99228386f515a00c3337a25d815952f22e","checks":6,"subjects":2,"scope":"G03 synthetic technical pre-review","publicationAllowed":false}
+[D4_COMMON_EXAMPLE] {"fingerprint":"c7a6bafb2f9c818309b69f03018b1405f03f96823371a322858028ce7bdf9405","subjects":2,"checks":6,"technicalOnly":true}
+(pass) COMMON-01/02 BDD technical regression > D1 validate/save/read/diff -> D3 export/import -> D2 preview/register/create via isolated CLI [435.93ms]
+[D4_COMMON_PI_EVIDENCE] {"caseId":"d4-real-pi-case","fingerprint":"ae6c51f728da6b728fbde9138507afd831dc4cf42f4ce8b1312f2074f9dfb3cc","subjects":["d4-item-a","d4-item-b"],"checks":["check-d2-60cff2b8ef1333443add-subject-d4-item-a","check-d2-bda92ce6e390f7df608f-subject-d4-item-a","check-d2-d3eef09e346fc55c2af3-subject-d4-item-a","check-d2-98a45e6257d575d804bf-subject-d4-item-b","check-d2-5a5c1658e3ff2ebaf2de-subject-d4-item-b","check-d2-b1fe8ee53cc832443dbf-subject-d4-item-b"],"runId":"run-pi-mvcxe7ff-ky7aq","technicalComplete":true,"publicationAllowed":false}
+(pass) COMMON-01/02 BDD technical regression > real D2 technical case -> Pi prepare/submit/verify pending checks [16.77ms]
+
+apps/electron/src/main/lib/review/pi-case-review-service.test.ts:
+[审核模板] 已发布: pi-review-submit-same-turn@1
+(pass) Pi 审核结果提交与续审 > finish=true 遇到图像出处拒绝和缺项时保持运行开放，修正后可在同一运行提交 [23.63ms]
+[审核模板] 已发布: pi-review-submit-next-turn@1
+(pass) Pi 审核结果提交与续审 > 流结束后的部分完成运行可由“更新审核结果”续交，复用原 runId 与有效检查 [6.21ms]
+[审核模板] 已发布: pi-review-submit-inherit-reads@1
+(pass) Pi 审核结果提交与续审 > 更新审核会沿用内容未变材料在历史运行中的完整读取回执 [5.32ms]
+[审核模板] 已发布: pi-review-submit-reconcile-reads@1
+(pass) Pi 审核结果提交与续审 > 工作台读取历史结果时会修复已完成运行中缺失的跨轮材料读取凭据 [6.08ms]
+
+apps/electron/src/main/lib/review/review-d4-client.test.ts:
+[审核模板] 已发布: comprehensive-assessment-v2@3
+[审核专区] 案卷已更新(rev=1): d4-1c1a517b-e3b1-4aaf-bc53-45d9da521736 — 导入材料 A-电子购买凭证.md（parsed）
+[审核专区] 已导入材料: A-电子购买凭证.md → d4-1c1a517b-e3b1-4aaf-bc53-45d9da521736/doc-1792273547661-ddjy7h（解析 parsed）
+[审核专区] 案卷已更新(rev=2): d4-1c1a517b-e3b1-4aaf-bc53-45d9da521736 — 从当前审核中移除证明材料
+(pass) D4 客户端最小接入 > 真实 G08 建案可发现；上传/移除材料保留固定责任，A 证据不能解锁 B [125.55ms]
+(pass) D4 客户端最小接入 > G03 两资源的互斥、叠加、未知进入 Plan；修改条件的新案不继承旧结果 [277.15ms]
+[审核专区] 案卷已更新(rev=1): d4-fd791555-36db-4297-bdb3-0a5526d713d0 — 导入材料 G01-双字段证明.md（parsed）
+[审核专区] 已导入材料: G01-双字段证明.md → d4-fd791555-36db-4297-bdb3-0a5526d713d0/doc-1792273548044-ymt02g（解析 parsed）
+(pass) D4 客户端最小接入 > G01-I 保留特殊 student-field 及合成 registry：同份证明两条独立关联 [114.40ms]
+
+apps/electron/src/main/lib/review/review-d2-runtime.test.ts:
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > Agent JSON CLI 基于固定 workspace 与对象选择无副作用编译 Pi 计划 [53.22ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > 不可发布候选只能走显式技术建案，普通正式入口继续拒绝未发布模板 [8.22ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > Agent JSON CLI 注册候选并建立可运行案卷，不需要绕过正式建案服务 [85.36ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > 没有固定 D2 任务包的候选案卷不能绕开技术建案直接运行 Pi [1.74ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > D2 计划之外混入额外规则或申报主体应被独立覆盖校验拒止 [2.52ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > 普通文本任务无需业务对象/高级 Claim 图即可编译为单一语义检查 [1.37ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > 校园卡 family 分支只激活家属义务，保留不可自动确认为校规的本地责任 [1.55ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > 未知情景不能假装不适用；复杂业务对象不允许悬空或串改操作 [8.03ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > 档案 item-1/read 与 item-1/copy 真正生成隔离的 RuleSpec/ReviewSubject [1.88ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > 普通 Pi 的真实准备/工具回执完成技术检查，但不意味着学校审批资格 [10.15ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > 档案查阅的真实 SourceRef 不得覆盖复制：Pi 续交完成逐操作三项检查 [10.91ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > 校园卡正式校规尚未认证时，即使 AI 提交符合结论也必须拒绝 [11.44ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > 冻结计划被改写或输入材料版本变化时拒绝旧 Pi 结果冒用 [4.15ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > D2 安装资格来自服务端独立登记，删改 sourceNote 也不影响候选技术预审 [2.12ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > 候选壳始终是草稿，直接发布必须被服务端拒绝 [0.72ms]
+(pass) D2 作者态到 Pi 有效审核规则（BDD） > 候选模板夹带额外 RuleSpec/政策/审批时，固定 D2 运行不能继续 [5.24ms]
+
+apps/electron/src/renderer/components/content-review/review-source-focus.test.ts:
+(pass) V2 SourceRef 三栏定位映射 > 段落、表格单元格和页坐标定位到对应的已解析块 [0.33ms]
+(pass) V2 SourceRef 三栏定位映射 > 文件级引用只定位到文档首块，避免所有原文同时跳动 [0.03ms]
+
+apps/electron/src/renderer/components/content-review/review-actions-controller.test.ts:
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 多选导入保留成功文件并汇报单文件失败 [4.08ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 辅助审核设置按当前案卷保存模板版本与可编辑规则 [1.01ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 文件依据生成的规则摘要可改写并立即进入当前案卷缓存 [1.63ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 人工修正 AI 申报事项后更新当前案卷缓存 [0.92ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 重新打开工作台时恢复已有案卷，材料入口有可用的当前任务 [1.14ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > Given 两份依据 When 生成大纲 Then 两包分别请求并保留各自结果 [1.47ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > Given 已有审核结果 When 导入或切换领域 Then 不切案且即时核验过期标记 [0.95ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > Given 审核过程中输入发生变化 When 旧快照结果返回 Then 仍标为过期 [0.67ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > K05 主场景：A 审核中切到 B，A 返回只落 A、不污染 B、不切回 [0.63ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > H09 恢复：selectCase 拉回最近运行与过期标记 [0.34ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > K05 交错：同案大纲（慢）与识别（快）都保留，互不覆盖 [0.81ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 选择代次：慢的 selectCase(A) 不把界面切回 A [0.37ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 同案互斥：审核进行中拒绝再次发起，且切走后守卫不解除 [0.56ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 一键审核复用已有中间产物，只调用一次最终审核 [2.09ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 已有审核结果可分别沿用会话更新或创建新会话从头审核 [0.58ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > Pi 审核启动前先识别逐事项规则所需的申报事项 [2.27ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > Pi 审核前自动重解析迁移过来的旧版 HTML/EML 失败材料 [1.53ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 阶段 3：一键审核提交同 ID V2 案卷并将主结果写入 V2 run [1.17ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 阶段 2 P0：无审核依据时不启动运行 [0.38ms]
+[审核专区] 生成规则大纲失败 636 |   test('阶段 2 P0：大纲生成失败显示失败，不伪装成缺少用户材料', async () => {
+637 |     const { api, calls } = makeApi()
+638 |     api.getCase = async (caseId) => makeCase(caseId, {
+639 |       documents: [{ id: 'application-1', fileName: '申报.txt', role: 'application', mimeType: 'text/plain', sizeBytes: 1, parseStatus: 'parsed', blocks: [], origin: 'upload' } as never],
+640 |     })
+641 |     api.generateRuleOutline = async () => { throw new Error('模型出口超时') }
+                                                            ^
+error: 模型出口超时
+      at <anonymous> (/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/src/renderer/components/content-review/review-actions-controller.test.ts:641:55)
+      at generateRuleOutline (/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/src/renderer/components/content-review/review-actions-controller.ts:749:37)
+      at runFullReview (/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/src/renderer/components/content-review/review-actions-controller.ts:973:22)
+      at <anonymous> (/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/src/renderer/components/content-review/review-actions-controller.test.ts:645:19)
+
+[审核专区] 一键审核失败 636 |   test('阶段 2 P0：大纲生成失败显示失败，不伪装成缺少用户材料', async () => {
+637 |     const { api, calls } = makeApi()
+638 |     api.getCase = async (caseId) => makeCase(caseId, {
+639 |       documents: [{ id: 'application-1', fileName: '申报.txt', role: 'application', mimeType: 'text/plain', sizeBytes: 1, parseStatus: 'parsed', blocks: [], origin: 'upload' } as never],
+640 |     })
+641 |     api.generateRuleOutline = async () => { throw new Error('模型出口超时') }
+                                                            ^
+error: 模型出口超时
+      at <anonymous> (/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/src/renderer/components/content-review/review-actions-controller.test.ts:641:55)
+      at generateRuleOutline (/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/src/renderer/components/content-review/review-actions-controller.ts:749:37)
+      at runFullReview (/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/src/renderer/components/content-review/review-actions-controller.ts:973:22)
+      at <anonymous> (/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/src/renderer/components/content-review/review-actions-controller.test.ts:645:19)
+
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 阶段 2 P0：大纲生成失败显示失败，不伪装成缺少用户材料 [1.71ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 阶段 2 P0：人工复核与覆盖缺口将完成运行标为部分完成 [0.54ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 阶段 2 P0：重启恢复时状态与最近运行和输入过期标记一致 [0.32ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 操作代次与互斥：同类第二次点击被拒；完成后结果正常落位 [0.36ms]
+[审核专区] 开始审核失败 701 |     const actions = createReviewActionsController(store, api)
+702 |     await actions.selectCase('case-A')
+703 | 
+704 |     const runPromise = actions.runReview()
+705 |     await actions.selectCase('case-B')
+706 |     ;(shift('run-1') ).reject(new Error('模型超时'))
+                                        ^
+error: 模型超时
+      at <anonymous> (/home/miku/Bot/CDUTStudio/.workdir/d4-product-loop-20261018/apps/electron/src/renderer/components/content-review/review-actions-controller.test.ts:706:35)
+
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 错误按案隔离：失败发生时已切走则不污染当前视图 [0.63ms]
+(pass) review-actions-controller（M0/H05 并发与按案写入） > 领域包切换按案落位：响应期间切走也只更新原案卷缓存 [0.42ms]
+
+ 74 pass
+ 0 fail
+ 387 expect() calls
+Ran 74 tests across 8 files. [2.73s]

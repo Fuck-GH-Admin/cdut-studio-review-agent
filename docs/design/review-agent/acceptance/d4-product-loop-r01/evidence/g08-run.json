@@ -1,0 +1,3268 @@
+{
+  "id": "run-pi-mvcx42ca-kvopy",
+  "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+  "templateId": "g08-t02",
+  "templateVersion": 1,
+  "inputManifest": {
+    "hash": "651e2ef4520dea1be1715e85c05bc693e36b73d56502fdcd95a33dd81e173216",
+    "templateVersion": 1,
+    "policyVersions": [],
+    "documentVersions": [
+      {
+        "documentId": "doc-1792273026701-gs1rha",
+        "versionId": "doc-1792273026701-gs1rha-v1",
+        "contentHash": "26ecb5df3dc98e65634f0593a2acf45b71aa28b1"
+      },
+      {
+        "documentId": "doc-1792273026724-dw6m1o",
+        "versionId": "doc-1792273026724-dw6m1o-v1",
+        "contentHash": "572e4d66d6829fcf9774670ddb1501adb6797be8"
+      }
+    ],
+    "observationIds": [],
+    "evidenceLinkIds": [
+      "evl-doc-1792273026701-gs1rha-v1-lost-a-1792273062742-2pax",
+      "evl-doc-1792273026724-dw6m1o-v1-lost-b-1792273063000-k2bw"
+    ],
+    "effectiveRuleIds": [
+      "d2-8c5f8f45ad1205c95550",
+      "d2-37f78c009d7886c00f6c",
+      "d2-c8b1ac66c1cdb539b5e8",
+      "d2-697be292e1a988d7daa5",
+      "d2-ad74dd23366ad2d7e133",
+      "d2-f88363cc141c0a6c8548",
+      "d2-b5de2d486099c8098a03",
+      "d2-1eb8f6c265e5235768e1",
+      "d2-a35d2d176153c7052643",
+      "d2-5bca2e4ddb8dbf140b81",
+      "d2-cf6645c4f463b06fbdd3",
+      "d2-fb5e0f32aba3c2c98f48",
+      "d2-2d57a8b4b42cee333f26",
+      "d2-d6c69e0afc46e2afd909",
+      "d2-45d1f0dd2d94d3a03d81",
+      "d2-814cee99d531a978a062",
+      "d2-6292053cfd6ece728c79",
+      "d2-fb95643c32dfe2e51d1c",
+      "d2-0d3cc2bf087bcfc6fcb8",
+      "d2-31fcb869eec7fa58c482",
+      "d2-adbe52c37fe9cb42da07",
+      "d2-fd54e553a3a3cd448bf2",
+      "d2-be63b5d4831ac86b3dfb",
+      "d2-d8a7b88b71aebc7be31a",
+      "d2-bda967b28befe3069900",
+      "d2-349c8986edcb501ed846",
+      "d2-c041f1a1ee01fad3c3bd",
+      "d2-9e52bd52b7baeb967045",
+      "d2-142bc2050799ab3b2d37",
+      "d2-8d749998d5df73ea7919",
+      "d2-620117a5446f7e0ca68b",
+      "d2-ef1be749a0764cb55934",
+      "d2-c8cfe5185f44c6e8b33c",
+      "d2-b6a78c022e65198f7a48",
+      "d2-39bf05ce19865891ac86",
+      "d2-7a70f507f41e0ce2c111",
+      "d2-a9e0c2428a08b0f66d8c",
+      "d2-929284edc1cd8c49a689",
+      "d2-591a7ca102790d8ff8e6",
+      "d2-a73640b59f5503974a3d",
+      "d2-975f461f5d10ee3b657d",
+      "d2-8eabdd552ad78a896bd9",
+      "d2-f7f2d32f84becd822e9b",
+      "d2-93a38d70282a9f4b288b",
+      "d2-4128c9637856e19017a2",
+      "d2-1466f12157b9be01be4d",
+      "d2-7b6e20a6f52dfd7b1c28",
+      "d2-db83a087c520da6cc7c2",
+      "d2-fa4b9ef4a8491d5b0ce3",
+      "d2-a5f207a079ea89cb42a6",
+      "d2-a7b42428402275f4ee20",
+      "d2-1a6301c1dcc281704af5",
+      "d2-71aee78bdcaef436b421",
+      "d2-26e5129b4f1a9922c12f",
+      "d2-8bda1821bf082103b84b",
+      "d2-d567d583a5565602bb90",
+      "d2-54d0b436cb52e486a2cd",
+      "d2-1e4944b48d0d748df217",
+      "d2-ea52d9e4e722cca558b6",
+      "d2-bdac5f35b3facd3968a0",
+      "d2-13d4238aa8656138a2d1",
+      "d2-f07784b46b7ef37edcab",
+      "d2-ff083d7a90a34597f0c6",
+      "d2-f727851f26e77c67902f",
+      "d2-0cc75385b2fc25461934",
+      "d2-843a1abc34fafd271a0a",
+      "d2-941f4e07ab4dae983ac2",
+      "d2-06e8d2f55c21e0d02ba2",
+      "d2-888bf52bb6f85e08bb48",
+      "d2-0aad7c1ac0f4c1f69c20",
+      "d2-1bad54b5e4add9568643",
+      "d2-89497fcccfab49592997",
+      "d2-a39f3d73c283530f5b8d",
+      "d2-8cc2875038265e2ecce2",
+      "d2-9caa280cd244af3a4924",
+      "d2-06f9da396b04d75e6cd3",
+      "d2-24282cb8b792434f59c5",
+      "d2-f0c2f7d4b0c9b7b2d1a7",
+      "d2-c222f50b1dbf01a30ee4",
+      "d2-c457b93bc254af5cd3a8",
+      "d2-c88dd4da8c10ee0c4e69",
+      "d2-369ac6af60a970dd99b9",
+      "d2-7cadafd069073566130e",
+      "d2-9236ce46cc431770845f",
+      "d2-df8006fb71f580086b00",
+      "d2-17c2de37fa438d2d216d",
+      "d2-8cb1fd23b08e719f518e",
+      "d2-e8f005ca10855073982b",
+      "d2-1a60874e4639093439cc",
+      "d2-72ba63d1cdff00494c9c",
+      "d2-e25081734b88584370a8",
+      "d2-88a731e9532fc1156c6a",
+      "d2-80813780eb6d20a9f600",
+      "d2-1f4774eb456c12376d8b",
+      "d2-1e5288517676cac72bca",
+      "d2-20a0d42a9be176a82cee",
+      "d2-e85594fac0c75eed0d2e",
+      "d2-395e09e48367910b85ee",
+      "d2-26ec01032228c1de83a7",
+      "d2-3daf2e1d4aa382fe5831",
+      "d2-c2348d8b66786054dc7e",
+      "d2-f86b9ea746e1693f2ad7",
+      "d2-1abc1b3080603aeb1977",
+      "d2-60684a6327d7cd460982",
+      "d2-bda6cb3cc6010bbd22eb",
+      "d2-406993aa8d09df6a7289",
+      "d2-9f5a8a41c62f5d6d9212"
+    ],
+    "effectiveRuleSetHash": "de1fdce7f1b20b11091ba6b0884224c6a07cc21a5fa118aaa084da4afffd1d09"
+  },
+  "status": "completed",
+  "checkpoints": [],
+  "checks": [
+    {
+      "checkId": "check-d2-8c5f8f45ad1205c95550-subject-lost-a",
+      "ruleId": "d2-8c5f8f45ad1205c95550",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "compliant",
+      "reason": "申请对象与合成保管登记 A-CUSTODY-018 的特征一致（黑色保温杯、TEST-A-6281、蓝色星形贴纸），构成对在库物的具体指向，而非仅寻物登记。登记真伪与当前是否仍在库须由保管窗口复核；预审不据此认定可交付。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "物品：黑色保温杯，杯底刻字 TEST-A-6281，侧面有蓝色星形贴纸。"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "合成保管登记：A-CUSTODY-018；物品特征为黑色保温杯、TEST-A-6281、蓝色星形贴纸"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.982Z"
+    },
+    {
+      "checkId": "check-d2-37f78c009d7886c00f6c-subject-lost-a",
+      "ruleId": "d2-37f78c009d7886c00f6c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料仅载拾得地点“合成图书馆一层”，未载实际保管部门、领取窗口与领取时段；无法确认申报路由与真实持物单位一致，须由窗口确认保管人与领取安排。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "拾得日期 2026-10-16；拾得地点：合成图书馆一层。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.982Z"
+    },
+    {
+      "checkId": "check-d2-c8b1ac66c1cdb539b5e8-subject-lost-a",
+      "ruleId": "d2-c8b1ac66c1cdb539b5e8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "保管登记载品名、特征、拾得日期与地点，但未载拾获人及接收信息，台账要素不全；属校方后台底账补录事项，O 类校规适用性尚未确认，不要求失主补签或补交。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "合成保管登记：A-CUSTODY-018；物品特征为黑色保温杯、TEST-A-6281、蓝色星形贴纸；拾得日期 2026-10-16；拾得地点：合成图书馆一层。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.982Z"
+    },
+    {
+      "checkId": "check-d2-f88363cc141c0a6c8548-subject-lost-a",
+      "ruleId": "d2-f88363cc141c0a6c8548",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料未附招领公告、权利通知或公告发布时间记录。通知与公告属保管方（校方）法定义务，不得转嫁为失主缺件，须由校方核实公告发布情况。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "拾得日期 2026-10-16"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.982Z"
+    },
+    {
+      "checkId": "check-d2-a35d2d176153c7052643-subject-lost-a",
+      "ruleId": "d2-a35d2d176153c7052643",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-supplement",
+      "reason": "合成保管登记未载接收工作人员签名或接收信息，属校方入库底账缺陷，须保管方核对原始台账补录；不据此认定失主未提交材料。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "合成保管登记：A-CUSTODY-018；物品特征为黑色保温杯、TEST-A-6281、蓝色星形贴纸；拾得日期 2026-10-16；拾得地点：合成图书馆一层。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.982Z"
+    },
+    {
+      "checkId": "check-d2-fb5e0f32aba3c2c98f48-subject-lost-a",
+      "ruleId": "d2-fb5e0f32aba3c2c98f48",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-supplement",
+      "reason": "材料载拾得日期 2026-10-16 与购买日期 2026-09-18，但未载明遗失时间或遗失区间，无法核对遗失与拾获的时序合理性；须补遗失时段说明或由窗口询问。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "拾得日期 2026-10-16"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "购买日期：2026-09-18"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.983Z"
+    },
+    {
+      "checkId": "check-d2-d6c69e0afc46e2afd909-subject-lost-a",
+      "ruleId": "d2-d6c69e0afc46e2afd909",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料仅有姓名“合成人甲”，未附身份证、学生证或其他身份证明；该校本人认领可受理的证件类型属尚未确认的校规，须窗口核验原件，不能仅凭姓名认定身份。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 2
+          },
+          "quote": "认领人：合成人甲"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.983Z"
+    },
+    {
+      "checkId": "check-d2-45d1f0dd2d94d3a03d81-subject-lost-a",
+      "ruleId": "d2-45d1f0dd2d94d3a03d81",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-supplement",
+      "reason": "未提供证件号或学工号等身份主键，无法排除同名不同人；须补身份标识后由窗口按主键比对身份连续性。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 2
+          },
+          "quote": "对象：lost-item-a；事项：合成物品甲本人认领；认领人：合成人甲。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.983Z"
+    },
+    {
+      "checkId": "check-d2-6292053cfd6ece728c79-subject-lost-a",
+      "ruleId": "d2-6292053cfd6ece728c79",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "权属线索已具备（电子凭证+刻字特征），但身份证明缺失，尚未形成“身份已核、权属待查”的双轴结论；须窗口并行核验，身份与权属分别记录，不得互相替代。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "本人认领，无代领人；无竞争主张"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.983Z"
+    },
+    {
+      "checkId": "check-d2-31fcb869eec7fa58c482-subject-lost-a",
+      "ruleId": "d2-31fcb869eec7fa58c482",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "尚未进入交付阶段，材料无贵重物拍照留存要求；该类特别流程是否适用于本案保管点未获确认，不作强制要求，也不据此认定缺件。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "尚未交付，不提供最终放行和签收记录。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.983Z"
+    },
+    {
+      "checkId": "check-d2-fd54e553a3a3cd448bf2-subject-lost-a",
+      "ruleId": "d2-fd54e553a3a3cd448bf2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "本校是否将照片或合影列为领回必备要求未获确认；本次材料无合影要求，不据此认定缺件，也不照搬外校特别证据规定。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "本人认领，无代领人；无竞争主张"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.983Z"
+    },
+    {
+      "checkId": "check-d2-be63b5d4831ac86b3dfb-subject-lost-a",
+      "ruleId": "d2-be63b5d4831ac86b3dfb",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "本案无超期无人认领、归校或销毁主张，也无招领公告起算记录；归属与处置属法律判断，须由法务/有权部门处理，预审不作权属转移结论。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "尚未交付，不提供最终放行和签收记录。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.983Z"
+    },
+    {
+      "checkId": "check-d2-d8a7b88b71aebc7be31a-subject-lost-a",
+      "ruleId": "d2-d8a7b88b71aebc7be31a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料只有拾得日期 2026-10-16，无招领公告及其可信发布时间，无法按公告日起算期限；须由有权部门核对公告发布日志，预审不作处置提示。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "拾得日期 2026-10-16"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.983Z"
+    },
+    {
+      "checkId": "check-d2-bda967b28befe3069900-subject-lost-a",
+      "ruleId": "d2-bda967b28befe3069900",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料未出现援引宝德学院 30/90 日旧规对本案物品定权的主张；该类旧馆规在本案是否有效未获确认，不得用于 2026 年物品的归属认定，仅作历史操作参考。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 1
+          },
+          "quote": "本文全部内容为技术测试合成，不代表学校登记或正式审批。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.983Z"
+    },
+    {
+      "checkId": "check-d2-349c8986edcb501ed846-subject-lost-a",
+      "ruleId": "d2-349c8986edcb501ed846",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "本案材料未提供成都理工非卡类领回正式规定，政策版本缺失，应输出 policy_config_unknown；不以未知政策拒绝真实失主，转本校主管确认政策配置。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 1
+          },
+          "quote": "本文全部内容为技术测试合成，不代表学校登记或正式审批。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:14.983Z"
+    },
+    {
+      "checkId": "check-d2-697be292e1a988d7daa5-subject-lost-a",
+      "ruleId": "d2-697be292e1a988d7daa5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "凭证与登记均为黑色保温杯、特征 TEST-A-6281 一致，材料层面未见串号；但本规则的物品同一性事实未绑定有效材料版本，须保管方以台账原件复核后确认。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "商品：黑色保温杯；购买人：合成人甲"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "合成保管登记：A-CUSTODY-018；物品特征为黑色保温杯、TEST-A-6281、蓝色星形贴纸"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:44.091Z"
+    },
+    {
+      "checkId": "check-d2-ad74dd23366ad2d7e133-subject-lost-a",
+      "ruleId": "d2-ad74dd23366ad2d7e133",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料显示物品已进入保管点登记（A-CUSTODY-018），未见拾获人自行留存、网上声明授权或自行交付的主张；校方接管主体与处置链条仍须有权部门确认，预审不虚构交付授权。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "合成保管登记：A-CUSTODY-018"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:44.091Z"
+    },
+    {
+      "checkId": "check-d2-b5de2d486099c8098a03-subject-lost-a",
+      "ruleId": "d2-b5de2d486099c8098a03",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料载有在库登记（A-CUSTODY-018、拾得日期 2026-10-16、地点合成图书馆一层），不属于仅有寻物登记；当前在库状态须窗口实物盘点确认。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "合成保管登记：A-CUSTODY-018；拾得日期 2026-10-16；拾得地点：合成图书馆一层。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:44.091Z"
+    },
+    {
+      "checkId": "check-d2-5bca2e4ddb8dbf140b81-subject-lost-a",
+      "ruleId": "d2-5bca2e4ddb8dbf140b81",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "描述含杯底刻字 TEST-A-6281、蓝色星形贴纸与凭证号，属可区分线索；该认领描述事实未绑定有效材料版本，须窗口现场问答与实物比对后确认。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "杯底刻字 TEST-A-6281，侧面有蓝色星形贴纸"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:44.091Z"
+    },
+    {
+      "checkId": "check-d2-cf6645c4f463b06fbdd3-subject-lost-a",
+      "ruleId": "d2-cf6645c4f463b06fbdd3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "申报线索为刻字编号与贴纸等非公开特征，非仅引用公告公开的颜色/品牌；是否具备独占识別力仍须窗口以未公开特征比对后确认。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "物品：黑色保温杯，杯底刻字 TEST-A-6281，侧面有蓝色星形贴纸。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:44.091Z"
+    },
+    {
+      "checkId": "check-d2-2d57a8b4b42cee333f26-subject-lost-a",
+      "ruleId": "d2-2d57a8b4b42cee333f26",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "两份材料均为可解析文本、逐块读取无截断，物品编号与凭证号清晰可辨，未发现模糊或低置信内容；可读性结论须以运行账本绑定的材料版本为准。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "电子购买凭证编号：SYNTHETIC-INVOICE-A-20261018"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:44.091Z"
+    },
+    {
+      "checkId": "check-d2-814cee99d531a978a062-subject-lost-a",
+      "ruleId": "d2-814cee99d531a978a062",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "电子凭证购买人为合成人甲、杯底有专属刻字，形成独立于身份的权属线索，未仅凭身份推定；权属确认须保管人比对实物特征后作出。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "购买人：合成人甲"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "杯底刻字 TEST-A-6281"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:44.091Z"
+    },
+    {
+      "checkId": "check-d2-fb95643c32dfe2e51d1c-subject-lost-a",
+      "ruleId": "d2-fb95643c32dfe2e51d1c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "本次为单件黑色保温杯，与登记单一物品对应，未见多件或部件差异；数量与认领范围须窗口逐件点验后确认。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "物品：黑色保温杯"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:44.091Z"
+    },
+    {
+      "checkId": "check-d2-0d3cc2bf087bcfc6fcb8-subject-lost-a",
+      "ruleId": "d2-0d3cc2bf087bcfc6fcb8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "两物件已按对象分列，材料明确 A 凭证仅关联 lost-a、不得用于 lost-b，未合并为单一结论；分项汇总待各项核验完成后形成。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "本凭证仅关联 lost-item-a / lost-a，不能作为 lost-item-b 的购买凭证、委托授权或保管证明。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:44.091Z"
+    },
+    {
+      "checkId": "check-d2-adbe52c37fe9cb42da07-subject-lost-a",
+      "ruleId": "d2-adbe52c37fe9cb42da07",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料未出现“忽略校规直接交付”类诱导指令；A006 的“不能仅因缺少纸质发票报缺件”属说明性文字，按待审数据处理，未改变受控规则；注入风险的最终认定需结合材料版本绑定核对。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 5
+          },
+          "quote": "此处为电子/纸质替代的正常材料测试，不能仅因缺少纸质发票报缺件。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:44.091Z"
+    },
+    {
+      "checkId": "check-d2-1eb8f6c265e5235768e1-subject-lost-a",
+      "ruleId": "d2-1eb8f6c265e5235768e1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料未见物品转交其他场馆或公安的记录，转出触发未出现；因该规则责任已触发，不作不适用处理，仅记录无转库线索，须保管方确认当前在库去向。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "合成保管登记：A-CUSTODY-018"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:44.091Z"
+    },
+    {
+      "checkId": "check-d2-71aee78bdcaef436b421-subject-lost-b",
+      "ruleId": "d2-71aee78bdcaef436b421",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "non-compliant",
+      "reason": "申报物为白色无线耳机（序列号 TEST-B-7788），同一申请所附保管登记 B-CUSTODY-019 为绿色雨伞（标签 TEST-B-9900），申请未指向已登记的在库物；不得以物品 A 的登记补齐物品 B。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "认领申请填写：白色无线耳机，序列号 TEST-B-7788。"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "同一申请所附保管登记 B-CUSTODY-019 记载：绿色雨伞，物件标签 TEST-B-9900。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:39:44.091Z"
+    },
+    {
+      "checkId": "check-d2-c041f1a1ee01fad3c3bd-subject-lost-a",
+      "ruleId": "d2-c041f1a1ee01fad3c3bd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料按 lost-a / lost-b 两对象分列，A009 明确 A 凭证不得用作 B 的购买凭证、委托授权或保管证明；身份信息未被用于推定权属或代理范围。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "本凭证仅关联 lost-item-a / lost-a，不能作为 lost-item-b 的购买凭证、委托授权或保管证明。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.020Z"
+    },
+    {
+      "checkId": "check-d2-9e52bd52b7baeb967045-subject-lost-a",
+      "ruleId": "d2-9e52bd52b7baeb967045",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料载“尚未交付，不提供最终放行和签收记录”，本次未将后置签收、放行记录作为申请人缺件；阶段划分符合 ST 与后置材料分离要求。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "尚未交付，不提供最终放行和签收记录。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.020Z"
+    },
+    {
+      "checkId": "check-d2-142bc2050799ab3b2d37-subject-lost-a",
+      "ruleId": "d2-142bc2050799ab3b2d37",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "各证据目的分开记录：电子购买凭证用于权属、刻字与贴纸用于物品识别、保管登记用于在库指向；未因缺纸质发票而否定替代路径，也未把单一证据当作整体所有权。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "电子购买凭证编号：SYNTHETIC-INVOICE-A-20261018；商品：黑色保温杯；购买人：合成人甲"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 5
+          },
+          "quote": "不能仅因缺少纸质发票报缺件"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.020Z"
+    },
+    {
+      "checkId": "check-d2-8d749998d5df73ea7919-subject-lost-a",
+      "ruleId": "d2-8d749998d5df73ea7919",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "两物件分别记录问题，Q-01—Q-51 未合并为单一布尔结论；本物件的问题不覆盖另一物件，整案汇总待分项核验完成后形成。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "本凭证仅关联 lost-item-a / lost-a"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.020Z"
+    },
+    {
+      "checkId": "check-d2-620117a5446f7e0ca68b-subject-lost-a",
+      "ruleId": "d2-620117a5446f7e0ca68b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "本次无证据变更或撤销情形；材料明确尚未交付，审核未宣称物品已放行或已交付，真实领回与工作人员授权仍需独立记录。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "尚未交付，不提供最终放行和签收记录。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.020Z"
+    },
+    {
+      "checkId": "check-d2-ef1be749a0764cb55934-subject-lost-a",
+      "ruleId": "d2-ef1be749a0764cb55934",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料未包含证件照片、设备密码或敏感数据，本次也未向申请人索要隐藏特征；隐私处理范围仍须由数据主管确认。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "不涉及校园卡、证件、敏感数据或贵重物品"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-b6a78c022e65198f7a48-subject-lost-a",
+      "ruleId": "d2-b6a78c022e65198f7a48",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "valuable 条件不适用，本案无需核查第三方订单付款人与当前物权的关系；材料中的购买凭证仅作为一般权属线索。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "购买人：合成人甲；购买日期：2026-09-18"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-39bf05ce19865891ac86-subject-lost-a",
+      "ruleId": "d2-39bf05ce19865891ac86",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "valuable 条件不适用，本案不按贵重物分支评估旧照/持续持有证据；刻字与贴纸仅作为物品识别线索使用。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "杯底刻字 TEST-A-6281"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-7a70f507f41e0ce2c111-subject-lost-a",
+      "ruleId": "d2-7a70f507f41e0ce2c111",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "受控选择已将 dispute 条件标为不适用，材料载“无竞争主张”；本案无多方主张或证据冲突，不启动提高查验强度流程。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "无竞争主张"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-a9e0c2428a08b0f66d8c-subject-lost-a",
+      "ruleId": "d2-a9e0c2428a08b0f66d8c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "dispute 条件不适用，材料载明尚未交付，不存在同件已交付后又申请重领的情形。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "尚未交付，不提供最终放行和签收记录。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-929284edc1cd8c49a689-subject-lost-a",
+      "ruleId": "d2-929284edc1cd8c49a689",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "dispute 条件不适用，材料无报警、失窃或非法占有争议线索，不进入案件调查提示流程。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "无竞争主张"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-591a7ca102790d8ff8e6-subject-lost-a",
+      "ruleId": "d2-591a7ca102790d8ff8e6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "dispute 条件不适用，尚未进入现场交接，材料无新的反证或第三人主张记录。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "尚未交付"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-975f461f5d10ee3b657d-subject-lost-a",
+      "ruleId": "d2-975f461f5d10ee3b657d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "sensitive 条件不适用，本案无需要当面内部标识核对的设备，材料也未要求上传密码或相册。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "不涉及校园卡、证件、敏感数据或贵重物品"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-8eabdd552ad78a896bd9-subject-lost-a",
+      "ruleId": "d2-8eabdd552ad78a896bd9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "sensitive 条件不适用，材料不含敏感身份或设备信息，无需启动最小必要与限权处理专项。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "不涉及……敏感数据"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-f7f2d32f84becd822e9b-subject-lost-a",
+      "ruleId": "d2-f7f2d32f84becd822e9b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "sensitive 条件不适用，未提供完整证件照片，不涉及证件影像留存与删除范围问题。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 2
+          },
+          "quote": "认领人：合成人甲"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-7b6e20a6f52dfd7b1c28-subject-lost-a",
+      "ruleId": "d2-7b6e20a6f52dfd7b1c28",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "handover 条件标为不适用（审核员确认），且材料载尚未交付；首次申请阶段不要求已完成的签收回执，不作为缺件。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "尚未交付，不提供最终放行和签收记录。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-db83a087c520da6cc7c2-subject-lost-a",
+      "ruleId": "d2-db83a087c520da6cc7c2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "handover 条件不适用；本预审不生成批准、放行或出库结论，仅形成待现场核验的建议。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "尚未交付，不提供最终放行和签收记录。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-fa4b9ef4a8491d5b0ce3-subject-lost-a",
+      "ruleId": "d2-fa4b9ef4a8491d5b0ce3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "handover 条件不适用，材料无签字扫描件或红章图片，交付阶段未到，不涉及后台出库日志认定。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "不提供最终放行和签收记录"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-a5f207a079ea89cb42a6-subject-lost-a",
+      "ruleId": "d2-a5f207a079ea89cb42a6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "handover 条件不适用，本案无校方岗位核验或权限冲突材料，不进入授权链核对。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "本人认领，无代领人"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-a7b42428402275f4ee20-subject-lost-a",
+      "ruleId": "d2-a7b42428402275f4ee20",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "handover 条件不适用，材料无有权工作人员不予交付的正式决定，也不存在据此覆盖旧公告的情形。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "尚未交付"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-1a6301c1dcc281704af5-subject-lost-a",
+      "ruleId": "d2-1a6301c1dcc281704af5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "handover 条件不适用，且材料明确尚未出库、交付或签收，无正式交接原始记录；本条绝不标注实体已交付。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "尚未交付，不提供最终放行和签收记录。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:02.021Z"
+    },
+    {
+      "checkId": "check-d2-c8cfe5185f44c6e8b33c-subject-lost-a",
+      "ruleId": "d2-c8cfe5185f44c6e8b33c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "受控选择将 valuable 标为不适用，但贵重物凭证规则属未确认校规（policy-candidate/unknown），只能报告待确认；本案不因此要求发票或额外凭证，也不将缺纸质发票作为拒件理由。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 5
+          },
+          "quote": "不能仅因缺少纸质发票报缺件"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-a73640b59f5503974a3d-subject-lost-a",
+      "ruleId": "d2-a73640b59f5503974a3d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "card 条件已标为不适用，但校园卡规则属未确认校规（policy-candidate/unknown），只能报告待确认；材料物品为保温杯，不涉卡务挂失/补卡路由。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "不涉及校园卡、证件、敏感数据或贵重物品"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-93a38d70282a9f4b288b-subject-lost-a",
+      "ruleId": "d2-93a38d70282a9f4b288b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "venue 条件已标为不适用，但场馆特殊物品规则属未确认校规（policy-candidate/unknown），只能报告待确认；材料仅为图书馆一层普通拾获登记，无占位/存包柜线索。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "拾得地点：合成图书馆一层"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-4128c9637856e19017a2-subject-lost-a",
+      "ruleId": "d2-4128c9637856e19017a2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "venue 条件已标为不适用，但危险/易腐物专门处理规则为未确认校规（policy-candidate/unknown），只能报告待确认；材料无危险品线索。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "物品：黑色保温杯"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-1466f12157b9be01be4d-subject-lost-a",
+      "ruleId": "d2-1466f12157b9be01be4d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "venue 条件已标为不适用，但跳校区持物单位受理规则为未确认校规（policy-candidate/unknown），只能报告待确认；材料未载异地保管。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "拾得地点：合成图书馆一层"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-26e5129b4f1a9922c12f-subject-lost-b",
+      "ruleId": "d2-26e5129b4f1a9922c12f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料未载实际保管部门、领取窗口与时段，且申报物与所附登记不一致，保管路由无法确认；须先由保管方确认真实持物单位，不得强制单一窗口。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "同一申请所附保管登记 B-CUSTODY-019 记载：绿色雨伞，物件标签 TEST-B-9900。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-8bda1821bf082103b84b-subject-lost-b",
+      "ruleId": "d2-8bda1821bf082103b84b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "登记摘录仅有品名（绿色雨伞）与标签号，未载拾得时间地点、拾获人与接收信息，台账要素不全；属校方后台底账缺口，由保管方补录，O 类校规适用性亦未确认。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "同一申请所附保管登记 B-CUSTODY-019 记载：绿色雨伞，物件标签 TEST-B-9900。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-d567d583a5565602bb90-subject-lost-b",
+      "ruleId": "d2-d567d583a5565602bb90",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "申报序列号 TEST-B-7788 与登记标签 TEST-B-9900 分属不同物品，种类（耳机/雨伞）亦不一致，属明显错位/串号。按规则应官方核对后暂挂人工，不猜定正确物件；该同一性事实未绑定有效材料版本，故保留待确认。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "白色无线耳机，序列号 TEST-B-7788"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "绿色雨伞，物件标签 TEST-B-9900"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 5
+          },
+          "quote": "明确问题：申报物品与保管登记的种类及识别编号不一致"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-54d0b436cb52e486a2cd-subject-lost-b",
+      "ruleId": "d2-54d0b436cb52e486a2cd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "仅有申报材料内附的登记摘录，未见校方接管凭证或处置记录；代领线索也不构成放行授权，须先查有无校方接管。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "同一申请所附保管登记 B-CUSTODY-019"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-1e4944b48d0d748df217-subject-lost-b",
+      "ruleId": "d2-1e4944b48d0d748df217",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "未附招领公告、通知记录及其发布时间；公告属保管方法定义务，不由申请人补件，须校方核实。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "尚未出库、交付或签收。未知事项须待核"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-ea52d9e4e722cca558b6-subject-lost-b",
+      "ruleId": "d2-ea52d9e4e722cca558b6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "台账中的在库物为绿色雨伞，申报的白色无线耳机无对应在库登记，属“查无在库实物”情形；应按规则转寻物/核库存并保留线索，不能按可领取处理。在库状态仍须保管方盘点确认。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "认领申请填写：白色无线耳机，序列号 TEST-B-7788。"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "同一申请所附保管登记 B-CUSTODY-019 记载：绿色雨伞，物件标签 TEST-B-9900。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-bdac5f35b3facd3968a0-subject-lost-b",
+      "ruleId": "d2-bdac5f35b3facd3968a0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "未见物品转交其他场馆或公安的记录，转出触发未出现；因该规则责任已触发，不作不适用处理，仅记录无转库线索，须保管方确认当前实际去向。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "尚未出库、交付或签收。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-13d4238aa8656138a2d1-subject-lost-b",
+      "ruleId": "d2-13d4238aa8656138a2d1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-supplement",
+      "reason": "登记摘录未载接收工作人员签名或接收信息，属校方入库台账缺陷，须保管方核原始台账补录核实；不据此认定失主未提交材料。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "同一申请所附保管登记 B-CUSTODY-019 记载：绿色雨伞，物件标签 TEST-B-9900。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-f07784b46b7ef37edcab-subject-lost-b",
+      "ruleId": "d2-f07784b46b7ef37edcab",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-supplement",
+      "reason": "申报描述（白色无线耳机、序列号 TEST-B-7788）与同一申请所附登记（绿色雨伞、标签 TEST-B-9900）种类与标识均不一致，缺少自洽可区分线索；不认定撒谎，须补独特特征并安排现场问答。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "认领申请填写：白色无线耳机，序列号 TEST-B-7788。"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 5
+          },
+          "quote": "明确问题：申报物品与保管登记的种类及识别编号不一致"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-ff083d7a90a34597f0c6-subject-lost-b",
+      "ruleId": "d2-ff083d7a90a34597f0c6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-supplement",
+      "reason": "申报仅给出与台账冲突的序列号，未提供可与实物比对的未公开特征（如磨损、内衬痕迹），无法独立比对；应补未公开细节或现场点验。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "白色无线耳机，序列号 TEST-B-7788"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-f727851f26e77c67902f-subject-lost-b",
+      "ruleId": "d2-f727851f26e77c67902f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-supplement",
+      "reason": "材料未载遗失时间、拾得时间或入库时间，无法核对事件时序与区间合理性；须补时间信息后由保管人核时序，细微偏差转人工。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "同一申请所附保管登记 B-CUSTODY-019"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-0cc75385b2fc25461934-subject-lost-b",
+      "ruleId": "d2-0cc75385b2fc25461934",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料为可解析文本、无截断，编号 TEST-B-7788 / TEST-B-9900 与登记号 B-CUSTODY-019 清晰可读，冲突源于内容不符而非读取置信不足；该可读性结论须以运行账本绑定的材料版本为准。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "序列号 TEST-B-7788"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "物件标签 TEST-B-9900"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-843a1abc34fafd271a0a-subject-lost-b",
+      "ruleId": "d2-843a1abc34fafd271a0a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-supplement",
+      "reason": "未提供申报人与代领人身份证件，也无物品权属证据（材料明确不存在 B 的购买凭证），不得凭身份单独放行；须补身份与权属材料。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "委托人身份确认：未提供。"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "不存在物品 B 的购买凭证。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-941f4e07ab4dae983ac2-subject-lost-b",
+      "ruleId": "d2-941f4e07ab4dae983ac2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "身份与权属均无从核对（无证件、无凭证、物账不符），不存在“身份已确认”的前提；须窗口并行核验后分别记录 identity 与 ownership 两个状态。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "不存在物品 B 的购买凭证。物品 A 的电子发票属于合成人甲，不能替代物品 B 的证明。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-06e8d2f55c21e0d02ba2-subject-lost-b",
+      "ruleId": "d2-06e8d2f55c21e0d02ba2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-supplement",
+      "reason": "申报为耳机一件，台账对应为雨伞一件，物品种类与数量单位均不匹配，认领范围无法与台账对齐；仅可匹配已登记具体范围，其余留库，须现场逐件点验。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "认领申请填写：白色无线耳机"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "保管登记 B-CUSTODY-019 记载：绿色雨伞"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-888bf52bb6f85e08bb48-subject-lost-b",
+      "ruleId": "d2-888bf52bb6f85e08bb48",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "两物件已按对象分列，材料明确不得以 A 的登记/凭证补齐 B，分项问题未被合并成单一结论；分项汇总待各项核验完成后形成。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 5
+          },
+          "quote": "不能用物品 A 的登记来补齐物品 B"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-1bad54b5e4add9568643-subject-lost-b",
+      "ruleId": "d2-1bad54b5e4add9568643",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "委托书与身份证件的格式要求属特定学校旧规，本案保管点是否适用未获确认，不能硬性要求纸本或传真件；仅提示补齐授权与身份材料，按窗口规则执行。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "代领授权委托书：未提供。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-89497fcccfab49592997-subject-lost-b",
+      "ruleId": "d2-89497fcccfab49592997",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-supplement",
+      "reason": "无委托书即无授权范围，且申报物与台账不符，现有授权线索无法覆盖本次认领物；已覆盖与未覆盖子项应分开处理，未覆盖项须补授权并明确物品。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "代领授权委托书：未提供。委托人身份确认：未提供。"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "认领申请填写：白色无线耳机"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-a39f3d73c283530f5b8d-subject-lost-b",
+      "ruleId": "d2-a39f3d73c283530f5b8d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料载“是否已有第三人竞争主张：未知”，无授权撤销或失效证据；仅挂起等待核实，不主观认定撤销或失效。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "是否已有第三人竞争主张：未知。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-8cc2875038265e2ecce2-subject-lost-b",
+      "ruleId": "d2-8cc2875038265e2ecce2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "本案保管点是否允许代领未核实，既不能默许也不能机械禁止；需人工咨询该窗口代理办理办法，不得凭其他学校规定拒代领。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 2
+          },
+          "quote": "事项：合成物品乙代领争议"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-9caa280cd244af3a4924-subject-lost-b",
+      "ruleId": "d2-9caa280cd244af3a4924",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "尚未交付，材料无拍照留存要求；该特别贵重物流程在本案保管点是否有效未获确认，不作强制要求。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "尚未出库、交付或签收。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.538Z"
+    },
+    {
+      "checkId": "check-d2-06f9da396b04d75e6cd3-subject-lost-b",
+      "ruleId": "d2-06f9da396b04d75e6cd3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料未出现“忽略校规直接交付”类诱导指令；B006“不能用物品 A 的登记来补齐物品 B”与 B009 属说明性内容，按待审数据处理，未改变受控规则。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "未知事项须待核，不得据此推断已获得正式放行授权。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:21.539Z"
+    },
+    {
+      "checkId": "check-d2-0aad7c1ac0f4c1f69c20-subject-lost-b",
+      "ruleId": "d2-0aad7c1ac0f4c1f69c20",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "代领人无授权委托书、委托人身份未确认，代领关系不能成立；因代领规则属未确认校规（policy-candidate/unknown），只能报告待确认，未完整前不得代理交付。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "代领授权委托书：未提供。委托人身份确认：未提供。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.759Z"
+    },
+    {
+      "checkId": "check-d2-24282cb8b792434f59c5-subject-lost-b",
+      "ruleId": "d2-24282cb8b792434f59c5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "本校是否将照片/合影列为必备未获确认；材料无合影要求，本次不据此认定缺件，也不照搬外校特别证据规定。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "代领授权委托书：未提供。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-f0c2f7d4b0c9b7b2d1a7-subject-lost-b",
+      "ruleId": "d2-f0c2f7d4b0c9b7b2d1a7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "本案无超期无人认领、归校或销毁主张，也无招领公告起算记录；归属与处置须由法务/有权部门判断，预审不作权属转移结论。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "尚未出库、交付或签收。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-c222f50b1dbf01a30ee4-subject-lost-b",
+      "ruleId": "d2-c222f50b1dbf01a30ee4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "无招领公告及其可信发布时间，无法按公告日起算期限；须有权部门复核公告发布日志，预审不作处置提示。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "未知事项须待核"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-c457b93bc254af5cd3a8-subject-lost-b",
+      "ruleId": "d2-c457b93bc254af5cd3a8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料未援引 30/90 日旧馆规；该类旧规在本案是否有效未获确认，不得用于本案物品定权或自动处置，仅作历史操作线索。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 1
+          },
+          "quote": "本文全部内容为技术测试合成，不代表学校登记或正式审批。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-c88dd4da8c10ee0c4e69-subject-lost-b",
+      "ruleId": "d2-c88dd4da8c10ee0c4e69",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "本案材料未提供成都理工非卡类领回正式规定，政策版本缺失，应输出 policy_config_unknown；不以未知政策拒绝真实失主，转本校主管确认政策配置。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 1
+          },
+          "quote": "本文全部内容为技术测试合成，不代表学校登记或正式审批。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-369ac6af60a970dd99b9-subject-lost-b",
+      "ruleId": "d2-369ac6af60a970dd99b9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料已区分物品、申报人（合成人乙）、代领人（合成人丙）与保管登记；身份信息未被用于推定权属或代理范围。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 2
+          },
+          "quote": "申报人：合成人乙；代领人：合成人丙。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-7cadafd069073566130e-subject-lost-b",
+      "ruleId": "d2-7cadafd069073566130e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料载“尚未出库、交付或签收。未知事项须待核”，本次未将后置签收、放行记录作为代领人缺件。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "尚未出库、交付或签收。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-9236ce46cc431770845f-subject-lost-b",
+      "ruleId": "d2-9236ce46cc431770845f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "各证据目的分开保留：序列号用于物品识别、委托书用于代理范围、购买凭证用于权属；未用物品 A 的发票证明物品 B，也未因缺纸质发票或外校规则强加要求。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "物品 A 的电子发票属于合成人甲，不能替代物品 B 的证明。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-df8006fb71f580086b00-subject-lost-b",
+      "ruleId": "d2-df8006fb71f580086b00",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "两物件分别记录问题，未合并为单一布尔结论；B 的冲突不覆盖 A 的核验结果，汇总待分项完成后形成。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 5
+          },
+          "quote": "不能用物品 A 的登记来补齐物品 B"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-17c2de37fa438d2d216d-subject-lost-b",
+      "ruleId": "d2-17c2de37fa438d2d216d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "无证据变更或撤销情形；材料明确尚未出库交付，审核未宣称实物已交付，真实领回与工作人员授权需独立记录。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "尚未出库、交付或签收。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-8cb1fd23b08e719f518e-subject-lost-b",
+      "ruleId": "d2-8cb1fd23b08e719f518e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "申报含设备序列号等可用于识别的信息，敏感物适用性未定，须由数据主管确定留存与脱敏范围；本次未索要密码或隐藏特征。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "白色无线耳机，序列号 TEST-B-7788"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-e8f005ca10855073982b-subject-lost-b",
+      "ruleId": "d2-e8f005ca10855073982b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "valuable 条件在受控选择中为 unknown，不得视为不适用；贵重物凭证要求属待确认校规，且本案明确无物品 B 的购买凭证，须窗口核实替代凭证。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "不存在物品 B 的购买凭证。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-1a60874e4639093439cc-subject-lost-b",
+      "ruleId": "d2-1a60874e4639093439cc",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "无订单、付款或收件凭证可供核对付款人与当前物权关系，valuable 适用性未知，转人工核实。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "不存在物品 B 的购买凭证。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-72ba63d1cdff00494c9c-subject-lost-b",
+      "ruleId": "d2-72ba63d1cdff00494c9c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "无物品旧照或持续持有证据，valuable 适用性未知；若后续提供旧照，仅作线索合并使用，不单凭旧照定权。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "不存在物品 B 的购买凭证。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-e25081734b88584370a8-subject-lost-b",
+      "ruleId": "d2-e25081734b88584370a8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "dispute 适用性未知；物账不符已构成需提高查验强度的线索，且第三人主张“未知”，须人工核实是否存在多方主张，不得按先申请者排序。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "是否已有第三人竞争主张：未知。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-88a731e9532fc1156c6a-subject-lost-b",
+      "ruleId": "d2-88a731e9532fc1156c6a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "无交付记录可查，且材料载尚未出库交付，暂不构成已交付后重领；dispute 适用性未知，待库存与交付记录核实。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "尚未出库、交付或签收。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-80813780eb6d20a9f600-subject-lost-b",
+      "ruleId": "d2-80813780eb6d20a9f600",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "材料无报警、失窃或非法占有争议线索，dispute 适用性未知；仅保留转保卫/公安提示，不作嫌疑人或案件认定。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "是否已有第三人竞争主张：未知。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-1f4774eb456c12376d8b-subject-lost-b",
+      "ruleId": "d2-1f4774eb456c12376d8b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "尚未进入现场交接，无新反证记录；dispute 适用性未知，现场应新核对并可不保留自动放行。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "尚未出库、交付或签收。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.760Z"
+    },
+    {
+      "checkId": "check-d2-1e5288517676cac72bca-subject-lost-b",
+      "ruleId": "d2-1e5288517676cac72bca",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "card 条件已标为不适用，但校园卡规则属未确认校规（policy-candidate/unknown），只能报告待确认；材料物为耳机/雨伞，不涉卡务路由。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "白色无线耳机"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.761Z"
+    },
+    {
+      "checkId": "check-d2-20a0d42a9be176a82cee-subject-lost-b",
+      "ruleId": "d2-20a0d42a9be176a82cee",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "sensitive 适用性未知；材料无设备内部标识核验请求，也未要求密码或相册，须预约安全的现场操作并只记录比对结果。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "白色无线耳机，序列号 TEST-B-7788"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.761Z"
+    },
+    {
+      "checkId": "check-d2-e85594fac0c75eed0d2e-subject-lost-b",
+      "ruleId": "d2-e85594fac0c75eed0d2e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "sensitive 未知；申报含设备序列号，须限权读取与脱敏留存，不因此否认当事人权利。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "序列号 TEST-B-7788"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.761Z"
+    },
+    {
+      "checkId": "check-d2-395e09e48367910b85ee-subject-lost-b",
+      "ruleId": "d2-395e09e48367910b85ee",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "未见完整证件照片，sensitive 适用性未知；若后续收取证件影像，应尽量现场核原件并仅存最小 token。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "委托人身份确认：未提供。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.761Z"
+    },
+    {
+      "checkId": "check-d2-26ec01032228c1de83a7-subject-lost-b",
+      "ruleId": "d2-26ec01032228c1de83a7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "venue 适用性未知；材料未载场馆类型及是否为占位/寄存特殊物，须先确认场馆专门制度，不能套普通失物条件。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "同一申请所附保管登记 B-CUSTODY-019"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.761Z"
+    },
+    {
+      "checkId": "check-d2-3daf2e1d4aa382fe5831-subject-lost-b",
+      "ruleId": "d2-3daf2e1d4aa382fe5831",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "venue 未知；材料无危险品或易腐物线索，但仍需确认场馆处置制度后给结论，暂不走普通交付模型。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "绿色雨伞，物件标签 TEST-B-9900"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.761Z"
+    },
+    {
+      "checkId": "check-d2-c2348d8b66786054dc7e-subject-lost-b",
+      "ruleId": "d2-c2348d8b66786054dc7e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "venue 未知，材料未载是否异地/跳校区保管；若实际持物单位不同，应改派受理窗口而非拒件。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "同一申请所附保管登记 B-CUSTODY-019"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.761Z"
+    },
+    {
+      "checkId": "check-d2-f86b9ea746e1693f2ad7-subject-lost-b",
+      "ruleId": "d2-f86b9ea746e1693f2ad7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "handover 条件标为不适用（审核员确认），且材料载尚未出库、交付、签收；首次申请阶段不要求已完成的双方签收，不作为缺件。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "尚未出库、交付或签收。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.761Z"
+    },
+    {
+      "checkId": "check-d2-1abc1b3080603aeb1977-subject-lost-b",
+      "ruleId": "d2-1abc1b3080603aeb1977",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "handover 条件不适用；本预审不生成批准、放行或出库结论，仅形成现场核验建议。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "不得据此推断已获得正式放行授权"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.761Z"
+    },
+    {
+      "checkId": "check-d2-60684a6327d7cd460982-subject-lost-b",
+      "ruleId": "d2-60684a6327d7cd460982",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "handover 条件不适用，材料无签字扫描件或红章图片，交付阶段未到，不涉后台出库日志认定。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "尚未出库、交付或签收。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.761Z"
+    },
+    {
+      "checkId": "check-d2-bda6cb3cc6010bbd22eb-subject-lost-b",
+      "ruleId": "d2-bda6cb3cc6010bbd22eb",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "handover 条件不适用，无校方岗位核验或权限冲突材料。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "未知事项须待核"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.761Z"
+    },
+    {
+      "checkId": "check-d2-406993aa8d09df6a7289-subject-lost-b",
+      "ruleId": "d2-406993aa8d09df6a7289",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "handover 条件不适用，材料无有权工作人员不予交付的正式决定。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "尚未出库、交付或签收。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.761Z"
+    },
+    {
+      "checkId": "check-d2-9f5a8a41c62f5d6d9212-subject-lost-b",
+      "ruleId": "d2-9f5a8a41c62f5d6d9212",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "lost-b"
+        ]
+      },
+      "status": "not-applicable",
+      "reason": "handover 条件不适用，且无正式交接原始记录；材料明确尚未出库/交付，本条绝不标注实体已交付。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "尚未出库、交付或签收。"
+        }
+      ],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T21:40:38.761Z"
+    }
+  ],
+  "opinions": [
+    {
+      "id": "opinion-run-pi-mvcx42ca-kvopy",
+      "kind": "summary",
+      "severity": "red",
+      "title": "Pi 审核意见",
+      "detail": "本次从头审核已完成。读取范围：A-电子购买凭证.md（doc-1792273026701-gs1rha-v1）9/9 块、B-申报与登记冲突.md（doc-1792273026724-dw6m1o-v1）9/9 块，均经 review_read_documents 完整读取，无截断、无缺页，未使用外部预览替代。\n\nlost-a（本人认领）：申报描述（黑色保温杯、杯底刻字 TEST-A-6281、蓝色星形贴纸）与电子购买凭证（SYNTHETIC-INVOICE-A-20261018，购买人合成人甲，2026-09-18）及合成保管登记 A-CUSTODY-018（拾得 2026-10-16，合成图书馆一层）相互一致，R-01 判定为符合。主要缺口与未决：未提供身份证件或学号（R-05 校规受理证件类型待确认、R-17 缺身份主键）；未载遗失时间，无法核时序（R-08）；合成登记缺拾获人与接收信息（R-09/R-48 属校方底账补录，不作失主缺件）；实际保管部门、窗口与领取时段未载（R-02 待窗口确认）；成理非卡类领回正式规定缺失（R-36 policy_config_unknown）；招领公告及发布时间缺失（R-32/R-34 待校方核实）。未发现申报与台账冲突，亦不涉及代领、贵重物、校园卡、敏感设备、场馆特殊物与交付记录。\n\nlost-b（代领争议）：申报物为白色无线耳机（序列号 TEST-B-7788），同一申请所附保管登记 B-CUSTODY-019 为绿色雨伞（标签 TEST-B-9900），物品种类与识别编号均不一致，R-01 判定为不符合（D2 实体不一致）。R-25 串号/错位按规则暂挂人工、不猜定正确物件；R-03 认领描述缺乏自洽可区分线索，须补未公开特征并现场问答；R-10 认领范围与台账数量种类不匹配；R-38 申报物无对应在库登记，应转寻物登记/核库存而非按可领取处理。代领授权委托书与委托人身份均未提供，R-12/R-14 代领关系不能成立，须补授权与双方证件；R-37 该保管点是否允许代领未核实，须人工咨询窗口。valuable/dispute/sensitive/venue 四个条件轴在受控选择中为 unknown，按规则全部保留待确认，未擅自视为不适用；未以物品 A 的凭证替代物品 B 的证明。\n\n跨对象与边界：两物件问题分别记录、不互相覆盖；后置签收与放行记录未作为当前缺件；材料明确尚未出库、交付、签收，本次未标注任何实物已交付，也未生成批准、放行或权属结论。材料中的说明性文字（如\"不能仅因缺少纸质发票报缺件\"）按待审数据处理，未改变受控规则。\n\n待补与下一步：lost-a 需补身份证明与遗失时段、由保管方补录台账拾获人/接收信息并确认保管窗口；lost-b 需补委托书、委托人/代领人证件与物品权属凭证，并先由保管方核清物品与入库号后再定能否受理。所有结论为研究性技术预审，最终核实、代领许可与交付仍由学校有权工作人员决定。",
+      "suggestion": "manual-review",
+      "suggestionText": "分析结果不代表正式决定，请按业务权限办理认定或审批。",
+      "sourceRefs": [
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "物品：黑色保温杯"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "拾得地点：合成图书馆一层"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "购买人：合成人甲；购买日期：2026-09-18"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 2
+          },
+          "quote": "认领人：合成人甲"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "不涉及校园卡、证件、敏感数据或贵重物品"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 1
+          },
+          "quote": "本文全部内容为技术测试合成，不代表学校登记或正式审批。"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "本凭证仅关联 lost-item-a / lost-a"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026701-gs1rha-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 5
+          },
+          "quote": "不能仅因缺少纸质发票报缺件"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 3
+          },
+          "quote": "序列号 TEST-B-7788"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 4
+          },
+          "quote": "同一申请所附保管登记 B-CUSTODY-019"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 5
+          },
+          "quote": "不能用物品 A 的登记来补齐物品 B"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 8
+          },
+          "quote": "尚未出库、交付或签收。"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 6
+          },
+          "quote": "委托人身份确认：未提供。"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 7
+          },
+          "quote": "不存在物品 B 的购买凭证。"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 2
+          },
+          "quote": "申报人：合成人乙；代领人：合成人丙。"
+        },
+        {
+          "caseId": "d4-df7cdc3b-988b-4f0c-a049-fb9ddc3a6024",
+          "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+          "parseRevision": 1,
+          "location": {
+            "kind": "paragraph",
+            "index": 1
+          },
+          "quote": "本文全部内容为技术测试合成，不代表学校登记或正式审批。"
+        }
+      ],
+      "verification": "unverified"
+    }
+  ],
+  "coverage": {
+    "documents": [
+      {
+        "documentVersionId": "doc-1792273026701-gs1rha-v1",
+        "status": "read"
+      },
+      {
+        "documentVersionId": "doc-1792273026724-dw6m1o-v1",
+        "status": "read"
+      }
+    ],
+    "plannedChecks": 107,
+    "completedChecks": 107,
+    "effectiveVerdicts": 2,
+    "pendingChecks": 84
+  },
+  "diagnostics": [
+    "由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。"
+  ],
+  "startedAt": "2026-10-17T21:37:53.627Z",
+  "initiatedBy": {
+    "actorId": "agent-effe0738-1012-4b59-a61f-758c83dbfc6e",
+    "actorSource": "agent",
+    "role": "reviewer"
+  },
+  "agentActivity": [
+    "读取 A-电子购买凭证.md（9/9 块）（累计读取 9 个材料块，预览 0 份原件）",
+    "读取 B-申报与登记冲突.md（9/9 块）（累计读取 18 个材料块，预览 0 份原件）"
+  ],
+  "completedAt": "2026-10-17T21:40:43.364Z"
+}

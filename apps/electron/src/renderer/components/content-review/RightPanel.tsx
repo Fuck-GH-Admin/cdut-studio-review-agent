@@ -244,12 +244,13 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
                   const scopeSubjects = check?.target.subjectIds.map((id) => aggregate?.caseV2.subjects.find((subject) => subject.id === id)?.title ?? id) ?? []
                   const sourceRefs = [...(item.sourceRefs ?? []), ...(relatedSubject?.sourceRefs ?? [])]
                   const distinctSources = sourceRefs.filter((ref, index) => sourceRefs.findIndex((candidate) => candidate.documentVersionId === ref.documentVersionId && JSON.stringify(candidate.location) === JSON.stringify(ref.location)) === index)
-                  const focusSource = async (ref: SourceRef): Promise<void> => {
+                  const focusSource = async (ref: SourceRef, preview = true): Promise<void> => {
                     const document = aggregate?.caseV2.documents.find((candidate) => candidate.versionId === ref.documentVersionId)
                     const purpose = document?.role === 'rule' ? 'rule' : document?.role === 'application' ? 'application' : 'evidence'
                     sourceFocusNonce += 1
                     setActivePane(purpose === 'rule' ? 'left' : 'center')
                     setSourceFocus({ ref, purpose, nonce: sourceFocusNonce, originPendingActionKey: item.key })
+                    if (!preview) return
                     if (!document || !aggregate) return
                     try {
                       const path = await window.reviewAPI.getWorkspaceDocumentPreviewPath({ caseId: aggregate.caseV2.id, documentVersionId: document.versionId })
@@ -290,6 +291,18 @@ export function RightPanel({ actions }: RightPanelProps): React.ReactElement {
                       <p className="mt-1 text-sm leading-5 text-foreground/75">{item.detail}</p>
                       {sourceNames.length > 0 && <p className="mt-1 text-xs text-muted-foreground">来源：{[...new Set(sourceNames)].join('、')}</p>}
                       {check && <p className="mt-1 rounded-md border border-border/50 bg-background/70 px-2 py-1.5 text-xs leading-5"><span className="font-semibold text-foreground">审核依据：</span><span className="text-muted-foreground">{aggregate?.caseV2.reviewRules?.find((rule) => rule.id === check.ruleId)?.title ?? '当前审核规则'} · {check.reason}</span></p>}
+                      {aggregate?.d2RuntimePlan && distinctSources.length > 0 && <div className="mt-2 space-y-2">
+                        {distinctSources.map((ref, index) => {
+                          const document = aggregate.caseV2.documents.find(d => d.versionId === ref.documentVersionId)
+                          const location = ref.location.kind === 'paragraph' ? `第 ${ref.location.index + 1} 段`
+                            : ref.location.kind === 'pdf-rect' ? `第 ${ref.location.page} 页`
+                            : ref.location.kind === 'sheet-cell' ? `${ref.location.sheet} · ${ref.location.column}${ref.location.row}` : '材料中的引文'
+                          return <div key={index} className="rounded-md bg-background/70 p-2 text-xs">
+                            <button type="button" className="text-left font-medium text-primary underline-offset-2 hover:underline" onClick={() => { void focusSource(ref, false) }}>定位引文 · {document?.fileName ?? ref.documentVersionId} · {location}</button>
+                            {ref.quote && <blockquote className="mt-1 whitespace-pre-wrap text-muted-foreground">{ref.quote}</blockquote>}
+                          </div>
+                        })}
+                      </div>}
                       {distinctSources.length > 0 && <div className="mt-2 flex flex-wrap gap-1.5">
                         {(['rule', 'application', 'evidence'] as const).map((purpose) => {
                           const ref = distinctSources.find((candidate) => {
