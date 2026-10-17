@@ -1,0 +1,28 @@
+{
+  "caseId": "g02-t01-case-one",
+  "runId": "run-pi-mvcmnzwy-oqggl",
+  "fingerprint": "67a401f5e9ecfe5e9bd2f7afee5e32f0d9d5f6f8a596a5731bc6aae7888bb145",
+  "subjects": [
+    "g02-t01-subject-a",
+    "g02-t01-subject-b"
+  ],
+  "checks": 106,
+  "documentVersionId": "doc-1-mvcmnzw2-v1",
+  "evidenceLinks": [
+    {
+      "id": "evl-doc-1-mvcmnzw2-v1-g02-t01-subject-a-1792255527811-bcua",
+      "documentVersionId": "doc-1-mvcmnzw2-v1",
+      "subjectId": "g02-t01-subject-a",
+      "supportsFact": "d2:object:g02-data-item:r-01",
+      "status": "confirmed",
+      "linkedBy": "user"
+    }
+  ],
+  "objectAConfirmed": true,
+  "objectBInheritsEvidence": false,
+  "verified": {
+    "complete": true,
+    "problems": []
+  },
+  "publicationAllowed": false
+}
