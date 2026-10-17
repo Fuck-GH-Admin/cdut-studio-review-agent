@@ -175,6 +175,35 @@ describe('D4 G08 actual modular business templates at COMMON fixed base',()=>{
       checks:run.checks.length,fingerprint:created.entity!.fingerprint,technicalComplete:true,modelRun:false}))
   })
  }
+ test('G08-T03 all remaining primary actions have real D2/Pi technical runs',async()=>{
+   const x=inputs('g08-t03')
+   for(const primary of ['query','followup','withdraw'] as const){
+     const selection=scenarioVariant(x.selection,primary)
+     const caseId='d4-g08-t03-action-'+primary
+     const plan=compileD2RuntimePlan(x.w,selection,x.cas)
+     expect(plan.mapping.length).toBeGreaterThan(5)
+     expect(plan.subjects).toHaveLength(1)
+     const created=await createD2TechnicalCase({caseId,title:'synthetic G08 T03 '+primary,actor,
+       workspace:x.w,selection})
+     expect(created.ok).toBeTrue()
+     if(!created.ok)throw Error(created.message)
+     const prepared=preparePiReviewRunV2({caseId,sessionId:'d4-g08-t03-'+primary,turnId:'d4-turn'})
+     const sent=submitPiReviewResultV2({binding:{assignmentId:prepared.assignmentId,
+       sessionId:'d4-g08-t03-'+primary,caseId,runId:prepared.runId},triggeredBy:'user',
+       result:{summary:'synthetic '+primary+' action, no authorized school action performed',
+         checks:created.entity!.mapping.map(m=>({ruleId:m.ruleId,subjectIds:[m.subjectId!],
+           status:'awaiting-confirmation' as const,
+           reason:'No verified current school workflow/authority source',sourceRefs:[]})),finish:true}})
+     expect(sent.rejected).toEqual([])
+     expect(sent.missingChecks).toEqual([])
+     const agg=readAggregate(caseId)!,run=getRunV2(caseId,prepared.runId)!
+     expect(verifyD2PiRun(agg,run)).toMatchObject({complete:true,problems:[]})
+     output('g08-t03-'+primary+'-pi-plan.json',created.entity)
+     output('g08-t03-'+primary+'-pi-run.json',run)
+     console.log('[G08_T03_ACTION_PI]',JSON.stringify({primary,caseId,checks:run.checks.length,
+       fingerprint:plan.fingerprint,verified:true,onlineModel:false}))
+   }
+ })
  test('reviewer-confirmed evidence for lost item A does not permit lost item B or stale versions',async()=>{
    const x=inputs('g08-t02')
    const caseId='d4-g08-lost-evidence-isolation'
