@@ -1,22 +1,22 @@
 {
-  "id": "run-pi-mvcqw19q-szgh7",
+  "id": "run-pi-mvcqzmvd-bj28q",
   "caseId": "g05-t06-tech-run",
   "templateId": "g05-t06",
   "templateVersion": 1,
   "inputManifest": {
-    "hash": "d9df457b15d4735aef03e7f0efe70a45a341e7ec5d9840299c97dc3ed6c77739",
+    "hash": "ad96d062f3930879afe20d91bdb5caf32d2d44cb9394c145857f5785ad94fc68",
     "templateVersion": 1,
     "policyVersions": [],
     "documentVersions": [
       {
-        "documentId": "doc-1-mvcqw19a",
-        "versionId": "doc-1-mvcqw19a-v1",
+        "documentId": "doc-1-mvcqzmuv",
+        "versionId": "doc-1-mvcqzmuv-v1",
         "contentHash": "a33c3ec8f574cad59f6e32d2e0707a385cec4464c581730501b3b07dd6532bfc"
       }
     ],
     "observationIds": [],
     "evidenceLinkIds": [
-      "evl-doc-1-mvcqw19a-v1-g05-t06-subject-alpha-1792262621286-5opb"
+      "evl-doc-1-mvcqzmuv-v1-g05-t06-subject-alpha-1792262789248-l20q"
     ],
     "effectiveRuleIds": [
       "d2-204f2019bdc575a63ffd",
@@ -119,7 +119,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-9f863fe942198501987b-subject-g05-t06-subject-alpha",
@@ -134,7 +134,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-70fea85d8733cefff61c-subject-g05-t06-subject-alpha",
@@ -149,7 +149,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-a7800be6a6eceaa5a004-subject-g05-t06-subject-alpha",
@@ -164,7 +164,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-55a7f955a4d455cc18fd-subject-g05-t06-subject-alpha",
@@ -179,7 +179,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-6902732969c5a5dead2b-subject-g05-t06-subject-alpha",
@@ -194,7 +194,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-6045e10e3045a89822a4-subject-g05-t06-subject-alpha",
@@ -209,7 +209,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-fccff6d90fcd622564ab-subject-g05-t06-subject-alpha",
@@ -224,7 +224,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-5e414d368debbb147218-subject-g05-t06-subject-alpha",
@@ -239,7 +239,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-6183f181430f80cf60cb-subject-g05-t06-subject-alpha",
@@ -254,7 +254,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-ecc081cff8dc0c154c1f-subject-g05-t06-subject-alpha",
@@ -269,7 +269,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-8031e0ee53dc5748b390-subject-g05-t06-subject-alpha",
@@ -284,7 +284,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-ced13149a05326697012-subject-g05-t06-subject-alpha",
@@ -299,7 +299,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-d4af4a5f4fc0b6203eec-subject-g05-t06-subject-alpha",
@@ -314,7 +314,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-94475cdb21fef1a59775-subject-g05-t06-subject-alpha",
@@ -329,7 +329,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-2a15ed7f2902223b2f4e-subject-g05-t06-subject-alpha",
@@ -344,7 +344,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-7fce82ac934247bcc93c-subject-g05-t06-subject-alpha",
@@ -359,7 +359,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-e11faedeb0d57777f64d-subject-g05-t06-subject-alpha",
@@ -374,7 +374,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-f34d42d707eb6907e2b2-subject-g05-t06-subject-alpha",
@@ -389,7 +389,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-4a6691ec6f9eb870adcc-subject-g05-t06-subject-alpha",
@@ -404,7 +404,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-1c3426f26e48052652b0-subject-g05-t06-subject-alpha",
@@ -419,7 +419,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-e341ebb45d6bb10fe006-subject-g05-t06-subject-alpha",
@@ -434,7 +434,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-6f58ca932ff1bc12a7d8-subject-g05-t06-subject-alpha",
@@ -449,7 +449,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-80d114d23b407c6b40ed-subject-g05-t06-subject-alpha",
@@ -464,7 +464,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-1b49c920179cbf2b7ad5-subject-g05-t06-subject-alpha",
@@ -479,7 +479,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-7365c1ae8281d9526770-subject-g05-t06-subject-alpha",
@@ -494,7 +494,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-80989648d999f2d61c06-subject-g05-t06-subject-alpha",
@@ -509,7 +509,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-8aa044089a7b39cc504f-subject-g05-t06-subject-alpha",
@@ -524,7 +524,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-240114517015fb9e6430-subject-g05-t06-subject-alpha",
@@ -539,7 +539,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-54ddc97327f178017f71-subject-g05-t06-subject-alpha",
@@ -554,7 +554,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-75ce7c1bf4e44d941a05-subject-g05-t06-subject-alpha",
@@ -569,7 +569,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-ba58e1d2580f28b313c9-subject-g05-t06-subject-alpha",
@@ -584,7 +584,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-2d3c1ab82db7bf9e8f6e-subject-g05-t06-subject-alpha",
@@ -599,7 +599,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-5c02d20b93e1adbb1951-subject-g05-t06-subject-alpha",
@@ -614,7 +614,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-a5f803a0bd3bcb75046b-subject-g05-t06-subject-alpha",
@@ -629,7 +629,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-c2fd7d5a508d3fa264d3-subject-g05-t06-subject-alpha",
@@ -644,7 +644,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-ce03934606e4cdab278d-subject-g05-t06-subject-alpha",
@@ -659,7 +659,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-a52b2b2a0e8f02f22e6a-subject-g05-t06-subject-alpha",
@@ -674,7 +674,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-317d94bf8dc80bd849ce-subject-g05-t06-subject-alpha",
@@ -689,7 +689,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-d7c7636b68bd4977bd48-subject-g05-t06-subject-alpha",
@@ -704,7 +704,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-7402efda6b51c5cb57a4-subject-g05-t06-subject-alpha",
@@ -719,7 +719,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-185fcbb931b66cd7dbb4-subject-g05-t06-subject-alpha",
@@ -734,7 +734,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-b286b7b0ec1fbb5a9848-subject-g05-t06-subject-alpha",
@@ -749,7 +749,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-d3d94ee265d41981c067-subject-g05-t06-subject-alpha",
@@ -764,7 +764,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-ac3cc24c63416e0897e3-case-g05-t06-subject-alpha-g05-t06-subject-beta",
@@ -780,7 +780,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-e0b75d03cc8a9261ca1f-case-g05-t06-subject-alpha-g05-t06-subject-beta",
@@ -796,7 +796,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-9904e29a94d769de3a2a-case-g05-t06-subject-alpha-g05-t06-subject-beta",
@@ -812,7 +812,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-ce6e46ddd974dfc4253b-case-g05-t06-subject-alpha-g05-t06-subject-beta",
@@ -828,7 +828,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-3f140d0dcefd1827edf3-case-g05-t06-subject-alpha-g05-t06-subject-beta",
@@ -844,7 +844,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-8a031e3f8369b9cb5265-case-g05-t06-subject-alpha-g05-t06-subject-beta",
@@ -860,7 +860,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-eed533382cfbcbb3a884-subject-g05-t06-subject-alpha",
@@ -875,7 +875,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-998d948b615ed2054132-subject-g05-t06-subject-alpha",
@@ -890,7 +890,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-f86e441ce4c68e0a251e-subject-g05-t06-subject-alpha",
@@ -905,7 +905,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-928e578d15724b6b159f-subject-g05-t06-subject-alpha",
@@ -920,7 +920,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-8d196f1cdb7b01a3de2f-subject-g05-t06-subject-alpha",
@@ -935,7 +935,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-20c395a79943f3c36186-subject-g05-t06-subject-alpha",
@@ -950,7 +950,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.267Z"
     },
     {
       "checkId": "check-d2-710539fb435b13b4e2b2-subject-g05-t06-subject-alpha",
@@ -965,7 +965,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-bbef96457094fef0513e-subject-g05-t06-subject-alpha",
@@ -980,7 +980,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.300Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-9c041c4bba5399c14ad1-subject-g05-t06-subject-alpha",
@@ -995,7 +995,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-a79886f00151c0e0804e-subject-g05-t06-subject-alpha",
@@ -1010,7 +1010,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-c147ef00efcc8e56026c-subject-g05-t06-subject-alpha",
@@ -1025,7 +1025,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-657f7ecb79a5ff2d55f4-subject-g05-t06-subject-alpha",
@@ -1040,7 +1040,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-70c66e67a40b75452e5e-subject-g05-t06-subject-alpha",
@@ -1055,7 +1055,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-29341e243dee757929b8-subject-g05-t06-subject-beta",
@@ -1070,7 +1070,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-2d9eaaddbae89e9e69fe-subject-g05-t06-subject-beta",
@@ -1085,7 +1085,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-0ed3022b0b04338dbe7d-subject-g05-t06-subject-beta",
@@ -1100,7 +1100,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-a91ef4cd1389a194bc61-subject-g05-t06-subject-beta",
@@ -1115,7 +1115,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-1bf1a8df065c53db751d-subject-g05-t06-subject-beta",
@@ -1130,7 +1130,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-5ce97a81a030d960ea33-subject-g05-t06-subject-beta",
@@ -1145,7 +1145,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-12f8eb6cf6436eba1220-subject-g05-t06-subject-beta",
@@ -1160,7 +1160,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-1d9db1f8737166325591-subject-g05-t06-subject-beta",
@@ -1175,7 +1175,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-9c94bead8b1fefc4e696-subject-g05-t06-subject-beta",
@@ -1190,7 +1190,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-45ef4706f5488a99fe27-subject-g05-t06-subject-beta",
@@ -1205,7 +1205,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-0328ef9bf04cd96e65ff-subject-g05-t06-subject-beta",
@@ -1220,7 +1220,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-023f96d827f206b39fc0-subject-g05-t06-subject-beta",
@@ -1235,7 +1235,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-bccc641107eb924c327b-subject-g05-t06-subject-beta",
@@ -1250,7 +1250,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-60d8b2cd541385cccb47-subject-g05-t06-subject-beta",
@@ -1265,7 +1265,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-1b21c2ce40aeea558ece-subject-g05-t06-subject-beta",
@@ -1280,7 +1280,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-5efa36e01685df8a2b2b-subject-g05-t06-subject-beta",
@@ -1295,7 +1295,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-ca3ccd3b369b7135ca19-subject-g05-t06-subject-beta",
@@ -1310,7 +1310,7 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     },
     {
       "checkId": "check-d2-a326fb4d51bbfab35c43-subject-g05-t06-subject-beta",
@@ -1325,12 +1325,12 @@
       "reason": "Unverified C business rule and/or subject evidence. Human policy decision required.",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T18:43:41.301Z"
+      "executedAt": "2026-10-17T18:46:29.268Z"
     }
   ],
   "opinions": [
     {
-      "id": "opinion-run-pi-mvcqw19q-szgh7",
+      "id": "opinion-run-pi-mvcqzmvd-bj28q",
       "kind": "summary",
       "severity": "yellow",
       "title": "Pi 审核意见",
@@ -1344,7 +1344,7 @@
   "coverage": {
     "documents": [
       {
-        "documentVersionId": "doc-1-mvcqw19a-v1",
+        "documentVersionId": "doc-1-mvcqzmuv-v1",
         "status": "unread",
         "reason": "本次运行没有可追溯的读取记录"
       }
@@ -1357,11 +1357,11 @@
   "diagnostics": [
     "由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。"
   ],
-  "startedAt": "2026-10-17T18:43:41.294Z",
+  "startedAt": "2026-10-17T18:46:29.257Z",
   "initiatedBy": {
     "actorId": "agent-g05-t06-session",
     "actorSource": "agent",
     "role": "reviewer"
   },
-  "completedAt": "2026-10-17T18:43:41.301Z"
+  "completedAt": "2026-10-17T18:46:29.268Z"
 }
