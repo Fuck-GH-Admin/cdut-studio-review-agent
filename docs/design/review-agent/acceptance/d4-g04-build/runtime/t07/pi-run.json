@@ -1,22 +1,22 @@
 {
-  "id": "run-pi-mvcmybnq-tonmc",
+  "id": "run-pi-mvcn4abh-g2guf",
   "caseId": "g04-t07-tech",
   "templateId": "d4-g04-t07",
   "templateVersion": 1,
   "inputManifest": {
-    "hash": "8496f9e374bee456fbc4e04967d189507d323d7fd79d6d7b29c29316a27bf079",
+    "hash": "29d4c4cef970aec377b9faf73594183af29c6f40861e5b43a8ba71b1573652d5",
     "templateVersion": 1,
     "policyVersions": [],
     "documentVersions": [
       {
-        "documentId": "doc-1-mvcmybn2",
-        "versionId": "doc-1-mvcmybn2-v1",
+        "documentId": "doc-1-mvcn4aaf",
+        "versionId": "doc-1-mvcn4aaf-v1",
         "contentHash": "8b52890265695608de8930eb0abe23bb497d6e7370e440cb12559bb65ea1f363"
       }
     ],
     "observationIds": [],
     "evidenceLinkIds": [
-      "evl-doc-1-mvcmybn2-v1-subject-a-1792256009593-h5sv"
+      "evl-doc-1-mvcn4aaf-v1-subject-a-1792256287794-k3j3"
     ],
     "effectiveRuleIds": [
       "d2-1db43dbf0c05c7f3486b",
@@ -168,7 +168,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-c5a8ba6e54c90c990ce3-subject-subject-a",
@@ -183,7 +183,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-0ab2d2a0fece4ebfec6c-subject-subject-a",
@@ -198,7 +198,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-0a87667e5c7e81ec8f0b-subject-subject-a",
@@ -213,7 +213,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-936411afb4f445cc6770-subject-subject-a",
@@ -228,7 +228,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-51b4bfb9d29ce94907a8-subject-subject-a",
@@ -243,7 +243,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-d2a8653e30f706605a58-subject-subject-a",
@@ -258,7 +258,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-bf4ea9825bf2379e2255-subject-subject-a",
@@ -273,7 +273,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-ab8367d249e44c48af06-subject-subject-a",
@@ -288,7 +288,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-f9664eb7841c0b7dbd79-subject-subject-a",
@@ -303,7 +303,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-5d3fc5542f6b87cca124-subject-subject-a",
@@ -318,7 +318,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-3c228c67386803141119-subject-subject-a",
@@ -333,7 +333,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-b57ee44ebeed0eb9ad74-subject-subject-a",
@@ -348,7 +348,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-22222a90bdb699e1f3d9-subject-subject-a",
@@ -363,7 +363,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-536ab7c40bbf672c19da-subject-subject-a",
@@ -378,7 +378,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-8d050f8e63b073cd60a8-subject-subject-a",
@@ -393,7 +393,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-787557a6467ca56528eb-subject-subject-a",
@@ -408,7 +408,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-0d3a4571e0df2bbb8a52-subject-subject-a",
@@ -423,7 +423,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-19d2464f3594026b5334-subject-subject-a",
@@ -438,7 +438,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-d02dff7266bf4d8010b7-subject-subject-a",
@@ -453,7 +453,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-5bc9b8a57e0e3a09a7bf-subject-subject-a",
@@ -468,7 +468,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-a5c649df7a3017d0ae2e-subject-subject-a",
@@ -483,7 +483,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-94819a58f39894b69b8a-subject-subject-a",
@@ -498,7 +498,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-a6a34b74c5910ad74796-subject-subject-a",
@@ -513,7 +513,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-d1f8e41d3b1fc20c1f1b-subject-subject-a",
@@ -528,7 +528,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-327293d30a0816576717-subject-subject-a",
@@ -543,7 +543,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-ccca476d2b3da037bcbc-subject-subject-a",
@@ -558,7 +558,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-21788ec9994b3b47f76b-subject-subject-a",
@@ -573,7 +573,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-c4bb6937c1cc49fd5f24-subject-subject-a",
@@ -588,7 +588,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.617Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-266bc04bcc0f962ff863-subject-subject-a",
@@ -603,7 +603,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-75fa16ea8c61f22982e9-subject-subject-a",
@@ -618,7 +618,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-452a248ead68df9b84f9-subject-subject-a",
@@ -633,7 +633,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-89829cfe218616b8fbbb-subject-subject-a",
@@ -648,7 +648,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-07ff074f21901054e80c-subject-subject-a",
@@ -663,7 +663,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-e52716d7b03db5529e6a-subject-subject-a",
@@ -678,7 +678,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-c6526792b585176e623c-subject-subject-a",
@@ -693,7 +693,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-dc7096141d360dc984e7-subject-subject-a",
@@ -708,7 +708,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-a2b550de6ba98501becd-subject-subject-a",
@@ -723,7 +723,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-2965e4480942d49d2e68-subject-subject-a",
@@ -738,7 +738,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-86ad1ac97479ac571024-subject-subject-a",
@@ -753,7 +753,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-e498abf62076da63380d-subject-subject-a",
@@ -768,7 +768,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-999716550e2ed29ab3f4-subject-subject-a",
@@ -783,7 +783,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-f134a99d9b225b6455f9-subject-subject-a",
@@ -798,7 +798,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-2ef3ec0ccb7b2cdc786c-subject-subject-a",
@@ -813,7 +813,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-a6b2692e509ce98dc8dd-subject-subject-a",
@@ -828,7 +828,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-94ed776b69cd70a924c8-subject-subject-a",
@@ -843,7 +843,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-880f0e940dcfc81f8c94-subject-subject-a",
@@ -858,7 +858,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-4d13b7cfb22c2a43d1d1-subject-subject-a",
@@ -873,7 +873,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-b454170d8edbee950051-subject-subject-a",
@@ -888,7 +888,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-cb8c86cf7363b46fdb46-subject-subject-a",
@@ -903,7 +903,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-199149723627550ef699-subject-subject-a",
@@ -918,7 +918,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-1f4c0e605eeabce87884-subject-subject-a",
@@ -933,7 +933,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-90457c3e7f25d68a6cbc-subject-subject-a",
@@ -948,7 +948,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-880847ac2d615956540f-subject-subject-a",
@@ -963,7 +963,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-35684bf5726204287e60-subject-subject-a",
@@ -978,7 +978,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-58bf14a06325ab44df7d-subject-subject-a",
@@ -993,7 +993,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-9a6cce2f829bbab75e6b-subject-subject-a",
@@ -1008,7 +1008,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-34c13412fe138ae34b86-subject-subject-a",
@@ -1023,7 +1023,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-33d388523d4bd27662a5-subject-subject-a",
@@ -1038,7 +1038,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-4f851cd6934e44d5c41b-subject-subject-a",
@@ -1053,7 +1053,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-930a396b64c3af6b5f9c-subject-subject-a",
@@ -1068,7 +1068,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-beac7d5436eb188b18c2-subject-subject-a",
@@ -1083,7 +1083,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-bcc90ce0a9afcabc1c88-subject-subject-a",
@@ -1098,7 +1098,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-452e057af9f2bf128462-subject-subject-a",
@@ -1113,7 +1113,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-ab354faaf137032ecad9-subject-subject-a",
@@ -1128,7 +1128,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-2aeaa1d34ed7458642a5-subject-subject-b",
@@ -1143,7 +1143,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-95d5397936bbb9bf206b-subject-subject-b",
@@ -1158,7 +1158,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.817Z"
     },
     {
       "checkId": "check-d2-89bf82430db282b2b259-subject-subject-b",
@@ -1173,7 +1173,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-51a97cf6899e062a0fff-subject-subject-b",
@@ -1188,7 +1188,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-ddb825cfefd311f4ac5e-subject-subject-b",
@@ -1203,7 +1203,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-c8504f9584572ecd93f3-subject-subject-b",
@@ -1218,7 +1218,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-7f6df698a56f15310ab5-subject-subject-b",
@@ -1233,7 +1233,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-2e89eecc79ed4d378c33-subject-subject-b",
@@ -1248,7 +1248,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-94cfa05848a93ca78010-subject-subject-b",
@@ -1263,7 +1263,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-0c9db474b08a131594ba-subject-subject-b",
@@ -1278,7 +1278,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-46a2a60b4bb3abc4d56d-subject-subject-b",
@@ -1293,7 +1293,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-c71316d4b9e6a25b20bb-subject-subject-b",
@@ -1308,7 +1308,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-d57955fffefcf6164876-subject-subject-b",
@@ -1323,7 +1323,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-d04c82edca0f4aeeeec1-subject-subject-b",
@@ -1338,7 +1338,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-ebf22619246c6c9270cc-subject-subject-b",
@@ -1353,7 +1353,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-084c3e961280a17d0f24-subject-subject-b",
@@ -1368,7 +1368,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-89ca8449b5e3c9c5d98f-subject-subject-b",
@@ -1383,7 +1383,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-8a71a70decff2400c2a0-subject-subject-b",
@@ -1398,7 +1398,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-d40b21b3ec5dc78c0144-subject-subject-b",
@@ -1413,7 +1413,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-127bb124c3e28c8d3dcd-subject-subject-b",
@@ -1428,7 +1428,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-0a240a80e25c7223d627-subject-subject-b",
@@ -1443,7 +1443,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-35a97a1a3690183b477d-subject-subject-b",
@@ -1458,7 +1458,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-d276dc1809867727c7b7-subject-subject-b",
@@ -1473,7 +1473,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-878f76bdddde164dfe37-subject-subject-b",
@@ -1488,7 +1488,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-4f8c258d52233df97414-subject-subject-b",
@@ -1503,7 +1503,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-9cbc651158a150ec2829-subject-subject-b",
@@ -1518,7 +1518,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-212200280bde267e5ba9-subject-subject-b",
@@ -1533,7 +1533,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-9eb90c94bfd80d99e604-subject-subject-b",
@@ -1548,7 +1548,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-41501138dd8088bbe0d7-subject-subject-b",
@@ -1563,7 +1563,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-0ad12887aa60be923afc-subject-subject-b",
@@ -1578,7 +1578,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-599d658ae10edd12641b-subject-subject-b",
@@ -1593,7 +1593,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-a152fe615709db3f70ff-subject-subject-b",
@@ -1608,7 +1608,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-08a4c48f283ffef23146-subject-subject-b",
@@ -1623,7 +1623,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-3841d7b53c4ceb8f8aed-subject-subject-b",
@@ -1638,7 +1638,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-13f926cbf098eb0101e6-subject-subject-b",
@@ -1653,7 +1653,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-8f5d9b4159411a15e909-subject-subject-b",
@@ -1668,7 +1668,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.618Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-453d21a36a8d96d6951f-subject-subject-b",
@@ -1683,7 +1683,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-529d9edf10979b163c68-subject-subject-b",
@@ -1698,7 +1698,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-d8fd62bd692258e81059-subject-subject-b",
@@ -1713,7 +1713,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-07042609af7c53d42f5f-subject-subject-b",
@@ -1728,7 +1728,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-27cc2ebd12502b672a02-subject-subject-b",
@@ -1743,7 +1743,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-8ed9aa787da150dbeb18-subject-subject-b",
@@ -1758,7 +1758,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-8dfce8c55038f804cb5d-subject-subject-b",
@@ -1773,7 +1773,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-627154c2db6fa5553e1a-subject-subject-b",
@@ -1788,7 +1788,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-c0bc6f5f12c58b696736-subject-subject-b",
@@ -1803,7 +1803,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-901eac5f6531cf44791d-subject-subject-b",
@@ -1818,7 +1818,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-dad120171fb21b9b12e6-subject-subject-b",
@@ -1833,7 +1833,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-691bbd1fc9834afc5f8a-subject-subject-b",
@@ -1848,7 +1848,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-21a46d06c97bea6a8d4b-subject-subject-b",
@@ -1863,7 +1863,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-3a7bf26ec35924ce1d85-subject-subject-b",
@@ -1878,7 +1878,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-b6fba44744b1ecc67d13-subject-subject-b",
@@ -1893,7 +1893,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-0207d8fc12de91e4070a-subject-subject-b",
@@ -1908,7 +1908,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-90ce67aed7300d5b8e32-subject-subject-b",
@@ -1923,7 +1923,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-2dbe4d0a624742bf982e-subject-subject-b",
@@ -1938,7 +1938,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-d3a1ea966f97db26a3b4-subject-subject-b",
@@ -1953,7 +1953,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-0085b8df900e4b53339c-subject-subject-b",
@@ -1968,7 +1968,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-4048c1ac3b42ec6756f9-subject-subject-b",
@@ -1983,7 +1983,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-f055f0add32cb0e28ee1-subject-subject-b",
@@ -1998,7 +1998,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-480c5dabcd69e22e00ad-subject-subject-b",
@@ -2013,7 +2013,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-5342c6202204f636006e-subject-subject-b",
@@ -2028,7 +2028,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-949cc60e3484da2b386c-subject-subject-b",
@@ -2043,7 +2043,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-ad29b6e388503fdce272-subject-subject-b",
@@ -2058,7 +2058,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-214fcb25f34362428150-subject-subject-b",
@@ -2073,7 +2073,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-682a3247f67b534e3b33-subject-subject-b",
@@ -2088,7 +2088,7 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     },
     {
       "checkId": "check-d2-839af103a3ecd03a998d-subject-subject-b",
@@ -2103,12 +2103,12 @@
       "reason": "当前业务对象和政策事实需受控人工确认",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:53:29.619Z"
+      "executedAt": "2026-10-17T16:58:07.818Z"
     }
   ],
   "opinions": [
     {
-      "id": "opinion-run-pi-mvcmybnq-tonmc",
+      "id": "opinion-run-pi-mvcn4abh-g2guf",
       "kind": "summary",
       "severity": "yellow",
       "title": "Pi 审核意见",
@@ -2122,7 +2122,7 @@
   "coverage": {
     "documents": [
       {
-        "documentVersionId": "doc-1-mvcmybn2-v1",
+        "documentVersionId": "doc-1-mvcn4aaf-v1",
         "status": "unread",
         "reason": "本次运行没有可追溯的读取记录"
       }
@@ -2135,11 +2135,11 @@
   "diagnostics": [
     "由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。"
   ],
-  "startedAt": "2026-10-17T16:53:29.607Z",
+  "startedAt": "2026-10-17T16:58:07.807Z",
   "initiatedBy": {
     "actorId": "agent-g04-session-t07",
     "actorSource": "agent",
     "role": "reviewer"
   },
-  "completedAt": "2026-10-17T16:53:29.619Z"
+  "completedAt": "2026-10-17T16:58:07.818Z"
 }
