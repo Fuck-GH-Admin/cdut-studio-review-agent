@@ -1,0 +1,117 @@
+{
+  "schema": "G07-T06/C-author-E0-recovery-r01",
+  "templateId": "G07-T06",
+  "businessName": "主办会议与培训经费结算预审",
+  "businessVersion": "v0.1",
+  "stageSpecification": "C v2.1",
+  "priorE0Decision": "BLOCKED_INPUT",
+  "priorE0DecisionFrozenHead": "ccbf9bd6b16c9472bb35b03cd8b676d87c6cd6ab",
+  "priorAuditPath": "docs/design/review-agent/business-templates/G07/acceptance/E-v1.0/",
+  "independentAuditorMustNotReadCBeforeE1Lock": true,
+  "originalAuthorCommit": "NOT_AVAILABLE",
+  "archivalRecoveryBranch": "author/g07-t06-c-r01-e0-input-recovery",
+  "archivalSnapshotCommitBeforeManifest": "7bf753b1aac9948521a3497ce7f0d76e945cea88",
+  "files": [
+    {
+      "path": "docs/design/review-agent/business-templates/G07/C/G07-T06/G07-T06_正式业务模板_MD_v0.1.md",
+      "sha256": "59f0e1cc0ef4232d8a3f5c8c8c6a6cb1413695c0ff8bed94fd8539d35bd95c13",
+      "authorVersion": "C v0.1",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "originalLocalLocation": "/mnt/data/G07-T06_C阶段_v2.1_最小迁移交付/G07-T06_正式业务模板_MD_v0.1.md",
+      "action": "BITWISE_RESTORED_NOT_REWRITTEN"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/C/G07-T06/G07-T06_规则追踪矩阵.md",
+      "sha256": "c5e75da1bf352101373f544dcbb4e61ff87cc7bcd22362b123948ea940375dbd",
+      "authorVersion": "C v0.1",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "originalLocalLocation": "/mnt/data/G07-T06_C阶段_v2.1_最小迁移交付/G07-T06_规则追踪矩阵.md",
+      "action": "BITWISE_RESTORED_NOT_REWRITTEN"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/C/G07-T06/G07-T06_规则追踪矩阵.csv",
+      "sha256": "111dfd34b4835be6c6c912dd66a97864734c161cf9bd2d8aa57b53857425bdfb",
+      "authorVersion": "C v0.1",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "originalLocalLocation": "/mnt/data/G07-T06_C阶段_v2.1_最小迁移交付/G07-T06_规则追踪矩阵.csv",
+      "action": "BITWISE_RESTORED_NOT_REWRITTEN"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/C/G07-T06/G07-T06_作者自检与问题修订记录.md",
+      "sha256": "ce42fc28abd3143e25c3201288fe37cabf0ced0976076347fc358d0df7ddf1cf",
+      "authorVersion": "C v0.1",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "originalLocalLocation": "/mnt/data/G07-T06_C阶段_v2.1_最小迁移交付/G07-T06_作者自检与问题修订记录.md",
+      "action": "BITWISE_RESTORED_NOT_REWRITTEN"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/C/G07-T06/G07-T06_编辑器共性模块候选.md",
+      "sha256": "4f6c71ecdc3d2aa56c8cd5d31f98c71960cbff49966654a9a62c4814961df972",
+      "authorVersion": "C v0.1",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "originalLocalLocation": "/mnt/data/G07-T06_C阶段_v2.1_最小迁移交付/G07-T06_编辑器共性模块候选.md",
+      "action": "BITWISE_RESTORED_NOT_REWRITTEN"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/C/G07-T06/G07-T06_验收对接说明.md",
+      "sha256": "832947b46c25df99c80cbc4a213f1b955fd1ce532a7afb2f036129f1bae63769",
+      "authorVersion": "C v2.1 migration; business v0.1",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "originalLocalLocation": "/mnt/data/G07-T06_C阶段_v2.1_最小迁移交付/G07-T06_验收对接说明.md",
+      "action": "BITWISE_RESTORED_NOT_REWRITTEN"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/C/G07-T06/G07-T06_测试对接说明.md",
+      "sha256": "591487498ab87733fc63f54fbb172201dac7eadef331156219a34ada34ed3168",
+      "authorVersion": "C v0.1",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "originalLocalLocation": "/mnt/data/G07-T06_C阶段_v2.1_最小迁移交付/G07-T06_测试对接说明.md",
+      "action": "BITWISE_RESTORED_NOT_REWRITTEN"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/C/G07-T06/G07-T06_Cv2.1_迁移核验报告.md",
+      "sha256": "f864869e31f4b315d95467e129bb5ab3b13528856d35cbb766f07a04687e10da",
+      "authorVersion": "C v2.1 migration; business v0.1",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "originalLocalLocation": "/mnt/data/G07-T06_C阶段_v2.1_最小迁移交付/G07-T06_Cv2.1_迁移核验报告.md",
+      "action": "BITWISE_RESTORED_NOT_REWRITTEN"
+    }
+  ],
+  "sourceDependencies": [
+    {
+      "phase": "A",
+      "filename": "G07_02_统一模板目录与边界.md",
+      "location": "/mnt/data/G07_A参考资料/",
+      "sha256": "64a771d60e7ea68a040c4d7fd551c246bf3cd123e0ca60a8f7d9d4ea245ee4c4",
+      "sourceAuthorCommit": "NOT_AVAILABLE",
+      "gitArchivedInThisBranch": false
+    },
+    {
+      "phase": "A",
+      "filename": "G07_03_来源索引.md",
+      "location": "/mnt/data/G07_A参考资料/",
+      "sha256": "17583564d18b1561b05ce6fd9104df86e132b6d34047ca78f85d1af75f8b3245",
+      "sourceAuthorCommit": "NOT_AVAILABLE",
+      "gitArchivedInThisBranch": false
+    },
+    {
+      "phase": "B",
+      "filename": "G07-T06_B阶段_深度调研_v0.2_校本补查交接包.zip",
+      "location": "/mnt/data/",
+      "sha256": "64b43ee85391f121ec71591662c5ebcd207f1f5db930161b9ce0a6bf6085f3e7",
+      "sourceAuthorCommit": "NOT_AVAILABLE",
+      "gitArchivedInThisBranch": false
+    }
+  ],
+  "frozenBusinessRuleIds": {
+    "prefix": "R",
+    "first": "R-01",
+    "last": "R-36",
+    "count": 36
+  },
+  "authorSelfTests": "WT-01..WT-18 only; not D Gold",
+  "status": "C_AUTHOR_INPUTS_ARCHIVED_PENDING_E0_RECHECK",
+  "pendingSchoolPolicy": "SOURCE_PENDING: 2026 meeting/training tariffs, hotel contract threshold, online attendance substitutes, delegated authority, relevant effective policy version",
+  "privacy": "Only public C author prose and hashes; no D Gold, hidden expected answers, original protected financial ledgers, credentials or personal data.",
+  "scope": "Current author recovered only G07-T06 C. Other six C and all D are outside this author session. E r01 original decision remains unchanged."
+}
