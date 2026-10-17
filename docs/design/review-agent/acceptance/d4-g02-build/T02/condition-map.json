@@ -1,0 +1,30 @@
+{
+  "axes": {
+    "act-new": "BR-01",
+    "act-change": "BR-03",
+    "act-end": "BR-08",
+    "route-personal": "BR-02",
+    "delegated": "BR-07",
+    "short-term": "BR-04",
+    "multi-member": "BR-06",
+    "organization-change": "BR-05",
+    "existing-mailbox": "BR-03/05/08",
+    "policy-confirmed": "C:school/version/channel/status"
+  },
+  "primary": [
+    "act-new",
+    "act-change",
+    "act-end",
+    "route-personal"
+  ],
+  "additive": [
+    "delegated",
+    "short-term",
+    "multi-member",
+    "organization-change",
+    "existing-mailbox",
+    "policy-confirmed"
+  ],
+  "unknownPolicy": "UNKNOWN stays an actual target Check; no administrative decision",
+  "notes": "完整原始BR/ST/场景仍以母版为准"
+}
