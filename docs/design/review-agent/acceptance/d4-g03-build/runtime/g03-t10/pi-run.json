@@ -1,0 +1,1906 @@
+{
+  "id": "run-pi-mvcnfmg2-3qb67",
+  "caseId": "g03-t10-live-synth",
+  "templateId": "g03-t10",
+  "templateVersion": 1,
+  "inputManifest": {
+    "hash": "5b0747decf61aae3ac0331b5379180fff89341ab4d71bc2eb30db8adc0e75d18",
+    "templateVersion": 1,
+    "policyVersions": [],
+    "documentVersions": [
+      {
+        "documentId": "doc-1-mvcnfmfc",
+        "versionId": "doc-1-mvcnfmfc-v1",
+        "contentHash": "042b12cf73f9eab4254354ff8b8d3e663171bcebd66ae879069c0a12abdf0214"
+      }
+    ],
+    "observationIds": [],
+    "evidenceLinkIds": [
+      "evl-doc-1-mvcnfmfc-v1-g03-t10-subject-a-1792256816727-43is"
+    ],
+    "effectiveRuleIds": [
+      "d2-ea27573ef4e26f060141",
+      "d2-72911360c7ff7db7a680",
+      "d2-a16121229ecee3921035",
+      "d2-86a397c6d77775203ec0",
+      "d2-d8f83c439d02cf6165be",
+      "d2-20d48fb4cd85e937da6a",
+      "d2-8f9add2cdababb6f0531",
+      "d2-8045f46b2f40d5cd0850",
+      "d2-e0e345b05afb6c7d2968",
+      "d2-f1f830e19f06d3f611f3",
+      "d2-94fab7e39a4dfa8aadde",
+      "d2-48cd451ea7b853fc6397",
+      "d2-cf2ecc409a6851211e75",
+      "d2-94f272178771f7b03381",
+      "d2-91f6e03eb47912bc3bc2",
+      "d2-19b732e1cc58d50be4d4",
+      "d2-eb8678217db5ba205819",
+      "d2-d64758609e0c96abf4a3",
+      "d2-ba6b0587c3b09206ea3c",
+      "d2-41647ce94a309fc3e76d",
+      "d2-956170679b062ba13b7d",
+      "d2-0c1076d897e34a5b0133",
+      "d2-245452639e264cd72ba2",
+      "d2-e800b4e70891602dc82b",
+      "d2-756f9a127c3596a307d9",
+      "d2-281ca4fcdb7ccee50f63",
+      "d2-5acac20fc23b19ff6db7",
+      "d2-f07b16947f2d65c666f8",
+      "d2-2371f745c193ae8c1560",
+      "d2-60db3f69765e0fdd2636",
+      "d2-dd993be492060004c19c",
+      "d2-3c53802ac295314e1b30",
+      "d2-7715cc0c53d84c08d047",
+      "d2-8355d555544760806b61",
+      "d2-67d23acccc874011a866",
+      "d2-cd08a6d1b78703271958",
+      "d2-37ae4b2af6d11ce81a39",
+      "d2-39d6e2d6097358cdfafc",
+      "d2-11d1a781f9744f5d1c89",
+      "d2-25ec3d2e633cd0768827",
+      "d2-fee96da63d07cbaa85bf",
+      "d2-04652031f42f33e522ea",
+      "d2-8d82ef8a5792d96f229d",
+      "d2-57e0b7552a785e93ce9e",
+      "d2-e1b02854ddd35468118f",
+      "d2-2cb23b48022e58172781",
+      "d2-2965e265707a5927347e",
+      "d2-8a0bedc4ba39a5ee7af1",
+      "d2-2ff6a3862936322dffc9",
+      "d2-09e4c3ca1b53930ec51c",
+      "d2-f821d2370809d47a5f5e",
+      "d2-7908258ff0fec0eaccfc",
+      "d2-d8d288a10dd81f0ebb90",
+      "d2-87d123f69fd270dae749",
+      "d2-023ebe04a1b82f38b04f",
+      "d2-50d18305d78acbc13a88",
+      "d2-9cb83a4fc1b65de0516f",
+      "d2-439e50f56812ab687383",
+      "d2-b99f0964b55d580bcb98",
+      "d2-93f793b3497310e985d6",
+      "d2-8e9b5c936b328b9a34ba",
+      "d2-72ea4ada5fc1a6ea93b4",
+      "d2-d10aad6fa49929c55401",
+      "d2-a7ea2fcc736fafeafba4",
+      "d2-e7e2cd51717015823c0e",
+      "d2-66239cdab178e59050f8",
+      "d2-7af30c632df73422df77",
+      "d2-3081ee09f8ba8946d52e",
+      "d2-86d8eb628a4bd78b286e",
+      "d2-219abbb9367e87b0a8cb",
+      "d2-c877a71e545fd1008b8a",
+      "d2-3352dc086f753f0f9590",
+      "d2-a0dfad2b62617b7c1e84",
+      "d2-3385f8c96b8978845bf6",
+      "d2-dac3831945a373bcf033",
+      "d2-b49c0f10c21738a8acbd",
+      "d2-038c45280c37c0649705",
+      "d2-9c070df6183b90291aca",
+      "d2-1ad62d66b453f099817d",
+      "d2-069697d2ced5965601bd",
+      "d2-a4bbdd0d52c1bde5428b",
+      "d2-0926f845f6db14cc210a",
+      "d2-3cc4023ad8f48e471c86",
+      "d2-7370d7aba45d5260cc29",
+      "d2-a6712a17dabb00b62879",
+      "d2-cdba7322533fa58a9492",
+      "d2-73c91c40b18678d5eb10",
+      "d2-c7fa477affef32cc4689",
+      "d2-72ce8e9132d71558c715",
+      "d2-bcf94cf2742be708bf88",
+      "d2-7c85ea45058b857bea5d",
+      "d2-b2d7a5f0cd1aacd79658",
+      "d2-cae6ed3fd1b8d904c2f1",
+      "d2-8ca4b4a52527941ab685",
+      "d2-8838f33e7567faf08ae6",
+      "d2-3b577078f13767cc3e3b",
+      "d2-95b9119fddb3350a9ce0",
+      "d2-d74f07f148e19bcd669d",
+      "d2-ea7564f1bf5904c83eb4",
+      "d2-59e051e68ef372d1d874",
+      "d2-74948a3d69768b01d4f2",
+      "d2-28e4f4ce2a1ce75a58d4",
+      "d2-f9755074bbfc6a189b85",
+      "d2-94d0c19c3b0dc5849cb8",
+      "d2-380bee4b6bf18692c3f4",
+      "d2-384f812e569bd0a64f79",
+      "d2-b327defabf8e9d5a5bee",
+      "d2-595e31a816ccbaacd19a",
+      "d2-1e5e75ef9228c50ff26f",
+      "d2-cdc215d3b94f34ad00a1",
+      "d2-8c94cadb6eef62fdfd9f",
+      "d2-c9cdfcb39cea6f37c69d",
+      "d2-fff6263cf37e08147c9b",
+      "d2-37980a910f3b748f21b2",
+      "d2-161b017713cefdae0aa7"
+    ],
+    "effectiveRuleSetHash": "ef7dfb80793f534a2d37a9f7182c7d74f4adc1dcfd430519f4afe82efc86d642"
+  },
+  "status": "completed",
+  "checkpoints": [],
+  "checks": [
+    {
+      "checkId": "check-d2-ea27573ef4e26f060141-case-g03-t10-subject-a-g03-t10-subject-b",
+      "ruleId": "d2-ea27573ef4e26f060141",
+      "target": {
+        "scope": "case",
+        "subjectIds": [
+          "g03-t10-subject-a",
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-72911360c7ff7db7a680-subject-g03-t10-subject-a",
+      "ruleId": "d2-72911360c7ff7db7a680",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-a16121229ecee3921035-subject-g03-t10-subject-a",
+      "ruleId": "d2-a16121229ecee3921035",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-86a397c6d77775203ec0-subject-g03-t10-subject-a",
+      "ruleId": "d2-86a397c6d77775203ec0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-d8f83c439d02cf6165be-subject-g03-t10-subject-a",
+      "ruleId": "d2-d8f83c439d02cf6165be",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-20d48fb4cd85e937da6a-subject-g03-t10-subject-a",
+      "ruleId": "d2-20d48fb4cd85e937da6a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-8f9add2cdababb6f0531-subject-g03-t10-subject-a",
+      "ruleId": "d2-8f9add2cdababb6f0531",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-8045f46b2f40d5cd0850-subject-g03-t10-subject-a",
+      "ruleId": "d2-8045f46b2f40d5cd0850",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-e0e345b05afb6c7d2968-subject-g03-t10-subject-a",
+      "ruleId": "d2-e0e345b05afb6c7d2968",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-f1f830e19f06d3f611f3-subject-g03-t10-subject-a",
+      "ruleId": "d2-f1f830e19f06d3f611f3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-94fab7e39a4dfa8aadde-subject-g03-t10-subject-a",
+      "ruleId": "d2-94fab7e39a4dfa8aadde",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-48cd451ea7b853fc6397-subject-g03-t10-subject-a",
+      "ruleId": "d2-48cd451ea7b853fc6397",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-cf2ecc409a6851211e75-subject-g03-t10-subject-a",
+      "ruleId": "d2-cf2ecc409a6851211e75",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-94f272178771f7b03381-subject-g03-t10-subject-a",
+      "ruleId": "d2-94f272178771f7b03381",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-91f6e03eb47912bc3bc2-subject-g03-t10-subject-a",
+      "ruleId": "d2-91f6e03eb47912bc3bc2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-19b732e1cc58d50be4d4-subject-g03-t10-subject-a",
+      "ruleId": "d2-19b732e1cc58d50be4d4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-eb8678217db5ba205819-subject-g03-t10-subject-a",
+      "ruleId": "d2-eb8678217db5ba205819",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-d64758609e0c96abf4a3-subject-g03-t10-subject-a",
+      "ruleId": "d2-d64758609e0c96abf4a3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-ba6b0587c3b09206ea3c-subject-g03-t10-subject-a",
+      "ruleId": "d2-ba6b0587c3b09206ea3c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-41647ce94a309fc3e76d-subject-g03-t10-subject-a",
+      "ruleId": "d2-41647ce94a309fc3e76d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-956170679b062ba13b7d-subject-g03-t10-subject-a",
+      "ruleId": "d2-956170679b062ba13b7d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-0c1076d897e34a5b0133-subject-g03-t10-subject-a",
+      "ruleId": "d2-0c1076d897e34a5b0133",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-245452639e264cd72ba2-subject-g03-t10-subject-a",
+      "ruleId": "d2-245452639e264cd72ba2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.748Z"
+    },
+    {
+      "checkId": "check-d2-e800b4e70891602dc82b-subject-g03-t10-subject-a",
+      "ruleId": "d2-e800b4e70891602dc82b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-756f9a127c3596a307d9-subject-g03-t10-subject-a",
+      "ruleId": "d2-756f9a127c3596a307d9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-281ca4fcdb7ccee50f63-subject-g03-t10-subject-a",
+      "ruleId": "d2-281ca4fcdb7ccee50f63",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-5acac20fc23b19ff6db7-subject-g03-t10-subject-a",
+      "ruleId": "d2-5acac20fc23b19ff6db7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-f07b16947f2d65c666f8-subject-g03-t10-subject-a",
+      "ruleId": "d2-f07b16947f2d65c666f8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-2371f745c193ae8c1560-subject-g03-t10-subject-a",
+      "ruleId": "d2-2371f745c193ae8c1560",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-60db3f69765e0fdd2636-subject-g03-t10-subject-a",
+      "ruleId": "d2-60db3f69765e0fdd2636",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-dd993be492060004c19c-subject-g03-t10-subject-a",
+      "ruleId": "d2-dd993be492060004c19c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-3c53802ac295314e1b30-subject-g03-t10-subject-a",
+      "ruleId": "d2-3c53802ac295314e1b30",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-7715cc0c53d84c08d047-subject-g03-t10-subject-a",
+      "ruleId": "d2-7715cc0c53d84c08d047",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-8355d555544760806b61-subject-g03-t10-subject-a",
+      "ruleId": "d2-8355d555544760806b61",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-67d23acccc874011a866-subject-g03-t10-subject-a",
+      "ruleId": "d2-67d23acccc874011a866",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-cd08a6d1b78703271958-subject-g03-t10-subject-a",
+      "ruleId": "d2-cd08a6d1b78703271958",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-37ae4b2af6d11ce81a39-subject-g03-t10-subject-a",
+      "ruleId": "d2-37ae4b2af6d11ce81a39",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-39d6e2d6097358cdfafc-subject-g03-t10-subject-a",
+      "ruleId": "d2-39d6e2d6097358cdfafc",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-11d1a781f9744f5d1c89-subject-g03-t10-subject-a",
+      "ruleId": "d2-11d1a781f9744f5d1c89",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-25ec3d2e633cd0768827-subject-g03-t10-subject-a",
+      "ruleId": "d2-25ec3d2e633cd0768827",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-fee96da63d07cbaa85bf-subject-g03-t10-subject-a",
+      "ruleId": "d2-fee96da63d07cbaa85bf",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-04652031f42f33e522ea-subject-g03-t10-subject-a",
+      "ruleId": "d2-04652031f42f33e522ea",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-8d82ef8a5792d96f229d-subject-g03-t10-subject-a",
+      "ruleId": "d2-8d82ef8a5792d96f229d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-57e0b7552a785e93ce9e-subject-g03-t10-subject-a",
+      "ruleId": "d2-57e0b7552a785e93ce9e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-e1b02854ddd35468118f-subject-g03-t10-subject-a",
+      "ruleId": "d2-e1b02854ddd35468118f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-2cb23b48022e58172781-subject-g03-t10-subject-a",
+      "ruleId": "d2-2cb23b48022e58172781",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-2965e265707a5927347e-subject-g03-t10-subject-a",
+      "ruleId": "d2-2965e265707a5927347e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-8a0bedc4ba39a5ee7af1-subject-g03-t10-subject-a",
+      "ruleId": "d2-8a0bedc4ba39a5ee7af1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-2ff6a3862936322dffc9-subject-g03-t10-subject-a",
+      "ruleId": "d2-2ff6a3862936322dffc9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-09e4c3ca1b53930ec51c-subject-g03-t10-subject-a",
+      "ruleId": "d2-09e4c3ca1b53930ec51c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-f821d2370809d47a5f5e-subject-g03-t10-subject-a",
+      "ruleId": "d2-f821d2370809d47a5f5e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-7908258ff0fec0eaccfc-subject-g03-t10-subject-a",
+      "ruleId": "d2-7908258ff0fec0eaccfc",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-d8d288a10dd81f0ebb90-subject-g03-t10-subject-a",
+      "ruleId": "d2-d8d288a10dd81f0ebb90",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-87d123f69fd270dae749-subject-g03-t10-subject-a",
+      "ruleId": "d2-87d123f69fd270dae749",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-023ebe04a1b82f38b04f-subject-g03-t10-subject-a",
+      "ruleId": "d2-023ebe04a1b82f38b04f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-50d18305d78acbc13a88-subject-g03-t10-subject-a",
+      "ruleId": "d2-50d18305d78acbc13a88",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-9cb83a4fc1b65de0516f-subject-g03-t10-subject-a",
+      "ruleId": "d2-9cb83a4fc1b65de0516f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-439e50f56812ab687383-subject-g03-t10-subject-a",
+      "ruleId": "d2-439e50f56812ab687383",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-b99f0964b55d580bcb98-subject-g03-t10-subject-b",
+      "ruleId": "d2-b99f0964b55d580bcb98",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-93f793b3497310e985d6-subject-g03-t10-subject-b",
+      "ruleId": "d2-93f793b3497310e985d6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-8e9b5c936b328b9a34ba-subject-g03-t10-subject-b",
+      "ruleId": "d2-8e9b5c936b328b9a34ba",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-72ea4ada5fc1a6ea93b4-subject-g03-t10-subject-b",
+      "ruleId": "d2-72ea4ada5fc1a6ea93b4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-d10aad6fa49929c55401-subject-g03-t10-subject-b",
+      "ruleId": "d2-d10aad6fa49929c55401",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-a7ea2fcc736fafeafba4-subject-g03-t10-subject-b",
+      "ruleId": "d2-a7ea2fcc736fafeafba4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-e7e2cd51717015823c0e-subject-g03-t10-subject-b",
+      "ruleId": "d2-e7e2cd51717015823c0e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-66239cdab178e59050f8-subject-g03-t10-subject-b",
+      "ruleId": "d2-66239cdab178e59050f8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-7af30c632df73422df77-subject-g03-t10-subject-b",
+      "ruleId": "d2-7af30c632df73422df77",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-3081ee09f8ba8946d52e-subject-g03-t10-subject-b",
+      "ruleId": "d2-3081ee09f8ba8946d52e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-86d8eb628a4bd78b286e-subject-g03-t10-subject-b",
+      "ruleId": "d2-86d8eb628a4bd78b286e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-219abbb9367e87b0a8cb-subject-g03-t10-subject-b",
+      "ruleId": "d2-219abbb9367e87b0a8cb",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-c877a71e545fd1008b8a-subject-g03-t10-subject-b",
+      "ruleId": "d2-c877a71e545fd1008b8a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-3352dc086f753f0f9590-subject-g03-t10-subject-b",
+      "ruleId": "d2-3352dc086f753f0f9590",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-a0dfad2b62617b7c1e84-subject-g03-t10-subject-b",
+      "ruleId": "d2-a0dfad2b62617b7c1e84",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-3385f8c96b8978845bf6-subject-g03-t10-subject-b",
+      "ruleId": "d2-3385f8c96b8978845bf6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-dac3831945a373bcf033-subject-g03-t10-subject-b",
+      "ruleId": "d2-dac3831945a373bcf033",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-b49c0f10c21738a8acbd-subject-g03-t10-subject-b",
+      "ruleId": "d2-b49c0f10c21738a8acbd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-038c45280c37c0649705-subject-g03-t10-subject-b",
+      "ruleId": "d2-038c45280c37c0649705",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-9c070df6183b90291aca-subject-g03-t10-subject-b",
+      "ruleId": "d2-9c070df6183b90291aca",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-1ad62d66b453f099817d-subject-g03-t10-subject-b",
+      "ruleId": "d2-1ad62d66b453f099817d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-069697d2ced5965601bd-subject-g03-t10-subject-b",
+      "ruleId": "d2-069697d2ced5965601bd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-a4bbdd0d52c1bde5428b-subject-g03-t10-subject-b",
+      "ruleId": "d2-a4bbdd0d52c1bde5428b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-0926f845f6db14cc210a-subject-g03-t10-subject-b",
+      "ruleId": "d2-0926f845f6db14cc210a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-3cc4023ad8f48e471c86-subject-g03-t10-subject-b",
+      "ruleId": "d2-3cc4023ad8f48e471c86",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-7370d7aba45d5260cc29-subject-g03-t10-subject-b",
+      "ruleId": "d2-7370d7aba45d5260cc29",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-a6712a17dabb00b62879-subject-g03-t10-subject-b",
+      "ruleId": "d2-a6712a17dabb00b62879",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-cdba7322533fa58a9492-subject-g03-t10-subject-b",
+      "ruleId": "d2-cdba7322533fa58a9492",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-73c91c40b18678d5eb10-subject-g03-t10-subject-b",
+      "ruleId": "d2-73c91c40b18678d5eb10",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-c7fa477affef32cc4689-subject-g03-t10-subject-b",
+      "ruleId": "d2-c7fa477affef32cc4689",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-72ce8e9132d71558c715-subject-g03-t10-subject-b",
+      "ruleId": "d2-72ce8e9132d71558c715",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-bcf94cf2742be708bf88-subject-g03-t10-subject-b",
+      "ruleId": "d2-bcf94cf2742be708bf88",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-7c85ea45058b857bea5d-subject-g03-t10-subject-b",
+      "ruleId": "d2-7c85ea45058b857bea5d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-b2d7a5f0cd1aacd79658-subject-g03-t10-subject-b",
+      "ruleId": "d2-b2d7a5f0cd1aacd79658",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-cae6ed3fd1b8d904c2f1-subject-g03-t10-subject-b",
+      "ruleId": "d2-cae6ed3fd1b8d904c2f1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-8ca4b4a52527941ab685-subject-g03-t10-subject-b",
+      "ruleId": "d2-8ca4b4a52527941ab685",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-8838f33e7567faf08ae6-subject-g03-t10-subject-b",
+      "ruleId": "d2-8838f33e7567faf08ae6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-3b577078f13767cc3e3b-subject-g03-t10-subject-b",
+      "ruleId": "d2-3b577078f13767cc3e3b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.749Z"
+    },
+    {
+      "checkId": "check-d2-95b9119fddb3350a9ce0-subject-g03-t10-subject-b",
+      "ruleId": "d2-95b9119fddb3350a9ce0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-d74f07f148e19bcd669d-subject-g03-t10-subject-b",
+      "ruleId": "d2-d74f07f148e19bcd669d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-ea7564f1bf5904c83eb4-subject-g03-t10-subject-b",
+      "ruleId": "d2-ea7564f1bf5904c83eb4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-59e051e68ef372d1d874-subject-g03-t10-subject-b",
+      "ruleId": "d2-59e051e68ef372d1d874",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-74948a3d69768b01d4f2-subject-g03-t10-subject-b",
+      "ruleId": "d2-74948a3d69768b01d4f2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-28e4f4ce2a1ce75a58d4-subject-g03-t10-subject-b",
+      "ruleId": "d2-28e4f4ce2a1ce75a58d4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-f9755074bbfc6a189b85-subject-g03-t10-subject-b",
+      "ruleId": "d2-f9755074bbfc6a189b85",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-94d0c19c3b0dc5849cb8-subject-g03-t10-subject-b",
+      "ruleId": "d2-94d0c19c3b0dc5849cb8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-380bee4b6bf18692c3f4-subject-g03-t10-subject-b",
+      "ruleId": "d2-380bee4b6bf18692c3f4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-384f812e569bd0a64f79-subject-g03-t10-subject-b",
+      "ruleId": "d2-384f812e569bd0a64f79",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-b327defabf8e9d5a5bee-subject-g03-t10-subject-b",
+      "ruleId": "d2-b327defabf8e9d5a5bee",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-595e31a816ccbaacd19a-subject-g03-t10-subject-b",
+      "ruleId": "d2-595e31a816ccbaacd19a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-1e5e75ef9228c50ff26f-subject-g03-t10-subject-b",
+      "ruleId": "d2-1e5e75ef9228c50ff26f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-cdc215d3b94f34ad00a1-subject-g03-t10-subject-b",
+      "ruleId": "d2-cdc215d3b94f34ad00a1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-8c94cadb6eef62fdfd9f-subject-g03-t10-subject-b",
+      "ruleId": "d2-8c94cadb6eef62fdfd9f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-c9cdfcb39cea6f37c69d-subject-g03-t10-subject-b",
+      "ruleId": "d2-c9cdfcb39cea6f37c69d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-fff6263cf37e08147c9b-subject-g03-t10-subject-b",
+      "ruleId": "d2-fff6263cf37e08147c9b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-37980a910f3b748f21b2-subject-g03-t10-subject-b",
+      "ruleId": "d2-37980a910f3b748f21b2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    },
+    {
+      "checkId": "check-d2-161b017713cefdae0aa7-subject-g03-t10-subject-b",
+      "ruleId": "d2-161b017713cefdae0aa7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t10-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.750Z"
+    }
+  ],
+  "opinions": [
+    {
+      "id": "opinion-run-pi-mvcnfmg2-3qb67",
+      "kind": "summary",
+      "severity": "yellow",
+      "title": "Pi 审核意见",
+      "detail": "SYNTHETIC technical review: verified business authority not supplied.",
+      "suggestion": "manual-review",
+      "suggestionText": "分析结果不代表正式决定，请按业务权限办理认定或审批。",
+      "sourceRefs": [],
+      "verification": "unverified"
+    }
+  ],
+  "coverage": {
+    "documents": [
+      {
+        "documentVersionId": "doc-1-mvcnfmfc-v1",
+        "status": "unread",
+        "reason": "本次运行没有可追溯的读取记录"
+      }
+    ],
+    "plannedChecks": 115,
+    "completedChecks": 115,
+    "effectiveVerdicts": 0,
+    "pendingChecks": 115
+  },
+  "diagnostics": [
+    "由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。"
+  ],
+  "startedAt": "2026-10-17T17:06:56.739Z",
+  "initiatedBy": {
+    "actorId": "agent-g03-t10-session",
+    "actorSource": "agent",
+    "role": "reviewer"
+  },
+  "completedAt": "2026-10-17T17:06:56.750Z"
+}
