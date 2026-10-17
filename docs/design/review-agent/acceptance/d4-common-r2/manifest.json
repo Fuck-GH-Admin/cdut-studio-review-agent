@@ -17,7 +17,7 @@
     "review-d3-r1-student.test.ts",
     "PR CI"
   ],
-  "status": "DRAFT_PENDING_CI",
+  "status": "VERIFIED_AT_F13_WITH_ADDITIONAL_EVIDENCE_TEST_PENDING",
   "handoffReady": false,
   "files": [
     "baseline-and-design.md",
@@ -29,5 +29,28 @@
     "examples/g03-workspace.json",
     "examples/g03-selection.json",
     "examples/g03-case.json"
-  ]
+  ],
+  "validatedCodeSha": "f13f7dd4860e37509dd8bf457f8c15e4672af484",
+  "validation": {
+    "commonCi": 39047830003,
+    "commonArtifactId": 12106815095,
+    "commonFocusedPass": 18,
+    "inheritedFocusedPass": 46,
+    "mainPrCi": 39047829966,
+    "fullPass": 3623,
+    "fullSkip": 6,
+    "fullFail": 0,
+    "r1Ci": 39047829992,
+    "d1Ci": 39047829964,
+    "d2Ci": 39047829969,
+    "d3Ci": 39047829972,
+    "planFingerprint": "6d8c18799b6bfa46c7c76acc401af87d4cb9ba8899a74488c70ef624e9daf095",
+    "exampleFingerprint": "c7a6bafb2f9c818309b69f03018b1405f03f96823371a322858028ce7bdf9405",
+    "piPlanFingerprint": "ae6c51f728da6b728fbde9138507afd831dc4cf42f4ce8b1312f2074f9dfb3cc"
+  },
+  "additionalEvidenceTest": {
+    "sha": "3a54052dcb39306fc3a8bfc05be858e1ef35492e",
+    "ciRun": 39048123453,
+    "status": "PENDING"
+  }
 }
