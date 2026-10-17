@@ -131,7 +131,7 @@ describe('D4 G02 full-business-MD modular candidates — synthetic technical exe
       const prepared=preparePiReviewRunV2({caseId:c.id,sessionId:s.id+'-synthetic-session',turnId:s.id+'-synthetic-turn'})
       const receipt=submitPiReviewResultV2({binding:{assignmentId:prepared.assignmentId,sessionId:s.id+'-synthetic-session',caseId:c.id,runId:prepared.runId},
         triggeredBy:'user',result:{summary:'G02 synthetic pre-review: candidate checks remain subject to source/authority verification',
-        checks:created.entity!.mapping.map(m=>({ruleId:m.ruleId,subjectIds:m.subjectId?[m.subjectId]:[],status:'awaiting-confirmation' as const,
+        checks:created.entity!.mapping.map(m=>({ruleId:m.ruleId,subjectIds:m.subjectId?[m.subjectId]:sel.targets.map(t=>t.subjectId),status:'awaiting-confirmation' as const,
           reason:'Source applicability and official approval require an authorized reviewer',sourceRefs:[]})),finish:true}})
       expect(receipt.rejected).toEqual([])
       expect(receipt.missingChecks).toEqual([])
