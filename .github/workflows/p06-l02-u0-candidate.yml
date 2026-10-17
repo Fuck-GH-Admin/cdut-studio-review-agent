@@ -1,0 +1,54 @@
+name: P06 L02 U0 candidate install and clean-tree gate
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/p06-l02-u0-candidate.yml'
+      - 'scripts/qa/p06-l02-u0-candidate-gate.sh'
+      - 'apps/cli/src/index.ts'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  u0-candidate:
+    name: U0 isolated candidate / installation and regression
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 45
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run isolated worktree with immutable failure logs
+        shell: bash
+        run: |
+          set -u -o pipefail
+          candidate="$RUNNER_TEMP/p06-l02-u0-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          out="$GITHUB_WORKSPACE/p06-l02-u0-evidence"
+          mkdir -p "$out"
+          trap 'if [ -d "$candidate" ]; then git worktree remove --force "$candidate" || true; fi' EXIT
+          if ! git worktree add --detach "$candidate" HEAD > "$out/bootstrap.log" 2>&1; then
+            printf 'label=worktree-bootstrap\nexit_code=1\n' > "$out/first-failure.txt"
+            exit 1
+          fi
+          (cd "$candidate" && P06_U0_EVIDENCE_DIR="$out" bash scripts/qa/p06-l02-u0-candidate-gate.sh)
+          exit $?
+      - name: Preserve candidate evidence on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p06-l02-u0-candidate-evidence
+          path: p06-l02-u0-evidence/
+          if-no-files-found: warn
+          retention-days: 30
