@@ -591,6 +591,83 @@
             "limits": "只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。"
           }
         ]
+      },
+      {
+        "moduleId": "g07-t02-non-numbered",
+        "version": 1,
+        "name": "非编号章节完整责任",
+        "purpose": "保留各 C 母版非编号条款中的补正、来源及人审责任",
+        "scope": "g07-travel-cost",
+        "limits": "校本政策待核，不产生审批付款",
+        "source": {
+          "kind": "user-request",
+          "note": "G07 D4 根据冻结母版转换技术语义模块"
+        },
+        "tasks": [
+          {
+            "id": "s07",
+            "title": "## 7. 原子审核事实、跨文书勾稽与版本/时间约束",
+            "requirement": "【原C母版非编号责任 第217行】\n## 7. 原子审核事实、跨文书勾稽与版本/时间约束\n\n以下事实必须按对象键独立记录；跨文件比对必须保留每条来源及“是否冲突”的证据位置：\n\n1. **一案多人**：审批覆盖的出差者集合与车票乘客集合比对，校内身份按人各自取有效档次；同一房晚支付额按受益/垫付链分摊。`Σ 已认个人分摊 ≤ 实际可报同房费用`。\n2. **目的及时间**：会议地点、起止日、报到日、实际交通路段、项目任务期限与最晚有效变更相对应。`issued_at`签发日、`traveled_at`实际旅行日、`submitted_at`报销提交日不能混用。\n3. **票据净额**：按`transaction_id + tax_invoice_no + traveler/beneficiary + cost_kind + eligible_share`防止重复；同一票分摊多项目必须有分摊及总额约束，而不简单“一票只能出现一次”。\n4. **分项金额公式（作者态核销建议）**：`gross_paid`、`refunded`、`third_party_covered`、`already_reimbursed_same_cost`和合规业务份额分别保留；`net_eligible = max(0, eligible_actual_cost - refunds - covered_same_cost - prior_reimbursement_same_share)`，且按政策限额/预算/档次再取每行可核部分。重复扣减同一个退款事件必须通过唯一资金事件ID去重；不得把不同种类的资助混作一笔扣减。\n5. **交通**：受益人的真实出行与票面实名信息匹配。私人绕道以原批准工作路线/合理公用路线价差判断，有合法超标说明可转权限审批；没有工作/私人行程分拆时金额待核。\n6. **住宿**：`实际可报住宿 = min(本人有凭自付合格房费, 本人对应城市×期间限额)`，共房扣重复，免费住宿房费为零；租房及野外例外另外核证据组。住宿零支出不意味着没有真实公务行程。\n7. **伙食/公杂**：按日、地点、人员身份、资金政策与主办承担情况计算。可以记录`day_segments`和`meal_coverage`；不存在“全国统一日额”。有权学校规定尚未确认时，金额写`uncomputed`而不是凭旧金额乘天数。\n8. **外币**：先按原币核实际费用和退款；按正式会计规则确定时点/来源的有效汇率后再转换；结果保留`original_currency/amount`, `rate_source/rate_date`, `converted_amount`，不得实时搜索汇率代替财务核准标准。\n9. **版本约束**：需要`school_id`, `campus`, `funding_scope`, `traveler_type`, `trip_start/end`, `expense_kind`, `policy_effective_from/to`, `approval_version`, `status_at_review`共同确定命中政策。未知关键维度返回待配置/待核，不“默认非科研”或“默认其他人员”。\n10. **权限约束**：国内出差正式派出、科研任务批准、专项资助批准、外事出行许可、财务票据核查、银行支付，是不同系统动作；模板只有读取授权事实的能力，无权自己生成正式批准。",
+            "completion": "逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。",
+            "limits": "仅技术预审，不得正式付款、批准或会计结清。"
+          },
+          {
+            "id": "s10",
+            "title": "## 10. 补件、重审、撤回、版本变更与生命周期",
+            "requirement": "【原C母版非编号责任 第426行】\n## 10. 补件、重审、撤回、版本变更与生命周期\n\n| 事件 | 原案卷处理 | 规则版本及费用行处理 | 必留审计内容 |\n|---|---|---|---|\n| 缺必要材料可补 | 只向真实申请人或授权经办发补件 | 标明哪条条件触发、允许同效证据及到期点；其他行原状态可保留但不能借旧结论绕过更新校验 | 缺项快照、请求时间、收到文件hash、核验轮次 |\n| 权威系统接口暂不可达 | 标`EXTERNAL_UNVERIFIED`；不迫使学生上传学校财务数据库截图 | 恢复后同业务对象重核R-08/R-29/R-32等依赖 | 查询范围、系统权限和异常、重试记录 |\n| 人员/行程改变 | 有授权变更的引用最新版批件；无批准仅保留待审事实 | 影响的客票、补助天数、经费项目及权限节点失效重算 | 旧批准版本与更正版本同留 |\n| 票据红冲、退款、部分付款 | 保留原票及红票，新增退款关联，不覆盖旧证据 | 相关费用行金额重新核算，历史已报重查 | 原始交易ID、对照退款/新金额、签批人 |\n| 政策修订/撤销 | 锁当时核验使用的制度版本；校方有合法溯及规则需有证据 | 只在有依据时对受影响行重算，不能静默替换旧数字 | 版本ID、前后差异、是否追溯、核算时间 |\n| 经办人授权撤销 | 停止其进一步提交和敏感数据访问 | 已提交材料留痕；转真正有权人继续 | 生效日期、权限范围、被影响对象 |\n| 申请撤回/超过受理期限 | 标撤回或待权责部门期限判断 | 不能以申请人撤回自动视已支付退款，不能擅自把超期判假材料 | 申请撤回/期限的权威记录 |\n| 正式拒绝/正式批准 | 更新正式后台状态（**非本模板执行**） | 预审核意见、费用行建议保留，不可替代正式结论 | 决定机关、结果、复议或再审编号 |\n| 付款成功/退汇 | 仅读取财务银行成功/退汇回执 | 可新增支付状态，不自动修改客观票据历史 | 银行回执脱敏ID、支付时间、冲正说明 |\n\n重审须固定证据包内容摘要、`policy_snapshot_id`、`review_round`、检查清单与查询到的学校底账版本；任何影响规则前提的材料/政策/权限改变，都不可把上一轮完成检查“原样沿用为本轮有效检查”。",
+            "completion": "逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。",
+            "limits": "仅技术预审，不得正式付款、批准或会计结清。"
+          },
+          {
+            "id": "s12",
+            "title": "## 12. 成都理工大学实际政策配置表、优先级及阻断缺口",
+            "requirement": "【原C母版非编号责任 第456行】\n## 12. 成都理工大学实际政策配置表、优先级及阻断缺口\n\n每项校本配置必须记录`config_key, scope, applicable_policy_id, valid_from, valid_to, authority, verification_status, example_values, resolver, on_unknown`。本模板内**没有**把外校的学生半价、特定学院论文要求、其它高校住宿包干数字写成CDUT默认。\n\n| 配置ID | 必须解决的范围/变量 | 本次可确证程度 | 未配置时安全行为 |\n|---|---|---|---|\n| `CFG-01` | 2025年第33号非科研差旅办法完整适用主体、标准、例外 | 官网条目、非科研公杂50/80文字已知；全本未取 | `POLICY_UNRESOLVED`；不得凭历史2018办法算未知交通住宿档 |\n| `CFG-02` | 科研经费（纵向/横向）差旅项目适用、2024外业例外与后续修订 | 2024第七条搜索文字、2025科研网站150/180伙食120公杂有依据 | 核当期政策及资金性质、学生资格，未知不支付自动额 |\n| `CFG-03` | 不同学生（本科/硕博/博士后）与教工身份、职级/负责人档 | 科研手册有三档但学生具体待遇未完整查明 | 待权威身份匹配、金额暂不可算 |\n| `CFG-04` | 住宿城市限额、交通乘坐等级、城市类别 | 官网可见分地区标准及历史表；有效适用细节需核 | 无对应档无法确定超标金额，相关行`AMOUNT_PENDING` |\n| `CFG-05` | 主办方提供伙食/住宿、租车/自驾对补助的调整 | 具有历史/跨校证据；最新条款未全查 | 保留真实承担事实，未核补助不计算 |\n| `CFG-06` | 2026智能报销审核上传字段与权限、无票处理模块 | 官方手册/无票说明入口已证，具体字段未完整读到 | 不要求旧网报纸质打印；待权威在线手册或真实接口 |\n| `CFG-07` | 预算可用金额、已报销台账、发票税票/铁路验真 | 非公开授权业务系统 | 无API→`EXTERNAL_UNVERIFIED`，非用户缺件 |\n| `CFG-08` | 适用截止期、逾期补报批准 | 2025年历史关账和2026开账通知已知 | 按目标批次与真实政策确定，不能通用三个月 |\n| `CFG-09` | 国际公派/出国境批件、外币核算及专项政策 | 2026博士后专项可证，普通学生尚未核全 | 必要时转外事，不能自动给出全部外汇核准额 |\n| `CFG-10` | 审批层级、学生授权代办、财务入账与支付权限 | 官网存在流程，真实角色权限及接口无权威全量数据 | `AUTHORITY_PENDING`，不可假装AI有签批权 |\n\n**校本实例的合法使用方式**：只在 `policy_scope`、`effective_date`、`traveler_class`、`funding_type`均被确认时，非科研公杂的50/80、科研公杂120、科研伙食150/180才可能作为该特定费用的计额参数。C草稿没有默认`2026每个学生每天120元`之类值。[CDT02-04][CDT02-05][R2-CD03]",
+            "completion": "逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。",
+            "limits": "仅技术预审，不得正式付款、批准或会计结清。"
+          },
+          {
+            "id": "s13",
+            "title": "## 13. 官方来源与规则追溯说明",
+            "requirement": "【原C母版非编号责任 第475行】\n## 13. 官方来源与规则追溯说明\n\n- `S-LOCAL`：本校财务处、科研管理正式办法/公告与最新有效表；如版本疑问先补原文，**不可把2025旧办事清单当2026逐项原表**。\n- `S-CROSS`：外校不同差旅制度、科研项目经费政策、会议专项资助，只用于佐证实际存在的分支和合法例外，**不能作为CDUT拒件规则**。\n- `S-DESIGN`：金额分行、复合主键、状态分层、隐私和版本治理等用于审核工程的作者规范，不等于学校已经开放API或批准自动审批。\n\n### 13.1 关键来源（保持B阶段的来源ID，不伪造全文核验）\n\n| 来源ID | 高校/名称 | 原始链接 | 支持范围/限制 |\n| --- | --- | --- | --- |\n| CDT02-01 | 成都理工大学财务处·2025-04《“只跑一次”财务事项清单》 | https://jcc.cdut.edu.cn/__local/8/A8/96/748E97CB5061A750C78C9A841EF_9631E851_E5400.pdf | 已读原始PDF；旧预约步骤过时 |\n| CDT02-02 | 成都理工大学·2024非科研差旅历史流程 | https://jcc.cdut.edu.cn/info/1016/2201.htm | 2024历史流程，不替代2025新办法 |\n| CDT02-03 | 成都理工大学·2024科研差旅流程目录 | https://jcc.cdut.edu.cn/ywlc/6.htm | 历史办事内容，现行环节需复核 |\n| CDT02-04 | 成都理工大学·2025-07非科研差旅标准 | https://jcc.cdut.edu.cn/info/1113/2578.htm | 公杂50/80有网页文字，具体人员范围及完整版待核 |\n| CDT02-05 | 成都理工大学·2025-07科研差旅标准 | https://jcc.cdut.edu.cn/info/1115/2580.htm | 科研伙食150/180及公杂120；学生套用不得推断 |\n| CDT02-06 | 成都理工大学·省内外住宿费标准 | https://jcc.cdut.edu.cn/info/1114/2579.htm | 宿费分地区、人员类；不能自行赋学生档次 |\n| CDT02-07 | 成都理工大学·2025国内差旅管理办法（第33号）目录 | https://jcc.cdut.edu.cn/cwzd/xxgzzd.htm | 正式办法全文未核 |\n| CDT02-08 | 成都理工大学·2026年度财务开账通知 | https://jcc.cdut.edu.cn/info/1012/2656.htm | 2026原则启用智能报销；公告署名日期矛盾留存 |\n| CDT02-09 | 成都理工大学·智能报销手册目录 | https://jcc.cdut.edu.cn/znbx.htm | 目录可见，差旅具体字段未核 |\n| CDT02-12 | 成都理工大学·财务报销应知应会手册 | https://jcc.cdut.edu.cn/__local/D/23/C5/05E72CFA4532D2A2946EBEBE258_FFC48E39_8EEE3.pdf | 2025手册三档科研交通与住宿；新系统映射待核 |\n| CDT02-13 | 成都理工大学·2025年终财务通知 | https://jcc.cdut.edu.cn/info/1012/2615.htm | 仅历史批次时限 |\n| EXT02-01 | 南方医科大学·2025修订国内差旅办法 | https://portal.smu.edu.cn/cwc/info/1018/2440.htm | 外校仅用于条件案例；学生半额不得迁入CDUT |\n| EXT02-02 | 天津理工大学·2025横向科研经费办法 | https://kjc.tjut.edu.cn/info/1056/1147.htm | 外校横向项目例外，非CDUT校规 |\n| EXT02-05 | 郑州航空工业管理学院·2026研究生会议资助 | https://yjsc.zua.edu.cn/info/1044/4668.htm | 外校专项分支 |\n| EXT02-06 | 五邑大学·2025学术活动资助流程 | https://www.wyu.edu.cn/kjc/info/1036/11798.htm | 资助资格与主办会议分流 |\n| EXT02-07 | 广西师范大学·2026国际会议专项资助 | https://www.gxnu.edu.cn/2026/0922/c4327a350252/page.htm | 外校专项论文报告与时限，非本校通用 |\n| EXT02-08 | 同济大学医学院·2025国际会议基金 | https://med.tongji.edu.cn/info/1861/13931.htm | 会前会后材料时点示例 |\n| EXT02-09 | 东南大学·2025国际差旅核销事项 | https://oic.seu.edu.cn/2025/0929/c64100a542650/page.htm | 境外凭据参考，非本校标准 |\n| EXT02-11 | 青岛农业大学·2024科研差旅办法 | https://www.qau.edu.cn/userfiles/files/zhuye/2025/06/20250612171456.pdf | 平台统一结算与垫付模式对照 |\n| EXT02-13 | 高校差旅/会议实施细则转载 | https://keyan.aynu.edu.cn/info/1344/10413.htm | 明确适用范围后使用；仅佐证住宿例外存在 |\n| R2-CD01 | 成都理工大学·成理校发〔2024〕20号第七条 | https://skc.cdut.edu.cn/__local/0/81/F8/F213AF25A8DDE36DF9DC104CDD7_3BB8AB3B_3BB05.pdf | 正式PDF搜索摘录可读，全文未直接打开；科研野外缺票批准/减免司机证件 |\n| R2-CD02 | 成都理工大学·2017网上预约FAQ | https://jcc.cdut.edu.cn/info/1049/1841.htm | 历史角色与个人参会vs主办会议分界 |\n| R2-CD03 | 成都理工大学·2025财务应知应会手册 | https://jcc.cdut.edu.cn/__local/D/23/C5/05E72CFA4532D2A2946EBEBE258_FFC48E39_8EEE3.pdf | 三档科研交通住宿；不能推断普通学生等级 |\n| R2-CD04 | 成都理工大学·科研/非科研2025标准 | https://jcc.cdut.edu.cn/info/1115/2580.htm | 同校不同经费两体系 |\n| R2-CD05 | 成都理工大学·2026智能报销目录 | https://jcc.cdut.edu.cn/znbx.htm | 使用手册与审批人员须知目录，附件全文未获 |\n| R2-CD06 | 成都理工大学·2026无票报销说明条目 | https://jcc.cdut.edu.cn/info/1052/2726.htm | 只确认入口存在；不等于无票自动合规 |\n| R2-CD07 | 成都理工大学·2026博士后国际交流专项 | https://rsc.cdut.edu.cn/info/1040/4042.htm | 仅特定人员专项，不适用于所有学生 |\n\n所有规则的字段—材料—证据—来源绑定详见辅文件`G07-T02_规则追踪矩阵.md`及CSV。文献ID仅说明B阶段的证据锚点，不等于自动将该机构的所有条款授予本模板强制权威；具体材料进入实施版本时还要记录条款页、批准状态、政策ID和校区经费适用范围。",
+            "completion": "逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。",
+            "limits": "仅技术预审，不得正式付款、批准或会计结清。"
+          },
+          {
+            "id": "s14",
+            "title": "## 14. 24个研究场景的独立覆盖清单（来自B阶段，非作者金标）",
+            "requirement": "【原C母版非编号责任 第515行】\n## 14. 24个研究场景的独立覆盖清单（来自B阶段，非作者金标）\n\n这些场景是现实业务类型的研究映射，不是D隐藏测试答案或被测材料设计提示。后续作者自检只在其中选最少必要的基础路径，不能用自身推演称“已经经过独立评测”。\n\n| B研究场景ID | 现实业务条件 | 发生/申请阶段 | 证据组线索 | 风险及语义边界 |\n| --- | --- | --- | --- | --- |\n| SC-01 | **教职工事业经费**到外地开会[CDT02-01/04] | 返程后，由本人或授权经办申报 | 审批表+会议通知+发生的交通住宿注册费票据；按人员档次确定定额 | 费用行部分核准，不能自动套科研补助 |\n| SC-02 | **教师纵向科研**到外地做实验/采样[CDT02-03/05] | 项目负责人授权后报账 | 科研审批、任务关联、出差交通/住宿凭证、预算记录 | 项目期、地区科研标准与任务对应 |\n| SC-03 | **学生课题组科研出差**[EXT02-01/03] | 导师批准、学生实际外出后报 | 在读/项目任务证据+相应批准及票据；可能有学生请销假 | 学生待遇为**该校配置**，非统一教师档次 |\n| SC-04 | **两师两生同行**[CDT02-12][EXT02-01] | 一次批准覆盖多人、按人分项核销 | 同任务审批记录+实名车票+合住房间明细 | 人员各自标准，房款垫付者不能为4人各报总额 |\n| SC-05 | **导师代学生垫机票/注册费**[EXT02-11] | 行程发生后 | 同行身份、代垫/对公凭据或财务平台记录、每人实名票据 | 人名不同但链完整可报；不可仅凭差名直接拒绝 |\n| SC-06 | **会议主办方统一包餐及住宿**[EXT02-01/04] | 参会返程后 | 会议通知/主办方负担事实、个人实际交通或自费票据 | 房费零不等于拒绝交通；会议期补助随制度调整 |\n| SC-07 | **合作单位提供住宿无发票**[CDT02-01][EXT02-13] | 返程后 | 对方单位签章住宿证明/合作函或校方认可的等效底账 | 合法替代，住宿无费用但交通及补助是否可核须依版本 |\n| SC-08 | **科研野外住宿帐篷/考察站**[CDT02-01][EXT02-13] | 返程后 | 真实野外任务、起讫凭证、经项目负责人及学院批准的情况说明 | 对无需住宿发票的情形不误杀；是否享全额补助视校规 |\n| SC-09 | **科研租房住宿**[CDT02-01] | 项目结束/返程后 | 税务代开发票、房主证明、租赁协议、收据、支付记录，或有效替代组 | 折算期间/多人合租，与房费税票关联 |\n| SC-10 | **纸质车票丢失**[CDT02-01/02] | 报销审核阶段 | 财核036（在制度仍适用时）+承运方证明/电子票据等可核替代 | 待补/例外批准，不直接认作虚假；不可随意补回无凭票价 |\n| SC-11 | **科研行程绕道并混入私人旅游**[EXT02-01] | 已返程 | 原经批准路线+真实车票+私人行程拆分+批准 | 私人天数不享公费，多付路线段按允许上限算 |\n| SC-12 | **会议取消、退票/改签**[CDT02-01][EXT02-01] | 已发生变更后 | 航司通知、改退签票据、退款流水、差旅取消审批或说明 | 退款扣减、允许损失另审，不应凭原出票金额直接通过 |\n| SC-13 | **短期当天来回**[EXT02-01] | 当天实际结束 | 交通/任务时间、是否住宿的事实记录 | 可能没有住宿发票，不能自动要求发票；是否有补助另配 |\n| SC-14 | **同城参会/远程会议**[EXT02-01] | 结束后 | 会议通知与真实注册缴费，若无出差不产生住宿/城际票 | 未发生的交通住宿项不必上传，专项可另有参加资格 |\n| SC-15 | **学生国内会议专项资助**[EXT02-05/06] | 资助先评或报名备案先发生，后参会报销 | 项目资助批复/导师意见/成果录用及报告（该专项触发），会后真实票据 | 审批资格、出行事实和会计报销须分离 |\n| SC-16 | **学生国际会议专项资助**[EXT02-07/08] | 会前评审/出国许可，会后票据实核销 | 邀请、论文与报告、外事批件、返校总结/日程/照片、票据 | 依专项授额和分阶段材料状态；绝不强制国内普通出差提交论文 |\n| SC-17 | **教师国际学术会议境外差旅**[CDT02-01/12][EXT02-09] | 国境外许可已通过后出行，返校核销 | 任务批件、会议中外文函、出入境有效记录、外币收据支付与汇率 | 不能由模型核准是否应当出国，仅比对已批条件和实际发生 |\n| SC-18 | **国际多币种与外币退款**[EXT02-09] | 返回后 | 每笔invoice币种/金额、兑换日期/汇率依据、支付与退款记录 | 分币种计算，汇率来源不可凭模型猜测 |\n| SC-19 | **同一费用多资金来源**[CDT02-01][EXT02-07] | 报销时 | 项目资金/专项资助批复、历史已报明细、实际票据 | 不能因有两项批复把同一机票全额报两次 |\n| SC-20 | **学校平台统一购票/结算**[EXT02-11] | 返程后仅剩补助核销 | 可信平台已支付的车票/酒店记录，真实参会/返程确认 | 不要求没有发生的个人付款流水，费用从已结算账簿剔除 |\n| SC-21 | **同一酒店多名同行、一个付款人**[EXT02-01] | 返程后 | 住宿实际人数/房晚明细、发票、谁已报销的财务历史 | 费用与标准逐人分摊；不可因付款人非受益人直接否定 |\n| SC-22 | **已批准变更行程与尚待批准的变更**[EXT02-01] | 行程中/核销前 | 原审批、变更申请、授权部门最终状态、实际票据 | 已批准按新路径；待批不能当作已获批准 |\n| SC-23 | **旧年份发票跨年度提交**[CDT02-08/13] | 2026初办理2025费用 | 票据日期、学校开账通知、核销时间、适用当期截止规则 | 截止日期由当期文件判断，过期是否存在合法例外需核 |\n| SC-24 | **票据官方数据暂不可查询**[CDT02-09] | 任何核销阶段 | 上传票面事实可读，但发票红冲/历史重复系统不可用 | 不得把未能验证当已验证；标记待权威核验 |",
+            "completion": "逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。",
+            "limits": "仅技术预审，不得正式付款、批准或会计结清。"
+          },
+          {
+            "id": "s15",
+            "title": "## 15. 跨模板可复用模块与业务专属逻辑",
+            "requirement": "【原C母版非编号责任 第546行】\n## 15. 跨模板可复用模块与业务专属逻辑\n\n模块候选的完整输入、输出、依赖/失败路径在辅文件`G07-T02_编辑器共性模块候选.md`。这里仅确定抽取边界：同一实体识别、材料触发、政策版本、可信来源回执、跨文件字段比对及分项状态聚合是可复用的**基础机制**；补助日期、伙食覆盖、交通等级、住宿房晚分摊、国际差旅汇兑是**差旅业务自身的判断语义**，不能因复用金额比较组件被替换。",
+            "completion": "逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。",
+            "limits": "仅技术预审，不得正式付款、批准或会计结清。"
+          },
+          {
+            "id": "s16",
+            "title": "## 16. 实际编辑器/运行时能力映射（读取GitHub main，未运行测试）",
+            "requirement": "【原C母版非编号责任 第550行】\n## 16. 实际编辑器/运行时能力映射（读取GitHub main，未运行测试）\n\n- 读取仓库：`Fuck-GH-Admin/cdut-studio-review-agent` 的 `main` 树 `dd5a553c...`；关键技术事实来自 `docs/design/review-agent/15-template-modules-and-runtime-boundary-spec.md`、`18-d1-authoring-contract-and-runtime-mapping-v1.md`、`19-d2-scenario-scoped-pi-runtime.md`、`apps/electron/src/main/lib/review/template-store.ts`、`stage-workflow.ts`、`17-current-state-and-handoff.md`。\n- **已经有代码或明确完成记录**：`TemplateVersion` 的草稿保存/校验、阶段工作流模型、受控的版本/来源作者候选机制；D1候选草稿绑定`RuleSpec`和来源追踪，D2支持**声明明确的 scenario + objectKey**映射到技术预审 `ReviewCaseV2.subjects` 及 `reviewRules`。\n- **仅合成试点、不是完整T02验收**：D2 的完成回执不等于业务资格；D2技术案卷阻断正式行政决定，公开设计明确提示复杂Claim/Evidence合取、替代关系和阶段条件未完全无损投影。\n- **尚不能声称已实现**：本文件中 14条件轴动态三值组合、16种证据AND/OR授权替代、多人多费用行核算、日补助计算、汇率/多项资金分摊、2026校本实时预算/票据/外事接口、35+规则自动编译并真实验收；需要逐层规划与验证。\n- **人工/学校接口限制**：出国许可、出差正式授权、资金真实余额、历史报账与税票真实性必须有权部门数据；模板制作不能凭源码中字段名假设已有连接。\n- **严重映射风险**：`TemplateCriterionSpec`对复杂条件及`onUnknown`比`RuleSpec`窄；草稿`RuleSpec.confirmation='confirmed'`之类内部标识不等同“校规已核”。对于本模板规则不能完整表达时应fail-closed，**不得把条件/例外丢掉后发布简单版**。参考技术文档D1/D2。",
+            "completion": "逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。",
+            "limits": "仅技术预审，不得正式付款、批准或会计结清。"
+          },
+          {
+            "id": "s17",
+            "title": "## 17. 作者自检、规则缺口与未关闭项",
+            "requirement": "【原C母版非编号责任 第559行】\n## 17. 作者自检、规则缺口与未关闭项\n\n本作者只做**静态全量检查与小规模人工路径推演**，不作真实模型审核、财务台账查验或D独立金标对比。规则ID共36、分支14、B研究场景24、字段55、材料槽31、等价证据组16，ID及矩阵引用由构建脚本核对。作者走查和修订记录见`G07-T02_作者自检与问题修订记录.md`。\n\n阻断正式校本上线的事项：2025国内非科研差旅成理校发〔2025〕33号全文、研究生/本科生等具体科研待遇、2026智能报销确切字段、校内真实预算/票据/OA接口，以及D阶段未验收。**这些不是继续制作业务母版的阻断，而是作为真实审批依据和运行发布的阻断**。",
+            "completion": "逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。",
+            "limits": "仅技术预审，不得正式付款、批准或会计结清。"
+          },
+          {
+            "id": "s18",
+            "title": "## 18. 版本、交付状态与下阶段交接",
+            "requirement": "【原C母版非编号责任 第565行】\n## 18. 版本、交付状态与下阶段交接\n\n- 本次版本：`v0.1`，**`BUSINESS_MD_DRAFT_WITH_GAPS`**，完整业务语义母版已形成，政策与运行映射尚有明确待配缺口。\n- 改动：按 C0—C7完整起草，保留 B `R-01—R-36`、55字段映射、一套模板14内部轴、8阶段、行级状态、合法例外与手工审批权责；没有删除因编辑器暂不支持的语义。\n- 附：规则追踪矩阵、作者自检及修订记录、编辑器共性模块、D对接说明（不含D隐藏金标），可用于后续C稿复核与独立D结果回填。\n- **明确未做**：未向 GitHub 写入或发布模板；未运行真实系统测试；未申请实际校内财务权限；未制作、读取或修改D测试金标。",
+            "completion": "逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。",
+            "limits": "仅技术预审，不得正式付款、批准或会计结清。"
+          }
+        ]
       }
     ],
     "templates": [
@@ -722,6 +799,12 @@
             "moduleId": "g07-t02-branch12",
             "version": 1,
             "scenario": "branch12"
+          },
+          {
+            "id": "use-non-numbered",
+            "moduleId": "g07-t02-non-numbered",
+            "version": 1,
+            "scenario": "core"
           }
         ],
         "localTasks": []
@@ -1468,6 +1551,123 @@
       "verification": "content-checked",
       "applicability": "unknown",
       "note": "C阶段文稿内容已定位，校本制度效力与逐案适用均未由有权机构核定"
+    },
+    {
+      "sourceId": "g07-t02-nonnum-s07",
+      "kind": "policy-candidate",
+      "label": "G07-T02 C章节 ## 7. 原子审核事实、跨文书勾稽与版本/时间约束",
+      "reference": {
+        "documentVersionId": "git-blob-46c48f80df90e99274986633ae29d7d407ed84b9",
+        "locator": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md:L217-231",
+        "excerpt": "## 7. 原子审核事实、跨文书勾稽与版本/时间约束\n\n以下事实必须按对象键独立记录；跨文件比对必须保留每条来源及“是否冲突”的证据位置：\n\n1. **一案多人**：审批覆盖的出差者集合与车票乘客集合比对，校内身份按人各自取有效档次；同一房晚支付额按受益/垫付链分摊。`Σ 已认个人分摊 ≤ 实际可报同房费用`。\n2. **目的及时间**："
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "作者原文可追溯，政策现行效力待校方有权核查"
+    },
+    {
+      "sourceId": "g07-t02-nonnum-s10",
+      "kind": "policy-candidate",
+      "label": "G07-T02 C章节 ## 10. 补件、重审、撤回、版本变更与生命周期",
+      "reference": {
+        "documentVersionId": "git-blob-46c48f80df90e99274986633ae29d7d407ed84b9",
+        "locator": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md:L426-441",
+        "excerpt": "## 10. 补件、重审、撤回、版本变更与生命周期\n\n| 事件 | 原案卷处理 | 规则版本及费用行处理 | 必留审计内容 |\n|---|---|---|---|\n| 缺必要材料可补 | 只向真实申请人或授权经办发补件 | 标明哪条条件触发、允许同效证据及到期点；其他行原状态可保留但不能借旧结论绕过更新校验 | 缺项快照、请求时间、收到文"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "作者原文可追溯，政策现行效力待校方有权核查"
+    },
+    {
+      "sourceId": "g07-t02-nonnum-s12",
+      "kind": "policy-candidate",
+      "label": "G07-T02 C章节 ## 12. 成都理工大学实际政策配置表、优先级及阻断缺口",
+      "reference": {
+        "documentVersionId": "git-blob-46c48f80df90e99274986633ae29d7d407ed84b9",
+        "locator": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md:L456-474",
+        "excerpt": "## 12. 成都理工大学实际政策配置表、优先级及阻断缺口\n\n每项校本配置必须记录`config_key, scope, applicable_policy_id, valid_from, valid_to, authority, verification_status, example_values, resolver, on_unkn"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "作者原文可追溯，政策现行效力待校方有权核查"
+    },
+    {
+      "sourceId": "g07-t02-nonnum-s13",
+      "kind": "policy-candidate",
+      "label": "G07-T02 C章节 ## 13. 官方来源与规则追溯说明",
+      "reference": {
+        "documentVersionId": "git-blob-46c48f80df90e99274986633ae29d7d407ed84b9",
+        "locator": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md:L475-514",
+        "excerpt": "## 13. 官方来源与规则追溯说明\n\n- `S-LOCAL`：本校财务处、科研管理正式办法/公告与最新有效表；如版本疑问先补原文，**不可把2025旧办事清单当2026逐项原表**。\n- `S-CROSS`：外校不同差旅制度、科研项目经费政策、会议专项资助，只用于佐证实际存在的分支和合法例外，**不能作为CDUT拒件规则**。\n- `S"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "作者原文可追溯，政策现行效力待校方有权核查"
+    },
+    {
+      "sourceId": "g07-t02-nonnum-s14",
+      "kind": "policy-candidate",
+      "label": "G07-T02 C章节 ## 14. 24个研究场景的独立覆盖清单（来自B阶段，非作者金标）",
+      "reference": {
+        "documentVersionId": "git-blob-46c48f80df90e99274986633ae29d7d407ed84b9",
+        "locator": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md:L515-545",
+        "excerpt": "## 14. 24个研究场景的独立覆盖清单（来自B阶段，非作者金标）\n\n这些场景是现实业务类型的研究映射，不是D隐藏测试答案或被测材料设计提示。后续作者自检只在其中选最少必要的基础路径，不能用自身推演称“已经经过独立评测”。\n\n| B研究场景ID | 现实业务条件 | 发生/申请阶段 | 证据组线索 | 风险及语义边界 |\n| --- |"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "作者原文可追溯，政策现行效力待校方有权核查"
+    },
+    {
+      "sourceId": "g07-t02-nonnum-s15",
+      "kind": "policy-candidate",
+      "label": "G07-T02 C章节 ## 15. 跨模板可复用模块与业务专属逻辑",
+      "reference": {
+        "documentVersionId": "git-blob-46c48f80df90e99274986633ae29d7d407ed84b9",
+        "locator": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md:L546-549",
+        "excerpt": "## 15. 跨模板可复用模块与业务专属逻辑\n\n模块候选的完整输入、输出、依赖/失败路径在辅文件`G07-T02_编辑器共性模块候选.md`。这里仅确定抽取边界：同一实体识别、材料触发、政策版本、可信来源回执、跨文件字段比对及分项状态聚合是可复用的**基础机制**；补助日期、伙食覆盖、交通等级、住宿房晚分摊、国际差旅汇兑是**差旅业务自身"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "作者原文可追溯，政策现行效力待校方有权核查"
+    },
+    {
+      "sourceId": "g07-t02-nonnum-s16",
+      "kind": "policy-candidate",
+      "label": "G07-T02 C章节 ## 16. 实际编辑器/运行时能力映射（读取GitHub main，未运行测试）",
+      "reference": {
+        "documentVersionId": "git-blob-46c48f80df90e99274986633ae29d7d407ed84b9",
+        "locator": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md:L550-558",
+        "excerpt": "## 16. 实际编辑器/运行时能力映射（读取GitHub main，未运行测试）\n\n- 读取仓库：`Fuck-GH-Admin/cdut-studio-review-agent` 的 `main` 树 `dd5a553c...`；关键技术事实来自 `docs/design/review-agent/15-template-modules"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "作者原文可追溯，政策现行效力待校方有权核查"
+    },
+    {
+      "sourceId": "g07-t02-nonnum-s17",
+      "kind": "policy-candidate",
+      "label": "G07-T02 C章节 ## 17. 作者自检、规则缺口与未关闭项",
+      "reference": {
+        "documentVersionId": "git-blob-46c48f80df90e99274986633ae29d7d407ed84b9",
+        "locator": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md:L559-564",
+        "excerpt": "## 17. 作者自检、规则缺口与未关闭项\n\n本作者只做**静态全量检查与小规模人工路径推演**，不作真实模型审核、财务台账查验或D独立金标对比。规则ID共36、分支14、B研究场景24、字段55、材料槽31、等价证据组16，ID及矩阵引用由构建脚本核对。作者走查和修订记录见`G07-T02_作者自检与问题修订记录.md`。\n\n阻断正式校"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "作者原文可追溯，政策现行效力待校方有权核查"
+    },
+    {
+      "sourceId": "g07-t02-nonnum-s18",
+      "kind": "policy-candidate",
+      "label": "G07-T02 C章节 ## 18. 版本、交付状态与下阶段交接",
+      "reference": {
+        "documentVersionId": "git-blob-46c48f80df90e99274986633ae29d7d407ed84b9",
+        "locator": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md:L565-571",
+        "excerpt": "## 18. 版本、交付状态与下阶段交接\n\n- 本次版本：`v0.1`，**`BUSINESS_MD_DRAFT_WITH_GAPS`**，完整业务语义母版已形成，政策与运行映射尚有明确待配缺口。\n- 改动：按 C0—C7完整起草，保留 B `R-01—R-36`、55字段映射、一套模板14内部轴、8阶段、行级状态、合法例外与手工审批权责"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "作者原文可追溯，政策现行效力待校方有权核查"
     }
   ],
   "sourceBindings": [
@@ -2308,6 +2508,141 @@
         ],
         "evidenceFacts": [
           "d2:object:g07-travel-cost:b12"
+        ]
+      }
+    },
+    {
+      "checkId": "g07-t02@1:module/use-non-numbered/s07",
+      "sourceIds": [
+        "g07-t02-nonnum-s07"
+      ],
+      "applicabilityNote": "按本章业务责任语义核验；未知不变不适用",
+      "genericScope": {
+        "businessTypes": [
+          "g07-travel-cost"
+        ],
+        "evidenceFacts": [
+          "d2:object:g07-travel-cost:nonnums07"
+        ]
+      }
+    },
+    {
+      "checkId": "g07-t02@1:module/use-non-numbered/s10",
+      "sourceIds": [
+        "g07-t02-nonnum-s10"
+      ],
+      "applicabilityNote": "按本章业务责任语义核验；未知不变不适用",
+      "genericScope": {
+        "businessTypes": [
+          "g07-travel-cost"
+        ],
+        "evidenceFacts": [
+          "d2:object:g07-travel-cost:nonnums10"
+        ]
+      }
+    },
+    {
+      "checkId": "g07-t02@1:module/use-non-numbered/s12",
+      "sourceIds": [
+        "g07-t02-nonnum-s12"
+      ],
+      "applicabilityNote": "按本章业务责任语义核验；未知不变不适用",
+      "genericScope": {
+        "businessTypes": [
+          "g07-travel-cost"
+        ],
+        "evidenceFacts": [
+          "d2:object:g07-travel-cost:nonnums12"
+        ]
+      }
+    },
+    {
+      "checkId": "g07-t02@1:module/use-non-numbered/s13",
+      "sourceIds": [
+        "g07-t02-nonnum-s13"
+      ],
+      "applicabilityNote": "按本章业务责任语义核验；未知不变不适用",
+      "genericScope": {
+        "businessTypes": [
+          "g07-travel-cost"
+        ],
+        "evidenceFacts": [
+          "d2:object:g07-travel-cost:nonnums13"
+        ]
+      }
+    },
+    {
+      "checkId": "g07-t02@1:module/use-non-numbered/s14",
+      "sourceIds": [
+        "g07-t02-nonnum-s14"
+      ],
+      "applicabilityNote": "按本章业务责任语义核验；未知不变不适用",
+      "genericScope": {
+        "businessTypes": [
+          "g07-travel-cost"
+        ],
+        "evidenceFacts": [
+          "d2:object:g07-travel-cost:nonnums14"
+        ]
+      }
+    },
+    {
+      "checkId": "g07-t02@1:module/use-non-numbered/s15",
+      "sourceIds": [
+        "g07-t02-nonnum-s15"
+      ],
+      "applicabilityNote": "按本章业务责任语义核验；未知不变不适用",
+      "genericScope": {
+        "businessTypes": [
+          "g07-travel-cost"
+        ],
+        "evidenceFacts": [
+          "d2:object:g07-travel-cost:nonnums15"
+        ]
+      }
+    },
+    {
+      "checkId": "g07-t02@1:module/use-non-numbered/s16",
+      "sourceIds": [
+        "g07-t02-nonnum-s16"
+      ],
+      "applicabilityNote": "按本章业务责任语义核验；未知不变不适用",
+      "genericScope": {
+        "businessTypes": [
+          "g07-travel-cost"
+        ],
+        "evidenceFacts": [
+          "d2:object:g07-travel-cost:nonnums16"
+        ]
+      }
+    },
+    {
+      "checkId": "g07-t02@1:module/use-non-numbered/s17",
+      "sourceIds": [
+        "g07-t02-nonnum-s17"
+      ],
+      "applicabilityNote": "按本章业务责任语义核验；未知不变不适用",
+      "genericScope": {
+        "businessTypes": [
+          "g07-travel-cost"
+        ],
+        "evidenceFacts": [
+          "d2:object:g07-travel-cost:nonnums17"
+        ]
+      }
+    },
+    {
+      "checkId": "g07-t02@1:module/use-non-numbered/s18",
+      "sourceIds": [
+        "g07-t02-nonnum-s18"
+      ],
+      "applicabilityNote": "按本章业务责任语义核验；未知不变不适用",
+      "genericScope": {
+        "businessTypes": [
+          "g07-travel-cost"
+        ],
+        "evidenceFacts": [
+          "d2:object:g07-travel-cost:nonnums18"
         ]
       }
     }

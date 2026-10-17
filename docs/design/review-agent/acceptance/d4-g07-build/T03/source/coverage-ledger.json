@@ -795,6 +795,132 @@
       "structuredScope": "generic-object",
       "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
       "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s02",
+      "sourceAnchor": "L21-28",
+      "checkId": "g07-t03@1:module/use-non-numbered/s02",
+      "sourceIds": [
+        "g07-t03-nonnum-s02"
+      ],
+      "evidenceFact": "d2:object:g07-procurement-package:nonnums02",
+      "objectScope": "g07-procurement-package",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s06",
+      "sourceAnchor": "L116-174",
+      "checkId": "g07-t03@1:module/use-non-numbered/s06",
+      "sourceIds": [
+        "g07-t03-nonnum-s06"
+      ],
+      "evidenceFact": "d2:object:g07-procurement-package:nonnums06",
+      "objectScope": "g07-procurement-package",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s08",
+      "sourceAnchor": "L223-232",
+      "checkId": "g07-t03@1:module/use-non-numbered/s08",
+      "sourceIds": [
+        "g07-t03-nonnum-s08"
+      ],
+      "evidenceFact": "d2:object:g07-procurement-package:nonnums08",
+      "objectScope": "g07-procurement-package",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s13",
+      "sourceAnchor": "L708-726",
+      "checkId": "g07-t03@1:module/use-non-numbered/s13",
+      "sourceIds": [
+        "g07-t03-nonnum-s13"
+      ],
+      "evidenceFact": "d2:object:g07-procurement-package:nonnums13",
+      "objectScope": "g07-procurement-package",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s14",
+      "sourceAnchor": "L727-765",
+      "checkId": "g07-t03@1:module/use-non-numbered/s14",
+      "sourceIds": [
+        "g07-t03-nonnum-s14"
+      ],
+      "evidenceFact": "d2:object:g07-procurement-package:nonnums14",
+      "objectScope": "g07-procurement-package",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s15",
+      "sourceAnchor": "L766-780",
+      "checkId": "g07-t03@1:module/use-non-numbered/s15",
+      "sourceIds": [
+        "g07-t03-nonnum-s15"
+      ],
+      "evidenceFact": "d2:object:g07-procurement-package:nonnums15",
+      "objectScope": "g07-procurement-package",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s16",
+      "sourceAnchor": "L781-786",
+      "checkId": "g07-t03@1:module/use-non-numbered/s16",
+      "sourceIds": [
+        "g07-t03-nonnum-s16"
+      ],
+      "evidenceFact": "d2:object:g07-procurement-package:nonnums16",
+      "objectScope": "g07-procurement-package",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s17",
+      "sourceAnchor": "L787-802",
+      "checkId": "g07-t03@1:module/use-non-numbered/s17",
+      "sourceIds": [
+        "g07-t03-nonnum-s17"
+      ],
+      "evidenceFact": "d2:object:g07-procurement-package:nonnums17",
+      "objectScope": "g07-procurement-package",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s18",
+      "sourceAnchor": "L803-812",
+      "checkId": "g07-t03@1:module/use-non-numbered/s18",
+      "sourceIds": [
+        "g07-t03-nonnum-s18"
+      ],
+      "evidenceFact": "d2:object:g07-procurement-package:nonnums18",
+      "objectScope": "g07-procurement-package",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
     }
   ],
   "sectionIndex": [
@@ -811,7 +937,7 @@
       "sourceLine": 21,
       "endLine": 28,
       "bytes": 455,
-      "linkedTaskId": null,
+      "linkedTaskId": "s02",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T03/source/frozen-C-v0.1.md"
     },
     {
@@ -843,7 +969,7 @@
       "sourceLine": 116,
       "endLine": 174,
       "bytes": 5992,
-      "linkedTaskId": null,
+      "linkedTaskId": "s06",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T03/source/frozen-C-v0.1.md"
     },
     {
@@ -859,7 +985,7 @@
       "sourceLine": 223,
       "endLine": 232,
       "bytes": 923,
-      "linkedTaskId": null,
+      "linkedTaskId": "s08",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T03/source/frozen-C-v0.1.md"
     },
     {
@@ -867,7 +993,7 @@
       "sourceLine": 233,
       "endLine": 632,
       "bytes": 31001,
-      "linkedTaskId": null,
+      "linkedTaskId": "rulebook",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T03/source/frozen-C-v0.1.md"
     },
     {
@@ -899,7 +1025,7 @@
       "sourceLine": 708,
       "endLine": 726,
       "bytes": 1198,
-      "linkedTaskId": null,
+      "linkedTaskId": "s13",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T03/source/frozen-C-v0.1.md"
     },
     {
@@ -907,7 +1033,7 @@
       "sourceLine": 727,
       "endLine": 765,
       "bytes": 6044,
-      "linkedTaskId": null,
+      "linkedTaskId": "s14",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T03/source/frozen-C-v0.1.md"
     },
     {
@@ -915,7 +1041,7 @@
       "sourceLine": 766,
       "endLine": 780,
       "bytes": 701,
-      "linkedTaskId": null,
+      "linkedTaskId": "s15",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T03/source/frozen-C-v0.1.md"
     },
     {
@@ -923,7 +1049,7 @@
       "sourceLine": 781,
       "endLine": 786,
       "bytes": 598,
-      "linkedTaskId": null,
+      "linkedTaskId": "s16",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T03/source/frozen-C-v0.1.md"
     },
     {
@@ -931,7 +1057,7 @@
       "sourceLine": 787,
       "endLine": 802,
       "bytes": 1386,
-      "linkedTaskId": null,
+      "linkedTaskId": "s17",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T03/source/frozen-C-v0.1.md"
     },
     {
@@ -939,7 +1065,7 @@
       "sourceLine": 803,
       "endLine": 812,
       "bytes": 652,
-      "linkedTaskId": null,
+      "linkedTaskId": "s18",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T03/source/frozen-C-v0.1.md"
     }
   ],
