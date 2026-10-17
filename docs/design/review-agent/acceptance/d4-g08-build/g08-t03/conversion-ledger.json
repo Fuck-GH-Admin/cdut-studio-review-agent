@@ -1,0 +1,946 @@
+[
+  {
+    "responsibilityId": "T03-R01",
+    "sourceLocator": "§10 line 248",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-base/r01"
+    ],
+    "sourceIds": [
+      "g08-t03-r01-src"
+    ],
+    "moduleId": "g08-t03-channel-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R02",
+    "sourceLocator": "§10 line 249",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-base/r02"
+    ],
+    "sourceIds": [
+      "g08-t03-r02-src"
+    ],
+    "moduleId": "g08-t03-channel-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R03",
+    "sourceLocator": "§10 line 250",
+    "checkIds": [
+      "g08-t03@1:module/use-material-initial/r03"
+    ],
+    "sourceIds": [
+      "g08-t03-r03-src"
+    ],
+    "moduleId": "g08-t03-material-initial",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R04",
+    "sourceLocator": "§10 line 251",
+    "checkIds": [
+      "g08-t03@1:module/use-material-initial/r04"
+    ],
+    "sourceIds": [
+      "g08-t03-r04-src"
+    ],
+    "moduleId": "g08-t03-material-initial",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R05",
+    "sourceLocator": "§10 line 252",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-base/r05"
+    ],
+    "sourceIds": [
+      "g08-t03-r05-src"
+    ],
+    "moduleId": "g08-t03-channel-base",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R06",
+    "sourceLocator": "§10 line 253",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-base/r06"
+    ],
+    "sourceIds": [
+      "g08-t03-r06-src"
+    ],
+    "moduleId": "g08-t03-channel-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R07",
+    "sourceLocator": "§10 line 254",
+    "checkIds": [
+      "g08-t03@1:module/use-jurisdiction-base/r07"
+    ],
+    "sourceIds": [
+      "g08-t03-r07-src"
+    ],
+    "moduleId": "g08-t03-jurisdiction-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R08",
+    "sourceLocator": "§10 line 255",
+    "checkIds": [
+      "g08-t03@1:module/use-jurisdiction-base/r08"
+    ],
+    "sourceIds": [
+      "g08-t03-r08-src"
+    ],
+    "moduleId": "g08-t03-jurisdiction-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R09",
+    "sourceLocator": "§10 line 256",
+    "checkIds": [
+      "g08-t03@1:module/use-security-sensitive/r09"
+    ],
+    "sourceIds": [
+      "g08-t03-r09-src"
+    ],
+    "moduleId": "g08-t03-security-sensitive",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R10",
+    "sourceLocator": "§10 line 257",
+    "checkIds": [
+      "g08-t03@1:module/use-security-urgent/r10"
+    ],
+    "sourceIds": [
+      "g08-t03-r10-src"
+    ],
+    "moduleId": "g08-t03-security-urgent",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R11",
+    "sourceLocator": "§10 line 258",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-school/r11"
+    ],
+    "sourceIds": [
+      "g08-t03-r11-src"
+    ],
+    "moduleId": "g08-t03-channel-school",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R12",
+    "sourceLocator": "§10 line 259",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-college/r12"
+    ],
+    "sourceIds": [
+      "g08-t03-r12-src"
+    ],
+    "moduleId": "g08-t03-channel-college",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R13",
+    "sourceLocator": "§10 line 260",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-shandong/r13"
+    ],
+    "sourceIds": [
+      "g08-t03-r13-src"
+    ],
+    "moduleId": "g08-t03-channel-shandong",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R14",
+    "sourceLocator": "§10 line 261",
+    "checkIds": [
+      "g08-t03@1:module/use-security-sensitive/r14"
+    ],
+    "sourceIds": [
+      "g08-t03-r14-src"
+    ],
+    "moduleId": "g08-t03-security-sensitive",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R15",
+    "sourceLocator": "§10 line 262",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-base/r15"
+    ],
+    "sourceIds": [
+      "g08-t03-r15-src"
+    ],
+    "moduleId": "g08-t03-channel-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R16",
+    "sourceLocator": "§10 line 263",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-initial/r16"
+    ],
+    "sourceIds": [
+      "g08-t03-r16-src"
+    ],
+    "moduleId": "g08-t03-channel-initial",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R17",
+    "sourceLocator": "§10 line 264",
+    "checkIds": [
+      "g08-t03@1:module/use-material-initial/r17"
+    ],
+    "sourceIds": [
+      "g08-t03-r17-src"
+    ],
+    "moduleId": "g08-t03-material-initial",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R18",
+    "sourceLocator": "§10 line 265",
+    "checkIds": [
+      "g08-t03@1:module/use-material-evidence/r18"
+    ],
+    "sourceIds": [
+      "g08-t03-r18-src"
+    ],
+    "moduleId": "g08-t03-material-evidence",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R19",
+    "sourceLocator": "§10 line 266",
+    "checkIds": [
+      "g08-t03@1:module/use-material-evidence/r19"
+    ],
+    "sourceIds": [
+      "g08-t03-r19-src"
+    ],
+    "moduleId": "g08-t03-material-evidence",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R20",
+    "sourceLocator": "§10 line 267",
+    "checkIds": [
+      "g08-t03@1:module/use-material-evidence/r20"
+    ],
+    "sourceIds": [
+      "g08-t03-r20-src"
+    ],
+    "moduleId": "g08-t03-material-evidence",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R21",
+    "sourceLocator": "§10 line 268",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-base/r21"
+    ],
+    "sourceIds": [
+      "g08-t03-r21-src"
+    ],
+    "moduleId": "g08-t03-channel-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R22",
+    "sourceLocator": "§10 line 269",
+    "checkIds": [
+      "g08-t03@1:module/use-issue-multi/r22"
+    ],
+    "sourceIds": [
+      "g08-t03-r22-src"
+    ],
+    "moduleId": "g08-t03-issue-multi",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R23",
+    "sourceLocator": "§10 line 270",
+    "checkIds": [
+      "g08-t03@1:module/use-jurisdiction-base/r23"
+    ],
+    "sourceIds": [
+      "g08-t03-r23-src"
+    ],
+    "moduleId": "g08-t03-jurisdiction-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R24",
+    "sourceLocator": "§10 line 271",
+    "checkIds": [
+      "g08-t03@1:module/use-security-base/r24"
+    ],
+    "sourceIds": [
+      "g08-t03-r24-src"
+    ],
+    "moduleId": "g08-t03-security-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R25",
+    "sourceLocator": "§10 line 272",
+    "checkIds": [
+      "g08-t03@1:module/use-history-query/r25"
+    ],
+    "sourceIds": [
+      "g08-t03-r25-src"
+    ],
+    "moduleId": "g08-t03-history-query",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R26",
+    "sourceLocator": "§10 line 273",
+    "checkIds": [
+      "g08-t03@1:module/use-history-query/r26"
+    ],
+    "sourceIds": [
+      "g08-t03-r26-src"
+    ],
+    "moduleId": "g08-t03-history-query",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R27",
+    "sourceLocator": "§10 line 274",
+    "checkIds": [
+      "g08-t03@1:module/use-history-query/r27"
+    ],
+    "sourceIds": [
+      "g08-t03-r27-src"
+    ],
+    "moduleId": "g08-t03-history-query",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R28",
+    "sourceLocator": "§10 line 275",
+    "checkIds": [
+      "g08-t03@1:module/use-history-query/r28"
+    ],
+    "sourceIds": [
+      "g08-t03-r28-src"
+    ],
+    "moduleId": "g08-t03-history-query",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R29",
+    "sourceLocator": "§10 line 276",
+    "checkIds": [
+      "g08-t03@1:module/use-feedback-feedback/r29"
+    ],
+    "sourceIds": [
+      "g08-t03-r29-src"
+    ],
+    "moduleId": "g08-t03-feedback-feedback",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R30",
+    "sourceLocator": "§10 line 277",
+    "checkIds": [
+      "g08-t03@1:module/use-feedback-feedback/r30"
+    ],
+    "sourceIds": [
+      "g08-t03-r30-src"
+    ],
+    "moduleId": "g08-t03-feedback-feedback",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R31",
+    "sourceLocator": "§10 line 278",
+    "checkIds": [
+      "g08-t03@1:module/use-feedback-feedback/r31"
+    ],
+    "sourceIds": [
+      "g08-t03-r31-src"
+    ],
+    "moduleId": "g08-t03-feedback-feedback",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R32",
+    "sourceLocator": "§10 line 279",
+    "checkIds": [
+      "g08-t03@1:module/use-feedback-feedback/r32"
+    ],
+    "sourceIds": [
+      "g08-t03-r32-src"
+    ],
+    "moduleId": "g08-t03-feedback-feedback",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R33",
+    "sourceLocator": "§10 line 280",
+    "checkIds": [
+      "g08-t03@1:module/use-history-followup/r33"
+    ],
+    "sourceIds": [
+      "g08-t03-r33-src"
+    ],
+    "moduleId": "g08-t03-history-followup",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R34",
+    "sourceLocator": "§10 line 281",
+    "checkIds": [
+      "g08-t03@1:module/use-history-followup/r34"
+    ],
+    "sourceIds": [
+      "g08-t03-r34-src"
+    ],
+    "moduleId": "g08-t03-history-followup",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R35",
+    "sourceLocator": "§10 line 282",
+    "checkIds": [
+      "g08-t03@1:module/use-issue-multi/r35"
+    ],
+    "sourceIds": [
+      "g08-t03-r35-src"
+    ],
+    "moduleId": "g08-t03-issue-multi",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R36",
+    "sourceLocator": "§10 line 283",
+    "checkIds": [
+      "g08-t03@1:module/use-feedback-withdraw/r36"
+    ],
+    "sourceIds": [
+      "g08-t03-r36-src"
+    ],
+    "moduleId": "g08-t03-feedback-withdraw",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R37",
+    "sourceLocator": "§10 line 284",
+    "checkIds": [
+      "g08-t03@1:module/use-feedback-withdraw/r37"
+    ],
+    "sourceIds": [
+      "g08-t03-r37-src"
+    ],
+    "moduleId": "g08-t03-feedback-withdraw",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R38",
+    "sourceLocator": "§10 line 285",
+    "checkIds": [
+      "g08-t03@1:module/use-feedback-followup/r38"
+    ],
+    "sourceIds": [
+      "g08-t03-r38-src"
+    ],
+    "moduleId": "g08-t03-feedback-followup",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R39",
+    "sourceLocator": "§10 line 286",
+    "checkIds": [
+      "g08-t03@1:module/use-history-followup/r39"
+    ],
+    "sourceIds": [
+      "g08-t03-r39-src"
+    ],
+    "moduleId": "g08-t03-history-followup",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R40",
+    "sourceLocator": "§10 line 287",
+    "checkIds": [
+      "g08-t03@1:module/use-history-followup/r40"
+    ],
+    "sourceIds": [
+      "g08-t03-r40-src"
+    ],
+    "moduleId": "g08-t03-history-followup",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R41",
+    "sourceLocator": "§10 line 288",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-base/r41"
+    ],
+    "sourceIds": [
+      "g08-t03-r41-src"
+    ],
+    "moduleId": "g08-t03-channel-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R42",
+    "sourceLocator": "§10 line 289",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-shandong/r42"
+    ],
+    "sourceIds": [
+      "g08-t03-r42-src"
+    ],
+    "moduleId": "g08-t03-channel-shandong",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R43",
+    "sourceLocator": "§10 line 290",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-shandong/r43"
+    ],
+    "sourceIds": [
+      "g08-t03-r43-src"
+    ],
+    "moduleId": "g08-t03-channel-shandong",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R44",
+    "sourceLocator": "§10 line 291",
+    "checkIds": [
+      "g08-t03@1:module/use-security-sensitive/r44"
+    ],
+    "sourceIds": [
+      "g08-t03-r44-src"
+    ],
+    "moduleId": "g08-t03-security-sensitive",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R45",
+    "sourceLocator": "§10 line 292",
+    "checkIds": [
+      "g08-t03@1:module/use-history-followup/r45"
+    ],
+    "sourceIds": [
+      "g08-t03-r45-src"
+    ],
+    "moduleId": "g08-t03-history-followup",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R46",
+    "sourceLocator": "§10 line 293",
+    "checkIds": [
+      "g08-t03@1:module/use-history-followup/r46"
+    ],
+    "sourceIds": [
+      "g08-t03-r46-src"
+    ],
+    "moduleId": "g08-t03-history-followup",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R47",
+    "sourceLocator": "§10 line 294",
+    "checkIds": [
+      "g08-t03@1:module/use-channel-base/r47"
+    ],
+    "sourceIds": [
+      "g08-t03-r47-src"
+    ],
+    "moduleId": "g08-t03-channel-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R48",
+    "sourceLocator": "§10 line 295",
+    "checkIds": [
+      "g08-t03@1:module/use-security-base/r48"
+    ],
+    "sourceIds": [
+      "g08-t03-r48-src"
+    ],
+    "moduleId": "g08-t03-security-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R49",
+    "sourceLocator": "§10 line 296",
+    "checkIds": [
+      "g08-t03@1:module/use-security-query/r49"
+    ],
+    "sourceIds": [
+      "g08-t03-r49-src"
+    ],
+    "moduleId": "g08-t03-security-query",
+    "status": "implemented-and-tested",
+    "trust": "external source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R50",
+    "sourceLocator": "§10 line 297",
+    "checkIds": [
+      "g08-t03@1:module/use-jurisdiction-base/r50"
+    ],
+    "sourceIds": [
+      "g08-t03-r50-src"
+    ],
+    "moduleId": "g08-t03-jurisdiction-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R51",
+    "sourceLocator": "§10 line 298",
+    "checkIds": [
+      "g08-t03@1:module/use-jurisdiction-base/r51"
+    ],
+    "sourceIds": [
+      "g08-t03-r51-src"
+    ],
+    "moduleId": "g08-t03-jurisdiction-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "T03-R52",
+    "sourceLocator": "§10 line 299",
+    "checkIds": [
+      "g08-t03@1:module/use-security-base/r52"
+    ],
+    "sourceIds": [
+      "g08-t03-r52-src"
+    ],
+    "moduleId": "g08-t03-security-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "INV-scope",
+    "sourceLocator": "§1—2 (f8acf0399426)",
+    "checkIds": [
+      "g08-t03@1:module/use-invariant-base/inv-scope"
+    ],
+    "sourceIds": [
+      "g08-t03-inv-scope-src"
+    ],
+    "moduleId": "g08-t03-invariant-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "INV-axes",
+    "sourceLocator": "§3 (f8acf0399426)",
+    "checkIds": [
+      "g08-t03@1:module/use-invariant-base/inv-axes"
+    ],
+    "sourceIds": [
+      "g08-t03-inv-axes-src"
+    ],
+    "moduleId": "g08-t03-invariant-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "INV-fields",
+    "sourceLocator": "§4—9 (f8acf0399426)",
+    "checkIds": [
+      "g08-t03@1:module/use-invariant-base/inv-fields"
+    ],
+    "sourceIds": [
+      "g08-t03-inv-fields-src"
+    ],
+    "moduleId": "g08-t03-invariant-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "INV-output",
+    "sourceLocator": "§11 (f8acf0399426)",
+    "checkIds": [
+      "g08-t03@1:module/use-invariant-base/inv-output"
+    ],
+    "sourceIds": [
+      "g08-t03-inv-output-src"
+    ],
+    "moduleId": "g08-t03-invariant-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "INV-lifecycle",
+    "sourceLocator": "§12 (f8acf0399426)",
+    "checkIds": [
+      "g08-t03@1:module/use-invariant-base/inv-lifecycle"
+    ],
+    "sourceIds": [
+      "g08-t03-inv-lifecycle-src"
+    ],
+    "moduleId": "g08-t03-invariant-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "INV-privacy",
+    "sourceLocator": "§13 (f8acf0399426)",
+    "checkIds": [
+      "g08-t03@1:module/use-invariant-base/inv-privacy"
+    ],
+    "sourceIds": [
+      "g08-t03-inv-privacy-src"
+    ],
+    "moduleId": "g08-t03-invariant-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  },
+  {
+    "responsibilityId": "INV-r31",
+    "sourceLocator": "§10 R30—R31 (f8acf0399426)",
+    "checkIds": [
+      "g08-t03@1:module/use-invariant-base/inv-r31"
+    ],
+    "sourceIds": [
+      "g08-t03-inv-r31-src"
+    ],
+    "moduleId": "g08-t03-invariant-base",
+    "status": "implemented-and-tested",
+    "trust": "candidate source; human authorization not verified",
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
+  }
+]
