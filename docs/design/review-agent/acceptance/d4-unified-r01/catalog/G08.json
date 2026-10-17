@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "domain": "G08",
+  "count": 2,
+  "templates": [
+    {
+      "domain": "G08",
+      "sourcePR": 94,
+      "sourceHeadSha": "fa3f561284e2395d0527790d725acb7587f6e7d8",
+      "templateId": "g08-t02",
+      "templateVersion": 1,
+      "workspacePath": "docs/design/review-agent/acceptance/d4-g08-build/g08-t02/workspace.json",
+      "workspaceGitBlobSha": "ef0e53e176da8181d3d5897d0f8dec513e61a350",
+      "manifestPath": "docs/design/review-agent/acceptance/d4-g08-build/g08-t02/manifest.json",
+      "sourceVersion": "C-MD-v0.1",
+      "sourceSha256": "7bd277cc24889805102e16d9f2de079434dd8f6ffe90ad00fc5872f169cd2418",
+      "previousDomainStatus": "READY_FOR_INTEGRATION",
+      "integrationStatus": "NOT_RUN",
+      "publication": "candidate-held",
+      "clientLoadMode": "explicit-local-import"
+    },
+    {
+      "domain": "G08",
+      "sourcePR": 94,
+      "sourceHeadSha": "fa3f561284e2395d0527790d725acb7587f6e7d8",
+      "templateId": "g08-t03",
+      "templateVersion": 1,
+      "workspacePath": "docs/design/review-agent/acceptance/d4-g08-build/g08-t03/workspace.json",
+      "workspaceGitBlobSha": "355d944791188a87e20f4ed9d7c7d664484328c2",
+      "manifestPath": "docs/design/review-agent/acceptance/d4-g08-build/g08-t03/manifest.json",
+      "sourceVersion": "C-MD-v0.1.1-r31-r01",
+      "sourceSha256": "f8acf03994262e621d4afac6e608d34d90b114b7103372bef25fc7a4b50f88ec",
+      "previousDomainStatus": "READY_FOR_INTEGRATION",
+      "integrationStatus": "NOT_RUN",
+      "publication": "candidate-held",
+      "clientLoadMode": "explicit-local-import"
+    }
+  ]
+}

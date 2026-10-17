@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "domain": "G02",
+  "count": 3,
+  "templates": [
+    {
+      "domain": "G02",
+      "sourcePR": 89,
+      "sourceHeadSha": "5edb9bdfad77dd850e82fdcf162a382a203946e5",
+      "templateId": "g02-t01-review",
+      "templateVersion": 1,
+      "workspacePath": "docs/design/review-agent/acceptance/d4-g02-build/T01/workspace.json",
+      "workspaceGitBlobSha": "31572edfb22f5cb4de2c0386d3403295247c484c",
+      "manifestPath": "docs/design/review-agent/acceptance/d4-g02-build/T01/manifest.json",
+      "sourceVersion": "C-v0.1",
+      "sourceSha256": "9d16ba80053266dfee3c89e4fbccf1bbd8b408d58c4189e8f7f12bc0a7b235cb",
+      "previousDomainStatus": "PARTIAL",
+      "integrationStatus": "NOT_RUN",
+      "publication": "candidate-held",
+      "clientLoadMode": "explicit-local-import"
+    },
+    {
+      "domain": "G02",
+      "sourcePR": 89,
+      "sourceHeadSha": "5edb9bdfad77dd850e82fdcf162a382a203946e5",
+      "templateId": "g02-t02-review",
+      "templateVersion": 1,
+      "workspacePath": "docs/design/review-agent/acceptance/d4-g02-build/T02/workspace.json",
+      "workspaceGitBlobSha": "0485d13a86263412037d6a1a720d239826bb2d24",
+      "manifestPath": "docs/design/review-agent/acceptance/d4-g02-build/T02/manifest.json",
+      "sourceVersion": "C-v0.1",
+      "sourceSha256": "4494cfd81dfde4af1fdcb127b342ed0452be6a7704fe317a123cbe589fff78bc",
+      "previousDomainStatus": "PARTIAL",
+      "integrationStatus": "NOT_RUN",
+      "publication": "candidate-held",
+      "clientLoadMode": "explicit-local-import"
+    },
+    {
+      "domain": "G02",
+      "sourcePR": 89,
+      "sourceHeadSha": "5edb9bdfad77dd850e82fdcf162a382a203946e5",
+      "templateId": "g02-t03-review",
+      "templateVersion": 1,
+      "workspacePath": "docs/design/review-agent/acceptance/d4-g02-build/T03/workspace.json",
+      "workspaceGitBlobSha": "2502f25a5a6dc26ed045a85c6e1170a50a7da527",
+      "manifestPath": "docs/design/review-agent/acceptance/d4-g02-build/T03/manifest.json",
+      "sourceVersion": "C-v0.1.1",
+      "sourceSha256": "e3d1d01555d49564931ac38892567ea23eab5ecd898afc3b67a8e4a26abe7380",
+      "previousDomainStatus": "PARTIAL",
+      "integrationStatus": "NOT_RUN",
+      "publication": "candidate-held",
+      "clientLoadMode": "explicit-local-import"
+    }
+  ]
+}
