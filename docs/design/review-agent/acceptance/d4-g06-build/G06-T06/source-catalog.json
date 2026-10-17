@@ -1,0 +1,1038 @@
+{
+  "sourceFile": "G06-T06_正式业务模板_MD_v0.1.md",
+  "sourceSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+  "version": "v0.1",
+  "scope": "full",
+  "atomicRules": [
+    {
+      "sourceId": "R-01",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L157",
+      "sourceAnchor": "### R-01｜案件路由",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r01/check",
+      "moduleId": "g06-t06-r01",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-02",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L162",
+      "sourceAnchor": "### R-02｜官方渠道关联",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r02/check",
+      "moduleId": "g06-t06-r02",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-03",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L167",
+      "sourceAnchor": "### R-03｜申请人与代办权限",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r03/check",
+      "moduleId": "g06-t06-r03",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-04",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L172",
+      "sourceAnchor": "### R-04｜新闻线索路径",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r04/check",
+      "moduleId": "g06-t06-r04",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-05",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L177",
+      "sourceAnchor": "### R-05｜送审内容完整",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r05/check",
+      "moduleId": "g06-t06-r05",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-06",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L182",
+      "sourceAnchor": "### R-06｜版本快照绑定",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r06/check",
+      "moduleId": "g06-t06-r06",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-07",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L187",
+      "sourceAnchor": "### R-07｜科研可验证主张拆解",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r07/check",
+      "moduleId": "g06-t06-r07",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-08",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L192",
+      "sourceAnchor": "### R-08｜成果阶段与措辞",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r08/check",
+      "moduleId": "g06-t06-r08",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-09",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L197",
+      "sourceAnchor": "### R-09｜科研责任主体关联",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r09/check",
+      "moduleId": "g06-t06-r09",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-10",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L202",
+      "sourceAnchor": "### R-10｜真实性与科研不端界限",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r10/check",
+      "moduleId": "g06-t06-r10",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-11",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L207",
+      "sourceAnchor": "### R-11｜媒体素材登记",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r11/check",
+      "moduleId": "g06-t06-r11",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-12",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L212",
+      "sourceAnchor": "### R-12｜素材许可范围",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r12/check",
+      "moduleId": "g06-t06-r12",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-13",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L217",
+      "sourceAnchor": "### R-13｜创作者与权利人差异",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r13/check",
+      "moduleId": "g06-t06-r13",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-14",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L222",
+      "sourceAnchor": "### R-14｜肖像及个人信息",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r14/check",
+      "moduleId": "g06-t06-r14",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-15",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L227",
+      "sourceAnchor": "### R-15｜合作与项目披露限制",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r15/check",
+      "moduleId": "g06-t06-r15",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-16",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L232",
+      "sourceAnchor": "### R-16｜保密审批或安全路由",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r16/check",
+      "moduleId": "g06-t06-r16",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-17",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L237",
+      "sourceAnchor": "### R-17｜科研重大事实专门复核",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r17/check",
+      "moduleId": "g06-t06-r17",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-18",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L242",
+      "sourceAnchor": "### R-18｜首次申请不得要求终审",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r18/check",
+      "moduleId": "g06-t06-r18",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-19",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L247",
+      "sourceAnchor": "### R-19｜当前审批决定合法性",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r19/check",
+      "moduleId": "g06-t06-r19",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-20",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L252",
+      "sourceAnchor": "### R-20｜多渠道逐动作授权",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r20/check",
+      "moduleId": "g06-t06-r20",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-21",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L257",
+      "sourceAnchor": "### R-21｜未经批准不得声称已发布",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r21/check",
+      "moduleId": "g06-t06-r21",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-22",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L262",
+      "sourceAnchor": "### R-22｜实质修改后重审判断",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r22/check",
+      "moduleId": "g06-t06-r22",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-23",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L267",
+      "sourceAnchor": "### R-23｜非实质编辑容错",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r23/check",
+      "moduleId": "g06-t06-r23",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-24",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L272",
+      "sourceAnchor": "### R-24｜刊后勘误申请",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r24/check",
+      "moduleId": "g06-t06-r24",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-25",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L277",
+      "sourceAnchor": "### R-25｜撤稿和停止传播",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r25/check",
+      "moduleId": "g06-t06-r25",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-26",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L282",
+      "sourceAnchor": "### R-26｜新闻纠错与成果库纠错分离",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r26/check",
+      "moduleId": "g06-t06-r26",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-27",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L287",
+      "sourceAnchor": "### R-27｜多素材独立结论",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r27/check",
+      "moduleId": "g06-t06-r27",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-28",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L292",
+      "sourceAnchor": "### R-28｜证据来源冲突与替代",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r28/check",
+      "moduleId": "g06-t06-r28",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-29",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L297",
+      "sourceAnchor": "### R-29｜可信数据不可达",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r29/check",
+      "moduleId": "g06-t06-r29",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-30",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L302",
+      "sourceAnchor": "### R-30｜校本制度未知",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r30/check",
+      "moduleId": "g06-t06-r30",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-31",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L307",
+      "sourceAnchor": "### R-31｜成果要报辅助证据",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r31/check",
+      "moduleId": "g06-t06-r31",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-32",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L312",
+      "sourceAnchor": "### R-32｜科研诚信承诺的非默认性",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r32/check",
+      "moduleId": "g06-t06-r32",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-33",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L317",
+      "sourceAnchor": "### R-33｜发布执行留痕",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r33/check",
+      "moduleId": "g06-t06-r33",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-34",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L322",
+      "sourceAnchor": "### R-34｜撤回或失效重审",
+      "type": "rule",
+      "checkId": "g06-t06@1:module/use-r34/check",
+      "moduleId": "g06-t06-r34",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    }
+  ],
+  "otherResponsibilities": [
+    {
+      "sourceId": "SECTION-01",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L7",
+      "sourceAnchor": "## 0. 使用方式、规范效力与版本控制",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section01/check",
+      "moduleId": "g06-t06-section01",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-02",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L15",
+      "sourceAnchor": "## 1. 审核目的与边界",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section02/check",
+      "moduleId": "g06-t06-section02",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-03",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L22",
+      "sourceAnchor": "## 2. 主体、权责和业务对象",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section03/check",
+      "moduleId": "g06-t06-section03",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-04",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L36",
+      "sourceAnchor": "## 3. 办理情景、互斥与条件轴",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section04/check",
+      "moduleId": "g06-t06-section04",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-05",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L52",
+      "sourceAnchor": "## 4. 输入契约——三类业务输入+独立可信底账",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section05/check",
+      "moduleId": "g06-t06-section05",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-06",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L62",
+      "sourceAnchor": "## 5. 字段字典（F-01—F-36）",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section06/check",
+      "moduleId": "g06-t06-section06",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-07",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L105",
+      "sourceAnchor": "## 6. 材料槽（MS）与合法替代证据组（EV）",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section07/check",
+      "moduleId": "g06-t06-section07",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-08",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L138",
+      "sourceAnchor": "## 7. 必核审核事实、跨文书关系与版本时间约束",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section08/check",
+      "moduleId": "g06-t06-section08",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-09",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L155",
+      "sourceAnchor": "## 8. 规则原子契约（R-01—R-34）",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section09/check",
+      "moduleId": "g06-t06-section09",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-10",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L331",
+      "sourceAnchor": "## 9. 状态字典、对象结果、问题码及总体聚合",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section10/check",
+      "moduleId": "g06-t06-section10",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-11",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L378",
+      "sourceAnchor": "## 10. 生命周期、补件与执行审计",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section11/check",
+      "moduleId": "g06-t06-section11",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-12",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L394",
+      "sourceAnchor": "## 11. 例外、替代证据与人工边界",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section12/check",
+      "moduleId": "g06-t06-section12",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-13",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L400",
+      "sourceAnchor": "## 12. 学校政策治理、校本待配置和风险",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section13/check",
+      "moduleId": "g06-t06-section13",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-14",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L415",
+      "sourceAnchor": "## 13. B来源、可证程度及规则引用",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section14/check",
+      "moduleId": "g06-t06-section14",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-15",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L437",
+      "sourceAnchor": "## 14. 按办理路径的作者流程推演摘要",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section15/check",
+      "moduleId": "g06-t06-section15",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-16",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L449",
+      "sourceAnchor": "## 15. 编辑器共性模块及运行映射",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section16/check",
+      "moduleId": "g06-t06-section16",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-17",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L463",
+      "sourceAnchor": "## 16. 完整性、审计风险及版本交接",
+      "type": "context",
+      "checkId": "g06-t06@1:module/use-section17/check",
+      "moduleId": "g06-t06-section17",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-01",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L39",
+      "sourceAnchor": "| BR-01 | 校级新闻网科研成果稿 | `channel_class=school_news, action=first_release` | 按同动作的渠道/阶段互斥；可与素材/修改条件叠加 | 校级事实核验+校级审签，审批节点依政策 | S01,S07,S08 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t06@1:module/use-axis-br-01/check",
+      "moduleId": "g06-t06-axis-br-01",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-02",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L40",
+      "sourceAnchor": "| BR-02 | 院系/科研院官方号科研成果稿 | `channel_class in {faculty_site,research_site,verified_official_social}, action=first_release` | 按同动作的渠道/阶段互斥；可与素材/修改条件叠加 | 本频道责任链，不继承BR-01 | S02,S07,S09 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t06@1:module/use-axis-br-02/check",
+      "moduleId": "g06-t06-axis-br-02",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-05",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L43",
+      "sourceAnchor": "| BR-05 | 已刊新闻勘误或撤稿 | `action in {correction,takedown}, prior_published=true` | 按同动作的渠道/阶段互斥；可与素材/修改条件叠加 | 原URL/旧稿/更正权威来源，执行权留编辑者 | S08,S09 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t06@1:module/use-axis-br-05/check",
+      "moduleId": "g06-t06-axis-br-05",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-03",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L41",
+      "sourceAnchor": "| BR-03 | 含图片/视频/图表的稿件 | `has_assets=true` | 可与其它分支叠加 | 逐素材版权、图注、肖像和用途核验 | S03,S05,S09 |",
+      "type": "additive-condition",
+      "checkId": "g06-t06@1:module/use-axis-br-03/check",
+      "moduleId": "g06-t06-axis-br-03",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-04",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L42",
+      "sourceAnchor": "| BR-04 | 审签后实质改稿及重新送审 | `has_prior_review=true AND content_changed=true` | 可与其它分支叠加 | 判断改变影响的claim/asset与原审签覆盖范围 | S08,S09 |",
+      "type": "additive-condition",
+      "checkId": "g06-t06@1:module/use-axis-br-04/check",
+      "moduleId": "g06-t06-axis-br-04",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-06",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L44",
+      "sourceAnchor": "| BR-06 | 线索报送/权限尚不明 | `submission_level=lead OR submitter_authority=unknown` | 可与其它分支叠加 | 允许转授权联系人；不要求完整新闻终审件 | S06,S08 |",
+      "type": "additive-condition",
+      "checkId": "g06-t06@1:module/use-axis-br-06/check",
+      "moduleId": "g06-t06-axis-br-06",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-01",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L46",
+      "sourceAnchor": "**条件轴**：`C-01`渠道（校级/院系/科研院/认证官方新媒）；`C-02`内容主张（科研论文/专利/奖项/项目结题/活动成果）；`C-03`证明阶段（拟申请/受理/授权/发表/撤回）；`C-04`素材及权利（自有/第三方/肖像/个人信息）；`C-05`申请权限（授权/无权/未知）；`C-06`工作阶段（线索/送审/审批/批准/执行/刊后）；`C-07`修改程度（非实质/实质/未知）。",
+      "type": "additive-condition",
+      "checkId": "g06-t06@1:module/use-axis-c-01/check",
+      "moduleId": "g06-t06-axis-c-01",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-02",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L46",
+      "sourceAnchor": "**条件轴**：`C-01`渠道（校级/院系/科研院/认证官方新媒）；`C-02`内容主张（科研论文/专利/奖项/项目结题/活动成果）；`C-03`证明阶段（拟申请/受理/授权/发表/撤回）；`C-04`素材及权利（自有/第三方/肖像/个人信息）；`C-05`申请权限（授权/无权/未知）；`C-06`工作阶段（线索/送审/审批/批准/执行/刊后）；`C-07`修改程度（非实质/实质/未知）。",
+      "type": "additive-condition",
+      "checkId": "g06-t06@1:module/use-axis-c-02/check",
+      "moduleId": "g06-t06-axis-c-02",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-03",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L46",
+      "sourceAnchor": "**条件轴**：`C-01`渠道（校级/院系/科研院/认证官方新媒）；`C-02`内容主张（科研论文/专利/奖项/项目结题/活动成果）；`C-03`证明阶段（拟申请/受理/授权/发表/撤回）；`C-04`素材及权利（自有/第三方/肖像/个人信息）；`C-05`申请权限（授权/无权/未知）；`C-06`工作阶段（线索/送审/审批/批准/执行/刊后）；`C-07`修改程度（非实质/实质/未知）。",
+      "type": "additive-condition",
+      "checkId": "g06-t06@1:module/use-axis-c-03/check",
+      "moduleId": "g06-t06-axis-c-03",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-04",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L46",
+      "sourceAnchor": "**条件轴**：`C-01`渠道（校级/院系/科研院/认证官方新媒）；`C-02`内容主张（科研论文/专利/奖项/项目结题/活动成果）；`C-03`证明阶段（拟申请/受理/授权/发表/撤回）；`C-04`素材及权利（自有/第三方/肖像/个人信息）；`C-05`申请权限（授权/无权/未知）；`C-06`工作阶段（线索/送审/审批/批准/执行/刊后）；`C-07`修改程度（非实质/实质/未知）。",
+      "type": "additive-condition",
+      "checkId": "g06-t06@1:module/use-axis-c-04/check",
+      "moduleId": "g06-t06-axis-c-04",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-05",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L46",
+      "sourceAnchor": "**条件轴**：`C-01`渠道（校级/院系/科研院/认证官方新媒）；`C-02`内容主张（科研论文/专利/奖项/项目结题/活动成果）；`C-03`证明阶段（拟申请/受理/授权/发表/撤回）；`C-04`素材及权利（自有/第三方/肖像/个人信息）；`C-05`申请权限（授权/无权/未知）；`C-06`工作阶段（线索/送审/审批/批准/执行/刊后）；`C-07`修改程度（非实质/实质/未知）。",
+      "type": "additive-condition",
+      "checkId": "g06-t06@1:module/use-axis-c-05/check",
+      "moduleId": "g06-t06-axis-c-05",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-06",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L46",
+      "sourceAnchor": "**条件轴**：`C-01`渠道（校级/院系/科研院/认证官方新媒）；`C-02`内容主张（科研论文/专利/奖项/项目结题/活动成果）；`C-03`证明阶段（拟申请/受理/授权/发表/撤回）；`C-04`素材及权利（自有/第三方/肖像/个人信息）；`C-05`申请权限（授权/无权/未知）；`C-06`工作阶段（线索/送审/审批/批准/执行/刊后）；`C-07`修改程度（非实质/实质/未知）。",
+      "type": "additive-condition",
+      "checkId": "g06-t06@1:module/use-axis-c-06/check",
+      "moduleId": "g06-t06-axis-c-06",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-07",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L46",
+      "sourceAnchor": "**条件轴**：`C-01`渠道（校级/院系/科研院/认证官方新媒）；`C-02`内容主张（科研论文/专利/奖项/项目结题/活动成果）；`C-03`证明阶段（拟申请/受理/授权/发表/撤回）；`C-04`素材及权利（自有/第三方/肖像/个人信息）；`C-05`申请权限（授权/无权/未知）；`C-06`工作阶段（线索/送审/审批/批准/执行/刊后）；`C-07`修改程度（非实质/实质/未知）。",
+      "type": "additive-condition",
+      "checkId": "g06-t06@1:module/use-axis-c-07/check",
+      "moduleId": "g06-t06-axis-c-07",
+      "scope": "g06-news-release-action",
+      "requiresHumanDecision": false
+    }
+  ],
+  "fieldMaterialEvidenceStageAndQuestionIndex": [
+    {
+      "id": "BR-01",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L4",
+      "sourceExcerpt": "> **一套模板**；`BR-01…BR-06`为**可组合、部分互斥的办理分支**，在每次案件中按行动、事实主张、素材三级独立核验。对外可发布必须有有权发布者的真实决定，不能由AI预审直接授权。"
+    },
+    {
+      "id": "BR-06",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L4",
+      "sourceExcerpt": "> **一套模板**；`BR-01…BR-06`为**可组合、部分互斥的办理分支**，在每次案件中按行动、事实主张、素材三级独立核验。对外可发布必须有有权发布者的真实决定，不能由AI预审直接授权。"
+    },
+    {
+      "id": "MS-01",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L12",
+      "sourceExcerpt": "5. IDs稳定：`BR-xx`路径、`F-xx`字段、`MS-xx`材料槽、`EV-xx`证据组、`R-xx`规则、`ST-xx`工作流、`Qxx`问题码、`MOD-xx`模块。B旧`M-01—M-11`在本模板一一映射为`MS-01—MS-11`。"
+    },
+    {
+      "id": "MS-11",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L12",
+      "sourceExcerpt": "5. IDs稳定：`BR-xx`路径、`F-xx`字段、`MS-xx`材料槽、`EV-xx`证据组、`R-xx`规则、`ST-xx`工作流、`Qxx`问题码、`MOD-xx`模块。B旧`M-01—M-11`在本模板一一映射为`MS-01—MS-11`。"
+    },
+    {
+      "id": "BR-02",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L40",
+      "sourceExcerpt": "| BR-02 | 院系/科研院官方号科研成果稿 | `channel_class in {faculty_site,research_site,verified_official_social}, action=first_release` | 按同动作的渠道/阶段互斥；可与素材/修改条件叠加 | 本频道责任链，不继承BR-01 | S02,S07,S09 |"
+    },
+    {
+      "id": "BR-03",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L41",
+      "sourceExcerpt": "| BR-03 | 含图片/视频/图表的稿件 | `has_assets=true` | 可与其它分支叠加 | 逐素材版权、图注、肖像和用途核验 | S03,S05,S09 |"
+    },
+    {
+      "id": "BR-04",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L42",
+      "sourceExcerpt": "| BR-04 | 审签后实质改稿及重新送审 | `has_prior_review=true AND content_changed=true` | 可与其它分支叠加 | 判断改变影响的claim/asset与原审签覆盖范围 | S08,S09 |"
+    },
+    {
+      "id": "BR-05",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L43",
+      "sourceExcerpt": "| BR-05 | 已刊新闻勘误或撤稿 | `action in {correction,takedown}, prior_published=true` | 按同动作的渠道/阶段互斥；可与素材/修改条件叠加 | 原URL/旧稿/更正权威来源，执行权留编辑者 | S08,S09 |"
+    },
+    {
+      "id": "F-01",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L62",
+      "sourceExcerpt": "## 5. 字段字典（F-01—F-36）"
+    },
+    {
+      "id": "F-36",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L62",
+      "sourceExcerpt": "## 5. 字段字典（F-01—F-36）"
+    },
+    {
+      "id": "F-28",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L63",
+      "sourceExcerpt": "`核心`不表示纸质必交；敏感信息按学校授权及最小必要原则处理。B阶段`F-01—F-28`稳定，C新增`F-29—F-36`均标明新增。"
+    },
+    {
+      "id": "F-29",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L63",
+      "sourceExcerpt": "`核心`不表示纸质必交；敏感信息按学校授权及最小必要原则处理。B阶段`F-01—F-28`稳定，C新增`F-29—F-36`均标明新增。"
+    },
+    {
+      "id": "F-02",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L67",
+      "sourceExcerpt": "| F-02 | `channel_id` | 申报事项+可信底账 | string | 逐发布动作核心 | 官方渠道ID，不以个人号替代；无法识别→核渠道 | 普通 |"
+    },
+    {
+      "id": "F-03",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L68",
+      "sourceExcerpt": "| F-03 | `scope_under_school_name` | 申报事项 | boolean/unknown | 核心@申请 | 学校/院系官方名义，未知→澄清 | 普通 |"
+    },
+    {
+      "id": "F-04",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "| F-04 | `submitter_id` | 申报事项+身份库 | string | 核心@申请 | 提交账号与撰稿人分离；允许代理 | 受限 |"
+    },
+    {
+      "id": "F-05",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "| F-05 | `representative_id` | 申报事项+授权库 | string? | 条件@代理/科研复核 | PI/单位授权代表，可由校内授权记录替代纸函 | 受限 |"
+    },
+    {
+      "id": "F-06",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L71",
+      "sourceExcerpt": "| F-06 | `article_title` | 申报材料 | text | 核心@送审 | 标题保留原文，修改保留版本历史 | 普通 |"
+    },
+    {
+      "id": "F-07",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L72",
+      "sourceExcerpt": "| F-07 | `article_body` | 申报材料 | richtext/document | 核心@完整送审 | 正文、图表、引文、字幕；仅线索路径不要求全文 | 内部 |"
+    },
+    {
+      "id": "F-08",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L73",
+      "sourceExcerpt": "| F-08 | `content_version` | 申报材料+可信底账 | string/hash | 核心@进入审签 | 可用系统快照或内容hash替代人工版本号 | 内部 |"
+    },
+    {
+      "id": "F-09",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L74",
+      "sourceExcerpt": "| F-09 | `release_channel_class` | 申报事项+频道目录 | enum | 核心@申请 | 校网/学院官网/经认证号；每渠道动作独立 | 普通 |"
+    },
+    {
+      "id": "F-10",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L75",
+      "sourceExcerpt": "| F-10 | `desired_publish_at` | 申报事项 | datetime? | 选填或政策条件 | 不得自行设所有稿件统一截止日 | 普通 |"
+    },
+    {
+      "id": "F-11",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L76",
+      "sourceExcerpt": "| F-11 | `contact_person` | 申报材料 | actor_ref | 频道有联系要求时 | 可由账号主数据代录 | 受限 |"
+    },
+    {
+      "id": "F-12",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L77",
+      "sourceExcerpt": "| F-12 | `byline_authors[]` | 申报材料 | actor_role[] | 出现署名/多媒体时 | 文作者/摄影/摄像独立列出 | 普通 |"
+    },
+    {
+      "id": "F-13",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L78",
+      "sourceExcerpt": "| F-13 | `source_unit` | 申报事项+可信底账 | org_ref | 核心@送审 | 来源单位须映射官方名义主体 | 普通 |"
+    },
+    {
+      "id": "F-14",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L79",
+      "sourceExcerpt": "| F-14 | `facts[]` | 申报材料 | claim[] | 含可验证科研主张时 | 逐主张记录引文位置和证据关联；普通意见不作高强度核验 | 内部 |"
+    },
+    {
+      "id": "F-15",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L80",
+      "sourceExcerpt": "| F-15 | `claimed_achievement_stage` | 申报材料+证明材料 | enum | 声称发表/授权/完成等阶段时 | 受理≠授权；录用≠发表；申请结题≠完成验收 | 内部 |"
+    },
+    {
+      "id": "F-16",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L81",
+      "sourceExcerpt": "| F-16 | `technical_disclosure_scope` | 申报材料 | risk_scope | 受技术披露约束时 | 保密最终判断非模型完成 | 敏感 |"
+    },
+    {
+      "id": "F-17",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L82",
+      "sourceExcerpt": "| F-17 | `media_assets[]` | 申报材料 | asset[] | 有图片/视频/海报时 | 每素材独立编号、图注、版本、关联发布动作 | 内部 |"
+    },
+    {
+      "id": "F-18",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L83",
+      "sourceExcerpt": "| F-18 | `asset_creator` | 申报材料 | actor/org_ref | 有素材时 | 摄制人≠实际许可权利人 | 内部 |"
+    },
+    {
+      "id": "F-19",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L84",
+      "sourceExcerpt": "| F-19 | `asset_license` | 证明材料+授权库 | license_ref | 第三方/受限素材时 | 核用途/频道/期间/作品范围；可由可信素材库替代 | 受限 |"
+    },
+    {
+      "id": "F-20",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L85",
+      "sourceExcerpt": "| F-20 | `portrait_personal_data` | 申报材料+证明材料 | risk_scope | 涉及可识别个人信息时 | 合法处理基础多种，不一律强制纸质肖像函 | 敏感 |"
+    },
+    {
+      "id": "F-21",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L86",
+      "sourceExcerpt": "| F-21 | `partner_clearance` | 证明材料+项目系统 | approval_ref | 合同限制发表时 | 合作方许可为条件触发；有合作不代表必需 | 敏感 |"
+    },
+    {
+      "id": "F-22",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L87",
+      "sourceExcerpt": "| F-22 | `internal_review_history` | 可信底账/后续 | decision[] | 审批阶段后置 | 审批者、权限、稿件版本、频道、时间；初交不必有 | 受限 |"
+    },
+    {
+      "id": "F-23",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L88",
+      "sourceExcerpt": "| F-23 | `secrecy_check` | 可信底账/条件证明 | status_ref | 校规或项目限制触发 | 网页展示标签不等于专业保密审查记录 | 敏感 |"
+    },
+    {
+      "id": "F-24",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L89",
+      "sourceExcerpt": "| F-24 | `published_url` | 可信底账/后续 | uri? | 发布后才生成 | 发布URL与真实账号发布时间需核验 | 普通 |"
+    },
+    {
+      "id": "F-25",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L90",
+      "sourceExcerpt": "| F-25 | `prior_article_id` | 可信底账+申报事项 | string? | 改版/勘误/撤稿时 | 需原报道和发布平台映射 | 内部 |"
+    },
+    {
+      "id": "F-26",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L91",
+      "sourceExcerpt": "| F-26 | `change_summary` | 申报材料 | diff[] | 旧稿修订时 | 逐claim/asset/action映射，区分笔误和实质改动 | 内部 |"
+    },
+    {
+      "id": "F-27",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L92",
+      "sourceExcerpt": "| F-27 | `editorial_decision` | 可信底账/后续 | decision | 有权人审签后才生成 | 未取得正式决定=NOT_DECIDED | 受限 |"
+    },
+    {
+      "id": "F-30",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L95",
+      "sourceExcerpt": "| F-30 | `responsible_researcher` | 申报事项/可信底账 | actor_ref | 需要专业科研事实核查时 | 成果完成人≠撰稿人≠新闻发稿人 | 内部 |"
+    },
+    {
+      "id": "F-31",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L96",
+      "sourceExcerpt": "| F-31 | `research_brief_ref` | 证明材料 | doc_ref? | 提供中心成果要报时选用 | 上游结题素材可辅助核项目号；非通用必交 | 受限 |"
+    },
+    {
+      "id": "F-32",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L97",
+      "sourceExcerpt": "| F-32 | `integrity_commitment_ref` | 证明材料/可信记录 | doc_ref? | 独立校本政策要求或已有时 | N01不是每篇新闻额外承诺书的依据 | 受限 |"
+    },
+    {
+      "id": "F-33",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L98",
+      "sourceExcerpt": "| F-33 | `release_actions[]` | 申报事项 | action[] | 多渠道/多发布操作时 | 每 actionId 绑定channel、version、授权、结果 | 内部 |"
+    },
+    {
+      "id": "F-34",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L99",
+      "sourceExcerpt": "| F-34 | `source_provenance` | 证明材料/可信底账 | provenance[] | 每项关键事实核验时 | 明示签发方、检索时间、证据页及可靠性 | 内部 |"
+    },
+    {
+      "id": "F-35",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L100",
+      "sourceExcerpt": "| F-35 | `asset_rights_basis` | 证明材料/可信记录 | license/legal_basis | 权利/隐私/版权条件触发 | 书面许可/协议/授权库/其他合法基础不得机械混同 | 敏感 |"
+    },
+    {
+      "id": "MS-04",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L106",
+      "sourceExcerpt": "材料槽不就是一个文件：MS-04可由官方发布URL及学校可信科研库合并证明；单份协议也可同时覆盖若干素材/传播渠道，但要逐范围校验。"
+    },
+    {
+      "id": "MS-02",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L110",
+      "sourceExcerpt": "| MS-02（B M-02） | 完整待发布稿件 | 申报材料 | 完整版申请必需 | DOCX/PDF/富文本系统快照 | S07,S08 |"
+    },
+    {
+      "id": "MS-03",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L111",
+      "sourceExcerpt": "| MS-03（B M-03） | 图文音视频及清单 | 申报材料 | 有素材时 | 原图/视频+时间码/截图+可回溯源文件 | S03,S04,S09 |"
+    },
+    {
+      "id": "MS-05",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L113",
+      "sourceExcerpt": "| MS-05（B M-05） | 合同披露限制/合作意见 | 证明材料 | 合作合同限制时 | 授权项目库的可披露条款摘要/原合同必要段 | S08 |"
+    },
+    {
+      "id": "MS-06",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L114",
+      "sourceExcerpt": "| MS-06（B M-06） | 素材版权及传播许可 | 证明材料 | 第三方/受限素材时 | 授权函/有效合同/许可库及应用范围 | S09 |"
+    },
+    {
+      "id": "MS-07",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L115",
+      "sourceExcerpt": "| MS-07（B M-07） | 肖像/个人信息合法使用依据 | 证明材料 | 使用可识别个人资料且需要合法依据时 | 同意/授权记录或适用的其他合法基础；人工确定 | S09 |"
+    },
+    {
+      "id": "MS-08",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L116",
+      "sourceExcerpt": "| MS-08（B M-08） | 部门审批与签署流转记录 | 可信底账/后续 | 审签时形成 | OA审批/有权签章记录 | S07,S08 |"
+    },
+    {
+      "id": "MS-09",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L117",
+      "sourceExcerpt": "| MS-09（B M-09） | 专业保密/技术披露批准 | 证明材料/可信底账 | 受合同/保密规则触发 | 有权保密部门记录、范围对应的可发布意见 | S07,S08 |"
+    },
+    {
+      "id": "MS-10",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L118",
+      "sourceExcerpt": "| MS-10（B M-10） | 旧稿、更正请求及版本差异 | 申报材料+证明材料 | 重审/勘误/撤稿时 | 原发布平台档案+新版全文+更正依据 | S08,S09 |"
+    },
+    {
+      "id": "MS-12",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L120",
+      "sourceExcerpt": "| MS-12（C追加） | 上游项目成果要报 | 证明材料 | 用户确实提供/需核上游结题时 | 中心成果要报＋正式结题/发表凭证另核 | N02,N03 |"
+    },
+    {
+      "id": "EV-01",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L125",
+      "sourceExcerpt": "| EV-01 | 频道存在与有效授权 | 官方频道目录+当前授权身份记录；缺授权可经有权单位确认 | 按action，不跨频道继承；S01,S02,S07,S08 |"
+    },
+    {
+      "id": "EV-02",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L126",
+      "sourceExcerpt": "| EV-02 | 确定版本稿件 | 原始待发内容+系统内容快照或哈希/修订版本 | 完整稿送审才必需；线索路径除外；S07,S08 |"
+    },
+    {
+      "id": "EV-03",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L127",
+      "sourceExcerpt": "| EV-03 | 科研事实证明组 | 官方出版/授权/奖项/结题文书 或 可信同步的相应管理底账 | 只证明该种事实与阶段，成果要报仅辅助；N01,N02,S07,S08 |"
+    },
+    {
+      "id": "EV-04",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L128",
+      "sourceExcerpt": "| EV-04 | 素材传播许可组 | 创作者/权利主体的适用授权 或 经认证学校图库许可记录 或 经有权法务确认其他合法基础 | 不因互联网可检索就认定可用；S03,S09 |"
+    },
+    {
+      "id": "EV-05",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L129",
+      "sourceExcerpt": "| EV-05 | 可识别个人信息传播依据 | 必要同意/许可+用途/范围 或 符合法律且由有权人确认的其他基础 | 不强制每张校园全景需肖像书；S09 |"
+    },
+    {
+      "id": "EV-06",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L130",
+      "sourceExcerpt": "| EV-06 | 合同及保密披露组 | 项目合同披露条款+合作方许可（确被要求时）+涉密专业审查（确触发时） | 未知触发条件→待核，安全上不得自动放行公开；S07,S08,N01 |"
+    },
+    {
+      "id": "EV-07",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L131",
+      "sourceExcerpt": "| EV-07 | 有权审签历史 | 有权校内系统日志或真实性经核的签章意见，均绑定频道+版本 | 投稿人自写同意、网页展示标签不可替代；S07,S08,S03 |"
+    },
+    {
+      "id": "EV-08",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L132",
+      "sourceExcerpt": "| EV-08 | 旧稿变更与更正组 | 平台原稿+新版稿/差异+正式科研事实更正来源 | 可按claim/asset分项处理；S08,S09 |"
+    },
+    {
+      "id": "EV-09",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L133",
+      "sourceExcerpt": "| EV-09 | 实际发布证据 | 发布账号后台日志及真实URL/平台记录 | 仅发布后可得，不是初交必交；S03,S04,S08 |"
+    },
+    {
+      "id": "EV-10",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L134",
+      "sourceExcerpt": "| EV-10 | 科研项目辅助信息 | 上游“成果要报”、项目号与负责人签署+必要时独立正式结题证明 | 要报不独立证明项目验收完成；N02,N03,N01 |"
+    },
+    {
+      "id": "ST-01",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L334",
+      "sourceExcerpt": "| ST-01 | `DRAFT` | 草稿/线索 | 无需全部正式证据 |"
+    },
+    {
+      "id": "ST-02",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L335",
+      "sourceExcerpt": "| ST-02 | `SUBMITTED` | 完整申请已提交 | 目标频道和动作已确认 |"
+    },
+    {
+      "id": "ST-03",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L336",
+      "sourceExcerpt": "| ST-03 | `INTAKE_CHECK` | 材料与事实预审 | 可出补件/专业问题 |"
+    },
+    {
+      "id": "ST-04",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L337",
+      "sourceExcerpt": "| ST-04 | `SUPPLEMENT_WAIT` | 待申请人补件 | 须保留原稿和具体欠缺 |"
+    },
+    {
+      "id": "ST-05",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L338",
+      "sourceExcerpt": "| ST-05 | `POLICY_HOLD` | 政策或身份授权待确认 | 不得默认宽松或拒稿 |"
+    },
+    {
+      "id": "ST-06",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L339",
+      "sourceExcerpt": "| ST-06 | `SPECIALIST_REVIEW` | 科研、保密、法律或隐私专业复核 | 不由模型替代 |"
+    },
+    {
+      "id": "ST-07",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L340",
+      "sourceExcerpt": "| ST-07 | `EDITORIAL_REVIEW` | 本频道有权负责人审批 | 不是AI批准 |"
+    },
+    {
+      "id": "ST-08",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L341",
+      "sourceExcerpt": "| ST-08 | `AUTHORITY_DECLINED` | 有权人正式不予发布 | 记录真实理由和版本 |"
+    },
+    {
+      "id": "ST-09",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L342",
+      "sourceExcerpt": "| ST-09 | `AUTHORITY_APPROVED` | 有权人批准特定渠道及版本 | 仅对范围内生效 |"
+    },
+    {
+      "id": "ST-10",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L343",
+      "sourceExcerpt": "| ST-10 | `PUBLISH_PENDING` | 批准后待排版/执行 | 未发布 |"
+    },
+    {
+      "id": "ST-11",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L344",
+      "sourceExcerpt": "| ST-11 | `PUBLISHED` | 有真实后台或发布页面证据 | 后续记录 |"
+    },
+    {
+      "id": "ST-12",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L345",
+      "sourceExcerpt": "| ST-12 | `CORRECTION_OR_TAKEDOWN` | 已发布后更正/撤稿处理 | 回归原发布责任部门 |"
+    },
+    {
+      "id": "ST-13",
+      "locator": "G06-T06_正式业务模板_MD_v0.1.md:L346",
+      "sourceExcerpt": "| ST-13 | `WITHDRAWN_OR_EXPIRED` | 撤回/超期/申请终止 | 不能复用旧版本授权 |"
+    }
+  ],
+  "unmappedAxes": []
+}

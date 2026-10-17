@@ -1,0 +1,25 @@
+{
+  "caseId": "g03-t09-live-synth",
+  "runId": "run-pi-mvcnfmb7-hybhq",
+  "planFingerprint": "c0f50e18e344ac87ee5f3af993e713b9a34ef162a66747ab795bee4611093ebf",
+  "evidenceVersion": "doc-1-mvcnfmai-v1",
+  "subjectEvidenceLinks": [
+    {
+      "id": "evl-doc-1-mvcnfmai-v1-g03-t09-subject-a-1792256816553-deqw",
+      "documentVersionId": "doc-1-mvcnfmai-v1",
+      "subjectId": "g03-t09-subject-a",
+      "supportsFact": "d2:object:g03-sample-service:r01",
+      "status": "confirmed",
+      "linkedBy": "user"
+    }
+  ],
+  "accepted": 123,
+  "rejected": [],
+  "missingChecks": [],
+  "verified": {
+    "complete": true,
+    "problems": []
+  },
+  "publicationAllowed": false,
+  "officialApproval": false
+}

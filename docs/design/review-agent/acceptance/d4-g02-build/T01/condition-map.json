@@ -1,0 +1,36 @@
+{
+  "axes": {
+    "act-new": "BR-01:new",
+    "act-change": "BR-01:change_scope/change_purpose",
+    "act-renew": "BR-01:renew",
+    "act-terminate": "BR-01:terminate",
+    "multi-source": "BR-03",
+    "delegated": "BR-02",
+    "third-party": "BR-06",
+    "personal-data": "BR-07",
+    "sensitive-data": "BR-07",
+    "api-delivery": "BR-05",
+    "policy-confirmed": "BR-08",
+    "source-approved": "BR-10",
+    "delivered": "BR-09"
+  },
+  "primary": [
+    "act-new",
+    "act-change",
+    "act-renew",
+    "act-terminate"
+  ],
+  "additive": [
+    "multi-source",
+    "delegated",
+    "third-party",
+    "personal-data",
+    "sensitive-data",
+    "api-delivery",
+    "policy-confirmed",
+    "source-approved",
+    "delivered"
+  ],
+  "unknownPolicy": "UNKNOWN stays an actual target Check; no administrative decision",
+  "notes": "完整原始BR/ST/场景仍以母版为准"
+}

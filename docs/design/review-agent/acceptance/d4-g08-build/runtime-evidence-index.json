@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "scope": "G08 D4 exact synthetic authoring/runtime",
+  "commonCodeSha": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "testedG08HeadSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+  "tests": {
+    "dedicatedWorkflow": {
+      "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39051306961",
+      "passed": 12,
+      "failed": 0
+    },
+    "jsonArtifact": {
+      "id": 12107009207,
+      "downloadPage": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39051306961",
+      "contains": [
+        "actual Pi Plans",
+        "Pi Runs",
+        "CLI plan fingerprints",
+        "source binding and isolated evidence status"
+      ]
+    }
+  },
+  "templates": {
+    "g08-t02": {
+      "fingerprint": "f2b7dabd3a4e0088e14b5a031c1308559a448bf00e359b56c9f0b25c5bc8a6b9",
+      "transfer": "4f58d9bf5519d92c3b2011e33e50eb99ba47d1e9edb94966277f29a026e7f9e0",
+      "checks": 107,
+      "subjects": 2,
+      "actions": [
+        "self",
+        "proxy"
+      ]
+    },
+    "g08-t03": {
+      "fingerprint": "fec3b9b611e90e2700864c9ba18caccdeffee560ddf2fd6b6cbf733dec87f317",
+      "transfer": "5b5f36d6c48a7132f0f8ab01854a5efc7133856bb84a92920cc8257e36148c75",
+      "checks": 82,
+      "subjects": 2,
+      "actions": [
+        "initial",
+        "query",
+        "feedback",
+        "followup",
+        "withdraw"
+      ],
+      "otherActionChecks": {
+        "query": 42,
+        "followup": 44,
+        "withdraw": 39
+      },
+      "otherActionFingerprints": {
+        "query": "e8bd95232af50a525d58ecbd67c77693d1ce82cec5a30a65378f7e45cae9868d",
+        "followup": "fbf64200dc3d0164378943f0e24d64f0ecbd02b4de9ccc4ea86fdd65db52712d",
+        "withdraw": "320bc4523c58b7e731b47e833a9c06f216900707deca7e246796aea91b5168db"
+      }
+    }
+  },
+  "totals": {
+    "originalRules": 103,
+    "additionalInvariantDuties": 13,
+    "workspaces": 2,
+    "modules": 36,
+    "sourceBindings": 116,
+    "piCaseRuns": 5,
+    "verifiedTechnicalCheckStatuses": "awaiting-confirmation",
+    "formalDecisions": 0
+  },
+  "sourceRefs": {
+    "T02": "Actual registered synthetic material version + reviewer-confirmed EvidenceLink on lost-a, lost-b denied; stale version denied",
+    "T03": "No authenticated official reply SourceRef; five primary scenarios are pending-only"
+  },
+  "privacy": {
+    "hiddenGoldRead": false,
+    "realStudentRecords": false,
+    "schoolProductionSystems": false
+  },
+  "limitation": "Passing candidate technical pre-review does not prove 103 semantic decisions, current policy, authorizing signature, or online-model accuracy"
+}

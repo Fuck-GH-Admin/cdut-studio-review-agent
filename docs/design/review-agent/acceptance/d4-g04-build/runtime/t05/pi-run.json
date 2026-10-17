@@ -1,0 +1,1825 @@
+{
+  "id": "run-pi-mvcn4a47-w5k4v",
+  "caseId": "g04-t05-tech",
+  "templateId": "d4-g04-t05",
+  "templateVersion": 1,
+  "inputManifest": {
+    "hash": "ded29875a56427750b75c6b827678ebb9d8538f2ded5511c1b389040c3e1148e",
+    "templateVersion": 1,
+    "policyVersions": [],
+    "documentVersions": [
+      {
+        "documentId": "doc-1-mvcn4a3e",
+        "versionId": "doc-1-mvcn4a3e-v1",
+        "contentHash": "a03a6a6d5123fa343070e95fdd307092db0aad18e2b463e530e0fcec381120eb"
+      }
+    ],
+    "observationIds": [],
+    "evidenceLinkIds": [
+      "evl-doc-1-mvcn4a3e-v1-subject-a-1792256287530-13ty"
+    ],
+    "effectiveRuleIds": [
+      "d2-a7d2e9644ab2936b6275",
+      "d2-679eaf43c1700bedb787",
+      "d2-ac0fb96c0cce11721925",
+      "d2-08611f56f7ac8bfe7a4b",
+      "d2-d98029207475ad917c20",
+      "d2-00be15e9d2821f1a423e",
+      "d2-a31d5a9e87965a3cf845",
+      "d2-15bd7ef1ddee202525f2",
+      "d2-3d0b244ce42bc34c2527",
+      "d2-24ee7267690f80f91ae0",
+      "d2-80f183c60e2a826f0de4",
+      "d2-7551d3904a310fe96e6a",
+      "d2-88ecfdc99706e17aa883",
+      "d2-faccfb5b0b574d26ea37",
+      "d2-0f9d645dc5b14bcf120c",
+      "d2-7827425d37d5f00cf132",
+      "d2-487eb6bb01c70895127a",
+      "d2-c73bc4ca3218b8b74acd",
+      "d2-e97d79f495ecacf28679",
+      "d2-863dd7162268302d8306",
+      "d2-30b7d9f041498b8297ba",
+      "d2-51b9908209e56737e28c",
+      "d2-5333c74e77ef33c1c19f",
+      "d2-206294a36adb8ecb8938",
+      "d2-1a383e9cd33f8b2d4366",
+      "d2-d90f9fd6e57b66c1ecf5",
+      "d2-23e6111aa3b6c7eaefad",
+      "d2-ad5fd9162def90543f54",
+      "d2-27113709aa5cfe80e8af",
+      "d2-a99f51ee669bef6c1c72",
+      "d2-8d4743c62458de9c0622",
+      "d2-89fc7e529010278d2e82",
+      "d2-d608393be50f0b97ee41",
+      "d2-9720a335cfb08e55a532",
+      "d2-97b20d46b4720a73393c",
+      "d2-a67f1eb6cfa8fbd530fe",
+      "d2-a9bf68bd91181a34335d",
+      "d2-11f4d80d110b998418e5",
+      "d2-95d97810232f8bf63fa7",
+      "d2-74c1f7e5f06d2e7d4407",
+      "d2-962805a567ad6f0348c0",
+      "d2-8a87ae3fce42452f747a",
+      "d2-2e75787a5c134da11247",
+      "d2-9c681d99cc7608424e38",
+      "d2-2652709b6ba332c81749",
+      "d2-aa095384bce68b0dc15c",
+      "d2-dabf840f60e2ad6ec9de",
+      "d2-a63ee4fc4d5625b4c039",
+      "d2-ef5b4a7f41dacb3a29d2",
+      "d2-ae7b018a5f4123263b33",
+      "d2-503d6328d7439f16eb0f",
+      "d2-a2a58cbc72d69382c8fc",
+      "d2-d293721c7b7a790eea3d",
+      "d2-bc337522b8c005517aa9",
+      "d2-efeb970211a91cbacbb2",
+      "d2-30829623b90374f01e2e",
+      "d2-64d08d760f18163f563a",
+      "d2-498b0d584db8e9a1d48a",
+      "d2-fbd93385f68bc50e294c",
+      "d2-c6aeac08e9809f58afa5",
+      "d2-97a42c7e7543dc6870d0",
+      "d2-804ea7dafcead46e3806",
+      "d2-11ff020876c7846939bc",
+      "d2-a4a5f39987ea3465f878",
+      "d2-daa25458b7ae3bec680e",
+      "d2-76b3969cd07b48da40ea",
+      "d2-274ab9e16780e3d6d1dd",
+      "d2-0d586b320ebba7dcfa6a",
+      "d2-8013c2e696beeac6b0bd",
+      "d2-6537affda8f4bc4f2368",
+      "d2-c3e9bd5be2dd6d5ca685",
+      "d2-c59e2956faad04be2ac1",
+      "d2-88977dea038be99314e8",
+      "d2-4bf8d434844615a39b34",
+      "d2-6e6509ac604abca50654",
+      "d2-6999ea0ddf1a6d7e3f70",
+      "d2-da39c6b370808d17d208",
+      "d2-528d4246790f2cec8712",
+      "d2-f2135a220f53c1af9a3f",
+      "d2-14b8565be67a700afa8b",
+      "d2-5e80af592a2c8d6cff23",
+      "d2-d9f1e1bca6ab3af304ae",
+      "d2-194a36ff6e81b4e9b63b",
+      "d2-30f9757911e94a18bd8c",
+      "d2-a7178e0e798d9497c5e4",
+      "d2-8095b6f017b4c16f7ad9",
+      "d2-a33a9b991543d156a93e",
+      "d2-76c4427a547b4ac69838",
+      "d2-8bf50c745dc6c6e6dc63",
+      "d2-df2c8815af328a929bdf",
+      "d2-218a571e5ec2a6d11077",
+      "d2-0a1d71b73e3512da98a0",
+      "d2-f6d41dcbd436f3a5a49e",
+      "d2-fcec47051188b0d48a6b",
+      "d2-fe04d8e99ab9ff96db0d",
+      "d2-1ca2fe16ce011246609f",
+      "d2-7b6c4c2a7c869f4cd1cc",
+      "d2-5eeb3a33d0dab3f6a00d",
+      "d2-446a454ca80f0c567a56",
+      "d2-5f8fd6b5c1c200949bea",
+      "d2-86dd8946cf996ba7fb75",
+      "d2-416375f22872eae08605",
+      "d2-eb656ffd094c13a7fd32",
+      "d2-d6f87b48333b7463d995",
+      "d2-a758615d76714f7361da",
+      "d2-8b777704e5648105cfba",
+      "d2-68e3dfbd3e9ad9b7a6c1",
+      "d2-8174a47cf4cef78803f7",
+      "d2-7db20e4bf4927b7f5b60",
+      "d2-bef86a8f35effb64e7dc"
+    ],
+    "effectiveRuleSetHash": "37e9def1454453e5e4179a86274c43fa445c7f2c04bb534d77ae1702729f3a11"
+  },
+  "status": "completed",
+  "checkpoints": [],
+  "checks": [
+    {
+      "checkId": "check-d2-a7d2e9644ab2936b6275-subject-subject-a",
+      "ruleId": "d2-a7d2e9644ab2936b6275",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-679eaf43c1700bedb787-subject-subject-a",
+      "ruleId": "d2-679eaf43c1700bedb787",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-ac0fb96c0cce11721925-subject-subject-a",
+      "ruleId": "d2-ac0fb96c0cce11721925",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-08611f56f7ac8bfe7a4b-subject-subject-a",
+      "ruleId": "d2-08611f56f7ac8bfe7a4b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-d98029207475ad917c20-subject-subject-a",
+      "ruleId": "d2-d98029207475ad917c20",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-00be15e9d2821f1a423e-subject-subject-a",
+      "ruleId": "d2-00be15e9d2821f1a423e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-a31d5a9e87965a3cf845-subject-subject-a",
+      "ruleId": "d2-a31d5a9e87965a3cf845",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-15bd7ef1ddee202525f2-subject-subject-a",
+      "ruleId": "d2-15bd7ef1ddee202525f2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-3d0b244ce42bc34c2527-subject-subject-a",
+      "ruleId": "d2-3d0b244ce42bc34c2527",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-24ee7267690f80f91ae0-subject-subject-a",
+      "ruleId": "d2-24ee7267690f80f91ae0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-80f183c60e2a826f0de4-subject-subject-a",
+      "ruleId": "d2-80f183c60e2a826f0de4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-7551d3904a310fe96e6a-subject-subject-a",
+      "ruleId": "d2-7551d3904a310fe96e6a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-88ecfdc99706e17aa883-subject-subject-a",
+      "ruleId": "d2-88ecfdc99706e17aa883",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-faccfb5b0b574d26ea37-subject-subject-a",
+      "ruleId": "d2-faccfb5b0b574d26ea37",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-0f9d645dc5b14bcf120c-subject-subject-a",
+      "ruleId": "d2-0f9d645dc5b14bcf120c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-7827425d37d5f00cf132-subject-subject-a",
+      "ruleId": "d2-7827425d37d5f00cf132",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-487eb6bb01c70895127a-subject-subject-a",
+      "ruleId": "d2-487eb6bb01c70895127a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-c73bc4ca3218b8b74acd-subject-subject-a",
+      "ruleId": "d2-c73bc4ca3218b8b74acd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-e97d79f495ecacf28679-subject-subject-a",
+      "ruleId": "d2-e97d79f495ecacf28679",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-863dd7162268302d8306-subject-subject-a",
+      "ruleId": "d2-863dd7162268302d8306",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-30b7d9f041498b8297ba-subject-subject-a",
+      "ruleId": "d2-30b7d9f041498b8297ba",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-51b9908209e56737e28c-subject-subject-a",
+      "ruleId": "d2-51b9908209e56737e28c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-5333c74e77ef33c1c19f-subject-subject-a",
+      "ruleId": "d2-5333c74e77ef33c1c19f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-206294a36adb8ecb8938-subject-subject-a",
+      "ruleId": "d2-206294a36adb8ecb8938",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-1a383e9cd33f8b2d4366-subject-subject-a",
+      "ruleId": "d2-1a383e9cd33f8b2d4366",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-d90f9fd6e57b66c1ecf5-subject-subject-a",
+      "ruleId": "d2-d90f9fd6e57b66c1ecf5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-23e6111aa3b6c7eaefad-subject-subject-a",
+      "ruleId": "d2-23e6111aa3b6c7eaefad",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-ad5fd9162def90543f54-subject-subject-a",
+      "ruleId": "d2-ad5fd9162def90543f54",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-27113709aa5cfe80e8af-subject-subject-a",
+      "ruleId": "d2-27113709aa5cfe80e8af",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-a99f51ee669bef6c1c72-subject-subject-a",
+      "ruleId": "d2-a99f51ee669bef6c1c72",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-8d4743c62458de9c0622-subject-subject-a",
+      "ruleId": "d2-8d4743c62458de9c0622",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-89fc7e529010278d2e82-subject-subject-a",
+      "ruleId": "d2-89fc7e529010278d2e82",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-d608393be50f0b97ee41-subject-subject-a",
+      "ruleId": "d2-d608393be50f0b97ee41",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-9720a335cfb08e55a532-subject-subject-a",
+      "ruleId": "d2-9720a335cfb08e55a532",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-97b20d46b4720a73393c-subject-subject-a",
+      "ruleId": "d2-97b20d46b4720a73393c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-a67f1eb6cfa8fbd530fe-subject-subject-a",
+      "ruleId": "d2-a67f1eb6cfa8fbd530fe",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-a9bf68bd91181a34335d-subject-subject-a",
+      "ruleId": "d2-a9bf68bd91181a34335d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-11f4d80d110b998418e5-subject-subject-a",
+      "ruleId": "d2-11f4d80d110b998418e5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-95d97810232f8bf63fa7-subject-subject-a",
+      "ruleId": "d2-95d97810232f8bf63fa7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-74c1f7e5f06d2e7d4407-subject-subject-a",
+      "ruleId": "d2-74c1f7e5f06d2e7d4407",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-962805a567ad6f0348c0-subject-subject-a",
+      "ruleId": "d2-962805a567ad6f0348c0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.550Z"
+    },
+    {
+      "checkId": "check-d2-8a87ae3fce42452f747a-subject-subject-a",
+      "ruleId": "d2-8a87ae3fce42452f747a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-2e75787a5c134da11247-subject-subject-a",
+      "ruleId": "d2-2e75787a5c134da11247",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-9c681d99cc7608424e38-subject-subject-a",
+      "ruleId": "d2-9c681d99cc7608424e38",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-2652709b6ba332c81749-subject-subject-a",
+      "ruleId": "d2-2652709b6ba332c81749",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-aa095384bce68b0dc15c-subject-subject-a",
+      "ruleId": "d2-aa095384bce68b0dc15c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-dabf840f60e2ad6ec9de-subject-subject-a",
+      "ruleId": "d2-dabf840f60e2ad6ec9de",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-a63ee4fc4d5625b4c039-subject-subject-a",
+      "ruleId": "d2-a63ee4fc4d5625b4c039",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-ef5b4a7f41dacb3a29d2-subject-subject-a",
+      "ruleId": "d2-ef5b4a7f41dacb3a29d2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-ae7b018a5f4123263b33-subject-subject-a",
+      "ruleId": "d2-ae7b018a5f4123263b33",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-503d6328d7439f16eb0f-subject-subject-a",
+      "ruleId": "d2-503d6328d7439f16eb0f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-a2a58cbc72d69382c8fc-subject-subject-a",
+      "ruleId": "d2-a2a58cbc72d69382c8fc",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-d293721c7b7a790eea3d-subject-subject-a",
+      "ruleId": "d2-d293721c7b7a790eea3d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-bc337522b8c005517aa9-subject-subject-a",
+      "ruleId": "d2-bc337522b8c005517aa9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-efeb970211a91cbacbb2-subject-subject-a",
+      "ruleId": "d2-efeb970211a91cbacbb2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-30829623b90374f01e2e-subject-subject-b",
+      "ruleId": "d2-30829623b90374f01e2e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-64d08d760f18163f563a-subject-subject-b",
+      "ruleId": "d2-64d08d760f18163f563a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-498b0d584db8e9a1d48a-subject-subject-b",
+      "ruleId": "d2-498b0d584db8e9a1d48a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-fbd93385f68bc50e294c-subject-subject-b",
+      "ruleId": "d2-fbd93385f68bc50e294c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-c6aeac08e9809f58afa5-subject-subject-b",
+      "ruleId": "d2-c6aeac08e9809f58afa5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-97a42c7e7543dc6870d0-subject-subject-b",
+      "ruleId": "d2-97a42c7e7543dc6870d0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-804ea7dafcead46e3806-subject-subject-b",
+      "ruleId": "d2-804ea7dafcead46e3806",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-11ff020876c7846939bc-subject-subject-b",
+      "ruleId": "d2-11ff020876c7846939bc",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-a4a5f39987ea3465f878-subject-subject-b",
+      "ruleId": "d2-a4a5f39987ea3465f878",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-daa25458b7ae3bec680e-subject-subject-b",
+      "ruleId": "d2-daa25458b7ae3bec680e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-76b3969cd07b48da40ea-subject-subject-b",
+      "ruleId": "d2-76b3969cd07b48da40ea",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-274ab9e16780e3d6d1dd-subject-subject-b",
+      "ruleId": "d2-274ab9e16780e3d6d1dd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-0d586b320ebba7dcfa6a-subject-subject-b",
+      "ruleId": "d2-0d586b320ebba7dcfa6a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-8013c2e696beeac6b0bd-subject-subject-b",
+      "ruleId": "d2-8013c2e696beeac6b0bd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-6537affda8f4bc4f2368-subject-subject-b",
+      "ruleId": "d2-6537affda8f4bc4f2368",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-c3e9bd5be2dd6d5ca685-subject-subject-b",
+      "ruleId": "d2-c3e9bd5be2dd6d5ca685",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-c59e2956faad04be2ac1-subject-subject-b",
+      "ruleId": "d2-c59e2956faad04be2ac1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-88977dea038be99314e8-subject-subject-b",
+      "ruleId": "d2-88977dea038be99314e8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-4bf8d434844615a39b34-subject-subject-b",
+      "ruleId": "d2-4bf8d434844615a39b34",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-6e6509ac604abca50654-subject-subject-b",
+      "ruleId": "d2-6e6509ac604abca50654",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-6999ea0ddf1a6d7e3f70-subject-subject-b",
+      "ruleId": "d2-6999ea0ddf1a6d7e3f70",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-da39c6b370808d17d208-subject-subject-b",
+      "ruleId": "d2-da39c6b370808d17d208",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-528d4246790f2cec8712-subject-subject-b",
+      "ruleId": "d2-528d4246790f2cec8712",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-f2135a220f53c1af9a3f-subject-subject-b",
+      "ruleId": "d2-f2135a220f53c1af9a3f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-14b8565be67a700afa8b-subject-subject-b",
+      "ruleId": "d2-14b8565be67a700afa8b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-5e80af592a2c8d6cff23-subject-subject-b",
+      "ruleId": "d2-5e80af592a2c8d6cff23",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-d9f1e1bca6ab3af304ae-subject-subject-b",
+      "ruleId": "d2-d9f1e1bca6ab3af304ae",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-194a36ff6e81b4e9b63b-subject-subject-b",
+      "ruleId": "d2-194a36ff6e81b4e9b63b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-30f9757911e94a18bd8c-subject-subject-b",
+      "ruleId": "d2-30f9757911e94a18bd8c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-a7178e0e798d9497c5e4-subject-subject-b",
+      "ruleId": "d2-a7178e0e798d9497c5e4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-8095b6f017b4c16f7ad9-subject-subject-b",
+      "ruleId": "d2-8095b6f017b4c16f7ad9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-a33a9b991543d156a93e-subject-subject-b",
+      "ruleId": "d2-a33a9b991543d156a93e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-76c4427a547b4ac69838-subject-subject-b",
+      "ruleId": "d2-76c4427a547b4ac69838",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-8bf50c745dc6c6e6dc63-subject-subject-b",
+      "ruleId": "d2-8bf50c745dc6c6e6dc63",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-df2c8815af328a929bdf-subject-subject-b",
+      "ruleId": "d2-df2c8815af328a929bdf",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-218a571e5ec2a6d11077-subject-subject-b",
+      "ruleId": "d2-218a571e5ec2a6d11077",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-0a1d71b73e3512da98a0-subject-subject-b",
+      "ruleId": "d2-0a1d71b73e3512da98a0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-f6d41dcbd436f3a5a49e-subject-subject-b",
+      "ruleId": "d2-f6d41dcbd436f3a5a49e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-fcec47051188b0d48a6b-subject-subject-b",
+      "ruleId": "d2-fcec47051188b0d48a6b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-fe04d8e99ab9ff96db0d-subject-subject-b",
+      "ruleId": "d2-fe04d8e99ab9ff96db0d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-1ca2fe16ce011246609f-subject-subject-b",
+      "ruleId": "d2-1ca2fe16ce011246609f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-7b6c4c2a7c869f4cd1cc-subject-subject-b",
+      "ruleId": "d2-7b6c4c2a7c869f4cd1cc",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-5eeb3a33d0dab3f6a00d-subject-subject-b",
+      "ruleId": "d2-5eeb3a33d0dab3f6a00d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-446a454ca80f0c567a56-subject-subject-b",
+      "ruleId": "d2-446a454ca80f0c567a56",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-5f8fd6b5c1c200949bea-subject-subject-b",
+      "ruleId": "d2-5f8fd6b5c1c200949bea",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-86dd8946cf996ba7fb75-subject-subject-b",
+      "ruleId": "d2-86dd8946cf996ba7fb75",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.551Z"
+    },
+    {
+      "checkId": "check-d2-416375f22872eae08605-subject-subject-b",
+      "ruleId": "d2-416375f22872eae08605",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.552Z"
+    },
+    {
+      "checkId": "check-d2-eb656ffd094c13a7fd32-subject-subject-b",
+      "ruleId": "d2-eb656ffd094c13a7fd32",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.552Z"
+    },
+    {
+      "checkId": "check-d2-d6f87b48333b7463d995-subject-subject-b",
+      "ruleId": "d2-d6f87b48333b7463d995",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.552Z"
+    },
+    {
+      "checkId": "check-d2-a758615d76714f7361da-subject-subject-b",
+      "ruleId": "d2-a758615d76714f7361da",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.552Z"
+    },
+    {
+      "checkId": "check-d2-8b777704e5648105cfba-subject-subject-b",
+      "ruleId": "d2-8b777704e5648105cfba",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.552Z"
+    },
+    {
+      "checkId": "check-d2-68e3dfbd3e9ad9b7a6c1-subject-subject-b",
+      "ruleId": "d2-68e3dfbd3e9ad9b7a6c1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.552Z"
+    },
+    {
+      "checkId": "check-d2-8174a47cf4cef78803f7-subject-subject-b",
+      "ruleId": "d2-8174a47cf4cef78803f7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.552Z"
+    },
+    {
+      "checkId": "check-d2-7db20e4bf4927b7f5b60-subject-subject-b",
+      "ruleId": "d2-7db20e4bf4927b7f5b60",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.552Z"
+    },
+    {
+      "checkId": "check-d2-bef86a8f35effb64e7dc-subject-subject-b",
+      "ruleId": "d2-bef86a8f35effb64e7dc",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "当前业务对象和政策事实需受控人工确认",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:58:07.552Z"
+    }
+  ],
+  "opinions": [
+    {
+      "id": "opinion-run-pi-mvcn4a47-w5k4v",
+      "kind": "summary",
+      "severity": "yellow",
+      "title": "Pi 审核意见",
+      "detail": "合成技术预审：全部待权威来源与有权部门核实",
+      "suggestion": "manual-review",
+      "suggestionText": "分析结果不代表正式决定，请按业务权限办理认定或审批。",
+      "sourceRefs": [],
+      "verification": "unverified"
+    }
+  ],
+  "coverage": {
+    "documents": [
+      {
+        "documentVersionId": "doc-1-mvcn4a3e-v1",
+        "status": "unread",
+        "reason": "本次运行没有可追溯的读取记录"
+      }
+    ],
+    "plannedChecks": 110,
+    "completedChecks": 110,
+    "effectiveVerdicts": 0,
+    "pendingChecks": 110
+  },
+  "diagnostics": [
+    "由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。"
+  ],
+  "startedAt": "2026-10-17T16:58:07.544Z",
+  "initiatedBy": {
+    "actorId": "agent-g04-session-t05",
+    "actorSource": "agent",
+    "role": "reviewer"
+  },
+  "completedAt": "2026-10-17T16:58:07.552Z"
+}

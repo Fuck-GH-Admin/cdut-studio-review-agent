@@ -1,0 +1,183 @@
+{
+  "templateId": "G06-T07",
+  "base": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "bundleFingerprint": "73fcc3608859897cb82d709627f7ec41c9ceab22608eba35a1c79af0650e280b",
+  "roundTripEqual": true,
+  "planFingerprint": "c166228a5b91338c55b17381bdb3b2dc7ba47b9a3571bcf43399ae00f040abdd",
+  "subjects": [
+    "g06-t07-subject-1",
+    "g06-t07-subject-2"
+  ],
+  "checkCount": 128,
+  "policy": "unverified-policy",
+  "runId": "run-pi-mvcmoxrf-0kb4z",
+  "verification": {
+    "complete": true,
+    "problems": []
+  },
+  "scenarioBranches": [
+    {
+      "objectKey": "g06-t07-test-1",
+      "primary": "br-01",
+      "conditions": [
+        {
+          "id": "br-03",
+          "applicability": "applicable",
+          "sourceId": "src-axis-br-03",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-01",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-01",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-02",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-02",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-03",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-03",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-04",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-04",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-05",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-05",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-06",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-06",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-07",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-07",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-08",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-08",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-09",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-09",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "reviewer"
+        }
+      ]
+    },
+    {
+      "objectKey": "g06-t07-test-2",
+      "primary": "br-02",
+      "conditions": [
+        {
+          "id": "br-03",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-br-03",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-01",
+          "applicability": "applicable",
+          "sourceId": "src-axis-ax-01",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-02",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-02",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-03",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-03",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-04",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-04",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-05",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-05",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-06",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-06",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-07",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-07",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-08",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-08",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-09",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-09",
+          "sourceVersionId": "g06-t07-v01-00fb0f834316ab78",
+          "decidedBy": "undetermined"
+        }
+      ]
+    }
+  ],
+  "evidence": {
+    "documentVersionId": "doc-1-mvcmoxqr-v1",
+    "linkedSubject": "g06-t07-subject-1",
+    "unlinkedSubject": "g06-t07-subject-2",
+    "aPassesEvidenceGuard": true,
+    "bRejectedEvidenceGuard": true,
+    "staleVersionRejected": true
+  },
+  "publicationAllowed": false,
+  "onlineLLMRun": false,
+  "administrativeApproval": false
+}

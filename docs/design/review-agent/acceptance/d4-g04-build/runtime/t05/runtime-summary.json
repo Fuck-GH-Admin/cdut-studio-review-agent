@@ -1,0 +1,23 @@
+{
+  "status": "TECHNICAL_PENDING_ONLY",
+  "commonSha": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "templateId": "d4-g04-t05",
+  "originalBusinessSha256": "384ead2ba14d69559a989d75bc5620007b33c7355e57209f0e0ec6ef6f5ff829",
+  "expectedR": 36,
+  "subjectCount": 2,
+  "mappingCount": 110,
+  "ruleCount": 110,
+  "planFingerprint": "ccb0f8207cad8f0020dd7360a73f8c6b0a32b49abe68b009657fccb60e75f883",
+  "d3TransferFingerprint": "100bc1c99b448ed3d7d52762f122cbb808c811240cac8f06692949e5874a7375",
+  "piRunId": "run-pi-mvcn4a47-w5k4v",
+  "piVerified": {
+    "complete": true,
+    "problems": []
+  },
+  "negativeEvidenceIsolation": "PASS",
+  "unknownCondition": "PASS",
+  "invalidSourceVersion": "PASS",
+  "publicationAllowed": false,
+  "onlineModelAccuracy": "NOT_RUN",
+  "hiddenGold": "NOT_READ"
+}

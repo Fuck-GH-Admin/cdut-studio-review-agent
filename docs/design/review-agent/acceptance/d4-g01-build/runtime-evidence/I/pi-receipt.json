@@ -1,0 +1,15 @@
+{
+  "caseId": "d4-g01-i-technical-2465",
+  "runId": "run-pi-mvcmzzpl-1vuvz",
+  "fingerprint": "71bfc0d6b9faadabc27392f8b0e558a099fd725c10d5e1a631e2cbfaef6ccf3b",
+  "verified": {
+    "complete": true,
+    "problems": []
+  },
+  "checks": 60,
+  "publicationAllowed": false,
+  "administrativeApproval": false,
+  "onlineModelRun": false,
+  "syntheticOnly": true,
+  "evidence": null
+}

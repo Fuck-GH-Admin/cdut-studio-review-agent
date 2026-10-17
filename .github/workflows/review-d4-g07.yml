@@ -1,0 +1,53 @@
+name: D4 G07 seven modular templates technical evidence
+on:
+  push:
+    branches:
+      - feat/d4-g07-modular-templates-r01
+    paths:
+      - 'docs/design/review-agent/acceptance/d4-g07-build/T*/**'
+      - 'apps/electron/src/main/lib/review/review-d4-g07-templates.test.ts'
+      - '.github/workflows/review-d4-g07.yml'
+  pull_request:
+    paths:
+      - 'docs/design/review-agent/acceptance/d4-g07-build/T*/**'
+      - 'apps/electron/src/main/lib/review/review-d4-g07-templates.test.ts'
+      - '.github/workflows/review-d4-g07.yml'
+permissions:
+  contents: write
+jobs:
+  g07:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      D4_G07_OUTPUT_DIR: ${{ github.workspace }}/docs/design/review-agent/acceptance/d4-g07-build/runtime
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bun install --frozen-lockfile
+      - name: Seven authoring, dynamic runtime, Pi and negative tests
+        run: bun test --isolate --timeout 180000 apps/electron/src/main/lib/review/review-d4-g07-templates.test.ts
+      - name: Upload actual Plans and Pi receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: d4-g07-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: docs/design/review-agent/acceptance/d4-g07-build/runtime/
+          retention-days: 30
+      - name: Commit machine generated Plan and Pi evidence into G07 branch
+        if: success() && github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/design/review-agent/acceptance/d4-g07-build/runtime/
+          if ! git diff --cached --quiet; then
+            git commit -m "test(d4-g07): freeze D3/D2/Pi actual technical evidence"
+            git push origin HEAD:feat/d4-g07-modular-templates-r01
+          fi

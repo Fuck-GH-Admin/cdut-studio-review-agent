@@ -1,0 +1,17 @@
+{
+  "caseId": "g04-t02-tech",
+  "documentVersionId": "doc-1-mvcn49ty-v1",
+  "links": [
+    {
+      "id": "evl-doc-1-mvcn49ty-v1-subject-a-1792256287183-rskg",
+      "documentVersionId": "doc-1-mvcn49ty-v1",
+      "subjectId": "subject-a",
+      "supportsFact": "d2:object:g04-visitor-access:r01",
+      "status": "confirmed",
+      "linkedBy": "user"
+    }
+  ],
+  "objectAHasConfirmedSyntheticFact": true,
+  "objectBHasConfirmedSyntheticFact": false,
+  "materialOnlyNotPermission": true
+}

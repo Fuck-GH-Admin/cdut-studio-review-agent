@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "domain": "G01",
+  "technicalBaseline": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "commonPr": 88,
+  "domainPr": 95,
+  "runId": 39051330755,
+  "templates": [
+    {
+      "key": "I",
+      "status": "PARTIAL",
+      "modules": 23,
+      "sourceBindings": 62,
+      "checksRun": 60,
+      "subjects": 2
+    },
+    {
+      "key": "A",
+      "status": "PARTIAL",
+      "modules": 15,
+      "sourceBindings": 146,
+      "checksRun": 267,
+      "subjects": 2
+    },
+    {
+      "key": "C",
+      "status": "PARTIAL",
+      "modules": 14,
+      "sourceBindings": 86,
+      "checksRun": 161,
+      "subjects": 2
+    },
+    {
+      "key": "S",
+      "status": "PARTIAL",
+      "modules": 10,
+      "sourceBindings": 92,
+      "checksRun": 163,
+      "subjects": 2
+    },
+    {
+      "key": "P",
+      "status": "PARTIAL",
+      "modules": 15,
+      "sourceBindings": 150,
+      "checksRun": 269,
+      "subjects": 2
+    }
+  ],
+  "counts": {
+    "templatesBuilt": 5,
+    "templatesTechnicallyExecuted": 5,
+    "localModules": 77,
+    "sourceBindings": 536,
+    "syntheticChecksRun": 920,
+    "syntheticSubjects": 10
+  },
+  "testCategories": {
+    "d1": true,
+    "d3": true,
+    "d2": true,
+    "piTechnicalPending": true,
+    "sourceRefSemanticAccuracy": false,
+    "onlineModel": false,
+    "hiddenGold": false,
+    "realAuthority": false
+  },
+  "runtimeIndex": "runtime-evidence/summary.json",
+  "issues": "issues.json",
+  "publicationAllowed": false
+}

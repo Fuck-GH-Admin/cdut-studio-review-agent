@@ -1,0 +1,243 @@
+{
+  "schemaVersion": 1,
+  "domain": "G04",
+  "templateCount": 8,
+  "technicalBase": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "branch": "feat/d4-g04-modular-templates-r01",
+  "sourceRuleCount": 343,
+  "authoredModules": 56,
+  "authoredSourceBindings": 972,
+  "compiledChecks": 988,
+  "compiledSubjects": 16,
+  "actualTechnicalTest": {
+    "kind": "REAL_COMMON_SERVICE_WITH_SYNTHETIC_INPUT",
+    "workflow": 39051277664,
+    "workflowUrl": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39051277664",
+    "testHead": "69dced1f393b38a6778d299b71ba9a6ccff0f0cf",
+    "evidenceHead": "2fb38598254aa792f31397f92980f59aaa36ed01",
+    "artifactId": 12108145858,
+    "allEightD1Pass": true,
+    "allEightD3Pass": true,
+    "allEightD2Pass": true,
+    "allEightPiPendingComplete": true,
+    "realMaterialAndEvidenceLinkPerTemplate": true,
+    "sourceVersionRejection": true,
+    "subjectIsolation": true,
+    "formalPolicyPass": false,
+    "onlineModelAccuracy": "NOT_RUN",
+    "hiddenGold": "NOT_READ"
+  },
+  "templates": [
+    {
+      "id": "G04-T01",
+      "sha256": "54ce879cacd4895da0dd746a65579098569b513c1166e0f8fd828dd39bf17efb",
+      "rules": 40,
+      "modules": 7,
+      "bindings": 116,
+      "checks": 118,
+      "subjects": 2,
+      "status": "PARTIAL",
+      "reason": "原文责任已保持并跑通合成 pending-only 技术链路；全部 BR 细分与有权数据尚未全量结构化/验证"
+    },
+    {
+      "id": "G04-T02",
+      "sha256": "8ef7326529c11a88affcba1085607b0cf919b7644935d1dda7ac72f4b1577f72",
+      "rules": 53,
+      "modules": 7,
+      "bindings": 142,
+      "checks": 144,
+      "subjects": 2,
+      "status": "PARTIAL",
+      "reason": "原文责任已保持并跑通合成 pending-only 技术链路；全部 BR 细分与有权数据尚未全量结构化/验证"
+    },
+    {
+      "id": "G04-T03",
+      "sha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "rules": 46,
+      "modules": 7,
+      "bindings": 128,
+      "checks": 130,
+      "subjects": 2,
+      "status": "PARTIAL",
+      "reason": "原文责任已保持并跑通合成 pending-only 技术链路；全部 BR 细分与有权数据尚未全量结构化/验证"
+    },
+    {
+      "id": "G04-T04",
+      "sha256": "868a37e073411ebe9aa3d5b7c5def22e8737caefb7c5b013df270f57b1059658",
+      "rules": 35,
+      "modules": 7,
+      "bindings": 106,
+      "checks": 108,
+      "subjects": 2,
+      "status": "PARTIAL",
+      "reason": "原文责任已保持并跑通合成 pending-only 技术链路；全部 BR 细分与有权数据尚未全量结构化/验证"
+    },
+    {
+      "id": "G04-T05",
+      "sha256": "384ead2ba14d69559a989d75bc5620007b33c7355e57209f0e0ec6ef6f5ff829",
+      "rules": 36,
+      "modules": 7,
+      "bindings": 108,
+      "checks": 110,
+      "subjects": 2,
+      "status": "PARTIAL",
+      "reason": "原文责任已保持并跑通合成 pending-only 技术链路；全部 BR 细分与有权数据尚未全量结构化/验证"
+    },
+    {
+      "id": "G04-T06",
+      "sha256": "d9c459f23bfdae097b6fa2a71700f0c10391bd9ffa63e8b387325db08cece0c2",
+      "rules": 48,
+      "modules": 7,
+      "bindings": 132,
+      "checks": 134,
+      "subjects": 2,
+      "status": "PARTIAL",
+      "reason": "原文责任已保持并跑通合成 pending-only 技术链路；全部 BR 细分与有权数据尚未全量结构化/验证"
+    },
+    {
+      "id": "G04-T07",
+      "sha256": "a0ad98d6685cc4a78f981dc4a146309a1e3ede67ba65303b936b60b2d2cf5712",
+      "rules": 46,
+      "modules": 7,
+      "bindings": 128,
+      "checks": 130,
+      "subjects": 2,
+      "status": "PARTIAL",
+      "reason": "原文责任已保持并跑通合成 pending-only 技术链路；全部 BR 细分与有权数据尚未全量结构化/验证"
+    },
+    {
+      "id": "G04-T08",
+      "sha256": "715ca07edd4934245e0c9f3774eb12302baf03a292b1fd635444fd10ba8f328a",
+      "rules": 39,
+      "modules": 7,
+      "bindings": 112,
+      "checks": 114,
+      "subjects": 2,
+      "status": "PARTIAL",
+      "reason": "原文责任已保持并跑通合成 pending-only 技术链路；全部 BR 细分与有权数据尚未全量结构化/验证"
+    }
+  ],
+  "issues": [
+    {
+      "id": "G04-AUTHOR-01",
+      "category": "AUTHORING",
+      "severity": "MAJOR",
+      "affected": [
+        "G04-T01",
+        "G04-T02",
+        "G04-T03",
+        "G04-T04",
+        "G04-T05",
+        "G04-T06",
+        "G04-T07",
+        "G04-T08"
+      ],
+      "description": "本轮两互斥主轴与两叠加条件为可执行最小路由；仍需逐原文 BR 配置每条条件启用，尤其 T01(13)、T06(19)、T08(18) 候选路径。不能宣称所有 BR 已具备机器三态分类。",
+      "minFix": "依据现有业务母版、经 C 作者确认的路径逐项重新分配 template.modules[].scenario 和 sourceBindings，验证互斥/叠加、原文条件 FALSE/UNKNOWN、不同对象互不覆盖，不改引擎",
+      "status": "OPEN"
+    },
+    {
+      "id": "G04-AUTHOR-02",
+      "category": "AUTHORING",
+      "severity": "MAJOR",
+      "affected": [
+        "G04-T01",
+        "G04-T02",
+        "G04-T03",
+        "G04-T04",
+        "G04-T05",
+        "G04-T06",
+        "G04-T07",
+        "G04-T08"
+      ],
+      "description": "F、MS/M、EV、Q、ST 及非编号不变量虽完整保存在 source-sections，并有逐章语义 Check，但尚未逐项全转换为机器材料到期/提供方、受控可信事实和输出字段映射。",
+      "minFix": "在不丢 R 前提下逐项完成章内 F/MS/BR/EV 程序/语义归属表，对真正必要的阶段 gate 实例化 D2ExecutionGate；无法确定由校本授权的人审继续待核",
+      "status": "OPEN"
+    },
+    {
+      "id": "G04-SOURCE-01",
+      "category": "SOURCE",
+      "severity": "HOLD",
+      "affected": [
+        "G04-T02",
+        "G04-T05",
+        "G04-T06",
+        "G04-T07",
+        "G04-T08"
+      ],
+      "description": "E r02 的校本来源和原作者 C Git 来源历史缺口仍在；本轮 Library SHA 只能固定内容，不能替代政策现行性或授权。",
+      "minFix": "来源治理/有权学校发布规则验证，不能由本领域模板擅自补强",
+      "status": "OPEN"
+    },
+    {
+      "id": "G04-POLICY-01",
+      "category": "POLICY",
+      "severity": "HOLD",
+      "affected": [
+        "G04-T01",
+        "G04-T02",
+        "G04-T03",
+        "G04-T04",
+        "G04-T05",
+        "G04-T06",
+        "G04-T07",
+        "G04-T08"
+      ],
+      "description": "真实审批角色/安全标准/访客通行/消防动火/车辆资格因当期 CDUT 制度待核而不可发布合规结论",
+      "minFix": "校方有权部门核实际生效规则并确认策略绑定",
+      "status": "OPEN"
+    },
+    {
+      "id": "G04-EXTERNAL-01",
+      "category": "EXTERNAL",
+      "severity": "HOLD",
+      "affected": [
+        "G04-T01",
+        "G04-T02",
+        "G04-T03",
+        "G04-T04",
+        "G04-T05",
+        "G04-T06",
+        "G04-T07",
+        "G04-T08"
+      ],
+      "description": "没有校方真实 OA/许可/门禁/车辆/安全监测权限接口，真实执行批准不可由 Pi 技术回执替代",
+      "minFix": "独立校务授权/数据治理接入",
+      "status": "OPEN"
+    },
+    {
+      "id": "G04-ENGINE-ADVANCED",
+      "category": "ENGINE",
+      "severity": "CONDITIONAL",
+      "affected": [
+        "G04-T01",
+        "G04-T04",
+        "G04-T06",
+        "G04-T07"
+      ],
+      "description": "泛用高级 Claim 图仍 D2_UNMAPPED_ADVANCED；本轮逐对象 Check+语义审核+证据人工绑定可保留待核，尚无证据证明它是当前合成测试的硬阻断。",
+      "minFix": "若新增真实案例不能逐对象表达，先冻结最小复现并提交公共工程，不在 G04 扩 Schema",
+      "status": "WATCH"
+    },
+    {
+      "id": "G04-TEST-01",
+      "category": "TEST",
+      "severity": "HOLD",
+      "affected": [
+        "G04-T01",
+        "G04-T02",
+        "G04-T03",
+        "G04-T04",
+        "G04-T05",
+        "G04-T06",
+        "G04-T07",
+        "G04-T08"
+      ],
+      "description": "8/8 real service pending-only synthetic technical Run; no official business result, no online model accuracy and no hidden Gold comparison",
+      "minFix": "D4 细分轴映射后独立模拟材料与 E 金标授权环境复验",
+      "status": "OPEN"
+    }
+  ],
+  "releaseAuthorization": false,
+  "decision": "EIGHT_PARTIAL_NOT_READY_FOR_FINAL_INTEGRATION"
+}

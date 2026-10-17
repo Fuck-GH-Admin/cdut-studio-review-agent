@@ -1,0 +1,1299 @@
+{
+  "originalBlob": "6a7ef0cdd10ecaa7e851d6dc43a728a669484106",
+  "rules": [
+    {
+      "sourceRequirementId": "R-01",
+      "sourceAnchor": "L280/R-01",
+      "sourceExcerpt": "| `R-01` | 先判`funding_scheme × 2026或历史有效政策版本`，确定项目资金能否列该类酬金；一个“科研”字样不自动满足 | `BR-01` | `ST-02` | M-03, M-19 | [N01] [N02] [A03]；N/DESIGN | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 版本/资金性质未识别→校本配置或财务复核 | `ISS-P_SCOPE` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r01",
+      "sourceIds": [
+        "g07-t05-r01"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r01",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-02",
+      "sourceAnchor": "L281/R-02",
+      "sourceExcerpt": "| `R-02` | 确定受款人类别（在籍学生、临聘、助理、专家、在职教工），选择业务内分支 | `BR-02/BR-04/BR-05/BR-09` | `ST-02` | 对应项目有权记录与受款行事实 | [A02] [B03]；CDUT/X | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 类型不匹配时先重分流，不直接判个人违规 | `ISS-ROLE_CLASS` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r02",
+      "sourceIds": [
+        "g07-t05-r02"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r02",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-03",
+      "sourceAnchor": "L282/R-03",
+      "sourceExcerpt": "| `R-03` | 核对申报人、经办人、项目负责人、受款人与签批人的不同角色；代理发起需有效权限 | `BR-11/BR-13` | `ST-01/ST-06` | 对应项目有权记录与受款行事实 | [A04] [B03]；CDUT/DESIGN | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 学生是受益人≠可自批；学生是否可独立录入属于待配置 | `ISS-AUTH_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r03",
+      "sourceIds": [
+        "g07-t05-r03"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r03",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-04",
+      "sourceAnchor": "L283/R-04",
+      "sourceExcerpt": "| `R-04` | 助研工作完成的工作内容/工作量应有负责人认可；CDUT2024《工作量统计表》为明确附件 | `BR-02` | `ST-03` | M-04 | [A01] [A02]；CDUT | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 其他校的系统导师考核可能等效，但CDUT是否认可待证；缺证可补 | `ISS-WORK_PROOF_MISSING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r04",
+      "sourceIds": [
+        "g07-t05-r04"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r04",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-05",
+      "sourceAnchor": "L284/R-05",
+      "sourceExcerpt": "| `R-05` | 校外人员在校财务信息系统建立有效人员信息；开户名与实名关联 | `BR-04` | `ST-03/ST-07` | M-09, M-20 | [A01] [A02] [A05]；CDUT | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 未建档=待维护，不能将其自动定性为虚构人员 | `ISS-PERSON_RECORD_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r05",
+      "sourceIds": [
+        "g07-t05-r05"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r05",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-06",
+      "sourceAnchor": "L285/R-06",
+      "sourceExcerpt": "| `R-06` | 科研财务助理按已核业务类别检查五方协议，必要时校对有效期、工作量 | `BR-08` | `ST-03` | M-08, M-10 | [A02]；CDUT历史 | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 五方协议的签约方名称未取得原表，不推定五位对象字段 | `ISS-AGREEMENT_MISSING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r06",
+      "sourceIds": [
+        "g07-t05-r06"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r06",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-07",
+      "sourceAnchor": "L286/R-07",
+      "sourceExcerpt": "| `R-07` | 如采用聘用协议制，学生应已确认有效协议，发放期不得早于适用协议生效期 | `BR-03` | `ST-03` | M-05 | [B01]；X | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | CDUT未知是否实行相同协议制，必须条件化 | `ISS-AGREEMENT_MISSING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r07",
+      "sourceIds": [
+        "g07-t05-r07"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r07",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-08",
+      "sourceAnchor": "L287/R-08",
+      "sourceExcerpt": "| `R-08` | 在籍、非定向、专业类型或学术类型的限制只在**对应校内助研专项**设定 | `BR-02/BR-03` | `ST-03` | M-07 | [B02]；X | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 东北农大全日制/非定向条件不可移植CDUT | `ISS-PERSON_STATUS_UNKNOWN` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r08",
+      "sourceIds": [
+        "g07-t05-r08"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r08",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-09",
+      "sourceAnchor": "L288/R-09",
+      "sourceExcerpt": "| `R-09` | 专家咨询费须区分独立咨询者与本项目研究/管理人员；中央科研适用时后者不可领本项目专家费 | `BR-05/BR-07` | `ST-03` | M-14, M-16 | [N01] [N02]；N | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 必须比对已核项目成员与管理名单；不能从同一学院就推定参加该项目 | `ISS-EXPERT_CONFLICT` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r09",
+      "sourceIds": [
+        "g07-t05-r09"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r09",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-10",
+      "sourceAnchor": "L289/R-10",
+      "sourceExcerpt": "| `R-10` | 校内员工绩效、科研技术成本费等旧财务“大酬金菜单”类别只在T05做路由和前置资料校验 | `BR-09` | `ST-02` | M-24 | [A02] [N01]；CDUT/边界 | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 教师绩效实质资格和分配结论转相邻教师流程；不得按学生助研工时计算 | `ISS-REFER_WORKFLOW` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r10",
+      "sourceIds": [
+        "g07-t05-r10"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r10",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-11",
+      "sourceAnchor": "L290/R-11",
+      "sourceExcerpt": "| `R-11` | 事业劳务、勤工助学、科研助研并非同一申报目的；需核发放资金和真正申请事项 | `BR-15` | `ST-01` | 对应项目有权记录与受款行事实 | [A01] [B03]；CDUT/边界 | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 非科研劳务转相邻事业或S03学生工作领域 | `ISS-REFER_WORKFLOW` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r11",
+      "sourceIds": [
+        "g07-t05-r11"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r11",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-12",
+      "sourceAnchor": "L291/R-12",
+      "sourceExcerpt": "| `R-12` | 拟发放工作期间应落在被确认实际劳动/有效项目期间内，且有人对工作内容负责 | `BR-02/BR-03/BR-04` | `ST-03` | M-04, M-10 | [A02] [B01] [B04]；X/DESIGN | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 尚未发生的未来月份不能凭预告视为已完成；对CDUT是否允许预发仍待本校核 | `ISS-WORK_PERIOD_CONFLICT` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r12",
+      "sourceIds": [
+        "g07-t05-r12"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r12",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-13",
+      "sourceAnchor": "L292/R-13",
+      "sourceExcerpt": "| `R-13` | 合法补发的已发生工作月份可以跨月结算，需查历史是否已经发过 | `BR-10` | `ST-04` | M-22 | [B01]；X | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 河海可补多月但CDUT上限未知；不能见跨月便驳回 | `ISS-HISTORY_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r13",
+      "sourceIds": [
+        "g07-t05-r13"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r13",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-14",
+      "sourceAnchor": "L293/R-14",
+      "sourceExcerpt": "| `R-14` | 专家应有具体咨询事由、实际参与形式、时间、工作结果，必要时适用邀请/意见证据 | `BR-05` | `ST-03` | M-13, M-15 | [N02] [B03] [B04]；N/X | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 通讯咨询用邮件/报告替代现场签到；不要求没发生的“纸质到会证明” | `ISS-EXPERT_WORK_MISSING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r14",
+      "sourceIds": [
+        "g07-t05-r14"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r14",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-15",
+      "sourceAnchor": "L294/R-15",
+      "sourceExcerpt": "| `R-15` | 专家职称/专业能力影响适用标准时必须可由正式专业信息或合法替代核实 | `BR-05` | `ST-03` | M-14 | [N02] [B03]；N/X | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 未核职级不能按最高档自动放行，也不能把真实其他专业人员一律拒绝 | `ISS-EXPERT_RANK_UNKNOWN` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r15",
+      "sourceIds": [
+        "g07-t05-r15"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r15",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-16",
+      "sourceAnchor": "L295/R-16",
+      "sourceExcerpt": "| `R-16` | 审核逐人拟发数额是否由实际工时、天数/月份、适用单价组成 | `BR-02/BR-03/BR-04` | `ST-04` | 对应项目有权记录与受款行事实 | [B01] [B04]；X/DESIGN | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 未知CDUT月额/单价不能硬判超限；区分项目内约定额度 | `ISS-AMOUNT_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r16",
+      "sourceIds": [
+        "g07-t05-r16"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r16",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-17",
+      "sourceAnchor": "L296/R-17",
+      "sourceExcerpt": "| `R-17` | 专家不同咨询形式与天数，按照**对应资金制度**的不同公式计算 | `BR-05` | `ST-04` | 对应项目有权记录与受款行事实 | [N02] [B03]；N/X | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 中央财政税后额度与西工大税前额度不同；不能直接混用 | `ISS-AMOUNT_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r17",
+      "sourceIds": [
+        "g07-t05-r17"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r17",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-18",
+      "sourceAnchor": "L297/R-18",
+      "sourceExcerpt": "| `R-18` | 申请逐行合计应与批次总金额、资金项目保持一致 | `BR-13` | `ST-04` | M-01, M-02 | [B02] [B03]；X/DESIGN | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 分摊来源需明确，不因1行错误自动否定其他合格行 | `ISS-TOTAL_MISMATCH` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r18",
+      "sourceIds": [
+        "g07-t05-r18"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r18",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-19",
+      "sourceAnchor": "L298/R-19",
+      "sourceExcerpt": "| `R-19` | 按项目人员经费预算/可用额及已有支付查整体余额，不用学生手填余额替代 | `BR-01` | `ST-04` | M-19 | [N01] [B04]；N/DESIGN | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 资金API不可达→待财务核验，不直接拒绝 | `ISS-BUDGET_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r19",
+      "sourceIds": [
+        "g07-t05-r19"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r19",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-20",
+      "sourceAnchor": "L299/R-20",
+      "sourceExcerpt": "| `R-20` | 相同人员相同任务相同工作期重复申报应与历史批次核对 | `BR-10/BR-13` | `ST-04` | M-22 | [B04]；X/DESIGN | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 同人同月在两个项目真实完成不同任务可以合法 | `ISS-DUPLICATE_REVIEW` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r20",
+      "sourceIds": [
+        "g07-t05-r20"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r20",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-21",
+      "sourceAnchor": "L300/R-21",
+      "sourceExcerpt": "| `R-21` | 同一项目成员身兼外聘专家的情况若资金规则禁付，不能通过“换一张表”消除利益冲突 | `BR-05/BR-07` | `ST-03` | M-16 | [N01] [N02]；N | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 资金类型不适用该上位规则时不得擅作全国禁令；转有权裁定 | `ISS-EXPERT_CONFLICT` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r21",
+      "sourceIds": [
+        "g07-t05-r21"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r21",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-22",
+      "sourceAnchor": "L301/R-22",
+      "sourceExcerpt": "| `R-22` | 关联利益相关人员在适用校规要求披露时须有声明和额外独立审批 | `BR-05` | `ST-06` | M-16 | [B04]；X | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 不是所有“同导师”“同学院”都算关联；CDUT具体披露制度待证 | `ISS-CONFLICT_OF_INTEREST` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r22",
+      "sourceIds": [
+        "g07-t05-r22"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r22",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-23",
+      "sourceAnchor": "L302/R-23",
+      "sourceExcerpt": "| `R-23` | CDUT 2026**经费负责人本人为收款人**时需要（分管）部门领导互签 | `BR-11` | `ST-06` | M-17 | [A04]；CDUT2026 | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 互签未形成=待审批；已被授权拒绝则保持拒绝，禁止AI自行批准 | `ISS-SELF_APPROVAL_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r23",
+      "sourceIds": [
+        "g07-t05-r23"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r23",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-24",
+      "sourceAnchor": "L303/R-24",
+      "sourceExcerpt": "| `R-24` | 有效审签必须核签批人的真实授权、签署时间、审批状态与撤回记录 | `BR-11` | `ST-06` | M-18 | [A04] [A10]；CDUT/DESIGN | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 电子签截图“通过”不可替代真实OA记录；断联=待核 | `ISS-SIGNATURE_AUTH_UNKNOWN` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r24",
+      "sourceIds": [
+        "g07-t05-r24"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r24",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-25",
+      "sourceAnchor": "L304/R-25",
+      "sourceExcerpt": "| `R-25` | 逐人发放账户需经学校指定系统维护和绑定，户名与领取人关联 | `BR-02/BR-04/BR-05` | `ST-07` | M-20 | [A05] [A06]；CDUT2026 | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 绑定未完成应走账户维护，不表示劳务不存在 | `ISS-ACCOUNT_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r25",
+      "sourceIds": [
+        "g07-t05-r25"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r25",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-26",
+      "sourceAnchor": "L305/R-26",
+      "sourceExcerpt": "| `R-26` | 校外人员发放与内部人员发放模式有别；现金/转账等按本校当期通道分别确定 | `BR-01` | `ST-07` | 对应项目有权记录与受款行事实 | [A01] [B03]；CDUT历史/X | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | CDUT2025不能同单混现金和银行卡；2026现金可否用未知 | `ISS-PAYMENT_MODE_UNKNOWN` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r26",
+      "sourceIds": [
+        "g07-t05-r26"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r26",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-27",
+      "sourceAnchor": "L306/R-27",
+      "sourceExcerpt": "| `R-27` | 外籍专家无境内卡时可能有跨境汇款或合法代领（西工大）；CDUT是否开放待查 | `BR-05` | `ST-07` | M-20 | [B03]；X | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 不因没有中国银行卡一律认定不是专家；人工按本校流程处理 | `ISS-EXTERNAL_TRANSFER_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r27",
+      "sourceIds": [
+        "g07-t05-r27"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r27",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-28",
+      "sourceAnchor": "L307/R-28",
+      "sourceExcerpt": "| `R-28` | 申报毛额、资金支付上限、税务代扣、银行实发净额必须独立存储 | `BR-01` | `ST-07` | M-21 | [N02] [B03]；N/X | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 税后标准不能与税前报表数直接比较；个税必须由授权财务/税务端处理 | `ISS-TAX_CALC_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r28",
+      "sourceIds": [
+        "g07-t05-r28"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r28",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-29",
+      "sourceAnchor": "L308/R-29",
+      "sourceExcerpt": "| `R-29` | 未产生银行回执时不能要求`paid_at`，也不能报告已成功打款 | `BR-12` | `ST-08` | M-23 | [A06] [B03]；CDUT/X | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 提交、审批、已发放三阶段不混同 | `ISS-PAYMENT_NOT_YET` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r29",
+      "sourceIds": [
+        "g07-t05-r29"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r29",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-30",
+      "sourceAnchor": "L309/R-30",
+      "sourceExcerpt": "| `R-30` | 支付失败重转应关联原付款/退汇，**不能新建完全独立的新劳务事实** | `BR-12` | `ST-08` | M-23 | [A01] [A06]；CDUT | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 人员银行信息错误时先修卡，并根据原付款做重转 | `ISS-REMIT_RETRY_LINK_MISSING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r30",
+      "sourceIds": [
+        "g07-t05-r30"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r30",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-31",
+      "sourceAnchor": "L310/R-31",
+      "sourceExcerpt": "| `R-31` | 多人批次包含缺件/待签/冲突时分别输出每行结论，并按系统支持决定拆分或整体等候 | `BR-13` | `ST-03/ST-04` | M-02 | [B02] [B03]；X/DESIGN | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 系统是否允许部分批准为**待配置**，不能擅自放款 | `ISS-PARTIAL_EXECUTION_UNKNOWN` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r31",
+      "sourceIds": [
+        "g07-t05-r31"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r31",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-32",
+      "sourceAnchor": "L311/R-32",
+      "sourceExcerpt": "| `R-32` | 证据未上传、可信接口无法访问、校规无明确条件、审批后期才产生的文件，各有不同状态 | `BR-01` | `ST-01/ST-09` | M-01 | [A03] [A04] [B01]；DESIGN | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 不把“规则未知”硬判“材料缺失”；不把OCR损坏认定造假 | `ISS-UNVERIFIED` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r32",
+      "sourceIds": [
+        "g07-t05-r32"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r32",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-33",
+      "sourceAnchor": "L312/R-33",
+      "sourceExcerpt": "| `R-33` | 敏感账号证件与收入税务信息仅受限核验、脱敏输出、保留访问日志 | `BR-01` | `ST-01/ST-09` | 对应项目有权记录与受款行事实 | [A05] [B03] [N02]；DESIGN | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 不在开放给无关Agent的审查理由中输出完整银行号、身份证 | `ISS-PRIVACY_RESTRICTION` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r33",
+      "sourceIds": [
+        "g07-t05-r33"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r33",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-34",
+      "sourceAnchor": "L313/R-34",
+      "sourceExcerpt": "| `R-34` | 按A12科研资金性质确认负责人与有效预算调剂 | `BR-01` | `ST-02/ST-04` | F-03, F-09, F-11, M-03, M-19, M-29 | [A12]；CDUT/设计拆分 | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 预算子项旧额与有效调剂不同→核有权记录；未知→待预算核验 | `ISS-P_SCOPE` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r34",
+      "sourceIds": [
+        "g07-t05-r34"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r34",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-35",
+      "sourceAnchor": "L314/R-35",
+      "sourceExcerpt": "| `R-35` | A13专项资金+业务目的二重范围锁 | `BR-06` | `ST-02` | F-49, F-50, M-03, M-25 | [A13]；CDUT/设计拆分 | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 两条件任一未知不得用A13金额；明确不适用则切其他有权政策 | `ISS-P_SCOPE` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r35",
+      "sourceIds": [
+        "g07-t05-r35"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r35",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-36",
+      "sourceAnchor": "L315/R-36",
+      "sourceExcerpt": "| `R-36` | A13专家角色禁付核验 | `BR-06` | `ST-03` | F-13, F-51, M-16, M-26 | [A13]；CDUT/设计拆分 | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 当次履职组织人员禁领；身份未核→有权科室确认；不拒全部校内专家 | `ISS-ROLE_REVIEW` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r36",
+      "sourceIds": [
+        "g07-t05-r36"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r36",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-37",
+      "sourceAnchor": "L316/R-37",
+      "sourceExcerpt": "| `R-37` | A13事前经费使用审批门控 | `BR-06` | `ST-01/ST-06` | F-53, F-36, M-25, M-18 | [A13]；CDUT/设计拆分 | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 申请准备阶段待办理可继续受理；执行前无有效批准阻断放款 | `ISS-AUTH_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r37",
+      "sourceIds": [
+        "g07-t05-r37"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r37",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-38",
+      "sourceAnchor": "L317/R-38",
+      "sourceExcerpt": "| `R-38` | A13专家会议及通讯税后标准分档 | `BR-06` | `ST-04` | F-16, F-23, F-24, F-25, F-35, F-52, M-13, M-14, M-15, M-26 | [A13]；CDUT/设计拆分 | A13专项有效时以税后院士3600、正高/组长1200、副高1000、其他800元/完整日为基数（仅专属金额约束）；其他资金不触发 | 按身份与咨询形式套专项税后基数；不确定半天跨阶梯时人工核规则 | `ISS-AMOUNT_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r38",
+      "sourceIds": [
+        "g07-t05-r38"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r38",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-39",
+      "sourceAnchor": "L318/R-39",
+      "sourceExcerpt": "| `R-39` | A13连续多天与边远地区条件折算 | `BR-06` | `ST-04` | F-23, F-24, F-52, M-15, M-26 | [A13]；CDUT/设计拆分 | A13专项在可判的连续完整工作日：前2日100%、第3—7日50%、第8日起30%；半天60%；通讯一次50%；边远地区有效时上浮10% | 从第3日起50%、第8日起30%；半天60%；边远地区上浮10%；混用口径缺明确条款时不臆造乘法顺序 | `ISS-AMOUNT_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r39",
+      "sourceIds": [
+        "g07-t05-r39"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r39",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-40",
+      "sourceAnchor": "L319/R-40",
+      "sourceExcerpt": "| `R-40` | A13同一事项仅计一次与已支付区分 | `BR-06` | `ST-04` | F-42, F-43, F-56, M-22, M-26 | [A13]；CDUT/设计拆分 | A13专项同一评审事项的历史有效报销已存在→不可再次为同一工作事实发放；不同事项独立核验 | 同评审事项历史支付一旦成立阻止重复；不同有依据独立事项不误判 | `ISS-DUPLICATE_REVIEW` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r40",
+      "sourceIds": [
+        "g07-t05-r40"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r40",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-41",
+      "sourceAnchor": "L320/R-41",
+      "sourceExcerpt": "| `R-41` | A12一般专家签收与负责人签审 | `BR-05` | `ST-03/ST-06` | F-21, F-36, F-38, M-12, M-15, M-18 | [A12]；CDUT/设计拆分 | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 适用学校一般科研咨询；不追加已被A12取消的科研管理部门统一审批，特殊规定另触发 | `ISS-AUTH_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r41",
+      "sourceIds": [
+        "g07-t05-r41"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r41",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-42",
+      "sourceAnchor": "L321/R-42",
+      "sourceExcerpt": "| `R-42` | A12纵向科研绩效上游学院批准后仅作转办核对 | `BR-09` | `ST-02/ST-06` | F-05, F-54, M-24, M-27 | [A12]；CDUT/设计拆分 | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 无学院批复仅待绩效专属审核；T05不能核定分配额度 | `ISS-REFER_WORKFLOW` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r42",
+      "sourceIds": [
+        "g07-t05-r42"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r42",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-43",
+      "sourceAnchor": "L322/R-43",
+      "sourceExcerpt": "| `R-43` | A14重点研发任务书/银行结算及经费范围 | `BR-07` | `ST-02/ST-07` | F-49, F-57, M-03, M-28, M-20 | [A14]；CDUT/设计拆分 | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 项目/课题/专题身份核对，原则银行转账；不以2025旧现金渠道作为普遍许可 | `ISS-ACCOUNT_PENDING` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r43",
+      "sourceIds": [
+        "g07-t05-r43"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r43",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-44",
+      "sourceAnchor": "L323/R-44",
+      "sourceExcerpt": "| `R-44` | A14涉密项目转受控入口 | `BR-14` | `ST-01` | F-55, M-28 | [A14]；CDUT/设计拆分 | 权威系统确认涉密而当前通道无保密授权→停止普通上传/传递，路由受控办理 | 正式涉密标记一经确认即停公开采集/转有权安全通道；不推断涉密正文内容 | `ISS-RESTRICTED_ROUTE` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r44",
+      "sourceIds": [
+        "g07-t05-r44"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r44",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-45",
+      "sourceAnchor": "L324/R-45",
+      "sourceExcerpt": "| `R-45` | 校级合同科研助理与在籍学生助研的职责隔离 | `BR-08/BR-15` | `ST-02` | F-13, F-58, M-05, M-08, M-11 | [A15] [A16]；CDUT/设计拆分 | 证据齐备且满足适用条件→记录该行局部COMPLIANT，不视为已付款；明确违反生效条件→标记阻断/转有权决断 | 合同社会聘用需有效人事记录；应届聘用资格不适用在籍助研待遇 | `ISS-REFER_WORKFLOW` | 边界真/假/unknown + 事实与可信记录冲突；合法例外/不同资金模式对照 |",
+      "checkId": "g07-t05@1:module/use-rulebook/r45",
+      "sourceIds": [
+        "g07-t05-r45"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:r45",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-scope",
+      "sourceAnchor": "L8/## 01｜模板元信息、适用范围与制度边界",
+      "sourceExcerpt": "## 01｜模板元信息、适用范围与制度边界\n\n| 项 | 定义 |\n|---|---|\n| templateId | `G07-T05`（固定ID；目录路径变化不改ID） |\n| displayName | 科研劳务、助研及专家酬金发放预审 |\n| scope | 校内授权发起的科研人员酬金发放及已批准绩效/成本费用的**路由及证据读取** |\n| reviewLevel | 材料事实预审 + 金额建议 + 待办理工作项；**不直接批准用工、科研绩效、会计记账、个税或付款** |\n| smallestUnit | `line_id` × `action_id`：一个受款人、项目、任务、工作期、发放动作；一个人可有多行；一批次可有不同结果 |\n| sourcePolicy | 学校及经费源制度优先；同校部门专项仅在项目号、业务目的、对象、实施时间同时满足时叠加/取代一般项目规则 |\n| defaultPolicy | **没有全国统一默认助研月额或专家费日额**；缺制度时 `POLICY_",
+      "checkId": "g07-t05@1:module/use-crosscut/sscope",
+      "sourceIds": [
+        "g07-t05-sscope"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:sscope",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-actor",
+      "sourceAnchor": "L35/## 02｜角色术语、权责和对象关系",
+      "sourceExcerpt": "## 02｜角色术语、权责和对象关系\n\n| 角色ID | 术语 | 含义与不能互换的关系 |\n|---|---|---|\n| ACT-01 | 请求主体/经办人 | 发起或填报申请（可为受托学生/工作人员），权限需授权来源，**填报不等于审批** |\n| ACT-02 | 受款人/劳务提供者 | 实际提供劳动/咨询并依法拟领取酬金的人，可能是学生、科研助理、外部专家或职工绩效受益人 |\n| ACT-03 | 研究任务负责人 | 项目/课题/专题任务书上负责任者，核工作事实和预算责任；自身受款触发互签，不具全流程自批权 |\n| ACT-04 | 工作量/咨询事实证明方 | 实际指导/主持/评议或签发工作量、专家意见的有权主体；本人自述弱于学校认可的证明或记录 |\n| ACT-05 | 院系/专项领导/人事/科研有权审批人 | 实体资格、绩效、专项用款或本人受益互签的有权决定者；权限来自对应政策及OA记录 |\n| ACT-06 | 财务与税务经办 | 核经费、确认个税分类/毛额实付、批次代发",
+      "checkId": "g07-t05@1:module/use-crosscut/sactor",
+      "sourceIds": [
+        "g07-t05-sactor"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:sactor",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-branch",
+      "sourceAnchor": "L67/## 04｜条件分支与优先级",
+      "sourceExcerpt": "## 04｜条件分支与优先级\n\n**条件判定顺序**：1) `涉密/受控通道` 优先于内容抽取；2) `学校+资金类型+制度生效范围` 先于金额计算；3) `是否真正科研酬金` 先于受款人分类；4) `人员类别/劳动事实` 主计费分支；5) `负责人本人受款/补发/批量/退汇` 等正交叠加；6) `阶段差异` 决定是否要求材料现在存在。**若同一笔支付同时满足两个相互冲突的专属额度规则，不以“从严”或加载顺序解决，停在POLICY_CONFLICT送有权政策管理者确认**。[A12][A13][N01][N02]\n\n| 分支ID | 名称 | 触发谓词（未知保留） | 主/叠加及优先级 | 适用来源 |\n|---|---|---|---|---|\n| `BR-01` | 资金与政策路由 | 每个批次必须选唯一有效政策路径（项目可按受款行分资金源，若混合需拆来源） | 根轴；funding_scheme, governing_policy, effective_date | 互斥的政策定位",
+      "checkId": "g07-t05@1:module/use-crosscut/sbranch",
+      "sourceIds": [
+        "g07-t05-sbranch"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:sbranch",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-stage",
+      "sourceAnchor": "L444/## 11｜全生命周期、补件重审、政策与审批版本控制",
+      "sourceExcerpt": "## 11｜全生命周期、补件重审、政策与审批版本控制\n\n| 阶段ID | 阶段名称 | 允许审核的证据与状态转换 | 阻断/回退与责任主体 |\n|---|---|---|---|\n| `ST-01` | 入口受理与来源锁定 | 受理申请，不检查未来形成文件；未来阶段的材料一律标记NOT_YET_GENERATED | 按规则进入ST-05补证、ST-06有权审批或安全受控转办 |\n| `ST-02` | 政策资金与角色分流 | 确定有效制度版本/涉密安全边界；未来阶段的材料一律标记NOT_YET_GENERATED | 按规则进入ST-05补证、ST-06有权审批或安全受控转办 |\n| `ST-03` | 人员受聘和工作证据预核 | 逐人实际任务与费用条款；未来阶段的材料一律标记NOT_YET_GENERATED | 按规则进入ST-05补证、ST-06有权审批或安全受控转办 |\n| `ST-04` | 预算/历史发放/金额初判 | 逐人金额预核，缺权威账则待核；未来阶段的材料一律标记N",
+      "checkId": "g07-t05@1:module/use-crosscut/sstage",
+      "sourceIds": [
+        "g07-t05-sstage"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:sstage",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-fields",
+      "sourceAnchor": "L91/## 05｜业务输入契约：四类输入分离",
+      "sourceExcerpt": "## 05｜业务输入契约：四类输入分离\n\n### 05.1 申报事项（审核动作，而非附件）\n\n每个 `Batch` 提交申请批次、项目资金选择、申请时间、汇总金额和请求动作（首次支付/补发/退汇重转）。`Line` 必须指向具体`recipient_ref`、`task_ref`、`work_start/end`、`claimed_amount_minor`、`payee_category`、`amount_basis`；支持多人批次和同一受款人不同任务，但每行须能单独定位。申报阶段只检查申报人声称的事实和基础结构；签批/银行执行结果不应要求申请人在初始输入中伪造。\n\n### 05.2 申报材料（申请人或项目经办部门提交的正文）\n\n包括校智能报销的原始申报/逐行清单，必要的跨月说明、负责人提交的工作量摘要、专项经费事前用款申请、专家费用申请表、退汇重转的关联申请，以及现行校本要求的表单。`M-01/M-02`可由**可信系统原生表单**代替同义纸质件；仅有外校示例的纸表列名不得当作成都理",
+      "checkId": "g07-t05@1:module/use-crosscut/sfields",
+      "sourceIds": [
+        "g07-t05-sfields"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:sfields",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-material",
+      "sourceAnchor": "L181/## 07｜材料槽 M-01—M-29 和等价证据组",
+      "sourceExcerpt": "## 07｜材料槽 M-01—M-29 和等价证据组\n\n| 槽ID | 应证明的事实/材料 | 输入类型与条件触发 | 形成阶段 | 相关字段 | 认可替代与缺失处置 | 依据 |\n|---|---|---|---|---|---|---|\n| M-01 | 科研酬金申报单/批次发放表 | 申报材料 B(发起时) | 提交 | F-01—07,F-14—15,F-33 | 智能报销系统原始申请等效纸表；无有效批次无法识别申报→补正 | [A01][A02][B03] |\n| M-02 | 逐人逐项发放清单 | 申报材料 B(多人可系统表) | 提交 | F-12—16,F-24—25 | 系统逐行数据/经办签名清单；人数金额不一致→逐行复核 | [B02][B03] |\n| M-03 | 经费项目任务书/合同/授权 | 证明或R B(与项目关联) | 提交/核验 | F-08—11,F-34 | 经费系统内项目性质、合同及额度；无接口=待外部核验 | [N01][B04] |\n| M-0",
+      "checkId": "g07-t05@1:module/use-crosscut/smaterial",
+      "sourceIds": [
+        "g07-t05-smaterial"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:smaterial",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-output",
+      "sourceAnchor": "L345/## 10｜统一输出契约、主状态/分项状态及问题聚合",
+      "sourceExcerpt": "## 10｜统一输出契约、主状态/分项状态及问题聚合\n\n### 10.1 不能混成一个“通过”的四层结果\n\n1. **材料阶段 `materials_state`**：`complete_at_current_stage / needs_supplement / evidence_conflict / not_yet_generated / unknown_policy / external_unavailable / inaccessible / not_applicable`。\n2. **业务预审 `review_recommendation`**：`facts_sufficient_for_authorized_review / eligible_amount_preliminary / partially_reviewable / pending_policy_or_authority / out_of_scope_referred / risk_requires_review ",
+      "checkId": "g07-t05@1:module/use-crosscut/soutput",
+      "sourceIds": [
+        "g07-t05-soutput"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:soutput",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-01",
+      "sourceAnchor": "L54/BR-01",
+      "sourceExcerpt": "| `BR-01..BR-15` | 条件分支 | 一个资金根分支、多个人员/工作分支及可组合审批、补发、支付分支 |",
+      "checkId": "g07-t05@1:module/use-branch01/br01",
+      "sourceIds": [
+        "g07-t05-b01"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:b01",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-02",
+      "sourceAnchor": "L74/BR-02",
+      "sourceExcerpt": "| `BR-02` | 在籍学生助研工作量制 | 受款人学生×工作量制×允许项目 | BR-01+F-13+F-17/F-20 | 可叠加本人互签、历史补发、多人批次、银行卡 | A01/A02 |",
+      "checkId": "g07-t05@1:module/use-branch02/br02",
+      "sourceIds": [
+        "g07-t05-b02"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:b02",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-03",
+      "sourceAnchor": "L75/BR-03",
+      "sourceExcerpt": "| `BR-03` | 助研协议/月额制 | 适用方案明确签协议且按有效月额发放 | BR-01+F-27+F-19 | 和BR-02可择其一主计费方式，或校规明确允许混合且分别计费；不能双付同工 | B01（CDUT待配置） |",
+      "checkId": "g07-t05@1:module/use-branch03/br03",
+      "sourceIds": [
+        "g07-t05-b03"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:b03",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-04",
+      "sourceAnchor": "L76/BR-04",
+      "sourceExcerpt": "| `BR-04` | 学生临时科研劳务/外部临聘 | 按工时、成果或合同任务，由受款人身份与协议确定 | BR-01+F-13/F-19/F-20 | 非学生工资关系；与独立专家咨询BR-05计费性质互斥 | A02/B04 |",
+      "checkId": "g07-t05@1:module/use-branch04/br04",
+      "sourceIds": [
+        "g07-t05-b04"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:b04",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-05",
+      "sourceAnchor": "L76/BR-05",
+      "sourceExcerpt": "| `BR-04` | 学生临时科研劳务/外部临聘 | 按工时、成果或合同任务，由受款人身份与协议确定 | BR-01+F-13/F-19/F-20 | 非学生工资关系；与独立专家咨询BR-05计费性质互斥 | A02/B04 |",
+      "checkId": "g07-t05@1:module/use-branch05/br05",
+      "sourceIds": [
+        "g07-t05-b05"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:b05",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-06",
+      "sourceAnchor": "L78/BR-06",
+      "sourceExcerpt": "| `BR-06` | 科发院专项专家评审 | 财务项目80303-FZ11200 AND 科发院相关管理活动 AND 专家咨询/评审 | BR-01+F-50 | 专门适用A13；优先于宽泛BR-05；工作形式细分不可相互代替 | A13第3-10条 |",
+      "checkId": "g07-t05@1:module/use-branch06/br06",
+      "sourceIds": [
+        "g07-t05-b06"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:b06",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-07",
+      "sourceAnchor": "L79/BR-07",
+      "sourceExcerpt": "| `BR-07` | 国家重点研发/重大专项 | 正式任务书确认在项目/课题/专题内 | BR-01+F-49 | 叠加人员细分与BR-05；涉密优先受控转办、银行原则转账 | A14第5、9、12-15条 |",
+      "checkId": "g07-t05@1:module/use-branch07/br07",
+      "sourceIds": [
+        "g07-t05-b07"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:b07",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-08",
+      "sourceAnchor": "L80/BR-08",
+      "sourceExcerpt": "| `BR-08` | 科研财务助理/五方协议 | 经费岗位经核实属于科研财务助理且适用有效协议制度 | BR-01+F-16/F-27 | 不是学生助研的无差别协议要求；与BR-04薪酬口径按岗位分流 | A02历史 |",
+      "checkId": "g07-t05@1:module/use-branch08/br08",
+      "sourceIds": [
+        "g07-t05-b08"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:b08",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-09",
+      "sourceAnchor": "L81/BR-09",
+      "sourceExcerpt": "| `BR-09` | 教师绩效/技术成本类转办 | T05输入实质是绩效分配或技术成本费而非个人直接劳务 | BR-01+F-05/F-09 | 只做路由和已批准结果核对；不按学生月额/专家日额审批 | A12第3-4条/A02 |",
+      "checkId": "g07-t05@1:module/use-branch09/br09",
+      "sourceIds": [
+        "g07-t05-b09"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:b09",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-10",
+      "sourceAnchor": "L82/BR-10",
+      "sourceExcerpt": "| `BR-10` | 跨月已工作补发 | 已发生有效工作且所适用制度准许补发 | F-19/F-42/F-44 | 可与BR-02/03/04叠加；历史重复需额外查账 | B01（CDUT待配置） |",
+      "checkId": "g07-t05@1:module/use-branch10/br10",
+      "sourceIds": [
+        "g07-t05-b10"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:b10",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-11",
+      "sourceAnchor": "L83/BR-11",
+      "sourceExcerpt": "| `BR-11` | 负责人本人为受款人 | F-03 = 某行F-12（可信身份映射） | 2026CDUT+F-37 | 可叠加任意实际发放分支；互签未完成是待审不是提交缺件 | A04 |",
+      "checkId": "g07-t05@1:module/use-branch11/br11",
+      "sourceIds": [
+        "g07-t05-b11"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:b11",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-12",
+      "sourceAnchor": "L84/BR-12",
+      "sourceExcerpt": "| `BR-12` | 银行卡退汇重转 | 存在原真实发放批次及银行失败事件 | F-45/F-46/F-47/F-48 | 不视为第二次劳动；需原交易+失败+绑定更新 | A01/A06 |",
+      "checkId": "g07-t05@1:module/use-branch12/br12",
+      "sourceIds": [
+        "g07-t05-b12"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:b12",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s03",
+      "sourceAnchor": "L50-66",
+      "checkId": "g07-t05@1:module/use-non-numbered/s03",
+      "sourceIds": [
+        "g07-t05-nonnum-s03"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:nonnums03",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s06",
+      "sourceAnchor": "L109-180",
+      "checkId": "g07-t05@1:module/use-non-numbered/s06",
+      "sourceIds": [
+        "g07-t05-nonnum-s06"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:nonnums06",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s08",
+      "sourceAnchor": "L245-263",
+      "checkId": "g07-t05@1:module/use-non-numbered/s08",
+      "sourceIds": [
+        "g07-t05-nonnum-s08"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:nonnums08",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s12",
+      "sourceAnchor": "L464-471",
+      "checkId": "g07-t05@1:module/use-non-numbered/s12",
+      "sourceIds": [
+        "g07-t05-nonnum-s12"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:nonnums12",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s13",
+      "sourceAnchor": "L472-492",
+      "checkId": "g07-t05@1:module/use-non-numbered/s13",
+      "sourceIds": [
+        "g07-t05-nonnum-s13"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:nonnums13",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s14",
+      "sourceAnchor": "L493-521",
+      "checkId": "g07-t05@1:module/use-non-numbered/s14",
+      "sourceIds": [
+        "g07-t05-nonnum-s14"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:nonnums14",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s15",
+      "sourceAnchor": "L522-544",
+      "checkId": "g07-t05@1:module/use-non-numbered/s15",
+      "sourceIds": [
+        "g07-t05-nonnum-s15"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:nonnums15",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s16",
+      "sourceAnchor": "L545-548",
+      "checkId": "g07-t05@1:module/use-non-numbered/s16",
+      "sourceIds": [
+        "g07-t05-nonnum-s16"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:nonnums16",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s17",
+      "sourceAnchor": "L549-565",
+      "checkId": "g07-t05@1:module/use-non-numbered/s17",
+      "sourceIds": [
+        "g07-t05-nonnum-s17"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:nonnums17",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s18",
+      "sourceAnchor": "L566-572",
+      "checkId": "g07-t05@1:module/use-non-numbered/s18",
+      "sourceIds": [
+        "g07-t05-nonnum-s18"
+      ],
+      "evidenceFact": "d2:object:g07-recipient-period:nonnums18",
+      "objectScope": "g07-recipient-period",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    }
+  ],
+  "sectionIndex": [
+    {
+      "heading": "## 01｜模板元信息、适用范围与制度边界",
+      "sourceLine": 8,
+      "endLine": 34,
+      "bytes": 1332,
+      "linkedTaskId": "scope",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 02｜角色术语、权责和对象关系",
+      "sourceLine": 35,
+      "endLine": 49,
+      "bytes": 841,
+      "linkedTaskId": "actor",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 03｜稳定ID与术语空间",
+      "sourceLine": 50,
+      "endLine": 66,
+      "bytes": 885,
+      "linkedTaskId": "s03",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 04｜条件分支与优先级",
+      "sourceLine": 67,
+      "endLine": 90,
+      "bytes": 2291,
+      "linkedTaskId": "branch",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 05｜业务输入契约：四类输入分离",
+      "sourceLine": 91,
+      "endLine": 108,
+      "bytes": 949,
+      "linkedTaskId": "fields",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 06｜字段字典：F-01—F-58",
+      "sourceLine": 109,
+      "endLine": 180,
+      "bytes": 6024,
+      "linkedTaskId": "s06",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 07｜材料槽 M-01—M-29 和等价证据组",
+      "sourceLine": 181,
+      "endLine": 244,
+      "bytes": 4998,
+      "linkedTaskId": "material",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 08｜需跨材料/可信底账确认的十二项事实",
+      "sourceLine": 245,
+      "endLine": 263,
+      "bytes": 1246,
+      "linkedTaskId": "s08",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 09｜原子审核规则 R-01—R-45",
+      "sourceLine": 264,
+      "endLine": 344,
+      "bytes": 14244,
+      "linkedTaskId": "rulebook",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 10｜统一输出契约、主状态/分项状态及问题聚合",
+      "sourceLine": 345,
+      "endLine": 443,
+      "bytes": 5032,
+      "linkedTaskId": "output",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 11｜全生命周期、补件重审、政策与审批版本控制",
+      "sourceLine": 444,
+      "endLine": 463,
+      "bytes": 1584,
+      "linkedTaskId": "stage",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 12｜合法替代、异常、责任与人工复核边界",
+      "sourceLine": 464,
+      "endLine": 471,
+      "bytes": 683,
+      "linkedTaskId": "s12",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 13｜学校规则与项目方案配置（真实CDUT与合成测试不可混淆）",
+      "sourceLine": 472,
+      "endLine": 492,
+      "bytes": 1718,
+      "linkedTaskId": "s13",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 14｜官方来源、证据效力及规则追踪",
+      "sourceLine": 493,
+      "endLine": 521,
+      "bytes": 2161,
+      "linkedTaskId": "s14",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 15｜按真实办理路径作者自检推演（不是独立D金标）",
+      "sourceLine": 522,
+      "endLine": 544,
+      "bytes": 2161,
+      "linkedTaskId": "s15",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 16｜跨模板可复用模块与G07-T05专有规则",
+      "sourceLine": 545,
+      "endLine": 548,
+      "bytes": 198,
+      "linkedTaskId": "s16",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 17｜已有编辑器和运行时能力映射（源码静态核验）",
+      "sourceLine": 549,
+      "endLine": 565,
+      "bytes": 1459,
+      "linkedTaskId": "s17",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 18｜完整性审计、版本冻结与后续交接",
+      "sourceLine": 566,
+      "endLine": 572,
+      "bytes": 363,
+      "linkedTaskId": "s18",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md"
+    }
+  ],
+  "allOriginalTextPreservedIn": "docs/design/review-agent/acceptance/d4-g07-build/T05/source/frozen-C-v0.1.md",
+  "independentRuleIds": [
+    "R-01",
+    "R-02",
+    "R-03",
+    "R-04",
+    "R-05",
+    "R-06",
+    "R-07",
+    "R-08",
+    "R-09",
+    "R-10",
+    "R-11",
+    "R-12",
+    "R-13",
+    "R-14",
+    "R-15",
+    "R-16",
+    "R-17",
+    "R-18",
+    "R-19",
+    "R-20",
+    "R-21",
+    "R-22",
+    "R-23",
+    "R-24",
+    "R-25",
+    "R-26",
+    "R-27",
+    "R-28",
+    "R-29",
+    "R-30",
+    "R-31",
+    "R-32",
+    "R-33",
+    "R-34",
+    "R-35",
+    "R-36",
+    "R-37",
+    "R-38",
+    "R-39",
+    "R-40",
+    "R-41",
+    "R-42",
+    "R-43",
+    "R-44",
+    "R-45"
+  ]
+}

@@ -1,0 +1,1128 @@
+{
+  "sourceFile": "G06-T08_正式业务模板_MD_v0.1.md",
+  "sourceSha256": "95d82865daec9494e08510592450b98a7baa673980a90451d21c66ef04df7882",
+  "version": "v0.1",
+  "scope": "full",
+  "atomicRules": [
+    {
+      "sourceId": "R-01",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L202",
+      "sourceAnchor": "**R-01｜业务目的与机构范围。** 目标`CL-01`；政策：`[SPEC]`+S01/S08（后者仅浙江）；触发：全部BR于提交时；对象：`action_id+project_id`。需要F01/F04与`EV-01`，通过申报表或有权系统输入识别“仅申报证明/实施许可/变更/终结”。缺用途→`ISS-PURPOSE-MISSING`补正；明确与所选工单不符→`ISS-ROUTE-MISMATCH`要求换路；校规允许一表多用途需以正式用途字段识别，不能仅依文件标题。未知学校业务入口→`ISS-POLICY-UNKNOWN`人工确认。下一动作：申请人说明用途/业务管理员分流；测试线索：仅有“动物伦理证明”字样但未载明用途。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r01/check",
+      "moduleId": "g06-t08-r01",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-02",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L204",
+      "sourceAnchor": "**R-02｜基金预审证明不能自动升级为实验实施批准。** 目标`CL-01/03`；政策：S04/S06/S08各校限定+S01一般审查职责；触发：BR01要求支持实施或BR02有人提交BR01证明替代正式批准；阶段：受理后、执行前；对象：`protocol_id`。证据F20/F23、`EV-09`或适用学校合格统一伦理批件（若其文本明确涵盖实施则属例外）。若正式证据只写“供当期基金申报”→`ISS-PROOF-NOT-EXECUTION`，**不能认定已获执行许可**；证据用途未知→`ISS-APPROVAL-SCOPE-UNKNOWN`交秘书处核验，绝不凭名称推定。测试线索：基金函、真正覆盖实施的统一批件两种反事实。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r02/check",
+      "moduleId": "g06-t08-r02",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-03",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L206",
+      "sourceAnchor": "**R-03｜PI与经办权限三层核验。** 目标`CL-02`；政策：S04（吉林在职PI）、S10（中山执行人员在线填报+PI确认）、[SPEC]；触发：全部BR、经办≠PI时加强；阶段：提交/受理；对象：`submitter_id,PI_id,operator_ids`。使用F02/F03/F19、`EV-02`，核对本人/授权提交、PI确认及校规相应权限。明确违反所选校规→`ISS-ACTOR-UNAUTHORIZED`，转授权PI重提；只有CDUT未知角色政策→`ISS-PERMISSION-UNKNOWN`，由校方确认，不能自动拒绝。测试线索：研究生作为实际执行者/学生代填且PI已确认。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r03/check",
+      "moduleId": "g06-t08-r03",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-04",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L208",
+      "sourceAnchor": "**R-04｜项目—方案—申请表版本关联。** 目标`CL-04`；政策：[SPEC]，S01/S03/S07；触发：BR02/03/04/05/07/08与所有版本相关动作；阶段：提交/复审；对象：`protocol_id/version/action_id`。F04/F05/F20/F21、`EV-03/05/10`必须支持同一方案或有可信更名映射。缺方案版本→`ISS-PROTOCOL-VERSION-MISSING`补正；当前版本与已审版本关键数据不同且无有效变更决定→`ISS-UNAPPROVED-VERSION`，由秘书处确认是否需新审；项目正式更名而有批准关联记录是**合法例外**。测试线索：科研项目中文缩写、旧版签名页配新版方案。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r04/check",
+      "moduleId": "g06-t08-r04",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-05",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L210",
+      "sourceAnchor": "**R-05｜实施前方案主体信息完备。** 目标`CL-04/05/07`；政策：S01/S03、[SPEC]；触发：BR02新实施申请，BR01按校具体要求可精简；阶段：提交；对象：每个拟实施`animal_scope`及`procedure_scope`。F05-F13、`EV-03/04`应覆盖研究目标、动物品系、分组、实验方法和与风险相称的福利资料；缺适用的方案主文→`ISS-PROTOCOL-INCOMPLETE`补正，内容专业适足性标`ISS-ETHICS-SCIENCE-REVIEW`等待委员会，不能给药物建议。测试线索：完整正式实施方案/仅基金摘要两种分支。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r05/check",
+      "moduleId": "g06-t08-r05",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-06",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L212",
+      "sourceAnchor": "**R-06｜动物行/分组数口径一致。** 目标`CL-05`；政策：[SPEC]基于S03/S09（仅数值可判部分）；触发：BR02/04/06/08；阶段：提交/变更/执行核算；对象：每个`animal_scope_id`。F06-F09与`EV-04/05`核互斥实验组之和、申请总数、备用数、重复用动物说明；只有计数口径明示可计算时才输出`MISMATCH`。不明→`ISS-COUNT-BASIS-UNKNOWN`请求口径说明；明确冲突→`ISS-ANIMAL-COUNT-CONFLICT`补正，不能把多时间点重复使用的同一动物双算。测试线索：同动物两阶段测量vs两批独立动物。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r06/check",
+      "moduleId": "g06-t08-r06",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-07",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L214",
+      "sourceAnchor": "**R-07｜3R和实验福利说明。** 目标`CL-07`；政策：S01/S03/S11；触发：BR02与风险相关BR04/07，BR01依校；阶段：实施前/变更；对象：具体操作和动物范围。F10-F13、`EV-03`检查3R替代/减少/优化、麻醉镇痛/观察/人道终点栏目是否按实施动作**存在且具有可读内容**。缺关键应填内容→`ISS-WELFARE-DOC-MISSING`；内容自相矛盾→`ISS-WELFARE-CONFLICT`；科学上是否充分→`ISS-ETHICS-SCIENCE-REVIEW`交委员会。测试线索：非手术方案不机械强求手术麻醉字段。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r07/check",
+      "moduleId": "g06-t08-r07",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-08",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L216",
+      "sourceAnchor": "**R-08｜动物供应商与生产许可范围。** 目标`CL-06/08`；政策：S03/S04/S11，校规/采购阶段适用；触发：计划采购/正在实施；对象：每类动物`source_line`。F06/F07/F14、`EV-06`核许可主体、动物类别、等级、有效期及实际供应方；官方核验记录或有权设施采购底账可替扫描件（需校规认可）。缺必需来源材料→`ISS-SUPPLIER-PROOF-MISSING`，证书查不到→`ISS-LICENSE-UNVERIFIED`，正式发现范围不覆盖→`ISS-SUPPLIER-SCOPE-MISMATCH`交设施管理者；**不得凭图片盖章判假证**。测试线索：许可覆盖小鼠但项目采购兔。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r08/check",
+      "moduleId": "g06-t08-r08",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-09",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L218",
+      "sourceAnchor": "**R-09｜批次质量凭证的阶段条件。** 目标`CL-08`；政策：S03（东南大学允许特定阶段后补）、S04；触发：`COND-07=TRUE`或明文要求在实施前提交；阶段：采购完成/实施/追踪；对象：已购`batch_id`。F15、`EV-06`，已购批次按适用制度应附质量证明/可信库存；未采购且制度允许后补→`NOT_YET_CREATED`，记录需要之后取得，**不输出缺件**；采购状态未知→`ISS-PROCUREMENT-UNKNOWN`；确已购且规定必交缺失→`ISS-BATCH-CERT-MISSING`。下一动作：申请人或设施管理员补证。测试线索：东南表单质量证编号可晚填的合法情形。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r09/check",
+      "moduleId": "g06-t08-r09",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-10",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L220",
+      "sourceAnchor": "**R-10｜实验设施许可与拟执行地点对应。** 目标`CL-06/09`；政策：S03/S04/S11；触发：BR02/04/06且计划场地已选定；阶段：实验实施前及设施变更；对象：`facility_scope_id`。F06/F07/F16、`EV-07`核设施使用许可种类、实验动物质量等级、地点、有效区间，必要时受有权部门直接核验。记录不存在/不可达→`ISS-FACILITY-PROOF-UNKNOWN`人工查证；证实超许可范围→`ISS-FACILITY-OUT-OF-SCOPE`必须转设施/伦理机构处理，不能标“已允许实验”。测试线索：供应商生产证与设施使用证混淆。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r10/check",
+      "moduleId": "g06-t08-r10",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-11",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L222",
+      "sourceAnchor": "**R-11｜操作者培训及学生安全前置双轨。** 目标`CL-02/06/13`；政策：S04/S10/S11；在CDUT实验室还关联[B02-01]实验室安全制度；触发：实际有拟操作人、学校/场所规定培训；阶段：正式实施前；对象：每个`operator_id+procedure_scope_id`。F03/F17、`EV-02/07/12`：伦理要求的动物操作培训、校园实验安全培训分别核对应制度。若真实CDUT实验室学生现场培训缺失，仅能报告**安全准入关联事项** `ISS-LAB-SAFETY-PENDING`并转校内G04/安全部门；不是T08委员会首申的自动拒件。制度未知→`ISS-TRAINING-POLICY-UNKNOWN`。测试线索：完成伦理培训但未完成校实验安全培训。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r11/check",
+      "moduleId": "g06-t08-r11",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-12",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L224",
+      "sourceAnchor": "**R-12｜实施许可与实际实验开始时间。** 目标`CL-03`；政策：S01/S04/S05；触发：申请声称可以开工、BR07/08已实际实施、或系统报告开始日期；阶段：执行时；对象：`protocol_id + scope + date_interval`。F20/F23与`EV-09/05`核有权决定确实批准、批准范围及生效日覆盖实际开始时间。确已实施但可信记录显示批准后置→`ISS-EXECUTION-BEFORE-APPROVAL`高优先级程序风险，转伦理委员会/校方处理；无有权决定可核而仅申请人自述→`ISS-APPROVAL-UNVERIFIED`，不可声称有执行资格。**首次待审且未开始实验**不应出现“缺已有批件”的申请缺件。[S01]",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r12/check",
+      "moduleId": "g06-t08-r12",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-13",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L226",
+      "sourceAnchor": "**R-13｜重大变更的旧新对照与重新审查。** 目标`CL-10`；政策：S01/S07/S14具体校差；触发：BR04或已获批后动物种类/额度/设施/操作风险变化，发生事实可能满足重大变化；阶段：变更实施前；对象：`change_id+affected_scope[]`。F05/F09/F12/F20/F21及`EV-05/10`需旧批准、新方案、完整差异及理由，评估是否扩大风险。已被有权规则确认须重新审查而未批→`ISS-CHANGE-APPROVAL-PENDING`，**影响分项不得实施**；变化重大性未知→`ISS-CHANGE-CLASSIFICATION-UNKNOWN`交委员会，不用全国统一20%阈值。测试线索：新增物种但不变总数。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r13/check",
+      "moduleId": "g06-t08-r13",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-14",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L228",
+      "sourceAnchor": "**R-14｜一般变更的合法简化路径。** 目标`CL-10`；政策：S07、S14（河北大学阈值严格限定），[SPEC]；触发：BR05、制度明确简化/备案；阶段：申报变更；对象：指定行政更正/轻微变化。F21/F20与`EV-10/05`须识别实际改变字段及有效学校制度，**只有有权制度/委员会决定明确一般变更**才适用简化；缺规定→`ISS-POLICY-UNKNOWN`，不得默认新旧方案一致或当然获批准；正式备案记录可使原批件继续适用时按实际范围解释。测试线索：本校未知制度时不得照用河北20%。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r14/check",
+      "moduleId": "g06-t08-r14",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-15",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L230",
+      "sourceAnchor": "**R-15｜已有批件沿用的全部同时条件。** 目标`CL-11`；政策：S09仅中山大学明确的沿用条件，其他学校依实际规则；触发：BR06；阶段：分批继续使用前；对象：每个原批准`animal_scope`。F05/F09/F20/F23与`EV-05/09`需 **同一研究、原方案/操作指标不变、批准有效、已用量可信、预计新增不会超批准量、适用学校允许沿用**。全部证实→`FACT_REUSE_CONDITIONS_MET`（**事实与规则核验建议，非机器批准**）；历史额度/有效期/校规任一未知→`ISS-REUSE-UNVERIFIABLE`；明确超量/重大变更→`ISS-REUSE-OUT-OF-SCOPE`，转BR04/委员会。测试线索：第二批未超额/已经超额。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r15/check",
+      "moduleId": "g06-t08-r15",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-16",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L232",
+      "sourceAnchor": "**R-16｜跟踪与动物福利风险事件。** 目标`CL-07/14`；政策：S01/S13；触发：BR07已出现报告期、实验偏离或新福利风险；阶段：执行中；对象：`event_id+affected_scope`。F09/F12/F13/F20/F25、`EV-05/10`核事件事实、发生日、与批准方案差异和适用报告义务。未到报告期或无触发事件→`NOT_APPLICABLE`；真实事件且制度要求报告但未给材料→`ISS-FOLLOWUP-REPORT-MISSING`；风险严重程度→`ISS-ETHICS-RISK-DECISION`转委员会，不能直接宣布暂停。测试线索：异常术后不良事件/正常跟踪。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r16/check",
+      "moduleId": "g06-t08-r16",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-17",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L234",
+      "sourceAnchor": "**R-17｜实验结束、真实用量与终结报告。** 目标`CL-12`；政策：S05/S06/S07及校规；触发：BR08实验已结束且相应机构要求终结；阶段：完成后；对象：原方案+项目+动物范围。F09/F20/F22/F23、`EV-08/05`核总用量、处置、方案偏离、实际结束日、原批件范围与终结表。缺必交终结表→`ISS-CLOSURE-MISSING`补件；真实数据冲突→`ISS-CLOSURE-COUNTS-CONFLICT`由PI/设施机构核对；实验从未开始或学校没有此终结路径→不适用。测试线索：只凭论文接收邮件申请终结证明。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r17/check",
+      "moduleId": "g06-t08-r17",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-18",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L236",
+      "sourceAnchor": "**R-18｜发表用途证明与终结文书效果。** 目标`CL-01/12`；政策：S05/S06等具名校规；触发：BR08同时申领文章/结题用途凭证；阶段：终结及论文准备期；对象：指定项目的原批件和完成证明。F20/F22/F25、`EV-08/09`核该校是否规定完成后出具期刊用途伦理证明、是否已有有权终结决定；未满足校规→`ISS-PUBLICATION-PROOF-PENDING`，转伦理秘书；若当前高校无需此步，不得硬加；伦理证明不能替代T05的学术投稿保密审查。测试线索：首次伦理申报不应索取终结证明。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r18/check",
+      "moduleId": "g06-t08-r18",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-19",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L238",
+      "sourceAnchor": "**R-19｜历史正式决定的效力优先级。** 目标`CL-03/14`；政策：S01/S13、[SPEC]；触发：任何关联已有委员会批准/需修改/否决/暂停/终结时；阶段：全程；对象：`approval_id + status_at_event`。F20/F25/F26、`EV-09/10`以可核正式决定为准，后出、有权、明确适用的新决定替代被其明示取代的旧决定；申请人自述/PI意见不覆盖正式否决。有效正式否决→`AUTHORITY_REJECTED`（仅同步）、暂停→`AUTHORITY_SUSPENDED`，仅补交PDF→保持原态并另开BR03。冲突的两份正式决定且无法确定替代关系→`ISS-DECISION-CONFLICT`交委员会。测试线索：退补件vs正式否决。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r19/check",
+      "moduleId": "g06-t08-r19",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-20",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L240",
+      "sourceAnchor": "**R-20｜补件与复审版本链完整。** 目标`CL-04/14`；政策：S06/S13、[SPEC]；触发：BR03，或因材料不足重交；阶段：反馈后；对象：`parent_case_id + response_id`。F05/F21/F25/F26、`EV-10`必须有原案引用、反馈点、新旧方案对应、申请人修订说明；反馈不在申请人当前责任时不得要求其补委员会内部签章。缺历史关联→`ISS-RESPONSE-LINK-MISSING`；修复后只对受影响条件重审、保留历史结论与旧批件，不静默改写。测试线索：上传新全文但没有指向原复审意见。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r20/check",
+      "moduleId": "g06-t08-r20",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-21",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L242",
+      "sourceAnchor": "**R-21｜撤回、申诉与重申权限。** 目标`CL-14`；政策：S01/S13、[SPEC]；触发：BR09；阶段：撤回或有决定后；对象：原工单与请求动作。F25/F26、`EV-10/09`核申请人有权请求撤回、明确是恢复草稿还是新提交、是否已有正式伦理决定；已完成撤回保留原流水号/时间；不能将`withdrawn`改成`approved`或把申诉当补正。权限不明→`ISS-ACTION-PERMISSION-UNKNOWN`；正式历史不符→`ISS-STATUS-MISMATCH`，交秘书处。测试线索：正式拒绝后提交“修改说明”却没有新受理决定。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r21/check",
+      "moduleId": "g06-t08-r21",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-22",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L244",
+      "sourceAnchor": "**R-22｜跨机构与特别生物安全权限。** 目标`CL-13`；政策：S01/S04、B02-01（CDUT安全）、[SPEC]；触发：`COND-09=TRUE`或跨机构/特种动物/感染性活动已被确认；阶段：实施前和变更；对象：`site_id+operation_scope`。F16/F24、`EV-11`要确认需不需要主管生物安全/运输/特殊物种资格及合作协议，按**具体法律与学校**触发，不把所有动物实验当高风险。缺必须许可→`ISS-SPECIAL-PERMIT-PENDING`转专业管理部门；政策未知→`ISS-SPECIAL-SCOPE-UNKNOWN`并限制对相应操作的执行断言；其它主管机关许可绝不替代动物伦理审查。测试线索：普通小鼠饲养vs特种动物/病原操作。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r22/check",
+      "moduleId": "g06-t08-r22",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-23",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L246",
+      "sourceAnchor": "**R-23｜CDUT实验室安全与动物伦理双轨。** 目标`CL-13`；政策：CDUT `成理校发〔2023〕40号` [B02-01]仅对其适用的实验室项目；触发：`COND-08=TRUE`，且安全制度相关项目/人员要求适用；阶段：实验室实施前；对象：`lab_safety_case_id`、项目与实验地点/责任人。F02/F03/F16/F17/F24、`EV-12`核项目负责人安全责任、安全论证、学生现场培训及动物/病原重要危险源报备是否有可信**安全审批**事实。安全准入未核→`ISS-LAB-SAFETY-PENDING`，通知相关安全管理员；但**不得以“未上传安全论证PDF”一律驳回T08伦理申请**。来源限CDUT规则，技术安全完成≠伦理批准。测试线索：校外合规设施不属于CDUT实验室安全入口。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r23/check",
+      "moduleId": "g06-t08-r23",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-24",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L248",
+      "sourceAnchor": "**R-24｜逐范围独立结论、来源故障与多问题聚合。** 目标`CL-15`；政策：[SPEC]（审核质量约束）+S01委员会决定边界；触发：所有路径，尤其多动物/多设施/多动作；阶段：每次材料审查。材料F-01—F-26动态集和EV-01—EV-12，输出每个`scope_id`的`check_status`、问题列表、证据页、适用规则及不能自动做的操作；一个范围材料充分不能让其它范围自动合格。`ISS-MULTIPLE-ISSUES`只表示呈现，**不能覆盖各问题原码**；证据接口不可达→受影响项`SOURCE_UNAVAILABLE`，未受影响项保留局部通过；**不得自动作部分伦理批准**。测试线索：一种动物数量齐全、另一种动物许可不符，同时存在有权批件待核。",
+      "type": "rule",
+      "checkId": "g06-t08@1:module/use-r24/check",
+      "moduleId": "g06-t08-r24",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    }
+  ],
+  "otherResponsibilities": [
+    {
+      "sourceId": "SECTION-01",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L10",
+      "sourceAnchor": "## 01｜独立目的、业务对象、范围与不可替代性",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section01/check",
+      "moduleId": "g06-t08-section01",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-02",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L18",
+      "sourceAnchor": "## 02｜稳定ID与术语空间",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section02/check",
+      "moduleId": "g06-t08-section02",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-03",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L37",
+      "sourceAnchor": "## 03｜角色、审批链与权限模型",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section03/check",
+      "moduleId": "g06-t08-section03",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-04",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L52",
+      "sourceAnchor": "## 04｜唯一模板内的九个业务路径与条件三值",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section04/check",
+      "moduleId": "g06-t08-section04",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-05",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L80",
+      "sourceAnchor": "## 05｜输入契约：申报事项、申报材料、证明材料、可信数据",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section05/check",
+      "moduleId": "g06-t08-section05",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-06",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L93",
+      "sourceAnchor": "## 06｜字段字典：F-01—F-26（与B阶段同序）",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section06/check",
+      "moduleId": "g06-t08-section06",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-07",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L126",
+      "sourceAnchor": "## 07｜材料槽、证明事实与合法等价证据组",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section07/check",
+      "moduleId": "g06-t08-section07",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-08",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L162",
+      "sourceAnchor": "## 08｜可执行的审核事实 CL-01—CL-15 与跨文件对象规则",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section08/check",
+      "moduleId": "g06-t08-section08",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-09",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L190",
+      "sourceAnchor": "## 09｜规则系统使用与解释总则",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section09/check",
+      "moduleId": "g06-t08-section09",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-10",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L252",
+      "sourceAnchor": "## 10｜状态契约：材料核验、正式决定和实际执行三条并行轴",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section10/check",
+      "moduleId": "g06-t08-section10",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-11",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L292",
+      "sourceAnchor": "## 11｜补件、复审、撤回、过期、审批与审计生命周期",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section11/check",
+      "moduleId": "g06-t08-section11",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-12",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L301",
+      "sourceAnchor": "## 12｜合法例外、未知与人工复核清单",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section12/check",
+      "moduleId": "g06-t08-section12",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-13",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L320",
+      "sourceAnchor": "## 13｜学校规则配置、政策优先级与本校缺口",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section13/check",
+      "moduleId": "g06-t08-section13",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-14",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L339",
+      "sourceAnchor": "## 14｜官方来源、规则追溯与事实强度",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section14/check",
+      "moduleId": "g06-t08-section14",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-15",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L385",
+      "sourceAnchor": "## 15｜按真实办理路径的作者走查总览",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section15/check",
+      "moduleId": "g06-t08-section15",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-16",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L402",
+      "sourceAnchor": "## 16｜跨模板共性模块候选与本业务专属职责",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section16/check",
+      "moduleId": "g06-t08-section16",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-17",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L417",
+      "sourceAnchor": "## 17｜现有编辑器与仓库静态映射（**非真实运行验证**）",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section17/check",
+      "moduleId": "g06-t08-section17",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-18",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L439",
+      "sourceAnchor": "## 18｜母版完整性、风险、版本与独立D交接",
+      "type": "context",
+      "checkId": "g06-t08@1:module/use-section18/check",
+      "moduleId": "g06-t08-section18",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "BR-01",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L23",
+      "sourceAnchor": "| 条件路径 | 单案操作及生命周期 | `BR-01`—`BR-09` | `BR`是办理目标，不是九套模板；见§04 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t08@1:module/use-axis-br-01/check",
+      "moduleId": "g06-t08-axis-br-01",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-02",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L59",
+      "sourceAnchor": "| BR-02 实验实施前伦理初审 | P02 | 拟在具体场地、动物与方法条件下实施 | 拟实施方案、动物/设施/人员信息 | 材料送委审；真实批件由委员会出具 | 首次申请不要求已有该申请的批准号 [S01,S03] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t08@1:module/use-axis-br-02/check",
+      "moduleId": "g06-t08-axis-br-02",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "BR-03",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L60",
+      "sourceAnchor": "| BR-03 退补件/复审答复 | P03 | 先前已受理并要求修正/补充 | `parent_case_id`、反馈单、修订版 | 可再次提交有权部门 | 不得以“补件已上传”直接覆盖旧审批意见 [S06] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t08@1:module/use-axis-br-03/check",
+      "moduleId": "g06-t08-axis-br-03",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-04",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L61",
+      "sourceAnchor": "| BR-04 重大变更复审 | P04 | 已批准方案的动物数、种类、侵入操作、设施等变化且达到重大变更条件 | 原批件、`change_set`及适用校规/委员会判断 | 再审核新版本；变更先批准后执行 | 不得把旧批准直接扩大到变更部分 [S01,S07] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t08@1:module/use-axis-br-04/check",
+      "moduleId": "g06-t08-axis-br-04",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-05",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L62",
+      "sourceAnchor": "| BR-05 一般变更 | P05 | 轻微更正或校规允许简化 | `change_set`、一般变更判据及审批权限 | 简化/确认/重新提交（以真实校规决定） | 不能全国硬编码20%阈值 [S14] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t08@1:module/use-axis-br-05/check",
+      "moduleId": "g06-t08-axis-br-05",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-06",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L63",
+      "sourceAnchor": "| BR-06 沿用既有批准 | P06 | 同项目、同方案、未超原批准数量且制度允许 | 旧批件、计划与历史用量、有效期、操作等 | 核验“可能沿用”；效力取决于有权规则及原批准 | 不得机械索取新的批件；不能凭材料层自主授权开工 [S09] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t08@1:module/use-axis-br-06/check",
+      "moduleId": "g06-t08-axis-br-06",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-07",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L64",
+      "sourceAnchor": "| BR-07 跟踪或风险报告 | P07 | 执行过程中按期、偏差或风险出现 | 已批准范围、实际执行/事件、报告期限 | 专业处理、暂停/继续建议 | 没有发生实验时不索取实际动物用量 [S01,S13] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t08@1:module/use-axis-br-07/check",
+      "moduleId": "g06-t08-axis-br-07",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-08",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L65",
+      "sourceAnchor": "| BR-08 终结/结题/发表用途证明 | P08 | 已完成或办理终结后的材料 | 原批件、真实执行及动物处置、终结申请 | 委员会真实终结/归档决定，部分学校有发表用途证明 | 不适用于首次基金申报 [S05,S06,S07] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t08@1:module/use-axis-br-08/check",
+      "moduleId": "g06-t08-axis-br-08",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-09",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L23",
+      "sourceAnchor": "| 条件路径 | 单案操作及生命周期 | `BR-01`—`BR-09` | `BR`是办理目标，不是九套模板；见§04 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t08@1:module/use-axis-br-09/check",
+      "moduleId": "g06-t08-axis-br-09",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "COND-01",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_scopes`、`COND-11 valid_policy_exception`、`COND-12 actual_execution_started`。",
+      "type": "additive-condition",
+      "checkId": "g06-t08@1:module/use-axis-cond-01/check",
+      "moduleId": "g06-t08-axis-cond-01",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "COND-02",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_scopes`、`COND-11 valid_policy_exception`、`COND-12 actual_execution_started`。",
+      "type": "additive-condition",
+      "checkId": "g06-t08@1:module/use-axis-cond-02/check",
+      "moduleId": "g06-t08-axis-cond-02",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "COND-03",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_scopes`、`COND-11 valid_policy_exception`、`COND-12 actual_execution_started`。",
+      "type": "additive-condition",
+      "checkId": "g06-t08@1:module/use-axis-cond-03/check",
+      "moduleId": "g06-t08-axis-cond-03",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "COND-04",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_scopes`、`COND-11 valid_policy_exception`、`COND-12 actual_execution_started`。",
+      "type": "additive-condition",
+      "checkId": "g06-t08@1:module/use-axis-cond-04/check",
+      "moduleId": "g06-t08-axis-cond-04",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "COND-05",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_scopes`、`COND-11 valid_policy_exception`、`COND-12 actual_execution_started`。",
+      "type": "additive-condition",
+      "checkId": "g06-t08@1:module/use-axis-cond-05/check",
+      "moduleId": "g06-t08-axis-cond-05",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "COND-06",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_scopes`、`COND-11 valid_policy_exception`、`COND-12 actual_execution_started`。",
+      "type": "additive-condition",
+      "checkId": "g06-t08@1:module/use-axis-cond-06/check",
+      "moduleId": "g06-t08-axis-cond-06",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "COND-07",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_scopes`、`COND-11 valid_policy_exception`、`COND-12 actual_execution_started`。",
+      "type": "additive-condition",
+      "checkId": "g06-t08@1:module/use-axis-cond-07/check",
+      "moduleId": "g06-t08-axis-cond-07",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "COND-08",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_scopes`、`COND-11 valid_policy_exception`、`COND-12 actual_execution_started`。",
+      "type": "additive-condition",
+      "checkId": "g06-t08@1:module/use-axis-cond-08/check",
+      "moduleId": "g06-t08-axis-cond-08",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "COND-09",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_scopes`、`COND-11 valid_policy_exception`、`COND-12 actual_execution_started`。",
+      "type": "additive-condition",
+      "checkId": "g06-t08@1:module/use-axis-cond-09/check",
+      "moduleId": "g06-t08-axis-cond-09",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "COND-10",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_scopes`、`COND-11 valid_policy_exception`、`COND-12 actual_execution_started`。",
+      "type": "additive-condition",
+      "checkId": "g06-t08@1:module/use-axis-cond-10/check",
+      "moduleId": "g06-t08-axis-cond-10",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "COND-11",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_scopes`、`COND-11 valid_policy_exception`、`COND-12 actual_execution_started`。",
+      "type": "additive-condition",
+      "checkId": "g06-t08@1:module/use-axis-cond-11/check",
+      "moduleId": "g06-t08-axis-cond-11",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "COND-12",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_scopes`、`COND-11 valid_policy_exception`、`COND-12 actual_execution_started`。",
+      "type": "additive-condition",
+      "checkId": "g06-t08@1:module/use-axis-cond-12/check",
+      "moduleId": "g06-t08-axis-cond-12",
+      "scope": "g06-animal-ethics-scope",
+      "requiresHumanDecision": false
+    }
+  ],
+  "fieldMaterialEvidenceStageAndQuestionIndex": [
+    {
+      "id": "BR-01",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L23",
+      "sourceExcerpt": "| 条件路径 | 单案操作及生命周期 | `BR-01`—`BR-09` | `BR`是办理目标，不是九套模板；见§04 |"
+    },
+    {
+      "id": "BR-09",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L23",
+      "sourceExcerpt": "| 条件路径 | 单案操作及生命周期 | `BR-01`—`BR-09` | `BR`是办理目标，不是九套模板；见§04 |"
+    },
+    {
+      "id": "F-01",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L24",
+      "sourceExcerpt": "| 字段 | 事实提取及表单字段 | `F-01`—`F-26` | 直接对照B阶段F-01—F-26；字段存在不等于阶段必填 |"
+    },
+    {
+      "id": "F-26",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L24",
+      "sourceExcerpt": "| 字段 | 事实提取及表单字段 | `F-01`—`F-26` | 直接对照B阶段F-01—F-26；字段存在不等于阶段必填 |"
+    },
+    {
+      "id": "MS-01",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L25",
+      "sourceExcerpt": "| 材料槽 | 可以承载审核事实的材料族 | `MS-01`—`MS-10` | 对照B阶段M01—M10；附件不等于证据已验证 |"
+    },
+    {
+      "id": "MS-10",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L25",
+      "sourceExcerpt": "| 材料槽 | 可以承载审核事实的材料族 | `MS-01`—`MS-10` | 对照B阶段M01—M10；附件不等于证据已验证 |"
+    },
+    {
+      "id": "EV-01",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L26",
+      "sourceExcerpt": "| 证据组 | 可核事实的组合/替代证明 | `EV-01`—`EV-12` | `AND`、`OR`、可信库替代需满足条件；见§07 |"
+    },
+    {
+      "id": "EV-12",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L26",
+      "sourceExcerpt": "| 证据组 | 可核事实的组合/替代证明 | `EV-01`—`EV-12` | `AND`、`OR`、可信库替代需满足条件；见§07 |"
+    },
+    {
+      "id": "CL-01",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L27",
+      "sourceExcerpt": "| 核验事实 | 不随文件格式改变的审核命题 | `CL-01`—`CL-15` | 每项可引用多份材料、多个对象 |"
+    },
+    {
+      "id": "CL-15",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L27",
+      "sourceExcerpt": "| 核验事实 | 不随文件格式改变的审核命题 | `CL-01`—`CL-15` | 每项可引用多份材料、多个对象 |"
+    },
+    {
+      "id": "ST-01",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L29",
+      "sourceExcerpt": "| 阶段 | 真实流程状态 | `ST-01`—`ST-13` | 拟申请、受理、批准、实施、终结及撤回独立 |"
+    },
+    {
+      "id": "ST-13",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L29",
+      "sourceExcerpt": "| 阶段 | 真实流程状态 | `ST-01`—`ST-13` | 拟申请、受理、批准、实施、终结及撤回独立 |"
+    },
+    {
+      "id": "BR-02",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L59",
+      "sourceExcerpt": "| BR-02 实验实施前伦理初审 | P02 | 拟在具体场地、动物与方法条件下实施 | 拟实施方案、动物/设施/人员信息 | 材料送委审；真实批件由委员会出具 | 首次申请不要求已有该申请的批准号 [S01,S03] |"
+    },
+    {
+      "id": "BR-03",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L60",
+      "sourceExcerpt": "| BR-03 退补件/复审答复 | P03 | 先前已受理并要求修正/补充 | `parent_case_id`、反馈单、修订版 | 可再次提交有权部门 | 不得以“补件已上传”直接覆盖旧审批意见 [S06] |"
+    },
+    {
+      "id": "BR-04",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L61",
+      "sourceExcerpt": "| BR-04 重大变更复审 | P04 | 已批准方案的动物数、种类、侵入操作、设施等变化且达到重大变更条件 | 原批件、`change_set`及适用校规/委员会判断 | 再审核新版本；变更先批准后执行 | 不得把旧批准直接扩大到变更部分 [S01,S07] |"
+    },
+    {
+      "id": "BR-05",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L62",
+      "sourceExcerpt": "| BR-05 一般变更 | P05 | 轻微更正或校规允许简化 | `change_set`、一般变更判据及审批权限 | 简化/确认/重新提交（以真实校规决定） | 不能全国硬编码20%阈值 [S14] |"
+    },
+    {
+      "id": "BR-06",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L63",
+      "sourceExcerpt": "| BR-06 沿用既有批准 | P06 | 同项目、同方案、未超原批准数量且制度允许 | 旧批件、计划与历史用量、有效期、操作等 | 核验“可能沿用”；效力取决于有权规则及原批准 | 不得机械索取新的批件；不能凭材料层自主授权开工 [S09] |"
+    },
+    {
+      "id": "BR-07",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L64",
+      "sourceExcerpt": "| BR-07 跟踪或风险报告 | P07 | 执行过程中按期、偏差或风险出现 | 已批准范围、实际执行/事件、报告期限 | 专业处理、暂停/继续建议 | 没有发生实验时不索取实际动物用量 [S01,S13] |"
+    },
+    {
+      "id": "BR-08",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L65",
+      "sourceExcerpt": "| BR-08 终结/结题/发表用途证明 | P08 | 已完成或办理终结后的材料 | 原批件、真实执行及动物处置、终结申请 | 委员会真实终结/归档决定，部分学校有发表用途证明 | 不适用于首次基金申报 [S05,S06,S07] |"
+    },
+    {
+      "id": "COND-01",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_sc"
+    },
+    {
+      "id": "COND-02",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_sc"
+    },
+    {
+      "id": "COND-03",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_sc"
+    },
+    {
+      "id": "COND-04",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_sc"
+    },
+    {
+      "id": "COND-05",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_sc"
+    },
+    {
+      "id": "COND-06",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_sc"
+    },
+    {
+      "id": "COND-07",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_sc"
+    },
+    {
+      "id": "COND-08",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_sc"
+    },
+    {
+      "id": "COND-09",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_sc"
+    },
+    {
+      "id": "COND-10",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_sc"
+    },
+    {
+      "id": "COND-11",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_sc"
+    },
+    {
+      "id": "COND-12",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "`COND-01 purpose`（欲取得基金证明/实施许可/沿用/变更/终结）、`COND-02 policy_applicability`（学校+实施/申报日期+规则版本）、`COND-03 PI_authority`、`COND-04 existing_approval`、`COND-05 material_change`、`COND-06 reuse_permitted`、`COND-07 already_procured`、`COND-08 facility_is_CDUT_lab`、`COND-09 high_risk_biosafety`、`COND-10 multiple_sc"
+    },
+    {
+      "id": "F-02",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L98",
+      "sourceExcerpt": "| F-02 | `people.pi`: person+org+contact | IN-CLAIM, IN-APP, IN-TRUST | 所有路径需识别责任主体；准入权限依校 | EV-02 | 个人 |"
+    },
+    {
+      "id": "EV-02",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L98",
+      "sourceExcerpt": "| F-02 | `people.pi`: person+org+contact | IN-CLAIM, IN-APP, IN-TRUST | 所有路径需识别责任主体；准入权限依校 | EV-02 | 个人 |"
+    },
+    {
+      "id": "F-03",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L99",
+      "sourceExcerpt": "| F-03 | `people.submitter/operators[]`: role-list | IN-CLAIM, IN-APP, IN-TRUST | 有实际操作人员时列明，代办另核授权 | EV-02,EV-07 | 个人 |"
+    },
+    {
+      "id": "EV-07",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L99",
+      "sourceExcerpt": "| F-03 | `people.submitter/operators[]`: role-list | IN-CLAIM, IN-APP, IN-TRUST | 有实际操作人员时列明，代办另核授权 | EV-02,EV-07 | 个人 |"
+    },
+    {
+      "id": "F-04",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L100",
+      "sourceExcerpt": "| F-04 | `project.title/id`: text, identifier | IN-CLAIM, IN-APP | 全部；无立项号的基金预申报可标暂未生成 | EV-01,EV-05 | 内部 |"
+    },
+    {
+      "id": "EV-05",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L100",
+      "sourceExcerpt": "| F-04 | `project.title/id`: text, identifier | IN-CLAIM, IN-APP | 全部；无立项号的基金预申报可标暂未生成 | EV-01,EV-05 | 内部 |"
+    },
+    {
+      "id": "F-05",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L101",
+      "sourceExcerpt": "| F-05 | `protocol.version/date`: string+date | IN-APP研究方案 | BR02/04/05/07/08需要版本和对应历史 | EV-03,EV-05 | 内部/受限 |"
+    },
+    {
+      "id": "EV-03",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L101",
+      "sourceExcerpt": "| F-05 | `protocol.version/date`: string+date | IN-APP研究方案 | BR02/04/05/07/08需要版本和对应历史 | EV-03,EV-05 | 内部/受限 |"
+    },
+    {
+      "id": "F-06",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L102",
+      "sourceExcerpt": "| F-06 | `animal[].species/strain`: string | IN-CLAIM,IN-APP | 真实使用动物的分项；BR01摘要粒度依申请规则 | EV-04,EV-06 | 内部 |"
+    },
+    {
+      "id": "EV-04",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L102",
+      "sourceExcerpt": "| F-06 | `animal[].species/strain`: string | IN-CLAIM,IN-APP | 真实使用动物的分项；BR01摘要粒度依申请规则 | EV-04,EV-06 | 内部 |"
+    },
+    {
+      "id": "EV-06",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L102",
+      "sourceExcerpt": "| F-06 | `animal[].species/strain`: string | IN-CLAIM,IN-APP | 真实使用动物的分项；BR01摘要粒度依申请规则 | EV-04,EV-06 | 内部 |"
+    },
+    {
+      "id": "F-07",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L103",
+      "sourceExcerpt": "| F-07 | `animal[].sex/age_weight/grade`: typed | IN-APP研究方案 | 详细实施方案；特例按动物/研究特性判断 | EV-04,EV-06 | 内部 |"
+    },
+    {
+      "id": "F-08",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L104",
+      "sourceExcerpt": "| F-08 | `animal[].groups/planned/justification`: list+int | IN-APP研究方案 | BR02/04/06/08；数量口径须声明备用/预实验 | EV-04,EV-05 | 内部 |"
+    },
+    {
+      "id": "F-09",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L105",
+      "sourceExcerpt": "| F-09 | `animal[].actual_used/reserved`: int + ledger refs | IN-TRUST及执行记录 | 已经执行、沿用、变更、终结时；初次无实际使用可合法为0/未产生 | EV-05 | 内部 |"
+    },
+    {
+      "id": "F-10",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L106",
+      "sourceExcerpt": "| F-10 | `research.aim/animal_necessity`: text | IN-APP研究方案 | BR01/02；必要性是否充分交专家 | EV-03 | 内部/受限 |"
+    },
+    {
+      "id": "F-11",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L107",
+      "sourceExcerpt": "| F-11 | `welfare.three_r`: structured text | IN-APP研究方案 | BR02及有变更影响福利时；3R适足性由委员会 | EV-03 | 内部/受限 |"
+    },
+    {
+      "id": "F-12",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L108",
+      "sourceExcerpt": "| F-12 | `procedure.steps/invasiveness/frequency`: list | IN-APP研究方案 | BR02/04/07/08（与实际对象比较） | EV-03,EV-05 | 内部/受限 |"
+    },
+    {
+      "id": "F-13",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L109",
+      "sourceExcerpt": "| F-13 | `welfare.anesthesia/analgesia/monitoring/humane_endpoint`: fields | IN-APP研究方案 | 触发操作风险、痛苦管理要求；不应凭字段存在给出医学建议 | EV-03 | 内部/受限 |"
+    },
+    {
+      "id": "F-14",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L110",
+      "sourceExcerpt": "| F-14 | `animal.source/supplier_license`: source+license | IN-PROOF许可,IN-TRUST | 供应来源要求适用的采购/实施阶段 | EV-06 | 内部 |"
+    },
+    {
+      "id": "F-15",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L111",
+      "sourceExcerpt": "| F-15 | `animal.batch/quality_certificate`: ref | IN-PROOF,IN-TRUST | 已采购或具体学校强制前置时；允许东南大学式后补合法情形 | EV-06 | 内部 |"
+    },
+    {
+      "id": "F-16",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L112",
+      "sourceExcerpt": "| F-16 | `site.facility/location/scope/license`: record | IN-PROOF,IN-TRUST | BR02、变更地点；设施范围校对 | EV-07 | 内部/受限 |"
+    },
+    {
+      "id": "F-17",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L113",
+      "sourceExcerpt": "| F-17 | `people.training[]`: person+credential+date | IN-PROOF,IN-TRUST | 有操作人员且校规要求；实验室安全准入另关联 | EV-02,EV-07 | 个人 |"
+    },
+    {
+      "id": "F-18",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L114",
+      "sourceExcerpt": "| F-18 | `funding.project/call`: reference | IN-CLAIM,IN-PROOF | BR01及特定学校要求；申请未获立项时不强求已立项通知 | EV-01 | 内部 |"
+    },
+    {
+      "id": "F-19",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L115",
+      "sourceExcerpt": "| F-19 | `attestation.signatures/commitments`: role+date | IN-APP,IN-TRUST | 该阶段由经办或PI应签者签，后续委员会栏位不提前要求 | EV-02 | 个人 |"
+    },
+    {
+      "id": "F-20",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L116",
+      "sourceExcerpt": "| F-20 | `committee.decision/approval_id/scope`: record | IN-TRUST/有权正式批件 | BR04/05/06/07/08需历史，BR02首次只能等后续形成 | EV-05,EV-09 | 高敏内部 |"
+    },
+    {
+      "id": "EV-09",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L116",
+      "sourceExcerpt": "| F-20 | `committee.decision/approval_id/scope`: record | IN-TRUST/有权正式批件 | BR04/05/06/07/08需历史，BR02首次只能等后续形成 | EV-05,EV-09 | 高敏内部 |"
+    },
+    {
+      "id": "F-21",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L117",
+      "sourceExcerpt": "| F-21 | `changes.old_new/risk/change_reason`: list | IN-APP变更对照 | BR03/04/05必有原工单和差异；沿用无变化可不适用 | EV-05,EV-10 | 内部/受限 |"
+    },
+    {
+      "id": "EV-10",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L117",
+      "sourceExcerpt": "| F-21 | `changes.old_new/risk/change_reason`: list | IN-APP变更对照 | BR03/04/05必有原工单和差异；沿用无变化可不适用 | EV-05,EV-10 | 内部/受限 |"
+    },
+    {
+      "id": "F-22",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L118",
+      "sourceExcerpt": "| F-22 | `closure.report/actuals/disposal`: report | IN-APP,IN-TRUST | BR08；实施前绝不要求 | EV-08 | 内部 |"
+    },
+    {
+      "id": "EV-08",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L118",
+      "sourceExcerpt": "| F-22 | `closure.report/actuals/disposal`: report | IN-APP,IN-TRUST | BR08；实施前绝不要求 | EV-08 | 内部 |"
+    },
+    {
+      "id": "F-23",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L119",
+      "sourceExcerpt": "| F-23 | `time.apply/approve/effective/execute`: dates | IN-CLAIM,IN-TRUST | 相关事件已发生的阶段，比较之前核实事件含义 | EV-05,EV-09 | 内部 |"
+    },
+    {
+      "id": "F-24",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L120",
+      "sourceExcerpt": "| F-24 | `special.cooperation/transport/biosafety`: typed refs | IN-PROOF,IN-TRUST | 仅跨机构/特种动物/感染性及相关特殊条件出现 | EV-11,EV-12 | 受限 |"
+    },
+    {
+      "id": "EV-11",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L120",
+      "sourceExcerpt": "| F-24 | `special.cooperation/transport/biosafety`: typed refs | IN-PROOF,IN-TRUST | 仅跨机构/特种动物/感染性及相关特殊条件出现 | EV-11,EV-12 | 受限 |"
+    },
+    {
+      "id": "F-25",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L121",
+      "sourceExcerpt": "| F-25 | `workflow.refusal/pause/withdrawal/response`: state log | IN-TRUST,IN-APP | BR03/07/09等有历史情形 | EV-09,EV-10 | 高敏内部 |"
+    },
+    {
+      "id": "MS-02",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L133",
+      "sourceExcerpt": "| MS-02 | 研究方案、动物设计、3R和操作福利 F05—13 | 申报材料 | BR02为核心；基金简版以其当期规则为准；变更需新旧版 | 正式方案+完整附表/电子结构等价→CL04/05/07 | S01,S03 |"
+    },
+    {
+      "id": "MS-03",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L134",
+      "sourceExcerpt": "| MS-03 | PI及操作者、人员承诺与培训 F02,F03,F17,F19 | 申报＋证明 | 校规签核/正式实施前；后续有权委员会签字不是提交时必交 | 有效机构账号签署/培训数据库→CL02/06 | S04,S10,S11 |"
+    },
+    {
+      "id": "MS-04",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L135",
+      "sourceExcerpt": "| MS-04 | 动物来源/生产许可/实际质量批次 F14,F15 | 证明 | 采购/实施；批次质量证可按校规后补 | 官方主管许可查询+真实批次可信库存→CL08 | S03,S04,S11 |"
+    },
+    {
+      "id": "MS-05",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L136",
+      "sourceExcerpt": "| MS-05 | 实施设施地址及使用许可 F16 | 证明＋可信底账 | 计划实施地点明确时；外机构场所用其有效权限资料 | 学校设施许可目录或有权主管机构核验→CL09 | S03,S04 |"
+    },
+    {
+      "id": "MS-06",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L137",
+      "sourceExcerpt": "| MS-06 | 项目/基金申报书与经费 F18 | 事项＋证明 | BR01或学校相关规定 | 基金受理通知/完整项目书，未立项不可要求立项完成证明→CL01 | S08,S11 |"
+    },
+    {
+      "id": "MS-07",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L138",
+      "sourceExcerpt": "| MS-07 | 旧伦理批件、历史状态、变更对照 F20,F21,F25 | 可信底账＋申报 | BR04/05/06；BR03要求先前反馈 | 有权机构可核历史系统记录可替上传旧批件→CL10/11 | S01,S07,S09 |"
+    },
+    {
+      "id": "MS-08",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L139",
+      "sourceExcerpt": "| MS-08 | 终结报告与真实实验记录 F09,F22 | 申报＋可信底账 | BR08或有跟踪要求时；BR01/02无 | 研究记录/中心日志与正式终结表组合→CL12 | S05,S06,S07 |"
+    },
+    {
+      "id": "MS-09",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L140",
+      "sourceExcerpt": "| MS-09 | 特殊许可、跨机构授权、动物运输、生物安全材料 F24 | 证明 | 条件确为真才触发；单独专项部门审批 | 主管专用记录/正式许可，可只引用已审结果→CL13 | S01,S04,B02-01 |"
+    },
+    {
+      "id": "CL-02",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L167",
+      "sourceExcerpt": "| CL-02 | PI、经办和操作人员角色与学校授权对应 | F02,F03,F17,F19 / EV02 | 不把学生经办一律当越权 |"
+    },
+    {
+      "id": "CL-03",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L168",
+      "sourceExcerpt": "| CL-03 | 正式委员会决定及其适用性可证 | F20,F23,F25 / EV09 | 申请齐全≠决定已生效 |"
+    },
+    {
+      "id": "CL-04",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L169",
+      "sourceExcerpt": "| CL-04 | 方案版本、研究标的跨文件相同或存在被批准的合法更名关系 | F04,F05 / EV03,EV05 | 名称不同不等于必然无关 |"
+    },
+    {
+      "id": "CL-05",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L170",
+      "sourceExcerpt": "| CL-05 | 动物数、分组口径、累计使用量可按适用定义核算 | F06-F09 / EV04,EV05 | 未定义备用/预实验不能简单求和 |"
+    },
+    {
+      "id": "CL-06",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L171",
+      "sourceExcerpt": "| CL-06 | 设施、动物来源与实际操作人资质适配 | F14-F17 / EV06,EV07 | 供应许可证和设施许可证不能互替 |"
+    },
+    {
+      "id": "CL-07",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L172",
+      "sourceExcerpt": "| CL-07 | 3R/麻醉镇痛/人道终点文书具备应有项 | F10-F13 / EV03 | 文书完备≠伦理技术合理 |"
+    },
+    {
+      "id": "CL-08",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L173",
+      "sourceExcerpt": "| CL-08 | 动物采购及批次证书按阶段提供或允许后补 | F14,F15 / EV06 | 未采购时不能强索实际批次号 |"
+    },
+    {
+      "id": "CL-09",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L174",
+      "sourceExcerpt": "| CL-09 | 场地及动物许可范围一致 | F06,F07,F16 / EV07 | 不能凭模糊照片鉴定许可证真实 |"
+    },
+    {
+      "id": "CL-10",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L175",
+      "sourceExcerpt": "| CL-10 | 变更已与原批准范围建立对照且按风险分类路由 | F05,F09,F12,F21 / EV05,EV10 | 河北20%阈值不是全国默认 |"
+    },
+    {
+      "id": "CL-11",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L176",
+      "sourceExcerpt": "| CL-11 | 沿用原批件的校规条件、剩余额度、有效期及版本被实际证明 | F05,F09,F20,F23 / EV05,EV09 | 历史用量未知不能声称可沿用 |"
+    },
+    {
+      "id": "CL-12",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L177",
+      "sourceExcerpt": "| CL-12 | 终结报告与真实实施范围和原批准对应 | F09,F22,F23 / EV08 | 未完成实验不应要求终结报告 |"
+    },
+    {
+      "id": "CL-13",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L178",
+      "sourceExcerpt": "| CL-13 | 特种/跨机构/实验安全条件存在时能识别另域许可 | F16,F17,F24 / EV11,EV12 | 实验室安全≠动物伦理 |"
+    },
+    {
+      "id": "CL-14",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L179",
+      "sourceExcerpt": "| CL-14 | 正式拒绝、暂停、撤回、补正、申诉分辨准确 | F20,F25,F26 / EV09,EV10 | 申请人自述不得覆盖真实委员会否决 |"
+    },
+    {
+      "id": "ST-02",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L267",
+      "sourceExcerpt": "| ST-02 | 已提交待受理 | 提交渠道及时间 | →ST03 或ST04：秘书受理/要求补正 |"
+    },
+    {
+      "id": "ST-03",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L268",
+      "sourceExcerpt": "| ST-03 | 形式受理通过待委员会 | 材料合适，受理有权登记 | →ST05：委员专业审查；不等于批准 |"
+    },
+    {
+      "id": "ST-04",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L269",
+      "sourceExcerpt": "| ST-04 | 退补/申请人修改中 | 正式退补单或明确欠件 | →ST02：补件重交并保留历史 |"
+    },
+    {
+      "id": "ST-05",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L270",
+      "sourceExcerpt": "| ST-05 | 伦理委员会专业审查中 | 有权限委员审查 | →ST06/07/08；只同步有权决定 |"
+    },
+    {
+      "id": "ST-06",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L271",
+      "sourceExcerpt": "| ST-06 | 已正式批准（具体范围） | 有权正式批件及版本效力 | →ST09或ST10；基金证明若仅用途有限不得直接ST09 |"
+    },
+    {
+      "id": "ST-07",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L272",
+      "sourceExcerpt": "| ST-07 | 修改后再审 | 委员会决定要求修改 | →ST04或ST05；与普通缺件不同 |"
+    },
+    {
+      "id": "ST-08",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L273",
+      "sourceExcerpt": "| ST-08 | 正式未批准/驳回 | 有权拒绝决定 | →ST11/新申请；不许自改为ST06 |"
+    },
+    {
+      "id": "ST-09",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L274",
+      "sourceExcerpt": "| ST-09 | 已在核准范围开展实验 | 批件生效+实施条件已被相应有权单位确认 | →ST10（变更）或ST12（终结）；系统仅核验记录 |"
+    },
+    {
+      "id": "ST-10",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L275",
+      "sourceExcerpt": "| ST-10 | 跟踪/变更/暂停风险处理中 | 实验/变更/风险事件记录 | →ST05/09/12；扩大范围前另获批准 |"
+    },
+    {
+      "id": "ST-11",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L276",
+      "sourceExcerpt": "| ST-11 | 撤回/过期/暂停 | 有权记录 | 可新申请/复核或按有效规则续期，保留历史 |"
+    },
+    {
+      "id": "ST-12",
+      "locator": "G06-T08_正式业务模板_MD_v0.1.md:L277",
+      "sourceExcerpt": "| ST-12 | 已开展后结束并终结材料送审 | 真实执行与处置记录 | →ST13：有权完成终结/证明 |"
+    }
+  ],
+  "unmappedAxes": []
+}

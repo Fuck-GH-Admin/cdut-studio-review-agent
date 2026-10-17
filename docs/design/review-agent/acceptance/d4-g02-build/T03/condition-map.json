@@ -1,0 +1,32 @@
+{
+  "axes": {
+    "restricted": "BR-02",
+    "ordinary-vpn": "BR-01",
+    "public-exposure": "BR-09",
+    "external-user": "BR-03",
+    "student-proxy": "BR-04",
+    "change-grant": "BR-05",
+    "multi-resource": "BR-06",
+    "no-ip": "BR-07",
+    "bastion-required": "BR-08",
+    "revoked": "BR-10",
+    "policy-confirmed": "§14 school applicability"
+  },
+  "primary": [
+    "restricted",
+    "ordinary-vpn",
+    "public-exposure"
+  ],
+  "additive": [
+    "external-user",
+    "student-proxy",
+    "change-grant",
+    "multi-resource",
+    "no-ip",
+    "bastion-required",
+    "revoked",
+    "policy-confirmed"
+  ],
+  "unknownPolicy": "UNKNOWN stays an actual target Check; no administrative decision",
+  "notes": "完整原始BR/ST/场景仍以母版为准"
+}

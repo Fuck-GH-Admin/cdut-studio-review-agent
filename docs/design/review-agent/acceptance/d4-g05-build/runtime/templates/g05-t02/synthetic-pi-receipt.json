@@ -1,0 +1,24 @@
+{
+  "caseId": "g05-t02-tech-run",
+  "runId": "run-pi-mvcrbt48-c56is",
+  "verified": {
+    "complete": true,
+    "problems": []
+  },
+  "registeredDocumentVersion": "doc-1-mvcrbt3v-v1",
+  "confirmedEvidenceLinks": [
+    {
+      "id": "evl-doc-1-mvcrbt3v-v1-g05-t02-subject-alpha-1792263357216-rxlz",
+      "documentVersionId": "doc-1-mvcrbt3v-v1",
+      "subjectId": "g05-t02-subject-alpha",
+      "supportsFact": "d2:object:g05-t02-activity:scope",
+      "status": "confirmed",
+      "linkedBy": "user"
+    }
+  ],
+  "negativeCrossObjectEvidence": "REJECTED",
+  "publicationAllowed": false,
+  "policyAuthority": "NOT_VERIFIED",
+  "onlineModel": "NOT_RUN",
+  "gold": "NOT_ACCESSED"
+}

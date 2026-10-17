@@ -1,0 +1,4370 @@
+{
+  "id": "run-pi-mvcn0083-fip22",
+  "caseId": "d4-g01-p-technical-2465",
+  "templateId": "g01-political-procedure",
+  "templateVersion": 1,
+  "inputManifest": {
+    "hash": "7681f3904a0eed62d96d8266d656edadcb15f43243a8d920b2946e30b0ec1a85",
+    "templateVersion": 1,
+    "policyVersions": [],
+    "documentVersions": [
+      {
+        "documentId": "doc-1-mvcn0072",
+        "versionId": "doc-1-mvcn0072-v1",
+        "contentHash": "148d48f6124f43ec62b7d6e600a6df6aad45d319fb62416381287a8fe9f28c1d"
+      }
+    ],
+    "observationIds": [],
+    "evidenceLinkIds": [
+      "evl-doc-1-mvcn0072-v1-sub-g01-p-object-a-1792256088082-epji"
+    ],
+    "effectiveRuleIds": [
+      "d2-3c793d8a94efaf2986fd",
+      "d2-dd968ffda474aec43d82",
+      "d2-82928342cd739ac4643e",
+      "d2-e6559600d973f83b1c4e",
+      "d2-eab01a24da10390508a9",
+      "d2-29811fdc9c5be6912da6",
+      "d2-c24595f93a710790b306",
+      "d2-1970e774cdd79f6c1bf9",
+      "d2-ca7e9e6e305c25fedd82",
+      "d2-d5d77c36dd266268f1a7",
+      "d2-40e62f484a4e17bbe96b",
+      "d2-4920e1beee2e975486bd",
+      "d2-16798357f249f588e00b",
+      "d2-87b3b51b7f17b9a1ea40",
+      "d2-0aa5aeb4b8bec4fff92a",
+      "d2-9fc3b8f3c4ea6e72c768",
+      "d2-a0ab5be897ed3dd4301b",
+      "d2-29bfa5f4fc29ee6bf4cc",
+      "d2-836e70744052662c555d",
+      "d2-89ce0324ecd314c9e573",
+      "d2-eba7e4a5bb9dda88938b",
+      "d2-074d398f7a98d4aaf5b9",
+      "d2-b66c1a619074929f9639",
+      "d2-4180f5627afb7e832ca1",
+      "d2-79ff23c131e7f4800220",
+      "d2-302b05ad666f5974fa41",
+      "d2-5bad4e94271af37fd504",
+      "d2-38cc2b4a26e5a4b01a3d",
+      "d2-b637953312f5bb338738",
+      "d2-eef980cb5e52022dc584",
+      "d2-8c5d2a1eb44c56906a8c",
+      "d2-3cc288ff407857c01f49",
+      "d2-a6289b4fb770ab19529f",
+      "d2-42b33398cb742c408b0e",
+      "d2-4871aee4432861acb8d8",
+      "d2-e25d965b583b8d2bb526",
+      "d2-43020c78969ddc214d68",
+      "d2-c08e9e2337e1739cc93c",
+      "d2-8319e1dd88bb2695318a",
+      "d2-a0e078982eee69ade4dc",
+      "d2-1922279b4f0b60981750",
+      "d2-01c5dc88362afec59eae",
+      "d2-cb36d81bfa3752a72695",
+      "d2-00bc739eb5def6ca7771",
+      "d2-fe17c0659fd443971fba",
+      "d2-44ba14c5e9197bf7d0e5",
+      "d2-698402b6145dac2a62a4",
+      "d2-2fb10144e9a519aa02ad",
+      "d2-e4f446f7a74284837af5",
+      "d2-6d34938f1115adb006c8",
+      "d2-2f6e2317767397fae635",
+      "d2-9f01e0a9ab212adff5d2",
+      "d2-e5ee352ddf3eba317921",
+      "d2-f84ccf460353d1b3bc25",
+      "d2-7c5c145573da48656242",
+      "d2-3aac6664485b1dcbc628",
+      "d2-2997a3151454beb10f61",
+      "d2-cc1492b62fae54919e30",
+      "d2-cdca1393f5ac0fe3b91c",
+      "d2-4a0f63c5b0a483dc4110",
+      "d2-06349cf8c858e4653952",
+      "d2-4b4d53f8f2f1b3681f58",
+      "d2-b6af619e735d2ed6e9de",
+      "d2-f72154cea48135523a7b",
+      "d2-0fcb273f050b651c7326",
+      "d2-9ef403ea87caa86557b2",
+      "d2-5e215596ee93596076b9",
+      "d2-4cd43b4ebf308027c139",
+      "d2-079a0f9159446275da16",
+      "d2-a9027b33e066cd43c30c",
+      "d2-de6a5db232e477350fcd",
+      "d2-5d1bc18f9da110b91945",
+      "d2-68e8f66199924fb0bea0",
+      "d2-d54770ea431befdd26fd",
+      "d2-75a4d351b6c0e3c564a1",
+      "d2-f754e4e4f405dd27ea89",
+      "d2-9c009efd6362cb2c3c0c",
+      "d2-395e7b17b5e329bf1e35",
+      "d2-d105a953c25d214a41d6",
+      "d2-0938e6e85d632078af16",
+      "d2-504172d1a4aac09be5d6",
+      "d2-e5dc1564081ba05b116e",
+      "d2-4bccab4ed99c961220e7",
+      "d2-4682b9bbe7b96157a297",
+      "d2-63d3ae606e81089a2033",
+      "d2-c6b1afa7b2608ea02ba1",
+      "d2-25508c44de72290f6d69",
+      "d2-63c24857460edd38d2b0",
+      "d2-f32e85d0fdc5fd375118",
+      "d2-a40d11992d6834ce5468",
+      "d2-383720b166ead2494cf8",
+      "d2-47f00670ed54776cc851",
+      "d2-b101e3a4af057effee05",
+      "d2-be147bdafd588e1b11e7",
+      "d2-89fcb3866b2385744869",
+      "d2-5c935487f8d4f416f26a",
+      "d2-dce8e8532450ecfb3765",
+      "d2-d79f022dadd85d515730",
+      "d2-a13f62fbdfd6622f18a3",
+      "d2-4d7128765a13468921ad",
+      "d2-4fd17ea900e15e038d30",
+      "d2-31ec9a3c9a31afd3b32a",
+      "d2-e1e41b088d1aca1da37e",
+      "d2-7191aa258ba394e2c210",
+      "d2-c56fa8436ec226360044",
+      "d2-ca11a25829ae9f934233",
+      "d2-8135190e9c9e023fd400",
+      "d2-f46b30e92823b4c35d0b",
+      "d2-f015e8c83ca0e8d1200f",
+      "d2-4f604f3337d20c9fe40f",
+      "d2-b640313b50c7dc37422b",
+      "d2-0573cbf18d6926d5113c",
+      "d2-b332e362f32c07d72fcc",
+      "d2-398cc58874ad5df33cf3",
+      "d2-0783f0130d36d77629cf",
+      "d2-f5be0022fa51889dc6f7",
+      "d2-e3916092072c226cfba9",
+      "d2-00e6668c9f4b11cefb2c",
+      "d2-f2a7628b4dac5019ce7d",
+      "d2-68f32571757294015882",
+      "d2-e701d1e946b7303b0815",
+      "d2-3a2d04e4f99f846afec4",
+      "d2-04a97f2921b24863c709",
+      "d2-4e49e9e09b8e1259fbcb",
+      "d2-8a1c08e930f317fe268f",
+      "d2-d54eff45ef7c346dac2c",
+      "d2-0d51e5cebe7bba21c447",
+      "d2-64874a00b86bc0088555",
+      "d2-2b7b8b680f415ddd2c3d",
+      "d2-965d48962abd6fdd86d3",
+      "d2-5ee94fb16af7e7d5b58f",
+      "d2-15d4237677715d35d442",
+      "d2-00fbcbe0af766e1c64ef",
+      "d2-7016a8a7363dc1080c9b",
+      "d2-d2100faa8248c97388ef",
+      "d2-f82573629741d8485bcf",
+      "d2-f9aa41b3002056b783f4",
+      "d2-44229e021e0e51ca8b31",
+      "d2-467c005ebfbe0e03d1cb",
+      "d2-0ec942dab07d2f43f2bd",
+      "d2-f107eb23e9624ea919f0",
+      "d2-767dab5f1deea4466f15",
+      "d2-357a35535e626ccfd708",
+      "d2-11e20531b61ad6b843c5",
+      "d2-8068d4069adb0c833588",
+      "d2-888d33ce0c23d7960ccd",
+      "d2-2939b7a03d6639268305",
+      "d2-4864dbced3429f5073fa",
+      "d2-7fdbfca6f0e6d117a11d",
+      "d2-c18c9e9828b6e66600ac",
+      "d2-95a836e7d6ee543ef353",
+      "d2-03aae7396fc1da5f8178",
+      "d2-1fefe18d5ed1be53ff20",
+      "d2-aa8c79ad80794ef0bbb3",
+      "d2-b627570787c4d06c4b58",
+      "d2-68860ca13ed37defdaf2",
+      "d2-9e8a6e80f1a27f65a0f1",
+      "d2-645262316cbdfed72c60",
+      "d2-bd33253356d7bb7a412b",
+      "d2-d1876bcb8cff5e5db02c",
+      "d2-f3673f266bb5c8a85deb",
+      "d2-42d2cd936090c1deeec3",
+      "d2-a30962d10969eec1408a",
+      "d2-2a022498f026e032c9be",
+      "d2-f5959bef3f321af4fa56",
+      "d2-ef5ac659477a9f8b8d42",
+      "d2-48b2dca802bab30d30fc",
+      "d2-b1944b50d56c884b07fe",
+      "d2-b2427e6953e262a931a2",
+      "d2-045f905a4a7ef041f856",
+      "d2-447c9b4dff4d62640625",
+      "d2-eb839ba3f54d2a509ee1",
+      "d2-c1491dae6c2873c086c9",
+      "d2-6600b4d498cfe7f4b3ce",
+      "d2-1105685874d12d8365e6",
+      "d2-e7aa64935b809c981c53",
+      "d2-59d4847c47e6853b9ba0",
+      "d2-9a666f1ddbfd88078055",
+      "d2-fd8fef6de333996a0d84",
+      "d2-600f0e021d9d8833b40c",
+      "d2-ad0fce69f8aa12f0cd98",
+      "d2-513885aa41b8900d927c",
+      "d2-0cc6b51fe22c15a6dc7d",
+      "d2-d834297c5e4d9d3b09f2",
+      "d2-d392a10d56b10192955d",
+      "d2-1fde4f9970fdc36ecf0c",
+      "d2-d886c7edc4e29190b252",
+      "d2-20bd130664f2da6b1d4d",
+      "d2-81a4a56d03f4e4629503",
+      "d2-b1d4acfa145de5f77a74",
+      "d2-5717ff98b79202cec42e",
+      "d2-47582c495fad89b17aff",
+      "d2-628f7aa5d269b91b5543",
+      "d2-1d57a55ecee9e0041333",
+      "d2-1ecc1a22473abc5f8eaa",
+      "d2-101f759dcb4504e47866",
+      "d2-582d9f1722880e472f8a",
+      "d2-5f51670da7aef3aa953a",
+      "d2-164d14d714db8a9f3ceb",
+      "d2-17e0d978424630670ac6",
+      "d2-20cc21c7e3f395ad3c7e",
+      "d2-5d921c91c82ea30b863e",
+      "d2-ac7b5c120a24dcd60a1e",
+      "d2-69d423bcb386bcbf44f7",
+      "d2-f80edab2063b7de2e68a",
+      "d2-076f97d047c1625b4cfa",
+      "d2-a3a12c1aa018ea547256",
+      "d2-b9fdebd61f8a31826454",
+      "d2-37fbfb22cf996bd1b1ab",
+      "d2-3627e0729009c4d45f3a",
+      "d2-9db6b38296b3e23d621a",
+      "d2-b9942404681d51ef7b40",
+      "d2-cf7613f73ad07c542b0d",
+      "d2-5e74ef6fe09d4109e2d6",
+      "d2-2ea6eb17938e7a0740f6",
+      "d2-86f4e79ee62a7ff0e2c3",
+      "d2-b4f2de0a0f697f9d3c52",
+      "d2-932f03bfde893e1b24ff",
+      "d2-420d515e691045f044ea",
+      "d2-a347893487cef7c1eee5",
+      "d2-5d55eca4af0396cfbc12",
+      "d2-ba40e8f90dc93ea3441a",
+      "d2-0fa9d4111d7bacaa514e",
+      "d2-40e2af60eb2b989706ac",
+      "d2-f13596adc716e1cc4bf9",
+      "d2-5b1aed881c95db3b680f",
+      "d2-0598c0388a21fe59ee52",
+      "d2-7e96d54c5d48184e81b3",
+      "d2-cfc9e3b78d5797a69f22",
+      "d2-8385489389af55d86162",
+      "d2-2474a053aca8437bcb2c",
+      "d2-d0f80dd39d151ce783f8",
+      "d2-75fd132071dcfea31a64",
+      "d2-457c6f0c944479c99195",
+      "d2-9df9394d62dbc1f50059",
+      "d2-e357171a3fff84d2a809",
+      "d2-7b11a9a031029e78ddbd",
+      "d2-c73fe85b85bcf64b6284",
+      "d2-2b164528bb97be63c880",
+      "d2-3fffe1f2edcb97171e79",
+      "d2-b89776cdabf92e9fe797",
+      "d2-3f53fe253df00db937b8",
+      "d2-97d822bf3cc37c7ecc0c",
+      "d2-d9f344adeb6cd2f279a6",
+      "d2-4f9365c7a334b4151d6f",
+      "d2-02b412124143dcb31951",
+      "d2-d8acfea68bcffa73fbbc",
+      "d2-8b07cc4e43bef1e675d9",
+      "d2-748e2889bba218f9cd62",
+      "d2-959d867c098dca7139a3",
+      "d2-acbaa3499607f58b55c9",
+      "d2-c5d3f2c398d5b52b2595",
+      "d2-37d1a0dbe995dba54d1e",
+      "d2-f9930e0422406322d50f",
+      "d2-3ff978cbc32f9bebec40",
+      "d2-47072964ec659454e320",
+      "d2-c89efe25e28f2ef14f90",
+      "d2-3428db3a2591598f7d20",
+      "d2-1eee1cca2907dc6d4780",
+      "d2-69115d9b3eebcb65a866",
+      "d2-e8248084e3ac570a45dc",
+      "d2-d86ce38e4689631bf0ea",
+      "d2-673c81a00bc02682cb6d",
+      "d2-94398d7483927412b497",
+      "d2-28aa8d84976c766a31e2",
+      "d2-4e922a60f5e4069a7f3c",
+      "d2-946c0877e1953d8782f2",
+      "d2-bd52bbff31cbd3c9d279",
+      "d2-16d7ed5bb3e2c997cb11"
+    ],
+    "effectiveRuleSetHash": "5ab10e99d0987fdd83d9e7b98a676103eb459dcf65dcf25b48cc918ba73f5169"
+  },
+  "status": "completed",
+  "checkpoints": [],
+  "checks": [
+    {
+      "checkId": "check-d2-3c793d8a94efaf2986fd-subject-sub-g01-p-object-a",
+      "ruleId": "d2-3c793d8a94efaf2986fd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-dd968ffda474aec43d82-subject-sub-g01-p-object-a",
+      "ruleId": "d2-dd968ffda474aec43d82",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-82928342cd739ac4643e-subject-sub-g01-p-object-a",
+      "ruleId": "d2-82928342cd739ac4643e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-e6559600d973f83b1c4e-subject-sub-g01-p-object-a",
+      "ruleId": "d2-e6559600d973f83b1c4e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-eab01a24da10390508a9-subject-sub-g01-p-object-a",
+      "ruleId": "d2-eab01a24da10390508a9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-29811fdc9c5be6912da6-subject-sub-g01-p-object-a",
+      "ruleId": "d2-29811fdc9c5be6912da6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-c24595f93a710790b306-subject-sub-g01-p-object-a",
+      "ruleId": "d2-c24595f93a710790b306",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-1970e774cdd79f6c1bf9-subject-sub-g01-p-object-a",
+      "ruleId": "d2-1970e774cdd79f6c1bf9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-ca7e9e6e305c25fedd82-subject-sub-g01-p-object-a",
+      "ruleId": "d2-ca7e9e6e305c25fedd82",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-d5d77c36dd266268f1a7-subject-sub-g01-p-object-a",
+      "ruleId": "d2-d5d77c36dd266268f1a7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-40e62f484a4e17bbe96b-subject-sub-g01-p-object-a",
+      "ruleId": "d2-40e62f484a4e17bbe96b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-4920e1beee2e975486bd-subject-sub-g01-p-object-a",
+      "ruleId": "d2-4920e1beee2e975486bd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-16798357f249f588e00b-subject-sub-g01-p-object-a",
+      "ruleId": "d2-16798357f249f588e00b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-87b3b51b7f17b9a1ea40-subject-sub-g01-p-object-a",
+      "ruleId": "d2-87b3b51b7f17b9a1ea40",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-0aa5aeb4b8bec4fff92a-subject-sub-g01-p-object-a",
+      "ruleId": "d2-0aa5aeb4b8bec4fff92a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-9fc3b8f3c4ea6e72c768-subject-sub-g01-p-object-a",
+      "ruleId": "d2-9fc3b8f3c4ea6e72c768",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-a0ab5be897ed3dd4301b-subject-sub-g01-p-object-a",
+      "ruleId": "d2-a0ab5be897ed3dd4301b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-29bfa5f4fc29ee6bf4cc-subject-sub-g01-p-object-a",
+      "ruleId": "d2-29bfa5f4fc29ee6bf4cc",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-836e70744052662c555d-subject-sub-g01-p-object-a",
+      "ruleId": "d2-836e70744052662c555d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-89ce0324ecd314c9e573-subject-sub-g01-p-object-a",
+      "ruleId": "d2-89ce0324ecd314c9e573",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-eba7e4a5bb9dda88938b-subject-sub-g01-p-object-a",
+      "ruleId": "d2-eba7e4a5bb9dda88938b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-074d398f7a98d4aaf5b9-subject-sub-g01-p-object-a",
+      "ruleId": "d2-074d398f7a98d4aaf5b9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-b66c1a619074929f9639-subject-sub-g01-p-object-a",
+      "ruleId": "d2-b66c1a619074929f9639",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-4180f5627afb7e832ca1-subject-sub-g01-p-object-a",
+      "ruleId": "d2-4180f5627afb7e832ca1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-79ff23c131e7f4800220-subject-sub-g01-p-object-a",
+      "ruleId": "d2-79ff23c131e7f4800220",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-302b05ad666f5974fa41-subject-sub-g01-p-object-a",
+      "ruleId": "d2-302b05ad666f5974fa41",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-5bad4e94271af37fd504-subject-sub-g01-p-object-a",
+      "ruleId": "d2-5bad4e94271af37fd504",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-38cc2b4a26e5a4b01a3d-subject-sub-g01-p-object-a",
+      "ruleId": "d2-38cc2b4a26e5a4b01a3d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-b637953312f5bb338738-subject-sub-g01-p-object-a",
+      "ruleId": "d2-b637953312f5bb338738",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-eef980cb5e52022dc584-subject-sub-g01-p-object-a",
+      "ruleId": "d2-eef980cb5e52022dc584",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-8c5d2a1eb44c56906a8c-subject-sub-g01-p-object-a",
+      "ruleId": "d2-8c5d2a1eb44c56906a8c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-3cc288ff407857c01f49-subject-sub-g01-p-object-a",
+      "ruleId": "d2-3cc288ff407857c01f49",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-a6289b4fb770ab19529f-subject-sub-g01-p-object-a",
+      "ruleId": "d2-a6289b4fb770ab19529f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-42b33398cb742c408b0e-subject-sub-g01-p-object-a",
+      "ruleId": "d2-42b33398cb742c408b0e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-4871aee4432861acb8d8-subject-sub-g01-p-object-a",
+      "ruleId": "d2-4871aee4432861acb8d8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-e25d965b583b8d2bb526-subject-sub-g01-p-object-a",
+      "ruleId": "d2-e25d965b583b8d2bb526",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-43020c78969ddc214d68-subject-sub-g01-p-object-a",
+      "ruleId": "d2-43020c78969ddc214d68",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-c08e9e2337e1739cc93c-subject-sub-g01-p-object-a",
+      "ruleId": "d2-c08e9e2337e1739cc93c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-8319e1dd88bb2695318a-subject-sub-g01-p-object-a",
+      "ruleId": "d2-8319e1dd88bb2695318a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-a0e078982eee69ade4dc-subject-sub-g01-p-object-a",
+      "ruleId": "d2-a0e078982eee69ade4dc",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-1922279b4f0b60981750-subject-sub-g01-p-object-a",
+      "ruleId": "d2-1922279b4f0b60981750",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-01c5dc88362afec59eae-subject-sub-g01-p-object-a",
+      "ruleId": "d2-01c5dc88362afec59eae",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-cb36d81bfa3752a72695-subject-sub-g01-p-object-a",
+      "ruleId": "d2-cb36d81bfa3752a72695",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-00bc739eb5def6ca7771-subject-sub-g01-p-object-a",
+      "ruleId": "d2-00bc739eb5def6ca7771",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-fe17c0659fd443971fba-subject-sub-g01-p-object-a",
+      "ruleId": "d2-fe17c0659fd443971fba",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-44ba14c5e9197bf7d0e5-subject-sub-g01-p-object-a",
+      "ruleId": "d2-44ba14c5e9197bf7d0e5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-698402b6145dac2a62a4-subject-sub-g01-p-object-a",
+      "ruleId": "d2-698402b6145dac2a62a4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-2fb10144e9a519aa02ad-subject-sub-g01-p-object-a",
+      "ruleId": "d2-2fb10144e9a519aa02ad",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-e4f446f7a74284837af5-subject-sub-g01-p-object-a",
+      "ruleId": "d2-e4f446f7a74284837af5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-6d34938f1115adb006c8-subject-sub-g01-p-object-a",
+      "ruleId": "d2-6d34938f1115adb006c8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-2f6e2317767397fae635-subject-sub-g01-p-object-a",
+      "ruleId": "d2-2f6e2317767397fae635",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-9f01e0a9ab212adff5d2-subject-sub-g01-p-object-a",
+      "ruleId": "d2-9f01e0a9ab212adff5d2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-e5ee352ddf3eba317921-subject-sub-g01-p-object-a",
+      "ruleId": "d2-e5ee352ddf3eba317921",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-f84ccf460353d1b3bc25-subject-sub-g01-p-object-a",
+      "ruleId": "d2-f84ccf460353d1b3bc25",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-7c5c145573da48656242-subject-sub-g01-p-object-a",
+      "ruleId": "d2-7c5c145573da48656242",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-3aac6664485b1dcbc628-subject-sub-g01-p-object-a",
+      "ruleId": "d2-3aac6664485b1dcbc628",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-2997a3151454beb10f61-subject-sub-g01-p-object-a",
+      "ruleId": "d2-2997a3151454beb10f61",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-cc1492b62fae54919e30-subject-sub-g01-p-object-a",
+      "ruleId": "d2-cc1492b62fae54919e30",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-cdca1393f5ac0fe3b91c-subject-sub-g01-p-object-a",
+      "ruleId": "d2-cdca1393f5ac0fe3b91c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-4a0f63c5b0a483dc4110-subject-sub-g01-p-object-a",
+      "ruleId": "d2-4a0f63c5b0a483dc4110",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-06349cf8c858e4653952-subject-sub-g01-p-object-a",
+      "ruleId": "d2-06349cf8c858e4653952",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-4b4d53f8f2f1b3681f58-subject-sub-g01-p-object-a",
+      "ruleId": "d2-4b4d53f8f2f1b3681f58",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-b6af619e735d2ed6e9de-subject-sub-g01-p-object-a",
+      "ruleId": "d2-b6af619e735d2ed6e9de",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-f72154cea48135523a7b-subject-sub-g01-p-object-a",
+      "ruleId": "d2-f72154cea48135523a7b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-0fcb273f050b651c7326-subject-sub-g01-p-object-a",
+      "ruleId": "d2-0fcb273f050b651c7326",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-9ef403ea87caa86557b2-subject-sub-g01-p-object-a",
+      "ruleId": "d2-9ef403ea87caa86557b2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-5e215596ee93596076b9-subject-sub-g01-p-object-a",
+      "ruleId": "d2-5e215596ee93596076b9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.112Z"
+    },
+    {
+      "checkId": "check-d2-4cd43b4ebf308027c139-subject-sub-g01-p-object-a",
+      "ruleId": "d2-4cd43b4ebf308027c139",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-079a0f9159446275da16-subject-sub-g01-p-object-a",
+      "ruleId": "d2-079a0f9159446275da16",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-a9027b33e066cd43c30c-subject-sub-g01-p-object-a",
+      "ruleId": "d2-a9027b33e066cd43c30c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-de6a5db232e477350fcd-subject-sub-g01-p-object-a",
+      "ruleId": "d2-de6a5db232e477350fcd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-5d1bc18f9da110b91945-subject-sub-g01-p-object-a",
+      "ruleId": "d2-5d1bc18f9da110b91945",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-68e8f66199924fb0bea0-subject-sub-g01-p-object-a",
+      "ruleId": "d2-68e8f66199924fb0bea0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-d54770ea431befdd26fd-subject-sub-g01-p-object-a",
+      "ruleId": "d2-d54770ea431befdd26fd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-75a4d351b6c0e3c564a1-subject-sub-g01-p-object-a",
+      "ruleId": "d2-75a4d351b6c0e3c564a1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-f754e4e4f405dd27ea89-subject-sub-g01-p-object-a",
+      "ruleId": "d2-f754e4e4f405dd27ea89",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-9c009efd6362cb2c3c0c-subject-sub-g01-p-object-a",
+      "ruleId": "d2-9c009efd6362cb2c3c0c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-395e7b17b5e329bf1e35-subject-sub-g01-p-object-a",
+      "ruleId": "d2-395e7b17b5e329bf1e35",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-d105a953c25d214a41d6-subject-sub-g01-p-object-a",
+      "ruleId": "d2-d105a953c25d214a41d6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-0938e6e85d632078af16-subject-sub-g01-p-object-a",
+      "ruleId": "d2-0938e6e85d632078af16",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-504172d1a4aac09be5d6-subject-sub-g01-p-object-a",
+      "ruleId": "d2-504172d1a4aac09be5d6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-e5dc1564081ba05b116e-subject-sub-g01-p-object-a",
+      "ruleId": "d2-e5dc1564081ba05b116e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-4bccab4ed99c961220e7-subject-sub-g01-p-object-a",
+      "ruleId": "d2-4bccab4ed99c961220e7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-4682b9bbe7b96157a297-subject-sub-g01-p-object-a",
+      "ruleId": "d2-4682b9bbe7b96157a297",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-63d3ae606e81089a2033-subject-sub-g01-p-object-a",
+      "ruleId": "d2-63d3ae606e81089a2033",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-c6b1afa7b2608ea02ba1-subject-sub-g01-p-object-a",
+      "ruleId": "d2-c6b1afa7b2608ea02ba1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-25508c44de72290f6d69-subject-sub-g01-p-object-a",
+      "ruleId": "d2-25508c44de72290f6d69",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-63c24857460edd38d2b0-subject-sub-g01-p-object-a",
+      "ruleId": "d2-63c24857460edd38d2b0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-f32e85d0fdc5fd375118-subject-sub-g01-p-object-a",
+      "ruleId": "d2-f32e85d0fdc5fd375118",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-a40d11992d6834ce5468-subject-sub-g01-p-object-a",
+      "ruleId": "d2-a40d11992d6834ce5468",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-383720b166ead2494cf8-subject-sub-g01-p-object-a",
+      "ruleId": "d2-383720b166ead2494cf8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-47f00670ed54776cc851-subject-sub-g01-p-object-a",
+      "ruleId": "d2-47f00670ed54776cc851",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-b101e3a4af057effee05-subject-sub-g01-p-object-a",
+      "ruleId": "d2-b101e3a4af057effee05",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-be147bdafd588e1b11e7-subject-sub-g01-p-object-a",
+      "ruleId": "d2-be147bdafd588e1b11e7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-89fcb3866b2385744869-subject-sub-g01-p-object-a",
+      "ruleId": "d2-89fcb3866b2385744869",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-5c935487f8d4f416f26a-subject-sub-g01-p-object-a",
+      "ruleId": "d2-5c935487f8d4f416f26a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-dce8e8532450ecfb3765-subject-sub-g01-p-object-a",
+      "ruleId": "d2-dce8e8532450ecfb3765",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-d79f022dadd85d515730-subject-sub-g01-p-object-a",
+      "ruleId": "d2-d79f022dadd85d515730",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-a13f62fbdfd6622f18a3-subject-sub-g01-p-object-a",
+      "ruleId": "d2-a13f62fbdfd6622f18a3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-4d7128765a13468921ad-subject-sub-g01-p-object-a",
+      "ruleId": "d2-4d7128765a13468921ad",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-4fd17ea900e15e038d30-subject-sub-g01-p-object-a",
+      "ruleId": "d2-4fd17ea900e15e038d30",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-31ec9a3c9a31afd3b32a-subject-sub-g01-p-object-a",
+      "ruleId": "d2-31ec9a3c9a31afd3b32a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-e1e41b088d1aca1da37e-subject-sub-g01-p-object-a",
+      "ruleId": "d2-e1e41b088d1aca1da37e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-7191aa258ba394e2c210-subject-sub-g01-p-object-a",
+      "ruleId": "d2-7191aa258ba394e2c210",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-c56fa8436ec226360044-subject-sub-g01-p-object-a",
+      "ruleId": "d2-c56fa8436ec226360044",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-ca11a25829ae9f934233-subject-sub-g01-p-object-a",
+      "ruleId": "d2-ca11a25829ae9f934233",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-8135190e9c9e023fd400-subject-sub-g01-p-object-a",
+      "ruleId": "d2-8135190e9c9e023fd400",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-f46b30e92823b4c35d0b-subject-sub-g01-p-object-a",
+      "ruleId": "d2-f46b30e92823b4c35d0b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-f015e8c83ca0e8d1200f-subject-sub-g01-p-object-a",
+      "ruleId": "d2-f015e8c83ca0e8d1200f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-4f604f3337d20c9fe40f-subject-sub-g01-p-object-a",
+      "ruleId": "d2-4f604f3337d20c9fe40f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-b640313b50c7dc37422b-subject-sub-g01-p-object-a",
+      "ruleId": "d2-b640313b50c7dc37422b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-0573cbf18d6926d5113c-subject-sub-g01-p-object-a",
+      "ruleId": "d2-0573cbf18d6926d5113c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-b332e362f32c07d72fcc-subject-sub-g01-p-object-a",
+      "ruleId": "d2-b332e362f32c07d72fcc",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-398cc58874ad5df33cf3-subject-sub-g01-p-object-a",
+      "ruleId": "d2-398cc58874ad5df33cf3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-0783f0130d36d77629cf-subject-sub-g01-p-object-a",
+      "ruleId": "d2-0783f0130d36d77629cf",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-f5be0022fa51889dc6f7-subject-sub-g01-p-object-a",
+      "ruleId": "d2-f5be0022fa51889dc6f7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-e3916092072c226cfba9-case-sub-g01-p-object-a-sub-g01-p-object-b",
+      "ruleId": "d2-e3916092072c226cfba9",
+      "target": {
+        "scope": "case",
+        "subjectIds": [
+          "sub-g01-p-object-a",
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-00e6668c9f4b11cefb2c-subject-sub-g01-p-object-a",
+      "ruleId": "d2-00e6668c9f4b11cefb2c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-f2a7628b4dac5019ce7d-subject-sub-g01-p-object-a",
+      "ruleId": "d2-f2a7628b4dac5019ce7d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-68f32571757294015882-subject-sub-g01-p-object-a",
+      "ruleId": "d2-68f32571757294015882",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.113Z"
+    },
+    {
+      "checkId": "check-d2-e701d1e946b7303b0815-subject-sub-g01-p-object-a",
+      "ruleId": "d2-e701d1e946b7303b0815",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-3a2d04e4f99f846afec4-subject-sub-g01-p-object-a",
+      "ruleId": "d2-3a2d04e4f99f846afec4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-04a97f2921b24863c709-subject-sub-g01-p-object-a",
+      "ruleId": "d2-04a97f2921b24863c709",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-4e49e9e09b8e1259fbcb-subject-sub-g01-p-object-a",
+      "ruleId": "d2-4e49e9e09b8e1259fbcb",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-8a1c08e930f317fe268f-subject-sub-g01-p-object-a",
+      "ruleId": "d2-8a1c08e930f317fe268f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-d54eff45ef7c346dac2c-subject-sub-g01-p-object-b",
+      "ruleId": "d2-d54eff45ef7c346dac2c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-0d51e5cebe7bba21c447-subject-sub-g01-p-object-b",
+      "ruleId": "d2-0d51e5cebe7bba21c447",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-64874a00b86bc0088555-subject-sub-g01-p-object-b",
+      "ruleId": "d2-64874a00b86bc0088555",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-2b7b8b680f415ddd2c3d-subject-sub-g01-p-object-b",
+      "ruleId": "d2-2b7b8b680f415ddd2c3d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-965d48962abd6fdd86d3-subject-sub-g01-p-object-b",
+      "ruleId": "d2-965d48962abd6fdd86d3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-5ee94fb16af7e7d5b58f-subject-sub-g01-p-object-b",
+      "ruleId": "d2-5ee94fb16af7e7d5b58f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-15d4237677715d35d442-subject-sub-g01-p-object-b",
+      "ruleId": "d2-15d4237677715d35d442",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-00fbcbe0af766e1c64ef-subject-sub-g01-p-object-b",
+      "ruleId": "d2-00fbcbe0af766e1c64ef",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-7016a8a7363dc1080c9b-subject-sub-g01-p-object-b",
+      "ruleId": "d2-7016a8a7363dc1080c9b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-d2100faa8248c97388ef-subject-sub-g01-p-object-b",
+      "ruleId": "d2-d2100faa8248c97388ef",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-f82573629741d8485bcf-subject-sub-g01-p-object-b",
+      "ruleId": "d2-f82573629741d8485bcf",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-f9aa41b3002056b783f4-subject-sub-g01-p-object-b",
+      "ruleId": "d2-f9aa41b3002056b783f4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-44229e021e0e51ca8b31-subject-sub-g01-p-object-b",
+      "ruleId": "d2-44229e021e0e51ca8b31",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-467c005ebfbe0e03d1cb-subject-sub-g01-p-object-b",
+      "ruleId": "d2-467c005ebfbe0e03d1cb",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-0ec942dab07d2f43f2bd-subject-sub-g01-p-object-b",
+      "ruleId": "d2-0ec942dab07d2f43f2bd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-f107eb23e9624ea919f0-subject-sub-g01-p-object-b",
+      "ruleId": "d2-f107eb23e9624ea919f0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-767dab5f1deea4466f15-subject-sub-g01-p-object-b",
+      "ruleId": "d2-767dab5f1deea4466f15",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-357a35535e626ccfd708-subject-sub-g01-p-object-b",
+      "ruleId": "d2-357a35535e626ccfd708",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-11e20531b61ad6b843c5-subject-sub-g01-p-object-b",
+      "ruleId": "d2-11e20531b61ad6b843c5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-8068d4069adb0c833588-subject-sub-g01-p-object-b",
+      "ruleId": "d2-8068d4069adb0c833588",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-888d33ce0c23d7960ccd-subject-sub-g01-p-object-b",
+      "ruleId": "d2-888d33ce0c23d7960ccd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-2939b7a03d6639268305-subject-sub-g01-p-object-b",
+      "ruleId": "d2-2939b7a03d6639268305",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-4864dbced3429f5073fa-subject-sub-g01-p-object-b",
+      "ruleId": "d2-4864dbced3429f5073fa",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-7fdbfca6f0e6d117a11d-subject-sub-g01-p-object-b",
+      "ruleId": "d2-7fdbfca6f0e6d117a11d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-c18c9e9828b6e66600ac-subject-sub-g01-p-object-b",
+      "ruleId": "d2-c18c9e9828b6e66600ac",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-95a836e7d6ee543ef353-subject-sub-g01-p-object-b",
+      "ruleId": "d2-95a836e7d6ee543ef353",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-03aae7396fc1da5f8178-subject-sub-g01-p-object-b",
+      "ruleId": "d2-03aae7396fc1da5f8178",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-1fefe18d5ed1be53ff20-subject-sub-g01-p-object-b",
+      "ruleId": "d2-1fefe18d5ed1be53ff20",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-aa8c79ad80794ef0bbb3-subject-sub-g01-p-object-b",
+      "ruleId": "d2-aa8c79ad80794ef0bbb3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-b627570787c4d06c4b58-subject-sub-g01-p-object-b",
+      "ruleId": "d2-b627570787c4d06c4b58",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-68860ca13ed37defdaf2-subject-sub-g01-p-object-b",
+      "ruleId": "d2-68860ca13ed37defdaf2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-9e8a6e80f1a27f65a0f1-subject-sub-g01-p-object-b",
+      "ruleId": "d2-9e8a6e80f1a27f65a0f1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-645262316cbdfed72c60-subject-sub-g01-p-object-b",
+      "ruleId": "d2-645262316cbdfed72c60",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-bd33253356d7bb7a412b-subject-sub-g01-p-object-b",
+      "ruleId": "d2-bd33253356d7bb7a412b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-d1876bcb8cff5e5db02c-subject-sub-g01-p-object-b",
+      "ruleId": "d2-d1876bcb8cff5e5db02c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-f3673f266bb5c8a85deb-subject-sub-g01-p-object-b",
+      "ruleId": "d2-f3673f266bb5c8a85deb",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-42d2cd936090c1deeec3-subject-sub-g01-p-object-b",
+      "ruleId": "d2-42d2cd936090c1deeec3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-a30962d10969eec1408a-subject-sub-g01-p-object-b",
+      "ruleId": "d2-a30962d10969eec1408a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-2a022498f026e032c9be-subject-sub-g01-p-object-b",
+      "ruleId": "d2-2a022498f026e032c9be",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-f5959bef3f321af4fa56-subject-sub-g01-p-object-b",
+      "ruleId": "d2-f5959bef3f321af4fa56",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-ef5ac659477a9f8b8d42-subject-sub-g01-p-object-b",
+      "ruleId": "d2-ef5ac659477a9f8b8d42",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-48b2dca802bab30d30fc-subject-sub-g01-p-object-b",
+      "ruleId": "d2-48b2dca802bab30d30fc",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-b1944b50d56c884b07fe-subject-sub-g01-p-object-b",
+      "ruleId": "d2-b1944b50d56c884b07fe",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.114Z"
+    },
+    {
+      "checkId": "check-d2-b2427e6953e262a931a2-subject-sub-g01-p-object-b",
+      "ruleId": "d2-b2427e6953e262a931a2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-045f905a4a7ef041f856-subject-sub-g01-p-object-b",
+      "ruleId": "d2-045f905a4a7ef041f856",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-447c9b4dff4d62640625-subject-sub-g01-p-object-b",
+      "ruleId": "d2-447c9b4dff4d62640625",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-eb839ba3f54d2a509ee1-subject-sub-g01-p-object-b",
+      "ruleId": "d2-eb839ba3f54d2a509ee1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-c1491dae6c2873c086c9-subject-sub-g01-p-object-b",
+      "ruleId": "d2-c1491dae6c2873c086c9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-6600b4d498cfe7f4b3ce-subject-sub-g01-p-object-b",
+      "ruleId": "d2-6600b4d498cfe7f4b3ce",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-1105685874d12d8365e6-subject-sub-g01-p-object-b",
+      "ruleId": "d2-1105685874d12d8365e6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-e7aa64935b809c981c53-subject-sub-g01-p-object-b",
+      "ruleId": "d2-e7aa64935b809c981c53",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-59d4847c47e6853b9ba0-subject-sub-g01-p-object-b",
+      "ruleId": "d2-59d4847c47e6853b9ba0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-9a666f1ddbfd88078055-subject-sub-g01-p-object-b",
+      "ruleId": "d2-9a666f1ddbfd88078055",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-fd8fef6de333996a0d84-subject-sub-g01-p-object-b",
+      "ruleId": "d2-fd8fef6de333996a0d84",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-600f0e021d9d8833b40c-subject-sub-g01-p-object-b",
+      "ruleId": "d2-600f0e021d9d8833b40c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-ad0fce69f8aa12f0cd98-subject-sub-g01-p-object-b",
+      "ruleId": "d2-ad0fce69f8aa12f0cd98",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-513885aa41b8900d927c-subject-sub-g01-p-object-b",
+      "ruleId": "d2-513885aa41b8900d927c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-0cc6b51fe22c15a6dc7d-subject-sub-g01-p-object-b",
+      "ruleId": "d2-0cc6b51fe22c15a6dc7d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-d834297c5e4d9d3b09f2-subject-sub-g01-p-object-b",
+      "ruleId": "d2-d834297c5e4d9d3b09f2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-d392a10d56b10192955d-subject-sub-g01-p-object-b",
+      "ruleId": "d2-d392a10d56b10192955d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-1fde4f9970fdc36ecf0c-subject-sub-g01-p-object-b",
+      "ruleId": "d2-1fde4f9970fdc36ecf0c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-d886c7edc4e29190b252-subject-sub-g01-p-object-b",
+      "ruleId": "d2-d886c7edc4e29190b252",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-20bd130664f2da6b1d4d-subject-sub-g01-p-object-b",
+      "ruleId": "d2-20bd130664f2da6b1d4d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-81a4a56d03f4e4629503-subject-sub-g01-p-object-b",
+      "ruleId": "d2-81a4a56d03f4e4629503",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-b1d4acfa145de5f77a74-subject-sub-g01-p-object-b",
+      "ruleId": "d2-b1d4acfa145de5f77a74",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-5717ff98b79202cec42e-subject-sub-g01-p-object-b",
+      "ruleId": "d2-5717ff98b79202cec42e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-47582c495fad89b17aff-subject-sub-g01-p-object-b",
+      "ruleId": "d2-47582c495fad89b17aff",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-628f7aa5d269b91b5543-subject-sub-g01-p-object-b",
+      "ruleId": "d2-628f7aa5d269b91b5543",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-1d57a55ecee9e0041333-subject-sub-g01-p-object-b",
+      "ruleId": "d2-1d57a55ecee9e0041333",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-1ecc1a22473abc5f8eaa-subject-sub-g01-p-object-b",
+      "ruleId": "d2-1ecc1a22473abc5f8eaa",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-101f759dcb4504e47866-subject-sub-g01-p-object-b",
+      "ruleId": "d2-101f759dcb4504e47866",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-582d9f1722880e472f8a-subject-sub-g01-p-object-b",
+      "ruleId": "d2-582d9f1722880e472f8a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-5f51670da7aef3aa953a-subject-sub-g01-p-object-b",
+      "ruleId": "d2-5f51670da7aef3aa953a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-164d14d714db8a9f3ceb-subject-sub-g01-p-object-b",
+      "ruleId": "d2-164d14d714db8a9f3ceb",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-17e0d978424630670ac6-subject-sub-g01-p-object-b",
+      "ruleId": "d2-17e0d978424630670ac6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-20cc21c7e3f395ad3c7e-subject-sub-g01-p-object-b",
+      "ruleId": "d2-20cc21c7e3f395ad3c7e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-5d921c91c82ea30b863e-subject-sub-g01-p-object-b",
+      "ruleId": "d2-5d921c91c82ea30b863e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-ac7b5c120a24dcd60a1e-subject-sub-g01-p-object-b",
+      "ruleId": "d2-ac7b5c120a24dcd60a1e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-69d423bcb386bcbf44f7-subject-sub-g01-p-object-b",
+      "ruleId": "d2-69d423bcb386bcbf44f7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-f80edab2063b7de2e68a-subject-sub-g01-p-object-b",
+      "ruleId": "d2-f80edab2063b7de2e68a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-076f97d047c1625b4cfa-subject-sub-g01-p-object-b",
+      "ruleId": "d2-076f97d047c1625b4cfa",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-a3a12c1aa018ea547256-subject-sub-g01-p-object-b",
+      "ruleId": "d2-a3a12c1aa018ea547256",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-b9fdebd61f8a31826454-subject-sub-g01-p-object-b",
+      "ruleId": "d2-b9fdebd61f8a31826454",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.115Z"
+    },
+    {
+      "checkId": "check-d2-37fbfb22cf996bd1b1ab-subject-sub-g01-p-object-b",
+      "ruleId": "d2-37fbfb22cf996bd1b1ab",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-3627e0729009c4d45f3a-subject-sub-g01-p-object-b",
+      "ruleId": "d2-3627e0729009c4d45f3a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-9db6b38296b3e23d621a-subject-sub-g01-p-object-b",
+      "ruleId": "d2-9db6b38296b3e23d621a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-b9942404681d51ef7b40-subject-sub-g01-p-object-b",
+      "ruleId": "d2-b9942404681d51ef7b40",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-cf7613f73ad07c542b0d-subject-sub-g01-p-object-b",
+      "ruleId": "d2-cf7613f73ad07c542b0d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-5e74ef6fe09d4109e2d6-subject-sub-g01-p-object-b",
+      "ruleId": "d2-5e74ef6fe09d4109e2d6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-2ea6eb17938e7a0740f6-subject-sub-g01-p-object-b",
+      "ruleId": "d2-2ea6eb17938e7a0740f6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-86f4e79ee62a7ff0e2c3-subject-sub-g01-p-object-b",
+      "ruleId": "d2-86f4e79ee62a7ff0e2c3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-b4f2de0a0f697f9d3c52-subject-sub-g01-p-object-b",
+      "ruleId": "d2-b4f2de0a0f697f9d3c52",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-932f03bfde893e1b24ff-subject-sub-g01-p-object-b",
+      "ruleId": "d2-932f03bfde893e1b24ff",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-420d515e691045f044ea-subject-sub-g01-p-object-b",
+      "ruleId": "d2-420d515e691045f044ea",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-a347893487cef7c1eee5-subject-sub-g01-p-object-b",
+      "ruleId": "d2-a347893487cef7c1eee5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-5d55eca4af0396cfbc12-subject-sub-g01-p-object-b",
+      "ruleId": "d2-5d55eca4af0396cfbc12",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-ba40e8f90dc93ea3441a-subject-sub-g01-p-object-b",
+      "ruleId": "d2-ba40e8f90dc93ea3441a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-0fa9d4111d7bacaa514e-subject-sub-g01-p-object-b",
+      "ruleId": "d2-0fa9d4111d7bacaa514e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-40e2af60eb2b989706ac-subject-sub-g01-p-object-b",
+      "ruleId": "d2-40e2af60eb2b989706ac",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-f13596adc716e1cc4bf9-subject-sub-g01-p-object-b",
+      "ruleId": "d2-f13596adc716e1cc4bf9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-5b1aed881c95db3b680f-subject-sub-g01-p-object-b",
+      "ruleId": "d2-5b1aed881c95db3b680f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-0598c0388a21fe59ee52-subject-sub-g01-p-object-b",
+      "ruleId": "d2-0598c0388a21fe59ee52",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-7e96d54c5d48184e81b3-subject-sub-g01-p-object-b",
+      "ruleId": "d2-7e96d54c5d48184e81b3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-cfc9e3b78d5797a69f22-subject-sub-g01-p-object-b",
+      "ruleId": "d2-cfc9e3b78d5797a69f22",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-8385489389af55d86162-subject-sub-g01-p-object-b",
+      "ruleId": "d2-8385489389af55d86162",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-2474a053aca8437bcb2c-subject-sub-g01-p-object-b",
+      "ruleId": "d2-2474a053aca8437bcb2c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-d0f80dd39d151ce783f8-subject-sub-g01-p-object-b",
+      "ruleId": "d2-d0f80dd39d151ce783f8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-75fd132071dcfea31a64-subject-sub-g01-p-object-b",
+      "ruleId": "d2-75fd132071dcfea31a64",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-457c6f0c944479c99195-subject-sub-g01-p-object-b",
+      "ruleId": "d2-457c6f0c944479c99195",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-9df9394d62dbc1f50059-subject-sub-g01-p-object-b",
+      "ruleId": "d2-9df9394d62dbc1f50059",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-e357171a3fff84d2a809-subject-sub-g01-p-object-b",
+      "ruleId": "d2-e357171a3fff84d2a809",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-7b11a9a031029e78ddbd-subject-sub-g01-p-object-b",
+      "ruleId": "d2-7b11a9a031029e78ddbd",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-c73fe85b85bcf64b6284-subject-sub-g01-p-object-b",
+      "ruleId": "d2-c73fe85b85bcf64b6284",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-2b164528bb97be63c880-subject-sub-g01-p-object-b",
+      "ruleId": "d2-2b164528bb97be63c880",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-3fffe1f2edcb97171e79-subject-sub-g01-p-object-b",
+      "ruleId": "d2-3fffe1f2edcb97171e79",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-b89776cdabf92e9fe797-subject-sub-g01-p-object-b",
+      "ruleId": "d2-b89776cdabf92e9fe797",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-3f53fe253df00db937b8-subject-sub-g01-p-object-b",
+      "ruleId": "d2-3f53fe253df00db937b8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-97d822bf3cc37c7ecc0c-subject-sub-g01-p-object-b",
+      "ruleId": "d2-97d822bf3cc37c7ecc0c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-d9f344adeb6cd2f279a6-subject-sub-g01-p-object-b",
+      "ruleId": "d2-d9f344adeb6cd2f279a6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-4f9365c7a334b4151d6f-subject-sub-g01-p-object-b",
+      "ruleId": "d2-4f9365c7a334b4151d6f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-02b412124143dcb31951-subject-sub-g01-p-object-b",
+      "ruleId": "d2-02b412124143dcb31951",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-d8acfea68bcffa73fbbc-subject-sub-g01-p-object-b",
+      "ruleId": "d2-d8acfea68bcffa73fbbc",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.116Z"
+    },
+    {
+      "checkId": "check-d2-8b07cc4e43bef1e675d9-subject-sub-g01-p-object-b",
+      "ruleId": "d2-8b07cc4e43bef1e675d9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-748e2889bba218f9cd62-subject-sub-g01-p-object-b",
+      "ruleId": "d2-748e2889bba218f9cd62",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-959d867c098dca7139a3-subject-sub-g01-p-object-b",
+      "ruleId": "d2-959d867c098dca7139a3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-acbaa3499607f58b55c9-subject-sub-g01-p-object-b",
+      "ruleId": "d2-acbaa3499607f58b55c9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-c5d3f2c398d5b52b2595-subject-sub-g01-p-object-b",
+      "ruleId": "d2-c5d3f2c398d5b52b2595",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-37d1a0dbe995dba54d1e-subject-sub-g01-p-object-b",
+      "ruleId": "d2-37d1a0dbe995dba54d1e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-f9930e0422406322d50f-subject-sub-g01-p-object-b",
+      "ruleId": "d2-f9930e0422406322d50f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-3ff978cbc32f9bebec40-subject-sub-g01-p-object-b",
+      "ruleId": "d2-3ff978cbc32f9bebec40",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-47072964ec659454e320-subject-sub-g01-p-object-b",
+      "ruleId": "d2-47072964ec659454e320",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-c89efe25e28f2ef14f90-subject-sub-g01-p-object-b",
+      "ruleId": "d2-c89efe25e28f2ef14f90",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-3428db3a2591598f7d20-subject-sub-g01-p-object-b",
+      "ruleId": "d2-3428db3a2591598f7d20",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-1eee1cca2907dc6d4780-subject-sub-g01-p-object-b",
+      "ruleId": "d2-1eee1cca2907dc6d4780",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-69115d9b3eebcb65a866-subject-sub-g01-p-object-b",
+      "ruleId": "d2-69115d9b3eebcb65a866",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-e8248084e3ac570a45dc-subject-sub-g01-p-object-b",
+      "ruleId": "d2-e8248084e3ac570a45dc",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-d86ce38e4689631bf0ea-subject-sub-g01-p-object-b",
+      "ruleId": "d2-d86ce38e4689631bf0ea",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-673c81a00bc02682cb6d-subject-sub-g01-p-object-b",
+      "ruleId": "d2-673c81a00bc02682cb6d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-94398d7483927412b497-subject-sub-g01-p-object-b",
+      "ruleId": "d2-94398d7483927412b497",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-28aa8d84976c766a31e2-subject-sub-g01-p-object-b",
+      "ruleId": "d2-28aa8d84976c766a31e2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-4e922a60f5e4069a7f3c-subject-sub-g01-p-object-b",
+      "ruleId": "d2-4e922a60f5e4069a7f3c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-946c0877e1953d8782f2-subject-sub-g01-p-object-b",
+      "ruleId": "d2-946c0877e1953d8782f2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-bd52bbff31cbd3c9d279-subject-sub-g01-p-object-b",
+      "ruleId": "d2-bd52bbff31cbd3c9d279",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    },
+    {
+      "checkId": "check-d2-16d7ed5bb3e2c997cb11-subject-sub-g01-p-object-b",
+      "ruleId": "d2-16d7ed5bb3e2c997cb11",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "sub-g01-p-object-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:54:48.117Z"
+    }
+  ],
+  "opinions": [
+    {
+      "id": "opinion-run-pi-mvcn0083-fip22",
+      "kind": "summary",
+      "severity": "yellow",
+      "title": "Pi 审核意见",
+      "detail": "Synthetic G01 P candidate: all authority/real-world claims pending independent confirmation",
+      "suggestion": "manual-review",
+      "suggestionText": "分析结果不代表正式决定，请按业务权限办理认定或审批。",
+      "sourceRefs": [],
+      "verification": "unverified"
+    }
+  ],
+  "coverage": {
+    "documents": [
+      {
+        "documentVersionId": "doc-1-mvcn0072-v1",
+        "status": "unread",
+        "reason": "本次运行没有可追溯的读取记录"
+      }
+    ],
+    "plannedChecks": 269,
+    "completedChecks": 269,
+    "effectiveVerdicts": 0,
+    "pendingChecks": 269
+  },
+  "diagnostics": [
+    "由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。"
+  ],
+  "startedAt": "2026-10-17T16:54:48.100Z",
+  "initiatedBy": {
+    "actorId": "agent-d4-g01-P-session",
+    "actorSource": "agent",
+    "role": "reviewer"
+  },
+  "completedAt": "2026-10-17T16:54:48.118Z"
+}

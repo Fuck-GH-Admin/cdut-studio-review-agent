@@ -1,0 +1,24 @@
+{
+  "caseId": "g05-t04-tech-run",
+  "runId": "run-pi-mvcrbt8y-948wz",
+  "verified": {
+    "complete": true,
+    "problems": []
+  },
+  "registeredDocumentVersion": "doc-1-mvcrbt8o-v1",
+  "confirmedEvidenceLinks": [
+    {
+      "id": "evl-doc-1-mvcrbt8o-v1-g05-t04-subject-alpha-1792263357389-6qx6",
+      "documentVersionId": "doc-1-mvcrbt8o-v1",
+      "subjectId": "g05-t04-subject-alpha",
+      "supportsFact": "d2:object:g05-t04-traveler:scope",
+      "status": "confirmed",
+      "linkedBy": "user"
+    }
+  ],
+  "negativeCrossObjectEvidence": "REJECTED",
+  "publicationAllowed": false,
+  "policyAuthority": "NOT_VERIFIED",
+  "onlineModel": "NOT_RUN",
+  "gold": "NOT_ACCESSED"
+}

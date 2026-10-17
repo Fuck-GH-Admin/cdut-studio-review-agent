@@ -1,0 +1,60 @@
+name: D4 unified G01-G08 engineering integration
+on:
+  pull_request:
+    paths:
+      - 'docs/design/review-agent/acceptance/d4-*-build/**'
+      - 'docs/design/review-agent/acceptance/d4-unified-r01/**'
+      - 'apps/electron/src/main/lib/review/review-d4-*.test.ts'
+      - 'apps/electron/scripts/review-d4-unified.ts'
+      - '.github/workflows/review-d4-unified.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unified:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - name: Frozen dependencies
+        run: bun install --frozen-lockfile
+      - name: Typecheck
+        run: bun run typecheck
+      - name: Module boundaries
+        run: bun run check:boundaries
+      - name: Full unified regression including all eight domains
+        run: |
+          set -euo pipefail
+          bun test --isolate --timeout 120000 2>&1 | tee "$RUNNER_TEMP/d4-bun-test.log"
+      - name: Verify candidate integrity D1 D3 and D2 plans
+        run: |
+          set -euo pipefail
+          bun apps/electron/scripts/review-d4-unified.ts verify | tee "$RUNNER_TEMP/d4-unified-verify.json"
+      - name: Install exactly fifty held candidates into isolated existing template store
+        run: |
+          set -euo pipefail
+          export PROFER_CONFIG_DIR="$(mktemp -d)"
+          bun apps/electron/scripts/review-d4-unified.ts install > "$RUNNER_TEMP/d4-install.json"
+          bun apps/electron/scripts/review-d4-unified.ts installed | tee "$RUNNER_TEMP/d4-installed.json"
+          bun -e "const fs=require('fs');const v=JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP+'/d4-installed.json')); if(v.expected!==50||v.candidateHeld!==50||v.visible!==50||v.missing.length)process.exit(1)"
+      - name: Preserve raw test diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: d4-unified-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/d4-bun-test.log
+            ${{ runner.temp }}/d4-unified-verify.json
+            ${{ runner.temp }}/d4-install.json
+            ${{ runner.temp }}/d4-installed.json
+          retention-days: 30

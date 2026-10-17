@@ -1,0 +1,1092 @@
+{
+  "originalBlob": "8a998496a49fff82fbb57bd8894c2f7bf646ec6f",
+  "rules": [
+    {
+      "sourceRequirementId": "R-01",
+      "sourceAnchor": "L532/R-01",
+      "sourceExcerpt": "### R-01｜受理范围与费用行路由\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 受理范围与费用行路由；申请目的必须是**已发生**的直接费用核销；差旅、人员酬金、主办会议、采购合同付款单独分流 |\n\n| 适用范围与制度 | 作者规范性规则/技术设计；不冒充行政实体判定。规范依据：CDUT2025清单、财务分类[CD-B01]；**研究路由规则** |\n\n| 触发条件 / 未知 | `已发生的直接费用或完整转办单元` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-02；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-02、F-03、F-21；候选证据槽 MS-01、MS-25、MS-34；另按第9",
+      "checkId": "g07-t01@1:module/use-rulebook/r01",
+      "sourceIds": [
+        "g07-t01-r01"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r01",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-02",
+      "sourceAnchor": "L561/R-02",
+      "sourceExcerpt": "### R-02｜制度生效及2026系统过渡\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 制度生效及2026系统过渡；用本次费用日/申请日适配2026报销系统与票据有效期；不能用已废旧预约单当现行完成审批 |\n\n| 适用范围与制度 | 校本2024/2025历史+2026变更需核。规范依据：学校2026开账通知[CD-B02] |\n\n| 触发条件 / 未知 | `按费用日/申报日选择有效制度` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-01；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-11、F-25、F-52；候选证据槽 MS-29、MS-38；另按第9.2节EV证据组和学校授权系统记录进行",
+      "checkId": "g07-t01@1:module/use-rulebook/r02",
+      "sourceIds": [
+        "g07-t01-r02"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r02",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-03",
+      "sourceAnchor": "L590/R-03",
+      "sourceExcerpt": "### R-03｜校内学生活动的事实证明\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 校内学生活动的事实证明；活动项目号及必要的`明细表或事项说明`支持时间/主题/人数 |\n\n| 适用范围与制度 | 校本2024/2025历史+2026变更需核。规范依据：CDUT2025校内活动费[P8][CD-B01] |\n\n| 触发条件 / 未知 | `student_activity_expense=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-04；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-13、F-15、F-16；候选证据槽 MS-02；另按第9.2节EV证据组和学校授权系统记录进行等价",
+      "checkId": "g07-t01@1:module/use-rulebook/r03",
+      "sourceIds": [
+        "g07-t01-r03"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r03",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-04",
+      "sourceAnchor": "L619/R-04",
+      "sourceExcerpt": "### R-04｜学生活动同次费用去重\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 学生活动同次费用去重；对符合该规则的同一校内活动原则一次报销；按费用发生事实/历史已报查重 |\n\n| 适用范围与制度 | 校本2024/2025历史+2026变更需核。规范依据：CDUT2025学生活动费[P8][CD-B01] |\n\n| 触发条件 / 未知 | `student_activity_expense=true AND historic_state_retrievable` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-48、F-50；候选证据槽 MS",
+      "checkId": "g07-t01@1:module/use-rulebook/r04",
+      "sourceIds": [
+        "g07-t01-r04"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r04",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-05",
+      "sourceAnchor": "L648/R-05",
+      "sourceExcerpt": "### R-05｜学生活动餐食/食品控制\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 学生活动餐食/食品控制；餐食和水果食品的人数、实际单价及相关签收/名单与发票商品对应；当时**原则人均20元** |\n\n| 适用范围与制度 | CDUT 2025/2024材料要求；2026是否沿用待核。规范依据：CDUT2025校内学生活动[P8][CD-B01] |\n\n| 触发条件 / 未知 | `student_activity_food=true AND verified_policy_contains_limit` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | ",
+      "checkId": "g07-t01@1:module/use-rulebook/r05",
+      "sourceIds": [
+        "g07-t01-r05"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r05",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-06",
+      "sourceAnchor": "L677/R-06",
+      "sourceExcerpt": "### R-06｜办公印刷商品明细补充\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 办公印刷商品明细补充；定额发票，或**单张票金额500元以上（含500元）且物品明细缺失**，触发供货方盖章清单 |\n\n| 适用范围与制度 | CDUT 2025/2024材料要求；2026是否沿用待核。规范依据：CDUT2025办公/印刷[P3][CD-B01] |\n\n| 触发条件 / 未知 | `office_printing=true AND local_detail_trigger=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-26、F-29；",
+      "checkId": "g07-t01@1:module/use-rulebook/r06",
+      "sourceIds": [
+        "g07-t01-r06"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r06",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-07",
+      "sourceAnchor": "L706/R-07",
+      "sourceExcerpt": "### R-07｜国内论文版面费关联\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 国内论文版面费关联；票据 + 论文录用通知**或**已发表首页关联同篇论文/刊物 |\n\n| 适用范围与制度 | CDUT 2025/2024材料要求；2026是否沿用待核。规范依据：CDUT2025国内论文版面费[P3][CD-B01] |\n\n| 触发条件 / 未知 | `domestic_publication_fee=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-38、F-39；候选证据槽 MS-07、MS-18、MS-19；另按第9.2节EV证据组",
+      "checkId": "g07-t01@1:module/use-rulebook/r07",
+      "sourceIds": [
+        "g07-t01-r07"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r07",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-08",
+      "sourceAnchor": "L735/R-08",
+      "sourceExcerpt": "### R-08｜境外出版付款专属依据\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 境外出版付款专属依据；录用、Invoice/Receipt、经有权单位批准的翻译汇率、税务证明，分币种金额 |\n\n| 适用范围与制度 | CDUT 2025/2024材料要求；2026是否沿用待核。规范依据：CDUT2025境外论文费[P3][CD-B01] |\n\n| 触发条件 / 未知 | `foreign_publication_fee=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-40；候选证据槽 MS-20；另按第9.2节EV证据组和学校授权系",
+      "checkId": "g07-t01@1:module/use-rulebook/r08",
+      "sourceIds": [
+        "g07-t01-r08"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r08",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-09",
+      "sourceAnchor": "L764/R-09",
+      "sourceExcerpt": "### R-09｜专利阶段与费用类型关联\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 专利阶段与费用类型关联；费用类型（申请、代理、年费等）与申请号/专利阶段/项目性质相符 |\n\n| 适用范围与制度 | CDUT 2025/2024材料要求；2026是否沿用待核。规范依据：CDUT2024专利指南+2025清单[P10][CD-B04][CD-B01] |\n\n| 触发条件 / 未知 | `patent_fee=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-43；候选证据槽 MS-23；另按第9.2节EV证据组和学校授权系统记录进行等价",
+      "checkId": "g07-t01@1:module/use-rulebook/r09",
+      "sourceIds": [
+        "g07-t01-r09"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r09",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-10",
+      "sourceAnchor": "L793/R-10",
+      "sourceExcerpt": "### R-10｜赛项对公支付证据组\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 赛项对公支付证据组；学校对公统一报名：竞赛通知、发票、正式名册与对公付款/借款引用一致 |\n\n| 适用范围与制度 | 付款事实核验为作者通用审核责任；CZU专属附件清单仅其学校规则确认时硬触发，CDUT不得外推。规范依据：常州工学院2026竞赛报名（仅该校）[EX-B01] |\n\n| 触发条件 / 未知 | `contest_fee AND payment_mode=central_public` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-14、F-17、F-3",
+      "checkId": "g07-t01@1:module/use-rulebook/r10",
+      "sourceIds": [
+        "g07-t01-r10"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r10",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-11",
+      "sourceAnchor": "L822/R-11",
+      "sourceExcerpt": "### R-11｜赛项个人垫付证据组\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 赛项个人垫付证据组；学生垫付：除官方通知/票/名册，还需签章缴费说明和**真实缴到主办方**的支付记录 |\n\n| 适用范围与制度 | 付款事实核验为作者通用审核责任；CZU专属附件清单仅其学校规则确认时硬触发，CDUT不得外推。规范依据：常州工学院2026学院牵头报名（仅该校）[EX-B01] |\n\n| 触发条件 / 未知 | `contest_fee AND payment_mode=individual_advance` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段",
+      "checkId": "g07-t01@1:module/use-rulebook/r11",
+      "sourceIds": [
+        "g07-t01-r11"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r11",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-12",
+      "sourceAnchor": "L851/R-12",
+      "sourceExcerpt": "### R-12｜按学校及赛段判断重复\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 按学校及赛段判断重复；按**学校+活动类型+赛事阶段+经济事实**判断是否重复 |\n\n| 适用范围与制度 | 跨校严格示例；只有 jurisdiction 匹配或显式合成规则启用时执行拒件。规范依据：常州2026竞赛按阶段报[EX-B01]，CDUT2025活动一次报[CD-B01] |\n\n| 触发条件 / 未知 | `contest_has_multiple_stages=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-14、F-48；候选证据槽 MS",
+      "checkId": "g07-t01@1:module/use-rulebook/r12",
+      "sourceIds": [
+        "g07-t01-r12"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r12",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-13",
+      "sourceAnchor": "L880/R-13",
+      "sourceExcerpt": "### R-13｜特定学部活动前后证明\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 特定学部活动前后证明；该学部活动**事前**需策划、经费预算和审批表前半部分；报销时要活动后记录、票据、订单、支付、奖品签领（如有） |\n\n| 适用范围与制度 | 跨校严格示例；只有 jurisdiction 匹配或显式合成规则启用时执行拒件。规范依据：BNU2025心理学部学生活动[EX-B02] |\n\n| 触发条件 / 未知 | `student_activity AND jurisdiction=BNU_psychology_reference` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-03；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 ",
+      "checkId": "g07-t01@1:module/use-rulebook/r13",
+      "sourceIds": [
+        "g07-t01-r13"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r13",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-14",
+      "sourceAnchor": "L909/R-14",
+      "sourceExcerpt": "### R-14｜特定学部奖品和合同阈值\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 特定学部奖品和合同阈值；单次活动人均原则20元，奖品数≤40%参与人，单份奖品单价≤30元；大型活动金额**超过1000元**需合同并对公支付 |\n\n| 适用范围与制度 | 跨校严格示例；只有 jurisdiction 匹配或显式合成规则启用时执行拒件。规范依据：BNU2025奖品特殊限额（仅心理学部）[EX-B02] |\n\n| 触发条件 / 未知 | `student_activity_prize AND jurisdiction=BNU_psychology_reference` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建",
+      "checkId": "g07-t01@1:module/use-rulebook/r14",
+      "sourceIds": [
+        "g07-t01-r14"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r14",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-15",
+      "sourceAnchor": "L938/R-15",
+      "sourceExcerpt": "### R-15｜付款事实与合法垫付关系\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 付款事实与合法垫付关系；个人支付记录的真实付款主体、金额、收款人必须与费用经济事实关联 |\n\n| 适用范围与制度 | 校本2024/2025历史+2026变更需核。规范依据：CZU2026与BNU2025[EX-B01][EX-B02] |\n\n| 触发条件 / 未知 | `expense_paid AND payment_mode!=central_public` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-06、F-30；候选证据槽 MS-09、MS-12；",
+      "checkId": "g07-t01@1:module/use-rulebook/r15",
+      "sourceIds": [
+        "g07-t01-r15"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r15",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-16",
+      "sourceAnchor": "L967/R-16",
+      "sourceExcerpt": "### R-16｜票面与费用行关联\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 票面与费用行关联；发票票号、抬头、开票方、商品明细、价税合计按适用制度相符 |\n\n| 适用范围与制度 | 校本2024/2025历史+2026变更需核。规范依据：CDUT2025与楚雄2025票据样例[CD-B01][EX-B03] |\n\n| 触发条件 / 未知 | `invoice_required_for_expense=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-22；候选证据槽 MS-07；另按第9.2节EV证据组和学校授权系统记录进行等价替代，",
+      "checkId": "g07-t01@1:module/use-rulebook/r16",
+      "sourceIds": [
+        "g07-t01-r16"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r16",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-17",
+      "sourceAnchor": "L996/R-17",
+      "sourceExcerpt": "### R-17｜票据遗失的合法替代\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 票据遗失的合法替代；原票存根盖章或开票方证明与有权部门批准满足当时例外路径 |\n\n| 适用范围与制度 | CDUT 2025/2024材料要求；2026是否沿用待核。规范依据：CDUT2025票据遗失替代[P14][CD-B01] |\n\n| 触发条件 / 未知 | `invoice_lost AND eligible_exception_policy=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-46；候选证据槽 MS-26；另按第9.2节EV证据组和学",
+      "checkId": "g07-t01@1:module/use-rulebook/r17",
+      "sourceIds": [
+        "g07-t01-r17"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r17",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-18",
+      "sourceAnchor": "L1025/R-18",
+      "sourceExcerpt": "### R-18｜退款与净实付核算\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 退款与净实付核算；同一支出的票据、订单、支付、退款应能算实际净额，避免退费后申请原全额 |\n\n| 适用范围与制度 | 作者规范性规则/技术设计；不冒充行政实体判定。规范依据：CDUT2025[CD-B01]、EX-B03 |\n\n| 触发条件 / 未知 | `refund_or_credit_note_known=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-27；候选证据槽 MS-07；另按第9.2节EV证据组和学校授权系统记录进行等价替代，禁止只凭文件名",
+      "checkId": "g07-t01@1:module/use-rulebook/r18",
+      "sourceIds": [
+        "g07-t01-r18"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r18",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-19",
+      "sourceAnchor": "L1054/R-19",
+      "sourceExcerpt": "### R-19｜奖品及餐食领用关系\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 奖品及餐食领用关系；活动领取奖品、食品时核费用金额、领取数量和受益人，不能仅凭集体合影 |\n\n| 适用范围与制度 | 校本2024/2025历史+2026变更需核。规范依据：CDUT2025活动[CD-B01]、江苏信息学院[EX-B05] |\n\n| 触发条件 / 未知 | `distribution_expense=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-16；候选证据槽 MS-16；另按第9.2节EV证据组和学校授权系统记录进行等价替代，禁止只",
+      "checkId": "g07-t01@1:module/use-rulebook/r19",
+      "sourceIds": [
+        "g07-t01-r19"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r19",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-20",
+      "sourceAnchor": "L1083/R-20",
+      "sourceExcerpt": "### R-20｜经费来源/余额/支出范围\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 经费来源/余额/支出范围；经费来源必须允许该项支出，项目有效、余额足，业务实际相关 |\n\n| 适用范围与制度 | 跨校/校本事实 + 产品设计责任约束，需本校配置具体准入。规范依据：官方用途说明[CD-B01]、研究归纳 |\n\n| 触发条件 / 未知 | `uses_school_fund=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-08；候选证据槽 MS-05；另按第9.2节EV证据组和学校授权系统记录进行等价替代，禁止只凭文件名判缺 |\n\n|",
+      "checkId": "g07-t01@1:module/use-rulebook/r20",
+      "sourceIds": [
+        "g07-t01-r20"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r20",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-21",
+      "sourceAnchor": "L1112/R-21",
+      "sourceExcerpt": "### R-21｜多主体角色和费用收款授权\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 多主体角色和费用收款授权；区分填报人、垫付人、组织部门、经费负责人、收款人、签章人 |\n\n| 适用范围与制度 | 跨校/校本事实 + 产品设计责任约束，需本校配置具体准入。规范依据：CZU2026范围[EX-B01]、学校职责[CD-B01] |\n\n| 触发条件 / 未知 | `uses_school_fund=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-02；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-05；候选证据槽 MS-28；另按第9.2节EV证据组和学校授权系统记录进行等价替代，禁止只",
+      "checkId": "g07-t01@1:module/use-rulebook/r21",
+      "sourceIds": [
+        "g07-t01-r21"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r21",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-22",
+      "sourceAnchor": "L1141/R-22",
+      "sourceExcerpt": "### R-22｜审批与实际支付分离\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 审批与实际支付分离；申请已交、财务已审、银行已付款为不同事实；系统不得提前宣称支付成功 |\n\n| 适用范围与制度 | 跨校/校本事实 + 产品设计责任约束，需本校配置具体准入。规范依据：CDUT2025/2026[CD-B01][CD-B02] |\n\n| 触发条件 / 未知 | `all_school_funded_claims` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-07；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-01；候选证据槽 MS-01；另按第9.2节EV证据组和学校授权系统记录进行等价替代，禁止",
+      "checkId": "g07-t01@1:module/use-rulebook/r22",
+      "sourceIds": [
+        "g07-t01-r22"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r22",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-23",
+      "sourceAnchor": "L1170/R-23",
+      "sourceExcerpt": "### R-23｜采购/外协费用路由\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 采购/外协费用路由；直接费用若触发合同、固定资产、专用测试委托/校内转账，需依T03/T04审 |\n\n| 适用范围与制度 | 跨校/校本事实 + 产品设计责任约束，需本校配置具体准入。规范依据：CDUT采购/T04指南[CD-B05][CD-B06] |\n\n| 触发条件 / 未知 | `purchase_or_outsourcing_trigger=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-02；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-02；候选证据槽 MS-25；另按第9.2节EV证据组和学校",
+      "checkId": "g07-t01@1:module/use-rulebook/r23",
+      "sourceIds": [
+        "g07-t01-r23"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r23",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-24",
+      "sourceAnchor": "L1199/R-24",
+      "sourceExcerpt": "### R-24｜逐费用行部分结果聚合\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 逐费用行部分结果聚合；部分可核费用与未到材料阶段、资金已退、争议行**分项**标注 |\n\n| 适用范围与制度 | 作者规范性规则/技术设计；不冒充行政实体判定。规范依据：CDUT2025与其它高校[CD-B01][EX-B01] |\n\n| 触发条件 / 未知 | `multiple_expense_lines=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-06；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-03、F-54；候选证据槽 MS-01、MS-31；另按第9.2节EV证据组和学校授权系统记录进行",
+      "checkId": "g07-t01@1:module/use-rulebook/r24",
+      "sourceIds": [
+        "g07-t01-r24"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r24",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-25",
+      "sourceAnchor": "L1228/R-25",
+      "sourceExcerpt": "### R-25｜冲突、OCR与输入信任边界\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 冲突、OCR与输入信任边界；正式业务证据含冲突、盖章模糊或公章真伪无法从截图确认 |\n\n| 适用范围与制度 | 作者规范性规则/技术设计；不冒充行政实体判定。规范依据：所有官方来源共性及研究建议 |\n\n| 触发条件 / 未知 | `evidence_conflict_or_ocr_uncertainty=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-22；候选证据槽 MS-07；另按第9.2节EV证据组和学校授权系统记录进行等价替代，禁止只凭文件",
+      "checkId": "g07-t01@1:module/use-rulebook/r25",
+      "sourceIds": [
+        "g07-t01-r25"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r25",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-26",
+      "sourceAnchor": "L1257/R-26",
+      "sourceExcerpt": "### R-26｜按形成阶段要求材料\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 按形成阶段要求材料；活动前审批未形成、活动未举办、费用尚未发生时不索未来文件 |\n\n| 适用范围与制度 | 作者规范性规则/技术设计；不冒充行政实体判定。规范依据：EX-B01、EX-B02、CDUT2025[EX-B01][EX-B02][CD-B01] |\n\n| 触发条件 / 未知 | `expense_occurred!=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-01；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-19、F-20、F-21；候选证据槽 MS-04、MS-07、MS-14；另按第9",
+      "checkId": "g07-t01@1:module/use-rulebook/r26",
+      "sourceIds": [
+        "g07-t01-r26"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r26",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-27",
+      "sourceAnchor": "L1286/R-27",
+      "sourceExcerpt": "### R-27｜多项目合法分摊与余额\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 多项目合法分摊与余额；多项目同一费用分摊、多个赛段票据同名时，以**基础交易/已报金额**判断重复 |\n\n| 适用范围与制度 | 作者规范性规则/技术设计；不冒充行政实体判定。规范依据：EX-B01、CDUT2025[EX-B01][CD-B01] |\n\n| 触发条件 / 未知 | `multi_funding_or_duplicate_risk=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-14；候选证据槽 MS-31；另按第9.2节EV证据组和学校",
+      "checkId": "g07-t01@1:module/use-rulebook/r27",
+      "sourceIds": [
+        "g07-t01-r27"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r27",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-28",
+      "sourceAnchor": "L1315/R-28",
+      "sourceExcerpt": "### R-28｜本校申请/签批权限\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 本校申请/签批权限；学校和申请时身份有无T01入口权限，未经批准不得代项目签批 |\n\n| 适用范围与制度 | 跨校/校本事实 + 产品设计责任约束，需本校配置具体准入。规范依据：2026系统+学生/教师差异[CD-B02][EX-B05] |\n\n| 触发条件 / 未知 | `application_submission_to_school=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-03；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-05；候选证据槽 MS-29；另按第9.2节EV证据组和学校授权系统记",
+      "checkId": "g07-t01@1:module/use-rulebook/r28",
+      "sourceIds": [
+        "g07-t01-r28"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r28",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-29",
+      "sourceAnchor": "L1344/R-29",
+      "sourceExcerpt": "### R-29｜横向包干制不要求细目预算\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 横向包干制不要求细目预算；横向包干制不要求细目预算 |\n\n| 适用范围与制度 | 成都理工大学已核文本；项目合同与2026适用版本仍需确认。规范依据：CD-B13原PDF第三条；CD-B14 |\n\n| 触发条件 / 未知 | `funding_management_type=horizontal_lump_sum` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-10、F-12、F-59、F-61；候选证据槽 MS-05、MS-32；另按第9.2节EV证据组和学",
+      "checkId": "g07-t01@1:module/use-rulebook/r29",
+      "sourceIds": [
+        "g07-t01-r29"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r29",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-30",
+      "sourceAnchor": "L1373/R-30",
+      "sourceExcerpt": "### R-30｜纵向预算制非设备费用调剂\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 纵向预算制非设备费用调剂；纵向预算制非设备费用调剂 |\n\n| 适用范围与制度 | 成都理工大学已核文本；项目合同与2026适用版本仍需确认。规范依据：CD-B13原PDF第二条 |\n\n| 触发条件 / 未知 | `funding_management_type=vertical_budgeted AND adjustment_to_non_equipment=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-09、F-12、F-59、F-60；候选证据",
+      "checkId": "g07-t01@1:module/use-rulebook/r30",
+      "sourceIds": [
+        "g07-t01-r30"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r30",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-31",
+      "sourceAnchor": "L1402/R-31",
+      "sourceExcerpt": "### R-31｜真实性相关性风险因子\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 真实性相关性风险因子；真实性相关性风险因子 |\n\n| 适用范围与制度 | 成都理工大学已核文本；项目合同与2026适用版本仍需确认。规范依据：CD-B14官网全文；CD-B13费用相关性 |\n\n| 触发条件 / 未知 | `financial_risk_indicator_present=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-05；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-26、F-49、F-63；候选证据槽 MS-07、MS-25、MS-31；另按第9.2节EV证据组和学校授权系统记录进行",
+      "checkId": "g07-t01@1:module/use-rulebook/r31",
+      "sourceIds": [
+        "g07-t01-r31"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r31",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-32",
+      "sourceAnchor": "L1431/R-32",
+      "sourceExcerpt": "### R-32｜经费责任与校区竞赛归口\n\n| 属性 | 完整规则语义 |\n| --- | --- |\n\n| 审核目标 | 经费责任与校区竞赛归口；经费责任与校区竞赛归口 |\n\n| 适用范围与制度 | 成都理工大学已核文本；项目合同与2026适用版本仍需确认。规范依据：CD-B13第一条；CD-B15校区职责 |\n\n| 触发条件 / 未知 | `contest_or_research_funding=true` → true执行；false→`NOT_APPLICABLE`；unknown→`FACT_UNKNOWN/POLICY_UNRESOLVED`并定向取证，不执行条件假设后续拒件。 |\n\n| 生效阶段、对象、动作 | ST-03；费用行/资金分摊行或特定办理角色；执行核事实/给出预审建议，不替权责签批 |\n\n| 字段 / 材料 / 替代组 | 字段 F-04、F-05、F-09、F-62、F-64；候选证据槽 MS-29、MS-33；另按第9.2节EV证据组和学校授权系统记录进行",
+      "checkId": "g07-t01@1:module/use-rulebook/r32",
+      "sourceIds": [
+        "g07-t01-r32"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:r32",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-scope",
+      "sourceAnchor": "L9/## 1. 元信息、制度性质与适用范围",
+      "sourceExcerpt": "## 1. 元信息、制度性质与适用范围\n\n| 项目 | 值/解释 |\n| --- | --- |\n\n| 模板标识 | `G07-T01`；独立目的：已实际发生的直接费用逐行**材料预审及可核销金额建议** |\n\n| 适用主体 | 经校方批准的学生或教师经办、授权财务提交人、费用实际垫付人/受益人；**不保证学生具备直接提交/签批权限** |\n\n| 有效制度 | 正式运行时必须加载学校/校区/年份/资金种类/项目资助方附加条款；CDUT2024科研经费办法、2025财务清单、2026风险提示分年标注 |\n\n| 强制来源优先级 | 适用法律/现行学校制度与项目合同 → 有权业务系统事实 → 正式第三方证明 → 申请人上传说明 → 未核网页/聊天；规范与事实各司其职 |\n\n| 模型禁止 | 不作采购批准、科研成果学术鉴定、票据真伪最终鉴定、经费审批签名、行政否决决定、实际会计核销或银行放款 |\n\n| 不确定性 | 条件取 `true / false / unknown`，另设 `not_app",
+      "checkId": "g07-t01@1:module/use-crosscut/sscope",
+      "sourceIds": [
+        "g07-t01-sscope"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:sscope",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-actor",
+      "sourceAnchor": "L61/## 3. 主体、权限关系及阶段模型",
+      "sourceExcerpt": "## 3. 主体、权限关系及阶段模型\n\n| 角色 | 权责/证明边界 | 允许作为何种记录 |\n| --- | --- | --- |\n\n| `submitter` | 录入申报事项/上传材料；学生权限待CDUT2026系统确认 | 身份登录记录、合法代理 |\n\n| `payer` | 实际经济支付方，可能是学生、教师、学校对公、合法第三人 | 付款账户令牌、真实流水 |\n\n| `beneficiary` | 参赛人、活动参与人、科研任务受益方，可能多人 | 名册/活动证明 |\n\n| `organizer` | 赛事主办/活动组织机构，负责证活动是否举办 | 正式通知/名册 |\n\n| `fund_controller` | 项目经费负责人，CD-B13规定科研经费直接责任人 | 学校项目及授权记录 |\n\n| `expense_reimbursement_recipient` | 最终报销款受领人，原则查代垫授权/校内绑卡 | 不得在报告暴露完整卡号 |\n\n| `school_approv",
+      "checkId": "g07-t01@1:module/use-crosscut/sactor",
+      "sourceIds": [
+        "g07-t01-sactor"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:sactor",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-branch",
+      "sourceAnchor": "L142/## 6. 一套模板内的办理分支目录",
+      "sourceExcerpt": "## 6. 一套模板内的办理分支目录\n\n| 分支ID | 名称 | 触发 | 证据槽/说明 | 等效/例外 | 依据及适用性 | 规则 |\n| --- | --- | --- | --- | --- | --- | --- |\n\n| BR-01 | 学生活动日常支出 | student_activity_expense | MS-01,MS-02,MS-07；人数/主题/日期 | 活动明细表 OR 事项说明；正式活动底账可替事实组 | CD-B01 2025原PDF P8 | R-03,R-04,R-20 |\n\n| BR-02 | 学生活动餐食食品 | student_activity_food | MS-02,MS-07,MS-17(按2025适用规则) | 仅当当期该项目确有签收/人数限制 | CD-B01 P8（2026未核） | R-05,R-19 |\n\n| BR-03 | 学生活动奖品 | student_activity_has_prizes | MS-16,MS-17与库存",
+      "checkId": "g07-t01@1:module/use-crosscut/sbranch",
+      "sourceIds": [
+        "g07-t01-sbranch"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:sbranch",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-stage",
+      "sourceAnchor": "L88/## 4. 全生命周期状态与业务阶段",
+      "sourceExcerpt": "## 4. 全生命周期状态与业务阶段\n\n| 阶段ID | 定义及允许操作 | 此时不得索取/不得声称 |\n| --- | --- | --- |\n\n| ST-01 | 业务类型、费用是否发生、学校制度版本确认 | 未发生的费用不得索“已开发票”；政策未核不得判违反 |\n\n| ST-02 | 申报事项逐行识别、范围路由及经办关系确认 | 转办行不得与T01合规行全案混判 |\n\n| ST-03 | 事前批准或项目负责人授权的存在/权限核验 | 本阶段“负责人待签”不等于财务正式拒绝 |\n\n| ST-04 | 按条件获取申报材料及等效证据组 | 没有触发的奖品签领、外汇证明不要求 |\n\n| ST-05 | 已发生费用的逐行事实/票据/净额/预算/冲突审核 | OCR识读和上传文件本身不构成权威验真 |\n\n| ST-06 | 局部预审状态、证据缺口及暂拟金额聚合 | 有待核分行不可被总“通过”掩盖 |\n\n| ST-07 | 转交有权负责人/学院/财务业务及会计核算 | 材料预审完毕 ≠ 已正式批",
+      "checkId": "g07-t01@1:module/use-crosscut/sstage",
+      "sourceIds": [
+        "g07-t01-sstage"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:sstage",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-fields",
+      "sourceAnchor": "L195/## 7. 输入契约：申报事项、申报材料、证明材料、可信数据",
+      "sourceExcerpt": "## 7. 输入契约：申报事项、申报材料、证明材料、可信数据\n\n**申报事项**负责描述“要求系统审核/记录什么费用行”；**申报材料**记录申请人的主张、用途及代理授权；**证明材料**来自票据/赛事/出版/物流等签发来源；**可信数据**由学校项目/财务/身份、税务、银行或正式有权部门授权提供。四者不能彼此无条件替代。\n\n```yaml\nintake:\n  application_id: string\n  school_id: string\n  campus_id: string | null\n  submission_at: ISO8601\n  applicant_ref: protected_identity_token\n  expense_lines:                     # 一案一至多行，行ID与业务对象稳定\n    - expense_line_id: string\n      expense_kind: enum              # BR映射",
+      "checkId": "g07-t01@1:module/use-crosscut/sfields",
+      "sourceIds": [
+        "g07-t01-sfields"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:sfields",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-material",
+      "sourceAnchor": "L362/## 9. 完整材料槽位（38项）及等价证据组",
+      "sourceExcerpt": "## 9. 完整材料槽位（38项）及等价证据组\n\n| 材料槽 | 材料及类别 | 触发谓词/等级 | 形成时点 | 格式/证明事实 | 核验与合法替代 | 版本/不足的动作 | B来源 |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n\n| MS-01 | 费用核销申请/系统报销记录（申报材料） | B / expense_occurred | 提交 | 系统表单/导出PDF；经办人、项目、费用行及金额 | 费用行↔原票与项目号；等效：具备等价字段的智能报销后台记录 | 2026新系统字段待核；申请记录缺失→未受理，不当成学生违规 | CD-B02,CD-B01 |\n\n| MS-02 | 活动经费使用明细表或事项说明（申报材料） | C / student_activity_expense | 申报 | 盖章表格/事项说明DOCX；活动起讫、主题、人数、经费构成 | 支出活动ID↔人数票据/签领；等效：两者满足事实要求可择一 | CD",
+      "checkId": "g07-t01@1:module/use-crosscut/smaterial",
+      "sourceIds": [
+        "g07-t01-smaterial"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:smaterial",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-output",
+      "sourceAnchor": "L1460/## 12. 主/分项结果、问题聚合、输出契约",
+      "sourceExcerpt": "## 12. 主/分项结果、问题聚合、输出契约\n\n| 代码 | 语义 | 下一动作与聚合影响 |\n| --- | --- | --- |\n\n| PRECHECK_SUPPORTED | 已覆盖材料和适用规则，暂可交给有权部门审核 | 并非“正式财务批准”，可建议暂拟金额 |\n\n| NEEDS_SUPPLEMENT | 当前阶段确已必须的事实缺证明/影像缺关键字段 | 给出缺哪个事实、允许什么证据组、对应该行 |\n\n| EVIDENCE_CONFLICT | 两份关键证明相互矛盾且证据效力未裁清 | 冻结争议行、交有权复核 |\n\n| EXTERNAL_UNVERIFIED | 预算、发票、财务历史、学籍或审批系统不可达 | 记录接口名称、请求范围和未核事实，不归责申请人 |\n\n| POLICY_UNRESOLVED | 对应学校/日期/资助类别有效条款或附件触发阈值无法确认 | 挂起硬性结论；等待校方规则配置 |\n\n| AUTHORITY_UNVERIFIED | 经办、垫付、项目负责人、",
+      "checkId": "g07-t01@1:module/use-crosscut/soutput",
+      "sourceIds": [
+        "g07-t01-soutput"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:soutput",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-exception",
+      "sourceAnchor": "L1543/## 14. 合法例外、人工核验与不自动裁量",
+      "sourceExcerpt": "## 14. 合法例外、人工核验与不自动裁量\n\n| 情形 | 允许的规范路径 | 禁止的捷径 |\n| --- | --- | --- |\n\n| 学生活动说明二选一 | MS-02事实齐全用等价证据EV-01 | 要求明细表和说明同时提交 |\n\n| 对公报名支付 | 查MS-11/TS-04，不要求学生流水 | 认定“学生无付款截图”违规 |\n\n| 合法第三人代垫或代收 | 确认委托及资金流向/受款权限 | 仅字符串不等判伪造 |\n\n| 论文已录用未正式刊发 | 有效编辑部录用与票据按校本判费用 | 借用综测成果加分的发表时点规则 |\n\n| 专利申请、授权、年费 | 按收费阶段匹配受理/授权/缴费材料 | 所有费用强制专利已授权 |\n\n| 横向包干科研项目 | 查任务、真实支出及余额，不强索支出细目科目[CD-B13] | 以“预算科目为空”直接拒件 |\n\n| 纵向非设备费细目调剂 | 核有权项目负责人调剂、项目主管附加条件 | 推定一定需要额外学院签批或一定完全自由 |\n\n| 风险迹象 ",
+      "checkId": "g07-t01@1:module/use-crosscut/sexception",
+      "sourceIds": [
+        "g07-t01-sexception"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:sexception",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-01",
+      "sourceAnchor": "L147/BR-01",
+      "sourceExcerpt": "| BR-01 | 学生活动日常支出 | student_activity_expense | MS-01,MS-02,MS-07；人数/主题/日期 | 活动明细表 OR 事项说明；正式活动底账可替事实组 | CD-B01 2025原PDF P8 | R-03,R-04,R-20 |",
+      "checkId": "g07-t01@1:module/use-branch01/br01",
+      "sourceIds": [
+        "g07-t01-b01"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:b01",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-02",
+      "sourceAnchor": "L149/BR-02",
+      "sourceExcerpt": "| BR-02 | 学生活动餐食食品 | student_activity_food | MS-02,MS-07,MS-17(按2025适用规则) | 仅当当期该项目确有签收/人数限制 | CD-B01 P8（2026未核） | R-05,R-19 |",
+      "checkId": "g07-t01@1:module/use-branch02/br02",
+      "sourceIds": [
+        "g07-t01-b02"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:b02",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-03",
+      "sourceAnchor": "L151/BR-03",
+      "sourceExcerpt": "| BR-03 | 学生活动奖品 | student_activity_has_prizes | MS-16,MS-17与库存或领用 | 签收 OR 经有权部门确认的电子领取/库存记录 | EX-B02限其心理学部 | R-14,R-19 |",
+      "checkId": "g07-t01@1:module/use-branch03/br03",
+      "sourceIds": [
+        "g07-t01-b03"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:b03",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-04",
+      "sourceAnchor": "L153/BR-04",
+      "sourceExcerpt": "| BR-04 | 报名费学校对公 | contest_fee AND central_public | MS-03,MS-06,MS-07,MS-11 | 对公付款事实应有可信记录；特定必传文件由当校规则决定，不索学生个人流水；T07借款另查 | EX-B01常州；CDUT待配置 | R-10,R-15 |",
+      "checkId": "g07-t01@1:module/use-branch04/br04",
+      "sourceIds": [
+        "g07-t01-b04"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:b04",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-05",
+      "sourceAnchor": "L155/BR-05",
+      "sourceExcerpt": "| BR-05 | 报名费学生或教师垫付 | contest_fee AND individual_advance | MS-03,MS-06,MS-07,MS-10,MS-12(按校规) | 校财务授权支付记录可替图片；代垫需关系 | EX-B01常州；CDUT待配置 | R-11,R-15 |",
+      "checkId": "g07-t01@1:module/use-branch05/br05",
+      "sourceIds": [
+        "g07-t01-b05"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:b05",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-06",
+      "sourceAnchor": "L157/BR-06",
+      "sourceExcerpt": "| BR-06 | 多赛段报名费 | contest_stage_known AND multiple_stages | MS-03,MS-06,MS-31 | 省赛/国赛不同支付事实可分别核；历史分项去重 | CD-B01/EX-B01适用各校 | R-04,R-12,R-27 |",
+      "checkId": "g07-t01@1:module/use-branch06/br06",
+      "sourceIds": [
+        "g07-t01-b06"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:b06",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-07",
+      "sourceAnchor": "L159/BR-07",
+      "sourceExcerpt": "| BR-07 | 作品邮寄/展示文印 | shipping_or_printing | MS-07,MS-08(触发时),MS-15,MS-37 | 合同采购/委外技术服务转T03/T04 | EX-B01、CD-B01 | R-06,R-23 |",
+      "checkId": "g07-t01@1:module/use-branch07/br07",
+      "sourceIds": [
+        "g07-t01-b07"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:b07",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-08",
+      "sourceAnchor": "L161/BR-08",
+      "sourceExcerpt": "| BR-08 | 研究日常办公小额 | routine_research_cost | MS-05,MS-07,MS-08(触发时),MS-25 | 科研直接用途与预算/包干制相符 | CD-B01/CD-B13 | R-06,R-20,R-29 |",
+      "checkId": "g07-t01@1:module/use-branch08/br08",
+      "sourceIds": [
+        "g07-t01-b08"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:b08",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-09",
+      "sourceAnchor": "L163/BR-09",
+      "sourceExcerpt": "| BR-09 | 国内论文版面费 | domestic_publication_fee | MS-07 + (MS-18 OR MS-19) | 录用通知可替正式发表首页 | CD-B01 P3 | R-07 |",
+      "checkId": "g07-t01@1:module/use-branch09/br09",
+      "sourceIds": [
+        "g07-t01-b09"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:b09",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-10",
+      "sourceAnchor": "L165/BR-10",
+      "sourceExcerpt": "| BR-10 | 国外论文版面费 | foreign_publication_fee | MS-20,MS-21,MS-22(条件),录用 | 原始Invoice/Receipt；汇率税务依权责确认 | CD-B01 P3，2026细则待核 | R-08 |",
+      "checkId": "g07-t01@1:module/use-branch10/br10",
+      "sourceIds": [
+        "g07-t01-b10"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:b10",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-11",
+      "sourceAnchor": "L167/BR-11",
+      "sourceExcerpt": "| BR-11 | 专利申请或年费 | patent_fee_claim | MS-07,MS-23,MS-24(纵向触发) | 受理/授权证件随收费阶段择其一 | CD-B01/CD-B04版本冲突 | R-09 |",
+      "checkId": "g07-t01@1:module/use-branch11/br11",
+      "sourceIds": [
+        "g07-t01-b11"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:b11",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-12",
+      "sourceAnchor": "L169/BR-12",
+      "sourceExcerpt": "| BR-12 | 合法委托或第三方垫付 | third_party_payment | MS-09,MS-10,MS-28(受款资格) | 银行/支付机构可替申报截图 | EX-B01/EX-B09 | R-15,R-21 |",
+      "checkId": "g07-t01@1:module/use-branch12/br12",
+      "sourceIds": [
+        "g07-t01-b12"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:b12",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s02",
+      "sourceAnchor": "L34-60",
+      "checkId": "g07-t01@1:module/use-non-numbered/s02",
+      "sourceIds": [
+        "g07-t01-nonnum-s02"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:nonnums02",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s05",
+      "sourceAnchor": "L115-141",
+      "checkId": "g07-t01@1:module/use-non-numbered/s05",
+      "sourceIds": [
+        "g07-t01-nonnum-s05"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:nonnums05",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s08",
+      "sourceAnchor": "L225-361",
+      "checkId": "g07-t01@1:module/use-non-numbered/s08",
+      "sourceIds": [
+        "g07-t01-nonnum-s08"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:nonnums08",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s10",
+      "sourceAnchor": "L495-527",
+      "checkId": "g07-t01@1:module/use-non-numbered/s10",
+      "sourceIds": [
+        "g07-t01-nonnum-s10"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:nonnums10",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s13",
+      "sourceAnchor": "L1527-1542",
+      "checkId": "g07-t01@1:module/use-non-numbered/s13",
+      "sourceIds": [
+        "g07-t01-nonnum-s13"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:nonnums13",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s15",
+      "sourceAnchor": "L1574-1609",
+      "checkId": "g07-t01@1:module/use-non-numbered/s15",
+      "sourceIds": [
+        "g07-t01-nonnum-s15"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:nonnums15",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s16",
+      "sourceAnchor": "L1610-1650",
+      "checkId": "g07-t01@1:module/use-non-numbered/s16",
+      "sourceIds": [
+        "g07-t01-nonnum-s16"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:nonnums16",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s17",
+      "sourceAnchor": "L1651-1675",
+      "checkId": "g07-t01@1:module/use-non-numbered/s17",
+      "sourceIds": [
+        "g07-t01-nonnum-s17"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:nonnums17",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s18",
+      "sourceAnchor": "L1676-1759",
+      "checkId": "g07-t01@1:module/use-non-numbered/s18",
+      "sourceIds": [
+        "g07-t01-nonnum-s18"
+      ],
+      "evidenceFact": "d2:object:g07-expense-line:nonnums18",
+      "objectScope": "g07-expense-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    }
+  ],
+  "sectionIndex": [
+    {
+      "heading": "## 1. 元信息、制度性质与适用范围",
+      "sourceLine": 9,
+      "endLine": 33,
+      "bytes": 734,
+      "linkedTaskId": "scope",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 2. 审核目的、可受理边界与相邻业务分流",
+      "sourceLine": 34,
+      "endLine": 60,
+      "bytes": 808,
+      "linkedTaskId": "s02",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 3. 主体、权限关系及阶段模型",
+      "sourceLine": 61,
+      "endLine": 87,
+      "bytes": 771,
+      "linkedTaskId": "actor",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 4. 全生命周期状态与业务阶段",
+      "sourceLine": 88,
+      "endLine": 114,
+      "bytes": 681,
+      "linkedTaskId": "stage",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 5. 业务条件轴及主分支",
+      "sourceLine": 115,
+      "endLine": 141,
+      "bytes": 1031,
+      "linkedTaskId": "s05",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 6. 一套模板内的办理分支目录",
+      "sourceLine": 142,
+      "endLine": 194,
+      "bytes": 2988,
+      "linkedTaskId": "branch",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 7. 输入契约：申报事项、申报材料、证明材料、可信数据",
+      "sourceLine": 195,
+      "endLine": 224,
+      "bytes": 1154,
+      "linkedTaskId": "fields",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 8. 完整字段字典（64项，其中58项沿用B，6项为v0.2增量）",
+      "sourceLine": 225,
+      "endLine": 361,
+      "bytes": 7605,
+      "linkedTaskId": "s08",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 9. 完整材料槽位（38项）及等价证据组",
+      "sourceLine": 362,
+      "endLine": 494,
+      "bytes": 9208,
+      "linkedTaskId": "material",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 10. 核心审核事实和跨文件不变量",
+      "sourceLine": 495,
+      "endLine": 527,
+      "bytes": 1891,
+      "linkedTaskId": "s10",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 11. 逐条原子审核规则（32条）",
+      "sourceLine": 528,
+      "endLine": 1459,
+      "bytes": 30529,
+      "linkedTaskId": "rulebook",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 12. 主/分项结果、问题聚合、输出契约",
+      "sourceLine": 1460,
+      "endLine": 1526,
+      "bytes": 2560,
+      "linkedTaskId": "output",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 13. 补件、重审、撤回与审计生命周期",
+      "sourceLine": 1527,
+      "endLine": 1542,
+      "bytes": 516,
+      "linkedTaskId": "s13",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 14. 合法例外、人工核验与不自动裁量",
+      "sourceLine": 1543,
+      "endLine": 1573,
+      "bytes": 797,
+      "linkedTaskId": "exception",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 15. 校本参数配置、有效期、来源与治理",
+      "sourceLine": 1574,
+      "endLine": 1609,
+      "bytes": 1594,
+      "linkedTaskId": "s15",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 16. 作者按实际申请路径的小规模流程推演",
+      "sourceLine": 1610,
+      "endLine": 1650,
+      "bytes": 1433,
+      "linkedTaskId": "s16",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 17. 编辑器共性模块及现有源码能力映射",
+      "sourceLine": 1651,
+      "endLine": 1675,
+      "bytes": 1339,
+      "linkedTaskId": "s17",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 18. 静态审计、版本说明和后续交接",
+      "sourceLine": 1676,
+      "endLine": 1759,
+      "bytes": 5785,
+      "linkedTaskId": "s18",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md"
+    }
+  ],
+  "allOriginalTextPreservedIn": "docs/design/review-agent/acceptance/d4-g07-build/T01/source/frozen-C-v0.1.md",
+  "independentRuleIds": [
+    "R-01",
+    "R-02",
+    "R-03",
+    "R-04",
+    "R-05",
+    "R-06",
+    "R-07",
+    "R-08",
+    "R-09",
+    "R-10",
+    "R-11",
+    "R-12",
+    "R-13",
+    "R-14",
+    "R-15",
+    "R-16",
+    "R-17",
+    "R-18",
+    "R-19",
+    "R-20",
+    "R-21",
+    "R-22",
+    "R-23",
+    "R-24",
+    "R-25",
+    "R-26",
+    "R-27",
+    "R-28",
+    "R-29",
+    "R-30",
+    "R-31",
+    "R-32"
+  ]
+}

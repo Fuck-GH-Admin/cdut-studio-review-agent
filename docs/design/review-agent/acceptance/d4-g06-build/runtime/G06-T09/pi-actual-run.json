@@ -1,0 +1,2081 @@
+{
+  "id": "run-pi-mvcmoy23-8xqct",
+  "caseId": "g06-t09-case-synthetic",
+  "templateId": "g06-t09",
+  "templateVersion": 1,
+  "inputManifest": {
+    "hash": "d3d73b1e8b7209f73de8e867689b4a508f43ca53950a10108fc173ca83f1830b",
+    "templateVersion": 1,
+    "policyVersions": [],
+    "documentVersions": [
+      {
+        "documentId": "doc-1-mvcmoy1c",
+        "versionId": "doc-1-mvcmoy1c-v1",
+        "contentHash": "611d855df532ca3fe51cbad0484880027d8c5e4a0e2edcb55a3bb9fbe44ad5b9"
+      }
+    ],
+    "observationIds": [],
+    "evidenceLinkIds": [
+      "evl-doc-1-mvcmoy1c-v1-g06-t09-subject-1-1792255572065-mbql"
+    ],
+    "effectiveRuleIds": [
+      "d2-ac98810b056341fca166",
+      "d2-339cb6356e4c9c89d462",
+      "d2-803e53df8b92e1189a57",
+      "d2-cb40190b2b3f9d2ba0cb",
+      "d2-368e05f8096ece8ded97",
+      "d2-7cff2c0f7fe8c044080b",
+      "d2-560fd34d4904904c69ac",
+      "d2-eb10899b98a89d989d5f",
+      "d2-8724a195578ae21e4941",
+      "d2-75931f25a980d4478e43",
+      "d2-6ebac5ebc126c98b7892",
+      "d2-70b72db01cd428cdb8de",
+      "d2-ece159cfb5dc84e3ee14",
+      "d2-25bded44ea012c3fbdda",
+      "d2-d8bc467e8969851461e2",
+      "d2-06c75078ba43b8a631e7",
+      "d2-97ab551e8fc4e1196812",
+      "d2-e38a1bf5bdf9f20697de",
+      "d2-7d84920e5bccce52ab41",
+      "d2-875a487e12bbe88389f5",
+      "d2-01918123b2c89a7bd31b",
+      "d2-f56fc3a53ef9ed3b8b56",
+      "d2-dc58905671df2e2bc85c",
+      "d2-09a93d213523a5cf0a08",
+      "d2-53484a324aa2b5164bc4",
+      "d2-629f445a1f989e125c7e",
+      "d2-727fcc19a87f35ecdeb7",
+      "d2-7adc9a0ff48dde77f10c",
+      "d2-2f05eb0e528a89864475",
+      "d2-59b766bb1fa71bf2570d",
+      "d2-6dd8308fd84387e7e7f0",
+      "d2-9a0d2298e078ed64717f",
+      "d2-0ecfb1437c7acc28bfd1",
+      "d2-b798d3b71f3b26b90a2b",
+      "d2-cd36d2a1d1f9117b7c86",
+      "d2-2882e3c4c637c28b0456",
+      "d2-9011ac490a3920e947a8",
+      "d2-aa1123fb68699f773660",
+      "d2-46d90942fa32b9d960e8",
+      "d2-5df4ac60b9094f43cb16",
+      "d2-7293745177a2a06e2001",
+      "d2-a9b286a31615798c8da0",
+      "d2-8b9a4352cb436b4b2b4a",
+      "d2-a08f774ed23354f32492",
+      "d2-0d12c80863388c203866",
+      "d2-f521acef3372eed0b672",
+      "d2-ed46ce88e56b818fcde6",
+      "d2-f9bd061b4e3b77936e6c",
+      "d2-1f44bd2d0a7dfbc3c43b",
+      "d2-a6e4e7fabee8b1b68721",
+      "d2-b691e3fd2085d225e413",
+      "d2-6bc5bf9a75cf9c91be9b",
+      "d2-4b80388c8ffce58fb603",
+      "d2-359f05604b53b50ced40",
+      "d2-0bc45470a3beb3abedf3",
+      "d2-c21523e3ab677ae9fbe8",
+      "d2-83bbe67414b4da590aa2",
+      "d2-30c2886aa6a3aa07f092",
+      "d2-e945368e5eb80e0ff0d8",
+      "d2-45e49e9d0686586d7c8f",
+      "d2-5f4b5a69503c4b6f9322",
+      "d2-41ada6cf4c720531119f",
+      "d2-69cf4c7586eb93686933",
+      "d2-a55093f4a62b780b6908",
+      "d2-61897baa0963174029ab",
+      "d2-810cd0226f032d7e3b47",
+      "d2-6173b95a6e7eeef0b125",
+      "d2-e80d3fe48531571a21b5",
+      "d2-bf5a966094e5f4f11297",
+      "d2-c7d4361e63b0105d2bec",
+      "d2-82b2cb767ab254924dce",
+      "d2-675d575babbcf46125e1",
+      "d2-732e11227813003c67c7",
+      "d2-ec58ef3e4b40794a1423",
+      "d2-2d797bb02895e93ff7b0",
+      "d2-889491dea60e7616f4a4",
+      "d2-0b607c31163042f32cd3",
+      "d2-a9e878b77e87061e43a3",
+      "d2-51a7bedd40f526170227",
+      "d2-f6e95704603eaae9449e",
+      "d2-ed0e10563ad3dd1a7859",
+      "d2-f3ff9db64cb9fff50083",
+      "d2-f7db918b039d03219ba9",
+      "d2-be0ac4bdc454aa315b53",
+      "d2-9f2d3ad9a667763ca973",
+      "d2-e87c79aaf390517248aa",
+      "d2-fd23515814bcd52859be",
+      "d2-711a25b43f202bc5e6a2",
+      "d2-cf050beadf0cacc60904",
+      "d2-21cd31a0156bd95bd5f8",
+      "d2-390627cedff64992ba88",
+      "d2-842e7c160a6a0ab8a36d",
+      "d2-0307e9317ca3f6c9e144",
+      "d2-f9fd02ca7dff6d659101",
+      "d2-6e44ddc0d434adabb33d",
+      "d2-7126aa23beb3647d89f1",
+      "d2-2902b2a5dd4f2415a573",
+      "d2-4f9bb942bcd4b7a4b7be",
+      "d2-18ccc218cc0b7aa3e6de",
+      "d2-8fc9659814fb192bc78b",
+      "d2-d6fa4bfbfd156d6b3073",
+      "d2-c568ba1a968a0a77d410",
+      "d2-1eebc7312ef75c7a779d",
+      "d2-42e0d988e2a823f79ae9",
+      "d2-886be1e0dda0793b4bc9",
+      "d2-e0d74d113a54cb601847",
+      "d2-5e8485e3b3843942f5c9",
+      "d2-e928d0f3e3750e51ab14",
+      "d2-c572f8da7681ac0fb3d1",
+      "d2-9224b2228c632168bdc6",
+      "d2-e902fe1b59cf9160958b",
+      "d2-e86558e8f9e1de6decae",
+      "d2-69181f3da415e0e595a0",
+      "d2-591a4d36aa6e89976e7b",
+      "d2-da5f3bf9d8aa3b47b272",
+      "d2-b377ca16cd1ec16db03c",
+      "d2-44358400253960a25a21",
+      "d2-a9afd4c0460655660a65",
+      "d2-3a2542a3a40c83f0c448",
+      "d2-0185c979777627d3cabf",
+      "d2-62e99b7099ff0334c4e8",
+      "d2-f2266c2f51a691e52b99",
+      "d2-c499c44f3248f29c0d8a",
+      "d2-70c332990a09abf71268",
+      "d2-64de451465603620024c",
+      "d2-9c72ce8db52830612fcf"
+    ],
+    "effectiveRuleSetHash": "f38f559afdf9041e76cce0db0b9289add0280f8467f573960a587a8afd5edbce"
+  },
+  "status": "completed",
+  "checkpoints": [],
+  "checks": [
+    {
+      "checkId": "check-d2-ac98810b056341fca166-subject-g06-t09-subject-1",
+      "ruleId": "d2-ac98810b056341fca166",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-339cb6356e4c9c89d462-subject-g06-t09-subject-1",
+      "ruleId": "d2-339cb6356e4c9c89d462",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-803e53df8b92e1189a57-subject-g06-t09-subject-1",
+      "ruleId": "d2-803e53df8b92e1189a57",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-cb40190b2b3f9d2ba0cb-subject-g06-t09-subject-1",
+      "ruleId": "d2-cb40190b2b3f9d2ba0cb",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-368e05f8096ece8ded97-subject-g06-t09-subject-1",
+      "ruleId": "d2-368e05f8096ece8ded97",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-7cff2c0f7fe8c044080b-subject-g06-t09-subject-1",
+      "ruleId": "d2-7cff2c0f7fe8c044080b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-560fd34d4904904c69ac-subject-g06-t09-subject-1",
+      "ruleId": "d2-560fd34d4904904c69ac",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-eb10899b98a89d989d5f-subject-g06-t09-subject-1",
+      "ruleId": "d2-eb10899b98a89d989d5f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-8724a195578ae21e4941-subject-g06-t09-subject-1",
+      "ruleId": "d2-8724a195578ae21e4941",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-75931f25a980d4478e43-subject-g06-t09-subject-1",
+      "ruleId": "d2-75931f25a980d4478e43",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-6ebac5ebc126c98b7892-subject-g06-t09-subject-1",
+      "ruleId": "d2-6ebac5ebc126c98b7892",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-70b72db01cd428cdb8de-subject-g06-t09-subject-1",
+      "ruleId": "d2-70b72db01cd428cdb8de",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-ece159cfb5dc84e3ee14-subject-g06-t09-subject-1",
+      "ruleId": "d2-ece159cfb5dc84e3ee14",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-25bded44ea012c3fbdda-subject-g06-t09-subject-1",
+      "ruleId": "d2-25bded44ea012c3fbdda",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-d8bc467e8969851461e2-subject-g06-t09-subject-1",
+      "ruleId": "d2-d8bc467e8969851461e2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-06c75078ba43b8a631e7-subject-g06-t09-subject-1",
+      "ruleId": "d2-06c75078ba43b8a631e7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-97ab551e8fc4e1196812-subject-g06-t09-subject-1",
+      "ruleId": "d2-97ab551e8fc4e1196812",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-e38a1bf5bdf9f20697de-subject-g06-t09-subject-1",
+      "ruleId": "d2-e38a1bf5bdf9f20697de",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-7d84920e5bccce52ab41-subject-g06-t09-subject-1",
+      "ruleId": "d2-7d84920e5bccce52ab41",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-875a487e12bbe88389f5-subject-g06-t09-subject-1",
+      "ruleId": "d2-875a487e12bbe88389f5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-01918123b2c89a7bd31b-subject-g06-t09-subject-1",
+      "ruleId": "d2-01918123b2c89a7bd31b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-f56fc3a53ef9ed3b8b56-subject-g06-t09-subject-1",
+      "ruleId": "d2-f56fc3a53ef9ed3b8b56",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-dc58905671df2e2bc85c-subject-g06-t09-subject-1",
+      "ruleId": "d2-dc58905671df2e2bc85c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-09a93d213523a5cf0a08-subject-g06-t09-subject-1",
+      "ruleId": "d2-09a93d213523a5cf0a08",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-53484a324aa2b5164bc4-subject-g06-t09-subject-1",
+      "ruleId": "d2-53484a324aa2b5164bc4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-629f445a1f989e125c7e-subject-g06-t09-subject-1",
+      "ruleId": "d2-629f445a1f989e125c7e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-727fcc19a87f35ecdeb7-subject-g06-t09-subject-1",
+      "ruleId": "d2-727fcc19a87f35ecdeb7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-7adc9a0ff48dde77f10c-subject-g06-t09-subject-1",
+      "ruleId": "d2-7adc9a0ff48dde77f10c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-2f05eb0e528a89864475-subject-g06-t09-subject-1",
+      "ruleId": "d2-2f05eb0e528a89864475",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-59b766bb1fa71bf2570d-subject-g06-t09-subject-1",
+      "ruleId": "d2-59b766bb1fa71bf2570d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-6dd8308fd84387e7e7f0-subject-g06-t09-subject-1",
+      "ruleId": "d2-6dd8308fd84387e7e7f0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-9a0d2298e078ed64717f-subject-g06-t09-subject-1",
+      "ruleId": "d2-9a0d2298e078ed64717f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-0ecfb1437c7acc28bfd1-subject-g06-t09-subject-1",
+      "ruleId": "d2-0ecfb1437c7acc28bfd1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-b798d3b71f3b26b90a2b-subject-g06-t09-subject-1",
+      "ruleId": "d2-b798d3b71f3b26b90a2b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-cd36d2a1d1f9117b7c86-subject-g06-t09-subject-1",
+      "ruleId": "d2-cd36d2a1d1f9117b7c86",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-2882e3c4c637c28b0456-subject-g06-t09-subject-1",
+      "ruleId": "d2-2882e3c4c637c28b0456",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-9011ac490a3920e947a8-subject-g06-t09-subject-1",
+      "ruleId": "d2-9011ac490a3920e947a8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-aa1123fb68699f773660-subject-g06-t09-subject-1",
+      "ruleId": "d2-aa1123fb68699f773660",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-46d90942fa32b9d960e8-subject-g06-t09-subject-1",
+      "ruleId": "d2-46d90942fa32b9d960e8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-5df4ac60b9094f43cb16-subject-g06-t09-subject-1",
+      "ruleId": "d2-5df4ac60b9094f43cb16",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-7293745177a2a06e2001-subject-g06-t09-subject-1",
+      "ruleId": "d2-7293745177a2a06e2001",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-a9b286a31615798c8da0-subject-g06-t09-subject-1",
+      "ruleId": "d2-a9b286a31615798c8da0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-8b9a4352cb436b4b2b4a-subject-g06-t09-subject-1",
+      "ruleId": "d2-8b9a4352cb436b4b2b4a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.085Z"
+    },
+    {
+      "checkId": "check-d2-a08f774ed23354f32492-subject-g06-t09-subject-1",
+      "ruleId": "d2-a08f774ed23354f32492",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-0d12c80863388c203866-subject-g06-t09-subject-1",
+      "ruleId": "d2-0d12c80863388c203866",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-f521acef3372eed0b672-subject-g06-t09-subject-1",
+      "ruleId": "d2-f521acef3372eed0b672",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-ed46ce88e56b818fcde6-subject-g06-t09-subject-1",
+      "ruleId": "d2-ed46ce88e56b818fcde6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-f9bd061b4e3b77936e6c-subject-g06-t09-subject-1",
+      "ruleId": "d2-f9bd061b4e3b77936e6c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-1f44bd2d0a7dfbc3c43b-subject-g06-t09-subject-1",
+      "ruleId": "d2-1f44bd2d0a7dfbc3c43b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-a6e4e7fabee8b1b68721-subject-g06-t09-subject-1",
+      "ruleId": "d2-a6e4e7fabee8b1b68721",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-b691e3fd2085d225e413-subject-g06-t09-subject-1",
+      "ruleId": "d2-b691e3fd2085d225e413",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-6bc5bf9a75cf9c91be9b-subject-g06-t09-subject-1",
+      "ruleId": "d2-6bc5bf9a75cf9c91be9b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-4b80388c8ffce58fb603-subject-g06-t09-subject-1",
+      "ruleId": "d2-4b80388c8ffce58fb603",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-359f05604b53b50ced40-subject-g06-t09-subject-1",
+      "ruleId": "d2-359f05604b53b50ced40",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-0bc45470a3beb3abedf3-subject-g06-t09-subject-1",
+      "ruleId": "d2-0bc45470a3beb3abedf3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-c21523e3ab677ae9fbe8-subject-g06-t09-subject-1",
+      "ruleId": "d2-c21523e3ab677ae9fbe8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-83bbe67414b4da590aa2-subject-g06-t09-subject-1",
+      "ruleId": "d2-83bbe67414b4da590aa2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-30c2886aa6a3aa07f092-subject-g06-t09-subject-1",
+      "ruleId": "d2-30c2886aa6a3aa07f092",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-e945368e5eb80e0ff0d8-subject-g06-t09-subject-1",
+      "ruleId": "d2-e945368e5eb80e0ff0d8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-45e49e9d0686586d7c8f-subject-g06-t09-subject-1",
+      "ruleId": "d2-45e49e9d0686586d7c8f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-5f4b5a69503c4b6f9322-subject-g06-t09-subject-1",
+      "ruleId": "d2-5f4b5a69503c4b6f9322",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-41ada6cf4c720531119f-subject-g06-t09-subject-1",
+      "ruleId": "d2-41ada6cf4c720531119f",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-69cf4c7586eb93686933-subject-g06-t09-subject-1",
+      "ruleId": "d2-69cf4c7586eb93686933",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-1"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-a55093f4a62b780b6908-subject-g06-t09-subject-2",
+      "ruleId": "d2-a55093f4a62b780b6908",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-61897baa0963174029ab-subject-g06-t09-subject-2",
+      "ruleId": "d2-61897baa0963174029ab",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-810cd0226f032d7e3b47-subject-g06-t09-subject-2",
+      "ruleId": "d2-810cd0226f032d7e3b47",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-6173b95a6e7eeef0b125-subject-g06-t09-subject-2",
+      "ruleId": "d2-6173b95a6e7eeef0b125",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-e80d3fe48531571a21b5-subject-g06-t09-subject-2",
+      "ruleId": "d2-e80d3fe48531571a21b5",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-bf5a966094e5f4f11297-subject-g06-t09-subject-2",
+      "ruleId": "d2-bf5a966094e5f4f11297",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-c7d4361e63b0105d2bec-subject-g06-t09-subject-2",
+      "ruleId": "d2-c7d4361e63b0105d2bec",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-82b2cb767ab254924dce-subject-g06-t09-subject-2",
+      "ruleId": "d2-82b2cb767ab254924dce",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-675d575babbcf46125e1-subject-g06-t09-subject-2",
+      "ruleId": "d2-675d575babbcf46125e1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-732e11227813003c67c7-subject-g06-t09-subject-2",
+      "ruleId": "d2-732e11227813003c67c7",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-ec58ef3e4b40794a1423-subject-g06-t09-subject-2",
+      "ruleId": "d2-ec58ef3e4b40794a1423",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-2d797bb02895e93ff7b0-subject-g06-t09-subject-2",
+      "ruleId": "d2-2d797bb02895e93ff7b0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-889491dea60e7616f4a4-subject-g06-t09-subject-2",
+      "ruleId": "d2-889491dea60e7616f4a4",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-0b607c31163042f32cd3-subject-g06-t09-subject-2",
+      "ruleId": "d2-0b607c31163042f32cd3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-a9e878b77e87061e43a3-subject-g06-t09-subject-2",
+      "ruleId": "d2-a9e878b77e87061e43a3",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-51a7bedd40f526170227-subject-g06-t09-subject-2",
+      "ruleId": "d2-51a7bedd40f526170227",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-f6e95704603eaae9449e-subject-g06-t09-subject-2",
+      "ruleId": "d2-f6e95704603eaae9449e",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-ed0e10563ad3dd1a7859-subject-g06-t09-subject-2",
+      "ruleId": "d2-ed0e10563ad3dd1a7859",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-f3ff9db64cb9fff50083-subject-g06-t09-subject-2",
+      "ruleId": "d2-f3ff9db64cb9fff50083",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-f7db918b039d03219ba9-subject-g06-t09-subject-2",
+      "ruleId": "d2-f7db918b039d03219ba9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-be0ac4bdc454aa315b53-subject-g06-t09-subject-2",
+      "ruleId": "d2-be0ac4bdc454aa315b53",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-9f2d3ad9a667763ca973-subject-g06-t09-subject-2",
+      "ruleId": "d2-9f2d3ad9a667763ca973",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-e87c79aaf390517248aa-subject-g06-t09-subject-2",
+      "ruleId": "d2-e87c79aaf390517248aa",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-fd23515814bcd52859be-subject-g06-t09-subject-2",
+      "ruleId": "d2-fd23515814bcd52859be",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-711a25b43f202bc5e6a2-subject-g06-t09-subject-2",
+      "ruleId": "d2-711a25b43f202bc5e6a2",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-cf050beadf0cacc60904-subject-g06-t09-subject-2",
+      "ruleId": "d2-cf050beadf0cacc60904",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-21cd31a0156bd95bd5f8-subject-g06-t09-subject-2",
+      "ruleId": "d2-21cd31a0156bd95bd5f8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-390627cedff64992ba88-subject-g06-t09-subject-2",
+      "ruleId": "d2-390627cedff64992ba88",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-842e7c160a6a0ab8a36d-subject-g06-t09-subject-2",
+      "ruleId": "d2-842e7c160a6a0ab8a36d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-0307e9317ca3f6c9e144-subject-g06-t09-subject-2",
+      "ruleId": "d2-0307e9317ca3f6c9e144",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-f9fd02ca7dff6d659101-subject-g06-t09-subject-2",
+      "ruleId": "d2-f9fd02ca7dff6d659101",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-6e44ddc0d434adabb33d-subject-g06-t09-subject-2",
+      "ruleId": "d2-6e44ddc0d434adabb33d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-7126aa23beb3647d89f1-subject-g06-t09-subject-2",
+      "ruleId": "d2-7126aa23beb3647d89f1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-2902b2a5dd4f2415a573-subject-g06-t09-subject-2",
+      "ruleId": "d2-2902b2a5dd4f2415a573",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-4f9bb942bcd4b7a4b7be-subject-g06-t09-subject-2",
+      "ruleId": "d2-4f9bb942bcd4b7a4b7be",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-18ccc218cc0b7aa3e6de-subject-g06-t09-subject-2",
+      "ruleId": "d2-18ccc218cc0b7aa3e6de",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-8fc9659814fb192bc78b-subject-g06-t09-subject-2",
+      "ruleId": "d2-8fc9659814fb192bc78b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-d6fa4bfbfd156d6b3073-subject-g06-t09-subject-2",
+      "ruleId": "d2-d6fa4bfbfd156d6b3073",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-c568ba1a968a0a77d410-subject-g06-t09-subject-2",
+      "ruleId": "d2-c568ba1a968a0a77d410",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-1eebc7312ef75c7a779d-subject-g06-t09-subject-2",
+      "ruleId": "d2-1eebc7312ef75c7a779d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-42e0d988e2a823f79ae9-subject-g06-t09-subject-2",
+      "ruleId": "d2-42e0d988e2a823f79ae9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-886be1e0dda0793b4bc9-subject-g06-t09-subject-2",
+      "ruleId": "d2-886be1e0dda0793b4bc9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-e0d74d113a54cb601847-subject-g06-t09-subject-2",
+      "ruleId": "d2-e0d74d113a54cb601847",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-5e8485e3b3843942f5c9-subject-g06-t09-subject-2",
+      "ruleId": "d2-5e8485e3b3843942f5c9",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-e928d0f3e3750e51ab14-subject-g06-t09-subject-2",
+      "ruleId": "d2-e928d0f3e3750e51ab14",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-c572f8da7681ac0fb3d1-subject-g06-t09-subject-2",
+      "ruleId": "d2-c572f8da7681ac0fb3d1",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.086Z"
+    },
+    {
+      "checkId": "check-d2-9224b2228c632168bdc6-subject-g06-t09-subject-2",
+      "ruleId": "d2-9224b2228c632168bdc6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-e902fe1b59cf9160958b-subject-g06-t09-subject-2",
+      "ruleId": "d2-e902fe1b59cf9160958b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-e86558e8f9e1de6decae-subject-g06-t09-subject-2",
+      "ruleId": "d2-e86558e8f9e1de6decae",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-69181f3da415e0e595a0-subject-g06-t09-subject-2",
+      "ruleId": "d2-69181f3da415e0e595a0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-591a4d36aa6e89976e7b-subject-g06-t09-subject-2",
+      "ruleId": "d2-591a4d36aa6e89976e7b",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-da5f3bf9d8aa3b47b272-subject-g06-t09-subject-2",
+      "ruleId": "d2-da5f3bf9d8aa3b47b272",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-b377ca16cd1ec16db03c-subject-g06-t09-subject-2",
+      "ruleId": "d2-b377ca16cd1ec16db03c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-44358400253960a25a21-subject-g06-t09-subject-2",
+      "ruleId": "d2-44358400253960a25a21",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-a9afd4c0460655660a65-subject-g06-t09-subject-2",
+      "ruleId": "d2-a9afd4c0460655660a65",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-3a2542a3a40c83f0c448-subject-g06-t09-subject-2",
+      "ruleId": "d2-3a2542a3a40c83f0c448",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-0185c979777627d3cabf-subject-g06-t09-subject-2",
+      "ruleId": "d2-0185c979777627d3cabf",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-62e99b7099ff0334c4e8-subject-g06-t09-subject-2",
+      "ruleId": "d2-62e99b7099ff0334c4e8",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-f2266c2f51a691e52b99-subject-g06-t09-subject-2",
+      "ruleId": "d2-f2266c2f51a691e52b99",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-c499c44f3248f29c0d8a-subject-g06-t09-subject-2",
+      "ruleId": "d2-c499c44f3248f29c0d8a",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-70c332990a09abf71268-subject-g06-t09-subject-2",
+      "ruleId": "d2-70c332990a09abf71268",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-64de451465603620024c-subject-g06-t09-subject-2",
+      "ruleId": "d2-64de451465603620024c",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    },
+    {
+      "checkId": "check-d2-9c72ce8db52830612fcf-subject-g06-t09-subject-2",
+      "ruleId": "d2-9c72ce8db52830612fcf",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g06-t09-subject-2"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "School policy/issuer authority not independently certified",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T16:46:12.087Z"
+    }
+  ],
+  "opinions": [
+    {
+      "id": "opinion-run-pi-mvcmoy23-8xqct",
+      "kind": "summary",
+      "severity": "yellow",
+      "title": "Pi 审核意见",
+      "detail": "G06 synthetic pre-review: authority and policy not independently verified",
+      "suggestion": "manual-review",
+      "suggestionText": "分析结果不代表正式决定，请按业务权限办理认定或审批。",
+      "sourceRefs": [],
+      "verification": "unverified"
+    }
+  ],
+  "coverage": {
+    "documents": [
+      {
+        "documentVersionId": "doc-1-mvcmoy1c-v1",
+        "status": "unread",
+        "reason": "本次运行没有可追溯的读取记录"
+      }
+    ],
+    "plannedChecks": 126,
+    "completedChecks": 126,
+    "effectiveVerdicts": 0,
+    "pendingChecks": 126
+  },
+  "diagnostics": [
+    "由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。"
+  ],
+  "startedAt": "2026-10-17T16:46:12.076Z",
+  "initiatedBy": {
+    "actorId": "agent-g06-session-9",
+    "actorSource": "agent",
+    "role": "reviewer"
+  },
+  "completedAt": "2026-10-17T16:46:12.087Z"
+}

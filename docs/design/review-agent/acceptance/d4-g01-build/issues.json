@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "technicalBaseline": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "sourceOriginals": "docs/design/review-agent/business-templates/G01/originals/",
+  "classification": {
+    "ENGINE": [
+      {
+        "id": "G01-ENGINE-01",
+        "affected": [
+          "I",
+          "A",
+          "C",
+          "S",
+          "P"
+        ],
+        "sourceAnchors": [
+          "I:R007/R020",
+          "A:R29/R40",
+          "C:F03/F06/T04",
+          "S:SP-24/SP-25",
+          "P:R018/R019"
+        ],
+        "reason": "D2_UNMAPPED_ADVANCED: arbitrary nested Claim/evidence graphs cannot be losslessly compiled; current limited per-Subject EvidenceLink is not a general relationship proof",
+        "minimalFix": "Only add a bounded graph if a specific independently tested requirement cannot be represented by independent observable semantic Checks plus HUMAN_ONLY; preserve fail-closed"
+      },
+      {
+        "id": "G01-ENGINE-02",
+        "affected": [
+          "S"
+        ],
+        "sourceAnchors": [
+          "SP-21",
+          "SP-22",
+          "SP-23",
+          "SP-24",
+          "SP-25",
+          "SP-26",
+          "SP-27"
+        ],
+        "reason": "COMMON generic objects isolate actions, but runtime cannot authenticate approved snapshot × document version × exact seal type/count/execution scope",
+        "minimalFix": "Controlled approval/execution event binding or retain all these decisions pending human approval; never claim execution complete"
+      },
+      {
+        "id": "G01-ENGINE-03",
+        "affected": [
+          "P",
+          "S",
+          "A",
+          "I"
+        ],
+        "sourceAnchors": [
+          "P:R004/R012/R020-R028",
+          "S:SP-21/SP-22/SP-27",
+          "A:R26/R33/R37",
+          "I:R025"
+        ],
+        "reason": "CaseStage is not the same as a trusted organizational signature, actual paper receipt, seal execution, or official school workflow event",
+        "minimalFix": "Use scoped controlled events with actor, signed record/version, timestamp, object, revocation and UNKNOWN; until then HUMAN_ONLY"
+      }
+    ],
+    "AUTHORING": [
+      {
+        "id": "G01-AUTHOR-01",
+        "affected": [
+          "I"
+        ],
+        "reason": "A′ original 85-point semantic ledger and 13 scenarios have been carried forward; COMMON run executed selected S01/S02/S07 in one synthetic field-pair; remaining individual scenario/G01 Gold matrix not all independently exercised",
+        "next": "Add D4-specific S01-S13 positive/unknown/negative runtime tests without changing original duties"
+      },
+      {
+        "id": "G01-AUTHOR-02",
+        "affected": [
+          "A",
+          "C",
+          "S",
+          "P"
+        ],
+        "reason": "Narrative, fields, materials and table rules are all present in workspaces; their long semantic Check text and non-activated branches require independent requirement-level inspection to ensure condition and material due-stage behavior in production",
+        "next": "Prioritize high-risk branch examples and source→Check→Rule one-by-one audit; do not treat checkCount as business accuracy"
+      }
+    ],
+    "SOURCE": [
+      {
+        "id": "G01-SOURCE-01",
+        "affected": [
+          "I",
+          "A",
+          "C",
+          "S",
+          "P"
+        ],
+        "status": "RESOLVED_FOR_AUTHORING",
+        "reason": "All five original Markdown archives copied byte-identically from main into fixed COMMON-descendant branch; indexed SHA256/blob hashes match archive manifest",
+        "remaining": "External school publications and approvals are separate POLICY/EXTERNAL tasks"
+      }
+    ],
+    "POLICY": [
+      {
+        "id": "G01-POLICY-01",
+        "affected": [
+          "I",
+          "A",
+          "C",
+          "S",
+          "P"
+        ],
+        "status": "OPEN",
+        "reason": "Business design drafts, cross-school examples and text verified by author do not prove an enforceable 2026 CDUT policy; typed policy-candidate must remain unconfirmed",
+        "next": "Only a separately authorized policy governance step may confirm applicability and effective dates"
+      }
+    ],
+    "EXTERNAL": [
+      {
+        "id": "G01-EXTERNAL-01",
+        "affected": [
+          "I"
+        ],
+        "reason": "No authenticated school student/registrar/admissions registry or authority workflow; controlled-registry.json is a synthetic fixture"
+      },
+      {
+        "id": "G01-EXTERNAL-02",
+        "affected": [
+          "A"
+        ],
+        "reason": "No certified archive issuance authority, actual opening/declassification, borrowing handover or entitlement service"
+      },
+      {
+        "id": "G01-EXTERNAL-03",
+        "affected": [
+          "C"
+        ],
+        "reason": "No trusted HR/cardholder/issued-card eligibility and permission records, deceased-family proxy approval or school card issuance event"
+      },
+      {
+        "id": "G01-EXTERNAL-04",
+        "affected": [
+          "S"
+        ],
+        "reason": "No signed seal jurisdiction, approved document snapshot, seal-execution event or verified electronic seal"
+      },
+      {
+        "id": "G01-EXTERNAL-05",
+        "affected": [
+          "P"
+        ],
+        "reason": "No signed organizational opinion, authenticated issuer identity, document receipt/physical seal integrity or valid signature verifier; political substantive judgment is explicitly HUMAN_ONLY"
+      }
+    ],
+    "TEST": [
+      {
+        "id": "G01-TEST-01",
+        "affected": [
+          "I",
+          "A",
+          "C",
+          "S",
+          "P"
+        ],
+        "reason": "Synthetic D1/D3/D2/Pi pending-only technical receipts do not establish LLM semantic accuracy. No online model; no independent hidden Gold scoring or real university approval."
+      },
+      {
+        "id": "G01-TEST-02",
+        "affected": [
+          "I",
+          "A",
+          "C",
+          "S",
+          "P"
+        ],
+        "reason": "Only fixed two-object synthetic selections (I two student fields) and selected conditions have been executed on COMMON; per-template full branch combinatorial coverage and independent business equivalence are still NOT_RUN"
+      },
+      {
+        "id": "G01-TEST-03",
+        "affected": [
+          "I",
+          "A",
+          "C",
+          "S",
+          "P"
+        ],
+        "reason": "All Pi CheckResult statuses in these synthetic runs are awaiting-confirmation with no asserted official SourceRef verification. Registered material and subject EvidenceLink tests are valid only as technical scope tests"
+      }
+    ]
+  }
+}
