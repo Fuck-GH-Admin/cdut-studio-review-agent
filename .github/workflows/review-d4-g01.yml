@@ -63,6 +63,8 @@ jobs:
           git add docs/design/review-agent/acceptance/d4-g01-build/runtime-evidence/
           if ! git diff --cached --quiet; then
             git commit -m 'test(d4-g01): capture actual five-template D2 Pi candidate receipts'
+            git status --short
+            git reset --hard HEAD
             git fetch origin feat/d4-g01-modular-templates-r01
             git rebase FETCH_HEAD
             git push origin HEAD:feat/d4-g01-modular-templates-r01
