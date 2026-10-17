@@ -1,0 +1,25 @@
+{
+  "caseId": "g03-t08-live-synth",
+  "runId": "run-pi-mvcn4smw-y5u8r",
+  "planFingerprint": "4c73a8b9531ab037e40ca2d7d4827b60a1e5022dca520223c8186aca5b73a7b6",
+  "evidenceVersion": "doc-1-mvcn4sme-v1",
+  "subjectEvidenceLinks": [
+    {
+      "id": "evl-doc-1-mvcn4sme-v1-g03-t08-subject-a-1792256311533-o8t5",
+      "documentVersionId": "doc-1-mvcn4sme-v1",
+      "subjectId": "g03-t08-subject-a",
+      "supportsFact": "d2:object:g03-instrument-slot:r01",
+      "status": "confirmed",
+      "linkedBy": "user"
+    }
+  ],
+  "accepted": 131,
+  "rejected": [],
+  "missingChecks": [],
+  "verified": {
+    "complete": true,
+    "problems": []
+  },
+  "publicationAllowed": false,
+  "officialApproval": false
+}

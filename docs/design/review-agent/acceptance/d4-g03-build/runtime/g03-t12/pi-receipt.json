@@ -1,0 +1,25 @@
+{
+  "caseId": "g03-t12-live-synth",
+  "runId": "run-pi-mvcn4scc-yv2wc",
+  "planFingerprint": "864dc717599666131e02517d01c36ccb1c16613b05760a60ae5256cc3684e8ec",
+  "evidenceVersion": "doc-1-mvcn4sbp-v1",
+  "subjectEvidenceLinks": [
+    {
+      "id": "evl-doc-1-mvcn4sbp-v1-g03-t12-subject-a-1792256311156-vgnf",
+      "documentVersionId": "doc-1-mvcn4sbp-v1",
+      "subjectId": "g03-t12-subject-a",
+      "supportsFact": "d2:object:g03-sports-slot:r01",
+      "status": "confirmed",
+      "linkedBy": "user"
+    }
+  ],
+  "accepted": 109,
+  "rejected": [],
+  "missingChecks": [],
+  "verified": {
+    "complete": true,
+    "problems": []
+  },
+  "publicationAllowed": false,
+  "officialApproval": false
+}
