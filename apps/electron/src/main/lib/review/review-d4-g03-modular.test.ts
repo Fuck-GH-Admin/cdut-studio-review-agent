@@ -47,6 +47,7 @@ describe('G03 D4 complete-source modular technical candidates',()=>{
    const {workspace,selection,caseV2,coverage,manifest}=load(spec)
    expect(validateReviewAuthoringV1(workspace)).toEqual([])
    expect(workspace.sharedModuleLocks).toEqual([])
+   expect(workspace.sourceBindings.filter(b=>b.gate)).toEqual([]) // Never infer school workflow/material deadlines from ordinal R IDs
    expect(coverage.ruleIds).toHaveLength(spec.expectedRules)
    expect(coverage.originalRuleCount).toBe(spec.expectedRules)
    expect(coverage.entries.filter((x:{sourceId:string})=>/^R-\d{2}$/.test(x.sourceId))).toHaveLength(spec.expectedRules)
