@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "G07-T04/C-author-E0-r02/v1",
+  "domain": "G07",
+  "templateId": "G07-T04",
+  "officialName": "采购及委托服务履约结算预审",
+  "authorScope": "C only",
+  "businessVersion": "v0.1-C-20261012",
+  "deliverySpecVersion": "C v2.1",
+  "maturity": "BUSINESS_MD_DRAFT_WITH_GAPS",
+  "originalAuthorCommit": "NOT_COMMITTED",
+  "recoveryBranch": "handoff/g07-t04-c-e0-r02",
+  "baseMainCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+  "E_r01_auditCommit_forReferenceOnly": "ccbf9bd6b16c9472bb35b03cd8b676d87c6cd6ab",
+  "sourceArchives": [
+    {
+      "name": "G07-T04_C阶段_完整MD业务母版_v0.1_交接包.zip",
+      "sha256": "94ecf4dcbca8e13aaf8641db3238e1cfef3859f187e6c0f524180f452dae0316",
+      "location": "Original C-author conversation attachment; original bytes preserved"
+    },
+    {
+      "name": "G07-T04_C_v2.1_阶段交付迁移_20261012_完整交接包.zip",
+      "sha256": "9d89f7e3753abdec1ddc6e3a54f244c18d88e5c9b156e84ac931a77035332e7c",
+      "location": "Original C-v2.1 conversation attachment; original bytes preserved"
+    },
+    {
+      "name": "G07-T04_B阶段深调研_v0.2_校本补查交接包.zip",
+      "sha256": "87fc62c13b382e69decafe159f471412f8ccf172e20164cfe6efa0a9b83b39ba",
+      "location": "Original B-author conversation attachment; NOT_COMMITTED"
+    }
+  ],
+  "ABaseline": [
+    {
+      "name": "G07_02_统一模板目录与边界.md",
+      "sha256": "64a771d60e7ea68a040c4d7fd551c246bf3cd123e0ca60a8f7d9d4ea245ee4c4",
+      "location": "ChatGPT Library, v0.1"
+    },
+    {
+      "name": "G07_03_来源索引.md",
+      "sha256": "17583564d18b1561b05ce6fd9104df86e132b6d34047ca78f85d1af75f8b3245",
+      "location": "ChatGPT Library, v0.1"
+    },
+    {
+      "name": "G07_07_成都理工大学校本规则专项核验.md",
+      "sha256": "2bbad8fd845cf22ab3029c683ad760c86c6847f4d9c56cbf34fc1099e9e1f70f",
+      "location": "ChatGPT Library, v0.2"
+    }
+  ],
+  "files": [
+    {
+      "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v0.1-original/G07-T04_正式业务模板_MD_v0.1.md",
+      "gitBlobSha": "9a629e8c6e6e9bf4c348fe413c32b564e50f580d",
+      "sha256": "009a13599a34a5a78407a953d19810637636ee2f4dd4821d12cb9a44bad54bb5",
+      "history": "C v0.1 preserved, originally NOT_COMMITTED"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v0.1-original/G07-T04_规则追踪矩阵.md",
+      "gitBlobSha": "8d7d2b5b4e0c00f54b6724238aa256eab259593f",
+      "sha256": "082a0621d6ed905179d31fe5b03844d84e61e3d20e1ffc6eaf135b89159b6db2",
+      "history": "C v0.1 preserved, originally NOT_COMMITTED"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v0.1-original/G07-T04_规则追踪矩阵.csv",
+      "gitBlobSha": "f021547982dea1ecc78d36a92bd27a1a4d963639",
+      "sha256": "d77c2490d03e1e3acc9fa3107ccd6cf2a8b50fc08f80a64ca247a2307e9358d4",
+      "history": "C v0.1 preserved, originally NOT_COMMITTED"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v0.1-original/G07-T04_作者自检与问题修订记录.md",
+      "gitBlobSha": "d54b0c13955b7510b17a6154984ff60391dd9e1c",
+      "sha256": "00d8089521d96df3aa0478464d722b7db4c24e6beec2c00a383187ed079b14fa",
+      "history": "C v0.1 preserved, originally NOT_COMMITTED"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v0.1-original/G07-T04_编辑器共性模块候选.md",
+      "gitBlobSha": "3fd93e440836093a948b81130288d5760acc67d8",
+      "sha256": "6027f992abc3562ea0696de79ece4362217b84b7eea40718a96bf0ac0a1690c2",
+      "history": "C v0.1 preserved, originally NOT_COMMITTED"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v0.1-original/G07-T04_测试对接说明.md",
+      "gitBlobSha": "abefd2408ea9a3f3a76b982e6e268652bb0ad937",
+      "sha256": "cb6b184d9e77afa7e987cb993be7e349505951e8f3d30ac6108d50cfa846d42a",
+      "history": "C v0.1 preserved, originally NOT_COMMITTED"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v0.1-original/README_阅读顺序.md",
+      "gitBlobSha": "a86dede2fee9db9dc977a56820115ca7c17a1b88",
+      "sha256": "ee21877dd0703dcad5ad7901f68c37b3a9a5e27ddf9a877cbdf4e742f9225e42",
+      "history": "C v0.1 preserved, originally NOT_COMMITTED"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v0.1-original/B阶段资料校验SHA256.tsv",
+      "gitBlobSha": "d5a74ebf08d6d5786f0957feaf1f818828277572",
+      "sha256": "f58a8bcd7aa3a11116ced0031f9e02080c0a9ef741802093f528346ae55c1250",
+      "history": "C v0.1 preserved, originally NOT_COMMITTED"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v2.1-handoff/G07-T04_验收对接说明.md",
+      "gitBlobSha": "5e21beadc78a92cffd2c3777460d40e493310902",
+      "sha256": "cd259b3be1bf2ce39eb0db7f48cd171d701925d8b455609166e511db06a4a96f",
+      "history": "C v2.1 handoff preserved"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v2.1-handoff/G07-T04_规则追踪矩阵_排版修复视图.md",
+      "gitBlobSha": "600bdae029a05290a90bfac652af59bbaf3428fb",
+      "sha256": "31df5d65999f69d1b7f914614c825403c278fec2d2a9f1bbe7ac0aeab29dd3f6",
+      "history": "C v2.1 handoff preserved"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v2.1-handoff/G07-T04_C_v2.0_to_v2.1_迁移核验结论.md",
+      "gitBlobSha": "02d2b7564a15c581e9bc7c8bcfaf672174cb153f",
+      "sha256": "48799f334ffc20260fce85c39bbe48cac353e58815b40b647298a96a36a83072",
+      "history": "C v2.1 handoff preserved"
+    }
+  ],
+  "completeness": {
+    "originalCFiles": 8,
+    "v21IncrementFiles": 3,
+    "motherChapterCount": 18,
+    "fieldCount": 58,
+    "materialSlotCount": 45,
+    "ruleIds": "R-01..R-36",
+    "authorWalkthroughs": 18,
+    "editorModuleCandidates": 12
+  },
+  "contentChange": "NONE; published Git blobs exactly match original author C source byte hashes, including UTF-8 BOM/CRLF in CSV",
+  "scopeLimits": [
+    "E_r01 verdict unchanged BLOCKED_INPUT",
+    "No D Gold, hidden expected outputs, sensitive ledgers or leaked indices",
+    "No D/E execution",
+    "No real accounting system run",
+    "No inferred CDUT binding thresholds"
+  ],
+  "visibility": "public-safe business template and file hashes only",
+  "EAccessProtocol": "E0 may inspect filenames/metadata, bytes/hashes without semantic review. E1 independently freezes A/B policy review BEFORE reading C/D. E2/E3 only afterward with Gold isolation verified.",
+  "pendingAcrossDomain": "Other six G07 templates, all D controlled Gold isolation and full A/B freeze are outside T04 C-author scope."
+}
