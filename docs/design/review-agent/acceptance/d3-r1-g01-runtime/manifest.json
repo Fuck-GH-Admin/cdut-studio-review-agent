@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "R1_DRAFT_TECHNICAL_CANDIDATE_PENDING_INDEPENDENT_REVIEW",
   "parentSha": "4b191c729f3d5f8135c73b87c17642023f6c3986",
-  "codeSnapshotSha": "9810402cab7a56235d1a0af9454d4e0da050961a",
+  "codeSnapshotSha": "6fe3c3bc09996a93020ccf82dea1f33a3fa3b5d9",
   "branch": "feat/d3-r1-g01-typed-runtime-r01",
   "draftPrUrl": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/83",
   "baseBranch": "release/d3-r0-20261011",
@@ -19,23 +19,34 @@
   },
   "dependencyInstallation": "bun install --frozen-lockfile in isolated CI",
   "verifiedPriorGreen": {
-    "head": "8a62fbe151951cf0248ca3b93fb327886ff16a9b",
-    "runId": 38998459675,
-    "artifactId": 12088072721,
+    "head": "0add1895261b612cafceee424e8779915664c69d",
+    "runId": 38999185257,
+    "artifactId": 12087344696,
     "studentTests": {
-      "pass": 9,
+      "pass": 13,
       "fail": 0
     },
     "legacyTests": {
-      "pass": 52,
+      "pass": 104,
       "fail": 0
     },
-    "typecheck": "PASS"
+    "typecheck": "PASS",
+    "boundaries": "PASS",
+    "d3LockVerification": "PASS",
+    "cliHandoff": "PASS",
+    "frozenACompatibilityDiff": "PASS"
   },
   "extendedScenarios": {
-    "state": "CI_PENDING",
-    "added": "multi-axis scenarios; explicit scoped fallback rejection; D1/D3/D2 real CLI chain",
-    "ciHead": "9810402cab7a56235d1a0af9454d4e0da050961a"
+    "state": "PASS_CI_SYNTHETIC",
+    "testHead": "0add1895261b612cafceee424e8779915664c69d",
+    "ciRunId": 38999185257,
+    "caseId": "r1-typed-pi-case",
+    "sourceShaValidation": "frozen A head e3321add... fixed verified",
+    "subjectCount": 2,
+    "perCaseChecks": 2,
+    "claimsOneDocumentTwoSubjectLinks": "PASS",
+    "d1D3D2Cli": "PASS",
+    "independentReleaseApproval": "NOT_GRANTED"
   },
   "independentSignoff": false,
   "merged": false,
@@ -53,5 +64,10 @@
     "Official policy & registry not verified",
     "Online model not run",
     "Independent release signoff pending"
-  ]
+  ],
+  "lastAuditedPreDocumentationHead": "0add1895261b612cafceee424e8779915664c69d",
+  "fullRepositoryTestSuite": {
+    "state": "NOT_RUN_IN_R1_DEDICATED_WORKFLOW",
+    "note": "Dedicated R1 workflow executes 13 focused and 104 inherited tests; separate repo PR CI is tracked independently and not claimed as full PASS."
+  }
 }

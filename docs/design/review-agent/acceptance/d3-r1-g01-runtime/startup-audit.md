@@ -26,3 +26,8 @@
 `bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-r1-student.test.ts`
 
 Current R0 implementation is expected to reject the typed field-target positive test; workflow `.github/workflows/review-d3-r1-student.yml` captures the red state on this branch before any implementation patch. This is a technical synthetic test, not a school audit.
+
+## Follow-up evidence (immutable R0 startup snapshot retained above)
+
+- Fixed base verified by `compare_commits(R0, R1)`: R1 branch exactly ahead of R0 (no behind), no edits to old A/C/B paths.
+- Subsequent R1 scoped CI green `38999185257` at `0add1895261b612cafceee424e8779915664c69d`: 13 new + 104 inherited pass, Bun install, typecheck, boundaries, D3 R0 locks. Head is a Draft PR, not a release.
