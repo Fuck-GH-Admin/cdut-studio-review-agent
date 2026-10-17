@@ -30,6 +30,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
+          fetch-depth: 0
       - name: Verify COMMON parent was inherited
         run: |
           git merge-base --is-ancestor a7a6a11d4840ad64cfc858c17b35f35180adf063 HEAD
