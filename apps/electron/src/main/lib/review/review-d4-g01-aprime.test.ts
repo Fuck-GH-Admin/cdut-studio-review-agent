@@ -54,7 +54,7 @@ describe('D4 G01-I A-prime real typed authoring',()=>{
   const choices:Record<string,string[]>={S01:['full-name'],S02:['credential-id'],S03:['credential-id'],S04:['full-name'],S05:['full-name'],S06:['birth-date'],S07:['full-name','credential-id'],S08:['sex'],S09:['full-name'],S10:['full-name'],S11:['full-name'],S12:['full-name'],S13:['full-name']}
   const logs=[]
   for(const [s,fields] of Object.entries(choices)){
-   const snapshot={...trusted,studentId:s==='S12'?'synthetic-alumni':'synthetic-1',enrollmentStatus:s==='S12'?'graduated':'enrolled'}
+   const snapshot={...trusted,studentId:s==='S12'?'synthetic-alumni':'synthetic-1',enrollmentStatus:s==='S12'?'graduated':'enrolled',fields:{...trusted.fields,'enrollment-status':s==='S12'?'graduated':'enrolled'}}
    const p=plan(sel(s,fields,snapshot.studentId),snapshot)
    expect(p.mapping.some(x=>x.checkId.includes('branch-'+s.toLowerCase()+'/'))).toBeTrue()
    logs.push({scenario:s,subjectCount:p.subjects.length,checkCount:p.mapping.length,fingerprint:p.fingerprint})
@@ -65,7 +65,7 @@ describe('D4 G01-I A-prime real typed authoring',()=>{
   const no=compileD2RuntimePlan(ws(),selections.name,draft('applicant-only'))
   expect(no.mapping.find(x=>x.checkId.includes('/r014#'))?.applicability).toBe('unknown')
   expect(no.mapping.some(x=>x.authority==='unverified-policy')).toBeTrue()
-  const graduated={...trusted,enrollmentStatus:'graduated'}
+  const graduated={...trusted,enrollmentStatus:'graduated',fields:{...trusted.fields,'enrollment-status':'graduated'}}
   expect(plan(selections.name,graduated).mapping.find(x=>x.checkId.includes('/r014#'))?.applicability).toBe('not-applicable')
   expect(()=>plan(selections.name,{...trusted,status:'revoked'})).toThrow('D2_TRUSTED_SOURCE_INVALID')
  })
@@ -99,7 +99,7 @@ describe('D4 G01-I A-prime real typed authoring',()=>{
    expect(link.ok).toBeTrue();if(!link.ok)throw new Error(link.message)
   }
   const prepared=preparePiReviewRunV2({caseId:id,sessionId:'aprime-session',turnId:'aprime-turn'})
-  const result=submitPiReviewResultV2({binding:{assignmentId:prepared.assignmentId,sessionId:'aprime-session',caseId:id,runId:prepared.runId},triggeredBy:'user',result:{summary:'Author technical synthetic only; no legal source proof',checks:created.entity!.mapping.map(x=>({ruleId:x.ruleId,subjectIds:x.subjectId?[x.subjectId]:[],status:'awaiting-confirmation' as const,reason:'official policy or issuer needs confirmation',sourceRefs:[]})),finish:true}})
+  const result=submitPiReviewResultV2({binding:{assignmentId:prepared.assignmentId,sessionId:'aprime-session',caseId:id,runId:prepared.runId},triggeredBy:'user',result:{summary:'Author technical synthetic only; no legal source proof',checks:created.entity!.mapping.map(x=>({ruleId:x.ruleId,subjectIds:x.subjectId?[x.subjectId]:created.entity!.subjects.map(s=>s.id),status:'awaiting-confirmation' as const,reason:'official policy or issuer needs confirmation',sourceRefs:[]})),finish:true}})
   expect(result.rejected).toEqual([]);expect(result.missingChecks).toEqual([])
   const final=readAggregate(id)!,run=getRunV2(id,prepared.runId)!
   expect(verifyD2InstalledPlan(final)).toEqual([]);expect(verifyD2PiRun(final,run).complete).toBeTrue()
