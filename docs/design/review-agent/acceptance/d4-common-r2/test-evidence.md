@@ -41,3 +41,9 @@ CLI 演示的 `save` 只写隔离目录。Pi 的服务端 prepare/submit/verify 
 
 **后续新增真实材料 / EvidenceLink 逐对象测试**：实现 SHA `3a54052dcb39306fc3a8bfc05be858e1ef35492e`，[CI #39048123453](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39048123453)；读取该运行的实际结论和 Artifact 后才能把新增用例标记 PASS。这里列出的既有绿灯只对应 `f13f7dd4…`，不冒充后续提交结果。
 
+
+## 最终签署前的更新证据
+- `3a54052dcb39306fc3a8bfc05be858e1ef35492e`：[D4 CI #39048123453](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39048123453) 成功，G08 真实材料登记与 reviewer-confirmed 精确 EvidenceLink 验证，只有对象 A 可使用该材料，B 与旧版本不能复用。新增 `registered-evidence-links.json` 可在 [Artifact #12106557849](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39048123453/artifacts/12106557849) 追查。
+- `fb661851d9c74ddff2d7164076012694fd4fedba`：[全仓 PR CI #39048259304](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39048259304)，**3623 PASS / 6 SKIP / 0 FAIL**；安装、typecheck、boundaries、打包主进程/预加载/渲染器全部为绿色。
+- 相同实现提交：[COMMON 专项 #39048259405](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39048259405) 为绿色。
+- D4 制作交接判定：`D4_AUTHORING_HANDOFF_READY = YES`，限定上述公共能力与作者契约；校方授权、Gold、50 套完整业务运行不在本轮已验证范围。

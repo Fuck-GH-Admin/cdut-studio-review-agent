@@ -15,3 +15,12 @@
 
 更严格的真实 Material/EvidenceLink 双目标负例在后续 `3a54052dcb39306fc3a8bfc05be858e1ef35492e` 实现提交中新增，须查看 [新增专项 CI #39048123453](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39048123453) 结果，不得把前一轮 CI 冒作对新增测试的验证。最终 PR HEAD SHA 与 Actions head_sha 共同构成锁定版本，正式切换到八领域前应重新确认。
 
+
+## COMMON-01/02 最终作者态交接门槛
+**D4_AUTHORING_HANDOFF_READY = YES（仅工程候选，仍保持 Draft）**。
+
+增强版实现提交 `3a54052dcb39306fc3a8bfc05be858e1ef35492e` 的 [专项 CI #39048123453](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39048123453) 已验证真实 registerMaterial → setEvidenceLink 只绑定 A 而不能覆盖 B、旧版文档不能继承；[证据 Artifact #12106557849](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39048123453/artifacts/12106557849) 记录了证据关联。
+
+补全合同文档的提交 `fb661851d9c74ddff2d7164076012694fd4fedba`，对应 [完整 PR CI #39048259304](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39048259304) 为 **3623 PASS / 6 SKIP / 0 FAIL**，[专项 #39048259405](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39048259405) 同样通过。后续提交纯交接状态文字不会替换实现代码；最终工程固定 SHA 须以 PR HEAD 和对应 CI checkout 确认。
+
+这个 YES 只授权 G01–G08 **开始在相同技术代码 SHA 上构建研究性模块化作者态与受控技术预审**，**不意味着 50 套模板完整转换/Gold 通过/学校授权或 R2 正式发布**。

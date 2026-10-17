@@ -17,8 +17,8 @@
     "review-d3-r1-student.test.ts",
     "PR CI"
   ],
-  "status": "VERIFIED_AT_F13_WITH_ADDITIONAL_EVIDENCE_TEST_PENDING",
-  "handoffReady": false,
+  "status": "D4_AUTHORING_HANDOFF_READY",
+  "handoffReady": true,
   "files": [
     "baseline-and-design.md",
     "README.md",
@@ -30,7 +30,7 @@
     "examples/g03-selection.json",
     "examples/g03-case.json"
   ],
-  "validatedCodeSha": "f13f7dd4860e37509dd8bf457f8c15e4672af484",
+  "validatedCodeSha": "fb661851d9c74ddff2d7164076012694fd4fedba",
   "validation": {
     "commonCi": 39047830003,
     "commonArtifactId": 12106815095,
@@ -46,11 +46,18 @@
     "d3Ci": 39047829972,
     "planFingerprint": "6d8c18799b6bfa46c7c76acc401af87d4cb9ba8899a74488c70ef624e9daf095",
     "exampleFingerprint": "c7a6bafb2f9c818309b69f03018b1405f03f96823371a322858028ce7bdf9405",
-    "piPlanFingerprint": "ae6c51f728da6b728fbde9138507afd831dc4cf42f4ce8b1312f2074f9dfb3cc"
+    "piPlanFingerprint": "ae6c51f728da6b728fbde9138507afd831dc4cf42f4ce8b1312f2074f9dfb3cc",
+    "latestFullPrCi": 39048259304,
+    "latestCommonCi": 39048259405,
+    "latestArtifactCodeSha": "fb661851d9c74ddff2d7164076012694fd4fedba"
   },
   "additionalEvidenceTest": {
     "sha": "3a54052dcb39306fc3a8bfc05be858e1ef35492e",
     "ciRun": 39048123453,
-    "status": "PENDING"
-  }
+    "status": "SUCCESS",
+    "artifactId": 12106557849,
+    "positiveAndNegative": "G08 real synthetic material registered, reviewer fact edge only for subject A; B and stale version cannot inherit"
+  },
+  "handoffDecision": "YES_RESEARCH_TECHNICAL_AUTHORING_ONLY",
+  "manifestNote": "Do not self-reference final HEAD SHA; pin exact PR HEAD and CI checkout separately"
 }
