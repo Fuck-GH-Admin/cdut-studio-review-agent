@@ -1,0 +1,999 @@
+{
+  "schema": "d4-g03-source-coverage-v1",
+  "templateId": "g03-t11",
+  "sourceSha256": "bd051a6332d9c557fec3103d486747f3ceca042d928c3758ace6f35966f2eb98",
+  "originalRuleCount": 24,
+  "ruleIds": [
+    "R-01",
+    "R-02",
+    "R-03",
+    "R-04",
+    "R-05",
+    "R-06",
+    "R-07",
+    "R-08",
+    "R-09",
+    "R-10",
+    "R-11",
+    "R-12",
+    "R-13",
+    "R-14",
+    "R-15",
+    "R-16",
+    "R-17",
+    "R-18",
+    "R-19",
+    "R-20",
+    "R-21",
+    "R-22",
+    "R-23",
+    "R-24"
+  ],
+  "authoredChecks": 55,
+  "entries": [
+    {
+      "sourceId": "R-02",
+      "locator": "§9/R-02",
+      "technicalCheckId": "g03-t11@1:module/use-identity/r02",
+      "moduleId": "g03-t11-identity",
+      "sourceBinding": "source-r02",
+      "evidenceFact": "d2:object:g03-screen-window:r02",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-04",
+      "locator": "§9/R-04",
+      "technicalCheckId": "g03-t11@1:module/use-identity/r04",
+      "moduleId": "g03-t11-identity",
+      "sourceBinding": "source-r04",
+      "evidenceFact": "d2:object:g03-screen-window:r04",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-03",
+      "locator": "§9/R-03",
+      "technicalCheckId": "g03-t11@1:module/use-evidence/r03",
+      "moduleId": "g03-t11-evidence",
+      "sourceBinding": "source-r03",
+      "evidenceFact": "d2:object:g03-screen-window:r03",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": {
+        "when": {
+          "kind": "case-stage",
+          "stages": [
+            "submitted",
+            "reviewing",
+            "awaiting-supplement"
+          ]
+        },
+        "material": {
+          "provider": "applicant",
+          "dueStages": [
+            "submitted",
+            "reviewing"
+          ],
+          "alternatives": [
+            "d2:object:g03-screen-window:r03"
+          ]
+        }
+      }
+    },
+    {
+      "sourceId": "R-07",
+      "locator": "§9/R-07",
+      "technicalCheckId": "g03-t11@1:module/use-evidence/r07",
+      "moduleId": "g03-t11-evidence",
+      "sourceBinding": "source-r07",
+      "evidenceFact": "d2:object:g03-screen-window:r07",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-08",
+      "locator": "§9/R-08",
+      "technicalCheckId": "g03-t11@1:module/use-evidence/r08",
+      "moduleId": "g03-t11-evidence",
+      "sourceBinding": "source-r08",
+      "evidenceFact": "d2:object:g03-screen-window:r08",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-17",
+      "locator": "§9/R-17",
+      "technicalCheckId": "g03-t11@1:module/use-evidence/r17",
+      "moduleId": "g03-t11-evidence",
+      "sourceBinding": "source-r17",
+      "evidenceFact": "d2:object:g03-screen-window:r17",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-19",
+      "locator": "§9/R-19",
+      "technicalCheckId": "g03-t11@1:module/use-evidence/r19",
+      "moduleId": "g03-t11-evidence",
+      "sourceBinding": "source-r19",
+      "evidenceFact": "d2:object:g03-screen-window:r19",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-20",
+      "locator": "§9/R-20",
+      "technicalCheckId": "g03-t11@1:module/use-evidence/r20",
+      "moduleId": "g03-t11-evidence",
+      "sourceBinding": "source-r20",
+      "evidenceFact": "d2:object:g03-screen-window:r20",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-21",
+      "locator": "§9/R-21",
+      "technicalCheckId": "g03-t11@1:module/use-evidence/r21",
+      "moduleId": "g03-t11-evidence",
+      "sourceBinding": "source-r21",
+      "evidenceFact": "d2:object:g03-screen-window:r21",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-22",
+      "locator": "§9/R-22",
+      "technicalCheckId": "g03-t11@1:module/use-evidence/r22",
+      "moduleId": "g03-t11-evidence",
+      "sourceBinding": "source-r22",
+      "evidenceFact": "d2:object:g03-screen-window:r22",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-23",
+      "locator": "§9/R-23",
+      "technicalCheckId": "g03-t11@1:module/use-evidence/r23",
+      "moduleId": "g03-t11-evidence",
+      "sourceBinding": "source-r23",
+      "evidenceFact": "d2:object:g03-screen-window:r23",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-01",
+      "locator": "§9/R-01",
+      "technicalCheckId": "g03-t11@1:module/use-screen/r01",
+      "moduleId": "g03-t11-screen",
+      "sourceBinding": "source-r01",
+      "evidenceFact": "d2:object:g03-screen-window:r01",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-05",
+      "locator": "§9/R-05",
+      "technicalCheckId": "g03-t11@1:module/use-screen/r05",
+      "moduleId": "g03-t11-screen",
+      "sourceBinding": "source-r05",
+      "evidenceFact": "d2:object:g03-screen-window:r05",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-06",
+      "locator": "§9/R-06",
+      "technicalCheckId": "g03-t11@1:module/use-screen/r06",
+      "moduleId": "g03-t11-screen",
+      "sourceBinding": "source-r06",
+      "evidenceFact": "d2:object:g03-screen-window:r06",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-09",
+      "locator": "§9/R-09",
+      "technicalCheckId": "g03-t11@1:module/use-screen/r09",
+      "moduleId": "g03-t11-screen",
+      "sourceBinding": "source-r09",
+      "evidenceFact": "d2:object:g03-screen-window:r09",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-10",
+      "locator": "§9/R-10",
+      "technicalCheckId": "g03-t11@1:module/use-screen/r10",
+      "moduleId": "g03-t11-screen",
+      "sourceBinding": "source-r10",
+      "evidenceFact": "d2:object:g03-screen-window:r10",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-11",
+      "locator": "§9/R-11",
+      "technicalCheckId": "g03-t11@1:module/use-screen/r11",
+      "moduleId": "g03-t11-screen",
+      "sourceBinding": "source-r11",
+      "evidenceFact": "d2:object:g03-screen-window:r11",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-14",
+      "locator": "§9/R-14",
+      "technicalCheckId": "g03-t11@1:module/use-screen/r14",
+      "moduleId": "g03-t11-screen",
+      "sourceBinding": "source-r14",
+      "evidenceFact": "d2:object:g03-screen-window:r14",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-15",
+      "locator": "§9/R-15",
+      "technicalCheckId": "g03-t11@1:module/use-screen/r15",
+      "moduleId": "g03-t11-screen",
+      "sourceBinding": "source-r15",
+      "evidenceFact": "d2:object:g03-screen-window:r15",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-12",
+      "locator": "§9/R-12",
+      "technicalCheckId": "g03-t11@1:module/use-approval/r12",
+      "moduleId": "g03-t11-approval",
+      "sourceBinding": "source-r12",
+      "evidenceFact": "d2:object:g03-screen-window:r12",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": {
+        "when": {
+          "kind": "case-stage",
+          "stages": [
+            "reviewing",
+            "awaiting-final",
+            "decided"
+          ]
+        },
+        "material": {
+          "provider": "authority",
+          "dueStages": [
+            "awaiting-final",
+            "decided"
+          ],
+          "alternatives": [
+            "d2:object:g03-screen-window:r12"
+          ]
+        }
+      }
+    },
+    {
+      "sourceId": "R-13",
+      "locator": "§9/R-13",
+      "technicalCheckId": "g03-t11@1:module/use-approval/r13",
+      "moduleId": "g03-t11-approval",
+      "sourceBinding": "source-r13",
+      "evidenceFact": "d2:object:g03-screen-window:r13",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-16",
+      "locator": "§9/R-16",
+      "technicalCheckId": "g03-t11@1:module/use-approval/r16",
+      "moduleId": "g03-t11-approval",
+      "sourceBinding": "source-r16",
+      "evidenceFact": "d2:object:g03-screen-window:r16",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-18",
+      "locator": "§9/R-18",
+      "technicalCheckId": "g03-t11@1:module/use-approval/r18",
+      "moduleId": "g03-t11-approval",
+      "sourceBinding": "source-r18",
+      "evidenceFact": "d2:object:g03-screen-window:r18",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "R-24",
+      "locator": "§9/R-24",
+      "technicalCheckId": "g03-t11@1:module/use-approval/r24",
+      "moduleId": "g03-t11-approval",
+      "sourceBinding": "source-r24",
+      "evidenceFact": "d2:object:g03-screen-window:r24",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§1-1",
+      "locator": "§1 元信息、目的、独立性与适用范围",
+      "technicalCheckId": "g03-t11@1:module/use-section-01/part-01",
+      "moduleId": "g03-t11-section-01",
+      "sourceBinding": "source-section-01",
+      "evidenceFact": "d2:object:g03-screen-window:section-01-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§2-1",
+      "locator": "§2 C0 基线、已知事实及政策缺口",
+      "technicalCheckId": "g03-t11@1:module/use-section-02/part-01",
+      "moduleId": "g03-t11-section-02",
+      "sourceBinding": "source-section-02",
+      "evidenceFact": "d2:object:g03-screen-window:section-02-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§3-1",
+      "locator": "§3 C1 角色术语与对象粒度",
+      "technicalCheckId": "g03-t11@1:module/use-section-03/part-01",
+      "moduleId": "g03-t11-section-03",
+      "sourceBinding": "source-section-03",
+      "evidenceFact": "d2:object:g03-screen-window:section-03-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§4-1",
+      "locator": "§4 C1/C2 互斥与叠加条件轴及具体分支",
+      "technicalCheckId": "g03-t11@1:module/use-section-04/part-01",
+      "moduleId": "g03-t11-section-04",
+      "sourceBinding": "source-section-04",
+      "evidenceFact": "d2:object:g03-screen-window:section-04-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§5-1",
+      "locator": "§5 C2 输入契约：三类申请输入与可信底账",
+      "technicalCheckId": "g03-t11@1:module/use-section-05/part-01",
+      "moduleId": "g03-t11-section-05",
+      "sourceBinding": "source-section-05",
+      "evidenceFact": "d2:object:g03-screen-window:section-05-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§6-1",
+      "locator": "§6 C2 字段字典（保留B期F-01—F-48编号）",
+      "technicalCheckId": "g03-t11@1:module/use-section-06/part-01",
+      "moduleId": "g03-t11-section-06",
+      "sourceBinding": "source-section-06",
+      "evidenceFact": "d2:object:g03-screen-window:section-06-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§6-2",
+      "locator": "§6 C2 字段字典（保留B期F-01—F-48编号）",
+      "technicalCheckId": "g03-t11@1:module/use-section-06/part-02",
+      "moduleId": "g03-t11-section-06",
+      "sourceBinding": "source-section-06",
+      "evidenceFact": "d2:object:g03-screen-window:section-06-2",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§7-1",
+      "locator": "§7 C2 材料槽与合法等价证据组",
+      "technicalCheckId": "g03-t11@1:module/use-section-07/part-01",
+      "moduleId": "g03-t11-section-07",
+      "sourceBinding": "source-section-07",
+      "evidenceFact": "d2:object:g03-screen-window:section-07-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§8-1",
+      "locator": "§8 C2/C3 校方可信数据槽、可得性与审核事实",
+      "technicalCheckId": "g03-t11@1:module/use-section-08/part-01",
+      "moduleId": "g03-t11-section-08",
+      "sourceBinding": "source-section-08",
+      "evidenceFact": "d2:object:g03-screen-window:section-08-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§10-1",
+      "locator": "§10 C4 审核阶段、结果状态及分项输出契约",
+      "technicalCheckId": "g03-t11@1:module/use-section-10/part-01",
+      "moduleId": "g03-t11-section-10",
+      "sourceBinding": "source-section-10",
+      "evidenceFact": "d2:object:g03-screen-window:section-10-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§11-1",
+      "locator": "§11 C4 状态转移、补件/变更/撤回/版本与审计",
+      "technicalCheckId": "g03-t11@1:module/use-section-11/part-01",
+      "moduleId": "g03-t11-section-11",
+      "sourceBinding": "source-section-11",
+      "evidenceFact": "d2:object:g03-screen-window:section-11-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§12-1",
+      "locator": "§12 C4 合法例外、证据替代与不可自动裁断范围",
+      "technicalCheckId": "g03-t11@1:module/use-section-12/part-01",
+      "moduleId": "g03-t11-section-12",
+      "sourceBinding": "source-section-12",
+      "evidenceFact": "d2:object:g03-screen-window:section-12-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§13-1",
+      "locator": "§13 C0 校本配置与政策版本优先级",
+      "technicalCheckId": "g03-t11@1:module/use-section-13/part-01",
+      "moduleId": "g03-t11-section-13",
+      "sourceBinding": "source-section-13",
+      "evidenceFact": "d2:object:g03-screen-window:section-13-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§14-1",
+      "locator": "§14 官方来源与规则事实标识",
+      "technicalCheckId": "g03-t11@1:module/use-section-14/part-01",
+      "moduleId": "g03-t11-section-14",
+      "sourceBinding": "source-section-14",
+      "evidenceFact": "d2:object:g03-screen-window:section-14-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§15-1",
+      "locator": "§15 C7 作者流程推演摘要（详细路径及修订见自检文件）",
+      "technicalCheckId": "g03-t11@1:module/use-section-15/part-01",
+      "moduleId": "g03-t11-section-15",
+      "sourceBinding": "source-section-15",
+      "evidenceFact": "d2:object:g03-screen-window:section-15-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§16-1",
+      "locator": "§16 C5 共性模块与专属逻辑接口概览",
+      "technicalCheckId": "g03-t11@1:module/use-section-16/part-01",
+      "moduleId": "g03-t11-section-16",
+      "sourceBinding": "source-section-16",
+      "evidenceFact": "d2:object:g03-screen-window:section-16-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§17-1",
+      "locator": "§17 C6 编辑器与当前实现映射",
+      "technicalCheckId": "g03-t11@1:module/use-section-17/part-01",
+      "moduleId": "g03-t11-section-17",
+      "sourceBinding": "source-section-17",
+      "evidenceFact": "d2:object:g03-screen-window:section-17-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "§18-1",
+      "locator": "§18 C7 完整性、版本记录和E阶段交接",
+      "technicalCheckId": "g03-t11@1:module/use-section-18/part-01",
+      "moduleId": "g03-t11-section-18",
+      "sourceBinding": "source-section-18",
+      "evidenceFact": "d2:object:g03-screen-window:section-18-1",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-p-central-screen",
+      "locator": "§4/p-central-screen",
+      "technicalCheckId": "g03-t11@1:module/use-axis-p-central-screen/verify",
+      "moduleId": "g03-t11-axis-p-central-screen",
+      "sourceBinding": "source-axis-p-central-screen",
+      "evidenceFact": "d2:object:g03-screen-window:axis-p-central-screen",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-p-department-screen",
+      "locator": "§4/p-department-screen",
+      "technicalCheckId": "g03-t11@1:module/use-axis-p-department-screen/verify",
+      "moduleId": "g03-t11-axis-p-department-screen",
+      "sourceBinding": "source-axis-p-department-screen",
+      "evidenceFact": "d2:object:g03-screen-window:axis-p-department-screen",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-p-venue-screen",
+      "locator": "§4/p-venue-screen",
+      "technicalCheckId": "g03-t11@1:module/use-axis-p-venue-screen/verify",
+      "moduleId": "g03-t11-axis-p-venue-screen",
+      "sourceBinding": "source-axis-p-venue-screen",
+      "evidenceFact": "d2:object:g03-screen-window:axis-p-venue-screen",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-video",
+      "locator": "§4/c-video",
+      "technicalCheckId": "g03-t11@1:module/use-axis-c-video/verify",
+      "moduleId": "g03-t11-axis-c-video",
+      "sourceBinding": "source-axis-c-video",
+      "evidenceFact": "d2:object:g03-screen-window:axis-c-video",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-plain-text",
+      "locator": "§4/c-plain-text",
+      "technicalCheckId": "g03-t11@1:module/use-axis-c-plain-text/verify",
+      "moduleId": "g03-t11-axis-c-plain-text",
+      "sourceBinding": "source-axis-c-plain-text",
+      "evidenceFact": "d2:object:g03-screen-window:axis-c-plain-text",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-change",
+      "locator": "§4/c-change",
+      "technicalCheckId": "g03-t11@1:module/use-axis-c-change/verify",
+      "moduleId": "g03-t11-axis-c-change",
+      "sourceBinding": "source-axis-c-change",
+      "evidenceFact": "d2:object:g03-screen-window:axis-c-change",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-emergency",
+      "locator": "§4/c-emergency",
+      "technicalCheckId": "g03-t11@1:module/use-axis-c-emergency/verify",
+      "moduleId": "g03-t11-axis-c-emergency",
+      "sourceBinding": "source-axis-c-emergency",
+      "evidenceFact": "d2:object:g03-screen-window:axis-c-emergency",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-brand",
+      "locator": "§4/c-brand",
+      "technicalCheckId": "g03-t11@1:module/use-axis-c-brand/verify",
+      "moduleId": "g03-t11-axis-c-brand",
+      "sourceBinding": "source-axis-c-brand",
+      "evidenceFact": "d2:object:g03-screen-window:axis-c-brand",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-multiple-screens",
+      "locator": "§4/c-multiple-screens",
+      "technicalCheckId": "g03-t11@1:module/use-axis-c-multiple-screens/verify",
+      "moduleId": "g03-t11-axis-c-multiple-screens",
+      "sourceBinding": "source-axis-c-multiple-screens",
+      "evidenceFact": "d2:object:g03-screen-window:axis-c-multiple-screens",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-confidential",
+      "locator": "§4/c-confidential",
+      "technicalCheckId": "g03-t11@1:module/use-axis-c-confidential/verify",
+      "moduleId": "g03-t11-axis-c-confidential",
+      "sourceBinding": "source-axis-c-confidential",
+      "evidenceFact": "d2:object:g03-screen-window:axis-c-confidential",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-withdraw",
+      "locator": "§4/c-withdraw",
+      "technicalCheckId": "g03-t11@1:module/use-axis-c-withdraw/verify",
+      "moduleId": "g03-t11-axis-c-withdraw",
+      "sourceBinding": "source-axis-c-withdraw",
+      "evidenceFact": "d2:object:g03-screen-window:axis-c-withdraw",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "AXIS-c-partial",
+      "locator": "§4/c-partial",
+      "technicalCheckId": "g03-t11@1:module/use-axis-c-partial/verify",
+      "moduleId": "g03-t11-axis-c-partial",
+      "sourceBinding": "source-axis-c-partial",
+      "evidenceFact": "d2:object:g03-screen-window:axis-c-partial",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    }
+  ],
+  "nonNumberedSections": [
+    {
+      "section": 1,
+      "title": "元信息、目的、独立性与适用范围",
+      "sourceLocator": "§1",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-01/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 2,
+      "title": "C0 基线、已知事实及政策缺口",
+      "sourceLocator": "§2",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-02/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 3,
+      "title": "C1 角色术语与对象粒度",
+      "sourceLocator": "§3",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-03/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 4,
+      "title": "C1/C2 互斥与叠加条件轴及具体分支",
+      "sourceLocator": "§4",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-04/part-01"
+      ],
+      "ids": [
+        "AX-01",
+        "AX-02",
+        "AX-03",
+        "AX-04",
+        "AX-05",
+        "AX-06",
+        "AX-07",
+        "AX-08",
+        "BR-01",
+        "BR-02",
+        "BR-03",
+        "BR-04",
+        "BR-05",
+        "BR-06",
+        "BR-07",
+        "BR-08",
+        "BR-09",
+        "BR-10",
+        "BR-11",
+        "BR-12"
+      ]
+    },
+    {
+      "section": 5,
+      "title": "C2 输入契约：三类申请输入与可信底账",
+      "sourceLocator": "§5",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-05/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 6,
+      "title": "C2 字段字典（保留B期F-01—F-48编号）",
+      "sourceLocator": "§6",
+      "parts": 2,
+      "checks": [
+        "g03-t11@1:module/use-section-06/part-01",
+        "g03-t11@1:module/use-section-06/part-02"
+      ],
+      "ids": [
+        "F-01",
+        "F-48",
+        "F-02",
+        "F-03",
+        "F-04",
+        "F-05",
+        "F-06",
+        "F-07",
+        "F-08",
+        "F-09",
+        "F-10",
+        "F-11",
+        "F-12",
+        "F-13",
+        "F-14",
+        "F-15",
+        "F-16",
+        "F-17",
+        "F-18",
+        "F-19",
+        "F-20",
+        "F-21",
+        "F-22",
+        "F-23",
+        "F-24",
+        "F-25",
+        "F-26",
+        "F-27",
+        "F-28",
+        "F-29",
+        "F-30",
+        "F-31",
+        "F-32",
+        "F-33",
+        "F-34",
+        "F-35",
+        "F-36",
+        "F-37",
+        "F-38",
+        "F-39",
+        "F-40",
+        "F-41",
+        "F-42",
+        "F-43",
+        "F-44",
+        "F-45",
+        "F-46",
+        "F-47"
+      ]
+    },
+    {
+      "section": 7,
+      "title": "C2 材料槽与合法等价证据组",
+      "sourceLocator": "§7",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-07/part-01"
+      ],
+      "ids": [
+        "M-01",
+        "M-02",
+        "M-03",
+        "M-04",
+        "M-05",
+        "M-06",
+        "M-07",
+        "M-08",
+        "M-09",
+        "M-10",
+        "M-11",
+        "M-12",
+        "M-13",
+        "M-14",
+        "M-15",
+        "M-16",
+        "EV-01",
+        "EV-02",
+        "F-03",
+        "F-04",
+        "F-07",
+        "EV-03",
+        "F-16",
+        "F-18",
+        "EV-04",
+        "F-25",
+        "EV-05",
+        "F-27",
+        "F-36",
+        "EV-06",
+        "F-28",
+        "F-29",
+        "EV-07",
+        "F-20",
+        "F-37",
+        "EV-08",
+        "F-22",
+        "F-24",
+        "F-42",
+        "EV-09",
+        "F-33",
+        "F-45",
+        "EV-10",
+        "F-26",
+        "F-46",
+        "EV-11",
+        "F-34",
+        "F-39",
+        "F-40",
+        "EV-12",
+        "F-19",
+        "F-35",
+        "EV-13",
+        "F-10",
+        "F-11"
+      ]
+    },
+    {
+      "section": 8,
+      "title": "C2/C3 校方可信数据槽、可得性与审核事实",
+      "sourceLocator": "§8",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-08/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 10,
+      "title": "C4 审核阶段、结果状态及分项输出契约",
+      "sourceLocator": "§10",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-10/part-01"
+      ],
+      "ids": [
+        "ST-01",
+        "ST-02",
+        "ST-03",
+        "ST-04",
+        "ST-05",
+        "ST-06",
+        "ST-07"
+      ]
+    },
+    {
+      "section": 11,
+      "title": "C4 状态转移、补件/变更/撤回/版本与审计",
+      "sourceLocator": "§11",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-11/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 12,
+      "title": "C4 合法例外、证据替代与不可自动裁断范围",
+      "sourceLocator": "§12",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-12/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 13,
+      "title": "C0 校本配置与政策版本优先级",
+      "sourceLocator": "§13",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-13/part-01"
+      ],
+      "ids": [
+        "CFG-01",
+        "CFG-02",
+        "CFG-03",
+        "CFG-04",
+        "CFG-05",
+        "CFG-06",
+        "CFG-07",
+        "CFG-08",
+        "CFG-09",
+        "CFG-10"
+      ]
+    },
+    {
+      "section": 14,
+      "title": "官方来源与规则事实标识",
+      "sourceLocator": "§14",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-14/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 15,
+      "title": "C7 作者流程推演摘要（详细路径及修订见自检文件）",
+      "sourceLocator": "§15",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-15/part-01"
+      ],
+      "ids": [
+        "EV-03"
+      ]
+    },
+    {
+      "section": 16,
+      "title": "C5 共性模块与专属逻辑接口概览",
+      "sourceLocator": "§16",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-16/part-01"
+      ],
+      "ids": []
+    },
+    {
+      "section": 17,
+      "title": "C6 编辑器与当前实现映射",
+      "sourceLocator": "§17",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-17/part-01"
+      ],
+      "ids": [
+        "F-01",
+        "F-48",
+        "M-01",
+        "M-16",
+        "AX-01",
+        "AX-08",
+        "EV-01",
+        "EV-13"
+      ]
+    },
+    {
+      "section": 18,
+      "title": "C7 完整性、版本记录和E阶段交接",
+      "sourceLocator": "§18",
+      "parts": 1,
+      "checks": [
+        "g03-t11@1:module/use-section-18/part-01"
+      ],
+      "ids": []
+    }
+  ],
+  "semanticIndependentlyVerified": false,
+  "schoolPolicyVerified": false,
+  "goldRegenerated": false
+}
