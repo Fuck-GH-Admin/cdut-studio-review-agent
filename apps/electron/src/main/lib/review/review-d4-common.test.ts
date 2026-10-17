@@ -8,8 +8,9 @@ import {compileD2RuntimePlan,makeD2CandidateShell,createD2TechnicalCase,verifyD2
 import {validateD2GuardSubmission} from './review-d2-execution-gates'
 import {saveAuthoringCandidateDraft} from './template-store'
 import {readAggregate} from './case-store-v2'
-import {registerMaterial} from './application-service'
-import {preparePiReviewRunV2,submitPiReviewResultV2,getRunV2} from './run-service-v2'
+import {registerMaterial} from './material-service'
+import {preparePiReviewRunV2,submitPiReviewResultV2} from './pi-case-review-service'
+import {getRunV2} from './run-store-v2'
 
 const home=mkdtempSync(join(tmpdir(),'d4-common-r2-'))
 process.env.PROFER_CONFIG_DIR=home
