@@ -1,22 +1,22 @@
 {
-  "id": "run-pi-mvcn4sfk-r99qb",
+  "id": "run-pi-mvcnflwq-cucvt",
   "caseId": "g03-t06-live-synth",
   "templateId": "g03-t06",
   "templateVersion": 1,
   "inputManifest": {
-    "hash": "ee7ff914e8fe24a9f22cfd1dd64c928e97f11aecf6e9a19de94dafc4ee921825",
+    "hash": "b0fb1e644958af1290c9e6ed0183870bae3fc86078c51865075ce35020c8e4c5",
     "templateVersion": 1,
     "policyVersions": [],
     "documentVersions": [
       {
-        "documentId": "doc-1-mvcn4sf4",
-        "versionId": "doc-1-mvcn4sf4-v1",
+        "documentId": "doc-1-mvcnflw4",
+        "versionId": "doc-1-mvcnflw4-v1",
         "contentHash": "042b12cf73f9eab4254354ff8b8d3e663171bcebd66ae879069c0a12abdf0214"
       }
     ],
     "observationIds": [],
     "evidenceLinkIds": [
-      "evl-doc-1-mvcn4sf4-v1-g03-t06-subject-a-1792256311273-am93"
+      "evl-doc-1-mvcnflw4-v1-g03-t06-subject-a-1792256816030-0ax9"
     ],
     "effectiveRuleIds": [
       "d2-f35f6d3cdbb2689d33f5",
@@ -60,6 +60,8 @@
       "d2-f5de28053ee7d3101a13",
       "d2-91cb5388b0dc4d274e3b",
       "d2-24ea6364dd5667ba7d0a",
+      "d2-b8253f73aedacc4b8ab6",
+      "d2-5db4c14f0bf3e22921c0",
       "d2-b0dfc781a423affe1ed6",
       "d2-5f2898c45e77632e0717",
       "d2-6bef8fa070fd975b0679",
@@ -107,6 +109,8 @@
       "d2-250e1dc9d81826bdb426",
       "d2-5dd85b3664e5f6fd86cc",
       "d2-892ac9177c619ac6265e",
+      "d2-2d7ac32aa340d1c2074d",
+      "d2-e02925eddc444dd5a191",
       "d2-655807c2bb0b20200417",
       "d2-6bfd1dceb2c4a2fff95c",
       "d2-5ccb1b51685e85a8ec55",
@@ -115,7 +119,7 @@
       "d2-46cf36f719869756a7bd",
       "d2-62789a8521b0db059a0b"
     ],
-    "effectiveRuleSetHash": "7758c8c9d6db78ffb26791f44ca0525c085e51707dfe86285b9e341ea73c889c"
+    "effectiveRuleSetHash": "ec40ddab63a3ca5e4be2206fd1f0542c0ed3e6f5632ca2cd166300f58a48274e"
   },
   "status": "completed",
   "checkpoints": [],
@@ -134,7 +138,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-87e11fa577155736e39d-subject-g03-t06-subject-a",
@@ -149,7 +153,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-eb85ae1070d1fc2f68d3-subject-g03-t06-subject-a",
@@ -164,7 +168,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-423146a0523919b5d7d1-subject-g03-t06-subject-a",
@@ -179,7 +183,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-d6118cff8ab010d64d13-subject-g03-t06-subject-a",
@@ -194,7 +198,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-8bbc6432b1bb9dd1bb8c-subject-g03-t06-subject-a",
@@ -209,7 +213,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-d634b089fe3f1c209817-subject-g03-t06-subject-a",
@@ -224,7 +228,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-08541e805079d95addb9-subject-g03-t06-subject-a",
@@ -239,7 +243,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-d14ff30880ee13317bf6-subject-g03-t06-subject-a",
@@ -254,7 +258,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-5b6d1e6f67caf890669d-subject-g03-t06-subject-a",
@@ -269,7 +273,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-4d787bc9c2849617f078-subject-g03-t06-subject-a",
@@ -284,7 +288,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-456c07d3228baba51625-subject-g03-t06-subject-a",
@@ -299,7 +303,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-a2e7b4ffc5937d009fab-subject-g03-t06-subject-a",
@@ -314,7 +318,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-13d6d54019facc470dcb-subject-g03-t06-subject-a",
@@ -329,7 +333,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-f833e7370601993f600c-subject-g03-t06-subject-a",
@@ -344,7 +348,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-1731ed1251cdab32cf26-subject-g03-t06-subject-a",
@@ -359,7 +363,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-82089337477c1d701971-subject-g03-t06-subject-a",
@@ -374,7 +378,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-8ee6327f12bbd90ebc47-subject-g03-t06-subject-a",
@@ -389,7 +393,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-8a683901d03a5dc9b6c7-subject-g03-t06-subject-a",
@@ -404,7 +408,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-7c5cd235d0ee18ddb19d-subject-g03-t06-subject-a",
@@ -419,7 +423,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-023a105fb324a3362bb8-subject-g03-t06-subject-a",
@@ -434,7 +438,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-02e774499e6925856dc0-subject-g03-t06-subject-a",
@@ -449,7 +453,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-cc12e0fafc3daa213c6e-subject-g03-t06-subject-a",
@@ -464,7 +468,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-79d2f81ea8d63423be20-subject-g03-t06-subject-a",
@@ -479,7 +483,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-6e3fadbe5a4f582aa5aa-subject-g03-t06-subject-a",
@@ -494,7 +498,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-d77f3d6202ae83ffdb15-subject-g03-t06-subject-a",
@@ -509,7 +513,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-c771bbe6a27bc96469c2-subject-g03-t06-subject-a",
@@ -524,7 +528,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-8f687a3e0b1ccf60a441-subject-g03-t06-subject-a",
@@ -539,7 +543,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-bab7ff74434f752853ec-subject-g03-t06-subject-a",
@@ -554,7 +558,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-638aaf48b2e035098b27-subject-g03-t06-subject-a",
@@ -569,7 +573,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-cdf17418fb44bc966ef8-subject-g03-t06-subject-a",
@@ -584,7 +588,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-4acf97d989b341467c53-subject-g03-t06-subject-a",
@@ -599,7 +603,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-315c6c0e9b14ff379bab-subject-g03-t06-subject-a",
@@ -614,7 +618,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-8d7cde3034962ab9f8e5-subject-g03-t06-subject-a",
@@ -629,7 +633,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-e167c8307d1fdac15a28-subject-g03-t06-subject-a",
@@ -644,7 +648,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-d9d82d329547437a4aa2-subject-g03-t06-subject-a",
@@ -659,7 +663,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-d2f617cb12e738d017dc-subject-g03-t06-subject-a",
@@ -674,7 +678,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-f0418d9a62242792276b-subject-g03-t06-subject-a",
@@ -689,7 +693,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-f5de28053ee7d3101a13-subject-g03-t06-subject-a",
@@ -704,7 +708,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-91cb5388b0dc4d274e3b-subject-g03-t06-subject-a",
@@ -719,7 +723,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-24ea6364dd5667ba7d0a-subject-g03-t06-subject-a",
@@ -734,7 +738,37 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
+    },
+    {
+      "checkId": "check-d2-b8253f73aedacc4b8ab6-subject-g03-t06-subject-a",
+      "ruleId": "d2-b8253f73aedacc4b8ab6",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t06-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.051Z"
+    },
+    {
+      "checkId": "check-d2-5db4c14f0bf3e22921c0-subject-g03-t06-subject-a",
+      "ruleId": "d2-5db4c14f0bf3e22921c0",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t06-subject-a"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-b0dfc781a423affe1ed6-subject-g03-t06-subject-a",
@@ -749,7 +783,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-5f2898c45e77632e0717-subject-g03-t06-subject-a",
@@ -764,7 +798,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-6bef8fa070fd975b0679-subject-g03-t06-subject-a",
@@ -779,7 +813,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-364d07eb223ec463fbc7-subject-g03-t06-subject-a",
@@ -794,7 +828,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-a1d89793074bbf41d95a-subject-g03-t06-subject-a",
@@ -809,7 +843,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-32ff641ea6a8110a7464-subject-g03-t06-subject-a",
@@ -824,7 +858,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-c7d93239e0c7127f8c3c-subject-g03-t06-subject-a",
@@ -839,7 +873,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.051Z"
     },
     {
       "checkId": "check-d2-b0bedee739190a7609ac-subject-g03-t06-subject-b",
@@ -854,7 +888,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.286Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-b9b4678e6184a3679050-subject-g03-t06-subject-b",
@@ -869,7 +903,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-da6a8c83a5659089ec12-subject-g03-t06-subject-b",
@@ -884,7 +918,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-42229e60946c04cae0d7-subject-g03-t06-subject-b",
@@ -899,7 +933,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-640ac3e224dd5eb98c53-subject-g03-t06-subject-b",
@@ -914,7 +948,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-98a15d6d04c379721399-subject-g03-t06-subject-b",
@@ -929,7 +963,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-74899738dd5b5639627b-subject-g03-t06-subject-b",
@@ -944,7 +978,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-22153720018abc3b4af4-subject-g03-t06-subject-b",
@@ -959,7 +993,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-333893e8ed5c75de9ac9-subject-g03-t06-subject-b",
@@ -974,7 +1008,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-f4f22f7ae3b3e79ac9ca-subject-g03-t06-subject-b",
@@ -989,7 +1023,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-8dcdf03d569e05f56fae-subject-g03-t06-subject-b",
@@ -1004,7 +1038,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-90280207d48a331d1ea8-subject-g03-t06-subject-b",
@@ -1019,7 +1053,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-2fb7781be470ab5b2195-subject-g03-t06-subject-b",
@@ -1034,7 +1068,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-7b83a286d915888633ec-subject-g03-t06-subject-b",
@@ -1049,7 +1083,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-20fa78ebc01b842cb4c6-subject-g03-t06-subject-b",
@@ -1064,7 +1098,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-dfcd286d4709284b62a4-subject-g03-t06-subject-b",
@@ -1079,7 +1113,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-01601ecc5c5d717318e5-subject-g03-t06-subject-b",
@@ -1094,7 +1128,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-32bfe0a6ed5f39006c31-subject-g03-t06-subject-b",
@@ -1109,7 +1143,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-9b78615d6e43bee432a6-subject-g03-t06-subject-b",
@@ -1124,7 +1158,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-280738174cef42350d97-subject-g03-t06-subject-b",
@@ -1139,7 +1173,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-108fde43ac7986fb6f64-subject-g03-t06-subject-b",
@@ -1154,7 +1188,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-38fd88ce4a265c389def-subject-g03-t06-subject-b",
@@ -1169,7 +1203,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-257ff8385b072b191cc4-subject-g03-t06-subject-b",
@@ -1184,7 +1218,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-143235d42d79118438ee-subject-g03-t06-subject-b",
@@ -1199,7 +1233,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-f2467ef25427d8a617de-subject-g03-t06-subject-b",
@@ -1214,7 +1248,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-5cb9ccf230975af775ba-subject-g03-t06-subject-b",
@@ -1229,7 +1263,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-513f1dd4fbd19bede560-subject-g03-t06-subject-b",
@@ -1244,7 +1278,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-285319b1e55e9350851c-subject-g03-t06-subject-b",
@@ -1259,7 +1293,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-de258c261d742640a7f0-subject-g03-t06-subject-b",
@@ -1274,7 +1308,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-3c96c33f2acbe473270a-subject-g03-t06-subject-b",
@@ -1289,7 +1323,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-4d2d8caae475950c376a-subject-g03-t06-subject-b",
@@ -1304,7 +1338,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-285a00329996a35e5167-subject-g03-t06-subject-b",
@@ -1319,7 +1353,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-d3eb54a7f282cfc86b37-subject-g03-t06-subject-b",
@@ -1334,7 +1368,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-9ed05a1f22803c436cc8-subject-g03-t06-subject-b",
@@ -1349,7 +1383,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-def40c1103b6f267bff7-subject-g03-t06-subject-b",
@@ -1364,7 +1398,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-60c78971c4fdcc7230ad-subject-g03-t06-subject-b",
@@ -1379,7 +1413,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-36e74966420e8dd21c2b-subject-g03-t06-subject-b",
@@ -1394,7 +1428,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-250e1dc9d81826bdb426-subject-g03-t06-subject-b",
@@ -1409,7 +1443,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-5dd85b3664e5f6fd86cc-subject-g03-t06-subject-b",
@@ -1424,7 +1458,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-892ac9177c619ac6265e-subject-g03-t06-subject-b",
@@ -1439,7 +1473,37 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
+    },
+    {
+      "checkId": "check-d2-2d7ac32aa340d1c2074d-subject-g03-t06-subject-b",
+      "ruleId": "d2-2d7ac32aa340d1c2074d",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t06-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.052Z"
+    },
+    {
+      "checkId": "check-d2-e02925eddc444dd5a191-subject-g03-t06-subject-b",
+      "ruleId": "d2-e02925eddc444dd5a191",
+      "target": {
+        "scope": "subject",
+        "subjectIds": [
+          "g03-t06-subject-b"
+        ]
+      },
+      "status": "awaiting-confirmation",
+      "reason": "C candidate source not independently authorized under active CDUT policy",
+      "sourceRefs": [],
+      "executedBy": "semantic",
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-655807c2bb0b20200417-subject-g03-t06-subject-b",
@@ -1454,7 +1518,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-6bfd1dceb2c4a2fff95c-subject-g03-t06-subject-b",
@@ -1469,7 +1533,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-5ccb1b51685e85a8ec55-subject-g03-t06-subject-b",
@@ -1484,7 +1548,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-fd7c72e06d681286f67e-subject-g03-t06-subject-b",
@@ -1499,7 +1563,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-065dfea9972176af72c1-subject-g03-t06-subject-b",
@@ -1514,7 +1578,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-46cf36f719869756a7bd-subject-g03-t06-subject-b",
@@ -1529,7 +1593,7 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     },
     {
       "checkId": "check-d2-62789a8521b0db059a0b-subject-g03-t06-subject-b",
@@ -1544,12 +1608,12 @@
       "reason": "C candidate source not independently authorized under active CDUT policy",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:58:31.287Z"
+      "executedAt": "2026-10-17T17:06:56.052Z"
     }
   ],
   "opinions": [
     {
-      "id": "opinion-run-pi-mvcn4sfk-r99qb",
+      "id": "opinion-run-pi-mvcnflwq-cucvt",
       "kind": "summary",
       "severity": "yellow",
       "title": "Pi 审核意见",
@@ -1563,24 +1627,24 @@
   "coverage": {
     "documents": [
       {
-        "documentVersionId": "doc-1-mvcn4sf4-v1",
+        "documentVersionId": "doc-1-mvcnflw4-v1",
         "status": "unread",
         "reason": "本次运行没有可追溯的读取记录"
       }
     ],
-    "plannedChecks": 95,
-    "completedChecks": 95,
+    "plannedChecks": 99,
+    "completedChecks": 99,
     "effectiveVerdicts": 0,
-    "pendingChecks": 95
+    "pendingChecks": 99
   },
   "diagnostics": [
     "由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。"
   ],
-  "startedAt": "2026-10-17T16:58:31.280Z",
+  "startedAt": "2026-10-17T17:06:56.043Z",
   "initiatedBy": {
     "actorId": "agent-g03-t06-session",
     "actorSource": "agent",
     "role": "reviewer"
   },
-  "completedAt": "2026-10-17T16:58:31.287Z"
+  "completedAt": "2026-10-17T17:06:56.052Z"
 }

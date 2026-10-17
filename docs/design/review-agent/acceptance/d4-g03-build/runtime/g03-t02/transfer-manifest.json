@@ -1,8 +1,8 @@
 {
-  "fingerprint": "b2c77acbd8f6cde6df83a4e26fe968cf537e3a89e614f7290503f84ecd65b60e",
+  "fingerprint": "a52496d2154fc9f0334cdbe9d57ad6bd51a30c2cfed4b21f17e817248c5ec062",
   "sourceSha256": "ccc47640de8023e4b258abdcd6cd17603b99a43f501e14fea7712655de3652ae",
   "templateId": "g03-t02",
   "ruleCount": 28,
-  "checks": 115,
+  "checks": 119,
   "subjects": 2
 }

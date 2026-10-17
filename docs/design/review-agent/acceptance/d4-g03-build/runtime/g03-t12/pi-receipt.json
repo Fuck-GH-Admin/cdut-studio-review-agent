@@ -1,19 +1,19 @@
 {
   "caseId": "g03-t12-live-synth",
-  "runId": "run-pi-mvcn4scc-yv2wc",
-  "planFingerprint": "864dc717599666131e02517d01c36ccb1c16613b05760a60ae5256cc3684e8ec",
-  "evidenceVersion": "doc-1-mvcn4sbp-v1",
+  "runId": "run-pi-mvcnflsc-c3a1e",
+  "planFingerprint": "5bf49f3ca3e9c8b85baf9a800d18cc440bfa1afedc7c26cbba0c9fcc6690581b",
+  "evidenceVersion": "doc-1-mvcnflrm-v1",
   "subjectEvidenceLinks": [
     {
-      "id": "evl-doc-1-mvcn4sbp-v1-g03-t12-subject-a-1792256311156-vgnf",
-      "documentVersionId": "doc-1-mvcn4sbp-v1",
+      "id": "evl-doc-1-mvcnflrm-v1-g03-t12-subject-a-1792256815873-ianc",
+      "documentVersionId": "doc-1-mvcnflrm-v1",
       "subjectId": "g03-t12-subject-a",
       "supportsFact": "d2:object:g03-sports-slot:r01",
       "status": "confirmed",
       "linkedBy": "user"
     }
   ],
-  "accepted": 109,
+  "accepted": 113,
   "rejected": [],
   "missingChecks": [],
   "verified": {

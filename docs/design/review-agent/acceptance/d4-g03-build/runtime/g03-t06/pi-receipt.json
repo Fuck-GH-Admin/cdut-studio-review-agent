@@ -1,19 +1,19 @@
 {
   "caseId": "g03-t06-live-synth",
-  "runId": "run-pi-mvcn4sfk-r99qb",
-  "planFingerprint": "d05b4e2e2f9c5b61f770dd6bc113ad4c159492e4a3b4aa2db210359dd2549721",
-  "evidenceVersion": "doc-1-mvcn4sf4-v1",
+  "runId": "run-pi-mvcnflwq-cucvt",
+  "planFingerprint": "70295272b1be2a38b8d34606359a774420233e06f0794bb89ec84fcfde2e41f5",
+  "evidenceVersion": "doc-1-mvcnflw4-v1",
   "subjectEvidenceLinks": [
     {
-      "id": "evl-doc-1-mvcn4sf4-v1-g03-t06-subject-a-1792256311273-am93",
-      "documentVersionId": "doc-1-mvcn4sf4-v1",
+      "id": "evl-doc-1-mvcnflw4-v1-g03-t06-subject-a-1792256816030-0ax9",
+      "documentVersionId": "doc-1-mvcnflw4-v1",
       "subjectId": "g03-t06-subject-a",
       "supportsFact": "d2:object:g03-group-member:r02",
       "status": "confirmed",
       "linkedBy": "user"
     }
   ],
-  "accepted": 95,
+  "accepted": 99,
   "rejected": [],
   "missingChecks": [],
   "verified": {

@@ -6,8 +6,8 @@
   "revision": 1,
   "templateId": "g03-t08",
   "templateVersion": 1,
-  "authoringDigest": "358501333e72df5abf0d5bc78eed51609d6777cdbdc3e3fcf69c5b52a5d088c3",
-  "previewFingerprint": "c2cc87c237fa38b886606622ec4041f72dd4380a60e10faeb1f556c16d90f50e",
+  "authoringDigest": "e7cb9408204b872a133a736f8882d082679c625ddc8f7e5261ec49dbac229880",
+  "previewFingerprint": "a10017f8ed4589c5625215064406afb4e107ca8f618f208cfd1cd8fb2b67a5e5",
   "targets": [
     {
       "kind": "generic-object",
@@ -1502,6 +1502,52 @@
       "confirmation": "unconfirmed"
     },
     {
+      "id": "d2-5db2dbf47835ad76053c",
+      "policyVersionId": "workspace:d2-d4-g03-t08@1",
+      "title": "业务母版原始头部/版本/权威声明",
+      "requirement": "适用范围：当前g03-instrument-slot\n# G03-T08｜共享仪器自主上机机时预约——完整业务 Markdown 审核模板母版\n\n> **templateId** `G03-T08` · **C作者候选版本** `v0.1` · **基线日期** 2026-10-12 · **作者交付状态** `BUSINESS_MD_DRAFT_WITH_GAPS`  \n> **唯一审核目的**：对具体设备、实际操作者、指定使用时段的**自主上机预约及随后安全开机门控**形成可追溯的材料审核建议与审批状态检查。**这不是已经发布到系统的JSON模板，也不是校园内真实预约批准证明。**  \n> 本母版为自包含纯Markdown业务契约；校本现行规则须另由有权部门提供，未知校本参数必须保持 `unknown`，不得把跨校规则写成成都理工大学强制拒件依据。  \n> **来源**：B阶段v0.2全部报告、字段F-01～F-59、材料M-01～M-21、候选R-01～R-36、成都理工大学S01～S06及S16～S21、外校参考S07～S15。未读取独立D阶段隐藏标准答案。\n完成标准：逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项\n责任边界：UNKNOWN必须等待；不能直接作行政许可\n不自动签发学校许可；所有候选校本条件未确认只能待核\n不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出\nD2 技术预审来源：source-extra-front/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-452838d8020d719b",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "source-extra-front"
+      ],
+      "priority": 50055,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-c555801a2ed6ce4c6f09",
+      "policyVersionId": "workspace:d2-d4-g03-t08@1",
+      "title": "§9 规则共同前提与表格注释",
+      "requirement": "适用范围：当前g03-instrument-slot\n## 9. 原子规则（完整评估契约）\n\n**规则来源说明**：每一条均需锁定实际学校、校区、设备、申请时点政策和作用阶段；“明确不符合”仅能依据当前适用的有效约束输出，不能直接据别校S07～S15拒绝成都理工大学用户。`Q-xx`为稳定问题码，`SCxx`仅是作者审查线索，不是D金标。\n\n| 规则、核查目标 | 有效范围、触发三值 | 生效阶段和被审对象 | 必要事实/等价证据以及可判断动作 | **确定失败** | **缺失/冲突/不可达** | 下一个有权动作、源、问题码、走查线索 |\n|---|---|---|---|---|---|---|\n### 9.1 原子规则如何判定 TRUE / FALSE / UNKNOWN\n\n- `TRUE`：明确适用且有正确授权、未过时的证据证明符合；仅给出**该规则的局部符合**。\n- `FALSE`：确认适用且可信证据明确反向；可为“需修改机时”“此付款路径不可用”“该操作不能获准”；不能机械把所有FALSE写成惩戒性的“欺诈”。\n- `UNKNOWN`：规则范围未落实、权限/日历不可访问、原证据相互冲突、审批未走到相关阶段；区分 `WAIT_POLICY`、`WAIT_FACT`、`WAIT_OWNER`、`WAIT_HUMAN`、`CONFLICT`。unknown不可转换成false绕过要求、亦不可当成true直接放行。\n- `N/A`：**已证实**条件不适用，例如合法免费单的预扣款字段、明确没有特殊风险的专项MSDS要求；N/A不等于不知道有没有风险。\n- 不同分支可叠加；若规则有条件“在提交后由主管批准”，提交阶段的缺签名应为`WAIT_OWNER`而不是缺件；已到执行阶段仍无必须的许可，则相应执行结果保持阻断。\n完成标准：逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项\n责任边界：UNKNOWN必须等待；不能直接作行政许可\n不自动签发学校许可；所有候选校本条件未确认只能待核\n不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出\nD2 技术预审来源：source-extra-rule-envelope/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-452838d8020d719b",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "source-extra-rule-envelope"
+      ],
+      "priority": 50056,
+      "confirmation": "unconfirmed"
+    },
+    {
       "id": "d2-27f5c406265001266b6e",
       "policyVersionId": "workspace:d2-d4-g03-t08@1",
       "title": "逐对象情景 p-self-operation",
@@ -1521,7 +1567,7 @@
       "sourceRefIds": [
         "source-axis-p-self-operation"
       ],
-      "priority": 50055,
+      "priority": 50057,
       "confirmation": "unconfirmed"
     },
     {
@@ -1544,7 +1590,7 @@
       "sourceRefIds": [
         "source-axis-c-after-hours"
       ],
-      "priority": 50056,
+      "priority": 50058,
       "confirmation": "unconfirmed"
     },
     {
@@ -1567,7 +1613,7 @@
       "sourceRefIds": [
         "source-axis-c-whitelist"
       ],
-      "priority": 50057,
+      "priority": 50059,
       "confirmation": "unconfirmed"
     },
     {
@@ -1590,7 +1636,7 @@
       "sourceRefIds": [
         "source-axis-c-fee"
       ],
-      "priority": 50058,
+      "priority": 50060,
       "confirmation": "unconfirmed"
     },
     {
@@ -1613,7 +1659,7 @@
       "sourceRefIds": [
         "source-axis-c-pi-approval"
       ],
-      "priority": 50059,
+      "priority": 50061,
       "confirmation": "unconfirmed"
     },
     {
@@ -1636,7 +1682,7 @@
       "sourceRefIds": [
         "source-axis-c-hazard"
       ],
-      "priority": 50060,
+      "priority": 50062,
       "confirmation": "unconfirmed"
     },
     {
@@ -1659,7 +1705,7 @@
       "sourceRefIds": [
         "source-axis-c-professional-safety"
       ],
-      "priority": 50061,
+      "priority": 50063,
       "confirmation": "unconfirmed"
     },
     {
@@ -1682,7 +1728,7 @@
       "sourceRefIds": [
         "source-axis-c-training"
       ],
-      "priority": 50062,
+      "priority": 50064,
       "confirmation": "unconfirmed"
     },
     {
@@ -1705,7 +1751,7 @@
       "sourceRefIds": [
         "source-axis-c-change"
       ],
-      "priority": 50063,
+      "priority": 50065,
       "confirmation": "unconfirmed"
     },
     {
@@ -1728,7 +1774,7 @@
       "sourceRefIds": [
         "source-axis-c-multiple-slots"
       ],
-      "priority": 50064,
+      "priority": 50066,
       "confirmation": "unconfirmed"
     },
     {
@@ -1751,7 +1797,7 @@
       "sourceRefIds": [
         "source-axis-c-closed"
       ],
-      "priority": 50065,
+      "priority": 50067,
       "confirmation": "unconfirmed"
     },
     {
@@ -1774,7 +1820,7 @@
       "sourceRefIds": [
         "source-r02"
       ],
-      "priority": 50066,
+      "priority": 50068,
       "confirmation": "unconfirmed"
     },
     {
@@ -1797,7 +1843,7 @@
       "sourceRefIds": [
         "source-r03"
       ],
-      "priority": 50067,
+      "priority": 50069,
       "confirmation": "unconfirmed"
     },
     {
@@ -1820,7 +1866,7 @@
       "sourceRefIds": [
         "source-r06"
       ],
-      "priority": 50068,
+      "priority": 50070,
       "confirmation": "unconfirmed"
     },
     {
@@ -1843,7 +1889,7 @@
       "sourceRefIds": [
         "source-r07"
       ],
-      "priority": 50069,
+      "priority": 50071,
       "confirmation": "unconfirmed"
     },
     {
@@ -1866,7 +1912,7 @@
       "sourceRefIds": [
         "source-r22"
       ],
-      "priority": 50070,
+      "priority": 50072,
       "confirmation": "unconfirmed"
     },
     {
@@ -1889,7 +1935,7 @@
       "sourceRefIds": [
         "source-r28"
       ],
-      "priority": 50071,
+      "priority": 50073,
       "confirmation": "unconfirmed"
     },
     {
@@ -1912,7 +1958,7 @@
       "sourceRefIds": [
         "source-r29"
       ],
-      "priority": 50072,
+      "priority": 50074,
       "confirmation": "unconfirmed"
     },
     {
@@ -1935,7 +1981,7 @@
       "sourceRefIds": [
         "source-r30"
       ],
-      "priority": 50073,
+      "priority": 50075,
       "confirmation": "unconfirmed"
     },
     {
@@ -1958,7 +2004,7 @@
       "sourceRefIds": [
         "source-r01"
       ],
-      "priority": 50074,
+      "priority": 50076,
       "confirmation": "unconfirmed"
     },
     {
@@ -1981,7 +2027,7 @@
       "sourceRefIds": [
         "source-r04"
       ],
-      "priority": 50075,
+      "priority": 50077,
       "confirmation": "unconfirmed"
     },
     {
@@ -2004,7 +2050,7 @@
       "sourceRefIds": [
         "source-r05"
       ],
-      "priority": 50076,
+      "priority": 50078,
       "confirmation": "unconfirmed"
     },
     {
@@ -2027,7 +2073,7 @@
       "sourceRefIds": [
         "source-r09"
       ],
-      "priority": 50077,
+      "priority": 50079,
       "confirmation": "unconfirmed"
     },
     {
@@ -2050,7 +2096,7 @@
       "sourceRefIds": [
         "source-r10"
       ],
-      "priority": 50078,
+      "priority": 50080,
       "confirmation": "unconfirmed"
     },
     {
@@ -2073,7 +2119,7 @@
       "sourceRefIds": [
         "source-r11"
       ],
-      "priority": 50079,
+      "priority": 50081,
       "confirmation": "unconfirmed"
     },
     {
@@ -2096,7 +2142,7 @@
       "sourceRefIds": [
         "source-r16"
       ],
-      "priority": 50080,
+      "priority": 50082,
       "confirmation": "unconfirmed"
     },
     {
@@ -2119,7 +2165,7 @@
       "sourceRefIds": [
         "source-r17"
       ],
-      "priority": 50081,
+      "priority": 50083,
       "confirmation": "unconfirmed"
     },
     {
@@ -2142,7 +2188,7 @@
       "sourceRefIds": [
         "source-r18"
       ],
-      "priority": 50082,
+      "priority": 50084,
       "confirmation": "unconfirmed"
     },
     {
@@ -2165,7 +2211,7 @@
       "sourceRefIds": [
         "source-r31"
       ],
-      "priority": 50083,
+      "priority": 50085,
       "confirmation": "unconfirmed"
     },
     {
@@ -2188,7 +2234,7 @@
       "sourceRefIds": [
         "source-r32"
       ],
-      "priority": 50084,
+      "priority": 50086,
       "confirmation": "unconfirmed"
     },
     {
@@ -2211,7 +2257,7 @@
       "sourceRefIds": [
         "source-r33"
       ],
-      "priority": 50085,
+      "priority": 50087,
       "confirmation": "unconfirmed"
     },
     {
@@ -2234,7 +2280,7 @@
       "sourceRefIds": [
         "source-r34"
       ],
-      "priority": 50086,
+      "priority": 50088,
       "confirmation": "unconfirmed"
     },
     {
@@ -2257,7 +2303,7 @@
       "sourceRefIds": [
         "source-r35"
       ],
-      "priority": 50087,
+      "priority": 50089,
       "confirmation": "unconfirmed"
     },
     {
@@ -2280,7 +2326,7 @@
       "sourceRefIds": [
         "source-r36"
       ],
-      "priority": 50088,
+      "priority": 50090,
       "confirmation": "unconfirmed"
     },
     {
@@ -2303,7 +2349,7 @@
       "sourceRefIds": [
         "source-r12"
       ],
-      "priority": 50089,
+      "priority": 50091,
       "confirmation": "unconfirmed"
     },
     {
@@ -2326,7 +2372,7 @@
       "sourceRefIds": [
         "source-r13"
       ],
-      "priority": 50090,
+      "priority": 50092,
       "confirmation": "unconfirmed"
     },
     {
@@ -2349,7 +2395,7 @@
       "sourceRefIds": [
         "source-r14"
       ],
-      "priority": 50091,
+      "priority": 50093,
       "confirmation": "unconfirmed"
     },
     {
@@ -2372,7 +2418,7 @@
       "sourceRefIds": [
         "source-r15"
       ],
-      "priority": 50092,
+      "priority": 50094,
       "confirmation": "unconfirmed"
     },
     {
@@ -2395,7 +2441,7 @@
       "sourceRefIds": [
         "source-r19"
       ],
-      "priority": 50093,
+      "priority": 50095,
       "confirmation": "unconfirmed"
     },
     {
@@ -2418,7 +2464,7 @@
       "sourceRefIds": [
         "source-r20"
       ],
-      "priority": 50094,
+      "priority": 50096,
       "confirmation": "unconfirmed"
     },
     {
@@ -2441,7 +2487,7 @@
       "sourceRefIds": [
         "source-r23"
       ],
-      "priority": 50095,
+      "priority": 50097,
       "confirmation": "unconfirmed"
     },
     {
@@ -2464,7 +2510,7 @@
       "sourceRefIds": [
         "source-r24"
       ],
-      "priority": 50096,
+      "priority": 50098,
       "confirmation": "unconfirmed"
     },
     {
@@ -2487,7 +2533,7 @@
       "sourceRefIds": [
         "source-r27"
       ],
-      "priority": 50097,
+      "priority": 50099,
       "confirmation": "unconfirmed"
     },
     {
@@ -2510,7 +2556,7 @@
       "sourceRefIds": [
         "source-r08"
       ],
-      "priority": 50098,
+      "priority": 50100,
       "confirmation": "unconfirmed"
     },
     {
@@ -2533,7 +2579,7 @@
       "sourceRefIds": [
         "source-r21"
       ],
-      "priority": 50099,
+      "priority": 50101,
       "confirmation": "unconfirmed"
     },
     {
@@ -2556,7 +2602,7 @@
       "sourceRefIds": [
         "source-r25"
       ],
-      "priority": 50100,
+      "priority": 50102,
       "confirmation": "unconfirmed"
     },
     {
@@ -2579,7 +2625,7 @@
       "sourceRefIds": [
         "source-r26"
       ],
-      "priority": 50101,
+      "priority": 50103,
       "confirmation": "unconfirmed"
     },
     {
@@ -2602,7 +2648,7 @@
       "sourceRefIds": [
         "source-section-01"
       ],
-      "priority": 50102,
+      "priority": 50104,
       "confirmation": "unconfirmed"
     },
     {
@@ -2625,7 +2671,7 @@
       "sourceRefIds": [
         "source-section-02"
       ],
-      "priority": 50103,
+      "priority": 50105,
       "confirmation": "unconfirmed"
     },
     {
@@ -2648,7 +2694,7 @@
       "sourceRefIds": [
         "source-section-03"
       ],
-      "priority": 50104,
+      "priority": 50106,
       "confirmation": "unconfirmed"
     },
     {
@@ -2671,7 +2717,7 @@
       "sourceRefIds": [
         "source-section-04"
       ],
-      "priority": 50105,
+      "priority": 50107,
       "confirmation": "unconfirmed"
     },
     {
@@ -2694,7 +2740,7 @@
       "sourceRefIds": [
         "source-section-05"
       ],
-      "priority": 50106,
+      "priority": 50108,
       "confirmation": "unconfirmed"
     },
     {
@@ -2717,7 +2763,7 @@
       "sourceRefIds": [
         "source-section-06"
       ],
-      "priority": 50107,
+      "priority": 50109,
       "confirmation": "unconfirmed"
     },
     {
@@ -2740,7 +2786,7 @@
       "sourceRefIds": [
         "source-section-06"
       ],
-      "priority": 50108,
+      "priority": 50110,
       "confirmation": "unconfirmed"
     },
     {
@@ -2763,7 +2809,7 @@
       "sourceRefIds": [
         "source-section-07"
       ],
-      "priority": 50109,
+      "priority": 50111,
       "confirmation": "unconfirmed"
     },
     {
@@ -2786,7 +2832,7 @@
       "sourceRefIds": [
         "source-section-08"
       ],
-      "priority": 50110,
+      "priority": 50112,
       "confirmation": "unconfirmed"
     },
     {
@@ -2809,7 +2855,7 @@
       "sourceRefIds": [
         "source-section-10"
       ],
-      "priority": 50111,
+      "priority": 50113,
       "confirmation": "unconfirmed"
     },
     {
@@ -2832,7 +2878,7 @@
       "sourceRefIds": [
         "source-section-11"
       ],
-      "priority": 50112,
+      "priority": 50114,
       "confirmation": "unconfirmed"
     },
     {
@@ -2855,7 +2901,7 @@
       "sourceRefIds": [
         "source-section-12"
       ],
-      "priority": 50113,
+      "priority": 50115,
       "confirmation": "unconfirmed"
     },
     {
@@ -2878,7 +2924,7 @@
       "sourceRefIds": [
         "source-section-13"
       ],
-      "priority": 50114,
+      "priority": 50116,
       "confirmation": "unconfirmed"
     },
     {
@@ -2901,7 +2947,7 @@
       "sourceRefIds": [
         "source-section-14"
       ],
-      "priority": 50115,
+      "priority": 50117,
       "confirmation": "unconfirmed"
     },
     {
@@ -2924,7 +2970,7 @@
       "sourceRefIds": [
         "source-section-15"
       ],
-      "priority": 50116,
+      "priority": 50118,
       "confirmation": "unconfirmed"
     },
     {
@@ -2947,7 +2993,7 @@
       "sourceRefIds": [
         "source-section-16"
       ],
-      "priority": 50117,
+      "priority": 50119,
       "confirmation": "unconfirmed"
     },
     {
@@ -2970,7 +3016,7 @@
       "sourceRefIds": [
         "source-section-17"
       ],
-      "priority": 50118,
+      "priority": 50120,
       "confirmation": "unconfirmed"
     },
     {
@@ -2993,7 +3039,53 @@
       "sourceRefIds": [
         "source-section-18"
       ],
-      "priority": 50119,
+      "priority": 50121,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-c9ca001008b9665f851a",
+      "policyVersionId": "workspace:d2-d4-g03-t08@1",
+      "title": "业务母版原始头部/版本/权威声明",
+      "requirement": "适用范围：当前g03-instrument-slot\n# G03-T08｜共享仪器自主上机机时预约——完整业务 Markdown 审核模板母版\n\n> **templateId** `G03-T08` · **C作者候选版本** `v0.1` · **基线日期** 2026-10-12 · **作者交付状态** `BUSINESS_MD_DRAFT_WITH_GAPS`  \n> **唯一审核目的**：对具体设备、实际操作者、指定使用时段的**自主上机预约及随后安全开机门控**形成可追溯的材料审核建议与审批状态检查。**这不是已经发布到系统的JSON模板，也不是校园内真实预约批准证明。**  \n> 本母版为自包含纯Markdown业务契约；校本现行规则须另由有权部门提供，未知校本参数必须保持 `unknown`，不得把跨校规则写成成都理工大学强制拒件依据。  \n> **来源**：B阶段v0.2全部报告、字段F-01～F-59、材料M-01～M-21、候选R-01～R-36、成都理工大学S01～S06及S16～S21、外校参考S07～S15。未读取独立D阶段隐藏标准答案。\n完成标准：逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项\n责任边界：UNKNOWN必须等待；不能直接作行政许可\n不自动签发学校许可；所有候选校本条件未确认只能待核\n不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出\nD2 技术预审来源：source-extra-front/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-21eae51dd48c144d",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "source-extra-front"
+      ],
+      "priority": 50122,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-f4faee0a8257c2bbdb41",
+      "policyVersionId": "workspace:d2-d4-g03-t08@1",
+      "title": "§9 规则共同前提与表格注释",
+      "requirement": "适用范围：当前g03-instrument-slot\n## 9. 原子规则（完整评估契约）\n\n**规则来源说明**：每一条均需锁定实际学校、校区、设备、申请时点政策和作用阶段；“明确不符合”仅能依据当前适用的有效约束输出，不能直接据别校S07～S15拒绝成都理工大学用户。`Q-xx`为稳定问题码，`SCxx`仅是作者审查线索，不是D金标。\n\n| 规则、核查目标 | 有效范围、触发三值 | 生效阶段和被审对象 | 必要事实/等价证据以及可判断动作 | **确定失败** | **缺失/冲突/不可达** | 下一个有权动作、源、问题码、走查线索 |\n|---|---|---|---|---|---|---|\n### 9.1 原子规则如何判定 TRUE / FALSE / UNKNOWN\n\n- `TRUE`：明确适用且有正确授权、未过时的证据证明符合；仅给出**该规则的局部符合**。\n- `FALSE`：确认适用且可信证据明确反向；可为“需修改机时”“此付款路径不可用”“该操作不能获准”；不能机械把所有FALSE写成惩戒性的“欺诈”。\n- `UNKNOWN`：规则范围未落实、权限/日历不可访问、原证据相互冲突、审批未走到相关阶段；区分 `WAIT_POLICY`、`WAIT_FACT`、`WAIT_OWNER`、`WAIT_HUMAN`、`CONFLICT`。unknown不可转换成false绕过要求、亦不可当成true直接放行。\n- `N/A`：**已证实**条件不适用，例如合法免费单的预扣款字段、明确没有特殊风险的专项MSDS要求；N/A不等于不知道有没有风险。\n- 不同分支可叠加；若规则有条件“在提交后由主管批准”，提交阶段的缺签名应为`WAIT_OWNER`而不是缺件；已到执行阶段仍无必须的许可，则相应执行结果保持阻断。\n完成标准：逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项\n责任边界：UNKNOWN必须等待；不能直接作行政许可\n不自动签发学校许可；所有候选校本条件未确认只能待核\n不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出\nD2 技术预审来源：source-extra-rule-envelope/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-21eae51dd48c144d",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "source-extra-rule-envelope"
+      ],
+      "priority": 50123,
       "confirmation": "unconfirmed"
     },
     {
@@ -3016,7 +3108,7 @@
       "sourceRefIds": [
         "source-axis-p-sample-redirect"
       ],
-      "priority": 50120,
+      "priority": 50124,
       "confirmation": "unconfirmed"
     },
     {
@@ -3039,7 +3131,7 @@
       "sourceRefIds": [
         "source-axis-c-after-hours"
       ],
-      "priority": 50121,
+      "priority": 50125,
       "confirmation": "unconfirmed"
     },
     {
@@ -3062,7 +3154,7 @@
       "sourceRefIds": [
         "source-axis-c-whitelist"
       ],
-      "priority": 50122,
+      "priority": 50126,
       "confirmation": "unconfirmed"
     },
     {
@@ -3085,7 +3177,7 @@
       "sourceRefIds": [
         "source-axis-c-fee"
       ],
-      "priority": 50123,
+      "priority": 50127,
       "confirmation": "unconfirmed"
     },
     {
@@ -3108,7 +3200,7 @@
       "sourceRefIds": [
         "source-axis-c-pi-approval"
       ],
-      "priority": 50124,
+      "priority": 50128,
       "confirmation": "unconfirmed"
     },
     {
@@ -3131,7 +3223,7 @@
       "sourceRefIds": [
         "source-axis-c-hazard"
       ],
-      "priority": 50125,
+      "priority": 50129,
       "confirmation": "unconfirmed"
     },
     {
@@ -3154,7 +3246,7 @@
       "sourceRefIds": [
         "source-axis-c-professional-safety"
       ],
-      "priority": 50126,
+      "priority": 50130,
       "confirmation": "unconfirmed"
     },
     {
@@ -3177,7 +3269,7 @@
       "sourceRefIds": [
         "source-axis-c-training"
       ],
-      "priority": 50127,
+      "priority": 50131,
       "confirmation": "unconfirmed"
     },
     {
@@ -3200,7 +3292,7 @@
       "sourceRefIds": [
         "source-axis-c-change"
       ],
-      "priority": 50128,
+      "priority": 50132,
       "confirmation": "unconfirmed"
     },
     {
@@ -3223,7 +3315,7 @@
       "sourceRefIds": [
         "source-axis-c-multiple-slots"
       ],
-      "priority": 50129,
+      "priority": 50133,
       "confirmation": "unconfirmed"
     },
     {
@@ -3246,7 +3338,7 @@
       "sourceRefIds": [
         "source-axis-c-closed"
       ],
-      "priority": 50130,
+      "priority": 50134,
       "confirmation": "unconfirmed"
     }
   ],
@@ -4214,6 +4306,40 @@
         "fieldKey": "g03-instrument-slot",
         "supportsFacts": [
           "d2:object:g03-instrument-slot:section-18-1"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-extra-front/full#item-a",
+      "ruleId": "d2-5db2dbf47835ad76053c",
+      "objectKey": "item-a",
+      "subjectId": "g03-t08-subject-a",
+      "sourceIds": [
+        "source-extra-front"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g03-instrument-slot",
+        "supportsFacts": [
+          "d2:object:g03-instrument-slot:extra-front"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-extra-rule-envelope/full#item-a",
+      "ruleId": "d2-c555801a2ed6ce4c6f09",
+      "objectKey": "item-a",
+      "subjectId": "g03-t08-subject-a",
+      "sourceIds": [
+        "source-extra-rule-envelope"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g03-instrument-slot",
+        "supportsFacts": [
+          "d2:object:g03-instrument-slot:extra-rule-envelope"
         ]
       }
     },
@@ -5363,6 +5489,40 @@
       }
     },
     {
+      "checkId": "module/use-extra-front/full#item-b",
+      "ruleId": "d2-c9ca001008b9665f851a",
+      "objectKey": "item-b",
+      "subjectId": "g03-t08-subject-b",
+      "sourceIds": [
+        "source-extra-front"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g03-instrument-slot",
+        "supportsFacts": [
+          "d2:object:g03-instrument-slot:extra-front"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-extra-rule-envelope/full#item-b",
+      "ruleId": "d2-f4faee0a8257c2bbdb41",
+      "objectKey": "item-b",
+      "subjectId": "g03-t08-subject-b",
+      "sourceIds": [
+        "source-extra-rule-envelope"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g03-instrument-slot",
+        "supportsFacts": [
+          "d2:object:g03-instrument-slot:extra-rule-envelope"
+        ]
+      }
+    },
+    {
       "checkId": "module/use-axis-p-sample-redirect/verify#item-b",
       "ruleId": "d2-d33f24421b7e8143202c",
       "objectKey": "item-b",
@@ -5550,5 +5710,5 @@
       }
     }
   ],
-  "fingerprint": "4c73a8b9531ab037e40ca2d7d4827b60a1e5022dca520223c8186aca5b73a7b6"
+  "fingerprint": "c151d5be2569d91d5e1a7863293d9ecb295681ba547104fe4b6061b8ebf2deab"
 }
