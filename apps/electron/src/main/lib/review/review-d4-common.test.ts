@@ -9,6 +9,7 @@ import {validateD2GuardSubmission} from './review-d2-execution-gates'
 import {saveAuthoringCandidateDraft} from './template-store'
 import {readAggregate} from './case-store-v2'
 import {registerMaterial} from './material-service'
+import {setEvidenceLink} from './application-service'
 import {preparePiReviewRunV2,submitPiReviewResultV2} from './pi-case-review-service'
 import {getRunV2} from './run-store-v2'
 
@@ -193,6 +194,43 @@ describe('COMMON-01/02 BDD technical regression',()=>{
     const created=await createD2TechnicalCase({caseId:id,title:'synthetic lost items',actor,workspace:w,selection:s})
     expect(created.ok).toBeTrue()
     if(!created.ok)throw Error(created.message)
+    // Material is registered through the real service; a single reviewer-confirmed
+    // EvidenceLink must NEVER be interpreted as covering a second business object.
+    const materialDir=join(home,'g08-materials');mkdirSync(materialDir,{recursive:true})
+    const inputPath=join(materialDir,'synthetic-lost-item.txt')
+    writeFileSync(inputPath,'SYNTHETIC ONLY: proof for lost object A. Lost object B remains unverified.')
+    const before=readAggregate(id)!
+    const registered=await registerMaterial(id,{
+      requestId:'d4-register-lost-item',actor,expectedRevision:before.caseV2.revision,
+      payload:{sourcePath:inputPath,role:'evidence'},
+    })
+    expect(registered.ok).toBeTrue()
+    if(!registered.ok)throw Error(registered.message)
+    const materialVersion=readAggregate(id)!.caseV2.documents[0]!.versionId
+    const updated=readAggregate(id)!
+    const linked=await setEvidenceLink(id,{
+      requestId:'d4-confirm-a-evidence',actor,expectedRevision:updated.caseV2.revision,
+      payload:{documentVersionId:materialVersion,subjectIds:['d4-item-a'],
+        supportsFact:evidenceFact('g08-lost-item'),linkedBy:'user'},
+    })
+    expect(linked.ok).toBeTrue()
+    if(!linked.ok)throw Error(linked.message)
+    const evidenceAggregate=readAggregate(id)!
+    expect(evidenceAggregate.evidenceLinks).toHaveLength(1)
+    const mappingA=created.entity!.mapping.find(m=>m.subjectId==='d4-item-a'&&m.applicability==='applicable')!
+    const mappingB=created.entity!.mapping.find(m=>m.subjectId==='d4-item-b'&&m.applicability==='applicable')!
+    expect(validateD2GuardSubmission(evidenceAggregate,mappingA,'compliant',[materialVersion])).toBeUndefined()
+    expect(validateD2GuardSubmission(evidenceAggregate,mappingB,'compliant',[materialVersion]))
+      .toContain('D2_GENERIC_EVIDENCE_SCOPE_MISSING')
+    expect(validateD2GuardSubmission(evidenceAggregate,mappingA,'compliant',['obsolete-version']))
+      .toContain('D2_GENERIC_EVIDENCE_SCOPE_MISSING')
+    if(process.env.D4_RUNTIME_EVIDENCE_DIR){
+      mkdirSync(process.env.D4_RUNTIME_EVIDENCE_DIR,{recursive:true})
+      writeFileSync(join(process.env.D4_RUNTIME_EVIDENCE_DIR,'registered-evidence-links.json'),
+        JSON.stringify({caseId:id,versionId:materialVersion,
+          links:evidenceAggregate.evidenceLinks,objectA: mappingA.objectKey,objectB: mappingB.objectKey,
+          objectABound: true,objectBBound:false},null,2))
+    }
     const prepared=preparePiReviewRunV2({caseId:id,sessionId:'d4-session',turnId:'d4-turn'})
     const out=submitPiReviewResultV2({binding:{assignmentId:prepared.assignmentId,
       sessionId:'d4-session',caseId:id,runId:prepared.runId},triggeredBy:'user',
