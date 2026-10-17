@@ -614,6 +614,48 @@
         ]
       },
       {
+        "moduleId": "g03-t10-extra-front",
+        "version": 1,
+        "name": "实体宣传品布设与公共位置使用｜extra-front",
+        "purpose": "逐对象审核extra-front",
+        "scope": "当前g03-publicity-placement",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "业务母版原始头部/版本/权威声明",
+            "requirement": "# G03-T10｜实体宣传品布设与公共位置使用申请——完整业务审核 Markdown 母版\n\n> **C阶段作者稿 v0.1（2026-10-12）**｜统一目录 `G03-04 / G03-T10`｜独立模板，只含业务审核语义。\n> **状态**：`BUSINESS_MD_DRAFT_WITH_GAPS`。成都理工大学公开服务入口和宣传部职责有证据，但**2026年砚湖易办表单字段、角色、点位台账、执行流程尚未核实**。本母版不可作为成理现行强制规定或已发布的系统模板。\n> **来源说明**：经B v0.2完整调研整理，字段 `F-001..F-049`、材料研究槽 `M-01..M-19` 和研究规则 `R-01..R-26` 的历史编号保留。C将材料正式槽写为 `MS-01..MS-19`（一一对应B的M），新增 `BR/EG/EV/PH/ST/ISS/CFG/MD` 编号。没有阅读D独立金标，不包含D答案。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
+        "moduleId": "g03-t10-extra-rule-envelope",
+        "version": 1,
+        "name": "实体宣传品布设与公共位置使用｜extra-rule-envelope",
+        "purpose": "逐对象审核extra-rule-envelope",
+        "scope": "当前g03-publicity-placement",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "§9 规则共同前提与表格注释",
+            "requirement": "## 9. 原子审核规则 R-01—R-26（每条都有完整可执行含义）\n\n> 规则来源均继承B阶段同号研究规则。每条设置政策门 `CFG`：只有已验证本校适用政策才将其学校特有部分设为强制；结构安全和业务边界等通用逻辑依然适用。测试点只是**作者自检线索**，不是D独立金标。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
         "moduleId": "g03-t10-axis-p-poster",
         "version": 1,
         "name": "实体宣传品布设与公共位置使用｜axis-p-poster",
@@ -1036,6 +1078,16 @@
           {
             "id": "use-section-18",
             "moduleId": "g03-t10-section-18",
+            "version": 1
+          },
+          {
+            "id": "use-extra-front",
+            "moduleId": "g03-t10-extra-front",
+            "version": 1
+          },
+          {
+            "id": "use-extra-rule-envelope",
+            "moduleId": "g03-t10-extra-rule-envelope",
             "version": 1
           },
           {
@@ -1653,6 +1705,30 @@
       "reference": {
         "documentVersionId": "md-g03-t10-80ae0ba9c29cb1f2",
         "locator": "§18"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-front",
+      "kind": "policy-candidate",
+      "label": "G03-T10 业务母版原始头部/版本/权威声明",
+      "reference": {
+        "documentVersionId": "md-g03-t10-80ae0ba9c29cb1f2",
+        "locator": "front-matter"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-rule-envelope",
+      "kind": "policy-candidate",
+      "label": "G03-T10 §9 规则共同前提与表格注释",
+      "reference": {
+        "documentVersionId": "md-g03-t10-80ae0ba9c29cb1f2",
+        "locator": "§9/shared-invariants"
       },
       "verification": "content-checked",
       "applicability": "unknown",
@@ -2528,6 +2604,36 @@
         ],
         "evidenceFacts": [
           "d2:object:g03-publicity-placement:section-18-1"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t10@1:module/use-extra-front/full",
+      "sourceIds": [
+        "source-extra-front"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-publicity-placement"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-publicity-placement:extra-front"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t10@1:module/use-extra-rule-envelope/full",
+      "sourceIds": [
+        "source-extra-rule-envelope"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-publicity-placement"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-publicity-placement:extra-rule-envelope"
         ]
       }
     },

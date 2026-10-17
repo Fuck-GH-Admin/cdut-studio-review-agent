@@ -593,6 +593,48 @@
         ]
       },
       {
+        "moduleId": "g03-t11-extra-front",
+        "version": 1,
+        "name": "校园电子屏内容与播放版位申请｜extra-front",
+        "purpose": "逐对象审核extra-front",
+        "scope": "当前g03-screen-window",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "业务母版原始头部/版本/权威声明",
+            "requirement": "# G03-T11｜校园电子屏内容与播放版位申请——完整业务 Markdown 母版 v0.1\n\n> **C作者侧候选版本** · `template_id=G03-T11`（历史 `G03-04-T11/T11`） · 编制日期：2026-10-12 · 研究基线：B v0.2；提示词：C v2.1。\n> **适用定位**：跨高校可配置的业务语义模板；**不是**成都理工大学2026已生效的电子屏申报表，也不是已发布到编辑器/线上运行的JSON。没有目标学校/资源级明确规则与权威查询时，模板只可输出材料层建议和`待配置/待核验`，不可做最终许可。\n> **职责边界**：本会话仅做C阶段母版、规则追踪、作者自检、模块候选及E验收对接，不查阅/制作D独立隐藏金标，不代替学校权责人员签批。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
+        "moduleId": "g03-t11-extra-rule-envelope",
+        "version": 1,
+        "name": "校园电子屏内容与播放版位申请｜extra-rule-envelope",
+        "purpose": "逐对象审核extra-rule-envelope",
+        "scope": "当前g03-screen-window",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "§9 规则共同前提与表格注释",
+            "requirement": "## 9. C3 逐条原子审核规则（R-01—R-24）\n\n**规则级作用域约定**：除非校方正式启用并指定适用时间/资源，所有依赖具体“限制/阈值/角色”的结论只是**可配置的检查逻辑**，不能以外校校例直接驳回本校申请。所有规则读取`rule_profile=(school,campus,screen,valid_from,valid_to,source_id,version)`并把`policy_resolution`与规则结果一并输出。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
         "moduleId": "g03-t11-axis-p-central-screen",
         "version": 1,
         "name": "校园电子屏内容与播放版位申请｜axis-p-central-screen",
@@ -992,6 +1034,16 @@
           {
             "id": "use-section-18",
             "moduleId": "g03-t11-section-18",
+            "version": 1
+          },
+          {
+            "id": "use-extra-front",
+            "moduleId": "g03-t11-extra-front",
+            "version": 1
+          },
+          {
+            "id": "use-extra-rule-envelope",
+            "moduleId": "g03-t11-extra-rule-envelope",
             "version": 1
           },
           {
@@ -1579,6 +1631,30 @@
       "reference": {
         "documentVersionId": "md-g03-t11-bd051a6332d9c557",
         "locator": "§18"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-front",
+      "kind": "policy-candidate",
+      "label": "G03-T11 业务母版原始头部/版本/权威声明",
+      "reference": {
+        "documentVersionId": "md-g03-t11-bd051a6332d9c557",
+        "locator": "front-matter"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-rule-envelope",
+      "kind": "policy-candidate",
+      "label": "G03-T11 §9 规则共同前提与表格注释",
+      "reference": {
+        "documentVersionId": "md-g03-t11-bd051a6332d9c557",
+        "locator": "§9/shared-invariants"
       },
       "verification": "content-checked",
       "applicability": "unknown",
@@ -2397,6 +2473,36 @@
         ],
         "evidenceFacts": [
           "d2:object:g03-screen-window:section-18-1"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t11@1:module/use-extra-front/full",
+      "sourceIds": [
+        "source-extra-front"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-screen-window"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-screen-window:extra-front"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t11@1:module/use-extra-rule-envelope/full",
+      "sourceIds": [
+        "source-extra-rule-envelope"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-screen-window"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-screen-window:extra-rule-envelope"
         ]
       }
     },
