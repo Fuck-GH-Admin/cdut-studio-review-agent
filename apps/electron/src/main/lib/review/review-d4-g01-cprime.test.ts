@@ -65,7 +65,7 @@ describe('D4 independent C prime no B 28 and no Gold',()=>{
   const w=ws();w.advanced={claimKeys:['unknown'],evidenceRelations:[{claimKey:'unknown',requiredSourceIds:['md-original']}]}
   expect(()=>compileD2RuntimePlan(w,selection(['full-name'],['s01']),draft(),trusted())).toThrow('D2_UNMAPPED_ADVANCED')
   const legacy=JSON.parse(readFileSync(resolve(import.meta.dir,'../../../../../../docs/design/review-agent/fixtures/d2-workspace-synthetic.json'),'utf8')) as ReviewAuthoringWorkspaceV1
-  const p=compileD2RuntimePlan(legacy,{templateId:'text-review',version:1,targets:[]},draft('legacy'))
+  const p=compileD2RuntimePlan(legacy,{templateId:'text-review',version:1,targets:[]},{...draft('legacy'),templateId:'text-review',templateVersion:1})
   expect(p.schemaVersion).toBe(1)
  })
  test('independent actual D2 Case and controlled Pi receipt remain awaiting confirmation',async()=>{
