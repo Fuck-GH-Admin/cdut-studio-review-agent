@@ -52,7 +52,7 @@ for(const sec of secs){if(sec.n===ruleSec.n)continue;
 const front=text.slice(0,text.search(/^##\s+1\./m)).trim();
 const rowLines=ruleSec.body.split('\n');
 const isRHeader=l=>/^#{3,4}\s+`?R-0?\d{1,3}/.test(l);
-const isRRow=l=>/^\|\s*`?R-0?\d{1,3}(?:\s|\||`)/.test(l);
+const isRRow=l=>/^\|\s*[`*]*R-0?\d{1,3}/.test(l);
 const firstR=rowLines.findIndex(l=>isRHeader(l)||isRRow(l));
 const lastR=rowLines.findLastIndex(l=>isRHeader(l)||isRRow(l));
 if(firstR<0||lastR<0)throw Error('rule envelope detection failed '+s.id);
