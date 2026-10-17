@@ -70,6 +70,9 @@ export interface ReviewAuthoringTemplateV1 {
   limits: string
   source: ReviewAuthoringModuleV1['source']
   scenarios?: string[]
+  /** COMMON-02: primary choices are mutually exclusive per object; conditions are additive axes.
+   * Every id must also be present in scenarios so the existing D3 preview can expand it. */
+  genericScenarioAxes?: { primary: string[]; conditions: string[] }
   modules: ReviewAuthoringUseV1[]
   localTasks: ReviewAuthoringResponsibilityV1[]
 }
@@ -84,6 +87,8 @@ export interface ReviewAuthoringSourceBindingV1 {
   gate?: import('./review-d2').D2ExecutionGateV1
   /** Explicit per-requested-field Check selection; unused on legacy templates. */
   studentScope?: import('./review-d2').D2StudentScopeV1
+  /** COMMON-01: one authored Check is instantiated for each matching generic business object. */
+  genericScope?: { businessTypes: string[]; evidenceFacts: string[] }
   /** A deliberate exception to field scoping for a genuine case-level student rule. */
   caseScopeJustification?: string
 }

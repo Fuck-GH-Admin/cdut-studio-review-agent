@@ -1,0 +1,64 @@
+{
+  "templateId": "d4-g03-example",
+  "version": 1,
+  "targets": [
+    {
+      "kind": "generic-object",
+      "objectKey": "room-slot-a",
+      "subjectId": "d4-room-a",
+      "title": "资源时段A",
+      "businessType": "g03-resource-slot",
+      "scenario": "x",
+      "scenarioSource": {
+        "sourceId": "synthetic-source",
+        "sourceVersionId": "synthetic-source-v1",
+        "decidedBy": "reviewer"
+      },
+      "conditions": [
+        {
+          "id": "m",
+          "applicability": "applicable",
+          "sourceId": "synthetic-source",
+          "sourceVersionId": "synthetic-source-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "n",
+          "applicability": "not-applicable",
+          "sourceId": "synthetic-source",
+          "sourceVersionId": "synthetic-source-v1",
+          "decidedBy": "reviewer"
+        }
+      ]
+    },
+    {
+      "kind": "generic-object",
+      "objectKey": "room-slot-b",
+      "subjectId": "d4-room-b",
+      "title": "资源时段B",
+      "businessType": "g03-resource-slot",
+      "scenario": "y",
+      "scenarioSource": {
+        "sourceId": "synthetic-source",
+        "sourceVersionId": "synthetic-source-v1",
+        "decidedBy": "reviewer"
+      },
+      "conditions": [
+        {
+          "id": "m",
+          "applicability": "unknown",
+          "sourceId": "synthetic-source",
+          "sourceVersionId": "synthetic-source-v1",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "n",
+          "applicability": "applicable",
+          "sourceId": "synthetic-source",
+          "sourceVersionId": "synthetic-source-v1",
+          "decidedBy": "reviewer"
+        }
+      ]
+    }
+  ]
+}

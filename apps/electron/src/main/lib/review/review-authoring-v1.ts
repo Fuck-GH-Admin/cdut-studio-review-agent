@@ -31,14 +31,14 @@ const STRUCTURE_KEYS = {
   workspace: ['schemaVersion', 'workspaceId', 'revision', 'definitions', 'sources', 'sourceBindings', 'sharedModuleLocks', 'advanced'],
   definitions: ['modules', 'templates'],
   module: ['moduleId', 'version', 'name', 'purpose', 'scope', 'limits', 'source', 'tasks', 'parameters', 'references'],
-  template: ['templateId', 'version', 'name', 'purpose', 'limits', 'source', 'scenarios', 'modules', 'localTasks'],
+  template: ['templateId', 'version', 'name', 'purpose', 'limits', 'source', 'scenarios', 'genericScenarioAxes', 'modules', 'localTasks'],
   responsibility: ['id', 'title', 'requirement', 'completion', 'limits'],
   use: ['id', 'moduleId', 'version', 'scenario', 'objectKey', 'bindings'],
   parameter: ['key', 'description', 'defaultValue'],
   source: ['sourceId', 'kind', 'label', 'reference', 'verification', 'applicability', 'note'],
   inlineSource: ['kind', 'note'],
   documentReference: ['documentVersionId', 'locator', 'excerpt'],
-  binding: ['checkId', 'sourceIds', 'applicabilityNote', 'gate', 'studentScope', 'caseScopeJustification'],
+  binding: ['checkId', 'sourceIds', 'applicabilityNote', 'gate', 'studentScope', 'genericScope', 'caseScopeJustification'],
   advanced: ['objectRoleKeys', 'claimKeys', 'evidenceRelations'],
   evidenceRelation: ['claimKey', 'requiredSourceIds'],
 } as const
@@ -78,6 +78,19 @@ export function validateReviewAuthoringV1(workspace: ReviewAuthoringWorkspaceV1)
     checkKnownFields(template.source, STRUCTURE_KEYS.inlineSource, template.templateId + '.source', issues)
     for (const task of template.localTasks ?? []) checkKnownFields(task, STRUCTURE_KEYS.responsibility, template.templateId + '/' + task.id, issues)
     for (const use of template.modules ?? []) checkKnownFields(use, STRUCTURE_KEYS.use, template.templateId + '/' + use.id, issues)
+    if (template.genericScenarioAxes) {
+      const axes = template.genericScenarioAxes
+      checkKnownFields(axes, ['primary', 'conditions'], template.templateId + '.genericScenarioAxes', issues)
+      const primary = axes.primary, conditions = axes.conditions
+      if (!Array.isArray(primary) || !Array.isArray(conditions) || !primary.length ||
+          primary.length > 13 || conditions.length > 13 ||
+          [...primary, ...conditions].some(x => typeof x !== 'string' || !ID.test(x)) ||
+          new Set([...primary, ...conditions]).size !== primary.length + conditions.length ||
+          new Set([...primary, ...conditions]).size !== (template.scenarios ?? []).length ||
+          [...primary, ...conditions].some(x => !(template.scenarios ?? []).includes(x))) {
+        issues.push(template.templateId + ': D2_GENERIC_AXES_INVALID')
+      }
+    }
   }
   for (const source of workspace.sources) {
     checkKnownFields(source, STRUCTURE_KEYS.source, source.sourceId, issues)
@@ -86,8 +99,20 @@ export function validateReviewAuthoringV1(workspace: ReviewAuthoringWorkspaceV1)
   for (const link of workspace.sourceBindings) {
     checkKnownFields(link, STRUCTURE_KEYS.binding, link.checkId, issues)
     if (link.gate) issues.push(...validateD2ExecutionGate(link.gate).map(msg => link.checkId + ': ' + msg))
-    if (link.caseScopeJustification !== undefined && (typeof link.caseScopeJustification !== 'string' || link.caseScopeJustification.trim().length < 12 || link.studentScope)) {
+    if (link.caseScopeJustification !== undefined && (typeof link.caseScopeJustification !== 'string' || link.caseScopeJustification.trim().length < 12 || link.studentScope || link.genericScope)) {
       issues.push(link.checkId + ': D2_STUDENT_CASE_SCOPE_INVALID')
+    }
+    if (link.genericScope) {
+      const scope = link.genericScope
+      checkKnownFields(scope, ['businessTypes', 'evidenceFacts'], link.checkId + '.genericScope', issues)
+      if (link.studentScope || !Array.isArray(scope.businessTypes) || !scope.businessTypes.length ||
+          scope.businessTypes.length > 32 || new Set(scope.businessTypes).size !== scope.businessTypes.length ||
+          scope.businessTypes.some(x => typeof x !== 'string' || !ID.test(x)) ||
+          !Array.isArray(scope.evidenceFacts) || !scope.evidenceFacts.length ||
+          scope.evidenceFacts.length > 32 || new Set(scope.evidenceFacts).size !== scope.evidenceFacts.length ||
+          scope.evidenceFacts.some(x => typeof x !== 'string' || !/^[a-zA-Z][a-zA-Z0-9:._-]{0,119}$/.test(x))) {
+        issues.push(link.checkId + ': D2_GENERIC_SCOPE_INVALID')
+      }
     }
     if (link.studentScope) {
       const scope = link.studentScope

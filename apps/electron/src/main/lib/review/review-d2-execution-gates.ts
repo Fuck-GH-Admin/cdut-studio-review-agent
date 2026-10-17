@@ -125,6 +125,16 @@ export function validateD2GuardSubmission(
       'D2_STUDENT_NOT_APPLICABLE: 已核条件不触发该字段责任'
   if(mapping.applicability==='applicable'&&status==='not-applicable')
     return 'D2_STUDENT_APPLICABLE: 该字段责任已触发，不能标记不适用'
+
+  const target=aggregate.d2RuntimePlan?.targets.find(t=>t.kind==='generic-object'&&t.objectKey===mapping.objectKey)
+  if(target&&['compliant','non-compliant'].includes(status)){
+    const facts=mapping.evidenceCoverage?.supportsFacts??[]
+    if(!facts.length||!aggregate.evidenceLinks.some(link=>
+      link.status==='confirmed'&&link.linkedBy==='user'&&link.subjectId===mapping.subjectId&&
+      facts.includes(link.supportsFact)&&documentIds.includes(link.documentVersionId)&&
+      aggregate.caseV2.documents.some(doc=>doc.versionId===link.documentVersionId&&doc.active!==false)))
+      return 'D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本'
+  }
   const gate=mapping.gate
   if(!gate)return undefined
   const issues=validateD2ExecutionGate(gate)

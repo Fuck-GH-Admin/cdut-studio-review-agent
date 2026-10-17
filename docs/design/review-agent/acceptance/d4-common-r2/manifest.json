@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "kind": "D4_COMMON_R2_DRAFT",
+  "parentSha": "94d5ec32b6de1ac0c185b63b4aabfddaa29b1649",
+  "r0Sha": "4b191c729f3d5f8135c73b87c17642023f6c3986",
+  "requirementsPr": 87,
+  "deliveryPr": 88,
+  "branch": "feat/d4-common-object-scenario-r01",
+  "technicalPlanSchema": 3,
+  "authoringSchema": 1,
+  "syntheticExamples": [
+    "G03:two resource slots",
+    "G08:two lost items"
+  ],
+  "tests": [
+    "review-d4-common.test.ts",
+    "review-d3-r1-student.test.ts",
+    "PR CI"
+  ],
+  "status": "D4_AUTHORING_HANDOFF_READY",
+  "handoffReady": true,
+  "files": [
+    "baseline-and-design.md",
+    "README.md",
+    "authoring-contract.md",
+    "migration-guide.md",
+    "test-evidence.md",
+    "known-gaps.md",
+    "examples/g03-workspace.json",
+    "examples/g03-selection.json",
+    "examples/g03-case.json"
+  ],
+  "validatedCodeSha": "fb661851d9c74ddff2d7164076012694fd4fedba",
+  "validation": {
+    "commonCi": 39047830003,
+    "commonArtifactId": 12106815095,
+    "commonFocusedPass": 18,
+    "inheritedFocusedPass": 46,
+    "mainPrCi": 39047829966,
+    "fullPass": 3623,
+    "fullSkip": 6,
+    "fullFail": 0,
+    "r1Ci": 39047829992,
+    "d1Ci": 39047829964,
+    "d2Ci": 39047829969,
+    "d3Ci": 39047829972,
+    "planFingerprint": "6d8c18799b6bfa46c7c76acc401af87d4cb9ba8899a74488c70ef624e9daf095",
+    "exampleFingerprint": "c7a6bafb2f9c818309b69f03018b1405f03f96823371a322858028ce7bdf9405",
+    "piPlanFingerprint": "ae6c51f728da6b728fbde9138507afd831dc4cf42f4ce8b1312f2074f9dfb3cc",
+    "latestFullPrCi": 39048259304,
+    "latestCommonCi": 39048259405,
+    "latestArtifactCodeSha": "fb661851d9c74ddff2d7164076012694fd4fedba"
+  },
+  "additionalEvidenceTest": {
+    "sha": "3a54052dcb39306fc3a8bfc05be858e1ef35492e",
+    "ciRun": 39048123453,
+    "status": "SUCCESS",
+    "artifactId": 12106557849,
+    "positiveAndNegative": "G08 real synthetic material registered, reviewer fact edge only for subject A; B and stale version cannot inherit"
+  },
+  "handoffDecision": "YES_RESEARCH_TECHNICAL_AUTHORING_ONLY",
+  "manifestNote": "Do not self-reference final HEAD SHA; pin exact PR HEAD and CI checkout separately"
+}

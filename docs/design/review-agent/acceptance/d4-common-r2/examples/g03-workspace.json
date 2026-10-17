@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "workspaceId": "d4-g03-example",
+  "revision": 1,
+  "definitions": {
+    "modules": [
+      {
+        "moduleId": "resource-review",
+        "version": 1,
+        "name": "合成业务对象审核",
+        "purpose": "区分同案两个资源或物件的证据",
+        "scope": "业务对象实例",
+        "limits": "不得根据另一对象的材料推定本对象符合",
+        "source": {
+          "kind": "synthetic",
+          "note": "合成接口样例，不是现行学校规则"
+        },
+        "tasks": [
+          {
+            "id": "scope",
+            "title": "对象材料独立核验",
+            "requirement": "核对当前对象的申请材料与明确来源",
+            "completion": "逐对象记录证据状态和待核原因",
+            "limits": "不能自动决定校方审批"
+          }
+        ]
+      }
+    ],
+    "templates": [
+      {
+        "templateId": "d4-g03-example",
+        "version": 1,
+        "name": "G03资源逐对象合成预审",
+        "purpose": "同案独立核查两个资源时段",
+        "limits": "仅技术候选，不表示场馆批准",
+        "source": {
+          "kind": "synthetic",
+          "note": "仅用于公共引擎验证"
+        },
+        "scenarios": [
+          "x",
+          "y",
+          "m",
+          "n"
+        ],
+        "genericScenarioAxes": {
+          "primary": [
+            "x",
+            "y"
+          ],
+          "conditions": [
+            "m",
+            "n"
+          ]
+        },
+        "modules": [
+          {
+            "id": "use-x",
+            "moduleId": "resource-review",
+            "version": 1,
+            "scenario": "x"
+          },
+          {
+            "id": "use-y",
+            "moduleId": "resource-review",
+            "version": 1,
+            "scenario": "y"
+          },
+          {
+            "id": "use-m",
+            "moduleId": "resource-review",
+            "version": 1,
+            "scenario": "m"
+          },
+          {
+            "id": "use-n",
+            "moduleId": "resource-review",
+            "version": 1,
+            "scenario": "n"
+          }
+        ],
+        "localTasks": []
+      }
+    ]
+  },
+  "sources": [
+    {
+      "sourceId": "synthetic-source",
+      "kind": "synthetic",
+      "label": "合成测试来源",
+      "reference": {
+        "documentVersionId": "synthetic-source-v1",
+        "locator": "synthetic/example:1",
+        "excerpt": "技术范围说明"
+      },
+      "verification": "content-checked",
+      "applicability": "request-scope",
+      "note": "测试输入，不得作为学校制度或权威业务事实"
+    }
+  ],
+  "sourceBindings": [
+    {
+      "checkId": "d4-g03-example@1:module/use-x/scope",
+      "sourceIds": [
+        "synthetic-source"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g03-resource-slot"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-resource-slot:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "d4-g03-example@1:module/use-y/scope",
+      "sourceIds": [
+        "synthetic-source"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g03-resource-slot"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-resource-slot:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "d4-g03-example@1:module/use-m/scope",
+      "sourceIds": [
+        "synthetic-source"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g03-resource-slot"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-resource-slot:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "d4-g03-example@1:module/use-n/scope",
+      "sourceIds": [
+        "synthetic-source"
+      ],
+      "genericScope": {
+        "businessTypes": [
+          "g03-resource-slot"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-resource-slot:scope"
+        ]
+      }
+    }
+  ]
+}
