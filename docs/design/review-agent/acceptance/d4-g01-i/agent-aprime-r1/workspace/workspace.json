@@ -835,79 +835,79 @@
             "id": "branch-s01",
             "moduleId": "g01i-scenario-s01",
             "version": 1,
-            "scenario": "S01"
+            "scenario": "s01"
           },
           {
             "id": "branch-s02",
             "moduleId": "g01i-scenario-s02",
             "version": 1,
-            "scenario": "S02"
+            "scenario": "s02"
           },
           {
             "id": "branch-s03",
             "moduleId": "g01i-scenario-s03",
             "version": 1,
-            "scenario": "S03"
+            "scenario": "s03"
           },
           {
             "id": "branch-s04",
             "moduleId": "g01i-scenario-s04",
             "version": 1,
-            "scenario": "S04"
+            "scenario": "s04"
           },
           {
             "id": "branch-s05",
             "moduleId": "g01i-scenario-s05",
             "version": 1,
-            "scenario": "S05"
+            "scenario": "s05"
           },
           {
             "id": "branch-s06",
             "moduleId": "g01i-scenario-s06",
             "version": 1,
-            "scenario": "S06"
+            "scenario": "s06"
           },
           {
             "id": "branch-s07",
             "moduleId": "g01i-scenario-s07",
             "version": 1,
-            "scenario": "S07"
+            "scenario": "s07"
           },
           {
             "id": "branch-s08",
             "moduleId": "g01i-scenario-s08",
             "version": 1,
-            "scenario": "S08"
+            "scenario": "s08"
           },
           {
             "id": "branch-s09",
             "moduleId": "g01i-scenario-s09",
             "version": 1,
-            "scenario": "S09"
+            "scenario": "s09"
           },
           {
             "id": "branch-s10",
             "moduleId": "g01i-scenario-s10",
             "version": 1,
-            "scenario": "S10"
+            "scenario": "s10"
           },
           {
             "id": "branch-s11",
             "moduleId": "g01i-scenario-s11",
             "version": 1,
-            "scenario": "S11"
+            "scenario": "s11"
           },
           {
             "id": "branch-s12",
             "moduleId": "g01i-scenario-s12",
             "version": 1,
-            "scenario": "S12"
+            "scenario": "s12"
           },
           {
             "id": "branch-s13",
             "moduleId": "g01i-scenario-s13",
             "version": 1,
-            "scenario": "S13"
+            "scenario": "s13"
           }
         ],
         "localTasks": [
@@ -927,19 +927,19 @@
           }
         ],
         "scenarios": [
-          "S01",
-          "S02",
-          "S03",
-          "S04",
-          "S05",
-          "S06",
-          "S07",
-          "S08",
-          "S09",
-          "S10",
-          "S11",
-          "S12",
-          "S13"
+          "s01",
+          "s02",
+          "s03",
+          "s04",
+          "s05",
+          "s06",
+          "s07",
+          "s08",
+          "s09",
+          "s10",
+          "s11",
+          "s12",
+          "s13"
         ]
       }
     ]
@@ -1110,7 +1110,7 @@
         "h01"
       ],
       "applicabilityNote": "原件 R001 L296；状态须结合真实情景判断",
-      "caseScopeJustification": "整案业务目标与正确路由"
+      "caseScopeJustification": "整案业务目标与正确路由；这是整案范围的程序性或权限性责任，非单一字段事实"
     },
     {
       "checkId": "g01-student-identity-correction@2:module/branch-s10/r024",
@@ -1152,7 +1152,7 @@
         "c04"
       ],
       "applicabilityNote": "原件 R003 L298；状态须结合真实情景判断",
-      "caseScopeJustification": "校规有效性与权威版本"
+      "caseScopeJustification": "校规有效性与权威版本；这是整案范围的程序性或权限性责任，非单一字段事实"
     },
     {
       "checkId": "g01-student-identity-correction@2:module/part-02/r011",
@@ -1627,7 +1627,7 @@
         "c01"
       ],
       "applicabilityNote": "原件 R028 L323；状态须结合真实情景判断",
-      "caseScopeJustification": "整案行政决定及发布门控"
+      "caseScopeJustification": "整案行政决定及发布门控；这是整案范围的程序性或权限性责任，非单一字段事实"
     },
     {
       "checkId": "g01-student-identity-correction@2:module/part-07/m01",
@@ -1753,7 +1753,7 @@
         "md-original"
       ],
       "applicabilityNote": "对应业务原文责任，需运行时证据确认",
-      "caseScopeJustification": "全案目标分流"
+      "caseScopeJustification": "全案目标分流；这是整案范围的程序性或权限性责任，非单一字段事实"
     },
     {
       "checkId": "g01-student-identity-correction@2:module/part-08/p1",
@@ -1761,7 +1761,7 @@
         "md-original"
       ],
       "applicabilityNote": "对应业务原文责任，需运行时证据确认",
-      "caseScopeJustification": "全案制度版本选择"
+      "caseScopeJustification": "全案制度版本选择；这是整案范围的程序性或权限性责任，非单一字段事实"
     },
     {
       "checkId": "g01-student-identity-correction@2:module/part-08/p2",
@@ -1769,7 +1769,7 @@
         "md-original"
       ],
       "applicabilityNote": "对应业务原文责任，需运行时证据确认",
-      "caseScopeJustification": "初次受理阶段"
+      "caseScopeJustification": "初次受理阶段；这是整案范围的程序性或权限性责任，非单一字段事实"
     },
     {
       "checkId": "g01-student-identity-correction@2:module/part-08/p3",
@@ -1777,7 +1777,7 @@
         "md-original"
       ],
       "applicabilityNote": "对应业务原文责任，需运行时证据确认",
-      "caseScopeJustification": "材料证据审查阶段"
+      "caseScopeJustification": "材料证据审查阶段；这是整案范围的程序性或权限性责任，非单一字段事实"
     },
     {
       "checkId": "g01-student-identity-correction@2:module/part-08/p4",
@@ -1785,7 +1785,7 @@
         "md-original"
       ],
       "applicabilityNote": "对应业务原文责任，需运行时证据确认",
-      "caseScopeJustification": "全案问题汇总"
+      "caseScopeJustification": "全案问题汇总；这是整案范围的程序性或权限性责任，非单一字段事实"
     },
     {
       "checkId": "g01-student-identity-correction@2:module/part-08/p5",
@@ -1793,7 +1793,7 @@
         "md-original"
       ],
       "applicabilityNote": "对应业务原文责任，需运行时证据确认",
-      "caseScopeJustification": "学院后续正式审批职责"
+      "caseScopeJustification": "学院后续正式审批职责；这是整案范围的程序性或权限性责任，非单一字段事实"
     },
     {
       "checkId": "g01-student-identity-correction@2:module/part-08/p6",
@@ -1828,7 +1828,7 @@
           ]
         }
       },
-      "caseScopeJustification": "正式行政注册后续回执"
+      "caseScopeJustification": "正式行政注册后续回执；这是整案范围的程序性或权限性责任，非单一字段事实"
     },
     {
       "checkId": "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix",

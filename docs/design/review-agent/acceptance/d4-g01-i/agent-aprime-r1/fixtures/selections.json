@@ -3,7 +3,7 @@
     "templateId": "g01-student-identity-correction",
     "version": 2,
     "scenarios": [
-      "S01"
+      "s01"
     ],
     "targets": [
       {
@@ -21,9 +21,9 @@
     "templateId": "g01-student-identity-correction",
     "version": 2,
     "scenarios": [
-      "S01",
-      "S02",
-      "S07"
+      "s01",
+      "s02",
+      "s07"
     ],
     "targets": [
       {
