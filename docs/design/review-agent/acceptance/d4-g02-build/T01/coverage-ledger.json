@@ -1,0 +1,2029 @@
+[
+  {
+    "id": "R-01",
+    "type": "rule",
+    "sourceLocator": "L180",
+    "sourceHeading": "模板入口资格",
+    "sourceId": "origin-r-01",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t01-review@1:module/use-rules-1/r-01",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S08"
+    ]
+  },
+  {
+    "id": "R-02",
+    "type": "rule",
+    "sourceLocator": "L191",
+    "sourceHeading": "校规版本匹配",
+    "sourceId": "origin-r-02",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t01-review@1:module/use-rules-1/r-02",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S02"
+    ]
+  },
+  {
+    "id": "R-03",
+    "type": "rule",
+    "sourceLocator": "L202",
+    "sourceHeading": "申请单位存在",
+    "sourceId": "origin-r-03",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t01-review@1:module/use-rules-1/r-03",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S08"
+    ]
+  },
+  {
+    "id": "R-04",
+    "type": "rule",
+    "sourceLocator": "L213",
+    "sourceHeading": "经办人≠负责人",
+    "sourceId": "origin-r-04",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t01-review@1:module/use-rules-1/r-04",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S05"
+    ]
+  },
+  {
+    "id": "R-05",
+    "type": "rule",
+    "sourceLocator": "L224",
+    "sourceHeading": "数据内容完整",
+    "sourceId": "origin-r-05",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t01-review@1:module/use-rules-1/r-05",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S05"
+    ]
+  },
+  {
+    "id": "R-06",
+    "type": "rule",
+    "sourceLocator": "L235",
+    "sourceHeading": "用途说明必要",
+    "sourceId": "origin-r-06",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t01-review@1:module/use-rules-1/r-06",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S06"
+    ]
+  },
+  {
+    "id": "R-07",
+    "type": "rule",
+    "sourceLocator": "L246",
+    "sourceHeading": "范围与必要性",
+    "sourceId": "origin-r-07",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t01-review@1:module/use-rules-1/r-07",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S06",
+      "S15",
+      "S01"
+    ]
+  },
+  {
+    "id": "R-08",
+    "type": "rule",
+    "sourceLocator": "L257",
+    "sourceHeading": "校本字段不可移植",
+    "sourceId": "origin-r-08",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t01-review@1:module/use-rules-1/r-08",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S05",
+      "S07"
+    ]
+  },
+  {
+    "id": "R-09",
+    "type": "rule",
+    "sourceLocator": "L268",
+    "sourceHeading": "数据生产部门确定",
+    "sourceId": "origin-r-09",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t01-review@1:module/use-rules-2/r-09",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01"
+    ]
+  },
+  {
+    "id": "R-10",
+    "type": "rule",
+    "sourceLocator": "L279",
+    "sourceHeading": "源部门授权在先",
+    "sourceId": "origin-r-10",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t01-review@1:module/use-rules-2/r-10",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01"
+    ]
+  },
+  {
+    "id": "R-11",
+    "type": "rule",
+    "sourceLocator": "L290",
+    "sourceHeading": "未到会签节点",
+    "sourceId": "origin-r-11",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t01-review@1:module/use-rules-2/r-11",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01"
+    ]
+  },
+  {
+    "id": "R-12",
+    "type": "rule",
+    "sourceLocator": "L301",
+    "sourceHeading": "单位责任承诺",
+    "sourceId": "origin-r-12",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t01-review@1:module/use-rules-2/r-12",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01"
+    ]
+  },
+  {
+    "id": "R-13",
+    "type": "rule",
+    "sourceLocator": "L312",
+    "sourceHeading": "单独保密承诺书",
+    "sourceId": "origin-r-13",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t01-review@1:module/use-rules-2/r-13",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01"
+    ]
+  },
+  {
+    "id": "R-14",
+    "type": "rule",
+    "sourceLocator": "L323",
+    "sourceHeading": "审批链真实性",
+    "sourceId": "origin-r-14",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t01-review@1:module/use-rules-2/r-14",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S07"
+    ]
+  },
+  {
+    "id": "R-15",
+    "type": "rule",
+    "sourceLocator": "L334",
+    "sourceHeading": "数据平台统一交换",
+    "sourceId": "origin-r-15",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t01-review@1:module/use-rules-2/r-15",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01"
+    ]
+  },
+  {
+    "id": "R-16",
+    "type": "rule",
+    "sourceLocator": "L345",
+    "sourceHeading": "使用范围限于原用途",
+    "sourceId": "origin-r-16",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t01-review@1:module/use-rules-2/r-16",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S06"
+    ]
+  },
+  {
+    "id": "R-17",
+    "type": "rule",
+    "sourceLocator": "L356",
+    "sourceHeading": "第三方转供CDUT",
+    "sourceId": "origin-r-17",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t01-review@1:module/use-rules-3/r-17",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01"
+    ]
+  },
+  {
+    "id": "R-18",
+    "type": "rule",
+    "sourceLocator": "L367",
+    "sourceHeading": "受托处理与转供有别",
+    "sourceId": "origin-r-18",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t01-review@1:module/use-rules-3/r-18",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S15"
+    ]
+  },
+  {
+    "id": "R-19",
+    "type": "rule",
+    "sourceLocator": "L378",
+    "sourceHeading": "个人信息处理法定依据",
+    "sourceId": "origin-r-19",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t01-review@1:module/use-rules-3/r-19",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S15",
+      "S01"
+    ]
+  },
+  {
+    "id": "R-20",
+    "type": "rule",
+    "sourceLocator": "L389",
+    "sourceHeading": "敏感个人信息",
+    "sourceId": "origin-r-20",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t01-review@1:module/use-rules-3/r-20",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S15",
+      "S01"
+    ]
+  },
+  {
+    "id": "R-21",
+    "type": "rule",
+    "sourceLocator": "L400",
+    "sourceHeading": "正式分类来源",
+    "sourceId": "origin-r-21",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t01-review@1:module/use-rules-3/r-21",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S13",
+      "S14",
+      "S01"
+    ]
+  },
+  {
+    "id": "R-22",
+    "type": "rule",
+    "sourceLocator": "L411",
+    "sourceHeading": "技术交付条件独立",
+    "sourceId": "origin-r-22",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t01-review@1:module/use-rules-3/r-22",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S07"
+    ]
+  },
+  {
+    "id": "R-23",
+    "type": "rule",
+    "sourceLocator": "L422",
+    "sourceHeading": "技术方案替代",
+    "sourceId": "origin-r-23",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t01-review@1:module/use-rules-3/r-23",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S08"
+    ]
+  },
+  {
+    "id": "R-24",
+    "type": "rule",
+    "sourceLocator": "L433",
+    "sourceHeading": "续期/变更",
+    "sourceId": "origin-r-24",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t01-review@1:module/use-rules-3/r-24",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S06",
+      "S07",
+      "S01"
+    ]
+  },
+  {
+    "id": "R-25",
+    "type": "rule",
+    "sourceLocator": "L444",
+    "sourceHeading": "部分来源未批",
+    "sourceId": "origin-r-25",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t01-review@1:module/use-rules-4/r-25",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01"
+    ]
+  },
+  {
+    "id": "R-26",
+    "type": "rule",
+    "sourceLocator": "L455",
+    "sourceHeading": "正式否决不绕开",
+    "sourceId": "origin-r-26",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t01-review@1:module/use-rules-4/r-26",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S07"
+    ]
+  },
+  {
+    "id": "R-27",
+    "type": "rule",
+    "sourceLocator": "L466",
+    "sourceHeading": "合法替代证据",
+    "sourceId": "origin-r-27",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t01-review@1:module/use-rules-4/r-27",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S07"
+    ]
+  },
+  {
+    "id": "R-28",
+    "type": "rule",
+    "sourceLocator": "L477",
+    "sourceHeading": "权限撤销后恢复",
+    "sourceId": "origin-r-28",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t01-review@1:module/use-rules-4/r-28",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S07",
+      "S01"
+    ]
+  },
+  {
+    "id": "R-29",
+    "type": "rule",
+    "sourceLocator": "L488",
+    "sourceHeading": "申请人上传证据隐私",
+    "sourceId": "origin-r-29",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t01-review@1:module/use-rules-4/r-29",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S15",
+      "S01"
+    ]
+  },
+  {
+    "id": "R-30",
+    "type": "rule",
+    "sourceLocator": "L499",
+    "sourceHeading": "跨模板识别",
+    "sourceId": "origin-r-30",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t01-review@1:module/use-rules-4/r-30",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S18",
+      "S01"
+    ]
+  },
+  {
+    "id": "R-31",
+    "type": "rule",
+    "sourceLocator": "L510",
+    "sourceHeading": "历史规范空白",
+    "sourceId": "origin-r-31",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t01-review@1:module/use-rules-4/r-31",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S03"
+    ]
+  },
+  {
+    "id": "R-32",
+    "type": "rule",
+    "sourceLocator": "L521",
+    "sourceHeading": "可核验与人工裁量分离",
+    "sourceId": "origin-r-32",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t01-review@1:module/use-rules-4/r-32",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalSources": [
+      "S01",
+      "S15"
+    ]
+  },
+  {
+    "id": "SECTION-1",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L7",
+    "sourceHeading": "§1｜模板元信息、目标、适用对象与政策边界",
+    "sourceId": "origin-section-1",
+    "checkId": "g02-t01-review@1:local/section-1",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "case"
+  },
+  {
+    "id": "SECTION-2",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L16",
+    "sourceHeading": "§2｜统一术语与逐对象审核单元",
+    "sourceId": "origin-section-2",
+    "checkId": "g02-t01-review@1:module/use-contract/section-2",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item"
+  },
+  {
+    "id": "SECTION-3",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L23",
+    "sourceHeading": "§3｜多源证据可信度与三种输入语义",
+    "sourceId": "origin-section-3",
+    "checkId": "g02-t01-review@1:module/use-contract/section-3",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item"
+  },
+  {
+    "id": "SECTION-4",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L31",
+    "sourceHeading": "§4｜生命周期与办理阶段（阶段ID唯一）",
+    "sourceId": "origin-section-4",
+    "checkId": "g02-t01-review@1:module/use-contract/section-4",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item"
+  },
+  {
+    "id": "SECTION-5",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L47",
+    "sourceHeading": "§5｜分支与三值条件演算",
+    "sourceId": "origin-section-5",
+    "checkId": "g02-t01-review@1:module/use-contract/section-5",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item"
+  },
+  {
+    "id": "SECTION-6",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L66",
+    "sourceHeading": "§6｜字段字典（完整45个稳定B字段ID）",
+    "sourceId": "origin-section-6",
+    "checkId": "g02-t01-review@1:module/use-contract/section-6",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item"
+  },
+  {
+    "id": "SECTION-7",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L122",
+    "sourceHeading": "§7｜材料槽、等价证据组及可信外部资料",
+    "sourceId": "origin-section-7",
+    "checkId": "g02-t01-review@1:module/use-contract/section-7",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item"
+  },
+  {
+    "id": "SECTION-8",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L163",
+    "sourceHeading": "§8｜审核事实与跨文书、一案多数据的关联约束",
+    "sourceId": "origin-section-8",
+    "checkId": "g02-t01-review@1:module/use-contract/section-8",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item"
+  },
+  {
+    "id": "SECTION-10",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L532",
+    "sourceHeading": "§10｜分项状态、整体聚合与审计输出契约",
+    "sourceId": "origin-section-10",
+    "checkId": "g02-t01-review@1:module/use-contract/section-10",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item"
+  },
+  {
+    "id": "SECTION-11",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L584",
+    "sourceHeading": "§11｜重审、撤回、变更、版本和授权生命周期",
+    "sourceId": "origin-section-11",
+    "checkId": "g02-t01-review@1:module/use-contract/section-11",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item"
+  },
+  {
+    "id": "SECTION-12",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L593",
+    "sourceHeading": "§12｜例外、合法替代与不可自动化事项",
+    "sourceId": "origin-section-12",
+    "checkId": "g02-t01-review@1:module/use-contract/section-12",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item"
+  },
+  {
+    "id": "SECTION-13",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L602",
+    "sourceHeading": "§13｜学校规则配置和来源优先级",
+    "sourceId": "origin-section-13",
+    "checkId": "g02-t01-review@1:local/section-13",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "case"
+  },
+  {
+    "id": "AXIS-act-new",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L53",
+    "sourceId": "origin-axis-act-new",
+    "checkId": "g02-t01-review@1:module/use-axis-act-new/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalBusinessAxis": "BR-01:new"
+  },
+  {
+    "id": "AXIS-act-change",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L53",
+    "sourceId": "origin-axis-act-change",
+    "checkId": "g02-t01-review@1:module/use-axis-act-change/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalBusinessAxis": "BR-01:change_scope/change_purpose"
+  },
+  {
+    "id": "AXIS-act-renew",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L53",
+    "sourceId": "origin-axis-act-renew",
+    "checkId": "g02-t01-review@1:module/use-axis-act-renew/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalBusinessAxis": "BR-01:renew"
+  },
+  {
+    "id": "AXIS-act-terminate",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L53",
+    "sourceId": "origin-axis-act-terminate",
+    "checkId": "g02-t01-review@1:module/use-axis-act-terminate/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalBusinessAxis": "BR-01:terminate"
+  },
+  {
+    "id": "AXIS-multi-source",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L55",
+    "sourceId": "origin-axis-multi-source",
+    "checkId": "g02-t01-review@1:module/use-axis-multi-source/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalBusinessAxis": "BR-03"
+  },
+  {
+    "id": "AXIS-delegated",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L54",
+    "sourceId": "origin-axis-delegated",
+    "checkId": "g02-t01-review@1:module/use-axis-delegated/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalBusinessAxis": "BR-02"
+  },
+  {
+    "id": "AXIS-third-party",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L58",
+    "sourceId": "origin-axis-third-party",
+    "checkId": "g02-t01-review@1:module/use-axis-third-party/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalBusinessAxis": "BR-06"
+  },
+  {
+    "id": "AXIS-personal-data",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L59",
+    "sourceId": "origin-axis-personal-data",
+    "checkId": "g02-t01-review@1:module/use-axis-personal-data/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalBusinessAxis": "BR-07"
+  },
+  {
+    "id": "AXIS-sensitive-data",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L59",
+    "sourceId": "origin-axis-sensitive-data",
+    "checkId": "g02-t01-review@1:module/use-axis-sensitive-data/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalBusinessAxis": "BR-07"
+  },
+  {
+    "id": "AXIS-api-delivery",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L57",
+    "sourceId": "origin-axis-api-delivery",
+    "checkId": "g02-t01-review@1:module/use-axis-api-delivery/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalBusinessAxis": "BR-05"
+  },
+  {
+    "id": "AXIS-policy-confirmed",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L60",
+    "sourceId": "origin-axis-policy-confirmed",
+    "checkId": "g02-t01-review@1:module/use-axis-policy-confirmed/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalBusinessAxis": "BR-08"
+  },
+  {
+    "id": "AXIS-source-approved",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L62",
+    "sourceId": "origin-axis-source-approved",
+    "checkId": "g02-t01-review@1:module/use-axis-source-approved/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalBusinessAxis": "BR-10"
+  },
+  {
+    "id": "AXIS-delivered",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L61",
+    "sourceId": "origin-axis-delivered",
+    "checkId": "g02-t01-review@1:module/use-axis-delivered/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-data-item",
+    "originalBusinessAxis": "BR-09"
+  },
+  {
+    "id": "F-03",
+    "type": "F",
+    "sourceLocator": "L53",
+    "sourceText": "| `BR-01` | 办理动作 | new,change_scope,change_purpose,renew,terminate；主动作互斥；一申请变更多个字段仍为同一动作的差异集合 | unknown→补明确动作或与系统原许可核对 | F-03,F-31,F-32 | S01,S06,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-3/r-24",
+      "g02-t01-review@1:module/use-rules-4/r-30",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-31",
+    "type": "F",
+    "sourceLocator": "L53",
+    "sourceText": "| `BR-01` | 办理动作 | new,change_scope,change_purpose,renew,terminate；主动作互斥；一申请变更多个字段仍为同一动作的差异集合 | unknown→补明确动作或与系统原许可核对 | F-03,F-31,F-32 | S01,S06,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-16",
+      "g02-t01-review@1:module/use-rules-3/r-24",
+      "g02-t01-review@1:module/use-rules-4/r-28",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-32",
+    "type": "F",
+    "sourceLocator": "L53",
+    "sourceText": "| `BR-01` | 办理动作 | new,change_scope,change_purpose,renew,terminate；主动作互斥；一申请变更多个字段仍为同一动作的差异集合 | unknown→补明确动作或与系统原许可核对 | F-03,F-31,F-32 | S01,S06,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-16",
+      "g02-t01-review@1:module/use-rules-3/r-24",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-04",
+    "type": "F",
+    "sourceLocator": "L54",
+    "sourceText": "| `BR-02` | 申请身份 | authorized_department,delegated_operator,individual_unverified；单位申请为主；经办可代理，学生/教师身份本身不足 | unknown→ORG_VERIFY | F-04,F-06,F-07,F-09 | S01,S08 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-01",
+      "g02-t01-review@1:module/use-rules-1/r-03",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-06",
+    "type": "F",
+    "sourceLocator": "L54",
+    "sourceText": "| `BR-02` | 申请身份 | authorized_department,delegated_operator,individual_unverified；单位申请为主；经办可代理，学生/教师身份本身不足 | unknown→ORG_VERIFY | F-04,F-06,F-07,F-09 | S01,S08 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-04",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-07",
+    "type": "F",
+    "sourceLocator": "L54",
+    "sourceText": "| `BR-02` | 申请身份 | authorized_department,delegated_operator,individual_unverified；单位申请为主；经办可代理，学生/教师身份本身不足 | unknown→ORG_VERIFY | F-04,F-06,F-07,F-09 | S01,S08 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-01",
+      "g02-t01-review@1:module/use-rules-1/r-03",
+      "g02-t01-review@1:module/use-rules-1/r-04",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-09",
+    "type": "F",
+    "sourceLocator": "L54",
+    "sourceText": "| `BR-02` | 申请身份 | authorized_department,delegated_operator,individual_unverified；单位申请为主；经办可代理，学生/教师身份本身不足 | unknown→ORG_VERIFY | F-04,F-06,F-07,F-09 | S01,S08 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-04",
+      "g02-t01-review@1:module/use-rules-2/r-12",
+      "g02-t01-review@1:module/use-rules-4/r-27",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-10",
+    "type": "F",
+    "sourceLocator": "L55",
+    "sourceText": "| `BR-03` | 来源数量 | single_source,multi_source,owner_unknown；多个数据项可叠加、多权责逐项核 | unknown→SOURCE_UNAVAILABLE | F-10,F-16,F-17,F-40 | S01 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-01",
+      "g02-t01-review@1:module/use-rules-1/r-05",
+      "g02-t01-review@1:module/use-rules-2/r-09",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-16",
+    "type": "F",
+    "sourceLocator": "L55",
+    "sourceText": "| `BR-03` | 来源数量 | single_source,multi_source,owner_unknown；多个数据项可叠加、多权责逐项核 | unknown→SOURCE_UNAVAILABLE | F-10,F-16,F-17,F-40 | S01 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-09",
+      "g02-t01-review@1:module/use-rules-4/r-25",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-17",
+    "type": "F",
+    "sourceLocator": "L55",
+    "sourceText": "| `BR-03` | 来源数量 | single_source,multi_source,owner_unknown；多个数据项可叠加、多权责逐项核 | unknown→SOURCE_UNAVAILABLE | F-10,F-16,F-17,F-40 | S01 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-40",
+    "type": "F",
+    "sourceLocator": "L55",
+    "sourceText": "| `BR-03` | 来源数量 | single_source,multi_source,owner_unknown；多个数据项可叠加、多权责逐项核 | unknown→SOURCE_UNAVAILABLE | F-10,F-16,F-17,F-40 | S01 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-09",
+      "g02-t01-review@1:module/use-rules-4/r-25",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-23",
+    "type": "F",
+    "sourceLocator": "L56",
+    "sourceText": "| `BR-04` | 学校共享等级 | public,unconditional,conditional,non_shareable,unknown；同一学校当前权威目录内互斥，跨数据项可不同 | unknown→CLASSIFICATION_UNKNOWN | F-23,F-35 | S09,S13,S14 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-3/r-21",
+      "g02-t01-review@1:module/use-rules-4/r-32",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-35",
+    "type": "F",
+    "sourceLocator": "L56",
+    "sourceText": "| `BR-04` | 学校共享等级 | public,unconditional,conditional,non_shareable,unknown；同一学校当前权威目录内互斥，跨数据项可不同 | unknown→CLASSIFICATION_UNKNOWN | F-23,F-35 | S09,S13,S14 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-3/r-19",
+      "g02-t01-review@1:module/use-rules-3/r-20",
+      "g02-t01-review@1:module/use-rules-4/r-29",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-25",
+    "type": "F",
+    "sourceLocator": "L57",
+    "sourceText": "| `BR-05` | 交付模式 | platform_view,file_export,api,other_approved；同申请多个模式时逐操作核；交付许可不等于可用 | unknown→技术咨询，不强制IP | F-25,F-27,F-28,F-29 | S05,S07,S10 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-08",
+      "g02-t01-review@1:module/use-rules-2/r-15",
+      "g02-t01-review@1:module/use-rules-3/r-23",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-27",
+    "type": "F",
+    "sourceLocator": "L57",
+    "sourceText": "| `BR-05` | 交付模式 | platform_view,file_export,api,other_approved；同申请多个模式时逐操作核；交付许可不等于可用 | unknown→技术咨询，不强制IP | F-25,F-27,F-28,F-29 | S05,S07,S10 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-08",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-28",
+    "type": "F",
+    "sourceLocator": "L57",
+    "sourceText": "| `BR-05` | 交付模式 | platform_view,file_export,api,other_approved；同申请多个模式时逐操作核；交付许可不等于可用 | unknown→技术咨询，不强制IP | F-25,F-27,F-28,F-29 | S05,S07,S10 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-08",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-29",
+    "type": "F",
+    "sourceLocator": "L57",
+    "sourceText": "| `BR-05` | 交付模式 | platform_view,file_export,api,other_approved；同申请多个模式时逐操作核；交付许可不等于可用 | unknown→技术咨询，不强制IP | F-25,F-27,F-28,F-29 | S05,S07,S10 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-08",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-33",
+    "type": "F",
+    "sourceLocator": "L58",
+    "sourceText": "| `BR-06` | 第三方关系 | none,entrusted_implementation,independent_disclosure,undetermined；与共享等级/交付模式叠加；未判明独立控制关系不能默认受托 | undetermined→LEGAL_REVIEW | F-33,F-34,F-42 | S01,S07,S15 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-3/r-17",
+      "g02-t01-review@1:module/use-rules-3/r-18",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-34",
+    "type": "F",
+    "sourceLocator": "L58",
+    "sourceText": "| `BR-06` | 第三方关系 | none,entrusted_implementation,independent_disclosure,undetermined；与共享等级/交付模式叠加；未判明独立控制关系不能默认受托 | undetermined→LEGAL_REVIEW | F-33,F-34,F-42 | S01,S07,S15 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-3/r-17",
+      "g02-t01-review@1:module/use-rules-3/r-18",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-42",
+    "type": "F",
+    "sourceLocator": "L58",
+    "sourceText": "| `BR-06` | 第三方关系 | none,entrusted_implementation,independent_disclosure,undetermined；与共享等级/交付模式叠加；未判明独立控制关系不能默认受托 | undetermined→LEGAL_REVIEW | F-33,F-34,F-42 | S01,S07,S15 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-16",
+      "g02-t01-review@1:module/use-rules-3/r-17",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-36",
+    "type": "F",
+    "sourceLocator": "L59",
+    "sourceText": "| `BR-07` | 个人信息性质 | non_personal,personal,sensitive,unknown；处理活动按字段逐项识别；涉及个人信息不自动等于须个人逐签同意 | unknown→SAFETY_REVIEW | F-35,F-36,F-37,F-44 | S15,S16,S17 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-3/r-19",
+      "g02-t01-review@1:module/use-rules-4/r-32",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-37",
+    "type": "F",
+    "sourceLocator": "L59",
+    "sourceText": "| `BR-07` | 个人信息性质 | non_personal,personal,sensitive,unknown；处理活动按字段逐项识别；涉及个人信息不自动等于须个人逐签同意 | unknown→SAFETY_REVIEW | F-35,F-36,F-37,F-44 | S15,S16,S17 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-07",
+      "g02-t01-review@1:module/use-rules-3/r-20",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-44",
+    "type": "F",
+    "sourceLocator": "L59",
+    "sourceText": "| `BR-07` | 个人信息性质 | non_personal,personal,sensitive,unknown；处理活动按字段逐项识别；涉及个人信息不自动等于须个人逐签同意 | unknown→SAFETY_REVIEW | F-35,F-36,F-37,F-44 | S15,S16,S17 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-3/r-19",
+      "g02-t01-review@1:module/use-rules-3/r-20",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-01",
+    "type": "F",
+    "sourceLocator": "L60",
+    "sourceText": "| `BR-08` | 政策状态 | verified_effective,historical_only,superseded,unknown,inaccessible；只有verified_effective能执行学校强制规则；上位法依适用事实独立检查 | unknown/inaccessible→POLICY_UNKNOWN | F-01,F-38 | S01,S03 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-02",
+      "g02-t01-review@1:module/use-rules-4/r-31",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-38",
+    "type": "F",
+    "sourceLocator": "L60",
+    "sourceText": "| `BR-08` | 政策状态 | verified_effective,historical_only,superseded,unknown,inaccessible；只有verified_effective能执行学校强制规则；上位法依适用事实独立检查 | unknown/inaccessible→POLICY_UNKNOWN | F-01,F-38 | S01,S03 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-11",
+      "g02-t01-review@1:module/use-rules-2/r-14",
+      "g02-t01-review@1:module/use-rules-4/r-26",
+      "g02-t01-review@1:module/use-rules-4/r-31",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-18",
+    "type": "F",
+    "sourceLocator": "L61",
+    "sourceText": "| `BR-09` | 办理当前节点 | ST-00..ST-08；全案主阶段互斥，各source_approval_node独立进度可并存 | unknown→WORKFLOW_UNKNOWN，不得作后置缺件 | F-18,F-19,F-38 | S01,S06 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-10",
+      "g02-t01-review@1:module/use-rules-2/r-11",
+      "g02-t01-review@1:module/use-rules-2/r-14",
+      "g02-t01-review@1:module/use-rules-4/r-25",
+      "g02-t01-review@1:module/use-rules-4/r-27",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-19",
+    "type": "F",
+    "sourceLocator": "L61",
+    "sourceText": "| `BR-09` | 办理当前节点 | ST-00..ST-08；全案主阶段互斥，各source_approval_node独立进度可并存 | unknown→WORKFLOW_UNKNOWN，不得作后置缺件 | F-18,F-19,F-38 | S01,S06 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-11",
+      "g02-t01-review@1:module/use-rules-2/r-14",
+      "g02-t01-review@1:module/use-rules-3/r-22",
+      "g02-t01-review@1:module/use-rules-4/r-27",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-30",
+    "type": "F",
+    "sourceLocator": "L62",
+    "sourceText": "| `BR-10` | 授权记录效力 | none,pending,approved,denied,revoked,expired,unverified；同一数据项按最新有效授权版本确定，不以图片覆盖系统 | unverified→EVIDENCE_UNVERIFIED | F-18,F-30,F-31,F-39 | S01,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-3/r-22",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-39",
+    "type": "F",
+    "sourceLocator": "L62",
+    "sourceText": "| `BR-10` | 授权记录效力 | none,pending,approved,denied,revoked,expired,unverified；同一数据项按最新有效授权版本确定，不以图片覆盖系统 | unverified→EVIDENCE_UNVERIFIED | F-18,F-30,F-31,F-39 | S01,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-4/r-26",
+      "g02-t01-review@1:module/use-rules-4/r-28",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-02",
+    "type": "F",
+    "sourceLocator": "L73",
+    "sourceText": "| `F-02` | 事项ID/申请编号（区分一案） | 申报事项；高/系统 | 提交后/关联变更；提交+所有后续 | 字符串唯一/不可重用；核所有附件/历史许可ID | 平台生成；纸质申请可待入库；未生成时不自动拒初始草稿 | 内部业务受控；CASE/ACTION.field_ref | S01,S06 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-05",
+    "type": "F",
+    "sourceLocator": "L76",
+    "sourceText": "| `F-05` | 申请日期（适用规则日期） | 申报材料；申请人或平台 | CDUT附件2；提交 | YYYY-MM-DD/电子时间戳；核签署时间与制度版本 | 平台可信提交时间优先；冲突→核时间戳 | 个人身份/审批限阅；APPROVAL_NODE.field_ref | S01 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-08",
+    "type": "F",
+    "sourceLocator": "L79",
+    "sourceText": "| `F-08` | 经办人联系电话（联系与责任） | 申报材料；申请表 | CDUT附件2；提交 | 手机/单位电话可接受本校格式；核F-06/组织目录 | 门户已有有效联系记录；缺时补正；不得擅自要求身份证图像 | 个人身份/审批限阅；UNIT.field_ref | S01 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-11",
+    "type": "F",
+    "sourceLocator": "L81",
+    "sourceText": "| `F-10` | 申请使用数据内容（哪些数据） | 申报事项；申请人 | 所有申请型共享；提交 | 数据名称/字段集合；核权威数据目录+F-11/F-12 | 可按CDUT原表自由文本，后续结构化；全空→补正；过宽→人工评估 | 依实际数据内容判级；DATA_ITEM.field_ref | S01,S05,S06 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-12",
+    "type": "F",
+    "sourceLocator": "L81",
+    "sourceText": "| `F-10` | 申请使用数据内容（哪些数据） | 申报事项；申请人 | 所有申请型共享；提交 | 数据名称/字段集合；核权威数据目录+F-11/F-12 | 可按CDUT原表自由文本，后续结构化；全空→补正；过宽→人工评估 | 依实际数据内容判级；DATA_ITEM.field_ref | S01,S05,S06 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-07",
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-14",
+    "type": "F",
+    "sourceLocator": "L83",
+    "sourceText": "| `F-12` | 具体字段集合（字段范围和最小化） | 申报事项；申请+可信目录 | 该校要求或API/复杂请求；提交/资源审查 | 字段名列表或说明附件；核F-10/F-14/目录权限 | 可由目录选择或经主管核定的等效描述；学校没要求字段表→不得强制拒件 | 依实际数据内容判级；DATA_ITEM.field_ref | S05,S06,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-06",
+      "g02-t01-review@1:module/use-rules-1/r-07",
+      "g02-t01-review@1:module/use-rules-2/r-16",
+      "g02-t01-review@1:module/use-rules-4/r-30",
+      "g02-t01-review@1:module/use-rules-4/r-32",
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-13",
+    "type": "F",
+    "sourceLocator": "L84",
+    "sourceText": "| `F-13` | 数据范围/筛选条件（对象与时间范围） | 申报事项；申请材料 | 多机构/批量或该校规定；提交/审查 | 单位/年级/起止日期/身份范围；核用途+敏感程度 | 按CDUT“数据内容”描述细化；不够明确→补正或人工缩范围 | 依实际数据内容判级；DATA_ITEM.field_ref | S05,S06,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-05",
+      "g02-t01-review@1:module/use-rules-1/r-07",
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-15",
+    "type": "F",
+    "sourceLocator": "L86",
+    "sourceText": "| `F-15` | 业务依据/项目说明（证明必要性） | 证明材料；申请人上传/可信公文 | 项目、外部函件等触发；提交或初审 | 正式公文编号/任务说明；核F-14/单位职责 | 可信OA批件或主管说明；非本校规定时不强求 | 依实际数据内容判级；CASE/ACTION.field_ref | S05,S06 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-20",
+    "type": "F",
+    "sourceLocator": "L91",
+    "sourceText": "| `F-20` | 单位数据保密承诺（附件2）（使用单位责任） | 申报材料；负责人签字 | CDUT2020申请表；提交/内部审批 | 固定文本+负责人日期；核F-04/F-09 | 经学校认可的电子承诺/部门审批；缺时按阶段补签 | 个人身份/审批限阅；UNIT.field_ref | S01 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-12",
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-21",
+    "type": "F",
+    "sourceLocator": "L92",
+    "sourceText": "| `F-21` | 另行数据保密承诺书（附件3）（具体人员保密义务） | 证明材料/单位长期义务；正式签字 | 该校制度要求或特定岗位；岗位授权/实施前 | 承诺对象+保密人+单位签字；核F-10/实际使用者 | 既有有效岗位承诺在可信档案可复用；是否每案必交未证实，不能强制 | 个人身份/审批限阅；UNIT.field_ref | S01,S09 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-13",
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-22",
+    "type": "F",
+    "sourceLocator": "L93",
+    "sourceText": "| `F-22` | 数据共享保密协议（受限数据责任） | 证明材料；签章文件 | 学校要求此协议时；来源审批或交付前 | 双方/多方签章及期限；核F-04/F-10/F-23 | 可信有效已签校内协议；非校本明定不得加码 | 依实际数据内容判级；CASE/ACTION.field_ref | S07,S08,S09 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-24",
+    "type": "F",
+    "sourceLocator": "L95",
+    "sourceText": "| `F-24` | 实际使用人/业务系统（谁会读数据） | 申报事项/系统底账；混合 | 持续接口或指定操作员；实施前 | 人员/系统ID；核单位许可/角色访问日志 | 组织授权成员清单；申请时按表单条件填写 | 个人身份/审批限阅；CASE/ACTION.field_ref | S05,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-26",
+    "type": "F",
+    "sourceLocator": "L97",
+    "sourceText": "| `F-26` | 使用期限（有限许可结束时间） | 申报事项；申请/校规 | 该校规则要求期限时；提交/授权 | 日期范围 start<=end；核项目期限/保密协议 | 本校若仅用途授权则可按系统许可代替；CDUT2020未列字段；按学校配置 | 内部业务受控；CASE/ACTION.field_ref | S06,S07,S10 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-08",
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-41",
+    "type": "F",
+    "sourceLocator": "L112",
+    "sourceText": "| `F-41` | 数据处理日志与存储位置（后续可审计性） | 系统底账；高/安全记录 | 校规有保存/技术约束时；执行后/续期 | 日志ID、存储期限；核F-30/F-33 | 已有审计平台日志；申请时不可作必交 | 条件高敏/法务限阅；DELIVERY.field_ref | S07,S15,S17 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-43",
+    "type": "F",
+    "sourceLocator": "L114",
+    "sourceText": "| `F-43` | 原始凭证类型与真实性（证据能否信赖） | 证明材料；OCR/文件来源 | 纸表/签章或截图有争议；材料核验 | 扫描页、签名、印章日期；核可信电子签与后台审计 | 可核验电子签或人工核原件；模糊→补清晰或查原件 | 个人身份/审批限阅；APPROVAL_NODE.field_ref | S01,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-4/r-27",
+      "g02-t01-review@1:module/use-rules-4/r-29",
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-45",
+    "type": "F",
+    "sourceLocator": "L116",
+    "sourceText": "| `F-45` | 实现困难的替代交付方案（无法按指定接口/规格交付） | 证明材料/审批节点；技术部门 | 申请已许可但技术不可实施；技术评估 | 替代接口/统计/脱敏说明；核F-25/F-30 | 职能部门商讨特别技术方案；只认技术受限，不自动否决合法申请 | 依实际数据内容判级；DELIVERY.field_ref | S01,S08 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-15",
+      "g02-t01-review@1:module/use-rules-3/r-23",
+      "g02-t01-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-01",
+    "type": "M",
+    "sourceLocator": "L126",
+    "sourceText": "| `M-01` | 申请表/网办主记录（申报材料）：CDUT2020：申请单位/日期/数据内容/用途/经办人/联系电话 | CDUT首次申请且对应表单仍适用；SUBMITTED | 若CDUT现行改电子工单，承认可信在线表单 | 核F-04,F-05,F-06,F-08,F-10,F-14 | S01 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-01",
+      "g02-t01-review@1:module/use-rules-1/r-02",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-02",
+    "type": "M",
+    "sourceLocator": "L127",
+    "sourceText": "| `M-02` | 申请的数据内容/字段目录清单（申报事项）：所需数据类目、具体字段、对象与时间范围 | 每次必须说明数据需求；字段清单按校规/API条件；SUBMITTED | 校方目录选中字段或用途+数据内容足够明确的表单 | 核F-10..F-13,F-40 | S01,S05,S06,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-05",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-03",
+    "type": "M",
+    "sourceLocator": "L128",
+    "sourceText": "| `M-03` | 用途与必要性说明（申报材料）：可识别具体业务目的与数据需要的联系 | 主干要求用途；额外立项公文非通用必交；SUBMITTED | 业务内单文本栏或申请说明文件 | 核F-14,F-15,F-36 | S01,S06 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-06",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-04",
+    "type": "M",
+    "sourceLocator": "L129",
+    "sourceText": "| `M-04` | 单位数据保密责任承诺（申报材料）：CDUT附件2固定承诺与单位负责人签字 | CDUT2020使用申请，在其负责人节点；UNIT_REVIEW | 被校方认可的电子审批/承诺代替手写签字 | 核F-09,F-20 | S01 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-12",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-05",
+    "type": "M",
+    "sourceLocator": "L130",
+    "sourceText": "| `M-05` | 单独数据保密承诺书（证明材料）：CDUT附件3由保密人/单位/负责人签署 | 校规/岗位首次签署或项目另需；不是每次首次申请已证实；SECURITY_REVIEW | 可信单位已有有效承诺归档 | 核F-21 | S01,S09 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-13",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-06",
+    "type": "M",
+    "sourceLocator": "L131",
+    "sourceText": "| `M-06` | 单位业务必要性批件/外部函件（证明材料）：业务任务、合同或主管授权的佐证 | 依校规或具体项目对用途提出更高证明时；SUBMITTED | 可信OA正式任务/单位领导审批记录 | 核F-15 | S05,S06 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-07",
+    "type": "M",
+    "sourceLocator": "L132",
+    "sourceText": "| `M-07` | 数据来源部门会签（审批节点/不可由申请人预制）：数据源对申请数据范围和用途的许可 | 已进入来源部门审查阶段；SOURCE_REVIEW | 权威系统流程签批或电子签章 | 核F-16,F-17,F-18 | S01,S06 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-10",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-08",
+    "type": "M",
+    "sourceLocator": "L133",
+    "sourceText": "| `M-08` | 网信/数据管理部门意见（审批节点/不可由申请人预制）：信息化部门审核或协调交付意见 | 已到信息化审核节点；IT_REVIEW | 校方可信流程记录 | 核F-19,F-38 | S01,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-09",
+    "type": "M",
+    "sourceLocator": "L134",
+    "sourceText": "| `M-09` | 共享数据敏感等级目录（可信系统底账）：合法数据源/部门及是否限制共享 | 数据源涉及分类级别判断；SECURITY_REVIEW | 数据源负责部门人工确认 | 核F-11,F-16,F-23,F-35 | S13,S14,S16 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-3/r-21",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-10",
+    "type": "M",
+    "sourceLocator": "L135",
+    "sourceText": "| `M-10` | 接口系统技术登记（申报事项/技术材料）：业务系统名、API名、IP、调用频率 | 该校采用API且表单要求技术参数；PROVISIONING | 校内已有接口登记记录 | 核F-25,F-27,F-28,F-29 | S05,S07,S10 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-11",
+    "type": "M",
+    "sourceLocator": "L136",
+    "sourceText": "| `M-11` | 原授权与变更说明（申报材料+可信底账）：原批准字段/用途、增加或缩减内容 | request_action!=new；SUBMITTED | 审批平台原授权日志与变更单 | 核F-03,F-31,F-32 | S06,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-12",
+    "type": "M",
+    "sourceLocator": "L137",
+    "sourceText": "| `M-12` | 第三方安全/保密材料（证明材料）：合同与人员/单位保密承诺 | 校规允许涉第三方受托且真实会接触数据；SECURITY_REVIEW | 学校正式合同/安全责任档案 | 核F-33,F-34,F-42 | S07,S15 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-13",
+    "type": "M",
+    "sourceLocator": "L138",
+    "sourceText": "| `M-13` | 电子或纸质审批日志（可信学校底账）：有权负责人签名、动作、时间与意见 | 对应审批节点已发生；ANY_POST_SUBMIT | 可信电子签平台,不用用户截图充当原始批准 | 核F-18,F-19,F-38 | S01,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-14",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-14",
+    "type": "M",
+    "sourceLocator": "L139",
+    "sourceText": "| `M-14` | 技术交付与回收记录（可信系统底账）：接口开通、文件交付、撤销及时间 | 审批已许可后的执行与到期阶段；PROVISIONING/REVOKED | 平台实施操作日志 | 核F-30,F-39,F-41 | S01,S05,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-3/r-22",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-15",
+    "type": "M",
+    "sourceLocator": "L140",
+    "sourceText": "| `M-15` | 身份/单位与代理授权凭据（可信底账/条件证明）：经办人与单位部门关联、主管是否有权 | 平台无法自动核验或申请代办；INTAKE | 有权单位OA审批或角色台账，不要求一般申请上传身份证 | 核F-04,F-07,F-09 | S01,S08 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-03",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-16",
+    "type": "M",
+    "sourceLocator": "L141",
+    "sourceText": "| `M-16` | 个人信息法律依据及影响评估（证明材料/人工后置）：合法性基础、敏感个人信息严格必要性 | 确有需评估的个人信息处理活动；SECURITY_REVIEW | 法务/网信批准的评估文书或现有合法合规流程 | 核F-35,F-36,F-37,F-44 | S15,S17 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-01",
+    "type": "EV",
+    "sourceLocator": "L147",
+    "sourceText": "| `EV-01` | 单位与经办权 | 官方组织目录+会话身份/岗位授权 | 有权单位电子委派或校方OA证明 | 平台不可达→AUTH_PENDING；缺实质委托不能仅凭个人身份放行 | F-04,F-06,F-07,M-15 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-01",
+      "g02-t01-review@1:module/use-rules-1/r-03",
+      "g02-t01-review@1:module/use-rules-1/r-04",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-02",
+    "type": "EV",
+    "sourceLocator": "L148",
+    "sourceText": "| `EV-02` | 负责人审签及承诺 | 有权单位负责人目录+可信OA签批+单位承诺 | 经学校核验的手签原件或可靠电子签章 | 签名图片≠任职授权；未到节点NOT_DUE | F-09,F-20,F-43,M-04 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-04",
+      "g02-t01-review@1:module/use-rules-2/r-12",
+      "g02-t01-review@1:module/use-rules-4/r-27",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-03",
+    "type": "EV",
+    "sourceLocator": "L149",
+    "sourceText": "| `EV-03` | 数据项与字段范围 | 申请内数据内容+现行权威数据目录 | 目录不可达时由来源部门书面确认映射 | 无目录≠虚构不存在；过宽→人工缩减范围 | F-10,F-11,F-12,F-13,M-02 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-05",
+      "g02-t01-review@1:module/use-rules-1/r-07",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-04",
+    "type": "EV",
+    "sourceLocator": "L150",
+    "sourceText": "| `EV-04` | 用途与职责 | 申请用途说明+单位职能目录 | 校方认可的项目批件/业务任务依据 | 判断用途存在≠必然合理，冲突→人工核 | F-14,F-15,M-03,M-06 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-06",
+      "g02-t01-review@1:module/use-rules-1/r-07",
+      "g02-t01-review@1:module/use-rules-4/r-30",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-05",
+    "type": "EV",
+    "sourceLocator": "L151",
+    "sourceText": "| `EV-05` | 来源与分级 | 正式数据来源映射/分类目录 | 有权数据源主管确认及时间戳 | 申请人自称公开不能免审；未知→来源核验 | F-16,F-17,F-23,F-40,M-09 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-09",
+      "g02-t01-review@1:module/use-rules-3/r-21",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-06",
+    "type": "EV",
+    "sourceLocator": "L152",
+    "sourceText": "| `EV-06` | 来源许可和流程 | 可信审批系统逐来源节点日志 | 可独立向审批机关核实的纸质原件 | 低可信截图不能反转正式否决 | F-18,F-19,F-38,F-39,M-07,M-08,M-13 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-10",
+      "g02-t01-review@1:module/use-rules-2/r-11",
+      "g02-t01-review@1:module/use-rules-2/r-14",
+      "g02-t01-review@1:module/use-rules-4/r-25",
+      "g02-t01-review@1:module/use-rules-4/r-26",
+      "g02-t01-review@1:module/use-rules-4/r-27",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-07",
+    "type": "EV",
+    "sourceLocator": "L153",
+    "sourceText": "| `EV-07` | 单独岗位保密义务 | 校方现行规定要求的既有有效岗位承诺记录 | 该节点真实签署的附件3或其他认可文书 | 未证实逐案必交；不得默认额外强制 | F-21,F-22,M-05 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-13",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-08",
+    "type": "EV",
+    "sourceLocator": "L154",
+    "sourceText": "| `EV-08` | 敏感度与个人信息合规 | 源目录敏感标签+处理基础+有权审查意见 | 有权法务/安全部门核验的影响评估和替代技术方案 | 不能模型自动判合法或强令逐人同意 | F-33,F-34,F-35,F-36,F-37,F-44,M-12,M-16 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-07",
+      "g02-t01-review@1:module/use-rules-3/r-17",
+      "g02-t01-review@1:module/use-rules-3/r-18",
+      "g02-t01-review@1:module/use-rules-3/r-19",
+      "g02-t01-review@1:module/use-rules-3/r-20",
+      "g02-t01-review@1:module/use-rules-4/r-29",
+      "g02-t01-review@1:module/use-rules-4/r-32",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-09",
+    "type": "EV",
+    "sourceLocator": "L155",
+    "sourceText": "| `EV-09` | 原授权与变更/失效 | 正式原授权ID、版本、字段/用途、当前状态 | 原授权机关确认的原始纸质决定 | 截图显示旧通过不能覆盖撤销/到期日志 | F-03,F-31,F-32,F-39,M-11 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-16",
+      "g02-t01-review@1:module/use-rules-3/r-24",
+      "g02-t01-review@1:module/use-rules-4/r-28",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-10",
+    "type": "EV",
+    "sourceLocator": "L156",
+    "sourceText": "| `EV-10` | 当前有效校规 | 可验证校发文和业务事项生效版本 | 政策维护人批准的暂行校本配置（需来源记录） | 2020试行办法仅历史参照；缺现行配置→仅非强制核验 | F-01,M-01 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-02",
+      "g02-t01-review@1:module/use-rules-1/r-08",
+      "g02-t01-review@1:module/use-rules-2/r-15",
+      "g02-t01-review@1:module/use-rules-4/r-31",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-11",
+    "type": "EV",
+    "sourceLocator": "L157",
+    "sourceText": "| `EV-11` | 实施与记录 | 实际技术交付单/接口开通日志+许可版本 | 具有可审计编号的实施回执 | 审批通过未实施→APPROVED_NOT_DELIVERED | F-25,F-30,F-41,F-45,M-14 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-3/r-22",
+      "g02-t01-review@1:module/use-rules-3/r-23",
+      "g02-t01-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-01",
+    "type": "BR",
+    "sourceLocator": "L53",
+    "sourceText": "| `BR-01` | 办理动作 | new,change_scope,change_purpose,renew,terminate；主动作互斥；一申请变更多个字段仍为同一动作的差异集合 | unknown→补明确动作或与系统原许可核对 | F-03,F-31,F-32 | S01,S06,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-02",
+    "type": "BR",
+    "sourceLocator": "L54",
+    "sourceText": "| `BR-02` | 申请身份 | authorized_department,delegated_operator,individual_unverified；单位申请为主；经办可代理，学生/教师身份本身不足 | unknown→ORG_VERIFY | F-04,F-06,F-07,F-09 | S01,S08 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-03",
+    "type": "BR",
+    "sourceLocator": "L55",
+    "sourceText": "| `BR-03` | 来源数量 | single_source,multi_source,owner_unknown；多个数据项可叠加、多权责逐项核 | unknown→SOURCE_UNAVAILABLE | F-10,F-16,F-17,F-40 | S01 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-04",
+    "type": "BR",
+    "sourceLocator": "L56",
+    "sourceText": "| `BR-04` | 学校共享等级 | public,unconditional,conditional,non_shareable,unknown；同一学校当前权威目录内互斥，跨数据项可不同 | unknown→CLASSIFICATION_UNKNOWN | F-23,F-35 | S09,S13,S14 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-05",
+    "type": "BR",
+    "sourceLocator": "L57",
+    "sourceText": "| `BR-05` | 交付模式 | platform_view,file_export,api,other_approved；同申请多个模式时逐操作核；交付许可不等于可用 | unknown→技术咨询，不强制IP | F-25,F-27,F-28,F-29 | S05,S07,S10 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-06",
+    "type": "BR",
+    "sourceLocator": "L58",
+    "sourceText": "| `BR-06` | 第三方关系 | none,entrusted_implementation,independent_disclosure,undetermined；与共享等级/交付模式叠加；未判明独立控制关系不能默认受托 | undetermined→LEGAL_REVIEW | F-33,F-34,F-42 | S01,S07,S15 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-07",
+    "type": "BR",
+    "sourceLocator": "L59",
+    "sourceText": "| `BR-07` | 个人信息性质 | non_personal,personal,sensitive,unknown；处理活动按字段逐项识别；涉及个人信息不自动等于须个人逐签同意 | unknown→SAFETY_REVIEW | F-35,F-36,F-37,F-44 | S15,S16,S17 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-08",
+    "type": "BR",
+    "sourceLocator": "L60",
+    "sourceText": "| `BR-08` | 政策状态 | verified_effective,historical_only,superseded,unknown,inaccessible；只有verified_effective能执行学校强制规则；上位法依适用事实独立检查 | unknown/inaccessible→POLICY_UNKNOWN | F-01,F-38 | S01,S03 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-01",
+      "g02-t01-review@1:module/use-rules-1/r-02",
+      "g02-t01-review@1:module/use-rules-1/r-03",
+      "g02-t01-review@1:module/use-rules-1/r-04",
+      "g02-t01-review@1:module/use-rules-1/r-05",
+      "g02-t01-review@1:module/use-rules-1/r-06",
+      "g02-t01-review@1:module/use-rules-1/r-07",
+      "g02-t01-review@1:module/use-rules-1/r-08",
+      "g02-t01-review@1:module/use-rules-2/r-09",
+      "g02-t01-review@1:module/use-rules-2/r-10",
+      "g02-t01-review@1:module/use-rules-2/r-11",
+      "g02-t01-review@1:module/use-rules-2/r-12",
+      "g02-t01-review@1:module/use-rules-2/r-13",
+      "g02-t01-review@1:module/use-rules-2/r-14",
+      "g02-t01-review@1:module/use-rules-2/r-15",
+      "g02-t01-review@1:module/use-rules-2/r-16",
+      "g02-t01-review@1:module/use-rules-3/r-17",
+      "g02-t01-review@1:module/use-rules-3/r-18",
+      "g02-t01-review@1:module/use-rules-3/r-19",
+      "g02-t01-review@1:module/use-rules-3/r-20",
+      "g02-t01-review@1:module/use-rules-3/r-21",
+      "g02-t01-review@1:module/use-rules-3/r-22",
+      "g02-t01-review@1:module/use-rules-3/r-23",
+      "g02-t01-review@1:module/use-rules-3/r-24",
+      "g02-t01-review@1:module/use-rules-4/r-25",
+      "g02-t01-review@1:module/use-rules-4/r-26",
+      "g02-t01-review@1:module/use-rules-4/r-27",
+      "g02-t01-review@1:module/use-rules-4/r-28",
+      "g02-t01-review@1:module/use-rules-4/r-29",
+      "g02-t01-review@1:module/use-rules-4/r-30",
+      "g02-t01-review@1:module/use-rules-4/r-31",
+      "g02-t01-review@1:module/use-rules-4/r-32",
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-09",
+    "type": "BR",
+    "sourceLocator": "L61",
+    "sourceText": "| `BR-09` | 办理当前节点 | ST-00..ST-08；全案主阶段互斥，各source_approval_node独立进度可并存 | unknown→WORKFLOW_UNKNOWN，不得作后置缺件 | F-18,F-19,F-38 | S01,S06 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-10",
+    "type": "BR",
+    "sourceLocator": "L62",
+    "sourceText": "| `BR-10` | 授权记录效力 | none,pending,approved,denied,revoked,expired,unverified；同一数据项按最新有效授权版本确定，不以图片覆盖系统 | unverified→EVIDENCE_UNVERIFIED | F-18,F-30,F-31,F-39 | S01,S07 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-5"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-00",
+    "type": "ST",
+    "sourceLocator": "L35",
+    "sourceText": "| `ST-00` | 草稿 | 填写但不触发正式缺件/批准（申请人） | 不跨越本阶段产生后续节点的“已批/已交付”结果 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-01",
+    "type": "ST",
+    "sourceLocator": "L36",
+    "sourceText": "| `ST-01` | 规则绑定 | 确定学校、申请时间、制度效力和节点（校规管理/可信服务） | 不跨越本阶段产生后续节点的“已批/已交付”结果 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-02",
+      "g02-t01-review@1:module/use-rules-4/r-31",
+      "g02-t01-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-02",
+    "type": "ST",
+    "sourceLocator": "L37",
+    "sourceText": "| `ST-02` | 提交及受理 | 核当前申请基本事实及入口（经办人/受理机构） | 不跨越本阶段产生后续节点的“已批/已交付”结果 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-01",
+      "g02-t01-review@1:module/use-rules-1/r-03",
+      "g02-t01-review@1:module/use-rules-1/r-05",
+      "g02-t01-review@1:module/use-rules-1/r-06",
+      "g02-t01-review@1:module/use-rules-1/r-08",
+      "g02-t01-review@1:module/use-rules-2/r-11",
+      "g02-t01-review@1:module/use-rules-2/r-16",
+      "g02-t01-review@1:module/use-rules-3/r-24",
+      "g02-t01-review@1:module/use-rules-4/r-29",
+      "g02-t01-review@1:module/use-rules-4/r-30",
+      "g02-t01-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-03",
+    "type": "ST",
+    "sourceLocator": "L38",
+    "sourceText": "| `ST-03` | 单位审签 | 核单位负责人/授权代办及责任承诺（使用单位） | 不跨越本阶段产生后续节点的“已批/已交付”结果 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-04",
+      "g02-t01-review@1:module/use-rules-2/r-12",
+      "g02-t01-review@1:module/use-rules-4/r-27",
+      "g02-t01-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-04",
+    "type": "ST",
+    "sourceLocator": "L39",
+    "sourceText": "| `ST-04` | 来源部门审批 | 逐数据项/逐来源签批与意见（权威数据产生部门） | 不跨越本阶段产生后续节点的“已批/已交付”结果 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-1/r-07",
+      "g02-t01-review@1:module/use-rules-2/r-09",
+      "g02-t01-review@1:module/use-rules-2/r-10",
+      "g02-t01-review@1:module/use-rules-2/r-14",
+      "g02-t01-review@1:module/use-rules-3/r-21",
+      "g02-t01-review@1:module/use-rules-4/r-25",
+      "g02-t01-review@1:module/use-rules-4/r-26",
+      "g02-t01-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-05",
+    "type": "ST",
+    "sourceLocator": "L40",
+    "sourceText": "| `ST-05` | 合规安全复核 | 个人信息、保密、第三方/限制共享（法务与信息安全负责人） | 不跨越本阶段产生后续节点的“已批/已交付”结果 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-13",
+      "g02-t01-review@1:module/use-rules-3/r-17",
+      "g02-t01-review@1:module/use-rules-3/r-18",
+      "g02-t01-review@1:module/use-rules-3/r-19",
+      "g02-t01-review@1:module/use-rules-3/r-20",
+      "g02-t01-review@1:module/use-rules-4/r-32",
+      "g02-t01-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-06",
+    "type": "ST",
+    "sourceLocator": "L41",
+    "sourceText": "| `ST-06` | 信息化协调 | 核网信审批/技术约束（信息化主管部门） | 不跨越本阶段产生后续节点的“已批/已交付”结果 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-2/r-15",
+      "g02-t01-review@1:module/use-rules-3/r-23",
+      "g02-t01-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-07",
+    "type": "ST",
+    "sourceLocator": "L42",
+    "sourceText": "| `ST-07` | 数据实施与交付 | 仅有效授权范围内执行，记日志（数据交付实施方） | 不跨越本阶段产生后续节点的“已批/已交付”结果 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-3/r-22",
+      "g02-t01-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-08",
+    "type": "ST",
+    "sourceLocator": "L43",
+    "sourceText": "| `ST-08` | 后续变更与终止 | 到期、撤销、变更、复审和归档（授权责任部门与平台） | 不跨越本阶段产生后续节点的“已批/已交付”结果 |",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-rules-4/r-28",
+      "g02-t01-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "FACT-01",
+    "type": "FACT",
+    "sourceLocator": "L165",
+    "sourceText": "- `FACT-01`单位主体：F-04正式单位 ↔ F-07身份/组织目录 ↔ F-09有权负责人；姓名不一致先检查曾用名、机构调整、合法经办授权。",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "FACT-02",
+    "type": "FACT",
+    "sourceLocator": "L166",
+    "sourceText": "- `FACT-02`数据范围：每个`item_id`下F-10/11/12/13必须共同可定位数据范围，并与F-16权威来源一致；缺目录时不能假定申请字段不存在。",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "FACT-03",
+    "type": "FACT",
+    "sourceLocator": "L167",
+    "sourceText": "- `FACT-03`用途：F-14与F-10/F-12、项目依据F-15、用途变更F-42和合同F-34不可实质矛盾；合理性实审为人工。",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "FACT-04",
+    "type": "FACT",
+    "sourceLocator": "L168",
+    "sourceText": "- `FACT-04`逐源审批：F-18与每项F-40映射，审批意见含决策人/节点/时间/批准范围，必须和F-38可信系统当前状态一致；“审批通过”截图只是提示核验。",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "FACT-05",
+    "type": "FACT",
+    "sourceLocator": "L169",
+    "sourceText": "- `FACT-05`许可执行：F-30交付日志的实际数据范围不得超出当期生效`authorization_version`的F-31范围与用途；如暂未获可信实施回执，输出待交付。",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "FACT-06",
+    "type": "FACT",
+    "sourceLocator": "L170",
+    "sourceText": "- `FACT-06`敏感信息：F-35安全标签为可信数据源级信息，F-36合法处理基础/必要性需法务审；F-44同意证明只是合法基础之一，不能跨场景强制。",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "FACT-07",
+    "type": "FACT",
+    "sourceLocator": "L171",
+    "sourceText": "- `FACT-07`第三方：F-33第三方身份/角色与F-34合同需按实际独立处理/受托处理区分；外校允许条款不得抵消CDUT旧规的转供限制。",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "FACT-08",
+    "type": "FACT",
+    "sourceLocator": "L172",
+    "sourceText": "- `FACT-08`时间：申请时间F-05、单位负责人签署时间F-09、源部门签署时间F-18、实际交付时间F-30、到期/撤销F-39分别存；不能使用单一`date`字段互相冒充。",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "FACT-09",
+    "type": "FACT",
+    "sourceLocator": "L173",
+    "sourceText": "- `FACT-09`既有许可：变更/续期先校对F-31的当期版本及F-39失效记录，不能因历史批件存在默认仍有效。",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "FACT-10",
+    "type": "FACT",
+    "sourceLocator": "L174",
+    "sourceText": "- `FACT-10`政策效力：F-01学校/版本、生效日期、办理日、规则来源组成不可变审计快照；历史旧文件无法确认现行性时禁止执行该文件对申请人的强制拒件。",
+    "coveringCheckIds": [
+      "g02-t01-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  }
+]

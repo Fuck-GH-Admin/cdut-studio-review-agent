@@ -1,0 +1,106 @@
+{
+  "schema": "g02-d4-build-manifest-v1",
+  "templateId": "g02-t02-review",
+  "businessOriginal": {
+    "filename": "G02-T02_正式业务模板_MD_v0.1.md",
+    "sha256": "4494cfd81dfde4af1fdcb127b342ed0452be6a7704fe317a123cbe589fff78bc",
+    "version": "C-v0.1",
+    "lines": 709,
+    "obtainedFrom": "ChatGPT Library raw file; bytes independently SHA256-verified; original not committed",
+    "originalStage": "BUSINESS_MD_DRAFT_WITH_GAPS"
+  },
+  "fixedCommonParent": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "workspaceFile": "workspace.json",
+  "selectionFile": "selection.json",
+  "caseFile": "case.json",
+  "coverageFile": "coverage-ledger.json",
+  "moduleVersions": [
+    {
+      "moduleId": "g02-t02-rules-1",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-rules-2",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-rules-3",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-rules-4",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-contract",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-axis-act-new",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-axis-act-change",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-axis-act-end",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-axis-route-personal",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-axis-delegated",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-axis-short-term",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-axis-multi-member",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-axis-organization-change",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-axis-existing-mailbox",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t02-axis-policy-confirmed",
+      "version": 1,
+      "scope": "workspace-local"
+    }
+  ],
+  "sharedModuleLocks": [],
+  "ruleSourceCount": 32,
+  "coverageEntries": 151,
+  "notes": [
+    "C原文不是学校现行校规",
+    "技术预审不自动批准",
+    "真实 Gold 未读",
+    "T03 v0.1.1 不继承旧 v0.1 E/D 签署"
+  ],
+  "status": "NOT_RUN",
+  "syntheticOnly": true,
+  "publicationAllowed": false
+}

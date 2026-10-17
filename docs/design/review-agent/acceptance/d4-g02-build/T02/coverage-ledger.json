@@ -1,0 +1,2069 @@
+[
+  {
+    "id": "R-01",
+    "type": "rule",
+    "sourceLocator": "L229",
+    "sourceHeading": "业务对象分流",
+    "sourceId": "origin-r-01",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t02-review@1:module/use-rules-1/r-01",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S03",
+      "S13",
+      "S17"
+    ]
+  },
+  {
+    "id": "R-02",
+    "type": "rule",
+    "sourceLocator": "L239",
+    "sourceHeading": "校内组织真实性",
+    "sourceId": "origin-r-02",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t02-review@1:module/use-rules-1/r-02",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S05",
+      "S07",
+      "S11"
+    ]
+  },
+  {
+    "id": "R-03",
+    "type": "rule",
+    "sourceLocator": "L249",
+    "sourceHeading": "提交者和受益单位区分",
+    "sourceId": "origin-r-03",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t02-review@1:module/use-rules-1/r-03",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S07",
+      "S09",
+      "S13"
+    ]
+  },
+  {
+    "id": "R-04",
+    "type": "rule",
+    "sourceLocator": "L259",
+    "sourceHeading": "申请事由明确",
+    "sourceId": "origin-r-04",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t02-review@1:module/use-rules-1/r-04",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S05",
+      "S11"
+    ]
+  },
+  {
+    "id": "R-05",
+    "type": "rule",
+    "sourceLocator": "L269",
+    "sourceHeading": "邮箱名称完整与可用",
+    "sourceId": "origin-r-05",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t02-review@1:module/use-rules-1/r-05",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S05",
+      "S07",
+      "S15"
+    ]
+  },
+  {
+    "id": "R-06",
+    "type": "rule",
+    "sourceLocator": "L279",
+    "sourceHeading": "命名规则不得跨校覆盖",
+    "sourceId": "origin-r-06",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t02-review@1:module/use-rules-1/r-06",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S05",
+      "S13",
+      "S15"
+    ]
+  },
+  {
+    "id": "R-07",
+    "type": "rule",
+    "sourceLocator": "L289",
+    "sourceHeading": "管理员身份明确",
+    "sourceId": "origin-r-07",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t02-review@1:module/use-rules-1/r-07",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S05"
+    ]
+  },
+  {
+    "id": "R-08",
+    "type": "rule",
+    "sourceLocator": "L299",
+    "sourceHeading": "管理员在编资格仅条件触发",
+    "sourceId": "origin-r-08",
+    "technicalBucket": "rules-1",
+    "checkId": "g02-t02-review@1:module/use-rules-1/r-08",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S09",
+      "S11",
+      "S12"
+    ]
+  },
+  {
+    "id": "R-09",
+    "type": "rule",
+    "sourceLocator": "L309",
+    "sourceHeading": "责任人与管理员非天然同一人",
+    "sourceId": "origin-r-09",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t02-review@1:module/use-rules-2/r-09",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S09",
+      "S11"
+    ]
+  },
+  {
+    "id": "R-10",
+    "type": "rule",
+    "sourceLocator": "L319",
+    "sourceHeading": "单位主管审批不能前置",
+    "sourceId": "origin-r-10",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t02-review@1:module/use-rules-2/r-10",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S05"
+    ]
+  },
+  {
+    "id": "R-11",
+    "type": "rule",
+    "sourceLocator": "L329",
+    "sourceHeading": "信息化审批不能前置",
+    "sourceId": "origin-r-11",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t02-review@1:module/use-rules-2/r-11",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S05"
+    ]
+  },
+  {
+    "id": "R-12",
+    "type": "rule",
+    "sourceLocator": "L339",
+    "sourceHeading": "真实签批优于截图陈述",
+    "sourceId": "origin-r-12",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t02-review@1:module/use-rules-2/r-12",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S05",
+      "S08"
+    ]
+  },
+  {
+    "id": "R-13",
+    "type": "rule",
+    "sourceLocator": "L349",
+    "sourceHeading": "技术实施与审批分离",
+    "sourceId": "origin-r-13",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t02-review@1:module/use-rules-2/r-13",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S05"
+    ]
+  },
+  {
+    "id": "R-14",
+    "type": "rule",
+    "sourceLocator": "L359",
+    "sourceHeading": "初始密码不采集",
+    "sourceId": "origin-r-14",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t02-review@1:module/use-rules-2/r-14",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S16",
+      "S17"
+    ]
+  },
+  {
+    "id": "R-15",
+    "type": "rule",
+    "sourceLocator": "L369",
+    "sourceHeading": "邮箱有效期需按校本触发",
+    "sourceId": "origin-r-15",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t02-review@1:module/use-rules-2/r-15",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S05",
+      "S09"
+    ]
+  },
+  {
+    "id": "R-16",
+    "type": "rule",
+    "sourceLocator": "L379",
+    "sourceHeading": "活动用途不是单独模板",
+    "sourceId": "origin-r-16",
+    "technicalBucket": "rules-2",
+    "checkId": "g02-t02-review@1:module/use-rules-2/r-16",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S05",
+      "S18"
+    ]
+  },
+  {
+    "id": "R-17",
+    "type": "rule",
+    "sourceLocator": "L389",
+    "sourceHeading": "同单位多邮箱不可统一拒绝",
+    "sourceId": "origin-r-17",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t02-review@1:module/use-rules-3/r-17",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S15",
+      "S17"
+    ]
+  },
+  {
+    "id": "R-18",
+    "type": "rule",
+    "sourceLocator": "L399",
+    "sourceHeading": "首次管理员与访问成员区分",
+    "sourceId": "origin-r-18",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t02-review@1:module/use-rules-3/r-18",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S09",
+      "S15"
+    ]
+  },
+  {
+    "id": "R-19",
+    "type": "rule",
+    "sourceLocator": "L409",
+    "sourceHeading": "授权共享应可追溯",
+    "sourceId": "origin-r-19",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t02-review@1:module/use-rules-3/r-19",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S16",
+      "S17"
+    ]
+  },
+  {
+    "id": "R-20",
+    "type": "rule",
+    "sourceLocator": "L419",
+    "sourceHeading": "变更须绑定既有账户",
+    "sourceId": "origin-r-20",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t02-review@1:module/use-rules-3/r-20",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S10",
+      "S11",
+      "S14"
+    ]
+  },
+  {
+    "id": "R-21",
+    "type": "rule",
+    "sourceLocator": "L429",
+    "sourceHeading": "管理员离岗交接",
+    "sourceId": "origin-r-21",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t02-review@1:module/use-rules-3/r-21",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S07",
+      "S10",
+      "S11",
+      "S12"
+    ]
+  },
+  {
+    "id": "R-22",
+    "type": "rule",
+    "sourceLocator": "L439",
+    "sourceHeading": "组织撤并不意味着申请人失责",
+    "sourceId": "origin-r-22",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t02-review@1:module/use-rules-3/r-22",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S11",
+      "S12"
+    ]
+  },
+  {
+    "id": "R-23",
+    "type": "rule",
+    "sourceLocator": "L449",
+    "sourceHeading": "注销/停用与账户状态分离",
+    "sourceId": "origin-r-23",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t02-review@1:module/use-rules-3/r-23",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S07",
+      "S11",
+      "S12"
+    ]
+  },
+  {
+    "id": "R-24",
+    "type": "rule",
+    "sourceLocator": "L459",
+    "sourceHeading": "合法替代避免重复上传",
+    "sourceId": "origin-r-24",
+    "technicalBucket": "rules-3",
+    "checkId": "g02-t02-review@1:module/use-rules-3/r-24",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S05",
+      "S08"
+    ]
+  },
+  {
+    "id": "R-25",
+    "type": "rule",
+    "sourceLocator": "L469",
+    "sourceHeading": "补件不等于正式否决",
+    "sourceId": "origin-r-25",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t02-review@1:module/use-rules-4/r-25",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S05",
+      "S06"
+    ]
+  },
+  {
+    "id": "R-26",
+    "type": "rule",
+    "sourceLocator": "L479",
+    "sourceHeading": "已否决或撤回后不自动开通",
+    "sourceId": "origin-r-26",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t02-review@1:module/use-rules-4/r-26",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S05",
+      "S06"
+    ]
+  },
+  {
+    "id": "R-27",
+    "type": "rule",
+    "sourceLocator": "L489",
+    "sourceHeading": "授权代办合法性不可从关系猜",
+    "sourceId": "origin-r-27",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t02-review@1:module/use-rules-4/r-27",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S07",
+      "S09"
+    ]
+  },
+  {
+    "id": "R-28",
+    "type": "rule",
+    "sourceLocator": "L499",
+    "sourceHeading": "数据与邮件权限区隔",
+    "sourceId": "origin-r-28",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t02-review@1:module/use-rules-4/r-28",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S05",
+      "S17"
+    ]
+  },
+  {
+    "id": "R-29",
+    "type": "rule",
+    "sourceLocator": "L509",
+    "sourceHeading": "提交资料不应包含真实往来邮件",
+    "sourceId": "origin-r-29",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t02-review@1:module/use-rules-4/r-29",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S11",
+      "S12",
+      "S16"
+    ]
+  },
+  {
+    "id": "R-30",
+    "type": "rule",
+    "sourceLocator": "L519",
+    "sourceHeading": "政策版本正确才能判强制项",
+    "sourceId": "origin-r-30",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t02-review@1:module/use-rules-4/r-30",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S01",
+      "S05",
+      "S09",
+      "S11"
+    ]
+  },
+  {
+    "id": "R-31",
+    "type": "rule",
+    "sourceLocator": "L529",
+    "sourceHeading": "审批依据对应同一版本材料",
+    "sourceId": "origin-r-31",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t02-review@1:module/use-rules-4/r-31",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S05"
+    ]
+  },
+  {
+    "id": "R-32",
+    "type": "rule",
+    "sourceLocator": "L539",
+    "sourceHeading": "部分结果需独立对象维度",
+    "sourceId": "origin-r-32",
+    "technicalBucket": "rules-4",
+    "checkId": "g02-t02-review@1:module/use-rules-4/r-32",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalSources": [
+      "S10",
+      "S15",
+      "S16"
+    ]
+  },
+  {
+    "id": "SECTION-1",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L8",
+    "sourceHeading": "§1｜元信息、适用范围及制度选择",
+    "sourceId": "origin-section-1",
+    "checkId": "g02-t02-review@1:local/section-1",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "case"
+  },
+  {
+    "id": "SECTION-2",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L30",
+    "sourceHeading": "§2｜独立审核目的、排除边界",
+    "sourceId": "origin-section-2",
+    "checkId": "g02-t02-review@1:module/use-contract/section-2",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action"
+  },
+  {
+    "id": "SECTION-3",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L38",
+    "sourceHeading": "§3｜角色/对象图与阶段/权责",
+    "sourceId": "origin-section-3",
+    "checkId": "g02-t02-review@1:module/use-contract/section-3",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action"
+  },
+  {
+    "id": "SECTION-4",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L69",
+    "sourceHeading": "§4｜条件轴、组合顺序、未知分支处理",
+    "sourceId": "origin-section-4",
+    "checkId": "g02-t02-review@1:module/use-contract/section-4",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action"
+  },
+  {
+    "id": "SECTION-5",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L100",
+    "sourceHeading": "§5｜审核输入契约与权限边界",
+    "sourceId": "origin-section-5",
+    "checkId": "g02-t02-review@1:module/use-contract/section-5",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action"
+  },
+  {
+    "id": "SECTION-6",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L109",
+    "sourceHeading": "§6｜完整字段字典（38项，非无条件必填表）",
+    "sourceId": "origin-section-6",
+    "checkId": "g02-t02-review@1:module/use-contract/section-6",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action"
+  },
+  {
+    "id": "SECTION-7",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L154",
+    "sourceHeading": "§7｜材料槽、可信来源及等价证据",
+    "sourceId": "origin-section-7",
+    "checkId": "g02-t02-review@1:module/use-contract/section-7",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action"
+  },
+  {
+    "id": "SECTION-8",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L206",
+    "sourceHeading": "§8｜审核事实、跨文件匹配及时间/版本约束",
+    "sourceId": "origin-section-8",
+    "checkId": "g02-t02-review@1:module/use-contract/section-8",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action"
+  },
+  {
+    "id": "SECTION-10",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L549",
+    "sourceHeading": "§10｜分项结果、多状态与输出结构",
+    "sourceId": "origin-section-10",
+    "checkId": "g02-t02-review@1:module/use-contract/section-10",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action"
+  },
+  {
+    "id": "SECTION-11",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L600",
+    "sourceHeading": "§11｜申请、补件、重审与审批实施生命周期",
+    "sourceId": "origin-section-11",
+    "checkId": "g02-t02-review@1:module/use-contract/section-11",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action"
+  },
+  {
+    "id": "SECTION-12",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L610",
+    "sourceHeading": "§12｜合法例外、人工审批与数据安全",
+    "sourceId": "origin-section-12",
+    "checkId": "g02-t02-review@1:module/use-contract/section-12",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action"
+  },
+  {
+    "id": "SECTION-13",
+    "type": "non-numbered-business-responsibility",
+    "sourceLocator": "L620",
+    "sourceHeading": "§13｜学校规则配置、版本优先级及缺口",
+    "sourceId": "origin-section-13",
+    "checkId": "g02-t02-review@1:local/section-13",
+    "status": "AUTHORED_SEMANTIC_NOT_YET_TESTED",
+    "runtimeScope": "case"
+  },
+  {
+    "id": "AXIS-act-new",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L87",
+    "sourceId": "origin-axis-act-new",
+    "checkId": "g02-t02-review@1:module/use-axis-act-new/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalBusinessAxis": "BR-01"
+  },
+  {
+    "id": "AXIS-act-change",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L88",
+    "sourceId": "origin-axis-act-change",
+    "checkId": "g02-t02-review@1:module/use-axis-act-change/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalBusinessAxis": "BR-03"
+  },
+  {
+    "id": "AXIS-act-end",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L91",
+    "sourceId": "origin-axis-act-end",
+    "checkId": "g02-t02-review@1:module/use-axis-act-end/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalBusinessAxis": "BR-08"
+  },
+  {
+    "id": "AXIS-route-personal",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L88",
+    "sourceId": "origin-axis-route-personal",
+    "checkId": "g02-t02-review@1:module/use-axis-route-personal/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalBusinessAxis": "BR-02"
+  },
+  {
+    "id": "AXIS-delegated",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L87",
+    "sourceId": "origin-axis-delegated",
+    "checkId": "g02-t02-review@1:module/use-axis-delegated/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalBusinessAxis": "BR-07"
+  },
+  {
+    "id": "AXIS-short-term",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L87",
+    "sourceId": "origin-axis-short-term",
+    "checkId": "g02-t02-review@1:module/use-axis-short-term/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalBusinessAxis": "BR-04"
+  },
+  {
+    "id": "AXIS-multi-member",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L89",
+    "sourceId": "origin-axis-multi-member",
+    "checkId": "g02-t02-review@1:module/use-axis-multi-member/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalBusinessAxis": "BR-06"
+  },
+  {
+    "id": "AXIS-organization-change",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L89",
+    "sourceId": "origin-axis-organization-change",
+    "checkId": "g02-t02-review@1:module/use-axis-organization-change/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalBusinessAxis": "BR-05"
+  },
+  {
+    "id": "AXIS-existing-mailbox",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L1",
+    "sourceId": "origin-axis-existing-mailbox",
+    "checkId": "g02-t02-review@1:module/use-axis-existing-mailbox/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalBusinessAxis": "BR-03/05/08"
+  },
+  {
+    "id": "AXIS-policy-confirmed",
+    "type": "conditional-runtime-axis",
+    "sourceLocator": "L3",
+    "sourceId": "origin-axis-policy-confirmed",
+    "checkId": "g02-t02-review@1:module/use-axis-policy-confirmed/applicability",
+    "status": "AUTHORED_AND_BRANCH_DECLARED_NOT_YET_TESTED",
+    "runtimeScope": "g02-mailbox-action",
+    "originalBusinessAxis": "C:school/version/channel/status"
+  },
+  {
+    "id": "F-01",
+    "type": "F",
+    "sourceLocator": "L115",
+    "sourceText": "|`F-01`|主办理动作 / `enum<Action>`|申报事项|提交必知；发起|普通|首次/负责人变更/成员变更/注销；与原账号/原因一致；依据S10,S11,S14|`R-01`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-01",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-02",
+    "type": "F",
+    "sourceLocator": "L116",
+    "sourceText": "|`F-02`|目标邮箱类型 / `enum<AccountScope>`|申报事项|提交必知；发起|普通|单位公共/岗位/系统/个人；用途与账号类型一致；依据S01,S13,S17|`R-01`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-01",
+      "g02-t02-review@1:module/use-rules-4/r-28",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-03",
+    "type": "F",
+    "sourceLocator": "L117",
+    "sourceText": "|`F-03`|申请单位名称 / `string`|申报材料|新开/归属变更必核；发起|组织信息|拟使用邮箱所属单位；与组织目录/单位签批主体匹配；依据S01,S05|`R-02`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-02",
+      "g02-t02-review@1:module/use-rules-3/r-17",
+      "g02-t02-review@1:module/use-rules-3/r-22",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-04",
+    "type": "F",
+    "sourceLocator": "L118",
+    "sourceText": "|`F-04`|申请单位ID / `OrganizationID`|可信学校底账|有接口时核验；发起/受理|组织信息|组织机构权威标识；申请方单位与审批单位关联；依据S01,S07|`R-02`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-02",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-05",
+    "type": "F",
+    "sourceLocator": "L119",
+    "sourceText": "|`F-05`|经办人姓名 / `PersonRef`|申报材料/可信底账|具名或系统预填；发起|个人信息|实际提交者身份；F-06、账号登录人；依据S05,S01|`R-03`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-03",
+      "g02-t02-review@1:module/use-rules-2/r-09",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-06",
+    "type": "F",
+    "sourceLocator": "L119",
+    "sourceText": "|`F-05`|经办人姓名 / `PersonRef`|申报材料/可信底账|具名或系统预填；发起|个人信息|实际提交者身份；F-06、账号登录人；依据S05,S01|`R-03`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-03",
+      "g02-t02-review@1:module/use-rules-3/r-24",
+      "g02-t02-review@1:module/use-rules-4/r-27",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-07",
+    "type": "F",
+    "sourceLocator": "L121",
+    "sourceText": "|`F-07`|经办人联系方式 / `Contact`|申报材料|当地表单要求时；发起|联系信息|通知渠道；F-05与联系账号；依据S05|`R-07`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-08",
+    "type": "F",
+    "sourceLocator": "L122",
+    "sourceText": "|`F-08`|经办人与单位关系 / `AuthorizationRelation`|可信底账/证明材料|代理办理触发；资格核验|授权信息|是否可代表部门发起；F-03、F-06、领导角色；依据S01,S07,S09|`R-03`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-03",
+      "g02-t02-review@1:module/use-rules-3/r-24",
+      "g02-t02-review@1:module/use-rules-4/r-27",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-09",
+    "type": "F",
+    "sourceLocator": "L123",
+    "sourceText": "|`F-09`|邮箱候选名称/前缀 / `MailboxName`|申报事项|新开需有拟名称；发起|资源信息|拟建账号唯一可识别名；与组织和账户目录查重；依据S01,S05,S07|`R-05`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-05",
+      "g02-t02-review@1:module/use-rules-1/r-06",
+      "g02-t02-review@1:module/use-rules-3/r-17",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-10",
+    "type": "F",
+    "sourceLocator": "L124",
+    "sourceText": "|`F-10`|域名后缀 / `Domain`|可信配置/申报事项|地址校验时；受理/执行|资源信息|邮箱所属域名；F-09及学校配置；依据S01,S11,S17|`R-05`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-05",
+      "g02-t02-review@1:module/use-rules-1/r-06",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-11",
+    "type": "F",
+    "sourceLocator": "L125",
+    "sourceText": "|`F-11`|对外显示名 / `string`|申报事项|学校显示名规则触发；发起|组织信息|单位邮箱对外署名；F-03与单位用途；依据S09|`R-06`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-12",
+    "type": "F",
+    "sourceLocator": "L126",
+    "sourceText": "|`F-12`|公务用途/申请事由 / `string`|申报材料|新建/应阐明变更事由；发起|普通|必要性与使用边界；F-02、F-03、风险与实际部门职责；依据S01,S05,S07|`R-04`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-04",
+      "g02-t02-review@1:module/use-rules-2/r-16",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-13",
+    "type": "F",
+    "sourceLocator": "L127",
+    "sourceText": "|`F-13`|单位业务背景/活动信息 / `string`|条件性证明|临时活动且校规要求；发起|项目资料|临时工作必要性；F-12,F-14与举办单位；依据S18,S05|`R-16`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-04",
+      "g02-t02-review@1:module/use-rules-2/r-16",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-14",
+    "type": "F",
+    "sourceLocator": "L127",
+    "sourceText": "|`F-13`|单位业务背景/活动信息 / `string`|条件性证明|临时活动且校规要求；发起|项目资料|临时工作必要性；F-12,F-14与举办单位；依据S18,S05|`R-16`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-15",
+      "g02-t02-review@1:module/use-rules-2/r-16",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-15",
+    "type": "F",
+    "sourceLocator": "L129",
+    "sourceText": "|`F-15`|管理员姓名 / `PersonRef`|申报材料|新申请需指定管理人；发起|个人信息|日常邮箱管理人的真实身份；与F-16/17和角色目录；依据S01,S05,S09|`R-07`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-07",
+      "g02-t02-review@1:module/use-rules-2/r-09",
+      "g02-t02-review@1:module/use-rules-3/r-18",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-16",
+    "type": "F",
+    "sourceLocator": "L129",
+    "sourceText": "|`F-15`|管理员姓名 / `PersonRef`|申报材料|新申请需指定管理人；发起|个人信息|日常邮箱管理人的真实身份；与F-16/17和角色目录；依据S01,S05,S09|`R-07`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-07",
+      "g02-t02-review@1:module/use-rules-1/r-08",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-17",
+    "type": "F",
+    "sourceLocator": "L131",
+    "sourceText": "|`F-17`|管理员联系电话 / `Contact`|申报材料|CDUT2024截图明确，按版本；发起|联系信息|发生安全事件可通知；F-15；与通信目录可能不同；依据S01,S05|`R-07`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-07",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-18",
+    "type": "F",
+    "sourceLocator": "L132",
+    "sourceText": "|`F-18`|责任人/单位业务负责人 / `PersonRef`|申报材料/可信底账|学校区分责任人和管理员时；发起/初审|个人信息|负责审查公邮用途与使用合规的人；与F-03、管理员不混同；依据S09,S11,S12|`R-09`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-08",
+      "g02-t02-review@1:module/use-rules-2/r-09",
+      "g02-t02-review@1:module/use-rules-4/r-27",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-19",
+    "type": "F",
+    "sourceLocator": "L133",
+    "sourceText": "|`F-19`|初始访问成员清单 / `PersonRef[]`|申报事项/申报材料|多人使用且当地要求时；发起或开通|个人信息|获授权操作邮箱的实名成员；与F-15/18和校内身份一致；依据S09,S10,S15|`R-18`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-18",
+      "g02-t02-review@1:module/use-rules-3/r-19",
+      "g02-t02-review@1:module/use-rules-4/r-32",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-20",
+    "type": "F",
+    "sourceLocator": "L134",
+    "sourceText": "|`F-20`|各成员操作范围 / `Permission[]`|申报事项/可信底账|共享成员操作时；审批/配置|授权信息|可读/可发/管理配置权限；与F-19个人身份；依据S16,S17|`R-19`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-18",
+      "g02-t02-review@1:module/use-rules-3/r-19",
+      "g02-t02-review@1:module/use-rules-4/r-28",
+      "g02-t02-review@1:module/use-rules-4/r-32",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-21",
+    "type": "F",
+    "sourceLocator": "L135",
+    "sourceText": "|`F-21`|单位主管签批结论 / `Decision`|审批后可信结果|单位审批节点形成；单位审批|审批元数据|部门确认申请资格及公务用途；核签字资格及F-03归属；依据S01,S05,S06|`R-10`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-10",
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-rules-4/r-25",
+      "g02-t02-review@1:module/use-rules-4/r-26",
+      "g02-t02-review@1:module/use-rules-4/r-31",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-22",
+    "type": "F",
+    "sourceLocator": "L136",
+    "sourceText": "|`F-22`|单位主管签批人及时间 / `DecisionAttribution`|审批后可信结果|已有单位签批时；单位审批|审批元数据|确认意见真实归属；和组织负责人台账一致；依据S01,S05|`R-12`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-10",
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-23",
+    "type": "F",
+    "sourceLocator": "L137",
+    "sourceText": "|`F-23`|信息化部门审批结论 / `Decision`|审批后可信结果|信息化审批节点形成；IT审核|审批元数据|机构是否准许创建/变更邮箱；F-21与申请内容版本一致；依据S01,S05|`R-11`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-11",
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-rules-4/r-25",
+      "g02-t02-review@1:module/use-rules-4/r-26",
+      "g02-t02-review@1:module/use-rules-4/r-31",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-24",
+    "type": "F",
+    "sourceLocator": "L138",
+    "sourceText": "|`F-24`|信息化审核人及时间 / `DecisionAttribution`|审批后可信结果|已有信息化签批时；IT审核|审批元数据|授权决定权属与时间；核负责人权限及F-23一致；依据S01,S05|`R-12`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-11",
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-25",
+    "type": "F",
+    "sourceLocator": "L139",
+    "sourceText": "|`F-25`|账号系统ID / `MailboxID`|执行后可信结果|账户实际建成后；执行|资源元数据|实际开通的邮箱实体；F-09/F-10、批准结果；依据S01,S05|`R-13`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-13",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-26",
+    "type": "F",
+    "sourceLocator": "L140",
+    "sourceText": "|`F-26`|初始密码/令牌 / `SecretCredential`|绝不采集/执行敏感输出|任何时间不得作为核验输入；执行|高度敏感|开户后账户安全凭证；不能纳入材料审核上下文；依据S01,S16,S17|`R-14`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-14",
+      "g02-t02-review@1:module/use-rules-4/r-29",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-27",
+    "type": "F",
+    "sourceLocator": "L141",
+    "sourceText": "|`F-27`|原邮箱系统ID与地址 / `MailboxID`|申报事项/可信底账|存在旧账号的变更/注销；发起|资源信息|欲变更/注销的既有账号；校验属于F-03单位；依据S10,S11,S14|`R-20`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-20",
+      "g02-t02-review@1:module/use-rules-3/r-21",
+      "g02-t02-review@1:module/use-rules-3/r-22",
+      "g02-t02-review@1:module/use-rules-3/r-23",
+      "g02-t02-review@1:module/use-rules-4/r-32",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-28",
+    "type": "F",
+    "sourceLocator": "L142",
+    "sourceText": "|`F-28`|原管理员或负责人员关系 / `AuthorizationRecord`|可信底账|更换管理人时；变更|授权信息|历史已授权责任人；与F-27及F-29；依据S10,S11,S14|`R-20`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-20",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-29",
+    "type": "F",
+    "sourceLocator": "L142",
+    "sourceText": "|`F-28`|原管理员或负责人员关系 / `AuthorizationRecord`|可信底账|更换管理人时；变更|授权信息|历史已授权责任人；与F-27及F-29；依据S10,S11,S14|`R-20`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-20",
+      "g02-t02-review@1:module/use-rules-3/r-21",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-30",
+    "type": "F",
+    "sourceLocator": "L144",
+    "sourceText": "|`F-30`|组织改名合并证明 / `OrgChangeRecord`|证明材料/可信底账|单位撤并更名时；变更|组织信息|单位邮箱归属发生组织调整；旧/新unit_id与mailbox_id；依据S11,S12|`R-22`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-22",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-31",
+    "type": "F",
+    "sourceLocator": "L145",
+    "sourceText": "|`F-31`|注销原因/停用类型 / `enum<TerminationReason>`|申报材料|注销/停用发起时；注销|普通|申请自行停用或违规处置；F-27、单位主管授权和历史状态；依据S07,S11,S12|`R-23`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-23",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-32",
+    "type": "F",
+    "sourceLocator": "L146",
+    "sourceText": "|`F-32`|邮件交接备份计划 / `TransitionPlan`|条件性证明|存在资料交接且校规要求；变更/注销|敏感元数据|公共信件归档与交接说明；与F-27/单位责任一致；依据S11,S12,S14|`R-21`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-21",
+      "g02-t02-review@1:module/use-rules-4/r-29",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-33",
+    "type": "F",
+    "sourceLocator": "L147",
+    "sourceText": "|`F-33`|原审批单号/版本 / `ApprovalVersion`|可信底账/申报事项|既有邮箱变更时；变更|审批元数据|同一邮箱历史授权链；与F-27/F-28关联；依据S10,S14|`R-20`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-20",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-34",
+    "type": "F",
+    "sourceLocator": "L148",
+    "sourceText": "|`F-34`|邮箱地址占用和保留状态 / `AvailabilityStatus`|可信邮箱目录|新名称查重/实施前；受理/执行|资源信息|账户前缀唯一性及禁用状态；与F-09/F-10比较；依据S07,S15|`R-05`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-05",
+      "g02-t02-review@1:module/use-rules-3/r-17",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-35",
+    "type": "F",
+    "sourceLocator": "L149",
+    "sourceText": "|`F-35`|账号开通实施状态 / `ProvisioningState`|执行后可信结果|执行或回收时；执行/归档|资源元数据|是否真正开通并授权成员；必须匹配F-25、F-21/23；依据S01,S05|`R-13`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-13",
+      "g02-t02-review@1:module/use-rules-3/r-23",
+      "g02-t02-review@1:module/use-rules-4/r-26",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-36",
+    "type": "F",
+    "sourceLocator": "L150",
+    "sourceText": "|`F-36`|政策版本与学校ID / `SchoolPolicyScope`|可信规则配置|审前必须定位或转待配置；受理前|审批元数据|选用规则的合法性；和业务发起时间/办理阶段一致；依据S01,S05,S09,S11|`R-30`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-06",
+      "g02-t02-review@1:module/use-rules-2/r-15",
+      "g02-t02-review@1:module/use-rules-4/r-30",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-37",
+    "type": "F",
+    "sourceLocator": "L151",
+    "sourceText": "|`F-37`|附件原文/扫描可读性 / `DocumentEvidence`|证明材料|学校要求盖章/附件时；提交/核验|个人信息|签章文件电子文本/扫描件质量；签章、主管意见和单位名称；依据S08,S14|`R-24`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-24",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F-38",
+    "type": "F",
+    "sourceLocator": "L152",
+    "sourceText": "|`F-38`|申请材料正文版次 / `VersionRef+Digest`|申报材料/可信底账|发生补件/回退时；多阶段|审批元数据|初报/补正/审批引用的内容；审批版本是否对应当前申请；依据S05,S06|`R-31`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-4/r-25",
+      "g02-t02-review@1:module/use-rules-4/r-31",
+      "g02-t02-review@1:module/use-contract/section-6"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F7",
+    "type": "F",
+    "sourceLocator": "L643",
+    "sourceText": "|`S01`|成都理工大学网络与信息化处；2024-12，第四版（PDF）|[《成都理工大学网络与信息化服务指南（教师版）》第18-20页（PDF页20-22）](https://wxc.cdut.edu.cn/__local/2/F7/A1/0E8EDEF68218B83FB5757A2F506_98ED2073_393AC4.pdf)|本校；在线单位/教师办公邮箱申请：**原始表单截图已核实**：申请单位、邮箱名称、账号负责人姓名/电话、申请人一卡通号、申请事由；单位负责人意见、网信处负责人意见；账号信息由网信部门后填。入口砚湖易办/网络与信息化处。|同一表单兼有单位、教师办公邮箱；不证明所有字段对普通学生适用；也不直接证明2026该线上表单未调整|",
+    "coveringCheckIds": [],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "F2",
+    "type": "F",
+    "sourceLocator": "L659",
+    "sourceText": "|`S17`|西安理工大学信息化管理处；2025-05-13|[西安理工大学电子邮件系统管理办法（西安理工信管〔2025〕1号）](https://nic.xaut.edu.cn/__local/1/F2/60/6A5507BE1C2070D35CC8D7A2250_73547C3B_26ED2.pdf)|外校；部门邮箱与系统群发邮箱界定：部门邮箱日常公务与系统邮箱消息推送分开，均由部门在线申请；部门应指定负责人；共享要用内置授权而非借出密码。|一个系统群发账号与办公公邮不是同一申请目的，部门邮箱默认仅一个属该校规则|",
+    "coveringCheckIds": [],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-06",
+    "type": "M",
+    "sourceLocator": "L156",
+    "sourceText": "> 申请阶段不可索要未来才形成的审批意见（M-06/M-07）或技术实施记录（M-12）。下表保留B阶段材料槽编号，但字段必填、材料存在与上传附件是三个不同判断。",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-10",
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-rules-3/r-24",
+      "g02-t02-review@1:module/use-rules-4/r-31",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-07",
+    "type": "M",
+    "sourceLocator": "L156",
+    "sourceText": "> 申请阶段不可索要未来才形成的审批意见（M-06/M-07）或技术实施记录（M-12）。下表保留B阶段材料槽编号，但字段必填、材料存在与上传附件是三个不同判断。",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-11",
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-rules-3/r-24",
+      "g02-t02-review@1:module/use-rules-4/r-31",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-12",
+    "type": "M",
+    "sourceLocator": "L156",
+    "sourceText": "> 申请阶段不可索要未来才形成的审批意见（M-06/M-07）或技术实施记录（M-12）。下表保留B阶段材料槽编号，但字段必填、材料存在与上传附件是三个不同判断。",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-05",
+      "g02-t02-review@1:module/use-rules-2/r-13",
+      "g02-t02-review@1:module/use-rules-2/r-14",
+      "g02-t02-review@1:module/use-rules-3/r-17",
+      "g02-t02-review@1:module/use-rules-3/r-19",
+      "g02-t02-review@1:module/use-rules-3/r-23",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-01",
+    "type": "M",
+    "sourceLocator": "L160",
+    "sourceText": "|`M-01` 单位/公共邮箱申请表|申报材料|新开（及校方要求变更时）|单位、拟邮箱、管理员、用途的主载体；CDUT电子表+清华PDF均可证明；在线结构字段；学校允许时电子签章或PDF|S01,S05；初审时不能要求后续IT结论|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-01",
+      "g02-t02-review@1:module/use-rules-1/r-02",
+      "g02-t02-review@1:module/use-rules-1/r-04",
+      "g02-t02-review@1:module/use-rules-1/r-05",
+      "g02-t02-review@1:module/use-rules-1/r-06",
+      "g02-t02-review@1:module/use-rules-1/r-07",
+      "g02-t02-review@1:module/use-rules-2/r-15",
+      "g02-t02-review@1:module/use-rules-3/r-17",
+      "g02-t02-review@1:module/use-rules-4/r-25",
+      "g02-t02-review@1:module/use-rules-4/r-28",
+      "g02-t02-review@1:module/use-rules-4/r-30",
+      "g02-t02-review@1:module/use-rules-4/r-31",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-02",
+    "type": "M",
+    "sourceLocator": "L161",
+    "sourceText": "|`M-02` 单位说明/业务用途附件|申报材料|用途需要附说明且学校规定时|解释单位公务需要；OA说明、行政函件|S05,S07；申请表已足以表达则不应再强制一份|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-04",
+      "g02-t02-review@1:module/use-rules-2/r-16",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-03",
+    "type": "M",
+    "sourceLocator": "L162",
+    "sourceText": "|`M-03` 单位授权代办记录|证明材料/可信后台|经办不属于规定直接发起角色时|证明经办有权代表组织；单位OA委托/岗位主数据/学校认可签章|S07,S09,S13；没有代办校规时不要自动强制|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-03",
+      "g02-t02-review@1:module/use-rules-2/r-09",
+      "g02-t02-review@1:module/use-rules-3/r-24",
+      "g02-t02-review@1:module/use-rules-4/r-27",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-04",
+    "type": "M",
+    "sourceLocator": "L163",
+    "sourceText": "|`M-04` 组织机构与岗位证明|可信底账优先|单位不存在、管理员任职边界待核或变更时|证明单位与指定管理员关系；单位组织台账/任命文件，仅需要时附件|S09,S11,S12；可信后台存在则无需再上传复印件|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-02",
+      "g02-t02-review@1:module/use-rules-1/r-03",
+      "g02-t02-review@1:module/use-rules-3/r-24",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-05",
+    "type": "M",
+    "sourceLocator": "L164",
+    "sourceText": "|`M-05` 邮箱管理员资格证据|可信底账/证明材料|该校限定管理员身份时|工号/教职工邮箱/在岗在编真实性；学校人事目录或批准文件|S09,S11,S12；其他学校的在编要求不得套CDUT|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-07",
+      "g02-t02-review@1:module/use-rules-1/r-08",
+      "g02-t02-review@1:module/use-rules-2/r-09",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-08",
+    "type": "M",
+    "sourceLocator": "L167",
+    "sourceText": "|`M-08` 旧邮箱申请及变更表|申报材料/可信底账|更换管理员、负责人、单位、地址|核旧授权权属并审核新负责人；邮箱备案表、OA申请号、邮箱目录|S10,S14；无法定位旧账号应补账号信息或查可信台账|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-20",
+      "g02-t02-review@1:module/use-rules-3/r-21",
+      "g02-t02-review@1:module/use-rules-3/r-22",
+      "g02-t02-review@1:module/use-rules-3/r-23",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-09",
+    "type": "M",
+    "sourceLocator": "L168",
+    "sourceText": "|`M-09` 部门撤并/更名依据|证明材料/可信底账|因组织调整变更账号时|确认新旧单位合法继承关系；校内机构调整文件或组织台账|S11,S12；无组织变动条件免交|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-02",
+      "g02-t02-review@1:module/use-rules-3/r-22",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-10",
+    "type": "M",
+    "sourceLocator": "L169",
+    "sourceText": "|`M-10` 共同使用成员清单|申报材料/可信底账|学校要求授权多人时|逐人明确权限和责任；实名成员列表、邮件系统角色配置|S10,S15,S16；首次仅一管理员学校不应强迫多个成员|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-18",
+      "g02-t02-review@1:module/use-rules-3/r-19",
+      "g02-t02-review@1:module/use-rules-4/r-32",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-11",
+    "type": "M",
+    "sourceLocator": "L170",
+    "sourceText": "|`M-11` 临时活动安排/起止时间|申报事项/条件证明|临时会议公邮且需凭据时|该用途真实且结束时间合理；学校活动通知/官方日程/单位说明|S18,S05；普通办公长期邮箱无需活动材料|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-04",
+      "g02-t02-review@1:module/use-rules-2/r-15",
+      "g02-t02-review@1:module/use-rules-2/r-16",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-13",
+    "type": "M",
+    "sourceLocator": "L172",
+    "sourceText": "|`M-13` 安全使用/交接承诺|证明材料/申报材料|相关学校或变更风险情境明确触发时|公邮管理责任和数据交接；校方承诺书模板、申请书内承诺栏|S07,S11,S17；不得把所有学校都设为额外一页承诺书|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-21",
+      "g02-t02-review@1:module/use-rules-4/r-29",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "M-14",
+    "type": "M",
+    "sourceLocator": "L173",
+    "sourceText": "|`M-14` 复核/否决/撤回审批记录|可信后台/正式批文|已经发生退回、终止、撤销时|确认权限链结论而非猜测；业务流程日志/部门批准文件|S05,S06,S11；截图仅低可信辅助|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-rules-3/r-23",
+      "g02-t02-review@1:module/use-rules-4/r-25",
+      "g02-t02-review@1:module/use-rules-4/r-26",
+      "g02-t02-review@1:module/use-rules-4/r-31",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-01",
+    "type": "EV",
+    "sourceLocator": "L192",
+    "sourceText": "|`EV-01` 账号类型/主办理动作|申报事项字段或服务入口的账户类别|F-01,F-02|路由依据；不等于权限|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-01",
+      "g02-t02-review@1:module/use-rules-4/r-28",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-02",
+    "type": "EV",
+    "sourceLocator": "L193",
+    "sourceText": "|`EV-02` 申请单位合法归属|授权组织目录／该校承认的变更、设立文件|F-03,F-04,F-30|组织名不同先查同一组织的历史沿革|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-02",
+      "g02-t02-review@1:module/use-rules-3/r-22",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-03",
+    "type": "EV",
+    "sourceLocator": "L194",
+    "sourceText": "|`EV-03` 经办人有权代表单位|可信认证与角色记录 或 本校认可委托+受托身份|F-05,F-06,F-08,F-18|无事项级代理规定时只能待授权确认|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-03",
+      "g02-t02-review@1:module/use-rules-2/r-09",
+      "g02-t02-review@1:module/use-rules-3/r-24",
+      "g02-t02-review@1:module/use-rules-4/r-27",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-04",
+    "type": "EV",
+    "sourceLocator": "L195",
+    "sourceText": "|`EV-04` 单位公务用途|申请事由＋主管正式确认／该校认可的活动说明|F-12,F-13|机关实际必要性需有权人裁量|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-04",
+      "g02-t02-review@1:module/use-rules-2/r-16",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-05",
+    "type": "EV",
+    "sourceLocator": "L196",
+    "sourceText": "|`EV-05` 目标邮箱可用|邮箱目录（主账号＋别名＋保留名）查重结果|F-09,F-10,F-34|创建和执行前复核，离线不能装作查重已通过|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-05",
+      "g02-t02-review@1:module/use-rules-3/r-17",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-06",
+    "type": "EV",
+    "sourceLocator": "L197",
+    "sourceText": "|`EV-06` 邮箱管理责任清晰|负责人资料＋校内人员台账；必要时该校认可的任命|F-15,F-16,F-17,F-18|管理员身份和经办人可能不同|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-07",
+      "g02-t02-review@1:module/use-rules-2/r-09",
+      "g02-t02-review@1:module/use-rules-3/r-18",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-07",
+    "type": "EV",
+    "sourceLocator": "L198",
+    "sourceText": "|`EV-07` 正式审批依据|具有权限与时间戳的OA审签记录 或 当地规则承认的签章件＋权力核验|F-21,F-22,F-23,F-24,F-38|提交阶段后续签批不存在是正常的|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-10",
+      "g02-t02-review@1:module/use-rules-2/r-11",
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-rules-3/r-24",
+      "g02-t02-review@1:module/use-rules-4/r-25",
+      "g02-t02-review@1:module/use-rules-4/r-26",
+      "g02-t02-review@1:module/use-rules-4/r-31",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-08",
+    "type": "EV",
+    "sourceLocator": "L199",
+    "sourceText": "|`EV-08` 学校规则有效性|school_id、action、stage、channel、有效期和学校批准的配置|F-36,F-10,F-14|仅外校来源时不得升级为CDUT禁止性校规|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-06",
+      "g02-t02-review@1:module/use-rules-1/r-08",
+      "g02-t02-review@1:module/use-rules-2/r-15",
+      "g02-t02-review@1:module/use-rules-3/r-17",
+      "g02-t02-review@1:module/use-rules-4/r-30",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-09",
+    "type": "EV",
+    "sourceLocator": "L200",
+    "sourceText": "|`EV-09` 账号实施与撤销事实|邮件管理后台不可篡改操作日志/状态|F-25,F-35|仅审批不能替代技术开通回执|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-13",
+      "g02-t02-review@1:module/use-rules-3/r-23",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-10",
+    "type": "EV",
+    "sourceLocator": "L201",
+    "sourceText": "|`EV-10` 敏感资料最小化|元数据、摘要、脱敏交接证明；不保留明文密钥和邮件正文|F-26,F-32|密码或OTP绝非必交附件|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-14",
+      "g02-t02-review@1:module/use-rules-4/r-29",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-11",
+    "type": "EV",
+    "sourceLocator": "L202",
+    "sourceText": "|`EV-11` 成员权限|邮件系统实名委托成员和权限映射、批准范围|F-19,F-20|可以分成员核验，不能凭共享密码等同授权|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-18",
+      "g02-t02-review@1:module/use-rules-3/r-19",
+      "g02-t02-review@1:module/use-rules-4/r-32",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-12",
+    "type": "EV",
+    "sourceLocator": "L203",
+    "sourceText": "|`EV-12` 原邮箱归属|旧mailbox_id＋历史审批/邮箱台账及授权单位|F-27,F-28,F-33|改号/迁移不丢历史绑定|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-20",
+      "g02-t02-review@1:module/use-rules-3/r-21",
+      "g02-t02-review@1:module/use-rules-3/r-23",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "EV-13",
+    "type": "EV",
+    "sourceLocator": "L204",
+    "sourceText": "|`EV-13` 单位或管理员变更连续性|权威组织/人事变更底账，或校方承认的正式交接文书|F-29,F-30,F-32|旧人在离职后无法签署不应机械驳回|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-21",
+      "g02-t02-review@1:module/use-rules-3/r-22",
+      "g02-t02-review@1:module/use-contract/section-7"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-01",
+    "type": "BR",
+    "sourceLocator": "L87",
+    "sourceText": "|`BR-01`|`account_scope=UNIT_PUBLIC AND action=NEW`|P01,P02|与其他主动作互斥，但与BR-04/BR-07可叠加|未知类型先`NEED_CLARIFICATION`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-01",
+      "g02-t02-review@1:module/use-rules-1/r-02",
+      "g02-t02-review@1:module/use-rules-1/r-04",
+      "g02-t02-review@1:module/use-rules-1/r-05",
+      "g02-t02-review@1:module/use-rules-1/r-06",
+      "g02-t02-review@1:module/use-rules-1/r-07",
+      "g02-t02-review@1:module/use-rules-1/r-08",
+      "g02-t02-review@1:module/use-rules-2/r-09",
+      "g02-t02-review@1:module/use-rules-2/r-10",
+      "g02-t02-review@1:module/use-rules-2/r-11",
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-rules-2/r-13",
+      "g02-t02-review@1:module/use-rules-2/r-15",
+      "g02-t02-review@1:module/use-rules-3/r-17",
+      "g02-t02-review@1:module/use-rules-3/r-18",
+      "g02-t02-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-04",
+    "type": "BR",
+    "sourceLocator": "L87",
+    "sourceText": "|`BR-01`|`account_scope=UNIT_PUBLIC AND action=NEW`|P01,P02|与其他主动作互斥，但与BR-04/BR-07可叠加|未知类型先`NEED_CLARIFICATION`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-04",
+      "g02-t02-review@1:module/use-rules-2/r-15",
+      "g02-t02-review@1:module/use-rules-2/r-16",
+      "g02-t02-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-07",
+    "type": "BR",
+    "sourceLocator": "L87",
+    "sourceText": "|`BR-01`|`account_scope=UNIT_PUBLIC AND action=NEW`|P01,P02|与其他主动作互斥，但与BR-04/BR-07可叠加|未知类型先`NEED_CLARIFICATION`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-03",
+      "g02-t02-review@1:module/use-rules-4/r-27",
+      "g02-t02-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-02",
+    "type": "BR",
+    "sourceLocator": "L88",
+    "sourceText": "|`BR-02`|账号为个人/群发/明确不同服务|P09,P10及P08边界|与BR-01/BR-03互斥（整项路由）|按性质引导其他服务，不“审批拒绝”|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-03",
+    "type": "BR",
+    "sourceLocator": "L88",
+    "sourceText": "|`BR-02`|账号为个人/群发/明确不同服务|P09,P10及P08边界|与BR-01/BR-03互斥（整项路由）|按性质引导其他服务，不“审批拒绝”|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-04",
+      "g02-t02-review@1:module/use-rules-1/r-07",
+      "g02-t02-review@1:module/use-rules-1/r-08",
+      "g02-t02-review@1:module/use-rules-2/r-09",
+      "g02-t02-review@1:module/use-rules-2/r-10",
+      "g02-t02-review@1:module/use-rules-2/r-11",
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-rules-2/r-13",
+      "g02-t02-review@1:module/use-rules-3/r-20",
+      "g02-t02-review@1:module/use-rules-3/r-21",
+      "g02-t02-review@1:module/use-rules-4/r-32",
+      "g02-t02-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-06",
+    "type": "BR",
+    "sourceLocator": "L89",
+    "sourceText": "|`BR-03`|`action=CHANGE_MANAGER`且有旧邮箱|P03|可与BR-06、BR-05共案不同动作|缺旧账号→`WAIT_SOURCE`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-18",
+      "g02-t02-review@1:module/use-rules-3/r-19",
+      "g02-t02-review@1:module/use-rules-3/r-20",
+      "g02-t02-review@1:module/use-rules-4/r-32",
+      "g02-t02-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-05",
+    "type": "BR",
+    "sourceLocator": "L89",
+    "sourceText": "|`BR-03`|`action=CHANGE_MANAGER`且有旧邮箱|P03|可与BR-06、BR-05共案不同动作|缺旧账号→`WAIT_SOURCE`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-02",
+      "g02-t02-review@1:module/use-rules-2/r-10",
+      "g02-t02-review@1:module/use-rules-2/r-11",
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-rules-2/r-13",
+      "g02-t02-review@1:module/use-rules-3/r-20",
+      "g02-t02-review@1:module/use-rules-3/r-22",
+      "g02-t02-review@1:module/use-rules-4/r-32",
+      "g02-t02-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "BR-08",
+    "type": "BR",
+    "sourceLocator": "L91",
+    "sourceText": "|`BR-05`|部门更名、撤并、归属变化|P05|可与BR-03、BR-08叠加但分别报结果|权利继承未知→`WAIT_AUTH`|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-23",
+      "g02-t02-review@1:module/use-contract/section-4"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-01",
+    "type": "ST",
+    "sourceLocator": "L58",
+    "sourceText": "|`ST-01`|识别适用学校/业务/政策|不得在未知政策下套用别校拒件条件|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-01",
+      "g02-t02-review@1:module/use-rules-4/r-28",
+      "g02-t02-review@1:module/use-rules-4/r-30",
+      "g02-t02-review@1:module/use-contract/section-3"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-02",
+    "type": "ST",
+    "sourceLocator": "L59",
+    "sourceText": "|`ST-02`|草稿/申请提交|申请资料可预审，下游单位、网信签批尚未发生|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-01",
+      "g02-t02-review@1:module/use-rules-1/r-02",
+      "g02-t02-review@1:module/use-rules-1/r-03",
+      "g02-t02-review@1:module/use-rules-1/r-04",
+      "g02-t02-review@1:module/use-rules-1/r-05",
+      "g02-t02-review@1:module/use-rules-1/r-06",
+      "g02-t02-review@1:module/use-rules-1/r-07",
+      "g02-t02-review@1:module/use-rules-2/r-15",
+      "g02-t02-review@1:module/use-rules-2/r-16",
+      "g02-t02-review@1:module/use-rules-3/r-18",
+      "g02-t02-review@1:module/use-rules-3/r-20",
+      "g02-t02-review@1:module/use-rules-3/r-21",
+      "g02-t02-review@1:module/use-rules-3/r-22",
+      "g02-t02-review@1:module/use-rules-3/r-23",
+      "g02-t02-review@1:module/use-rules-3/r-24",
+      "g02-t02-review@1:module/use-rules-4/r-25",
+      "g02-t02-review@1:module/use-contract/section-3"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-03",
+    "type": "ST",
+    "sourceLocator": "L60",
+    "sourceText": "|`ST-03`|身份、组织、材料受理|按当前节点核验内容与可信事实/等效证明|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-02",
+      "g02-t02-review@1:module/use-rules-1/r-03",
+      "g02-t02-review@1:module/use-rules-1/r-05",
+      "g02-t02-review@1:module/use-rules-1/r-06",
+      "g02-t02-review@1:module/use-rules-1/r-07",
+      "g02-t02-review@1:module/use-rules-1/r-08",
+      "g02-t02-review@1:module/use-rules-2/r-09",
+      "g02-t02-review@1:module/use-rules-2/r-15",
+      "g02-t02-review@1:module/use-rules-3/r-17",
+      "g02-t02-review@1:module/use-rules-3/r-20",
+      "g02-t02-review@1:module/use-rules-3/r-21",
+      "g02-t02-review@1:module/use-rules-3/r-22",
+      "g02-t02-review@1:module/use-rules-3/r-24",
+      "g02-t02-review@1:module/use-rules-4/r-27",
+      "g02-t02-review@1:module/use-rules-4/r-32",
+      "g02-t02-review@1:module/use-contract/section-3"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-04",
+    "type": "ST",
+    "sourceLocator": "L61",
+    "sourceText": "|`ST-04`|有权单位负责人审批|仅有权单位决定公务需要与管理责任|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-10",
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-rules-4/r-26",
+      "g02-t02-review@1:module/use-rules-4/r-27",
+      "g02-t02-review@1:module/use-rules-4/r-31",
+      "g02-t02-review@1:module/use-contract/section-3"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-05",
+    "type": "ST",
+    "sourceLocator": "L62",
+    "sourceText": "|`ST-05`|有权信息化部门审批|仅网信部门或授权人员决定准入和服务范围|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-11",
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-rules-3/r-23",
+      "g02-t02-review@1:module/use-rules-4/r-26",
+      "g02-t02-review@1:module/use-rules-4/r-31",
+      "g02-t02-review@1:module/use-contract/section-3"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-06",
+    "type": "ST",
+    "sourceLocator": "L63",
+    "sourceText": "|`ST-06`|批准后等待技术实施|不因批准即称账户已开通|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-2/r-12",
+      "g02-t02-review@1:module/use-rules-2/r-13",
+      "g02-t02-review@1:module/use-contract/section-3"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-07",
+    "type": "ST",
+    "sourceLocator": "L64",
+    "sourceText": "|`ST-07`|邮箱技术实施/成员授权|执行记录与批准内容及权限映射一致|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-1/r-05",
+      "g02-t02-review@1:module/use-rules-2/r-13",
+      "g02-t02-review@1:module/use-rules-3/r-18",
+      "g02-t02-review@1:module/use-rules-3/r-19",
+      "g02-t02-review@1:module/use-rules-3/r-23",
+      "g02-t02-review@1:module/use-contract/section-3"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-08",
+    "type": "ST",
+    "sourceLocator": "L65",
+    "sourceText": "|`ST-08`|维护/停用/撤销/归档|需记录真实注销/变更与历史证据|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-3/r-19",
+      "g02-t02-review@1:module/use-rules-3/r-21",
+      "g02-t02-review@1:module/use-rules-4/r-26",
+      "g02-t02-review@1:module/use-contract/section-3"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-09",
+    "type": "ST",
+    "sourceLocator": "L66",
+    "sourceText": "|`ST-09`|补件与版本重审|涉及核心事实变更的审批须核适用版本及重审权限|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-rules-4/r-25",
+      "g02-t02-review@1:module/use-rules-4/r-31",
+      "g02-t02-review@1:module/use-rules-4/r-32",
+      "g02-t02-review@1:module/use-contract/section-3"
+    ],
+    "status": "BOUND_TO_RULE_CHECK_AND_CONTRACT",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "ST-10",
+    "type": "ST",
+    "sourceLocator": "L67",
+    "sourceText": "|`ST-10`|终结（已否决、撤回、已回收）|终态不被后续材料预检自动推翻|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-3"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "CL-01",
+    "type": "CL",
+    "sourceLocator": "L210",
+    "sourceText": "|`CL-01`|本案归属于单位公邮而非个人/系统账号|F-01,F-02,原服务入口|每个`action_id`独立分流|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "CL-02",
+    "type": "CL",
+    "sourceLocator": "L211",
+    "sourceText": "|`CL-02`|单位和提交者关系合法|F-03,F-04,F-05,F-06,F-08,B-01/B-02|发起时点组织/岗位身份，既有委托有效期|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "CL-03",
+    "type": "CL",
+    "sourceLocator": "L212",
+    "sourceText": "|`CL-03`|邮箱前缀/域/占用状态合法|F-09,F-10,F-34,B-03|申请和实施前二次校验，主账号及别名一起查|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "CL-04",
+    "type": "CL",
+    "sourceLocator": "L213",
+    "sourceText": "|`CL-04`|管理责任、负责人和成员被明确赋予|F-15至F-20、B-05|按角色逐人比对，不能机械要求三类姓名完全相同|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "CL-05",
+    "type": "CL",
+    "sourceLocator": "L214",
+    "sourceText": "|`CL-05`|用途与单位工作和临时活动一致|F-12,F-13,F-14|核对文本可明确，不替代负责人对必要性裁量|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "CL-06",
+    "type": "CL",
+    "sourceLocator": "L215",
+    "sourceText": "|`CL-06`|签批人有权并确实批了这个版本|F-21至F-24,F-38,B-04|审批时岗位、对象、时间戳、申请版次|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "CL-07",
+    "type": "CL",
+    "sourceLocator": "L216",
+    "sourceText": "|`CL-07`|原邮箱属于提出变更的单位|F-27,F-28,F-33,B-03/B-05|历史审批/组织更名链，不以旧邮箱截图定归属|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "CL-08",
+    "type": "CL",
+    "sourceLocator": "L217",
+    "sourceText": "|`CL-08`|组织撤并有正当继承关系|F-30,B-02/B-06|按机构生效日连接旧单位和新单位|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "CL-09",
+    "type": "CL",
+    "sourceLocator": "L218",
+    "sourceText": "|`CL-09`|审批结果与技术实施一致|F-25,F-35,B-07|已批不等于已实施；已撤销不等于后台禁用完毕|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "CL-10",
+    "type": "CL",
+    "sourceLocator": "L219",
+    "sourceText": "|`CL-10`|无无根据采集明文秘密或通信隐私|F-26,F-32、M-13|优先最小元数据；历史邮件移交另由校方流程处理|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "CL-11",
+    "type": "CL",
+    "sourceLocator": "L220",
+    "sourceText": "|`CL-11`|多动作或多成员分别有独立授权结果|F-19/F-20、M-10|按`(mailbox_id, action_id, member_id?)`记录局部问题|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  },
+  {
+    "id": "CL-12",
+    "type": "CL",
+    "sourceLocator": "L221",
+    "sourceText": "|`CL-12`|规则版本在适用时点已获有权确认|F-36,B-08|2022事项/S19、2024截图/S01、2026邮箱服务/S20不能合并为已证实的2026同版制度|",
+    "coveringCheckIds": [
+      "g02-t02-review@1:module/use-contract/section-8"
+    ],
+    "status": "BOUND_TO_SECTION_SEMANTIC_CHECK_OR_SOURCE_CATALOG",
+    "note": "该条是条件/材料/字段/事实索引，不自动新增无条件缺件；按原文触发时点保留"
+  }
+]

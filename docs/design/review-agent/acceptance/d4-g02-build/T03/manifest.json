@@ -1,0 +1,116 @@
+{
+  "schema": "g02-d4-build-manifest-v1",
+  "templateId": "g02-t03-review",
+  "businessOriginal": {
+    "filename": "G02-T03_正式业务模板_MD_v0.1.1.md",
+    "sha256": "e3d1d01555d49564931ac38892567ea23eab5ecd898afc3b67a8e4a26abe7380",
+    "version": "C-v0.1.1",
+    "lines": 718,
+    "obtainedFrom": "ChatGPT Library raw file; bytes independently SHA256-verified; original not committed",
+    "originalStage": "BUSINESS_MD_DRAFT_WITH_GAPS"
+  },
+  "fixedCommonParent": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "workspaceFile": "workspace.json",
+  "selectionFile": "selection.json",
+  "caseFile": "case.json",
+  "coverageFile": "coverage-ledger.json",
+  "moduleVersions": [
+    {
+      "moduleId": "g02-t03-rules-1",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-rules-2",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-rules-3",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-rules-4",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-rules-5",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-contract",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-axis-restricted",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-axis-ordinary-vpn",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-axis-public-exposure",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-axis-external-user",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-axis-student-proxy",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-axis-change-grant",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-axis-multi-resource",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-axis-no-ip",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-axis-bastion-required",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-axis-revoked",
+      "version": 1,
+      "scope": "workspace-local"
+    },
+    {
+      "moduleId": "g02-t03-axis-policy-confirmed",
+      "version": 1,
+      "scope": "workspace-local"
+    }
+  ],
+  "sharedModuleLocks": [],
+  "ruleSourceCount": 36,
+  "coverageEntries": 154,
+  "notes": [
+    "C原文不是学校现行校规",
+    "技术预审不自动批准",
+    "真实 Gold 未读",
+    "T03 v0.1.1 不继承旧 v0.1 E/D 签署"
+  ],
+  "status": "NOT_RUN",
+  "syntheticOnly": true,
+  "publicationAllowed": false
+}
