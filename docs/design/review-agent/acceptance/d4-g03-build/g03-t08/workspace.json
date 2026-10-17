@@ -691,6 +691,48 @@
         ]
       },
       {
+        "moduleId": "g03-t08-extra-front",
+        "version": 1,
+        "name": "仪器自主上机机时预约｜extra-front",
+        "purpose": "逐对象审核extra-front",
+        "scope": "当前g03-instrument-slot",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "业务母版原始头部/版本/权威声明",
+            "requirement": "# G03-T08｜共享仪器自主上机机时预约——完整业务 Markdown 审核模板母版\n\n> **templateId** `G03-T08` · **C作者候选版本** `v0.1` · **基线日期** 2026-10-12 · **作者交付状态** `BUSINESS_MD_DRAFT_WITH_GAPS`  \n> **唯一审核目的**：对具体设备、实际操作者、指定使用时段的**自主上机预约及随后安全开机门控**形成可追溯的材料审核建议与审批状态检查。**这不是已经发布到系统的JSON模板，也不是校园内真实预约批准证明。**  \n> 本母版为自包含纯Markdown业务契约；校本现行规则须另由有权部门提供，未知校本参数必须保持 `unknown`，不得把跨校规则写成成都理工大学强制拒件依据。  \n> **来源**：B阶段v0.2全部报告、字段F-01～F-59、材料M-01～M-21、候选R-01～R-36、成都理工大学S01～S06及S16～S21、外校参考S07～S15。未读取独立D阶段隐藏标准答案。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
+        "moduleId": "g03-t08-extra-rule-envelope",
+        "version": 1,
+        "name": "仪器自主上机机时预约｜extra-rule-envelope",
+        "purpose": "逐对象审核extra-rule-envelope",
+        "scope": "当前g03-instrument-slot",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "§9 规则共同前提与表格注释",
+            "requirement": "## 9. 原子规则（完整评估契约）\n\n**规则来源说明**：每一条均需锁定实际学校、校区、设备、申请时点政策和作用阶段；“明确不符合”仅能依据当前适用的有效约束输出，不能直接据别校S07～S15拒绝成都理工大学用户。`Q-xx`为稳定问题码，`SCxx`仅是作者审查线索，不是D金标。\n\n| 规则、核查目标 | 有效范围、触发三值 | 生效阶段和被审对象 | 必要事实/等价证据以及可判断动作 | **确定失败** | **缺失/冲突/不可达** | 下一个有权动作、源、问题码、走查线索 |\n|---|---|---|---|---|---|---|\n### 9.1 原子规则如何判定 TRUE / FALSE / UNKNOWN\n\n- `TRUE`：明确适用且有正确授权、未过时的证据证明符合；仅给出**该规则的局部符合**。\n- `FALSE`：确认适用且可信证据明确反向；可为“需修改机时”“此付款路径不可用”“该操作不能获准”；不能机械把所有FALSE写成惩戒性的“欺诈”。\n- `UNKNOWN`：规则范围未落实、权限/日历不可访问、原证据相互冲突、审批未走到相关阶段；区分 `WAIT_POLICY`、`WAIT_FACT`、`WAIT_OWNER`、`WAIT_HUMAN`、`CONFLICT`。unknown不可转换成false绕过要求、亦不可当成true直接放行。\n- `N/A`：**已证实**条件不适用，例如合法免费单的预扣款字段、明确没有特殊风险的专项MSDS要求；N/A不等于不知道有没有风险。\n- 不同分支可叠加；若规则有条件“在提交后由主管批准”，提交阶段的缺签名应为`WAIT_OWNER`而不是缺件；已到执行阶段仍无必须的许可，则相应执行结果保持阻断。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
         "moduleId": "g03-t08-axis-p-self-operation",
         "version": 1,
         "name": "仪器自主上机机时预约｜axis-p-self-operation",
@@ -1095,6 +1137,16 @@
           {
             "id": "use-section-18",
             "moduleId": "g03-t08-section-18",
+            "version": 1
+          },
+          {
+            "id": "use-extra-front",
+            "moduleId": "g03-t08-extra-front",
+            "version": 1
+          },
+          {
+            "id": "use-extra-rule-envelope",
+            "moduleId": "g03-t08-extra-rule-envelope",
             "version": 1
           },
           {
@@ -1826,6 +1878,30 @@
       "reference": {
         "documentVersionId": "md-g03-t08-c807cc90a3e6fd2d",
         "locator": "§18"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-front",
+      "kind": "policy-candidate",
+      "label": "G03-T08 业务母版原始头部/版本/权威声明",
+      "reference": {
+        "documentVersionId": "md-g03-t08-c807cc90a3e6fd2d",
+        "locator": "front-matter"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-rule-envelope",
+      "kind": "policy-candidate",
+      "label": "G03-T08 §9 规则共同前提与表格注释",
+      "reference": {
+        "documentVersionId": "md-g03-t08-c807cc90a3e6fd2d",
+        "locator": "§9/shared-invariants"
       },
       "verification": "content-checked",
       "applicability": "unknown",
@@ -2824,6 +2900,36 @@
         ],
         "evidenceFacts": [
           "d2:object:g03-instrument-slot:section-18-1"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t08@1:module/use-extra-front/full",
+      "sourceIds": [
+        "source-extra-front"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-instrument-slot"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-instrument-slot:extra-front"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t08@1:module/use-extra-rule-envelope/full",
+      "sourceIds": [
+        "source-extra-rule-envelope"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-instrument-slot"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-instrument-slot:extra-rule-envelope"
         ]
       }
     },

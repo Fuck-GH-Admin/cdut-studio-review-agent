@@ -649,6 +649,48 @@
         ]
       },
       {
+        "moduleId": "g03-t09-extra-front",
+        "version": 1,
+        "name": "仪器送样检测委托｜extra-front",
+        "purpose": "逐对象审核extra-front",
+        "scope": "当前g03-sample-service",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "业务母版原始头部/版本/权威声明",
+            "requirement": "# G03-T09｜共享仪器送样检测委托——完整业务审核 Markdown 母版 v0.1\n\n> **母版标识**：`G03-T09`（A/B旧路径：`G03-03-T09`）；阶段：**C阶段业务母版草案**；编制：2026-10-11。\n> **研究依据**：A阶段 G03 统一目录及 B-v0.2 七份研究文档、四份 CSV，来源 S01–S21；源文件完整性以随包索引为准。\n> **制度适用**：全国范围用于高校通用*材料预审业务建模*；成都理工大学实际生效规则和设备设置在取得权威配置前保持未知。**不构成对真实高校审批的自动授权或承诺**。\n> **隔离**：本文件与作者自检不读取 D 阶段独立金标，不发布可供真实审批使用的规则JSON。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
+        "moduleId": "g03-t09-extra-rule-envelope",
+        "version": 1,
+        "name": "仪器送样检测委托｜extra-rule-envelope",
+        "purpose": "逐对象审核extra-rule-envelope",
+        "scope": "当前g03-sample-service",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "§9 规则共同前提与表格注释",
+            "requirement": "## 9. R-01—R-30 逐条原子审核规则（单一完整规则集）\n\n**全规则通用前提**：`applicable_scope` 必须从学校/资源/服务的有效 `policy_profile` 取得；若来源仅为外校或历史校例，具体阈值处于 `UNVERIFIED_POLICY`，规则只可提出验证要求不能产生自动拒件。每条规则对应 B-v0.2 的 `R-xx` 候选，但这里补上触发、阶段、目标、证据、缺失与冲突以及人工动作。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
         "moduleId": "g03-t09-axis-p-internal-entrust",
         "version": 1,
         "name": "仪器送样检测委托｜axis-p-internal-entrust",
@@ -1076,6 +1118,16 @@
           {
             "id": "use-section-18",
             "moduleId": "g03-t09-section-18",
+            "version": 1
+          },
+          {
+            "id": "use-extra-front",
+            "moduleId": "g03-t09-extra-front",
+            "version": 1
+          },
+          {
+            "id": "use-extra-rule-envelope",
+            "moduleId": "g03-t09-extra-rule-envelope",
             "version": 1
           },
           {
@@ -1741,6 +1793,30 @@
       "reference": {
         "documentVersionId": "md-g03-t09-ca3195c16f7be049",
         "locator": "§18"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-front",
+      "kind": "policy-candidate",
+      "label": "G03-T09 业务母版原始头部/版本/权威声明",
+      "reference": {
+        "documentVersionId": "md-g03-t09-ca3195c16f7be049",
+        "locator": "front-matter"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-rule-envelope",
+      "kind": "policy-candidate",
+      "label": "G03-T09 §9 规则共同前提与表格注释",
+      "reference": {
+        "documentVersionId": "md-g03-t09-ca3195c16f7be049",
+        "locator": "§9/shared-invariants"
       },
       "verification": "content-checked",
       "applicability": "unknown",
@@ -2661,6 +2737,36 @@
         ],
         "evidenceFacts": [
           "d2:object:g03-sample-service:section-18-1"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t09@1:module/use-extra-front/full",
+      "sourceIds": [
+        "source-extra-front"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-sample-service"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-sample-service:extra-front"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t09@1:module/use-extra-rule-envelope/full",
+      "sourceIds": [
+        "source-extra-rule-envelope"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-sample-service"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-sample-service:extra-rule-envelope"
         ]
       }
     },
