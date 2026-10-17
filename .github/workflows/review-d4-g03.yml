@@ -1,0 +1,64 @@
+name: G03 D4 Modular Templates Real Runtime Evidence
+on:
+  push:
+    branches: [feat/d4-g03-modular-templates-r01]
+    paths:
+      - .github/workflows/review-d4-g03.yml
+      - apps/electron/src/main/lib/review/review-d4-g03-modular.test.ts
+      - docs/design/review-agent/acceptance/d4-g03-build/catalog.json
+      - docs/design/review-agent/acceptance/d4-g03-build/generate.cjs
+      - docs/design/review-agent/acceptance/d4-g03-build/g03-t*/workspace.json
+      - docs/design/review-agent/acceptance/d4-g03-build/g03-t*/selection.json
+      - docs/design/review-agent/acceptance/d4-g03-build/g03-t*/case.json
+      - docs/design/review-agent/acceptance/d4-g03-build/g03-t*/coverage.json
+  pull_request:
+    paths:
+      - .github/workflows/review-d4-g03.yml
+      - apps/electron/src/main/lib/review/review-d4-g03-modular.test.ts
+      - docs/design/review-agent/acceptance/d4-g03-build/**
+permissions:
+  contents: write
+jobs:
+  g03-real-d1-d3-d2-pi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install workspace
+        run: bun install --frozen-lockfile
+      - name: Typecheck
+        run: bun run typecheck
+      - name: Run ten original-source G03 module/Pi technical cases
+        run: |
+          mkdir -p docs/design/review-agent/acceptance/d4-g03-build/runtime
+          D4_G03_OUTPUT_DIR="$PWD/docs/design/review-agent/acceptance/d4-g03-build/runtime" bun test --isolate --timeout 120000 apps/electron/src/main/lib/review/review-d4-g03-modular.test.ts
+      - name: Upload real machine outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g03-d4-ten-template-real-runtime
+          path: docs/design/review-agent/acceptance/d4-g03-build/runtime/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Commit actual D2 Plans and Pi receipts to G03 branch
+        if: success() && github.event_name == 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/design/review-agent/acceptance/d4-g03-build/runtime/
+          if git diff --cached --quiet; then
+            echo "No runtime changes to commit"
+            exit 0
+          fi
+          git commit -m "test(G03 D4): archive verified D2 Plans and Pi receipts [skip ci]"
+          git push origin HEAD:feat/d4-g03-modular-templates-r01
