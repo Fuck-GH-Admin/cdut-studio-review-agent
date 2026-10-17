@@ -7,6 +7,7 @@ import {join,resolve} from 'node:path'
 import type {ReviewAuthoringWorkspaceV1,D2ScenarioSelection,ReviewCaseV2,Actor} from '@profer/shared'
 import {validateReviewAuthoringV1} from './review-authoring-v1'
 import {exportD3Bundle,importD3Bundle} from './review-d3-module-library'
+import {saveReviewAuthoringRevisionV1,getReviewAuthoringRevisionV1,diffReviewAuthoringRevisionsV1} from './review-authoring-store-v1'
 import {compileD2RuntimePlan,makeD2CandidateShell,createD2TechnicalCase,verifyD2PiRun} from './review-d2-runtime'
 import {validateD2GuardSubmission} from './review-d2-execution-gates'
 import {saveAuthoringCandidateDraft} from './template-store'
@@ -46,6 +47,11 @@ describe('G07 complete C mothers -> scoped D1/D3/D2/Pi technical candidates',()=
    expect(ws.sourceBindings).toHaveLength(ledger.rules.length)
    const errors=validateReviewAuthoringV1(ws)
    expect(errors).toEqual([])
+   const savedRevision=saveReviewAuthoringRevisionV1(ws,0,'g07-synthetic-author')
+   expect(savedRevision.workspace.revision).toBe(1)
+   expect(getReviewAuthoringRevisionV1(ws.workspaceId)?.workspace.sourceBindings.length).toBe(ws.sourceBindings.length)
+   const revisedDraft=structuredClone(ws);revisedDraft.revision=2
+   expect(diffReviewAuthoringRevisionsV1(ws,revisedDraft)).toBeDefined()
    const exported=exportD3Bundle(ws)
    const imported=importD3Bundle(exported)
    expect(imported.sourceBindings.length).toBe(ws.sourceBindings.length)
@@ -108,7 +114,7 @@ describe('G07 complete C mothers -> scoped D1/D3/D2/Pi technical candidates',()=
    const run=getRunV2(c.id,prepared.runId)!
    const verified=verifyD2PiRun(readAggregate(c.id)!,run)
    expect(verified).toMatchObject({complete:true,problems:[]})
-   save(id,'d3-export.json',{fingerprint:exported.fingerprint,moduleCount:ws.definitions.modules.length,
+   save(id,'d3-export.json',{d1SavedRevision:savedRevision.workspace.revision,d1Digest:savedRevision.digest,fingerprint:exported.fingerprint,moduleCount:ws.definitions.modules.length,
      importedWorkspaceId:imported.workspaceId,sourceBindings:ws.sourceBindings.length})
    save(id,'d2-plan.json',plan)
    save(id,'pi-run.json',run)
