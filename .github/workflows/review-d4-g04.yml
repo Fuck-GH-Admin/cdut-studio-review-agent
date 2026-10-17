@@ -1,0 +1,50 @@
+name: G04 D4 modular templates technical proof
+on:
+  pull_request:
+    paths:
+      - 'docs/design/review-agent/acceptance/d4-g04-build/t*/workspace.json'
+      - 'docs/design/review-agent/acceptance/d4-g04-build/t*/selection.json'
+      - 'apps/electron/src/main/lib/review/review-d4-g04.test.ts'
+      - '.github/workflows/review-d4-g04.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  g04:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      D4_G04_EVIDENCE_DIR: ${{ github.workspace }}/docs/design/review-agent/acceptance/d4-g04-build/runtime
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: true
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - run: bun run check:boundaries
+      - name: D1/D3/D2/Pi G04 frozen-input run
+        run: bun test --isolate --timeout 120000 apps/electron/src/main/lib/review/review-d4-g04.test.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: d4-g04-raw-plans-and-runs-${{ github.run_id }}
+          path: docs/design/review-agent/acceptance/d4-g04-build/runtime/
+          retention-days: 30
+      - name: Commit measured technical plans and receipts to G04 branch
+        if: success() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/design/review-agent/acceptance/d4-g04-build/runtime/
+          if ! git diff --cached --quiet; then
+            git commit -m 'test(G04): record measured D2 plans and Pi synthetic receipts [skip ci]'
+            git push origin HEAD:${{ github.head_ref }}
+          fi

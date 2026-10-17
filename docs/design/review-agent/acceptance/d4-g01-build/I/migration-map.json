@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "parent": "94d5ec32b6de1ac0c185b63b4aabfddaa29b1649",
+  "oldA": "e3321add7322fba29169f0faeac9bc66571067e0",
+  "originCommit": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+  "originSha256": "52ae0cdc27a16bb46659cd43d3e78632c44d8b5ccc86a18559b263512f51f329",
+  "oldToNew": {
+    "g01-student-identity-correction@1:module/part-01/r001": "g01-student-identity-correction@2:module/part-01/r001",
+    "g01-student-identity-correction@1:module/part-01/r024": "g01-student-identity-correction@2:module/branch-s10/r024",
+    "g01-student-identity-correction@1:module/part-01/r026": "g01-student-identity-correction@2:module/branch-s12/r026",
+    "g01-student-identity-correction@1:module/part-02/r002": "g01-student-identity-correction@2:module/part-02/r002",
+    "g01-student-identity-correction@1:module/part-02/r003": "g01-student-identity-correction@2:module/part-02/r003",
+    "g01-student-identity-correction@1:module/part-02/r011": "g01-student-identity-correction@2:module/part-02/r011",
+    "g01-student-identity-correction@1:module/part-02/r012": "g01-student-identity-correction@2:module/part-02/r012",
+    "g01-student-identity-correction@1:module/part-02/r013": "g01-student-identity-correction@2:module/branch-s11/r013",
+    "g01-student-identity-correction@1:module/part-02/r021": "g01-student-identity-correction@2:module/part-02/r021",
+    "g01-student-identity-correction@1:module/part-02/r022": "g01-student-identity-correction@2:module/branch-s08/r022",
+    "g01-student-identity-correction@1:module/part-02/r023": "g01-student-identity-correction@2:module/branch-s09/r023",
+    "g01-student-identity-correction@1:module/part-03/r004": "g01-student-identity-correction@2:module/part-03/r004",
+    "g01-student-identity-correction@1:module/part-03/r005": "g01-student-identity-correction@2:module/part-03/r005",
+    "g01-student-identity-correction@1:module/part-03/r006": "g01-student-identity-correction@2:module/part-03/r006",
+    "g01-student-identity-correction@1:module/part-03/r008": "g01-student-identity-correction@2:module/part-03/r008",
+    "g01-student-identity-correction@1:module/part-04/r007": "g01-student-identity-correction@2:module/part-04/r007",
+    "g01-student-identity-correction@1:module/part-04/r009": "g01-student-identity-correction@2:module/part-04/r009",
+    "g01-student-identity-correction@1:module/part-04/r010": "g01-student-identity-correction@2:module/part-04/r010",
+    "g01-student-identity-correction@1:module/part-04/r014": "g01-student-identity-correction@2:module/branch-s01/r014",
+    "g01-student-identity-correction@1:module/part-04/r015": "g01-student-identity-correction@2:module/branch-s02/r015",
+    "g01-student-identity-correction@1:module/part-04/r016": "g01-student-identity-correction@2:module/branch-s03/r016",
+    "g01-student-identity-correction@1:module/part-04/r019": "g01-student-identity-correction@2:module/branch-s06/r019",
+    "g01-student-identity-correction@1:module/part-04/r020": "g01-student-identity-correction@2:module/branch-s07/r020",
+    "g01-student-identity-correction@1:module/part-05/r017": "g01-student-identity-correction@2:module/branch-s04/r017",
+    "g01-student-identity-correction@1:module/part-05/r018": "g01-student-identity-correction@2:module/branch-s05/r018",
+    "g01-student-identity-correction@1:module/part-06/r025": "g01-student-identity-correction@2:module/part-06/r025",
+    "g01-student-identity-correction@1:module/part-06/r027": "g01-student-identity-correction@2:module/part-06/r027",
+    "g01-student-identity-correction@1:module/part-06/r028": "g01-student-identity-correction@2:module/part-06/r028",
+    "g01-student-identity-correction@1:module/part-07/m01": "g01-student-identity-correction@2:module/part-07/m01",
+    "g01-student-identity-correction@1:module/part-07/m02": "g01-student-identity-correction@2:module/part-07/m02",
+    "g01-student-identity-correction@1:module/part-07/m03": "g01-student-identity-correction@2:module/part-07/m03",
+    "g01-student-identity-correction@1:module/part-07/m04": "g01-student-identity-correction@2:module/part-07/m04",
+    "g01-student-identity-correction@1:module/part-07/m05": "g01-student-identity-correction@2:module/part-07/m05",
+    "g01-student-identity-correction@1:module/part-07/m06": "g01-student-identity-correction@2:module/part-07/m06",
+    "g01-student-identity-correction@1:module/part-08/p0": "g01-student-identity-correction@2:module/part-08/p0",
+    "g01-student-identity-correction@1:module/part-08/p1": "g01-student-identity-correction@2:module/part-08/p1",
+    "g01-student-identity-correction@1:module/part-08/p2": "g01-student-identity-correction@2:module/part-08/p2",
+    "g01-student-identity-correction@1:module/part-08/p3": "g01-student-identity-correction@2:module/part-08/p3",
+    "g01-student-identity-correction@1:module/part-08/p4": "g01-student-identity-correction@2:module/part-08/p4",
+    "g01-student-identity-correction@1:module/part-08/p5": "g01-student-identity-correction@2:module/part-08/p5",
+    "g01-student-identity-correction@1:module/part-08/p6": "g01-student-identity-correction@2:module/part-08/p6",
+    "g01-student-identity-correction@1:module/part-08/p7": "g01-student-identity-correction@2:module/part-08/p7",
+    "g01-student-identity-correction@1:module/part-09/s01-s13-conditional-matrix": "g01-student-identity-correction@2:module/part-09/s01-s13-conditional-matrix",
+    "g01-student-identity-correction@1:module/part-10/subject-and-request": "g01-student-identity-correction@2:module/part-10/subject-and-request",
+    "g01-student-identity-correction@1:module/part-10/identity-continuity": "g01-student-identity-correction@2:module/part-10/identity-continuity",
+    "g01-student-identity-correction@1:module/part-10/admission-and-changes": "g01-student-identity-correction@2:module/part-10/admission-and-changes",
+    "g01-student-identity-correction@1:module/part-10/decision-and-temporal": "g01-student-identity-correction@2:module/part-10/decision-and-temporal",
+    "g01-student-identity-correction@1:local/output-state-contract": "g01-student-identity-correction@2:local/output-state-contract",
+    "g01-student-identity-correction@1:local/exceptions-and-safe-alternatives": "g01-student-identity-correction@2:local/exceptions-and-safe-alternatives"
+  },
+  "scenarioModules": {
+    "S01": "g01-student-identity-correction@2:module/branch-s01/trigger-s01",
+    "S02": "g01-student-identity-correction@2:module/branch-s02/trigger-s02",
+    "S03": "g01-student-identity-correction@2:module/branch-s03/trigger-s03",
+    "S04": "g01-student-identity-correction@2:module/branch-s04/trigger-s04",
+    "S05": "g01-student-identity-correction@2:module/branch-s05/trigger-s05",
+    "S06": "g01-student-identity-correction@2:module/branch-s06/trigger-s06",
+    "S07": "g01-student-identity-correction@2:module/branch-s07/trigger-s07",
+    "S08": "g01-student-identity-correction@2:module/branch-s08/trigger-s08",
+    "S09": "g01-student-identity-correction@2:module/branch-s09/trigger-s09",
+    "S10": "g01-student-identity-correction@2:module/branch-s10/trigger-s10",
+    "S11": "g01-student-identity-correction@2:module/branch-s11/trigger-s11",
+    "S12": "g01-student-identity-correction@2:module/branch-s12/trigger-s12",
+    "S13": "g01-student-identity-correction@2:module/branch-s13/trigger-s13"
+  },
+  "originalModules": [
+    {
+      "id": "g01i-scope-routing",
+      "v1": 1,
+      "v2": 2
+    },
+    {
+      "id": "g01i-policy-applicability",
+      "v1": 1,
+      "v2": 2
+    },
+    {
+      "id": "g01i-applicant-record",
+      "v1": 1,
+      "v2": 2
+    },
+    {
+      "id": "g01i-identity-evidence",
+      "v1": 1,
+      "v2": 2
+    },
+    {
+      "id": "g01i-admissions-sources",
+      "v1": 1,
+      "v2": 2
+    },
+    {
+      "id": "g01i-authority-and-output",
+      "v1": 1,
+      "v2": 2
+    },
+    {
+      "id": "g01i-material-purpose",
+      "v1": 1,
+      "v2": 2
+    },
+    {
+      "id": "g01i-workflow",
+      "v1": 1,
+      "v2": 2
+    },
+    {
+      "id": "g01i-branch-router",
+      "v1": 1,
+      "v2": 2
+    },
+    {
+      "id": "g01i-fact-catalog",
+      "v1": 1,
+      "v2": 2
+    }
+  ],
+  "note": "场景和字段动态实例化不代表真实校务批准"
+}

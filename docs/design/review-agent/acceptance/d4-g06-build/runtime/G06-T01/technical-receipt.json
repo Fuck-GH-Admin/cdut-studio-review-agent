@@ -1,0 +1,211 @@
+{
+  "templateId": "G06-T01",
+  "base": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "bundleFingerprint": "79c2e9fcbb13811236196b8608f409178d79f91d0a79c8dd648223981c10b66d",
+  "roundTripEqual": true,
+  "planFingerprint": "419f66c93ed73becbc4ac26b84a1ff55b37d02b2460d7dd02a0f306ae1c804d8",
+  "subjects": [
+    "g06-t01-subject-1",
+    "g06-t01-subject-2"
+  ],
+  "checkCount": 146,
+  "policy": "unverified-policy",
+  "runId": "run-pi-mvcmowtc-czztr",
+  "verification": {
+    "complete": true,
+    "problems": []
+  },
+  "scenarioBranches": [
+    {
+      "objectKey": "g06-t01-test-1",
+      "primary": "br-01",
+      "conditions": [
+        {
+          "id": "ax-01",
+          "applicability": "applicable",
+          "sourceId": "src-axis-ax-01",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-02",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-02",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-03",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-03",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-04",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-04",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-05",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-05",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-06",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-06",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-07",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-07",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-08",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-08",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-09",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-09",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-10",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-10",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-11",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-11",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-12",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-12",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "reviewer"
+        }
+      ]
+    },
+    {
+      "objectKey": "g06-t01-test-2",
+      "primary": "br-02",
+      "conditions": [
+        {
+          "id": "ax-01",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-01",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-02",
+          "applicability": "applicable",
+          "sourceId": "src-axis-ax-02",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-03",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-03",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-04",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-04",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-05",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-05",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-06",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-06",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-07",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-07",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-08",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-08",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-09",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-09",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-10",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-10",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-11",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-11",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-12",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-12",
+          "sourceVersionId": "g06-t01-v01-e3bb29673e317bf6",
+          "decidedBy": "undetermined"
+        }
+      ]
+    }
+  ],
+  "evidence": {
+    "documentVersionId": "doc-1-mvcmowsi-v1",
+    "linkedSubject": "g06-t01-subject-1",
+    "unlinkedSubject": "g06-t01-subject-2",
+    "aPassesEvidenceGuard": true,
+    "bRejectedEvidenceGuard": true,
+    "staleVersionRejected": true
+  },
+  "publicationAllowed": false,
+  "onlineLLMRun": false,
+  "administrativeApproval": false
+}

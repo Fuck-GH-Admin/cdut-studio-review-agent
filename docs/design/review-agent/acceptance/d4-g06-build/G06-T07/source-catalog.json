@@ -1,0 +1,953 @@
+{
+  "sourceFile": "G06-T07_正式业务模板_MD_v0.1.md",
+  "sourceSha256": "00fb0f834316ab781ce4e40f624de08d3ff8f0ec48e72f838671379a6fb12a78",
+  "version": "v0.1",
+  "scope": "full",
+  "atomicRules": [
+    {
+      "sourceId": "R-01",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L182",
+      "sourceAnchor": "### R-01｜涉人伦理适用范围",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r01/check",
+      "moduleId": "g06-t07-r01",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-02",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L191",
+      "sourceAnchor": "### R-02｜政策版次与适用学校选择",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r02/check",
+      "moduleId": "g06-t07-r02",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-03",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L200",
+      "sourceAnchor": "### R-03｜业务路径和多种行为分项识别",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r03/check",
+      "moduleId": "g06-t07-r03",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-04",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L209",
+      "sourceAnchor": "### R-04｜PI/提交人与代办权限",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r04/check",
+      "moduleId": "g06-t07-r04",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-05",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L218",
+      "sourceAnchor": "### R-05｜初审基础申请材料",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r05/check",
+      "moduleId": "g06-t07-r05",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-06",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L227",
+      "sourceAnchor": "### R-06｜生命医学专门附件的适用",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r06/check",
+      "moduleId": "g06-t07-r06",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-07",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L236",
+      "sourceAnchor": "### R-07｜方案风险与保护措施完整性",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r07/check",
+      "moduleId": "g06-t07-r07",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-08",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L245",
+      "sourceAnchor": "### R-08｜研究数据/样本来源及用途",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r08/check",
+      "moduleId": "g06-t07-r08",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-09",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L254",
+      "sourceAnchor": "### R-09｜常规知情同意模板与过程",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r09/check",
+      "moduleId": "g06-t07-r09",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-10",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L263",
+      "sourceAnchor": "### R-10｜四类例外/审查程序严格区分",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r10/check",
+      "moduleId": "g06-t07-r10",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-11",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L272",
+      "sourceAnchor": "### R-11｜医学研究条件性免除审查请求",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r11/check",
+      "moduleId": "g06-t07-r11",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-12",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L281",
+      "sourceAnchor": "### R-12｜豁免取得知情同意的请求",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r12/check",
+      "moduleId": "g06-t07-r12",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-13",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L290",
+      "sourceAnchor": "### R-13｜免除签字或合法口头同意",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r13/check",
+      "moduleId": "g06-t07-r13",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-14",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L299",
+      "sourceAnchor": "### R-14｜简易审查程序选择权",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r14/check",
+      "moduleId": "g06-t07-r14",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-15",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L308",
+      "sourceAnchor": "### R-15｜未成年人及特别保护群体",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r15/check",
+      "moduleId": "g06-t07-r15",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-16",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L317",
+      "sourceAnchor": "### R-16｜同一研究参数跨文件一致",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r16/check",
+      "moduleId": "g06-t07-r16",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-17",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L326",
+      "sourceAnchor": "### R-17｜研究人员资质及培训核验",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r17/check",
+      "moduleId": "g06-t07-r17",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-18",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L335",
+      "sourceAnchor": "### R-18｜资助来源与利益冲突",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r18/check",
+      "moduleId": "g06-t07-r18",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-19",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L344",
+      "sourceAnchor": "### R-19｜科学性证明的合法替代",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r19/check",
+      "moduleId": "g06-t07-r19",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-20",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L353",
+      "sourceAnchor": "### R-20｜多中心与委员会书面委托",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r20/check",
+      "moduleId": "g06-t07-r20",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-21",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L362",
+      "sourceAnchor": "### R-21｜既有伦理批件项目与方案对应",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r21/check",
+      "moduleId": "g06-t07-r21",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-22",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L371",
+      "sourceAnchor": "### R-22｜修正案文件与风险变化",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r22/check",
+      "moduleId": "g06-t07-r22",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-23",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L380",
+      "sourceAnchor": "### R-23｜变更与研究实施时序",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r23/check",
+      "moduleId": "g06-t07-r23",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-24",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L389",
+      "sourceAnchor": "### R-24｜跟踪频率、批件到期和进展",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r24/check",
+      "moduleId": "g06-t07-r24",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-25",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L398",
+      "sourceAnchor": "### R-25｜严重不良事件/偏差必须如实记录",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r25/check",
+      "moduleId": "g06-t07-r25",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-26",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L407",
+      "sourceAnchor": "### R-26｜暂停/终止的参与者保护和记录",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r26/check",
+      "moduleId": "g06-t07-r26",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-27",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L416",
+      "sourceAnchor": "### R-27｜结题及关闭报告",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r27/check",
+      "moduleId": "g06-t07-r27",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-28",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L425",
+      "sourceAnchor": "### R-28｜修改后再审与正式申诉",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r28/check",
+      "moduleId": "g06-t07-r28",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-29",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L434",
+      "sourceAnchor": "### R-29｜正式批准和形式结果不可互推",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r29/check",
+      "moduleId": "g06-t07-r29",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-30",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L443",
+      "sourceAnchor": "### R-30｜多中心、多对象部分就绪与总览",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r30/check",
+      "moduleId": "g06-t07-r30",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-31",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L452",
+      "sourceAnchor": "### R-31｜数据隐私、敏感附件与渠道限制",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r31/check",
+      "moduleId": "g06-t07-r31",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-32",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L461",
+      "sourceAnchor": "### R-32｜来源可信度与两份正式证明冲突",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r32/check",
+      "moduleId": "g06-t07-r32",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-33",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L470",
+      "sourceAnchor": "### R-33｜CDUT人遗资源承诺的跨业务边界",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r33/check",
+      "moduleId": "g06-t07-r33",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-34",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L479",
+      "sourceAnchor": "### R-34｜其他科技伦理重大风险升级",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r34/check",
+      "moduleId": "g06-t07-r34",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-35",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L488",
+      "sourceAnchor": "### R-35｜撤回、补件、版本及权限变更后的重审",
+      "type": "rule",
+      "checkId": "g06-t07@1:module/use-r35/check",
+      "moduleId": "g06-t07-r35",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    }
+  ],
+  "otherResponsibilities": [
+    {
+      "sourceId": "SECTION-01",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L8",
+      "sourceAnchor": "## 1. 元信息、适用范围与政策边界",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section01/check",
+      "moduleId": "g06-t07-section01",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-02",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L16",
+      "sourceAnchor": "## 2. 业务目的、独立性与不受理范围",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section02/check",
+      "moduleId": "g06-t07-section02",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-03",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L21",
+      "sourceAnchor": "## 3. 主体、权利义务与阶段",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section03/check",
+      "moduleId": "g06-t07-section03",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-04",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L35",
+      "sourceAnchor": "## 4. 内部条件维度及分支的组合优先级",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section04/check",
+      "moduleId": "g06-t07-section04",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-05",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L66",
+      "sourceAnchor": "## 5. 输入契约：四类来源与输出事实隔离",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section05/check",
+      "moduleId": "g06-t07-section05",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-06",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L77",
+      "sourceAnchor": "## 6. 字段字典：义务与作用时点",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section06/check",
+      "moduleId": "g06-t07-section06",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-07",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L113",
+      "sourceAnchor": "## 7. 材料槽、合法替代证据与可信度",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section07/check",
+      "moduleId": "g06-t07-section07",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-08",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L157",
+      "sourceAnchor": "## 8. 可核审核事实与跨文件关系",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section08/check",
+      "moduleId": "g06-t07-section08",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-09",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L179",
+      "sourceAnchor": "## 9. 原子审核规则：可执行语义、证据和结果",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section09/check",
+      "moduleId": "g06-t07-section09",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-10",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L497",
+      "sourceAnchor": "## 10. 统一输出契约、分项状态与问题聚合",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section10/check",
+      "moduleId": "g06-t07-section10",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-11",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L576",
+      "sourceAnchor": "## 11. 生命周期、补件重审与审批依赖",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section11/check",
+      "moduleId": "g06-t07-section11",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-12",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L593",
+      "sourceAnchor": "## 12. 合法例外、裁量、不可自动化事项",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section12/check",
+      "moduleId": "g06-t07-section12",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-13",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L607",
+      "sourceAnchor": "## 13. 学校规则配置、版本选择与未关闭缺口",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section13/check",
+      "moduleId": "g06-t07-section13",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-14",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L621",
+      "sourceAnchor": "## 14. 官方来源、规则依据与事实/建议分离",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section14/check",
+      "moduleId": "g06-t07-section14",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-15",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L643",
+      "sourceAnchor": "## 15. 作者小规模流程推演（仅逻辑走查，不是独立金标）",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section15/check",
+      "moduleId": "g06-t07-section15",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-16",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L657",
+      "sourceAnchor": "## 16. 共性模块与T07专属语义",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section16/check",
+      "moduleId": "g06-t07-section16",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-17",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L661",
+      "sourceAnchor": "## 17. 现有编辑器与运行时能力映射（诚实标记）",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section17/check",
+      "moduleId": "g06-t07-section17",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-18",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L673",
+      "sourceAnchor": "## 18. 完整性自审、版本风险与C→D交接",
+      "type": "context",
+      "checkId": "g06-t07@1:module/use-section18/check",
+      "moduleId": "g06-t07-section18",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "BR-01",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L40",
+      "sourceAnchor": "| BR-01 | P01 | 初始伦理审查 | 研究计划启动且判定属于本业务适用范围，申请已确定版本的方案伦理审查 | 主路径；与BR-02按请求目的通常互斥；可叠加BR-03 | 初始申请不要求现成同项目伦理批准函 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t07@1:module/use-axis-br-01/check",
+      "moduleId": "g06-t07-axis-br-01",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "BR-02",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L40",
+      "sourceAnchor": "| BR-01 | P01 | 初始伦理审查 | 研究计划启动且判定属于本业务适用范围，申请已确定版本的方案伦理审查 | 主路径；与BR-02按请求目的通常互斥；可叠加BR-03 | 初始申请不要求现成同项目伦理批准函 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t07@1:module/use-axis-br-02/check",
+      "moduleId": "g06-t07-axis-br-02",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "BR-04",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L42",
+      "sourceAnchor": "| BR-03 | P03 | 知情同意程序变体 | 研究适用审查而请求同意豁免、免签字或依法有记录的口头同意 | 附加维度，通常叠加BR-01、BR-04；内部具体方式互斥或分研究人群 | 同意豁免/免签字/免审/简易程序四者不能互替 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t07@1:module/use-axis-br-04/check",
+      "moduleId": "g06-t07-axis-br-04",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-05",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L44",
+      "sourceAnchor": "| BR-05 | P05 | 定期/持续跟踪 | 原已批准研究到期或受规定需进展审查 | 要求原批件、适用间隔、进展与偏离信息 | 不可用一般医院截止天数泛化 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t07@1:module/use-axis-br-05/check",
+      "moduleId": "g06-t07-axis-br-05",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-06",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L45",
+      "sourceAnchor": "| BR-06 | P06 | 不良事件及方案偏离 | 发生需报告的事件、偏差或风险增加 | 可同时关联BR-04/05/07的后续动作；事件本身单独处理 | 材料齐全不抹除历史事件 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t07@1:module/use-axis-br-06/check",
+      "moduleId": "g06-t07-axis-br-06",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-07",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L46",
+      "sourceAnchor": "| BR-07 | P07 | 暂停或提前终止 | 研究拟暂停/终止或已有正式暂停要求 | 与BR-05/06可关联；状态不可被普通补件覆盖 | 暂停≠初审否决；保障参与者与数据 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t07@1:module/use-axis-br-07/check",
+      "moduleId": "g06-t07-axis-br-07",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-08",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L47",
+      "sourceAnchor": "| BR-08 | P08 | 结题/关闭 | 研究依批准方案实施完毕申请伦理结题归档 | 通常须有效历史批件及执行概况 | 不能把结题报告要求给尚未启动的BR-01 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t07@1:module/use-axis-br-08/check",
+      "moduleId": "g06-t07-axis-br-08",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "BR-09",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L48",
+      "sourceAnchor": "| BR-09 | P09 | 修改后再审/申诉复审 | 委员会已提出修改或正式决定，申请人按合法渠道提交答复/申诉 | 必须引用上一个决定及其版本；同一次复审与纯补件不同 | 已有正式否决不可由AI自动变为批准 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t07@1:module/use-axis-br-09/check",
+      "moduleId": "g06-t07-axis-br-09",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-03",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L40",
+      "sourceAnchor": "| BR-01 | P01 | 初始伦理审查 | 研究计划启动且判定属于本业务适用范围，申请已确定版本的方案伦理审查 | 主路径；与BR-02按请求目的通常互斥；可叠加BR-03 | 初始申请不要求现成同项目伦理批准函 |",
+      "type": "additive-condition",
+      "checkId": "g06-t07@1:module/use-axis-br-03/check",
+      "moduleId": "g06-t07-axis-br-03",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "AX-01",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L54",
+      "sourceAnchor": "| AX-01 | 是否属S01涉人科技伦理范围/F03 | 进入T07判定 | OUT_OF_SCOPE或转其它伦理 | ST-06，索取研究性质而非默认免审 |",
+      "type": "additive-condition",
+      "checkId": "g06-t07@1:module/use-axis-ax-01/check",
+      "moduleId": "g06-t07-axis-ax-01",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "AX-02",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L55",
+      "sourceAnchor": "| AX-02 | 是否属S02生命医学范围/F03 | 启用医学材料规则R-06 | 仅S01通用要求及真实学校规则 | ST-06，不能默认全部医院表单 |",
+      "type": "additive-condition",
+      "checkId": "g06-t07@1:module/use-axis-ax-02/check",
+      "moduleId": "g06-t07-axis-ax-02",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-03",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L56",
+      "sourceAnchor": "| AX-03 | 是否涉及直接招募/F09/F10 | 启用招募/同意/脆弱群体相应槽 | 不强制招募广告 | ST-06，先问研究方式 |",
+      "type": "additive-condition",
+      "checkId": "g06-t07@1:module/use-axis-ax-03/check",
+      "moduleId": "g06-t07-axis-ax-03",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-04",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L57",
+      "sourceAnchor": "| AX-04 | 是否使用人类数据/样本/F18 | 启用来源、许可和隐私相关证据 | 数据样本专属件N/A | ST-06，不能先标免审 |",
+      "type": "additive-condition",
+      "checkId": "g06-t07@1:module/use-axis-ax-04/check",
+      "moduleId": "g06-t07-axis-ax-04",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-05",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L58",
+      "sourceAnchor": "| AX-05 | 是否有学校认可的代办/PI授权/F05 | 核对权限后路由 | 明确无权则修正提交路径 | ST-07，请有权机构确认 |",
+      "type": "additive-condition",
+      "checkId": "g06-t07@1:module/use-axis-ax-05/check",
+      "moduleId": "g06-t07-axis-ax-05",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-06",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L59",
+      "sourceAnchor": "| AX-06 | 是否明确申请四类例外中的某一种/F16 | 分别路由BR-02/03或委员会程序 | 常规路径 | ST-06，不能把空白自选成免审 |",
+      "type": "additive-condition",
+      "checkId": "g06-t07@1:module/use-axis-ax-06/check",
+      "moduleId": "g06-t07-axis-ax-06",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-07",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L60",
+      "sourceAnchor": "| AX-07 | 是否存在经核实的委员会正式决定/F24 | 按效力和覆盖范围同步状态 | 未批准保持待决定 | ST-05，证据待核，不可自动批准 |",
+      "type": "additive-condition",
+      "checkId": "g06-t07@1:module/use-axis-ax-07/check",
+      "moduleId": "g06-t07-axis-ax-07",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-08",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L61",
+      "sourceAnchor": "| AX-08 | 是否存在合作研究或外部委托/F11/F29 | 逐机构审查书面委托/互认 | 单机构路径 | ST-06，不能默认一批件覆盖全部 |",
+      "type": "additive-condition",
+      "checkId": "g06-t07@1:module/use-axis-ax-08/check",
+      "moduleId": "g06-t07-axis-ax-08",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-09",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L62",
+      "sourceAnchor": "| AX-09 | 是否关联特定CDUT资助批次且真实涉人遗/F26/F27 | MS16归相关资助工单 | 不触发MS16 | ST-06，不作为T07拒件条件 |",
+      "type": "additive-condition",
+      "checkId": "g06-t07@1:module/use-axis-ax-09/check",
+      "moduleId": "g06-t07-axis-ax-09",
+      "scope": "g06-human-ethics-scope",
+      "requiresHumanDecision": false
+    }
+  ],
+  "fieldMaterialEvidenceStageAndQuestionIndex": [
+    {
+      "id": "BR-01",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L36",
+      "sourceExcerpt": "**稳定分支空间**：`BR-01—BR-09`映射B阶段`P01—P09`，所有情况下由一个主路径和零个或多个附加条件组成。"
+    },
+    {
+      "id": "BR-09",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L36",
+      "sourceExcerpt": "**稳定分支空间**：`BR-01—BR-09`映射B阶段`P01—P09`，所有情况下由一个主路径和零个或多个附加条件组成。"
+    },
+    {
+      "id": "BR-02",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L40",
+      "sourceExcerpt": "| BR-01 | P01 | 初始伦理审查 | 研究计划启动且判定属于本业务适用范围，申请已确定版本的方案伦理审查 | 主路径；与BR-02按请求目的通常互斥；可叠加BR-03 | 初始申请不要求现成同项目伦理批准函 |"
+    },
+    {
+      "id": "BR-03",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L40",
+      "sourceExcerpt": "| BR-01 | P01 | 初始伦理审查 | 研究计划启动且判定属于本业务适用范围，申请已确定版本的方案伦理审查 | 主路径；与BR-02按请求目的通常互斥；可叠加BR-03 | 初始申请不要求现成同项目伦理批准函 |"
+    },
+    {
+      "id": "BR-04",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L42",
+      "sourceExcerpt": "| BR-03 | P03 | 知情同意程序变体 | 研究适用审查而请求同意豁免、免签字或依法有记录的口头同意 | 附加维度，通常叠加BR-01、BR-04；内部具体方式互斥或分研究人群 | 同意豁免/免签字/免审/简易程序四者不能互替 |"
+    },
+    {
+      "id": "BR-05",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L44",
+      "sourceExcerpt": "| BR-05 | P05 | 定期/持续跟踪 | 原已批准研究到期或受规定需进展审查 | 要求原批件、适用间隔、进展与偏离信息 | 不可用一般医院截止天数泛化 |"
+    },
+    {
+      "id": "BR-06",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L45",
+      "sourceExcerpt": "| BR-06 | P06 | 不良事件及方案偏离 | 发生需报告的事件、偏差或风险增加 | 可同时关联BR-04/05/07的后续动作；事件本身单独处理 | 材料齐全不抹除历史事件 |"
+    },
+    {
+      "id": "BR-07",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L46",
+      "sourceExcerpt": "| BR-07 | P07 | 暂停或提前终止 | 研究拟暂停/终止或已有正式暂停要求 | 与BR-05/06可关联；状态不可被普通补件覆盖 | 暂停≠初审否决；保障参与者与数据 |"
+    },
+    {
+      "id": "BR-08",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L47",
+      "sourceExcerpt": "| BR-08 | P08 | 结题/关闭 | 研究依批准方案实施完毕申请伦理结题归档 | 通常须有效历史批件及执行概况 | 不能把结题报告要求给尚未启动的BR-01 |"
+    },
+    {
+      "id": "AX-01",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L54",
+      "sourceExcerpt": "| AX-01 | 是否属S01涉人科技伦理范围/F03 | 进入T07判定 | OUT_OF_SCOPE或转其它伦理 | ST-06，索取研究性质而非默认免审 |"
+    },
+    {
+      "id": "ST-06",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L54",
+      "sourceExcerpt": "| AX-01 | 是否属S01涉人科技伦理范围/F03 | 进入T07判定 | OUT_OF_SCOPE或转其它伦理 | ST-06，索取研究性质而非默认免审 |"
+    },
+    {
+      "id": "AX-02",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L55",
+      "sourceExcerpt": "| AX-02 | 是否属S02生命医学范围/F03 | 启用医学材料规则R-06 | 仅S01通用要求及真实学校规则 | ST-06，不能默认全部医院表单 |"
+    },
+    {
+      "id": "AX-03",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L56",
+      "sourceExcerpt": "| AX-03 | 是否涉及直接招募/F09/F10 | 启用招募/同意/脆弱群体相应槽 | 不强制招募广告 | ST-06，先问研究方式 |"
+    },
+    {
+      "id": "AX-04",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L57",
+      "sourceExcerpt": "| AX-04 | 是否使用人类数据/样本/F18 | 启用来源、许可和隐私相关证据 | 数据样本专属件N/A | ST-06，不能先标免审 |"
+    },
+    {
+      "id": "AX-05",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L58",
+      "sourceExcerpt": "| AX-05 | 是否有学校认可的代办/PI授权/F05 | 核对权限后路由 | 明确无权则修正提交路径 | ST-07，请有权机构确认 |"
+    },
+    {
+      "id": "ST-07",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L58",
+      "sourceExcerpt": "| AX-05 | 是否有学校认可的代办/PI授权/F05 | 核对权限后路由 | 明确无权则修正提交路径 | ST-07，请有权机构确认 |"
+    },
+    {
+      "id": "AX-06",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L59",
+      "sourceExcerpt": "| AX-06 | 是否明确申请四类例外中的某一种/F16 | 分别路由BR-02/03或委员会程序 | 常规路径 | ST-06，不能把空白自选成免审 |"
+    },
+    {
+      "id": "AX-07",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L60",
+      "sourceExcerpt": "| AX-07 | 是否存在经核实的委员会正式决定/F24 | 按效力和覆盖范围同步状态 | 未批准保持待决定 | ST-05，证据待核，不可自动批准 |"
+    },
+    {
+      "id": "ST-05",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L60",
+      "sourceExcerpt": "| AX-07 | 是否存在经核实的委员会正式决定/F24 | 按效力和覆盖范围同步状态 | 未批准保持待决定 | ST-05，证据待核，不可自动批准 |"
+    },
+    {
+      "id": "AX-08",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L61",
+      "sourceExcerpt": "| AX-08 | 是否存在合作研究或外部委托/F11/F29 | 逐机构审查书面委托/互认 | 单机构路径 | ST-06，不能默认一批件覆盖全部 |"
+    },
+    {
+      "id": "AX-09",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L62",
+      "sourceExcerpt": "| AX-09 | 是否关联特定CDUT资助批次且真实涉人遗/F26/F27 | MS16归相关资助工单 | 不触发MS16 | ST-06，不作为T07拒件条件 |"
+    },
+    {
+      "id": "EV-01",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L138",
+      "sourceExcerpt": "- **EV-01 方案文书证明**：MS03正式当前全文 或 授权系统已归档的同一完整方案版本；摘要不能替代全文。适用：BR-01/04。"
+    },
+    {
+      "id": "EV-02",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L139",
+      "sourceExcerpt": "- **EV-02 科学性论证**：MS04有权评议记录 或 机构制度承认并可核版本的开题/立项评审。适用：生命医学/明确校规要求。"
+    },
+    {
+      "id": "EV-03",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L140",
+      "sourceExcerpt": "- **EV-03 研究者资格**：MS05经授权资质/培训底账核验 或 有效真实证明材料。适用：专业任务要求。"
+    },
+    {
+      "id": "EV-04",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L141",
+      "sourceExcerpt": "- **EV-04 取得常规知情同意路径**：MS07拟定可执行同意文本+告知流程；BR-01**不需要未来参加者签名**。适用：需要取得同意。"
+    },
+    {
+      "id": "EV-05",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L142",
+      "sourceExcerpt": "- **EV-05 依法申请的同意变体**：MS08对应类别的正式申请及法律依据＋当前方案；批准与否另外从MS15取。适用：BR-03。"
+    },
+    {
+      "id": "EV-06",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L143",
+      "sourceExcerpt": "- **EV-06 数据样本来源**：MS09正式授权/原同意范围/可靠开放数据许可证等能证明目标用途的材料。适用：使用数据样本。"
+    },
+    {
+      "id": "EV-07",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L144",
+      "sourceExcerpt": "- **EV-07 PI/代办权限**：MS05机构授权系统/书面有效委托；不能以聊天截图代替。适用：代办/资格触发。"
+    },
+    {
+      "id": "EV-08",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L145",
+      "sourceExcerpt": "- **EV-08 既往伦理批件**：MS15委员会底账的对应批准 或 可核验的MS12正式批准文件；个人截图不能独立确认。适用：BR-04—09。"
+    },
+    {
+      "id": "EV-09",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L146",
+      "sourceExcerpt": "- **EV-09 跨机构伦理委托**：MS11有权单位书面委托及接受机构资格/范围。适用：未设委员会或不能胜任。"
+    },
+    {
+      "id": "EV-10",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L147",
+      "sourceExcerpt": "- **EV-10 变更对照**：MS13旧新版与差异列表＋对应旧批准的MS12。适用：BR-04/09。"
+    },
+    {
+      "id": "EV-11",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L148",
+      "sourceExcerpt": "- **EV-11 正式决定**：MS15经授权可核的伦理委员会决定，按范围/时间同步；无人能查不推断通过。适用：审批决定已形成后。"
+    },
+    {
+      "id": "EV-12",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L149",
+      "sourceExcerpt": "- **EV-12 资助申报的人遗资源条件**：MS16特定专项人遗承诺（属于**关联资助工单**）。适用：CDUT特定申报同时满足双触发。"
+    },
+    {
+      "id": "ST-04",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L155",
+      "sourceExcerpt": "- 无法核验出具机构身份或两份有权文件互相矛盾时，要分别给`ST-05`/`ST-04`和证据位置，不以“附件多的一方”为真。"
+    },
+    {
+      "id": "ST-08",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L241",
+      "sourceExcerpt": "- **缺失/矛盾/未知的稳定处理**：显式章节缺漏→IS-01；专业合理性不确定→ST-08人工审查。输出问题码：`IS-01`；缺少权威数据时不声称已验证。"
+    },
+    {
+      "id": "ST-12",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L412",
+      "sourceExcerpt": "- **缺失/矛盾/未知的稳定处理**：委员会决定待核→IS-03，正式暂停→ST-12；需保护措施缺→IS-01。输出问题码：`IS-01/IS-03`；缺少权威数据时不声称已验证。"
+    },
+    {
+      "id": "ST-10",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L430",
+      "sourceExcerpt": "- **缺失/矛盾/未知的稳定处理**：存在否决→ST-10+IS-10；仅补件不改变决定；无原意见→IS-01。输出问题码：`IS-10/IS-01`；缺少权威数据时不声称已验证。"
+    },
+    {
+      "id": "ST-02",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L448",
+      "sourceExcerpt": "- **缺失/矛盾/未知的稳定处理**：部分就绪→ST-02且保留未解决问题列表。输出问题码：`IS-18`；缺少权威数据时不声称已验证。"
+    },
+    {
+      "id": "ST-00",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L504",
+      "sourceExcerpt": "| `ST-00` | 草稿未提交 | 未正式进入受理流程 |"
+    },
+    {
+      "id": "ST-01",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L505",
+      "sourceExcerpt": "| `ST-01` | 已申报待形式核验 | 有申请不代表委员会接受 |"
+    },
+    {
+      "id": "ST-03",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L507",
+      "sourceExcerpt": "| `ST-03` | 缺件待补正 | 确有适用强制材料缺失/无法读取 |"
+    },
+    {
+      "id": "ST-09",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L513",
+      "sourceExcerpt": "| `ST-09` | 正式要求修订/复审 | 委员会已形成修改后再审类意见 |"
+    },
+    {
+      "id": "ST-11",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L515",
+      "sourceExcerpt": "| `ST-11` | 已正式批准且待执行 | 有权批件已被权威核对，实施仍须满足其他条件 |"
+    },
+    {
+      "id": "ST-13",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L517",
+      "sourceExcerpt": "| `ST-13` | 执行/结题结果已记录 | 实际记录与有权决定已核验 |"
+    },
+    {
+      "id": "ST-14",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L518",
+      "sourceExcerpt": "| `ST-14` | 不适用本模板/条件免除已确认 | 限定具体活动/版本/法定路径，免除状态需有依据 |"
+    },
+    {
+      "id": "ST-15",
+      "locator": "G06-T07_正式业务模板_MD_v0.1.md:L519",
+      "sourceExcerpt": "| `ST-15` | 申请撤回/历史版本失效 | 撤回不删除历史事实 |"
+    }
+  ],
+  "unmappedAxes": []
+}

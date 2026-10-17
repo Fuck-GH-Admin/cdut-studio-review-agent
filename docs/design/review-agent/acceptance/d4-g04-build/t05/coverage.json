@@ -1,0 +1,623 @@
+{
+  "templateId": "d4-g04-t05",
+  "sourceSha": "384ead2ba14d69559a989d75bc5620007b33c7355e57209f0e0ec6ef6f5ff829",
+  "rules": [
+    {
+      "id": "R-01",
+      "sourceId": "src-r01",
+      "line": 200,
+      "title": "受理/路由",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-02",
+      "sourceId": "src-r02",
+      "line": 212,
+      "title": "受理/路由",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-03",
+      "sourceId": "src-r03",
+      "line": 224,
+      "title": "受理/路由",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-04",
+      "sourceId": "src-r04",
+      "line": 236,
+      "title": "受理/权限",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-05",
+      "sourceId": "src-r05",
+      "line": 248,
+      "title": "安全资格",
+      "moduleId": "g04-t05-identity",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-06",
+      "sourceId": "src-r06",
+      "line": 260,
+      "title": "安全资格",
+      "moduleId": "g04-t05-identity",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-07",
+      "sourceId": "src-r07",
+      "line": 272,
+      "title": "条件危险源",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-08",
+      "sourceId": "src-r08",
+      "line": 284,
+      "title": "时间程序",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-09",
+      "sourceId": "src-r09",
+      "line": 296,
+      "title": "人员值守",
+      "moduleId": "g04-t05-identity",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-10",
+      "sourceId": "src-r10",
+      "line": 308,
+      "title": "本校明确禁令",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-11",
+      "sourceId": "src-r11",
+      "line": 320,
+      "title": "安全设施",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-12",
+      "sourceId": "src-r12",
+      "line": 332,
+      "title": "审批权限",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-13",
+      "sourceId": "src-r13",
+      "line": 344,
+      "title": "签署身份",
+      "moduleId": "g04-t05-identity",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-14",
+      "sourceId": "src-r14",
+      "line": 356,
+      "title": "紧急联系",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-15",
+      "sourceId": "src-r15",
+      "line": 368,
+      "title": "时段覆盖",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-16",
+      "sourceId": "src-r16",
+      "line": 380,
+      "title": "危险源例外",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-17",
+      "sourceId": "src-r17",
+      "line": 392,
+      "title": "特殊设备",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-18",
+      "sourceId": "src-r18",
+      "line": 404,
+      "title": "跨流程效力",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-19",
+      "sourceId": "src-r19",
+      "line": 416,
+      "title": "方案变更",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-20",
+      "sourceId": "src-r20",
+      "line": 428,
+      "title": "签发与备案",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-21",
+      "sourceId": "src-r21",
+      "line": 440,
+      "title": "执行后材料",
+      "moduleId": "g04-t05-material",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-22",
+      "sourceId": "src-r22",
+      "line": 452,
+      "title": "合法替代",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-23",
+      "sourceId": "src-r23",
+      "line": 464,
+      "title": "证据低可信",
+      "moduleId": "g04-t05-material",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-24",
+      "sourceId": "src-r24",
+      "line": 476,
+      "title": "拒止效力",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-25",
+      "sourceId": "src-r25",
+      "line": 488,
+      "title": "人工边界",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-26",
+      "sourceId": "src-r26",
+      "line": 500,
+      "title": "信息不全",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-27",
+      "sourceId": "src-r27",
+      "line": 512,
+      "title": "工作日与假期",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-28",
+      "sourceId": "src-r28",
+      "line": 524,
+      "title": "批量/部分批准",
+      "moduleId": "g04-t05-authority",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-29",
+      "sourceId": "src-r29",
+      "line": 536,
+      "title": "应急事件",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-30",
+      "sourceId": "src-r30",
+      "line": 548,
+      "title": "去重复用",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-31",
+      "sourceId": "src-r31",
+      "line": 560,
+      "title": "适用2026危险/通宵实验检查点",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-32",
+      "sourceId": "src-r32",
+      "line": 572,
+      "title": "计划阶段人数符合≠执行阶段真实两人在场；实施期逐",
+      "moduleId": "g04-t05-scope",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-33",
+      "sourceId": "src-r33",
+      "line": 584,
+      "title": "若作业由多名操作人员、设备或房间构成，分别绑定范",
+      "moduleId": "g04-t05-identity",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-34",
+      "sourceId": "src-r34",
+      "line": 596,
+      "title": "本校专项制度适用/签发权限未知时，仍可作通用材料",
+      "moduleId": "g04-t05-material",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-35",
+      "sourceId": "src-r35",
+      "line": 608,
+      "title": "证据来源相互冲突时优先核当前可信台账、正式更正和",
+      "moduleId": "g04-t05-material",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "R-36",
+      "sourceId": "src-r36",
+      "line": 620,
+      "title": "补正、实质变更、否决后重报与历史批准分别版本化，",
+      "moduleId": "g04-t05-authority",
+      "status": "SOURCE_MAPPED_TECHNICAL_NOT_RUN",
+      "conditionNote": "保留原文的全部条件和状态分流；当前未把每一个 BR 细分都认证为机器三态"
+    },
+    {
+      "id": "§sec01",
+      "line": 7,
+      "title": "范围、审核目的与政策边界",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec01",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec02",
+      "line": 19,
+      "title": "术语、角色和权限链",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec02",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec03",
+      "line": 34,
+      "title": "分支触发、组合、互斥、优先级和未知态",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec03",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec04",
+      "line": 57,
+      "title": "分阶段输入契约：三类材料 + 权威底账与后续产物",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec04",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec05",
+      "line": 70,
+      "title": "字段字典（保留B阶段 F-01—F-44；新增F-45—F-47）",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec05",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec06",
+      "line": 126,
+      "title": "材料槽字典（统一 MS-01—MS-24，与B的M-01—M-24一一对应）",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec06",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec07",
+      "line": 157,
+      "title": "证据等价组（AND/OR、可信来源与失败路径）",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec07",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec08",
+      "line": 175,
+      "title": "审核事实与跨文书版本关系",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec08",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec10",
+      "line": 632,
+      "title": "状态语义、逐操作结果与聚合规则",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec10",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec11",
+      "line": 684,
+      "title": "生命周期、变更与防旧结果复用",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec11",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec12",
+      "line": 696,
+      "title": "合法例外、替代证据、人工边界",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec12",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec13",
+      "line": 707,
+      "title": "校本配置项及当前未关闭的真实缺口",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec13",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec14",
+      "line": 719,
+      "title": "来源与逐条追溯说明",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec14",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec15",
+      "line": 756,
+      "title": "作者真实办理路径走查（非D独立金标）",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec15",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec16",
+      "line": 770,
+      "title": "共性模块与T05专用规则边界",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec16",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec17",
+      "line": 775,
+      "title": "现有编辑器映射（仅在阅读真实工程后作出的有限判断）",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec17",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    },
+    {
+      "id": "§sec18",
+      "line": 789,
+      "title": "C0—C7完整性审计、版本与交接",
+      "moduleId": "g04-t05-section",
+      "sourceId": "src-sec18",
+      "status": "SECTION_SEMANTIC_CHECK_NOT_RUN",
+      "conditionNote": "原文完整保存在 source-sections.json；字段/材料/BR 未逐一具备确定性 Schema"
+    }
+  ],
+  "markers": {
+    "F": [
+      "F-01",
+      "F-02",
+      "F-03",
+      "F-04",
+      "F-05",
+      "F-06",
+      "F-07",
+      "F-08",
+      "F-09",
+      "F-10",
+      "F-11",
+      "F-12",
+      "F-13",
+      "F-14",
+      "F-15",
+      "F-16",
+      "F-17",
+      "F-18",
+      "F-19",
+      "F-20",
+      "F-21",
+      "F-22",
+      "F-23",
+      "F-24",
+      "F-25",
+      "F-26",
+      "F-27",
+      "F-28",
+      "F-29",
+      "F-30",
+      "F-31",
+      "F-32",
+      "F-33",
+      "F-34",
+      "F-35",
+      "F-36",
+      "F-37",
+      "F-38",
+      "F-39",
+      "F-40",
+      "F-41",
+      "F-42",
+      "F-43",
+      "F-44",
+      "F-45",
+      "F-46",
+      "F-47"
+    ],
+    "MS": [
+      "MS-01",
+      "MS-02",
+      "MS-03",
+      "MS-04",
+      "MS-05",
+      "MS-06",
+      "MS-07",
+      "MS-08",
+      "MS-09",
+      "MS-10",
+      "MS-11",
+      "MS-12",
+      "MS-13",
+      "MS-14",
+      "MS-15",
+      "MS-16",
+      "MS-17",
+      "MS-18",
+      "MS-19",
+      "MS-20",
+      "MS-21",
+      "MS-22",
+      "MS-23",
+      "MS-24"
+    ],
+    "M": [
+      "M-01",
+      "M-02",
+      "M-03",
+      "M-04",
+      "M-05",
+      "M-06",
+      "M-07",
+      "M-08",
+      "M-09",
+      "M-10",
+      "M-11",
+      "M-12",
+      "M-13",
+      "M-14",
+      "M-15",
+      "M-16",
+      "M-17",
+      "M-18",
+      "M-19",
+      "M-20",
+      "M-21",
+      "M-22",
+      "M-23",
+      "M-24"
+    ],
+    "BR": [
+      "BR-01",
+      "BR-02",
+      "BR-03",
+      "BR-04",
+      "BR-05",
+      "BR-06",
+      "BR-07",
+      "BR-08",
+      "BR-09",
+      "BR-10"
+    ],
+    "EV": [
+      "EV-01",
+      "EV-02",
+      "EV-03",
+      "EV-04",
+      "EV-05",
+      "EV-06",
+      "EV-07",
+      "EV-08",
+      "EV-09",
+      "EV-10",
+      "EV-11"
+    ],
+    "Q": [],
+    "ST": [
+      "ST-01",
+      "ST-02",
+      "ST-03",
+      "ST-04",
+      "ST-05",
+      "ST-06",
+      "ST-07",
+      "ST-08"
+    ]
+  },
+  "scope": "ALL_R_AND_MAIN_SECTIONS_WITH_ORIGINAL_RAW_TEXT"
+}

@@ -1,0 +1,1154 @@
+{
+  "sourceFile": "G06-T02_正式业务模板_MD_v0.1.md",
+  "sourceSha256": "251640d6dfe6746dca1296bde9ef9e0ee0f314be539270ab17c46ee581c557b5",
+  "version": "v0.1",
+  "scope": "full",
+  "atomicRules": [
+    {
+      "sourceId": "R-01",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L313",
+      "sourceAnchor": "### R-01｜路由与标的核对",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r01/check",
+      "moduleId": "g06-t02-r01",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-02",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L327",
+      "sourceAnchor": "### R-02｜政策适用范围和时间",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r02/check",
+      "moduleId": "g06-t02-r02",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-03",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L341",
+      "sourceAnchor": "### R-03｜本人/经办/代理角色",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r03/check",
+      "moduleId": "g06-t02-r03",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-04",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L355",
+      "sourceAnchor": "### R-04｜本校申请表存在性",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r04/check",
+      "moduleId": "g06-t02-r04",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-05",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L369",
+      "sourceAnchor": "### R-05｜本校诚信承诺存在性",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r05/check",
+      "moduleId": "g06-t02-r05",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-06",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L383",
+      "sourceAnchor": "### R-06｜国家统一登记申请表",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r06/check",
+      "moduleId": "g06-t02-r06",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-07",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L397",
+      "sourceAnchor": "### R-07｜程序鉴别材料存在",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r07/check",
+      "moduleId": "g06-t02-r07",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-08",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L411",
+      "sourceAnchor": "### R-08｜任一种文档鉴别材料存在",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r08/check",
+      "moduleId": "g06-t02-r08",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-09",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L425",
+      "sourceAnchor": "### R-09｜一般交存的程序前后页和少页全交",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r09/check",
+      "moduleId": "g06-t02-r09",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-10",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L439",
+      "sourceAnchor": "### R-10｜一般交存的文档前后页和少页全交",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r10/check",
+      "moduleId": "g06-t02-r10",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-11",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L453",
+      "sourceAnchor": "### R-11｜程序页行数最低要求",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r11/check",
+      "moduleId": "g06-t02-r11",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-12",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L467",
+      "sourceAnchor": "### R-12｜文档页行数最低要求",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r12/check",
+      "moduleId": "g06-t02-r12",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-13",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L481",
+      "sourceAnchor": "### R-13｜例外交存方式一遮盖限制",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r13/check",
+      "moduleId": "g06-t02-r13",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-14",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L495",
+      "sourceAnchor": "### R-14｜例外交存方式二页段组合",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r14/check",
+      "moduleId": "g06-t02-r14",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-15",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L509",
+      "sourceAnchor": "### R-15｜例外交存方式三目标程序与源程序",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r15/check",
+      "moduleId": "g06-t02-r15",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-16",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L523",
+      "sourceAnchor": "### R-16｜封存与可访问权限",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r16/check",
+      "moduleId": "g06-t02-r16",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-17",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L537",
+      "sourceAnchor": "### R-17｜申请表的语言签名证明格式",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r17/check",
+      "moduleId": "g06-t02-r17",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-18",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L551",
+      "sourceAnchor": "### R-18｜软件名跨文书一致及合法更名",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r18/check",
+      "moduleId": "g06-t02-r18",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-19",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L565",
+      "sourceAnchor": "### R-19｜版本及功能对应",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r19/check",
+      "moduleId": "g06-t02-r19",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-20",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L579",
+      "sourceAnchor": "### R-20｜申请人身份证明与权利人一致",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r20/check",
+      "moduleId": "g06-t02-r20",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-21",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L593",
+      "sourceAnchor": "### R-21｜共同开发及代表申请",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r21/check",
+      "moduleId": "g06-t02-r21",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-22",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L607",
+      "sourceAnchor": "### R-22｜委托开发/职务/任务开发权属",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r22/check",
+      "moduleId": "g06-t02-r22",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-23",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L621",
+      "sourceAnchor": "### R-23｜原软件许可与重要改进",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r23/check",
+      "moduleId": "g06-t02-r23",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-24",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L635",
+      "sourceAnchor": "### R-24｜继受/受让/承受权利来源",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r24/check",
+      "moduleId": "g06-t02-r24",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-25",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L649",
+      "sourceAnchor": "### R-25｜CDUT职务软件与本校合作协议范围",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r25/check",
+      "moduleId": "g06-t02-r25",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-26",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L663",
+      "sourceAnchor": "### R-26｜指导教师监督义务与校本责任",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r26/check",
+      "moduleId": "g06-t02-r26",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-27",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L677",
+      "sourceAnchor": "### R-27｜CDUT AI与复制等校本承诺和事实调查分离",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r27/check",
+      "moduleId": "g06-t02-r27",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-28",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L691",
+      "sourceAnchor": "### R-28｜开源许可证与第三方依赖",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r28/check",
+      "moduleId": "g06-t02-r28",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-29",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L705",
+      "sourceAnchor": "### R-29｜学校盖章、授权与外部登记状态隔离",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r29/check",
+      "moduleId": "g06-t02-r29",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-30",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L719",
+      "sourceAnchor": "### R-30｜校本开发前备案/验收严格项",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r30/check",
+      "moduleId": "g06-t02-r30",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-31",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L733",
+      "sourceAnchor": "### R-31｜授权码/机构账号与现行平台差异",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r31/check",
+      "moduleId": "g06-t02-r31",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-32",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L747",
+      "sourceAnchor": "### R-32｜已受理后的补正",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r32/check",
+      "moduleId": "g06-t02-r32",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-33",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L761",
+      "sourceAnchor": "### R-33｜已登记事项的变更/补充",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r33/check",
+      "moduleId": "g06-t02-r33",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-34",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L775",
+      "sourceAnchor": "### R-34｜登记批准前撤回请求",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r34/check",
+      "moduleId": "g06-t02-r34",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-35",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L789",
+      "sourceAnchor": "### R-35｜外部正式登记/不予登记状态和再申请",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r35/check",
+      "moduleId": "g06-t02-r35",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-36",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L803",
+      "sourceAnchor": "### R-36｜局部多问题聚合与版本变更后重审",
+      "type": "rule",
+      "checkId": "g06-t02@1:module/use-r36/check",
+      "moduleId": "g06-t02-r36",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    }
+  ],
+  "otherResponsibilities": [
+    {
+      "sourceId": "SECTION-01",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L11",
+      "sourceAnchor": "## 0. 文档导读、ID空间与使用方式",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section01/check",
+      "moduleId": "g06-t02-section01",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-02",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L41",
+      "sourceAnchor": "## 1. 审核目的、保留必要性及相邻排除",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section02/check",
+      "moduleId": "g06-t02-section02",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-03",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L51",
+      "sourceAnchor": "## 2. 角色、关系、权限和最小审核单位",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section03/check",
+      "moduleId": "g06-t02-section03",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-04",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "## 3. 条件轴、主分支与规则选择优先级",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section04/check",
+      "moduleId": "g06-t02-section04",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-05",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L114",
+      "sourceAnchor": "## 4. 生命周期及审批责任链",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section05/check",
+      "moduleId": "g06-t02-section05",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-06",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L133",
+      "sourceAnchor": "## 5. 四类输入与底账故障契约",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section06/check",
+      "moduleId": "g06-t02-section06",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-07",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L156",
+      "sourceAnchor": "## 6. 字段字典（申报事项/材料/证明/底账彼此解耦）",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section07/check",
+      "moduleId": "g06-t02-section07",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-08",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L219",
+      "sourceAnchor": "## 7. 材料槽、替代证据组与访问约束",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section08/check",
+      "moduleId": "g06-t02-section08",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-09",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L281",
+      "sourceAnchor": "## 8. 审核事实（AF）与跨文件关系",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section09/check",
+      "moduleId": "g06-t02-section09",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-10",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L309",
+      "sourceAnchor": "## 9. 逐条原子审核规则（可审计业务契约）",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section10/check",
+      "moduleId": "g06-t02-section10",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-11",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L817",
+      "sourceAnchor": "## 10. 逐项状态、问题码、聚合和结果契约",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section11/check",
+      "moduleId": "g06-t02-section11",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-12",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L885",
+      "sourceAnchor": "## 11. 补件、变更、撤回、审批及执行的完整生命周期",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section12/check",
+      "moduleId": "g06-t02-section12",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-13",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L903",
+      "sourceAnchor": "## 12. 合法例外、替代证据与人工边界",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section13/check",
+      "moduleId": "g06-t02-section13",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-14",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L929",
+      "sourceAnchor": "## 13. 校本政策参数与未关闭缺口",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section14/check",
+      "moduleId": "g06-t02-section14",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-15",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L947",
+      "sourceAnchor": "## 14. 官方来源追踪与事实/推断分离",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section15/check",
+      "moduleId": "g06-t02-section15",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-16",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L969",
+      "sourceAnchor": "## 15. 按真实办理路径的作者流程推演（不构成D独立测试金标）",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section16/check",
+      "moduleId": "g06-t02-section16",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-17",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L983",
+      "sourceAnchor": "## 16. 共性模块与本业务专属责任",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section17/check",
+      "moduleId": "g06-t02-section17",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-18",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L999",
+      "sourceAnchor": "## 17. 当前仓库的表达映射（静态读取，未运行此模板）",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section18/check",
+      "moduleId": "g06-t02-section18",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-19",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L1023",
+      "sourceAnchor": "## 18. 完整性审计、版本变更及交接边界",
+      "type": "context",
+      "checkId": "g06-t02@1:module/use-section19/check",
+      "moduleId": "g06-t02-section19",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "BR-01",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L18",
+      "sourceAnchor": "| 分支 | `BR-01—BR-11` | 根据主办理目标先互斥选一，再叠加组合条件 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t02@1:module/use-axis-br-01/check",
+      "moduleId": "g06-t02-axis-br-01",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-02",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L76",
+      "sourceAnchor": "| BR-02 | 其他高校通过OA/机构平台首次申请 | ST-00—ST-05 | 按该校有来源的流程审校表及授权[S05][S07] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t02@1:module/use-axis-br-02/check",
+      "moduleId": "g06-t02-axis-br-02",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-08",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L82",
+      "sourceAnchor": "| BR-08 | 按版权中心通知进行补正 | ST-07 | 原申请号、待补清单、期限/正式回执[S04] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t02@1:module/use-axis-br-08/check",
+      "moduleId": "g06-t02-axis-br-08",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-09",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L83",
+      "sourceAnchor": "| BR-09 | 对已经登记的事项办理变更或补充 | ST-09 | 原证、变更/补充表及依据，权利处分联T09[S04] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t02@1:module/use-axis-br-09/check",
+      "moduleId": "g06-t02-axis-br-09",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "BR-10",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L84",
+      "sourceAnchor": "| BR-10 | 登记尚未批准时申请撤回 | ST-05—ST-07 | 撤回请求与发起人资格；已登记撤销不是该分支[S04] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t02@1:module/use-axis-br-10/check",
+      "moduleId": "g06-t02-axis-br-10",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-11",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L18",
+      "sourceAnchor": "| 分支 | `BR-01—BR-11` | 根据主办理目标先互斥选一，再叠加组合条件 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t02@1:module/use-axis-br-11/check",
+      "moduleId": "g06-t02-axis-br-11",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-03",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L77",
+      "sourceAnchor": "| BR-03 | 校外机构合作开发且由代表申报 | ST-00—ST-05 | 额外核共同权利人关系和同意[S03][S04] |",
+      "type": "additive-condition",
+      "checkId": "g06-t02@1:module/use-axis-br-03/check",
+      "moduleId": "g06-t02-axis-br-03",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-04",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L78",
+      "sourceAnchor": "| BR-04 | 委托开发、受指派任务或职务软件 | ST-00—ST-05 | 额外核权利归属与相关合同[S03] |",
+      "type": "additive-condition",
+      "checkId": "g06-t02@1:module/use-axis-br-04/check",
+      "moduleId": "g06-t02-axis-br-04",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-05",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L79",
+      "sourceAnchor": "| BR-05 | 在原软件基础上经许可实现重要改进 | ST-00—ST-05 | 额外核原著作权人许可、改进对象与权利[S04] |",
+      "type": "additive-condition",
+      "checkId": "g06-t02@1:module/use-axis-br-05/check",
+      "moduleId": "g06-t02-axis-br-05",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-06",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L80",
+      "sourceAnchor": "| BR-06 | 一般交存及原件不足60页全部交存 | ST-04—ST-06 | 按第10条核内容页与行数[S04] |",
+      "type": "additive-condition",
+      "checkId": "g06-t02@1:module/use-axis-br-06/check",
+      "moduleId": "g06-t02-axis-br-06",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-07",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L81",
+      "sourceAnchor": "| BR-07 | 法定例外交存、申请封存 | ST-04—ST-06 | 合法保密交存不按一般交存误拒[S04] |",
+      "type": "additive-condition",
+      "checkId": "g06-t02@1:module/use-axis-br-07/check",
+      "moduleId": "g06-t02-axis-br-07",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-01",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L99",
+      "sourceAnchor": "| AX-01 `institution` | CDUT/其它明确学校/UNKNOWN | 本校S01通知校本范围 | 按已核目标学校政策 | `POLICY_UNRESOLVED`，不猜学校 |",
+      "type": "additive-condition",
+      "checkId": "g06-t02@1:module/use-axis-ax-01/check",
+      "moduleId": "g06-t02-axis-ax-01",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-02",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L100",
+      "sourceAnchor": "| AX-02 `rights_basis` | 个人/职务/委托/任务/合作/继受/混合/UNKNOWN | 具体M08/09/11 | 不存在关系则相关文件NA | `CONDITION_UNRESOLVED`，不推定学校独有或个人独有 |",
+      "type": "additive-condition",
+      "checkId": "g06-t02@1:module/use-axis-ax-02/check",
+      "moduleId": "g06-t02-axis-ax-02",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-03",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L101",
+      "sourceAnchor": "| AX-03 `outside_owner` | TRUE/FALSE/UNKNOWN | M08及代表申请权 | NA（有充足事实证据时） | `RIGHTS_SCOPE_PENDING`，不能删除校外主体 |",
+      "type": "additive-condition",
+      "checkId": "g06-t02@1:module/use-axis-ax-03/check",
+      "moduleId": "g06-t02-axis-ax-03",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-04",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L102",
+      "sourceAnchor": "| AX-04 `modified_prior_software` | TRUE/FALSE/UNKNOWN | M10许可和改进内容 | NA | 可能涉及第三方代码时待澄清 |",
+      "type": "additive-condition",
+      "checkId": "g06-t02@1:module/use-axis-ax-04/check",
+      "moduleId": "g06-t02-axis-ax-04",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-05",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L103",
+      "sourceAnchor": "| AX-05 `source_deposit_mode` | GENERAL/EXC-1/EXC-2/EXC-3/UNKNOWN | BR-06或BR-07 | 单一明确方式 | `DEPOSIT_MODE_PENDING`，不能直接套60页阈值 |",
+      "type": "additive-condition",
+      "checkId": "g06-t02@1:module/use-axis-ax-05/check",
+      "moduleId": "g06-t02-axis-ax-05",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-06",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L104",
+      "sourceAnchor": "| AX-06 `sealing_requested` | TRUE/FALSE/UNKNOWN | 封存申请及可访问范围 | 非封存流程 | 不影响已明确交存方式；涉及访问限制须待核 |",
+      "type": "additive-condition",
+      "checkId": "g06-t02@1:module/use-axis-ax-06/check",
+      "moduleId": "g06-t02-axis-ax-06",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-07",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L105",
+      "sourceAnchor": "| AX-07 `published` | TRUE/FALSE/UNKNOWN | 已发表时核首次发表日 | 未发表日期NA | 先核发表事实，不以空日期定错 |",
+      "type": "additive-condition",
+      "checkId": "g06-t02@1:module/use-axis-ax-07/check",
+      "moduleId": "g06-t02-axis-ax-07",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-08",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L106",
+      "sourceAnchor": "| AX-08 `open_source_used` | TRUE/FALSE/UNKNOWN | M13与许可证遵守证据 | NA | 有第三方依赖线索时留待确认，不自动无问题 |",
+      "type": "additive-condition",
+      "checkId": "g06-t02@1:module/use-axis-ax-08/check",
+      "moduleId": "g06-t02-axis-ax-08",
+      "scope": "g06-software-right",
+      "requiresHumanDecision": true
+    }
+  ],
+  "fieldMaterialEvidenceStageAndQuestionIndex": [
+    {
+      "id": "BR-01",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L18",
+      "sourceExcerpt": "| 分支 | `BR-01—BR-11` | 根据主办理目标先互斥选一，再叠加组合条件 |"
+    },
+    {
+      "id": "BR-11",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L18",
+      "sourceExcerpt": "| 分支 | `BR-01—BR-11` | 根据主办理目标先互斥选一，再叠加组合条件 |"
+    },
+    {
+      "id": "MS-01",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L20",
+      "sourceExcerpt": "| 材料槽 | `MS-01—MS-24`（与B阶段`M01—M24`一一对应） | 按阶段与触发事实决定是否需要；材料类型不等于申请人一定要上传文件 |"
+    },
+    {
+      "id": "MS-24",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L20",
+      "sourceExcerpt": "| 材料槽 | `MS-01—MS-24`（与B阶段`M01—M24`一一对应） | 按阶段与触发事实决定是否需要；材料类型不等于申请人一定要上传文件 |"
+    },
+    {
+      "id": "EV-01",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L21",
+      "sourceExcerpt": "| 证据组 | `EV-01—EV-17` | 同一事实可由“权威数据或符合规则的原件”等合法等价证明组支持 |"
+    },
+    {
+      "id": "EV-17",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L21",
+      "sourceExcerpt": "| 证据组 | `EV-01—EV-17` | 同一事实可由“权威数据或符合规则的原件”等合法等价证明组支持 |"
+    },
+    {
+      "id": "ST-00",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L24",
+      "sourceExcerpt": "| 阶段 | `ST-00—ST-11` | 具体学校不必全部采用；流转节点不能冒充外部行政状态 |"
+    },
+    {
+      "id": "ST-11",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L24",
+      "sourceExcerpt": "| 阶段 | `ST-00—ST-11` | 具体学校不必全部采用；流转节点不能冒充外部行政状态 |"
+    },
+    {
+      "id": "ST-04",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L75",
+      "sourceExcerpt": "| BR-01 | 本校师生首次申请软件著作权，准备内部审批 | ST-00—ST-04 | 校内审签意见；外部法定登记另办[S01] |"
+    },
+    {
+      "id": "BR-02",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L76",
+      "sourceExcerpt": "| BR-02 | 其他高校通过OA/机构平台首次申请 | ST-00—ST-05 | 按该校有来源的流程审校表及授权[S05][S07] |"
+    },
+    {
+      "id": "ST-05",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L76",
+      "sourceExcerpt": "| BR-02 | 其他高校通过OA/机构平台首次申请 | ST-00—ST-05 | 按该校有来源的流程审校表及授权[S05][S07] |"
+    },
+    {
+      "id": "BR-03",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L77",
+      "sourceExcerpt": "| BR-03 | 校外机构合作开发且由代表申报 | ST-00—ST-05 | 额外核共同权利人关系和同意[S03][S04] |"
+    },
+    {
+      "id": "BR-04",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L78",
+      "sourceExcerpt": "| BR-04 | 委托开发、受指派任务或职务软件 | ST-00—ST-05 | 额外核权利归属与相关合同[S03] |"
+    },
+    {
+      "id": "BR-05",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L79",
+      "sourceExcerpt": "| BR-05 | 在原软件基础上经许可实现重要改进 | ST-00—ST-05 | 额外核原著作权人许可、改进对象与权利[S04] |"
+    },
+    {
+      "id": "BR-06",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L80",
+      "sourceExcerpt": "| BR-06 | 一般交存及原件不足60页全部交存 | ST-04—ST-06 | 按第10条核内容页与行数[S04] |"
+    },
+    {
+      "id": "ST-06",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L80",
+      "sourceExcerpt": "| BR-06 | 一般交存及原件不足60页全部交存 | ST-04—ST-06 | 按第10条核内容页与行数[S04] |"
+    },
+    {
+      "id": "BR-07",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L81",
+      "sourceExcerpt": "| BR-07 | 法定例外交存、申请封存 | ST-04—ST-06 | 合法保密交存不按一般交存误拒[S04] |"
+    },
+    {
+      "id": "BR-08",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L82",
+      "sourceExcerpt": "| BR-08 | 按版权中心通知进行补正 | ST-07 | 原申请号、待补清单、期限/正式回执[S04] |"
+    },
+    {
+      "id": "ST-07",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L82",
+      "sourceExcerpt": "| BR-08 | 按版权中心通知进行补正 | ST-07 | 原申请号、待补清单、期限/正式回执[S04] |"
+    },
+    {
+      "id": "BR-09",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L83",
+      "sourceExcerpt": "| BR-09 | 对已经登记的事项办理变更或补充 | ST-09 | 原证、变更/补充表及依据，权利处分联T09[S04] |"
+    },
+    {
+      "id": "ST-09",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L83",
+      "sourceExcerpt": "| BR-09 | 对已经登记的事项办理变更或补充 | ST-09 | 原证、变更/补充表及依据，权利处分联T09[S04] |"
+    },
+    {
+      "id": "BR-10",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L84",
+      "sourceExcerpt": "| BR-10 | 登记尚未批准时申请撤回 | ST-05—ST-07 | 撤回请求与发起人资格；已登记撤销不是该分支[S04] |"
+    },
+    {
+      "id": "ST-08",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L85",
+      "sourceExcerpt": "| BR-11 | 外部受理/登记/拒登结果归档 | ST-08—ST-11 | 同步正式状态；取得证书后成果库另转T03[S04][S05] |"
+    },
+    {
+      "id": "AX-01",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L99",
+      "sourceExcerpt": "| AX-01 `institution` | CDUT/其它明确学校/UNKNOWN | 本校S01通知校本范围 | 按已核目标学校政策 | `POLICY_UNRESOLVED`，不猜学校 |"
+    },
+    {
+      "id": "AX-02",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L100",
+      "sourceExcerpt": "| AX-02 `rights_basis` | 个人/职务/委托/任务/合作/继受/混合/UNKNOWN | 具体M08/09/11 | 不存在关系则相关文件NA | `CONDITION_UNRESOLVED`，不推定学校独有或个人独有 |"
+    },
+    {
+      "id": "AX-03",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L101",
+      "sourceExcerpt": "| AX-03 `outside_owner` | TRUE/FALSE/UNKNOWN | M08及代表申请权 | NA（有充足事实证据时） | `RIGHTS_SCOPE_PENDING`，不能删除校外主体 |"
+    },
+    {
+      "id": "AX-04",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L102",
+      "sourceExcerpt": "| AX-04 `modified_prior_software` | TRUE/FALSE/UNKNOWN | M10许可和改进内容 | NA | 可能涉及第三方代码时待澄清 |"
+    },
+    {
+      "id": "AX-05",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L103",
+      "sourceExcerpt": "| AX-05 `source_deposit_mode` | GENERAL/EXC-1/EXC-2/EXC-3/UNKNOWN | BR-06或BR-07 | 单一明确方式 | `DEPOSIT_MODE_PENDING`，不能直接套60页阈值 |"
+    },
+    {
+      "id": "AX-06",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L104",
+      "sourceExcerpt": "| AX-06 `sealing_requested` | TRUE/FALSE/UNKNOWN | 封存申请及可访问范围 | 非封存流程 | 不影响已明确交存方式；涉及访问限制须待核 |"
+    },
+    {
+      "id": "AX-07",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L105",
+      "sourceExcerpt": "| AX-07 `published` | TRUE/FALSE/UNKNOWN | 已发表时核首次发表日 | 未发表日期NA | 先核发表事实，不以空日期定错 |"
+    },
+    {
+      "id": "AX-08",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L106",
+      "sourceExcerpt": "| AX-08 `open_source_used` | TRUE/FALSE/UNKNOWN | M13与许可证遵守证据 | NA | 有第三方依赖线索时留待确认，不自动无问题 |"
+    },
+    {
+      "id": "AX-09",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L107",
+      "sourceExcerpt": "| AX-09 `uses_AI_generated_content` | TRUE/FALSE/UNKNOWN | CDUT校本禁止事实如有权核实→专业处理 | 自述与承诺可记录，但不证明事实无AI | 只能标`UNVERIFIED`;检测器分数不成正式认定 |"
+    },
+    {
+      "id": "AX-10",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L108",
+      "sourceExcerpt": "| AX-10 `agent_submits` | TRUE/FALSE/UNKNOWN | M23及权利人授权 | 仅本人/有权代表提交 | 身份未经信源确认→`AUTHORITY_PENDING` |"
+    },
+    {
+      "id": "AX-11",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L109",
+      "sourceExcerpt": "| AX-11 `has_prior_registration` | TRUE/FALSE/UNKNOWN | BR-09/M17或历史升级说明 | 新申请不得预索证书 | 已登变更路径待核，不预设 |"
+    },
+    {
+      "id": "AX-12",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L110",
+      "sourceExcerpt": "| AX-12 `effective_policy` | CONFIRMED/CONFLICTED/UNKNOWN | 用准确时段的权威制度 | 已确认不适用则NA | 保留本校网页/落款双日期，待校方说明后强制适用 |"
+    },
+    {
+      "id": "ST-01",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L119",
+      "sourceExcerpt": "| ST-01 校内申请草稿 | 申请表、承诺草稿、代码/文档候选 | 主要材料、条件轴、自述事实 | 学校签章、版权中心受理号 |"
+    },
+    {
+      "id": "ST-02",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L120",
+      "sourceExcerpt": "| ST-02 校内材料形式初核 | 文书与版本、条件协议、必要证明 | 提交完整度和可复核性 | 终审章、版权登记证 |"
+    },
+    {
+      "id": "ST-03",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L121",
+      "sourceExcerpt": "| ST-03 有权单位审签中 | 导师/学院/科发院或本校另定节点 | 节点是否真实存在及对应版本 | **尚在审的节点不可当作申请初期缺件** |"
+    },
+    {
+      "id": "ST-10",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L128",
+      "sourceExcerpt": "| ST-10 证书/决定归档 | 正式软件登记/撤回/不予登记文件留存 | 真实阶段和关联原案 | 归档不等于自动完成T03成果登记 |"
+    },
+    {
+      "id": "MS-15",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L162",
+      "sourceExcerpt": "| **F01** | ``case.application_type``：首次/补正/变更/撤回（事项）；`string` | all | MS-01/MS-15/MS-16；M01/M15/M16 S04 | S1业务元数据 | 路径不明分类 |"
+    },
+    {
+      "id": "MS-16",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L162",
+      "sourceExcerpt": "| **F01** | ``case.application_type``：首次/补正/变更/撤回（事项）；`string` | all | MS-01/MS-15/MS-16；M01/M15/M16 S04 | S1业务元数据 | 路径不明分类 |"
+    },
+    {
+      "id": "MS-20",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L164",
+      "sourceExcerpt": "| **F03** | ``actor.submitter_id``：经办人身份（事项/底账）；`id` | s | MS-20/MS-23；M20/M23 | S3个人/合同/技术 | 越权待授权 |"
+    },
+    {
+      "id": "MS-23",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L164",
+      "sourceExcerpt": "| **F03** | ``actor.submitter_id``：经办人身份（事项/底账）；`id` | s | MS-20/MS-23；M20/M23 | S3个人/合同/技术 | 越权待授权 |"
+    },
+    {
+      "id": "MS-12",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L165",
+      "sourceExcerpt": "| **F04** | ``actor.submitter_role``：学生/教师/代办人（事项）；`enum` | s | MS-12/MS-20；M12/M20 | S3个人/合同/技术 | 不等权利人 |"
+    },
+    {
+      "id": "MS-04",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L167",
+      "sourceExcerpt": "| **F06** | ``software.full_name``：软件全称（申报事项）；`string` | N:e | MS-01/MS-04/MS-05/MS-06；M01/M04/M05/M06 S04 | S2内部技术 | 不一致补正/证争人审 |"
+    },
+    {
+      "id": "MS-05",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L167",
+      "sourceExcerpt": "| **F06** | ``software.full_name``：软件全称（申报事项）；`string` | N:e | MS-01/MS-04/MS-05/MS-06；M01/M04/M05/M06 S04 | S2内部技术 | 不一致补正/证争人审 |"
+    },
+    {
+      "id": "MS-06",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L167",
+      "sourceExcerpt": "| **F06** | ``software.full_name``：软件全称（申报事项）；`string` | N:e | MS-01/MS-04/MS-05/MS-06；M01/M04/M05/M06 S04 | S2内部技术 | 不一致补正/证争人审 |"
+    },
+    {
+      "id": "MS-14",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L169",
+      "sourceExcerpt": "| **F08** | ``software.version``：软件版本（事项）；`string` | N:e或校规 | MS-04/MS-05/MS-06/MS-14；M04/M05/M06/M14 S06 | S2内部技术 | 合法映射需证据 |"
+    },
+    {
+      "id": "MS-08",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L172",
+      "sourceExcerpt": "| **F11** | ``software.development_mode``：原创/合作/委托/任务开发（事项）；`enum` | s/e | MS-04/MS-08/MS-09；M04/M08/M09 S03 | S2内部技术 | 与合同冲突→人审 |"
+    },
+    {
+      "id": "MS-09",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L172",
+      "sourceExcerpt": "| **F11** | ``software.development_mode``：原创/合作/委托/任务开发（事项）；`enum` | s/e | MS-04/MS-08/MS-09；M04/M08/M09 S03 | S2内部技术 | 与合同冲突→人审 |"
+    },
+    {
+      "id": "MS-11",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L173",
+      "sourceExcerpt": "| **F12** | ``software.rights_acquisition_mode``：原始/继受等（事项）；`enum` | 依权利来源 | MS-04/MS-11；M04/M11 S04 | S2内部技术 | 继受无依据补件 |"
+    },
+    {
+      "id": "MS-07",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L180",
+      "sourceExcerpt": "| **F19** | ``software.owner_entities[]``：外部拟登记权利人（事项）；`entity[]` | e | MS-04/MS-07/MS-08/MS-09；M04/M07/M08/M09 S03 | S3个人/合同/技术 | 争议人审 |"
+    },
+    {
+      "id": "MS-02",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L181",
+      "sourceExcerpt": "| **F20** | ``software.developers[]``：实际参与开发名单/贡献（申报材料）；`person[]` | 校本/权属 | MS-02/MS-03/MS-12；M02/M03/M12 S01 | S3个人/合同/技术 | 不等登记著作权人 |"
+    },
+    {
+      "id": "MS-03",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L181",
+      "sourceExcerpt": "| **F20** | ``software.developers[]``：实际参与开发名单/贡献（申报材料）；`person[]` | 校本/权属 | MS-02/MS-03/MS-12；M02/M03/M12 S01 | S3个人/合同/技术 | 不等登记著作权人 |"
+    },
+    {
+      "id": "MS-10",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L184",
+      "sourceExcerpt": "| **F23** | ``ownership.original_software_permission``：原权利人许可范围（证明）；`scope` | C:二次开发 | MS-10；M10 S04 | S3个人/合同/技术 | 无许可风险人审 |"
+    },
+    {
+      "id": "MS-21",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L186",
+      "sourceExcerpt": "| **F25** | ``authorization.school_approval``：校内签章状态和日期（底账）；`status+date` | 按校流程 | MS-21；M21 S01 | S3个人/合同/技术 | 在途≠获批 |"
+    },
+    {
+      "id": "MS-13",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L189",
+      "sourceExcerpt": "| **F28** | ``integrity.open_source_list``：依赖软件许可证集合（申报/证明）；`array` | C:开源使用 | MS-13；M13 S01 | S3个人/合同/技术 | 条件未知待核 |"
+    },
+    {
+      "id": "MS-22",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L190",
+      "sourceExcerpt": "| **F29** | ``integrity.similarity_candidate``：疑似重复作品关联（底账候选）；`reference` | C:出现候选 | MS-22；M22 S01 | S3个人/合同/技术 | 标记风险≠定案 |"
+    },
+    {
+      "id": "MS-17",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L191",
+      "sourceExcerpt": "| **F30** | ``history.original_registration_no``：旧登记号（事项/证明）；`registration_no` | C:变更 | MS-16/MS-17；M16/M17 S04 | S2内部技术 | 新申请无旧号合法 |"
+    },
+    {
+      "id": "MS-19",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L193",
+      "sourceExcerpt": "| **F32** | ``register.status``：版权中心阶段状态（底账）；`state` | e/c/a | MS-19/MS-22；M19/M22 S04 | S1业务元数据 | 不推断登记成功 |"
+    },
+    {
+      "id": "MS-18",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L242",
+      "sourceExcerpt": "| **MS-18** | 申报材料：登记前撤回请求 | C:申请中主动撤回 | 工单、申请人身份及授权 | 官方平台撤回申请记录 | 仅在撤回分支出现 | S04；常规内部申请元数据 |"
+    },
+    {
+      "id": "EV-02",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L257",
+      "sourceExcerpt": "| **EV-02** | CDUT本校申请表及承诺存在 | 在确定S01有效范围时MS-02 **AND** MS-03；经校方明确认可的电子化等效文书可替代物理文件 | S02精确栏位未读→不能要求未证的签章栏 |"
+    },
+    {
+      "id": "EV-03",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L258",
+      "sourceExcerpt": "| **EV-03** | 外部登记核心申请文书 | MS-04 **AND** MS-05 **AND** MS-06；分别证明表、程序、文档 | 法定登记阶段缺一项需补正；内部草稿可允许待形成正式表 |"
+    },
+    {
+      "id": "EV-04",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L259",
+      "sourceExcerpt": "| **EV-04** | 权利人真实主体 | ANY[MS-07, TB-02可核的学校法人认证, 经有权部门核证的机构主体文件] | 查询失败→未验证，不自动判身份不真实 |"
+    },
+    {
+      "id": "EV-05",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L260",
+      "sourceExcerpt": "| **EV-05** | 合作开发权属及代表权 | MS-08正式协议/合同 **AND** 代表办理授权（适用时）；S04第8条特殊不同意场景须识别合法权利人申请与披露 | 合同矛盾→人工；无合作则组NA |"
+    },
+    {
+      "id": "EV-06",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L261",
+      "sourceExcerpt": "| **EV-06** | 职务/委托/任务权属基础 | ANY[MS-09项目任务书及有关条款、学校可信备案合同/项目系统、其他合法书面权属依据] 加开发事实核对 | 不能因经办是学生自动归学校或个人 |"
+    },
+    {
+      "id": "EV-07",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L262",
+      "sourceExcerpt": "| **EV-07** | 许可改进他人软件 | MS-10原权利人许可 **AND** 改进范围/功能新内容说明 | 许可范围是否足够人审；无原软件则NA |"
+    },
+    {
+      "id": "EV-08",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L263",
+      "sourceExcerpt": "| **EV-08** | 继受权利来源 | MS-11相关有效证明 或可核权威登记链（登记办法第11条） | T09处理实质处分；没有触发则NA |"
+    },
+    {
+      "id": "EV-09",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L264",
+      "sourceExcerpt": "| **EV-09** | 导师监督及学校授权 | 适用的MS-12或TB-02/TB-01可信审批；**S01监督义务不自动等于规定任何签名人数** | 需要校本表栏但未知→待校规配置 |"
+    },
+    {
+      "id": "EV-10",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L265",
+      "sourceExcerpt": "| **EV-10** | 开源许可证与第三方依赖 | MS-13许可证文本、固定版本依赖清单、软件功能/许可范围关系；有可信公开许可原文可代上传全文 | 使用开源≠自动违规；证据不足→待核 |"
+    },
+    {
+      "id": "EV-11",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L266",
+      "sourceExcerpt": "| **EV-11** | 代码/文档一般交存符合形制 | MS-05**AND**MS-06，依第10条按各自原件总页数、前后连续页/不足60全部及行数例外判断 | 总页数不明/扫描OCR不可读→未验证，不推断页数 |"
+    },
+    {
+      "id": "EV-12",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L267",
+      "sourceExcerpt": "| **EV-12** | 三种例外交存/封存被合法声明 | 第12条选定模式+实际交存材料；封存申请作为**可叠加独立要求**并保留保密访问范围 | 不把封存当免交；例外规则不按第10条一般页数拒件 |"
+    },
+    {
+      "id": "EV-13",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L268",
+      "sourceExcerpt": "| **EV-13** | 补正通知和原申请对应 | MS-15或TB-05可核正式补正通知 + 原受理号/期限 + 新提交版本 | 仅聊天截图不能替登记机关通知 |"
+    },
+    {
+      "id": "EV-14",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L269",
+      "sourceExcerpt": "| **EV-14** | 已登记变更/补充申请 | MS-16 **AND** ANY[MS-17, TB-05原证信息] **AND** 变更依据；某些变化须有T09的权利处置结果 | 无原登记不走BR-09；变更材料不代替T09交易批准 |"
+    },
+    {
+      "id": "EV-15",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L270",
+      "sourceExcerpt": "| **EV-15** | 登记前撤回的有效请求 | MS-18+申报经办人/权利人授权+当前登记尚未批准的可核状态 | 正式已登记则不适用此路径，另有国家机关撤销程序 |"
+    },
+    {
+      "id": "EV-16",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L271",
+      "sourceExcerpt": "| **EV-16** | 外部状态/证书事实 | TB-05或MS-19有机构和编号且可独立核验；不能只凭校内上传文本视为国家决定 | 接口不可达→UNVERIFIED，不写REGISTERED |"
+    }
+  ],
+  "unmappedAxes": [
+    {
+      "id": "AX-09",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L107",
+      "sourceExcerpt": "| AX-09 `uses_AI_generated_content` | TRUE/FALSE/UNKNOWN | CDUT校本禁止事实如有权核实→专业处理 | 自述与承诺可记录，但不证明事实无AI | 只能标`UNVERIFIED`;检测器分数不成正式认定 |"
+    },
+    {
+      "id": "AX-10",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L108",
+      "sourceExcerpt": "| AX-10 `agent_submits` | TRUE/FALSE/UNKNOWN | M23及权利人授权 | 仅本人/有权代表提交 | 身份未经信源确认→`AUTHORITY_PENDING` |"
+    },
+    {
+      "id": "AX-11",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L109",
+      "sourceExcerpt": "| AX-11 `has_prior_registration` | TRUE/FALSE/UNKNOWN | BR-09/M17或历史升级说明 | 新申请不得预索证书 | 已登变更路径待核，不预设 |"
+    },
+    {
+      "id": "AX-12",
+      "locator": "G06-T02_正式业务模板_MD_v0.1.md:L110",
+      "sourceExcerpt": "| AX-12 `effective_policy` | CONFIRMED/CONFLICTED/UNKNOWN | 用准确时段的权威制度 | 已确认不适用则NA | 保留本校网页/落款双日期，待校方说明后强制适用 |"
+    }
+  ]
+}

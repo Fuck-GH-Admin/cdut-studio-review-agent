@@ -1,0 +1,14 @@
+{
+  "workspaceId": "d4-g01-c-common-r2",
+  "revision": 1,
+  "modules": 14,
+  "sourceBindings": 86,
+  "checks": 161,
+  "subjects": [
+    "sub-g01-c-object-a",
+    "sub-g01-c-object-b"
+  ],
+  "transferFingerprint": "f2c415bf64092dea52919bb83920d579e63cd4c0b2a4259cb6f758bc2fc43065",
+  "planFingerprint": "2ddf5d2727d7739d25cc0788daf29a4fa3521729e22f1ed4405130969994bb32",
+  "mode": "technical-pre-review"
+}

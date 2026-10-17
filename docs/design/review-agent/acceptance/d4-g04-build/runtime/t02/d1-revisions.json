@@ -1,0 +1,10 @@
+{
+  "revision1": "52ea5a9c384cef2e19c653186860f0138f6d6ea9385b67366b3025e0306bbf2e",
+  "revision2": "ddb5c91d93d18dc5bb30a215fc0532d6a705b772fbe9e23fb5307fe974f07f5d",
+  "parentDigest": "52ea5a9c384cef2e19c653186860f0138f6d6ea9385b67366b3025e0306bbf2e",
+  "changedModules": [
+    "g04-t02-scope@1"
+  ],
+  "originalUntouched": true,
+  "sourceSHA256": "8ef7326529c11a88affcba1085607b0cf919b7644935d1dda7ac72f4b1577f72"
+}
