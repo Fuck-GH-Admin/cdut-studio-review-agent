@@ -1,0 +1,24 @@
+{
+  "caseId": "g05-t02-tech-run",
+  "runId": "run-pi-mvcmolq1-zpo7z",
+  "verified": {
+    "complete": true,
+    "problems": []
+  },
+  "registeredDocumentVersion": "doc-1-mvcmolps-v1",
+  "confirmedEvidenceLinks": [
+    {
+      "id": "evl-doc-1-mvcmolps-v1-g05-t02-subject-alpha-1792255556085-fzts",
+      "documentVersionId": "doc-1-mvcmolps-v1",
+      "subjectId": "g05-t02-subject-alpha",
+      "supportsFact": "d2:object:g05-t02-activity:scope",
+      "status": "confirmed",
+      "linkedBy": "user"
+    }
+  ],
+  "negativeCrossObjectEvidence": "REJECTED",
+  "publicationAllowed": false,
+  "policyAuthority": "NOT_VERIFIED",
+  "onlineModel": "NOT_RUN",
+  "gold": "NOT_ACCESSED"
+}
