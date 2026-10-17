@@ -92,7 +92,7 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
     onActivity: context.onCapabilityEvent,
   })
   const ref = (documentVersionId: string, blockId?: string, quote?: string): SourceRef | undefined => {
-    const document = context.documents.find((candidate) => candidate.versionId === documentVersionId)
+    const document = context.documents.find((candidate) => candidate.versionId === documentVersionId && candidate.active !== false)
     if (!document) return undefined
     const block = blockId ? document.blocks.find((candidate) => candidate.blockId === blockId) : undefined
     if (blockId && !block) return undefined
@@ -176,7 +176,7 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
         try {
           const attachment = documentCapabilities.loadImage(documentVersionId, blockId)
           const text = await context.inspectDocumentImage({ ...attachment, question })
-          const document = context.documents.find((candidate) => candidate.versionId === documentVersionId)
+          const document = context.documents.find((candidate) => candidate.versionId === documentVersionId && candidate.active !== false)
           const imageBlock = document?.blocks.find((candidate) => candidate.blockId === blockId && candidate.kind === 'image')
           if (!document || !imageBlock) return { ok: false, error: '图像块在核对后已无法定位' }
           const visionBlockId = `vision-${blockId}`
@@ -312,7 +312,7 @@ export function buildReviewTools(context: ReviewToolContext): ReviewTool[] {
       input: '{ documentVersionId, subjectIds, supportsFact }',
       async execute(input) {
         const documentVersionId = String(input.documentVersionId ?? '')
-        if (!context.documents.some((document) => document.versionId === documentVersionId)) return { ok: false, error: `材料版本不存在: ${documentVersionId}` }
+        if (!context.documents.some((document) => document.versionId === documentVersionId && document.active !== false)) return { ok: false, error: `材料版本不存在: ${documentVersionId}` }
         const subjectIds = Array.isArray(input.subjectIds) ? (input.subjectIds as string[]) : []
         const missingSubject = subjectIds.find((subjectId) => !findSubject(context, subjectId))
         if (missingSubject) return { ok: false, error: `主体不存在: ${missingSubject}` }
