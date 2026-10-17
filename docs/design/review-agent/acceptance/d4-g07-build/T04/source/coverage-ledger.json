@@ -840,6 +840,146 @@
       "structuredScope": "generic-object",
       "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
       "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s02",
+      "sourceAnchor": "L18-34",
+      "checkId": "g07-t04@1:module/use-non-numbered/s02",
+      "sourceIds": [
+        "g07-t04-nonnum-s02"
+      ],
+      "evidenceFact": "d2:object:g07-settlement-line:nonnums02",
+      "objectScope": "g07-settlement-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s05",
+      "sourceAnchor": "L98-137",
+      "checkId": "g07-t04@1:module/use-non-numbered/s05",
+      "sourceIds": [
+        "g07-t04-nonnum-s05"
+      ],
+      "evidenceFact": "d2:object:g07-settlement-line:nonnums05",
+      "objectScope": "g07-settlement-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s08",
+      "sourceAnchor": "L290-325",
+      "checkId": "g07-t04@1:module/use-non-numbered/s08",
+      "sourceIds": [
+        "g07-t04-nonnum-s08"
+      ],
+      "evidenceFact": "d2:object:g07-settlement-line:nonnums08",
+      "objectScope": "g07-settlement-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s11",
+      "sourceAnchor": "L878-887",
+      "checkId": "g07-t04@1:module/use-non-numbered/s11",
+      "sourceIds": [
+        "g07-t04-nonnum-s11"
+      ],
+      "evidenceFact": "d2:object:g07-settlement-line:nonnums11",
+      "objectScope": "g07-settlement-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s13",
+      "sourceAnchor": "L898-916",
+      "checkId": "g07-t04@1:module/use-non-numbered/s13",
+      "sourceIds": [
+        "g07-t04-nonnum-s13"
+      ],
+      "evidenceFact": "d2:object:g07-settlement-line:nonnums13",
+      "objectScope": "g07-settlement-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s14",
+      "sourceAnchor": "L917-962",
+      "checkId": "g07-t04@1:module/use-non-numbered/s14",
+      "sourceIds": [
+        "g07-t04-nonnum-s14"
+      ],
+      "evidenceFact": "d2:object:g07-settlement-line:nonnums14",
+      "objectScope": "g07-settlement-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s15",
+      "sourceAnchor": "L963-987",
+      "checkId": "g07-t04@1:module/use-non-numbered/s15",
+      "sourceIds": [
+        "g07-t04-nonnum-s15"
+      ],
+      "evidenceFact": "d2:object:g07-settlement-line:nonnums15",
+      "objectScope": "g07-settlement-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s16",
+      "sourceAnchor": "L988-1004",
+      "checkId": "g07-t04@1:module/use-non-numbered/s16",
+      "sourceIds": [
+        "g07-t04-nonnum-s16"
+      ],
+      "evidenceFact": "d2:object:g07-settlement-line:nonnums16",
+      "objectScope": "g07-settlement-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s17",
+      "sourceAnchor": "L1005-1019",
+      "checkId": "g07-t04@1:module/use-non-numbered/s17",
+      "sourceIds": [
+        "g07-t04-nonnum-s17"
+      ],
+      "evidenceFact": "d2:object:g07-settlement-line:nonnums17",
+      "objectScope": "g07-settlement-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-s18",
+      "sourceAnchor": "L1020-1029",
+      "checkId": "g07-t04@1:module/use-non-numbered/s18",
+      "sourceIds": [
+        "g07-t04-nonnum-s18"
+      ],
+      "evidenceFact": "d2:object:g07-settlement-line:nonnums18",
+      "objectScope": "g07-settlement-line",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
     }
   ],
   "sectionIndex": [
@@ -856,7 +996,7 @@
       "sourceLine": 18,
       "endLine": 34,
       "bytes": 924,
-      "linkedTaskId": null,
+      "linkedTaskId": "s02",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T04/source/frozen-C-v0.1.md"
     },
     {
@@ -880,7 +1020,7 @@
       "sourceLine": 98,
       "endLine": 137,
       "bytes": 1774,
-      "linkedTaskId": null,
+      "linkedTaskId": "s05",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T04/source/frozen-C-v0.1.md"
     },
     {
@@ -904,7 +1044,7 @@
       "sourceLine": 290,
       "endLine": 325,
       "bytes": 2062,
-      "linkedTaskId": null,
+      "linkedTaskId": "s08",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T04/source/frozen-C-v0.1.md"
     },
     {
@@ -928,7 +1068,7 @@
       "sourceLine": 878,
       "endLine": 887,
       "bytes": 631,
-      "linkedTaskId": null,
+      "linkedTaskId": "s11",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T04/source/frozen-C-v0.1.md"
     },
     {
@@ -944,7 +1084,7 @@
       "sourceLine": 898,
       "endLine": 916,
       "bytes": 1299,
-      "linkedTaskId": null,
+      "linkedTaskId": "s13",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T04/source/frozen-C-v0.1.md"
     },
     {
@@ -952,7 +1092,7 @@
       "sourceLine": 917,
       "endLine": 962,
       "bytes": 3130,
-      "linkedTaskId": null,
+      "linkedTaskId": "s14",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T04/source/frozen-C-v0.1.md"
     },
     {
@@ -960,7 +1100,7 @@
       "sourceLine": 963,
       "endLine": 987,
       "bytes": 1835,
-      "linkedTaskId": null,
+      "linkedTaskId": "s15",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T04/source/frozen-C-v0.1.md"
     },
     {
@@ -968,7 +1108,7 @@
       "sourceLine": 988,
       "endLine": 1004,
       "bytes": 1080,
-      "linkedTaskId": null,
+      "linkedTaskId": "s16",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T04/source/frozen-C-v0.1.md"
     },
     {
@@ -976,7 +1116,7 @@
       "sourceLine": 1005,
       "endLine": 1019,
       "bytes": 1108,
-      "linkedTaskId": null,
+      "linkedTaskId": "s17",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T04/source/frozen-C-v0.1.md"
     },
     {
@@ -984,7 +1124,7 @@
       "sourceLine": 1020,
       "endLine": 1029,
       "bytes": 600,
-      "linkedTaskId": null,
+      "linkedTaskId": "s18",
       "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T04/source/frozen-C-v0.1.md"
     }
   ],
