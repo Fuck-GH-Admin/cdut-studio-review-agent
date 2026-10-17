@@ -1,0 +1,135 @@
+{
+  "schema": "D4_G05_ISSUES_V1",
+  "domain": "G05",
+  "technicalBaseSha": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "engineeringCIRun": 39051560191,
+  "allTemplateStatuses": [
+    "PARTIAL",
+    "PARTIAL",
+    "PARTIAL",
+    "PARTIAL",
+    "PARTIAL",
+    "PARTIAL"
+  ],
+  "issues": [
+    {
+      "id": "G05-ENG-01",
+      "category": "ENGINE",
+      "severity": "MAJOR",
+      "affected": [
+        "T01:R-34..44",
+        "T02:R-26..32",
+        "T03:R-17,21..23,41..43",
+        "T04:R-13..17,25..32",
+        "T05:R-09..11,29..34",
+        "T06:R-08..12,25..35"
+      ],
+      "observed": "D2 only has technical CaseStage and applicant/authority material providers; no authenticated template-specific administrative approval, rejection, revocation, or stage event source.",
+      "minimum": "Read-only authority event/source contract with stageId, legal actor, objectKey, effective version and revoked supersession; unresolved stays awaiting-confirmation; no auto-approval.",
+      "workaround": "Semantic task preserves obligation and records HUMAN_ONLY/POLICY_HOLD; do not present pending-only Pi as administrative stage completion.",
+      "status": "OPEN"
+    },
+    {
+      "id": "G05-ENG-02",
+      "category": "ENGINE",
+      "severity": "MAJOR",
+      "affected": [
+        "T01:R-27..33",
+        "T02:R-21..25,43..45",
+        "T03:R-08..15",
+        "T04:R-09..10,39..48",
+        "T05:R-07..12,19..24",
+        "T06:R-17..21,43..49"
+      ],
+      "observed": "COMMON maps independent generic targets and a finite evidence scope; advanced.evidenceRelations and issuer-legal equivalence cannot be unconditionally projected into RuleSpec.",
+      "minimum": "Targeted support or a documented reviewer-only hold for necessary per-target AND/OR issuer/version coverage, with negative tests for changed versions and unsupported legal equivalence.",
+      "workaround": "Do not assert automatic legal/evidence equivalence. Retain original text and pending status; current basic EvidenceLink negative test passes.",
+      "status": "OPEN"
+    },
+    {
+      "id": "G05-AUTH-01",
+      "category": "AUTHORING",
+      "severity": "MAJOR",
+      "affected": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06"
+      ],
+      "observed": "All 273 R mapped but source-to-target grouping and non-R F/M/MS/EV/ST grouped contract tasks are an authored engineering translation; not independently demonstrated to preserve every complex non-R invariant in active runtime.",
+      "minimum": "Independent D4 review of coverage.json vs byte-frozen C MD: verify per-R target type, BR multi-value conditions, provider and due stage; introduce local semantic modules or an ENGINE repro for any concrete mistranslation.",
+      "workaround": "Six runnable technical candidates are kept PARTIAL; raw originals and line-by-line source bindings remain untouched.",
+      "status": "OPEN"
+    },
+    {
+      "id": "G05-SOURCE-01",
+      "category": "SOURCE",
+      "severity": "P1",
+      "affected": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06"
+      ],
+      "observed": "Six C v0.1 byte-identical files are now in Git; C full author ZIP and latest A-v2.4 unified tree plus B full author Git snapshots were not independently frozen in this round.",
+      "minimum": "Unified integrator checks latest frozen A catalog and C supporting matrix/pack digests, recording any immutable version supersession. Do not treat Library version 1 as Git author SHA.",
+      "workaround": "Six stable C SHA-256 verified; no source reconstruction.",
+      "status": "OPEN"
+    },
+    {
+      "id": "G05-POLICY-01",
+      "category": "POLICY",
+      "severity": "P1",
+      "affected": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06"
+      ],
+      "observed": "Current CDUT 2026 department rules, threshold values, and policy profiles not certified; cross-school examples and former university regulations may not be effective.",
+      "minimum": "Current school authoritative policy version and applicable school/term/project/role mapping, with reviewer-controlled activation. E r03 T06 2017/2025 intersection must be independently adjudicated.",
+      "workaround": "policy-candidate stays awaiting-confirmation and no formal school rule certification.",
+      "status": "OPEN"
+    },
+    {
+      "id": "G05-EXTERNAL-01",
+      "category": "EXTERNAL",
+      "severity": "P1",
+      "affected": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06"
+      ],
+      "observed": "No authorized school OA, funding, registry, foreign affairs, invitation issuing or authority-decision read API. Uploaded PDF cannot become authenticated approval event.",
+      "minimum": "Documented authenticated read-only data source with jurisdiction, effective scope, signed version/revocation and access permissions; otherwise human authority confirmation remains mandatory.",
+      "workaround": "SYNTHETIC registry/evidence only, no administrative output.",
+      "status": "OPEN"
+    },
+    {
+      "id": "G05-TEST-01",
+      "category": "TEST",
+      "severity": "MAJOR",
+      "affected": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06"
+      ],
+      "observed": "18/18 tests exercise authoring/CLI/scoping and Pi pending-only receipts; they are not online LLM semantic runs, original hidden Gold or independent business correctness acceptance. G05 E r02 was BLOCKED_INPUT.",
+      "minimum": "Separate independent G05 semantic/business tests with existing authorized D input and sealed Gold under proper ACL, not this PR. Track actual false negative/positive per rule and exact version.",
+      "workaround": "D4 engineering run remains visible in runtime/, Gold remains untouched.",
+      "status": "OPEN"
+    }
+  ]
+}
