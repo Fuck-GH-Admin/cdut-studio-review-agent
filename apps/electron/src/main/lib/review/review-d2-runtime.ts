@@ -179,7 +179,7 @@ export function compileD2RuntimePlan(
   }
   const previews=selectedScenarios.length>1 ?
     selectedScenarios.map(s=>previewDemo(toDemo(workspace), selection.templateId, selection.version, s)) :
-    [previewDemo(toDemo(workspace), selection.templateId, selection.version, selection.scenario)]
+    [previewDemo(toDemo(workspace), selection.templateId, selection.version, selectedScenarios[0])]
   if(previews.some(v=>v.blocked))throw new Error('D2_PREVIEW_BLOCKED: '+previews.flatMap(v=>v.issues).join('；'))
   const uniqueTasks=new Map(previews.flatMap(v=>v.tasks).map(task=>[task.checkId,task]))
   const preview={tasks:[...uniqueTasks.values()],fingerprint:previews.length===1?previews[0]!.fingerprint:
