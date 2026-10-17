@@ -62,14 +62,65 @@ jobs:
           name: d4-g06-runtime-${{ github.sha }}
           path: ${{ runner.temp }}/d4-g06-real-runtime/
           retention-days: 90
-      - name: Save immutable same-run runtime JSON under G06 domain directory
-        if: ${{ github.event_name == 'push' && github.ref_name == 'feat/d4-g06-modular-templates-r01' }}
+      - name: Preserve first successful same-run D2/Pi evidence in G06 branch
+        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/d4-g06-real-runtime
+          G06_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          cp -r "${{ runner.temp }}/d4-g06-real-runtime/" docs/design/review-agent/acceptance/d4-g06-build/runtime/
-          git add docs/design/review-agent/acceptance/d4-g06-build/runtime
-          if git diff --cached --quiet; then
-            echo "No new runtime bytes"
-          else
-            git -c user.name='cdut-d4-g06-ci' -c user.email='actions@users.noreply.github.com' commit -m "test(d4-g06): store actual nine-template D2/Pi runtime snapshots"
-            git push origin HEAD:feat/d4-g06-modular-templates-r01
+          git fetch origin "refs/heads/$GITHUB_HEAD_REF:refs/remotes/origin/$GITHUB_HEAD_REF"
+          git switch -C "$GITHUB_HEAD_REF" "origin/$GITHUB_HEAD_REF"
+          DEST=docs/design/review-agent/acceptance/d4-g06-build
+          if test -f "$DEST/runtime/G06-T01/technical-receipt.json"; then
+            echo "Runtime is already frozen; never overwrite evidence from another run."
+            exit 0
           fi
+          mkdir -p "$DEST/runtime"
+          cp -r "$EVIDENCE_DIR/." "$DEST/runtime/"
+          python3 - <<'PY'
+          import json,os,pathlib
+          base=pathlib.Path("docs/design/review-agent/acceptance/d4-g06-build")
+          total=0
+          table=['# G06 D4｜九套实际技术运行摘要','',
+                 '固定 COMMON SHA: `a7a6a11d4840ad64cfc858c17b35f35180adf063`。',
+                 '原始 CI Run: '+os.environ['G06_RUN_URL']+'.',
+                 '这不是在线模型/校方 Gold 或正式行政审批。','',
+                 '| 模板 | 真实 Check | Subject | D3 携包 | Pi 验证 | 完整业务状态 |',
+                 '|---|---:|---:|---|---|---|']
+          for i in range(1,10):
+              name=f"G06-T{i:02d}"
+              p=base/name/"manifest.json"
+              m=json.loads(p.read_text())
+              r=json.loads((base/"runtime"/name/"technical-receipt.json").read_text())
+              plan=json.loads((base/"runtime"/name/"d2-actual-plan.json").read_text())
+              assert r['verification']=={'complete':True,'problems':[]}
+              assert plan['fingerprint']==r['planFingerprint']
+              m.update(templateStatus="PARTIAL",
+                technicalExecutionStatus="PASS_SYNTHETIC_D1_D3_D2_PI",
+                d3RoundTripVerified=True,
+                runtimeCheckCount=r['checkCount'],
+                runtimeSubjectCount=len(r['subjects']),
+                runtimeFingerprint=r['planFingerprint'],
+                runtimeRunId=r['runId'],
+                runtimeEvidenceRun=os.environ['G06_RUN_URL'],
+                actualD2Plan=f"runtime/{name}/d2-actual-plan.json",
+                actualPiRun=f"runtime/{name}/pi-actual-run.json",
+                sourcePolicyStatus="POLICY_HOLD",
+                goldAccuracy="NOT_RUN",
+                onlineModelAccuracy="NOT_RUN")
+              p.write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n')
+              total+=r['checkCount']
+              table.append(f"| {name} | {r['checkCount']} | {len(r['subjects'])} | VERIFIED | COMPLETE | PARTIAL |")
+          domain=base/"domain-manifest.json"
+          d=json.loads(domain.read_text())
+          d.update(templateStatus="PARTIAL",syntheticPiVerified=9,actualCheckTotal=total,
+                   evidenceRun=os.environ['G06_RUN_URL'],goldAccuracy="NOT_RUN",onlineModelAccuracy="NOT_RUN")
+          domain.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n')
+          table.extend(['',f'九套合计实例 Check：{total}；其中所有学校政策均保持 unverified-policy。',
+                        'PARTIAL 的原因：尚未逐路径独立 Gold 复核，跨对象复杂事实关系无程序化完整证明；'
+                        'T02 部分 AX 条件只保留语义任务；真实校方来源和权限待有权核查。'])
+          (base/"integration-summary.md").write_text('\n'.join(table)+'\n')
+          PY
+          git add "$DEST"
+          git -c user.name='cdut-d4-g06-ci' -c user.email='actions@users.noreply.github.com' commit -m "test(d4-g06): freeze nine actual D2 plans Pi receipts and scoped negative evidence"
+          git push origin HEAD:"$GITHUB_HEAD_REF"
