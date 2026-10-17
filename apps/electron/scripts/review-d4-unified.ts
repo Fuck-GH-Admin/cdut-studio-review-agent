@@ -138,7 +138,7 @@ export function verifyD4Unified(): {
         const plan = compileD2RuntimePlan(w, s, c)
         if (plan.schemaVersion !== 3 || plan.publicationAllowed !== false ||
             plan.mapping.length < 1 || plan.subjects.length < 1 ||
-            plan.mapping.some(m => !m.sourceIds.length || !m.objectKey)) {
+            plan.mapping.some(m => !m.sourceIds.length || (Boolean(m.subjectId) !== Boolean(m.objectKey)))) {
           throw new Error('D4_D2_PLAN_INCOMPLETE')
         }
         d2PlanOk++
