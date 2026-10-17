@@ -156,6 +156,12 @@ describe('COMMON-01/02 BDD technical regression',()=>{
     const plan=run('review-d2-plan.ts',['preview',imported,selection,caseFile])
     expect(plan.mapping).toHaveLength(6)
     expect(plan.schemaVersion).toBe(3)
+    if(process.env.D4_RUNTIME_EVIDENCE_DIR){
+      mkdirSync(process.env.D4_RUNTIME_EVIDENCE_DIR,{recursive:true})
+      writeFileSync(join(process.env.D4_RUNTIME_EVIDENCE_DIR,'cli-plan.json'),JSON.stringify(plan,null,2))
+      writeFileSync(join(process.env.D4_RUNTIME_EVIDENCE_DIR,'cli-selection.json'),JSON.stringify(s,null,2))
+      writeFileSync(join(process.env.D4_RUNTIME_EVIDENCE_DIR,'cli-authoring.json'),JSON.stringify(w,null,2))
+    }
     expect(run('review-d2-plan.ts',['register',imported,selection]).registered).toBeTrue()
     const created=run('review-d2-plan.ts',['create',imported,selection,'d4-cli-case','synthetic common example','d4-reviewer'])
     expect(created.created).toBeTrue()
@@ -163,6 +169,22 @@ describe('COMMON-01/02 BDD technical regression',()=>{
     console.log('[D4_COMMON_CLI_EVIDENCE]',JSON.stringify({head:process.env.GITHUB_SHA??'local',
       planFingerprint:plan.fingerprint,transferFingerprint:x.fingerprint,checks:plan.mapping.length,
       subjects:plan.subjects.length,scope:'G03 synthetic technical pre-review',publicationAllowed:false}))
+    const example=resolve(import.meta.dir,'../../../../../../docs/design/review-agent/acceptance/d4-common-r2/examples')
+    const sampleWork=join(example,'g03-workspace.json'),sampleSelection=join(example,'g03-selection.json'),
+      sampleCase=join(example,'g03-case.json')
+    expect(run('review-authoring-v1.ts',['validate',sampleWork]).ok).toBeTrue()
+    const sampleBundle=join(io,'sample-bundle.json'),sampleImported=join(io,'sample-imported.json')
+    expect(run('review-d3-library.ts',['export',sampleWork,sampleBundle]).fingerprint).toHaveLength(64)
+    expect(run('review-d3-library.ts',['import',sampleBundle,sampleImported]).imported).toBeTrue()
+    const samplePlan=run('review-d2-plan.ts',['preview',sampleImported,sampleSelection,sampleCase])
+    expect(samplePlan.mapping).toHaveLength(6)
+    expect(samplePlan.subjects).toHaveLength(2)
+    expect(samplePlan.publicationAllowed).toBeFalse()
+    if(process.env.D4_RUNTIME_EVIDENCE_DIR){
+      writeFileSync(join(process.env.D4_RUNTIME_EVIDENCE_DIR,'checked-in-example-plan.json'),JSON.stringify(samplePlan,null,2))
+    }
+    console.log('[D4_COMMON_EXAMPLE]',JSON.stringify({fingerprint:samplePlan.fingerprint,
+      subjects:samplePlan.subjects.length,checks:samplePlan.mapping.length,technicalOnly:true}))
   })
   test('real D2 technical case -> Pi prepare/submit/verify pending checks',async()=>{
     const w=authoring('g08-lost-item'),s=targets('g08-lost-item')
@@ -185,5 +207,14 @@ describe('COMMON-01/02 BDD technical regression',()=>{
     console.log('[D4_COMMON_PI_EVIDENCE]',JSON.stringify({caseId:id,fingerprint:created.entity!.fingerprint,
       subjects:agg.caseV2.subjects.map(s=>s.id),checks:run.checks.map(c=>c.checkId),
       runId:run.id,technicalComplete:true,publicationAllowed:false}))
+    if(process.env.D4_RUNTIME_EVIDENCE_DIR){
+      mkdirSync(process.env.D4_RUNTIME_EVIDENCE_DIR,{recursive:true})
+      writeFileSync(join(process.env.D4_RUNTIME_EVIDENCE_DIR,'actual-pi-plan.json'),JSON.stringify(created.entity,null,2))
+      writeFileSync(join(process.env.D4_RUNTIME_EVIDENCE_DIR,'actual-pi-run.json'),JSON.stringify(run,null,2))
+      writeFileSync(join(process.env.D4_RUNTIME_EVIDENCE_DIR,'actual-pi-receipt.json'),JSON.stringify({
+        caseId:id,runId:run.id,preparedAssignmentId:prepared.assignmentId,
+        verified:verifyD2PiRun(agg,run),publicationAllowed:false,
+      },null,2))
+    }
   })
 })

@@ -15,6 +15,7 @@ jobs:
     timeout-minutes: 30
     env:
       ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      D4_RUNTIME_EVIDENCE_DIR: ${{ github.workspace }}/d4-evidence
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
@@ -29,3 +30,9 @@ jobs:
       - run: node apps/electron/scripts/review-d3-r0-verify.cjs
       - run: bun test --isolate --timeout 60000 apps/electron/src/main/lib/review/review-d4-common.test.ts apps/electron/src/main/lib/review/review-d3-r1-student.test.ts
       - run: bun test --isolate --timeout 60000 apps/electron/src/main/lib/review/review-d2-runtime.test.ts apps/electron/src/main/lib/review/review-d2-execution-gates.test.ts apps/electron/src/main/lib/review/review-authoring-v1.test.ts apps/electron/src/main/lib/review/review-d3-handoff.test.ts apps/electron/src/main/lib/review/review-d3-pi-integration.test.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: d4-common-r2-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: d4-evidence/
+          retention-days: 30
