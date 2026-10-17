@@ -92,8 +92,8 @@ describe('G04 eight modular business templates on fixed COMMON-01/02',()=>{
    if(!material.ok)throw Error(material.message)
    const afterMaterial=readAggregate(caseId)!
    const documentVersionId=afterMaterial.caseV2.documents[0]!.versionId
-   const linkA=real.entity!.mapping.find(m=>m.objectKey==='object-a'&&/\\/r01#/.test(m.checkId))!
-   const linkB=real.entity!.mapping.find(m=>m.objectKey==='object-b'&&/\\/r01#/.test(m.checkId))!
+   const linkA=real.entity!.mapping.find(m=>m.objectKey==='object-a'&&m.checkId.includes('/r01#'))!
+   const linkB=real.entity!.mapping.find(m=>m.objectKey==='object-b'&&m.checkId.includes('/r01#'))!
    const setLink=await setEvidenceLink(caseId,{requestId:'g04-link-'+id,actor,
      expectedRevision:afterMaterial.caseV2.revision,payload:{documentVersionId,subjectIds:['subject-a'],
        supportsFact:linkA.evidenceCoverage!.supportsFacts[0],linkedBy:'user'}})
