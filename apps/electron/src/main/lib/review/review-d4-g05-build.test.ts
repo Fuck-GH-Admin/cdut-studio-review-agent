@@ -58,7 +58,7 @@ describe('D4 G05 six complete C-source modular candidates / locked COMMON',()=>{
       expect(plan.mapping.every(x=>x.sourceIds.length>0)).toBeTrue()
       expect(plan.publicationAllowed).toBeFalse()
       for(const rule of cov.ruleCoverage.filter((x:any)=>/^R-\d\d$/.test(x.sourceId))){
-        expect(plan.mapping.some(x=>x.checkId.startsWith(rule.checkId+'#'))).toBeTrue()
+        expect(plan.mapping.some(x=>x.checkId.startsWith(rule.checkId.split(':').slice(1).join(':')+'#'))).toBeTrue()
       }
       // A changed authority/conditions input must change the fixed plan.
       const unknown=structuredClone(sel)
@@ -112,7 +112,7 @@ describe('D4 G05 six complete C-source modular candidates / locked COMMON',()=>{
       const prepared=preparePiReviewRunV2({caseId,sessionId:id+'-session',turnId:id+'-turn'})
       const out=submitPiReviewResultV2({binding:{assignmentId:prepared.assignmentId,sessionId:id+'-session',caseId,runId:prepared.runId},triggeredBy:'user',
         result:{summary:'SYNTHETIC G05. Authority and policy unverified. No official approvals.',
-          checks:created.entity!.mapping.map(m=>({ruleId:m.ruleId,subjectIds:m.subjectId?[m.subjectId]:[],
+          checks:created.entity!.mapping.map(m=>({ruleId:m.ruleId,subjectIds:m.subjectId?[m.subjectId]:s.targets.map(t=>t.subjectId),
             status:'awaiting-confirmation' as const,reason:'Unverified C business rule and/or subject evidence. Human policy decision required.',sourceRefs:[]})),
           finish:true}})
       expect(out.rejected).toEqual([])
