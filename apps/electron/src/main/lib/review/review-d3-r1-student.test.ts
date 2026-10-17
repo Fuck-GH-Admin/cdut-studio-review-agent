@@ -241,6 +241,19 @@ describe('D3-R1 typed G01-I runtime: R0 red-to-green',()=>{
   const run=getRunV2(id,prepared.runId)!
   expect(run.checks.map(x=>x.target.subjectIds[0]).sort()).toEqual(['student-credential-check','student-name-check'])
   expect(verifyD2PiRun(final,run).complete).toBeTrue()
+  const evidenceOut=process.env.R1_RUNTIME_EVIDENCE_DIR
+  if(evidenceOut){
+    mkdirSync(evidenceOut,{recursive:true})
+    writeFileSync(join(evidenceOut,'actual-d2-plan.json'),JSON.stringify(created.entity,null,2))
+    writeFileSync(join(evidenceOut,'actual-pi-run-and-evidence.json'),JSON.stringify({
+      caseId:id,planFingerprint:created.entity!.fingerprint,
+      runId:run.id,runStatus:run.status,technicalComplete:verifyD2PiRun(final,run).complete,
+      checks:run.checks.map(c=>({checkId:c.checkId,ruleId:c.ruleId,subjectIds:c.target.subjectIds,status:c.status,reason:c.reason,sourceRefs:c.sourceRefs})),
+      documents:final.caseV2.documents.map(d=>({versionId:d.versionId,active:d.active,contentHash:d.contentHash,parseRevision:d.parseRevision})),
+      links:final.evidenceLinks.map(l=>({id:l.id,subjectId:l.subjectId,supportsFact:l.supportsFact,documentVersionId:l.documentVersionId,status:l.status,linkedBy:l.linkedBy})),
+      publicationAllowed:false,onlineModelRun:false,officialAuthority:false,
+    },null,2))
+  }
  })
  test('D1 validate/save/read/diff → D3 export/import → D2 preview/register/create through real isolated CLIs',()=>{
   const cliHome=join(config,'r1-cli-home')
@@ -290,11 +303,44 @@ describe('D3-R1 typed G01-I runtime: R0 red-to-green',()=>{
     env:{...env,D2_ALLOW_SYNTHETIC_REGISTRY:'0'}})
   expect(denied.exitCode).not.toBe(0)
   expect(denied.stderr.toString()).toContain('D2_TRUSTED_SOURCE_DISABLED')
-  console.log('[R1_CLI_EVIDENCE]',JSON.stringify({
-    caseId:'r1-cli-typed',workspaceId:w.workspaceId,revision:1,
+  const chain={caseId:'r1-cli-typed',workspaceId:w.workspaceId,revision:1,
     transferFingerprint:exported.fingerprint,planFingerprint:plan.fingerprint,
     subjects:plan.subjects.length,checks:plan.mapping.length,publicationAllowed:false,
-  }))
+    d1Validated:true,d1Saved:true,d1Read:true,d1Diff:true,d3Exported:true,d3Imported:true,
+    d2Preview:true,d2Registered:true,d2Created:true,fixtureWithoutOptInDenied:true}
+  console.log('[R1_CLI_EVIDENCE]',JSON.stringify(chain))
+  const evidenceOut=process.env.R1_RUNTIME_EVIDENCE_DIR
+  if(evidenceOut){mkdirSync(evidenceOut,{recursive:true})
+    writeFileSync(join(evidenceOut,'actual-cli-chain.json'),JSON.stringify(chain,null,2))
+  }
+ })
+
+ test('C0 frozen A workspace: reproduce 49 case-scope probes and R1 refuse silent migration (read-only A)',()=>{
+  const root=process.env.R1_FROZEN_A_ACCEPTANCE_ROOT
+  if(!root){console.log('[R1_A_C_DIFF] optional frozen A checkout unavailable; dedicated CI supplies it');return}
+  const load=<T>(relative:string):T=>JSON.parse(readFileSync(join(root,relative),'utf8')) as T
+  const w=load<ReviewAuthoringWorkspaceV1>('workspace/workspace.json')
+  const selection=load<D2ScenarioSelection>('workspace/selection.json')
+  const originalCase=load<ReviewCaseV2>('runtime/synthetic-draft-case.json')
+  // This is C0's 0-subject / 49-check technical truth, NOT a successful G01 business run.
+  const legacy=compileD2RuntimePlan(w,selection,originalCase)
+  expect(legacy.rules).toHaveLength(49)
+  expect(legacy.subjects).toHaveLength(0)
+  expect(legacy.targets).toHaveLength(0)
+  expect(legacy.mapping.every(m=>!m.subjectId&&!m.objectKey)).toBeTrue()
+  const another={...originalCase,caseFields:{...originalCase.caseFields,studentNameNew:{kind:'text' as const,value:'SELF_DECLARED_ONLY'}}}
+  expect(compileD2RuntimePlan(w,selection,another).fingerprint).toBe(legacy.fingerprint)
+  const requested={...selection,targets:[chosen().targets[0]!]}
+  expect(()=>compileD2RuntimePlan(w,requested,originalCase,trusted())).toThrow('D2_STUDENT_UNSCOPED_CHECK')
+  const advanced=structuredClone(w);advanced.advanced={claimKeys:['old-new'],evidenceRelations:[{claimKey:'old-new',requiredSourceIds:['md-original']}]}
+  expect(()=>compileD2RuntimePlan(advanced,selection,originalCase)).toThrow('D2_UNMAPPED_ADVANCED')
+  const c0={oldAChecks:legacy.rules.length,oldASubjects:legacy.subjects.length,oldATargets:legacy.targets.length,
+   unchangedApplicantFieldFingerprint:true,studentTypedMigration:'D2_STUDENT_UNSCOPED_CHECK',
+   genericAdvanced:'D2_UNMAPPED_ADVANCED',newEngineDoesNotAuthorizeOldA:true}
+  console.log('[R1_A_C_DIFF]',JSON.stringify(c0))
+  if(process.env.R1_RUNTIME_EVIDENCE_DIR){mkdirSync(process.env.R1_RUNTIME_EVIDENCE_DIR,{recursive:true})
+    writeFileSync(join(process.env.R1_RUNTIME_EVIDENCE_DIR,'actual-frozen-A-C0-diff.json'),JSON.stringify(c0,null,2))
+  }
  })
 
 })
