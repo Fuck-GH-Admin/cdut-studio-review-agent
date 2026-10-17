@@ -1,0 +1,65 @@
+name: D4 G05 modular six-template technical acceptance
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/d4-g05-modular.yml'
+      - 'apps/electron/src/main/lib/review/review-d4-g05-build.test.ts'
+      - 'docs/design/review-agent/acceptance/d4-g05-build/source/**'
+      - 'docs/design/review-agent/acceptance/d4-g05-build/templates/**'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  g05-authoring-d1-d3-d2-pi:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      G05_RUNTIME_EVIDENCE_DIR: docs/design/review-agent/acceptance/d4-g05-build/runtime
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          persist-credentials: true
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Capture exact source HEAD and COMMON ancestor
+        shell: bash
+        run: |
+          git rev-parse HEAD
+          git merge-base --is-ancestor a7a6a11d4840ad64cfc858c17b35f35180adf063 HEAD
+      - run: bun install --frozen-lockfile
+      - name: Test all six source-locked D1/D3/D2/Pi candidates
+        shell: bash
+        run: |
+          mkdir -p "$G05_RUNTIME_EVIDENCE_DIR"
+          set -o pipefail
+          bun test apps/electron/src/main/lib/review/review-d4-g05-build.test.ts 2>&1 | tee "$G05_RUNTIME_EVIDENCE_DIR/test-log.txt"
+      - name: Store run fingerprint and provenance
+        shell: bash
+        run: |
+          printf '%s\n' "$(git rev-parse HEAD)" > "$G05_RUNTIME_EVIDENCE_DIR/checkout-sha.txt"
+          printf '%s\n' 'a7a6a11d4840ad64cfc858c17b35f35180adf063' > "$G05_RUNTIME_EVIDENCE_DIR/common-base-sha.txt"
+      - name: Upload unmodified raw technical evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g05-d4-technical-evidence
+          path: docs/design/review-agent/acceptance/d4-g05-build/runtime/
+          retention-days: 30
+      - name: Commit generated D2 plans and synthetic Pi receipts
+        if: success() && github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/design/review-agent/acceptance/d4-g05-build/runtime/
+          if ! git diff --cached --quiet; then
+            git commit -m "test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]"
+            git push origin "HEAD:${{ github.head_ref }}"
+          fi
