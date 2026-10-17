@@ -6,8 +6,8 @@
   "revision": 1,
   "templateId": "g07-t03",
   "templateVersion": 1,
-  "authoringDigest": "5ba2354bb29dec093296155a061cd5674b2b84a76ae86c921ca720d31f55d19d",
-  "previewFingerprint": "fe951a9db26e5397855a825afd13d86a06c60c4be359b02544d0673226cd6aae",
+  "authoringDigest": "846420edb642b4be61d230588d861c5d1e52879af06c4103828dd78176d1ce6a",
+  "previewFingerprint": "cd0b9baf383df8be1c04dff4cfd230b6e11ac37e2a0becf5578bbac2d0f00a59",
   "targets": [
     {
       "kind": "generic-object",
@@ -1209,6 +1209,213 @@
       "confirmation": "unconfirmed"
     },
     {
+      "id": "d2-229d6b483c400e409783",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 2. 独立审核目的、审核对象与相邻模板的硬边界",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第21行】\n## 2. 独立审核目的、审核对象与相邻模板的硬边界\n\n模板以 `request_id` 为案卷、以 **`package_id × requested_action × policy_scope`** 为最小评估单元；如某包含多采购明细，再以费用明细行核数量、估价与品目。任何一种资金或报价类共同字段均不使本模板与活动报销、差旅、采购付款、科研酬金合并。\n\n**同一案件主目的**：判定申请文件/系统事实是否可送有权采购审批；不对合同履行质量、采购过程结果作正式决定。处理已有合同/发票时可利用它们识别申请实际已经到下游，不因此反向将其设成采购前必需材料。\n\n**可被机器得出的结论**：金额算术、日期/版次对齐、已触发材料完整程度、对专业审查所需的事实清单、跨文件明确矛盾，以及“需要校方/系统复核”。**不可独断的结论**：单一来源法定合格、供应商违法、重大设备是否科研必要、紧急采购是否依法可免招标、审批人已正式同意。机器只能基于校方已返回的正式决定引用这些结果。[MOF01][CD12][CD06]\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s02/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3d6a3769c9362821",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s02"
+      ],
+      "priority": 50041,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-80af15b071e2b0b63abb",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 6. 42个字段：语义、类型、作用时点、证据替代及错误处理",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第116行】\n## 6. 42个字段：语义、类型、作用时点、证据替代及错误处理\n\n字段沿用B阶段稳定 `F-01…F-42`，原研究中的“可信级B/R/L3”对应申请文本/授权只读记录/第三方原始材料，不是布尔通过状态。**所有字段均先解释触发条件才检查是否需要**。`F-42`是**审核输出**字段，不可反向要求申请人填写。原始成都理工采购论证表的具体栏目未取得，以下字段不等同“原表真实栏目”。\n\n| ID | 字段与精确语义 | 所属输入 | 触发/阶段 | 取值及跨文书核对 | 合法替代与来源 | 未知/冲突处理 |\n| F-01 | 申请单及当前版本主键 request_id；重复退回不能再造虚假新单 | 申报事项 | 正式提交时；D1-D5 | 同校同流程唯一，与旧版本 lineage 相连 | OA唯一流水号或正式表单编号 [CD01,EX01] | 缺编号可草稿；重复ID冲突核历史 |\n| F-02 | 申请动作 request_action：新购/修订/延期/撤回/转办 | 申报事项 | 全部；D0-D5 | 修改申请须关联原申请与上次决定 | 对应OA申请操作 [MOF01,EX01] | 动作与阶段不符→核当前申请类型 |\n| F-03 | 采购项目与采购包编号 request_project_id, package_id | 申报事项 | 涉及计划/分包；D1-D5 | 一个计划多包逐包记录；不能将汇总金额当单包金额 | 采购计划档案关联 [CD01,MOF01] | 对不上台账→待权威核实 |\n| F-04 | 本次申请审核的阶段 stage | 申报事项 | 全部；D0-D5 | 阶段决定材料是否已可形成 | 系统申请状态或受理时间 [CD01,EX01] | 不要求后续才产生文件 |\n| F-05 | 申请拟采购的货物/服务/工程类别 | 申报事项 | 全部；D0-D5 | 工程与服务、软件资产和货物归类；混合分包 | 正式采购品目编码 [CD03,EX01,SC01] | 含工程→按权限分流，非默认拒绝 |\n| F-06 | 用途描述与关联教学/科研/活动项目 | 申报事项 | 全部；D0-D5 | 用途与任务书/现有资产相关 | 正式立项任务/需求单位说明 [CD01,EX01] | 无法判断必要性→专业论证 |\n| F-07 | 申请/拟批预算总额含税与币种 | 申报事项 | 全部；D1-D5 | 明细Σ数量×价及税、汇总、分包额与预算余额比对 | 预算审批金额+报价明细 [EX01,MOF01] | 计算错→可修订；超预算待批准 |\n| F-08 | 本次申请人实名身份 | 申报事项 | 全部；D0-D5 | 学生提出需求≠获采购签批权 | 校内统一身份认证 [CD01,CD07] | 无权提交正式审批→补授权/转有权经办 |\n| F-09 | 使用单位、学院和校区 | 申报事项 | 全部；D0-D5 | 归口是否校园规划、实验室或职能单位 | 组织机构主数据 [CD03,CD01] | 归口不明→转部门确认 |\n| F-10 | 经办人/授权代办人及授权范围 | 申报事项+证明材料 | 代办或学生上报；D0-D5 | 授权有效期/项目/可提交动作不得超越 | 部门OA委托名单、采购联络员台账 [CD01,CD07] | 缺授权→待补或转申请主体 |\n| F-11 | 预算项目号及资金类型 | 可信学校底账 | 全部；D1-D5 | 项目期间、资金性质决定政府采购范围 | 财务项目只读预算接口 [MOF01,SC01,CD03] | 接口不可用→external_unverified |\n| F-12 | 预算余额及科目允许范围 | 可信学校底账 | 需要经费核验；D1-D5 | 按对应项目和科目，不以学生截图为准 | 授权财务预算查询 [CD01,MOF01] | 余额未知≠学生造假 |\n| F-13 | 计划备案号/预算年度 | 可信学校底账 | 已进入年度计划的；D1-D5 | 时间、分包、部门计划一致 | 采购中心年度项目台账 [CD01,CD02] | 未备案且必须→待办理计划 |\n| F-14 | 需求提出人、资金负责人、审批人不同的角色关系 | 申报事项+可信底账 | 全部；D0-D5 | 一人兼任可合法但不得自授采购权 | 角色授权与签批日志 [CD01,CD07] | 无权审批→阻止视为已获批 |\n| F-15 | 货物品目编码/服务类别编码 | 申报材料 | 全部；D1-D5 | 集中采购目录、分散限额与方式适用 | 四川2024目录/系统品目映射 [SC01,MOF01] | 类型无法确定→采购办复核 |\n| F-16 | 拟购明细逐行品名/主要功能 | 申报材料 | 全部；D1-D5 | 不得仅一个笼统总称而无功能 | 参考标准及使用场景 [EX01,EX02] | 缺关键功能→补需求说明 |\n| F-17 | 规格型号/技术参数和可验收指标 | 申报材料 | 设备/定制服务；D1-D5 | 检非必要排他、指标过拟合、性能与任务相符 | 中性技术标准或兼容性专家论证 [MOF01,EX01] | 疑似排他→人审；不直接判违法 |\n| F-18 | 数量、单位、估价单价与含税总价 | 申报材料 | 全部；D1-D5 | Σ行金额和申请、包预算一致；单位/税率 | 政府定额、市场调查来源 [EX01,EX02] | 金额矛盾→补正/局部审查 |\n| F-19 | 交付地点、要求交货日期/服务周期 | 申报材料 | 全部；D1-D5 | 要求不得无理由限制供应商；安装时留足场地 | 既有安排、任务节点 [EX01,MOF01] | 不合理排期→专业复核 |\n| F-20 | 质量、性能及验收方案设计 | 申报材料 | 货物/服务；D1-D5 | 预拟验收方法，不是正式验收结果 | 行业标准与合同草案指标 [EX01,MOF01] | 缺可测目标→补充需求 |\n| F-21 | 服务范围、成果、服务人员与考核标准 | 申报材料 | 服务采购；D1-D5 | 服务不同于设备交货；信息系统需数据保护条款 | 原型需求/服务SLA/行业规范 [EX01,EX02] | 服务交付不明确→补证 |\n| F-22 | 拟供应商资格条件和必要理由 | 申报材料 | 需要资格条件时；D1-D5 | 不得排斥潜在供应商/与项目无关 | 法定许可或行业资质规定 [MOF01,EX01] | 无依据排他→专业与采购人审 |\n| F-23 | 市场调查对象及调查时间 | 证明材料 | 按政府采购需求调查/校本触发；D2-D4 | 明确市场调查与最终询价投标是不同阶段 | 一年内相同需求调查/可研已涵盖内容 [MOF01,EX01] | 不足需补调查；有豁免则不误杀 |\n| F-24 | 调查来源/方法与可比方案数 | 证明材料 | 需市场调查；D2-D4 | 同品目同规格含税报价可比;通常调查不少于3个市场主体的适用情形 | 官方行业协会数据、可研合法等效 [MOF01,EX01] | 不能强制全情境上传三份报价 |\n| F-25 | 需求调查报告：市场供给/价格/产业情况 | 申报材料+证明材料 | 政府采购需求调查触发；D2-D4 | 技术商务需求有来源；调查专家与采购响应不同 | 可研报告、一年内等效调查 [MOF01,EX01] | 无替代且触发→补报告 |\n| F-26 | 预计采购组织形式/实施主体 | 申报事项 | 进入实施计划；D3-D5 | 统一采购、自主、集采机构或代理权责 | 采购中心归口及年度计划 [CD01,CD02,EX01] | 方式与主体矛盾→转采购中心 |\n| F-27 | 拟采购方式与适用依据 | 申报材料 | 进入方式选择；D3-D5 | 政府法定采购法与学校自主方式不可混用 | 采购管理部门方式核定 [LAW01,CD05,MOF01] | 建议方式不等于批准方式 |\n| F-28 | 分包数量、分包理由、每包预算 | 申报事项+申报材料 | 分包/混合标的；D1-D5 | 审合理性及同品目历史，不能凭相邻订单直接定违规 | 统筹采购台账/不同用途理由 [MOF01,CD01,LAW01] | 疑拆分→采购/法务复核 |\n| F-29 | 采购意向公告草案/公告状态 | 申报材料或底账 | 属于需公示的阶段；D3-D5 | 草案不等于已公告，公开期限/豁免按法定或校规 | 公告平台发布记录 [CD01,CD02,MOF01] | 未到发布阶段不判缺件 |\n| F-30 | 采购需求论证表及专业意见 | 申报材料+证明材料 | 学校统一组织/重大复杂按规定；D3-D5 | 有讨论问题、采纳意见、签署和日期 | 部门正式评审纪要/OA [CD01,EX01] | 论证在组织中→待形成，不等于拒绝 |\n| F-31 | 进口理由、进口必要性、国产替代比较 | 申报材料 | 进口设备/服务适用；D2-D4 | 进口和单一来源要分开审 | 主管部门进口审批与行业替代报告 [EX03,MOF01] | 只想买外国产品不等于合法进口批准 |\n| F-32 | 拟单一来源事实及专家论证 | 申报材料+证明材料 | 拟单一来源；D2-D5 | 唯一供应、紧急不可替代或延续性需逐法定条件核 | 需求历史兼容/真实供应证明 [LAW01,MOF01,EX01] | 单方指定品牌→待专家/法务，不代批准 |\n| F-33 | 科研急需或不可预见紧急性证据 | 申报材料+证明材料 | 紧急申请；D2-D4 | 起因、发生时间、替代采购路径、持续影响 | 故障/停机/研究窗口、审批 [MOE01,MOE02,LAW01] | 普通赶进度不等于紧急法定例外 |\n| F-34 | 重大/复杂需求重点审查触发项 | 可信底账+申报材料 | 需重点审查的政府采购或校规；D3-D5 | 1000万货服/3000万工程及进口等法定范围的调查门槛注意项目条件 | 既有可研成果可承担部分事实 [MOF01] | 不能把国家门槛错套非政府采购 |\n| F-35 | 信息系统安全、数据出境、软件授权风险 | 申报材料+证明材料 | 软件/云/敏感数据；D2-D4 | 数据类别、部署形式、等保/授权视实际触发 | 信息化处审批及安全审查记录 [EX01,MOF01] | 缺不适用的安全许可不应拒绝 |\n| F-36 | 危险化学品、实验安全、安装场地约束 | 申报材料+证明材料 | 危险品/特种设备/安装；D2-D4 | 危害等级、实验室资质、功率/承重等 | 实验室安全准入/场地确认 [EX02,MOF01] | 按学校专门审批，不由采购AI代批 |\n| F-37 | 复用既有仪器及资产存量证明 | 可信底账+证明材料 | 重复购置风险或大型仪器；D2-D4 | 同类可共享/维修替代与需求必要性 | 资产处设备查询结果 [EX01,EX02] | 存在一台资产不意味着需求必须被拒 |\n| F-38 | 拟成交供应商回避/关联关系声明 | 申报材料+证明材料 | 参与方案设计或有利益冲突；D2-D5 | 关联人员与参与岗位；投诉违法判断归有权部门 | 部门回避申报/采购监督记录 [MOF01,EX01] | 存在关联线索→人审，不擅自定违法 |\n| F-39 | 已有批准/退回/否决的OA节点和日期 | 可信学校底账 | 全部阶段；D0-D5 | 审批时序、人员权限、上次否决原因与当前版本 | 权威OA节点状态 [CD01,EX01] | 待审批不算申请人缺证明，也非已获批 |\n| F-40 | 修订前后版本及变更原因 | 申报材料 | 修改/撤回/追认；D1-D5 | 已批准变更需重新论证的内容与原因 | 受控版本历史/修订记录 [MOF01,EX01] | 不因重传文件覆盖历史否决 |\n| F-41 | 采购需求论证草案编写人和时间 | 申报材料 | 需填论证表；D1-D4 | 填表人与签批者角色隔离 | 经办人员名册/学校CA [CD01,CD07] | 无签章可为草稿但不能伪称已批准 |\n| F-42 | 各采购包审查状态与风险处理结果 | 仅审核输出 | 全部；D1-D5 | 按包输出缺口而不是一刀切总申请拒绝 | 采购部门正式受理回执 [EX01,MOF01] | 不得输出“已采购/已付款” |\n\n### 6.1 关键字段类型（其余字段按说明/结构化对象存储）\n\n- `request_id/package_id/plan_id`: 非空稳定字符串（主单与包分离），版本不更换自然主键；`F-01,F-03`。申请草稿允许系统尚未分配正式流水号。\n- `money`: 金额统一以**十进制金额/分单位整数、币种、税别、原单位**存储，禁止二进制浮点自动求财务结论；`F-07,F-12,F-18,F-28`。跨币种按合法汇率来源转换，未知汇率暂不比较。\n- `effective_dates`: 时区明确的ISO日期/时间，保留制度生效日、申请日、论证日、OA批准日及计划年度；`F-04,F-13,F-39,F-41`。\n- `authorization`: 人员ID、角色、可执行动作、适用单位/项目、授权起止、批准令牌/文号、来源系统与状态；`F-08,F-10,F-14,F-39`。\n- `research_funding_regime`: 除纵向预算制、横向包干外，可为`other/UNKNOWN`。纵向设备费变化为`increase/decrease_or_structure_change/none/UNKNOWN`，关联[CD12]第2—3条。\n- `research_urgency`: `is_research_related`、`item_is_equipment_or_consumable`、`urgency_evidence`、`approved_simplification_route`分开存储，不能一个`urgent=true`推出审批通过。[CD12]第9条。\n- `publication_status`: `draft/submitted/published/exempt/unknown`，来源平台与适用阶段分开；`F-29`。\n- `result_fact`: 单条规则事实状态及证据定位，不由申请人提交；`F-42`。\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s06/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3d6a3769c9362821",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s06"
+      ],
+      "priority": 50042,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-f715ea9761d2c9f319bc",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 8. 审核事实、跨文件依赖、时序和版本约束",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第223行】\n## 8. 审核事实、跨文件依赖、时序和版本约束\n\n**事实图**：`Applicant →(delegate_for)→ Handler →(submit)→ Request →(contains)→ Package →(contains)→ DemandLine`；`Package → FundProject → CurrentBudgetAndPolicy`；`Package → ClassificationAndCatalog → CandidateRoute`；`Package → MarketEvidence / SpecializedOpinions`；`RequestVersion → OAStageEvents → AuthorizedDecision`。每条关系须保留`source_ref + obtained_at + effective_at + doc_hash + authority_level`。\n\n**时间判定原则**：先取实际采购业务申请日与有关政策生效期；后续采购计划、调查、论证和正式批准均不能因后上传电子档而回溯重写生效日；学校规则变动不自动改历史案卷，而是建立新评估版/明确影响范围。校本CD12（2024-05-15生效）政策适用亦须核是否后续被新制度替代。`year=2024`政府采购目录不能默认覆盖所有2026采购，必须校方配置目录版本。[SC01][CD12]\n\n**金额依赖**：同一包各明细行 `line_total = qty×unit_price×(1+tax_rate)-discount` 仅当单价为未税价且税率定义有效时成立；**含税单价不得再加税**。`package_total=Σlines`，`request_total=Σpackages`，但审批额度按各包及资金来源分别核，不以项目总额直接抵消某包不足。单位换算不明、报价币种不明不得直接“算术不符”。\n\n**跨案历史**：相同资金+同品目+同采购需求在相近期间多包可能是应重点审查的拆分线索；是否达到“化整为零规避采购”的法律定性需要有权部门根据法律和项目事实作决定。无历史台账不能声称“没有重复采购”。\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s08/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3d6a3769c9362821",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s08"
+      ],
+      "priority": 50043,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-4707bc643199423aa3ec",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 13. 校本规则配置、优先级和未关闭缺口",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第708行】\n## 13. 校本规则配置、优先级和未关闭缺口\n\n**严格字段**：`policy_binding`至少包括`school_id, effective_from, effective_to, policy_doc_id, issuer, official_url/hash, scope_funding_type, scope_object_type, scope_department, authorized_config_editor, verified_at`。未配置/不确定不许退回到外校最宽松或最严格默认值。\n\n| 配置ID | 需要有权确认的真实值 | 校本已有可用证据 | 当前处理 |\n|---|---|---|---|\n| CFG-01 | 非政采实施细则2024全文、后继修订、货物/服务各路径金额与方式 | CD03/CD04/CD17仅部分引用 | `school_policy_pending` 阻止依该未知限额作正式合规结论 |\n| CFG-02 | 当前《采购需求论证表》《采购意向公告》逐栏标准 | CD01/CD16仅原附件名称 | 通用字段作为研究母版；不宣称复刻本校原表 |\n| CFG-03 | 学生/教师/项目负责人/部门/采购中心的真实系统权限 | CD13/CD14证明系统存在与功能 | `role_auth_external_pending`；不允许自动审批 |\n| CFG-04 | 四川当年最新集中目录、政府采购限额 | SC01 2024目录 | 按实际发生年及法规核定；不能拿旧目录硬判新单 |\n| CFG-05 | 采购科研急需设备耗材2021采购办法第17条及2024衔接 | CD12第9条 | 只承认候选简化路径，真正免招标步骤待职能审批 |\n| CFG-06 | 纵向预算制设备调增/调减或明细变更审批状态 | CD12第2条 | 精确分流学院/科研管理部门记录 |\n| CFG-07 | 横向包干科研经费项目范围和余额 | CD12第3条 | 不查不存在的逐项预算，但查真实项目总额/相关性 |\n| CFG-08 | 安全、进口、网信、重大设备和需求调查专属触发 | EX01/EX02/MOF01为部分结构 | 条件分支；未证适用则不作校本强制拒件 |\n| CFG-09 | 学校采购前系统的计划、OA、目录、资产台账接口 | CD13/CD14报道 | `external_unavailable`路径，不能自行填假记录 |\n| CFG-10 | 分包独立报审的允许范围、正式受理形态 | CD19真实多包例证 | 逐包审查可做，整案正式提交方式待校方确认 |\n\n**不能用学校自由配置覆盖法律强制适用范围**。若存在同效层级规则直接冲突，标`policy_conflict`并暂停受影响动作，保存冲突来源和等待有权解释。\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s13/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3d6a3769c9362821",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s13"
+      ],
+      "priority": 50044,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-ca5ea170b21960037ad9",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 14. 来源追踪：哪些已核真实制度、哪些只是结构参考",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第727行】\n## 14. 来源追踪：哪些已核真实制度、哪些只是结构参考\n\n下面引用的是B阶段已列的原始来源索引。`CD`为成都理工大学校本或其官方公告，`MOF/MOE/LAW/SC`为上位法律政策/省级目录，`EX`为其他高校制度结构参考。**出处可支持事实不等于已授权自动执行该要求**。对被直开限制的网页和源附件仍保留`not_fully_read`。\n\n| 来源ID | 发布文种/时间 | 原始URL | 核验范围/状态 | 可支持事实 | 不能推断 |\n| CD01 | 成都理工大学采购与招标管理中心，2025-05-08《开展2025年度采购工作通知》 | https://cg.cdut.edu.cn/info/1008/4398.htm | 官网检索内容可读、附件下载受限 | 学校统一采购项目，单位明确责任人/经办人、市场调查、需求论证，附件名称《成都理工大学采购需求论证表》《成都理工大学政府采购意向公告》 | **没有取得两个附件文件本身**，不得声称已读取实际栏目；不证明所有自主采购都要公告 |\n| CD02 | 成都理工大学2026-03-24《加快推进2026年度采购工作通知》 | https://jcc.cdut.edu.cn/tzgg.htm | 官网检索/通知目录可读，详情页可能受限 | 已备案采购项目加快需求调查/论证、公告；区分统一采购与自主采购并按学校实施细则 | 不证明学生可自行签采购合同，不含完整金额档次 |\n| CD03 | 成都理工大学2024年度信息公开工作报告；引用成理校发〔2024〕1号《非政府采购实施细则》 | https://dbxb.cdut.edu.cn/xxgkwz/info/1008/4001.htm | 年报原文可读 | 校园规划与建设处负责的特定**服务、工程**项目分档：1万元（含）至30万元（不含），30万元（含）及以上有不同采购组织路径 | 不等于全校所有品目的统一限额，更不能将其当作货物目录门槛 |\n| CD04 | 成都理工大学2025年度信息公开工作报告 | https://dbxb.cdut.edu.cn/xxgkwz/info/1008/4011.htm | 年报原文可读 | 再次披露成理校发〔2024〕1号在特定服务/工程场景的组织分档 | 没有公开整份《非政府采购实施细则》；不能证明2026年无修订 |\n| CD05 | 成都理工大学采购管理2023-03-07补充说明（针对2021旧办法） | https://cg.cdut.edu.cn/info/1008/3280.htm | 官网检索原文可读，直开受限 | 自主采购历史上区别货物询价、商城/比选、服务采购市场调研与部门决议、供应商回应数量 | **2024有新实施细则**；不得把旧“3家、10万元、服务不得询价”等直接激活为2026校规 |\n| CD06 | 成都理工大学2023《采购验收管理办法》成理校发〔2023〕11号 | https://gz.cdut.edu.cn/__local/2/CC/13/647DE095C814922158068435485_A6347BE6_67024.pdf | **官方PDF已读及关键页面查验** | 货物开箱/技术/综合验收及资产权责；用于说明本模板与T04阶段区别 | 规定验收结果，不是T03采购前完整材料表；学院自购及工程另有权限路径 |\n| CD07 | 成都理工大学2021-12采购管理联系人及归口职责登记 | https://cg.cdut.edu.cn/info/1008/2378.htm | 官网原文检索可见，历史资料 | 责任领导、经办人、采购中心岗位分离 | 2026角色权限需要授权OA查询 |\n| CD08 | 成都理工大学采购与招标工作会议相关公开页面，2026 | https://jcc.cdut.edu.cn/info/1014/2694.htm | 官网检索可见 | 采购需求不合理、过度限定参数、调查不充分等实操风险 | 工作报告不构成新的硬性申请附件清单 |\n| CD09 | 成都理工大学2025-04《“只跑一次”财务事项清单》，17页 | https://jcc.cdut.edu.cn/__local/8/A8/96/748E97CB5061A750C78C9A841EF_9631E851_E5400.pdf | **官方PDF已读** | 已发生材料采购、设备购置与后端报销验收需凭据，可辅助T03/T04划界 | 不是采购事前需求批准的材料清单；2026财务换用智能报销 |\n| CD10 | 成都理工大学采购与招标管理中心官网表单/办事入口 | https://cg.cdut.edu.cn/index.htm | 首页条目可检索；具体下载不可得 | 学校存在采购程序、申请表和公告制度入口 | 不是某张申请表逐栏权威版本 |\n| CD11 | 成都理工大学财务处2026-01-13年度开账通知 | https://jcc.cdut.edu.cn/info/1012/2656.htm | 官网检索内容可读、打开部分受限 | 2026原则上使用智能报销，不把历史预约表单当现行唯一渠道 | 财务后端信息，并不能推出T03采购平台全部技术字段 |\n| MOF01 | 财政部财库〔2021〕22号《政府采购需求管理办法》，2021年 | https://www.mof.gov.cn/gkml/caizhengwengao/wg2021/wg202005/202109/t20210917_3753625.htm | 政府原文已读取；另核上海官方转载 | 需求调查、需求编制、实施计划、一般/重点审查、重点情境调查与合法等效既有调查；政府采购资格条件与公平性 | **政府采购**适用，不是所有学校自购的小额耗材一律按国家重点项目完整论证 |\n| SC01 | 四川省财政厅川财规〔2023〕9号，2024年政府集中采购目录及标准 | https://www.ccgp.gov.cn/cgml/df/202403/t20240307_21606814.htm | 中国政府采购网官方文本索引可读 | 集中采购品目与分散采购限额、公开招标标准需依法适用 | 不以“金额低于50万”推论计算机集中采购目录商品必然无流程，也不能将2024目录永久适用以后年份 |\n| LAW01 | 《中华人民共和国政府采购法》现行法全文 | https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_47b5807c40c040368eb5f13b489d6c43.html | 国家市场监管总局官方全文 | 采购方式与公平原则、不得将依法应公开招标的采购化整为零、符合法定条件的单一来源 | 政府采购法律不能自动适用于不属于其范围的科研横向资金普通采购 |\n| MOE01 | 教育部2019年关于扩大高校科研采购自主权的指导 | https://www.moe.gov.cn/s78/A16/A16_zcwj/201910/t20191022_404799.html | 教育部官网原文可检索 | 依法依规简化科研急需仪器设备/耗材采购，提高科研便利 | “急需”不能自动授予学生跳过校内有效程序的权力 |\n| MOE02 | 教育部2019-04-17高校科研管理相关政策 | https://www.moe.gov.cn/srcsite/A16/s7062/201904/t20190417_378380.html | 教育部官网原文可检索 | 科研仪器设备采购简化/学校完善内控等政策原则 | 不直接定义成都理工大学2026年哪个岗位可以免审批 |\n| EX01 | 安徽工业大学2025-09公开《采购需求管理办法》（文件成文2025-03） | https://xb.ahut.edu.cn/info/1843/3731.htm | **HTML全文、附表正文已查** | 市场调查、采购需求调查表、市场调研记录、货物和服务采购需求表、实施计划、专家论证及审查意见均有真实字段；货物需求含性能/数量/交付，服务含周期/成果/考核；计划含方式/预算/包/合同安排 | 本校具体论证金额与学校签批路线不能直接变成都理工大学要求；网页文本出现某些附件**编号与名称对应不够一致**，按文书实际标题而非序号定位 |\n| EX02 | 蚌埠医科大学资产设备管理处2026-05-27采购项目报送通知 | https://gzc.bbmu.edu.cn/info/1012/10246.htm | 官方网页附件目录可读，原DOC/DOCX附件未实际取得 | 按货物/服务/工程区分需求表、预算审批、市场调查/必要时大型仪器论证、技术参数；有实际原始可下载附件名称 | 未读取附件每个表格的每一栏；该校30万元大型仪器论证不适用于CDUT |\n| EX03 | 华侨大学2025-03-10进口仪器设备购置管理说明 | https://sysbc.hqu.edu.cn/info/1052/7753.htm | 官方指南网页可读 | 进口设备申请、专家论证、进口审核相关表；教学/科研和其他用途分制度路线 | 进口并不自动等于单一来源，也不要求普通国产耗材提交进口说明 |\n| EX04 | 深圳大学资产与实验室管理设备采购平台 | https://sbc.szu.edu.cn/sbcbuy/index.aspx | 公开采购系统说明目录可读 | 设备购置、重复购置与重大资产论证的附加材料路径 | 不能把它的设备金额门槛、校区权限移植 |\n| EX05 | 河南应用技术职业学院2025左右物资采购申报操作说明 | https://gzc.henz.edu.cn/info/1203/2232.htm | 官网原文可检索 | 设备、材料/大宗采购的申请与部门审核实际存在 | 不代替CDUT本校采购方式 |\n| EX06 | 山东农业大学2025-03-28采购需求管理公开规则 | https://jjc.sdau.edu.cn/2025/0328/c8492a252331/page.htm | 官网原文检索可读 | 设备参数、市场调查、同行论证、采购计划的组织层次 | 其市场调查数量与层次不等于国家法律一致 |\n| EX07 | 重庆文理学院2025自主采购管理办事公开规则 | https://gzc.cqwu.edu.cn/article_415096.html | 官网公开文可检索 | 某些大学认可在校内授权下由科研负责人自行组织采购；提供合法授权的反误杀样例 | 该校自主采购及阈值不能套给成都理工大学 |\n| CD12 | 成都理工大学成理校发〔2024〕20号科研项目及经费管理办法（2024-05-15） | https://kjc.cdut.edu.cn/__local/0/81/F8/F213AF25A8DDE36DF9DC104CDD7_3BB8AB3B_3BB05.pdf | **P：10页官方PDF原文** | 第1、2、3、9、13条；未包含2021采购办法第17条全文 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD13 | 财务处2025-06-18采购管理信息系统操作培训报道 | https://jcc.cdut.edu.cn/ssjg.jsp?currentnum=6&newskeycode2=&searchScope=0&wbtreeid=1033 | W：官方可检索 | 六个模块名称；无学生角色/权限矩阵 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD14 | 财务处2025-10-24预算绩效与采购管理系统培训 | https://jcc.cdut.edu.cn/info/1014/2622.htm | W：官方可检索 | 预算管理与采购系统培训；没有公开API字段 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD15 | 财务处2026-01-23年度采购工作推进会 | https://jcc.cdut.edu.cn/cwxw.htm | W：官方可检索 | 采购计划（二上）、紧急采购安排和配置标准；没有详细审批权限 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD16 | 采购中心2025-05-08采购工作通知附件 | https://cg.cdut.edu.cn/info/1008/4398.htm | I：表名及扩展名/下载入口已核，文件字节未得 | 附件1需求论证ZIP/附件2意向DOCX；不支持逐栏字段声明 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD17 | 保卫处2026-04-13安防巡逻车比选结果 | https://bwc.cdut.edu.cn/info/1033/2373.htm | W：官方网页文字可见 | 2026非政采细则仍被业务引用，比选综合评分；无法替代细则原文 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD18 | 学校2024/25信息公开年报 | https://dbxb.cdut.edu.cn/xxgkwz/info/1008/4011.htm | W：官网原文可检索 | 特定服务/工程1万—30万分档，非全部物资通用阈值 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD19 | 中国政府采购网2025-10-17校方软件公开招标公告 | https://www.ccgp.gov.cn/cggg/dfgg/gkzb/202510/t20251017_25524285.htm | W：政府采购公告完整可见 | 7个采购包/采购方式/预算事实；不代表前期内部需求表原件 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n\n**来源审计特别说明**：B阶段 `CD12` 为已读10页校本正式PDF，其第2、3、9条足以建立上述特定条件；`CD01/CD16`只有表名、未取得附件内容；`CD03/CD04/CD18`从年报得到特定建规服务/工程金额分档，不能代替实施细则全文；`CD05`是历史说明；国家财政部采购需求调查规则只在法定适用条件成立时触发。建议真实上线前再由校内采购法务对法律法规最新有效性与具体版本逐条确认。\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s14/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3d6a3769c9362821",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s14"
+      ],
+      "priority": 50045,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-cb87f0bbc75b9e1ec111",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 15. 作者侧流程推演（C阶段小样，不是D金标）",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第766行】\n## 15. 作者侧流程推演（C阶段小样，不是D金标）\n\n详细逐步走查记录另见辅文件。本母版规定所有测试先固定政策版本、角色、材料版本和系统可达性，再执行**分包逐规则**，所有正常和异常情境均测试“不误索未来材料、不越权报批准”。\n\n| 走查路径 | 实际执行规则 | 作者侧预期的过程表现（不是独立测试答案） |\n|---|---|---|\n| 普通合法设备采购前草稿 | R-01,R-03,R-04,R-13,R-28 | 允许无合同/发票/验收；当前缺需求才补，不因缺后续权责意见指责学生 |\n| 横向科研包干 + 无逐科目预算 | R-04,R-05,R-06 | 校本CD12允许项目总额与用途审查，不以不存在的材料科目预算拒件 |\n| 纵向设备费调增仅学院同意 | R-04,R-28 | 识别尚需科研管理部门正式审批，不把学院同意写成全部批准 |\n| 急需耗材主张快速采购 | R-22,R-03,R-28 | 校本快速路径可被识别，但2021第17条未取原文须待专业部门决定 |\n| 政府采购范围未明 | R-08,R-10,R-31 | 强制保持UNKNOWN，不直接走普通低额自主采购 |\n| 三包：货物+云服务+工程 | R-02,R-24,R-30 | 逐包给结果；工程转归口，云服务可等待信息化意见，不把其他包自动错杀 |\n| 旧OA正式否决后改名重传 | R-29,R-28,R-32 | 维护历史否决及版本关系，不把新文件名当正式授权 |\n| 市场调查旧资料等效与不等效 | R-11,R-12 | 对时效、调查内容逐项判断，不能无依据强制再做调查，也不能任意豁免 |\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s15/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3d6a3769c9362821",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s15"
+      ],
+      "priority": 50046,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-68bfd36e18920f6d0839",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 16. 跨模板共性模块与本业务专属规则",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第781行】\n## 16. 跨模板共性模块与本业务专属规则\n\n共性机制只是能力提取，不共享业务目的：`MOD-01 PolicyScopeResolver`按学校/项目/行为时间锁有效制度；`MOD-02 ConditionalMaterial`用TRUE/FALSE/UNKNOWN+阶段区分本期必需和未来产生；`MOD-03 EvidenceEquivalence`按证明事实与发行权威核等价；`MOD-04 RoleActionAuthorization`对角色×动作×时间/项目授权；`MOD-05 CrossDocumentConsistency`定位文件页和冲突；`MOD-06 MultiObjectAggregation`按包汇总多问题；`MOD-07 ExternalFactDependency`将业务系统断联与人证伪造分离；`MOD-08 RevisionAuditTrail`保留修订和正式否决；`MOD-09 HumanDecisionGate`阻止预审自动授予采购权限。\n\n**不宜提成全域通用模块**：`BR-10/R-22`成都理工科研急需免招标规则；`R-04`纵向设备费调整审批层级/横向包干口径；`R-08/R-10`政府采购与校本自主方式联立判断；`R-23`特定法定拆分采购风险。这些需要本业务的法规、资金和实施场景，不能因输入有数值和采购号就复用到奖学金或差旅模板。\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s16/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3d6a3769c9362821",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s16"
+      ],
+      "priority": 50047,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-1fa04619aa25de762e56",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 17. 现有编辑器和运行时实际能力映射（仓库main只读核验）",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第787行】\n## 17. 现有编辑器和运行时实际能力映射（仓库main只读核验）\n\n仓库范围：`https://github.com/Fuck-GH-Admin/cdut-studio-review-agent` 的 `main` 公开文本，阅读了 `apps/electron/src/main/lib/review/template-store.ts`、`stage-workflow.ts`、`business-workflow.ts`、`renderer/.../TemplateWizardPanel.tsx` 和设计文档 `15-...`、`18-d1-...`、`19-d2-...`。**不是**本轮在真实App点击或运行代码得出的验收结论；GitHub`main`以文件路径与各文件SHA保存追踪，当前阶段未编辑仓库。\n\n| 业务需求 | 当前证据 | 归类与约束 |\n|---|---|---|\n| 模板草稿/版本、基础字段/材料槽/规则/阶段存在 | `TemplateWizardPanel.tsx`直接引用`FieldSpec`,`MaterialSlotSpec`,`TemplateVersion`,`WorkflowStageSpec`，`template-store.ts`存在草稿/验证及受控发布 | `已有类型/代码路径，但未对G07-T03作运行验证`，不能说本母版已可无损导入 |\n| 单模板分项审核与退件/阶段决策 | `stage-workflow.ts`存在`RecordStageDecision`、`return-for-supplement`、`item-partial-pass`及角色检查 | `已有可观察动作`, 本母版包级子对象聚合/逐权责等待是否全部表达尚未实测 |\n| 模块制作平面与运行平面分离 | `15-template-modules...`描述规范 | `已确认设计规范`≠所有模块组合器已开发 |\n| D1作者态来源/责任追溯与D2情境化审核试点 | `18-d1...`、`19-d2...`有实际实现范围和限制；尤其D1仅`review-candidate`、`publicationAllowed=false`，复杂对象关系不能无损时拒发布 | `已有实验性/受限路径`，不能自动投产多资金、多包条件版 |\n| 多值逻辑、同条规则跨多学校生效期限、等价证据组 | 当前已读资料未证明全链路无损支持 | `能力未验证/可能需扩展`，保留完整自然语言语义 |\n| 采购预算/采购目录/四川法规更新、校方OA角色和签批接口 | 无校方授权接口证据 | `需要有权学校接口`，不能自动填预算、签章或采购许可 |\n| 排他性、唯一供应商、重大设备科学必要性、法定采购方式 | 外校制度可说明规则来源，但机器不能作最终专家/法务决定 | `需要人工专业判断`，只能给证据缺口与风险，不能假装算法已经裁决 |\n\n**能力分级建议**：`已有并可验证`只用于经过真实回归测试的本业务功能（目前空）；`源码结构存在但未运行验证`用于基础字段/流程；`研究态结构具备但映射未证`用于D1/D2复杂语义；`校方接口缺失`用于预算/权限；`人工专业判断`用于采购法务。**不把D1候选自动当作已发布正式模板**。[Repo]\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s17/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3d6a3769c9362821",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s17"
+      ],
+      "priority": 50048,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-df67b19897d2c9c93c7a",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 18. 完整性审计、剩余风险、版本与C/D交接",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第803行】\n## 18. 完整性审计、剩余风险、版本与C/D交接\n\n**母版完整性**：16个场景使用`SC01—SC16`研究标识（见B-01）、42字段、25材料槽（M-25后端排除）、33条稳定规则、14个条件分支、7个阶段与9个证据组。保留B阶段所有候选规则的证据链与校本版本待确认，规则卡按场景和审批动作可审查。\n\n**已知尚未关闭的高影响项**：`U01`成都理工非政府采购实施细则全文；`U02`真实采购需求论证/意向表文件；`U03`采购OA角色权限；`U04`当前四川目录与年度限额；`U10`预算/采购/资产系统的数据访问；`U12`科研急需2021采购办法第17条；后续上线须由有权学校单位确认并完成强制规则配置。这些不会阻碍独立D测试使用明确虚构的封闭政策，但**阻止冒充真实校本已充分验证**。\n\n**C阶段状态**：`BUSINESS_MD_DRAFT_WITH_GAPS`，解释为母版内容、字段、分支、原子规则、走查和追踪已完成；校本现行合同/采购细则、原表字段、真实OA权限仍不足，且未执行软件端到端/独立D盲测。交付为只读 Markdown 业务母版与4份辅文件；不生成、上传或发布生产`TemplateVersion`。\n\n**交给D的公开合同**：模板ID、场景入口、规则/字段/材料/证据组ID、三值条件与阶段例外、输出语义及可计算金额逻辑；不给测试作者任何C作者自测隐藏答案，D必须独立构造虚构制度和金标，避免输入泄漏。完整D接口另见`G07-T03_测试对接说明.md`。\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s18/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-3d6a3769c9362821",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s18"
+      ],
+      "priority": 50049,
+      "confirmation": "unconfirmed"
+    },
+    {
       "id": "d2-a3ad3eaadd2694a9952e",
       "policyVersionId": "workspace:d2-d4-g07-t03@1",
       "title": "BR-01 条件性审核",
@@ -1228,7 +1435,7 @@
       "sourceRefIds": [
         "g07-t03-b01"
       ],
-      "priority": 50041,
+      "priority": 50050,
       "confirmation": "unconfirmed"
     },
     {
@@ -1251,7 +1458,7 @@
       "sourceRefIds": [
         "g07-t03-b02"
       ],
-      "priority": 50042,
+      "priority": 50051,
       "confirmation": "unconfirmed"
     },
     {
@@ -1274,7 +1481,7 @@
       "sourceRefIds": [
         "g07-t03-b03"
       ],
-      "priority": 50043,
+      "priority": 50052,
       "confirmation": "unconfirmed"
     },
     {
@@ -1297,7 +1504,7 @@
       "sourceRefIds": [
         "g07-t03-b04"
       ],
-      "priority": 50044,
+      "priority": 50053,
       "confirmation": "unconfirmed"
     },
     {
@@ -1320,7 +1527,7 @@
       "sourceRefIds": [
         "g07-t03-b05"
       ],
-      "priority": 50045,
+      "priority": 50054,
       "confirmation": "unconfirmed"
     },
     {
@@ -1343,7 +1550,7 @@
       "sourceRefIds": [
         "g07-t03-b06"
       ],
-      "priority": 50046,
+      "priority": 50055,
       "confirmation": "unconfirmed"
     },
     {
@@ -1366,7 +1573,7 @@
       "sourceRefIds": [
         "g07-t03-b07"
       ],
-      "priority": 50047,
+      "priority": 50056,
       "confirmation": "unconfirmed"
     },
     {
@@ -1389,7 +1596,7 @@
       "sourceRefIds": [
         "g07-t03-b08"
       ],
-      "priority": 50048,
+      "priority": 50057,
       "confirmation": "unconfirmed"
     },
     {
@@ -1412,7 +1619,7 @@
       "sourceRefIds": [
         "g07-t03-b09"
       ],
-      "priority": 50049,
+      "priority": 50058,
       "confirmation": "unconfirmed"
     },
     {
@@ -1435,7 +1642,7 @@
       "sourceRefIds": [
         "g07-t03-b10"
       ],
-      "priority": 50050,
+      "priority": 50059,
       "confirmation": "unconfirmed"
     },
     {
@@ -1458,7 +1665,7 @@
       "sourceRefIds": [
         "g07-t03-b11"
       ],
-      "priority": 50051,
+      "priority": 50060,
       "confirmation": "unconfirmed"
     },
     {
@@ -1481,7 +1688,7 @@
       "sourceRefIds": [
         "g07-t03-b12"
       ],
-      "priority": 50052,
+      "priority": 50061,
       "confirmation": "unconfirmed"
     },
     {
@@ -1504,7 +1711,7 @@
       "sourceRefIds": [
         "g07-t03-r01"
       ],
-      "priority": 50053,
+      "priority": 50062,
       "confirmation": "unconfirmed"
     },
     {
@@ -1527,7 +1734,7 @@
       "sourceRefIds": [
         "g07-t03-r02"
       ],
-      "priority": 50054,
+      "priority": 50063,
       "confirmation": "unconfirmed"
     },
     {
@@ -1550,7 +1757,7 @@
       "sourceRefIds": [
         "g07-t03-r03"
       ],
-      "priority": 50055,
+      "priority": 50064,
       "confirmation": "unconfirmed"
     },
     {
@@ -1573,7 +1780,7 @@
       "sourceRefIds": [
         "g07-t03-r04"
       ],
-      "priority": 50056,
+      "priority": 50065,
       "confirmation": "unconfirmed"
     },
     {
@@ -1596,7 +1803,7 @@
       "sourceRefIds": [
         "g07-t03-r05"
       ],
-      "priority": 50057,
+      "priority": 50066,
       "confirmation": "unconfirmed"
     },
     {
@@ -1619,7 +1826,7 @@
       "sourceRefIds": [
         "g07-t03-r06"
       ],
-      "priority": 50058,
+      "priority": 50067,
       "confirmation": "unconfirmed"
     },
     {
@@ -1642,7 +1849,7 @@
       "sourceRefIds": [
         "g07-t03-r07"
       ],
-      "priority": 50059,
+      "priority": 50068,
       "confirmation": "unconfirmed"
     },
     {
@@ -1665,7 +1872,7 @@
       "sourceRefIds": [
         "g07-t03-r08"
       ],
-      "priority": 50060,
+      "priority": 50069,
       "confirmation": "unconfirmed"
     },
     {
@@ -1688,7 +1895,7 @@
       "sourceRefIds": [
         "g07-t03-r09"
       ],
-      "priority": 50061,
+      "priority": 50070,
       "confirmation": "unconfirmed"
     },
     {
@@ -1711,7 +1918,7 @@
       "sourceRefIds": [
         "g07-t03-r10"
       ],
-      "priority": 50062,
+      "priority": 50071,
       "confirmation": "unconfirmed"
     },
     {
@@ -1734,7 +1941,7 @@
       "sourceRefIds": [
         "g07-t03-r11"
       ],
-      "priority": 50063,
+      "priority": 50072,
       "confirmation": "unconfirmed"
     },
     {
@@ -1757,7 +1964,7 @@
       "sourceRefIds": [
         "g07-t03-r12"
       ],
-      "priority": 50064,
+      "priority": 50073,
       "confirmation": "unconfirmed"
     },
     {
@@ -1780,7 +1987,7 @@
       "sourceRefIds": [
         "g07-t03-r13"
       ],
-      "priority": 50065,
+      "priority": 50074,
       "confirmation": "unconfirmed"
     },
     {
@@ -1803,7 +2010,7 @@
       "sourceRefIds": [
         "g07-t03-r14"
       ],
-      "priority": 50066,
+      "priority": 50075,
       "confirmation": "unconfirmed"
     },
     {
@@ -1826,7 +2033,7 @@
       "sourceRefIds": [
         "g07-t03-r15"
       ],
-      "priority": 50067,
+      "priority": 50076,
       "confirmation": "unconfirmed"
     },
     {
@@ -1849,7 +2056,7 @@
       "sourceRefIds": [
         "g07-t03-r16"
       ],
-      "priority": 50068,
+      "priority": 50077,
       "confirmation": "unconfirmed"
     },
     {
@@ -1872,7 +2079,7 @@
       "sourceRefIds": [
         "g07-t03-r17"
       ],
-      "priority": 50069,
+      "priority": 50078,
       "confirmation": "unconfirmed"
     },
     {
@@ -1895,7 +2102,7 @@
       "sourceRefIds": [
         "g07-t03-r18"
       ],
-      "priority": 50070,
+      "priority": 50079,
       "confirmation": "unconfirmed"
     },
     {
@@ -1918,7 +2125,7 @@
       "sourceRefIds": [
         "g07-t03-r19"
       ],
-      "priority": 50071,
+      "priority": 50080,
       "confirmation": "unconfirmed"
     },
     {
@@ -1941,7 +2148,7 @@
       "sourceRefIds": [
         "g07-t03-r20"
       ],
-      "priority": 50072,
+      "priority": 50081,
       "confirmation": "unconfirmed"
     },
     {
@@ -1964,7 +2171,7 @@
       "sourceRefIds": [
         "g07-t03-r21"
       ],
-      "priority": 50073,
+      "priority": 50082,
       "confirmation": "unconfirmed"
     },
     {
@@ -1987,7 +2194,7 @@
       "sourceRefIds": [
         "g07-t03-r22"
       ],
-      "priority": 50074,
+      "priority": 50083,
       "confirmation": "unconfirmed"
     },
     {
@@ -2010,7 +2217,7 @@
       "sourceRefIds": [
         "g07-t03-r23"
       ],
-      "priority": 50075,
+      "priority": 50084,
       "confirmation": "unconfirmed"
     },
     {
@@ -2033,7 +2240,7 @@
       "sourceRefIds": [
         "g07-t03-r24"
       ],
-      "priority": 50076,
+      "priority": 50085,
       "confirmation": "unconfirmed"
     },
     {
@@ -2056,7 +2263,7 @@
       "sourceRefIds": [
         "g07-t03-r25"
       ],
-      "priority": 50077,
+      "priority": 50086,
       "confirmation": "unconfirmed"
     },
     {
@@ -2079,7 +2286,7 @@
       "sourceRefIds": [
         "g07-t03-r26"
       ],
-      "priority": 50078,
+      "priority": 50087,
       "confirmation": "unconfirmed"
     },
     {
@@ -2102,7 +2309,7 @@
       "sourceRefIds": [
         "g07-t03-r27"
       ],
-      "priority": 50079,
+      "priority": 50088,
       "confirmation": "unconfirmed"
     },
     {
@@ -2125,7 +2332,7 @@
       "sourceRefIds": [
         "g07-t03-r28"
       ],
-      "priority": 50080,
+      "priority": 50089,
       "confirmation": "unconfirmed"
     },
     {
@@ -2148,7 +2355,7 @@
       "sourceRefIds": [
         "g07-t03-r29"
       ],
-      "priority": 50081,
+      "priority": 50090,
       "confirmation": "unconfirmed"
     },
     {
@@ -2171,7 +2378,7 @@
       "sourceRefIds": [
         "g07-t03-r30"
       ],
-      "priority": 50082,
+      "priority": 50091,
       "confirmation": "unconfirmed"
     },
     {
@@ -2194,7 +2401,7 @@
       "sourceRefIds": [
         "g07-t03-r31"
       ],
-      "priority": 50083,
+      "priority": 50092,
       "confirmation": "unconfirmed"
     },
     {
@@ -2217,7 +2424,7 @@
       "sourceRefIds": [
         "g07-t03-r32"
       ],
-      "priority": 50084,
+      "priority": 50093,
       "confirmation": "unconfirmed"
     },
     {
@@ -2240,7 +2447,7 @@
       "sourceRefIds": [
         "g07-t03-r33"
       ],
-      "priority": 50085,
+      "priority": 50094,
       "confirmation": "unconfirmed"
     },
     {
@@ -2263,7 +2470,7 @@
       "sourceRefIds": [
         "g07-t03-sscope"
       ],
-      "priority": 50086,
+      "priority": 50095,
       "confirmation": "unconfirmed"
     },
     {
@@ -2286,7 +2493,7 @@
       "sourceRefIds": [
         "g07-t03-sactor"
       ],
-      "priority": 50087,
+      "priority": 50096,
       "confirmation": "unconfirmed"
     },
     {
@@ -2309,7 +2516,7 @@
       "sourceRefIds": [
         "g07-t03-sbranch"
       ],
-      "priority": 50088,
+      "priority": 50097,
       "confirmation": "unconfirmed"
     },
     {
@@ -2332,7 +2539,7 @@
       "sourceRefIds": [
         "g07-t03-sstage"
       ],
-      "priority": 50089,
+      "priority": 50098,
       "confirmation": "unconfirmed"
     },
     {
@@ -2355,7 +2562,7 @@
       "sourceRefIds": [
         "g07-t03-sfields"
       ],
-      "priority": 50090,
+      "priority": 50099,
       "confirmation": "unconfirmed"
     },
     {
@@ -2378,7 +2585,7 @@
       "sourceRefIds": [
         "g07-t03-smaterial"
       ],
-      "priority": 50091,
+      "priority": 50100,
       "confirmation": "unconfirmed"
     },
     {
@@ -2401,7 +2608,7 @@
       "sourceRefIds": [
         "g07-t03-soutput"
       ],
-      "priority": 50092,
+      "priority": 50101,
       "confirmation": "unconfirmed"
     },
     {
@@ -2424,7 +2631,214 @@
       "sourceRefIds": [
         "g07-t03-sexception"
       ],
-      "priority": 50093,
+      "priority": 50102,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-52b2b882230c102569c7",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 2. 独立审核目的、审核对象与相邻模板的硬边界",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第21行】\n## 2. 独立审核目的、审核对象与相邻模板的硬边界\n\n模板以 `request_id` 为案卷、以 **`package_id × requested_action × policy_scope`** 为最小评估单元；如某包含多采购明细，再以费用明细行核数量、估价与品目。任何一种资金或报价类共同字段均不使本模板与活动报销、差旅、采购付款、科研酬金合并。\n\n**同一案件主目的**：判定申请文件/系统事实是否可送有权采购审批；不对合同履行质量、采购过程结果作正式决定。处理已有合同/发票时可利用它们识别申请实际已经到下游，不因此反向将其设成采购前必需材料。\n\n**可被机器得出的结论**：金额算术、日期/版次对齐、已触发材料完整程度、对专业审查所需的事实清单、跨文件明确矛盾，以及“需要校方/系统复核”。**不可独断的结论**：单一来源法定合格、供应商违法、重大设备是否科研必要、紧急采购是否依法可免招标、审批人已正式同意。机器只能基于校方已返回的正式决定引用这些结果。[MOF01][CD12][CD06]\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s02/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-a2800dd0913f4949",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s02"
+      ],
+      "priority": 50103,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-46534d07deb20534829f",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 6. 42个字段：语义、类型、作用时点、证据替代及错误处理",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第116行】\n## 6. 42个字段：语义、类型、作用时点、证据替代及错误处理\n\n字段沿用B阶段稳定 `F-01…F-42`，原研究中的“可信级B/R/L3”对应申请文本/授权只读记录/第三方原始材料，不是布尔通过状态。**所有字段均先解释触发条件才检查是否需要**。`F-42`是**审核输出**字段，不可反向要求申请人填写。原始成都理工采购论证表的具体栏目未取得，以下字段不等同“原表真实栏目”。\n\n| ID | 字段与精确语义 | 所属输入 | 触发/阶段 | 取值及跨文书核对 | 合法替代与来源 | 未知/冲突处理 |\n| F-01 | 申请单及当前版本主键 request_id；重复退回不能再造虚假新单 | 申报事项 | 正式提交时；D1-D5 | 同校同流程唯一，与旧版本 lineage 相连 | OA唯一流水号或正式表单编号 [CD01,EX01] | 缺编号可草稿；重复ID冲突核历史 |\n| F-02 | 申请动作 request_action：新购/修订/延期/撤回/转办 | 申报事项 | 全部；D0-D5 | 修改申请须关联原申请与上次决定 | 对应OA申请操作 [MOF01,EX01] | 动作与阶段不符→核当前申请类型 |\n| F-03 | 采购项目与采购包编号 request_project_id, package_id | 申报事项 | 涉及计划/分包；D1-D5 | 一个计划多包逐包记录；不能将汇总金额当单包金额 | 采购计划档案关联 [CD01,MOF01] | 对不上台账→待权威核实 |\n| F-04 | 本次申请审核的阶段 stage | 申报事项 | 全部；D0-D5 | 阶段决定材料是否已可形成 | 系统申请状态或受理时间 [CD01,EX01] | 不要求后续才产生文件 |\n| F-05 | 申请拟采购的货物/服务/工程类别 | 申报事项 | 全部；D0-D5 | 工程与服务、软件资产和货物归类；混合分包 | 正式采购品目编码 [CD03,EX01,SC01] | 含工程→按权限分流，非默认拒绝 |\n| F-06 | 用途描述与关联教学/科研/活动项目 | 申报事项 | 全部；D0-D5 | 用途与任务书/现有资产相关 | 正式立项任务/需求单位说明 [CD01,EX01] | 无法判断必要性→专业论证 |\n| F-07 | 申请/拟批预算总额含税与币种 | 申报事项 | 全部；D1-D5 | 明细Σ数量×价及税、汇总、分包额与预算余额比对 | 预算审批金额+报价明细 [EX01,MOF01] | 计算错→可修订；超预算待批准 |\n| F-08 | 本次申请人实名身份 | 申报事项 | 全部；D0-D5 | 学生提出需求≠获采购签批权 | 校内统一身份认证 [CD01,CD07] | 无权提交正式审批→补授权/转有权经办 |\n| F-09 | 使用单位、学院和校区 | 申报事项 | 全部；D0-D5 | 归口是否校园规划、实验室或职能单位 | 组织机构主数据 [CD03,CD01] | 归口不明→转部门确认 |\n| F-10 | 经办人/授权代办人及授权范围 | 申报事项+证明材料 | 代办或学生上报；D0-D5 | 授权有效期/项目/可提交动作不得超越 | 部门OA委托名单、采购联络员台账 [CD01,CD07] | 缺授权→待补或转申请主体 |\n| F-11 | 预算项目号及资金类型 | 可信学校底账 | 全部；D1-D5 | 项目期间、资金性质决定政府采购范围 | 财务项目只读预算接口 [MOF01,SC01,CD03] | 接口不可用→external_unverified |\n| F-12 | 预算余额及科目允许范围 | 可信学校底账 | 需要经费核验；D1-D5 | 按对应项目和科目，不以学生截图为准 | 授权财务预算查询 [CD01,MOF01] | 余额未知≠学生造假 |\n| F-13 | 计划备案号/预算年度 | 可信学校底账 | 已进入年度计划的；D1-D5 | 时间、分包、部门计划一致 | 采购中心年度项目台账 [CD01,CD02] | 未备案且必须→待办理计划 |\n| F-14 | 需求提出人、资金负责人、审批人不同的角色关系 | 申报事项+可信底账 | 全部；D0-D5 | 一人兼任可合法但不得自授采购权 | 角色授权与签批日志 [CD01,CD07] | 无权审批→阻止视为已获批 |\n| F-15 | 货物品目编码/服务类别编码 | 申报材料 | 全部；D1-D5 | 集中采购目录、分散限额与方式适用 | 四川2024目录/系统品目映射 [SC01,MOF01] | 类型无法确定→采购办复核 |\n| F-16 | 拟购明细逐行品名/主要功能 | 申报材料 | 全部；D1-D5 | 不得仅一个笼统总称而无功能 | 参考标准及使用场景 [EX01,EX02] | 缺关键功能→补需求说明 |\n| F-17 | 规格型号/技术参数和可验收指标 | 申报材料 | 设备/定制服务；D1-D5 | 检非必要排他、指标过拟合、性能与任务相符 | 中性技术标准或兼容性专家论证 [MOF01,EX01] | 疑似排他→人审；不直接判违法 |\n| F-18 | 数量、单位、估价单价与含税总价 | 申报材料 | 全部；D1-D5 | Σ行金额和申请、包预算一致；单位/税率 | 政府定额、市场调查来源 [EX01,EX02] | 金额矛盾→补正/局部审查 |\n| F-19 | 交付地点、要求交货日期/服务周期 | 申报材料 | 全部；D1-D5 | 要求不得无理由限制供应商；安装时留足场地 | 既有安排、任务节点 [EX01,MOF01] | 不合理排期→专业复核 |\n| F-20 | 质量、性能及验收方案设计 | 申报材料 | 货物/服务；D1-D5 | 预拟验收方法，不是正式验收结果 | 行业标准与合同草案指标 [EX01,MOF01] | 缺可测目标→补充需求 |\n| F-21 | 服务范围、成果、服务人员与考核标准 | 申报材料 | 服务采购；D1-D5 | 服务不同于设备交货；信息系统需数据保护条款 | 原型需求/服务SLA/行业规范 [EX01,EX02] | 服务交付不明确→补证 |\n| F-22 | 拟供应商资格条件和必要理由 | 申报材料 | 需要资格条件时；D1-D5 | 不得排斥潜在供应商/与项目无关 | 法定许可或行业资质规定 [MOF01,EX01] | 无依据排他→专业与采购人审 |\n| F-23 | 市场调查对象及调查时间 | 证明材料 | 按政府采购需求调查/校本触发；D2-D4 | 明确市场调查与最终询价投标是不同阶段 | 一年内相同需求调查/可研已涵盖内容 [MOF01,EX01] | 不足需补调查；有豁免则不误杀 |\n| F-24 | 调查来源/方法与可比方案数 | 证明材料 | 需市场调查；D2-D4 | 同品目同规格含税报价可比;通常调查不少于3个市场主体的适用情形 | 官方行业协会数据、可研合法等效 [MOF01,EX01] | 不能强制全情境上传三份报价 |\n| F-25 | 需求调查报告：市场供给/价格/产业情况 | 申报材料+证明材料 | 政府采购需求调查触发；D2-D4 | 技术商务需求有来源；调查专家与采购响应不同 | 可研报告、一年内等效调查 [MOF01,EX01] | 无替代且触发→补报告 |\n| F-26 | 预计采购组织形式/实施主体 | 申报事项 | 进入实施计划；D3-D5 | 统一采购、自主、集采机构或代理权责 | 采购中心归口及年度计划 [CD01,CD02,EX01] | 方式与主体矛盾→转采购中心 |\n| F-27 | 拟采购方式与适用依据 | 申报材料 | 进入方式选择；D3-D5 | 政府法定采购法与学校自主方式不可混用 | 采购管理部门方式核定 [LAW01,CD05,MOF01] | 建议方式不等于批准方式 |\n| F-28 | 分包数量、分包理由、每包预算 | 申报事项+申报材料 | 分包/混合标的；D1-D5 | 审合理性及同品目历史，不能凭相邻订单直接定违规 | 统筹采购台账/不同用途理由 [MOF01,CD01,LAW01] | 疑拆分→采购/法务复核 |\n| F-29 | 采购意向公告草案/公告状态 | 申报材料或底账 | 属于需公示的阶段；D3-D5 | 草案不等于已公告，公开期限/豁免按法定或校规 | 公告平台发布记录 [CD01,CD02,MOF01] | 未到发布阶段不判缺件 |\n| F-30 | 采购需求论证表及专业意见 | 申报材料+证明材料 | 学校统一组织/重大复杂按规定；D3-D5 | 有讨论问题、采纳意见、签署和日期 | 部门正式评审纪要/OA [CD01,EX01] | 论证在组织中→待形成，不等于拒绝 |\n| F-31 | 进口理由、进口必要性、国产替代比较 | 申报材料 | 进口设备/服务适用；D2-D4 | 进口和单一来源要分开审 | 主管部门进口审批与行业替代报告 [EX03,MOF01] | 只想买外国产品不等于合法进口批准 |\n| F-32 | 拟单一来源事实及专家论证 | 申报材料+证明材料 | 拟单一来源；D2-D5 | 唯一供应、紧急不可替代或延续性需逐法定条件核 | 需求历史兼容/真实供应证明 [LAW01,MOF01,EX01] | 单方指定品牌→待专家/法务，不代批准 |\n| F-33 | 科研急需或不可预见紧急性证据 | 申报材料+证明材料 | 紧急申请；D2-D4 | 起因、发生时间、替代采购路径、持续影响 | 故障/停机/研究窗口、审批 [MOE01,MOE02,LAW01] | 普通赶进度不等于紧急法定例外 |\n| F-34 | 重大/复杂需求重点审查触发项 | 可信底账+申报材料 | 需重点审查的政府采购或校规；D3-D5 | 1000万货服/3000万工程及进口等法定范围的调查门槛注意项目条件 | 既有可研成果可承担部分事实 [MOF01] | 不能把国家门槛错套非政府采购 |\n| F-35 | 信息系统安全、数据出境、软件授权风险 | 申报材料+证明材料 | 软件/云/敏感数据；D2-D4 | 数据类别、部署形式、等保/授权视实际触发 | 信息化处审批及安全审查记录 [EX01,MOF01] | 缺不适用的安全许可不应拒绝 |\n| F-36 | 危险化学品、实验安全、安装场地约束 | 申报材料+证明材料 | 危险品/特种设备/安装；D2-D4 | 危害等级、实验室资质、功率/承重等 | 实验室安全准入/场地确认 [EX02,MOF01] | 按学校专门审批，不由采购AI代批 |\n| F-37 | 复用既有仪器及资产存量证明 | 可信底账+证明材料 | 重复购置风险或大型仪器；D2-D4 | 同类可共享/维修替代与需求必要性 | 资产处设备查询结果 [EX01,EX02] | 存在一台资产不意味着需求必须被拒 |\n| F-38 | 拟成交供应商回避/关联关系声明 | 申报材料+证明材料 | 参与方案设计或有利益冲突；D2-D5 | 关联人员与参与岗位；投诉违法判断归有权部门 | 部门回避申报/采购监督记录 [MOF01,EX01] | 存在关联线索→人审，不擅自定违法 |\n| F-39 | 已有批准/退回/否决的OA节点和日期 | 可信学校底账 | 全部阶段；D0-D5 | 审批时序、人员权限、上次否决原因与当前版本 | 权威OA节点状态 [CD01,EX01] | 待审批不算申请人缺证明，也非已获批 |\n| F-40 | 修订前后版本及变更原因 | 申报材料 | 修改/撤回/追认；D1-D5 | 已批准变更需重新论证的内容与原因 | 受控版本历史/修订记录 [MOF01,EX01] | 不因重传文件覆盖历史否决 |\n| F-41 | 采购需求论证草案编写人和时间 | 申报材料 | 需填论证表；D1-D4 | 填表人与签批者角色隔离 | 经办人员名册/学校CA [CD01,CD07] | 无签章可为草稿但不能伪称已批准 |\n| F-42 | 各采购包审查状态与风险处理结果 | 仅审核输出 | 全部；D1-D5 | 按包输出缺口而不是一刀切总申请拒绝 | 采购部门正式受理回执 [EX01,MOF01] | 不得输出“已采购/已付款” |\n\n### 6.1 关键字段类型（其余字段按说明/结构化对象存储）\n\n- `request_id/package_id/plan_id`: 非空稳定字符串（主单与包分离），版本不更换自然主键；`F-01,F-03`。申请草稿允许系统尚未分配正式流水号。\n- `money`: 金额统一以**十进制金额/分单位整数、币种、税别、原单位**存储，禁止二进制浮点自动求财务结论；`F-07,F-12,F-18,F-28`。跨币种按合法汇率来源转换，未知汇率暂不比较。\n- `effective_dates`: 时区明确的ISO日期/时间，保留制度生效日、申请日、论证日、OA批准日及计划年度；`F-04,F-13,F-39,F-41`。\n- `authorization`: 人员ID、角色、可执行动作、适用单位/项目、授权起止、批准令牌/文号、来源系统与状态；`F-08,F-10,F-14,F-39`。\n- `research_funding_regime`: 除纵向预算制、横向包干外，可为`other/UNKNOWN`。纵向设备费变化为`increase/decrease_or_structure_change/none/UNKNOWN`，关联[CD12]第2—3条。\n- `research_urgency`: `is_research_related`、`item_is_equipment_or_consumable`、`urgency_evidence`、`approved_simplification_route`分开存储，不能一个`urgent=true`推出审批通过。[CD12]第9条。\n- `publication_status`: `draft/submitted/published/exempt/unknown`，来源平台与适用阶段分开；`F-29`。\n- `result_fact`: 单条规则事实状态及证据定位，不由申请人提交；`F-42`。\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s06/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-a2800dd0913f4949",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s06"
+      ],
+      "priority": 50104,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-3782c72eed4e34e3a8c5",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 8. 审核事实、跨文件依赖、时序和版本约束",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第223行】\n## 8. 审核事实、跨文件依赖、时序和版本约束\n\n**事实图**：`Applicant →(delegate_for)→ Handler →(submit)→ Request →(contains)→ Package →(contains)→ DemandLine`；`Package → FundProject → CurrentBudgetAndPolicy`；`Package → ClassificationAndCatalog → CandidateRoute`；`Package → MarketEvidence / SpecializedOpinions`；`RequestVersion → OAStageEvents → AuthorizedDecision`。每条关系须保留`source_ref + obtained_at + effective_at + doc_hash + authority_level`。\n\n**时间判定原则**：先取实际采购业务申请日与有关政策生效期；后续采购计划、调查、论证和正式批准均不能因后上传电子档而回溯重写生效日；学校规则变动不自动改历史案卷，而是建立新评估版/明确影响范围。校本CD12（2024-05-15生效）政策适用亦须核是否后续被新制度替代。`year=2024`政府采购目录不能默认覆盖所有2026采购，必须校方配置目录版本。[SC01][CD12]\n\n**金额依赖**：同一包各明细行 `line_total = qty×unit_price×(1+tax_rate)-discount` 仅当单价为未税价且税率定义有效时成立；**含税单价不得再加税**。`package_total=Σlines`，`request_total=Σpackages`，但审批额度按各包及资金来源分别核，不以项目总额直接抵消某包不足。单位换算不明、报价币种不明不得直接“算术不符”。\n\n**跨案历史**：相同资金+同品目+同采购需求在相近期间多包可能是应重点审查的拆分线索；是否达到“化整为零规避采购”的法律定性需要有权部门根据法律和项目事实作决定。无历史台账不能声称“没有重复采购”。\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s08/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-a2800dd0913f4949",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s08"
+      ],
+      "priority": 50105,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-1ac393350c12e202aa7b",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 13. 校本规则配置、优先级和未关闭缺口",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第708行】\n## 13. 校本规则配置、优先级和未关闭缺口\n\n**严格字段**：`policy_binding`至少包括`school_id, effective_from, effective_to, policy_doc_id, issuer, official_url/hash, scope_funding_type, scope_object_type, scope_department, authorized_config_editor, verified_at`。未配置/不确定不许退回到外校最宽松或最严格默认值。\n\n| 配置ID | 需要有权确认的真实值 | 校本已有可用证据 | 当前处理 |\n|---|---|---|---|\n| CFG-01 | 非政采实施细则2024全文、后继修订、货物/服务各路径金额与方式 | CD03/CD04/CD17仅部分引用 | `school_policy_pending` 阻止依该未知限额作正式合规结论 |\n| CFG-02 | 当前《采购需求论证表》《采购意向公告》逐栏标准 | CD01/CD16仅原附件名称 | 通用字段作为研究母版；不宣称复刻本校原表 |\n| CFG-03 | 学生/教师/项目负责人/部门/采购中心的真实系统权限 | CD13/CD14证明系统存在与功能 | `role_auth_external_pending`；不允许自动审批 |\n| CFG-04 | 四川当年最新集中目录、政府采购限额 | SC01 2024目录 | 按实际发生年及法规核定；不能拿旧目录硬判新单 |\n| CFG-05 | 采购科研急需设备耗材2021采购办法第17条及2024衔接 | CD12第9条 | 只承认候选简化路径，真正免招标步骤待职能审批 |\n| CFG-06 | 纵向预算制设备调增/调减或明细变更审批状态 | CD12第2条 | 精确分流学院/科研管理部门记录 |\n| CFG-07 | 横向包干科研经费项目范围和余额 | CD12第3条 | 不查不存在的逐项预算，但查真实项目总额/相关性 |\n| CFG-08 | 安全、进口、网信、重大设备和需求调查专属触发 | EX01/EX02/MOF01为部分结构 | 条件分支；未证适用则不作校本强制拒件 |\n| CFG-09 | 学校采购前系统的计划、OA、目录、资产台账接口 | CD13/CD14报道 | `external_unavailable`路径，不能自行填假记录 |\n| CFG-10 | 分包独立报审的允许范围、正式受理形态 | CD19真实多包例证 | 逐包审查可做，整案正式提交方式待校方确认 |\n\n**不能用学校自由配置覆盖法律强制适用范围**。若存在同效层级规则直接冲突，标`policy_conflict`并暂停受影响动作，保存冲突来源和等待有权解释。\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s13/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-a2800dd0913f4949",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s13"
+      ],
+      "priority": 50106,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-2e92381969abddd92d6f",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 14. 来源追踪：哪些已核真实制度、哪些只是结构参考",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第727行】\n## 14. 来源追踪：哪些已核真实制度、哪些只是结构参考\n\n下面引用的是B阶段已列的原始来源索引。`CD`为成都理工大学校本或其官方公告，`MOF/MOE/LAW/SC`为上位法律政策/省级目录，`EX`为其他高校制度结构参考。**出处可支持事实不等于已授权自动执行该要求**。对被直开限制的网页和源附件仍保留`not_fully_read`。\n\n| 来源ID | 发布文种/时间 | 原始URL | 核验范围/状态 | 可支持事实 | 不能推断 |\n| CD01 | 成都理工大学采购与招标管理中心，2025-05-08《开展2025年度采购工作通知》 | https://cg.cdut.edu.cn/info/1008/4398.htm | 官网检索内容可读、附件下载受限 | 学校统一采购项目，单位明确责任人/经办人、市场调查、需求论证，附件名称《成都理工大学采购需求论证表》《成都理工大学政府采购意向公告》 | **没有取得两个附件文件本身**，不得声称已读取实际栏目；不证明所有自主采购都要公告 |\n| CD02 | 成都理工大学2026-03-24《加快推进2026年度采购工作通知》 | https://jcc.cdut.edu.cn/tzgg.htm | 官网检索/通知目录可读，详情页可能受限 | 已备案采购项目加快需求调查/论证、公告；区分统一采购与自主采购并按学校实施细则 | 不证明学生可自行签采购合同，不含完整金额档次 |\n| CD03 | 成都理工大学2024年度信息公开工作报告；引用成理校发〔2024〕1号《非政府采购实施细则》 | https://dbxb.cdut.edu.cn/xxgkwz/info/1008/4001.htm | 年报原文可读 | 校园规划与建设处负责的特定**服务、工程**项目分档：1万元（含）至30万元（不含），30万元（含）及以上有不同采购组织路径 | 不等于全校所有品目的统一限额，更不能将其当作货物目录门槛 |\n| CD04 | 成都理工大学2025年度信息公开工作报告 | https://dbxb.cdut.edu.cn/xxgkwz/info/1008/4011.htm | 年报原文可读 | 再次披露成理校发〔2024〕1号在特定服务/工程场景的组织分档 | 没有公开整份《非政府采购实施细则》；不能证明2026年无修订 |\n| CD05 | 成都理工大学采购管理2023-03-07补充说明（针对2021旧办法） | https://cg.cdut.edu.cn/info/1008/3280.htm | 官网检索原文可读，直开受限 | 自主采购历史上区别货物询价、商城/比选、服务采购市场调研与部门决议、供应商回应数量 | **2024有新实施细则**；不得把旧“3家、10万元、服务不得询价”等直接激活为2026校规 |\n| CD06 | 成都理工大学2023《采购验收管理办法》成理校发〔2023〕11号 | https://gz.cdut.edu.cn/__local/2/CC/13/647DE095C814922158068435485_A6347BE6_67024.pdf | **官方PDF已读及关键页面查验** | 货物开箱/技术/综合验收及资产权责；用于说明本模板与T04阶段区别 | 规定验收结果，不是T03采购前完整材料表；学院自购及工程另有权限路径 |\n| CD07 | 成都理工大学2021-12采购管理联系人及归口职责登记 | https://cg.cdut.edu.cn/info/1008/2378.htm | 官网原文检索可见，历史资料 | 责任领导、经办人、采购中心岗位分离 | 2026角色权限需要授权OA查询 |\n| CD08 | 成都理工大学采购与招标工作会议相关公开页面，2026 | https://jcc.cdut.edu.cn/info/1014/2694.htm | 官网检索可见 | 采购需求不合理、过度限定参数、调查不充分等实操风险 | 工作报告不构成新的硬性申请附件清单 |\n| CD09 | 成都理工大学2025-04《“只跑一次”财务事项清单》，17页 | https://jcc.cdut.edu.cn/__local/8/A8/96/748E97CB5061A750C78C9A841EF_9631E851_E5400.pdf | **官方PDF已读** | 已发生材料采购、设备购置与后端报销验收需凭据，可辅助T03/T04划界 | 不是采购事前需求批准的材料清单；2026财务换用智能报销 |\n| CD10 | 成都理工大学采购与招标管理中心官网表单/办事入口 | https://cg.cdut.edu.cn/index.htm | 首页条目可检索；具体下载不可得 | 学校存在采购程序、申请表和公告制度入口 | 不是某张申请表逐栏权威版本 |\n| CD11 | 成都理工大学财务处2026-01-13年度开账通知 | https://jcc.cdut.edu.cn/info/1012/2656.htm | 官网检索内容可读、打开部分受限 | 2026原则上使用智能报销，不把历史预约表单当现行唯一渠道 | 财务后端信息，并不能推出T03采购平台全部技术字段 |\n| MOF01 | 财政部财库〔2021〕22号《政府采购需求管理办法》，2021年 | https://www.mof.gov.cn/gkml/caizhengwengao/wg2021/wg202005/202109/t20210917_3753625.htm | 政府原文已读取；另核上海官方转载 | 需求调查、需求编制、实施计划、一般/重点审查、重点情境调查与合法等效既有调查；政府采购资格条件与公平性 | **政府采购**适用，不是所有学校自购的小额耗材一律按国家重点项目完整论证 |\n| SC01 | 四川省财政厅川财规〔2023〕9号，2024年政府集中采购目录及标准 | https://www.ccgp.gov.cn/cgml/df/202403/t20240307_21606814.htm | 中国政府采购网官方文本索引可读 | 集中采购品目与分散采购限额、公开招标标准需依法适用 | 不以“金额低于50万”推论计算机集中采购目录商品必然无流程，也不能将2024目录永久适用以后年份 |\n| LAW01 | 《中华人民共和国政府采购法》现行法全文 | https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_47b5807c40c040368eb5f13b489d6c43.html | 国家市场监管总局官方全文 | 采购方式与公平原则、不得将依法应公开招标的采购化整为零、符合法定条件的单一来源 | 政府采购法律不能自动适用于不属于其范围的科研横向资金普通采购 |\n| MOE01 | 教育部2019年关于扩大高校科研采购自主权的指导 | https://www.moe.gov.cn/s78/A16/A16_zcwj/201910/t20191022_404799.html | 教育部官网原文可检索 | 依法依规简化科研急需仪器设备/耗材采购，提高科研便利 | “急需”不能自动授予学生跳过校内有效程序的权力 |\n| MOE02 | 教育部2019-04-17高校科研管理相关政策 | https://www.moe.gov.cn/srcsite/A16/s7062/201904/t20190417_378380.html | 教育部官网原文可检索 | 科研仪器设备采购简化/学校完善内控等政策原则 | 不直接定义成都理工大学2026年哪个岗位可以免审批 |\n| EX01 | 安徽工业大学2025-09公开《采购需求管理办法》（文件成文2025-03） | https://xb.ahut.edu.cn/info/1843/3731.htm | **HTML全文、附表正文已查** | 市场调查、采购需求调查表、市场调研记录、货物和服务采购需求表、实施计划、专家论证及审查意见均有真实字段；货物需求含性能/数量/交付，服务含周期/成果/考核；计划含方式/预算/包/合同安排 | 本校具体论证金额与学校签批路线不能直接变成都理工大学要求；网页文本出现某些附件**编号与名称对应不够一致**，按文书实际标题而非序号定位 |\n| EX02 | 蚌埠医科大学资产设备管理处2026-05-27采购项目报送通知 | https://gzc.bbmu.edu.cn/info/1012/10246.htm | 官方网页附件目录可读，原DOC/DOCX附件未实际取得 | 按货物/服务/工程区分需求表、预算审批、市场调查/必要时大型仪器论证、技术参数；有实际原始可下载附件名称 | 未读取附件每个表格的每一栏；该校30万元大型仪器论证不适用于CDUT |\n| EX03 | 华侨大学2025-03-10进口仪器设备购置管理说明 | https://sysbc.hqu.edu.cn/info/1052/7753.htm | 官方指南网页可读 | 进口设备申请、专家论证、进口审核相关表；教学/科研和其他用途分制度路线 | 进口并不自动等于单一来源，也不要求普通国产耗材提交进口说明 |\n| EX04 | 深圳大学资产与实验室管理设备采购平台 | https://sbc.szu.edu.cn/sbcbuy/index.aspx | 公开采购系统说明目录可读 | 设备购置、重复购置与重大资产论证的附加材料路径 | 不能把它的设备金额门槛、校区权限移植 |\n| EX05 | 河南应用技术职业学院2025左右物资采购申报操作说明 | https://gzc.henz.edu.cn/info/1203/2232.htm | 官网原文可检索 | 设备、材料/大宗采购的申请与部门审核实际存在 | 不代替CDUT本校采购方式 |\n| EX06 | 山东农业大学2025-03-28采购需求管理公开规则 | https://jjc.sdau.edu.cn/2025/0328/c8492a252331/page.htm | 官网原文检索可读 | 设备参数、市场调查、同行论证、采购计划的组织层次 | 其市场调查数量与层次不等于国家法律一致 |\n| EX07 | 重庆文理学院2025自主采购管理办事公开规则 | https://gzc.cqwu.edu.cn/article_415096.html | 官网公开文可检索 | 某些大学认可在校内授权下由科研负责人自行组织采购；提供合法授权的反误杀样例 | 该校自主采购及阈值不能套给成都理工大学 |\n| CD12 | 成都理工大学成理校发〔2024〕20号科研项目及经费管理办法（2024-05-15） | https://kjc.cdut.edu.cn/__local/0/81/F8/F213AF25A8DDE36DF9DC104CDD7_3BB8AB3B_3BB05.pdf | **P：10页官方PDF原文** | 第1、2、3、9、13条；未包含2021采购办法第17条全文 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD13 | 财务处2025-06-18采购管理信息系统操作培训报道 | https://jcc.cdut.edu.cn/ssjg.jsp?currentnum=6&newskeycode2=&searchScope=0&wbtreeid=1033 | W：官方可检索 | 六个模块名称；无学生角色/权限矩阵 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD14 | 财务处2025-10-24预算绩效与采购管理系统培训 | https://jcc.cdut.edu.cn/info/1014/2622.htm | W：官方可检索 | 预算管理与采购系统培训；没有公开API字段 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD15 | 财务处2026-01-23年度采购工作推进会 | https://jcc.cdut.edu.cn/cwxw.htm | W：官方可检索 | 采购计划（二上）、紧急采购安排和配置标准；没有详细审批权限 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD16 | 采购中心2025-05-08采购工作通知附件 | https://cg.cdut.edu.cn/info/1008/4398.htm | I：表名及扩展名/下载入口已核，文件字节未得 | 附件1需求论证ZIP/附件2意向DOCX；不支持逐栏字段声明 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD17 | 保卫处2026-04-13安防巡逻车比选结果 | https://bwc.cdut.edu.cn/info/1033/2373.htm | W：官方网页文字可见 | 2026非政采细则仍被业务引用，比选综合评分；无法替代细则原文 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD18 | 学校2024/25信息公开年报 | https://dbxb.cdut.edu.cn/xxgkwz/info/1008/4011.htm | W：官网原文可检索 | 特定服务/工程1万—30万分档，非全部物资通用阈值 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n| CD19 | 中国政府采购网2025-10-17校方软件公开招标公告 | https://www.ccgp.gov.cn/cggg/dfgg/gkzb/202510/t20251017_25524285.htm | W：政府采购公告完整可见 | 7个采购包/采购方式/预算事实；不代表前期内部需求表原件 | 校本原文只支持所列内容；不能推断全部角色/阈值/表单结构 |\n\n**来源审计特别说明**：B阶段 `CD12` 为已读10页校本正式PDF，其第2、3、9条足以建立上述特定条件；`CD01/CD16`只有表名、未取得附件内容；`CD03/CD04/CD18`从年报得到特定建规服务/工程金额分档，不能代替实施细则全文；`CD05`是历史说明；国家财政部采购需求调查规则只在法定适用条件成立时触发。建议真实上线前再由校内采购法务对法律法规最新有效性与具体版本逐条确认。\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s14/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-a2800dd0913f4949",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s14"
+      ],
+      "priority": 50107,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-60676ab45a00e4ef9049",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 15. 作者侧流程推演（C阶段小样，不是D金标）",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第766行】\n## 15. 作者侧流程推演（C阶段小样，不是D金标）\n\n详细逐步走查记录另见辅文件。本母版规定所有测试先固定政策版本、角色、材料版本和系统可达性，再执行**分包逐规则**，所有正常和异常情境均测试“不误索未来材料、不越权报批准”。\n\n| 走查路径 | 实际执行规则 | 作者侧预期的过程表现（不是独立测试答案） |\n|---|---|---|\n| 普通合法设备采购前草稿 | R-01,R-03,R-04,R-13,R-28 | 允许无合同/发票/验收；当前缺需求才补，不因缺后续权责意见指责学生 |\n| 横向科研包干 + 无逐科目预算 | R-04,R-05,R-06 | 校本CD12允许项目总额与用途审查，不以不存在的材料科目预算拒件 |\n| 纵向设备费调增仅学院同意 | R-04,R-28 | 识别尚需科研管理部门正式审批，不把学院同意写成全部批准 |\n| 急需耗材主张快速采购 | R-22,R-03,R-28 | 校本快速路径可被识别，但2021第17条未取原文须待专业部门决定 |\n| 政府采购范围未明 | R-08,R-10,R-31 | 强制保持UNKNOWN，不直接走普通低额自主采购 |\n| 三包：货物+云服务+工程 | R-02,R-24,R-30 | 逐包给结果；工程转归口，云服务可等待信息化意见，不把其他包自动错杀 |\n| 旧OA正式否决后改名重传 | R-29,R-28,R-32 | 维护历史否决及版本关系，不把新文件名当正式授权 |\n| 市场调查旧资料等效与不等效 | R-11,R-12 | 对时效、调查内容逐项判断，不能无依据强制再做调查，也不能任意豁免 |\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s15/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-a2800dd0913f4949",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s15"
+      ],
+      "priority": 50108,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-545b1f5b877e2a593cac",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 16. 跨模板共性模块与本业务专属规则",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第781行】\n## 16. 跨模板共性模块与本业务专属规则\n\n共性机制只是能力提取，不共享业务目的：`MOD-01 PolicyScopeResolver`按学校/项目/行为时间锁有效制度；`MOD-02 ConditionalMaterial`用TRUE/FALSE/UNKNOWN+阶段区分本期必需和未来产生；`MOD-03 EvidenceEquivalence`按证明事实与发行权威核等价；`MOD-04 RoleActionAuthorization`对角色×动作×时间/项目授权；`MOD-05 CrossDocumentConsistency`定位文件页和冲突；`MOD-06 MultiObjectAggregation`按包汇总多问题；`MOD-07 ExternalFactDependency`将业务系统断联与人证伪造分离；`MOD-08 RevisionAuditTrail`保留修订和正式否决；`MOD-09 HumanDecisionGate`阻止预审自动授予采购权限。\n\n**不宜提成全域通用模块**：`BR-10/R-22`成都理工科研急需免招标规则；`R-04`纵向设备费调整审批层级/横向包干口径；`R-08/R-10`政府采购与校本自主方式联立判断；`R-23`特定法定拆分采购风险。这些需要本业务的法规、资金和实施场景，不能因输入有数值和采购号就复用到奖学金或差旅模板。\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s16/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-a2800dd0913f4949",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s16"
+      ],
+      "priority": 50109,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-c9421a7d7f8c94e28772",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 17. 现有编辑器和运行时实际能力映射（仓库main只读核验）",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第787行】\n## 17. 现有编辑器和运行时实际能力映射（仓库main只读核验）\n\n仓库范围：`https://github.com/Fuck-GH-Admin/cdut-studio-review-agent` 的 `main` 公开文本，阅读了 `apps/electron/src/main/lib/review/template-store.ts`、`stage-workflow.ts`、`business-workflow.ts`、`renderer/.../TemplateWizardPanel.tsx` 和设计文档 `15-...`、`18-d1-...`、`19-d2-...`。**不是**本轮在真实App点击或运行代码得出的验收结论；GitHub`main`以文件路径与各文件SHA保存追踪，当前阶段未编辑仓库。\n\n| 业务需求 | 当前证据 | 归类与约束 |\n|---|---|---|\n| 模板草稿/版本、基础字段/材料槽/规则/阶段存在 | `TemplateWizardPanel.tsx`直接引用`FieldSpec`,`MaterialSlotSpec`,`TemplateVersion`,`WorkflowStageSpec`，`template-store.ts`存在草稿/验证及受控发布 | `已有类型/代码路径，但未对G07-T03作运行验证`，不能说本母版已可无损导入 |\n| 单模板分项审核与退件/阶段决策 | `stage-workflow.ts`存在`RecordStageDecision`、`return-for-supplement`、`item-partial-pass`及角色检查 | `已有可观察动作`, 本母版包级子对象聚合/逐权责等待是否全部表达尚未实测 |\n| 模块制作平面与运行平面分离 | `15-template-modules...`描述规范 | `已确认设计规范`≠所有模块组合器已开发 |\n| D1作者态来源/责任追溯与D2情境化审核试点 | `18-d1...`、`19-d2...`有实际实现范围和限制；尤其D1仅`review-candidate`、`publicationAllowed=false`，复杂对象关系不能无损时拒发布 | `已有实验性/受限路径`，不能自动投产多资金、多包条件版 |\n| 多值逻辑、同条规则跨多学校生效期限、等价证据组 | 当前已读资料未证明全链路无损支持 | `能力未验证/可能需扩展`，保留完整自然语言语义 |\n| 采购预算/采购目录/四川法规更新、校方OA角色和签批接口 | 无校方授权接口证据 | `需要有权学校接口`，不能自动填预算、签章或采购许可 |\n| 排他性、唯一供应商、重大设备科学必要性、法定采购方式 | 外校制度可说明规则来源，但机器不能作最终专家/法务决定 | `需要人工专业判断`，只能给证据缺口与风险，不能假装算法已经裁决 |\n\n**能力分级建议**：`已有并可验证`只用于经过真实回归测试的本业务功能（目前空）；`源码结构存在但未运行验证`用于基础字段/流程；`研究态结构具备但映射未证`用于D1/D2复杂语义；`校方接口缺失`用于预算/权限；`人工专业判断`用于采购法务。**不把D1候选自动当作已发布正式模板**。[Repo]\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s17/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-a2800dd0913f4949",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s17"
+      ],
+      "priority": 50110,
+      "confirmation": "unconfirmed"
+    },
+    {
+      "id": "d2-a5ec06e55725d03b47b5",
+      "policyVersionId": "workspace:d2-d4-g07-t03@1",
+      "title": "## 18. 完整性审计、剩余风险、版本与C/D交接",
+      "requirement": "适用范围：g07-procurement-package\n【原C母版非编号责任 第803行】\n## 18. 完整性审计、剩余风险、版本与C/D交接\n\n**母版完整性**：16个场景使用`SC01—SC16`研究标识（见B-01）、42字段、25材料槽（M-25后端排除）、33条稳定规则、14个条件分支、7个阶段与9个证据组。保留B阶段所有候选规则的证据链与校本版本待确认，规则卡按场景和审批动作可审查。\n\n**已知尚未关闭的高影响项**：`U01`成都理工非政府采购实施细则全文；`U02`真实采购需求论证/意向表文件；`U03`采购OA角色权限；`U04`当前四川目录与年度限额；`U10`预算/采购/资产系统的数据访问；`U12`科研急需2021采购办法第17条；后续上线须由有权学校单位确认并完成强制规则配置。这些不会阻碍独立D测试使用明确虚构的封闭政策，但**阻止冒充真实校本已充分验证**。\n\n**C阶段状态**：`BUSINESS_MD_DRAFT_WITH_GAPS`，解释为母版内容、字段、分支、原子规则、走查和追踪已完成；校本现行合同/采购细则、原表字段、真实OA权限仍不足，且未执行软件端到端/独立D盲测。交付为只读 Markdown 业务母版与4份辅文件；不生成、上传或发布生产`TemplateVersion`。\n\n**交给D的公开合同**：模板ID、场景入口、规则/字段/材料/证据组ID、三值条件与阶段例外、输出语义及可计算金额逻辑；不给测试作者任何C作者自测隐藏答案，D必须独立构造虚构制度和金标，避免输入泄漏。完整D接口另见`G07-T03_测试对接说明.md`。\n完成标准：逐对象记录这一章的条件、来源、材料形成阶段、例外、输出与人工权责；不以校规未核或外部事实缺失做肯定判断。\n责任边界：校本政策待核，不产生审批付款\n只做材料与证据的技术预审；政策未核必须待确认。不得批准、付款、正式结清、进行税票真伪最终认定或用用户扫描件冒充校方权威记录。\n仅技术预审，不得正式付款、批准或会计结清。\nD2 技术预审来源：g07-t03-nonnum-s18/policy-candidate/unknown\n行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。\n校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。\n学籍字段条件：applicable；申请陈述不等于可信学籍快照。",
+      "when": {
+        "all": []
+      },
+      "sectionId": "d2-scope-a2800dd0913f4949",
+      "targetScope": "subject",
+      "execution": "semantic",
+      "semanticOutputEnum": [
+        "compliant",
+        "non-compliant"
+      ],
+      "onFail": "manual-review",
+      "onUnknown": "needs-confirmation",
+      "sourceRefIds": [
+        "g07-t03-nonnum-s18"
+      ],
+      "priority": 50111,
       "confirmation": "unconfirmed"
     },
     {
@@ -2447,7 +2861,7 @@
       "sourceRefIds": [
         "g07-t03-b01"
       ],
-      "priority": 50094,
+      "priority": 50112,
       "confirmation": "unconfirmed"
     },
     {
@@ -2470,7 +2884,7 @@
       "sourceRefIds": [
         "g07-t03-b02"
       ],
-      "priority": 50095,
+      "priority": 50113,
       "confirmation": "unconfirmed"
     },
     {
@@ -2493,7 +2907,7 @@
       "sourceRefIds": [
         "g07-t03-b03"
       ],
-      "priority": 50096,
+      "priority": 50114,
       "confirmation": "unconfirmed"
     },
     {
@@ -2516,7 +2930,7 @@
       "sourceRefIds": [
         "g07-t03-b04"
       ],
-      "priority": 50097,
+      "priority": 50115,
       "confirmation": "unconfirmed"
     },
     {
@@ -2539,7 +2953,7 @@
       "sourceRefIds": [
         "g07-t03-b05"
       ],
-      "priority": 50098,
+      "priority": 50116,
       "confirmation": "unconfirmed"
     },
     {
@@ -2562,7 +2976,7 @@
       "sourceRefIds": [
         "g07-t03-b06"
       ],
-      "priority": 50099,
+      "priority": 50117,
       "confirmation": "unconfirmed"
     },
     {
@@ -2585,7 +2999,7 @@
       "sourceRefIds": [
         "g07-t03-b07"
       ],
-      "priority": 50100,
+      "priority": 50118,
       "confirmation": "unconfirmed"
     },
     {
@@ -2608,7 +3022,7 @@
       "sourceRefIds": [
         "g07-t03-b08"
       ],
-      "priority": 50101,
+      "priority": 50119,
       "confirmation": "unconfirmed"
     },
     {
@@ -2631,7 +3045,7 @@
       "sourceRefIds": [
         "g07-t03-b09"
       ],
-      "priority": 50102,
+      "priority": 50120,
       "confirmation": "unconfirmed"
     },
     {
@@ -2654,7 +3068,7 @@
       "sourceRefIds": [
         "g07-t03-b10"
       ],
-      "priority": 50103,
+      "priority": 50121,
       "confirmation": "unconfirmed"
     },
     {
@@ -2677,7 +3091,7 @@
       "sourceRefIds": [
         "g07-t03-b11"
       ],
-      "priority": 50104,
+      "priority": 50122,
       "confirmation": "unconfirmed"
     },
     {
@@ -2700,7 +3114,7 @@
       "sourceRefIds": [
         "g07-t03-b12"
       ],
-      "priority": 50105,
+      "priority": 50123,
       "confirmation": "unconfirmed"
     }
   ],
@@ -3399,6 +3813,159 @@
         "fieldKey": "g07-procurement-package",
         "supportsFacts": [
           "d2:object:g07-procurement-package:sexception"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s02#g07-t03-item-a",
+      "ruleId": "d2-229d6b483c400e409783",
+      "objectKey": "g07-t03-item-a",
+      "subjectId": "g07-t03-subject-a",
+      "sourceIds": [
+        "g07-t03-nonnum-s02"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums02"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s06#g07-t03-item-a",
+      "ruleId": "d2-80af15b071e2b0b63abb",
+      "objectKey": "g07-t03-item-a",
+      "subjectId": "g07-t03-subject-a",
+      "sourceIds": [
+        "g07-t03-nonnum-s06"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums06"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s08#g07-t03-item-a",
+      "ruleId": "d2-f715ea9761d2c9f319bc",
+      "objectKey": "g07-t03-item-a",
+      "subjectId": "g07-t03-subject-a",
+      "sourceIds": [
+        "g07-t03-nonnum-s08"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums08"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s13#g07-t03-item-a",
+      "ruleId": "d2-4707bc643199423aa3ec",
+      "objectKey": "g07-t03-item-a",
+      "subjectId": "g07-t03-subject-a",
+      "sourceIds": [
+        "g07-t03-nonnum-s13"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums13"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s14#g07-t03-item-a",
+      "ruleId": "d2-ca5ea170b21960037ad9",
+      "objectKey": "g07-t03-item-a",
+      "subjectId": "g07-t03-subject-a",
+      "sourceIds": [
+        "g07-t03-nonnum-s14"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums14"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s15#g07-t03-item-a",
+      "ruleId": "d2-cb87f0bbc75b9e1ec111",
+      "objectKey": "g07-t03-item-a",
+      "subjectId": "g07-t03-subject-a",
+      "sourceIds": [
+        "g07-t03-nonnum-s15"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums15"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s16#g07-t03-item-a",
+      "ruleId": "d2-68bfd36e18920f6d0839",
+      "objectKey": "g07-t03-item-a",
+      "subjectId": "g07-t03-subject-a",
+      "sourceIds": [
+        "g07-t03-nonnum-s16"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums16"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s17#g07-t03-item-a",
+      "ruleId": "d2-1fa04619aa25de762e56",
+      "objectKey": "g07-t03-item-a",
+      "subjectId": "g07-t03-subject-a",
+      "sourceIds": [
+        "g07-t03-nonnum-s17"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums17"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s18#g07-t03-item-a",
+      "ruleId": "d2-df67b19897d2c9c93c7a",
+      "objectKey": "g07-t03-item-a",
+      "subjectId": "g07-t03-subject-a",
+      "sourceIds": [
+        "g07-t03-nonnum-s18"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums18"
         ]
       }
     },
@@ -4304,6 +4871,159 @@
       }
     },
     {
+      "checkId": "module/use-non-numbered/s02#g07-t03-item-b",
+      "ruleId": "d2-52b2b882230c102569c7",
+      "objectKey": "g07-t03-item-b",
+      "subjectId": "g07-t03-subject-b",
+      "sourceIds": [
+        "g07-t03-nonnum-s02"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums02"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s06#g07-t03-item-b",
+      "ruleId": "d2-46534d07deb20534829f",
+      "objectKey": "g07-t03-item-b",
+      "subjectId": "g07-t03-subject-b",
+      "sourceIds": [
+        "g07-t03-nonnum-s06"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums06"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s08#g07-t03-item-b",
+      "ruleId": "d2-3782c72eed4e34e3a8c5",
+      "objectKey": "g07-t03-item-b",
+      "subjectId": "g07-t03-subject-b",
+      "sourceIds": [
+        "g07-t03-nonnum-s08"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums08"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s13#g07-t03-item-b",
+      "ruleId": "d2-1ac393350c12e202aa7b",
+      "objectKey": "g07-t03-item-b",
+      "subjectId": "g07-t03-subject-b",
+      "sourceIds": [
+        "g07-t03-nonnum-s13"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums13"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s14#g07-t03-item-b",
+      "ruleId": "d2-2e92381969abddd92d6f",
+      "objectKey": "g07-t03-item-b",
+      "subjectId": "g07-t03-subject-b",
+      "sourceIds": [
+        "g07-t03-nonnum-s14"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums14"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s15#g07-t03-item-b",
+      "ruleId": "d2-60676ab45a00e4ef9049",
+      "objectKey": "g07-t03-item-b",
+      "subjectId": "g07-t03-subject-b",
+      "sourceIds": [
+        "g07-t03-nonnum-s15"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums15"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s16#g07-t03-item-b",
+      "ruleId": "d2-545b1f5b877e2a593cac",
+      "objectKey": "g07-t03-item-b",
+      "subjectId": "g07-t03-subject-b",
+      "sourceIds": [
+        "g07-t03-nonnum-s16"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums16"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s17#g07-t03-item-b",
+      "ruleId": "d2-c9421a7d7f8c94e28772",
+      "objectKey": "g07-t03-item-b",
+      "subjectId": "g07-t03-subject-b",
+      "sourceIds": [
+        "g07-t03-nonnum-s17"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums17"
+        ]
+      }
+    },
+    {
+      "checkId": "module/use-non-numbered/s18#g07-t03-item-b",
+      "ruleId": "d2-a5ec06e55725d03b47b5",
+      "objectKey": "g07-t03-item-b",
+      "subjectId": "g07-t03-subject-b",
+      "sourceIds": [
+        "g07-t03-nonnum-s18"
+      ],
+      "authority": "unverified-policy",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g07-procurement-package",
+        "supportsFacts": [
+          "d2:object:g07-procurement-package:nonnums18"
+        ]
+      }
+    },
+    {
       "checkId": "module/use-branch01/br01#g07-t03-item-b",
       "ruleId": "d2-cdc9d99f769656e00e19",
       "objectKey": "g07-t03-item-b",
@@ -4508,5 +5228,5 @@
       }
     }
   ],
-  "fingerprint": "76a8bdea829283fc389dc13b0d309905f63744da22ba71be52f2f871b199f191"
+  "fingerprint": "d0d74471470c8cbe2ad3968ba0d5b4f911d80bf7643a757fd7531e9af724693b"
 }

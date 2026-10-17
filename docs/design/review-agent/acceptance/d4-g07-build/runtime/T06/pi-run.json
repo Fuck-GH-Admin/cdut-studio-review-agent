@@ -1,22 +1,22 @@
 {
-  "id": "run-pi-mvcmk5vm-glahb",
+  "id": "run-pi-mvcmq7c1-sdnrd",
   "caseId": "g07-t06-synthetic-case",
   "templateId": "g07-t06",
   "templateVersion": 1,
   "inputManifest": {
-    "hash": "428a852e73607fd19924a0a0cd1d660ec012bf49c45f7c03242e67cf8494b0c0",
+    "hash": "70246a2e48c94319a471924ba3f68e7856cf6212518a06b5dcd399a649f04b2f",
     "templateVersion": 1,
     "policyVersions": [],
     "documentVersions": [
       {
-        "documentId": "doc-1-mvcmk5ur",
-        "versionId": "doc-1-mvcmk5ur-v1",
+        "documentId": "doc-1-mvcmq7ba",
+        "versionId": "doc-1-mvcmq7ba-v1",
         "contentHash": "e6ff0826646c9cc5b1b3710f94b5e1ac167cc6e6b59b1bf8bf245899e1410568"
       }
     ],
     "observationIds": [],
     "evidenceLinkIds": [
-      "evl-doc-1-mvcmk5ur-v1-g07-t06-subject-a-1792255348914-vm7a"
+      "evl-doc-1-mvcmq7ba-v1-g07-t06-subject-a-1792255630738-ex28"
     ],
     "effectiveRuleIds": [
       "d2-e7a9e9bfd3397aca7c12",
@@ -146,7 +146,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-97cd253321ac8c9e471d-subject-g07-t06-subject-a",
@@ -161,7 +161,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-4c85b70549679c04375a-subject-g07-t06-subject-a",
@@ -176,7 +176,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-71dde1406a23eb6d1a3d-subject-g07-t06-subject-a",
@@ -191,7 +191,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-348b94aa0c10ce4b4987-subject-g07-t06-subject-a",
@@ -206,7 +206,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-6531916c003ba967c8dc-subject-g07-t06-subject-a",
@@ -221,7 +221,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-948636b0d9386065fb85-subject-g07-t06-subject-a",
@@ -236,7 +236,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-206264fd8e2233ae0dc5-subject-g07-t06-subject-a",
@@ -251,7 +251,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-23d4c2bada91d451692f-subject-g07-t06-subject-a",
@@ -266,7 +266,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-cf99dc924d22b8aff475-subject-g07-t06-subject-a",
@@ -281,7 +281,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-0208022323bcb2134d04-subject-g07-t06-subject-a",
@@ -296,7 +296,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-72336facf9578623beec-subject-g07-t06-subject-a",
@@ -311,7 +311,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-25de39d78b27a18fde75-subject-g07-t06-subject-a",
@@ -326,7 +326,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-3aac44402296d0877a81-subject-g07-t06-subject-a",
@@ -341,7 +341,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-aa64dbf9d75a51273570-subject-g07-t06-subject-a",
@@ -356,7 +356,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-c3134e36449606e4c248-subject-g07-t06-subject-a",
@@ -371,7 +371,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-bb2711e811237036ee2d-subject-g07-t06-subject-a",
@@ -386,7 +386,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-c138bdb479995d9aa44e-subject-g07-t06-subject-a",
@@ -401,7 +401,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-dc9afc0f5b57790307b3-subject-g07-t06-subject-a",
@@ -416,7 +416,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-833381cf717a0f8f0c38-subject-g07-t06-subject-a",
@@ -431,7 +431,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-d9f22d7c0f274c4f858e-subject-g07-t06-subject-a",
@@ -446,7 +446,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-4289c3e1316573656375-subject-g07-t06-subject-a",
@@ -461,7 +461,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-6b58902ff0e452e32933-subject-g07-t06-subject-a",
@@ -476,7 +476,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-ab1f1952038a74e615e9-subject-g07-t06-subject-a",
@@ -491,7 +491,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-2ae10130ede850f8f9d3-subject-g07-t06-subject-a",
@@ -506,7 +506,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-25d83e65bd1ce6c2ea02-subject-g07-t06-subject-a",
@@ -521,7 +521,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-9988f50c4b23dc5f9828-subject-g07-t06-subject-a",
@@ -536,7 +536,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-78130904d61db831e50e-subject-g07-t06-subject-a",
@@ -551,7 +551,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-88cad535985b92cb7d35-subject-g07-t06-subject-a",
@@ -566,7 +566,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-533a3c48f75e65558c28-subject-g07-t06-subject-a",
@@ -581,7 +581,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-7f6468d1f8e2a9c639bf-subject-g07-t06-subject-a",
@@ -596,7 +596,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-65ce17be076f91da7849-subject-g07-t06-subject-a",
@@ -611,7 +611,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-ba1da1b2eab152247cb2-subject-g07-t06-subject-a",
@@ -626,7 +626,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-38075fdeb58c7a90545e-subject-g07-t06-subject-a",
@@ -641,7 +641,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-bba250ae5c6c4a0beb95-subject-g07-t06-subject-a",
@@ -656,7 +656,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-3e0e8e16ab80e3d2961f-subject-g07-t06-subject-a",
@@ -671,7 +671,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-d5604d371f412109f0be-subject-g07-t06-subject-a",
@@ -686,7 +686,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-9eaf3098acfdaece6fbd-subject-g07-t06-subject-a",
@@ -701,7 +701,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-81be09f8d10d9355fd53-subject-g07-t06-subject-a",
@@ -716,7 +716,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-4dc08ef0952fe7ff55d9-subject-g07-t06-subject-a",
@@ -731,7 +731,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-9a6b85ec23f04a8c8180-subject-g07-t06-subject-a",
@@ -746,7 +746,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-a95fd8956459aca09257-subject-g07-t06-subject-a",
@@ -761,7 +761,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-3cdf8d779e72b8467981-subject-g07-t06-subject-a",
@@ -776,7 +776,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-6c0ddae34d18f68d2be3-subject-g07-t06-subject-a",
@@ -791,7 +791,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-3e3c7b72f530d7b8ce56-subject-g07-t06-subject-a",
@@ -806,7 +806,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-40950e9bace1a0cc2e4c-subject-g07-t06-subject-a",
@@ -821,7 +821,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-ab57cf9a4da48f1d9334-subject-g07-t06-subject-a",
@@ -836,7 +836,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-4a34d12f29fff5c97550-subject-g07-t06-subject-a",
@@ -851,7 +851,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-a0334fb604437564a1be-subject-g07-t06-subject-a",
@@ -866,7 +866,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-61e1583ecb5b5e0eb165-subject-g07-t06-subject-a",
@@ -881,7 +881,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.940Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-d1fbad60e2fe2e925b88-subject-g07-t06-subject-a",
@@ -896,7 +896,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-b16b82d3647db4356e7d-subject-g07-t06-subject-a",
@@ -911,7 +911,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-fe0e3a27055568f6a683-subject-g07-t06-subject-a",
@@ -926,7 +926,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-7121c27dcc7cfba42112-subject-g07-t06-subject-a",
@@ -941,7 +941,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-cb5219409980ed2789b3-subject-g07-t06-subject-b",
@@ -956,7 +956,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-160a778067508e04c77b-subject-g07-t06-subject-b",
@@ -971,7 +971,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-1237e4f7a5f5bb1fcab1-subject-g07-t06-subject-b",
@@ -986,7 +986,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-a4532ddb2c56ffaf583d-subject-g07-t06-subject-b",
@@ -1001,7 +1001,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-3255c89b2971e58e4b7b-subject-g07-t06-subject-b",
@@ -1016,7 +1016,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-a7e84ca30a0f0907430b-subject-g07-t06-subject-b",
@@ -1031,7 +1031,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-26baed9b889d15de9681-subject-g07-t06-subject-b",
@@ -1046,7 +1046,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-4dbfc2576cb699c77d7d-subject-g07-t06-subject-b",
@@ -1061,7 +1061,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-5da3b6911b50b0fd0a47-subject-g07-t06-subject-b",
@@ -1076,7 +1076,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-94d2a6714b3eb9c83a2b-subject-g07-t06-subject-b",
@@ -1091,7 +1091,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-91fe8e3a4e8b2ad7c7bf-subject-g07-t06-subject-b",
@@ -1106,7 +1106,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-e960bcce9f2a03959f86-subject-g07-t06-subject-b",
@@ -1121,7 +1121,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-5cc4e6589c0e6454c954-subject-g07-t06-subject-b",
@@ -1136,7 +1136,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-fb232a4b865c1b5af26d-subject-g07-t06-subject-b",
@@ -1151,7 +1151,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-95f859e0305e7488643b-subject-g07-t06-subject-b",
@@ -1166,7 +1166,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-e91ebac5ff35d3269aa6-subject-g07-t06-subject-b",
@@ -1181,7 +1181,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-e036e524e0c263c63c0d-subject-g07-t06-subject-b",
@@ -1196,7 +1196,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-4627a67c6fc85e552ebf-subject-g07-t06-subject-b",
@@ -1211,7 +1211,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-8f06c21f7cf8c8da9d14-subject-g07-t06-subject-b",
@@ -1226,7 +1226,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-4ebca91ac0dfb71e5857-subject-g07-t06-subject-b",
@@ -1241,7 +1241,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.763Z"
     },
     {
       "checkId": "check-d2-8e92a25a2cba61e5a894-subject-g07-t06-subject-b",
@@ -1256,7 +1256,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-789679e79b2e368d7bf8-subject-g07-t06-subject-b",
@@ -1271,7 +1271,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-3270bf240fe61e987656-subject-g07-t06-subject-b",
@@ -1286,7 +1286,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-1fe6d17c5092c04a6867-subject-g07-t06-subject-b",
@@ -1301,7 +1301,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-d45daf30ffbb8d35b60f-subject-g07-t06-subject-b",
@@ -1316,7 +1316,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-51f1b5ea29ca8a353e27-subject-g07-t06-subject-b",
@@ -1331,7 +1331,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-331b80da6ef33410f290-subject-g07-t06-subject-b",
@@ -1346,7 +1346,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-be24fdb9783502e31857-subject-g07-t06-subject-b",
@@ -1361,7 +1361,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-b2c1ee7863a85e4545d4-subject-g07-t06-subject-b",
@@ -1376,7 +1376,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-537eebbdba4e2a889953-subject-g07-t06-subject-b",
@@ -1391,7 +1391,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-33962683efacf373846d-subject-g07-t06-subject-b",
@@ -1406,7 +1406,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-cdaa15ea5d8191374461-subject-g07-t06-subject-b",
@@ -1421,7 +1421,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-cc5deb9bff73cf828b4a-subject-g07-t06-subject-b",
@@ -1436,7 +1436,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-339bca73475266f3cebd-subject-g07-t06-subject-b",
@@ -1451,7 +1451,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-eb98f39c03a2f1eecc7f-subject-g07-t06-subject-b",
@@ -1466,7 +1466,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-547a0dd3995eb9f0f698-subject-g07-t06-subject-b",
@@ -1481,7 +1481,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-f01ab6b10185e62ec6b0-subject-g07-t06-subject-b",
@@ -1496,7 +1496,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-9f6cbdab96abbc787179-subject-g07-t06-subject-b",
@@ -1511,7 +1511,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-87dc2daf526c40cac295-subject-g07-t06-subject-b",
@@ -1526,7 +1526,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-5477295e17dc968d05cd-subject-g07-t06-subject-b",
@@ -1541,7 +1541,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-f1a6d63bb7021df0f63e-subject-g07-t06-subject-b",
@@ -1556,7 +1556,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-8293a8c36a221b19236c-subject-g07-t06-subject-b",
@@ -1571,7 +1571,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-9d383a950ecebafcb9ee-subject-g07-t06-subject-b",
@@ -1586,7 +1586,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-46ffc6bc6921bf72ca4f-subject-g07-t06-subject-b",
@@ -1601,7 +1601,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-37d0d732e8c9bd82da05-subject-g07-t06-subject-b",
@@ -1616,7 +1616,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-161bcbe5f3da99e2c4a2-subject-g07-t06-subject-b",
@@ -1631,7 +1631,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-a254cc8fda17c5be0f64-subject-g07-t06-subject-b",
@@ -1646,7 +1646,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-155d4c185c9e6d22044d-subject-g07-t06-subject-b",
@@ -1661,7 +1661,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-32c57444ba744ec4191f-subject-g07-t06-subject-b",
@@ -1676,7 +1676,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-dea40beb75a9972b3c8a-subject-g07-t06-subject-b",
@@ -1691,7 +1691,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-08582c32b50741066c7e-subject-g07-t06-subject-b",
@@ -1706,7 +1706,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-1807b89c1bd368d458d1-subject-g07-t06-subject-b",
@@ -1721,7 +1721,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-7ebf03dd356aab1235c9-subject-g07-t06-subject-b",
@@ -1736,7 +1736,7 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     },
     {
       "checkId": "check-d2-5b9ab187f066052b2bd2-subject-g07-t06-subject-b",
@@ -1751,12 +1751,12 @@
       "reason": "Frozen author MD policy candidate requires verified source or authorized reviewer",
       "sourceRefs": [],
       "executedBy": "semantic",
-      "executedAt": "2026-10-17T16:42:28.941Z"
+      "executedAt": "2026-10-17T16:47:10.764Z"
     }
   ],
   "opinions": [
     {
-      "id": "opinion-run-pi-mvcmk5vm-glahb",
+      "id": "opinion-run-pi-mvcmq7c1-sdnrd",
       "kind": "summary",
       "severity": "yellow",
       "title": "Pi 审核意见",
@@ -1770,7 +1770,7 @@
   "coverage": {
     "documents": [
       {
-        "documentVersionId": "doc-1-mvcmk5ur-v1",
+        "documentVersionId": "doc-1-mvcmq7ba-v1",
         "status": "unread",
         "reason": "本次运行没有可追溯的读取记录"
       }
@@ -1783,11 +1783,11 @@
   "diagnostics": [
     "由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。"
   ],
-  "startedAt": "2026-10-17T16:42:28.931Z",
+  "startedAt": "2026-10-17T16:47:10.754Z",
   "initiatedBy": {
     "actorId": "agent-g07-session-T06",
     "actorSource": "agent",
     "role": "reviewer"
   },
-  "completedAt": "2026-10-17T16:42:28.942Z"
+  "completedAt": "2026-10-17T16:47:10.765Z"
 }
