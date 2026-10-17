@@ -13,7 +13,7 @@
  * review-d2-plan.ts create/attach workflow.
  */
 import { createHash } from 'node:crypto'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { isDeepStrictEqual } from 'node:util'
 import type { D2ScenarioSelection, ReviewAuthoringWorkspaceV1, ReviewCaseV2 } from '@profer/shared'
@@ -128,7 +128,6 @@ export function verifyD4Unified(): {
         : entry.workspacePath.slice(0, -'/workspace.json'.length)
       const selections = ['selection.json', 'synthetic-selection.json', 'fixtures/selection.json']
       const cases = ['case.json', 'synthetic-case.json', 'fixtures/case.json']
-      const { existsSync } = require('node:fs') as typeof import('node:fs')
       const selection = selections.map(n => sourceDir + '/' + n).find(n => existsSync(pathInRepo(n)))
       const casePath = cases.map(n => sourceDir + '/' + n).find(n => existsSync(pathInRepo(n)))
       if (!selection || !casePath) {
