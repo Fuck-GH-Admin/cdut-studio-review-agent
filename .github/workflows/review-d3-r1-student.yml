@@ -57,6 +57,11 @@ jobs:
         run: |
           set -o pipefail
           bun run typecheck 2>&1 | tee r1-evidence/typecheck.log
+      - name: Enforce shared package architecture boundaries
+        if: always()
+        run: |
+          set -o pipefail
+          bun run check:boundaries 2>&1 | tee r1-evidence/boundaries.log
       - name: Original D1/D2/D3/Pi gates regression
         if: always()
         run: |
