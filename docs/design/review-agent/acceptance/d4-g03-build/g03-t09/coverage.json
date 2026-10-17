@@ -123,26 +123,7 @@
       "evidenceFact": "d2:object:g03-sample-service:r08",
       "disposition": "implemented-not-tested",
       "policy": "POLICY_HOLD",
-      "gate": {
-        "when": {
-          "kind": "case-stage",
-          "stages": [
-            "submitted",
-            "reviewing",
-            "awaiting-supplement"
-          ]
-        },
-        "material": {
-          "provider": "applicant",
-          "dueStages": [
-            "submitted",
-            "reviewing"
-          ],
-          "alternatives": [
-            "d2:object:g03-sample-service:r08"
-          ]
-        }
-      }
+      "gate": null
     },
     {
       "sourceId": "R-27",
@@ -384,26 +365,7 @@
       "evidenceFact": "d2:object:g03-sample-service:r29",
       "disposition": "implemented-not-tested",
       "policy": "POLICY_HOLD",
-      "gate": {
-        "when": {
-          "kind": "case-stage",
-          "stages": [
-            "reviewing",
-            "awaiting-final",
-            "decided"
-          ]
-        },
-        "material": {
-          "provider": "authority",
-          "dueStages": [
-            "awaiting-final",
-            "decided"
-          ],
-          "alternatives": [
-            "d2:object:g03-sample-service:r29"
-          ]
-        }
-      }
+      "gate": null
     },
     {
       "sourceId": "§1-1",
