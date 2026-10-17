@@ -1,0 +1,1018 @@
+{
+  "sourceFile": "G06-T05_正式业务模板_MD_v0.1.md",
+  "sourceSha256": "d0062108a34b73e4c21e56f6d164d147de8a5731e876f10a08612ac370838ec1",
+  "version": "v0.1",
+  "scope": "full",
+  "atomicRules": [
+    {
+      "sourceId": "R-01",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L250",
+      "sourceAnchor": "### `R-01`｜适用校规及版本选择",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r01/check",
+      "moduleId": "g06-t05-r01",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-02",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L267",
+      "sourceAnchor": "### `R-02`｜审核对象与公开动作定位",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r02/check",
+      "moduleId": "g06-t05-r02",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-03",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L284",
+      "sourceAnchor": "### `R-03`｜拟公开材料完整度与可读性",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r03/check",
+      "moduleId": "g06-t05-r03",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-04",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L301",
+      "sourceAnchor": "### `R-04`｜正式申请表的当前阶段齐全性",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r04/check",
+      "moduleId": "g06-t05-r04",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-05",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L318",
+      "sourceAnchor": "### `R-05`｜题名、作者、单位、稿件版本的关系一致",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r05/check",
+      "moduleId": "g06-t05-r05",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-06",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L335",
+      "sourceAnchor": "### `R-06`｜申请/代办与有权签署的关系",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r06/check",
+      "moduleId": "g06-t05-r06",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-07",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L352",
+      "sourceAnchor": "### `R-07`｜人员或项目保密性质的权威核验",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r07/check",
+      "moduleId": "g06-t05-r07",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-08",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L369",
+      "sourceAnchor": "### `R-08`｜涉密/内部敏感实质内容的保密审批路由",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r08/check",
+      "moduleId": "g06-t05-r08",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-09",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L386",
+      "sourceAnchor": "### `R-09`｜一般研究生首作导师责任（外校分支）",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r09/check",
+      "moduleId": "g06-t05-r09",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-10",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L403",
+      "sourceAnchor": "### `R-10`｜CDUT涉密研究生公开发表论文或科研信息的导师—学院批准",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r10/check",
+      "moduleId": "g06-t05-r10",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-11",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L420",
+      "sourceAnchor": "### `R-11`｜CDUT涉密研究生境内涉外学术交流的导师—学院—提醒谈话",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r11/check",
+      "moduleId": "g06-t05-r11",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-12",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L437",
+      "sourceAnchor": "### `R-12`｜合同合作方与外部披露许可",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r12/check",
+      "moduleId": "g06-t05-r12",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-13",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L454",
+      "sourceAnchor": "### `R-13`｜相关伦理与专利状态只交叉提示",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r13/check",
+      "moduleId": "g06-t05-r13",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-14",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L471",
+      "sourceAnchor": "### `R-14`｜已审稿件的版本变化是否需要重新审查",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r14/check",
+      "moduleId": "g06-t05-r14",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-15",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L488",
+      "sourceAnchor": "### `R-15`｜许可范围与拟公开动作的一致性",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r15/check",
+      "moduleId": "g06-t05-r15",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-16",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L505",
+      "sourceAnchor": "### `R-16`｜已有有权正式否决/撤销的效力",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r16/check",
+      "moduleId": "g06-t05-r16",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-17",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L522",
+      "sourceAnchor": "### `R-17`｜按第三方要求申请官方非涉密证明",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r17/check",
+      "moduleId": "g06-t05-r17",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-18",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L539",
+      "sourceAnchor": "### `R-18`｜事前批准与实际公开时序",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r18/check",
+      "moduleId": "g06-t05-r18",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-19",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L556",
+      "sourceAnchor": "### `R-19`｜科研诚信责任与保密审批不得混同",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r19/check",
+      "moduleId": "g06-t05-r19",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-20",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L573",
+      "sourceAnchor": "### `R-20`｜电子OA签核与纸质签名的合法等价",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r20/check",
+      "moduleId": "g06-t05-r20",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-21",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L590",
+      "sourceAnchor": "### `R-21`｜多对象的独立核验结果",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r21/check",
+      "moduleId": "g06-t05-r21",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-22",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L607",
+      "sourceAnchor": "### `R-22`｜多条问题聚合与前后阶段语义",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r22/check",
+      "moduleId": "g06-t05-r22",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-23",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L624",
+      "sourceAnchor": "### `R-23`｜申请初期后续审批的责任到期",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r23/check",
+      "moduleId": "g06-t05-r23",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-24",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L641",
+      "sourceAnchor": "### `R-24`｜撤回、取消、过期与复核事件",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r24/check",
+      "moduleId": "g06-t05-r24",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-25",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L658",
+      "sourceAnchor": "### `R-25`｜成都理工大学涉密研究生身份判定与适用边界",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r25/check",
+      "moduleId": "g06-t05-r25",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-26",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L675",
+      "sourceAnchor": "### `R-26`｜学校无适用前审义务时的安全退出",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r26/check",
+      "moduleId": "g06-t05-r26",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-27",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L692",
+      "sourceAnchor": "### `R-27`｜专利公开风险的受控提示",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r27/check",
+      "moduleId": "g06-t05-r27",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-28",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L709",
+      "sourceAnchor": "### `R-28`｜境内涉外与实际出国（境）事务边界",
+      "type": "rule",
+      "checkId": "g06-t05@1:module/use-r28/check",
+      "moduleId": "g06-t05-r28",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    }
+  ],
+  "otherResponsibilities": [
+    {
+      "sourceId": "SECTION-01",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L11",
+      "sourceAnchor": "## 1. 适用范围、审核目的和来源效力",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section01/check",
+      "moduleId": "g06-t05-section01",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-02",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L41",
+      "sourceAnchor": "## 2. 角色、权责与术语（C1）",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section02/check",
+      "moduleId": "g06-t05-section02",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-03",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L61",
+      "sourceAnchor": "## 3. 办理路径与条件优先级（C2）",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section03/check",
+      "moduleId": "g06-t05-section03",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-04",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L102",
+      "sourceAnchor": "## 4. 办理阶段、时间不变量与责任到期（C4）",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section04/check",
+      "moduleId": "g06-t05-section04",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-05",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L118",
+      "sourceAnchor": "## 5. 审核输入契约：三类输入与可信底账（C2）",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section05/check",
+      "moduleId": "g06-t05-section05",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-06",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L132",
+      "sourceAnchor": "## 6. 字段字典（C1/C2）",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section06/check",
+      "moduleId": "g06-t05-section06",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-07",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L181",
+      "sourceAnchor": "## 7. 材料槽、等价证据组和来源可靠性（C2）",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section07/check",
+      "moduleId": "g06-t05-section07",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-08",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L223",
+      "sourceAnchor": "## 8. 审核事实与跨文件关系（C2/C3）",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section08/check",
+      "moduleId": "g06-t05-section08",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-09",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L246",
+      "sourceAnchor": "## 9. 逐条可判断的原子规则（C3）",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section09/check",
+      "moduleId": "g06-t05-section09",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-10",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L728",
+      "sourceAnchor": "## 10. 规则结果、主状态与问题聚合（C4）",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section10/check",
+      "moduleId": "g06-t05-section10",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-11",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L789",
+      "sourceAnchor": "## 11. 补件、重审、撤回、版本和权限变更（C4）",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section11/check",
+      "moduleId": "g06-t05-section11",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-12",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L801",
+      "sourceAnchor": "## 12. 合法例外、人工复核与安全边界",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section12/check",
+      "moduleId": "g06-t05-section12",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-13",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L822",
+      "sourceAnchor": "## 13. 校本制度、规则优先级和待配置项",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section13/check",
+      "moduleId": "g06-t05-section13",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-14",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L837",
+      "sourceAnchor": "## 14. 官方来源与规则追踪",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section14/check",
+      "moduleId": "g06-t05-section14",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-15",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L855",
+      "sourceAnchor": "## 15. 作者流程走查与预期局部结果",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section15/check",
+      "moduleId": "g06-t05-section15",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-16",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L876",
+      "sourceAnchor": "## 16. 跨模板模块与本业务专有责任",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section16/check",
+      "moduleId": "g06-t05-section16",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-17",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L892",
+      "sourceAnchor": "## 17. 现有编辑器/运行时能力映射（C6）",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section17/check",
+      "moduleId": "g06-t05-section17",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-18",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L911",
+      "sourceAnchor": "## 18. 完整性审计、残余风险与下一阶段交接（C7）",
+      "type": "context",
+      "checkId": "g06-t05@1:module/use-section18/check",
+      "moduleId": "g06-t05-section18",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-01",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L67",
+      "sourceAnchor": "| `BR-01` | 按所在学校规定的一般学术论文/著作投稿前审查 | 有效校规明确要求且拟公开版本未公开 | 审查表、全文、按角色签审，校际差异配置 | P01 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t05@1:module/use-axis-br-01/check",
+      "moduleId": "g06-t05-axis-br-01",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-03",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L69",
+      "sourceAnchor": "| `BR-03` | 会议交流、摘要、报告、海报与外部咨询内容披露 | 适用校规覆盖该交流行为，且有明确拟披露内容 | 活动场地/日期/境外参与方与拟披露版本 | P03 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t05@1:module/use-axis-br-03/check",
+      "moduleId": "g06-t05-axis-br-03",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-05",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L71",
+      "sourceAnchor": "| `BR-05` | 已审内容的实质修改与再审 | 有以前审查记录，内容、动作、渠道或有效范围变化 | 新旧版本差异、原批准快照、是否需要重新批准 | P05，设计安全不变量+校规 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t05@1:module/use-axis-br-05/check",
+      "moduleId": "g06-t05-axis-br-05",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-06",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L72",
+      "sourceAnchor": "| `BR-06` | 按第三方要求申请正式非涉密证明 | 有外部刊物/主办单位真实要求，且学校有出具权限 | 第三方要求、待审内容、正式证明的出具链 | P06；[S07] |",
+      "type": "primary-scenario",
+      "checkId": "g06-t05@1:module/use-axis-br-06/check",
+      "moduleId": "g06-t05-axis-br-06",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-02",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L68",
+      "sourceAnchor": "| `BR-02` | 涉密或披露受限的科研成果对外公开 | 人员身份或科研项目/合同明确触发限制 | 项目/人员权威底账、保密专岗、合同权限、安全路由 | P02 |",
+      "type": "additive-condition",
+      "checkId": "g06-t05@1:module/use-axis-br-02/check",
+      "moduleId": "g06-t05-axis-br-02",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-04",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L70",
+      "sourceAnchor": "| `BR-04` | 依人员身份触发导师与单位审签 | `BR-01`或`BR-03`等且该学校规则对该角色要求导师/学院意见 | 复用文书，但审核不同级签署与真实身份映射 | P04；CD-T05-12第9/10条 |",
+      "type": "additive-condition",
+      "checkId": "g06-t05@1:module/use-axis-br-04/check",
+      "moduleId": "g06-t05-axis-br-04",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-01",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L80",
+      "sourceAnchor": "| `C-01` 学校政策适用 | `T/F/U` | 加载该学校此事项强制规则 | 不启用该路径强制附件 | `HOLD_POLICY`，不以外校强制拒件 |",
+      "type": "additive-condition",
+      "checkId": "g06-t05@1:module/use-axis-c-01/check",
+      "moduleId": "g06-t05-axis-c-01",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-02",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L81",
+      "sourceAnchor": "| `C-02` 稿件已公开 | `T/F/U` | 禁止签发**事前**结论，进入事后核查 | 可继续事前申请 | 不允许自动宣称仍可“事前”，补事实或人工确认 |",
+      "type": "additive-condition",
+      "checkId": "g06-t05@1:module/use-axis-c-02/check",
+      "moduleId": "g06-t05-axis-c-02",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-03",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L82",
+      "sourceAnchor": "| `C-03` 涉密研究生身份 | `T/F/U` | CDUT第9/10条条件链进一步判断 | 不触发仅针对涉密研究生的特殊链 | `HOLD_IDENTITY`，联系有权学校身份部门 |",
+      "type": "additive-condition",
+      "checkId": "g06-t05@1:module/use-axis-c-03/check",
+      "moduleId": "g06-t05-axis-c-03",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-04",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L83",
+      "sourceAnchor": "| `C-04` 境内学术活动 | `T/F/U` | 与C-05合成第9条条件 | 不把第9条套给境外出访；转相关审批 | 活动地不清不能放行 |",
+      "type": "additive-condition",
+      "checkId": "g06-t05@1:module/use-axis-c-04/check",
+      "moduleId": "g06-t05-axis-c-04",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-05",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L83",
+      "sourceAnchor": "| `C-04` 境内学术活动 | `T/F/U` | 与C-05合成第9条条件 | 不把第9条套给境外出访；转相关审批 | 活动地不清不能放行 |",
+      "type": "additive-condition",
+      "checkId": "g06-t05@1:module/use-axis-c-05/check",
+      "moduleId": "g06-t05-axis-c-05",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-06",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L85",
+      "sourceAnchor": "| `C-06` 公开学术论文/科研工作信息 | `T/F/U` | 在C-03=真时触发第10条 | 不触发**该条**论文公开要求 | 对外行为未说明须补明确目标 |",
+      "type": "additive-condition",
+      "checkId": "g06-t05@1:module/use-axis-c-06/check",
+      "moduleId": "g06-t05-axis-c-06",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-07",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L86",
+      "sourceAnchor": "| `C-07` 项目/合同披露限制 | `T/F/U` | 专业保密/合同审查，按有权条款要求补授权 | 不中途额外索取合作协议 | 不等于“无项目”，限制未知→专业核查 |",
+      "type": "additive-condition",
+      "checkId": "g06-t05@1:module/use-axis-c-07/check",
+      "moduleId": "g06-t05-axis-c-07",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-08",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L87",
+      "sourceAnchor": "| `C-08` 研究生首作及导师条件 | `T/F/U` | 所在学校明确时要导师意见 | 教师首作不因此强制导师 | 导师关系/作者状态待核 |",
+      "type": "additive-condition",
+      "checkId": "g06-t05@1:module/use-axis-c-08/check",
+      "moduleId": "g06-t05-axis-c-08",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-09",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L88",
+      "sourceAnchor": "| `C-09` 关键版本变化 | `T/F/U` | 对变化部分重新判断需否复审 | 保留原批准适用范围 | 不凭文件hash推重大变化，人工版本比对 |",
+      "type": "additive-condition",
+      "checkId": "g06-t05@1:module/use-axis-c-09/check",
+      "moduleId": "g06-t05-axis-c-09",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-10",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L89",
+      "sourceAnchor": "| `C-10` OA代替纸签被正式允许 | `T/F/U` | 可核正式OA的签署范围与时间 | 仍要求制度所选形式 | 未知不把OA当已批准，也不按“没有纸章”一票否决 |",
+      "type": "additive-condition",
+      "checkId": "g06-t05@1:module/use-axis-c-10/check",
+      "moduleId": "g06-t05-axis-c-10",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "C-11",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L90",
+      "sourceAnchor": "| `C-11` 期刊/主办方需非涉密证明 | `T/F/U` | 启用BR-06材料收集 | 不索取该证明 | 需要具体通知支持；不能推断第三方要求 |",
+      "type": "additive-condition",
+      "checkId": "g06-t05@1:module/use-axis-c-11/check",
+      "moduleId": "g06-t05-axis-c-11",
+      "scope": "g06-disclosure-action",
+      "requiresHumanDecision": false
+    }
+  ],
+  "fieldMaterialEvidenceStageAndQuestionIndex": [
+    {
+      "id": "F-10",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L59",
+      "sourceExcerpt": "**人员资格判定**：涉密研究生属性只接受本校有权确认的记录（`F-10` / `L-01`）；自行勾选“不涉密”只能作为待核声明。同名不直接合并，合法更名用可信身份映射；经办与审签有不同的权限。学校尚未启用接口时，由有权部门核查，不能用其他高校学生限制替代。"
+    },
+    {
+      "id": "BR-01",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L67",
+      "sourceExcerpt": "| `BR-01` | 按所在学校规定的一般学术论文/著作投稿前审查 | 有效校规明确要求且拟公开版本未公开 | 审查表、全文、按角色签审，校际差异配置 | P01 |"
+    },
+    {
+      "id": "BR-02",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L68",
+      "sourceExcerpt": "| `BR-02` | 涉密或披露受限的科研成果对外公开 | 人员身份或科研项目/合同明确触发限制 | 项目/人员权威底账、保密专岗、合同权限、安全路由 | P02 |"
+    },
+    {
+      "id": "BR-03",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L69",
+      "sourceExcerpt": "| `BR-03` | 会议交流、摘要、报告、海报与外部咨询内容披露 | 适用校规覆盖该交流行为，且有明确拟披露内容 | 活动场地/日期/境外参与方与拟披露版本 | P03 |"
+    },
+    {
+      "id": "BR-04",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L70",
+      "sourceExcerpt": "| `BR-04` | 依人员身份触发导师与单位审签 | `BR-01`或`BR-03`等且该学校规则对该角色要求导师/学院意见 | 复用文书，但审核不同级签署与真实身份映射 | P04；CD-T05-12第9/10条 |"
+    },
+    {
+      "id": "BR-05",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L71",
+      "sourceExcerpt": "| `BR-05` | 已审内容的实质修改与再审 | 有以前审查记录，内容、动作、渠道或有效范围变化 | 新旧版本差异、原批准快照、是否需要重新批准 | P05，设计安全不变量+校规 |"
+    },
+    {
+      "id": "BR-06",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L72",
+      "sourceExcerpt": "| `BR-06` | 按第三方要求申请正式非涉密证明 | 有外部刊物/主办单位真实要求，且学校有出具权限 | 第三方要求、待审内容、正式证明的出具链 | P06；[S07] |"
+    },
+    {
+      "id": "ST-01",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L106",
+      "sourceExcerpt": "| `ST-01` | 意向/草稿 | 指明申请对象、载体、版本和预计公开行为 | 可能提示路径、保密环境选择 | 草稿≠已提交 |"
+    },
+    {
+      "id": "ST-02",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L107",
+      "sourceExcerpt": "| `ST-02` | 提交/受理申请 | 提交适用路径所需的申请表、待公开内容与本人声明 | 受理编号、补件清单 | 初次提交时尚无学院终审批准**不是**申请人缺既有证明 |"
+    },
+    {
+      "id": "ST-03",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L108",
+      "sourceExcerpt": "| `ST-03` | 材料形式核验 | 配合补清楚字段、权限与文件版本 | 形式审查意见、分流/待补 | 形式合格≠内容不涉密 |"
+    },
+    {
+      "id": "ST-04",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L109",
+      "sourceExcerpt": "| `ST-04` | 导师/PI/单位审签 | 按校规答复必要补充 | 导师同意、单位意见、学院批准（按校顺序） | 提交后等待导师 ≠ 导师已拒绝 |"
+    },
+    {
+      "id": "ST-05",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L110",
+      "sourceExcerpt": "| `ST-05` | 保密专岗/主管审批 | 申请人不得越权查看专岗底账 | 正式同意/否决/附条件限制及对应版本 | 仅由有权部门写正式决定 |"
+    },
+    {
+      "id": "ST-06",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L111",
+      "sourceExcerpt": "| `ST-06` | 已批准待公开 | 必须使用获批版本、渠道、范围、有效期间 | 可核验批件有效性与未撤销 | 待公开≠实际上已投稿 |"
+    },
+    {
+      "id": "ST-07",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L112",
+      "sourceExcerpt": "| `ST-07` | 已公开/已执行 | 记录真实投稿/报告/发布对象和时间 | 归档实际执行与审查版本对应关系 | 投稿回执不能替代事先审签 |"
+    },
+    {
+      "id": "ST-08",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L113",
+      "sourceExcerpt": "| `ST-08` | 补正/修改重审 | 仅针对缺件/变化部分补证 | 重开对应审核节点 | 不自动清除以前正式否决 |"
+    },
+    {
+      "id": "ST-09",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L114",
+      "sourceExcerpt": "| `ST-09` | 撤回/失效/否决 | 不以撤回旧稿推定可发新稿 | 有权撤销/否决与再申请意见 | 终止后不得复用旧“可公开”结论 |"
+    },
+    {
+      "id": "F-01",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L138",
+      "sourceExcerpt": "| `F-01` | I | `institution_id` 学校、单位ID，字符串 | K/ST-02 | 学校有权组织信息; 政策匹配 | 内控；无法解析→`HOLD_POLICY` |"
+    },
+    {
+      "id": "F-02",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L139",
+      "sourceExcerpt": "| `F-02` | I | `action_kind`，枚举 `PAPER/BOOK/MEETING_REPORT/POSTER/ABSTRACT/OUTSIDE_CONSULT/RESEARCH_INFO/PROOF_REQUEST` | K/ST-02 | 对应审批申请和具体稿件 | 内控；不明→补明事项 |"
+    },
+    {
+      "id": "F-03",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L140",
+      "sourceExcerpt": "| `F-03` | I | `intended_channel`，目标期刊/会议/主办机构/受众集合 | C(ST-02，路径要求) | 审查表、期刊通知、会议议程 | 内控；未知且影响适用→待核 |"
+    },
+    {
+      "id": "F-04",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L141",
+      "sourceExcerpt": "| `F-04` | I | `intended_at` 预计公开/投稿日期或期间、时区 | C(ST-02，已确定时) | 会议方案/申请人 | 内控；时间不定可估，不擅填截止日 |"
+    },
+    {
+      "id": "F-05",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L142",
+      "sourceExcerpt": "| `F-05` | I | `items[]` 待审对象集合、稳定ID | K/ST-02 | 一个内容×每个独立动作 | 内控；为空无法确定对象 |"
+    },
+    {
+      "id": "F-06",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L143",
+      "sourceExcerpt": "| `F-06` | I | `target_locale` 国内/境外及活动实际地点 | C(BR-03/校表明确) | 活动安排、主办方 | 内控；境内涉外与境外出访分流 |"
+    },
+    {
+      "id": "F-07",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L144",
+      "sourceExcerpt": "| `F-07` | A | `title_original` 中英文原稿名称、字符串 | K/被审稿 | 从正文原件抽取+表单 | 内控；更名有证据时不机械拒绝 |"
+    },
+    {
+      "id": "F-08",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L145",
+      "sourceExcerpt": "| `F-08` | A | `authors[]` 列表含顺位、署名单位 | C(有作者署名的作品) | 正文署名页、审批表 | 内控；同名非同人 |"
+    },
+    {
+      "id": "F-09",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L146",
+      "sourceExcerpt": "| `F-09` | A | `submitter_id/role` 身份及代办关系 | K/ST-02 | 账号登录+授权；≠第一作者 | 内控；代理权不明→`HOLD_AUTHORITY` |"
+    },
+    {
+      "id": "F-11",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L148",
+      "sourceExcerpt": "| `F-11` | L | `mentor_relation` 导师ID及关系有效期间 | Q(需导师审签时) | 研究生培养/人员主数据 | 敏感；缺查→角色人工核验 |"
+    },
+    {
+      "id": "F-12",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L149",
+      "sourceExcerpt": "| `F-12` | A | `content_snapshot_id/version/hash` 稿件版本/指纹 | K/ST-02 | 全文+附件内部一致 | 受限视内容；无法关联→补材料 |"
+    },
+    {
+      "id": "F-13",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L150",
+      "sourceExcerpt": "| `F-13` | A | `abstract_or_summary` 摘要/说明 | C(校表要求或必要简述) | 摘要**不能自动替代待审全文** | 内控；只缺摘要依校规补 |"
+    },
+    {
+      "id": "F-14",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L151",
+      "sourceExcerpt": "| `F-14` | A | `content_bundle_manifest` 全文、图表、附录、讲稿、音视频脚本的被审清单 | K/对应披露行为 | MS-02，逐件标审查范围 | 受限；缺核心公开内容→补或保密专岗 |"
+    },
+    {
+      "id": "MS-02",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L151",
+      "sourceExcerpt": "| `F-14` | A | `content_bundle_manifest` 全文、图表、附录、讲稿、音视频脚本的被审清单 | K/对应披露行为 | MS-02，逐件标审查范围 | 受限；缺核心公开内容→补或保密专岗 |"
+    },
+    {
+      "id": "F-15",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L152",
+      "sourceExcerpt": "| `F-15` | A | `project_links[]` 依托项目/课题编号 | C(确有依托/披露约束) | 项目任务书/权威库 | 受限；权限不足→专业核查 |"
+    },
+    {
+      "id": "F-16",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L153",
+      "sourceExcerpt": "| `F-16` | A | `secrecy_self_declaration` 申请人保密属性声明 | C(该校申请表要求时) | 签署、日期、针对版本 | 敏感；**非权威定密结果** |"
+    },
+    {
+      "id": "F-17",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L154",
+      "sourceExcerpt": "| `F-17` | L | `project_secrecy_scope` 涉密/内部敏感/合同限制范围 | Q(存在关联限制) | 学校保密项目库/有权专岗 | 受限；不可达→`SOURCE_UNAVAILABLE` |"
+    },
+    {
+      "id": "F-18",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L155",
+      "sourceExcerpt": "| `F-18` | E | `collaboration_restrictions` 合作合同披露条款 | C(实际合同有此要求) | 合同/有权合同库/合作方正式许可 | 受限；冲突→专业/法务复核 |"
+    },
+    {
+      "id": "F-19",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L156",
+      "sourceExcerpt": "| `F-19` | E | `external_proof_request` 第三方正式要求非涉密证明 | C(BR-06) | 期刊投稿说明/主办函 | 内控；不是学校批准 |"
+    },
+    {
+      "id": "F-20",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L157",
+      "sourceExcerpt": "| `F-20` | E | `ethics_approval_ref` 批件项目、版本、时效 | C(相应研究适用伦理时) | T07/T08批件系统/正式批件 | 敏感；不符→转伦理专业部门 |"
+    },
+    {
+      "id": "F-21",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L158",
+      "sourceExcerpt": "| `F-21` | E | `ip_disclosure_ref` 相关专利状态/先行披露 | C(实际相关且需策略审查) | T01/公开记录 | 内控；不能机器裁断专利新颖性 |"
+    },
+    {
+      "id": "F-22",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L159",
+      "sourceExcerpt": "| `F-22` | A/E | `mentor_assent` 导师本人同意/不同意、日期 | C(进入导师审批节点) | 可信OA或被学校认可的签字原件 | 内控；未到节点→`WAIT_APPROVAL` |"
+    },
+    {
+      "id": "F-23",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L160",
+      "sourceExcerpt": "| `F-23` | L/P | `college_decision` 业务学院或部门正式审批结果/日期 | P(到有权学院节点) | 可信OA/部门原始记录 | 内控；初次提交时**不必已产生** |"
+    },
+    {
+      "id": "F-24",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L161",
+      "sourceExcerpt": "| `F-24` | L/P | `specialist_decision` 保密办等有权审批结果、限制及日期 | P(按规定触发专岗) | 限权审批日志 | 受限；不存在不能伪造 |"
+    },
+    {
+      "id": "F-25",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L162",
+      "sourceExcerpt": "| `F-25` | L/P | `briefing_record` 保密提醒谈话记录/时间/执行者 | P(CD第9条触发后形成) | 学院/专岗留痕 | 受限；受理时未来记录不必已存在 |"
+    },
+    {
+      "id": "F-26",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L163",
+      "sourceExcerpt": "| `F-26` | L | `approval_scope` 正式批准对应的稿件ID、版本、动作、受众、期限 | Q(已有审批或执行前) | 可信审批事件+批准快照 | 内控；超范围→`EVIDENCE_CONFLICT` |"
+    },
+    {
+      "id": "F-27",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L164",
+      "sourceExcerpt": "| `F-27` | L | `approval_status` 受理/待审/同意/不同意/撤销/过期 | Q(流程中) | 学校审批系统，不信用户自报“已通过” | 内控；冲突→专业确认 |"
+    },
+    {
+      "id": "F-28",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L165",
+      "sourceExcerpt": "| `F-28` | L | `policy_ref/effective_scope` 政策ID、发布方、版本、适用日、角色 | Q(所有规则启用前) | 经学校核验的政策配置 | 内控；未知→`HOLD_POLICY` |"
+    },
+    {
+      "id": "F-29",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L166",
+      "sourceExcerpt": "| `F-29` | L | `prior_review_snapshot` 旧稿文件和旧批准记录 | Q(BR-05) | 学校审查归档 | 受限；取不到→待人工调档 |"
+    },
+    {
+      "id": "F-30",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L167",
+      "sourceExcerpt": "| `F-30` | A/E | `version_change_log` 旧新稿关键改动及授权改题对应 | C(BR-05) | 新旧稿对照/申请人说明，重大性由有权部门判断 | 受限；未知→`HOLD_VERSION` |"
+    },
+    {
+      "id": "F-31",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L168",
+      "sourceExcerpt": "| `F-31` | P | `actual_disclosure_event` 实际发稿/报告/公开时间、版本、渠道 | P(ST-07) | 可信执行记录/核验的外部平台证明 | 内控；首次申请不必有 |"
+    },
+    {
+      "id": "F-32",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L169",
+      "sourceExcerpt": "| `F-32` | L/P | `research_integrity_commitment` 科研诚信承诺的适用要求、签署事实 | C(学校诚信制度要求其在该路径到期) | 诚信承诺原件/学校记录，与保密批准独立 | 内控；承诺≠无泄密风险 |"
+    },
+    {
+      "id": "MS-01",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L187",
+      "sourceExcerpt": "| `MS-01` | 申报事项；公开请求 | F-01—F-06、F-05对象集合 | ST-02；每个披露动作 | 用户表单或可信学校OA录入 | 无法确定动作→`SUPPLEMENT_REQUIRED` |"
+    },
+    {
+      "id": "MS-03",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L189",
+      "sourceExcerpt": "| `MS-03` | 申报材料；校内申请/保密审查表 | F-07/F-08/F-16、申请人签署 | ST-02；**所选政策明确需要时** | 学校指定纸质表/OA表（须经认可） | 无校本表适用依据不硬性拒绝 |"
+    },
+    {
+      "id": "MS-04",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L190",
+      "sourceExcerpt": "| `MS-04` | 申报材料；研究内容与来源说明 | F-13/F-15/F-16 | ST-02；所选表需声明或项目限制时 | 经签署说明、申请表内同等栏目 | 仅自声明，不能代替专岗审批 |"
+    },
+    {
+      "id": "MS-05",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L191",
+      "sourceExcerpt": "| `MS-05` | 证明材料；会议/活动通知 | F-03/F-04/F-06 | ST-02；BR-03且活动属性需证 | 主办方正式日程/通知/可信会议系统 | CDUT第9条没有统一邀请函格式规定 |"
+    },
+    {
+      "id": "MS-06",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L192",
+      "sourceExcerpt": "| `MS-06` | 证明/底账；项目及涉密披露权限 | F-15/F-17/F-18 | 审查时；受限项目触发 | `EV-01`学校有权专岗底账 **或** `EV-02`依法授权项目档案 | 无访问权→`SOURCE_UNAVAILABLE`，不得把机密合同上传普通服务 |"
+    },
+    {
+      "id": "EV-01",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L192",
+      "sourceExcerpt": "| `MS-06` | 证明/底账；项目及涉密披露权限 | F-15/F-17/F-18 | 审查时；受限项目触发 | `EV-01`学校有权专岗底账 **或** `EV-02`依法授权项目档案 | 无访问权→`SOURCE_UNAVAILABLE`，不得把机密合同上传普通服务 |"
+    },
+    {
+      "id": "EV-02",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L192",
+      "sourceExcerpt": "| `MS-06` | 证明/底账；项目及涉密披露权限 | F-15/F-17/F-18 | 审查时；受限项目触发 | `EV-01`学校有权专岗底账 **或** `EV-02`依法授权项目档案 | 无访问权→`SOURCE_UNAVAILABLE`，不得把机密合同上传普通服务 |"
+    },
+    {
+      "id": "MS-07",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L193",
+      "sourceExcerpt": "| `MS-07` | 证明材料；导师意见 | F-11/F-22 | **到导师节点**；适用身份分支 | `EV-03`学校OA **或** `EV-04`按校规有效纸质签署 | 初交等待导师不是缺申请者历史文件 |"
+    },
+    {
+      "id": "EV-03",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L193",
+      "sourceExcerpt": "| `MS-07` | 证明材料；导师意见 | F-11/F-22 | **到导师节点**；适用身份分支 | `EV-03`学校OA **或** `EV-04`按校规有效纸质签署 | 初交等待导师不是缺申请者历史文件 |"
+    },
+    {
+      "id": "EV-04",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L193",
+      "sourceExcerpt": "| `MS-07` | 证明材料；导师意见 | F-11/F-22 | **到导师节点**；适用身份分支 | `EV-03`学校OA **或** `EV-04`按校规有效纸质签署 | 初交等待导师不是缺申请者历史文件 |"
+    },
+    {
+      "id": "MS-08",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L194",
+      "sourceExcerpt": "| `MS-08` | 过程/底账；学院或部门审批 | F-23/F-27 | **到学院节点**；CDUT第9/10条或其他校规触发 | `EV-03`OA/有权部门原始签章 | 未形成→`WAIT_APPROVAL`，正式否决→终止公开 |"
+    },
+    {
+      "id": "MS-09",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L195",
+      "sourceExcerpt": "| `MS-09` | 过程/底账；保密/专门主管审查 | F-24/F-27 | **到专业节点**；受限项目/校规触发 | 限权保密系统/有权签发原件 | 仅授权环境访问，未形成不伪造 |"
+    },
+    {
+      "id": "MS-10",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L196",
+      "sourceExcerpt": "| `MS-10` | 过程/底账；保密提醒谈话 | F-25 | 境内涉外且涉密研究生，CDUT第9条；**在开展活动之前完成** | `EV-05`学院有权谈话记录 | 申请初期无需假装谈话已完成 |"
+    },
+    {
+      "id": "EV-05",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L196",
+      "sourceExcerpt": "| `MS-10` | 过程/底账；保密提醒谈话 | F-25 | 境内涉外且涉密研究生，CDUT第9条；**在开展活动之前完成** | `EV-05`学院有权谈话记录 | 申请初期无需假装谈话已完成 |"
+    },
+    {
+      "id": "MS-11",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L197",
+      "sourceExcerpt": "| `MS-11` | 证明材料；合作披露授权 | F-18 | 合同实际要求对外许可 | 合同公开条款+有效授权/可信合同库 | 未知→法务/主管复核，不能随意公开 |"
+    },
+    {
+      "id": "MS-12",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L198",
+      "sourceExcerpt": "| `MS-12` | 证明材料；专利与伦理相关状态 | F-20/F-21 | 文稿真实涉及该前置限制 | 关联T01/T07/T08有效范围/正式文件 | 不构成本模板签发别项许可 |"
+    },
+    {
+      "id": "MS-13",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L199",
+      "sourceExcerpt": "| `MS-13` | 证明材料；第三方非涉密证明要求 | F-19 | BR-06确定要求 | 期刊官方说明/主办函 | 第三方要求≠学校已提供证明 |"
+    },
+    {
+      "id": "MS-14",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L200",
+      "sourceExcerpt": "| `MS-14` | 底账；申请者权限与导师关系 | F-09/F-10/F-11 | 角色触发/所有需要授权动作 | `EV-06`学校身份库、授权经办记录 | 不可达→`HOLD_IDENTITY/AUTHORITY` |"
+    },
+    {
+      "id": "EV-06",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L200",
+      "sourceExcerpt": "| `MS-14` | 底账；申请者权限与导师关系 | F-09/F-10/F-11 | 角色触发/所有需要授权动作 | `EV-06`学校身份库、授权经办记录 | 不可达→`HOLD_IDENTITY/AUTHORITY` |"
+    },
+    {
+      "id": "MS-15",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L201",
+      "sourceExcerpt": "| `MS-15` | 底账；已审稿件快照和意见 | F-26/F-27/F-29/F-30 | BR-05或拟实际公开前 | `EV-03`学校可信OA+版本归档 | 旧稿批准不默认覆盖新稿 |"
+    },
+    {
+      "id": "MS-16",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L202",
+      "sourceExcerpt": "| `MS-16` | 审后输出；学校决定/非涉密证明 | F-23/F-24/F-26/F-27 | ST-04/05或BR-06执行阶段 | 学校有权签发记录 | 初次申请**不是必交** |"
+    },
+    {
+      "id": "MS-17",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L203",
+      "sourceExcerpt": "| `MS-17` | 审后执行；投稿/会议公开实际事实 | F-31 | ST-07 | 可信投稿系统回执/有权确认的活动记录 | 初次申请**不是必交** |"
+    },
+    {
+      "id": "MS-18",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L204",
+      "sourceExcerpt": "| `MS-18` | 申报/底账；科研诚信承诺 | F-32 | 依本校诚信规定与业务确认具体到期流程 | 官方承诺表或校方受控登记 | 缺件依有效承诺流程核对；不能与保密许可等效 |"
+    },
+    {
+      "id": "EV-07",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L216",
+      "sourceExcerpt": "| `EV-07` | 目标期刊或主办单位的正式证明要求+有效时点 | 网上论坛自称“可能需要保密证明” |"
+    },
+    {
+      "id": "EV-08",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L217",
+      "sourceExcerpt": "| `EV-08` | 有权签发的**正式非涉密证明**+对应稿件版本+有效范围（AND） | 期刊要求函、科研诚信承诺、第一作者声明 |"
+    },
+    {
+      "id": "EV-09",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L218",
+      "sourceExcerpt": "| `EV-09` | 认可的更名/换题记录+旧新稿内容和版本映射；可多文件协同 | 标题相似就自动继承批准 |"
+    },
+    {
+      "id": "EV-10",
+      "locator": "G06-T05_正式业务模板_MD_v0.1.md:L219",
+      "sourceExcerpt": "| `EV-10` | 可信批准范围**包含**本次动作、材料版本、受众渠道、时段（AND） | A篇论文批准扩展到B篇、论文扩展到演示视频 |"
+    }
+  ],
+  "unmappedAxes": []
+}

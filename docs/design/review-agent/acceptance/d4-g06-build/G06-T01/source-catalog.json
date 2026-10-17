@@ -1,0 +1,1313 @@
+{
+  "sourceFile": "G06-T01_正式业务模板_MD_v0.1.md",
+  "sourceSha256": "e3bb29673e317bf65b00b9b20f5af56a69d8fb2d87f42e2c3aab0473d7e9f727",
+  "version": "v0.1",
+  "scope": "full",
+  "atomicRules": [
+    {
+      "sourceId": "R-01",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L252",
+      "sourceAnchor": "### `R-01`｜主路径及动作路由",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r01/check",
+      "moduleId": "g06-t01-r01",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-02",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L260",
+      "sourceAnchor": "### `R-02`｜专利类别分支",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r02/check",
+      "moduleId": "g06-t01-r02",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-03",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L268",
+      "sourceAnchor": "### `R-03`｜政策版本及学校适用",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r03/check",
+      "moduleId": "g06-t01-r03",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-04",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L276",
+      "sourceAnchor": "### `R-04`｜非学校申请路由",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r04/check",
+      "moduleId": "g06-t01-r04",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-05",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L284",
+      "sourceAnchor": "### `R-05`｜发明人清单完整与角色分离",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r05/check",
+      "moduleId": "g06-t01-r05",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-06",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L292",
+      "sourceAnchor": "### `R-06`｜拟申请主体识别",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r06/check",
+      "moduleId": "g06-t01-r06",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-07",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L300",
+      "sourceAnchor": "### `R-07`｜题名与版本可追溯",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r07/check",
+      "moduleId": "g06-t01-r07",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-08",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L308",
+      "sourceAnchor": "### `R-08`｜职务发明来源证据",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r08/check",
+      "moduleId": "g06-t01-r08",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-09",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L316",
+      "sourceAnchor": "### `R-09`｜多主体合作申请",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r09/check",
+      "moduleId": "g06-t01-r09",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-10",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L324",
+      "sourceAnchor": "### `R-10`｜经办人与导师代理权限",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r10/check",
+      "moduleId": "g06-t01-r10",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-11",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L332",
+      "sourceAnchor": "### `R-11`｜发明实用新型技术文本完备",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r11/check",
+      "moduleId": "g06-t01-r11",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-12",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L340",
+      "sourceAnchor": "### `R-12`｜外观设计专有附件",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r12/check",
+      "moduleId": "g06-t01-r12",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-13",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L348",
+      "sourceAnchor": "### `R-13`｜国家提交法定文本分流",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r13/check",
+      "moduleId": "g06-t01-r13",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-14",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L356",
+      "sourceAnchor": "### `R-14`｜检索报告仅校规触发",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r14/check",
+      "moduleId": "g06-t01-r14",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-15",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L364",
+      "sourceAnchor": "### `R-15`｜CDUT快审申报表",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r15/check",
+      "moduleId": "g06-t01-r15",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-16",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L372",
+      "sourceAnchor": "### `R-16`｜CDUT快审申请主体资格",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r16/check",
+      "moduleId": "g06-t01-r16",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-17",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L380",
+      "sourceAnchor": "### `R-17`｜CDUT快审技术领域",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r17/check",
+      "moduleId": "g06-t01-r17",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-18",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L388",
+      "sourceAnchor": "### `R-18`｜CDUT快审专用排除项",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r18/check",
+      "moduleId": "g06-t01-r18",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-19",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L396",
+      "sourceAnchor": "### `R-19`｜CDUT快审时间窗口",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r19/check",
+      "moduleId": "g06-t01-r19",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-20",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L404",
+      "sourceAnchor": "### `R-20`｜快审配额和裁量",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r20/check",
+      "moduleId": "g06-t01-r20",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-21",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L412",
+      "sourceAnchor": "### `R-21`｜校内审签阶段不可倒置",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r21/check",
+      "moduleId": "g06-t01-r21",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-22",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L420",
+      "sourceAnchor": "### `R-22`｜代理委托范围",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r22/check",
+      "moduleId": "g06-t01-r22",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-23",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L428",
+      "sourceAnchor": "### `R-23`｜CDUT代理禁用规定",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r23/check",
+      "moduleId": "g06-t01-r23",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-24",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L436",
+      "sourceAnchor": "### `R-24`｜CDUT推荐目录非排他",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r24/check",
+      "moduleId": "g06-t01-r24",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-25",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L444",
+      "sourceAnchor": "### `R-25`｜代理法人同一性无法确定",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r25/check",
+      "moduleId": "g06-t01-r25",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-26",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L452",
+      "sourceAnchor": "### `R-26`｜敏感项目特殊流转",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r26/check",
+      "moduleId": "g06-t01-r26",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-27",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L460",
+      "sourceAnchor": "### `R-27`｜外国申请法定保密审查",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r27/check",
+      "moduleId": "g06-t01-r27",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-28",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L468",
+      "sourceAnchor": "### `R-28`｜既有公开与新颖性风险",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r28/check",
+      "moduleId": "g06-t01-r28",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-29",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L476",
+      "sourceAnchor": "### `R-29`｜优先权条件材料",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r29/check",
+      "moduleId": "g06-t01-r29",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-30",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L484",
+      "sourceAnchor": "### `R-30`｜2026国家优先审查适用阶段",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r30/check",
+      "moduleId": "g06-t01-r30",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-31",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L492",
+      "sourceAnchor": "### `R-31`｜国家优先审查请求及适用情形",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r31/check",
+      "moduleId": "g06-t01-r31",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-32",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L500",
+      "sourceAnchor": "### `R-32`｜国家优先全体申请人同意",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r32/check",
+      "moduleId": "g06-t01-r32",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-33",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L508",
+      "sourceAnchor": "### `R-33`｜国家优先推荐机构与法定例外",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r33/check",
+      "moduleId": "g06-t01-r33",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-34",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L516",
+      "sourceAnchor": "### `R-34`｜快速预审与优先审查隔离",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r34/check",
+      "moduleId": "g06-t01-r34",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-35",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L524",
+      "sourceAnchor": "### `R-35`｜国家受理授权与校审状态不得串级",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r35/check",
+      "moduleId": "g06-t01-r35",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-36",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L532",
+      "sourceAnchor": "### `R-36`｜申请文件更正还是实际权利处分",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r36/check",
+      "moduleId": "g06-t01-r36",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "R-37",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L540",
+      "sourceAnchor": "### `R-37`｜正式来源冲突与真假未知",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r37/check",
+      "moduleId": "g06-t01-r37",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-38",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L548",
+      "sourceAnchor": "### `R-38`｜多专利多操作分项审核",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r38/check",
+      "moduleId": "g06-t01-r38",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-39",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L556",
+      "sourceAnchor": "### `R-39`｜正式拒绝撤回与有效期",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r39/check",
+      "moduleId": "g06-t01-r39",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-40",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L564",
+      "sourceAnchor": "### `R-40`｜材料补正与旧批准版本绑定",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r40/check",
+      "moduleId": "g06-t01-r40",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-41",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L572",
+      "sourceAnchor": "### `R-41`｜不得凭失联底账断言",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r41/check",
+      "moduleId": "g06-t01-r41",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "R-42",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L580",
+      "sourceAnchor": "### `R-42`｜国家优先审查2026版本边界",
+      "type": "rule",
+      "checkId": "g06-t01@1:module/use-r42/check",
+      "moduleId": "g06-t01-r42",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    }
+  ],
+  "otherResponsibilities": [
+    {
+      "sourceId": "SECTION-01",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L8",
+      "sourceAnchor": "## 1. 业务目的、适用依据和政策边界",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section01/check",
+      "moduleId": "g06-t01-section01",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-02",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L31",
+      "sourceAnchor": "## 2. 独立存在理由、适用范围与业务排除",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section02/check",
+      "moduleId": "g06-t01-section02",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-03",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L39",
+      "sourceAnchor": "## 3. 固定 ID 命名空间、词典及角色责任",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section03/check",
+      "moduleId": "g06-t01-section03",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-04",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L78",
+      "sourceAnchor": "## 4. 统一主路径与叠加条件轴",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section04/check",
+      "moduleId": "g06-t01-section04",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-05",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L111",
+      "sourceAnchor": "## 5. 生命周期阶段与审批/国家行为分层",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section05/check",
+      "moduleId": "g06-t01-section05",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-06",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L128",
+      "sourceAnchor": "## 6. 申报事项字段字典（F-01—F-44）",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section06/check",
+      "moduleId": "g06-t01-section06",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-07",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L179",
+      "sourceAnchor": "## 7. 材料槽（MS-01—MS-25）与等价证据组（EV-01—EV-10）",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section07/check",
+      "moduleId": "g06-t01-section07",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-08",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L226",
+      "sourceAnchor": "## 8. 可抽取的审核事实与跨文件依赖",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section08/check",
+      "moduleId": "g06-t01-section08",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-09",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L248",
+      "sourceAnchor": "## 9. 原子规则明细（R-01—R-42）",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section09/check",
+      "moduleId": "g06-t01-section09",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-10",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L588",
+      "sourceAnchor": "## 10. 输出状态、问题编码、聚合与可追溯结构",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section10/check",
+      "moduleId": "g06-t01-section10",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-11",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L688",
+      "sourceAnchor": "## 11. 补件、审批、变更、撤回与证据链重评估",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section11/check",
+      "moduleId": "g06-t01-section11",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-12",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L700",
+      "sourceAnchor": "## 12. 合法例外与人工边界的显式约束",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section12/check",
+      "moduleId": "g06-t01-section12",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-13",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L717",
+      "sourceAnchor": "## 13. 成都理工大学及其它学校的差异配置（冻结前必须确认）",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section13/check",
+      "moduleId": "g06-t01-section13",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-14",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L735",
+      "sourceAnchor": "## 14. 官方依据及每种来源的使用上限",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section14/check",
+      "moduleId": "g06-t01-section14",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "SECTION-15",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L755",
+      "sourceAnchor": "## 15. 按实际路径的作者流程推演总览",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section15/check",
+      "moduleId": "g06-t01-section15",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-16",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L774",
+      "sourceAnchor": "## 16. 跨模板共性语义模块与本业务专属模块",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section16/check",
+      "moduleId": "g06-t01-section16",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-17",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L782",
+      "sourceAnchor": "## 17. 现有系统仓库表达映射及能力缺口（2026-10-12只读核验）",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section17/check",
+      "moduleId": "g06-t01-section17",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "SECTION-18",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L803",
+      "sourceAnchor": "## 18. 版本审计、风险与交接",
+      "type": "context",
+      "checkId": "g06-t01@1:module/use-section18/check",
+      "moduleId": "g06-t01-section18",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-01",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L45",
+      "sourceAnchor": "| `BR` | 一套模板内部单次申请主路径 | `BR-01` | `AX`叠加条件不是新模板 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t01@1:module/use-axis-br-01/check",
+      "moduleId": "g06-t01-axis-br-01",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-02",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L85",
+      "sourceAnchor": "| `BR-02` CDUT快速预审学校推荐 | P02 | 快审校内资格核对、排期、学院/科发院审签 | 校内推荐≠保护中心预审合格≠授权 | S01；效力待确认 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t01@1:module/use-axis-br-02/check",
+      "moduleId": "g06-t01-axis-br-02",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-03",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L86",
+      "sourceAnchor": "| `BR-03` 2026国家优先审查请求 | P03 | 适用阶段、请求和推荐资料核验；国家机关最终受理/决定 | 优先审查与快速预审**不同制度** | S05、P-12线索 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t01@1:module/use-axis-br-03/check",
+      "moduleId": "g06-t01-axis-br-03",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-04",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L87",
+      "sourceAnchor": "| `BR-04` 申请文件非处分性补正/更正 | P07 | 修改申请文件、补齐受理机关要求的材料 | 笔误更正≠权利转让 | S03、P-13目录 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t01@1:module/use-axis-br-04/check",
+      "moduleId": "g06-t01-axis-br-04",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "BR-05",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L88",
+      "sourceAnchor": "| `BR-05` 国家申请后的状态核实与归档 | P08 | 核实际受理/审查/授权状态并写档案候选结论 | 受理≠审查≠授权 | S02/S03 |",
+      "type": "primary-scenario",
+      "checkId": "g06-t01@1:module/use-axis-br-05/check",
+      "moduleId": "g06-t01-axis-br-05",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-01",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L96",
+      "sourceAnchor": "| `AX-01` 专利类别 | 发明／实用新型／外观设计（必选3选1） | 选择对应法定附件 | — | `UNKNOWN`→询明类别，限制国家申请文本规则 |",
+      "type": "additive-condition",
+      "checkId": "g06-t01@1:module/use-axis-ax-01/check",
+      "moduleId": "g06-t01-axis-ax-01",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-02",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L97",
+      "sourceAnchor": "| `AX-02` 职务/非职务/争议 | 可为多事实汇合但最终权属状态需判断 | 职务或合同义务触发权属审查 | 确证非职务且无学校申请需求→可转个人法定通道 | 纠纷→人工；不可由学籍自动确定 |",
+      "type": "additive-condition",
+      "checkId": "g06-t01@1:module/use-axis-ax-02/check",
+      "moduleId": "g06-t01-axis-ax-02",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-03",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L98",
+      "sourceAnchor": "| `AX-03` 合作/委托权属 | 是否存在外部单位或合同限制 | 激活共同申请依据`EV-04` | 不要求空白合作合同 | 合同数据库不可得→待核，不得默许独占 |",
+      "type": "additive-condition",
+      "checkId": "g06-t01@1:module/use-axis-ax-03/check",
+      "moduleId": "g06-t01-axis-ax-03",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-04",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L99",
+      "sourceAnchor": "| `AX-04` 代理/自行递交 | `agency/self/undecided` | 代理时查授权及校本机构限制 | 自行申请只核适用权限 | 未决→暂缓对应代理判断 |",
+      "type": "additive-condition",
+      "checkId": "g06-t01@1:module/use-axis-ax-04/check",
+      "moduleId": "g06-t01-axis-ax-04",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-05",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L46",
+      "sourceAnchor": "| `AX` | 条件轴；`true/false/unknown/not-applicable` | `AX-05` | `unknown`不得降级为false |",
+      "type": "additive-condition",
+      "checkId": "g06-t01@1:module/use-axis-ax-05/check",
+      "moduleId": "g06-t01-axis-ax-05",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-06",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L101",
+      "sourceAnchor": "| `AX-06` CDUT校本快审资格 | 学校为拟申请主体之一、2021产业范围、专利类别、排除项 | 均适用才进入资格核验 | 改走普通/相应路径，不宣告专利无效 | 边界技术/文件效力未知→学校判断 |",
+      "type": "additive-condition",
+      "checkId": "g06-t01@1:module/use-axis-ax-06/check",
+      "moduleId": "g06-t01-axis-ax-06",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-07",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L102",
+      "sourceAnchor": "| `AX-07` 优先权 | 申请人是否实际请求国内/国外在先优先权 | 启动在先申请关联与期限核验 | 不要求优先权附件 | 询明事实或标不确定 |",
+      "type": "additive-condition",
+      "checkId": "g06-t01@1:module/use-axis-ax-07/check",
+      "moduleId": "g06-t01-axis-ax-07",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-08",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L103",
+      "sourceAnchor": "| `AX-08` 国家优先审查情形 | 2026第85号令第4—8条适用类型、时点、情形 | 激活推荐/同意/电子申请要求 | 转普通国家审查 | 证据不明保留国家优先请求未核 |",
+      "type": "additive-condition",
+      "checkId": "g06-t01@1:module/use-axis-ax-08/check",
+      "moduleId": "g06-t01-axis-ax-08",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "AX-09",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L104",
+      "sourceAnchor": "| `AX-09` 申请更正是否改变实际权利 | 是否使真正申请权/专利权转移或放弃 | **转T09并保留当前T01非处分事项** | 可留在BR-04做文书补正 | 合同解释争议→法务并暂缓处分操作 |",
+      "type": "additive-condition",
+      "checkId": "g06-t01@1:module/use-axis-ax-09/check",
+      "moduleId": "g06-t01-axis-ax-09",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": true
+    },
+    {
+      "sourceId": "AX-10",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L105",
+      "sourceAnchor": "| `AX-10` 校本禁用代理有效性 | 禁用主体、委托时间、业务范围、公告及后续撤销状态 | 命中即生成校本禁止委托问题 | 不因不在推荐目录拒绝 | 名称碰撞/公告效力未知→待权威确认 |",
+      "type": "additive-condition",
+      "checkId": "g06-t01@1:module/use-axis-ax-10/check",
+      "moduleId": "g06-t01-axis-ax-10",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-11",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L106",
+      "sourceAnchor": "| `AX-11` 当前政策已确定 | 申请地、学校、版本及生效时点已确定 | 加载对应强制规则 | 有正式证据可判不适用 | **未知→相关校本规则不得假通过、假驳回** |",
+      "type": "additive-condition",
+      "checkId": "g06-t01@1:module/use-axis-ax-11/check",
+      "moduleId": "g06-t01-axis-ax-11",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    },
+    {
+      "sourceId": "AX-12",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L107",
+      "sourceAnchor": "| `AX-12` 已有国家申请号 | 国知局阶段和状态可核 | BR-03/04/05可加载后置材料 | BR-01前审可为空 | 不得用伪国家号启动国家优先 |",
+      "type": "additive-condition",
+      "checkId": "g06-t01@1:module/use-axis-ax-12/check",
+      "moduleId": "g06-t01-axis-ax-12",
+      "scope": "g06-patent-action",
+      "requiresHumanDecision": false
+    }
+  ],
+  "fieldMaterialEvidenceStageAndQuestionIndex": [
+    {
+      "id": "BR-01",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L45",
+      "sourceExcerpt": "| `BR` | 一套模板内部单次申请主路径 | `BR-01` | `AX`叠加条件不是新模板 |"
+    },
+    {
+      "id": "AX-05",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L46",
+      "sourceExcerpt": "| `AX` | 条件轴；`true/false/unknown/not-applicable` | `AX-05` | `unknown`不得降级为false |"
+    },
+    {
+      "id": "F-07",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L47",
+      "sourceExcerpt": "| `F` | 字段字典，一致的语义键 | `F-07` | 同名人员与权利主体不共用字段 |"
+    },
+    {
+      "id": "MS-08",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L48",
+      "sourceExcerpt": "| `MS` | 材料槽，含上传/系统生成/可验底账 | `MS-08` | “槽存在”不等于当场必交 |"
+    },
+    {
+      "id": "EV-03",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L49",
+      "sourceExcerpt": "| `EV` | 支持同一事实的合取/析取证据组 | `EV-03` | 不以截图数量取代权威性 |"
+    },
+    {
+      "id": "ST-04",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L52",
+      "sourceExcerpt": "| `ST` | 业务阶段 | `ST-04` | 后置审批栏位不是申请人材料 |"
+    },
+    {
+      "id": "BR-02",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L85",
+      "sourceExcerpt": "| `BR-02` CDUT快速预审学校推荐 | P02 | 快审校内资格核对、排期、学院/科发院审签 | 校内推荐≠保护中心预审合格≠授权 | S01；效力待确认 |"
+    },
+    {
+      "id": "BR-03",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L86",
+      "sourceExcerpt": "| `BR-03` 2026国家优先审查请求 | P03 | 适用阶段、请求和推荐资料核验；国家机关最终受理/决定 | 优先审查与快速预审**不同制度** | S05、P-12线索 |"
+    },
+    {
+      "id": "BR-04",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L87",
+      "sourceExcerpt": "| `BR-04` 申请文件非处分性补正/更正 | P07 | 修改申请文件、补齐受理机关要求的材料 | 笔误更正≠权利转让 | S03、P-13目录 |"
+    },
+    {
+      "id": "BR-05",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L88",
+      "sourceExcerpt": "| `BR-05` 国家申请后的状态核实与归档 | P08 | 核实际受理/审查/授权状态并写档案候选结论 | 受理≠审查≠授权 | S02/S03 |"
+    },
+    {
+      "id": "AX-01",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L96",
+      "sourceExcerpt": "| `AX-01` 专利类别 | 发明／实用新型／外观设计（必选3选1） | 选择对应法定附件 | — | `UNKNOWN`→询明类别，限制国家申请文本规则 |"
+    },
+    {
+      "id": "AX-02",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L97",
+      "sourceExcerpt": "| `AX-02` 职务/非职务/争议 | 可为多事实汇合但最终权属状态需判断 | 职务或合同义务触发权属审查 | 确证非职务且无学校申请需求→可转个人法定通道 | 纠纷→人工；不可由学籍自动确定 |"
+    },
+    {
+      "id": "AX-03",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L98",
+      "sourceExcerpt": "| `AX-03` 合作/委托权属 | 是否存在外部单位或合同限制 | 激活共同申请依据`EV-04` | 不要求空白合作合同 | 合同数据库不可得→待核，不得默许独占 |"
+    },
+    {
+      "id": "EV-04",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L98",
+      "sourceExcerpt": "| `AX-03` 合作/委托权属 | 是否存在外部单位或合同限制 | 激活共同申请依据`EV-04` | 不要求空白合作合同 | 合同数据库不可得→待核，不得默许独占 |"
+    },
+    {
+      "id": "AX-04",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L99",
+      "sourceExcerpt": "| `AX-04` 代理/自行递交 | `agency/self/undecided` | 代理时查授权及校本机构限制 | 自行申请只核适用权限 | 未决→暂缓对应代理判断 |"
+    },
+    {
+      "id": "AX-06",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L101",
+      "sourceExcerpt": "| `AX-06` CDUT校本快审资格 | 学校为拟申请主体之一、2021产业范围、专利类别、排除项 | 均适用才进入资格核验 | 改走普通/相应路径，不宣告专利无效 | 边界技术/文件效力未知→学校判断 |"
+    },
+    {
+      "id": "AX-07",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L102",
+      "sourceExcerpt": "| `AX-07` 优先权 | 申请人是否实际请求国内/国外在先优先权 | 启动在先申请关联与期限核验 | 不要求优先权附件 | 询明事实或标不确定 |"
+    },
+    {
+      "id": "AX-08",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L103",
+      "sourceExcerpt": "| `AX-08` 国家优先审查情形 | 2026第85号令第4—8条适用类型、时点、情形 | 激活推荐/同意/电子申请要求 | 转普通国家审查 | 证据不明保留国家优先请求未核 |"
+    },
+    {
+      "id": "AX-09",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L104",
+      "sourceExcerpt": "| `AX-09` 申请更正是否改变实际权利 | 是否使真正申请权/专利权转移或放弃 | **转T09并保留当前T01非处分事项** | 可留在BR-04做文书补正 | 合同解释争议→法务并暂缓处分操作 |"
+    },
+    {
+      "id": "AX-10",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L105",
+      "sourceExcerpt": "| `AX-10` 校本禁用代理有效性 | 禁用主体、委托时间、业务范围、公告及后续撤销状态 | 命中即生成校本禁止委托问题 | 不因不在推荐目录拒绝 | 名称碰撞/公告效力未知→待权威确认 |"
+    },
+    {
+      "id": "AX-11",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L106",
+      "sourceExcerpt": "| `AX-11` 当前政策已确定 | 申请地、学校、版本及生效时点已确定 | 加载对应强制规则 | 有正式证据可判不适用 | **未知→相关校本规则不得假通过、假驳回** |"
+    },
+    {
+      "id": "AX-12",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L107",
+      "sourceExcerpt": "| `AX-12` 已有国家申请号 | 国知局阶段和状态可核 | BR-03/04/05可加载后置材料 | BR-01前审可为空 | 不得用伪国家号启动国家优先 |"
+    },
+    {
+      "id": "ST-01",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L115",
+      "sourceExcerpt": "| `ST-01` 初始意向/选路 | 声明目标、各主体及专利种类 | **不得**要求国家申请号、授权证书 | 事项与主路径可识别→ST-02 |"
+    },
+    {
+      "id": "ST-02",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L115",
+      "sourceExcerpt": "| `ST-01` 初始意向/选路 | 声明目标、各主体及专利种类 | **不得**要求国家申请号、授权证书 | 事项与主路径可识别→ST-02 |"
+    },
+    {
+      "id": "ST-03",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L116",
+      "sourceExcerpt": "| `ST-02` 草稿收集与申报 | 准备申请表、技术方案及触发证明 | 只要求适用的申请人责任材料，不要求未来审批人签字 | 输入材料达到可审状态→ST-03 |"
+    },
+    {
+      "id": "ST-05",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L118",
+      "sourceExcerpt": "| `ST-04` 等待学院/PI/有权部门审批 | 申请材料已齐但审批意见待产生 | **审批签章是后置**，不能先当缺上传件 | 真实审签→ST-05；正式否决→ST-08 |"
+    },
+    {
+      "id": "ST-08",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L118",
+      "sourceExcerpt": "| `ST-04` 等待学院/PI/有权部门审批 | 申请材料已齐但审批意见待产生 | **审批签章是后置**，不能先当缺上传件 | 真实审签→ST-05；正式否决→ST-08 |"
+    },
+    {
+      "id": "ST-06",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L119",
+      "sourceExcerpt": "| `ST-05` 学校推荐/内部允许继续 | 有权校内部门确认适用路径、名额 | 不表示保护中心或国知局已通过 | 经代理/授权向主管机关提交→ST-06 |"
+    },
+    {
+      "id": "ST-07",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L120",
+      "sourceExcerpt": "| `ST-06` 国家/保护中心已提交或受理 | 具体区分请求已提交、形式受理、加速审查决定 | 以国家/保护中心正式记录判相应事实 | 补正→ST-03或BR-04；后续审查→ST-07 |"
+    },
+    {
+      "id": "ST-09",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L123",
+      "sourceExcerpt": "| `ST-09` 后置归档/移交 | 记录国家授权、公开、转T03成果入库 | 可要求已产生的受理/授权证据；转让/放弃转T09 | 归档完成但不改变国家效力 |"
+    },
+    {
+      "id": "ST-10",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L124",
+      "sourceExcerpt": "| `ST-10` 快审排期/名额人工排序 | CDUT学校快审在月度窗口内统一推荐 | 每月20号之后滚入下一月；名额人工决策 | 符合条件后等待校内决定，不能自动宣布有名额 |"
+    },
+    {
+      "id": "F-01",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L128",
+      "sourceExcerpt": "## 6. 申报事项字段字典（F-01—F-44）"
+    },
+    {
+      "id": "F-44",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L128",
+      "sourceExcerpt": "## 6. 申报事项字段字典（F-01—F-44）"
+    },
+    {
+      "id": "F-02",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L135",
+      "sourceExcerpt": "| `F-02` | `case.operationKey` 本次动作ID | 系统事项 | BASE ST-01 | 多动作不合并结果 |"
+    },
+    {
+      "id": "F-03",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L136",
+      "sourceExcerpt": "| `F-03` | `case.targetRoute` BR-01—BR-05 | 用户事项+受理入口 | BASE ST-01 | 未知为待分流 |"
+    },
+    {
+      "id": "F-04",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L137",
+      "sourceExcerpt": "| `F-04` | `case.schoolId` 适用高校ID | 身份/校本配置 | BASE ST-01 | 学校可为空仅针对校外通用咨询；正式校审须确认 |"
+    },
+    {
+      "id": "F-05",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L138",
+      "sourceExcerpt": "| `F-05` | `case.policyVersion` 来源、发布日期、生效期和撤销版 | 有权限制度底账 | AUTH ST-01 | 旧2021快审是否有效待核 |"
+    },
+    {
+      "id": "F-06",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L139",
+      "sourceExcerpt": "| `F-06` | `patent.kind` 发明/实用新型/外观设计 | 事项+正式文本 | BASE ST-01 | 类别未知暂不触发正式文本字段 |"
+    },
+    {
+      "id": "F-08",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L141",
+      "sourceExcerpt": "| `F-08` | `patent.objectDescription` 技术或设计范围概要 | 申材 | BASE ST-02 | 敏感项目仅授权环境处理 |"
+    },
+    {
+      "id": "F-09",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L142",
+      "sourceExcerpt": "| `F-09` | `identity.submitter` 经办人标识/角色/机构 | 事项/校方登录记录 | BASE ST-02 | 不要求身份证明的完整扫描件为默认附件 |"
+    },
+    {
+      "id": "F-10",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L143",
+      "sourceExcerpt": "| `F-10` | `identity.inventors[]` 发明人/设计人及顺序 | 事项/申材/确认 | BASE ST-02 | 数组可含校外人员，实际贡献人工确认 |"
+    },
+    {
+      "id": "F-11",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L144",
+      "sourceExcerpt": "| `F-11` | `identity.projectLead` PI/导师/负责人 | 项目底账/申材 | COND 有PI或学校审批要求 | 申请人、导师和发明人角色分离 |"
+    },
+    {
+      "id": "F-12",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L145",
+      "sourceExcerpt": "| `F-12` | `rights.proposedApplicants[]` 拟申请权主体数组 | 事项/请求书/合同 | BASE ST-02 | 每主体法定身份；不等于发明人 |"
+    },
+    {
+      "id": "F-13",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L146",
+      "sourceExcerpt": "| `F-13` | `rights.employmentBasis` 职务来源/任务/资源/合同，三值 | 项目合同与记录 | AUTH/COND ST-02 | 非职务不得凭师生身份误判 |"
+    },
+    {
+      "id": "F-14",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L147",
+      "sourceExcerpt": "| `F-14` | `rights.ownershipDispute` 有无争议及争点 | 当事人声明/合同 | COND 争议成立 | 人工法务，不自动选择一方 |"
+    },
+    {
+      "id": "F-15",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L148",
+      "sourceExcerpt": "| `F-15` | `project.linkedProjects[]` 项目号/资助/合同 | 申材/项目库 | COND 实际依托项目 | 允许零或多个 |"
+    },
+    {
+      "id": "F-16",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L149",
+      "sourceExcerpt": "| `F-16` | `rights.collaborationMode` 独立/共同/委托/争议 | 事项/合同 | BASE/COND ST-02 | 无合作不用虚构合作合同 |"
+    },
+    {
+      "id": "F-17",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L150",
+      "sourceExcerpt": "| `F-17` | `rights.jointApplicantConsent[]` 全部权利主体确认及范围 | 证材/底账 | COND 多主体/国家优先 | 时间与具体专利对象绑定 |"
+    },
+    {
+      "id": "F-18",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L151",
+      "sourceExcerpt": "| `F-18` | `technology.disclosureVersion` 技术文本版本号/日期/附件集 | 申材 | COND 需要技术/设计文本 | 技术交底与国家正式文书可不同版本 |"
+    },
+    {
+      "id": "F-19",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L152",
+      "sourceExcerpt": "| `F-19` | `technology.classification` 产业领域或技术标签 | 申材/机构认定 | COND CDUT快速预审 | 边界领域应由成果科判断 |"
+    },
+    {
+      "id": "F-20",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L153",
+      "sourceExcerpt": "| `F-20` | `request.accelerationKind` 普通/保护中心快审/85号令优先 | 事项 | BASE ST-01 | 加速制度与国家审查阶段不能混称 |"
+    },
+    {
+      "id": "F-21",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L154",
+      "sourceExcerpt": "| `F-21` | `request.accelerationGround` 加速理由、客观依据 | 申请/证材 | COND BR-02或BR-03 | 国家优先理由与CDUT快审领域不同 |"
+    },
+    {
+      "id": "F-22",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L155",
+      "sourceExcerpt": "| `F-22` | `request.exclusionFlags` 分案、PCT、同日双报等 | 事项/国家底账 | COND BR-02/03 | 仅对应制度使用，不一律拒绝申请 |"
+    },
+    {
+      "id": "F-23",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L156",
+      "sourceExcerpt": "| `F-23` | `agency.mode` 自行或委托或待定 | 事项 | BASE ST-02 | 不强制委托代理 |"
+    },
+    {
+      "id": "F-24",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L157",
+      "sourceExcerpt": "| `F-24` | `agency.legalEntity` 代理法人名、代码、资质 | 委托/可信机构库 | COND 委托时 | 同名匹配不等于同一法人 |"
+    },
+    {
+      "id": "F-25",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L158",
+      "sourceExcerpt": "| `F-25` | `agency.engagedAt` 选择/签约/委托生效日期 | 授权/合同 | COND 委托时 | 禁令不能不考虑生效日期追溯拒绝 |"
+    },
+    {
+      "id": "F-26",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L159",
+      "sourceExcerpt": "| `F-26` | `agency.recommendationState` 推荐/未推荐/无法核 | 学校目录 | AUTH/OPTION | 未推荐本身不构成禁止 |"
+    },
+    {
+      "id": "F-27",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L160",
+      "sourceExcerpt": "| `F-27` | `agency.restrictionState` 禁止/允许/未知/撤销 | 校本限制底账 | AUTH/COND CDUT委托 | 须核法人、限制业务、时间及后续变更 |"
+    },
+    {
+      "id": "F-28",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L161",
+      "sourceExcerpt": "| `F-28` | `agency.authorization` 委托范围、当事人和有效期 | 证材/有权日志 | COND 代理/盖章 | 授权人权限另验证 |"
+    },
+    {
+      "id": "F-29",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L162",
+      "sourceExcerpt": "| `F-29` | `security.classification` 非涉密/涉密/未判 | 项目保密底账 | AUTH ST-02 | 普通文件和保密受控文件分存 |"
+    },
+    {
+      "id": "F-30",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L163",
+      "sourceExcerpt": "| `F-30` | `security.foreignFiling` 境外申请计划及保密审查 | 事项/国家记录 | COND 出境路径 | 国家法定保密审查不是学院自签就可代替 |"
+    },
+    {
+      "id": "F-31",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L164",
+      "sourceExcerpt": "| `F-31` | `request.claimPriority` 是否主张优先权 | 事项 | COND 国家正式提交 | 无优先权无需在先文件 |"
+    },
+    {
+      "id": "F-32",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L165",
+      "sourceExcerpt": "| `F-32` | `request.earlierApplications[]` 在先申请、日、国别和证明 | 证材/国知局底账 | COND 主张优先权 | 起算时间与等同主题专业核验 |"
+    },
+    {
+      "id": "F-33",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L166",
+      "sourceExcerpt": "| `F-33` | `timeline.schoolSubmittedAt` 校内提交时间 | 事项/校内OA | BASE ST-02 | CDUT快审月20号排期，不是逾期失权 |"
+    },
+    {
+      "id": "F-34",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L167",
+      "sourceExcerpt": "| `F-34` | `timeline.cnipaSubmittedAt` 国家正式递交时间 | 国家回执 | OUT ST-06+ | 空不妨碍前审 |"
+    },
+    {
+      "id": "F-35",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L168",
+      "sourceExcerpt": "| `F-35` | `cnipa.applicationNo` 法定国家申请号 | 国家回执/底账 | OUT ST-06+ | 不冒充校内工单号 |"
+    },
+    {
+      "id": "F-36",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L169",
+      "sourceExcerpt": "| `F-36` | `cnipa.caseStatus` 递交/受理/在审/授权/驳回等 | 国家官方底账 | OUT ST-06+ | 必须有主体+出具时间 |"
+    },
+    {
+      "id": "F-37",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L170",
+      "sourceExcerpt": "| `F-37` | `internal.collegeDecision` 申请对应的学院审签记录 | 有权审批日志 | OUT/COND BR-02 | ST-02缺校领导签不视为申请人缺上传附件 |"
+    },
+    {
+      "id": "F-38",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L171",
+      "sourceExcerpt": "| `F-38` | `internal.officeDecision` 成果科/分管院长等记录 | 有权审批日志 | OUT/COND BR-02 | 部门及角色随校规版本更新 |"
+    },
+    {
+      "id": "F-39",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L172",
+      "sourceExcerpt": "| `F-39` | `internal.quotaWindow` 快审月度窗口及名额 | 可信学校底账 | AUTH BR-02 | 申请人不可自行声明“有名额” |"
+    },
+    {
+      "id": "F-40",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L173",
+      "sourceExcerpt": "| `F-40` | `request.review2026Stage` 发明实审首次处理、其它案别 | 官方国家记录 | COND BR-03 | 2026第85号令适用状态 |"
+    },
+    {
+      "id": "F-41",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L174",
+      "sourceExcerpt": "| `F-41` | `request.recommendationBasis` 85号令推荐机构/例外情形 | 证材/国家平台 | COND BR-03 | 第5条第（四）项例外单独处理 |"
+    },
+    {
+      "id": "F-42",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L175",
+      "sourceExcerpt": "| `F-42` | `revision.changeSet[]` 原/新字段、版本、原因、当事人 | 申材/旧记录 | COND BR-04 | 真正权利处分转T09 |"
+    },
+    {
+      "id": "F-43",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L176",
+      "sourceExcerpt": "| `F-43` | `evidence.sourceTrace[]` 文件、页、原始段、出具机关、版本 | 申材/证材/底账 | BASE 核验时 | 必须保护敏感信息且可追溯 |"
+    },
+    {
+      "id": "MS-01",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L179",
+      "sourceExcerpt": "## 7. 材料槽（MS-01—MS-25）与等价证据组（EV-01—EV-10）"
+    },
+    {
+      "id": "MS-25",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L179",
+      "sourceExcerpt": "## 7. 材料槽（MS-01—MS-25）与等价证据组（EV-01—EV-10）"
+    },
+    {
+      "id": "EV-01",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L179",
+      "sourceExcerpt": "## 7. 材料槽（MS-01—MS-25）与等价证据组（EV-01—EV-10）"
+    },
+    {
+      "id": "EV-10",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L179",
+      "sourceExcerpt": "## 7. 材料槽（MS-01—MS-25）与等价证据组（EV-01—EV-10）"
+    },
+    {
+      "id": "MS-02",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L186",
+      "sourceExcerpt": "| `MS-02` | A 成都理工大学快审审批原表 F-06,F-07,F-12,F-15,F-19,F-23,F-33 | BR-02 ST-02 | 校方正式授权的线上表单可替代，是否允许需确认 | CORE/内部，S01 |"
+    },
+    {
+      "id": "MS-03",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L187",
+      "sourceExcerpt": "| `MS-03` | A 发明/实用新型技术交底或完整技术文书 F-07,F-08,F-18 | 由学校对应路径要求，或国家最终文件阶段 | 适用时可用完整正式说明书替代初期交底 | C/技术敏感，S03/S06 |"
+    },
+    {
+      "id": "MS-04",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L188",
+      "sourceExcerpt": "| `MS-04` | A 外观设计图片/照片及简要说明 | 外观设计国家正式递交 ST-06 | 按国家正式文本要求；不能套发明权利要求书 | CORE/内部，S02/S03 |"
+    },
+    {
+      "id": "MS-05",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L189",
+      "sourceExcerpt": "| `MS-05` | A 国家发明/实用新型申请文本 | 已准备正式提交国家时 ST-06 | 请求书/说明书/权利要求、发明/实用新型所需图及摘要 | CORE/技术敏感，S02/S03 |"
+    },
+    {
+      "id": "MS-06",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L190",
+      "sourceExcerpt": "| `MS-06` | E 发明人/设计人确认及完整列表 F-10 | 多人或学校要求全员确认时 | 经学校认证电子签/正式项目成员记录，可组合证明 | C/个人信息，S06 |"
+    },
+    {
+      "id": "MS-07",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L191",
+      "sourceExcerpt": "| `MS-07` | E 任务书/职务创造基础合同 F-13,F-15 | 涉职务/委托/合同限制时 | 有权学校合同档案与对外正式合同 | C/商业敏感，S02/S06 |"
+    },
+    {
+      "id": "MS-09",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L193",
+      "sourceExcerpt": "| `MS-09` | E 专利检索/查新报告 F-18 | **仅**适用学校或特定代理明确要求时 | 可按学校认可形式交代理报告/检索记录 | U/技术内部，S06/S07 |"
+    },
+    {
+      "id": "MS-10",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L194",
+      "sourceExcerpt": "| `MS-10` | E 代理委托书/用印授权 F-23—F-28 | 委托代理、学校对外用印时 | 有权学校电子委托和正式签章记录组合 | C/合同敏感，S06/P-10 |"
+    },
+    {
+      "id": "MS-11",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L195",
+      "sourceExcerpt": "| `MS-11` | TR 学校代理禁用正式公告及现行撤销/变更记录 F-27 | CDUT委托代理时 | 学校可靠公告档案/有权知识产权管理底账 | L-C/内部，P-10 |"
+    },
+    {
+      "id": "MS-12",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L196",
+      "sourceExcerpt": "| `MS-12` | TR 2026推荐代理名录及历史版 F-26 | CDUT代理选择时作为参考 | 学校发布的相关版次；**不是排他白名单** | L-C/公开，S04/P-11 |"
+    },
+    {
+      "id": "MS-13",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L197",
+      "sourceExcerpt": "| `MS-13` | E/TR 代理机构身份与真实委托关系 F-24,F-25 | 代理委托且需辨识法人时 | 有效企业/代理机构登记记录+真实委托签订信息 | C/商业，P-10/P-11 |"
+    },
+    {
+      "id": "MS-14",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L198",
+      "sourceExcerpt": "| `MS-14` | E 项目涉密/披露保密审查与法定对外申请审查 F-29,F-30 | 涉密/中国完成发明实用新型拟外国申请等适用时 | 必须区分学校保密意见与国家法定程序结论 | C/涉密，S02/S03 |"
+    },
+    {
+      "id": "MS-15",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L199",
+      "sourceExcerpt": "| `MS-15` | E 优先权在先申请和权利衔接 F-31,F-32 | 实际主张优先权时 | 官方在先申请档案/合法证明 | C/内部，S03 |"
+    },
+    {
+      "id": "MS-16",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L200",
+      "sourceExcerpt": "| `MS-16` | A/E 2026优先审查请求书 F-20,F-21,F-40,F-41 | BR-03 ST-06 | 依据85号令现行国家申请/案件阶段 | CORE/内部，S05 |"
+    },
+    {
+      "id": "MS-17",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L201",
+      "sourceExcerpt": "| `MS-17` | E 85号令适用情形客观证明/申请人共同同意 F-17,F-21 | BR-03条件生效 | 正式申请/案件主体共同同意及法定情形证明 | CORE或C/内部，S05 |"
+    },
+    {
+      "id": "MS-18",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L202",
+      "sourceExcerpt": "| `MS-18` | E 国家优先审查推荐意见或法定例外依据 F-41 | BR-03 ST-06 | 85号令第5条第（四）项的**专利申请优先请求**有推荐意见例外 | C/内部，S05 |"
+    },
+    {
+      "id": "MS-19",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L203",
+      "sourceExcerpt": "| `MS-19` | TR 2026国家申请/案件状态与电子递交证据 F-35,F-40 | BR-03前提或BR-05 | CNIPA可验记录；不可用个人“已进入实审”截图单独替代 | AUTH/内部，S05 |"
+    },
+    {
+      "id": "MS-20",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L204",
+      "sourceExcerpt": "| `MS-20` | TR CDUT快审校内政策、主管部门额度与排期 F-19,F-33,F-39 | BR-02 ST-02—ST-10 | 学校有效制度及月度台账；用户不自行主张名额 | AUTH/内部，S01 |"
+    },
+    {
+      "id": "MS-21",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L205",
+      "sourceExcerpt": "| `MS-21` | POST 有权学院和学校审批意见 F-37,F-38 | BR-02 ST-04—ST-05 | 正式审批链/有权签章页；申请时待产生 | POST/内部，S01 |"
+    },
+    {
+      "id": "MS-22",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L206",
+      "sourceExcerpt": "| `MS-22` | POST CNIPA受理通知、审查通知、优先审查意见 F-35,F-36 | 国家递交/决定后 | 对应官方国家申请/案件号及时间 | POST/内部，S03/S05 |"
+    },
+    {
+      "id": "MS-23",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L207",
+      "sourceExcerpt": "| `MS-23` | POST 国家授权证书、公告与法律状态 F-36 | 已授权或BR-05需确认授权时 | 官方国家公告与状态；不可要求未申请者提供 | POST/公开/内部，S02/S03 |"
+    },
+    {
+      "id": "MS-24",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L208",
+      "sourceExcerpt": "| `MS-24` | A/E 更正说明、原版/新版、国家补正通知 F-42 | BR-04 对应阶段 | 原文件版本和相关权利方确认；权利真正转让→T09 | C/内部，S03/P-13 |"
+    },
+    {
+      "id": "EV-02",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L216",
+      "sourceExcerpt": "| `EV-02` | 本专利的技术/设计内容 | `(MS-03 或完整合规拟正式申请文本)` 或 `外观设计MS-04`，按类别和阶段 | 不以实质专利性作为机器通过项 |"
+    },
+    {
+      "id": "EV-05",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L219",
+      "sourceExcerpt": "| `EV-05` | 委托合法且非禁用 | `真实机构身份MS-13 AND (有权委托MS-10) AND (现行禁令MS-11核验)`；推荐MS-12仅参考 | 禁令主体/时间/撤销状态不明→待校方核实 |"
+    },
+    {
+      "id": "EV-06",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L220",
+      "sourceExcerpt": "| `EV-06` | CDUT快审资格 | `学校拟权利主体 AND 领域及排除条件 AND MS-02 AND 有效校本政策MS-20`；**名额/最终签章另待形成** | 领域边界不明→专业核验；逾20号只是排期 |"
+    },
+    {
+      "id": "EV-07",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L221",
+      "sourceExcerpt": "| `EV-07` | 国家优先审查材料 | `MS-16 AND MS-17 AND (MS-18 或85号令第5条第（四）项法定例外)`，并以MS-19确证阶段 | 旧76号令材料不是现行自动必需 |"
+    },
+    {
+      "id": "EV-08",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L222",
+      "sourceExcerpt": "| `EV-08` | 保密/涉外审批前置 | `项目风险来源 AND 有权保密或国家法定程序结论MS-14`（依场景可需两者） | 不能让校园内部签章替代国家法定手续 |"
+    },
+    {
+      "id": "EV-09",
+      "locator": "G06-T01_正式业务模板_MD_v0.1.md:L223",
+      "sourceExcerpt": "| `EV-09` | 国家申请受理/授权状态 | `MS-22 OR 可核CNIPA记录`支持具体提交/受理；`MS-23 OR 可核官方授权公示`支持授权 | “受理”不能提升成“授权” |"
+    }
+  ],
+  "unmappedAxes": []
+}

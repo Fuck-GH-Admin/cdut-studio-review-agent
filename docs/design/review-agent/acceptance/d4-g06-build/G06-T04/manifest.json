@@ -1,0 +1,24 @@
+{
+  "domain": "G06",
+  "templateId": "g06-t04",
+  "templateVersion": 1,
+  "sourceFile": "G06-T04_正式业务模板_MD_v0.1.md",
+  "sourceSha256": "d222b07422fdad32b19ade9e5f8373c9189ec12907e4e8f5b72259591934b640",
+  "technicalBaseline": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "publicationAllowed": false,
+  "sourcePolicyStatus": "POLICY_HOLD",
+  "technicalStatus": "NOT_RUN",
+  "sourceRuleCount": 35,
+  "sourceContextSections": 18,
+  "sourceIds": 70,
+  "modules": 70,
+  "sourceBindings": 70,
+  "sharedModuleLocks": [],
+  "initialObjects": 2,
+  "actualD2Plan": "NOT_RUN",
+  "limitations": [
+    "复杂跨对象Claim/事实的语义解释未程序化",
+    "校方真实制度有效性和权限未核",
+    "作者初稿条件语义不是全部可由单个TRUE/FALSE/UNKNOWN精确代表"
+  ]
+}

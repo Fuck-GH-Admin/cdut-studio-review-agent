@@ -1,0 +1,88 @@
+{
+  "domain": "G06",
+  "technicalBaseline": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "templateCount": 9,
+  "templates": [
+    {
+      "id": "g06-t01",
+      "ruleCount": 42,
+      "sections": 18,
+      "modules": 77,
+      "bindings": 77,
+      "unmapped": []
+    },
+    {
+      "id": "g06-t02",
+      "ruleCount": 36,
+      "sections": 19,
+      "modules": 74,
+      "bindings": 74,
+      "unmapped": [
+        "AX-09",
+        "AX-10",
+        "AX-11",
+        "AX-12"
+      ]
+    },
+    {
+      "id": "g06-t03",
+      "ruleCount": 30,
+      "sections": 18,
+      "modules": 60,
+      "bindings": 60,
+      "unmapped": []
+    },
+    {
+      "id": "g06-t04",
+      "ruleCount": 35,
+      "sections": 18,
+      "modules": 70,
+      "bindings": 70,
+      "unmapped": []
+    },
+    {
+      "id": "g06-t05",
+      "ruleCount": 28,
+      "sections": 18,
+      "modules": 63,
+      "bindings": 63,
+      "unmapped": []
+    },
+    {
+      "id": "g06-t06",
+      "ruleCount": 34,
+      "sections": 17,
+      "modules": 64,
+      "bindings": 64,
+      "unmapped": []
+    },
+    {
+      "id": "g06-t07",
+      "ruleCount": 35,
+      "sections": 18,
+      "modules": 71,
+      "bindings": 71,
+      "unmapped": []
+    },
+    {
+      "id": "g06-t08",
+      "ruleCount": 24,
+      "sections": 18,
+      "modules": 63,
+      "bindings": 63,
+      "unmapped": []
+    },
+    {
+      "id": "g06-t09",
+      "ruleCount": 32,
+      "sections": 19,
+      "modules": 68,
+      "bindings": 68,
+      "unmapped": [
+        "AX-01"
+      ]
+    }
+  ],
+  "technicalStatus": "NOT_RUN",
+  "publicationAllowed": false
+}
