@@ -6,8 +6,6 @@ on:
       - 'docs/design/review-agent/acceptance/d4-g06-build/**'
       - 'apps/electron/src/main/lib/review/review-d4-g06.test.ts'
       - '.github/workflows/review-d4-g06.yml'
-    paths-ignore:
-      - 'docs/design/review-agent/acceptance/d4-g06-build/runtime/**'
   pull_request:
     branches: [feat/d4-common-object-scenario-r01]
     paths:
