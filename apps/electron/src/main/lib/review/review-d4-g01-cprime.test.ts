@@ -62,7 +62,7 @@ describe('D4 independent C prime no B 28 and no Gold',()=>{
   expect(validateD2GuardSubmission(agg(p,[facts[0]!]),id,'compliant',['v1'])).toContain('D2_MATERIAL_ALTERNATIVE_UNVERIFIED')
  })
  test('complex claims stay rejected, legacy text plan continues',()=>{
-  const w=ws();w.advanced={claimKeys:['unmapped'],evidenceRelations:[{claimKey:'unmapped',requiredSourceIds:['test-only']}]}
+  const w=ws();w.advanced={claimKeys:['unknown'],evidenceRelations:[{claimKey:'unknown',requiredSourceIds:['md-original']}]}
   expect(()=>compileD2RuntimePlan(w,selection(['full-name'],['s01']),draft(),trusted())).toThrow('D2_UNMAPPED_ADVANCED')
   const legacy=JSON.parse(readFileSync(resolve(import.meta.dir,'../../../../../../docs/design/review-agent/fixtures/d2-workspace-synthetic.json'),'utf8')) as ReviewAuthoringWorkspaceV1
   const p=compileD2RuntimePlan(legacy,{templateId:'text-review',version:1,targets:[]},draft('legacy'))
