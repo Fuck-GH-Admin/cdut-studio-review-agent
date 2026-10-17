@@ -83,6 +83,14 @@
       ]
     }
   ],
-  "technicalStatus": "NOT_RUN",
-  "publicationAllowed": false
+  "technicalStatus": "PASS_SCOPED_SYNTHETIC_D1_D3_D2_PI",
+  "publicationAllowed": false,
+  "templateStatus": "PARTIAL",
+  "syntheticPiVerified": 9,
+  "actualCheckTotal": 1132,
+  "subjectTotal": 18,
+  "evidenceRun": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39050795868",
+  "replayRun": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39051081182",
+  "goldAccuracy": "NOT_RUN",
+  "onlineModelAccuracy": "NOT_RUN"
 }
