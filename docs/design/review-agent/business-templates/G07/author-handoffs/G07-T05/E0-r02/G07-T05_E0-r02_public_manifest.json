@@ -1,0 +1,322 @@
+{
+  "schema": "G07-T05-author-E0-r02-recovery-v1",
+  "scope": "G07-T05 ONLY",
+  "businessName": "科研劳务、助研及专家酬金发放预审",
+  "templateVersion": "G07-T05:MD@0.1.0",
+  "cAuthorStatus": "BUSINESS_MD_DRAFT_WITH_GAPS",
+  "priorCHandoffStatus": "C_V2_1_MIGRATION_VERIFIED_WITH_EXISTING_GAPS",
+  "auditBaseline": {
+    "branch": "audit/g07-e-v1-r01",
+    "auditHead": "ccbf9bd6b16c9472bb35b03cd8b676d87c6cd6ab",
+    "originalDecision": "BLOCKED_INPUT",
+    "unchanged": true
+  },
+  "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "archivalBranch": "author/g07-t05-e0-r02-input-recovery",
+  "baseSha": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+  "originalAuthorGitCommit": "NOT_AVAILABLE",
+  "archivalCommitPolicy": "Archive commit identifies E0-replayable copy only; never attribute A/B/C original authorship to this commit",
+  "inputPolicy": "E0 may read hashes/manifests/A/B only; E1 must lock H/M/L independent evidence plan before C/D business text is opened; D Gold never available in this branch",
+  "integrity": {
+    "C_v0.1_archive_sha256": "2af6405a27d6628542895562acb07a696aa74284612af6a9824583dd0052177d",
+    "C_v2.1_archive_sha256": "030b7c045572434a0d9d23b01495ae4bfd86c6d023507479ca8ddc770e204471",
+    "B_v0.2_archive_sha256": "ec5459dff9acd8144509a59b87ec28520ff7fda02e2588534e827a55b0d76e6a"
+  },
+  "files": [
+    {
+      "kind": "A",
+      "archivePath": "A_recovered/G07_00_领域总论.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/A_recovered/G07_00_领域总论.md",
+      "sourceProvenance": "A v0.1/v0.2 recovered, NOT C-authored",
+      "bytes": 7074,
+      "sha256": "8de7546f98cf43b768701bba0e5d909345f4249e53cf760338eda4d6cda48639",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "A",
+      "archivePath": "A_recovered/G07_01_候选事项处置矩阵.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/A_recovered/G07_01_候选事项处置矩阵.md",
+      "sourceProvenance": "A v0.1/v0.2 recovered, NOT C-authored",
+      "bytes": 15643,
+      "sha256": "4d6f4f90cd6a42370bd1c26eb939a87ffb1b185731815fed9a9ea8be9150a2a5",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "A",
+      "archivePath": "A_recovered/G07_02_统一模板目录与边界.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/A_recovered/G07_02_统一模板目录与边界.md",
+      "sourceProvenance": "A v0.1/v0.2 recovered, NOT C-authored",
+      "bytes": 10555,
+      "sha256": "64a771d60e7ea68a040c4d7fd551c246bf3cd123e0ca60a8f7d9d4ea245ee4c4",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "A",
+      "archivePath": "A_recovered/G07_03_来源索引.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/A_recovered/G07_03_来源索引.md",
+      "sourceProvenance": "A v0.1/v0.2 recovered, NOT C-authored",
+      "bytes": 16950,
+      "sha256": "17583564d18b1561b05ce6fd9104df86e132b6d34047ca78f85d1af75f8b3245",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "A",
+      "archivePath": "A_recovered/G07_05_缺口与争议.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/A_recovered/G07_05_缺口与争议.md",
+      "sourceProvenance": "A v0.1/v0.2 recovered, NOT C-authored",
+      "bytes": 4981,
+      "sha256": "842364f2c2b96903bb54bc0213d29080552b299cd84532e595dc25fedaac75e8",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "A",
+      "archivePath": "A_recovered/G07_06_领域审计与阶段结论.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/A_recovered/G07_06_领域审计与阶段结论.md",
+      "sourceProvenance": "A v0.1/v0.2 recovered, NOT C-authored",
+      "bytes": 4826,
+      "sha256": "27cfd3dfe0d7c0a3de803b69d2437f9b9adc01850958fd9df54e5d855e951043",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "A",
+      "archivePath": "A_recovered/G07_07_成都理工大学校本规则专项核验.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/A_recovered/G07_07_成都理工大学校本规则专项核验.md",
+      "sourceProvenance": "A v0.1/v0.2 recovered, NOT C-authored",
+      "bytes": 19463,
+      "sha256": "2bbad8fd845cf22ab3029c683ad760c86c6847f4d9c56cbf34fc1099e9e1f70f",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "A",
+      "archivePath": "A_recovered/G07_04_模板子任务卡/G07-T05_研究交接卡.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/A_recovered/G07_04_模板子任务卡/G07-T05_研究交接卡.md",
+      "sourceProvenance": "A v0.2 ZIP original, NOT C-authored",
+      "bytes": 5193,
+      "sha256": "a5f5863cab06f29ab39e4762c6e4f24403c42147c2cd74e9229c3b2a3ddf0726",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "B",
+      "archivePath": "B_recovered/G07-T05_00_独立业务深调研.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/B_recovered/G07-T05_00_独立业务深调研.md",
+      "sourceProvenance": "B v0.2 research original, NOT C-authored",
+      "bytes": 13461,
+      "sha256": "f261ff47209b082cfbed49ae0b8cab5fdde968e4f50298f77c9c2a466a6daca9",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "B",
+      "archivePath": "B_recovered/G07-T05_01_办理情景与条件轴.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/B_recovered/G07-T05_01_办理情景与条件轴.md",
+      "sourceProvenance": "B v0.2 research original, NOT C-authored",
+      "bytes": 12028,
+      "sha256": "63e9e5bcb10fbe6d06bdc2b3feb88c7603ccbf4bf8471e6a54419e0958d8061d",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "B",
+      "archivePath": "B_recovered/G07-T05_02_字段材料证据矩阵.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/B_recovered/G07-T05_02_字段材料证据矩阵.md",
+      "sourceProvenance": "B v0.2 research original, NOT C-authored",
+      "bytes": 19212,
+      "sha256": "851f1ec7896b2b19b859ff3514f9c57756dfae55c71b4f5628138383f73605f2",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "B",
+      "archivePath": "B_recovered/G07-T05_03_候选审核规则与权限边界.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/B_recovered/G07-T05_03_候选审核规则与权限边界.md",
+      "sourceProvenance": "B v0.2 research original, NOT C-authored",
+      "bytes": 12383,
+      "sha256": "ac2a4588216714605138388fcaf3ade0045d7a8b24fb7496edffaad376f556db",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "B",
+      "archivePath": "B_recovered/G07-T05_04_官方来源与差异登记.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/B_recovered/G07-T05_04_官方来源与差异登记.md",
+      "sourceProvenance": "B v0.2 research original, NOT C-authored",
+      "bytes": 11076,
+      "sha256": "28445b9ca22db19abd65ae24c864b448d85bce14d8b9a6a9b036b95653d34690",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "B",
+      "archivePath": "B_recovered/G07-T05_05_缺口及质量自审.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/B_recovered/G07-T05_05_缺口及质量自审.md",
+      "sourceProvenance": "B v0.2 research original, NOT C-authored",
+      "bytes": 14393,
+      "sha256": "d82b5ad935693d7d1dd23361f56d0f4c2569d1912f0f1c1f36fff785f7685ba5",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "B",
+      "archivePath": "B_recovered/G07-T05_06_C与D双向交接卡.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/B_recovered/G07-T05_06_C与D双向交接卡.md",
+      "sourceProvenance": "B v0.2 research original, NOT C-authored",
+      "bytes": 12754,
+      "sha256": "dfd1c5f17d4f77da210c5d48c936508a4ce3c72ce5d172190c2a536a00353154",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "B",
+      "archivePath": "B_recovered/G07-T05_07_本校第二轮定向检索增量报告.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/B_recovered/G07-T05_07_本校第二轮定向检索增量报告.md",
+      "sourceProvenance": "B v0.2 research original, NOT C-authored",
+      "bytes": 18628,
+      "sha256": "5defa56fc75b3ed67261d7b71975bc2857bc570b388ba7736997d74406e5cc6a",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "B",
+      "archivePath": "B_recovered/G07-T05_08_新增校本规则映射及回归审计.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/B_recovered/G07-T05_08_新增校本规则映射及回归审计.md",
+      "sourceProvenance": "B v0.2 research original, NOT C-authored",
+      "bytes": 9211,
+      "sha256": "520665e6e1616f3097c8cc54a8e3d8f5ab437e7795b39333c3397cfb59a56ddc",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "B",
+      "archivePath": "B_recovered/README_v0.2_交接说明.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/B_recovered/README_v0.2_交接说明.md",
+      "sourceProvenance": "B v0.2 research original, NOT C-authored",
+      "bytes": 1729,
+      "sha256": "27d5be3c9643434a1f31f0ffb1d33633f7084c954b8c9a516d8b2a43c85fa663",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "C original",
+      "archivePath": "C_frozen/original_v0.1/G07-T05_作者自检与问题修订记录.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/original_v0.1/G07-T05_作者自检与问题修订记录.md",
+      "sourceProvenance": "Original C v0.1 bytes; no revisions",
+      "bytes": 10102,
+      "sha256": "61e13b77b488117d2cc36a8f0b60d6520431fd5a767358d07d7d7cb8ffeb09cf",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "C original",
+      "archivePath": "C_frozen/original_v0.1/G07-T05_正式业务模板_MD_v0.1.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/original_v0.1/G07-T05_正式业务模板_MD_v0.1.md",
+      "sourceProvenance": "Original C v0.1 bytes; no revisions",
+      "bytes": 94303,
+      "sha256": "1be277aa5387b2995a5d7a606885706848bc7fb68426efce1c4ea61a695e7abf",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "C original",
+      "archivePath": "C_frozen/original_v0.1/G07-T05_测试对接说明.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/original_v0.1/G07-T05_测试对接说明.md",
+      "sourceProvenance": "Original C v0.1 bytes; no revisions",
+      "bytes": 3843,
+      "sha256": "526d80c8201192c78e6711374efdb3e357bc1f380fb8aa0526418ef316e56ed0",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "C original",
+      "archivePath": "C_frozen/original_v0.1/G07-T05_编辑器共性模块候选.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/original_v0.1/G07-T05_编辑器共性模块候选.md",
+      "sourceProvenance": "Original C v0.1 bytes; no revisions",
+      "bytes": 5298,
+      "sha256": "3dfc1e8bc47b76b2f5c3bb484ea958b6bdd188342ea9bd197deab34d15634412",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "C original",
+      "archivePath": "C_frozen/original_v0.1/G07-T05_规则追踪矩阵.csv",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/original_v0.1/G07-T05_规则追踪矩阵.csv",
+      "sourceProvenance": "Original C v0.1 bytes; no revisions",
+      "bytes": 10664,
+      "sha256": "bef3115dd15a563f61e9a870823a3781a676e8eda24f7ec3d9c7cc46a9468161",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "C original",
+      "archivePath": "C_frozen/original_v0.1/G07-T05_规则追踪矩阵.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/original_v0.1/G07-T05_规则追踪矩阵.md",
+      "sourceProvenance": "Original C v0.1 bytes; no revisions",
+      "bytes": 16566,
+      "sha256": "a7d170d185a67f97aa4a927afb8b1f0010a054db0fa97bdee7acd45e1f320d62",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "C original",
+      "archivePath": "C_frozen/original_v0.1/README_交付说明.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/original_v0.1/README_交付说明.md",
+      "sourceProvenance": "Original C v0.1 bytes; no revisions",
+      "bytes": 1625,
+      "sha256": "5eca1054563cc25a88b102a2cdec1c0a19d5cfc8b669a539b7d5414a1028e2fc",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "C v2.1 increment",
+      "archivePath": "C_frozen/v2.1_handoff/G07-T05_Cv2.1_迁移核验结论.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/v2.1_handoff/G07-T05_Cv2.1_迁移核验结论.md",
+      "sourceProvenance": "Prior C v2.1 handoff bytes; no revisions",
+      "bytes": 5114,
+      "sha256": "49059e32aabf5359cf429efb4146e13899553a390fc273844b49bb71cef62d08",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "C v2.1 increment",
+      "archivePath": "C_frozen/v2.1_handoff/G07-T05_字段追踪缺口补充矩阵.csv",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/v2.1_handoff/G07-T05_字段追踪缺口补充矩阵.csv",
+      "sourceProvenance": "Prior C v2.1 handoff bytes; no revisions",
+      "bytes": 11759,
+      "sha256": "cc467f3120add300b9f0b63540734c02f40b83b4a2ba265212597b00520daa4f",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "C v2.1 increment",
+      "archivePath": "C_frozen/v2.1_handoff/G07-T05_验收对接说明.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/v2.1_handoff/G07-T05_验收对接说明.md",
+      "sourceProvenance": "Prior C v2.1 handoff bytes; no revisions",
+      "bytes": 10172,
+      "sha256": "2d1c2ace4e3a1bff1a9d94892b576696c90184c5a2539b231d9cad19f051086b",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    },
+    {
+      "kind": "C v2.1 increment",
+      "archivePath": "C_frozen/v2.1_handoff/README_迁移阅读顺序.md",
+      "gitPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/v2.1_handoff/README_迁移阅读顺序.md",
+      "sourceProvenance": "Prior C v2.1 handoff bytes; no revisions",
+      "bytes": 905,
+      "sha256": "02b051b53c504f08924de5fbf2f7430a4c464a5257b85c2cc66bb948c547f34d",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "archivalGitCommit": "SEE_BRANCH_HEAD"
+    }
+  ],
+  "unresolvedOutsideScope": [
+    "G07-T01/T02/T03/T04/T06/T07 C input recovery",
+    "all D Gold input and ACL attestation",
+    "E0 full-domain freeze and H/M/L precommit"
+  ]
+}
