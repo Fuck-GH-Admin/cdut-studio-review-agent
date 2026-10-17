@@ -1,0 +1,1126 @@
+{
+  "originalBlob": "f6d9c8c2820b165b6010fecddc1dde5a478a9ac2",
+  "rules": [
+    {
+      "sourceRequirementId": "R-01",
+      "sourceAnchor": "L267/R-01",
+      "sourceExcerpt": "### R-01｜只处理资金借入/债务清结；预借发票、助学贷款和普通先垫后报须分流\n\n- **审核目标与适用依据**：只处理资金借入/债务清结；预借发票、助学贷款和普通先垫后报须分流；来源 `L01`，性质 `客观`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：任意阶段发现借入/清结以外事项；B候选阶段 `全部`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：F-01,F-19；申报事项和业务目的；字段关联 `F-01,F-19`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：明确越界→ROUTE_OUT；仍在范围内→",
+      "checkId": "g07-t07@1:module/use-rulebook/r01",
+      "sourceIds": [
+        "g07-t07-r01"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r01",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-02",
+      "sourceAnchor": "L276/R-02",
+      "sourceExcerpt": "### R-02｜申报人/借款人/经办人分别建角色；CDUT历史仅在职职工可为借款人\n\n- **审核目标与适用依据**：申报人/借款人/经办人分别建角色；CDUT历史仅在职职工可为借款人；来源 `L02,E01`，性质 `客观+校本`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：ST-02; 校本存在有效借款资格条款；B候选阶段 `借款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：F-11,F-12,F-14；TR-01及校本制度；字段关联 `F-11,F-12,F-14`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要",
+      "checkId": "g07-t07@1:module/use-rulebook/r02",
+      "sourceIds": [
+        "g07-t07-r02"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r02",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-03",
+      "sourceAnchor": "L285/R-03",
+      "sourceExcerpt": "### R-03｜教师委托学生代录必须对应真实教师借款责任与授权\n\n- **审核目标与适用依据**：教师委托学生代录必须对应真实教师借款责任与授权；来源 `L02,E09`，性质 `客观+可信`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-10学生或其他经办代理；B候选阶段 `提交`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-05/EV-07、TR-01；字段关联 `F-12,F-14,F-15`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：确认无有效代理且该阶段必须由授权人提交→AUTHORIZATI",
+      "checkId": "g07-t07@1:module/use-rulebook/r03",
+      "sourceIds": [
+        "g07-t07-r03"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r03",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-04",
+      "sourceAnchor": "L294/R-04",
+      "sourceExcerpt": "### R-04｜项目负责人借自己名下借款，需其他有权负责人/部门领导审批\n\n- **审核目标与适用依据**：项目负责人借自己名下借款，需其他有权负责人/部门领导审批；来源 `L02,E01`，性质 `校本`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-11；仅审批节点；B候选阶段 `审批`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-06、CL10、F-12,F-16,F-17；字段关联 `F-16,F-17,F-18`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：最终签批由本人自审或缺按有效制度必需",
+      "checkId": "g07-t07@1:module/use-rulebook/r04",
+      "sourceIds": [
+        "g07-t07-r04"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r04",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-05",
+      "sourceAnchor": "L303/R-05",
+      "sourceExcerpt": "### R-05｜借款有确定用途、业务编号或合同任务，不得因私支出\n\n- **审核目标与适用依据**：借款有确定用途、业务编号或合同任务，不得因私支出；来源 `E01,E02,E03`，性质 `客观`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-01且用款说明完成；B候选阶段 `借款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-01,F-19,F-20、业务事由文件；字段关联 `F-19,F-20`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：确定为非公目的→PURPOSE_INELIGIBLE。\n- ",
+      "checkId": "g07-t07@1:module/use-rulebook/r05",
+      "sourceIds": [
+        "g07-t07-r05"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r05",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-06",
+      "sourceAnchor": "L312/R-06",
+      "sourceExcerpt": "### R-06｜存在当前有效预算及允许支出科目，借款金额不超有效控制值\n\n- **审核目标与适用依据**：存在当前有效预算及允许支出科目，借款金额不超有效控制值；来源 `E01,E04`，性质 `可信系统`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-01; 要求预算保障；B候选阶段 `借款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-02,F-05—09,F-23；字段关联 `F-05,F-06,F-08,F-09,F-23`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：预算真实不足或科目禁止→B",
+      "checkId": "g07-t07@1:module/use-rulebook/r06",
+      "sourceIds": [
+        "g07-t07-r06"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r06",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-07",
+      "sourceAnchor": "L321/R-07",
+      "sourceExcerpt": "### R-07｜查已有未清借款，按目标校有无前清后借以及例外规则执行\n\n- **审核目标与适用依据**：查已有未清借款，按目标校有无前清后借以及例外规则执行；来源 `E01,E03,E04`，性质 `校本`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-01；再借且当期规则限制未清旧借款；B候选阶段 `借款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-03/F-10 + TR-07有效政策；字段关联 `F-10,F-46`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：明确违反当期前清后借规定→ELIG",
+      "checkId": "g07-t07@1:module/use-rulebook/r07",
+      "sourceIds": [
+        "g07-t07-r07"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r07",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-08",
+      "sourceAnchor": "L330/R-08",
+      "sourceExcerpt": "### R-08｜事前借款必须按照业务要求发生在资金需用节点，未发生票据不是前置条件\n\n- **审核目标与适用依据**：事前借款必须按照业务要求发生在资金需用节点，未发生票据不是前置条件；来源 `L01,E01`，性质 `阶段`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-01开始准备付款；B候选阶段 `借款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-01用途审批，ST-02；字段关联 `F-21,F-28,F-49`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：尚未发生支出的发票**不触发**；真正",
+      "checkId": "g07-t07@1:module/use-rulebook/r08",
+      "sourceIds": [
+        "g07-t07-r08"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r08",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-09",
+      "sourceAnchor": "L339/R-09",
+      "sourceExcerpt": "### R-09｜国内差旅借款应具有国内或科研出差审批及对应行程\n\n- **审核目标与适用依据**：国内差旅借款应具有国内或科研出差审批及对应行程；来源 `L01,E01`，性质 `证据`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-05国内差旅；B候选阶段 `借款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-03或有效校方出差OA；EV-02；字段关联 `F-19,F-29`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：明确需要事前审批而缺有效审批→SUPPLEMENT/WAIT_AUTHORITY。",
+      "checkId": "g07-t07@1:module/use-rulebook/r09",
+      "sourceIds": [
+        "g07-t07-r09"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r09",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-10",
+      "sourceAnchor": "L348/R-10",
+      "sourceExcerpt": "### R-10｜本校2025清单国内差旅借款>50000元需负责人签字开支明细\n\n- **审核目标与适用依据**：本校2025清单国内差旅借款>50000元需负责人签字开支明细；来源 `L01`，性质 `历史校本`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-12且适用2025版清单，金额严格>50000元；B候选阶段 `借款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-07+经费负责人签字、TR-07；字段关联 `F-23,F-24`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：旧2025清单要求未",
+      "checkId": "g07-t07@1:module/use-rulebook/r10",
+      "sourceIds": [
+        "g07-t07-r10"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r10",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-11",
+      "sourceAnchor": "L357/R-11",
+      "sourceExcerpt": "### R-11｜实习费预借核有效事前实习审批\n\n- **审核目标与适用依据**：实习费预借核有效事前实习审批；来源 `L01`，性质 `证据`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-06实习费；B候选阶段 `借款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-04实习经费事前审批/有权记录；字段关联 `F-19,F-30`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：必要批准明确不存在→SUPPLEMENT/WAIT_AUTHORITY。\n- **UNKNOWN/证据冲突与后续动作**：批准记录无",
+      "checkId": "g07-t07@1:module/use-rulebook/r11",
+      "sourceIds": [
+        "g07-t07-r11"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r11",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-12",
+      "sourceAnchor": "L366/R-12",
+      "sourceExcerpt": "### R-12｜版面费预借核论文录用通知及付款义务\n\n- **审核目标与适用依据**：版面费预借核论文录用通知及付款义务；来源 `L01,E01`，性质 `证据`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-07版面费；B候选阶段 `借款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-08正式录用及收费依据；字段关联 `F-19,F-31,F-34`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：录用/缴费关系确定不符→PURPOSE_INELIGIBLE。\n- **UNKNOWN/证据冲突与后续动作**",
+      "checkId": "g07-t07@1:module/use-rulebook/r12",
+      "sourceIds": [
+        "g07-t07-r12"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r12",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-13",
+      "sourceAnchor": "L375/R-13",
+      "sourceExcerpt": "### R-13｜国际差旅预借核经费协议、借款说明及外事审批\n\n- **审核目标与适用依据**：国际差旅预借核经费协议、借款说明及外事审批；来源 `L01,E01`，性质 `证据+权限`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-08国际差旅；B候选阶段 `借款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：EV-05；M-04国际经费协议、说明、外事批准；字段关联 `F-19,F-32,F-33`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：有权外事明确否决→AUTHORITY_DENIED。\n- **U",
+      "checkId": "g07-t07@1:module/use-rulebook/r13",
+      "sourceIds": [
+        "g07-t07-r13"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r13",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-14",
+      "sourceAnchor": "L384/R-14",
+      "sourceExcerpt": "### R-14｜其他用途可用合同/协议/付款通知等有效替代文件说明付款义务\n\n- **审核目标与适用依据**：其他用途可用合同/协议/付款通知等有效替代文件说明付款义务；来源 `L01`，性质 `证据`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-09合同/其他借款；B候选阶段 `借款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：EV-06；M-08合同OR协议OR付款通知；字段关联 `F-19,F-34`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：无任何有效付款义务依据→SUPPLEMENT。\n- *",
+      "checkId": "g07-t07@1:module/use-rulebook/r14",
+      "sourceIds": [
+        "g07-t07-r14"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r14",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-15",
+      "sourceAnchor": "L393/R-15",
+      "sourceExcerpt": "### R-15｜支付方式与真实付款对象符合法定/校规和合同授权\n\n- **审核目标与适用依据**：支付方式与真实付款对象符合法定/校规和合同授权；来源 `E01,E06`，性质 `权限`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-01且实际需外部转账；B候选阶段 `借款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-08受款方、TR-01权限、付款指令；字段关联 `F-25,F-26,F-27`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：收款方确定与有权合同不符且无授权→PAYEE_MISMATCH",
+      "checkId": "g07-t07@1:module/use-rulebook/r15",
+      "sourceIds": [
+        "g07-t07-r15"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r15",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-16",
+      "sourceAnchor": "L402/R-16",
+      "sourceExcerpt": "### R-16｜借款审批记录须真实且有权，未批≠材料缺件≠已拨付\n\n- **审核目标与适用依据**：借款审批记录须真实且有权，未批≠材料缺件≠已拨付；来源 `L02,L04`，性质 `权限`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：ST-03审批已到结论节点；B候选阶段 `审批`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-06审批节点及身份；字段关联 `F-17,F-28,F-49`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：正式否决→FORMALLY_REJECTED；仍在审批→WAIT_AUTH",
+      "checkId": "g07-t07@1:module/use-rulebook/r16",
+      "sourceIds": [
+        "g07-t07-r16"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r16",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-17",
+      "sourceAnchor": "L411/R-17",
+      "sourceExcerpt": "### R-17｜实际债务只有系统已拨付交易才能建立\n\n- **审核目标与适用依据**：实际债务只有系统已拨付交易才能建立；来源 `E01,E09`，性质 `可信系统`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：判断是否形成借款债务；B候选阶段 `拨款后`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-03放款主账/银行事件；字段关联 `F-35,F-49`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：财务明确支付失败→DISBURSEMENT_FAILED、**未建立新债务**。\n- **UNKNOWN/证",
+      "checkId": "g07-t07@1:module/use-rulebook/r17",
+      "sourceIds": [
+        "g07-t07-r17"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r17",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-18",
+      "sourceAnchor": "L420/R-18",
+      "sourceExcerpt": "### R-18｜用途/项目变更需要权责部门认可后才能接受不同费用抵借\n\n- **审核目标与适用依据**：用途/项目变更需要权责部门认可后才能接受不同费用抵借；来源 `E01,E03`，性质 `条件`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-04用途项目变更后抵账；B候选阶段 `变更/冲账`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-18、TR-06或历史可用批准；字段关联 `F-06,F-20,F-40,F-55`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：无有效批准而用途不一致→OFFSET_",
+      "checkId": "g07-t07@1:module/use-rulebook/r18",
+      "sourceIds": [
+        "g07-t07-r18"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r18",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-19",
+      "sourceAnchor": "L429/R-19",
+      "sourceExcerpt": "### R-19｜凭票冲账关联正确借款编号与经费项目号\n\n- **审核目标与适用依据**：凭票冲账关联正确借款编号与经费项目号；来源 `L02,E09`，性质 `数据`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-02凭票冲账；B候选阶段 `冲账`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-10,M-11、F-02,F-06；字段关联 `F-02,F-06,F-36,F-37`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：借款主账编号不对应→OFFSET_BLOCK。\n- **UNKNOWN/证据冲突与",
+      "checkId": "g07-t07@1:module/use-rulebook/r19",
+      "sourceIds": [
+        "g07-t07-r19"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r19",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-20",
+      "sourceAnchor": "L438/R-20",
+      "sourceExcerpt": "### R-20｜费用合法性由对应费种审核结果支持，T07仅核对应关系和可抵借额\n\n- **审核目标与适用依据**：费用合法性由对应费种审核结果支持，T07仅核对应关系和可抵借额；来源 `L01,E07`，性质 `跨域`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-02费用有费种审批要求；B候选阶段 `冲账`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-12、TR-04费种核准净额；字段关联 `F-38,F-39`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：费种正式不认可→该费用行OFFSET_DENI",
+      "checkId": "g07-t07@1:module/use-rulebook/r20",
+      "sourceIds": [
+        "g07-t07-r20"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r20",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-21",
+      "sourceAnchor": "L447/R-21",
+      "sourceExcerpt": "### R-21｜冲账费用行必须与原借款业务目的具备可核验关联\n\n- **审核目标与适用依据**：冲账费用行必须与原借款业务目的具备可核验关联；来源 `E01,E03`，性质 `数据`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-02逐费用行；B候选阶段 `冲账`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-01用途、M-11及M-12；字段关联 `F-19,F-38,F-40`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：确定与借款用途不符且无有效变更→该行OFFSET_DENIED。\n- **UNKN",
+      "checkId": "g07-t07@1:module/use-rulebook/r21",
+      "sourceIds": [
+        "g07-t07-r21"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r21",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-22",
+      "sourceAnchor": "L456/R-22",
+      "sourceExcerpt": "### R-22｜票据真实性、历史重复申报、红冲需要权威系统查账\n\n- **审核目标与适用依据**：票据真实性、历史重复申报、红冲需要权威系统查账；来源 `E09,L01`，性质 `可信系统`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-02需票据查验；B候选阶段 `冲账`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-04税票/重复历史、M-12；字段关联 `F-39,F-41`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：确定红冲或重复使用→对应行OFFSET_DENIED。\n- **UNKNOWN/",
+      "checkId": "g07-t07@1:module/use-rulebook/r22",
+      "sourceIds": [
+        "g07-t07-r22"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r22",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-23",
+      "sourceAnchor": "L465/R-23",
+      "sourceExcerpt": "### R-23｜单笔借款有效冲账额不可大于该笔账面未清余额\n\n- **审核目标与适用依据**：单笔借款有效冲账额不可大于该笔账面未清余额；来源 `E09,E12`，性质 `计算`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-02逐borrow_id；B候选阶段 `冲账`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-03已清余额+M-11拟冲分配；字段关联 `F-36,F-37,F-51`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：本次拟冲>该笔可用余额→超额行OFFSET_EXCEEDS_BALAN",
+      "checkId": "g07-t07@1:module/use-rulebook/r23",
+      "sourceIds": [
+        "g07-t07-r23"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r23",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-24",
+      "sourceAnchor": "L474/R-24",
+      "sourceExcerpt": "### R-24｜同一费用行的抵借累计不得超过费种审查的合法净额\n\n- **审核目标与适用依据**：同一费用行的抵借累计不得超过费种审查的合法净额；来源 `E09,E12`，性质 `计算`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-02逐expense_line_id；B候选阶段 `冲账`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-04费种净额+历史各借分配；字段关联 `F-38,F-56`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：累计分配>该费用可冲合法净额→超额部分OFFSET_OVERAL",
+      "checkId": "g07-t07@1:module/use-rulebook/r24",
+      "sourceIds": [
+        "g07-t07-r24"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r24",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-25",
+      "sourceAnchor": "L483/R-25",
+      "sourceExcerpt": "### R-25｜多笔借款与多费用行分配需保留每条关系和金额\n\n- **审核目标与适用依据**：多笔借款与多费用行分配需保留每条关系和金额；来源 `E09,E12`，性质 `计算`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-17一案多借多费用；B候选阶段 `冲账`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-11分配关系，TR-03/04；字段关联 `F-56`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：缺关键映射行→SUPPLEMENT；确定重复占用→OFFSET_OVERALLOCATED。\n- ",
+      "checkId": "g07-t07@1:module/use-rulebook/r25",
+      "sourceIds": [
+        "g07-t07-r25"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r25",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-26",
+      "sourceAnchor": "L492/R-26",
+      "sourceExcerpt": "### R-26｜报销金额低于借款时剩余额度保持待清\n\n- **审核目标与适用依据**：报销金额低于借款时剩余额度保持待清；来源 `E01,E09`，性质 `计算`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：部分冲后还有余额；B候选阶段 `冲账`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-03+已生效会计事件；字段关联 `F-36,F-37,F-51`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：余额>0→REMAINING_DEBT（非拒绝）。\n- **UNKNOWN/证据冲突与后续动作**：缺正式生效",
+      "checkId": "g07-t07@1:module/use-rulebook/r26",
+      "sourceIds": [
+        "g07-t07-r26"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r26",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-27",
+      "sourceAnchor": "L501/R-27",
+      "sourceExcerpt": "### R-27｜报销金额大于借款未清余额时，仅剩余额用于抵借，超额按费种付款单处理\n\n- **审核目标与适用依据**：报销金额大于借款未清余额时，仅剩余额用于抵借，超额按费种付款单处理；来源 `E09,E12`，性质 `计算`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：合规费用>借款剩余额；B候选阶段 `冲账`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-11及TR-04/03；字段关联 `F-36,F-37,F-52`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：抵借最多到可用余额；超额部分ROUTE_E",
+      "checkId": "g07-t07@1:module/use-rulebook/r27",
+      "sourceIds": [
+        "g07-t07-r27"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r27",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-28",
+      "sourceAnchor": "L510/R-28",
+      "sourceExcerpt": "### R-28｜取消活动或退票后按有效净支出与财务退款记录重算\n\n- **审核目标与适用依据**：取消活动或退票后按有效净支出与财务退款记录重算；来源 `E01,E09`，性质 `计算`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：实际退票、退款或取消；B候选阶段 `冲账`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-12退款+TR-03/04可追踪状态；字段关联 `F-41,F-57`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：已红冲费用不得保持原净额抵借；需调账。\n- **UNKNOWN/证据冲突与后续",
+      "checkId": "g07-t07@1:module/use-rulebook/r28",
+      "sourceIds": [
+        "g07-t07-r28"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r28",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-29",
+      "sourceAnchor": "L519/R-29",
+      "sourceExcerpt": "### R-29｜现金/转账归还应证明已向学校账户转出\n\n- **审核目标与适用依据**：现金/转账归还应证明已向学校账户转出；来源 `L01`，性质 `证据`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-03现金/转账还款已发起；B候选阶段 `还款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-13,M-14和校方账户信息；字段关联 `F-42,F-43`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：仅能确认转出与申请→RETURN_INITIATED。\n- **UNKNOWN/证据冲突与后续动作**：",
+      "checkId": "g07-t07@1:module/use-rulebook/r29",
+      "sourceIds": [
+        "g07-t07-r29"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r29",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-30",
+      "sourceAnchor": "L528/R-30",
+      "sourceExcerpt": "### R-30｜学校银行到账及对应会计冲销成功方可归为已结清\n\n- **审核目标与适用依据**：学校银行到账及对应会计冲销成功方可归为已结清；来源 `L01,E08`，性质 `可信系统`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-03已到账、ST-09需结清；B候选阶段 `归还/结案`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-05银行入账+会计过账+余额0；字段关联 `F-44,F-50,F-53`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：三者均证实→SETTLED_RECORDED，否则不",
+      "checkId": "g07-t07@1:module/use-rulebook/r30",
+      "sourceIds": [
+        "g07-t07-r30"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r30",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-31",
+      "sourceAnchor": "L537/R-31",
+      "sourceExcerpt": "### R-31｜现金还款流程按当期智能报销路径，不能硬性要求旧纸质预约单\n\n- **审核目标与适用依据**：现金还款流程按当期智能报销路径，不能硬性要求旧纸质预约单；来源 `L01,L04`，性质 `版本`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：2026智能报销流程；B候选阶段 `还款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-07流程版本+M-14；字段关联 `F-01,F-49`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：不要求旧预约单；依当期审批路径。\n- **UNKNOWN/证据冲突与后",
+      "checkId": "g07-t07@1:module/use-rulebook/r31",
+      "sourceIds": [
+        "g07-t07-r31"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r31",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-32",
+      "sourceAnchor": "L546/R-32",
+      "sourceExcerpt": "### R-32｜清账截止以校本有效制度及每种借款事件为基准\n\n- **审核目标与适用依据**：清账截止以校本有效制度及每种借款事件为基准；来源 `E01,E03,L05`，性质 `校本`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-04逾期清理且存在真实基准事件；B候选阶段 `清理`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-07制度期限+TR-03账期；字段关联 `F-22,F-46,F-54`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：经现行规定可证明逾期→OVERDUE_RISK，不直接惩戒",
+      "checkId": "g07-t07@1:module/use-rulebook/r32",
+      "sourceIds": [
+        "g07-t07-r32"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r32",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-33",
+      "sourceAnchor": "L555/R-33",
+      "sourceExcerpt": "### R-33｜已获延期批准者按批准延长期重计算时间\n\n- **审核目标与适用依据**：已获延期批准者按批准延长期重计算时间；来源 `E01,E08`，性质 `权限`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-04延期申请；B候选阶段 `延期/清理`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-09正式批复+TR-06；字段关联 `F-45,F-55`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：经有权人批准，按批准新截止期重算。\n- **UNKNOWN/证据冲突与后续动作**：只有申请书没有批复→E",
+      "checkId": "g07-t07@1:module/use-rulebook/r33",
+      "sourceIds": [
+        "g07-t07-r33"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r33",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-34",
+      "sourceAnchor": "L564/R-34",
+      "sourceExcerpt": "### R-34｜确有未清历史账应向财务展示催账/冻结状态，不能由模型触发扣薪\n\n- **审核目标与适用依据**：确有未清历史账应向财务展示催账/冻结状态，不能由模型触发扣薪；来源 `L07,E01,E04`，性质 `权限`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：有正式催缴/冻结历史信息；B候选阶段 `清理`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-16/ TR-03；字段关联 `F-10,F-47`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：如实标风险并转有权部门；模型不得扣薪/冻结。\n- **U",
+      "checkId": "g07-t07@1:module/use-rulebook/r34",
+      "sourceIds": [
+        "g07-t07-r34"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r34",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-35",
+      "sourceAnchor": "L573/R-35",
+      "sourceExcerpt": "### R-35｜项目结题、人事岗位离开时须查相关未清借款并交有权部门处理\n\n- **审核目标与适用依据**：项目结题、人事岗位离开时须查相关未清借款并交有权部门处理；来源 `E01,E03`，性质 `跨域`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：项目结题/离职等；B候选阶段 `清理`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：F-48,TR-01/03、M-16；字段关联 `F-48,F-47`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：转有权部门核债务处理责任。\n- **UNKNOWN/证据冲突与后续",
+      "checkId": "g07-t07@1:module/use-rulebook/r35",
+      "sourceIds": [
+        "g07-t07-r35"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r35",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-36",
+      "sourceAnchor": "L582/R-36",
+      "sourceExcerpt": "### R-36｜撤回申请前后阶段不同，已放款不得仅删除申请即消灭债务\n\n- **审核目标与适用依据**：撤回申请前后阶段不同，已放款不得仅删除申请即消灭债务；来源 `L04,E09`，性质 `阶段`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：撤回申请或取消；B候选阶段 `撤回/冲正`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：ST-02/03/04 vs 已拨ST-05；字段关联 `F-01,F-35,F-49`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：未放款可撤申请；已拨不得删除债务→WAIT_DEBT",
+      "checkId": "g07-t07@1:module/use-rulebook/r36",
+      "sourceIds": [
+        "g07-t07-r36"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r36",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-37",
+      "sourceAnchor": "L591/R-37",
+      "sourceExcerpt": "### R-37｜会计冲正必须关联原核销/还款凭证并重算余额\n\n- **审核目标与适用依据**：会计冲正必须关联原核销/还款凭证并重算余额；来源 `E09`，性质 `账务`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-16有正式冲正；B候选阶段 `冲正`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-03/05会计冲正源凭证；字段关联 `F-50,F-57`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：冲正重算余额并保留审计链。\n- **UNKNOWN/证据冲突与后续动作**：只有口头声称冲正→REVIE",
+      "checkId": "g07-t07@1:module/use-rulebook/r37",
+      "sourceIds": [
+        "g07-t07-r37"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r37",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-38",
+      "sourceAnchor": "L600/R-38",
+      "sourceExcerpt": "### R-38｜到款用途/收款主体不一致时先查银行回单和例外授权\n\n- **审核目标与适用依据**：到款用途/收款主体不一致时先查银行回单和例外授权；来源 `L01,E09`，性质 `证据`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-03收款账户出现不一致；B候选阶段 `现金还款`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：M-13校方户名/账号摘要、TR-05；字段关联 `F-42,F-43,F-44`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：非学校账号转款不得计作学校已归还。\n- **UNKNO",
+      "checkId": "g07-t07@1:module/use-rulebook/r38",
+      "sourceIds": [
+        "g07-t07-r38"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r38",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-39",
+      "sourceAnchor": "L609/R-39",
+      "sourceExcerpt": "### R-39｜转款截图及电子影像不能单独证明发票真实或款项到账\n\n- **审核目标与适用依据**：转款截图及电子影像不能单独证明发票真实或款项到账；来源 `L01,E09`，性质 `可信度`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：任意影像证据与外部事实核验；B候选阶段 `全部`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：E位置、TR-03/04/05；字段关联 `F-39,F-44`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：仅影像不可推出真实票据/实际到账。\n- **UNKNOWN/证据冲突与后续动",
+      "checkId": "g07-t07@1:module/use-rulebook/r39",
+      "sourceIds": [
+        "g07-t07-r39"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r39",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-40",
+      "sourceAnchor": "L618/R-40",
+      "sourceExcerpt": "### R-40｜会计与人事敏感数据最小化，权限外不得查询他人借款\n\n- **审核目标与适用依据**：会计与人事敏感数据最小化，权限外不得查询他人借款；来源 `L02,E09`，性质 `隐私`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：需要任何敏感/他人账簿；B候选阶段 `全部`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-01授权范围、脱敏级别；字段关联 `F-60`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：无授权拒绝数据查询，而非拒绝业务实体。\n- **UNKNOWN/证据冲突与后续动作**：访问凭",
+      "checkId": "g07-t07@1:module/use-rulebook/r40",
+      "sourceIds": [
+        "g07-t07-r40"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r40",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-41",
+      "sourceAnchor": "L627/R-41",
+      "sourceExcerpt": "### R-41｜经办人/项目负责人利益冲突和签批代理有效期需按时点核验\n\n- **审核目标与适用依据**：经办人/项目负责人利益冲突和签批代理有效期需按时点核验；来源 `L02,E04`，性质 `权限`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：BR-10/11审批代理、关系变化；B候选阶段 `审批`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-01/06有权代理时间段；字段关联 `F-12,F-16,F-17`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：利益冲突时不得自审，需有权审批。\n- **UNK",
+      "checkId": "g07-t07@1:module/use-rulebook/r41",
+      "sourceIds": [
+        "g07-t07-r41"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r41",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-42",
+      "sourceAnchor": "L636/R-42",
+      "sourceExcerpt": "### R-42｜不同费用行适用不同的有效制度版本并避免以2024旧流程驳2026材料\n\n- **审核目标与适用依据**：不同费用行适用不同的有效制度版本并避免以2024旧流程驳2026材料；来源 `L01,L04,L06`，性质 `校本`。**有效范围**按第1节证据等级及 `TR-07` 确认，非CDUT现行硬规则不得自动拒件。\n- **触发/阶段/最小对象**：任意跨政策生效期；B候选阶段 `全部`；对象=相应 `operation_id`、`borrow_id` 或逐费用分配行。\n- **输入与必要证据**：TR-07签发/生效期、费用与借款各事件日；字段关联 `F-04,F-54`。系统已取得同一真实事实时，不要求额外重复上传影像；按第7节 EV/TR等价关系。\n- **TRUE/合规与 FALSE/不合规**：条件不触发返回 `NOT_APPLICABLE` 并记理由；触发且证据满足→`DOCUMENTED_PRECHECK`；确定违背有效要求时：按各阶段当日有效规则，不迁旧",
+      "checkId": "g07-t07@1:module/use-rulebook/r42",
+      "sourceIds": [
+        "g07-t07-r42"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:r42",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-scope",
+      "sourceAnchor": "L8/## 1. 模板定位、独立目的与适用范围",
+      "sourceExcerpt": "## 1. 模板定位、独立目的与适用范围\n\n**唯一审核目的**：针对一笔因公项目预借款的债务责任，检查新借款申请的主体与授权、经费预算、用途及用途证明；该笔借款**真正拨付后**，检查其费用冲账、余款归还、展期、错账冲正、历史清理及实际会计结清。核心对象是**借款责任账户 `borrow_id` 的有账务效力的变化**，而非某张“报销申请表”。\n\n本模板是一套主干业务加条件分支：每次操作单独评估，多个操作可以引用同一个 `borrow_id`；不因“借入/还款/冲账/延期”而拆成多套模板。归属：G07-T07。与原业务 G07-01/02/03/04 不合并。\n\n**纳入**：国内差旅、实习、论文版面费、国际差旅、合同/付款通知及举办会议/竞赛等具有项目经费来源的预借；学生经授权代录；已拨本金关联票据冲账；现金/银行还余款；部分冲账、混合结清、用途变更、事由取消、延期申请、历史遗留账、重新归档与财务冲正。\n\n**排除并分流**：学生助学贷款→S03学生资助；个人因私借款→非本校因公业务",
+      "checkId": "g07-t07@1:module/use-crosscut/sscope",
+      "sourceIds": [
+        "g07-t07-sscope"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:sscope",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-actor",
+      "sourceAnchor": "L30/## 2. 术语、审核主体与权限责任",
+      "sourceExcerpt": "## 2. 术语、审核主体与权限责任\n\n| 概念 | 定义与必须区分的对象 |\n|---|---|\n| `case_id` | 审核案卷，包含一个或多个操作申请；不是会计借款号 |\n| `operation_id` | 一次业务请求：借入/冲账/归还/延期/用途变更/撤回/冲正等 |\n| `borrow_id` | 财务正式账簿中的同一借款责任标识；首次申请未发放时可只有临时申请号 |\n| `filler` | 登录并提交表单的人，可能是受托学生 |\n| `borrower` | 对借款负责任的本人/历史责任人；是否具资格以有效校规及台账为准 |\n| `project_controller` | 对项目经费拥有管理/批准权限的负责人；与borrower有可能同一人 |\n| `handler` | 实际经办/支付操作协助人，不因操作成功拥有借款责任 |\n| `leader_cosigner` | 当适用政策要求利益冲突回避时有权互签的部门领导/负责人 |\n| `recipient/paye",
+      "checkId": "g07-t07@1:module/use-crosscut/sactor",
+      "sourceIds": [
+        "g07-t07-sactor"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:sactor",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-branch",
+      "sourceAnchor": "L77/## 4. 条件分支（稳定 BR ID；条件为三态）",
+      "sourceExcerpt": "## 4. 条件分支（稳定 BR ID；条件为三态）\n\n**条件判定**：每个条件产生 `TRUE / FALSE / UNKNOWN`；适用的要求在TRUE时激活；FALSE时记`NOT_APPLICABLE(reason)`；UNKNOWN时该分支必要规则不得默默跳过或当作FALSE，记录`CONDITION_UNRESOLVED`并指派补件/授权系统查询/人工处理，其他不依赖项可继续预审。\n\n| 分支 | 激活条件/优先级 | 唯一性和叠加关系 | 主要材料/可信底账 | UNKNOWN时下一动作 |\n|---|---|---|---|---|\n| BR-01 新借款 | F-01=`new_advance`；入口互斥 | 与BR-02/03本次操作互斥；同案可先后发生 | M-01/02及用途材料 | 补确认本次请求类型 |\n| BR-02 费用冲账 | F-01=`expense_offset` | 单次允许多借款、多费用行；可与同次归还构成混合结清 | M-10/11/12及",
+      "checkId": "g07-t07@1:module/use-crosscut/sbranch",
+      "sourceIds": [
+        "g07-t07-sbranch"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:sbranch",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-stage",
+      "sourceAnchor": "L61/## 3. 生命周期和阶段（统一 ST 空间）",
+      "sourceExcerpt": "## 3. 生命周期和阶段（统一 ST 空间）\n\n| 阶段ID | 阶段 | 进入条件 | 主体/动作 | 阶段不能提前要求什么 | 可进入下一阶段的权威事件 |\n|---|---|---|---|---|---|\n| ST-01 | 受理与范围路由 | 新case / operation | 校验所属业务及受托权限 | 不要求尚未发生的费用发票 | 案卷提交并识别操作类型 |\n| ST-02 | 借款前置材料预审 | `operation=new_advance` | 验主体、用途、经费和用途分支材料 | 无预期未来支出凭票冲账单，正常 | 形成材料预审建议 |\n| ST-03 | 有权审批在途 | 材料完成、需签批 | 有权人员在OA完成预算/部门互签 | 不得把还未签的审批当作材料缺失造假 | 官方审批 `approved/rejected` 事件 |\n| ST-04 | 资金支付在途 | 审批通过 | 财务经办，银行实际支付 | 不应在银行成功前建立已拨本金 | 财务 `disb",
+      "checkId": "g07-t07@1:module/use-crosscut/sstage",
+      "sourceIds": [
+        "g07-t07-sstage"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:sstage",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-fields",
+      "sourceAnchor": "L106/## 5. 输入契约：申报事项、申报材料、证明材料与权威底账",
+      "sourceExcerpt": "## 5. 输入契约：申报事项、申报材料、证明材料与权威底账\n\n| 输入层 | 必须表达的语义 | 谁提交/谁出具 | 如何被引用 |\n|---|---|---|---|\n| **申报事项** | 每次 `operation_id`、操作类型、目标 `borrow_id`、用途与各笔金额/借款—费用分配目标 | 填报人及系统生成项 | 一个案例允许多操作、多笔分配，主键不靠中文标题 |\n| **申报材料** | 借款申请单、用款说明、预算/用途明细、还款申请、延期申请、分配表（按阶段选） | 经办/借款责任人签认，系统正式受理记录 | 记录申请版本、填报角色、日期、身份授权，不凭提交即认批准 |\n| **证明材料** | 差旅审批、实习批准、版面录用、合同/付款通知、银行转账回单、费用原票或影像、例外批件（仅触发时） | 相应主办单位、项目、商户、银行、批准部门 | 文件版本+页码/区域/表格单元，含OCR置信度和签发机关 |\n| **可信底账（单列R）** | 本校权限/项目预算、放款",
+      "checkId": "g07-t07@1:module/use-crosscut/sfields",
+      "sourceIds": [
+        "g07-t07-sfields"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:sfields",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-material",
+      "sourceAnchor": "L190/## 7. 材料槽与条件性证据组（20个M槽；一槽可由多文件或合法替代证明）",
+      "sourceExcerpt": "## 7. 材料槽与条件性证据组（20个M槽；一槽可由多文件或合法替代证明）\n\n| 材料槽/目的 | 触发阶段/条件 | 证据组与可替代证明 | 不可倒推 | 来源 |\n|---|---|---|---|---|\n| M-01 借款申请/网报借款单 | 初始借款申请 / 申请借入 | 线上身份确认或当期官方表单 | 校本2026界面未确认；纸质预约单不得默认强制 | L01,L02,E01,E06 |\n| M-02 项目经费预算与负责人信息 | 申请预审 / 一切借款 | 校预算系统直接读取优先 | 不能要求学生上传个人预算截图代替系统余额 | E01,E02,E04 |\n| M-03 国内差旅/会议通知及出差审批 | 借款申请 / 国内差旅或会议相关 | 有效OA审批可代替纸质表 | 出差实际票据只在事后核销 | L01,E01 |\n| M-04 实习事前审批、外事批准及协议 | 借款申请 / 实习或国际借款 | 学校管理系统有效批准记录 | 国际借款需考虑外事权责 | L01,E01",
+      "checkId": "g07-t07@1:module/use-crosscut/smaterial",
+      "sourceIds": [
+        "g07-t07-smaterial"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:smaterial",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-output",
+      "sourceAnchor": "L651/## 10. 结果契约、分项状态和问题聚合",
+      "sourceExcerpt": "## 10. 结果契约、分项状态和问题聚合\n\n### 10.1 不混淆三条正交状态轴\n\n| 轴 | 枚举（建议） | 含义 |\n|---|---|---|\n| `precheck_state` | `DOCUMENTED_PRECHECK` / `SUPPLEMENT_REQUIRED` / `FACT_CONFLICT` / `EXTERNAL_UNVERIFIED` / `POLICY_UNRESOLVED` / `AUTHORIZATION_PENDING` / `PENDING_HUMAN` / `FORMALLY_REJECTED` / `NOT_APPLICABLE` | 文件/规则审核可得出的建议结果；**DOCUMENTED_PRECHECK不是学校批准** |\n| `approval_state` | `NOT_SUBMITTED / SUBMITTED / IN_REVIEW / APPROVED / FORMALLY_DENIED / REVOKED / UNKNO",
+      "checkId": "g07-t07@1:module/use-crosscut/soutput",
+      "sourceIds": [
+        "g07-t07-soutput"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:soutput",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-exception",
+      "sourceAnchor": "L725/## 12. 合法例外、人工介入和不予自动化的范围",
+      "sourceExcerpt": "## 12. 合法例外、人工介入和不予自动化的范围\n\n- 学生受导师委托代录：有效委托（或现行授权机制）+教师实际借款人，属于允许研究的正常路径；2026正式角色资格仍须校本核实。[L02][CL16]\n- 历史存量债务的学生/退休/死亡/调离借款人：**债务清理权属处理**独立于2026新借款准入；需旧账、主管单位处理意见和财务批复。[CL14][CL20]\n- 原始票据遗失：仅在适用的历史或现行规则允许时，原出具方盖章的票据复印件或正式批准的合法替代可以组成EV-12；不能用一张聊天记录代替原票或税务查验。\n- 学校统一对公打款：学生垫付截图不触发；而合同付款义务、支付主体和法定审批仍要可核。[L01]\n- 费用/还款**部分处理**：有效项目可拟冲；仍未清余额继续列为债务。未知项目可以补正而不否定其它独立可核项。\n- 办理窗口：2025年终暂停借款、2026暑期非值班日紧急预约，只能按具体公告日期和服务对象激活；不能归类为全年的硬性材料准入。[CL12][CL13]\n- 人工保留事",
+      "checkId": "g07-t07@1:module/use-crosscut/sexception",
+      "sourceIds": [
+        "g07-t07-sexception"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:sexception",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-01",
+      "sourceAnchor": "L83/BR-01",
+      "sourceExcerpt": "| BR-01 新借款 | F-01=`new_advance`；入口互斥 | 与BR-02/03本次操作互斥；同案可先后发生 | M-01/02及用途材料 | 补确认本次请求类型 |",
+      "checkId": "g07-t07@1:module/use-branch01/br01",
+      "sourceIds": [
+        "g07-t07-b01"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:b01",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-02",
+      "sourceAnchor": "L83/BR-02",
+      "sourceExcerpt": "| BR-01 新借款 | F-01=`new_advance`；入口互斥 | 与BR-02/03本次操作互斥；同案可先后发生 | M-01/02及用途材料 | 补确认本次请求类型 |",
+      "checkId": "g07-t07@1:module/use-branch02/br02",
+      "sourceIds": [
+        "g07-t07-b02"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:b02",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-03",
+      "sourceAnchor": "L85/BR-03",
+      "sourceExcerpt": "| BR-03 银行归还 | F-01=`cash_return` | 与BR-02可组合为 `mixed_close` 的两个动作单元 | M-10/13/14/15 | 区分支付发起与实际到账 |",
+      "checkId": "g07-t07@1:module/use-branch03/br03",
+      "sourceIds": [
+        "g07-t07-b03"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:b03",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-04",
+      "sourceAnchor": "L86/BR-04",
+      "sourceExcerpt": "| BR-04 变更延期 | F-01=`extension/change/withdraw/reverse` | 可附着任意有效借款阶段，但 each 操作独立结果 | M-09/15/16/18 | 查询有权审批状态及适用政策 |",
+      "checkId": "g07-t07@1:module/use-branch04/br04",
+      "sourceIds": [
+        "g07-t07-b04"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:b04",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-05",
+      "sourceAnchor": "L87/BR-05",
+      "sourceExcerpt": "| BR-05 国内差旅借款 | BR-01∧F-19=`domestic_travel` | 与06/07/08/09按**同一费用行主用途**互斥 | M-03、经费预算；旧2025>50000的M-07 | 先确认借款真实用途，不要求所有分支附件 |",
+      "checkId": "g07-t07@1:module/use-branch05/br05",
+      "sourceIds": [
+        "g07-t07-b05"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:b05",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-06",
+      "sourceAnchor": "L88/BR-06",
+      "sourceExcerpt": "| BR-06 实习经费借款 | BR-01∧F-19=`internship` | 主用途互斥，允许混合借款拆分费用行 | M-04实习事前审批 | 询问事前批准号 |",
+      "checkId": "g07-t07@1:module/use-branch06/br06",
+      "sourceIds": [
+        "g07-t07-b06"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:b06",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-07",
+      "sourceAnchor": "L89/BR-07",
+      "sourceExcerpt": "| BR-07 版面费借款 | BR-01∧F-19=`publication_fee` | 主用途互斥 | M-08论文录用通知及收费义务 | 核论文与用款关联 |",
+      "checkId": "g07-t07@1:module/use-branch07/br07",
+      "sourceIds": [
+        "g07-t07-b07"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:b07",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-08",
+      "sourceAnchor": "L90/BR-08",
+      "sourceExcerpt": "| BR-08 国际差旅借款 | BR-01∧F-19=`international_travel` | 主用途互斥；叠加外事合规引用 | M-04外事经费协议、M-01说明、外事审批系统 | 转 G05 外事手续权威结果 |",
+      "checkId": "g07-t07@1:module/use-branch08/br08",
+      "sourceIds": [
+        "g07-t07-b08"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:b08",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-09",
+      "sourceAnchor": "L91/BR-09",
+      "sourceExcerpt": "| BR-09 其他合同/会议竞赛借款 | BR-01∧F-19=`other` | 同一动作的一组可替代依据；会议费/采购专属审批引用外部业务结果 | M-08合同/协议**或**付款通知，按情境补M-03 | 补业务目的与支付义务证明 |",
+      "checkId": "g07-t07@1:module/use-branch09/br09",
+      "sourceIds": [
+        "g07-t07-b09"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:b09",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-10",
+      "sourceAnchor": "L92/BR-10",
+      "sourceExcerpt": "| BR-10 学生代录 | F-11 ≠ F-12 或 F-14存在 | 叠加BR-01等；有权申请人与借款人必须区分 | M-05或可信校方委托记录 | 查授权，不可因学生提交直接拒件 |",
+      "checkId": "g07-t07@1:module/use-branch10/br10",
+      "sourceIds": [
+        "g07-t07-b10"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:b10",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-11",
+      "sourceAnchor": "L93/BR-11",
+      "sourceExcerpt": "| BR-11 负责人本人借款 | F-12=`F-16` | 叠加BR-01/10；于签批阶段激活，不提前误判 | M-06互签记录，CL10只确认摘要 | 查角色、领导有权身份与互签状态 |",
+      "checkId": "g07-t07@1:module/use-branch11/br11",
+      "sourceIds": [
+        "g07-t07-b11"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:b11",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-12",
+      "sourceAnchor": "L94/BR-12",
+      "sourceExcerpt": "| BR-12 大额用途明细 | BR-05∧制度适用2025清单∧F-23 > 50000元 | 金额**严格大于**；不推断2026仍适用 | M-07负责人签字明细 | 政策版本未知→先 `POLICY_UNRESOLVED` |",
+      "checkId": "g07-t07@1:module/use-branch12/br12",
+      "sourceIds": [
+        "g07-t07-b12"
+      ],
+      "evidenceFact": "d2:object:g07-loan-operation:b12",
+      "objectScope": "g07-loan-operation",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    }
+  ],
+  "sectionIndex": [
+    {
+      "heading": "## 1. 模板定位、独立目的与适用范围",
+      "sourceLine": 8,
+      "endLine": 29,
+      "bytes": 1417,
+      "linkedTaskId": "scope",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 2. 术语、审核主体与权限责任",
+      "sourceLine": 30,
+      "endLine": 60,
+      "bytes": 1387,
+      "linkedTaskId": "actor",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 3. 生命周期和阶段（统一 ST 空间）",
+      "sourceLine": 61,
+      "endLine": 76,
+      "bytes": 1128,
+      "linkedTaskId": "stage",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 4. 条件分支（稳定 BR ID；条件为三态）",
+      "sourceLine": 77,
+      "endLine": 105,
+      "bytes": 2482,
+      "linkedTaskId": "branch",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 5. 输入契约：申报事项、申报材料、证明材料与权威底账",
+      "sourceLine": 106,
+      "endLine": 120,
+      "bytes": 972,
+      "linkedTaskId": "fields",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 6. 字段字典（60项，沿用B阶段稳定F-ID）",
+      "sourceLine": 121,
+      "endLine": 189,
+      "bytes": 5635,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 7. 材料槽与条件性证据组（20个M槽；一槽可由多文件或合法替代证明）",
+      "sourceLine": 190,
+      "endLine": 243,
+      "bytes": 3644,
+      "linkedTaskId": "material",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 8. 审核事实与关系约束",
+      "sourceLine": 244,
+      "endLine": 262,
+      "bytes": 1337,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 9. 原子规则（42条 R-01—R-42，与 B 阶段 R01—R42 一一映射）",
+      "sourceLine": 263,
+      "endLine": 650,
+      "bytes": 28233,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 10. 结果契约、分项状态和问题聚合",
+      "sourceLine": 651,
+      "endLine": 713,
+      "bytes": 3979,
+      "linkedTaskId": "output",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 11. 工作流、补件、撤回、版本与权限变更",
+      "sourceLine": 714,
+      "endLine": 724,
+      "bytes": 644,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 12. 合法例外、人工介入和不予自动化的范围",
+      "sourceLine": 725,
+      "endLine": 735,
+      "bytes": 600,
+      "linkedTaskId": "exception",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 13. 校本参数与政策版本登记（不能凭猜测填数字）",
+      "sourceLine": 736,
+      "endLine": 753,
+      "bytes": 1084,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 14. 官方来源与设计命题的区分",
+      "sourceLine": 754,
+      "endLine": 773,
+      "bytes": 1313,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 15. 作者流程推演与自检入口（不构成D独立金标）",
+      "sourceLine": 774,
+      "endLine": 800,
+      "bytes": 2680,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 16. 编辑器共性模块候选（不把业务规则偷换成通用字段校验）",
+      "sourceLine": 801,
+      "endLine": 819,
+      "bytes": 1088,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 17. 现有编辑器/运行时映射（C6，对仓库 `main` 只读核验）",
+      "sourceLine": 820,
+      "endLine": 843,
+      "bytes": 2228,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 18. 完整性审计、版本与交接",
+      "sourceLine": 844,
+      "endLine": 854,
+      "bytes": 605,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md"
+    }
+  ],
+  "allOriginalTextPreservedIn": "docs/design/review-agent/acceptance/d4-g07-build/T07/source/frozen-C-v0.1.md",
+  "independentRuleIds": [
+    "R-01",
+    "R-02",
+    "R-03",
+    "R-04",
+    "R-05",
+    "R-06",
+    "R-07",
+    "R-08",
+    "R-09",
+    "R-10",
+    "R-11",
+    "R-12",
+    "R-13",
+    "R-14",
+    "R-15",
+    "R-16",
+    "R-17",
+    "R-18",
+    "R-19",
+    "R-20",
+    "R-21",
+    "R-22",
+    "R-23",
+    "R-24",
+    "R-25",
+    "R-26",
+    "R-27",
+    "R-28",
+    "R-29",
+    "R-30",
+    "R-31",
+    "R-32",
+    "R-33",
+    "R-34",
+    "R-35",
+    "R-36",
+    "R-37",
+    "R-38",
+    "R-39",
+    "R-40",
+    "R-41",
+    "R-42"
+  ]
+}

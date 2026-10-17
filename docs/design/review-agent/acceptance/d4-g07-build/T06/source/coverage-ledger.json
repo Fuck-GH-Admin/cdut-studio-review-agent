@@ -1,0 +1,1016 @@
+{
+  "originalBlob": "c3be13c801a56300e71e2a468632d263f8fa2de8",
+  "rules": [
+    {
+      "sourceRequirementId": "R-01",
+      "sourceAnchor": "L350/R-01",
+      "sourceExcerpt": "### R-01｜申请事项确系学校部门**主办/承办/协办**的会议或培训支出\n\n- **审核目标与来源属性**：申请事项确系学校部门**主办/承办/协办**的会议或培训支出。B阶段分类 `E+X;CD-01,EX-HF,EX-TG`；来源 `CD-01;EX-HF;EX-TG`。\n- **触发条件**：`所有申请`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-SCOPE`。\n- **生效阶段/被审对象**：`ST-02`；`整案`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-02/04/05/16/17; M-01/09/10`；本母版等效/组合组 `EG-01`；各文书页码或授权系统ID须能反查。B原文核验目标：申请事项确系学校部门**主办/承办/协办**的会议或培训支出。\n- **原子判定",
+      "checkId": "g07-t06@1:module/use-rulebook/r01",
+      "sourceIds": [
+        "g07-t06-r01"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r01",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-02",
+      "sourceAnchor": "L363/R-02",
+      "sourceExcerpt": "### R-02｜经办人可以是获授权学生；项目负责人、举办负责人、审批与财务执行人应分开验证\n\n- **审核目标与来源属性**：经办人可以是获授权学生；项目负责人、举办负责人、审批与财务执行人应分开验证。B阶段分类 `X;EX-HF,EX-AS`；来源 `EX-HF;EX-AS`。\n- **触发条件**：`存在经办/授权人`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-AUTH`。\n- **生效阶段/被审对象**：`ST-02`；`申请人和操作`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-15/16/29/35/55/56; M-03/31`；本母版等效/组合组 `EG-02`；各文书页码或授权系统ID须能反查。B原文核验目标：经办人可以是获授权学生；项目负责人、举办负责人、审批与财务执行人应",
+      "checkId": "g07-t06@1:module/use-rulebook/r02",
+      "sourceIds": [
+        "g07-t06-r02"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r02",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-03",
+      "sourceAnchor": "L376/R-03",
+      "sourceExcerpt": "### R-03｜举办及预算审批在应当事前申请的业务发生前有效\n\n- **审核目标与来源属性**：举办及预算审批在应当事前申请的业务发生前有效。B阶段分类 `X+J;EX-HF,EX-AJ,EX-AS`；来源 `EX-HF;EX-AJ;EX-AS;CD-N01`。\n- **触发条件**：`该类办会制度要求会前批复`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-APPROVAL`。\n- **生效阶段/被审对象**：`ST-03`；`举办活动及预算`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-02/19/28/29/56; M-04/05/31`；本母版等效/组合组 `EG-02`；各文书页码或授权系统ID须能反查。B原文核验目标：举办及预算审批在应当事前申请的业务发生前有效。\n- **原子判定步",
+      "checkId": "g07-t06@1:module/use-rulebook/r03",
+      "sourceIds": [
+        "g07-t06-r03"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r03",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-04",
+      "sourceAnchor": "L389/R-04",
+      "sourceExcerpt": "### R-04｜会前预算包含类别、地点、人数、天数、经费来源、分项及主管审批\n\n- **审核目标与来源属性**：会前预算包含类别、地点、人数、天数、经费来源、分项及主管审批。B阶段分类 `E+X;EX-HF,EX-NJ,EX-TG`；来源 `EX-HF;EX-NJ;EX-TG`。\n- **触发条件**：`举办前有预算计划要求`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-BUDGET`。\n- **生效阶段/被审对象**：`ST-03`；`预算计划`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-17~21/25/26/28; M-04/05`；本母版等效/组合组 `EG-03`；各文书页码或授权系统ID须能反查。B原文核验目标：会前预算包含类别、地点、人数、天数、经费来源、分项及主管审批。\n- ",
+      "checkId": "g07-t06@1:module/use-rulebook/r04",
+      "sourceIds": [
+        "g07-t06-r04"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r04",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-05",
+      "sourceAnchor": "L402/R-05",
+      "sourceExcerpt": "### R-05｜本次真实有效经费项目可列支会议/培训，余额足够且审批人有权\n\n- **审核目标与来源属性**：本次真实有效经费项目可列支会议/培训，余额足够且审批人有权。B阶段分类 `X+P;EX-HF,EX-TJ`；来源 `EX-HF;EX-TJ;CD-N01`。\n- **触发条件**：`每个费用行存在经费来源`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-BUDGET`。\n- **生效阶段/被审对象**：`ST-03`；`经费来源/费用行`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-10/14/28/56/57; M-32/35`；本母版等效/组合组 `EG-03`；各文书页码或授权系统ID须能反查。B原文核验目标：本次真实有效经费项目可列支会议/培训，余额足够且审批人有权。\n- **原",
+      "checkId": "g07-t06@1:module/use-rulebook/r05",
+      "sourceIds": [
+        "g07-t06-r05"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r05",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-06",
+      "sourceAnchor": "L415/R-06",
+      "sourceExcerpt": "### R-06｜会议、培训类型对应到正确资助规则；科研会议和非科研会议分流\n\n- **审核目标与来源属性**：会议、培训类型对应到正确资助规则；科研会议和非科研会议分流。B阶段分类 `E+P;CD-01,CD-02,EX-AJ`；来源 `CD-01;CD-02;EX-AJ`。\n- **触发条件**：`会议/培训类型需确定`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-POLICY`。\n- **生效阶段/被审对象**：`ST-02`；`活动类型`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-04/14/25/26; M-04/05/35`；本母版等效/组合组 `EG-01`；各文书页码或授权系统ID须能反查。B原文核验目标：会议、培训类型对应到正确资助规则；科研会议和非科研会议分流。\n- **原",
+      "checkId": "g07-t06@1:module/use-rulebook/r06",
+      "sourceIds": [
+        "g07-t06-r06"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r06",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-07",
+      "sourceAnchor": "L428/R-07",
+      "sourceExcerpt": "### R-07｜会议通知、正式日程与批准事由、举办时间地点基本一致\n\n- **审核目标与来源属性**：会议通知、正式日程与批准事由、举办时间地点基本一致。B阶段分类 `E;CD-01,EX-HF`；来源 `CD-01;EX-HF`。\n- **触发条件**：`已举办，存在活动通知与日程`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-EVENT`。\n- **生效阶段/被审对象**：`ST-03`；`活动日期/地点`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-02/17/19/20/36/37; M-09/10`；本母版等效/组合组 `EG-01`；各文书页码或授权系统ID须能反查。B原文核验目标：会议通知、正式日程与批准事由、举办时间地点基本一致。\n- **原子判定步骤**：用 `event_i",
+      "checkId": "g07-t06@1:module/use-rulebook/r07",
+      "sourceIds": [
+        "g07-t06-r07"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r07",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-08",
+      "sourceAnchor": "L441/R-08",
+      "sourceExcerpt": "### R-08｜更改日期、场地、预算、主体后，按目标校需取得正式变更批准\n\n- **审核目标与来源属性**：更改日期、场地、预算、主体后，按目标校需取得正式变更批准。B阶段分类 `X+J+P;EX-NJ,EX-AJ`；来源 `EX-NJ;EX-AJ`。\n- **触发条件**：`有重大日期/预算/场地变更`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-CHANGE`。\n- **生效阶段/被审对象**：`ST-03`；`变更事项`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-29/30/34; M-07/31`；本母版等效/组合组 `EG-12`；各文书页码或授权系统ID须能反查。B原文核验目标：更改日期、场地、预算、主体后，按目标校需取得正式变更批准。\n- **原子判定步骤**：为 `日期/地点",
+      "checkId": "g07-t06@1:module/use-rulebook/r08",
+      "sourceIds": [
+        "g07-t06-r08"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r08",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-09",
+      "sourceAnchor": "L454/R-09",
+      "sourceExcerpt": "### R-09｜结算人数按**实际参与**，不把预算预估100人直接当100个已到人日\n\n- **审核目标与来源属性**：结算人数按**实际参与**，不把预算预估100人直接当100个已到人日。B阶段分类 `E+X;EX-HF,EX-NJ`；来源 `EX-HF;EX-NJ`。\n- **触发条件**：`按人数、场次计费的费用行`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-ATTEND`。\n- **生效阶段/被审对象**：`ST-04`；`人次/人天/费用行`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-21/22/38/39; M-11/12/13/14/15`；本母版等效/组合组 `EG-04`；各文书页码或授权系统ID须能反查。B原文核验目标：结算人数按**实际参与**，不把预算预估100",
+      "checkId": "g07-t06@1:module/use-rulebook/r09",
+      "sourceIds": [
+        "g07-t06-r09"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r09",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-10",
+      "sourceAnchor": "L467/R-10",
+      "sourceExcerpt": "### R-10｜线下签到表与培训签到、线上平台记录有不同形成形式\n\n- **审核目标与来源属性**：线下签到表与培训签到、线上平台记录有不同形成形式。B阶段分类 `E+P;EX-HF,EX-AJ,EX-NJ`；来源 `EX-HF;EX-AJ;EX-NJ`。\n- **触发条件**：`线下/线上/混合模式需要签到`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-EVIDENCE`。\n- **生效阶段/被审对象**：`ST-03`；`证据方式`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-20/38/39; M-11~13`；本母版等效/组合组 `EG-04`；各文书页码或授权系统ID须能反查。B原文核验目标：线下签到表与培训签到、线上平台记录有不同形成形式。\n- **原子判定步骤**：线下优先核有权",
+      "checkId": "g07-t06@1:module/use-rulebook/r10",
+      "sourceIds": [
+        "g07-t06-r10"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r10",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-11",
+      "sourceAnchor": "L480/R-11",
+      "sourceExcerpt": "### R-11｜计费的有效代表与工作人员不双计，工作人员比率仅在相应学校与会议类别触发\n\n- **审核目标与来源属性**：计费的有效代表与工作人员不双计，工作人员比率仅在相应学校与会议类别触发。B阶段分类 `E+P;EX-TG,EX-AJ,EX-YN`；来源 `EX-TG;EX-AJ;EX-YN`。\n- **触发条件**：`人员、工作人员计入分项额度`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-COUNT`。\n- **生效阶段/被审对象**：`ST-04`；`有效人员/人天`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-22/23/38; M-14/15`；本母版等效/组合组 `EG-04`；各文书页码或授权系统ID须能反查。B原文核验目标：计费的有效代表与工作人员不双计，工作人员比率仅在相",
+      "checkId": "g07-t06@1:module/use-rulebook/r11",
+      "sourceIds": [
+        "g07-t06-r11"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r11",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-12",
+      "sourceAnchor": "L493/R-12",
+      "sourceExcerpt": "### R-12｜会议报到/撤离日、有效会期与人数按正式政策版本核对\n\n- **审核目标与来源属性**：会议报到/撤离日、有效会期与人数按正式政策版本核对。B阶段分类 `E+P;EX-HF,EX-TG,EX-AJ`；来源 `EX-HF;EX-TG;EX-AJ`。\n- **触发条件**：`费用与会议/培训天数相关`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-DAYS`。\n- **生效阶段/被审对象**：`ST-04`；`日期/天数`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-19/25/37/39; M-09/11`；本母版等效/组合组 `EG-04`；各文书页码或授权系统ID须能反查。B原文核验目标：会议报到/撤离日、有效会期与人数按正式政策版本核对。\n- **原子判定步骤**：由正式日程及",
+      "checkId": "g07-t06@1:module/use-rulebook/r12",
+      "sourceIds": [
+        "g07-t06-r12"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r12",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-13",
+      "sourceAnchor": "L506/R-13",
+      "sourceExcerpt": "### R-13｜线上/混合会议的设备租赁、线路、软件、技术服务须可对应会议\n\n- **审核目标与来源属性**：线上/混合会议的设备租赁、线路、软件、技术服务须可对应会议。B阶段分类 `E+P;EX-HF,EX-AJ,EX-TG`；来源 `EX-HF;EX-AJ;EX-TG`。\n- **触发条件**：`线上/混合且有技术服务费`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-SERVICE`。\n- **生效阶段/被审对象**：`ST-04`；`线上费用行`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-20/46/47; M-13/27/28`；本母版等效/组合组 `EG-05`；各文书页码或授权系统ID须能反查。B原文核验目标：线上/混合会议的设备租赁、线路、软件、技术服务须可对应会议。\n- **",
+      "checkId": "g07-t06@1:module/use-rulebook/r13",
+      "sourceIds": [
+        "g07-t06-r13"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r13",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-14",
+      "sourceAnchor": "L519/R-14",
+      "sourceExcerpt": "### R-14｜不安排住宿/就餐的分项不得被当作实际发生，也不应随意调剂\n\n- **审核目标与来源属性**：不安排住宿/就餐的分项不得被当作实际发生，也不应随意调剂。B阶段分类 `E+P;CD-01,CD-02,EX-HF,EX-AS`；来源 `CD-01;CD-02;EX-HF;EX-AS`。\n- **触发条件**：`会议/培训不提供食宿或部分提供`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-MEAL`。\n- **生效阶段/被审对象**：`ST-04`；`食宿费用行`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-24/43/44; M-17/35`；本母版等效/组合组 `EG-05`；各文书页码或授权系统ID须能反查。B原文核验目标：不安排住宿/就餐的分项不得被当作实际发生，也不应随意调剂",
+      "checkId": "g07-t06@1:module/use-rulebook/r14",
+      "sourceIds": [
+        "g07-t06-r14"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r14",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-15",
+      "sourceAnchor": "L532/R-15",
+      "sourceExcerpt": "### R-15｜校内/校外会议材料不同：CDUT历史科研校外酒店需签到、结算单及酒店证明\n\n- **审核目标与来源属性**：校内/校外会议材料不同：CDUT历史科研校外酒店需签到、结算单及酒店证明。B阶段分类 `E+P;CD-01,CD-02`；来源 `CD-01;CD-02`。\n- **触发条件**：`校内/校外酒店或会议供应商`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-HOTEL`。\n- **生效阶段/被审对象**：`ST-03`；`举办场所和材料触发`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-20/40/48/49; M-11/17/19`；本母版等效/组合组 `EG-05`；各文书页码或授权系统ID须能反查。B原文核验目标：校内/校外会议材料不同：CDUT历史科研校外酒店需签到",
+      "checkId": "g07-t06@1:module/use-rulebook/r15",
+      "sourceIds": [
+        "g07-t06-r15"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r15",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-16",
+      "sourceAnchor": "L545/R-16",
+      "sourceExcerpt": "### R-16｜会议人员酒店房晚、参加时间和实缴住宿单价要匹配\n\n- **审核目标与来源属性**：会议人员酒店房晚、参加时间和实缴住宿单价要匹配。B阶段分类 `E+J;EX-HF,EX-AJ`；来源 `EX-HF;EX-AJ`。\n- **触发条件**：`酒店住宿及合同最低消费`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-HOTEL`。\n- **生效阶段/被审对象**：`ST-04`；`住宿结算行`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-19/22/39/43; M-11/17`；本母版等效/组合组 `EG-05`；各文书页码或授权系统ID须能反查。B原文核验目标：会议人员酒店房晚、参加时间和实缴住宿单价要匹配。\n- **原子判定步骤**：按 `room_id/date/guest` 关",
+      "checkId": "g07-t06@1:module/use-rulebook/r16",
+      "sourceIds": [
+        "g07-t06-r16"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r16",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-17",
+      "sourceAnchor": "L558/R-17",
+      "sourceExcerpt": "### R-17｜餐饮实际餐次/人数/地点与会议议程和原始明细一致\n\n- **审核目标与来源属性**：餐饮实际餐次/人数/地点与会议议程和原始明细一致。B阶段分类 `E+P;EX-TG,EX-AJ`；来源 `EX-TG;EX-AJ`。\n- **触发条件**：`有餐饮结算行`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-MEAL`。\n- **生效阶段/被审对象**：`ST-04`；`餐饮费用行`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-24/37/44; M-09/17`；本母版等效/组合组 `EG-05`；各文书页码或授权系统ID须能反查。B原文核验目标：餐饮实际餐次/人数/地点与会议议程和原始明细一致。\n- **原子判定步骤**：按会议日期、早餐/午餐/晚餐、每餐实际人数和服务明细关联，识",
+      "checkId": "g07-t06@1:module/use-rulebook/r17",
+      "sourceIds": [
+        "g07-t06-r17"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r17",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-18",
+      "sourceAnchor": "L571/R-18",
+      "sourceExcerpt": "### R-18｜会议预算内线下综合定额按**会议类别×合格人天**计算；实际支出仍据实\n\n- **审核目标与来源属性**：会议预算内线下综合定额按**会议类别×合格人天**计算；实际支出仍据实。B阶段分类 `E+P;CD-02,EX-HF,EX-NJ`；来源 `CD-02;EX-HF;EX-NJ`。\n- **触发条件**：`线下会议综合定额支出`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-CAP`。\n- **生效阶段/被审对象**：`ST-04`；`会议人天及分项`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-07/11/19/22/25/28/41; M-06/11/35`；本母版等效/组合组 `EG-03+EG-04`；各文书页码或授权系统ID须能反查。B原文核验目标：会议预算内线下综合",
+      "checkId": "g07-t06@1:module/use-rulebook/r18",
+      "sourceIds": [
+        "g07-t06-r18"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r18",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-19",
+      "sourceAnchor": "L584/R-19",
+      "sourceExcerpt": "### R-19｜培训定额按培训类别、实到人数、培训天数、提供住宿/就餐情况计算\n\n- **审核目标与来源属性**：培训定额按培训类别、实到人数、培训天数、提供住宿/就餐情况计算。B阶段分类 `E+P;CD-02,EX-AS,EX-AJ`；来源 `CD-02;EX-AS;EX-AJ`。\n- **触发条件**：`举办培训且按综合定额`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-CAP`。\n- **生效阶段/被审对象**：`ST-04`；`培训人天及类别`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-07/19/22/24/26/28; M-05/12/35`；本母版等效/组合组 `EG-03+EG-04`；各文书页码或授权系统ID须能反查。B原文核验目标：培训定额按培训类别、实到人数、培训天数、",
+      "checkId": "g07-t06@1:module/use-rulebook/r19",
+      "sourceIds": [
+        "g07-t06-r19"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r19",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-20",
+      "sourceAnchor": "L597/R-20",
+      "sourceExcerpt": "### R-20｜培训伙食不得突破适用单项上限，不安排住宿时不得用未发生住宿额调剂\n\n- **审核目标与来源属性**：培训伙食不得突破适用单项上限，不安排住宿时不得用未发生住宿额调剂。B阶段分类 `E+P;CD-01,CD-02,EX-AS`；来源 `CD-01;CD-02;EX-AS`。\n- **触发条件**：`培训提供餐食或不提供住宿`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-CAP`。\n- **生效阶段/被审对象**：`ST-04`；`食宿额度`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-24/26/41/43/44; M-17/35`；本母版等效/组合组 `EG-05`；各文书页码或授权系统ID须能反查。B原文核验目标：培训伙食不得突破适用单项上限，不安排住宿时不得用未发生住宿额调",
+      "checkId": "g07-t06@1:module/use-rulebook/r20",
+      "sourceIds": [
+        "g07-t06-r20"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r20",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-21",
+      "sourceAnchor": "L610/R-21",
+      "sourceExcerpt": "### R-21｜师资费、授课专家城际交通与培训综合定额外支出必须分账户/费用类别\n\n- **审核目标与来源属性**：师资费、授课专家城际交通与培训综合定额外支出必须分账户/费用类别。B阶段分类 `E+X;CD-01,CD-02,EX-AS`；来源 `CD-01;CD-02;EX-AS;CD-N01;CD-N03`。\n- **触发条件**：`培训有讲课费或科研主办受邀专家旅费`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-EXPERT`。\n- **生效阶段/被审对象**：`ST-04`；`师资/专家相关费用行`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-07/27/52; M-24/25`；本母版等效/组合组 `EG-11`；各文书页码或授权系统ID须能反查。B原文核验目标：师资费、授课专家城",
+      "checkId": "g07-t06@1:module/use-rulebook/r21",
+      "sourceIds": [
+        "g07-t06-r21"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r21",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-22",
+      "sourceAnchor": "L623/R-22",
+      "sourceExcerpt": "### R-22｜长期培训天数、非学历教育范围、学生是否属于培训对象等分支依学校专项制度\n\n- **审核目标与来源属性**：长期培训天数、非学历教育范围、学生是否属于培训对象等分支依学校专项制度。B阶段分类 `P+J;EX-AS,EX-AJ`；来源 `EX-AS;EX-AJ`。\n- **触发条件**：`长训/非学历教育或在校学生教育`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-TRAIN-SCOPE`。\n- **生效阶段/被审对象**：`ST-02`；`培训业务类别`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-04/19/26; M-05/35`；本母版等效/组合组 `EG-01`；各文书页码或授权系统ID须能反查。B原文核验目标：长期培训天数、非学历教育范围、学生是否属于培训对象等分支依学",
+      "checkId": "g07-t06@1:module/use-rulebook/r22",
+      "sourceIds": [
+        "g07-t06-r22"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r22",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-23",
+      "sourceAnchor": "L636/R-23",
+      "sourceExcerpt": "### R-23｜国际/双边及港澳台会议须先识别定义并查看有权外事批准\n\n- **审核目标与来源属性**：国际/双边及港澳台会议须先识别定义并查看有权外事批准。B阶段分类 `X+J;EX-HF,EX-TG,EX-AJ`；来源 `EX-HF;EX-TG;EX-AJ;CD-N02`。\n- **触发条件**：`举办在华国际会议且符合校本定义`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-FOREIGN`。\n- **生效阶段/被审对象**：`ST-03`；`外事审批/活动`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-04/25/54; M-26`；本母版等效/组合组 `EG-10`；各文书页码或授权系统ID须能反查。B原文核验目标：国际/双边及港澳台会议须先识别定义并查看有权外事批准。\n- **原子判",
+      "checkId": "g07-t06@1:module/use-rulebook/r23",
+      "sourceIds": [
+        "g07-t06-r23"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r23",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-24",
+      "sourceAnchor": "L649/R-24",
+      "sourceExcerpt": "### R-24｜严禁把个人旅游、公务接待、普通办公固定资产、礼品等非允许费用塞入会议预算\n\n- **审核目标与来源属性**：严禁把个人旅游、公务接待、普通办公固定资产、礼品等非允许费用塞入会议预算。B阶段分类 `E+J+P;EX-HF,EX-NJ,EX-AJ`；来源 `EX-HF;EX-NJ;EX-AJ`。\n- **触发条件**：`存在特定费用行可能不允许列支`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-COST-SCOPE`。\n- **生效阶段/被审对象**：`ST-04`；`费用行`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-07/18/41; M-06/17`；本母版等效/组合组 `EG-05`；各文书页码或授权系统ID须能反查。B原文核验目标：严禁把个人旅游、公务接待、普通办公固定",
+      "checkId": "g07-t06@1:module/use-rulebook/r24",
+      "sourceIds": [
+        "g07-t06-r24"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r24",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-25",
+      "sourceAnchor": "L662/R-25",
+      "sourceExcerpt": "### R-25｜外校培训师资特别审批、委托第三方、长期或境外师资开支按特定条款触发\n\n- **审核目标与来源属性**：外校培训师资特别审批、委托第三方、长期或境外师资开支按特定条款触发。B阶段分类 `P+J;EX-AS,EX-AJ`；来源 `EX-AS;EX-AJ`。\n- **触发条件**：`培训委托外包/特殊师资`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-OUTSOURCE`。\n- **生效阶段/被审对象**：`ST-03`；`合同/讲课费用`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-27/34/47/54; M-05/21/24/26`；本母版等效/组合组 `EG-08+EG-11`；各文书页码或授权系统ID须能反查。B原文核验目标：外校培训师资特别审批、委托第三方、长期或境外师资",
+      "checkId": "g07-t06@1:module/use-rulebook/r25",
+      "sourceIds": [
+        "g07-t06-r25"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r25",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-26",
+      "sourceAnchor": "L675/R-26",
+      "sourceExcerpt": "### R-26｜非科研会议需相关票据、通知、实到情况、对方单位盖章的费用明细（2025 CDUT）\n\n- **审核目标与来源属性**：非科研会议需相关票据、通知、实到情况、对方单位盖章的费用明细（2025 CDUT）。B阶段分类 `E+P;CD-01,CD-02`；来源 `CD-01;CD-02`。\n- **触发条件**：`非科研会议及相应服务费`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-DOC`。\n- **生效阶段/被审对象**：`ST-03`；`证明材料完整度`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-17/22/36/41/42/49; M-09/14/16/18`；本母版等效/组合组 `EG-05`；各文书页码或授权系统ID须能反查。B原文核验目标：非科研会议需相关票据、通知、",
+      "checkId": "g07-t06@1:module/use-rulebook/r26",
+      "sourceIds": [
+        "g07-t06-r26"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r26",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-27",
+      "sourceAnchor": "L688/R-27",
+      "sourceExcerpt": "### R-27｜科研校外酒店会议在2025 CDUT清单中“超过20,000元”需酒店合同\n\n- **审核目标与来源属性**：科研校外酒店会议在2025 CDUT清单中“超过20,000元”需酒店合同。B阶段分类 `E+P;CD-01,CD-02`；来源 `CD-01;CD-02`。\n- **触发条件**：`CDUT科研校外酒店且金额达到合同触发条件`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-CONTRACT`。\n- **生效阶段/被审对象**：`ST-03`；`合同材料槽`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-04/08/20/47; M-17/19/20`；本母版等效/组合组 `EG-08`；各文书页码或授权系统ID须能反查。B原文核验目标：科研校外酒店会议在2025 CDUT",
+      "checkId": "g07-t06@1:module/use-rulebook/r27",
+      "sourceIds": [
+        "g07-t06-r27"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r27",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-28",
+      "sourceAnchor": "L701/R-28",
+      "sourceExcerpt": "### R-28｜委托/合办的合同、委托权限、服务责任、收入支出明细必须关联\n\n- **审核目标与来源属性**：委托/合办的合同、委托权限、服务责任、收入支出明细必须关联。B阶段分类 `E+X;EX-HF,EX-NJ,EX-TG`；来源 `EX-HF;EX-NJ;EX-TG;CD-N02`。\n- **触发条件**：`委托/联合/多方举办`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-COHOST`。\n- **生效阶段/被审对象**：`ST-03`；`举办责任和分摊`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-05/32/33/40/47/53; M-08/20/21/22`；本母版等效/组合组 `EG-09`；各文书页码或授权系统ID须能反查。B原文核验目标：委托/合办的合同、委托权限、服务责",
+      "checkId": "g07-t06@1:module/use-rulebook/r28",
+      "sourceIds": [
+        "g07-t06-r28"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r28",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-29",
+      "sourceAnchor": "L714/R-29",
+      "sourceExcerpt": "### R-29｜发票身份、项目和结算原始明细一致；电子票查验依税务和校财务系统\n\n- **审核目标与来源属性**：发票身份、项目和结算原始明细一致；电子票查验依税务和校财务系统。B阶段分类 `E+X;CD-01,EX-YN`；来源 `CD-01;EX-YN`。\n- **触发条件**：`存在发票型费用行`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-INVOICE`。\n- **生效阶段/被审对象**：`ST-04`；`发票/服务行`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-41/42/49/58; M-16/17/33`；本母版等效/组合组 `EG-06`；各文书页码或授权系统ID须能反查。B原文核验目标：发票身份、项目和结算原始明细一致；电子票查验依税务和校财务系统。\n- **原子判定步骤",
+      "checkId": "g07-t06@1:module/use-rulebook/r29",
+      "sourceIds": [
+        "g07-t06-r29"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r29",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-30",
+      "sourceAnchor": "L727/R-30",
+      "sourceExcerpt": "### R-30｜同一酒店合约/账单内已含餐饮住宿的费用不能重复在其他行按全额申报\n\n- **审核目标与来源属性**：同一酒店合约/账单内已含餐饮住宿的费用不能重复在其他行按全额申报。B阶段分类 `E+X;EX-HF,EX-NJ`；来源 `EX-HF;EX-NJ`。\n- **触发条件**：`供应商打包餐宿或服务`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-DUPLICATE`。\n- **生效阶段/被审对象**：`ST-04`；`疑似重复费用行`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-06/07/41~44/49/59; M-17/20/23`；本母版等效/组合组 `EG-05+EG-14`；各文书页码或授权系统ID须能反查。B原文核验目标：同一酒店合约/账单内已含餐饮住宿的费用不能重复在",
+      "checkId": "g07-t06@1:module/use-rulebook/r30",
+      "sourceIds": [
+        "g07-t06-r30"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r30",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-31",
+      "sourceAnchor": "L740/R-31",
+      "sourceExcerpt": "### R-31｜收费会议可否向参会者收费、费用是否归学校统一入账，应按资金类型和学校审批\n\n- **审核目标与来源属性**：收费会议可否向参会者收费、费用是否归学校统一入账，应按资金类型和学校审批。B阶段分类 `X+P;EX-HF,EX-NJ,EX-TG`；来源 `EX-HF;EX-NJ;EX-TG`。\n- **触发条件**：`举办活动向参会者收费`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-REVENUE`。\n- **生效阶段/被审对象**：`ST-03`；`收费许可和收入`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-10/14/33/53/60; M-22/30`；本母版等效/组合组 `EG-13`；各文书页码或授权系统ID须能反查。B原文核验目标：收费会议可否向参会者收费、费用是否归",
+      "checkId": "g07-t06@1:module/use-rulebook/r31",
+      "sourceIds": [
+        "g07-t06-r31"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r31",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-32",
+      "sourceAnchor": "L753/R-32",
+      "sourceExcerpt": "### R-32｜经费多方分摊，不能因同一基础发票被不同单位各报100%而重复领款\n\n- **审核目标与来源属性**：经费多方分摊，不能因同一基础发票被不同单位各报100%而重复领款。B阶段分类 `X;EX-HF,EX-NJ`；来源 `EX-HF;EX-NJ`。\n- **触发条件**：`多项目/多方经费分担`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-SPLIT`。\n- **生效阶段/被审对象**：`ST-04`；`资金分摊行`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-10/13/32/59; M-08/22/33`；本母版等效/组合组 `EG-09`；各文书页码或授权系统ID须能反查。B原文核验目标：经费多方分摊，不能因同一基础发票被不同单位各报100%而重复领款。\n- **原子判定步骤",
+      "checkId": "g07-t06@1:module/use-rulebook/r32",
+      "sourceIds": [
+        "g07-t06-r32"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r32",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-33",
+      "sourceAnchor": "L766/R-33",
+      "sourceExcerpt": "### R-33｜申请总额应等于各行核销明细；超预算/超定额应分行拆出有依据的超出金额\n\n- **审核目标与来源属性**：申请总额应等于各行核销明细；超预算/超定额应分行拆出有依据的超出金额。B阶段分类 `E+P;EX-HF,EX-NJ,EX-AJ`；来源 `EX-HF;EX-NJ;EX-AJ`。\n- **触发条件**：`逐行金额、预算和定额要核`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-AMOUNT`。\n- **生效阶段/被审对象**：`ST-04`；`每条费用行与整案`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-06~11/28/30/31; M-02/06/07`；本母版等效/组合组 `EG-03+EG-14`；各文书页码或授权系统ID须能反查。B原文核验目标：申请总额应等于各行核销",
+      "checkId": "g07-t06@1:module/use-rulebook/r33",
+      "sourceIds": [
+        "g07-t06-r33"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r33",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-34",
+      "sourceAnchor": "L779/R-34",
+      "sourceExcerpt": "### R-34｜酒店提供的是服务结算/付款证明，学校是否已向供方付款另查财务状态\n\n- **审核目标与来源属性**：酒店提供的是服务结算/付款证明，学校是否已向供方付款另查财务状态。B阶段分类 `X;CD-03,EX-HF`；来源 `CD-03;EX-HF`。\n- **触发条件**：`已有费用结算/银行支付查询`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-PAYMENT`。\n- **生效阶段/被审对象**：`ST-05`；`支付状态`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-49/50/63; M-17/23/34`；本母版等效/组合组 `EG-07`；各文书页码或授权系统ID须能反查。B原文核验目标：酒店提供的是服务结算/付款证明，学校是否已向供方付款另查财务状态。\n- **原子判定步",
+      "checkId": "g07-t06@1:module/use-rulebook/r34",
+      "sourceIds": [
+        "g07-t06-r34"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r34",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-35",
+      "sourceAnchor": "L792/R-35",
+      "sourceExcerpt": "### R-35｜活动被取消、退款、红字票或部分退房时核净成本与历史已付\n\n- **审核目标与来源属性**：活动被取消、退款、红字票或部分退房时核净成本与历史已付。B阶段分类 `X+J;EX-NJ,EX-HF`；来源 `EX-NJ;EX-HF`。\n- **触发条件**：`活动取消、改期/退款/红冲`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-REFUND`。\n- **生效阶段/被审对象**：`ST-04`；`退款/冲销行`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-51/58/59; M-23/33/34`；本母版等效/组合组 `EG-14`；各文书页码或授权系统ID须能反查。B原文核验目标：活动被取消、退款、红字票或部分退房时核净成本与历史已付。\n- **原子判定步骤**：按原合同/发票/",
+      "checkId": "g07-t06@1:module/use-rulebook/r35",
+      "sourceIds": [
+        "g07-t06-r35"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r35",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "R-36",
+      "sourceAnchor": "L805/R-36",
+      "sourceExcerpt": "### R-36｜附件关键事实冲突/模糊、合同不确定及校规版本未知需区分处理\n\n- **审核目标与来源属性**：附件关键事实冲突/模糊、合同不确定及校规版本未知需区分处理。B阶段分类 `X+J+P;提示词B及官方凭证规范`；来源 `设计建议/B候选规则`。\n- **触发条件**：`重大证据冲突/政策缺失/接口不可达`；判断`TRUE`时执行；`FALSE`且明确证实不属于适用范围记录`NOT_APPLICABLE`；如无法判断，返回`UNKNOWN`并标`IC-UNCERTAIN`。\n- **生效阶段/被审对象**：`ST-03/ST-04`；`规则和证据状态`，如涉及多笔费用必须按`expense_line_id`输出结论而不把一个异常扩散到全部费用。\n- **事实和证据组**：B字段与槽 `F-14/41/42/56~61; M-31~35`；本母版等效/组合组 `EG-12`；各文书页码或授权系统ID须能反查。B原文核验目标：附件关键事实冲突/模糊、合同不确定及校规版本未知需区分处",
+      "checkId": "g07-t06@1:module/use-rulebook/r36",
+      "sourceIds": [
+        "g07-t06-r36"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:r36",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-scope",
+      "sourceAnchor": "L31/## 1. 独立审核目的、范围及相邻模板路由",
+      "sourceExcerpt": "## 1. 独立审核目的、范围及相邻模板路由\n\n**本模板核验**：一次主办/承办或协办会议、培训的**已发生**会务费用是否有合法来源、真实服务量、有效预算、必要证明、分项定额及无重复承担，并输出材料预审意见。一个活动多个会场、供应商、参加者、资金来源和费用行仍属于同一主申请，按对象分项审查。\n\n**不审核为本模板最终结果**：个人参加别人主办会议的出差住宿（`G07-T02`）；活动前采购方式审批（`G07-T03`）；独立供应商合同正式履约验收/分期付款（`G07-T04`）；专家个人咨询、讲课酬金领取与计税代发（`G07-T05`）；会前借款债务及冲账（`G07-T07`）；出国/国际会议举办的主管机关批准（G05/国际交流管理）；科研项目立项/预算科目正式变更（T03等）。\n\n**边界上的正确处理**：主办科研会议聘请学者产生的、CD-N01允许且真实确需承担的城际/国际旅费可作为本会议**费用行**审查；个人学者自己报销往返（且非主办承担）走T02；向专家个人发放咨询劳务走T",
+      "checkId": "g07-t06@1:module/use-crosscut/sscope",
+      "sourceIds": [
+        "g07-t06-sscope"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:sscope",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-actor",
+      "sourceAnchor": "L44/## 2. 术语、主体关系与审批权限",
+      "sourceExcerpt": "## 2. 术语、主体关系与审批权限\n\n| 术语/角色 | 本模板唯一含义 | 事实/权限核验来源 | 不允许推断 |\n|---|---|---|---|\n| 发起经办人 `claimant_ref` | 提交本次结算事项和材料的人，可为授权学生/教工 | OA授权/报销系统的委托记录 `F-15/F-35/F-55` | 上传人就是经费所有人或学校法人 |\n| 举办单位 `organizing_unit` | 以学校名义组织会议/培训的学院、部门或研究组 | 正式举办批复、会议通知、组织协议 | 会议邀请人就是举办审批人 |\n| 经费负责人/项目负责人 | 对对应基金的用途与支出承担授权内责任 | 财务项目台账、科研合同及签署角色 | 任一指导教师可批准全校任意项目经费 |\n| 受益参与者 | 学员、代表、工作人员、受邀专家；决定签到/额度条件 | 真实签到、可信平台日志和项目名册 | 预计人数=实际到场或多账号=多人 |\n| 供应商/委托承办人 | 提供酒店、场租、培训或线上服务的独",
+      "checkId": "g07-t06@1:module/use-crosscut/sactor",
+      "sourceIds": [
+        "g07-t06-sactor"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:sactor",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-branch",
+      "sourceAnchor": "L91/## 4. 分支表：一套模板、内部16个场景轴与动作",
+      "sourceExcerpt": "## 4. 分支表：一套模板、内部16个场景轴与动作\n\n| 分支ID | 条件维度 | 候选取值 | 互斥/可叠加关系 | 影响阶段 | 未知及不适用处理 | 研究依据 |\n| --- | --- | --- | --- | --- | --- | --- |\n| BR-01 | 主类型 | 科研会议/非科研会议/举办培训 | 互斥 | P0 | 无明确有效举办类型，暂停额度硬判 | CD-01;CD-02 |\n| BR-02 | 经费来源 | 纵向科研/横向科研/事业/财政专项/合办多源 | 多源可叠加；每行唯一分摊清单 | P0-P2 | 经费性质未知先读取项目与合同 | CD-N01;EX-TJ |\n| BR-03 | 主办关系 | 主办/承办/协办/联合举办/委托承办 | 可按组织角色形成多方，但每费用行责任需明确 | P0-P2 | 第三方权责不明转人工或补合同 | EX-HF;EX-NJ |\n| BR-04 | 举办地点 | 校内/校外酒店/其他线下/线上/混合 | 混合包含",
+      "checkId": "g07-t06@1:module/use-crosscut/sbranch",
+      "sourceIds": [
+        "g07-t06-sbranch"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:sbranch",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-stage",
+      "sourceAnchor": "L60/## 3. 生命周期、触发语义与条件优先级",
+      "sourceExcerpt": "## 3. 生命周期、触发语义与条件优先级\n\n| 阶段ID | 业务阶段 | 何时存在、允许审核什么 | 此时**不能**要求/宣称 |\n|---|---|---|---|\n| ST-01 | 会前拟办/预算草稿P0 | 路由、规划、经费准备；将举办批复设为前置依赖 | 尚未举办便索要最终签到和发票；直接输出可核销金额 |\n| ST-02 | 已有申报事项/收件初审 | 判断是主办会议/培训还是T02/T05等；确认申请人/基本主键 | 未取得OA便假定已正式批准 |\n| ST-03 | 有权批复及活动证据预核P1/P2 | 读取正式批准、活动身份、通知、有效参加事实、适用规则 | 代替校方追认、外事审批或采购法定许可 |\n| ST-04 | 会后逐费用行核算P2 | 实际服务、票据、分项限额、合同、退款/分摊与金额 | 无政策就引用他校定额自动全部驳回 |\n| ST-05 | 财务权责审批P3 | 传递预审意见、等待财务部门的真实决定 | 将AI预审推荐写成正式财务批准 |\n| ST-",
+      "checkId": "g07-t06@1:module/use-crosscut/sstage",
+      "sourceIds": [
+        "g07-t06-sstage"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:sstage",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-fields",
+      "sourceAnchor": "L137/## 5. 输入契约——三类申报输入与可信记录完全分离",
+      "sourceExcerpt": "## 5. 输入契约——三类申报输入与可信记录完全分离\n\n1. **申报事项 (`claims`)**：一主案 `claim_id/event_id/action` + `expense_lines[]`（每项唯一`expense_line_id`），需有申请金额、类型、关联资金来源、申请动作及历史单引用。这是用户**要求系统判断的对象**，不是某张PDF。\n2. **申报材料 (`application_documents`)**：结算表、批准的办会预算申请、培训计划、变更说明和申报人提交的费用清单；它们表达申请人主张和已获得的签批引用。\n3. **证明材料 (`evidence_documents`)**：会务/培训通知、签到、酒店服务明细、付款凭证、发票、委托合同、专家服务记录、线上平台日志等，用于证实具体事实。图片扫描保留定位页码与抽取可信度。\n4. **可信底账 (`trusted_sources`)**：学校OA正式批准、经费账簿、税务发票有效状态、合同采购系统、收入账、真实",
+      "checkId": "g07-t06@1:module/use-crosscut/sfields",
+      "sourceIds": [
+        "g07-t06-sfields"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:sfields",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "SECTION-material",
+      "sourceAnchor": "L246/## 7. 材料槽与可信系统槽（B M-ID 显式映射）",
+      "sourceExcerpt": "## 7. 材料槽与可信系统槽（B M-ID 显式映射）\n\n> `MS-01..30`分别是申报事项/申报材料/证明材料的业务槽，`TD-01..05`为**可信系统查询槽**。后者绝不在界面显示为学生必须上传的PDF材料。能从有权OA获得同一事实时可以按已配置等效组免除重复纸质上传。\n\n| 当前稳定ID | B对应ID | 名称和材料类别 | 触发/形成阶段 | 载体与可核事实 | 替代证据 | 来源及缺件动作 |\n| --- | --- | --- | --- | --- | --- | --- |\n| MS-01 | M-01 | **申报事项**：本次会议/培训结算申请 | P2必有 | 系统JSON/表单项，event_id、fund_id、费用行 | 可系统创建，不要求扫描件 | CD-01,EX-HF；无可辨事项→补 |\n| MS-02 | M-02 | **申报事项**：多条费用行及申报金额 | P2有支出必有 | CSV/Excel/网报表；行号、类型、金额 | 已由系",
+      "checkId": "g07-t06@1:module/use-crosscut/smaterial",
+      "sourceIds": [
+        "g07-t06-smaterial"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:smaterial",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-01",
+      "sourceAnchor": "L95/BR-01",
+      "sourceExcerpt": "| BR-01 | 主类型 | 科研会议/非科研会议/举办培训 | 互斥 | P0 | 无明确有效举办类型，暂停额度硬判 | CD-01;CD-02 |",
+      "checkId": "g07-t06@1:module/use-branch01/br01",
+      "sourceIds": [
+        "g07-t06-b01"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:b01",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-02",
+      "sourceAnchor": "L96/BR-02",
+      "sourceExcerpt": "| BR-02 | 经费来源 | 纵向科研/横向科研/事业/财政专项/合办多源 | 多源可叠加；每行唯一分摊清单 | P0-P2 | 经费性质未知先读取项目与合同 | CD-N01;EX-TJ |",
+      "checkId": "g07-t06@1:module/use-branch02/br02",
+      "sourceIds": [
+        "g07-t06-b02"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:b02",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-03",
+      "sourceAnchor": "L97/BR-03",
+      "sourceExcerpt": "| BR-03 | 主办关系 | 主办/承办/协办/联合举办/委托承办 | 可按组织角色形成多方，但每费用行责任需明确 | P0-P2 | 第三方权责不明转人工或补合同 | EX-HF;EX-NJ |",
+      "checkId": "g07-t06@1:module/use-branch03/br03",
+      "sourceIds": [
+        "g07-t06-b03"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:b03",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-04",
+      "sourceAnchor": "L98/BR-04",
+      "sourceExcerpt": "| BR-04 | 举办地点 | 校内/校外酒店/其他线下/线上/混合 | 混合包含多个会场子段；不是一条费用行混算 | P1-P2 | 实际地点不明则相关费用行待证 | CD-01;EX-AJ |",
+      "checkId": "g07-t06@1:module/use-branch04/br04",
+      "sourceIds": [
+        "g07-t06-b04"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:b04",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-05",
+      "sourceAnchor": "L99/BR-05",
+      "sourceExcerpt": "| BR-05 | 活动阶段 | 立项P0/举办P1/结算P2/财务P3/冲销P4 | 依事件轨迹递进，不可略过批准 | P0-P4 | 不索取未来阶段尚不存在文件 | EX-NJ;CD-03 |",
+      "checkId": "g07-t06@1:module/use-branch05/br05",
+      "sourceIds": [
+        "g07-t06-b05"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:b05",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-06",
+      "sourceAnchor": "L100/BR-06",
+      "sourceExcerpt": "| BR-06 | 参加身份 | 代表/学员/工作人员/专家/线上参与 | 同人可兼角色但不得重复计人日 | P1-P2 | 来源冲突时逐人分段待核 | EX-HF;EX-TG |",
+      "checkId": "g07-t06@1:module/use-branch06/br06",
+      "sourceIds": [
+        "g07-t06-b06"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:b06",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-07",
+      "sourceAnchor": "L101/BR-07",
+      "sourceExcerpt": "| BR-07 | 食宿提供 | 有住宿餐食/只餐/只宿/都不提供/部分天数提供 | 按日/分项组合 | P1-P2 | 未发生分项不自动获得上限额度 | CD-02;EX-AS |",
+      "checkId": "g07-t06@1:module/use-branch07/br07",
+      "sourceIds": [
+        "g07-t06-b07"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:b07",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-08",
+      "sourceAnchor": "L102/BR-08",
+      "sourceExcerpt": "| BR-08 | 培训性质 | 现场短训/远程/长期/非学历专项/一般讲座归并 | 会议主类型下不可激活培训定额 | P0-P2 | 学校类型定义未知待规则配置 | EX-AS;EX-AJ |",
+      "checkId": "g07-t06@1:module/use-branch08/br08",
+      "sourceIds": [
+        "g07-t06-b08"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:b08",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-09",
+      "sourceAnchor": "L103/BR-09",
+      "sourceExcerpt": "| BR-09 | 合同与供应商 | 无供应商/一般供应商/酒店/委托外包/变更合同 | 可随费用行叠加 | P0-P2 | 金额阈值依生效校规 | CD-01;EX-HF |",
+      "checkId": "g07-t06@1:module/use-branch09/br09",
+      "sourceIds": [
+        "g07-t06-b09"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:b09",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-10",
+      "sourceAnchor": "L104/BR-10",
+      "sourceExcerpt": "| BR-10 | 收费/分摊 | 不收费/收费/多源分摊/第三方代收/赞助 | 部分可叠加；收入与支出分账 | P0-P2 | 未授权收费状态不得默许 | EX-HF;EX-NJ |",
+      "checkId": "g07-t06@1:module/use-branch10/br10",
+      "sourceIds": [
+        "g07-t06-b10"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:b10",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-11",
+      "sourceAnchor": "L105/BR-11",
+      "sourceExcerpt": "| BR-11 | 正式审批状态 | 批准/在审/正式否决/已撤销/未知 | 互斥，依据权威OA | P0-P3 | 在审不等于否决；正式否决阻后续资金执行 | CD-N01;CD-03 |",
+      "checkId": "g07-t06@1:module/use-branch11/br11",
+      "sourceIds": [
+        "g07-t06-b11"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:b11",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    },
+    {
+      "sourceRequirementId": "BR-12",
+      "sourceAnchor": "L106/BR-12",
+      "sourceExcerpt": "| BR-12 | 事件变更 | 日期/场地/预算/对象/第三方/退款/撤回 | 可叠加并保留原始版本链 | P0-P4 | 变更是否需补批依校本制度 | EX-NJ;EX-AJ |",
+      "checkId": "g07-t06@1:module/use-branch12/br12",
+      "sourceIds": [
+        "g07-t06-b12"
+      ],
+      "evidenceFact": "d2:object:g07-meeting-cost:b12",
+      "objectScope": "g07-meeting-cost",
+      "reviewMode": "semantic",
+      "structuredScope": "generic-object",
+      "status": "AUTHORED_NOT_RUNTIME_VERIFIED",
+      "policyAuthority": "POLICY_HOLD"
+    }
+  ],
+  "sectionIndex": [
+    {
+      "heading": "## 0. 一页使用说明、版本及责任边界",
+      "sourceLine": 7,
+      "endLine": 30,
+      "bytes": 1296,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 1. 独立审核目的、范围及相邻模板路由",
+      "sourceLine": 31,
+      "endLine": 43,
+      "bytes": 624,
+      "linkedTaskId": "scope",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 2. 术语、主体关系与审批权限",
+      "sourceLine": 44,
+      "endLine": 59,
+      "bytes": 876,
+      "linkedTaskId": "actor",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 3. 生命周期、触发语义与条件优先级",
+      "sourceLine": 60,
+      "endLine": 90,
+      "bytes": 1619,
+      "linkedTaskId": "stage",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 4. 分支表：一套模板、内部16个场景轴与动作",
+      "sourceLine": 91,
+      "endLine": 136,
+      "bytes": 3700,
+      "linkedTaskId": "branch",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 5. 输入契约——三类申报输入与可信记录完全分离",
+      "sourceLine": 137,
+      "endLine": 174,
+      "bytes": 1818,
+      "linkedTaskId": "fields",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 6. 字段字典（保留B阶段63个稳定F-ID）",
+      "sourceLine": 175,
+      "endLine": 245,
+      "bytes": 7127,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 7. 材料槽与可信系统槽（B M-ID 显式映射）",
+      "sourceLine": 246,
+      "endLine": 320,
+      "bytes": 6165,
+      "linkedTaskId": "material",
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 8. 审核事实与跨文件关联、版本和时间约束",
+      "sourceLine": 321,
+      "endLine": 345,
+      "bytes": 1508,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 9. 逐条原子审核规则（36项，保留B阶段R-ID）",
+      "sourceLine": 346,
+      "endLine": 818,
+      "bytes": 49777,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 10. 状态、分项输出、整体聚合和错误码",
+      "sourceLine": 819,
+      "endLine": 865,
+      "bytes": 2549,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 10.4 问题码字典",
+      "sourceLine": 866,
+      "endLine": 902,
+      "bytes": 1750,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 11. 补件、重审、撤回、版本变更与执行审计",
+      "sourceLine": 903,
+      "endLine": 913,
+      "bytes": 660,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 12. 合法替代、复核与不应自动判定的事项",
+      "sourceLine": 914,
+      "endLine": 932,
+      "bytes": 868,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 13. 成都理工大学校本政策配置与仍待确认项",
+      "sourceLine": 933,
+      "endLine": 952,
+      "bytes": 1273,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 14. 来源索引与关键强规则的证据锁定",
+      "sourceLine": 953,
+      "endLine": 985,
+      "bytes": 2857,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 15. 作者沿真实办理流程推演的基本路径（非独立D金标）",
+      "sourceLine": 986,
+      "endLine": 997,
+      "bytes": 880,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 16. 跨模板可复用能力与本模板专有规则",
+      "sourceLine": 998,
+      "endLine": 1004,
+      "bytes": 407,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 17. 对现有仓库的静态能力映射（已读取GitHub main源码/文档，尚未运行端到端）",
+      "sourceLine": 1005,
+      "endLine": 1028,
+      "bytes": 2175,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    },
+    {
+      "heading": "## 18. 完整性审计、已知风险、版本控制与D阶段交接",
+      "sourceLine": 1029,
+      "endLine": 1039,
+      "bytes": 604,
+      "linkedTaskId": null,
+      "sourceMd": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md"
+    }
+  ],
+  "allOriginalTextPreservedIn": "docs/design/review-agent/acceptance/d4-g07-build/T06/source/frozen-C-v0.1.md",
+  "independentRuleIds": [
+    "R-01",
+    "R-02",
+    "R-03",
+    "R-04",
+    "R-05",
+    "R-06",
+    "R-07",
+    "R-08",
+    "R-09",
+    "R-10",
+    "R-11",
+    "R-12",
+    "R-13",
+    "R-14",
+    "R-15",
+    "R-16",
+    "R-17",
+    "R-18",
+    "R-19",
+    "R-20",
+    "R-21",
+    "R-22",
+    "R-23",
+    "R-24",
+    "R-25",
+    "R-26",
+    "R-27",
+    "R-28",
+    "R-29",
+    "R-30",
+    "R-31",
+    "R-32",
+    "R-33",
+    "R-34",
+    "R-35",
+    "R-36"
+  ]
+}

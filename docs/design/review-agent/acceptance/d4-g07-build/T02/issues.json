@@ -1,0 +1,24 @@
+[
+  {
+    "type": "SEMANTIC_ONLY_CONDITION",
+    "anchor": "BR-13",
+    "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+    "owner": "ENGINE_OR_AUTHORING"
+  },
+  {
+    "type": "SEMANTIC_ONLY_CONDITION",
+    "anchor": "BR-14",
+    "detail": "COMMON-02 单模板附加条件轴最大13；本分支仅留在核心规则原文及原件引用，不假称结构化条件已执行",
+    "owner": "ENGINE_OR_AUTHORING"
+  },
+  {
+    "type": "POLICY",
+    "detail": "校本现行制度、授权与资金/预算/税票/银行权威事实缺少有权认证；源以 policy-candidate/unknown 进入 D2，不能输出正式符合或付款",
+    "owner": "POLICY_EXTERNAL"
+  },
+  {
+    "type": "HUMAN_ONLY",
+    "detail": "自动可付净额、实付、会计冲销或结清非默认能力；只生成待财务核实建议，不直接算账",
+    "owner": "HUMAN_EXTERNAL"
+  }
+]
