@@ -8,3 +8,10 @@
 - 合法证据可支持不同字段，但只能对各字段Subject分别确认当前版证据事实。
 - 原本科/研究生/留学生制度现行性未核。校务审批、学籍底账与法定真伪、复杂Claim图、在线模型及B隐藏Gold都不在本轮认可范围。
 - 核实真实运行情况请看分支对应Actions产物；本次提交只含源码候选，不能预填 PASS。
+
+## 真实 CI 结果（固定源码 ca1c4735efad18505d6e5fb9f51b0090c8a7ef71）
+- A′ 8/8、新旧引擎相关回归36/36、typecheck、boundaries、仓库 PR CI 均 PASS；真实运行 [Actions #39009162738](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39009162738)。
+- 实际运行：更名场景1 Subject/39 Check；姓名+证号+联合场景2 Subject/60 Check，完整 JSON 原件在 [Artifact #12092321445](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39009162738/artifacts/12092321445)。
+- 13场景均可实例化，不等于已经实现法律事实自动分流。
+- 校规现行性、招生学籍可信源、签发机关鉴真、在线模型、B隐藏Gold、行政最终批准保持 NOT_VERIFIED/NOT_RUN。
+- 原事务提交中两轮失败作为历史红灯保留，不回填为 PASS。

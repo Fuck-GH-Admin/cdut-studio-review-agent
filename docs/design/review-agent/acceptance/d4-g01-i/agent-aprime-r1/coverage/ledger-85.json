@@ -44,7 +44,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-03/r004"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -56,7 +56,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-03/r005"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -68,7 +68,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-03/r006"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -80,7 +80,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-04/r007"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -92,7 +92,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-03/r008"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -104,7 +104,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-04/r009"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -116,7 +116,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-04/r010"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -164,7 +164,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/branch-s01/r014"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -176,7 +176,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/branch-s02/r015"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -188,7 +188,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/branch-s03/r016"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -200,7 +200,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/branch-s04/r017"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -212,7 +212,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/branch-s05/r018"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -224,7 +224,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/branch-s06/r019"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -236,7 +236,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/branch-s07/r020"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -260,7 +260,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/branch-s08/r022"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -272,7 +272,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/branch-s09/r023"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -320,7 +320,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-06/r027"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "check 可编译为技术语义 RuleSpec；trigger/unknown/证据替代尚非完整结构化执行，不能视作该业务规则 PASS"
   },
   {
@@ -585,7 +585,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/identity-continuity"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -597,7 +597,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/identity-continuity"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -609,7 +609,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/identity-continuity"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -621,7 +621,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/identity-continuity"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -633,7 +633,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/identity-continuity"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -645,7 +645,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/identity-continuity"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -657,7 +657,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/identity-continuity"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -669,7 +669,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/identity-continuity"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -681,7 +681,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/admission-and-changes"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -693,7 +693,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/admission-and-changes"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -705,7 +705,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/admission-and-changes"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -717,7 +717,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/admission-and-changes"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -729,7 +729,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/admission-and-changes"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -741,7 +741,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/admission-and-changes"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -753,7 +753,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/admission-and-changes"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -765,7 +765,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-10/admission-and-changes"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "缺少被授权的本案字段/来源/旧新值 typed schema 与可验证对象级观察关系；不得把字段目录视为实装数据契约"
   },
   {
@@ -849,7 +849,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-07/m01"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
   },
   {
@@ -861,7 +861,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-07/m02"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
   },
   {
@@ -873,7 +873,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-07/m03"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
   },
   {
@@ -885,7 +885,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-07/m04"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
   },
   {
@@ -897,7 +897,7 @@
     "newChecks": [
       "g01-student-identity-correction@2:module/part-07/m05"
     ],
-    "status": "FIELD_SCOPED_EXECUTABLE_CHECK",
+    "status": "FIELD_SCOPED_TECHNICAL_SEMANTIC",
     "limitation": "材料用途文本可进入 RuleSpec；材料槽、合法替代的多对多事实图未实现；不得宣布必交材料动态判定完成"
   },
   {

@@ -12,9 +12,20 @@
   "originalCheckCount": 49,
   "originalLedgerCount": 85,
   "newBindingCount": 62,
-  "runStatus": "NOT_RUN_YET",
+  "runStatus": "PASS_CI_SYNTHETIC_TECHNICAL_ONLY",
   "policyAuthority": "HOLD",
   "officialRegistry": "NOT_CONNECTED",
   "independentGold": "UNREAD",
-  "adminApproval": false
+  "adminApproval": false,
+  "ciSourceHead": "ca1c4735efad18505d6e5fb9f51b0090c8a7ef71",
+  "ciRunId": 39009162738,
+  "artifactId": 12092321445,
+  "prCiRunId": 39009162733,
+  "onlineModel": "NOT_RUN",
+  "migrationLimitations": [
+    "13 scenarios explicit technical selection only, not automatic reason verification",
+    "semantic checks do not prove all original review duties fulfilled",
+    "D2_UNMAPPED_ADVANCED remains fail closed",
+    "P0–P7 school approval stages unavailable without trusted workflow"
+  ]
 }
