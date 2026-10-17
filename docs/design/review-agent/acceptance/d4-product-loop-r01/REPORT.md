@@ -50,6 +50,8 @@ bun run review:d4:dev --model-config /你的模型配置目录
 
 G04 历史 CI [39060217414](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39060217414) 的测试和 Artifact 步骤成功，最后反推提交因远端竞争拒绝；[原始完整日志](evidence/g04-39060217414-original.log) 保留。本轮移除回推步骤并降为 contents:read，只保留 Artifact，未归因为业务引擎失败。
 
+首次后续 PR 的 Review Baseline CI [39073027029](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39073027029) 发现本轮包 patch 递增后 CHANGELOG 首项遗漏同步；打包守卫因 0.15.151/0.15.150 不一致失败。[原始失败日志](evidence/baseline-39073027029-original.log) 保留，补齐 0.15.151 变更记录后定向复跑守卫；最终远端状态以 PR #100 新 HEAD 的 Checks 为准，不把首次失败写成通过。
+
 仓库要求改 AGENTS.md/根 README.md 前确认；已提出具体同步内容，未收到确认时保留原文件，本说明独立交付。
 
 Q1：**能**，G08-T02 已从真实客户端选择、建案并执行固定责任。Q2：**有**，真实模型读取两份原件 18 个块并保存对应 Check/来源，而非合成 pending。Q3：最小后续是正式业务输入、可信外部数据适配，以及与新版后台 owner 的定向接合；现版本可用于受控技术预审。

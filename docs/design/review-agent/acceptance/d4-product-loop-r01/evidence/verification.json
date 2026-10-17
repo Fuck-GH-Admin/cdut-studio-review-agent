@@ -86,6 +86,10 @@
     "runVerification": {
       "complete": true,
       "problems": []
+    },
+    "packagingGuardsRetry": {
+      "pass": 19,
+      "fail": 0
     }
   },
   "modelRunProvenance": "Online run executed against fixed input plus this change before publishing the final Git commit. Main review runtime source hashes are recorded below; final delivery also verifies the persisted real run. Package-only patch bump and final Renderer evidence controls do not change the executed Pi/D2 service code.",
@@ -97,5 +101,17 @@
     "apps/electron/src/main/lib/review/review-d2-runtime.ts": "31dc646f4eaa81192dab243b637b354930eff2ae081fe1b9dd70af14e736516b",
     "apps/electron/src/main/lib/review/workspace-service-v2.ts": "b5c4518a94749427c09b2692d4ace4f0986be78d3aa169b283b8113b8653de7d",
     "apps/electron/src/preload/index.ts": "a6c9e4092261d6c889e45af3911dca36124f3f25b6d2378883c5ecc01d489a16"
+  },
+  "firstRemoteCI": {
+    "sha": "ab3716f1e39f19b8581b025909ba184bfec145a2",
+    "unified": {
+      "pass": 3717,
+      "skip": 6,
+      "fail": 1,
+      "failure": "CHANGELOG first version 0.15.150 did not match package 0.15.151"
+    },
+    "g04": "SUCCESS - Artifact only, no competing git push",
+    "baselineRunId": 39073027029,
+    "unifiedRunId": 39073026922
   }
 }
