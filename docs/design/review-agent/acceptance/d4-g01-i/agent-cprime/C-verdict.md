@@ -26,6 +26,8 @@
 
 C′ 在独立分支增加无需 Gold 的 Bun 工程测试、GitHub Actions 工作流和原 ZIP 私有预检工具。新增技术测试复核动态两个字段/单字段指纹、申请人自述与受控底账分隔、文书共用但证据主体/版本/确认状态独立、复杂 Claim 拒止、旧 D2 兼容和受控 Pi 工具回执。必须以实际 Action log 确定 Pass/Fail；不能拿 A′ 自测代替 C′。
 
+**C′ 独立合成技术 CI 已核实：** [Actions #39012346623](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39012346623) 在 C′ 源码 `7721eaa1fc48fea6be2d1bda870614eb21eb1cd6` 上实际执行：新回归 5/5 PASS、旧 R1/D2 19/19 PASS、全仓 Typecheck PASS。首次和第二次新增测试红灯及修复后结果全部保留于 [synthetic-ci-attempts.md](runtime/synthetic-ci-attempts.md)。这些是独立合成**技术回归**，不改变上表 B 28 案 `NOT_RUN` 判定。
+
 ## 仍未完成的关口
 
 1. 在具备 Bun + 仓库依赖的隔离宿主，以**私有本地挂载**方式提供原 B ZIP（不上传公开 Git）；完成有来源许可的 S01–S13 手工选择与字段/阶段/政策适配审计。
