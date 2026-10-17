@@ -1,0 +1,95 @@
+{
+  "technicalParentSha": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "source": "G01 immutable Markdown archival files",
+  "policyAuthority": "NOT_VERIFIED",
+  "hiddenGold": "UNREAD",
+  "onlineModel": "NOT_RUN",
+  "formalApproval": false,
+  "templates": [
+    {
+      "key": "I",
+      "d1": true,
+      "d3": true,
+      "d2": true,
+      "pi": true,
+      "checks": 60,
+      "subjects": 2,
+      "planFingerprint": "71bfc0d6b9faadabc27392f8b0e558a099fd725c10d5e1a631e2cbfaef6ccf3b",
+      "runId": "run-pi-mvcmzzpl-1vuvz",
+      "negatives": {},
+      "publicationAllowed": false
+    },
+    {
+      "key": "A",
+      "d1": true,
+      "d3": true,
+      "d2": true,
+      "pi": true,
+      "checks": 267,
+      "subjects": 2,
+      "planFingerprint": "68e751d51fc02308f5746176d733326d2608ba5a66e119fb2081b1169570045d",
+      "runId": "run-pi-mvcmzzur-bpo0b",
+      "negatives": {
+        "aValid": "ACCEPTED",
+        "bCannotBorrow": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本",
+        "aStaleDocument": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本",
+        "unknownCannotPass": "D2_STUDENT_APPLICABILITY_UNKNOWN: 受控学籍条件未知，只能待核"
+      },
+      "publicationAllowed": false
+    },
+    {
+      "key": "C",
+      "d1": true,
+      "d3": true,
+      "d2": true,
+      "pi": true,
+      "checks": 161,
+      "subjects": 2,
+      "planFingerprint": "2ddf5d2727d7739d25cc0788daf29a4fa3521729e22f1ed4405130969994bb32",
+      "runId": "run-pi-mvcmzzz7-84l63",
+      "negatives": {
+        "aValid": "ACCEPTED",
+        "bCannotBorrow": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本",
+        "aStaleDocument": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本",
+        "unknownCannotPass": "D2_STUDENT_APPLICABILITY_UNKNOWN: 受控学籍条件未知，只能待核"
+      },
+      "publicationAllowed": false
+    },
+    {
+      "key": "S",
+      "d1": true,
+      "d3": true,
+      "d2": true,
+      "pi": true,
+      "checks": 163,
+      "subjects": 2,
+      "planFingerprint": "d5c6c4f596d7cb3e69ffa9bc707052328822b51652867fff0e0667523bd04b9f",
+      "runId": "run-pi-mvcn002p-7tw0j",
+      "negatives": {
+        "aValid": "ACCEPTED",
+        "bCannotBorrow": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本",
+        "aStaleDocument": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本",
+        "unknownCannotPass": "D2_STUDENT_APPLICABILITY_UNKNOWN: 受控学籍条件未知，只能待核"
+      },
+      "publicationAllowed": false
+    },
+    {
+      "key": "P",
+      "d1": true,
+      "d3": true,
+      "d2": true,
+      "pi": true,
+      "checks": 269,
+      "subjects": 2,
+      "planFingerprint": "6fbd5671e83c3288422a6fa57e18c49c459e13422de3cd8a431eaf61b757f00f",
+      "runId": "run-pi-mvcn0083-fip22",
+      "negatives": {
+        "aValid": "ACCEPTED",
+        "bCannotBorrow": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本",
+        "aStaleDocument": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本",
+        "unknownCannotPass": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本"
+      },
+      "publicationAllowed": false
+    }
+  ]
+}

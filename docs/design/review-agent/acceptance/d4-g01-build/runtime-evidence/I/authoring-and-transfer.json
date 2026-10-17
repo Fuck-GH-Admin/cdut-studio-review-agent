@@ -1,0 +1,14 @@
+{
+  "workspaceId": "d4-g01-i-r1-aprime-r01",
+  "revision": 1,
+  "modules": 23,
+  "sourceBindings": 62,
+  "checks": 60,
+  "subjects": [
+    "student-name",
+    "student-id"
+  ],
+  "transferFingerprint": "0732a406fb6e5cf99c1e8be8c6343f4ddf98ba551e35691193f00c75807d0d51",
+  "planFingerprint": "71bfc0d6b9faadabc27392f8b0e558a099fd725c10d5e1a631e2cbfaef6ccf3b",
+  "mode": "technical-pre-review"
+}

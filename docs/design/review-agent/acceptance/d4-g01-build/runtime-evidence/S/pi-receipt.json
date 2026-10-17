@@ -1,0 +1,36 @@
+{
+  "caseId": "d4-g01-s-technical-2465",
+  "runId": "run-pi-mvcn002p-7tw0j",
+  "fingerprint": "d5c6c4f596d7cb3e69ffa9bc707052328822b51652867fff0e0667523bd04b9f",
+  "verified": {
+    "complete": true,
+    "problems": []
+  },
+  "checks": 163,
+  "publicationAllowed": false,
+  "administrativeApproval": false,
+  "onlineModelRun": false,
+  "syntheticOnly": true,
+  "evidence": {
+    "documentVersionId": "doc-1-mvcn0024-v1",
+    "linkedSubject": "sub-g01-s-object-a",
+    "unlinkedSubject": "sub-g01-s-object-b",
+    "fact": "d2:object:g01-document-action:sp-01",
+    "links": [
+      {
+        "id": "evl-doc-1-mvcn0024-v1-sub-g01-s-object-a-1792256087894-th2i",
+        "documentVersionId": "doc-1-mvcn0024-v1",
+        "subjectId": "sub-g01-s-object-a",
+        "supportsFact": "d2:object:g01-document-action:sp-01",
+        "status": "confirmed",
+        "linkedBy": "user"
+      }
+    ],
+    "negativeResults": {
+      "aValid": "ACCEPTED",
+      "bCannotBorrow": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本",
+      "aStaleDocument": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本",
+      "unknownCannotPass": "D2_STUDENT_APPLICABILITY_UNKNOWN: 受控学籍条件未知，只能待核"
+    }
+  }
+}

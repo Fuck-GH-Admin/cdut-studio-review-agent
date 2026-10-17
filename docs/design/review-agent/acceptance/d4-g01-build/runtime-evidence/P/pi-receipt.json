@@ -1,0 +1,36 @@
+{
+  "caseId": "d4-g01-p-technical-2465",
+  "runId": "run-pi-mvcn0083-fip22",
+  "fingerprint": "6fbd5671e83c3288422a6fa57e18c49c459e13422de3cd8a431eaf61b757f00f",
+  "verified": {
+    "complete": true,
+    "problems": []
+  },
+  "checks": 269,
+  "publicationAllowed": false,
+  "administrativeApproval": false,
+  "onlineModelRun": false,
+  "syntheticOnly": true,
+  "evidence": {
+    "documentVersionId": "doc-1-mvcn0072-v1",
+    "linkedSubject": "sub-g01-p-object-a",
+    "unlinkedSubject": "sub-g01-p-object-b",
+    "fact": "d2:object:g01-procedure-subject:prose-s0-part1",
+    "links": [
+      {
+        "id": "evl-doc-1-mvcn0072-v1-sub-g01-p-object-a-1792256088082-epji",
+        "documentVersionId": "doc-1-mvcn0072-v1",
+        "subjectId": "sub-g01-p-object-a",
+        "supportsFact": "d2:object:g01-procedure-subject:prose-s0-part1",
+        "status": "confirmed",
+        "linkedBy": "user"
+      }
+    ],
+    "negativeResults": {
+      "aValid": "ACCEPTED",
+      "bCannotBorrow": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本",
+      "aStaleDocument": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本",
+      "unknownCannotPass": "D2_GENERIC_EVIDENCE_SCOPE_MISSING: 本对象未绑定对应事实的有效材料版本"
+    }
+  }
+}
