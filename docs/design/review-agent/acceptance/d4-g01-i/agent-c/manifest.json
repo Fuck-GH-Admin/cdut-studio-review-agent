@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "project": "G01-I v1.7",
+  "phase": "C0",
+  "aFixedSha": "e3321add7322fba29169f0faeac9bc66571067e0",
+  "aPr": 81,
+  "d3R0": "4b191c729f3d5f8135c73b87c17642023f6c3986",
+  "sourceSha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+  "businessSourceExpectedSha256": "52ae0cdc27a16bb46659cd43d3e78632c44d8b5ccc86a18559b263512f51f329",
+  "bInputSha256": "33ad9e1fe5104cae91463218293ae58ccd27c934ff091b0687b20c64d699b26c",
+  "bGoldSha256ExpectedButNotRead": "bec6dac84382bb7c47d240c2da552250a9a47b382ba9597d419726c0d5efcb03",
+  "safePublicArtifacts": [
+    "preflight.md",
+    "input-to-runtime-contract.md",
+    "execution-matrix.json",
+    "runtime/README.md",
+    "runtime/pre-gold-freeze.json",
+    "tests/verify_input_zip.py",
+    "tests/g01-i-integration-c0.test.ts",
+    "issues/blockers.md",
+    "integration-verdict.md",
+    "manifest.json"
+  ],
+  "testCommands": [
+    "python3 docs/design/review-agent/acceptance/d4-g01-i/agent-c/tests/verify_input_zip.py <LOCAL_PRIVATE_INPUT_ZIP>",
+    "bun test docs/design/review-agent/acceptance/d4-g01-i/agent-c/tests/g01-i-integration-c0.test.ts"
+  ],
+  "results": {
+    "localInputIntegrity": "PASS",
+    "independentBunEngine": "NOT_RUN_AWAITING_CI",
+    "businessRuntime": "NOT_RUN_BLOCKED_ENGINE",
+    "caseRuns": 0,
+    "caseCount": 28,
+    "pi": "NOT_RUN",
+    "gold": "NOT_RUN"
+  },
+  "publicationAllowed": false,
+  "sourceAuthority": "candidate only",
+  "isolatedGold": false,
+  "warning": "Not official approval; do not infer ACL enforcement from staged workflow."
+}
