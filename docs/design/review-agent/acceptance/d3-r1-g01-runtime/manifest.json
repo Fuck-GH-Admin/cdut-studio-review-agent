@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "status": "R1_DRAFT_TECHNICAL_CANDIDATE_PENDING_INDEPENDENT_REVIEW",
+  "parentSha": "4b191c729f3d5f8135c73b87c17642023f6c3986",
+  "codeSnapshotSha": "9810402cab7a56235d1a0af9454d4e0da050961a",
+  "branch": "feat/d3-r1-g01-typed-runtime-r01",
+  "draftPrUrl": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/83",
+  "baseBranch": "release/d3-r0-20261011",
+  "sourceReference": {
+    "commit": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+    "sha256": "52ae0cdc27a16bb46659cd43d3e78632c44d8b5ccc86a18559b263512f51f329"
+  },
+  "schemaVersions": {
+    "authoring": 1,
+    "portableBundle": 1,
+    "legacyD2Plan": 1,
+    "studentD2Plan": 2,
+    "trustedSyntheticRegistry": 1
+  },
+  "dependencyInstallation": "bun install --frozen-lockfile in isolated CI",
+  "verifiedPriorGreen": {
+    "head": "8a62fbe151951cf0248ca3b93fb327886ff16a9b",
+    "runId": 38998459675,
+    "artifactId": 12088072721,
+    "studentTests": {
+      "pass": 9,
+      "fail": 0
+    },
+    "legacyTests": {
+      "pass": 52,
+      "fail": 0
+    },
+    "typecheck": "PASS"
+  },
+  "extendedScenarios": {
+    "state": "CI_PENDING",
+    "added": "multi-axis scenarios; explicit scoped fallback rejection; D1/D3/D2 real CLI chain",
+    "ciHead": "9810402cab7a56235d1a0af9454d4e0da050961a"
+  },
+  "independentSignoff": false,
+  "merged": false,
+  "releaseStatus": "NOT_RELEASED",
+  "actualOperationalScope": [
+    "Synthetic enrolled student: name/credential independent technical rules",
+    "Two separately reviewed fact links to one active registered document version",
+    "Unknown synthetic registry -> awaiting-confirmation",
+    "Technical pre-review prepare/submit/verify Pi Check results"
+  ],
+  "unmet": [
+    "Old A#81 full G01 migration not performed",
+    "General advanced graph still rejected",
+    "28 B cases & Gold not run",
+    "Official policy & registry not verified",
+    "Online model not run",
+    "Independent release signoff pending"
+  ]
+}
