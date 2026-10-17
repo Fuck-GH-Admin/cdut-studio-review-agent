@@ -47,6 +47,29 @@ for(const sec of secs){if(sec.n===ruleSec.n)continue;
  module(name,tasks);
  nonR.push({section:sec.n,title:sec.title,sourceLocator:'§'+sec.n,parts:chunks.length,checks:tasks.map(t=>s.templateId+'@1:module/use-'+name+'/'+t.id),ids:[...new Set([...sec.body.matchAll(/\b(F|MS|M|EV|EG|BR|AX|ST|CFG|PH)-?0?(\d{1,3})\b/g)].map(x=>x[1]+'-'+String(x[2]).padStart(2,'0')))]});
 }
+// Preserve the Markdown front matter and common R-section envelope. Numbered R rows
+// do not themselves cover policy applicability preambles, table legends or source scope.
+const front=text.slice(0,text.search(/^##\s+1\./m)).trim();
+const rowLines=ruleSec.body.split('\n');
+const isRHeader=l=>/^#{3,4}\s+`?R-0?\d{1,3}/.test(l);
+const isRRow=l=>/^\|\s*`?R-0?\d{1,3}(?:\s|\||`)/.test(l);
+const firstR=rowLines.findIndex(l=>isRHeader(l)||isRRow(l));
+const lastR=rowLines.findLastIndex(l=>isRHeader(l)||isRRow(l));
+if(firstR<0||lastR<0)throw Error('rule envelope detection failed '+s.id);
+const rulePreamble=rowLines.slice(0,firstR).join('\n').trim();
+const ruleTail=isRRow(rowLines[firstR])?rowLines.slice(lastR+1).join('\n').trim():'';
+for(const extra of [
+ {name:'front',title:'业务母版原始头部/版本/权威声明',body:front,locator:'front-matter'},
+ {name:'rule-envelope',title:'§'+ruleSec.n+' 规则共同前提与表格注释',body:rulePreamble+(ruleTail?'\n'+ruleTail:''),locator:'§'+ruleSec.n+'/shared-invariants'}
+]){
+ if(!extra.body)throw Error(s.id+' missing shared invariant '+extra.name);
+ const name='extra-'+extra.name,sid='source-'+name,fact='d2:object:'+s.businessType+':'+name;
+ source(sid,s.id+' '+extra.title,extra.locator);
+ add(name,'full',sid,fact,'EXTRA-'+extra.name,extra.locator);
+ module(name,[makeTask('full',extra.title,extra.body)]);
+ nonR.push({section:extra.name,title:extra.title,sourceLocator:extra.locator,parts:1,
+ checks:[s.templateId+'@1:module/use-'+name+'/full'],ids:[]});
+}
 for(const axis of [...s.axes.primary,...s.axes.conditions]){const name='axis-'+axis,sid='source-'+name,fact='d2:object:'+s.businessType+':axis-'+axis;source(sid,'§4 条件轴 '+axis,'§4/'+axis);add(name,'verify',sid,fact,'AXIS-'+axis,'§4/'+axis);module(name,[makeTask('verify','逐对象情景 '+axis,'依原文§4对当前对象确认'+axis+'，primary每对象恰选一，conditions可叠加且须逐项三态；其它互斥轴仍由完整§4原文的语义模块核查。')],axis);}
 const template={templateId:s.templateId,version:1,name:s.title,purpose:'G03 '+s.id+' 完整原文技术预审',limits:'不自动签发学校许可；所有候选校本条件未确认只能待核',source:artificial,scenarios:[...s.axes.primary,...s.axes.conditions],genericScenarioAxes:s.axes,modules:uses,localTasks:[makeTask('boundary','整案审核目的和许可禁区','保持本业务与相邻领域的路由界线；逐对象结论不可替代整案行政许可；不能从上一对象继承审批事件。')]};
 links.push({checkId:s.templateId+'@1:local/boundary',sourceIds:['source-section-01'],caseScopeJustification:'只就整个申请案卷的业务目标及行政权限边界作一次整案审查。'});
