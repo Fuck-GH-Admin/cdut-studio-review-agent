@@ -1,0 +1,183 @@
+{
+  "templateId": "G06-T06",
+  "base": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "bundleFingerprint": "b4bcd2f125db75df72803dd846506155ed0fa166f9e71b02016cf0dc45c48e84",
+  "roundTripEqual": true,
+  "planFingerprint": "6e93d630b44fab60fcf3d8986277dca6a196728ec365376acdda874fe7c4d13b",
+  "subjects": [
+    "g06-t06-subject-1",
+    "g06-t06-subject-2"
+  ],
+  "checkCount": 124,
+  "policy": "unverified-policy",
+  "runId": "run-pi-mvcmoxm3-ifp18",
+  "verification": {
+    "complete": true,
+    "problems": []
+  },
+  "scenarioBranches": [
+    {
+      "objectKey": "g06-t06-test-1",
+      "primary": "br-01",
+      "conditions": [
+        {
+          "id": "br-03",
+          "applicability": "applicable",
+          "sourceId": "src-axis-br-03",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br-04",
+          "applicability": "unknown",
+          "sourceId": "src-axis-br-04",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "br-06",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-br-06",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "c-01",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-c-01",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "c-02",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-c-02",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "c-03",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-c-03",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "c-04",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-c-04",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "c-05",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-c-05",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "c-06",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-c-06",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "c-07",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-c-07",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "reviewer"
+        }
+      ]
+    },
+    {
+      "objectKey": "g06-t06-test-2",
+      "primary": "br-02",
+      "conditions": [
+        {
+          "id": "br-03",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-br-03",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br-04",
+          "applicability": "applicable",
+          "sourceId": "src-axis-br-04",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "br-06",
+          "applicability": "unknown",
+          "sourceId": "src-axis-br-06",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "c-01",
+          "applicability": "unknown",
+          "sourceId": "src-axis-c-01",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "c-02",
+          "applicability": "unknown",
+          "sourceId": "src-axis-c-02",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "c-03",
+          "applicability": "unknown",
+          "sourceId": "src-axis-c-03",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "c-04",
+          "applicability": "unknown",
+          "sourceId": "src-axis-c-04",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "c-05",
+          "applicability": "unknown",
+          "sourceId": "src-axis-c-05",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "c-06",
+          "applicability": "unknown",
+          "sourceId": "src-axis-c-06",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "c-07",
+          "applicability": "unknown",
+          "sourceId": "src-axis-c-07",
+          "sourceVersionId": "g06-t06-v01-77f89ac22112477e",
+          "decidedBy": "undetermined"
+        }
+      ]
+    }
+  ],
+  "evidence": {
+    "documentVersionId": "doc-1-mvcmoxl8-v1",
+    "linkedSubject": "g06-t06-subject-1",
+    "unlinkedSubject": "g06-t06-subject-2",
+    "aPassesEvidenceGuard": true,
+    "bRejectedEvidenceGuard": true,
+    "staleVersionRejected": true
+  },
+  "publicationAllowed": false,
+  "onlineLLMRun": false,
+  "administrativeApproval": false
+}

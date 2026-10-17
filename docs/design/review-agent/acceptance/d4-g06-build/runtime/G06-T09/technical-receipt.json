@@ -1,0 +1,197 @@
+{
+  "templateId": "G06-T09",
+  "base": "a7a6a11d4840ad64cfc858c17b35f35180adf063",
+  "bundleFingerprint": "ae7718ea78d30d47aab9b83f7c1bb97ad1f41df25eca46eefb54cedab4608fa8",
+  "roundTripEqual": true,
+  "planFingerprint": "70a482232f85c076d616943361f544be4483daf2492635120d683568e15711ea",
+  "subjects": [
+    "g06-t09-subject-1",
+    "g06-t09-subject-2"
+  ],
+  "checkCount": 126,
+  "policy": "unverified-policy",
+  "runId": "run-pi-mvcmoy23-8xqct",
+  "verification": {
+    "complete": true,
+    "problems": []
+  },
+  "scenarioBranches": [
+    {
+      "objectKey": "g06-t09-test-1",
+      "primary": "br-01",
+      "conditions": [
+        {
+          "id": "ax-02",
+          "applicability": "applicable",
+          "sourceId": "src-axis-ax-02",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-03",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-03",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-04",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-04",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-05",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-05",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-06",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-06",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-07",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-07",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-08",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-08",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-09",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-09",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-10",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-10",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-11",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-11",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-12",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-12",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "reviewer"
+        }
+      ]
+    },
+    {
+      "objectKey": "g06-t09-test-2",
+      "primary": "br-02",
+      "conditions": [
+        {
+          "id": "ax-02",
+          "applicability": "not-applicable",
+          "sourceId": "src-axis-ax-02",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-03",
+          "applicability": "applicable",
+          "sourceId": "src-axis-ax-03",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "ax-04",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-04",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-05",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-05",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-06",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-06",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-07",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-07",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-08",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-08",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-09",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-09",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-10",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-10",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-11",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-11",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "ax-12",
+          "applicability": "unknown",
+          "sourceId": "src-axis-ax-12",
+          "sourceVersionId": "g06-t09-v01-aaf92ece90671016",
+          "decidedBy": "undetermined"
+        }
+      ]
+    }
+  ],
+  "evidence": {
+    "documentVersionId": "doc-1-mvcmoy1c-v1",
+    "linkedSubject": "g06-t09-subject-1",
+    "unlinkedSubject": "g06-t09-subject-2",
+    "aPassesEvidenceGuard": true,
+    "bRejectedEvidenceGuard": true,
+    "staleVersionRejected": true
+  },
+  "publicationAllowed": false,
+  "onlineLLMRun": false,
+  "administrativeApproval": false
+}
