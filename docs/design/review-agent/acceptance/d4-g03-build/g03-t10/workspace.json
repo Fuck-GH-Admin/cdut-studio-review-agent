@@ -1950,26 +1950,6 @@
         "evidenceFacts": [
           "d2:object:g03-publicity-placement:r03"
         ]
-      },
-      "gate": {
-        "when": {
-          "kind": "case-stage",
-          "stages": [
-            "submitted",
-            "reviewing",
-            "awaiting-supplement"
-          ]
-        },
-        "material": {
-          "provider": "applicant",
-          "dueStages": [
-            "submitted",
-            "reviewing"
-          ],
-          "alternatives": [
-            "d2:object:g03-publicity-placement:r03"
-          ]
-        }
       }
     },
     {
@@ -2255,26 +2235,6 @@
         "evidenceFacts": [
           "d2:object:g03-publicity-placement:r16"
         ]
-      },
-      "gate": {
-        "when": {
-          "kind": "case-stage",
-          "stages": [
-            "reviewing",
-            "awaiting-final",
-            "decided"
-          ]
-        },
-        "material": {
-          "provider": "authority",
-          "dueStages": [
-            "awaiting-final",
-            "decided"
-          ],
-          "alternatives": [
-            "d2:object:g03-publicity-placement:r16"
-          ]
-        }
       }
     },
     {
