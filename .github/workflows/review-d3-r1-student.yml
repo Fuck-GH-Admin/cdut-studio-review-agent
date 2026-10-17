@@ -1,0 +1,43 @@
+name: D3-R1 G01-I typed runtime evidence
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/review-d3-r1-student.yml'
+      - 'packages/shared/src/types/review-*.ts'
+      - 'apps/electron/src/main/lib/review/**'
+      - 'docs/design/review-agent/acceptance/d3-r1-g01-runtime/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  scoped-r1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: mkdir -p r1-evidence && git rev-parse HEAD | tee r1-evidence/head-sha.txt
+      - name: Install frozen deps
+        run: bun install --frozen-lockfile 2>&1 | tee r1-evidence/install.log
+      - name: R1 red-to-green real engine probes
+        run: |
+          set -o pipefail
+          bun test --isolate --timeout 30000 apps/electron/src/main/lib/review/review-d3-r1-student.test.ts 2>&1 | tee r1-evidence/student-tests.log
+      - name: Typecheck
+        if: always()
+        run: |
+          set -o pipefail
+          bun run typecheck 2>&1 | tee r1-evidence/typecheck.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: d3-r1-g01-probes-${{ github.run_id }}-${{ github.run_attempt }}
+          path: r1-evidence/
+          retention-days: 30
