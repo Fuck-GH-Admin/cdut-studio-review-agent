@@ -71,26 +71,7 @@
       "evidenceFact": "d2:object:g03-classroom-slot:r04",
       "disposition": "implemented-not-tested",
       "policy": "POLICY_HOLD",
-      "gate": {
-        "when": {
-          "kind": "case-stage",
-          "stages": [
-            "submitted",
-            "reviewing",
-            "awaiting-supplement"
-          ]
-        },
-        "material": {
-          "provider": "applicant",
-          "dueStages": [
-            "submitted",
-            "reviewing"
-          ],
-          "alternatives": [
-            "d2:object:g03-classroom-slot:r04"
-          ]
-        }
-      }
+      "gate": null
     },
     {
       "sourceId": "R-17",
@@ -244,26 +225,7 @@
       "evidenceFact": "d2:object:g03-classroom-slot:r15",
       "disposition": "implemented-not-tested",
       "policy": "POLICY_HOLD",
-      "gate": {
-        "when": {
-          "kind": "case-stage",
-          "stages": [
-            "reviewing",
-            "awaiting-final",
-            "decided"
-          ]
-        },
-        "material": {
-          "provider": "authority",
-          "dueStages": [
-            "awaiting-final",
-            "decided"
-          ],
-          "alternatives": [
-            "d2:object:g03-classroom-slot:r15"
-          ]
-        }
-      }
+      "gate": null
     },
     {
       "sourceId": "R-18",
