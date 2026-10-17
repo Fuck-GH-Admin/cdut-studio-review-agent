@@ -96,7 +96,7 @@ for(const key of ['I','A','C','S','P'] as const){
       sessionId:'d4-g01-'+key+'-session',caseId:id,runId:prepared.runId},triggeredBy:'user',
     result:{summary:'Synthetic G01 '+key+' candidate: all authority/real-world claims pending independent confirmation',
       checks:created.entity!.mapping.map(m=>({
-        ruleId:m.ruleId,subjectIds:m.subjectId?[m.subjectId]:[],status:'awaiting-confirmation' as const,
+        ruleId:m.ruleId,subjectIds:m.subjectId?[m.subjectId]:created.entity!.subjects.map(subject=>subject.id),status:'awaiting-confirmation' as const,
         reason:'真实制度与材料真实性未认证；本回执仅检验D2/Pi受控技术路径',sourceRefs:[],
       })),finish:true}})
   if(result.rejected.length||result.missingChecks.length)
