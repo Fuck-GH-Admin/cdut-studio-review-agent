@@ -1,0 +1,61 @@
+{
+  "template": "G07-T03",
+  "authoring_version": "0.1",
+  "result": "BUSINESS_MD_DRAFT_WITH_GAPS",
+  "fields": 42,
+  "slots": 25,
+  "rules": 33,
+  "branches": 14,
+  "scenarios": 16,
+  "stages": 7,
+  "evidence_groups": 9,
+  "official_source_ids": 31,
+  "case_walkthroughs": 20,
+  "checks": {
+    "all_18_major_sections": true,
+    "all_42_field_ids_present": true,
+    "all_25_material_ids_present": true,
+    "all_33_rules_as_headers": true,
+    "all_14_branches": true,
+    "all_16_scenarios": true,
+    "all_7_stages": true,
+    "all_9_evidence_groups": true,
+    "all_rules_trace": true,
+    "rule_sources_known": true,
+    "source_links_in_main": true,
+    "cd12_official_url_in_main": true,
+    "new_school_source_ids": true,
+    "no_published_status": true,
+    "future_evidence_not_required": true,
+    "four_inputs_present": true,
+    "strict_approval_gate": true
+  },
+  "files": {
+    "G07-T03_正式业务模板_MD_v0.1.md": {
+      "bytes": 141566,
+      "sha256": "fec6ee135ad9b5f644dfe8415440e34f633e851c690deba678a2097f2fc98d98"
+    },
+    "G07-T03_规则追踪矩阵.md": {
+      "bytes": 31583,
+      "sha256": "828137bd6caab332933775bcf47538722c3975f3cde75982ea0257e606466d68"
+    },
+    "G07-T03_作者自检与问题修订记录.md": {
+      "bytes": 6077,
+      "sha256": "b7c2fbe308052eb405a66cbcc149b108388369d3a5d5676d07a3d2214d0923e2"
+    },
+    "G07-T03_编辑器共性模块候选.md": {
+      "bytes": 4486,
+      "sha256": "158024d93dad986fd3a87405a1bc10ce38632a2e74783acf493f7fabd6240812"
+    },
+    "G07-T03_测试对接说明.md": {
+      "bytes": 3890,
+      "sha256": "d85a0c97fa8196672396e1e2b94e024fd5e2554e0152bb2074764313ce66655b"
+    }
+  },
+  "not_tested": [
+    "独立D金标",
+    "生产App导入/运行",
+    "真实CDUT OA/经费接口",
+    "校本完整实施细则"
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "schema_version": "G07-T03/C-author-E0-r02/v1",
+  "domain_id": "G07",
+  "template_id": "G07-T03",
+  "formal_title": "物资与服务采购事前经费合规预审",
+  "audit_reference": {
+    "branch": "audit/g07-e-v1-r01",
+    "frozen_head": "ccbf9bd6b16c9472bb35b03cd8b676d87c6cd6ab",
+    "decision": "BLOCKED_INPUT",
+    "decision_unchanged": true
+  },
+  "author_source": {
+    "business_template_version": "v0.1",
+    "delivery_standard": "C v2.1",
+    "source_author_commit": "NOT_COMMITTED",
+    "source_git_sha": "NOT_AVAILABLE",
+    "original_c_v0_1_zip_sha256": "bb69afe241f7c7a842dbfa78ff7d0eaa404f7701cda84759cccc24528e73bbe0",
+    "c_v2_1_zip_sha256": "58cf292ea0a44d16ff080b397bfe9ac623c70b6c39cdf4ea5ac57b6e89657567",
+    "status": "BUSINESS_MD_DRAFT_WITH_GAPS"
+  },
+  "upstream_baseline": {
+    "a_v0_2_zip_sha256": "9da75137b5a9cb3f948a623a655d99fa7b6ce11e9138107518272a42b799e213",
+    "b_t03_v0_2_zip_sha256": "6eeb5576e953a46179b9fcbfb0889d4a90b98c8cd69ccb63f213c3372bc983bf",
+    "source_locations": "original user conversation artifacts; A/B author Git commits NOT_AVAILABLE",
+    "not_uploaded_to_this_c_author_directory": true
+  },
+  "public_safe": true,
+  "contains_hidden_gold": false,
+  "contains_d_expected_answers": false,
+  "contains_sensitive_trusted_records": false,
+  "status": "C_T03_RECOVERED_FREEZE_CANDIDATE_ONLY_NOT_E_APPROVED",
+  "files": [
+    {
+      "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/C阶段_静态审计结果.json",
+      "source_sha256": "e74d9947400ddfbdd228ab002f8fc8faea6bf77525e2627501c7ab17b9393205",
+      "git_blob_sha": "5055888f498893ba80aa0a48de5d2dcd1e0c34bb",
+      "size_bytes": 1819,
+      "source_version": "C-v0.1-original-or-history",
+      "byte_identical_to_recovered_zip": true
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/G07-T03_Cv2.0至v2.1_迁移核验结论.md",
+      "source_sha256": "608bdb2395d0fbdf6d8d698588ea4b838e2eee2e75c0b46ed89095dca19e65ad",
+      "git_blob_sha": "bacfa5705552f3bd6cc4338f63a632de31b0c2db",
+      "size_bytes": 4815,
+      "source_version": "C2.1-handoff",
+      "byte_identical_to_recovered_zip": true
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/G07-T03_Cv2.1_SHA256_交付清单.json",
+      "source_sha256": "285eeae883b3ddab9a4f2977817bf26869b7fc68d66fafe624cbd42edbff0f2b",
+      "git_blob_sha": "679047dfa97b81df1c410f04cf4e556f829e0c17",
+      "size_bytes": 3954,
+      "source_version": "C2.1-handoff",
+      "byte_identical_to_recovered_zip": true
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/G07-T03_作者自检与问题修订记录.md",
+      "source_sha256": "b7c2fbe308052eb405a66cbcc149b108388369d3a5d5676d07a3d2214d0923e2",
+      "git_blob_sha": "d0a6bb3d8927da6741b6d04a311d1c2b63f52ce9",
+      "size_bytes": 6077,
+      "source_version": "C-v0.1-original-or-history",
+      "byte_identical_to_recovered_zip": true
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/G07-T03_正式业务模板_MD_v0.1.md",
+      "source_sha256": "fec6ee135ad9b5f644dfe8415440e34f633e851c690deba678a2097f2fc98d98",
+      "git_blob_sha": "734f9fdeb16ee25c8b4e5b339b02a2af9baf1aee",
+      "size_bytes": 141566,
+      "source_version": "C-v0.1-original-or-history",
+      "byte_identical_to_recovered_zip": true
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/G07-T03_测试对接说明.md",
+      "source_sha256": "d85a0c97fa8196672396e1e2b94e024fd5e2554e0152bb2074764313ce66655b",
+      "git_blob_sha": "856a8256896b81a9aaf3a33f3d1846aa8a22ed47",
+      "size_bytes": 3890,
+      "source_version": "C-v0.1-original-or-history",
+      "byte_identical_to_recovered_zip": true
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/G07-T03_编辑器共性模块候选.md",
+      "source_sha256": "158024d93dad986fd3a87405a1bc10ce38632a2e74783acf493f7fabd6240812",
+      "git_blob_sha": "2a1ab70c23823cdf9e3a484bcc3f543d30ab480b",
+      "size_bytes": 4486,
+      "source_version": "C-v0.1-original-or-history",
+      "byte_identical_to_recovered_zip": true
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/G07-T03_规则追踪矩阵.csv",
+      "source_sha256": "680bbc2830107f6abcb04389c8f59bc75ddd401a9c5516245c6ad4ef433aec26",
+      "git_blob_sha": "7c00499a6bbbbf6ba90ce02143337dcdb2f0d48f",
+      "size_bytes": 18446,
+      "source_version": "C-v0.1-original-or-history",
+      "byte_identical_to_recovered_zip": true
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/G07-T03_规则追踪矩阵.md",
+      "source_sha256": "828137bd6caab332933775bcf47538722c3975f3cde75982ea0257e606466d68",
+      "git_blob_sha": "68457ace4c4e477a3c1e29950a354bae836c2fba",
+      "size_bytes": 31583,
+      "source_version": "C-v0.1-original-or-history",
+      "byte_identical_to_recovered_zip": true
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/G07-T03_验收对接说明.md",
+      "source_sha256": "44992650b288e573394b028f54498cf0d4701573b46084b58c5729dde591d710",
+      "git_blob_sha": "64aa7b4278e333045cff5f2dc97a6701917238b1",
+      "size_bytes": 9132,
+      "source_version": "C2.1-handoff",
+      "byte_identical_to_recovered_zip": true
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/README_交付阅读顺序.md",
+      "source_sha256": "434cb646d39f00dd2cfd85ff6e5de6b8fdc88f4d28175a5eddf996aa6d4ba55f",
+      "git_blob_sha": "ea9eac14ca7fac40c847fdab9d3b7ee55c3dfb58",
+      "size_bytes": 938,
+      "source_version": "C-v0.1-original-or-history",
+      "byte_identical_to_recovered_zip": true
+    }
+  ],
+  "missing_not_blocking_C_source": [
+    "school_non_government_procurement_full_current_text:SOURCE_PENDING",
+    "school_actual_procurement_authority_map:SOURCE_PENDING",
+    "procurement_demand_attachment_full_text:SOURCE_PENDING"
+  ],
+  "downstream_r02_required": {
+    "E0": "Re-hash and verify only G07-T03 C artifacts and provenance; separately resolve other TXX, A/B and D controlled inputs",
+    "E1": "Independent official-source evidence scope/lock BEFORE reading C or D content",
+    "E2": "Cross-check frozen C against separately supplied authorized D artifacts only after E1 lock",
+    "E3": "Document disagreements, authority boundaries and source policy; rerun only after gates"
+  },
+  "forbidden": "Do not read/publish D hidden Gold, alter E r01 verdict, or treat this archive commit as original C author commit."
+}
