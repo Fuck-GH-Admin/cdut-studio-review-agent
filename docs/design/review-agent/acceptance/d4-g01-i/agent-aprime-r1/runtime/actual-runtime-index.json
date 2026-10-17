@@ -1,0 +1,71 @@
+{
+  "sourceHead": "ca1c4735efad18505d6e5fb9f51b0090c8a7ef71",
+  "ciRunId": 39009162738,
+  "ciUrl": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39009162738",
+  "artifactId": 12092321445,
+  "artifactUrl": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39009162738/artifacts/12092321445",
+  "release": "NOT_RELEASED",
+  "verified": {
+    "aprimeTests": {
+      "passed": 8,
+      "failed": 0
+    },
+    "regression": {
+      "passed": 36,
+      "failed": 0
+    },
+    "typecheck": "PASS",
+    "boundaries": "PASS",
+    "prCi": "PASS",
+    "prCiRunId": 39009162733
+  },
+  "runtime": {
+    "name": {
+      "schemaVersion": 2,
+      "targets": 1,
+      "subjects": 1,
+      "checks": 39,
+      "fingerprint": "df583e96e47568a20b99302983fb90e4f20fe97c08d4c618a7357d6e14cce95c",
+      "file": "actual-name-plan.json",
+      "sha256": "8b40295a2001bf355f4c736b4c499cbea66cd735755b4ddb43fdaf1809903611"
+    },
+    "two": {
+      "schemaVersion": 2,
+      "targets": 2,
+      "subjects": 2,
+      "checks": 60,
+      "fingerprint": "71bfc0d6b9faadabc27392f8b0e558a099fd725c10d5e1a631e2cbfaef6ccf3b",
+      "file": "actual-two-field-plan.json",
+      "sha256": "28062fe66e041a15774a0ea050a848b93c13658cd4d744ee898915a4bf0b8dbf"
+    },
+    "scenarios": {
+      "count": 13,
+      "file": "actual-13-scenarios.json",
+      "sha256": "4cad97449f555e63132e60d945e0d6a002d79dba20998eb2565bf6d3363796d0"
+    },
+    "caseRun": {
+      "caseId": "aprime-d2-pi-case",
+      "runId": "run-pi-mvc04xkw-8ixli",
+      "checks": 60,
+      "evidenceLinks": 2,
+      "status": "completed",
+      "approved": false,
+      "file": "actual-case-run.json",
+      "sha256": "5440e5594bbdaf4149d919446c5d8c5c65ffc03f305876a5befc3a798573eadb"
+    },
+    "cli": {
+      "caseId": "aprime-cli-case",
+      "d1": true,
+      "d3": true,
+      "d2": true,
+      "transferFingerprint": "0732a406fb6e5cf99c1e8be8c6343f4ddf98ba551e35691193f00c75807d0d51",
+      "file": "actual-cli-chain.json",
+      "sha256": "aec1d0f07f87a3c6c7524081a33ef23b064198dba9befa7a64d8f8d7227e5543"
+    }
+  },
+  "evidenceNotes": [
+    "All JSON source bytes are retained as actual GitHub Actions Artifact, not fake data.",
+    "Pi Run is synthetic awaiting-confirmation technical completion; not model accuracy or school approval.",
+    "B Gold not accessed, R1 PR #83 remains draft not released."
+  ]
+}

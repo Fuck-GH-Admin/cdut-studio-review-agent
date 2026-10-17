@@ -1,0 +1,53 @@
+name: D4 G01-I A-prime R1 migration evidence
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/d4-g01-aprime.yml'
+      - 'apps/electron/src/main/lib/review/review-d4-g01-aprime.test.ts'
+      - 'docs/design/review-agent/acceptance/d4-g01-i/agent-aprime-r1/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  aprime-author-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      APRIME_RUNTIME_EVIDENCE_DIR: aprime-evidence
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: |
+          mkdir -p aprime-evidence
+          git rev-parse HEAD > aprime-evidence/checkout-sha.txt
+      - name: Install frozen deps
+        run: |
+          set -o pipefail
+          bun install --frozen-lockfile 2>&1 | tee aprime-evidence/install.log
+      - name: Real A-prime D1/D3/D2/Pi test
+        run: |
+          set -o pipefail
+          bun test --isolate --timeout 60000 apps/electron/src/main/lib/review/review-d4-g01-aprime.test.ts 2>&1 | tee aprime-evidence/aprime-tests.log
+      - name: Workspace typecheck and boundaries
+        if: always()
+        run: |
+          set -o pipefail
+          bun run typecheck 2>&1 | tee aprime-evidence/typecheck.log
+          bun run check:boundaries 2>&1 | tee aprime-evidence/boundaries.log
+      - name: R1 and old engine regressions
+        if: always()
+        run: |
+          set -o pipefail
+          bun test --isolate --timeout 60000 apps/electron/src/main/lib/review/review-d3-r1-student.test.ts apps/electron/src/main/lib/review/review-d2-execution-gates.test.ts apps/electron/src/main/lib/review/review-authoring-v1.test.ts 2>&1 | tee aprime-evidence/regression.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: g01-aprime-evidence
+          path: aprime-evidence/
+          retention-days: 30

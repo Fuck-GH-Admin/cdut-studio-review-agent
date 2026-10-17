@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "status": "R1_APRIME_AUTHOR_CANDIDATE",
+  "parent": "94d5ec32b6de1ac0c185b63b4aabfddaa29b1649",
+  "oldA": "e3321add7322fba29169f0faeac9bc66571067e0",
+  "originCommit": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+  "originSha256": "52ae0cdc27a16bb46659cd43d3e78632c44d8b5ccc86a18559b263512f51f329",
+  "oldTemplateVersion": 1,
+  "newTemplateVersion": 2,
+  "originalModules": 10,
+  "newConditionalModules": 13,
+  "originalCheckCount": 49,
+  "originalLedgerCount": 85,
+  "newBindingCount": 62,
+  "runStatus": "PASS_CI_SYNTHETIC_TECHNICAL_ONLY",
+  "policyAuthority": "HOLD",
+  "officialRegistry": "NOT_CONNECTED",
+  "independentGold": "UNREAD",
+  "adminApproval": false,
+  "ciSourceHead": "ca1c4735efad18505d6e5fb9f51b0090c8a7ef71",
+  "ciRunId": 39009162738,
+  "artifactId": 12092321445,
+  "prCiRunId": 39009162733,
+  "onlineModel": "NOT_RUN",
+  "migrationLimitations": [
+    "13 scenarios explicit technical selection only, not automatic reason verification",
+    "semantic checks do not prove all original review duties fulfilled",
+    "D2_UNMAPPED_ADVANCED remains fail closed",
+    "P0–P7 school approval stages unavailable without trusted workflow"
+  ]
+}
