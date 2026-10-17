@@ -32,7 +32,7 @@
     "R-26",
     "R-27"
   ],
-  "authoredChecks": 57,
+  "authoredChecks": 59,
   "entries": [
     {
       "sourceId": "R-01",
@@ -568,6 +568,28 @@
       "gate": null
     },
     {
+      "sourceId": "EXTRA-front",
+      "locator": "front-matter",
+      "technicalCheckId": "g03-t12@1:module/use-extra-front/full",
+      "moduleId": "g03-t12-extra-front",
+      "sourceBinding": "source-extra-front",
+      "evidenceFact": "d2:object:g03-sports-slot:extra-front",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
+      "sourceId": "EXTRA-rule-envelope",
+      "locator": "§9/shared-invariants",
+      "technicalCheckId": "g03-t12@1:module/use-extra-rule-envelope/full",
+      "moduleId": "g03-t12-extra-rule-envelope",
+      "sourceBinding": "source-extra-rule-envelope",
+      "evidenceFact": "d2:object:g03-sports-slot:extra-rule-envelope",
+      "disposition": "implemented-not-tested",
+      "policy": "POLICY_HOLD",
+      "gate": null
+    },
+    {
       "sourceId": "AXIS-p-indoor",
       "locator": "§4/p-indoor",
       "technicalCheckId": "g03-t12@1:module/use-axis-p-indoor/verify",
@@ -1023,6 +1045,26 @@
         "M-01",
         "M-18"
       ]
+    },
+    {
+      "section": "front",
+      "title": "业务母版原始头部/版本/权威声明",
+      "sourceLocator": "front-matter",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-extra-front/full"
+      ],
+      "ids": []
+    },
+    {
+      "section": "rule-envelope",
+      "title": "§9 规则共同前提与表格注释",
+      "sourceLocator": "§9/shared-invariants",
+      "parts": 1,
+      "checks": [
+        "g03-t12@1:module/use-extra-rule-envelope/full"
+      ],
+      "ids": []
     }
   ],
   "semanticIndependentlyVerified": false,

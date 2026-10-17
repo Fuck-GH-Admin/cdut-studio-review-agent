@@ -628,6 +628,48 @@
         ]
       },
       {
+        "moduleId": "g03-t12-extra-front",
+        "version": 1,
+        "name": "体育场馆集体活动借用｜extra-front",
+        "purpose": "逐对象审核extra-front",
+        "scope": "当前g03-sports-slot",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "业务母版原始头部/版本/权威声明",
+            "requirement": "# G03-T12｜体育场馆集体活动借用——完整业务 Markdown 模板母版 v0.1\n\n> **模板稳定ID**：`G03-T12` ｜ **归属**：`G03-02` 师生共有·体育专用活动资源 ｜ **版本**：`business-md-0.1` ｜ **编制**：2026-10-11 ｜ **成熟度**：`BUSINESS_MD_DRAFT_WITH_GAPS`。\n>\n> **业务目标**：对有组织的体育集体活动申请使用指定体育馆/体育场子区域及时间段进行**材料与合规预审、权威事实核查、可追溯的审批待办整理**；只有取得有权学校主体的正式许可，才可报告“批准使用”。\n>\n> **研究基线**：B阶段 `v0.2` 全部文件（含F01–F50、M01–M18、Q01–Q27、S01–S24）；A阶段 G03 统一目录历史 `T12`。本母版是供产品设计、编写与校方配置的**语义规范**；不伪称已经取得成都理工大学2026在用申请表完整正文、最新审批权限、实时场馆台账或大型赛事安全阈值。\n>\n> **C/D独立**：本文件不是测试金标，不包含D的隐含答案；作者侧走查只证明内部规则叙述可以自洽，不能替代独立金标或真实程序验收。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
+        "moduleId": "g03-t12-extra-rule-envelope",
+        "version": 1,
+        "name": "体育场馆集体活动借用｜extra-rule-envelope",
+        "purpose": "逐对象审核extra-rule-envelope",
+        "scope": "当前g03-sports-slot",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "§9 规则共同前提与表格注释",
+            "requirement": "## 9. R-01—R-27 原子规则契约（每项可独立追踪）\n\n**统一规则包络（作用于以下每一条）**：`school_policy_id`已确认且覆盖当前校区、申请时间、活动时间、资源与角色；任一规则`when=unknown`→`RULE_CONFIG_PENDING`或`AUTHORITATIVE_DATA_PENDING`而不是默认为假；`false`且存在适用证据→`NOT_APPLICABLE`；规则的材料义务以当次生效校规为准。每条规则输出都需要`scope_item_id`,`rule_id`, `status`, `issue_code`, `field_refs`, `document_refs`, `authority_refs`, `action`,`severity`,`checked_at`,`policy_version`。以下`测试线索`仅供C作者自检及D独立选题参考，不是D隐藏答案。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
         "moduleId": "g03-t12-axis-p-indoor",
         "version": 1,
         "name": "体育场馆集体活动借用｜axis-p-indoor",
@@ -1009,6 +1051,16 @@
           {
             "id": "use-section-18",
             "moduleId": "g03-t12-section-18",
+            "version": 1
+          },
+          {
+            "id": "use-extra-front",
+            "moduleId": "g03-t12-extra-front",
+            "version": 1
+          },
+          {
+            "id": "use-extra-rule-envelope",
+            "moduleId": "g03-t12-extra-rule-envelope",
             "version": 1
           },
           {
@@ -1626,6 +1678,30 @@
       "reference": {
         "documentVersionId": "md-g03-t12-a6c7131a8b8dbf5e",
         "locator": "§18"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-front",
+      "kind": "policy-candidate",
+      "label": "G03-T12 业务母版原始头部/版本/权威声明",
+      "reference": {
+        "documentVersionId": "md-g03-t12-a6c7131a8b8dbf5e",
+        "locator": "front-matter"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-rule-envelope",
+      "kind": "policy-candidate",
+      "label": "G03-T12 §9 规则共同前提与表格注释",
+      "reference": {
+        "documentVersionId": "md-g03-t12-a6c7131a8b8dbf5e",
+        "locator": "§9/shared-invariants"
       },
       "verification": "content-checked",
       "applicability": "unknown",
@@ -2477,6 +2553,36 @@
         ],
         "evidenceFacts": [
           "d2:object:g03-sports-slot:section-18-1"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t12@1:module/use-extra-front/full",
+      "sourceIds": [
+        "source-extra-front"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-sports-slot"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-sports-slot:extra-front"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t12@1:module/use-extra-rule-envelope/full",
+      "sourceIds": [
+        "source-extra-rule-envelope"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-sports-slot"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-sports-slot:extra-rule-envelope"
         ]
       }
     },

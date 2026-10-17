@@ -649,6 +649,48 @@
         ]
       },
       {
+        "moduleId": "g03-t03-extra-front",
+        "version": 1,
+        "name": "校园公共活动场地借用｜extra-front",
+        "purpose": "逐对象审核extra-front",
+        "scope": "当前g03-activity-site",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "业务母版原始头部/版本/权威声明",
+            "requirement": "# G03-T03｜校园公共活动场地借用——正式业务 Markdown 模板母版 v0.1\n\n> **模板身份**：`G03-T03`；统一业务域 `G03-02`；母版版本 `0.1.0`；生成日期 `2026-10-11`；作者身份：C 阶段独立业务模板作者。\n> **状态**：`BUSINESS_MD_DRAFT_WITH_GAPS`（存在明确的成都理工大学校本配置缺口）；**未发布到系统、未运行真实审批、未经过独立 D 金标验收**。\n> **依据**：B v0.2 校本补证包的58项字段、25项材料槽、30项候选检查；沿用 ID `F-001…F-058`，将 B 的 `M-01…M-25` 一一映射为本版 `MS-01…MS-25`，`Q-01…Q-30` 一一映射为 `R-01…R-30`。\n> **强制性前提**：本模板定义通用材料审核语义；各校**合法生效**的流程/场馆配置未确认时，只能提出补配置/待核验，不能自行编造制度，也不能把外校严格参数作为成都理工大学的拒件依据。\n> **独立测试隔离**：仅做作者自检，不读取或生成 D 阶段的隐藏答案。\n\n---",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
+        "moduleId": "g03-t03-extra-rule-envelope",
+        "version": 1,
+        "name": "校园公共活动场地借用｜extra-rule-envelope",
+        "purpose": "逐对象审核extra-rule-envelope",
+        "scope": "当前g03-activity-site",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "§9 规则共同前提与表格注释",
+            "requirement": "## 9. 30条原子规则：R-01…R-30\n\n**统一规则协议（每条自动继承）**：`template_id=G03-T03`; `policy_scope=effective_school+campus+site_policy+policy_version`; `truth=TRUE/FALSE/UNKNOWN/NOT_APPLICABLE`; `activation=相应阶段`；`证据必须引用MS/EV/F所列的事实源`。当规则引用外校来源时，其严苛约束仅供**校方显式启用**的模拟规则或跨校特定校规使用。未取得资源配置的条款不得被强制执行。\n\n`TRUE` 表示规则触发，需要实际核证；`FALSE`记不适用；`UNKNOWN`或来源不可达→明确等待状态，不允许基于“没查到”直接驳回或放行。条件不适用与规则已通过是两个不同结果。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
         "moduleId": "g03-t03-axis-p-indoor-room",
         "version": 1,
         "name": "校园公共活动场地借用｜axis-p-indoor-room",
@@ -1145,6 +1187,16 @@
           {
             "id": "use-section-18",
             "moduleId": "g03-t03-section-18",
+            "version": 1
+          },
+          {
+            "id": "use-extra-front",
+            "moduleId": "g03-t03-extra-front",
+            "version": 1
+          },
+          {
+            "id": "use-extra-rule-envelope",
+            "moduleId": "g03-t03-extra-rule-envelope",
             "version": 1
           },
           {
@@ -1828,6 +1880,30 @@
       "reference": {
         "documentVersionId": "md-g03-t03-419ef4ad231b51f9",
         "locator": "§18"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-front",
+      "kind": "policy-candidate",
+      "label": "G03-T03 业务母版原始头部/版本/权威声明",
+      "reference": {
+        "documentVersionId": "md-g03-t03-419ef4ad231b51f9",
+        "locator": "front-matter"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-rule-envelope",
+      "kind": "policy-candidate",
+      "label": "G03-T03 §9 规则共同前提与表格注释",
+      "reference": {
+        "documentVersionId": "md-g03-t03-419ef4ad231b51f9",
+        "locator": "§9/shared-invariants"
       },
       "verification": "content-checked",
       "applicability": "unknown",
@@ -2784,6 +2860,36 @@
         ],
         "evidenceFacts": [
           "d2:object:g03-activity-site:section-18-1"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t03@1:module/use-extra-front/full",
+      "sourceIds": [
+        "source-extra-front"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-activity-site"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-activity-site:extra-front"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t03@1:module/use-extra-rule-envelope/full",
+      "sourceIds": [
+        "source-extra-rule-envelope"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-activity-site"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-activity-site:extra-rule-envelope"
         ]
       }
     },
