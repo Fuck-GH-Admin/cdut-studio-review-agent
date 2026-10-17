@@ -1,0 +1,66 @@
+name: D4 G01 five modular templates technical chain
+on:
+  push:
+    branches:
+      - feat/d4-g01-modular-templates-r01
+    paths:
+      - 'apps/electron/scripts/review-d4-g01-build.ts'
+      - 'docs/design/review-agent/acceptance/d4-g01-build/I/**'
+      - 'docs/design/review-agent/acceptance/d4-g01-build/A/workspace.json'
+      - 'docs/design/review-agent/acceptance/d4-g01-build/A/selection.json'
+      - 'docs/design/review-agent/acceptance/d4-g01-build/C/workspace.json'
+      - 'docs/design/review-agent/acceptance/d4-g01-build/C/selection.json'
+      - 'docs/design/review-agent/acceptance/d4-g01-build/S/workspace.json'
+      - 'docs/design/review-agent/acceptance/d4-g01-build/S/selection.json'
+      - 'docs/design/review-agent/acceptance/d4-g01-build/P/workspace.json'
+      - 'docs/design/review-agent/acceptance/d4-g01-build/P/selection.json'
+      - '.github/workflows/review-d4-g01.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  five-templates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      PROFER_CONFIG_DIR: ${{ runner.temp }}/d4-g01-synthetic
+      D4_G01_EVIDENCE_DIR: ${{ github.workspace }}/docs/design/review-agent/acceptance/d4-g01-build/runtime-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Verify COMMON parent was inherited
+        run: |
+          git merge-base --is-ancestor a7a6a11d4840ad64cfc858c17b35f35180adf063 HEAD
+          git show -s --format='%H %s' a7a6a11d4840ad64cfc858c17b35f35180adf063
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - run: bun run check:boundaries
+      - name: Generate five real D2 technical Plans and Pi receipts
+        run: |
+          mkdir -p "$PROFER_CONFIG_DIR"
+          bun apps/electron/scripts/review-d4-g01-build.ts
+      - name: Preserve evidence for independent integration
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: d4-g01-five-plans-and-pi-${{ github.run_id }}-${{ github.run_attempt }}
+          path: docs/design/review-agent/acceptance/d4-g01-build/runtime-evidence/
+          retention-days: 30
+      - name: Commit deterministic evidence to G01 author branch
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/design/review-agent/acceptance/d4-g01-build/runtime-evidence/
+          if ! git diff --cached --quiet; then
+            git commit -m 'test(d4-g01): capture actual five-template D2 Pi candidate receipts'
+            git push origin HEAD:feat/d4-g01-modular-templates-r01
+          fi
