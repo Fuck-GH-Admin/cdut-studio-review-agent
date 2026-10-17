@@ -9,9 +9,11 @@
       "g08-t03-r01-src"
     ],
     "moduleId": "g08-t03-channel-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R02",
@@ -23,9 +25,11 @@
       "g08-t03-r02-src"
     ],
     "moduleId": "g08-t03-channel-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R03",
@@ -37,9 +41,11 @@
       "g08-t03-r03-src"
     ],
     "moduleId": "g08-t03-material-initial",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R04",
@@ -51,9 +57,11 @@
       "g08-t03-r04-src"
     ],
     "moduleId": "g08-t03-material-initial",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R05",
@@ -65,9 +73,11 @@
       "g08-t03-r05-src"
     ],
     "moduleId": "g08-t03-channel-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R06",
@@ -79,9 +89,11 @@
       "g08-t03-r06-src"
     ],
     "moduleId": "g08-t03-channel-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R07",
@@ -93,9 +105,11 @@
       "g08-t03-r07-src"
     ],
     "moduleId": "g08-t03-jurisdiction-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R08",
@@ -107,9 +121,11 @@
       "g08-t03-r08-src"
     ],
     "moduleId": "g08-t03-jurisdiction-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R09",
@@ -121,9 +137,11 @@
       "g08-t03-r09-src"
     ],
     "moduleId": "g08-t03-security-sensitive",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R10",
@@ -135,9 +153,11 @@
       "g08-t03-r10-src"
     ],
     "moduleId": "g08-t03-security-urgent",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R11",
@@ -149,9 +169,11 @@
       "g08-t03-r11-src"
     ],
     "moduleId": "g08-t03-channel-school",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R12",
@@ -163,9 +185,11 @@
       "g08-t03-r12-src"
     ],
     "moduleId": "g08-t03-channel-college",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R13",
@@ -177,9 +201,11 @@
       "g08-t03-r13-src"
     ],
     "moduleId": "g08-t03-channel-shandong",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R14",
@@ -191,9 +217,11 @@
       "g08-t03-r14-src"
     ],
     "moduleId": "g08-t03-security-sensitive",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R15",
@@ -205,9 +233,11 @@
       "g08-t03-r15-src"
     ],
     "moduleId": "g08-t03-channel-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R16",
@@ -219,9 +249,11 @@
       "g08-t03-r16-src"
     ],
     "moduleId": "g08-t03-channel-initial",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R17",
@@ -233,9 +265,11 @@
       "g08-t03-r17-src"
     ],
     "moduleId": "g08-t03-material-initial",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R18",
@@ -247,9 +281,11 @@
       "g08-t03-r18-src"
     ],
     "moduleId": "g08-t03-material-evidence",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R19",
@@ -261,9 +297,11 @@
       "g08-t03-r19-src"
     ],
     "moduleId": "g08-t03-material-evidence",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R20",
@@ -275,9 +313,11 @@
       "g08-t03-r20-src"
     ],
     "moduleId": "g08-t03-material-evidence",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R21",
@@ -289,9 +329,11 @@
       "g08-t03-r21-src"
     ],
     "moduleId": "g08-t03-channel-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R22",
@@ -303,9 +345,11 @@
       "g08-t03-r22-src"
     ],
     "moduleId": "g08-t03-issue-multi",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R23",
@@ -317,9 +361,11 @@
       "g08-t03-r23-src"
     ],
     "moduleId": "g08-t03-jurisdiction-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R24",
@@ -331,9 +377,11 @@
       "g08-t03-r24-src"
     ],
     "moduleId": "g08-t03-security-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R25",
@@ -345,9 +393,11 @@
       "g08-t03-r25-src"
     ],
     "moduleId": "g08-t03-history-query",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R26",
@@ -359,9 +409,11 @@
       "g08-t03-r26-src"
     ],
     "moduleId": "g08-t03-history-query",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R27",
@@ -373,9 +425,11 @@
       "g08-t03-r27-src"
     ],
     "moduleId": "g08-t03-history-query",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R28",
@@ -387,9 +441,11 @@
       "g08-t03-r28-src"
     ],
     "moduleId": "g08-t03-history-query",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R29",
@@ -401,9 +457,11 @@
       "g08-t03-r29-src"
     ],
     "moduleId": "g08-t03-feedback-feedback",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R30",
@@ -415,9 +473,11 @@
       "g08-t03-r30-src"
     ],
     "moduleId": "g08-t03-feedback-feedback",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R31",
@@ -429,9 +489,11 @@
       "g08-t03-r31-src"
     ],
     "moduleId": "g08-t03-feedback-feedback",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R32",
@@ -443,9 +505,11 @@
       "g08-t03-r32-src"
     ],
     "moduleId": "g08-t03-feedback-feedback",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R33",
@@ -457,9 +521,11 @@
       "g08-t03-r33-src"
     ],
     "moduleId": "g08-t03-history-followup",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R34",
@@ -471,9 +537,11 @@
       "g08-t03-r34-src"
     ],
     "moduleId": "g08-t03-history-followup",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R35",
@@ -485,9 +553,11 @@
       "g08-t03-r35-src"
     ],
     "moduleId": "g08-t03-issue-multi",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R36",
@@ -499,9 +569,11 @@
       "g08-t03-r36-src"
     ],
     "moduleId": "g08-t03-feedback-withdraw",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R37",
@@ -513,9 +585,11 @@
       "g08-t03-r37-src"
     ],
     "moduleId": "g08-t03-feedback-withdraw",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R38",
@@ -527,9 +601,11 @@
       "g08-t03-r38-src"
     ],
     "moduleId": "g08-t03-feedback-followup",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R39",
@@ -541,9 +617,11 @@
       "g08-t03-r39-src"
     ],
     "moduleId": "g08-t03-history-followup",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R40",
@@ -555,9 +633,11 @@
       "g08-t03-r40-src"
     ],
     "moduleId": "g08-t03-history-followup",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R41",
@@ -569,9 +649,11 @@
       "g08-t03-r41-src"
     ],
     "moduleId": "g08-t03-channel-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R42",
@@ -583,9 +665,11 @@
       "g08-t03-r42-src"
     ],
     "moduleId": "g08-t03-channel-shandong",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R43",
@@ -597,9 +681,11 @@
       "g08-t03-r43-src"
     ],
     "moduleId": "g08-t03-channel-shandong",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R44",
@@ -611,9 +697,11 @@
       "g08-t03-r44-src"
     ],
     "moduleId": "g08-t03-security-sensitive",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R45",
@@ -625,9 +713,11 @@
       "g08-t03-r45-src"
     ],
     "moduleId": "g08-t03-history-followup",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R46",
@@ -639,9 +729,11 @@
       "g08-t03-r46-src"
     ],
     "moduleId": "g08-t03-history-followup",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R47",
@@ -653,9 +745,11 @@
       "g08-t03-r47-src"
     ],
     "moduleId": "g08-t03-channel-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R48",
@@ -667,9 +761,11 @@
       "g08-t03-r48-src"
     ],
     "moduleId": "g08-t03-security-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R49",
@@ -681,9 +777,11 @@
       "g08-t03-r49-src"
     ],
     "moduleId": "g08-t03-security-query",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "external source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R50",
@@ -695,9 +793,11 @@
       "g08-t03-r50-src"
     ],
     "moduleId": "g08-t03-jurisdiction-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R51",
@@ -709,9 +809,11 @@
       "g08-t03-r51-src"
     ],
     "moduleId": "g08-t03-jurisdiction-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "T03-R52",
@@ -723,9 +825,11 @@
       "g08-t03-r52-src"
     ],
     "moduleId": "g08-t03-security-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "INV-scope",
@@ -737,9 +841,11 @@
       "g08-t03-inv-scope-src"
     ],
     "moduleId": "g08-t03-invariant-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "INV-axes",
@@ -751,9 +857,11 @@
       "g08-t03-inv-axes-src"
     ],
     "moduleId": "g08-t03-invariant-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "INV-fields",
@@ -765,9 +873,11 @@
       "g08-t03-inv-fields-src"
     ],
     "moduleId": "g08-t03-invariant-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "INV-output",
@@ -779,9 +889,11 @@
       "g08-t03-inv-output-src"
     ],
     "moduleId": "g08-t03-invariant-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "INV-lifecycle",
@@ -793,9 +905,11 @@
       "g08-t03-inv-lifecycle-src"
     ],
     "moduleId": "g08-t03-invariant-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "INV-privacy",
@@ -807,9 +921,11 @@
       "g08-t03-inv-privacy-src"
     ],
     "moduleId": "g08-t03-invariant-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   },
   {
     "responsibilityId": "INV-r31",
@@ -821,8 +937,10 @@
       "g08-t03-inv-r31-src"
     ],
     "moduleId": "g08-t03-invariant-base",
-    "status": "implemented-not-tested",
+    "status": "implemented-and-tested",
     "trust": "candidate source; human authorization not verified",
-    "runtimeEvidence": "pending actual D2/Pi execution"
+    "runtimeEvidence": "D4 G08 Actions #39051306961; all authored g08-t03 Check duties instantiated in at least one scenario and Pi pending-only technical Run; no semantic Gold/administrative approval",
+    "lastTechnicalRunSha": "fd42de23b4814a4c4e8fd30527f816e14550988f",
+    "businessSemanticAccuracy": "NOT_VERIFIED"
   }
 ]
