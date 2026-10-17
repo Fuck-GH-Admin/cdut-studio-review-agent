@@ -35,6 +35,10 @@ function expressionIssues(expr: D2GateExpressionV1, depth: number, errors: strin
     if(!FIELD.test(expr.fieldKey??'')||typeof expr.equals!=='string'||!expr.equals.trim()||expr.equals.length>200){
       errors.push('D2_GATE_BAD_OBSERVATION')
     }
+  }else if(expr.kind==='trusted-registry-field'){
+    exactKeys(expr as unknown as Record<string,unknown>,['kind','fieldKey','equals'],expr.kind,errors)
+    if(!FIELD.test(expr.fieldKey??'')||typeof expr.equals!=='string'||!expr.equals.trim()||expr.equals.length>200)
+      errors.push('D2_GATE_BAD_TRUSTED_REGISTRY_FIELD')
   }else if(expr.kind==='evidence-any'){
     exactKeys(expr as unknown as Record<string,unknown>,['kind','supportsFacts'],expr.kind,errors)
     if(!Array.isArray(expr.supportsFacts)||!expr.supportsFacts.length||expr.supportsFacts.length>32||
@@ -89,6 +93,15 @@ export function evaluateD2GateExpression(
   if(expr.kind==='not')return triNot(evaluateD2GateExpression(expr.condition,aggregate,subjectId,documentIds))
   if(expr.kind==='case-stage')return expr.stages.includes(aggregate.caseV2.stage)?'true':'false'
   if(expr.kind==='evidence-any')return checkedEvidence(aggregate,subjectId,expr.supportsFacts,documentIds)?'true':'unknown'
+  if(expr.kind==='trusted-registry-field'){
+    const plan=aggregate.d2RuntimePlan
+    const target=plan?.targets.find(t=>t.subjectId===subjectId&&t.kind==='student-field')
+    const snapshot=plan?.trustedStudentSnapshot
+    if(!target||!snapshot||snapshot.status!=='current'||snapshot.sourceKind!=='controlled-synthetic'||
+      snapshot.studentId!==target.studentId||!snapshot.sourceId||!snapshot.snapshotVersionId)return 'unknown'
+    const value=snapshot.fields[expr.fieldKey]
+    return typeof value==='string' ? (value===expr.equals?'true':'false') : 'unknown'
+  }
   // A confirmed, user-origin observation with current SourceRef on THIS target.
   // Never use self-declared caseFields, AI guesses or old/retired versions as authority.
   if(!subjectId)return 'unknown'
@@ -105,6 +118,12 @@ export function validateD2GuardSubmission(
   aggregate:CaseAggregateV2,mapping:D2RuleBinding,
   status:CheckStatus,documentIds:readonly string[],
 ):string|undefined {
+  if(mapping.applicability==='unknown'&&status!=='awaiting-confirmation')
+    return 'D2_STUDENT_APPLICABILITY_UNKNOWN: 受控学籍条件未知，只能待核'
+  if(mapping.applicability==='not-applicable'&&!['not-applicable','awaiting-confirmation'].includes(status))
+    return 'D2_STUDENT_NOT_APPLICABLE: 已核条件不触发该字段责任'
+  if(mapping.applicability==='applicable'&&status==='not-applicable')
+    return 'D2_STUDENT_APPLICABLE: 该字段责任已触发，不能标记不适用'
   const gate=mapping.gate
   if(!gate)return undefined
   const issues=validateD2ExecutionGate(gate)

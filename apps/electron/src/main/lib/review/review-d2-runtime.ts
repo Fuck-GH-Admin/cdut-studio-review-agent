@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto'
 import type {
   Actor, CaseAggregateV2, D2RuntimePlan, D2ScenarioSelection, D2RuleBinding, D2TargetBinding,
   ReviewAuthoringWorkspaceV1, ReviewCaseV2, ReviewCommandResult, ReviewRunV2, CommandReceipt,
-  ReviewSubject, RuleSpec, TemplateVersion,
+  ReviewSubject, RuleSpec, TemplateVersion, D2TrustedStudentSnapshotV1,
 } from '@profer/shared'
 import { previewDemo, type DemoState } from './semantic-module-demo'
 import { validateReviewAuthoringV1 } from './review-authoring-v1'
@@ -38,6 +38,9 @@ const scopeRef = (binding: D2TargetBinding): ReviewSubject => ({
     ...(binding.operation ? { d2Operation: { kind: 'text' as const, value: binding.operation } } : {}),
     ...(binding.operationId ? { d2OperationId: { kind: 'text' as const, value: binding.operationId } } : {}),
     ...(binding.scenario ? { d2Scenario: { kind: 'text' as const, value: binding.scenario } } : {}),
+    ...(binding.studentId ? { d2StudentId: { kind: 'text' as const, value: binding.studentId } } : {}),
+    ...(binding.fieldKey ? { d2FieldKey: { kind: 'text' as const, value: binding.fieldKey } } : {}),
+    ...(binding.intent ? { d2RequestIntent: { kind: 'text' as const, value: binding.intent } } : {}),
   },
   sourceRefs: [], correction: 'user-confirmed', status: 'confirmed',
 })
@@ -94,7 +97,27 @@ function validateTargets(selection: D2ScenarioSelection): void {
       if (!selection.scenario || target.scenario !== selection.scenario || target.operation || target.operationId) {
         throw new Error('D2_TARGET_INVALID: 校园卡主体必须绑定已选择的分支')
       }
+    } else if (target.kind === 'student-field') {
+      if (!target.studentId || !safe(target.studentId) || !target.fieldKey || !safe(target.fieldKey) ||
+          !target.intent || !safe(target.intent) || target.objectKey !== target.studentId + '/' + target.fieldKey ||
+          target.operation || target.operationId || target.itemId || target.scenario) {
+        throw new Error('D2_TARGET_INVALID: 学籍目标必须绑定精确学生/字段/更正意图')
+      }
     } else throw new Error('D2_TARGET_INVALID: 未知目标种类')
+  }
+}
+
+/** Validate an independent, synthetic-only registry fixture. Applicant caseFields never enter this boundary. */
+function validateTrustedSnapshot(snapshot: D2TrustedStudentSnapshotV1 | undefined): void {
+  if (!snapshot) return
+  if (snapshot.schemaVersion !== 1 || snapshot.sourceKind !== 'controlled-synthetic' ||
+      snapshot.status !== 'current' || !safe(snapshot.studentId) ||
+      !safe(snapshot.sourceId) || !safe(snapshot.snapshotVersionId) ||
+      !safe(snapshot.enrollmentStatus) || !snapshot.fields ||
+      typeof snapshot.fields !== 'object' || Array.isArray(snapshot.fields) ||
+      Object.keys(snapshot.fields).length > 32 ||
+      Object.entries(snapshot.fields).some(([key, value]) => !safe(key) || typeof value !== 'string' || value.length > 200)) {
+    throw new Error('D2_TRUSTED_SOURCE_INVALID: 仅接受独立受控、现行的合成学籍快照')
   }
 }
 
@@ -106,6 +129,7 @@ export function compileD2RuntimePlan(
   workspace: ReviewAuthoringWorkspaceV1,
   selection: D2ScenarioSelection,
   caseV2: ReviewCaseV2,
+  trustedStudentSnapshot?: D2TrustedStudentSnapshotV1,
 ): D2RuntimePlan {
   const errors = validateReviewAuthoringV1(workspace)
   if (errors.length) throw new Error('D2_AUTHORING_INVALID: ' + errors.join('；'))
@@ -132,6 +156,14 @@ export function compileD2RuntimePlan(
     throw new Error('D2_SCENARIO_SCOPE_INVALID: 无分支模板不能声明校园卡情景主体')
   }
   validateTargets(selection)
+  validateTrustedSnapshot(trustedStudentSnapshot)
+  if (trustedStudentSnapshot && selection.targets.some(t=>t.kind!=='student-field')) {
+    throw new Error('D2_TRUSTED_SOURCE_INVALID: 受控合成学籍快照不能套用于档案或校园卡')
+  }
+  const studentTargets=selection.targets.filter(t=>t.kind==='student-field')
+  if (studentTargets.length && studentTargets.length!==selection.targets.length) {
+    throw new Error('D2_STUDENT_OBJECT_MIXED: 学籍字段审核必须使用一致的对象种类')
+  }
   const preview = previewDemo(toDemo(workspace), selection.templateId, selection.version, selection.scenario)
   if (preview.blocked || !preview.tasks.length) throw new Error('D2_PREVIEW_BLOCKED: ' + preview.issues.join('；'))
   const registry = new Map(selection.targets.map((target) => [target.objectKey, target]))
@@ -142,7 +174,26 @@ export function compileD2RuntimePlan(
   const links = new Map(workspace.sourceBindings.map((link) => [link.checkId, link]))
   const rules: RuleSpec[] = [], mapping: D2RuleBinding[] = []
   const usedKeys = new Set<string>()
-  for (const [index, task] of preview.tasks.entries()) {
+  // The D1 preview remains an immutable authoring task; D2 expands only explicitly
+  // scoped student responsibilities into separate real Pi Check/Subject instances.
+  const expanded=preview.tasks.flatMap(task=>{
+    const source=links.get(selection.templateId+'@'+selection.version+':'+task.checkId)
+    if (!studentTargets.length || !source?.studentScope) return [{task,instanceCheckId:task.checkId,applicability:undefined as D2RuleBinding['applicability']}]
+    if(task.objectKey)throw new Error('D2_STUDENT_OBJECT_MIXED: 同一责任不能同时绑定档案键和学生字段')
+    return studentTargets.filter(t=>source.studentScope!.fieldKeys.includes(t.fieldKey!)&&
+        source.studentScope!.intents.includes(t.intent!)).map(target=>{
+      const restricted=source.studentScope!.enrollmentStatuses
+      const snapshot=trustedStudentSnapshot?.studentId===target.studentId ? trustedStudentSnapshot : undefined
+      const applicability:D2RuleBinding['applicability']=!restricted?.length ? 'applicable' :
+        !snapshot ? 'unknown' : restricted.includes(snapshot.enrollmentStatus)?'applicable':'not-applicable'
+      return {task:{...task,objectKey:target.objectKey},instanceCheckId:task.checkId+'#'+target.objectKey,applicability}
+    })
+  })
+  if(studentTargets.length && !expanded.some(entry=>entry.instanceCheckId.includes('#'))) {
+    throw new Error('D2_STUDENT_SCOPE_REQUIRED: 缺少字段级实例责任；不允许 0 字段假成功')
+  }
+  for (const [index, entry] of expanded.entries()) {
+    const {task,instanceCheckId,applicability}=entry
     const objectKey = task.objectKey ?? (task.checkId.startsWith('module/') ? selection.scenarioObjectKey : undefined)
     const target = objectKey ? registry.get(objectKey) : undefined
     if (objectKey && !target) throw new Error('D2_SCOPE_MISSING: 未登记业务对象 ' + objectKey)
@@ -156,7 +207,11 @@ export function compileD2RuntimePlan(
         return !source || source.kind === 'cross-school-reference' || source.kind === 'policy-candidate' ||
           source.applicability !== 'request-scope'
       }) ? 'unverified-policy' : 'request-scope'
-    const id = runtimeRuleId(selection.templateId + '@' + selection.version + ':' + task.checkId)
+    const id = runtimeRuleId(selection.templateId + '@' + selection.version + ':' + instanceCheckId)
+    if (target?.kind==='student-field' && sourceBinding?.gate?.material &&
+        sourceBinding.gate.material.alternatives.some(label=>!label.startsWith('d2:student:'+target.fieldKey+':'))) {
+      throw new Error('D2_STUDENT_EVIDENCE_SCOPE_INVALID: 证据事实必须绑定准确的更正字段')
+    }
     const requirement = [
       task.requirement,
       '完成标准：' + task.completion,
@@ -167,6 +222,7 @@ export function compileD2RuntimePlan(
       }).join('；'),
       '行政边界：技术核验结果不能代替学校制度确认、授权或最终批准。',
       ...(authority === 'unverified-policy' ? ['校规/外校参考适用性未获确认：只能报告 awaiting-confirmation。'] : []),
+      ...(applicability ? ['学籍字段条件：'+applicability+'；申请陈述不等于可信学籍快照。'] : []),
       ...(sourceBinding?.gate ? [
         '结构化执行条件（D2 强制门禁，不是行政制度已生效证明）：' + JSON.stringify(sourceBinding.gate),
         '执行规则：条件未知一律 awaiting-confirmation；阶段未到不得报申请人缺件；电子/纸质替代须有本对象当前版本的审核员证据确认。',
@@ -182,9 +238,13 @@ export function compileD2RuntimePlan(
       priority: 50000 + index, confirmation: authority === 'request-scope' ? 'confirmed' : 'unconfirmed',
     })
     mapping.push({
-      checkId: task.checkId, ruleId: id,
+      checkId: instanceCheckId, ruleId: id,
       ...(target ? { objectKey: target.objectKey, subjectId: target.subjectId } : {}),
       sourceIds: [...sourceIds], authority,
+      ...(applicability ? { applicability } : {}),
+      ...(target?.kind==='student-field' && sourceBinding?.gate?.material ? {
+        evidenceCoverage: { fieldKey: target.fieldKey!, supportsFacts: [...sourceBinding.gate.material.alternatives] },
+      } : {}),
       ...(sourceBinding?.gate ? { gate: structuredClone(sourceBinding.gate) } : {}),
     })
   }
@@ -193,7 +253,8 @@ export function compileD2RuntimePlan(
   }
   if (new Set(rules.map((rule) => rule.id)).size !== rules.length) throw new Error('D2_RULE_COLLISION')
   const bare: Omit<D2RuntimePlan, 'fingerprint'> = {
-    schemaVersion: 1, mode: 'technical-pre-review', publicationAllowed: false,
+    schemaVersion: studentTargets.length ? 2 : 1, mode: 'technical-pre-review', publicationAllowed: false,
+    ...(trustedStudentSnapshot ? {trustedStudentSnapshot:structuredClone(trustedStudentSnapshot)} : {}),
     workspaceId: workspace.workspaceId, revision: workspace.revision,
     templateId: selection.templateId, templateVersion: selection.version,
     ...(selection.scenario ? { scenario: selection.scenario } : {}),
@@ -212,7 +273,9 @@ export function verifyD2InstalledPlan(aggregate: CaseAggregateV2): string[] {
   const candidateProblem = d2CandidateShellProblem(getTemplate(plan.templateId, plan.templateVersion))
   if (candidateProblem) problems.push(candidateProblem)
   const { fingerprint, ...bare } = plan
-  if (plan.schemaVersion !== 1 || plan.mode !== 'technical-pre-review' || plan.publicationAllowed !== false || fingerprint !== digestPlan(bare)) {
+  if ((plan.schemaVersion !== 1 && plan.schemaVersion !== 2) ||
+      (plan.targets.some(t=>t.kind==='student-field') && plan.schemaVersion!==2) ||
+      plan.mode !== 'technical-pre-review' || plan.publicationAllowed !== false || fingerprint !== digestPlan(bare)) {
     problems.push('D2 作者态任务包指纹不匹配或伪造发布资格')
   }
   if (aggregate.caseV2.templateId !== plan.templateId || aggregate.caseV2.templateVersion !== plan.templateVersion ||
@@ -255,11 +318,12 @@ export function attachD2RuntimePlan(input: {
   expectedRevision: number
   workspace: ReviewAuthoringWorkspaceV1
   selection: D2ScenarioSelection
+  trustedStudentSnapshot?: D2TrustedStudentSnapshotV1
 }): Promise<ReviewCommandResult<D2RuntimePlan>> {
-  return submitCommand<{ workspace: ReviewAuthoringWorkspaceV1; selection: D2ScenarioSelection }, D2RuntimePlan>(
+  return submitCommand<{ workspace: ReviewAuthoringWorkspaceV1; selection: D2ScenarioSelection; trustedStudentSnapshot?: D2TrustedStudentSnapshotV1 }, D2RuntimePlan>(
     input.caseId, {
       requestId: input.requestId, actor: input.actor, expectedRevision: input.expectedRevision,
-      type: 'AttachD2TechnicalReviewPlan', payload: { workspace: input.workspace, selection: input.selection },
+      type: 'AttachD2TechnicalReviewPlan', payload: { workspace: input.workspace, selection: input.selection, trustedStudentSnapshot: input.trustedStudentSnapshot },
     }, (aggregate, payload) => {
       if (aggregate.caseV2.stage !== 'draft' || aggregate.d2RuntimePlan) {
         throw new CommandValidationError('INVALID_TRANSITION', 'D2 只能绑定未开始审核且没有已固定计划的草稿案卷')
@@ -267,7 +331,7 @@ export function attachD2RuntimePlan(input: {
       const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
       const shellProblem = d2CandidateShellProblem(template)
       if (shellProblem || !template) throw new CommandValidationError('AGENT_DECISION_DISABLED', shellProblem ?? '候选模板不存在')
-      const plan = compileD2RuntimePlan(payload.workspace, payload.selection, aggregate.caseV2)
+      const plan = compileD2RuntimePlan(payload.workspace, payload.selection, aggregate.caseV2, payload.trustedStudentSnapshot)
       if ((aggregate.caseV2.reviewRules?.length ?? 0) > 0 || aggregate.caseV2.subjects.length > 0) {
         throw new CommandValidationError('VALIDATION_FAILED', 'D2 草稿案卷不能预先混入未登记的规则或业务主体；须先固定唯一任务包')
       }
@@ -297,6 +361,7 @@ export async function createD2TechnicalCase(input: {
   actor: Actor
   workspace: ReviewAuthoringWorkspaceV1
   selection: D2ScenarioSelection
+  trustedStudentSnapshot?: D2TrustedStudentSnapshotV1
 }): Promise<ReviewCommandResult<D2RuntimePlan>> {
   if (!safe(input.caseId) || !input.title?.trim() || !input.actor.actorId?.trim() || input.actor.role !== 'reviewer') {
     throw new CommandValidationError('VALIDATION_FAILED', 'D2 技术建案缺少安全案卷 ID、标题或审核员身份')
@@ -312,7 +377,7 @@ export async function createD2TechnicalCase(input: {
     stage: 'draft', revision: 0, createdAt: now, updatedAt: now,
   }
   // 前置编译 fail-closed；坏情景、悬空对象或无来源责任不能留下半个案卷。
-  compileD2RuntimePlan(input.workspace, input.selection, caseV2)
+  compileD2RuntimePlan(input.workspace, input.selection, caseV2, input.trustedStudentSnapshot)
   const type = 'CreateD2TechnicalReviewCase'
   const createPayload = { title: caseV2.title, templateId: caseV2.templateId, templateVersion: caseV2.templateVersion }
   const receipt: CommandReceipt = {
@@ -325,7 +390,7 @@ export async function createD2TechnicalCase(input: {
   const attached = await attachD2RuntimePlan({
     caseId: input.caseId, requestId: 'd2-attach-' + input.caseId,
     actor: input.actor, expectedRevision: 0,
-    workspace: input.workspace, selection: input.selection,
+    workspace: input.workspace, selection: input.selection, trustedStudentSnapshot: input.trustedStudentSnapshot,
   })
   // 仅返回实际有计划且已验真配置的案卷，不冒充创建成功。
   if (attached.ok) {
@@ -349,7 +414,7 @@ export function validateD2OperationEvidence(
 ): string | undefined {
   const mapping = aggregate.d2RuntimePlan?.mapping.find((entry) => entry.ruleId === ruleId)
   const target = aggregate.d2RuntimePlan?.targets.find((item) => item.objectKey === mapping?.objectKey)
-  if (!mapping || !target || target.kind === 'campus-card') return undefined
+  if (!mapping || !target || (target.kind !== 'archive-operation' && target.kind !== 'archive-item')) return undefined
   if (!['compliant', 'non-compliant', 'not-applicable'].includes(status)) return undefined
   const factKey = target.kind === 'archive-operation' ? 'd2:archive:' + target.operation : 'd2:archive:open-status'
   const proven = aggregate.evidenceLinks.some((link) =>

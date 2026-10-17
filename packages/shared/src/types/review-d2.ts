@@ -4,7 +4,7 @@
  */
 import type { ReviewSubject, RuleSpec } from './review-v2'
 
-export type D2TargetKind = 'campus-card' | 'archive-item' | 'archive-operation'
+export type D2TargetKind = 'campus-card' | 'archive-item' | 'archive-operation' | 'student-field'
 
 /** 同一档案件每个操作必须拥有独立 objectKey/subjectId。 */
 export interface D2TargetBinding {
@@ -17,7 +17,35 @@ export interface D2TargetBinding {
   operation?: 'read' | 'copy' | 'excerpt' | 'borrow' | 'certified_copy'
   /** Optional stable per-request operation identity; disambiguates same-kind operations. */
   operationId?: string
+  /** Synthetic G01-I student / registry identity: never derived from applicant caseFields. */
+  studentId?: string
+  /** A particular requested correction field; one distinct Subject per field. */
+  fieldKey?: string
+  intent?: string
+  /** Applicant-declared status is NOT authoritative; use an independent controlled snapshot. */
+  enrollmentStatus?: string
 }
+/** Controlled fixture boundary for technical tests. This is NOT an official school registry adapter. */
+export interface D2TrustedStudentSnapshotV1 {
+  schemaVersion: 1
+  sourceKind: 'controlled-synthetic'
+  studentId: string
+  sourceId: string
+  snapshotVersionId: string
+  status: 'current' | 'revoked'
+  enrollmentStatus: string
+  /** Values keyed by field name. Must be passed through an explicit reviewer-controlled channel. */
+  fields: Record<string, string>
+}
+
+/** A scoped Check is instantiated only for matching target field + request intent.
+ * Enrollment condition is resolved from the separate controlled snapshot or UNKNOWN. */
+export interface D2StudentScopeV1 {
+  fieldKeys: string[]
+  intents: string[]
+  enrollmentStatuses?: string[]
+}
+
 export interface D2ScenarioSelection {
   templateId: string
   version: number
@@ -35,6 +63,10 @@ export interface D2RuleBinding {
   sourceIds: string[]
   /** 记录制度候选/跨校参考尚未获本案授权；Pi 只能返回待确认。 */
   authority: 'request-scope' | 'unverified-policy'
+  /** Runtime selection of a student-field responsibility, never inferred from prose. */
+  applicability?: 'applicable' | 'not-applicable' | 'unknown'
+  /** Exact allowed evidence labels on THIS target, not a global evidence whitelist. */
+  evidenceCoverage?: { fieldKey: string; supportsFacts: string[] }
   /** Structured execution gate; never inferred from task prose. */
   gate?: D2ExecutionGateV1
 }
@@ -43,6 +75,7 @@ export type D2GatePredicateV1 =
   | { kind: 'confirmed-observation'; fieldKey: string; equals: string }
   | { kind: 'evidence-any'; supportsFacts: string[] }
   | { kind: 'case-stage'; stages: import('./review-v2').CaseStage[] }
+  | { kind: 'trusted-registry-field'; fieldKey: string; equals: string }
 export type D2GateExpressionV1 =
   | D2GatePredicateV1
   | { kind: 'all'; conditions: D2GateExpressionV1[] }
@@ -59,7 +92,9 @@ export interface D2ExecutionGateV1 {
   }
 }
 export interface D2RuntimePlan {
-  schemaVersion: 1
+  schemaVersion: 1 | 2
+  /** Optional independent, controlled synthetic fixture, hashed into the fixed technical plan. */
+  trustedStudentSnapshot?: D2TrustedStudentSnapshotV1
   mode: 'technical-pre-review'
   publicationAllowed: false
   workspaceId: string
