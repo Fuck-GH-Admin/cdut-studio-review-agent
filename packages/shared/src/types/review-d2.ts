@@ -24,6 +24,7 @@ export interface D2TargetBinding {
   kind: D2TargetKind
   /** Namespaced bounded generic type, e.g. g03-resource-slot or g08-lost-item. */
   businessType?: string
+  scenarioSource?: {sourceId:string;sourceVersionId:string;decidedBy:'reviewer'}
   /** Explicit per-object primary scenario (generic-object only). */
   scenario?: string
   /** All declared additive condition axes must appear, including unknown/false ones. */

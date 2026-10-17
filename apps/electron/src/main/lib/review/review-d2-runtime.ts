@@ -16,6 +16,7 @@ import { getTemplate, isAuthoringCandidateDraft } from './template-store'
 import { hashEffectiveRuleSet, resolveEffectiveRules } from './effective-rules'
 import { computeRunInputHash } from './run-service-v2'
 import { validateD2GuardSubmission } from './review-d2-execution-gates'
+import { compileD4Generic } from './review-d4-common'
 
 const sha = (value: unknown): string => createHash('sha256').update(JSON.stringify(value) ?? 'undefined', 'utf8').digest('hex')
 const ID = /^[a-z][a-z0-9-]{0,79}$/
@@ -34,6 +35,8 @@ const scopeRef = (binding: D2TargetBinding): ReviewSubject => ({
   sectionId: sectionFor(binding.objectKey),
   fields: {
     d2ObjectKey: { kind: 'text', value: binding.objectKey },
+    ...(binding.businessType ? {d2BusinessType:{kind:'text' as const,value:binding.businessType}} : {}),
+    ...(binding.conditions ? {d2Conditions:{kind:'text' as const,value:JSON.stringify(binding.conditions)}} : {}),
     ...(binding.itemId ? { d2ItemId: { kind: 'text' as const, value: binding.itemId } } : {}),
     ...(binding.operation ? { d2Operation: { kind: 'text' as const, value: binding.operation } } : {}),
     ...(binding.operationId ? { d2OperationId: { kind: 'text' as const, value: binding.operationId } } : {}),
@@ -103,6 +106,11 @@ function validateTargets(selection: D2ScenarioSelection): void {
           target.operation || target.operationId || target.itemId || target.scenario) {
         throw new Error('D2_TARGET_INVALID: 学籍目标必须绑定精确学生/字段/更正意图')
       }
+    } else if (target.kind==='generic-object') {
+      if(!safe(target.objectKey)||!safe(target.businessType??'')||target.operation||target.operationId||
+         target.itemId||target.studentId||target.fieldKey||target.intent||
+         (target.conditions!==undefined&&!Array.isArray(target.conditions)))
+        throw Error('D2_GENERIC_TARGET_INVALID')
     } else throw new Error('D2_TARGET_INVALID: 未知目标种类')
   }
 }
@@ -143,18 +151,21 @@ export function compileD2RuntimePlan(
   if (!template || caseV2.templateId !== selection.templateId || caseV2.templateVersion !== selection.version) {
     throw new Error('D2_TEMPLATE_MISMATCH: 案卷模板与作者态不一致')
   }
+  const genericMode=selection.targets.some(t=>t.kind==='generic-object')
+  if(genericMode&&selection.targets.some(t=>t.kind!=='generic-object'))
+    throw Error('D2_GENERIC_OBJECT_MIXED')
   const multi = selection.scenarios
   if (multi !== undefined && (!Array.isArray(multi) || !multi.length || multi.length > 13 ||
       new Set(multi).size !== multi.length || multi.some(s=>typeof s!=='string'||!safe(s)) || selection.scenario)) {
     throw new Error('D2_SCENARIOS_INVALID: 复合分支必须显式且不能与旧单分支并存')
   }
   const selectedScenarios = multi ?? (selection.scenario ? [selection.scenario] : [])
-  if (template.scenarios?.length && (!selectedScenarios.length ||
+  if (!genericMode && template.scenarios?.length && (!selectedScenarios.length ||
       selectedScenarios.some(s => !template.scenarios!.includes(s)))) {
     throw new Error('D2_SCENARIO_REQUIRED: 未知分支不能当作不适用')
   }
-  if (!template.scenarios?.length && selectedScenarios.length) throw new Error('D2_SCENARIO_INVALID: 无条件模板不接受分支')
-  if (template.scenarios?.length) {
+  if (!genericMode && !template.scenarios?.length && selectedScenarios.length) throw new Error('D2_SCENARIO_INVALID: 无条件模板不接受分支')
+  if (!genericMode && template.scenarios?.length) {
     const studentSelection = selection.targets.length > 0 && selection.targets.every(t => t.kind === 'student-field')
     if (!studentSelection && (!selection.scenario || selection.scenarios ||
         !selection.scenarioObjectKey || selection.targets.length !== 1 ||
@@ -165,7 +176,7 @@ export function compileD2RuntimePlan(
     if (studentSelection && selection.scenarioObjectKey) {
       throw new Error('D2_SCENARIO_SCOPE_INVALID: 学籍目标不允许伪装校园卡对象键')
     }
-  } else if (selection.scenarioObjectKey) {
+  } else if (!genericMode && selection.scenarioObjectKey) {
     throw new Error('D2_SCENARIO_SCOPE_INVALID: 无分支模板不能声明校园卡情景主体')
   }
   validateTargets(selection)
@@ -177,14 +188,15 @@ export function compileD2RuntimePlan(
   if (studentTargets.length && studentTargets.length!==selection.targets.length) {
     throw new Error('D2_STUDENT_OBJECT_MIXED: 学籍字段审核必须使用一致的对象种类')
   }
-  const previews=selectedScenarios.length>1 ?
+  const generic=genericMode?compileD4Generic(workspace,selection):undefined
+  const previews=genericMode?[]:selectedScenarios.length>1 ?
     selectedScenarios.map(s=>previewDemo(toDemo(workspace), selection.templateId, selection.version, s)) :
     [previewDemo(toDemo(workspace), selection.templateId, selection.version, selectedScenarios[0])]
   if(previews.some(v=>v.blocked))throw new Error('D2_PREVIEW_BLOCKED: '+previews.flatMap(v=>v.issues).join('；'))
   const uniqueTasks=new Map(previews.flatMap(v=>v.tasks).map(task=>[task.checkId,task]))
-  const preview={tasks:[...uniqueTasks.values()],fingerprint:previews.length===1?previews[0]!.fingerprint:
+  const preview={tasks:[...uniqueTasks.values()],fingerprint:generic?generic.fingerprint:previews.length===1?previews[0]!.fingerprint:
     sha({scenarios:selectedScenarios,fingerprints:previews.map(v=>v.fingerprint),checks:[...uniqueTasks.keys()]})}
-  if (!preview.tasks.length)throw new Error('D2_PREVIEW_BLOCKED: 无任何已激活责任')
+  if (!genericMode && !preview.tasks.length)throw new Error('D2_PREVIEW_BLOCKED: 无任何已激活责任')
   const registry = new Map(selection.targets.map((target) => [target.objectKey, target]))
   if (selection.scenarioObjectKey && !registry.has(selection.scenarioObjectKey)) {
     throw new Error('D2_SCOPE_MISSING: 分支对象未登记')
@@ -197,7 +209,7 @@ export function compileD2RuntimePlan(
   // scoped student responsibilities into separate real Pi Check/Subject instances.
   const hasStudentScope=preview.tasks.some(task=>links.get(selection.templateId+'@'+selection.version+':'+task.checkId)?.studentScope)
   if(hasStudentScope && !studentTargets.length)throw new Error('D2_STUDENT_SCOPE_REQUIRED: 字段条件责任不能以零学生对象生成整案假成功')
-  const expanded=preview.tasks.flatMap(task=>{
+  const expanded=generic?generic.entries:preview.tasks.flatMap(task=>{
     const source=links.get(selection.templateId+'@'+selection.version+':'+task.checkId)
     if (studentTargets.length && !source?.studentScope && !task.objectKey && !source?.caseScopeJustification) {
       throw new Error('D2_STUDENT_UNSCOPED_CHECK: 学籍模板责任缺少字段约束或明示整案例外 '+task.checkId)
@@ -232,6 +244,9 @@ export function compileD2RuntimePlan(
           source.applicability !== 'request-scope'
       }) ? 'unverified-policy' : 'request-scope'
     const id = runtimeRuleId(selection.templateId + '@' + selection.version + ':' + instanceCheckId)
+    if(target?.kind==='generic-object'&&(!sourceBinding?.genericScope||
+       !sourceBinding.genericScope.businessTypes.includes(target.businessType!)))
+      throw Error('D2_GENERIC_SCOPE_REQUIRED: '+task.checkId)
     if (target?.kind==='student-field' && sourceBinding?.gate?.material &&
         sourceBinding.gate.material.alternatives.some(label=>!label.startsWith('d2:student:'+target.fieldKey+':'))) {
       throw new Error('D2_STUDENT_EVIDENCE_SCOPE_INVALID: 证据事实必须绑定准确的更正字段')
@@ -266,6 +281,9 @@ export function compileD2RuntimePlan(
       ...(target ? { objectKey: target.objectKey, subjectId: target.subjectId } : {}),
       sourceIds: [...sourceIds], authority,
       ...(applicability ? { applicability } : {}),
+       ...(target?.kind==='generic-object' && sourceBinding?.genericScope ? {
+         evidenceCoverage:{fieldKey:target.businessType!,supportsFacts:[...sourceBinding.genericScope.evidenceFacts]},
+       } : {}),
       ...(target?.kind==='student-field' && sourceBinding?.gate?.material ? {
         evidenceCoverage: { fieldKey: target.fieldKey!, supportsFacts: [...sourceBinding.gate.material.alternatives] },
       } : {}),
@@ -277,7 +295,7 @@ export function compileD2RuntimePlan(
   }
   if (new Set(rules.map((rule) => rule.id)).size !== rules.length) throw new Error('D2_RULE_COLLISION')
   const bare: Omit<D2RuntimePlan, 'fingerprint'> = {
-    schemaVersion: studentTargets.length ? 2 : 1, mode: 'technical-pre-review', publicationAllowed: false,
+    schemaVersion: genericMode ? 3 : studentTargets.length ? 2 : 1, mode: 'technical-pre-review', publicationAllowed: false,
     ...(trustedStudentSnapshot ? {trustedStudentSnapshot:structuredClone(trustedStudentSnapshot)} : {}),
     workspaceId: workspace.workspaceId, revision: workspace.revision,
     templateId: selection.templateId, templateVersion: selection.version,
@@ -298,7 +316,8 @@ export function verifyD2InstalledPlan(aggregate: CaseAggregateV2): string[] {
   const candidateProblem = d2CandidateShellProblem(getTemplate(plan.templateId, plan.templateVersion))
   if (candidateProblem) problems.push(candidateProblem)
   const { fingerprint, ...bare } = plan
-  if ((plan.schemaVersion !== 1 && plan.schemaVersion !== 2) ||
+  if ((plan.schemaVersion !== 1 && plan.schemaVersion !== 2 && plan.schemaVersion !== 3) ||
+      (plan.targets.some(t=>t.kind==='generic-object')&&plan.schemaVersion!==3) ||
       (plan.targets.some(t=>t.kind==='student-field') && plan.schemaVersion!==2) ||
       plan.mode !== 'technical-pre-review' || plan.publicationAllowed !== false || fingerprint !== digestPlan(bare)) {
     problems.push('D2 作者态任务包指纹不匹配或伪造发布资格')
