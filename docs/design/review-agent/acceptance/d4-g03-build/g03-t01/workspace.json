@@ -593,6 +593,48 @@
         ]
       },
       {
+        "moduleId": "g03-t01-extra-front",
+        "version": 1,
+        "name": "公共教学教室临时借用｜extra-front",
+        "purpose": "逐对象审核extra-front",
+        "scope": "当前g03-classroom-slot",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "业务母版原始头部/版本/权威声明",
+            "requirement": "# G03-T01｜公共教学教室临时借用——完整业务模板 Markdown 母版 v0.1\n\n> 模板身份：`G03-T01`，业务域 `G03-01`；**一套业务母版，非已发布的学校行政审批系统**。作者 C 阶段 / 2026-10-11。> 输入：A阶段统一目录；B-v0.2 全套字段、材料、来源与校本补证；项目 GitHub **main 快照 `0b9bf9bfe58300aa0860d1ebf10c782f7b4ab641`**（仅实际打开的源码文件）。> 业务母版状态：`BUSINESS_MD_DRAFT_WITH_GAPS`（可交独立测试/下游转换，**校本参数仍不全**）。未读取 D 阶段隐藏测试或答案，未发布行政政策、未运行真实 Pi/编辑器验收。> 来源表达：文内 `[Cxx]/[Uxx]` 是 **B调研原始资料ID**；`[V01]` 为第三方厂商案例，只作架构线索；`[DESIGN]` 是作者设计，须经合法政策/业务 owner 核准后才能成为正式规则。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
+        "moduleId": "g03-t01-extra-rule-envelope",
+        "version": 1,
+        "name": "公共教学教室临时借用｜extra-rule-envelope",
+        "purpose": "逐对象审核extra-rule-envelope",
+        "scope": "当前g03-classroom-slot",
+        "limits": "UNKNOWN必须等待；不能直接作行政许可",
+        "source": {
+          "kind": "synthetic",
+          "note": "原文转换的技术审核任务，权威性仍待校方确认"
+        },
+        "tasks": [
+          {
+            "id": "full",
+            "title": "§9 规则共同前提与表格注释",
+            "requirement": "## 9. 完整原子规则集（22条）\n\n每条规则均给出**目标、校本适用门槛、触发、阶段、对象、证据与替代、处理逻辑、失败/冲突、UNKNOWN、例外、人工或后续、B证据、问题码、作者走查线索**。表中`来源支持业务存在`不等于`已确认在成都理工大学必交`。规则的执行器类型仅是设计建议。",
+            "completion": "逐对象记录当前来源、材料版本、证据冲突、适用性和待人工处理事项",
+            "limits": "不能因未找到学校底账直接认定违规或宣布批准、激活、上机、播出"
+          }
+        ]
+      },
+      {
         "moduleId": "g03-t01-axis-p-public-classroom",
         "version": 1,
         "name": "公共教学教室临时借用｜axis-p-public-classroom",
@@ -974,6 +1016,16 @@
           {
             "id": "use-section-18",
             "moduleId": "g03-t01-section-18",
+            "version": 1
+          },
+          {
+            "id": "use-extra-front",
+            "moduleId": "g03-t01-extra-front",
+            "version": 1
+          },
+          {
+            "id": "use-extra-rule-envelope",
+            "moduleId": "g03-t01-extra-rule-envelope",
             "version": 1
           },
           {
@@ -1531,6 +1583,30 @@
       "reference": {
         "documentVersionId": "md-g03-t01-5dd90cd20cb814c7",
         "locator": "§18"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-front",
+      "kind": "policy-candidate",
+      "label": "G03-T01 业务母版原始头部/版本/权威声明",
+      "reference": {
+        "documentVersionId": "md-g03-t01-5dd90cd20cb814c7",
+        "locator": "front-matter"
+      },
+      "verification": "content-checked",
+      "applicability": "unknown",
+      "note": "C原文已获得并核对，正式校规适用/后台事件未获有权核定"
+    },
+    {
+      "sourceId": "source-extra-rule-envelope",
+      "kind": "policy-candidate",
+      "label": "G03-T01 §9 规则共同前提与表格注释",
+      "reference": {
+        "documentVersionId": "md-g03-t01-5dd90cd20cb814c7",
+        "locator": "§9/shared-invariants"
       },
       "verification": "content-checked",
       "applicability": "unknown",
@@ -2307,6 +2383,36 @@
         ],
         "evidenceFacts": [
           "d2:object:g03-classroom-slot:section-18-1"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t01@1:module/use-extra-front/full",
+      "sourceIds": [
+        "source-extra-front"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-classroom-slot"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-classroom-slot:extra-front"
+        ]
+      }
+    },
+    {
+      "checkId": "g03-t01@1:module/use-extra-rule-envelope/full",
+      "sourceIds": [
+        "source-extra-rule-envelope"
+      ],
+      "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+      "genericScope": {
+        "businessTypes": [
+          "g03-classroom-slot"
+        ],
+        "evidenceFacts": [
+          "d2:object:g03-classroom-slot:extra-rule-envelope"
         ]
       }
     },
