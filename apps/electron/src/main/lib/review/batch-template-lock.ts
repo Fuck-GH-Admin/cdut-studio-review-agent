@@ -14,8 +14,21 @@ export function assertBatchCaseTemplateLock(
 
 export function assertBatchRunTemplateLock(
   batch: Pick<ReviewBatch, 'templateId' | 'templateVersion'>,
-  run: Pick<ReviewRunV2, 'templateId' | 'templateVersion'>,
+  caseId: string,
+  run: Pick<ReviewRunV2, 'caseId' | 'templateId' | 'templateVersion' | 'inputManifest'>,
 ): void {
-  if (run.templateId !== batch.templateId || run.templateVersion !== batch.templateVersion)
-    throw new Error('审核运行使用的模板与批次冻结版本不一致；不得将该结果登记为批次完成')
+  if (run.caseId !== caseId) throw new Error('模型返回的运行不属于当前批次案卷，禁止跨案登记完成')
+  if (run.templateId !== batch.templateId || run.templateVersion !== batch.templateVersion
+    || run.inputManifest?.templateVersion !== batch.templateVersion) {
+    throw new Error('审核运行的模板与输入清单不符合批次冻结版本；不得将该结果登记为批次完成')
+  }
+}
+
+/** A technically failed check must never turn a completed graph into a done batch item. */
+export function classifyBatchRunCompletion(
+  run: Pick<ReviewRunV2, 'status' | 'checks'>,
+): string {
+  if (run.status !== 'completed') return run.status
+  if (run.checks.some((item) => item.status === 'execution-failed')) return 'technical-check-failed'
+  return 'completed'
 }

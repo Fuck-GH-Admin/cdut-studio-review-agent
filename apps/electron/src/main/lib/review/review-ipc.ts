@@ -637,7 +637,7 @@ export function registerReviewIpc(): void {
     const { assembleAndRunReview } = require('./run-async-service') as typeof import('./run-async-service')
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
     const { readBatchStateV2: readBatchStateForDispatch } = require('./batch-store') as typeof import('./batch-store')
-    const { assertBatchCaseTemplateLock, assertBatchRunTemplateLock } = require('./batch-template-lock') as typeof import('./batch-template-lock')
+    const { assertBatchCaseTemplateLock, assertBatchRunTemplateLock, classifyBatchRunCompletion } = require('./batch-template-lock') as typeof import('./batch-template-lock')
     const completed = await runBatchQueue(batchId, {
       runCase: async (caseId: string) => {
         const batch = readBatchStateForDispatch(batchId)
@@ -646,8 +646,8 @@ export function registerReviewIpc(): void {
         // published template version drifted since the batch was created.
         assertBatchCaseTemplateLock(batch.batch, caseId, getCaseV2Aggregate(caseId))
         const run = await assembleAndRunReview(caseId)
-        assertBatchRunTemplateLock(batch.batch, run)
-        return { status: run.status }
+        assertBatchRunTemplateLock(batch.batch, caseId, run)
+        return { status: classifyBatchRunCompletion(run) }
       },
     })
     if (completed.automation && completed.automation.mode !== 'assist') {
