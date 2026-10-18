@@ -89,6 +89,31 @@ export interface ImportDocumentsResult {
   canceled: boolean
 }
 
+/** W1 post-create import: everything is based on Main OS-picked staged bytes. */
+export interface D4CaseBatchAssessment {
+  caseId: string
+  token: string
+  expectedRevision: number
+  role: 'application' | 'evidence'
+  skipped: Array<{ originLabel: string; reason: string }>
+  files: Array<{
+    index: number; name: string; originLabel: string; sizeBytes: number
+    duplicateOf?: string
+    nameConflicts: Array<{ documentId: string; fileName: string }>
+  }>
+}
+export type D4CaseBatchChoice =
+  | { kind: 'skip' }
+  | { kind: 'append' }
+  | { kind: 'replace'; documentId: string }
+export interface D4CaseBatchResult {
+  caseId: string
+  documents: SourceDocument[]
+  skipped: Array<{ originLabel: string; reason: string }>
+  replacements: Array<{ oldDocumentId: string; newDocumentId: string }>
+}
+
+
 /** 材料导入的逐文件进度；扫描 PDF 会额外报告页检查和图像渲染阶段。 */
 export interface ReviewImportProgressEvent {
   requestId: string
@@ -491,6 +516,8 @@ export const REVIEW_IPC_CHANNELS = {
   LIST_D4_TEMPLATES: 'review:list-d4-templates',
   /** Native OS picker: Main stages originals, returning only a bounded opaque token. */
   STAGE_D4_INTAKE: 'review:stage-d4-intake',
+  ASSESS_D4_CASE_BATCH: 'review:assess-d4-case-batch',
+  APPLY_D4_CASE_BATCH: 'review:apply-d4-case-batch',
   DISCARD_D4_INTAKE: 'review:discard-d4-intake',
   /** 多选导入文件到案卷（逐文件返回解析结果与失败项） */
   IMPORT_DOCUMENT: 'review:import-document',
