@@ -25,6 +25,10 @@
 10. **用户实际处理界面**：新增 `D4CaseBatchControls` 并嵌入 `CenterPanel` 申报/证明区，调用新版 Main/Preload IPC 先选择文件/ZIP 或文件夹，再显示逐文件冲突清单、重复判定、跳过明细及替换选项。案卷修订号变化则拒绝应用，须重新预检；迟到的本机文件选择在换案时丢弃。处理结果写回原案卷，并仅在仍查看此案时刷新。
 11. **失败与历史追溯**：追加过程继续用已有 `importDocumentFromPath`、`removeDocumentsFromCase`、`updateCase` 和 V2 同步机制，保留原 SourceDocument 和存储历史。未导入清单要求明确同意，失败和部分解析记入永久历史；不能用表面上的导入成功掩盖漏材料。现为非原子多步补充/替换，审计保证“新材料收录成功后才归档旧件”，异常需检查日志与案卷版本，不能宣称完整数据库事务。
 
+12. **D4 Subject 事实确认可用化**：原 `CenterPanel` 的 V2 Observation 校对、人工事实录入和最终认定仅在 V1 申报条目分支内可用，D4 Subject 页面只有静态对象卡。现直接把事实候选卡、单对象来源核验、人工更正、人工新增及确认关联摘要接到每一个独立 D2 Subject；各对象之间不复用事实或来源状态。字段候选来自该 Subject 的固定 `evidenceCoverage.fieldKey`/`supportsFacts` 或嵌套 `confirmed-observation` 执行 gate，仍不构成校方规则授权。
+13. **真实 SourceRef 与来源定位**：`w1-fact-source` 只接受当前案卷仍有效、parseStatus 为 parsed/partial 的 DocumentVersion，审核人明确选择文件和可选的具体文本块；无法可靠对应到块则声明为文件级。V2 原生 SourceRef 的准确坐标，仅当 caseId、parseRevision 和实际块完全一致才继承。模型摘录只在非空、唯一完全匹配时得到块精度；模糊匹配不伪造定位。候选事实无有效来源时不能直接人工确认；支持选择来源并点击原始资料定位、补充理由与更正。全部提交沿用 `CorrectObservation` 的 V2 expectedRevision/actor/append 机制。
+14. **业务表单兜底语义**：候选模板自身如果没有声明 `TemplateVersion.fields`，事实 UI 不把任意自然语言当字段；只使用本 Subject 的冻结 D2 事实责任键。无法提供业务标签时显示真实字段 key 而非所有字段同名为“补充信息”。特殊 G01-I 学籍没有被转换成未经授权的通用学生底账。
+
 ### 本轮自动化覆盖
 
 - `review-d4-intake-roles.test.ts`：正常、缺省、role 注入、长度错、越界拒绝。
@@ -34,6 +38,7 @@
 - `review-d4-batch-staging.test.ts`：真实目录/ZIP、SHA 去重、源顺序、路径穿越、符号链接、损坏 ZIP、100 份上限；`review-d4-client-intake-roles.test.ts` 增加文件夹跳过后 Main 强制确认、真实案卷未导入清单、来源哈希、token 重放拒止。
 
 - `review-d4-case-batch.test.ts`：在真实 D2 案卷使用本机 picker 暂存，再检验追加、SHA 重复拒绝、跨 sender、旧 revision、伪造替换目标、成功新版归档旧件、永久来源 hash 与重复 token、已建案文件夹 skip 强制同意。
+- `w1-fact-source.test.ts`：同案 Subject 自己的候选事实与 gate 递归键、真实 block/paragraph 精度、file 级降级、已归档/未解析来源拒绝、伪造块和旧 parseRevision 阴性测试。
 - C10 Main 已消费/跨 sender 安全回归持续沿用 #126，C10 独立 GUI 门禁仍未签。
 - **CI 状态须以 PR #129 最后固定 HEAD 的实际远端运行回执为准**，不以本台账预先宣布通过。
 
@@ -42,7 +47,7 @@
 以下能力在 W1 的后续开发会话继续实际落代码，完成后才进入一次集中 W1 实机验收：
 
 - **已交付**原生选择器的文件夹/ZIP 展开、批内去重，以及已建案后的追加、同案 SHA/同名预检、明确旧版归档替换；**待完善**大规模解析进度与差分重试的专用界面、更多非原子失败复原证据、材料版本关系呈现和无二次 OS picker 的可靠桌面拖放授权合同。不可把 Renderer 任意路径视为可信授权。
-- 把可解析材料的候选审核事项、对象/事实分离显示为**待审核人确认**的建议；不能根据 filename/textSample 直接确定事实，无法确认维持 unknown；多事项必须拆案/明确拒绝。
+- **已交付**D4 Subject 对象下的逐对象候选事实显示、人工来源确认与更正、字段责任限界及原文坐标定位；**仍需完善**提取器对更多 Office/PDF 格式的对象归属建议、待确认的候选事项拆案操作、批量纠错的可视化一致性、人工事实审查操作在旧/新版本之间的版本差异提示。来源不足仍须 unknown，不得从文件名推定事实。
 - 接通跨格式原件预览、页/段/单元格定位、人工提取纠错和版本化、证明对照对象的实际关联工作区；复用现有 `CenterPanel`、`ReviewMaterialControls`、`use-review-workspace-actions`、`SourceBlockView`，不新开第二套责任账本。
 - 模板适用表单从技术 ID 进一步转成作者态声明驱动的业务友好名称与校验；保留 G01-I student-field 单独通道与真实来源适配阻断，不让合成 student fixture 进入正式模式。
 
