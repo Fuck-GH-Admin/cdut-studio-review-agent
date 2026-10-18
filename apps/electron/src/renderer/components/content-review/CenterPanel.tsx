@@ -38,6 +38,7 @@ import {
   reviewWorkspaceRunAtom,
   reviewWorkspaceTemplateAtom,
   reviewAdjudicationEditorSubjectAtom,
+  reviewSourceFocusAtom,
 } from '@/atoms/review-atoms'
 import { cn } from '@/lib/utils'
 import type { ReviewActions } from './use-review-actions'
@@ -47,7 +48,7 @@ import { ReviewActionDialog } from './ReviewActionDialog'
 import { Button } from '@profer/ui/primitives/button'
 import { MaterialDropZone } from './MaterialDropZone'
 import { D4CaseBatchControls } from './D4CaseBatchControls'
-import { w1CandidateFactKeys } from './w1-fact-source'
+import { w1CandidateFactKeys, w1ObservationSources } from './w1-fact-source'
 import { MoveReviewDocumentButtons, RemoveReviewDocumentButton, ReviewMaterialDropZone, ReviewMaterialLaneActions } from './ReviewMaterialControls'
 
 interface ReviewItemDraft {
@@ -787,12 +788,18 @@ function WorkspaceObservationCard({
   observation: Record<string, unknown>
   aggregate: CaseAggregateV2
   template: TemplateVersion | null
-  onConfirm(value: unknown, reason: string): Promise<void>
+  onConfirm(value: unknown, reason: string, override?: { documentVersionId: string; blockId?: string }): Promise<void>
 }): React.ReactElement {
   const [editing, setEditing] = React.useState(false)
   const [value, setValue] = React.useState(displayValue(observation.value))
   const [reason, setReason] = React.useState('')
   const [busy, setBusy] = React.useState(false)
+  const [sourceVersionId, setSourceVersionId] = React.useState('')
+  const [blockId, setBlockId] = React.useState('')
+  const setSourceFocus = useSetAtom(reviewSourceFocusAtom)
+  const validatedSources = w1ObservationSources(aggregate, observation.sourceRefs)
+  const currentSource = aggregate.caseV2.documents.find(doc => doc.versionId === sourceVersionId && doc.active !== false)
+  const canConfirmSource = validatedSources.length > 0 || !!currentSource
   const subjectId = String(observation.subjectId ?? '')
   const fieldKey = String(observation.fieldKey ?? '事实')
   const fieldLabel = businessFieldLabel(fieldKey, template)
@@ -806,7 +813,8 @@ function WorkspaceObservationCard({
   const run = async (nextValue: unknown, nextReason: string): Promise<void> => {
     setBusy(true)
     try {
-      await onConfirm(nextValue, nextReason)
+      await onConfirm(nextValue, nextReason,
+        sourceVersionId ? { documentVersionId: sourceVersionId, ...(blockId ? { blockId } : {}) } : undefined)
       setEditing(false)
       setReason('')
     } catch (error) {
@@ -827,16 +835,55 @@ function WorkspaceObservationCard({
         <div className="mt-1.5 space-y-1.5">
           <input className="h-7 w-full rounded border bg-background px-2" value={value} onChange={(event) => setValue(event.target.value)} aria-label={`${fieldLabel}核验结果`} />
           <input className="h-7 w-full rounded border bg-background px-2" value={reason} onChange={(event) => setReason(event.target.value)} placeholder="更正理由（必填）" aria-label="更正理由" />
+          <label className="block text-xs">更正依据（未选择时沿用可验证的原来源）
+            <select value={sourceVersionId} onChange={event => { setSourceVersionId(event.target.value); setBlockId('') }}
+              className="mt-1 h-7 w-full rounded border bg-background px-2" aria-label="更正来源材料">
+              <option value="">沿用原来源</option>
+              {aggregate.caseV2.documents.filter(doc => doc.active !== false &&
+                (doc.parseStatus === 'parsed' || doc.parseStatus === 'partial')).map(doc =>
+                  <option value={doc.versionId} key={doc.versionId}>{doc.fileName}</option>)}
+            </select>
+          </label>
+          {currentSource && <label className="block text-xs">原文位置
+            <select value={blockId} onChange={event => setBlockId(event.target.value)}
+              className="mt-1 h-7 w-full rounded border bg-background px-2" aria-label="更正来源原文块">
+              <option value="">文件级引用</option>
+              {currentSource.blocks.filter(b => b.text.trim()).map(b =>
+                <option key={b.blockId} value={b.blockId}>{b.text.slice(0, 80)}</option>)}
+            </select>
+          </label>}
           <div className="flex gap-1.5">
-            <button disabled={busy || !reason.trim()} onClick={() => void run(value, reason)} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存更正</button>
+            <button disabled={busy || !reason.trim() || !canConfirmSource} onClick={() => void run(value, reason)} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存更正</button>
             <button disabled={busy} onClick={() => setEditing(false)} className="rounded border px-2 py-1">取消</button>
           </div>
         </div>
       )}
-      {sourceNames.length > 0 && <p className="mt-1 text-muted-foreground">来源：{[...new Set(sourceNames)].join('、')}</p>}
+      {validatedSources.length > 0 && <div className="mt-1 flex flex-wrap gap-1">
+        {validatedSources.map((ref, i) => <button type="button" key={i}
+          className="rounded border border-border px-1.5 py-0.5 text-xs text-muted-foreground hover:text-primary"
+          onClick={() => {
+            const source = aggregate.caseV2.documents.find(doc => doc.versionId === ref.documentVersionId)
+            setSourceFocus({ ref, purpose: source?.role === 'rule' ? 'rule' :
+              source?.role === 'evidence' ? 'evidence' : 'application', nonce: Date.now() })
+          }}>
+          定位来源：{aggregate.caseV2.documents.find(doc => doc.versionId === ref.documentVersionId)?.fileName ?? ref.documentVersionId}
+          {ref.location.kind === 'file' ? '（仅文件级）' : ''}
+        </button>)}
+      </div>}
+      {!validatedSources.length && <p className="mt-1 text-amber-700 dark:text-amber-300">尚无可验证的有效来源，确认前须手动选择材料。</p>}
+      {!confirmed && !editing && !canConfirmSource && <label className="mt-1.5 block text-xs">
+        请选择核验来源
+        <select value={sourceVersionId} onChange={event => { setSourceVersionId(event.target.value); setBlockId('') }}
+          className="mt-1 h-7 w-full rounded border bg-background px-2" aria-label="确认事实来源材料">
+          <option value="">尚未选择来源</option>
+          {aggregate.caseV2.documents.filter(doc => doc.active !== false &&
+            (doc.parseStatus === 'parsed' || doc.parseStatus === 'partial')).map(doc =>
+            <option value={doc.versionId} key={doc.versionId}>{doc.fileName}</option>)}
+        </select>
+      </label>}
       {!confirmed && !editing && (
         <div className="mt-1.5 flex gap-1.5">
-          <button disabled={busy} onClick={() => void run(observation.value, '审核员核对原始材料后确认该识别结果')} className="rounded border px-2 py-1 text-xs hover:bg-background disabled:opacity-50">识别正确</button>
+          <button disabled={busy || !canConfirmSource} onClick={() => void run(observation.value, '审核员核对原始材料后确认该识别结果')} className="rounded border px-2 py-1 text-xs hover:bg-background disabled:opacity-50">识别正确</button>
           <button disabled={busy} onClick={() => { setValue(displayValue(observation.value)); setEditing(true) }} className="rounded border px-2 py-1 text-xs hover:bg-background disabled:opacity-50">识别有误</button>
         </div>
       )}
