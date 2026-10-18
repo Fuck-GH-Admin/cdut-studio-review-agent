@@ -4,7 +4,7 @@
  * and NOT an independent Electron process restart acceptance.
  */
 import { afterAll, describe, expect, test } from 'bun:test'
-import { existsSync, mkdtempSync, readFileSync, rmSync, symlinkSync, unlinkSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, rmSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
@@ -23,6 +23,17 @@ const { markStaleRunsInterrupted, getRunV2 } = await import('./run-store-v2')
 
 const linuxWithFull = process.platform === 'linux' && existsSync('/dev/full')
 const linuxTest = linuxWithFull ? test : test.skip
+
+/** Prove this private path really returns the Linux kernel ENOSPC code. */
+function verifyKernelFull(tempPath: string): void {
+  let code: string | undefined
+  try {
+    writeFileSync(tempPath, 'synthetic failure probe')
+  } catch (error) {
+    code = (error as NodeJS.ErrnoException).code
+  }
+  expect(code).toBe('ENOSPC')
+}
 
 async function fixture() {
   const caseId = 'io-' + randomUUID()
@@ -66,6 +77,7 @@ describe('P06 U1 controlled kernel ENOSPC: immutable run and assignment deny', (
     const tmp = f.runPath + '.tmp'
     symlinkSync('/dev/full', tmp)
     try {
+      verifyKernelFull(tmp)
       // Kernel /dev/full returns ENOSPC on write: not a mocked filesystem error.
       expect(markStaleRunsInterrupted(f.caseId)).toBe(0)
       expect(readFileSync(f.runPath).equals(before)).toBe(true)
@@ -94,7 +106,11 @@ describe('P06 U1 controlled kernel ENOSPC: immutable run and assignment deny', (
     const tmp = ledger + '.tmp'
     symlinkSync('/dev/full', tmp)
     try {
-      expect(() => revokeAssignment(f.prepared.assignmentId)).toThrow()
+      verifyKernelFull(tmp)
+      let errorCode: string | undefined
+      try { revokeAssignment(f.prepared.assignmentId) }
+      catch (error) { errorCode = (error as NodeJS.ErrnoException).code }
+      expect(errorCode).toBe('ENOSPC')
       expect(readFileSync(ledger).equals(before)).toBe(true)
       expect(f.allowed()).toBe(false)
       expect(getPiReviewBindingForSession(f.session.id)).toBeUndefined()
