@@ -387,7 +387,8 @@ export interface BatchAutomationReport {
 export interface BatchStateV2 {
   batch: import('./review-v2').ReviewBatch
   status: 'draft' | 'queued' | 'running' | 'finalized' | 'reopened'
-  cases: Array<{ caseId: string; status: 'queued' | 'running' | 'done' | 'failed' | 'paused'; error?: string }>
+  /** Durable identity of the Run executed by this batch; legacy entries have no binding. */
+  cases: Array<{ caseId: string; status: 'queued' | 'running' | 'done' | 'failed' | 'paused'; error?: string; runId?: string }>
   finalizedSnapshotHash?: string
   finalizedAt?: string
   round: number

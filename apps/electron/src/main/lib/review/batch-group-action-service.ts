@@ -11,7 +11,7 @@ import type { Actor, BatchGroupActionRequest, BatchGroupApplyRequest, BatchGroup
 import { getConfigDir } from '../config-paths'
 import { readAggregate } from './case-store-v2'
 import { readBatchStateV2 } from './batch-store'
-import { listRunsV2, readArtifact } from './run-store-v2'
+import { getRunV2, readArtifact } from './run-store-v2'
 import { getTemplate } from './template-store'
 import { isWorkspaceRunStaleV2, decideWorkspaceCaseV2, openWorkspaceSupplementV2, recordWorkspaceDispositionV2 } from './workspace-business-service-v2'
 
@@ -55,9 +55,6 @@ function validateRequest(req: BatchGroupActionRequest): void {
   }
 }
 
-function latestRun(caseId: string): ReviewRunV2 | undefined {
-  return [...listRunsV2(caseId)].sort((a,b) => (b.completedAt ?? b.startedAt).localeCompare(a.completedAt ?? a.startedAt))[0]
-}
 
 function collect(batchId: string) {
   const batch = readBatchStateV2(batchId)
@@ -67,7 +64,9 @@ function collect(batchId: string) {
     const aggregate = readAggregate(entry.caseId)
     return {
       caseId: entry.caseId, entryStatus: entry.status,
-      caseStage: aggregate?.caseV2.stage, run: latestRun(entry.caseId),
+      caseStage: aggregate?.caseV2.stage,
+      // Group actions may only use a Run durably bound to THIS batch.
+      run: entry.runId ? getRunV2(entry.caseId, entry.runId) : undefined,
       batch: batch.batch,
     }
   })
@@ -97,7 +96,10 @@ export function previewBatchGroupAction(request: BatchGroupActionRequest): Batch
     if (!run || run.id !== occurrence.runId || isWorkspaceRunStaleV2(agg, run.id)) {
       base.reason = '案卷材料、事实或证明关联已变更，需要重新审核'; return base
     }
-    if (run.caseId !== agg.caseV2.id || agg.caseV2.templateId !== batch.batch.templateId || agg.caseV2.templateVersion !== batch.batch.templateVersion) {
+    if (run.caseId !== agg.caseV2.id || run.templateId !== batch.batch.templateId
+      || run.templateVersion !== batch.batch.templateVersion
+      || run.inputManifest?.templateVersion !== batch.batch.templateVersion
+      || agg.caseV2.templateId !== batch.batch.templateId || agg.caseV2.templateVersion !== batch.batch.templateVersion) {
       base.reason = '案卷模板与批次锁不一致'; return base
     }
     const template = getTemplate(agg.caseV2.templateId, agg.caseV2.templateVersion)
@@ -217,7 +219,8 @@ export async function applyBatchGroupAction(request: BatchGroupApplyRequest): Pr
       // Re-read the case for each write; preview is not a capability token.
       const agg = readAggregate(row.caseId)
       if (!agg || agg.caseV2.revision !== row.revision
-        || isWorkspaceRunStaleV2(agg, row.runId) || readBatchStateV2(request.batchId)?.status !== 'queued') {
+        || isWorkspaceRunStaleV2(agg, row.runId) || readBatchStateV2(request.batchId)?.status !== 'queued'
+        || readBatchStateV2(request.batchId)?.cases.find((entry) => entry.caseId === row.caseId)?.runId !== row.runId) {
         result.results.push({ caseId: row.caseId, status: 'conflict', message: '提交前案卷版本、输入或批次状态改变' })
         result.conflicts++
         persist(path, { inputHash, result, completed: false } satisfies PersistedOp)
