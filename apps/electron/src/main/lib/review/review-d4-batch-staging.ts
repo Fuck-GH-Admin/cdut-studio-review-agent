@@ -25,6 +25,7 @@ export interface D4BatchFile {
   sourcePath: string
   sizeBytes: number
   originLabel: string
+  sha256: string
 }
 export interface D4BatchSkip {
   originLabel: string
@@ -97,7 +98,7 @@ export async function stageD4NativeBatch(
       if (digests.has(digest)) { skip(label, '与本批次已有材料内容重复（SHA-256）'); rmSync(join(privateDir, String(files.length)), { recursive: true, force: true }); return }
       digests.add(digest)
       bytesTotal += written
-      files.push({ name, sourcePath: dest, sizeBytes: written, originLabel: safeLabel(label) })
+      files.push({ name, sourcePath: dest, sizeBytes: written, originLabel: safeLabel(label), sha256: digest })
     } catch (error) {
       rmSync(join(privateDir, String(files.length)), { recursive: true, force: true })
       skip(label, '读取或解压失败：' + (error instanceof Error ? error.message : String(error)))
