@@ -7,7 +7,7 @@ import { createCaseFromTemplate, correctObservation, setEvidenceLink } from './a
 import { readAggregate, submitCommand } from './case-store-v2'
 import { registerMaterial } from './material-service'
 import { publishTemplate, saveDraft } from './template-store'
-import { submitCaseV2, respondSupplementV2, resolveSupplementV2 } from './stage-workflow'
+import { submitCaseV2, recordStageDecision, respondSupplementV2, resolveSupplementV2 } from './stage-workflow'
 import { compileWorkspaceRule } from './workspace-rule-compiler'
 import { assembleV2Executors } from './v2-executor-factory'
 import { runReviewCaseV2 } from './run-service-v2'
@@ -189,7 +189,21 @@ describe('单案审核 MVP 全链路（真实存储与执行器，模型调用�
       expect(saved.ok).toBeTrue()
     }
 
+    // 先由系统在当前有效 Run 上完成技术 auto-check 交接，才进入 reviewer
+    // 最终业务决定。不能让工作台绕过尚未完成的 system/teacher 阶段任务。
     aggregate = readAggregate(caseId)!
+    const autoCheckTask = aggregate.tasks.find(task => task.status === 'open' && task.stageId === 'auto-check')!
+    expect(autoCheckTask?.assigneeRole).toBe('system')
+    const handedOff = await recordStageDecision(caseId, {
+      requestId: nextRequest('system-handoff'),
+      actor: { actorId: 'mvp-system-auto-check', actorSource: 'system', role: 'system' },
+      expectedRevision: aggregate.caseV2.revision,
+      payload: { action: 'stage-pass', taskId: autoCheckTask.id, reason: '当前技术核对完成，转交本地人工终审' },
+    }, template)
+    expect(handedOff.ok).toBeTrue()
+    if (!handedOff.ok) throw new Error(handedOff.message)
+    aggregate = readAggregate(caseId)!
+    expect(aggregate.tasks.some(task => task.status === 'open' && task.stageId === 'final-review' && task.assigneeRole === 'reviewer')).toBeTrue()
     const finalDecision = await decideWorkspaceCaseV2(caseId, { requestId: nextRequest('decision'), actor, expectedRevision: aggregate.caseV2.revision, payload: { result: 'partial-pass', reason: '按三项当前最终认定形成部分通过决定', basedOnRunId: finalRun.id, inputHash: finalRun.inputManifest.hash } })
     expect(finalDecision.ok).toBeTrue()
     if (!finalDecision.ok) throw new Error(finalDecision.message)
