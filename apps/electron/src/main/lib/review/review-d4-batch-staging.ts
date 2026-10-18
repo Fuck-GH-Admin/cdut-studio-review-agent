@@ -50,6 +50,7 @@ function safeHostFileName(name: string): boolean {
 export async function stageD4NativeBatch(
   selectedPaths: readonly string[], privateDir: string,
 ): Promise<{ files: D4BatchFile[]; skipped: D4BatchSkip[] }> {
+  if (selectedPaths.length > D4_BATCH_MAX_FILES) throw new Error('D4_INTAKE_TOO_MANY_ROOTS: 原生选择源超过 100 份')
   const files: D4BatchFile[] = []
   const skipped: D4BatchSkip[] = []
   const digests = new Set<string>()
