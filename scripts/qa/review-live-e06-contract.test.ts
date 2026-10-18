@@ -1,4 +1,6 @@
 import { describe, expect, test } from 'bun:test'
+import { spawnSync } from 'node:child_process'
+import { join } from 'node:path'
 // @ts-ignore -- executable Node E06 QA helper has no TypeScript declarations
 import { E06_LOCAL_LANES, summarizeE06Rows, assertE06IsolatedPreflight } from './review-live-e06-contract.mjs'
 
@@ -10,6 +12,11 @@ const validInput = {
 }
 
 describe('P06 E06 actual-live witness matrix contract', () => {
+  test('real CDP runner is valid Node syntax without starting model traffic', () => {
+    const result = spawnSync('node', ['--check', join(import.meta.dir, 'review-live-e06.mjs')], { encoding: 'utf8' })
+    expect(result.status).toBe(0)
+    expect(result.stderr).toBe('')
+  })
   test('four green local Pi lanes never grant full E06/LIVE-08 approval', () => {
     const result = summarizeE06Rows(E06_LOCAL_LANES.map((id: string) => lane(id)))
     expect(result.status).toBe('PARTIAL')

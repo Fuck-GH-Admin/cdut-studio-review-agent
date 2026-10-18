@@ -1,11 +1,17 @@
 // 普通 Pi 的真实工具/权限/停止与 Renderer 预览子矩阵；缺少的外部前置条件单独登记。
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
+import { execFileSync } from 'node:child_process'
 import assert from 'node:assert/strict'
 import { connect, storeAccess, ensureReviewPage } from './review-live-cdp.mjs'
 import { assertE06IsolatedPreflight, summarizeE06Rows } from './review-live-e06-contract.mjs'
 const dir = process.env.QA_REPORT_DIR, profile = process.env.QA_PROFILE_ROOT
 if (!dir || !profile) throw new Error('E06 需明确隔离的 QA_REPORT_DIR 和 QA_PROFILE_ROOT')
+// A caller-supplied SHA is not a source lock on its own. Refuse mismatched worktrees.
+const checkedOutSha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim()
+if (checkedOutSha !== process.env.QA_APPLICATION_SHA) {
+  throw new Error('E06 QA_APPLICATION_SHA differs from the actual checked-out Git HEAD')
+}
 const selected = JSON.parse(readFileSync(join(profile, 'config/review-module-settings.json'), 'utf8')).agentModelSelection
 const preflight = assertE06IsolatedPreflight({
   reportDir: dir, profileRoot: profile, applicationSha: process.env.QA_APPLICATION_SHA,
