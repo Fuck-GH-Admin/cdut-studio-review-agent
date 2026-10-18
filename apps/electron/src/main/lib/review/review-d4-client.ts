@@ -5,9 +5,11 @@ import type { D2ScenarioSelection, D2TrustedStudentSnapshotV1, D4ClientTemplate,
 import { loadD4UnifiedCatalog, loadD4UnifiedWorkspace, resolveD4SourcePath } from './review-d4-catalog'
 import { createD2TechnicalCase, makeD2CandidateShell } from './review-d2-runtime'
 import { getTemplate, isAuthoringCandidateDraft, saveAuthoringCandidateDraft } from './template-store'
-import { saveCase } from './case-store'
+import { getCase, saveCase } from './case-store'
 import { ensureWorkspaceAggregateV2 } from './workspace-service-v2'
 import { validateD4UserSelection } from './review-d4-client-validation'
+import { claimD4Intake, releaseD4Intake } from './review-d4-intake'
+import { importDocumentFromPath } from './case-import'
 
 const json = <T>(path: string): T => JSON.parse(readFileSync(resolveD4SourcePath(path), 'utf8')) as T
 const basePath = (path: string): string => path.replace(/\/workspace(?:\/workspace)?\.json$/, '')
@@ -37,7 +39,7 @@ export function listD4ClientTemplates(): D4ClientTemplate[] {
 
 export async function createD4ClientCase(input: {
   title: string; applicant: string; academicYear: string; d4: D4ClientSelection
-}): Promise<ReviewCase> {
+}, ownerWebContentsId?: number): Promise<ReviewCase> {
   const selection = input.d4?.selection
   if (!selection || !input.title?.trim() || !input.applicant?.trim() || !input.academicYear?.trim()) {
     throw new Error('D4 技术预审需要标题、申请人和明确的对象/场景选择')
@@ -53,20 +55,44 @@ export async function createD4ClientCase(input: {
     if (entry.templateId !== 'g01-student-identity-correction') throw new Error('D4_SYNTHETIC_REGISTRY_SCOPE_INVALID')
     trustedStudentSnapshot = json<D2TrustedStudentSnapshotV1>(`${basePath(entry.workspacePath)}/fixtures/controlled-registry.json`)
   }
-  const old = getTemplate(entry.templateId, entry.templateVersion)
-  if (old && !isAuthoringCandidateDraft(entry.templateId, entry.templateVersion)) throw new Error('D4_EXISTING_TEMPLATE_NOT_CANDIDATE')
-  if (!old) saveAuthoringCandidateDraft(makeD2CandidateShell(workspace, entry.templateId, entry.templateVersion))
-  const caseId = `d4-${randomUUID()}`
-  const result = await createD2TechnicalCase({ caseId, title: input.title,
-    actor: { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' },
-    workspace, selection, trustedStudentSnapshot })
-  if (!result.ok) throw new Error(`${result.code}: ${result.message}`)
-  const now = new Date().toISOString()
-  const reviewCase: ReviewCase = { id: caseId, title: input.title.trim(), type: '自定义审核',
-    applicant: input.applicant.trim(), academicYear: input.academicYear.trim(), createdAt: now, updatedAt: now,
-    documents: [], rulePacks: [], items: [], evidences: [], isDemo: false,
-    reviewTemplate: { templateId: entry.templateId, version: entry.templateVersion } }
-  saveCase(reviewCase)
-  await ensureWorkspaceAggregateV2(caseId)
-  return reviewCase
+  // P1-C: only a Main-owned OS picker can supply a staged file token.
+  const intake = input.d4.intakeToken
+    ? claimD4Intake(input.d4.intakeToken, ownerWebContentsId ?? -1) : undefined
+  let createdCaseId: string | undefined
+  try {
+    const old = getTemplate(entry.templateId, entry.templateVersion)
+    if (old && !isAuthoringCandidateDraft(entry.templateId, entry.templateVersion)) throw new Error('D4_EXISTING_TEMPLATE_NOT_CANDIDATE')
+    if (!old) saveAuthoringCandidateDraft(makeD2CandidateShell(workspace, entry.templateId, entry.templateVersion))
+    const caseId = `d4-${randomUUID()}`
+    const result = await createD2TechnicalCase({ caseId, title: input.title,
+      actor: { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' },
+      workspace, selection, trustedStudentSnapshot })
+    if (!result.ok) throw new Error(`${result.code}: ${result.message}`)
+    const now = new Date().toISOString()
+    const reviewCase: ReviewCase = { id: caseId, title: input.title.trim(), type: '自定义审核',
+      applicant: input.applicant.trim(), academicYear: input.academicYear.trim(), createdAt: now, updatedAt: now,
+      documents: [], rulePacks: [], items: [], evidences: [], isDemo: false,
+      reviewTemplate: { templateId: entry.templateId, version: entry.templateVersion } }
+    saveCase(reviewCase)
+    createdCaseId = caseId
+    await ensureWorkspaceAggregateV2(caseId)
+    const d4IntakeFailures: string[] = []
+    if (intake) {
+      for (const file of intake.files) {
+        try {
+          const parsed = await importDocumentFromPath({ caseId, sourcePath: file.sourcePath, role: 'application' })
+          if (parsed.parseStatus !== 'parsed') d4IntakeFailures.push(file.name + ': ' + parsed.parseStatus)
+        } catch (error) {
+          d4IntakeFailures.push(file.name + ': ' + (error instanceof Error ? error.message : String(error)))
+        }
+      }
+    }
+    // Transient disclosure only. The partial case stays visible for explicit manual supplement.
+    return { ...(getCase(caseId) ?? reviewCase), ...(d4IntakeFailures.length ? { d4IntakeFailures } : {}) }
+  } catch (error) {
+    if (createdCaseId) throw new Error('D4_CASE_CREATED_INCOMPLETE: ' + createdCaseId + ': ' + String(error))
+    throw error
+  } finally {
+    if (intake) releaseD4Intake(intake, !!createdCaseId)
+  }
 }
