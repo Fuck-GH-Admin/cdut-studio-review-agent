@@ -306,44 +306,70 @@ function buildVirtualPagesFromText(rawText: string): DocumentPageSlice[] {
 /**
  * 为当前会话工作区内的文档分配确定性的唯一 `fileId`（如 "f1", "f2"...）。
  */
-function allocateSessionFileId(
+type OfficeArtifactManifest = Record<string, {
+  fileId?: string
+  sourcePath: string
+  revision: string
+  cleanPath: string
+}>
+
+/** 同名异源必须分配独立 artifact；优先保留单文档旧版路径。 */
+function selectSessionArtifactId(
   artifactsDir: string,
   stem: string,
-  resolvedSourcePath: string,
-  manifest: Record<string, { fileId?: string; sourcePath: string; revision: string; cleanPath: string }>,
+  sourcePath: string,
+  manifest: OfficeArtifactManifest,
 ): string {
-  const existing = manifest[stem]
-  if (existing?.fileId && /^f\d+$/i.test(existing.fileId)) {
-    return existing.fileId.toLowerCase()
-  }
+  const sameSource = Object.entries(manifest)
+    .find(([, record]) => record?.sourcePath && resolve(record.sourcePath) === sourcePath)
+  if (sameSource) return sameSource[0]
+  if (!manifest[stem] && !existsSync(join(artifactsDir, `${stem}.index.json`))) return stem
 
-  // 检查是否已有相同 sourcePath 的记录
-  for (const entry of Object.values(manifest)) {
-    if (entry.sourcePath === resolvedSourcePath && entry.fileId && /^f\d+$/i.test(entry.fileId)) {
-      return entry.fileId.toLowerCase()
-    }
+  const hash = createHash('sha256').update(sourcePath).digest('hex').slice(0, 16)
+  const suffix = `${stem}--${hash}`
+  let artifactId = suffix
+  let ordinal = 1
+  while (manifest[artifactId] || existsSync(join(artifactsDir, `${artifactId}.index.json`))) {
+    ordinal++
+    artifactId = `${suffix}-${ordinal}`
   }
+  return artifactId
+}
 
-  let maxNum = 0
-  for (const entry of Object.values(manifest)) {
-    const m = /^f(\d+)$/i.exec(entry.fileId ?? '')
-    if (m) maxNum = Math.max(maxNum, parseInt(m[1]!, 10))
-  }
-
+/**
+ * fileId 只按源路径复用，不按 stem。
+ * 老缓存中若发现同一个 fN 归属多个路径，不复用冲突 ID。
+ */
+function allocateSessionFileId(
+  artifactsDir: string,
+  sourcePath: string,
+  manifest: OfficeArtifactManifest,
+  preferredFileId?: string,
+): string {
   const registryPath = join(artifactsDir, 'registry.json')
+  let registry: Record<string, SessionDocumentRegistryEntry> = {}
   if (existsSync(registryPath)) {
     try {
-      const reg = JSON.parse(readFileSync(registryPath, 'utf-8')) as Record<string, SessionDocumentRegistryEntry>
-      for (const item of Object.values(reg)) {
-        if (item.sourcePath === resolvedSourcePath && item.fileId) return item.fileId
-        const m = /^f(\d+)$/i.exec(item.fileId ?? '')
-        if (m) maxNum = Math.max(maxNum, parseInt(m[1]!, 10))
-      }
+      registry = JSON.parse(readFileSync(registryPath, 'utf-8')) as Record<string, SessionDocumentRegistryEntry>
     } catch {
-      // ignore
+      // 无效旧 registry 不授予任何文件身份。
     }
   }
+  const entries = [...Object.values(manifest), ...Object.values(registry)]
+  const ids = entries
+    .map(entry => ({ id: entry?.fileId?.toLowerCase(), path: entry?.sourcePath }))
+    .filter((entry): entry is { id: string; path: string } =>
+      !!entry.id && /^f\d+$/.test(entry.id) && !!entry.path)
+  const ownedByOther = (fileId: string) =>
+    ids.some(entry => entry.id === fileId && resolve(entry.path) !== sourcePath)
 
+  for (const entry of ids) {
+    if (resolve(entry.path) === sourcePath && !ownedByOther(entry.id)) return entry.id
+  }
+  const preferred = preferredFileId?.toLowerCase()
+  if (preferred && /^f\d+$/.test(preferred) && !ownedByOther(preferred)) return preferred
+
+  const maxNum = ids.reduce((max, entry) => Math.max(max, Number(entry.id.slice(1)) || 0), 0)
   return `f${maxNum + 1}`
 }
 
@@ -360,13 +386,14 @@ export function materializeToWorkspace(
 ): MaterializedDocumentIndex | undefined {
   if (!agentCwd || !existsSync(agentCwd)) return undefined
   try {
-    const ext = extname(resolvedSourcePath)
-    const stem = basename(resolvedSourcePath, ext).trim() || 'document'
+    const sourcePath = resolve(resolvedSourcePath)
+    const ext = extname(sourcePath)
+    const stem = basename(sourcePath, ext).trim() || 'document'
     const artifactsDir = join(agentCwd, '.context', 'artifacts')
     mkdirSync(artifactsDir, { recursive: true })
 
     const manifestPath = join(artifactsDir, 'manifest.json')
-    let manifest: Record<string, { fileId?: string; sourcePath: string; revision: string; cleanPath: string }> = {}
+    let manifest: OfficeArtifactManifest = {}
     if (existsSync(manifestPath)) {
       try {
         manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'))
@@ -375,16 +402,14 @@ export function materializeToWorkspace(
       }
     }
 
-    const fileId =
-      preferredFileId && /^f\d+$/i.test(preferredFileId)
-        ? preferredFileId.toLowerCase()
-        : allocateSessionFileId(artifactsDir, stem, resolvedSourcePath, manifest)
+    const artifactId = selectSessionArtifactId(artifactsDir, stem, sourcePath, manifest)
+    const fileId = allocateSessionFileId(artifactsDir, sourcePath, manifest, preferredFileId)
 
     // 决定 Clean Markdown 的目标路径：优先使用工作目录根下的 `<stem>.md`；
     // 若该文件已存在且并非由内核生成（避免覆盖用户手写笔记），则回退至 `<stem>.parsed.md`
-    const primaryCleanPath = join(agentCwd, `${stem}.md`)
-    const fallbackCleanPath = join(agentCwd, `${stem}.parsed.md`)
-    const existingRecord = manifest[stem]
+    const primaryCleanPath = join(agentCwd, `${artifactId}.md`)
+    const fallbackCleanPath = join(agentCwd, `${artifactId}.parsed.md`)
+    const existingRecord = manifest[artifactId]
     let cleanMarkdownPath = primaryCleanPath
     if (
       existsSync(primaryCleanPath) &&
@@ -393,12 +418,14 @@ export function materializeToWorkspace(
       cleanMarkdownPath = fallbackCleanPath
     }
 
-    const anchoredMarkdownPath = join(artifactsDir, `${stem}.anchored.md`)
-    const indexJsonPath = join(artifactsDir, `${stem}.index.json`)
+    const anchoredMarkdownPath = join(artifactsDir, `${artifactId}.anchored.md`)
+    const indexJsonPath = join(artifactsDir, `${artifactId}.index.json`)
 
     // 若版本未变化且双态文件均在磁盘上（且索引已包含 fileId 与 blocks），直接复用
     if (
       existingRecord &&
+      existingRecord.sourcePath === sourcePath &&
+      existingRecord.fileId === fileId &&
       existingRecord.revision === parsed.file.revision &&
       (!preferredFileId || existingRecord.fileId === fileId) &&
       existsSync(cleanMarkdownPath) &&
@@ -407,7 +434,11 @@ export function materializeToWorkspace(
     ) {
       try {
         const cachedIndex = JSON.parse(readFileSync(indexJsonPath, 'utf-8')) as MaterializedDocumentIndex
-        if (cachedIndex.fileId && cachedIndex.blocks) {
+        if (cachedIndex.fileId === fileId &&
+          cachedIndex.artifactId === artifactId &&
+          cachedIndex.sourcePath === sourcePath &&
+          cachedIndex.revision === parsed.file.revision &&
+          cachedIndex.blocks) {
           return cachedIndex
         }
       } catch {
@@ -439,8 +470,8 @@ export function materializeToWorkspace(
 
     const indexData: MaterializedDocumentIndex = {
       fileId,
-      artifactId: stem,
-      sourcePath: resolvedSourcePath,
+      artifactId,
+      sourcePath,
       sourceName: parsed.file.name,
       revision: parsed.file.revision,
       format: parsed.format,
@@ -461,9 +492,9 @@ export function materializeToWorkspace(
     }
 
     writeFileSync(indexJsonPath, JSON.stringify(indexData, null, 2), 'utf-8')
-    manifest[stem] = {
+    manifest[artifactId] = {
       fileId,
-      sourcePath: resolvedSourcePath,
+      sourcePath,
       revision: parsed.file.revision,
       cleanPath: cleanMarkdownPath,
     }
@@ -481,8 +512,8 @@ export function materializeToWorkspace(
     }
     registry[fileId] = {
       fileId,
-      artifactId: stem,
-      sourcePath: resolvedSourcePath,
+      artifactId,
+      sourcePath,
       sourceName: parsed.file.name,
       indexJsonPath,
       updatedAt: Date.now(),
@@ -917,17 +948,26 @@ async function resolveMaterializedIndex(
         const q = fileQuery.trim().toLowerCase()
         const qBase = basename(q).toLowerCase()
         const qStem = basename(q, extname(q)).toLowerCase()
-        const matched = indices.find(
-          (idx) =>
-            (idx.fileId && idx.fileId.toLowerCase() === q) ||
-            idx.artifactId.toLowerCase() === q ||
-            idx.artifactId.toLowerCase() === qStem ||
-            idx.sourceName.toLowerCase() === qBase ||
-            idx.sourcePath.toLowerCase() === q ||
-            idx.cleanMarkdownPath.toLowerCase() === q ||
-            idx.sourceName.toLowerCase().includes(qStem),
+        // 精确 fileId/路径优先；同名弱查询出现多个候选时 fail closed。
+        const exact = indices.filter(idx =>
+          (idx.fileId && idx.fileId.toLowerCase() === q) ||
+          idx.sourcePath.toLowerCase() === q ||
+          idx.cleanMarkdownPath.toLowerCase() === q ||
+          idx.artifactId.toLowerCase() === q,
         )
-        if (matched) return matched
+        if (exact.length > 1) throw new Error('文档索引身份冲突，请重新导入原始文件')
+        if (exact.length === 1 && /^f\d+$/.test(q)) return exact[0]!
+        const matches = indices.filter(idx =>
+          idx.artifactId.toLowerCase() === q ||
+          idx.artifactId.toLowerCase() === qStem ||
+          idx.sourceName.toLowerCase() === qBase ||
+          idx.sourceName.toLowerCase().includes(qStem),
+        )
+        if (matches.length > 1) {
+          throw new Error('存在多份同名文档，请改用唯一 fileId 或完整来源路径')
+        }
+        if (exact.length === 1) return exact[0]!
+        if (matches.length === 1) return matches[0]!
       }
     }
   }
