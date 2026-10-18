@@ -2,7 +2,7 @@ import { describe, expect, test } from 'bun:test'
 import { spawnSync } from 'node:child_process'
 import { join } from 'node:path'
 // @ts-ignore -- executable Node E06 QA helper has no TypeScript declarations
-import { E06_LOCAL_LANES, summarizeE06Rows, assertE06IsolatedPreflight } from './review-live-e06-contract.mjs'
+import { E06_LOCAL_LANES, summarizeE06Rows, assertE06IsolatedPreflight, makeE06SyntheticMarker } from './review-live-e06-contract.mjs'
 
 const lane = (id: string, status = 'PASS') => ({ id, status, assertions: [{ name: 'real witness', pass: true }] })
 const validInput = {
@@ -22,6 +22,12 @@ describe('P06 E06 actual-live witness matrix contract', () => {
     expect(result.status).toBe('PARTIAL')
     expect(result.localLanesComplete).toBe(true)
     expect(result.completedLocalLanes).toBe(4)
+  })
+  test('each real Pi run gets an unpredictable fresh synthetic marker', () => {
+    const first = makeE06SyntheticMarker()
+    const second = makeE06SyntheticMarker()
+    expect(first).toMatch(/^P06_TOOL_READ_REAL_OK_[0-9a-f]{32}$/)
+    expect(first).not.toBe(second)
   })
   test('a claimed green lane without actual assertions fails closed', () => {
     const result = summarizeE06Rows([{ id: E06_LOCAL_LANES[0], status: 'PASS', assertions: [] }])

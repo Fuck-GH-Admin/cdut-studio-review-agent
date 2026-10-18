@@ -1,4 +1,5 @@
 import { homedir } from 'node:os'
+import { randomUUID } from 'node:crypto'
 import { isAbsolute, resolve } from 'node:path'
 
 export const E06_LOCAL_LANES = Object.freeze([
@@ -7,6 +8,11 @@ export const E06_LOCAL_LANES = Object.freeze([
   'E06-PI-STOP-IN-FLIGHT',
   'E06-DESKTOP-TEXT-PREVIEW',
 ])
+
+/** Never accept a marker from a previous cached ordinary Pi transcript. */
+export function makeE06SyntheticMarker() {
+  return 'P06_TOOL_READ_REAL_OK_' + randomUUID().replaceAll('-', '')
+}
 
 const VALID_STATUSES = new Set(['RUNNING', 'PASS', 'FAIL', 'NOT-RUN', 'BLOCKED', 'INFO'])
 

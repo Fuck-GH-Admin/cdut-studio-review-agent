@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { execFileSync } from 'node:child_process'
 import assert from 'node:assert/strict'
 import { connect, storeAccess, ensureReviewPage } from './review-live-cdp.mjs'
-import { assertE06IsolatedPreflight, summarizeE06Rows } from './review-live-e06-contract.mjs'
+import { assertE06IsolatedPreflight, summarizeE06Rows, makeE06SyntheticMarker } from './review-live-e06-contract.mjs'
 const dir = process.env.QA_REPORT_DIR, profile = process.env.QA_PROFILE_ROOT
 if (!dir || !profile) throw new Error('E06 需明确隔离的 QA_REPORT_DIR 和 QA_PROFILE_ROOT')
 // A caller-supplied SHA is not a source lock on its own. Refuse mismatched worktrees.
@@ -20,6 +20,7 @@ const preflight = assertE06IsolatedPreflight({
 mkdirSync(dir, { recursive: true })
 const renderer = await connect(), main = await connect(9230, () => true)
 const q = JSON.stringify, rows = [{ id: 'E06-PREFLIGHT', status: 'INFO', witness: preflight }]
+const syntheticMarker = makeE06SyntheticMarker()
 const save = () => writeFileSync(join(dir, 'e06-matrix.json'), JSON.stringify({
   sourceSha: process.env.QA_APPLICATION_SHA, ...summarizeE06Rows(rows), rows,
 }, null, 2) + '\n')
@@ -42,7 +43,7 @@ try {
   session = await createSession()
   workspace = join(profile, 'config/agent-workspaces/default', session.id)
   mkdirSync(workspace, { recursive: true })
-  writeFileSync(join(workspace, 'tool-positive.txt'), 'P06_TOOL_READ_REAL_OK\n')
+  writeFileSync(join(workspace, 'tool-positive.txt'), syntheticMarker + '\n')
   await record('E06-PI-READ-TOOL', async (row, check) => {
     const visible = await renderer.evaluate(`(async()=>{const list=await window.electronAPI.listAgentSessions(true);const meta=await window.electronAPI.getAgentSessionMeta(${q(session.id)});return {visible:list.some(s=>s.id===${q(session.id)}),readable:meta?.id===${q(session.id)},ordinary:!meta?.owner}})()`)
     check('普通 create/list/meta 正常', visible.visible && visible.readable && visible.ordinary)
@@ -51,7 +52,7 @@ try {
     check('真实模型实际发起 read 工具', row.toolCalls.some(n => n.toLowerCase() === 'read'))
     // A tool name alone is not proof that the tool returned the requested file.
     // Only save this boolean, never the SDK transcript or confidential payload.
-    row.readMarkerWitness = await renderer.evaluate(`(async()=>{const m=await window.electronAPI.getAgentSessionSDKMessages(${q(session.id)});return JSON.stringify(m).includes('P06_TOOL_READ_REAL_OK')})()`)
+    row.readMarkerWitness = await renderer.evaluate(`(async()=>{const m=await window.electronAPI.getAgentSessionSDKMessages(${q(session.id)});return JSON.stringify(m).includes(${q(syntheticMarker)})})()`)
     check('SDK 本次回执包含合成文件中的唯一读取标记', row.readMarkerWitness === true)
     check('普通会话工具读取后已释放', !await main.evaluate(`__p06Live.isAgentSessionActive(${q(session.id)})`))
   })
@@ -84,10 +85,10 @@ try {
   })
   await record('E06-DESKTOP-TEXT-PREVIEW', async (row, check) => {
     const path = join(workspace, 'tool-positive.txt')
-    const view = await renderer.evaluate(`(async()=>{${storeAccess}const p=await import('/components/diff/preview-opener.ts');const a=await import('/atoms/active-view.ts');store.set(a.activeViewAtom,'conversations');const tab=await p.openFilePreviewTabAuthorized(store,${q(session.id)},{filePath:${q(path)},previewOnly:true,readOnly:true});const read=await window.electronAPI.resolveAndReadFile(${q(path)},{sessionId:${q(session.id)}});return {tabOpened:!!tab,fileRead:read?.content.includes('P06_TOOL_READ_REAL_OK')}})()`)
+    const view = await renderer.evaluate(`(async()=>{${storeAccess}const p=await import('/components/diff/preview-opener.ts');const a=await import('/atoms/active-view.ts');store.set(a.activeViewAtom,'conversations');const tab=await p.openFilePreviewTabAuthorized(store,${q(session.id)},{filePath:${q(path)},previewOnly:true,readOnly:true});const read=await window.electronAPI.resolveAndReadFile(${q(path)},{sessionId:${q(session.id)}});return {tabOpened:!!tab,fileRead:read?.content.includes(${q(syntheticMarker)})}})()`)
     check('真实 Main 授权读取与 Renderer 预览 Tab', view.tabOpened && view.fileRead)
     // @pierre/diffs 用 Shadow DOM；必须检查真实代码节点，body.innerText 不能见证内容。
-    const visibleText = '(()=>{const visit=n=>[n.textContent??"",...[...n.querySelectorAll?.("*")??[]].filter(e=>e.shadowRoot).map(e=>visit(e.shadowRoot))].join(" ");return visit(document).includes("P06_TOOL_READ_REAL_OK")})()'
+    const visibleText = `(()=>{const visit=n=>[n.textContent??"",...[...n.querySelectorAll?.("*")??[]].filter(e=>e.shadowRoot).map(e=>visit(e.shadowRoot))].join(" ");return visit(document).includes(${q(syntheticMarker)})})()`
     await renderer.poll(visibleText)
     check('真实 Renderer Shadow DOM 显示合成文件内容', await renderer.evaluate(visibleText))
     const png = await renderer.call('Page.captureScreenshot', { format: 'png', clip: { x: 315, y: 82, width: 1270, height: 780, scale: 1 } })
