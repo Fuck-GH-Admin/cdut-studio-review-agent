@@ -38,8 +38,9 @@ describe('W1 explicit subject facts and truthful V2 SourceRef precision', () => 
       .toEqual({ kind: 'paragraph', index: 2 })
     expect(w1ObservationSources(aggregate, [{ documentVersionId: 'd1-v1', quote: '不存在的引用' }])[0]!.location)
       .toEqual({ kind: 'file' })
+    // A two-character excerpt is too weak to justify a precise location.
     expect(w1ObservationSources(aggregate, [{ documentVersionId: 'd1-v1', quote: '教室' }])[0]!.location)
-      .toEqual({ kind: 'paragraph', index: 2 })
+      .toEqual({ kind: 'file' })
   })
   test('preserves an existing precise V2 source only at the current revision and actual block', () => {
     const current = {
