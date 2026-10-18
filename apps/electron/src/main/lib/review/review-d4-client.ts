@@ -5,7 +5,7 @@ import type { D2ScenarioSelection, D2TrustedStudentSnapshotV1, D4ClientTemplate,
 import { loadD4UnifiedCatalog, loadD4UnifiedWorkspace, resolveD4SourcePath } from './review-d4-catalog'
 import { createD2TechnicalCase, makeD2CandidateShell } from './review-d2-runtime'
 import { getTemplate, isAuthoringCandidateDraft, saveAuthoringCandidateDraft } from './template-store'
-import { getCase, saveCase } from './case-store'
+import { getCase, saveCase, updateCase } from './case-store'
 import { ensureWorkspaceAggregateV2 } from './workspace-service-v2'
 import { validateD4UserSelection } from './review-d4-client-validation'
 import { claimD4Intake, releaseD4Intake } from './review-d4-intake'
@@ -58,6 +58,9 @@ export async function createD4ClientCase(input: {
   }
   // P1-C/W1: only a Main-owned OS picker can supply staged files.
   // A role plan without a token is never an authority or material source.
+  if (input.d4.acknowledgeSkippedFiles !== undefined && !input.d4.intakeToken) {
+    throw new Error('D4_INTAKE_ACK_WITHOUT_TOKEN')
+  }
   if (input.d4.intakeRoles !== undefined && !input.d4.intakeToken) {
     throw new Error('D4_INTAKE_ROLE_PLAN_INVALID: no staged file token')
   }
@@ -68,6 +71,9 @@ export async function createD4ClientCase(input: {
     // Validate inside try so a rejected role plan releases the claimed token for
     // correction, instead of consuming the file or creating a partial case.
     const intakeRoles = intake ? resolveD4IntakeRoles(intake.files.length, input.d4.intakeRoles) : []
+    if (intake?.skipped.length && input.d4.acknowledgeSkippedFiles !== true) {
+      throw new Error('D4_INTAKE_SKIPS_ACK_REQUIRED: 已跳过材料，须明确确认不完整输入清单')
+    }
     const old = getTemplate(entry.templateId, entry.templateVersion)
     if (old && !isAuthoringCandidateDraft(entry.templateId, entry.templateVersion)) throw new Error('D4_EXISTING_TEMPLATE_NOT_CANDIDATE')
     if (!old) saveAuthoringCandidateDraft(makeD2CandidateShell(workspace, entry.templateId, entry.templateVersion))
@@ -80,6 +86,7 @@ export async function createD4ClientCase(input: {
     const reviewCase: ReviewCase = { id: caseId, title: input.title.trim(), type: '自定义审核',
       applicant: input.applicant.trim(), academicYear: input.academicYear.trim(), createdAt: now, updatedAt: now,
       documents: [], rulePacks: [], items: [], evidences: [], isDemo: false,
+      ...(intake?.skipped.length ? { d4IntakeWarnings: intake.skipped } : {}),
       reviewTemplate: { templateId: entry.templateId, version: entry.templateVersion } }
     saveCase(reviewCase)
     createdCaseId = caseId
@@ -95,8 +102,19 @@ export async function createD4ClientCase(input: {
         }
       }
     }
-    // Transient disclosure only. The partial case stays visible for explicit manual supplement.
-    return { ...(getCase(caseId) ?? reviewCase), ...(d4IntakeFailures.length ? { d4IntakeFailures } : {}) }
+    // An omitted or failed document must remain visible after reopening this
+    // case, not only in a one-time success toast.
+    if (d4IntakeFailures.length) {
+      await updateCase(caseId, fresh => ({
+        ...fresh,
+        d4IntakeWarnings: [
+          ...(fresh.d4IntakeWarnings ?? []),
+          ...d4IntakeFailures.map(item => ({ originLabel: item.split(': ')[0] ?? item, reason: item })),
+        ],
+      }), { reason: 'W1 文件批次导入/解析失败，保留未完成清单' })
+    }
+    const omissions = [...(intake?.skipped.map(item => item.originLabel + ': ' + item.reason) ?? []), ...d4IntakeFailures]
+    return { ...(getCase(caseId) ?? reviewCase), ...(omissions.length ? { d4IntakeFailures: omissions } : {}) }
   } catch (error) {
     if (createdCaseId) throw new Error('D4_CASE_CREATED_INCOMPLETE: ' + createdCaseId + ': ' + String(error))
     throw error
