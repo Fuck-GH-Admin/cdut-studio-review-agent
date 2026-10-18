@@ -68,8 +68,15 @@ export async function retryD4CaseDocument(input: {
     })
     let status: D4DocumentRetryResult['status'] = 'needs-review'
     let message = ''
-    if (replay.parseStatus === 'parsed') {
+    const hasReviewableText = replay.blocks.some(block => !!block.text.trim())
+    if (replay.parseStatus === 'parsed' && hasReviewableText) {
       try {
+        // The new import itself advances V1 by exactly one revision. Another
+        // concurrent editor write must prevent automatic retirement of old
+        // material; both originals stay available for explicit reconciliation.
+        if ((getCase(caseId)?.revision ?? -1) !== input.expectedRevision + 1) {
+          throw new Error('D4_RETRY_CONCURRENT_CASE_EDIT')
+        }
         await removeDocumentsFromCase({ caseId, role: checked.document.role, documentIds: [documentId] })
         status = 'replaced'
         message = '重新解析成功，旧版本已归档；审核结果需要重新计算'
@@ -84,7 +91,7 @@ export async function retryD4CaseDocument(input: {
       try {
         await removeDocumentsFromCase({ caseId, role: checked.document.role, documentIds: [replay.id] })
         status = 'still-incomplete'
-        message = '重新解析仍不完整，旧材料仍有效；已记录此次尝试，请人工核对原件'
+        message = '重新解析仍不完整或没有可核验文字，旧材料仍有效；已记录此次尝试，请人工核对原件'
       } catch (error) {
         message = '重新解析未完成，尝试文件归档失败；请检查两个材料版本：' +
           (error instanceof Error ? error.message : String(error))
