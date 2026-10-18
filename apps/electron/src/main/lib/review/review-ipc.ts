@@ -108,6 +108,30 @@ export function registerReviewIpc(): void {
     if (mode !== undefined && mode !== 'files' && mode !== 'folder') throw new Error('D4_INTAKE_PICKER_MODE_INVALID')
     return stageD4Intake(event.sender.id, parent, mode ?? 'files')
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.ASSESS_D4_CASE_BATCH, (event, raw: unknown) => {
+    const { BrowserWindow } = require('electron') as typeof import('electron')
+    const owner = BrowserWindow.fromWebContents(event.sender)
+    if (!owner || event.senderFrame !== owner.webContents.mainFrame) throw new Error('D4_BATCH_SENDER_INVALID')
+    if (!raw || typeof raw !== 'object') throw new Error('D4_BATCH_INPUT_INVALID')
+    const input = raw as Record<string, unknown>
+    if (typeof input.caseId !== 'string' || typeof input.token !== 'string' ||
+        (input.role !== 'application' && input.role !== 'evidence')) throw new Error('D4_BATCH_INPUT_INVALID')
+    const { assessD4CaseBatch } = require('./review-d4-case-batch') as typeof import('./review-d4-case-batch')
+    return assessD4CaseBatch({ caseId: input.caseId, token: input.token, role: input.role }, event.sender.id)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.APPLY_D4_CASE_BATCH, async (event, raw: unknown) => {
+    const { BrowserWindow } = require('electron') as typeof import('electron')
+    const owner = BrowserWindow.fromWebContents(event.sender)
+    if (!owner || event.senderFrame !== owner.webContents.mainFrame) throw new Error('D4_BATCH_SENDER_INVALID')
+    if (!raw || typeof raw !== 'object') throw new Error('D4_BATCH_INPUT_INVALID')
+    const input = raw as Record<string, unknown>
+    if (typeof input.caseId !== 'string' || typeof input.token !== 'string' ||
+        (input.role !== 'application' && input.role !== 'evidence') ||
+        !Number.isSafeInteger(input.expectedRevision) || !Array.isArray(input.choices) ||
+        typeof input.acknowledgeSkipped !== 'boolean') throw new Error('D4_BATCH_INPUT_INVALID')
+    const { applyD4CaseBatch } = require('./review-d4-case-batch') as typeof import('./review-d4-case-batch')
+    return applyD4CaseBatch(input as Parameters<typeof applyD4CaseBatch>[0], event.sender.id)
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.DISCARD_D4_INTAKE, (event, token: unknown) => {
     if (typeof token !== 'string') return false
     const { discardD4Intake } = require('./review-d4-intake') as typeof import('./review-d4-intake')
