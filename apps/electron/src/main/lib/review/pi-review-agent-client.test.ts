@@ -219,7 +219,7 @@ describe('Pi 审核 Agent 客户端', () => {
       apiKey: 'test-key', model: 'test-model', cwd: '/tmp/review-case', piAgentDir: '/tmp/pi-config',
       loadSdk: async () => ({ defineTool: (definition: unknown) => definition }) as never,
       query: async function* () {
-        yield { type: 'result', subtype: 'error_max_turns', errors: ['Maximum turns (24) reached in private upstream session'] } as unknown as SDKMessage
+        yield { type: 'result', subtype: 'error_max_turns', errors: ['private upstream error without readable turn hint'] } as unknown as SDKMessage
       },
     })
     await expect(client.complete({
