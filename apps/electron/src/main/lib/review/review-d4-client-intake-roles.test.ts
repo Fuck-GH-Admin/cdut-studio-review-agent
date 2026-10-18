@@ -4,6 +4,8 @@
  * persistence and both imported document roles use real production services.
  */
 import { afterAll, describe, expect, mock, test } from 'bun:test'
+import { createHash } from 'node:crypto'
+import { readFileSync } from 'node:fs'
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -68,6 +70,9 @@ describe('W1 real D4 Main native intake per-file classification', () => {
     const stored = getCase(created.id)!
     expect(stored.documents).toHaveLength(2)
     expect(stored.documents.map(doc => doc.role)).toEqual(['application', 'evidence'])
+    expect(stored.d4IntakeOrigins).toHaveLength(2)
+    expect(stored.d4IntakeOrigins?.map(item => item.documentId)).toEqual(stored.documents.map(item => item.id))
+    expect(stored.d4IntakeOrigins?.[0]?.sha256).toBe(createHash('sha256').update(readFileSync(applicationPath)).digest('hex'))
     expect(stored.documents.map(doc => doc.fileName)).toEqual([
       '公共教学教室借用申请.md', '教室安排证明.md',
     ])
