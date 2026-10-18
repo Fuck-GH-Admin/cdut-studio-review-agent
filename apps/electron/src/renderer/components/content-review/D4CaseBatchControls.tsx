@@ -20,9 +20,15 @@ export function D4CaseBatchControls({ role, actions }: {
   const [busy, setBusy] = React.useState(false)
   const [error, setError] = React.useState('')
   const activeToken = React.useRef<string | null>(null)
+  const sessionGeneration = React.useRef(0)
 
   React.useEffect(() => {
-    return () => { if (activeToken.current) void window.reviewAPI.discardD4Intake(activeToken.current).catch(() => false) }
+    return () => {
+      sessionGeneration.current += 1
+      const previous = activeToken.current
+      activeToken.current = null
+      if (previous) void window.reviewAPI.discardD4Intake(previous).catch(() => false)
+    }
   }, [caseId, role])
 
   if (!caseId || !caseId.startsWith('d4-')) return null
@@ -37,11 +43,21 @@ export function D4CaseBatchControls({ role, actions }: {
     setBusy(true); setError('')
     try {
       await close()
+      const generation = sessionGeneration.current
       const next = await window.reviewAPI.stageD4Intake(mode)
       if (!next) return
+      if (sessionGeneration.current !== generation || store.get(selectedCaseIdAtom) !== caseId) {
+        await window.reviewAPI.discardD4Intake(next.token).catch(() => false)
+        return
+      }
       // No callbacks may write an arbitrary path: only an opaque Main token.
       activeToken.current = next.token
       const proposed = await window.reviewAPI.assessD4CaseBatch({ caseId, role, token: next.token })
+      if (sessionGeneration.current !== generation || store.get(selectedCaseIdAtom) !== caseId) {
+        await window.reviewAPI.discardD4Intake(next.token).catch(() => false)
+        activeToken.current = null
+        return
+      }
       setPreview(next)
       setAssessment(proposed)
       setChoices(proposed.files.map(file => file.duplicateOf || file.nameConflicts.length
