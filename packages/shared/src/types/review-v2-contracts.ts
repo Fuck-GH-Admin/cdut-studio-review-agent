@@ -387,7 +387,11 @@ export interface BatchAutomationReport {
 export interface BatchStateV2 {
   batch: import('./review-v2').ReviewBatch
   status: 'draft' | 'queued' | 'running' | 'finalized' | 'reopened'
-  cases: Array<{ caseId: string; status: 'queued' | 'running' | 'done' | 'failed' | 'paused'; error?: string }>
+  cases: Array<{ caseId: string; status: 'queued' | 'running' | 'done' | 'failed' | 'paused'; error?: string
+    /** Run identity recorded on this batch attempt. Missing on legacy rows; never infer from latest Run. */
+    runId?: string
+    runInputHash?: string
+  }>
   finalizedSnapshotHash?: string
   finalizedAt?: string
   round: number

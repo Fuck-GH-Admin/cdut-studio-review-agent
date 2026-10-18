@@ -69,13 +69,17 @@ export function batchTechnicalFailureMessage(
 export function selectBatchMatchingRun(
   caseId: string,
   batch: Pick<ReviewBatch, 'templateId' | 'templateVersion'>,
-  latest: ReviewRunV2 | undefined,
+  entry: BatchStateV2['cases'][number],
+  history: readonly ReviewRunV2[],
 ): { run: ReviewRunV2 | undefined; mismatch: boolean } {
-  if (!latest) return { run: undefined, mismatch: false }
-  if (latest.caseId !== caseId || latest.templateId !== batch.templateId
-    || latest.templateVersion !== batch.templateVersion
-    || latest.inputManifest?.templateVersion !== batch.templateVersion) {
-    return { run: undefined, mismatch: true }
-  }
-  return { run: latest, mismatch: false }
+  // A missing legacy binding is UNKNOWN, not a request to pick the latest
+  // matching Run (which might have been launched for a different batch).
+  if (!entry.runId || !entry.runInputHash || entry.caseId !== caseId)
+    return { run: undefined, mismatch: entry.status === 'done' }
+  const run = history.find((item) => item.id === entry.runId)
+  if (!run || run.caseId !== caseId || run.templateId !== batch.templateId
+    || run.templateVersion !== batch.templateVersion
+    || run.inputManifest?.templateVersion !== batch.templateVersion
+    || run.inputManifest.hash !== entry.runInputHash) return { run: undefined, mismatch: true }
+  return { run, mismatch: false }
 }

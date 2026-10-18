@@ -60,6 +60,39 @@ async function seedFinalCase(caseId: string, options: { final?: boolean; supplem
   expect(result.ok).toBeTrue()
 }
 
+describe('P06 L02-01：同案同模板双批次 Run 来源绑定', () => {
+  test('两个批次持久绑定各自 Run；后运行的同模板 Run 不能覆盖先前批次', async () => {
+    const caseId = 'cross-batch-case-' + Date.now()
+    const one = 'cross-batch-a-' + Date.now()
+    const two = 'cross-batch-b-' + Date.now()
+    createBatchV2({ ...batch(one), caseIds: [caseId] })
+    createBatchV2({ ...batch(two), caseIds: [caseId] })
+    const first = await runBatchQueue(one, { runCase: async () => ({
+      status: 'completed', runId: 'run-a', inputHash: 'a'.repeat(64),
+    }) })
+    const second = await runBatchQueue(two, { runCase: async () => ({
+      status: 'completed', runId: 'run-b', inputHash: 'b'.repeat(64),
+    }) })
+    expect(first.cases[0]).toMatchObject({ status: 'done', runId: 'run-a', runInputHash: 'a'.repeat(64) })
+    expect(second.cases[0]).toMatchObject({ status: 'done', runId: 'run-b', runInputHash: 'b'.repeat(64) })
+    expect(readBatchStateV2(one)?.cases[0]?.runId).toBe('run-a')
+    expect(readBatchStateV2(two)?.cases[0]?.runId).toBe('run-b')
+    updateCaseStatus(two, caseId, 'queued')
+    expect(readBatchStateV2(two)?.cases[0]?.runId).toBeUndefined()
+    expect(readBatchStateV2(two)?.cases[0]?.runInputHash).toBeUndefined()
+    expect(readBatchStateV2(one)?.cases[0]?.runId).toBe('run-a')
+  })
+  test('缺少 Run identity / 不合法输入哈希，队列不能虚报 done', async () => {
+    const id = 'unbound-run-' + Date.now()
+    const caseId = 'unbound-case-' + Date.now()
+    createBatchV2({ ...batch(id), caseIds: [caseId] })
+    const outcome = await runBatchQueue(id, { runCase: async () => ({ status: 'completed' }) })
+    expect(outcome.cases[0]?.status).toBe('failed')
+    expect(outcome.cases[0]?.error).toContain('来源绑定')
+    expect(outcome.cases[0]?.runId).toBeUndefined()
+  })
+})
+
 describe('批次状态机（R08）', () => {
   test('Given 多个已保存批次 When 查询目录 Then 返回全部批次并按创建时间倒序', () => {
     createBatchV2({ ...batch('list-old'), createdAt: '2026-10-01T00:00:00.000Z' })
@@ -188,7 +221,10 @@ describe('批次中断恢复与定向重试（B 切片）', () => {
     updateCaseStatus('retry-specific', 'c3', 'done')
     retryBatchCases('retry-specific', ['c1'])
     const executed: string[] = []
-    const result = await runBatchQueue('retry-specific', { runCase: async (id) => { executed.push(id); return { status: 'completed' } } })
+    const result = await runBatchQueue('retry-specific', { runCase: async (id) => {
+      executed.push(id)
+      return { status: 'completed', runId: 'test-bound-' + id, inputHash: 'a'.repeat(64) }
+    } })
     expect(executed).toEqual(['c1'])
     expect(result.cases.find((x) => x.caseId === 'c2')?.status).toBe('failed')
     expect(result.cases.find((x) => x.caseId === 'c3')?.status).toBe('done')
@@ -430,7 +466,7 @@ describe('批次队列执行（G06/G11 真实队列）', () => {
     const state = await runBatchQueue('bq1', {
       runCase: async (caseId: string) => {
         if (caseId === 'c1') throw new Error('解析失败（坏案）')
-        return { status: 'completed' }
+        return { status: 'completed', runId: 'test-bound-' + caseId, inputHash: 'b'.repeat(64) }
       },
     })
     const c1 = state.cases.find((entry) => entry.caseId === 'c1')!

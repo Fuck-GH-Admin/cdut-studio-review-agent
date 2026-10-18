@@ -141,7 +141,7 @@ export function requeueCaseAfterSupplement(caseId: string): string[] {
     const entry = state.cases.find((candidate) => candidate.caseId === caseId)
     if (!entry || entry.status === 'queued' || entry.status === 'running') continue
     state.cases = state.cases.map((candidate) => candidate.caseId === caseId
-      ? { ...candidate, status: 'queued', error: undefined } : candidate)
+      ? { caseId: candidate.caseId, status: 'queued' } : candidate)
     saveBatchStateV2(state)
     queued.push(state.batch.id)
   }
@@ -205,7 +205,7 @@ export function selectSupplementRequeueBatch(
   if (entry.status === 'queued') return { queued: false, batch: state }
   if (entry.status === 'running') throw new Error('该案卷仍在执行，禁止补件回流')
   scoped.cases = state.cases.map((item) => item.caseId === caseId
-    ? { ...item, status: 'queued', error: undefined } : item)
+    ? { caseId: item.caseId, status: 'queued' } : item)
   scoped.supplementRequeueCursors = {
     ...scoped.supplementRequeueCursors,
     [caseId]: { caseRevision: selection.expectedRevision, supplementId: selection.supplementId,
@@ -221,7 +221,30 @@ export function updateCaseStatus(batchId: string, caseId: string, status: BatchS
   const state = readBatchStateV2(batchId)
   if (!state) throw new Error(`批次不存在: ${batchId}`)
   if (state.status === 'finalized') throw new Error('批次已定稿，变更需重开新轮次')
-  state.cases = state.cases.map((entry) => (entry.caseId === caseId ? { ...entry, status, error } : entry))
+  state.cases = state.cases.map((entry) => entry.caseId !== caseId ? entry
+    : status === 'queued' ? { caseId: entry.caseId, status, error } : { ...entry, status, error })
+  saveBatchStateV2(state)
+  return state
+}
+
+/** Record the actual Run this batch executed; write case outcome and provenance together. */
+export function recordBatchCaseRunOutcome(
+  batchId: string, caseId: string, outcome: { status: string; runId?: string; inputHash?: string },
+): BatchStateV2 {
+  assertSafeReviewStorageId(caseId, 'caseId')
+  const state = readBatchStateV2(batchId)
+  if (!state || state.status !== 'running' || !activeBatchRuns.has(batchId)) throw new Error('批次不在活动运行中')
+  const entry = state.cases.find((item) => item.caseId === caseId)
+  if (!entry || entry.status !== 'running') throw new Error('案卷不属于当前活动队列')
+  const validBinding = typeof outcome.runId === 'string' && !!outcome.runId
+    && typeof outcome.inputHash === 'string' && /^[0-9a-f]{64}$/.test(outcome.inputHash)
+  const status: BatchStateV2['cases'][number]['status'] = outcome.status === 'completed' && validBinding ? 'done' : 'failed'
+  state.cases = state.cases.map((item) => item.caseId !== caseId ? item : {
+    caseId, status,
+    ...(validBinding ? { runId: outcome.runId, runInputHash: outcome.inputHash } : {}),
+    ...(status === 'failed' ? { error: outcome.status === 'completed'
+      ? 'Run 没有完整来源绑定，不能按批次完成' : `运行结束状态: ${outcome.status}` } : {}),
+  })
   saveBatchStateV2(state)
   return state
 }
@@ -540,10 +563,12 @@ export function retryBatchCases(batchId: string, caseIds: string[]): BatchStateV
     if (!entry) throw new Error(`案卷不属于此批次: ${caseId}`)
     if (entry.status === 'failed' || entry.status === 'paused') continue
     if (entry.status === 'done') {
-      const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+      const { getRunV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+      const { validateBoundBatchRun } = require('./batch-run-provenance') as typeof import('./batch-run-provenance')
       const { readAggregate } = require('./case-store-v2') as typeof import('./case-store-v2')
       const aggregate = readAggregate(caseId)
-      const run = [...listRunsV2(caseId)].sort((a, b) => (b.completedAt ?? b.startedAt).localeCompare(a.completedAt ?? a.startedAt))[0]
+      const run = validateBoundBatchRun(state.batch, entry,
+        entry.runId ? getRunV2(caseId, entry.runId) : undefined)
       const route = triageBatchCase({
         caseId, entryStatus: 'done', caseStage: aggregate?.caseV2.stage, run, batch: state.batch,
       }).route
@@ -551,7 +576,7 @@ export function retryBatchCases(batchId: string, caseIds: string[]): BatchStateV
     }
     throw new Error(`案卷当前状态不可重试: ${caseId} (${entry.status})`)
   }
-  state.cases = state.cases.map((entry) => requested.has(entry.caseId) ? { ...entry, status: 'queued', error: undefined } : entry)
+  state.cases = state.cases.map((entry) => requested.has(entry.caseId) ? { caseId: entry.caseId, status: 'queued' } : entry)
   saveBatchStateV2(state)
   return state
 }
@@ -559,7 +584,7 @@ export function retryBatchCases(batchId: string, caseIds: string[]): BatchStateV
 
 export interface BatchQueueOptions {
   /** 运行参数注入（测试可传假执行器）；产品层复用 Pi 审核 Agent */
-  runCase?: (caseId: string) => Promise<{ status: string }>
+  runCase?: (caseId: string) => Promise<{ status: string; runId?: string; inputHash?: string }>
 }
 
 /**
@@ -585,8 +610,7 @@ export async function runBatchQueue(batchId: string, options: BatchQueueOptions 
       updateCaseStatus(batchId, entry.caseId, 'running')
       try {
         const outcome = await runCase(entry.caseId)
-        if (outcome.status === 'completed') updateCaseStatus(batchId, entry.caseId, 'done')
-        else updateCaseStatus(batchId, entry.caseId, 'failed', `运行结束状态: ${outcome.status}`)
+        recordBatchCaseRunOutcome(batchId, entry.caseId, outcome)
       } catch (error) {
         updateCaseStatus(batchId, entry.caseId, 'failed', error instanceof Error ? error.message : String(error))
       }

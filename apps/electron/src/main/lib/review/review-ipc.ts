@@ -647,7 +647,7 @@ export function registerReviewIpc(): void {
         assertBatchCaseTemplateLock(batch.batch, caseId, getCaseV2Aggregate(caseId))
         const run = await assembleAndRunReview(caseId)
         assertBatchRunTemplateLock(batch.batch, caseId, run)
-        return { status: classifyBatchRunCompletion(run) }
+        return { status: classifyBatchRunCompletion(run), runId: run.id, inputHash: run.inputManifest.hash }
       },
     })
     if (completed.automation && completed.automation.mode !== 'assist') {

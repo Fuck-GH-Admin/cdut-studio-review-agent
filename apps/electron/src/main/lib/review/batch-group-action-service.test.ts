@@ -6,7 +6,7 @@ import { createAggregate, readAggregate, submitCommand } from './case-store-v2'
 import { createBatchV2, readBatchStateV2, saveBatchStateV2, updateCaseStatus } from './batch-store'
 import { getTemplate, publishTemplate, saveDraft } from './template-store'
 import { computeRunInputHash } from './run-service-v2'
-import { saveRunV2 } from './run-store-v2'
+import { saveRunV2, listRunsV2 } from './run-store-v2'
 import { applyBatchGroupAction, previewBatchGroupAction } from './batch-group-action-service'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-bulk-action-${Date.now()}`)
@@ -70,6 +70,10 @@ function makeBatch(caseIds: string[]): string {
   })
   for (const caseId of caseIds) updateCaseStatus(batchId, caseId, 'done')
   const state = readBatchStateV2(batchId)!
+  state.cases = state.cases.map((entry) => {
+    const run = listRunsV2(entry.caseId)[0]!
+    return { ...entry, runId: run.id, runInputHash: run.inputManifest.hash }
+  })
   state.status = 'queued'
   saveBatchStateV2(state)
   return batchId

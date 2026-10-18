@@ -60,19 +60,25 @@ describe('21 号本地 UI QA：反馈语义', () => {
   })
   test('selected batch never displays a newer wrong-template or cross-case Run as its evidence', () => {
     const batch = { templateId: 'review-g04', templateVersion: 4 } as import('@profer/shared').ReviewBatch
-    const run = { caseId: 'case-a', templateId: 'review-g04', templateVersion: 4,
-      inputManifest: { hash: 'h', templateVersion: 4 } } as import('@profer/shared').ReviewRunV2
-    expect(selectBatchMatchingRun('case-a', batch, run)).toEqual({ run, mismatch: false })
+    const run = { id: 'run-a', caseId: 'case-a', templateId: 'review-g04', templateVersion: 4,
+      inputManifest: { hash: 'fingerprint', templateVersion: 4 } } as import('@profer/shared').ReviewRunV2
+    const otherBatchRun = { ...run, id: 'run-b' }
+    const entry = { caseId: 'case-a', status: 'done' as const, runId: 'run-a', runInputHash: 'fingerprint' }
+    expect(selectBatchMatchingRun('case-a', batch, entry, [otherBatchRun, run])).toEqual({ run, mismatch: false })
+    expect(selectBatchMatchingRun('case-a', batch, entry, [otherBatchRun])).toEqual({ run: undefined, mismatch: true })
     for (const stale of [
       { ...run, caseId: 'case-b' },
       { ...run, templateId: 'comprehensive-assessment-v2' },
       { ...run, templateVersion: 3 },
       { ...run, inputManifest: { ...run.inputManifest, templateVersion: 3 } },
+      { ...run, inputManifest: { ...run.inputManifest, hash: 'tampered' } },
     ]) {
-      const projected = selectBatchMatchingRun('case-a', batch, stale)
-      expect(projected).toEqual({ run: undefined, mismatch: true })
+      expect(selectBatchMatchingRun('case-a', batch, entry, [stale])).toEqual({ run: undefined, mismatch: true })
     }
-    expect(selectBatchMatchingRun('case-a', batch, undefined)).toEqual({ run: undefined, mismatch: false })
+    expect(selectBatchMatchingRun('case-a', batch, { caseId: 'case-a', status: 'done' }, [run]))
+      .toEqual({ run: undefined, mismatch: true })
+    expect(selectBatchMatchingRun('case-a', batch, { caseId: 'case-a', status: 'queued' }, []))
+      .toEqual({ run: undefined, mismatch: false })
   })
 
 })
