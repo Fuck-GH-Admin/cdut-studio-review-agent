@@ -29,7 +29,7 @@ async function record(id, fn) {
   const row = { id, status: 'RUNNING', assertions: [], startedAt: new Date().toISOString() }; rows.push(row); save()
   const check = (name, ok) => { row.assertions.push({ name, pass: !!ok }); assert.ok(ok, name) }
   try { await fn(row, check); row.status = 'PASS' }
-  catch (error) { row.status = 'FAIL'; row.error = String(error); process.exitCode = 1 }
+  catch (error) { row.status = 'FAIL'; row.error = String(error); process.exitCode = 1; throw error }
   finally { row.finishedAt = new Date().toISOString(); save(); console.log(JSON.stringify({ id, status: row.status, assertions: row.assertions.length, error: row.error })) }
 }
 let session, workspace
