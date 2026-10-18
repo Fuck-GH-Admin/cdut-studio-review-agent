@@ -542,10 +542,13 @@ export function retryBatchCases(batchId: string, caseIds: string[]): BatchStateV
     if (!entry) throw new Error(`案卷不属于此批次: ${caseId}`)
     if (entry.status === 'failed' || entry.status === 'paused') continue
     if (entry.status === 'done') {
+      // Unbound legacy 'done' is not proof of success; a new explicit retry is safe.
+      if (!entry.runId) continue
       const { getRunV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
       const { readAggregate } = require('./case-store-v2') as typeof import('./case-store-v2')
       const aggregate = readAggregate(caseId)
-      const run = entry.runId ? getRunV2(caseId, entry.runId) : undefined
+      const run = getRunV2(caseId, entry.runId)
+      if (!run) continue
       const route = triageBatchCase({
         caseId, entryStatus: 'done', caseStage: aggregate?.caseV2.stage, run, batch: state.batch,
       }).route
