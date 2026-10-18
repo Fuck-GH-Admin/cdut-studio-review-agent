@@ -1,6 +1,6 @@
 /** P1-C native-picker intake. Renderer never supplies arbitrary host paths. */
 import { randomUUID } from 'node:crypto'
-import { closeSync, existsSync, mkdtempSync, openSync, readSync, rmSync, statSync } from 'node:fs'
+import { closeSync, existsSync, mkdirSync, mkdtempSync, openSync, readSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { extname, join } from 'node:path'
 import { dialog, type BrowserWindow } from 'electron'
@@ -48,11 +48,14 @@ export async function stageD4Intake(ownerWebContentsId: number, parent?: Browser
       properties: ['openFile', 'multiSelections'] as Array<'openFile' | 'multiSelections'> }
   const selection = parent ? await dialog.showOpenDialog(parent, opts) : await dialog.showOpenDialog(opts)
   if (selection.canceled || !selection.filePaths.length) return null
-  const dir = mkdtempSync(join(tmpdir(), 'cdut-d4-intake-'))
+  return stageD4TrustedRoots(ownerWebContentsId, selection.filePaths)
+}
+async function stageD4TrustedRoots(ownerWebContentsId: number, roots: readonly string[], providedDir?: string): Promise<D4IntakePreview> {
+  const dir = providedDir ?? mkdtempSync(join(tmpdir(), 'cdut-d4-intake-'))
   try {
-    // Native-selected roots only. This helper handles recursive folders/ZIP,
-    // size caps, symlinks, basename preservation and duplicate byte hashes.
-    const expanded = await stageD4NativeBatch(selection.filePaths, dir)
+    // The only permissible roots are Main-picked originals or private copies
+    // of explicit File bytes. Arbitrary Renderer paths are never accepted.
+    const expanded = await stageD4NativeBatch(roots, dir)
     if (!expanded.files.length) {
       throw new Error('D4_INTAKE_NO_VALID_FILES: 全部材料被过滤或无法解析，请检查文件类型与大小')
     }
@@ -86,6 +89,50 @@ export async function stageD4Intake(ownerWebContentsId: number, parent?: Browser
     throw error
   }
 }
+/** Browser/Electron drag-and-drop materializes user-supplied bytes, NOT paths.
+ * Lower drag caps control IPC copies and prevent UI freezes. The normal Main
+ * staging pipeline still performs ZIP expansion, content hashes, dedup and route.
+ */
+export const D4_DROP_MAX_FILES = 16
+export const D4_DROP_MAX_BYTES_PER_FILE = 10 * 1024 * 1024
+export const D4_DROP_MAX_TOTAL_BYTES = 40 * 1024 * 1024
+export function isValidD4DropName(name: unknown): name is string {
+  return typeof name === 'string' && !!name && name.length <= 220 &&
+    name !== '.' && name !== '..' && !name.includes('/') &&
+    !name.includes('\\\\') && !name.includes(String.fromCharCode(0)) &&
+    !/[<>:"|?*]/.test(name) && !/[. ]$/.test(name) &&
+    !/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\\.|$)/i.test(name)
+}
+export async function stageD4DroppedBytes(ownerWebContentsId: number,
+  items: Array<{ name: string; bytes: Uint8Array }>): Promise<D4IntakePreview> {
+  if (!Array.isArray(items) || items.length < 1 || items.length > D4_DROP_MAX_FILES)
+    throw new Error('D4_DROP_FILE_COUNT_INVALID')
+  let total = 0
+  for (const item of items) {
+    if (!item || !isValidD4DropName(item.name) || !(item.bytes instanceof Uint8Array) ||
+        item.bytes.byteLength < 1 || item.bytes.byteLength > D4_DROP_MAX_BYTES_PER_FILE)
+      throw new Error('D4_DROP_FILE_INVALID')
+    total += item.bytes.byteLength
+    if (total > D4_DROP_MAX_TOTAL_BYTES) throw new Error('D4_DROP_TOTAL_BYTES_EXCEEDED')
+  }
+  const dir = mkdtempSync(join(tmpdir(), 'cdut-d4-drop-'))
+  try {
+    const roots: string[] = []
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i]!
+      const folder = join(dir, 'original-' + i)
+      mkdirSync(folder)
+      const dest = join(folder, item.name)
+      writeFileSync(dest, item.bytes, { flag: 'wx' })
+      roots.push(dest)
+    }
+    return await stageD4TrustedRoots(ownerWebContentsId, roots, dir)
+  } catch (error) {
+    rmSync(dir, { recursive: true, force: true })
+    throw error
+  }
+}
+
 /** Acquire token for a single Main-owned create operation, preventing double-submit replay. */
 /** Read-only inspection for a Main-owned token. Never send staged disk paths over IPC. */
 export function inspectD4Intake(token: string, ownerWebContentsId: number): StagedIntake {
