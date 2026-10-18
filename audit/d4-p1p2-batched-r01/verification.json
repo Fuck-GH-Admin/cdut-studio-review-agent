@@ -210,6 +210,10 @@
   ],
   "evidenceBranch": {
     "name": "audit/d4-p1p2-batched-r01",
-    "draftPrCreation": "pending"
+    "draftPrCreation": {
+      "status": "created",
+      "number": 122,
+      "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/122"
+    }
   }
 }

@@ -4,6 +4,7 @@ Acceptance date: 2026-10-18 (Asia/Shanghai)
 Overall verdict: **PARTIAL**
 Candidate: PR #120, frozen HEAD `026cfe0f4905bf10f46291bdd7451788c60df5f9`
 Evidence branch: `audit/d4-p1p2-batched-r01`
+Draft evidence PR: [#122](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/122) (open, Draft; base is frozen PR #120 HEAD).
 
 The unified taskbook was executed against the current #120 HEAD in an isolated detached worktree, Electron profile, empty model-config directory, and Xvfb display. The remote branch and `refs/pull/120/head` both still matched the pinned SHA at final verification. The existing #120 PR is Draft. No tracked product code, Gold, business template, approval boundary, or P06 state was changed.
 
