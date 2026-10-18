@@ -227,6 +227,54 @@ describe('Pi 审核 Agent 客户端', () => {
     })).rejects.toThrow('PI_REVIEW_TURN_LIMIT_EXHAUSTED')
   })
 
+  test('a single accepted check out of two cannot conceal turn-limit failure as a completed run', async () => {
+    let terminationHint: unknown
+    const client = createPiReviewModelClient({
+      channel: { id: 'test-channel', name: 'Test', provider: 'openai', models: [{ id: 'test-model', name: 'Test Model' }] } as Channel,
+      apiKey: 'test-key', model: 'test-model', cwd: '/tmp/review-case', piAgentDir: '/tmp/pi-config',
+      loadSdk: async () => ({ defineTool: (definition: unknown) => definition }) as never,
+      query: async function* (input) {
+        const submit = input.customTools?.find((tool) => tool.name === 'submit_checks')
+        const first = await submit?.execute('call-one', { checks: [{ ruleId: 'r1' }] } as never, undefined, undefined, {} as never)
+        terminationHint = first?.terminate
+        yield { type: 'result', subtype: 'error_max_turns', errors: ['Maximum turns (24) reached'] } as unknown as SDKMessage
+      },
+    })
+    await expect(client.complete({
+      prompt: '合成检查包含 r1 / r2', system: '缺失检查必须保持技术未完成',
+      terminateAfterTools: ['submit_checks'], requiredToolKeys: ['check:r1::case::', 'check:r2::case::'],
+      tools: [{
+        name: 'submit_checks', description: '回执仅 r1', input: '{}',
+        execute: async () => ({ ok: true, data: { results: [{ ok: true, data: { toolKey: 'check:r1::case::' } }] } }),
+      }],
+    })).rejects.toThrow('PI_REVIEW_TURN_LIMIT_EXHAUSTED')
+    expect(terminationHint).toBeUndefined()
+  })
+
+  test('mixed accepted/rejected tool batch without required keys cannot produce fallback success', async () => {
+    const client = createPiReviewModelClient({
+      channel: { id: 'test-channel', name: 'Test', provider: 'openai', models: [{ id: 'test-model', name: 'Test Model' }] } as Channel,
+      apiKey: 'test-key', model: 'test-model', cwd: '/tmp/review-case', piAgentDir: '/tmp/pi-config',
+      loadSdk: async () => ({ defineTool: (definition: unknown) => definition }) as never,
+      query: async function* (input) {
+        const submit = input.customTools?.find((tool) => tool.name === 'submit_checks')
+        await submit?.execute('call-mixed', { checks: [] } as never, undefined, undefined, {} as never)
+        yield { type: 'result', subtype: 'error_max_turns', errors: ['Maximum turns reached'] } as unknown as SDKMessage
+      },
+    })
+    await expect(client.complete({
+      prompt: '检查', system: '不允许将有拒绝的提交当作通过',
+      terminateAfterTools: ['submit_checks'],
+      tools: [{
+        name: 'submit_checks', description: '混合结果', input: '{}',
+        execute: async () => ({ ok: true, data: { results: [
+          { ok: true, data: { toolKey: 'check:r1::case::' } },
+          { ok: false, error: 'r2 缺少证据' },
+        ] } }),
+      }],
+    })).rejects.toThrow('PI_REVIEW_TURN_LIMIT_EXHAUSTED')
+  })
+
   test('Pi max-turn limit after accepted tool result retains only witnessed results, not fabricated checks', async () => {
     const client = createPiReviewModelClient({
       channel: { id: 'test-channel', name: 'Test', provider: 'openai', models: [{ id: 'test-model', name: 'Test Model' }] } as Channel,
