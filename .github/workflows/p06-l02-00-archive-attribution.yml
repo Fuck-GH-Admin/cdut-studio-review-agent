@@ -1,0 +1,39 @@
+name: P06 L02-00 archived failure attribution
+on:
+  pull_request:
+    paths:
+      - 'scripts/qa/p06-l02-00-archive-attribution.py'
+      - '.github/workflows/p06-l02-00-archive-attribution.yml'
+      - 'docs/design/review-agent/57-p06-l02-00-evidence-preflight-20261018.md'
+      - 'docs/design/review-agent/58-p06-l02-00-archive-attribution-20261018.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  archive-attribution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify historical commits exist
+        run: |
+          set -euo pipefail
+          git cat-file -e d24d1c2d69ae25ff47a080155041cc62620a6bf9^{commit}
+          git cat-file -e b95b44f7a06bb1e1ae21a985b5bb4cd9f5581027^{commit}
+      - name: Verify archived cases and frozen production source
+        run: |
+          set -euo pipefail
+          mkdir -p evidence-output
+          python3 scripts/qa/p06-l02-00-archive-attribution.py --out evidence-output/l02-00-ledger.json | tee evidence-output/verdict.log
+          sha256sum evidence-output/l02-00-ledger.json > evidence-output/sha256sums.txt
+      - name: Archive read-only evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p06-l02-00-archived-provenance
+          if-no-files-found: warn
+          path: evidence-output/
+          retention-days: 30
