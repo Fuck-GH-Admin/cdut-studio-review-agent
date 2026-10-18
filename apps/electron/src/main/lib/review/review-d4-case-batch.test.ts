@@ -18,7 +18,7 @@ mock.module('electron', () => ({ dialog: { showOpenDialog: async () => ({ cancel
 const { stageD4Intake, claimD4Intake } = await import('./review-d4-intake')
 const { assessD4CaseBatch, applyD4CaseBatch } = await import('./review-d4-case-batch')
 const { createD4ClientCase, listD4ClientTemplates } = await import('./review-d4-client')
-const { getCase } = await import('./case-store')
+const { getCase, updateCase } = await import('./case-store')
 afterAll(() => rmSync(root, { recursive: true, force: true }))
 const template = listD4ClientTemplates().find(item => item.templateId === 'g03-t01')!
 const selection = (): D4ClientSelection => ({
@@ -53,6 +53,11 @@ describe('W1 post-case native append and revision-aware replacement', () => {
       acknowledgeSkipped: false }, 903)
     expect(added.documents).toHaveLength(1)
     const oldDocId = added.documents[0]!.id
+    await updateCase(originalCase.id, fresh => ({ ...fresh, items: [...fresh.items, {
+      id: 'w1-stale-v1-item', title: '旧原件识别的历史申报条目', category: '合成场景',
+      declaredScore: 0, anchor: { documentId: oldDocId, precision: 'document' as const },
+      evidenceDocumentIds: [], status: 'identified' as const, identifiedBy: 'manual' as const,
+    }] }), { reason: 'W1 synthetic old-file anchored item' })
     const duplicated = (await stageD4Intake(903))!
     const assessDuplicate = assessD4CaseBatch({ caseId: originalCase.id, role: 'application', token: duplicated.token }, 903)
     expect(assessDuplicate.files[0]!.duplicateOf).toBe(oldDocId)
@@ -85,6 +90,7 @@ describe('W1 post-case native append and revision-aware replacement', () => {
     expect(latest.documents).toHaveLength(1)
     expect(latest.documents[0]!.id).not.toBe(oldDocId)
     expect(latest.archivedDocuments?.some(doc => doc.id === oldDocId)).toBe(true)
+    expect(latest.items.some(item => item.anchor.documentId === oldDocId)).toBe(false)
     expect(latest.d4IntakeOrigins).toHaveLength(2)
     expect(new Set(latest.d4IntakeOrigins?.map(x => x.sha256)).size).toBe(2)
     expect(() => claimD4Intake(replacement.token, 903)).toThrow('D4_INTAKE_TOKEN_INVALID')
