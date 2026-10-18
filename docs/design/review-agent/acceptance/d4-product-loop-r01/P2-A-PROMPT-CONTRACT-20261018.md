@@ -15,18 +15,18 @@
 仅在 `apps/electron/src/main/lib/review/pi-case-review-service.ts` 的 **prompt 组装**处引入辅助模块 `pi-review-prompt-contract.ts`：
 
 1. 明列该模板的实际 `FieldSpec` key、kind、scope、分项；无字段时明确告知模型 `observations=[]`，不再诱导虚构 `d2ObjectKey`、`claim_item`、`d2Scenario` 等 Observation 字段。**Main 仍照常独立拒绝非法字段。**
-2. 对每条完整 `RuleSpec` 提醒确认状态：`confirmed` 或 `unconfirmed→仅允许 awaiting-confirmation`。规则正文/title/ID、每项 Check 均**原样完整保留**。
+2. 对每条独立 `RuleSpec` 提醒确认状态：`confirmed` 或 `unconfirmed→仅允许 awaiting-confirmation`。同时使用**无损要求字典**：107 个规则的 ID/title/目标/确认态各自占一条索引，重复的完整 requirement 文本共享一个 `RQxxx` 词典条目；模型必须按每条 ruleId 独立提交 Check，不能因为引用相同正文就合并检查。G08 107 条规则共有 70 段不同要求正文，纯归档测量规则区约减少 3.1 万字符（约 29%）。
 3. 提示 `review_submit_result` 的唯一允许字段、有效状态、SourceRef 逐材料块引用、逐对象证据关联、unknown 不能默认 false、`finish=false` 分批提交和 `rejected/missingChecks` 修正。
 4. D2 逐项映射从冗长汉字重复标签改成带列名的管道分隔表，逐行保留原 `ruleId/checkId/subjectId/objectKey/authority/applicability/supportsFacts`，不归并主体、不遗漏任何 107 Check。
 5. D2 Subject 展示不再重复打印固定 Plan 中已经出现的 `d2ObjectKey/d2BusinessType/d2Scenario/d2Conditions`，但所有非 D2 实际字段仍展示。
 
-当前 G08 结构测试量化 mapping 区：旧格式约 17,756 字符→压缩格式约 9.2k 字符（减少约 8.5k 字符，**仅针对 mapping 区**）。由于新合同和规则确认态会增加少量说明，**必须在实机/实际 prompt 再测整段净变化**，不得用 8.5k 当完整 Prompt 或 token 节省。
+当前 G08 结构测试量化：mapping 区旧格式约 17,756 字符→9.2k 字符（减约 8.5k）；规则区通过 107→70 个要求正文去重约减少 3.1 万字符。**两部分离线合计只是约 3.9 万字符级别的结构压缩估计**，新合同文本略有新增；必须对实际 `preparePiReviewRunV2.userMessage` 作完整新旧测量，不得把字符估计当作付费 token 节省，更不能先声称模型准确率提升。
 
 ## 断言/边界
 
-- 新 `pi-review-prompt-contract.test.ts` 实际读取已归档 `g08-plan.json`，复核 107 映射各自的 Rule/Check/Subject/Object/Authority/Applicability/Fact 不丢失，所有 107 完整规则正文和全部未确认规则提示存在。
+- 新 `pi-review-prompt-contract.test.ts` 实际读取已归档 `g08-plan.json`，复核 107 映射各自的 Rule/Check/Subject/Object/Authority/Applicability/Fact 不丢失；每个 ruleId 都能从索引无损还原原始完整 requirement，70/70 正文存在，所有未确认规则提示存在，单条小模板仍用普通展开形式。
 - **未修改** `review_submit_result` 校验/持久化、`validateD2GuardSubmission`、SourceRef/EvidenceLink、TemplateStore、Pi 自定义工具数、P06 Main owner 和后台会话权限。任何 prompt 的指令始终是低可信辅助，Main 确权不靠模型守约。
-- 仍全部传送 107 条长规则正文（原约 105k 字符）；没有在本轮增加按需拉取规则的工具。跨越 P06 五工具 allowlist 来换 token 是禁止的。
+- 仍完整传送所有 **107 条 RuleSpec 所要求的全部语义正文**，但完全相同的 requirement 文本只发送一次，107 条索引全部保留；**没有**按需拉取规则、减少检查数量或新增 Pi 工具。跨越 P06 五工具 allowlist 来换 token 是禁止的。
 
 ## 下轮 P2-B 的门禁
 
