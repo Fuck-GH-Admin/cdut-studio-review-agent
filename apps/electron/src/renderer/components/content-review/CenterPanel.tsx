@@ -182,6 +182,23 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
         </p>
       </header>
 
+      {!!reviewCase?.d4IntakeOrigins?.length && <section aria-label="批次材料来源校验"
+        className="shrink-0 border-b border-border/40 px-3 py-2">
+        <details>
+          <summary className="cursor-pointer text-xs text-muted-foreground">
+            已登记的批量导入来源（{reviewCase.d4IntakeOrigins.length} 份，可核对 SHA-256）
+          </summary>
+          <ul className="mt-2 max-h-40 space-y-2 overflow-y-auto text-xs">
+            {reviewCase.d4IntakeOrigins.map((origin) => (
+              <li key={origin.documentId} className="break-all">
+                <span className="font-medium">{reviewCase.documents.find(d => d.id === origin.documentId)?.fileName ?? '已归档文件'}</span>
+                <span className="block text-muted-foreground">{origin.originLabel}</span>
+                <code className="block text-[10px] text-muted-foreground">SHA-256: {origin.sha256}</code>
+              </li>
+            ))}
+          </ul>
+        </details>
+      </section>}
       {!!reviewCase?.d4IntakeWarnings?.length && <section aria-label="批次材料未导入清单"
         className="shrink-0 border-b border-amber-500/30 bg-amber-500/5 px-3 py-2">
         <details>
