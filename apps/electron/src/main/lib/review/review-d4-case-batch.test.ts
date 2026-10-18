@@ -19,6 +19,8 @@ const { stageD4Intake, claimD4Intake } = await import('./review-d4-intake')
 const { assessD4CaseBatch, applyD4CaseBatch } = await import('./review-d4-case-batch')
 const { createD4ClientCase, listD4ClientTemplates } = await import('./review-d4-client')
 const { getCase, updateCase } = await import('./case-store')
+const { readAggregate } = await import('./case-store-v2')
+const { correctObservation } = await import('./application-service')
 afterAll(() => rmSync(root, { recursive: true, force: true }))
 const template = listD4ClientTemplates().find(item => item.templateId === 'g03-t01')!
 const selection = (): D4ClientSelection => ({
@@ -95,6 +97,38 @@ describe('W1 post-case native append and revision-aware replacement', () => {
     expect(new Set(latest.d4IntakeOrigins?.map(x => x.sha256)).size).toBe(2)
     expect(() => claimD4Intake(replacement.token, 903)).toThrow('D4_INTAKE_TOKEN_INVALID')
   })
+  test('real D4 Subject observation correction retains current original-version SourceRef and audit receipt', async () => {
+    selected = [path]
+    writeFileSync(path, '# 教室容量说明\\n可供 120 人使用，合成测试资料')
+    const created = await create()
+    const staged = (await stageD4Intake(903))!
+    const assessment = assessD4CaseBatch({ caseId: created.id, role: 'application', token: staged.token }, 903)
+    await applyD4CaseBatch({ caseId: created.id, role: 'application',
+      token: staged.token, expectedRevision: assessment.expectedRevision,
+      choices: [{ kind: 'append' }], acknowledgeSkipped: false }, 903)
+    const before = readAggregate(created.id)!
+    const doc = before.caseV2.documents.find(item => item.role === 'application' && item.active !== false)!
+    expect(doc.parseStatus).toBe('parsed')
+    const subjectId = before.d2RuntimePlan!.targets[0]!.subjectId
+    const changed = await correctObservation(created.id, {
+      requestId: 'w1-actual-source-correction-' + created.id,
+      actor: { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' },
+      expectedRevision: before.caseV2.revision,
+      payload: {
+        subjectId, fieldKey: 'capacity', value: { kind: 'text', value: '120 人（待进一步核验）' },
+        sourceRefs: [{ caseId: created.id, documentVersionId: doc.versionId,
+          parseRevision: doc.parseRevision, location: { kind: 'file' }, quote: '可供 120 人使用' }],
+        reason: '审核员选择当前原件并人工更正，保留引用和原因',
+      },
+    })
+    expect(changed.ok).toBe(true)
+    const after = readAggregate(created.id)!
+    expect(after.observations.some(item => item.subjectId === subjectId && item.fieldKey === 'capacity' &&
+      item.confirmed && item.sourceRefs[0]?.documentVersionId === doc.versionId &&
+      item.sourceRefs[0]?.parseRevision === doc.parseRevision)).toBe(true)
+    expect(after.receiptLog.some(item => item.type === 'CorrectObservation')).toBe(true)
+  })
+
   test('nonempty skipped file manifest requires explicit human permission after case exists', async () => {
     const created = await create()
     const folder = join(root, 'post-case-folder')
