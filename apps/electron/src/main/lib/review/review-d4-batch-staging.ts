@@ -42,9 +42,9 @@ function safeEntryName(raw: string): boolean {
 export function isSafeD4ZipEntry(raw: string): boolean { return safeEntryName(raw) }
 function safeHostFileName(name: string): boolean {
   if (!name || name.length > 240 || name === '.' || name === '..' ||
-      /[\\/:*?"<>|\\u0000-\\u001f]/.test(name) || /[. ]$/.test(name)) return false
+      /[\\/:*?"<>|\x00-\x1f]/.test(name) || /[. ]$/.test(name)) return false
   // Windows reserves these names irrespective of file extension.
-  return !/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\\.|$)/i.test(name)
+  return !/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(name)
 }
 export async function stageD4NativeBatch(
   selectedPaths: readonly string[], privateDir: string,
