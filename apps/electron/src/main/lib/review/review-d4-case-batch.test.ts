@@ -6,6 +6,7 @@ import { afterAll, describe, expect, mock, test } from 'bun:test'
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import JSZip from 'jszip'
 import type { D4ClientSelection } from '@profer/shared'
 
 const root = mkdtempSync(join(tmpdir(), 'd4-w1-case-batch-'))
@@ -154,6 +155,18 @@ describe('W1 post-case native append and revision-aware replacement', () => {
     expect(result.documents).toHaveLength(1)
     expect(getCase(created.id)!.d4IntakeOrigins?.some(item => item.documentId === result.documents[0]!.id)).toBe(true)
     expect(getCase(created.id)!.d4IntakeWarnings).toHaveLength(2)
+    expect(() => claimD4Intake(preview.token, 903)).toThrow('D4_INTAKE_TOKEN_INVALID')
+  })
+  test('dropped ZIP reuses the bounded Main extraction path and preserves member provenance', async () => {
+    const zip = new JSZip()
+    zip.file('evidence/合成说明.md', '合成 ZIP 文件内容')
+    zip.file('evidence/script.exe', 'must be rejected')
+    const bytes = await zip.generateAsync({ type: 'uint8array' })
+    const preview = await stageD4DroppedBytes(903, [{ name: '资料.zip', bytes }])
+    expect(preview.files).toHaveLength(1)
+    expect(preview.files[0]!.originLabel).toBe('资料.zip/evidence/合成说明.md')
+    expect(preview.skipped.some(entry => entry.reason.includes('不支持'))).toBe(true)
+    expect(discardD4Intake(preview.token, 903)).toBe(true)
     expect(() => claimD4Intake(preview.token, 903)).toThrow('D4_INTAKE_TOKEN_INVALID')
   })
   test('drop rejects path names, invalid shape and oversized count without persisting token', async () => {
