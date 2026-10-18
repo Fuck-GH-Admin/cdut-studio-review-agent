@@ -2,7 +2,7 @@ import { describe, expect, test } from 'bun:test'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import type { CaseAggregateV2, RuleSpec } from '@profer/shared'
-import { compactD2MappingForPi, piObservationFieldContract, piRuleForPrompt, PI_SUBMIT_SCHEMA_CONTRACT } from './pi-review-prompt-contract'
+import { compactD2MappingForPi, piObservationFieldContract, piRuleCatalogForPrompt, piRuleForPrompt, PI_SUBMIT_SCHEMA_CONTRACT } from './pi-review-prompt-contract'
 
 const planPath = resolve(import.meta.dir, '../../../../../../docs/design/review-agent/acceptance/d4-product-loop-r01/evidence/g08-plan.json')
 const plan = JSON.parse(readFileSync(planPath, 'utf8')) as NonNullable<CaseAggregateV2['d2RuntimePlan']>
@@ -56,6 +56,34 @@ describe('P2-A Pi prompt contract does not omit, merge, or invent audit responsi
       }
     }
     expect(plan.rules.filter(rule => rule.confirmation !== 'confirmed').length).toBeGreaterThan(0)
+  })
+
+  test('G08 107 fixed RuleSpecs are losslessly indexed to 70 complete requirement strings', () => {
+    const catalog = piRuleCatalogForPrompt(plan.rules, () => undefined)
+    expect(catalog.mode).toBe('dictionary')
+    expect(catalog.pointers).toHaveLength(107)
+    expect(catalog.requirements).toHaveLength(70)
+    expect(new Set(catalog.pointers.map(pointer => pointer.ruleId)).size).toBe(107)
+    const requirementLookup = new Map(catalog.requirements.map(entry => [entry.id, entry.requirement]))
+    for (const [index, rule] of plan.rules.entries()) {
+      const pointer = catalog.pointers[index]!
+      expect(pointer.ruleId).toBe(rule.id)
+      expect(requirementLookup.get(pointer.requirementId)).toBe(rule.requirement)
+      expect(catalog.text).toContain(rule.id)
+      expect(catalog.text).toContain(rule.title)
+      if (rule.confirmation !== 'confirmed') expect(catalog.text).toContain('未确认→只可 awaiting-confirmation')
+    }
+    for (const requirement of catalog.requirements) {
+      expect(catalog.text).toContain(`[${requirement.id}]\\n${requirement.requirement}`.replace('\\n', '\n'))
+    }
+    const expanded = plan.rules.map(rule => piRuleForPrompt(rule)).join('\n')
+    expect(catalog.text.length).toBeLessThan(expanded.length * 0.8)
+  })
+
+  test('small distinct RuleSpecs stay expanded, without dictionary indirection', () => {
+    const catalog = piRuleCatalogForPrompt(plan.rules.slice(0, 1), () => undefined)
+    expect(catalog.mode).toBe('expanded')
+    expect(catalog.text).toContain(plan.rules[0]!.requirement)
   })
 
   test('even if model text claims acceptance, deterministic gates are not bypassed by prompt text', () => {
