@@ -1,0 +1,217 @@
+{
+  "sourceSha": "6b96dbda8258c64033c0d9158f4fae578f7f66a1",
+  "overall": "P02_LOCAL_PASS_SCOPED",
+  "cases": [
+    {
+      "id": "P02-R01",
+      "status": "PASS",
+      "expected": "Held true Main getAgentSessionMeta response is discarded after true delete IPC; Main null and Renderer revoke/list/Preview clear are observed.",
+      "actual": {
+        "realMainMetaHeld": true,
+        "deleteIpcOk": true,
+        "mainMetaAfter": null,
+        "mainDeleteProjectionRevision": 1,
+        "rendererAfterProjection": {
+          "revoked": true,
+          "sessionPresent": false,
+          "previewPresent": false
+        },
+        "releasedLateValue": "",
+        "rendererAfterRelease": {
+          "sessionPresent": false,
+          "previewPresent": false,
+          "revoked": true
+        },
+        "ordinaryPreviewBeforeDelete": {
+          "readOnly": true,
+          "tabTypesUnchanged": true
+        },
+        "lookupRoundTripMs": 0.30000001192092896
+      },
+      "evidence": [
+        {
+          "privateRaw": "client/r01.json",
+          "sha256": "1bde1e04e9b76e199574b3c047de7a07086f8d76d6e32dff28721b7dac323646"
+        }
+      ]
+    },
+    {
+      "id": "P02-R02",
+      "status": "PASS",
+      "expected": "Delete then re-enter preview and deliver stale projection/SDK event; no deleted session or Preview is resurrected.",
+      "actual": {
+        "deleteIpcOk": true,
+        "staleMainProjectionAndSdkEventsObserved": 2,
+        "rendererSessionPresentAfterStale": false,
+        "previewPresentAfterStale": false,
+        "revokedAfterStale": true,
+        "sdkCacheAfterStale": 0,
+        "releasedLateValue": ""
+      },
+      "evidence": [
+        {
+          "privateRaw": "client/r02.json",
+          "sha256": "adac860b99de2c77be7f6d8edc3d35c422891842623cd8dcf2ea619afbb7c656"
+        }
+      ]
+    },
+    {
+      "id": "P02-R03",
+      "status": "PASS",
+      "expected": "Close Electron and restart same isolated profile under a different Main PID, then rerun R01.",
+      "actual": {
+        "oldMainPid": 2788570,
+        "newMainPid": 2793918,
+        "pidChanged": true,
+        "deleteProjectionRevision": 1,
+        "mainMetaAfter": null,
+        "releasedLateValue": "",
+        "rendererAfterRelease": {
+          "sessionPresent": false,
+          "previewPresent": false,
+          "revoked": true
+        }
+      },
+      "evidence": [
+        {
+          "privateRaw": "client/r03.json",
+          "sha256": "903187617b1d0241b2d64d20533c4763db6e37a0904a55e46f3105487b8b779a"
+        }
+      ]
+    },
+    {
+      "id": "P02-R04",
+      "status": "PASS",
+      "expected": "Valid ordinary early Preview passes second Main confirmation, stays read-only, query timing/count visible; archive, unarchive, search/sidebar work.",
+      "actual": {
+        "mainMetaQueryCount": 2,
+        "observedRoundTripMs": [
+          0.1,
+          0.1
+        ],
+        "timerResolutionCaveat": "Renderer performance.now values are about 0.10 ms and are timer-granularity limited.",
+        "previewReadOnly": true,
+        "tabTypesUnchanged": true,
+        "archiveRevision": 1,
+        "unarchiveRevision": 2,
+        "ordinarySearchResultCount": 1,
+        "ordinarySearchExcludesReviewOwner": true
+      },
+      "evidence": [
+        {
+          "privateRaw": "client/r04.json",
+          "sha256": "47fdb7d8c6e071bf75bc590ce0e315db3530e2a4ce9b57dd300c37336ada3d91"
+        }
+      ]
+    },
+    {
+      "id": "P02-R05",
+      "status": "PASS",
+      "expected": "Internal review owner, deleted tombstone/cross-ID metadata, direct and symlink/parent path forgeries denied through ordinary IPC.",
+      "actual": {
+        "ordinaryMeta": null,
+        "ordinaryListContainsOwner": false,
+        "ordinarySdkHistoryRejected": true,
+        "directPrivatePathRejected": true,
+        "symlinkRejected": true,
+        "parentEscapeRejected": true,
+        "forgedPdfPreviewRejected": true,
+        "deletedTombstoneMeta": null,
+        "deletedTombstonePreview": "",
+        "crossIdPreview": "",
+        "searchExclusionVerifiedBy": "R04 real ordinary search query"
+      },
+      "evidence": [
+        {
+          "privateRaw": "client/r05.json",
+          "sha256": "3ce79a3b47f6563fb6df96a18c869507247b11040e08d215c6f3c3363d83851c"
+        }
+      ]
+    },
+    {
+      "id": "P02-R06",
+      "status": "PASS",
+      "expected": "Real isolated persistence write failure preserves Main metadata/index, emits no false delete; previous ordinary session remains usable.",
+      "actual": {
+        "fault": "Isolated index directory write permission removed (mode 0500); real Main DELETE_SESSION IPC rejected.",
+        "deleteRejected": true,
+        "indexSha256Before": "1bd663bb15f11aaa5af7ccce4fdb6998e597756be25d0072895d10d38ef1aa5d",
+        "indexSha256After": "1bd663bb15f11aaa5af7ccce4fdb6998e597756be25d0072895d10d38ef1aa5d",
+        "indexUnchanged": true,
+        "mainMetaPreserved": true,
+        "stillInList": true,
+        "deleteProjectionCountBefore": 0,
+        "deleteProjectionCountAfter": 0,
+        "ordinaryFileReadAfterRestore": true,
+        "readOnlyPreviewAfterRestore": true
+      },
+      "evidence": [
+        {
+          "privateRaw": "client/r06.json",
+          "sha256": "719eede3ccf1c82888fced4d994df9e4f7c404442771aae964f9424f47c61acc"
+        }
+      ]
+    },
+    {
+      "id": "P02-R07",
+      "status": "PASS",
+      "expected": "Workspace deletion cascades to multiple sessions with separate delete projections; pending lookup cannot resurrect; unrelated state remains; default/last workspace deletion rejects without false delete.",
+      "actual": {
+        "cascadeDeleteIpcOk": true,
+        "sessionDeleteProjectionRevisions": [
+          1,
+          1
+        ],
+        "mainMetaAfterCascade": [
+          null,
+          null
+        ],
+        "releasedLateValue": "",
+        "rendererRevokedBoth": true,
+        "unrelatedWorkspaceAndSessionsPreserved": true,
+        "onlyDefaultWorkspaceRemained": [
+          "default"
+        ],
+        "defaultDeleteRejected": true,
+        "defaultDeleteFalseEventCount": 0
+      },
+      "attempts": [
+        {
+          "name": "first",
+          "exitCode": 1,
+          "status": "FAIL",
+          "classification": "HARNESS_ORACLE_ERROR",
+          "summary": "Only default remained; first harness incorrectly expected length 2. Raw failure retained.",
+          "evidence": [
+            {
+              "privateRaw": "client/r07-first-failure.json",
+              "sha256": "a92c6af7bac90ce5b3b62e0f3435146a899cafa7a8714022ba9bdb3f62894d5e"
+            }
+          ]
+        },
+        {
+          "name": "corrected-oracle-rerun",
+          "exitCode": 0,
+          "status": "PASS",
+          "summary": "Changed QA oracle length from 2 to 1 and reran all R07 checks with new synthetic identities.",
+          "evidence": [
+            {
+              "privateRaw": "commands/20-r07-after-harness-fix.stdout.log",
+              "sha256": "74d110bd41fd8e1da16bcac7418449b5d890a5c6cfec2adf871284d0dd6f1a10"
+            },
+            {
+              "privateRaw": "client/r07.json",
+              "sha256": "0fdeb172fe44726977ad0a7e090a515053cd890aa7a3003fcdd6b83432ced218"
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "privateRaw": "client/r07.json",
+          "sha256": "0fdeb172fe44726977ad0a7e090a515053cd890aa7a3003fcdd6b83432ced218"
+        }
+      ]
+    }
+  ]
+}

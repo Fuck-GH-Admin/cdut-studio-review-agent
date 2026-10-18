@@ -1,0 +1,62 @@
+{
+  "historical": [
+    {
+      "id": "PR105-P02-before-restart",
+      "status": "FAIL",
+      "classification": "PRODUCT_REGRESSION_ON_PARENT",
+      "summary": "After true Main deletion and Main meta null, releasing held old Main metadata reinserted the deleted ordinary session into agentSessionsAtom and previewFileMapAtom.",
+      "privateEvidenceSha256": "365aa75bc3017e4b2167ea01243264ae051e3f603aa92a39e9f8a22c917b71c7",
+      "notClaimed": "No claim that internal review file content leaked."
+    },
+    {
+      "id": "PR105-P02-after-restart",
+      "status": "FAIL",
+      "classification": "PRODUCT_REGRESSION_ON_PARENT",
+      "summary": "Same late response race reproduced after restarting Electron with a new process.",
+      "privateEvidenceSha256": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+      "notClaimed": "No claim that internal review file content leaked."
+    }
+  ],
+  "thisRun": [
+    {
+      "command": "08-live-setup",
+      "status": "FAIL",
+      "classification": "HARNESS_CWD_ERROR",
+      "exitCode": 1,
+      "summary": "Relative QA script path was run from the wrong cwd; subsequent command used apps/electron cwd.",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "7be5c7098ec88e803d60928d85900c3e0e144c5e0c185d34c465efe7cc9664fd"
+    },
+    {
+      "command": "09-live-setup",
+      "status": "FAIL",
+      "classification": "HARNESS_BOOTSTRAP_ERROR",
+      "exitCode": 1,
+      "summary": "Diagnostic observer assumed the index file existed before app initialization; fixed to report size zero when absent.",
+      "stdoutSha256": "6153b7562ced169f0ba09b729cb082351e556f8464fd87daeba5b79d9393a4f7",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "19-r07",
+      "status": "FAIL",
+      "classification": "HARNESS_ORACLE_ERROR",
+      "exitCode": 1,
+      "summary": "The first R07 oracle expected two workspaces after keeper cleanup, but the intended actual state was one default workspace. The default deletion was correctly rejected without a delete event.",
+      "privateReportSha256": "a92c6af7bac90ce5b3b62e0f3435146a899cafa7a8714022ba9bdb3f62894d5e",
+      "stdoutSha256": "24710e640d084efbb4006893948dd696d9b95fe7e8f9ecfbce515ced8e2e4ed3",
+      "rerun": "20-r07-after-harness-fix PASS"
+    }
+  ],
+  "unresolvedScope": [
+    {
+      "id": "provider-five-tool-binding",
+      "status": "NOT-RUN",
+      "reason": "P02 scope does not require provider; broader U1 authorized provider/five-tool gate remains outside scope."
+    },
+    {
+      "id": "office-71",
+      "status": "NOT-RUN",
+      "reason": "P02-only task; Office #71 not re-executed or modified."
+    }
+  ]
+}

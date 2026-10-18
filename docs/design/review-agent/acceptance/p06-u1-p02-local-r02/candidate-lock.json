@@ -1,0 +1,66 @@
+{
+  "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "source": {
+    "pullRequest": 106,
+    "headSha": "6b96dbda8258c64033c0d9158f4fae578f7f66a1",
+    "headTree": "818893feb3a9a9dbe35c2e91d723fd815591b4ff",
+    "parentPullRequest": 105,
+    "parentSha": "44c7dc9fefdfd7693f1b6d1de00cf348af7abf3f",
+    "localBranch": "audit/p06-u1-p02-local-r02",
+    "localHeadBeforeEvidence": "6b96dbda8258c64033c0d9158f4fae578f7f66a1",
+    "localTreeBeforeEvidence": "818893feb3a9a9dbe35c2e91d723fd815591b4ff",
+    "worktreeStatusAtCreation": "clean"
+  },
+  "remote": {
+    "pr106": {
+      "state": "open",
+      "draft": true,
+      "mergeable": true,
+      "headSha": "6b96dbda8258c64033c0d9158f4fae578f7f66a1",
+      "baseSha": "44c7dc9fefdfd7693f1b6d1de00cf348af7abf3f"
+    },
+    "ci": {
+      "runId": 39098656248,
+      "jobId": 117590242858,
+      "job": "verify (ubuntu-latest)",
+      "checkoutMergeCommit": "c40523564ae23c28514d84e288e8e8654ed14370",
+      "mergeTree": "818893feb3a9a9dbe35c2e91d723fd815591b4ff",
+      "result": "SUCCESS",
+      "steps": {
+        "frozenInstall": "PASS",
+        "typecheck": "PASS",
+        "boundaries": "PASS",
+        "skinSurface": "PASS",
+        "mainPreloadRendererBuild": "PASS",
+        "fullTests": "PASS"
+      },
+      "tests": {
+        "pass": 3997,
+        "skip": 5,
+        "fail": 0
+      },
+      "artifacts": {
+        "count": 0,
+        "status": "NOT_AVAILABLE"
+      }
+    }
+  },
+  "localRuntime": {
+    "electronVersion": "43.7.7",
+    "electronBinaryBytes": 224550136,
+    "electronBinarySha256": "9ecc59968492b5139d37b2de89496832655d2caeae1c7229cecb706006aceb9a",
+    "qaMainEntry": "scripts/qa/p06-u1-p02-main.ts",
+    "qaMainEntrySha256": "6e448ba7e981533b38e6a4218056c92597206c561b65a8320859ab7a3521ed2e",
+    "qaMainBundleSha256": "8943196676e3355a9d0c4bf89c8ce8468802693a13dc08bed6569863a3a79ddb",
+    "qaRendererDriver": "scripts/qa/p06-u1-p02-client.mjs",
+    "qaRendererDriverSha256": "f77b9957891c9c9702598d6aba9d9f5d33bc3535d182e24f03c98e623294a6ac",
+    "productionSourcesModified": false
+  },
+  "integrity": {
+    "pr105OriginalFailureBeforeRestartSha256": "365aa75bc3017e4b2167ea01243264ae051e3f603aa92a39e9f8a22c917b71c7",
+    "pr105OriginalFailureAfterRestartSha256": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+    "rawR01Sha256": "1bde1e04e9b76e199574b3c047de7a07086f8d76d6e32dff28721b7dac323646",
+    "rawR03Sha256": "903187617b1d0241b2d64d20533c4763db6e37a0904a55e46f3105487b8b779a",
+    "r07FirstFailureSha256": "a92c6af7bac90ce5b3b62e0f3435146a899cafa7a8714022ba9bdb3f62894d5e"
+  }
+}

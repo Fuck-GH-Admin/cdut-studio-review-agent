@@ -1,0 +1,41 @@
+{
+  "origin": "fresh isolated local profile; synthetic-only",
+  "files": [
+    {
+      "logicalFixture": "synthetic-fixture-04.txt",
+      "bytes": 55,
+      "sha256": "f42b8b5302cd074e23c6e0ec51d7c788482e0e646d57c4c7a718908bf1ef81d8",
+      "purpose": "synthetic ordinary-session preview or synthetic internal-review denial"
+    },
+    {
+      "logicalFixture": "synthetic-fixture-06.txt",
+      "bytes": 55,
+      "sha256": "d1fe79a0888ec0dd7f0bc2aefb55aebe9e1d40f2ab8b7f561fd306e72a982953",
+      "purpose": "synthetic ordinary-session preview or synthetic internal-review denial"
+    },
+    {
+      "logicalFixture": "synthetic-fixture-08.txt",
+      "bytes": 32,
+      "sha256": "03abd18ecded56518628044097ff1c923dd86435e89f4897a6752e191b8144b0",
+      "purpose": "synthetic ordinary-session preview or synthetic internal-review denial"
+    },
+    {
+      "logicalFixture": "synthetic-fixture-09.pdf",
+      "bytes": 604,
+      "sha256": "af3a92d36b2a3d177362ae7bbd891fe2a518dadcff93398f0b823a46ab45259a",
+      "purpose": "synthetic ordinary-session preview or synthetic internal-review denial"
+    },
+    {
+      "logicalFixture": "synthetic-fixture-11.txt",
+      "bytes": 55,
+      "sha256": "67d94e16d8da358af2f94818a587da3fd32811cad87daf5453c0ac8f52f7da14",
+      "purpose": "synthetic ordinary-session preview or synthetic internal-review denial"
+    },
+    {
+      "logicalFixture": "synthetic-fixture-13.txt",
+      "bytes": 55,
+      "sha256": "1007b6f0e46e2c50adf16dd233517d80e1300e0cffc78f314dd99bf5c479cdc8",
+      "purpose": "synthetic ordinary-session preview or synthetic internal-review denial"
+    }
+  ]
+}
