@@ -47,8 +47,12 @@ async function seed(flowTemplate: TemplateVersion = template): Promise<{ caseId:
     id: `run-${caseId}`, caseId, templateId: flowTemplate.templateId, templateVersion: flowTemplate.version,
     inputManifest: { hash: computeRunInputHash(data, [], []), templateVersion: flowTemplate.version,
       policyVersions: [], documentVersions: [], observationIds: [], evidenceLinkIds: [] },
-    status: 'completed', checkpoints: [], checks: [], opinions: [],
-    coverage: { documents: [], plannedChecks: 0, completedChecks: 0, effectiveVerdicts: 0, pendingChecks: 0 },
+    status: 'completed', checkpoints: [],
+    checks: [{ checkId: 'stage-fixture', ruleId: 'stage-fixture', target: { scope: 'case', subjectIds: [] },
+      status: 'compliant', reason: '合成规则通过', sourceRefs: [],
+      executedBy: 'deterministic', executedAt: '2026-01-01T00:00:01.000Z' }],
+    opinions: [],
+    coverage: { documents: [], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 },
     diagnostics: [], startedAt: '2026-01-01T00:00:00.000Z', completedAt: '2026-01-01T00:00:01.000Z',
   }
   saveRunV2(run)
@@ -67,6 +71,26 @@ describe('阶段推进（R07，修正误判 6）', () => {
     if (!denied.ok) expect(denied.code).toBe('STALE_INPUT')
     expect(readAggregate(caseId)?.decisions).toHaveLength(0)
     expect(readAggregate(caseId)?.caseV2.revision).toBe(original.caseV2.revision)
+  })
+  test('E02: real run with zero effective rules cannot create final pass', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const first = await recordStageDecision(caseId, {
+      requestId: nextReq(), actor, expectedRevision: 1,
+      payload: { action: 'stage-pass', taskId: firstTaskId, reason: '初审转办' },
+    }, template)
+    expect(first.ok).toBeTrue()
+    if (!first.ok) return
+    const run = getRunV2(caseId, `run-${caseId}`)!
+    saveRunV2({ ...run, coverage: { ...run.coverage, plannedChecks: 0, completedChecks: 0 },
+      checks: [], inputManifest: { ...run.inputManifest, effectiveRuleIds: [] } })
+    const task = first.aggregate.tasks.find((item) => item.stageId === 'final' && item.status === 'open')!
+    const denied = await recordStageDecision(caseId, {
+      requestId: nextReq(), actor: teacherActor, expectedRevision: first.aggregate.caseV2.revision,
+      payload: { action: 'stage-pass', taskId: task.id, reason: '空规则冒充终审' },
+    }, template)
+    expect(denied.ok).toBeFalse()
+    if (!denied.ok) expect(denied.code).toBe('DEPENDENCY_UNRESOLVED')
+    expect(readAggregate(caseId)?.decisions).toHaveLength(1)
   })
   test('Given 三阶段审核且时钟不前进 When 连续通过 Then 每个阶段任务仍有唯一 ID 并可终审', async () => {
     const threeStageTemplate = {

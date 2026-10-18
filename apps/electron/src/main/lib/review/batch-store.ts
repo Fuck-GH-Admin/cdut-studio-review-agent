@@ -197,6 +197,11 @@ export function selectSupplementRequeueBatch(
     if (previous.supplementId !== selection.supplementId) throw new Error('同案卷修订已有不同补件回流记录')
     return { queued: false, batch: state }
   }
+  if (previous?.supplementId === selection.supplementId) {
+    // Revision can advance for unrelated commands after the first requeue.
+    // A replay of the same satisfied supplement cannot revive a later done.
+    return { queued: false, batch: state }
+  }
   if (entry.status === 'queued') return { queued: false, batch: state }
   if (entry.status === 'running') throw new Error('该案卷仍在执行，禁止补件回流')
   scoped.cases = state.cases.map((item) => item.caseId === caseId

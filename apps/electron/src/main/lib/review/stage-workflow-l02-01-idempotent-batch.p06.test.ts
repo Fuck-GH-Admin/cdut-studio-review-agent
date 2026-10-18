@@ -14,7 +14,7 @@ const config = mkdtempSync(join(tmpdir(), 'p06-l02-01-offline-'))
 process.env.PROFER_CONFIG_DIR = config
 afterAll(() => rmSync(config, { recursive: true, force: true }))
 
-const { createAggregate, readAggregate } = await import('./case-store-v2')
+const { createAggregate, readAggregate, submitCommand } = await import('./case-store-v2')
 const { createBatchV2, readBatchStateV2, updateCaseStatus, selectSupplementRequeueBatch } = await import('./batch-store')
 const { ensureInitialTask, recordStageDecision, respondSupplementV2, resolveSupplementV2 } = await import('./stage-workflow')
 const { saveRunV2 } = await import('./run-store-v2')
@@ -192,6 +192,17 @@ describe('L02-01 human supplement is idempotent across V2 and batch projection',
     expect(replay.queued).toBeFalse()
     expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('done')
     expect(readBatchStateV2(historicalId)?.cases[0]?.status).toBe('done')
+    const changed = await submitCommand(caseId, {
+      requestId: 'later-'+randomUUID(), actor: reviewer, expectedRevision: selected.expectedRevision,
+      type: 'NoopAudit', payload: {},
+    }, () => ({ summary: '模拟补件核验后其他业务编辑', mutate: () => undefined }))
+    expect(changed.ok).toBeTrue()
+    if (!changed.ok) return
+    const newerReplay = selectSupplementRequeueBatch(caseId, batchId, {
+      ...selected, expectedRevision: changed.aggregate.caseV2.revision,
+    })
+    expect(newerReplay.queued).toBeFalse()
+    expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('done')
   })
 
   test('same request ID with modified outcome and stale independent commands cannot silently write', async () => {

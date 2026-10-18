@@ -14,6 +14,7 @@
 
 import type { Appeal, BusinessDecision, CaseAggregateV2, ReviewCommandResult, SupplementRequest, TemplateVersion, WorkflowTask } from '@profer/shared'
 import { randomUUID } from 'node:crypto'
+import { assessDecisionReadiness } from '@profer/shared'
 import { CommandValidationError, submitCommand, type CommandSourceMeta } from './case-store-v2'
 import type { Actor } from '@profer/shared'
 
@@ -136,6 +137,16 @@ export function recordStageDecision(
         throw new CommandValidationError('STALE_INPUT', '正式阶段结论必须引用当前真实且已完成的审核运行')
       }
       verifiedRunId = run.id
+      if (finality === 'final' && payload.action === 'stage-pass') {
+        const { readArtifact } = require('./run-store-v2') as typeof import('./run-store-v2')
+        const artifact = readArtifact<{ observations?: Array<Record<string, unknown>> }>(caseId, run.id, 'node-auto-check-extract')
+        const readiness = assessDecisionReadiness({ aggregate, run, runStale: false, template,
+          observations: artifact?.observations ?? [] })
+        if (!readiness.ready) {
+          throw new CommandValidationError('DEPENDENCY_UNRESOLVED',
+            `仍有阻断最终通过的事项：${readiness.blockers.map((item) => item.message).join('；')}`)
+        }
+      }
     }
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '决定必须附理由')
     if (!aggregate.decisions.every((decision) => decision.taskId !== task.id)) throw new CommandValidationError('INVALID_TRANSITION', '该任务已有决定')

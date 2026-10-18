@@ -757,6 +757,7 @@ export function registerReviewIpc(): void {
     if (input.action === 'reopen') return reopenBatch(input.batchId, input.newBatchId ?? `${input.batchId}-r${Date.now().toString(36)}`, input.reason ?? '人工重开')
     if (input.action === 'retry') return retryBatchCases(input.batchId, input.caseIds ?? [])
     if (input.action === 'requeue-supplement') {
+      if (input.confirmed !== true) throw new Error('补件批次重新入队必须由审核人明确确认')
       if (typeof input.caseId !== 'string' || typeof input.supplementId !== 'string'
         || !Number.isSafeInteger(input.expectedRevision) || (input.expectedRevision ?? -1) < 0) {
         throw new Error('补件批次选择必须指定案卷、补件 ID 和最新修订号')
