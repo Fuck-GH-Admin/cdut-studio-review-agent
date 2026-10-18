@@ -192,14 +192,14 @@ describe('L02-01 human supplement is idempotent across V2 and batch projection',
     expect(replay.queued).toBeFalse()
     expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('done')
     expect(readBatchStateV2(historicalId)?.cases[0]?.status).toBe('done')
-    const changed = await submitCommand(caseId, {
+    const laterCommand = await submitCommand(caseId, {
       requestId: 'later-'+randomUUID(), actor: reviewer, expectedRevision: selected.expectedRevision,
       type: 'NoopAudit', payload: {},
     }, () => ({ summary: '模拟补件核验后其他业务编辑', mutate: () => undefined }))
-    expect(changed.ok).toBeTrue()
-    if (!changed.ok) return
+    expect(laterCommand.ok).toBeTrue()
+    if (!laterCommand.ok) return
     const newerReplay = selectSupplementRequeueBatch(caseId, batchId, {
-      ...selected, expectedRevision: changed.aggregate.caseV2.revision,
+      ...selected, expectedRevision: laterCommand.aggregate.caseV2.revision,
     })
     expect(newerReplay.queued).toBeFalse()
     expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('done')
