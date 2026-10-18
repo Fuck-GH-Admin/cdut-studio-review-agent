@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.156",
+      "date": "2026-10-18",
+      "title": "0.15.156",
+      "notes": "D4 P2-C：现有 Pi review_submit_result 拒绝返回附加有界分类及下一步修复建议；保留原 rejected/missingChecks/accepted/status，长流程续交只引用前12条短拒绝提示而不删历史账本。Main SourceRef/D2 EvidenceLink/校规确认/授权/完成门禁保持不变。"
+    },
+    {
       "version": "0.15.155",
       "date": "2026-10-18",
       "title": "0.15.155",
