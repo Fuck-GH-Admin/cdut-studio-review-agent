@@ -1,0 +1,111 @@
+name: P06 L02 U1 split - cloud controlled safety evidence
+on:
+  pull_request:
+    paths:
+      - 'apps/electron/src/main/lib/agent-orchestrator.ts'
+      - 'apps/electron/src/main/lib/agent-orchestrator-permission-wiring.p06.test.ts'
+      - 'docs/design/review-agent/62-p06-l02-u1-two-stage-handoff-20261018.md'
+      - 'docs/design/review-agent/63-p06-l02-u1-local-execution-task-20261018.md'
+      - '.github/workflows/p06-l02-u1-split-controlled.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: p06-u1-split-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  remote-controlled:
+    name: P06 U1 focused controls and known Office #71 reproducer (NOT LIVE)
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 40
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Capture exact input, controlled test exits and #71 observed collision
+        shell: bash
+        run: |
+          set +e
+          set -u -o pipefail
+          out="$RUNNER_TEMP/evidence-p06-u1-remote-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$out"
+          git rev-parse HEAD > "$out/checkout-sha.txt"
+          git rev-parse HEAD^{tree} > "$out/checkout-tree.txt"
+          uname -a > "$out/host.txt"
+          node --version > "$out/node.txt"
+          bun --version > "$out/bun.txt"
+          printf 'step\texit\n' > "$out/commands.tsv"
+          status=0
+          bun install --frozen-lockfile > "$out/install.log" 2>&1
+          install_rc=$?
+          printf 'install\t%s\n' "$install_rc" >> "$out/commands.tsv"
+          if [ "$install_rc" -ne 0 ]; then status=1; fi
+          if [ "$install_rc" -eq 0 ]; then
+            bun run typecheck > "$out/typecheck.log" 2>&1
+            rc=$?
+            printf 'typecheck\t%s\n' "$rc" >> "$out/commands.tsv"
+            if [ "$rc" -ne 0 ]; then status=1; fi
+
+            bun test --isolate --timeout 30000 \
+              apps/electron/src/main/lib/agent-orchestrator-permission-wiring.p06.test.ts \
+              apps/electron/src/main/lib/review/review-strict-profile.p02.probe.test.ts \
+              apps/electron/src/main/lib/review/review-pi-run-bridge.main.test.ts \
+              apps/electron/src/main/lib/review/review-office-v2-sourceref-boundary.l02.test.ts \
+              apps/electron/src/main/lib/review/review-retired-source-ref.l02-u1.test.ts \
+              apps/electron/src/main/lib/review/review-deleted-owner-tombstone.p04.test.ts \
+              apps/electron/src/main/lib/review/review-ipc-actor-guard.test.ts \
+              > "$out/controlled-tests.log" 2>&1
+            rc=$?
+            printf 'controlled-tests\t%s\n' "$rc" >> "$out/commands.tsv"
+            if [ "$rc" -ne 0 ]; then status=1; fi
+
+            # IMPORTANT: exit 0 here means known #71 collision was REPRODUCED;
+            # it is a product blocker, never an acceptance PASS for Office.
+            bun scripts/qa/p06-l02-office-index-identity-repro.ts > "$out/office71-repro.json" 2> "$out/office71-stderr.log"
+            rc=$?
+            printf 'office71-expected-repro\t%s\n' "$rc" >> "$out/commands.tsv"
+            if [ "$rc" -ne 0 ]; then status=1; fi
+            if [ "$rc" -eq 0 ]; then
+              python3 -c "import json,sys; data=json.load(open(sys.argv[1])); assert data['issue']==71 and data['collisionDetected'] is True and len(data['rows'])==6" "$out/office71-repro.json"
+              rc=$?
+              printf 'office71-expected-collision-assert\t%s\n' "$rc" >> "$out/commands.tsv"
+              if [ "$rc" -ne 0 ]; then status=1; fi
+            fi
+          else
+            echo 'NOT_RUN: dependency installation failed' > "$out/controlled-tests.log"
+            echo 'NOT_RUN: dependency installation failed' > "$out/office71-stderr.log"
+          fi
+          git status --porcelain=v1 > "$out/git-status.txt"
+          git diff --summary > "$out/git-diff-summary.txt"
+          if [ -s "$out/git-status.txt" ]; then
+            echo "nonclean checkout after controlled tests" >> "$out/git-diff-summary.txt"
+            status=1
+          fi
+          printf 'overall\t%s\n' "$status" >> "$out/commands.tsv"
+          (cd "$out" && sha256sum *.txt *.tsv *.log *.json > SHA256SUMS 2>/dev/null) || true
+          cat "$out/commands.tsv"
+          echo "----- focused tests (last 60 lines) -----"
+          tail -n 60 "$out/controlled-tests.log"
+          echo "----- typecheck (last 35 lines) -----"
+          tail -n 35 "$out/typecheck.log" 2>/dev/null || true
+          echo "----- known Office #71 (last 15 lines) -----"
+          tail -n 15 "$out/office71-stderr.log" 2>/dev/null || true
+          exit "$status"
+      - name: Preserve bounded controlled evidence and all failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p06-l02-u1-remote-controlled
+          path: ${{ runner.temp }}/evidence-p06-u1-remote-${{ github.run_id }}-${{ github.run_attempt }}/
+          if-no-files-found: warn
+          retention-days: 60

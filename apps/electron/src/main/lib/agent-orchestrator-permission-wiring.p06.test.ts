@@ -4,7 +4,7 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
-import type { SDKMessage } from '@profer/shared'
+import { DEFAULT_PRESET_ID, type SDKMessage } from '@profer/shared'
 import { PiAgentAdapter, type PiAgentQueryOptions } from './adapters/pi-agent-adapter'
 
 const profile = mkdtempSync(join(tmpdir(), 'p06-pi-permission-wiring-'))
@@ -14,7 +14,7 @@ afterAll(() => rmSync(profile, { recursive: true, force: true }))
 await import('./agent-service')
 const { AgentOrchestrator } = await import('./agent-orchestrator')
 const { AgentEventBus } = await import('./agent-event-bus')
-const { createAgentSession } = await import('./agent-session-manager')
+const { createAgentSession, createReviewOwnedAgentSession, updateAgentSessionMeta } = await import('./agent-session-manager')
 const { createChannel } = await import('./channel-manager')
 const { permissionService } = await import('./agent-permission-service')
 const channel = createChannel({ name: '合成权限渠道', provider: 'deepseek', baseUrl: 'https://example.invalid', apiKey: 'synthetic-key', enabled: true,
@@ -32,6 +32,43 @@ class WitnessAdapter extends PiAgentAdapter {
 }
 const callbacks = { onError() {}, onComplete() {}, onTitleUpdated() {} }
 const options = { signal: new AbortController().signal, toolUseID: 'synthetic-write-call' }
+
+describe('P06 L02-U1 内部审核 owner 缺指派不得降级普通 Pi', () => {
+  test('内部 review-case owner 无可信运行绑定，在调用 Pi adapter 前拒绝', async () => {
+    const session = createReviewOwnedAgentSession({
+      caseId: 'u1-no-binding-' + randomUUID(),
+      title: '合成内部审核缺绑定',
+      channelId: channel.id,
+      modelId: 'synthetic-model',
+    })
+    const adapter = new WitnessAdapter()
+    const orchestrator = new AgentOrchestrator(adapter, new AgentEventBus())
+    await expect(orchestrator.sendMessage({
+      sessionId: session.id, channelId: channel.id, modelId: 'synthetic-model',
+      agentRuntime: 'pi', triggeredBy: 'user', uuid: randomUUID(),
+      userMessage: '合成审核：缺少可信绑定', permissionModeOverride: 'auto',
+    }, callbacks)).rejects.toThrow('拒绝降级为普通 Agent 权限')
+    expect(adapter.calls).toBe(0)
+  })
+
+  test('审核预设意外变为默认时，内部 owner 仍不得取得普通工具', async () => {
+    const session = createReviewOwnedAgentSession({
+      caseId: 'u1-preset-swapped-' + randomUUID(),
+      title: '合成内部审核预设漂移',
+      channelId: channel.id,
+      modelId: 'synthetic-model',
+    })
+    updateAgentSessionMeta(session.id, { presetId: DEFAULT_PRESET_ID, presetReference: undefined })
+    const adapter = new WitnessAdapter()
+    const orchestrator = new AgentOrchestrator(adapter, new AgentEventBus())
+    await expect(orchestrator.sendMessage({
+      sessionId: session.id, channelId: channel.id, modelId: 'synthetic-model',
+      agentRuntime: 'pi', triggeredBy: 'user', uuid: randomUUID(),
+      userMessage: '合成审核：预设意外变化',
+    }, callbacks)).rejects.toThrow('拒绝降级为普通 Agent 权限')
+    expect(adapter.calls).toBe(0)
+  })
+})
 
 describe('P06 普通 Pi 权限真实接线', () => {
   test('auto Write 确实进入现有权限 pending，人工拒绝传回 Adapter', async () => {

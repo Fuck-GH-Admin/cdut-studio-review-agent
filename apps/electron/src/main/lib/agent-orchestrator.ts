@@ -1325,6 +1325,18 @@ export class AgentOrchestrator {
             }
           })()
         : undefined
+      // A review-owned hidden session must never fall back to ordinary Pi tools
+      // when its trusted run/assignment is absent, revoked, stale or mismatched.
+      // In particular, the Pi adapter's review profile does not filter externally
+      // injected customTools: the Main-owned binding is a required admission gate.
+      if (presetSessionMeta?.owner?.kind === 'review-case'
+        && (agentRuntime !== 'pi'
+          || currentPresetReference?.presetId !== 'review-operator'
+          || presetOperationSource !== 'user'
+          || !activePiReviewBinding
+          || activePiReviewBinding.caseId !== presetSessionMeta.owner.caseId)) {
+        throw new Error('内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限')
+      }
       const presetPolicy = createEffectiveAgentPresetPolicy(
         sessionPreset,
         currentPresetReference,
