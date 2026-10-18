@@ -1,0 +1,115 @@
+{
+  "candidateHead": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+  "policy": "Every failed or invalid harness attempt remains recorded. These outcomes are not silently converted into product PASS. Raw local stdout/stderr and technical identifiers remain in the private evidence directory; public references use command IDs and hashes.",
+  "failures": [
+    {
+      "id": "vite-ooxml-build-local",
+      "class": "HARNESS_INVALID",
+      "exitCode": 1,
+      "summary": "The first OOXML build was launched from the repository root rather than apps/electron. The recorded stderr identifies the incorrect working directory. Rerun from apps/electron passed.",
+      "resolution": "Corrected only the command working directory; no source change.",
+      "evidence": ["vite-ooxml-build-local", "vite-ooxml-build-local-rerun"]
+    },
+    {
+      "id": "electron-main-first-attempt",
+      "class": "HARNESS_INVALID",
+      "exitCode": "SIGTRAP",
+      "summary": "Chromium could not create its SingletonSocket because the generated socket path exceeded the operating-system limit in the long private temporary directory.",
+      "resolution": "Relaunched with a short mode-0700 private TMPDIR. The first attempt log remains preserved.",
+      "rawLogSha256": "cee514fd3d44a32de9a262b4d87bdd13e3b1cc4e371e85aa601b6b2ca3fc5215"
+    },
+    {
+      "id": "electron-main-no-xvfb-attempt",
+      "class": "HARNESS_INVALID",
+      "exitCode": "SIGTRAP",
+      "summary": "A retry omitted xvfb-run and failed because no X server or DISPLAY was available. The process log was rotated by the later successful launch; a clearly labeled excerpt was reconstructed from the captured command output and is not represented as the original raw log.",
+      "reconstructedExcerptSha256": "c556a5972e73733522fbb014dddc33c501a58161dad67290b7f9b5a6e141d8f9",
+      "preservationQuality": "reconstructed command-output excerpt; original process log unavailable"
+    },
+    {
+      "id": "pi-sdk-registry-probe",
+      "class": "HARNESS_INVALID",
+      "exitCode": 1,
+      "summary": "Bun test runner imported the Electron stub and could not find the named safeStorage export.",
+      "resolution": "Switched to the production Main bridge harness and later to an actual Electron process; no source change.",
+      "evidence": ["pi-sdk-registry-probe"]
+    },
+    {
+      "id": "pi-sdk-registry-probe-bun-test-rerun-01",
+      "class": "HARNESS_INVALID",
+      "exitCode": 1,
+      "summary": "Bun test file filter omitted the .test extension and matched no files.",
+      "resolution": "Corrected the test path in later probes.",
+      "evidence": ["pi-sdk-registry-probe-bun-test-rerun-01"]
+    },
+    {
+      "id": "pi-sdk-registry-probe-bun-test-rerun-02",
+      "class": "HARNESS_INVALID",
+      "exitCode": 0,
+      "summary": "An early direct orchestrator probe bypassed the official review bridge and left three synthetic V2 runs in running state with zero completed checks or receipts. It is retained only as harness-invalid evidence and was not used as a product result.",
+      "evidence": ["pi-sdk-registry-probe-bun-test-rerun-02"],
+      "privateCaptureSha256": "2c288e050a9ce123d9c7ab6478ad72636a2b3e37fb61cc9e0187e9d245c17858"
+    },
+    {
+      "id": "pi-sdk-registry-provider-boundary-rerun-01",
+      "class": "HARNESS_INVALID",
+      "exitCode": 0,
+      "summary": "The first stream fence was placed at a layer that the adapter classified as retryable network failure, producing local retry activity. No network request left the host, but this was not accepted as the final no-provider boundary.",
+      "resolution": "Moved the fence to the actual Pi AgentSession stream boundary before transport.",
+      "evidence": ["pi-sdk-registry-provider-boundary-rerun-01"]
+    },
+    {
+      "id": "pi-sdk-provider-toolset-boundary-rerun-02",
+      "class": "HARNESS_INVALID",
+      "exitCode": 0,
+      "summary": "Repeated the wrong-layer retry behavior from the prior stream fence. It is kept as a separate attempt and excluded from pass counts.",
+      "evidence": ["pi-sdk-provider-toolset-boundary-rerun-02"]
+    },
+    {
+      "id": "pi-main-bridge-sdk-boundary",
+      "class": "HARNESS_INVALID",
+      "exitCode": 0,
+      "summary": "The first bridge diagnostic ended before ACK and SDK session creation; its output fields were null and it is not a pass.",
+      "evidence": ["pi-main-bridge-sdk-boundary"]
+    },
+    {
+      "id": "pi-main-bridge-sdk-boundary-rerun-01",
+      "class": "HARNESS_INVALID",
+      "exitCode": 0,
+      "summary": "The test WebContents fixture lacked once(), so the production bridge rejected the incomplete fixture before a valid capture.",
+      "resolution": "Fixed the fixture and repeated the controlled bridge run; later actual Electron IPC evidence is separate.",
+      "evidence": ["pi-main-bridge-sdk-boundary-rerun-01"]
+    },
+    {
+      "id": "electron-main-sdk-import-probe",
+      "class": "HARNESS_INVALID",
+      "exitCode": 0,
+      "summary": "Inspector Runtime.evaluate does not provide Node's dynamic import callback; the probe caught the TypeError and returned a diagnostic false result.",
+      "resolution": "Loaded the same Pi SDK ESM module through a temporary private NODE_OPTIONS preload before the actual Electron app started.",
+      "evidence": ["electron-main-sdk-import-probe"]
+    },
+    {
+      "id": "electron-main-sdk-require-probe",
+      "class": "HARNESS_INVALID",
+      "exitCode": 0,
+      "summary": "CommonJS require could not load the Pi SDK package because it exports only an ESM import condition.",
+      "resolution": "Used an ESM preload; no production source change.",
+      "evidence": ["electron-main-sdk-require-probe"]
+    },
+    {
+      "id": "electron-renderer-post-run-observation",
+      "class": "HARNESS_INVALID",
+      "exitCode": 1,
+      "summary": "The first observation called listAgentSessions on reviewAPI. The ordinary session API is exposed on electronAPI. The corrected Renderer IPC query passed.",
+      "resolution": "Reran via electronAPI and retained both attempts.",
+      "evidence": ["electron-renderer-post-run-observation", "electron-renderer-post-run-observation-rerun"]
+    },
+    {
+      "id": "electron-live-provider-fence",
+      "class": "EXPECTED_FENCE_FAILURE",
+      "exitCode": 0,
+      "summary": "The actual Pi SDK stream reached its request context and the private AbortError fence stopped it before transport because no authorized test Provider credential was available. The synthetic V2 run persisted failed/incomplete with one execution-failed check, zero opinions, zero model usage, zero agent activity, zero SourceRefs, and one pending check. This is not a business review result or a product failure claim.",
+      "evidence": ["electron-live-pi-sdk.json", "electron-renderer-post-run-observation-rerun", "provider-tool-receipt-index.json"]
+    }
+  ]
+}

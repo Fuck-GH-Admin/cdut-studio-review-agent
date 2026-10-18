@@ -1,0 +1,48 @@
+{
+  "task": "73",
+  "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "candidate": {
+    "pullRequest": 114,
+    "head": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+    "tree": "df27656c56a5147ebfb4e1cd67f1645919522147",
+    "parent": "5c4108b84e9f8ba0505afa1ba9bebce665320079",
+    "basePullRequest": 113,
+    "baseHead": "3c9d1b63593816b066a0986dcb2b638d2df673eb",
+    "remoteState": "OPEN_DRAFT_MERGEABLE",
+    "independentBranch": "audit/p06-u1-pi-provider-local-r01"
+  },
+  "readOnlyHistory": {
+    "mainHead": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+    "pullRequests": {
+      "105": "44c7dc9fefdfd7693f1b6d1de00cf348af7abf3f",
+      "108": "64c01e57d1e3e1a587a639ae59f9f62ed878924e",
+      "110": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "113": "3c9d1b63593816b066a0986dcb2b638d2df673eb"
+    },
+    "historicalPullRequestsState": "OPEN_OR_DRAFT_MERGEABLE_AT_FREEZE; READ_ONLY"
+  },
+  "remoteCi": {
+    "runId": "39112696729",
+    "jobId": "117632053211",
+    "conclusion": "success",
+    "checkoutCommit": "20dd66ede36767d758a7950ae8dda04af80ca629",
+    "checkoutTree": "df27656c56a5147ebfb4e1cd67f1645919522147",
+    "checkoutTreeMatchesCandidate": true,
+    "tests": {
+      "files": 461,
+      "passed": 4012,
+      "skipped": 5,
+      "failed": 0,
+      "total": 4017
+    },
+    "workflowArtifactCount": 0,
+    "jobLogSha256": "858c31e86b48e2f81070250d46f1dd80c5dd0aa58da21e6df6f6f949cee87455"
+  },
+  "freeze": {
+    "candidateWasPinnedBeforeLocalExecution": true,
+    "localWorktreeHeadMatchesCandidate": true,
+    "localWorktreeTreeMatchesCandidate": true,
+    "frozenAtUtc": "2026-10-18",
+    "sourceMutationsDuringExecution": false
+  }
+}

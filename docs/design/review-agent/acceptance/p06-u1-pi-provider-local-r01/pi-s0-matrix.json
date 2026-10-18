@@ -1,0 +1,159 @@
+{
+  "candidateHead": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+  "overall": "PARTIAL; S0 NOT COMPLETE",
+  "results": [
+    {
+      "id": "PI-M01",
+      "status": "PASS_SCOPED",
+      "execution": "A real Electron Renderer called window.reviewAPI.startBackgroundPiReviewV2 through the shipped preload IPC into Main. Main returned an onRunOwned-backed accepted ACK; the subsequent V2 state returned the same runId hash. After the pre-transport fence, Main persisted the same run as failed/incomplete. ACK keys were caseId, phase, runId, runStatus and contained no sessionId, assignmentId, or path.",
+      "isolation": "The hidden review session was absent from ordinary session listing and search; getPiReviewSessionV2 returned null and the Renderer assignment list exposed no internal assignment.",
+      "notRun": [
+        "GUI button click",
+        "navigate away while a valid provider request continues",
+        "return to a live run after leaving the page"
+      ],
+      "evidence": [
+        "electron-renderer-real-review-start",
+        "electron-renderer-post-run-observation-rerun",
+        "electron-renderer-assignment-state",
+        "electron-main.log"
+      ],
+      "identityHashes": {
+        "caseId": "e8a186f609b434d19063db88f436bfd0408b9470c82fb4a3f37fcb95d5265935",
+        "runId": "ecb9e7bbd6e51964b597e3f2f77725fb161fe63438f1c49040dda53670c8b289",
+        "assignmentId": "74c52838e7a174c771f327ce7444bbe8931155d09bf640fdd6fb9f06f3bbb9eb",
+        "sessionId": "2bc1f7891c924104df88ed9d8dfac739016c1434e5e19e3a0ef5f9dcb2329f7c",
+        "turnId": "deb48f6468b807b0931d4c198bceaddcf47a70010a731e17b8215a7c04ee996d"
+      },
+      "bindingObserved": {
+        "ownerKind": "review-case",
+        "ownerCaseMatches": true,
+        "presetId": "review-operator",
+        "agentRuntime": "pi",
+        "assignmentCaseMatches": true,
+        "assignmentRunMatchesAck": true,
+        "assignmentSessionMatchesOwner": true,
+        "assignmentPersistentlyRevokedAfterFence": true
+      }
+    },
+    {
+      "id": "PI-T01",
+      "status": "PASS_SCOPED",
+      "sdkVersion": "0.86.1",
+      "activeAndModelFacingToolNames": [
+        "CompactContext",
+        "review_inspect_document_image",
+        "review_inspect_original",
+        "review_read_documents",
+        "review_submit_result"
+      ],
+      "activeNamesMatchModelFacingNames": true,
+      "actualPiSdkSessionPromptReached": true,
+      "providerStreamBoundaryReached": true,
+      "providerTransportCalled": false,
+      "registryQualification": "Pi AgentSession.getAllTools() contained 13 definitions: the five active review names plus inactive builtin bash, edit, find, grep, ls, powershell, read, and write. All eight general definitions were absent from the active list and model-facing request context. The scoped pass applies only to the actual active/model-facing tool set; the inactive internal definitions remain explicitly recorded for review.",
+      "bindingAndProfileQualification": "Actual isolated-profile metadata after Main created the run showed owner.kind=review-case, owner case match, preset=review-operator, runtime=pi. The persisted assignment case/run/session matched the fresh case, Renderer ACK runId, and session metadata; its turnId is recorded as a hash. Assignment was persisted revoked after the fenced run. No live Host canUseTool callback result was captured in this Electron invocation.",
+      "evidence": [
+        "electron-live-pi-sdk.json",
+        "electron-renderer-real-review-start",
+        "electron-renderer-post-run-observation-rerun"
+      ]
+    },
+    {
+      "id": "PI-T02",
+      "status": "BLOCKED_ENV",
+      "reason": "No authorized test Provider credential was available. The real Electron SDK stream was stopped before transport, so no real model tool-use attempt could exercise the same live Host canUseTool callback.",
+      "controlledSupplement": {
+        "status": "PASS_CONTROLLED",
+        "allowedCallbacks": 5,
+        "forbiddenCallbacksDenied": 8,
+        "postRevocationFiveToolCallbacksDenied": true,
+        "qualification": "Direct Main callback probes came from the production review bridge under a Bun Electron preload fixture; they were not live Electron Provider tool calls."
+      },
+      "evidence": [
+        "pi-main-bridge-sdk-boundary-final",
+        "pi-main-bridge-registry-private-capture"
+      ]
+    },
+    {
+      "id": "PI-T03",
+      "status": "BLOCKED_ENV",
+      "reason": "No authorized Provider request was made. Provider request ID, provider-supplied tool_use, Pi tool call ID, live Main authorization event, tool execution receipt, valid SourceRef/read receipt, and Provider usage are all absent. No substitute transcript was created.",
+      "evidence": [
+        "electron-live-pi-sdk.json",
+        "electron-renderer-post-run-observation-rerun",
+        "provider-tool-receipt-index.json"
+      ]
+    },
+    {
+      "id": "PI-T04",
+      "status": "NOT-RUN",
+      "reason": "Actual live-provider revocation races, stale tool handles, wrong-case/source references, and restart checks were not repeated. The prior controlled suite includes revoke/deny assertions but does not substitute for this live scenario.",
+      "evidence": [
+        "focused-tests",
+        "pi-main-bridge-sdk-boundary-final"
+      ]
+    },
+    {
+      "id": "PI-T05",
+      "status": "NOT-RUN",
+      "reason": "No separate real ordinary Pi Agent session with authorized Read, MCP, read-only preview, and approval/denial flow was executed in Electron. Controlled normal-session checks remain controlled evidence only.",
+      "evidence": [
+        "focused-tests",
+        "review-ipc-controlled-tests"
+      ]
+    },
+    {
+      "id": "PI-T06",
+      "status": "NOT-RUN",
+      "reason": "No real compaction threshold was triggered. Compaction policy/unit evidence cannot satisfy the live continuation check.",
+      "evidence": []
+    },
+    {
+      "id": "S1-A-B-C",
+      "status": "NOT-RUN",
+      "reason": "73 requires S0 permission gates before new business cases. PI-T02/T03 are not passed, so no A/B/C case was started.",
+      "evidence": [
+        "pi-a-b-c-matrix.json"
+      ]
+    },
+    {
+      "id": "IO_RECOVERY",
+      "status": "NOT-RUN",
+      "reason": "This run did not repeat Office/document parse recovery, app restart recovery, or cache/SourceRef isolation beyond the narrowly scoped startup and V2 observation.",
+      "evidence": []
+    }
+  ],
+  "controlledMainAuthorizationProbe": {
+    "status": "PASS_CONTROLLED",
+    "allowed": [
+      "review_read_documents",
+      "review_inspect_document_image",
+      "review_submit_result",
+      "review_inspect_original",
+      "CompactContext"
+    ],
+    "denied": [
+      "Read",
+      "Write",
+      "Bash",
+      "Edit",
+      "AskUserQuestion",
+      "mcp__untrusted__write",
+      "inspect_preview",
+      "unregistered_custom_probe"
+    ],
+    "afterRevokeDenied": [
+      "review_read_documents",
+      "review_inspect_document_image",
+      "review_submit_result",
+      "review_inspect_original",
+      "CompactContext"
+    ],
+    "qualification": "Controlled production Main callback probes, no Provider request and no real Electron callback.",
+    "evidence": [
+      "pi-main-bridge-sdk-boundary-final",
+      "pi-main-bridge-registry-private-capture"
+    ]
+  }
+}
