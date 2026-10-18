@@ -35,6 +35,6 @@ describe('P06 R02 batch transaction must run the frozen case template', () => {
     expect(classifyBatchRunCompletion({
       status: 'completed', checks: [{ status: 'awaiting-confirmation' }],
     } as ReviewRunV2)).toBe('completed')
-    expect(classifyBatchRunCompletion({ status: 'failed', checks: [] } as ReviewRunV2)).toBe('failed')
+    expect(classifyBatchRunCompletion({ status: 'failed', checks: [] } as unknown as ReviewRunV2)).toBe('failed')
   })
 })
