@@ -530,6 +530,7 @@ export const REVIEW_IPC_CHANNELS = {
   ASSESS_D4_CASE_BATCH: 'review:assess-d4-case-batch',
   APPLY_D4_CASE_BATCH: 'review:apply-d4-case-batch',
   RETRY_D4_DOCUMENT: 'review:retry-d4-document',
+  STAGE_D4_DROPPED_BYTES: 'review:stage-d4-dropped-bytes',
   DISCARD_D4_INTAKE: 'review:discard-d4-intake',
   /** 多选导入文件到案卷（逐文件返回解析结果与失败项） */
   IMPORT_DOCUMENT: 'review:import-document',
