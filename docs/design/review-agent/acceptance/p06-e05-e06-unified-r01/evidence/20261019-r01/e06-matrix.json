@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "campaign": "P06-E05-E06-UNIFIED-r01",
+  "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+  "overallVerdict": "PARTIAL",
+  "piBaseFour": [
+    "E06-01",
+    "E06-02",
+    "E06-03",
+    "E06-04"
+  ],
+  "rows": [
+    {
+      "id": "E06-01",
+      "status": "PASS",
+      "evidenceId": "EV-E06-01-PI-READ",
+      "assertions": {
+        "ordinaryCreateListMeta": true,
+        "realReadToolCall": true,
+        "uniqueSyntheticMarkerInSdkReceipt": true,
+        "ownerAbsentFromOrdinaryList": true
+      },
+      "commandExitCode": null,
+      "note": "Individual lane assertions passed; combined driver exit 1 was caused by the separate text-preview setup assertion."
+    },
+    {
+      "id": "E06-02",
+      "status": "PASS",
+      "evidenceId": "EV-E06-02-WRITE-PERMISSION",
+      "assertions": {
+        "realWritePermissionPrompt": true,
+        "denyLeftNoFile": true,
+        "subsequentAllowWroteFile": true,
+        "noOldPending": true
+      },
+      "commandExitCode": null
+    },
+    {
+      "id": "E06-03",
+      "status": "PASS",
+      "evidenceId": "EV-E06-03-STOP",
+      "assertions": {
+        "ordinaryRunWasInFlight": true,
+        "stopReleasedExecutor": true
+      },
+      "commandExitCode": null
+    },
+    {
+      "id": "E06-04",
+      "status": "PASS",
+      "evidenceId": "EV-E06-04-TEXT-PREVIEW-RETEST",
+      "assertions": {
+        "mainAuthorizedRead": true,
+        "rendererSessionSelected": true,
+        "shadowDomMarker": true,
+        "reviewWorkbenchReturned": true
+      },
+      "firstFailureId": "FF-E06-TEXT-PREVIEW-SETUP",
+      "retestOf": "E06-DESKTOP-TEXT-PREVIEW",
+      "attemptHistory": [
+        {
+          "status": "FAIL",
+          "commandId": "CMD-E06-PI-BASE-DRIVER",
+          "exitCode": 1,
+          "reason": "Onboarding and selected Renderer session were not ready."
+        },
+        {
+          "status": "FAIL",
+          "commandId": "CMD-E06-PREVIEW-RETEST-AFTER-ONBOARDING",
+          "exitCode": 1,
+          "reason": "Onboarding completed, but ordinary session still was not selected."
+        },
+        {
+          "status": "PASS",
+          "commandId": "CMD-E06-PREVIEW-RETEST-AFTER-SESSION-SELECT",
+          "exitCode": 0,
+          "reason": "Main read, Shadow DOM marker and review workbench return passed."
+        }
+      ],
+      "commandExitCode": 0,
+      "privateScreenshotIds": [
+        "PRIVATE:e06-text-preview-after-session-select.png",
+        "PRIVATE:e06-review-page-after-preview.png"
+      ]
+    },
+    {
+      "id": "E06-05",
+      "status": "NOT-RUN",
+      "evidenceId": "EV-E06-05-OWNER-SUBSET",
+      "verifiedSubset": {
+        "ordinaryListExcludesOwners": true,
+        "ordinaryMetaNull": true,
+        "previewDenied": true,
+        "searchExcludesOwners": true,
+        "archiveDeniedWithoutMutation": true
+      },
+      "unrun": [
+        "Tab restoration by owner ID",
+        "async replay into a Tab"
+      ],
+      "commandExitCode": 0,
+      "note": "Verified subset passed, but the full matrix row is not complete."
+    },
+    {
+      "id": "E06-06",
+      "status": "PASS",
+      "evidenceId": "EV-E06-06-DOCX-PDF-PREVIEW",
+      "assertions": {
+        "docxMainReadAndRendererMarker": true,
+        "pdfMainPreparationAndRendererCanvas": true,
+        "pdfCanvasSize": {
+          "width": 432,
+          "height": 576
+        },
+        "reviewWorkbenchVisibleOnManualRetest": true
+      },
+      "firstFailureId": "FF-E06-PDF-PAGE-SWITCH-HELPER",
+      "retestOf": "E06-SCAN-PDF",
+      "attemptHistory": [
+        {
+          "status": "FAIL",
+          "commandId": "CMD-E06-SCAN-PDF-PREVIEW",
+          "exitCode": 1,
+          "reason": "PDF canvas assertions passed, driver page-switch helper failed."
+        },
+        {
+          "status": "PASS",
+          "commandId": null,
+          "exitCode": null,
+          "reason": "Manual Renderer retest showed review workbench visible; screenshot retained privately."
+        }
+      ],
+      "commandExitCode": null,
+      "privateScreenshotIds": [
+        "PRIVATE:e06-office-preview-cropped.png",
+        "PRIVATE:e06-scan-pdf-cropped.png",
+        "PRIVATE:e06-pdf-preview-review-workbench-retest.png"
+      ],
+      "note": "Ordinary preview only; does not prove review_inspect_original or business SourceRef."
+    },
+    {
+      "id": "E06-07",
+      "status": "NOT-RUN",
+      "evidenceId": "EV-U3-RECOVERY-SUBSET",
+      "verifiedSubset": {
+        "ordinarySessionCountBeforeCrash": 2,
+        "ordinarySetPreservedAfterSigkillRestart": true,
+        "reviewOwnerSessionsStillHidden": true,
+        "cancelledOldRunStayedCancelled": true
+      },
+      "unrun": [
+        "fork",
+        "dual-window",
+        "Tab restore of preview state"
+      ],
+      "commandExitCode": 0
+    },
+    {
+      "id": "E06-08",
+      "status": "BLOCKED_AUTH",
+      "evidenceId": "EV-E06-08-NO-CLAUDE-AUTH",
+      "blocker": "No authorized Claude ordinary-runtime profile was available.",
+      "commandExitCode": null
+    },
+    {
+      "id": "E06-09",
+      "status": "BLOCKED_ENV",
+      "evidenceId": "EV-E06-09-LINUX-ONLY",
+      "blocker": "Only Linux host was available; no Windows/macOS devices.",
+      "commandExitCode": null
+    },
+    {
+      "id": "E06-10",
+      "status": "BLOCKED_EXTERNAL",
+      "evidenceId": "EV-E06-10-NO-RELAY-POCKET",
+      "blocker": "No authorized Relay/Pocket service, separate external actor, or FIFO environment.",
+      "commandExitCode": null
+    }
+  ],
+  "artifactNote": "Original raw SDK/provider messages and screenshots are preserved in the local private evidence directory and are not included in this public PR."
+}

@@ -1,0 +1,1477 @@
+{
+  "schemaVersion": 1,
+  "campaign": "P06-E05-E06-UNIFIED-r01",
+  "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+  "commandCount": 56,
+  "rawLogsRetainedOutsidePublicRepository": true,
+  "commands": [
+    {
+      "commandId": "CMD-E06-VITE-LAUNCH-HARNESS-ATTEMPT-01",
+      "name": "e06-vite-launch-harness-attempt-01",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "python3",
+        "scripts/qa/review-live-command.py",
+        "--out",
+        "<private>/commands",
+        "--name",
+        "e06-vite-server",
+        "--cwd",
+        "<candidate>/apps/electron",
+        "--",
+        "bun",
+        "run",
+        "dev:vite"
+      ],
+      "startedAt": null,
+      "endedAt": null,
+      "exitCode": 2,
+      "environment": {},
+      "stdoutPrivateId": "PRIVATE:commands/e06-vite-launch-harness-attempt-01.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-vite-launch-harness-attempt-01.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-vite-launch-harness-attempt-01",
+      "sha256Raw": "68b643b567ce2d6717f103bb061725fe85eca83b70aa74172d7e343d9627fc31",
+      "sha256Public": "efaba9a2778ada8c4441022191529a9c75476d6ffc04d20c33ccd4ef3873231d",
+      "summary": "Initial Vite launcher used an invalid working directory and exited 2; retried with the candidate Electron worktree successfully."
+    },
+    {
+      "commandId": "CMD-E06-CONTRACT",
+      "name": "e06-contract",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "scripts/qa/review-live-e06-contract.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:32:05.063667+00:00",
+      "endedAt": "2026-10-18T18:32:05.161433+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/u1-commands/e06-contract.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/u1-commands/e06-contract.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-contract",
+      "sha256Raw": "efa4b0d12bc5040b7402877229dbc1e6945d7d23b28d422cc64d008616d98a41",
+      "sha256Public": "58db510602101a15df0ae35cdc19c7e74a37cd4aa993b92869ee2720f5647fab",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-E06-NODE-CHECK",
+      "name": "e06-node-check",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "--check",
+        "scripts/qa/review-live-e06.mjs"
+      ],
+      "startedAt": "2026-10-18T18:32:08.557660+00:00",
+      "endedAt": "2026-10-18T18:32:08.594270+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/u1-commands/e06-node-check.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/u1-commands/e06-node-check.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-node-check",
+      "sha256Raw": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "sha256Public": "38aa5810c582461e80890275f1a9c9a51b72ff2a5fa98a16a476527402d4ee9e",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-01-FROZEN-INSTALL",
+      "name": "01-frozen-install",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "startedAt": "2026-10-18T18:32:13.446140+00:00",
+      "endedAt": "2026-10-18T18:32:14.812522+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/01-frozen-install.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/01-frozen-install.stderr.log",
+      "redactedLogPath": "command-ledger.json#01-frozen-install",
+      "sha256Raw": "dbffb0cca348a4c3885e9ec0cb2b640eced2a99b6ca4defaea89c35f2963c680",
+      "sha256Public": "72d51b055edff2a3bb19b719eb55f2363efed2f99df69a4e8e44fb921f406f0a",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-02-TYPECHECK",
+      "name": "02-typecheck",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "run",
+        "typecheck"
+      ],
+      "startedAt": "2026-10-18T18:32:14.855946+00:00",
+      "endedAt": "2026-10-18T18:32:47.587620+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/02-typecheck.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/02-typecheck.stderr.log",
+      "redactedLogPath": "command-ledger.json#02-typecheck",
+      "sha256Raw": "0883015be3b9afbeedab69a404cca48050ebe1de2b69a5427b897f004c8ba76b",
+      "sha256Public": "0441d73cf28928b18daf39550be3276234188c5e601ff816a642e8c3aa8f70a5",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-03-BOUNDARIES",
+      "name": "03-boundaries",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "run",
+        "check:boundaries"
+      ],
+      "startedAt": "2026-10-18T18:32:47.636474+00:00",
+      "endedAt": "2026-10-18T18:32:47.965242+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/03-boundaries.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/03-boundaries.stderr.log",
+      "redactedLogPath": "command-ledger.json#03-boundaries",
+      "sha256Raw": "2385ff58f9c5e78bd74331d7d34920642eed62acc33dd27e2f27441136bca887",
+      "sha256Public": "8bb05110ddf466601c9629d7fbb5424d3b50714609f5c0151fca8dc11f14253a",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-04-SKIN",
+      "name": "04-skin",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "run",
+        "check:skin-contract"
+      ],
+      "startedAt": "2026-10-18T18:32:48.013948+00:00",
+      "endedAt": "2026-10-18T18:32:48.092708+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/04-skin.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/04-skin.stderr.log",
+      "redactedLogPath": "command-ledger.json#04-skin",
+      "sha256Raw": "fddee276c6814ef858d8d8386d19606480733d1453ec5686b7f17279bd5ba307",
+      "sha256Public": "5a8dc808845b68b94a99db66aaf02a486f3310754295d82fe30142278943ea8e",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-05-MAIN",
+      "name": "05-main",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "run",
+        "build:main"
+      ],
+      "startedAt": "2026-10-18T18:32:48.140128+00:00",
+      "endedAt": "2026-10-18T18:32:48.706329+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/05-main.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/05-main.stderr.log",
+      "redactedLogPath": "command-ledger.json#05-main",
+      "sha256Raw": "91577e8cb710995b113c273f4918699cf6f53990c086cb094f2cc975334456d5",
+      "sha256Public": "f2a34ee07e8fb850da74f99d4700bbce06af44f0711223f6fd513a517ba50818",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-06-PRELOAD",
+      "name": "06-preload",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "run",
+        "build:preload"
+      ],
+      "startedAt": "2026-10-18T18:32:48.753472+00:00",
+      "endedAt": "2026-10-18T18:32:48.798944+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/06-preload.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/06-preload.stderr.log",
+      "redactedLogPath": "command-ledger.json#06-preload",
+      "sha256Raw": "64239dd153fc7c86f01b64451f07caac354c6141b3a5d9d57ac0e2799609ef50",
+      "sha256Public": "cd7b61bb6473d64ce7f60e841029cade7c79ec9c54595e72783487bc54ecd5e3",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-07-RENDERER",
+      "name": "07-renderer",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "run",
+        "build:renderer"
+      ],
+      "startedAt": "2026-10-18T18:32:48.845500+00:00",
+      "endedAt": "2026-10-18T18:33:46.917098+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/07-renderer.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/07-renderer.stderr.log",
+      "redactedLogPath": "command-ledger.json#07-renderer",
+      "sha256Raw": "e7b86772f0abc847e8c605cede047be4b61de574099e1e9648b43545c8a406c5",
+      "sha256Public": "9a9492821c89c30a69c39850f22157301a311c324e45e9c5a76b58b3abc255f9",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-08-FOCUSED",
+      "name": "08-focused",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/review/review-startup-io-recovery.p06.test.ts",
+        "apps/electron/src/main/lib/review/review-batch-<alias>.p06.test.ts",
+        "apps/electron/src/main/lib/agent-orchestrator-permission-wiring.p06.test.ts",
+        "apps/electron/src/main/lib/review-owner-index-recovery.p06-fix01.test.ts",
+        "apps/electron/src/main/lib/review/review-background-reuse.probe.test.ts",
+        "apps/electron/src/main/lib/review/review-pi-run-bridge.main.test.ts",
+        "apps/electron/src/renderer/components/content-review/review-actions-controller.test.ts",
+        "apps/electron/src/renderer/components/content-review/review-workspace-write-fence.p06-fix02.test.ts",
+        "apps/electron/src/renderer/components/content-review/review-workspace-recheck-independent.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:33:46.973421+00:00",
+      "endedAt": "2026-10-18T18:33:48.767345+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/08-focused.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/08-focused.stderr.log",
+      "redactedLogPath": "command-ledger.json#08-focused",
+      "sha256Raw": "daf3b738420618bc241ad6fd6725cae839e323d7b5cbf526ab63c88f4aa09d43",
+      "sha256Public": "5c0b47328d0c123ebdb1cf28af5204c1003a23dbb4876c80af2f13498fdc689a",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-09-FULL-REGRESSION",
+      "name": "09-full-regression",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000"
+      ],
+      "startedAt": "2026-10-18T18:33:48.813549+00:00",
+      "endedAt": "2026-10-18T18:34:15.551518+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/09-full-regression.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/09-full-regression.stderr.log",
+      "redactedLogPath": "command-ledger.json#09-full-regression",
+      "sha256Raw": "2f509375df4ed46e9229f66714b11f56145fa373c157b243f99a663ba5685049",
+      "sha256Public": "d3793d02050f89c572d508b7031a45248943b4ea28ce353521ef3c236f9ecbac",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-10-D2-01",
+      "name": "10-d2-01",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/review/review-d2-runtime.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:34:15.600419+00:00",
+      "endedAt": "2026-10-18T18:34:15.899369+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/10-d2-01.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/10-d2-01.stderr.log",
+      "redactedLogPath": "command-ledger.json#10-d2-01",
+      "sha256Raw": "2efae1d1a215cc3de2821b9ec2fa273ea42e4034476824e4139332d9871cdc3e",
+      "sha256Public": "73d5a0645c1d3a5f21f9b3e46ef3c370eee39334c7ee9ea49641615a94cb377e",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-10-D2-02",
+      "name": "10-d2-02",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/review/pi-case-<alias>.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:34:15.945257+00:00",
+      "endedAt": "2026-10-18T18:34:16.133377+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/10-d2-02.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/10-d2-02.stderr.log",
+      "redactedLogPath": "command-ledger.json#10-d2-02",
+      "sha256Raw": "fe09e93fe4d510fc4d95a90b1069dd6f50fe92da8cba0ff5957c721060d2e641",
+      "sha256Public": "f8a1cb96c10316a8435809b69839f81274bb183bc03a5b7d3b3661a1703ebee6",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-10-D2-03",
+      "name": "10-d2-03",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/review/review-authoring-v1.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:34:16.180090+00:00",
+      "endedAt": "2026-10-18T18:34:16.355582+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/10-d2-03.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/10-d2-03.stderr.log",
+      "redactedLogPath": "command-ledger.json#10-d2-03",
+      "sha256Raw": "88a14d2d08d15a76ee94e1f1ec0a32a2c4dfff73bdf0225bbea8e36199aa4ba8",
+      "sha256Public": "8fd7e20a37b76b29db02922a92f02f79a02dd6c105049371df74602c3d117ff7",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-10-D2-04",
+      "name": "10-d2-04",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/review/semantic-module-demo.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:34:16.401085+00:00",
+      "endedAt": "2026-10-18T18:34:16.554306+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/10-d2-04.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/10-d2-04.stderr.log",
+      "redactedLogPath": "command-ledger.json#10-d2-04",
+      "sha256Raw": "0c955045d2ce726fc7772a180c19cc3799efd1584639e97d9204ca8eb220e7a2",
+      "sha256Public": "b64e86a45c4eb727a409a4c9f9e3ce6da835ab1348f5aafdf5d25021ea78ca7e",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-10-D2-05",
+      "name": "10-d2-05",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/review/template-store.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:34:16.601443+00:00",
+      "endedAt": "2026-10-18T18:34:16.717455+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/10-d2-05.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/10-d2-05.stderr.log",
+      "redactedLogPath": "command-ledger.json#10-d2-05",
+      "sha256Raw": "ca0eca6ad851445549af0d0c9b0953464c9b3b4d690716f9361be035efdd3d8d",
+      "sha256Public": "b28231ad57e6de1dd2c03bbb8de884ac9a0bb20976d666e400712016d0cefe0a",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-10-BASELINE-01",
+      "name": "10-baseline-01",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/review/single-case-<alias>.e2e.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:34:16.761362+00:00",
+      "endedAt": "2026-10-18T18:34:17.044182+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/10-baseline-01.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/10-baseline-01.stderr.log",
+      "redactedLogPath": "command-ledger.json#10-baseline-01",
+      "sha256Raw": "9db261e574248e1624dd975de1849be4e6f67faae3c956252170e35205ceb732",
+      "sha256Public": "69149136ea0c124c55d01d4c519447ab5743d27962671095509cc513fba1a7bb",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-10-BASELINE-02",
+      "name": "10-baseline-02",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/review/run-<alias>.artifacts.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:34:17.089730+00:00",
+      "endedAt": "2026-10-18T18:34:17.193437+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/10-baseline-02.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/10-baseline-02.stderr.log",
+      "redactedLogPath": "command-ledger.json#10-baseline-02",
+      "sha256Raw": "a479567283cb1c61cd23baa87c00e51000a5ccfcc035cf4f3a1c8612be2b147c",
+      "sha256Public": "2412312309d9dc93739968a525950f503629ca346492f8b9e48a2e4fc9681e25",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-10-BASELINE-03",
+      "name": "10-baseline-03",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/review/boot-check.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:34:17.237925+00:00",
+      "endedAt": "2026-10-18T18:34:17.341942+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/10-baseline-03.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/10-baseline-03.stderr.log",
+      "redactedLogPath": "command-ledger.json#10-baseline-03",
+      "sha256Raw": "3416f136b88c317f7622f3b2d28edcb881c7e59d4f7fb5e78bdec46dda4cf3fc",
+      "sha256Public": "1fac09362115f29eec7e8de7e42016747062c0e7d1e7008c8676d050a653155d",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-10-BASELINE-04",
+      "name": "10-baseline-04",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/review/fixtures/all-templates-fixture.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:34:17.388344+00:00",
+      "endedAt": "2026-10-18T18:34:17.483779+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/10-baseline-04.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/10-baseline-04.stderr.log",
+      "redactedLogPath": "command-ledger.json#10-baseline-04",
+      "sha256Raw": "b5c267f8e6f2608e303d0f52b57cae972adfae82259b3133c3314a4617baae59",
+      "sha256Public": "296b33996dfa59a2188b9394b251ccb9acda14a3910dff03cae463cf2e380fac",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-10-BASELINE-05",
+      "name": "10-baseline-05",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/scripts/packaging-guards.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:34:17.528952+00:00",
+      "endedAt": "2026-10-18T18:34:17.603759+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/10-baseline-05.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/10-baseline-05.stderr.log",
+      "redactedLogPath": "command-ledger.json#10-baseline-05",
+      "sha256Raw": "02bcb45c434f7d49beda83a2cd84be16898329c0745b2631b4b2f0db58ba5008",
+      "sha256Public": "16150b52e92cb80e259b0f052aeb70e1bf6bd70ef3b672c499767a9f60947219",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-10-BASELINE-06",
+      "name": "10-baseline-06",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/skin-manager-service.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:34:17.649522+00:00",
+      "endedAt": "2026-10-18T18:34:17.741957+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/10-baseline-06.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/10-baseline-06.stderr.log",
+      "redactedLogPath": "command-ledger.json#10-baseline-06",
+      "sha256Raw": "fd62333aeff7c500294233832d7410382dd5858178d4667b5c273d7c79fd38fe",
+      "sha256Public": "18c2e170c06cb7d2babdb2501725c4bd9cdc0efb82943197a6e880dcefdc8614",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-10-BASELINE-07",
+      "name": "10-baseline-07",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/agent-workspace-profile.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:34:17.787645+00:00",
+      "endedAt": "2026-10-18T18:34:17.924114+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/10-baseline-07.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/10-baseline-07.stderr.log",
+      "redactedLogPath": "command-ledger.json#10-baseline-07",
+      "sha256Raw": "a3b1bcfe7f74b527633be281d5b07cf6e485ad5eb55158e8f929ec95a922e030",
+      "sha256Public": "3bc8a9eecfac2563b1b0fc1e86ff639f3c7a8e91ceaa21220f5c975991b84af7",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-10-BATCH-01",
+      "name": "10-batch-01",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "packages/shared/src/review/batch-<alias>.test.ts",
+        "apps/electron/src/main/lib/review/batch-store.test.ts",
+        "apps/electron/src/main/lib/review/batch-<alias>.test.ts",
+        "apps/electron/src/main/lib/review/batch-<alias>.test.ts",
+        "apps/electron/src/main/lib/review/stage-workflow.test.ts",
+        "apps/electron/src/main/lib/review/workspace-business-service-v2.test.ts",
+        "apps/electron/src/main/lib/review/case-<alias>.test.ts",
+        "apps/electron/src/main/lib/review/template-store.test.ts",
+        "apps/electron/src/main/lib/review/review-ipc-actor-guard.test.ts",
+        "apps/electron/src/main/lib/review/real-chain-journey.test.ts",
+        "apps/electron/src/main/lib/review/review-storage-id.test.ts",
+        "apps/electron/src/renderer/components/content-review/batch-<alias>.test.ts",
+        "apps/electron/src/main/lib/review/review-ipc-path.test.ts"
+      ],
+      "startedAt": "2026-10-18T18:34:17.968321+00:00",
+      "endedAt": "2026-10-18T18:34:18.620979+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "CI": "true"
+      },
+      "stdoutPrivateId": "PRIVATE:raw/gates/10-batch-01.stdout.log",
+      "stderrPrivateId": "PRIVATE:raw/gates/10-batch-01.stderr.log",
+      "redactedLogPath": "command-ledger.json#10-batch-01",
+      "sha256Raw": "8475fc62cc20c0a3327de9dc93c02d5e6a0ca85f6ffcb6267413cc25c4bf6b81",
+      "sha256Public": "f9fb32ae5e7635bdbca0b3f22b2f0f9d52e923c7ffc55662553e21f5134be978",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-INSTALL-ELECTRON-43-7-7",
+      "name": "install-electron-43.7.7",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "node_modules/electron/install.js"
+      ],
+      "startedAt": "2026-10-18T18:36:48.740779+00:00",
+      "endedAt": "2026-10-18T18:36:49.533152+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/install-electron-43.7.7.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/install-electron-43.7.7.stderr.log",
+      "redactedLogPath": "command-ledger.json#install-electron-43.7.7",
+      "sha256Raw": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "sha256Public": "7c20d1181a889ac202fb1e5f88fd254884848783ab5908c43b3eaa8cdcb289fe",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-BUILD-E06-DIAGNOSTIC-MAIN",
+      "name": "build-e06-diagnostic-main",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node_modules/.bin/esbuild",
+        "scripts/qa/review-live-main.ts",
+        "--bundle",
+        "--platform=node",
+        "--format=cjs",
+        "--outfile=apps/electron/dist/live-main.cjs",
+        "--external:electron",
+        "--external:@earendil-works/pi-coding-agent",
+        "--external:@earendil-works/pi-agent-core",
+        "--external:@earendil-works/pi-ai",
+        "--define:__PROFER_BUILD_TARGET__=\"oss\""
+      ],
+      "startedAt": "2026-10-18T18:37:36.514611+00:00",
+      "endedAt": "2026-10-18T18:37:37.042207+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/build-e06-diagnostic-main.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/build-e06-diagnostic-main.stderr.log",
+      "redactedLogPath": "command-ledger.json#build-e06-diagnostic-main",
+      "sha256Raw": "8c4f13a1cf56bbdca422c24799d5bc6278dde5ad68ebd9d6bdd30bd75f14f531",
+      "sha256Public": "90e356f7bea02a249a4228d389c58913f969652ffe3f5948c4da6b9f8053a1d9",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-E06-VITE-SERVER",
+      "name": "e06-vite-server",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "bun",
+        "run",
+        "dev:vite"
+      ],
+      "startedAt": "2026-10-18T18:38:44.570221+00:00",
+      "endedAt": "2026-10-18T19:03:04.598108+00:00",
+      "exitCode": 143,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_DEV": "1",
+        "PROFER_DEV_INSTANCE": "p06-e05-e06-isolated",
+        "PROFER_VITE_PORT": "5176",
+        "QA_PROFILE_ROOT": "<private>/profile",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "ELECTRON_OVERRIDE_DIST_PATH": "<candidate>/node_modules/electron/dist",
+        "QA_APPLICATION_SHA": "bc228f64750714e70c73cbd115d2f169c610a517",
+        "QA_REPORT_DIR": "<private>/reports"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-vite-server.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-vite-server.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-vite-server",
+      "sha256Raw": "b6174e81ea97b523dc64e7073483527bb1b082f60acb0c8ca4f4e473e0414f0a",
+      "sha256Public": "bed9f79a9d265be5d50e01f93a5c28b7a8c3df6a74a0fd7d0a75d8ac4a80cabe",
+      "summary": "Nonzero exit preserved; raw failure output retained locally."
+    },
+    {
+      "commandId": "CMD-E06-ELECTRON-MAIN",
+      "name": "e06-electron-main",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "xvfb-run",
+        "-a",
+        "-s",
+        "-screen 0 1600x1000x24",
+        "<candidate>/node_modules/electron/dist/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--remote-debugging-port=9222",
+        "<private>/private-profile/runtime-app"
+      ],
+      "startedAt": "2026-10-18T18:38:54.688330+00:00",
+      "endedAt": "2026-10-18T18:59:28.888920+00:00",
+      "exitCode": 143,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_DEV": "1",
+        "PROFER_DEV_INSTANCE": "p06-e05-e06-isolated",
+        "PROFER_VITE_PORT": "5176",
+        "QA_PROFILE_ROOT": "<private>/profile",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "ELECTRON_OVERRIDE_DIST_PATH": "<candidate>/node_modules/electron/dist",
+        "QA_APPLICATION_SHA": "bc228f64750714e70c73cbd115d2f169c610a517",
+        "QA_REPORT_DIR": "<private>/reports"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-electron-main.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-electron-main.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-electron-main",
+      "sha256Raw": "515e84faea8bf4e9ac0cb518ae3d0bcd0bf0c4bf6f0d9db1af355b38a7077c3d",
+      "sha256Public": "9778e325279fa99c4cd87fc61c6024eb85138d7f5d71f621d367a7ab0a69d812",
+      "summary": "Original isolated Electron instance was stopped by the test operator after the non-destructive test set; exit 143 is controlled teardown."
+    },
+    {
+      "commandId": "CMD-E06-PI-BASE-DRIVER",
+      "name": "e06-pi-base-driver",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "scripts/qa/review-live-e06.mjs"
+      ],
+      "startedAt": "2026-10-18T18:39:48.647210+00:00",
+      "endedAt": "2026-10-18T18:40:41.443345+00:00",
+      "exitCode": 1,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_DEV": "1",
+        "PROFER_DEV_INSTANCE": "p06-e05-e06-isolated",
+        "PROFER_VITE_PORT": "5176",
+        "QA_PROFILE_ROOT": "<private>/profile",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "ELECTRON_OVERRIDE_DIST_PATH": "<candidate>/node_modules/electron/dist",
+        "QA_APPLICATION_SHA": "bc228f64750714e70c73cbd115d2f169c610a517",
+        "QA_REPORT_DIR": "<private>/reports"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-pi-base-driver.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-pi-base-driver.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-pi-base-driver",
+      "sha256Raw": "81c63cd5958a9adfe3eefc4009ad2b1520fdabb667c9c08efb3fb1cbefaa6f76",
+      "sha256Public": "8ab207efd461f869e7ee2a28804783defbf8d08f353d6b8025dfd2c4e751d28f",
+      "summary": "Real Pi Read, Write deny/allow and in-flight Stop subchecks passed; aggregate driver exited 1 on the text-preview setup assertion."
+    },
+    {
+      "commandId": "CMD-E06-PREVIEW-RETEST-AFTER-ONBOARDING",
+      "name": "e06-preview-retest-after-onboarding",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "<private>/raw/e06-preview-retest.mjs"
+      ],
+      "startedAt": "2026-10-18T18:42:29.315684+00:00",
+      "endedAt": "2026-10-18T18:43:14.776120+00:00",
+      "exitCode": 1,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-preview-retest-after-onboarding.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-preview-retest-after-onboarding.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-preview-retest-after-onboarding",
+      "sha256Raw": "85b77ca2afa885d1d71156d123b1c3b8f263248b0ca5fde272014dd84925f94f",
+      "sha256Public": "33b85ba9ad53c9acde414749a928bc17e06e06231f8836a1aa4a23bcb319f600",
+      "summary": "First-run onboarding was complete, but the test had not selected its ordinary session in the Renderer; preview marker assertion failed."
+    },
+    {
+      "commandId": "CMD-E06-PREVIEW-RETEST-AFTER-SESSION-SELECT",
+      "name": "e06-preview-retest-after-session-select",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "<private>/raw/e06-preview-retest-after-session-select.mjs"
+      ],
+      "startedAt": "2026-10-18T18:45:16.641394+00:00",
+      "endedAt": "2026-10-18T18:45:17.477773+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-preview-retest-after-session-select.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-preview-retest-after-session-select.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-preview-retest-after-session-select",
+      "sha256Raw": "89ba0b93fcbf804297182c75c078067bc58d150b80b11208e19132f681ef5f88",
+      "sha256Public": "56483201dc2b3e04b351ce55fe711125d7b78aa9d53fb7b648391dd3387d06b4",
+      "summary": "Selected the ordinary session through the Renderer; Main authorized read, Shadow DOM marker and return to review workbench passed."
+    },
+    {
+      "commandId": "CMD-E05-REAL-SYNTHETIC-BATCH-SUBSET",
+      "name": "e05-real-synthetic-batch-subset",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "scripts/qa/review-live-batch.mjs"
+      ],
+      "startedAt": "2026-10-18T18:46:10.670358+00:00",
+      "endedAt": "2026-10-18T18:46:49.888717+00:00",
+      "exitCode": 1,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_DEV": "1",
+        "PROFER_DEV_INSTANCE": "p06-e05-e06-isolated",
+        "PROFER_VITE_PORT": "5176",
+        "QA_PROFILE_ROOT": "<private>/profile",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "ELECTRON_OVERRIDE_DIST_PATH": "<candidate>/node_modules/electron/dist",
+        "QA_APPLICATION_SHA": "bc228f64750714e70c73cbd115d2f169c610a517",
+        "QA_REPORT_DIR": "<private>/reports"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e05-real-synthetic-batch-subset.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e05-real-synthetic-batch-subset.stderr.log",
+      "redactedLogPath": "command-ledger.json#e05-real-synthetic-batch-subset",
+      "sha256Raw": "f0de57ec5caba4747b13339fe25a61a7ebb3dbd4004e916dc5398625dd63225d",
+      "sha256Public": "55682c3aea9bc4472404e3789ee7fd73df4d044ed97e8919ae47cc84f6346363",
+      "summary": "Synthetic A and B completed; synthetic C ended in technical execution failure at the Agent 24-turn limit. Aggregate assertion failed; C was not classified as business-noncompliant."
+    },
+    {
+      "commandId": "CMD-E06-DOCX-PREVIEW",
+      "name": "e06-docx-preview",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "<private>/raw/e06-docx-preview.mjs"
+      ],
+      "startedAt": "2026-10-18T18:49:56.731035+00:00",
+      "endedAt": "2026-10-18T18:49:57.586186+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-docx-preview.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-docx-preview.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-docx-preview",
+      "sha256Raw": "732ed417d75e42a092ea67be39066fc02f4f7efaa5d7169cfae3c16c06f72e93",
+      "sha256Public": "93e3a140cc96037e859d1531d58c964c0e950958c884315af9a60e4ede53159a",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-E06-SCAN-PDF-PREVIEW",
+      "name": "e06-scan-pdf-preview",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "scripts/qa/review-live-pdf.mjs"
+      ],
+      "startedAt": "2026-10-18T18:50:04.894644+00:00",
+      "endedAt": "2026-10-18T18:50:50.497694+00:00",
+      "exitCode": 1,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_DEV": "1",
+        "PROFER_DEV_INSTANCE": "p06-e05-e06-isolated",
+        "PROFER_VITE_PORT": "5176",
+        "QA_PROFILE_ROOT": "<private>/profile",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "ELECTRON_OVERRIDE_DIST_PATH": "<candidate>/node_modules/electron/dist",
+        "QA_APPLICATION_SHA": "bc228f64750714e70c73cbd115d2f169c610a517",
+        "QA_REPORT_DIR": "<private>/reports"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-scan-pdf-preview.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-scan-pdf-preview.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-scan-pdf-preview",
+      "sha256Raw": "2ab7026fe555e58aab9dba22bbe6ad0aee641313d0db08d45bffe6e6c4c4ffc0",
+      "sha256Public": "9d7aeef36af7f36ea9f76354aed389592422c9b466beb7a59e212e0e8d71084a",
+      "summary": "Main PDF preparation, iframe navigation and rendered PDF canvas passed; driver exited 1 because its review-page helper assumed a workbench tab from Batch Manager. Manual Renderer retest reached the workbench."
+    },
+    {
+      "commandId": "CMD-E05-BACKGROUND-RUN-ACK-LATE-RESPONSE-SUBSET",
+      "name": "e05-background-run-ack-late-response-subset",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "scripts/qa/review-live-e05.mjs"
+      ],
+      "startedAt": "2026-10-18T18:52:42.202444+00:00",
+      "endedAt": "2026-10-18T18:53:27.782342+00:00",
+      "exitCode": 1,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_DEV": "1",
+        "PROFER_DEV_INSTANCE": "p06-e05-e06-isolated",
+        "PROFER_VITE_PORT": "5176",
+        "QA_PROFILE_ROOT": "<private>/profile",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "ELECTRON_OVERRIDE_DIST_PATH": "<candidate>/node_modules/electron/dist",
+        "QA_APPLICATION_SHA": "bc228f64750714e70c73cbd115d2f169c610a517",
+        "QA_REPORT_DIR": "<private>/reports"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e05-background-run-ack-late-response-subset.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e05-background-run-ack-late-response-subset.stderr.log",
+      "redactedLogPath": "command-ledger.json#e05-background-run-ack-late-response-subset",
+      "sha256Raw": "5daa12797dfc58fc70f75f46dc911ea83c6ff74925da49191f7da56c37c83314",
+      "sha256Public": "df467052c43affe198082b4bea49c1ae30e3c95a7fdb599d41ab42b07e5b5076",
+      "summary": "Driver setup failed because the Renderer was on Batch Manager rather than the review workbench; no signed business action was taken."
+    },
+    {
+      "commandId": "CMD-E05-BACKGROUND-RUN-ACK-LATE-RESPONSE-SUBSET-WORKBENCH-READY",
+      "name": "e05-background-run-ack-late-response-subset-workbench-ready",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "scripts/qa/review-live-e05.mjs"
+      ],
+      "startedAt": "2026-10-18T18:53:40.949142+00:00",
+      "endedAt": "2026-10-18T18:53:41.197128+00:00",
+      "exitCode": 1,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_DEV": "1",
+        "PROFER_DEV_INSTANCE": "p06-e05-e06-isolated",
+        "PROFER_VITE_PORT": "5176",
+        "QA_PROFILE_ROOT": "<private>/profile",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "ELECTRON_OVERRIDE_DIST_PATH": "<candidate>/node_modules/electron/dist",
+        "QA_APPLICATION_SHA": "bc228f64750714e70c73cbd115d2f169c610a517",
+        "QA_REPORT_DIR": "<private>/reports"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e05-background-run-ack-late-response-subset-workbench-ready.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e05-background-run-ack-late-response-subset-workbench-ready.stderr.log",
+      "redactedLogPath": "command-ledger.json#e05-background-run-ack-late-response-subset-workbench-ready",
+      "sha256Raw": "29aca42c119cc5349fad1f372927f265607b8700ea6b94fd007643a93bad76d5",
+      "sha256Public": "83ed520f41486ee0c13866ad1db4010bd16474627e8654de33d5c8d73a8cd462",
+      "summary": "Driver mapped an already-completed case and expected a Start button while the UI offered Restart; setup mismatch, no signed decision."
+    },
+    {
+      "commandId": "CMD-E05-CREATE-BACKGROUND-RACE-FIXTURE",
+      "name": "e05-create-background-race-fixture",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "<private>/raw/e05-create-background-fixture.mjs"
+      ],
+      "startedAt": "2026-10-18T18:54:22.344792+00:00",
+      "endedAt": "2026-10-18T18:54:22.422459+00:00",
+      "exitCode": 1,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e05-create-background-race-fixture.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e05-create-background-race-fixture.stderr.log",
+      "redactedLogPath": "command-ledger.json#e05-create-background-race-fixture",
+      "sha256Raw": "4f68d0c00f7c754a72d1dbcefa6a6da2777120cc0a5992673aae977a95ef39e8",
+      "sha256Public": "9e95b77389d1dc7928b3e3d2cc1ecc5bd00e63dac672f8910d963b420d008567",
+      "summary": "Initial synthetic race fixture used the wrong data shape and failed before creating the intended case."
+    },
+    {
+      "commandId": "CMD-E05-CREATE-BACKGROUND-RACE-FIXTURE-RETRY",
+      "name": "e05-create-background-race-fixture-retry",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "<private>/raw/e05-create-background-fixture.mjs"
+      ],
+      "startedAt": "2026-10-18T18:54:33.181018+00:00",
+      "endedAt": "2026-10-18T18:54:33.275452+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e05-create-background-race-fixture-retry.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e05-create-background-race-fixture-retry.stderr.log",
+      "redactedLogPath": "command-ledger.json#e05-create-background-race-fixture-retry",
+      "sha256Raw": "991ea2169d423e0504505f909bee404579360284ac228a9ad4aeb1fef34ac96b",
+      "sha256Public": "c4672e617fb68ff8b16effcc28114340fce871528c56237392e68264974db8c5",
+      "summary": "Corrected synthetic race fixture created a fresh case with no prior Run."
+    },
+    {
+      "commandId": "CMD-E05-BACKGROUND-RUN-ACK-LATE-RESPONSE-FRESH-CASE",
+      "name": "e05-background-run-ack-late-response-fresh-case",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "scripts/qa/review-live-e05.mjs"
+      ],
+      "startedAt": "2026-10-18T18:54:41.417737+00:00",
+      "endedAt": "2026-10-18T18:54:41.461220+00:00",
+      "exitCode": 1,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_DEV": "1",
+        "PROFER_DEV_INSTANCE": "p06-e05-e06-isolated",
+        "PROFER_VITE_PORT": "5176",
+        "QA_PROFILE_ROOT": "<private>/profile",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "ELECTRON_OVERRIDE_DIST_PATH": "<candidate>/node_modules/electron/dist",
+        "QA_APPLICATION_SHA": "bc228f64750714e70c73cbd115d2f169c610a517",
+        "QA_REPORT_DIR": "<private>/reports"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e05-background-run-ack-late-response-fresh-case.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e05-background-run-ack-late-response-fresh-case.stderr.log",
+      "redactedLogPath": "command-ledger.json#e05-background-run-ack-late-response-fresh-case",
+      "sha256Raw": "25978238c2eecc619bff9ba73be32da72f70b12023cc0e0195e477c05269bf03",
+      "sha256Public": "a9921aec07257659d29ec31b5bae7d3ff6ab8e4a4ab88201ed5e7cfafa846c56",
+      "summary": "Attempted race replay without the required fixed-SHA/profile QA environment; rejected before valid execution."
+    },
+    {
+      "commandId": "CMD-E05-BACKGROUND-RUN-ACK-LATE-RESPONSE-FRESH-CASE-RETRY",
+      "name": "e05-background-run-ack-late-response-fresh-case-retry",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "scripts/qa/review-live-e05.mjs"
+      ],
+      "startedAt": "2026-10-18T18:54:52.299385+00:00",
+      "endedAt": "2026-10-18T18:54:52.343155+00:00",
+      "exitCode": 1,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e05-background-run-ack-late-response-fresh-case-retry.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e05-background-run-ack-late-response-fresh-case-retry.stderr.log",
+      "redactedLogPath": "command-ledger.json#e05-background-run-ack-late-response-fresh-case-retry",
+      "sha256Raw": "eeff02b98a1cb15ca51efb960a5ae374b92858fbdb8764a9cc4bfa1f91c4c3a3",
+      "sha256Public": "9739a079c5e2fa4ccc17a374c227b343952467cdfc9a48609499191a79994e6b",
+      "summary": "Race driver setup retry failed before a valid provider run."
+    },
+    {
+      "commandId": "CMD-E05-BACKGROUND-RUN-ACK-LATE-RESPONSE-FRESH-CASE-RETRY-02",
+      "name": "e05-background-run-ack-late-response-fresh-case-retry-02",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "scripts/qa/review-live-e05.mjs"
+      ],
+      "startedAt": "2026-10-18T18:54:58.686011+00:00",
+      "endedAt": "2026-10-18T18:54:58.729616+00:00",
+      "exitCode": 1,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e05-background-run-ack-late-response-fresh-case-retry-02.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e05-background-run-ack-late-response-fresh-case-retry-02.stderr.log",
+      "redactedLogPath": "command-ledger.json#e05-background-run-ack-late-response-fresh-case-retry-02",
+      "sha256Raw": "eeff02b98a1cb15ca51efb960a5ae374b92858fbdb8764a9cc4bfa1f91c4c3a3",
+      "sha256Public": "9739a079c5e2fa4ccc17a374c227b343952467cdfc9a48609499191a79994e6b",
+      "summary": "Race driver setup retry failed before a valid provider run."
+    },
+    {
+      "commandId": "CMD-E05-BACKGROUND-RUN-ACK-LATE-RESPONSE-FRESH-CASE-WITH-ENV",
+      "name": "e05-background-run-ack-late-response-fresh-case-with-env",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "scripts/qa/review-live-e05.mjs"
+      ],
+      "startedAt": "2026-10-18T18:55:31.468121+00:00",
+      "endedAt": "2026-10-18T18:55:34.157777+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1",
+        "PROFER_DEV": "1",
+        "PROFER_DEV_INSTANCE": "p06-e05-e06-isolated",
+        "PROFER_VITE_PORT": "5176",
+        "QA_PROFILE_ROOT": "<private>/profile",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "ELECTRON_OVERRIDE_DIST_PATH": "<candidate>/node_modules/electron/dist",
+        "QA_APPLICATION_SHA": "bc228f64750714e70c73cbd115d2f169c610a517",
+        "QA_REPORT_DIR": "<private>/reports"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e05-background-run-ack-late-response-fresh-case-with-env.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e05-background-run-ack-late-response-fresh-case-with-env.stderr.log",
+      "redactedLogPath": "command-ledger.json#e05-background-run-ack-late-response-fresh-case-with-env",
+      "sha256Raw": "8f95a4eb996f07deec1f63a3ee94e3590d811ecf9719e66ace6454fe0b1d6ea1",
+      "sha256Public": "23e242f8355b45b427fe52ae3adcc1205791dcaab68463646fd4cb841c546e03",
+      "summary": "Real Pi/Main ACK and late old response race passed on a fresh synthetic case; old callback did not overwrite the new run; cleanup cancelled the new run."
+    },
+    {
+      "commandId": "CMD-E06-OWNER-ISOLATION-LIVE",
+      "name": "e06-owner-isolation-live",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "<private>/raw/e06-owner-isolation.mjs"
+      ],
+      "startedAt": "2026-10-18T18:57:02.792903+00:00",
+      "endedAt": "2026-10-18T18:57:03.190778+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-owner-isolation-live.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-owner-isolation-live.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-owner-isolation-live",
+      "sha256Raw": "ce176910cb157a31fe0f65c6d1e119c7da913e65158f88607107c4021d1e7e77",
+      "sha256Public": "7956e057afb58ef66a31fe96a3b24435987f1b4e5146b4cdf34eb01f9edf5c5c",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-E06-RECOVERY-BASELINE",
+      "name": "e06-recovery-baseline",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "<private>/raw/e06-recovery-before.mjs"
+      ],
+      "startedAt": "2026-10-18T18:59:12.604776+00:00",
+      "endedAt": "2026-10-18T18:59:12.690961+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-recovery-baseline.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-recovery-baseline.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-recovery-baseline",
+      "sha256Raw": "0907b7cd2c75d4d2afbc8ccd5fd90187ec7b950fcfb649736c4f2b482872a2a0",
+      "sha256Public": "bfcfa79d84e9066393613dfeb0ee2586dadae21add36865e723af6d8b72b0e9d",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-E06-STOP-OWNED-ELECTRON-MAIN",
+      "name": "e06-stop-owned-electron-main",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "python3",
+        "<private>/raw/e06-stop-owned-main.py"
+      ],
+      "startedAt": "2026-10-18T18:59:20.723624+00:00",
+      "endedAt": "2026-10-18T18:59:20.773238+00:00",
+      "exitCode": 1,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-stop-owned-electron-main.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-stop-owned-electron-main.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-stop-owned-electron-main",
+      "sha256Raw": "04ab6f461b282690cd8414a03d71fc8811767fc0195c914821627cce8bb19df0",
+      "sha256Public": "ec6887e28dfd570876c768b8a892fb2bc2ea6d029df7a09aebb36ee430ace4ab",
+      "summary": "Cleanup selector matched three argv strings and refused to signal any process; no process was killed by this attempt."
+    },
+    {
+      "commandId": "CMD-E06-STOP-OWNED-ELECTRON-MAIN-RETRY-01",
+      "name": "e06-stop-owned-electron-main-retry-01",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "python3",
+        "<private>/raw/e06-stop-owned-main.py"
+      ],
+      "startedAt": "2026-10-18T18:59:28.808924+00:00",
+      "endedAt": "2026-10-18T18:59:28.962182+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-stop-owned-electron-main-retry-01.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-stop-owned-electron-main-retry-01.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-stop-owned-electron-main-retry-01",
+      "sha256Raw": "99e4cf4d13ef72f675e5d44fbe30b228651b79f52ed5352091e47c9a0cc568ca",
+      "sha256Public": "fd74ffdbc45d829d8d890f4dbcc791f7b7a281e3b29df128c1194cb0f29f4921",
+      "summary": "Corrected selector verified the candidate Electron executable and isolated runtime path; owned Main stopped as intended."
+    },
+    {
+      "commandId": "CMD-E06-RECOVERY-PROFILE-LAUNCH-01",
+      "name": "e06-recovery-profile-launch-01",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "xvfb-run",
+        "-a",
+        "-s",
+        "-screen 0 1600x1000x24",
+        "<candidate>/node_modules/electron/dist/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--remote-debugging-port=9223",
+        "--user-data-dir=<private>/recovery-profile/user-data",
+        "<private>/recovery-profile/runtime-app"
+      ],
+      "startedAt": "2026-10-18T18:59:42.329594+00:00",
+      "endedAt": "2026-10-18T19:00:08.891336+00:00",
+      "exitCode": 137,
+      "environment": {
+        "PROFER_VITE_PORT": "5176",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "QA_PROFILE_ROOT": "<private>/profile",
+        "ELECTRON_OVERRIDE_DIST_PATH": "<candidate>/node_modules/electron/dist",
+        "PROFER_DEV_INSTANCE": "p06-e05-e06-isolated",
+        "PROFER_DEV": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "QA_APPLICATION_SHA": "bc228f64750714e70c73cbd115d2f169c610a517",
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-recovery-profile-launch-01.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-recovery-profile-launch-01.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-recovery-profile-launch-01",
+      "sha256Raw": "ee539c5959227650d5af4d8cfce91ce4bdde2af097d29d2666795e77e7baa536",
+      "sha256Public": "4bfc9c92e99170bd62ed96ceb03c617f9af45c5657cdc6908ee376aca7563243",
+      "summary": "Recovery clone launched from a saved snapshot. Exit 137 was the deliberate SIGKILL injection recorded for recovery testing."
+    },
+    {
+      "commandId": "CMD-E06-RECOVERY-AFTER-FIRST-BOOT",
+      "name": "e06-recovery-after-first-boot",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "<private>/raw/e06-recovery-check.mjs"
+      ],
+      "startedAt": "2026-10-18T18:59:54.997862+00:00",
+      "endedAt": "2026-10-18T18:59:55.087131+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-recovery-after-first-boot.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-recovery-after-first-boot.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-recovery-after-first-boot",
+      "sha256Raw": "9d534ad9f4970a66c9cbdd1439c7793042d90a06d8764a088c12ced7fd8dff27",
+      "sha256Public": "420085800f0890403e51d2507c6a438c1b974b7376ac94bf60d10785174bfaa5",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-E06-CRASH-OWNED-RECOVERY-MAIN",
+      "name": "e06-crash-owned-recovery-main",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "python3",
+        "<private>/raw/e06-crash-owned-main.py"
+      ],
+      "startedAt": "2026-10-18T19:00:08.819724+00:00",
+      "endedAt": "2026-10-18T19:00:08.970731+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-crash-owned-recovery-main.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-crash-owned-recovery-main.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-crash-owned-recovery-main",
+      "sha256Raw": "dc7008050db659e1eb2fec468ef9fb6af7ba03f16dcf6d4e2c442c3db527c9e4",
+      "sha256Public": "23cdbeb890d279d0709cb61aee5938890a4b866ecd4207446e9ed32c9c95d93f",
+      "summary": "Exit 0; fixed-source command output and raw log hashes retained locally."
+    },
+    {
+      "commandId": "CMD-E06-RECOVERY-PROFILE-RELAUNCH-AFTER-SIGKILL",
+      "name": "e06-recovery-profile-relaunch-after-sigkill",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "xvfb-run",
+        "-a",
+        "-s",
+        "-screen 0 1600x1000x24",
+        "<candidate>/node_modules/electron/dist/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--remote-debugging-port=9223",
+        "--user-data-dir=<private>/recovery-profile/user-data",
+        "<private>/recovery-profile/runtime-app"
+      ],
+      "startedAt": "2026-10-18T19:00:13.370842+00:00",
+      "endedAt": "2026-10-18T19:02:55.513731+00:00",
+      "exitCode": 0,
+      "environment": {
+        "PROFER_VITE_PORT": "5176",
+        "PROFER_USER_DATA_DIR": "<private>/profile/user-data",
+        "QA_PROFILE_ROOT": "<private>/profile",
+        "ELECTRON_OVERRIDE_DIST_PATH": "<candidate>/node_modules/electron/dist",
+        "PROFER_DEV_INSTANCE": "p06-e05-e06-isolated",
+        "PROFER_DEV": "1",
+        "PROFER_CONFIG_DIR": "<private>/profile/config",
+        "QA_APPLICATION_SHA": "bc228f64750714e70c73cbd115d2f169c610a517",
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-recovery-profile-relaunch-after-sigkill.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-recovery-profile-relaunch-after-sigkill.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-recovery-profile-relaunch-after-sigkill",
+      "sha256Raw": "224df8fd03e0df21fef1d2761e05cd200279753a52c22942f7bbd2d257269498",
+      "sha256Public": "c30bbf32c38d7c8cff9d546fc818e4f0abfcefc676cee6f1fffaed58856ed07b",
+      "summary": "Recovery clone restarted after deliberate SIGKILL; persistent ordinary sessions and owner exclusion were verified."
+    },
+    {
+      "commandId": "CMD-E06-RECOVERY-AFTER-SIGKILL-RESTART",
+      "name": "e06-recovery-after-sigkill-restart",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "node",
+        "<private>/raw/e06-recovery-after-crash.mjs"
+      ],
+      "startedAt": "2026-10-18T19:00:18.228089+00:00",
+      "endedAt": "2026-10-18T19:00:18.314937+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-recovery-after-sigkill-restart.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-recovery-after-sigkill-restart.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-recovery-after-sigkill-restart",
+      "sha256Raw": "9d534ad9f4970a66c9cbdd1439c7793042d90a06d8764a088c12ced7fd8dff27",
+      "sha256Public": "b7f7b025517b5b8af437d0b5ef5f800daa9874d9acfc7aa5cfe1d769890156c8",
+      "summary": "Post-crash Renderer recheck passed: ordinary session set preserved, review owner sessions still hidden, old cancelled Run remained cancelled."
+    },
+    {
+      "commandId": "CMD-E06-STOP-RECOVERY-ELECTRON-MAIN",
+      "name": "e06-stop-recovery-electron-main",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "python3",
+        "<private>/raw/e06-stop-recovery-main.py"
+      ],
+      "startedAt": "2026-10-18T19:02:55.377596+00:00",
+      "endedAt": "2026-10-18T19:02:55.526914+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-stop-recovery-electron-main.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-stop-recovery-electron-main.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-stop-recovery-electron-main",
+      "sha256Raw": "04a6cc894dd1b920fc5ca972292809b6fdbd1241f6ea48d21098cac4ac2a83dc",
+      "sha256Public": "5a6dfeddaf83e08fad6281bcc4808f15fc00dc6f3a8047cbaaa3456b8e007dca",
+      "summary": "Recovery clone Main stopped after evidence capture."
+    },
+    {
+      "commandId": "CMD-E06-STOP-OWNED-VITE",
+      "name": "e06-stop-owned-vite",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "python3",
+        "<private>/raw/e06-stop-owned-vite.py"
+      ],
+      "startedAt": "2026-10-18T19:03:04.507049+00:00",
+      "endedAt": "2026-10-18T19:03:04.662265+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/e06-stop-owned-vite.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/e06-stop-owned-vite.stderr.log",
+      "redactedLogPath": "command-ledger.json#e06-stop-owned-vite",
+      "sha256Raw": "3187aef51b50c81db75485cffc3ec3b82519fc69c2851034ceb901b53c8627f9",
+      "sha256Public": "0c2ccc0a71aa654db9029fb1f8c026ee709412ca1bb9b75c3ffc05485ca69eff",
+      "summary": "Candidate Vite process stopped after evidence capture."
+    },
+    {
+      "commandId": "CMD-U3-SNAPSHOT-HASH-VALIDATION",
+      "name": "u3-snapshot-hash-validation",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "python3",
+        "<private>/raw/validate-recovery-snapshots.py"
+      ],
+      "startedAt": "2026-10-18T19:08:48.459255+00:00",
+      "endedAt": "2026-10-18T19:08:48.597229+00:00",
+      "exitCode": 1,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/u3-snapshot-hash-validation.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/u3-snapshot-hash-validation.stderr.log",
+      "redactedLogPath": "command-ledger.json#u3-snapshot-hash-validation",
+      "sha256Raw": "be687961a481d3b225bc5e18e212f12f0704a11d395f8b21cee1c44adf3727d9",
+      "sha256Public": "bffb7e1e897e3c8cdc4ee535ff18e877b1a98dd16df99e6ffc9dcb67b070b2f0",
+      "summary": "Initial validator compared the pre-launch snapshot manifest against the profile after app startup had legitimately modified it; the validator target was wrong."
+    },
+    {
+      "commandId": "CMD-U3-PRE-CRASH-SNAPSHOT-HASH-VALIDATION",
+      "name": "u3-pre-crash-snapshot-hash-validation",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "argv": [
+        "python3",
+        "<private>/raw/validate-pre-crash-snapshot.py"
+      ],
+      "startedAt": "2026-10-18T19:09:01.014930+00:00",
+      "endedAt": "2026-10-18T19:09:01.189027+00:00",
+      "exitCode": 0,
+      "environment": {
+        "NO_COLOR": "1"
+      },
+      "stdoutPrivateId": "PRIVATE:commands/u3-pre-crash-snapshot-hash-validation.stdout.log",
+      "stderrPrivateId": "PRIVATE:commands/u3-pre-crash-snapshot-hash-validation.stderr.log",
+      "redactedLogPath": "command-ledger.json#u3-pre-crash-snapshot-hash-validation",
+      "sha256Raw": "b94b7273da26e4e8ec7d97136503fda26680e55f54d61f9f2104c85016340a6d",
+      "sha256Public": "e2d9078f1b61764debe5a506de080c25e37318b85f104414d0eb78996ce9bee9",
+      "summary": "Validated every file digest in the immutable pre-crash snapshot; all files matched."
+    }
+  ]
+}
