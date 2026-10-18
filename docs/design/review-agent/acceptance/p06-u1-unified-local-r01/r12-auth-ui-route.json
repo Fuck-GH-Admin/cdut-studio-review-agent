@@ -1,0 +1,84 @@
+{
+  "campaign": "P06 L02-U1 unified local acceptance R01; authenticated UI route addendum",
+  "result": "PASS_SCOPED",
+  "candidateSourceSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+  "candidateSourceTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+  "testCheckoutHead": "778c1f6e16681c310421a7cdc159f2589ebb7702",
+  "testCheckoutTree": "b195674d10a443c271b5bbd16d77b3bddf1838bb",
+  "scope": "Incremental authentication/UI-gate follow-up only; P02, Office #71 and full Provider/U1 campaign were not rerun.",
+  "environment": {
+    "host": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+    "architecture": "x86_64",
+    "hostNode": "v22.23.2",
+    "electronPackage": "43.7.7",
+    "electronNode": "24.21.0",
+    "freshIsolatedProfile": "r12; config, userData, HOME, XDG, Pi, sessions and workspace all isolated under private evidence root",
+    "applicationPorts": "loopback; Vite 5174 plus fresh renderer/Main inspector ports",
+    "providerCredentials": "stripped; no Provider request"
+  },
+  "steps": [
+    {
+      "id": "r12-client-start",
+      "command": "python3 <PRIVATE_EVIDENCE>/setup/start-client.py",
+      "exitCode": 0,
+      "expected": "fresh Electron/Main/Preload/Renderer on isolated profile",
+      "actual": "Electron 43.7.7 client launched; remote debugging bound to loopback"
+    },
+    {
+      "id": "r12-tour-navigation",
+      "command": "CDP click onboarding controls; final Continue selector first attempted, then corrected to the visible skip control",
+      "exitCode": 0,
+      "expected": "reach ordinary app shell without importing user configuration",
+      "actual": "onboarding tour skipped; no migration/import action"
+    },
+    {
+      "id": "r12-authentication",
+      "command": "node <PRIVATE_EVIDENCE>/setup/submit-login-r12.mjs; login values supplied via no-echo stdin and not in argv/env/files",
+      "exitCode": 0,
+      "expected": "real UI submit reaches Main auth IPC with rememberPassword=false",
+      "actual": "Main getAccount IPC reported active; login form disappeared; persistence metadata confirmed rememberPassword=false and encryptedPassword empty"
+    },
+    {
+      "id": "r12-review-ui",
+      "command": "CDP mouse click on Material Review card; call window.reviewAPI.listCases and listCasesV2 through preload/Main IPC",
+      "exitCode": 0,
+      "expected": "real review UI route mounts without opening any case",
+      "actual": "review region and toolbar mounted; local V1/V2 case counts 0; no case, demo case, run, assignment, turn or SourceRef created"
+    },
+    {
+      "id": "r12-logout-cleanup",
+      "command": "window.electronAPI.cdutZone.logout; query getAccount; terminate isolated process groups; remove r12 profile/session/workspace",
+      "exitCode": 0,
+      "expected": "remove active auth and local profile state",
+      "actual": "logout resolved, account status disconnected, account file removed, profile and workspace destroyed"
+    }
+  ],
+  "identifiers": {
+    "studentAccount": "withheld",
+    "caseId": null,
+    "runId": null,
+    "assignmentId": null,
+    "turnId": null,
+    "sourceRef": null,
+    "reason": "no review case or run was opened or created"
+  },
+  "privacy": {
+    "rememberPassword": false,
+    "encryptedPasswordPersisted": false,
+    "accountProfileFieldsPublished": false,
+    "realCampusMaterialsOrGoldUsed": false,
+    "logoutClearedAccountAndAuthPartition": true,
+    "isolatedProfileDestroyed": true
+  },
+  "limits": [
+    "Login succeeded through real CDUT auth Main IPC, but this does not constitute a Provider-generated review receipt or full U1 business replay.",
+    "The CDUT auth implementation automatically fetches account profile fields on successful login; they were not inspected or included in evidence, and logout plus profile destruction removed local account artifacts.",
+    "Interactive command outputs were not captured by the command runner. The retained private receipt is a sanitized structured summary, not a raw log. Electron Main stdout was discarded to avoid persisting profile fields.",
+    "One onboarding selector attempt failed because the final slide button label differs; the failure is retained in defects-and-first-failures.json and corrected via the visible skip control."
+  ],
+  "privateReceipt": {
+    "file": "<PRIVATE_EVIDENCE>/private/r12-auth-ui-receipt-redacted.json",
+    "sha256": "3ec86f5b615f78315baaccf8be6683b65125fc079930356a9b8a91f7baa883d8",
+    "mode": "0600"
+  }
+}

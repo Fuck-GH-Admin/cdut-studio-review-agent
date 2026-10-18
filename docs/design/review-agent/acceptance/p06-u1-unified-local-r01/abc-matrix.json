@@ -1,0 +1,34 @@
+{
+  "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+  "gate": "U-09 real Provider S0 required; U-10 runtime revocation/stop gate also required",
+  "cases": [
+    {
+      "alias": "A",
+      "status": "NOT-RUN_GATE",
+      "expected": "100 currency units, evidence-supported compliant recommendation only; no automatic approval",
+      "caseId": null,
+      "runId": null,
+      "assignmentId": null,
+      "providerReceipts": []
+    },
+    {
+      "alias": "B",
+      "status": "NOT-RUN_GATE",
+      "expected": "120 currency units, evidence-supported non-compliant recommendation with exact SourceRef",
+      "caseId": null,
+      "runId": null,
+      "assignmentId": null,
+      "providerReceipts": []
+    },
+    {
+      "alias": "C",
+      "status": "NOT-RUN_GATE",
+      "expected": "amount missing; no guessing; await supplement/confirmation",
+      "caseId": null,
+      "runId": null,
+      "assignmentId": null,
+      "providerReceipts": []
+    }
+  ],
+  "reason": "Authorized Provider credential absent; no A/B/C cases, runs, turns or assignments were created in this lane. Historical or controlled Main output was not substituted."
+}

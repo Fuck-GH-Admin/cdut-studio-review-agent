@@ -1,0 +1,172 @@
+{
+  "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+  "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+  "generatedAtUtc": "2026-10-18T11:12:31Z",
+  "items": [
+    {
+      "id": "U-00",
+      "status": "PASS",
+      "expected": "Freeze, clean candidate checkout, actual build artifacts, CI and fresh isolated profile locked.",
+      "actual": "PR #116 HEAD/tree match the fixed candidate; local Main/Preload/Renderer hashes recorded; all required remote CI checks successful.",
+      "evidenceCommandIds": [
+        "restart-main-runtime-probe",
+        "electron-build",
+        "full-suite"
+      ],
+      "notes": "No production source changes."
+    },
+    {
+      "id": "U-01",
+      "status": "PASS_SCOPED",
+      "expected": "Real Electron Renderer→Preload→Main start ACK and V2 run agreement; navigate away/return and restore current state.",
+      "actual": "Main ACK phase accepted with same V2 runId; provider fence moves run to failed/incomplete. Agent↔CDUT Zone navigation and return work; r12 authenticated through the real Renderer form→Preload→Main IPC, then mounted Material Review UI; Main IPC reported V1/V2 case counts 0, with no case opened or created.",
+      "evidenceCommandIds": [
+        "live-pi-sdk-start-r02",
+        "live-office-alpha-preview-port-rerun-r09",
+        "live-office-alpha-source-ref-corrected-rerun-r10b",
+        "live-ui-open-cdut-zone",
+        "live-ui-return-agent",
+        "final-restart-persistence-r11",
+        "r12-authenticated-review-ui"
+      ],
+      "notes": "PASS_SCOPED for UI access only. No live Provider run or business receipt is claimed; U-09/U-10 remain BLOCKED_ENV and A/B/C remain NOT-RUN_GATE."
+    },
+    {
+      "id": "U-02",
+      "status": "PASS_SCOPED",
+      "expected": "Actual Pi SDK active/model-facing tools match the exact five review tools; report inactive builtins.",
+      "actual": "SDK 0.86.1 active and model-facing tool sets match: CompactContext plus four review tools; getAllTools also exposes eight inactive generic definitions.",
+      "evidenceCommandIds": [
+        "live-main-controlled-audit-inspection-rerun-01",
+        "live-office-alpha-source-ref-corrected-rerun-r10b"
+      ],
+      "notes": "Raw r07 SDK capture is retained privately; later restart captures are summarized by persisted IPC/V2 receipts."
+    },
+    {
+      "id": "U-03",
+      "status": "PASS_SCOPED",
+      "expected": "Owner session list/search/meta/path/message/preview/event isolation and ordinary Agent read/preview positive path.",
+      "actual": "Owner absent from normal/archive lists, search, metadata, path/message IPC and review-owner lookup; cross-owner file read/Preview refused; ordinary session file read and cdut-file Preview pass; no internal Owner renderer events observed.",
+      "evidenceCommandIds": [
+        "live-owner-isolation-main-ipc",
+        "live-ordinary-preview-p02-smoke-r02",
+        "live-restart-run-event-isolation-rerun-01",
+        "final-restart-persistence-r11"
+      ],
+      "notes": "Synthetic owner/session only."
+    },
+    {
+      "id": "U-04",
+      "status": "CONTROLLED_PARTIAL",
+      "expected": "Current valid binding canUseTool permits five exact tools and denies generic Read/Write/Bash/MCP.",
+      "actual": "Controlled actual SDK tool wrappers executed review read, inspect-original, submit and CompactContext; valid V2 SourceRef submission reached Main. Provider-generated denied tool calls were NOT-RUN. An invalid raw inactive Bash definition call from the harness was unexpectedly allowed outside the actual wrapper and is not a permission test.",
+      "evidenceCommandIds": [
+        "live-main-controlled-audit-inspection-rerun-01",
+        "live-office-alpha-preview-port-rerun-r09",
+        "live-office-alpha-source-ref-corrected-rerun-r10b"
+      ],
+      "notes": "Do not infer Provider auth or generic-tool denial from this controlled subset; remote PR #114 controlled tests were 5/5."
+    },
+    {
+      "id": "U-05",
+      "status": "PASS_SCOPED",
+      "expected": "P02 late IPC after ordinary session deletion and Office same-name two-case parse/anchor/SourceRef isolation.",
+      "actual": "After deletion, meta/list and delayed read/Preview remain null. Six synthetic same-name Office sources retain distinct hashes/version IDs and correct DOCX paragraph, XLSX cell, PPTX paragraph anchors after restart. Alpha V2 check accepted exact alpha SourceRef and rejected beta version; check persists across another app restart.",
+      "evidenceCommandIds": [
+        "live-ordinary-preview-p02-smoke-r02",
+        "live-register-office-source-pairs",
+        "live-source-ref-r10b-v2-status",
+        "final-restart-persistence-r11"
+      ],
+      "notes": "Office #71 compatibility is one mixed-format scope, not the prior full O71-01–09 suite."
+    },
+    {
+      "id": "U-06",
+      "status": "BLOCKED_ENV",
+      "expected": "Real isolated bounded volume full with kernel ENOSPC and V2 atomic-write evidence.",
+      "actual": "No trusted private mount available: mount namespace failed Operation not permitted. No filesystem was filled and no local ENOSPC was induced.",
+      "evidenceCommandIds": [
+        "preflight-environment-redacted.json"
+      ],
+      "notes": "Historical PR #116 /dev/full is controlled kernel evidence only, not a small-volume substitute."
+    },
+    {
+      "id": "U-07",
+      "status": "BLOCKED_ENV",
+      "expected": "Revoke dual write failure, old assignment isolation, new Electron PID recovery after actual full-volume fault.",
+      "actual": "Not run because U-06 was blocked; normal restart persistence was tested separately under U-08 and is not fault recovery.",
+      "evidenceCommandIds": [
+        "preflight-environment-redacted.json",
+        "final-restart-persistence-r11"
+      ],
+      "notes": "Historical remote /dev/full test remains separate."
+    },
+    {
+      "id": "U-08",
+      "status": "PASS_SCOPED",
+      "expected": "After failed run, create distinct new run/assignment; old bindings revoked; normal session and V2 state persist after real restart.",
+      "actual": "A second run received a distinct run ID, ended failed at no-credential fence, assignments were revoked; later new-PID Main restart preserved failed run, awaiting-confirmation SourceRef check, six Office documents and ordinary session, with zero active assignments and Owner lookup hidden.",
+      "evidenceCommandIds": [
+        "live-restart-run-event-isolation-rerun-01",
+        "live-office-alpha-source-ref-corrected-rerun-r10b",
+        "final-restart-persistence-r11"
+      ],
+      "notes": "No failure-volume state existed; this does not pass U-07."
+    },
+    {
+      "id": "U-09",
+      "status": "BLOCKED_ENV",
+      "expected": "Real Provider tool_use→Pi SDK→Main canUseTool→execution→receipt→V2 source chain, including all five tools.",
+      "actual": "No authorized Provider credential was present. Transport fence aborted before network; zero provider requests and zero Provider-generated tool receipts. Controlled Main callbacks do not substitute.",
+      "evidenceCommandIds": [
+        "live-main-controlled-audit-inspection-rerun-01",
+        "live-office-alpha-source-ref-corrected-rerun-r10b"
+      ],
+      "notes": "Explicitly BLOCKED_ENV."
+    },
+    {
+      "id": "U-10",
+      "status": "BLOCKED_ENV",
+      "expected": "Revoke/stop/cross-case/material-version/old tool handles during actual live Provider call.",
+      "actual": "Gate not entered because U-09 did not pass.",
+      "evidenceCommandIds": [
+        "live-office-alpha-source-ref-corrected-rerun-r10b"
+      ],
+      "notes": "NOT-RUN under Provider gate; no simulated transcript."
+    },
+    {
+      "id": "U-11",
+      "status": "PARTIAL",
+      "expected": "Normal Agent real Provider tools and compaction preserve ordinary/review scopes.",
+      "actual": "Ordinary Agent Main IPC read/Preview passed; actual Provider tool use and actual compaction not run. CompactContext registration and controlled authorization observed, but compaction was deliberately suppressed by the evidence hook.",
+      "evidenceCommandIds": [
+        "live-ordinary-preview-p02-smoke-r02",
+        "live-main-controlled-audit-inspection-rerun-01"
+      ],
+      "notes": "Provider/compaction remains BLOCKED_ENV."
+    },
+    {
+      "id": "U-12",
+      "status": "NOT-RUN_GATE",
+      "expected": "New synthetic A/B/C with required separate case/run/turn/assignment/provider receipts.",
+      "actual": "No A/B/C case started because U-09/U-10 S0 Provider gate failed to open.",
+      "evidenceCommandIds": [
+        "live-main-controlled-audit-inspection-rerun-01"
+      ],
+      "notes": "No historic case or simulation substituted."
+    },
+    {
+      "id": "U-13",
+      "status": "PASS",
+      "expected": "Unified status, historical boundaries, upstream limitation and next gates reported.",
+      "actual": "All current and historical evidence is separated; no production repair, LIVE ledger edit, merge, P07 or P08 action.",
+      "evidenceCommandIds": [
+        "candidate-lock.json",
+        "command-ledger.json",
+        "defects-and-first-failures.json"
+      ],
+      "notes": "Overall remains NOT ACCEPTED."
+    }
+  ],
+  "overallStatus": "P06 PARTIAL / P06-S02 NOT ACCEPTED / U1_FULL NOT ACCEPTED / L02-00 EXIT NOT ACCEPTED / L02-01 NOT ADMITTED / MERGE NO-GO"
+}

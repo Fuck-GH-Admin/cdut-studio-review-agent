@@ -1,0 +1,210 @@
+{
+  "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+  "productionDefectsConfirmed": [],
+  "firstFailures": [
+    {
+      "id": "manual-shutdown-runner-path-first-attempt",
+      "exitCode": 2,
+      "classification": "HARNESS_FAIL",
+      "summary": "runner invoked via a worktree-relative path although it resides in private evidence directory; corrected using absolute runner path.",
+      "stdoutSha256": "96785b3428e8368b01a84cc9efce3d6be09e8f66a50ce8028f3269ffcbde670d",
+      "stderrSha256": null
+    },
+    {
+      "id": "harness-argv-parser-first-attempt",
+      "exitCode": 2,
+      "classification": "HARNESS_FAIL",
+      "summary": "runner argparse rejected --frozen-lockfile; parser fixed, frozen install passed.",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "c22c2f84e90d98e06688937c9beab52158378a3bb3bf56716318332015a7701c"
+    },
+    {
+      "id": "electron-client-start",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "test driver source had a malformed environment string; driver rewritten.",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "582c211594bfd18ddb0931d935a7a1567f1e547574e5b7b27acabbc84ad591ac"
+    },
+    {
+      "id": "electron-client-start-rerun-01",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "driver referenced stale vite.log path; per-attempt log path corrected.",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "61befdb962537fb0751501292b2cd5b5249be7749e059eda4c0b82df80605339"
+    },
+    {
+      "id": "electron-client-start-rerun-02",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "driver looked under apps/electron/node_modules for Vite; corrected to candidate root dependency install.",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "50192ad5b93ccd93bb06f3f3624d7e05bdb72b2e4cc5a7bcd32ed0bd35ee4b99"
+    },
+    {
+      "id": "electron-client-start-rerun-03",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "driver looked under apps/electron/node_modules for Electron; corrected binary path.",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "474e0cab4dd4bae91b99386b2e45564aa67e7c2519ac7c97ddfd01132893f63c"
+    },
+    {
+      "id": "electron-client-start-rerun-04",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "startup timed out waiting for the expected Renderer CDP target; driver/target readiness corrected.",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "793ce107787d33331cf196af72676a40078f2c6bd1a49944cc29b7a4f3663974"
+    },
+    {
+      "id": "electron-client-start-rerun-05",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "electron --version probe raised SIGTRAP in this Xvfb launch context; removed that probe and verified version inside real Main.",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "683108614848b1f326fa72a247d302d54ebfc6d0baaf106c57d5ea1970d38f39"
+    },
+    {
+      "id": "actual-main-runtime-probe",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "probe ran in a context without the expected Main process global; Main CDP target selection corrected.",
+      "stdoutSha256": "bc007389555b891519aa53bd5e4b5f96543774447af7d0c333a51b3380c10a9b",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "live-pi-probe-setup",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "probe script resolved SDK from an absent module path; subsequent attempt also selected a case not yet created; fixture and import order corrected.",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "3b9657fd966374694170a9cb1485a48435b5ef6b59dc665a965e48da48a23870"
+    },
+    {
+      "id": "live-pi-probe-setup-rerun-01",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "probe selected undefined case revision; created explicit v2 case before Main session start.",
+      "stdoutSha256": "8e97a645a4cd2563b8758c5f8102e1c9e502a54cbea5e67dfe5a440f1e3e6c72",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "shutdown-owned-client",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "shutdown helper read a stale/reused /proc entry whose state field shifted; later process-group-safe shutdown passed.",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "b53cf189ab61aaf074b6e6960632cf0079111df2ecb5f6901e34f640e90bab4d"
+    },
+    {
+      "id": "shutdown-owned-client-rerun-01",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "shutdown helper rejected an old recorded PID outside candidate argv; helper narrowed ownership checks and later shutdown passed.",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "c5e4fe21509609dd596cab65a1da54496a2df74ee348adc4eacb06715360a9a8"
+    },
+    {
+      "id": "electron-client-start-rerun-06",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "driver used runtimeVersions.electron but record key is electronPackage; reporting key corrected.",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "a4057292e5b1682df51e80c0cd0204b0b958cd976c8173587a0bd6be9ad87bb4"
+    },
+    {
+      "id": "live-pi-sdk-start",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "published full template had no executable rules for this probe; started synthetic v2 case with a required semantic rule.",
+      "stdoutSha256": "90ec75d61a436b78df3a3dde5556a235f4c601d04df87ca048746fe713d04221",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "live-create-synthetic-probe-case",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "first synthetic fixture used a template with no required executable section; replaced by explicit synthetic v2 template and case.",
+      "stdoutSha256": "d608501135502e9a6b281545c2c677d455005e617fa503102d3d07010a853377",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "live-main-controlled-audit-inspection",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "first Main capture probe selected an unsuitable CDP execution target; rerun on Main target succeeded.",
+      "stdoutSha256": "ddf7cb761619feb3f462142a9370d6cd31cc1c3280e9cf17bf5d22ac0b030e89",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "live-restart-run-event-isolation",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "first run used a non-main renderer target and Main refused IPC; helper now chooses CDUT Studio main page; rerun succeeded.",
+      "stdoutSha256": "73a22b0d619a5adc82be93a92601c96cbdc62c29558268c9fb42998749f40378",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "restart-persistence-query",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "included a non-created probe case and did not catch its expected missing-case IPC error; rerun narrowed cases and caught expected absent case.",
+      "stdoutSha256": "8a33e42786cc7a279acd191cb30c8eb313110644d5ce80ee1c4b29f1c6b032bb",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "live-ordinary-preview-p02-smoke",
+      "exitCode": 0,
+      "classification": "HARNESS_FAIL",
+      "summary": "exit code was zero but internal booleans showed missing target, preserved as first failed smoke; corrected by r02."
+    },
+    {
+      "id": "live-office-alpha-controlled-run",
+      "exitCode": 0,
+      "classification": "HARNESS_FAIL",
+      "summary": "Main tool preview returned renderer timeout at the mismatched temporary Vite port; corrected port-only rerun passed."
+    },
+    {
+      "id": "live-office-alpha-source-ref-rerun-r10",
+      "exitCode": 0,
+      "classification": "HARNESS_FAIL",
+      "summary": "exit code was zero, but V2 accepted zero and rejected both checks under wrong rule ID; corrected rerun accepted one exact SourceRef and rejected the cross-case source."
+    },
+    {
+      "id": "raw-inactive-bash-harness-probe",
+      "exitCode": 0,
+      "classification": "HARNESS_FAIL",
+      "summary": "SDK getToolDefinition(bash) raw inactive definition executed harmless printf without invoking actual Main permission wrapper; not evidence of authorization bypass."
+    },
+    {
+      "id": "r12-onboarding-final-continue-selector",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "The final feature-tour slide exposes a different Continue label; the generic Continue selector had no target. Corrected by using the visible skip control; no import or migration action was taken.",
+      "rawOutputCaptured": false,
+      "followUp": "r12-authenticated-review-ui"
+    }
+  ],
+  "captureLimitations": [
+    {
+      "id": "per-process-sdk-capture-overwrite",
+      "classification": "EVIDENCE_GAP",
+      "detail": "The r07 SDK capture was copied privately. Later r09/r10b in-process capture summaries were inspected but their session JSON was overwritten by the next Electron restart before archival. Their Main/V2 outcomes remain in retained runner stdout logs and persisted V2 records; no provider receipt is claimed."
+    },
+    {
+      "id": "r12-interactive-auth-ui-output",
+      "classification": "EVIDENCE_GAP",
+      "detail": "Interactive follow-up results were not persisted by the original command runner; retained only as a sanitized structured outcome receipt with SHA-256. Electron Main stdout was discarded to prevent persistence of account-profile fields."
+    }
+  ],
+  "safetyNotes": [
+    "No production source code changed.",
+    "No provider request was sent.",
+    "No host/shared filesystem was filled.",
+    "No merge, P07 or P08 work was done.",
+    "One explicitly authorized campus account was used only for the authentication/UI gate; password remember was disabled, no account values were published, Main logout removed the account file and auth partition, and the isolated profile was destroyed.",
+    "No campus materials or hidden Gold were opened; review V1/V2 lists were empty and no case, run, assignment, turn or SourceRef was created."
+  ]
+}
