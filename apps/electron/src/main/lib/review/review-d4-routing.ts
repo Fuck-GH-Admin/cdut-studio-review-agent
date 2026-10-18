@@ -30,6 +30,15 @@ function rank(file: D4RouteFile, templates: D4ClientTemplate[]): D4RouteSuggesti
   const ranked: D4RouteSuggestion[] = []
   for (const template of templates) {
     const basis: string[] = []
+    // W1: extend navigation to the actual frozen catalog, not just two hardcoded
+    // domains. Only a sufficiently specific FULL authored template name counts;
+    // never infer scenario, identity, policy or evidence from this text.
+    const authoredName = normalize(template.name ?? '')
+    if (authoredName.length >= 5 && name.includes(authoredName)) {
+      basis.push('文件名与完整候选名称一致')
+    } else if (authoredName.length >= 8 && sample.includes(authoredName)) {
+      basis.push('文本片段与完整候选名称一致')
+    }
     const signals = SIGNALS[template.templateId] ?? []
     for (const signal of signals) {
       if (name.includes(signal.toLowerCase())) basis.push('文件名关键词：' + signal)
