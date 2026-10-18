@@ -485,6 +485,9 @@ export const REVIEW_IPC_CHANNELS = {
   /** 创建空案卷 */
   CREATE_CASE: 'review:create-case',
   LIST_D4_TEMPLATES: 'review:list-d4-templates',
+  /** Native OS picker: Main stages originals, returning only a bounded opaque token. */
+  STAGE_D4_INTAKE: 'review:stage-d4-intake',
+  DISCARD_D4_INTAKE: 'review:discard-d4-intake',
   /** 多选导入文件到案卷（逐文件返回解析结果与失败项） */
   IMPORT_DOCUMENT: 'review:import-document',
   /** 多文件导入进度事件，按 requestId 关联到发起导入的界面。 */
