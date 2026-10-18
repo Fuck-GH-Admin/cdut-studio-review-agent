@@ -3847,6 +3847,8 @@ const reviewAPI = {
   listD4Templates: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_D4_TEMPLATES) as Promise<import('@profer/shared').D4ClientTemplate[]>,
   stageD4Intake: (mode?: 'files' | 'folder') => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.STAGE_D4_INTAKE, mode) as Promise<import('@profer/shared').D4IntakePreview | null>,
   discardD4Intake: (token: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.DISCARD_D4_INTAKE, token) as Promise<boolean>,
+  stageD4DroppedBytes: (items: Array<{ name: string; bytes: Uint8Array }>) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.STAGE_D4_DROPPED_BYTES, items) as Promise<import('@profer/shared').D4IntakePreview>,
   retryD4Document: (input: { caseId: string; documentId: string; expectedRevision: number }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RETRY_D4_DOCUMENT, input) as Promise<import('@profer/shared').D4DocumentRetryResult>,
   assessD4CaseBatch: (input: { caseId: string; token: string; role: 'application' | 'evidence' }) =>
