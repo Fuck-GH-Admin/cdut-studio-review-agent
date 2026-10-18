@@ -34,6 +34,7 @@ import { cn } from '@/lib/utils'
 import type { CreateCaseInput } from './use-review-actions'
 import { D4CaseSetup } from './D4CaseSetup'
 import { D4IntakePicker } from './D4IntakePicker'
+import { createReviewCaseSubmitLock } from './review-case-submit-lock'
 import type { D4IntakePreview } from '@profer/shared'
 
 /** 审核类型选项（与主进程 CASE_TYPES 白名单一致） */
@@ -62,6 +63,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
   const [domainPackId, setDomainPackId] = React.useState<string>(DEFAULT_DOMAIN_PACK_ID)
   const [templateKey, setTemplateKey] = React.useState('')
   const [submitting, setSubmitting] = React.useState(false)
+  const submitLock = React.useRef(createReviewCaseSubmitLock())
   const [d4Mode, setD4Mode] = React.useState(false)
   const [d4, setD4] = React.useState<import('@profer/shared').D4ClientSelection>()
   const [intake, setIntake] = React.useState<D4IntakePreview | null>(null)
@@ -79,6 +81,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
     setCaseType('综合测评')
     setDomainPackId(DEFAULT_DOMAIN_PACK_ID)
     setTemplateKey('')
+    submitLock.current.release()
     setSubmitting(false)
     setD4Mode(false)
     setD4(undefined)
@@ -100,7 +103,8 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-    if (!canSubmit) return
+    // Ref-backed synchronous acquire wins over duplicate clicks before React re-renders.
+    if (!canSubmit || !submitLock.current.acquire()) return
     setSubmitting(true)
     try {
       const created = await onCreate({
@@ -120,6 +124,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
       })
       onOpenChange(false)
     } finally {
+      submitLock.current.release()
       setSubmitting(false)
     }
   }
