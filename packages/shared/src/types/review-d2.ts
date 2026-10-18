@@ -26,6 +26,19 @@ export interface D4ClientSelection {
   useControlledStudentFixture?: boolean
   /** UI acknowledgement of selections only: NOT trusted school facts or policy authorization. */
   reviewerConfirmation?: 'explicit-ui-confirmation'
+  /** Main-owned one-use native-picker intake token; never a Renderer-supplied filesystem path. */
+  intakeToken?: string
+}
+/** Preview returned after OS file selection; not a business fact or school authority. */
+export interface D4IntakePreview {
+  token: string
+  expiresAt: number
+  files: Array<{ name: string; sizeBytes: number }>
+  route: {
+    status: 'suggested' | 'manual-required' | 'multiple-tasks'
+    suggestion?: { templateId: string; templateVersion: number; score: number; basis: string[] }
+    reason: string
+  }
 }
 
 export type D2TargetKind = 'campus-card' | 'archive-item' | 'archive-operation' | 'student-field' | 'generic-object'
