@@ -73,6 +73,11 @@ describe('21 号本地 UI QA：反馈语义', () => {
       expect(projected).toEqual({ run: undefined, mismatch: true })
     }
     expect(selectBatchMatchingRun('case-a', batch, undefined)).toEqual({ run: undefined, mismatch: false })
+    const bound = { ...run, id: 'run-current' }
+    expect(selectBatchMatchingRun('case-a', batch, bound, 'run-current')).toEqual({ run: bound, mismatch: false })
+    expect(selectBatchMatchingRun('case-a', batch, bound, 'run-other')).toEqual({ run: undefined, mismatch: true })
+    expect(selectBatchMatchingRun('case-a', batch, bound, '')).toEqual({ run: undefined, mismatch: true })
+    expect(selectBatchMatchingRun('case-a', batch, undefined, '')).toEqual({ run: undefined, mismatch: true })
   })
 
 })
