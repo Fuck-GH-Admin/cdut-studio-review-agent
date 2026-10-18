@@ -1,6 +1,6 @@
 /** P1-C native-picker intake. Renderer never supplies arbitrary host paths. */
 import { randomUUID } from 'node:crypto'
-import { closeSync, copyFileSync, existsSync, mkdtempSync, openSync, readSync, rmSync, statSync } from 'node:fs'
+import { closeSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, openSync, readSync, rmSync, statSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { basename, extname, join } from 'node:path'
 import { dialog, type BrowserWindow } from 'electron'
@@ -67,7 +67,12 @@ export async function stageD4Intake(ownerWebContentsId: number, parent?: Browser
     const routeInputs: D4RouteFile[] = []
     const files: StagedFile[] = []
     for (const [i, descriptor] of descriptors.entries()) {
-      const dest = join(dir, String(i) + '-' + descriptor.name)
+      // Keep the original OS-picked basename for downstream SourceDocument and
+      // displayed evidence citations. Isolate per index to prevent collisions;
+      // do not mutate the user's material filename with a numeric prefix.
+      const itemDir = join(dir, String(i))
+      mkdirSync(itemDir)
+      const dest = join(itemDir, descriptor.name)
       copyFileSync(descriptor.sourcePath, dest)
       const route: D4RouteFile = { name: descriptor.name }
       if (TEXT_TYPES.has(extname(descriptor.name).toLowerCase())) {
