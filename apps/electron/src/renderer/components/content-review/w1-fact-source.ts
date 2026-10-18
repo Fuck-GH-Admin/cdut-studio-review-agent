@@ -51,11 +51,25 @@ export function w1ObservationSources(aggregate: CaseAggregateV2, raw: unknown): 
   if (!Array.isArray(raw)) return []
   return raw.flatMap(value => {
     if (!value || typeof value !== 'object') return []
-    const item = value as { documentVersionId?: unknown; blockId?: unknown; quote?: unknown }
+    const item = value as {
+      documentVersionId?: unknown; blockId?: unknown; quote?: unknown
+      caseId?: unknown; parseRevision?: unknown; location?: unknown
+    }
     if (typeof item.documentVersionId !== 'string') return []
     const doc = aggregate.caseV2.documents.find(d =>
       d.versionId === item.documentVersionId && d.active !== false)
     if (!doc || (doc.parseStatus !== 'parsed' && doc.parseStatus !== 'partial')) return []
+    // Existing V2 SourceRef can carry a precise original location.
+    // Retain it only when case, parse revision and a live source block agree.
+    if (item.caseId === aggregate.caseV2.id && item.parseRevision === doc.parseRevision &&
+        item.location && typeof item.location === 'object') {
+      const located = doc.blocks.find(block => block.location &&
+        JSON.stringify(block.location) === JSON.stringify(item.location))
+      if (located) return [w1ExplicitSourceRef(aggregate, doc.versionId, located.blockId)]
+      if ((item.location as { kind?: unknown }).kind === 'file') {
+        return [w1ExplicitSourceRef(aggregate, doc.versionId)]
+      }
+    }
     if (typeof item.blockId === 'string') {
       const block = doc.blocks.find(b => b.blockId === item.blockId)
       return block ? [w1ExplicitSourceRef(aggregate, doc.versionId, block.blockId)] : []
