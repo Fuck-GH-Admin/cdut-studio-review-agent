@@ -1,7 +1,7 @@
 import { afterAll, describe, expect, test } from 'bun:test'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { join, sep } from 'node:path'
 import JSZip from 'jszip'
 import { isSafeD4ZipEntry, stageD4NativeBatch } from './review-d4-batch-staging'
 
@@ -52,7 +52,7 @@ describe('W1 native OS picked folder, ZIP, duplicate and invalid file handling',
     expect(result.skipped).toHaveLength(2)
     expect(result.skipped.some(x => x.reason.includes('SHA-256'))).toBe(true)
     expect(result.skipped.some(x => x.reason.includes('不支持'))).toBe(true)
-    expect(result.files.every(x => x.sourcePath.startsWith(stageDir + '/'))).toBe(true)
+    expect(result.files.every(x => x.sourcePath.startsWith(stageDir + sep))).toBe(true)
   })
 
   test('ZIP slip names are always rejected before filesystem extraction', () => {
