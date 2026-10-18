@@ -112,7 +112,9 @@ export async function stageD4NativeBatch(
     }
     try {
       const zip = await JSZip.loadAsync(readFileSync(zipPath), { checkCRC32: false })
-      const members = Object.values(zip.files).sort((a, b) => a.name.localeCompare(b.name))
+      // Preserve the archive author's entry order when identical bytes occur in
+      // differently named entries; the first occurrence is the kept original.
+      const members = Object.values(zip.files)
       if (members.length > 500) { skip(label, 'ZIP 条目超过 500，请拆分'); return }
       for (const entry of members) {
         visit()
@@ -138,10 +140,13 @@ export async function stageD4NativeBatch(
     try { info = lstatSync(sourcePath) } catch { skip(label, '路径无法读取'); return }
     if (info.isSymbolicLink()) { skip(label, '符号链接不允许跟随'); return }
     if (info.isDirectory()) {
-      let entries: string[]
-      try { entries = readdirSync(sourcePath).sort() } catch { skip(label, '文件夹无法读取'); return }
+      let entries: import('node:fs').Dirent[]
+      try {
+        entries = readdirSync(sourcePath, { withFileTypes: true })
+          .sort((a, b) => Number(a.isDirectory()) - Number(b.isDirectory()) || a.name.localeCompare(b.name))
+      } catch { skip(label, '文件夹无法读取'); return }
       if (entries.length > 1000) { skip(label, '单级文件夹条目超过 1000'); return }
-      for (const entry of entries) await walk(join(sourcePath, entry), label + '/' + entry, depth + 1)
+      for (const entry of entries) await walk(join(sourcePath, entry.name), label + '/' + entry.name, depth + 1)
       return
     }
     if (!info.isFile()) { skip(label, '不是普通文件'); return }
