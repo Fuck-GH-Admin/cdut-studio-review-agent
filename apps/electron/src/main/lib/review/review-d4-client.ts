@@ -7,6 +7,7 @@ import { createD2TechnicalCase, makeD2CandidateShell } from './review-d2-runtime
 import { getTemplate, isAuthoringCandidateDraft, saveAuthoringCandidateDraft } from './template-store'
 import { saveCase } from './case-store'
 import { ensureWorkspaceAggregateV2 } from './workspace-service-v2'
+import { validateD4UserSelection } from './review-d4-client-validation'
 
 const json = <T>(path: string): T => JSON.parse(readFileSync(resolveD4SourcePath(path), 'utf8')) as T
 const basePath = (path: string): string => path.replace(/\/workspace(?:\/workspace)?\.json$/, '')
@@ -25,7 +26,12 @@ export function listD4ClientTemplates(): D4ClientTemplate[] {
     return { templateId: entry.templateId, version: entry.templateVersion, domain: entry.domain,
       name: template.name, workspaceGitBlobSha: entry.workspaceGitBlobSha,
       primary: template.genericScenarioAxes?.primary ?? [], conditions: template.genericScenarioAxes?.conditions ?? [],
-      selection, controlledStudentFixture }
+      selection, controlledStudentFixture,
+      businessTypes: [...new Set(workspace.sourceBindings.flatMap(binding => binding.genericScope?.businessTypes ?? []))].sort(),
+      selectionSource: selection.targets.find(target => target.kind === 'generic-object')?.scenarioSource
+        ? { sourceId: selection.targets.find(target => target.kind === 'generic-object')!.scenarioSource!.sourceId,
+            sourceVersionId: selection.targets.find(target => target.kind === 'generic-object')!.scenarioSource!.sourceVersionId }
+        : undefined }
   })
 }
 
@@ -39,6 +45,9 @@ export async function createD4ClientCase(input: {
   const entry = loadD4UnifiedCatalog().templates.find(e => e.templateId === selection.templateId && e.templateVersion === selection.version)
   if (!entry) throw new Error('D4_TEMPLATE_NOT_IN_CATALOG')
   const workspace = loadD4UnifiedWorkspace(entry)
+  const choices = listD4ClientTemplates().find(item => item.templateId === entry.templateId && item.version === entry.templateVersion)
+  if (!choices) throw new Error('D4_CHOICES_UNAVAILABLE')
+  validateD4UserSelection(input.d4, choices)
   let trustedStudentSnapshot: D2TrustedStudentSnapshotV1 | undefined
   if (input.d4.useControlledStudentFixture) {
     if (entry.templateId !== 'g01-student-identity-correction') throw new Error('D4_SYNTHETIC_REGISTRY_SCOPE_INVALID')
