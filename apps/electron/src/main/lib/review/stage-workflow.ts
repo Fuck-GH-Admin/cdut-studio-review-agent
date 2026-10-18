@@ -50,11 +50,11 @@ export async function ensureInitialTask(caseId: string, template: TemplateVersio
  * RespondSupplement 是提交者侧动作，不受此门控（由指派与归属校验约束）。
  */
 function assertAgentDecisionAllowed(command: { actor: Actor; type: string }): void {
-  if (command.actor.actorSource !== 'agent') return
-  // C2：代批开关——事务校验内读取（settings 内存缓存与 updateSettings 同步更新，排队期间关闭立即生效）
-  const { getSettings } = require('../settings-service') as typeof import('../settings-service')
-  if (getSettings().reviewAgentAutoApproval === true) return
-  throw new CommandValidationError('AGENT_DECISION_DISABLED', 'AI 代批未开启：此类决定需要人工做出（可在审核专区高级设置中开启并确认风险）')
+  // 开启全局开关并不等于授予某个普通 Agent 行政审批资格；
+  // 系统自动处理只能经过 batch-auto 身份 + 当前批次/模板门禁。
+  if (command.actor.actorSource === 'agent' || command.actor.actorSource === 'system') {
+    throw new CommandValidationError('AGENT_DECISION_DISABLED', '机器来源不得直接签署阶段决定或补件结论；请走经过逐批确认的业务授权入口')
+  }
 }
 
 
@@ -191,6 +191,9 @@ export function recordStageDecision(
 /** 补件回复（G04：学生/提交方对单个请求提交说明与材料版本；open→responded） */
 export function respondSupplementV2(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: { supplementId: string; note: string; documentVersionIds?: string[] } }): Promise<ReviewCommandResult<SupplementRequest>> {
   return submitCommand<{ supplementId: string; note: string; documentVersionIds?: string[] }, SupplementRequest>(caseId, { ...command, type: 'RespondSupplement' }, (aggregate, payload) => {
+    if (command.actor.actorSource === 'agent' || command.actor.actorSource === 'system') {
+      throw new CommandValidationError('AGENT_DECISION_DISABLED', '机器身份不能伪造补件提交人身份')
+    }
     const target = aggregate.supplements.find((request) => request.id === payload.supplementId)
     if (!target) throw new CommandValidationError('NOT_FOUND', `补件请求不存在: ${payload.supplementId}`)
     if (target.status !== 'open' && target.status !== 'responded' && target.status !== 'insufficient') throw new CommandValidationError('INVALID_TRANSITION', `补件已关闭（${target.status}）`)
@@ -273,6 +276,7 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
 
 export function resolveAppealV2(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: { appealId: string; resolution: Appeal['resolution'] & ('maintain-original' | 'amend-original' | 'withdrawn'); reason: string; amendedResult?: BusinessDecision['result'] } }): Promise<ReviewCommandResult<Appeal>> {
   return submitCommand<{ appealId: string; resolution: string; reason: string; amendedResult?: BusinessDecision['result'] }, Appeal>(caseId, { ...command, type: 'ResolveAppeal' } as never, (aggregate, payload) => {
+    assertAgentDecisionAllowed({ actor: command.actor, type: 'ResolveAppeal' })
     if (aggregate.d2RuntimePlan) throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术预审不支持冒充正式申诉改判')
     const appeal = aggregate.appeals.find((candidate) => candidate.id === payload.appealId)
     if (!appeal) throw new CommandValidationError('NOT_FOUND', `申诉不存在: ${payload.appealId}`)
