@@ -33,6 +33,8 @@ import type { ReviewCase, ReviewCaseType, TemplateVersion } from '@profer/shared
 import { cn } from '@/lib/utils'
 import type { CreateCaseInput } from './use-review-actions'
 import { D4CaseSetup } from './D4CaseSetup'
+import { D4IntakePicker } from './D4IntakePicker'
+import type { D4IntakePreview } from '@profer/shared'
 
 /** 审核类型选项（与主进程 CASE_TYPES 白名单一致） */
 const CASE_TYPE_OPTIONS: ReviewCaseType[] = ['综合测评', '活动申请', '自定义审核']
@@ -62,6 +64,9 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
   const [submitting, setSubmitting] = React.useState(false)
   const [d4Mode, setD4Mode] = React.useState(false)
   const [d4, setD4] = React.useState<import('@profer/shared').D4ClientSelection>()
+  const [intake, setIntake] = React.useState<D4IntakePreview | null>(null)
+  const [routedTemplateId, setRoutedTemplateId] = React.useState<string>()
+  const [manualRouting, setManualRouting] = React.useState(false)
 
   const selectedTemplate = templates.find((template) => `${template.templateId}@${template.version}` === templateKey)
 
@@ -77,6 +82,9 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
     setSubmitting(false)
     setD4Mode(false)
     setD4(undefined)
+    setIntake(null)
+    setRoutedTemplateId(undefined)
+    setManualRouting(false)
   }, [open])
 
   React.useEffect(() => {
@@ -87,7 +95,8 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
   }, [open, templateKey, templates])
 
   const selectedPack = resolveDomainPack(domainPackId)
-  const canSubmit = title.trim().length > 0 && applicant.trim().length > 0 && (d4Mode ? !!d4 : !!selectedTemplate) && !submitting
+  const intakeBlocked = intake?.route.status === 'multiple-tasks' || (intake ? intake.expiresAt <= Date.now() : false)
+  const canSubmit = title.trim().length > 0 && applicant.trim().length > 0 && (d4Mode ? !!d4 && !intakeBlocked : !!selectedTemplate) && !submitting
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
@@ -101,11 +110,13 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
         academicYear: academicYear.trim() || defaultAcademicYear(),
         domainPackId,
         reviewTemplate: !d4Mode && selectedTemplate ? { templateId: selectedTemplate.templateId, version: selectedTemplate.version } : undefined,
-        ...(d4Mode && d4 ? { d4 } : {}),
+        ...(d4Mode && d4 ? { d4: { ...d4, ...(intake ? { intakeToken: intake.token } : {}) } } : {}),
       })
       if (!created) return
+      const importFailures = (created as typeof created & { d4IntakeFailures?: string[] }).d4IntakeFailures ?? []
+      if (importFailures.length) toast.error('案卷已创建，但部分暂存材料导入/解析失败：' + importFailures.join('；'))
       toast.success(`已创建审核项目：${created.title}`, {
-        description: '接下来可在左栏导入审核依据、待审文件与证明材料。',
+        description: intake ? '已按原件解析链导入选定材料；请核对材料与对象关联，再开始审核。' : '接下来可导入审核依据、待审文件与证明材料。',
       })
       onOpenChange(false)
     } finally {
@@ -113,8 +124,12 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
     }
   }
 
+  const closeDialog = (next: boolean): void => {
+    if (!next && intake?.token) void window.reviewAPI.discardD4Intake(intake.token).catch(() => false)
+    onOpenChange(next)
+  }
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle>新建审核项目</DialogTitle>
@@ -136,7 +151,16 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
             />
           </div>
 
-          {d4Mode ? <D4CaseSetup onChange={setD4} /> : <div className="space-y-1.5">
+          {d4Mode && <D4IntakePicker intake={intake} manuallyOverridden={manualRouting}
+            onIntake={value => {
+              setIntake(value); setD4(undefined); setRoutedTemplateId(undefined); setManualRouting(false)
+            }}
+            onApplyRoute={id => { if (!manualRouting) setRoutedTemplateId(id) }}
+          />}
+          {d4Mode ? <D4CaseSetup key={intake?.token ?? 'no-intake'} onChange={setD4}
+            preferredTemplateId={routedTemplateId}
+            onManualOverride={() => { setManualRouting(true); setRoutedTemplateId(undefined) }}
+          /> : <div className="space-y-1.5">
             <Label htmlFor="review-case-template">审核模板</Label>
             <select
               id="review-case-template"
@@ -232,7 +256,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
           </div>}
 
           <DialogFooter className="gap-2 pt-2">
-            <Button type="button" variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>
+            <Button type="button" variant="ghost" onClick={() => closeDialog(false)} disabled={submitting}>
               取消
             </Button>
             <Button type="submit" disabled={!canSubmit}>

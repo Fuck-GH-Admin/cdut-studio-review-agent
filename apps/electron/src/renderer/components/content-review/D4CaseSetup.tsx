@@ -3,7 +3,11 @@ import type { D2ScenarioSelection, D4ClientSelection, D4ClientTemplate } from '@
 import { D4GenericObjectForm, isValidD4GenericForm } from './D4GenericObjectForm'
 
 /** P1-A/B: human-confirmed real object selections; no editable scenario JSON required. */
-export function D4CaseSetup({ onChange }: { onChange: (value: D4ClientSelection | undefined) => void }): React.ReactElement {
+export function D4CaseSetup({ onChange, preferredTemplateId, onManualOverride }: {
+  onChange: (value: D4ClientSelection | undefined) => void
+  preferredTemplateId?: string
+  onManualOverride?: () => void
+}): React.ReactElement {
   const [templates, setTemplates] = React.useState<D4ClientTemplate[]>([])
   const [templateId, setTemplateId] = React.useState('')
   const [selection, setSelection] = React.useState<D2ScenarioSelection>()
@@ -37,6 +41,12 @@ export function D4CaseSetup({ onChange }: { onChange: (value: D4ClientSelection 
     setConfirmed(false)
     setStudentFixture(false)
   }
+  React.useEffect(() => {
+    if (preferredTemplateId && preferredTemplateId !== templateId &&
+        templates.some(item => item.templateId === preferredTemplateId)) {
+      selectTemplate(preferredTemplateId)
+    }
+  }, [preferredTemplateId, templates, templateId])
   const updateSelection = (value: D2ScenarioSelection): void => {
     setSelection(value)
     setConfirmed(false)
@@ -48,7 +58,7 @@ export function D4CaseSetup({ onChange }: { onChange: (value: D4ClientSelection 
     </p>
     <label className="block">审核事项模板
       <select aria-label="D4 技术预审模板" className="mt-1 h-9 w-full rounded-md border bg-background px-2"
-        value={templateId} onChange={e => selectTemplate(e.target.value)}>
+        value={templateId} onChange={e => { onManualOverride?.(); selectTemplate(e.target.value) }}>
         <option value="">选择受控 D4 候选（{templates.length} 套）…</option>
         {templates.map(t => <option key={t.templateId} value={t.templateId}>
           {t.domain} · {t.name} · {t.templateId}
