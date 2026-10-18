@@ -53,6 +53,11 @@ export async function stageD4NativeBatch(
   const skipped: D4BatchSkip[] = []
   const digests = new Set<string>()
   let bytesTotal = 0
+  let examined = 0
+  const visit = (): void => {
+    examined += 1
+    if (examined > 5000) throw new Error('D4_INTAKE_TOO_MANY_ENTRIES: 单次最多扫描 5000 个目录/文件/ZIP 条目')
+  }
   const skip = (label: string, reason: string): void => { skipped.push({ originLabel: safeLabel(label), reason }) }
   const target = (name: string): string => {
     const dir = join(privateDir, String(files.length))
@@ -109,6 +114,7 @@ export async function stageD4NativeBatch(
       const members = Object.values(zip.files).sort((a, b) => a.name.localeCompare(b.name))
       if (members.length > 500) { skip(label, 'ZIP 条目超过 500，请拆分'); return }
       for (const entry of members) {
+        visit()
         const raw = (entry as typeof entry & { unsafeOriginalName?: string }).unsafeOriginalName ?? entry.name
         if (!safeEntryName(raw)) { skip(label + '/' + raw, 'ZIP 路径不安全'); continue }
         if (entry.dir) continue
@@ -119,9 +125,13 @@ export async function stageD4NativeBatch(
         if (!Number.isSafeInteger(size) || size === undefined) { skip(label + '/' + raw, 'ZIP 无可信解压后长度'); continue }
         await accept(name, label + '/' + raw, size, () => entry.nodeStream() as unknown as Readable)
       }
-    } catch (error) { skip(label, 'ZIP 格式错误或无法读取：' + (error instanceof Error ? error.message : String(error))) }
+    } catch (error) {
+      if (error instanceof Error && error.message.startsWith('D4_INTAKE_TOO_MANY_ENTRIES')) throw error
+      skip(label, 'ZIP 格式错误或无法读取：' + (error instanceof Error ? error.message : String(error)))
+    }
   }
   async function walk(sourcePath: string, label: string, depth: number): Promise<void> {
+    visit()
     if (depth > MAX_DEPTH) { skip(label, '目录层级超过 8'); return }
     let info: ReturnType<typeof lstatSync>
     try { info = lstatSync(sourcePath) } catch { skip(label, '路径无法读取'); return }
