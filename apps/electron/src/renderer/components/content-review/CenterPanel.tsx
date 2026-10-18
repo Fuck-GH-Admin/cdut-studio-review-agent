@@ -731,6 +731,7 @@ function ManualFactEntry({
   const [sourceBlockId, setSourceBlockId] = React.useState('')
   const [reason, setReason] = React.useState('')
   const [busy, setBusy] = React.useState(false)
+  const [error, setError] = React.useState('')
   const activeDocs = aggregate.caseV2.documents.filter(doc =>
     doc.active !== false && (doc.parseStatus === 'parsed' || doc.parseStatus === 'partial'))
   const sourceDoc = activeDocs.find(doc => doc.versionId === sourceVersionId)
@@ -747,8 +748,8 @@ function ManualFactEntry({
     try {
       await onSave(fieldKey.trim(), value.trim(), sourceVersionId, sourceBlockId, reason.trim())
       setOpen(false); setFieldKey(''); setValue(''); setReason('')
-    } catch (error) {
-      console.error(`[审核工作台] 手工录入 ${subjectTitle} 事实失败`, error)
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : String(cause))
     } finally { setBusy(false) }
   }
   return (
@@ -777,6 +778,7 @@ function ManualFactEntry({
             </select>
           </label>}
           <input value={reason} onChange={(event) => setReason(event.target.value)} className="h-7 w-full rounded border px-2" placeholder="核实理由（必填）" aria-label="核实理由" />
+          {error && <p role="alert" className="text-destructive">{error}</p>}
           <div className="flex gap-1.5">
             <button disabled={busy || !fieldKey.trim() || !value.trim() || !reason.trim() || !sourceDoc || !fields.length} onClick={() => void save()} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存事实</button>
             <button disabled={busy} onClick={() => setOpen(false)} className="rounded border px-2 py-1">取消</button>
@@ -802,6 +804,7 @@ function WorkspaceObservationCard({
   const [value, setValue] = React.useState(displayValue(observation.value))
   const [reason, setReason] = React.useState('')
   const [busy, setBusy] = React.useState(false)
+  const [error, setError] = React.useState('')
   const [sourceVersionId, setSourceVersionId] = React.useState('')
   const [blockId, setBlockId] = React.useState('')
   const setSourceFocus = useSetAtom(reviewSourceFocusAtom)
@@ -811,6 +814,10 @@ function WorkspaceObservationCard({
   const subjectId = String(observation.subjectId ?? '')
   const fieldKey = String(observation.fieldKey ?? '事实')
   const fieldLabel = businessFieldLabel(fieldKey, template)
+  const subject = aggregate.caseV2.subjects.find(item => item.id === subjectId)
+  const inScope = !aggregate.d2RuntimePlan || (!!subject &&
+    (w1CandidateFactKeys(aggregate.d2RuntimePlan, subjectId).includes(fieldKey) ||
+     Object.prototype.hasOwnProperty.call(subject.fields, fieldKey)))
   const refs = Array.isArray(observation.sourceRefs) ? observation.sourceRefs : []
   const sourceNames = refs.flatMap((raw) => {
     if (!raw || typeof raw !== 'object' || !('documentVersionId' in raw)) return []
@@ -825,8 +832,8 @@ function WorkspaceObservationCard({
         sourceVersionId ? { documentVersionId: sourceVersionId, ...(blockId ? { blockId } : {}) } : undefined)
       setEditing(false)
       setReason('')
-    } catch (error) {
-      console.error('[审核工作台] 保存事实失败', error)
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : String(cause))
     } finally {
       setBusy(false)
     }
@@ -861,7 +868,7 @@ function WorkspaceObservationCard({
             </select>
           </label>}
           <div className="flex gap-1.5">
-            <button disabled={busy || !reason.trim() || !canConfirmSource} onClick={() => void run(value, reason)} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存更正</button>
+            <button disabled={busy || !reason.trim() || !canConfirmSource || !inScope} onClick={() => void run(value, reason)} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存更正</button>
             <button disabled={busy} onClick={() => setEditing(false)} className="rounded border px-2 py-1">取消</button>
           </div>
         </div>
@@ -879,6 +886,10 @@ function WorkspaceObservationCard({
         </button>)}
       </div>}
       {!validatedSources.length && <p className="mt-1 text-amber-700 dark:text-amber-300">尚无可验证的有效来源，确认前须手动选择材料。</p>}
+      {!inScope && <p role="alert" className="mt-1 text-amber-700 dark:text-amber-300">
+        该识别字段不属于当前对象的冻结责任范围，只作待核线索，不能在此确认为已核验事实。
+      </p>}
+      {error && <p role="alert" className="mt-1 text-destructive">{error}</p>}
       {!confirmed && !editing && !canConfirmSource && <label className="mt-1.5 block text-xs">
         请选择核验来源
         <select value={sourceVersionId} onChange={event => { setSourceVersionId(event.target.value); setBlockId('') }}
@@ -891,7 +902,7 @@ function WorkspaceObservationCard({
       </label>}
       {!confirmed && !editing && (
         <div className="mt-1.5 flex gap-1.5">
-          <button disabled={busy || !canConfirmSource} onClick={() => void run(observation.value, '审核员核对原始材料后确认该识别结果')} className="rounded border px-2 py-1 text-xs hover:bg-background disabled:opacity-50">识别正确</button>
+          <button disabled={busy || !canConfirmSource || !inScope} onClick={() => void run(observation.value, '审核员核对原始材料后确认该识别结果')} className="rounded border px-2 py-1 text-xs hover:bg-background disabled:opacity-50">识别正确</button>
           <button disabled={busy} onClick={() => { setValue(displayValue(observation.value)); setEditing(true) }} className="rounded border px-2 py-1 text-xs hover:bg-background disabled:opacity-50">识别有误</button>
         </div>
       )}
