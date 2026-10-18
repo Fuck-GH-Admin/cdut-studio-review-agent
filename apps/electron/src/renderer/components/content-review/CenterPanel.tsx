@@ -47,6 +47,7 @@ import { ReviewActionDialog } from './ReviewActionDialog'
 import { Button } from '@profer/ui/primitives/button'
 import { MaterialDropZone } from './MaterialDropZone'
 import { D4CaseBatchControls } from './D4CaseBatchControls'
+import { w1CandidateFactKeys } from './w1-fact-source'
 import { MoveReviewDocumentButtons, RemoveReviewDocumentButton, ReviewMaterialDropZone, ReviewMaterialLaneActions } from './ReviewMaterialControls'
 
 interface ReviewItemDraft {
@@ -288,10 +289,51 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
         </div>
 
         {aggregate?.d2RuntimePlan ? <div className="space-y-2">
-          {aggregate.caseV2.subjects.map(subject => <div id={`review-subject-${encodeURIComponent(subject.id)}`} key={subject.id} className="rounded-xl bg-muted/40 p-3 text-xs">
-            <p className="font-medium">{subject.title}</p>
-            <p className="mt-1 text-muted-foreground">{subject.id} · {aggregate.d2RuntimePlan!.mapping.filter(m => m.subjectId === subject.id).length} 项固定责任</p>
-          </div>)}
+          {aggregate.caseV2.subjects.map(subject => {
+            const candidates = [
+              ...aggregate.observations.filter(observation => observation.subjectId === subject.id),
+              ...extractedObservations.filter(observation => observation.subjectId === subject.id),
+            ]
+            const facts = candidates.reduce<Array<Record<string, unknown>>>((list, value) => {
+              const observation = value as unknown as Record<string, unknown>
+              const index = list.findIndex(item => item.fieldKey === observation.fieldKey)
+              if (index < 0) list.push(observation)
+              else if (observation.extractedBy === 'user' || observation.confirmed === true) list[index] = observation
+              return list
+            }, [])
+            const factKeys = w1CandidateFactKeys(aggregate.d2RuntimePlan, subject.id)
+            const confirmedLinks = aggregate.evidenceLinks.filter(link =>
+              link.subjectId === subject.id && link.status === 'confirmed')
+            return <section id={`review-subject-${encodeURIComponent(subject.id)}`} key={subject.id}
+              className="rounded-xl border border-border/60 bg-card p-3 text-xs" data-testid="d4-subject-fact-workbench">
+              <p className="font-medium">{subject.title}</p>
+              <p className="mt-1 text-muted-foreground">
+                {aggregate.d2RuntimePlan!.mapping.filter(m => m.subjectId === subject.id).length} 项固定责任 ·
+                {facts.length} 项材料事实 · {confirmedLinks.length} 条已确认的证明关联
+              </p>
+              <p className="mt-1 text-muted-foreground">审核对象 ID：{subject.id}。事实、条件、证据分别核对；模板仍为未发布技术候选。</p>
+              <div className="mt-2 space-y-1.5">
+                {facts.map((observation, index) => <WorkspaceObservationCard
+                  key={`${String(observation.fieldKey)}-${index}`}
+                  observation={observation} aggregate={aggregate} template={workspaceTemplate}
+                  onConfirm={(value, reason) => workspaceActions.confirmObservation(observation, value, reason)}
+                />)}
+                {!facts.length && <p className="rounded border border-dashed p-2 text-muted-foreground">尚无已提取的事实。可以人工记录有来源的核验结果；没有材料依据时保持未知。</p>}
+                <ManualFactEntry subjectId={subject.id} subjectTitle={subject.title}
+                  subjectFields={subject.fields} candidateFields={factKeys}
+                  template={workspaceTemplate} aggregate={aggregate}
+                  onSave={(fieldKey, value, sourceVersionId, blockId, reason) =>
+                    workspaceActions.confirmObservation({
+                      subjectId: subject.id, fieldKey, value,
+                      sourceRefs: [{ documentVersionId: sourceVersionId, ...(blockId ? { blockId } : {}) }],
+                    }, value, reason)}
+                />
+              </div>
+              <SubjectAdjudicationCard aggregate={aggregate} subject={subject}
+                template={workspaceTemplate} canEdit={!!workspaceRun && !workspaceRunStale}
+                actions={workspaceActions}/>
+            </section>
+          })}
         </div> : items.length === 0 ? (
           <p className="rounded-lg border border-dashed border-border/60 px-3 py-6 text-center text-xs text-muted-foreground">
             导入待审材料后，系统会在开始审核时自动识别申报事项。
@@ -402,7 +444,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                           subjectFields={aggregate.caseV2.subjects.find((subject) => subject.id === item.id)?.fields ?? {}}
                           template={workspaceTemplate}
                           aggregate={aggregate}
-                          onSave={(fieldKey, value, sourceVersionId, reason) => workspaceActions.confirmObservation({ subjectId: item.id, fieldKey, value, sourceRefs: sourceVersionId ? [{ documentVersionId: sourceVersionId }] : [] }, value, reason)}
+                          onSave={(fieldKey, value, sourceVersionId, blockId, reason) => workspaceActions.confirmObservation({ subjectId: item.id, fieldKey, value, sourceRefs: [{ documentVersionId: sourceVersionId, ...(blockId ? { blockId } : {}) }] }, value, reason)}
                         />
                       </details>
                     </div>
