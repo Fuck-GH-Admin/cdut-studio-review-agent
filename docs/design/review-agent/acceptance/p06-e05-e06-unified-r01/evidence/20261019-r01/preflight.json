@@ -3,7 +3,7 @@
   "campaign": "P06-E05-E06-UNIFIED-r01",
   "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
   "treeSha": "0536edcf57a1350d2f2f777a6bab55c6e8ca731f",
-  "finishedAt": "2026-10-18T19:09:46.608109+00:00",
+  "finishedAt": "2026-10-18T19:14:41.326600+00:00",
   "checks": [
     {
       "id": "PRE-01",
@@ -71,7 +71,8 @@
     "initial": {
       "electronMain": 306392,
       "renderer": 306543,
-      "viteLogger": 305437
+      "viteLogger": 305437,
+      "viteNode": 305452
     },
     "recovery": {
       "preCrashElectronMain": 412578,

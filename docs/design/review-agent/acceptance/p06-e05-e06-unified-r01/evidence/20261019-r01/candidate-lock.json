@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "campaign": "P06-E05-E06-UNIFIED-r01",
-  "lockedAt": "2026-10-18T19:09:46.608109+00:00",
+  "lockedAt": "2026-10-18T19:14:41.326600+00:00",
   "source": {
     "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
     "pr": 127,
@@ -26,7 +26,7 @@
       "headBranch": "audit/p06-e06-ordinary-agent-r01",
       "baseSha": "4f8a68e26e5276e61883fa53c21447a703bbf94d",
       "baseBranch": "feat/p06-l02-01-offline-business-closure-r01",
-      "checkedAt": "2026-10-18T19:09:46.608109+00:00"
+      "checkedAt": "2026-10-18T19:14:41.326600+00:00"
     }
   },
   "ci": [
@@ -62,7 +62,8 @@
     "initial": {
       "mainPid": 306392,
       "rendererPid": 306543,
-      "vitePid": 305437,
+      "viteSupervisorPid": 305437,
+      "viteNodePid": 305452,
       "cdpPort": 9222,
       "mainInspectorPort": 9230,
       "rendererTargetAlias": "candidate-renderer-localhost-5176",
