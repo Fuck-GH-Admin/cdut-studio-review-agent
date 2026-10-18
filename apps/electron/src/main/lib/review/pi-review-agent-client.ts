@@ -158,6 +158,12 @@ export function createPiReviewModelClient(options: PiReviewModelClientOptions): 
           if (assistantText) latestResponse = assistantText
           if (message.type === 'result' && message.subtype !== 'success') {
             const details = 'errors' in message && Array.isArray(message.errors) ? message.errors.join('；') : message.subtype
+            // Bounded Pi turns are a TECHNICAL budget exhaustion, never an
+            // implicit compliant/non-compliant finding. Keep a stable diagnostic
+            // code instead of propagating potentially sensitive SDK details.
+            if (/max[_\s-]?turns?|maximum[^\n]{0,30}turns?|turn[_\s-]?limit|轮次上限|超过[^\n]{0,12}轮/.test(String(details).toLowerCase())) {
+              throw new Error('PI_REVIEW_TURN_LIMIT_EXHAUSTED: 本轮 Agent 达到 24 轮执行上限；未提交的检查仍为技术未完成')
+            }
             throw new Error(`Pi 审核 Agent 未完成：${details}`)
           }
         }

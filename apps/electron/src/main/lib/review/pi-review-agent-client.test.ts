@@ -213,4 +213,40 @@ describe('Pi 审核 Agent 客户端', () => {
     expect(aborted).toBe(true)
     expect(JSON.parse(result.content).opinion).toContain('本轮未得到可核验的模型结论')
   })
+  test('Pi reaches max-turn limit without an accepted check: fail with technical code and no false compliance', async () => {
+    const client = createPiReviewModelClient({
+      channel: { id: 'test-channel', name: 'Test', provider: 'openai', models: [{ id: 'test-model', name: 'Test Model' }] } as Channel,
+      apiKey: 'test-key', model: 'test-model', cwd: '/tmp/review-case', piAgentDir: '/tmp/pi-config',
+      loadSdk: async () => ({ defineTool: (definition: unknown) => definition }) as never,
+      query: async function* () {
+        yield { type: 'result', subtype: 'error_max_turns', errors: ['Maximum turns (24) reached in private upstream session'] } as unknown as SDKMessage
+      },
+    })
+    await expect(client.complete({
+      prompt: '检查合成 C 案', system: '缺材料应待确认', terminateAfterTools: ['submit_checks'],
+    })).rejects.toThrow('PI_REVIEW_TURN_LIMIT_EXHAUSTED')
+  })
+
+  test('Pi max-turn limit after accepted tool result retains only witnessed results, not fabricated checks', async () => {
+    const client = createPiReviewModelClient({
+      channel: { id: 'test-channel', name: 'Test', provider: 'openai', models: [{ id: 'test-model', name: 'Test Model' }] } as Channel,
+      apiKey: 'test-key', model: 'test-model', cwd: '/tmp/review-case', piAgentDir: '/tmp/pi-config',
+      loadSdk: async () => ({ defineTool: (definition: unknown) => definition }) as never,
+      query: async function* (input) {
+        const submit = input.customTools?.find((tool) => tool.name === 'submit_checks')
+        await submit?.execute('call-accepted', { checks: [{ ruleId: 'r1' }] } as never, undefined, undefined, {} as never)
+        yield { type: 'result', subtype: 'error_max_turns', errors: ['Maximum turns (24) reached'] } as unknown as SDKMessage
+      },
+    })
+    const response = await client.complete({
+      prompt: '合成审核', system: '审核',
+      terminateAfterTools: ['submit_checks'], requiredToolKeys: ['check:r1::case::'],
+      tools: [{
+        name: 'submit_checks', description: '验证的提交', input: '{}',
+        execute: async () => ({ ok: true, data: { results: [{ ok: true, data: { toolKey: 'check:r1::case::' } }] } }),
+      }],
+    })
+    expect(JSON.parse(response.content).checks).toEqual([])
+    expect(JSON.parse(response.content).opinion).toContain('已接受的事实和检查以系统记录为准')
+  })
 })

@@ -942,7 +942,7 @@ export async function assembleV2Executors(aggregate: CaseAggregateV2, template: 
       '任务：基于案卷字段、材料与规则清单，给出审核结论。',
       '分项规则只适用于标明的分项事项；分项材料按材料清单标注使用，全案共用材料可供各分项参考。不得把另一分项的专属证明当成本分项的依据。',
       '先列材料目录并用 read_documents 读完所有 role=rule 文件；模板规则已在上下文中完整提供，不要重复逐条调用 read_rule。用一次 search_document_text_batch 定位所需依据，再用 read_documents 一次读取选定的多份材料，必要时对单页调用 inspect_document_image；最后用一次 submit_checks 提交所有 semantic 检查和真实 sourceRefs。',
-      '没有足够证据时提交 awaiting-confirmation 或 awaiting-supplement，不得用其他分项的材料补足。',
+      '没有足够证据时提交 awaiting-confirmation 或 awaiting-supplement，不得用其他分项的材料补足。若已定向读取材料一次仍未找到规则所需字段（例如合成预算金额缺失），立即用 submit_checks 提交该项待确认/待补件；不重复同义搜索，不循环调用 read_rule，也不要把未找到字段编造为 0。缺项仍须附真实已核验材料范围或清楚标明无可用出处。',
       '输出 JSON：{"opinion":"…简短结论…","checks":[{"ruleId":"…","status":"compliant|non-compliant|awaiting-confirmation|not-applicable","reason":"…","subjectIds":["…"]}]}。只为 semantic 规则输出 checks；deterministic/manual 规则由系统提供。',
       `当前已生成的规则检查：${JSON.stringify(latestDeterministicChecks)}`,
       `规则清单：\n${findingsText}`,

@@ -58,7 +58,7 @@ export function batchTechnicalFailureMessage(
   if (entryStatus !== 'failed') return null
   const signals = [run?.error, ...(run?.diagnostics ?? [])].filter(Boolean).join('；')
   const remaining = run?.coverage?.pendingChecks ?? 0
-  if (/max.?turn|maximum.+turn|24.?轮|轮次上限|达到.+轮上限/i.test(signals)) {
+  if (/PI_REVIEW_TURN_LIMIT_EXHAUSTED|max.?turn|maximum.+turn|24.?轮|轮次上限|达到.+轮上限/i.test(signals)) {
     return 'Agent 达到本轮运行上限' + (remaining > 0 ? '，仍有 ' + remaining + ' 项检查未完成' : '') + '；未形成业务审核结论。'
   }
   return '检查运行发生技术异常' + (remaining > 0 ? '，仍有 ' + remaining + ' 项检查未完成' : '')
