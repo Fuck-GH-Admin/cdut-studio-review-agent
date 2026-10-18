@@ -1,11 +1,36 @@
 import * as React from 'react'
 import type { ReviewCase } from '@profer/shared'
 import { w1MaterialHistory } from './w1-material-history'
+import { FilePreviewDialog } from '@/components/file-browser/FilePreviewDialog'
 
 /** Persistent reconciliation panel: historical warnings are not current failure counts. */
 export function D4MaterialHistory({ reviewCase }: { reviewCase: ReviewCase }): React.ReactElement {
   const records = w1MaterialHistory(reviewCase)
   const attention = records.filter(row => row.needsReconciliation).length
+  const [preview, setPreview] = React.useState<{ path: string; fileName: string } | null>(null)
+  const [error, setError] = React.useState('')
+  const [opening, setOpening] = React.useState<string | null>(null)
+  const currentCase = React.useRef(reviewCase.id)
+  currentCase.current = reviewCase.id
+  React.useEffect(() => { setPreview(null); setError(''); setOpening(null) }, [reviewCase.id])
+  const previewOriginal = async (documentId: string, fileName: string): Promise<void> => {
+    const caseId = reviewCase.id
+    setOpening(documentId); setError('')
+    try {
+      // Only a Main-verified case asset path is accepted. The Renderer never
+      // supplies a host path and the preview is always tied to a V2 version.
+      const path = await window.reviewAPI.getWorkspaceDocumentPreviewPath({
+        caseId, documentVersionId: documentId + '-v1',
+      })
+      if (currentCase.current !== caseId) return
+      if (path) setPreview({ path, fileName })
+      else setError('案卷中未找到可安全预览的原件，或版本尚未同步；请核对存档来源。')
+    } catch (cause) {
+      if (currentCase.current === caseId) setError(cause instanceof Error ? cause.message : String(cause))
+    } finally {
+      if (currentCase.current === caseId) setOpening(null)
+    }
+  }
   return <section aria-label="材料版本与来源对账"
     className="shrink-0 border-b border-border/40 px-3 py-2 text-xs">
     <details>
@@ -29,6 +54,10 @@ export function D4MaterialHistory({ reviewCase }: { reviewCase: ReviewCase }): R
           </p>
           <p className="text-muted-foreground">{row.originLabel}</p>
           <code className="block text-[10px] text-muted-foreground">ID: {row.documentId}{row.sha256 ? ' · SHA-256: ' + row.sha256 : ''}</code>
+          {row.location !== 'missing' && <button type="button" className="mt-1 rounded border px-2 py-1 disabled:opacity-50"
+            disabled={opening !== null} onClick={() => void previewOriginal(row.documentId, row.fileName)}>
+            {opening === row.documentId ? '正在核验原件路径…' : '预览本版原件'}
+          </button>}
         </li>)}
       </ul>
     </details>
@@ -41,5 +70,8 @@ export function D4MaterialHistory({ reviewCase }: { reviewCase: ReviewCase }): R
           <li key={i} className="break-all">{item.originLabel}：{item.reason}</li>)}
       </ul>
     </details>}
+    {error && <p role="alert" className="mt-2 text-destructive">{error}</p>}
+    {preview && <FilePreviewDialog open={true} filePath={preview.path} fileName={preview.fileName}
+      onClose={() => setPreview(null)} />}
   </section>
 }

@@ -33,6 +33,18 @@ describe('审核原件预览路径', () => {
     expect(resolveCaseDocumentPreviewPath(root, aggregate('source-docs/original.pdf'), 'doc-1-v1')).toBe(source)
   })
 
+  test('归档版本仍可从当前案卷中的不可变 V2 索引安全预览', () => {
+    const root = makeRoot()
+    mkdirSync(join(root, 'source-docs'), { recursive: true })
+    const original = join(root, 'source-docs', 'archived.docx')
+    writeFileSync(original, 'archived original')
+    const historical = aggregate('source-docs/archived.docx')
+    historical.caseV2.documents[0]!.active = false
+    historical.caseV2.documents[0]!.fileName = '存档材料.docx'
+    expect(resolveCaseDocumentPreviewPath(root, historical, 'doc-1-v1')).toBe(original)
+    expect(resolveCaseDocumentPreviewPath(root, historical, 'foreign-version')).toBeNull()
+  })
+
   test('拒绝未登记材料、越界路径和指向案卷外的符号链接', () => {
     const root = makeRoot()
     const outside = join(root, '..', 'outside-review-preview.txt')
