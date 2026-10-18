@@ -15,7 +15,7 @@ process.env.PROFER_CONFIG_DIR = config
 afterAll(() => rmSync(config, { recursive: true, force: true }))
 
 const { createAggregate, readAggregate } = await import('./case-store-v2')
-const { createBatchV2, readBatchStateV2, updateCaseStatus } = await import('./batch-store')
+const { createBatchV2, readBatchStateV2, updateCaseStatus, selectSupplementRequeueBatch } = await import('./batch-store')
 const { ensureInitialTask, recordStageDecision, respondSupplementV2, resolveSupplementV2 } = await import('./stage-workflow')
 
 const reviewer = { actorId: 'local-reviewer', actorSource: 'local' as const, role: 'reviewer' as const }
@@ -132,6 +132,54 @@ describe('L02-01 human supplement is idempotent across V2 and batch projection',
     expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('done')
     expect(readBatchStateV2(otherBatchId)?.cases[0]?.status).toBe('done')
     expect(readAggregate(caseId)?.caseV2.stage).toBe('reviewing')
+  })
+
+
+  test('E03: explicit selection queues only one batch once, never revives a later done item', async () => {
+    const { caseId, batchId, taskId } = await seed()
+    const historicalId = 'batch-old-' + randomUUID()
+    createBatchV2({
+      id: historicalId, name: '保留历史', templateId: template.templateId,
+      templateVersion: template.version, policyVersionLock: [], caseIds: [caseId],
+      createdAt: new Date().toISOString(),
+    })
+    const before = readAggregate(caseId)!
+    const opened = await recordStageDecision(caseId,
+      command('select-return-'+randomUUID(), before.caseV2.revision, reviewer, {
+        taskId, action: 'return-for-supplement', reason: '需补件',
+        supplementReason: '补充必要证明', supplementRequiredElements: ['证明'],
+      }), template)
+    expect(opened.ok).toBeTrue()
+    if (!opened.ok) return
+    const supplementId = opened.aggregate.supplements[0]!.id
+    updateCaseStatus(batchId, caseId, 'done')
+    updateCaseStatus(historicalId, caseId, 'done')
+    const replied = await respondSupplementV2(caseId,
+      command('select-reply-'+randomUUID(), opened.aggregate.caseV2.revision, student,
+        { supplementId, note: '已补齐' }))
+    expect(replied.ok).toBeTrue()
+    if (!replied.ok) return
+    const resolved = await resolveSupplementV2(caseId,
+      command('select-resolve-'+randomUUID(), replied.aggregate.caseV2.revision, reviewer,
+        { supplementId, outcome: 'satisfied', reason: '人工验真' }))
+    expect(resolved.ok).toBeTrue()
+    if (!resolved.ok) return
+    const selected = { actor: reviewer, expectedRevision: resolved.aggregate.caseV2.revision, supplementId }
+    expect(() => selectSupplementRequeueBatch(caseId, batchId, {
+      ...selected, actor: { actorId: 'synthetic-student', actorSource: 'local', role: 'student' },
+    })).toThrow()
+    expect(() => selectSupplementRequeueBatch(caseId, batchId, {
+      ...selected, expectedRevision: selected.expectedRevision - 1,
+    })).toThrow()
+    const changed = selectSupplementRequeueBatch(caseId, batchId, selected)
+    expect(changed.queued).toBeTrue()
+    expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('queued')
+    expect(readBatchStateV2(historicalId)?.cases[0]?.status).toBe('done')
+    updateCaseStatus(batchId, caseId, 'done')
+    const replay = selectSupplementRequeueBatch(caseId, batchId, selected)
+    expect(replay.queued).toBeFalse()
+    expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('done')
+    expect(readBatchStateV2(historicalId)?.cases[0]?.status).toBe('done')
   })
 
   test('same request ID with modified outcome and stale independent commands cannot silently write', async () => {
