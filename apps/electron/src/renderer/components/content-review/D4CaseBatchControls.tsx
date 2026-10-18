@@ -18,6 +18,7 @@ export function D4CaseBatchControls({ role, actions }: {
   const [choices, setChoices] = React.useState<D4CaseBatchChoice[]>([])
   const [acknowledged, setAcknowledged] = React.useState(false)
   const [busy, setBusy] = React.useState(false)
+  const [dragging, setDragging] = React.useState(false)
   const [error, setError] = React.useState('')
   const activeToken = React.useRef<string | null>(null)
   const sessionGeneration = React.useRef(0)
@@ -41,13 +42,28 @@ export function D4CaseBatchControls({ role, actions }: {
     activeToken.current = null
     setPreview(null); setAssessment(null); setChoices([]); setAcknowledged(false); setError('')
   }
-  const open = async (mode: 'files' | 'folder'): Promise<void> => {
+  const open = async (mode: 'files' | 'folder', dropped?: File[]): Promise<void> => {
     if (busy) return
     setBusy(true); setError('')
     try {
       await close()
       const generation = sessionGeneration.current
-      const next = await window.reviewAPI.stageD4Intake(mode)
+      let next: D4IntakePreview | null
+      if (dropped) {
+        if (!dropped.length || dropped.length > 16 || dropped.some(file => file.size < 1 || file.size > 10 * 1024 * 1024) ||
+            dropped.reduce((total, file) => total + file.size, 0) > 40 * 1024 * 1024) {
+          throw new Error('拖放单批限 16 份、单文件 10 MB、总计 40 MB；大量材料请使用文件夹选择器')
+        }
+        // Transfer the user's dropped bytes, NOT webUtils.getPathForFile(File).
+        // Main treats these bytes as untrusted files and reuses the same ZIP/hash checks.
+        next = await window.reviewAPI.stageD4DroppedBytes(
+          await Promise.all(dropped.map(async file => ({
+            name: file.name, bytes: new Uint8Array(await file.arrayBuffer()),
+          }))),
+        )
+      } else {
+        next = await window.reviewAPI.stageD4Intake(mode)
+      }
       if (!next) return
       if (sessionGeneration.current !== generation || store.get(selectedCaseIdAtom) !== caseId) {
         await window.reviewAPI.discardD4Intake(next.token).catch(() => false)
@@ -98,6 +114,21 @@ export function D4CaseBatchControls({ role, actions }: {
         onClick={() => void open('folder')}>文件夹</button>
     </div>
     <p className="mt-1 text-muted-foreground">本机确认文件后先预检哈希、同名冲突和案卷版本，再由你决定。审核依据仍由左栏独立管理。</p>
+    <div role="region" aria-label={`拖入${role === 'application' ? '申报材料' : '证明材料'}以预检`}
+      className={`mt-2 rounded border border-dashed px-3 py-3 text-center ${dragging ? 'border-primary bg-primary/5' : 'border-border/60'}`}
+      onDragEnter={event => { event.preventDefault(); event.stopPropagation(); setDragging(true) }}
+      onDragOver={event => { event.preventDefault(); event.stopPropagation(); setDragging(true) }}
+      onDragLeave={event => { event.preventDefault(); event.stopPropagation(); setDragging(false) }}
+      onDrop={event => {
+        event.preventDefault(); event.stopPropagation(); setDragging(false)
+        if (busy) return
+        const dropped = Array.from(event.dataTransfer.files ?? [])
+        if (dropped.length) void open('files', dropped)
+      }}>
+      {busy ? '正在读取材料…' : dragging ? '松手进行可信字节暂存与冲突预检' :
+        '直接拖入文件预检（16 份以内）；文件夹请点上方选择按钮'}
+      <p className="mt-1 text-muted-foreground">拖放只传输材料字节，不传输或信任宿主文件路径；所有实际追加仍需你逐份确认。</p>
+    </div>
     {assessment && preview && <div className="mt-2 space-y-2">
       <p className="font-medium">批次预检：{assessment.files.length} 份可读，{assessment.skipped.length} 项已跳过</p>
       <div className="max-h-64 space-y-2 overflow-y-auto">
