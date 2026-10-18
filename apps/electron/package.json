@@ -60,7 +60,8 @@
     "dist:visual": "bun run scripts/dist.ts",
     "dist:fast": "bun run scripts/dist.ts --current-arch",
     "dist:debug": "bun run scripts/dist.ts --current-arch --verbose",
-    "review:d4:dev": "bun run scripts/review-d4-product-loop.ts"
+    "review:d4:dev": "bun run scripts/review-d4-product-loop.ts",
+    "review:d4:p2-metrics": "bun run scripts/review-d4-p2-prompt-metrics.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.93.0",
