@@ -135,8 +135,8 @@ describe('U1 T01–T05：Main 真实当前案卷绑定与 Adapter 输入受控�
       expect(inspect).toBeDefined()
       const result = await inspect!.execute('synthetic-call', {
         documentVersionId: 'forged-cross-case-document', scope: 'overview',
-      } as never, new AbortController().signal)
-      expect(result.isError).toBe(true)
+      } as never, new AbortController().signal, undefined as never, undefined as never)
+      expect((result as { isError?: boolean }).isError).toBe(true)
       expect(JSON.stringify(result.details)).toContain('已经变化')
     }
     await new AgentOrchestrator(adapter, new AgentEventBus())
