@@ -1,13 +1,13 @@
 /** P1-C native-picker intake. Renderer never supplies arbitrary host paths. */
 import { randomUUID } from 'node:crypto'
-import { closeSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, openSync, readSync, rmSync, statSync } from 'node:fs'
+import { closeSync, existsSync, mkdtempSync, openSync, readSync, rmSync, statSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { basename, extname, join } from 'node:path'
+import { extname, join } from 'node:path'
 import { dialog, type BrowserWindow } from 'electron'
 import { recommendD4Intake, type D4RouteFile, type D4RouteResult } from './review-d4-routing'
+import { stageD4NativeBatch, type D4BatchSkip } from './review-d4-batch-staging'
 
 const TTL_MS = 20 * 60 * 1000
-import { stageD4NativeBatch, type D4BatchSkip } from './review-d4-batch-staging'
 const TEXT_TYPES = new Set(['.md', '.txt', '.csv', '.json', '.html', '.htm', '.eml'])
 interface StagedFile { name: string; sourcePath: string; sizeBytes: number }
 interface StagedIntake {
@@ -35,7 +35,7 @@ process.once('exit', () => { for (const entry of [...STAGED.values()]) forget(en
 export interface D4IntakePreview {
   token: string
   expiresAt: number
-  files: Array<{ name: string; sizeBytes: number }>
+  files: Array<{ name: string; sizeBytes: number; originLabel?: string }>
   route: D4RouteResult
   skipped: D4BatchSkip[]
 }
