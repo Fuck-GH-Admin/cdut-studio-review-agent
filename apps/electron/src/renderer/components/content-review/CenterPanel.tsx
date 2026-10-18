@@ -49,6 +49,7 @@ import { Button } from '@profer/ui/primitives/button'
 import { MaterialDropZone } from './MaterialDropZone'
 import { D4CaseBatchControls } from './D4CaseBatchControls'
 import { w1CandidateFactKeys, w1ObservationSources } from './w1-fact-source'
+import { w1ParseHumanFieldValue } from './w1-fact-value'
 import { MoveReviewDocumentButtons, RemoveReviewDocumentButton, ReviewMaterialDropZone, ReviewMaterialLaneActions } from './ReviewMaterialControls'
 
 interface ReviewItemDraft {
@@ -722,7 +723,7 @@ function ManualFactEntry({
   candidateFields?: string[]
   template: TemplateVersion | null
   aggregate: CaseAggregateV2
-  onSave(fieldKey: string, value: string, sourceVersionId: string, blockId: string, reason: string): Promise<void>
+  onSave(fieldKey: string, value: FieldValue, sourceVersionId: string, blockId: string, reason: string): Promise<void>
 }): React.ReactElement {
   const [open, setOpen] = React.useState(false)
   const [fieldKey, setFieldKey] = React.useState('')
@@ -746,7 +747,9 @@ function ManualFactEntry({
     if (!fieldKey.trim() || !value.trim() || !reason.trim() || !sourceDoc) return
     setBusy(true)
     try {
-      await onSave(fieldKey.trim(), value.trim(), sourceVersionId, sourceBlockId, reason.trim())
+      const typedValue = w1ParseHumanFieldValue(value, selectedField?.kind ?? 'text',
+        selectedField?.options.map(option => option.value) ?? [], subjectFields[fieldKey])
+      await onSave(fieldKey.trim(), typedValue, sourceVersionId, sourceBlockId, reason.trim())
       setOpen(false); setFieldKey(''); setValue(''); setReason('')
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : String(cause))
@@ -828,7 +831,17 @@ function WorkspaceObservationCard({
   const run = async (nextValue: unknown, nextReason: string): Promise<void> => {
     setBusy(true)
     try {
-      await onConfirm(nextValue, nextReason,
+      const originalValue = observation.value
+      const storedValue = originalValue && typeof originalValue === 'object' && 'kind' in originalValue
+        ? originalValue as FieldValue : undefined
+      const currentField = subject?.fields[fieldKey]
+      const templateField = template?.fields.find(field => field.key === fieldKey)
+      const kind = storedValue?.kind ?? currentField?.kind ?? templateField?.kind ?? 'text'
+      const typedValue = typeof nextValue === 'string'
+        ? w1ParseHumanFieldValue(nextValue, kind,
+          templateField?.options?.map(option => option.value) ?? [], storedValue ?? currentField)
+        : nextValue
+      await onConfirm(typedValue, nextReason,
         sourceVersionId ? { documentVersionId: sourceVersionId, ...(blockId ? { blockId } : {}) } : undefined)
       setEditing(false)
       setReason('')
