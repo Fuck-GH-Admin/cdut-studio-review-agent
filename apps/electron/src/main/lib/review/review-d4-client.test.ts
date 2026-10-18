@@ -103,8 +103,8 @@ describe('D4 客户端最小接入', () => {
       scenario: t.primary[index % t.primary.length]!,
       conditions: prototype.conditions!.map(c => ({
         ...c,
-        applicability: index === 2 ? 'unknown' as const : index === 1 ? 'not-applicable' as const : 'applicable' as const,
-        decidedBy: index === 2 ? 'undetermined' as const : 'reviewer' as const,
+        applicability: index === 3 ? 'unknown' as const : index === 2 ? 'not-applicable' as const : 'applicable' as const,
+        decidedBy: index === 3 ? 'undetermined' as const : 'reviewer' as const,
       })),
     })
     t.selection.targets = [makeObject(1), makeObject(2), makeObject(3)]
