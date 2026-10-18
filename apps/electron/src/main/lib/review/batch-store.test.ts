@@ -6,7 +6,7 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewBatch, ReviewCaseV2 } from '@profer/shared'
 import { createAggregate, readAggregate, submitCommand } from './case-store-v2'
-import { createBatchV2, finalizeBatch, listBatchStatesV2, pushViaOutbox, recoverPendingPushesDetailed, recoverPendingPushes, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus, runBatchQueue, retryBatchCases, recoverInterruptedBatch } from './batch-store'
+import { createBatchV2, saveBatchStateV2, finalizeBatch, listBatchStatesV2, pushViaOutbox, recoverPendingPushesDetailed, recoverPendingPushes, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus, runBatchQueue, retryBatchCases, recoverInterruptedBatch } from './batch-store'
 import type { BatchStateV2 } from '@profer/shared'
 type Entry = BatchStateV2['cases'][number]
 import { MockSchoolAdapter } from './external-ports'
