@@ -304,7 +304,12 @@ export async function removeDocumentsFromCase(input: {
         ? { rulePacks: fresh.rulePacks.filter((pack) => !removedIds.has(pack.documentId)) }
         : {}),
       ...(input.role === 'application'
-        ? { subjectDocumentIds: fresh.subjectDocumentIds?.filter((documentId) => !removedIds.has(documentId)) }
+        ? {
+            // Remove stale V1 items anchored to the retired original while
+            // retaining the archived source file for audit and revision history.
+            items: retainedItems,
+            subjectDocumentIds: fresh.subjectDocumentIds?.filter((documentId) => !removedIds.has(documentId)),
+          }
         : {}),
       ...(input.role === 'evidence'
         ? {
