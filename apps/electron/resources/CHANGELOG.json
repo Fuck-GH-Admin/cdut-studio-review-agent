@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "0.15.155",
+      "date": "2026-10-18",
+      "title": "0.15.155",
+      "notes": "D4 P2-A：普通 Pi 审核提示增加模板 FieldSpec 允许列表、未确认规则只能 awaiting-confirmation 及证据范围检查说明；压缩 D2 逐 Check 映射表、避免向模型重复送入不可变场景字段。保持完整 107 项 Check/SourceRef/EvidenceLink 和 Main 受控提交边界不变。"
+    },
+    {
       "version": "0.15.154",
       "date": "2026-10-18",
       "title": "0.15.154",
