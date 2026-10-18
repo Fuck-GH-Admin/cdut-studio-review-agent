@@ -8,7 +8,7 @@ describe('W1 native-picked document role fence', () => {
   test('application and evidence may be mixed in native picker order', () => {
     const source = ['evidence','application'] as const
     const roles = resolveD4IntakeRoles(2, source.slice())
-    expect(roles).toEqual(source)
+    expect(roles).toEqual(['evidence', 'application'])
     roles[0] = 'application'
     expect(source[0]).toBe('evidence')
   })
