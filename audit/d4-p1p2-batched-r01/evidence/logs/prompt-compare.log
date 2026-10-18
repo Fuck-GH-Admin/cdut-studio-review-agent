@@ -1,0 +1,17 @@
+{
+  "status": "PAIRED",
+  "reasons": [],
+  "oldSourceSha": "2e24e0c9a24d378a5b7f2e160c81c03041a2859c",
+  "newSourceSha": "026cfe0f4905bf10f46291bdd7451788c60df5f9",
+  "oldCharacters": 128358,
+  "newCharacters": 100816,
+  "oldUtf8Bytes": 243080,
+  "newUtf8Bytes": 183673,
+  "oldRulesCharacters": 104849,
+  "newRulesCharacters": 79762,
+  "oldMappingCharacters": 17687,
+  "newMappingCharacters": 16419,
+  "characterDelta": -27542,
+  "characterReductionPercent": 21.46,
+  "modelInvoked": false
+}

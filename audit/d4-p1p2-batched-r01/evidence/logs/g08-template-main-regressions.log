@@ -1,0 +1,31 @@
+bun test v1.4.0 (34cbb9a40)
+
+apps/electron/src/main/lib/review/review-d4-g08-templates.test.ts:
+(pass) D4 G08 actual modular business templates at COMMON fixed base > g08-t02 D1 complete authoring, stable original rules and non-numbered invariants [16.20ms]
+[G08_D2_PLAN] {"id":"g08-t02","checks":107,"subjects":2,"fingerprint":"f2b7dabd3a4e0088e14b5a031c1308559a448bf00e359b56c9f0b25c5bc8a6b9","candidateOnly":true}
+(pass) D4 G08 actual modular business templates at COMMON fixed base > g08-t02 D2 compiles genuine subjects and independent rule provenance [14.65ms]
+(pass) D4 G08 actual modular business templates at COMMON fixed base > g08-t02 invalid and unknown object selection fail closed [21.32ms]
+[G08_CLI] {"id":"g08-t02","transferFingerprint":"4f58d9bf5519d92c3b2011e33e50eb99ba47d1e9edb94966277f29a026e7f9e0","plan":"f2b7dabd3a4e0088e14b5a031c1308559a448bf00e359b56c9f0b25c5bc8a6b9","checks":107}
+(pass) D4 G08 actual modular business templates at COMMON fixed base > g08-t02 real D1/D3 CLI save export/import and D2 preview/register/create [295.58ms]
+[G08_PI_TECHNICAL] {"id":"g08-t02","caseId":"d4-g08-t02-pi-real","runId":"run-pi-mvdv86ja-88awg","checks":107,"fingerprint":"f2b7dabd3a4e0088e14b5a031c1308559a448bf00e359b56c9f0b25c5bc8a6b9","technicalComplete":true,"modelRun":false}
+(pass) D4 G08 actual modular business templates at COMMON fixed base > g08-t02 actual D2 Case → Pi prepare/submit/verify with non-authoritative pending checks [63.87ms]
+(pass) D4 G08 actual modular business templates at COMMON fixed base > g08-t03 D1 complete authoring, stable original rules and non-numbered invariants [4.23ms]
+[G08_D2_PLAN] {"id":"g08-t03","checks":82,"subjects":2,"fingerprint":"fec3b9b611e90e2700864c9ba18caccdeffee560ddf2fd6b6cbf733dec87f317","candidateOnly":true}
+(pass) D4 G08 actual modular business templates at COMMON fixed base > g08-t03 D2 compiles genuine subjects and independent rule provenance [36.26ms]
+(pass) D4 G08 actual modular business templates at COMMON fixed base > g08-t03 invalid and unknown object selection fail closed [17.42ms]
+[G08_CLI] {"id":"g08-t03","transferFingerprint":"5b5f36d6c48a7132f0f8ab01854a5efc7133856bb84a92920cc8257e36148c75","plan":"fec3b9b611e90e2700864c9ba18caccdeffee560ddf2fd6b6cbf733dec87f317","checks":82}
+(pass) D4 G08 actual modular business templates at COMMON fixed base > g08-t03 real D1/D3 CLI save export/import and D2 preview/register/create [292.23ms]
+[G08_PI_TECHNICAL] {"id":"g08-t03","caseId":"d4-g08-t03-pi-real","runId":"run-pi-mvdv86ud-c7f5k","checks":82,"fingerprint":"fec3b9b611e90e2700864c9ba18caccdeffee560ddf2fd6b6cbf733dec87f317","technicalComplete":true,"modelRun":false}
+(pass) D4 G08 actual modular business templates at COMMON fixed base > g08-t03 actual D2 Case → Pi prepare/submit/verify with non-authoritative pending checks [34.98ms]
+[G08_T03_ACTION_PI] {"primary":"query","caseId":"d4-g08-t03-action-query","checks":42,"fingerprint":"e8bd95232af50a525d58ecbd67c77693d1ce82cec5a30a65378f7e45cae9868d","verified":true,"onlineModel":false}
+[G08_T03_ACTION_PI] {"primary":"followup","caseId":"d4-g08-t03-action-followup","checks":44,"fingerprint":"fbf64200dc3d0164378943f0e24d64f0ecbd02b4de9ccc4ea86fdd65db52712d","verified":true,"onlineModel":false}
+[G08_T03_ACTION_PI] {"primary":"withdraw","caseId":"d4-g08-t03-action-withdraw","checks":39,"fingerprint":"320bc4523c58b7e731b47e833a9c06f216900707deca7e246796aea91b5168db","verified":true,"onlineModel":false}
+(pass) D4 G08 actual modular business templates at COMMON fixed base > G08-T03 all remaining primary actions have real D2/Pi technical runs [72.54ms]
+(pass) D4 G08 actual modular business templates at COMMON fixed base > reviewer-confirmed evidence for lost item A does not permit lost item B or stale versions [41.26ms]
+
+ 12 pass
+ 0 fail
+ 320 expect() calls
+Ran 12 tests across 1 file. [1055.00ms]
+
+EXIT_CODE=0

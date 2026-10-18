@@ -1,0 +1,53 @@
+bun test v1.4.0 (34cbb9a40)
+
+apps/electron/src/main/lib/review/pi-review-submit-repair.test.ts:
+(pass) P2-C bounded model-facing repair feedback is purely explanatory > frozen G08 rejection families return deterministic actionable categories [0.45ms]
+(pass) P2-C bounded model-facing repair feedback is purely explanatory > bounded and no untrusted contents copied into hints; original rejection records unchanged [1.00ms]
+(pass) P2-C bounded model-facing repair feedback is purely explanatory > unknown or no rejections never invent approval or suppress remaining checks [0.03ms]
+
+apps/electron/src/main/lib/review/pi-review-prompt-contract.test.ts:
+(pass) P2-A Pi prompt contract does not omit, merge, or invent audit responsibilities > all G08 107 immutable D2 rule/check targets remain individually listed in compact model map [0.66ms]
+(pass) P2-A Pi prompt contract does not omit, merge, or invent audit responsibilities > schema forbids any invented Observation when frozen template has no declared FieldSpec [0.06ms]
+(pass) P2-A Pi prompt contract does not omit, merge, or invent audit responsibilities > render all 107 rule requirements, and expose all unconfirmed policy restrictions [1.14ms]
+(pass) P2-A Pi prompt contract does not omit, merge, or invent audit responsibilities > G08 107 fixed RuleSpecs are losslessly indexed to 70 complete requirement strings [11.37ms]
+(pass) P2-A Pi prompt contract does not omit, merge, or invent audit responsibilities > small distinct RuleSpecs stay expanded, without dictionary indirection [0.11ms]
+(pass) P2-A Pi prompt contract does not omit, merge, or invent audit responsibilities > even if model text claims acceptance, deterministic gates are not bypassed by prompt text [0.09ms]
+
+apps/electron/src/main/lib/review/review-d2-execution-gates.test.ts:
+(pass) D2 execution gates — always-on regression (no external oracle) > unknown conditions cannot be labelled false, not-applicable or compliant [0.68ms]
+(pass) D2 execution gates — always-on regression (no external oracle) > a confirmed observation is scoped to the exact subject and current cited version [0.23ms]
+(pass) D2 execution gates — always-on regression (no external oracle) > material is not due before the declared stage, and missing alternatives are not compliant [0.19ms]
+(pass) D2 execution gates — always-on regression (no external oracle) > reviewer-confirmed electronic alternative is sufficient only on its own subject and active cited document [0.25ms]
+(pass) D2 execution gates — always-on regression (no external oracle) > authority-owned material never turns reviewer evidence into formal approval or applicant missing documents [0.09ms]
+(pass) D2 execution gates — always-on regression (no external oracle) > unknown and malformed structured gates fail closed [0.11ms]
+
+apps/electron/src/main/lib/review/pi-review-prompt-metrics.test.ts:
+(pass) P2-B actual-run prompt metrics comparison safety contract > correctly measures full message, UTF8, rule region and present constraints [0.77ms]
+(pass) P2-B actual-run prompt metrics comparison safety contract > only identical frozen plan and synthetic selections earn paired reduction metrics [0.17ms]
+(pass) P2-B actual-run prompt metrics comparison safety contract > changing template, selection, rule IDs, Check IDs or exact requirement text refuses pair [0.15ms]
+(pass) P2-B actual-run prompt metrics comparison safety contract > scrubbed result reports only digests, counts, IDs and no original document excerpts [0.07ms]
+
+apps/electron/src/main/lib/review/pi-review-submit-repair-d4.test.ts:
+[审核模板] 已发布: comprehensive-assessment-v2@3
+(pass) P2-C G08 immutable Plan negative feedback > unconfirmed D2 RuleSpec remains blocked despite explanatory repair suggestions [617.48ms]
+
+apps/electron/src/main/lib/review/pi-case-review-service.test.ts:
+[审核模板] 已发布: pi-review-submit-p2c-retry@1
+(pass) Pi 审核结果提交与续审 > P2-C Main keeps five missing checks after invalid observation and empty reason; successful retry uses same run [7.75ms]
+[审核模板] 已发布: pi-review-submit-same-turn@1
+(pass) Pi 审核结果提交与续审 > finish=true 遇到图像出处拒绝和缺项时保持运行开放，修正后可在同一运行提交 [2.82ms]
+[审核模板] 已发布: pi-review-submit-next-turn@1
+(pass) Pi 审核结果提交与续审 > 流结束后的部分完成运行可由“更新审核结果”续交，复用原 runId 与有效检查 [6.82ms]
+[审核模板] 已发布: pi-review-submit-inherit-reads@1
+(pass) Pi 审核结果提交与续审 > 更新审核会沿用内容未变材料在历史运行中的完整读取回执 [3.84ms]
+[审核模板] 已发布: pi-review-submit-reconcile-reads@1
+(pass) Pi 审核结果提交与续审 > 工作台读取历史结果时会修复已完成运行中缺失的跨轮材料读取凭据 [3.38ms]
+
+apps/electron/src/main/lib/review/pi-review-prompt-metrics.integration.test.ts:
+[审核模板] 已发布: comprehensive-assessment-v2@3
+(pass) P2-B actual Pi prepare, no Provider > G08 two frozen synthetic objects give 107 matching D2 Check IDs in a real userMessage [606.22ms]
+
+ 26 pass
+ 0 fail
+ 1980 expect() calls
+Ran 26 tests across 7 files. [1.52s]

@@ -1,0 +1,19 @@
+[审核模板] 已发布: comprehensive-assessment-v2@3
+56 |       ruleIds: plan.rules.map(x => x.id), checkIds: plan.mapping.map(x => x.checkId),
+57 |       ruleRequirements: plan.rules.map(x => ({ id: x.id, requirement: x.requirement })),
+58 |     })
+59 |     if (result.checkIds.length !== 107 || result.subjects !== 2) throw new Error('G08_FIXED_CHECK_COVERAGE_MISMATCH')
+60 |     const data = JSON.stringify(result, null, 2) + '\n'
+61 |     if (outAt >= 0) writeFileSync(args[outAt + 1]!, data, { flag: 'wx', mode: 0o600 })
+                         ^
+EEXIST: file already exists, open '/home/miku/Bot/CDUTStudio/audit/d4-p1p2-batched-r01/evidence/metrics/prompt-112.json'
+    path: "/home/miku/Bot/CDUTStudio/audit/d4-p1p2-batched-r01/evidence/metrics/prompt-112.json",
+ syscall: "open",
+   errno: -17,
+    code: "EEXIST"
+
+      at /home/miku/Bot/CDUTStudio/CDUT-Studio/.workdir/d4-p1p2-112/apps/electron/scripts/.qa-review-d4-p2-prompt-metrics.ts:61:21
+
+Bun v1.4.0 (Linux x64)
+
+EXIT_CODE=1
