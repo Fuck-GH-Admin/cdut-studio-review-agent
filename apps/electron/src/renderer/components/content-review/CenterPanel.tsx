@@ -48,6 +48,7 @@ import { ReviewActionDialog } from './ReviewActionDialog'
 import { Button } from '@profer/ui/primitives/button'
 import { MaterialDropZone } from './MaterialDropZone'
 import { D4CaseBatchControls } from './D4CaseBatchControls'
+import { D4RetryDocumentButton } from './D4RetryDocumentButton'
 import { w1CandidateFactKeys, w1ObservationSources } from './w1-fact-source'
 import { w1ParseHumanFieldValue } from './w1-fact-value'
 import { MoveReviewDocumentButtons, RemoveReviewDocumentButton, ReviewMaterialDropZone, ReviewMaterialLaneActions } from './ReviewMaterialControls'
@@ -475,6 +476,11 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
         )}
       </section>
 
+      {documentsByRole.application.filter(doc => doc.parseStatus !== 'parsed').map(doc =>
+        <section key={doc.id} className="px-3 pb-2">
+          <D4RetryDocumentButton document={doc} actions={actions} />
+        </section>)}
+
       {/* 未被条目卡引用的原文仍可见：识别失败与漏项不能使待审文件从界面消失。 */}
       {documentsByRole.application.map((document) => {
         const blocks = (document.parseStatus === 'failed' ? [] : document.blocks).filter((block) => !renderedBlockIds.has(block.id))
@@ -514,6 +520,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
               .map((item) => item.title)
             return (
               <div key={document.id}>
+                <D4RetryDocumentButton document={document} actions={actions} />
                 <EvidenceCard
                   evidence={evidence}
                   fileName={document.fileName}
