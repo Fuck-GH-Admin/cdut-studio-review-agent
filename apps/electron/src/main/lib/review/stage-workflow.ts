@@ -243,7 +243,11 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
       entity: payload.outcome === 'satisfied' ? { ...target, status: 'satisfied' } : { ...target, status: payload.outcome },
     }
   })
-  if (result.ok && command.payload.outcome === 'satisfied'
+  // submitCommand may return a previous receipt for an identical requestId.
+  // Only a newly applied resolution has an entity. Do not repeat the external
+  // batch requeue side effect for a replay: another actor may have already
+  // advanced the case from queued to done after the first resolution.
+  if (result.ok && result.entity !== undefined && command.payload.outcome === 'satisfied'
     && result.aggregate.caseV2.stage === 'reviewing'
     && result.aggregate.supplements.every((supplement) =>
       !['open', 'responded', 'insufficient'].includes(supplement.status))) {
