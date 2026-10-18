@@ -368,6 +368,8 @@ export interface ReviewCase {
   documents: SourceDocument[]
   /** Main-generated, persistently retained reasons for omitted/failed native-batch inputs. */
   d4IntakeWarnings?: Array<{ originLabel: string; reason: string }>
+  /** Immutable Main-recorded hash/within-batch origin for imported folder and ZIP members. */
+  d4IntakeOrigins?: Array<{ documentId: string; originLabel: string; sha256: string }>
   /** 已从当前审核材料中移除的文件；保留记录用于 V2 来源追溯。 */
   archivedDocuments?: SourceDocument[]
   /** 规则包 */
