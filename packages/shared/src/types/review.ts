@@ -113,6 +113,17 @@ export interface D4CaseBatchResult {
   replacements: Array<{ oldDocumentId: string; newDocumentId: string }>
 }
 
+/** Reprocess only an archived-in-case, Main-verified original (no Renderer host path). */
+export interface D4DocumentRetryResult {
+  caseId: string
+  documentId: string
+  attemptDocumentId: string
+  status: 'replaced' | 'still-incomplete' | 'needs-review'
+  parseStatus: ReviewParseStatus
+  message: string
+}
+
+
 
 /** 材料导入的逐文件进度；扫描 PDF 会额外报告页检查和图像渲染阶段。 */
 export interface ReviewImportProgressEvent {
@@ -518,6 +529,7 @@ export const REVIEW_IPC_CHANNELS = {
   STAGE_D4_INTAKE: 'review:stage-d4-intake',
   ASSESS_D4_CASE_BATCH: 'review:assess-d4-case-batch',
   APPLY_D4_CASE_BATCH: 'review:apply-d4-case-batch',
+  RETRY_D4_DOCUMENT: 'review:retry-d4-document',
   DISCARD_D4_INTAKE: 'review:discard-d4-intake',
   /** 多选导入文件到案卷（逐文件返回解析结果与失败项） */
   IMPORT_DOCUMENT: 'review:import-document',
