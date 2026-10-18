@@ -20,7 +20,7 @@
 4. D2 逐项映射从冗长汉字重复标签改成带列名的管道分隔表，逐行保留原 `ruleId/checkId/subjectId/objectKey/authority/applicability/supportsFacts`，不归并主体、不遗漏任何 107 Check。
 5. D2 Subject 展示不再重复打印固定 Plan 中已经出现的 `d2ObjectKey/d2BusinessType/d2Scenario/d2Conditions`，但所有非 D2 实际字段仍展示。
 
-当前 G08 结构测试量化：mapping 区旧格式约 17,756 字符→9.2k 字符（减约 8.5k）；规则区通过 107→70 个要求正文去重约减少 3.1 万字符。**两部分离线合计只是约 3.9 万字符级别的结构压缩估计**，新合同文本略有新增；必须对实际 `preparePiReviewRunV2.userMessage` 作完整新旧测量，不得把字符估计当作付费 token 节省，更不能先声称模型准确率提升。
+当前 G08 结构测试量化：mapping 区旧格式约 17,756 字符→16,498 字符（减 1,258）；规则区通过 107→70 个要求正文去重约减少 3.1 万字符。**两部分离线合计约 3.2 万字符的结构压缩估计**，新合同文本略有新增；必须对实际 `preparePiReviewRunV2.userMessage` 作完整新旧测量，不得把字符估计当作付费 token 节省，更不能先声称模型准确率提升。
 
 ## 断言/边界
 
@@ -39,3 +39,7 @@ P2-A CI 通过后，在**单一**受控同模板样本上做新旧提示词差�
 - PR #111 P1-C 原始独立 GUI 结论：PARTIAL，确认 C10 双击误报。
 - PR #112 代码和全仓 CI 已通过（3,729 PASS / 6 SKIP / 0 FAIL）；**尚未发现新的 C10 独立 GUI 复验 PR**。此缺项不阻挡 P2 作为独立工程候选开发，但阻挡“P1-C 完全验收”和正式集成签署。
 - P06 仍为外部受控依赖；本轮不宣布 P06-S02、Provider LIVE、正式 school approval 或 Gold 通过。
+
+## 首轮 CI 红灯保留与修正
+
+首轮 P2-A 全仓回归原始红灯：PR CI #39119340934，3734 PASS / 6 SKIP / 1 FAIL。失败点仅为新增压缩率断言过高：预期 mapping 缩短至少 20%，实际安全保留七项字段后缩短约 7.1%。已按实测值收敛到保守 5% 下限，**没有删除 Check IDs、修改 D2 规则或安全门禁**。新的固定 HEAD 应重新执行 CI 后才可标技术 PASS。
