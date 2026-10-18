@@ -2401,3 +2401,13 @@ Error creating proxy: Unknown or unsupported transport “disabled” for addres
 [3054705:1018/150021.992029:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
 [3054705:1018/150021.992057:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
 [3054705:1018/150021.992071:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[工作区监听] 已停止
+[Bridge Registry] 自愈守护已停止
+[飞书 BridgeManager] 所有 Bot 已停止
+[钉钉 BridgeManager] 所有 Bot 已停止
+[微信 Bridge] 已停止
+[定时任务] 调度器已停止
+[Remote] 移动版服务已停止
+[全局快捷键] 已注销所有
+[设置] 已更新 keys: tabState
+error: script "dev:vite" exited with code 143

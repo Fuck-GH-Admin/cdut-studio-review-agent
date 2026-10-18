@@ -45,7 +45,7 @@ d36553b58e7a66632220bc3dcbdbaf5f7048fb1a916e9d514e3bd65ec1cb51cb  ./evidence/log
 54029c018a610ea37d293b37d6e1f91fb09a0cce829ee0b52d26f7a56aabb53b  ./evidence/logs/c10-ready-before-double-click.json
 a2a7a07bdf1cfb4c43798af0f85945438d6eaa3827b87cabfbcbabded7c937f0  ./evidence/logs/c10-stage-ui.json
 3ae039b776517e1b90924b5e5f216edecbb15487c78001a52d372e04073c7cb0  ./evidence/logs/current-c07-ui.json
-2870e885025f22fe738d507bd807bfe93a264a5180c7f972c920e52b3391ff35  ./evidence/logs/electron-retry.log
+c8d3a3debb9c2160168eae924584aa9e7476b92e2b492e2cde28141b2ba1a579  ./evidence/logs/electron-retry.log
 1e37937759137a406bb6790e71d2d1d43ff0f88861519f098f8f1f22fd50e200  ./evidence/logs/electron.log
 2e0ad94c7a56665deaff0e96a15fab555d5d58b076e63cca837ec32f90723552  ./evidence/logs/fixture-generation.log
 0078715d5182b90e5910848e1fccb70bf5baca8c1480c36915efcb40e98610fa  ./evidence/logs/xvfb-accepted-process.txt
