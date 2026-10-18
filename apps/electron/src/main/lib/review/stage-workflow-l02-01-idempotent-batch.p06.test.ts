@@ -99,6 +99,41 @@ describe('L02-01 human supplement is idempotent across V2 and batch projection',
     expect(readBatchStateV2(batchId)!.cases[0]!.status).toBe('done')
   })
 
+  test('E03: ambiguous multi-batch membership cannot resurrect an unrelated historical done entry', async () => {
+    const { caseId, batchId, taskId } = await seed()
+    const otherBatchId = 'batch-historical-' + randomUUID()
+    createBatchV2({
+      id: otherBatchId, name: '同案历史或并行批次', templateId: template.templateId,
+      templateVersion: template.version, policyVersionLock: [],
+      caseIds: [caseId], createdAt: new Date().toISOString(),
+    })
+    const initial = readAggregate(caseId)!
+    const opened = await recordStageDecision(caseId,
+      command('ambiguous-return-'+randomUUID(), initial.caseV2.revision, reviewer, {
+        taskId, action: 'return-for-supplement', reason: '需要新证明',
+        supplementReason: '补充真实材料', supplementRequiredElements: ['资料'],
+      }), template)
+    expect(opened.ok).toBeTrue()
+    if (!opened.ok) return
+    updateCaseStatus(batchId, caseId, 'done')
+    updateCaseStatus(otherBatchId, caseId, 'done')
+    const response = await respondSupplementV2(caseId,
+      command('ambiguous-response-'+randomUUID(), opened.aggregate.caseV2.revision, student, {
+        supplementId: opened.aggregate.supplements[0]!.id, note: '重新提交说明',
+      }))
+    expect(response.ok).toBeTrue()
+    if (!response.ok) return
+    const resolved = await resolveSupplementV2(caseId,
+      command('ambiguous-resolve-'+randomUUID(), response.aggregate.caseV2.revision, reviewer, {
+        supplementId: opened.aggregate.supplements[0]!.id, outcome: 'satisfied', reason: '核验完成',
+      }))
+    expect(resolved.ok).toBeTrue()
+    // 没有批次来源绑定时不能猜测哪个批次可以重新运行。
+    expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('done')
+    expect(readBatchStateV2(otherBatchId)?.cases[0]?.status).toBe('done')
+    expect(readAggregate(caseId)?.caseV2.stage).toBe('reviewing')
+  })
+
   test('same request ID with modified outcome and stale independent commands cannot silently write', async () => {
     const { caseId, taskId } = await seed()
     let aggregate = readAggregate(caseId)!
