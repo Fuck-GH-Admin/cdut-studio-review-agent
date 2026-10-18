@@ -30,6 +30,10 @@
 14. **业务表单兜底语义**：候选模板自身如果没有声明 `TemplateVersion.fields`，事实 UI 不把任意自然语言当字段；只使用本 Subject 的冻结 D2 事实责任键。无法提供业务标签时显示真实字段 key 而非所有字段同名为“补充信息”。特殊 G01-I 学籍没有被转换成未经授权的通用学生底账。
 15. **字段类型与跨案防护**：`w1-fact-value.ts` 按 V2 FieldValue 原 kind 校验 number/date/boolean/enum/multi/text，不再把数字更正悄悄降级成字符串；错误数值、无效日期、无授权 enum 拒绝并在事实卡显示原因。当前案卷必须包含被操作 Subject；D2 候选字段必须来自本对象固定 `evidenceCoverage` / gate，或已存在的 Subject 字段；超出范围的候选事实可见但不得点击确认。人工无有效来源禁止保存，错误通过 UI 可见并保留编辑状态。
 
+16. **定向材料重新解析**：新增 `review-d4-document-retry.ts`，D4 的申报/证明区对 failed/partial 材料提供“重新解析案卷内原件”。Main 仅从本案 `source-docs` 定位原件，验证普通文件、相对路径边界、原始大小和首次 Main 暂存 SHA-256；拒绝来自 Renderer 的路径、非 D4、已归档原件、旧 revision 和篡改字节。沿用 `importDocumentFromPath` 生成新的源文件 ID 和不可变版本；只有新版本 parsed 才归档旧文件，仍 partial/failed 则归档本次尝试、保留原文件，保存失败原因和所有版本来源。与批量追加共享 Main case BUSY 守卫；非数据库事务，不能宣称 OCR 或视觉自动补齐。
+17. **直接拖放的无路径安全契约**：新增 `stageD4DroppedBytes` 和 Preload typed IPC。Renderer 从真实拖入 File 提取用户提供的字节，**只上传 name + Uint8Array，不上传宿主路径**；Main 限制 16 份、每份 10 MB、总计 40 MB，验证可移植文件名并写到隔离目录，再统一复用 ZIP/文件夹、SHA 去重、跳过列表、跨 sender token 与建案后逐项冲突预检。D4 旧版路径拖放区隐藏；其他非 D4 审核保留旧体验。目录拖放不自动扫描，需使用原生文件夹 picker；仍待集中 Electron GUI/负载验收。
+18. **失败不是通过**：解析重试不自动确认 Subject 事实、不授权 EvidenceLink。无法完整解析的图片仍显示 partial，拖入材料仍受候选路由多任务阻断与 D2 immutable plan/unknown 条件约束。
+
 ### 本轮自动化覆盖
 
 - `review-d4-intake-roles.test.ts`：正常、缺省、role 注入、长度错、越界拒绝。
@@ -41,6 +45,8 @@
 - `review-d4-case-batch.test.ts`：在真实 D2 案卷使用本机 picker 暂存，再检验追加、SHA 重复拒绝、跨 sender、旧 revision、伪造替换目标、成功新版归档旧件、永久来源 hash 与重复 token、已建案文件夹 skip 强制同意。
 - `w1-fact-source.test.ts`：同案 Subject 自己的候选事实与 gate 递归键、真实 block/paragraph 精度、file 级降级、已归档/未解析来源拒绝、伪造块和旧 parseRevision 阴性测试。
 - `w1-fact-value.test.ts`：数值和单位保留、非法数字、日期/布尔/枚举、多值去重、未声明对象种类的拒绝；`review-d4-case-batch.test.ts` 补真实 D2 Subject `CorrectObservation` 原件 SourceRef + Receipt 持久化回归。
+- `review-d4-document-retry.test.ts`：真实 D2 案卷旧解析失败→重试成功/旧件归档、图片 partial→旧件有效、原件同长度篡改 SHA 拒绝、旧 revision 拒绝。
+- `review-d4-case-batch.test.ts` 新增真正字节拖放、SHA 去重、跳过清单人工确认、跨 owner、token 重放、危险名称和超限拒绝。
 - C10 Main 已消费/跨 sender 安全回归持续沿用 #126，C10 独立 GUI 门禁仍未签。
 - **CI 状态须以 PR #129 最后固定 HEAD 的实际远端运行回执为准**，不以本台账预先宣布通过。
 
@@ -48,7 +54,7 @@
 
 以下能力在 W1 的后续开发会话继续实际落代码，完成后才进入一次集中 W1 实机验收：
 
-- **已交付**原生选择器的文件夹/ZIP 展开、批内去重，以及已建案后的追加、同案 SHA/同名预检、明确旧版归档替换；**待完善**大规模解析进度与差分重试的专用界面、更多非原子失败复原证据、材料版本关系呈现和无二次 OS picker 的可靠桌面拖放授权合同。不可把 Renderer 任意路径视为可信授权。
+- **已交付**原生文件夹/ZIP 批量展开、批内哈希去重、案卷追加/同名替换，以及可信字节拖放和 failed/partial 原件的定向重试；**仍需完善**重试历史/版本图更细致的 UI、进度/取消、大批次流式传输与异常中断恢复。不可把 Renderer 路径视为已授权。
 - **已交付**D4 Subject 对象下的逐对象候选事实显示、人工来源确认与更正、字段责任限界及原文坐标定位；**仍需完善**提取器对更多 Office/PDF 格式的对象归属建议、待确认的候选事项拆案操作、批量纠错的可视化一致性、人工事实审查操作在旧/新版本之间的版本差异提示。来源不足仍须 unknown，不得从文件名推定事实。
 - 接通跨格式原件预览、页/段/单元格定位、人工提取纠错和版本化、证明对照对象的实际关联工作区；复用现有 `CenterPanel`、`ReviewMaterialControls`、`use-review-workspace-actions`、`SourceBlockView`，不新开第二套责任账本。
 - 模板适用表单从技术 ID 进一步转成作者态声明驱动的业务友好名称与校验；保留 G01-I student-field 单独通道与真实来源适配阻断，不让合成 student fixture 进入正式模式。
