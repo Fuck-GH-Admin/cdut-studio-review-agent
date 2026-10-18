@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import { useAtomValue, useStore } from 'jotai'
-import type { Actor, CaseAggregateV2, FieldValue, ReviewCommandV2, SourceRef } from '@profer/shared'
+import type { Actor, CaseAggregateV2, FieldValue, ReviewCommandV2 } from '@profer/shared'
+import { w1ObservationSources } from './w1-fact-source'
 import {
   reviewWorkspaceAggregatesByCaseAtom,
   reviewWorkspaceExtractedObservationsByCaseAtom,
@@ -16,26 +17,6 @@ function fieldValue(value: unknown): FieldValue {
   if (typeof value === 'number' && Number.isFinite(value)) return { kind: 'number', value }
   if (typeof value === 'boolean') return { kind: 'boolean', value }
   return { kind: 'text', value: value == null ? '' : String(value) }
-}
-
-function sourceRefsFor(aggregate: CaseAggregateV2, refs: unknown): SourceRef[] {
-  if (!Array.isArray(refs)) return []
-  return refs.flatMap((raw) => {
-    if (!raw || typeof raw !== 'object') return []
-    const value = raw as { documentVersionId?: unknown; quote?: unknown }
-    if (typeof value.documentVersionId !== 'string') return []
-    const document = aggregate.caseV2.documents.find((item) => item.versionId === value.documentVersionId)
-    if (!document) return []
-    const quote = typeof value.quote === 'string' ? value.quote : undefined
-    const block = quote ? document.blocks.find((item) => item.text.includes(quote) || quote.includes(item.text)) : undefined
-    return [{
-      caseId: aggregate.caseV2.id,
-      documentVersionId: document.versionId,
-      parseRevision: document.parseRevision,
-      location: block?.location ?? { kind: 'file' as const },
-      ...(quote ? { quote } : {}),
-    }]
-  })
 }
 
 export function useReviewWorkspaceActions(): {
@@ -107,7 +88,7 @@ export function useReviewWorkspaceActions(): {
         subjectId: observation.subjectId,
         fieldKey: observation.fieldKey,
         value: fieldValue(value),
-        sourceRefs: sourceRefsFor(aggregate, observation.sourceRefs),
+        sourceRefs: w1ObservationSources(aggregate, observation.sourceRefs),
         reason,
       },
     }) }))
