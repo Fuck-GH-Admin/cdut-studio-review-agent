@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { useAtomValue, useStore } from 'jotai'
 import type { Actor, CaseAggregateV2, FieldValue, ReviewCommandV2 } from '@profer/shared'
 import { w1CandidateFactKeys, w1ObservationSources } from './w1-fact-source'
+import { w1AssertEvidenceAssignment } from './w1-evidence-assignment'
 import {
   reviewWorkspaceAggregatesByCaseAtom,
   reviewWorkspaceExtractedObservationsByCaseAtom,
@@ -103,6 +104,7 @@ export function useReviewWorkspaceActions(): {
 
   const transitionEvidenceLink = useCallback(async (input: { id?: string; documentVersionId: string; subjectId: string; supportsFact: string; status: 'confirmed' | 'rejected' }) => {
     const aggregate = await currentAggregate()
+    w1AssertEvidenceAssignment(aggregate, input)
     await apply(await window.reviewAPI.setEvidenceLinkV2({ caseId: aggregate.caseV2.id, command: command(aggregate, {
       type: 'SetEvidenceLink',
       payload: input.id

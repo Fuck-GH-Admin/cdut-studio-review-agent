@@ -506,7 +506,9 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                 {aggregate && (
                   <details className="mt-1 rounded-lg border border-border/50 px-2.5 py-1.5">
                     <summary className="cursor-pointer text-xs font-medium text-muted-foreground">管理这份证明与申报事项的关联</summary>
-                    <EvidenceLinkControls aggregate={aggregate} documentVersionId={`${document.id}-v1`} actions={workspaceActions} />
+                    {aggregate.caseV2.documents.some(v => v.versionId === `${document.id}-v1` && v.active !== false)
+                      ? <EvidenceLinkControls aggregate={aggregate} documentVersionId={`${document.id}-v1`} actions={workspaceActions} />
+                      : <p role="alert" className="text-amber-700 dark:text-amber-300">当前文件版本尚未同步为有效 V2 来源，不能建立证明关联，请刷新案卷核对。</p>}
                   </details>
                 )}
                 <details className="mt-1 rounded-lg border border-border/50 bg-muted/20 px-2.5 py-1.5">
@@ -916,11 +918,16 @@ function EvidenceLinkControls({
   const links = aggregate.evidenceLinks.filter((link) => link.documentVersionId === documentVersionId)
   const doc = aggregate.caseV2.documents.find((item) => item.versionId === documentVersionId)
   const titles = new Map(aggregate.caseV2.subjects.map((subject) => [subject.id, subject.title]))
-  const facts = [...new Set(aggregate.d2RuntimePlan?.mapping.filter(m => m.subjectId === subjectId).flatMap(m => m.evidenceCoverage?.supportsFacts ?? []) ?? [])]
+  const facts = [...new Set(aggregate.d2RuntimePlan?.mapping
+    .filter(m => m.subjectId === subjectId)
+    .flatMap(m => [m.evidenceCoverage?.fieldKey, ...(m.evidenceCoverage?.supportsFacts ?? [])])
+    .filter((fact): fact is string => !!fact && !!fact.trim()) ?? [])]
   const supportsFact = facts.includes(selectedFact) ? selectedFact : facts[0]
   const update = async (input: Parameters<typeof actions.transitionEvidenceLink>[0]): Promise<void> => {
     setBusy(true)
-    try { await actions.transitionEvidenceLink(input) } catch (error) { console.error('[审核工作台] 更新证明关联失败', error) } finally { setBusy(false) }
+    try { await actions.transitionEvidenceLink(input) }
+    catch (error) { toast.error(error instanceof Error ? error.message : String(error)) }
+    finally { setBusy(false) }
   }
   return (
     <div className="mt-1 rounded-lg border border-border/50 bg-card px-2.5 py-2 text-xs">

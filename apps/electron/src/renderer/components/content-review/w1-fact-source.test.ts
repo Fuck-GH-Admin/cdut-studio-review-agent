@@ -48,8 +48,7 @@ describe('W1 explicit subject facts and truthful V2 SourceRef precision', () => 
       location: { kind: 'paragraph', index: 2 },
     }
     expect(w1ObservationSources(aggregate, [current])[0]!.location).toEqual({ kind: 'paragraph', index: 2 })
-    expect(w1ObservationSources(aggregate, [{ ...current, parseRevision: 1 }])[0]!.location)
-      .toEqual({ kind: 'file' })
+    expect(w1ObservationSources(aggregate, [{ ...current, parseRevision: 1 }])).toEqual([])
     expect(w1ObservationSources(aggregate, [{ ...current, location: { kind: 'paragraph', index: 999 } }])[0]!.location)
       .toEqual({ kind: 'file' })
   })
@@ -59,5 +58,11 @@ describe('W1 explicit subject facts and truthful V2 SourceRef precision', () => 
     expect(() => w1ExplicitSourceRef(aggregate, 'd3-v1')).toThrow('W1_SOURCE_INACTIVE_OR_UNPARSED')
     expect(w1ObservationSources(aggregate, [{ documentVersionId: 'd2-v1', quote: 'old' }])).toEqual([])
     expect(w1ObservationSources(aggregate, [{ documentVersionId: 'd1-v1', blockId: '../untrusted' }])).toEqual([])
+    expect(w1ObservationSources(aggregate, [{
+      caseId: 'foreign-case', documentVersionId: 'd1-v1', parseRevision: 3, blockId: 'a',
+    }])).toEqual([])
+    expect(w1ObservationSources(aggregate, [{
+      caseId: 'd4-test-case', documentVersionId: 'd1-v1', parseRevision: 1, blockId: 'a',
+    }])).toEqual([])
   })
 })

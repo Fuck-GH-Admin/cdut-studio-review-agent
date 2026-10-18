@@ -90,12 +90,16 @@ export async function retryD4CaseDocument(input: {
             createHash('sha256').update(readFileSync(copied)).digest('hex') !== checked.sha256) {
           throw new Error('D4_RETRY_SOURCE_CHANGED_DURING_PARSE')
         }
+        if ((getCase(caseId)?.revision ?? -1) !== input.expectedRevision + 2) {
+          throw new Error('D4_RETRY_CONCURRENT_CASE_EDIT')
+        }
         const pending = await updateCase(caseId, fresh => ({
           ...fresh, d4MaterialTransitions: [...(fresh.d4MaterialTransitions ?? []), {
             previousDocumentId: documentId, newDocumentId: replay.id,
             kind: 'retry', status: 'pending', originLabel: checked.originLabel,
           }],
-        }), { reason: 'W1 重试原件待归档关系' })
+        }), { expectedRevision: input.expectedRevision + 2,
+          reason: 'W1 重试原件待归档关系' })
         await removeDocumentsFromCase({ caseId, role: checked.document.role,
           documentIds: [documentId], expectedRevision: pending.revision })
         await updateCase(caseId, fresh => ({

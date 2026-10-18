@@ -56,9 +56,13 @@ export function w1ObservationSources(aggregate: CaseAggregateV2, raw: unknown): 
       caseId?: unknown; parseRevision?: unknown; location?: unknown
     }
     if (typeof item.documentVersionId !== 'string') return []
+    // A sourced hint that asserts a different case can never be silently
+    // remapped into the currently visible case's similarly named version.
+    if (item.caseId !== undefined && item.caseId !== aggregate.caseV2.id) return []
     const doc = aggregate.caseV2.documents.find(d =>
       d.versionId === item.documentVersionId && d.active !== false)
     if (!doc || (doc.parseStatus !== 'parsed' && doc.parseStatus !== 'partial')) return []
+    if (item.parseRevision !== undefined && item.parseRevision !== doc.parseRevision) return []
     // Existing V2 SourceRef can carry a precise original location.
     // Retain it only when case, parse revision and a live source block agree.
     if (item.caseId === aggregate.caseV2.id && item.parseRevision === doc.parseRevision &&
