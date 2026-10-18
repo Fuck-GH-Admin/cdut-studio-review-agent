@@ -239,8 +239,10 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
             draft.tasks = [...draft.tasks, { id: newWorkflowTaskId(), caseId: draft.caseV2.id, stageId: originStageId, round: originTask?.round ?? 1, assigneeRole: originTask?.assigneeRole ?? 'reviewer', status: 'open', prerequisiteTaskId: target.originTaskId, inputRevision: draft.caseV2.revision, createdAt: new Date().toISOString() }]
           }
         }
+        // submitCommand returns the value of mutate(draft) as result.entity.
+        // A cached requestId replay returns only its prior receipt, no entity.
+        return { ...target, status: payload.outcome }
       },
-      entity: payload.outcome === 'satisfied' ? { ...target, status: 'satisfied' } : { ...target, status: payload.outcome },
     }
   })
   // submitCommand may return a previous receipt for an identical requestId.
