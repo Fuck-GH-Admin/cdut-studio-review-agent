@@ -92,31 +92,32 @@ export async function createD4ClientCase(input: {
     createdCaseId = caseId
     await ensureWorkspaceAggregateV2(caseId)
     const d4IntakeFailures: string[] = []
-    const d4IntakeOrigins: NonNullable<ReviewCase['d4IntakeOrigins']> = []
     if (intake) {
       for (const [index, file] of intake.files.entries()) {
         try {
           const parsed = await importDocumentFromPath({ caseId, sourcePath: file.sourcePath, role: intakeRoles[index]! })
-          d4IntakeOrigins.push({ documentId: parsed.id, originLabel: file.originLabel, sha256: file.sha256 })
-          if (parsed.parseStatus !== 'parsed') d4IntakeFailures.push(file.name + ': ' + parsed.parseStatus)
+          await updateCase(caseId, fresh => ({
+            ...fresh, d4IntakeOrigins: [...(fresh.d4IntakeOrigins ?? []), {
+              documentId: parsed.id, originLabel: file.originLabel, sha256: file.sha256,
+            }],
+          }), { reason: 'W1 建案批次逐原件来源及哈希持久化' })
+          if (parsed.parseStatus !== 'parsed' || !parsed.blocks.some(block => !!block.text.trim())) {
+            const reason = file.name + ': ' + parsed.parseStatus + '（未形成完整可审核文本）'
+            d4IntakeFailures.push(reason)
+            await updateCase(caseId, fresh => ({
+              ...fresh, d4IntakeWarnings: [...(fresh.d4IntakeWarnings ?? []),
+                { originLabel: file.originLabel, reason }],
+            }), { reason: 'W1 建案单文件解析不完整' })
+          }
         } catch (error) {
-          d4IntakeFailures.push(file.name + ': ' + (error instanceof Error ? error.message : String(error)))
+          const reason = file.name + ': ' + (error instanceof Error ? error.message : String(error))
+          d4IntakeFailures.push(reason)
+          await updateCase(caseId, fresh => ({
+            ...fresh, d4IntakeWarnings: [...(fresh.d4IntakeWarnings ?? []),
+              { originLabel: file.originLabel, reason }],
+          }), { reason: 'W1 建案单文件导入失败' })
         }
       }
-    }
-    // An omitted or failed document must remain visible after reopening this
-    // case, not only in a one-time success toast.
-    if (d4IntakeFailures.length || d4IntakeOrigins.length) {
-      await updateCase(caseId, fresh => ({
-        ...fresh,
-        ...(d4IntakeOrigins.length ? { d4IntakeOrigins: [
-          ...(fresh.d4IntakeOrigins ?? []), ...d4IntakeOrigins,
-        ] } : {}),
-        d4IntakeWarnings: [
-          ...(fresh.d4IntakeWarnings ?? []),
-          ...d4IntakeFailures.map(item => ({ originLabel: item.split(': ')[0] ?? item, reason: item })),
-        ],
-      }), { reason: 'W1 文件批次导入/解析失败，保留未完成清单' })
     }
     const omissions = [...(intake?.skipped.map(item => item.originLabel + ': ' + item.reason) ?? []), ...d4IntakeFailures]
     return { ...(getCase(caseId) ?? reviewCase), ...(omissions.length ? { d4IntakeFailures: omissions } : {}) }

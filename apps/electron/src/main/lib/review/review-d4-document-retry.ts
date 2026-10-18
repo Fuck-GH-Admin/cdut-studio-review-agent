@@ -66,6 +66,14 @@ export async function retryD4CaseDocument(input: {
       caseId, sourcePath: checked.realSourcePath, role: checked.document.role,
       originalFileName: checked.document.fileName,
     })
+    // Record the new original before attempting to retire either document. If the
+    // process exits mid-retry, the new active/archived version still has provenance.
+    await updateCase(caseId, fresh => ({
+      ...fresh, d4IntakeOrigins: [...(fresh.d4IntakeOrigins ?? []), {
+        documentId: replay.id, sha256: checked.sha256,
+        originLabel: '原件重试解析：' + checked.originLabel,
+      }],
+    }), { reason: 'W1 重试原件逐文件来源登记' })
     let status: D4DocumentRetryResult['status'] = 'needs-review'
     let message = ''
     const hasReviewableText = replay.blocks.some(block => !!block.text.trim())
@@ -74,14 +82,34 @@ export async function retryD4CaseDocument(input: {
         // The new import itself advances V1 by exactly one revision. Another
         // concurrent editor write must prevent automatic retirement of old
         // material; both originals stay available for explicit reconciliation.
-        if ((getCase(caseId)?.revision ?? -1) !== input.expectedRevision + 1) {
-          throw new Error('D4_RETRY_CONCURRENT_CASE_EDIT')
+        // Recheck both the original and the *newly copied* original: a local
+        // modification between preflight and parsing must never retire the old.
+        const copied = join(getReviewCasesDir(), caseId, 'source-docs',
+          replay.id + '-' + replay.fileName)
+        if (createHash('sha256').update(readFileSync(checked.realSourcePath)).digest('hex') !== checked.sha256 ||
+            createHash('sha256').update(readFileSync(copied)).digest('hex') !== checked.sha256) {
+          throw new Error('D4_RETRY_SOURCE_CHANGED_DURING_PARSE')
         }
-        await removeDocumentsFromCase({ caseId, role: checked.document.role, documentIds: [documentId] })
+        const pending = await updateCase(caseId, fresh => ({
+          ...fresh, d4MaterialTransitions: [...(fresh.d4MaterialTransitions ?? []), {
+            previousDocumentId: documentId, newDocumentId: replay.id,
+            kind: 'retry', status: 'pending', originLabel: checked.originLabel,
+          }],
+        }), { reason: 'W1 重试原件待归档关系' })
+        await removeDocumentsFromCase({ caseId, role: checked.document.role,
+          documentIds: [documentId], expectedRevision: pending.revision })
+        await updateCase(caseId, fresh => ({
+          ...fresh, d4MaterialTransitions: (fresh.d4MaterialTransitions ?? []).map(item =>
+            item.newDocumentId === replay.id ? { ...item, status: 'archived' as const } : item),
+        }), { reason: 'W1 重试原件归档关系' })
         status = 'replaced'
         message = '重新解析成功，旧版本已归档；审核结果需要重新计算'
       } catch (error) {
-        message = '新材料已解析，但旧材料归档失败；两个版本均保留，须人工处理：' +
+        await updateCase(caseId, fresh => ({
+          ...fresh, d4MaterialTransitions: (fresh.d4MaterialTransitions ?? []).map(item =>
+            item.newDocumentId === replay.id ? { ...item, status: 'archive-failed' as const } : item),
+        }), { reason: 'W1 重试归档异常，待按实际版本对账' })
+        message = '新材料已解析，但旧材料归档尚未确认；请核对两个版本的真实状态：' +
           (error instanceof Error ? error.message : String(error))
       }
     } else {
@@ -89,7 +117,8 @@ export async function retryD4CaseDocument(input: {
       // the attempt, not the original; never let failed new blocks replace
       // the current source or make a partial file look fully reviewed.
       try {
-        await removeDocumentsFromCase({ caseId, role: checked.document.role, documentIds: [replay.id] })
+        await removeDocumentsFromCase({ caseId, role: checked.document.role,
+          documentIds: [replay.id], expectedRevision: getCase(caseId)?.revision })
         status = 'still-incomplete'
         message = '重新解析仍不完整或没有可核验文字，旧材料仍有效；已记录此次尝试，请人工核对原件'
       } catch (error) {
@@ -99,10 +128,6 @@ export async function retryD4CaseDocument(input: {
     }
     await updateCase(caseId, fresh => ({
       ...fresh,
-      d4IntakeOrigins: [...(fresh.d4IntakeOrigins ?? []), {
-        documentId: replay.id, sha256: checked.sha256,
-        originLabel: '原件重试解析：' + checked.originLabel,
-      }],
       d4IntakeWarnings: status === 'replaced' ? fresh.d4IntakeWarnings : [
         ...(fresh.d4IntakeWarnings ?? []), {
           originLabel: checked.originLabel,

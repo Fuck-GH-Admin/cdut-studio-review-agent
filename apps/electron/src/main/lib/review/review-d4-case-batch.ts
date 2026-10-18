@@ -80,58 +80,80 @@ export async function applyD4CaseBatch(input: {
   if (replacementIds.length !== new Set(replacementIds).size) throw new Error('D4_BATCH_REPLACEMENT_TARGET_REUSED')
   const intake = claimD4Intake(token, ownerWebContentsId)
   D4_CASE_WRITE_BUSY.add(caseId)
-  let consumed = false
   const documents: D4CaseBatchResult['documents'] = []
-  const warnings: D4CaseBatchResult['skipped'] = [...review.skipped]
-  const origins: NonNullable<ReviewCase['d4IntakeOrigins']> = []
+  const warnings: D4CaseBatchResult['skipped'] = []
   const replacements: D4CaseBatchResult['replacements'] = []
+  const warn = async (originLabel: string, reason: string): Promise<void> => {
+    const warning = { originLabel, reason }
+    warnings.push(warning)
+    await updateCase(caseId, fresh => ({
+      ...fresh, d4IntakeWarnings: [...(fresh.d4IntakeWarnings ?? []), warning],
+    }), { reason: 'W1 逐文件导入异常或人工跳过（持久历史）' })
+  }
+  const transition = async (
+    previousDocumentId: string, newDocumentId: string, originLabel: string,
+    status: 'pending' | 'archived' | 'archive-failed',
+  ): Promise<number> => {
+    const updated = await updateCase(caseId, fresh => {
+      const entries = [...(fresh.d4MaterialTransitions ?? [])]
+      const index = entries.findIndex(item => item.newDocumentId === newDocumentId)
+      const entry = { previousDocumentId, newDocumentId, originLabel, kind: 'replace' as const, status }
+      if (index < 0) entries.push(entry)
+      else entries[index] = entry
+      return { ...fresh, d4MaterialTransitions: entries }
+    }, { reason: 'W1 替换关系及中断对账状态' })
+    return updated.revision ?? 0
+  }
   try {
-    consumed = true
+    // Persist the Main-supplied skipped manifest before any actual imports.
+    // A crash mid-batch must not erase the reviewer's acknowledged omissions.
+    for (const omitted of review.skipped) await warn(omitted.originLabel, omitted.reason)
     for (const [i, file] of intake.files.entries()) {
       const choice = input.choices[i]!
       if (choice.kind === 'skip') {
-        warnings.push({ originLabel: file.originLabel, reason: file.sha256 ===
-          intake.files.find((item, index) => index !== i && item.sha256 === file.sha256)?.sha256
-          ? '审核员跳过批次重复文件' : '审核员选择跳过此材料' })
+        await warn(file.originLabel, '审核员选择跳过此材料')
         continue
       }
+      let imported: D4CaseBatchResult['documents'][number]
       try {
-        const imported = await importDocumentFromPath({
+        imported = await importDocumentFromPath({
           caseId, sourcePath: file.sourcePath, role,
           fileIndex: i + 1, fileCount: intake.files.length,
         })
-        documents.push(imported)
-        origins.push({ documentId: imported.id, originLabel: file.originLabel, sha256: file.sha256 })
-        if (imported.parseStatus !== 'parsed') {
-          warnings.push({ originLabel: file.originLabel, reason: '材料已保存，但解析状态为 ' +
-            imported.parseStatus + '；未撤下历史材料' })
-          continue
-        }
-        if (choice.kind === 'replace') {
-          try {
-            await removeDocumentsFromCase({ caseId, role, documentIds: [choice.documentId] })
-            replacements.push({ oldDocumentId: choice.documentId, newDocumentId: imported.id })
-          } catch (error) {
-            warnings.push({ originLabel: file.originLabel,
-              reason: '新原件已保留，但旧材料归档失败，须人工复核：' +
-                (error instanceof Error ? error.message : String(error)) })
-          }
-        }
       } catch (error) {
-        warnings.push({ originLabel: file.originLabel,
-          reason: '文件导入失败：' + (error instanceof Error ? error.message : String(error)) })
+        await warn(file.originLabel, '文件导入失败：' + (error instanceof Error ? error.message : String(error)))
+        continue
       }
-    }
-    if (origins.length || warnings.length) {
+      documents.push(imported)
+      // Store each source identity immediately, not after processing every file.
+      // On interruption the active document remains traceable by Main-recorded SHA.
       await updateCase(caseId, fresh => ({
-        ...fresh,
-        d4IntakeOrigins: [...(fresh.d4IntakeOrigins ?? []), ...origins],
-        d4IntakeWarnings: [...(fresh.d4IntakeWarnings ?? []), ...warnings],
-      }), { reason: 'W1 批量追加及材料冲突处理结果' })
+        ...fresh, d4IntakeOrigins: [...(fresh.d4IntakeOrigins ?? []),
+          { documentId: imported.id, originLabel: file.originLabel, sha256: file.sha256 }],
+      }), { reason: 'W1 导入原件逐文件来源及哈希持久化' })
+      if (imported.parseStatus !== 'parsed' || !imported.blocks.some(block => !!block.text.trim())) {
+        await warn(file.originLabel, '材料已保存，但解析未产生完整可审核文字（' +
+          imported.parseStatus + '）；历史材料保持有效')
+        continue
+      }
+      if (choice.kind === 'replace') {
+        const revision = await transition(choice.documentId, imported.id, file.originLabel, 'pending')
+        try {
+          await removeDocumentsFromCase({
+            caseId, role, documentIds: [choice.documentId], expectedRevision: revision,
+          })
+          replacements.push({ oldDocumentId: choice.documentId, newDocumentId: imported.id })
+          await transition(choice.documentId, imported.id, file.originLabel, 'archived')
+        } catch (error) {
+          await transition(choice.documentId, imported.id, file.originLabel, 'archive-failed')
+          await warn(file.originLabel, '新原件已保存，旧版归档或同步未完全结束，必须核对实际 active/archived：' +
+            (error instanceof Error ? error.message : String(error)))
+        }
+      }
     }
     return { caseId, documents, skipped: warnings, replacements }
   } finally {
-    releaseD4Intake(intake, consumed)
+    releaseD4Intake(intake, true)
     D4_CASE_WRITE_BUSY.delete(caseId)
   }
 }

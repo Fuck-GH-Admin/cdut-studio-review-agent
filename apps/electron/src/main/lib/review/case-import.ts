@@ -282,6 +282,8 @@ export async function removeDocumentsFromCase(input: {
   caseId: string
   role: SourceDocument['role']
   documentIds?: string[]
+  /** Optional Main-side optimistic guard, checked inside case-store's write queue. */
+  expectedRevision?: number
 }): Promise<ReviewCase> {
   assertSafeId(input.caseId)
   if (input.documentIds !== undefined && (!Array.isArray(input.documentIds) || input.documentIds.some((id) => typeof id !== 'string' || !id))) {
@@ -329,7 +331,8 @@ export async function removeDocumentsFromCase(input: {
           }
         : {}),
     }
-  }, { reason: `从当前审核中移除${input.role === 'rule' ? '审核依据' : input.role === 'application' ? '申报材料' : '证明材料'}` })
+  }, { expectedRevision: input.expectedRevision,
+    reason: `从当前审核中移除${input.role === 'rule' ? '审核依据' : input.role === 'application' ? '申报材料' : '证明材料'}` })
   await syncWorkspaceProjectionV2(input.caseId)
   return updated
 }
