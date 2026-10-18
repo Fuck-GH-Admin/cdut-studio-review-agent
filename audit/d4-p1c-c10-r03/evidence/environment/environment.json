@@ -1,0 +1,51 @@
+{
+  "executionDateLocal": "2026-10-19",
+  "target": {
+    "pullRequest": 126,
+    "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+    "headRef": "test/d4-p1c-c10-r03-input-token-gates",
+    "headSha": "412e1520b22591818463dff3e6658cfa09fe124d",
+    "baseRef": "fix/d4-p1c-c10-lifecycle-r02",
+    "baseSha": "fc5100b339d1f097aea4ee60bd2d912276bf8429",
+    "mergeBaseSha": "fc5100b339d1f097aea4ee60bd2d912276bf8429"
+  },
+  "audit": {
+    "branch": "audit/d4-p1c-c10-r03",
+    "draftPrBaseRef": "test/d4-p1c-c10-r03-input-token-gates"
+  },
+  "worktree": {
+    "mode": "detached during execution",
+    "testedHeadSha": "412e1520b22591818463dff3e6658cfa09fe124d",
+    "testedTreeShaBeforeEvidence": "5b1c5e6bc081ac6640fa5138ea7c61167661dfe3",
+    "cleanAfterTemporaryInstrumentationRevert": true,
+    "productionSourceChanged": false
+  },
+  "runtime": {
+    "os": "Linux",
+    "bun": "1.4.0",
+    "node": "v22.23.2",
+    "electron": "43.7.7",
+    "display": "Xvfb :120, 1600x1000x24",
+    "windowManager": "Openbox",
+    "modelProviderCount": 0,
+    "mode": "offline demo; no CAS or online model"
+  },
+  "fixture": {
+    "name": "synthetic-40b.md",
+    "bytes": 40,
+    "sha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e",
+    "selection": "native OS file picker"
+  },
+  "instrumentation": {
+    "basedOn": "R02 test-only Main handler instrumentation",
+    "records": [
+      "monotonic sequence",
+      "timestamp",
+      "sender id"
+    ],
+    "materialContentLogged": false,
+    "revertedAfterExecution": true,
+    "patch": "temporary-main-instrumentation.patch"
+  },
+  "profile": "Fresh temporary Electron config and user-data; concrete path omitted from evidence."
+}

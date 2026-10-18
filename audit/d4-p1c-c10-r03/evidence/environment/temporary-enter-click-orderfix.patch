@@ -1,0 +1,12 @@
+--- apps/electron/scripts/review-d4-c10-r03-input.mjs	2026-10-19 02:12:32.765194542 +0800
++++ /tmp/d4-c10-r03-qa/review-d4-c10-r03-input-orderfix.mjs	2026-10-19 02:28:36.519445911 +0800
+@@ -50,8 +50,8 @@
+   if (!form) throw Error('CreateCaseDialog form missing')
+   const button = form.querySelector('button[type="submit"]')
+   if (!button) throw Error('CreateCaseDialog submit button missing')
+-  button.scrollIntoView({block:'center',inline:'center'})
+   if (${JSON.stringify(mode)} === 'enter-click') title.focus()
++  button.scrollIntoView({block:'center',inline:'center'})
+   const r = button.getBoundingClientRect()
+   const x = r.left + r.width / 2, y = r.top + r.height / 2
+   const target = document.elementFromPoint(x,y)

@@ -1,0 +1,95 @@
+{
+  "mode": "enter-click",
+  "requestedMouseGapMs": null,
+  "preflight": {
+    "x": 1057,
+    "y": 863.703125,
+    "width": 88,
+    "height": 36,
+    "buttonEnabled": true,
+    "activeTag": "INPUT",
+    "activeIsTitle": true
+  },
+  "dispatchAcknowledgements": 6,
+  "dispatchedAt": 1792348116586,
+  "observedTrustedPointerDownGapMs": null,
+  "observedCreateButtonClicks": 1,
+  "observedTrustedSubmits": 1,
+  "timingWithin120ms": false,
+  "outcome": "NATIVE_SINGLE_SUBMIT_OBSERVED",
+  "events": [
+    {
+      "type": "keydown",
+      "trusted": true,
+      "at": 115763.90000000037,
+      "targetTag": "INPUT",
+      "createButton": false,
+      "buttonDisabled": null,
+      "key": "Enter",
+      "clickDetail": 0
+    },
+    {
+      "type": "click",
+      "trusted": true,
+      "at": 115764.40000000037,
+      "targetTag": "BUTTON",
+      "createButton": true,
+      "buttonDisabled": false,
+      "clickDetail": 0
+    },
+    {
+      "type": "submit",
+      "trusted": true,
+      "at": 115764.40000000037,
+      "targetTag": "FORM",
+      "createButton": false,
+      "buttonDisabled": null
+    },
+    {
+      "type": "pointerdown",
+      "trusted": true,
+      "at": 115766.70000000019,
+      "targetTag": "DIV",
+      "createButton": false,
+      "buttonDisabled": null,
+      "clickDetail": 0
+    },
+    {
+      "type": "mousedown",
+      "trusted": true,
+      "at": 115766.70000000019,
+      "targetTag": "DIV",
+      "createButton": false,
+      "buttonDisabled": null,
+      "clickDetail": 1
+    },
+    {
+      "type": "pointerup",
+      "trusted": true,
+      "at": 115768.30000000028,
+      "targetTag": "DIV",
+      "createButton": false,
+      "buttonDisabled": null,
+      "clickDetail": 0
+    },
+    {
+      "type": "mouseup",
+      "trusted": true,
+      "at": 115768.30000000028,
+      "targetTag": "DIV",
+      "createButton": false,
+      "buttonDisabled": null,
+      "clickDetail": 1
+    },
+    {
+      "type": "click",
+      "trusted": true,
+      "at": 115768.30000000028,
+      "targetTag": "DIV",
+      "createButton": false,
+      "buttonDisabled": null,
+      "clickDetail": 1
+    }
+  ],
+  "caveat": "Check separate Main entry log, success/failure toasts, and read-only IPC. No GUI PASS is implied by event counts alone."
+}

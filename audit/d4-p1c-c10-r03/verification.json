@@ -1,0 +1,124 @@
+{
+  "verdict": "C10_R03_BLOCKED_INPUT",
+  "scope": {
+    "codeCi": "CODE_CI_PASS",
+    "model": "MODEL_NOT_RUN",
+    "p06": "P06_NOT_RUN"
+  },
+  "target": {
+    "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+    "pullRequest": 126,
+    "headRef": "test/d4-p1c-c10-r03-input-token-gates",
+    "headSha": "412e1520b22591818463dff3e6658cfa09fe124d",
+    "baseSha": "fc5100b339d1f097aea4ee60bd2d912276bf8429",
+    "mergeBaseSha": "fc5100b339d1f097aea4ee60bd2d912276bf8429",
+    "treeShaBeforeEvidence": "5b1c5e6bc081ac6640fa5138ea7c61167661dfe3"
+  },
+  "audit": {
+    "branch": "audit/d4-p1c-c10-r03",
+    "baseRef": "test/d4-p1c-c10-r03-input-token-gates",
+    "draft": true
+  },
+  "checks": {
+    "frozenInstall": "PASS",
+    "typecheck": "PASS",
+    "boundaries": "PASS",
+    "mainIntakeTokenTests": {
+      "status": "PASS",
+      "passed": 5,
+      "failed": 0,
+      "expectCalls": 22
+    },
+    "rendererSubmitTests": {
+      "status": "PASS",
+      "passed": 9,
+      "failed": 0,
+      "expectCalls": 50
+    },
+    "githubCi": "7/7 success"
+  },
+  "gui": {
+    "runtime": "Electron 43.7.7 / Xvfb 1600x1000x24 / Openbox",
+    "providerCount": 0,
+    "mode": "offline demo",
+    "fixtureBytes": 40,
+    "fixtureSha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e",
+    "mouse40": {
+      "requestedGapMs": 40,
+      "observedPointerdownGapsMs": [
+        543.3,
+        475.3,
+        507.4
+      ],
+      "within120ms": false,
+      "secondEventTarget": "DIV",
+      "trustedSubmitsPerAttempt": [
+        1,
+        1,
+        1
+      ],
+      "result": "INPUT_GAP_NOT_MET"
+    },
+    "enterClick": {
+      "trustedEnter": true,
+      "trustedDefaultButtonClick": true,
+      "trustedSubmitCount": 1,
+      "laterMouseTarget": "DIV",
+      "mainEntries": 1,
+      "result": "TEST_INPUT_INVALID"
+    },
+    "persistedCases": 4,
+    "eachPersistedOnce": true,
+    "postReloadReadbackStable": true
+  },
+  "storedDocuments": [
+    {
+      "caseId": "d4-5617b73e-53be-4eb0-8346-8aebe1676ba4",
+      "documentId": "doc-1792347753217-ikl60w",
+      "title": "C10-R03-MOUSE-20261019-01",
+      "bytes": 40,
+      "sourceSha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e",
+      "storedCopySha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+    },
+    {
+      "caseId": "d4-08ff4c30-e923-4c7f-9e7b-689e9a6bd0df",
+      "documentId": "doc-1792347867696-8d26mm",
+      "title": "C10-R03-MOUSE-20261019-02",
+      "bytes": 40,
+      "sourceSha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e",
+      "storedCopySha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+    },
+    {
+      "caseId": "d4-f17a0bf9-f523-4126-98d4-adae0ee849a9",
+      "documentId": "doc-1792348049050-u4wyy2",
+      "title": "C10-R03-MOUSE-20261019-03",
+      "bytes": 40,
+      "sourceSha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e",
+      "storedCopySha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+    },
+    {
+      "caseId": "d4-aa99d4c4-9f02-45a1-b834-813623896d92",
+      "documentId": "doc-1792348117050-toyyiz",
+      "title": "C10-R03-ENTER-CLICK-20261019-01",
+      "bytes": 40,
+      "sourceSha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e",
+      "storedCopySha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+    }
+  ],
+  "limitations": [
+    "GUI physical double-click path not credibly exercised",
+    "GUI Enter+Click mouse event did not target the submit button",
+    "no product failure inferred"
+  ],
+  "instrumentation": {
+    "mainHandlerTemporaryPatch": "reverted",
+    "logsContent": false,
+    "entryLog": "sequence/time/sender only"
+  },
+  "evidence": {
+    "report": "REPORT.md",
+    "checks": "evidence/logs/prescribed-commands.json",
+    "readback": "evidence/readback/c10-r03-readback-final-after-reload.json",
+    "checksums": "SHA256SUMS"
+  }
+}

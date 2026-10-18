@@ -1,0 +1,38 @@
+{
+  "fixtureSha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e",
+  "copies": [
+    {
+      "caseId": "d4-5617b73e-53be-4eb0-8346-8aebe1676ba4",
+      "documentId": "doc-1792347753217-ikl60w",
+      "title": "C10-R03-MOUSE-20261019-01",
+      "bytes": 40,
+      "sourceSha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e",
+      "storedCopySha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+    },
+    {
+      "caseId": "d4-08ff4c30-e923-4c7f-9e7b-689e9a6bd0df",
+      "documentId": "doc-1792347867696-8d26mm",
+      "title": "C10-R03-MOUSE-20261019-02",
+      "bytes": 40,
+      "sourceSha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e",
+      "storedCopySha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+    },
+    {
+      "caseId": "d4-f17a0bf9-f523-4126-98d4-adae0ee849a9",
+      "documentId": "doc-1792348049050-u4wyy2",
+      "title": "C10-R03-MOUSE-20261019-03",
+      "bytes": 40,
+      "sourceSha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e",
+      "storedCopySha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+    },
+    {
+      "caseId": "d4-aa99d4c4-9f02-45a1-b834-813623896d92",
+      "documentId": "doc-1792348117050-toyyiz",
+      "title": "C10-R03-ENTER-CLICK-20261019-01",
+      "bytes": 40,
+      "sourceSha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e",
+      "storedCopySha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+    }
+  ],
+  "verification": "SHA-256 of copied 40-byte application document matched the fixture for all four persisted cases."
+}
