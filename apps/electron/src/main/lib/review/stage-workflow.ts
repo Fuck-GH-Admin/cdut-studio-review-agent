@@ -197,6 +197,14 @@ export function respondSupplementV2(caseId: string, command: { requestId: string
     // 角色校验（05 §2 补件责任方）：仅 student/submitter 可回复
     if (target.responsibleRole === 'student' && command.actor.role !== 'student' && command.actor.role !== 'reviewer') throw new CommandValidationError('INVALID_TRANSITION', '该补件由学生负责，其他角色不能代回复')
     if (!payload.note.trim() && !(payload.documentVersionIds?.length)) throw new CommandValidationError('VALIDATION_FAILED', '回复必须附说明或材料')
+    // 不允许把伪造版本、已废弃版本或重复的版本 ID 写入正式补件回执。
+    const versions = payload.documentVersionIds ?? []
+    if (new Set(versions).size !== versions.length) throw new CommandValidationError('VALIDATION_FAILED', '同一材料版本不能重复提交')
+    for (const versionId of versions) {
+      if (!versionId || !aggregate.caseV2.documents.some((document) => document.versionId === versionId && document.active !== false)) {
+        throw new CommandValidationError('NOT_FOUND', `补件材料版本不存在或已失效: ${versionId}`)
+      }
+    }
     return {
       summary: `补件回复：${target.id}`,
       mutate: (draft) => {
