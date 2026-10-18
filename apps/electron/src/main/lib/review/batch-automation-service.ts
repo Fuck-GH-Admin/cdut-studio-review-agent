@@ -6,7 +6,7 @@
  */
 import { createHash } from 'node:crypto'
 import { triageBatchCase } from '@profer/shared'
-import type { Actor, BatchAutomationReport, BatchAutomationReceipt, ReviewRunV2 } from '@profer/shared'
+import type { Actor, BatchAutomationReport, BatchAutomationReceipt } from '@profer/shared'
 import { readAggregate } from './case-store-v2'
 import { readBatchStateV2, saveBatchStateV2, finalizeBatch, assertBatchBusinessReadyForFinalization } from './batch-store'
 import { checkAutoBatchAction, type AutoAction } from './batch-automation-gates'
@@ -42,6 +42,9 @@ export async function runBatchAutomation(batchId: string): Promise<BatchAutomati
       const current = readBatchStateV2(batchId)
       if (!current || current.status !== 'queued' || current.automation?.revision !== revision
         || current.automation.mode === 'assist') break
+      // Stale snapshots must not allow a previous Run to approve a requeued case.
+      const liveEntry = current.cases.find((candidate) => candidate.caseId === entry.caseId)
+      if (liveEntry?.status !== 'done' || !entry.runId || liveEntry.runId !== entry.runId) continue
       const aggregate = readAggregate(entry.caseId)
       // A same-case, same-template Run produced by a different batch is NOT this batch's evidence.
       const run = entry.runId ? getRunV2(entry.caseId, entry.runId) : undefined
