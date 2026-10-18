@@ -23,6 +23,13 @@
 - 正反回归位于 `batch-template-lock.test.ts`，覆盖跨案、跨模板、manifest 版本错配和 execution-failed 与 awaiting-confirmation 的区分。
 - #130 报告里的 `caseTemplate=comprehensive-assessment-v2@3` 与 `runTemplate=p06-batch-live-…@1` **仅能确定证据字段不一致**，还未从同一时刻 V1、V2、Batch、Run 四源独立重建，不宣布已找到根因。防守性版本门禁不是根因修复。
 
+### 2.1 批次面板的证据归属（避免 UI 跨模板误读）
+
+- `BatchPanel` 原先对每个 case 直接使用 `listRunsV2` 的最新 Run，**没有按选中批次模板过滤**，存在界面将另一模板的 Run 误放入当前批次覆盖/分流统计的风险。
+- 新增纯函数 `selectBatchMatchingRun`，对 `caseId / templateId / templateVersion / inputManifest.templateVersion` 与所选批次严格对齐；若不一致，该最新 Run 不显示为本批次证据，覆盖率与 triage 不能使用它，界面明确提示版本冲突。
+- 不用“退回上一条旧 Run”掩盖最新输入来源变化，不改写任何已保存 Run/事实。单个案卷可能在两个**同模板**批次出现；目前 Run 还没有不可伪造的 batchId 归属，**同模板跨批是否属于该批次仍需未来设计核验**，不能宣称已经解决所有跨批 Run 关联问题。
+- 离线 UI 测试覆盖当前案卷、跨案卷、跨模板、manifest 版本错配及无 Run 情况。正式 GUI 视觉行为仍留待统一验收。
+
 ## 3. 已实现：本地人工补件闭环正反回归
 
 - 在 `stage-workflow-l02-01-idempotent-batch.p06.test.ts` 增加真实 V2 事务（无 Provider）：人工退回补件、伪造文件版本 ID 拒止、不足退回、学生再次回复、人工确认满足、恢复来源审核阶段、同案双批不猜测、明确选一个目标重新入队、旧版本拒绝、重放不复活历史 done。
