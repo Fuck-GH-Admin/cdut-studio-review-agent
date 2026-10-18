@@ -84,8 +84,11 @@ export function recordStageDecision(
   template: TemplateVersion,
 ): Promise<ReviewCommandResult<{ decision: BusinessDecision; task?: WorkflowTask; supplement?: SupplementRequest }>> {
   return submitCommand<StageDecisionPayload, { decision: BusinessDecision; task?: WorkflowTask; supplement?: SupplementRequest }>(caseId, { ...command, type: 'RecordStageDecision' }, (aggregate, payload) => {
-    // Agent 代批门控：在事务校验内、任何业务变更前检查（排队期间关闭也生效）
-    assertAgentDecisionAllowed({ actor: command.actor, type: 'RecordStageDecision' })
+    // 普通 Agent 不得签任何阶段决定。仅允许受控的 system 自动核对阶段
+    // 向下一人工阶段移交，绝不允许机器作最终通过、驳回或补件决定。
+    if (command.actor.actorSource === 'agent') {
+      throw new CommandValidationError('AGENT_DECISION_DISABLED', '普通 Agent 无权直接签署阶段决定')
+    }
     if (aggregate.d2RuntimePlan) throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术预审案卷无权进入正式阶段决定')
     const task = aggregate.tasks.find((candidate) => candidate.id === payload.taskId && candidate.status === 'open')
     if (!task) throw new CommandValidationError('INVALID_TRANSITION', '当前阶段没有开放任务（或已处理）')
@@ -99,8 +102,19 @@ export function recordStageDecision(
       || (task.assigneeActorId && task.assigneeActorId !== command.actor.actorId)) {
       throw new CommandValidationError('INVALID_TRANSITION', '操作者无权处理当前审核阶段任务')
     }
-    if (command.actor.actorSource === 'agent' && task.assigneeRole !== 'reviewer') {
-      throw new CommandValidationError('AGENT_DECISION_DISABLED', 'Agent 不得代替教师或校方执行阶段决定')
+    if (command.actor.actorSource === 'system') {
+      if (command.actor.role !== 'system' || task.assigneeRole !== 'system'
+        || currentStage.kind !== 'auto-check' || !currentStage.nextStageId
+        || payload.action !== 'stage-pass') {
+        throw new CommandValidationError('AGENT_DECISION_DISABLED', '机器身份仅能移交系统自动核对任务，不得形成正式业务决定')
+      }
+      const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+      const { isWorkspaceRunStaleV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+      const currentRun = listRunsV2(caseId).find((run) =>
+        run.status === 'completed' && run.templateId === aggregate.caseV2.templateId
+        && run.templateVersion === aggregate.caseV2.templateVersion
+        && !isWorkspaceRunStaleV2(aggregate, run.id))
+      if (!currentRun) throw new CommandValidationError('STALE_INPUT', '自动核对移交需要本案当前版本的已完成审核运行')
     }
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '决定必须附理由')
     if (!aggregate.decisions.every((decision) => decision.taskId !== task.id)) throw new CommandValidationError('INVALID_TRANSITION', '该任务已有决定')
