@@ -129,8 +129,20 @@ export async function openFilePreviewTabAuthorized(
   isCurrent: () => boolean = () => true,
   load: (id: string) => Promise<import('@profer/shared').AgentSessionMeta | null> =
     (id) => window.electronAPI.getAgentSessionMeta(id),
+  // 旧 Main lookup 可能在会话删除后才返回。确认必须另走当前 Main，
+  // 而不能重用可能已被测试/调用方扣留的旧 Promise。
+  confirmCurrent: ((id: string) => Promise<import('@profer/shared').AgentSessionMeta | null>) | undefined =
+    typeof window !== 'undefined' && window.electronAPI
+      ? (id) => window.electronAPI.getAgentSessionMeta(id)
+      : undefined,
 ): Promise<string> {
-  if (!await ensureOrdinaryWorkTabOwner(store, sessionId, load, isCurrent)) return ''
+  const verifiedLoad = async (id: string): Promise<import('@profer/shared').AgentSessionMeta | null> => {
+    const earlier = await load(id)
+    if (!earlier || !confirmCurrent) return earlier
+    const fresh = await confirmCurrent(id)
+    return fresh?.id === id && (fresh.revision ?? 0) >= (earlier.revision ?? 0) ? fresh : null
+  }
+  if (!await ensureOrdinaryWorkTabOwner(store, sessionId, verifiedLoad, isCurrent)) return ''
   if (!isCurrent()) return ''
   return openFilePreviewTab(store, sessionId, file, options)
 }
