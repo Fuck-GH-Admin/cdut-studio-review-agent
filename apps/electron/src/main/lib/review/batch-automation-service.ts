@@ -6,18 +6,15 @@
  */
 import { createHash } from 'node:crypto'
 import { triageBatchCase } from '@profer/shared'
-import type { Actor, BatchAutomationReport, BatchAutomationReceipt, ReviewRunV2 } from '@profer/shared'
+import type { Actor, BatchAutomationReport, BatchAutomationReceipt } from '@profer/shared'
 import { readAggregate } from './case-store-v2'
 import { readBatchStateV2, saveBatchStateV2, finalizeBatch, assertBatchBusinessReadyForFinalization } from './batch-store'
 import { checkAutoBatchAction, type AutoAction } from './batch-automation-gates'
-import { listRunsV2, readArtifact } from './run-store-v2'
+import { getRunV2, readArtifact } from './run-store-v2'
 import { getTemplate } from './template-store'
 import { decideWorkspaceCaseV2, isWorkspaceRunStaleV2 } from './workspace-business-service-v2'
 
 const activeAutomation = new Set<string>()
-function latestRun(caseId: string): ReviewRunV2 | undefined {
-  return [...listRunsV2(caseId)].sort((a,b) => (b.completedAt ?? b.startedAt).localeCompare(a.completedAt ?? a.startedAt))[0]
-}
 function stableId(parts: unknown[]): string {
   return createHash('sha256').update(JSON.stringify(parts)).digest('hex').slice(0,44)
 }
@@ -45,9 +42,16 @@ export async function runBatchAutomation(batchId: string): Promise<BatchAutomati
       const current = readBatchStateV2(batchId)
       if (!current || current.status !== 'queued' || current.automation?.revision !== revision
         || current.automation.mode === 'assist') break
+      // Stale snapshots must not allow a previous Run to approve a requeued case.
+      const liveEntry = current.cases.find((candidate) => candidate.caseId === entry.caseId)
+      if (liveEntry?.status !== 'done' || !entry.runId || liveEntry.runId !== entry.runId) continue
       const aggregate = readAggregate(entry.caseId)
-      const run = latestRun(entry.caseId)
-      if (!aggregate || !run || aggregate.caseV2.stage === 'decided'
+      // A same-case, same-template Run produced by a different batch is NOT this batch's evidence.
+      const run = entry.runId ? getRunV2(entry.caseId, entry.runId) : undefined
+      if (!aggregate || !run || run.caseId !== entry.caseId
+        || run.templateId !== current.batch.templateId || run.templateVersion !== current.batch.templateVersion
+        || run.inputManifest?.templateVersion !== current.batch.templateVersion
+        || aggregate.caseV2.stage === 'decided'
         || aggregate.caseV2.stage === 'archived' || aggregate.caseV2.stage === 'awaiting-supplement') continue
       const route = triageBatchCase({
         caseId: entry.caseId, entryStatus: entry.status, caseStage: aggregate.caseV2.stage,

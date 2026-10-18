@@ -206,7 +206,6 @@ describe('批次中断恢复与定向重试（B 切片）', () => {
     const id = 'retry-valid-done'
     const caseId = 'retry-valid-done-case'
     createBatchV2({ ...batch(id), caseIds: [caseId] })
-    updateCaseStatus(id, caseId, 'done')
     const { saveRunV2 } = await import('./run-store-v2')
     saveRunV2({
       id: 'run-valid-done', caseId, templateId: 't', templateVersion: 1,
@@ -219,6 +218,7 @@ describe('批次中断恢复与定向重试（B 切片）', () => {
       coverage: { documents: [], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 },
       diagnostics: [], startedAt: '2026-10-10T00:00:00Z', completedAt: '2026-10-10T00:00:01Z',
     })
+    updateCaseStatus(id, caseId, 'done', undefined, 'run-valid-done')
     expect(() => retryBatchCases(id, [caseId])).toThrow('不可重试')
     expect(readBatchStateV2(id)?.cases[0]?.status).toBe('done')
   })

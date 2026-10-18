@@ -68,7 +68,7 @@ function makeBatch(caseIds: string[]): string {
     id: batchId, name: batchId, templateId: 'batch-b-test', templateVersion: 1,
     policyVersionLock: [], caseIds, createdAt: '2026-10-10T00:00:00Z',
   })
-  for (const caseId of caseIds) updateCaseStatus(batchId, caseId, 'done')
+  for (const caseId of caseIds) updateCaseStatus(batchId, caseId, 'done', undefined, `run-${caseId}`)
   const state = readBatchStateV2(batchId)!
   state.status = 'queued'
   saveBatchStateV2(state)
@@ -79,6 +79,18 @@ const request = (batchId: string, caseIds: string[], action: BatchGroupActionReq
   ({ batchId, groupKey: groupKey(status), caseIds, action, reason: '审核员核对材料和校验依据后人工认定', ...(action === 'request-supplement' || action === 'final-return' ? { requiredElements: ['原始获奖等级证明'] } : {}) })
 
 describe('B 阶段：人工集中处置预览与逐案 V2 事务', () => {
+  test('问题组预览固定批次绑定 Run；另一同模板新 Run 不能污染预览', async () => {
+    const a = await makeCase('non-compliant')
+    const batchId = makeBatch([a.caseId])
+    saveRunV2({ ...a.run, id: next('newer-other-batch-run'),
+      startedAt: '2026-11-01T00:00:00Z', completedAt: '2026-11-01T00:00:01Z',
+      checks: a.run.checks.map((check) => ({ ...check, status: 'compliant' as const, reason: '另一个批次的结果' })) })
+    const r = request(batchId, [a.caseId], 'confirm-issue', 'non-compliant')
+    expect(previewBatchGroupAction(r).eligibleCount).toBe(1)
+    // Old unbound batch state does not grant a new group-operation capability.
+    updateCaseStatus(batchId, a.caseId, 'done')
+    expect(() => previewBatchGroupAction(r)).toThrow('问题组已失效')
+  })
   test('双案可预览并确认问题，结果持久化且同操作重放幂等', async () => {
     const a = await makeCase('non-compliant'), b = await makeCase('non-compliant')
     const batchId = makeBatch([a.caseId,b.caseId])

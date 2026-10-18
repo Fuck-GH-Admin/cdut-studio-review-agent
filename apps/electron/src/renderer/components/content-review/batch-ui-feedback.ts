@@ -70,7 +70,11 @@ export function selectBatchMatchingRun(
   caseId: string,
   batch: Pick<ReviewBatch, 'templateId' | 'templateVersion'>,
   latest: ReviewRunV2 | undefined,
+  boundRunId?: string,
 ): { run: ReviewRunV2 | undefined; mismatch: boolean } {
+  // A batch row without an explicit binding cannot inherit a same-template Run.
+  if (boundRunId !== undefined && (!boundRunId || !latest || latest.id !== boundRunId))
+    return { run: undefined, mismatch: true }
   if (!latest) return { run: undefined, mismatch: false }
   if (latest.caseId !== caseId || latest.templateId !== batch.templateId
     || latest.templateVersion !== batch.templateVersion
