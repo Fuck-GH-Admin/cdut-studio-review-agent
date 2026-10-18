@@ -190,7 +190,7 @@ export async function importDocumentFromPath(input: {
   if (!reviewCase) throw new Error(`案卷不存在: ${input.caseId}`)
   const filePath = input.sourcePath
   const fileName = input.originalFileName ?? filePath.split(/[\\/]/).pop() ?? '审核材料'
-  if (!fileName || fileName === '.' || fileName === '..' || fileName.includes('/') || fileName.includes('\\\\') || fileName.includes(String.fromCharCode(0))) {
+  if (!fileName || fileName === '.' || fileName === '..' || fileName.includes('/') || fileName.includes('\\') || fileName.includes(String.fromCharCode(0))) {
     throw new Error('REVIEW_IMPORT_UNSAFE_FILENAME')
   }
   const progressContext = { ...input, fileName }
