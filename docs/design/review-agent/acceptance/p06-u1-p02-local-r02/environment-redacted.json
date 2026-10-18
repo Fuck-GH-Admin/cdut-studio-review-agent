@@ -1,0 +1,48 @@
+{
+  "runId": "p06-u1-p02-r02-20261018T052919Z",
+  "host": {
+    "os": "Linux",
+    "releaseFamily": "Linux",
+    "architecture": "x86_64",
+    "uid": 1000,
+    "display": "isolated Xvfb 1600x1000x24"
+  },
+  "runtime": {
+    "bun": "1.4.0",
+    "electron": "43.7.7",
+    "electronNode": "24.21.0",
+    "rendererChrome": "150.0.7871.250"
+  },
+  "network": {
+    "vite": "127.0.0.1:28174",
+    "rendererCdp": "127.0.0.1:29222",
+    "mainInspector": "127.0.0.1:29230",
+    "portsCheckedFreeBeforeLaunch": true
+  },
+  "profile": {
+    "config": "fresh private synthetic profile",
+    "userData": "fresh private Electron userData",
+    "piConfig": "fresh private Pi config",
+    "sameProfileAcrossR01AndR03Restart": true,
+    "separateFromPR105": true,
+    "rawEvidencePermissions": "0700"
+  },
+  "authorization": {
+    "provider": "none; not required for P02 R01-R07",
+    "schoolAccount": "not used",
+    "realUserData": "not used",
+    "inheritedProviderCredentialVariableNamesStripped": 9
+  },
+  "fixtures": {
+    "reviewCase": "synthetic-only",
+    "ordinarySessions": "synthetic local sessions created through real Main IPC",
+    "privatePDF": "synthetic-only",
+    "noHiddenGold": true
+  },
+  "qa": {
+    "main": "Electron Main real production handlers with non-invasive observer helpers",
+    "ipc": "Renderer -> Preload -> Main IPC",
+    "renderer": "real Electron renderer with actual Jotai store snapshots",
+    "productionCodeModified": false
+  }
+}

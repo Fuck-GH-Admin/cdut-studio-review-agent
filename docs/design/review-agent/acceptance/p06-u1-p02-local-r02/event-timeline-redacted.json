@@ -1,0 +1,164 @@
+{
+  "sourceSha": "6b96dbda8258c64033c0d9158f4fae578f7f66a1",
+  "identityPolicy": "All case/session UUIDs and private paths omitted; source details retained in private raw evidence by SHA-256.",
+  "cases": [
+    {
+      "case": "R01",
+      "mainPid": 2788570,
+      "heldResponse": {
+        "origin": "window.electronAPI.getAgentSessionMeta Main IPC",
+        "presentBeforeDelete": true,
+        "lookupElapsedMs": 0.30000001192092896
+      },
+      "delete": {
+        "ipcResolved": true,
+        "mainMetaAfter": null,
+        "mainEvent": {
+          "kind": "session_projection",
+          "operation": "delete",
+          "revision": 1
+        }
+      },
+      "rendererAfterDelete": {
+        "revokeObserved": true,
+        "agentSessionPresent": false,
+        "previewFileMapPresent": false
+      },
+      "releasedOldResponse": {
+        "result": "",
+        "agentSessionPresent": false,
+        "previewFileMapPresent": false,
+        "revoked": true
+      }
+    },
+    {
+      "case": "R02",
+      "mainPid": 2788570,
+      "heldResponse": {
+        "origin": "window.electronAPI.getAgentSessionMeta Main IPC",
+        "presentBeforeDelete": true,
+        "lookupElapsedMs": 0.10000002384185791
+      },
+      "delete": {
+        "ipcResolved": true,
+        "mainMetaAfter": null,
+        "mainEvent": {
+          "kind": "session_projection",
+          "operation": "delete",
+          "revision": 1
+        }
+      },
+      "rendererAfterDelete": {
+        "revokeObserved": true,
+        "agentSessionPresent": false,
+        "previewFileMapPresent": false
+      },
+      "releasedOldResponse": {
+        "result": "",
+        "agentSessionPresent": false,
+        "previewFileMapPresent": false,
+        "revoked": true
+      },
+      "staleDeliveries": {
+        "oldMainProjectionSent": true,
+        "syntheticSdkMessageSentViaMainEventBus": true,
+        "rendererObservedEvents": 2,
+        "sessionPresentAfter": false,
+        "previewPresentAfter": false,
+        "sdkCacheCountAfter": 0
+      }
+    },
+    {
+      "case": "R03",
+      "mainPid": 2793918,
+      "heldResponse": {
+        "origin": "window.electronAPI.getAgentSessionMeta Main IPC",
+        "presentBeforeDelete": true,
+        "lookupElapsedMs": 0.5
+      },
+      "delete": {
+        "ipcResolved": true,
+        "mainMetaAfter": null,
+        "mainEvent": {
+          "kind": "session_projection",
+          "operation": "delete",
+          "revision": 1
+        }
+      },
+      "rendererAfterDelete": {
+        "revokeObserved": true,
+        "agentSessionPresent": false,
+        "previewFileMapPresent": false
+      },
+      "releasedOldResponse": {
+        "result": "",
+        "agentSessionPresent": false,
+        "previewFileMapPresent": false,
+        "revoked": true
+      }
+    },
+    {
+      "case": "R04",
+      "mainMetaQueries": [
+        {
+          "source": "load",
+          "observedRoundTripMs": 0.1,
+          "found": true
+        },
+        {
+          "source": "confirm",
+          "observedRoundTripMs": 0.1,
+          "found": true
+        }
+      ],
+      "preview": {
+        "readOnly": true,
+        "tabTypesChanged": false
+      },
+      "archiveRevisions": [
+        1,
+        2
+      ],
+      "ordinarySearchResultCount": 1
+    },
+    {
+      "case": "R05",
+      "ordinaryMainMeta": null,
+      "ordinarySdkHistory": "rejected",
+      "forgedPreviewPaths": {
+        "direct": "rejected",
+        "symlink": "rejected",
+        "parentEscape": "rejected",
+        "crossId": "rejected"
+      },
+      "deletedTombstone": {
+        "mainMeta": null,
+        "preview": "rejected"
+      }
+    },
+    {
+      "case": "R06",
+      "directoryModeDuringFault": "0500",
+      "deleteIpc": "rejected",
+      "indexHashBefore": "1bd663bb15f11aaa5af7ccce4fdb6998e597756be25d0072895d10d38ef1aa5d",
+      "indexHashAfter": "1bd663bb15f11aaa5af7ccce4fdb6998e597756be25d0072895d10d38ef1aa5d",
+      "falseDeleteProjection": false,
+      "postRestorePreviewReadOnly": true
+    },
+    {
+      "case": "R07",
+      "cascadeDeleteProjectionRevisions": [
+        1,
+        1
+      ],
+      "mainMetaAfter": [
+        null,
+        null
+      ],
+      "releasedLateLookup": "",
+      "otherOrdinarySessionsPreserved": true,
+      "defaultWorkspaceDelete": "rejected",
+      "falseDeleteProjection": false
+    }
+  ]
+}
