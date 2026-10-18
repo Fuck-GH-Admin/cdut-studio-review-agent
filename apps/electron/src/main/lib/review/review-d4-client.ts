@@ -25,7 +25,12 @@ export function listD4ClientTemplates(): D4ClientTemplate[] {
     return { templateId: entry.templateId, version: entry.templateVersion, domain: entry.domain,
       name: template.name, workspaceGitBlobSha: entry.workspaceGitBlobSha,
       primary: template.genericScenarioAxes?.primary ?? [], conditions: template.genericScenarioAxes?.conditions ?? [],
-      selection, controlledStudentFixture }
+      selection, controlledStudentFixture,
+      businessTypes: [...new Set(workspace.sourceBindings.flatMap(binding => binding.genericScope?.businessTypes ?? []))].sort(),
+      selectionSource: selection.targets.find(target => target.kind === 'generic-object')?.scenarioSource
+        ? { sourceId: selection.targets.find(target => target.kind === 'generic-object')!.scenarioSource!.sourceId,
+            sourceVersionId: selection.targets.find(target => target.kind === 'generic-object')!.scenarioSource!.sourceVersionId }
+        : undefined }
   })
 }
 
