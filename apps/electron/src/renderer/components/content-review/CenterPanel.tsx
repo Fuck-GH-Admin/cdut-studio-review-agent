@@ -313,6 +313,12 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                 {facts.length} 项材料事实 · {confirmedLinks.length} 条已确认的证明关联
               </p>
               <p className="mt-1 text-muted-foreground">审核对象 ID：{subject.id}。事实、条件、证据分别核对；模板仍为未发布技术候选。</p>
+              {Object.keys(subject.fields).length > 0 && <p className="mt-1 rounded bg-muted/50 p-2 text-foreground/80">
+                当前字段：{displaySubjectFields(subject.fields, workspaceTemplate)}
+              </p>}
+              <p className="mt-1 text-muted-foreground">
+                本对象候选事实字段：{factKeys.length ? factKeys.map(key => businessFieldLabel(key, workspaceTemplate)).join('、') : '尚未在当前映射中声明；不得自由编造字段'}
+              </p>
               <div className="mt-2 space-y-1.5">
                 {facts.map((observation, index) => <WorkspaceObservationCard
                   key={`${String(observation.fieldKey)}-${index}`}
@@ -693,7 +699,7 @@ function displaySubjectFields(fields: Record<string, FieldValue>, template: Temp
 function businessFieldLabel(key: string, template: TemplateVersion | null): string {
   const configured = template?.fields.find((field) => field.key === key)?.label
   if (configured) return configured
-  return ({ level: '获奖等级', declaredScore: '申报分值', score: '申报分值', activityDate: '活动日期', organizer: '主办单位', category: '事项类别', title: '事项名称' } as Record<string, string>)[key] ?? '补充信息'
+  return ({ level: '获奖等级', declaredScore: '申报分值', score: '申报分值', activityDate: '活动日期', organizer: '主办单位', category: '事项类别', title: '事项名称' } as Record<string, string>)[key] ?? `事实字段：${key}`
 }
 
 function displayValue(raw: unknown): string {
