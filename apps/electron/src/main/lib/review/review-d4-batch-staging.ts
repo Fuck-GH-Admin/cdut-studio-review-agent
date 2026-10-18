@@ -110,7 +110,7 @@ export async function stageD4NativeBatch(
         const data = (entry as typeof entry & { _data?: { uncompressedSize?: number } })._data
         const size = data?.uncompressedSize
         if (!Number.isSafeInteger(size) || size === undefined) { skip(label + '/' + raw, 'ZIP 无可信解压后长度'); continue }
-        await accept(name, label + '/' + raw, size, () => entry.nodeStream())
+        await accept(name, label + '/' + raw, size, () => entry.nodeStream() as unknown as Readable)
       }
     } catch (error) { skip(label, 'ZIP 格式错误或无法读取：' + (error instanceof Error ? error.message : String(error))) }
   }
