@@ -48,8 +48,13 @@ async function seed() {
     id: runId, caseId, templateId: template.templateId, templateVersion: template.version,
     inputManifest: { hash: inputHash, templateVersion: template.version,
       policyVersions: [], documentVersions: [], observationIds: [], evidenceLinkIds: [] },
-    status: 'completed', checkpoints: [], checks: [], opinions: [],
-    coverage: { documents: [], plannedChecks: 0, completedChecks: 0, effectiveVerdicts: 0, pendingChecks: 0 },
+    status: 'completed', checkpoints: [],
+    checks: [{ checkId: 'l02-fixture', ruleId: 'l02-fixture',
+      target: { scope: 'case', subjectIds: [] }, status: 'compliant',
+      reason: '合成规则执行成功', sourceRefs: [], executedBy: 'deterministic',
+      executedAt: '2026-01-01T00:00:01.000Z' }],
+    opinions: [],
+    coverage: { documents: [], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 },
     diagnostics: [], startedAt: '2026-01-01T00:00:00.000Z', completedAt: '2026-01-01T00:00:01.000Z',
   })
   const initialized = await ensureInitialTask(caseId, template, reviewer)
