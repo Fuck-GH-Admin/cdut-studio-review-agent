@@ -9,7 +9,7 @@ import { stageD4NativeBatch, type D4BatchSkip } from './review-d4-batch-staging'
 
 const TTL_MS = 20 * 60 * 1000
 const TEXT_TYPES = new Set(['.md', '.txt', '.csv', '.json', '.html', '.htm', '.eml'])
-interface StagedFile { name: string; sourcePath: string; sizeBytes: number }
+interface StagedFile { name: string; sourcePath: string; sizeBytes: number; originLabel: string; sha256: string }
 interface StagedIntake {
   token: string
   ownerWebContentsId: number
@@ -69,7 +69,8 @@ export async function stageD4Intake(ownerWebContentsId: number, parent?: Browser
         } finally { closeSync(handle) }
       }
       routeInputs.push(route)
-      files.push({ name: descriptor.name, sourcePath: descriptor.sourcePath, sizeBytes: descriptor.sizeBytes })
+      files.push({ name: descriptor.name, sourcePath: descriptor.sourcePath, sizeBytes: descriptor.sizeBytes,
+        originLabel: descriptor.originLabel, sha256: descriptor.sha256 })
     }
     const { listD4ClientTemplates } = require('./review-d4-client') as typeof import('./review-d4-client')
     const route = recommendD4Intake(routeInputs, listD4ClientTemplates())
