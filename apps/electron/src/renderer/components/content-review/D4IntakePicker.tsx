@@ -3,7 +3,7 @@ import type { D4IntakePreview } from '@profer/shared'
 
 /** 20-second auto-adoption is only a template-selection convenience, NEVER case submission. */
 export function D4IntakePicker({
-  intake, onIntake, onApplyRoute, manuallyOverridden, documentRoles, onDocumentRolesChange,
+  intake, onIntake, onApplyRoute, manuallyOverridden, documentRoles, onDocumentRolesChange, enabled = true,
 }: {
   intake: D4IntakePreview | null
   onIntake: (value: D4IntakePreview | null) => void
@@ -11,12 +11,21 @@ export function D4IntakePicker({
   manuallyOverridden: boolean
   documentRoles: Array<'application' | 'evidence'>
   onDocumentRolesChange: (roles: Array<'application' | 'evidence'>) => void
+  /** Freeze OS-picker operations while creating/closing the parent case. */
+  enabled?: boolean
 }): React.ReactElement {
   const [working, setWorking] = React.useState(false)
   const [error, setError] = React.useState('')
   const [seconds, setSeconds] = React.useState<number | null>(null)
   const applied = React.useRef(false)
   const [dragging, setDragging] = React.useState(false)
+  const stillEnabled = React.useRef(enabled)
+  // A native picker can complete after the dialog closed. Reject/discard its
+  // late token instead of resurrecting staged originals in a later case.
+  React.useEffect(() => {
+    stillEnabled.current = enabled
+    return () => { stillEnabled.current = false }
+  }, [enabled])
   React.useEffect(() => {
     applied.current = false
     setSeconds(intake?.route.status === 'suggested' ? 20 : null)
@@ -35,19 +44,24 @@ export function D4IntakePicker({
     return () => window.clearTimeout(timer)
   }, [intake, seconds, manuallyOverridden])
   const pick = async (): Promise<void> => {
-    if (working) return
+    if (working || !enabled) return
     setError('')
     setWorking(true)
     try {
       const next = await window.reviewAPI.stageD4Intake()
       if (!next) return
-      if (intake?.token) await window.reviewAPI.discardD4Intake(intake.token)
+      if (!stillEnabled.current) {
+        await window.reviewAPI.discardD4Intake(next.token).catch(() => false)
+        return
+      }
+      if (intake?.token) await window.reviewAPI.discardD4Intake(intake.token).catch(() => false)
       onIntake(next)
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e))
     } finally { setWorking(false) }
   }
   const discard = async (): Promise<void> => {
+    if (!enabled) return
     if (intake?.token) await window.reviewAPI.discardD4Intake(intake.token).catch(() => false)
     onIntake(null)
     setError('')
@@ -56,8 +70,8 @@ export function D4IntakePicker({
     <div className="flex items-center justify-between gap-2">
       <strong className="text-sm">先选申请材料（可选）</strong>
       <div className="flex gap-2">
-        {intake && <button type="button" className="rounded border px-2 py-1 text-xs" onClick={() => void discard()} disabled={working}>清除暂存</button>}
-        <button type="button" disabled={working} className="rounded border px-2 py-1 text-xs" onClick={() => void pick()}>
+        {intake && <button type="button" className="rounded border px-2 py-1 text-xs" onClick={() => void discard()} disabled={working || !enabled}>清除暂存</button>}
+        <button type="button" disabled={working || !enabled} className="rounded border px-2 py-1 text-xs" onClick={() => void pick()}>
           {working ? '正在读取…' : intake ? '重新选择材料' : '系统选择文件'}
         </button>
       </div>
@@ -65,7 +79,7 @@ export function D4IntakePicker({
     <div role="region" aria-label="D4 路由材料入口"
       onDragOver={e => { e.preventDefault(); setDragging(true) }}
       onDragLeave={e => { e.preventDefault(); setDragging(false) }}
-      onDrop={e => { e.preventDefault(); setDragging(false); void pick() }}
+      onDrop={e => { e.preventDefault(); setDragging(false); if (enabled) void pick() }}
       className={'rounded-md border border-dashed p-2 text-xs ' + (dragging ? 'bg-muted' : 'text-muted-foreground')}>
       松开拖入文件将打开系统选择框，由你再次确认本机文件；不会直接信任网页提供的文件路径。
     </div>
@@ -81,6 +95,7 @@ export function D4IntakePicker({
           <span className="min-w-0 flex-1 break-all">{file.name} · {(file.sizeBytes / 1024).toFixed(1)} KiB</span>
           <select aria-label={`材料 ${index + 1} 的用途`}
             className="h-8 rounded border bg-background px-2 text-xs"
+            disabled={!enabled}
             value={documentRoles[index] ?? 'application'}
             onChange={e => onDocumentRolesChange(intake.files.map((_, i) => i === index
               ? e.target.value as 'application' | 'evidence'
