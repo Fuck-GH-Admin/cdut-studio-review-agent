@@ -15,11 +15,17 @@ export interface D4ClientTemplate {
   conditions: string[]
   selection: D2ScenarioSelection
   controlledStudentFixture: boolean
+  /** Editor choices from the frozen D1/D3 authoring workspace, not model-inferred facts. */
+  businessTypes?: string[]
+  /** Existing bounded authoring source anchor. Never a school registry or applicant assertion. */
+  selectionSource?: { sourceId: string; sourceVersionId: string }
 }
 export interface D4ClientSelection {
   selection: D2ScenarioSelection
   /** 仅启用随包 G01-I 合成学籍快照；不接受 Renderer 提交的学籍事实。 */
   useControlledStudentFixture?: boolean
+  /** UI acknowledgement of selections only: NOT trusted school facts or policy authorization. */
+  reviewerConfirmation?: 'explicit-ui-confirmation'
 }
 
 export type D2TargetKind = 'campus-card' | 'archive-item' | 'archive-operation' | 'student-field' | 'generic-object'
