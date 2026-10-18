@@ -55,5 +55,13 @@ export function w1MaterialHistory(reviewCase: Pick<ReviewCase,
         needsReconciliation: true })
     }
   }
+  for (const doc of reviewCase.archivedDocuments ?? []) {
+    if (!origins.some(origin => origin.documentId === doc.id)) {
+      rows.push({ documentId: doc.id, fileName: doc.fileName,
+        originLabel: '历史归档原件（未登记 W1 来源哈希）', parseStatus: doc.parseStatus,
+        location: 'archived', description: '历史版已归档；可预览原件但需人工复核其来源与旧版归属',
+        needsReconciliation: true })
+    }
+  }
   return rows
 }

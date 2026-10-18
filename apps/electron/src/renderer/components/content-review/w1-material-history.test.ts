@@ -33,6 +33,15 @@ describe('W1 crash-aware material history is derived from actual versions', () =
     expect(rows.find(row => row.documentId === 'new')!.needsReconciliation).toBe(true)
     expect(rows.find(row => row.documentId === 'old')!.location).toBe('untracked')
   })
+  test('historical originals without W1 source SHA are visible, not silently discarded', () => {
+    const rows = w1MaterialHistory({
+      documents: [], archivedDocuments: [doc('legacy-archived')], d4IntakeOrigins: [],
+      d4MaterialTransitions: [],
+    })
+    expect(rows).toHaveLength(1)
+    expect(rows[0]!.location).toBe('archived')
+    expect(rows[0]!.needsReconciliation).toBe(true)
+  })
   test('active partial source and orphaned source do not pretend to be completed', () => {
     const rows = w1MaterialHistory({
       documents: [doc('partial', 'partial')], archivedDocuments: [],
