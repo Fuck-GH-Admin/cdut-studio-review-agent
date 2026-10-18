@@ -92,10 +92,12 @@ export async function createD4ClientCase(input: {
     createdCaseId = caseId
     await ensureWorkspaceAggregateV2(caseId)
     const d4IntakeFailures: string[] = []
+    const d4IntakeOrigins: NonNullable<ReviewCase['d4IntakeOrigins']> = []
     if (intake) {
       for (const [index, file] of intake.files.entries()) {
         try {
           const parsed = await importDocumentFromPath({ caseId, sourcePath: file.sourcePath, role: intakeRoles[index]! })
+          d4IntakeOrigins.push({ documentId: parsed.id, originLabel: file.originLabel, sha256: file.sha256 })
           if (parsed.parseStatus !== 'parsed') d4IntakeFailures.push(file.name + ': ' + parsed.parseStatus)
         } catch (error) {
           d4IntakeFailures.push(file.name + ': ' + (error instanceof Error ? error.message : String(error)))
@@ -104,9 +106,12 @@ export async function createD4ClientCase(input: {
     }
     // An omitted or failed document must remain visible after reopening this
     // case, not only in a one-time success toast.
-    if (d4IntakeFailures.length) {
+    if (d4IntakeFailures.length || d4IntakeOrigins.length) {
       await updateCase(caseId, fresh => ({
         ...fresh,
+        ...(d4IntakeOrigins.length ? { d4IntakeOrigins: [
+          ...(fresh.d4IntakeOrigins ?? []), ...d4IntakeOrigins,
+        ] } : {}),
         d4IntakeWarnings: [
           ...(fresh.d4IntakeWarnings ?? []),
           ...d4IntakeFailures.map(item => ({ originLabel: item.split(': ')[0] ?? item, reason: item })),
