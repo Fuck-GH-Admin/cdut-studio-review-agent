@@ -46,6 +46,7 @@ import { useReviewWorkspaceActions } from './use-review-workspace-actions'
 import { ReviewActionDialog } from './ReviewActionDialog'
 import { Button } from '@profer/ui/primitives/button'
 import { MaterialDropZone } from './MaterialDropZone'
+import { D4CaseBatchControls } from './D4CaseBatchControls'
 import { MoveReviewDocumentButtons, RemoveReviewDocumentButton, ReviewMaterialDropZone, ReviewMaterialLaneActions } from './ReviewMaterialControls'
 
 interface ReviewItemDraft {
@@ -237,6 +238,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
         )}
         <div className="mt-2">
           <ReviewMaterialDropZone role="application" hasDocuments={documentsByRole.application.length > 0} actions={actions} />
+          <D4CaseBatchControls role="application" actions={actions} />
         </div>
       </section>
 
@@ -492,6 +494,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
         </div>
         <div className="mt-2">
           <ReviewMaterialDropZone role="evidence" hasDocuments={documentsByRole.evidence.length > 0} actions={actions} />
+          <D4CaseBatchControls role="evidence" actions={actions} />
         </div>
       </section>
       {workspaceRunStale && (
