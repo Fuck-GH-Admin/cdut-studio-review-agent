@@ -19,6 +19,8 @@
 
 先确认本机真实权限/工具/CDP/Provider/隔离 profile 与 HEAD、CI 的版本锁；没有必要的条件，不要假跑。采用**一次环境准备、一次非破坏性业务验收、一次普通 Pi 兼容性验收、最后一次可授权的故障恢复子集**。不得增加不必要的重复付费模型调用，不允许任何产物混用多个 commit。
 
+先复制 `docs/design/review-agent/acceptance/p06-e05-e06-unified-r01/scenario-matrix.template.json` 为现场 `scenario-matrix.json`，每一项必须保留行和原始结论。
+
 执行矩阵 PRE-01～04、E05-01～15、E06-01～10。每个场景都实际记录 `PASS/FAIL/NOT-RUN/BLOCKED_ENV/BLOCKED_AUTH/BLOCKED_PRODUCT/BLOCKED_EXTERNAL`，附命令原始退出码、真实 V2 / Main / SDK / Renderer 证据。独立读取原 A/B/C 真实 fixture（如果没有则说明来源缺口），不要拿生成的新合成用例冒充历史原始 C 的完整业务复跑。C 的 `execution-failed` 要分析原因，不因报错而编造 compliant。
 
 先运行受控合同测试、必要项目 typecheck/build；再运行 `scripts/qa/review-live-e06.mjs` 的真实 CDP 子矩阵，同时按 E05 矩阵**人工操作**实际业务 UI + Main + V2。没有产品 GUI 目标批次选择入口就记 `BLOCKED_PRODUCT`，不能用后台 API 证明 GUI 已完成。运行独立 tmpfs/跨 PID/强杀测试必须有独立卷、独立进程及授权；否则列为 NOT-RUN，不对宿主机器发危险命令。

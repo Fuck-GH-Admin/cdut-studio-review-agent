@@ -11,6 +11,8 @@
 5. [本地 Agent 提示词](local-agent-prompt.md)：按既定顺序做真实执行、归档并提交独立 Draft 证据 PR，不替换父版。
 6. 历史入口：L02-01 [85 号](../../85-p06-l02-01-offline-gap-closure-20261019.md) + [E05 矩阵](../p06-l02-01-offline-r02/e05-unified-acceptance-matrix.md)；普通 Agent [86 号](../../86-p06-e06-ordinary-agent-entry-20261019.md) + [既有 E06 现场手册](../p06-e06-ordinary-agent-r01/local-agent-task.md)；E06 历史只读 [46 号](../../46-p06-recheck-live-local-acceptance-20261014.md)。
 
+**可直接复制的空白机器结果模板**：[scenario-matrix.template.json](scenario-matrix.template.json)。共 29 行（PRE 4、E05 15、E06 10），均预置 `NOT-RUN`，不是已执行结果。现场复制为 `scenario-matrix.json` 后逐项补真实证据，禁止直接把模板当验收产物。
+
 ## 固定输入、不可更改的边界
 
 - 冻结 U1：PR #118 / `3baf1fc2ccf27607f948923dbf5aff26d984729e`。
