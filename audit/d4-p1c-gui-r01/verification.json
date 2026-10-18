@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "verdict": "PARTIAL",
+  "testedHead": "4dce31f4792a188e969c0bdbedd844620a82aaf6",
+  "testedBase": "26a482c0a53813455166d74bd71c728b13a237e0",
+  "runtime": {
+    "realElectron": true,
+    "xvfbDisplay": ":112",
+    "resolution": "1600x1000x24",
+    "isolatedProfile": true,
+    "onlineModelUsed": false,
+    "directCaseCreationIPCUsed": false,
+    "p06Executed": false
+  },
+  "cases": [
+    {
+      "id": "C-01",
+      "status": "PASS",
+      "result": "D4 case created through the visible UI without staged material; one G03 object was confirmed and the case displayed zero materials.",
+      "evidence": ["evidence/screenshots/05-c01-empty-dialog.png", "evidence/screenshots/07-c01-object-entered.png", "evidence/screenshots/08-c01-ready-confirmed.png", "evidence/screenshots/09-c01-created.png", "evidence/logs/c01-created-ui.json"]
+    },
+    {
+      "id": "C-02",
+      "status": "PASS",
+      "result": "The native picker accepted the 40-byte synthetic G03 file. The visible preview named it and showed the conservative g03-t01 suggestion with filename-keyword reasons, without showing its absolute path or body. The actual Main preview token value was not read from the frozen contextBridge; token consumption is verified by C-07.",
+      "evidence": ["evidence/screenshots/10b-c07-native-picker-file-selected.png", "evidence/screenshots/11-c07-staged-countdown.png", "evidence/logs/c07-staged-ui.json", "evidence/logs/bridge-readonly-inspection.json"]
+    },
+    {
+      "id": "C-03",
+      "status": "PASS",
+      "result": "After waiting beyond 20 seconds with no interaction, only g03-t01 was selected; object count remained zero, confirmation remained unchecked/disabled, and Create remained disabled.",
+      "evidence": ["evidence/screenshots/11-c07-staged-countdown.png", "evidence/screenshots/12-c07-countdown-auto-selected.png", "evidence/logs/c07-after-countdown-ui.json"]
+    },
+    {
+      "id": "C-04",
+      "status": "PASS",
+      "result": "A G08 lost-item recommendation was manually changed to g03-t01 within the countdown; after 22 seconds the UI still reported manual selection and retained g03-t01. A second G03 recommendation was manually changed by keyboard navigation to g08-t03 and remained selected after the wait. No case was created; cancel left the case list unchanged and intake temp directories empty.",
+      "evidence": ["evidence/screenshots/21-c04-countdown-before-manual-choice.png", "evidence/screenshots/22-c04-manual-override-after-wait.png", "evidence/screenshots/45-c04-g08-keyboard-override.png", "evidence/screenshots/46-c04-g08-keyboard-after-wait.png", "evidence/screenshots/47-c04-cancelled.png", "evidence/logs/c04-after-manual-override-wait-ui.json", "evidence/logs/c04-g08-keyboard-after-wait-ui.json", "evidence/readback/case-list-final.json", "evidence/readback/intake-tempdirs-final.txt"]
+    },
+    {
+      "id": "C-05",
+      "status": "PASS",
+      "result": "Native multi-select of the synthetic lost-property notice and classroom-loan request showed the multiple-matters rejection, left the template unselected and Create disabled, and did not create a case. Cancel left the case list unchanged.",
+      "evidence": ["evidence/screenshots/24-c05-picker-selected.png", "evidence/screenshots/25-c05-mixed-rejected.png", "evidence/screenshots/26-c05-cancelled.png", "evidence/logs/c05-mixed-stage-ui.json", "evidence/readback/case-list-after-c05-cancel.json"]
+    },
+    {
+      "id": "C-06",
+      "status": "PASS",
+      "result": "The non-empty synthetic PDF named 申请.pdf received no suggestion; the GUI said material was insufficient to uniquely identify a matter and required manual template choice. No case was created.",
+      "evidence": ["evidence/screenshots/27-c06-picker-selected.png", "evidence/screenshots/28-c06-pdf-manual-required.png", "evidence/logs/c06-pdf-manual-ui.json", "evidence/readback/case-list-after-c06-cancel.json"]
+    },
+    {
+      "id": "C-07",
+      "status": "PASS",
+      "result": "Visible UI created a new G03 case with two synthetic classroom subjects, all 16 conditions left unknown, and the staged original imported as one parsed application document. Read-only Main queries returned a D2 technical-pre-review Plan (g03-t01, fingerprint 90dba5aac80e77abff367784a185f2679e66d0b6ea431e3cc816dbc15e706162), publicationAllowed=false, zero EvidenceLinks and zero Runs. The stored case copy and selected fixture have identical SHA-256 57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e. Ctrl+R preserved case ID, Plan fingerprint, both subjects, and the single document.",
+      "caseId": "d4-09e97e60-e08b-4874-b350-ac075b9dcd17",
+      "evidence": ["evidence/screenshots/14-c07-two-objects-before-confirmation.png", "evidence/screenshots/15-c07-ready-before-create.png", "evidence/screenshots/16-c07-created.png", "evidence/screenshots/17-c07-after-reload.png", "evidence/logs/c07-created-ui.json", "evidence/readback/c07-main-ipc-readback.json", "evidence/readback/c07-after-reload-readback.json", "evidence/readback/c07-source-and-case-copy.sha256"]
+    },
+    {
+      "id": "C-08",
+      "status": "PASS",
+      "result": "A visible rapid double-click submitted the same staged token twice. Main accepted the first request and rejected the repeated request with D4_INTAKE_TOKEN_INVALID. Readback showed one matching case, one imported application, and no duplicate Run. Expired-token, forged-token, and cross-sender probes were not performed.",
+      "evidence": ["evidence/screenshots/37-c10-ready-double-click.png", "evidence/screenshots/38-c10-after-cdp-double-click.png", "evidence/logs/electron-retry.log", "evidence/readback/c10-main-ipc-readback.json"]
+    },
+    {
+      "id": "C-09",
+      "status": "PASS",
+      "result": "Main rejected the zero-byte file, the 50 MiB + 1 byte file, and a nine-file selection with D4_INTAKE_FILE_INVALID / D4_INTAKE_TOO_MANY before creating a case. The case inventory stayed unchanged and intake temp directories were empty after cancel.",
+      "evidence": ["evidence/screenshots/29-c09-empty-picker-selected.png", "evidence/screenshots/30-c09-empty-rejected.png", "evidence/screenshots/31-c09-over50-picker-selected.png", "evidence/screenshots/32-c09-over50-rejected.png", "evidence/screenshots/33-c09-toomany-picker-selected.png", "evidence/screenshots/34-c09-toomany-rejected.png", "evidence/screenshots/35-c09-cancelled.png", "evidence/logs/c09-empty-rejected-ui.json", "evidence/logs/c09-over50-rejected-ui.json", "evidence/logs/c09-toomany-rejected-ui.json", "evidence/readback/case-list-after-c09.json", "evidence/readback/intake-tempdirs-final.txt"]
+    },
+    {
+      "id": "C-10",
+      "status": "FAIL",
+      "result": "Ctrl+R preserved the accepted C-07 case. Rapid double-click did not duplicate the case or material, and the repeated token was rejected. However, after the first request visibly succeeded and the case plus material existed, the renderer surfaced the second request's rejection as a red “新建案卷失败” toast. The UI therefore reports failure for an operation that already succeeded.",
+      "defectId": "D4-C10-01",
+      "evidence": ["evidence/screenshots/38-c10-after-cdp-double-click.png", "evidence/screenshots/39-c10-after-reload.png", "evidence/logs/c10-after-cdp-double-click-ui.json", "evidence/logs/electron-retry.log", "evidence/readback/c10-main-ipc-readback.json", "evidence/readback/c10-after-reload-readback.json"]
+    }
+  ],
+  "confirmedDefects": [
+    {
+      "id": "D4-C10-01",
+      "severity": "user-visible correctness",
+      "summary": "A rapid duplicate submit produces a false failure toast after the first create and material import succeeded.",
+      "shortReproduction": [
+        "Open a new D4 case in Electron, stage the synthetic G03 application, choose g03-t01, add one valid object and confirm.",
+        "Double-click Create once rapidly.",
+        "Observe exactly one case and one imported file, while a red “新建案卷失败: D4_INTAKE_TOKEN_INVALID” toast is shown."
+      ],
+      "evidence": ["evidence/screenshots/38-c10-after-cdp-double-click.png", "evidence/logs/electron-retry.log", "evidence/readback/c10-main-ipc-readback.json"]
+    }
+  ],
+  "notExecuted": [
+    "P06 and any online model, Pi run, school credential, signature, or formal approval path.",
+    "Forged/expired token and cross-sender replay probes; only same-window duplicate replay was exercised through the visible UI.",
+    "A raw copy of the D4IntakePreview token response; the stage method is immutable on the exposed contextBridge and no direct stage/write IPC was invoked."
+  ],
+  "operatorOrEnvironmentEvents": [
+    "The first Electron launch failed before UI startup because DISPLAY was not attached; rerunning under persistent Xvfb :112 succeeded. This was an environment setup issue, not a product failure.",
+    "One CJK path typed into the native location field was mis-encoded and produced ENOENT; no file was staged or case created. The operator then selected the fixture through the visible file list. This was not a product failure."
+  ],
+  "recommendation": "Do not treat P1-C as fully accepted or advance to P2 until D4-C10-01 is addressed and C-10 is rerun. The core GUI-to-D2-and-original-import path passed; the false failure report needs a product fix."
+}

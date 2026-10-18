@@ -1,0 +1,17 @@
+{
+  "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "pullRequest": 109,
+  "headSha": "4dce31f4792a188e969c0bdbedd844620a82aaf6",
+  "baseBranch": "feat/d4-p1-real-case-input-r01",
+  "baseSha": "26a482c0a53813455166d74bd71c728b13a237e0",
+  "source": "GitHub Actions workflow runs associated with the exact PR head SHA, fetched on 2026-10-18",
+  "workflows": [
+    { "id": 39102436786, "name": "PR CI", "status": "completed", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39102436786" },
+    { "id": 39102436801, "name": "D3 MD Dynamic and Structured Gates", "status": "completed", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39102436801" },
+    { "id": 39102436773, "name": "Review Baseline CI", "status": "completed", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39102436773" },
+    { "id": 39102436796, "name": "D3-R1 G01-I typed runtime evidence", "status": "completed", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39102436796" },
+    { "id": 39102436802, "name": "D2 Scoped Pi Review Tests", "status": "completed", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39102436802" },
+    { "id": 39102436772, "name": "D4 COMMON-01-02 runtime evidence", "status": "completed", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39102436772" },
+    { "id": 39102436795, "name": "D4 unified G01-G08 engineering integration", "status": "completed", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39102436795", "tests": { "passed": 3726, "skipped": 6, "failed": 0, "files": 425, "cases": 3732 } }
+  ]
+}
