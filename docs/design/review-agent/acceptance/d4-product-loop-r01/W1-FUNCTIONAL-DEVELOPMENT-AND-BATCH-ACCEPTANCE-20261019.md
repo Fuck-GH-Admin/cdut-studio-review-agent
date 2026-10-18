@@ -17,12 +17,18 @@
 4. **通用候选路由**：在既有精确信号外，允许使用冻结作者态模板的**完整且足够长的名称**做保守的文件名/受限纯文本片段建议，覆盖此前未显式硬编码的 G01–G08 模板。歧义、部分材料不明或多事项依然拒绝自动决定；不会凭文件名推定主场景、条件、校方权属。
 5. **批量业务对象输入**：`D4GenericObjectForm` 保留逐对象新增/删除，增加每行一个名称、每次最多 20 个、总量最多 100 个的批量入口。自动创建独立对象/Subject ID；每个主场景仍需用户明确选择，全部条件默认 unknown，必须逐项确认，不能从名称造审核结论。
 
+6. **文件夹/ZIP 可信批量入站**：Main 原生文件夹选择器和原有多选/ZIP 选择器统一进入 `stageD4NativeBatch`。支持递归目录和压缩包条目，100 份/50 MB 单文件/100 MB 总解压体积/8 层目录/最多 5000 条目；超限和损坏条目记录到 skip ledger；符号链接、ZIP Slip、非普通文件和不可移植文件名 fail-closed。JSZip 使用受限 Node Transform 管线流式解压，不按 ZIP entry 原路径写磁盘。
+7. **去重与缺失清单**：同批内容采用 SHA-256 去重，首份保留、后续重复项明确登记原因；unsupported/empty/oversize/坏 ZIP/重复来源不会静默消失。Main 在 `createD4ClientCase` 验证用户对 skipped manifest 的明确确认，角色计划仍只接受 application/evidence；提示与落盘明确区分已导入和未导入。
+8. **持久来源与状态可见**：`ReviewCase.d4IntakeOrigins` 为每份导入材料保存 documentId、文件夹/ZIP 内相对来源标签和 staging bytes SHA-256；`d4IntakeWarnings` 保存全部跳过和解析异常。重新打开案卷时，`CenterPanel` 可浏览已导入来源/哈希与需要补交的材料清单。未自动为证明建立 Subject EvidenceLink，仍需人工操作。
+
 ### 本轮自动化覆盖
 
 - `review-d4-intake-roles.test.ts`：正常、缺省、role 注入、长度错、越界拒绝。
 - `review-d4-client-intake-roles.test.ts`：真实 Main + D2 建案、Application/Evidence 分道落库、角色污染拒绝后原 token 可重试、消费后不可重复、旧版 fallback。
 - `d4-generic-object-builder.test.ts`：独立对象 ID、默认 unknown、批量重复/上限与伪来源拒绝。
 - `review-d4-routing.test.ts`：冻结完整名称路由、短泛词不推荐、跨事项拒绝、PDF 正文不作已解析内容。
+- `review-d4-batch-staging.test.ts`：真实目录/ZIP、SHA 去重、源顺序、路径穿越、符号链接、损坏 ZIP、100 份上限；`review-d4-client-intake-roles.test.ts` 增加文件夹跳过后 Main 强制确认、真实案卷未导入清单、来源哈希、token 重放拒止。
+
 - C10 Main 已消费/跨 sender 安全回归持续沿用 #126，C10 独立 GUI 门禁仍未签。
 - **CI 状态须以 PR #129 最后固定 HEAD 的实际远端运行回执为准**，不以本台账预先宣布通过。
 
@@ -30,7 +36,7 @@
 
 以下能力在 W1 的后续开发会话继续实际落代码，完成后才进入一次集中 W1 实机验收：
 
-- 从文件/多选扩展到可用的文件夹和 ZIP 批量导入、列表化逐文件状态、去重/替换、单坏文件隔离；真实拖放要经 Main 可信入站，不可直接把 Renderer 任意路径当已授权。
+- **已交付**原生选择器下的文件夹/ZIP/单坏文件隔离与批内内容去重；**仍需开发**建案之后同样可信的批量追加入口、材料替换与版本/重复文件冲突处理、更详细的进度/失败重试和不依赖二次原生选择的真实桌面拖放授权合同。不能直接把 Renderer 传来的路径当已获授权。
 - 把可解析材料的候选审核事项、对象/事实分离显示为**待审核人确认**的建议；不能根据 filename/textSample 直接确定事实，无法确认维持 unknown；多事项必须拆案/明确拒绝。
 - 接通跨格式原件预览、页/段/单元格定位、人工提取纠错和版本化、证明对照对象的实际关联工作区；复用现有 `CenterPanel`、`ReviewMaterialControls`、`use-review-workspace-actions`、`SourceBlockView`，不新开第二套责任账本。
 - 模板适用表单从技术 ID 进一步转成作者态声明驱动的业务友好名称与校验；保留 G01-I student-field 单独通道与真实来源适配阻断，不让合成 student fixture 进入正式模式。
