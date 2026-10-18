@@ -1,0 +1,2394 @@
+{
+  "campaign": "P06 L02-U1 unified local R01",
+  "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+  "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+  "privateRawEvidenceRoot": "private local root; absolute path withheld",
+  "records": [
+    {
+      "id": "manual-shutdown-runner-path-first-attempt",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "candidate-worktree",
+      "command": [
+        "python3",
+        "commands/run.py",
+        "--cwd",
+        "root",
+        "shutdown-owned-client-r07",
+        "--",
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/shutdown-owned-client.py"
+      ],
+      "exitCode": 2,
+      "executionStatus": "HARNESS_FAIL",
+      "stdoutSummarySha256": "96785b3428e8368b01a84cc9efce3d6be09e8f66a50ce8028f3269ffcbde670d",
+      "rawRunnerLogCaptured": false,
+      "note": "首次关闭命令误把私有 evidence/commands/run.py 当作 worktree/commands/run.py；随后用绝对路径 runner 重试成功。"
+    },
+    {
+      "id": "harness-argv-parser-first-attempt",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<private>/commands/run.py",
+        "frozen-install",
+        "bun",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "startedAtUtc": "2026-10-18T10:33:10.208124+00:00",
+      "finishedAtUtc": "2026-10-18T10:33:10.208147+00:00",
+      "exitCode": 2,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "sha256": "c22c2f84e90d98e06688937c9beab52158378a3bb3bf56716318332015a7701c",
+        "bytes": 109
+      }
+    },
+    {
+      "id": "frozen-install",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "bun",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "startedAtUtc": "2026-10-18T10:33:13.296222+00:00",
+      "finishedAtUtc": "2026-10-18T10:33:14.513223+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "d3ad91801dd4e7b69e33e002e3452811c6298d66f3bbe4917b711a18af905426",
+        "bytes": 287
+      },
+      "stderr": {
+        "sha256": "b17e7d1ebdbf4f86ab3481a0355d53a2bc425a2d93414a2b4abf5a0591256eab",
+        "bytes": 62
+      }
+    },
+    {
+      "id": "typecheck",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "bun",
+        "run",
+        "typecheck"
+      ],
+      "startedAtUtc": "2026-10-18T10:33:19.617130+00:00",
+      "finishedAtUtc": "2026-10-18T10:33:55.658140+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "5b84d668c2e2922dca6bd49e230be8406972702c2313539f5ca1cd4270d32196",
+        "bytes": 428
+      },
+      "stderr": {
+        "sha256": "8277b6b0db2d97d9c202472974204c9b592713f39cd8665934c5d44892357069",
+        "bytes": 33
+      }
+    },
+    {
+      "id": "boundaries",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "bun",
+        "run",
+        "check:boundaries"
+      ],
+      "startedAtUtc": "2026-10-18T10:33:58.519509+00:00",
+      "finishedAtUtc": "2026-10-18T10:33:58.685467+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "7c12341190370579829bb125d1338070e12652e36c5c6ea19282bffd769e56af",
+        "bytes": 38
+      },
+      "stderr": {
+        "sha256": "21f6953e48c36416639e37cfd5ac857c3b93042937908b6bd6089ca264f4932f",
+        "bytes": 34
+      }
+    },
+    {
+      "id": "electron-build",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "bun",
+        "run",
+        "electron:build"
+      ],
+      "startedAtUtc": "2026-10-18T10:34:00.876000+00:00",
+      "finishedAtUtc": "2026-10-18T10:35:04.040204+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "1a9e53be0fdf845d7d35f301fdeebfe3883ec2a9e4c769fc97fdfa318ff87bdb",
+        "bytes": 128231
+      },
+      "stderr": {
+        "sha256": "890b155b17f990e81d3c162b125f8ac510cba0de95dafab3ec023be678b42743",
+        "bytes": 44
+      }
+    },
+    {
+      "id": "full-suite",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000"
+      ],
+      "startedAtUtc": "2026-10-18T10:35:11.133199+00:00",
+      "finishedAtUtc": "2026-10-18T10:35:39.324522+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "0dfed983c2274c46fbeb00399e77236b298dc1771b677092bee06392fe2caa2c",
+        "bytes": 162046
+      },
+      "stderr": {
+        "sha256": "e64b178dba3b4714161453629ba699935e82460a2a4f77b0aedb0dfce37de8f2",
+        "bytes": 580103
+      }
+    },
+    {
+      "id": "electron-client-start",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/start-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:37:19.292462+00:00",
+      "finishedAtUtc": "2026-10-18T10:37:19.387284+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "sha256": "582c211594bfd18ddb0931d935a7a1567f1e547574e5b7b27acabbc84ad591ac",
+        "bytes": 1676
+      }
+    },
+    {
+      "id": "electron-client-start-rerun-01",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/start-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:37:30.732792+00:00",
+      "finishedAtUtc": "2026-10-18T10:37:30.835471+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "sha256": "61befdb962537fb0751501292b2cd5b5249be7749e059eda4c0b82df80605339",
+        "bytes": 902
+      }
+    },
+    {
+      "id": "electron-runtime-provision",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "node_modules/electron/install.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:38:06.245985+00:00",
+      "finishedAtUtc": "2026-10-18T10:38:07.038447+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "electron-client-start-rerun-02",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/start-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:38:11.132449+00:00",
+      "finishedAtUtc": "2026-10-18T10:38:11.236518+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "sha256": "50192ad5b93ccd93bb06f3f3624d7e05bdb72b2e4cc5a7bcd32ed0bd35ee4b99",
+        "bytes": 1329
+      }
+    },
+    {
+      "id": "electron-client-start-rerun-03",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/start-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:38:21.043844+00:00",
+      "finishedAtUtc": "2026-10-18T10:38:21.441380+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "sha256": "474e0cab4dd4bae91b99386b2e45564aa67e7c2519ac7c97ddfd01132893f63c",
+        "bytes": 1437
+      }
+    },
+    {
+      "id": "electron-client-start-rerun-04",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/start-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:38:46.657354+00:00",
+      "finishedAtUtc": "2026-10-18T10:40:47.606600+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "sha256": "793ce107787d33331cf196af72676a40078f2c6bd1a49944cc29b7a4f3663974",
+        "bytes": 633
+      }
+    },
+    {
+      "id": "electron-client-start-rerun-05",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/start-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:41:10.664604+00:00",
+      "finishedAtUtc": "2026-10-18T10:41:12.569458+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "sha256": "683108614848b1f326fa72a247d302d54ebfc6d0baaf106c57d5ea1970d38f39",
+        "bytes": 1644
+      }
+    },
+    {
+      "id": "actual-main-runtime-probe",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "main",
+        "<PRIVATE_EVIDENCE>/setup/main-runtime-probe.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:41:40.320928+00:00",
+      "finishedAtUtc": "2026-10-18T10:41:40.428492+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "bc007389555b891519aa53bd5e4b5f96543774447af7d0c333a51b3380c10a9b",
+        "bytes": 418
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "actual-main-runtime-probe-rerun-01",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "main",
+        "<PRIVATE_EVIDENCE>/setup/main-runtime-probe.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:41:53.215298+00:00",
+      "finishedAtUtc": "2026-10-18T10:41:53.325251+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "a421dad2f5f63e14efb8be6bb37e90ee9f130802970fcc2a66c6be2aba496074",
+        "bytes": 153
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "actual-renderer-api-inventory",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/setup/renderer-api-names.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:41:53.218569+00:00",
+      "finishedAtUtc": "2026-10-18T10:41:53.285381+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "80898050319e175f583f6d1a0118cd8cd2f0830feefa954f06eb023ac86eb828",
+        "bytes": 5108
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-pi-probe-setup",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "setup/cdp-eval.mjs",
+        "renderer",
+        "private/pi-sdk-probe-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:45:09.845038+00:00",
+      "finishedAtUtc": "2026-10-18T10:45:09.864625+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "sha256": "3b9657fd966374694170a9cb1485a48435b5ef6b59dc665a965e48da48a23870",
+        "bytes": 717
+      }
+    },
+    {
+      "id": "live-pi-probe-setup-rerun-01",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/pi-sdk-probe-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:45:16.455578+00:00",
+      "finishedAtUtc": "2026-10-18T10:45:16.538857+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "8e97a645a4cd2563b8758c5f8102e1c9e502a54cbea5e67dfe5a440f1e3e6c72",
+        "bytes": 537
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "shutdown-owned-client",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/shutdown-owned-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:46:00.886630+00:00",
+      "finishedAtUtc": "2026-10-18T10:46:00.982691+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "sha256": "b53cf189ab61aaf074b6e6960632cf0079111df2ecb5f6901e34f640e90bab4d",
+        "bytes": 374
+      }
+    },
+    {
+      "id": "shutdown-owned-client-rerun-01",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/shutdown-owned-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:46:07.258402+00:00",
+      "finishedAtUtc": "2026-10-18T10:46:07.470247+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "sha256": "c5e4fe21509609dd596cab65a1da54496a2df74ee348adc4eacb06715360a9a8",
+        "bytes": 451
+      }
+    },
+    {
+      "id": "shutdown-owned-client-rerun-02",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/shutdown-owned-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:46:13.065499+00:00",
+      "finishedAtUtc": "2026-10-18T10:46:13.220385+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "c1c94bddbf3ba061250b9561855f626b21590d591102a279e4adf78f1c01ebf0",
+        "bytes": 268
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "electron-client-start-rerun-06",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/start-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:46:16.571631+00:00",
+      "finishedAtUtc": "2026-10-18T10:46:18.407872+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "sha256": "a4057292e5b1682df51e80c0cd0204b0b958cd976c8173587a0bd6be9ad87bb4",
+        "bytes": 621
+      }
+    },
+    {
+      "id": "live-pi-sdk-start",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/pi-sdk-probe-start-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:46:32.029191+00:00",
+      "finishedAtUtc": "2026-10-18T10:46:32.115302+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "90ec75d61a436b78df3a3dde5556a235f4c601d04df87ca048746fe713d04221",
+        "bytes": 767
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-template-inventory",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/list-templates-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:46:45.517811+00:00",
+      "finishedAtUtc": "2026-10-18T10:46:45.590582+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "9e9433553b7191daf5b305a2d5acaf74864deb187d2843b3182dc438bda56def",
+        "bytes": 153
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-create-synthetic-probe-case",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/create-synthetic-probe-case-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:47:12.761205+00:00",
+      "finishedAtUtc": "2026-10-18T10:47:12.836490+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "d608501135502e9a6b281545c2c677d455005e617fa503102d3d07010a853377",
+        "bytes": 455
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-create-synthetic-probe-case-rerun-01",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/create-synthetic-probe-case-v2-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:47:24.246283+00:00",
+      "finishedAtUtc": "2026-10-18T10:47:24.318813+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "8af9325f968f0ecff5024025c5d6ed282f9f7a1d001d44b51a3fa936e3de4a74",
+        "bytes": 303
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-pi-sdk-start-r02",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/pi-sdk-probe-start-r02-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:47:29.521547+00:00",
+      "finishedAtUtc": "2026-10-18T10:47:31.413013+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "468699d44ebd5cbcb7aaf4639882474aeff12f7e586e177e92bcce4511ac7b22",
+        "bytes": 572
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-ordinary-preview-p02-smoke",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/ordinary-preview-p02-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:48:36.814184+00:00",
+      "finishedAtUtc": "2026-10-18T10:48:37.156343+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "add0db63d34b0cd6e7e821d5bfb841717c885c1ceaa53ba67752160ba2e112c8",
+        "bytes": 502
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-create-ordinary-session-r02",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/create-ordinary-session-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:48:52.088715+00:00",
+      "finishedAtUtc": "2026-10-18T10:48:52.156367+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "d5249a2f833a03a6cbfece73d12de3c776376afa3b13e9e67a34b84ba1e0feaa",
+        "bytes": 255
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "create-empty-preview-target",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/private/create-empty-preview.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:49:00.681274+00:00",
+      "finishedAtUtc": "2026-10-18T10:49:00.701140+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "c26c657df2333dda3fccc33b8e3239cdde4002765ec45d11f14c2a025236f4c6",
+        "bytes": 29
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-ordinary-preview-p02-smoke-r02",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/ordinary-preview-p02-r02-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:49:07.647183+00:00",
+      "finishedAtUtc": "2026-10-18T10:49:07.988129+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "1340560b45c08768cb6d24439f7e0c9c25835ac78da18bce3d545b76535f2dfd",
+        "bytes": 389
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "create-office-synthetic-fixtures",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/private/make-office-fixtures.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:50:59.371943+00:00",
+      "finishedAtUtc": "2026-10-18T10:50:59.405272+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "ca3a91dbbff8e75c5c106a96fb20835a47b4835e2af7138e63c54ae24feb07d9",
+        "bytes": 986
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-register-office-source-pairs",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/register-office-synthetic-pairs-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:51:12.787565+00:00",
+      "finishedAtUtc": "2026-10-18T10:51:12.928244+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "b4a329fcb24f955c7abf1f17c54c749f77d081158e266215ee64297b5f83c3dc",
+        "bytes": 2542
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "shutdown-owned-client-r06",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/shutdown-owned-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:53:42.755315+00:00",
+      "finishedAtUtc": "2026-10-18T10:53:43.016691+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "9e10781f6264daa0c2878badea8748252fbb320b7025774cefb82f017af479a6",
+        "bytes": 291
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "electron-client-start-rerun-07",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/start-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:53:45.268525+00:00",
+      "finishedAtUtc": "2026-10-18T10:53:47.084414+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "519a069b966a4b91e52951895810c56a7187f8a07c83d4c9939beb98933b8526",
+        "bytes": 13626
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-office-alpha-controlled-run",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/start-office-alpha-probe-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:53:57.141698+00:00",
+      "finishedAtUtc": "2026-10-18T10:53:57.276052+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "121ec9d8835560e8d47dccc92f2af3629db89a742caba2d1eeeed951687fe113",
+        "bytes": 139
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-main-controlled-audit-inspection",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "main",
+        "<PRIVATE_EVIDENCE>/private/read-main-audit-global.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:54:29.796001+00:00",
+      "finishedAtUtc": "2026-10-18T10:54:29.905240+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "ddf7cb761619feb3f462142a9370d6cd31cc1c3280e9cf17bf5d22ac0b030e89",
+        "bytes": 419
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-main-controlled-audit-inspection-rerun-01",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "main",
+        "<PRIVATE_EVIDENCE>/private/read-main-audit-global.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:54:37.285290+00:00",
+      "finishedAtUtc": "2026-10-18T10:54:37.397965+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "60186e6e5a4bb97ea9d50e3ae84e636e3f7788ded574d190df4e55942213d655",
+        "bytes": 2282
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "create-owner-isolation-marker",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/private/create-owner-marker.py"
+      ],
+      "startedAtUtc": "2026-10-18T10:55:45.402873+00:00",
+      "finishedAtUtc": "2026-10-18T10:55:45.425904+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "5456d1108fbfe8f1197f574b50bc680b0394b7a0fea6eebbfb7bf82ed5d7ed62",
+        "bytes": 39
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-owner-isolation-main-ipc",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/owner-isolation-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:55:45.481895+00:00",
+      "finishedAtUtc": "2026-10-18T10:55:45.561005+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "fbdfa15ba2d6f5185e2029a6056651fa683c6e772b82fa01989b1c5855b4eda1",
+        "bytes": 389
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-restart-run-event-isolation",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/restart-run-event-isolation-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:56:09.654246+00:00",
+      "finishedAtUtc": "2026-10-18T10:56:09.722805+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "73a22b0d619a5adc82be93a92601c96cbdc62c29558268c9fb42998749f40378",
+        "bytes": 496
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-restart-run-event-isolation-rerun-01",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/restart-run-event-isolation-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:56:21.834649+00:00",
+      "finishedAtUtc": "2026-10-18T10:56:23.323619+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "6cc25401f1226be1aac7308ac7b868ad10504e3b73a5407f16c2d141299ea876",
+        "bytes": 411
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-ui-inventory",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-ui-inventory.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:56:30.220902+00:00",
+      "finishedAtUtc": "2026-10-18T10:56:30.286449+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "c6c2fb49fd8677199290c22dec5368d4b62697621eafdfe81258b84b55c9b378",
+        "bytes": 370
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-onboarding-step",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-onboarding-click.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:56:36.561145+00:00",
+      "finishedAtUtc": "2026-10-18T10:56:37.131526+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "696cd0d859d9c38ac4ca21f036bfcfffa35b90118b18e9e6e705581d68a65e20",
+        "bytes": 258
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-onboarding-finish",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-onboarding-finish.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:56:43.842532+00:00",
+      "finishedAtUtc": "2026-10-18T10:56:46.010485+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "c20af110ea4b150a6350039cce1bf0e1464794926503003651499609b9dfef0d",
+        "bytes": 667
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-onboarding-next-01",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-onboarding-next.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:56:52.523914+00:00",
+      "finishedAtUtc": "2026-10-18T10:56:53.794368+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "0233122972597201807036426febedcddb86e5f3fc05067c5c4f174bed1adb08",
+        "bytes": 308
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-onboarding-next-step",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-onboarding-next-step.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:57:02.417470+00:00",
+      "finishedAtUtc": "2026-10-18T10:57:03.685174+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "4ac20c0915cec1d134d6538fffa76f5bfa508ff248465951bdf09826f73fab88",
+        "bytes": 821
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-onboarding-enter-app",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-onboarding-start-app.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:57:09.885057+00:00",
+      "finishedAtUtc": "2026-10-18T10:57:11.259561+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "37c4a72e3b0c9bcdda13792d176ea4a1784888eea5c7d54a5893c0b4be4890a4",
+        "bytes": 1311
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-tutorial-dismiss",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-tutorial-dismiss.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:57:17.021884+00:00",
+      "finishedAtUtc": "2026-10-18T10:57:17.694893+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "72da68b2c50e1b73ad6375894234417f14327c38266e61938ed3cf46c4a1e331",
+        "bytes": 1257
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-tutorial-next-01",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-tutorial-next.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:57:26.747326+00:00",
+      "finishedAtUtc": "2026-10-18T10:57:28.118799+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "3c867797352566d4a2b4990bfadb2b40d3bfd019efbf3cb9412791637664fbf0",
+        "bytes": 1257
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-tutorial-complete",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-tutorial-complete.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:57:35.216645+00:00",
+      "finishedAtUtc": "2026-10-18T10:57:36.191756+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "442e44388fe2c98a93cc47bdd0be81a353376a0e5b7661924e27144196e63b15",
+        "bytes": 1297
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-tutorial-target-inventory",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-tutorial-target-inventory.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:57:44.473736+00:00",
+      "finishedAtUtc": "2026-10-18T10:57:44.546747+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "682771e485146668a892a03808e13afe7a9664cfc50b78b39c4af52e8dd69118",
+        "bytes": 503
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-tutorial-click-input",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-tutorial-click-input.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:57:50.075591+00:00",
+      "finishedAtUtc": "2026-10-18T10:57:50.951674+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "ffef67d1019856612ff3c8700085f609fcd8f437ea9197ff02696a1b71d88117",
+        "bytes": 1260
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-trusted-input-click",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-click-selector.mjs",
+        "[role=\"textbox\"]"
+      ],
+      "startedAtUtc": "2026-10-18T10:58:03.962393+00:00",
+      "finishedAtUtc": "2026-10-18T10:58:04.045543+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "7ee2b553235b4470579e4e849db0ea8fdb56346a68ee25a1a974767c4338a424",
+        "bytes": 79
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-tutorial-after-trusted-click",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-ui-inventory.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:58:06.469468+00:00",
+      "finishedAtUtc": "2026-10-18T10:58:06.548694+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "37f90c206ce6b6994882030501e09d3a82a15eb78ca3bbedd217700946e8897f",
+        "bytes": 1282
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-tutorial-skip-trusted-click",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-click-selector.mjs",
+        "button-text:稍后再学"
+      ],
+      "startedAtUtc": "2026-10-18T10:58:17.167733+00:00",
+      "finishedAtUtc": "2026-10-18T10:58:17.245045+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "f49a583d9e78d3b898b4de4a4d8da5ce489c46d00149f78f49983073e14d9c3b",
+        "bytes": 92
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-after-tutorial-dismiss",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-ui-inventory.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:58:20.049995+00:00",
+      "finishedAtUtc": "2026-10-18T10:58:20.115456+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "38b817fb091b28fcb30cb5b9bc1f4e0be1c610e3e7c28653dae808c877f1da30",
+        "bytes": 1232
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-tutorial-highlight-plan-click",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-click-selector.mjs",
+        "button-text:规划中心\n0"
+      ],
+      "startedAtUtc": "2026-10-18T10:58:30.757325+00:00",
+      "finishedAtUtc": "2026-10-18T10:58:30.874400+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "861a6f656ddf44bfd24ec07f93a7d0a784ca55e6588bcc723583c94818af3e99",
+        "bytes": 86
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-tutorial-after-highlight",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-ui-inventory.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:58:33.380625+00:00",
+      "finishedAtUtc": "2026-10-18T10:58:33.446704+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "b2dbd0c1a77769c4d19ed251a92ace6f7a8ba06a7d3cc6effeaa2d86907e1aff",
+        "bytes": 1580
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-tutorial-skip-rerun-01",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-click-selector.mjs",
+        "button-text:稍后再学"
+      ],
+      "startedAtUtc": "2026-10-18T10:58:42.522692+00:00",
+      "finishedAtUtc": "2026-10-18T10:58:42.608050+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "f49a583d9e78d3b898b4de4a4d8da5ce489c46d00149f78f49983073e14d9c3b",
+        "bytes": 92
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-tutorial-skip-after-click",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-ui-inventory.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:58:45.277087+00:00",
+      "finishedAtUtc": "2026-10-18T10:58:45.343079+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "c312e007ac6af6bf2e753feff5c1cb731c70c35774cf4c4bdd0c200165ded52f",
+        "bytes": 1470
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-tutorial-target-agent-skills",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-click-selector.mjs",
+        "button-text:Agent 技能\n17"
+      ],
+      "startedAtUtc": "2026-10-18T10:58:54.564556+00:00",
+      "finishedAtUtc": "2026-10-18T10:58:54.661474+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "5c2b2125fd0ad444296ba9c6bc9264a0f105bc9c4d5876f52f9d453fdcdc2515",
+        "bytes": 87
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-ui-after-agent-skills-target",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-ui-inventory.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:58:57.185347+00:00",
+      "finishedAtUtc": "2026-10-18T10:58:57.248943+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "62244b7d91d2256dde4e8bdd2d829fa4dc1b61311685f04aa21eff1f22c618f1",
+        "bytes": 3580
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-tutorial-tail",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-tutorial-tail.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:59:07.398774+00:00",
+      "finishedAtUtc": "2026-10-18T10:59:07.469898+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "6d4a4105d45bd1343389ea5cbc4690d309778e6f30f934b063239e24482afd2e",
+        "bytes": 901
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-tutorial-next-08",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-click-selector.mjs",
+        "button-text:下一步"
+      ],
+      "startedAtUtc": "2026-10-18T10:59:12.526581+00:00",
+      "finishedAtUtc": "2026-10-18T10:59:12.609901+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "f72c281be72d7600f24d8b665ed4d71ea572ad363ed9dcfd91a2f6bb24235959",
+        "bytes": 88
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-tutorial-tail-09",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-tutorial-tail.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:59:15.450894+00:00",
+      "finishedAtUtc": "2026-10-18T10:59:15.514556+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "2c4d1394438e90bd4e42486f9abcd8a6cfb2d515346457eb9c8842d159b55a3e",
+        "bytes": 899
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-tutorial-complete-final",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-click-selector.mjs",
+        "button-text:完成"
+      ],
+      "startedAtUtc": "2026-10-18T10:59:21.165540+00:00",
+      "finishedAtUtc": "2026-10-18T10:59:21.306077+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "eadf072f42013be9655f20b9b52905e667d4e41e0f56445b9f6573e9a0dd35ad",
+        "bytes": 83
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-main-ui-after-tutorial",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-ui-inventory.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:59:24.080780+00:00",
+      "finishedAtUtc": "2026-10-18T10:59:24.146711+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "2e8f7f209aa077a45308b91bd7227534b116fff8ae06fbc82e34a8fa31fa583c",
+        "bytes": 1021
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-tutorial-dismiss-final",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-click-selector.mjs",
+        "button-text:稍后再学"
+      ],
+      "startedAtUtc": "2026-10-18T10:59:29.523573+00:00",
+      "finishedAtUtc": "2026-10-18T10:59:29.588667+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "f49a583d9e78d3b898b4de4a4d8da5ce489c46d00149f78f49983073e14d9c3b",
+        "bytes": 92
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-verify-after-tour-dismiss",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-ui-inventory.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:59:35.361326+00:00",
+      "finishedAtUtc": "2026-10-18T10:59:35.425773+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "32974d8d056928d6ec0fc353028ed6810efa33d440b4971ee3eec1f908552047",
+        "bytes": 963
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-ui-open-cdut-zone",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-click-selector.mjs",
+        "button-text:CDUT 专区"
+      ],
+      "startedAtUtc": "2026-10-18T10:59:44.367170+00:00",
+      "finishedAtUtc": "2026-10-18T10:59:44.486979+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "052387e6c0be79f29ac9b3d904cc5eb5ca20587829950a38b5e8a4d605eb193b",
+        "bytes": 80
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-ui-after-cdut-zone",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-ui-inventory.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:59:47.195005+00:00",
+      "finishedAtUtc": "2026-10-18T10:59:47.258738+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "d52611aa1600b539210efb49f0f8db9147f4e08d4de57113d0eff50bfba535f8",
+        "bytes": 1615
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-ui-return-agent",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-click-selector.mjs",
+        "button-text:Agent"
+      ],
+      "startedAtUtc": "2026-10-18T10:59:53.450904+00:00",
+      "finishedAtUtc": "2026-10-18T10:59:53.557012+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "d701b268cf830fd4551d0a63df5f25580c3e9f815aa87aa4b3456d4a44d1e253",
+        "bytes": 73
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-ui-agent-after-return",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-ui-inventory.js"
+      ],
+      "startedAtUtc": "2026-10-18T10:59:56.123944+00:00",
+      "finishedAtUtc": "2026-10-18T10:59:56.188847+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "39d97950ba0ea8bccf42dbb57ce6b02fdbe15ca5cdab5c5dc747a906caf43d49",
+        "bytes": 961
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-ui-cdut-zone-return",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-click-selector.mjs",
+        "button-text:CDUT 专区"
+      ],
+      "startedAtUtc": "2026-10-18T11:00:05.370000+00:00",
+      "finishedAtUtc": "2026-10-18T11:00:05.458729+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "052387e6c0be79f29ac9b3d904cc5eb5ca20587829950a38b5e8a4d605eb193b",
+        "bytes": 80
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-cdut-zone-buttons",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-all-button-attrs.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:00:09.561699+00:00",
+      "finishedAtUtc": "2026-10-18T11:00:09.627955+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "2f14c648d38d88e4d62f72d81c2ba8cdc4f34ea52ae940d6034d051193e2521c",
+        "bytes": 3092
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-renderer-review-navigation-options",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/renderer-review-navigation-options.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:00:20.701083+00:00",
+      "finishedAtUtc": "2026-10-18T11:00:20.766631+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "aa93fea01bd4323b66b99fb5a7cda3de7efb921cd28cd57405eeeb2e4ee0bf42",
+        "bytes": 58
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "shutdown-owned-client-r07",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/shutdown-owned-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T11:01:48.874907+00:00",
+      "finishedAtUtc": "2026-10-18T11:01:49.136750+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "2507515049059288f1e85c63ca0af7e1243556da2fee78bf7674743e81df3984",
+        "bytes": 299
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "restart-client-r08",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "electron",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/start-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T11:01:52.226091+00:00",
+      "finishedAtUtc": "2026-10-18T11:01:54.071258+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "59e39f7ce8c1c466474480b3cd837be06504f52da9bbac2b0576e44a3ca76e22",
+        "bytes": 13626
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "restart-runtime-api-inventory",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/setup/renderer-api-names.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:02:14.767618+00:00",
+      "finishedAtUtc": "2026-10-18T11:02:14.835877+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "80898050319e175f583f6d1a0118cd8cd2f0830feefa954f06eb023ac86eb828",
+        "bytes": 5108
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "restart-persistence-query",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/restart-persistence-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:02:25.153135+00:00",
+      "finishedAtUtc": "2026-10-18T11:02:25.243913+00:00",
+      "exitCode": 1,
+      "executionStatus": "HARNESS_FAIL",
+      "stdout": {
+        "sha256": "8a33e42786cc7a279acd191cb30c8eb313110644d5ce80ee1c4b29f1c6b032bb",
+        "bytes": 480
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "restart-persistence-query-rerun-01",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/restart-persistence-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:02:33.573013+00:00",
+      "finishedAtUtc": "2026-10-18T11:02:33.662944+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "d054d62bc89ba88fc565f4ed463fa8dc639ff93993e1aeae567b09e90ea71698",
+        "bytes": 2020
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "restart-aggregate-shape",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/restart-aggregate-shape.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:02:48.167733+00:00",
+      "finishedAtUtc": "2026-10-18T11:02:48.237682+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "bc82b082c5b9b51f630aac6926c81e524afdbf9e4c2ec292bcc4a00046fa434a",
+        "bytes": 3093
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "restart-persistence-summary",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/restart-persistence-summary.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:02:58.626959+00:00",
+      "finishedAtUtc": "2026-10-18T11:02:58.701360+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "9ad90626299da83babbd580270c8fbcdc53708fef56f53ebc14219696a9917d4",
+        "bytes": 4421
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "restart-main-runtime-probe",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "main",
+        "<PRIVATE_EVIDENCE>/setup/main-runtime-probe.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:03:20.866219+00:00",
+      "finishedAtUtc": "2026-10-18T11:03:20.970993+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "cfc2c640052746e963436dd24d99ae0605769b02a53399a0b87f00ab6476f2a7",
+        "bytes": 154
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "shutdown-owned-client-r08",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/shutdown-owned-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T11:03:25.800130+00:00",
+      "finishedAtUtc": "2026-10-18T11:03:26.062184+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "7338a57099612dcfed8ea36996da8f330945e871efb65c2f297da0fb05201231",
+        "bytes": 291
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "electron-client-start-rerun-08",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "electron",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/start-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T11:05:39.281414+00:00",
+      "finishedAtUtc": "2026-10-18T11:05:41.100914+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "d08c2d0fcb83af5d1d28384d320286665005dc3cd41a6761835ed7b8e01a4193",
+        "bytes": 13626
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-office-alpha-preview-port-rerun-r09",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/start-office-alpha-probe-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:05:49.808520+00:00",
+      "finishedAtUtc": "2026-10-18T11:05:49.933539+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "55e5d2f5c67a4b8f601c49e9485b9e2ad2ff323afe58760173b9003a82a51464",
+        "bytes": 139
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-preview-r09-v2-status",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/preview-r09-run-status.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:06:03.654816+00:00",
+      "finishedAtUtc": "2026-10-18T11:06:03.733521+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "1b50bb5e84d2677d350eb33478d0fb7180a13c8046407cede42d165dce514644",
+        "bytes": 721
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "shutdown-owned-client-r09",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/shutdown-owned-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T11:06:08.675654+00:00",
+      "finishedAtUtc": "2026-10-18T11:06:08.937561+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "4d55b3f5b8a834cc7cf1c6c62dca8fe8443360fc780479e120f590130a86a49c",
+        "bytes": 299
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "electron-client-start-rerun-09",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "electron",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/start-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T11:07:51.586724+00:00",
+      "finishedAtUtc": "2026-10-18T11:07:53.430699+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "6b8850b9faeddb91840e8ddd7640dba561eb02d0751659848865f7a5fff2471e",
+        "bytes": 13626
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-office-alpha-source-ref-rerun-r10",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/start-office-alpha-probe-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:07:56.574083+00:00",
+      "finishedAtUtc": "2026-10-18T11:07:56.738812+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "9951944957cbe93254ab21ee90bdb6b596f2211359948cdbfd79cacda4708f80",
+        "bytes": 139
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-source-ref-r10-status",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/source-ref-r10-status.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:08:08.382734+00:00",
+      "finishedAtUtc": "2026-10-18T11:08:08.452902+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "29ace5648cdc819a677b77bb0e3597c4f3156919e503e43490efdece85f2d7cb",
+        "bytes": 1060
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "reset-main-capture-r10b",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "main",
+        "<PRIVATE_EVIDENCE>/private/reset-main-evidence-capture.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:08:34.426433+00:00",
+      "finishedAtUtc": "2026-10-18T11:08:34.535009+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "e745ee16748c7f07143be0059a9fffeed416ad3171a50b7eff92405d40522140",
+        "bytes": 64
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-office-alpha-source-ref-corrected-rerun-r10b",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/start-office-alpha-probe-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:08:34.587399+00:00",
+      "finishedAtUtc": "2026-10-18T11:08:34.698790+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "1aa9c7452bde0026c8b872d99402859b43b8c42fe80a42631d4aea4c50a44a68",
+        "bytes": 139
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "live-source-ref-r10b-v2-status",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/source-ref-r10b-v2-status.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:08:41.808082+00:00",
+      "finishedAtUtc": "2026-10-18T11:08:41.880399+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "894b2b9a61895171c7f7c891ff2dcbc9b6f6871a451ede642dd0b87a7904927d",
+        "bytes": 851
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "shutdown-owned-client-r10",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/shutdown-owned-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T11:08:53.596682+00:00",
+      "finishedAtUtc": "2026-10-18T11:08:53.857034+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "42c589541d32a26e75f4633c195c74dd39177fdba48e3097096b6ad4cfd234dd",
+        "bytes": 291
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "restart-client-r11",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "electron",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/start-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T11:08:53.931237+00:00",
+      "finishedAtUtc": "2026-10-18T11:08:55.941139+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "6f636b15ff70c5a37fd7600a54fa04dea68d5d5674eec8f5b8dcdafc024c0009",
+        "bytes": 17964
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "final-restart-persistence-r11",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/private/final-restart-r11-expression.js"
+      ],
+      "startedAtUtc": "2026-10-18T11:09:05.699939+00:00",
+      "finishedAtUtc": "2026-10-18T11:09:05.793069+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "bfb655086fec4d98470af7e0beb5875bce6e1dddcd20afbfbe15717c0264071a",
+        "bytes": 2907
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "shutdown-owned-client-r11",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "cwdLabel": "worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/shutdown-owned-client.py"
+      ],
+      "startedAtUtc": "2026-10-18T11:09:16.477099+00:00",
+      "finishedAtUtc": "2026-10-18T11:09:16.740126+00:00",
+      "exitCode": 0,
+      "executionStatus": "PASS",
+      "stdout": {
+        "sha256": "492241272d511d24099598d95c83904d9e4490bec3b8b1c2304dc7053bed74d0",
+        "bytes": 291
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    }
+  ],
+  "summary": {
+    "totalInvocations": 101,
+    "passExit": 82,
+    "harnessFailExit": 19,
+    "harnessFailIds": [
+      "manual-shutdown-runner-path-first-attempt",
+      "harness-argv-parser-first-attempt",
+      "electron-client-start",
+      "electron-client-start-rerun-01",
+      "electron-client-start-rerun-02",
+      "electron-client-start-rerun-03",
+      "electron-client-start-rerun-04",
+      "electron-client-start-rerun-05",
+      "actual-main-runtime-probe",
+      "live-pi-probe-setup",
+      "live-pi-probe-setup-rerun-01",
+      "shutdown-owned-client",
+      "shutdown-owned-client-rerun-01",
+      "electron-client-start-rerun-06",
+      "live-pi-sdk-start",
+      "live-create-synthetic-probe-case",
+      "live-main-controlled-audit-inspection",
+      "live-restart-run-event-isolation",
+      "restart-persistence-query"
+    ],
+    "manualUncapturedRunnerLogCount": 1
+  }
+}

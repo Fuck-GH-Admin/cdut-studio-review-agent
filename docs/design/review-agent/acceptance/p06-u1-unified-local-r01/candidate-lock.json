@@ -1,0 +1,155 @@
+{
+  "campaign": "P06 L02-U1 unified local acceptance R01",
+  "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "candidatePr": 116,
+  "candidateState": "open-draft",
+  "candidateBranch": "audit/p06-l02-u1-io-recovery-gates-r01",
+  "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+  "candidateTreeSha": "6b0212090693d3686a41312e7b9490acfb8f865e",
+  "candidateParentSha": "74298aceb516999022d41b930a966b439cc163d4",
+  "testedWorktreeBranch": "audit/p06-u1-unified-local-r01",
+  "testedSourceSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+  "testedSourceTreeSha": "6b0212090693d3686a41312e7b9490acfb8f865e",
+  "workingTreeAtTestStart": "clean",
+  "remoteSnapshotUtc": "2026-10-18T10:32:55Z",
+  "mainShaAtFreeze": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+  "relatedPullRequests": [
+    {
+      "number": 105,
+      "headSha": "44c7dc9fefdfd7693f1b6d1de00cf348af7abf3f",
+      "baseSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "state": "open-draft",
+      "ci": [
+        {
+          "name": "PR CI",
+          "runId": 39095114943,
+          "status": "completed-success"
+        }
+      ]
+    },
+    {
+      "number": 108,
+      "headSha": "64c01e57d1e3e1a587a639ae59f9f62ed878924e",
+      "baseSha": "6b96dbda8258c64033c0d9158f4fae578f7f66a1",
+      "state": "open-draft",
+      "ci": [
+        {
+          "name": "PR CI",
+          "runId": 39101992863,
+          "status": "completed-success"
+        }
+      ]
+    },
+    {
+      "number": 110,
+      "headSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "baseSha": "64c01e57d1e3e1a587a639ae59f9f62ed878924e",
+      "state": "open-draft",
+      "ci": [
+        {
+          "name": "PR CI",
+          "runId": 39105979654,
+          "status": "completed-success"
+        }
+      ]
+    },
+    {
+      "number": 113,
+      "headSha": "3c9d1b63593816b066a0986dcb2b638d2df673eb",
+      "baseSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "state": "open-draft",
+      "ci": [
+        {
+          "name": "PR CI",
+          "runId": 39110074043,
+          "status": "completed-success"
+        }
+      ]
+    },
+    {
+      "number": 114,
+      "headSha": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "baseSha": "3c9d1b63593816b066a0986dcb2b638d2df673eb",
+      "state": "open-draft",
+      "ci": [
+        {
+          "name": "PR CI",
+          "runId": 39112696729,
+          "status": "completed-success"
+        }
+      ]
+    },
+    {
+      "number": 115,
+      "headSha": "74298aceb516999022d41b930a966b439cc163d4",
+      "baseSha": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "state": "open-draft",
+      "ci": [
+        {
+          "name": "PR CI",
+          "runId": 39115747567,
+          "status": "completed-success"
+        }
+      ]
+    },
+    {
+      "number": 116,
+      "headSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "baseSha": "74298aceb516999022d41b930a966b439cc163d4",
+      "state": "open-draft",
+      "ci": [
+        {
+          "name": "PR CI",
+          "runId": 39118749726,
+          "job": "verify (ubuntu-latest)",
+          "status": "completed-success"
+        },
+        {
+          "name": "Review Baseline CI",
+          "runId": 39118749672,
+          "job": "review-baseline",
+          "status": "completed-success"
+        },
+        {
+          "name": "D2 Scoped Pi Review Tests",
+          "runId": 39118749650,
+          "job": "scoped-pi",
+          "status": "completed-success"
+        }
+      ]
+    },
+    {
+      "number": 117,
+      "headSha": "ff1aa01670bbeeeba33aa0f01efdf4d8da87bb9e",
+      "baseSha": "2e24e0c9a24d378a5b7f2e160c81c03041a2859c",
+      "state": "open-draft",
+      "scope": "unrelated D4 concurrent PR"
+    }
+  ],
+  "mainAndPr116FreezeMatch": true,
+  "buildArtifacts": {
+    "electronPackage": "43.7.7",
+    "electronRuntimeNode": "24.21.0",
+    "hostNode": "v22.23.2",
+    "bun": "1.4.0",
+    "mainCjsSha256": "f22172fe2386e66193dd40daa9d6df44b4b5709a7ad31c8b3fbb9070f47474f8",
+    "preloadCjsSha256": "1f64b7ea5fa24bc6425a4ebc55c006064e09b6df4fc4818aaf5673b40b2707d5",
+    "rendererBundleTreeSha256": "86e159f2a9ae69e5bdd4854719bf81dffb9dbcd30fd720a835673856e4cbfa50",
+    "electronBuildCommand": "electron-build"
+  },
+  "localPreparation": {
+    "frozenInstall": "PASS",
+    "typecheck": "PASS",
+    "boundaryCheck": "PASS",
+    "electronBuild": "PASS",
+    "fullSuite": {
+      "status": "PASS",
+      "tests": 4019,
+      "passed": 4014,
+      "skipped": 5,
+      "failed": 0,
+      "assertions": 16682
+    }
+  },
+  "noProductionSourceModified": true
+}

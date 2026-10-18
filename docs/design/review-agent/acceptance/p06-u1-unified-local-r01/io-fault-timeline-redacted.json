@@ -1,0 +1,39 @@
+{
+  "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+  "localRealVolume": {
+    "status": "BLOCKED_ENV",
+    "cause": "unshare --mount --propagation private true exited 1: Operation not permitted",
+    "mountId": null,
+    "filesystem": null,
+    "capacity": null,
+    "errnoEnospcObserved": false,
+    "hostOrSharedVolumeFillAttempted": false,
+    "electronPidBeforeAfter": null,
+    "v2RunningArtifactHashBeforeAfter": null,
+    "oldAssignmentAfterFault": null,
+    "evidenceCommandIds": [
+      "preflight-environment-redacted.json"
+    ],
+    "attempt": {
+      "command": "unshare --mount --propagation private true",
+      "exitCode": 1,
+      "stderrSummary": "Operation not permitted"
+    }
+  },
+  "crossPidFailureRecovery": {
+    "status": "BLOCKED_ENV",
+    "reason": "depends on U-06 real private-volume ENOSPC; no local fault state was created",
+    "normalAppRestartPersistence": "PASS_SCOPED under U-08, distinct from failure recovery",
+    "electronMainPidChangedAcrossRestart": true,
+    "oldRunsPersistedAsFailed": true,
+    "activeAssignmentsAfterRestart": 0
+  },
+  "historicalRemoteControlled": {
+    "sourcePr": 116,
+    "sourceSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+    "device": "/dev/full",
+    "classification": "CONTROLLED_KERNEL_IO",
+    "status": "PASS_REMOTE_CONTROLLED_SCOPED",
+    "limitation": "does not prove filesystem capacity exhaustion or real small-volume restart recovery"
+  }
+}

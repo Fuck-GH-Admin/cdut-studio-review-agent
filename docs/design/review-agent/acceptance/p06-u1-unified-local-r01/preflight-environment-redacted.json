@@ -1,0 +1,57 @@
+{
+  "campaign": "P06 L02-U1 unified local acceptance R01",
+  "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+  "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+  "snapshotUtc": "2026-10-18T10:32:55Z",
+  "host": {
+    "os": "Linux 7.0.0-38-generic",
+    "architecture": "x86_64",
+    "bun": "1.4.0",
+    "node": "v22.23.2",
+    "electronPackage": "43.7.7",
+    "electronNode": "24.21.0",
+    "xvfbAvailable": true
+  },
+  "credentials": {
+    "authorizedSyntheticProviderCredentialAvailable": false,
+    "credentialValuesReadOrPublished": false,
+    "credentialEnvironmentNamesChecked": [
+      "P06_PI_TEST_PROVIDER",
+      "P06_PI_TEST_API_KEY",
+      "OPENAI_API_KEY",
+      "ANTHROPIC_API_KEY",
+      "DEEPSEEK_API_KEY",
+      "QWEN_API_KEY",
+      "MINIMAX_API_KEY",
+      "GOOGLE_API_KEY"
+    ],
+    "providerRequestsPermitted": 0,
+    "decision": "BLOCKED_ENV"
+  },
+  "volumeIsolation": {
+    "mountNamespaceAttemptExitCode": 1,
+    "error": "Operation not permitted",
+    "boundedPrivateTestVolumeAvailable": false,
+    "hostAndSharedTmpfsCapacityConsumed": false,
+    "decision": "BLOCKED_ENV; no host/shared filesystem fill attempted"
+  },
+  "profile": {
+    "freshIsolatedProfile": "private evidence profile; mode 0700",
+    "configUserDataHomeXdGPiSessionsWorkspace": "all inside isolated evidence root",
+    "realUserConfigurationReadOrChanged": false,
+    "campusMaterialsOrGoldUsed": false,
+    "sourceMaterials": "newly generated synthetic DOCX/XLSX/PPTX only"
+  },
+  "network": {
+    "providerTransportFence": "abort before transport",
+    "providerRequestIssued": false,
+    "loopbackOnlyAppPorts": true,
+    "vitePort": "5174 verified free at each relevant launch to satisfy renderer allowlist",
+    "mainRendererCdpPorts": "fresh loopback ephemeral ports; private raw values retained"
+  },
+  "uiAccess": {
+    "ordinaryAgentPage": "opened by real Electron Renderer",
+    "cdutZonePage": "real navigation reached campus SSO login gate",
+    "reviewModuleUiRoute": "BLOCKED_ENV; no authorized campus account used"
+  }
+}

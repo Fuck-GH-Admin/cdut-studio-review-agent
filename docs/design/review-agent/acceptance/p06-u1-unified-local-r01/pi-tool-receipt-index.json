@@ -1,0 +1,143 @@
+{
+  "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+  "piSdkVersion": "0.86.1",
+  "activeToolNames": [
+    "CompactContext",
+    "review_inspect_document_image",
+    "review_inspect_original",
+    "review_read_documents",
+    "review_submit_result"
+  ],
+  "modelFacingToolNames": [
+    "CompactContext",
+    "review_inspect_document_image",
+    "review_inspect_original",
+    "review_read_documents",
+    "review_submit_result"
+  ],
+  "allSdkToolNames": [
+    "CompactContext",
+    "bash",
+    "edit",
+    "find",
+    "grep",
+    "ls",
+    "powershell",
+    "read",
+    "review_inspect_document_image",
+    "review_inspect_original",
+    "review_read_documents",
+    "review_submit_result",
+    "write"
+  ],
+  "inactiveBuiltinToolNames": [
+    "bash",
+    "edit",
+    "find",
+    "grep",
+    "ls",
+    "powershell",
+    "read",
+    "write"
+  ],
+  "activeEqualsModelFacing": true,
+  "provider": {
+    "authorizedCredentialAvailable": false,
+    "providerRequestsIssued": 0,
+    "preTransportFence": "ABORTED_BEFORE_PROVIDER_TRANSPORT_NO_AUTHORIZED_CREDENTIAL",
+    "providerGeneratedReceipts": []
+  },
+  "controlledMainReceipts": [
+    {
+      "alias": "alpha-initial-read",
+      "run": {
+        "alias": "alpha-initial-read",
+        "caseIdSha256": "d4ce537075ff5730066a838bf8f6985838f7fec479e28143f9b6036f3aaa0703",
+        "runIdSha256": "83077a7cab57fe96cf458de8a2caf4e5ebcb6e99230ab6f502f293782f49be4b",
+        "assignmentIdSha256": "00d1ad447170f39002f4bd2806483ca017e7bf85d24ca4c6a00544f026316bab",
+        "sessionIdSha256": "ab9f876f648f79b6ea92a4d55e78267e195a63d497b5757653b756c7f268956e",
+        "turnId": "not surfaced by captured Main/IPC contract",
+        "providerGeneratedToolUse": false,
+        "evidenceCommandIds": [
+          "live-office-alpha-controlled-run",
+          "live-main-controlled-audit-inspection-rerun-01"
+        ]
+      },
+      "tool": "review_read_documents",
+      "outcome": "EXECUTED",
+      "acceptedCount": 1,
+      "rejectedCount": 0,
+      "sourceBlockIdSha256": "1569f3835e8a7e4e9f6b07e9c381e3e387b63cb4767f2a395cc2dde02bea8c9f",
+      "anchorKind": "paragraph",
+      "syntheticMarkerObserved": true,
+      "v2ReadCoverage": "read",
+      "classification": "CONTROLLED_MAIN_CALLBACK"
+    },
+    {
+      "alias": "alpha-original-preview-retry",
+      "run": {
+        "alias": "alpha-original-preview-retry",
+        "caseIdSha256": "d4ce537075ff5730066a838bf8f6985838f7fec479e28143f9b6036f3aaa0703",
+        "runIdSha256": "2d3bece4ce26331822e7319e27d65264841f673274f156cb93b2a7d7886d34b2",
+        "assignmentIdSha256": "e951c4e1ab5a6b37cefae42cc7e0f17c9027ba7be9a9698b59a3d2b6e4b7c24e",
+        "sessionIdSha256": "beca61fa859b73b567cda15a6bbf0287cb1df4cec5cf0a9afd2a01001b89114f",
+        "turnId": "not surfaced by captured Main/IPC contract",
+        "providerGeneratedToolUse": false,
+        "evidenceCommandIds": [
+          "live-office-alpha-preview-port-rerun-r09",
+          "live-preview-r09-v2-status"
+        ]
+      },
+      "tool": "review_inspect_original",
+      "outcome": "EXECUTED",
+      "isError": false,
+      "visualImageCount": 1,
+      "v2ReadCoverage": "partially-read",
+      "classification": "CONTROLLED_MAIN_CALLBACK",
+      "captureRetention": "transient SDK capture was read during the run but overwritten by the following process start; retained V2 coverage records partially-read. Visual image count is a transcript observation, not a retained raw capture."
+    },
+    {
+      "alias": "alpha-source-ref-probe",
+      "run": {
+        "alias": "alpha-source-ref-probe",
+        "caseIdSha256": "d4ce537075ff5730066a838bf8f6985838f7fec479e28143f9b6036f3aaa0703",
+        "runIdSha256": "aa8efa0afcaf09ba10049c73580df30a4e4699248baa5783663284e48c1f9052",
+        "assignmentIdSha256": "22824232267bec251ffd7bc0477fafd86c60c8e2b8e1f4bf3252bbf1c00c0ff1",
+        "sessionIdSha256": "fabc78b7c2b6de1068cddf45549f5f1a93d986b13116579a8890d122a661230a",
+        "turnId": "not surfaced by captured Main/IPC contract",
+        "providerGeneratedToolUse": false,
+        "evidenceCommandIds": [
+          "live-office-alpha-source-ref-corrected-rerun-r10b",
+          "live-source-ref-r10b-v2-status",
+          "final-restart-persistence-r11"
+        ]
+      },
+      "tool": "review_submit_result",
+      "outcome": "accepted-one-valid-and-rejected-one-cross-case",
+      "acceptedChecks": 1,
+      "rejectedChecks": 1,
+      "acceptedStatus": "awaiting-confirmation",
+      "businessConclusionCreated": false,
+      "persistedSourceRef": {
+        "caseIdSha256": "d4ce537075ff5730066a838bf8f6985838f7fec479e28143f9b6036f3aaa0703",
+        "documentVersionIdSha256": "61d33271272121f3800a23ca4a0f9c513309e9ed23eb714c46c146aabeef4287",
+        "blockIdSha256": "1569f3835e8a7e4e9f6b07e9c381e3e387b63cb4767f2a395cc2dde02bea8c9f",
+        "parseRevision": 1,
+        "location": {
+          "kind": "paragraph",
+          "index": 0
+        },
+        "quoteSha256": "7fd5453302cd534638961bdb5fd0b2d52df6aaed4d450f90a40fa3f6fe8709c7"
+      },
+      "crossCaseRef": "rejected; beta document version not in alpha aggregate",
+      "persistedAfterRestart": true,
+      "classification": "CONTROLLED_MAIN_CALLBACK"
+    }
+  ],
+  "otherControlledTools": {
+    "review_inspect_document_image": "called with nonexistent synthetic image block and returned isError; no image receipt counted",
+    "review_submit_result_empty": "accepted zero findings; no business conclusion",
+    "CompactContext": "returned scheduled; actual compaction was suppressed after authorization for test safety"
+  },
+  "turnIdentityLimit": "Main/IPC did not surface a stable turn ID in these observed receipts; no Provider turn exists."
+}

@@ -1,0 +1,11 @@
+471750d35a1cae5f8ce8fcfbd00dcd90d1c4202de95d30b9dae7914706692e29  docs/design/review-agent/79-p06-l02-u1-unified-local-result-20261018.md
+f6608fdd4e423226ff54d748cfa11622d0147ab3f806c49a0cc75daef4c90495  docs/design/review-agent/acceptance/p06-u1-unified-local-r01/README.md
+2d826874a0c6277b01c3b37905d844abb51b4e59040a0bd1c6c5bb8226a43f3b  docs/design/review-agent/acceptance/p06-u1-unified-local-r01/abc-matrix.json
+4fbffe5b8c83ff51f9f5308d70a124270c97d53646cd121c108b1f9a4bc7872a  docs/design/review-agent/acceptance/p06-u1-unified-local-r01/candidate-lock.json
+ef81a9385737961071df0f0b17903e0dafeeae0b3267ced8c42b3c348baa045c  docs/design/review-agent/acceptance/p06-u1-unified-local-r01/command-ledger.json
+9ef6e7028b9b373f5e742ae7269183ab882663eafab99d40a4e2bc298b2de159  docs/design/review-agent/acceptance/p06-u1-unified-local-r01/defects-and-first-failures.json
+91e3662af4eb38e05d149a26bac145a8d4fadd23474102319164e985433c8b7d  docs/design/review-agent/acceptance/p06-u1-unified-local-r01/evidence-index.json
+ac1ffdedfa3a60d38f2b741d0c3b2f3965864740886a787ce7678c749b1950a0  docs/design/review-agent/acceptance/p06-u1-unified-local-r01/io-fault-timeline-redacted.json
+35b2dd6e05362dee3e13089f9f17b243839c8fafa5a6106dd29b3dcdd0061f9c  docs/design/review-agent/acceptance/p06-u1-unified-local-r01/pi-tool-receipt-index.json
+f478696c232f534f8add81927c601e7ca533d552a55e5ffc830f6524fbef66bc  docs/design/review-agent/acceptance/p06-u1-unified-local-r01/preflight-environment-redacted.json
+26b178520c34132653723b1d049e260ef1396386f9b199aa557d17403205cc01  docs/design/review-agent/acceptance/p06-u1-unified-local-r01/unified-matrix.json
