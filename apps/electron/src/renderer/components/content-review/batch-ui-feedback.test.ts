@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 import type { BatchStateV2, BatchTriageRoute } from '@profer/shared'
-import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution, batchTechnicalFailureMessage } from './batch-ui-feedback'
+import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution, batchTechnicalFailureMessage, selectBatchMatchingRun } from './batch-ui-feedback'
 
 describe('21 号本地 UI QA：反馈语义', () => {
   test('Electron IPC 包装信息不显示给用户，但保留真实业务拒绝原因', () => {
@@ -58,4 +58,21 @@ describe('21 号本地 UI QA：反馈语义', () => {
     expect(batchTechnicalFailureMessage('done', run)).toBeNull()
     expect(batchTechnicalFailureMessage('failed', undefined)).toContain('技术异常')
   })
+  test('selected batch never displays a newer wrong-template or cross-case Run as its evidence', () => {
+    const batch = { templateId: 'review-g04', templateVersion: 4 } as import('@profer/shared').ReviewBatch
+    const run = { caseId: 'case-a', templateId: 'review-g04', templateVersion: 4,
+      inputManifest: { hash: 'h', templateVersion: 4 } } as import('@profer/shared').ReviewRunV2
+    expect(selectBatchMatchingRun('case-a', batch, run)).toEqual({ run, mismatch: false })
+    for (const stale of [
+      { ...run, caseId: 'case-b' },
+      { ...run, templateId: 'comprehensive-assessment-v2' },
+      { ...run, templateVersion: 3 },
+      { ...run, inputManifest: { ...run.inputManifest, templateVersion: 3 } },
+    ]) {
+      const projected = selectBatchMatchingRun('case-a', batch, stale)
+      expect(projected).toEqual({ run: undefined, mismatch: true })
+    }
+    expect(selectBatchMatchingRun('case-a', batch, undefined)).toEqual({ run: undefined, mismatch: false })
+  })
+
 })

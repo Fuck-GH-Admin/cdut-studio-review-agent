@@ -1,4 +1,4 @@
-import type { BatchStateV2, BatchTriageRoute, BatchAutomationReceipt, ReviewRunV2 } from '@profer/shared'
+import type { BatchStateV2, BatchTriageRoute, BatchAutomationReceipt, ReviewRunV2, ReviewBatch } from '@profer/shared'
 
 /** Electron's transport wrapper is an implementation detail, not a user-facing cause. */
 export function reviewBusinessError(error: unknown): string {
@@ -63,4 +63,19 @@ export function batchTechnicalFailureMessage(
   }
   return '检查运行发生技术异常' + (remaining > 0 ? '，仍有 ' + remaining + ' 项检查未完成' : '')
     + '；请打开案卷核对 Run 记录，不能将失败视为不合规。'
+}
+
+/** Bind displayed evidence to the selected batch: a latest unrelated Run is not a verdict. */
+export function selectBatchMatchingRun(
+  caseId: string,
+  batch: Pick<ReviewBatch, 'templateId' | 'templateVersion'>,
+  latest: ReviewRunV2 | undefined,
+): { run: ReviewRunV2 | undefined; mismatch: boolean } {
+  if (!latest) return { run: undefined, mismatch: false }
+  if (latest.caseId !== caseId || latest.templateId !== batch.templateId
+    || latest.templateVersion !== batch.templateVersion
+    || latest.inputManifest?.templateVersion !== batch.templateVersion) {
+    return { run: undefined, mismatch: true }
+  }
+  return { run: latest, mismatch: false }
 }

@@ -13,7 +13,7 @@ import { reviewV2BusyAtom } from './V2CasePanel'
 import { BatchGroupActionDialog } from './BatchGroupActionDialog'
 import { BatchAutomationDialog } from './BatchAutomationDialog'
 import { SupplementRequeueDialog } from './SupplementRequeueDialog'
-import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution, batchTechnicalFailureMessage } from './batch-ui-feedback'
+import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution, batchTechnicalFailureMessage, selectBatchMatchingRun } from './batch-ui-feedback'
 
 type CaseIndexItem = Awaited<ReturnType<typeof window.reviewAPI.listCasesV2>>[number]
 type ReviewRunV2 = Awaited<ReturnType<typeof window.reviewAPI.listRunsV2>>[number]
@@ -26,6 +26,7 @@ interface BatchProjectRow {
   entryStatus: BatchStateV2['cases'][number]['status']
   stage?: CaseIndexItem['stage']
   run?: ReviewRunV2
+  runMismatch?: boolean
 }
 
 interface BatchPanelProps {
@@ -44,6 +45,7 @@ function formatTime(value: string | undefined): string {
 }
 
 function caseStatus(row: BatchProjectRow, batch: BatchStateV2): { label: string; tone: string } {
+  if (row.runMismatch) return { label: '最新 Run 模板版本冲突', tone: 'bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-300' }
   if (row.stage === 'awaiting-supplement') return { label: '等待补件', tone: 'bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300' }
   if (row.stage === 'awaiting-review' || row.stage === 'awaiting-final') return { label: '需要人工处理', tone: 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300' }
   if (row.entryStatus === 'failed') return { label: '执行失败', tone: 'bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-300' }
@@ -152,7 +154,8 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
         updatedAt: indexItem?.updatedAt ?? legacy?.updatedAt ?? selectedBatch.batch.createdAt,
         entryStatus: entry.status,
         stage: indexItem?.stage,
-        run: runs[entry.caseId],
+        run: selectBatchMatchingRun(entry.caseId, selectedBatch.batch, runs[entry.caseId]).run,
+        runMismatch: selectBatchMatchingRun(entry.caseId, selectedBatch.batch, runs[entry.caseId]).mismatch,
       }
     })
   }, [caseById, legacyById, runs, selectedBatch])
@@ -449,6 +452,11 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                               disabled={executing || handlingBatch}
                               title={selectedBatch.cases.find((entry) => entry.caseId === row.caseId)?.error ?? '重新入队，仅本案'}
                               onClick={() => void handleBatchAction('retry', row.caseId)}>重试本案</button>
+                          )}
+                          {row.runMismatch && (
+                            <p role="alert" className="mt-1 max-w-[250px] text-[11px] leading-4 text-red-700 dark:text-red-300">
+                              当前案卷最新 Run 不属于此批次的冻结模板版本。请核对来源，不得按这份 Run 认定批次已完成。
+                            </p>
                           )}
                           {batchTechnicalFailureMessage(row.entryStatus, row.run) && (
                             <p className="mt-1 max-w-[250px] text-[11px] leading-4 text-red-700 dark:text-red-300" role="status">
