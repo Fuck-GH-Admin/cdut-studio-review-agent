@@ -24,7 +24,7 @@ describe('W1 native-picked document role fence', () => {
   test('reject nonarray, malformed and out-of-bounds staged file counts', () => {
     expect(() => resolveD4IntakeRoles(1, 'application')).toThrow('D4_INTAKE_ROLE_PLAN_INVALID')
     expect(() => resolveD4IntakeRoles(0, [])).toThrow('D4_INTAKE_ROLE_PLAN_INVALID')
-    expect(() => resolveD4IntakeRoles(9, undefined)).toThrow('D4_INTAKE_ROLE_PLAN_INVALID')
+    expect(() => resolveD4IntakeRoles(101, undefined)).toThrow('D4_INTAKE_ROLE_PLAN_INVALID')
     expect(() => resolveD4IntakeRoles(1.5, undefined)).toThrow('D4_INTAKE_ROLE_PLAN_INVALID')
   })
 })
