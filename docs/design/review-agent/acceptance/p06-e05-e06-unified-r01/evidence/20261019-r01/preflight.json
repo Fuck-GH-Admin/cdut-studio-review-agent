@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "campaign": "P06-E05-E06-UNIFIED-r01",
+  "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+  "treeSha": "0536edcf57a1350d2f2f777a6bab55c6e8ca731f",
+  "finishedAt": "2026-10-18T19:14:41.326600+00:00",
+  "checks": [
+    {
+      "id": "PRE-01",
+      "status": "PASS",
+      "evidenceIds": [
+        "EV-PRE-01-REMOTE-LOCK",
+        "EV-PRE-01-GIT-LOCK"
+      ],
+      "actual": "GitHub #127 remained open draft at the fixed SHA/tree; same-SHA PR CI completed successfully; detached acceptance worktree clean before execution. GitHub #121 remained open draft at the frozen business SHA. #118 historical CLOSED_SCOPED_PARTIAL finding was preserved; GitHub currently reports #118 open draft, recorded as a state discrepancy.",
+      "exitCode": 0
+    },
+    {
+      "id": "PRE-02",
+      "status": "PASS",
+      "evidenceIds": [
+        "EV-PRE-02-BUILD",
+        "EV-PRE-02-PID-CDP",
+        "EV-U3-RECOVERY"
+      ],
+      "actual": "Electron 43.7.7 Main, preload and Renderer artifacts were built in the candidate worktree and hashed. Initial Main/Renderer PIDs and localhost CDP target were observed; recovery clone used a distinct profile and CDP port. Renderer ran under Xvfb.",
+      "exitCode": 0
+    },
+    {
+      "id": "PRE-03",
+      "status": "PASS",
+      "evidenceIds": [
+        "EV-PRE-03-PROFILE",
+        "EV-E06-01-PI-RECEIPT"
+      ],
+      "actual": "Authorized Pi provider config was present only in a mode-restricted isolated profile. All business documents and preview fixtures were synthetic; credentials/raw provider transcripts were kept private. No real user profile, school account, student record, or hidden Gold was used.",
+      "exitCode": 0
+    },
+    {
+      "id": "PRE-04",
+      "status": "PASS",
+      "evidenceIds": [
+        "EV-U1-LOCAL-TESTS",
+        "EV-U1-GATES",
+        "EV-PRE-01-CI"
+      ],
+      "actual": "E06 contract test and Node syntax check exited 0. The frozen review-live-gates.py run completed 22 subprocess gates with no failed children. Same-SHA GitHub CI was green.",
+      "exitCode": 0
+    }
+  ],
+  "environment": {
+    "os": "Ubuntu 26.04.1 x86_64",
+    "kernel": "Linux 7.0.0-38-generic",
+    "node": "v22.23.2",
+    "bun": "1.4.0",
+    "electron": "43.7.7",
+    "display": "Xvfb virtual display",
+    "portsAtStart": {
+      "5176": "free then candidate Vite",
+      "9222": "free then candidate Renderer CDP",
+      "9230": "free then candidate Main inspector",
+      "9223": "free then recovery-clone Renderer CDP"
+    },
+    "initialOtherAgentElectronOrCdpProcesses": 0,
+    "candidateProfileAlias": "isolated-pi-synthetic-r01",
+    "recoveryProfileAlias": "isolated-recovery-clone-r01",
+    "materials": "synthetic only",
+    "authorizedProviderPresent": true
+  },
+  "runtimePids": {
+    "initial": {
+      "electronMain": 306392,
+      "renderer": 306543,
+      "viteLogger": 305437,
+      "viteNode": 305452
+    },
+    "recovery": {
+      "preCrashElectronMain": 412578,
+      "postCrashElectronMain": 415606,
+      "postCrashRenderer": 415727
+    }
+  },
+  "safety": {
+    "originalWorktreeUntouched": true,
+    "historicalPr118AndBusinessPr121AndCandidatePr127Unmodified": true,
+    "authoritativeLiveLedger29Unmodified": true,
+    "noUnauthorizedProcessKilled": true,
+    "boundedEnospcVolumeAvailable": false,
+    "enospcRun": "NOT-RUN",
+    "isolatedMainSigkillTestedOnRecoveryClone": true
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "campaign": "P06-E05-E06-UNIFIED-r01",
+  "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+  "preservationRule": "First failure records are additive and not rewritten after retest.",
+  "failures": [
+    {
+      "id": "FF-VITE-LAUNCH-PATH",
+      "scenarioIds": [
+        "PRE-02"
+      ],
+      "commandId": "CMD-E06-VITE-LAUNCH-HARNESS-ATTEMPT-01",
+      "exitCode": 2,
+      "classification": "HARNESS_INVALID",
+      "actual": "Initial launcher used a wrong working directory and did not start the intended Vite process.",
+      "followUpEvidenceIds": [
+        "CMD-E06-VITE-SERVER",
+        "EV-PRE-02-PID-CDP"
+      ],
+      "resolution": "Corrected launcher pointed at the candidate worktree; Vite and Renderer CDP started."
+    },
+    {
+      "id": "FF-E06-TEXT-PREVIEW-SETUP",
+      "scenarioIds": [
+        "E06-04"
+      ],
+      "commandId": "CMD-E06-PI-BASE-DRIVER",
+      "exitCode": 1,
+      "classification": "HARNESS_INVALID",
+      "actual": "E06-01/02/03 individual receipts passed; text preview assertion failed while first-run onboarding/Renderer ordinary-session selection was incomplete.",
+      "followUpEvidenceIds": [
+        "CMD-E06-PREVIEW-RETEST-AFTER-ONBOARDING",
+        "CMD-E06-PREVIEW-RETEST-AFTER-SESSION-SELECT",
+        "EV-E06-04-TEXT-PREVIEW-RETEST"
+      ],
+      "resolution": "Completed onboarding, selected the actual ordinary session in the Renderer, then verified Main read, Shadow DOM marker and review workbench return."
+    },
+    {
+      "id": "FF-E06-SESSION-NOT-SELECTED",
+      "scenarioIds": [
+        "E06-04"
+      ],
+      "commandId": "CMD-E06-PREVIEW-RETEST-AFTER-ONBOARDING",
+      "exitCode": 1,
+      "classification": "HARNESS_INVALID",
+      "actual": "Onboarding was complete and Main authorized read passed, but the ordinary session created through IPC had not been selected in the live Renderer; preview marker was absent there.",
+      "followUpEvidenceIds": [
+        "CMD-E06-PREVIEW-RETEST-AFTER-SESSION-SELECT",
+        "EV-E06-04-TEXT-PREVIEW-RETEST"
+      ],
+      "resolution": "Selected the actual ordinary session through the Renderer and repeated the preview check successfully."
+    },
+    {
+      "id": "FF-E05-C-MAX-TURNS",
+      "scenarioIds": [
+        "E05-02",
+        "E05-13"
+      ],
+      "commandId": "CMD-E05-REAL-SYNTHETIC-BATCH-SUBSET",
+      "exitCode": 1,
+      "classification": "EXECUTION_FAILURE",
+      "actual": "Synthetic C real provider Run persisted failed with zero checks; diagnostic reports one planned check unexecuted and Agent max-turn limit 24. This is not a business-non-compliant verdict.",
+      "followUpEvidenceIds": [
+        "EV-E05-C-TECHNICAL-FAILURE"
+      ],
+      "resolution": "No repair/re-run performed; first failure retained pending proper original A/B/C pack and fault attribution."
+    },
+    {
+      "id": "FF-E05-BATCH-WORKBENCH-ASSUMPTION",
+      "scenarioIds": [
+        "E05-02"
+      ],
+      "commandId": "CMD-E05-BACKGROUND-RUN-ACK-LATE-RESPONSE-SUBSET",
+      "exitCode": 1,
+      "classification": "HARNESS_INVALID",
+      "actual": "Driver expected the review workbench while the live Renderer was on Batch Manager.",
+      "followUpEvidenceIds": [
+        "CMD-E05-BACKGROUND-RUN-ACK-LATE-RESPONSE-SUBSET-WORKBENCH-READY",
+        "EV-E05-02-LATE-RESPONSE-RACE"
+      ],
+      "resolution": "Prepared a fresh synthetic case, opened the actual workbench and reran with the required fixed-SHA environment; the race scenario passed."
+    },
+    {
+      "id": "FF-E05-START-BUTTON-ASSUMPTION",
+      "scenarioIds": [
+        "E05-02"
+      ],
+      "commandId": "CMD-E05-BACKGROUND-RUN-ACK-LATE-RESPONSE-SUBSET-WORKBENCH-READY",
+      "exitCode": 1,
+      "classification": "HARNESS_INVALID",
+      "actual": "Selected case already had a completed Run, so Renderer showed Restart while the helper asserted Start. No business decision was made.",
+      "followUpEvidenceIds": [
+        "EV-E05-02-LATE-RESPONSE-RACE"
+      ],
+      "resolution": "Used a fresh case with zero prior Runs."
+    },
+    {
+      "id": "FF-E05-RACE-FIXTURE-SETUP",
+      "scenarioIds": [
+        "E05-02"
+      ],
+      "commandId": "CMD-E05-CREATE-BACKGROUND-RACE-FIXTURE",
+      "exitCode": 1,
+      "classification": "HARNESS_INVALID",
+      "actual": "First fixture-generation attempt used a wrong object shape; subsequent attempt had invalid escaped newline and one run lacked required QA environment. Each original command/log is retained.",
+      "followUpEvidenceIds": [
+        "CMD-E05-CREATE-BACKGROUND-RACE-FIXTURE-RETRY",
+        "CMD-E05-BACKGROUND-RUN-ACK-LATE-RESPONSE-FRESH-CASE-WITH-ENV",
+        "EV-E05-02-LATE-RESPONSE-RACE"
+      ],
+      "resolution": "Corrected synthetic fixture and environment; fresh-case race run passed."
+    },
+    {
+      "id": "FF-E06-PDF-PAGE-SWITCH-HELPER",
+      "scenarioIds": [
+        "E06-06"
+      ],
+      "commandId": "CMD-E06-SCAN-PDF-PREVIEW",
+      "exitCode": 1,
+      "classification": "HARNESS_INVALID",
+      "actual": "PDF Main preparation, Renderer tab, iframe navigation and 432x576 canvas all passed; final helper assertion failed because it assumed a workbench tab from Batch Manager.",
+      "followUpEvidenceIds": [
+        "PRIVATE:e06-pdf-preview-review-workbench-retest.png",
+        "EV-E06-06-DOCX-PDF-PREVIEW"
+      ],
+      "resolution": "Manual real Renderer retest clicked the actual review workbench and confirmed it visible; first helper failure preserved."
+    },
+    {
+      "id": "FF-STOP-OWNED-MAIN-SELECTOR",
+      "scenarioIds": [
+        "PRE-02"
+      ],
+      "commandId": "CMD-E06-STOP-OWNED-ELECTRON-MAIN",
+      "exitCode": 1,
+      "classification": "HARNESS_INVALID",
+      "actual": "Initial cleanup selector matched three command lines and refused to signal any process. No target process was killed.",
+      "followUpEvidenceIds": [
+        "CMD-E06-STOP-OWNED-ELECTRON-MAIN-RETRY-01",
+        "CMD-E06-STOP-RECOVERY-ELECTRON-MAIN"
+      ],
+      "resolution": "Corrected selector required the exact candidate Electron executable and isolated runtime app path."
+    },
+    {
+      "id": "FF-U3-SNAPSHOT-CHECK-TARGET",
+      "scenarioIds": [
+        "E05-15",
+        "E06-07"
+      ],
+      "commandId": "CMD-U3-SNAPSHOT-HASH-VALIDATION",
+      "exitCode": 1,
+      "classification": "HARNESS_INVALID",
+      "actual": "Initial validator compared an immutable pre-launch manifest to the mutable recovery profile after it had booted and written normal runtime state; 1383 expected differences. It did not modify the snapshot or live profile.",
+      "followUpEvidenceIds": [
+        "CMD-U3-PRE-CRASH-SNAPSHOT-HASH-VALIDATION",
+        "EV-U3-SNAPSHOT-VALIDATED"
+      ],
+      "resolution": "Corrected validation to check the immutable pre-crash snapshot copy against its own manifest; every file hash matched."
+    }
+  ]
+}

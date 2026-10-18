@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "campaign": "P06-E05-E06-UNIFIED-r01",
+  "lockedAt": "2026-10-18T19:14:41.326600+00:00",
+  "source": {
+    "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+    "pr": 127,
+    "commitSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+    "treeSha": "0536edcf57a1350d2f2f777a6bab55c6e8ca731f",
+    "checkoutAlias": "isolated-detached-acceptance-worktree",
+    "dirtyBeforeEvidenceWrite": false,
+    "basePr": 121,
+    "baseSha": "4f8a68e26e5276e61883fa53c21447a703bbf94d",
+    "frozenHistory": {
+      "pr": 118,
+      "sha": "3baf1fc2ccf27607f948923dbf5aff26d984729e",
+      "acceptanceConclusion": "CLOSED_SCOPED_PARTIAL",
+      "remotePullRequestStateObserved": "OPEN_DRAFT",
+      "conflictRecorded": true
+    },
+    "latestRemotePr127": {
+      "state": "open",
+      "draft": true,
+      "headSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "headTreeSha": "0536edcf57a1350d2f2f777a6bab55c6e8ca731f",
+      "headBranch": "audit/p06-e06-ordinary-agent-r01",
+      "baseSha": "4f8a68e26e5276e61883fa53c21447a703bbf94d",
+      "baseBranch": "feat/p06-l02-01-offline-business-closure-r01",
+      "checkedAt": "2026-10-18T19:14:41.326600+00:00"
+    }
+  },
+  "ci": [
+    {
+      "workflow": "PR CI",
+      "runId": 39153560134,
+      "runUrl": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39153560134",
+      "conclusion": "success",
+      "status": "completed",
+      "headSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "summary": "4034 PASS / 5 SKIP / 0 FAIL"
+    }
+  ],
+  "build": {
+    "electronVersion": "43.7.7",
+    "electronArchiveChecksumVerified": true,
+    "mainBundleSha256": "11dc40950d6e6ed1009809b18b9c81691851c04b06c48466480153f0f167a5ca",
+    "preloadBundleSha256": "1f64b7ea5fa24bc6425a4ebc55c006064e09b6df4fc4818aaf5673b40b2707d5",
+    "rendererIndexSha256": "94fe8286b7b38788b05e3ae0b7783a79c08615015238ea07dcb95cd393a1e7b6",
+    "diagnosticMainSha256": "eeba19ed840eaba980408e2b518719d03118be0148e1fea1e2fff21d0eaa7762",
+    "loadedFromCandidateWorktree": true,
+    "mainPreloadRendererSameSourceSha": true
+  },
+  "host": {
+    "os": "Ubuntu 26.04.1 x86_64",
+    "kernel": "Linux 7.0.0-38-generic",
+    "node": "v22.23.2",
+    "bun": "1.4.0",
+    "display": "Xvfb virtual display",
+    "profileAlias": "isolated-pi-synthetic-r01"
+  },
+  "runtime": {
+    "initial": {
+      "mainPid": 306392,
+      "rendererPid": 306543,
+      "viteSupervisorPid": 305437,
+      "viteNodePid": 305452,
+      "cdpPort": 9222,
+      "mainInspectorPort": 9230,
+      "rendererTargetAlias": "candidate-renderer-localhost-5176",
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517"
+    },
+    "crashRecovery": {
+      "snapshotAlias": "recovery-profile-copy",
+      "preCrashMainPid": 412578,
+      "sigkillTargetPid": 412578,
+      "restartMainPid": 415606,
+      "restartRendererPid": 415727,
+      "cdpPort": 9223,
+      "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+      "ordinarySessionSetPreserved": true,
+      "reviewOwnerSessionsExcluded": true
+    },
+    "electronBinaryFromCandidateDependencies": true,
+    "sandbox": "--no-sandbox required because host SUID sandbox was not configured"
+  },
+  "privacy": {
+    "testMaterials": "synthetic only",
+    "provider": "authorized Pi profile isolated locally; secrets and raw provider transcripts withheld",
+    "realStudentOrSchoolRecordsUsed": false,
+    "formalSchoolApproverAvailable": false
+  },
+  "limitations": [
+    "No dedicated bounded tmpfs/volume available for ENOSPC injection.",
+    "No authorized original A/B/C source pack or hidden Gold.",
+    "No Claude authorization, Windows/macOS device, or Relay/Pocket external actor."
+  ]
+}

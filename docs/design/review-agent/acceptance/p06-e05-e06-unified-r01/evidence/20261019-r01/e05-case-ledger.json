@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "campaign": "P06-E05-E06-UNIFIED-r01",
+  "sourceSha": "bc228f64750714e70c73cbd115d2f169c610a517",
+  "dataBoundary": "synthetic only; original authorized A/B/C pack and hidden Gold unavailable",
+  "batch": {
+    "batchAlias": "BATCH-SYN-01",
+    "caseAliases": [
+      "CASE-A",
+      "CASE-B",
+      "CASE-C"
+    ],
+    "queueStatus": "queued",
+    "caseQueueStatuses": [
+      {
+        "caseAlias": "CASE-A",
+        "status": "done"
+      },
+      {
+        "caseAlias": "CASE-B",
+        "status": "done"
+      },
+      {
+        "caseAlias": "CASE-C",
+        "status": "failed"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "caseAlias": "CASE-A",
+      "kind": "synthetic",
+      "batchAlias": "BATCH-SYN-01",
+      "caseRevision": 1,
+      "caseTemplate": {
+        "id": "comprehensive-assessment-v2",
+        "version": 3
+      },
+      "runAlias": "RUN-A-01",
+      "runStatus": "completed",
+      "runTemplate": {
+        "id": "p06-batch-live-mve6f3aq",
+        "version": 1
+      },
+      "materialVersionAlias": "A-DOC-01",
+      "materialContentHash": "66cc59251049e67d3714740d8c520dae9e8f61ea",
+      "inputManifestHash": "322767be456bf37d2505fac89234e197796cfe8fdb9af56457c7ce49ac6f4b2f",
+      "effectiveRuleSetHash": "5bc2ec8e8b6ff33794bc3dcc60256f08a3aec674a43debe8d764f3e98a546a86",
+      "sourceRefCount": 1,
+      "checkStatus": "compliant",
+      "providerUsageRecorded": true,
+      "formalDecisions": 0,
+      "tasks": 0,
+      "supplements": 0,
+      "interpretation": "provider run completed with compliant finding and SourceRef"
+    },
+    {
+      "caseAlias": "CASE-B",
+      "kind": "synthetic",
+      "batchAlias": "BATCH-SYN-01",
+      "caseRevision": 1,
+      "caseTemplate": {
+        "id": "comprehensive-assessment-v2",
+        "version": 3
+      },
+      "runAlias": "RUN-B-01",
+      "runStatus": "completed",
+      "runTemplate": {
+        "id": "p06-batch-live-mve6f3aq",
+        "version": 1
+      },
+      "materialVersionAlias": "B-DOC-01",
+      "materialContentHash": "2a22913cfc8e79173dcfc3c2c2e5f05609f65509",
+      "inputManifestHash": "49cf79083a7afdd3663a2b2f998778bcefd5a11a51c7c6ab11dfff8d69abb2bc",
+      "effectiveRuleSetHash": "5bc2ec8e8b6ff33794bc3dcc60256f08a3aec674a43debe8d764f3e98a546a86",
+      "sourceRefCount": 1,
+      "checkStatus": "non-compliant",
+      "providerUsageRecorded": true,
+      "formalDecisions": 0,
+      "tasks": 0,
+      "supplements": 0,
+      "interpretation": "provider run completed with non-compliant finding and SourceRef"
+    },
+    {
+      "caseAlias": "CASE-C",
+      "kind": "synthetic",
+      "batchAlias": "BATCH-SYN-01",
+      "caseRevision": 1,
+      "caseTemplate": {
+        "id": "comprehensive-assessment-v2",
+        "version": 3
+      },
+      "runAlias": "RUN-C-01",
+      "runStatus": "failed",
+      "runTemplate": {
+        "id": "p06-batch-live-mve6f3aq",
+        "version": 1
+      },
+      "materialVersionAlias": "C-DOC-01",
+      "materialContentHash": "9eb7610c0524e02d2298106440f5d310b62da67e",
+      "inputManifestHash": "de4522f4d3b42c776a76fd2af6cc0ee9d2cbf000f86432e6954c94a0d0f46fde",
+      "effectiveRuleSetHash": "5bc2ec8e8b6ff33794bc3dcc60256f08a3aec674a43debe8d764f3e98a546a86",
+      "sourceRefCount": 0,
+      "checkStatus": null,
+      "providerUsageRecorded": false,
+      "formalDecisions": 0,
+      "tasks": 0,
+      "supplements": 0,
+      "interpretation": "technical execution failure; not business non-compliance"
+    }
+  ],
+  "backgroundRunRace": {
+    "caseAlias": "CASE-RACE-01",
+    "revision": 1,
+    "providerWitness": {
+      "assistantReplies": 1,
+      "toolCalls": [
+        "review_read_documents"
+      ]
+    },
+    "oldResponseHeldAndDelivered": true,
+    "oldRunCancelledBeforeNewRun": true,
+    "newRunStartedBeforeOldResponseDelivery": true,
+    "newRunUnaffectedByOldResponse": true,
+    "finalCleanupStatus": "cancelled",
+    "formalDecisions": 0,
+    "supplements": 0,
+    "evidenceId": "EV-E05-02-LATE-RESPONSE-RACE"
+  },
+  "groupAction": {
+    "evidenceId": "EV-E05-11-GROUP-PREVIEW-ONLY",
+    "previewVisible": true,
+    "previewedCases": 1,
+    "confirmed": false,
+    "actionSubmitted": false,
+    "note": "read-only preview only; no business mutation"
+  },
+  "businessClosure": {
+    "humanStageDecisions": 0,
+    "finalDecisions": 0,
+    "supplementTransactions": 0,
+    "multiBatchRequeueTransactions": 0,
+    "autoApprovals": 0,
+    "finalizedSnapshots": 0,
+    "outboxActions": 0,
+    "schoolActorAuthorization": "unavailable; no role impersonation performed"
+  },
+  "classification": {
+    "A": "synthetic compliant case; real provider run completed",
+    "B": "synthetic non-compliant case; real provider run completed",
+    "C": "technical execution-failed at 24-turn limit; not business non-compliant",
+    "gold": "not available; no original source pack used"
+  }
+}
