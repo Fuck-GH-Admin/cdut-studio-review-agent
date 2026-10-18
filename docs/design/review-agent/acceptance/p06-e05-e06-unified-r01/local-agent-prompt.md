@@ -7,13 +7,13 @@
 - 冻结安全基线 PR #118（SHA `3baf1fc2ccf27607f948923dbf5aff26d984729e`），不可改。
 - 业务工程 Draft PR #121（上一轮固定 `4f8a68e26e5276e61883fa53c21447a703bbf94d`），不可推进父版或重跑旧 U1。
 - 本轮 QA 工作 Draft PR #127：从 GitHub 查询其当前 HEAD，核实 CI SUCCESS 后 **detach 固定 commit SHA**。只测试这份构建。
-- 权威文档：`AGENTS.md`、`docs/design/review-agent/27-...`、`29-background-session-preflight-audit.md`、46、47、84、85、86、87。
+- 权威文档：`AGENTS.md`、`docs/design/review-agent/27-background-review-session-proposal.md`、`docs/design/review-agent/29-background-session-preflight-audit.md`、46、47、84、85、86、87。
 - **务必完整读取**：
   - `docs/design/review-agent/acceptance/p06-e05-e06-unified-r01/README.md`
-  - `.../acceptance-matrix.md`
-  - `.../local-runbook.md`
-  - `.../evidence-contract.md`
-  - 补充 `.../../p06-l02-01-offline-r02/e05-unified-acceptance-matrix.md` 和原 E06 `p06-e06-ordinary-agent-r01/local-agent-task.md`。
+  - `docs/design/review-agent/acceptance/p06-e05-e06-unified-r01/acceptance-matrix.md`
+  - `docs/design/review-agent/acceptance/p06-e05-e06-unified-r01/local-runbook.md`
+  - `docs/design/review-agent/acceptance/p06-e05-e06-unified-r01/evidence-contract.md`
+  - 补充 `docs/design/review-agent/acceptance/p06-l02-01-offline-r02/e05-unified-acceptance-matrix.md` 和原 E06 `docs/design/review-agent/acceptance/p06-e06-ordinary-agent-r01/local-agent-task.md`。
 
 ## 1. 工作方式
 
