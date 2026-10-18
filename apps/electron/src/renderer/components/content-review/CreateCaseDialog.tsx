@@ -68,6 +68,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
   const [d4, setD4] = React.useState<import('@profer/shared').D4ClientSelection>()
   const [intake, setIntake] = React.useState<D4IntakePreview | null>(null)
   const [intakeRoles, setIntakeRoles] = React.useState<Array<'application' | 'evidence'>>([])
+  const [skippedAcknowledged, setSkippedAcknowledged] = React.useState(false)
   const [routedTemplateId, setRoutedTemplateId] = React.useState<string>()
   const [manualRouting, setManualRouting] = React.useState(false)
 
@@ -96,6 +97,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
     setD4(undefined)
     setIntake(null)
     setIntakeRoles([])
+    setSkippedAcknowledged(false)
     setRoutedTemplateId(undefined)
     setManualRouting(false)
   }, [open])
@@ -109,6 +111,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
 
   const selectedPack = resolveDomainPack(domainPackId)
   const intakeBlocked = intake?.route.status === 'multiple-tasks' || (intake ? intake.expiresAt <= Date.now() : false)
+    || (!!intake?.skipped?.length && !skippedAcknowledged)
   const canSubmit = title.trim().length > 0 && applicant.trim().length > 0 && (d4Mode ? !!d4 && !intakeBlocked : !!selectedTemplate) && !submitting
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -124,7 +127,8 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
         academicYear: academicYear.trim() || defaultAcademicYear(),
         domainPackId,
         reviewTemplate: !d4Mode && selectedTemplate ? { templateId: selectedTemplate.templateId, version: selectedTemplate.version } : undefined,
-        ...(d4Mode && d4 ? { d4: { ...d4, ...(intake ? { intakeToken: intake.token, intakeRoles } : {}) } } : {}),
+        ...(d4Mode && d4 ? { d4: { ...d4, ...(intake ? { intakeToken: intake.token, intakeRoles,
+          ...((intake.skipped?.length && skippedAcknowledged) ? { acknowledgeSkippedFiles: true as const } : {}) } : {}) } } : {}),
       }),
       () => setSubmitting(true),
       (created) => {
@@ -175,9 +179,11 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
 
           {d4Mode && <D4IntakePicker intake={intake} manuallyOverridden={manualRouting} enabled={open && !submitting}
             documentRoles={intakeRoles} onDocumentRolesChange={setIntakeRoles}
+            skippedAcknowledged={skippedAcknowledged} onSkippedAcknowledgedChange={setSkippedAcknowledged}
             onIntake={value => {
               setIntake(value)
               setIntakeRoles(value ? value.files.map(() => 'application' as const) : [])
+              setSkippedAcknowledged(false)
               setD4(undefined); setRoutedTemplateId(undefined); setManualRouting(false)
             }}
             onApplyRoute={id => { if (!manualRouting) setRoutedTemplateId(id) }}
