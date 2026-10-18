@@ -280,6 +280,9 @@ export function assertBatchBusinessReadyForFinalization(state: BatchStateV2): vo
     if (!projected.isFinal || !projected.decision) {
       throw new Error(`案卷缺少有效且可追溯的最终业务决定: ${entry.caseId}`)
     }
+    if (entry.runId && projected.decision.basedOnRunId !== entry.runId) {
+      throw new Error(`正式业务决定引用的 Run 不属于该批次执行记录: ${entry.caseId}`)
+    }
   }
 }
 

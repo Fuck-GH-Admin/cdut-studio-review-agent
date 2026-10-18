@@ -384,6 +384,20 @@ describe('C 阶段：显式授权的自动通过与退回', () => {
     expect(readAggregate(second.caseId)?.decisions).toHaveLength(1)
   })
 
+  test('人工决定虽然有效，但批次 Run 绑定被改成另一批的 Run 后，不允许定稿', async () => {
+    const a = await createCase('compliant')
+    const batchId = makeBatch([a.caseId])
+    updateSettings({ reviewAgentAutoApproval: true })
+    configureBatchAutomation(batchId, 'auto-approve', true)
+    expect((await runBatchAutomation(batchId)).applied).toBe(1)
+    const damaged = readBatchStateV2(batchId)!
+    damaged.cases = damaged.cases.map((entry) => ({ ...entry, runId: 'another-batch-run' }))
+    saveBatchStateV2(damaged)
+    expect(() => finalizeCompletedBatch(batchId)).toThrow('Run')
+    expect(readBatchStateV2(batchId)?.status).toBe('queued')
+    expect(readFinalizedSnapshot(batchId)).toBeUndefined()
+  })
+
   test('已真实形成所有最终业务决定后才允许批次定稿', async () => {
     const a = await createCase('compliant')
     const batchId = makeBatch([a.caseId])

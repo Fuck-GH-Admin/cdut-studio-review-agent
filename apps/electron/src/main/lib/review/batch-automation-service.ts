@@ -125,8 +125,16 @@ export function finalizeCompletedBatch(batchId: string) {
     const projection = resolveFinalDecisionProjection(aggregate.decisions)
     const final = projection.decision
     if (!projection.isFinal || !final) throw new Error(`案卷缺少可追溯的正式决定: ${caseId}`)
-    return { caseId, decisionId: final.id, result: final.result, runId: final.basedOnRunId,
-      basedOnRevision: final.basedOnRevision, actor: final.actor }
+    const entry = state.cases.find((item) => item.caseId === caseId)
+    if (!entry?.runId || !entry.runInputHash || final.basedOnRunId !== entry.runId) {
+      throw new Error(`定稿必须绑定该批次已执行的 Run 与决定: ${caseId}`)
+    }
+    const run = validateBoundBatchRun(state.batch, entry, getRunV2(caseId, entry.runId))
+    if (!run || isWorkspaceRunStaleV2(aggregate, run.id)) {
+      throw new Error(`该批次 Run 证据已失效，不能定稿: ${caseId}`)
+    }
+    return { caseId, decisionId: final.id, result: final.result, runId: entry.runId,
+      runInputHash: entry.runInputHash, basedOnRevision: final.basedOnRevision, actor: final.actor }
   })
   return finalizeBatch(batchId, {
     kind: 'audited-automation-batch', round: state.round, templateId: state.batch.templateId,

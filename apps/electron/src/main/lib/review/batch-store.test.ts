@@ -255,6 +255,12 @@ describe('批次中断恢复与定向重试（B 切片）', () => {
       coverage: { documents: [], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 },
       diagnostics: [], startedAt: '2026-10-10T00:00:00Z', completedAt: '2026-10-10T00:00:01Z',
     })
+    // A manually seeded successful Run is not enough: bind it to this batch.
+    const state = readBatchStateV2(id)!
+    state.cases = state.cases.map((entry) => ({
+      ...entry, runId: 'run-valid-done', runInputHash: 'valid-hash',
+    }))
+    saveBatchStateV2(state)
     expect(() => retryBatchCases(id, [caseId])).toThrow('不可重试')
     expect(readBatchStateV2(id)?.cases[0]?.status).toBe('done')
   })
@@ -275,7 +281,10 @@ describe('批次中断恢复与定向重试（B 切片）', () => {
     let release!: () => void
     const entered = new Promise<void>((resolve) => { signal = resolve })
     const block = new Promise<void>((resolve) => { release = resolve })
-    const pending = runBatchQueue('active-run', { runCase: async () => { signal(); await block; return { status: 'completed' } } })
+    const pending = runBatchQueue('active-run', { runCase: async () => {
+      signal(); await block
+      return { status: 'completed', runId: 'run-active', inputHash: 'c'.repeat(64) }
+    } })
     await entered
     expect(() => recoverInterruptedBatch('active-run')).toThrow('仍在当前进程')
     expect(() => retryBatchCases('active-run', ['c1'])).toThrow('执行中')
@@ -505,7 +514,10 @@ describe('批次队列执行（G06/G11 真实队列）', () => {
     const blocker = new Promise<void>((resolve) => { release = resolve })
     let calls = 0
     const first = runBatchQueue('bq-concurrent', {
-      runCase: async () => { calls++; started(); await blocker; return { status: 'completed' } },
+      runCase: async () => {
+        calls++; started(); await blocker
+        return { status: 'completed', runId: 'run-concurrent', inputHash: 'd'.repeat(64) }
+      },
     })
     await entered
     await expect(runBatchQueue('bq-concurrent', {
