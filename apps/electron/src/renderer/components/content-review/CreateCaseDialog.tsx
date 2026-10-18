@@ -67,6 +67,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
   const [d4Mode, setD4Mode] = React.useState(false)
   const [d4, setD4] = React.useState<import('@profer/shared').D4ClientSelection>()
   const [intake, setIntake] = React.useState<D4IntakePreview | null>(null)
+  const [intakeRoles, setIntakeRoles] = React.useState<Array<'application' | 'evidence'>>([])
   const [routedTemplateId, setRoutedTemplateId] = React.useState<string>()
   const [manualRouting, setManualRouting] = React.useState(false)
 
@@ -91,6 +92,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
     setD4Mode(false)
     setD4(undefined)
     setIntake(null)
+    setIntakeRoles([])
     setRoutedTemplateId(undefined)
     setManualRouting(false)
   }, [open])
@@ -119,7 +121,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
         academicYear: academicYear.trim() || defaultAcademicYear(),
         domainPackId,
         reviewTemplate: !d4Mode && selectedTemplate ? { templateId: selectedTemplate.templateId, version: selectedTemplate.version } : undefined,
-        ...(d4Mode && d4 ? { d4: { ...d4, ...(intake ? { intakeToken: intake.token } : {}) } } : {}),
+        ...(d4Mode && d4 ? { d4: { ...d4, ...(intake ? { intakeToken: intake.token, intakeRoles } : {}) } } : {}),
       }),
       () => setSubmitting(true),
       (created) => {
@@ -169,8 +171,11 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
           </div>
 
           {d4Mode && <D4IntakePicker intake={intake} manuallyOverridden={manualRouting}
+            documentRoles={intakeRoles} onDocumentRolesChange={setIntakeRoles}
             onIntake={value => {
-              setIntake(value); setD4(undefined); setRoutedTemplateId(undefined); setManualRouting(false)
+              setIntake(value)
+              setIntakeRoles(value ? value.files.map(() => 'application' as const) : [])
+              setD4(undefined); setRoutedTemplateId(undefined); setManualRouting(false)
             }}
             onApplyRoute={id => { if (!manualRouting) setRoutedTemplateId(id) }}
           />}
