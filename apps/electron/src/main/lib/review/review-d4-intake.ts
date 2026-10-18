@@ -99,9 +99,9 @@ export const D4_DROP_MAX_TOTAL_BYTES = 40 * 1024 * 1024
 export function isValidD4DropName(name: unknown): name is string {
   return typeof name === 'string' && !!name && name.length <= 220 &&
     name !== '.' && name !== '..' && !name.includes('/') &&
-    !name.includes('\\\\') && !name.includes(String.fromCharCode(0)) &&
+    !name.includes(String.fromCharCode(92)) && !name.includes(String.fromCharCode(0)) &&
     !/[<>:"|?*]/.test(name) && !/[. ]$/.test(name) &&
-    !/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\\.|$)/i.test(name)
+    !/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(name)
 }
 export async function stageD4DroppedBytes(ownerWebContentsId: number,
   items: Array<{ name: string; bytes: Uint8Array }>): Promise<D4IntakePreview> {
