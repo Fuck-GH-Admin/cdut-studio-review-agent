@@ -28,6 +28,11 @@ export interface D4ClientSelection {
   reviewerConfirmation?: 'explicit-ui-confirmation'
   /** Main-owned one-use native-picker intake token; never a Renderer-supplied filesystem path. */
   intakeToken?: string
+  /** Reviewer-selected role for each staged file in picker order. Only application/evidence;
+   * applicant documents can NEVER become a policy/rule authority through intake.
+   * Main validates length + values against the claimed token's actual files.
+   */
+  intakeRoles?: Array<'application' | 'evidence'>
 }
 /** Preview returned after OS file selection; not a business fact or school authority. */
 export interface D4IntakePreview {
