@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useAtomValue, useStore } from 'jotai'
 import type { Actor, CaseAggregateV2, FieldValue, ReviewCommandV2 } from '@profer/shared'
-import { w1ObservationSources } from './w1-fact-source'
+import { w1CandidateFactKeys, w1ObservationSources } from './w1-fact-source'
 import {
   reviewWorkspaceAggregatesByCaseAtom,
   reviewWorkspaceExtractedObservationsByCaseAtom,
@@ -82,6 +82,13 @@ export function useReviewWorkspaceActions(): {
   const confirmObservation = useCallback(async (observation: Record<string, unknown>, value: unknown = observation.value, reason = '审核员核对材料后确认该事实') => {
     const aggregate = await currentAggregate()
     if (typeof observation.subjectId !== 'string' || typeof observation.fieldKey !== 'string') throw new Error('事实缺少事项或字段标识')
+    const subject = aggregate.caseV2.subjects.find(item => item.id === observation.subjectId)
+    if (!subject) throw new Error('W1_FACT_SUBJECT_NOT_IN_ACTIVE_CASE')
+    if (aggregate.d2RuntimePlan &&
+        !w1CandidateFactKeys(aggregate.d2RuntimePlan, subject.id).includes(observation.fieldKey) &&
+        !Object.prototype.hasOwnProperty.call(subject.fields, observation.fieldKey)) {
+      throw new Error('W1_FACT_FIELD_OUTSIDE_FROZEN_SCOPE')
+    }
     await apply(await window.reviewAPI.correctObservationV2({ caseId: aggregate.caseV2.id, command: command(aggregate, {
       type: 'CorrectObservation',
       payload: {
