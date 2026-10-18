@@ -704,28 +704,39 @@ function ManualFactEntry({
   subjectFields,
   template,
   aggregate,
+  candidateFields = [],
   onSave,
 }: {
   subjectId: string
   subjectTitle: string
   subjectFields: Record<string, FieldValue>
+  candidateFields?: string[]
   template: TemplateVersion | null
   aggregate: CaseAggregateV2
-  onSave(fieldKey: string, value: string, sourceVersionId: string, reason: string): Promise<void>
+  onSave(fieldKey: string, value: string, sourceVersionId: string, blockId: string, reason: string): Promise<void>
 }): React.ReactElement {
   const [open, setOpen] = React.useState(false)
   const [fieldKey, setFieldKey] = React.useState('')
   const [value, setValue] = React.useState('')
-  const [sourceVersionId, setSourceVersionId] = React.useState(aggregate.caseV2.documents.find((doc) => doc.role === 'evidence')?.versionId ?? '')
+  const [sourceVersionId, setSourceVersionId] = React.useState('')
+  const [sourceBlockId, setSourceBlockId] = React.useState('')
   const [reason, setReason] = React.useState('')
   const [busy, setBusy] = React.useState(false)
+  const activeDocs = aggregate.caseV2.documents.filter(doc =>
+    doc.active !== false && (doc.parseStatus === 'parsed' || doc.parseStatus === 'partial'))
+  const sourceDoc = activeDocs.find(doc => doc.versionId === sourceVersionId)
   const fields = editableSubjectFields(subjectFields, template)
+  for (const key of candidateFields) {
+    if (!fields.some(item => item.key === key)) fields.push({
+      key, label: businessFieldLabel(key, template), kind: 'text', options: [],
+    })
+  }
   const selectedField = fields.find((field) => field.key === fieldKey)
   const save = async (): Promise<void> => {
-    if (!fieldKey.trim() || !value.trim() || !reason.trim()) return
+    if (!fieldKey.trim() || !value.trim() || !reason.trim() || !sourceDoc) return
     setBusy(true)
     try {
-      await onSave(fieldKey.trim(), value.trim(), sourceVersionId, reason.trim())
+      await onSave(fieldKey.trim(), value.trim(), sourceVersionId, sourceBlockId, reason.trim())
       setOpen(false); setFieldKey(''); setValue(''); setReason('')
     } catch (error) {
       console.error(`[审核工作台] 手工录入 ${subjectTitle} 事实失败`, error)
@@ -736,17 +747,29 @@ function ManualFactEntry({
       {!open ? <button onClick={() => setOpen(true)} className="rounded border px-2 py-1 text-xs hover:bg-background">手工录入事实</button> : (
         <div className="space-y-1.5 rounded-lg border bg-background p-2">
           <p className="text-xs font-medium">为“{subjectTitle}”添加人工核实事实</p>
+          {!fields.length && <p role="alert" className="text-amber-700 dark:text-amber-300">当前候选没有声明可录入的事实字段，不能从自由文本凭空增加审核责任。</p>}
           <label className="block text-xs">事实类型<select value={fieldKey} onChange={(event) => { setFieldKey(event.target.value); setValue('') }} className="mt-1 h-8 w-full rounded border bg-background px-2" aria-label="事实类型"><option value="">请选择事实类型</option>{fields.map((field) => <option key={field.key} value={field.key}>{field.label}</option>)}</select></label>
           <label className="block text-xs">核验结果{selectedField?.kind === 'enum' && selectedField.options.length > 0
             ? <select value={value} onChange={(event) => setValue(event.target.value)} className="mt-1 h-8 w-full rounded border bg-background px-2">{selectedField.options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select>
             : <input value={value} onChange={(event) => setValue(event.target.value)} className="mt-1 h-8 w-full rounded border px-2" placeholder="填写核验结果" aria-label="核验结果" />}</label>
-          <select value={sourceVersionId} onChange={(event) => setSourceVersionId(event.target.value)} className="h-7 w-full rounded border bg-background px-2" aria-label="事实来源材料">
-            <option value="">不关联材料来源</option>
-            {aggregate.caseV2.documents.map((doc) => <option key={doc.versionId} value={doc.versionId}>{doc.fileName}</option>)}
-          </select>
+          <label className="block text-xs">核验依据材料（必选）
+            <select value={sourceVersionId} onChange={(event) => { setSourceVersionId(event.target.value); setSourceBlockId('') }}
+              className="mt-1 h-7 w-full rounded border bg-background px-2" aria-label="事实来源材料">
+              <option value="">请选择仍有效且可解析的材料</option>
+              {activeDocs.map(doc => <option key={doc.versionId} value={doc.versionId}>{doc.fileName}</option>)}
+            </select>
+          </label>
+          {sourceDoc && <label className="block text-xs">原文定位（不能定位时仅文件级）
+            <select className="mt-1 h-7 w-full rounded border bg-background px-2" aria-label="事实来源原文块"
+              value={sourceBlockId} onChange={event => setSourceBlockId(event.target.value)}>
+              <option value="">仅关联到文件（定位精度较低）</option>
+              {sourceDoc.blocks.filter(block => block.text.trim()).map(block =>
+                <option value={block.blockId} key={block.blockId}>{block.text.slice(0, 90)}</option>)}
+            </select>
+          </label>}
           <input value={reason} onChange={(event) => setReason(event.target.value)} className="h-7 w-full rounded border px-2" placeholder="核实理由（必填）" aria-label="核实理由" />
           <div className="flex gap-1.5">
-            <button disabled={busy || !fieldKey.trim() || !value.trim() || !reason.trim()} onClick={() => void save()} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存事实</button>
+            <button disabled={busy || !fieldKey.trim() || !value.trim() || !reason.trim() || !sourceDoc || !fields.length} onClick={() => void save()} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存事实</button>
             <button disabled={busy} onClick={() => setOpen(false)} className="rounded border px-2 py-1">取消</button>
           </div>
         </div>
