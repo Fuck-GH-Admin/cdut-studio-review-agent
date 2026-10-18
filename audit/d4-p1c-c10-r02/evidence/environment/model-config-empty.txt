@@ -1,0 +1,3 @@
+path=<WORKTREE>/audit/d4-p1c-c10-r02/tmp/empty-model-config
+entryCount=0
+providerInvoked=false

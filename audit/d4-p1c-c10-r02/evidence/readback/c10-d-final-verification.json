@@ -1,0 +1,12 @@
+{
+  "stable": true,
+  "totalCaseCountBefore": 7,
+  "totalCaseCountAfter": 7,
+  "matchedBefore": 5,
+  "matchedAfter": 5,
+  "allFiveHaveSingle40ByteApp": true,
+  "allFiveHave52Rules": true,
+  "allPublicationBlocked": true,
+  "allUnknown": true,
+  "allNoEvidenceAndRuns": true
+}

@@ -1,0 +1,9 @@
+candidate=PR #124
+branch=fix/d4-p1c-c10-lifecycle-r02
+head=fc5100b339d1f097aea4ee60bd2d912276bf8429
+remoteRef=mine/fix/d4-p1c-c10-lifecycle-r02
+pullRef=refs/pull/124/head
+productionParent=026cfe0f4905bf10f46291bdd7451788c60df5f9
+mergeBaseAncestorExit=0
+worktreeDetached=true
+trackedWorktreeCleanBeforeTemporaryInstrumentation=true

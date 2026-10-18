@@ -1,0 +1,42 @@
+[
+  {
+    "caseId": "d4-745e6d80-d500-406a-8274-7fa27e476e7d",
+    "title": "C10-R02-ENTER-KEY-20261018-01",
+    "fileName": "0-公共教学教室借用申请.md",
+    "role": "application",
+    "sizeBytes": 40,
+    "sha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+  },
+  {
+    "caseId": "d4-85a7da4d-6a9a-4322-bdfd-83bb8a0a5f6c",
+    "title": "C10-R02-CANCEL-REOPEN-20261018-01",
+    "fileName": "0-公共教学教室借用申请.md",
+    "role": "application",
+    "sizeBytes": 40,
+    "sha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+  },
+  {
+    "caseId": "d4-2820ead6-b3f5-46b0-89bf-4bc802fe2c1b",
+    "title": "C10-R02-FAIL-RETRY-20261018-01",
+    "fileName": "0-公共教学教室借用申请.md",
+    "role": "application",
+    "sizeBytes": 40,
+    "sha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+  },
+  {
+    "caseId": "d4-d01485b0-0272-4840-a9a8-663b88655f59",
+    "title": "C10-R02-EVENT-INSTRUMENTED-20261018-02",
+    "fileName": "0-公共教学教室借用申请.md",
+    "role": "application",
+    "sizeBytes": 40,
+    "sha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+  },
+  {
+    "caseId": "d4-7a3073a5-82c9-4afd-80b2-bdcafb8260df",
+    "title": "C10-R02-MOUSE-20261018-01",
+    "fileName": "0-公共教学教室借用申请.md",
+    "role": "application",
+    "sizeBytes": 40,
+    "sha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+  }
+]

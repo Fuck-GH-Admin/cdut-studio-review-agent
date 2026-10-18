@@ -1,0 +1,608 @@
+$ bun run scripts/review-d4-product-loop.ts --model-config "../../audit/d4-p1c-c10-r02/tmp/empty-model-config" --no-sandbox
+D4 技术预审隔离目录：<QA_TMP>/isolated-profile
+模型配置来源：<WORKTREE>/audit/d4-p1c-c10-r02/tmp/empty-model-config
+合成材料：<WORKTREE>/docs/design/review-agent/acceptance/d4-product-loop-r01/fixtures
+$ tsc --noEmit
+$ esbuild src/main/index.ts --bundle --platform=node --format=cjs --outfile=dist/main.cjs --external:electron --external:@earendil-works/pi-coding-agent --external:@earendil-works/pi-agent-core --external:@earendil-works/pi-ai --define:__PROFER_BUILD_TARGET__='"oss"' --minify-whitespace --minify-identifiers
+▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+
+    src/main/lib/study/study-document-indexer.ts:182:70:
+      182 │ ...L(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+          ╵                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+
+    src/main/lib/document-parser.ts:773:70:
+      773 │ ...L(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+          ╵                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+
+    src/main/lib/review/case-import.ts:49:70:
+      49 │ ...RL(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+         ╵                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3 warnings
+
+  dist/main.cjs  9.2mb ⚠️
+
+⚡ Done in 491ms
+$ bun run build:app-preload
+$ esbuild src/preload/index.ts --bundle --platform=node --format=cjs --outfile=dist/preload.cjs --external:electron
+
+  dist/preload.cjs  205.4kb
+
+⚡ Done in 15ms
+$ bun run scripts/copy-resources.ts
+resources → dist/resources
+$ node scripts/build-ooxml.mjs
+[ooxml] copied 25 files to src/renderer/public/vendor/ooxml
+[ooxml] wasm manifest: {"docx":"docx_parser_bg.b03d7042070b8f7d.wasm","xlsx":"xlsx_parser_bg.72cc0f2c2c001587.wasm","pptx":"pptx_parser_bg.6d87be4bc539a1f7.wasm"}
+$ bun run build:ooxml && vite dev
+$ node scripts/build-ooxml.mjs
+[ooxml] copied 25 files to src/renderer/public/vendor/ooxml
+[ooxml] wasm manifest: {"docx":"docx_parser_bg.b03d7042070b8f7d.wasm","xlsx":"xlsx_parser_bg.72cc0f2c2c001587.wasm","pptx":"pptx_parser_bg.6d87be4bc539a1f7.wasm"}
+
+  VITE v6.4.3  ready in 164 ms
+
+  ➜  Local:   http://localhost:38583/
+  ➜  Network: use --host to expose
+客户端入口：CDUT 专区 → 材料审核 → 新建审核项目 → 使用 D4 候选模板 · 技术预审
+条件改变请新建案卷；候选不能发布。退出后保留隔离目录供核验。
+[配置] 已创建 SDK 配置目录: <QA_TMP>/isolated-profile/config/sdk-config
+[协作工具] EventBus 阻塞事件监听已注册
+[启动] 开发隔离实例: d4-1792335763334，userData=<QA_TMP>/isolated-profile/user-data
+[1370189:1018/230316.108559:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+
+DevTools listening on ws://127.0.0.1:9252/devtools/browser/df696913-b5a0-4d63-bee5-7ad9841e9d37
+[运行时初始化] 开始初始化运行时环境...
+[Node.js 检测] 开始检测 Node.js 运行时...
+[Node.js 检测] 找到 Node.js: <NODE_PREFIX>/bin/node (22.23.2)
+[Bun 检测] 开始检测 Bun 运行时（可选组件）...
+[Bun 检测] 找到 Bun (system): <NODE_PREFIX>/bin/bun (1.4.0)
+[Git 检测] 开始检测 Git 运行时...
+[Git 检测] 找到 Git: /usr/bin/git (2.53.0)
+[运行时初始化] 已写入磁盘缓存
+[运行时初始化] 初始化完成 (耗时 52ms)
+[运行时初始化] 状态: {
+  node: '✅ 22.23.2',
+  bun: '✅ 1.4.0 (system)',
+  git: '✅ 2.53.0',
+  shell: '⏭️ 跳过（非 Windows）',
+  envLoaded: '✅'
+}
+[IPC] 正在注册 IPC 处理器...
+[配置] 已创建 Agent 工作区目录: <QA_TMP>/isolated-profile/config/agent-workspaces
+[配置] 已创建 Agent 工作区: <QA_TMP>/isolated-profile/config/agent-workspaces/default
+[Agent 工作区] 已创建 plugin manifest: default
+[Agent 工作区] 已创建默认工作区
+[IPC] IPC 处理器注册完成
+[审核专区] IPC 处理器注册完成
+[Remote] 未启用（设置页未开启移动模式，且 PROFER_REMOTE 未设置）
+[配置] 默认配置目录名: ~/.cdutai-dev/（开发模式）；实际路径可由 PROFER_CONFIG_DIR 覆盖
+[AgentFabric] 未启用（设置 PROFER_AGENT_FABRIC=1 或 agent-fabric.json enabled=true）
+[1370189:1018/230316.232199:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230316.250183:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230316.259556:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+System tray created
+[启动] 开机自启动: 已关闭
+[工作区监听] 已启动文件监听: <QA_TMP>/isolated-profile/config/agent-workspaces
+[全局快捷键] 注册成功: show-main-window → CommandOrControl+Shift+P
+[1370189:1018/230316.283954:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230316.284038:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[Bridge Registry] 自愈守护已启动
+[定时任务] 调度器已启动，tick 周期 30s
+[设置] 系统主题变化: 浅色
+[1370189:1018/230316.310849:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370346:1018/230316.322217:ERROR:gpu/ipc/client/command_buffer_proxy_impl.cc:285] ContextResult::kTransientFailure: Failed to send GpuControl.CreateCommandBuffer.
+[CdutAuthManager] 启动已清空特区账户分区存储，登录态复位为未登录
+[1370247:1018/230316.329637:ERROR:gpu/command_buffer/service/context_group.cc:140] ContextResult::kFatalFailure: WebGL1 blocklisted
+[设置] 已更新 keys: mainWindowState
+(electron) 'console-message' arguments are deprecated and will be removed. Please use Event<WebContentsConsoleMessageEventParams> object instead.
+[renderer:verbose] http://localhost:38583/@vite/client:789 [vite] connecting...
+[renderer:verbose] http://localhost:38583/@vite/client:912 [vite] connected.
+[renderer:info] http://localhost:38583/@fs<WORKTREE>/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=999b1da6:21609 %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+[renderer:warning] http://localhost:38583/@fs<WORKTREE>/apps/electron/node_modules/.vite/deps/jotai_utils.js?v=5c627574:36 [DEPRECATED] atomFamily is deprecated and will be removed in v3. Please use the `jotai-family` package instead: https://github.com/jotaijs/jotai-family
+[皮肤] 注册表: forest-dark(dark,内置), forest-light(light,内置), mist-paper-dark(dark,内置), ocean-dark(dark,内置), ocean-light(light,内置), slate-dark(dark,内置), slate-light(light,内置), terminal-dark(dark,内置)
+
+(electron:1370189): libunity-CRITICAL **: 23:03:25.063: unity-inspector.vala:96: Unable to connect to session bus: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): libunity-CRITICAL **: 23:03:25.063: unity-launcher.vala:157: Unable to connect to session bus: Unknown or unsupported transport “disabled” for address “disabled:”
+[renderer:info] http://localhost:38583/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[renderer:info] http://localhost:38583/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[配置] 已同步默认 Skill: automation
+[配置] 已同步默认 Skill: brainstorming
+[1370247:1018/230325.199178:ERROR:gpu/command_buffer/service/context_group.cc:140] ContextResult::kFatalFailure: WebGL1 blocklisted
+[1370247:1018/230325.200371:ERROR:gpu/command_buffer/service/context_group.cc:140] ContextResult::kFatalFailure: WebGL1 blocklisted
+[配置] 已同步默认 Skill: docx
+[配置] 已同步默认 Skill: executing-plans
+[配置] 已同步默认 Skill: find-skills
+[配置] 已同步默认 Skill: guizang-ppt-skill
+[配置] 已同步默认 Skill: in-app-browser
+[配置] 已同步默认 Skill: lark-delivery
+[配置] 已同步默认 Skill: pdf
+[配置] 已同步默认 Skill: pptx
+[配置] 已同步默认 Skill: profer-coach
+[配置] 已同步默认 Skill: session-cleaner
+[配置] 已同步默认 Skill: skill-creator
+[配置] 已同步默认 Skill: tool-builder
+[配置] 已同步默认 Skill: user-sense
+[配置] 已同步默认 Skill: writing-plans
+[配置] 已同步默认 Skill: xlsx
+[设置] 已更新 keys: tabState
+[设置] 已更新 keys: mainWindowState
+[1370189:1018/230343.305526:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230343.305568:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230343.305597:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230343.305605:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370247:1018/230349.925398:ERROR:gpu/command_buffer/service/context_group.cc:140] ContextResult::kFatalFailure: WebGL1 blocklisted
+[1370247:1018/230349.926181:ERROR:gpu/command_buffer/service/context_group.cc:140] ContextResult::kFatalFailure: WebGL1 blocklisted
+[1370189:1018/230350.420820:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230350.420945:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230350.420977:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230350.420986:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230354.977174:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230354.977233:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230354.977272:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230354.977293:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[设置] 已更新 keys: onboardingCompleted
+[配置] 已创建 Agent 会话目录: <QA_TMP>/isolated-profile/config/agent-sessions
+[配置] 已创建 Agent 会话工作目录: <QA_TMP>/isolated-profile/config/agent-workspaces/default/03d8135a-dd7d-4ce9-9985-afd935379533
+[Agent 会话] 已创建会话: 新 Agent 会话 (03d8135a-dd7d-4ce9-9985-afd935379533)
+[设置] 已更新 keys: scratchPadActive
+[设置] 已更新 keys: agentWorkspaceId
+[设置] 已更新 keys: tabState
+[1370189:1018/230401.859290:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230401.859340:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230401.859383:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230401.859401:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230411.041917:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230411.042241:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230411.042277:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230411.042291:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[设置] 已更新 keys: coachTourVersion
+[设置] 已更新 keys: tutorialBannerDismissed
+[1370189:1018/230452.688849:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230452.688905:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230452.688945:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230452.688962:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230501.471597:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230501.471664:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230501.471707:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230501.471725:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230657.137728:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230657.137785:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230657.137817:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230657.137835:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[CdutDemo] 命中演示账户，进入离线演示态（不保活、不落盘）
+[1370189:1018/230702.182495:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230702.182756:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230702.182802:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230702.183131:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230710.194876:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230710.194930:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230710.194955:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230710.194965:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230738.879463:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230738.879515:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230738.879542:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230738.879560:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230754.514292:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230754.514343:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230754.514371:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230754.514383:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+
+(electron:1370189): dconf-WARNING **: 23:07:58.268: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:07:58.276: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:07:58.380: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:07:58.398: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:07:58.422: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:07:58.456: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:07:58.467: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:07:58.489: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:07:58.521: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:07:58.528: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:07:58.544: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:08:09.494: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:08:40.693: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:08:40.693: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+[1370189:1018/230842.128625:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230842.128672:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230842.128704:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230842.128715:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230913.348578:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230913.348629:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230913.348653:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230913.348664:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230928.982595:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230928.982650:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230928.982680:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230928.982698:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230939.736560:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230939.736604:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230939.736625:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230939.736640:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230953.028593:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230953.028641:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/230953.028670:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/230953.028678:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[C10-R02-QA] CREATE_CASE_ENTRY seq=1 at=2026-10-18T15:09:59.850Z sender=1
+[审核模板] 已发布: comprehensive-assessment-v2@3
+[审核专区] 案卷已更新(rev=1): d4-7a3073a5-82c9-4afd-80b2-bdcafb8260df — 导入材料 0-公共教学教室借用申请.md（parsed）
+[审核专区] 已导入材料: 0-公共教学教室借用申请.md → d4-7a3073a5-82c9-4afd-80b2-bdcafb8260df/doc-1792336200628-qu4oar（解析 parsed）
+[1370189:1018/231003.344003:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231003.344081:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231003.344146:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231003.344175:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+
+(electron:1370189): dconf-WARNING **: 23:11:24.590: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:11:24.631: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:11:24.682: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:11:24.697: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:11:24.731: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:11:24.762: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:11:24.784: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:11:24.801: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:11:24.818: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:11:24.835: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:11:24.852: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:11:25.883: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:11:26.891: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:11:26.891: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+[1370189:1018/231158.994847:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231158.994903:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231158.994930:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231158.994947:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231208.926562:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231208.926610:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231208.926649:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231208.926674:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[设置] 已更新 keys: tabState
+[renderer:verbose] http://localhost:38583/@vite/client:789 [vite] connecting...
+[renderer:verbose] http://localhost:38583/@vite/client:912 [vite] connected.
+[renderer:info] http://localhost:38583/@fs<WORKTREE>/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=999b1da6:21609 %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+[renderer:warning] http://localhost:38583/@fs<WORKTREE>/apps/electron/node_modules/.vite/deps/jotai_utils.js?v=5c627574:36 [DEPRECATED] atomFamily is deprecated and will be removed in v3. Please use the `jotai-family` package instead: https://github.com/jotaijs/jotai-family
+[设置] 已更新 keys: scratchPadActive
+[renderer:info] http://localhost:38583/main.tsx:715 [TabRestore] 已恢复 1 个标签页
+[renderer:info] http://localhost:38583/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[renderer:info] http://localhost:38583/main.tsx:715 [TabRestore] 已恢复 1 个标签页
+[renderer:info] http://localhost:38583/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[设置] 已更新 keys: tabState
+[1370189:1018/231338.520461:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231338.520571:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231338.520606:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231338.520613:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+
+(electron:1370189): dconf-WARNING **: 23:13:48.874: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:13:48.915: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:13:48.976: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:13:48.988: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:13:49.022: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:13:49.051: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:13:49.073: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:13:49.080: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:13:49.097: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:13:49.114: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:13:49.131: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:13:53.359: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:13:54.911: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:13:54.911: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+[1370189:1018/231433.355355:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231433.355403:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231433.355427:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231433.355437:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[C10-R02-QA] CREATE_CASE_ENTRY seq=2 at=2026-10-18T15:14:47.343Z sender=1
+[审核专区] 案卷已更新(rev=1): d4-d01485b0-0272-4840-a9a8-663b88655f59 — 导入材料 0-公共教学教室借用申请.md（parsed）
+[审核专区] 已导入材料: 0-公共教学教室借用申请.md → d4-d01485b0-0272-4840-a9a8-663b88655f59/doc-1792336487889-cfjq1n（解析 parsed）
+[1370189:1018/231451.790889:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231451.790964:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231451.791007:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231451.791026:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+
+(electron:1370189): dconf-WARNING **: 23:15:59.488: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:15:59.533: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:15:59.591: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:15:59.605: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:15:59.641: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:15:59.671: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:15:59.681: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:15:59.702: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:15:59.733: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:15:59.744: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:15:59.846: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:16:01.399: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:16:01.399: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+[1370247:1018/231611.324205:ERROR:ui/base/x/x11_software_bitmap_presenter.cc:147] XGetWindowAttributes failed for window 4194347
+[1370189:1018/231612.409175:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231612.409239:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231612.409269:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231612.409292:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231643.212366:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231643.212411:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231643.212436:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231643.212447:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[C10-R02-QA] CREATE_CASE_ENTRY seq=3 at=2026-10-18T15:16:50.449Z sender=1
+Error occurred in handler for 'review:create-case': Error: D4_INTAKE_TOKEN_INVALID: 材料暂存已过期、含多任务或未获当前窗口授权
+    at dUe (<WORKTREE>/apps/electron/dist/main.cjs:665:72220)
+    at U6n (<WORKTREE>/apps/electron/dist/main.cjs:665:75164)
+    at <WORKTREE>/apps/electron/dist/main.cjs:784:34454
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:120511)
+    at Session.emit (node:events:514:28)
+[renderer:error] http://localhost:38583/components/content-review/review-actions-controller.ts:83 [审核专区] 新建案卷失败 Error: Error invoking remote method 'review:create-case': Error: D4_INTAKE_TOKEN_INVALID: 材料暂存已过期、含多任务或未获当前窗口授权
+[1370189:1018/231653.781187:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231653.781236:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231653.781267:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231653.781279:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+
+(electron:1370189): dconf-WARNING **: 23:17:19.692: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:17:19.736: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:17:19.785: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:17:19.796: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:17:19.820: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:17:19.863: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:17:19.893: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:17:19.901: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:17:19.917: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:17:19.934: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:17:20.057: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:17:21.615: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:17:21.616: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+[1370189:1018/231735.957049:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231735.957108:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231735.957135:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231735.957154:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[C10-R02-QA] CREATE_CASE_ENTRY seq=4 at=2026-10-18T15:17:43.146Z sender=1
+[审核专区] 案卷已更新(rev=1): d4-2820ead6-b3f5-46b0-89bf-4bc802fe2c1b — 导入材料 0-公共教学教室借用申请.md（parsed）
+[审核专区] 已导入材料: 0-公共教学教室借用申请.md → d4-2820ead6-b3f5-46b0-89bf-4bc802fe2c1b/doc-1792336663633-6nc7im（解析 parsed）
+[1370189:1018/231746.495786:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231746.495852:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231746.495878:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231746.495898:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231809.625600:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231809.625681:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231809.625753:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231809.625784:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231811.244575:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231811.244645:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231811.244679:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231811.244706:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+
+(electron:1370189): dconf-WARNING **: 23:18:26.870: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:26.906: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:26.956: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:26.967: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:27.002: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:27.033: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:27.055: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:27.063: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:27.079: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:27.096: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:27.113: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:27.130: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:27.252: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:28.779: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:18:28.779: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+[1370189:1018/231833.735333:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231833.735390:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231833.735417:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231833.735438:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[C10-R02-QA] CREATE_CASE_ENTRY seq=5 at=2026-10-18T15:18:40.233Z sender=1
+[审核专区] 案卷已更新(rev=1): d4-85a7da4d-6a9a-4322-bdfd-83bb8a0a5f6c — 导入材料 0-公共教学教室借用申请.md（parsed）
+[审核专区] 已导入材料: 0-公共教学教室借用申请.md → d4-85a7da4d-6a9a-4322-bdfd-83bb8a0a5f6c/doc-1792336720675-qclp8b（解析 parsed）
+[1370189:1018/231843.543860:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231843.543908:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231843.543935:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231843.543946:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231914.237564:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231914.237619:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231914.237645:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231914.237666:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[C10-R02-QA] CREATE_CASE_ENTRY seq=6 at=2026-10-18T15:19:14.904Z sender=1
+[审核专区] 已创建案卷: case-1792336754905-ghbzws（C10-F-PUBLISHED-20261018-01）
+[1370189:1018/231917.912557:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231917.912605:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231917.912629:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231917.912644:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231928.922121:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231928.922200:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231928.925526:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231928.925571:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[C10-R02-QA] CREATE_CASE_ENTRY seq=7 at=2026-10-18T15:19:29.624Z sender=1
+[审核专区] 已创建案卷: case-1792336769625-5o0gj4（C10-F-PUBLISHED-20261018-02）
+[1370189:1018/231932.480762:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231932.480832:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/231932.480863:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/231932.480888:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[设置] 已更新 keys: tabState
+[renderer:verbose] http://localhost:38583/@vite/client:789 [vite] connecting...
+[renderer:verbose] http://localhost:38583/@vite/client:912 [vite] connected.
+[renderer:info] http://localhost:38583/@fs<WORKTREE>/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=999b1da6:21609 %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+[renderer:warning] http://localhost:38583/@fs<WORKTREE>/apps/electron/node_modules/.vite/deps/jotai_utils.js?v=5c627574:36 [DEPRECATED] atomFamily is deprecated and will be removed in v3. Please use the `jotai-family` package instead: https://github.com/jotaijs/jotai-family
+[设置] 已更新 keys: scratchPadActive
+[renderer:info] http://localhost:38583/main.tsx:715 [TabRestore] 已恢复 1 个标签页
+[renderer:info] http://localhost:38583/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[renderer:info] http://localhost:38583/main.tsx:715 [TabRestore] 已恢复 1 个标签页
+[renderer:info] http://localhost:38583/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[设置] 已更新 keys: tabState
+[1370189:1018/232015.108139:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/232015.108182:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/232015.108207:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/232015.108221:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+Error creating proxy: Unknown or unsupported transport “disabled” for address “disabled:” (g-io-error-quark, 13)
+
+(electron:1370189): dconf-WARNING **: 23:21:02.071: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:02.113: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:02.170: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:02.183: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:02.219: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:02.239: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:02.251: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:02.283: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:02.297: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:02.312: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:02.331: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:02.433: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:02.452: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:04.091: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+
+(electron:1370189): dconf-WARNING **: 23:21:04.091: failed to commit changes to dconf: Unknown or unsupported transport “disabled” for address “disabled:”
+[1370247:1018/232108.522338:ERROR:ui/base/x/x11_software_bitmap_presenter.cc:147] XGetWindowAttributes failed for window 4194353
+[1370189:1018/232110.907370:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/232110.907501:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/232110.907539:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/232110.907569:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[C10-R02-QA] CREATE_CASE_ENTRY seq=8 at=2026-10-18T15:21:19.559Z sender=1
+[审核专区] 案卷已更新(rev=1): d4-745e6d80-d500-406a-8274-7fa27e476e7d — 导入材料 0-公共教学教室借用申请.md（parsed）
+[审核专区] 已导入材料: 0-公共教学教室借用申请.md → d4-745e6d80-d500-406a-8274-7fa27e476e7d/doc-1792336880093-r30hrv（解析 parsed）
+[1370189:1018/232122.177681:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/232122.177792:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/232122.177832:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/232122.177846:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[设置] 已更新 keys: tabState
+[renderer:verbose] http://localhost:38583/@vite/client:789 [vite] connecting...
+[renderer:verbose] http://localhost:38583/@vite/client:912 [vite] connected.
+[renderer:info] http://localhost:38583/@fs<WORKTREE>/apps/electron/node_modules/.vite/deps/chunk-EKGHCEOM.js?v=999b1da6:21609 %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+[renderer:warning] http://localhost:38583/@fs<WORKTREE>/apps/electron/node_modules/.vite/deps/jotai_utils.js?v=5c627574:36 [DEPRECATED] atomFamily is deprecated and will be removed in v3. Please use the `jotai-family` package instead: https://github.com/jotaijs/jotai-family
+[设置] 已更新 keys: scratchPadActive
+[renderer:info] http://localhost:38583/main.tsx:715 [TabRestore] 已恢复 1 个标签页
+[renderer:info] http://localhost:38583/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[renderer:info] http://localhost:38583/main.tsx:715 [TabRestore] 已恢复 1 个标签页
+[renderer:info] http://localhost:38583/main.tsx:802 [ScratchPad] 初始化完成，已加载内容: false
+[设置] 已更新 keys: tabState
+[1370189:1018/232240.297146:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/232240.297235:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/232240.297270:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/232240.297314:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             [1370189:1018/233037.405096:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/233037.405153:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[1370189:1018/233037.405179:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[1370189:1018/233037.405193:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: 
+[工作区监听] 已停止
+[Bridge Registry] 自愈守护已停止
+[飞书 BridgeManager] 所有 Bot 已停止
+[钉钉 BridgeManager] 所有 Bot 已停止
+[微信 Bridge] 已停止
+[定时任务] 调度器已停止
+[Remote] 移动版服务已停止
+[全局快捷键] 已注销所有
+[1370247:1018/233125.777283:ERROR:ui/gfx/x/connection.cc:66] X connection error received.
+[1370247:1018/233125.777294:ERROR:ui/gfx/x/connection.cc:66] X connection error received.
+error: script "review:d4:dev" exited with code 1

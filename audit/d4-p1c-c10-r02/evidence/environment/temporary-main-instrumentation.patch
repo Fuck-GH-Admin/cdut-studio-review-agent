@@ -1,0 +1,22 @@
+diff --git a/apps/electron/src/main/lib/review/review-ipc.ts b/apps/electron/src/main/lib/review/review-ipc.ts
+index 85dcbd3b..9786c55f 100644
+--- a/apps/electron/src/main/lib/review/review-ipc.ts
++++ b/apps/electron/src/main/lib/review/review-ipc.ts
+@@ -75,6 +75,8 @@ function requireString(value: unknown, name: string): string {
+  * 由 registerIpcHandlers() 在应用启动时调用一次（幂等由外层守卫保证）。
+  */
+ export function registerReviewIpc(): void {
++  // C10-R02 isolated QA-only counter; records no case/material payload. Revert after GUI retest.
++  let c10R02CreateCaseEntryCount = 0
+   // 启动恢复：上次进程遗留的 queued/running 运行标 interrupted（08 设计 §5）
+   try {
+     const { markStaleRunsInterrupted } = require('./run-store-v2') as typeof import('./run-store-v2')
+@@ -138,6 +140,8 @@ export function registerReviewIpc(): void {
+         d4?: import('@profer/shared').D4ClientSelection
+       },
+     ): Promise<ReviewCase> => {
++      const c10R02Entry = ++c10R02CreateCaseEntryCount
++      console.log(`[C10-R02-QA] CREATE_CASE_ENTRY seq=${c10R02Entry} at=${new Date().toISOString()} sender=${_event.sender.id}`)
+       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+       if (!CASE_TYPES.has(input.type)) throw new Error(`参数 type 非法：${String(input.type)}`)
+       if (input.d4) {

@@ -1,0 +1,5 @@
+$ node audit/d4-p1c-c10-r02/tmp/cdp-driver.mjs dump
+
+{"title":"CDUT Studio","url":"http://localhost:38583/","text":"欢迎使用 CDUT Studio\n\n下一代桌面 AI 软件，让通用 Agent 触手可及\n\n基于开源项目 Proma 深度改造\n\n了解 CDUT Studio 能做什么\n\n这些内容之后也能在设置中找到，不用担心错过","controls":[{"tag":"BUTTON","type":"submit","text":"了解 CDUT Studio 能做什么","aria":null,"testid":null,"placeholder":null,"value":"","disabled":false,"rect":{"x":464,"y":537,"w":672,"h":48}}]}
+
+EXIT_CODE=0

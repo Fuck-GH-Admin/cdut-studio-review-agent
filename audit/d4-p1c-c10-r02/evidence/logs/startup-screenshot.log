@@ -1,0 +1,5 @@
+$ node audit/d4-p1c-c10-r02/tmp/cdp-driver.mjs screenshot audit/d4-p1c-c10-r02/evidence/screenshots/00-startup.png
+
+{"path":"audit/d4-p1c-c10-r02/evidence/screenshots/00-startup.png","title":"CDUT Studio","url":"http://localhost:38583/"}
+
+EXIT_CODE=0

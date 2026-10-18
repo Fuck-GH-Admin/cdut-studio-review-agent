@@ -1,0 +1,122 @@
+{
+  "totalCaseCount": 1,
+  "matchedCaseCount": 1,
+  "cases": [
+    {
+      "caseId": "d4-7a3073a5-82c9-4afd-80b2-bdcafb8260df",
+      "title": "C10-R02-MOUSE-20261018-01",
+      "caseV2": {
+        "templateId": "g03-t01",
+        "templateVersion": 1,
+        "stage": "draft",
+        "revision": 3,
+        "subjects": [
+          {
+            "id": "d4-subject-dcbdab26f4e646e7",
+            "title": "综合楼 A 区 101 教室（合成对象）",
+            "status": "confirmed",
+            "scenario": "p-public-classroom",
+            "conditions": [
+              {
+                "id": "c-exam-period",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-holiday",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-multiple-slots",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-multimedia",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-lecture",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-student-club",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-delegated",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-change",
+                "applicability": "unknown"
+              }
+            ]
+          }
+        ]
+      },
+      "documents": [
+        {
+          "id": "doc-1792336200628-qu4oar",
+          "fileName": "0-公共教学教室借用申请.md",
+          "role": "application",
+          "sizeBytes": 40,
+          "parseStatus": "parsed",
+          "origin": "upload"
+        }
+      ],
+      "d2Plan": {
+        "templateId": "g03-t01",
+        "templateVersion": 1,
+        "fingerprint": "c2a30da06c03f1247850f2f42720f275658317fe61b531e93d802ec9336611f7",
+        "publicationAllowed": false,
+        "targetCount": 1,
+        "targets": [
+          {
+            "objectKey": "d4-object-dcbdab26f4e646e7",
+            "subjectId": "d4-subject-dcbdab26f4e646e7",
+            "title": "综合楼 A 区 101 教室（合成对象）",
+            "businessType": "g03-classroom-slot",
+            "scenario": "p-public-classroom",
+            "conditions": [
+              {
+                "id": "c-exam-period",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-holiday",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-multiple-slots",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-multimedia",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-lecture",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-student-club",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-delegated",
+                "applicability": "unknown"
+              },
+              {
+                "id": "c-change",
+                "applicability": "unknown"
+              }
+            ]
+          }
+        ],
+        "rulesCount": 52,
+        "checksCount": 0
+      },
+      "evidenceLinkCount": 0,
+      "runCount": 0
+    }
+  ]
+}

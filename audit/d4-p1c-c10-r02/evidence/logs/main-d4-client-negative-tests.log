@@ -1,0 +1,23 @@
+$ bun test --isolate apps/electron/src/main/lib/review/review-d4-client.test.ts
+
+bun test v1.4.0 (34cbb9a40)
+
+apps/electron/src/main/lib/review/review-d4-client.test.ts:
+[审核模板] 已发布: comprehensive-assessment-v2@3
+[审核专区] 案卷已更新(rev=1): d4-5ea4a4d8-5d02-430a-a78e-bb6628966f9a — 导入材料 A-电子购买凭证.md（parsed）
+[审核专区] 已导入材料: A-电子购买凭证.md → d4-5ea4a4d8-5d02-430a-a78e-bb6628966f9a/doc-1792335704187-0z0ugi（解析 parsed）
+[审核专区] 案卷已更新(rev=2): d4-5ea4a4d8-5d02-430a-a78e-bb6628966f9a — 从当前审核中移除证明材料
+(pass) D4 客户端最小接入 > 真实 G08 建案可发现；上传/移除材料保留固定责任，A 证据不能解锁 B [361.36ms]
+(pass) D4 客户端最小接入 > G03 两资源的互斥、叠加、未知进入 Plan；修改条件的新案不继承旧结果 [947.24ms]
+[审核专区] 案卷已更新(rev=1): d4-2b85db59-1b23-44d6-b4f3-a3b95fbc6949 — 导入材料 G01-双字段证明.md（parsed）
+[审核专区] 已导入材料: G01-双字段证明.md → d4-2b85db59-1b23-44d6-b4f3-a3b95fbc6949/doc-1792335705454-529pet（解析 parsed）
+(pass) D4 客户端最小接入 > G01-I 保留特殊 student-field 及合成 registry：同份证明两条独立关联 [295.98ms]
+(pass) D4 客户端最小接入 > P1-A/B: three real resource objects compile to separate D2 Subjects and preserve unknown [656.63ms]
+(pass) D4 客户端最小接入 > P1-B: reject unconfirmed input, forged source, duplicated ID, missing axis, foreign type and mixed object [1492.74ms]
+
+ 5 pass
+ 0 fail
+ 45 expect() calls
+Ran 5 tests across 1 file. [4.20s]
+
+EXIT_CODE=0

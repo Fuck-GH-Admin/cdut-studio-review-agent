@@ -1,0 +1,14 @@
+candidate=PR #124
+sourceHead=fc5100b339d1f097aea4ee60bd2d912276bf8429
+worktree=<DETACHED_QA_WORKTREE>
+userData=<QA_TMP>/cdut-d4-product-loop-<random>/user-data
+config=<QA_TMP>/cdut-d4-product-loop-<random>/config
+profileCreatedByIsolatedLauncher=true
+profileFresh=true
+modelConfig=<WORKTREE>/audit/d4-p1c-c10-r02/tmp/empty-model-config
+modelConfigEntryCount=0
+realCAS=false
+provider=false
+productionDatabase=false
+onlyBuiltInOfflineDemoLogin=true
+credentialsNotRecorded=true
