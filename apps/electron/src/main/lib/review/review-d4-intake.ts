@@ -87,6 +87,18 @@ export async function stageD4Intake(ownerWebContentsId: number, parent?: Browser
   }
 }
 /** Acquire token for a single Main-owned create operation, preventing double-submit replay. */
+/** Read-only inspection for a Main-owned token. Never send staged disk paths over IPC. */
+export function inspectD4Intake(token: string, ownerWebContentsId: number): StagedIntake {
+  reap()
+  const entry = STAGED.get(token)
+  if (!entry || entry.ownerWebContentsId !== ownerWebContentsId ||
+      entry.expiresAt <= Date.now() || entry.inUse ||
+      entry.route.status === 'multiple-tasks' ||
+      !entry.files.every(file => existsSync(file.sourcePath) && statSync(file.sourcePath).size === file.sizeBytes)) {
+    throw new Error('D4_INTAKE_TOKEN_INVALID')
+  }
+  return entry
+}
 export function claimD4Intake(token: string, ownerWebContentsId: number): StagedIntake {
   reap()
   const entry = STAGED.get(token)
