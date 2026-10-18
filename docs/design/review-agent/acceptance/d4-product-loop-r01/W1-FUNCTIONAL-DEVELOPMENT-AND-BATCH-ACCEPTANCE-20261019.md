@@ -64,3 +64,26 @@
 对固定 HEAD，在干净 Electron 用户环境、隔离文件、无真实校务数据下操作完整业务链：新建多对象 → 批量文件与 ZIP/文件夹 → 路由建议/人工改选/多事项拒绝 → 确认三态条件 → D2 建案/Subject/Rule/fingerprint → 材料角色、原件 hash、证明主体绑定 → 事实纠错与来源定位 → 重新启动核对持久化。正反例含重名、空文件、损坏 PDF、跨对象串证、同 token 双消费、晚到 native picker、过期与换案、混合事项、人工纠错过期状态。综合验收记录截图、只读 Main、文件 hash、真实事件；不能通过补写文档宣布 PASS。
 
 批次正式验收之前，功能可持续开发，保留 Draft/不合 main；对已知越权、串案、丢原件等 S0 安全问题必须当轮修复，不能以集中验收为由延后。C10 历史 GUI 风险在同一集中测试窗口进行差分复核，但不能篡改 #128。
+
+
+## 2026-10-19｜续开发会话 C1 → C4 实施记录（仍为 W1 进行中）
+
+### 基线核对
+
+- 接手时远端 PR #129 HEAD：`ff9c249bec8cc5105f0363abe7c0b80343526422`，Draft，PR base `412e1520b22591818463dff3e6658cfa09fe124d`，无交接后并发提交；该 HEAD 的 7 条工作流均 SUCCESS。
+- 首轮安全审阅范围：`review-d4-intake.ts`、`review-d4-batch-staging.ts`、`review-d4-case-batch.ts`、`review-d4-document-retry.ts`、`case-import.ts`、IPC / Preload / Renderer 及既有定向测试。字节拖放走 `File.arrayBuffer()` / Main 校验 token，不传 Renderer 绝对路径；原件重试按当前案卷源路径和 Main 记录 SHA-256 校验。本会话没有开展独立 Electron GUI 验收。
+
+### 已实施的生产代码与防护
+
+1. **C1/C2｜逐文件可追溯落盘和修订安全**（`10c66a65b3c5314203fade751fabc896ba5c4338`）：批量/建案导入每完成一份便写 Main 持久来源哈希和错误记录，减少进程中断后来源缺失；替换要求真正 `parsed` 且至少有非空可审核文本，修订使用 V1 expectedRevision 乐观检查。定向重试增加源文件与已复制原件的二次 SHA 检查，记录 pending/archived/archive-failed 状态，仍保留旧原件和历史回执。避免把失败重试或 image-only partial 误标已替换。此代码快照 7/7 CI SUCCESS。
+2. **C2｜进度与历史对账**（`a5abf42a11c90400d8906cbb2e378304647f49ef` 与类型修复 `f1a637fceb7d858a947b1e12ff52bf2ad13c7568`）：批次 Main 通过现成 `ReviewImportProgressEvent` 通道逐文件发送阶段；Renderer 绑定 requestId/案卷/角色，错误后重新载入案卷以反映可能已完成的部分处理。新增 `D4MaterialHistory`，从实际 active/archived、来源哈希和 revision transition 展示当前/归档/双活待人工对账/来源缺失/解析不完整；旧的永久 Warning 明示是历史而不是当前缺件数量。第一次代码提交由于两处 TS 类型问题 CI 失败，修订后恢复。本记录不把阶段消息当持久批次工作队列，也不声称关闭后 Main 处理被取消。
+3. **C3｜逐 Subject 来源/证明关系约束**（`5ec4d6c04112524a8e18a48dd68369801ae46ea8`）：带明确错误 `caseId` 或 `parseRevision` 的候选 SourceRef 被拒绝，不能降级成另一案卷貌似有效的来源；逐 Subject 的 EvidenceLink UI 先核对有效证明 DocumentVersion、当前 Subject、冻结 D2 supportsFacts/fieldKey 及现有 link 不可变身份，保存仍交原 V2 服务二次校验与接收回执；阻断未同步版本建立关联，错误反馈前台可见。增加来源和证据范围负例测试。
+4. **C4｜真实作者责任展示，不伪造业务表单**（`fd4ea9783c1fe34cf307ec28a79846801aff7bb5`）：D4 对象卡显示不可变 D2 plan 上作者原有的每项规则标题、责任、适用性、权威范围和候选事实责任键。核验 G03-T01 冻结 `workspace.json` 确实拥有 task/module/genericScope，但 `makeD2CandidateShell()` 合同刻意保持 `TemplateVersion.fields=[]`；当前没有足够的作者声明字段类型/必填/枚举配置来生成可全面校验的实际业务表单。**C4 完整表单仍未完成，严禁从文本臆造校方字段或破坏 D2 不可变计划。**
+5. **C3/C1｜旧版确认事实失效**（`b1c9c5dc78333004c5ae671c1662773e2359f8ec`）：在原 V1→V2 投影同步里，材料源归档时原来已确认且引用归档版本的 Observation 降为待重新人工确认，保留事实值/SourceRefs/操作 Receipt；已有 EvidenceLink 归档后拒止路径继续沿用。补充旧证明确认事实→归档→旧事实不再 confirmed 的服务测试。
+
+### 验证门禁与遗留风险
+
+- 新增或加严：`review-d4-case-batch.test.ts`、`review-d4-document-retry.test.ts`、`w1-material-history.test.ts`、`w1-fact-source.test.ts`、`w1-evidence-assignment.test.ts`、`w1-author-responsibilities.test.ts`、`workspace-service-v2.test.ts`。需要以最终业务代码 SHA `b1c9c5dc78333004c5ae671c1662773e2359f8ec` 的 CI 结束结果为准；不可从较早通过记录推断最终 PASS。
+- **尚未实施/签收**：可取消且可断电恢复的持久批次任务队列；大批次 IPC 流式传输；主动恢复历史版本的授权操作；完整 PDF 真页、DOCX 段落、Excel sheet/cell、扫描 OCR 与图像原件对照 GUI 正反综合验证；全量 D2 来源事实批量人工校正与候选事项拆案；冻结作者态业务字段的完整 schema/types/required/enum 适配与校验；独立 Electron 全链路测试。已有来源块 UI 不等于所有格式的精确预览合格。
+- **后续实施顺序**：先等最终 CI、修复实际回归；继续 W1 C2 的可信持久批次检查点/中断恢复和可操作修订恢复；再完成 C3 多格式真实原件定位/逐对象纠错；再为 C4 建立仅来源于已冻结作者事实的可信声明映射或新增经过审定的业务表单元数据契约；功能冻结 SHA 后统一独立 Electron/Xvfb 和目标机验收。不得以本次代码 CI 代替 Electron GUI。
+- PR #129 始终 Draft，不合并 main。C10 #128 仍为 `C10_R03_BLOCKED_INPUT`，P06/Provider/校方真实联网能力均独立门禁。
