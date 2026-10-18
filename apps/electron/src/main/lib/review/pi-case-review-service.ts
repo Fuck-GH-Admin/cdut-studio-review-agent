@@ -18,7 +18,7 @@ import { DocumentCapabilityLibrary } from './document-capability-library'
 import { finalizePiDocumentCoverage } from './pi-document-coverage'
 import { validateD2OperationEvidence, verifyD2InstalledPlan } from './review-d2-runtime'
 import { validateD2GuardSubmission } from './review-d2-execution-gates'
-import { compactD2MappingForPi, piObservationFieldContract, piRuleForPrompt, PI_SUBMIT_SCHEMA_CONTRACT } from './pi-review-prompt-contract'
+import { compactD2MappingForPi, piObservationFieldContract, piRuleCatalogForPrompt, piRuleForPrompt, PI_SUBMIT_SCHEMA_CONTRACT } from './pi-review-prompt-contract'
 
 export interface PiReviewBinding {
   assignmentId: string
@@ -398,10 +398,12 @@ function promptFor(aggregate: CaseAggregateV2, template: TemplateVersion): strin
       .map(([key, value]) => `${key}=${JSON.stringify('value' in value ? value.value : value.documentVersionId)}`).join('；')
     return `- ${subject.id}${section ? ` | 分项：${section}` : ''} | ${subject.title}${fields ? ` | 已登记字段：${fields}` : ''}`
   }).join('\n') || '（尚未预登记申报事项。当前模板检查按分项覆盖整案；请从申报材料识别每个实际申报事项，在总结中分别报告核验结果，不得伪造事项 ID 或声称系统已登记事项。）'
-  const rulesText = rules.map((rule) => {
-    const section = rule.sectionId ? template.sections?.find((item) => item.id === rule.sectionId)?.name : undefined
-    return piRuleForPrompt(rule, section)
-  }).join('\n') || '【关键限制】当前模板/审核依据没有生成有效规则，且案卷尚未登记申报事项。只能做材料内部分析，必须在结论中明确标注“未按规则完成结构化审核”；不得给出按校级规则的符合/不符合或最终通过结论。'
+  const sectionName = (rule: RuleSpec): string | undefined =>
+    rule.sectionId ? template.sections?.find((item) => item.id === rule.sectionId)?.name : undefined
+  const rulesText = (aggregate.d2RuntimePlan
+    ? piRuleCatalogForPrompt(rules, sectionName).text
+    : rules.map(rule => piRuleForPrompt(rule, sectionName(rule))).join('\n'))
+    || '【关键限制】当前模板/审核依据没有生成有效规则，且案卷尚未登记申报事项。只能做材料内部分析，必须在结论中明确标注“未按规则完成结构化审核”；不得给出按校级规则的符合/不符合或最终通过结论。'
   return [
     `请在当前案卷「${aggregate.caseV2.title}」中直接完成本次材料审核。`,
     `案卷 ID：${aggregate.caseV2.id}；模板：${template.name}（${template.templateId}@${template.version}）。`,
