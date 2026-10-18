@@ -1,0 +1,464 @@
+{
+  "source": "IPC_READBACK",
+  "observedAt": "2026-10-18T04:59:39.842Z",
+  "case": {
+    "id": "d4-afc27b3c-87b3-4baf-87b7-6f26e0c268cb",
+    "title": "P1AB-GUI-G03-20261018",
+    "applicant": "合成测试申请人",
+    "academicYear": "2026-2027",
+    "templateId": "g03-t01",
+    "templateVersion": 1,
+    "stage": "draft",
+    "revision": 2
+  },
+  "d2Plan": {
+    "schemaVersion": 3,
+    "mode": "technical-pre-review",
+    "publicationAllowed": false,
+    "workspaceId": "d4-g03-t01",
+    "revision": 1,
+    "templateId": "g03-t01",
+    "templateVersion": 1,
+    "authoringDigest": "ba15630eac26cb14f2f8cfb5e594780bb25a60bc62cece82a9e3e91183e1ee73",
+    "previewFingerprint": "2f3fb18688fd6e184c63180e1f512780785630f1d1de9898b111eac237316049",
+    "fingerprint": "4cd44e8c1ba11db22a86b8f1d626e130c56c5d5ecee4eefc057b8a174b3bcde7",
+    "targets": [
+      {
+        "objectKey": "d4-object-719fbffb4d2a4d0e",
+        "subjectId": "d4-subject-719fbffb4d2a4d0e",
+        "title": "图书馆教室·上午",
+        "scenario": "p-public-classroom",
+        "conditions": [
+          {
+            "id": "c-exam-period",
+            "applicability": "applicable",
+            "decidedBy": "reviewer",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-holiday",
+            "applicability": "not-applicable",
+            "decidedBy": "reviewer",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-multiple-slots",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-multimedia",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-lecture",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-student-club",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-delegated",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-change",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          }
+        ]
+      },
+      {
+        "objectKey": "d4-object-bc085823a7244558",
+        "subjectId": "d4-subject-bc085823a7244558",
+        "title": "委托教室·晚间",
+        "scenario": "p-delegated-classroom",
+        "conditions": [
+          {
+            "id": "c-exam-period",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-holiday",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-multiple-slots",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-multimedia",
+            "applicability": "applicable",
+            "decidedBy": "reviewer",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-lecture",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-student-club",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-delegated",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-change",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          }
+        ]
+      },
+      {
+        "objectKey": "d4-object-7bd2838fb6ea427e",
+        "subjectId": "d4-subject-7bd2838fb6ea427e",
+        "title": "研究生教室·新增时段",
+        "scenario": "p-graduate-classroom",
+        "conditions": [
+          {
+            "id": "c-exam-period",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-holiday",
+            "applicability": "applicable",
+            "decidedBy": "reviewer",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-multiple-slots",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-multimedia",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-lecture",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-student-club",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-delegated",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          },
+          {
+            "id": "c-change",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "synthetic-choice",
+            "sourceVersionId": "synthetic-g03-t01-v1"
+          }
+        ]
+      }
+    ],
+    "targetCount": 3,
+    "subjectCount": 3,
+    "ruleCount": 154,
+    "mappingCount": 154
+  },
+  "subjects": [
+    {
+      "id": "d4-subject-719fbffb4d2a4d0e",
+      "title": "图书馆教室·上午",
+      "objectKey": "d4-object-719fbffb4d2a4d0e",
+      "businessType": "g03-classroom-slot",
+      "scenario": "p-public-classroom",
+      "conditionCount": 8,
+      "conditions": [
+        {
+          "id": "c-exam-period",
+          "applicability": "applicable",
+          "decidedBy": "reviewer",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-holiday",
+          "applicability": "not-applicable",
+          "decidedBy": "reviewer",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-multiple-slots",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-multimedia",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-lecture",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-student-club",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-delegated",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-change",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        }
+      ]
+    },
+    {
+      "id": "d4-subject-bc085823a7244558",
+      "title": "委托教室·晚间",
+      "objectKey": "d4-object-bc085823a7244558",
+      "businessType": "g03-classroom-slot",
+      "scenario": "p-delegated-classroom",
+      "conditionCount": 8,
+      "conditions": [
+        {
+          "id": "c-exam-period",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-holiday",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-multiple-slots",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-multimedia",
+          "applicability": "applicable",
+          "decidedBy": "reviewer",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-lecture",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-student-club",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-delegated",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-change",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        }
+      ]
+    },
+    {
+      "id": "d4-subject-7bd2838fb6ea427e",
+      "title": "研究生教室·新增时段",
+      "objectKey": "d4-object-7bd2838fb6ea427e",
+      "businessType": "g03-classroom-slot",
+      "scenario": "p-graduate-classroom",
+      "conditionCount": 8,
+      "conditions": [
+        {
+          "id": "c-exam-period",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-holiday",
+          "applicability": "applicable",
+          "decidedBy": "reviewer",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-multiple-slots",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-multimedia",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-lecture",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-student-club",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-delegated",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        },
+        {
+          "id": "c-change",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "synthetic-choice",
+          "sourceVersionId": "synthetic-g03-t01-v1"
+        }
+      ]
+    }
+  ],
+  "evidenceLinkCount": 0,
+  "runRecords": [],
+  "runCount": 0,
+  "reloadComparison": {
+    "before": {
+      "observedAt": "2026-10-18T04:51:04.327Z",
+      "caseId": "d4-afc27b3c-87b3-4baf-87b7-6f26e0c268cb",
+      "templateId": "g03-t01",
+      "fingerprint": "4cd44e8c1ba11db22a86b8f1d626e130c56c5d5ecee4eefc057b8a174b3bcde7",
+      "subjectIds": [
+        "d4-subject-719fbffb4d2a4d0e",
+        "d4-subject-7bd2838fb6ea427e",
+        "d4-subject-bc085823a7244558"
+      ],
+      "subjectTitles": [
+        "图书馆教室·上午",
+        "委托教室·晚间",
+        "研究生教室·新增时段"
+      ]
+    },
+    "after": {
+      "observedAt": "2026-10-18T04:59:39.842Z",
+      "caseId": "d4-afc27b3c-87b3-4baf-87b7-6f26e0c268cb",
+      "templateId": "g03-t01",
+      "fingerprint": "4cd44e8c1ba11db22a86b8f1d626e130c56c5d5ecee4eefc057b8a174b3bcde7",
+      "subjectIds": [
+        "d4-subject-719fbffb4d2a4d0e",
+        "d4-subject-7bd2838fb6ea427e",
+        "d4-subject-bc085823a7244558"
+      ],
+      "subjectTitles": [
+        "图书馆教室·上午",
+        "委托教室·晚间",
+        "研究生教室·新增时段"
+      ]
+    },
+    "sameCaseId": true,
+    "sameFingerprint": true,
+    "sameSubjects": true
+  }
+}

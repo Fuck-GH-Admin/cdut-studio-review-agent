@@ -1,0 +1,25 @@
+{
+  "source": "READ_ONLY_MAIN_IPC",
+  "observedAt": "2026-10-18T04:57:52.571Z",
+  "caseCount": 2,
+  "cases": [
+    {
+      "id": "d4-afc27b3c-87b3-4baf-87b7-6f26e0c268cb",
+      "title": "P1AB-GUI-G03-20261018",
+      "type": "自定义审核",
+      "applicant": "合成测试申请人",
+      "academicYear": "2026-2027",
+      "isDemo": false,
+      "documentCount": 0
+    },
+    {
+      "id": "d4-d216d9be-3092-43ae-bab9-f6fa586f9837",
+      "title": "P1AB-GUI-G08-20261018",
+      "type": "自定义审核",
+      "applicant": "合成测试申请人-G08",
+      "academicYear": "2026-2027",
+      "isDemo": false,
+      "documentCount": 0
+    }
+  ]
+}

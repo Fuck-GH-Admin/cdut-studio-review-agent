@@ -1,0 +1,143 @@
+{
+  "scope": "D4 P1-A/B independent Electron GUI and D2 real-case input acceptance",
+  "repository": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent",
+  "pullRequest": 104,
+  "sourceCodeHead": "639dd5ea47853e820590f72fca2eb643ebdf23c4",
+  "testedHead": "26a482c0a53813455166d74bd71c728b13a237e0",
+  "pullRequestHeadAtTest": "26a482c0a53813455166d74bd71c728b13a237e0",
+  "pullRequestBaseAtTest": {
+    "ref": "feat/d4-product-loop-20261018",
+    "sha": "b5a1bde69b04832a3ce5625b9577a8b50e626f13"
+  },
+  "auditBranch": "audit/d4-p1ab-gui-r01",
+  "requestedDraftBase": "feat/d4-p1-real-case-input-r01",
+  "ciHistorical": [
+    { "name": "Review Baseline CI #494", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39095074646" },
+    { "name": "D3 MD Dynamic and Structured Gates #139", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39095074703" },
+    { "name": "D2 Scoped Pi Review Tests #446", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39095074711" },
+    { "name": "D3-R1 G01-I typed runtime evidence #110", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39095074677" },
+    { "name": "PR CI #813", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39095074717" },
+    { "name": "D4 COMMON-01-02 runtime evidence #90", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39095074626" },
+    { "name": "D4 unified G01-G08 engineering integration #13", "conclusion": "success", "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39095074620" }
+  ],
+  "worktreeClean": true,
+  "worktreeNotes": {
+    "testedWorktreeCleanAtStart": true,
+    "productionSourceChanges": false,
+    "onlyCommittedChanges": "de-identified acceptance report and evidence",
+    "originalWorktreeDirtyFilePreserved": "apps/electron/src/renderer/components/content-review/CenterPanel.tsx"
+  },
+  "guiObserved": {
+    "value": true,
+    "application": "CDUT Studio Electron client",
+    "offlineEntry": "built-in offline demo route; no CAS or real school account",
+    "xvfb": {
+      "display": ":110",
+      "screen": "1600x1000x24",
+      "pid": 2476113
+    },
+    "electron": {
+      "version": "43.7.7",
+      "chromium": "150.0.7871.250",
+      "mainPid": 2479655,
+      "rendererPid": 2479844,
+      "sandboxEnabled": true,
+      "noSandboxFlagUsed": false
+    },
+    "cdp": "127.0.0.1:9229",
+    "realInput": [
+      "visible-window mouse clicks",
+      "keyboard keyDown/keyUp",
+      "keyboard text insertion",
+      "mouse-wheel scrolling"
+    ],
+    "screenshotSource": "CDP Page.captureScreenshot from the running Electron page"
+  },
+  "mainIpcReadback": {
+    "value": true,
+    "source": "IPC_READBACK",
+    "readOnlyMethods": [
+      "listCases",
+      "getAggregateV2",
+      "listRunsV2"
+    ],
+    "writeMethodsUsed": [],
+    "g03EvidenceLinks": 0,
+    "g03RunRecords": 0,
+    "g08EvidenceLinks": 0,
+    "g08RunRecords": 0
+  },
+  "cases": [
+    {
+      "title": "P1AB-GUI-G03-20261018",
+      "caseId": "d4-afc27b3c-87b3-4baf-87b7-6f26e0c268cb",
+      "templateId": "g03-t01",
+      "templateVersion": 1,
+      "mode": "technical-pre-review",
+      "publicationAllowed": false,
+      "fingerprint": "4cd44e8c1ba11db22a86b8f1d626e130c56c5d5ecee4eefc057b8a174b3bcde7",
+      "targetCount": 3,
+      "subjectCount": 3,
+      "conditionCountPerSubject": 8,
+      "ruleCount": 154,
+      "mappingCount": 154,
+      "evidenceLinkCount": 0,
+      "runCount": 0,
+      "source": "GUI_OBSERVED + IPC_READBACK"
+    },
+    {
+      "title": "P1AB-GUI-G08-20261018",
+      "caseId": "d4-d216d9be-3092-43ae-bab9-f6fa586f9837",
+      "templateId": "g08-t02",
+      "templateVersion": 1,
+      "mode": "technical-pre-review",
+      "publicationAllowed": false,
+      "fingerprint": "9899a78d9c21f71ffafb062b36065ff9a1217b1a50b2515a832ea9cd16c97e9a",
+      "targetCount": 2,
+      "subjectCount": 2,
+      "conditionCountPerSubject": 6,
+      "ruleCount": 107,
+      "mappingCount": 107,
+      "evidenceLinkCount": 0,
+      "runCount": 0,
+      "source": "GUI_OBSERVED + IPC_READBACK"
+    }
+  ],
+  "checks": [
+    { "id": "G-01", "status": "PASS", "evidence": ["GUI_OBSERVED"] },
+    { "id": "G-02", "status": "PASS", "evidence": ["GUI_OBSERVED"] },
+    { "id": "G-03", "status": "PASS", "evidence": ["GUI_OBSERVED", "IPC_READBACK"] },
+    { "id": "G-04", "status": "PASS", "evidence": ["GUI_OBSERVED", "IPC_READBACK"] },
+    { "id": "G-05", "status": "PASS", "evidence": ["GUI_OBSERVED", "IPC_READBACK"] },
+    { "id": "G-06", "status": "PASS", "evidence": ["GUI_OBSERVED"] },
+    { "id": "G-07", "status": "PASS", "evidence": ["GUI_OBSERVED", "IPC_READBACK"] },
+    { "id": "G-08", "status": "PASS", "evidence": ["GUI_OBSERVED", "IPC_READBACK"] },
+    { "id": "B-01-G08-T02", "status": "PASS", "evidence": ["GUI_OBSERVED", "IPC_READBACK"] },
+    { "id": "B-02-G01-I", "status": "PASS", "evidence": ["GUI_OBSERVED"] },
+    { "id": "B-03", "status": "PASS", "evidence": ["GUI_OBSERVED", "IPC_READBACK"] },
+    {
+      "id": "B-04",
+      "status": "PASS_WITH_LIMITATION",
+      "evidence": ["GUI_OBSERVED"],
+      "limitation": "The fixed-case page stated that conditions require a new case and exposed no D4 condition editor. The generic review-template selector was inspected but not changed."
+    }
+  ],
+  "failures": [],
+  "environmentIncidents": [
+    "Two Electron startup attempts exited 133 because the isolated packaged sandbox helper lacked root ownership/mode; corrected without disabling the sandbox, then restored after the run.",
+    "One startup attempt exited 133 after the earlier Xvfb background session ended; a persistent Xvfb :110 session was used successfully.",
+    "Several native select/submit coordinate attempts were corrected before creating any case; details are in the private operator recovery log."
+  ],
+  "unrun": [
+    "P1-C routing/countdown",
+    "P06",
+    "online model setup or execution",
+    "full G08 107-item review",
+    "G01-I synthetic case creation",
+    "real student registry or school account",
+    "document/evidence import",
+    "formal approval and signature flows"
+  ],
+  "verdict": "PASS_GUI_AND_D2",
+  "recommendation": "Proceed to P1-C; this verdict covers P1-A/B GUI and D2 real input only."
+}
