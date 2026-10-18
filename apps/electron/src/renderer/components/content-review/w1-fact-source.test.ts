@@ -17,9 +17,12 @@ describe('W1 explicit subject facts and truthful V2 SourceRef precision', () => 
     const plan = { mapping: [
       { subjectId: 'room-1', evidenceCoverage: { fieldKey: 'capacity', supportsFacts: ['classroom-access', 'capacity'] } },
       { subjectId: 'room-2', evidenceCoverage: { fieldKey: 'sensitive-registry', supportsFacts: ['registry-verified'] } },
-      { subjectId: 'room-1' },
+      { subjectId: 'room-1', gate: { when: { kind: 'all', conditions: [
+        { kind: 'confirmed-observation', fieldKey: 'event-verified', equals: 'yes' },
+        { kind: 'not', condition: { kind: 'confirmed-observation', fieldKey: 'not-holiday', equals: 'no' } },
+      ] } } },
     ] } as D2RuntimePlan
-    expect(w1CandidateFactKeys(plan, 'room-1')).toEqual(['capacity', 'classroom-access'])
+    expect(w1CandidateFactKeys(plan, 'room-1')).toEqual(['capacity', 'classroom-access', 'event-verified', 'not-holiday'])
     expect(w1CandidateFactKeys(plan, 'room-2')).toEqual(['sensitive-registry', 'registry-verified'])
     expect(w1CandidateFactKeys(plan, 'no-such-subject')).toEqual([])
   })
