@@ -74,7 +74,11 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
 
   // 每次打开重置为缺省值，避免带上一次输入
   React.useEffect(() => {
-    if (!open) return
+    // Also invalidate a pending create if the parent closes via props (not Dialog UI).
+    if (!open) {
+      submitLock.current.closeSession()
+      return
+    }
     setTitle('')
     setApplicant('')
     setAcademicYear(defaultAcademicYear())
