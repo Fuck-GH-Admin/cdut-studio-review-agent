@@ -132,6 +132,15 @@ export function registerReviewIpc(): void {
     const { applyD4CaseBatch } = require('./review-d4-case-batch') as typeof import('./review-d4-case-batch')
     return applyD4CaseBatch(input as Parameters<typeof applyD4CaseBatch>[0], event.sender.id)
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.STAGE_D4_DROPPED_BYTES, async (event, raw: unknown) => {
+    const { BrowserWindow } = require('electron') as typeof import('electron')
+    const owner = BrowserWindow.fromWebContents(event.sender)
+    if (!owner || event.senderFrame !== owner.webContents.mainFrame) throw new Error('D4_DROP_SENDER_INVALID')
+    const { stageD4DroppedBytes } = require('./review-d4-intake') as typeof import('./review-d4-intake')
+    // Runtime validates every byte array, each filename, count and total size.
+    // Renderer-supplied file paths are not accepted in this channel.
+    return stageD4DroppedBytes(event.sender.id, raw as Parameters<typeof stageD4DroppedBytes>[1])
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RETRY_D4_DOCUMENT, async (event, raw: unknown) => {
     const { BrowserWindow } = require('electron') as typeof import('electron')
     const owner = BrowserWindow.fromWebContents(event.sender)
