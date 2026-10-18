@@ -81,6 +81,7 @@ describe('L02-01 human supplement is idempotent across V2 and batch projection',
     const first = await resolveSupplementV2(caseId, resolveCommand)
     expect(first.ok).toBe(true)
     if (!first.ok) return
+    expect(first.entity).toMatchObject({ id: supplementId, status: 'satisfied' })
     expect(first.aggregate.caseV2.stage).toBe('reviewing')
     expect(readBatchStateV2(batchId)!.cases[0]!.status).toBe('queued')
     const afterFirst = readAggregate(caseId)!
@@ -92,6 +93,7 @@ describe('L02-01 human supplement is idempotent across V2 and batch projection',
     updateCaseStatus(batchId, caseId, 'done')
     const replay = await resolveSupplementV2(caseId, resolveCommand)
     expect(replay.ok).toBe(true)
+    if (replay.ok) expect(replay.entity).toBeUndefined()
     expect(readAggregate(caseId)!.caseV2.revision).toBe(revision)
     expect(readAggregate(caseId)!.receiptLog).toHaveLength(receipts)
     expect(readBatchStateV2(batchId)!.cases[0]!.status).toBe('done')
