@@ -203,14 +203,14 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
         className="shrink-0 border-b border-amber-500/30 bg-amber-500/5 px-3 py-2">
         <details>
           <summary className="cursor-pointer text-xs font-semibold text-amber-700 dark:text-amber-300">
-            本案有 {reviewCase.d4IntakeWarnings.length} 项材料未成功导入或解析，请补齐后再审核
+            本案历史批次有 {reviewCase.d4IntakeWarnings.length} 项材料未成功导入或解析，请核对是否已补齐
           </summary>
           <ul className="mt-2 max-h-48 list-disc space-y-1 overflow-y-auto pl-4 text-xs">
             {reviewCase.d4IntakeWarnings.map((warning, index) => (
               <li key={index} className="break-all">{warning.originLabel}：{warning.reason}</li>
             ))}
           </ul>
-          <p className="mt-2 text-xs text-muted-foreground">这些记录保存在案卷中，不代表已审核或已核验。请根据缺失清单重新提供材料。</p>
+          <p className="mt-2 text-xs text-muted-foreground">这些是永久保留的历史导入记录。后来补交的文件不会自动删除旧失败记录，请核对当前材料与来源后再判断是否已补齐。</p>
         </details>
       </section>}
       {/* 申报文件只在中栏管理，和左栏审核依据、下方证明材料分开导入。 */}
