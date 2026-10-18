@@ -100,6 +100,18 @@ export function registerReviewIpc(): void {
     const { listD4ClientTemplates } = require('./review-d4-client') as typeof import('./review-d4-client')
     return listD4ClientTemplates()
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.STAGE_D4_INTAKE, async (event) => {
+    const { BrowserWindow } = require('electron') as typeof import('electron')
+    const parent = BrowserWindow.fromWebContents(event.sender)
+    if (!parent || event.senderFrame !== parent.webContents.mainFrame) throw new Error('D4_INTAKE_SENDER_INVALID')
+    const { stageD4Intake } = require('./review-d4-intake') as typeof import('./review-d4-intake')
+    return stageD4Intake(event.sender.id, parent)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.DISCARD_D4_INTAKE, (event, token: unknown) => {
+    if (typeof token !== 'string') return false
+    const { discardD4Intake } = require('./review-d4-intake') as typeof import('./review-d4-intake')
+    return discardD4Intake(token, event.sender.id)
+  })
 
   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_RUNS, (_event, caseId: string): ReviewRun[] => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
@@ -130,7 +142,7 @@ export function registerReviewIpc(): void {
       if (!CASE_TYPES.has(input.type)) throw new Error(`参数 type 非法：${String(input.type)}`)
       if (input.d4) {
         const { createD4ClientCase } = require('./review-d4-client') as typeof import('./review-d4-client')
-        return createD4ClientCase(input as Parameters<typeof createD4ClientCase>[0])
+        return createD4ClientCase(input as Parameters<typeof createD4ClientCase>[0], _event.sender.id)
       }
       // 领域包 ID 只做存在性判断：未知 ID 回落缺省包由 resolveDomainPack 负责，不因拼错而拒绝建卷
       if (input.domainPackId !== undefined && typeof input.domainPackId !== 'string') {
