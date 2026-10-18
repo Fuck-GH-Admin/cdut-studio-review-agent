@@ -13,7 +13,7 @@ import { reviewV2BusyAtom } from './V2CasePanel'
 import { BatchGroupActionDialog } from './BatchGroupActionDialog'
 import { BatchAutomationDialog } from './BatchAutomationDialog'
 import { SupplementRequeueDialog } from './SupplementRequeueDialog'
-import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution } from './batch-ui-feedback'
+import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution, batchTechnicalFailureMessage } from './batch-ui-feedback'
 
 type CaseIndexItem = Awaited<ReturnType<typeof window.reviewAPI.listCasesV2>>[number]
 type ReviewRunV2 = Awaited<ReturnType<typeof window.reviewAPI.listRunsV2>>[number]
@@ -449,6 +449,11 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                               disabled={executing || handlingBatch}
                               title={selectedBatch.cases.find((entry) => entry.caseId === row.caseId)?.error ?? '重新入队，仅本案'}
                               onClick={() => void handleBatchAction('retry', row.caseId)}>重试本案</button>
+                          )}
+                          {batchTechnicalFailureMessage(row.entryStatus, row.run) && (
+                            <p className="mt-1 max-w-[250px] text-[11px] leading-4 text-red-700 dark:text-red-300" role="status">
+                              {batchTechnicalFailureMessage(row.entryStatus, row.run)}
+                            </p>
                           )}
                           {multiBatchCaseIds.has(row.caseId) && row.stage === 'reviewing' && selectedBatch.status !== 'finalized' && (
                             <button type="button" className="ml-2 text-[11px] text-primary hover:underline"

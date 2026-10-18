@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 import type { BatchStateV2, BatchTriageRoute } from '@profer/shared'
-import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution } from './batch-ui-feedback'
+import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution, batchTechnicalFailureMessage } from './batch-ui-feedback'
 
 describe('21 号本地 UI QA：反馈语义', () => {
   test('Electron IPC 包装信息不显示给用户，但保留真实业务拒绝原因', () => {
@@ -46,5 +46,16 @@ describe('21 号本地 UI QA：反馈语义', () => {
     expect(summarizeBatchExecution({ ...state, cases: [{ caseId: 'error', status: 'failed' }] }, new Map())).toEqual({
       completed: 0, failed: 1, pending: 0, needsHuman: 0, technical: 0,
     })
+  })
+  test('C 型 max-turn 中断展示技术失败而非业务不合规；不泄漏原始模型错误', () => {
+    const run = { status: 'failed', error: 'Pi 审核 Agent 未完成：max turns 24',
+      diagnostics: ['模型上游内部敏感字段 SECRET_SHOULD_NOT_BE_IN_UI'],
+      coverage: { pendingChecks: 1 } } as unknown as import('@profer/shared').ReviewRunV2
+    const label = batchTechnicalFailureMessage('failed', run)
+    expect(label).toContain('运行上限')
+    expect(label).toContain('1 项')
+    expect(label).not.toContain('SECRET_SHOULD_NOT_BE_IN_UI')
+    expect(batchTechnicalFailureMessage('done', run)).toBeNull()
+    expect(batchTechnicalFailureMessage('failed', undefined)).toContain('技术异常')
   })
 })
