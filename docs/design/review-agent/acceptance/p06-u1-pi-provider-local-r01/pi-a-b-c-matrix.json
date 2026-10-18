@@ -1,0 +1,34 @@
+{
+  "candidateHead": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+  "gate": "S0 permission gates did not complete; no A/B/C cases were created or run",
+  "cases": [
+    {
+      "case": "A",
+      "status": "NOT-RUN",
+      "expected": "synthetic sufficient evidence, compliant suggestion, no automatic human approval",
+      "caseRunAssignmentTurnHashes": null,
+      "providerToolCalls": 0,
+      "sourceRefs": 0,
+      "v2BusinessConclusion": null
+    },
+    {
+      "case": "B",
+      "status": "NOT-RUN",
+      "expected": "synthetic sufficient evidence, non-compliant suggestion, accurate source reference",
+      "caseRunAssignmentTurnHashes": null,
+      "providerToolCalls": 0,
+      "sourceRefs": 0,
+      "v2BusinessConclusion": null
+    },
+    {
+      "case": "C",
+      "status": "NOT-RUN",
+      "expected": "missing amount remains missing; awaiting supplement or confirmation; no inferred amount or compliant verdict",
+      "caseRunAssignmentTurnHashes": null,
+      "providerToolCalls": 0,
+      "sourceRefs": 0,
+      "v2BusinessConclusion": null
+    }
+  ],
+  "historicalCasesReused": false
+}

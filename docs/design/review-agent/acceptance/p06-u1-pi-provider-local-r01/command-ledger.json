@@ -1,0 +1,846 @@
+{
+  "candidateHead": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+  "candidateTree": "df27656c56a5147ebfb4e1cd67f1645919522147",
+  "sourceEvidenceVisibility": "raw stdout/stderr and technical identifiers retained only in access-restricted local evidence directory; public fields contain summaries and hashes",
+  "records": [
+    {
+      "id": "01-frozen-install",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/01-frozen-install.stdout.log",
+        "sha256": "913a53688709bc4132d21a65717f59fd8af0a9e884681c87d268e11461fca7c0",
+        "bytes": 287
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/01-frozen-install.stderr.log",
+        "sha256": "b17e7d1ebdbf4f86ab3481a0355d53a2bc425a2d93414a2b4abf5a0591256eab",
+        "bytes": 62
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Dependency installation should complete with the frozen lockfile.",
+      "actual": "process exit 0; routine build/static command completed"
+    },
+    {
+      "id": "authorized-provider-presence-check",
+      "classification": "BLOCKED_ENV",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "python3",
+        "-c",
+        "import os,json; names=[\"P06_PI_TEST_PROVIDER\",\"P06_PI_TEST_API_KEY\",\"OPENAI_API_KEY\",\"ANTHROPIC_API_KEY\",\"DEEPSEEK_API_KEY\",\"QWEN_API_KEY\",\"MINIMAX_API_KEY\",\"GOOGLE_API_KEY\"]; print(json.dumps({\"checkedVariableNames\":names,\"presentVariableNames\":[n for n in names if bool(os.environ.get(n))],\"authorizedTestCredentialAvailable\":any(bool(os.environ.get(n)) for n in names)},sort_keys=True))"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/authorized-provider-presence-check.stdout.log",
+        "sha256": "129b761e7330f3f206b1a98e2ec8b8492bc1686aa40ef11f77b3408ec8f01e02",
+        "bytes": 258
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/authorized-provider-presence-check.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Presence-only check should find no explicitly authorized test Provider credential, without reading values.",
+      "actual": "BLOCKED_ENV: no explicitly authorized test credential available"
+    },
+    {
+      "id": "boundaries",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "run",
+        "check:boundaries"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/boundaries.stdout.log",
+        "sha256": "7c12341190370579829bb125d1338070e12652e36c5c6ea19282bffd769e56af",
+        "bytes": 38
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/boundaries.stderr.log",
+        "sha256": "21f6953e48c36416639e37cfd5ac857c3b93042937908b6bd6089ca264f4932f",
+        "bytes": 34
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Repository boundary checks should complete without errors.",
+      "actual": "process exit 0; routine build/static command completed"
+    },
+    {
+      "id": "electron-build",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "run",
+        "electron:build"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/electron-build.stdout.log",
+        "sha256": "3c2064c1822ac803b6b6d4a1543940a607fc9b74a863c5417341103711092490",
+        "bytes": 128251
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/electron-build.stderr.log",
+        "sha256": "890b155b17f990e81d3c162b125f8ac510cba0de95dafab3ec023be678b42743",
+        "bytes": 44
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Electron build should complete without errors.",
+      "actual": "process exit 0; routine build/static command completed"
+    },
+    {
+      "id": "electron-main-instrument-status",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "main",
+        "<PRIVATE_EVIDENCE>/setup/main-instrument-status.js"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/electron-main-instrument-status.stdout.log",
+        "sha256": "0375b39536cebd3b33ca6b6511107cef9b53a7c21e11c23a94f86433a565942b",
+        "bytes": 159
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/electron-main-instrument-status.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Actual Electron Main process should load the Pi SDK instrumentation successfully.",
+      "actual": "PASS_REAL_ELECTRON_SCOPED: private Main process loaded actual ESM Pi SDK singleton"
+    },
+    {
+      "id": "electron-main-ipc-profile-seed",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "scripts/qa/p06-electron-main-ipc-profile-seed.test.ts"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/electron-main-ipc-profile-seed.stdout.log",
+        "sha256": "14a6fc72a6ee15f1347ef8d90e171d508c98c67edb6a7c7d5533dd2658cb4430",
+        "bytes": 1061
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/electron-main-ipc-profile-seed.stderr.log",
+        "sha256": "c65ed6dfc93873575f108ece8c8d4e236cff23a1b69c9a5a15ba69a208d04bf9",
+        "bytes": 111
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Seed one fresh synthetic template/case/channel in the private profile; no external provider request.",
+      "actual": "process exit 0; routine build/static command completed; 0 pass lines"
+    },
+    {
+      "id": "electron-main-runtime-probe",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "main",
+        "<PRIVATE_EVIDENCE>/setup/main-runtime-probe.js"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/electron-main-runtime-probe.stdout.log",
+        "sha256": "da6287a96dd1ce180e8372867ffbe341f7e8b57ee18630a40de6d99482636e54",
+        "bytes": 175
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/electron-main-runtime-probe.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Command exits zero for the documented static/build diagnostic.",
+      "actual": "process exit 0; routine build/static command completed"
+    },
+    {
+      "id": "electron-main-sdk-import-probe",
+      "classification": "HARNESS_INVALID",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "main",
+        "<PRIVATE_EVIDENCE>/setup/main-sdk-import-probe.js"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/electron-main-sdk-import-probe.stdout.log",
+        "sha256": "a1379144f5ae84061679dc5e511f3faf14a2942fe6e18da4c0de1f2640101b18",
+        "bytes": 109
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/electron-main-sdk-import-probe.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Preserve this failed harness attempt and exclude it from product pass claims; any correction must have its own recorded rerun.",
+      "actual": "HARNESS_INVALID: inspector Runtime.evaluate lacks dynamic import callback"
+    },
+    {
+      "id": "electron-main-sdk-require-probe",
+      "classification": "HARNESS_INVALID",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "main",
+        "<PRIVATE_EVIDENCE>/setup/main-sdk-require-probe.js"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/electron-main-sdk-require-probe.stdout.log",
+        "sha256": "26a835aad032b4868c104f462d3cc7e5d919769d251253737e9365955b933c9c",
+        "bytes": 213
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/electron-main-sdk-require-probe.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Preserve this failed harness attempt and exclude it from product pass claims; any correction must have its own recorded rerun.",
+      "actual": "HARNESS_INVALID: Pi packages expose ESM-only import condition; CommonJS require unavailable"
+    },
+    {
+      "id": "electron-renderer-api-names",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/setup/renderer-api-names.js"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/electron-renderer-api-names.stdout.log",
+        "sha256": "b07663f54f5f3dde16d0703417cab6f049975c708f85f56ed846e1ed0d347ef2",
+        "bytes": 66
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/electron-renderer-api-names.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Command exits zero for the documented static/build diagnostic.",
+      "actual": "process exit 0; routine build/static command completed"
+    },
+    {
+      "id": "electron-renderer-assignment-state",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/setup/renderer-assignment-state.js"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/electron-renderer-assignment-state.stdout.log",
+        "sha256": "5e756b8d74e9d2fc706e0d64563449624272f353396ffb203d028fd747afe9b2",
+        "bytes": 49
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/electron-renderer-assignment-state.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Ordinary Renderer assignment API should not expose the hidden review assignment.",
+      "actual": "PASS_REAL_ELECTRON_IPC_SCOPED: ordinary Renderer API did not reveal internal assignment"
+    },
+    {
+      "id": "electron-renderer-post-run-observation-rerun",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/setup/renderer-post-run-observation.js"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/electron-renderer-post-run-observation-rerun.stdout.log",
+        "sha256": "9ce238587075688602cbb74914fbece823d2692dcebe6bb01189cd45d4f386e8",
+        "bytes": 718
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/electron-renderer-post-run-observation-rerun.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Main V2 failure state should persist; ordinary session/search APIs should hide the review owner.",
+      "actual": "PASS_REAL_ELECTRON_IPC_SCOPED: persisted V2 terminal record and ordinary session/search isolation observed"
+    },
+    {
+      "id": "electron-renderer-post-run-observation",
+      "classification": "HARNESS_INVALID",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/setup/renderer-post-run-observation.js"
+      ],
+      "exitCode": 1,
+      "stdout": {
+        "privateRef": "raw-log://setup/electron-renderer-post-run-observation.stdout.log",
+        "sha256": "415c2b54af23355ab7e659f4aa48889cfbdb0aba78b26b73b2e4bf8c6342592c",
+        "bytes": 497
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/electron-renderer-post-run-observation.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Preserve this failed harness attempt and exclude it from product pass claims; any correction must have its own recorded rerun.",
+      "actual": "HARNESS_INVALID: called ordinary-session method on reviewAPI instead of electronAPI; rerun corrected and passed"
+    },
+    {
+      "id": "electron-renderer-real-review-start",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "node",
+        "<PRIVATE_EVIDENCE>/setup/cdp-eval.mjs",
+        "renderer",
+        "<PRIVATE_EVIDENCE>/setup/renderer-start-real-review.js"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/electron-renderer-real-review-start.stdout.log",
+        "sha256": "3418560e1026cc7ca030d25462b8ce5c01be7bf4767fab2fd582fd7122d70f75",
+        "bytes": 393
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/electron-renderer-real-review-start.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Renderer-to-Main IPC should return accepted ACK and the same run identity on V2 reread; no hidden owner identifiers in ACK.",
+      "actual": "PASS_REAL_ELECTRON_IPC_SCOPED: Renderer preload invoked Main start; accepted ACK matched state"
+    },
+    {
+      "id": "focused-tests",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/agent-orchestrator-review-tool-gates.p06.test.ts",
+        "apps/electron/src/main/lib/agent-orchestrator-permission-wiring.p06.test.ts",
+        "apps/electron/src/main/lib/review/pi-case-review-service.test.ts"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/focused-tests.stdout.log",
+        "sha256": "8bbf4163b09c8b5695bf60c0da25911a2d8e2b2f1dafbada80cac1415cb996f7",
+        "bytes": 17199
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/focused-tests.stderr.log",
+        "sha256": "bbddb3c22658fc0c7f62a9dd70cac5e7d5ff97fe7883da3bd917b0c1078b14de",
+        "bytes": 2948
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "13 focused U1/Main permission/V2 tests should pass with zero failures.",
+      "actual": "PASS_CONTROLLED: 13/13 tests across 3 files; 13 tests across 3 files"
+    },
+    {
+      "id": "pi-main-bridge-sdk-boundary-final",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "60000",
+        "scripts/qa/p06-pi-main-bridge-registry.test.ts"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/pi-main-bridge-sdk-boundary-final.stdout.log",
+        "sha256": "3fe93b2d5c0f701cfc885f25e377788eecb6de0c6b3b0a68174b1c60436c58a6",
+        "bytes": 4775
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/pi-main-bridge-sdk-boundary-final.stderr.log",
+        "sha256": "abf0ac3b202aed2446fdeca426cf54a6f67ecb37ea63951bacf1d480082f805c",
+        "bytes": 219
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Command exits zero for the documented static/build diagnostic.",
+      "actual": "PASS_CONTROLLED_SCOPED: production Main review bridge and real Pi SDK via Bun-controlled Electron preload; provider fenced before network; not real Electron; 0 pass lines"
+    },
+    {
+      "id": "pi-main-bridge-sdk-boundary-rerun-01",
+      "classification": "HARNESS_INVALID",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "60000",
+        "scripts/qa/p06-pi-main-bridge-registry.test.ts"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/pi-main-bridge-sdk-boundary-rerun-01.stdout.log",
+        "sha256": "0ee4c9e99f03fb26823cec8319e7925dac2a648730d7a1891ebbce56ad4bfd07",
+        "bytes": 1574
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/pi-main-bridge-sdk-boundary-rerun-01.stderr.log",
+        "sha256": "e09dcbe719e8a3ddefd31cf2854c7c4e199645cbfe60d9e5ea22ecb1c85a4415",
+        "bytes": 104
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Preserve this failed harness attempt and exclude it from product pass claims; any correction must have its own recorded rerun.",
+      "actual": "HARNESS_INVALID: incomplete Electron WebContents fixture lacked once(); 0 pass lines"
+    },
+    {
+      "id": "pi-main-bridge-sdk-boundary-rerun-02",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "60000",
+        "scripts/qa/p06-pi-main-bridge-registry.test.ts"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/pi-main-bridge-sdk-boundary-rerun-02.stdout.log",
+        "sha256": "13a09e2b48b4c71887af9012f6bb55140240ad6c013d49171a5bee983d5e709f",
+        "bytes": 4984
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/pi-main-bridge-sdk-boundary-rerun-02.stderr.log",
+        "sha256": "709da97a731905e03550c86787413b86d547434c01bbc81066813397a499993f",
+        "bytes": 219
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Command exits zero for the documented static/build diagnostic.",
+      "actual": "PASS_CONTROLLED_SCOPED: bridge ACK, real Pi SDK active five, direct Main canUseTool probes; no real Electron or provider; 0 pass lines"
+    },
+    {
+      "id": "pi-main-bridge-sdk-boundary-rerun-03",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "60000",
+        "scripts/qa/p06-pi-main-bridge-registry.test.ts"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/pi-main-bridge-sdk-boundary-rerun-03.stdout.log",
+        "sha256": "9ddbc152223478bc873dd1b6a14f58e690e297370c3d2029c6aeb840c9dbda95",
+        "bytes": 4719
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/pi-main-bridge-sdk-boundary-rerun-03.stderr.log",
+        "sha256": "1925bd264a5eeaf9b9df04135d988b6aeccc48de2bd0bedd062d90cfd0e284a4",
+        "bytes": 219
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Command exits zero for the documented static/build diagnostic.",
+      "actual": "PASS_CONTROLLED_SCOPED: repeat diagnostic capture of prior controlled bridge result; no real Electron or provider; 0 pass lines"
+    },
+    {
+      "id": "pi-main-bridge-sdk-boundary",
+      "classification": "HARNESS_INVALID",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "60000",
+        "scripts/qa/p06-pi-main-bridge-registry.test.ts"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/pi-main-bridge-sdk-boundary.stdout.log",
+        "sha256": "5402cd93940afe2a62f2da48d0cab9bd66ca2a087ef047e25ad5adef6525d155",
+        "bytes": 2070
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/pi-main-bridge-sdk-boundary.stderr.log",
+        "sha256": "9c30ed48c959e73120bf7a13cbdbaeb81834bb3997dbe57d0233adb53870e5c8",
+        "bytes": 104
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Preserve this failed harness attempt and exclude it from product pass claims; any correction must have its own recorded rerun.",
+      "actual": "HARNESS_INVALID: bridge ACK absent and evidence fields null; 0 pass lines"
+    },
+    {
+      "id": "pi-sdk-provider-toolset-boundary-rerun-02",
+      "classification": "HARNESS_INVALID",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "60000",
+        "scripts/qa/p06-pi-sdk-registry-local-probe.test.ts"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/pi-sdk-provider-toolset-boundary-rerun-02.stdout.log",
+        "sha256": "3d93797c97c6dd2ee18200b1a3242df35371054279aa0b702c1c00ea73388e8d",
+        "bytes": 7301
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/pi-sdk-provider-toolset-boundary-rerun-02.stderr.log",
+        "sha256": "802343fc10305dc942a0ea199bee4268896bf763dac96fd62d3877d551d9042f",
+        "bytes": 7732
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Preserve this failed harness attempt and exclude it from product pass claims; any correction must have its own recorded rerun.",
+      "actual": "HARNESS_INVALID: same wrong-layer retry behavior; no provider request made; 0 pass lines"
+    },
+    {
+      "id": "pi-sdk-registry-probe-bun-test-rerun-01",
+      "classification": "HARNESS_INVALID",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "60000",
+        "scripts/qa/p06-pi-sdk-registry-local-probe.ts"
+      ],
+      "exitCode": 1,
+      "stdout": {
+        "privateRef": "raw-log://setup/pi-sdk-registry-probe-bun-test-rerun-01.stdout.log",
+        "sha256": "335ab4d3d0d98d4c3b3478fa50c807da6d2740deb186a27fa4aed967dcd71e94",
+        "bytes": 28
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/pi-sdk-registry-probe-bun-test-rerun-01.stderr.log",
+        "sha256": "bbc572e67d1687301a2358e2a41e663211d246bfbeac68fa0ba59a86dac3dba6",
+        "bytes": 435
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Preserve this failed harness attempt and exclude it from product pass claims; any correction must have its own recorded rerun.",
+      "actual": "HARNESS_INVALID: test file filter did not match a file"
+    },
+    {
+      "id": "pi-sdk-registry-probe-bun-test-rerun-02",
+      "classification": "HARNESS_INVALID",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "60000",
+        "scripts/qa/p06-pi-sdk-registry-local-probe.test.ts"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/pi-sdk-registry-probe-bun-test-rerun-02.stdout.log",
+        "sha256": "2e742e20725bc6665ef5930014f063d03bd8590b85bc996337adbfadc5c58deb",
+        "bytes": 4158
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/pi-sdk-registry-probe-bun-test-rerun-02.stderr.log",
+        "sha256": "63e0890f769181c61bc3ffa4575c26d9f086f5cbaa622887ed4fabfdfc3311a3",
+        "bytes": 1937
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Preserve this failed harness attempt and exclude it from product pass claims; any correction must have its own recorded rerun.",
+      "actual": "HARNESS_INVALID: direct orchestrator probe bypassed official review bridge; synthetic V2 runs left running; retained as diagnostic only; 0 pass lines"
+    },
+    {
+      "id": "pi-sdk-registry-probe",
+      "classification": "HARNESS_INVALID",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "run",
+        "scripts/qa/p06-pi-sdk-registry-local-probe.ts"
+      ],
+      "exitCode": 1,
+      "stdout": {
+        "privateRef": "raw-log://setup/pi-sdk-registry-probe.stdout.log",
+        "sha256": "a319c45a0c5b2a8df1bd2931cc07313a2b5b192e3e125a6c7b79681ac488d7ea",
+        "bytes": 31
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/pi-sdk-registry-probe.stderr.log",
+        "sha256": "3909f44c120894f36c2d44b44ce84e7fe67d40c54cde0c75f2da67fcbcfeca2c",
+        "bytes": 182
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Preserve this failed harness attempt and exclude it from product pass claims; any correction must have its own recorded rerun.",
+      "actual": "HARNESS_INVALID: Bun Electron module import mismatch (Electron exports unavailable in Bun test runner)"
+    },
+    {
+      "id": "pi-sdk-registry-provider-boundary-rerun-01",
+      "classification": "HARNESS_INVALID",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "60000",
+        "scripts/qa/p06-pi-sdk-registry-local-probe.test.ts"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/pi-sdk-registry-provider-boundary-rerun-01.stdout.log",
+        "sha256": "9832d9f65ec8cb65ab3a61a5519f6fcee4064c582e4993016deb1a0c87a7bd9f",
+        "bytes": 7084
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/pi-sdk-registry-provider-boundary-rerun-01.stderr.log",
+        "sha256": "5502c60d27362422bdb704697e8f25b8965fd1dc909dcdd91ca88e3d845cc4a2",
+        "bytes": 7732
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Preserve this failed harness attempt and exclude it from product pass claims; any correction must have its own recorded rerun.",
+      "actual": "HARNESS_INVALID: stream fence mapped to retryable network error and exercised retries instead of stopping before stream boundary; 0 pass lines"
+    },
+    {
+      "id": "review-ipc-controlled-tests",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/review/review-pi-run-bridge.main.test.ts",
+        "apps/electron/src/main/lib/review/review-background-state.p03-main.test.ts",
+        "apps/electron/src/main/lib/review/review-p06-driver-contract.test.ts"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/review-ipc-controlled-tests.stdout.log",
+        "sha256": "df83628cf6f30e6ef1d782d3ad7f27400e07a913e0d388744d0cf2fcc8d80210",
+        "bytes": 5836
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/review-ipc-controlled-tests.stderr.log",
+        "sha256": "23fb2a320006f38fdd163b1634e81bfd660c033ea3e0ded460558d9bbbcb6ec4",
+        "bytes": 3450
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "23 focused controlled IPC/state/driver tests should pass with zero failures.",
+      "actual": "PASS_CONTROLLED: 23/23 tests across 3 files; 23 tests across 3 files"
+    },
+    {
+      "id": "typecheck",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "run",
+        "typecheck"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/typecheck.stdout.log",
+        "sha256": "5b84d668c2e2922dca6bd49e230be8406972702c2313539f5ca1cd4270d32196",
+        "bytes": 428
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/typecheck.stderr.log",
+        "sha256": "8277b6b0db2d97d9c202472974204c9b592713f39cd8665934c5d44892357069",
+        "bytes": 33
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "TypeScript/project type checks should complete without errors.",
+      "actual": "process exit 0; routine build/static command completed"
+    },
+    {
+      "id": "vite-ooxml-build-local-rerun",
+      "classification": "PASS",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "run",
+        "build:ooxml"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://setup/vite-ooxml-build-local-rerun.stdout.log",
+        "sha256": "11ee63f177e9d818f649afadd6c33f45562c1cee219812be4b6182b1ead8f2d6",
+        "bytes": 223
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/vite-ooxml-build-local-rerun.stderr.log",
+        "sha256": "9d5fab4cfb46052ec8af4e5994ecad14ec40ffea11019986bd579b808381ec2b",
+        "bytes": 31
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Command exits zero for the documented static/build diagnostic.",
+      "actual": "process exit 0; routine build/static command completed"
+    },
+    {
+      "id": "vite-ooxml-build-local",
+      "classification": "HARNESS_INVALID",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "bun",
+        "run",
+        "build:ooxml"
+      ],
+      "exitCode": 1,
+      "stdout": {
+        "privateRef": "raw-log://setup/vite-ooxml-build-local.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "privateRef": "raw-log://setup/vite-ooxml-build-local.stderr.log",
+        "sha256": "b46f11e52ac1279bf35d8285fb2479953e4f8a47a94579a8cbfa0223784f6ffa",
+        "bytes": 38
+      },
+      "environmentRef": "environment-redacted.json",
+      "expected": "Preserve this failed harness attempt and exclude it from product pass claims; any correction must have its own recorded rerun.",
+      "actual": "HARNESS_INVALID: command ran from repository root instead of apps/electron; rerun from correct directory passed"
+    },
+    {
+      "id": "remote-pr114-ci-job-117632053211",
+      "classification": "PASS_REMOTE_CONTROLLED",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "GitHub Actions workflow job 117632053211; run 39112696729"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://logs/pr114-job-117632053211.log",
+        "sha256": "858c31e86b48e2f81070250d46f1dd80c5dd0aa58da21e6df6f6f949cee87455",
+        "bytes": 1200900
+      },
+      "stderr": null,
+      "environmentRef": "environment-redacted.json",
+      "expected": "Pinned PR CI should succeed and check out the candidate tree.",
+      "actual": "PR #114 CI success; 4012 pass, 5 skipped, 0 failed across 461 files; synthetic merge checkout tree matched candidate tree; no workflow artifacts"
+    },
+    {
+      "id": "electron-main-first-attempt",
+      "classification": "HARNESS_INVALID",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "private process supervisor",
+        "see raw process metadata alias"
+      ],
+      "exitCode": 1,
+      "stdout": {
+        "privateRef": "raw-log://logs/electron-main-first-attempt.log",
+        "sha256": "cee514fd3d44a32de9a262b4d87bdd13e3b1cc4e371e85aa601b6b2ca3fc5215",
+        "bytes": 733
+      },
+      "stderr": null,
+      "environmentRef": "environment-redacted.json",
+      "expected": "Preserve this failed harness attempt and exclude it from product pass claims; any correction must have its own recorded rerun.",
+      "actual": "isolated-profile first launch failed because Chromium singleton socket path exceeded system limit; fixed by short private TMPDIR"
+    },
+    {
+      "id": "electron-main-no-xvfb-attempt",
+      "classification": "HARNESS_INVALID",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "private process supervisor",
+        "see raw process metadata alias"
+      ],
+      "exitCode": 1,
+      "stdout": {
+        "privateRef": "raw-log://logs/electron-main-no-xvfb-attempt.reconstructed.log",
+        "sha256": "c556a5972e73733522fbb014dddc33c501a58161dad67290b7f9b5a6e141d8f9",
+        "bytes": 483
+      },
+      "stderr": null,
+      "environmentRef": "environment-redacted.json",
+      "expected": "Preserve this failed harness attempt and exclude it from product pass claims; any correction must have its own recorded rerun.",
+      "actual": "launch omitted xvfb-run; failed because DISPLAY/X server was unavailable; excerpt reconstructed from command output after process log rotation"
+    },
+    {
+      "id": "electron-main-final",
+      "classification": "PASS_REAL_ELECTRON_SCOPED",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "private process supervisor",
+        "see raw process metadata alias"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://logs/electron-main.log",
+        "sha256": "f63e82c33763555e55a3cdf0ad979e25005d65e87dec061cd162d4d1cde36e27",
+        "bytes": 12416
+      },
+      "stderr": null,
+      "environmentRef": "environment-redacted.json",
+      "expected": "Launch isolated Electron Main under Xvfb and private profile, then stop it cleanly.",
+      "actual": "real Electron Main launched under isolated Xvfb and fresh profile; stopped with SIGTERM"
+    },
+    {
+      "id": "vite-final",
+      "classification": "PASS_REAL_ELECTRON_SCOPED",
+      "sourceCommit": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+      "command": [
+        "private process supervisor",
+        "see raw process metadata alias"
+      ],
+      "exitCode": 0,
+      "stdout": {
+        "privateRef": "raw-log://logs/vite.log",
+        "sha256": "58977fb3f2c274e44c0b361a81897645ca5550118c2637c179d293e0444dce1a",
+        "bytes": 73
+      },
+      "stderr": null,
+      "environmentRef": "environment-redacted.json",
+      "expected": "Serve the Renderer on a fresh loopback port, then stop it cleanly.",
+      "actual": "isolated Vite Renderer server bound to loopback; stopped with SIGTERM"
+    }
+  ]
+}

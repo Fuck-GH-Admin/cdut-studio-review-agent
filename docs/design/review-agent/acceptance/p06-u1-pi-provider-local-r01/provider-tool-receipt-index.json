@@ -1,0 +1,81 @@
+{
+  "candidateHead": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+  "actualElectronProviderPath": {
+    "status": "BLOCKED_ENV",
+    "authorizedProviderCredentialAvailable": false,
+    "piSdkStreamBoundaryCalls": 1,
+    "providerTransportCalls": 0,
+    "providerRequestIds": [],
+    "providerToolUseIds": [],
+    "piToolCallIds": [],
+    "liveMainAuthorizationDecisions": [],
+    "toolExecutionReceipts": [],
+    "sourceRefs": [],
+    "readReceipts": [],
+    "providerUsageRecords": [],
+    "reason": "A private Electron Main instrumentation fence intercepted the real Pi SDK stream at the model request context, before transport. It threw an AbortError because no authorized test credential existed. The configured synthetic endpoint was loopback-only and no network request was allowed."
+  },
+  "actualElectronV2Persistence": {
+    "runIdSha256": "ecb9e7bbd6e51964b597e3f2f77725fb161fe63438f1c49040dda53670c8b289",
+    "statusAfterFence": "failed",
+    "backgroundStateAfterFence": "incomplete",
+    "checks": 1,
+    "checkStatuses": [
+      "execution-failed"
+    ],
+    "opinions": 0,
+    "modelUsage": 0,
+    "agentActivity": 0,
+    "coverage": {
+      "documents": 0,
+      "plannedChecks": 1,
+      "completedChecks": 0,
+      "effectiveVerdicts": 0,
+      "pendingChecks": 1
+    },
+    "sourceRefPresent": false,
+    "assignmentPersistedRevoked": true,
+    "businessConclusion": false,
+    "classification": "EXPECTED_FENCE_FAILURE_NOT_A_BUSINESS_REVIEW_RESULT",
+    "identityHashes": {
+      "caseId": "e8a186f609b434d19063db88f436bfd0408b9470c82fb4a3f37fcb95d5265935",
+      "runId": "ecb9e7bbd6e51964b597e3f2f77725fb161fe63438f1c49040dda53670c8b289",
+      "assignmentId": "74c52838e7a174c771f327ce7444bbe8931155d09bf640fdd6fb9f06f3bbb9eb",
+      "sessionId": "2bc1f7891c924104df88ed9d8dfac739016c1434e5e19e3a0ef5f9dcb2329f7c",
+      "turnId": "deb48f6468b807b0931d4c198bceaddcf47a70010a731e17b8215a7c04ee996d"
+    },
+    "caseAuditLogEntries": 1,
+    "caseAuditLogEntryKind": "local synthetic CreateCaseFromTemplate; not a Pi tool execution receipt"
+  },
+  "controlledSupplement": {
+    "status": "PASS_CONTROLLED_ONLY",
+    "mainAdmissionAckKeys": [
+      "caseId",
+      "phase",
+      "runId",
+      "runStatus"
+    ],
+    "allowedHostCallbacks": 5,
+    "deniedForbiddenCallbacks": 8,
+    "postRevocationDeniedCallbacks": 5,
+    "providerCalls": 0,
+    "executionReceipts": 0,
+    "qualification": "Bun-controlled Electron preload and production bridge/SDK path; direct callback probes are not provider tool calls and do not satisfy PI_PROVIDER.",
+    "privateEvidence": {
+      "sdkBridgeCaptureSha256": "20eca3f42d9875f4af66d422a11087248ec35712cd3a84c78e2ea7feb71366f8",
+      "rendererAckStdoutSha256": "3418560e1026cc7ca030d25462b8ce5c01be7bf4767fab2fd582fd7122d70f75"
+    }
+  },
+  "privateEvidenceHashes": {
+    "electronSdkCapture": "6ae31d05012ed0dd2ef597270c8be813930333eaceca973f1ace3c9f9fa200ba",
+    "rendererAckObservation": "3418560e1026cc7ca030d25462b8ce5c01be7bf4767fab2fd582fd7122d70f75",
+    "rendererV2AndIsolationObservation": "9ce238587075688602cbb74914fbece823d2692dcebe6bb01189cd45d4f386e8",
+    "rendererAssignmentListObservation": "5e756b8d74e9d2fc706e0d64563449624272f353396ffb203d028fd747afe9b2",
+    "privateAssignmentLedger": "29d1f024dd63c3fa360065bd1433478b312817b9cb27357dcb8f0140e42e4051",
+    "electronMainLog": "f63e82c33763555e55a3cdf0ad979e25005d65e87dec061cd162d4d1cde36e27",
+    "privateInstrumentationSource": "16ebc2a81e629d4dc93776b8ef079987ccdcebfee985a55613c0649f5a4d7ee9",
+    "agentSessionMetadata": "c2bba2c2811a0af648362f3158e04e035b13e48bfcaefc967b3b8a0ad57992aa",
+    "v2CaseState": "f384387b15797f9321acfd00f3452f7462c4966382bb57e1989052e822952bbf",
+    "v2RunRecord": "003e5e190cfe7ec0dc83eed36195062ee52d159421a09ee837186658e792a942"
+  }
+}

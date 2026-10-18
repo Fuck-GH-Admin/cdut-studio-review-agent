@@ -1,0 +1,55 @@
+{
+  "classification": "isolated_local_acceptance_environment",
+  "date": "2026-10-18",
+  "platform": "Linux x86_64",
+  "runtime": {
+    "node": "22.23.2",
+    "bun": "1.4.0",
+    "piCodingAgent": "0.86.1",
+    "xvfbAvailable": true
+  },
+  "source": {
+    "head": "cf8c5f36cebf1f22362eabd58d28275412f6f9f8",
+    "tree": "df27656c56a5147ebfb4e1cd67f1645919522147",
+    "branch": "audit/p06-u1-pi-provider-local-r01"
+  },
+  "isolation": {
+    "worktree": "independent",
+    "configDir": "fresh_private_profile_alias",
+    "userDataDir": "fresh_private_profile_alias",
+    "piSessionDir": "fresh_per_run_temporary_directory",
+    "syntheticCaseAndTemplate": true,
+    "syntheticChannel": true,
+    "realSchoolMaterialUsed": false,
+    "existingUserProfileReadOrModified": false,
+    "existingHiddenGoldReadOrModified": false,
+    "xvfbDisplay": "fresh ephemeral display",
+    "viteLoopbackPort": 18174,
+    "rendererCdpPort": 19222,
+    "mainInspectorPort": 19230,
+    "shortPrivateTmpDirectoryUsed": true
+  },
+  "provider": {
+    "authorizedTestCredentialAvailable": false,
+    "credentialValuesRead": false,
+    "presenceOnlyVariableNamesChecked": [
+      "P06_PI_TEST_PROVIDER",
+      "P06_PI_TEST_API_KEY",
+      "OPENAI_API_KEY",
+      "ANTHROPIC_API_KEY",
+      "DEEPSEEK_API_KEY",
+      "QWEN_API_KEY",
+      "MINIMAX_API_KEY",
+      "GOOGLE_API_KEY"
+    ],
+    "syntheticEndpointOrigin": "127.0.0.1",
+    "networkRequestAllowed": false,
+    "realProviderRequestCount": 0
+  },
+  "privateEvidence": {
+    "directoryMode": "0700",
+    "rawLogsMode": "0600",
+    "containsTechnicalIds": true,
+    "committed": false
+  }
+}
