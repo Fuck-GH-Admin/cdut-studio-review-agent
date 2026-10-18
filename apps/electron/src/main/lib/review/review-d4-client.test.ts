@@ -73,7 +73,7 @@ describe('D4 客户端最小接入', () => {
     expect(second.evidenceLinks).toEqual([])
     expect(listRunsV2(c2.id)).toEqual([])
     const bad = pick('g03-t01'); bad.selection.targets[0]!.scenario = 'unknown-primary'
-    await expect(create(bad)).rejects.toThrow('D2_GENERIC_PRIMARY_INVALID')
+    await expect(create(bad)).rejects.toThrow('D4_GENERIC_PRIMARY_SOURCE_INVALID')
   })
   test('G01-I 保留特殊 student-field 及合成 registry：同份证明两条独立关联', async () => {
     const c = await create(pick('g01-student-identity-correction'))
@@ -113,7 +113,7 @@ describe('D4 客户端最小接入', () => {
     expect(aggregate.d2RuntimePlan!.targets).toHaveLength(3)
     expect(aggregate.caseV2.subjects).toHaveLength(3)
     expect(new Set(aggregate.caseV2.subjects.map(x => x.id)).size).toBe(3)
-    expect(aggregate.d2RuntimePlan!.mapping.some(x => x.applicability === 'unknown' && x.subjectId === 'resource-subject-3')).toBeTrue()
+    expect(aggregate.d2RuntimePlan!.targets[2]!.conditions!.every(x => x.applicability === 'unknown' && x.decidedBy === 'undetermined')).toBeTrue()
     expect(verifyD2InstalledPlan(aggregate)).toEqual([])
     expect(aggregate.evidenceLinks).toEqual([])
     // Removing the middle object and adding a different one is a new case with a new fingerprint.
