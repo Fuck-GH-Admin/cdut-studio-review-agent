@@ -72,6 +72,8 @@ export function SupplementRequeueDialog({ caseId, title, onClose, onApplied }: {
       const saved = await window.reviewAPI.batchActionV2({
         action: 'requeue-supplement', caseId, batchId: targetBatchId,
         supplementId, expectedRevision: snapshot.revision, confirmed: true,
+        // Main ignores this identity claim and rebinds the fixed local reviewer.
+        actor: { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' },
       })
       const entry = saved.cases.find((item) => item.caseId === caseId)
       if (entry?.status !== 'queued') throw new Error('主进程没有返回有效的待执行队列状态')

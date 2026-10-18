@@ -35,6 +35,10 @@ describe('L02-01 R02 supplemental target selection UI safety contract', () => {
     expect(c.targets.map((t) => t.batchId)).toEqual(['historical', 'current'])
     expect(c.targets.every((t) => t.disabledReason === null)).toBe(true)
   })
+  test('bound local reviewer can hold the task, other claimed actor is refused', () => {
+    expect(getSupplementRequeueChoices(caseId, caseRecord({ actorId: 'local-reviewer' }), both).readyReason).toBeNull()
+    expect(getSupplementRequeueChoices(caseId, caseRecord({ actorId: 'local-user' }), both).supplements).toHaveLength(0)
+  })
   test('unresolved supplement and absent matched task fail closed', () => {
     expect(getSupplementRequeueChoices(caseId, caseRecord({ extraOpen: true }), both).readyReason).toContain('未完成')
     expect(getSupplementRequeueChoices(caseId, caseRecord({ taskStatus: 'completed' }), both).supplements).toHaveLength(0)

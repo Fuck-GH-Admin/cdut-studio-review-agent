@@ -45,7 +45,7 @@ export function getSupplementRequeueChoices(
   const supplements: SupplementRequeueChoice[] = aggregate.supplements
     .filter((item) => item.status === 'satisfied' && !!item.originStageId && aggregate.tasks.some((task) =>
       task.status === 'open' && task.stageId === item.originStageId && task.assigneeRole === 'reviewer'
-      && (!task.assigneeActorId || task.assigneeActorId === 'local-user')))
+      && (!task.assigneeActorId || task.assigneeActorId === 'local-reviewer')))
     .map((item) => ({ id: item.id, originStageId: item.originStageId!, label: item.reason || item.id }))
   const readyReason = memberBatches.length < 2 ? '该案卷不属于多个批次，无需显式选择'
     : aggregate.caseV2.stage !== 'reviewing' ? '案卷尚未进入补件后重审状态'
