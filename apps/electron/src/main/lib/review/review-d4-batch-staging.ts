@@ -40,6 +40,12 @@ function safeEntryName(raw: string): boolean {
     parts.every((part, i) => part !== '.' && part !== '..' && (part.length > 0 || i === parts.length - 1))
 }
 export function isSafeD4ZipEntry(raw: string): boolean { return safeEntryName(raw) }
+function safeHostFileName(name: string): boolean {
+  if (!name || name.length > 240 || name === '.' || name === '..' ||
+      /[\\/:*?"<>|\\u0000-\\u001f]/.test(name) || /[. ]$/.test(name)) return false
+  // Windows reserves these names irrespective of file extension.
+  return !/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\\.|$)/i.test(name)
+}
 export async function stageD4NativeBatch(
   selectedPaths: readonly string[], privateDir: string,
 ): Promise<{ files: D4BatchFile[]; skipped: D4BatchSkip[] }> {
@@ -57,6 +63,7 @@ export async function stageD4NativeBatch(
     name: string, label: string, size: number,
     stream: () => Readable,
   ): Promise<void> => {
+    if (!safeHostFileName(name)) { skip(label, '文件名不安全或不兼容 Windows'); return }
     if (!EXTENSIONS.has(extname(name).toLowerCase())) { skip(label, '不支持的文件格式'); return }
     if (size < 1 || size > D4_BATCH_MAX_FILE_BYTES) { skip(label, '空文件或超过单文件 50 MB'); return }
     if (files.length >= D4_BATCH_MAX_FILES) { skip(label, '超过 100 份材料上限'); return }
