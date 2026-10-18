@@ -1,0 +1,10 @@
+Repository: https://github.com/Fuck-GH-Admin/cdut-studio-review-agent
+Acceptance candidate PR: #120 (Draft)
+Candidate branch: feat/d4-p2c-submit-repair-feedback-r01
+Candidate HEAD: 026cfe0f4905bf10f46291bdd7451788c60df5f9
+Parent: 60a17e103f97f386c9332fce7ef6b714efad1156
+Remote branch HEAD at final check: 026cfe0f4905bf10f46291bdd7451788c60df5f9
+refs/pull/120/head at final check: 026cfe0f4905bf10f46291bdd7451788c60df5f9
+Pinned P2-B comparison HEAD: 2e24e0c9a24d378a5b7f2e160c81c03041a2859c
+Pinned worktrees were clean before and after test execution; audit artifacts are maintained separately.
+No tracked product source was modified.

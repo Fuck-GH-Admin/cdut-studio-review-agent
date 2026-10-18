@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "task": "P1-P2-UNIFIED-OFFLINE-AND-LIVE-ACCEPTANCE-20261018",
+  "overallVerdict": "PARTIAL",
+  "candidate": {
+    "pullRequest": 120,
+    "draft": true,
+    "branch": "feat/d4-p2c-submit-repair-feedback-r01",
+    "head": "026cfe0f4905bf10f46291bdd7451788c60df5f9",
+    "headMatchesRemoteAtFinalCheck": true,
+    "parent": "60a17e103f97f386c9332fce7ef6b714efad1156",
+    "p2bComparisonHead": "2e24e0c9a24d378a5b7f2e160c81c03041a2859c",
+    "testWorktreesClean": true,
+    "trackedProductSourceModified": false
+  },
+  "ciHistorical": {
+    "candidateHead": "026cfe0f4905bf10f46291bdd7451788c60df5f9",
+    "prCi": {
+      "runId": 39128291306,
+      "conclusion": "success",
+      "passed": 3745,
+      "skipped": 6,
+      "failed": 0,
+      "files": 431
+    },
+    "reviewBaseline": {
+      "runId": 39128291301,
+      "conclusion": "success"
+    },
+    "d3Md": {
+      "runId": 39128291310,
+      "conclusion": "success"
+    },
+    "common": {
+      "runId": 39128291315,
+      "conclusion": "success"
+    },
+    "d3r1": {
+      "runId": 39128291319,
+      "conclusion": "success"
+    },
+    "d2Scoped": {
+      "runId": 39128291537,
+      "conclusion": "success"
+    },
+    "source": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/120"
+  },
+  "A_GUI": {
+    "verdict": "GUI_FAIL",
+    "sourceType": "GUI_OBSERVED",
+    "display": ":120",
+    "resolution": "1600x1000x24",
+    "electron": "43.7.7",
+    "isolatedProfile": "audit/d4-p1p2-batched-r01/tmp/cdut-d4-product-loop-yDikaP/user-data",
+    "emptyModelConfig": true,
+    "realCdutLogin": false,
+    "onlineModelInvoked": false,
+    "fixture": {
+      "fileName": "公共教学教室借用申请.md",
+      "sizeBytes": 40,
+      "sha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+    },
+    "suggestionAndCancel": {
+      "suggestedTemplateId": "g03-t01",
+      "after20SecondsAutoAdoptedTemplateOnly": true,
+      "autoFilledSubjects": 0,
+      "autoFilledConditions": false,
+      "autoConfirmed": false,
+      "manualOverrideTemplateId": "g03-t02",
+      "manualOverrideWaitSeconds": 21,
+      "manualOverridePersisted": true,
+      "cancelledCaseCount": 0
+    },
+    "mouseDoubleClick": {
+      "status": "FAIL",
+      "input": "Two visible CDP mouse clicks, 40ms apart",
+      "successToastObserved": true,
+      "falseFailureToastObserved": true,
+      "failureCode": "D4_INTAKE_TOKEN_INVALID",
+      "distinctMatchingCases": 1,
+      "documents": 1,
+      "documentRole": "application",
+      "documentSizeBytes": 40,
+      "storedCopyMatchesFixtureSha256": true,
+      "caseId": "d4-0d8e586a-b9e1-42d3-99b3-7e490b97734f",
+      "templateId": "g03-t01",
+      "subjectCount": 1,
+      "conditionCount": 8,
+      "conditionApplicability": "all unknown",
+      "d2Fingerprint": "0092f616f43f29ce9baf6830434e0fb22313c5206a7f2290e3b11183dea4e290",
+      "publicationAllowed": false,
+      "evidenceLinkCount": 0,
+      "piRunCount": 0,
+      "failureEvidence": [
+        "evidence/logs/mouse-doubleclick-dispatch.json",
+        "evidence/logs/electron-120.log",
+        "evidence/screenshots/32-mouse-doubleclick-result.png",
+        "evidence/readback/after-mouse-doubleclick-main-ipc.json"
+      ]
+    },
+    "enterClickInstrumented": {
+      "status": "PASS",
+      "inputEvidence": {
+        "trustedEnterKeydown": true,
+        "trustedPointerDownOnCreateButton": true,
+        "trustedPointerUpOnCreateButton": true,
+        "trustedMouseClickOnCreateButton": true,
+        "formSubmitEvents": 2,
+        "dispatchBatchAwaitedBetweenInputs": false
+      },
+      "successToastObserved": true,
+      "falseFailureToastObserved": false,
+      "caseId": "d4-fae53171-0d1b-4fa2-ac75-36a133867052",
+      "distinctMatchingCases": 1,
+      "documents": 1,
+      "subjectCount": 1,
+      "d2Fingerprint": "96a1717789eb7ec8a9b23e24f71f82cf6446efe78491c00e772d0233a178120f",
+      "publicationAllowed": false,
+      "evidenceLinkCount": 0,
+      "piRunCount": 0,
+      "eventEvidence": "evidence/logs/enter-click-dispatch-instrumented-result.json"
+    },
+    "reloadPersistence": {
+      "status": "PASS",
+      "totalCases": 3,
+      "matchingCases": 3,
+      "caseIdsAndFingerprintsRetained": true,
+      "oneApplicationDocumentPerCase": true,
+      "duplicateImport": false,
+      "allSourceCopiesMatchFixture": true,
+      "allPiRunCountsZero": true
+    },
+    "mainReadbackMethod": "window.reviewAPI.listCases/getCase/getAggregateV2/listRunsV2 (read-only)",
+    "directCreateIpcUsed": false,
+    "databaseWrittenByAcceptance": false
+  },
+  "B_OFFLINE": {
+    "verdict": "OFFLINE_P2_PASS",
+    "sourceType": "OFFLINE_CLI",
+    "fixture": "g08-t02-frozen-synthetic-selection",
+    "oldSourceSha": "2e24e0c9a24d378a5b7f2e160c81c03041a2859c",
+    "newSourceSha": "026cfe0f4905bf10f46291bdd7451788c60df5f9",
+    "status": "PAIRED",
+    "templateId": "g08-t02",
+    "templateVersion": 1,
+    "selectionHash": "bcfa1700cbdcaa619c9c53267bb0e5ab335131d726559a9cd5f8634ab130274d",
+    "subjectCount": 2,
+    "ruleIdCount": 107,
+    "checkIdCount": 107,
+    "ruleAndCheckSetsEqual": true,
+    "requirementHash": "72c87042d73c53dc486ce289225fed607bbd32150f87175c57991116e5a4edc4",
+    "requirementDictionaryMode": true,
+    "reconstructedFullRequirementCount": 70,
+    "oldPromptCharacters": 128358,
+    "newPromptCharacters": 100816,
+    "characterDelta": -27542,
+    "characterReductionPercent": 21.46,
+    "oldPromptUtf8Bytes": 243080,
+    "newPromptUtf8Bytes": 183673,
+    "utf8ByteDelta": -59407,
+    "oldRulesRegionCharacters": 104849,
+    "newRulesRegionCharacters": 79762,
+    "oldMappingRegionCharacters": 17687,
+    "newMappingRegionCharacters": 16419,
+    "oldPromptSha256": "959ad773cfa4279773ae3f94a1bf806019b3572af17c1eb4fb707dfd81318df2",
+    "newPromptSha256": "4a083713bc94419a97766e46a18b54440909455e9dad1dd239829950b371def8",
+    "modelInvoked": false,
+    "targetedTests": {
+      "files": 7,
+      "passed": 26,
+      "failed": 0,
+      "assertions": 1980,
+      "exitCode": 0
+    },
+    "oldRunnerExitCode": 0,
+    "newRunnerExitCode": 0,
+    "compareExitCode": 0,
+    "metricFiles": [
+      "evidence/metrics/prompt-112-exit-verified.json",
+      "evidence/metrics/prompt-120-exit-verified.json"
+    ],
+    "exactRuleCheckSets": "Retained as sorted arrays in the paired metric JSON files",
+    "additionalG08MainRegressionTest": {
+      "file": "apps/electron/src/main/lib/review/review-d4-g08-templates.test.ts",
+      "passed": 12,
+      "failed": 0,
+      "assertions": 320,
+      "exitCode": 0,
+      "coverage": "actual synthetic G08 D2/Pi Main service runs, unknown applicability, one-subject EvidenceLink scope, stale document version rejection"
+    }
+  },
+  "C_MODEL": {
+    "verdict": "MODEL_NOT_RUN",
+    "reason": "No online model request was authorized; model config was empty. No Provider transcript or token result is claimed."
+  },
+  "P06_EXTERNAL_DEPENDENCY": {
+    "verdict": "NOT_RUN",
+    "state": "Unverified and independent; this acceptance did not access or alter P06."
+  },
+  "RELEASE_GATE": {
+    "status": "BLOCKED_GUI_FAIL",
+    "restrictedTechnicalIntegrationAllowed": false,
+    "candidateState": "candidate-held",
+    "nextMinimumTask": "Fix duplicate rapid-create handling so one successful create cannot be followed by a D4_INTAKE_TOKEN_INVALID failure toast, then rerun isolated GUI double-click and instrumented Enter+click readback."
+  },
+  "notRun": [
+    "Online Provider/model A/B",
+    "P06 external/provider workflow",
+    "P1-C C01-C09 full detail retest (not required by the unified taskbook scope)"
+  ],
+  "evidenceBranch": {
+    "name": "audit/d4-p1p2-batched-r01",
+    "draftPrCreation": {
+      "status": "created",
+      "number": 122,
+      "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/122"
+    }
+  }
+}
