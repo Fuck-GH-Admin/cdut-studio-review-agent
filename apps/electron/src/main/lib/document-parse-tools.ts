@@ -956,7 +956,12 @@ async function resolveMaterializedIndex(
           idx.artifactId.toLowerCase() === q,
         )
         if (exact.length > 1) throw new Error('文档索引身份冲突，请重新导入原始文件')
-        if (exact.length === 1 && /^f\d+$/.test(q)) return exact[0]!
+        // 完整绝对路径、clean Markdown 路径和 fN 永远优先于同名弱查询。
+        const authoritative = indices.filter(idx =>
+          idx.fileId?.toLowerCase() === q ||
+          idx.sourcePath.toLowerCase() === q ||
+          idx.cleanMarkdownPath.toLowerCase() === q)
+        if (authoritative.length === 1) return authoritative[0]!
         const matches = indices.filter(idx =>
           idx.artifactId.toLowerCase() === q ||
           idx.artifactId.toLowerCase() === qStem ||
