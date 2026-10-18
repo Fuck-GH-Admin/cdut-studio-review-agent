@@ -35,8 +35,9 @@ jobs:
       - name: Capture exact input, controlled test exits and #71 observed collision
         shell: bash
         run: |
+          set +e
           set -u -o pipefail
-          out="$GITHUB_WORKSPACE/evidence-p06-u1-remote"
+          out="$RUNNER_TEMP/evidence-p06-u1-remote-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           mkdir -p "$out"
           git rev-parse HEAD > "$out/checkout-sha.txt"
           git rev-parse HEAD^{tree} > "$out/checkout-tree.txt"
@@ -93,13 +94,18 @@ jobs:
           printf 'overall\t%s\n' "$status" >> "$out/commands.tsv"
           (cd "$out" && sha256sum *.txt *.tsv *.log *.json > SHA256SUMS 2>/dev/null) || true
           cat "$out/commands.tsv"
-          tail -n 25 "$out/controlled-tests.log"
+          echo "----- focused tests (last 60 lines) -----"
+          tail -n 60 "$out/controlled-tests.log"
+          echo "----- typecheck (last 35 lines) -----"
+          tail -n 35 "$out/typecheck.log" 2>/dev/null || true
+          echo "----- known Office #71 (last 15 lines) -----"
+          tail -n 15 "$out/office71-stderr.log" 2>/dev/null || true
           exit "$status"
       - name: Preserve bounded controlled evidence and all failures
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: p06-l02-u1-remote-controlled
-          path: evidence-p06-u1-remote/
+          path: ${{ runner.temp }}/evidence-p06-u1-remote-${{ github.run_id }}-${{ github.run_attempt }}/
           if-no-files-found: warn
           retention-days: 60
