@@ -18,6 +18,7 @@ import { DocumentCapabilityLibrary } from './document-capability-library'
 import { finalizePiDocumentCoverage } from './pi-document-coverage'
 import { validateD2OperationEvidence, verifyD2InstalledPlan } from './review-d2-runtime'
 import { validateD2GuardSubmission } from './review-d2-execution-gates'
+import { buildPiReviewRepairGuide, formatPiReviewRepairGuide, type PiReviewRepairGuide } from './pi-review-submit-repair'
 import { compactD2MappingForPi, piObservationFieldContract, piRuleCatalogForPrompt, piRuleForPrompt, PI_SUBMIT_SCHEMA_CONTRACT } from './pi-review-prompt-contract'
 
 export interface PiReviewBinding {
@@ -66,6 +67,15 @@ export interface PiReviewSubmissionRejection {
   kind: 'observation' | 'check'
   index: number
   reason: string
+}
+
+export interface PiReviewSubmissionResponse {
+  accepted: number
+  rejected: PiReviewSubmissionRejection[]
+  missingChecks: string[]
+  status: ReviewRunV2['status']
+  /** Non-authoritative bounded guidance; original rejected/missingChecks remain unchanged. */
+  repairGuide?: PiReviewRepairGuide
 }
 
 interface PiReviewSubmissionAttempt {
@@ -441,11 +451,12 @@ function continuationPrompt(aggregate: CaseAggregateV2, template: TemplateVersio
   const history = readArtifact<{ attempts?: PiReviewSubmissionAttempt[] }>(aggregate.caseV2.id, run.id, 'node-pi-submit-attempts')
   const lastAttempt = history?.attempts?.at(-1)
   const pendingText = missing.map((check) => `- ${check.checkId} | ${ruleTitles.get(check.ruleId) ?? check.ruleId} | ${check.target.subjectIds.join('、') || '整案'}`).join('\n')
-  const rejectedText = lastAttempt?.rejected.map((item) => `- ${item.kind}[${item.index}]：${item.reason}`).join('\n')
+  const rejectedText = lastAttempt?.rejected.slice(0, 12).map((item) => `- ${item.kind}[${item.index}]：${item.reason.slice(0, 240)}`).join('\n')
   return [
     `【续审同一运行】本次继续 runId=${run.id}，不新建运行。已保留 ${previousAccepted}/${expected.length} 项有效语义检查；请补齐下列未完成项并保留其他有效结论。`,
     `【未完成检查】\n${pendingText || '（无语义检查占位项；依据本次运行的剩余覆盖问题继续处理。）'}`,
     ...(rejectedText ? [`【上次提交被拒原因】\n${rejectedText}`] : []),
+    ...(lastAttempt ? [formatPiReviewRepairGuide(lastAttempt.rejected, lastAttempt.missingChecks)].filter(Boolean) : []),
     '修正出处时必须使用本案当前激活材料的有效 blockId 和准确引文；图像出处被拒时，先用 review_inspect_document_image 实际读取该图像块，再提交该检查。只有 rejected 为空且 missingChecks 为空时 finish=true 才会关闭运行；否则运行保持开放供本轮继续提交。',
   ].join('\n\n')
 }
@@ -845,7 +856,7 @@ export function submitPiReviewResultV2(input: {
   binding: PiReviewBinding
   triggeredBy?: 'user' | 'automation' | 'delegation' | 'goal'
   result: PiReviewResultInput
-}): { accepted: number; rejected: PiReviewSubmissionRejection[]; missingChecks: string[]; status: ReviewRunV2['status'] } {
+}): PiReviewSubmissionResponse {
   const auth = checkAssignment({ assignmentId: input.binding.assignmentId, sessionId: input.binding.sessionId, action: 'submit-result', turnTriggeredBy: input.triggeredBy })
   if (!auth.ok || !auth.assignment) throw new Error(`审核授权失效：${auth.message ?? auth.code}`)
   const run = getRunV2(input.binding.caseId, input.binding.runId)
@@ -987,7 +998,9 @@ export function submitPiReviewResultV2(input: {
       recalculateCoverage(run, aggregate, rules, template)
       saveArtifact(input.binding.caseId, run.id, 'node-auto-check-extract', { observations: mergedObservations })
       saveRunV2(run)
-      return { accepted: observations.length + acceptedCheckIds.length, rejected, missingChecks, status: 'running' }
+      return { accepted: observations.length + acceptedCheckIds.length, rejected, missingChecks, status: 'running',
+        ...(rejected.length || missingChecks.length ? { repairGuide: buildPiReviewRepairGuide(rejected, missingChecks) } : {}),
+      }
     }
 
     run.checks.push(...missing)
@@ -1041,7 +1054,9 @@ export function submitPiReviewResultV2(input: {
     }
   }
   saveRunV2(run)
-  return { accepted: observations.length + acceptedCheckIds.length, rejected, missingChecks, status: run.status }
+  return { accepted: observations.length + acceptedCheckIds.length, rejected, missingChecks, status: run.status,
+        ...(rejected.length || missingChecks.length ? { repairGuide: buildPiReviewRepairGuide(rejected, missingChecks) } : {}),
+      }
 }
 
 /** Pi 流式轮结束但没有提交完成时，保存为部分完成，避免留下永久 running。 */

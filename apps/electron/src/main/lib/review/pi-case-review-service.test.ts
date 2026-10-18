@@ -99,6 +99,39 @@ function checksWithTextRef(textRef: { documentVersionId: string; blockId: string
 }
 
 describe('Pi 审核结果提交与续审', () => {
+  test('P2-C Main keeps five missing checks after invalid observation and empty reason; successful retry uses same run', async () => {
+    const context = await setupReviewCase('p2c-retry')
+    const binding = {
+      assignmentId: context.prepared.assignmentId, sessionId: context.sessionId,
+      caseId: context.caseId, runId: context.prepared.runId,
+    }
+    const bad = submitPiReviewResultV2({
+      binding, triggeredBy: 'user',
+      result: {
+        summary: '含非法字段和空理由',
+        observations: [{ subjectId: context.caseId, fieldKey: 'inventedField', kind: 'text', value: 'bad', sourceRefs: [context.textRef] }],
+        checks: [{ ruleId: 'section-all-check-1', subjectIds: [], status: 'compliant', reason: '', sourceRefs: [context.textRef] }],
+        finish: true,
+      },
+    })
+    expect(bad.status).toBe('running')
+    expect(bad.accepted).toBe(0)
+    expect(bad.rejected).toHaveLength(2)
+    expect(bad.missingChecks).toHaveLength(5)
+    expect(bad.repairGuide?.hints.map(h => h.code)).toEqual(['OBS_FIELD_NOT_DECLARED', 'CHECK_REASON_EMPTY'])
+    expect(bad.repairGuide?.pendingChecks).toBe(5)
+    expect(getRunV2(context.caseId, binding.runId)?.status).toBe('running')
+    const corrected = submitPiReviewResultV2({
+      binding, triggeredBy: 'user',
+      result: { summary: '核验后全部按既有 SourceRef 修正', checks: checksWithTextRef(context.textRef), finish: true },
+    })
+    expect(corrected).toMatchObject({ accepted: 5, rejected: [], missingChecks: [], status: 'completed' })
+    expect(corrected.repairGuide).toBeUndefined()
+    expect(listRunsV2(context.caseId)).toHaveLength(1)
+    expect(getRunV2(context.caseId, binding.runId)?.checks).toHaveLength(5)
+  })
+
+
   test('finish=true 遇到图像出处拒绝和缺项时保持运行开放，修正后可在同一运行提交', async () => {
     const context = await setupReviewCase('same-turn')
     const binding = {
