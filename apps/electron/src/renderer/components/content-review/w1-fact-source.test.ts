@@ -41,6 +41,17 @@ describe('W1 explicit subject facts and truthful V2 SourceRef precision', () => 
     expect(w1ObservationSources(aggregate, [{ documentVersionId: 'd1-v1', quote: '教室' }])[0]!.location)
       .toEqual({ kind: 'paragraph', index: 2 })
   })
+  test('preserves an existing precise V2 source only at the current revision and actual block', () => {
+    const current = {
+      documentVersionId: 'd1-v1', caseId: 'd4-test-case', parseRevision: 3,
+      location: { kind: 'paragraph', index: 2 },
+    }
+    expect(w1ObservationSources(aggregate, [current])[0]!.location).toEqual({ kind: 'paragraph', index: 2 })
+    expect(w1ObservationSources(aggregate, [{ ...current, parseRevision: 1 }])[0]!.location)
+      .toEqual({ kind: 'file' })
+    expect(w1ObservationSources(aggregate, [{ ...current, location: { kind: 'paragraph', index: 999 } }])[0]!.location)
+      .toEqual({ kind: 'file' })
+  })
   test('rejects forged block, retired source and unparsed source', () => {
     expect(() => w1ExplicitSourceRef(aggregate, 'd1-v1', 'old-document-block')).toThrow('W1_SOURCE_BLOCK_NOT_IN_VERSION')
     expect(() => w1ExplicitSourceRef(aggregate, 'd2-v1')).toThrow('W1_SOURCE_INACTIVE_OR_UNPARSED')
