@@ -1,0 +1,22 @@
+
+=== renderer-submit-tests: bun test --isolate apps/electron/src/renderer/components/content-review/review-case-submit-lock.test.ts apps/electron/src/renderer/components/content-review/review-case-submit-lifecycle.test.ts ===
+bun test v1.4.0 (34cbb9a40)
+
+apps/electron/src/renderer/components/content-review/review-case-submit-lock.test.ts:
+(pass) D4-C10-01: synchronous submit admission before the React commit > two submissions in the same event turn dispatch only one create and one import [1.24ms]
+(pass) D4-C10-01: synchronous submit admission before the React commit > after a rejected create the user can deliberately retry; close/open does not retain a stale lock [0.19ms]
+(pass) D4-C10-01: synchronous submit admission before the React commit > token scope remains Main-owned; lock never transforms a rejected token to a success [0.02ms]
+
+apps/electron/src/renderer/components/content-review/review-case-submit-lifecycle.test.ts:
+(pass) D4-C10-01: one CreateCaseDialog lifecycle, including success-before-close > pending: synchronous mouse double click admits only the first CREATE_CASE [0.25ms]
+(pass) D4-C10-01: one CreateCaseDialog lifecycle, including success-before-close > resolved success stays blocked for another click before parent commits open=false (the missing 40ms window) [0.16ms]
+(pass) D4-C10-01: one CreateCaseDialog lifecycle, including success-before-close > failed or rejected create releases admission so correction and retry are possible [0.21ms]
+(pass) D4-C10-01: one CreateCaseDialog lifecycle, including success-before-close > close while pending then reopen: late result cannot close or unlock the new dialog [0.14ms]
+(pass) D4-C10-01: one CreateCaseDialog lifecycle, including success-before-close > Enter+click submits two form callbacks but only one create [0.09ms]
+(pass) D4-C10-01: one CreateCaseDialog lifecycle, including success-before-close > published-template path without D4 intake obeys the same success latch [0.10ms]
+
+ 9 pass
+ 0 fail
+ 50 expect() calls
+Ran 9 tests across 2 files. [47.00ms]
+EXIT_CODE=0

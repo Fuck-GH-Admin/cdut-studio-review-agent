@@ -1,0 +1,294 @@
+{
+  "totalCaseCount": 4,
+  "matchedCaseCount": 4,
+  "cases": [
+    {
+      "caseId": "d4-aa99d4c4-9f02-45a1-b834-813623896d92",
+      "title": "C10-R03-ENTER-CLICK-20261019-01",
+      "documentCount": 1,
+      "documents": [
+        {
+          "id": "doc-1792348117050-toyyiz",
+          "fileName": "0-synthetic-40b.md",
+          "role": "application",
+          "sizeBytes": 40,
+          "parseStatus": "parsed",
+          "origin": "upload"
+        }
+      ],
+      "templateId": "g03-t01",
+      "templateVersion": 1,
+      "subjectCount": 1,
+      "subjects": [
+        {
+          "id": "d4-subject-7de69f16c7264e20",
+          "title": "教学楼 D 区 405 教室（合成对象）",
+          "status": "confirmed",
+          "scenario": "p-public-classroom",
+          "conditions": [
+            {
+              "id": "c-exam-period",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-holiday",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-multiple-slots",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-multimedia",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-lecture",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-student-club",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-delegated",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-change",
+              "applicability": "unknown"
+            }
+          ]
+        }
+      ],
+      "d2Plan": {
+        "templateId": "g03-t01",
+        "templateVersion": 1,
+        "fingerprint": "95b4f1779bfda511184cbc582331cbb4f0079e79228f1d0d489a591782ea9bc5",
+        "publicationAllowed": false,
+        "targetCount": 1,
+        "rulesCount": 52,
+        "conditionCount": 8,
+        "allConditionsUnknown": true
+      },
+      "evidenceLinkCount": 0,
+      "runCount": 0
+    },
+    {
+      "caseId": "d4-f17a0bf9-f523-4126-98d4-adae0ee849a9",
+      "title": "C10-R03-MOUSE-20261019-03",
+      "documentCount": 1,
+      "documents": [
+        {
+          "id": "doc-1792348049050-u4wyy2",
+          "fileName": "0-synthetic-40b.md",
+          "role": "application",
+          "sizeBytes": 40,
+          "parseStatus": "parsed",
+          "origin": "upload"
+        }
+      ],
+      "templateId": "g03-t01",
+      "templateVersion": 1,
+      "subjectCount": 1,
+      "subjects": [
+        {
+          "id": "d4-subject-9c41dd7233d841b3",
+          "title": "教学楼 C 区 304 教室（合成对象）",
+          "status": "confirmed",
+          "scenario": "p-public-classroom",
+          "conditions": [
+            {
+              "id": "c-exam-period",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-holiday",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-multiple-slots",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-multimedia",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-lecture",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-student-club",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-delegated",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-change",
+              "applicability": "unknown"
+            }
+          ]
+        }
+      ],
+      "d2Plan": {
+        "templateId": "g03-t01",
+        "templateVersion": 1,
+        "fingerprint": "fb4cc25a40eec6903d299d585ca9bc5197c1aa5cfcd6a57b41357412046e4976",
+        "publicationAllowed": false,
+        "targetCount": 1,
+        "rulesCount": 52,
+        "conditionCount": 8,
+        "allConditionsUnknown": true
+      },
+      "evidenceLinkCount": 0,
+      "runCount": 0
+    },
+    {
+      "caseId": "d4-08ff4c30-e923-4c7f-9e7b-689e9a6bd0df",
+      "title": "C10-R03-MOUSE-20261019-02",
+      "documentCount": 1,
+      "documents": [
+        {
+          "id": "doc-1792347867696-8d26mm",
+          "fileName": "0-synthetic-40b.md",
+          "role": "application",
+          "sizeBytes": 40,
+          "parseStatus": "parsed",
+          "origin": "upload"
+        }
+      ],
+      "templateId": "g03-t01",
+      "templateVersion": 1,
+      "subjectCount": 1,
+      "subjects": [
+        {
+          "id": "d4-subject-46487db11f3043f6",
+          "title": "教学楼 B 区 203 教室（合成对象）",
+          "status": "confirmed",
+          "scenario": "p-public-classroom",
+          "conditions": [
+            {
+              "id": "c-exam-period",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-holiday",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-multiple-slots",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-multimedia",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-lecture",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-student-club",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-delegated",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-change",
+              "applicability": "unknown"
+            }
+          ]
+        }
+      ],
+      "d2Plan": {
+        "templateId": "g03-t01",
+        "templateVersion": 1,
+        "fingerprint": "94455ce65f73f328b2ad1a21104688de7a5e7febe61add6046c7e468de9f2ff8",
+        "publicationAllowed": false,
+        "targetCount": 1,
+        "rulesCount": 52,
+        "conditionCount": 8,
+        "allConditionsUnknown": true
+      },
+      "evidenceLinkCount": 0,
+      "runCount": 0
+    },
+    {
+      "caseId": "d4-5617b73e-53be-4eb0-8346-8aebe1676ba4",
+      "title": "C10-R03-MOUSE-20261019-01",
+      "documentCount": 1,
+      "documents": [
+        {
+          "id": "doc-1792347753217-ikl60w",
+          "fileName": "0-synthetic-40b.md",
+          "role": "application",
+          "sizeBytes": 40,
+          "parseStatus": "parsed",
+          "origin": "upload"
+        }
+      ],
+      "templateId": "g03-t01",
+      "templateVersion": 1,
+      "subjectCount": 1,
+      "subjects": [
+        {
+          "id": "d4-subject-f8b1f499ff314340",
+          "title": "综合楼 A 区 101 教室（合成对象）",
+          "status": "confirmed",
+          "scenario": "p-public-classroom",
+          "conditions": [
+            {
+              "id": "c-exam-period",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-holiday",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-multiple-slots",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-multimedia",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-lecture",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-student-club",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-delegated",
+              "applicability": "unknown"
+            },
+            {
+              "id": "c-change",
+              "applicability": "unknown"
+            }
+          ]
+        }
+      ],
+      "d2Plan": {
+        "templateId": "g03-t01",
+        "templateVersion": 1,
+        "fingerprint": "bd86e1b36ee053bb746b24d1a812fc991e7d10f1ad94439b4e0717b46ad7cb44",
+        "publicationAllowed": false,
+        "targetCount": 1,
+        "rulesCount": 52,
+        "conditionCount": 8,
+        "allConditionsUnknown": true
+      },
+      "evidenceLinkCount": 0,
+      "runCount": 0
+    }
+  ]
+}

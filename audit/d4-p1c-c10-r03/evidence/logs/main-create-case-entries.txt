@@ -1,0 +1,4 @@
+dev: CREATE_CASE_ENTRY seq=1 at=2026-10-18T18:22:32.677Z sender=1
+dev: CREATE_CASE_ENTRY seq=2 at=2026-10-18T18:24:27.223Z sender=1
+renderer-preview: CREATE_CASE_ENTRY seq=1 at=2026-10-18T18:27:28.546Z sender=1
+renderer-preview: CREATE_CASE_ENTRY seq=2 at=2026-10-18T18:28:36.589Z sender=1

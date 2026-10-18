@@ -1,0 +1,5 @@
+
+=== check-boundaries: bun run check:boundaries ===
+$ bun scripts/check-boundaries.ts
+check-boundaries: ✅ 无边界违规
+EXIT_CODE=0
