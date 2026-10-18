@@ -182,12 +182,17 @@ export async function importDocumentFromPath(input: {
   onProgress?: (event: ReviewImportProgressEvent) => void
   fileIndex?: number
   fileCount?: number
+  /** Main-internal archival replay; never accepted as a Renderer-supplied path or role. */
+  originalFileName?: string
 }): Promise<SourceDocument> {
   assertSafeId(input.caseId)
   const reviewCase = getCase(input.caseId)
   if (!reviewCase) throw new Error(`案卷不存在: ${input.caseId}`)
   const filePath = input.sourcePath
-  const fileName = filePath.split(/[\\/]/).pop() ?? '审核材料'
+  const fileName = input.originalFileName ?? filePath.split(/[\\/]/).pop() ?? '审核材料'
+  if (!fileName || fileName === '.' || fileName === '..' || /[\\/\\\\\\x00]/.test(fileName)) {
+    throw new Error('REVIEW_IMPORT_UNSAFE_FILENAME')
+  }
   const progressContext = { ...input, fileName }
   const reportProgress = (payload: ImportProgressPayload): void => emitImportProgress(progressContext, {
     ...payload,
