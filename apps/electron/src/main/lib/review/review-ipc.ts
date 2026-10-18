@@ -100,12 +100,13 @@ export function registerReviewIpc(): void {
     const { listD4ClientTemplates } = require('./review-d4-client') as typeof import('./review-d4-client')
     return listD4ClientTemplates()
   })
-  ipcMain.handle(REVIEW_IPC_CHANNELS.STAGE_D4_INTAKE, async (event) => {
+  ipcMain.handle(REVIEW_IPC_CHANNELS.STAGE_D4_INTAKE, async (event, mode: unknown) => {
     const { BrowserWindow } = require('electron') as typeof import('electron')
     const parent = BrowserWindow.fromWebContents(event.sender)
     if (!parent || event.senderFrame !== parent.webContents.mainFrame) throw new Error('D4_INTAKE_SENDER_INVALID')
     const { stageD4Intake } = require('./review-d4-intake') as typeof import('./review-d4-intake')
-    return stageD4Intake(event.sender.id, parent)
+    if (mode !== undefined && mode !== 'files' && mode !== 'folder') throw new Error('D4_INTAKE_PICKER_MODE_INVALID')
+    return stageD4Intake(event.sender.id, parent, mode ?? 'files')
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.DISCARD_D4_INTAKE, (event, token: unknown) => {
     if (typeof token !== 'string') return false
