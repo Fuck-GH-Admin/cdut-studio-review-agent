@@ -23,6 +23,9 @@ export function D4CaseBatchControls({ role, actions }: {
   const sessionGeneration = React.useRef(0)
 
   React.useEffect(() => {
+    // Case switch reuses the same React component instance. Reset *all* visual
+    // decisions so A's staged selection can never be applied to B's case.
+    setPreview(null); setAssessment(null); setChoices([]); setAcknowledged(false); setError('')
     return () => {
       sessionGeneration.current += 1
       const previous = activeToken.current
@@ -67,6 +70,11 @@ export function D4CaseBatchControls({ role, actions }: {
   }
   const apply = async (): Promise<void> => {
     if (!assessment || !preview || busy) return
+    if (assessment.caseId !== caseId || assessment.token !== preview.token ||
+        activeToken.current !== preview.token || store.get(selectedCaseIdAtom) !== caseId) {
+      setError('案卷已切换或预检记录过期，请重新选择材料')
+      return
+    }
     setBusy(true); setError('')
     try {
       const result = await window.reviewAPI.applyD4CaseBatch({
