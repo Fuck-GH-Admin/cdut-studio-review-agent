@@ -284,8 +284,8 @@ export function decideWorkspaceCaseV2(
     if (!lockedTemplate || lockedTemplate.status !== 'published') {
       throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '案卷模板未发布或已失效，不得形成正式业务决定')
     }
-    assertAutomatedWorkspaceDecision(aggregate, run, command.actor, payload.result, payload.requiredElements, payload.reason)
-
+    // 先给出与旧人工审批一致的业务不足诊断；即便不足已解决，
+    // 后续授权门禁仍是形成正式决定前不可绕过的事务检查。
     if (payload.result === 'pass' || payload.result === 'partial-pass') {
       const { getTemplate } = require('./template-store') as typeof import('./template-store')
       const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
@@ -307,6 +307,7 @@ export function decideWorkspaceCaseV2(
         }
       }
     }
+    assertAutomatedWorkspaceDecision(aggregate, run, command.actor, payload.result, payload.requiredElements, payload.reason)
     if (payload.result === 'return' && (!(payload.requiredElements?.some((item) => item.trim())) || !payload.supplementReason?.trim())) {
       throw new CommandValidationError('VALIDATION_FAILED', '退回补件必须指定缺少要素和原因')
     }
