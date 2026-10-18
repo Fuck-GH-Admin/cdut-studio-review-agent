@@ -29,7 +29,8 @@ describe('P2-A Pi prompt contract does not omit, merge, or invent audit responsi
       item.authority + ' / 适用性=' + (item.applicability ?? '整案') + ' / 证明事实=' +
       JSON.stringify(item.evidenceCoverage?.supportsFacts ?? [])).join('；')
     // Compressed without dropping check IDs, applicability, authorities or supported facts.
-    expect(text.length).toBeLessThan(prior.length * 0.8)
+    // Full ruleId/checkId/objectKey/subjectId/source-fact values are retained; do not claim 50% savings by dropping them.
+    expect(text.length).toBeLessThan(prior.length * 0.95)
   })
 
   test('schema forbids any invented Observation when frozen template has no declared FieldSpec', () => {
