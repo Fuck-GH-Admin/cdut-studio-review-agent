@@ -6,7 +6,7 @@
 export type D4IntakeRole = 'application' | 'evidence'
 
 export function resolveD4IntakeRoles(fileCount: number, proposed: unknown): D4IntakeRole[] {
-  if (!Number.isInteger(fileCount) || fileCount < 1 || fileCount > 8) {
+  if (!Number.isInteger(fileCount) || fileCount < 1 || fileCount > 100) {
     throw new Error('D4_INTAKE_ROLE_PLAN_INVALID: staged file count outside permitted range')
   }
   if (proposed === undefined) return Array.from({ length: fileCount }, () => 'application')
