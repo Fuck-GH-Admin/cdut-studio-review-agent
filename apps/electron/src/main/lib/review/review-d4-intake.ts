@@ -1,10 +1,9 @@
 /** P1-C native-picker intake. Renderer never supplies arbitrary host paths. */
 import { randomUUID } from 'node:crypto'
-import { copyFileSync, existsSync, mkdtempSync, readFileSync, rmSync, statSync } from 'node:fs'
+import { closeSync, copyFileSync, existsSync, mkdtempSync, openSync, readSync, rmSync, statSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { basename, extname, join } from 'node:path'
 import { dialog, type BrowserWindow } from 'electron'
-import { listD4ClientTemplates } from './review-d4-client'
 import { recommendD4Intake, type D4RouteFile, type D4RouteResult } from './review-d4-routing'
 
 const TTL_MS = 20 * 60 * 1000
@@ -69,12 +68,17 @@ export async function stageD4Intake(ownerWebContentsId: number, parent?: Browser
       const route: D4RouteFile = { name: descriptor.name }
       if (TEXT_TYPES.has(extname(descriptor.name).toLowerCase())) {
         // Classification-only bounded sampling; no text or absolute file path crosses IPC.
-        const raw = readFileSync(dest)
-        route.textSample = raw.subarray(0, 16 * 1024).toString('utf8')
+        const handle = openSync(dest, 'r')
+        try {
+          const raw = Buffer.alloc(16 * 1024)
+          const bytes = readSync(handle, raw, 0, raw.byteLength, 0)
+          route.textSample = raw.subarray(0, bytes).toString('utf8')
+        } finally { closeSync(handle) }
       }
       routeInputs.push(route)
       files.push({ name: descriptor.name, sourcePath: dest, sizeBytes: descriptor.sizeBytes })
     }
+    const { listD4ClientTemplates } = require('./review-d4-client') as typeof import('./review-d4-client')
     const route = recommendD4Intake(routeInputs, listD4ClientTemplates())
     const token = randomUUID()
     const entry: StagedIntake = { token, ownerWebContentsId, directory: dir, files,
