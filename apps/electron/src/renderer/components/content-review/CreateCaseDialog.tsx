@@ -173,7 +173,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
             />
           </div>
 
-          {d4Mode && <D4IntakePicker intake={intake} manuallyOverridden={manualRouting}
+          {d4Mode && <D4IntakePicker intake={intake} manuallyOverridden={manualRouting} enabled={open && !submitting}
             documentRoles={intakeRoles} onDocumentRolesChange={setIntakeRoles}
             onIntake={value => {
               setIntake(value)
@@ -182,10 +182,11 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
             }}
             onApplyRoute={id => { if (!manualRouting) setRoutedTemplateId(id) }}
           />}
-          {d4Mode ? <D4CaseSetup key={intake?.token ?? 'no-intake'} onChange={setD4}
-            preferredTemplateId={routedTemplateId}
-            onManualOverride={() => { setManualRouting(true); setRoutedTemplateId(undefined) }}
-          /> : <div className="space-y-1.5">
+          {d4Mode ? <fieldset disabled={submitting} className="min-w-0">
+            <D4CaseSetup key={intake?.token ?? 'no-intake'} onChange={setD4}
+              preferredTemplateId={routedTemplateId}
+              onManualOverride={() => { setManualRouting(true); setRoutedTemplateId(undefined) }}/>
+          </fieldset> : <div className="space-y-1.5">
             <Label htmlFor="review-case-template">审核模板</Label>
             <select
               id="review-case-template"
