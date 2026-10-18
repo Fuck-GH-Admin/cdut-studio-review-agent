@@ -126,10 +126,18 @@ export function requeueCaseAfterSupplement(caseId: string): string[] {
   const aggregate = readAggregate(caseId)
   if (!aggregate || aggregate.caseV2.stage !== 'reviewing'
     || aggregate.supplements.some((request) => ['open', 'responded', 'insufficient'].includes(request.status))) return queued
-  for (const state of listBatchStatesV2()) {
-    if (state.status === 'finalized' || state.status === 'running' || activeBatchRuns.has(state.batch.id)
-      || state.batch.templateId !== aggregate.caseV2.templateId
-      || state.batch.templateVersion !== aggregate.caseV2.templateVersion) continue
+  // 没有补件所属批次的不可伪造绑定时，不能向同案所有旧/并行批次广播重新入队。
+  // 唯一归属才自动恢复；多批归属必须由后续人工选择明确目标批次。
+  const associated = listBatchStatesV2().filter((state) =>
+    state.batch.templateId === aggregate.caseV2.templateId
+    && state.batch.templateVersion === aggregate.caseV2.templateVersion
+    && state.cases.some((entry) => entry.caseId === caseId))
+  if (associated.length > 1) {
+    console.warn(`[批次] 案卷 ${caseId} 存在多个批次归属，补件回流已拒止自动入队，需人工明确批次`)
+    return queued
+  }
+  for (const state of associated) {
+    if (state.status === 'finalized' || state.status === 'running' || activeBatchRuns.has(state.batch.id)) continue
     const entry = state.cases.find((candidate) => candidate.caseId === caseId)
     if (!entry || entry.status === 'queued' || entry.status === 'running') continue
     state.cases = state.cases.map((candidate) => candidate.caseId === caseId
