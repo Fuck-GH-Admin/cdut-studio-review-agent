@@ -1,0 +1,392 @@
+{
+  "prs": [
+    {
+      "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/98",
+      "number": 98,
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "base": "main",
+      "base_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "head": "audit/p06-l02-u0-u1-r01",
+      "head_sha": "2d9e93f3a637e8325862769f80fe4b4e884c51a1"
+    },
+    {
+      "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/99",
+      "number": 99,
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "base": "audit/p06-l02-u0-u1-r01",
+      "base_sha": "2d9e93f3a637e8325862769f80fe4b4e884c51a1",
+      "head": "audit/p06-l02-00-evidence-preflight-r01",
+      "head_sha": "66dc3f099e4711b8889d24fabb893973896c71ee"
+    },
+    {
+      "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/101",
+      "number": 101,
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "base": "audit/p06-l02-00-evidence-preflight-r01",
+      "base_sha": "66dc3f099e4711b8889d24fabb893973896c71ee",
+      "head": "audit/p06-l02-00-r02-independent-20261018",
+      "head_sha": "0524604cac13794af5f43cff7771160f98f176d9"
+    },
+    {
+      "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/103",
+      "number": 103,
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "base": "audit/p06-l02-00-r02-independent-20261018",
+      "base_sha": "0524604cac13794af5f43cff7771160f98f176d9",
+      "head": "audit/p06-l02-u1-split-remote-local-r01",
+      "head_sha": "1c6deadfc0d51644aed6152463f78fdae662cdb6"
+    }
+  ],
+  "runs": [
+    {
+      "pr": 98,
+      "workflow_runs": [
+        {
+          "id": 39068176008,
+          "name": "P06 L02 U0 candidate install and clean-tree gate",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 9,
+          "jobs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39068176008/jobs",
+          "logs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39068176008/logs",
+          "workflow_id": 387952932
+        },
+        {
+          "id": 39068176005,
+          "name": "PR CI",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 792,
+          "jobs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39068176005/jobs",
+          "logs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39068176005/logs",
+          "workflow_id": 376891930
+        },
+        {
+          "id": 39068176012,
+          "name": "Review Baseline CI",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 487,
+          "jobs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39068176012/jobs",
+          "logs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39068176012/logs",
+          "workflow_id": 380705673
+        },
+        {
+          "id": 39068176049,
+          "name": "D2 Scoped Pi Review Tests",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 439,
+          "jobs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39068176049/jobs",
+          "logs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39068176049/logs",
+          "workflow_id": 380737909
+        }
+      ]
+    },
+    {
+      "pr": 99,
+      "workflow_runs": [
+        {
+          "id": 39087873166,
+          "name": "P06 L02-00 archived failure attribution",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 3,
+          "jobs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39087873166/jobs",
+          "logs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39087873166/logs",
+          "workflow_id": 387982215
+        },
+        {
+          "id": 39087873114,
+          "name": "PR CI",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 798,
+          "jobs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39087873114/jobs",
+          "logs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39087873114/logs",
+          "workflow_id": 376891930
+        }
+      ]
+    },
+    {
+      "pr": 101,
+      "workflow_runs": [
+        {
+          "id": 39089177006,
+          "name": "P06 L02-00 R02 independent history and controlled checks",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 2,
+          "jobs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39089177006/jobs",
+          "logs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39089177006/logs",
+          "workflow_id": 388112653
+        },
+        {
+          "id": 39089177020,
+          "name": "PR CI",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 801,
+          "jobs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39089177020/jobs",
+          "logs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39089177020/logs",
+          "workflow_id": 376891930
+        }
+      ]
+    },
+    {
+      "pr": 103,
+      "workflow_runs": [
+        {
+          "id": 39092396304,
+          "name": "PR CI",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 808,
+          "jobs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39092396304/jobs",
+          "logs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39092396304/logs",
+          "workflow_id": 376891930
+        },
+        {
+          "id": 39092396363,
+          "name": "P06 L02 U1 split - cloud controlled safety evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 7,
+          "jobs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39092396363/jobs",
+          "logs_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39092396363/logs",
+          "workflow_id": 388133898
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "runId": 39092396304,
+      "artifacts": []
+    },
+    {
+      "runId": 39092396363,
+      "artifacts": [
+        {
+          "id": 12123565948,
+          "name": "p06-l02-u1-remote-controlled",
+          "size_in_bytes": 9493,
+          "url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/artifacts/12123565948",
+          "archive_download_url": "https://api.github.com/repos/Fuck-GH-Admin/cdut-studio-review-agent/actions/artifacts/12123565948/zip",
+          "expired": false,
+          "created_at": "2026-10-18T03:09:25Z",
+          "expires_at": "2026-12-17T03:09:21Z",
+          "updated_at": "2026-10-18T03:09:25Z",
+          "digest": "sha256:060549124823d90003431c0060d55a8f0a9429402e61aee1951f74d50bfc6c75",
+          "workflow_run": {
+            "id": 39092396363,
+            "repository_id": 1407990463,
+            "head_repository_id": 1407990463,
+            "head_branch": "audit/p06-l02-u1-split-remote-local-r01",
+            "head_sha": "1c6deadfc0d51644aed6152463f78fdae662cdb6"
+          }
+        }
+      ]
+    }
+  ],
+  "currentHeadSpecialized": {
+    "runId": 39092396363,
+    "artifactId": 12123565948,
+    "zipSha256": "060549124823d90003431c0060d55a8f0a9429402e61aee1951f74d50bfc6c75",
+    "checkoutSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+    "checkoutTree": "987cc106b4952f01231f46698800f4f58f94ed40",
+    "commands": "step\texit\ninstall\t0\ntypecheck\t0\ncontrolled-tests\t0\noffice71-expected-repro\t0\noffice71-expected-collision-assert\t0\noverall\t0\n",
+    "tests": {
+      "pass": 43,
+      "fail": 0,
+      "expect": 216
+    },
+    "office71": {
+      "kind": "P06-L02-U1-OFFICE-POSTPARSE-IDENTITY-REPRO",
+      "source": "actual materializeToWorkspace; synthetic post-parse payloads",
+      "issue": 71,
+      "collisionDetected": true,
+      "rows": [
+        {
+          "format": "docx",
+          "mode": "same-revision",
+          "collision": true,
+          "staleCache": true,
+          "reassignedId": false,
+          "firstRevision": "9c493339714dd63dda85709489263297067294977402ee71daf27e400497d4f9",
+          "secondRevision": "9c493339714dd63dda85709489263297067294977402ee71daf27e400497d4f9",
+          "manifestTracksB": false,
+          "registryTracksB": false
+        },
+        {
+          "format": "docx",
+          "mode": "changed-revision",
+          "collision": true,
+          "staleCache": false,
+          "reassignedId": true,
+          "firstRevision": "9c493339714dd63dda85709489263297067294977402ee71daf27e400497d4f9",
+          "secondRevision": "4f9f03cd79a3302c1cfc50366f93a5dced4171d7c55d7a96360b8147dd24a09b",
+          "manifestTracksB": true,
+          "registryTracksB": true
+        },
+        {
+          "format": "xlsx",
+          "mode": "same-revision",
+          "collision": true,
+          "staleCache": true,
+          "reassignedId": false,
+          "firstRevision": "f1c3b06f1c3d566a3c265a6c13df3e39bc3b65c6c0d473fa8ac016f9c23bde9d",
+          "secondRevision": "f1c3b06f1c3d566a3c265a6c13df3e39bc3b65c6c0d473fa8ac016f9c23bde9d",
+          "manifestTracksB": false,
+          "registryTracksB": false
+        },
+        {
+          "format": "xlsx",
+          "mode": "changed-revision",
+          "collision": true,
+          "staleCache": false,
+          "reassignedId": true,
+          "firstRevision": "f1c3b06f1c3d566a3c265a6c13df3e39bc3b65c6c0d473fa8ac016f9c23bde9d",
+          "secondRevision": "334ee63eaf635fb4dafb60e1dacec4c63075ff76d85c310b15b311e8e46732f2",
+          "manifestTracksB": true,
+          "registryTracksB": true
+        },
+        {
+          "format": "pptx",
+          "mode": "same-revision",
+          "collision": true,
+          "staleCache": true,
+          "reassignedId": false,
+          "firstRevision": "387b025bb13eb93f7d87aa404a62888e6a6313d7814132c1bbd4e056becadcc9",
+          "secondRevision": "387b025bb13eb93f7d87aa404a62888e6a6313d7814132c1bbd4e056becadcc9",
+          "manifestTracksB": false,
+          "registryTracksB": false
+        },
+        {
+          "format": "pptx",
+          "mode": "changed-revision",
+          "collision": true,
+          "staleCache": false,
+          "reassignedId": true,
+          "firstRevision": "387b025bb13eb93f7d87aa404a62888e6a6313d7814132c1bbd4e056becadcc9",
+          "secondRevision": "6b3c7faef7f362a1380a4d168c8ba488954920d3bf7629c85869924e0fc7ba50",
+          "manifestTracksB": true,
+          "registryTracksB": true
+        }
+      ]
+    }
+  },
+  "standardPRCI": {
+    "runId": 39092396304,
+    "actualCheckout": "b2181314b51e4a906324fb491e03e77fea006515",
+    "sameTreeVerified": true,
+    "artifactCount": 0,
+    "rawJob": {
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/job-117571699991.log",
+      "sha256": "b104608a801e10b4d21b23c4c81c2e6a672d365d8f0195ca36fd45bdf2594b96",
+      "bytes": 1179904
+    },
+    "tests": {
+      "pass": 3991,
+      "skip": 5,
+      "fail": 0,
+      "files": 458
+    }
+  },
+  "concurrencyHistory": [
+    {
+      "id": 39092396304,
+      "headSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "name": "PR CI",
+      "conclusion": "success"
+    },
+    {
+      "id": 39092396363,
+      "headSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "name": "P06 L02 U1 split - cloud controlled safety evidence",
+      "conclusion": "success"
+    },
+    {
+      "id": 39092362853,
+      "headSha": "b21b3ce5ff8aafd85f4d7aa8d751e923279ac6b0",
+      "name": "PR CI",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 39092362869,
+      "headSha": "b21b3ce5ff8aafd85f4d7aa8d751e923279ac6b0",
+      "name": "P06 L02 U1 split - cloud controlled safety evidence",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 39092214383,
+      "headSha": "73cb485b3c7cfcca6fdec0662d9e7f66da6bbae4",
+      "name": "PR CI",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 39092214375,
+      "headSha": "73cb485b3c7cfcca6fdec0662d9e7f66da6bbae4",
+      "name": "P06 L02 U1 split - cloud controlled safety evidence",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 39092153177,
+      "headSha": "4b241846886bc571f885e0602ac96c7410fc84a0",
+      "name": "PR CI",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 39092153167,
+      "headSha": "4b241846886bc571f885e0602ac96c7410fc84a0",
+      "name": "P06 L02 U1 split - cloud controlled safety evidence",
+      "conclusion": "failure"
+    },
+    {
+      "id": 39092088576,
+      "headSha": "feff1c403a6ba266e0825f858f61f7d2b6d3523a",
+      "name": "P06 L02 U1 split - cloud controlled safety evidence",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 39092088636,
+      "headSha": "feff1c403a6ba266e0825f858f61f7d2b6d3523a",
+      "name": "PR CI",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 39091960604,
+      "headSha": "c7dd49e7c2f36d29db2bc2c8c6db73b3f5739ad4",
+      "name": "P06 L02 U1 split - cloud controlled safety evidence",
+      "conclusion": "failure"
+    },
+    {
+      "id": 39091960612,
+      "headSha": "c7dd49e7c2f36d29db2bc2c8c6db73b3f5739ad4",
+      "name": "PR CI",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 39091866164,
+      "headSha": "72c646fb58f95e240dad2d6c8e228db038b4b8f7",
+      "name": "P06 L02 U1 split - cloud controlled safety evidence",
+      "conclusion": "failure"
+    },
+    {
+      "id": 39091866104,
+      "headSha": "72c646fb58f95e240dad2d6c8e228db038b4b8f7",
+      "name": "PR CI",
+      "conclusion": "cancelled"
+    }
+  ],
+  "activeAtCheck": 0,
+  "queuedAtCheck": 0
+}

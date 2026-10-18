@@ -1,0 +1,66 @@
+{
+  "rawEvidence": {
+    "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/body-pdf.json",
+    "sha256": "5839cb5c792906db17e6c8c513cddf096c4be3cc7ed3dd5277fc804edee0093c",
+    "bytes": 1456
+  },
+  "summary": {
+    "inputHash": "61188c0bbc416b177afee33d3b894cd7e7bff1a1b8a7a5d929f07889108be688",
+    "document": {
+      "id": "doc-readable-body-mvd9u0y9",
+      "fileName": "readable-body.pdf",
+      "role": "evidence",
+      "mimeType": "application/pdf",
+      "sizeBytes": 610,
+      "parseStatus": "parsed",
+      "blocks": [
+        {
+          "id": "p1-b0",
+          "kind": "paragraph",
+          "text": "P06_U1_READABLE_BODY_PDF budget 100",
+          "page": 1,
+          "bbox": [
+            0.06666666666666667,
+            0.3525,
+            0.6886266666666659,
+            0.375
+          ],
+          "readingOrder": 0,
+          "confidence": 0.9
+        }
+      ],
+      "origin": "upload",
+      "importedAt": "2026-10-18T03:34:00.022Z"
+    },
+    "originalHeader": {
+      "hash": "82ba86e5269f411b8a5b737993567474309b883811b4aabce65d512ff3fc6159",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "width": 600,
+          "height": 800,
+          "columnCount": 1,
+          "blocks": [
+            {
+              "id": "p1-b0",
+              "pageNumber": 1,
+              "kind": "header",
+              "text": "P06_U1_READABLE_PDF budget 100",
+              "bbox": [
+                0.06666666666666667,
+                0.0525,
+                0.5869266666666666,
+                0.075
+              ],
+              "readingOrderIndex": 0,
+              "readingStreamId": -1,
+              "confidence": 0.9
+            }
+          ],
+          "trappedTokensFiltered": 0
+        }
+      ],
+      "readingOrderedBlocks": []
+    }
+  }
+}

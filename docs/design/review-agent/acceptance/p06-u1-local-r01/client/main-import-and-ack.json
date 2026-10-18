@@ -1,0 +1,1545 @@
+{
+  "rawEvidence": {
+    "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/prepare.json",
+    "sha256": "482e09e3f00b15a22127ac35d171814b27ee23eed5bf36e326d74b38aa7bbc25",
+    "bytes": 55429
+  },
+  "summary": {
+    "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+    "mode": "prepare",
+    "startedAt": "2026-10-18T03:34:28.243Z",
+    "level": "MAIN_IPC_SCOPED_NO_PROVIDER",
+    "rows": [
+      {
+        "id": "MAIN_CASE_AND_NEGATIVE_ACK",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:34:28.258Z",
+        "assertions": [
+          {
+            "name": "真实 Main IPC 已独立导入八份合成材料",
+            "pass": true
+          },
+          {
+            "name": "Main 回执不泄露内部身份",
+            "pass": true
+          },
+          {
+            "name": "accepted 有真实 V2 run 与指派",
+            "pass": true
+          }
+        ],
+        "caseId": "case-1792294468580-zl04pz",
+        "imports": [
+          {
+            "input": "A/proof.docx",
+            "result": {
+              "id": "doc-1792294468596-gpfqeb",
+              "fileName": "proof.docx",
+              "role": "evidence",
+              "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "sizeBytes": 1630,
+              "parseStatus": "parsed",
+              "blocks": [
+                {
+                  "id": "blk-proof-001",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_A paragraph one",
+                  "page": 1
+                },
+                {
+                  "id": "blk-proof-002",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_A paragraph two budget 100",
+                  "page": 1
+                },
+                {
+                  "id": "blk-proof-003",
+                  "kind": "table-cell",
+                  "text": "Item",
+                  "page": 1,
+                  "table": {
+                    "row": 0,
+                    "column": 0
+                  }
+                },
+                {
+                  "id": "blk-proof-004",
+                  "kind": "table-cell",
+                  "text": "P06_U1_SYNTHETIC_A table 100",
+                  "page": 1,
+                  "table": {
+                    "row": 0,
+                    "column": 1
+                  }
+                }
+              ],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:34:28.597Z"
+            }
+          },
+          {
+            "input": "B/proof.docx",
+            "result": {
+              "id": "doc-1792294468651-u7g9kb",
+              "fileName": "proof.docx",
+              "role": "evidence",
+              "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "sizeBytes": 1630,
+              "parseStatus": "parsed",
+              "blocks": [
+                {
+                  "id": "blk-proof-001",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_B paragraph one",
+                  "page": 1
+                },
+                {
+                  "id": "blk-proof-002",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_B paragraph two budget 100",
+                  "page": 1
+                },
+                {
+                  "id": "blk-proof-003",
+                  "kind": "table-cell",
+                  "text": "Item",
+                  "page": 1,
+                  "table": {
+                    "row": 0,
+                    "column": 0
+                  }
+                },
+                {
+                  "id": "blk-proof-004",
+                  "kind": "table-cell",
+                  "text": "P06_U1_SYNTHETIC_B table 100",
+                  "page": 1,
+                  "table": {
+                    "row": 0,
+                    "column": 1
+                  }
+                }
+              ],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:34:28.651Z"
+            }
+          },
+          {
+            "input": "A/proof.xlsx",
+            "result": {
+              "id": "doc-1792294468671-w4yzqn",
+              "fileName": "proof.xlsx",
+              "role": "evidence",
+              "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              "sizeBytes": 17195,
+              "parseStatus": "parsed",
+              "blocks": [
+                {
+                  "id": "blk-proof-001",
+                  "kind": "table-cell",
+                  "text": "P06_U1_SYNTHETIC_A",
+                  "page": 1,
+                  "table": {
+                    "row": 1,
+                    "column": 1,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-002",
+                  "kind": "table-cell",
+                  "text": "Budget",
+                  "page": 1,
+                  "table": {
+                    "row": 1,
+                    "column": 2,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-003",
+                  "kind": "table-cell",
+                  "text": "budget",
+                  "page": 1,
+                  "table": {
+                    "row": 2,
+                    "column": 1,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-004",
+                  "kind": "table-cell",
+                  "text": "100",
+                  "page": 1,
+                  "table": {
+                    "row": 2,
+                    "column": 2,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-005",
+                  "kind": "table-cell",
+                  "text": "item",
+                  "page": 1,
+                  "table": {
+                    "row": 3,
+                    "column": 1,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-006",
+                  "kind": "table-cell",
+                  "text": "reading",
+                  "page": 1,
+                  "table": {
+                    "row": 3,
+                    "column": 2,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-007",
+                  "kind": "table-cell",
+                  "text": "P06_U1_SYNTHETIC_A",
+                  "page": 1,
+                  "table": {
+                    "row": 1,
+                    "column": 1,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-008",
+                  "kind": "table-cell",
+                  "text": "Details",
+                  "page": 1,
+                  "table": {
+                    "row": 1,
+                    "column": 2,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-009",
+                  "kind": "table-cell",
+                  "text": "budget",
+                  "page": 1,
+                  "table": {
+                    "row": 2,
+                    "column": 1,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-010",
+                  "kind": "table-cell",
+                  "text": "100",
+                  "page": 1,
+                  "table": {
+                    "row": 2,
+                    "column": 2,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-011",
+                  "kind": "table-cell",
+                  "text": "item",
+                  "page": 1,
+                  "table": {
+                    "row": 3,
+                    "column": 1,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-012",
+                  "kind": "table-cell",
+                  "text": "reading",
+                  "page": 1,
+                  "table": {
+                    "row": 3,
+                    "column": 2,
+                    "sheet": "Details"
+                  }
+                }
+              ],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:34:28.671Z"
+            }
+          },
+          {
+            "input": "A/proof.pptx",
+            "result": {
+              "id": "doc-1792294468686-l9qa0h",
+              "fileName": "proof.pptx",
+              "role": "evidence",
+              "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+              "sizeBytes": 49723,
+              "parseStatus": "parsed",
+              "blocks": [
+                {
+                  "id": "p1-b1",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_A slide 1",
+                  "page": 1,
+                  "bbox": [
+                    0.1,
+                    0.1778,
+                    0.8,
+                    0.3556
+                  ],
+                  "readingOrder": 0,
+                  "confidence": 1
+                },
+                {
+                  "id": "p2-b1",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_A slide 2",
+                  "page": 2,
+                  "bbox": [
+                    0.1,
+                    0.1778,
+                    0.8,
+                    0.3556
+                  ],
+                  "readingOrder": 1,
+                  "confidence": 1
+                }
+              ],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:34:28.687Z"
+            }
+          },
+          {
+            "input": "readable.pdf",
+            "result": {
+              "id": "doc-1792294468707-n6vcjm",
+              "fileName": "readable.pdf",
+              "role": "evidence",
+              "mimeType": "application/pdf",
+              "sizeBytes": 605,
+              "parseStatus": "partial",
+              "parseError": "PDF 未提取到文本内容（可能是扫描件或纯图片文档，需 OCR/视觉核验）；原件已保留，审核 Agent 可按需查看页面图像",
+              "blocks": [],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:34:28.708Z"
+            }
+          },
+          {
+            "input": "scan.pdf",
+            "result": {
+              "id": "doc-1792294469080-418srl",
+              "fileName": "scan.pdf",
+              "role": "evidence",
+              "mimeType": "application/pdf",
+              "sizeBytes": 10452,
+              "parseStatus": "partial",
+              "parseError": "PDF 未提取到文本内容（可能是扫描件或纯图片文档，需 OCR/视觉核验）；原件已保留，审核 Agent 可按需查看页面图像",
+              "blocks": [],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:34:29.081Z"
+            }
+          },
+          {
+            "input": "blank.pdf",
+            "result": {
+              "id": "doc-1792294469157-byod22",
+              "fileName": "blank.pdf",
+              "role": "evidence",
+              "mimeType": "application/pdf",
+              "sizeBytes": 575,
+              "parseStatus": "partial",
+              "parseError": "PDF 未提取到文本内容（可能是扫描件或纯图片文档，需 OCR/视觉核验）；原件已保留，审核 Agent 可按需查看页面图像",
+              "blocks": [],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:34:29.157Z"
+            }
+          },
+          {
+            "input": "corrupt.pdf",
+            "result": {
+              "id": "doc-1792294469175-sypdvb",
+              "fileName": "corrupt.pdf",
+              "role": "evidence",
+              "mimeType": "application/pdf",
+              "sizeBytes": 26,
+              "parseStatus": "failed",
+              "parseError": "文档解析失败: Invalid PDF structure.",
+              "blocks": [],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:34:29.175Z"
+            }
+          }
+        ],
+        "start": {
+          "value": {
+            "caseId": "case-1792294468580-zl04pz",
+            "runId": "run-pi-mvd9un9p-5j15n",
+            "runStatus": "running",
+            "phase": "accepted"
+          }
+        },
+        "ownership": {
+          "run": {
+            "id": "run-pi-mvd9un9p-5j15n",
+            "caseId": "case-1792294468580-zl04pz",
+            "templateId": "comprehensive-assessment-v2",
+            "templateVersion": 3,
+            "inputManifest": {
+              "hash": "c1f70936a411858fec2035f298bf03fe0a7d143d11028d23dd21eec018893ee7",
+              "templateVersion": 3,
+              "policyVersions": [],
+              "documentVersions": [
+                {
+                  "documentId": "doc-1792294468596-gpfqeb",
+                  "versionId": "doc-1792294468596-gpfqeb-v1",
+                  "contentHash": "7af451d502b635c95d2f63ffbc2ad737b8179553"
+                },
+                {
+                  "documentId": "doc-1792294468651-u7g9kb",
+                  "versionId": "doc-1792294468651-u7g9kb-v1",
+                  "contentHash": "af04a69346d5003f7d0f4f8143564b9372c6ea8c"
+                },
+                {
+                  "documentId": "doc-1792294468671-w4yzqn",
+                  "versionId": "doc-1792294468671-w4yzqn-v1",
+                  "contentHash": "30cec246d7225387b3c9175b8a27bb3ab0350a4f"
+                },
+                {
+                  "documentId": "doc-1792294468686-l9qa0h",
+                  "versionId": "doc-1792294468686-l9qa0h-v1",
+                  "contentHash": "de6bc07b7b5b2f9bc30e2abff7bd801f60497a83"
+                },
+                {
+                  "documentId": "doc-1792294468707-n6vcjm",
+                  "versionId": "doc-1792294468707-n6vcjm-v1",
+                  "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+                },
+                {
+                  "documentId": "doc-1792294469080-418srl",
+                  "versionId": "doc-1792294469080-418srl-v1",
+                  "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+                },
+                {
+                  "documentId": "doc-1792294469157-byod22",
+                  "versionId": "doc-1792294469157-byod22-v1",
+                  "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+                },
+                {
+                  "documentId": "doc-1792294469175-sypdvb",
+                  "versionId": "doc-1792294469175-sypdvb-v1",
+                  "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+                }
+              ],
+              "observationIds": [],
+              "evidenceLinkIds": [],
+              "effectiveRuleIds": [
+                "section-academic-identity",
+                "section-academic-result",
+                "section-academic-duplicate",
+                "section-competition-honor-award-identity",
+                "section-competition-honor-award-role",
+                "section-competition-honor-award-duplicate",
+                "section-student-work-position",
+                "section-student-work-service",
+                "section-practice-volunteer-practice-period",
+                "section-practice-volunteer-practice-proof",
+                "section-health-development-activity-participation",
+                "section-health-development-result-proof"
+              ],
+              "effectiveRuleSetHash": "f9c45297af31f708e2b652c452e8065884bb1d4588c3b7b09ffcbd3c8a5c337e"
+            },
+            "status": "running",
+            "checkpoints": [],
+            "checks": [],
+            "opinions": [],
+            "coverage": {
+              "documents": [
+                {
+                  "documentVersionId": "doc-1792294468596-gpfqeb-v1",
+                  "fileName": "proof.docx",
+                  "status": "read"
+                },
+                {
+                  "documentVersionId": "doc-1792294468651-u7g9kb-v1",
+                  "fileName": "proof.docx",
+                  "status": "read"
+                },
+                {
+                  "documentVersionId": "doc-1792294468671-w4yzqn-v1",
+                  "fileName": "proof.xlsx",
+                  "status": "read"
+                },
+                {
+                  "documentVersionId": "doc-1792294468686-l9qa0h-v1",
+                  "fileName": "proof.pptx",
+                  "status": "read"
+                },
+                {
+                  "documentVersionId": "doc-1792294468707-n6vcjm-v1",
+                  "fileName": "readable.pdf",
+                  "status": "unread",
+                  "reason": "V1 未提取到文本"
+                },
+                {
+                  "documentVersionId": "doc-1792294469080-418srl-v1",
+                  "fileName": "scan.pdf",
+                  "status": "unread",
+                  "reason": "V1 未提取到文本"
+                },
+                {
+                  "documentVersionId": "doc-1792294469157-byod22-v1",
+                  "fileName": "blank.pdf",
+                  "status": "unread",
+                  "reason": "V1 未提取到文本"
+                },
+                {
+                  "documentVersionId": "doc-1792294469175-sypdvb-v1",
+                  "fileName": "corrupt.pdf",
+                  "status": "unread",
+                  "reason": "自动解析失败；空占位块不代表读过原件。请重新解析或打开原件核验。"
+                }
+              ],
+              "plannedChecks": 12,
+              "completedChecks": 0,
+              "effectiveVerdicts": 0,
+              "pendingChecks": 12
+            },
+            "diagnostics": [
+              "由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。"
+            ],
+            "startedAt": "2026-10-18T03:34:29.198Z",
+            "initiatedBy": {
+              "actorId": "agent-58a5ef2c-a482-4d9b-8d17-1a4616f071ec",
+              "actorSource": "agent",
+              "role": "reviewer"
+            }
+          },
+          "hasAssignment": true
+        },
+        "aggregate": {
+          "caseV2": {
+            "id": "case-1792294468580-zl04pz",
+            "templateId": "comprehensive-assessment-v2",
+            "templateVersion": 3,
+            "title": "P06 U1 本轮合成安全探针",
+            "objectType": "person",
+            "caseFields": {
+              "applicant": {
+                "kind": "text",
+                "value": "SYNTHETIC_ONLY"
+              },
+              "academicYear": {
+                "kind": "text",
+                "value": "2026"
+              }
+            },
+            "subjects": [],
+            "documents": [
+              {
+                "documentId": "doc-1792294468596-gpfqeb",
+                "versionId": "doc-1792294468596-gpfqeb-v1",
+                "contentHash": "7af451d502b635c95d2f63ffbc2ad737b8179553",
+                "role": "evidence",
+                "fileName": "proof.docx",
+                "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "sizeBytes": 1630,
+                "assetPath": "source-docs/doc-1792294468596-gpfqeb-proof.docx",
+                "parseRevision": 1,
+                "parseStatus": "parsed",
+                "blocks": [
+                  {
+                    "blockId": "blk-proof-001",
+                    "text": "P06_U1_SYNTHETIC_A paragraph one",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 0
+                    },
+                    "kind": "text",
+                    "format": "paragraph"
+                  },
+                  {
+                    "blockId": "blk-proof-002",
+                    "text": "P06_U1_SYNTHETIC_A paragraph two budget 100",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 1
+                    },
+                    "kind": "text",
+                    "format": "paragraph"
+                  },
+                  {
+                    "blockId": "blk-proof-003",
+                    "text": "Item",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 2
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 0,
+                      "column": 0
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-004",
+                    "text": "P06_U1_SYNTHETIC_A table 100",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 3
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 0,
+                      "column": 1
+                    }
+                  }
+                ],
+                "usage": "read",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294468651-u7g9kb",
+                "versionId": "doc-1792294468651-u7g9kb-v1",
+                "contentHash": "af04a69346d5003f7d0f4f8143564b9372c6ea8c",
+                "role": "evidence",
+                "fileName": "proof.docx",
+                "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "sizeBytes": 1630,
+                "assetPath": "source-docs/doc-1792294468651-u7g9kb-proof.docx",
+                "parseRevision": 1,
+                "parseStatus": "parsed",
+                "blocks": [
+                  {
+                    "blockId": "blk-proof-001",
+                    "text": "P06_U1_SYNTHETIC_B paragraph one",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 0
+                    },
+                    "kind": "text",
+                    "format": "paragraph"
+                  },
+                  {
+                    "blockId": "blk-proof-002",
+                    "text": "P06_U1_SYNTHETIC_B paragraph two budget 100",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 1
+                    },
+                    "kind": "text",
+                    "format": "paragraph"
+                  },
+                  {
+                    "blockId": "blk-proof-003",
+                    "text": "Item",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 2
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 0,
+                      "column": 0
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-004",
+                    "text": "P06_U1_SYNTHETIC_B table 100",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 3
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 0,
+                      "column": 1
+                    }
+                  }
+                ],
+                "usage": "read",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294468671-w4yzqn",
+                "versionId": "doc-1792294468671-w4yzqn-v1",
+                "contentHash": "30cec246d7225387b3c9175b8a27bb3ab0350a4f",
+                "role": "evidence",
+                "fileName": "proof.xlsx",
+                "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "sizeBytes": 17195,
+                "assetPath": "source-docs/doc-1792294468671-w4yzqn-proof.xlsx",
+                "parseRevision": 1,
+                "parseStatus": "parsed",
+                "blocks": [
+                  {
+                    "blockId": "blk-proof-001",
+                    "text": "P06_U1_SYNTHETIC_A",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 0
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 1,
+                      "column": 1,
+                      "sheet": "Budget"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-002",
+                    "text": "Budget",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 1
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 1,
+                      "column": 2,
+                      "sheet": "Budget"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-003",
+                    "text": "budget",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 2
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 2,
+                      "column": 1,
+                      "sheet": "Budget"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-004",
+                    "text": "100",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 3
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 2,
+                      "column": 2,
+                      "sheet": "Budget"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-005",
+                    "text": "item",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 4
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 3,
+                      "column": 1,
+                      "sheet": "Budget"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-006",
+                    "text": "reading",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 5
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 3,
+                      "column": 2,
+                      "sheet": "Budget"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-007",
+                    "text": "P06_U1_SYNTHETIC_A",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 6
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 1,
+                      "column": 1,
+                      "sheet": "Details"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-008",
+                    "text": "Details",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 7
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 1,
+                      "column": 2,
+                      "sheet": "Details"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-009",
+                    "text": "budget",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 8
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 2,
+                      "column": 1,
+                      "sheet": "Details"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-010",
+                    "text": "100",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 9
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 2,
+                      "column": 2,
+                      "sheet": "Details"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-011",
+                    "text": "item",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 10
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 3,
+                      "column": 1,
+                      "sheet": "Details"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-012",
+                    "text": "reading",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 11
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 3,
+                      "column": 2,
+                      "sheet": "Details"
+                    }
+                  }
+                ],
+                "usage": "read",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294468686-l9qa0h",
+                "versionId": "doc-1792294468686-l9qa0h-v1",
+                "contentHash": "de6bc07b7b5b2f9bc30e2abff7bd801f60497a83",
+                "role": "evidence",
+                "fileName": "proof.pptx",
+                "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                "sizeBytes": 49723,
+                "assetPath": "source-docs/doc-1792294468686-l9qa0h-proof.pptx",
+                "parseRevision": 1,
+                "parseStatus": "parsed",
+                "blocks": [
+                  {
+                    "blockId": "p1-b1",
+                    "text": "P06_U1_SYNTHETIC_A slide 1",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 0
+                    },
+                    "kind": "text",
+                    "format": "paragraph"
+                  },
+                  {
+                    "blockId": "p2-b1",
+                    "text": "P06_U1_SYNTHETIC_A slide 2",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 1
+                    },
+                    "kind": "text",
+                    "format": "paragraph"
+                  }
+                ],
+                "usage": "read",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294468707-n6vcjm",
+                "versionId": "doc-1792294468707-n6vcjm-v1",
+                "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+                "role": "evidence",
+                "fileName": "readable.pdf",
+                "mimeType": "application/pdf",
+                "sizeBytes": 605,
+                "assetPath": "source-docs/doc-1792294468707-n6vcjm-readable.pdf",
+                "parseRevision": 1,
+                "parseStatus": "partial",
+                "blocks": [],
+                "usage": "unread",
+                "unusedReason": "V1 未提取到文本",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294469080-418srl",
+                "versionId": "doc-1792294469080-418srl-v1",
+                "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+                "role": "evidence",
+                "fileName": "scan.pdf",
+                "mimeType": "application/pdf",
+                "sizeBytes": 10452,
+                "assetPath": "source-docs/doc-1792294469080-418srl-scan.pdf",
+                "parseRevision": 1,
+                "parseStatus": "partial",
+                "blocks": [],
+                "usage": "unread",
+                "unusedReason": "V1 未提取到文本",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294469157-byod22",
+                "versionId": "doc-1792294469157-byod22-v1",
+                "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+                "role": "evidence",
+                "fileName": "blank.pdf",
+                "mimeType": "application/pdf",
+                "sizeBytes": 575,
+                "assetPath": "source-docs/doc-1792294469157-byod22-blank.pdf",
+                "parseRevision": 1,
+                "parseStatus": "partial",
+                "blocks": [],
+                "usage": "unread",
+                "unusedReason": "V1 未提取到文本",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294469175-sypdvb",
+                "versionId": "doc-1792294469175-sypdvb-v1",
+                "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+                "role": "evidence",
+                "fileName": "corrupt.pdf",
+                "mimeType": "application/pdf",
+                "sizeBytes": 26,
+                "assetPath": "source-docs/doc-1792294469175-sypdvb-corrupt.pdf",
+                "parseRevision": 1,
+                "parseStatus": "failed",
+                "blocks": [],
+                "usage": "unread",
+                "unusedReason": "V1 解析失败",
+                "materialSlotId": "certificates"
+              }
+            ],
+            "stage": "draft",
+            "revision": 8,
+            "createdAt": "2026-10-18T03:34:28.580Z",
+            "updatedAt": "2026-10-18T03:34:29.181Z",
+            "reviewRules": []
+          },
+          "observations": [],
+          "evidenceLinks": [],
+          "dispositions": [],
+          "tasks": [],
+          "decisions": [],
+          "supplements": [],
+          "appeals": [],
+          "receiptLog": [
+            {
+              "requestId": "workspace-init-case-1792294468580-zl04pz",
+              "type": "EnsureReviewWorkspaceAggregate",
+              "payloadHash": "a7cd315953dc599a069a6382bf63feb54dc6919e8612af5519a65c19b9add2d4",
+              "revision": 0,
+              "at": "2026-10-18T03:34:28.586Z",
+              "summary": "辅助审核工作台已映射到单案业务聚合",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-99faddb223b55e2eedde8c1cd457f80e",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "bea85453735599787c84e4a7072ed429bad6b053f3b38930cd705ac2c9ca5dc3",
+              "revision": 1,
+              "at": "2026-10-18T03:34:28.649Z",
+              "summary": "同步申报输入与材料（0 项 / 1 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-9c32c13379cd30d25da4e6c51287e84c",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "8406438bdf30aa0106e08ef447f8be8c4f22c23ec0ae0a4cc8bcd98298417861",
+              "revision": 2,
+              "at": "2026-10-18T03:34:28.667Z",
+              "summary": "同步申报输入与材料（0 项 / 2 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-072c4d4f820056b09e6f9b93a626b933",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "15fe298c18b3310299ef095491fb5a070ce9f3cfc4122d9c34869e64a6ac5e66",
+              "revision": 3,
+              "at": "2026-10-18T03:34:28.684Z",
+              "summary": "同步申报输入与材料（0 项 / 3 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-3b3ddf6fa8bd3ab2fec78b469c101076",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "b1d85f53557c7c816cd78aaacb6247b804039c93b5292ded40a14bbac7b5e41f",
+              "revision": 4,
+              "at": "2026-10-18T03:34:28.698Z",
+              "summary": "同步申报输入与材料（0 项 / 4 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-54e081a0fdb5710c4d9feed9710a0097",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "2109f2a1f0fb1a46612a8bb131150651cf47c71c2ccc8c64a8e9fa788aff3e16",
+              "revision": 5,
+              "at": "2026-10-18T03:34:29.070Z",
+              "summary": "同步申报输入与材料（0 项 / 5 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-aecb66296c2afb5f39264feecc7739b7",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "c9e18ce26d33b3f2d35124861ee8dd5703d4c634c6ec736652ef6f8b7c840274",
+              "revision": 6,
+              "at": "2026-10-18T03:34:29.154Z",
+              "summary": "同步申报输入与材料（0 项 / 6 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-7119a3266012e8a7daabeac78d10f336",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "3a642d8564ca322fb5d94b069a5d94ef22c43ba2de20c11be051e20167d6abf5",
+              "revision": 7,
+              "at": "2026-10-18T03:34:29.171Z",
+              "summary": "同步申报输入与材料（0 项 / 7 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-4deedb4de231cf5d04dd4743bf6fbb1a",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "747bc26c19e6a7c24575512c4fd35cd8eb11e4d2c203501d3a88437c03f94659",
+              "revision": 8,
+              "at": "2026-10-18T03:34:29.181Z",
+              "summary": "同步申报输入与材料（0 项 / 8 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            }
+          ]
+        },
+        "finishedAt": "2026-10-18T03:34:30.265Z"
+      },
+      {
+        "id": "MAIN_OWNER_AND_ORDINARY_POSITIVE",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:34:30.265Z",
+        "assertions": [
+          {
+            "name": "真实 IPC 隐藏 review owner，普通正例可见",
+            "pass": true
+          },
+          {
+            "name": "普通真实读取可用",
+            "pass": true
+          },
+          {
+            "name": "直接路径及目录 symlink 无法读审核 owner 原件",
+            "pass": true
+          },
+          {
+            "name": "内部 owner 普通发送入口拒止",
+            "pass": true
+          }
+        ],
+        "projection": {
+          "ownerVisible": false,
+          "ordinaryVisible": true,
+          "ownerMeta": null,
+          "ordinaryMeta": {
+            "id": "fdc45e3a-0643-442a-8600-a68213983d52",
+            "title": "P06 U1 普通合成预览",
+            "agentRuntime": "pi",
+            "presetId": "standard",
+            "presetReference": {
+              "presetId": "standard",
+              "presetScope": "builtin-meta",
+              "presetVersion": "1.1.0"
+            },
+            "createdAt": 1792294470384,
+            "updatedAt": 1792294470384
+          }
+        },
+        "read": {
+          "resolvedPath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/safe.txt",
+          "content": "P06_U1_LOCAL_READ_ONLY\n",
+          "version": {
+            "revision": "1792294470439.09:23",
+            "mtimeMs": 1792294470439.09,
+            "size": 23,
+            "hash": "639a3edcfc2b1e32ff83a8204baa2c05eeaf47ff80431b49f963417e538e4425"
+          }
+        },
+        "denied": [
+          null,
+          null
+        ],
+        "ownerSend": {
+          "error": "Error: Error invoking remote method 'agent:send-message': Error: 内部审核会话不可通过普通 Agent 入口访问"
+        },
+        "finishedAt": "2026-10-18T03:34:30.495Z"
+      },
+      {
+        "id": "MAIN_REAL_RUNAGENT_MISSING_BINDING",
+        "status": "FAIL",
+        "startedAt": "2026-10-18T03:34:30.495Z",
+        "assertions": [
+          {
+            "name": "no-binding 在真实 Main runAgent 拒止且未进入 Pi query",
+            "pass": true
+          }
+        ],
+        "results": [
+          {
+            "variant": "no-binding",
+            "sessionId": "d19b053f-c666-403e-a16f-4257bcb8b969",
+            "value": {
+              "returned": true
+            },
+            "messages": [
+              {
+                "type": "user",
+                "message": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "P06 U1 合成缺绑定负例"
+                    }
+                  ]
+                },
+                "parent_tool_use_id": null,
+                "uuid": "aeb029de-d380-4865-ac09-a97bc28f3dd6",
+                "_createdAt": 1792294470509
+              }
+            ],
+            "rejectionEvents": [
+              {
+                "at": "2026-10-18T03:34:30.508Z",
+                "event": "real-onRunOwned",
+                "sessionId": "d19b053f-c666-403e-a16f-4257bcb8b969"
+              },
+              {
+                "at": "2026-10-18T03:34:30.510Z",
+                "event": "real-sendMessage-rejected",
+                "sessionId": "d19b053f-c666-403e-a16f-4257bcb8b969",
+                "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+              }
+            ],
+            "piQueries": 0
+          }
+        ],
+        "error": "Error: AgentPresetError: 无法将旧预设 ID 转换为稳定引用: default\n    at presetReferenceForId (<AUDIT_WORKTREE>/apps/electron/dist/u1-live-main.cjs:8444:9)\n    at Object.updateAgentSessionMeta (<AUDIT_WORKTREE>/apps/electron/dist/u1-live-main.cjs:47691:46)\n    at <anonymous>:1:20\n    at FSWatcher.<anonymous> (node:internal/fs/recursive_watch:187:8)\n    at FSWatcher.emit (node:events:514:28)\n    at FSWatcher._handle.onchange (node:internal/fs/watchers:281:12)",
+        "finishedAt": "2026-10-18T03:34:30.612Z"
+      },
+      {
+        "id": "PREVIEW_OWNER_NEGATIVE_AND_TEXT",
+        "status": "FAIL",
+        "startedAt": "2026-10-18T03:34:30.617Z",
+        "assertions": [
+          {
+            "name": "侧栏打开且强制只读、不新增 Tab",
+            "pass": true
+          }
+        ],
+        "text": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/safe.txt",
+          "before": [
+            "agent"
+          ],
+          "after": [
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/safe.txt",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "error": "Error: 真实运行条件未达到：document.body.textContent.includes(\"P06_U1_LOCAL_READ_ONLY\")||[...document.querySelectorAll(\"canvas\")].some(c=>c.width>0&&c.height>0)",
+        "finishedAt": "2026-10-18T03:35:00.913Z"
+      },
+      {
+        "id": "PREVIEW_REAL_docx",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:35:00.914Z",
+        "assertions": [
+          {
+            "name": "真实侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "真实 Office 页面可见内容",
+            "pass": true
+          }
+        ],
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.docx",
+          "before": [
+            "agent"
+          ],
+          "after": [
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.docx",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "finishedAt": "2026-10-18T03:35:01.482Z"
+      },
+      {
+        "id": "PREVIEW_REAL_xlsx",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:35:01.483Z",
+        "assertions": [
+          {
+            "name": "真实侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "真实 Office 页面可见内容",
+            "pass": true
+          }
+        ],
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.xlsx",
+          "before": [
+            "agent"
+          ],
+          "after": [
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.xlsx",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "finishedAt": "2026-10-18T03:35:01.766Z"
+      },
+      {
+        "id": "PREVIEW_REAL_pptx",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:35:01.766Z",
+        "assertions": [
+          {
+            "name": "真实侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "真实 Office 页面可见内容",
+            "pass": true
+          }
+        ],
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.pptx",
+          "before": [
+            "agent"
+          ],
+          "after": [
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.pptx",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "finishedAt": "2026-10-18T03:35:02.001Z"
+      },
+      {
+        "id": "PREVIEW_SCAN_PDF_CANVAS",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:35:02.001Z",
+        "assertions": [
+          {
+            "name": "真实 Main PDF 返回受控 URL",
+            "pass": true
+          },
+          {
+            "name": "真实扫描 PDF 只读侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "PDF iframe 实际绘制 canvas",
+            "pass": true
+          }
+        ],
+        "prepared": {
+          "tmpHtmlUrl": "cdut-file://39df0897-55d4-431a-93f9-e94f554b1fe0"
+        },
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/scan.pdf",
+          "before": [
+            "agent"
+          ],
+          "after": [
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/scan.pdf",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "frames": {
+          "frameTree": {
+            "frame": {
+              "id": "AA84AD38D3D9437EDCBF7F74144E512B",
+              "loaderId": "AC268E98006FCB4FB55283900F842D8D",
+              "url": "http://localhost:18574/",
+              "domainAndRegistry": "",
+              "securityOrigin": "http://localhost:18574",
+              "securityOriginDetails": {
+                "isLocalhost": true
+              },
+              "mimeType": "text/html",
+              "adFrameStatus": {
+                "adFrameType": "none"
+              },
+              "secureContextType": "SecureLocalhost",
+              "crossOriginIsolatedContextType": "NotIsolated",
+              "gatedAPIFeatures": []
+            }
+          }
+        },
+        "targets": [
+          {
+            "targetId": "134A4FD236DAD810A8E9E1C51B4EF2CC",
+            "type": "worker",
+            "url": ""
+          },
+          {
+            "targetId": "AA84AD38D3D9437EDCBF7F74144E512B",
+            "type": "page",
+            "url": "http://localhost:18574/"
+          },
+          {
+            "targetId": "F823EBC6F0EDB632A5165F1C55CF3F6B",
+            "type": "iframe",
+            "url": "cdut-file://b1440463-c2b0-4276-b23c-f31943d23791/"
+          }
+        ],
+        "canvas": {
+          "width": 600,
+          "height": 800
+        },
+        "finishedAt": "2026-10-18T03:35:02.335Z"
+      }
+    ],
+    "environment": {
+      "versions": {
+        "node": "24.21.0",
+        "acorn": "8.18.0",
+        "ada": "4.0.0",
+        "amaro": "1.1.11",
+        "ares": "1.34.8",
+        "brotli": "1.2.0",
+        "cldr": "48.0",
+        "icu": "78.2",
+        "llhttp": "9.4.3",
+        "merve": "1.2.2",
+        "modules": "148",
+        "napi": "10",
+        "nbytes": "0.1.4",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.70.0",
+        "nghttp3": "",
+        "ngtcp2": "",
+        "openssl": "0.0.0",
+        "simdjson": "4.6.7",
+        "simdutf": "7.7.0",
+        "sqlite": "3.53.4",
+        "tz": "2025c",
+        "undici": "7.29.1",
+        "unicode": "17.0",
+        "uv": "1.52.1",
+        "uvwasi": "0.0.23",
+        "v8": "15.0.245.31-electron.0",
+        "zlib": "1.3.2.1-motley",
+        "zstd": "1.6.0",
+        "electron": "43.7.7",
+        "chrome": "150.0.7871.250"
+      },
+      "config": "<PRIVATE_RAW_ROOT>/profile/config",
+      "userData": "<PRIVATE_RAW_ROOT>/profile/user-data",
+      "pid": 2173621
+    },
+    "mainEvents": [
+      {
+        "at": "2026-10-18T03:34:29.201Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": true
+      },
+      {
+        "at": "2026-10-18T03:34:29.205Z",
+        "event": "real-onRunOwned",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:30.253Z",
+        "event": "real-pi-query-entered",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:30.369Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:34:30.508Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": false
+      },
+      {
+        "at": "2026-10-18T03:34:30.508Z",
+        "event": "real-onRunOwned",
+        "sessionId": "d19b053f-c666-403e-a16f-4257bcb8b969"
+      },
+      {
+        "at": "2026-10-18T03:34:30.510Z",
+        "event": "real-sendMessage-rejected",
+        "sessionId": "d19b053f-c666-403e-a16f-4257bcb8b969",
+        "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+      },
+      {
+        "at": "2026-10-18T03:34:31.545Z",
+        "event": "real-pi-query-entered",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:31.564Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:34:33.604Z",
+        "event": "real-pi-query-entered",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:33.624Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:34:38.261Z",
+        "event": "real-pi-query-entered",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:38.284Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:34:45.763Z",
+        "event": "real-pi-query-entered",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:45.780Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:34:59.548Z",
+        "event": "real-pi-query-entered",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:59.571Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      }
+    ],
+    "finishedAt": "2026-10-18T03:35:02.335Z"
+  }
+}

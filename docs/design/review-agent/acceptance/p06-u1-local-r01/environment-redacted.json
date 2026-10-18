@@ -1,0 +1,91 @@
+{
+  "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+  "uid": "1000",
+  "node": "v22.23.2",
+  "bun": "1.4.0",
+  "git": "git version 2.53.0",
+  "applicationVersion": "0.15.162",
+  "electron": {
+    "node": "24.21.0",
+    "acorn": "8.18.0",
+    "ada": "4.0.0",
+    "amaro": "1.1.11",
+    "ares": "1.34.8",
+    "brotli": "1.2.0",
+    "cldr": "48.0",
+    "icu": "78.2",
+    "llhttp": "9.4.3",
+    "merve": "1.2.2",
+    "modules": "148",
+    "napi": "10",
+    "nbytes": "0.1.4",
+    "ncrypto": "0.0.1",
+    "nghttp2": "1.70.0",
+    "nghttp3": "",
+    "ngtcp2": "",
+    "openssl": "0.0.0",
+    "simdjson": "4.6.7",
+    "simdutf": "7.7.0",
+    "sqlite": "3.53.4",
+    "tz": "2025c",
+    "undici": "7.29.1",
+    "unicode": "17.0",
+    "uv": "1.52.1",
+    "uvwasi": "0.0.23",
+    "v8": "15.0.245.31-electron.0",
+    "zlib": "1.3.2.1-motley",
+    "zstd": "1.6.0",
+    "electron": "43.7.7",
+    "chrome": "150.0.7871.250"
+  },
+  "beforeRestartPid": 2173621,
+  "afterRestartPid": 2201360,
+  "gui": "独立 Xvfb 1600x1000x24，软件渲染；无物理显示器/GPU 跨平台签收",
+  "config": "<PRIVATE_RAW_ROOT>/profile/config",
+  "userData": "<PRIVATE_RAW_ROOT>/profile/user-data",
+  "ports": {
+    "vite": 18574,
+    "rendererCDP": 19222,
+    "mainInspector": 19230,
+    "bind": "127.0.0.1"
+  },
+  "electronBinary": {
+    "version": "43.7.7",
+    "zipHash": "4d0a48398c444258dbcf2f5f83b49ca5bc53583130f354e0c299dad5b22b5271",
+    "verifiedAgainst": "locked electron/checksums.json",
+    "scanPdfHash": "9b25f3e889b7b29e23a5bd1ab930808572a0e15194f20ad6b345b1f62539f78f"
+  },
+  "provider": {
+    "status": "BLOCKED_ENV",
+    "authorizedDedicatedChannel": "NOT_PROVIDED",
+    "credentialsReadFromUserProfile": false,
+    "ambientCredentialsUsed": false,
+    "diagnosticOnlyChannel": "合成假 key + http://127.0.0.1:1；无真实模型成功回执，不能签 PI_PROVIDER"
+  },
+  "io": {
+    "status": "BLOCKED_ENV",
+    "classification": "NOT-RUN_ENV",
+    "reason": "unshare: write failed /proc/self/uid_map: Operation not permitted\n",
+    "attempt": {
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/21-safe-mount-capability.command.json",
+      "sha256": "c20726c52c7084cc887109e0831567b520e0ec28c888278ade0395b4fd0e812b",
+      "bytes": 2502
+    },
+    "enospcAttempted": false
+  },
+  "rawRoot": "<PRIVATE_RAW_ROOT>",
+  "cleanup": {
+    "targets": [
+      {
+        "pid": 2213861,
+        "kind": "main"
+      },
+      {
+        "pid": 2215354,
+        "kind": "vite"
+      }
+    ],
+    "at": 1792295044.0632699,
+    "profileRetained": true
+  }
+}

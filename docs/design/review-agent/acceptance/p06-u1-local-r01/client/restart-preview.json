@@ -1,0 +1,342 @@
+{
+  "rawEvidence": {
+    "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/restore.json",
+    "sha256": "059a3ccc07b2f05867c649e062bd842b2113b329e72e1fdb2d8ce1d306478b8d",
+    "bytes": 13225
+  },
+  "summary": {
+    "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+    "mode": "restore",
+    "startedAt": "2026-10-18T03:40:13.577Z",
+    "level": "MAIN_IPC_SCOPED_NO_PROVIDER",
+    "rows": [
+      {
+        "id": "PREVIEW_OWNER_NEGATIVE_AND_TEXT",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:40:14.286Z",
+        "assertions": [
+          {
+            "name": "侧栏打开且强制只读、不新增 Tab",
+            "pass": true
+          },
+          {
+            "name": "实际只读 Shadow DOM 显示精确文本",
+            "pass": true
+          },
+          {
+            "name": "review owner 授权 lookup 不可打开普通预览",
+            "pass": true
+          },
+          {
+            "name": "不存在会话不可凭事件恢复",
+            "pass": true
+          }
+        ],
+        "text": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/safe.txt",
+          "before": [
+            "agent"
+          ],
+          "after": [
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/safe.txt",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "surface": [
+          {
+            "visible": true,
+            "markerPresent": true
+          }
+        ],
+        "owner": "",
+        "unknown": "",
+        "finishedAt": "2026-10-18T03:40:16.386Z"
+      },
+      {
+        "id": "PREVIEW_REAL_docx",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:40:16.386Z",
+        "assertions": [
+          {
+            "name": "真实侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "真实 Office 页面可见内容",
+            "pass": true
+          }
+        ],
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.docx",
+          "before": [
+            "scratch",
+            "agent"
+          ],
+          "after": [
+            "scratch",
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.docx",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "finishedAt": "2026-10-18T03:40:16.796Z"
+      },
+      {
+        "id": "PREVIEW_REAL_xlsx",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:40:16.796Z",
+        "assertions": [
+          {
+            "name": "真实侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "真实 Office 页面可见内容",
+            "pass": true
+          }
+        ],
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.xlsx",
+          "before": [
+            "scratch",
+            "agent"
+          ],
+          "after": [
+            "scratch",
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.xlsx",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "finishedAt": "2026-10-18T03:40:17.040Z"
+      },
+      {
+        "id": "PREVIEW_REAL_pptx",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:40:17.040Z",
+        "assertions": [
+          {
+            "name": "真实侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "真实 Office 页面可见内容",
+            "pass": true
+          }
+        ],
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.pptx",
+          "before": [
+            "scratch",
+            "agent"
+          ],
+          "after": [
+            "scratch",
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.pptx",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "finishedAt": "2026-10-18T03:40:17.403Z"
+      },
+      {
+        "id": "PREVIEW_SCAN_PDF_CANVAS",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:40:17.403Z",
+        "assertions": [
+          {
+            "name": "真实 Main PDF 返回受控 URL",
+            "pass": true
+          },
+          {
+            "name": "真实扫描 PDF 只读侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "PDF iframe 实际绘制 canvas",
+            "pass": true
+          }
+        ],
+        "prepared": {
+          "tmpHtmlUrl": "cdut-file://81b3574f-1b46-4b4e-bc62-01aba0077f94"
+        },
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/scan.pdf",
+          "before": [
+            "scratch",
+            "agent"
+          ],
+          "after": [
+            "scratch",
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/scan.pdf",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "frames": {
+          "frameTree": {
+            "frame": {
+              "id": "4D978F639F8F2F2F15EE822CBB9E245C",
+              "loaderId": "55963AF2B0E6D3B2222BBEF7640BB6F4",
+              "url": "http://localhost:18574/",
+              "domainAndRegistry": "",
+              "securityOrigin": "http://localhost:18574",
+              "securityOriginDetails": {
+                "isLocalhost": true
+              },
+              "mimeType": "text/html",
+              "adFrameStatus": {
+                "adFrameType": "none"
+              },
+              "secureContextType": "SecureLocalhost",
+              "crossOriginIsolatedContextType": "NotIsolated",
+              "gatedAPIFeatures": []
+            }
+          }
+        },
+        "targets": [
+          {
+            "targetId": "4A915A6F802A8837CB0FD1C62E778EDC",
+            "type": "worker",
+            "url": ""
+          },
+          {
+            "targetId": "4D978F639F8F2F2F15EE822CBB9E245C",
+            "type": "page",
+            "url": "http://localhost:18574/"
+          },
+          {
+            "targetId": "52CD5389F441E021B44BEE4273312DAF",
+            "type": "iframe",
+            "url": "cdut-file://71b89d3a-b3a6-4cec-82a8-b1cedcd5629c/"
+          }
+        ],
+        "canvas": {
+          "width": 600,
+          "height": 800
+        },
+        "finishedAt": "2026-10-18T03:40:17.819Z"
+      },
+      {
+        "id": "REAL_PROCESS_RESTART_PERSISTENCE",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:40:17.819Z",
+        "assertions": [
+          {
+            "name": "独立新 PID 保留普通会话并隐藏旧 owner",
+            "pass": true
+          }
+        ],
+        "meta": {
+          "id": "fdc45e3a-0643-442a-8600-a68213983d52",
+          "title": "P06 U1 普通合成预览",
+          "agentRuntime": "pi",
+          "presetId": "standard",
+          "presetReference": {
+            "presetId": "standard",
+            "presetScope": "builtin-meta",
+            "presetVersion": "1.1.0"
+          },
+          "createdAt": 1792294470384,
+          "updatedAt": 1792294761974,
+          "archived": false,
+          "revision": 4
+        },
+        "owner": null,
+        "assignments": [
+          {
+            "id": "asg-a9d069ea",
+            "sessionId": "346d74e3-e18b-4f09-a0dc-9a07e7260c8a",
+            "turnId": "044f3cea-1fa5-4aef-8669-fd17f8da2981",
+            "caseId": "case-1792294308553-f2fpdj",
+            "actions": [
+              "submit-result"
+            ],
+            "workRole": "reviewer",
+            "grantedBy": {
+              "actorId": "local-user",
+              "sessionId": "346d74e3-e18b-4f09-a0dc-9a07e7260c8a"
+            },
+            "createdAt": "2026-10-18T03:31:48.753Z",
+            "activeRunId": "run-pi-mvd9r7gy-v4d7z",
+            "revokedAt": "2026-10-18T03:32:21.764Z"
+          },
+          {
+            "id": "asg-331b7307",
+            "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec",
+            "turnId": "9bb7d81e-68cd-48a6-b290-5f504bc70335",
+            "caseId": "case-1792294468580-zl04pz",
+            "actions": [
+              "submit-result"
+            ],
+            "workRole": "reviewer",
+            "grantedBy": {
+              "actorId": "local-user",
+              "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+            },
+            "createdAt": "2026-10-18T03:34:29.196Z",
+            "activeRunId": "run-pi-mvd9un9p-5j15n",
+            "revokedAt": "2026-10-18T03:34:59.577Z"
+          }
+        ],
+        "finishedAt": "2026-10-18T03:40:17.823Z"
+      }
+    ],
+    "environment": {
+      "versions": {
+        "node": "24.21.0",
+        "acorn": "8.18.0",
+        "ada": "4.0.0",
+        "amaro": "1.1.11",
+        "ares": "1.34.8",
+        "brotli": "1.2.0",
+        "cldr": "48.0",
+        "icu": "78.2",
+        "llhttp": "9.4.3",
+        "merve": "1.2.2",
+        "modules": "148",
+        "napi": "10",
+        "nbytes": "0.1.4",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.70.0",
+        "nghttp3": "",
+        "ngtcp2": "",
+        "openssl": "0.0.0",
+        "simdjson": "4.6.7",
+        "simdutf": "7.7.0",
+        "sqlite": "3.53.4",
+        "tz": "2025c",
+        "undici": "7.29.1",
+        "unicode": "17.0",
+        "uv": "1.52.1",
+        "uvwasi": "0.0.23",
+        "v8": "15.0.245.31-electron.0",
+        "zlib": "1.3.2.1-motley",
+        "zstd": "1.6.0",
+        "electron": "43.7.7",
+        "chrome": "150.0.7871.250"
+      },
+      "config": "<PRIVATE_RAW_ROOT>/profile/config",
+      "userData": "<PRIVATE_RAW_ROOT>/profile/user-data",
+      "pid": 2201360
+    },
+    "mainEvents": [],
+    "finishedAt": "2026-10-18T03:40:17.823Z"
+  }
+}

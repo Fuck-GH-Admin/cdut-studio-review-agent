@@ -1,0 +1,844 @@
+{
+  "sourceDocument": 55,
+  "itemCount": 23,
+  "rows": [
+    {
+      "id": "O01",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "MAIN_IPC/REAL_PARSER",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-real-materials.ts office2",
+      "exit": 0,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "不同路径同名 A/B 均可独立锚定；反例 A/B 同名不同内容、导入顺序调换不应错绑 `fN`",
+      "actual": "真实 DOCX 同名异源身份碰撞；含段落、表格、反序、改版、进程重启与 Main 物化。",
+      "status": "BLOCKED_UPSTREAM",
+      "evidencePublicPaths": [
+        "office/revision-cache.json",
+        "client/deleted-lookup-before-restart.json",
+        "client/deleted-lookup-after-restart.json"
+      ],
+      "evidenceSha256": {
+        "office/revision-cache.json": "e0200a0519d3483429cbc10302bae630836bda4e434a26290b87b06f367ed1e1",
+        "client/deleted-lookup-before-restart.json": "365aa75bc3017e4b2167ea01243264ae051e3f603aa92a39e9f8a22c917b71c7",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": "OFFICE71_REAL",
+      "classification": "UPSTREAM_OFFICE71"
+    },
+    {
+      "id": "O02",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "MAIN_IPC/REAL_PARSER",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-real-materials.ts office2",
+      "exit": 0,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "不同工作表/单元格正确锚定；反例跨表/同名异路径/同 stem 跨格式不能互认",
+      "actual": "真实双 Sheet XLSX/Cell 正常解析，但跨源同名/cross-stem 身份碰撞。",
+      "status": "BLOCKED_UPSTREAM",
+      "evidencePublicPaths": [
+        "office/revision-cache.json",
+        "client/deleted-lookup-before-restart.json",
+        "client/deleted-lookup-after-restart.json"
+      ],
+      "evidenceSha256": {
+        "office/revision-cache.json": "e0200a0519d3483429cbc10302bae630836bda4e434a26290b87b06f367ed1e1",
+        "client/deleted-lookup-before-restart.json": "365aa75bc3017e4b2167ea01243264ae051e3f603aa92a39e9f8a22c917b71c7",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": "OFFICE71_REAL",
+      "classification": "UPSTREAM_OFFICE71"
+    },
+    {
+      "id": "O03",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "MAIN_IPC/REAL_PARSER",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-real-materials.ts office2",
+      "exit": 0,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "slide 结构及引用可回读；同 stem 不同源/修改后索引不得替代旧文档",
+      "actual": "真实双页 PPTX 正常解析，但同 stem 索引复用与覆盖。",
+      "status": "BLOCKED_UPSTREAM",
+      "evidencePublicPaths": [
+        "office/revision-cache.json",
+        "client/deleted-lookup-before-restart.json",
+        "client/deleted-lookup-after-restart.json"
+      ],
+      "evidenceSha256": {
+        "office/revision-cache.json": "e0200a0519d3483429cbc10302bae630836bda4e434a26290b87b06f367ed1e1",
+        "client/deleted-lookup-before-restart.json": "365aa75bc3017e4b2167ea01243264ae051e3f603aa92a39e9f8a22c917b71c7",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": "OFFICE71_REAL",
+      "classification": "UPSTREAM_OFFICE71"
+    },
+    {
+      "id": "O04",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "MAIN_IPC/REAL_PARSER",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-real-materials.ts body-pdf; bun scripts/qa/p06-u1-real-materials.ts review",
+      "exit": 0,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {
+        "16-body-pdf-control": 0,
+        "13-review-real": 0,
+        "37-owner-late-actual": 1
+      },
+      "expected": "真实可读 PDF 的真实来源与审核块；扫描/空页/损坏与无文本回退不得伪造“已读”",
+      "actual": "Main 正文 PDF 有真实文字块；扫描/空页 partial 零文字块，损坏 failed；页眉专门对照，不假造已读。",
+      "status": "PASS",
+      "evidencePublicPaths": [
+        "office/review-parser.json",
+        "office/pdf-header-body-control.json",
+        "client/deleted-lookup-before-restart.json"
+      ],
+      "evidenceSha256": {
+        "office/review-parser.json": "e6d8438cecb31481ba8cbdf4dd9eb0c829aaa0e1c24f086eac42727ebdd87ed1",
+        "office/pdf-header-body-control.json": "cd2c54bd0e57feb9eaca7aff01c7eea113c1a01ce783839bcc0f32078c0363a8",
+        "client/deleted-lookup-before-restart.json": "365aa75bc3017e4b2167ea01243264ae051e3f603aa92a39e9f8a22c917b71c7"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "SCOPED_REAL_PASS"
+    },
+    {
+      "id": "O05",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "MAIN_IPC/REAL_PARSER",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-real-materials.ts office2",
+      "exit": 0,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "同物理源 unchanged revision 命中；源文件更改、缓存失效、重启后旧 `fileId/revision` 不得错误复用",
+      "actual": "同物理源缓存与改版已执行；多路径同 revision stale source 和 fileId 重用仍存在，重启不消除。",
+      "status": "BLOCKED_UPSTREAM",
+      "evidencePublicPaths": [
+        "office/revision-cache.json",
+        "client/deleted-lookup-before-restart.json",
+        "client/deleted-lookup-after-restart.json"
+      ],
+      "evidenceSha256": {
+        "office/revision-cache.json": "e0200a0519d3483429cbc10302bae630836bda4e434a26290b87b06f367ed1e1",
+        "client/deleted-lookup-before-restart.json": "365aa75bc3017e4b2167ea01243264ae051e3f603aa92a39e9f8a22c917b71c7",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": "OFFICE71_REAL",
+      "classification": "UPSTREAM_OFFICE71"
+    },
+    {
+      "id": "O06",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "在两个独立空间索引同一字节材料，明确映射/不映射；普通 RAG 锚点不可冒充审核证据",
+      "actual": "真实 Office 与审核版本两个空间均有输入；严格 SourceRef 拒绝只有本轮 43 项受控证据，缺合法 provider 工具提交。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "office/revision-cache.json",
+        "client/deleted-lookup-before-restart.json",
+        "client/deleted-lookup-after-restart.json"
+      ],
+      "evidenceSha256": {
+        "office/revision-cache.json": "e0200a0519d3483429cbc10302bae630836bda4e434a26290b87b06f367ed1e1",
+        "client/deleted-lookup-before-restart.json": "365aa75bc3017e4b2167ea01243264ae051e3f603aa92a39e9f8a22c917b71c7",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "S01",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "复用 #72 的同名 `rev-a/rev-b` 正例，每次只接受正确 `documentVersionId + blockId + quote`",
+      "actual": "同名版本/位置/quote 受控正例通过；缺本轮合法 Pi 严格读取/提交。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "S02",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "拒绝 `fileId=f1/revision/f1:p1-b0`、错引文、跨版本块、过期版本、跨案引用",
+      "actual": "普通 f1/错 quote/旧版拒止受控通过；缺实际 Pi 跨案、旧 turn 工具回执。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "S03",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "本案活跃材料真实视觉工具回执；任意路径、符号链接案卷外和跨案拒绝",
+      "actual": "真实 Main 私有路径/symlink 拒止通过；缺有授权 review_inspect_original 正例。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "S04",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "解析/视觉调用中变更 assignment 或 documentVersionId、await 返回后撤权必须拒绝写回",
+      "actual": "缺真实有效 binding 下 await 渲染撤权/改版回执。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "S05",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "版本/位置/引文/parseRevision 一致；普通 Office index / RAG / 仅 preview 截图不能写覆盖账本",
+      "actual": "缺真实 Pi SourceRef/coverage 写入见证，不能借预览证明覆盖。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "T01",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "真实 active Pi binding 正向仅四个 review 专属工具 + `CompactContext`；失效 binding 拒绝",
+      "actual": "无合法 provider 成功 turn；五工具最终 SDK registration 尚未见证。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "T02",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "用真实 `runAgent` 确保 Bash/Write/Read/MCP/AskUser 与注入 customTools 均不可见/不可调用；Host 未授权不能靠 adapter 自动过滤",
+      "actual": "真实 runAgent 三种缺绑定负例均未进入 Pi query；有效 binding 正例/最终 SDK 外部工具拒止仍缺。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "T03",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "同案有效授权五工具可执行；跨案/已 revoke/旧 turn/伪造 owner 即使工具名正确也拒绝",
+      "actual": "缺同案合法五工具执行及运行中 revoke/跨案/旧 turn。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "T04",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "分轮压缩前后仍需同案权限/材料版本；不允许普通上下文把旧授权复活",
+      "actual": "真实 Pi 压缩前后授权不可复活未运行。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "T05",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "NOT_APPLICABLE_PARSER_OR_NOT_EXECUTED",
+        "sessionId": "MISSING_NOT_EXECUTED",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "普通 Agent 的合法 Read/MCP/文档预览操作保持可用，严格白名单不得误作用于普通会话",
+      "actual": "普通 IPC 读取和侧栏正例通过；真实普通 Pi Read 与本地 mock MCP 尚缺。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "P01",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "MAIN_IPC/REAL_PARSER",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": 0,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "case-1792294468580-zl04pz",
+        "sessionId": "fdc45e3a-0643-442a-8600-a68213983d52",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "普通会话只读侧栏正例；旧 Preview Tab API 不恢复、预览权限不变更",
+      "actual": "真实只读侧栏；readOnly=false 输入被强制只读；Tab 类型/数量不变，应用重启后重复通过。",
+      "status": "PASS",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "SCOPED_REAL_PASS"
+    },
+    {
+      "id": "P02",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "MAIN_IPC/REAL_PARSER",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-owner-events.mjs",
+      "exit": 1,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "case-1792294468580-zl04pz",
+        "sessionId": "fdc45e3a-0643-442a-8600-a68213983d52",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {
+        "37-owner-late-actual": 1,
+        "39-owner-after-restart": 1
+      },
+      "expected": "合法 owner 可开侧栏；review owner、已删除 owner、伪造 lookup、延迟 lookup 不得预览内部文件",
+      "actual": "真实 Main 删除后旧 lookup 复活 Renderer 普通会话及预览槽；Main meta=null；重启后重现。审核 owner 和假 lookup ID 仍正确拒绝。",
+      "status": "FAIL",
+      "evidencePublicPaths": [
+        "client/deleted-lookup-before-restart.json",
+        "client/deleted-lookup-after-restart.json"
+      ],
+      "evidenceSha256": {
+        "client/deleted-lookup-before-restart.json": "365aa75bc3017e4b2167ea01243264ae051e3f603aa92a39e9f8a22c917b71c7",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": "P02_STALE_DELETED_LOOKUP",
+      "classification": "PRODUCT_STALE_LOOKUP"
+    },
+    {
+      "id": "P03",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "case-1792294468580-zl04pz",
+        "sessionId": "fdc45e3a-0643-442a-8600-a68213983d52",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "review owner 不投影进 sidebar/search/archive/events；普通归档/恢复正例必须保留",
+      "actual": "真实普通 archive/restore/search/list/meta 正例及 review owner 隐藏已见证；remote 未开启、真实 provider 事件面未完整运行。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "P04",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "MAIN_IPC/REAL_PARSER",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": 0,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "case-1792294468580-zl04pz",
+        "sessionId": "fdc45e3a-0643-442a-8600-a68213983d52",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "真实 DOCX/XLSX/PPTX/扫描 PDF UI 只读；symlink/rename/路径越界与过期 owner 拒绝",
+      "actual": "三类 Office 与扫描 PDF 实际 UI 渲染；审核私有路径的目录/文件 symlink、parent、rename、假/过期身份 IPC 拒止，重启后 UI 通过。",
+      "status": "PASS",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "SCOPED_REAL_PASS"
+    },
+    {
+      "id": "P05",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "case-1792294468580-zl04pz",
+        "sessionId": "fdc45e3a-0643-442a-8600-a68213983d52",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "结束轮次后旧响应/慢事件/旧 Hook 写入不回退；新版真实 Main/IPC E05 最小定向复验",
+      "actual": "未执行有效 provider 的真实 review-run E05 迟到回复；普通已删除 lookup 失败另记 P02。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "P06",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "case-1792294468580-zl04pz",
+        "sessionId": "fdc45e3a-0643-442a-8600-a68213983d52",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "新版真实 Main ACK、stop pending/busy/restart(E03)、旧 outcome(E04)，关键权限影响时恢复失败安全",
+      "actual": "Main ACK 有 V2 ownership 的诊断见证；合法模型 stop pending/restart/E03/E04 未运行。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/restart-preview.json",
+        "client/deleted-lookup-after-restart.json",
+        "client/private-path-boundaries.json"
+      ],
+      "evidenceSha256": {
+        "client/guard-and-preview.json": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+        "client/restart-preview.json": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+        "client/deleted-lookup-after-restart.json": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+        "client/private-path-boundaries.json": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "MISSING_REAL_PI_SCOPE"
+    },
+    {
+      "id": "P07",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "level": "PARTIAL_MAIN_IPC_WITH_CONTROLLED_ONLY",
+      "inputHash": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "command": "bun scripts/qa/p06-u1-client.mjs guard / restore; bun scripts/qa/p06-u1-preview-boundaries.mjs",
+      "exit": null,
+      "environment": "environment-redacted.json",
+      "context": {
+        "caseId": "case-1792294468580-zl04pz",
+        "sessionId": "fdc45e3a-0643-442a-8600-a68213983d52",
+        "runId": "MISSING_NO_REAL_PROVIDER_REVIEW_RUN",
+        "assignmentId": "MISSING_NO_ACTIVE_BINDING",
+        "turnId": "MISSING_NO_AUTHORIZED_PROVIDER_TURN",
+        "sourceRef": "MISSING_NO_STRICT_PI_SUBMISSION",
+        "diagnosticRunProvenance": "case-provenance-redacted.json"
+      },
+      "commandExits": {},
+      "expected": "实际双失写、ENOSPC、故障重启及恢复重启，旧 owner/assignment 永不复活",
+      "actual": "非 root 有界 tmpfs 前置能力失败；真实 ENOSPC/双失写与故障重启 NOT-RUN_ENV。",
+      "status": "BLOCKED_ENV",
+      "evidencePublicPaths": [
+        "environment-redacted.json",
+        "command-ledger.json"
+      ],
+      "evidenceSha256": {
+        "environment-redacted.json": "adeaab1beb9bd976136bed173398cd03be82477daffc308a61ab13b5b95fa5dc",
+        "command-ledger.json": "036e86bf5c017c9746ab04437215fb0756aef017630b07478cadd912c9d1a46b"
+      },
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "firstFailure": null,
+      "classification": "NOT-RUN_ENV"
+    }
+  ]
+}

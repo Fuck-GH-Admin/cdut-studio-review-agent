@@ -1,0 +1,95 @@
+{
+  "rawEvidence": {
+    "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/preview-boundaries.json",
+    "sha256": "50e2ce08e6995772b7862b8f924df9f521ffd68722814bb01f325f21da4d7c3a",
+    "bytes": 2948
+  },
+  "summary": {
+    "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+    "level": "MAIN_IPC",
+    "assertions": [
+      {
+        "name": "改名前普通文件真实可读",
+        "pass": true
+      },
+      {
+        "name": "改名后旧路径不复用内容",
+        "pass": true
+      },
+      {
+        "name": "symlink-to-review-private 真实 Main 拒止",
+        "pass": true
+      },
+      {
+        "name": "parent-to-owner 真实 Main 拒止",
+        "pass": true
+      },
+      {
+        "name": "deleted-owner-private-path 真实 Main 拒止",
+        "pass": true
+      },
+      {
+        "name": "unknown-owner-private-path 真实 Main 拒止",
+        "pass": true
+      },
+      {
+        "name": "删除 owner 不能取得审核私有 PDF 预览令牌",
+        "pass": true
+      },
+      {
+        "name": "真实重命名 IPC 拒绝审核 owner 路径",
+        "pass": true
+      },
+      {
+        "name": "真实重命名 IPC 拒绝父目录逃逸",
+        "pass": true
+      }
+    ],
+    "results": [
+      {
+        "path": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/private-link-2.txt",
+        "id": "fdc45e3a-0643-442a-8600-a68213983d52",
+        "kind": "symlink-to-review-private",
+        "actual": null
+      },
+      {
+        "path": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/b5047f73-92d5-43bb-90d2-1ffc6aeeadeb/internal.txt",
+        "id": "fdc45e3a-0643-442a-8600-a68213983d52",
+        "kind": "parent-to-owner",
+        "actual": null
+      },
+      {
+        "path": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/b5047f73-92d5-43bb-90d2-1ffc6aeeadeb/internal.txt",
+        "id": "9ab99b83-1fbe-4441-be75-60c6ce6515a0",
+        "kind": "deleted-owner-private-path",
+        "actual": null
+      },
+      {
+        "path": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/b5047f73-92d5-43bb-90d2-1ffc6aeeadeb/internal.txt",
+        "id": "p06-forged-session",
+        "kind": "unknown-owner-private-path",
+        "actual": null
+      }
+    ],
+    "ordinaryOutsideRead": {
+      "resolvedPath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/rename-probe-2.txt",
+      "content": "P06_U1_RENAME_SYNTHETIC_ONLY",
+      "version": {
+        "revision": "1792295027331.686:28",
+        "mtimeMs": 1792295027331.686,
+        "size": 28,
+        "hash": "849bf45bb1a82a81881a11c2d5f35ecba1afe0965e96d7f3189f94a0d84e5ada"
+      }
+    },
+    "deletedPdf": {
+      "value": null
+    },
+    "renamePrivate": {
+      "error": "Error: Error invoking remote method 'agent:rename-file': Error: 审核内部路径不可操作"
+    },
+    "renameTraversal": {
+      "error": "Error: Error invoking remote method 'agent:rename-file': Error: 文件名不能包含路径分隔符或 \"..\""
+    },
+    "status": "PASS"
+  }
+}

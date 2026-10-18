@@ -1,0 +1,125 @@
+{
+  "failures": [
+    {
+      "id": "REMOTE_DEFAULT_PRESET_FIRST",
+      "classification": "HARNESS_INVALID",
+      "actual": "旧 #103 首败：42 pass/1 fail；无效 presetId=default，非越权成功。另两次相同首败保留。",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091866164/artifact/controlled-tests.log",
+      "sha256": "6d9625b00e694e7c8d962bc5aca97e6e4467285abbc1b974970aabcdcd610c67",
+      "bytes": 26792
+    },
+    {
+      "id": "LOCAL_XLSX_WRITER_FIRST",
+      "classification": "HARNESS_INVALID",
+      "actual": "ESM XLSX.writeFile 没有 fs；改用写入生成的合法 buffer。",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/10-generate.stderr.log",
+      "sha256": "bd64999082b28fe1e0dc658136e49ff714de9c59caae725653c65fadfe5f88ea",
+      "bytes": 746
+    },
+    {
+      "id": "LOCAL_HISTORY_MISSING_GIT",
+      "classification": "BLOCKED_ENV",
+      "actual": "本地缺历史 Git 对象；fetch 固定两个历史 SHA 后 22-history-fetched exit0。",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/07-history.stderr.log",
+      "sha256": "44b2536a066e82a809b2f584ac9132c024c27aead70ade68a00e83501896504f",
+      "bytes": 175
+    },
+    {
+      "id": "LOCAL_DRIVER_FIRST",
+      "classification": "HARNESS_INVALID",
+      "actual": "诊断 require 与旧 Atom 导出假设错误；未产生安全通过结论。",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/30-client.stderr.log",
+      "sha256": "bee3f957ec628b10232d1483ce7db037928a20ee9fc9323f26d869d5f54dd638",
+      "bytes": 1570
+    },
+    {
+      "id": "LOCAL_ACK_AND_DOM_FIRST",
+      "classification": "HARNESS_INVALID",
+      "actual": "诊断假渠道存在后 ACK 可先取得真实 ownership；RunAgent 错误需 Main observer，文本在 Shadow DOM，XLSX 在 canvas。",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/31-client-harness-corrected.stdout.log",
+      "sha256": "994cb318793e5d42f0b7dd1fc3cd5fb3e2adf9ffc4734d619f3d240c077696d6",
+      "bytes": 839
+    },
+    {
+      "id": "LOCAL_PRESET_FIRST",
+      "classification": "HARNESS_INVALID",
+      "actual": "本地驱动也用了无效 default；改 standard 后三种 guard 实测拒止。",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/32-client-observed.stdout.log",
+      "sha256": "3e8ef7656de66b784e0d17aab883bb347454a973a39b85b64c1d682c87d7b6cf",
+      "bytes": 1169
+    },
+    {
+      "id": "LOCAL_TEMPLATE_FIRST",
+      "classification": "HARNESS_INVALID",
+      "actual": "动态 CDP 表达式缺闭合；后续修正的是驱动字符串，不改变产品断言。",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/33-client-final.stdout.log",
+      "sha256": "fe88f3d4e59e0115943557d5164821b467136cf46af26a366d704f5d1e499580",
+      "bytes": 349
+    },
+    {
+      "id": "LOCAL_DELETE_NOTIFICATION_FIRST",
+      "classification": "FAIL_PRODUCT",
+      "actual": "真实 Main 删除后未收到撤销；37/39 进一步确认旧 metadata 实际复活普通列表/预览槽。",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/owner-events-first-failure.json",
+      "sha256": "06567563f0c54256d9a22f2b93ec09ed55d9a8df67d501b062d1a00b339b49ce",
+      "bytes": 86007
+    },
+    {
+      "id": "P02_STALE_DELETED_LOOKUP",
+      "classification": "FAIL_PRODUCT",
+      "actual": "删除后 Main meta=null，旧 lookup 返回非空路径；Renderer sessionPresent=true、preview 非空；重启后重现。未证明审核私有文件泄露。",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/owner-events-before-restart.json",
+      "sha256": "a34849b6daabfe32ee35e23df9f7bfd35b21a3ed4165caea9ec6a8b66350e46a",
+      "bytes": 86696
+    },
+    {
+      "id": "OFFICE71_REAL",
+      "classification": "BLOCKED_UPSTREAM",
+      "actual": "合法 Office 解析实测同 stem fileId 碰撞、同字节异路径 stale source；真实 Main 六行与重启复现。",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/12-office-real.stdout.log",
+      "sha256": "047a13fb8a1147b86a192d9fe1966eae64c3a89be46b5e1417138b06eecccef0",
+      "bytes": 106
+    },
+    {
+      "id": "PREVIEW_POLICY_FIRST",
+      "classification": "HARNESS_INVALID",
+      "actual": "普通用户只读预览允许非敏感外部文件；原过严预期不符合 ipc.ts 789–800。44 改测明确审核私有边界，全通过。",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/preview-boundaries-first-failure.json",
+      "sha256": "f11f199110b53f2218238eb0a7867ec1278f19fc59cb3f7fe90dc5e842960a6d",
+      "bytes": 1250
+    },
+    {
+      "id": "IO_MOUNT_UNAVAILABLE",
+      "classification": "BLOCKED_ENV",
+      "actual": "non-root user namespace uid_map 不允许；未创建/填满宿主 tmpfs，ENOSPC 与双故障恢复未运行。",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/21-safe-mount-capability.stderr.log",
+      "sha256": "6b50086233b9e3c0f8f5ac5e8094da06d7a05f1c3be0b88baf49578943392a94",
+      "bytes": 66
+    },
+    {
+      "id": "EVIDENCE_GENERATOR_FIRST",
+      "classification": "HARNESS_INVALID",
+      "actual": "摘要器把 blocks 字典当列表切片；修正摘要器后 47 exit0，原始测试结果不变。",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/46-evidence-generator-first-failure.stderr.log",
+      "sha256": "fa3b9d0338db20d96f983a3c8f1272dc7fdfc1fb50fb8f882a7d1f46a067c212",
+      "bytes": 2166
+    }
+  ],
+  "priorHistoricalEvidencePreserved": [
+    "37",
+    "38",
+    "44",
+    "46",
+    "55",
+    "56",
+    "57",
+    "58",
+    "61",
+    "29"
+  ],
+  "olderU0U1FirstFailures": {
+    "modeFailure": "56 原 U0 #38867959248 artifact #12032580281；未回写",
+    "retiredSourceRef": "56 #39067328601 artifact #12114101699，2 fail 原记录未回写"
+  },
+  "lossDisclosure": "早期 UI 驱动的截图共用失败文件名，不能按该截图重建每次原像；原始 stdout/stderr、独立命令记录与备份 JSON 仍保留，首败判断使用这些证据。"
+}

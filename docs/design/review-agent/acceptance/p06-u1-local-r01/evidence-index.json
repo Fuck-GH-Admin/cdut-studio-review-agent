@@ -1,0 +1,1581 @@
+{
+  "generatedAt": "2026-10-18T03:50:50.141059+00:00",
+  "raw": [
+    {
+      "path": "setup/01-install.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/01-install.command.json",
+      "sha256": "c71d39a694d32021d75b922302f49189d881d8beff34f94f1e9ffac4718745f8",
+      "bytes": 2474
+    },
+    {
+      "path": "setup/01-install.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/01-install.stderr.log",
+      "sha256": "b17e7d1ebdbf4f86ab3481a0355d53a2bc425a2d93414a2b4abf5a0591256eab",
+      "bytes": 62
+    },
+    {
+      "path": "setup/01-install.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/01-install.stdout.log",
+      "sha256": "0bcfb53decaabe4d6525ed3dddcd08b9205e5185b4e908f392868a7c1556cb03",
+      "bytes": 283
+    },
+    {
+      "path": "setup/02-typecheck.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/02-typecheck.command.json",
+      "sha256": "cc88342effe1c4bdffabdf7030f65aa5bb419d4c0bb50834a6ed6a2ab570b553",
+      "bytes": 2807
+    },
+    {
+      "path": "setup/02-typecheck.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/02-typecheck.stderr.log",
+      "sha256": "8277b6b0db2d97d9c202472974204c9b592713f39cd8665934c5d44892357069",
+      "bytes": 33
+    },
+    {
+      "path": "setup/02-typecheck.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/02-typecheck.stdout.log",
+      "sha256": "fe93f24e7efc2123f7cb138899155a609211fee6d979171278698342398a0edb",
+      "bytes": 428
+    },
+    {
+      "path": "setup/03-boundaries.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/03-boundaries.command.json",
+      "sha256": "172ce390bae0d818f478b43cd06082c1557032c226f0772e78ba6d1d443e1b8d",
+      "bytes": 2816
+    },
+    {
+      "path": "setup/03-boundaries.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/03-boundaries.stderr.log",
+      "sha256": "21f6953e48c36416639e37cfd5ac857c3b93042937908b6bd6089ca264f4932f",
+      "bytes": 34
+    },
+    {
+      "path": "setup/03-boundaries.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/03-boundaries.stdout.log",
+      "sha256": "7c12341190370579829bb125d1338070e12652e36c5c6ea19282bffd769e56af",
+      "bytes": 38
+    },
+    {
+      "path": "setup/04-electron-build.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/04-electron-build.command.json",
+      "sha256": "61f2c7d6c8f2e89fd0bed4472998a072d9b3254c1861a1cdfeb614e7066d4504",
+      "bytes": 2830
+    },
+    {
+      "path": "setup/04-electron-build.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/04-electron-build.stderr.log",
+      "sha256": "890b155b17f990e81d3c162b125f8ac510cba0de95dafab3ec023be678b42743",
+      "bytes": 44
+    },
+    {
+      "path": "setup/04-electron-build.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/04-electron-build.stdout.log",
+      "sha256": "cfd06084e060fbf4519ca6655bfb280e974660e00a68f3727cd34bd54bf48fe5",
+      "bytes": 128237
+    },
+    {
+      "path": "setup/05-focused.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/05-focused.command.json",
+      "sha256": "0c1de924380ef63fd7d1ce3bc946f667ba958cc3776440b54a593076d880739f",
+      "bytes": 3401
+    },
+    {
+      "path": "setup/05-focused.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/05-focused.stderr.log",
+      "sha256": "9b71841fe663a2bfdfa54415714c49b236f2f93cf7ea4f3b06939403ca3cc539",
+      "bytes": 7175
+    },
+    {
+      "path": "setup/05-focused.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/05-focused.stdout.log",
+      "sha256": "faf51d3de8e39ad744ef64adb2877a319ed98c088317db3a0b75d961aeb45b6f",
+      "bytes": 18177
+    },
+    {
+      "path": "setup/06-full.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/06-full.command.json",
+      "sha256": "101623e488141eac4775390fc37da12e3ba20be0faa6286c774f04d7385b9f48",
+      "bytes": 2829
+    },
+    {
+      "path": "setup/06-full.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/06-full.stderr.log",
+      "sha256": "c5344bc0f82b28600d12d0f1bd0573493ee748dca46065ba7acbaf0c3eb0468b",
+      "bytes": 575194
+    },
+    {
+      "path": "setup/06-full.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/06-full.stdout.log",
+      "sha256": "ee66701af0c3110b9252bf4893a55f0e2d2e5c6e7dd8a5d188b8540bfcd87c0d",
+      "bytes": 145346
+    },
+    {
+      "path": "setup/07-history.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/07-history.command.json",
+      "sha256": "1f3c5cb2e8395f08018f93fc273a872c03b4187d4ff3ea480aed80443768ca55",
+      "bytes": 2916
+    },
+    {
+      "path": "setup/07-history.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/07-history.stderr.log",
+      "sha256": "44b2536a066e82a809b2f584ac9132c024c27aead70ade68a00e83501896504f",
+      "bytes": 175
+    },
+    {
+      "path": "setup/07-history.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/07-history.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup/20-diagnostic-build.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/20-diagnostic-build.command.json",
+      "sha256": "ab3f88bcc75946173863a45dec4a48f572983d9a9eea20b726bac2d81a20900b",
+      "bytes": 2857
+    },
+    {
+      "path": "setup/20-diagnostic-build.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/20-diagnostic-build.stderr.log",
+      "sha256": "2ceb82742cfa30720d5e21330407a3d05ec74cdff87d7f59ee1db1967649e1a3",
+      "bytes": 450
+    },
+    {
+      "path": "setup/20-diagnostic-build.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/20-diagnostic-build.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup/21-safe-mount-capability.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/21-safe-mount-capability.command.json",
+      "sha256": "c20726c52c7084cc887109e0831567b520e0ec28c888278ade0395b4fd0e812b",
+      "bytes": 2502
+    },
+    {
+      "path": "setup/21-safe-mount-capability.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/21-safe-mount-capability.stderr.log",
+      "sha256": "6b50086233b9e3c0f8f5ac5e8094da06d7a05f1c3be0b88baf49578943392a94",
+      "bytes": 66
+    },
+    {
+      "path": "setup/21-safe-mount-capability.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/21-safe-mount-capability.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup/22-history-fetched.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/22-history-fetched.command.json",
+      "sha256": "9730e3f802701d2fdf4d3a087bab36d0eaa8933de85bf142c05c5a1d297701bf",
+      "bytes": 2607
+    },
+    {
+      "path": "setup/22-history-fetched.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/22-history-fetched.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup/22-history-fetched.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/22-history-fetched.stdout.log",
+      "sha256": "ea978f45c32047e62b5ba94736476c09b35e72adf1c32876a0248e3191ae4e82",
+      "bytes": 231
+    },
+    {
+      "path": "setup/23-diagnostic-build-v2.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/23-diagnostic-build-v2.command.json",
+      "sha256": "0eee149c1d1d1290766579e66f9c99d9ff668107e29af764a8da29e4cdb44f48",
+      "bytes": 2866
+    },
+    {
+      "path": "setup/23-diagnostic-build-v2.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/23-diagnostic-build-v2.stderr.log",
+      "sha256": "86192b3333a03e933af3e31fa7ce4bee0c51a1e78a7f551a8c0a907a5e843ceb",
+      "bytes": 450
+    },
+    {
+      "path": "setup/23-diagnostic-build-v2.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/23-diagnostic-build-v2.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup/24-diagnostic-observers.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/24-diagnostic-observers.command.json",
+      "sha256": "948c36ac854406b737dc45af76ff4c8761e38a02cb116c24716b24a0fab027f5",
+      "bytes": 2869
+    },
+    {
+      "path": "setup/24-diagnostic-observers.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/24-diagnostic-observers.stderr.log",
+      "sha256": "8dfd5bbfe88b4004fdcc864aa803891e1f3490118cc239b2902e19a0e9fa1bde",
+      "bytes": 450
+    },
+    {
+      "path": "setup/24-diagnostic-observers.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/24-diagnostic-observers.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup/40-final-typecheck.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/40-final-typecheck.command.json",
+      "sha256": "0f26b5e241456b3586b1ec00f4bf8868c50d872b453e9134d2023b2a060ee10e",
+      "bytes": 2707
+    },
+    {
+      "path": "setup/40-final-typecheck.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/40-final-typecheck.stderr.log",
+      "sha256": "8277b6b0db2d97d9c202472974204c9b592713f39cd8665934c5d44892357069",
+      "bytes": 33
+    },
+    {
+      "path": "setup/40-final-typecheck.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/40-final-typecheck.stdout.log",
+      "sha256": "fe93f24e7efc2123f7cb138899155a609211fee6d979171278698342398a0edb",
+      "bytes": 428
+    },
+    {
+      "path": "setup/41-remote-ref-final.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/41-remote-ref-final.command.json",
+      "sha256": "f6e01ce6df1ff6cf41d8dd7896eda26a69dbd2d40ef018a931124710f092ba9e",
+      "bytes": 2613
+    },
+    {
+      "path": "setup/41-remote-ref-final.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/41-remote-ref-final.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup/41-remote-ref-final.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/41-remote-ref-final.stdout.log",
+      "sha256": "647e32a18508879cb28e82321c709e3e9a6a3f25785031804d3293e3bc2e9ecc",
+      "bytes": 295
+    },
+    {
+      "path": "setup/43-vite-relaunch.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/43-vite-relaunch.command.json",
+      "sha256": "616b67478da35e5ec2c13987c60245440f56448b8916972e7bf7f3fedbb77e09",
+      "bytes": 795
+    },
+    {
+      "path": "setup/43-vite-relaunch.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/43-vite-relaunch.stderr.log",
+      "sha256": "b17ba217211392f9bea5e65d9544709aa68151672ca2228bbabd088906bcbe49",
+      "bytes": 111
+    },
+    {
+      "path": "setup/43-vite-relaunch.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/43-vite-relaunch.stdout.log",
+      "sha256": "a0891fa5b7808f854f0210835b39a7aecb9cfc852ea7490852d141f1c79cc87a",
+      "bytes": 333
+    },
+    {
+      "path": "setup/45-delivery-typecheck.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/45-delivery-typecheck.command.json",
+      "sha256": "3ca3551965940a12fcd25b05cd6e7862afd3db33dd83a55d86cc990d9e89c6d9",
+      "bytes": 2716
+    },
+    {
+      "path": "setup/45-delivery-typecheck.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/45-delivery-typecheck.stderr.log",
+      "sha256": "8277b6b0db2d97d9c202472974204c9b592713f39cd8665934c5d44892357069",
+      "bytes": 33
+    },
+    {
+      "path": "setup/45-delivery-typecheck.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/45-delivery-typecheck.stdout.log",
+      "sha256": "5b84d668c2e2922dca6bd49e230be8406972702c2313539f5ca1cd4270d32196",
+      "bytes": 428
+    },
+    {
+      "path": "setup/46-evidence-generator-first-failure.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/46-evidence-generator-first-failure.command.json",
+      "sha256": "1fae75b0a15744f88ade2773e25fc24e6e7a3169f3d0dd8a6363cbca0fe7a539",
+      "bytes": 2707
+    },
+    {
+      "path": "setup/46-evidence-generator-first-failure.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/46-evidence-generator-first-failure.stderr.log",
+      "sha256": "fa3b9d0338db20d96f983a3c8f1272dc7fdfc1fb50fb8f882a7d1f46a067c212",
+      "bytes": 2166
+    },
+    {
+      "path": "setup/46-evidence-generator-first-failure.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/46-evidence-generator-first-failure.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup/47-evidence-generator-corrected.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/47-evidence-generator-corrected.command.json",
+      "sha256": "51b1e93e0f4f16438f81d19b8dc7dcfc7da188054a2ca4142404869e0457f826",
+      "bytes": 2694
+    },
+    {
+      "path": "setup/47-evidence-generator-corrected.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/47-evidence-generator-corrected.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup/47-evidence-generator-corrected.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/47-evidence-generator-corrected.stdout.log",
+      "sha256": "12b628e113c8d27b1698c5a90df77b9e30adaaf7125e9ad90988a1f8a1861f23",
+      "bytes": 184
+    },
+    {
+      "path": "setup/cleanup-final.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/cleanup-final.json",
+      "sha256": "15581632dc8c7ae988fa8e67298e323e8e2c1100dfdd5ed7915ba8312479c7df",
+      "bytes": 188
+    },
+    {
+      "path": "setup/cleanup.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/cleanup.json",
+      "sha256": "ceef69a72bc629f4a0d57d096adb6d7204a61e300a39d92668c2c9919af6c486",
+      "bytes": 1251
+    },
+    {
+      "path": "setup/electron-1792294219.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294219.stderr.log",
+      "sha256": "365f9f816be06cb94b9a4a345b8eda77db3ef966789ac1a6329a0115594f7850",
+      "bytes": 20558
+    },
+    {
+      "path": "setup/electron-1792294219.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294219.stdout.log",
+      "sha256": "4d794aa5fbd550912b302a7508731419c6c7a132998f519623393cbf62ae7422",
+      "bytes": 25937
+    },
+    {
+      "path": "setup/electron-1792294219.supervisor.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294219.supervisor.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "setup/electron-1792294442.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294442.command.json",
+      "sha256": "bde7d8f184f6350a007e398ebb6d2140357f385cb4fcb73dae6381abc10aee84",
+      "bytes": 1531
+    },
+    {
+      "path": "setup/electron-1792294442.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294442.stderr.log",
+      "sha256": "705652ff07c106da8fd3996a5ab74fbf75c76d628f11fc47cbacf72a5f33866d",
+      "bytes": 39946
+    },
+    {
+      "path": "setup/electron-1792294442.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294442.stdout.log",
+      "sha256": "3258fdfe0ddc66d5eb3ea0aff539a4f2f1192f39fe5006508d82058e13838353",
+      "bytes": 55883
+    },
+    {
+      "path": "setup/electron-1792294442.supervisor.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294442.supervisor.log",
+      "sha256": "a6834b8935e6b48519a1a66b3775def61f1ea254ebb163de7098cb53bcbddce0",
+      "bytes": 106
+    },
+    {
+      "path": "setup/electron-1792294788.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294788.command.json",
+      "sha256": "a94739b73c4701ad0b29aedb9c849254431a8917b7bf1a139081f7a2897ffee7",
+      "bytes": 1528
+    },
+    {
+      "path": "setup/electron-1792294788.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294788.stderr.log",
+      "sha256": "75856dcb06491bcf3abc7d4dfa1b0cb91556cf39e8949439d5004669c780b97a",
+      "bytes": 7503
+    },
+    {
+      "path": "setup/electron-1792294788.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294788.stdout.log",
+      "sha256": "4730a6da430214602dc7568b083dd87c783f5a497e1ea0bfcf899758a56cf682",
+      "bytes": 12767
+    },
+    {
+      "path": "setup/electron-1792294788.supervisor.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294788.supervisor.log",
+      "sha256": "39e39280e241af8f5eb0b6b1c7594551b099eca6ef37b6c22b21998ce4beb46f",
+      "bytes": 104
+    },
+    {
+      "path": "setup/electron-1792294944.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294944.command.json",
+      "sha256": "dd41629153ae3342e2177da6ce2bf66da435e75836b587a7ea9755f507de03a2",
+      "bytes": 1527
+    },
+    {
+      "path": "setup/electron-1792294944.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294944.stderr.log",
+      "sha256": "900a686caf38d9650ad868ada72dec22767b2daf767b54984a7d49f585d71624",
+      "bytes": 4556
+    },
+    {
+      "path": "setup/electron-1792294944.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294944.stdout.log",
+      "sha256": "aa1346fa41cb59fadf8c5c558fdb173e4998141ee3a5f13af3595da6ae1b10f5",
+      "bytes": 3327
+    },
+    {
+      "path": "setup/electron-1792294944.supervisor.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron-1792294944.supervisor.log",
+      "sha256": "c34689f10765fe8308580cd9cb05122ea1095902900d6140527950e2371182e1",
+      "bytes": 104
+    },
+    {
+      "path": "setup/electron.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/electron.log",
+      "sha256": "25fd058b43edb4b38ab294a31dd9b96f0697465d0d16e55f85099dab9dbcf588",
+      "bytes": 7058
+    },
+    {
+      "path": "setup/gates-summary.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/gates-summary.json",
+      "sha256": "f318e095e5a4aa62bd132cea1e4e02231d30e890890c40564747036bb8035bc1",
+      "bytes": 305
+    },
+    {
+      "path": "setup/processes.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/processes.json",
+      "sha256": "f6ee57c49a54cecf3482636d4172f6c2d8aff45603adcaf4f645cceda892f9fd",
+      "bytes": 1045
+    },
+    {
+      "path": "setup/vite.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/setup/vite.log",
+      "sha256": "651f5cd0afe0ac5affb48c2c6d77188aee8aff9648ea131e11c44867e4c78d8b",
+      "bytes": 444
+    },
+    {
+      "path": "client/30-client.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/30-client.command.json",
+      "sha256": "6a36e24877d1248220ce1bab75bff4fa7527482e6cb52bb4a2afc6d505e00ed0",
+      "bytes": 2586
+    },
+    {
+      "path": "client/30-client.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/30-client.stderr.log",
+      "sha256": "bee3f957ec628b10232d1483ce7db037928a20ee9fc9323f26d869d5f54dd638",
+      "bytes": 1570
+    },
+    {
+      "path": "client/30-client.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/30-client.stdout.log",
+      "sha256": "2ced1f38b9969bea64c7c11e2e211224e9d79c83d171730e0ffe74fff921c649",
+      "bytes": 708
+    },
+    {
+      "path": "client/31-client-harness-corrected.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/31-client-harness-corrected.command.json",
+      "sha256": "8cf2741a0361ce9deb63c46a269fd6669f50c94f2b67690be842006b829e1301",
+      "bytes": 2637
+    },
+    {
+      "path": "client/31-client-harness-corrected.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/31-client-harness-corrected.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "client/31-client-harness-corrected.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/31-client-harness-corrected.stdout.log",
+      "sha256": "994cb318793e5d42f0b7dd1fc3cd5fb3e2adf9ffc4734d619f3d240c077696d6",
+      "bytes": 839
+    },
+    {
+      "path": "client/32-client-observed.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/32-client-observed.command.json",
+      "sha256": "defce599bf15465488e0efbf98b2b6f590c01eeeac3549badda5aa511fdb3c6c",
+      "bytes": 2611
+    },
+    {
+      "path": "client/32-client-observed.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/32-client-observed.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "client/32-client-observed.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/32-client-observed.stdout.log",
+      "sha256": "3e8ef7656de66b784e0d17aab883bb347454a973a39b85b64c1d682c87d7b6cf",
+      "bytes": 1169
+    },
+    {
+      "path": "client/33-client-final.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/33-client-final.command.json",
+      "sha256": "e6e336bfbb0034d02e6f6670d7a07020ca67207cb96df7efc271561b9e6c68a1",
+      "bytes": 2599
+    },
+    {
+      "path": "client/33-client-final.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/33-client-final.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "client/33-client-final.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/33-client-final.stdout.log",
+      "sha256": "fe88f3d4e59e0115943557d5164821b467136cf46af26a366d704f5d1e499580",
+      "bytes": 349
+    },
+    {
+      "path": "client/34-client-shadow.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/34-client-shadow.command.json",
+      "sha256": "1a44e48670773ea4215013fc790c1f8d22175102d2d0b6e3434f6a33219d4949",
+      "bytes": 2602
+    },
+    {
+      "path": "client/34-client-shadow.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/34-client-shadow.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "client/34-client-shadow.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/34-client-shadow.stdout.log",
+      "sha256": "fe88f3d4e59e0115943557d5164821b467136cf46af26a366d704f5d1e499580",
+      "bytes": 349
+    },
+    {
+      "path": "client/35-client-lookup-fixed.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/35-client-lookup-fixed.command.json",
+      "sha256": "e292890754e48dd643e078c4d4fa24aeb4e52bbb9e6ec8c9ea42e3461fd8f3d9",
+      "bytes": 2620
+    },
+    {
+      "path": "client/35-client-lookup-fixed.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/35-client-lookup-fixed.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "client/35-client-lookup-fixed.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/35-client-lookup-fixed.stdout.log",
+      "sha256": "1c9d3bcfa0c51c59a8f04c856f06157792539adb12b19f1a30bd2561c97aa018",
+      "bytes": 295
+    },
+    {
+      "path": "client/36-owner-events.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/36-owner-events.command.json",
+      "sha256": "fa09f67692d7f32842fb40d4e28030c3ef5fa397056665613357a901ee4cefdf",
+      "bytes": 2592
+    },
+    {
+      "path": "client/36-owner-events.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/36-owner-events.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "client/36-owner-events.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/36-owner-events.stdout.log",
+      "sha256": "710ef9a76c0fc4ca7bf36835295cb3be502961f4309d014f0227540ef8f4f60b",
+      "bytes": 263
+    },
+    {
+      "path": "client/37-owner-late-actual.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/37-owner-late-actual.command.json",
+      "sha256": "15f00b1f65d5cfe6d9900cc6acb09f1f52db0bd3049f42c2e7289238d5c196b9",
+      "bytes": 2607
+    },
+    {
+      "path": "client/37-owner-late-actual.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/37-owner-late-actual.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "client/37-owner-late-actual.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/37-owner-late-actual.stdout.log",
+      "sha256": "6f91e3defada8f2e5a605630f09abb09af441e2aab22aed441eb26c6024136c5",
+      "bytes": 133
+    },
+    {
+      "path": "client/38-real-restart-preview.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/38-real-restart-preview.command.json",
+      "sha256": "007611f75627b528fe27a0b5f492b7335af44826eb33a747af6617ae8bb3050e",
+      "bytes": 2625
+    },
+    {
+      "path": "client/38-real-restart-preview.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/38-real-restart-preview.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "client/38-real-restart-preview.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/38-real-restart-preview.stdout.log",
+      "sha256": "9d9080634effe841bda8afd500e3c141e4ea237030fc7d6b8e41fb8ff3ced841",
+      "bytes": 293
+    },
+    {
+      "path": "client/39-owner-after-restart.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/39-owner-after-restart.command.json",
+      "sha256": "984f574694a5c4a3fa6d32490ba690320c696b1e0e08ef2f0a4adf3ea1b821f5",
+      "bytes": 2613
+    },
+    {
+      "path": "client/39-owner-after-restart.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/39-owner-after-restart.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "client/39-owner-after-restart.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/39-owner-after-restart.stdout.log",
+      "sha256": "6f91e3defada8f2e5a605630f09abb09af441e2aab22aed441eb26c6024136c5",
+      "bytes": 133
+    },
+    {
+      "path": "client/42-preview-boundaries.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/42-preview-boundaries.command.json",
+      "sha256": "9340910f969ebc2cccaa7ebc08d13d19188ff513248201c594c207b573a0b62d",
+      "bytes": 2616
+    },
+    {
+      "path": "client/42-preview-boundaries.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/42-preview-boundaries.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "client/42-preview-boundaries.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/42-preview-boundaries.stdout.log",
+      "sha256": "e473b1ac18628cd3adfef6a99042818e3b92ba8ecf5dcec163fb246a9bb3b382",
+      "bytes": 113
+    },
+    {
+      "path": "client/44-preview-private-boundaries.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/44-preview-private-boundaries.command.json",
+      "sha256": "12a97a3866e31a16b2f4f4a7432660ec6ad652b8f810c41d8eeaa7ea5706ffa8",
+      "bytes": 2639
+    },
+    {
+      "path": "client/44-preview-private-boundaries.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/44-preview-private-boundaries.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "client/44-preview-private-boundaries.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/44-preview-private-boundaries.stdout.log",
+      "sha256": "f9755a7f5499a749658205401d888ad09c20dd028760d51811582e694a20b8b3",
+      "bytes": 33
+    },
+    {
+      "path": "client/MAIN_CASE_AND_NEGATIVE_ACK-failure.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/MAIN_CASE_AND_NEGATIVE_ACK-failure.png",
+      "sha256": "8b8da956dca72c7c922399a43977d4d93d8cd9293e1e2c15c6d1e8c1168466cd",
+      "bytes": 10343
+    },
+    {
+      "path": "client/MAIN_REAL_RUNAGENT_MISSING_BINDING-failure.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/MAIN_REAL_RUNAGENT_MISSING_BINDING-failure.png",
+      "sha256": "b4fe366b5dd7972d3f526ea3032ef055d78691589cb331d90d0f4036dc43105e",
+      "bytes": 153750
+    },
+    {
+      "path": "client/PREVIEW_OWNER_NEGATIVE_AND_TEXT-failure.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/PREVIEW_OWNER_NEGATIVE_AND_TEXT-failure.png",
+      "sha256": "16cf4bb334d267f29b32c031c3c9f2d498e1fe6716bf0b9b1e2126d9e0b02671",
+      "bytes": 127061
+    },
+    {
+      "path": "client/PREVIEW_REAL_xlsx-failure.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/PREVIEW_REAL_xlsx-failure.png",
+      "sha256": "d90ac16aeb82365e12c0fbc3b89dae3c47eeaf6ede2668b88cd47661889d1de4",
+      "bytes": 135514
+    },
+    {
+      "path": "client/facts-attempt1-private.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/facts-attempt1-private.json",
+      "sha256": "d05298406e953700e76dfe42371bf2e161845260c8e465854990dfa3e08b3f09",
+      "bytes": 469
+    },
+    {
+      "path": "client/facts-attempt2-private.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/facts-attempt2-private.json",
+      "sha256": "c6dd1e56c1ab8cf01e0255e2831d746091b65684ed0c2c1552f2757bd87be001",
+      "bytes": 469
+    },
+    {
+      "path": "client/facts-private.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/facts-private.json",
+      "sha256": "c67d7f4e4c05efbc047c101b47fce7a8d7ef9a8a53c425b87f25d91a27dcbeb0",
+      "bytes": 469
+    },
+    {
+      "path": "client/guard-attempt1.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/guard-attempt1.json",
+      "sha256": "fccb119bcc75946d98b75b6e3ef4b313fd34e1caec9bed2f81b4c3211f3099c1",
+      "bytes": 19468
+    },
+    {
+      "path": "client/guard-attempt2.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/guard-attempt2.json",
+      "sha256": "0abab077ec9d8f028a58587863953242aae14b1932e2cc807f1bcae8c4e07f60",
+      "bytes": 21097
+    },
+    {
+      "path": "client/guard-office-docx.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/guard-office-docx.png",
+      "sha256": "d6f1cee9f78317c9e048fd65c91a9f6a82c98915ff12d4afbbf2d8f8de9d419b",
+      "bytes": 138670
+    },
+    {
+      "path": "client/guard-office-pptx.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/guard-office-pptx.png",
+      "sha256": "f5d93a9e231bb5bf480c597e2fe782d9532a98ef3a8b78e48e57e2061a98ee6c",
+      "bytes": 136624
+    },
+    {
+      "path": "client/guard-office-xlsx.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/guard-office-xlsx.png",
+      "sha256": "40ece375372570b84033c0322f9ac48cd4e9224dbcf14fbcb6be71ace1c85632",
+      "bytes": 138005
+    },
+    {
+      "path": "client/guard-scan-pdf.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/guard-scan-pdf.png",
+      "sha256": "710609cd55197b0f3b7fdd455184a8b8e7f870b374394dc21a167846e3569995",
+      "bytes": 129210
+    },
+    {
+      "path": "client/guard-text-preview.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/guard-text-preview.png",
+      "sha256": "492d20131f2eb7b295a3cd40f8932d712c1e41171b6440b4e8299faeec07c471",
+      "bytes": 125868
+    },
+    {
+      "path": "client/guard.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/guard.json",
+      "sha256": "5eeb653130b813bbe1ab4198064f56d07a5f307cfa2f7a1ae9a5f71665b66c62",
+      "bytes": 22926
+    },
+    {
+      "path": "client/owner-events-before-restart.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/owner-events-before-restart.json",
+      "sha256": "a34849b6daabfe32ee35e23df9f7bfd35b21a3ed4165caea9ec6a8b66350e46a",
+      "bytes": 86696
+    },
+    {
+      "path": "client/owner-events-first-failure.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/owner-events-first-failure.json",
+      "sha256": "06567563f0c54256d9a22f2b93ec09ed55d9a8df67d501b062d1a00b339b49ce",
+      "bytes": 86007
+    },
+    {
+      "path": "client/owner-events.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/owner-events.json",
+      "sha256": "23b9692aaa2eb3032259056fb507f87868f40181ff24cc38492f5b7985ee4529",
+      "bytes": 86696
+    },
+    {
+      "path": "client/prepare-attempt1.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/prepare-attempt1.json",
+      "sha256": "3fb13943d4f96a25ae7c52abad0f271859ac3851760a474939729ad0520d1d76",
+      "bytes": 36421
+    },
+    {
+      "path": "client/prepare-attempt2.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/prepare-attempt2.json",
+      "sha256": "f5d7ca8980132316bfd6ef96cac8fb6143057559d44a2dfe182d4ccf2b18c151",
+      "bytes": 25887
+    },
+    {
+      "path": "client/prepare-office-docx.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/prepare-office-docx.png",
+      "sha256": "f26e98e7c582b9ce3db9d5a88871320fdabad124303284829726282818aa0592",
+      "bytes": 139357
+    },
+    {
+      "path": "client/prepare-office-pptx.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/prepare-office-pptx.png",
+      "sha256": "a256bb908209f52c5637bb05e06a24175770b1791b0943f28d4f713455e05b36",
+      "bytes": 137527
+    },
+    {
+      "path": "client/prepare-office-xlsx.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/prepare-office-xlsx.png",
+      "sha256": "151314292356f597d28760090f540a5aa6efe90cc0b6e13eaa4b78c17c881e70",
+      "bytes": 127123
+    },
+    {
+      "path": "client/prepare-scan-pdf.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/prepare-scan-pdf.png",
+      "sha256": "85419f863f3dd8c9d52cc6ce979f6a6d0958f4f117c64235004fb0a2307b5216",
+      "bytes": 130027
+    },
+    {
+      "path": "client/prepare.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/prepare.json",
+      "sha256": "482e09e3f00b15a22127ac35d171814b27ee23eed5bf36e326d74b38aa7bbc25",
+      "bytes": 55429
+    },
+    {
+      "path": "client/preview-boundaries-first-failure.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/preview-boundaries-first-failure.json",
+      "sha256": "f11f199110b53f2218238eb0a7867ec1278f19fc59cb3f7fe90dc5e842960a6d",
+      "bytes": 1250
+    },
+    {
+      "path": "client/preview-boundaries.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/preview-boundaries.json",
+      "sha256": "50e2ce08e6995772b7862b8f924df9f521ffd68722814bb01f325f21da4d7c3a",
+      "bytes": 2948
+    },
+    {
+      "path": "client/restore-office-docx.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/restore-office-docx.png",
+      "sha256": "ee3f721c7cb8553ad4981265d7dd7363c6372896b75f62dbbf88170b2775dff1",
+      "bytes": 103653
+    },
+    {
+      "path": "client/restore-office-pptx.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/restore-office-pptx.png",
+      "sha256": "fdc3537cbfd79e42a18a0769d2cbf6b38de4f027188a59b48c295ad98add81cf",
+      "bytes": 101073
+    },
+    {
+      "path": "client/restore-office-xlsx.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/restore-office-xlsx.png",
+      "sha256": "9a1e3fafc4ca04169ecbc284155f878200a54bf9ff78d6c0f6742f8a66ef184d",
+      "bytes": 90622
+    },
+    {
+      "path": "client/restore-scan-pdf.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/restore-scan-pdf.png",
+      "sha256": "eaa0f529c006e9494b12ebc3ff70b22707cbe0eda09d0db1706d4a337b9ecc3d",
+      "bytes": 94116
+    },
+    {
+      "path": "client/restore-text-preview.png",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/restore-text-preview.png",
+      "sha256": "3c9bcc7e79ba86e1d1fac7c015622b3a5c87125f910e3cd6e7f37dcac76fc590",
+      "bytes": 90270
+    },
+    {
+      "path": "client/restore.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/restore.json",
+      "sha256": "059a3ccc07b2f05867c649e062bd842b2113b329e72e1fdb2d8ce1d306478b8d",
+      "bytes": 13225
+    },
+    {
+      "path": "material-evidence/10-generate.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/10-generate.command.json",
+      "sha256": "dcc8570a68a7867225e2938b517105a7efa00f7245f43ce85917bbddad868269",
+      "bytes": 2494
+    },
+    {
+      "path": "material-evidence/10-generate.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/10-generate.stderr.log",
+      "sha256": "bd64999082b28fe1e0dc658136e49ff714de9c59caae725653c65fadfe5f88ea",
+      "bytes": 746
+    },
+    {
+      "path": "material-evidence/10-generate.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/10-generate.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "material-evidence/11-generate-buffer.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/11-generate-buffer.command.json",
+      "sha256": "1e35b45ed1b71d8d286ef8a24cd18911b86889b47f5813f0fe8fa99fec20d515",
+      "bytes": 2514
+    },
+    {
+      "path": "material-evidence/11-generate-buffer.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/11-generate-buffer.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "material-evidence/11-generate-buffer.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/11-generate-buffer.stdout.log",
+      "sha256": "275d13d50afb9de014ff108da084960ebf7fd38e55e0462d00a809b49bdf1bff",
+      "bytes": 85
+    },
+    {
+      "path": "material-evidence/12-office-real.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/12-office-real.command.json",
+      "sha256": "5d1dc89e190d5e89acad78c93905b8a1d12b8928842584a296ce9da4c020d946",
+      "bytes": 2571
+    },
+    {
+      "path": "material-evidence/12-office-real.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/12-office-real.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "material-evidence/12-office-real.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/12-office-real.stdout.log",
+      "sha256": "047a13fb8a1147b86a192d9fe1966eae64c3a89be46b5e1417138b06eecccef0",
+      "bytes": 106
+    },
+    {
+      "path": "material-evidence/13-review-real.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/13-review-real.command.json",
+      "sha256": "ab62b6192bef91fafe35faf346fe735b80e1173cbf43bf344401118019815500",
+      "bytes": 2505
+    },
+    {
+      "path": "material-evidence/13-review-real.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/13-review-real.stderr.log",
+      "sha256": "ad6f65066cb5d13dd36a1e7ced76a49a8e58da876d579ac43f7cd7f36f82a98c",
+      "bytes": 1408
+    },
+    {
+      "path": "material-evidence/13-review-real.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/13-review-real.stdout.log",
+      "sha256": "9c566f2759a6f7736a5b969066263d1107708732489e7ef45ac84c884604bb29",
+      "bytes": 1100
+    },
+    {
+      "path": "material-evidence/14-office-process-restart.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/14-office-process-restart.command.json",
+      "sha256": "5e359c33aa00674d92a66267c41be613ed02faf4d5ccd2a2f786a4dd430b8449",
+      "bytes": 2605
+    },
+    {
+      "path": "material-evidence/14-office-process-restart.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/14-office-process-restart.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "material-evidence/14-office-process-restart.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/14-office-process-restart.stdout.log",
+      "sha256": "f6e7bdfd4d3db0b22d11a80c99a961eefa451dd64803d715132a7cec2d1df975",
+      "bytes": 107
+    },
+    {
+      "path": "material-evidence/15-pdf-independent-text.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/15-pdf-independent-text.command.json",
+      "sha256": "18040606952dbbb1ad417ab28a7bff7b68e9b380a7bd55da84d08d3f2fd57b69",
+      "bytes": 2588
+    },
+    {
+      "path": "material-evidence/15-pdf-independent-text.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/15-pdf-independent-text.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "material-evidence/15-pdf-independent-text.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/15-pdf-independent-text.stdout.log",
+      "sha256": "4fe1147e87b94b74c958565aff7cc6389909c83acc9e0c2243268a4fd452ae1a",
+      "bytes": 33
+    },
+    {
+      "path": "material-evidence/16-body-pdf-control.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/16-body-pdf-control.command.json",
+      "sha256": "142ba0bdffabfede124e2da88439bb984d792b3b1ac677c27c973de64dcf8cf0",
+      "bytes": 2518
+    },
+    {
+      "path": "material-evidence/16-body-pdf-control.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/16-body-pdf-control.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "material-evidence/16-body-pdf-control.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/16-body-pdf-control.stdout.log",
+      "sha256": "d1ae4970ad7374e8ca8d95857508d09fc6eec8d372a07347a476c28ea40a4e99",
+      "bytes": 255
+    },
+    {
+      "path": "material-evidence/17-office-revision-cache.command.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/17-office-revision-cache.command.json",
+      "sha256": "5e6f878c7c10034a69d3206a84ffdd2625b4094d78ef48a1e18f308bb5b55132",
+      "bytes": 2602
+    },
+    {
+      "path": "material-evidence/17-office-revision-cache.stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/17-office-revision-cache.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "material-evidence/17-office-revision-cache.stdout.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/material-evidence/17-office-revision-cache.stdout.log",
+      "sha256": "3467077861c698090d2f9db9619c1b1990b9eb33c2b1b33f89a321ffec501f96",
+      "bytes": 107
+    },
+    {
+      "path": "remote/39091866164/artifact/bun.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091866164/artifact/bun.txt",
+      "sha256": "78b591400c56b7b67b8cb3b2b8a8e65e9093897f02ce0878e6b5405c68620fa7",
+      "bytes": 6
+    },
+    {
+      "path": "remote/39091866164/artifact/checkout-sha.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091866164/artifact/checkout-sha.txt",
+      "sha256": "66616548fee961b902ff286e0adc51d4c6142339ccebd90eb8defe8cce6a7272",
+      "bytes": 41
+    },
+    {
+      "path": "remote/39091866164/artifact/checkout-tree.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091866164/artifact/checkout-tree.txt",
+      "sha256": "3587ba85f993260c1b6b9e1801b107aa45fc9cbd7a1ad6c58d736c04de5c0058",
+      "bytes": 41
+    },
+    {
+      "path": "remote/39091866164/artifact/commands.tsv",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091866164/artifact/commands.tsv",
+      "sha256": "1f890d0e770ba1fff02415a6ca02476b1050e959d700ffc8007d7ea1c6845916",
+      "bytes": 32
+    },
+    {
+      "path": "remote/39091866164/artifact/controlled-tests.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091866164/artifact/controlled-tests.log",
+      "sha256": "6d9625b00e694e7c8d962bc5aca97e6e4467285abbc1b974970aabcdcd610c67",
+      "bytes": 26792
+    },
+    {
+      "path": "remote/39091866164/artifact/host.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091866164/artifact/host.txt",
+      "sha256": "cdeb2575fa750b7af8cc95d3c936f6cce1adeab83a5b0a53358b4a9dbae79bf3",
+      "bytes": 104
+    },
+    {
+      "path": "remote/39091866164/artifact/install.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091866164/artifact/install.log",
+      "sha256": "2246a7b35b4341a988d427ac0d6f8f4b834f0aa09eb132037ab3a9202530cb8f",
+      "bytes": 349
+    },
+    {
+      "path": "remote/39091866164/artifact/node.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091866164/artifact/node.txt",
+      "sha256": "33e26f35db6e57ce0c486ddc815fe966867e4f649e418eaf323f75f4720eb8e9",
+      "bytes": 9
+    },
+    {
+      "path": "remote/39091866164/artifact/typecheck.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091866164/artifact/typecheck.log",
+      "sha256": "08b3dde79ce03450048d76f9ddb593472031d7976c59f8901305d8ee53af499c",
+      "bytes": 461
+    },
+    {
+      "path": "remote/39091866164/artifact.zip",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091866164/artifact.zip",
+      "sha256": "f3a5cd3fac59fd1cf13eb73c6fa3ef03aeff95559e059c1fdbb1894126779037",
+      "bytes": 8094
+    },
+    {
+      "path": "remote/39091960604/artifact/bun.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091960604/artifact/bun.txt",
+      "sha256": "78b591400c56b7b67b8cb3b2b8a8e65e9093897f02ce0878e6b5405c68620fa7",
+      "bytes": 6
+    },
+    {
+      "path": "remote/39091960604/artifact/checkout-sha.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091960604/artifact/checkout-sha.txt",
+      "sha256": "8e090cf05fe521c88c840db2e29f2198b8c4c0f186995cce1ffeff910a36405e",
+      "bytes": 41
+    },
+    {
+      "path": "remote/39091960604/artifact/checkout-tree.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091960604/artifact/checkout-tree.txt",
+      "sha256": "208bfad59796bee0a01c667bdc65e1e4e8268721de083cbba00dfaceef095c59",
+      "bytes": 41
+    },
+    {
+      "path": "remote/39091960604/artifact/commands.tsv",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091960604/artifact/commands.tsv",
+      "sha256": "1f890d0e770ba1fff02415a6ca02476b1050e959d700ffc8007d7ea1c6845916",
+      "bytes": 32
+    },
+    {
+      "path": "remote/39091960604/artifact/controlled-tests.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091960604/artifact/controlled-tests.log",
+      "sha256": "59268f1559b18269065088a1e9c1221919d362bf120acd4a7e18f3733c02d33f",
+      "bytes": 26791
+    },
+    {
+      "path": "remote/39091960604/artifact/host.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091960604/artifact/host.txt",
+      "sha256": "cdeb2575fa750b7af8cc95d3c936f6cce1adeab83a5b0a53358b4a9dbae79bf3",
+      "bytes": 104
+    },
+    {
+      "path": "remote/39091960604/artifact/install.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091960604/artifact/install.log",
+      "sha256": "6a5e29f7a70557f4582cba1e937dcf59e7dd11f91381d581e26c5bafcd088647",
+      "bytes": 349
+    },
+    {
+      "path": "remote/39091960604/artifact/node.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091960604/artifact/node.txt",
+      "sha256": "33e26f35db6e57ce0c486ddc815fe966867e4f649e418eaf323f75f4720eb8e9",
+      "bytes": 9
+    },
+    {
+      "path": "remote/39091960604/artifact/typecheck.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091960604/artifact/typecheck.log",
+      "sha256": "08b3dde79ce03450048d76f9ddb593472031d7976c59f8901305d8ee53af499c",
+      "bytes": 461
+    },
+    {
+      "path": "remote/39091960604/artifact.zip",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39091960604/artifact.zip",
+      "sha256": "de1256db239175af72af1bed694f48c17f7e84efd2fd93bb616411652654c616",
+      "bytes": 8093
+    },
+    {
+      "path": "remote/39092153167/artifact/SHA256SUMS",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/SHA256SUMS",
+      "sha256": "3f94b36c76ceb49d680ebdd3c05616dcc225a30731776e601e44ff9f6426d80a",
+      "bytes": 1055
+    },
+    {
+      "path": "remote/39092153167/artifact/bun.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/bun.txt",
+      "sha256": "78b591400c56b7b67b8cb3b2b8a8e65e9093897f02ce0878e6b5405c68620fa7",
+      "bytes": 6
+    },
+    {
+      "path": "remote/39092153167/artifact/checkout-sha.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/checkout-sha.txt",
+      "sha256": "3911ed46df6746df9f9d6cb1970218bb81f5d97c9dde5a36b8c50bca247e16b8",
+      "bytes": 41
+    },
+    {
+      "path": "remote/39092153167/artifact/checkout-tree.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/checkout-tree.txt",
+      "sha256": "1da3e58a29f9dba75055ac37e38b3e07bddd8cef507e4a07d59364d8d521766a",
+      "bytes": 41
+    },
+    {
+      "path": "remote/39092153167/artifact/commands.tsv",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/commands.tsv",
+      "sha256": "2ef6d3df1bac3ed7914cfde815386fd64527472a3a84e2e333f09af57f3caf22",
+      "bytes": 124
+    },
+    {
+      "path": "remote/39092153167/artifact/controlled-tests.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/controlled-tests.log",
+      "sha256": "05d99c199e714553791b4421b65f0fa18299cf44543c32f3d9e3dc67fd2b7d66",
+      "bytes": 26792
+    },
+    {
+      "path": "remote/39092153167/artifact/git-diff-summary.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/git-diff-summary.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "remote/39092153167/artifact/git-status.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/git-status.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "remote/39092153167/artifact/host.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/host.txt",
+      "sha256": "cdeb2575fa750b7af8cc95d3c936f6cce1adeab83a5b0a53358b4a9dbae79bf3",
+      "bytes": 104
+    },
+    {
+      "path": "remote/39092153167/artifact/install.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/install.log",
+      "sha256": "063120ac65789a765867b4514ed1dc694529317c5e913ad78d9776950dabb4c3",
+      "bytes": 349
+    },
+    {
+      "path": "remote/39092153167/artifact/node.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/node.txt",
+      "sha256": "33e26f35db6e57ce0c486ddc815fe966867e4f649e418eaf323f75f4720eb8e9",
+      "bytes": 9
+    },
+    {
+      "path": "remote/39092153167/artifact/office71-repro.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/office71-repro.json",
+      "sha256": "621d21a2926d2f7859c5ef19623c358e345647002b48dbb0bbabf6cc0b510499",
+      "bytes": 2562
+    },
+    {
+      "path": "remote/39092153167/artifact/office71-stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/office71-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "remote/39092153167/artifact/typecheck.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact/typecheck.log",
+      "sha256": "08b3dde79ce03450048d76f9ddb593472031d7976c59f8901305d8ee53af499c",
+      "bytes": 461
+    },
+    {
+      "path": "remote/39092153167/artifact.zip",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/39092153167/artifact.zip",
+      "sha256": "4252863529782d37f59723a20776bc9ce178668fb45a24c07979898d3010e579",
+      "bytes": 9943
+    },
+    {
+      "path": "remote/concurrency-history.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/concurrency-history.json",
+      "sha256": "c7d8369755374176ffdb51ef7cd0332c768d5c9d18f967f1a4be6c71c46579db",
+      "bytes": 2475823
+    },
+    {
+      "path": "remote/controlled/SHA256SUMS",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/SHA256SUMS",
+      "sha256": "1abd940b87ce77a6eaeaf784b3e1f8e6e2eb406fefb10599d3183e4e5af5ab6d",
+      "bytes": 1055
+    },
+    {
+      "path": "remote/controlled/bun.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/bun.txt",
+      "sha256": "78b591400c56b7b67b8cb3b2b8a8e65e9093897f02ce0878e6b5405c68620fa7",
+      "bytes": 6
+    },
+    {
+      "path": "remote/controlled/checkout-sha.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/checkout-sha.txt",
+      "sha256": "05c4c2db72404750161fb9c122c08c3d471b473348afb01b3f83508f0d66fe81",
+      "bytes": 41
+    },
+    {
+      "path": "remote/controlled/checkout-tree.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/checkout-tree.txt",
+      "sha256": "d4174fbe82fc8a7fa52bbe3d1122520a98b52d8200be8632ec820f7e773e6729",
+      "bytes": 41
+    },
+    {
+      "path": "remote/controlled/commands.tsv",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/commands.tsv",
+      "sha256": "b13d4bbb454cedee951e3bf01321e752207e37c24f8d473306aee9d0e23454d7",
+      "bytes": 124
+    },
+    {
+      "path": "remote/controlled/controlled-tests.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/controlled-tests.log",
+      "sha256": "acc19b760d8009e0bd54c2fc828df086287ed7528f4f52b7daf766b6353a6c72",
+      "bytes": 25495
+    },
+    {
+      "path": "remote/controlled/git-diff-summary.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/git-diff-summary.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "remote/controlled/git-status.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/git-status.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "remote/controlled/host.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/host.txt",
+      "sha256": "cdeb2575fa750b7af8cc95d3c936f6cce1adeab83a5b0a53358b4a9dbae79bf3",
+      "bytes": 104
+    },
+    {
+      "path": "remote/controlled/install.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/install.log",
+      "sha256": "6a5e29f7a70557f4582cba1e937dcf59e7dd11f91381d581e26c5bafcd088647",
+      "bytes": 349
+    },
+    {
+      "path": "remote/controlled/node.txt",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/node.txt",
+      "sha256": "33e26f35db6e57ce0c486ddc815fe966867e4f649e418eaf323f75f4720eb8e9",
+      "bytes": 9
+    },
+    {
+      "path": "remote/controlled/office71-repro.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/office71-repro.json",
+      "sha256": "621d21a2926d2f7859c5ef19623c358e345647002b48dbb0bbabf6cc0b510499",
+      "bytes": 2562
+    },
+    {
+      "path": "remote/controlled/office71-stderr.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/office71-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "remote/controlled/typecheck.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled/typecheck.log",
+      "sha256": "08b3dde79ce03450048d76f9ddb593472031d7976c59f8901305d8ee53af499c",
+      "bytes": 461
+    },
+    {
+      "path": "remote/controlled.zip",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/controlled.zip",
+      "sha256": "060549124823d90003431c0060d55a8f0a9429402e61aee1951f74d50bfc6c75",
+      "bytes": 9493
+    },
+    {
+      "path": "remote/history-39091866164.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/history-39091866164.log",
+      "sha256": "5db5e55f096eeb326a34a6b6f7059e36dc053875182522ddc2092fd9e05b2363",
+      "bytes": 20366
+    },
+    {
+      "path": "remote/history-39091960604.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/history-39091960604.log",
+      "sha256": "b7fdc5992c0253e88500bb8134be850352f1a46714dd2f4ec343162606f1a198",
+      "bytes": 20358
+    },
+    {
+      "path": "remote/history-39092153167.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/history-39092153167.log",
+      "sha256": "047aa1b565e6fa6b4ccec33007b8dc3634091109243dfbfa0c78f8f366f7ddfe",
+      "bytes": 29212
+    },
+    {
+      "path": "remote/job-117571699991.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/job-117571699991.log",
+      "sha256": "b104608a801e10b4d21b23c4c81c2e6a672d365d8f0195ca36fd45bdf2594b96",
+      "bytes": 1179904
+    },
+    {
+      "path": "remote/job-117571724431.log",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/job-117571724431.log",
+      "sha256": "0125152bcedaf882d90803485e4cc902c16ee141a2267c255b40dad46f74f9dc",
+      "bytes": 29925
+    },
+    {
+      "path": "remote/metadata.json",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/remote/metadata.json",
+      "sha256": "4975384c65a37b57bd47d2afb97555f651033dcf9b22d5914fab689a2ae2cfba",
+      "bytes": 20411
+    },
+    {
+      "path": "profile/materials/A/proof.docx",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/A/proof.docx",
+      "sha256": "46b505960dd61d304e1075c830ce490cd9c52c491091eb17aa5b35ed4e99b316",
+      "bytes": 1630
+    },
+    {
+      "path": "profile/materials/A/proof.pptx",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/A/proof.pptx",
+      "sha256": "da3549f53a13aa905aa00cc826a177de9fa81ec18485962417e716ac8710f09a",
+      "bytes": 49723
+    },
+    {
+      "path": "profile/materials/A/proof.xlsx",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/A/proof.xlsx",
+      "sha256": "c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+      "bytes": 17195
+    },
+    {
+      "path": "profile/materials/B/proof.docx",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/B/proof.docx",
+      "sha256": "990fc4c50438e0acfd5c5f7bcaf8cae77a629a344a319cffd042a54de27ba017",
+      "bytes": 1630
+    },
+    {
+      "path": "profile/materials/B/proof.pptx",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/B/proof.pptx",
+      "sha256": "87014b273fc8fb99892add9a42d30f01e41e09974a830d6077d82fef89e70d39",
+      "bytes": 49723
+    },
+    {
+      "path": "profile/materials/B/proof.xlsx",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/B/proof.xlsx",
+      "sha256": "05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4",
+      "bytes": 17195
+    },
+    {
+      "path": "profile/materials/same/proof.docx",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/same/proof.docx",
+      "sha256": "46b505960dd61d304e1075c830ce490cd9c52c491091eb17aa5b35ed4e99b316",
+      "bytes": 1630
+    },
+    {
+      "path": "profile/materials/same/proof.pptx",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/same/proof.pptx",
+      "sha256": "da3549f53a13aa905aa00cc826a177de9fa81ec18485962417e716ac8710f09a",
+      "bytes": 49723
+    },
+    {
+      "path": "profile/materials/same/proof.xlsx",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/same/proof.xlsx",
+      "sha256": "c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+      "bytes": 17195
+    },
+    {
+      "path": "profile/materials/readable-body.pdf",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/readable-body.pdf",
+      "sha256": "61188c0bbc416b177afee33d3b894cd7e7bff1a1b8a7a5d929f07889108be688",
+      "bytes": 610
+    },
+    {
+      "path": "profile/materials/scan.pdf",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/scan.pdf",
+      "sha256": "9b25f3e889b7b29e23a5bd1ab930808572a0e15194f20ad6b345b1f62539f78f",
+      "bytes": 10452
+    },
+    {
+      "path": "profile/materials/corrupt.pdf",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/corrupt.pdf",
+      "sha256": "83fb777bc8f3fd8fea3a43658030726c065ca9e695219da8c41a940805002bfb",
+      "bytes": 26
+    },
+    {
+      "path": "profile/materials/readable.pdf",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/readable.pdf",
+      "sha256": "82ba86e5269f411b8a5b737993567474309b883811b4aabce65d512ff3fc6159",
+      "bytes": 605
+    },
+    {
+      "path": "profile/materials/blank.pdf",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/materials/blank.pdf",
+      "sha256": "3b3f049ab9156645d913f2a4c4cecad98e5564ec45af87807c13440b93c72d60",
+      "bytes": 575
+    }
+  ],
+  "public": [
+    {
+      "path": "README.md",
+      "sha256": "f59b99638ae16eb06d7c7e31585d124b5e23538967cbdf3c81ca09315e996151",
+      "bytes": 4033
+    },
+    {
+      "path": "acceptance-summary.json",
+      "sha256": "eee06b3ef9c8244f56551e4b87172dea7f7ef528aa4743c208ecaf7eee23bb8b",
+      "bytes": 1069
+    },
+    {
+      "path": "candidate-lock.json",
+      "sha256": "f028230c607606476eece2a20f14a706dffc23fcf7a378e47969aa93c631ccb1",
+      "bytes": 1676
+    },
+    {
+      "path": "case-provenance-redacted.json",
+      "sha256": "c9aee5c76ab0e1b351f1e07130bbd95cfc53d96182f0eb3320f01dff669c908c",
+      "bytes": 23644
+    },
+    {
+      "path": "client/deleted-lookup-after-restart.json",
+      "sha256": "261c4f0e3bd28debffd792ca4b8f68e3bfdf9a12e93423257a774c12873981a1",
+      "bytes": 86755
+    },
+    {
+      "path": "client/deleted-lookup-before-restart.json",
+      "sha256": "365aa75bc3017e4b2167ea01243264ae051e3f603aa92a39e9f8a22c917b71c7",
+      "bytes": 86770
+    },
+    {
+      "path": "client/deletion-event-first-failure.json",
+      "sha256": "71835e71541f8893c9156706980151c9792da883e6fc343ec68343aaad88e0ff",
+      "bytes": 86126
+    },
+    {
+      "path": "client/first-attempt.json",
+      "sha256": "126b9a20e6e1d94ae2554a22d4e5b2c9a96c4028b34b09ba3c7e8f22032d55d6",
+      "bytes": 38638
+    },
+    {
+      "path": "client/guard-and-preview.json",
+      "sha256": "c18aed7ae02878c09fc499e5ab71551b56cef8d9ac2c140e3ae6ddb14a60dba4",
+      "bytes": 20869
+    },
+    {
+      "path": "client/main-import-and-ack.json",
+      "sha256": "e1678ce80113afe9df4de13364ed030457d43fe7a1806d617be0e09b009bfa5c",
+      "bytes": 54982
+    },
+    {
+      "path": "client/preview-policy-first-failure.json",
+      "sha256": "9167c7e7d868da6d5ca7898e10190f7714e2e65361b7666618f7191a6958555c",
+      "bytes": 1486
+    },
+    {
+      "path": "client/private-path-boundaries.json",
+      "sha256": "ce7a97fe6807c24c943b265d9e151fb3a6bf53222f7740026402571bc54033af",
+      "bytes": 3134
+    },
+    {
+      "path": "client/restart-preview.json",
+      "sha256": "5b4e190ee5cde86850cff325be7ddb971b5117d45d12fc2afef5eb5a57604e4e",
+      "bytes": 10430
+    },
+    {
+      "path": "client/second-attempt.json",
+      "sha256": "cb0cff4863a655bc349885db6e09444fd5fab0d2a0633958e635b2df7b74b76a",
+      "bytes": 25084
+    },
+    {
+      "path": "command-ledger.json",
+      "sha256": "036e86bf5c017c9746ab04437215fb0756aef017630b07478cadd912c9d1a46b",
+      "bytes": 114758
+    },
+    {
+      "path": "commands-summary.txt",
+      "sha256": "434ed95a6321b8e266ecab1dab1f18c55ede0ed7cf4078a648bfd20ebb5819bc",
+      "bytes": 9338
+    },
+    {
+      "path": "environment-redacted.json",
+      "sha256": "adeaab1beb9bd976136bed173398cd03be82477daffc308a61ab13b5b95fa5dc",
+      "bytes": 2577
+    },
+    {
+      "path": "history/nine-case-rerun.json",
+      "sha256": "192b975b01d9dd819357e2a63312309aa72c8586f463831e7e91bfe92a185e22",
+      "bytes": 21438
+    },
+    {
+      "path": "input-manifest.json",
+      "sha256": "93a1277f5026ae60092725409c7552df011c4ff3a6a4762d12ea487a04f07c53",
+      "bytes": 2086
+    },
+    {
+      "path": "known-failures.json",
+      "sha256": "1d7a09932a4a399be6814795ecd54ef25ab64a3bdba38cb25ecf87b6d2e036d8",
+      "bytes": 6270
+    },
+    {
+      "path": "office/first-real-parser.json",
+      "sha256": "105f750ea3741e892be2c02d4e9eeca13306683e0bc2eafe22fcea0d42aa1c0a",
+      "bytes": 204059
+    },
+    {
+      "path": "office/pdf-header-body-control.json",
+      "sha256": "cd2c54bd0e57feb9eaca7aff01c7eea113c1a01ce783839bcc0f32078c0363a8",
+      "bytes": 1815
+    },
+    {
+      "path": "office/process-restart.json",
+      "sha256": "9c4623f283d3cce4b1eb40a141a5ba50554a349937029dc331711365ae1ee03a",
+      "bytes": 172770
+    },
+    {
+      "path": "office/review-parser.json",
+      "sha256": "e6d8438cecb31481ba8cbdf4dd9eb0c829aaa0e1c24f086eac42727ebdd87ed1",
+      "bytes": 11084
+    },
+    {
+      "path": "office/revision-cache.json",
+      "sha256": "e0200a0519d3483429cbc10302bae630836bda4e434a26290b87b06f367ed1e1",
+      "bytes": 403267
+    },
+    {
+      "path": "remote-ci.json",
+      "sha256": "ee71764f5f01cb8f19414078a62ce131bfc62ef755ec2dbca8fdb7bba5e426e9",
+      "bytes": 14197
+    },
+    {
+      "path": "s0-matrix.json",
+      "sha256": "89f45e868a7f6bdddc338936b12b846c7f1f7b435855197ffdf9eddf46285d83",
+      "bytes": 3812
+    },
+    {
+      "path": "u1-matrix.json",
+      "sha256": "634e44f759240ff278e67a100fdf6c0d1bbc8852035e7fb33d8672fb89b149f7",
+      "bytes": 44440
+    }
+  ]
+}

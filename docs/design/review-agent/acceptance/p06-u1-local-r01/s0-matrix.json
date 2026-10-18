@@ -1,0 +1,100 @@
+{
+  "rows": [
+    {
+      "id": "L-M01",
+      "status": "BLOCKED_ENV",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "actual": "真实 Main ownership ACK 子集已见证；合成不可用端点不是合法 provider，未签完整正例。",
+      "required": "63 号完整真实安全合同",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/main-import-and-ack.json"
+      ]
+    },
+    {
+      "id": "L-T01",
+      "status": "BLOCKED_ENV",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "actual": "缺真实 provider 最终 SDK 五工具注册/调用。",
+      "required": "63 号完整真实安全合同",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/main-import-and-ack.json"
+      ]
+    },
+    {
+      "id": "L-T02",
+      "status": "BLOCKED_ENV",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "actual": "三种真实 runAgent 缺绑定拒止通过；有效 binding 的运行中撤销/跨案尚缺。",
+      "required": "63 号完整真实安全合同",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/main-import-and-ack.json"
+      ]
+    },
+    {
+      "id": "L-T03",
+      "status": "BLOCKED_ENV",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "actual": "普通 IPC/Preview 正例通过；真实普通 Pi Read/MCP 未运行。",
+      "required": "63 号完整真实安全合同",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/main-import-and-ack.json"
+      ]
+    },
+    {
+      "id": "L-S01",
+      "status": "BLOCKED_ENV",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "actual": "真实材料已解析导入；严格 Pi SourceRef 提交未运行。",
+      "required": "63 号完整真实安全合同",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/main-import-and-ack.json"
+      ]
+    },
+    {
+      "id": "L-S02",
+      "status": "BLOCKED_ENV",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "actual": "真实私有路径拒止通过；有效审核 binding 的 async 撤销未运行。",
+      "required": "63 号完整真实安全合同",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/main-import-and-ack.json"
+      ]
+    },
+    {
+      "id": "L-P01",
+      "status": "BLOCKED_ENV",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "actual": "普通删除后迟到 lookup 实际 FAIL 见 P02；审核 run 的完整 Renderer 合同未运行。",
+      "required": "63 号完整真实安全合同",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/main-import-and-ack.json"
+      ]
+    },
+    {
+      "id": "L-P02",
+      "status": "BLOCKED_ENV",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "actual": "有效模型下 stop pending/restart/旧 outcome 未运行。",
+      "required": "63 号完整真实安全合同",
+      "rawPrivateReference": "private://local-u1-raw-20261018T033000Z",
+      "evidencePublicPaths": [
+        "client/guard-and-preview.json",
+        "client/main-import-and-ack.json"
+      ]
+    }
+  ]
+}
