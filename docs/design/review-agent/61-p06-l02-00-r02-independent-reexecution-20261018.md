@@ -20,7 +20,7 @@
 | `records/live-final/batch-witness/batch-real-result.json` | `d24d1c2` | 1 / FAIL | 同上 | 三案存在 | 含 `问题组已失效或不再存在` 的预期过期组拒止从 IPC 传播到驱动，导致当前脚本 exit1；此拒止**不等于模型执行故障**，实际 Promise/夹具接收时序应另开问题核实 |
 | `records/live-b95-final/batch-real-result.json` | `b95b44f` | 0 / PASS 子集 | 同上 | 不存在 | 测试驱动 9 断言均 PASS；C 仍待补件，整个 A/B/C 工作流**未办结** |
 
-以上机器 JSON 的原 SHA-256 锁定为 `4a32389840d71edcb3aca64408f4628da12deeaeccb5379060f38b7b1f3fac2a`、`cbb3fdc36486c593152a3e4d19ae892b6f9e040ba8b694f63d611e1c11d096a3`、`381bc830150d3399ce241176489c615cfb22c304bd04a56f23b308fbba0cb1d1`。**需由本轮 R02 CI 重新按字节计算才能标 R02 verified**；不能把旧 58 CI digest 当新运行结果。命令记录见各批 `batch-real.command.json` / `06-batch.command.json` 与归档 `evidence-manifest.json`。
+以上机器 JSON 的原 SHA-256 锁定为 `4a32389840d71edcb3aca64408f4628da12deeaeccb5379060f38b7b1f3fac2a`、`cbb3fdc36486c593152a3e4d19ae892b6f9e040ba8b694f63d611e1c11d096a3`、`381bc830150d3399ce241176489c615cfb22c304bd04a56f23b308fbba0cb1d1`。**R02 独立 Actions #39088892287 已重新按字节检查，9 案对应归档及命令源证据均核对通过**；不能把旧 58 CI digest 当新运行结果。命令记录见各批 `batch-real.command.json` / `06-batch.command.json` 与归档 `evidence-manifest.json`。
 
 ### 新会话对 58 号的修正
 
@@ -47,17 +47,28 @@
 ## 4. 本轮独立工程交付与证据方法
 
 - 新增 **独立于 58 号脚本**的 `scripts/qa/p06-l02-00-r02-independent.py`：打开原 9 条，重新计算 archive / command / stdout/stderr 的字节 SHA-256，强制三份 manifest 条目存在，校验创建/队列/执行三层 ID 联结，不依赖旧脚本的 `zip("ABC", EXPECTED, runs)` 裸顺序假设；对比冻结生产代码的真实 Git blob；分开保存历史命令退出直接原因。
-- 新增 `.github/workflows/p06-l02-00-r02-independent.yml`：Ubuntu 历史只读独立核验 + self-hosted Bun 1.4/Node22 的 **新版受控** `review-batch-case-fallback`、停用材料 SourceRef、不同版本 SourceRef 专项回归。**有 CI success + 明确测试 exit/日志/sha 才可将两栏写 PASS**；工作流成功也不冒充 Main/IPC。
+- 新增 `.github/workflows/p06-l02-00-r02-independent.yml`：Ubuntu 历史只读独立核验 + self-hosted Bun 1.4/Node22 的 **新版受控** `review-batch-case-fallback`、停用材料 SourceRef、不同版本 SourceRef 专项回归。**在固定 SHA `6081abded4f0cfef62e60357fd6c753f5576c4cd` 已获得真实 CI success + 完整退出码、日志与工件；后续文档提交改变 HEAD，不能自动转用旧 CI 为新 HEAD 回归**；工作流成功也不冒充 Main/IPC。
 - 不执行自动 provider 或 Main LIVE 的默认 workflow，不连接密钥，不发真实行政审批；`PROFER_CONFIG_DIR/PROFER_USER_DATA_DIR` 的新版环境、授权 provider 和安全门禁未经提供时，`NEW LIVE E2E=NOT-RUN / BLOCKED_ENV_AND_U1`。
 
 ## 5. 三栏判词与 L02-01 准入
 
 | 栏 | 现阶段可签范围 | R02 总签收 |
 | --- | --- | --- |
-| HISTORICAL ATTRIBUTION | 待本轮 Actions 实际确认 9 案 SHA256、原命令 exit 和 code predicate；不能借 58 的 SUCCESS | PENDING_R02_CI |
-| NEW CONTROLLED REGRESSION | 同 R02 HEAD 的 Bun 真跑定向三份 test 及日志；不能套 #98 历史测试 | PENDING_R02_CI |
+| HISTORICAL ATTRIBUTION | **本轮新的 Ubuntu Actions #39088892287 成功重验 9 案、三批 SHA256/命令输出、两源谓词差异，见 artifact #12121318460** | **R02 ARCHIVED PASS（固定 6081abde）** |
+| NEW CONTROLLED REGRESSION | **固定 6081abde 的自托管 Linux/Bun 1.4.0/Node 22，三文件 9 PASS / 0 FAIL / 39 expect，原始命令与退出码见 artifact #12121847775** | **R02 CONTROLLED PASS（非 Main/IPC/provider）** |
 | NEW LIVE E2E | 本轮无授权 provider、合规隔离 Electron profile，且 U1 Office #71/Main/IPC/严格 Pi/Preview/Owner 未解锁 | **NOT-RUN / BLOCKED** |
 
 **L02-00 正式签收仍为 `PARTIAL / NOT ACCEPTED`，不能进入 L02-01 的正式业务验收执行。** 可以做不涉及发布授权的输入准备、隔离合成数据和后续复演安排；正式 L02-01 必须先有固定最新安全候选的 U1 Main/IPC/Office/严格五工具、撤权后不写入、SourceRef 原件引用、preview/owner 正反回执。需要能隔离运行真实 Electron/Pi、授权模型、真实输入 manifest/hash 和逐案工具/权限日志；否则完整业务矩阵不可签。Office #71 本阶段只能测影响不改共享源码，集中验收后另开上游 Office PR；P05 Relay/Pocket 的外部门禁不妨碍 L02-00 静态归因但阻断整体合并。P04 tombstone/UUID journal 永久安全记录不动。
 
 验收者：R02 独立 Agent（自动化结果需 CI 和用户核验）。**不更改 29 号唯一 LIVE-01～08，不合并任何 Draft PR，不进入 P07/P08。**
+
+## 6. R02 实际 CI 回执（本轮，不借旧测试）
+
+候选源码及工作流原始 checkout commit：`6081abded4f0cfef62e60357fd6c753f5576c4cd`；标准 PR CI [#39088892257](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39088892257) **SUCCESS**。独立工作流 [#39088892287](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39088892287) 两个 job **SUCCESS**：
+
+- **ARCHIVED_REAL_RUN REVALIDATION**：新代码 `p06-l02-00-r02-independent.py` 退出 0；`PASS_9_ARCHIVED_CASES_WITH_DIRECT_EXIT_CAUSES_SEPARATED`，原始 3 批结束因 `HARNESS_MODEL_USAGE_ASSERTION` / `STALE_GROUP_DENIAL_PROPAGATED_TO_DRIVER` / `NONE`。artifact [#12121318460](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39088892287/artifacts/12121318460)，ZIP digest `sha256:e07c617c88567febf647a7eb02da9d44148ffd480c922942b48537c62c84f8bc`；含 9 案机器矩阵、log、exit-code 和 SHA256SUMS。
+- **NEW CONTROLLED**：独立自托管 runner Bun 1.4.0；`bun install --frozen-lockfile` 退出 0，三份受控测试 `9 pass / 0 fail / 39 expect`，test exit 0。包含 `review-batch-case-fallback.p06.test.ts`（case/group 已提交与 case 未提交）、`review-office-v2-sourceref-boundary.l02.test.ts`（Office 锚点不得冒充严格来源）、`review-retired-source-ref.l02-u1.test.ts`（active/retired 正反）。artifact [#12121847775](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39088892287/artifacts/12121847775)，ZIP digest `sha256:af94ddffdd01ef2a4c9e4c6809a6e4536bb819f0db71132a31f9cf0b1c788900`，含环境版本、SHA/tree、日志、exit-code、SHA256SUMS。
+- 两项 CI **均非** Electron Main/Preload/Renderer 真实 IPC、真实 DOCX/XLSX/PPTX 解析或获授权 Pi provider 实机执行。本 CI 并没有解决 #71 或 U1 LIVE 门禁；`NEW LIVE E2E=NOT-RUN / BLOCKED_SECURITY_AND_ENV`。
+- 只对上述 **固定 CI HEAD** 签署 R02 历史/受控通过。本文后续纯文档更新造成新 Git HEAD，不得未经查询把 `6081abde` 的 CI 当成新 HEAD 测试；生产源码经独立 compare 相对于 #99 **0 条修改**，新增文件仅此文档、验证器和工作流。
+
+**正式总判定不变：L02-00 PARTIAL / NOT ACCEPTED；P06 PARTIAL、P06-S02 NOT ACCEPTED、MERGE NO-GO、P07/P08 NOT STARTED。L02-01 尚未获得正式准入。**
