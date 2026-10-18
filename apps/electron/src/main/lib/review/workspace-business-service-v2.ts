@@ -84,7 +84,11 @@ export function recordWorkspaceSubjectAdjudicationV2(
 
 function assertCurrentRun(aggregate: CaseAggregateV2, runId: string, inputHash: string) {
   const run = getRunV2(aggregate.caseV2.id, runId)
-  if (!run || run.inputManifest.hash !== inputHash) throw new CommandValidationError('STALE_INPUT', '审核运行已过期，请重新运行后再处理')
+  if (!run || run.inputManifest.hash !== inputHash
+    || run.templateId !== aggregate.caseV2.templateId || run.templateVersion !== aggregate.caseV2.templateVersion
+    || run.inputManifest.templateVersion !== aggregate.caseV2.templateVersion) {
+    throw new CommandValidationError('STALE_INPUT', '审核运行或模板锁已过期，请重新运行后再处理')
+  }
   const currentHash = computeRunInputHash(aggregate.caseV2, aggregate.observations as unknown as Array<Record<string, unknown>>, aggregate.evidenceLinks as unknown as Array<Record<string, unknown>>)
   if (currentHash !== inputHash) throw new CommandValidationError('STALE_INPUT', '案卷输入已变化，请重新运行后再处理')
   if (hasSupplementResponseAfterRun(aggregate, run)) throw new CommandValidationError('STALE_INPUT', '补件回复在审核运行后发生变化，请重新审核后再处理')
@@ -226,13 +230,24 @@ function assertAutomatedWorkspaceDecision(
   requiredElements: string[] | undefined,
   reason: string,
 ): void {
+  // 全局开关只是逐批自动化的必要条件，不能授权普通 Agent 绕开批次确认。
   if (actor.actorSource === 'agent') {
-    const { getSettings } = require('../settings-service') as typeof import('../settings-service')
-    if (getSettings().reviewAgentAutoApproval !== true) throw new CommandValidationError('AGENT_DECISION_DISABLED', 'AI 代批未授权')
-    // Generic Agent approval is not batch automation. Its permissions are scoped separately.
+    throw new CommandValidationError('AGENT_DECISION_DISABLED', '普通 Agent 无权直接签署正式决定；必须走逐批授权的受控自动化入口')
+  }
+  if (actor.actorSource !== 'system') {
+    // Renderer IPC 会将本地身份重新绑定为 reviewer；服务层同样必须拒绝
+    // 学生/模板管理员等不相干角色，避免内部直接调用形成越权决定。
+    if (!((actor.actorSource === 'local' && actor.role === 'reviewer')
+      || (actor.actorSource === 'school' && (actor.role === 'reviewer' || actor.role === 'teacher')))) {
+      throw new CommandValidationError('AGENT_DECISION_DISABLED', '正式决定需要经过授权的审核人员身份')
+    }
+    const openTasks = aggregate.tasks.filter((task) => task.status === 'open')
+    if (openTasks.some((task) => task.assigneeRole !== actor.role
+      || (task.assigneeActorId && task.assigneeActorId !== actor.actorId))) {
+      throw new CommandValidationError('INVALID_TRANSITION', '存在其他审核角色或指派人的未完成任务，不得越级形成最终决定')
+    }
     return
   }
-  if (actor.actorSource !== 'system') return
   const match = /^batch-auto:([^:]+):(\d+)$/.exec(actor.actorId)
   if (!match) throw new CommandValidationError('AGENT_DECISION_DISABLED', '未经授权的系统审批主体')
   const batchId = decodeURIComponent(match[1]!)
@@ -264,6 +279,11 @@ export function decideWorkspaceCaseV2(
     if (!['completed', 'partially-completed'].includes(run.status)) throw new CommandValidationError('INVALID_TRANSITION', '运行未完成，不能形成最终决定')
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '最终决定必须填写理由')
     if (aggregate.caseV2.stage === 'decided' || aggregate.caseV2.stage === 'archived') throw new CommandValidationError('INVALID_TRANSITION', '案卷已结束')
+    const { getTemplate } = require('./template-store') as typeof import('./template-store')
+    const lockedTemplate = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+    if (!lockedTemplate || lockedTemplate.status !== 'published') {
+      throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '案卷模板未发布或已失效，不得形成正式业务决定')
+    }
     assertAutomatedWorkspaceDecision(aggregate, run, command.actor, payload.result, payload.requiredElements, payload.reason)
 
     if (payload.result === 'pass' || payload.result === 'partial-pass') {
