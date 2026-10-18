@@ -126,10 +126,18 @@ export function requeueCaseAfterSupplement(caseId: string): string[] {
   const aggregate = readAggregate(caseId)
   if (!aggregate || aggregate.caseV2.stage !== 'reviewing'
     || aggregate.supplements.some((request) => ['open', 'responded', 'insufficient'].includes(request.status))) return queued
-  for (const state of listBatchStatesV2()) {
-    if (state.status === 'finalized' || state.status === 'running' || activeBatchRuns.has(state.batch.id)
-      || state.batch.templateId !== aggregate.caseV2.templateId
-      || state.batch.templateVersion !== aggregate.caseV2.templateVersion) continue
+  // 没有补件所属批次的不可伪造绑定时，不能向同案所有旧/并行批次广播重新入队。
+  // 唯一归属才自动恢复；多批归属必须由后续人工选择明确目标批次。
+  const associated = listBatchStatesV2().filter((state) =>
+    state.batch.templateId === aggregate.caseV2.templateId
+    && state.batch.templateVersion === aggregate.caseV2.templateVersion
+    && state.cases.some((entry) => entry.caseId === caseId))
+  if (associated.length > 1) {
+    console.warn(`[批次] 案卷 ${caseId} 存在多个批次归属，补件回流已拒止自动入队，需人工明确批次`)
+    return queued
+  }
+  for (const state of associated) {
+    if (state.status === 'finalized' || state.status === 'running' || activeBatchRuns.has(state.batch.id)) continue
     const entry = state.cases.find((candidate) => candidate.caseId === caseId)
     if (!entry || entry.status === 'queued' || entry.status === 'running') continue
     state.cases = state.cases.map((candidate) => candidate.caseId === caseId
@@ -138,6 +146,73 @@ export function requeueCaseAfterSupplement(caseId: string): string[] {
     queued.push(state.batch.id)
   }
   return queued
+}
+
+
+/**
+ * Explicitly target one batch when an aggregate belongs to multiple batches.
+ * Callers must bind local reviewer identity at Main; this service is not
+ * independently a school credential verifier or a renderer authorization.
+ * Persist a per-case revision cursor so a replay cannot change a later done.
+ */
+export function selectSupplementRequeueBatch(
+  caseId: string,
+  batchId: string,
+  selection: { actor: import('@profer/shared').Actor; expectedRevision: number; supplementId: string },
+): { queued: boolean; batch: BatchStateV2 } {
+  assertSafeReviewStorageId(caseId, 'caseId')
+  assertSafeBatchId(batchId)
+  if (selection.actor.actorSource !== 'local' || !['reviewer', 'teacher'].includes(selection.actor.role)) {
+    throw new Error('补件批次选择必须由本机已绑定的人工审核角色执行')
+  }
+  const { readAggregate } = require('./case-store-v2') as typeof import('./case-store-v2')
+  const aggregate = readAggregate(caseId)
+  if (!aggregate || aggregate.caseV2.revision !== selection.expectedRevision) {
+    throw new Error('案卷版本已变化，必须重新确认补件回流目标')
+  }
+  if (aggregate.caseV2.stage !== 'reviewing'
+    || aggregate.supplements.some((request) => ['open', 'responded', 'insufficient'].includes(request.status))) {
+    throw new Error('案卷仍待补件或不在重审状态，禁止回流批次')
+  }
+  const resolved = aggregate.supplements.find((item) => item.id === selection.supplementId && item.status === 'satisfied')
+  if (!resolved?.originStageId) throw new Error('补件没有已满足的原审核阶段，不能指定批次回流')
+  const task = aggregate.tasks.find((item) => item.status === 'open' && item.stageId === resolved.originStageId)
+  if (!task || task.assigneeRole !== selection.actor.role
+    || (task.assigneeActorId && task.assigneeActorId !== selection.actor.actorId)) {
+    throw new Error('当前审核人未持有该补件来源阶段的重审任务')
+  }
+  const state = readBatchStateV2(batchId)
+  if (!state || state.batch.templateId !== aggregate.caseV2.templateId
+    || state.batch.templateVersion !== aggregate.caseV2.templateVersion
+    || !state.batch.caseIds.includes(caseId)) throw new Error('目标批次不属于此案卷的冻结模板版本')
+  if (state.status === 'finalized' || state.status === 'running' || activeBatchRuns.has(batchId)) {
+    throw new Error('运行中或已定稿批次不可补件回流')
+  }
+  const entry = state.cases.find((item) => item.caseId === caseId)
+  if (!entry) throw new Error('案卷没有对应批次队列项')
+  type Cursor = { caseRevision: number; supplementId: string; actorId: string; at: string }
+  const scoped = state as BatchStateV2 & { supplementRequeueCursors?: Record<string, Cursor> }
+  const previous = scoped.supplementRequeueCursors?.[caseId]
+  if (previous?.caseRevision === selection.expectedRevision) {
+    if (previous.supplementId !== selection.supplementId) throw new Error('同案卷修订已有不同补件回流记录')
+    return { queued: false, batch: state }
+  }
+  if (previous?.supplementId === selection.supplementId) {
+    // Revision can advance for unrelated commands after the first requeue.
+    // A replay of the same satisfied supplement cannot revive a later done.
+    return { queued: false, batch: state }
+  }
+  if (entry.status === 'queued') return { queued: false, batch: state }
+  if (entry.status === 'running') throw new Error('该案卷仍在执行，禁止补件回流')
+  scoped.cases = state.cases.map((item) => item.caseId === caseId
+    ? { ...item, status: 'queued', error: undefined } : item)
+  scoped.supplementRequeueCursors = {
+    ...scoped.supplementRequeueCursors,
+    [caseId]: { caseRevision: selection.expectedRevision, supplementId: selection.supplementId,
+      actorId: selection.actor.actorId, at: new Date().toISOString() },
+  }
+  saveBatchStateV2(scoped)
+  return { queued: true, batch: scoped }
 }
 
 /** 入队/暂停/重试（单案失败不阻塞全批，06 §7.1） */

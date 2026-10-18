@@ -39,6 +39,21 @@ describe('20 号 QA：真实 renderer V2 IPC 路径穿越拒绝', () => {
         policyVersionLock: [], caseIds: ['safe-case', caseId], createdAt: '2026-10-11T00:00:00Z' },
     })).toThrow('非法 caseId')
     await expect(Promise.resolve(invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, caseId))).rejects.toThrow('非法 caseId')
+    expect(() => invoke(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, {
+      action: 'requeue-supplement', confirmed: false, batchId: 'safe-batch',
+      caseId: 'safe-case', supplementId: 'sup-1', expectedRevision: 2,
+      actor: { actorId: 'spoof-reviewer', actorSource: 'local', role: 'reviewer' },
+    })).toThrow('明确确认')
+    expect(() => invoke(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, {
+      action: 'requeue-supplement', confirmed: true, batchId: 'safe-batch',
+      caseId: 'safe-case', supplementId: 'sup-1', expectedRevision: 2,
+      actor: { actorId: 'teacher-spoof', actorSource: 'school', role: 'teacher' },
+    })).toThrow('本地审核 IPC 仅允许 reviewer')
+    expect(() => invoke(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, {
+      action: 'requeue-supplement', confirmed: true, batchId: 'safe-batch',
+      caseId: 'safe-case', supplementId: 'sup-1', expectedRevision: 2,
+      actor: { actorId: 'fake-reviewer', actorSource: 'local', role: 'reviewer' },
+    })).toThrow('案卷版本已变化')
     expect(existsSync(join(dirname(root), 'path-poc'))).toBeFalse()
     expect(existsSync(join(root, 'review-batches', 'safe-batch'))).toBeFalse()
   })

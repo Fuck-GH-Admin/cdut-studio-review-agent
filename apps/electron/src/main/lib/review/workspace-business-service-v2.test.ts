@@ -224,4 +224,117 @@ describe('三栏单案的 V2 业务闭环事务', () => {
       { subjectId: 'subject-b', value: '0', basisRunId: run.id },
     ])
   })
+
+  test('E02：学生角色不能直接签正式驳回；拒绝不增加版本或回执', async () => {
+    const { caseId, run } = await seed()
+    const before = readAggregate(caseId)!
+    const result = await decideWorkspaceCaseV2(caseId, {
+      requestId: request(),
+      actor: { actorId: 'student-test', actorSource: 'local', role: 'student' },
+      expectedRevision: before.caseV2.revision,
+      payload: { result: 'reject', reason: '无权角色伪造正式驳回', basedOnRunId: run.id, inputHash: run.inputManifest.hash },
+    })
+    expect(result.ok).toBeFalse()
+    if (!result.ok) expect(result.code).toBe('AGENT_DECISION_DISABLED')
+    const after = readAggregate(caseId)!
+    expect(after.caseV2.revision).toBe(before.caseV2.revision)
+    expect(after.decisions).toHaveLength(0)
+    expect(after.receiptLog).toHaveLength(before.receiptLog.length)
+  })
+
+  test('E02：全局 AI 代批开关不能取代逐批授权，Agent 不能直接签决定', async () => {
+    const { caseId, run } = await seed()
+    const { getSettings, updateSettings } = await import('../settings-service')
+    const previous = getSettings().reviewAgentAutoApproval
+    try {
+      updateSettings({ reviewAgentAutoApproval: true })
+      const result = await decideWorkspaceCaseV2(caseId, {
+        requestId: request(), actor: { actorId: 'agent-direct', actorSource: 'agent', role: 'reviewer' },
+        expectedRevision: 0,
+        payload: { result: 'reject', reason: '绕开批次授权的直接代批', basedOnRunId: run.id, inputHash: run.inputManifest.hash },
+      })
+      expect(result.ok).toBeFalse()
+      if (!result.ok) expect(result.code).toBe('AGENT_DECISION_DISABLED')
+      expect(readAggregate(caseId)?.decisions).toHaveLength(0)
+    } finally {
+      updateSettings({ reviewAgentAutoApproval: previous })
+    }
+  })
+
+  test('E02：存在教师开放任务时，本地 reviewer 不能跳过阶段授权作最终决定', async () => {
+    const { caseId, run } = await seed()
+    const setup = await submitCommand(caseId, {
+      requestId: request(), actor, expectedRevision: 0, type: 'SeedTeacherReviewTask', payload: {},
+    }, () => ({
+      summary: '创建待教师审核任务',
+      mutate: (draft) => {
+        draft.tasks.push({
+          id: 'teacher-review-task', caseId, stageId: 'teacher-review', round: 1,
+          assigneeRole: 'teacher', status: 'open', inputRevision: 0, createdAt: new Date().toISOString(),
+        })
+      },
+    }))
+    expect(setup.ok).toBeTrue()
+    if (!setup.ok) return
+    const result = await decideWorkspaceCaseV2(caseId, {
+      requestId: request(), actor, expectedRevision: setup.aggregate.caseV2.revision,
+      payload: { result: 'reject', reason: '提前终结教师审核任务', basedOnRunId: run.id, inputHash: run.inputManifest.hash },
+    })
+    expect(result.ok).toBeFalse()
+    if (!result.ok) expect(result.code).toBe('INVALID_TRANSITION')
+    expect(readAggregate(caseId)?.tasks.find(task => task.id === 'teacher-review-task')?.status).toBe('open')
+    expect(readAggregate(caseId)?.decisions).toHaveLength(0)
+  })
+
+
+  test('E03：补件回复不能引用不存在的材料版本，失败不污染补件事务', async () => {
+    const { caseId, run } = await seed()
+    const opened = await openWorkspaceSupplementV2(caseId, {
+      requestId: request(), actor, expectedRevision: 0,
+      payload: { findingKey: 'check-a', runId: run.id, inputHash: run.inputManifest.hash,
+        requiredElements: ['补充证明'], reason: '证明材料不足' },
+    })
+    expect(opened.ok).toBeTrue()
+    if (!opened.ok || !opened.entity) return
+    const rejected = await respondSupplementV2(caseId, {
+      requestId: request(), actor: { actorId: 'student', actorSource: 'local', role: 'student' },
+      expectedRevision: opened.aggregate.caseV2.revision,
+      payload: { supplementId: opened.entity.id, note: '伪造不存在的版本', documentVersionIds: ['missing-document-version'] },
+    })
+    expect(rejected.ok).toBeFalse()
+    if (!rejected.ok) expect(rejected.code).toBe('NOT_FOUND')
+    const current = readAggregate(caseId)!
+    expect(current.caseV2.revision).toBe(opened.aggregate.caseV2.revision)
+    expect(current.supplements[0]?.responses).toHaveLength(0)
+  })
+
+  test('E03：补件回复与旧 Run 完成时间同毫秒，仍须拒止旧 Run 再作正式决定', async () => {
+    const { caseId, run } = await seed()
+    const opened = await openWorkspaceSupplementV2(caseId, {
+      requestId: request(), actor, expectedRevision: 0,
+      payload: { findingKey: 'check-a', runId: run.id, inputHash: run.inputManifest.hash,
+        requiredElements: ['补充说明'], reason: '仍须核实' },
+    })
+    expect(opened.ok).toBeTrue()
+    if (!opened.ok || !opened.entity) return
+    const response = await respondSupplementV2(caseId, {
+      requestId: request(), actor: { actorId: 'student', actorSource: 'local', role: 'student' },
+      expectedRevision: opened.aggregate.caseV2.revision,
+      payload: { supplementId: opened.entity.id, note: '学生再次回复补件' },
+    })
+    expect(response.ok).toBeTrue()
+    if (!response.ok) return
+    const responseAt = response.aggregate.supplements[0]!.responses[0]!.at
+    // 合成同一毫秒完成的 Run：这种时间碰撞不能让旧输入重新获得审批资格。
+    saveRunV2({ ...run, completedAt: responseAt })
+    expect(isWorkspaceRunStaleV2(response.aggregate, run.id)).toBeTrue()
+    const attempt = await decideWorkspaceCaseV2(caseId, {
+      requestId: request(), actor, expectedRevision: response.aggregate.caseV2.revision,
+      payload: { result: 'reject', reason: '重复使用补件前的旧运行', basedOnRunId: run.id, inputHash: run.inputManifest.hash },
+    })
+    expect(attempt.ok).toBeFalse()
+    if (!attempt.ok) expect(attempt.code).toBe('STALE_INPUT')
+    expect(readAggregate(caseId)?.decisions).toHaveLength(0)
+  })
+
 })

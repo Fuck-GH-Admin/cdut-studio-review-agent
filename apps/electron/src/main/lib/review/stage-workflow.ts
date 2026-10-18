@@ -14,6 +14,7 @@
 
 import type { Appeal, BusinessDecision, CaseAggregateV2, ReviewCommandResult, SupplementRequest, TemplateVersion, WorkflowTask } from '@profer/shared'
 import { randomUUID } from 'node:crypto'
+import { assessDecisionReadiness } from '@profer/shared'
 import { CommandValidationError, submitCommand, type CommandSourceMeta } from './case-store-v2'
 import type { Actor } from '@profer/shared'
 
@@ -50,11 +51,11 @@ export async function ensureInitialTask(caseId: string, template: TemplateVersio
  * RespondSupplement 是提交者侧动作，不受此门控（由指派与归属校验约束）。
  */
 function assertAgentDecisionAllowed(command: { actor: Actor; type: string }): void {
-  if (command.actor.actorSource !== 'agent') return
-  // C2：代批开关——事务校验内读取（settings 内存缓存与 updateSettings 同步更新，排队期间关闭立即生效）
-  const { getSettings } = require('../settings-service') as typeof import('../settings-service')
-  if (getSettings().reviewAgentAutoApproval === true) return
-  throw new CommandValidationError('AGENT_DECISION_DISABLED', 'AI 代批未开启：此类决定需要人工做出（可在审核专区高级设置中开启并确认风险）')
+  // 开启全局开关并不等于授予某个普通 Agent 行政审批资格；
+  // 系统自动处理只能经过 batch-auto 身份 + 当前批次/模板门禁。
+  if (command.actor.actorSource === 'agent' || command.actor.actorSource === 'system') {
+    throw new CommandValidationError('AGENT_DECISION_DISABLED', '机器来源不得直接签署阶段决定或补件结论；请走经过逐批确认的业务授权入口')
+  }
 }
 
 
@@ -70,6 +71,8 @@ export interface StageDecisionPayload {
   /** 退回补件所需要素 */
   supplementRequiredElements?: string[]
   supplementReason?: string
+  basedOnRunId?: string
+  inputHash?: string
 }
 
 const isFinalStage = (aggregate: CaseAggregateV2, stageId: string, template: TemplateVersion): boolean => {
@@ -84,8 +87,11 @@ export function recordStageDecision(
   template: TemplateVersion,
 ): Promise<ReviewCommandResult<{ decision: BusinessDecision; task?: WorkflowTask; supplement?: SupplementRequest }>> {
   return submitCommand<StageDecisionPayload, { decision: BusinessDecision; task?: WorkflowTask; supplement?: SupplementRequest }>(caseId, { ...command, type: 'RecordStageDecision' }, (aggregate, payload) => {
-    // Agent 代批门控：在事务校验内、任何业务变更前检查（排队期间关闭也生效）
-    assertAgentDecisionAllowed({ actor: command.actor, type: 'RecordStageDecision' })
+    // 普通 Agent 不得签任何阶段决定。仅允许受控的 system 自动核对阶段
+    // 向下一人工阶段移交，绝不允许机器作最终通过、驳回或补件决定。
+    if (command.actor.actorSource === 'agent') {
+      throw new CommandValidationError('AGENT_DECISION_DISABLED', '普通 Agent 无权直接签署阶段决定')
+    }
     if (aggregate.d2RuntimePlan) throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术预审案卷无权进入正式阶段决定')
     const task = aggregate.tasks.find((candidate) => candidate.id === payload.taskId && candidate.status === 'open')
     if (!task) throw new CommandValidationError('INVALID_TRANSITION', '当前阶段没有开放任务（或已处理）')
@@ -99,14 +105,53 @@ export function recordStageDecision(
       || (task.assigneeActorId && task.assigneeActorId !== command.actor.actorId)) {
       throw new CommandValidationError('INVALID_TRANSITION', '操作者无权处理当前审核阶段任务')
     }
-    if (command.actor.actorSource === 'agent' && task.assigneeRole !== 'reviewer') {
-      throw new CommandValidationError('AGENT_DECISION_DISABLED', 'Agent 不得代替教师或校方执行阶段决定')
+    if (command.actor.actorSource === 'system') {
+      if (command.actor.role !== 'system' || task.assigneeRole !== 'system'
+        || currentStage.kind !== 'auto-check' || !currentStage.nextStageId
+        || payload.action !== 'stage-pass') {
+        throw new CommandValidationError('AGENT_DECISION_DISABLED', '机器身份仅能移交系统自动核对任务，不得形成正式业务决定')
+      }
+      const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+      const { isWorkspaceRunStaleV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+      const currentRun = listRunsV2(caseId).find((run) =>
+        run.status === 'completed' && run.templateId === aggregate.caseV2.templateId
+        && run.templateVersion === aggregate.caseV2.templateVersion
+        && !isWorkspaceRunStaleV2(aggregate, run.id))
+      if (!currentRun) throw new CommandValidationError('STALE_INPUT', '自动核对移交需要本案当前版本的已完成审核运行')
+    }
+    const finality: BusinessDecision['finality'] = payload.action === 'final-reject'
+      || (payload.action === 'stage-pass' && isFinalStage(aggregate, task.stageId, template)) ? 'final' : 'stage'
+    // A final decision must be bound to a current persisted Run, not run@rev.
+    // Explicit run bindings on stage-only decisions are validated as well.
+    let verifiedRunId: string | undefined
+    if (finality === 'final' || payload.basedOnRunId !== undefined || payload.inputHash !== undefined) {
+      const { getRunV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+      const { isWorkspaceRunStaleV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+      const run = payload.basedOnRunId ? getRunV2(caseId, payload.basedOnRunId) : undefined
+      if (!run || !payload.inputHash || run.inputManifest.hash !== payload.inputHash
+        || !['completed', 'partially-completed'].includes(run.status)
+        || run.templateId !== aggregate.caseV2.templateId
+        || run.templateVersion !== aggregate.caseV2.templateVersion
+        || run.inputManifest.templateVersion !== aggregate.caseV2.templateVersion
+        || isWorkspaceRunStaleV2(aggregate, run.id)) {
+        throw new CommandValidationError('STALE_INPUT', '正式阶段结论必须引用当前真实且已完成的审核运行')
+      }
+      verifiedRunId = run.id
+      if (finality === 'final' && payload.action === 'stage-pass') {
+        const { readArtifact } = require('./run-store-v2') as typeof import('./run-store-v2')
+        const artifact = readArtifact<{ observations?: Array<Record<string, unknown>> }>(caseId, run.id, 'node-auto-check-extract')
+        const readiness = assessDecisionReadiness({ aggregate, run, runStale: false, template,
+          observations: artifact?.observations ?? [] })
+        if (!readiness.ready) {
+          throw new CommandValidationError('DEPENDENCY_UNRESOLVED',
+            `仍有阻断最终通过的事项：${readiness.blockers.map((item) => item.message).join('；')}`)
+        }
+      }
     }
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '决定必须附理由')
     if (!aggregate.decisions.every((decision) => decision.taskId !== task.id)) throw new CommandValidationError('INVALID_TRANSITION', '该任务已有决定')
 
     const now = new Date().toISOString()
-    const finality: BusinessDecision['finality'] = payload.action === 'final-reject' || (payload.action === 'stage-pass' && isFinalStage(aggregate, task.stageId, template)) ? 'final' : 'stage'
     return {
       summary: `阶段决定：${payload.action}（${task.stageId}）`,
       mutate: (draft): { decision: BusinessDecision; task?: WorkflowTask; supplement?: SupplementRequest } => {
@@ -125,7 +170,7 @@ export function recordStageDecision(
           result,
           finalScores: payload.finalScores,
           reason: payload.reason.trim(),
-          basedOnRunId: `run@rev${aggregate.caseV2.revision}`,
+          basedOnRunId: verifiedRunId ?? `run@rev${aggregate.caseV2.revision}`,
           basedOnRevision: aggregate.caseV2.revision,
           at: now,
           finality,
@@ -191,12 +236,23 @@ export function recordStageDecision(
 /** 补件回复（G04：学生/提交方对单个请求提交说明与材料版本；open→responded） */
 export function respondSupplementV2(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: { supplementId: string; note: string; documentVersionIds?: string[] } }): Promise<ReviewCommandResult<SupplementRequest>> {
   return submitCommand<{ supplementId: string; note: string; documentVersionIds?: string[] }, SupplementRequest>(caseId, { ...command, type: 'RespondSupplement' }, (aggregate, payload) => {
+    if (command.actor.actorSource === 'agent' || command.actor.actorSource === 'system') {
+      throw new CommandValidationError('AGENT_DECISION_DISABLED', '机器身份不能伪造补件提交人身份')
+    }
     const target = aggregate.supplements.find((request) => request.id === payload.supplementId)
     if (!target) throw new CommandValidationError('NOT_FOUND', `补件请求不存在: ${payload.supplementId}`)
     if (target.status !== 'open' && target.status !== 'responded' && target.status !== 'insufficient') throw new CommandValidationError('INVALID_TRANSITION', `补件已关闭（${target.status}）`)
     // 角色校验（05 §2 补件责任方）：仅 student/submitter 可回复
     if (target.responsibleRole === 'student' && command.actor.role !== 'student' && command.actor.role !== 'reviewer') throw new CommandValidationError('INVALID_TRANSITION', '该补件由学生负责，其他角色不能代回复')
     if (!payload.note.trim() && !(payload.documentVersionIds?.length)) throw new CommandValidationError('VALIDATION_FAILED', '回复必须附说明或材料')
+    // 不允许把伪造版本、已废弃版本或重复的版本 ID 写入正式补件回执。
+    const versions = payload.documentVersionIds ?? []
+    if (new Set(versions).size !== versions.length) throw new CommandValidationError('VALIDATION_FAILED', '同一材料版本不能重复提交')
+    for (const versionId of versions) {
+      if (!versionId || !aggregate.caseV2.documents.some((document) => document.versionId === versionId && document.active !== false)) {
+        throw new CommandValidationError('NOT_FOUND', `补件材料版本不存在或已失效: ${versionId}`)
+      }
+    }
     return {
       summary: `补件回复：${target.id}`,
       mutate: (draft) => {
@@ -239,11 +295,17 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
             draft.tasks = [...draft.tasks, { id: newWorkflowTaskId(), caseId: draft.caseV2.id, stageId: originStageId, round: originTask?.round ?? 1, assigneeRole: originTask?.assigneeRole ?? 'reviewer', status: 'open', prerequisiteTaskId: target.originTaskId, inputRevision: draft.caseV2.revision, createdAt: new Date().toISOString() }]
           }
         }
+        // submitCommand returns the value of mutate(draft) as result.entity.
+        // A cached requestId replay returns only its prior receipt, no entity.
+        return { ...target, status: payload.outcome }
       },
-      entity: payload.outcome === 'satisfied' ? { ...target, status: 'satisfied' } : { ...target, status: payload.outcome },
     }
   })
-  if (result.ok && command.payload.outcome === 'satisfied'
+  // submitCommand may return a previous receipt for an identical requestId.
+  // Only a newly applied resolution has an entity. Do not repeat the external
+  // batch requeue side effect for a replay: another actor may have already
+  // advanced the case from queued to done after the first resolution.
+  if (result.ok && result.entity !== undefined && command.payload.outcome === 'satisfied'
     && result.aggregate.caseV2.stage === 'reviewing'
     && result.aggregate.supplements.every((supplement) =>
       !['open', 'responded', 'insufficient'].includes(supplement.status))) {
@@ -259,6 +321,7 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
 
 export function resolveAppealV2(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: { appealId: string; resolution: Appeal['resolution'] & ('maintain-original' | 'amend-original' | 'withdrawn'); reason: string; amendedResult?: BusinessDecision['result'] } }): Promise<ReviewCommandResult<Appeal>> {
   return submitCommand<{ appealId: string; resolution: string; reason: string; amendedResult?: BusinessDecision['result'] }, Appeal>(caseId, { ...command, type: 'ResolveAppeal' } as never, (aggregate, payload) => {
+    assertAgentDecisionAllowed({ actor: command.actor, type: 'ResolveAppeal' })
     if (aggregate.d2RuntimePlan) throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术预审不支持冒充正式申诉改判')
     const appeal = aggregate.appeals.find((candidate) => candidate.id === payload.appealId)
     if (!appeal) throw new CommandValidationError('NOT_FOUND', `申诉不存在: ${payload.appealId}`)

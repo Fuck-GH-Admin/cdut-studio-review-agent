@@ -6,8 +6,18 @@ import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewCaseV2, TemplateVersion } from '@profer/shared'
 import { createAggregate, readAggregate } from './case-store-v2'
-import { ensureInitialTask, recordStageDecision, resolveAppealV2, resolveFinalDecisionProjection, resolveSupplementV2, respondSupplementV2, type StageDecisionPayload } from './stage-workflow'
+import { ensureInitialTask, recordStageDecision as coreRecordStageDecision, resolveAppealV2, resolveFinalDecisionProjection, resolveSupplementV2, respondSupplementV2, type StageDecisionPayload } from './stage-workflow'
 import { submitAppeal } from './business-workflow'
+import { getRunV2, saveRunV2 } from './run-store-v2'
+import { computeRunInputHash } from './run-service-v2'
+import type { ReviewRunV2 } from '@profer/shared'
+const recordStageDecision = (...args: Parameters<typeof coreRecordStageDecision>) => {
+  const run = getRunV2(args[0], `run-${args[0]}`)
+  return coreRecordStageDecision(args[0], {
+    ...args[1], payload: { ...args[1].payload,
+      ...(run ? { basedOnRunId: run.id, inputHash: run.inputManifest.hash } : {}) },
+  }, args[2])
+}
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-stage-${Date.now()}`)
 process.env.PROFER_CONFIG_DIR = CONFIG_DIR
@@ -30,12 +40,58 @@ const nextReq = (): string => `req-${(requestIdCounter += 1)}`
 let caseCounter = 0
 async function seed(flowTemplate: TemplateVersion = template): Promise<{ caseId: string; firstTaskId: string }> {
   const caseId = `case-stage-${(caseCounter += 1)}`
-  await createAggregate(caseId, { ...caseV2, id: caseId })
+  const data = { ...caseV2, id: caseId }
+  await createAggregate(caseId, data)
   const taskResult = await ensureInitialTask(caseId, flowTemplate, actor)
+  const run: ReviewRunV2 = {
+    id: `run-${caseId}`, caseId, templateId: flowTemplate.templateId, templateVersion: flowTemplate.version,
+    inputManifest: { hash: computeRunInputHash(data, [], []), templateVersion: flowTemplate.version,
+      policyVersions: [], documentVersions: [], observationIds: [], evidenceLinkIds: [] },
+    status: 'completed', checkpoints: [],
+    checks: [{ checkId: 'stage-fixture', ruleId: 'stage-fixture', target: { scope: 'case', subjectIds: [] },
+      status: 'compliant', reason: '合成规则通过', sourceRefs: [],
+      executedBy: 'deterministic', executedAt: '2026-01-01T00:00:01.000Z' }],
+    opinions: [],
+    coverage: { documents: [], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 },
+    diagnostics: [], startedAt: '2026-01-01T00:00:00.000Z', completedAt: '2026-01-01T00:00:01.000Z',
+  }
+  saveRunV2(run)
   return { caseId, firstTaskId: taskResult.ok ? taskResult.entity!.id : '' }
 }
 
 describe('阶段推进（R07，修正误判 6）', () => {
+  test('E02: no Run binding cannot create a final decision', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const original = readAggregate(caseId)!
+    const denied = await coreRecordStageDecision(caseId, {
+      requestId: nextReq(), actor, expectedRevision: original.caseV2.revision,
+      payload: { action: 'final-reject', taskId: firstTaskId, reason: '无依据冒签' },
+    }, template)
+    expect(denied.ok).toBeFalse()
+    if (!denied.ok) expect(denied.code).toBe('STALE_INPUT')
+    expect(readAggregate(caseId)?.decisions).toHaveLength(0)
+    expect(readAggregate(caseId)?.caseV2.revision).toBe(original.caseV2.revision)
+  })
+  test('E02: real run with zero effective rules cannot create final pass', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const first = await recordStageDecision(caseId, {
+      requestId: nextReq(), actor, expectedRevision: 1,
+      payload: { action: 'stage-pass', taskId: firstTaskId, reason: '初审转办' },
+    }, template)
+    expect(first.ok).toBeTrue()
+    if (!first.ok) return
+    const run = getRunV2(caseId, `run-${caseId}`)!
+    saveRunV2({ ...run, coverage: { ...run.coverage, plannedChecks: 0, completedChecks: 0 },
+      checks: [], inputManifest: { ...run.inputManifest, effectiveRuleIds: [] } })
+    const task = first.aggregate.tasks.find((item) => item.stageId === 'final' && item.status === 'open')!
+    const denied = await recordStageDecision(caseId, {
+      requestId: nextReq(), actor: teacherActor, expectedRevision: first.aggregate.caseV2.revision,
+      payload: { action: 'stage-pass', taskId: task.id, reason: '空规则冒充终审' },
+    }, template)
+    expect(denied.ok).toBeFalse()
+    if (!denied.ok) expect(denied.code).toBe('DEPENDENCY_UNRESOLVED')
+    expect(readAggregate(caseId)?.decisions).toHaveLength(1)
+  })
   test('Given 三阶段审核且时钟不前进 When 连续通过 Then 每个阶段任务仍有唯一 ID 并可终审', async () => {
     const threeStageTemplate = {
       ...template,
@@ -155,6 +211,30 @@ describe('阶段推进（R07，修正误判 6）', () => {
     const again = await recordStageDecision(agg2.caseV2.id, { requestId: nextReq(), actor, expectedRevision: agg2.caseV2.revision, payload: { action: 'stage-pass', taskId: firstTaskId, reason: 'y' } }, template)
     expect(again.ok).toBeFalse()
     if (!again.ok) expect(again.code).toBe('INVALID_TRANSITION')
+  })
+})
+
+describe('L02-01 E02 阶段决定来源授权', () => {
+  test('即使全局自动审批开关开启，普通 Agent 也不能直接代签阶段决定', async () => {
+    const { getSettings, updateSettings } = await import('../settings-service')
+    const before = getSettings().reviewAgentAutoApproval
+    try {
+      updateSettings({ reviewAgentAutoApproval: true })
+      const { caseId, firstTaskId } = await seed()
+      const original = readAggregate(caseId)!
+      const result = await recordStageDecision(caseId, {
+        requestId: nextReq(),
+        actor: { actorId: 'agent-direct', actorSource: 'agent', role: 'reviewer' },
+        expectedRevision: original.caseV2.revision,
+        payload: { action: 'stage-pass', taskId: firstTaskId, reason: '机器未经逐批授权直接代批' },
+      }, template)
+      expect(result.ok).toBeFalse()
+      if (!result.ok) expect(result.code).toBe('AGENT_DECISION_DISABLED')
+      expect(readAggregate(caseId)?.decisions).toHaveLength(0)
+      expect(readAggregate(caseId)?.caseV2.revision).toBe(original.caseV2.revision)
+    } finally {
+      updateSettings({ reviewAgentAutoApproval: before })
+    }
   })
 })
 
