@@ -78,6 +78,9 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
     // Also invalidate a pending create if the parent closes via props (not Dialog UI).
     if (!open) {
       submitLock.current.closeSession()
+      // A parent-driven close must not leave Main-owned temporary originals
+      // staged until their TTL. A successful create already consumes its token.
+      if (intake?.token) void window.reviewAPI.discardD4Intake(intake.token).catch(() => false)
       return
     }
     setTitle('')
