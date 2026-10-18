@@ -25,12 +25,15 @@ export function D4CaseBatchControls({ role, actions }: {
   const activeToken = React.useRef<string | null>(null)
   const sessionGeneration = React.useRef(0)
 
-  React.useEffect(() => window.reviewAPI.onImportProgress(event => {
-    if (requestId.current === event.requestId && event.caseId === caseId && event.role === role &&
-        store.get(selectedCaseIdAtom) === caseId) {
-      setPhase(`${event.fileIndex ?? 0}/${event.fileCount ?? 0} · ${event.message ?? event.phase}`)
-    }
-  }), [caseId, role, store])
+  React.useEffect(() => {
+    const unsubscribe = window.reviewAPI.onImportProgress(event => {
+      if (requestId.current === event.requestId && event.caseId === caseId && event.role === role &&
+          store.get(selectedCaseIdAtom) === caseId) {
+        setPhase(`${event.fileIndex ?? 0}/${event.fileCount ?? 0} · ${event.message ?? event.phase}`)
+      }
+    })
+    return () => { unsubscribe() }
+  }, [caseId, role, store])
 
   React.useEffect(() => {
     // Case switch reuses the same React component instance. Reset *all* visual

@@ -97,7 +97,7 @@ describe('W1 post-case native append and revision-aware replacement', () => {
     expect(latest.d4IntakeOrigins).toHaveLength(2)
     expect(latest.d4MaterialTransitions).toContainEqual({
       previousDocumentId: oldDocId, newDocumentId: result.replacements[0]!.newDocumentId,
-      kind: 'replace', status: 'archived', originLabel: replacement.files[0]!.originLabel,
+      kind: 'replace', status: 'archived', originLabel: assess2.files[0]!.originLabel,
     })
     expect(new Set(latest.d4IntakeOrigins?.map(x => x.sha256)).size).toBe(2)
     expect(() => claimD4Intake(replacement.token, 903)).toThrow('D4_INTAKE_TOKEN_INVALID')
