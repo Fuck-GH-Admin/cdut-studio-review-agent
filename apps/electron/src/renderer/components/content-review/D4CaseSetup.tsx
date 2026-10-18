@@ -1,20 +1,20 @@
 import * as React from 'react'
-import type { D4ClientSelection, D4ClientTemplate, D2TargetBinding } from '@profer/shared'
+import type { D2ScenarioSelection, D4ClientSelection, D4ClientTemplate } from '@profer/shared'
+import { D4GenericObjectForm, isValidD4GenericForm } from './D4GenericObjectForm'
 
-/** 受控候选的场景输入；只改变案卷选择，不改写冻结作者态。 */
+/** P1-A/B: human-confirmed real object selections; no editable scenario JSON required. */
 export function D4CaseSetup({ onChange }: { onChange: (value: D4ClientSelection | undefined) => void }): React.ReactElement {
   const [templates, setTemplates] = React.useState<D4ClientTemplate[]>([])
   const [templateId, setTemplateId] = React.useState('')
-  const [draft, setDraft] = React.useState('')
+  const [selection, setSelection] = React.useState<D2ScenarioSelection>()
   const [confirmed, setConfirmed] = React.useState(false)
   const [studentFixture, setStudentFixture] = React.useState(false)
   const [error, setError] = React.useState('')
   const template = templates.find(t => t.templateId === templateId)
-  let selection: D4ClientSelection['selection'] | undefined
-  try {
-    const parsed = draft ? JSON.parse(draft) : undefined
-    if (parsed && Array.isArray(parsed.targets) && parsed.targets.every((t: D2TargetBinding) => t && typeof t.title === 'string' && (!t.conditions || (Array.isArray(t.conditions) && t.conditions.every(c => c && typeof c.id === 'string' && typeof c.applicability === 'string'))))) selection = parsed
-  } catch { /* 编辑时允许暂时不完整，禁止提交。 */ }
+  const generic = !!template?.businessTypes?.length
+  const canConfirm = !!template && !!selection && (generic
+    ? isValidD4GenericForm(template, selection)
+    : selection.targets.length > 0 && JSON.stringify(selection) === JSON.stringify(template.selection))
 
   React.useEffect(() => {
     let active = true
@@ -23,57 +23,66 @@ export function D4CaseSetup({ onChange }: { onChange: (value: D4ClientSelection 
     return () => { active = false }
   }, [])
   React.useEffect(() => {
-    let value: D4ClientSelection | undefined
-    try {
-      const selected = JSON.parse(draft)
-      if (confirmed && template && selected.templateId === template.templateId && selected.version === template.version && Array.isArray(selected.targets)) {
-        value = { selection: selected, useControlledStudentFixture: studentFixture }
-      }
-    } catch { /* 非法 JSON 由提交状态直接提示。 */ }
-    onChange(value)
-  }, [draft, confirmed, studentFixture, template, onChange])
+    onChange(confirmed && canConfirm && selection
+      ? { selection, useControlledStudentFixture: studentFixture, reviewerConfirmation: 'explicit-ui-confirmation' }
+      : undefined)
+  }, [confirmed, canConfirm, selection, studentFixture, onChange])
 
-  const updateTarget = (index: number, patch: Partial<D2TargetBinding>): void => {
-    if (!selection) return
-    setDraft(JSON.stringify({ ...selection, targets: selection.targets.map((target, i) => i === index ? { ...target, ...patch } : target) }, null, 2))
+  const selectTemplate = (id: string): void => {
+    const next = templates.find(t => t.templateId === id)
+    setTemplateId(id)
+    setSelection(next ? next.businessTypes?.length
+      ? { templateId: next.templateId, version: next.version, targets: [] }
+      : structuredClone(next.selection) : undefined)
+    setConfirmed(false)
+    setStudentFixture(false)
+  }
+  const updateSelection = (value: D2ScenarioSelection): void => {
+    setSelection(value)
     setConfirmed(false)
   }
+
   return <div className="space-y-3 rounded-lg bg-muted/40 p-3 text-sm" data-testid="d4-case-setup">
-    <p className="text-amber-700 dark:text-amber-300">D4 候选 · 技术预审。初始值为受控合成示例，请逐对象核对。条件改变后须新建案卷。</p>
-    <label className="block">D4 模板
-      <select aria-label="D4 技术预审模板" className="mt-1 h-9 w-full rounded-md border bg-background px-2" value={templateId} onChange={e => {
-        const next = templates.find(t => t.templateId === e.target.value)
-        setTemplateId(e.target.value); setDraft(next ? JSON.stringify(next.selection, null, 2) : ''); setConfirmed(false); setStudentFixture(false)
-      }}>
+    <p className="text-amber-700 dark:text-amber-300">
+      D4 候选 · 技术预审。业务选择不代表学校规则授权，条件未知时请保持“未知·待核”。
+    </p>
+    <label className="block">审核事项模板
+      <select aria-label="D4 技术预审模板" className="mt-1 h-9 w-full rounded-md border bg-background px-2"
+        value={templateId} onChange={e => selectTemplate(e.target.value)}>
         <option value="">选择受控 D4 候选（{templates.length} 套）…</option>
-        {templates.map(t => <option key={t.templateId} value={t.templateId}>{t.domain} · {t.templateId} · {t.name}</option>)}
+        {templates.map(t => <option key={t.templateId} value={t.templateId}>
+          {t.domain} · {t.name} · {t.templateId}
+        </option>)}
       </select>
     </label>
-    {selection?.targets?.map((target, index) => <fieldset key={index} className="space-y-2 rounded-lg bg-background p-2">
-      <legend className="px-1">对象 {index + 1} · {target.subjectId}</legend>
-      <input aria-label={`对象 ${index + 1} 名称`} className="w-full rounded border bg-background p-1.5" value={target.title} onChange={e => updateTarget(index, { title: e.target.value })} />
-      {target.kind === 'generic-object' && template && <>
-        {template.primary.length > 0 && <label className="block">主场景（互斥）
-          <select aria-label={`对象 ${index + 1} 主场景`} className="ml-2 rounded border bg-background p-1" value={target.scenario} onChange={e => updateTarget(index, { scenario: e.target.value })}>
-            {template.primary.map(id => <option key={id} value={id}>{id}</option>)}
-          </select>
-        </label>}
-        <div className="grid grid-cols-2 gap-2">{target.conditions?.map((condition, ci) => <label key={condition.id}>{condition.id}
-          <select aria-label={`对象 ${index + 1} 条件 ${condition.id}`} className="ml-1 rounded border bg-background p-1" value={condition.applicability} onChange={e => {
-            const applicability = e.target.value as typeof condition.applicability
-            updateTarget(index, { conditions: target.conditions!.map((c, i) => i === ci ? { ...c, applicability, decidedBy: applicability === 'unknown' ? 'undetermined' : 'reviewer' } : c) })
-          }}>
-            <option value="unknown">未知 · 待核</option><option value="applicable">适用</option><option value="not-applicable">不适用</option>
-          </select>
-        </label>)}</div>
-      </>}
-    </fieldset>)}
-    {template && <details><summary className="cursor-pointer">对象标识与完整场景 JSON</summary>
-      <textarea aria-label="D4 场景 JSON" className="mt-2 h-48 w-full rounded border bg-background p-2 font-mono text-xs" value={draft} onChange={e => { setDraft(e.target.value); setConfirmed(false) }} />
+    {template && selection && (generic
+      ? <D4GenericObjectForm template={template} selection={selection} onChange={updateSelection}/>
+      : <div className="space-y-1 rounded border p-3">
+        <p className="font-medium">此模板使用特殊对象合同，暂保留独立受控技术输入。</p>
+        <p className="text-xs text-muted-foreground">
+          不能把校园卡、档案操作或学籍字段伪装成通用业务对象；本轮尚不开放真实学籍登记接口。
+        </p>
+        <p className="text-xs text-muted-foreground">预设对象：{selection.targets.map(t => t.title).join('、')}</p>
+      </div>)}
+    {template?.controlledStudentFixture && <label className="flex gap-2">
+      <input type="checkbox" checked={studentFixture}
+        onChange={e => { setStudentFixture(e.target.checked); setConfirmed(false) }}/>
+      使用随包受控合成学籍快照（仅技术测试，不是正式学籍底账）
+    </label>}
+    {template && selection && <details className="text-xs">
+      <summary className="cursor-pointer">查看技术标识和固定场景输入（只读）</summary>
+      <pre className="mt-2 max-h-40 overflow-auto rounded border bg-background p-2 whitespace-pre-wrap break-all">
+        {JSON.stringify(selection, null, 2)}
+      </pre>
     </details>}
-    {template?.controlledStudentFixture && <label className="flex gap-2"><input type="checkbox" checked={studentFixture} onChange={e => { setStudentFixture(e.target.checked); setConfirmed(false) }} />使用随包的受控合成学籍快照（姓名/证号独立字段；非正式学籍接口）</label>}
-    {template && <label className="flex gap-2"><input aria-label="确认 D4 对象和条件" type="checkbox" checked={confirmed} onChange={e => setConfirmed(e.target.checked)} />我已核对对象、场景、条件及其来源版本，按以上选择创建固定任务。</label>}
-    {draft && !selection && <p role="alert" className="text-destructive">场景 JSON 格式不正确</p>}
+    {template && <label className="flex gap-2">
+      <input aria-label="确认 D4 对象和条件" type="checkbox" disabled={!canConfirm}
+        checked={confirmed && canConfirm} onChange={e => setConfirmed(e.target.checked)}/>
+      我已确认对象、主场景和条件选择；来源是作者态锚点，不证明事实或行政授权。确认后创建新固定案卷。
+    </label>}
+    {template && !canConfirm && <p role="alert" className="text-amber-700 dark:text-amber-300">
+      请至少添加一个对象、填写名称并选择主场景，才能确认建案。
+    </p>}
     {error && <p role="alert" className="text-destructive">{error}</p>}
   </div>
 }
