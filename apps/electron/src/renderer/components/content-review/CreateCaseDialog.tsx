@@ -34,7 +34,7 @@ import { cn } from '@/lib/utils'
 import type { CreateCaseInput } from './use-review-actions'
 import { D4CaseSetup } from './D4CaseSetup'
 import { D4IntakePicker } from './D4IntakePicker'
-import { createReviewCaseSubmitLock } from './review-case-submit-lock'
+import { createReviewCaseSubmitLock, runReviewCaseSubmission } from './review-case-submit-lock'
 import type { D4IntakePreview } from '@profer/shared'
 
 /** 审核类型选项（与主进程 CASE_TYPES 白名单一致） */
@@ -81,7 +81,8 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
     setCaseType('综合测评')
     setDomainPackId(DEFAULT_DOMAIN_PACK_ID)
     setTemplateKey('')
-    submitLock.current.release()
+    // A fresh committed open, never a settled Promise, resets the success latch.
+    submitLock.current.openSession()
     setSubmitting(false)
     setD4Mode(false)
     setD4(undefined)
@@ -103,11 +104,11 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-    // Ref-backed synchronous acquire wins over duplicate clicks before React re-renders.
-    if (!canSubmit || !submitLock.current.acquire()) return
-    setSubmitting(true)
-    try {
-      const created = await onCreate({
+    if (!open || !canSubmit) return
+    // Shared by mouse and Enter: synchronous acquire happens before any Promise/React commit.
+    await runReviewCaseSubmission(
+      submitLock.current,
+      () => onCreate({
         title: title.trim(),
         type: d4Mode ? '自定义审核' : caseType,
         applicant: applicant.trim(),
@@ -115,22 +116,29 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
         domainPackId,
         reviewTemplate: !d4Mode && selectedTemplate ? { templateId: selectedTemplate.templateId, version: selectedTemplate.version } : undefined,
         ...(d4Mode && d4 ? { d4: { ...d4, ...(intake ? { intakeToken: intake.token } : {}) } } : {}),
-      })
-      if (!created) return
-      const importFailures = (created as typeof created & { d4IntakeFailures?: string[] }).d4IntakeFailures ?? []
-      if (importFailures.length) toast.error('案卷已创建，但部分暂存材料导入/解析失败：' + importFailures.join('；'))
-      toast.success(`已创建审核项目：${created.title}`, {
-        description: intake ? '已按原件解析链导入选定材料；请核对材料与对象关联，再开始审核。' : '接下来可导入审核依据、待审文件与证明材料。',
-      })
-      onOpenChange(false)
-    } finally {
-      submitLock.current.release()
-      setSubmitting(false)
-    }
+      }),
+      () => setSubmitting(true),
+      (created) => {
+        const importFailures = (created as typeof created & { d4IntakeFailures?: string[] }).d4IntakeFailures ?? []
+        if (importFailures.length) toast.error('案卷已创建，但部分暂存材料导入/解析失败：' + importFailures.join('；'))
+        toast.success(`已创建审核项目：${created.title}`, {
+          description: intake ? '已按原件解析链导入选定材料；请核对材料与对象关联，再开始审核。' : '接下来可导入审核依据、待审文件与证明材料。',
+        })
+        // Closing can be delayed by the parent/Radix animation. Keep admission
+        // closed now; do not discard the already-consumed Main intake token.
+        submitLock.current.closeSession()
+        onOpenChange(false)
+      },
+      () => setSubmitting(false),
+    )
   }
 
   const closeDialog = (next: boolean): void => {
-    if (!next && intake?.token) void window.reviewAPI.discardD4Intake(intake.token).catch(() => false)
+    if (!next) {
+      // Invalidate any Main response returning after ESC/cancel and a new open.
+      submitLock.current.closeSession()
+      if (intake?.token) void window.reviewAPI.discardD4Intake(intake.token).catch(() => false)
+    }
     onOpenChange(next)
   }
   return (
