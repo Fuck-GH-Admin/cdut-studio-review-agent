@@ -28,6 +28,7 @@
 12. **D4 Subject 事实确认可用化**：原 `CenterPanel` 的 V2 Observation 校对、人工事实录入和最终认定仅在 V1 申报条目分支内可用，D4 Subject 页面只有静态对象卡。现直接把事实候选卡、单对象来源核验、人工更正、人工新增及确认关联摘要接到每一个独立 D2 Subject；各对象之间不复用事实或来源状态。字段候选来自该 Subject 的固定 `evidenceCoverage.fieldKey`/`supportsFacts` 或嵌套 `confirmed-observation` 执行 gate，仍不构成校方规则授权。
 13. **真实 SourceRef 与来源定位**：`w1-fact-source` 只接受当前案卷仍有效、parseStatus 为 parsed/partial 的 DocumentVersion，审核人明确选择文件和可选的具体文本块；无法可靠对应到块则声明为文件级。V2 原生 SourceRef 的准确坐标，仅当 caseId、parseRevision 和实际块完全一致才继承。模型摘录只在非空、唯一完全匹配时得到块精度；模糊匹配不伪造定位。候选事实无有效来源时不能直接人工确认；支持选择来源并点击原始资料定位、补充理由与更正。全部提交沿用 `CorrectObservation` 的 V2 expectedRevision/actor/append 机制。
 14. **业务表单兜底语义**：候选模板自身如果没有声明 `TemplateVersion.fields`，事实 UI 不把任意自然语言当字段；只使用本 Subject 的冻结 D2 事实责任键。无法提供业务标签时显示真实字段 key 而非所有字段同名为“补充信息”。特殊 G01-I 学籍没有被转换成未经授权的通用学生底账。
+15. **字段类型与跨案防护**：`w1-fact-value.ts` 按 V2 FieldValue 原 kind 校验 number/date/boolean/enum/multi/text，不再把数字更正悄悄降级成字符串；错误数值、无效日期、无授权 enum 拒绝并在事实卡显示原因。当前案卷必须包含被操作 Subject；D2 候选字段必须来自本对象固定 `evidenceCoverage` / gate，或已存在的 Subject 字段；超出范围的候选事实可见但不得点击确认。人工无有效来源禁止保存，错误通过 UI 可见并保留编辑状态。
 
 ### 本轮自动化覆盖
 
@@ -39,6 +40,7 @@
 
 - `review-d4-case-batch.test.ts`：在真实 D2 案卷使用本机 picker 暂存，再检验追加、SHA 重复拒绝、跨 sender、旧 revision、伪造替换目标、成功新版归档旧件、永久来源 hash 与重复 token、已建案文件夹 skip 强制同意。
 - `w1-fact-source.test.ts`：同案 Subject 自己的候选事实与 gate 递归键、真实 block/paragraph 精度、file 级降级、已归档/未解析来源拒绝、伪造块和旧 parseRevision 阴性测试。
+- `w1-fact-value.test.ts`：数值和单位保留、非法数字、日期/布尔/枚举、多值去重、未声明对象种类的拒绝；`review-d4-case-batch.test.ts` 补真实 D2 Subject `CorrectObservation` 原件 SourceRef + Receipt 持久化回归。
 - C10 Main 已消费/跨 sender 安全回归持续沿用 #126，C10 独立 GUI 门禁仍未签。
 - **CI 状态须以 PR #129 最后固定 HEAD 的实际远端运行回执为准**，不以本台账预先宣布通过。
 
