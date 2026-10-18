@@ -87,3 +87,15 @@
 - **尚未实施/签收**：可取消且可断电恢复的持久批次任务队列；大批次 IPC 流式传输；主动恢复历史版本的授权操作；完整 PDF 真页、DOCX 段落、Excel sheet/cell、扫描 OCR 与图像原件对照 GUI 正反综合验证；全量 D2 来源事实批量人工校正与候选事项拆案；冻结作者态业务字段的完整 schema/types/required/enum 适配与校验；独立 Electron 全链路测试。已有来源块 UI 不等于所有格式的精确预览合格。
 - **后续实施顺序**：先等最终 CI、修复实际回归；继续 W1 C2 的可信持久批次检查点/中断恢复和可操作修订恢复；再完成 C3 多格式真实原件定位/逐对象纠错；再为 C4 建立仅来源于已冻结作者事实的可信声明映射或新增经过审定的业务表单元数据契约；功能冻结 SHA 后统一独立 Electron/Xvfb 和目标机验收。不得以本次代码 CI 代替 Electron GUI。
 - PR #129 始终 Draft，不合并 main。C10 #128 仍为 `C10_R03_BLOCKED_INPUT`，P06/Provider/校方真实联网能力均独立门禁。
+
+
+### 续开发收口补记：最终代码候选已通过 CI（2026-10-19）
+
+- **完整业务代码固定 SHA**：`c0704d11a8bb0ac342e13b565960ddd8a25a1f5f`（此后如有仅文档提交，不得将其解释为新的代码功能验证）。
+- 原件预览产品接线（`3321f0a1b194a16764da5146d0770f70998b782b`）：`D4MaterialHistory` 为有效、归档、来源未登记但仍在档的原件提供操作入口；用原有 `getWorkspaceDocumentPreviewPath()` 经 Main `resolveCaseDocumentPreviewPath()` 对当前案卷的文件尺寸、realpath 与越界/符号链接做复核，再交现有 `FilePreviewDialog` 按格式展示 PDF、Office、图片等，不接收 Renderer 提交的磁盘路径。增加历史归档版本原件路径回归测试。**真实目标系统上的格式精度、页/单元格/图片定位没有 GUI PASS。**
+- 补全旧来源缺失的归档展示（`c0704d11a8bb0ac342e13b565960ddd8a25a1f5f`）：无 W1 SHA 的历史归档原件仍在历史栏明示，并显示人工来源复核状态；新增纯逻辑负例。
+- **最新代码 CI 严格结论 7/7 SUCCESS**：
+  - Review Baseline CI `39168171194`；D2 Scoped Pi Review Tests `39168171178`；D3-R1 G01-I typed runtime evidence `39168171193`；D4 COMMON-01-02 runtime evidence `39168171183`；D4 unified G01–G08 `39168171240`；D3 MD Dynamic and Structured Gates `39168171264`；PR CI `39168171281`。
+  - PR CI 运行了 `3809` 项 / `444` 个测试文件，`3803 pass`、`6 skip`、`0 fail`，TypeScript workspace 检查、包边界、Main/Preload/Renderer 构建均通过。6 个 skip 为 macOS shell、Windows PowerShell 和另行门禁的 MD 独立验收，不可擅自记为通过。
+  - 中间提交 `a5abf42a11c90400d8906cbb2e378304647f49ef` 曾因两处类型错误失败；`f1a637fceb7d858a947b1e12ff52bf2ad13c7568` 修正，最终 `c0704d1` 通过全部门禁。部分中间 PR CI 因新提交被取消，不能计入失败或成功。
+- **仍不签收 W1 完成或 Electron GUI**：C2 持久恢复/任务队列、C3 真格式精确定位与跨对象全流程、C4 冻结字段类型与可校验业务表单均未完全完成。继续大型产品开发批次，冻结新的代码候选后再统一 Electron 实机综合验收。PR 继续 Draft；C10 #128 仍为 `C10_R03_BLOCKED_INPUT`。
