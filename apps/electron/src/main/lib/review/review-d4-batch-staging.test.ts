@@ -45,13 +45,14 @@ describe('W1 native OS picked folder, ZIP, duplicate and invalid file handling',
     zip.file('folder/copy-of-application.md', 'classroom zip source')
     const path = join(workspace, 'source.zip')
     writeFileSync(path, await zip.generateAsync({ type: 'nodebuffer' }))
-    const result = await stageD4NativeBatch([path], destination())
+    const stageDir = destination()
+    const result = await stageD4NativeBatch([path], stageDir)
     expect(result.files).toHaveLength(2)
     expect(result.files.map(x => x.originLabel)).toContain('source.zip/folder/教室借用申请.md')
     expect(result.skipped).toHaveLength(2)
     expect(result.skipped.some(x => x.reason.includes('SHA-256'))).toBe(true)
     expect(result.skipped.some(x => x.reason.includes('不支持'))).toBe(true)
-    expect(result.files.some(x => x.sourcePath.includes('folder'))).toBe(false)
+    expect(result.files.every(x => x.sourcePath.startsWith(stageDir + '/'))).toBe(true)
   })
 
   test('ZIP slip names are always rejected before filesystem extraction', () => {
