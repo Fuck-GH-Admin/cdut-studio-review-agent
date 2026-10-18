@@ -1,0 +1,107 @@
+name: P06 L02-00 R02 independent history and controlled checks
+on:
+  pull_request:
+    paths:
+      - 'scripts/qa/p06-l02-00-r02-independent.py'
+      - '.github/workflows/p06-l02-00-r02-independent.yml'
+      - 'docs/design/review-agent/61-p06-l02-00-r02-independent-reexecution-20261018.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: p06-l02-r02-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  historical-independent:
+    name: R02 archival SHA256, exit provenance and 9-case matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Independently validate archive and preserve evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence-r02
+          git rev-parse HEAD > evidence-r02/candidate-commit.txt
+          git rev-parse HEAD^{tree} > evidence-r02/candidate-tree.txt
+          python3 --version > evidence-r02/python-version.txt
+          set +e
+          python3 scripts/qa/p06-l02-00-r02-independent.py --out evidence-r02/nine-case-matrix.json > evidence-r02/stdout.log 2> evidence-r02/stderr.log
+          rc=$?
+          set -e
+          printf '%s\n' "$rc" > evidence-r02/exit-code.txt
+          (cd evidence-r02 && sha256sum *.txt *.log *.json > SHA256SUMS 2>/dev/null) || true
+          cat evidence-r02/stdout.log
+          cat evidence-r02/stderr.log
+          exit "$rc"
+      - name: Preserve independent history and first-failure result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p06-l02-r02-archival-independent
+          path: evidence-r02/
+          if-no-files-found: warn
+          retention-days: 60
+
+  controlled-regression:
+    name: R02 Bun REAL controlled fallback and SourceRef tests (not LIVE E2E)
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 35
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute controlled tests and archive exact exit codes
+        shell: bash
+        run: |
+          set -u -o pipefail
+          out="$GITHUB_WORKSPACE/evidence-r02-controlled"
+          mkdir -p "$out"
+          git rev-parse HEAD > "$out/candidate-commit.txt"
+          git rev-parse HEAD^{tree} > "$out/candidate-tree.txt"
+          uname -a > "$out/os.txt"
+          bun --version > "$out/bun.txt"
+          node --version > "$out/node.txt"
+          bun install --frozen-lockfile > "$out/install.log" 2>&1
+          install_rc=$?
+          echo "$install_rc" > "$out/install-exit.txt"
+          test_rc=125
+          if [ "$install_rc" -eq 0 ]; then
+            bun test --isolate --timeout 30000 \
+              apps/electron/src/main/lib/review/review-batch-case-fallback.p06.test.ts \
+              apps/electron/src/main/lib/review/review-retired-source-ref.l02-u1.test.ts \
+              apps/electron/src/main/lib/review/review-office-v2-sourceref-boundary.l02.test.ts \
+              > "$out/controlled-tests.log" 2>&1
+            test_rc=$?
+          else
+            printf '%s\n' 'NOT_RUN_INSTALL_FAILED' > "$out/controlled-tests.log"
+          fi
+          echo "$test_rc" > "$out/tests-exit.txt"
+          git status --porcelain=v1 > "$out/working-tree-after.txt"
+          (cd "$out" && sha256sum *.txt *.log > SHA256SUMS 2>/dev/null) || true
+          cat "$out/controlled-tests.log"
+          if [ "$install_rc" -ne 0 ]; then exit "$install_rc"; fi
+          exit "$test_rc"
+      - name: Preserve NEW controlled diagnostics (not provider evidence)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p06-l02-r02-controlled-regression
+          path: evidence-r02-controlled/
+          if-no-files-found: warn
+          retention-days: 60
