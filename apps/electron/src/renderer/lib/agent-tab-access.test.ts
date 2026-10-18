@@ -141,3 +141,51 @@ test('Main-authorized work tabs preserve archived and draft normal session compa
   expect(await ensureOrdinaryWorkTabOwner(store, 'draft', async () => draft)).toBe(true)
   expect(store.get(agentSessionsAtom).map(s => s.id).sort()).toEqual(['archived', 'draft'])
 })
+
+test('P02 删除投影的本地撤销同步清除 Agent 列表和已有 Preview 槽', () => {
+  const store = createStore()
+  store.set(agentSessionsAtom, [ordinary, archived])
+  expect(openFilePreviewTab(store, 'ordinary', { filePath: '/tmp/synthetic-preview.txt' }))
+    .toBe('/tmp/synthetic-preview.txt')
+  expect(store.get(previewFileMapAtom).has('ordinary')).toBe(true)
+  markAgentSessionRevoked(store, 'ordinary')
+  expect(store.get(agentSessionsAtom).some(s => s.id === 'ordinary')).toBe(false)
+  expect(store.get(agentSessionsAtom).some(s => s.id === 'archived')).toBe(true)
+  expect(store.get(previewFileMapAtom).has('ordinary')).toBe(false)
+  expect(openFilePreviewTab(store, 'ordinary', { filePath: '/tmp/replayed.txt' })).toBe('')
+})
+
+test('P02 旧 Main metadata 被删除后释放：新的权威 Main 返回 null 时不能复活列表和预览', async () => {
+  const store = createStore()
+  let release!: (meta: AgentSessionMeta | null) => void
+  let lookups = 0
+  const oldResponse = new Promise<AgentSessionMeta | null>(resolve => { release = resolve })
+  const pending = openFilePreviewTabAuthorized(
+    store, 'ordinary', { filePath: '/tmp/replayed.txt' }, {}, () => true,
+    () => oldResponse,
+    async () => { lookups++; return null }, // 真 Main 重新读取已删除会话
+  )
+  release(ordinary) // 删除前捕获的合法原始回复
+  expect(await pending).toBe('')
+  expect(lookups).toBe(1)
+  expect(store.get(agentSessionsAtom)).toHaveLength(0)
+  expect(store.get(previewFileMapAtom).size).toBe(0)
+})
+
+test('P02 普通合法 Main 查询确认后仍能打开预览；旧修订不覆盖更高修订', async () => {
+  const store = createStore()
+  const older = session('p02-active', { revision: 1 })
+  const current = session('p02-active', { revision: 4, title: '最新合法会话' })
+  const first = await openFilePreviewTabAuthorized(
+    store, older.id, { filePath: '/tmp/safe.txt' }, {}, () => true,
+    async () => older,
+    async () => current,
+  )
+  expect(first).toBe('/tmp/safe.txt')
+  expect(store.get(agentSessionsAtom).find(s => s.id === older.id)?.title).toBe('最新合法会话')
+  const stale = createStore()
+  expect(await openFilePreviewTabAuthorized(stale, older.id, { filePath: '/tmp/stale.txt' }, {},
+    () => true, async () => current, async () => older)).toBe('')
+  expect(stale.get(agentSessionsAtom)).toHaveLength(0)
+  expect(stale.get(previewFileMapAtom).size).toBe(0)
+})

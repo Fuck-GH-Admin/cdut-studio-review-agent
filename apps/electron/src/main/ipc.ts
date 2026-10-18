@@ -317,7 +317,7 @@ import {
 } from './lib/agent-session-manager'
 import { listAgentPresets, listGlobalAgentPresets, getDefaultPresetId, setDefaultPresetId, setDefaultPresetReference, enableGlobalPresetInWorkspace, disableGlobalPresetInWorkspace, rebindAndDisableGlobalPresetScope, setWorkspacePresetEnabled, rebindAgentSessionPreset, rebindAutomationPreset, createAgentPreset, createGlobalAgentPreset, promoteWorkspacePresetToGlobal, copyAgentPreset, copyPresetToWorkspace, updateAgentPreset, updateGlobalAgentPreset, deleteAgentPreset, deleteGlobalAgentPreset, getAgentPreset, getPresetReferenceReport, serializeAgentPresetsForExport, importAgentPresets } from './lib/agent-preset-manager'
 import { runAgent, stopAgent, stopAgentAndWait, stopGoalRunAndWait, isGoalRunActive, beginAgentSessionDeletion, endAgentSessionDeletion, generateAgentTitle, regenerateAgentTitle, saveFilesToAgentSession, saveFilesToWorkspaceFiles, isAgentSessionActive, queueAgentMessage, updateAgentPermissionMode, rewindAgentSession, restoreActiveAgentStreams, getAgentRuntimeCapabilities, getAgentTaskOutput, stopAgentTask, emitSessionStreamEvent, agentCatalogInvalidationPublisher } from './lib/agent-service'
-import { publishAgentSessionProjection, updateAgentSessionUiMeta } from './lib/agent-session-ui-projection-publisher'
+import { deleteAgentSessionAndPublish, publishAgentSessionProjection, updateAgentSessionUiMeta } from './lib/agent-session-ui-projection-publisher'
 import { mapSdkShellTasks, isSameProcess, terminateProcessTreeGracefully, type MonitoredProcess } from './lib/process-monitor'
 import { listOwnedRuntimeProcesses, markOwnedRuntimeProcessExited, onRuntimeProcessRegistryChanged } from './lib/runtime-process-registry'
 import { isProcessHandleOwnedBySession, processHandleFromRuntimeRecord } from './lib/process-handle'
@@ -3217,7 +3217,8 @@ export function registerIpcHandlers(): void {
           exitPlanService.clearSessionPending(sessionId)
           void browserController.close(sessionId)
         },
-        deleteSession: (sessionId) => deleteAgentSession(sessionId, { backgroundDiskCleanup: true }),
+        deleteSession: (sessionId) => deleteAgentSessionAndPublish(sessionId,
+          (id) => deleteAgentSession(id, { backgroundDiskCleanup: true })),
       })
     }
   )
@@ -3546,7 +3547,7 @@ export function registerIpcHandlers(): void {
             exitPlanService.clearSessionPending(id)
             void browserController.close(id)
           },
-          deleteSession: deleteAgentSession,
+          deleteSession: (sessionId) => deleteAgentSessionAndPublish(sessionId, deleteAgentSession),
         })
       }
       for (const automationId of affectedAutomationIds) {

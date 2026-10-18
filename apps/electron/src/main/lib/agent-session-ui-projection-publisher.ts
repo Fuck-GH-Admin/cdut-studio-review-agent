@@ -1,6 +1,6 @@
 import { isReviewOwnedAgentSession, type AgentSessionMeta, type AgentStreamPayload } from '@profer/shared'
 import type { AgentEventBus } from './agent-event-bus'
-import { isReviewOwnedOrDeletedAgentSessionId, updateAgentSessionMeta } from './agent-session-manager'
+import { getAgentSessionMeta, isReviewOwnedOrDeletedAgentSessionId, updateAgentSessionMeta } from './agent-session-manager'
 import { buildAgentSessionUiProjection } from './agent-session-ui-projection'
 
 let projectionEventBus: AgentEventBus | null = null
@@ -47,4 +47,20 @@ export function publishAgentSessionDeletion(sessionId: string, revision: number)
     sessionId,
     revision,
   })
+}
+
+/**
+ * 只在持久删除成功后向普通桌面发布删除投影。读取删除前 revision，
+ * 禁止把旧 upsert 的较低修订当成新实体；审核 owner 的投影始终隐身。
+ * 删除失败必须保留原错误，不能伪造已经删除的事件。
+ */
+export function deleteAgentSessionAndPublish(
+  sessionId: string,
+  deletePersisted: (id: string) => void,
+): void {
+  const before = getAgentSessionMeta(sessionId)
+  deletePersisted(sessionId)
+  if (before && !isReviewOwnedAgentSession(before)) {
+    publishAgentSessionDeletion(sessionId, (before.revision ?? 0) + 1)
+  }
 }

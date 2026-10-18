@@ -1,6 +1,7 @@
 import { isReviewOwnedAgentSession, type AgentSessionMeta } from '@profer/shared'
 import type { TabItem } from '@/atoms/tab-atoms'
-import { agentSessionsAtom } from '@/atoms/agent-atoms'
+import { agentDiffPanelTabAtom, agentSessionsAtom } from '@/atoms/agent-atoms'
+import { previewFileMapAtom } from '@/atoms/preview-atoms'
 import { upsertAgentSession } from '@/lib/agent-session-list'
 import { atom, getDefaultStore } from 'jotai'
 
@@ -10,7 +11,21 @@ type Store = ReturnType<typeof getDefaultStore>
 export const revokedAgentSessionIdsAtom = atom<ReadonlySet<string>>(new Set<string>())
 
 export function markAgentSessionRevoked(store: Store, id: string): void {
+  // 先隔离 ID，再清理派生 UI：异步旧 lookup 不得在同一 tick 重开 Preview。
   store.set(revokedAgentSessionIdsAtom, (previous) => new Set([...previous, id]))
+  store.set(agentSessionsAtom, (previous) => previous.filter((session) => session.id !== id))
+  store.set(previewFileMapAtom, (previous) => {
+    if (!previous.has(id)) return previous
+    const next = new Map(previous)
+    next.delete(id)
+    return next
+  })
+  store.set(agentDiffPanelTabAtom, (previous) => {
+    if (!previous.has(id)) return previous
+    const next = new Map(previous)
+    next.delete(id)
+    return next
+  })
 }
 
 /** Historical settings are untrusted. Only persisted, still-existing ordinary Agent sessions can restore. */
