@@ -317,7 +317,8 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                 {facts.map((observation, index) => <WorkspaceObservationCard
                   key={`${String(observation.fieldKey)}-${index}`}
                   observation={observation} aggregate={aggregate} template={workspaceTemplate}
-                  onConfirm={(value, reason) => workspaceActions.confirmObservation(observation, value, reason)}
+                  onConfirm={(value, reason, override) => workspaceActions.confirmObservation(
+                    override ? { ...observation, sourceRefs: [override] } : observation, value, reason)}
                 />)}
                 {!facts.length && <p className="rounded border border-dashed p-2 text-muted-foreground">尚无已提取的事实。可以人工记录有来源的核验结果；没有材料依据时保持未知。</p>}
                 <ManualFactEntry subjectId={subject.id} subjectTitle={subject.title}
@@ -434,7 +435,8 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                             observation={observation}
                             aggregate={aggregate}
                             template={workspaceTemplate}
-                            onConfirm={(value, reason) => workspaceActions.confirmObservation(observation, value, reason)}
+                            onConfirm={(value, reason, override) => workspaceActions.confirmObservation(
+                    override ? { ...observation, sourceRefs: [override] } : observation, value, reason)}
                           />
                         ))}
                       <details className="rounded-lg border border-border/50 px-2.5 py-1.5">
