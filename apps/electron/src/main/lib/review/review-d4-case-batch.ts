@@ -9,7 +9,8 @@ import { importDocumentFromPath, removeDocumentsFromCase } from './case-import'
 import { claimD4Intake, inspectD4Intake, releaseD4Intake } from './review-d4-intake'
 
 type Role = 'application' | 'evidence'
-const BUSY = new Set<string>()
+/** Main-only per-case write guard shared with source replay and batched append. */
+export const D4_CASE_WRITE_BUSY = new Set<string>()
 function base(caseId: string, token: string, role: Role, owner: number) {
   assertSafeId(caseId)
   if (role !== 'application' && role !== 'evidence') throw new Error('D4_BATCH_ROLE_INVALID')
@@ -50,7 +51,7 @@ export async function applyD4CaseBatch(input: {
       !Array.isArray(input.choices) || typeof input.acknowledgeSkipped !== 'boolean') {
     throw new Error('D4_BATCH_INPUT_INVALID')
   }
-  if (BUSY.has(caseId)) throw new Error('D4_BATCH_CASE_BUSY')
+  if (D4_CASE_WRITE_BUSY.has(caseId)) throw new Error('D4_BATCH_CASE_BUSY')
   const review = assess(caseId, token, role, ownerWebContentsId)
   if (review.expectedRevision !== input.expectedRevision) throw new Error('D4_BATCH_STALE_CASE_REVISION')
   if (input.choices.length !== review.files.length) throw new Error('D4_BATCH_PLAN_MISMATCH')
@@ -78,7 +79,7 @@ export async function applyD4CaseBatch(input: {
   const replacementIds = input.choices.flatMap(x => x.kind === 'replace' ? [x.documentId] : [])
   if (replacementIds.length !== new Set(replacementIds).size) throw new Error('D4_BATCH_REPLACEMENT_TARGET_REUSED')
   const intake = claimD4Intake(token, ownerWebContentsId)
-  BUSY.add(caseId)
+  D4_CASE_WRITE_BUSY.add(caseId)
   let consumed = false
   const documents: D4CaseBatchResult['documents'] = []
   const warnings: D4CaseBatchResult['skipped'] = [...review.skipped]
@@ -131,6 +132,6 @@ export async function applyD4CaseBatch(input: {
     return { caseId, documents, skipped: warnings, replacements }
   } finally {
     releaseD4Intake(intake, consumed)
-    BUSY.delete(caseId)
+    D4_CASE_WRITE_BUSY.delete(caseId)
   }
 }
