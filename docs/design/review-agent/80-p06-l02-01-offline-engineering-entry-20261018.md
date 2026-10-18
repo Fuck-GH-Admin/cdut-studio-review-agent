@@ -32,6 +32,8 @@
 
 首次 PR #121 CI [#39132697022](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39132697022) 验证发现 `same ResolveSupplement request replay must not requeue a batch already marked done` **RED**：`Expected done / Received queued`。源码原本在 `submitCommand` 已按 `requestId` 返回缓存回执后，仍调用 `requeueCaseAfterSupplement`，重复写入批次队列。修补以 `result.entity !== undefined` 明确区分本轮真正执行和旧缓存回执（这是当前 `submitCommand` 明确返回形状）；**仅新执行的成功满足操作触发原有 requeue**，不修改其他工作流合同。保留首次 RED，不重写历史。
 
+**补充的首败与修正（必须保留）**：第二次提交 `c576fe7a` 将 `result.entity !== undefined` 作为重放过滤条件，但专项 Review batch focused CI [#39133158848](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39133158848) 发现两条正常首次补件满足后入队测试反而 RED（`Expected queued / Received done`）。原因是 `submitCommand` 的真实合同将 `mutate(draft)` **返回值**放在 `result.entity`，原 `resolveSupplementV2` 在 handler 返回值顶层错误放置 `entity`，实际上一直没有产出新实体。后续最小修复 `72dad6b0` 调整 `mutate` 返回真实已处理补件实体，新执行拥有实体、缓存重放仍无实体；测试 `18b92073` 还显式核验首次实体和回放无实体。必须在**最终 HEAD**上同时证明“首次自动入队”和“重放不再二次入队”两方向，否则不允许签 PASS。首次 RED 与第二次 RED 都不能从报告抹去。
+
 同一首次完整 CI 另出现不在本改动范围内的 `goal-session-service.test.ts` 异步用例 `空白证据或无运行终态不能被桥接改回成功`：Expected failed / Received active。初步作为 **INDEPENDENT_FAILURE_PENDING_ATTRIBUTION**，不是凭一次结果声称 flake，也不能无独立复验直接归因为本轮补件修复。后续 CI 根据最终同 SHA 独立核验；若仍失败应隔离验证 Goal 代码路径、时序和 runner 环境，不顺手改非目标生产代码求绿。
 
 ## 4. L02-01 下一批次开发清单（待独立工程执行）
