@@ -748,7 +748,7 @@ export function registerReviewIpc(): void {
     const { listBatchStatesV2 } = require('./batch-store') as typeof import('./batch-store')
     return listBatchStatesV2()
   })
-  ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, (_e, input: { action: 'finalize' | 'reopen' | 'retry' | 'recover' | 'configure-automation' | 'finalize-completed'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown>; caseIds?: string[]; mode?: import('@profer/shared').BatchAutomationMode; confirmed?: boolean }) => {
+  ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, (_e, input: { action: 'finalize' | 'reopen' | 'retry' | 'recover' | 'configure-automation' | 'finalize-completed' | 'requeue-supplement'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown>; caseIds?: string[]; mode?: import('@profer/shared').BatchAutomationMode; confirmed?: boolean; caseId?: string; supplementId?: string; expectedRevision?: number; actor?: import('@profer/shared').Actor }) => {
     if (!input || typeof input.batchId !== 'string' || !input.batchId) throw new Error('无效批次操作')
     const { reopenBatch, retryBatchCases, recoverInterruptedBatch } = require('./batch-store') as typeof import('./batch-store')
     // Legacy free-form renderer snapshots are NOT authoritative decisions.
@@ -756,6 +756,19 @@ export function registerReviewIpc(): void {
     if (input.action === 'finalize') throw new Error('原始快照定稿入口已禁用，请使用核验并定稿')
     if (input.action === 'reopen') return reopenBatch(input.batchId, input.newBatchId ?? `${input.batchId}-r${Date.now().toString(36)}`, input.reason ?? '人工重开')
     if (input.action === 'retry') return retryBatchCases(input.batchId, input.caseIds ?? [])
+    if (input.action === 'requeue-supplement') {
+      if (typeof input.caseId !== 'string' || typeof input.supplementId !== 'string'
+        || !Number.isSafeInteger(input.expectedRevision) || (input.expectedRevision ?? -1) < 0) {
+        throw new Error('补件批次选择必须指定案卷、补件 ID 和最新修订号')
+      }
+      // The renderer cannot grant itself school/teacher authority; Main binds
+      // the reviewed local identity before delegating to the durable batch store.
+      const reviewer = bindLocalReviewerCommand({ actor: input.actor }).actor as import('@profer/shared').Actor
+      const { selectSupplementRequeueBatch } = require('./batch-store') as typeof import('./batch-store')
+      return selectSupplementRequeueBatch(input.caseId, input.batchId, {
+        actor: reviewer, supplementId: input.supplementId, expectedRevision: input.expectedRevision!,
+      }).batch
+    }
     if (input.action === 'recover') return recoverInterruptedBatch(input.batchId)
     if (input.action === 'configure-automation') {
       const { configureBatchAutomation } = require('./batch-store') as typeof import('./batch-store')
