@@ -70,6 +70,8 @@ export interface StageDecisionPayload {
   /** 退回补件所需要素 */
   supplementRequiredElements?: string[]
   supplementReason?: string
+  basedOnRunId?: string
+  inputHash?: string
 }
 
 const isFinalStage = (aggregate: CaseAggregateV2, stageId: string, template: TemplateVersion): boolean => {
@@ -116,11 +118,29 @@ export function recordStageDecision(
         && !isWorkspaceRunStaleV2(aggregate, run.id))
       if (!currentRun) throw new CommandValidationError('STALE_INPUT', '自动核对移交需要本案当前版本的已完成审核运行')
     }
+    const finality: BusinessDecision['finality'] = payload.action === 'final-reject'
+      || (payload.action === 'stage-pass' && isFinalStage(aggregate, task.stageId, template)) ? 'final' : 'stage'
+    // A final decision must be bound to a current persisted Run, not run@rev.
+    // Explicit run bindings on stage-only decisions are validated as well.
+    let verifiedRunId: string | undefined
+    if (finality === 'final' || payload.basedOnRunId !== undefined || payload.inputHash !== undefined) {
+      const { getRunV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+      const { isWorkspaceRunStaleV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+      const run = payload.basedOnRunId ? getRunV2(caseId, payload.basedOnRunId) : undefined
+      if (!run || !payload.inputHash || run.inputManifest.hash !== payload.inputHash
+        || !['completed', 'partially-completed'].includes(run.status)
+        || run.templateId !== aggregate.caseV2.templateId
+        || run.templateVersion !== aggregate.caseV2.templateVersion
+        || run.inputManifest.templateVersion !== aggregate.caseV2.templateVersion
+        || isWorkspaceRunStaleV2(aggregate, run.id)) {
+        throw new CommandValidationError('STALE_INPUT', '正式阶段结论必须引用当前真实且已完成的审核运行')
+      }
+      verifiedRunId = run.id
+    }
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '决定必须附理由')
     if (!aggregate.decisions.every((decision) => decision.taskId !== task.id)) throw new CommandValidationError('INVALID_TRANSITION', '该任务已有决定')
 
     const now = new Date().toISOString()
-    const finality: BusinessDecision['finality'] = payload.action === 'final-reject' || (payload.action === 'stage-pass' && isFinalStage(aggregate, task.stageId, template)) ? 'final' : 'stage'
     return {
       summary: `阶段决定：${payload.action}（${task.stageId}）`,
       mutate: (draft): { decision: BusinessDecision; task?: WorkflowTask; supplement?: SupplementRequest } => {
@@ -139,7 +159,7 @@ export function recordStageDecision(
           result,
           finalScores: payload.finalScores,
           reason: payload.reason.trim(),
-          basedOnRunId: `run@rev${aggregate.caseV2.revision}`,
+          basedOnRunId: verifiedRunId ?? `run@rev${aggregate.caseV2.revision}`,
           basedOnRevision: aggregate.caseV2.revision,
           at: now,
           finality,

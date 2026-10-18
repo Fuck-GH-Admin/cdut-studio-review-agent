@@ -17,6 +17,8 @@ afterAll(() => rmSync(config, { recursive: true, force: true }))
 const { createAggregate, readAggregate } = await import('./case-store-v2')
 const { createBatchV2, readBatchStateV2, updateCaseStatus, selectSupplementRequeueBatch } = await import('./batch-store')
 const { ensureInitialTask, recordStageDecision, respondSupplementV2, resolveSupplementV2 } = await import('./stage-workflow')
+const { saveRunV2 } = await import('./run-store-v2')
+const { computeRunInputHash } = await import('./run-service-v2')
 
 const reviewer = { actorId: 'local-reviewer', actorSource: 'local' as const, role: 'reviewer' as const }
 const student = { actorId: 'synthetic-student', actorSource: 'local' as const, role: 'student' as const }
@@ -40,6 +42,16 @@ async function seed() {
     revision: 0, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
   }
   await createAggregate(caseId, caseV2)
+  const runId = 'run-' + caseId
+  const inputHash = computeRunInputHash(caseV2, [], [])
+  saveRunV2({
+    id: runId, caseId, templateId: template.templateId, templateVersion: template.version,
+    inputManifest: { hash: inputHash, templateVersion: template.version,
+      policyVersions: [], documentVersions: [], observationIds: [], evidenceLinkIds: [] },
+    status: 'completed', checkpoints: [], checks: [], opinions: [],
+    coverage: { documents: [], plannedChecks: 0, completedChecks: 0, effectiveVerdicts: 0, pendingChecks: 0 },
+    diagnostics: [], startedAt: '2026-01-01T00:00:00.000Z', completedAt: '2026-01-01T00:00:01.000Z',
+  })
   const initialized = await ensureInitialTask(caseId, template, reviewer)
   expect(initialized.ok).toBe(true)
   if (!initialized.ok || !initialized.entity) throw new Error('initial task missing')
@@ -49,7 +61,7 @@ async function seed() {
     templateVersion: template.version, policyVersionLock: [],
     caseIds: [caseId], createdAt: new Date().toISOString(),
   })
-  return { caseId, batchId, taskId: initialized.entity.id }
+  return { caseId, batchId, taskId: initialized.entity.id, runId, inputHash }
 }
 
 const command = (id: string, revision: number, actor: typeof reviewer | typeof student, payload: any) =>
@@ -183,17 +195,17 @@ describe('L02-01 human supplement is idempotent across V2 and batch projection',
   })
 
   test('same request ID with modified outcome and stale independent commands cannot silently write', async () => {
-    const { caseId, taskId } = await seed()
+    const { caseId, taskId, runId, inputHash } = await seed()
     let aggregate = readAggregate(caseId)!
     const req = 'decision-'+randomUUID()
     const first = await recordStageDecision(caseId, command(req, aggregate.caseV2.revision, reviewer,
-      { taskId, action: 'stage-pass' as const, reason: '人工核验通过' }), template)
+      { taskId, action: 'stage-pass' as const, reason: '人工核验通过', basedOnRunId: runId, inputHash }), template)
     expect(first.ok).toBe(true)
     if (!first.ok) return
     const oldRev = aggregate.caseV2.revision
     aggregate = readAggregate(caseId)!
     const replay = await recordStageDecision(caseId, command(req, oldRev, reviewer,
-      { taskId, action: 'stage-pass' as const, reason: '人工核验通过' }), template)
+      { taskId, action: 'stage-pass' as const, reason: '人工核验通过', basedOnRunId: runId, inputHash }), template)
     expect(replay.ok).toBe(true)
     expect(readAggregate(caseId)!.decisions).toHaveLength(1)
     const collision = await recordStageDecision(caseId, command(req, oldRev, reviewer,

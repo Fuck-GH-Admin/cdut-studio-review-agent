@@ -6,8 +6,18 @@ import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewCaseV2, TemplateVersion } from '@profer/shared'
 import { createAggregate, readAggregate } from './case-store-v2'
-import { ensureInitialTask, recordStageDecision, resolveAppealV2, resolveFinalDecisionProjection, resolveSupplementV2, respondSupplementV2, type StageDecisionPayload } from './stage-workflow'
+import { ensureInitialTask, recordStageDecision as coreRecordStageDecision, resolveAppealV2, resolveFinalDecisionProjection, resolveSupplementV2, respondSupplementV2, type StageDecisionPayload } from './stage-workflow'
 import { submitAppeal } from './business-workflow'
+import { getRunV2, saveRunV2 } from './run-store-v2'
+import { computeRunInputHash } from './run-service-v2'
+import type { ReviewRunV2 } from '@profer/shared'
+const recordStageDecision = (...args: Parameters<typeof coreRecordStageDecision>) => {
+  const run = getRunV2(args[0], `run-${args[0]}`)
+  return coreRecordStageDecision(args[0], {
+    ...args[1], payload: { ...args[1].payload,
+      ...(run ? { basedOnRunId: run.id, inputHash: run.inputManifest.hash } : {}) },
+  }, args[2])
+}
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-stage-${Date.now()}`)
 process.env.PROFER_CONFIG_DIR = CONFIG_DIR
@@ -30,12 +40,34 @@ const nextReq = (): string => `req-${(requestIdCounter += 1)}`
 let caseCounter = 0
 async function seed(flowTemplate: TemplateVersion = template): Promise<{ caseId: string; firstTaskId: string }> {
   const caseId = `case-stage-${(caseCounter += 1)}`
-  await createAggregate(caseId, { ...caseV2, id: caseId })
+  const data = { ...caseV2, id: caseId }
+  await createAggregate(caseId, data)
   const taskResult = await ensureInitialTask(caseId, flowTemplate, actor)
+  const run: ReviewRunV2 = {
+    id: `run-${caseId}`, caseId, templateId: flowTemplate.templateId, templateVersion: flowTemplate.version,
+    inputManifest: { hash: computeRunInputHash(data, [], []), templateVersion: flowTemplate.version,
+      policyVersions: [], documentVersions: [], observationIds: [], evidenceLinkIds: [] },
+    status: 'completed', checkpoints: [], checks: [], opinions: [],
+    coverage: { documents: [], plannedChecks: 0, completedChecks: 0, effectiveVerdicts: 0, pendingChecks: 0 },
+    diagnostics: [], startedAt: '2026-01-01T00:00:00.000Z', completedAt: '2026-01-01T00:00:01.000Z',
+  }
+  saveRunV2(run)
   return { caseId, firstTaskId: taskResult.ok ? taskResult.entity!.id : '' }
 }
 
 describe('阶段推进（R07，修正误判 6）', () => {
+  test('E02: no Run binding cannot create a final decision', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const original = readAggregate(caseId)!
+    const denied = await coreRecordStageDecision(caseId, {
+      requestId: nextReq(), actor, expectedRevision: original.caseV2.revision,
+      payload: { action: 'final-reject', taskId: firstTaskId, reason: '无依据冒签' },
+    }, template)
+    expect(denied.ok).toBeFalse()
+    if (!denied.ok) expect(denied.code).toBe('STALE_INPUT')
+    expect(readAggregate(caseId)?.decisions).toHaveLength(0)
+    expect(readAggregate(caseId)?.caseV2.revision).toBe(original.caseV2.revision)
+  })
   test('Given 三阶段审核且时钟不前进 When 连续通过 Then 每个阶段任务仍有唯一 ID 并可终审', async () => {
     const threeStageTemplate = {
       ...template,

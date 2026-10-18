@@ -133,6 +133,10 @@ describe('全链路旅程（自检探查）', () => {
   test('4. 终审驳回 → 申诉更正 → 投影立即终审生效且 actor=复核人', async () => {
     let agg = readAggregate(caseId)!
     const firstTask = agg.tasks.find((task) => task.status === 'open' && task.stageId === 'first-review')!
+    const lockedTemplate = getTemplate('comprehensive-assessment-v2', 2)!
+    const rerunExecutors = await assembleV2Executors(agg, lockedTemplate, { client: fakeClient as never })
+    run = await runReviewCaseV2(agg.caseV2, lockedTemplate, rerunExecutors, {})
+    expect(run.status).toBe('completed')
     const firstPass = await recordStageDecision(caseId, {
       requestId: 'j-review-pass', actor, expectedRevision: agg.caseV2.revision,
       payload: { action: 'stage-pass', taskId: firstTask.id, reason: '初审核对后送终审' },
@@ -140,7 +144,8 @@ describe('全链路旅程（自检探查）', () => {
     expect(firstPass.ok).toBeTrue()
     agg = firstPass.ok ? firstPass.aggregate : agg
     const openTask = agg.tasks.find((task) => task.status === 'open' && task.stageId === 'final-review')!
-    const reject = await recordStageDecision(caseId, { requestId: 'j-dec-2', actor: teacher, expectedRevision: agg.caseV2.revision, payload: { action: 'final-reject', taskId: openTask.id, reason: '材料存疑' } }, getTemplate('comprehensive-assessment-v2', 2)!)
+    const reject = await recordStageDecision(caseId, { requestId: 'j-dec-2', actor: teacher, expectedRevision: agg.caseV2.revision, payload: { action: 'final-reject', taskId: openTask.id, reason: '材料存疑',
+      basedOnRunId: run!.id, inputHash: run!.inputManifest.hash } }, getTemplate('comprehensive-assessment-v2', 2)!)
     expect(reject.ok).toBe(true)
     agg = reject.ok ? reject.aggregate : agg
     expect(agg.caseV2.stage).toBe('decided')
