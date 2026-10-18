@@ -286,4 +286,55 @@ describe('三栏单案的 V2 业务闭环事务', () => {
     expect(readAggregate(caseId)?.decisions).toHaveLength(0)
   })
 
+
+  test('E03：补件回复不能引用不存在的材料版本，失败不污染补件事务', async () => {
+    const { caseId, run } = await seed()
+    const opened = await openWorkspaceSupplementV2(caseId, {
+      requestId: request(), actor, expectedRevision: 0,
+      payload: { findingKey: 'check-a', runId: run.id, inputHash: run.inputManifest.hash,
+        requiredElements: ['补充证明'], reason: '证明材料不足' },
+    })
+    expect(opened.ok).toBeTrue()
+    if (!opened.ok || !opened.entity) return
+    const rejected = await respondSupplementV2(caseId, {
+      requestId: request(), actor: { actorId: 'student', actorSource: 'local', role: 'student' },
+      expectedRevision: opened.aggregate.caseV2.revision,
+      payload: { supplementId: opened.entity.id, note: '伪造不存在的版本', documentVersionIds: ['missing-document-version'] },
+    })
+    expect(rejected.ok).toBeFalse()
+    if (!rejected.ok) expect(rejected.code).toBe('NOT_FOUND')
+    const current = readAggregate(caseId)!
+    expect(current.caseV2.revision).toBe(opened.aggregate.caseV2.revision)
+    expect(current.supplements[0]?.responses).toHaveLength(0)
+  })
+
+  test('E03：补件回复与旧 Run 完成时间同毫秒，仍须拒止旧 Run 再作正式决定', async () => {
+    const { caseId, run } = await seed()
+    const opened = await openWorkspaceSupplementV2(caseId, {
+      requestId: request(), actor, expectedRevision: 0,
+      payload: { findingKey: 'check-a', runId: run.id, inputHash: run.inputManifest.hash,
+        requiredElements: ['补充说明'], reason: '仍须核实' },
+    })
+    expect(opened.ok).toBeTrue()
+    if (!opened.ok || !opened.entity) return
+    const response = await respondSupplementV2(caseId, {
+      requestId: request(), actor: { actorId: 'student', actorSource: 'local', role: 'student' },
+      expectedRevision: opened.aggregate.caseV2.revision,
+      payload: { supplementId: opened.entity.id, note: '学生再次回复补件' },
+    })
+    expect(response.ok).toBeTrue()
+    if (!response.ok) return
+    const responseAt = response.aggregate.supplements[0]!.responses[0]!.at
+    // 合成同一毫秒完成的 Run：这种时间碰撞不能让旧输入重新获得审批资格。
+    saveRunV2({ ...run, completedAt: responseAt })
+    expect(isWorkspaceRunStaleV2(response.aggregate, run.id)).toBeTrue()
+    const attempt = await decideWorkspaceCaseV2(caseId, {
+      requestId: request(), actor, expectedRevision: response.aggregate.caseV2.revision,
+      payload: { result: 'reject', reason: '重复使用补件前的旧运行', basedOnRunId: run.id, inputHash: run.inputManifest.hash },
+    })
+    expect(attempt.ok).toBeFalse()
+    if (!attempt.ok) expect(attempt.code).toBe('STALE_INPUT')
+    expect(readAggregate(caseId)?.decisions).toHaveLength(0)
+  })
+
 })
