@@ -1,0 +1,83 @@
+{
+  "historicalProductFailures": [
+    {
+      "source": "PR #105 fixed head 44c7dc9fefdfd7693f1b6d1de00cf348af7abf3f",
+      "status": "FAIL",
+      "finding": "真实 Main 删除后的迟到 metadata 回执使普通 session/preview 复活；同 basename Office A/B 的 fileId、artifact、索引和来源互相别名。",
+      "handling": "原有 PR #105 工件保持不变；本轮以反向断言重测，不把历史 RED 改写为 PASS。"
+    }
+  ],
+  "thisRunFirstFailures": [
+    {
+      "command": "09-allocate-loopback-ports",
+      "status": "BLOCKED_ENV",
+      "classification": "QA runtime CLI 初次传入缺少所需端口参数，退出 2；改用本轮端口分配入口后 command 10 成功。",
+      "productImpact": false
+    },
+    {
+      "command": "14-start-office71-electron-main",
+      "status": "BLOCKED_ENV",
+      "classification": "frozen install 保留 electron JS 包但未下载本机 binary，启动退出 1；锁定 electron@43.7.7 后只在独立工作树执行 install.js，command 16 启动真实 Electron。",
+      "productImpact": false
+    },
+    {
+      "command": "17-office71-main-initial",
+      "status": "FAIL",
+      "classification": "初始真实 Main 驱动中，XLSX same-size/mtime ZIP 夹具改写改变了 archive byte size，故该子项记 NOT-RUN；O71-07 断言把无效 stale registry key 计作有效 fN，造成测试误报。",
+      "resolution": "固定同尺寸、STORE 格式夹具后 command 18 通过 XLSX same-size/mtime；修正 QA oracle 后 O71-07 通过。没有修改生产实现。",
+      "productImpact": false
+    },
+    {
+      "command": "22-office71-preview-smoke",
+      "status": "FAIL",
+      "classification": "等待 1.2 秒且只接受文本/iframe/canvas 的初版检查早于 DOCX Office canvas 完成渲染，误判预览不可见。",
+      "resolution": "保留首次报告；按真实渲染完成信号轮询，验证同名 A/B 的文本互斥或画布像素 SHA 后，command 29 全部通过。",
+      "productImpact": false
+    },
+    {
+      "command": "25-office71-preview-smoke-retry",
+      "status": "FAIL",
+      "classification": "测试 session 选择时没有使用唯一 UI session 标题，主窗口切回会话文件面板，未观察到预览。",
+      "resolution": "以独立 session 标题经真实 Renderer 点击后重试；DOCX A/B 通过，随后 canvas 判据补齐 XLSX/PPTX，command 29 全部通过。",
+      "productImpact": false
+    },
+    {
+      "command": "28-office71-preview-smoke-retry2",
+      "status": "FAIL",
+      "classification": "XLSX 在合法 Office canvas 上绘制而不把单元格文本放进普通 DOM；初版仅检查 DOM marker。",
+      "resolution": "改为轮询可见 canvas 并对同名 A/B 计算画布像素 SHA；command 29 通过。",
+      "productImpact": false
+    },
+    {
+      "command": "34-p02-r01-deletion-late-ack-minimal",
+      "status": "BLOCKED_ENV",
+      "classification": "第一次构建了 P02 base Main bridge，未包含 p02Environment 诊断扩展，R01 用例未开始。",
+      "resolution": "保留 command 34；改为构建隔离 QA adapter p06-u1-p02-main.ts，桥接 readiness command 39 通过，R01 command 40 通过。",
+      "productImpact": false
+    },
+    {
+      "command": "32-prepare-p02-smoke-facts",
+      "status": "BLOCKED_ENV",
+      "classification": "初次准备合成事实文件时写入了字面反斜杠-n；在 R01 用例启动前修正并用 command 32b 验证有效 JSON。",
+      "productImpact": false
+    },
+    {
+      "command": "23-inspect-office71-renderer-surface",
+      "status": "BLOCKED_ENV",
+      "classification": "辅助观察复用了 connect 默认端口过滤器（旧 5176）；进程被 SIGTERM 终止前未产出结果。后续 command 24 显式选择本轮动态 Vite 端口 37361 并成功。此项不作为验收结果。",
+      "productImpact": false
+    }
+  ],
+  "currentResults": {
+    "O71-01-through-O71-08": "PASS after retry; all first attempts retained above",
+    "P02-R01-minimal-delete-late-ack": "PASS after replacing the QA diagnostic bridge",
+    "O71-09-upstream-port": "BLOCKED_UPSTREAM: GitHub integration returned 403 Resource not accessible by integration; no upstream branch or PR exists"
+  },
+  "notRunByScope": [
+    "P02 R02-R07",
+    "full P02 or full U1",
+    "provider/Pi review, approval and business replay",
+    "upstream integration CI (no upstream branch permission)"
+  ],
+  "productionImplementationChanged": false
+}

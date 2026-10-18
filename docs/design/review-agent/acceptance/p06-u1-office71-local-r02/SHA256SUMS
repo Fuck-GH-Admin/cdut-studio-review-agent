@@ -1,0 +1,15 @@
+682f4864bf5aa08cccbb0613305f6e423e504b4e15f46eb2a6253e4d591974eb  docs/design/review-agent/acceptance/p06-u1-office71-local-r02/README.md
+3beaed7649fb22463a950eecb05231f795009c2840dfbc6520048fa376ca65d6  docs/design/review-agent/acceptance/p06-u1-office71-local-r02/candidate-lock.json
+536c66ad6c88311a8b2033cfecf8ff8fed9fca8afe56568a865205f5a4839520  docs/design/review-agent/acceptance/p06-u1-office71-local-r02/environment-redacted.json
+a5b67bc4c1eb2bf72d8ef1e08cf0b6af58c995f9cd797589a2c7dbfa94c10589  docs/design/review-agent/acceptance/p06-u1-office71-local-r02/input-manifest.json
+713e005aa5bd7cc45e7c05df181c9460cd4bbccdd23a4f3bf2107efb426fec25  docs/design/review-agent/acceptance/p06-u1-office71-local-r02/command-ledger.json
+fe6dd6250b5dae0df99441031e722c5813e659e055aeb79bdac29f69f8a37b00  docs/design/review-agent/acceptance/p06-u1-office71-local-r02/office71-real-matrix.json
+0e996cbbe9158bb992a62512a70c42829126d45d851eae292317e9a63268f09a  docs/design/review-agent/acceptance/p06-u1-office71-local-r02/known-failures.json
+a8989f8d743938b3a43c0acf029788560e2bd1a243abc0947de388cf7ab26842  docs/design/review-agent/71-p06-l02-u1-office71-local-result-20261018.md
+0f8a3354d6675edc2976e98281479f77e5f4b17629c5ba1b09645c3099c8059e  scripts/qa/p06-u1-p02-client.mjs
+98e60abce2da1c40566ebe1d8ee8d47070445a7d67596f58303b1aaab351ed38  scripts/qa/p06-u1-real-materials.ts
+e43793290e521b07560cc6b586c92e04e33296f98d33e6d4e45579ca67ccb1af  scripts/qa/p06-office71-fixture-verify.mjs
+99ec78982de7a8e1b4031ae3b264e9ed6872ad52289743469cc4a37c53ed41d0  scripts/qa/p06-office71-main-client.mjs
+b8d59014eae11e3a39a9f0f255fe1e0fd4b8f7f6442caf97653c89aed7dc2720  scripts/qa/p06-office71-main.ts
+4114dd51e02adaac9d414272b36f3a54294d86a15a3ac0a273b84d4414e1690b  scripts/qa/p06-office71-preview-smoke.mjs
+c3a48c7356e441e90b9c9cf71aa4942dd9a6ec307d63d527ec4d14ce4982c2ad  scripts/qa/p06-office71-runtime.py

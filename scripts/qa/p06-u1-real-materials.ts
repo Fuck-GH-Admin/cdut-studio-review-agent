@@ -8,8 +8,13 @@ import { join, resolve, basename } from 'node:path'
 import { executeParseDocumentTool } from '../../apps/electron/src/main/lib/document-parse-tools'
 import { parseFileIntoSourceDocument } from '../../apps/electron/src/main/lib/review/document-service'
 
-const root = resolve(process.env.QA_MATERIAL_ROOT ?? '')
-if (!process.env.QA_MATERIAL_ROOT || !root.includes('local-u1-raw-')) throw Error('必须使用本轮独立材料目录')
+const evidenceRoot = resolve(process.env.P06_OFFICE71_RAW_ROOT ?? '')
+const root = resolve(process.env.P06_OFFICE71_MATERIAL_ROOT ?? '')
+if (!process.env.P06_OFFICE71_RAW_ROOT || !process.env.P06_OFFICE71_MATERIAL_ROOT
+  || root !== resolve(evidenceRoot, 'materials')
+  || !evidenceRoot.split(/[\\/]/).at(-1)?.startsWith('p06-office71-local-r02-')) {
+  throw Error('必须使用本轮 R02 专用隔离材料目录')
+}
 mkdirSync(root, { recursive: true })
 const hash = (b: Buffer) => createHash('sha256').update(b).digest('hex')
 const mode = process.argv[2] ?? 'generate'

@@ -1,0 +1,1376 @@
+{
+  "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+  "rawRootLocalOnly": "<LOCAL_RAW_ROOT>",
+  "records": [
+    {
+      "id": "01-frozen-install",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "startedAt": "2026-10-18T07:34:20.022116+00:00",
+      "finishedAt": "2026-10-18T07:34:21.265614+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "01-frozen-install.stdout.log": {
+          "sha256": "dedef483616080a5deb4a75dce18e7b4f40eb676a97e2447e107831d9c954e57",
+          "bytes": 287
+        },
+        "01-frozen-install.stderr.log": {
+          "sha256": "b17e7d1ebdbf4f86ab3481a0355d53a2bc425a2d93414a2b4abf5a0591256eab",
+          "bytes": 62
+        }
+      }
+    },
+    {
+      "id": "02-typecheck",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "run",
+        "typecheck"
+      ],
+      "startedAt": "2026-10-18T07:39:34.029381+00:00",
+      "finishedAt": "2026-10-18T07:40:10.369834+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "02-typecheck.stdout.log": {
+          "sha256": "5b84d668c2e2922dca6bd49e230be8406972702c2313539f5ca1cd4270d32196",
+          "bytes": 428
+        },
+        "02-typecheck.stderr.log": {
+          "sha256": "8277b6b0db2d97d9c202472974204c9b592713f39cd8665934c5d44892357069",
+          "bytes": 33
+        }
+      }
+    },
+    {
+      "id": "03-boundaries",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "run",
+        "check:boundaries"
+      ],
+      "startedAt": "2026-10-18T07:40:12.539898+00:00",
+      "finishedAt": "2026-10-18T07:40:12.727536+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "03-boundaries.stdout.log": {
+          "sha256": "7c12341190370579829bb125d1338070e12652e36c5c6ea19282bffd769e56af",
+          "bytes": 38
+        },
+        "03-boundaries.stderr.log": {
+          "sha256": "21f6953e48c36416639e37cfd5ac857c3b93042937908b6bd6089ca264f4932f",
+          "bytes": 34
+        }
+      }
+    },
+    {
+      "id": "04-electron-build",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "run",
+        "electron:build"
+      ],
+      "startedAt": "2026-10-18T07:40:15.402444+00:00",
+      "finishedAt": "2026-10-18T07:41:19.900238+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "04-electron-build.stdout.log": {
+          "sha256": "2f406d14a6632b839806bec6453d3d6eaa0db27fe9f5dcc089ef754b2149dc6c",
+          "bytes": 128246
+        },
+        "04-electron-build.stderr.log": {
+          "sha256": "890b155b17f990e81d3c162b125f8ac510cba0de95dafab3ec023be678b42743",
+          "bytes": 44
+        }
+      }
+    },
+    {
+      "id": "05-focused-office-tests",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/document-parse-tools.office71.test.ts",
+        "apps/electron/src/main/lib/document-parse-tools.test.ts"
+      ],
+      "startedAt": "2026-10-18T07:41:23.796420+00:00",
+      "finishedAt": "2026-10-18T07:41:24.280618+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "05-focused-office-tests.stdout.log": {
+          "sha256": "1572c5fe70a524227540dfd27325b664e0b48316a1af2645052f9980cff5e013",
+          "bytes": 222
+        },
+        "05-focused-office-tests.stderr.log": {
+          "sha256": "72b473b86c3a24be995d9996995050c3b14fd9ae98d7b450700e393a07af67bf",
+          "bytes": 3187
+        }
+      }
+    },
+    {
+      "id": "06-source-ref-boundary-tests",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "test",
+        "--isolate",
+        "--timeout",
+        "30000",
+        "apps/electron/src/main/lib/review/review-office-v2-sourceref-boundary.l02.test.ts",
+        "apps/electron/src/main/lib/review/review-retired-source-ref.l02-u1.test.ts"
+      ],
+      "startedAt": "2026-10-18T07:41:27.210689+00:00",
+      "finishedAt": "2026-10-18T07:41:27.301711+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "06-source-ref-boundary-tests.stdout.log": {
+          "sha256": "335ab4d3d0d98d4c3b3478fa50c807da6d2740deb186a27fa4aed967dcd71e94",
+          "bytes": 28
+        },
+        "06-source-ref-boundary-tests.stderr.log": {
+          "sha256": "41db9a12f6e674190c5154c27dad560dc27650a83190c7e9a2665fa70131b543",
+          "bytes": 1169
+        }
+      }
+    },
+    {
+      "id": "07-generate-fixtures",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "scripts/qa/p06-u1-real-materials.ts",
+        "generate"
+      ],
+      "startedAt": "2026-10-18T07:41:33.519126+00:00",
+      "finishedAt": "2026-10-18T07:41:33.681312+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "07-generate-fixtures.stdout.log": {
+          "sha256": "275d13d50afb9de014ff108da084960ebf7fd38e55e0462d00a809b49bdf1bff",
+          "bytes": 85
+        },
+        "07-generate-fixtures.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "08-verify-fixtures",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "scripts/qa/p06-office71-fixture-verify.mjs"
+      ],
+      "startedAt": "2026-10-18T07:41:56.224509+00:00",
+      "finishedAt": "2026-10-18T07:41:56.316958+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "08-verify-fixtures.stdout.log": {
+          "sha256": "3d4df88ff5839e309db46aaf2b67809bc3d9f6ce3f0fc5c51da2395dcdafe4f0",
+          "bytes": 811
+        },
+        "08-verify-fixtures.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "09-allocate-loopback-ports",
+      "status": "BLOCKED_ENV",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "scripts/qa/p06-office71-runtime.py",
+        "allocate-ports",
+        "--raw-root",
+        "<LOCAL_RAW_ROOT>"
+      ],
+      "startedAt": "2026-10-18T07:42:11.313834+00:00",
+      "finishedAt": "2026-10-18T07:42:11.391174+00:00",
+      "exitCode": 2,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 2",
+      "rawLogs": {
+        "09-allocate-loopback-ports.stdout.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "09-allocate-loopback-ports.stderr.log": {
+          "sha256": "0cd21eb248f6de9c4dfb852a5f70836c19521d542492c9a2f97cec5c94daf008",
+          "bytes": 419
+        }
+      },
+      "classification": "non-product environment/QA harness issue; retained in known-failures.json"
+    },
+    {
+      "id": "10-allocate-loopback-ports-retry",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "scripts/qa/p06-office71-runtime.py",
+        "allocate-ports",
+        "--raw-root",
+        "<LOCAL_RAW_ROOT>"
+      ],
+      "startedAt": "2026-10-18T07:42:19.345115+00:00",
+      "finishedAt": "2026-10-18T07:42:19.422759+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "10-allocate-loopback-ports-retry.stdout.log": {
+          "sha256": "697726c6fd828f853e06c48ed9119d60afdd2258bf5a48a70a8c83014a4614fd",
+          "bytes": 145
+        },
+        "10-allocate-loopback-ports-retry.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "11-typecheck-after-qa",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "run",
+        "typecheck"
+      ],
+      "startedAt": "2026-10-18T07:42:35.477003+00:00",
+      "finishedAt": "2026-10-18T07:43:14.745338+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "11-typecheck-after-qa.stdout.log": {
+          "sha256": "5b84d668c2e2922dca6bd49e230be8406972702c2313539f5ca1cd4270d32196",
+          "bytes": 428
+        },
+        "11-typecheck-after-qa.stderr.log": {
+          "sha256": "8277b6b0db2d97d9c202472974204c9b592713f39cd8665934c5d44892357069",
+          "bytes": 33
+        }
+      }
+    },
+    {
+      "id": "12-build-office71-main-bridge",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "node_modules/esbuild/bin/esbuild",
+        "scripts/qa/p06-office71-main.ts",
+        "--bundle",
+        "--platform=node",
+        "--format=cjs",
+        "--outfile=apps/electron/dist/main.cjs",
+        "--external:electron",
+        "--external:@earendil-works/pi-coding-agent",
+        "--external:@earendil-works/pi-agent-core",
+        "--external:@earendil-works/pi-ai",
+        "--define:__PROFER_BUILD_TARGET__=\"oss\""
+      ],
+      "startedAt": "2026-10-18T07:43:18.887849+00:00",
+      "finishedAt": "2026-10-18T07:43:19.452947+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "12-build-office71-main-bridge.stdout.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "12-build-office71-main-bridge.stderr.log": {
+          "sha256": "4db78304d53f38ba404e6732364b23db2e3e99c1452648aa31d1da515e2487ab",
+          "bytes": 442
+        }
+      }
+    },
+    {
+      "id": "13-start-isolated-vite",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "scripts/qa/p06-office71-runtime.py",
+        "start",
+        "--kind",
+        "vite",
+        "--raw-root",
+        "<LOCAL_RAW_ROOT>",
+        "--vite-port",
+        "37361",
+        "--main-port",
+        "43407",
+        "--renderer-port",
+        "44091"
+      ],
+      "startedAt": "2026-10-18T07:43:24.933966+00:00",
+      "finishedAt": "2026-10-18T07:43:25.321005+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "13-start-isolated-vite.stdout.log": {
+          "sha256": "eec52334af8408a2e31c16cdd008b2eaf55aeec7bf326f2e2b11a3f66e1b960f",
+          "bytes": 65
+        },
+        "13-start-isolated-vite.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "14-start-office71-electron-main",
+      "status": "BLOCKED_ENV",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "scripts/qa/p06-office71-runtime.py",
+        "start",
+        "--kind",
+        "electron",
+        "--raw-root",
+        "<LOCAL_RAW_ROOT>",
+        "--vite-port",
+        "37361",
+        "--main-port",
+        "43407",
+        "--renderer-port",
+        "44091"
+      ],
+      "startedAt": "2026-10-18T07:43:32.248426+00:00",
+      "finishedAt": "2026-10-18T07:43:32.357338+00:00",
+      "exitCode": 1,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 1",
+      "rawLogs": {
+        "14-start-office71-electron-main.stdout.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "14-start-office71-electron-main.stderr.log": {
+          "sha256": "978db41f78810bd355d4ea36e0034b8dc0a6e37152398684e8debf8809635d0c",
+          "bytes": 59
+        }
+      },
+      "classification": "non-product environment/QA harness issue; retained in known-failures.json"
+    },
+    {
+      "id": "15-install-electron-binary",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "node_modules/electron/install.js"
+      ],
+      "startedAt": "2026-10-18T07:43:52.680269+00:00",
+      "finishedAt": "2026-10-18T07:43:53.496527+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "15-install-electron-binary.stdout.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "15-install-electron-binary.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "16-start-office71-electron-main-retry",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "scripts/qa/p06-office71-runtime.py",
+        "start",
+        "--kind",
+        "electron",
+        "--raw-root",
+        "<LOCAL_RAW_ROOT>",
+        "--vite-port",
+        "37361",
+        "--main-port",
+        "43407",
+        "--renderer-port",
+        "44091"
+      ],
+      "startedAt": "2026-10-18T07:44:00.772753+00:00",
+      "finishedAt": "2026-10-18T07:44:01.827132+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "16-start-office71-electron-main-retry.stdout.log": {
+          "sha256": "69093f6ec7dd4f7ebeacdded91e12c75c8968866567d8395a373689b55c3a688",
+          "bytes": 69
+        },
+        "16-start-office71-electron-main-retry.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "17-office71-main-initial",
+      "status": "FAIL",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "scripts/qa/p06-office71-main-client.mjs",
+        "initial"
+      ],
+      "startedAt": "2026-10-18T07:44:08.224362+00:00",
+      "finishedAt": "2026-10-18T07:44:08.594338+00:00",
+      "exitCode": 1,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 1",
+      "rawLogs": {
+        "17-office71-main-initial.stdout.log": {
+          "sha256": "36c26c585359fa789089a162796bada5a52033cac86ec651c63feea217c96ab5",
+          "bytes": 1134
+        },
+        "17-office71-main-initial.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      "classification": "non-product environment/QA harness issue; retained in known-failures.json"
+    },
+    {
+      "id": "18-office71-main-initial-retry",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "node",
+        "scripts/qa/p06-office71-main-client.mjs",
+        "initial-retry"
+      ],
+      "startedAt": "2026-10-18T07:46:05.557548+00:00",
+      "finishedAt": "2026-10-18T07:46:05.849126+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "18-office71-main-initial-retry.stdout.log": {
+          "sha256": "4dfa9f8a21f14b7621beee072f8b9b3f4cbc540bd2f0e374615270d1d10df2e8",
+          "bytes": 1065
+        },
+        "18-office71-main-initial-retry.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "19-stop-office71-electron-before-restart",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "scripts/qa/p06-office71-runtime.py",
+        "stop",
+        "--kind",
+        "electron",
+        "--raw-root",
+        "<LOCAL_RAW_ROOT>",
+        "--vite-port",
+        "37361",
+        "--main-port",
+        "43407",
+        "--renderer-port",
+        "44091"
+      ],
+      "startedAt": "2026-10-18T07:46:13.592186+00:00",
+      "finishedAt": "2026-10-18T07:46:13.679472+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "19-stop-office71-electron-before-restart.stdout.log": {
+          "sha256": "94c78f62117d7790e4e64649dc6c6c0b0fee233ff5ff4377768d9e57a7cc78fd",
+          "bytes": 58
+        },
+        "19-stop-office71-electron-before-restart.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "20-start-office71-electron-after-restart",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "scripts/qa/p06-office71-runtime.py",
+        "start",
+        "--kind",
+        "electron",
+        "--raw-root",
+        "<LOCAL_RAW_ROOT>",
+        "--vite-port",
+        "37361",
+        "--main-port",
+        "43407",
+        "--renderer-port",
+        "44091"
+      ],
+      "startedAt": "2026-10-18T07:46:20.838970+00:00",
+      "finishedAt": "2026-10-18T07:46:21.688661+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "20-start-office71-electron-after-restart.stdout.log": {
+          "sha256": "1a4fa07b53a46859c84d85aac1e05385383faa04059516becfba8a08f561cb5a",
+          "bytes": 69
+        },
+        "20-start-office71-electron-after-restart.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "21-office71-main-restart",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "node",
+        "scripts/qa/p06-office71-main-client.mjs",
+        "restart"
+      ],
+      "startedAt": "2026-10-18T07:46:24.891105+00:00",
+      "finishedAt": "2026-10-18T07:46:25.040594+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "21-office71-main-restart.stdout.log": {
+          "sha256": "73aaeb1361c288e34c736cec01832a7dae1f76c1fd5ad7f6a30e6ea75c5c0bfe",
+          "bytes": 76
+        },
+        "21-office71-main-restart.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "22-office71-preview-smoke",
+      "status": "FAIL",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "node",
+        "scripts/qa/p06-office71-preview-smoke.mjs"
+      ],
+      "startedAt": "2026-10-18T07:46:30.622788+00:00",
+      "finishedAt": "2026-10-18T07:46:32.854035+00:00",
+      "exitCode": 1,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 1",
+      "rawLogs": {
+        "22-office71-preview-smoke.stdout.log": {
+          "sha256": "5ab3c16039c97770bd8a6740bef123794cd4ab2b6065076d2161ffac116ac451",
+          "bytes": 151
+        },
+        "22-office71-preview-smoke.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      "classification": "non-product environment/QA harness issue; retained in known-failures.json"
+    },
+    {
+      "id": "24-inspect-office71-renderer-surface",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "node",
+        "--input-type=module",
+        "-e",
+        "import {connect} from \"./scripts/qa/review-live-cdp.mjs\"; const c=await connect(44091,p=>p.url.startsWith(\"http://localhost:37361\")); const x=await c.evaluate(`({url:location.href,title:document.title,text:document.body.innerText.slice(0,2000),buttons:[...document.querySelectorAll(\"button\")].filter(b=>b.getClientRects().length).map(b=>({text:b.innerText.trim(),aria:b.getAttribute(\"aria-label\"),title:b.title})).slice(0,60)})`); console.log(JSON.stringify(x)); await c.screenshot(\"<LOCAL_RAW_ROOT>/office71\",\"renderer-inspect\"); c.close()"
+      ],
+      "startedAt": "2026-10-18T07:47:57.749264+00:00",
+      "finishedAt": "2026-10-18T07:47:57.939906+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "24-inspect-office71-renderer-surface.stdout.log": {
+          "sha256": "eeb03a8d1b4619341dc4968288f028e936c72c20933fadf6a4c0ec2a90375631",
+          "bytes": 4199
+        },
+        "24-inspect-office71-renderer-surface.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "25-office71-preview-smoke-retry",
+      "status": "FAIL",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "node",
+        "scripts/qa/p06-office71-preview-smoke.mjs",
+        "retry"
+      ],
+      "startedAt": "2026-10-18T07:49:00.796691+00:00",
+      "finishedAt": "2026-10-18T07:49:26.923309+00:00",
+      "exitCode": 1,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 1",
+      "rawLogs": {
+        "25-office71-preview-smoke-retry.stdout.log": {
+          "sha256": "d7b8badbe8fb47e6bca425d7d52beb9b33c7b399cfb0374e1320f6a4c13fe3f3",
+          "bytes": 155
+        },
+        "25-office71-preview-smoke-retry.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      "classification": "non-product environment/QA harness issue; retained in known-failures.json"
+    },
+    {
+      "id": "26-inspect-preview-retry-state",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "node",
+        "--input-type=module",
+        "-e",
+        "import {connect} from \"./scripts/qa/review-live-cdp.mjs\"; const c=await connect(44091,p=>p.url.startsWith(\"http://localhost:37361\")); console.log(JSON.stringify(await c.evaluate(`({text:document.body.innerText.slice(-5000),frames:[...document.querySelectorAll(\"iframe\")].map(x=>({title:x.title,src:x.src})),errors:[...document.querySelectorAll(\"[role=alert]\")].map(x=>x.innerText)})`)));c.close()"
+      ],
+      "startedAt": "2026-10-18T07:49:33.967820+00:00",
+      "finishedAt": "2026-10-18T07:49:34.047459+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "26-inspect-preview-retry-state.stdout.log": {
+          "sha256": "b363613a74483be3e9b2ffa4c8cd7cafb6d1e7e5e769d7494b58ddd5ab744e89",
+          "bytes": 1124
+        },
+        "26-inspect-preview-retry-state.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "27-inspect-preview-atoms",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "node",
+        "--input-type=module",
+        "-e",
+        "import {connect,storeAccess} from \"./scripts/qa/review-live-cdp.mjs\"; const c=await connect(44091,p=>p.url.startsWith(\"http://localhost:37361\")); console.log(JSON.stringify(await c.evaluate(`(async()=>{${storeAccess} const a=await import(\"/atoms/agent-atoms.ts\"),p=await import(\"/atoms/preview-atoms.ts\"),v=await import(\"/atoms/active-view.ts\"),t=await import(\"/atoms/tab-atoms.ts\"); const id=store.get(a.currentAgentSessionIdAtom); return {id,activeView:store.get(v.activeViewAtom),panel:store.get(a.agentDiffPanelTabAtom).get(id),open:store.get(a.agentSidePanelOpenAtom),preview:store.get(p.previewFileMapAtom).get(id),tabs:store.get(t.tabsAtom)}})()`)));c.close()"
+      ],
+      "startedAt": "2026-10-18T07:49:47.955726+00:00",
+      "finishedAt": "2026-10-18T07:49:48.338831+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "27-inspect-preview-atoms.stdout.log": {
+          "sha256": "b2ea301c7dd4f46cdb9baae507f3fe7704d153719faedc4e530dd71b353519b0",
+          "bytes": 328
+        },
+        "27-inspect-preview-atoms.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "28-office71-preview-smoke-retry2",
+      "status": "FAIL",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "node",
+        "scripts/qa/p06-office71-preview-smoke.mjs",
+        "retry2"
+      ],
+      "startedAt": "2026-10-18T07:51:00.613659+00:00",
+      "finishedAt": "2026-10-18T07:51:28.809090+00:00",
+      "exitCode": 1,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 1",
+      "rawLogs": {
+        "28-office71-preview-smoke-retry2.stdout.log": {
+          "sha256": "28fd3af3240f610ddf721f2b9978cb2794d547c180bf1dbbb44ae0d0e7c973b0",
+          "bytes": 249
+        },
+        "28-office71-preview-smoke-retry2.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      "classification": "non-product environment/QA harness issue; retained in known-failures.json"
+    },
+    {
+      "id": "29-office71-preview-smoke-retry3",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "node",
+        "scripts/qa/p06-office71-preview-smoke.mjs",
+        "retry3"
+      ],
+      "startedAt": "2026-10-18T07:52:08.289849+00:00",
+      "finishedAt": "2026-10-18T07:52:13.664288+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "29-office71-preview-smoke-retry3.stdout.log": {
+          "sha256": "bcda97e30436111b4881cad84663fd5bbd65cf427735f4ca8bd06e00fbf49348",
+          "bytes": 434
+        },
+        "29-office71-preview-smoke-retry3.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "30-stop-office71-electron-before-p02-smoke",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "scripts/qa/p06-office71-runtime.py",
+        "stop",
+        "--kind",
+        "electron",
+        "--raw-root",
+        "<LOCAL_RAW_ROOT>",
+        "--vite-port",
+        "37361",
+        "--main-port",
+        "43407",
+        "--renderer-port",
+        "44091"
+      ],
+      "startedAt": "2026-10-18T07:52:41.262615+00:00",
+      "finishedAt": "2026-10-18T07:52:41.347301+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "30-stop-office71-electron-before-p02-smoke.stdout.log": {
+          "sha256": "0ae2fb9fecc3bbcb8102d0e082a799ea2201ffb6082cbb5f765b3f149da79347",
+          "bytes": 58
+        },
+        "30-stop-office71-electron-before-p02-smoke.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "31-build-p02-minimal-main-bridge",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "node_modules/esbuild/bin/esbuild",
+        "scripts/qa/p06-u1-main.ts",
+        "--bundle",
+        "--platform=node",
+        "--format=cjs",
+        "--outfile=apps/electron/dist/main.cjs",
+        "--external:electron",
+        "--external:@earendil-works/pi-coding-agent",
+        "--external:@earendil-works/pi-agent-core",
+        "--external:@earendil-works/pi-ai",
+        "--define:__PROFER_BUILD_TARGET__=\"oss\""
+      ],
+      "startedAt": "2026-10-18T07:52:44.036749+00:00",
+      "finishedAt": "2026-10-18T07:52:44.654204+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "31-build-p02-minimal-main-bridge.stdout.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "31-build-p02-minimal-main-bridge.stderr.log": {
+          "sha256": "eb545946e1d08ab3c7eef923d2c53a8773aea3cb0ac7afd68978a15882ef7c27",
+          "bytes": 442
+        }
+      }
+    },
+    {
+      "id": "32-prepare-p02-smoke-facts",
+      "status": "BLOCKED_ENV",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "-c",
+        "from pathlib import Path; import json; p=Path(\"<LOCAL_RAW_ROOT>/client/facts-private.json\"); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps({\"syntheticOnly\":True,\"scope\":\"R01 deletion late-ack smoke only\"},indent=2)+\"\\\\n\"); p.chmod(0o600)"
+      ],
+      "startedAt": "2026-10-18T07:52:50.416932+00:00",
+      "finishedAt": "2026-10-18T07:52:50.455261+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "32-prepare-p02-smoke-facts.stdout.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "32-prepare-p02-smoke-facts.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      "classification": "non-product environment/QA harness issue; retained in known-failures.json"
+    },
+    {
+      "id": "32b-verify-p02-smoke-facts",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "-c",
+        "import json; p=\"<LOCAL_RAW_ROOT>/client/facts-private.json\"; value=json.load(open(p)); assert value=={}; print(\"synthetic R01-only facts valid\")"
+      ],
+      "startedAt": "2026-10-18T07:59:14.625418+00:00",
+      "finishedAt": "2026-10-18T07:59:14.661683+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "32b-verify-p02-smoke-facts.stdout.log": {
+          "sha256": "e4c4ce70978dc98bac40594ed993d6a5c6ea5e9ee2f5f7aaccf8efdb69f3267b",
+          "bytes": 31
+        },
+        "32b-verify-p02-smoke-facts.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "33-start-p02-minimal-electron",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "scripts/qa/p06-office71-runtime.py",
+        "start",
+        "--kind",
+        "electron",
+        "--raw-root",
+        "<LOCAL_RAW_ROOT>",
+        "--vite-port",
+        "37361",
+        "--main-port",
+        "43407",
+        "--renderer-port",
+        "44091"
+      ],
+      "startedAt": "2026-10-18T07:52:55.476697+00:00",
+      "finishedAt": "2026-10-18T07:52:56.329786+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "33-start-p02-minimal-electron.stdout.log": {
+          "sha256": "06a88219abd7a8761c696e6b16f0be2fc294f2103bcdbf236fc335a93542a553",
+          "bytes": 69
+        },
+        "33-start-p02-minimal-electron.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "34-p02-r01-deletion-late-ack-minimal",
+      "status": "BLOCKED_ENV",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "node",
+        "scripts/qa/p06-u1-p02-client.mjs",
+        "r01"
+      ],
+      "startedAt": "2026-10-18T07:53:08.821971+00:00",
+      "finishedAt": "2026-10-18T07:53:53.967178+00:00",
+      "exitCode": 1,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 1",
+      "rawLogs": {
+        "34-p02-r01-deletion-late-ack-minimal.stdout.log": {
+          "sha256": "0e4b931b689824f0c6fb2a72ea378537c7aeeb33cf3ed615e3aa82ac8f885525",
+          "bytes": 128
+        },
+        "34-p02-r01-deletion-late-ack-minimal.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      "classification": "non-product environment/QA harness issue; retained in known-failures.json"
+    },
+    {
+      "id": "35-inspect-p02-main-globals",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "node",
+        "--input-type=module",
+        "-e",
+        "import {connect} from \"./scripts/qa/review-live-cdp.mjs\"; const c=await connect(43407,()=>true); console.log(JSON.stringify(await c.evaluate(`({pid:process.pid, file:process.mainModule?.filename, office:!!globalThis.__p06Office71, p02:!!globalThis.__p06Live, keys:Object.keys(globalThis).filter(k=>k.startsWith(\"__p06\"))})`))); c.close()"
+      ],
+      "startedAt": "2026-10-18T07:54:24.501256+00:00",
+      "finishedAt": "2026-10-18T07:54:24.587712+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "35-inspect-p02-main-globals.stdout.log": {
+          "sha256": "c9645d43026481335ae1a3b19cd6581a0e782172f551e9f260258cbcd51d80db",
+          "bytes": 81
+        },
+        "35-inspect-p02-main-globals.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "36-stop-uninstrumented-p02-attempt",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "scripts/qa/p06-office71-runtime.py",
+        "stop",
+        "--kind",
+        "electron",
+        "--raw-root",
+        "<LOCAL_RAW_ROOT>",
+        "--vite-port",
+        "37361",
+        "--main-port",
+        "43407",
+        "--renderer-port",
+        "44091"
+      ],
+      "startedAt": "2026-10-18T07:54:35.372993+00:00",
+      "finishedAt": "2026-10-18T07:54:35.653560+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "36-stop-uninstrumented-p02-attempt.stdout.log": {
+          "sha256": "6d850592c36a5e43b304fcc355c7bac04c605acc4b5a5819ef1980b5284a7332",
+          "bytes": 58
+        },
+        "36-stop-uninstrumented-p02-attempt.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "37-build-p02-diagnostic-main-bridge",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "bun",
+        "node_modules/esbuild/bin/esbuild",
+        "scripts/qa/p06-u1-p02-main.ts",
+        "--bundle",
+        "--platform=node",
+        "--format=cjs",
+        "--outfile=apps/electron/dist/main.cjs",
+        "--external:electron",
+        "--external:@earendil-works/pi-coding-agent",
+        "--external:@earendil-works/pi-agent-core",
+        "--external:@earendil-works/pi-ai",
+        "--define:__PROFER_BUILD_TARGET__=\"oss\""
+      ],
+      "startedAt": "2026-10-18T07:54:38.980190+00:00",
+      "finishedAt": "2026-10-18T07:54:39.554829+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "37-build-p02-diagnostic-main-bridge.stdout.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "37-build-p02-diagnostic-main-bridge.stderr.log": {
+          "sha256": "57c7f10c175a5408899b36e4dad2daa4101e64ec3a2d7c7c9960d7f3e8734e3b",
+          "bytes": 442
+        }
+      }
+    },
+    {
+      "id": "38-start-p02-instrumented-electron",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "scripts/qa/p06-office71-runtime.py",
+        "start",
+        "--kind",
+        "electron",
+        "--raw-root",
+        "<LOCAL_RAW_ROOT>",
+        "--vite-port",
+        "37361",
+        "--main-port",
+        "43407",
+        "--renderer-port",
+        "44091"
+      ],
+      "startedAt": "2026-10-18T07:54:43.980693+00:00",
+      "finishedAt": "2026-10-18T07:54:44.828387+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "38-start-p02-instrumented-electron.stdout.log": {
+          "sha256": "cd025e29a5f314cb5d8f2248d38348d64791badb0b86ebf30358473e61765150",
+          "bytes": 69
+        },
+        "38-start-p02-instrumented-electron.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "39-verify-p02-main-bridge-ready",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "node",
+        "--input-type=module",
+        "-e",
+        "import {connect} from \"./scripts/qa/review-live-cdp.mjs\"; const c=await connect(43407,()=>true); const v=await c.poll(\"!!globalThis.__p06Live?.p02Environment\"); console.log(JSON.stringify(await c.evaluate(\"__p06Live.p02Environment()\"))); c.close()"
+      ],
+      "startedAt": "2026-10-18T07:54:47.917965+00:00",
+      "finishedAt": "2026-10-18T07:54:48.001713+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "39-verify-p02-main-bridge-ready.stdout.log": {
+          "sha256": "5bd39ee676f7b688f7e475770a8d907e31409af6b6a429f0a9087af6fa4f81bf",
+          "bytes": 791
+        },
+        "39-verify-p02-main-bridge-ready.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "40-p02-r01-deletion-late-ack-retry",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "node",
+        "scripts/qa/p06-u1-p02-client.mjs",
+        "r01"
+      ],
+      "startedAt": "2026-10-18T07:54:51.745450+00:00",
+      "finishedAt": "2026-10-18T07:54:52.687951+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "40-p02-r01-deletion-late-ack-retry.stdout.log": {
+          "sha256": "90eee6ab44e608edc57ce799abde84ba46b052e7acdfba3ce0221e83a3ac2ad5",
+          "bytes": 73
+        },
+        "40-p02-r01-deletion-late-ack-retry.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "41-stop-final-electron",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "scripts/qa/p06-office71-runtime.py",
+        "stop",
+        "--kind",
+        "electron",
+        "--raw-root",
+        "<LOCAL_RAW_ROOT>",
+        "--vite-port",
+        "37361",
+        "--main-port",
+        "43407",
+        "--renderer-port",
+        "44091"
+      ],
+      "startedAt": "2026-10-18T07:58:22.279681+00:00",
+      "finishedAt": "2026-10-18T07:58:22.560196+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "41-stop-final-electron.stdout.log": {
+          "sha256": "4cccbd8c6a08dd4c89ab2482909bd31dc121e4c36ef32ea8a0743afdf69fed31",
+          "bytes": 58
+        },
+        "41-stop-final-electron.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "42-stop-final-vite",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "scripts/qa/p06-office71-runtime.py",
+        "stop",
+        "--kind",
+        "vite",
+        "--raw-root",
+        "<LOCAL_RAW_ROOT>",
+        "--vite-port",
+        "37361",
+        "--main-port",
+        "43407",
+        "--renderer-port",
+        "44091"
+      ],
+      "startedAt": "2026-10-18T07:58:25.918704+00:00",
+      "finishedAt": "2026-10-18T07:58:26.200232+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "42-stop-final-vite.stdout.log": {
+          "sha256": "fc0106ffebb7f177f66a6d1fd0bc668b22f9fa568b45b7fe6d789814102acfb6",
+          "bytes": 54
+        },
+        "42-stop-final-vite.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "43-verify-isolated-ports-released",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "-c",
+        "import json,socket; ports=[37361,43407,44091]; out={};\nfor p in ports:\n s=socket.socket();s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)\n try:s.bind((\"127.0.0.1\",p));out[str(p)]=\"FREE\"\n except OSError as e:out[str(p)]=str(e)\n finally:s.close()\nprint(json.dumps(out))"
+      ],
+      "startedAt": "2026-10-18T07:58:32.574711+00:00",
+      "finishedAt": "2026-10-18T07:58:32.611967+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "43-verify-isolated-ports-released.stdout.log": {
+          "sha256": "d827b581390d1e2783a3c159ff3685ec4ea208a0c7412b6642b02cd08fbf66c5",
+          "bytes": 52
+        },
+        "43-verify-isolated-ports-released.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "44-capture-redacted-environment",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "branch": "audit/p06-u1-office71-local-r02",
+      "command": [
+        "python3",
+        "-c",
+        "import json,platform,shutil,subprocess; out={\"platform\":platform.platform(),\"architecture\":platform.machine(),\"bun\":subprocess.check_output([\"bun\",\"--version\"],text=True).strip(),\"systemNode\":subprocess.check_output([\"node\",\"--version\"],text=True).strip(),\"python\":platform.python_version(),\"xvfbRun\":shutil.which(\"xvfb-run\"),\"xvfb\":shutil.which(\"Xvfb\")}; print(json.dumps(out))"
+      ],
+      "startedAt": "2026-10-18T07:58:37.650536+00:00",
+      "finishedAt": "2026-10-18T07:58:37.704227+00:00",
+      "exitCode": 0,
+      "expected": "按任务书执行该准备、构建、真实 Electron/UI、验证或清理步骤；失败项见 known-failures.json。",
+      "actual": "exit 0",
+      "rawLogs": {
+        "44-capture-redacted-environment.stdout.log": {
+          "sha256": "0b52f4d4c7b2cf84e8cf7e928128d3e711e4bb5b95babf1ca061e10f15c75e13",
+          "bytes": 206
+        },
+        "44-capture-redacted-environment.stderr.log": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "id": "23-inspect-office71-renderer-surface",
+      "status": "BLOCKED_ENV",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "command": [
+        "node",
+        "scripts/qa/p06-office71-preview-smoke.mjs",
+        "inspect",
+        "(stale default port 5176)"
+      ],
+      "startedAt": null,
+      "finishedAt": null,
+      "exitCode": null,
+      "expected": "辅助检查本轮真实 Renderer surface",
+      "actual": "旧端口过滤器未连接当前 Vite；手动 SIGTERM，空日志；不作为验收结果。后续 command 24 使用动态端口 37361 成功。",
+      "rawLogs": {
+        "stdout": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "stderr": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      },
+      "timingNote": "未保留可核实的精确时间；未补造时间戳。"
+    },
+    {
+      "id": "REMOTE-PR110-CI",
+      "status": "PASS",
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "command": [
+        "GitHub Actions run 39105979654 / job 117611851730; downloaded full job log"
+      ],
+      "startedAt": null,
+      "finishedAt": null,
+      "exitCode": 0,
+      "expected": "固定候选 SHA 的远程 CI 全部通过",
+      "actual": "run/job success; 4007 passed, 5 skipped, 0 failed; 10 steps passed; no uploaded artifacts; job checked out f387c2e (production apps/electron tree matches candidate; 6c8e adds only task 70).",
+      "rawLogs": {
+        "pr110-job-117611851730.log": {
+          "sha256": "ec84d1f4a9e26149d64425d9613037a5180e7be908a82ff889cbfb6ec6c5f9bc",
+          "bytes": 1184861
+        }
+      },
+      "rawLogLocalOnly": "<LOCAL_RAW_ROOT>/remote-ci/pr110-job-117611851730.log",
+      "timingNote": "未保留可核实的精确时间；未补造时间戳。"
+    },
+    {
+      "id": "O71-09-upstream-write",
+      "status": "BLOCKED_UPSTREAM",
+      "sourceSha": "d262a8860af47797733f9f88442b79737666f37f",
+      "command": [
+        "github_create_branch",
+        "Nya-Angle/CDUT-Studio",
+        "fix/office71-source-identity-r02"
+      ],
+      "startedAt": null,
+      "finishedAt": null,
+      "exitCode": 403,
+      "expected": "在授权上游独立分支移植最小共享补丁并取得独立 CI",
+      "actual": "GitHub integration returned 403 Resource not accessible by integration; no upstream branch or PR created.",
+      "rawLogs": {
+        "upstreamDiffSummary": "candidate document-parse-tools.ts differs from upstream main; full diff remains local raw evidence"
+      },
+      "timingNote": "未保留可核实的精确时间；未补造时间戳。"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "host": {
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+    "architecture": "x86_64",
+    "systemNode": "v22.23.2",
+    "bun": "1.4.0",
+    "python": "3.14.4",
+    "electron": "43.7.7",
+    "electronNode": "24.21.0",
+    "chromium": "150.0.7871.250",
+    "xvfbRun": "/usr/bin/xvfb-run",
+    "xvfb": "/usr/bin/Xvfb",
+    "display": "1600x1000x24"
+  },
+  "isolation": {
+    "worktree": "独立 git worktree，从固定 PR #110 HEAD 建立",
+    "branch": "audit/p06-u1-office71-local-r02",
+    "profile": "<LOCAL_RAW_ROOT>/profile/{config,user-data}",
+    "workspace": "<LOCAL_RAW_ROOT>/workspaces/ 与隔离 profile 内的合成 session workspace",
+    "materials": "<LOCAL_RAW_ROOT>/materials/；仅合成文件",
+    "provider": "未配置、未调用",
+    "schoolDataOrGold": "未使用",
+    "userConfigOrCredentials": "未读取、未写入"
+  },
+  "loopback": {
+    "host": "127.0.0.1",
+    "vite": 37361,
+    "mainInspector": 43407,
+    "rendererCdp": 44091,
+    "portsReleasedAfterRun": true
+  },
+  "realMain": {
+    "initialPid": 3396991,
+    "afterRestartPid": 3408759,
+    "p02R01SmokePid": 3450966,
+    "profileConfigAndUserDataMatchedIsolatedRoot": true
+  }
+}

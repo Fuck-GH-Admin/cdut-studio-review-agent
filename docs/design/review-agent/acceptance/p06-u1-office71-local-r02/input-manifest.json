@@ -1,0 +1,280 @@
+{
+  "candidateSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+  "status": "PASS",
+  "classification": "all inputs synthetic and generated for this run",
+  "officeFixtureValidation": {
+    "status": "PASS",
+    "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+    "rows": [
+      {
+        "input": "materials/A/proof.docx",
+        "format": "docx",
+        "source": "A",
+        "bytes": 1630,
+        "sha256": "bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418",
+        "zipMembers": 5,
+        "validation": {
+          "paragraphs": 4,
+          "tables": 1
+        }
+      },
+      {
+        "input": "materials/A/proof.xlsx",
+        "format": "xlsx",
+        "source": "A",
+        "bytes": 17195,
+        "sha256": "c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+        "zipMembers": 11,
+        "validation": {
+          "sheets": [
+            {
+              "name": "Budget",
+              "rows": 3,
+              "columns": 2
+            },
+            {
+              "name": "Details",
+              "rows": 3,
+              "columns": 2
+            }
+          ]
+        }
+      },
+      {
+        "input": "materials/A/proof.pptx",
+        "format": "pptx",
+        "source": "A",
+        "bytes": 49723,
+        "sha256": "78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd",
+        "zipMembers": 43,
+        "validation": {
+          "slideCount": 2,
+          "slidePaths": [
+            "ppt/slides/slide1.xml",
+            "ppt/slides/slide2.xml"
+          ]
+        }
+      },
+      {
+        "input": "materials/B/proof.docx",
+        "format": "docx",
+        "source": "B",
+        "bytes": 1630,
+        "sha256": "9dd6f4583f19b93b1c8e1cbe7dc9f23a297a2e92e36f154bd195f6ab73c36d1e",
+        "zipMembers": 5,
+        "validation": {
+          "paragraphs": 4,
+          "tables": 1
+        }
+      },
+      {
+        "input": "materials/B/proof.xlsx",
+        "format": "xlsx",
+        "source": "B",
+        "bytes": 17195,
+        "sha256": "05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4",
+        "zipMembers": 11,
+        "validation": {
+          "sheets": [
+            {
+              "name": "Budget",
+              "rows": 3,
+              "columns": 2
+            },
+            {
+              "name": "Details",
+              "rows": 3,
+              "columns": 2
+            }
+          ]
+        }
+      },
+      {
+        "input": "materials/B/proof.pptx",
+        "format": "pptx",
+        "source": "B",
+        "bytes": 49723,
+        "sha256": "93940ce551d683299ac86a954c9d9177ce90cd0deaa220db2c892e67e46682bf",
+        "zipMembers": 43,
+        "validation": {
+          "slideCount": 2,
+          "slidePaths": [
+            "ppt/slides/slide1.xml",
+            "ppt/slides/slide2.xml"
+          ]
+        }
+      }
+    ],
+    "sameByteCopies": 3,
+    "pdfControls": [
+      "readable.pdf",
+      "blank.pdf",
+      "corrupt.pdf"
+    ]
+  },
+  "files": [
+    {
+      "path": "materials/A/proof.docx",
+      "bytes": 1630,
+      "sha256": "bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418"
+    },
+    {
+      "path": "materials/A/proof.pptx",
+      "bytes": 49723,
+      "sha256": "78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd"
+    },
+    {
+      "path": "materials/A/proof.xlsx",
+      "bytes": 17195,
+      "sha256": "c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f"
+    },
+    {
+      "path": "materials/B/proof.docx",
+      "bytes": 1630,
+      "sha256": "9dd6f4583f19b93b1c8e1cbe7dc9f23a297a2e92e36f154bd195f6ab73c36d1e"
+    },
+    {
+      "path": "materials/B/proof.pptx",
+      "bytes": 49723,
+      "sha256": "93940ce551d683299ac86a954c9d9177ce90cd0deaa220db2c892e67e46682bf"
+    },
+    {
+      "path": "materials/B/proof.xlsx",
+      "bytes": 17195,
+      "sha256": "05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4"
+    },
+    {
+      "path": "materials/blank.pdf",
+      "bytes": 575,
+      "sha256": "3b3f049ab9156645d913f2a4c4cecad98e5564ec45af87807c13440b93c72d60"
+    },
+    {
+      "path": "materials/corrupt.pdf",
+      "bytes": 26,
+      "sha256": "83fb777bc8f3fd8fea3a43658030726c065ca9e695219da8c41a940805002bfb"
+    },
+    {
+      "path": "materials/fixture-manifest.json",
+      "bytes": 1654,
+      "sha256": "bb5652e852b243b3f04bd5b58b029c6d4c995d9bc59e4a0fe958be71a1cbf5a8"
+    },
+    {
+      "path": "materials/readable.pdf",
+      "bytes": 605,
+      "sha256": "82ba86e5269f411b8a5b737993567474309b883811b4aabce65d512ff3fc6159"
+    },
+    {
+      "path": "materials/revision-large-docx/peer-proof.docx",
+      "bytes": 1630,
+      "sha256": "9dd6f4583f19b93b1c8e1cbe7dc9f23a297a2e92e36f154bd195f6ab73c36d1e"
+    },
+    {
+      "path": "materials/revision-large-docx/proof.docx",
+      "bytes": 1561,
+      "sha256": "f8a87198889e4b062fde8290ac62af3a4bb80ae33d0dddfccda6c4a4c9cf07c5"
+    },
+    {
+      "path": "materials/revision-large-docx-retry/peer-proof.docx",
+      "bytes": 1630,
+      "sha256": "9dd6f4583f19b93b1c8e1cbe7dc9f23a297a2e92e36f154bd195f6ab73c36d1e"
+    },
+    {
+      "path": "materials/revision-large-docx-retry/proof.docx",
+      "bytes": 1562,
+      "sha256": "7198d52a9b0369679fc4178eaa90c3cffcab8c00514c6256b6cb2f38dd5011d5"
+    },
+    {
+      "path": "materials/revision-large-pptx/peer-proof.pptx",
+      "bytes": 49723,
+      "sha256": "93940ce551d683299ac86a954c9d9177ce90cd0deaa220db2c892e67e46682bf"
+    },
+    {
+      "path": "materials/revision-large-pptx/proof.pptx",
+      "bytes": 17148,
+      "sha256": "b4d3cd52a19c056b196850c7f0640cfdda850a3c2df5f8be3dbfe7c03112adec"
+    },
+    {
+      "path": "materials/revision-large-pptx-retry/peer-proof.pptx",
+      "bytes": 49723,
+      "sha256": "93940ce551d683299ac86a954c9d9177ce90cd0deaa220db2c892e67e46682bf"
+    },
+    {
+      "path": "materials/revision-large-pptx-retry/proof.pptx",
+      "bytes": 17146,
+      "sha256": "30e4a7989357305c834b692d1a056f01a4d85970c13da6e6781d3dd8ad682fe8"
+    },
+    {
+      "path": "materials/revision-large-xlsx/peer-proof.xlsx",
+      "bytes": 17195,
+      "sha256": "05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4"
+    },
+    {
+      "path": "materials/revision-large-xlsx/proof.xlsx",
+      "bytes": 6831,
+      "sha256": "6541fdfd12607df0f5369adafb3a22d15952c0be0e2bb5f526005c689d7d41de"
+    },
+    {
+      "path": "materials/revision-large-xlsx-retry/peer-proof.xlsx",
+      "bytes": 17195,
+      "sha256": "05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4"
+    },
+    {
+      "path": "materials/revision-large-xlsx-retry/proof.xlsx",
+      "bytes": 6833,
+      "sha256": "f5a97910f99399a084f27c6b1d064d9c536831c919fd853523f031ab8e377a43"
+    },
+    {
+      "path": "materials/revision-same-docx/proof.docx",
+      "bytes": 1630,
+      "sha256": "f7f27285e0e2fabf072e70d2d7fea97ddfcdbdd4905b3548ed896eb85a4f712a"
+    },
+    {
+      "path": "materials/revision-same-docx-retry/proof.docx",
+      "bytes": 1630,
+      "sha256": "b0f277c49be8485ba947f926b1d622435580f70764b359ca6d248646f565c839"
+    },
+    {
+      "path": "materials/revision-same-pptx/proof.pptx",
+      "bytes": 49723,
+      "sha256": "08a27c9925e06b75721d7578b76979024eca610f9f824783f5698d3890686e25"
+    },
+    {
+      "path": "materials/revision-same-pptx-retry/proof.pptx",
+      "bytes": 49723,
+      "sha256": "f06a1e7b2e09101b01f6e107705bd71187a9d1f4982facbfcff550cbbdfeaa6a"
+    },
+    {
+      "path": "materials/revision-same-xlsx/proof.xlsx",
+      "bytes": 17381,
+      "sha256": "bc7f1e91d299413019ae824d4752fb185a0a9663b105e3859331dc9903e85a43"
+    },
+    {
+      "path": "materials/revision-same-xlsx-retry/proof.xlsx",
+      "bytes": 17751,
+      "sha256": "2394eb1be11b3d6f12a79f7504fb5000a74012198bfaac1cae3315a7ef609bfc"
+    },
+    {
+      "path": "materials/same/proof.docx",
+      "bytes": 1630,
+      "sha256": "bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418"
+    },
+    {
+      "path": "materials/same/proof.pptx",
+      "bytes": 49723,
+      "sha256": "78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd"
+    },
+    {
+      "path": "materials/same/proof.xlsx",
+      "bytes": 17195,
+      "sha256": "c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f"
+    }
+  ],
+  "sameByteCopies": 3,
+  "pdfControls": [
+    "readable.pdf",
+    "blank.pdf",
+    "corrupt.pdf"
+  ],
+  "provider": "not configured or called",
+  "realSchoolMaterialsOrGold": "not used"
+}
