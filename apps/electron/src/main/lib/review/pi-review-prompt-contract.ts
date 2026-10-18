@@ -37,6 +37,42 @@ export function piRuleForPrompt(rule: RuleSpec, sectionName?: string): string {
   return `${header} | ${rule.confirmation === 'confirmed' ? '已确认' : '未确认→只可 awaiting-confirmation'} | ${rule.title}：${rule.requirement}`
 }
 
+/** A lossless dictionary: every RuleSpec remains an individual rule, even if texts repeat.
+ * The complete requirement text is present exactly once per distinct string; model cannot
+ * collapse separate rule targets, statuses, IDs or authoring sections into one Check. */
+export function piRuleCatalogForPrompt(
+  rules: RuleSpec[],
+  sectionName: (rule: RuleSpec) => string | undefined,
+): { text: string; mode: 'expanded' | 'dictionary'; pointers: Array<{ ruleId: string; requirementId: string; requirement: string }>; requirements: Array<{ id: string; requirement: string }> } {
+  const expanded = rules.map(rule => piRuleForPrompt(rule, sectionName(rule))).join('\n')
+  const dictionary = new Map<string, string>()
+  const pointers = rules.map(rule => {
+    let id = dictionary.get(rule.requirement)
+    if (!id) {
+      id = 'RQ' + String(dictionary.size + 1).padStart(3, '0')
+      dictionary.set(rule.requirement, id)
+    }
+    return { ruleId: rule.id, requirementId: id, requirement: rule.requirement }
+  })
+  const requirements = [...dictionary].map(([requirement, id]) => ({ id, requirement }))
+  const index = rules.map((rule, i) => {
+    const section = sectionName(rule)
+    const status = rule.confirmation === 'confirmed' ? '已确认' : '未确认→只可 awaiting-confirmation'
+    return `- ${rule.id} | ${rule.execution} | ${rule.targetScope}${section ? ' | 分项：' + section : ''} | ${status} | ${rule.title} | 要求正文=${pointers[i]!.requirementId}`
+  }).join('\n')
+  const catalog = [
+    '【逐 RuleSpec 独立检查索引】每个 ruleId 必须独立提交其目标检查；多个 ruleId 引用同一要求正文，绝不意味着可合并 Check。',
+    index,
+    '【要求正文完整词典】以下是各要求编号的全部原文，无删减。每个 ruleId 按索引中的 要求正文=RQxxx 精确引用。',
+    ...requirements.map(item => `[${item.id}]\n${item.requirement}`),
+  ].join('\n')
+  // Do not make small or already-unique rule sets harder for the model to understand.
+  if (catalog.length >= expanded.length * 0.90) {
+    return { text: expanded, mode: 'expanded', pointers, requirements }
+  }
+  return { text: catalog, mode: 'dictionary', pointers, requirements }
+}
+
 export const PI_SUBMIT_SCHEMA_CONTRACT = [
   '【review_submit_result 的精确输入合同】',
   'summary: string；observations?: Array<{subjectId,fieldKey,kind,value,sourceRefs:[{documentVersionId,blockId,quote?}]}>；',
