@@ -14,7 +14,7 @@ function hasSupplementResponseAfterRun(aggregate: CaseAggregateV2, run: ReviewRu
   const completedAt = run.completedAt ?? run.startedAt
   // Opening a request records workflow intent against this run; it does not
   // change the reviewed inputs. A response does, and requires a fresh review.
-  return aggregate.supplements.some((supplement) => supplement.responses.some((response) => response.at > completedAt))
+  return aggregate.supplements.some((supplement) => supplement.responses.some((response) => response.at >= completedAt))
 }
 
 function currentSubjectAdjudications(aggregate: CaseAggregateV2, runId?: string, inputHash?: string): Map<string, SubjectAdjudication> {
