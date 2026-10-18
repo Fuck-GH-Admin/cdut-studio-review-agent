@@ -4,7 +4,7 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
-import type { SDKMessage } from '@profer/shared'
+import { DEFAULT_PRESET_ID, type SDKMessage } from '@profer/shared'
 import { PiAgentAdapter, type PiAgentQueryOptions } from './adapters/pi-agent-adapter'
 
 const profile = mkdtempSync(join(tmpdir(), 'p06-pi-permission-wiring-'))
@@ -58,7 +58,7 @@ describe('P06 L02-U1 内部审核 owner 缺指派不得降级普通 Pi', () => {
       channelId: channel.id,
       modelId: 'synthetic-model',
     })
-    updateAgentSessionMeta(session.id, { presetId: 'default', presetReference: undefined })
+    updateAgentSessionMeta(session.id, { presetId: DEFAULT_PRESET_ID, presetReference: undefined })
     const adapter = new WitnessAdapter()
     const orchestrator = new AgentOrchestrator(adapter, new AgentEventBus())
     await expect(orchestrator.sendMessage({
