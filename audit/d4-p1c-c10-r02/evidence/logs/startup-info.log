@@ -1,0 +1,5 @@
+$ node audit/d4-p1c-c10-r02/tmp/cdp-driver.mjs info
+
+{"id":"E0AB0DC8C501062962967C5B0CEF38C3","title":"CDUT Studio","url":"http://localhost:38583/","websocket":"ws://127.0.0.1:9252/devtools/page/<redacted>"}
+
+EXIT_CODE=0

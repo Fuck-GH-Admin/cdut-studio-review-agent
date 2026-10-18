@@ -1,0 +1,61 @@
+[
+  {
+    "name": "typecheck",
+    "command": [
+      "bun",
+      "run",
+      "typecheck"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "check-boundaries",
+    "command": [
+      "bun",
+      "run",
+      "check:boundaries"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "build-main",
+    "command": [
+      "bun",
+      "run",
+      "--filter=@profer/electron",
+      "build:main"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "build-preload",
+    "command": [
+      "bun",
+      "run",
+      "--filter=@profer/electron",
+      "build:preload"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "build-renderer",
+    "command": [
+      "bun",
+      "run",
+      "--filter=@profer/electron",
+      "build:renderer"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "submit-lock-tests",
+    "command": [
+      "bun",
+      "test",
+      "--isolate",
+      "apps/electron/src/renderer/components/content-review/review-case-submit-lock.test.ts",
+      "apps/electron/src/renderer/components/content-review/review-case-submit-lifecycle.test.ts"
+    ],
+    "exitCode": 0
+  }
+]

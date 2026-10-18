@@ -1,0 +1,28 @@
+$ bun run --filter=@profer/electron build:main
+
+@profer/electron build:main: ▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+@profer/electron build:main: 
+@profer/electron build:main:     src/main/lib/document-parser.ts:773:70:
+@profer/electron build:main:       773 │ ...L(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+@profer/electron build:main:           ╵                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@profer/electron build:main: 
+@profer/electron build:main: ▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+@profer/electron build:main: 
+@profer/electron build:main:     src/main/lib/study/study-document-indexer.ts:182:70:
+@profer/electron build:main:       182 │ ...L(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+@profer/electron build:main:           ╵                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@profer/electron build:main: 
+@profer/electron build:main: ▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+@profer/electron build:main: 
+@profer/electron build:main:     src/main/lib/review/case-import.ts:49:70:
+@profer/electron build:main:       49 │ ...RL(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+@profer/electron build:main:          ╵                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@profer/electron build:main: 
+@profer/electron build:main: 3 warnings
+@profer/electron build:main: 
+@profer/electron build:main:   dist/main.cjs  9.2mb ⚠️
+@profer/electron build:main: 
+@profer/electron build:main: ⚡ Done in 452ms
+@profer/electron build:main: Exited with code 0
+
+EXIT_CODE=0

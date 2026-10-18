@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "verdict": "C10_GUI_FAIL",
+  "candidate": "PR #124",
+  "testedHead": "fc5100b339d1f097aea4ee60bd2d912276bf8429",
+  "productionParent": "026cfe0f4905bf10f46291bdd7451788c60df5f9",
+  "remoteHeadStable": true,
+  "environment": {
+    "electron": "43.7.7",
+    "display": ":120",
+    "resolution": "1600x1000x24",
+    "isolatedWorktree": true,
+    "isolatedProfile": true,
+    "offlineDemoLogin": true,
+    "modelConfigEntries": 0,
+    "realCAS": false,
+    "provider": false,
+    "onlineModel": false,
+    "p06": false,
+    "productionDatabase": false
+  },
+  "fixture": {
+    "path": "evidence/fixtures/公共教学教室借用申请.md",
+    "sizeBytes": 40,
+    "sha256": "57bdcc65f42a3c551601e2d23ddf7e72ae474b1d621192e75496d8b2a951684e"
+  },
+  "checks": {
+    "frozenInstall": {
+      "status": "PASS",
+      "exitCode": 0
+    },
+    "typecheck": {
+      "status": "PASS",
+      "exitCode": 0
+    },
+    "boundaries": {
+      "status": "PASS",
+      "exitCode": 0
+    },
+    "buildMain": {
+      "status": "PASS",
+      "exitCode": 0
+    },
+    "buildPreload": {
+      "status": "PASS",
+      "exitCode": 0
+    },
+    "buildRenderer": {
+      "status": "PASS",
+      "exitCode": 0
+    },
+    "rendererSubmitTests": {
+      "status": "PASS",
+      "passed": 9,
+      "failed": 0,
+      "assertions": 50
+    },
+    "mainD4ClientNegativeTests": {
+      "status": "PASS",
+      "passed": 5,
+      "failed": 0,
+      "assertions": 45
+    },
+    "headCI": {
+      "status": "PASS",
+      "run": "39135801349",
+      "passed": 3751,
+      "skipped": 6,
+      "failed": 0,
+      "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39135801349"
+    }
+  },
+  "cases": {
+    "C10-A-mouseDoubleClick": {
+      "status": "PASS",
+      "formSubmitEvents": 1,
+      "mainCreateCaseEntries": 1,
+      "falseFailureToast": false,
+      "caseId": "d4-7a3073a5-82c9-4afd-80b2-bdcafb8260df",
+      "evidence": [
+        "evidence/logs/c10-a-mouse-double-click-dispatch.json",
+        "evidence/logs/c10-a-renderer-events.json",
+        "evidence/screenshots/20-c10-a-pre-submit.png",
+        "evidence/screenshots/21-c10-a-post-submit.png"
+      ]
+    },
+    "C10-B-enterClick": {
+      "status": "FAIL",
+      "requiredFormSubmitEvents": 2,
+      "observedFormSubmitEvents": 1,
+      "observedMainCreateCaseEntries": 1,
+      "falseFailureToast": false,
+      "interpretation": "The taskbook hard assertion was not reproduced; no confirmed product defect established.",
+      "evidence": [
+        "evidence/logs/c10-b-retry-enter-click-dispatch.json",
+        "evidence/logs/c10-b-retry-renderer-events.json",
+        "evidence/logs/c10-b-retry-main-entry-count.txt",
+        "evidence/screenshots/25-c10-b-retry-post-scroll.png",
+        "evidence/screenshots/26-c10-b-retry-post-submit.png"
+      ]
+    },
+    "C10-B-physicalEnterSupplement": {
+      "status": "PASS",
+      "formSubmitEvents": 1,
+      "mainCreateCaseEntries": 1,
+      "falseFailureToast": false,
+      "caseId": "d4-745e6d80-d500-406a-8274-7fa27e476e7d",
+      "evidence": [
+        "evidence/logs/c10-b-actual-enter-renderer-events.json",
+        "evidence/logs/c10-b-actual-enter-main-entries.txt",
+        "evidence/screenshots/41-c10-b-actual-enter-pre-submit.png",
+        "evidence/screenshots/42-c10-b-actual-enter-post.png"
+      ]
+    },
+    "C10-C-failRetry": {
+      "status": "PASS",
+      "failure": "D4_INTAKE_TOKEN_INVALID after staged-file disappearance",
+      "newCasesOnFailure": 0,
+      "retryCreatedCase": true,
+      "cancelReopenCreatedIndependentCase": true,
+      "pendingMainReplyWhileClosing": "NOT_RUN",
+      "evidence": [
+        "evidence/logs/c10-c-failure-ui.json",
+        "evidence/logs/c10-c-after-failure-main-entries.txt",
+        "evidence/screenshots/27-c10-c-pre-failure.png",
+        "evidence/screenshots/29-c10-c-failure-toast.png",
+        "evidence/screenshots/31-c10-c-retry-post-submit.png",
+        "evidence/screenshots/35-c10-c-reopen-post-submit.png"
+      ]
+    },
+    "C10-D-mainPersistence": {
+      "status": "PASS",
+      "matchedCaseCount": 5,
+      "single40ByteApplicationPerCase": true,
+      "sourceHashMatchesFixture": true,
+      "oneSubjectPerCase": true,
+      "rulesCountPerCase": 52,
+      "conditionsUnknownPerCase": 8,
+      "publicationAllowed": false,
+      "evidenceLinkCount": 0,
+      "runCount": 0,
+      "stableAcrossReload": true,
+      "evidence": [
+        "evidence/readback/c10-d-final-main-api-readback.json",
+        "evidence/readback/c10-d-final-stored-source-hashes.json",
+        "evidence/readback/c10-d-final-verification.json",
+        "evidence/readback/c10-d-reload-ui-confirmation.json",
+        "evidence/screenshots/44-c10-d-reload-material-review.png"
+      ]
+    },
+    "C10-E-mainSecurityRejection": {
+      "status": "PARTIAL",
+      "invalidStagedFileRejected": true,
+      "mainD4ClientNegativeTests": "5 passed / 45 assertions",
+      "crossSenderReplay": "NOT_RUN",
+      "consumedTokenReplay": "NOT_RUN",
+      "dedicatedTokenReplayRegressionFound": false,
+      "evidence": [
+        "evidence/logs/main-d4-client-negative-tests.log",
+        "evidence/logs/c10-c-failure-ui.json",
+        "evidence/logs/c10-c-induced-staging-file-disappearance.json"
+      ]
+    },
+    "C10-F-publishedTemplate": {
+      "status": "PASS",
+      "separateCasesCreated": 2,
+      "oneSubmissionPerCase": true,
+      "falseFailureToast": false,
+      "evidence": [
+        "evidence/logs/c10-f-case1-renderer-events.json",
+        "evidence/logs/c10-f-case2-renderer-events.json",
+        "evidence/screenshots/37-c10-f-case1-post-submit.png",
+        "evidence/screenshots/39-c10-f-case2-post-submit.png"
+      ]
+    }
+  },
+  "unexecuted": [
+    "C10-C pending Main reply while closing/reopening",
+    "C10-E manual cross-sender and consumed-token replay",
+    "live CAS",
+    "provider or online model",
+    "P06",
+    "full P2 and separately scoped D2/D3/COMMON workflows"
+  ],
+  "productionCodeChanged": false,
+  "qaInstrumentationReverted": true,
+  "recommendation": "Keep the C10 gate open. Re-run the prescribed Enter+Click sequence after confirming the archived CDP driver emits two trusted form-submit callbacks, then complete Main token replay coverage."
+}

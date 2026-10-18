@@ -1,0 +1,68 @@
+{
+  "totalCaseCount": 2,
+  "matchedCaseCount": 2,
+  "cases": [
+    {
+      "caseId": "d4-d01485b0-0272-4840-a9a8-663b88655f59",
+      "title": "C10-R02-EVENT-INSTRUMENTED-20261018-02",
+      "summary": {
+        "documentCount": 1
+      },
+      "caseV2": {
+        "templateId": "g03-t01",
+        "templateVersion": 1,
+        "stage": "draft",
+        "revision": 3,
+        "subjectCount": 1
+      },
+      "documents": [
+        {
+          "id": "doc-1792336487889-cfjq1n",
+          "fileName": "0-公共教学教室借用申请.md",
+          "role": "application",
+          "sizeBytes": 40,
+          "parseStatus": "parsed"
+        }
+      ],
+      "d2Plan": {
+        "fingerprint": "bd4ee3ddeaf2bfd9ef3cd979675ddf2316220f9767ac8821c73637a890570668",
+        "publicationAllowed": false,
+        "targetCount": 1,
+        "rulesCount": 52
+      },
+      "evidenceLinkCount": 0,
+      "runCount": 0
+    },
+    {
+      "caseId": "d4-7a3073a5-82c9-4afd-80b2-bdcafb8260df",
+      "title": "C10-R02-MOUSE-20261018-01",
+      "summary": {
+        "documentCount": 1
+      },
+      "caseV2": {
+        "templateId": "g03-t01",
+        "templateVersion": 1,
+        "stage": "draft",
+        "revision": 3,
+        "subjectCount": 1
+      },
+      "documents": [
+        {
+          "id": "doc-1792336200628-qu4oar",
+          "fileName": "0-公共教学教室借用申请.md",
+          "role": "application",
+          "sizeBytes": 40,
+          "parseStatus": "parsed"
+        }
+      ],
+      "d2Plan": {
+        "fingerprint": "c2a30da06c03f1247850f2f42720f275658317fe61b531e93d802ec9336611f7",
+        "publicationAllowed": false,
+        "targetCount": 1,
+        "rulesCount": 52
+      },
+      "evidenceLinkCount": 0,
+      "runCount": 0
+    }
+  ]
+}
