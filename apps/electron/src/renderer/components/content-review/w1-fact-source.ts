@@ -3,11 +3,24 @@ import type { CaseAggregateV2, D2RuntimePlan, SourceRef } from '@profer/shared'
 /** Derive *candidate field choices* only from this subject's frozen D2 mapping.
  * This does NOT establish policy authority or confirm any applicant fact.
  */
+function conditionKeys(condition: unknown): string[] {
+  if (!condition || typeof condition !== 'object') return []
+  const entry = condition as { kind?: string; fieldKey?: unknown; conditions?: unknown[]; condition?: unknown }
+  if (entry.kind === 'confirmed-observation' && typeof entry.fieldKey === 'string')
+    return [entry.fieldKey]
+  if ((entry.kind === 'all' || entry.kind === 'any') && Array.isArray(entry.conditions))
+    return entry.conditions.flatMap(conditionKeys)
+  if (entry.kind === 'not') return conditionKeys(entry.condition)
+  return []
+}
 export function w1CandidateFactKeys(plan: D2RuntimePlan | undefined, subjectId: string): string[] {
   return [...new Set((plan?.mapping ?? [])
     .filter(mapping => mapping.subjectId === subjectId)
-    .flatMap(mapping => [mapping.evidenceCoverage?.fieldKey, ...(mapping.evidenceCoverage?.supportsFacts ?? [])])
-    .filter((key): key is string => typeof key === 'string' && !!key.trim()))]
+    .flatMap(mapping => [
+      mapping.evidenceCoverage?.fieldKey,
+      ...(mapping.evidenceCoverage?.supportsFacts ?? []),
+      ...conditionKeys(mapping.gate?.when),
+    ]).filter((key): key is string => typeof key === 'string' && !!key.trim()))]
 }
 
 /** An explicit source location must refer to one active parsed document version.
