@@ -7,11 +7,12 @@ import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { assessDecisionReadiness, groupBatchIssues, triageBatchCase } from '@profer/shared'
-import type { Actor, BatchGroupActionRequest, BatchGroupApplyRequest, BatchGroupApplyResult, BatchGroupPreview, BatchGroupPreviewRow, BatchTriageInput, ReviewRunV2 } from '@profer/shared'
+import type { Actor, BatchGroupActionRequest, BatchGroupApplyRequest, BatchGroupApplyResult, BatchGroupPreview, BatchGroupPreviewRow, BatchTriageInput } from '@profer/shared'
 import { getConfigDir } from '../config-paths'
 import { readAggregate } from './case-store-v2'
 import { readBatchStateV2 } from './batch-store'
-import { listRunsV2, readArtifact } from './run-store-v2'
+import { getRunV2, readArtifact } from './run-store-v2'
+import { validateBoundBatchRun } from './batch-run-provenance'
 import { getTemplate } from './template-store'
 import { isWorkspaceRunStaleV2, decideWorkspaceCaseV2, openWorkspaceSupplementV2, recordWorkspaceDispositionV2 } from './workspace-business-service-v2'
 
@@ -55,9 +56,6 @@ function validateRequest(req: BatchGroupActionRequest): void {
   }
 }
 
-function latestRun(caseId: string): ReviewRunV2 | undefined {
-  return [...listRunsV2(caseId)].sort((a,b) => (b.completedAt ?? b.startedAt).localeCompare(a.completedAt ?? a.startedAt))[0]
-}
 
 function collect(batchId: string) {
   const batch = readBatchStateV2(batchId)
@@ -67,7 +65,9 @@ function collect(batchId: string) {
     const aggregate = readAggregate(entry.caseId)
     return {
       caseId: entry.caseId, entryStatus: entry.status,
-      caseStage: aggregate?.caseV2.stage, run: latestRun(entry.caseId),
+      caseStage: aggregate?.caseV2.stage,
+      run: validateBoundBatchRun(batch.batch, entry,
+        entry.runId ? getRunV2(entry.caseId, entry.runId) : undefined),
       batch: batch.batch,
     }
   })
@@ -217,7 +217,13 @@ export async function applyBatchGroupAction(request: BatchGroupApplyRequest): Pr
       // Re-read the case for each write; preview is not a capability token.
       const agg = readAggregate(row.caseId)
       if (!agg || agg.caseV2.revision !== row.revision
-        || isWorkspaceRunStaleV2(agg, row.runId) || readBatchStateV2(request.batchId)?.status !== 'queued') {
+        || isWorkspaceRunStaleV2(agg, row.runId) || readBatchStateV2(request.batchId)?.status !== 'queued'
+        || !(() => {
+          const latestBatch = readBatchStateV2(request.batchId)
+          const currentEntry = latestBatch?.cases.find((entry) => entry.caseId === row.caseId)
+          return latestBatch && currentEntry && validateBoundBatchRun(latestBatch.batch, currentEntry,
+            getRunV2(row.caseId, row.runId))
+        })()) {
         result.results.push({ caseId: row.caseId, status: 'conflict', message: '提交前案卷版本、输入或批次状态改变' })
         result.conflicts++
         persist(path, { inputHash, result, completed: false } satisfies PersistedOp)

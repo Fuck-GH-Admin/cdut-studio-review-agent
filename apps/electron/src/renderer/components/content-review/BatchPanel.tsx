@@ -12,7 +12,8 @@ import { useStore } from 'jotai'
 import { reviewV2BusyAtom } from './V2CasePanel'
 import { BatchGroupActionDialog } from './BatchGroupActionDialog'
 import { BatchAutomationDialog } from './BatchAutomationDialog'
-import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution } from './batch-ui-feedback'
+import { SupplementRequeueDialog } from './SupplementRequeueDialog'
+import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution, batchTechnicalFailureMessage, selectBatchMatchingRun } from './batch-ui-feedback'
 
 type CaseIndexItem = Awaited<ReturnType<typeof window.reviewAPI.listCasesV2>>[number]
 type ReviewRunV2 = Awaited<ReturnType<typeof window.reviewAPI.listRunsV2>>[number]
@@ -25,6 +26,7 @@ interface BatchProjectRow {
   entryStatus: BatchStateV2['cases'][number]['status']
   stage?: CaseIndexItem['stage']
   run?: ReviewRunV2
+  runMismatch?: boolean
 }
 
 interface BatchPanelProps {
@@ -43,6 +45,7 @@ function formatTime(value: string | undefined): string {
 }
 
 function caseStatus(row: BatchProjectRow, batch: BatchStateV2): { label: string; tone: string } {
+  if (row.runMismatch) return { label: '最新 Run 模板版本冲突', tone: 'bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-300' }
   if (row.stage === 'awaiting-supplement') return { label: '等待补件', tone: 'bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300' }
   if (row.stage === 'awaiting-review' || row.stage === 'awaiting-final') return { label: '需要人工处理', tone: 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300' }
   if (row.entryStatus === 'failed') return { label: '执行失败', tone: 'bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-300' }
@@ -80,7 +83,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
   const [cases, setCases] = useState<CaseIndexItem[]>([])
   const [legacyCases, setLegacyCases] = useState<ReviewCaseSummary[]>([])
   const [templates, setTemplates] = useState<TemplateVersion[]>([])
-  const [runs, setRuns] = useState<Record<string, ReviewRunV2 | undefined>>({})
+  const [runs, setRuns] = useState<Record<string, ReviewRunV2[]>>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [createOpen, setCreateOpen] = useState(false)
@@ -90,6 +93,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
   const [openedGroupKey, setOpenedGroupKey] = useState<string | null>(null)
   const [actionGroup, setActionGroup] = useState<BatchIssueGroup | null>(null)
   const [configureAutomationOpen, setConfigureAutomationOpen] = useState(false)
+  const [requeueCaseId, setRequeueCaseId] = useState<string | null>(null)
   const [batchName, setBatchName] = useState('')
   const [templateKey, setTemplateKey] = useState('')
   const [selectedCaseIds, setSelectedCaseIds] = useState<string[]>([])
@@ -114,10 +118,9 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
       const runEntries = await Promise.all(caseIds.map(async (caseId) => {
         try {
           const history = await window.reviewAPI.listRunsV2(caseId)
-          const latest = [...history].sort((a, b) => (b.completedAt ?? b.startedAt).localeCompare(a.completedAt ?? a.startedAt))[0]
-          return [caseId, latest] as const
+          return [caseId, history] as const
         } catch {
-          return [caseId, undefined] as const
+          return [caseId, [] as ReviewRunV2[]] as const
         }
       }))
       setRuns(Object.fromEntries(runEntries))
@@ -131,6 +134,11 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
   useEffect(() => { if (active) void refresh() }, [active, refresh])
 
   const selectedBatch = batches.find((batch) => batch.batch.id === selectedBatchId) ?? null
+  const multiBatchCaseIds = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const batch of batches) for (const caseId of batch.batch.caseIds) counts.set(caseId, (counts.get(caseId) ?? 0) + 1)
+    return new Set([...counts].filter(([, count]) => count > 1).map(([caseId]) => caseId))
+  }, [batches])
   const legacyById = useMemo(() => new Map(legacyCases.map((item) => [item.id, item])), [legacyCases])
   const caseById = useMemo(() => new Map(cases.map((item) => [item.caseId, item])), [cases])
   const rows = useMemo<BatchProjectRow[]>(() => {
@@ -145,7 +153,8 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
         updatedAt: indexItem?.updatedAt ?? legacy?.updatedAt ?? selectedBatch.batch.createdAt,
         entryStatus: entry.status,
         stage: indexItem?.stage,
-        run: runs[entry.caseId],
+        run: selectBatchMatchingRun(entry.caseId, selectedBatch.batch, entry, runs[entry.caseId] ?? []).run,
+        runMismatch: selectBatchMatchingRun(entry.caseId, selectedBatch.batch, entry, runs[entry.caseId] ?? []).mismatch,
       }
     })
   }, [caseById, legacyById, runs, selectedBatch])
@@ -270,8 +279,8 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
         ])
         const stages = new Map(caseIndex.map((item) => [item.caseId, item.stage]))
         routes = new Map(histories.map(({ caseId, history }) => {
-          const run = [...history].sort((a, b) =>
-            (b.completedAt ?? b.startedAt).localeCompare(a.completedAt ?? a.startedAt))[0]
+          const entry = result.cases.find((item) => item.caseId === caseId)!
+          const run = selectBatchMatchingRun(caseId, result.batch, entry, history).run
           return [caseId, triageBatchCase({
             caseId, entryStatus: 'done', caseStage: stages.get(caseId), run, batch: result.batch,
           }).route] as const
@@ -443,6 +452,22 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                               title={selectedBatch.cases.find((entry) => entry.caseId === row.caseId)?.error ?? '重新入队，仅本案'}
                               onClick={() => void handleBatchAction('retry', row.caseId)}>重试本案</button>
                           )}
+                          {row.runMismatch && (
+                            <p role="alert" className="mt-1 max-w-[250px] text-[11px] leading-4 text-red-700 dark:text-red-300">
+                              该批次缺少可验证的专属 Run 绑定，或 Run 的案卷、模板、输入指纹已发生冲突。请核对来源，不能借用其他批次的最新 Run。
+                            </p>
+                          )}
+                          {batchTechnicalFailureMessage(row.entryStatus, row.run) && (
+                            <p className="mt-1 max-w-[250px] text-[11px] leading-4 text-red-700 dark:text-red-300" role="status">
+                              {batchTechnicalFailureMessage(row.entryStatus, row.run)}
+                            </p>
+                          )}
+                          {multiBatchCaseIds.has(row.caseId) && row.stage === 'reviewing' && selectedBatch.status !== 'finalized' && (
+                            <button type="button" className="ml-2 text-[11px] text-primary hover:underline"
+                              disabled={executing || handlingBatch} onClick={() => setRequeueCaseId(row.caseId)}>
+                              选择补件回流批次
+                            </button>
+                          )}
                         </td>
                         <td className={`px-3 py-3 font-medium ${triage ? TRIAGE_TONES[triage.route] : 'text-muted-foreground'}`} title={triage?.explanation}>
                           <div>{display.label}</div>
@@ -527,6 +552,12 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
           onClose={() => setActionGroup(null)}
           onApplied={refresh}
         />
+      )}
+
+      {requeueCaseId && (
+        <SupplementRequeueDialog key={requeueCaseId} caseId={requeueCaseId}
+          title={caseById.get(requeueCaseId)?.title ?? legacyById.get(requeueCaseId)?.title ?? requeueCaseId}
+          onClose={() => setRequeueCaseId(null)} onApplied={refresh} />
       )}
 
       {selectedBatch && configureAutomationOpen && (

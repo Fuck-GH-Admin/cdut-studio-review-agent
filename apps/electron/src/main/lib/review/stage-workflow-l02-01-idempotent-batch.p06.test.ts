@@ -210,6 +210,85 @@ describe('L02-01 human supplement is idempotent across V2 and batch projection',
     expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('done')
   })
 
+  test('E05 local-only: incomplete → insufficient → new reply → satisfied → one selected requeue, no school-signature pretense', async () => {
+    const { caseId, batchId, taskId } = await seed()
+    const oldBatchId = 'batch-archived-' + randomUUID()
+    createBatchV2({
+      id: oldBatchId, name: '旧批次历史记录', templateId: template.templateId,
+      templateVersion: template.version, policyVersionLock: [],
+      caseIds: [caseId], createdAt: new Date().toISOString(),
+    })
+    const a0 = readAggregate(caseId)!
+    const opened = await recordStageDecision(caseId,
+      command('e05-open-'+randomUUID(), a0.caseV2.revision, reviewer, {
+        taskId, action: 'return-for-supplement', reason: '缺材料，需要补件',
+        supplementReason: '提交原始证明', supplementRequiredElements: ['材料'],
+      }), template)
+    expect(opened.ok).toBeTrue()
+    if (!opened.ok) return
+    const supplementId = opened.aggregate.supplements[0]!.id
+    updateCaseStatus(batchId, caseId, 'done')
+    updateCaseStatus(oldBatchId, caseId, 'done')
+
+    // Reject forged document-version ID without mutating case revision.
+    const bad = await respondSupplementV2(caseId,
+      command('e05-fake-'+randomUUID(), opened.aggregate.caseV2.revision, student, {
+        supplementId, note: '不存在的证据版本', documentVersionIds: ['made-up-document-v1'],
+      }))
+    expect(bad.ok).toBeFalse()
+    if (!bad.ok) expect(bad.code).toBe('NOT_FOUND')
+    expect(readAggregate(caseId)?.caseV2.revision).toBe(opened.aggregate.caseV2.revision)
+
+    const firstReply = await respondSupplementV2(caseId,
+      command('e05-reply-'+randomUUID(), opened.aggregate.caseV2.revision, student, {
+        supplementId, note: '第一次补充仍不完整',
+      }))
+    expect(firstReply.ok).toBeTrue()
+    if (!firstReply.ok) return
+    const insufficient = await resolveSupplementV2(caseId,
+      command('e05-insufficient-'+randomUUID(), firstReply.aggregate.caseV2.revision, reviewer, {
+        supplementId, outcome: 'insufficient', reason: '仍缺少可信证明',
+      }))
+    expect(insufficient.ok).toBeTrue()
+    if (!insufficient.ok) return
+    expect(insufficient.aggregate.caseV2.stage).toBe('awaiting-supplement')
+    expect(insufficient.aggregate.supplements[0]?.status).toBe('insufficient')
+    const replyAgain = await respondSupplementV2(caseId,
+      command('e05-reply-again-'+randomUUID(), insufficient.aggregate.caseV2.revision, student, {
+        supplementId, note: '再次提供可核对的补充说明（合成测试）',
+      }))
+    expect(replyAgain.ok).toBeTrue()
+    if (!replyAgain.ok) return
+    expect(replyAgain.aggregate.supplements[0]?.responses).toHaveLength(2)
+    const satisfied = await resolveSupplementV2(caseId,
+      command('e05-satisfied-'+randomUUID(), replyAgain.aggregate.caseV2.revision, reviewer, {
+        supplementId, outcome: 'satisfied', reason: '本地 reviewer 已核对补件',
+      }))
+    expect(satisfied.ok).toBeTrue()
+    if (!satisfied.ok) return
+    expect(satisfied.aggregate.caseV2.stage).toBe('reviewing')
+    expect(satisfied.aggregate.tasks.filter((item) => item.status === 'open' && item.stageId === 'first')).toHaveLength(1)
+    expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('done')
+    expect(readBatchStateV2(oldBatchId)?.cases[0]?.status).toBe('done')
+    expect(satisfied.aggregate.decisions.some((decision) => decision.finality === 'final')).toBe(false)
+
+    // The renderer must explicitly choose ONE destination; backend refuses
+    // stale revisions and replay. Old historical batch is not resurrected.
+    const selection = { actor: reviewer, expectedRevision: satisfied.aggregate.caseV2.revision, supplementId }
+    expect(() => selectSupplementRequeueBatch(caseId, batchId, {
+      ...selection, expectedRevision: selection.expectedRevision - 1,
+    })).toThrow('案卷版本已变化')
+    const requeue = selectSupplementRequeueBatch(caseId, batchId, selection)
+    expect(requeue.queued).toBe(true)
+    expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('queued')
+    expect(readBatchStateV2(oldBatchId)?.cases[0]?.status).toBe('done')
+    updateCaseStatus(batchId, caseId, 'done')
+    const replay = selectSupplementRequeueBatch(caseId, batchId, selection)
+    expect(replay.queued).toBe(false)
+    expect(readBatchStateV2(batchId)?.cases[0]?.status).toBe('done')
+    expect(readBatchStateV2(oldBatchId)?.cases[0]?.status).toBe('done')
+  })
+
   test('same request ID with modified outcome and stale independent commands cannot silently write', async () => {
     const { caseId, taskId, runId, inputHash } = await seed()
     let aggregate = readAggregate(caseId)!

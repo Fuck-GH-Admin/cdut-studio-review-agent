@@ -1,4 +1,4 @@
-import type { BatchStateV2, BatchTriageRoute, BatchAutomationReceipt } from '@profer/shared'
+import type { BatchStateV2, BatchTriageRoute, BatchAutomationReceipt, ReviewRunV2, ReviewBatch } from '@profer/shared'
 
 /** Electron's transport wrapper is an implementation detail, not a user-facing cause. */
 export function reviewBusinessError(error: unknown): string {
@@ -48,4 +48,38 @@ export function batchAutomationDisplay(
     label: entryStatus === 'queued' && receipt ? '待本轮重新审核' : currentTriageLabel,
     ...(receipt ? { history: `上次动作：${receipt.action === 'pass' ? '自动通过' : '自动退回补件'}（历史记录）` } : {}),
   }
+}
+
+/** Only technical incidents are rendered; raw model errors may contain sensitive text. */
+export function batchTechnicalFailureMessage(
+  entryStatus: BatchStateV2['cases'][number]['status'],
+  run: Pick<ReviewRunV2, 'status' | 'error' | 'diagnostics' | 'coverage'> | undefined,
+): string | null {
+  if (entryStatus !== 'failed') return null
+  const signals = [run?.error, ...(run?.diagnostics ?? [])].filter(Boolean).join('；')
+  const remaining = run?.coverage?.pendingChecks ?? 0
+  if (/PI_REVIEW_TURN_LIMIT_EXHAUSTED|max.?turn|maximum.+turn|24.?轮|轮次上限|达到.+轮上限/i.test(signals)) {
+    return 'Agent 达到本轮运行上限' + (remaining > 0 ? '，仍有 ' + remaining + ' 项检查未完成' : '') + '；未形成业务审核结论。'
+  }
+  return '检查运行发生技术异常' + (remaining > 0 ? '，仍有 ' + remaining + ' 项检查未完成' : '')
+    + '；请打开案卷核对 Run 记录，不能将失败视为不合规。'
+}
+
+/** Bind displayed evidence to the selected batch: a latest unrelated Run is not a verdict. */
+export function selectBatchMatchingRun(
+  caseId: string,
+  batch: Pick<ReviewBatch, 'templateId' | 'templateVersion'>,
+  entry: BatchStateV2['cases'][number],
+  history: readonly ReviewRunV2[],
+): { run: ReviewRunV2 | undefined; mismatch: boolean } {
+  // A missing legacy binding is UNKNOWN, not a request to pick the latest
+  // matching Run (which might have been launched for a different batch).
+  if (!entry.runId || !entry.runInputHash || entry.caseId !== caseId)
+    return { run: undefined, mismatch: entry.status === 'done' }
+  const run = history.find((item) => item.id === entry.runId)
+  if (!run || run.caseId !== caseId || run.templateId !== batch.templateId
+    || run.templateVersion !== batch.templateVersion
+    || run.inputManifest?.templateVersion !== batch.templateVersion
+    || run.inputManifest.hash !== entry.runInputHash) return { run: undefined, mismatch: true }
+  return { run, mismatch: false }
 }

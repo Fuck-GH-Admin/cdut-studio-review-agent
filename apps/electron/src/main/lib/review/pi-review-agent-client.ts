@@ -81,7 +81,7 @@ export function createPiReviewModelClient(options: PiReviewModelClientOptions): 
   const runPi = async (request: Parameters<ReviewModelClient['complete']>[0], images: string[], deadlineAt: number): Promise<string> => {
     if (request.signal?.aborted) throw new Error('审核已取消')
     const sdk = await (options.loadSdk ?? (() => import('@earendil-works/pi-coding-agent')))()
-    let completedReviewToolAttempt = false
+    let validatedReviewToolSubmission = false
     const completedReviewToolKeys = new Set<string>()
     const customTools = buildPiReviewToolDefinitions(sdk, request.tools ?? [], request.onToolCall, (name, outcome) => {
       if (!request.terminateAfterTools?.includes(name)) return
@@ -89,7 +89,6 @@ export function createPiReviewModelClient(options: PiReviewModelClientOptions): 
       const data = outcome.data as { toolKey?: unknown; toolKeys?: unknown[]; results?: Array<{ ok?: boolean; data?: { toolKey?: unknown; toolKeys?: unknown[] } }> } | undefined
       const items = Array.isArray(data?.results) ? data.results : [outcome]
       const accepted = items.filter((item) => 'ok' in item && item.ok === true)
-      if (accepted.length > 0) completedReviewToolAttempt = true
       for (const item of accepted) {
         const itemData = 'data' in item && item.data && typeof item.data === 'object'
           ? item.data as { toolKey?: unknown; toolKeys?: unknown[] }
@@ -100,8 +99,14 @@ export function createPiReviewModelClient(options: PiReviewModelClientOptions): 
         if (Array.isArray(keys)) for (const nestedKey of keys) if (typeof nestedKey === 'string') completedReviewToolKeys.add(nestedKey)
       }
       const requiredKeys = request.requiredToolKeys
-      if (requiredKeys?.length) return requiredKeys.every((key) => completedReviewToolKeys.has(key))
-      return items.length > 0 && accepted.length === items.length
+      // No fallback merely because ONE check was accepted: all required
+      // checks must be covered, otherwise a max-turn/SDK failure remains a
+      // technical failure and cannot be presented as a completed batch.
+      const complete = requiredKeys?.length
+        ? requiredKeys.every((key) => completedReviewToolKeys.has(key))
+        : items.length > 0 && accepted.length === items.length
+      if (complete) validatedReviewToolSubmission = true
+      return complete
     }, request.terminateAfterTools)
     const sessionId = `review-${randomUUID()}`
     const sessionDir = mkdtempSync(join(tmpdir(), 'cdut-pi-review-'))
@@ -158,17 +163,23 @@ export function createPiReviewModelClient(options: PiReviewModelClientOptions): 
           if (assistantText) latestResponse = assistantText
           if (message.type === 'result' && message.subtype !== 'success') {
             const details = 'errors' in message && Array.isArray(message.errors) ? message.errors.join('；') : message.subtype
+            // Bounded Pi turns are a TECHNICAL budget exhaustion, never an
+            // implicit compliant/non-compliant finding. Keep a stable diagnostic
+            // code instead of propagating potentially sensitive SDK details.
+            if (/max[_\s-]?turns?|maximum[^\n]{0,30}turns?|turn[_\s-]?limit|轮次上限|超过[^\n]{0,12}轮/.test(`${message.subtype} ${String(details)}`.toLowerCase())) {
+              throw new Error('PI_REVIEW_TURN_LIMIT_EXHAUSTED: 本轮 Agent 达到 24 轮执行上限；未提交的检查仍为技术未完成')
+            }
             throw new Error(`Pi 审核 Agent 未完成：${details}`)
           }
         }
         return latestResponse
       })(), interrupted ])
-      if (!response && completedReviewToolAttempt) return REVIEW_TOOL_RESULT_FALLBACK
+      if (!response && validatedReviewToolSubmission) return REVIEW_TOOL_RESULT_FALLBACK
       if (!response) throw new Error('Pi 审核 Agent 没有返回可用的结构化结果')
-      if (completedReviewToolAttempt && !hasStructuredJson(response)) return REVIEW_TOOL_RESULT_FALLBACK
+      if (validatedReviewToolSubmission && !hasStructuredJson(response)) return REVIEW_TOOL_RESULT_FALLBACK
       return response
     } catch (error) {
-      if (completedReviewToolAttempt && !request.signal?.aborted && !(error instanceof Error && error.name === 'AbortError')) {
+      if (validatedReviewToolSubmission && !request.signal?.aborted && !(error instanceof Error && error.name === 'AbortError')) {
         return REVIEW_TOOL_RESULT_FALLBACK
       }
       if (images.length === 0 && (request.terminateAfterTools?.length ?? 0) > 0 && !request.signal?.aborted && isRecoverableReviewServiceFailure(error)) {

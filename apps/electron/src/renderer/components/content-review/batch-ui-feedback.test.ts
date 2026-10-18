@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 import type { BatchStateV2, BatchTriageRoute } from '@profer/shared'
-import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution } from './batch-ui-feedback'
+import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution, batchTechnicalFailureMessage, selectBatchMatchingRun } from './batch-ui-feedback'
 
 describe('21 号本地 UI QA：反馈语义', () => {
   test('Electron IPC 包装信息不显示给用户，但保留真实业务拒绝原因', () => {
@@ -47,4 +47,38 @@ describe('21 号本地 UI QA：反馈语义', () => {
       completed: 0, failed: 1, pending: 0, needsHuman: 0, technical: 0,
     })
   })
+  test('C 型 max-turn 中断展示技术失败而非业务不合规；不泄漏原始模型错误', () => {
+    const run = { status: 'failed', error: 'Pi 审核 Agent 未完成：max turns 24',
+      diagnostics: ['模型上游内部敏感字段 SECRET_SHOULD_NOT_BE_IN_UI'],
+      coverage: { pendingChecks: 1 } } as unknown as import('@profer/shared').ReviewRunV2
+    const label = batchTechnicalFailureMessage('failed', run)
+    expect(label).toContain('运行上限')
+    expect(label).toContain('1 项')
+    expect(label).not.toContain('SECRET_SHOULD_NOT_BE_IN_UI')
+    expect(batchTechnicalFailureMessage('done', run)).toBeNull()
+    expect(batchTechnicalFailureMessage('failed', undefined)).toContain('技术异常')
+  })
+  test('selected batch never displays a newer wrong-template or cross-case Run as its evidence', () => {
+    const batch = { templateId: 'review-g04', templateVersion: 4 } as import('@profer/shared').ReviewBatch
+    const run = { id: 'run-a', caseId: 'case-a', templateId: 'review-g04', templateVersion: 4,
+      inputManifest: { hash: 'fingerprint', templateVersion: 4 } } as import('@profer/shared').ReviewRunV2
+    const otherBatchRun = { ...run, id: 'run-b' }
+    const entry = { caseId: 'case-a', status: 'done' as const, runId: 'run-a', runInputHash: 'fingerprint' }
+    expect(selectBatchMatchingRun('case-a', batch, entry, [otherBatchRun, run])).toEqual({ run, mismatch: false })
+    expect(selectBatchMatchingRun('case-a', batch, entry, [otherBatchRun])).toEqual({ run: undefined, mismatch: true })
+    for (const stale of [
+      { ...run, caseId: 'case-b' },
+      { ...run, templateId: 'comprehensive-assessment-v2' },
+      { ...run, templateVersion: 3 },
+      { ...run, inputManifest: { ...run.inputManifest, templateVersion: 3 } },
+      { ...run, inputManifest: { ...run.inputManifest, hash: 'tampered' } },
+    ]) {
+      expect(selectBatchMatchingRun('case-a', batch, entry, [stale])).toEqual({ run: undefined, mismatch: true })
+    }
+    expect(selectBatchMatchingRun('case-a', batch, { caseId: 'case-a', status: 'done' }, [run]))
+      .toEqual({ run: undefined, mismatch: true })
+    expect(selectBatchMatchingRun('case-a', batch, { caseId: 'case-a', status: 'queued' }, []))
+      .toEqual({ run: undefined, mismatch: false })
+  })
+
 })

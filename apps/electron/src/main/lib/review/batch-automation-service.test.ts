@@ -7,7 +7,7 @@ import { createBatchV2, configureBatchAutomation, readBatchStateV2, saveBatchSta
 import { canonicalContentHash, publishPolicy, savePolicyDraft } from './policy-store'
 import { publishTemplate, saveDraft, getTemplate } from './template-store'
 import { computeRunInputHash } from './run-service-v2'
-import { saveRunV2 } from './run-store-v2'
+import { saveRunV2, listRunsV2 } from './run-store-v2'
 import { runBatchAutomation, finalizeCompletedBatch } from './batch-automation-service'
 import { checkAutoBatchAction } from './batch-automation-gates'
 import { respondSupplementV2, resolveSupplementV2 } from './stage-workflow'
@@ -97,6 +97,10 @@ function makeBatch(caseIds: string[]): string {
     createdAt: '2026-10-10T00:00:00Z' })
   for (const caseId of caseIds) updateCaseStatus(batchId, caseId, 'done')
   const ready = readBatchStateV2(batchId)!
+  ready.cases = ready.cases.map((entry) => {
+    const run = listRunsV2(entry.caseId)[0]!
+    return { ...entry, runId: run.id, runInputHash: run.inputManifest.hash }
+  })
   ready.status = 'queued'
   saveBatchStateV2(ready)
   return batchId
@@ -340,7 +344,7 @@ describe('C 阶段：显式授权的自动通过与退回', () => {
     const second = await createCase('compliant')
     const batchId = makeBatch([first.caseId, second.caseId])
     const preparing = readBatchStateV2(batchId)!
-    preparing.cases = preparing.cases.map((entry) => ({ ...entry, status: 'queued' as const }))
+    preparing.cases = preparing.cases.map((entry) => ({ caseId: entry.caseId, status: 'queued' as const }))
     preparing.status = 'queued'
     saveBatchStateV2(preparing)
 
@@ -348,7 +352,11 @@ describe('C 阶段：显式授权的自动通过与退回', () => {
     configureBatchAutomation(batchId, 'auto-approve', true)
     const dispatched: string[] = []
     const reviewed = await runBatchQueue(batchId, {
-      runCase: async (caseId) => { dispatched.push(caseId); return { status: 'completed' } },
+      runCase: async (caseId) => {
+        dispatched.push(caseId)
+        const run = listRunsV2(caseId)[0]!
+        return { status: 'completed', runId: run.id, inputHash: run.inputManifest.hash }
+      },
     })
     expect(dispatched).toEqual([first.caseId, second.caseId])
     expect(reviewed.cases.map((entry) => entry.status)).toEqual(['done', 'done'])
@@ -374,6 +382,20 @@ describe('C 阶段：显式授权的自动通过与退回', () => {
     } })).rejects.toThrow('重开')
     expect(readAggregate(first.caseId)?.decisions).toHaveLength(1)
     expect(readAggregate(second.caseId)?.decisions).toHaveLength(1)
+  })
+
+  test('人工决定虽然有效，但批次 Run 绑定被改成另一批的 Run 后，不允许定稿', async () => {
+    const a = await createCase('compliant')
+    const batchId = makeBatch([a.caseId])
+    updateSettings({ reviewAgentAutoApproval: true })
+    configureBatchAutomation(batchId, 'auto-approve', true)
+    expect((await runBatchAutomation(batchId)).applied).toBe(1)
+    const damaged = readBatchStateV2(batchId)!
+    damaged.cases = damaged.cases.map((entry) => ({ ...entry, runId: 'another-batch-run' }))
+    saveBatchStateV2(damaged)
+    expect(() => finalizeCompletedBatch(batchId)).toThrow('Run')
+    expect(readBatchStateV2(batchId)?.status).toBe('queued')
+    expect(readFinalizedSnapshot(batchId)).toBeUndefined()
   })
 
   test('已真实形成所有最终业务决定后才允许批次定稿', async () => {

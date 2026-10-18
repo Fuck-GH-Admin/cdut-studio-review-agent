@@ -6,7 +6,7 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewBatch, ReviewCaseV2 } from '@profer/shared'
 import { createAggregate, readAggregate, submitCommand } from './case-store-v2'
-import { createBatchV2, finalizeBatch, listBatchStatesV2, pushViaOutbox, recoverPendingPushesDetailed, recoverPendingPushes, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus, runBatchQueue, retryBatchCases, recoverInterruptedBatch } from './batch-store'
+import { createBatchV2, saveBatchStateV2, finalizeBatch, listBatchStatesV2, pushViaOutbox, recoverPendingPushesDetailed, recoverPendingPushes, readBatchStateV2, readFinalizedSnapshot, reopenBatch, updateCaseStatus, runBatchQueue, retryBatchCases, recoverInterruptedBatch } from './batch-store'
 import type { BatchStateV2 } from '@profer/shared'
 type Entry = BatchStateV2['cases'][number]
 import { MockSchoolAdapter } from './external-ports'
@@ -59,6 +59,39 @@ async function seedFinalCase(caseId: string, options: { final?: boolean; supplem
   }))
   expect(result.ok).toBeTrue()
 }
+
+describe('P06 L02-01：同案同模板双批次 Run 来源绑定', () => {
+  test('两个批次持久绑定各自 Run；后运行的同模板 Run 不能覆盖先前批次', async () => {
+    const caseId = 'cross-batch-case-' + Date.now()
+    const one = 'cross-batch-a-' + Date.now()
+    const two = 'cross-batch-b-' + Date.now()
+    createBatchV2({ ...batch(one), caseIds: [caseId] })
+    createBatchV2({ ...batch(two), caseIds: [caseId] })
+    const first = await runBatchQueue(one, { runCase: async () => ({
+      status: 'completed', runId: 'run-a', inputHash: 'a'.repeat(64),
+    }) })
+    const second = await runBatchQueue(two, { runCase: async () => ({
+      status: 'completed', runId: 'run-b', inputHash: 'b'.repeat(64),
+    }) })
+    expect(first.cases[0]).toMatchObject({ status: 'done', runId: 'run-a', runInputHash: 'a'.repeat(64) })
+    expect(second.cases[0]).toMatchObject({ status: 'done', runId: 'run-b', runInputHash: 'b'.repeat(64) })
+    expect(readBatchStateV2(one)?.cases[0]?.runId).toBe('run-a')
+    expect(readBatchStateV2(two)?.cases[0]?.runId).toBe('run-b')
+    updateCaseStatus(two, caseId, 'queued')
+    expect(readBatchStateV2(two)?.cases[0]?.runId).toBeUndefined()
+    expect(readBatchStateV2(two)?.cases[0]?.runInputHash).toBeUndefined()
+    expect(readBatchStateV2(one)?.cases[0]?.runId).toBe('run-a')
+  })
+  test('缺少 Run identity / 不合法输入哈希，队列不能虚报 done', async () => {
+    const id = 'unbound-run-' + Date.now()
+    const caseId = 'unbound-case-' + Date.now()
+    createBatchV2({ ...batch(id), caseIds: [caseId] })
+    const outcome = await runBatchQueue(id, { runCase: async () => ({ status: 'completed' }) })
+    expect(outcome.cases[0]?.status).toBe('failed')
+    expect(outcome.cases[0]?.error).toContain('来源绑定')
+    expect(outcome.cases[0]?.runId).toBeUndefined()
+  })
+})
 
 describe('批次状态机（R08）', () => {
   test('Given 多个已保存批次 When 查询目录 Then 返回全部批次并按创建时间倒序', () => {
@@ -188,7 +221,10 @@ describe('批次中断恢复与定向重试（B 切片）', () => {
     updateCaseStatus('retry-specific', 'c3', 'done')
     retryBatchCases('retry-specific', ['c1'])
     const executed: string[] = []
-    const result = await runBatchQueue('retry-specific', { runCase: async (id) => { executed.push(id); return { status: 'completed' } } })
+    const result = await runBatchQueue('retry-specific', { runCase: async (id) => {
+      executed.push(id)
+      return { status: 'completed', runId: 'test-bound-' + id, inputHash: 'a'.repeat(64) }
+    } })
     expect(executed).toEqual(['c1'])
     expect(result.cases.find((x) => x.caseId === 'c2')?.status).toBe('failed')
     expect(result.cases.find((x) => x.caseId === 'c3')?.status).toBe('done')
@@ -219,6 +255,12 @@ describe('批次中断恢复与定向重试（B 切片）', () => {
       coverage: { documents: [], plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 },
       diagnostics: [], startedAt: '2026-10-10T00:00:00Z', completedAt: '2026-10-10T00:00:01Z',
     })
+    // A manually seeded successful Run is not enough: bind it to this batch.
+    const state = readBatchStateV2(id)!
+    state.cases = state.cases.map((entry) => ({
+      ...entry, runId: 'run-valid-done', runInputHash: 'valid-hash',
+    }))
+    saveBatchStateV2(state)
     expect(() => retryBatchCases(id, [caseId])).toThrow('不可重试')
     expect(readBatchStateV2(id)?.cases[0]?.status).toBe('done')
   })
@@ -239,7 +281,10 @@ describe('批次中断恢复与定向重试（B 切片）', () => {
     let release!: () => void
     const entered = new Promise<void>((resolve) => { signal = resolve })
     const block = new Promise<void>((resolve) => { release = resolve })
-    const pending = runBatchQueue('active-run', { runCase: async () => { signal(); await block; return { status: 'completed' } } })
+    const pending = runBatchQueue('active-run', { runCase: async () => {
+      signal(); await block
+      return { status: 'completed', runId: 'run-active', inputHash: 'c'.repeat(64) }
+    } })
     await entered
     expect(() => recoverInterruptedBatch('active-run')).toThrow('仍在当前进程')
     expect(() => retryBatchCases('active-run', ['c1'])).toThrow('执行中')
@@ -430,7 +475,7 @@ describe('批次队列执行（G06/G11 真实队列）', () => {
     const state = await runBatchQueue('bq1', {
       runCase: async (caseId: string) => {
         if (caseId === 'c1') throw new Error('解析失败（坏案）')
-        return { status: 'completed' }
+        return { status: 'completed', runId: 'test-bound-' + caseId, inputHash: 'b'.repeat(64) }
       },
     })
     const c1 = state.cases.find((entry) => entry.caseId === 'c1')!
@@ -469,7 +514,10 @@ describe('批次队列执行（G06/G11 真实队列）', () => {
     const blocker = new Promise<void>((resolve) => { release = resolve })
     let calls = 0
     const first = runBatchQueue('bq-concurrent', {
-      runCase: async () => { calls++; started(); await blocker; return { status: 'completed' } },
+      runCase: async () => {
+        calls++; started(); await blocker
+        return { status: 'completed', runId: 'run-concurrent', inputHash: 'd'.repeat(64) }
+      },
     })
     await entered
     await expect(runBatchQueue('bq-concurrent', {

@@ -6,18 +6,16 @@
  */
 import { createHash } from 'node:crypto'
 import { triageBatchCase } from '@profer/shared'
-import type { Actor, BatchAutomationReport, BatchAutomationReceipt, ReviewRunV2 } from '@profer/shared'
+import type { Actor, BatchAutomationReport, BatchAutomationReceipt } from '@profer/shared'
 import { readAggregate } from './case-store-v2'
 import { readBatchStateV2, saveBatchStateV2, finalizeBatch, assertBatchBusinessReadyForFinalization } from './batch-store'
 import { checkAutoBatchAction, type AutoAction } from './batch-automation-gates'
-import { listRunsV2, readArtifact } from './run-store-v2'
+import { getRunV2, readArtifact } from './run-store-v2'
+import { validateBoundBatchRun } from './batch-run-provenance'
 import { getTemplate } from './template-store'
 import { decideWorkspaceCaseV2, isWorkspaceRunStaleV2 } from './workspace-business-service-v2'
 
 const activeAutomation = new Set<string>()
-function latestRun(caseId: string): ReviewRunV2 | undefined {
-  return [...listRunsV2(caseId)].sort((a,b) => (b.completedAt ?? b.startedAt).localeCompare(a.completedAt ?? a.startedAt))[0]
-}
 function stableId(parts: unknown[]): string {
   return createHash('sha256').update(JSON.stringify(parts)).digest('hex').slice(0,44)
 }
@@ -46,7 +44,9 @@ export async function runBatchAutomation(batchId: string): Promise<BatchAutomati
       if (!current || current.status !== 'queued' || current.automation?.revision !== revision
         || current.automation.mode === 'assist') break
       const aggregate = readAggregate(entry.caseId)
-      const run = latestRun(entry.caseId)
+      const currentEntry = current.cases.find((item) => item.caseId === entry.caseId)
+      const run = currentEntry && validateBoundBatchRun(current.batch, currentEntry,
+        currentEntry.runId ? getRunV2(entry.caseId, currentEntry.runId) : undefined)
       if (!aggregate || !run || aggregate.caseV2.stage === 'decided'
         || aggregate.caseV2.stage === 'archived' || aggregate.caseV2.stage === 'awaiting-supplement') continue
       const route = triageBatchCase({
@@ -125,8 +125,16 @@ export function finalizeCompletedBatch(batchId: string) {
     const projection = resolveFinalDecisionProjection(aggregate.decisions)
     const final = projection.decision
     if (!projection.isFinal || !final) throw new Error(`案卷缺少可追溯的正式决定: ${caseId}`)
-    return { caseId, decisionId: final.id, result: final.result, runId: final.basedOnRunId,
-      basedOnRevision: final.basedOnRevision, actor: final.actor }
+    const entry = state.cases.find((item) => item.caseId === caseId)
+    if (!entry?.runId || !entry.runInputHash || final.basedOnRunId !== entry.runId) {
+      throw new Error(`定稿必须绑定该批次已执行的 Run 与决定: ${caseId}`)
+    }
+    const run = validateBoundBatchRun(state.batch, entry, getRunV2(caseId, entry.runId))
+    if (!run || isWorkspaceRunStaleV2(aggregate, run.id)) {
+      throw new Error(`该批次 Run 证据已失效，不能定稿: ${caseId}`)
+    }
+    return { caseId, decisionId: final.id, result: final.result, runId: entry.runId,
+      runInputHash: entry.runInputHash, basedOnRevision: final.basedOnRevision, actor: final.actor }
   })
   return finalizeBatch(batchId, {
     kind: 'audited-automation-batch', round: state.round, templateId: state.batch.templateId,

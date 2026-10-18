@@ -635,10 +635,19 @@ export function registerReviewIpc(): void {
     if (typeof batchId !== 'string' || !batchId) throw new Error('参数 batchId 非法')
     const { runBatchQueue } = require('./batch-store') as typeof import('./batch-store')
     const { assembleAndRunReview } = require('./run-async-service') as typeof import('./run-async-service')
+    const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+    const { readBatchStateV2: readBatchStateForDispatch } = require('./batch-store') as typeof import('./batch-store')
+    const { assertBatchCaseTemplateLock, assertBatchRunTemplateLock, classifyBatchRunCompletion } = require('./batch-template-lock') as typeof import('./batch-template-lock')
     const completed = await runBatchQueue(batchId, {
       runCase: async (caseId: string) => {
+        const batch = readBatchStateForDispatch(batchId)
+        if (!batch) throw new Error('批次在执行期间丢失，拒绝继续')
+        // Fail closed before paid Provider invocation if V1/V2 projected case or
+        // published template version drifted since the batch was created.
+        assertBatchCaseTemplateLock(batch.batch, caseId, getCaseV2Aggregate(caseId))
         const run = await assembleAndRunReview(caseId)
-        return { status: run.status }
+        assertBatchRunTemplateLock(batch.batch, caseId, run)
+        return { status: classifyBatchRunCompletion(run), runId: run.id, inputHash: run.inputManifest.hash }
       },
     })
     if (completed.automation && completed.automation.mode !== 'assist') {
