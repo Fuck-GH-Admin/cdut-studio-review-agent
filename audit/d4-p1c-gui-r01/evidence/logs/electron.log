@@ -1,0 +1,2115 @@
+$ bun run scripts/review-d4-product-loop.ts --model-config "/tmp/cdut-d4-p1c-empty-config" --no-sandbox
+D4 技术预审隔离目录：/tmp/cdut-d4-product-loop-TuLZEG
+模型配置来源：/tmp/cdut-d4-p1c-empty-config
+合成材料：/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/docs/design/review-agent/acceptance/d4-product-loop-r01/fixtures
+$ tsc --noEmit
+$ esbuild src/main/index.ts --bundle --platform=node --format=cjs --outfile=dist/main.cjs --external:electron --external:@earendil-works/pi-coding-agent --external:@earendil-works/pi-agent-core --external:@earendil-works/pi-ai --define:__PROFER_BUILD_TARGET__='"oss"' --minify-whitespace --minify-identifiers
+▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+
+    src/main/lib/study/study-document-indexer.ts:182:70:
+      182 │ ...L(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+          ╵                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+
+    src/main/lib/review/case-import.ts:49:70:
+      49 │ ...RL(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+         ╵                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] "pdfjs-dist/legacy/build/pdf.worker.mjs" should be marked as external for use with "require.resolve" [require-resolve-not-external]
+
+    src/main/lib/document-parser.ts:773:70:
+      773 │ ...L(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+          ╵                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3 warnings
+
+  dist/main.cjs  9.2mb ⚠️
+
+⚡ Done in 481ms
+$ bun run build:app-preload
+$ esbuild src/preload/index.ts --bundle --platform=node --format=cjs --outfile=dist/preload.cjs --external:electron
+
+  dist/preload.cjs  205.4kb
+
+⚡ Done in 15ms
+$ bun run scripts/copy-resources.ts
+resources → dist/resources
+$ node scripts/build-ooxml.mjs
+[ooxml] copied 25 files to src/renderer/public/vendor/ooxml
+[ooxml] wasm manifest: {"docx":"docx_parser_bg.b03d7042070b8f7d.wasm","xlsx":"xlsx_parser_bg.72cc0f2c2c001587.wasm","pptx":"pptx_parser_bg.6d87be4bc539a1f7.wasm"}
+$ bun run build:ooxml && vite dev
+$ node scripts/build-ooxml.mjs
+[ooxml] copied 25 files to src/renderer/public/vendor/ooxml
+[ooxml] wasm manifest: {"docx":"docx_parser_bg.b03d7042070b8f7d.wasm","xlsx":"xlsx_parser_bg.72cc0f2c2c001587.wasm","pptx":"pptx_parser_bg.6d87be4bc539a1f7.wasm"}
+
+  VITE v6.4.3  ready in 141 ms
+
+  ➜  Local:   http://localhost:42763/
+  ➜  Network: use --host to expose
+客户端入口：CDUT 专区 → 材料审核 → 新建审核项目 → 使用 D4 候选模板 · 技术预审
+条件改变请新建案卷；候选不能发布。退出后保留隔离目录供核验。
+[配置] 已创建 SDK 配置目录: /tmp/cdut-d4-product-loop-TuLZEG/config/sdk-config
+[协作工具] EventBus 阻塞事件监听已注册
+[启动] 开发隔离实例: d4-1792305327748，userData=/tmp/cdut-d4-product-loop-TuLZEG/user-data
+[3049699:1018/143556.707817:ERROR:ui/ozone/platform/x11/ozone_platform_x11.cc:257] Missing X server or $DISPLAY
+[3049699:1018/143556.707846:ERROR:ui/aura/env.cc:246] The platform failed to initialize.  Exiting.
+Error:   Failed to scan for dependencies from entries:
+  /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/apps/electron/src/renderer/index.html
+/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/apps/electron/src/renderer/viewer.html
+
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    ../../packages/shared/src/types/index.ts:90:14:
+[37m      90 │ export * from [32m'./review-d3'[37m
+         ╵               [32m~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    ../../packages/ui/src/index.ts:11:30:
+[37m      11 │ export { useSmoothZoom } from [32m'./hooks/use-smooth-zoom.ts'[37m
+         ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/cdut-zone/yanhu/pet/YanhuPetFloatingHost.tsx:41:31:
+[37m      41 │ import { YanhuPetAvatar } from [32m'./YanhuPetAvatar'[37m
+         ╵                                [32m~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/planning/PlanningWindowApp.tsx:6:29:
+[37m      6 │ import { PlanningView } from [32m'./PlanningView'[37m
+        ╵                              [32m~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/hooks/useGlobalAgentListeners.ts:15:36:
+[37m      15 │ import { sidebarViewModeAtom } from [32m'@/atoms/sidebar-atoms'[37m
+         ╵                                     [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/diff/DetachedPreviewApp.tsx:13:32:
+[37m      13 │ import { TooltipProvider } from [32m'@profer/ui/primitives/tooltip'[37m
+         ╵                                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/shortcuts/GlobalShortcuts.tsx:22:7:
+[37m      22 │ } from [32m'@/atoms/tab-atoms'[37m
+         ╵        [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/tabs/TabSwitcher.tsx:20:28:
+[37m      20 │ import { appModeAtom } from [32m'@/atoms/app-mode'[37m
+         ╵                             [32m~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/atoms/notifications.ts:19:27:
+[37m      19 │ import soundDownPower from [32m'@/assets/sound/down-power.mp3'[37m
+         ╵                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/App.tsx:7:33:
+[37m      7 │ import { useCreateSession } from [32m'./hooks/useCreateSession'[37m
+        ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    ../../packages/shared/src/types/index.ts:93:14:
+[37m      93 │ export * from [32m'./cdut'[37m
+         ╵               [32m~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    ../../packages/ui/src/index.ts:13:51:
+[37m      13 │ ... { applyWheelZoom, DEFAULT_WHEEL_ZOOM } from [32m'./lib/wheel-zoom.ts'[37m
+         ╵                                                 [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/cdut-zone/yanhu/pet/YanhuPetFloatingHost.tsx:42:31:
+[37m      42 │ import { YanhuPetDialog } from [32m'./YanhuPetDialog'[37m
+         ╵                                [32m~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/hooks/useGlobalAgentListeners.ts:54:7:
+[37m      54 │ } from [32m'@/atoms/agent-atoms'[37m
+         ╵        [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/diff/DetachedPreviewApp.tsx:14:32:
+[37m      14 │ import { getFileBaseName } from [32m'@/lib/file-utils'[37m
+         ╵                                 [32m~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/shortcuts/GlobalShortcuts.tsx:23:60:
+[37m      23 │ ...verridesAtom, sendWithCmdEnterAtom } from [32m'@/atoms/shortcut-atoms'[37m
+         ╵                                              [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/tabs/TabSwitcher.tsx:28:7:
+[37m      28 │ } from [32m'@/atoms/agent-atoms'[37m
+         ╵        [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/atoms/notifications.ts:20:22:
+[37m      20 │ import soundFood from [32m'@/assets/sound/food.mp3'[37m
+         ╵                       [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/types/index.ts:7:14:
+[37m      7 │ export * from [32m'./settings'[37m
+        ╵               [32m~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/App.tsx:8:47:
+[37m      8 │ import { environmentCheckDialogOpenAtom } from [32m'./atoms/environment'[37m
+        ╵                                                [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    ../../packages/shared/src/types/index.ts:96:14:
+[37m      96 │ export * from [32m'./study'[37m
+         ╵               [32m~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    ../../packages/ui/src/index.ts:15:19:
+[37m      15 │ export { cn } from [32m'./lib/cn.ts'[37m
+         ╵                    [32m~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/hooks/useGlobalAgentListeners.ts:61:7:
+[37m      61 │ } from [32m'@/atoms/notifications'[37m
+         ╵        [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/diff/DetachedPreviewApp.tsx:15:31:
+[37m      15 │ import { DiffTabContent } from [32m'./DiffTabContent'[37m
+         ╵                                [32m~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/shortcuts/GlobalShortcuts.tsx:34:7:
+[37m      34 │ } from [32m'@/atoms/agent-atoms'[37m
+         ╵        [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/tabs/TabSwitcher.tsx:30:36:
+[37m      30 │ import { draftSessionIdsAtom } from [32m'@/atoms/draft-session-atoms'[37m
+         ╵                                     [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/atoms/notifications.ts:21:22:
+[37m      21 │ import soundLite from [32m'@/assets/sound/lite.mp3'[37m
+         ╵                       [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    ../../packages/ui/src/lib/cn.ts:1:38:
+[37m      1 │ import { type ClassValue, clsx } from [32m'clsx'[37m
+        ╵                                       [32m~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/types/index.ts:8:14:
+[37m      8 │ export * from [32m'./user-profile'[37m
+        ╵               [32m~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    ../../packages/ui/src/index.ts:16:45:
+[37m      16 │ export { detectIsMac, detectIsWindows } from [32m'./lib/platform.ts'[37m
+         ╵                                              [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/hooks/useGlobalAgentListeners.ts:62:28:
+[37m      62 │ import { appModeAtom } from [32m'@/atoms/app-mode'[37m
+         ╵                             [32m~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/diff/DetachedPreviewApp.tsx:16:37:
+[37m      16 │ import { DefaultAppOpenButton } from [32m'./DefaultAppOpenButton'[37m
+         ╵                                      [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/shortcuts/GlobalShortcuts.tsx:35:31:
+[37m      35 │ import { activeViewAtom } from [32m'@/atoms/active-view'[37m
+         ╵                                [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/atoms/notifications.ts:22:23:
+[37m      22 │ import soundQuiet from [32m'@/assets/sound/quiet.mp3'[37m
+         ╵                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    ../../packages/ui/src/lib/cn.ts:2:24:
+[37m      2 │ import { twMerge } from [32m'tailwind-merge'[37m
+        ╵                         [32m~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/tabs/TabSwitcher.tsx:32:42:
+[37m      32 │ ...t { getVisibleAgentWorkspaces } from [32m'@/lib/product-feature-flags'[37m
+         ╵                                         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/App.tsx:10:68:
+[37m      10 │ ...ironmentTestAtom, replayIntroOpenAtom } from [32m'./atoms/intro-atoms'[37m
+         ╵                                                 [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/types/index.ts:9:14:
+[37m      9 │ export * from [32m'./identity'[37m
+        ╵               [32m~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    ../../packages/ui/src/index.ts:22:7:
+[37m      22 │ } from [32m'./mermaid-detection.ts'[37m
+         ╵        [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/hooks/useGlobalAgentListeners.ts:63:88:
+[37m      63 │ ...eSessionIdAtom, openTab, updateTabTitle } from [32m'@/atoms/tab-atoms'[37m
+         ╵                                                   [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/diff/DetachedPreviewApp.tsx:17:62:
+[37m      17 │ ...ltAppTargetPath, getPreviewFileAccess } from [32m'./preview-open-path'[37m
+         ╵                                                 [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/shortcuts/GlobalShortcuts.tsx:36:33:
+[37m      36 │ import { useCreateSession } from [32m'@/hooks/useCreateSession'[37m
+         ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/App.tsx:11:33:
+[37m      11 │ ...IntroWaterRipple } from [32m'./components/onboarding/IntroWaterRipple'[37m
+         ╵                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/hooks/useGlobalAgentListeners.ts:64:49:
+[37m      64 │ ... planFollowWorkTab, tabGroupsAtom } from [32m'@/atoms/tab-group-atoms'[37m
+         ╵                                             [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/components/shortcuts/GlobalShortcuts.tsx:37:28:
+[37m      37 │ import { useShortcut } from [32m'@/hooks/useShortcut'[37m
+         ╵                             [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14534:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14529:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+    at buildOrContextImpl (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:854:5)
+    at Object.buildOrContext (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:680:5)
+    at /home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:68
+    at new Promise (<anonymous>)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:2035:27)
+    at Object.context (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1877:58)
+    at prepareEsbuildScanner (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14266:24)
+
+  The plugin "vite:dep-scan" was triggered by this import
+
+    src/renderer/App.tsx:12:33:
+[37m      12 │ ...erlay } from [32m'./components/onboarding/coach-tour/CoachTourOverlay'[37m
+         ╵                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe server is being restarted or closed. Request is outdated[0m [1m[35m[plugin vite:dep-scan][0m
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1217:27:
+[37m      1217 │         let result = await [32m[37mcallback({
+           ╵                            [32m^[0m
+
+    at throwClosedServerError (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42185:15)
+    at EnvironmentPluginContainer.resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:42364:9)
+    at resolveId (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14314:40)
+    at resolve (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14325:28)
+    at file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14490:34
+    at requestCallbacks.on-resolve (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1217:28)
+    at handleRequest (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:628:17)
+    at handleIncomingPacket (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:653:7)
+    at Socket.readFromStdout (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:581:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+  This error came from the "onResolve" callback registered here:
+
+    ../../node_modules/vite/node_modules/esbuild/lib/main.js:1141:20:
+[37m      1141 │       let promise = [32m[37msetup({
+           ╵                     [32m^[0m
+
+    at setup (file:///home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:14478:13)
+    at handlePlugins (/home/miku/Bot/CDUTStudio/.workdir/d4-p1c-gui-r01/node_modules/vite/node_modules/esbuild/lib/main.js:1141:21)
+   error: script "dev:vite" exited with code 143
+error: script "review:d4:dev" exited with code 133
