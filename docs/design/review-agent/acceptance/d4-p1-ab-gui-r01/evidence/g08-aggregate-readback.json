@@ -1,0 +1,241 @@
+{
+  "source": "IPC_READBACK",
+  "observedAt": "2026-10-18T04:57:41.920Z",
+  "case": {
+    "id": "d4-d216d9be-3092-43ae-bab9-f6fa586f9837",
+    "title": "P1AB-GUI-G08-20261018",
+    "applicant": "合成测试申请人-G08",
+    "academicYear": "2026-2027",
+    "templateId": "g08-t02",
+    "templateVersion": 1,
+    "stage": "draft",
+    "revision": 2
+  },
+  "d2Plan": {
+    "schemaVersion": 3,
+    "mode": "technical-pre-review",
+    "publicationAllowed": false,
+    "workspaceId": "d4-g08-t02-authoring",
+    "revision": 1,
+    "templateId": "g08-t02",
+    "templateVersion": 1,
+    "authoringDigest": "6ca7defd3063fa6a05c095a478d8b0a6e2d2498a747386a20c93d49c5a075a38",
+    "previewFingerprint": "30465ff79fd0df0e525b9e8f7b2d4161c3b24dd460d34132fd4371659034560f",
+    "fingerprint": "9899a78d9c21f71ffafb062b36065ff9a1217b1a50b2515a832ea9cd16c97e9a",
+    "targets": [
+      {
+        "objectKey": "d4-object-bb27656266ff41d6",
+        "subjectId": "d4-subject-bb27656266ff41d6",
+        "title": "失物甲",
+        "scenario": "self",
+        "conditions": [
+          {
+            "id": "valuable",
+            "applicability": "not-applicable",
+            "decidedBy": "reviewer",
+            "sourceId": "controlled-selection",
+            "sourceVersionId": "g08-t02-selection-v1"
+          },
+          {
+            "id": "dispute",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "controlled-selection",
+            "sourceVersionId": "g08-t02-selection-v1"
+          },
+          {
+            "id": "card",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "controlled-selection",
+            "sourceVersionId": "g08-t02-selection-v1"
+          },
+          {
+            "id": "sensitive",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "controlled-selection",
+            "sourceVersionId": "g08-t02-selection-v1"
+          },
+          {
+            "id": "venue",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "controlled-selection",
+            "sourceVersionId": "g08-t02-selection-v1"
+          },
+          {
+            "id": "handover",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "controlled-selection",
+            "sourceVersionId": "g08-t02-selection-v1"
+          }
+        ]
+      },
+      {
+        "objectKey": "d4-object-78d462831c4e4946",
+        "subjectId": "d4-subject-78d462831c4e4946",
+        "title": "失物乙",
+        "scenario": "proxy",
+        "conditions": [
+          {
+            "id": "valuable",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "controlled-selection",
+            "sourceVersionId": "g08-t02-selection-v1"
+          },
+          {
+            "id": "dispute",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "controlled-selection",
+            "sourceVersionId": "g08-t02-selection-v1"
+          },
+          {
+            "id": "card",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "controlled-selection",
+            "sourceVersionId": "g08-t02-selection-v1"
+          },
+          {
+            "id": "sensitive",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "controlled-selection",
+            "sourceVersionId": "g08-t02-selection-v1"
+          },
+          {
+            "id": "venue",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "controlled-selection",
+            "sourceVersionId": "g08-t02-selection-v1"
+          },
+          {
+            "id": "handover",
+            "applicability": "unknown",
+            "decidedBy": "undetermined",
+            "sourceId": "controlled-selection",
+            "sourceVersionId": "g08-t02-selection-v1"
+          }
+        ]
+      }
+    ],
+    "targetCount": 2,
+    "subjectCount": 2,
+    "ruleCount": 107,
+    "mappingCount": 107
+  },
+  "subjects": [
+    {
+      "id": "d4-subject-bb27656266ff41d6",
+      "title": "失物甲",
+      "objectKey": "d4-object-bb27656266ff41d6",
+      "businessType": "g08-lost-item",
+      "scenario": "self",
+      "conditionCount": 6,
+      "conditions": [
+        {
+          "id": "valuable",
+          "applicability": "not-applicable",
+          "decidedBy": "reviewer",
+          "sourceId": "controlled-selection",
+          "sourceVersionId": "g08-t02-selection-v1"
+        },
+        {
+          "id": "dispute",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "controlled-selection",
+          "sourceVersionId": "g08-t02-selection-v1"
+        },
+        {
+          "id": "card",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "controlled-selection",
+          "sourceVersionId": "g08-t02-selection-v1"
+        },
+        {
+          "id": "sensitive",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "controlled-selection",
+          "sourceVersionId": "g08-t02-selection-v1"
+        },
+        {
+          "id": "venue",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "controlled-selection",
+          "sourceVersionId": "g08-t02-selection-v1"
+        },
+        {
+          "id": "handover",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "controlled-selection",
+          "sourceVersionId": "g08-t02-selection-v1"
+        }
+      ]
+    },
+    {
+      "id": "d4-subject-78d462831c4e4946",
+      "title": "失物乙",
+      "objectKey": "d4-object-78d462831c4e4946",
+      "businessType": "g08-lost-item",
+      "scenario": "proxy",
+      "conditionCount": 6,
+      "conditions": [
+        {
+          "id": "valuable",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "controlled-selection",
+          "sourceVersionId": "g08-t02-selection-v1"
+        },
+        {
+          "id": "dispute",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "controlled-selection",
+          "sourceVersionId": "g08-t02-selection-v1"
+        },
+        {
+          "id": "card",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "controlled-selection",
+          "sourceVersionId": "g08-t02-selection-v1"
+        },
+        {
+          "id": "sensitive",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "controlled-selection",
+          "sourceVersionId": "g08-t02-selection-v1"
+        },
+        {
+          "id": "venue",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "controlled-selection",
+          "sourceVersionId": "g08-t02-selection-v1"
+        },
+        {
+          "id": "handover",
+          "applicability": "unknown",
+          "decidedBy": "undetermined",
+          "sourceId": "controlled-selection",
+          "sourceVersionId": "g08-t02-selection-v1"
+        }
+      ]
+    }
+  ],
+  "evidenceLinkCount": 0,
+  "runRecords": [],
+  "runCount": 0
+}
