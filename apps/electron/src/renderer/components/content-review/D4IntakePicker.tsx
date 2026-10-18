@@ -3,7 +3,7 @@ import type { D4IntakePreview } from '@profer/shared'
 
 /** 20-second auto-adoption is only a template-selection convenience, NEVER case submission. */
 export function D4IntakePicker({
-  intake, onIntake, onApplyRoute, manuallyOverridden, documentRoles, onDocumentRolesChange, enabled = true,
+  intake, onIntake, onApplyRoute, manuallyOverridden, documentRoles, onDocumentRolesChange, skippedAcknowledged, onSkippedAcknowledgedChange, enabled = true,
 }: {
   intake: D4IntakePreview | null
   onIntake: (value: D4IntakePreview | null) => void
@@ -11,6 +11,8 @@ export function D4IntakePicker({
   manuallyOverridden: boolean
   documentRoles: Array<'application' | 'evidence'>
   onDocumentRolesChange: (roles: Array<'application' | 'evidence'>) => void
+  skippedAcknowledged: boolean
+  onSkippedAcknowledgedChange: (checked: boolean) => void
   /** Freeze OS-picker operations while creating/closing the parent case. */
   enabled?: boolean
 }): React.ReactElement {
@@ -43,12 +45,12 @@ export function D4IntakePicker({
     const timer = window.setTimeout(() => setSeconds(s => s === null ? null : Math.max(0, s - 1)), 1000)
     return () => window.clearTimeout(timer)
   }, [intake, seconds, manuallyOverridden])
-  const pick = async (): Promise<void> => {
+  const pick = async (mode: 'files' | 'folder'): Promise<void> => {
     if (working || !enabled) return
     setError('')
     setWorking(true)
     try {
-      const next = await window.reviewAPI.stageD4Intake()
+      const next = await window.reviewAPI.stageD4Intake(mode)
       if (!next) return
       if (!stillEnabled.current) {
         await window.reviewAPI.discardD4Intake(next.token).catch(() => false)
@@ -71,15 +73,18 @@ export function D4IntakePicker({
       <strong className="text-sm">先选申请材料（可选）</strong>
       <div className="flex gap-2">
         {intake && <button type="button" className="rounded border px-2 py-1 text-xs" onClick={() => void discard()} disabled={working || !enabled}>清除暂存</button>}
-        <button type="button" disabled={working || !enabled} className="rounded border px-2 py-1 text-xs" onClick={() => void pick()}>
-          {working ? '正在读取…' : intake ? '重新选择材料' : '系统选择文件'}
+        <button type="button" disabled={working || !enabled} className="rounded border px-2 py-1 text-xs" onClick={() => void pick('files')}>
+          {working ? '正在读取…' : '选择文件 / ZIP'}
+        </button>
+        <button type="button" disabled={working || !enabled} className="rounded border px-2 py-1 text-xs" onClick={() => void pick('folder')}>
+          选择文件夹
         </button>
       </div>
     </div>
     <div role="region" aria-label="D4 路由材料入口"
       onDragOver={e => { e.preventDefault(); setDragging(true) }}
       onDragLeave={e => { e.preventDefault(); setDragging(false) }}
-      onDrop={e => { e.preventDefault(); setDragging(false); if (enabled) void pick() }}
+      onDrop={e => { e.preventDefault(); setDragging(false); if (enabled) void pick('files') }}
       className={'rounded-md border border-dashed p-2 text-xs ' + (dragging ? 'bg-muted' : 'text-muted-foreground')}>
       松开拖入文件将打开系统选择框，由你再次确认本机文件；不会直接信任网页提供的文件路径。
     </div>
@@ -92,7 +97,7 @@ export function D4IntakePicker({
         </p>
         {intake.files.map((file, index) => <label key={`${intake.token}-${index}`}
           className="flex flex-wrap items-center justify-between gap-2 rounded border bg-background p-2 text-xs">
-          <span className="min-w-0 flex-1 break-all">{file.name} · {(file.sizeBytes / 1024).toFixed(1)} KiB</span>
+          <span className="min-w-0 flex-1 break-all">{file.originLabel ?? file.name} · {(file.sizeBytes / 1024).toFixed(1)} KiB</span>
           <select aria-label={`材料 ${index + 1} 的用途`}
             className="h-8 rounded border bg-background px-2 text-xs"
             disabled={!enabled}
@@ -105,6 +110,18 @@ export function D4IntakePicker({
           </select>
         </label>)}
       </div>
+      {(intake.skipped?.length ?? 0) > 0 && <section role="alert" className="space-y-2 rounded border border-amber-500/50 p-2 text-xs">
+        <strong>有 {intake.skipped!.length} 份材料未纳入本次暂存</strong>
+        <p>包括无效文件、重复内容、超限文件或 ZIP 中不可读取的条目。不会悄悄丢弃，请确认后再创建案卷；原因将保存在案卷历史。</p>
+        <ul className="max-h-36 list-disc space-y-1 overflow-y-auto pl-4">
+          {intake.skipped!.map((item, index) => <li key={index} className="break-all">{item.originLabel}：{item.reason}</li>)}
+        </ul>
+        <label className="flex items-center gap-2">
+          <input type="checkbox" disabled={!enabled} checked={skippedAcknowledged}
+            onChange={e => onSkippedAcknowledgedChange(e.target.checked)}/>
+          我已检查未导入清单，并同意创建注明缺失材料的案卷
+        </label>
+      </section>}
       <p className="text-xs" data-testid="d4-route-status">{intake.route.reason}</p>
       {intake.route.suggestion && <p className="text-xs">
         建议模板：<strong>{intake.route.suggestion.templateId}</strong>；
