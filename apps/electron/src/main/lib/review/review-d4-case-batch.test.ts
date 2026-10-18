@@ -15,7 +15,7 @@ const path = join(root, '教室用途申请.md')
 writeFileSync(path, '# 首份教室用途申请\n材料是合成测试输入，不是校方证明。')
 let selected = [path]
 mock.module('electron', () => ({ dialog: { showOpenDialog: async () => ({ canceled: false, filePaths: selected }) } }))
-const { stageD4Intake, claimD4Intake } = await import('./review-d4-intake')
+const { stageD4Intake, stageD4DroppedBytes, claimD4Intake, discardD4Intake } = await import('./review-d4-intake')
 const { assessD4CaseBatch, applyD4CaseBatch } = await import('./review-d4-case-batch')
 const { createD4ClientCase, listD4ClientTemplates } = await import('./review-d4-client')
 const { getCase, updateCase } = await import('./case-store')
@@ -127,6 +127,45 @@ describe('W1 post-case native append and revision-aware replacement', () => {
       item.confirmed && item.sourceRefs[0]?.documentVersionId === doc.versionId &&
       item.sourceRefs[0]?.parseRevision === doc.parseRevision)).toBe(true)
     expect(after.receiptLog.some(item => item.type === 'CorrectObservation')).toBe(true)
+  })
+
+  test('untrusted drag bytes undergo Main-owned native staging, hashing and same-case conflict preflight', async () => {
+    const created = await create()
+    const preview = await stageD4DroppedBytes(903, [
+      { name: '拖放申请.md', bytes: new TextEncoder().encode('# 原始申报材料\\n多对象不可自动认定') },
+      { name: '重复字节.md', bytes: new TextEncoder().encode('# 原始申报材料\\n多对象不可自动认定') },
+      { name: 'unsafe.exe', bytes: new TextEncoder().encode('not allowed') },
+    ])
+    expect(preview.files).toHaveLength(1)
+    expect(preview.files[0]!.name).toBe('拖放申请.md')
+    expect(preview.skipped).toHaveLength(2)
+    expect(preview.skipped.some(item => item.reason.includes('SHA-256'))).toBe(true)
+    expect(() => assessD4CaseBatch({ caseId: created.id, token: preview.token,
+      role: 'application' }, 904)).toThrow('D4_INTAKE_TOKEN_INVALID')
+    const assessment = assessD4CaseBatch({ caseId: created.id, token: preview.token,
+      role: 'application' }, 903)
+    await expect(applyD4CaseBatch({ caseId: created.id, role: 'application',
+      token: preview.token, expectedRevision: assessment.expectedRevision,
+      choices: [{ kind: 'append' }], acknowledgeSkipped: false }, 903))
+      .rejects.toThrow('D4_BATCH_SKIPS_ACK_REQUIRED')
+    const result = await applyD4CaseBatch({ caseId: created.id, role: 'application',
+      token: preview.token, expectedRevision: assessment.expectedRevision,
+      choices: [{ kind: 'append' }], acknowledgeSkipped: true }, 903)
+    expect(result.documents).toHaveLength(1)
+    expect(getCase(created.id)!.d4IntakeOrigins?.some(item => item.documentId === result.documents[0]!.id)).toBe(true)
+    expect(getCase(created.id)!.d4IntakeWarnings).toHaveLength(2)
+    expect(() => claimD4Intake(preview.token, 903)).toThrow('D4_INTAKE_TOKEN_INVALID')
+  })
+  test('drop rejects path names, invalid shape and oversized count without persisting token', async () => {
+    await expect(stageD4DroppedBytes(903, [{ name: '../secret.md', bytes: new Uint8Array([65]) }]))
+      .rejects.toThrow('D4_DROP_FILE_INVALID')
+    await expect(stageD4DroppedBytes(903, [{ name: 'C:\\\\windows\\\\secret.txt', bytes: new Uint8Array([65]) }]))
+      .rejects.toThrow('D4_DROP_FILE_INVALID')
+    await expect(stageD4DroppedBytes(903,
+      Array.from({ length: 17 }, (_, i) => ({ name: i + '.md', bytes: new Uint8Array([65]) }))))
+      .rejects.toThrow('D4_DROP_FILE_COUNT_INVALID')
+    await expect(stageD4DroppedBytes(903, [{ name: 'oversize.md', bytes: new Uint8Array(10 * 1024 * 1024 + 1) }]))
+      .rejects.toThrow('D4_DROP_FILE_INVALID')
   })
 
   test('nonempty skipped file manifest requires explicit human permission after case exists', async () => {
