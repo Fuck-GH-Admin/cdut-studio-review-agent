@@ -1,0 +1,597 @@
+{
+  "schemaVersion": 1,
+  "kind": "E05_E06_ACCEPTANCE_RESULT_TEMPLATE_NOT_EVIDENCE",
+  "campaign": "P06-E05-E06-UNIFIED-r01",
+  "sourceSha": null,
+  "createdFrom": {
+    "pr": 127,
+    "documentCommit": "6af70e2136666d42385836fc111a9cff24b4031d"
+  },
+  "verdicts": {
+    "E05": "NOT-RUN",
+    "E06": "PARTIAL-HISTORICAL_ONLY",
+    "overall": "MERGE_NO_GO"
+  },
+  "rows": [
+    {
+      "id": "PRE-01",
+      "scope": "PRE",
+      "title": "候选 HEAD/tree、PR/CI 源版本锁",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "pre-01-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "PRE-02",
+      "scope": "PRE",
+      "title": "真实 Electron 与独立 profile、PID/CDP",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "pre-02-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "PRE-03",
+      "scope": "PRE",
+      "title": "授权模型/凭据与材料隔离",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "pre-03-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "PRE-04",
+      "scope": "PRE",
+      "title": "本地受控测试、完整构建与 QA 合同",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "pre-04-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-01",
+      "scope": "L02-01-E05",
+      "title": "独立 A/B/C 案卷/材料/SourceRef",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-01-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-02",
+      "scope": "L02-01-E05",
+      "title": "真 Pi/Provider + Main ACK/V2 Run",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-02-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-03",
+      "scope": "L02-01-E05",
+      "title": "人工最终决定绑定当前 Run/哈希",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-03-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-04",
+      "scope": "L02-01-E05",
+      "title": "签批身份来源和 Renderer 角色欺骗",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-04-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-05",
+      "scope": "L02-01-E05",
+      "title": "零有效规则/未确认材料的准备度拒止",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-05-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-06",
+      "scope": "L02-01-E05",
+      "title": "补件原件版本、重试和 Run 新鲜度",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-06-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-07",
+      "scope": "L02-01-E05",
+      "title": "多个待补件来源/重审阶段回流",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-07-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-08",
+      "scope": "L02-01-E05",
+      "title": "多批明确目标选择和 replay cursor",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-08-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-09",
+      "scope": "L02-01-E05",
+      "title": "真正 Renderer 多批选择和确认 UI",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-09-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-10",
+      "scope": "L02-01-E05",
+      "title": "assist/auto-approve 多级授权",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-10-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-11",
+      "scope": "L02-01-E05",
+      "title": "group preview hash 和操作重放",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-11-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-12",
+      "scope": "L02-01-E05",
+      "title": "finalize/reopen/outbox 的快照幂等",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-12-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-13",
+      "scope": "L02-01-E05",
+      "title": "原 A/B/C 业务归因（特别 C execution-failed）",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-13-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-14",
+      "scope": "L02-01-E05",
+      "title": "严格 PDF/PNG/Office 原件审核工具回执",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-14-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E05-15",
+      "scope": "L02-01-E05",
+      "title": "隔离磁盘 ENOSPC/跨 PID 和 outbox 恢复",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e05-15-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E06-01",
+      "scope": "P06-E06",
+      "title": "普通 Pi create/list/meta/Read 和 SDK marker",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e06-01-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E06-02",
+      "scope": "P06-E06",
+      "title": "普通 Write pending/deny/allow 恢复",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e06-02-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E06-03",
+      "scope": "P06-E06",
+      "title": "普通正在运行时 Stop 和旧事件隔离",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e06-03-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E06-04",
+      "scope": "P06-E06",
+      "title": "真实文本预览 Shadow DOM/页面切换",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e06-04-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E06-05",
+      "scope": "P06-E06",
+      "title": "Owner 隐藏与按 ID/Tab/搜索拒止",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e06-05-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E06-06",
+      "scope": "P06-E06",
+      "title": "DOCX/PDF 普通预览与源文件关联",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e06-06-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E06-07",
+      "scope": "P06-E06",
+      "title": "跨 PID fork 双窗 Tab 恢复",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e06-07-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E06-08",
+      "scope": "P06-E06",
+      "title": "Claude 普通会话独立回归",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e06-08-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E06-09",
+      "scope": "P06-E06",
+      "title": "Windows/macOS 原生环境回归",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e06-09-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    },
+    {
+      "id": "E06-10",
+      "scope": "P06-E06",
+      "title": "外部 Relay/Pocket 真多 viewer/FIFO",
+      "status": "NOT-RUN",
+      "classification": "UNDETERMINED",
+      "assertions": [
+        {
+          "id": "e06-10-real-positive-and-negative",
+          "expected": "按 acceptance-matrix.md 验证正反例并填实际证据",
+          "actual": null,
+          "pass": null
+        }
+      ],
+      "evidenceIds": [],
+      "actualCommandExitCode": null,
+      "firstFailureId": null,
+      "blocker": "结果模板：尚未执行，禁止标 PASS",
+      "notes": null
+    }
+  ]
+}
