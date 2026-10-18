@@ -51,6 +51,7 @@ import { D4CaseBatchControls } from './D4CaseBatchControls'
 import { D4RetryDocumentButton } from './D4RetryDocumentButton'
 import { D4MaterialHistory } from './D4MaterialHistory'
 import { w1CandidateFactKeys, w1ObservationSources } from './w1-fact-source'
+import { w1AuthorResponsibilityCards } from './w1-author-responsibilities'
 import { w1ParseHumanFieldValue } from './w1-fact-value'
 import { MoveReviewDocumentButtons, RemoveReviewDocumentButton, ReviewMaterialDropZone, ReviewMaterialLaneActions } from './ReviewMaterialControls'
 
@@ -292,6 +293,26 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
               <p className="mt-1 text-muted-foreground">
                 本对象候选事实字段：{factKeys.length ? factKeys.map(key => businessFieldLabel(key, workspaceTemplate)).join('、') : '尚未在当前映射中声明；不得自由编造字段'}
               </p>
+              <details className="mt-2 rounded border border-border/50 p-2" data-testid="d4-author-responsibilities">
+                <summary className="cursor-pointer font-medium">本对象冻结作者态审核责任与人工核对说明</summary>
+                <p className="mt-1 text-muted-foreground">
+                  下列标题和要求来自本案不可变 D2 规则映射；它们是技术预审责任，不是校方许可或额外生成的表单字段。
+                  作者未声明的字段类型/必填约束不会自行补造。
+                </p>
+                <ul className="mt-2 space-y-2">
+                  {w1AuthorResponsibilityCards(aggregate.d2RuntimePlan!, subject.id).map(card =>
+                    <li key={card.ruleId} className="rounded border border-border/40 p-2">
+                      <strong>{card.title}</strong>
+                      <p className="mt-1 text-muted-foreground">
+                        适用：{card.applicability === 'applicable' ? '已明确适用' :
+                          card.applicability === 'not-applicable' ? '按冻结计划不适用' : '待人工确认'}
+                        · 来源权限：{card.authority === 'request-scope' ? '申请范围内技术核对' : '校规适用性未核实'}
+                      </p>
+                      <p className="mt-1 whitespace-pre-wrap text-muted-foreground">{card.requirement}</p>
+                      <p className="mt-1 break-all text-muted-foreground">责任键：{card.factKeys.join('、') || '未声明可确认事实字段'}</p>
+                    </li>)}
+                </ul>
+              </details>
               <div className="mt-2 space-y-1.5">
                 {facts.map((observation, index) => <WorkspaceObservationCard
                   key={`${String(observation.fieldKey)}-${index}`}
