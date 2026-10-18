@@ -158,6 +158,30 @@ describe('阶段推进（R07，修正误判 6）', () => {
   })
 })
 
+describe('L02-01 E02 阶段决定来源授权', () => {
+  test('即使全局自动审批开关开启，普通 Agent 也不能直接代签阶段决定', async () => {
+    const { getSettings, updateSettings } = await import('../settings-service')
+    const before = getSettings().reviewAgentAutoApproval
+    try {
+      updateSettings({ reviewAgentAutoApproval: true })
+      const { caseId, firstTaskId } = await seed()
+      const original = readAggregate(caseId)!
+      const result = await recordStageDecision(caseId, {
+        requestId: nextReq(),
+        actor: { actorId: 'agent-direct', actorSource: 'agent', role: 'reviewer' },
+        expectedRevision: original.caseV2.revision,
+        payload: { action: 'stage-pass', taskId: firstTaskId, reason: '机器未经逐批授权直接代批' },
+      }, template)
+      expect(result.ok).toBeFalse()
+      if (!result.ok) expect(result.code).toBe('AGENT_DECISION_DISABLED')
+      expect(readAggregate(caseId)?.decisions).toHaveLength(0)
+      expect(readAggregate(caseId)?.caseV2.revision).toBe(original.caseV2.revision)
+    } finally {
+      updateSettings({ reviewAgentAutoApproval: before })
+    }
+  })
+})
+
 describe('补件多请求门控（06 §5.3）', () => {
   test('Given 两个未结束请求 When 只满足其一 Then 不恢复；全部结束才恢复', async () => {
     const { caseId, firstTaskId } = await seed()
