@@ -1,0 +1,48 @@
+{
+  "repository": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "candidate": {
+    "pullRequest": 110,
+    "branch": "fix/office71-generic-index-source-identity-r01",
+    "headSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+    "treeSha": "a1ba88da5d14e21a90d3e1c35c4f42c11d67435f",
+    "parentSha": "f387c2eb4ce71fc68775f3673a69c18a3f5733d2",
+    "worktreeBranch": "audit/p06-u1-office71-local-r02",
+    "worktreeBaseSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918"
+  },
+  "remoteSnapshot": {
+    "main": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+    "relatedPullRequests": [
+      { "number": 105, "head": "44c7dc9fefdfd7693f1b6d1de00cf348af7abf3f", "state": "open-draft", "ci": "success", "runId": 39095114943 },
+      { "number": 106, "head": "6b96dbda8258c64033c0d9158f4fae578f7f66a1", "state": "open-draft", "ci": "success", "runId": 39098656248 },
+      { "number": 108, "head": "64c01e57d1e3e1a587a639ae59f9f62ed878924e", "state": "open-draft", "ci": "success", "runId": 39101992863 },
+      { "number": 110, "head": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918", "state": "open-draft", "ci": "success", "runId": 39105979654 }
+    ]
+  },
+  "remoteCi": {
+    "runId": 39105979654,
+    "jobId": 117611851730,
+    "runAttempt": 1,
+    "conclusion": "success",
+    "jobConclusion": "success",
+    "steps": 10,
+    "testSummary": { "passed": 4007, "skipped": 5, "failed": 0 },
+    "artifacts": [],
+    "logPathLocalOnly": "<LOCAL_RAW_ROOT>/remote-ci/pr110-job-117611851730.log",
+    "logSha256": "ec84d1f4a9e26149d64425d9613037a5180e7be908a82ff889cbfb6ec6c5f9bc",
+    "logBytes": 1184861,
+    "checkoutObservation": {
+      "mergeCommitPrefix": "17a91c5b",
+      "observedHead": "f387c2eb4ce71fc68775f3673a69c18a3f5733d2",
+      "candidateHead": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "difference": "候选只在该提交后新增 docs/design/review-agent/70-p06-u1-office71-local-acceptance-20261018.md；apps/electron 源码树一致"
+    }
+  },
+  "upstreamSnapshot": {
+    "repository": "Nya-Angle/CDUT-Studio",
+    "main": "d262a8860af47797733f9f88442b79737666f37f",
+    "writeAttempt": "github_create_branch fix/office71-source-identity-r02",
+    "result": "403 Resource not accessible by integration",
+    "pullRequest": null
+  },
+  "productionSourceModified": false
+}

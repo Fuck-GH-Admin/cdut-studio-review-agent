@@ -4,8 +4,10 @@ import { join, resolve } from 'node:path'
 import { randomUUID } from 'node:crypto'
 import { connect, storeAccess } from './review-live-cdp.mjs'
 
-const raw = resolve(process.env.QA_RAW_ROOT ?? '')
-if (!raw.includes('p06-u1-p02-r02-')) throw new Error('必须指向本轮独立 P02 R02 原始证据根目录')
+const raw = resolve(process.env.P06_OFFICE71_RAW_ROOT ?? '')
+if (!process.env.P06_OFFICE71_RAW_ROOT || !raw.split(/[\\/]/).at(-1)?.startsWith('p06-office71-local-r02-')) {
+  throw new Error('P02 兼容冒烟只能使用本轮 Office R02 隔离 profile')
+}
 const profile = join(raw, 'profile')
 const clientDir = join(raw, 'client')
 mkdirSync(clientDir, { recursive: true })

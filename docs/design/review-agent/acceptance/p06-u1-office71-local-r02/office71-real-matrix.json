@@ -1,0 +1,1619 @@
+{
+  "candidateSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+  "overallStatus": "PASS_WITH_SCOPE_LIMITS",
+  "mainVersion": {
+    "electron": "43.7.7",
+    "node": "24.21.0",
+    "chromium": "150.0.7871.250"
+  },
+  "runtime": {
+    "initialMainPid": 3396991,
+    "restartMainPid": 3408759,
+    "p02R01MainPid": 3450966,
+    "sameIsolatedProfileAfterRestart": true,
+    "vitePort": 37361,
+    "inspectorPort": 43407,
+    "rendererCdpPort": 44091,
+    "allLoopbackPortsReleased": true
+  },
+  "office71": {
+    "initial": {
+      "candidateSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "mode": "initial-retry",
+      "startedAt": "2026-10-18T07:46:05.622Z",
+      "rows": [
+        {
+          "id": "O71-01-docx-forward",
+          "status": "PASS",
+          "expected": "两份合法真 ZIP 同名异路径独立映射，切片和锚点回到各自原件；basename 明确拒绝歧义",
+          "actual": {
+            "order": "forward",
+            "inputs": [
+              {
+                "path": "materials/A/proof.docx",
+                "sha256": "bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418",
+                "bytes": 1630
+              },
+              {
+                "path": "materials/B/proof.docx",
+                "sha256": "9dd6f4583f19b93b1c8e1cbe7dc9f23a297a2e92e36f154bd195f6ab73c36d1e",
+                "bytes": 1630
+              }
+            ],
+            "A": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/A/proof.docx",
+              "revision": "sha256:v2:bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418",
+              "cleanMarkdownPath": "workspaces/o71-01-docx-forward-retry/proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-01-docx-forward-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-01-docx-forward-retry/.context/artifacts/proof.index.json"
+            },
+            "B": {
+              "fileId": "f2",
+              "artifactId": "proof--55dfbc8c00538d68",
+              "sourcePath": "materials/B/proof.docx",
+              "revision": "sha256:v2:9dd6f4583f19b93b1c8e1cbe7dc9f23a297a2e92e36f154bd195f6ab73c36d1e",
+              "cleanMarkdownPath": "workspaces/o71-01-docx-forward-retry/proof--55dfbc8c00538d68.md",
+              "anchoredMarkdownPath": "workspaces/o71-01-docx-forward-retry/.context/artifacts/proof--55dfbc8c00538d68.anchored.md",
+              "indexPath": "workspaces/o71-01-docx-forward-retry/.context/artifacts/proof--55dfbc8c00538d68.index.json"
+            },
+            "registryIds": [
+              "f1",
+              "f2"
+            ],
+            "manifestKeys": [
+              "proof",
+              "proof--55dfbc8c00538d68"
+            ],
+            "readBack": {
+              "byFileId": true,
+              "byAbsolutePath": true,
+              "ambiguousBasenameRejected": true,
+              "anchorsReturnSourcePath": true
+            }
+          },
+          "startedAt": "2026-10-18T07:46:05.655Z",
+          "finishedAt": "2026-10-18T07:46:05.663Z"
+        },
+        {
+          "id": "O71-01-docx-reverse",
+          "status": "PASS",
+          "expected": "两份合法真 ZIP 同名异路径独立映射，切片和锚点回到各自原件；basename 明确拒绝歧义",
+          "actual": {
+            "order": "reverse",
+            "inputs": [
+              {
+                "path": "materials/B/proof.docx",
+                "sha256": "9dd6f4583f19b93b1c8e1cbe7dc9f23a297a2e92e36f154bd195f6ab73c36d1e",
+                "bytes": 1630
+              },
+              {
+                "path": "materials/A/proof.docx",
+                "sha256": "bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418",
+                "bytes": 1630
+              }
+            ],
+            "A": {
+              "fileId": "f2",
+              "artifactId": "proof--dc3d2b97788f00dc",
+              "sourcePath": "materials/A/proof.docx",
+              "revision": "sha256:v2:bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418",
+              "cleanMarkdownPath": "workspaces/o71-01-docx-reverse-retry/proof--dc3d2b97788f00dc.md",
+              "anchoredMarkdownPath": "workspaces/o71-01-docx-reverse-retry/.context/artifacts/proof--dc3d2b97788f00dc.anchored.md",
+              "indexPath": "workspaces/o71-01-docx-reverse-retry/.context/artifacts/proof--dc3d2b97788f00dc.index.json"
+            },
+            "B": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/B/proof.docx",
+              "revision": "sha256:v2:9dd6f4583f19b93b1c8e1cbe7dc9f23a297a2e92e36f154bd195f6ab73c36d1e",
+              "cleanMarkdownPath": "workspaces/o71-01-docx-reverse-retry/proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-01-docx-reverse-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-01-docx-reverse-retry/.context/artifacts/proof.index.json"
+            },
+            "registryIds": [
+              "f1",
+              "f2"
+            ],
+            "manifestKeys": [
+              "proof",
+              "proof--dc3d2b97788f00dc"
+            ],
+            "readBack": {
+              "byFileId": true,
+              "byAbsolutePath": true,
+              "ambiguousBasenameRejected": true,
+              "anchorsReturnSourcePath": true
+            }
+          },
+          "startedAt": "2026-10-18T07:46:05.664Z",
+          "finishedAt": "2026-10-18T07:46:05.669Z"
+        },
+        {
+          "id": "O71-02-docx-identical-bytes",
+          "status": "PASS",
+          "expected": "同字节异路径仍有独立 identity；重复导入保持各自映射",
+          "actual": {
+            "sourceA": {
+              "fileId": "f2",
+              "artifactId": "proof--dc3d2b97788f00dc",
+              "sourcePath": "materials/A/proof.docx",
+              "revision": "sha256:v2:bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418",
+              "cleanMarkdownPath": "workspaces/o71-02-docx-retry/proof--dc3d2b97788f00dc.md",
+              "anchoredMarkdownPath": "workspaces/o71-02-docx-retry/.context/artifacts/proof--dc3d2b97788f00dc.anchored.md",
+              "indexPath": "workspaces/o71-02-docx-retry/.context/artifacts/proof--dc3d2b97788f00dc.index.json"
+            },
+            "sourceSameBytes": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/same/proof.docx",
+              "revision": "sha256:v2:bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418",
+              "cleanMarkdownPath": "workspaces/o71-02-docx-retry/proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-02-docx-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-02-docx-retry/.context/artifacts/proof.index.json"
+            },
+            "repeatedIdentityStable": true,
+            "equalInputHash": "bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418",
+            "byteLength": 1630
+          },
+          "startedAt": "2026-10-18T07:46:05.669Z",
+          "finishedAt": "2026-10-18T07:46:05.675Z"
+        },
+        {
+          "id": "O71-03-docx-revision-size-time",
+          "status": "PASS",
+          "expected": "同路径内容改版后 identity 稳定、revision/正文更新，B 与其 index 不变",
+          "actual": {
+            "input": "materials/revision-large-docx-retry/proof.docx",
+            "before": {
+              "size": 1630,
+              "mtimeMs": 1767225600000,
+              "revision": "sha256:v2:bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418"
+            },
+            "after": {
+              "size": 1562,
+              "mtimeMs": 1767225605000,
+              "revision": "sha256:v2:7198d52a9b0369679fc4178eaa90c3cffcab8c00514c6256b6cb2f38dd5011d5",
+              "sha256": "7198d52a9b0369679fc4178eaa90c3cffcab8c00514c6256b6cb2f38dd5011d5"
+            },
+            "A": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/revision-large-docx-retry/proof.docx",
+              "revision": "sha256:v2:7198d52a9b0369679fc4178eaa90c3cffcab8c00514c6256b6cb2f38dd5011d5",
+              "cleanMarkdownPath": "workspaces/o71-03-large-docx-retry/proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-03-large-docx-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-03-large-docx-retry/.context/artifacts/proof.index.json"
+            },
+            "B": {
+              "fileId": "f2",
+              "artifactId": "peer-proof",
+              "sourcePath": "materials/revision-large-docx-retry/peer-proof.docx",
+              "revision": "sha256:v2:9dd6f4583f19b93b1c8e1cbe7dc9f23a297a2e92e36f154bd195f6ab73c36d1e",
+              "cleanMarkdownPath": "workspaces/o71-03-large-docx-retry/peer-proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-03-large-docx-retry/.context/artifacts/peer-proof.anchored.md",
+              "indexPath": "workspaces/o71-03-large-docx-retry/.context/artifacts/peer-proof.index.json"
+            },
+            "peerIndexHashUnchanged": true
+          },
+          "startedAt": "2026-10-18T07:46:05.676Z",
+          "finishedAt": "2026-10-18T07:46:05.692Z"
+        },
+        {
+          "id": "O71-03-docx-same-size-same-mtime",
+          "status": "PASS",
+          "expected": "same size + same mtime 的真实 ZIP 内容变化必须更新 hash revision 与正文",
+          "actual": {
+            "input": "materials/revision-same-docx-retry/proof.docx",
+            "before": {
+              "size": 1630,
+              "mtimeMs": 1770091506000,
+              "revision": "sha256:v2:ee007bd925df506c798a4b28860021221857808682560f558c5bc676eca270b2"
+            },
+            "after": {
+              "size": 1630,
+              "mtimeMs": 1770091506000,
+              "revision": "sha256:v2:b0f277c49be8485ba947f926b1d622435580f70764b359ca6d248646f565c839",
+              "sha256": "b0f277c49be8485ba947f926b1d622435580f70764b359ca6d248646f565c839"
+            },
+            "identityStable": true,
+            "sourceTextUpdated": true
+          },
+          "startedAt": "2026-10-18T07:46:05.692Z",
+          "finishedAt": "2026-10-18T07:46:05.699Z"
+        },
+        {
+          "id": "O71-01-xlsx-forward",
+          "status": "PASS",
+          "expected": "两份合法真 ZIP 同名异路径独立映射，切片和锚点回到各自原件；basename 明确拒绝歧义",
+          "actual": {
+            "order": "forward",
+            "inputs": [
+              {
+                "path": "materials/A/proof.xlsx",
+                "sha256": "c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+                "bytes": 17195
+              },
+              {
+                "path": "materials/B/proof.xlsx",
+                "sha256": "05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4",
+                "bytes": 17195
+              }
+            ],
+            "A": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/A/proof.xlsx",
+              "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+              "cleanMarkdownPath": "workspaces/o71-01-xlsx-forward-retry/proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-01-xlsx-forward-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-01-xlsx-forward-retry/.context/artifacts/proof.index.json"
+            },
+            "B": {
+              "fileId": "f2",
+              "artifactId": "proof--f1cea60ba2c21bb5",
+              "sourcePath": "materials/B/proof.xlsx",
+              "revision": "sha256:v2:05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4",
+              "cleanMarkdownPath": "workspaces/o71-01-xlsx-forward-retry/proof--f1cea60ba2c21bb5.md",
+              "anchoredMarkdownPath": "workspaces/o71-01-xlsx-forward-retry/.context/artifacts/proof--f1cea60ba2c21bb5.anchored.md",
+              "indexPath": "workspaces/o71-01-xlsx-forward-retry/.context/artifacts/proof--f1cea60ba2c21bb5.index.json"
+            },
+            "registryIds": [
+              "f1",
+              "f2"
+            ],
+            "manifestKeys": [
+              "proof",
+              "proof--f1cea60ba2c21bb5"
+            ],
+            "readBack": {
+              "byFileId": true,
+              "byAbsolutePath": true,
+              "ambiguousBasenameRejected": true,
+              "anchorsReturnSourcePath": true
+            }
+          },
+          "startedAt": "2026-10-18T07:46:05.699Z",
+          "finishedAt": "2026-10-18T07:46:05.705Z"
+        },
+        {
+          "id": "O71-01-xlsx-reverse",
+          "status": "PASS",
+          "expected": "两份合法真 ZIP 同名异路径独立映射，切片和锚点回到各自原件；basename 明确拒绝歧义",
+          "actual": {
+            "order": "reverse",
+            "inputs": [
+              {
+                "path": "materials/B/proof.xlsx",
+                "sha256": "05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4",
+                "bytes": 17195
+              },
+              {
+                "path": "materials/A/proof.xlsx",
+                "sha256": "c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+                "bytes": 17195
+              }
+            ],
+            "A": {
+              "fileId": "f2",
+              "artifactId": "proof--becdad13a5a09142",
+              "sourcePath": "materials/A/proof.xlsx",
+              "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+              "cleanMarkdownPath": "workspaces/o71-01-xlsx-reverse-retry/proof--becdad13a5a09142.md",
+              "anchoredMarkdownPath": "workspaces/o71-01-xlsx-reverse-retry/.context/artifacts/proof--becdad13a5a09142.anchored.md",
+              "indexPath": "workspaces/o71-01-xlsx-reverse-retry/.context/artifacts/proof--becdad13a5a09142.index.json"
+            },
+            "B": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/B/proof.xlsx",
+              "revision": "sha256:v2:05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4",
+              "cleanMarkdownPath": "workspaces/o71-01-xlsx-reverse-retry/proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-01-xlsx-reverse-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-01-xlsx-reverse-retry/.context/artifacts/proof.index.json"
+            },
+            "registryIds": [
+              "f1",
+              "f2"
+            ],
+            "manifestKeys": [
+              "proof",
+              "proof--becdad13a5a09142"
+            ],
+            "readBack": {
+              "byFileId": true,
+              "byAbsolutePath": true,
+              "ambiguousBasenameRejected": true,
+              "anchorsReturnSourcePath": true
+            }
+          },
+          "startedAt": "2026-10-18T07:46:05.705Z",
+          "finishedAt": "2026-10-18T07:46:05.714Z"
+        },
+        {
+          "id": "O71-02-xlsx-identical-bytes",
+          "status": "PASS",
+          "expected": "同字节异路径仍有独立 identity；重复导入保持各自映射",
+          "actual": {
+            "sourceA": {
+              "fileId": "f2",
+              "artifactId": "proof--becdad13a5a09142",
+              "sourcePath": "materials/A/proof.xlsx",
+              "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+              "cleanMarkdownPath": "workspaces/o71-02-xlsx-retry/proof--becdad13a5a09142.md",
+              "anchoredMarkdownPath": "workspaces/o71-02-xlsx-retry/.context/artifacts/proof--becdad13a5a09142.anchored.md",
+              "indexPath": "workspaces/o71-02-xlsx-retry/.context/artifacts/proof--becdad13a5a09142.index.json"
+            },
+            "sourceSameBytes": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/same/proof.xlsx",
+              "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+              "cleanMarkdownPath": "workspaces/o71-02-xlsx-retry/proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-02-xlsx-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-02-xlsx-retry/.context/artifacts/proof.index.json"
+            },
+            "repeatedIdentityStable": true,
+            "equalInputHash": "c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+            "byteLength": 17195
+          },
+          "startedAt": "2026-10-18T07:46:05.714Z",
+          "finishedAt": "2026-10-18T07:46:05.722Z"
+        },
+        {
+          "id": "O71-03-xlsx-revision-size-time",
+          "status": "PASS",
+          "expected": "同路径内容改版后 identity 稳定、revision/正文更新，B 与其 index 不变",
+          "actual": {
+            "input": "materials/revision-large-xlsx-retry/proof.xlsx",
+            "before": {
+              "size": 17195,
+              "mtimeMs": 1767225600000,
+              "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f"
+            },
+            "after": {
+              "size": 6833,
+              "mtimeMs": 1767225605000,
+              "revision": "sha256:v2:f5a97910f99399a084f27c6b1d064d9c536831c919fd853523f031ab8e377a43",
+              "sha256": "f5a97910f99399a084f27c6b1d064d9c536831c919fd853523f031ab8e377a43"
+            },
+            "A": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/revision-large-xlsx-retry/proof.xlsx",
+              "revision": "sha256:v2:f5a97910f99399a084f27c6b1d064d9c536831c919fd853523f031ab8e377a43",
+              "cleanMarkdownPath": "workspaces/o71-03-large-xlsx-retry/proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-03-large-xlsx-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-03-large-xlsx-retry/.context/artifacts/proof.index.json"
+            },
+            "B": {
+              "fileId": "f2",
+              "artifactId": "peer-proof",
+              "sourcePath": "materials/revision-large-xlsx-retry/peer-proof.xlsx",
+              "revision": "sha256:v2:05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4",
+              "cleanMarkdownPath": "workspaces/o71-03-large-xlsx-retry/peer-proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-03-large-xlsx-retry/.context/artifacts/peer-proof.anchored.md",
+              "indexPath": "workspaces/o71-03-large-xlsx-retry/.context/artifacts/peer-proof.index.json"
+            },
+            "peerIndexHashUnchanged": true
+          },
+          "startedAt": "2026-10-18T07:46:05.722Z",
+          "finishedAt": "2026-10-18T07:46:05.745Z"
+        },
+        {
+          "id": "O71-03-xlsx-same-size-same-mtime",
+          "status": "PASS",
+          "expected": "same size + same mtime 的真实 ZIP 内容变化必须更新 hash revision 与正文",
+          "actual": {
+            "input": "materials/revision-same-xlsx-retry/proof.xlsx",
+            "before": {
+              "size": 17751,
+              "mtimeMs": 1770091506000,
+              "revision": "sha256:v2:f80916b3a765888e560dcff6a22180aefd854f2c69cff6f58a3c5ca8fb878a3f"
+            },
+            "after": {
+              "size": 17751,
+              "mtimeMs": 1770091506000,
+              "revision": "sha256:v2:2394eb1be11b3d6f12a79f7504fb5000a74012198bfaac1cae3315a7ef609bfc",
+              "sha256": "2394eb1be11b3d6f12a79f7504fb5000a74012198bfaac1cae3315a7ef609bfc"
+            },
+            "identityStable": true,
+            "sourceTextUpdated": true
+          },
+          "startedAt": "2026-10-18T07:46:05.745Z",
+          "finishedAt": "2026-10-18T07:46:05.755Z"
+        },
+        {
+          "id": "O71-01-pptx-forward",
+          "status": "PASS",
+          "expected": "两份合法真 ZIP 同名异路径独立映射，切片和锚点回到各自原件；basename 明确拒绝歧义",
+          "actual": {
+            "order": "forward",
+            "inputs": [
+              {
+                "path": "materials/A/proof.pptx",
+                "sha256": "78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd",
+                "bytes": 49723
+              },
+              {
+                "path": "materials/B/proof.pptx",
+                "sha256": "93940ce551d683299ac86a954c9d9177ce90cd0deaa220db2c892e67e46682bf",
+                "bytes": 49723
+              }
+            ],
+            "A": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/A/proof.pptx",
+              "revision": "sha256:v2:78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd",
+              "cleanMarkdownPath": "workspaces/o71-01-pptx-forward-retry/proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-01-pptx-forward-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-01-pptx-forward-retry/.context/artifacts/proof.index.json"
+            },
+            "B": {
+              "fileId": "f2",
+              "artifactId": "proof--74ff21909446e232",
+              "sourcePath": "materials/B/proof.pptx",
+              "revision": "sha256:v2:93940ce551d683299ac86a954c9d9177ce90cd0deaa220db2c892e67e46682bf",
+              "cleanMarkdownPath": "workspaces/o71-01-pptx-forward-retry/proof--74ff21909446e232.md",
+              "anchoredMarkdownPath": "workspaces/o71-01-pptx-forward-retry/.context/artifacts/proof--74ff21909446e232.anchored.md",
+              "indexPath": "workspaces/o71-01-pptx-forward-retry/.context/artifacts/proof--74ff21909446e232.index.json"
+            },
+            "registryIds": [
+              "f1",
+              "f2"
+            ],
+            "manifestKeys": [
+              "proof",
+              "proof--74ff21909446e232"
+            ],
+            "readBack": {
+              "byFileId": true,
+              "byAbsolutePath": true,
+              "ambiguousBasenameRejected": true,
+              "anchorsReturnSourcePath": true
+            }
+          },
+          "startedAt": "2026-10-18T07:46:05.755Z",
+          "finishedAt": "2026-10-18T07:46:05.761Z"
+        },
+        {
+          "id": "O71-01-pptx-reverse",
+          "status": "PASS",
+          "expected": "两份合法真 ZIP 同名异路径独立映射，切片和锚点回到各自原件；basename 明确拒绝歧义",
+          "actual": {
+            "order": "reverse",
+            "inputs": [
+              {
+                "path": "materials/B/proof.pptx",
+                "sha256": "93940ce551d683299ac86a954c9d9177ce90cd0deaa220db2c892e67e46682bf",
+                "bytes": 49723
+              },
+              {
+                "path": "materials/A/proof.pptx",
+                "sha256": "78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd",
+                "bytes": 49723
+              }
+            ],
+            "A": {
+              "fileId": "f2",
+              "artifactId": "proof--67b27656f80b57da",
+              "sourcePath": "materials/A/proof.pptx",
+              "revision": "sha256:v2:78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd",
+              "cleanMarkdownPath": "workspaces/o71-01-pptx-reverse-retry/proof--67b27656f80b57da.md",
+              "anchoredMarkdownPath": "workspaces/o71-01-pptx-reverse-retry/.context/artifacts/proof--67b27656f80b57da.anchored.md",
+              "indexPath": "workspaces/o71-01-pptx-reverse-retry/.context/artifacts/proof--67b27656f80b57da.index.json"
+            },
+            "B": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/B/proof.pptx",
+              "revision": "sha256:v2:93940ce551d683299ac86a954c9d9177ce90cd0deaa220db2c892e67e46682bf",
+              "cleanMarkdownPath": "workspaces/o71-01-pptx-reverse-retry/proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-01-pptx-reverse-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-01-pptx-reverse-retry/.context/artifacts/proof.index.json"
+            },
+            "registryIds": [
+              "f1",
+              "f2"
+            ],
+            "manifestKeys": [
+              "proof",
+              "proof--67b27656f80b57da"
+            ],
+            "readBack": {
+              "byFileId": true,
+              "byAbsolutePath": true,
+              "ambiguousBasenameRejected": true,
+              "anchorsReturnSourcePath": true
+            }
+          },
+          "startedAt": "2026-10-18T07:46:05.762Z",
+          "finishedAt": "2026-10-18T07:46:05.767Z"
+        },
+        {
+          "id": "O71-02-pptx-identical-bytes",
+          "status": "PASS",
+          "expected": "同字节异路径仍有独立 identity；重复导入保持各自映射",
+          "actual": {
+            "sourceA": {
+              "fileId": "f2",
+              "artifactId": "proof--67b27656f80b57da",
+              "sourcePath": "materials/A/proof.pptx",
+              "revision": "sha256:v2:78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd",
+              "cleanMarkdownPath": "workspaces/o71-02-pptx-retry/proof--67b27656f80b57da.md",
+              "anchoredMarkdownPath": "workspaces/o71-02-pptx-retry/.context/artifacts/proof--67b27656f80b57da.anchored.md",
+              "indexPath": "workspaces/o71-02-pptx-retry/.context/artifacts/proof--67b27656f80b57da.index.json"
+            },
+            "sourceSameBytes": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/same/proof.pptx",
+              "revision": "sha256:v2:78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd",
+              "cleanMarkdownPath": "workspaces/o71-02-pptx-retry/proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-02-pptx-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-02-pptx-retry/.context/artifacts/proof.index.json"
+            },
+            "repeatedIdentityStable": true,
+            "equalInputHash": "78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd",
+            "byteLength": 49723
+          },
+          "startedAt": "2026-10-18T07:46:05.768Z",
+          "finishedAt": "2026-10-18T07:46:05.774Z"
+        },
+        {
+          "id": "O71-03-pptx-revision-size-time",
+          "status": "PASS",
+          "expected": "同路径内容改版后 identity 稳定、revision/正文更新，B 与其 index 不变",
+          "actual": {
+            "input": "materials/revision-large-pptx-retry/proof.pptx",
+            "before": {
+              "size": 49723,
+              "mtimeMs": 1767225600000,
+              "revision": "sha256:v2:78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd"
+            },
+            "after": {
+              "size": 17146,
+              "mtimeMs": 1767225605000,
+              "revision": "sha256:v2:30e4a7989357305c834b692d1a056f01a4d85970c13da6e6781d3dd8ad682fe8",
+              "sha256": "30e4a7989357305c834b692d1a056f01a4d85970c13da6e6781d3dd8ad682fe8"
+            },
+            "A": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/revision-large-pptx-retry/proof.pptx",
+              "revision": "sha256:v2:30e4a7989357305c834b692d1a056f01a4d85970c13da6e6781d3dd8ad682fe8",
+              "cleanMarkdownPath": "workspaces/o71-03-large-pptx-retry/proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-03-large-pptx-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-03-large-pptx-retry/.context/artifacts/proof.index.json"
+            },
+            "B": {
+              "fileId": "f2",
+              "artifactId": "peer-proof",
+              "sourcePath": "materials/revision-large-pptx-retry/peer-proof.pptx",
+              "revision": "sha256:v2:93940ce551d683299ac86a954c9d9177ce90cd0deaa220db2c892e67e46682bf",
+              "cleanMarkdownPath": "workspaces/o71-03-large-pptx-retry/peer-proof.md",
+              "anchoredMarkdownPath": "workspaces/o71-03-large-pptx-retry/.context/artifacts/peer-proof.anchored.md",
+              "indexPath": "workspaces/o71-03-large-pptx-retry/.context/artifacts/peer-proof.index.json"
+            },
+            "peerIndexHashUnchanged": true
+          },
+          "startedAt": "2026-10-18T07:46:05.774Z",
+          "finishedAt": "2026-10-18T07:46:05.799Z"
+        },
+        {
+          "id": "O71-03-pptx-same-size-same-mtime",
+          "status": "PASS",
+          "expected": "same size + same mtime 的真实 ZIP 内容变化必须更新 hash revision 与正文",
+          "actual": {
+            "input": "materials/revision-same-pptx-retry/proof.pptx",
+            "before": {
+              "size": 49723,
+              "mtimeMs": 1770091506000,
+              "revision": "sha256:v2:1bf443468d2408aafa66b78cc3be7db75bf09829ae088bb7cd2ad6a3f841dd36"
+            },
+            "after": {
+              "size": 49723,
+              "mtimeMs": 1770091506000,
+              "revision": "sha256:v2:f06a1e7b2e09101b01f6e107705bd71187a9d1f4982facbfcff550cbbdfeaa6a",
+              "sha256": "f06a1e7b2e09101b01f6e107705bd71187a9d1f4982facbfcff550cbbdfeaa6a"
+            },
+            "identityStable": true,
+            "sourceTextUpdated": true
+          },
+          "startedAt": "2026-10-18T07:46:05.799Z",
+          "finishedAt": "2026-10-18T07:46:05.815Z"
+        },
+        {
+          "id": "O71-04-cross-format-forward",
+          "status": "PASS",
+          "expected": "同 stem 三格式在同工作区保持唯一 fileId/artifact/index，manifest/registry 一一对应",
+          "actual": {
+            "order": "forward",
+            "files": [
+              {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "materials/A/proof.docx",
+                "revision": "sha256:v2:bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418",
+                "cleanMarkdownPath": "workspaces/o71-04-cross-forward-retry/proof.md",
+                "anchoredMarkdownPath": "workspaces/o71-04-cross-forward-retry/.context/artifacts/proof.anchored.md",
+                "indexPath": "workspaces/o71-04-cross-forward-retry/.context/artifacts/proof.index.json"
+              },
+              {
+                "fileId": "f2",
+                "artifactId": "proof--becdad13a5a09142",
+                "sourcePath": "materials/A/proof.xlsx",
+                "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+                "cleanMarkdownPath": "workspaces/o71-04-cross-forward-retry/proof--becdad13a5a09142.md",
+                "anchoredMarkdownPath": "workspaces/o71-04-cross-forward-retry/.context/artifacts/proof--becdad13a5a09142.anchored.md",
+                "indexPath": "workspaces/o71-04-cross-forward-retry/.context/artifacts/proof--becdad13a5a09142.index.json"
+              },
+              {
+                "fileId": "f3",
+                "artifactId": "proof--67b27656f80b57da",
+                "sourcePath": "materials/A/proof.pptx",
+                "revision": "sha256:v2:78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd",
+                "cleanMarkdownPath": "workspaces/o71-04-cross-forward-retry/proof--67b27656f80b57da.md",
+                "anchoredMarkdownPath": "workspaces/o71-04-cross-forward-retry/.context/artifacts/proof--67b27656f80b57da.anchored.md",
+                "indexPath": "workspaces/o71-04-cross-forward-retry/.context/artifacts/proof--67b27656f80b57da.index.json"
+              }
+            ],
+            "registryIds": [
+              "f1",
+              "f2",
+              "f3"
+            ],
+            "manifestKeys": [
+              "proof",
+              "proof--becdad13a5a09142",
+              "proof--67b27656f80b57da"
+            ],
+            "indexFiles": [
+              "proof--67b27656f80b57da.index.json",
+              "proof--becdad13a5a09142.index.json",
+              "proof.index.json"
+            ]
+          },
+          "startedAt": "2026-10-18T07:46:05.815Z",
+          "finishedAt": "2026-10-18T07:46:05.821Z"
+        },
+        {
+          "id": "O71-04-cross-format-reverse",
+          "status": "PASS",
+          "expected": "同 stem 三格式在同工作区保持唯一 fileId/artifact/index，manifest/registry 一一对应",
+          "actual": {
+            "order": "reverse",
+            "files": [
+              {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "materials/A/proof.pptx",
+                "revision": "sha256:v2:78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd",
+                "cleanMarkdownPath": "workspaces/o71-04-cross-reverse-retry/proof.md",
+                "anchoredMarkdownPath": "workspaces/o71-04-cross-reverse-retry/.context/artifacts/proof.anchored.md",
+                "indexPath": "workspaces/o71-04-cross-reverse-retry/.context/artifacts/proof.index.json"
+              },
+              {
+                "fileId": "f2",
+                "artifactId": "proof--becdad13a5a09142",
+                "sourcePath": "materials/A/proof.xlsx",
+                "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+                "cleanMarkdownPath": "workspaces/o71-04-cross-reverse-retry/proof--becdad13a5a09142.md",
+                "anchoredMarkdownPath": "workspaces/o71-04-cross-reverse-retry/.context/artifacts/proof--becdad13a5a09142.anchored.md",
+                "indexPath": "workspaces/o71-04-cross-reverse-retry/.context/artifacts/proof--becdad13a5a09142.index.json"
+              },
+              {
+                "fileId": "f3",
+                "artifactId": "proof--dc3d2b97788f00dc",
+                "sourcePath": "materials/A/proof.docx",
+                "revision": "sha256:v2:bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418",
+                "cleanMarkdownPath": "workspaces/o71-04-cross-reverse-retry/proof--dc3d2b97788f00dc.md",
+                "anchoredMarkdownPath": "workspaces/o71-04-cross-reverse-retry/.context/artifacts/proof--dc3d2b97788f00dc.anchored.md",
+                "indexPath": "workspaces/o71-04-cross-reverse-retry/.context/artifacts/proof--dc3d2b97788f00dc.index.json"
+              }
+            ],
+            "registryIds": [
+              "f1",
+              "f2",
+              "f3"
+            ],
+            "manifestKeys": [
+              "proof",
+              "proof--becdad13a5a09142",
+              "proof--dc3d2b97788f00dc"
+            ],
+            "indexFiles": [
+              "proof--becdad13a5a09142.index.json",
+              "proof--dc3d2b97788f00dc.index.json",
+              "proof.index.json"
+            ]
+          },
+          "startedAt": "2026-10-18T07:46:05.822Z",
+          "finishedAt": "2026-10-18T07:46:05.827Z"
+        },
+        {
+          "id": "O71-06-legacy-note",
+          "status": "PASS",
+          "expected": "单文档 legacy stem 布局可用；同名手写笔记与旧索引在重复导入后保留",
+          "actual": {
+            "legacyA": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/A/proof.docx",
+              "revision": "sha256:v2:bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418",
+              "cleanMarkdownPath": "workspaces/o71-06-legacy-retry/proof.parsed.md",
+              "anchoredMarkdownPath": "workspaces/o71-06-legacy-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-06-legacy-retry/.context/artifacts/proof.index.json"
+            },
+            "secondSource": {
+              "fileId": "f2",
+              "artifactId": "proof--55dfbc8c00538d68",
+              "sourcePath": "materials/B/proof.docx",
+              "revision": "sha256:v2:9dd6f4583f19b93b1c8e1cbe7dc9f23a297a2e92e36f154bd195f6ab73c36d1e",
+              "cleanMarkdownPath": "workspaces/o71-06-legacy-retry/proof--55dfbc8c00538d68.md",
+              "anchoredMarkdownPath": "workspaces/o71-06-legacy-retry/.context/artifacts/proof--55dfbc8c00538d68.anchored.md",
+              "indexPath": "workspaces/o71-06-legacy-retry/.context/artifacts/proof--55dfbc8c00538d68.index.json"
+            },
+            "manualNoteHash": "06ee4665f4dbe268874afb292a1bd10aee2ab75f307c378a6f77a5222fe0b60d",
+            "repeatedImportStable": true,
+            "manualNotePreserved": true
+          },
+          "startedAt": "2026-10-18T07:46:05.828Z",
+          "finishedAt": "2026-10-18T07:46:05.831Z"
+        },
+        {
+          "id": "O71-07-preferred-and-stale-registry",
+          "status": "PASS",
+          "expected": "preferred fN、伪造 registry 不得占用或混并另一源；普通 fN 不带审核 SourceRef 字段",
+          "actual": {
+            "preferred": {
+              "ownerA": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "materials/A/proof.xlsx",
+                "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+                "cleanMarkdownPath": "workspaces/o71-07-preferred-retry/proof.md",
+                "anchoredMarkdownPath": "workspaces/o71-07-preferred-retry/.context/artifacts/proof.anchored.md",
+                "indexPath": "workspaces/o71-07-preferred-retry/.context/artifacts/proof.index.json"
+              },
+              "importedB": {
+                "fileId": "f2",
+                "artifactId": "proof--f1cea60ba2c21bb5",
+                "sourcePath": "materials/B/proof.xlsx",
+                "revision": "sha256:v2:05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4",
+                "cleanMarkdownPath": "workspaces/o71-07-preferred-retry/proof--f1cea60ba2c21bb5.md",
+                "anchoredMarkdownPath": "workspaces/o71-07-preferred-retry/.context/artifacts/proof--f1cea60ba2c21bb5.anchored.md",
+                "indexPath": "workspaces/o71-07-preferred-retry/.context/artifacts/proof--f1cea60ba2c21bb5.index.json"
+              },
+              "rejectedHijack": true
+            },
+            "corruptRegistry": {
+              "ownerA": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "materials/A/proof.xlsx",
+                "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+                "cleanMarkdownPath": "workspaces/o71-07-corrupt-registry-retry/proof.md",
+                "anchoredMarkdownPath": "workspaces/o71-07-corrupt-registry-retry/.context/artifacts/proof.anchored.md",
+                "indexPath": "workspaces/o71-07-corrupt-registry-retry/.context/artifacts/proof.index.json"
+              },
+              "importedB": {
+                "fileId": "f2",
+                "artifactId": "proof--f1cea60ba2c21bb5",
+                "sourcePath": "materials/B/proof.xlsx",
+                "revision": "sha256:v2:05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4",
+                "cleanMarkdownPath": "workspaces/o71-07-corrupt-registry-retry/proof--f1cea60ba2c21bb5.md",
+                "anchoredMarkdownPath": "workspaces/o71-07-corrupt-registry-retry/.context/artifacts/proof--f1cea60ba2c21bb5.anchored.md",
+                "indexPath": "workspaces/o71-07-corrupt-registry-retry/.context/artifacts/proof--f1cea60ba2c21bb5.index.json"
+              },
+              "distinctIds": true
+            },
+            "ordinaryIndexContainsNoReviewSourceRefIdentity": true
+          },
+          "startedAt": "2026-10-18T07:46:05.831Z",
+          "finishedAt": "2026-10-18T07:46:05.839Z"
+        }
+      ],
+      "main": {
+        "rawRoot": "<LOCAL_RAW_ROOT>",
+        "materialRoot": "<LOCAL_RAW_ROOT>/materials",
+        "profileRoot": "<LOCAL_RAW_ROOT>/profile",
+        "config": "<LOCAL_RAW_ROOT>/profile/config",
+        "userData": "<LOCAL_RAW_ROOT>/profile/user-data",
+        "pid": 3396991
+      },
+      "versions": {
+        "node": "24.21.0",
+        "acorn": "8.18.0",
+        "ada": "4.0.0",
+        "amaro": "1.1.11",
+        "ares": "1.34.8",
+        "brotli": "1.2.0",
+        "cldr": "48.0",
+        "icu": "78.2",
+        "llhttp": "9.4.3",
+        "merve": "1.2.2",
+        "modules": "148",
+        "napi": "10",
+        "nbytes": "0.1.4",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.70.0",
+        "nghttp3": "",
+        "ngtcp2": "",
+        "openssl": "0.0.0",
+        "simdjson": "4.6.7",
+        "simdutf": "7.7.0",
+        "sqlite": "3.53.4",
+        "tz": "2025c",
+        "undici": "7.29.1",
+        "unicode": "17.0",
+        "uv": "1.52.1",
+        "uvwasi": "0.0.23",
+        "v8": "15.0.245.31-electron.0",
+        "zlib": "1.3.2.1-motley",
+        "zstd": "1.6.0",
+        "electron": "43.7.7",
+        "chrome": "150.0.7871.250"
+      },
+      "startedPid": 3396991,
+      "status": "PASS",
+      "finishedAt": "2026-10-18T07:46:05.839Z"
+    },
+    "sameProfileRestart": {
+      "candidateSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "mode": "restart",
+      "startedAt": "2026-10-18T07:46:24.967Z",
+      "rows": [
+        {
+          "id": "O71-04-process-restart",
+          "status": "PASS",
+          "expected": "新 Main PID 复用同 profile 后身份、revision、正文和索引数量稳定",
+          "actual": {
+            "oldPid": 3396991,
+            "newPid": 3408759,
+            "files": [
+              {
+                "format": "pptx",
+                "afterRestart": {
+                  "fileId": "f3",
+                  "artifactId": "proof--67b27656f80b57da",
+                  "sourcePath": "materials/A/proof.pptx",
+                  "revision": "sha256:v2:78b66a12ad2a9a7d61eba4e5180fa6d760907b1c61c83f299877ff37f0fa25fd",
+                  "cleanMarkdownPath": "workspaces/o71-04-cross-forward-retry/proof--67b27656f80b57da.md",
+                  "anchoredMarkdownPath": "workspaces/o71-04-cross-forward-retry/.context/artifacts/proof--67b27656f80b57da.anchored.md",
+                  "indexPath": "workspaces/o71-04-cross-forward-retry/.context/artifacts/proof--67b27656f80b57da.index.json"
+                },
+                "slice": {
+                  "fileId": "f3",
+                  "returnedPages": [
+                    1,
+                    2
+                  ]
+                }
+              },
+              {
+                "format": "xlsx",
+                "afterRestart": {
+                  "fileId": "f2",
+                  "artifactId": "proof--becdad13a5a09142",
+                  "sourcePath": "materials/A/proof.xlsx",
+                  "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+                  "cleanMarkdownPath": "workspaces/o71-04-cross-forward-retry/proof--becdad13a5a09142.md",
+                  "anchoredMarkdownPath": "workspaces/o71-04-cross-forward-retry/.context/artifacts/proof--becdad13a5a09142.anchored.md",
+                  "indexPath": "workspaces/o71-04-cross-forward-retry/.context/artifacts/proof--becdad13a5a09142.index.json"
+                },
+                "slice": {
+                  "fileId": "f2",
+                  "returnedPages": [
+                    1,
+                    2
+                  ]
+                }
+              },
+              {
+                "format": "docx",
+                "afterRestart": {
+                  "fileId": "f1",
+                  "artifactId": "proof",
+                  "sourcePath": "materials/A/proof.docx",
+                  "revision": "sha256:v2:bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418",
+                  "cleanMarkdownPath": "workspaces/o71-04-cross-forward-retry/proof.md",
+                  "anchoredMarkdownPath": "workspaces/o71-04-cross-forward-retry/.context/artifacts/proof.anchored.md",
+                  "indexPath": "workspaces/o71-04-cross-forward-retry/.context/artifacts/proof.index.json"
+                },
+                "slice": {
+                  "fileId": "f1",
+                  "returnedPages": [
+                    1
+                  ]
+                }
+              }
+            ],
+            "registryIds": [
+              "f1",
+              "f2",
+              "f3"
+            ],
+            "manifestKeys": [
+              "proof",
+              "proof--becdad13a5a09142",
+              "proof--67b27656f80b57da"
+            ],
+            "indexFiles": [
+              "proof--67b27656f80b57da.index.json",
+              "proof--becdad13a5a09142.index.json",
+              "proof.index.json"
+            ]
+          }
+        },
+        {
+          "id": "O71-06-process-restart",
+          "status": "PASS",
+          "expected": "重启后 legacy index 与同名手写笔记仍保留",
+          "actual": {
+            "legacyInitialRecordPresent": true,
+            "legacyAfter": {
+              "fileId": "f1",
+              "artifactId": "proof",
+              "sourcePath": "materials/A/proof.docx",
+              "revision": "sha256:v2:bd0d37a24b27594ed2fb6d2654afdd33a63cb4aed82068abb3e62c981f6e7418",
+              "cleanMarkdownPath": "workspaces/o71-06-legacy-retry/proof.parsed.md",
+              "anchoredMarkdownPath": "workspaces/o71-06-legacy-retry/.context/artifacts/proof.anchored.md",
+              "indexPath": "workspaces/o71-06-legacy-retry/.context/artifacts/proof.index.json"
+            },
+            "manualNotePreserved": true
+          }
+        }
+      ],
+      "main": {
+        "rawRoot": "<LOCAL_RAW_ROOT>",
+        "materialRoot": "<LOCAL_RAW_ROOT>/materials",
+        "profileRoot": "<LOCAL_RAW_ROOT>/profile",
+        "config": "<LOCAL_RAW_ROOT>/profile/config",
+        "userData": "<LOCAL_RAW_ROOT>/profile/user-data",
+        "pid": 3408759
+      },
+      "versions": {
+        "node": "24.21.0",
+        "acorn": "8.18.0",
+        "ada": "4.0.0",
+        "amaro": "1.1.11",
+        "ares": "1.34.8",
+        "brotli": "1.2.0",
+        "cldr": "48.0",
+        "icu": "78.2",
+        "llhttp": "9.4.3",
+        "merve": "1.2.2",
+        "modules": "148",
+        "napi": "10",
+        "nbytes": "0.1.4",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.70.0",
+        "nghttp3": "",
+        "ngtcp2": "",
+        "openssl": "0.0.0",
+        "simdjson": "4.6.7",
+        "simdutf": "7.7.0",
+        "sqlite": "3.53.4",
+        "tz": "2025c",
+        "undici": "7.29.1",
+        "unicode": "17.0",
+        "uv": "1.52.1",
+        "uvwasi": "0.0.23",
+        "v8": "15.0.245.31-electron.0",
+        "zlib": "1.3.2.1-motley",
+        "zstd": "1.6.0",
+        "electron": "43.7.7",
+        "chrome": "150.0.7871.250"
+      },
+      "startedPid": 3408759,
+      "status": "PASS",
+      "finishedAt": "2026-10-18T07:46:25.032Z"
+    },
+    "realReadOnlyPreview": {
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "startedAt": "2026-10-18T07:52:08.373Z",
+      "rows": [
+        {
+          "id": "O71-08-preview-docx-A",
+          "status": "PASS",
+          "expected": "真实 Renderer 主窗口只读预览可用、同 basename A/B 内容隔离且不新增顶栏 Tab",
+          "actual": {
+            "readOnly": true,
+            "tabsUnchanged": true,
+            "activeRightPanel": "preview",
+            "currentSessionMatches": true,
+            "visibleMarker": true,
+            "canvasSha256": "b9953207e900401f5f4985fb1c3bfbe697379ba8997504992be7d7fef2f6299d",
+            "canvasHashesDistinct": true,
+            "unexpectedOtherSourceMarker": false,
+            "pdfFrame": [],
+            "canvas": [
+              {
+                "width": 816,
+                "height": 1056
+              }
+            ],
+            "frames": [],
+            "targetUrls": [
+              "http://localhost:37361/"
+            ]
+          }
+        },
+        {
+          "id": "O71-08-preview-docx-B",
+          "status": "PASS",
+          "expected": "真实 Renderer 主窗口只读预览可用、同 basename A/B 内容隔离且不新增顶栏 Tab",
+          "actual": {
+            "readOnly": true,
+            "tabsUnchanged": true,
+            "activeRightPanel": "preview",
+            "currentSessionMatches": true,
+            "visibleMarker": true,
+            "canvasSha256": "6de03a38ab1aeff336db3cbea54849d4b9a0addcccaca41a2251d13d046fd3b0",
+            "canvasHashesDistinct": true,
+            "unexpectedOtherSourceMarker": false,
+            "pdfFrame": [],
+            "canvas": [
+              {
+                "width": 816,
+                "height": 1056
+              }
+            ],
+            "frames": [],
+            "targetUrls": [
+              "http://localhost:37361/"
+            ]
+          }
+        },
+        {
+          "id": "O71-08-preview-xlsx-A",
+          "status": "PASS",
+          "expected": "真实 Renderer 主窗口只读预览可用、同 basename A/B 内容隔离且不新增顶栏 Tab",
+          "actual": {
+            "readOnly": true,
+            "tabsUnchanged": true,
+            "activeRightPanel": "preview",
+            "currentSessionMatches": true,
+            "visibleMarker": false,
+            "canvasSha256": "14859defebc88d69f397cdc47a20706da502e7e4600a643632e8557875c3b397",
+            "canvasHashesDistinct": true,
+            "unexpectedOtherSourceMarker": false,
+            "pdfFrame": [],
+            "canvas": [
+              {
+                "width": 558,
+                "height": 848
+              }
+            ],
+            "frames": [],
+            "targetUrls": [
+              "http://localhost:37361/"
+            ]
+          }
+        },
+        {
+          "id": "O71-08-preview-xlsx-B",
+          "status": "PASS",
+          "expected": "真实 Renderer 主窗口只读预览可用、同 basename A/B 内容隔离且不新增顶栏 Tab",
+          "actual": {
+            "readOnly": true,
+            "tabsUnchanged": true,
+            "activeRightPanel": "preview",
+            "currentSessionMatches": true,
+            "visibleMarker": false,
+            "canvasSha256": "6dc54f870b09431c6da4ed56776db48ffc476176cb132f89d00642afe44d440e",
+            "canvasHashesDistinct": true,
+            "unexpectedOtherSourceMarker": false,
+            "pdfFrame": [],
+            "canvas": [
+              {
+                "width": 558,
+                "height": 848
+              }
+            ],
+            "frames": [],
+            "targetUrls": [
+              "http://localhost:37361/"
+            ]
+          }
+        },
+        {
+          "id": "O71-08-preview-pptx-A",
+          "status": "PASS",
+          "expected": "真实 Renderer 主窗口只读预览可用、同 basename A/B 内容隔离且不新增顶栏 Tab",
+          "actual": {
+            "readOnly": true,
+            "tabsUnchanged": true,
+            "activeRightPanel": "preview",
+            "currentSessionMatches": true,
+            "visibleMarker": true,
+            "canvasSha256": "6df7245c2e946f4e7ba2351f92e8ee473097ac8bd48b9647c5ec68e80288d8e0",
+            "canvasHashesDistinct": true,
+            "unexpectedOtherSourceMarker": false,
+            "pdfFrame": [],
+            "canvas": [
+              {
+                "width": 528,
+                "height": 297
+              },
+              {
+                "width": 528,
+                "height": 297
+              }
+            ],
+            "frames": [],
+            "targetUrls": [
+              "http://localhost:37361/"
+            ]
+          }
+        },
+        {
+          "id": "O71-08-preview-pptx-B",
+          "status": "PASS",
+          "expected": "真实 Renderer 主窗口只读预览可用、同 basename A/B 内容隔离且不新增顶栏 Tab",
+          "actual": {
+            "readOnly": true,
+            "tabsUnchanged": true,
+            "activeRightPanel": "preview",
+            "currentSessionMatches": true,
+            "visibleMarker": true,
+            "canvasSha256": "4fde5d8366fe690d24ed0d3b69981c888c1f7a921f0e0c57b37760ea6ab47ec0",
+            "canvasHashesDistinct": true,
+            "unexpectedOtherSourceMarker": false,
+            "pdfFrame": [],
+            "canvas": [
+              {
+                "width": 960,
+                "height": 540
+              },
+              {
+                "width": 960,
+                "height": 540
+              }
+            ],
+            "frames": [],
+            "targetUrls": [
+              "http://localhost:37361/"
+            ]
+          }
+        },
+        {
+          "id": "O71-08-preview-pdf-PDF",
+          "status": "PASS",
+          "expected": "真实 Renderer 主窗口只读预览可用、同 basename A/B 内容隔离且不新增顶栏 Tab",
+          "actual": {
+            "readOnly": true,
+            "tabsUnchanged": true,
+            "activeRightPanel": "preview",
+            "currentSessionMatches": true,
+            "visibleMarker": false,
+            "canvasSha256": null,
+            "canvasHashesDistinct": true,
+            "unexpectedOtherSourceMarker": false,
+            "pdfFrame": [
+              {
+                "title": "readable.pdf",
+                "src": "cdut-file://f352b025-583e-4834-80e0-1f1b13d7e799/",
+                "width": 560,
+                "height": 880
+              }
+            ],
+            "canvas": [],
+            "frames": [
+              {
+                "title": "readable.pdf",
+                "src": "cdut-file://f352b025-583e-4834-80e0-1f1b13d7e799/",
+                "width": 560,
+                "height": 880
+              }
+            ],
+            "targetUrls": [
+              "http://localhost:37361/"
+            ]
+          }
+        },
+        {
+          "id": "O71-08-ordinary-positive",
+          "expected": "普通会话 IPC metadata 仍可读且合法预览保持只读",
+          "actual": {
+            "sessionId": "93cb9018-f086-4f49-ae81-50319b5e89c0",
+            "metaId": "93cb9018-f086-4f49-ae81-50319b5e89c0"
+          },
+          "status": "PASS"
+        }
+      ],
+      "main": {
+        "rawRoot": "<LOCAL_RAW_ROOT>",
+        "materialRoot": "<LOCAL_RAW_ROOT>/materials",
+        "profileRoot": "<LOCAL_RAW_ROOT>/profile",
+        "config": "<LOCAL_RAW_ROOT>/profile/config",
+        "userData": "<LOCAL_RAW_ROOT>/profile/user-data",
+        "pid": 3408759
+      },
+      "sessionId": "93cb9018-f086-4f49-ae81-50319b5e89c0",
+      "sessionTitle": "P06 Office71 Preview 1792309928392",
+      "status": "PASS",
+      "finishedAt": "2026-10-18T07:52:13.640Z"
+    }
+  },
+  "sourceRefBoundary": {
+    "status": "PASS",
+    "testFiles": [
+      "apps/electron/src/main/lib/review/review-office-v2-sourceref-boundary.l02.test.ts",
+      "apps/electron/src/main/lib/review/review-retired-source-ref.l02-u1.test.ts"
+    ],
+    "passed": 6,
+    "failed": 0,
+    "expectCalls": 33,
+    "rawStdoutSha256": "335ab4d3d0d98d4c3b3478fa50c807da6d2740deb186a27fa4aed967dcd71e94",
+    "rawStderrSha256": "41db9a12f6e674190c5154c27dad560dc27650a83190c7e9a2665fa70131b543",
+    "findings": [
+      "普通 fileId/revision/fN anchor never authorizes a definite review conclusion",
+      "only the correct review document version, block and quote are accepted",
+      "retired version fails closed"
+    ]
+  },
+  "p02CompatibilityOnly": {
+    "R01": {
+      "sourceSha": "6c8ee997da1f0fd781e3bd11cbc7fcc97867e918",
+      "mode": "r01",
+      "startedAtUtc": "2026-10-18T07:54:51.789Z",
+      "checks": [
+        {
+          "name": "R01 删除前普通只读侧栏预览真实可用",
+          "expected": "只读=true 且产生正式预览槽",
+          "actual": {
+            "result": "<LOCAL_RAW_ROOT>/profile/config/agent-workspaces/default/36d6cebb-aea3-4831-bac7-1d4affba0d15/safe.txt",
+            "calls": [],
+            "before": [
+              "agent"
+            ],
+            "after": [
+              "agent"
+            ],
+            "preview": {
+              "filePath": "<LOCAL_RAW_ROOT>/profile/config/agent-workspaces/default/36d6cebb-aea3-4831-bac7-1d4affba0d15/safe.txt",
+              "previewOnly": true,
+              "readOnly": true
+            }
+          },
+          "status": "PASS"
+        },
+        {
+          "name": "R01 进入 Main lookup 前仅移除普通列表缓存",
+          "expected": "没有预写 revoked tombstone",
+          "actual": {
+            "revokedBefore": false,
+            "sessionPresent": false
+          },
+          "status": "PASS"
+        },
+        {
+          "name": "R01 被扣留的旧回执来自真实 Main getAgentSessionMeta IPC",
+          "expected": "id 与真实 Main meta 一致",
+          "actual": {
+            "id": "36d6cebb-aea3-4831-bac7-1d4affba0d15",
+            "title": "P02_R01_迟到预览",
+            "agentRuntime": "pi",
+            "presetId": "standard",
+            "presetReference": {
+              "presetId": "standard",
+              "presetScope": "builtin-meta",
+              "presetVersion": "1.1.0"
+            },
+            "createdAt": 1792310091834,
+            "updatedAt": 1792310091834
+          },
+          "status": "PASS"
+        },
+        {
+          "name": "R01 真 deleteAgentSession IPC 成功",
+          "expected": "持久删除完成且 IPC resolve",
+          "actual": {
+            "ok": true
+          },
+          "status": "PASS"
+        },
+        {
+          "name": "R01 删除后 Main meta 为 null",
+          "expected": "getAgentSessionMeta IPC 返回 null",
+          "actual": null,
+          "status": "PASS"
+        },
+        {
+          "name": "R01 Main 真实发布带递增 revision 的 delete projection",
+          "expected": "revision > 旧 Main meta revision",
+          "actual": {
+            "sessionId": "36d6cebb-aea3-4831-bac7-1d4affba0d15",
+            "payload": {
+              "kind": "session_projection",
+              "operation": "delete",
+              "sessionId": "36d6cebb-aea3-4831-bac7-1d4affba0d15",
+              "revision": 1
+            },
+            "at": "2026-10-18T07:54:52.416Z"
+          },
+          "status": "PASS"
+        },
+        {
+          "name": "R01 Renderer 收到 revoke 并清空列表/预览槽",
+          "expected": "revoked=true 且 session/preview 均无此 ID",
+          "actual": {
+            "sessionPresent": false,
+            "previewPresent": false,
+            "preview": null,
+            "revoked": true,
+            "sdkCacheCount": 0,
+            "sessionTitle": null,
+            "tabTypes": [
+              "agent"
+            ]
+          },
+          "status": "PASS"
+        },
+        {
+          "name": "R01 释放旧 Main lookup 不复活 session/preview",
+          "expected": "late 为空、无 session、无 Preview",
+          "actual": {
+            "released": {
+              "late": "",
+              "error": null,
+              "held": {
+                "issued": true,
+                "startedAt": 7582.699999988079,
+                "meta": {
+                  "id": "36d6cebb-aea3-4831-bac7-1d4affba0d15",
+                  "title": "P02_R01_迟到预览",
+                  "agentRuntime": "pi",
+                  "presetId": "standard",
+                  "presetReference": {
+                    "presetId": "standard",
+                    "presetScope": "builtin-meta",
+                    "presetVersion": "1.1.0"
+                  },
+                  "createdAt": 1792310091834,
+                  "updatedAt": 1792310091834
+                },
+                "gate": {},
+                "lookupElapsedMs": 8.200000047683716
+              }
+            },
+            "afterRelease": {
+              "sessionPresent": false,
+              "previewPresent": false,
+              "preview": null,
+              "revoked": true,
+              "sdkCacheCount": 0,
+              "sessionTitle": null,
+              "tabTypes": [
+                "agent"
+              ]
+            }
+          },
+          "status": "PASS"
+        },
+        {
+          "name": "R01 最终 Main 权威索引仍无删除 session",
+          "expected": "null",
+          "actual": null,
+          "status": "PASS"
+        }
+      ],
+      "main": {
+        "pid": 3450966,
+        "config": "<LOCAL_RAW_ROOT>/profile/config",
+        "userData": "<LOCAL_RAW_ROOT>/profile/user-data",
+        "indexFileBytes": 1568,
+        "versions": {
+          "node": "24.21.0",
+          "acorn": "8.18.0",
+          "ada": "4.0.0",
+          "amaro": "1.1.11",
+          "ares": "1.34.8",
+          "brotli": "1.2.0",
+          "cldr": "48.0",
+          "icu": "78.2",
+          "llhttp": "9.4.3",
+          "merve": "1.2.2",
+          "modules": "148",
+          "napi": "10",
+          "nbytes": "0.1.4",
+          "ncrypto": "0.0.1",
+          "nghttp2": "1.70.0",
+          "nghttp3": "",
+          "ngtcp2": "",
+          "openssl": "0.0.0",
+          "simdjson": "4.6.7",
+          "simdutf": "7.7.0",
+          "sqlite": "3.53.4",
+          "tz": "2025c",
+          "undici": "7.29.1",
+          "unicode": "17.0",
+          "uv": "1.52.1",
+          "uvwasi": "0.0.23",
+          "v8": "15.0.245.31-electron.0",
+          "zlib": "1.3.2.1-motley",
+          "zstd": "1.6.0",
+          "electron": "43.7.7",
+          "chrome": "150.0.7871.250"
+        }
+      },
+      "rendererUrl": "http://localhost:37361/",
+      "createdSessions": [
+        {
+          "id": "36d6cebb-aea3-4831-bac7-1d4affba0d15",
+          "title": "P02_R01_迟到预览",
+          "workspaceId": null
+        }
+      ],
+      "race": {
+        "label": "R01",
+        "sessionId": "36d6cebb-aea3-4831-bac7-1d4affba0d15",
+        "deletionStart": "2026-10-18T07:54:52.413Z",
+        "oldMainMeta": {
+          "id": "36d6cebb-aea3-4831-bac7-1d4affba0d15",
+          "title": "P02_R01_迟到预览",
+          "agentRuntime": "pi",
+          "presetId": "standard",
+          "presetReference": {
+            "presetId": "standard",
+            "presetScope": "builtin-meta",
+            "presetVersion": "1.1.0"
+          },
+          "createdAt": 1792310091834,
+          "updatedAt": 1792310091834
+        },
+        "oldLookupElapsedMs": 8.200000047683716,
+        "deleteResult": {
+          "ok": true
+        },
+        "deletionNotification": {
+          "at": "2026-10-18T07:54:52.417Z",
+          "sessionId": "36d6cebb-aea3-4831-bac7-1d4affba0d15",
+          "payload": {
+            "kind": "session_projection",
+            "operation": "delete",
+            "sessionId": "36d6cebb-aea3-4831-bac7-1d4affba0d15",
+            "revision": 1
+          }
+        },
+        "mainBusDelete": {
+          "sessionId": "36d6cebb-aea3-4831-bac7-1d4affba0d15",
+          "payload": {
+            "kind": "session_projection",
+            "operation": "delete",
+            "sessionId": "36d6cebb-aea3-4831-bac7-1d4affba0d15",
+            "revision": 1
+          },
+          "at": "2026-10-18T07:54:52.416Z"
+        },
+        "mainMetaAfter": null,
+        "stateAfterProjection": {
+          "sessionPresent": false,
+          "previewPresent": false,
+          "preview": null,
+          "revoked": true,
+          "sdkCacheCount": 0,
+          "sessionTitle": null,
+          "tabTypes": [
+            "agent"
+          ]
+        },
+        "released": {
+          "late": "",
+          "error": null,
+          "held": {
+            "issued": true,
+            "startedAt": 7582.699999988079,
+            "meta": {
+              "id": "36d6cebb-aea3-4831-bac7-1d4affba0d15",
+              "title": "P02_R01_迟到预览",
+              "agentRuntime": "pi",
+              "presetId": "standard",
+              "presetReference": {
+                "presetId": "standard",
+                "presetScope": "builtin-meta",
+                "presetVersion": "1.1.0"
+              },
+              "createdAt": 1792310091834,
+              "updatedAt": 1792310091834
+            },
+            "gate": {},
+            "lookupElapsedMs": 8.200000047683716
+          }
+        },
+        "stateAfterRelease": {
+          "sessionPresent": false,
+          "previewPresent": false,
+          "preview": null,
+          "revoked": true,
+          "sdkCacheCount": 0,
+          "sessionTitle": null,
+          "tabTypes": [
+            "agent"
+          ]
+        },
+        "mainPid": 3450966,
+        "ordinaryPreviewBeforeDelete": {
+          "result": "<LOCAL_RAW_ROOT>/profile/config/agent-workspaces/default/36d6cebb-aea3-4831-bac7-1d4affba0d15/safe.txt",
+          "calls": [],
+          "before": [
+            "agent"
+          ],
+          "after": [
+            "agent"
+          ],
+          "preview": {
+            "filePath": "<LOCAL_RAW_ROOT>/profile/config/agent-workspaces/default/36d6cebb-aea3-4831-bac7-1d4affba0d15/safe.txt",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        }
+      },
+      "status": "PASS",
+      "finishedAtUtc": "2026-10-18T07:54:52.678Z"
+    },
+    "scope": "Only historical delete/late-ack regression smoke; R02-R07, full P02 and full U1 were not run."
+  },
+  "upstreamPort": {
+    "status": "BLOCKED_UPSTREAM",
+    "upstreamHead": "d262a8860af47797733f9f88442b79737666f37f",
+    "attemptedBranch": "fix/office71-source-identity-r02",
+    "result": "403 Resource not accessible by integration; no PR or upstream CI."
+  },
+  "productSourceModified": false,
+  "rawEvidenceLocalOnly": "<LOCAL_RAW_ROOT>/",
+  "rawEvidenceIndex": {
+    "office71/fixture-verification.json": {
+      "sha256": "cb57fbc21c16f786638b26af6cdea3acf4c228d778f805b0cdf07575615fc1d4",
+      "bytes": 2568
+    },
+    "office71/office71-initial-retry.json": {
+      "sha256": "ba86a5b38135e2160a38bcefb0dd57c4d243a1a06be3726b0e3989c960681780",
+      "bytes": 37743
+    },
+    "office71/office71-restart.json": {
+      "sha256": "4b6b1a4b0bf0b79401a68185af38410b0a1e98200125a9b13ef0a995c6222474",
+      "bytes": 5442
+    },
+    "office71/preview-smoke-retry3.json": {
+      "sha256": "cd7a23b76ebdbc606d9ee3b4769c911d1719d01327e09e8c3b816ec378d07582",
+      "bytes": 7051
+    },
+    "client/r01.json": {
+      "sha256": "3722e46fbb9f2d80919a6930cfaee67d4aa2f3d5195263c4f676f60a71d922bb",
+      "bytes": 8732
+    },
+    "office71/preview-docx-A.png": {
+      "sha256": "3e862f519746d3dc4832c9d2a10cff8345dd744f9bd77234e92ed126eae8ebaa",
+      "bytes": 150411
+    },
+    "office71/preview-docx-B.png": {
+      "sha256": "2e0f566e12f144b9152ce54a17e63360e2af4c9932d3393c8191dba98b5d2ffb",
+      "bytes": 150934
+    },
+    "office71/preview-xlsx-A.png": {
+      "sha256": "d07d32724fb17bed313bdc7d8b77de14f8d05997727585d9458cfa6ab319c42b",
+      "bytes": 156706
+    },
+    "office71/preview-xlsx-B.png": {
+      "sha256": "65c07bccdccee9a1051b71bd785761bb1425fc8afb5286abb70a4a8d1f0e78ed",
+      "bytes": 156718
+    },
+    "office71/preview-pptx-A.png": {
+      "sha256": "eb04ba6da1aa59d6ab02cd90f27033345f926f7237b1fb85806368a13384855b",
+      "bytes": 150527
+    },
+    "office71/preview-pptx-B.png": {
+      "sha256": "84ca3f69b38352646bb504e9e92f2514f75896aa69ff51912061a4a771c8b160",
+      "bytes": 150457
+    },
+    "office71/preview-pdf-PDF.png": {
+      "sha256": "c75e404cfda7190823a462c1ff7643f718de6bde11705c0e48e3496f6a58135e",
+      "bytes": 143588
+    }
+  }
+}
