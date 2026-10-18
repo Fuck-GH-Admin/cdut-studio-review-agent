@@ -7,15 +7,8 @@ import { dialog, type BrowserWindow } from 'electron'
 import { recommendD4Intake, type D4RouteFile, type D4RouteResult } from './review-d4-routing'
 
 const TTL_MS = 20 * 60 * 1000
-const MAX_FILES = 8
-const MAX_FILE_BYTES = 50 * 1024 * 1024
-const MAX_TOTAL = 100 * 1024 * 1024
+import { stageD4NativeBatch, type D4BatchSkip } from './review-d4-batch-staging'
 const TEXT_TYPES = new Set(['.md', '.txt', '.csv', '.json', '.html', '.htm', '.eml'])
-const ALLOWED_TYPES = new Set([
-  ...TEXT_TYPES, '.pdf', '.doc', '.docx', '.docm', '.dot', '.dotx', '.wps', '.xls', '.xlsx',
-  '.xlsm', '.et', '.ppt', '.pptx', '.pptm', '.dps', '.rtf', '.odt', '.ods', '.odp',
-  '.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp',
-])
 interface StagedFile { name: string; sourcePath: string; sizeBytes: number }
 interface StagedIntake {
   token: string
@@ -25,6 +18,7 @@ interface StagedIntake {
   expiresAt: number
   inUse: boolean
   route: D4RouteResult
+  skipped: D4BatchSkip[]
 }
 const STAGED = new Map<string, StagedIntake>()
 function forget(intake: StagedIntake): void {
@@ -43,41 +37,31 @@ export interface D4IntakePreview {
   expiresAt: number
   files: Array<{ name: string; sizeBytes: number }>
   route: D4RouteResult
+  skipped: D4BatchSkip[]
 }
-export async function stageD4Intake(ownerWebContentsId: number, parent?: BrowserWindow): Promise<D4IntakePreview | null> {
+export async function stageD4Intake(ownerWebContentsId: number, parent?: BrowserWindow, mode: 'files' | 'folder' = 'files'): Promise<D4IntakePreview | null> {
   reap()
-  const opts = { title: '选择同一审核事项的申请材料（最多 8 份）',
-    properties: ['openFile', 'multiSelections'] as Array<'openFile' | 'multiSelections'> }
+  if (mode !== 'files' && mode !== 'folder') throw new Error('D4_INTAKE_PICKER_MODE_INVALID')
+  const opts = mode === 'folder'
+    ? { title: '选择同一审核事项的材料文件夹（支持子目录和 ZIP）', properties: ['openDirectory'] as Array<'openDirectory'> }
+    : { title: '选择审核材料或 ZIP 压缩包（单批最多 100 份）',
+      properties: ['openFile', 'multiSelections'] as Array<'openFile' | 'multiSelections'> }
   const selection = parent ? await dialog.showOpenDialog(parent, opts) : await dialog.showOpenDialog(opts)
   if (selection.canceled || !selection.filePaths.length) return null
-  if (selection.filePaths.length > MAX_FILES) throw new Error('D4_INTAKE_TOO_MANY: 单次最多 8 份文件')
-  const descriptors = selection.filePaths.map(sourcePath => {
-    const sizeBytes = statSync(sourcePath).size
-    const name = basename(sourcePath)
-    if (!ALLOWED_TYPES.has(extname(name).toLowerCase()) || sizeBytes > MAX_FILE_BYTES || sizeBytes < 1) {
-      throw new Error('D4_INTAKE_FILE_INVALID: 不支持、空文件或单文件超过 50 MB：' + name)
-    }
-    return { name, sourcePath, sizeBytes }
-  })
-  if (descriptors.reduce((n, item) => n + item.sizeBytes, 0) > MAX_TOTAL) {
-    throw new Error('D4_INTAKE_TOO_LARGE: 总体积超过 100 MB')
-  }
   const dir = mkdtempSync(join(tmpdir(), 'cdut-d4-intake-'))
   try {
+    // Native-selected roots only. This helper handles recursive folders/ZIP,
+    // size caps, symlinks, basename preservation and duplicate byte hashes.
+    const expanded = await stageD4NativeBatch(selection.filePaths, dir)
+    if (!expanded.files.length) {
+      throw new Error('D4_INTAKE_NO_VALID_FILES: 全部材料被过滤或无法解析，请检查文件类型与大小')
+    }
     const routeInputs: D4RouteFile[] = []
     const files: StagedFile[] = []
-    for (const [i, descriptor] of descriptors.entries()) {
-      // Keep the original OS-picked basename for downstream SourceDocument and
-      // displayed evidence citations. Isolate per index to prevent collisions;
-      // do not mutate the user's material filename with a numeric prefix.
-      const itemDir = join(dir, String(i))
-      mkdirSync(itemDir)
-      const dest = join(itemDir, descriptor.name)
-      copyFileSync(descriptor.sourcePath, dest)
+    for (const descriptor of expanded.files) {
       const route: D4RouteFile = { name: descriptor.name }
       if (TEXT_TYPES.has(extname(descriptor.name).toLowerCase())) {
-        // Classification-only bounded sampling; no text or absolute file path crosses IPC.
-        const handle = openSync(dest, 'r')
+        const handle = openSync(descriptor.sourcePath, 'r')
         try {
           const raw = Buffer.alloc(16 * 1024)
           const bytes = readSync(handle, raw, 0, raw.byteLength, 0)
@@ -85,16 +69,17 @@ export async function stageD4Intake(ownerWebContentsId: number, parent?: Browser
         } finally { closeSync(handle) }
       }
       routeInputs.push(route)
-      files.push({ name: descriptor.name, sourcePath: dest, sizeBytes: descriptor.sizeBytes })
+      files.push({ name: descriptor.name, sourcePath: descriptor.sourcePath, sizeBytes: descriptor.sizeBytes })
     }
     const { listD4ClientTemplates } = require('./review-d4-client') as typeof import('./review-d4-client')
     const route = recommendD4Intake(routeInputs, listD4ClientTemplates())
     const token = randomUUID()
     const entry: StagedIntake = { token, ownerWebContentsId, directory: dir, files,
-      expiresAt: Date.now() + TTL_MS, inUse: false, route }
+      expiresAt: Date.now() + TTL_MS, inUse: false, route, skipped: expanded.skipped }
     STAGED.set(token, entry)
     return { token, expiresAt: entry.expiresAt,
-      files: files.map(file => ({ name: file.name, sizeBytes: file.sizeBytes })), route }
+      files: expanded.files.map(file => ({ name: file.name, sizeBytes: file.sizeBytes, originLabel: file.originLabel })),
+      route, skipped: expanded.skipped }
   } catch (error) {
     rmSync(dir, { recursive: true, force: true })
     throw error
