@@ -1,0 +1,74 @@
+{
+  "files": [
+    {
+      "path": "A/proof.docx",
+      "sha256": "46b505960dd61d304e1075c830ce490cd9c52c491091eb17aa5b35ed4e99b316",
+      "bytes": 1630
+    },
+    {
+      "path": "A/proof.pptx",
+      "sha256": "da3549f53a13aa905aa00cc826a177de9fa81ec18485962417e716ac8710f09a",
+      "bytes": 49723
+    },
+    {
+      "path": "A/proof.xlsx",
+      "sha256": "c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+      "bytes": 17195
+    },
+    {
+      "path": "B/proof.docx",
+      "sha256": "990fc4c50438e0acfd5c5f7bcaf8cae77a629a344a319cffd042a54de27ba017",
+      "bytes": 1630
+    },
+    {
+      "path": "B/proof.pptx",
+      "sha256": "87014b273fc8fb99892add9a42d30f01e41e09974a830d6077d82fef89e70d39",
+      "bytes": 49723
+    },
+    {
+      "path": "B/proof.xlsx",
+      "sha256": "05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4",
+      "bytes": 17195
+    },
+    {
+      "path": "same/proof.docx",
+      "sha256": "46b505960dd61d304e1075c830ce490cd9c52c491091eb17aa5b35ed4e99b316",
+      "bytes": 1630
+    },
+    {
+      "path": "same/proof.pptx",
+      "sha256": "da3549f53a13aa905aa00cc826a177de9fa81ec18485962417e716ac8710f09a",
+      "bytes": 49723
+    },
+    {
+      "path": "same/proof.xlsx",
+      "sha256": "c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+      "bytes": 17195
+    },
+    {
+      "path": "readable-body.pdf",
+      "sha256": "61188c0bbc416b177afee33d3b894cd7e7bff1a1b8a7a5d929f07889108be688",
+      "bytes": 610
+    },
+    {
+      "path": "scan.pdf",
+      "sha256": "9b25f3e889b7b29e23a5bd1ab930808572a0e15194f20ad6b345b1f62539f78f",
+      "bytes": 10452
+    },
+    {
+      "path": "corrupt.pdf",
+      "sha256": "83fb777bc8f3fd8fea3a43658030726c065ca9e695219da8c41a940805002bfb",
+      "bytes": 26
+    },
+    {
+      "path": "readable.pdf",
+      "sha256": "82ba86e5269f411b8a5b737993567474309b883811b4aabce65d512ff3fc6159",
+      "bytes": 605
+    },
+    {
+      "path": "blank.pdf",
+      "sha256": "3b3f049ab9156645d913f2a4c4cecad98e5564ec45af87807c13440b93c72d60",
+      "bytes": 575
+    }
+  ]
+}

@@ -1,0 +1,648 @@
+{
+  "rawEvidence": {
+    "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/guard.json",
+    "sha256": "5eeb653130b813bbe1ab4198064f56d07a5f307cfa2f7a1ae9a5f71665b66c62",
+    "bytes": 22926
+  },
+  "summary": {
+    "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+    "mode": "guard",
+    "startedAt": "2026-10-18T03:37:04.204Z",
+    "level": "MAIN_IPC_SCOPED_NO_PROVIDER",
+    "rows": [
+      {
+        "id": "MAIN_REAL_RUNAGENT_MISSING_BINDING",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:37:04.217Z",
+        "assertions": [
+          {
+            "name": "no-binding 在真实 Main runAgent 拒止且未进入 Pi query",
+            "pass": true
+          },
+          {
+            "name": "preset-swapped 在真实 Main runAgent 拒止且未进入 Pi query",
+            "pass": true
+          },
+          {
+            "name": "non-user 在真实 Main runAgent 拒止且未进入 Pi query",
+            "pass": true
+          }
+        ],
+        "results": [
+          {
+            "variant": "no-binding",
+            "sessionId": "1fa66a5f-fa71-4a1b-996c-6a01b3133f71",
+            "value": {
+              "returned": true
+            },
+            "messages": [
+              {
+                "type": "user",
+                "message": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "P06 U1 合成缺绑定负例"
+                    }
+                  ]
+                },
+                "parent_tool_use_id": null,
+                "uuid": "11dae5a0-4a48-4f62-bfa6-c5d4c84fb172",
+                "_createdAt": 1792294624229
+              }
+            ],
+            "rejectionEvents": [
+              {
+                "at": "2026-10-18T03:37:04.228Z",
+                "event": "real-onRunOwned",
+                "sessionId": "1fa66a5f-fa71-4a1b-996c-6a01b3133f71"
+              },
+              {
+                "at": "2026-10-18T03:37:04.229Z",
+                "event": "real-sendMessage-rejected",
+                "sessionId": "1fa66a5f-fa71-4a1b-996c-6a01b3133f71",
+                "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+              }
+            ],
+            "piQueries": 0
+          },
+          {
+            "variant": "preset-swapped",
+            "sessionId": "13f47275-4cbb-4953-9d7a-dffd8269d724",
+            "value": {
+              "returned": true
+            },
+            "messages": [
+              {
+                "type": "user",
+                "message": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "P06 U1 合成缺绑定负例"
+                    }
+                  ]
+                },
+                "parent_tool_use_id": null,
+                "uuid": "0b337d59-2338-4c86-b62d-5042408a183d",
+                "_createdAt": 1792294624245
+              }
+            ],
+            "rejectionEvents": [
+              {
+                "at": "2026-10-18T03:37:04.245Z",
+                "event": "real-onRunOwned",
+                "sessionId": "13f47275-4cbb-4953-9d7a-dffd8269d724"
+              },
+              {
+                "at": "2026-10-18T03:37:04.246Z",
+                "event": "real-sendMessage-rejected",
+                "sessionId": "13f47275-4cbb-4953-9d7a-dffd8269d724",
+                "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+              }
+            ],
+            "piQueries": 0
+          },
+          {
+            "variant": "non-user",
+            "sessionId": "4a462c89-d6f5-4c58-a347-770e170c1090",
+            "value": {
+              "returned": true
+            },
+            "messages": [
+              {
+                "type": "user",
+                "message": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "P06 U1 合成缺绑定负例"
+                    }
+                  ]
+                },
+                "parent_tool_use_id": null,
+                "uuid": "fe640532-f874-4c22-80a4-7290fed9c608",
+                "_createdAt": 1792294624258
+              }
+            ],
+            "rejectionEvents": [
+              {
+                "at": "2026-10-18T03:37:04.257Z",
+                "event": "real-onRunOwned",
+                "sessionId": "4a462c89-d6f5-4c58-a347-770e170c1090"
+              },
+              {
+                "at": "2026-10-18T03:37:04.259Z",
+                "event": "real-sendMessage-rejected",
+                "sessionId": "4a462c89-d6f5-4c58-a347-770e170c1090",
+                "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+              }
+            ],
+            "piQueries": 0
+          }
+        ],
+        "finishedAt": "2026-10-18T03:37:04.260Z"
+      },
+      {
+        "id": "PREVIEW_OWNER_NEGATIVE_AND_TEXT",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:37:04.928Z",
+        "assertions": [
+          {
+            "name": "侧栏打开且强制只读、不新增 Tab",
+            "pass": true
+          },
+          {
+            "name": "实际只读 Shadow DOM 显示精确文本",
+            "pass": true
+          },
+          {
+            "name": "review owner 授权 lookup 不可打开普通预览",
+            "pass": true
+          },
+          {
+            "name": "不存在会话不可凭事件恢复",
+            "pass": true
+          }
+        ],
+        "text": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/safe.txt",
+          "before": [
+            "agent"
+          ],
+          "after": [
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/safe.txt",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "surface": [
+          {
+            "visible": true,
+            "markerPresent": true
+          }
+        ],
+        "owner": "",
+        "unknown": "",
+        "finishedAt": "2026-10-18T03:37:06.195Z"
+      },
+      {
+        "id": "PREVIEW_REAL_docx",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:37:06.195Z",
+        "assertions": [
+          {
+            "name": "真实侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "真实 Office 页面可见内容",
+            "pass": true
+          }
+        ],
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.docx",
+          "before": [
+            "scratch",
+            "agent"
+          ],
+          "after": [
+            "scratch",
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.docx",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "finishedAt": "2026-10-18T03:37:06.414Z"
+      },
+      {
+        "id": "PREVIEW_REAL_xlsx",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:37:06.414Z",
+        "assertions": [
+          {
+            "name": "真实侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "真实 Office 页面可见内容",
+            "pass": true
+          }
+        ],
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.xlsx",
+          "before": [
+            "scratch",
+            "agent"
+          ],
+          "after": [
+            "scratch",
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.xlsx",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "finishedAt": "2026-10-18T03:37:06.681Z"
+      },
+      {
+        "id": "PREVIEW_REAL_pptx",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:37:06.681Z",
+        "assertions": [
+          {
+            "name": "真实侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "真实 Office 页面可见内容",
+            "pass": true
+          }
+        ],
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.pptx",
+          "before": [
+            "scratch",
+            "agent"
+          ],
+          "after": [
+            "scratch",
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/proof.pptx",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "finishedAt": "2026-10-18T03:37:06.910Z"
+      },
+      {
+        "id": "PREVIEW_SCAN_PDF_CANVAS",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:37:06.910Z",
+        "assertions": [
+          {
+            "name": "真实 Main PDF 返回受控 URL",
+            "pass": true
+          },
+          {
+            "name": "真实扫描 PDF 只读侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "PDF iframe 实际绘制 canvas",
+            "pass": true
+          }
+        ],
+        "prepared": {
+          "tmpHtmlUrl": "cdut-file://562c76d1-f86f-4eb7-b22b-ea2f8e1d6a31"
+        },
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/scan.pdf",
+          "before": [
+            "scratch",
+            "agent"
+          ],
+          "after": [
+            "scratch",
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/scan.pdf",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "frames": {
+          "frameTree": {
+            "frame": {
+              "id": "AA84AD38D3D9437EDCBF7F74144E512B",
+              "loaderId": "809D424F4C6AA79C09409050648BDF53",
+              "url": "http://localhost:18574/",
+              "domainAndRegistry": "",
+              "securityOrigin": "http://localhost:18574",
+              "securityOriginDetails": {
+                "isLocalhost": true
+              },
+              "mimeType": "text/html",
+              "adFrameStatus": {
+                "adFrameType": "none"
+              },
+              "secureContextType": "SecureLocalhost",
+              "crossOriginIsolatedContextType": "NotIsolated",
+              "gatedAPIFeatures": []
+            }
+          }
+        },
+        "targets": [
+          {
+            "targetId": "FE94E759453D03D0F548CAFEDB6CE6C2",
+            "type": "worker",
+            "url": ""
+          },
+          {
+            "targetId": "AA84AD38D3D9437EDCBF7F74144E512B",
+            "type": "page",
+            "url": "http://localhost:18574/"
+          },
+          {
+            "targetId": "8F6527666DC77EC75BFBC32BCF3BEB9F",
+            "type": "iframe",
+            "url": "cdut-file://88f05197-4525-4532-82fa-dc44b0ab77e0/"
+          }
+        ],
+        "canvas": {
+          "width": 600,
+          "height": 800
+        },
+        "finishedAt": "2026-10-18T03:37:07.227Z"
+      }
+    ],
+    "environment": {
+      "versions": {
+        "node": "24.21.0",
+        "acorn": "8.18.0",
+        "ada": "4.0.0",
+        "amaro": "1.1.11",
+        "ares": "1.34.8",
+        "brotli": "1.2.0",
+        "cldr": "48.0",
+        "icu": "78.2",
+        "llhttp": "9.4.3",
+        "merve": "1.2.2",
+        "modules": "148",
+        "napi": "10",
+        "nbytes": "0.1.4",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.70.0",
+        "nghttp3": "",
+        "ngtcp2": "",
+        "openssl": "0.0.0",
+        "simdjson": "4.6.7",
+        "simdutf": "7.7.0",
+        "sqlite": "3.53.4",
+        "tz": "2025c",
+        "undici": "7.29.1",
+        "unicode": "17.0",
+        "uv": "1.52.1",
+        "uvwasi": "0.0.23",
+        "v8": "15.0.245.31-electron.0",
+        "zlib": "1.3.2.1-motley",
+        "zstd": "1.6.0",
+        "electron": "43.7.7",
+        "chrome": "150.0.7871.250"
+      },
+      "config": "<PRIVATE_RAW_ROOT>/profile/config",
+      "userData": "<PRIVATE_RAW_ROOT>/profile/user-data",
+      "pid": 2173621
+    },
+    "mainEvents": [
+      {
+        "at": "2026-10-18T03:34:29.201Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": true
+      },
+      {
+        "at": "2026-10-18T03:34:29.205Z",
+        "event": "real-onRunOwned",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:30.253Z",
+        "event": "real-pi-query-entered",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:30.369Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:34:30.508Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": false
+      },
+      {
+        "at": "2026-10-18T03:34:30.508Z",
+        "event": "real-onRunOwned",
+        "sessionId": "d19b053f-c666-403e-a16f-4257bcb8b969"
+      },
+      {
+        "at": "2026-10-18T03:34:30.510Z",
+        "event": "real-sendMessage-rejected",
+        "sessionId": "d19b053f-c666-403e-a16f-4257bcb8b969",
+        "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+      },
+      {
+        "at": "2026-10-18T03:34:31.545Z",
+        "event": "real-pi-query-entered",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:31.564Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:34:33.604Z",
+        "event": "real-pi-query-entered",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:33.624Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:34:38.261Z",
+        "event": "real-pi-query-entered",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:38.284Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:34:45.763Z",
+        "event": "real-pi-query-entered",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:45.780Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:34:59.548Z",
+        "event": "real-pi-query-entered",
+        "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+      },
+      {
+        "at": "2026-10-18T03:34:59.571Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:35:29.947Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": false
+      },
+      {
+        "at": "2026-10-18T03:35:29.947Z",
+        "event": "real-onRunOwned",
+        "sessionId": "af193c1c-34c9-48bb-9ce4-523843ed2543"
+      },
+      {
+        "at": "2026-10-18T03:35:29.949Z",
+        "event": "real-sendMessage-rejected",
+        "sessionId": "af193c1c-34c9-48bb-9ce4-523843ed2543",
+        "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+      },
+      {
+        "at": "2026-10-18T03:35:29.963Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": false
+      },
+      {
+        "at": "2026-10-18T03:35:29.963Z",
+        "event": "real-onRunOwned",
+        "sessionId": "49b8d51a-b00f-4e55-9014-a5e56342a05d"
+      },
+      {
+        "at": "2026-10-18T03:35:29.965Z",
+        "event": "real-sendMessage-rejected",
+        "sessionId": "49b8d51a-b00f-4e55-9014-a5e56342a05d",
+        "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+      },
+      {
+        "at": "2026-10-18T03:35:29.979Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": false
+      },
+      {
+        "at": "2026-10-18T03:35:29.979Z",
+        "event": "real-onRunOwned",
+        "sessionId": "24c09bce-265e-4a60-b902-616de96f03e2"
+      },
+      {
+        "at": "2026-10-18T03:35:29.981Z",
+        "event": "real-sendMessage-rejected",
+        "sessionId": "24c09bce-265e-4a60-b902-616de96f03e2",
+        "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+      },
+      {
+        "at": "2026-10-18T03:36:21.326Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": false
+      },
+      {
+        "at": "2026-10-18T03:36:21.326Z",
+        "event": "real-onRunOwned",
+        "sessionId": "a448c7bd-e4cb-4d54-a642-6c1d5a7eca6c"
+      },
+      {
+        "at": "2026-10-18T03:36:21.328Z",
+        "event": "real-sendMessage-rejected",
+        "sessionId": "a448c7bd-e4cb-4d54-a642-6c1d5a7eca6c",
+        "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+      },
+      {
+        "at": "2026-10-18T03:36:21.339Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": false
+      },
+      {
+        "at": "2026-10-18T03:36:21.339Z",
+        "event": "real-onRunOwned",
+        "sessionId": "aa41d234-6e2a-4b49-b179-29a98747ff2b"
+      },
+      {
+        "at": "2026-10-18T03:36:21.340Z",
+        "event": "real-sendMessage-rejected",
+        "sessionId": "aa41d234-6e2a-4b49-b179-29a98747ff2b",
+        "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+      },
+      {
+        "at": "2026-10-18T03:36:21.351Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": false
+      },
+      {
+        "at": "2026-10-18T03:36:21.351Z",
+        "event": "real-onRunOwned",
+        "sessionId": "79968fa7-69d1-4261-953a-05fff1d5bf20"
+      },
+      {
+        "at": "2026-10-18T03:36:21.353Z",
+        "event": "real-sendMessage-rejected",
+        "sessionId": "79968fa7-69d1-4261-953a-05fff1d5bf20",
+        "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+      },
+      {
+        "at": "2026-10-18T03:37:04.228Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": false
+      },
+      {
+        "at": "2026-10-18T03:37:04.228Z",
+        "event": "real-onRunOwned",
+        "sessionId": "1fa66a5f-fa71-4a1b-996c-6a01b3133f71"
+      },
+      {
+        "at": "2026-10-18T03:37:04.229Z",
+        "event": "real-sendMessage-rejected",
+        "sessionId": "1fa66a5f-fa71-4a1b-996c-6a01b3133f71",
+        "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+      },
+      {
+        "at": "2026-10-18T03:37:04.245Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": false
+      },
+      {
+        "at": "2026-10-18T03:37:04.245Z",
+        "event": "real-onRunOwned",
+        "sessionId": "13f47275-4cbb-4953-9d7a-dffd8269d724"
+      },
+      {
+        "at": "2026-10-18T03:37:04.246Z",
+        "event": "real-sendMessage-rejected",
+        "sessionId": "13f47275-4cbb-4953-9d7a-dffd8269d724",
+        "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+      },
+      {
+        "at": "2026-10-18T03:37:04.257Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": false
+      },
+      {
+        "at": "2026-10-18T03:37:04.257Z",
+        "event": "real-onRunOwned",
+        "sessionId": "4a462c89-d6f5-4c58-a347-770e170c1090"
+      },
+      {
+        "at": "2026-10-18T03:37:04.259Z",
+        "event": "real-sendMessage-rejected",
+        "sessionId": "4a462c89-d6f5-4c58-a347-770e170c1090",
+        "error": "Error: 内部审核会话缺少有效案卷指派或运行绑定，拒绝降级为普通 Agent 权限"
+      }
+    ],
+    "finishedAt": "2026-10-18T03:37:07.229Z"
+  }
+}

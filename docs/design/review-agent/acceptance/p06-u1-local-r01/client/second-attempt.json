@@ -1,0 +1,789 @@
+{
+  "rawEvidence": {
+    "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/prepare-attempt2.json",
+    "sha256": "f5d7ca8980132316bfd6ef96cac8fb6143057559d44a2dfe182d4ccf2b18c151",
+    "bytes": 25887
+  },
+  "summary": {
+    "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+    "mode": "prepare",
+    "startedAt": "2026-10-18T03:31:48.223Z",
+    "level": "MAIN_IPC_SCOPED_NO_PROVIDER",
+    "rows": [
+      {
+        "id": "MAIN_CASE_AND_NEGATIVE_ACK",
+        "status": "FAIL",
+        "startedAt": "2026-10-18T03:31:48.232Z",
+        "assertions": [
+          {
+            "name": "真实 Main IPC 已独立导入八份合成材料",
+            "pass": true
+          },
+          {
+            "name": "未配置模型时不伪造已受理",
+            "pass": false
+          }
+        ],
+        "caseId": "case-1792294308553-f2fpdj",
+        "imports": [
+          {
+            "input": "A/proof.docx",
+            "result": {
+              "id": "doc-1792294308570-94vpzd",
+              "fileName": "proof.docx",
+              "role": "evidence",
+              "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "sizeBytes": 1630,
+              "parseStatus": "parsed",
+              "blocks": [
+                {
+                  "id": "blk-proof-001",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_A paragraph one",
+                  "page": 1
+                },
+                {
+                  "id": "blk-proof-002",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_A paragraph two budget 100",
+                  "page": 1
+                },
+                {
+                  "id": "blk-proof-003",
+                  "kind": "table-cell",
+                  "text": "Item",
+                  "page": 1,
+                  "table": {
+                    "row": 0,
+                    "column": 0
+                  }
+                },
+                {
+                  "id": "blk-proof-004",
+                  "kind": "table-cell",
+                  "text": "P06_U1_SYNTHETIC_A table 100",
+                  "page": 1,
+                  "table": {
+                    "row": 0,
+                    "column": 1
+                  }
+                }
+              ],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:48.570Z"
+            }
+          },
+          {
+            "input": "B/proof.docx",
+            "result": {
+              "id": "doc-1792294308593-yavn1n",
+              "fileName": "proof.docx",
+              "role": "evidence",
+              "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "sizeBytes": 1630,
+              "parseStatus": "parsed",
+              "blocks": [
+                {
+                  "id": "blk-proof-001",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_B paragraph one",
+                  "page": 1
+                },
+                {
+                  "id": "blk-proof-002",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_B paragraph two budget 100",
+                  "page": 1
+                },
+                {
+                  "id": "blk-proof-003",
+                  "kind": "table-cell",
+                  "text": "Item",
+                  "page": 1,
+                  "table": {
+                    "row": 0,
+                    "column": 0
+                  }
+                },
+                {
+                  "id": "blk-proof-004",
+                  "kind": "table-cell",
+                  "text": "P06_U1_SYNTHETIC_B table 100",
+                  "page": 1,
+                  "table": {
+                    "row": 0,
+                    "column": 1
+                  }
+                }
+              ],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:48.593Z"
+            }
+          },
+          {
+            "input": "A/proof.xlsx",
+            "result": {
+              "id": "doc-1792294308615-1v04ag",
+              "fileName": "proof.xlsx",
+              "role": "evidence",
+              "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              "sizeBytes": 17195,
+              "parseStatus": "parsed",
+              "blocks": [
+                {
+                  "id": "blk-proof-001",
+                  "kind": "table-cell",
+                  "text": "P06_U1_SYNTHETIC_A",
+                  "page": 1,
+                  "table": {
+                    "row": 1,
+                    "column": 1,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-002",
+                  "kind": "table-cell",
+                  "text": "Budget",
+                  "page": 1,
+                  "table": {
+                    "row": 1,
+                    "column": 2,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-003",
+                  "kind": "table-cell",
+                  "text": "budget",
+                  "page": 1,
+                  "table": {
+                    "row": 2,
+                    "column": 1,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-004",
+                  "kind": "table-cell",
+                  "text": "100",
+                  "page": 1,
+                  "table": {
+                    "row": 2,
+                    "column": 2,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-005",
+                  "kind": "table-cell",
+                  "text": "item",
+                  "page": 1,
+                  "table": {
+                    "row": 3,
+                    "column": 1,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-006",
+                  "kind": "table-cell",
+                  "text": "reading",
+                  "page": 1,
+                  "table": {
+                    "row": 3,
+                    "column": 2,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-007",
+                  "kind": "table-cell",
+                  "text": "P06_U1_SYNTHETIC_A",
+                  "page": 1,
+                  "table": {
+                    "row": 1,
+                    "column": 1,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-008",
+                  "kind": "table-cell",
+                  "text": "Details",
+                  "page": 1,
+                  "table": {
+                    "row": 1,
+                    "column": 2,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-009",
+                  "kind": "table-cell",
+                  "text": "budget",
+                  "page": 1,
+                  "table": {
+                    "row": 2,
+                    "column": 1,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-010",
+                  "kind": "table-cell",
+                  "text": "100",
+                  "page": 1,
+                  "table": {
+                    "row": 2,
+                    "column": 2,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-011",
+                  "kind": "table-cell",
+                  "text": "item",
+                  "page": 1,
+                  "table": {
+                    "row": 3,
+                    "column": 1,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-012",
+                  "kind": "table-cell",
+                  "text": "reading",
+                  "page": 1,
+                  "table": {
+                    "row": 3,
+                    "column": 2,
+                    "sheet": "Details"
+                  }
+                }
+              ],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:48.615Z"
+            }
+          },
+          {
+            "input": "A/proof.pptx",
+            "result": {
+              "id": "doc-1792294308625-sbvdtx",
+              "fileName": "proof.pptx",
+              "role": "evidence",
+              "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+              "sizeBytes": 49723,
+              "parseStatus": "parsed",
+              "blocks": [
+                {
+                  "id": "p1-b1",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_A slide 1",
+                  "page": 1,
+                  "bbox": [
+                    0.1,
+                    0.1778,
+                    0.8,
+                    0.3556
+                  ],
+                  "readingOrder": 0,
+                  "confidence": 1
+                },
+                {
+                  "id": "p2-b1",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_A slide 2",
+                  "page": 2,
+                  "bbox": [
+                    0.1,
+                    0.1778,
+                    0.8,
+                    0.3556
+                  ],
+                  "readingOrder": 1,
+                  "confidence": 1
+                }
+              ],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:48.625Z"
+            }
+          },
+          {
+            "input": "readable.pdf",
+            "result": {
+              "id": "doc-1792294308635-znu3he",
+              "fileName": "readable.pdf",
+              "role": "evidence",
+              "mimeType": "application/pdf",
+              "sizeBytes": 605,
+              "parseStatus": "partial",
+              "parseError": "PDF 未提取到文本内容（可能是扫描件或纯图片文档，需 OCR/视觉核验）；原件已保留，审核 Agent 可按需查看页面图像",
+              "blocks": [],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:48.635Z"
+            }
+          },
+          {
+            "input": "scan.pdf",
+            "result": {
+              "id": "doc-1792294308650-f3mk4f",
+              "fileName": "scan.pdf",
+              "role": "evidence",
+              "mimeType": "application/pdf",
+              "sizeBytes": 10452,
+              "parseStatus": "partial",
+              "parseError": "PDF 未提取到文本内容（可能是扫描件或纯图片文档，需 OCR/视觉核验）；原件已保留，审核 Agent 可按需查看页面图像",
+              "blocks": [],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:48.650Z"
+            }
+          },
+          {
+            "input": "blank.pdf",
+            "result": {
+              "id": "doc-1792294308719-c8p1i5",
+              "fileName": "blank.pdf",
+              "role": "evidence",
+              "mimeType": "application/pdf",
+              "sizeBytes": 575,
+              "parseStatus": "partial",
+              "parseError": "PDF 未提取到文本内容（可能是扫描件或纯图片文档，需 OCR/视觉核验）；原件已保留，审核 Agent 可按需查看页面图像",
+              "blocks": [],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:48.719Z"
+            }
+          },
+          {
+            "input": "corrupt.pdf",
+            "result": {
+              "id": "doc-1792294308733-1zfrus",
+              "fileName": "corrupt.pdf",
+              "role": "evidence",
+              "mimeType": "application/pdf",
+              "sizeBytes": 26,
+              "parseStatus": "failed",
+              "parseError": "文档解析失败: Invalid PDF structure.",
+              "blocks": [],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:48.734Z"
+            }
+          }
+        ],
+        "start": {
+          "value": {
+            "caseId": "case-1792294308553-f2fpdj",
+            "runId": "run-pi-mvd9r7gy-v4d7z",
+            "runStatus": "running",
+            "phase": "accepted"
+          }
+        },
+        "error": "AssertionError [ERR_ASSERTION]: 未配置模型时不伪造已受理",
+        "finishedAt": "2026-10-18T03:31:50.040Z"
+      },
+      {
+        "id": "MAIN_OWNER_AND_ORDINARY_POSITIVE",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:31:50.040Z",
+        "assertions": [
+          {
+            "name": "真实 IPC 隐藏 review owner，普通正例可见",
+            "pass": true
+          },
+          {
+            "name": "普通真实读取可用",
+            "pass": true
+          },
+          {
+            "name": "直接路径及目录 symlink 无法读审核 owner 原件",
+            "pass": true
+          },
+          {
+            "name": "内部 owner 普通发送入口拒止",
+            "pass": true
+          }
+        ],
+        "projection": {
+          "ownerVisible": false,
+          "ordinaryVisible": true,
+          "ownerMeta": null,
+          "ordinaryMeta": {
+            "id": "f49d0351-9af6-4410-953b-0220704cc5bf",
+            "title": "P06 U1 普通合成预览",
+            "agentRuntime": "pi",
+            "presetId": "standard",
+            "presetReference": {
+              "presetId": "standard",
+              "presetScope": "builtin-meta",
+              "presetVersion": "1.1.0"
+            },
+            "createdAt": 1792294310063,
+            "updatedAt": 1792294310063
+          }
+        },
+        "read": {
+          "resolvedPath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/f49d0351-9af6-4410-953b-0220704cc5bf/safe.txt",
+          "content": "P06_U1_LOCAL_READ_ONLY\n",
+          "version": {
+            "revision": "1792294310169.2646:23",
+            "mtimeMs": 1792294310169.2646,
+            "size": 23,
+            "hash": "639a3edcfc2b1e32ff83a8204baa2c05eeaf47ff80431b49f963417e538e4425"
+          }
+        },
+        "denied": [
+          null,
+          null
+        ],
+        "ownerSend": {
+          "error": "Error: Error invoking remote method 'agent:send-message': Error: 内部审核会话不可通过普通 Agent 入口访问"
+        },
+        "finishedAt": "2026-10-18T03:31:50.615Z"
+      },
+      {
+        "id": "MAIN_REAL_RUNAGENT_MISSING_BINDING",
+        "status": "FAIL",
+        "startedAt": "2026-10-18T03:31:50.616Z",
+        "assertions": [
+          {
+            "name": "no-binding 在真实 Main runAgent 拒止且未进入 Pi query",
+            "pass": false
+          }
+        ],
+        "results": [
+          {
+            "variant": "no-binding",
+            "sessionId": "1e6e26ea-638d-4c27-940f-8f9087f6a667",
+            "value": {
+              "returned": true
+            },
+            "messages": [
+              {
+                "type": "user",
+                "message": {
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "P06 U1 合成缺绑定负例"
+                    }
+                  ]
+                },
+                "parent_tool_use_id": null,
+                "uuid": "0fcf0eaa-ffb7-43d4-a028-c20a55ead39c",
+                "_createdAt": 1792294310637
+              }
+            ],
+            "piQueries": 0
+          }
+        ],
+        "error": "AssertionError [ERR_ASSERTION]: no-binding 在真实 Main runAgent 拒止且未进入 Pi query",
+        "finishedAt": "2026-10-18T03:31:50.758Z"
+      },
+      {
+        "id": "PREVIEW_OWNER_NEGATIVE_AND_TEXT",
+        "status": "FAIL",
+        "startedAt": "2026-10-18T03:31:50.767Z",
+        "assertions": [
+          {
+            "name": "侧栏打开且强制只读、不新增 Tab",
+            "pass": true
+          }
+        ],
+        "text": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/f49d0351-9af6-4410-953b-0220704cc5bf/safe.txt",
+          "before": [
+            "agent"
+          ],
+          "after": [
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/f49d0351-9af6-4410-953b-0220704cc5bf/safe.txt",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "error": "Error: 真实运行条件未达到：document.body.innerText.includes(\"P06_U1_LOCAL_READ_ONLY\")",
+        "finishedAt": "2026-10-18T03:32:21.070Z"
+      },
+      {
+        "id": "PREVIEW_REAL_docx",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:32:21.071Z",
+        "assertions": [
+          {
+            "name": "真实侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "真实 Office 页面可见内容",
+            "pass": true
+          }
+        ],
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/f49d0351-9af6-4410-953b-0220704cc5bf/proof.docx",
+          "before": [
+            "agent"
+          ],
+          "after": [
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/f49d0351-9af6-4410-953b-0220704cc5bf/proof.docx",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "finishedAt": "2026-10-18T03:32:21.696Z"
+      },
+      {
+        "id": "PREVIEW_REAL_xlsx",
+        "status": "FAIL",
+        "startedAt": "2026-10-18T03:32:21.697Z",
+        "assertions": [
+          {
+            "name": "真实侧栏打开",
+            "pass": true
+          }
+        ],
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/f49d0351-9af6-4410-953b-0220704cc5bf/proof.xlsx",
+          "before": [
+            "agent"
+          ],
+          "after": [
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/f49d0351-9af6-4410-953b-0220704cc5bf/proof.xlsx",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "error": "Error: 真实运行条件未达到：document.body.innerText.includes(\"P06_U1_SYNTHETIC_A\")||!!document.querySelector(\"iframe\")",
+        "finishedAt": "2026-10-18T03:32:51.787Z"
+      },
+      {
+        "id": "PREVIEW_REAL_pptx",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:32:51.787Z",
+        "assertions": [
+          {
+            "name": "真实侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "真实 Office 页面可见内容",
+            "pass": true
+          }
+        ],
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/f49d0351-9af6-4410-953b-0220704cc5bf/proof.pptx",
+          "before": [
+            "agent"
+          ],
+          "after": [
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/f49d0351-9af6-4410-953b-0220704cc5bf/proof.pptx",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "finishedAt": "2026-10-18T03:32:52.013Z"
+      },
+      {
+        "id": "PREVIEW_SCAN_PDF_CANVAS",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:32:52.014Z",
+        "assertions": [
+          {
+            "name": "真实 Main PDF 返回受控 URL",
+            "pass": true
+          },
+          {
+            "name": "真实扫描 PDF 只读侧栏打开",
+            "pass": true
+          },
+          {
+            "name": "PDF iframe 实际绘制 canvas",
+            "pass": true
+          }
+        ],
+        "prepared": {
+          "tmpHtmlUrl": "cdut-file://02f09257-cd97-48aa-8b25-8dc5d5d744d4"
+        },
+        "open": {
+          "result": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/f49d0351-9af6-4410-953b-0220704cc5bf/scan.pdf",
+          "before": [
+            "agent"
+          ],
+          "after": [
+            "agent"
+          ],
+          "file": {
+            "filePath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/f49d0351-9af6-4410-953b-0220704cc5bf/scan.pdf",
+            "previewOnly": true,
+            "readOnly": true
+          }
+        },
+        "frames": {
+          "frameTree": {
+            "frame": {
+              "id": "681702612FF5A1DDD99280172CBD9348",
+              "loaderId": "D74FC9BFF088F06C12257A292037D9EF",
+              "url": "http://localhost:18574/",
+              "domainAndRegistry": "",
+              "securityOrigin": "http://localhost:18574",
+              "securityOriginDetails": {
+                "isLocalhost": true
+              },
+              "mimeType": "text/html",
+              "adFrameStatus": {
+                "adFrameType": "none"
+              },
+              "secureContextType": "SecureLocalhost",
+              "crossOriginIsolatedContextType": "NotIsolated",
+              "gatedAPIFeatures": []
+            }
+          }
+        },
+        "targets": [
+          {
+            "targetId": "DE309F4EDDD99D037E88492AC49EEF41",
+            "type": "worker",
+            "url": ""
+          },
+          {
+            "targetId": "681702612FF5A1DDD99280172CBD9348",
+            "type": "page",
+            "url": "http://localhost:18574/"
+          },
+          {
+            "targetId": "5044CB838B6D8F6F5D3A6992B7BDB834",
+            "type": "iframe",
+            "url": "cdut-file://1e1f20f4-2554-465b-bbc8-297a15129836/"
+          }
+        ],
+        "canvas": {
+          "width": 600,
+          "height": 800
+        },
+        "finishedAt": "2026-10-18T03:32:52.357Z"
+      }
+    ],
+    "environment": {
+      "versions": {
+        "node": "24.21.0",
+        "acorn": "8.18.0",
+        "ada": "4.0.0",
+        "amaro": "1.1.11",
+        "ares": "1.34.8",
+        "brotli": "1.2.0",
+        "cldr": "48.0",
+        "icu": "78.2",
+        "llhttp": "9.4.3",
+        "merve": "1.2.2",
+        "modules": "148",
+        "napi": "10",
+        "nbytes": "0.1.4",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.70.0",
+        "nghttp3": "",
+        "ngtcp2": "",
+        "openssl": "0.0.0",
+        "simdjson": "4.6.7",
+        "simdutf": "7.7.0",
+        "sqlite": "3.53.4",
+        "tz": "2025c",
+        "undici": "7.29.1",
+        "unicode": "17.0",
+        "uv": "1.52.1",
+        "uvwasi": "0.0.23",
+        "v8": "15.0.245.31-electron.0",
+        "zlib": "1.3.2.1-motley",
+        "zstd": "1.6.0",
+        "electron": "43.7.7",
+        "chrome": "150.0.7871.250"
+      },
+      "config": "<PRIVATE_RAW_ROOT>/profile/config",
+      "userData": "<PRIVATE_RAW_ROOT>/profile/user-data",
+      "pid": 2155851
+    },
+    "mainEvents": [
+      {
+        "at": "2026-10-18T03:31:48.758Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": true
+      },
+      {
+        "at": "2026-10-18T03:31:49.880Z",
+        "event": "real-pi-query-entered"
+      },
+      {
+        "at": "2026-10-18T03:31:50.006Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:31:50.636Z",
+        "event": "real-sendMessage-entered",
+        "reviewOutcomeCaptured": false
+      },
+      {
+        "at": "2026-10-18T03:31:50.875Z",
+        "event": "real-pi-query-entered"
+      },
+      {
+        "at": "2026-10-18T03:31:50.896Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:31:53.266Z",
+        "event": "real-pi-query-entered"
+      },
+      {
+        "at": "2026-10-18T03:31:53.282Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:31:57.274Z",
+        "event": "real-pi-query-entered"
+      },
+      {
+        "at": "2026-10-18T03:31:57.293Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:32:05.002Z",
+        "event": "real-pi-query-entered"
+      },
+      {
+        "at": "2026-10-18T03:32:05.028Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      {
+        "at": "2026-10-18T03:32:21.728Z",
+        "event": "real-pi-query-entered"
+      },
+      {
+        "at": "2026-10-18T03:32:21.756Z",
+        "event": "real-pi-assistant-received",
+        "inputTokens": 0,
+        "outputTokens": 0
+      }
+    ],
+    "finishedAt": "2026-10-18T03:32:52.359Z"
+  }
+}

@@ -1,0 +1,1065 @@
+{
+  "rawEvidence": {
+    "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/prepare-attempt1.json",
+    "sha256": "3fb13943d4f96a25ae7c52abad0f271859ac3851760a474939729ad0520d1d76",
+    "bytes": 36421
+  },
+  "summary": {
+    "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+    "mode": "prepare",
+    "startedAt": "2026-10-18T03:31:15.221Z",
+    "level": "MAIN_IPC_SCOPED_NO_PROVIDER",
+    "rows": [
+      {
+        "id": "MAIN_CASE_AND_NEGATIVE_ACK",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:31:15.237Z",
+        "assertions": [
+          {
+            "name": "真实 Main IPC 已独立导入八份合成材料",
+            "pass": true
+          },
+          {
+            "name": "未配置模型时不伪造已受理",
+            "pass": true
+          }
+        ],
+        "caseId": "case-1792294275559-cfrlmg",
+        "imports": [
+          {
+            "input": "A/proof.docx",
+            "result": {
+              "id": "doc-1792294275580-r9mek2",
+              "fileName": "proof.docx",
+              "role": "evidence",
+              "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "sizeBytes": 1630,
+              "parseStatus": "parsed",
+              "blocks": [
+                {
+                  "id": "blk-proof-001",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_A paragraph one",
+                  "page": 1
+                },
+                {
+                  "id": "blk-proof-002",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_A paragraph two budget 100",
+                  "page": 1
+                },
+                {
+                  "id": "blk-proof-003",
+                  "kind": "table-cell",
+                  "text": "Item",
+                  "page": 1,
+                  "table": {
+                    "row": 0,
+                    "column": 0
+                  }
+                },
+                {
+                  "id": "blk-proof-004",
+                  "kind": "table-cell",
+                  "text": "P06_U1_SYNTHETIC_A table 100",
+                  "page": 1,
+                  "table": {
+                    "row": 0,
+                    "column": 1
+                  }
+                }
+              ],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:15.581Z"
+            }
+          },
+          {
+            "input": "B/proof.docx",
+            "result": {
+              "id": "doc-1792294275650-ugh46y",
+              "fileName": "proof.docx",
+              "role": "evidence",
+              "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "sizeBytes": 1630,
+              "parseStatus": "parsed",
+              "blocks": [
+                {
+                  "id": "blk-proof-001",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_B paragraph one",
+                  "page": 1
+                },
+                {
+                  "id": "blk-proof-002",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_B paragraph two budget 100",
+                  "page": 1
+                },
+                {
+                  "id": "blk-proof-003",
+                  "kind": "table-cell",
+                  "text": "Item",
+                  "page": 1,
+                  "table": {
+                    "row": 0,
+                    "column": 0
+                  }
+                },
+                {
+                  "id": "blk-proof-004",
+                  "kind": "table-cell",
+                  "text": "P06_U1_SYNTHETIC_B table 100",
+                  "page": 1,
+                  "table": {
+                    "row": 0,
+                    "column": 1
+                  }
+                }
+              ],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:15.650Z"
+            }
+          },
+          {
+            "input": "A/proof.xlsx",
+            "result": {
+              "id": "doc-1792294275668-t25y0a",
+              "fileName": "proof.xlsx",
+              "role": "evidence",
+              "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              "sizeBytes": 17195,
+              "parseStatus": "parsed",
+              "blocks": [
+                {
+                  "id": "blk-proof-001",
+                  "kind": "table-cell",
+                  "text": "P06_U1_SYNTHETIC_A",
+                  "page": 1,
+                  "table": {
+                    "row": 1,
+                    "column": 1,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-002",
+                  "kind": "table-cell",
+                  "text": "Budget",
+                  "page": 1,
+                  "table": {
+                    "row": 1,
+                    "column": 2,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-003",
+                  "kind": "table-cell",
+                  "text": "budget",
+                  "page": 1,
+                  "table": {
+                    "row": 2,
+                    "column": 1,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-004",
+                  "kind": "table-cell",
+                  "text": "100",
+                  "page": 1,
+                  "table": {
+                    "row": 2,
+                    "column": 2,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-005",
+                  "kind": "table-cell",
+                  "text": "item",
+                  "page": 1,
+                  "table": {
+                    "row": 3,
+                    "column": 1,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-006",
+                  "kind": "table-cell",
+                  "text": "reading",
+                  "page": 1,
+                  "table": {
+                    "row": 3,
+                    "column": 2,
+                    "sheet": "Budget"
+                  }
+                },
+                {
+                  "id": "blk-proof-007",
+                  "kind": "table-cell",
+                  "text": "P06_U1_SYNTHETIC_A",
+                  "page": 1,
+                  "table": {
+                    "row": 1,
+                    "column": 1,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-008",
+                  "kind": "table-cell",
+                  "text": "Details",
+                  "page": 1,
+                  "table": {
+                    "row": 1,
+                    "column": 2,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-009",
+                  "kind": "table-cell",
+                  "text": "budget",
+                  "page": 1,
+                  "table": {
+                    "row": 2,
+                    "column": 1,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-010",
+                  "kind": "table-cell",
+                  "text": "100",
+                  "page": 1,
+                  "table": {
+                    "row": 2,
+                    "column": 2,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-011",
+                  "kind": "table-cell",
+                  "text": "item",
+                  "page": 1,
+                  "table": {
+                    "row": 3,
+                    "column": 1,
+                    "sheet": "Details"
+                  }
+                },
+                {
+                  "id": "blk-proof-012",
+                  "kind": "table-cell",
+                  "text": "reading",
+                  "page": 1,
+                  "table": {
+                    "row": 3,
+                    "column": 2,
+                    "sheet": "Details"
+                  }
+                }
+              ],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:15.668Z"
+            }
+          },
+          {
+            "input": "A/proof.pptx",
+            "result": {
+              "id": "doc-1792294275677-aiqar7",
+              "fileName": "proof.pptx",
+              "role": "evidence",
+              "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+              "sizeBytes": 49723,
+              "parseStatus": "parsed",
+              "blocks": [
+                {
+                  "id": "p1-b1",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_A slide 1",
+                  "page": 1,
+                  "bbox": [
+                    0.1,
+                    0.1778,
+                    0.8,
+                    0.3556
+                  ],
+                  "readingOrder": 0,
+                  "confidence": 1
+                },
+                {
+                  "id": "p2-b1",
+                  "kind": "paragraph",
+                  "text": "P06_U1_SYNTHETIC_A slide 2",
+                  "page": 2,
+                  "bbox": [
+                    0.1,
+                    0.1778,
+                    0.8,
+                    0.3556
+                  ],
+                  "readingOrder": 1,
+                  "confidence": 1
+                }
+              ],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:15.677Z"
+            }
+          },
+          {
+            "input": "readable.pdf",
+            "result": {
+              "id": "doc-1792294275690-rh4txt",
+              "fileName": "readable.pdf",
+              "role": "evidence",
+              "mimeType": "application/pdf",
+              "sizeBytes": 605,
+              "parseStatus": "partial",
+              "parseError": "PDF 未提取到文本内容（可能是扫描件或纯图片文档，需 OCR/视觉核验）；原件已保留，审核 Agent 可按需查看页面图像",
+              "blocks": [],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:15.690Z"
+            }
+          },
+          {
+            "input": "scan.pdf",
+            "result": {
+              "id": "doc-1792294276045-kl3lxo",
+              "fileName": "scan.pdf",
+              "role": "evidence",
+              "mimeType": "application/pdf",
+              "sizeBytes": 10452,
+              "parseStatus": "partial",
+              "parseError": "PDF 未提取到文本内容（可能是扫描件或纯图片文档，需 OCR/视觉核验）；原件已保留，审核 Agent 可按需查看页面图像",
+              "blocks": [],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:16.046Z"
+            }
+          },
+          {
+            "input": "blank.pdf",
+            "result": {
+              "id": "doc-1792294276122-ssa7hu",
+              "fileName": "blank.pdf",
+              "role": "evidence",
+              "mimeType": "application/pdf",
+              "sizeBytes": 575,
+              "parseStatus": "partial",
+              "parseError": "PDF 未提取到文本内容（可能是扫描件或纯图片文档，需 OCR/视觉核验）；原件已保留，审核 Agent 可按需查看页面图像",
+              "blocks": [],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:16.122Z"
+            }
+          },
+          {
+            "input": "corrupt.pdf",
+            "result": {
+              "id": "doc-1792294276134-1mq8p6",
+              "fileName": "corrupt.pdf",
+              "role": "evidence",
+              "mimeType": "application/pdf",
+              "sizeBytes": 26,
+              "parseStatus": "failed",
+              "parseError": "文档解析失败: Invalid PDF structure.",
+              "blocks": [],
+              "origin": "upload",
+              "importedAt": "2026-10-18T03:31:16.134Z"
+            }
+          }
+        ],
+        "start": {
+          "error": "Error: Error invoking remote method 'review-v2:start-background-pi-review': Error: 审核渠道或模型未配置、已停用或已删除，请在审核设置中选择有效模型"
+        },
+        "aggregate": {
+          "caseV2": {
+            "id": "case-1792294275559-cfrlmg",
+            "templateId": "comprehensive-assessment-v2",
+            "templateVersion": 3,
+            "title": "P06 U1 本轮合成安全探针",
+            "objectType": "person",
+            "caseFields": {
+              "applicant": {
+                "kind": "text",
+                "value": "SYNTHETIC_ONLY"
+              },
+              "academicYear": {
+                "kind": "text",
+                "value": "2026"
+              }
+            },
+            "subjects": [],
+            "documents": [
+              {
+                "documentId": "doc-1792294275580-r9mek2",
+                "versionId": "doc-1792294275580-r9mek2-v1",
+                "contentHash": "7af451d502b635c95d2f63ffbc2ad737b8179553",
+                "role": "evidence",
+                "fileName": "proof.docx",
+                "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "sizeBytes": 1630,
+                "assetPath": "source-docs/doc-1792294275580-r9mek2-proof.docx",
+                "parseRevision": 1,
+                "parseStatus": "parsed",
+                "blocks": [
+                  {
+                    "blockId": "blk-proof-001",
+                    "text": "P06_U1_SYNTHETIC_A paragraph one",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 0
+                    },
+                    "kind": "text",
+                    "format": "paragraph"
+                  },
+                  {
+                    "blockId": "blk-proof-002",
+                    "text": "P06_U1_SYNTHETIC_A paragraph two budget 100",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 1
+                    },
+                    "kind": "text",
+                    "format": "paragraph"
+                  },
+                  {
+                    "blockId": "blk-proof-003",
+                    "text": "Item",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 2
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 0,
+                      "column": 0
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-004",
+                    "text": "P06_U1_SYNTHETIC_A table 100",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 3
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 0,
+                      "column": 1
+                    }
+                  }
+                ],
+                "usage": "read",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294275650-ugh46y",
+                "versionId": "doc-1792294275650-ugh46y-v1",
+                "contentHash": "af04a69346d5003f7d0f4f8143564b9372c6ea8c",
+                "role": "evidence",
+                "fileName": "proof.docx",
+                "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "sizeBytes": 1630,
+                "assetPath": "source-docs/doc-1792294275650-ugh46y-proof.docx",
+                "parseRevision": 1,
+                "parseStatus": "parsed",
+                "blocks": [
+                  {
+                    "blockId": "blk-proof-001",
+                    "text": "P06_U1_SYNTHETIC_B paragraph one",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 0
+                    },
+                    "kind": "text",
+                    "format": "paragraph"
+                  },
+                  {
+                    "blockId": "blk-proof-002",
+                    "text": "P06_U1_SYNTHETIC_B paragraph two budget 100",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 1
+                    },
+                    "kind": "text",
+                    "format": "paragraph"
+                  },
+                  {
+                    "blockId": "blk-proof-003",
+                    "text": "Item",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 2
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 0,
+                      "column": 0
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-004",
+                    "text": "P06_U1_SYNTHETIC_B table 100",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 3
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 0,
+                      "column": 1
+                    }
+                  }
+                ],
+                "usage": "read",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294275668-t25y0a",
+                "versionId": "doc-1792294275668-t25y0a-v1",
+                "contentHash": "30cec246d7225387b3c9175b8a27bb3ab0350a4f",
+                "role": "evidence",
+                "fileName": "proof.xlsx",
+                "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "sizeBytes": 17195,
+                "assetPath": "source-docs/doc-1792294275668-t25y0a-proof.xlsx",
+                "parseRevision": 1,
+                "parseStatus": "parsed",
+                "blocks": [
+                  {
+                    "blockId": "blk-proof-001",
+                    "text": "P06_U1_SYNTHETIC_A",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 0
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 1,
+                      "column": 1,
+                      "sheet": "Budget"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-002",
+                    "text": "Budget",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 1
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 1,
+                      "column": 2,
+                      "sheet": "Budget"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-003",
+                    "text": "budget",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 2
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 2,
+                      "column": 1,
+                      "sheet": "Budget"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-004",
+                    "text": "100",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 3
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 2,
+                      "column": 2,
+                      "sheet": "Budget"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-005",
+                    "text": "item",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 4
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 3,
+                      "column": 1,
+                      "sheet": "Budget"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-006",
+                    "text": "reading",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 5
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 3,
+                      "column": 2,
+                      "sheet": "Budget"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-007",
+                    "text": "P06_U1_SYNTHETIC_A",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 6
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 1,
+                      "column": 1,
+                      "sheet": "Details"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-008",
+                    "text": "Details",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 7
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 1,
+                      "column": 2,
+                      "sheet": "Details"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-009",
+                    "text": "budget",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 8
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 2,
+                      "column": 1,
+                      "sheet": "Details"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-010",
+                    "text": "100",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 9
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 2,
+                      "column": 2,
+                      "sheet": "Details"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-011",
+                    "text": "item",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 10
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 3,
+                      "column": 1,
+                      "sheet": "Details"
+                    }
+                  },
+                  {
+                    "blockId": "blk-proof-012",
+                    "text": "reading",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 11
+                    },
+                    "kind": "table",
+                    "format": "table-cell",
+                    "table": {
+                      "row": 3,
+                      "column": 2,
+                      "sheet": "Details"
+                    }
+                  }
+                ],
+                "usage": "read",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294275677-aiqar7",
+                "versionId": "doc-1792294275677-aiqar7-v1",
+                "contentHash": "de6bc07b7b5b2f9bc30e2abff7bd801f60497a83",
+                "role": "evidence",
+                "fileName": "proof.pptx",
+                "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                "sizeBytes": 49723,
+                "assetPath": "source-docs/doc-1792294275677-aiqar7-proof.pptx",
+                "parseRevision": 1,
+                "parseStatus": "parsed",
+                "blocks": [
+                  {
+                    "blockId": "p1-b1",
+                    "text": "P06_U1_SYNTHETIC_A slide 1",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 0
+                    },
+                    "kind": "text",
+                    "format": "paragraph"
+                  },
+                  {
+                    "blockId": "p2-b1",
+                    "text": "P06_U1_SYNTHETIC_A slide 2",
+                    "location": {
+                      "kind": "paragraph",
+                      "index": 1
+                    },
+                    "kind": "text",
+                    "format": "paragraph"
+                  }
+                ],
+                "usage": "read",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294275690-rh4txt",
+                "versionId": "doc-1792294275690-rh4txt-v1",
+                "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+                "role": "evidence",
+                "fileName": "readable.pdf",
+                "mimeType": "application/pdf",
+                "sizeBytes": 605,
+                "assetPath": "source-docs/doc-1792294275690-rh4txt-readable.pdf",
+                "parseRevision": 1,
+                "parseStatus": "partial",
+                "blocks": [],
+                "usage": "unread",
+                "unusedReason": "V1 未提取到文本",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294276045-kl3lxo",
+                "versionId": "doc-1792294276045-kl3lxo-v1",
+                "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+                "role": "evidence",
+                "fileName": "scan.pdf",
+                "mimeType": "application/pdf",
+                "sizeBytes": 10452,
+                "assetPath": "source-docs/doc-1792294276045-kl3lxo-scan.pdf",
+                "parseRevision": 1,
+                "parseStatus": "partial",
+                "blocks": [],
+                "usage": "unread",
+                "unusedReason": "V1 未提取到文本",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294276122-ssa7hu",
+                "versionId": "doc-1792294276122-ssa7hu-v1",
+                "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+                "role": "evidence",
+                "fileName": "blank.pdf",
+                "mimeType": "application/pdf",
+                "sizeBytes": 575,
+                "assetPath": "source-docs/doc-1792294276122-ssa7hu-blank.pdf",
+                "parseRevision": 1,
+                "parseStatus": "partial",
+                "blocks": [],
+                "usage": "unread",
+                "unusedReason": "V1 未提取到文本",
+                "materialSlotId": "certificates"
+              },
+              {
+                "documentId": "doc-1792294276134-1mq8p6",
+                "versionId": "doc-1792294276134-1mq8p6-v1",
+                "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+                "role": "evidence",
+                "fileName": "corrupt.pdf",
+                "mimeType": "application/pdf",
+                "sizeBytes": 26,
+                "assetPath": "source-docs/doc-1792294276134-1mq8p6-corrupt.pdf",
+                "parseRevision": 1,
+                "parseStatus": "failed",
+                "blocks": [],
+                "usage": "unread",
+                "unusedReason": "V1 解析失败",
+                "materialSlotId": "certificates"
+              }
+            ],
+            "stage": "draft",
+            "revision": 8,
+            "createdAt": "2026-10-18T03:31:15.559Z",
+            "updatedAt": "2026-10-18T03:31:16.141Z",
+            "reviewRules": []
+          },
+          "observations": [],
+          "evidenceLinks": [],
+          "dispositions": [],
+          "tasks": [],
+          "decisions": [],
+          "supplements": [],
+          "appeals": [],
+          "receiptLog": [
+            {
+              "requestId": "workspace-init-case-1792294275559-cfrlmg",
+              "type": "EnsureReviewWorkspaceAggregate",
+              "payloadHash": "e51b0b4dcba7e3a5ee9f8e3139938f78b5649eadabe7fef14c3d12b5bccad4c4",
+              "revision": 0,
+              "at": "2026-10-18T03:31:15.574Z",
+              "summary": "辅助审核工作台已映射到单案业务聚合",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-a05cf517d0fd459a70560238b9c2a761",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "84702b241e2f23b85d8b056c45791394d593f205a4f7efe9cb5328f067a8e888",
+              "revision": 1,
+              "at": "2026-10-18T03:31:15.645Z",
+              "summary": "同步申报输入与材料（0 项 / 1 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-25f0f2e576e604378b0907ad8c60f30c",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "72aca001222b28ed0f499e6e46c34449a8b8087208affc6082448bfda9b6a7d3",
+              "revision": 2,
+              "at": "2026-10-18T03:31:15.665Z",
+              "summary": "同步申报输入与材料（0 项 / 2 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-ed85236dc2343da2cf81f0f91b75a089",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "063e1139b0b4aec04202e02bbc591d09dcb96ff6c56f0d557a9d31462ee1f092",
+              "revision": 3,
+              "at": "2026-10-18T03:31:15.675Z",
+              "summary": "同步申报输入与材料（0 项 / 3 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-6f3febfbce31ff075c7a6d070a307687",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "f79e5e9d9d78fed1c7b6ab65926ca8b1c7c79a5d7047c13894dfd8955f7aaf01",
+              "revision": 4,
+              "at": "2026-10-18T03:31:15.688Z",
+              "summary": "同步申报输入与材料（0 项 / 4 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-cbeea7d438efd6d19c4a53e3088d0b9a",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "791c68574a47709f8ebc3e951a5f98a44a0cdcecfae656bf6bf08c67d93abd6b",
+              "revision": 5,
+              "at": "2026-10-18T03:31:16.035Z",
+              "summary": "同步申报输入与材料（0 项 / 5 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-1e55bd0ad3a6a2646e15f487edd06137",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "e53b030fa44344640dc92daa15fd816457cfec7ca7aa8cffc370a49a323f959f",
+              "revision": 6,
+              "at": "2026-10-18T03:31:16.117Z",
+              "summary": "同步申报输入与材料（0 项 / 6 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-5f83bddc4631f73a36786c07810700b7",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "1646d9ed33f4ad3c36fff44f270ff46df79a5a46891f5fd8f2b2296333ad5373",
+              "revision": 7,
+              "at": "2026-10-18T03:31:16.131Z",
+              "summary": "同步申报输入与材料（0 项 / 7 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            },
+            {
+              "requestId": "workspace-sync-35a9ec2e05f41744e52995adeb569c90",
+              "type": "SyncReviewWorkspaceProjection",
+              "payloadHash": "6aaab240a4ff22e4d6080b14c0ec8af062d546785e1413544f7272b762aa6e31",
+              "revision": 8,
+              "at": "2026-10-18T03:31:16.141Z",
+              "summary": "同步申报输入与材料（0 项 / 8 份）",
+              "actor": {
+                "actorId": "review-workspace-sync",
+                "actorSource": "system",
+                "role": "system"
+              }
+            }
+          ]
+        },
+        "finishedAt": "2026-10-18T03:31:16.147Z"
+      },
+      {
+        "id": "MAIN_OWNER_AND_ORDINARY_POSITIVE",
+        "status": "PASS",
+        "startedAt": "2026-10-18T03:31:16.148Z",
+        "assertions": [
+          {
+            "name": "真实 IPC 隐藏 review owner，普通正例可见",
+            "pass": true
+          },
+          {
+            "name": "普通真实读取可用",
+            "pass": true
+          },
+          {
+            "name": "直接路径及目录 symlink 无法读审核 owner 原件",
+            "pass": true
+          },
+          {
+            "name": "内部 owner 普通发送入口拒止",
+            "pass": true
+          }
+        ],
+        "projection": {
+          "ownerVisible": false,
+          "ordinaryVisible": true,
+          "ownerMeta": null,
+          "ordinaryMeta": {
+            "id": "87db439d-be20-434d-8199-289cf55572a3",
+            "title": "P06 U1 普通合成预览",
+            "agentRuntime": "pi",
+            "presetId": "standard",
+            "presetReference": {
+              "presetId": "standard",
+              "presetScope": "builtin-meta",
+              "presetVersion": "1.1.0"
+            },
+            "createdAt": 1792294276149,
+            "updatedAt": 1792294276149
+          }
+        },
+        "read": {
+          "resolvedPath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/87db439d-be20-434d-8199-289cf55572a3/safe.txt",
+          "content": "P06_U1_LOCAL_READ_ONLY\n",
+          "version": {
+            "revision": "1792294276152.6482:23",
+            "mtimeMs": 1792294276152.6482,
+            "size": 23,
+            "hash": "639a3edcfc2b1e32ff83a8204baa2c05eeaf47ff80431b49f963417e538e4425"
+          }
+        },
+        "denied": [
+          null,
+          null
+        ],
+        "ownerSend": {
+          "error": "Error: Error invoking remote method 'agent:send-message': Error: 内部审核会话不可通过普通 Agent 入口访问"
+        },
+        "finishedAt": "2026-10-18T03:31:16.186Z"
+      },
+      {
+        "id": "MAIN_REAL_RUNAGENT_MISSING_BINDING",
+        "status": "FAIL",
+        "startedAt": "2026-10-18T03:31:16.186Z",
+        "assertions": [],
+        "results": [],
+        "error": "Error: ReferenceError: require is not defined\n    at <anonymous>:1:210\n    at FSWatcher.addListener (node:events:615:58)\n    at watch (node:fs:2617:13)\n    at #watchFile (node:internal/fs/recursive_watch:185:21)\n    at #watchFolder (node:internal/fs/recursive_watch:150:28)\n    at #watchFolder (node:internal/fs/recursive_watch:152:32)\n    at FSWatcher.<anonymous> (node:internal/fs/recursive_watch:213:26)\n    at FSWatcher.emit (node:events:514:28)\n    at FSWatcher._handle.onchange (node:internal/fs/watchers:281:12)",
+        "finishedAt": "2026-10-18T03:31:16.305Z"
+      }
+    ],
+    "environment": {
+      "versions": {
+        "node": "24.21.0",
+        "acorn": "8.18.0",
+        "ada": "4.0.0",
+        "amaro": "1.1.11",
+        "ares": "1.34.8",
+        "brotli": "1.2.0",
+        "cldr": "48.0",
+        "icu": "78.2",
+        "llhttp": "9.4.3",
+        "merve": "1.2.2",
+        "modules": "148",
+        "napi": "10",
+        "nbytes": "0.1.4",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.70.0",
+        "nghttp3": "",
+        "ngtcp2": "",
+        "openssl": "0.0.0",
+        "simdjson": "4.6.7",
+        "simdutf": "7.7.0",
+        "sqlite": "3.53.4",
+        "tz": "2025c",
+        "undici": "7.29.1",
+        "unicode": "17.0",
+        "uv": "1.52.1",
+        "uvwasi": "0.0.23",
+        "v8": "15.0.245.31-electron.0",
+        "zlib": "1.3.2.1-motley",
+        "zstd": "1.6.0",
+        "electron": "43.7.7",
+        "chrome": "150.0.7871.250"
+      },
+      "config": "<PRIVATE_RAW_ROOT>/profile/config",
+      "userData": "<PRIVATE_RAW_ROOT>/profile/user-data",
+      "pid": 2155851
+    },
+    "finishedAt": "2026-10-18T03:31:16.486Z"
+  }
+}

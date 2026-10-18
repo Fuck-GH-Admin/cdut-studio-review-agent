@@ -1,0 +1,1580 @@
+{
+  "rawEvidence": {
+    "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/owner-events-first-failure.json",
+    "sha256": "06567563f0c54256d9a22f2b93ec09ed55d9a8df67d501b062d1a00b339b49ce",
+    "bytes": 86007
+  },
+  "summary": {
+    "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+    "level": "MAIN_IPC_RENDERER",
+    "startedAt": "2026-10-18T03:37:38.768Z",
+    "assertions": [
+      {
+        "name": "真实 Main IPC 正文 PDF 有原文块",
+        "pass": true
+      },
+      {
+        "name": "普通归档仍有真实 meta",
+        "pass": true
+      },
+      {
+        "name": "普通归档列表正例保留",
+        "pass": true
+      },
+      {
+        "name": "普通取消归档正例保留",
+        "pass": true
+      },
+      {
+        "name": "搜索不泄露内部 owner 且普通正例存在",
+        "pass": true
+      },
+      {
+        "name": "普通 SDK 历史入口拒止内部 owner",
+        "pass": true
+      },
+      {
+        "name": "延迟回执来自真实 Main",
+        "pass": true
+      }
+    ],
+    "pdfBody": {
+      "id": "doc-1792294658769-665p4s",
+      "fileName": "readable-body.pdf",
+      "role": "evidence",
+      "mimeType": "application/pdf",
+      "sizeBytes": 610,
+      "parseStatus": "parsed",
+      "blocks": [
+        {
+          "id": "p1-b0",
+          "kind": "paragraph",
+          "text": "P06_U1_READABLE_BODY_PDF budget 100",
+          "page": 1,
+          "bbox": [
+            0.06666666666666667,
+            0.3525,
+            0.6886266666666659,
+            0.375
+          ],
+          "readingOrder": 0,
+          "confidence": 0.9
+        }
+      ],
+      "origin": "upload",
+      "importedAt": "2026-10-18T03:37:38.769Z"
+    },
+    "office": {
+      "level": "REAL_MAIN_PARSER",
+      "rows": [
+        {
+          "ext": "docx",
+          "mode": "different",
+          "paths": [
+            "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.docx",
+            "<PRIVATE_RAW_ROOT>/profile/materials/B/proof.docx"
+          ],
+          "values": [
+            {
+              "file": {
+                "name": "proof.docx",
+                "size": 1630,
+                "modifiedAt": "2026-10-18T03:27:55.894Z",
+                "revision": "sha256:v2:46b505960dd61d304e1075c830ce490cd9c52c491091eb17aa5b35ed4e99b316"
+              },
+              "format": "docx",
+              "text": "<!-- page: 1 label=\"第 1 页\" -->\n<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.151,0.086,0.481,0.102\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: p1-b1 [0.151,0.086,0.481,0.102] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph one\n\n<span id=\"p1-b2\" data-page=\"1\" data-bbox=\"0.151,0.106,0.585,0.123\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: p1-b2 [0.151,0.106,0.585,0.123] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n<span id=\"p1-b3\" data-page=\"1\" data-bbox=\"0.151,0.132,0.849,0.158\" data-loc=\"第1页·表格\"></span>\n<!-- anchor: p1-b3 [0.151,0.132,0.849,0.158] loc=\"第1页·表格\" -->\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |",
+              "cleanText": "P06_U1_SYNTHETIC_A paragraph one\n\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |",
+              "truncated": false,
+              "pageCount": 1,
+              "columnCounts": [
+                1
+              ],
+              "outline": [],
+              "pages": [
+                {
+                  "pageNumber": 1,
+                  "columnCount": 1,
+                  "blockCount": 3,
+                  "charCount": 132,
+                  "firstBlockId": "p1-b1",
+                  "lastBlockId": "p1-b3",
+                  "isFigureHeavy": false,
+                  "headings": [],
+                  "anchoredText": "<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.151,0.086,0.481,0.102\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: p1-b1 [0.151,0.086,0.481,0.102] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph one\n\n<span id=\"p1-b2\" data-page=\"1\" data-bbox=\"0.151,0.106,0.585,0.123\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: p1-b2 [0.151,0.106,0.585,0.123] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n<span id=\"p1-b3\" data-page=\"1\" data-bbox=\"0.151,0.132,0.849,0.158\" data-loc=\"第1页·表格\"></span>\n<!-- anchor: p1-b3 [0.151,0.132,0.849,0.158] loc=\"第1页·表格\" -->\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |",
+                  "cleanText": "P06_U1_SYNTHETIC_A paragraph one\n\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |"
+                }
+              ],
+              "materialized": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.docx",
+                "sourceName": "proof.docx",
+                "revision": "sha256:v2:46b505960dd61d304e1075c830ce490cd9c52c491091eb17aa5b35ed4e99b316",
+                "format": "docx",
+                "pageCount": 1,
+                "totalChars": 132,
+                "cleanMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/docx-different/proof.md",
+                "anchoredMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/docx-different/.context/artifacts/proof.anchored.md",
+                "outline": [],
+                "pages": [
+                  {
+                    "pageNumber": 1,
+                    "columnCount": 1,
+                    "blockCount": 3,
+                    "charCount": 132,
+                    "firstBlockId": "f1:p1-b1",
+                    "lastBlockId": "f1:p1-b3",
+                    "isFigureHeavy": false,
+                    "headings": [],
+                    "anchoredText": "<span id=\"f1:p1-b1\" data-page=\"1\" data-bbox=\"0.151,0.086,0.481,0.102\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: f1:p1-b1 [0.151,0.086,0.481,0.102] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph one\n\n<span id=\"f1:p1-b2\" data-page=\"1\" data-bbox=\"0.151,0.106,0.585,0.123\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: f1:p1-b2 [0.151,0.106,0.585,0.123] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n<span id=\"f1:p1-b3\" data-page=\"1\" data-bbox=\"0.151,0.132,0.849,0.158\" data-loc=\"第1页·表格\"></span>\n<!-- anchor: f1:p1-b3 [0.151,0.132,0.849,0.158] loc=\"第1页·表格\" -->\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |",
+                    "cleanText": "P06_U1_SYNTHETIC_A paragraph one\n\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |"
+                  }
+                ],
+                "blocks": {
+                  "p1-b1": {
+                    "blockId": "p1-b1",
+                    "scopedId": "f1:p1-b1",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0.151,
+                      0.086,
+                      0.481,
+                      0.102
+                    ],
+                    "loc": "第1页·P06_U1_SYNTHETIC_A parag"
+                  },
+                  "p1-b2": {
+                    "blockId": "p1-b2",
+                    "scopedId": "f1:p1-b2",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0.151,
+                      0.106,
+                      0.585,
+                      0.123
+                    ],
+                    "loc": "第1页·P06_U1_SYNTHETIC_A parag"
+                  }
+                },
+                "blockCount": 3
+              }
+            },
+            {
+              "file": {
+                "name": "proof.docx",
+                "size": 1630,
+                "modifiedAt": "2026-10-18T03:27:55.938Z",
+                "revision": "sha256:v2:990fc4c50438e0acfd5c5f7bcaf8cae77a629a344a319cffd042a54de27ba017"
+              },
+              "format": "docx",
+              "text": "<!-- page: 1 label=\"第 1 页\" -->\n<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.151,0.086,0.481,0.102\" data-loc=\"第1页·P06_U1_SYNTHETIC_B parag\"></span>\n<!-- anchor: p1-b1 [0.151,0.086,0.481,0.102] loc=\"第1页·P06_U1_SYNTHETIC_B parag\" -->\nP06_U1_SYNTHETIC_B paragraph one\n\n<span id=\"p1-b2\" data-page=\"1\" data-bbox=\"0.151,0.106,0.585,0.123\" data-loc=\"第1页·P06_U1_SYNTHETIC_B parag\"></span>\n<!-- anchor: p1-b2 [0.151,0.106,0.585,0.123] loc=\"第1页·P06_U1_SYNTHETIC_B parag\" -->\nP06_U1_SYNTHETIC_B paragraph two budget 100\n\n<span id=\"p1-b3\" data-page=\"1\" data-bbox=\"0.151,0.132,0.849,0.158\" data-loc=\"第1页·表格\"></span>\n<!-- anchor: p1-b3 [0.151,0.132,0.849,0.158] loc=\"第1页·表格\" -->\n| Item | P06_U1_SYNTHETIC_B table 100 |\n| --- | --- |",
+              "cleanText": "P06_U1_SYNTHETIC_B paragraph one\n\nP06_U1_SYNTHETIC_B paragraph two budget 100\n\n| Item | P06_U1_SYNTHETIC_B table 100 |\n| --- | --- |",
+              "truncated": false,
+              "pageCount": 1,
+              "columnCounts": [
+                1
+              ],
+              "outline": [],
+              "pages": [
+                {
+                  "pageNumber": 1,
+                  "columnCount": 1,
+                  "blockCount": 3,
+                  "charCount": 132,
+                  "firstBlockId": "p1-b1",
+                  "lastBlockId": "p1-b3",
+                  "isFigureHeavy": false,
+                  "headings": [],
+                  "anchoredText": "<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.151,0.086,0.481,0.102\" data-loc=\"第1页·P06_U1_SYNTHETIC_B parag\"></span>\n<!-- anchor: p1-b1 [0.151,0.086,0.481,0.102] loc=\"第1页·P06_U1_SYNTHETIC_B parag\" -->\nP06_U1_SYNTHETIC_B paragraph one\n\n<span id=\"p1-b2\" data-page=\"1\" data-bbox=\"0.151,0.106,0.585,0.123\" data-loc=\"第1页·P06_U1_SYNTHETIC_B parag\"></span>\n<!-- anchor: p1-b2 [0.151,0.106,0.585,0.123] loc=\"第1页·P06_U1_SYNTHETIC_B parag\" -->\nP06_U1_SYNTHETIC_B paragraph two budget 100\n\n<span id=\"p1-b3\" data-page=\"1\" data-bbox=\"0.151,0.132,0.849,0.158\" data-loc=\"第1页·表格\"></span>\n<!-- anchor: p1-b3 [0.151,0.132,0.849,0.158] loc=\"第1页·表格\" -->\n| Item | P06_U1_SYNTHETIC_B table 100 |\n| --- | --- |",
+                  "cleanText": "P06_U1_SYNTHETIC_B paragraph one\n\nP06_U1_SYNTHETIC_B paragraph two budget 100\n\n| Item | P06_U1_SYNTHETIC_B table 100 |\n| --- | --- |"
+                }
+              ],
+              "materialized": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "<PRIVATE_RAW_ROOT>/profile/materials/B/proof.docx",
+                "sourceName": "proof.docx",
+                "revision": "sha256:v2:990fc4c50438e0acfd5c5f7bcaf8cae77a629a344a319cffd042a54de27ba017",
+                "format": "docx",
+                "pageCount": 1,
+                "totalChars": 132,
+                "cleanMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/docx-different/proof.md",
+                "anchoredMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/docx-different/.context/artifacts/proof.anchored.md",
+                "outline": [],
+                "pages": [
+                  {
+                    "pageNumber": 1,
+                    "columnCount": 1,
+                    "blockCount": 3,
+                    "charCount": 132,
+                    "firstBlockId": "f1:p1-b1",
+                    "lastBlockId": "f1:p1-b3",
+                    "isFigureHeavy": false,
+                    "headings": [],
+                    "anchoredText": "<span id=\"f1:p1-b1\" data-page=\"1\" data-bbox=\"0.151,0.086,0.481,0.102\" data-loc=\"第1页·P06_U1_SYNTHETIC_B parag\"></span>\n<!-- anchor: f1:p1-b1 [0.151,0.086,0.481,0.102] loc=\"第1页·P06_U1_SYNTHETIC_B parag\" -->\nP06_U1_SYNTHETIC_B paragraph one\n\n<span id=\"f1:p1-b2\" data-page=\"1\" data-bbox=\"0.151,0.106,0.585,0.123\" data-loc=\"第1页·P06_U1_SYNTHETIC_B parag\"></span>\n<!-- anchor: f1:p1-b2 [0.151,0.106,0.585,0.123] loc=\"第1页·P06_U1_SYNTHETIC_B parag\" -->\nP06_U1_SYNTHETIC_B paragraph two budget 100\n\n<span id=\"f1:p1-b3\" data-page=\"1\" data-bbox=\"0.151,0.132,0.849,0.158\" data-loc=\"第1页·表格\"></span>\n<!-- anchor: f1:p1-b3 [0.151,0.132,0.849,0.158] loc=\"第1页·表格\" -->\n| Item | P06_U1_SYNTHETIC_B table 100 |\n| --- | --- |",
+                    "cleanText": "P06_U1_SYNTHETIC_B paragraph one\n\nP06_U1_SYNTHETIC_B paragraph two budget 100\n\n| Item | P06_U1_SYNTHETIC_B table 100 |\n| --- | --- |"
+                  }
+                ],
+                "blocks": {
+                  "p1-b1": {
+                    "blockId": "p1-b1",
+                    "scopedId": "f1:p1-b1",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0.151,
+                      0.086,
+                      0.481,
+                      0.102
+                    ],
+                    "loc": "第1页·P06_U1_SYNTHETIC_B parag"
+                  },
+                  "p1-b2": {
+                    "blockId": "p1-b2",
+                    "scopedId": "f1:p1-b2",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0.151,
+                      0.106,
+                      0.585,
+                      0.123
+                    ],
+                    "loc": "第1页·P06_U1_SYNTHETIC_B parag"
+                  }
+                },
+                "blockCount": 3
+              }
+            }
+          ],
+          "collision": true,
+          "wrongSource": false
+        },
+        {
+          "ext": "docx",
+          "mode": "same",
+          "paths": [
+            "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.docx",
+            "<PRIVATE_RAW_ROOT>/profile/materials/same/proof.docx"
+          ],
+          "values": [
+            {
+              "file": {
+                "name": "proof.docx",
+                "size": 1630,
+                "modifiedAt": "2026-10-18T03:27:55.894Z",
+                "revision": "sha256:v2:46b505960dd61d304e1075c830ce490cd9c52c491091eb17aa5b35ed4e99b316"
+              },
+              "format": "docx",
+              "text": "<!-- page: 1 label=\"第 1 页\" -->\n<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.151,0.086,0.481,0.102\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: p1-b1 [0.151,0.086,0.481,0.102] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph one\n\n<span id=\"p1-b2\" data-page=\"1\" data-bbox=\"0.151,0.106,0.585,0.123\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: p1-b2 [0.151,0.106,0.585,0.123] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n<span id=\"p1-b3\" data-page=\"1\" data-bbox=\"0.151,0.132,0.849,0.158\" data-loc=\"第1页·表格\"></span>\n<!-- anchor: p1-b3 [0.151,0.132,0.849,0.158] loc=\"第1页·表格\" -->\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |",
+              "cleanText": "P06_U1_SYNTHETIC_A paragraph one\n\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |",
+              "truncated": false,
+              "pageCount": 1,
+              "columnCounts": [
+                1
+              ],
+              "outline": [],
+              "pages": [
+                {
+                  "pageNumber": 1,
+                  "columnCount": 1,
+                  "blockCount": 3,
+                  "charCount": 132,
+                  "firstBlockId": "p1-b1",
+                  "lastBlockId": "p1-b3",
+                  "isFigureHeavy": false,
+                  "headings": [],
+                  "anchoredText": "<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.151,0.086,0.481,0.102\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: p1-b1 [0.151,0.086,0.481,0.102] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph one\n\n<span id=\"p1-b2\" data-page=\"1\" data-bbox=\"0.151,0.106,0.585,0.123\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: p1-b2 [0.151,0.106,0.585,0.123] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n<span id=\"p1-b3\" data-page=\"1\" data-bbox=\"0.151,0.132,0.849,0.158\" data-loc=\"第1页·表格\"></span>\n<!-- anchor: p1-b3 [0.151,0.132,0.849,0.158] loc=\"第1页·表格\" -->\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |",
+                  "cleanText": "P06_U1_SYNTHETIC_A paragraph one\n\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |"
+                }
+              ],
+              "materialized": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.docx",
+                "sourceName": "proof.docx",
+                "revision": "sha256:v2:46b505960dd61d304e1075c830ce490cd9c52c491091eb17aa5b35ed4e99b316",
+                "format": "docx",
+                "pageCount": 1,
+                "totalChars": 132,
+                "cleanMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/docx-same/proof.md",
+                "anchoredMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/docx-same/.context/artifacts/proof.anchored.md",
+                "outline": [],
+                "pages": [
+                  {
+                    "pageNumber": 1,
+                    "columnCount": 1,
+                    "blockCount": 3,
+                    "charCount": 132,
+                    "firstBlockId": "f1:p1-b1",
+                    "lastBlockId": "f1:p1-b3",
+                    "isFigureHeavy": false,
+                    "headings": [],
+                    "anchoredText": "<span id=\"f1:p1-b1\" data-page=\"1\" data-bbox=\"0.151,0.086,0.481,0.102\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: f1:p1-b1 [0.151,0.086,0.481,0.102] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph one\n\n<span id=\"f1:p1-b2\" data-page=\"1\" data-bbox=\"0.151,0.106,0.585,0.123\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: f1:p1-b2 [0.151,0.106,0.585,0.123] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n<span id=\"f1:p1-b3\" data-page=\"1\" data-bbox=\"0.151,0.132,0.849,0.158\" data-loc=\"第1页·表格\"></span>\n<!-- anchor: f1:p1-b3 [0.151,0.132,0.849,0.158] loc=\"第1页·表格\" -->\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |",
+                    "cleanText": "P06_U1_SYNTHETIC_A paragraph one\n\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |"
+                  }
+                ],
+                "blocks": {
+                  "p1-b1": {
+                    "blockId": "p1-b1",
+                    "scopedId": "f1:p1-b1",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0.151,
+                      0.086,
+                      0.481,
+                      0.102
+                    ],
+                    "loc": "第1页·P06_U1_SYNTHETIC_A parag"
+                  },
+                  "p1-b2": {
+                    "blockId": "p1-b2",
+                    "scopedId": "f1:p1-b2",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0.151,
+                      0.106,
+                      0.585,
+                      0.123
+                    ],
+                    "loc": "第1页·P06_U1_SYNTHETIC_A parag"
+                  }
+                },
+                "blockCount": 3
+              }
+            },
+            {
+              "file": {
+                "name": "proof.docx",
+                "size": 1630,
+                "modifiedAt": "2026-10-18T03:27:55.945Z",
+                "revision": "sha256:v2:46b505960dd61d304e1075c830ce490cd9c52c491091eb17aa5b35ed4e99b316"
+              },
+              "format": "docx",
+              "text": "<!-- page: 1 label=\"第 1 页\" -->\n<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.151,0.086,0.481,0.102\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: p1-b1 [0.151,0.086,0.481,0.102] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph one\n\n<span id=\"p1-b2\" data-page=\"1\" data-bbox=\"0.151,0.106,0.585,0.123\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: p1-b2 [0.151,0.106,0.585,0.123] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n<span id=\"p1-b3\" data-page=\"1\" data-bbox=\"0.151,0.132,0.849,0.158\" data-loc=\"第1页·表格\"></span>\n<!-- anchor: p1-b3 [0.151,0.132,0.849,0.158] loc=\"第1页·表格\" -->\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |",
+              "cleanText": "P06_U1_SYNTHETIC_A paragraph one\n\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |",
+              "truncated": false,
+              "pageCount": 1,
+              "columnCounts": [
+                1
+              ],
+              "outline": [],
+              "pages": [
+                {
+                  "pageNumber": 1,
+                  "columnCount": 1,
+                  "blockCount": 3,
+                  "charCount": 132,
+                  "firstBlockId": "p1-b1",
+                  "lastBlockId": "p1-b3",
+                  "isFigureHeavy": false,
+                  "headings": [],
+                  "anchoredText": "<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.151,0.086,0.481,0.102\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: p1-b1 [0.151,0.086,0.481,0.102] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph one\n\n<span id=\"p1-b2\" data-page=\"1\" data-bbox=\"0.151,0.106,0.585,0.123\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: p1-b2 [0.151,0.106,0.585,0.123] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n<span id=\"p1-b3\" data-page=\"1\" data-bbox=\"0.151,0.132,0.849,0.158\" data-loc=\"第1页·表格\"></span>\n<!-- anchor: p1-b3 [0.151,0.132,0.849,0.158] loc=\"第1页·表格\" -->\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |",
+                  "cleanText": "P06_U1_SYNTHETIC_A paragraph one\n\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |"
+                }
+              ],
+              "materialized": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.docx",
+                "sourceName": "proof.docx",
+                "revision": "sha256:v2:46b505960dd61d304e1075c830ce490cd9c52c491091eb17aa5b35ed4e99b316",
+                "format": "docx",
+                "pageCount": 1,
+                "totalChars": 132,
+                "cleanMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/docx-same/proof.md",
+                "anchoredMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/docx-same/.context/artifacts/proof.anchored.md",
+                "outline": [],
+                "pages": [
+                  {
+                    "pageNumber": 1,
+                    "columnCount": 1,
+                    "blockCount": 3,
+                    "charCount": 132,
+                    "firstBlockId": "f1:p1-b1",
+                    "lastBlockId": "f1:p1-b3",
+                    "isFigureHeavy": false,
+                    "headings": [],
+                    "anchoredText": "<span id=\"f1:p1-b1\" data-page=\"1\" data-bbox=\"0.151,0.086,0.481,0.102\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: f1:p1-b1 [0.151,0.086,0.481,0.102] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph one\n\n<span id=\"f1:p1-b2\" data-page=\"1\" data-bbox=\"0.151,0.106,0.585,0.123\" data-loc=\"第1页·P06_U1_SYNTHETIC_A parag\"></span>\n<!-- anchor: f1:p1-b2 [0.151,0.106,0.585,0.123] loc=\"第1页·P06_U1_SYNTHETIC_A parag\" -->\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n<span id=\"f1:p1-b3\" data-page=\"1\" data-bbox=\"0.151,0.132,0.849,0.158\" data-loc=\"第1页·表格\"></span>\n<!-- anchor: f1:p1-b3 [0.151,0.132,0.849,0.158] loc=\"第1页·表格\" -->\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |",
+                    "cleanText": "P06_U1_SYNTHETIC_A paragraph one\n\nP06_U1_SYNTHETIC_A paragraph two budget 100\n\n| Item | P06_U1_SYNTHETIC_A table 100 |\n| --- | --- |"
+                  }
+                ],
+                "blocks": {
+                  "p1-b1": {
+                    "blockId": "p1-b1",
+                    "scopedId": "f1:p1-b1",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0.151,
+                      0.086,
+                      0.481,
+                      0.102
+                    ],
+                    "loc": "第1页·P06_U1_SYNTHETIC_A parag"
+                  },
+                  "p1-b2": {
+                    "blockId": "p1-b2",
+                    "scopedId": "f1:p1-b2",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0.151,
+                      0.106,
+                      0.585,
+                      0.123
+                    ],
+                    "loc": "第1页·P06_U1_SYNTHETIC_A parag"
+                  }
+                },
+                "blockCount": 3
+              }
+            }
+          ],
+          "collision": true,
+          "wrongSource": true
+        },
+        {
+          "ext": "xlsx",
+          "mode": "different",
+          "paths": [
+            "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.xlsx",
+            "<PRIVATE_RAW_ROOT>/profile/materials/B/proof.xlsx"
+          ],
+          "values": [
+            {
+              "file": {
+                "name": "proof.xlsx",
+                "size": 17195,
+                "modifiedAt": "2026-10-18T03:27:55.912Z",
+                "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f"
+              },
+              "format": "xlsx",
+              "text": "<!-- page: 1 label=\"工作表：Budget\" -->\n<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Budget·A1:B3\" data-sheet=\"Budget\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p1-b1 [0.000,0.000,1.000,1.000] loc=\"Budget·A1:B3\" sheet=\"Budget\" cell=\"A1:B3\" -->\n### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |\n\n---\n\n<!-- page: 2 label=\"工作表：Details\" -->\n<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Details·A1:B3\" data-sheet=\"Details\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p2-b1 [0.000,0.000,1.000,1.000] loc=\"Details·A1:B3\" sheet=\"Details\" cell=\"A1:B3\" -->\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+              "cleanText": "### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |\n\n---\n\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+              "truncated": false,
+              "pageCount": 2,
+              "columnCounts": [
+                1,
+                1
+              ],
+              "outline": [
+                {
+                  "title": "Budget",
+                  "level": 1,
+                  "page": 1,
+                  "blockId": "p1-b1"
+                },
+                {
+                  "title": "Details",
+                  "level": 1,
+                  "page": 2,
+                  "blockId": "p2-b1"
+                }
+              ],
+              "pages": [
+                {
+                  "pageNumber": 1,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 136,
+                  "firstBlockId": "p1-b1",
+                  "lastBlockId": "p1-b1",
+                  "isFigureHeavy": false,
+                  "headings": [
+                    "Budget"
+                  ],
+                  "anchoredText": "<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Budget·A1:B3\" data-sheet=\"Budget\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p1-b1 [0.000,0.000,1.000,1.000] loc=\"Budget·A1:B3\" sheet=\"Budget\" cell=\"A1:B3\" -->\n### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+                  "cleanText": "### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |"
+                },
+                {
+                  "pageNumber": 2,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 138,
+                  "firstBlockId": "p2-b1",
+                  "lastBlockId": "p2-b1",
+                  "isFigureHeavy": false,
+                  "headings": [
+                    "Details"
+                  ],
+                  "anchoredText": "<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Details·A1:B3\" data-sheet=\"Details\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p2-b1 [0.000,0.000,1.000,1.000] loc=\"Details·A1:B3\" sheet=\"Details\" cell=\"A1:B3\" -->\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+                  "cleanText": "### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |"
+                }
+              ],
+              "materialized": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.xlsx",
+                "sourceName": "proof.xlsx",
+                "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+                "format": "xlsx",
+                "pageCount": 2,
+                "totalChars": 281,
+                "cleanMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/xlsx-different/proof.md",
+                "anchoredMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/xlsx-different/.context/artifacts/proof.anchored.md",
+                "outline": [
+                  {
+                    "title": "Budget",
+                    "level": 1,
+                    "page": 1,
+                    "blockId": "f1:p1-b1"
+                  },
+                  {
+                    "title": "Details",
+                    "level": 1,
+                    "page": 2,
+                    "blockId": "f1:p2-b1"
+                  }
+                ],
+                "pages": [
+                  {
+                    "pageNumber": 1,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 136,
+                    "firstBlockId": "f1:p1-b1",
+                    "lastBlockId": "f1:p1-b1",
+                    "isFigureHeavy": false,
+                    "headings": [
+                      "Budget"
+                    ],
+                    "anchoredText": "<span id=\"f1:p1-b1\" data-page=\"1\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Budget·A1:B3\" data-sheet=\"Budget\" data-cell=\"A1:B3\"></span>\n<!-- anchor: f1:p1-b1 [0.000,0.000,1.000,1.000] loc=\"Budget·A1:B3\" sheet=\"Budget\" cell=\"A1:B3\" -->\n### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+                    "cleanText": "### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |"
+                  },
+                  {
+                    "pageNumber": 2,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 138,
+                    "firstBlockId": "f1:p2-b1",
+                    "lastBlockId": "f1:p2-b1",
+                    "isFigureHeavy": false,
+                    "headings": [
+                      "Details"
+                    ],
+                    "anchoredText": "<span id=\"f1:p2-b1\" data-page=\"2\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Details·A1:B3\" data-sheet=\"Details\" data-cell=\"A1:B3\"></span>\n<!-- anchor: f1:p2-b1 [0.000,0.000,1.000,1.000] loc=\"Details·A1:B3\" sheet=\"Details\" cell=\"A1:B3\" -->\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+                    "cleanText": "### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |"
+                  }
+                ],
+                "blocks": {
+                  "p1-b1": {
+                    "blockId": "p1-b1",
+                    "scopedId": "f1:p1-b1",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0,
+                      0,
+                      1,
+                      1
+                    ],
+                    "loc": "Budget·A1:B3",
+                    "sheetName": "Budget",
+                    "cellRef": "A1:B3"
+                  },
+                  "p2-b1": {
+                    "blockId": "p2-b1",
+                    "scopedId": "f1:p2-b1",
+                    "pageNumber": 2,
+                    "bbox": [
+                      0,
+                      0,
+                      1,
+                      1
+                    ],
+                    "loc": "Details·A1:B3",
+                    "sheetName": "Details",
+                    "cellRef": "A1:B3"
+                  }
+                },
+                "blockCount": 2
+              }
+            },
+            {
+              "file": {
+                "name": "proof.xlsx",
+                "size": 17195,
+                "modifiedAt": "2026-10-18T03:27:55.941Z",
+                "revision": "sha256:v2:05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4"
+              },
+              "format": "xlsx",
+              "text": "<!-- page: 1 label=\"工作表：Budget\" -->\n<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Budget·A1:B3\" data-sheet=\"Budget\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p1-b1 [0.000,0.000,1.000,1.000] loc=\"Budget·A1:B3\" sheet=\"Budget\" cell=\"A1:B3\" -->\n### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_B | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 120 |\n| A3:B3 | item | reading |\n\n---\n\n<!-- page: 2 label=\"工作表：Details\" -->\n<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Details·A1:B3\" data-sheet=\"Details\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p2-b1 [0.000,0.000,1.000,1.000] loc=\"Details·A1:B3\" sheet=\"Details\" cell=\"A1:B3\" -->\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_B | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 120 |\n| A3:B3 | item | reading |",
+              "cleanText": "### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_B | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 120 |\n| A3:B3 | item | reading |\n\n---\n\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_B | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 120 |\n| A3:B3 | item | reading |",
+              "truncated": false,
+              "pageCount": 2,
+              "columnCounts": [
+                1,
+                1
+              ],
+              "outline": [
+                {
+                  "title": "Budget",
+                  "level": 1,
+                  "page": 1,
+                  "blockId": "p1-b1"
+                },
+                {
+                  "title": "Details",
+                  "level": 1,
+                  "page": 2,
+                  "blockId": "p2-b1"
+                }
+              ],
+              "pages": [
+                {
+                  "pageNumber": 1,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 136,
+                  "firstBlockId": "p1-b1",
+                  "lastBlockId": "p1-b1",
+                  "isFigureHeavy": false,
+                  "headings": [
+                    "Budget"
+                  ],
+                  "anchoredText": "<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Budget·A1:B3\" data-sheet=\"Budget\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p1-b1 [0.000,0.000,1.000,1.000] loc=\"Budget·A1:B3\" sheet=\"Budget\" cell=\"A1:B3\" -->\n### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_B | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 120 |\n| A3:B3 | item | reading |",
+                  "cleanText": "### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_B | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 120 |\n| A3:B3 | item | reading |"
+                },
+                {
+                  "pageNumber": 2,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 138,
+                  "firstBlockId": "p2-b1",
+                  "lastBlockId": "p2-b1",
+                  "isFigureHeavy": false,
+                  "headings": [
+                    "Details"
+                  ],
+                  "anchoredText": "<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Details·A1:B3\" data-sheet=\"Details\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p2-b1 [0.000,0.000,1.000,1.000] loc=\"Details·A1:B3\" sheet=\"Details\" cell=\"A1:B3\" -->\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_B | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 120 |\n| A3:B3 | item | reading |",
+                  "cleanText": "### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_B | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 120 |\n| A3:B3 | item | reading |"
+                }
+              ],
+              "materialized": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "<PRIVATE_RAW_ROOT>/profile/materials/B/proof.xlsx",
+                "sourceName": "proof.xlsx",
+                "revision": "sha256:v2:05c39abf145396bc7be53081a051dbd33047ee42e404e588d27e55c14d239ec4",
+                "format": "xlsx",
+                "pageCount": 2,
+                "totalChars": 281,
+                "cleanMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/xlsx-different/proof.md",
+                "anchoredMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/xlsx-different/.context/artifacts/proof.anchored.md",
+                "outline": [
+                  {
+                    "title": "Budget",
+                    "level": 1,
+                    "page": 1,
+                    "blockId": "f1:p1-b1"
+                  },
+                  {
+                    "title": "Details",
+                    "level": 1,
+                    "page": 2,
+                    "blockId": "f1:p2-b1"
+                  }
+                ],
+                "pages": [
+                  {
+                    "pageNumber": 1,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 136,
+                    "firstBlockId": "f1:p1-b1",
+                    "lastBlockId": "f1:p1-b1",
+                    "isFigureHeavy": false,
+                    "headings": [
+                      "Budget"
+                    ],
+                    "anchoredText": "<span id=\"f1:p1-b1\" data-page=\"1\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Budget·A1:B3\" data-sheet=\"Budget\" data-cell=\"A1:B3\"></span>\n<!-- anchor: f1:p1-b1 [0.000,0.000,1.000,1.000] loc=\"Budget·A1:B3\" sheet=\"Budget\" cell=\"A1:B3\" -->\n### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_B | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 120 |\n| A3:B3 | item | reading |",
+                    "cleanText": "### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_B | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 120 |\n| A3:B3 | item | reading |"
+                  },
+                  {
+                    "pageNumber": 2,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 138,
+                    "firstBlockId": "f1:p2-b1",
+                    "lastBlockId": "f1:p2-b1",
+                    "isFigureHeavy": false,
+                    "headings": [
+                      "Details"
+                    ],
+                    "anchoredText": "<span id=\"f1:p2-b1\" data-page=\"2\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Details·A1:B3\" data-sheet=\"Details\" data-cell=\"A1:B3\"></span>\n<!-- anchor: f1:p2-b1 [0.000,0.000,1.000,1.000] loc=\"Details·A1:B3\" sheet=\"Details\" cell=\"A1:B3\" -->\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_B | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 120 |\n| A3:B3 | item | reading |",
+                    "cleanText": "### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_B | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 120 |\n| A3:B3 | item | reading |"
+                  }
+                ],
+                "blocks": {
+                  "p1-b1": {
+                    "blockId": "p1-b1",
+                    "scopedId": "f1:p1-b1",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0,
+                      0,
+                      1,
+                      1
+                    ],
+                    "loc": "Budget·A1:B3",
+                    "sheetName": "Budget",
+                    "cellRef": "A1:B3"
+                  },
+                  "p2-b1": {
+                    "blockId": "p2-b1",
+                    "scopedId": "f1:p2-b1",
+                    "pageNumber": 2,
+                    "bbox": [
+                      0,
+                      0,
+                      1,
+                      1
+                    ],
+                    "loc": "Details·A1:B3",
+                    "sheetName": "Details",
+                    "cellRef": "A1:B3"
+                  }
+                },
+                "blockCount": 2
+              }
+            }
+          ],
+          "collision": true,
+          "wrongSource": false
+        },
+        {
+          "ext": "xlsx",
+          "mode": "same",
+          "paths": [
+            "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.xlsx",
+            "<PRIVATE_RAW_ROOT>/profile/materials/same/proof.xlsx"
+          ],
+          "values": [
+            {
+              "file": {
+                "name": "proof.xlsx",
+                "size": 17195,
+                "modifiedAt": "2026-10-18T03:27:55.912Z",
+                "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f"
+              },
+              "format": "xlsx",
+              "text": "<!-- page: 1 label=\"工作表：Budget\" -->\n<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Budget·A1:B3\" data-sheet=\"Budget\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p1-b1 [0.000,0.000,1.000,1.000] loc=\"Budget·A1:B3\" sheet=\"Budget\" cell=\"A1:B3\" -->\n### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |\n\n---\n\n<!-- page: 2 label=\"工作表：Details\" -->\n<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Details·A1:B3\" data-sheet=\"Details\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p2-b1 [0.000,0.000,1.000,1.000] loc=\"Details·A1:B3\" sheet=\"Details\" cell=\"A1:B3\" -->\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+              "cleanText": "### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |\n\n---\n\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+              "truncated": false,
+              "pageCount": 2,
+              "columnCounts": [
+                1,
+                1
+              ],
+              "outline": [
+                {
+                  "title": "Budget",
+                  "level": 1,
+                  "page": 1,
+                  "blockId": "p1-b1"
+                },
+                {
+                  "title": "Details",
+                  "level": 1,
+                  "page": 2,
+                  "blockId": "p2-b1"
+                }
+              ],
+              "pages": [
+                {
+                  "pageNumber": 1,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 136,
+                  "firstBlockId": "p1-b1",
+                  "lastBlockId": "p1-b1",
+                  "isFigureHeavy": false,
+                  "headings": [
+                    "Budget"
+                  ],
+                  "anchoredText": "<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Budget·A1:B3\" data-sheet=\"Budget\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p1-b1 [0.000,0.000,1.000,1.000] loc=\"Budget·A1:B3\" sheet=\"Budget\" cell=\"A1:B3\" -->\n### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+                  "cleanText": "### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |"
+                },
+                {
+                  "pageNumber": 2,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 138,
+                  "firstBlockId": "p2-b1",
+                  "lastBlockId": "p2-b1",
+                  "isFigureHeavy": false,
+                  "headings": [
+                    "Details"
+                  ],
+                  "anchoredText": "<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Details·A1:B3\" data-sheet=\"Details\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p2-b1 [0.000,0.000,1.000,1.000] loc=\"Details·A1:B3\" sheet=\"Details\" cell=\"A1:B3\" -->\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+                  "cleanText": "### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |"
+                }
+              ],
+              "materialized": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.xlsx",
+                "sourceName": "proof.xlsx",
+                "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+                "format": "xlsx",
+                "pageCount": 2,
+                "totalChars": 281,
+                "cleanMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/xlsx-same/proof.md",
+                "anchoredMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/xlsx-same/.context/artifacts/proof.anchored.md",
+                "outline": [
+                  {
+                    "title": "Budget",
+                    "level": 1,
+                    "page": 1,
+                    "blockId": "f1:p1-b1"
+                  },
+                  {
+                    "title": "Details",
+                    "level": 1,
+                    "page": 2,
+                    "blockId": "f1:p2-b1"
+                  }
+                ],
+                "pages": [
+                  {
+                    "pageNumber": 1,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 136,
+                    "firstBlockId": "f1:p1-b1",
+                    "lastBlockId": "f1:p1-b1",
+                    "isFigureHeavy": false,
+                    "headings": [
+                      "Budget"
+                    ],
+                    "anchoredText": "<span id=\"f1:p1-b1\" data-page=\"1\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Budget·A1:B3\" data-sheet=\"Budget\" data-cell=\"A1:B3\"></span>\n<!-- anchor: f1:p1-b1 [0.000,0.000,1.000,1.000] loc=\"Budget·A1:B3\" sheet=\"Budget\" cell=\"A1:B3\" -->\n### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+                    "cleanText": "### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |"
+                  },
+                  {
+                    "pageNumber": 2,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 138,
+                    "firstBlockId": "f1:p2-b1",
+                    "lastBlockId": "f1:p2-b1",
+                    "isFigureHeavy": false,
+                    "headings": [
+                      "Details"
+                    ],
+                    "anchoredText": "<span id=\"f1:p2-b1\" data-page=\"2\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Details·A1:B3\" data-sheet=\"Details\" data-cell=\"A1:B3\"></span>\n<!-- anchor: f1:p2-b1 [0.000,0.000,1.000,1.000] loc=\"Details·A1:B3\" sheet=\"Details\" cell=\"A1:B3\" -->\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+                    "cleanText": "### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |"
+                  }
+                ],
+                "blocks": {
+                  "p1-b1": {
+                    "blockId": "p1-b1",
+                    "scopedId": "f1:p1-b1",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0,
+                      0,
+                      1,
+                      1
+                    ],
+                    "loc": "Budget·A1:B3",
+                    "sheetName": "Budget",
+                    "cellRef": "A1:B3"
+                  },
+                  "p2-b1": {
+                    "blockId": "p2-b1",
+                    "scopedId": "f1:p2-b1",
+                    "pageNumber": 2,
+                    "bbox": [
+                      0,
+                      0,
+                      1,
+                      1
+                    ],
+                    "loc": "Details·A1:B3",
+                    "sheetName": "Details",
+                    "cellRef": "A1:B3"
+                  }
+                },
+                "blockCount": 2
+              }
+            },
+            {
+              "file": {
+                "name": "proof.xlsx",
+                "size": 17195,
+                "modifiedAt": "2026-10-18T03:27:55.945Z",
+                "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f"
+              },
+              "format": "xlsx",
+              "text": "<!-- page: 1 label=\"工作表：Budget\" -->\n<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Budget·A1:B3\" data-sheet=\"Budget\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p1-b1 [0.000,0.000,1.000,1.000] loc=\"Budget·A1:B3\" sheet=\"Budget\" cell=\"A1:B3\" -->\n### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |\n\n---\n\n<!-- page: 2 label=\"工作表：Details\" -->\n<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Details·A1:B3\" data-sheet=\"Details\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p2-b1 [0.000,0.000,1.000,1.000] loc=\"Details·A1:B3\" sheet=\"Details\" cell=\"A1:B3\" -->\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+              "cleanText": "### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |\n\n---\n\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+              "truncated": false,
+              "pageCount": 2,
+              "columnCounts": [
+                1,
+                1
+              ],
+              "outline": [
+                {
+                  "title": "Budget",
+                  "level": 1,
+                  "page": 1,
+                  "blockId": "p1-b1"
+                },
+                {
+                  "title": "Details",
+                  "level": 1,
+                  "page": 2,
+                  "blockId": "p2-b1"
+                }
+              ],
+              "pages": [
+                {
+                  "pageNumber": 1,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 136,
+                  "firstBlockId": "p1-b1",
+                  "lastBlockId": "p1-b1",
+                  "isFigureHeavy": false,
+                  "headings": [
+                    "Budget"
+                  ],
+                  "anchoredText": "<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Budget·A1:B3\" data-sheet=\"Budget\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p1-b1 [0.000,0.000,1.000,1.000] loc=\"Budget·A1:B3\" sheet=\"Budget\" cell=\"A1:B3\" -->\n### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+                  "cleanText": "### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |"
+                },
+                {
+                  "pageNumber": 2,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 138,
+                  "firstBlockId": "p2-b1",
+                  "lastBlockId": "p2-b1",
+                  "isFigureHeavy": false,
+                  "headings": [
+                    "Details"
+                  ],
+                  "anchoredText": "<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Details·A1:B3\" data-sheet=\"Details\" data-cell=\"A1:B3\"></span>\n<!-- anchor: p2-b1 [0.000,0.000,1.000,1.000] loc=\"Details·A1:B3\" sheet=\"Details\" cell=\"A1:B3\" -->\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+                  "cleanText": "### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |"
+                }
+              ],
+              "materialized": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.xlsx",
+                "sourceName": "proof.xlsx",
+                "revision": "sha256:v2:c086828a461ea93756de4455bc08e95c2caea1b77528a95dd676ca3ca7cdea6f",
+                "format": "xlsx",
+                "pageCount": 2,
+                "totalChars": 281,
+                "cleanMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/xlsx-same/proof.md",
+                "anchoredMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/xlsx-same/.context/artifacts/proof.anchored.md",
+                "outline": [
+                  {
+                    "title": "Budget",
+                    "level": 1,
+                    "page": 1,
+                    "blockId": "f1:p1-b1"
+                  },
+                  {
+                    "title": "Details",
+                    "level": 1,
+                    "page": 2,
+                    "blockId": "f1:p2-b1"
+                  }
+                ],
+                "pages": [
+                  {
+                    "pageNumber": 1,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 136,
+                    "firstBlockId": "f1:p1-b1",
+                    "lastBlockId": "f1:p1-b1",
+                    "isFigureHeavy": false,
+                    "headings": [
+                      "Budget"
+                    ],
+                    "anchoredText": "<span id=\"f1:p1-b1\" data-page=\"1\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Budget·A1:B3\" data-sheet=\"Budget\" data-cell=\"A1:B3\"></span>\n<!-- anchor: f1:p1-b1 [0.000,0.000,1.000,1.000] loc=\"Budget·A1:B3\" sheet=\"Budget\" cell=\"A1:B3\" -->\n### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+                    "cleanText": "### Budget (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Budget |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |"
+                  },
+                  {
+                    "pageNumber": 2,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 138,
+                    "firstBlockId": "f1:p2-b1",
+                    "lastBlockId": "f1:p2-b1",
+                    "isFigureHeavy": false,
+                    "headings": [
+                      "Details"
+                    ],
+                    "anchoredText": "<span id=\"f1:p2-b1\" data-page=\"2\" data-bbox=\"0.000,0.000,1.000,1.000\" data-loc=\"Details·A1:B3\" data-sheet=\"Details\" data-cell=\"A1:B3\"></span>\n<!-- anchor: f1:p2-b1 [0.000,0.000,1.000,1.000] loc=\"Details·A1:B3\" sheet=\"Details\" cell=\"A1:B3\" -->\n### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |",
+                    "cleanText": "### Details (A1:B3)\n| 行坐标 (A1:B1) | P06_U1_SYNTHETIC_A | Details |\n| --- | --- | --- |\n| A2:B2 | budget | 100 |\n| A3:B3 | item | reading |"
+                  }
+                ],
+                "blocks": {
+                  "p1-b1": {
+                    "blockId": "p1-b1",
+                    "scopedId": "f1:p1-b1",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0,
+                      0,
+                      1,
+                      1
+                    ],
+                    "loc": "Budget·A1:B3",
+                    "sheetName": "Budget",
+                    "cellRef": "A1:B3"
+                  },
+                  "p2-b1": {
+                    "blockId": "p2-b1",
+                    "scopedId": "f1:p2-b1",
+                    "pageNumber": 2,
+                    "bbox": [
+                      0,
+                      0,
+                      1,
+                      1
+                    ],
+                    "loc": "Details·A1:B3",
+                    "sheetName": "Details",
+                    "cellRef": "A1:B3"
+                  }
+                },
+                "blockCount": 2
+              }
+            }
+          ],
+          "collision": true,
+          "wrongSource": true
+        },
+        {
+          "ext": "pptx",
+          "mode": "different",
+          "paths": [
+            "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.pptx",
+            "<PRIVATE_RAW_ROOT>/profile/materials/B/proof.pptx"
+          ],
+          "values": [
+            {
+              "file": {
+                "name": "proof.pptx",
+                "size": 49723,
+                "modifiedAt": "2026-10-18T03:27:55.937Z",
+                "revision": "sha256:v2:da3549f53a13aa905aa00cc826a177de9fa81ec18485962417e716ac8710f09a"
+              },
+              "format": "pptx",
+              "text": "<!-- page: 1 label=\"幻灯片 1\" -->\n<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片1·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: p1-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片1·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 1\n\n---\n\n<!-- page: 2 label=\"幻灯片 2\" -->\n<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片2·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: p2-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片2·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 2",
+              "cleanText": "P06_U1_SYNTHETIC_A slide 1\n\n---\n\nP06_U1_SYNTHETIC_A slide 2",
+              "truncated": false,
+              "pageCount": 2,
+              "columnCounts": [
+                1,
+                1
+              ],
+              "outline": [],
+              "pages": [
+                {
+                  "pageNumber": 1,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 26,
+                  "firstBlockId": "p1-b1",
+                  "lastBlockId": "p1-b1",
+                  "isFigureHeavy": false,
+                  "headings": [],
+                  "anchoredText": "<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片1·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: p1-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片1·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 1",
+                  "cleanText": "P06_U1_SYNTHETIC_A slide 1"
+                },
+                {
+                  "pageNumber": 2,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 26,
+                  "firstBlockId": "p2-b1",
+                  "lastBlockId": "p2-b1",
+                  "isFigureHeavy": false,
+                  "headings": [],
+                  "anchoredText": "<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片2·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: p2-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片2·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 2",
+                  "cleanText": "P06_U1_SYNTHETIC_A slide 2"
+                }
+              ],
+              "materialized": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.pptx",
+                "sourceName": "proof.pptx",
+                "revision": "sha256:v2:da3549f53a13aa905aa00cc826a177de9fa81ec18485962417e716ac8710f09a",
+                "format": "pptx",
+                "pageCount": 2,
+                "totalChars": 59,
+                "cleanMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/pptx-different/proof.md",
+                "anchoredMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/pptx-different/.context/artifacts/proof.anchored.md",
+                "outline": [],
+                "pages": [
+                  {
+                    "pageNumber": 1,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 26,
+                    "firstBlockId": "f1:p1-b1",
+                    "lastBlockId": "f1:p1-b1",
+                    "isFigureHeavy": false,
+                    "headings": [],
+                    "anchoredText": "<span id=\"f1:p1-b1\" data-page=\"1\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片1·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: f1:p1-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片1·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 1",
+                    "cleanText": "P06_U1_SYNTHETIC_A slide 1"
+                  },
+                  {
+                    "pageNumber": 2,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 26,
+                    "firstBlockId": "f1:p2-b1",
+                    "lastBlockId": "f1:p2-b1",
+                    "isFigureHeavy": false,
+                    "headings": [],
+                    "anchoredText": "<span id=\"f1:p2-b1\" data-page=\"2\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片2·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: f1:p2-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片2·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 2",
+                    "cleanText": "P06_U1_SYNTHETIC_A slide 2"
+                  }
+                ],
+                "blocks": {
+                  "p1-b1": {
+                    "blockId": "p1-b1",
+                    "scopedId": "f1:p1-b1",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0.1,
+                      0.178,
+                      0.8,
+                      0.356
+                    ],
+                    "loc": "幻灯片1·P06_U1_SYNTHETIC_A"
+                  },
+                  "p2-b1": {
+                    "blockId": "p2-b1",
+                    "scopedId": "f1:p2-b1",
+                    "pageNumber": 2,
+                    "bbox": [
+                      0.1,
+                      0.178,
+                      0.8,
+                      0.356
+                    ],
+                    "loc": "幻灯片2·P06_U1_SYNTHETIC_A"
+                  }
+                },
+                "blockCount": 2
+              }
+            },
+            {
+              "file": {
+                "name": "proof.pptx",
+                "size": 49723,
+                "modifiedAt": "2026-10-18T03:27:55.945Z",
+                "revision": "sha256:v2:87014b273fc8fb99892add9a42d30f01e41e09974a830d6077d82fef89e70d39"
+              },
+              "format": "pptx",
+              "text": "<!-- page: 1 label=\"幻灯片 1\" -->\n<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片1·P06_U1_SYNTHETIC_B\"></span>\n<!-- anchor: p1-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片1·P06_U1_SYNTHETIC_B\" -->\nP06_U1_SYNTHETIC_B slide 1\n\n---\n\n<!-- page: 2 label=\"幻灯片 2\" -->\n<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片2·P06_U1_SYNTHETIC_B\"></span>\n<!-- anchor: p2-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片2·P06_U1_SYNTHETIC_B\" -->\nP06_U1_SYNTHETIC_B slide 2",
+              "cleanText": "P06_U1_SYNTHETIC_B slide 1\n\n---\n\nP06_U1_SYNTHETIC_B slide 2",
+              "truncated": false,
+              "pageCount": 2,
+              "columnCounts": [
+                1,
+                1
+              ],
+              "outline": [],
+              "pages": [
+                {
+                  "pageNumber": 1,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 26,
+                  "firstBlockId": "p1-b1",
+                  "lastBlockId": "p1-b1",
+                  "isFigureHeavy": false,
+                  "headings": [],
+                  "anchoredText": "<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片1·P06_U1_SYNTHETIC_B\"></span>\n<!-- anchor: p1-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片1·P06_U1_SYNTHETIC_B\" -->\nP06_U1_SYNTHETIC_B slide 1",
+                  "cleanText": "P06_U1_SYNTHETIC_B slide 1"
+                },
+                {
+                  "pageNumber": 2,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 26,
+                  "firstBlockId": "p2-b1",
+                  "lastBlockId": "p2-b1",
+                  "isFigureHeavy": false,
+                  "headings": [],
+                  "anchoredText": "<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片2·P06_U1_SYNTHETIC_B\"></span>\n<!-- anchor: p2-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片2·P06_U1_SYNTHETIC_B\" -->\nP06_U1_SYNTHETIC_B slide 2",
+                  "cleanText": "P06_U1_SYNTHETIC_B slide 2"
+                }
+              ],
+              "materialized": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "<PRIVATE_RAW_ROOT>/profile/materials/B/proof.pptx",
+                "sourceName": "proof.pptx",
+                "revision": "sha256:v2:87014b273fc8fb99892add9a42d30f01e41e09974a830d6077d82fef89e70d39",
+                "format": "pptx",
+                "pageCount": 2,
+                "totalChars": 59,
+                "cleanMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/pptx-different/proof.md",
+                "anchoredMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/pptx-different/.context/artifacts/proof.anchored.md",
+                "outline": [],
+                "pages": [
+                  {
+                    "pageNumber": 1,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 26,
+                    "firstBlockId": "f1:p1-b1",
+                    "lastBlockId": "f1:p1-b1",
+                    "isFigureHeavy": false,
+                    "headings": [],
+                    "anchoredText": "<span id=\"f1:p1-b1\" data-page=\"1\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片1·P06_U1_SYNTHETIC_B\"></span>\n<!-- anchor: f1:p1-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片1·P06_U1_SYNTHETIC_B\" -->\nP06_U1_SYNTHETIC_B slide 1",
+                    "cleanText": "P06_U1_SYNTHETIC_B slide 1"
+                  },
+                  {
+                    "pageNumber": 2,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 26,
+                    "firstBlockId": "f1:p2-b1",
+                    "lastBlockId": "f1:p2-b1",
+                    "isFigureHeavy": false,
+                    "headings": [],
+                    "anchoredText": "<span id=\"f1:p2-b1\" data-page=\"2\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片2·P06_U1_SYNTHETIC_B\"></span>\n<!-- anchor: f1:p2-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片2·P06_U1_SYNTHETIC_B\" -->\nP06_U1_SYNTHETIC_B slide 2",
+                    "cleanText": "P06_U1_SYNTHETIC_B slide 2"
+                  }
+                ],
+                "blocks": {
+                  "p1-b1": {
+                    "blockId": "p1-b1",
+                    "scopedId": "f1:p1-b1",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0.1,
+                      0.178,
+                      0.8,
+                      0.356
+                    ],
+                    "loc": "幻灯片1·P06_U1_SYNTHETIC_B"
+                  },
+                  "p2-b1": {
+                    "blockId": "p2-b1",
+                    "scopedId": "f1:p2-b1",
+                    "pageNumber": 2,
+                    "bbox": [
+                      0.1,
+                      0.178,
+                      0.8,
+                      0.356
+                    ],
+                    "loc": "幻灯片2·P06_U1_SYNTHETIC_B"
+                  }
+                },
+                "blockCount": 2
+              }
+            }
+          ],
+          "collision": true,
+          "wrongSource": false
+        },
+        {
+          "ext": "pptx",
+          "mode": "same",
+          "paths": [
+            "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.pptx",
+            "<PRIVATE_RAW_ROOT>/profile/materials/same/proof.pptx"
+          ],
+          "values": [
+            {
+              "file": {
+                "name": "proof.pptx",
+                "size": 49723,
+                "modifiedAt": "2026-10-18T03:27:55.937Z",
+                "revision": "sha256:v2:da3549f53a13aa905aa00cc826a177de9fa81ec18485962417e716ac8710f09a"
+              },
+              "format": "pptx",
+              "text": "<!-- page: 1 label=\"幻灯片 1\" -->\n<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片1·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: p1-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片1·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 1\n\n---\n\n<!-- page: 2 label=\"幻灯片 2\" -->\n<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片2·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: p2-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片2·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 2",
+              "cleanText": "P06_U1_SYNTHETIC_A slide 1\n\n---\n\nP06_U1_SYNTHETIC_A slide 2",
+              "truncated": false,
+              "pageCount": 2,
+              "columnCounts": [
+                1,
+                1
+              ],
+              "outline": [],
+              "pages": [
+                {
+                  "pageNumber": 1,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 26,
+                  "firstBlockId": "p1-b1",
+                  "lastBlockId": "p1-b1",
+                  "isFigureHeavy": false,
+                  "headings": [],
+                  "anchoredText": "<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片1·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: p1-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片1·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 1",
+                  "cleanText": "P06_U1_SYNTHETIC_A slide 1"
+                },
+                {
+                  "pageNumber": 2,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 26,
+                  "firstBlockId": "p2-b1",
+                  "lastBlockId": "p2-b1",
+                  "isFigureHeavy": false,
+                  "headings": [],
+                  "anchoredText": "<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片2·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: p2-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片2·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 2",
+                  "cleanText": "P06_U1_SYNTHETIC_A slide 2"
+                }
+              ],
+              "materialized": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.pptx",
+                "sourceName": "proof.pptx",
+                "revision": "sha256:v2:da3549f53a13aa905aa00cc826a177de9fa81ec18485962417e716ac8710f09a",
+                "format": "pptx",
+                "pageCount": 2,
+                "totalChars": 59,
+                "cleanMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/pptx-same/proof.md",
+                "anchoredMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/pptx-same/.context/artifacts/proof.anchored.md",
+                "outline": [],
+                "pages": [
+                  {
+                    "pageNumber": 1,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 26,
+                    "firstBlockId": "f1:p1-b1",
+                    "lastBlockId": "f1:p1-b1",
+                    "isFigureHeavy": false,
+                    "headings": [],
+                    "anchoredText": "<span id=\"f1:p1-b1\" data-page=\"1\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片1·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: f1:p1-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片1·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 1",
+                    "cleanText": "P06_U1_SYNTHETIC_A slide 1"
+                  },
+                  {
+                    "pageNumber": 2,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 26,
+                    "firstBlockId": "f1:p2-b1",
+                    "lastBlockId": "f1:p2-b1",
+                    "isFigureHeavy": false,
+                    "headings": [],
+                    "anchoredText": "<span id=\"f1:p2-b1\" data-page=\"2\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片2·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: f1:p2-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片2·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 2",
+                    "cleanText": "P06_U1_SYNTHETIC_A slide 2"
+                  }
+                ],
+                "blocks": {
+                  "p1-b1": {
+                    "blockId": "p1-b1",
+                    "scopedId": "f1:p1-b1",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0.1,
+                      0.178,
+                      0.8,
+                      0.356
+                    ],
+                    "loc": "幻灯片1·P06_U1_SYNTHETIC_A"
+                  },
+                  "p2-b1": {
+                    "blockId": "p2-b1",
+                    "scopedId": "f1:p2-b1",
+                    "pageNumber": 2,
+                    "bbox": [
+                      0.1,
+                      0.178,
+                      0.8,
+                      0.356
+                    ],
+                    "loc": "幻灯片2·P06_U1_SYNTHETIC_A"
+                  }
+                },
+                "blockCount": 2
+              }
+            },
+            {
+              "file": {
+                "name": "proof.pptx",
+                "size": 49723,
+                "modifiedAt": "2026-10-18T03:27:55.945Z",
+                "revision": "sha256:v2:da3549f53a13aa905aa00cc826a177de9fa81ec18485962417e716ac8710f09a"
+              },
+              "format": "pptx",
+              "text": "<!-- page: 1 label=\"幻灯片 1\" -->\n<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片1·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: p1-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片1·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 1\n\n---\n\n<!-- page: 2 label=\"幻灯片 2\" -->\n<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片2·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: p2-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片2·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 2",
+              "cleanText": "P06_U1_SYNTHETIC_A slide 1\n\n---\n\nP06_U1_SYNTHETIC_A slide 2",
+              "truncated": false,
+              "pageCount": 2,
+              "columnCounts": [
+                1,
+                1
+              ],
+              "outline": [],
+              "pages": [
+                {
+                  "pageNumber": 1,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 26,
+                  "firstBlockId": "p1-b1",
+                  "lastBlockId": "p1-b1",
+                  "isFigureHeavy": false,
+                  "headings": [],
+                  "anchoredText": "<span id=\"p1-b1\" data-page=\"1\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片1·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: p1-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片1·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 1",
+                  "cleanText": "P06_U1_SYNTHETIC_A slide 1"
+                },
+                {
+                  "pageNumber": 2,
+                  "columnCount": 1,
+                  "blockCount": 1,
+                  "charCount": 26,
+                  "firstBlockId": "p2-b1",
+                  "lastBlockId": "p2-b1",
+                  "isFigureHeavy": false,
+                  "headings": [],
+                  "anchoredText": "<span id=\"p2-b1\" data-page=\"2\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片2·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: p2-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片2·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 2",
+                  "cleanText": "P06_U1_SYNTHETIC_A slide 2"
+                }
+              ],
+              "materialized": {
+                "fileId": "f1",
+                "artifactId": "proof",
+                "sourcePath": "<PRIVATE_RAW_ROOT>/profile/materials/A/proof.pptx",
+                "sourceName": "proof.pptx",
+                "revision": "sha256:v2:da3549f53a13aa905aa00cc826a177de9fa81ec18485962417e716ac8710f09a",
+                "format": "pptx",
+                "pageCount": 2,
+                "totalChars": 59,
+                "cleanMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/pptx-same/proof.md",
+                "anchoredMarkdownPath": "<PRIVATE_RAW_ROOT>/profile/materials/main-workspaces/pptx-same/.context/artifacts/proof.anchored.md",
+                "outline": [],
+                "pages": [
+                  {
+                    "pageNumber": 1,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 26,
+                    "firstBlockId": "f1:p1-b1",
+                    "lastBlockId": "f1:p1-b1",
+                    "isFigureHeavy": false,
+                    "headings": [],
+                    "anchoredText": "<span id=\"f1:p1-b1\" data-page=\"1\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片1·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: f1:p1-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片1·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 1",
+                    "cleanText": "P06_U1_SYNTHETIC_A slide 1"
+                  },
+                  {
+                    "pageNumber": 2,
+                    "columnCount": 1,
+                    "blockCount": 1,
+                    "charCount": 26,
+                    "firstBlockId": "f1:p2-b1",
+                    "lastBlockId": "f1:p2-b1",
+                    "isFigureHeavy": false,
+                    "headings": [],
+                    "anchoredText": "<span id=\"f1:p2-b1\" data-page=\"2\" data-bbox=\"0.100,0.178,0.800,0.356\" data-loc=\"幻灯片2·P06_U1_SYNTHETIC_A\"></span>\n<!-- anchor: f1:p2-b1 [0.100,0.178,0.800,0.356] loc=\"幻灯片2·P06_U1_SYNTHETIC_A\" -->\nP06_U1_SYNTHETIC_A slide 2",
+                    "cleanText": "P06_U1_SYNTHETIC_A slide 2"
+                  }
+                ],
+                "blocks": {
+                  "p1-b1": {
+                    "blockId": "p1-b1",
+                    "scopedId": "f1:p1-b1",
+                    "pageNumber": 1,
+                    "bbox": [
+                      0.1,
+                      0.178,
+                      0.8,
+                      0.356
+                    ],
+                    "loc": "幻灯片1·P06_U1_SYNTHETIC_A"
+                  },
+                  "p2-b1": {
+                    "blockId": "p2-b1",
+                    "scopedId": "f1:p2-b1",
+                    "pageNumber": 2,
+                    "bbox": [
+                      0.1,
+                      0.178,
+                      0.8,
+                      0.356
+                    ],
+                    "loc": "幻灯片2·P06_U1_SYNTHETIC_A"
+                  }
+                },
+                "blockCount": 2
+              }
+            }
+          ],
+          "collision": true,
+          "wrongSource": true
+        }
+      ],
+      "productStatus": "BLOCKED_UPSTREAM"
+    },
+    "archive": {
+      "id": "fdc45e3a-0643-442a-8600-a68213983d52",
+      "title": "P06 U1 普通合成预览",
+      "agentRuntime": "pi",
+      "presetId": "standard",
+      "presetReference": {
+        "presetId": "standard",
+        "presetScope": "builtin-meta",
+        "presetVersion": "1.1.0"
+      },
+      "createdAt": 1792294470384,
+      "updatedAt": 1792294658830,
+      "archived": true,
+      "revision": 1
+    },
+    "unarchive": {
+      "id": "fdc45e3a-0643-442a-8600-a68213983d52",
+      "title": "P06 U1 普通合成预览",
+      "agentRuntime": "pi",
+      "presetId": "standard",
+      "presetReference": {
+        "presetId": "standard",
+        "presetScope": "builtin-meta",
+        "presetVersion": "1.1.0"
+      },
+      "createdAt": 1792294470384,
+      "updatedAt": 1792294658921,
+      "archived": false,
+      "revision": 2
+    },
+    "search": [
+      {
+        "sessionId": "fdc45e3a-0643-442a-8600-a68213983d52",
+        "sessionTitle": "P06 U1 普通合成预览",
+        "messageId": "dc951e56-0b8d-406f-8df9-6b48545383d7",
+        "role": "user",
+        "snippet": "P06_U1_SEARCH_SYNTHETIC_ONLY",
+        "matchStart": 0,
+        "matchLength": 28,
+        "archived": false
+      }
+    ],
+    "ownerMessages": {
+      "error": "Error: Error invoking remote method 'agent:get-sdk-messages': Error: 内部审核会话不可通过普通 Agent 入口访问"
+    },
+    "delayedSessionId": "63718ea5-eaf1-4e27-a979-b7a512be82c5",
+    "heldMeta": {
+      "id": "63718ea5-eaf1-4e27-a979-b7a512be82c5",
+      "title": "P06 U1 延迟删除合成",
+      "agentRuntime": "pi",
+      "presetId": "standard",
+      "presetReference": {
+        "presetId": "standard",
+        "presetScope": "builtin-meta",
+        "presetVersion": "1.1.0"
+      },
+      "createdAt": 1792294659008,
+      "updatedAt": 1792294659008
+    },
+    "status": "FAIL",
+    "error": "Error: 真实运行条件未达到：(async()=>{const source=await(await fetch('/atoms/review-atoms.ts')).text();const {getDefaultStore}=await import(source.split('from \"')[1].split('\"')[0]);const atoms=await import('",
+    "finishedAt": "2026-10-18T03:38:24.462Z"
+  }
+}

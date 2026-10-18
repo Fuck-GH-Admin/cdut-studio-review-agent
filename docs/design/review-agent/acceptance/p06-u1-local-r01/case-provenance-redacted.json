@@ -1,0 +1,631 @@
+{
+  "diagnosticCases": [
+    {
+      "kind": "NEW_SYNTHETIC_DIAGNOSTIC_NOT_S2_ABC",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "caseId": "case-1792294308553-f2fpdj",
+      "runId": "run-pi-mvd9r7gy-v4d7z",
+      "inputManifest": {
+        "hash": "81f72e131a15d81dc34a2eeadba1e941bc49637cf0da62493c9ce369676be17e",
+        "templateVersion": 3,
+        "policyVersions": [],
+        "documentVersions": [
+          {
+            "documentId": "doc-1792294308570-94vpzd",
+            "versionId": "doc-1792294308570-94vpzd-v1",
+            "contentHash": "7af451d502b635c95d2f63ffbc2ad737b8179553"
+          },
+          {
+            "documentId": "doc-1792294308593-yavn1n",
+            "versionId": "doc-1792294308593-yavn1n-v1",
+            "contentHash": "af04a69346d5003f7d0f4f8143564b9372c6ea8c"
+          },
+          {
+            "documentId": "doc-1792294308615-1v04ag",
+            "versionId": "doc-1792294308615-1v04ag-v1",
+            "contentHash": "30cec246d7225387b3c9175b8a27bb3ab0350a4f"
+          },
+          {
+            "documentId": "doc-1792294308625-sbvdtx",
+            "versionId": "doc-1792294308625-sbvdtx-v1",
+            "contentHash": "de6bc07b7b5b2f9bc30e2abff7bd801f60497a83"
+          },
+          {
+            "documentId": "doc-1792294308635-znu3he",
+            "versionId": "doc-1792294308635-znu3he-v1",
+            "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          },
+          {
+            "documentId": "doc-1792294308650-f3mk4f",
+            "versionId": "doc-1792294308650-f3mk4f-v1",
+            "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          },
+          {
+            "documentId": "doc-1792294308719-c8p1i5",
+            "versionId": "doc-1792294308719-c8p1i5-v1",
+            "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          },
+          {
+            "documentId": "doc-1792294308733-1zfrus",
+            "versionId": "doc-1792294308733-1zfrus-v1",
+            "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          }
+        ],
+        "observationIds": [],
+        "evidenceLinkIds": [],
+        "effectiveRuleIds": [
+          "section-academic-identity",
+          "section-academic-result",
+          "section-academic-duplicate",
+          "section-competition-honor-award-identity",
+          "section-competition-honor-award-role",
+          "section-competition-honor-award-duplicate",
+          "section-student-work-position",
+          "section-student-work-service",
+          "section-practice-volunteer-practice-period",
+          "section-practice-volunteer-practice-proof",
+          "section-health-development-activity-participation",
+          "section-health-development-result-proof"
+        ],
+        "effectiveRuleSetHash": "f9c45297af31f708e2b652c452e8065884bb1d4588c3b7b09ffcbd3c8a5c337e"
+      },
+      "templateVersion": 3,
+      "assignments": [
+        {
+          "id": "asg-a9d069ea",
+          "sessionId": "346d74e3-e18b-4f09-a0dc-9a07e7260c8a",
+          "turnId": "044f3cea-1fa5-4aef-8669-fd17f8da2981",
+          "caseId": "case-1792294308553-f2fpdj",
+          "actions": [
+            "submit-result"
+          ],
+          "workRole": "reviewer",
+          "grantedBy": {
+            "actorId": "local-user",
+            "sessionId": "346d74e3-e18b-4f09-a0dc-9a07e7260c8a"
+          },
+          "createdAt": "2026-10-18T03:31:48.753Z",
+          "activeRunId": "run-pi-mvd9r7gy-v4d7z",
+          "revokedAt": "2026-10-18T03:32:21.764Z"
+        }
+      ],
+      "status": "failed",
+      "error": "执行出错",
+      "checks": [
+        {
+          "checkId": "check-section-academic-identity-group-case",
+          "ruleId": "section-academic-identity",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:32:21.762Z"
+        },
+        {
+          "checkId": "check-section-academic-result-group-case",
+          "ruleId": "section-academic-result",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:32:21.762Z"
+        },
+        {
+          "checkId": "check-section-academic-duplicate-group-case",
+          "ruleId": "section-academic-duplicate",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:32:21.762Z"
+        },
+        {
+          "checkId": "check-section-competition-honor-award-identity-group-case",
+          "ruleId": "section-competition-honor-award-identity",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:32:21.762Z"
+        },
+        {
+          "checkId": "check-section-competition-honor-award-role-group-case",
+          "ruleId": "section-competition-honor-award-role",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:32:21.762Z"
+        },
+        {
+          "checkId": "check-section-competition-honor-award-duplicate-group-case",
+          "ruleId": "section-competition-honor-award-duplicate",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:32:21.762Z"
+        },
+        {
+          "checkId": "check-section-student-work-position-group-case",
+          "ruleId": "section-student-work-position",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:32:21.762Z"
+        },
+        {
+          "checkId": "check-section-student-work-service-group-case",
+          "ruleId": "section-student-work-service",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:32:21.762Z"
+        },
+        {
+          "checkId": "check-section-practice-volunteer-practice-period-group-case",
+          "ruleId": "section-practice-volunteer-practice-period",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:32:21.762Z"
+        },
+        {
+          "checkId": "check-section-practice-volunteer-practice-proof-group-case",
+          "ruleId": "section-practice-volunteer-practice-proof",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:32:21.762Z"
+        },
+        {
+          "checkId": "check-section-health-development-activity-participation-group-case",
+          "ruleId": "section-health-development-activity-participation",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:32:21.762Z"
+        },
+        {
+          "checkId": "check-section-health-development-result-proof-group-case",
+          "ruleId": "section-health-development-result-proof",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:32:21.762Z"
+        }
+      ],
+      "documentVersions": [
+        {
+          "documentId": "doc-1792294308570-94vpzd",
+          "versionId": "doc-1792294308570-94vpzd-v1",
+          "contentHash": "7af451d502b635c95d2f63ffbc2ad737b8179553",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294308593-yavn1n",
+          "versionId": "doc-1792294308593-yavn1n-v1",
+          "contentHash": "af04a69346d5003f7d0f4f8143564b9372c6ea8c",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294308615-1v04ag",
+          "versionId": "doc-1792294308615-1v04ag-v1",
+          "contentHash": "30cec246d7225387b3c9175b8a27bb3ab0350a4f",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294308625-sbvdtx",
+          "versionId": "doc-1792294308625-sbvdtx-v1",
+          "contentHash": "de6bc07b7b5b2f9bc30e2abff7bd801f60497a83",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294308635-znu3he",
+          "versionId": "doc-1792294308635-znu3he-v1",
+          "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294308650-f3mk4f",
+          "versionId": "doc-1792294308650-f3mk4f-v1",
+          "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294308719-c8p1i5",
+          "versionId": "doc-1792294308719-c8p1i5-v1",
+          "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294308733-1zfrus",
+          "versionId": "doc-1792294308733-1zfrus-v1",
+          "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+          "parseRevision": "MISSING"
+        }
+      ],
+      "providerToolWitness": "MISSING_NO_AUTHORIZED_PROVIDER",
+      "sourceRefQuoteLocation": "MISSING_NO_MODEL_TOOL_SUBMISSION",
+      "providerUsage": "MISSING_NOT_ALLOCATED",
+      "decisionCount": 0,
+      "rawRun": {
+        "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/config/review-cases/case-1792294308553-f2fpdj/runs-v2/run-pi-mvd9r7gy-v4d7z.json",
+        "sha256": "e2941b8cc4095a051613ae4db265cb678e5f2bc2431e5334c383f5533c630e8d",
+        "bytes": 9236
+      }
+    },
+    {
+      "kind": "NEW_SYNTHETIC_DIAGNOSTIC_NOT_S2_ABC",
+      "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+      "caseId": "case-1792294468580-zl04pz",
+      "runId": "run-pi-mvd9un9p-5j15n",
+      "inputManifest": {
+        "hash": "c1f70936a411858fec2035f298bf03fe0a7d143d11028d23dd21eec018893ee7",
+        "templateVersion": 3,
+        "policyVersions": [],
+        "documentVersions": [
+          {
+            "documentId": "doc-1792294468596-gpfqeb",
+            "versionId": "doc-1792294468596-gpfqeb-v1",
+            "contentHash": "7af451d502b635c95d2f63ffbc2ad737b8179553"
+          },
+          {
+            "documentId": "doc-1792294468651-u7g9kb",
+            "versionId": "doc-1792294468651-u7g9kb-v1",
+            "contentHash": "af04a69346d5003f7d0f4f8143564b9372c6ea8c"
+          },
+          {
+            "documentId": "doc-1792294468671-w4yzqn",
+            "versionId": "doc-1792294468671-w4yzqn-v1",
+            "contentHash": "30cec246d7225387b3c9175b8a27bb3ab0350a4f"
+          },
+          {
+            "documentId": "doc-1792294468686-l9qa0h",
+            "versionId": "doc-1792294468686-l9qa0h-v1",
+            "contentHash": "de6bc07b7b5b2f9bc30e2abff7bd801f60497a83"
+          },
+          {
+            "documentId": "doc-1792294468707-n6vcjm",
+            "versionId": "doc-1792294468707-n6vcjm-v1",
+            "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          },
+          {
+            "documentId": "doc-1792294469080-418srl",
+            "versionId": "doc-1792294469080-418srl-v1",
+            "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          },
+          {
+            "documentId": "doc-1792294469157-byod22",
+            "versionId": "doc-1792294469157-byod22-v1",
+            "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          },
+          {
+            "documentId": "doc-1792294469175-sypdvb",
+            "versionId": "doc-1792294469175-sypdvb-v1",
+            "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          }
+        ],
+        "observationIds": [],
+        "evidenceLinkIds": [],
+        "effectiveRuleIds": [
+          "section-academic-identity",
+          "section-academic-result",
+          "section-academic-duplicate",
+          "section-competition-honor-award-identity",
+          "section-competition-honor-award-role",
+          "section-competition-honor-award-duplicate",
+          "section-student-work-position",
+          "section-student-work-service",
+          "section-practice-volunteer-practice-period",
+          "section-practice-volunteer-practice-proof",
+          "section-health-development-activity-participation",
+          "section-health-development-result-proof"
+        ],
+        "effectiveRuleSetHash": "f9c45297af31f708e2b652c452e8065884bb1d4588c3b7b09ffcbd3c8a5c337e"
+      },
+      "templateVersion": 3,
+      "assignments": [
+        {
+          "id": "asg-331b7307",
+          "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec",
+          "turnId": "9bb7d81e-68cd-48a6-b290-5f504bc70335",
+          "caseId": "case-1792294468580-zl04pz",
+          "actions": [
+            "submit-result"
+          ],
+          "workRole": "reviewer",
+          "grantedBy": {
+            "actorId": "local-user",
+            "sessionId": "58a5ef2c-a482-4d9b-8d17-1a4616f071ec"
+          },
+          "createdAt": "2026-10-18T03:34:29.196Z",
+          "activeRunId": "run-pi-mvd9un9p-5j15n",
+          "revokedAt": "2026-10-18T03:34:59.577Z"
+        }
+      ],
+      "status": "failed",
+      "error": "执行出错",
+      "checks": [
+        {
+          "checkId": "check-section-academic-identity-group-case",
+          "ruleId": "section-academic-identity",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:34:59.576Z"
+        },
+        {
+          "checkId": "check-section-academic-result-group-case",
+          "ruleId": "section-academic-result",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:34:59.576Z"
+        },
+        {
+          "checkId": "check-section-academic-duplicate-group-case",
+          "ruleId": "section-academic-duplicate",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:34:59.576Z"
+        },
+        {
+          "checkId": "check-section-competition-honor-award-identity-group-case",
+          "ruleId": "section-competition-honor-award-identity",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:34:59.576Z"
+        },
+        {
+          "checkId": "check-section-competition-honor-award-role-group-case",
+          "ruleId": "section-competition-honor-award-role",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:34:59.576Z"
+        },
+        {
+          "checkId": "check-section-competition-honor-award-duplicate-group-case",
+          "ruleId": "section-competition-honor-award-duplicate",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:34:59.576Z"
+        },
+        {
+          "checkId": "check-section-student-work-position-group-case",
+          "ruleId": "section-student-work-position",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:34:59.576Z"
+        },
+        {
+          "checkId": "check-section-student-work-service-group-case",
+          "ruleId": "section-student-work-service",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:34:59.576Z"
+        },
+        {
+          "checkId": "check-section-practice-volunteer-practice-period-group-case",
+          "ruleId": "section-practice-volunteer-practice-period",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:34:59.576Z"
+        },
+        {
+          "checkId": "check-section-practice-volunteer-practice-proof-group-case",
+          "ruleId": "section-practice-volunteer-practice-proof",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:34:59.576Z"
+        },
+        {
+          "checkId": "check-section-health-development-activity-participation-group-case",
+          "ruleId": "section-health-development-activity-participation",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:34:59.576Z"
+        },
+        {
+          "checkId": "check-section-health-development-result-proof-group-case",
+          "ruleId": "section-health-development-result-proof",
+          "target": {
+            "scope": "group",
+            "subjectIds": []
+          },
+          "status": "execution-failed",
+          "reason": "Pi Agent 未提交此项检查结果",
+          "sourceRefs": [],
+          "executedBy": "semantic",
+          "executedAt": "2026-10-18T03:34:59.576Z"
+        }
+      ],
+      "documentVersions": [
+        {
+          "documentId": "doc-1792294468596-gpfqeb",
+          "versionId": "doc-1792294468596-gpfqeb-v1",
+          "contentHash": "7af451d502b635c95d2f63ffbc2ad737b8179553",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294468651-u7g9kb",
+          "versionId": "doc-1792294468651-u7g9kb-v1",
+          "contentHash": "af04a69346d5003f7d0f4f8143564b9372c6ea8c",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294468671-w4yzqn",
+          "versionId": "doc-1792294468671-w4yzqn-v1",
+          "contentHash": "30cec246d7225387b3c9175b8a27bb3ab0350a4f",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294468686-l9qa0h",
+          "versionId": "doc-1792294468686-l9qa0h-v1",
+          "contentHash": "de6bc07b7b5b2f9bc30e2abff7bd801f60497a83",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294468707-n6vcjm",
+          "versionId": "doc-1792294468707-n6vcjm-v1",
+          "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294469080-418srl",
+          "versionId": "doc-1792294469080-418srl-v1",
+          "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294469157-byod22",
+          "versionId": "doc-1792294469157-byod22-v1",
+          "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+          "parseRevision": "MISSING"
+        },
+        {
+          "documentId": "doc-1792294469175-sypdvb",
+          "versionId": "doc-1792294469175-sypdvb-v1",
+          "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+          "parseRevision": "MISSING"
+        }
+      ],
+      "providerToolWitness": "MISSING_NO_AUTHORIZED_PROVIDER",
+      "sourceRefQuoteLocation": "MISSING_NO_MODEL_TOOL_SUBMISSION",
+      "providerUsage": "MISSING_NOT_ALLOCATED",
+      "decisionCount": 0,
+      "rawRun": {
+        "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/profile/config/review-cases/case-1792294468580-zl04pz/runs-v2/run-pi-mvd9un9p-5j15n.json",
+        "sha256": "01d7c26113d47bf9e77bce9864f2589856ecfae543d1f7b33cdda3677896f2e6",
+        "bytes": 9236
+      }
+    }
+  ],
+  "s2ABC": {
+    "status": "NOT-RUN",
+    "caseId": "MISSING_NOT_CREATED",
+    "runId": "MISSING_NOT_CREATED",
+    "assignmentId": "MISSING_NOT_CREATED",
+    "turnId": "MISSING_NOT_CREATED",
+    "reason": "S0 未通过；未执行正式 A/B/C 新版三案业务复演。诊断案卷不能冒充 S2。"
+  },
+  "historicalNineCases": "history/nine-case-rerun.json：ARCHIVED，未覆盖历史 identity"
+}

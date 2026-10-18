@@ -1,0 +1,37 @@
+{
+  "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+  "conclusions": {
+    "REMOTE_CONTROLLED": {
+      "status": "PASS",
+      "scope": "43/43，固定 SHA；标准 PR CI 相同 tree 3991/5/0"
+    },
+    "S0_MAIN_IPC_PI": {
+      "status": "NOT-RUN",
+      "classification": "BLOCKED_ENV",
+      "scope": "真实 Main 子集执行；无合法 provider，完整安全准入未通过"
+    },
+    "S1_OFFICE_PREVIEW_IO": {
+      "status": "FAIL",
+      "classification": "P02_FAIL_AND_OFFICE71_BLOCKED_UPSTREAM_AND_IO_BLOCKED_ENV"
+    },
+    "S2_NEW_SYNTHETIC_C": {
+      "status": "NOT-RUN",
+      "classification": "S0_NOT_ADMITTED"
+    },
+    "L02-00 EXIT": {
+      "status": "FAIL",
+      "classification": "PARTIAL_NOT_ACCEPTED",
+      "historicalAttribution": "PASS_9_ARCHIVED_CASES"
+    },
+    "L02-01 ENTRY": {
+      "status": "FAIL",
+      "classification": "NOT_ADMITTED"
+    }
+  },
+  "P06": "PARTIAL",
+  "P06-S02": "NOT ACCEPTED",
+  "MERGE": "NO-GO",
+  "P07/P08": "NOT STARTED",
+  "noAuthorityLedgerChanged": true,
+  "noProductionCodeChanged": true
+}

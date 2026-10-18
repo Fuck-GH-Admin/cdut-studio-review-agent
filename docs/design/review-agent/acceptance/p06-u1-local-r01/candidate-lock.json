@@ -1,0 +1,23 @@
+{
+  "applicationCommit": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+  "applicationTree": "987cc106b4952f01231f46698800f4f58f94ed40",
+  "basePR": 103,
+  "parentPR": 101,
+  "parentHead": "0524604cac13794af5f43cff7771160f98f176d9",
+  "branch": "audit/p06-l02-u1-local-real-r01",
+  "lockedAt": "2026-10-18T03:50:50.141059+00:00",
+  "initialInstallWorkingTreeDirty": false,
+  "mergeCommit": "b2181314b51e4a906324fb491e03e77fea006515",
+  "mergeTree": "987cc106b4952f01231f46698800f4f58f94ed40",
+  "productionDiffFromCandidate": "",
+  "qaSourceHashes": {
+    "scripts/qa/p06-u1-evidence.py": "e0481dbc10de935c95c59290da447c88be538722dd59f8c755a2506fbbd19e85",
+    "scripts/qa/p06-u1-main.ts": "1fd92a0b5af1ee17aecaca25a7a9e8f39b75e5382e72aa2cbf6a19b21e929ef1",
+    "scripts/qa/p06-u1-owner-events.mjs": "d3a4c910139a7c9e45e241e1d029017b2d56b3cf4ed92b8e382855c5116e6d80",
+    "scripts/qa/p06-u1-real-materials.ts": "a19943128814063b79bb0bbc41183fcd69dfc751d08901b07a1c8cddae2fb66c",
+    "scripts/qa/p06-u1-preview-boundaries.mjs": "ff3772177d08e7d25b2ee10988ed8ebaa966eb836eb70d4650cd17b61a338cdb",
+    "scripts/qa/p06-u1-client.mjs": "e23b33ae3e0b1104249b105ff8a4568d49a92c0e6a6d47cf5925999fa676f8e1"
+  },
+  "scope": "应用源码冻结；新增 QA 与本轮报告。命令期间 QA 适配导致 workingTreeDirty=true，不声称整树 clean gate。",
+  "remoteRefFinal": "8989941b6fb5651564e32d11c4215b6a6d5a5209\trefs/heads/main\n0524604cac13794af5f43cff7771160f98f176d9\trefs/pull/101/head\n1c6deadfc0d51644aed6152463f78fdae662cdb6\trefs/pull/103/head\n2d9e93f3a637e8325862769f80fe4b4e884c51a1\trefs/pull/98/head\n66dc3f099e4711b8889d24fabb893973896c71ee\trefs/pull/99/head\n"
+}

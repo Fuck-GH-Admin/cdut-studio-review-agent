@@ -1,0 +1,44 @@
+{
+  "rawEvidence": {
+    "rawPrivateReference": "private://local-u1-raw-20261018T033000Z/client/preview-boundaries-first-failure.json",
+    "sha256": "f11f199110b53f2218238eb0a7867ec1278f19fc59cb3f7fe90dc5e842960a6d",
+    "bytes": 1250
+  },
+  "summary": {
+    "sourceSha": "1c6deadfc0d51644aed6152463f78fdae662cdb6",
+    "level": "MAIN_IPC",
+    "assertions": [
+      {
+        "name": "改名前普通文件真实可读",
+        "pass": true
+      },
+      {
+        "name": "改名后旧路径不复用内容",
+        "pass": true
+      },
+      {
+        "name": "symlink-to-outside 真实 Main 拒止",
+        "pass": false
+      }
+    ],
+    "results": [
+      {
+        "path": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/rename-probe.txt",
+        "id": "fdc45e3a-0643-442a-8600-a68213983d52",
+        "kind": "symlink-to-outside",
+        "actual": {
+          "resolvedPath": "<PRIVATE_RAW_ROOT>/profile/config/agent-workspaces/default/fdc45e3a-0643-442a-8600-a68213983d52/rename-probe.txt",
+          "content": "P06_U1_RENAME_SYNTHETIC_ONLY",
+          "version": {
+            "revision": "1792294963828.9531:28",
+            "mtimeMs": 1792294963828.9531,
+            "size": 28,
+            "hash": "849bf45bb1a82a81881a11c2d5f35ecba1afe0965e96d7f3189f94a0d84e5ada"
+          }
+        }
+      }
+    ],
+    "status": "FAIL",
+    "error": "AssertionError [ERR_ASSERTION]: symlink-to-outside 真实 Main 拒止"
+  }
+}
