@@ -52,7 +52,7 @@ describe('D4-C10-R03 Main intake token replay and sender isolation', () => {
     expect(discardD4Intake(token, 503)).toBe(false)
   })
 
-  test('failed operation restores the same owner's ability, but never the wrong owner', async () => {
+  test("failed operation restores the same owner's ability, but never the wrong owner", async () => {
     const token = await stage(505)
     const first = claimD4Intake(token, 505)
     releaseD4Intake(first, false)
@@ -62,7 +62,7 @@ describe('D4-C10-R03 Main intake token replay and sender isolation', () => {
     expect(() => claimD4Intake(token, 505)).toThrow('D4_INTAKE_TOKEN_INVALID')
   })
 
-  test('cancel discards only its owner's unused token', async () => {
+  test("cancel discards only its owner's unused token", async () => {
     const token = await stage(507)
     expect(discardD4Intake(token, 508)).toBe(false)
     expect(discardD4Intake(token, 507)).toBe(true)
