@@ -40,7 +40,11 @@
     "configUserDataHomeXdGPiSessionsWorkspace": "all inside isolated evidence root",
     "realUserConfigurationReadOrChanged": false,
     "campusMaterialsOrGoldUsed": false,
-    "sourceMaterials": "newly generated synthetic DOCX/XLSX/PPTX only"
+    "sourceMaterials": "newly generated synthetic DOCX/XLSX/PPTX only",
+    "authorizedCampusAccountUsedForAuthGateOnly": true,
+    "campusLoginPasswordRemembered": false,
+    "rawCampusProfileRetainedAfterLogout": false,
+    "isolatedR12ProfileDestroyedAfterLogout": true
   },
   "network": {
     "providerTransportFence": "abort before transport",
@@ -51,7 +55,9 @@
   },
   "uiAccess": {
     "ordinaryAgentPage": "opened by real Electron Renderer",
-    "cdutZonePage": "real navigation reached campus SSO login gate",
-    "reviewModuleUiRoute": "BLOCKED_ENV; no authorized campus account used"
+    "cdutZonePage": "real Electron renderer navigation; authorized login completed through Renderer→Preload→Main IPC with rememberPassword=false",
+    "reviewModuleUiRoute": "PASS_SCOPED; Material Review UI mounted in fresh isolated profile; Main listCases/listCasesV2 returned 0; no case opened or created",
+    "logoutCleanup": "Main logout IPC disconnected account, removed account file and cleared auth partition; isolated profile destroyed",
+    "providerBusinessReplay": "BLOCKED_ENV; this auth/UI route check does not unblock Provider receipts or A/B/C"
   }
 }

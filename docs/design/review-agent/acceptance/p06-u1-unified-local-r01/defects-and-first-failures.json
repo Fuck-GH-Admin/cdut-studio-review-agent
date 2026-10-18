@@ -177,6 +177,14 @@
       "exitCode": 0,
       "classification": "HARNESS_FAIL",
       "summary": "SDK getToolDefinition(bash) raw inactive definition executed harmless printf without invoking actual Main permission wrapper; not evidence of authorization bypass."
+    },
+    {
+      "id": "r12-onboarding-final-continue-selector",
+      "exitCode": 1,
+      "classification": "HARNESS_FAIL",
+      "summary": "The final feature-tour slide exposes a different Continue label; the generic Continue selector had no target. Corrected by using the visible skip control; no import or migration action was taken.",
+      "rawOutputCaptured": false,
+      "followUp": "r12-authenticated-review-ui"
     }
   ],
   "captureLimitations": [
@@ -184,13 +192,19 @@
       "id": "per-process-sdk-capture-overwrite",
       "classification": "EVIDENCE_GAP",
       "detail": "The r07 SDK capture was copied privately. Later r09/r10b in-process capture summaries were inspected but their session JSON was overwritten by the next Electron restart before archival. Their Main/V2 outcomes remain in retained runner stdout logs and persisted V2 records; no provider receipt is claimed."
+    },
+    {
+      "id": "r12-interactive-auth-ui-output",
+      "classification": "EVIDENCE_GAP",
+      "detail": "Interactive follow-up results were not persisted by the original command runner; retained only as a sanitized structured outcome receipt with SHA-256. Electron Main stdout was discarded to prevent persistence of account-profile fields."
     }
   ],
   "safetyNotes": [
     "No production source code changed.",
     "No provider request was sent.",
     "No host/shared filesystem was filled.",
-    "No campus material, real account configuration, hidden Gold, LIVE ledger, or campus credentials were used.",
-    "No merge, P07 or P08 work was done."
+    "No merge, P07 or P08 work was done.",
+    "One explicitly authorized campus account was used only for the authentication/UI gate; password remember was disabled, no account values were published, Main logout removed the account file and auth partition, and the isolated profile was destroyed.",
+    "No campus materials or hidden Gold were opened; review V1/V2 lists were empty and no case, run, assignment, turn or SourceRef was created."
   ]
 }

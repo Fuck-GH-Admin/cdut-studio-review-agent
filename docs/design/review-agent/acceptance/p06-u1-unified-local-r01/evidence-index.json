@@ -58,6 +58,15 @@
       "supports": [
         "all runner command exit codes and private log hashes"
       ]
+    },
+    {
+      "file": "r12-auth-ui-route.json",
+      "supports": [
+        "real Electron auth UI route through Renderer→Preload→Main",
+        "Material Review route mounted with empty V1/V2 lists",
+        "rememberPassword=false, logout and profile cleanup",
+        "scoped UI-gate result; provider/business gates unchanged"
+      ]
     }
   ],
   "privateCommandLogs": [
@@ -565,11 +574,19 @@
       "id": "shutdown-owned-client-r11",
       "stdoutSha256": "492241272d511d24099598d95c83904d9e4490bec3b8b1c2304dc7053bed74d0",
       "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "r12-authenticated-review-ui",
+      "resultSummarySha256": "3ec86f5b615f78315baaccf8be6683b65125fc079930356a9b8a91f7baa883d8",
+      "rawStdoutCaptured": false,
+      "rawStderrCaptured": false,
+      "note": "Sanitized structured result receipt only; interactive tool output was not routed through the original runner. Main stdout was discarded to avoid persisting personal profile fields."
     }
   ],
   "captureLimitations": [
     "One initial manual command used a wrong runner path outside the command recorder; its summary hash is included and disclosed.",
-    "r07 raw Pi SDK capture retained; later r09/r10b transient SDK capture JSON was overwritten by subsequent process startup. The corresponding persisted Main/V2 query logs are retained; provider status remains blocked."
+    "r07 raw Pi SDK capture retained; later r09/r10b transient SDK capture JSON was overwritten by subsequent process startup. The corresponding persisted Main/V2 query logs are retained; provider status remains blocked.",
+    "r12 interactive auth/UI follow-up was run outside the original command runner. Per-step raw stdout/stderr hashes were not retained; only the sanitized structured outcome receipt is retained. Main stdout was discarded because the auth manager logs profile fields."
   ],
   "rawConfigurationCredentialsTranscriptsScreenshots": "not committed; isolated local only"
 }

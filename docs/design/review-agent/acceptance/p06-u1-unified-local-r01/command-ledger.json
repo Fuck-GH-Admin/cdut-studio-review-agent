@@ -2362,11 +2362,47 @@
         "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "bytes": 0
       }
+    },
+    {
+      "id": "r12-authenticated-review-ui",
+      "candidateSha": "9601bd2181ee1e25f599b1dd44d39bf23b1a924f",
+      "candidateTree": "6b0212090693d3686a41312e7b9490acfb8f865e",
+      "testCheckoutHead": "778c1f6e16681c310421a7cdc159f2589ebb7702",
+      "testCheckoutTree": "b195674d10a443c271b5bbd16d77b3bddf1838bb",
+      "cwdLabel": "candidate-worktree",
+      "command": [
+        "python3",
+        "<PRIVATE_EVIDENCE>/setup/start-client.py",
+        "node <PRIVATE_EVIDENCE>/setup/submit-login-r12.mjs (no-echo stdin; no credentials in argv/env/files)",
+        "CDP click Material Review; Main IPC listCases/listCasesV2",
+        "Main logout IPC; terminate isolated processes and destroy r12 profile"
+      ],
+      "startedAtUtc": "2026-10-18T13:02:02.818708+00:00",
+      "finishedAtUtc": null,
+      "exitCode": 0,
+      "executionStatus": "PASS_SCOPED",
+      "substepExitCodes": {
+        "clientStart": 0,
+        "authUiSubmit": 0,
+        "reviewUiAndMainListIpc": 0,
+        "logoutAndCleanup": 0
+      },
+      "rawRunnerLogCaptured": false,
+      "resultSummary": {
+        "file": "r12-auth-ui-route.json",
+        "sha256": "ed5df725fe72d5790898c8902cfd41b610b202e8f3bf63b9fd128b3af5ab1c0b"
+      },
+      "privateReceipt": {
+        "file": "<PRIVATE_EVIDENCE>/private/r12-auth-ui-receipt-redacted.json",
+        "sha256": "3ec86f5b615f78315baaccf8be6683b65125fc079930356a9b8a91f7baa883d8",
+        "mode": "0600"
+      },
+      "note": "Composite timestamp spans client launch through teardown. Interactive step outputs were not redirected through the original runner; this structured sanitized summary is not a raw stdout/stderr log. Electron Main stdout was discarded to avoid account-profile fields."
     }
   ],
   "summary": {
-    "totalInvocations": 101,
-    "passExit": 82,
+    "totalInvocations": 102,
+    "passExit": 83,
     "harnessFailExit": 19,
     "harnessFailIds": [
       "manual-shutdown-runner-path-first-attempt",
@@ -2389,6 +2425,8 @@
       "live-restart-run-event-isolation",
       "restart-persistence-query"
     ],
-    "manualUncapturedRunnerLogCount": 1
+    "manualUncapturedRunnerLogCount": 1,
+    "nonRunnerInteractiveOutcomeGroups": 1,
+    "nonRunnerHarnessFailureCount": 1
   }
 }

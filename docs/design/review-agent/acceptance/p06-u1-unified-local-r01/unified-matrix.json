@@ -19,16 +19,17 @@
       "id": "U-01",
       "status": "PASS_SCOPED",
       "expected": "Real Electron Renderer→Preload→Main start ACK and V2 run agreement; navigate away/return and restore current state.",
-      "actual": "Main ACK phase accepted with same V2 runId; provider fence moves run to failed/incomplete. Agent↔CDUT Zone navigation and return work; review UI itself is behind campus SSO.",
+      "actual": "Main ACK phase accepted with same V2 runId; provider fence moves run to failed/incomplete. Agent↔CDUT Zone navigation and return work; r12 authenticated through the real Renderer form→Preload→Main IPC, then mounted Material Review UI; Main IPC reported V1/V2 case counts 0, with no case opened or created.",
       "evidenceCommandIds": [
         "live-pi-sdk-start-r02",
         "live-office-alpha-preview-port-rerun-r09",
         "live-office-alpha-source-ref-corrected-rerun-r10b",
         "live-ui-open-cdut-zone",
         "live-ui-return-agent",
-        "final-restart-persistence-r11"
+        "final-restart-persistence-r11",
+        "r12-authenticated-review-ui"
       ],
-      "notes": "No live provider run is claimed; UI review route is BLOCKED_ENV."
+      "notes": "PASS_SCOPED for UI access only. No live Provider run or business receipt is claimed; U-09/U-10 remain BLOCKED_ENV and A/B/C remain NOT-RUN_GATE."
     },
     {
       "id": "U-02",

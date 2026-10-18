@@ -12,7 +12,7 @@
 
 真实 Provider 工具调用、运行中 revoke/stop/跨案/改版旧 handle、普通 Agent Provider 与实际 CompactContext 压缩、A/B/C 均没有执行。系统没有获授权 Provider 凭据，测试 hook 在任何网络 transport 之前中止；不得把受控 Main callback 或旧 WitnessAdapter 当作 Provider receipt。环境也禁止 mount namespace，无法创建独立受限卷，因此本地真实容量 ENOSPC 和故障后的跨 PID 恢复 BLOCKED_ENV。历史 PR #116 的 /dev/full 为远程 CONTROLLED_KERNEL_IO，只能单独记为受控内核 ENOSPC，通过，不替代本地真实满卷。
 
-CDUT 专区真实 UI 导航到达校园 SSO 登录门；没有使用校方账户或真实材料，审核业务页面 UI 未进入，记 BLOCKED_ENV。Office #71 上游移植历史状态仍为 BLOCKED_UPSTREAM（PR #110 曾收到 403），本轮没有重复尝试权限操作。
+初次实机导航到达校园 SSO 门的 BLOCKED_ENV 历史首败仍保留。随后在用户明确授权后，r12 通过真实 Renderer 登录表单→Preload→Main IPC 完成认证（rememberPassword=false），Main `getAccount` 回读 active；点击 Material Review 后真实审核 UI 区域和工具栏挂载，Main 列表 IPC 的 V1/V2 数量均为 0，未打开/创建案卷、示例案卷、run、assignment、turn 或 SourceRef。logout IPC 回读 disconnected、账户文件已删除、认证分区已清理，本轮 Electron profile 已销毁。UI 门禁因此为 PASS_SCOPED；这不构成 Provider 业务闭环。账户概况由应用登录实现自动读取，但未查看、输出或留存字段；r12 交互日志缺少 runner 原始输出，脱敏回执已标注。Office #71 上游移植历史状态仍为 BLOCKED_UPSTREAM（PR #110 曾收到 403），本轮没有重复尝试权限操作。
 
 **最终状态保持 P06 PARTIAL / P06-S02 NOT ACCEPTED / U1_FULL NOT ACCEPTED / L02-00 EXIT NOT ACCEPTED / L02-01 NOT ADMITTED / MERGE NO-GO。** 不修改权威 LIVE 台账，不合并 PR，不进入 P07/P08。
 
@@ -32,14 +32,15 @@ CDUT 专区真实 UI 导航到达校园 SSO 登录门；没有使用校方账户
 | IO_CROSS_PID | BLOCKED_ENV | 满卷故障门禁不可进入；普通 V2/会话重启持久化在 U-08 独立通过 |
 | A/B/C | NOT-RUN_GATE | U-09/U-10 Provider 安全门未通过，未创建案卷 |
 | OFFICE71_UPSTREAM_PORT | BLOCKED_UPSTREAM | 继承 #110 的 403；本轮未重试 |
-| U1_FULL | NOT ACCEPTED | 真 Provider、真实满卷和完整 UI 流程缺失 |
+| U1_REVIEW_UI_ROUTE | PASS_SCOPED | 用户授权登录后真实 Material Review UI 挂载，V1/V2 案卷列表均为 0；无案卷复演 |
+| U1_FULL | NOT ACCEPTED | 真 Provider 收据链、真实满卷故障和完整业务复演缺失 |
 | L02-00 EXIT | NOT ACCEPTED | 无本轮真实 Provider 业务闭环；A/B/C 未运行 |
 | L02-01 ENTRY | NOT ADMITTED | 前置条件未齐 |
 
 ## 本机运行与证据
 
-候选锁、预检、统一矩阵、IO 时间线、Pi 工具/SourceRef 索引、A/B/C 门禁、首败归因与校验和位于本目录的 acceptance 包。command-ledger 收录每条 runner 命令的参数摘要、候选 SHA/tree、起止时间、退出码和私有 stdout/stderr SHA-256；所有底层原始日志仍在本机私有目录。
+候选锁、预检、统一矩阵、IO 时间线、Pi 工具/SourceRef 索引、A/B/C 门禁、首败归因与校验和位于本目录的 acceptance 包。command-ledger 收录 runner 命令的参数摘要、候选 SHA/tree、起止时间、退出码和私有 stdout/stderr SHA-256；r12 交互式认证/UI 步骤在 runner 外执行，原始输出未留存，仅有脱敏结构化回执，具体缺口已列明。
 
-首败均保留，包括参数解析器、Electron 启动驱动的路径/版本字段、初次 synthetic template、错误 CDP target、预览目标不存在、预览端口错配，以及第一次 SourceRef 提交误用未加 section 前缀的 rule ID。每次修正限定在本地 QA 驱动或证据配置，随后只对失败项重跑；生产实现没有修改。早期手工调用 runner 路径错误未经统一 runner 保存原始日志，已在 defects 文件注明；r09/r10b 的 SDK capture JSON 被下一次进程启动覆盖，相关 V2/Main 查询日志仍可核对，报告未据此声称 Provider 收据。
+首败均保留，包括参数解析器、Electron 启动驱动的路径/版本字段、初次 synthetic template、错误 CDP target、预览目标不存在、预览端口错配，第一次 SourceRef 提交误用未加 section 前缀的 rule ID，以及 r12 最后一页 onboarding 按钮选择器不匹配。每次修正限定在本地 QA 驱动或证据配置，随后只对失败项重跑；生产实现没有修改。早期手工调用 runner 路径错误未经统一 runner 保存原始日志，已在 defects 文件注明；r09/r10b 的 SDK capture JSON 被下一次进程启动覆盖，相关 V2/Main 查询日志仍可核对，报告未据此声称 Provider 收据。
 
-证据路径仅引用私有别名与 SHA-256；实际 session/run/assignment/case ID、材料和本地绝对路径均不公开。原始三份合成 Office 文件均由本轮创建，未接触真实校方材料或隐藏 Gold。
+证据路径仅引用私有别名与 SHA-256；实际 session/run/assignment/case ID、材料和本地绝对路径均不公开。原始三份合成 Office 文件均由本轮创建，未接触真实校方材料或隐藏 Gold。r12 使用获准校园账户仅打通认证/UI 门禁，未开案或创建真实业务记录，凭据值不进入日志或提交。
