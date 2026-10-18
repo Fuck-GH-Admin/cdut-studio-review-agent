@@ -12,6 +12,7 @@ import { useStore } from 'jotai'
 import { reviewV2BusyAtom } from './V2CasePanel'
 import { BatchGroupActionDialog } from './BatchGroupActionDialog'
 import { BatchAutomationDialog } from './BatchAutomationDialog'
+import { SupplementRequeueDialog } from './SupplementRequeueDialog'
 import { batchAutomationDisplay, reviewBusinessError, summarizeBatchExecution } from './batch-ui-feedback'
 
 type CaseIndexItem = Awaited<ReturnType<typeof window.reviewAPI.listCasesV2>>[number]
@@ -90,6 +91,7 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
   const [openedGroupKey, setOpenedGroupKey] = useState<string | null>(null)
   const [actionGroup, setActionGroup] = useState<BatchIssueGroup | null>(null)
   const [configureAutomationOpen, setConfigureAutomationOpen] = useState(false)
+  const [requeueCaseId, setRequeueCaseId] = useState<string | null>(null)
   const [batchName, setBatchName] = useState('')
   const [templateKey, setTemplateKey] = useState('')
   const [selectedCaseIds, setSelectedCaseIds] = useState<string[]>([])
@@ -131,6 +133,11 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
   useEffect(() => { if (active) void refresh() }, [active, refresh])
 
   const selectedBatch = batches.find((batch) => batch.batch.id === selectedBatchId) ?? null
+  const multiBatchCaseIds = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const batch of batches) for (const caseId of batch.batch.caseIds) counts.set(caseId, (counts.get(caseId) ?? 0) + 1)
+    return new Set([...counts].filter(([, count]) => count > 1).map(([caseId]) => caseId))
+  }, [batches])
   const legacyById = useMemo(() => new Map(legacyCases.map((item) => [item.id, item])), [legacyCases])
   const caseById = useMemo(() => new Map(cases.map((item) => [item.caseId, item])), [cases])
   const rows = useMemo<BatchProjectRow[]>(() => {
@@ -443,6 +450,12 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
                               title={selectedBatch.cases.find((entry) => entry.caseId === row.caseId)?.error ?? '重新入队，仅本案'}
                               onClick={() => void handleBatchAction('retry', row.caseId)}>重试本案</button>
                           )}
+                          {multiBatchCaseIds.has(row.caseId) && row.stage === 'reviewing' && selectedBatch.status !== 'finalized' && (
+                            <button type="button" className="ml-2 text-[11px] text-primary hover:underline"
+                              disabled={executing || handlingBatch} onClick={() => setRequeueCaseId(row.caseId)}>
+                              选择补件回流批次
+                            </button>
+                          )}
                         </td>
                         <td className={`px-3 py-3 font-medium ${triage ? TRIAGE_TONES[triage.route] : 'text-muted-foreground'}`} title={triage?.explanation}>
                           <div>{display.label}</div>
@@ -527,6 +540,12 @@ export function BatchPanel({ active, onOpenProject }: BatchPanelProps): JSX.Elem
           onClose={() => setActionGroup(null)}
           onApplied={refresh}
         />
+      )}
+
+      {requeueCaseId && (
+        <SupplementRequeueDialog key={requeueCaseId} caseId={requeueCaseId}
+          title={caseById.get(requeueCaseId)?.title ?? legacyById.get(requeueCaseId)?.title ?? requeueCaseId}
+          onClose={() => setRequeueCaseId(null)} onApplied={refresh} />
       )}
 
       {selectedBatch && configureAutomationOpen && (
