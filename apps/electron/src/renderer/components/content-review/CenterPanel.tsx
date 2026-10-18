@@ -49,6 +49,7 @@ import { Button } from '@profer/ui/primitives/button'
 import { MaterialDropZone } from './MaterialDropZone'
 import { D4CaseBatchControls } from './D4CaseBatchControls'
 import { D4RetryDocumentButton } from './D4RetryDocumentButton'
+import { D4MaterialHistory } from './D4MaterialHistory'
 import { w1CandidateFactKeys, w1ObservationSources } from './w1-fact-source'
 import { w1ParseHumanFieldValue } from './w1-fact-value'
 import { MoveReviewDocumentButtons, RemoveReviewDocumentButton, ReviewMaterialDropZone, ReviewMaterialLaneActions } from './ReviewMaterialControls'
@@ -187,37 +188,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
         </p>
       </header>
 
-      {!!reviewCase?.d4IntakeOrigins?.length && <section aria-label="批次材料来源校验"
-        className="shrink-0 border-b border-border/40 px-3 py-2">
-        <details>
-          <summary className="cursor-pointer text-xs text-muted-foreground">
-            已登记的批量导入来源（{reviewCase.d4IntakeOrigins.length} 份，可核对 SHA-256）
-          </summary>
-          <ul className="mt-2 max-h-40 space-y-2 overflow-y-auto text-xs">
-            {reviewCase.d4IntakeOrigins.map((origin) => (
-              <li key={origin.documentId} className="break-all">
-                <span className="font-medium">{reviewCase.documents.find(d => d.id === origin.documentId)?.fileName ?? '已归档文件'}</span>
-                <span className="block text-muted-foreground">{origin.originLabel}</span>
-                <code className="block text-[10px] text-muted-foreground">SHA-256: {origin.sha256}</code>
-              </li>
-            ))}
-          </ul>
-        </details>
-      </section>}
-      {!!reviewCase?.d4IntakeWarnings?.length && <section aria-label="批次材料未导入清单"
-        className="shrink-0 border-b border-amber-500/30 bg-amber-500/5 px-3 py-2">
-        <details>
-          <summary className="cursor-pointer text-xs font-semibold text-amber-700 dark:text-amber-300">
-            本案历史批次有 {reviewCase.d4IntakeWarnings.length} 项材料未成功导入或解析，请核对是否已补齐
-          </summary>
-          <ul className="mt-2 max-h-48 list-disc space-y-1 overflow-y-auto pl-4 text-xs">
-            {reviewCase.d4IntakeWarnings.map((warning, index) => (
-              <li key={index} className="break-all">{warning.originLabel}：{warning.reason}</li>
-            ))}
-          </ul>
-          <p className="mt-2 text-xs text-muted-foreground">这些是永久保留的历史导入记录。后来补交的文件不会自动删除旧失败记录，请核对当前材料与来源后再判断是否已补齐。</p>
-        </details>
-      </section>}
+      {reviewCase?.id.startsWith('d4-') && <D4MaterialHistory reviewCase={reviewCase} />}
       {/* 申报文件只在中栏管理，和左栏审核依据、下方证明材料分开导入。 */}
       <section className="shrink-0 border-b border-border/40 px-3 py-3">
         <div className="flex items-center justify-between gap-2 px-1">

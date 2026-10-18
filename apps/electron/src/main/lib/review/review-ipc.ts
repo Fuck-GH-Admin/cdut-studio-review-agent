@@ -130,7 +130,10 @@ export function registerReviewIpc(): void {
         !Number.isSafeInteger(input.expectedRevision) || !Array.isArray(input.choices) ||
         typeof input.acknowledgeSkipped !== 'boolean') throw new Error('D4_BATCH_INPUT_INVALID')
     const { applyD4CaseBatch } = require('./review-d4-case-batch') as typeof import('./review-d4-case-batch')
-    return applyD4CaseBatch(input as Parameters<typeof applyD4CaseBatch>[0], event.sender.id)
+    return applyD4CaseBatch(input as Parameters<typeof applyD4CaseBatch>[0], event.sender.id,
+      (progress) => {
+        if (!event.sender.isDestroyed()) event.sender.send(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_PROGRESS, progress)
+      })
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.STAGE_D4_DROPPED_BYTES, async (event, raw: unknown) => {
     const { BrowserWindow } = require('electron') as typeof import('electron')

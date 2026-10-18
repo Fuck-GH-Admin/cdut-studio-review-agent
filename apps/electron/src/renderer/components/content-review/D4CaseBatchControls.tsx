@@ -20,14 +20,24 @@ export function D4CaseBatchControls({ role, actions }: {
   const [busy, setBusy] = React.useState(false)
   const [dragging, setDragging] = React.useState(false)
   const [error, setError] = React.useState('')
+  const [phase, setPhase] = React.useState('')
+  const requestId = React.useRef<string | null>(null)
   const activeToken = React.useRef<string | null>(null)
   const sessionGeneration = React.useRef(0)
+
+  React.useEffect(() => window.reviewAPI.onImportProgress(event => {
+    if (requestId.current === event.requestId && event.caseId === caseId && event.role === role &&
+        store.get(selectedCaseIdAtom) === caseId) {
+      setPhase(`${event.fileIndex ?? 0}/${event.fileCount ?? 0} · ${event.message ?? event.phase}`)
+    }
+  }), [caseId, role, store])
 
   React.useEffect(() => {
     // Case switch reuses the same React component instance. Reset *all* visual
     // decisions so A's staged selection can never be applied to B's case.
-    setPreview(null); setAssessment(null); setChoices([]); setAcknowledged(false); setError('')
+    setPreview(null); setAssessment(null); setChoices([]); setAcknowledged(false); setError(''); setPhase('')
     return () => {
+      requestId.current = null
       sessionGeneration.current += 1
       const previous = activeToken.current
       activeToken.current = null
@@ -40,7 +50,8 @@ export function D4CaseBatchControls({ role, actions }: {
   const close = async (): Promise<void> => {
     if (activeToken.current) await window.reviewAPI.discardD4Intake(activeToken.current).catch(() => false)
     activeToken.current = null
-    setPreview(null); setAssessment(null); setChoices([]); setAcknowledged(false); setError('')
+    requestId.current = null
+    setPreview(null); setAssessment(null); setChoices([]); setAcknowledged(false); setError(''); setPhase('')
   }
   const open = async (mode: 'files' | 'folder', dropped?: File[]): Promise<void> => {
     if (busy) return
@@ -91,19 +102,34 @@ export function D4CaseBatchControls({ role, actions }: {
       setError('案卷已切换或预检记录过期，请重新选择材料')
       return
     }
-    setBusy(true); setError('')
+    setBusy(true); setError(''); setPhase('批次已交付 Main，开始逐文件处理')
+    const generation = sessionGeneration.current
+    requestId.current = 'd4batch-' + Date.now() + '-' + Math.random().toString(36).slice(2, 12)
     try {
       const result = await window.reviewAPI.applyD4CaseBatch({
         caseId, token: preview.token, role, expectedRevision: assessment.expectedRevision,
-        choices, acknowledgeSkipped: acknowledged,
+        choices, acknowledgeSkipped: acknowledged, requestId: requestId.current,
       })
       activeToken.current = null
+      if (sessionGeneration.current !== generation || store.get(selectedCaseIdAtom) !== caseId) return
       setPreview(null); setAssessment(null); setChoices([]); setAcknowledged(false)
       if (store.get(selectedCaseIdAtom) === caseId) await actions.selectCase(caseId)
-      toast.success(`已收录 ${result.documents.length} 份，修订替换 ${result.replacements.length} 份`)
-      if (result.skipped.length) toast.warning(`有 ${result.skipped.length} 项跳过或需要人工处理，已保存案卷记录`)
-    } catch (cause) { setError(cause instanceof Error ? cause.message : String(cause)) }
-    finally { setBusy(false) }
+      const incomplete = result.documents.filter(doc => doc.parseStatus !== 'parsed' ||
+        !doc.blocks.some(block => !!block.text.trim())).length
+      if (incomplete || result.skipped.length) {
+        toast.warning(`本批收录 ${result.documents.length} 份，其中 ${incomplete} 份解析未完成；
+          ${result.skipped.length} 项跳过/待对账，请查看案卷历史`)
+      } else toast.success(`已收录 ${result.documents.length} 份，归档旧版 ${result.replacements.length} 份`)
+    } catch (cause) {
+      if (sessionGeneration.current === generation && store.get(selectedCaseIdAtom) === caseId) {
+        setError((cause instanceof Error ? cause.message : String(cause)) +
+          '。Main 可能已完成部分文件，请以重新载入的案卷来源/版本记录为准，勿假定整批回滚。')
+        await actions.selectCase(caseId).catch(() => undefined)
+      }
+    } finally {
+      if (sessionGeneration.current === generation) { setBusy(false); setPhase('') }
+      requestId.current = null
+    }
   }
   return <section className="mt-2 rounded-lg border border-dashed p-2 text-xs" data-testid={`d4-post-case-batch-${role}`}>
     <div className="flex flex-wrap items-center gap-2">
@@ -165,6 +191,7 @@ export function D4CaseBatchControls({ role, actions }: {
           onClick={() => void apply()}>{busy ? '正在处理…' : '确认应用本批次决定'}</button>
       </div>
     </div>}
+    {phase && <p role="status" className="mt-2 text-muted-foreground">{phase}（已执行操作不会因关闭本面板回滚）</p>}
     {error && <p role="alert" className="mt-2 text-destructive">{error}</p>}
   </section>
 }

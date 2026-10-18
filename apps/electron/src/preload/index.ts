@@ -3856,6 +3856,7 @@ const reviewAPI = {
   applyD4CaseBatch: (input: {
     caseId: string; token: string; role: 'application' | 'evidence'; expectedRevision: number
     choices: import('@profer/shared').D4CaseBatchChoice[]; acknowledgeSkipped: boolean
+    requestId?: string
   }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.APPLY_D4_CASE_BATCH, input) as Promise<import('@profer/shared').D4CaseBatchResult>,
   createCase: (input: {
     title: string

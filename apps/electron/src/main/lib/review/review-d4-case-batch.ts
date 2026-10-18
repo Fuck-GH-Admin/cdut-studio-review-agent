@@ -3,7 +3,7 @@
  * Native staging token is owner-bound; every mutation is checked against a
  * reviewer-visible assessment and the exact case revision.
  */
-import type { D4CaseBatchAssessment, D4CaseBatchChoice, D4CaseBatchResult, ReviewCase } from '@profer/shared'
+import type { D4CaseBatchAssessment, D4CaseBatchChoice, D4CaseBatchResult, ReviewImportProgressEvent } from '@profer/shared'
 import { getCase, updateCase, assertSafeId } from './case-store'
 import { importDocumentFromPath, removeDocumentsFromCase } from './case-import'
 import { claimD4Intake, inspectD4Intake, releaseD4Intake } from './review-d4-intake'
@@ -44,9 +44,11 @@ export function assessD4CaseBatch(input: {
 }
 export async function applyD4CaseBatch(input: {
   caseId: string; token: string; role: Role; expectedRevision: number
-  choices: D4CaseBatchChoice[]; acknowledgeSkipped: boolean
-}, ownerWebContentsId: number): Promise<D4CaseBatchResult> {
+  choices: D4CaseBatchChoice[]; acknowledgeSkipped: boolean; requestId?: string
+}, ownerWebContentsId: number, onProgress?: (progress: ReviewImportProgressEvent) => void): Promise<D4CaseBatchResult> {
   const { caseId, token, role } = input
+  if (input.requestId !== undefined && (typeof input.requestId !== 'string' ||
+      !/^d4batch-[a-zA-Z0-9_-]{8,70}$/.test(input.requestId))) throw new Error('D4_BATCH_PROGRESS_ID_INVALID')
   if (typeof token !== 'string' || !Number.isSafeInteger(input.expectedRevision) ||
       !Array.isArray(input.choices) || typeof input.acknowledgeSkipped !== 'boolean') {
     throw new Error('D4_BATCH_INPUT_INVALID')
@@ -83,6 +85,11 @@ export async function applyD4CaseBatch(input: {
   const documents: D4CaseBatchResult['documents'] = []
   const warnings: D4CaseBatchResult['skipped'] = []
   const replacements: D4CaseBatchResult['replacements'] = []
+  const report = (phase: ReviewImportProgressEvent['phase'], index: number, message: string): void => {
+    if (!input.requestId) return
+    onProgress?.({ requestId: input.requestId, caseId, role, phase,
+      fileIndex: index + 1, fileCount: intake.files.length, message })
+  }
   const warn = async (originLabel: string, reason: string): Promise<void> => {
     const warning = { originLabel, reason }
     warnings.push(warning)
@@ -110,8 +117,10 @@ export async function applyD4CaseBatch(input: {
     for (const omitted of review.skipped) await warn(omitted.originLabel, omitted.reason)
     for (const [i, file] of intake.files.entries()) {
       const choice = input.choices[i]!
+      report('file-start', i, '正在处理：' + file.name)
       if (choice.kind === 'skip') {
         await warn(file.originLabel, '审核员选择跳过此材料')
+        report('file-complete', i, '审核员已跳过：' + file.name)
         continue
       }
       let imported: D4CaseBatchResult['documents'][number]
@@ -119,9 +128,11 @@ export async function applyD4CaseBatch(input: {
         imported = await importDocumentFromPath({
           caseId, sourcePath: file.sourcePath, role,
           fileIndex: i + 1, fileCount: intake.files.length,
+          requestId: input.requestId, onProgress,
         })
       } catch (error) {
         await warn(file.originLabel, '文件导入失败：' + (error instanceof Error ? error.message : String(error)))
+        report('file-failed', i, '文件导入失败：' + file.name)
         continue
       }
       documents.push(imported)
@@ -134,6 +145,7 @@ export async function applyD4CaseBatch(input: {
       if (imported.parseStatus !== 'parsed' || !imported.blocks.some(block => !!block.text.trim())) {
         await warn(file.originLabel, '材料已保存，但解析未产生完整可审核文字（' +
           imported.parseStatus + '）；历史材料保持有效')
+        report('file-failed', i, '已收录但解析不完整：' + file.name)
         continue
       }
       if (choice.kind === 'replace') {
@@ -151,6 +163,8 @@ export async function applyD4CaseBatch(input: {
         }
       }
     }
+    report('batch-complete', Math.max(0, intake.files.length - 1),
+      '本批次处理结束。仍需核对部分解析和修订关系')
     return { caseId, documents, skipped: warnings, replacements }
   } finally {
     releaseD4Intake(intake, true)

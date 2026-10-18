@@ -61,6 +61,9 @@ describe('W1 safe in-case immutable source retry', () => {
     expect(after.documents).toHaveLength(1)
     expect(after.documents[0]!.fileName).toBe('教室申请.md')
     expect(after.archivedDocuments?.some(doc => doc.id === document.id)).toBe(true)
+    expect(after.d4MaterialTransitions?.some(link => link.kind === 'retry' &&
+      link.previousDocumentId === document.id &&
+      link.newDocumentId === result.attemptDocumentId && link.status === 'archived')).toBe(true)
     expect(after.d4IntakeOrigins?.some(item => item.documentId === result.attemptDocumentId)).toBe(true)
     await expect(retryD4CaseDocument({ caseId, documentId: document.id,
       expectedRevision: after.revision! })).rejects.toThrow('D4_RETRY_DOCUMENT_NOT_ELIGIBLE')

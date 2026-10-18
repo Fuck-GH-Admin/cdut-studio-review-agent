@@ -95,6 +95,10 @@ describe('W1 post-case native append and revision-aware replacement', () => {
     expect(latest.archivedDocuments?.some(doc => doc.id === oldDocId)).toBe(true)
     expect(latest.items.some(item => item.anchor.documentId === oldDocId)).toBe(false)
     expect(latest.d4IntakeOrigins).toHaveLength(2)
+    expect(latest.d4MaterialTransitions).toContainEqual({
+      previousDocumentId: oldDocId, newDocumentId: result.replacements[0]!.newDocumentId,
+      kind: 'replace', status: 'archived', originLabel: replacement.files[0]!.originLabel,
+    })
     expect(new Set(latest.d4IntakeOrigins?.map(x => x.sha256)).size).toBe(2)
     expect(() => claimD4Intake(replacement.token, 903)).toThrow('D4_INTAKE_TOKEN_INVALID')
   })
@@ -155,6 +159,8 @@ describe('W1 post-case native append and revision-aware replacement', () => {
     expect(result.documents).toHaveLength(1)
     expect(getCase(created.id)!.d4IntakeOrigins?.some(item => item.documentId === result.documents[0]!.id)).toBe(true)
     expect(getCase(created.id)!.d4IntakeWarnings).toHaveLength(2)
+    expect(getCase(created.id)!.d4IntakeOrigins?.some(item =>
+      item.documentId === result.documents[0]!.id && /^[0-9a-f]{64}$/.test(item.sha256))).toBe(true)
     expect(() => claimD4Intake(preview.token, 903)).toThrow('D4_INTAKE_TOKEN_INVALID')
   })
   test('dropped ZIP reuses the bounded Main extraction path and preserves member provenance', async () => {
