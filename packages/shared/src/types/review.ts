@@ -366,6 +366,8 @@ export interface ReviewCase {
   updatedAt: string
   /** 来源文档（依据 + 申报 + 证明） */
   documents: SourceDocument[]
+  /** Main-generated, persistently retained reasons for omitted/failed native-batch inputs. */
+  d4IntakeWarnings?: Array<{ originLabel: string; reason: string }>
   /** 已从当前审核材料中移除的文件；保留记录用于 V2 来源追溯。 */
   archivedDocuments?: SourceDocument[]
   /** 规则包 */
