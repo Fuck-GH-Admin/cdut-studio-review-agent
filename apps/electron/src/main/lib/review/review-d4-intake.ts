@@ -34,6 +34,10 @@ function forget(intake: StagedIntake): void {
 function reap(): void {
   for (const intake of STAGED.values()) if (!intake.inUse && intake.expiresAt < Date.now()) forget(intake)
 }
+// Reap unused temporary originals even if no further user action occurs.
+const reapInterval = setInterval(reap, 60_000)
+reapInterval.unref()
+process.once('exit', () => { for (const entry of [...STAGED.values()]) forget(entry) })
 export interface D4IntakePreview {
   token: string
   expiresAt: number
