@@ -81,6 +81,29 @@ describe('W1 real D4 Main native intake per-file classification', () => {
     expect(() => claimD4Intake(token, 711)).toThrow('D4_INTAKE_TOKEN_INVALID')
   })
 
+  test('folder mode requires explicit warning acknowledgement, then stores both source and omission ledger', async () => {
+    const folder = join(root, 'folder-intake')
+    mkdirSync(folder)
+    writeFileSync(join(folder, '公共教学教室借用.md'), 'new classroom request')
+    writeFileSync(join(folder, 'unsupported.exe'), 'unsupported file')
+    pickedPaths = [folder]
+    const preview = (await stageD4Intake(711, undefined, 'folder'))!
+    expect(preview.files).toHaveLength(1)
+    expect(preview.skipped).toHaveLength(1)
+    expect(preview.skipped[0]!.reason).toContain('不支持')
+    await expect(create({ ...selection(), intakeToken: preview.token, intakeRoles: ['application'] }))
+      .rejects.toThrow('D4_INTAKE_SKIPS_ACK_REQUIRED')
+    const created = await create({ ...selection(), intakeToken: preview.token,
+      intakeRoles: ['application'], acknowledgeSkippedFiles: true })
+    const restored = getCase(created.id)!
+    expect(restored.documents).toHaveLength(1)
+    expect(restored.d4IntakeWarnings).toHaveLength(1)
+    expect(restored.d4IntakeWarnings![0]!.originLabel).toContain('unsupported.exe')
+    await expect(create({ ...selection(), intakeToken: preview.token,
+      intakeRoles: ['application'], acknowledgeSkippedFiles: true }))
+      .rejects.toThrow('D4_INTAKE_TOKEN_INVALID')
+  })
+
   test('older clients omitting the role plan still put all OS-picked material into applications', async () => {
     pickedPaths = [applicationPath]
     const token = (await stageD4Intake(711))!.token
