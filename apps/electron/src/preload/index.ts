@@ -3845,7 +3845,7 @@ const reviewAPI = {
   listRuns: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_RUNS, caseId) as Promise<import('@profer/shared').ReviewRun[]>,
   getCase: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_CASE, caseId) as Promise<import('@profer/shared').ReviewCase | undefined>,
   listD4Templates: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_D4_TEMPLATES) as Promise<import('@profer/shared').D4ClientTemplate[]>,
-  stageD4Intake: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.STAGE_D4_INTAKE) as Promise<import('@profer/shared').D4IntakePreview | null>,
+  stageD4Intake: (mode?: 'files' | 'folder') => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.STAGE_D4_INTAKE, mode) as Promise<import('@profer/shared').D4IntakePreview | null>,
   discardD4Intake: (token: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.DISCARD_D4_INTAKE, token) as Promise<boolean>,
   createCase: (input: {
     title: string
