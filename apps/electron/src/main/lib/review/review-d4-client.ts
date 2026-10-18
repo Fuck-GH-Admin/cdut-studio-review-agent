@@ -9,6 +9,7 @@ import { getCase, saveCase } from './case-store'
 import { ensureWorkspaceAggregateV2 } from './workspace-service-v2'
 import { validateD4UserSelection } from './review-d4-client-validation'
 import { claimD4Intake, releaseD4Intake } from './review-d4-intake'
+import { resolveD4IntakeRoles } from './review-d4-intake-roles'
 import { importDocumentFromPath } from './case-import'
 
 const json = <T>(path: string): T => JSON.parse(readFileSync(resolveD4SourcePath(path), 'utf8')) as T
@@ -55,11 +56,18 @@ export async function createD4ClientCase(input: {
     if (entry.templateId !== 'g01-student-identity-correction') throw new Error('D4_SYNTHETIC_REGISTRY_SCOPE_INVALID')
     trustedStudentSnapshot = json<D2TrustedStudentSnapshotV1>(`${basePath(entry.workspacePath)}/fixtures/controlled-registry.json`)
   }
-  // P1-C: only a Main-owned OS picker can supply a staged file token.
+  // P1-C/W1: only a Main-owned OS picker can supply staged files.
+  // A role plan without a token is never an authority or material source.
+  if (input.d4.intakeRoles !== undefined && !input.d4.intakeToken) {
+    throw new Error('D4_INTAKE_ROLE_PLAN_INVALID: no staged file token')
+  }
   const intake = input.d4.intakeToken
     ? claimD4Intake(input.d4.intakeToken, ownerWebContentsId ?? -1) : undefined
   let createdCaseId: string | undefined
   try {
+    // Validate inside try so a rejected role plan releases the claimed token for
+    // correction, instead of consuming the file or creating a partial case.
+    const intakeRoles = intake ? resolveD4IntakeRoles(intake.files.length, input.d4.intakeRoles) : []
     const old = getTemplate(entry.templateId, entry.templateVersion)
     if (old && !isAuthoringCandidateDraft(entry.templateId, entry.templateVersion)) throw new Error('D4_EXISTING_TEMPLATE_NOT_CANDIDATE')
     if (!old) saveAuthoringCandidateDraft(makeD2CandidateShell(workspace, entry.templateId, entry.templateVersion))
@@ -78,9 +86,9 @@ export async function createD4ClientCase(input: {
     await ensureWorkspaceAggregateV2(caseId)
     const d4IntakeFailures: string[] = []
     if (intake) {
-      for (const file of intake.files) {
+      for (const [index, file] of intake.files.entries()) {
         try {
-          const parsed = await importDocumentFromPath({ caseId, sourcePath: file.sourcePath, role: 'application' })
+          const parsed = await importDocumentFromPath({ caseId, sourcePath: file.sourcePath, role: intakeRoles[index]! })
           if (parsed.parseStatus !== 'parsed') d4IntakeFailures.push(file.name + ': ' + parsed.parseStatus)
         } catch (error) {
           d4IntakeFailures.push(file.name + ': ' + (error instanceof Error ? error.message : String(error)))
