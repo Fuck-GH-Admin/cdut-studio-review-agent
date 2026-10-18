@@ -3,7 +3,8 @@
  * ZIP extraction is streamed, size-limited and never uses entry paths as host paths.
  */
 import { createHash } from 'node:crypto'
-import { closeSync, createReadStream, createWriteStream, lstatSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync } from 'node:fs'
+import { createReadStream, createWriteStream, lstatSync, mkdirSync, readdirSync, readFileSync, rmSync } from 'node:fs'
+import { Readable, Transform } from 'node:stream'
 import { basename, extname, join, posix } from 'node:path'
 import { pipeline } from 'node:stream/promises'
 import JSZip from 'jszip'
@@ -54,7 +55,7 @@ export async function stageD4NativeBatch(
   }
   const accept = async (
     name: string, label: string, size: number,
-    stream: () => NodeJS.ReadableStream,
+    stream: () => Readable,
   ): Promise<void> => {
     if (!EXTENSIONS.has(extname(name).toLowerCase())) { skip(label, '不支持的文件格式'); return }
     if (size < 1 || size > D4_BATCH_MAX_FILE_BYTES) { skip(label, '空文件或超过单文件 50 MB'); return }
@@ -64,22 +65,21 @@ export async function stageD4NativeBatch(
     let written = 0
     const sha = createHash('sha256')
     try {
-      // Streaming also checks actual bytes (ZIP headers are untrusted).
-      // `ReadableStream` typing differs across JSZip/Node; async-iterate chunks.
-      const input = stream() as NodeJS.ReadableStream & AsyncIterable<Buffer | Uint8Array>
-      const output = createWriteStream(dest, { flags: 'wx' })
-      try {
-        for await (const chunk of input) {
+      // `pipeline` propagates disk, decompression and size failures. Even
+      // malicious ZIP headers cannot bypass the live byte cap.
+      const limiter = new Transform({
+        transform(chunk: Buffer, _encoding, callback) {
           const buffer = Buffer.from(chunk)
           written += buffer.length
           if (written > size || written > D4_BATCH_MAX_FILE_BYTES || bytesTotal + written > D4_BATCH_MAX_TOTAL_BYTES) {
-            throw new Error('解压后实际体积超出声明或上限')
+            callback(new Error('解压后实际体积超出声明或上限'))
+            return
           }
           sha.update(buffer)
-          if (!output.write(buffer)) await new Promise<void>(resolve => output.once('drain', resolve))
-        }
-        await new Promise<void>((resolve, reject) => output.end((error?: Error) => error ? reject(error) : resolve()))
-      } finally { output.destroy() }
+          callback(null, buffer)
+        },
+      })
+      await pipeline(stream(), limiter, createWriteStream(dest, { flags: 'wx' }))
       if (written !== size) throw new Error('压缩包声明与实际解压大小不符')
       const digest = sha.digest('hex')
       if (digests.has(digest)) { skip(label, '与本批次已有材料内容重复（SHA-256）'); rmSync(join(privateDir, String(files.length)), { recursive: true, force: true }); return }
