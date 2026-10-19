@@ -36,3 +36,14 @@ Supported operations: `admit/record/seal` delegate to existing C-owned technical
 At creation **engineering exact HEAD `b51e5f299ffa68284fc1d187607b658405c8643f` is COMMITTED; new exact-SHA PR CI `39306309483`, Baseline `39306309415`, Batch `39306309433`, D1 `39306309447`, D2 `39306309399` were queued/in-progress**. Do not inherit prior `e87f75...` Gate O. Read actual jobs/logs and fix first failure on C-owned files before signing `R04 Gate O`. Re-run all five exact same final SHA, then update this report/STATUS:C with reality.
 
 After R04 exact Gate O: continue C-owned trusted immutable B Plan publication/source-to-Case admission/physical Host instrumentation and C-Tx crash/cross-PID fidelity, maintaining signed I3 base R03 unless C explicitly rules otherwise. Production/Electron E `NOT_RUN`, school L `BLOCKED_NO_AUTH`, full product P `NOT_RUN`, release `NO_GO`.
+
+## Verified exact-SHA Gate O after initial pending state
+
+GitHub independently completed all five workflow runs for **unchanged** engineering SHA `b51e5f299ffa68284fc1d187607b658405c8643f`:
+- PR CI `39306309483`, job `118244194354` SUCCESS: frozen install, TypeScript, package boundary checks, skin contract, Main/Preload/Renderer build and full Bun **4099 PASS / 5 OS SKIP / 0 FAIL** (4104 tests / 472 files); C2-R04 5 new integrated tests are included.
+- Baseline `39306309415`: SUCCESS.
+- Batch `39306309433`: SUCCESS.
+- D1 `39306309447`: SUCCESS.
+- D2 `39306309399`: SUCCESS.
+
+**C2-R04 Gate O = PASS_EXACT_SHA / C_MAIN_OFFLINE_AUTHORITY_SCOPE_ONLY.** Original pending status above is a historical check, not a current failure. No live B publisher/Host/SDK/Provider integration and no Gate E/L/P or Release approval.
