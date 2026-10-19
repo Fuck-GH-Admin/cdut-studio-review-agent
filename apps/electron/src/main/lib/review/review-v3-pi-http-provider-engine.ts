@@ -227,7 +227,7 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
             // successful terminal receipt.
             const responsesDone=api==='openai-responses' &&
               frameEvent==='response.completed' && dataLines===1 &&
-              /^\\{\\s*"type"\\s*:\\s*"response\\.completed"\\s*[,}]/.test(frameData)
+              /^\{\s*"type"\s*:\s*"response\.completed"\s*[,}]/.test(frameData)
             if(completionsDone || responsesDone) {
               sseTerminated=true
             } else if(frameEvent==='response.completed' ||
@@ -239,7 +239,7 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
             dataLines=0
           }
           const finishLine=(value:string):void=>{
-            const line=value.endsWith('\\r')?value.slice(0,-1):value
+            const line=value.endsWith('\r')?value.slice(0,-1):value
             if(line===''){
               finishFrame()
             } else if(line.startsWith('event:')){
@@ -252,7 +252,7 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
             }
           }
           const inspect=(chunk:Uint8Array):void=>{
-            const parts=decoder.decode(chunk,{stream:true}).split('\\n')
+            const parts=decoder.decode(chunk,{stream:true}).split('\n')
             for(let i=0;i<parts.length;i++){
               const next=(linePrefix+parts[i]!).slice(0,256)
               if(i<parts.length-1){
