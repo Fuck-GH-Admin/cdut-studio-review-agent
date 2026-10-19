@@ -94,3 +94,18 @@ A1 unfinished: actual session manager and Orchestrator admission/stop; persist A
 - New adapter: `review-execution-event-adapter-driver.ts` (modes direct/hidden/graph/batch), test: `review-execution-event-adapter-driver.test.ts`.
 - Host read must supply matching actualSource; Host submit must echo the exact Check tuple and outcome after an await; both paths recheck current Main Owner generation. The adapter does not invoke arbitrary model tools.
 - `closeTechnical()` returns a memory-only proof of 9/9 Host receipts and does not emit a C0 completed/business-pass event. It is intentionally unusable as a Dev-C formal Run finalizer until CR-A-001 is decided.
+
+
+## A4 follow-on: file-backed optimistic CAS, stale-state fence and A2 receipt idempotence
+- Added OwnerPersistence.compareAndWrite(expectedRaw,nextRaw) as an optional Dev-A-local persistence port, **without changing C0 DTO**. The production file adapter uses exclusive O_EXCL .write-lock, atomic rename, fsync, and exact previous-file comparison. A contested/orphaned lock is RECOVERY_REQUIRED; never automatically steal by age or untrusted PID.
+- Owner and event adapters remember the read snapshot. Before owner grant/private-session check/current-tool permission/query, event proposal append, pending delivery or ACK, they reject external changes. Writes use CAS when the underlying store supports it. Existing synthetic stores remain test-only with process-local semantics.
+- A revoke/delete performs local denial before any failed write. The remaining interleaving between separate files and Dev-C final business commit **is not solved** here: C still owns transaction coordination and authenticated ACK.
+- Same Host receipt ID plus kind/grant/sourceVersion/exact physical SourceIdentity digest returns one durable event. Reuse for another tool or block is REQUEST_ID_COLLISION. The private digest is NOT a new C0 eventId, a formal ReadReceipt, or full-document coverage; CR-A-001 stays PENDING_C.
+- New tests cover two adapters sharing one file, stale CAS, contested lock, cold quarantine, file-backed outbox sequence, duplicate receipts and collision, malformed persisted record. These use **two objects in one test PID**; not a real two-process/kill/full-volume/Electron Gate E.
+- The prior 4023 PASS CI applies to d8fd3e0e696caa1df7321c23c46e4f70a1f910f7 only. Latest new code/head needs its own Gate O workflow.
+
+### Recovery procedure still to validate
+1. If a .write-lock survives, deny all writers. Only an authorized recovery coordinator after independent proof of no active writer may remove it. No automatic stale lock steal.
+2. C's Run consumer must revalidate attemptId/generation/sequence/manifest/Owner/current Case/Source before accepting a replay. Dev-A local ACK is not business persistence or approval.
+3. Never reopen a grant from a previous processEpoch. Quarantine then issue a fresh trusted Main authorization and generation under an approved C contract.
+4. Run two *actual OS PIDs*, cold kill, crash-after-rename, ENOSPC/EACCES and post-reboot recovery on an isolated fault volume before declaring Gate E.
