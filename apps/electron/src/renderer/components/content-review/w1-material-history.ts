@@ -42,6 +42,10 @@ export function w1MaterialHistory(reviewCase: Pick<ReviewCase,
       }
     }
     if (replacedBy && location === 'archived') description = '历史原件：已被 ' + replacedBy.newDocumentId + ' 替换'
+    if (replacing?.status === 'abandoned' && location === 'archived') {
+      description = '本次修订已由审核员取消：新版归档，旧版仍有效'
+      needsReconciliation = false
+    }
     if (location === 'active' && doc?.parseStatus !== 'parsed') needsReconciliation = true
     return { documentId: origin.documentId, fileName: doc?.fileName ?? origin.documentId,
       originLabel: origin.originLabel, sha256: origin.sha256, parseStatus: doc?.parseStatus,

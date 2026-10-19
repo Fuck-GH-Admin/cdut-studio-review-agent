@@ -191,7 +191,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
         </p>
       </header>
 
-      {reviewCase?.id.startsWith('d4-') && <D4MaterialHistory reviewCase={reviewCase} />}
+      {reviewCase?.id.startsWith('d4-') && <D4MaterialHistory reviewCase={reviewCase} reload={() => actions.selectCase(reviewCase.id)} />}
       {/* 申报文件只在中栏管理，和左栏审核依据、下方证明材料分开导入。 */}
       <section className="shrink-0 border-b border-border/40 px-3 py-3">
         <div className="flex items-center justify-between gap-2 px-1">
