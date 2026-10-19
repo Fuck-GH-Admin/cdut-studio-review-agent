@@ -16,6 +16,7 @@ import {
 } from './review-pi-owner-adapter'
 import type { V3ReviewToolCall } from './review-execution-event-adapter'
 import { V3ExecutionCompletenessAdapter } from './review-execution-event-adapter-completeness'
+import type { V3ATurnExhaustion } from './review-v3-execution-turn-budget'
 
 export const A_V3_PROPOSAL_SCHEMA = 'review-v3-execution/1' as const
 export type ATechnicalStatus =
@@ -140,7 +141,8 @@ export class V3AProposalProducer {
 
   constructor(private readonly persistence: OwnerPersistence,
     private readonly owners: V3ReviewOwnerAdapter,
-    private readonly host: AVerifiedExecutionHost) {
+    private readonly host: AVerifiedExecutionHost,
+    private readonly turnBudget?: V3ATurnExhaustion) {
     if (!host || typeof host.read !== 'function' ||
         typeof host.check !== 'function' || typeof host.terminal !== 'function') {
       throw new C0ContractError('ACTOR_UNTRUSTED', 'Main Host result port is required')
@@ -219,6 +221,15 @@ export class V3AProposalProducer {
         call.tool, call.source, lease => {
           this.fresh()
           const {run, plan} = this.pinned(lease)
+          if (kind === 'terminal' && detail.terminal?.status === 'needs-resume' &&
+              !this.turnBudget?.exhausted(lease)) {
+            throw new C0ContractError('CONTRACT_INVALID',
+              'needs-resume requires exhausted Main-attested durable turn budget')
+          }
+          if (kind !== 'terminal' && this.turnBudget?.exhausted(lease)) {
+            throw new C0ContractError('RUN_IDENTITY_MISMATCH',
+              'Turn budget exhausted; no more Host proposals in this attempt')
+          }
           const k = keyOf(run)
           const current = this.disk.attempts[k] ?? {
             runDigest: sha(run), grantId: lease.grantId,
@@ -311,6 +322,13 @@ export class V3AProposalProducer {
     }
     this.owners.assertAuthorized(call.sessionId, call.grantId,call.senderKey,
       call.principal,call.tool,call.source)
+    const initialLease = this.owners.assertAuthorized(
+      call.sessionId,call.grantId,call.senderKey,call.principal,
+      call.tool,call.source,
+    )
+    if (this.turnBudget?.exhausted(initialLease)) {
+      throw new C0ContractError('RUN_IDENTITY_MISMATCH','Pi turn budget exhausted')
+    }
     const result = await this.host.read(structuredClone(call.source))
     this.owners.assertAuthorized(call.sessionId, call.grantId,call.senderKey,
       call.principal,call.tool,call.source)
@@ -334,6 +352,9 @@ export class V3AProposalProducer {
     }
     const lease = this.owners.assertAuthorized(call.sessionId,call.grantId,
       call.senderKey,call.principal,call.tool)
+    if (this.turnBudget?.exhausted(lease)) {
+      throw new C0ContractError('RUN_IDENTITY_MISMATCH','Pi turn budget exhausted')
+    }
     const {run,plan} = this.pinned(lease)
     const binding = plan.bindings.find(b =>
       b.checkKey === requested.checkKey && b.targetKey === requested.targetKey &&
