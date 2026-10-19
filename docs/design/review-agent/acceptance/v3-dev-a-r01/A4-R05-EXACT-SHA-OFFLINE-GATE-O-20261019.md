@@ -63,6 +63,7 @@ else
     apps/electron/src/main/lib/review/review-pi-owner-adapter.test.ts \
     apps/electron/src/main/lib/review/review-pi-owner-adapter-multipid.test.ts \
     apps/electron/src/main/lib/review/review-v3-execution-crashpid.test.ts \
+    apps/electron/src/main/lib/review/review-v3-sdk-dispatch-crashpid.test.ts \
     apps/electron/src/main/lib/review/review-v3-execution-late-pid.test.ts
   run_gate typecheck bun run typecheck
   run_gate boundaries bun run check:boundaries
@@ -103,6 +104,15 @@ fi
 8. `V3ASDKDispatchFence` 仍只是技术 durable intent，不存在自行清账、模拟 Provider 恢复或第二份 ReviewRun writer。
 9. **A4-R06-01/02**：真实 Main 分发先持久生成 `dispatchId`，回调 `completed-turn` 或 `interrupted` 必须携带同一 ID；跨派发串回的可疑结果不能扣 SDK 预算、不能写 terminal、不能自动再调 Provider。
 10. **A4-R06-03/04**：冷启动读取旧 hash-sealed dispatch journal，若历史 `late-denied` 之后还有新 settled，或不同物理 dispatch 重用了同一 SDK receipt，必须保留原始账本并 `RECOVERY_REQUIRED`，不通过删除异常记录凑 PASS。
+
+### R08 Main cancellation and OS-PID crash gate (new)
+
+- Targeted files: `review-v3-main-sdk-turn-bridge.test.ts` R08-01/02, and Linux-only `review-v3-sdk-dispatch-crashpid.test.ts` R08-PID-01.
+- **R08-01**: SDK promise intentionally hangs; Main AbortSignal must reject without waiting for Provider. While native work is still live, even a *second bridge instance* on the same Owner session must be blocked by process-local SDK lock. Late resolution must not emit a proposal, charge a turn, clear in-flight intent or auto-retry.
+- **R08-02**: a late Provider *rejection* after Main aborted is observed without unhandled promise rejection, and same-session redispatch remains blocked while provider is unresolved. Once it settles, durable in-flight intent still blocks the old Run.
+- **R08-PID-01**: actual Bun/Linux OS child, A-owned Owner + SDK dispatch + turn budget persisted to real files; child SIGKILL inside synthetic SDK callback after durable `claim`. New PID re-opens journals, quarantines old Owner grant, observes **in-flight** SDK intent / 0 completed turns / no technical proposal. Preserve marker PID, signal, SHA and temp file hashes in redacted logs; this is **real OS process test with synthetic Provider**, not Gate E.
+- Existing `A3-SDK-14` / `A4-DISPATCH-07` cancellation regressions now expect `in-flight` (if abort wins before SDK promise settles), *not* the old `late-denied` branch. Both states remain `RECOVERY_REQUIRED`. Exact error string must match new implementation and no new provider call is permitted.
+- For true Provider Gate E still separately validate native cancellation propagation, actual network/inference call lifetime, SDK retry and image downgrade. A Main timeout is only a wait cancellation; it does not prove upstream Provider physically stopped. Never equate the quick Main error with safe retry.
 
 ## 5. 留存与报告格式
 
