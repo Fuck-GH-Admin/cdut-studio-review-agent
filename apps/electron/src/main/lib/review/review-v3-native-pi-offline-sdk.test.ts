@@ -73,6 +73,7 @@ async function nativeHarness(responseBody:string){
   let fetchCalls=0
   let session:AgentSession|undefined
   const events:NativeEvent[]=[]
+  const allNativeEvents:string[]=[]
   const transportFetch:V3AHttpRequestTransport=async (resource,init)=>{
     fetchCalls++
     const url=resource instanceof Request?resource.url:String(resource)
@@ -97,6 +98,13 @@ async function nativeHarness(responseBody:string){
       })
       session=result.session
       session.subscribe(event=>{
+        if(allNativeEvents.length<80){
+          const eventMessage='message' in event && event.message &&
+            typeof event.message==='object' &&
+            'stopReason' in event.message
+            ? String(event.message.stopReason):''
+          allNativeEvents.push(event.type+(eventMessage?':'+eventMessage:''))
+        }
         if(expectedNativeEvents.includes(event.type as NativeEvent)){
           events.push(event.type as NativeEvent)
         }
@@ -110,14 +118,27 @@ async function nativeHarness(responseBody:string){
   }
   return {
     host:new V3APhysicalSDKTurnPort(new V3APiHttpSingleRequestEngine(factory)),
-    events,fetchCalls:()=>fetchCalls,session:()=>session,
+    events,allNativeEvents,fetchCalls:()=>fetchCalls,session:()=>session,
   }
 }
 
 describe('Dev-A R16 real Pi 0.86.1 AgentSession offline — no external Provider / Gate E',()=>{
   it('R16-01: actual createAgentSession + OpenAI SSE + SDK native events settle one physical turn',async()=>{
     const h=await nativeHarness(validSse)
-    expect(await h.host.nextTurn(request)).toEqual({
+    let result:Awaited<ReturnType<typeof h.host.nextTurn>>
+    try{
+      result=await h.host.nextTurn(request)
+    }catch(error){
+      throw new Error('R16 native SDK diagnosis '+JSON.stringify({
+        fetchCalls:h.fetchCalls(),events:h.events,
+        eventTrace:h.allNativeEvents,
+        model:h.session()?.agent.state.model,
+        lastMessage:h.session()?.agent.state.messages.slice(-1).map(x=>
+          x.role==='assistant'?{role:x.role,stopReason:x.stopReason,
+            errorMessage:x.errorMessage}: {role:x.role}),
+      }),{cause:error})
+    }
+    expect(result).toEqual({
       kind:'completed-turn',run,dispatchId:request.dispatchId,
       receiptId:'r16-native-provider-http-001',
     })
