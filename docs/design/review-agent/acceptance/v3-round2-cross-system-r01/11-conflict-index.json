@@ -1,0 +1,715 @@
+{
+  "schema": "cdut-v3-round2-conflicts-r01",
+  "snapshot_date": "2026-10-19",
+  "overall_status": "PARTIAL",
+  "caveat": "P0_CANDIDATE denotes severity of possible impact, not dynamically verified exploitable bug",
+  "source_map": {
+    "M": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+    "D": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+    "P": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+    "R": "c23789882aabf18689c314c77c270ac4a8ae4729"
+  },
+  "conflicts": [
+    {
+      "conflict_id": "ARCH-001",
+      "priority": "P1",
+      "evidence_status": "PARTIAL",
+      "capability_ids": "CASE-01,CASE-02,CASE-06,UI-04",
+      "source_refs": "M,D,P",
+      "functions_or_locations": "case-store.ts:updateCase;workspace-service-v2.ts:syncWorkspaceProjectionV2;case-store-v2.ts:submitCommand",
+      "current_behavior": "V1 case.json先写后投影 V2聚合；V2 native仅写聚合",
+      "root_cause": "二个写入权/多个 rev，跨文件无原子提交",
+      "impact": "读写错序、重启后半事务、过期展示",
+      "options": "单一输入命令写 owner+兼容只读 V1；或显式迁移日志",
+      "invariants": "CAS/idempotent receipt;不覆盖人工记录",
+      "required_tests": "A:中断于V1写入与V2同步之间；恢复与影子迁移",
+      "round3_owner": "2A/2D",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/c2f965d29022a42b3c32d6a4cb73aa8fd542329b/apps/electron/src/main/lib/review/workspace-service-v2.ts#L166"
+    },
+    {
+      "conflict_id": "ARCH-002",
+      "priority": "P1",
+      "evidence_status": "VERIFIED",
+      "capability_ids": "CASE-03,CASE-06,TPL-03,TPL-07,BAT-05",
+      "source_refs": "D,P",
+      "functions_or_locations": "workspace-service-v2.ts:projectedCase;review-ipc.ts:UPDATE_CASE_SETTINGS",
+      "current_behavior": "D4 fixedD2 保留 subjects/rules + 模板锁；P06无该分支",
+      "root_cause": "同名服务不同合同，覆盖后丢冻结映射",
+      "impact": "模板/规则作用域及CheckKey错误",
+      "options": "Plan 存独立不可变权威，投影不可变更其领域对象",
+      "invariants": "frozen fingerprint and no implicit template switch",
+      "required_tests": "A/G:fixed Plan+V1编辑后subjects/rules完全相同",
+      "round3_owner": "第三轮必裁决",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/c2f965d29022a42b3c32d6a4cb73aa8fd542329b/apps/electron/src/main/lib/review/workspace-service-v2.ts#L22 https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/workspace-service-v2.ts#L22"
+    },
+    {
+      "conflict_id": "ARCH-003",
+      "priority": "P0_CANDIDATE",
+      "evidence_status": "VERIFIED",
+      "capability_ids": "CASE-04,CASE-05,CASE-06,DOC-02,IN-07",
+      "source_refs": "D,P",
+      "functions_or_locations": "workspace-service-v2.ts:syncWorkspaceProjectionV2 archivedDocuments mutate",
+      "current_behavior": "D4 archived旧来源时取消Observation confirmed；P06只拒EvidenceLink",
+      "root_cause": "事实当前效力撤销没有统一传播",
+      "impact": "旧人工确认或旧Run可能参与新判断（可达性待测）",
+      "options": "SourceVersion撤效级联至 confirmed/link/read/run/decision；历史不可删除",
+      "invariants": "源版本失效不等于删除历史；旧证据不再有效",
+      "required_tests": "B:先confirmed后归档新材料并执行readiness和决定负例",
+      "round3_owner": "第三轮必裁决",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/c2f965d29022a42b3c32d6a4cb73aa8fd542329b/apps/electron/src/main/lib/review/workspace-service-v2.ts#L188 https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/workspace-service-v2.ts#L184"
+    },
+    {
+      "conflict_id": "ARCH-004",
+      "priority": "P0_CANDIDATE",
+      "evidence_status": "VERIFIED",
+      "capability_ids": "CASE-04,BG-01,CASE-05",
+      "source_refs": "M,D,P",
+      "functions_or_locations": "review-ipc.ts:CREATE_CASE_V2/UPDATE_FIELDS_V2/CORRECT_OBSERVATION_V2/SET_EVIDENCE_LINK_V2",
+      "current_behavior": "部分IPC透传renderer actor，正式决定另有bindLocalReviewerCommand",
+      "root_cause": "IPC caller-auth语义不一致；型别不是可信身份",
+      "impact": "伪造Actor或伪造Receipt的潜在威胁，未动态证实",
+      "options": "Main统一从可信身份绑定Actor；service再查角色/命令域",
+      "invariants": "无提升校方身份/跨案改证",
+      "required_tests": "actor负例student/agent/renderer forged local/school，主窗口与preload入口",
+      "round3_owner": "第三轮必裁决",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/review-ipc.ts#L515"
+    },
+    {
+      "conflict_id": "ARCH-005",
+      "priority": "P1",
+      "evidence_status": "VERIFIED",
+      "capability_ids": "TPL-03,TPL-06,TPL-07,CASE-03,RUN-01,IN-04",
+      "source_refs": "D,P",
+      "functions_or_locations": "pi-case-review-service.ts:promptFor;review-d2-runtime.ts:compileD2RuntimePlan",
+      "current_behavior": "D4 target列表与新mapping；P06仍用scenario旧式描述",
+      "root_cause": "Runner prompt的D2合同语义漂移",
+      "impact": "多业务对象/条件映射丢失或误核",
+      "options": "Check×target, conditions unknown, Plan fingerprint一致",
+      "invariants": "D2未知条件不能静默N/A",
+      "required_tests": "A/G:两target混淆/SourceRef跨对象；checkId精准映射",
+      "round3_owner": "第三轮必裁决",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/c2f965d29022a42b3c32d6a4cb73aa8fd542329b/apps/electron/src/main/lib/review/pi-case-review-service.ts#L392 https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/pi-case-review-service.ts#L384"
+    },
+    {
+      "conflict_id": "ARCH-006",
+      "priority": "P1",
+      "evidence_status": "PARTIAL",
+      "capability_ids": "RUN-02,RUN-03,RUN-05,RUN-06,RUN-07,EXP-08,UI-03",
+      "source_refs": "M,D,P",
+      "functions_or_locations": "pi-case-review-service.ts:submitPiReviewResultV2;coverage-ledger.ts;deterministic-engine.ts",
+      "current_behavior": "缺项/被拒/执行失败可存在；完成必须另走覆盖/Readiness",
+      "root_cause": "Run状态与Check结果与业务决定是三个层次",
+      "impact": "漏项/1680-1480算数错被误认合格",
+      "options": "accepted/rejected/missing单独持久，算数确定性执行",
+      "invariants": "unknown≠pass; execution-failed≠business fail",
+      "required_tests": "C:9漏1、数值差额200、rejected补交、turn cap",
+      "round3_owner": "第三轮定义统一Check合同",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/c2f965d29022a42b3c32d6a4cb73aa8fd542329b/apps/electron/src/main/lib/review/pi-case-review-service.ts#L855"
+    },
+    {
+      "conflict_id": "ARCH-007",
+      "priority": "P1",
+      "evidence_status": "PARTIAL",
+      "capability_ids": "BAT-01,BAT-03,BAT-05,BAT-06,BAT-07,BAT-08,RUN-04",
+      "source_refs": "P,R",
+      "functions_or_locations": "batch-store.ts:runBatchQueue/updateCaseStatus;batch-automation-service.ts:runBatchAutomation",
+      "current_behavior": "实际批次记录runId，底层runCase契约允许completed且无runId",
+      "root_cause": "batch done与可信运行来源非同构",
+      "impact": "同案多批或旧batch没有准确依据",
+      "options": "绑定exact Run、input hash、batch attempt，legacy done拒止",
+      "invariants": "任何latestRun不得回填旧batch",
+      "required_tests": "D:双batch不同Run/旧done/补件回流",
+      "round3_owner": "第三轮必裁决",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/batch-store.ts#L576"
+    },
+    {
+      "conflict_id": "ARCH-008",
+      "priority": "P1",
+      "evidence_status": "PARTIAL",
+      "capability_ids": "BAT-06,CASE-07,CASE-12,RUN-04",
+      "source_refs": "P,R",
+      "functions_or_locations": "batch-store.ts:finalizeBatch→assertBatchBusinessReadyForFinalization",
+      "current_behavior": "业务终态门禁未明确比较本batch run与final decision basedOnRunId（2C静态报告）",
+      "root_cause": "Case正式决定真但属于另一个Batch的风险",
+      "impact": "错误批次定稿快照溯源",
+      "options": "每个Batch snapshot包含其确切Run与决定依据等式",
+      "invariants": "未经同批实证不能写finalized",
+      "required_tests": "D:A done RunA,B决定 RunB，再finalize A（负例未实测）",
+      "round3_owner": "第三轮必裁决",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/batch-store.ts#L266"
+    },
+    {
+      "conflict_id": "ARCH-009",
+      "priority": "P1",
+      "evidence_status": "PARTIAL",
+      "capability_ids": "BAT-02,BAT-03,BAT-04,BAT-06",
+      "source_refs": "P",
+      "functions_or_locations": "workspace-business-service-v2.ts:assertAutomatedWorkspaceDecision→checkAutoBatchAction",
+      "current_behavior": "外层有live runId，内层system actor gate未显式runId=entry.runId",
+      "root_cause": "分层授权依赖外层约束",
+      "impact": "内部系统调用/异常重试可能丢batch绑定（未复现）",
+      "options": "内层事务重复验证bound Run、role、revision、approval policy",
+      "invariants": "双重验证非冗余，不放宽auto审批",
+      "required_tests": "D:绕过外层的受控system actor负例",
+      "round3_owner": "第三轮定义授权合同",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/workspace-business-service-v2.ts#L225"
+    },
+    {
+      "conflict_id": "ARCH-010",
+      "priority": "P0_CANDIDATE",
+      "evidence_status": "PARTIAL",
+      "capability_ids": "DOC-01,DOC-02,DOC-04,UI-02,BG-03",
+      "source_refs": "D,P",
+      "functions_or_locations": "pi-case-review-service.ts:resolveSourceRefs/createPiReviewDocumentLibrary;renderer SourceRef focus",
+      "current_behavior": "documentVersionId→block/original/read账本分层；UI可高亮但不能鉴权",
+      "root_cause": "展示引用与主进程来源信任边界不同",
+      "impact": "同名/跨案/跨根引用污染潜在严重",
+      "options": "Main validate case+version+digest+block; renderer only display",
+      "invariants": "引用必须读过/稳定hash；禁止跨案串证",
+      "required_tests": "B/C:源ID窜改、旧版本、虚构block、原件读取范围",
+      "round3_owner": "第三轮必裁决",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/pi-case-review-service.ts#L733"
+    },
+    {
+      "conflict_id": "ARCH-011",
+      "priority": "P1",
+      "evidence_status": "VERIFIED",
+      "capability_ids": "IN-01,IN-02,IN-03,IN-05,IN-07,BAT-01,UI-06",
+      "source_refs": "D,P",
+      "functions_or_locations": "review-ipc.ts:STAGE_D4_INTAKE/APPLY_D4_CASE_BATCH vs RUN_BATCH_V2",
+      "current_behavior": "D4 batch按材料导入；P06 batch按多案执行；均称batch非同一对象",
+      "root_cause": "名称相近但身份、事务、owner、生命周期不同",
+      "impact": "误复用DTO或误合并状态",
+      "options": "保留两种独立Batch并定义清楚ImportBatch/ReviewBatch",
+      "invariants": "暂存token不能当Case/Run授权",
+      "required_tests": "A/D:batch互换、并发、用户换role",
+      "round3_owner": "第三轮接口合同",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/c2f965d29022a42b3c32d6a4cb73aa8fd542329b/apps/electron/src/main/lib/review/review-ipc.ts#L103 https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/review-ipc.ts#L634"
+    },
+    {
+      "conflict_id": "ARCH-012",
+      "priority": "P0_CANDIDATE",
+      "evidence_status": "PARTIAL",
+      "capability_ids": "DOC-01,DOC-03,IN-06,EXP-02,EXP-06",
+      "source_refs": "M,D,P",
+      "functions_or_locations": "Office parser/cache/source manifest;历史#71回归",
+      "current_behavior": "历史Office同物理来源缓存缺失曾导致串源，后续修复跨分支不保证继承",
+      "root_cause": "逻辑名与真实物理来源/解析修订绑定缺失",
+      "impact": "跨案引用和错误取证潜在错误结论",
+      "options": "物理路径仅在Main确定+内容hash+parseRevision隔离",
+      "invariants": "缓存键不得仅用可重复文件名",
+      "required_tests": "Office71:同名不同路径、多线程parse旧缓存",
+      "round3_owner": "第三轮回归强门禁",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/pi-case-review-service.ts#L629"
+    },
+    {
+      "conflict_id": "ARCH-013",
+      "priority": "P0_CANDIDATE",
+      "evidence_status": "PARTIAL",
+      "capability_ids": "BG-01,BG-02,BG-03,BG-04,BG-05,BG-06,IN-01,EXP-05",
+      "source_refs": "P",
+      "functions_or_locations": "review-ipc.ts:START_BACKGROUND_PI_REVIEW_V2→review-pi-run-bridge/Owner",
+      "current_behavior": "Main主窗口校验+Owner grant，普通会话隔离，late revoke设计存在",
+      "root_cause": "若混回普通Pi会话会丢所有权/撤权保护",
+      "impact": "跨会话越权工具、迟到事件回填",
+      "options": "Main唯一grant owner、persist tombstone，工具调用中after-await重验",
+      "invariants": "路径/会话/工具权限须双层拒绝",
+      "required_tests": "F:sender/revoke/late deleted session/ordinary tool",
+      "round3_owner": "第三轮安全边界",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/review-ipc.ts#L687"
+    },
+    {
+      "conflict_id": "ARCH-014",
+      "priority": "P1",
+      "evidence_status": "VERIFIED",
+      "capability_ids": "CASE-07,CASE-09,CASE-11,RET-02",
+      "source_refs": "P",
+      "functions_or_locations": "review-ipc.ts:RESOLVE_APPEAL_V2→stage-workflow.resolveAppealV2",
+      "current_behavior": "IPC绑定reviewer而service要求teacher；旧run@rev并非Run",
+      "root_cause": "权限入口与业务角色不一致/虚拟出处",
+      "impact": "申诉闭环不可走通，迁移可能接受假来源",
+      "options": "可信teacher/school credential与真实Run绑定",
+      "invariants": "agent和local reviewer不得冒充teacher",
+      "required_tests": "E:teacher/非teacher角色申诉、legacy run@rev拒止",
+      "round3_owner": "第三轮决定actor入口",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/review-ipc.ts#L721"
+    },
+    {
+      "conflict_id": "ARCH-015",
+      "priority": "P1",
+      "evidence_status": "PARTIAL",
+      "capability_ids": "TPL-02,TPL-04,TPL-05,CASE-06,IN-04",
+      "source_refs": "D",
+      "functions_or_locations": "review-d3-module-library.ts/review-d3-upgrade.ts/review-d2-runtime.ts",
+      "current_behavior": "D3 digest/责任ACK+ D2冻Plan，升级可能与V1投影冲突",
+      "root_cause": "模板模块责任变化与Run/current input效力脱节",
+      "impact": "静默删除义务、跳过未知规则",
+      "options": "发布→差分→明确ACK→新Plan/Run；旧历史不可变",
+      "invariants": "未知≠N/A，未签认职责不能删除",
+      "required_tests": "G:变更/删除Check、依赖循环、新旧Plan对比",
+      "round3_owner": "第三轮决定模板所有权",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/c2f965d29022a42b3c32d6a4cb73aa8fd542329b/apps/electron/src/main/lib/review/review-d2-runtime.ts"
+    },
+    {
+      "conflict_id": "ARCH-016",
+      "priority": "P1",
+      "evidence_status": "PARTIAL",
+      "capability_ids": "CASE-02,CASE-08,BAT-08,BG-07,EXT-01,IN-05",
+      "source_refs": "M,P",
+      "functions_or_locations": "case-store-v2.ts:submitCommand;batch-store.ts:outbox/finalizeBatch",
+      "current_behavior": "V2 CAS聚合、Batch snapshot、Outbox各自落盘",
+      "root_cause": "跨文件/跨进程 crash 后两阶段成功状态无统一回执",
+      "impact": "重复外发或漏出站/快照",
+      "options": "幂等actionId+payloadHash+ack level+recover protocol",
+      "invariants": "mock accepted≠真实school receipt",
+      "required_tests": "E/F:post-CAS前outbox crash, retry same ID and changed payload",
+      "round3_owner": "第三轮定义事务回滚",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/batch-store.ts#L266"
+    },
+    {
+      "conflict_id": "ARCH-017",
+      "priority": "P1",
+      "evidence_status": "BLOCKED",
+      "capability_ids": "BG-07,RUN-06,EXP-05,EXP-07,EXP-08",
+      "source_refs": "P",
+      "functions_or_locations": "RunStore/Owner journal/Host tool contract; true ENOSPC injection",
+      "current_behavior": "历史受控试验和CI不等价真Provider+跨PID容量故障",
+      "root_cause": "观测不可替代缺失的实机验证",
+      "impact": "假成功、不可恢复终态与模型输出失真",
+      "options": "真实Provider/Host tool-use与跨PID fail-close",
+      "invariants": "保留首败原因;不得把mock当LIVE",
+      "required_tests": "F:Provider tool_use, ENOSPC every terminal point, restart",
+      "round3_owner": "第三轮发布门禁",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/pi-case-review-service.ts#L1035"
+    },
+    {
+      "conflict_id": "ARCH-018",
+      "priority": "P2",
+      "evidence_status": "PARTIAL",
+      "capability_ids": "UI-01,UI-03,UI-04,UI-05,CASE-01,CASE-10,CASE-12,RET-02",
+      "source_refs": "M,P",
+      "functions_or_locations": "ContentReviewView.tsx/V2CasePanel/stage-workflow.ts/migration",
+      "current_behavior": "V1三栏与V2 Panel/时间线存在双入口和legacy run存储",
+      "root_cause": "读模型UI重复、旧运行迁移缺口",
+      "impact": "用户看到冲突状态/历史丢失",
+      "options": "一套用户工作台+角色投影，旧卷只读迁移",
+      "invariants": "原V1交互和历史报告必须保留",
+      "required_tests": "A/E: V1/V2双列表、旧Run迁移、窄屏source focus",
+      "round3_owner": "第三轮工作台选型",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/8989941b6fb5651564e32d11c4215b6a6d5a5209/apps/electron/src/main/lib/review/case-store.ts#L324"
+    },
+    {
+      "conflict_id": "ARCH-019",
+      "priority": "P1",
+      "evidence_status": "PARTIAL",
+      "capability_ids": "TPL-01,TPL-02,TPL-09,RUN-03,EXP-04,EXP-08,RET-01,RET-03",
+      "source_refs": "M,D",
+      "functions_or_locations": "semantic-module-demo.ts/deterministic-engine.ts/domain route",
+      "current_behavior": "demo/关键词推荐/计算器定义有实验与失败历史但不可当正式引擎",
+      "root_cause": "规则职责和测试回归可能遗落",
+      "impact": "责任未覆盖/数字漏检",
+      "options": "遗留行为仅入compat/test;正式规则版本管理",
+      "invariants": "完整责任清点、定量误差必须 deterministic",
+      "required_tests": "G/C: MD-Q1责任、1680-1480、关键词误路由",
+      "round3_owner": "第三轮保全风险",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/c2f965d29022a42b3c32d6a4cb73aa8fd542329b/apps/electron/src/main/lib/review/pi-case-review-service.ts#L392"
+    },
+    {
+      "conflict_id": "ARCH-020",
+      "priority": "P1",
+      "evidence_status": "PARTIAL",
+      "capability_ids": "TPL-08,TPL-09,EXP-04",
+      "source_refs": "M,D",
+      "functions_or_locations": "G01–G08 original PRs/#97 integrated catalog/manifest",
+      "current_behavior": "#97 575 files，50/50 candidate-held；G03 generated not run、G04/G07残缺结构化",
+      "root_cause": "PR compare 300截断+语义移植不透明",
+      "impact": "模板义务缺失/误认为已Gold PASS",
+      "options": "逐G full tree hash/manifest/check obligation mapping",
+      "invariants": "未授权Gold不得变动，保留未结构化义务",
+      "required_tests": "G:8 domain original versus #97 file-by-file/semantic gate",
+      "round3_owner": "第三轮资产清册",
+      "source_urls": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/97"
+    }
+  ],
+  "lookup": {
+    "by_conflict": {
+      "ARCH-001": 0,
+      "ARCH-002": 1,
+      "ARCH-003": 2,
+      "ARCH-004": 3,
+      "ARCH-005": 4,
+      "ARCH-006": 5,
+      "ARCH-007": 6,
+      "ARCH-008": 7,
+      "ARCH-009": 8,
+      "ARCH-010": 9,
+      "ARCH-011": 10,
+      "ARCH-012": 11,
+      "ARCH-013": 12,
+      "ARCH-014": 13,
+      "ARCH-015": 14,
+      "ARCH-016": 15,
+      "ARCH-017": 16,
+      "ARCH-018": 17,
+      "ARCH-019": 18,
+      "ARCH-020": 19
+    },
+    "by_capability": {
+      "CASE-01": [
+        "ARCH-001",
+        "ARCH-018"
+      ],
+      "CASE-02": [
+        "ARCH-001",
+        "ARCH-016"
+      ],
+      "CASE-06": [
+        "ARCH-001",
+        "ARCH-002",
+        "ARCH-003",
+        "ARCH-015"
+      ],
+      "UI-04": [
+        "ARCH-001",
+        "ARCH-018"
+      ],
+      "CASE-03": [
+        "ARCH-002",
+        "ARCH-005"
+      ],
+      "TPL-03": [
+        "ARCH-002",
+        "ARCH-005"
+      ],
+      "TPL-07": [
+        "ARCH-002",
+        "ARCH-005"
+      ],
+      "BAT-05": [
+        "ARCH-002",
+        "ARCH-007"
+      ],
+      "CASE-04": [
+        "ARCH-003",
+        "ARCH-004"
+      ],
+      "CASE-05": [
+        "ARCH-003",
+        "ARCH-004"
+      ],
+      "DOC-02": [
+        "ARCH-003",
+        "ARCH-010"
+      ],
+      "IN-07": [
+        "ARCH-003",
+        "ARCH-011"
+      ],
+      "BG-01": [
+        "ARCH-004",
+        "ARCH-013"
+      ],
+      "TPL-06": [
+        "ARCH-005"
+      ],
+      "RUN-01": [
+        "ARCH-005"
+      ],
+      "IN-04": [
+        "ARCH-005",
+        "ARCH-015"
+      ],
+      "RUN-02": [
+        "ARCH-006"
+      ],
+      "RUN-03": [
+        "ARCH-006",
+        "ARCH-019"
+      ],
+      "RUN-05": [
+        "ARCH-006"
+      ],
+      "RUN-06": [
+        "ARCH-006",
+        "ARCH-017"
+      ],
+      "RUN-07": [
+        "ARCH-006"
+      ],
+      "EXP-08": [
+        "ARCH-006",
+        "ARCH-017",
+        "ARCH-019"
+      ],
+      "UI-03": [
+        "ARCH-006",
+        "ARCH-018"
+      ],
+      "BAT-01": [
+        "ARCH-007",
+        "ARCH-011"
+      ],
+      "BAT-03": [
+        "ARCH-007",
+        "ARCH-009"
+      ],
+      "BAT-06": [
+        "ARCH-007",
+        "ARCH-008",
+        "ARCH-009"
+      ],
+      "BAT-07": [
+        "ARCH-007"
+      ],
+      "BAT-08": [
+        "ARCH-007",
+        "ARCH-016"
+      ],
+      "RUN-04": [
+        "ARCH-007",
+        "ARCH-008"
+      ],
+      "CASE-07": [
+        "ARCH-008",
+        "ARCH-014"
+      ],
+      "CASE-12": [
+        "ARCH-008",
+        "ARCH-018"
+      ],
+      "BAT-02": [
+        "ARCH-009"
+      ],
+      "BAT-04": [
+        "ARCH-009"
+      ],
+      "DOC-01": [
+        "ARCH-010",
+        "ARCH-012"
+      ],
+      "DOC-04": [
+        "ARCH-010"
+      ],
+      "UI-02": [
+        "ARCH-010"
+      ],
+      "BG-03": [
+        "ARCH-010",
+        "ARCH-013"
+      ],
+      "IN-01": [
+        "ARCH-011",
+        "ARCH-013"
+      ],
+      "IN-02": [
+        "ARCH-011"
+      ],
+      "IN-03": [
+        "ARCH-011"
+      ],
+      "IN-05": [
+        "ARCH-011",
+        "ARCH-016"
+      ],
+      "UI-06": [
+        "ARCH-011"
+      ],
+      "DOC-03": [
+        "ARCH-012"
+      ],
+      "IN-06": [
+        "ARCH-012"
+      ],
+      "EXP-02": [
+        "ARCH-012"
+      ],
+      "EXP-06": [
+        "ARCH-012"
+      ],
+      "BG-02": [
+        "ARCH-013"
+      ],
+      "BG-04": [
+        "ARCH-013"
+      ],
+      "BG-05": [
+        "ARCH-013"
+      ],
+      "BG-06": [
+        "ARCH-013"
+      ],
+      "EXP-05": [
+        "ARCH-013",
+        "ARCH-017"
+      ],
+      "CASE-09": [
+        "ARCH-014"
+      ],
+      "CASE-11": [
+        "ARCH-014"
+      ],
+      "RET-02": [
+        "ARCH-014",
+        "ARCH-018"
+      ],
+      "TPL-02": [
+        "ARCH-015",
+        "ARCH-019"
+      ],
+      "TPL-04": [
+        "ARCH-015"
+      ],
+      "TPL-05": [
+        "ARCH-015"
+      ],
+      "CASE-08": [
+        "ARCH-016"
+      ],
+      "BG-07": [
+        "ARCH-016",
+        "ARCH-017"
+      ],
+      "EXT-01": [
+        "ARCH-016"
+      ],
+      "EXP-07": [
+        "ARCH-017"
+      ],
+      "UI-01": [
+        "ARCH-018"
+      ],
+      "UI-05": [
+        "ARCH-018"
+      ],
+      "CASE-10": [
+        "ARCH-018"
+      ],
+      "TPL-01": [
+        "ARCH-019"
+      ],
+      "TPL-09": [
+        "ARCH-019",
+        "ARCH-020"
+      ],
+      "EXP-04": [
+        "ARCH-019",
+        "ARCH-020"
+      ],
+      "RET-01": [
+        "ARCH-019"
+      ],
+      "RET-03": [
+        "ARCH-019"
+      ],
+      "TPL-08": [
+        "ARCH-020"
+      ]
+    },
+    "by_source_sha": {
+      "8989941b6fb5651564e32d11c4215b6a6d5a5209": [
+        "ARCH-001",
+        "ARCH-004",
+        "ARCH-006",
+        "ARCH-012",
+        "ARCH-016",
+        "ARCH-018",
+        "ARCH-019",
+        "ARCH-020"
+      ],
+      "c2f965d29022a42b3c32d6a4cb73aa8fd542329b": [
+        "ARCH-001",
+        "ARCH-002",
+        "ARCH-003",
+        "ARCH-004",
+        "ARCH-005",
+        "ARCH-006",
+        "ARCH-010",
+        "ARCH-011",
+        "ARCH-012",
+        "ARCH-015",
+        "ARCH-019",
+        "ARCH-020"
+      ],
+      "db0284879f75ce123b5d83cb6577a3cc7ad057da": [
+        "ARCH-001",
+        "ARCH-002",
+        "ARCH-003",
+        "ARCH-004",
+        "ARCH-005",
+        "ARCH-006",
+        "ARCH-007",
+        "ARCH-008",
+        "ARCH-009",
+        "ARCH-010",
+        "ARCH-011",
+        "ARCH-012",
+        "ARCH-013",
+        "ARCH-014",
+        "ARCH-016",
+        "ARCH-017",
+        "ARCH-018"
+      ],
+      "c23789882aabf18689c314c77c270ac4a8ae4729": [
+        "ARCH-007",
+        "ARCH-008"
+      ]
+    },
+    "by_priority": {
+      "P1": [
+        "ARCH-001",
+        "ARCH-002",
+        "ARCH-005",
+        "ARCH-006",
+        "ARCH-007",
+        "ARCH-008",
+        "ARCH-009",
+        "ARCH-011",
+        "ARCH-014",
+        "ARCH-015",
+        "ARCH-016",
+        "ARCH-017",
+        "ARCH-019",
+        "ARCH-020"
+      ],
+      "P0_CANDIDATE": [
+        "ARCH-003",
+        "ARCH-004",
+        "ARCH-010",
+        "ARCH-012",
+        "ARCH-013"
+      ],
+      "P2": [
+        "ARCH-018"
+      ]
+    },
+    "by_status": {
+      "PARTIAL": [
+        "ARCH-001",
+        "ARCH-006",
+        "ARCH-007",
+        "ARCH-008",
+        "ARCH-009",
+        "ARCH-010",
+        "ARCH-012",
+        "ARCH-013",
+        "ARCH-015",
+        "ARCH-016",
+        "ARCH-018",
+        "ARCH-019",
+        "ARCH-020"
+      ],
+      "VERIFIED": [
+        "ARCH-002",
+        "ARCH-003",
+        "ARCH-004",
+        "ARCH-005",
+        "ARCH-011",
+        "ARCH-014"
+      ],
+      "BLOCKED": [
+        "ARCH-017"
+      ]
+    }
+  },
+  "test_status": "NOT_RUN_THIS_ROUND"
+}
