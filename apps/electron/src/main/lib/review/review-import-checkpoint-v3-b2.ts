@@ -8,8 +8,8 @@
  */
 import { createHash, randomBytes } from 'node:crypto'
 import {
-  closeSync, existsSync, fsyncSync, mkdirSync, openSync, readFileSync,
-  renameSync, rmSync, statSync, writeFileSync,
+  closeSync, existsSync, fsyncSync, lstatSync, mkdirSync, openSync, readFileSync,
+  readdirSync, renameSync, rmSync, statSync, writeFileSync,
 } from 'node:fs'
 import { join } from 'node:path'
 import { getConfigDir } from '../config-paths'
@@ -20,6 +20,7 @@ import { decodeReviewB2Zip, type B2ZipLimits, type B2ZipFileReceipt } from './re
 const sha256 = (bytes: Uint8Array | string): string => createHash('sha256').update(bytes).digest('hex')
 const code = (s: string): never => { throw new Error('B2_ARCHIVE_' + s) }
 const idPattern = /^[A-Za-z0-9._:-]{1,128}$/
+const MAX_ARCHIVE_STORAGE_BYTES = 1024 * 1024 * 1024
 export interface B2ArchiveCheckpoint {
   schemaVersion: 'review-b2-archive/1'
   archiveId: string
@@ -55,6 +56,32 @@ export class ReviewB2ArchiveVault {
     if (!/^[a-f0-9]{40}$/.test(archiveId)) code('ID_INVALID')
     return join(this.baseDirectory,archiveId)
   }
+  private safeArchiveDirectory(archiveId: string): string {
+    const dir = this.directory(archiveId)
+    if (existsSync(this.baseDirectory) && !lstatSync(this.baseDirectory).isDirectory()) {
+      code('UNSAFE_ROOT')
+    }
+    if (existsSync(dir) && !lstatSync(dir).isDirectory()) code('UNSAFE_ARCHIVE_DIRECTORY')
+    return dir
+  }
+  private assertRegularFile(path: string): void {
+    const stat=lstatSync(path)
+    if (!stat.isFile() || stat.nlink !== 1) code('UNSAFE_ARCHIVE_FILE')
+  }
+  private usedBytes(): number {
+    if (!existsSync(this.baseDirectory)) return 0
+    if (!lstatSync(this.baseDirectory).isDirectory()) code('UNSAFE_ROOT')
+    let count=0
+    for (const record of readdirSync(this.baseDirectory,{withFileTypes:true})) {
+      if (!/^[a-f0-9]{40}$/.test(record.name) || !record.isDirectory()) continue
+      const archive=join(this.baseDirectory,record.name,'archive.zip')
+      if (!existsSync(archive)) continue
+      this.assertRegularFile(archive)
+      count+=statSync(archive).size
+      if (count>MAX_ARCHIVE_STORAGE_BYTES) code('CAPACITY_EXCEEDED')
+    }
+    return count
+  }
   private ensureOwner(ctx:B2MainContext, checkpoint:B2ArchiveCheckpoint):void {
     this.staging.assertStillGranted(ctx)
     if (checkpoint.ownerId!==ctx.ownerId || checkpoint.caseCandidateId!==ctx.caseCandidateId) {
@@ -63,9 +90,11 @@ export class ReviewB2ArchiveVault {
   }
   private readVerified(ctx: B2MainContext, archiveId: string): {checkpoint:B2ArchiveCheckpoint; bytes:Buffer} {
     this.staging.assertStillGranted(ctx)
-    const dir=this.directory(archiveId)
+    const dir=this.safeArchiveDirectory(archiveId)
     let checkpoint:B2ArchiveCheckpoint, bytes:Buffer
     try {
+      this.assertRegularFile(join(dir,'checkpoint.json'))
+      this.assertRegularFile(join(dir,'archive.zip'))
       checkpoint=JSON.parse(readFileSync(join(dir,'checkpoint.json'),'utf8')) as B2ArchiveCheckpoint
       bytes=readFileSync(join(dir,'archive.zip'))
     } catch { code('RECOVERY_REQUIRED') }
@@ -89,7 +118,7 @@ export class ReviewB2ArchiveVault {
     this.staging.assertStillGranted(ctx)
     const archiveId=this.id(ctx,input)
     const archiveHash=sha256(input.bytes)
-    const dir=this.directory(archiveId)
+    const dir=this.safeArchiveDirectory(archiveId)
     let checkpoint:B2ArchiveCheckpoint
     if (existsSync(join(dir,'checkpoint.json'))) {
       const old=this.readVerified(ctx,archiveId)
@@ -97,7 +126,9 @@ export class ReviewB2ArchiveVault {
       checkpoint=old.checkpoint
     } else {
       const decoded=decodeReviewB2Zip(input.bytes,limits)
+      if (this.usedBytes()+input.bytes.byteLength>MAX_ARCHIVE_STORAGE_BYTES) code('CAPACITY_EXCEEDED')
       mkdirSync(dir,{recursive:true,mode:0o700})
+      this.safeArchiveDirectory(archiveId)
       const lock=join(dir,'write.lock')
       let fd:number
       try { fd=openSync(lock,'wx',0o600) } catch { code('CHECKPOINT_LOCKED') }
