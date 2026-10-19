@@ -6,7 +6,7 @@
 import { describe, expect, test } from 'bun:test'
 import {
   REVIEW_C0_SCHEMA_VERSION, type Principal, type RunEvidenceIdentity,
-  type CanonicalPlan, type SourceIdentity,
+  type CanonicalPlan, type SourceIdentity, type CaseAggregateV2,
 } from '@profer/shared'
 import {
   ReviewB2StagingService, type B2MainContext,
@@ -76,6 +76,7 @@ async function scenario() {
     scope: { caseIds: [identity.caseCandidateId], actions: ['start-review'] },
   }
   let current = true
+  let currentCase: CaseAggregateV2 | null = null
   const authority: V3MainAuthority = {
     authorizeExecution: ({ principal: actor, run: proposedRun, senderKey }) => {
       if (!current || actor.principalId !== principal.principalId ||
@@ -83,7 +84,8 @@ async function scenario() {
         throw new Error('FIXTURE_MAIN_AUTH_REJECTED')
       }
     },
-    isCurrent: ({ lease }) => current && lease.caseId === source.caseId,
+    isCurrent: ({ lease }) => current && lease.caseId === source.caseId &&
+      (currentCase === null || currentSourceValidityBlockers(currentCase).length === 0),
   }
   const ownerJournal = memoryJournal()
   const eventJournal = memoryJournal()
@@ -102,6 +104,7 @@ async function scenario() {
     staging, candidate, parser, parsed, source, plan, run, principal,
     ownerJournal, eventJournal, authority, owners, events, lease, readCall,
     deny: () => { current = false },
+    setCaseSnapshot: (snapshot: CaseAggregateV2) => { currentCase = snapshot },
   }
 }
 describe('I1 A1+A2 with B1/B2 parser identity and C1 fail-closed boundaries', () => {
@@ -168,7 +171,7 @@ describe('I1 A1+A2 with B1/B2 parser identity and C1 fail-closed boundaries', ()
     }
     // C1 is read-only; Main port must actually re-read this result.
     expect(currentSourceValidityBlockers(staleCase as never)).toContain('evidence:confirmed-on-archived')
-    h.deny()
+    h.setCaseSnapshot(staleCase as unknown as CaseAggregateV2)
     await expect(h.events.guardedRead(h.readCall, async source => ({
       receiptId: 'after-source-retirement', actualSource: source, result: 'no',
     }))).rejects.toThrow()
