@@ -1,0 +1,90 @@
+{
+  "schema": "v3-integrator-i4-a19-os-fault/1",
+  "authority": {
+    "C_source_CR": "CR-A-R17-R19-SECURITY-SOURCE-R01 / APPROVED_SCOPED_TECHNICAL_MIGRATION_ONLY",
+    "C_source_response": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/144#issuecomment-6277472480",
+    "C_A18_signed": "ec880cd6b5bc6779095fcbdddb143b1034d751c5",
+    "C_B18_signed": "a74d513f3c990fe4b87401380a2eade8677b2163",
+    "C_B18_decision": "245024b392848f373c702716f3514b89bdd3856b"
+  },
+  "parent": {
+    "branch": "integration/v3-i4-b18-accepted-frozen",
+    "exactCommit": "a74d513f3c990fe4b87401380a2eade8677b2163"
+  },
+  "source": {
+    "branch": "Dev-A",
+    "pr": 143,
+    "exactCommit": "58aed24f05645159cdc06afd8448244e7fe9710a",
+    "sourceAonlyWorkflowGate": "3/3 completed/success"
+  },
+  "replay": {
+    "branch": "integration/v3-i4-a19-crosspid-faults-r01",
+    "firstCommit": "366d3f26dcecb19d7fa5864631266f2186854f09",
+    "objects": [
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-native-pi-crosspid-r19.worker.ts",
+        "gitBlob": "ffbb803a7e93e47488bcb7e97f0537258ff76f04",
+        "op": "add"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-native-pi-crosspid-r19.test.ts",
+        "gitBlob": "7855139e7bdf367f8ed023483c8905a59903ca27",
+        "op": "add"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-native-pi-revoke-r19.test.ts",
+        "gitBlob": "27f9d589b37f7560bc1945b5ba2a303f746436e3",
+        "op": "add"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-sdk-diskfault-r19.test.ts",
+        "gitBlob": "094698f65a93b47a5fa5cba5080132ea5e733547",
+        "op": "add"
+      }
+    ],
+    "sourceToTargetMatched": 4
+  },
+  "dependenciesOnFrozenParent": [
+    {
+      "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter.ts",
+      "sha": "cb80e050c7c8256d002f2c1315b3f3c388d47427"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-dispatch-fence.ts",
+      "sha": "d895feaed037260aad9b7502d6909b394678bc26"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-execution-turn-budget.ts",
+      "sha": "34d52ebb9716fd964aa3e9a82e7f3f5671d2e221"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.ts",
+      "sha": "c4eb67ff185ecd889864431a898bee77c352fc84"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-sdk-turn-bridge.ts",
+      "sha": "7937bd0b995ebdb5730399a761e58e2a329c52fe"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.ts",
+      "sha": "49b8d9270570a76f58f04d90c3bdc77ce6230a9b"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.ts",
+      "sha": "029419de63dd1974c262f59dc80fc8d9b559004d"
+    }
+  ],
+  "constraints": {
+    "noCownedFiles": true,
+    "noAProductionImport": true,
+    "noB19orR20": true,
+    "realExternalProvider": false,
+    "realElectronGateE": false,
+    "realSchoolIssuer": false,
+    "durableCWriteAuthority": false,
+    "readOnlyMainLease": "CONDITIONAL_NOT_ACTIVE",
+    "businessWriter": "DENIED"
+  },
+  "newExactGateO": "PENDING",
+  "CFinalI4A19EngineeringSignature": "PENDING"
+}
