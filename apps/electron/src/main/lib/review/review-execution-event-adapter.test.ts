@@ -157,6 +157,25 @@ describe('V3 A2 scoped execution proposals', () => {
     expect(h.adapter.pending()).toEqual([])
   })
 
+  it('A-PAUSE-04: a Host read pending across pause/resume cannot reuse the pre-pause grant', async () => {
+    const h=start()
+    let release!: (x: {receiptId:string;actualSource:typeof h.call.source;result:string})=>void
+    const hostPending=new Promise<{receiptId:string;actualSource:typeof h.call.source;result:string}>(
+      resolve=>{release=resolve})
+    const oldRead=h.adapter.guardedRead(h.call,async()=>hostPending)
+    h.owners.pause(h.call.sessionId)
+    const next=h.owners.resumePaused(h.call.sessionId,h.call.grantId,
+      h.call.senderKey,h.call.principal)
+    expect(next.grantId).not.toBe(h.call.grantId)
+    release({receiptId:'late-pre-pause-host-result',actualSource:h.call.source,result:'old'})
+    await expect(oldRead).rejects.toThrow()
+    expect(h.adapter.pending()).toEqual([])
+    const fresh=await h.adapter.guardedRead({...h.call,grantId:next.grantId},
+      async source=>({receiptId:'new-post-resume-host-result',actualSource:source,result:'new'}))
+    expect(fresh.delivery.event.sequence).toBe(1)
+    expect(fresh.result).toBe('new')
+  })
+
   it('A-TOOL-01: no cross-case or forged source, no arbitrary generic tool', async () => {
     const h = start()
     const fake = { ...h.call.source, documentVersionId: 'cross-case-version' }
