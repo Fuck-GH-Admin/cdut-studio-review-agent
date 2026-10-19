@@ -47,3 +47,15 @@
 - 每场记录机型和 OS、Electron/Preload 当前 SHA、脱敏屏幕录像、IPC 拒绝原因、Main 主窗口/frame 和 Owner epoch、Case state 前后 hash、PID、原件 sha256、测试结果；不可只写截图看起来正常。
 
 **结论截至文档创建**：真实的独立安装代码与 6 个回归测试已经提交；同 SHA GitHub Gate O 尚需完成，本地真实 Electron/学校/真人 UAT 仍未运行。本文件不得被当作 Gate E/L/P 签收。
+
+## 6. 完整 GitHub CI 最终独立签收（同 SHA）
+
+> 后置附录是实际完成后的事实记录；前述「创建时 PENDING」保留为可追溯的时间点快照，不覆盖原始 pending 证据。
+
+- C 工程最新 HEAD 再核 `5005ecd7a034d6e983fca5e377d3da751e5a8811`；相对已签 R01 `331519d...` Git compare **ahead 2 / behind 0 / 修改恰好 2 个 C-owned 文件**。
+- **PR CI** [39324903439](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39324903439) job `118308231212` `completed/success`：install、TS、package boundaries、built-in skin、Electron Main+Preload+Renderer builds、whole Bun 均 `success`。
+- 原始 CI log：**4138 pass / 5 OS skip / 0 fail（4143 tests，477 files）**，新 `C-MAIN-WIRE-R02 independently installed candidate read / formal write authorities` 下 **6/6 全部逐项 pass**：reader-only、writer-only、writer 撤销 reader 仍在、同对象 reader reinstall 拒绝、同对象 writer reinstall/CAS 拒绝、legacy installer 禁抢占。
+- Review Baseline CI `39324903425`、Review batch focused `39324903466`、D1 `39324903396`、D2 `39324903435` **4/4 completed/success**；合计 **5/5**。
+- 正式四线协议 C 唯一签署：`C-MAIN-WIRE-R02-FINAL-GATE-O / PASS_EXACT_SHA_5005ECD`，协调 commit `eb55adb23f1c79b854dbad8df98957053cf68a4a`。
+
+**工程结论**：C-MAIN-WIRE-R02 `Gate O=PASS_EXACT_SHA_SCOPED`。明确不是 `Electron Gate E` / `School L` / `Product P`，三个门禁分别 `NOT_RUN / BLOCKED_NO_AUTH / NOT_RUN`，发布仍 `NO_GO`；真实 B1 author vault 和 Main Owner grant 并未安装，正式 published Plan writer 仍缺 school issuer，生产默认 deny。
