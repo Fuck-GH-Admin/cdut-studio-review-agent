@@ -16,13 +16,19 @@ import { V3AProposalProducer } from './review-v3-execution-proposal-producer'
 class MemoryStore implements OwnerPersistence {
   value: string | null = null
   fail = false
+  failAfterCommit = false
   read() { return this.value }
   write(data: string) {
     if (this.fail) throw Object.assign(new Error('ENOSPC'),{code:'ENOSPC'})
     this.value=data
+    if(this.failAfterCommit) {
+      this.failAfterCommit=false
+      throw Object.assign(new Error('EIO after turn commit'),{code:'EIO'})
+    }
   }
 }
-function prepare(persistence: OwnerPersistence = new MemoryStore()) {
+function prepare(persistence: OwnerPersistence = new MemoryStore(),
+  ownerPersistence: OwnerPersistence = new MemoryStore()) {
   const hash='f'.repeat(64)
   const principal:Principal={
     source:'local',principalId:'main',sessionId:'window1',role:'reviewer',
@@ -48,7 +54,7 @@ function prepare(persistence: OwnerPersistence = new MemoryStore()) {
     }],
   }
   const authority={authorizeExecution:()=>{},isCurrent:()=>true}
-  const owners=new V3ReviewOwnerAdapter(new MemoryStore(),authority)
+  const owners=new V3ReviewOwnerAdapter(ownerPersistence,authority)
   const lease=owners.grant({
     principal,run,plan,sources:[source],sessionId:'private1',senderKey:'frame1',
     expiresAt:Date.now()+90_000,
@@ -118,7 +124,9 @@ describe('V3 A3 durable Main turn budget and A2 technical resume gate', () => {
     const dir=mkdtempSync(join(tmpdir(),'review-v3-turns-'))
     try{
       const file=join(dir,'turns.json')
-      const h=prepare(createFileOwnerPersistence(file))
+      const ownersPath=join(dir,'owner.json')
+      const h=prepare(createFileOwnerPersistence(file),
+        createFileOwnerPersistence(ownersPath))
       for(let i=0;i<7;i++)h.budget.recordCompletedTurn(h.call,'turn-'+(i+1))
       const next=new V3ATurnBudget(createFileOwnerPersistence(file),h.owners)
       expect(next.snapshot(h.lease).usedTurns).toBe(7)
@@ -127,11 +135,16 @@ describe('V3 A3 durable Main turn budget and A2 technical resume gate', () => {
       expect(()=>next.snapshot(h.lease)).toThrow()
       const reopened=new V3ATurnBudget(createFileOwnerPersistence(file),h.owners)
       expect(reopened.snapshot(h.lease).usedTurns).toBe(8)
-      const ownerAgain=new V3ReviewOwnerAdapter(new MemoryStore(),{
-        authorizeExecution:()=>{},isCurrent:()=>false,
-      })
-      expect(()=>ownerAgain.assertAuthorized(h.call.sessionId,h.call.grantId,
-        h.call.senderKey,h.principal,'review_submit_result')).toThrow()
+      const ownerAgain=new V3ReviewOwnerAdapter(
+        createFileOwnerPersistence(ownersPath),
+        {authorizeExecution:()=>{},isCurrent:()=>true},
+      )
+      expect(ownerAgain.get(h.call.sessionId)?.state).toBe('recovery-required')
+      const coldBudget=new V3ATurnBudget(createFileOwnerPersistence(file),ownerAgain)
+      expect(coldBudget.snapshot(h.lease).usedTurns).toBe(8)
+      expect(()=>coldBudget.recordCompletedTurn(h.call,'turn-9')).toThrow()
+      expect(ownerAgain.quarantineInterrupted()).toEqual([h.call.sessionId])
+      expect(coldBudget.snapshot(h.lease).usedTurns).toBe(8)
     }finally{rmSync(dir,{recursive:true,force:true})}
   })
   it('A3-TURN-04: ENOSPC does not consume a turn or claim Host budget exhaustion',()=>{
@@ -154,6 +167,19 @@ describe('V3 A3 durable Main turn budget and A2 technical resume gate', () => {
     })
     expect(()=>h.budget.recordCompletedTurn(h.call,'sdk-turn-25')).toThrow()
     expect(()=>h.budget.recordCompletedTurn(h.call,'')).toThrow()
+  })
+  it('A3-TURN-07: postcommit EIO reopens exactly one charged SDK turn, not two',()=>{
+    const store=new MemoryStore()
+    const h=prepare(store)
+    store.failAfterCommit=true
+    expect(()=>h.budget.recordCompletedTurn(h.call,'durable-turn1'))
+      .toThrow('EIO after turn commit')
+    expect(()=>h.budget.snapshot(h.lease)).toThrow()
+    const reloaded=new V3ATurnBudget(store,h.owners)
+    expect(reloaded.snapshot(h.lease).usedTurns).toBe(1)
+    expect(reloaded.recordCompletedTurn(h.call,'durable-turn1').usedTurns).toBe(1)
+    expect(reloaded.recordCompletedTurn(h.call,'durable-turn2').usedTurns).toBe(2)
+    expect(reloaded.snapshot(h.lease).usedTurns).toBe(2)
   })
   it('A3-TURN-05: forged grant, wrong tool and damaged budget fail closed',()=>{
     const h=prepare()
