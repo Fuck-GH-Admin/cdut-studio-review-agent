@@ -104,3 +104,11 @@ B 新增 `ReviewB2InputLedger` 与 `proposeB2MaterialCandidates`（详见 `B2-IN
 - C/ I 不得依据普通 SHA-256 原件及本地 journal hash 冒充有权签署人签名、学校制度或独立 Gold。
 
 **状态**：B 自有源码已提交，最新 B HEAD CI 仍需按真实 SHA 判断。I 可以准备隔离的 read-only handoff 合同测试；不能在新的 Gate O 通过之前将 R03 新代码作为 approved integrated slice。
+
+## R06｜B4 50 候选模板与原始政策能力验证分层
+
+Dev-B 新交付 `B4-50-OBLIGATION-COVERAGE-R02.md` 及 8 域 `B4-OBLIGATION-SOURCE-Gxx.json`、`B4-50-CHECK-SOURCE-COVERAGE-R02.csv`、`B4-50-ORIGINAL-MD-GIT-AUDIT-R02.csv` 和两组独立测试。固定 D4 历史 SHA `b68443b23293b4714e61a3b81383d3d3a56434fc`；50 套 workspace 共 3,875 条 Check 映射到历史 task/sourceBinding，0 个历史结构性孤立绑定；**G01 仍有 34 条未单独明示对象/全案 scope**。原文证据中 9 套有匹配的历史预期 Git Blob、1 套能观察 Git Blob 但无预期锁、40 套仅有原文 SHA256 元数据且无法从已记录的固定仓库原文路径完成本批独立字节核验。9 套 Git Blob 技术一致也不等于校规现行有效。
+
+对 C 的 `InstallPlan` policy provenance gate **仍然全体阻断**。不能用 `B4_WORKSPACE_BOUND`、`verification=content-checked`、目录 `SHA256` 声明、D4 合成 Pi 或本批 JSON 作为有权来源/现行校规/独立 Gold 证据；不得自动补齐 34 个对象或将 50 候选提升为 published。
+
+本批新增 B4 校验器仅提供离线候选档案防丢失/版本血缘/负例，不导入共享 types/IPC，也不写 CurrentCase、ReviewRun 或模板正式批准记录。I 可等新精确 B SHA CI 绿灯后读这些 `SOURCE_ONLY` 片段，C 负责正式 policy verifier/权限签出与独立 L/P Gate。
