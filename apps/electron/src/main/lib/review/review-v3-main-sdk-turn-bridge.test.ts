@@ -329,6 +329,116 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('Unresolved SDK Provider dispatch')
     expect(h.calls()).toBe(1)
   })
+  it('A4-R09-01: a fresh Run and fresh Owner session on same Case cannot bypass unresolved SDK call',()=>{
+    const h=fixture()
+    const first=h.dispatch.claim(h.call)
+    expect(first.dispatchId).toBeTruthy()
+    const laterRun={...h.run,runId:'different-run',attemptId:'new-attempt'}
+    const grant=h.owners.grant({
+      principal:h.principal,run:laterRun,plan:h.grant.planSnapshot!,
+      sources:[...h.grant.sourceIdentities],sessionId:'private-fresh',
+      senderKey:'main-frame-new',expiresAt:Date.now()+120_000,
+      permittedTools:['review_submit_result'],
+    })
+    const secondCall={
+      ...h.call,sessionId:grant.sessionId,grantId:grant.grantId,
+      senderKey:grant.senderKey,
+    }
+    expect(()=>h.dispatch.claim(secondCall)).toThrow(
+      'Unresolved SDK Provider dispatch on prior Run/Case',
+    )
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    expect(h.dispatch.unresolved(laterRun)).toBe(false)
+    expect(h.calls()).toBe(0)
+  })
+  it('A4-R09-02: independent Case may claim while previous Case unresolved',()=>{
+    const h=fixture()
+    h.dispatch.claim(h.call)
+    const principal:Principal={
+      ...h.principal,
+      scope:{...h.principal.scope,caseIds:['caseA','caseB']},
+    }
+    const laterRun={...h.run,runId:'run-other-case',caseId:'caseB',attemptId:'attempt-B'}
+    const grant=h.owners.grant({
+      principal,run:laterRun,plan:h.grant.planSnapshot!,
+      sources:h.grant.sourceIdentities.map(s=>({...s,caseId:'caseB'})),
+      sessionId:'private-caseB',senderKey:'frame-caseB',
+      expiresAt:Date.now()+120_000,
+      permittedTools:['review_submit_result'],
+    })
+    const claim=h.dispatch.claim({
+      ...h.call,sessionId:grant.sessionId,grantId:grant.grantId,
+      senderKey:grant.senderKey,principal,
+    })
+    expect(claim.run).toEqual(laterRun)
+    expect(h.dispatch.unresolved(laterRun)).toBe(true)
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+  })
+  it('A4-R09-03: cold reopen retains cross-Run Case fence',()=>{
+    const h=fixture()
+    h.dispatch.claim(h.call)
+    const opened=new V3ASDKDispatchFence(h.dispatchStore,h.owners)
+    const laterRun={...h.run,runId:'fresh-cold-run',attemptId:'fresh-cold-attempt'}
+    const grant=h.owners.grant({
+      principal:h.principal,run:laterRun,plan:h.grant.planSnapshot!,
+      sources:[...h.grant.sourceIdentities],sessionId:'fresh-cold-session',
+      senderKey:'fresh-main-frame',expiresAt:Date.now()+120_000,
+      permittedTools:['review_submit_result'],
+    })
+    expect(()=>opened.claim({
+      ...h.call,sessionId:grant.sessionId,grantId:grant.grantId,
+      senderKey:grant.senderKey,
+    })).toThrow('Unresolved SDK Provider dispatch on prior Run/Case')
+    expect(opened.unresolved(h.run)).toBe(true)
+  })
+  it('A4-R09-04: legacy unresolved intent without Case attribution quarantines every new Run',()=>{
+    const h=fixture()
+    h.dispatch.claim(h.call)
+    const envelope=JSON.parse(h.dispatchStore.raw!) as {
+      payload:{version:string;runs:Record<string,{
+        runHash:string
+        records:Array<{id:string;grantId:string;caseId?:string;
+          sessionId?:string;state:string}>}>}
+      sha256:string
+    }
+    const only=Object.values(envelope.payload.runs)[0]
+    expect(only).toBeDefined()
+    delete only!.records[0]!.caseId
+    delete only!.records[0]!.sessionId
+    envelope.sha256=createHash('sha256')
+      .update(JSON.stringify(envelope.payload)).digest('hex')
+    h.dispatchStore.raw=JSON.stringify(envelope)
+    const reopened=new V3ASDKDispatchFence(h.dispatchStore,h.owners)
+    const principal:Principal={
+      ...h.principal,scope:{...h.principal.scope,caseIds:['caseA','caseB']},
+    }
+    const runB={...h.run,runId:'runB',caseId:'caseB',attemptId:'attemptB'}
+    const lease=h.owners.grant({
+      principal,run:runB,plan:h.grant.planSnapshot!,
+      sources:h.grant.sourceIdentities.map(s=>({...s,caseId:'caseB'})),
+      sessionId:'legacy-fresh-case',senderKey:'new-frame',
+      expiresAt:Date.now()+120_000,permittedTools:['review_submit_result'],
+    })
+    expect(()=>reopened.claim({
+      ...h.call,sessionId:lease.sessionId,grantId:lease.grantId,
+      senderKey:lease.senderKey,principal,
+    })).toThrow('Unresolved SDK Provider dispatch on prior Run/Case')
+  })
+  it('A4-R09-05: half-present Case/session attribution is a corrupt SDK journal',()=>{
+    const h=fixture()
+    h.dispatch.claim(h.call)
+    const envelope=JSON.parse(h.dispatchStore.raw!) as {
+      payload:{runs:Record<string,{records:Array<{caseId?:string;sessionId?:string}>}>}
+      sha256:string
+    }
+    const chain=Object.values(envelope.payload.runs)[0]!
+    delete chain.records[0]!.sessionId
+    envelope.sha256=createHash('sha256')
+      .update(JSON.stringify(envelope.payload)).digest('hex')
+    h.dispatchStore.raw=JSON.stringify(envelope)
+    expect(()=>new V3ASDKDispatchFence(h.dispatchStore,h.owners))
+      .toThrow('SDK dispatch ledger invalid/duplicated')
+  })
   it('A4-R08-01: abort returns promptly but holds Owner SDK lock until hung Provider settles',async()=>{
     const h=fixture()
     const controller=new AbortController()
