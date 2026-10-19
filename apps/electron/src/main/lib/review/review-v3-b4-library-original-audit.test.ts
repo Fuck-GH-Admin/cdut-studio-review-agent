@@ -54,10 +54,12 @@ describe('B4 R11 Library original bytes evidence remains candidate-only and sour
       expect(item.policyApproval).toBe('NOT_VERIFIED')
       expect(item.independentGold).toBe('NOT_AUTHORIZED_OR_NOT_RUN')
       if(item.status==='MATCHED_LIBRARY_RAW_BYTES'){
+        if(item.observedLibrarySha256===null)throw new Error('B4_R11_MISSING_RAW_DIGEST')
         expect(sha256.test(item.observedLibrarySha256)).toBe(true)
         expect(item.observedLibrarySha256).toBe(item.claimedD4SourceSha256)
         expect(typeof item.libraryFilename).toBe('string')
       }else if(item.status==='HASH_MISMATCH_QUARANTINED'){
+        if(item.observedLibrarySha256===null)throw new Error('B4_R11_MISSING_RAW_DIGEST')
         expect(sha256.test(item.observedLibrarySha256)).toBe(true)
         expect(item.observedLibrarySha256).not.toBe(item.claimedD4SourceSha256)
         expect(typeof item.libraryFilename).toBe('string')
