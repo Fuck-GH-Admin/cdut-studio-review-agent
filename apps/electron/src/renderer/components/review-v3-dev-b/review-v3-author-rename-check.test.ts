@@ -20,7 +20,7 @@ describe('B1 R15 historical Check key rename and explicit owner-only confirmatio
   const original=fixture()
   const next=renameB1AuthorCheckKey(original,'check-old','check-next')
   expect(original.modules[0]!.checks[0]!.checkKey).toBe('check-old')
-  expect(next.modules[0]!.checks[0]).toEqual({...original.modules[0]!.checks[0],checkKey:'check-next'})
+  expect(next.modules[0]!.checks[0]).toEqual({...original.modules[0]!.checks[0]!,checkKey:'check-next'})
   expect(next.modules[1]!.checks[0]!.checkKey).toBe('other-check')
   expect(diffB1AuthorDocuments(original,next).deletedCheckKeys).toEqual(['check-old'])
   expect(diffB1AuthorDocuments(original,next).addedCheckKeys).toEqual(['check-next'])
