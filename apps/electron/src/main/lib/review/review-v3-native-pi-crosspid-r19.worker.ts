@@ -12,7 +12,8 @@ import {setTimeout as delay} from 'node:timers/promises'
 import {createAgentSession,ModelRuntime,SessionManager,SettingsManager} from '@earendil-works/pi-coding-agent'
 import {REVIEW_C0_SCHEMA_VERSION,type CanonicalPlan,type Principal,
   type RunEvidenceIdentity,type SourceIdentity} from '@profer/shared'
-import {createFileOwnerPersistence,V3ReviewOwnerAdapter} from './review-pi-owner-adapter'
+import {createFileOwnerPersistence,V3ReviewOwnerAdapter,
+  type OwnerPersistence} from './review-pi-owner-adapter'
 import {V3ASDKDispatchFence} from './review-v3-sdk-dispatch-fence'
 import {V3ATurnBudget} from './review-v3-execution-turn-budget'
 import {V3AProposalProducer} from './review-v3-execution-proposal-producer'
@@ -23,7 +24,7 @@ import {V3APiHttpSingleRequestEngine,
 } from './review-v3-pi-http-provider-engine'
 
 const [mode,rootArg]=process.argv.slice(2)
-if(!rootArg || !['crash','recover','late','quarantine'].includes(mode??'')){
+if(!rootArg || !['crash','recover','late','quarantine','postcommit-eio','precommit-enospc','reopen-postcommit','reopen-precommit'].includes(mode??'')){
   throw new Error('R19 worker requires an explicit crash/recover mode and test root')
 }
 const root=rootArg
@@ -329,6 +330,147 @@ function recover():void{
     dispatchLedgerSha256:disk.sha256,
   })+'\n')
 }
+
+/**
+ * R19-04 fault injection uses REAL disk CAS/fsync and independent OS PIDs.
+ * EIO/ENOSPC is injected deliberately at the boundary, not an OS-produced
+ * disk failure. The SDK callback is synthetic and MUST remain uninvoked.
+ * This checks fail-closed journal commit ambiguity, not real Provider entry.
+ */
+async function faultDispatch(postcommit:boolean):Promise<void>{
+  const caseId='r19-fault-case'
+  const {run,plan,source,principal}=scope(caseId)
+  const owners=new V3ReviewOwnerAdapter(ownerStore(),authority)
+  const lease=owners.grant({
+    principal,run,plan,sources:[source],sessionId:'fault-original',
+    senderKey:'fault-original-frame',expiresAt:Date.now()+120000,
+    permittedTools:['review_submit_result'],
+  })
+  const backing=createFileOwnerPersistence(paths.dispatch)
+  let attempted=0,committed=false,enteredSDK=0
+  const faultStore:OwnerPersistence={
+    read:()=>backing.read(),
+    write:()=>{throw Error('R19 unexpected non-CAS dispatch write')},
+    compareAndWrite:(expected,bytes)=>{
+      attempted++
+      if(!postcommit){
+        throw Object.assign(new Error('ENOSPC before durable intent'),{code:'ENOSPC'})
+      }
+      backing.compareAndWrite!(expected,bytes)
+      committed=true
+      throw Object.assign(new Error('EIO after durable intent commit'),{code:'EIO'})
+    },
+  }
+  const dispatch=new V3ASDKDispatchFence(faultStore,owners)
+  const turns=new V3ATurnBudget(createFileOwnerPersistence(paths.turns),owners)
+  const host={
+    read:async()=>{throw Error('unused')},
+    check:async()=>{throw Error('unused')},
+    terminal:async()=>{throw Error('unused')},
+  }
+  const proposals=new V3AProposalProducer(
+    createFileOwnerPersistence(paths.events),owners,host,turns,
+  )
+  const sdk={nextTurn:async()=>{
+    enteredSDK++
+    throw Error('R19 fault must fail before entering SDK')
+  }}
+  const bridge=new V3ASDKTurnBridge(owners,turns,proposals,sdk,dispatch)
+  let caught=''
+  try{await bridge.next(callOf(lease,principal),'direct')}
+  catch(error){caught=String(error)}
+  if(attempted!==1 || enteredSDK!==0 ||
+    !caught.includes(postcommit?'EIO after durable intent commit':'ENOSPC before durable intent')){
+    throw Error('R19 fault boundary failed: '+JSON.stringify({
+      attempted,enteredSDK,committed,caught,
+    }))
+  }
+  if(committed!==postcommit || existsSync(paths.dispatch)!==postcommit ||
+    existsSync(paths.turns) || existsSync(paths.events)){
+    throw Error('R19 unexpected journal side effect on injected write failure')
+  }
+  const ownerBytes=sealed(paths.owner)
+  const dispatchBytes=postcommit?sealed(paths.dispatch):null
+  const records=postcommit?
+    Object.values(dispatchBytes!.payload.runs as
+      Record<string,{records:{state:string;caseId:string}[]}>)
+      .flatMap(chain=>chain.records):[]
+  if(postcommit && (records.length!==1 ||
+    records[0]?.state!=='in-flight' || records[0]?.caseId!==caseId)){
+    throw Error('R19 postcommit durable dispatch is not unresolved')
+  }
+  process.stdout.write('R19_DISK_FAULT '+JSON.stringify({
+    pid:process.pid,kind:postcommit?'POSTCOMMIT_EIO':'PRECOMMIT_ENOSPC',
+    caught,attempted,enteredSDK,committed,
+    ownerLedgerSha256:ownerBytes.sha256,
+    dispatchLedgerSha256:dispatchBytes?.sha256??null,
+    run,sessionId:lease.sessionId,
+  })+'\n')
+}
+/** No previous PID token, global Actor, SDK callback or in-memory store survives. */
+function reopenFault(postcommit:boolean):void{
+  const owners=new V3ReviewOwnerAdapter(ownerStore(),authority)
+  const previous=owners.get('fault-original')
+  if(!previous || previous.state!=='recovery-required' ||
+    previous.processEpoch===owners.processEpoch){
+    throw Error('R19 recovery did not isolate a previous process epoch')
+  }
+  const quarantined=owners.quarantineInterrupted()
+  if(!quarantined.includes(previous.sessionId) ||
+    owners.get(previous.sessionId)?.state!=='recovery-required'){
+    throw Error('R19 cross-PID quarantine did not persist')
+  }
+  const dispatch=new V3ASDKDispatchFence(
+    createFileOwnerPersistence(paths.dispatch),owners,
+  )
+  const priorRun=previous.runEvidence!
+  const wasUnresolved=dispatch.unresolved(priorRun)
+  if(wasUnresolved!==postcommit)throw Error('R19 dispatch unknown outcome mismatch')
+  const turns=new V3ATurnBudget(createFileOwnerPersistence(paths.turns),owners)
+  if(turns.snapshot(previous).usedTurns!==0 || existsSync(paths.events)){
+    throw Error('R19 crash falsely counted a turn / proposal')
+  }
+  const {principal}=scope('r19-fault-case')
+  const newRun={...priorRun,runId:'fault-new-run',attemptId:'fault-new-attempt'}
+  const fresh=owners.grant({
+    principal,run:newRun,plan:previous.planSnapshot!,
+    sources:previous.sourceIdentities,sessionId:'fault-new-session',
+    senderKey:'fault-new-frame',expiresAt:Date.now()+120000,
+    permittedTools:['review_submit_result'],
+  })
+  let blocked=false
+  let newDispatchId=''
+  try{
+    const result=dispatch.claim(callOf(fresh,principal))
+    newDispatchId=result.dispatchId
+  }catch(error){
+    if(String(error).includes('Unresolved SDK Provider dispatch on prior Run/Case')){
+      blocked=true
+    }else throw error
+  }
+  if(blocked!==postcommit || (!postcommit && !newDispatchId)){
+    throw Error('R19 pre/postcommit recovery fence scope incorrect')
+  }
+  // A true UNKNOWN old provider side effect must prevent even a new
+  // Main-granted Run. A KNOWN precommit failure (zero physical SDK entries)
+  // can be explicitly reauthorized by a new PID; never silently retry.
+  const oldRecords=postcommit?Object.values(sealed(paths.dispatch).payload.runs as
+    Record<string,{records:{state:string}[]}>).flatMap(x=>x.records):[]
+  if(postcommit && oldRecords.at(-1)?.state!=='in-flight'){
+    throw Error('R19 postcommit intent was cleared by recovery')
+  }
+  process.stdout.write('R19_FAULT_RECOVERY '+JSON.stringify({
+    pid:process.pid,kind:postcommit?'POSTCOMMIT_EIO':'PRECOMMIT_ENOSPC',
+    quarantined,oldState:previous.state,
+    oldProcessEpoch:previous.processEpoch,newProcessEpoch:owners.processEpoch,
+    wasUnresolved,blocked,newDispatchId,usedTurns:turns.snapshot(previous).usedTurns,
+    originalState:oldRecords.at(-1)?.state??null,
+  })+'\n')
+}
 if(mode==='crash' || mode==='late')await crashOrLate()
 else if(mode==='quarantine')quarantineWhileOldAlive()
+else if(mode==='postcommit-eio')await faultDispatch(true)
+else if(mode==='precommit-enospc')await faultDispatch(false)
+else if(mode==='reopen-postcommit')reopenFault(true)
+else if(mode==='reopen-precommit')reopenFault(false)
 else recover()
