@@ -276,4 +276,38 @@ describe('B3 Main-scoped physical route session, no business writer',()=>{
     })
   })
 
+  test('R21-09 hidden second physical application in same Owner Case cannot trick auto route',()=>{
+    const f=mainFixture()
+    expect(f.staging.listScopedCandidateIds(owner)).toEqual([f.material.candidateId])
+    const grant=f.staging.grant(owner)
+    const hidden=f.staging.stage(owner,grant.token,{
+      requestId:'hidden-other-business',fileName:'hidden.txt',
+      physicalSourceKey:'native-hidden-application',
+      bytes:Buffer.from('different genuine business request'),
+      role:'application',subjectId:'different-subject',
+    })
+    expect(f.staging.listScopedCandidateIds(owner).sort()).toEqual(
+      [f.material.candidateId,hidden.candidateId].sort())
+    f.setTime(45000)
+    // The request still presents ONLY the first legitimate staged file.
+    expect(()=>f.session.evaluate(owner,f.input))
+      .toThrow('B3_ROUTING_INCOMPLETE_STAGED_SET')
+    expect(()=>f.session.evaluate(owner,{...f.input,
+      materialCandidates:[f.material,f.material],
+    })).toThrow('B3_ROUTING_INCOMPLETE_STAGED_SET')
+    // The missing source cannot be silently filtered out by a suggested
+    // high confidence and technical catalog match.
+    f.input.materialCandidates.push(hidden)
+    expect(f.session.evaluate(owner,f.input).status).toBe('needs-user-confirmation')
+  })
+  test('R21-10 incomplete or cross-owner inventory is not a reusable Main route capability',()=>{
+    const f=mainFixture()
+    expect(f.staging.listScopedCandidateIds(owner)).toEqual([f.material.candidateId])
+    expect(f.staging.listScopedCandidateIds({...owner,caseCandidateId:'other-case'})).toEqual([])
+    expect(f.staging.listScopedCandidateIds({...owner,ownerGeneration:3})).toEqual([])
+    f.staging.revoke(owner)
+    expect(()=>f.staging.listScopedCandidateIds(owner)).toThrow('B2_OWNER_INVALID_OR_REVOKED')
+    expect(()=>f.session.evaluate(owner,f.input)).toThrow('B2_OWNER_INVALID_OR_REVOKED')
+  })
+
 })
