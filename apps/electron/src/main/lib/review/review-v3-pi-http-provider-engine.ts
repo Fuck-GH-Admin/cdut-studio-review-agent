@@ -37,6 +37,9 @@ export interface V3APiHttpSingleRequestFactory {
   create(input: V3APhysicalTurnInput): Promise<V3APiHttpRequestSpec>
 }
 
+// A single SDK session must never be recycled for another ReviewRun/provider
+// claim, even if prompt() returned or failed. The instance is Main-private.
+const consumedPiAgents=new WeakSet<object>()
 const fail=(reason:string):never=>{
   throw new C0ContractError('RECOVERY_REQUIRED',reason)
 }
@@ -73,6 +76,13 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
       fail('Only exact trusted HTTPS Provider origin is allowed')
     }
     if(session.agent.state.isStreaming)fail('Pi SDK session already running')
+    if(consumedPiAgents.has(session.agent)) {
+      fail('Pi SDK review Agent session reused for another physical request')
+    }
+    if(typeof session.agent.streamFunction!=='function') {
+      fail('Pi SDK stream function is unavailable')
+    }
+    consumedPiAgents.add(session.agent)
     const previous=session.agent.streamFunction
     let invocations=0
     let httpCalls=0
