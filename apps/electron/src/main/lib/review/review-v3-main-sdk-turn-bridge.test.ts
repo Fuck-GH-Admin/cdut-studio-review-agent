@@ -194,6 +194,33 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     await expect(pending).rejects.toThrow()
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
   })
+  it('A3-SDK-11: pause/resume while SDK awaits fences old grant and does not charge',async()=>{
+    const h=fixture()
+    let resolve!:(out:V3ATurnHostOutcome)=>void
+    h.setNext(()=>new Promise<V3ATurnHostOutcome>(res=>{resolve=res}))
+    const pending=h.bridge.next(h.call,'hidden')
+    h.owners.pause(h.call.sessionId)
+    const grant=h.owners.resumePaused(h.call.sessionId,h.grant.grantId,
+      h.grant.senderKey,h.principal)
+    resolve({kind:'completed-turn',receiptId:'old-grant-late',run:h.run})
+    await expect(pending).rejects.toThrow()
+    expect(h.turns.snapshot(grant).usedTurns).toBe(0)
+    h.setNext(async run=>({kind:'completed-turn',receiptId:'new-grant-current',run}))
+    expect((await h.bridge.next({...h.call,grantId:grant.grantId},'hidden')).kind)
+      .toBe('recorded')
+    expect(h.turns.snapshot(grant).usedTurns).toBe(1)
+  })
+  it('A3-SDK-12: ENOSPC turn journal failure cannot acknowledge SDK progress',async()=>{
+    const h=fixture()
+    h.setNext(async run=>({kind:'completed-turn',receiptId:'stable-main-sdk-turn',run}))
+    h.turnStore.fail=true
+    await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('ENOSPC')
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
+    expect(h.producer.replayCandidates()).toEqual([])
+    h.turnStore.fail=false
+    expect((await h.bridge.next(h.call,'direct')).kind).toBe('recorded')
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(1)
+  })
   it('A3-SDK-08: exhausted-turn terminal failure can replay without running SDK again',async()=>{
     const h=fixture()
     for(let i=0;i<23;i++)await h.bridge.next(h.call,'direct')
