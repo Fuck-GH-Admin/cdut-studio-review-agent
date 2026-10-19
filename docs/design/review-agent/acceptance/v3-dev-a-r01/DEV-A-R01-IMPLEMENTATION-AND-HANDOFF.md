@@ -156,3 +156,18 @@ A1 unfinished: actual session manager and Orchestrator admission/stop; persist A
 - New tests: `A-PAUSE-01..05`, `A-PAUSE-V3-01..02`, `A3-V3-14`. They exercise rotate/revoke, Main denial, ENOSPC pause, disk-backed cold restart, late Host read after resume, same-run sequence across rotated grants, coverage reset, and contradictory Host status fail-closed.
 - Important **unclosed contract/flow**: a C2 Run consumer has not been wired. Before taking events across an Owner pause, C must define whether already-durable but not consumed events with the old grant are rejected or recognized by an independently durable pre-pause trust record. Do not infer that A local producer replays constitute C committed ACKs. A's conservative current-grant technical coverage intentionally does not rely on them.
 - A4-R02 Gate O: **PENDING_LATEST_EXACT_SHA_CI** (new tests committed, CI may be queued due GitHub runner). Gate E real Electron end-to-end and full OS two-PID lifecycle **NOT_RUN**; Gate L **BLOCKED_NO_AUTH**; Gate P **NOT_RUN**. File primitives/isolated synthetic Host tests are not a replacement for app integration.
+
+## A4-R03｜真实独立 PID 冷崩溃、Host-await 撤权验证（本批已提交，CI 未签收）
+
+- 本批来自协调 PR #145 已更新的 `C-I0-ACCEPT-001`（I0 限定验收）与 `C-I1-AUTH-001`（I1 技术-only GO），没有增加 A 的 C-exclusive 写权。I #147 已在旧已绿 A SHA `d8fd3e0e696caa1df7321c23c46e4f70a1f910f7` 上真正组装技术集成快照；本次 A4-R03 新 SHA 仍须独立 CI 验证，不能浮动替换 I1 锁定来源。
+- 新 `review-v3-execution-crashpid.test.ts`：真实独立 Bun child PID 创建带完整 frozen Run+Plan 的 Owner、Host-attested 单块读取 proposal，并在真实文件 fsync 落盘后 **SIGKILL** 退出，没有应用 shutdown callback。主进程重新打开 Owner 时分别复验 `active` 和 `paused` 两种死亡前状态：旧 capability 必须变 `recovery-required`，`quarantineInterrupted()` 持久记录；proposal 仅能被读作候选，无法借旧 grant 调用 Host/写新事件；普通聊天不能接管私有 Owner ID。
+- 新 `review-v3-execution-late-pid.test.ts`：真实独立 Bun child PID 在合成 Host read 中 await，parent Main-only Owner 复开同一物理账本并持久 `revoke()` 后发释放信号。子进程恢复 Host 时必须由于 Owner CAS/snapshot 已变而 `RECOVERY_REQUIRED`，事件文件不存在/无新 proposal，避免 await 期间撤权后迟到事件污染。不是单进程两个对象伪称双 PID。
+- 测试作用域：Linux/Bun 两个 OS PID、临时隔离磁盘文件、Main 授权/Host 只用**合成端口**。没有 Electron Renderer→Preload→Main 真实上下文，没有真实 Provider、外部学校权限、正式 C ReviewRun、可信 C ACK；**仅归属 Gate O 的 A4 可靠性负例，不代表 Gate E 通过**。真实多 PID app lifecycle、断电/fsync 崩溃点、满卷 EACCES/ENOSPC fault-volume 仍需集中实机验收。
+- 本轮未修改 `packages/shared/**`、Main IPC、preload、Case/Run/Decision writer，也没有自行批准 `CR-A-001` 的 Run 消费者。源 Producer 仍只输出 C 批准的 `review-v3-execution/1` proposal candidate。
+- 精确测试文件：`apps/electron/src/main/lib/review/review-v3-execution-crashpid.test.ts` 与 `review-v3-execution-late-pid.test.ts`。目标命令：`bun test --isolate apps/electron/src/main/lib/review/review-v3-execution-crashpid.test.ts apps/electron/src/main/lib/review/review-v3-execution-late-pid.test.ts`；随后 `bun run typecheck`、`bun run check:boundaries`、Main/Preload/Renderer build 和 `bun test --isolate` 全量。应保存 first failure、fix SHA、精确 workflow job/exit、PASS/FAIL/SKIP 数，不借旧 SHA。两个 PID Linux 专项测试在非 Linux 需明确记录 SKIP。
+- 本批首次源测试 SHA `cc7105e8b822542e18d051381fe442a9dc4deefd`（cold SIGKILL），第二次 `73936866d42be2348788c94153ee5b0a23293f7c`（跨 PID await revoke）。这些均仅为**已提交源代码**，观察时 PR CI 仍排队，新 HEAD Gate O=`PENDING_EXACT_SHA_CI`，E=`NOT_RUN`，L=`BLOCKED_NO_AUTH`，P=`NOT_RUN`。
+
+### Gate O 首败排障优先级
+1. 检查 SIGKILL 子进程在 GitHub Linux runner 中能否加载 TS module 的 file URL、完整写盘后产生 marker，不能把超时/异常当安全拒绝。
+2. 检查跨 PID await 测试是否在 `ready` 后先持久 revoke、再 signal Host release；只有子进程 **明确 `RECOVERY_REQUIRED`、0 proposal** 才 PASS。
+3. 如果 CI 排队不运行，不将 tests-committed 改成 tests-passed，也不要凭 C / I / 旧 A CI 继承新切片的 Gate O。实际 C2 消费端的 ACK replay、真实用户 Electron/Provider 全流程仍由对应边界验收。
