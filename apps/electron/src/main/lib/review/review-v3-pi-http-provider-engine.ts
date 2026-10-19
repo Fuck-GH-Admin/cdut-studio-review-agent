@@ -1,0 +1,144 @@
+/**
+ * A4-R10: version-pinned Pi SDK 0.86.1 HTTP Provider request witness.
+ *
+ * Actual upstream source facts:
+ * - coding-agent AgentSession.agent.streamFunction is public, called by the
+ *   agent loop before each model stream;
+ * - openai-completions/openai-responses pass options.fetch into OpenAI SDK,
+ *   use SDK maxRetries:0 and an outer retryProviderRequest(options.maxRetries);
+ * - onResponse is AFTER the HTTP response, not a provider turn receipt.
+ *
+ * Attach ONLY to a fresh, Main-owned, review-specific AgentSession before prompt.
+ * This witnesses exactly one OpenAI-compatible HTTPS/SSE transport fetch plus
+ * full SDK turn_end; it is NOT a universal Pi Provider receipt capability.
+ * No C business ReviewRun / IPC / Preload / Renderer entrypoint.
+ */
+import type {AgentSession} from '@earendil-works/pi-coding-agent'
+import type {FetchFunction} from '@earendil-works/pi-ai'
+import {C0ContractError} from '@profer/shared'
+import type {
+  V3ANativeProviderWitness,
+  V3APhysicalTurnInput,
+  V3ANativeSingleRequestEngine,
+} from './review-v3-sdk-physical-turn-port'
+
+type PiSession = Pick<AgentSession,'agent'|'prompt'|'subscribe'>
+
+export interface V3APiHttpRequestSpec {
+  /** Must be a new, non-running Pi review session, not a shared user agent. */
+  session: PiSession
+  /** Prompt constructed by trusted Main from frozen Case/Plan/Source. */
+  prompt: string
+  /** Main-approved HTTPS provider base origin; never derive from model text. */
+  trustedOrigin: string
+}
+
+export interface V3APiHttpSingleRequestFactory {
+  create(input: V3APhysicalTurnInput): Promise<V3APiHttpRequestSpec>
+}
+
+const fail=(reason:string):never=>{
+  throw new C0ContractError('RECOVERY_REQUIRED',reason)
+}
+const requestId=(response:Response):string|undefined=>{
+  const id=response.headers.get('x-request-id')
+  return id && id.trim() && id.trim().length<=512 ? id.trim():undefined
+}
+function getUrl(input:RequestInfo|URL):URL{
+  if(input instanceof Request)return new URL(input.url)
+  return new URL(String(input))
+}
+/**
+ * Not globally installed and does not patch pi node_modules. It binds the real
+ * pi-agent-core streamFunction in one dedicated session for one invocation.
+ * Other providers/transports must use a separately proven transport adapter.
+ */
+export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngine {
+  constructor(private readonly factory:V3APiHttpSingleRequestFactory){}
+
+  async invoke(input:V3APhysicalTurnInput,witness:V3ANativeProviderWitness):Promise<void>{
+    if(input.signal?.aborted)fail('Main aborted before Pi session creation')
+    const spec=await this.factory.create(input)
+    const session=spec.session
+    if(!session?.agent || typeof session.prompt!=='function' ||
+        typeof session.subscribe!=='function' ||
+        !spec.prompt?.trim() || !spec.trustedOrigin) {
+      fail('Trusted dedicated Pi SDK session/prompt unavailable')
+    }
+    let origin:URL
+    try{origin=new URL(spec.trustedOrigin)}
+    catch{return fail('Trusted Pi Provider HTTPS origin invalid')}
+    if(origin.protocol!=='https:' || origin.username || origin.password ||
+        origin.pathname!=='/' || origin.search || origin.hash) {
+      fail('Only exact trusted HTTPS Provider origin is allowed')
+    }
+    if(session.agent.state.isStreaming)fail('Pi SDK session already running')
+    const previous=session.agent.streamFunction
+    let invocations=0
+    let httpCalls=0
+    let physicalResponseId:string|undefined
+    let finishedTurn=false
+    let corrupted=false
+    const mark=():never=>{
+      corrupted=true
+      return fail('Pi SDK Provider request count/provenance violated')
+    }
+    const unsubscribe=session.subscribe(event=>{
+      if(event.type!=='turn_end')return
+      if(finishedTurn || event.message.role!=='assistant' ||
+          !['stop','length','toolUse'].includes(event.message.stopReason)){
+        corrupted=true
+        return
+      }
+      finishedTurn=true
+    })
+    try{
+      session.agent.streamFunction=(model,context,options)=>{
+        invocations++
+        if(invocations!==1 || input.signal?.aborted ||
+            !['openai-completions','openai-responses'].includes(model.api) ||
+            options?.transport==='websocket' ||
+            options?.transport==='websocket-cached'){
+          return mark()
+        }
+        const upstreamFetch:FetchFunction=options?.fetch??globalThis.fetch
+        const guardedFetch:FetchFunction=async (resource,init)=>{
+          httpCalls++
+          if(httpCalls!==1 || input.signal?.aborted)return mark()
+          let url:URL
+          try{url=getUrl(resource)}
+          catch{return mark()}
+          if(url.protocol!=='https:' || url.origin!==origin.origin)return mark()
+          const response=await upstreamFetch(resource,init)
+          if(!response.ok) return response
+          physicalResponseId=requestId(response)
+          if(!physicalResponseId)return mark()
+          // This is a server-issued HTTP response ID, NOT a model/assistant
+          // UUID and NOT proof that the stream has finished.
+          witness.requestStarted(physicalResponseId)
+          return response
+        }
+        return previous(model,context,{
+          ...options,
+          transport:'sse',
+          maxRetries:0,
+          fetch:guardedFetch,
+        })
+      }
+      await session.prompt(spec.prompt)
+      if(input.signal?.aborted)fail('Pi Provider aborted during model stream')
+      if(corrupted || invocations!==1 || httpCalls!==1 ||
+          !physicalResponseId || !finishedTurn) {
+        fail('Pi HTTP Provider request/stream completion provenance unavailable')
+      }
+      witness.requestFinished({
+        nativeRequestId:physicalResponseId,
+        nativeReceiptId:physicalResponseId,
+        status:'completed',
+      })
+    } finally {
+      session.agent.streamFunction=previous
+      unsubscribe()
+    }
+  }
+}
