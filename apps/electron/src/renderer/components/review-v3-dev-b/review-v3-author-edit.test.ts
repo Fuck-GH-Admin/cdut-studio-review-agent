@@ -4,7 +4,7 @@ import {
   type B1AuthorDocument,
 } from '../../../main/lib/review/review-template-plan-adapter-v3-b1'
 import {
-  b1AuthorHasUnsavedEdits, deleteB1AuthorIdentity, renameB1AuthorIdentity, renameB1TrialKey,
+  b1AuthorHasUnsavedEdits, deleteB1AuthorIdentity, nextB1AuthorId, renameB1AuthorIdentity, renameB1TrialKey,
 } from './review-v3-author-edit'
 import {
   exportB1AuthorCandidate, prepareB1TechnicalTrial,
@@ -93,6 +93,12 @@ describe('B1 51st author no-code editing integrity',()=>{
     expect('extra' in removed.targets[0]!.fieldValues).toBe(false)
     expect(compileReviewB1Plan(removed).canonicalPlan.bindings).toHaveLength(4)
     expect('extra' in draft.targets[0]!.fieldValues).toBe(true)
+  })
+  test('generated IDs never collide after removing a middle item or keeping old names',()=>{
+    expect(nextB1AuthorId(['field-1','field-3'],'field')).toBe('field-2')
+    expect(nextB1AuthorId(['check-1','check-2','check-4'],'check')).toBe('check-3')
+    expect(nextB1AuthorId(['target-1','target-2','target-3'],'target')).toBe('target-4')
+    expect(()=>nextB1AuthorId(['a'],'bad key')).toThrow('B1_AUTHOR_EDIT_ID_INVALID')
   })
   test('freezing requires exactly the persisted author snapshot; synthetic trial is independent',()=>{
     const first=author51()
