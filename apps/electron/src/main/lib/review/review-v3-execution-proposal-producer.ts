@@ -109,7 +109,10 @@ function load(raw: string | null): ProducerDisk {
     const receipts = new Map<string, string>()
     for (let i = 0; i < chain.records.length; ++i) {
       const proposal = chain.records[i]
-      if (!proposal || proposal.schemaVersion !== A_V3_PROPOSAL_SCHEMA ||
+      // Explicit early exit for indexed access under noUncheckedIndexedAccess.
+      // Never deserialize a partial persisted event as a valid proposal.
+      if (!proposal) return mismatch('V3 proposal chain missing indexed event')
+      if (proposal.schemaVersion !== A_V3_PROPOSAL_SCHEMA ||
           proposal.sequence !== i + 1 || keyOf(proposal.run) !== k ||
           sha(proposal.run) !== chain.runDigest ||
           !proposal.permissionGrantId ||
@@ -414,7 +417,7 @@ export class V3AProposalProducer {
     const last=chain.records[chain.records.length-1]
     if (!chain.terminal) return null
     if (!last || last.kind !== 'terminal') {
-      mismatch('Attempt declared sealed without technical terminal')
+      return mismatch('Attempt declared sealed without technical terminal')
     }
     return structuredClone(last)
   }
