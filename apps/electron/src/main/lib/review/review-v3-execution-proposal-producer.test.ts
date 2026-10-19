@@ -212,7 +212,17 @@ describe('Dev-A versioned CR-A-001 A-1 proposal producer (Main Host only)', () =
     expect(completed.sequence).toBe(3)
     expect(completed.terminal.status).toBe('completed-technical')
     expect(h.producer.replayCandidates()).toHaveLength(3)
-    await expect(h.producer.read(h.call)).rejects.toThrow()
+    // No Host access may occur after a persisted terminal, including replaying
+    // a formerly valid read receipt.
+    let physicalReads=0
+    let physicalChecks=0
+    h.host.read=async()=>{physicalReads++;throw Error('forbidden read after terminal')}
+    h.host.check=async()=>{physicalChecks++;throw Error('forbidden check after terminal')}
+    await expect(h.producer.read(h.call)).rejects.toThrow('Terminal proposal already sealed')
+    await expect(h.producer.check(terminalCall,tuple)).rejects.toThrow('Terminal proposal already sealed')
+    expect(physicalReads).toBe(0)
+    expect(physicalChecks).toBe(0)
+    expect(h.producer.replayCandidates()).toHaveLength(3)
   })
 
   it('A3-V3-13: 8/9 does not complete, 9/9 persisted exact Check tuples do', async () => {
