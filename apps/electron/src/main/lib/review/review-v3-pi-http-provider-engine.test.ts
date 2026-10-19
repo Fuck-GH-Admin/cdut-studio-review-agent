@@ -236,6 +236,55 @@ describe('A4-R10 pinned Pi 0.86.1 HTTP transport witness seam - in-memory Provid
     const h=makeHarness({sseChunks:['data: {"text":"data: [DONE]"}\n\n']})
     await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
   })
+  it('R15-01: Responses event header without a completed data frame fails closed',async()=>{
+    const h=makeHarness({
+      modelApi:'openai-responses',
+      sseChunks:['event: response.completed\n\n'],
+    })
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+    expect(h.counts().physicalCalls).toBe(1)
+  })
+  it('R15-02: Responses event with mismatched JSON type cannot attest completion',async()=>{
+    const h=makeHarness({
+      modelApi:'openai-responses',
+      sseChunks:['event: response.completed\ndata: {"type":"response.failed"}\n\n'],
+    })
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+  })
+  it('R15-03: unflushed response.completed data frame is not an SSE terminal',async()=>{
+    const h=makeHarness({
+      modelApi:'openai-responses',
+      sseChunks:['event: response.completed\ndata: {"type":"response.completed"}\n'],
+    })
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+  })
+  it('R15-04: completion marker without an SSE blank-frame delimiter is not trusted',async()=>{
+    const h=makeHarness({sseChunks:['data: [DONE]\n']})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+  })
+  it('R15-05: two terminal frames cannot certify one physical request',async()=>{
+    const h=makeHarness({sseChunks:['data: [DONE]\n\ndata: [DONE]\n\n']})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+  })
+  it('R15-06: multiline faux terminal is never equivalent to one SSE DONE event',async()=>{
+    const h=makeHarness({sseChunks:['data: [DONE]\ndata: extra\n\n']})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+  })
+  it('R15-07: Responses frame split across multiple HTTP chunks completes once',async()=>{
+    const h=makeHarness({modelApi:'openai-responses',sseChunks:[
+      'event: response.', 'completed\r\ndata: {"type":',
+      '"response.completed","response":{}}\r\n\r\n',
+    ]})
+    expect((await h.host.nextTurn(input)).kind).toBe('completed-turn')
+    expect(h.counts().physicalCalls).toBe(1)
+  })
+  it('R15-08: a completed Responses frame followed by a failed frame is corrupt',async()=>{
+    const h=makeHarness({modelApi:'openai-responses',sseChunks:[
+      'event: response.completed\ndata: {"type":"response.completed"}\n\n',
+      'event: response.failed\ndata: {"type":"response.failed"}\n\n',
+    ]})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+  })
   it('R13-01: Pi turn_end without agent_settled cannot certify Provider completion',async()=>{
     const h=makeHarness({noAgentSettled:true})
     await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
