@@ -12,7 +12,7 @@ const rows = lines.slice(1).map((line) =>
 describe('B-ASSET-01 preliminary: historical candidate index, not source obligation Gold', () => {
   test('all 50 cataloged candidates are distinct and still held, never published/CI-passed', () => {
     expect(rows).toHaveLength(50)
-    expect(new Set(rows.map((x) => x.templateId))).toHaveLength(50)
+    expect(new Set(rows.map((x) => x.templateId)).size).toBe(50)
     const count = Object.fromEntries(
       ['G01','G02','G03','G04','G05','G06','G07','G08'].map(
         (domain) => [domain, rows.filter((x) => x.domain === domain).length],
