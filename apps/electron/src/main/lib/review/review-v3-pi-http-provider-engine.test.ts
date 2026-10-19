@@ -36,6 +36,7 @@ function makeHarness(options?:{
   actualFetchOrigin?:string
   sends?:number
   modelApi?:string
+  requestedTransport?:'sse'|'websocket'
   stopReason?:'stop'|'error'|'toolUse'
   noTurn?:boolean
   failAfterFetch?:boolean
@@ -50,6 +51,8 @@ function makeHarness(options?:{
   let listener:((e:NativeTurnEvent)=>void)|undefined
   const original:StreamFn=async (_model,_context,streamOptions)=>{
     streamCalls++
+    expect(streamOptions?.transport).toBe('sse')
+    expect(streamOptions?.maxRetries).toBe(0)
     for(let i=0;i<(options?.sends??1);i++){
       await streamOptions!.fetch!(
         (options?.actualFetchOrigin??'https://approved.example')+'/v1/chat/completions',
@@ -70,7 +73,7 @@ function makeHarness(options?:{
       await session.agent.streamFunction(
         {...model,api:options?.modelApi??model.api} as never,
         {messages:[]} as never,
-        {transport:'sse',
+        {transport:options?.requestedTransport??'sse',
           fetch:async (_url,_init)=>{
             physicalCalls++
             const headers=new Headers()
@@ -162,6 +165,25 @@ describe('A4-R10 pinned Pi 0.86.1 HTTP transport witness seam - in-memory Provid
       'Main cancelled before native SDK call',
     )
     expect(h.counts().streamCalls).toBe(0)
+  })
+  it('R10-13: same Pi session cannot service another SDK physical dispatch',async()=>{
+    const h=makeHarness()
+    expect((await h.host.nextTurn(input)).kind).toBe('completed-turn')
+    await expect(h.host.nextTurn({
+      ...input,dispatchId:'another-durable-main-claim',
+    })).rejects.toThrow('session reused')
+    expect(h.counts().physicalCalls).toBe(1)
+  })
+  it('R10-14: existing WebSocket transport config must not silently become trusted HTTP',async()=>{
+    const h=makeHarness({requestedTransport:'websocket'})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('request count/provenance')
+    expect(h.counts().physicalCalls).toBe(0)
+  })
+  it('R10-15: x-request-id equal to Main dispatch intent is not independent evidence',async()=>{
+    const h=makeHarness({nativeReceipt:input.dispatchId})
+    await expect(h.host.nextTurn(input)).rejects.toThrow(
+      'Missing, duplicated or mismatched native Provider completion',
+    )
   })
   it('R10-12: multiple SDK turn_end messages fail closed',async()=>{
     const h=makeHarness()
