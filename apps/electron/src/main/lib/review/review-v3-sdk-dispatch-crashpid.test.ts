@@ -9,6 +9,7 @@ import {tmpdir} from 'node:os'
 import {join} from 'node:path'
 import {fileURLToPath,pathToFileURL} from 'node:url'
 import {describe,expect,it} from 'bun:test'
+import type {Principal} from '@profer/shared'
 import {
   createFileOwnerPersistence,V3ReviewOwnerAdapter,
 } from './review-pi-owner-adapter'
@@ -99,6 +100,26 @@ describe('A4-R08 durable pre-Provider SDK intent, actual SIGKILL process',()=>{
       expect(turns.snapshot(lease!).usedTurns).toBe(0)
       expect(existsSync(eventsFile)).toBe(false)
       expect(owners.quarantineInterrupted()).toEqual([record.sessionId])
+      expect(dispatch.unresolved(record.run)).toBe(true)
+      // R09-PID-02: a new Main Owner session and new attempt for the SAME
+      // Case cannot use a fresh Run ID to bypass the dead worker's intent.
+      const principal:Principal={
+        source:'local',principalId:'main-owner',role:'reviewer',
+        sessionId:'trusted-frame',assurance:'local-device',
+        scope:{caseIds:['case-a'],actions:['start-review']},
+      }
+      const newRun={...record.run,runId:'run2-after-crash',attemptId:'attempt2'}
+      const fresh=owners.grant({
+        principal,run:newRun,plan:lease!.planSnapshot!,
+        sources:[...lease!.sourceIdentities],
+        sessionId:'new-review-session',senderKey:'new-trusted-frame',
+        expiresAt:Date.now()+120000,permittedTools:['review_submit_result'],
+      })
+      expect(()=>dispatch.claim({
+        sessionId:fresh.sessionId,grantId:fresh.grantId,
+        senderKey:fresh.senderKey,principal,tool:'review_submit_result',
+      })).toThrow('Unresolved SDK Provider dispatch on prior Run/Case')
+      expect(dispatch.unresolved(newRun)).toBe(false)
       expect(dispatch.unresolved(record.run)).toBe(true)
     }finally{
       rmSync(root,{recursive:true,force:true})
