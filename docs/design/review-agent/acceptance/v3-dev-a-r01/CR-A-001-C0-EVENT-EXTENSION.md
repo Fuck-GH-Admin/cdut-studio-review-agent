@@ -1,6 +1,6 @@
 # CHANGE_REQUEST CR-A-001 — C0 execution proposal identity and status
 
-Status: PENDING_DEV_C_DECISION. Dev-A does not edit shared DTOs, Main IPC, Preload, Case/Run writer, or C0 manifest.
+Status: **APPROVED_SLICED_SPEC / IMPLEMENTATION_PENDING** per Dev-C governance decision in PR #145 (2026-10-19). A-0 existing C0 proposal-only and A-1 versioned envelope direction approved; A-2 Dev-A Host producer and C2 Main durable consumer still require separate implementation/validation; A-3 real Host/E/L/P gates remain blocked. Dev-A does not edit shared DTOs, Main IPC, Preload, Case/Run writer or frozen C0 manifest.
 
 ## Frozen input
 - C0_base_sha: 5682057c7232c914e72fdae525ce95fd33f32b53
@@ -48,3 +48,11 @@ Negative: forged source/hash/quote, cross-case; post-await revoke; old generatio
 Rollback: refuse proposed extended version, remain C0/1 read/check/stopped/failed proposals without false complete; revert schema/bridge to C0 SHA and discard non-ACKed expanded event versions after audit, never synthesize a Run.
 
 Requested decision: APPROVED / REJECTED / REQUEST_CHANGES by Dev-C. No response has been assumed.
+
+## Dev-C actual implementation/decision observed on 2026-10-19
+- Governance: #145, `CR-A-001 / APPROVED_SLICED_SPEC / IMPLEMENTATION_PENDING`; this replaces the original request's undecided language, but does **not** authorize Run writes or publish any ACK.
+- C-owned code #144 @ `395f74741d4dda8635cc46fbd3dc2fb3ed86841e`: `packages/shared/src/types/review-v3-execution.ts` and `apps/electron/src/main/lib/review/review-v3-execution-contract.ts` with validator. Version `review-v3-execution/1` is **separate** from frozen `review-c0/1`; C's exact source/version CI must be checked separately.
+- Approved envelope: full C0 RunEvidenceIdentity, `eventId=SHA-256(canonical-json(payload-without-eventId))`, monotonically contiguous attempt sequence, Main grantId, verified Host receipt, exact read SourceIdentity + block/full-document extent, Check tuple/status, or independent Host terminal. A event ID is a proposal ID, never C's persisted ACK.
+- Dev-A began `review-v3-execution-proposal-producer.ts` implementing the C-owned shape as a **local, non-authoritative structural producer** so that its original C0-based branch still compiles before C/I integration. Do not re-export it as a second shared DTO. During I/C code integration it must be statically compared to C's exported `V3ExecutionProposal` type and validated with C's real `validateV3ExecutionProposal` same-SHA tests.
+- The producer requires Main-owned Owner snapshots (Run + Plan) issued at grant, exact Host callback and after-await authorization. It preserves durable sequence and replay candidates (NOT acknowledged), rejects a repeated Host receipt with different body, and prevents `completed-technical` unless durable accepted Check×target outcomes and a physical read for every applicable sourceVersion exist. C must still independently verify the active grant, current Case/source, exact Host receipt registry, contiguous sequence and durable commit before returning any formal ACK.
+- **Do not treat approval of a specification as completion**: C2 Run writer/Host registry and all cross-line same-SHA Gate O/E remain not yet validated. Legacy C0 proposals remain separate, are not auto-upgraded, and never become trusted business checks.
