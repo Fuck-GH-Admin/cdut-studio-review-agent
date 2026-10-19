@@ -32,3 +32,9 @@
 3. Next C plan: finalize independently authorized B publication evidence entrypoint and C-owned Main trusted execution assembly hookup **only after source proof exists**; focus next on C-Tx cross-PID OS process and crash-safe single-aggregate CAS/Receipt, avoiding pretend production Gate E.
 
 **Current Gate E: NOT_RUN; Gate L: BLOCKED_NO_AUTH; Gate P: NOT_RUN; Release: NO_GO.**
+
+## First actual R05 Gate O failure and correction (preserved)
+
+Old exact C SHA `0f7a0de92d199772c55db77ddb49e64c12635636` **PR CI `39308572991` job `118251939823` failed full TypeScript check**, before boundaries/build/full Bun. Original log errors: `review-v3-main-plan-provenance.ts` TS2345 at 88, TS18048 at 106/113, TS2345 at 146, TS18048 at 147 (optional publication record/Plan not narrowed by a throw-only error helper). This is a real compiler failure, **not Gate O pass or malicious-source regression failing**; do not borrow Baseline/Batch successes from this SHA.
+
+Owner-only fix: `8273ff4669d4fe55065584b14513557468beecb8` adds explicit `return deny(...)` to the two rejected optional-record/Plan branches. Security behavior stays strict and fail closed, no trust callback or publication constraint weakened. **New exact SHA** PR CI `39308946455`, Baseline `39308946310`, Batch `39308946644`, D1 `39308946487`, D2 `39308946333` are started/not yet signed as Gate O. Wait for all same SHA workflow outcomes, full Bun and new R05 test lines before C signs.
