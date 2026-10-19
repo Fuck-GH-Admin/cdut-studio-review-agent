@@ -15,6 +15,7 @@ import {
   type OwnerPersistence, type V3OwnerLease, type V3ReviewOwnerAdapter,
 } from './review-pi-owner-adapter'
 import type { V3ReviewToolCall } from './review-execution-event-adapter'
+import { V3ExecutionCompletenessAdapter } from './review-execution-event-adapter-completeness'
 
 export const A_V3_PROPOSAL_SCHEMA = 'review-v3-execution/1' as const
 export type ATechnicalStatus =
@@ -137,8 +138,7 @@ export class V3AProposalProducer {
 
   constructor(private readonly persistence: OwnerPersistence,
     private readonly owners: V3ReviewOwnerAdapter,
-    private readonly host: AVerifiedExecutionHost,
-    private readonly coverage?: {completeTechnically(run: RunEvidenceIdentity): boolean}) {
+    private readonly host: AVerifiedExecutionHost) {
     if (!host || typeof host.read !== 'function' ||
         typeof host.check !== 'function' || typeof host.terminal !== 'function') {
       throw new C0ContractError('ACTOR_UNTRUSTED', 'Main Host result port is required')
@@ -174,6 +174,24 @@ export class V3AProposalProducer {
     assertC0RunEvidenceIdentity(lease.runEvidence)
     return { run: lease.runEvidence, plan: lease.planSnapshot }
   }
+  private completionFromDurableHostEvents(lease: V3OwnerLease): boolean {
+    const {run,plan} = this.pinned(lease)
+    const chain = this.disk.attempts[keyOf(run)]
+    if (!chain) return false
+    const coverage = new V3ExecutionCompletenessAdapter(plan,run)
+    const readVersions = new Set<string>()
+    for (const event of chain.records) {
+      if (event.kind === 'read') {
+        readVersions.add(event.read.source.documentVersionId)
+      } else if (event.kind === 'check') {
+        coverage.recordHostOutcome({...event.check,hostReceiptId:event.hostReceiptId})
+      }
+    }
+    const requiredVersions = new Set(plan.bindings.filter(
+      b => b.applicability === 'applicable').flatMap(b => b.sourceVersionIds))
+    return coverage.snapshot().state === 'technically-complete' &&
+      [...requiredVersions].every(versionId => readVersions.has(versionId))
+  }
   private append(call: V3ReviewToolCall, kind: ProposalPayload['kind'],
     receiptId: string, detail: {read?: {source:SourceIdentity; extent:'block'|'full-document'};
       check?: ACheckResult; terminal?: {status:ATechnicalStatus;reason?:string}}): AExecutionProposal {
@@ -208,6 +226,12 @@ export class V3AProposalProducer {
                 (detail.check.status === 'accepted' && matching[0]?.applicability !== 'applicable')) {
               throw new C0ContractError('RUN_IDENTITY_MISMATCH', 'Check not in frozen applicable Plan/Run')
             }
+          }
+          if (kind === 'terminal' &&
+              detail.terminal?.status === 'completed-technical' &&
+              !this.completionFromDurableHostEvents(lease)) {
+            throw new C0ContractError('CONTRACT_INVALID',
+              'Cannot complete without durable accepted Checks and physical source reads')
           }
           if (kind === 'read' && detail.read) {
             if (!run.sourceVersionIds.includes(detail.read.source.documentVersionId) ||
@@ -315,9 +339,10 @@ export class V3AProposalProducer {
     }
     const lease = this.owners.assertAuthorized(call.sessionId,call.grantId,
       call.senderKey,call.principal,call.tool)
-    const {run} = this.pinned(lease)
-    if (status === 'completed-technical' && !this.coverage?.completeTechnically(run)) {
-      throw new C0ContractError('CONTRACT_INVALID', 'Cannot claim unverified technical completion')
+    this.pinned(lease)
+    if (status === 'completed-technical' && !this.completionFromDurableHostEvents(lease)) {
+      throw new C0ContractError('CONTRACT_INVALID',
+        'Cannot claim incomplete Check/source technical coverage')
     }
     const receipt = await this.host.terminal(status)
     this.owners.assertAuthorized(call.sessionId,call.grantId,
