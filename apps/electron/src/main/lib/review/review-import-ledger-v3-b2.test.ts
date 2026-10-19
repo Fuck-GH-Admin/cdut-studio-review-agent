@@ -1,4 +1,5 @@
 import { afterAll, describe, expect, test } from 'bun:test'
+import { createHash } from 'node:crypto'
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -115,6 +116,47 @@ describe('B-IN-01/02: durable source-only ImportBatch input status ledger',()=>{
     expect(()=>reopened.decide(ctx,f.archiveId,2,'intent-3',{
       ...confirm(0,raw),
     },trusted)).toThrow('B2_LEDGER_ENTRY_NOT_CONFIRMABLE')
+  })
+  test('receipt replay detects impossible final file status even if an editor recomputes ledger hash',()=>{
+    const f=fixture('receipt-replay')
+    const first=f.ledger.getOrCreate(ctx,f.archiveId)
+    f.ledger.decide(ctx,f.archiveId,0,'accept-replay',confirm(0,first.files[0]!.rawSha256!),trusted)
+    const file=join(f.ledgerDir,f.archiveId,'ledger.json')
+    const original=readFileSync(file,'utf8')
+    const mutate=(apply:(x:any)=>void)=>{
+      const body=JSON.parse(original)
+      apply(body)
+      const {ledgerHash:_,...plain}=body
+      body.ledgerHash=createHash('sha256').update(JSON.stringify(plain)).digest('hex')
+      writeFileSync(file,JSON.stringify(body))
+      expect(()=>f.ledger.snapshot(ctx,f.archiveId)).toThrow('B2_LEDGER_CORRUPT')
+      writeFileSync(file,original)
+    }
+    mutate(x=>{x.files[0].status='needs-user-confirmation'})
+    mutate(x=>{x.files[2].status='accepted'})
+    mutate(x=>{x.files[0].reason='invented school confirmation'})
+    mutate(x=>{x.files[1].reason='silently changed ZIP rejected reason'})
+    expect(f.ledger.snapshot(ctx,f.archiveId).revision).toBe(1)
+  })
+  test('duplicated terminal mutation of one file cannot be accepted as a separate import decision',()=>{
+    const f=fixture('double-terminal')
+    const first=f.ledger.getOrCreate(ctx,f.archiveId)
+    f.ledger.decide(ctx,f.archiveId,0,'accept-once',confirm(0,first.files[0]!.rawSha256!),trusted)
+    const file=join(f.ledgerDir,f.archiveId,'ledger.json')
+    const body=JSON.parse(readFileSync(file,'utf8'))
+    const firstMutation=body.mutations[0]
+    const unsigned={
+      requestId:'accept-twice',payloadHash:firstMutation.payloadHash,
+      revision:2,previousHash:firstMutation.receiptHash,decidedBy:firstMutation.decidedBy,
+      ownerGeneration:1,entryIndex:0,status:'accepted',
+    }
+    const receiptHash=createHash('sha256').update(JSON.stringify(unsigned)).digest('hex')
+    body.mutations.push({...unsigned,receiptHash})
+    body.revision=2
+    const {ledgerHash:_,...plain}=body
+    body.ledgerHash=createHash('sha256').update(JSON.stringify(plain)).digest('hex')
+    writeFileSync(file,JSON.stringify(body))
+    expect(()=>f.ledger.snapshot(ctx,f.archiveId)).toThrow('B2_LEDGER_CORRUPT')
   })
   test('no cross-case, owner generation revoke and filesystem tamper allowed',()=>{
     const f=fixture('trust')

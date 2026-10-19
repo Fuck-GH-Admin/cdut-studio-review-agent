@@ -139,6 +139,7 @@ export class ReviewB2InputLedger {
     }
     let prev='GENESIS'
     const requestIds=new Set<string>()
+    const terminalByEntry=new Map<number,B2InputMutation>()
     for(let i=0;i<record.mutations.length;i++){
       const action=record.mutations[i]!
       if(!localId.test(action.requestId) || requestIds.has(action.requestId) ||
@@ -146,12 +147,34 @@ export class ReviewB2InputLedger {
          action.revision!==i+1 || action.previousHash!==prev ||
          !localId.test(action.decidedBy) || !Number.isSafeInteger(action.ownerGeneration) ||
          action.ownerGeneration<0 || !seen.has(action.entryIndex) ||
-         !['accepted','skipped','rejected'].includes(action.status)) fail('CORRUPT')
+         !['accepted','skipped','rejected'].includes(action.status) ||
+         originals.get(action.entryIndex)?.status!=='accepted' ||
+         terminalByEntry.has(action.entryIndex)) fail('CORRUPT')
+      terminalByEntry.set(action.entryIndex,action)
       // append-only receipt chain; wrong in-place edits cannot pass checksum
       const {receiptHash,...unsigned}=action
       if(hash(JSON.stringify(unsigned))!==receiptHash) fail('CORRUPT')
       requestIds.add(action.requestId)
       prev=receiptHash
+    }
+    // A digest alone cannot establish that the file snapshot is the replayed
+    // outcome of the append-only receipt chain. Check terminal transitions.
+    for(const item of record.files) {
+      const original=originals.get(item.index)!
+      const final=terminalByEntry.get(item.index)
+      if(original.status!=='accepted') {
+        if(final || item.reason!==(original.reason??null)) fail('CORRUPT')
+        continue
+      }
+      if(!final) {
+        if(item.status!=='needs-user-confirmation' ||
+           item.reason!==(original.reason??null)) fail('CORRUPT')
+      } else if(item.status!==final.status ||
+                (final.status==='accepted' &&
+                  item.reason!=='input-only, not applied to CurrentCase') ||
+                (final.status!=='accepted' && !item.reason?.trim())) {
+        fail('CORRUPT')
+      }
     }
     const {ledgerHash,...plain}=record
     if(record.ledgerHash!==digestLedger(plain)) fail('CORRUPT')

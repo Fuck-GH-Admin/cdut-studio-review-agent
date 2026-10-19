@@ -18,7 +18,7 @@ const sha256 = (bytes: Uint8Array | string): string => createHash('sha256').upda
 const PARSER_ID = 'review-v3-b2-production-document-service/1'
 const allowed = new Set(['.docx', '.xlsx', '.xls', '.pdf', '.png', '.jpg', '.jpeg', '.webp',
   '.gif', '.bmp', '.txt', '.md', '.csv', '.pptx'])
-export type B2Precision = 'pdf-rect' | 'sheet-cell' | 'paragraph' | 'file' | 'approximate'
+export type B2Precision = 'pdf-rect' | 'sheet-cell' | 'paragraph' | 'document-block' | 'file' | 'approximate'
 export type B2ParseStatus = 'parsed' | 'partial' | 'failed'
 export interface B2ParsedBlock {
   blockId: string
@@ -55,6 +55,103 @@ const hasRect = (b: { page?: number; bbox?: readonly number[] }): boolean =>
   Array.isArray(b.bbox) && b.bbox.length === 4 &&
   b.bbox.every((value) => typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= 1) &&
   b.bbox[0]! <= b.bbox[2]! && b.bbox[1]! <= b.bbox[3]!
+
+/** Geometry accepted from production document-service, never from Renderer. */
+export interface B2ParserBlockLocationInput {
+  id: string
+  kind: string
+  page?: number
+  bbox?: readonly number[]
+  readingOrder?: number
+  table?: { row?: number; column?: number; sheet?: string }
+}
+export interface B2LocatedBlock {
+  precision: B2Precision
+  location: SourceIdentity['location']
+  uncertainty?: string
+}
+
+/**
+ * C0 has no dedicated DOCX block/table locator kind. Its paragraph location
+ * is a transport envelope ONLY; the JSON locator explicitly identifies a
+ * Mammoth document-service block ordinal, not an OOXML paragraph or page.
+ * Parser fallback and unsupported coordinates must never become exact refs.
+ */
+export function locateB2ParserBlock(
+  ext: string, block: B2ParserBlockLocationInput, parserBlockIndex: number,
+  parseError?: string,
+): B2LocatedBlock {
+  if (!Number.isSafeInteger(parserBlockIndex) || parserBlockIndex < 0 ||
+      !block || typeof block.id !== 'string' || !block.id ||
+      typeof block.kind !== 'string') throw new Error('B2_SOURCE_BLOCK_LOCATOR_INVALID')
+  if (ext === '.pdf' && hasRect(block)) {
+    return { precision: 'pdf-rect', location: {
+      kind: 'pdf-rect', locator: JSON.stringify({
+        page: block.page, rect: block.bbox, readingOrder: block.readingOrder ?? null,
+      }),
+    }}
+  }
+  if (['.xlsx', '.xls'].includes(ext) &&
+      typeof block.table?.sheet === 'string' && block.table.sheet.trim() &&
+      Number.isSafeInteger(block.table.row) && block.table.row! >= 1 &&
+      Number.isSafeInteger(block.table.column) && block.table.column! >= 1) {
+    return { precision: 'sheet-cell', location: {
+      kind: 'sheet-cell', locator: JSON.stringify({
+        sheet: block.table.sheet, row: block.table.row, column: block.table.column,
+      }),
+    }}
+  }
+  if (ext === '.docx' && block.kind !== 'image' &&
+      !parseError?.includes('DOCX 结构解析失败')) {
+    const table = block.table
+    if (block.kind === 'table-cell' &&
+        (!Number.isSafeInteger(table?.row) || table!.row! < 0 ||
+         !Number.isSafeInteger(table?.column) || table!.column! < 0)) {
+      return {
+        precision: 'approximate',
+        location: { kind: 'file', locator: JSON.stringify({ originalBlockId: block.id }) },
+        uncertainty: 'DOCX table cell has no verified parser row/column',
+      }
+    }
+    return {
+      precision: 'document-block',
+      location: { kind: 'paragraph', locator: JSON.stringify({
+        locatorKind: block.kind === 'table-cell' ? 'docx-table-cell' : 'docx-parser-block',
+        parserBlockIndex, originalBlockId: block.id,
+        ...(block.kind === 'table-cell' ? {
+          table: { row: table!.row, column: table!.column },
+        } : {}),
+      }) },
+      uncertainty: 'DOCX parser block order; original OOXML paragraph/page position not verified',
+    }
+  }
+  if (['.txt', '.md', '.csv'].includes(ext)) {
+    return { precision: 'paragraph', location: {
+      kind: 'paragraph', locator: JSON.stringify({
+        blockIndex: parserBlockIndex, originalBlockId: block.id,
+      }),
+    }}
+  }
+  return {
+    precision: block.kind === 'image' ? 'file' : 'approximate',
+    location: { kind: 'file', locator: JSON.stringify({ originalBlockId: block.id }) },
+    uncertainty: block.kind === 'image'
+      ? 'Image or embedded image requires independent visual inspection; not OCR full-read'
+      : 'Parser did not prove page/cell geometry; file-level location only',
+  }
+}
+
+/** All proof-relevant parser geometry must participate in the parse revision. */
+export function fingerprintB2ParserGeometry(
+  inputFingerprint: string, parseStatus: B2ParseStatus,
+  blocks: ReadonlyArray<B2ParserBlockLocationInput & { text: string }>,
+  parseError?: string,
+): string {
+  return 'parse-' + sha256(JSON.stringify([
+    inputFingerprint, parseStatus, parseError ?? null,
+    blocks.map(b => [b.id, b.kind, b.text, b.table, b.bbox, b.page, b.readingOrder]),
+  ])).slice(0, 32)
+}
 
 export class ReviewB2SourceVersionAdapter {
   private parsed = new Map<string, Stored>()
@@ -109,9 +206,9 @@ export class ReviewB2SourceVersionAdapter {
       if (!['parsed', 'partial', 'failed'].includes(source.parseStatus)) {
         throw new Error('B2_SOURCE_PARSER_STATUS_INVALID')
       }
-      const parsedRevision = 'parse-' + sha256(JSON.stringify([inputFingerprint, source.parseStatus,
-        source.blocks.map((b) => [b.id, b.kind, b.text, b.table, b.bbox, b.page]),
-      ])).slice(0, 32)
+      const parsedRevision = fingerprintB2ParserGeometry(
+        inputFingerprint, source.parseStatus, source.blocks, source.parseError,
+      )
       const blocks: B2ParsedBlock[] = []
       const seen = new Set<string>()
       for (let index = 0; index < source.blocks.length; index += 1) {
@@ -124,40 +221,8 @@ export class ReviewB2SourceVersionAdapter {
         ])).slice(0, 40)
         if (seen.has(blockId)) throw new Error('B2_SOURCE_BLOCK_COLLISION')
         seen.add(blockId)
-        let location: SourceIdentity['location']
-        let precision: B2Precision
-        let uncertainty: string | undefined
-        if (ext === '.pdf' && hasRect(block)) {
-          precision = 'pdf-rect'
-          location = { kind: 'pdf-rect', locator: JSON.stringify({
-            page: block.page, rect: block.bbox, readingOrder: block.readingOrder ?? null,
-          }) }
-        } else if (['.xlsx', '.xls'].includes(ext) && block.table?.sheet &&
-                   Number.isSafeInteger(block.table.row) && Number.isSafeInteger(block.table.column)) {
-          precision = 'sheet-cell'
-          location = { kind: 'sheet-cell', locator: JSON.stringify({
-            sheet: block.table.sheet, row: block.table.row, column: block.table.column,
-          }) }
-        } else if (ext === '.docx' && block.kind !== 'image') {
-          precision = 'paragraph'
-          location = { kind: 'paragraph', locator: JSON.stringify({
-            paragraphIndex: index, originalBlockId: block.id,
-            table: block.table ?? null,
-          }) }
-        } else if (['.txt', '.md', '.csv'].includes(ext)) {
-          precision = 'paragraph'
-          location = { kind: 'paragraph', locator: JSON.stringify({
-            blockIndex: index, originalBlockId: block.id,
-          }) }
-        } else {
-          // PDF textual fallback's artificial page=1 does NOT prove a true page;
-          // and any image has no OCR content. Keep it visibly approximate.
-          precision = block.kind === 'image' ? 'file' : 'approximate'
-          location = { kind: 'file', locator: JSON.stringify({ originalBlockId: block.id }) }
-          uncertainty = block.kind === 'image'
-            ? 'Image or embedded image requires independent visual inspection; not OCR full-read'
-            : 'Parser did not prove page/cell geometry; file-level location only'
-        }
+        const { precision, location, uncertainty } =
+          locateB2ParserBlock(ext, block, index, source.parseError)
         blocks.push({
           blockId, text: block.text, kind: block.kind, precision, location,
           ...(uncertainty ? { uncertainty } : {}),

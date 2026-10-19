@@ -1,6 +1,8 @@
 import { describe, expect, test } from 'bun:test'
 import { ReviewB2StagingService, type B2MainContext } from './review-intake-adapter-v3-b2'
-import { ReviewB2SourceVersionAdapter } from './review-source-version-adapter-v3-b2'
+import {
+  ReviewB2SourceVersionAdapter, locateB2ParserBlock, fingerprintB2ParserGeometry,
+} from './review-source-version-adapter-v3-b2'
 
 const a: B2MainContext = { senderId: 20, frameId: 3, ownerId: 'main-user',
   ownerGeneration: 1, caseCandidateId: 'case-1' }
@@ -103,5 +105,54 @@ describe('B-DOC-01/02 source adapter consumes real original bytes and verified b
     store.revoke(a)
     expect(() => svc.sourceForBlock(a,mat.candidateId,parsed.parseRevision,parsed.blocks[0]!.blockId))
       .toThrow('B2_OWNER_INVALID_OR_REVOKED')
+  })
+})
+
+describe('B-DOC-03: exact geometries vs DOCX parser ordinals and fallback', () => {
+  test('DOCX paragraphs and table cells preserve parser order, never invent OOXML paragraph number', () => {
+    const paragraph=locateB2ParserBlock('.docx',{id:'blk-doc-001',kind:'paragraph'},0)
+    const cell=locateB2ParserBlock('.docx',{id:'blk-doc-002',kind:'table-cell',table:{row:2,column:1}},1)
+    expect(paragraph.precision).toBe('document-block')
+    expect(paragraph.location.kind).toBe('paragraph')
+    const p=JSON.parse(paragraph.location.locator)
+    expect(p).toMatchObject({locatorKind:'docx-parser-block',parserBlockIndex:0})
+    expect(p.paragraphIndex).toBeUndefined()
+    expect(paragraph.uncertainty).toContain('not verified')
+    expect(cell.precision).toBe('document-block')
+    expect(JSON.parse(cell.location.locator)).toMatchObject({
+      locatorKind:'docx-table-cell',parserBlockIndex:1,table:{row:2,column:1},
+    })
+  })
+  test('DOCX fallback and malformed table location fail to file-level, without false precision', () => {
+    const fallback=locateB2ParserBlock(
+      '.docx',{id:'blk-001',kind:'paragraph'},0,'DOCX 结构解析失败，已回退纯文本',
+    )
+    expect(fallback.precision).toBe('approximate')
+    expect(fallback.location.kind).toBe('file')
+    const missing=locateB2ParserBlock('.docx',{id:'blk-002',kind:'table-cell'},1)
+    expect(missing.precision).toBe('approximate')
+    expect(missing.uncertainty).toContain('no verified parser')
+    expect(locateB2ParserBlock('.docx',{id:'blk-003',kind:'image'},2).precision).toBe('file')
+  })
+  test('spreadsheet and PDF require valid real coordinates; parser revision binds reading order', () => {
+    const cell=locateB2ParserBlock('.xlsx',{
+      id:'c1',kind:'table-cell',table:{sheet:'Score',row:2,column:3},
+    },0)
+    expect(cell.precision).toBe('sheet-cell')
+    expect(JSON.parse(cell.location.locator)).toEqual({sheet:'Score',row:2,column:3})
+    const bad=locateB2ParserBlock('.xlsx',{
+      id:'c1',kind:'table-cell',table:{sheet:'Score',row:0,column:3},
+    },0)
+    expect(bad.precision).toBe('approximate')
+    const pdf={id:'pdf-b',kind:'paragraph',text:'Read me',
+      page:2,bbox:[0.1,0.2,0.4,0.5],readingOrder:1}
+    expect(locateB2ParserBlock('.pdf',pdf,0).precision).toBe('pdf-rect')
+    const rev=fingerprintB2ParserGeometry('hash','parsed',[pdf])
+    expect(fingerprintB2ParserGeometry('hash','parsed',[{...pdf,readingOrder:2}]))
+      .not.toBe(rev)
+    expect(fingerprintB2ParserGeometry('hash','partial',[pdf])).not.toBe(rev)
+    expect(fingerprintB2ParserGeometry('hash','parsed',[pdf],'parser warning')).not.toBe(rev)
+    expect(locateB2ParserBlock('.pdf',{...pdf,bbox:[0,0,2,2]},0).precision)
+      .toBe('approximate')
   })
 })
