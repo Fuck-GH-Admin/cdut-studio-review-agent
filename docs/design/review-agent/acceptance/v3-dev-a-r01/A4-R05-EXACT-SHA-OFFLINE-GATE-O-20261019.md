@@ -58,6 +58,7 @@ else
   run_gate a4-r05-targeted bun test --isolate --timeout 30000 \
     apps/electron/src/main/lib/review/review-v3-main-sdk-turn-bridge.test.ts \
     apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.test.ts \
+    apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.test.ts \
     apps/electron/src/main/lib/review/review-v3-execution-turn-budget.test.ts \
     apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.test.ts \
     apps/electron/src/main/lib/review/review-pi-owner-adapter.test.ts \
@@ -121,6 +122,16 @@ fi
 - Cold historical dispatch journal v1 need not be silently migrated: old unscoped `in-flight` or `late-denied` must fail closed globally for safety, whereas correctly scoped still-unresolved records must only quarantine their Case/Owner session. No deletes or guessed SDK turn receipts.
 - Two distinct SDK/provider physical dispatches may never settle against the same `receiptId` **even if Run/case/session differs**. The full ledger scan runs before completed turn budget mutation; the hash-sealed journal decoder independently rejects already persisted collisions. Normal independent Case with unique receipt must continue to work.
 - Exact #143 SHA Gate O must verify original Owner/proposal/24-turn tests as well as R09 negatives; `Gate E` still requires installed Pi native API/Provider and independent request/receipt observations. All R09 changes are A-owned technical ledger behavior, not C business recovery or formal Run ACK.
+
+### R10 pinned Pi 0.86.1 real streamFunction / HTTP transport Gate O and Gate E split
+
+- Test file `review-v3-pi-http-provider-engine.test.ts` **plus** `review-v3-main-sdk-turn-bridge.test.ts::A4-R10-16`; verify import/constructor smoke for actual installed `@earendil-works/pi-agent-core` `Agent.streamFunction` (R10-SDK-01). Other R10 cases use fake `AgentSession` and in-memory HTTP but the exact real upstream SDK method signature; **do not confuse with real Provider**.
+- R10-01..18 (test names may have gaps; select by exact file) require exactly one `openai-completions`/`openai-responses` HTTPS/SSE fetch, `options.maxRetries=0`, Main selected trusted fetch, server-supplied `x-request-id`, Pi SDK assistant `turn_end`, no second stream/fetch/session re-use, abort propagated to SDK and transport, strict origin and `redirect:error`.
+- Negative states include 503, absent request ID, stopReason=error, missing turn_end, opaque upstream fetch, WebSocket/other provider, mismatched HTTPS origin, stream disconnect after response, Main cancellation and identical Main dispatch/native request identity. No synthetic requestId fallback or guesswork.
+- `R10-16` verifies same callback travels through `V3APhysicalSDKTurnPort` + durable A4 claim/settle + A3 turn budget **with an in-memory fake Provider transport**; never count as Pi SDK/Provider Gate E.
+- **Exact deployed SDK probe:** lock and capture `@earendil-works/pi-coding-agent` / `pi-agent-core` / `pi-ai` dist/package versions `0.86.1`, Bun patch SHA, `AgentSession.agent.streamFunction` writable, OpenAI-compatible API `fetch` honored, Pi outer retry disabled by maxRetries=0. Compare behavior to pinned upstream Git tag `13cbf77df2396303013a41646bcfa77b4271ae56` and keep first failure.
+- **Real Gate E separate:** with actual authorized provider and real HTTPS+SSE network, save sanitized physical request count, `x-request-id` response value (redact if identity-sensitive), stream end/abort timings, native retries, proxy flow, correct no-resume on uncertain side effects, and existing V2 sanitizer/payload/PROXY compatibility. Successful mock `Response` and fake `turn_end` are NOT proof of this. No configured provider request ID → `BLOCKED_NATIVE_RECEIPT_API`, do not generate one.
+- C-owned integration/file lease remains **unapproved**. Read `A4-R10-PI-0861-TRANSPORT-EVIDENCE-AND-INTEGRATION-CR.md` before editing `pi-agent-adapter.ts`, `pi-review-agent-client.ts`, `review-ipc.ts`, Preload, shared DTO, or formal Run writer; leave them untouched on A branch.
 
 ## 5. 留存与报告格式
 
