@@ -82,6 +82,7 @@ describe('I1 frozen B1+B2+B3+A3+C1 read-only integration (synthetic Gate O)', ()
     expect(output.coverage.state).toBe('partial')
     expect(output.coverage.accepted).toHaveLength(1)
     expect(output.coverage.unknown).toHaveLength(1)
+    expect(output.subjectSourceBlockers).toHaveLength(1)
     expect(output.technicalPreviewEligible).toBe(false)
   })
   test('claimed accepted unknown target, fabricated staged source and wrong case fail closed', () => {
@@ -101,7 +102,7 @@ describe('I1 frozen B1+B2+B3+A3+C1 read-only integration (synthetic Gate O)', ()
       ...base, currentCaseSnapshot: { caseV2: { id: 'another-case' } } as CaseAggregateV2,
     })).toThrow('I1_CURRENT_CASE_SCOPE_MISMATCH')
   })
-  test('both exact Host diagnostic tuples can be technically complete but never produce a business write', () => {
+  test('both Host diagnostic tuples can be complete while cross-Subject evidence remains blocked', () => {
     const { staging, material } = stagingSample()
     const draft = author(material.documentVersionId, true)
     const output = inspectI1TechnicalPreview({
@@ -110,10 +111,29 @@ describe('I1 frozen B1+B2+B3+A3+C1 read-only integration (synthetic Gate O)', ()
       technicalObservations: [t1, t2],
     })
     expect(output.coverage.state).toBe('technically-complete')
-    expect(output.technicalPreviewEligible).toBe(true)
+    expect(output.subjectSourceBlockers).toHaveLength(1)
+    expect(output.technicalPreviewEligible).toBe(false)
     expect(output.canCommitRun).toBe(false)
     expect(output.canFinalizeDecision).toBe(false)
     expect(output.publicationAllowed).toBe(false)
+  })
+
+  test('single-Subject physical candidate permits only a valid technical preview, never a formal approval', () => {
+    const { staging, material } = stagingSample()
+    const draft = author(material.documentVersionId, true)
+    draft.targets = draft.targets.slice(0, 1)
+    draft.modules[0]!.checks[0]!.targetKeys = ['target-1']
+    const output = inspectI1TechnicalPreview({
+      mainContext: ctx, staging, candidateIds: [material.candidateId],
+      authorDraft: draft, proposedRun: runFor(draft, material.documentVersionId),
+      technicalObservations: [t1],
+    })
+    expect(output.coverage.state).toBe('technically-complete')
+    expect(output.subjectSourceBlockers).toEqual([])
+    expect(output.technicalPreviewEligible).toBe(true)
+    expect(output.canInstallPlan).toBe(false)
+    expect(output.canCommitRun).toBe(false)
+    expect(output.canFinalizeDecision).toBe(false)
   })
   test('C1 archived confirmed evidence blocks preview current-validity even when A3 diagnostic is complete', () => {
     const { staging, material } = stagingSample()
