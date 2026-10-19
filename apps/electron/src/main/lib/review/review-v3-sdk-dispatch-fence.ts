@@ -121,6 +121,12 @@ export class V3ASDKDispatchFence {
         if(last?.state==='in-flight'){
           reject('Unresolved SDK Provider dispatch: refusing automatic repeat')
         }
+        // A returned SDK result that Main could not authenticate is NOT proof
+        // the Provider performed no work. Pause/resume or signal cancellation
+        // must not silently authorize a second physical dispatch for this Run.
+        if(last?.state==='late-denied'){
+          reject('Late-denied SDK dispatch requires explicit recovery before repeat')
+        }
         const dispatchId=randomUUID()
         const updated:SDKDispatchChain={
           runHash:chain?.runHash??hash(JSON.stringify(run)),
@@ -198,10 +204,11 @@ export class V3ASDKDispatchFence {
     ]}
     this.persist({...this.disk,runs:{...this.disk.runs,[key(run)]:next}})
   }
-  /** Diagnostics only: never grant authority based on this summary. */
+  /** Both in-flight and late-denied still need recovery, never auto-retry. */
   unresolved(run:RunEvidenceIdentity):boolean{
     assertC0RunEvidenceIdentity(run)
     this.current()
-    return this.entry(run)?.records.at(-1)?.state==='in-flight'
+    const state=this.entry(run)?.records.at(-1)?.state
+    return state==='in-flight' || state==='late-denied'
   }
 }
