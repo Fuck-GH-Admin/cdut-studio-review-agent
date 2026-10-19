@@ -19,6 +19,9 @@ import type {V3ReviewToolCall} from './review-execution-event-adapter'
 interface SDKDispatchRecord {
   id: string
   grantId: string
+  /** New claims pin Case and Owner session. Old records lack scope and are quarantined globally while unresolved. */
+  caseId?: string
+  sessionId?: string
   state: 'in-flight' | 'settled' | 'late-denied'
   /** Main-only SDK receipt; a technical observation, never a C Run ACK. */
   receiptId?: string
@@ -56,6 +59,9 @@ function decode(raw:string|null):SDKDispatchDisk {
       const item=chain.records[i]
       if(!item || typeof item.id!=='string' || !item.id.trim() ||
         ids.has(item.id) || typeof item.grantId!=='string' || !item.grantId.trim() ||
+        (item.caseId===undefined)!==(item.sessionId===undefined) ||
+        (item.caseId!==undefined && (typeof item.caseId!=='string' || !item.caseId.trim())) ||
+        (item.sessionId!==undefined && (typeof item.sessionId!=='string' || !item.sessionId.trim())) ||
         !['in-flight','settled','late-denied'].includes(item.state) ||
         (item.state==='settled' && !item.receiptId?.trim()) ||
         (item.state!=='settled' && item.receiptId!==undefined) ||
@@ -127,6 +133,20 @@ export class V3ASDKDispatchFence {
       undefined,lease=>{
         this.current()
         const run=pinned(lease)
+        // Changing Run ID, attempt or Owner session never proves prior
+        // Provider work on this Case has stopped. Deny overlapping attempts.
+        // Legacy unresolved records lack Case attribution: quarantine globally.
+        for(const [otherKey,previous] of Object.entries(this.disk.runs)){
+          if(otherKey===key(run))continue
+          const lastOther=previous.records.at(-1)
+          if(lastOther && (lastOther.state==='in-flight' ||
+              lastOther.state==='late-denied') &&
+            (!lastOther.caseId || !lastOther.sessionId ||
+              lastOther.caseId===lease.caseId ||
+              lastOther.sessionId===lease.sessionId)){
+            reject('Unresolved SDK Provider dispatch on prior Run/Case; recovery required')
+          }
+        }
         const chain=this.entry(run)
         const last=chain?.records.at(-1)
         if(last?.state==='in-flight'){
@@ -142,7 +162,8 @@ export class V3ASDKDispatchFence {
         const updated:SDKDispatchChain={
           runHash:chain?.runHash??hash(JSON.stringify(run)),
           records:[...(chain?.records??[]),{
-            id:dispatchId,grantId:lease.grantId,state:'in-flight',
+            id:dispatchId,grantId:lease.grantId,
+            caseId:lease.caseId,sessionId:lease.sessionId,state:'in-flight',
           }],
         }
         this.persist({...this.disk,runs:{...this.disk.runs,[key(run)]:updated}})
