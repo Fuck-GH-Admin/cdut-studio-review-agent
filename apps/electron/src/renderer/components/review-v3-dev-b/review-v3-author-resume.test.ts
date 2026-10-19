@@ -120,7 +120,7 @@ describe('Dev-B R22 real persisted B1 author reopen, optimistic revision conflic
     expect(isB1PristineReopenLookup(draft,0,null,blank)).toBe(true)
     expect(isB1PristineReopenLookup({...draft,name:'Unsaved work'},0,null,blank)).toBe(false)
     expect(isB1PristineReopenLookup({...draft,purpose:'I have made edits'},0,null,blank)).toBe(false)
-    expect(isB1PristineReopenLookup({...draft,sources:doc.sources},0,null,blank)).toBe(false)
+    expect(isB1PristineReopenLookup({...draft,sources:[...doc.sources,{sourceId:'extra',kind:'user-declared',documentVersionId:'new-user-v1',locator:'unsaved',recordedBy:'local-author-unverified'}]},0,null,blank)).toBe(false)
     expect(isB1PristineReopenLookup({...draft,templateId:''},0,null,blank)).toBe(false)
     expect(isB1PristineReopenLookup({...draft,templateId:'bad id'},0,null,blank)).toBe(false)
     expect(isB1PristineReopenLookup(draft,1,null,blank)).toBe(false)
