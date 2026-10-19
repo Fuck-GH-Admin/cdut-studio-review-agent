@@ -208,7 +208,9 @@ export class V3ASDKDispatchFence {
         const chain=this.entry(run)
         const last=chain?.records.at(-1)
         if(!last || last.id!==id || last.grantId!==lease.grantId ||
-          last.state!=='in-flight')reject('SDK dispatch settlement has no current claim')
+          last.state!=='in-flight') {
+          return reject('SDK dispatch settlement has no current claim')
+        }
         this.assertUniqueReceipt(run,id,receiptId)
         const next:SDKDispatchChain={runHash:chain!.runHash,records:[
           ...chain!.records.slice(0,-1),
@@ -229,7 +231,7 @@ export class V3ASDKDispatchFence {
     const chain=this.entry(run)
     const last=chain?.records.at(-1)
     if(!last || last.id!==id || last.state!=='in-flight'){
-      reject('SDK denied outcome has no unresolved dispatch')
+      return reject('SDK denied outcome has no unresolved dispatch')
     }
     const next:SDKDispatchChain={runHash:chain!.runHash,records:[
       ...chain!.records.slice(0,-1),
