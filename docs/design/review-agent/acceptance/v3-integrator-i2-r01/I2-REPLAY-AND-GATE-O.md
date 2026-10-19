@@ -35,3 +35,14 @@ From C-approved A fixed SHA c0132ae06de8ae09ab021ac231ffd34756eb5990, selectivel
 New I-only review-v3-integration-i2-a-proposal.test.ts has 2 crossline synthetic Host/Main tests using actual A V3 proposal producer and C-owned executionProposalId/validateV3ExecutionProposal: read/check canonical digest, sequential events and Host receipt match; denial on grant revoke, tampered/rehashed physical read extent and conflicting replay. This is purely C validator invocation, NOT C2 durable Case/Run/ReadReceipt writer or authenticated real Provider. No B candidate policy publication.
 
 Gate O of the new A checkpoint is PENDING: full PR CI/typecheck/boundaries/build/Bun, D2, Baseline at exact SHA; the I1 original 19 tests and new two tests must be rerun on this same tree. Owner code defects go to Dev-A; I-only defects may be corrected in this Draft branch. Main read-only port lease CONDITIONAL_NOT_ACTIVE; business writer DENIED; Gate E/L/P unverified.
+
+
+## R03 selected B technical source-only batch (eight B blobs)
+
+Previous A selected checkpoint c9548e1310b9fd14046e21318b72051ba3bb42ef passed exact Gate O: PR CI 39297399475, D2 39297399458, Baseline 39297399618, full Bun 4181 pass / 5 OS-skip / 0 fail, prior I1 19 + I2 A/C two joint tests all PASS. Its green SHA is an immutable separate rollback point.
+
+From C-approved B #142 source pool bf88320e57b20ebc2023f27665c544ce2ba72ce4 selected EXACTLY eight B-owned source/test Git blobs: upgraded B2 Main-scoped staging (source and test), upgraded B3 conservative routing (source and test), B1 plan compiler (source), B1 author store (source and test), and read-only B4 physical original Git-byte verifier (source). Each Git path/source hash must match B fixed SHA; see JSON source lock. No wholesale B 72 paths, no B4 archive fixture/Gold claim, no C Main capability creation or C-owned production edits.
+
+I-only new source test verifies B2 Main-scoped physical bytes via actual B4 Git blob/sha256 byte verifier and B1 candidate Plan remain explicitly unpublished; negative byte tamper, forged Git pin, cross-owner scope, revocation and path traversal are rejected. Main is an explicitly synthetic trusted fixture, never a real Native picker/SchoolPort approval.
+
+NEW B exact SHA Gate O remains PENDING; expect original 19 I1 + 2 A/C + 2 B joint tests and full workspace CI. Any B-owned source defect returns to Dev-B; C Main/Preload/Case/Run/Plan writers remain immutable and denied. Gate E/L/P not satisfied.

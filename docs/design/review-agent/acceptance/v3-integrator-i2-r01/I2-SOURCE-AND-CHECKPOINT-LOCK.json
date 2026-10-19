@@ -162,7 +162,7 @@
     ]
   },
   "work": {
-    "stage": "A_SELECTED_9_BLOBS",
+    "stage": "B_SELECTED_8_BLOBS",
     "scope": "STAGED_ONLY",
     "newCContracts": [
       "review-v3-execution/1",
@@ -175,7 +175,7 @@
     "businessWriterLease": "DENIED"
   },
   "gates": {
-    "gateO": "PENDING_NEW_A_SLICE_EXACT_SHA_CI",
+    "gateO": "PENDING_NEW_B_SLICE_EXACT_SHA_CI",
     "gateE": "NOT_RUN",
     "gateL": "BLOCKED_NO_AUTH",
     "gateP": "NOT_RUN",
@@ -202,7 +202,7 @@
     "sourcePoolSha": "c0132ae06de8ae09ab021ac231ffd34756eb5990",
     "sourcePr": 143,
     "codeImportCommit": "15af72e2cb2fad35e853471dcc417220a9baabab",
-    "status": "CODE_COMMITTED_PENDING_EXACT_SHA_CI",
+    "status": "PASS_EXACT_SHA_SCOPED",
     "blobs": [
       {
         "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter.ts",
@@ -254,6 +254,67 @@
     "iJointCases": 2,
     "originalI1TestsMustPass": 19,
     "remainingA": "physical SDK / Pi HTTP / dispatch / native witness deferred",
-    "CbusinessWrites": 0
+    "CbusinessWrites": 0,
+    "gateO": {
+      "sha": "c9548e1310b9fd14046e21318b72051ba3bb42ef",
+      "prCI": 39297399475,
+      "d2": 39297399458,
+      "baseline": 39297399618,
+      "passed": 4181,
+      "skipped": 5,
+      "failed": 0,
+      "i1AndI2JointPassed": 21
+    }
+  },
+  "bSelectedSlice": {
+    "sourcePoolSha": "bf88320e57b20ebc2023f27665c544ce2ba72ce4",
+    "sourcePr": 142,
+    "status": "CODE_COMMITTED_PENDING_NEW_B_GATE_O",
+    "originalBlobs": [
+      {
+        "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+        "sourceBlob": "ebc5f82ca72870839bfa441e6752f81a088c601c",
+        "importedBlob": "ebc5f82ca72870839bfa441e6752f81a088c601c"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts",
+        "sourceBlob": "f0d0b442e59ab1dc75089b592a6f449481577383",
+        "importedBlob": "f0d0b442e59ab1dc75089b592a6f449481577383"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.ts",
+        "sourceBlob": "51a0fa003eb444e91ac246f2789b31db149f2456",
+        "importedBlob": "51a0fa003eb444e91ac246f2789b31db149f2456"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.test.ts",
+        "sourceBlob": "16fafce274b5fcbc86be27618d5001ecf2cd7baa",
+        "importedBlob": "16fafce274b5fcbc86be27618d5001ecf2cd7baa"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+        "sourceBlob": "974f0b0d127301ed71ad10df5ae64623ce378882",
+        "importedBlob": "974f0b0d127301ed71ad10df5ae64623ce378882"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts",
+        "sourceBlob": "37cf71a31a88754fc213322e389d4c96a5eeaf77",
+        "importedBlob": "37cf71a31a88754fc213322e389d4c96a5eeaf77"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts",
+        "sourceBlob": "b6f1c25079e6f54f7953ccb94b71679176fc912e",
+        "importedBlob": "b6f1c25079e6f54f7953ccb94b71679176fc912e"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-b4-original-byte-verifier.ts",
+        "sourceBlob": "02565186990a7e67e5e1e37fb83931384be9fffd",
+        "importedBlob": "02565186990a7e67e5e1e37fb83931384be9fffd"
+      }
+    ],
+    "iOwnedTest": "apps/electron/src/main/lib/review/review-v3-integration-i2-b-source.test.ts",
+    "iOwnedTests": 2,
+    "excluded": "B4 historical archive-source fixture-dependent tests and any official publishing/Gold; import pool 72 paths NOT wholesale",
+    "formalMainWrite": false
   }
 }

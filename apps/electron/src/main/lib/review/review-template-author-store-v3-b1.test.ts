@@ -64,6 +64,25 @@ describe('B1 Author revisions and immutable candidate vault', () => {
     expect(() => readB1AuthorRevision('author-tamper')).toThrow('B1_HISTORY_BROKEN')
     expect(() => saveB1AuthorRevision(original, 1, 'local-author')).toThrow('B1_HISTORY_BROKEN')
   })
+  test('freeze and draft save serialize through one author lock; busy writer cannot freeze stale candidate', () => {
+    const doc = synthetic('author-freeze-cas')
+    saveB1AuthorRevision(doc, 0, 'trusted-author')
+    const lock = join(home, 'review-v3-author-candidate', doc.templateId, 'author.lock')
+    writeFileSync(lock, 'another writer owns author revision CAS', { flag: 'wx' })
+    try {
+      expect(() => freezeB1Candidate(doc.templateId, 1)).toThrow()
+      expect(() => saveB1AuthorRevision(doc, 1, 'trusted-author')).toThrow()
+    } finally {
+      rmSync(lock, { force: true })
+    }
+    const version2 = saveB1AuthorRevision(doc, 1, 'trusted-author')
+    expect(version2.revision).toBe(2)
+    expect(() => freezeB1Candidate(doc.templateId, 1)).toThrow('B1_AUTHOR_REVISION_STALE')
+    const frozen = freezeB1Candidate(doc.templateId, 2)
+    expect(frozen.revision).toBe(2)
+    expect(frozen.status).toBe('candidate-held')
+  })
+
   test('candidate status cannot be elevated through author API', () => {
     const doc = synthetic('author-published-spoof')
     ;(doc as {status: string}).status = 'published'

@@ -3,7 +3,10 @@
  * Main must verify the referenced staged candidates and template authorization;
  * only Dev-C's Case command can apply a selected route.
  */
-import type { B2MaterialCandidate } from './review-intake-adapter-v3-b2'
+import { createHash } from 'node:crypto'
+import {
+  type B2MainContext, type B2MaterialCandidate, ReviewB2StagingService,
+} from './review-intake-adapter-v3-b2'
 
 export interface B3RouteSuggestion {
   templateId: string
@@ -90,5 +93,110 @@ export function planB3ConservativeRouting(input: B3RoutingInput): B3RouteState {
   return {status:'default-selected',remainingMs:0,
     chosen:{templateId:only.templateId,templateVersion:only.templateVersion},
     reason:'Technical route selected, not a Case/Run/administrative decision',
+  }
+}
+
+/** Catalog originates from the embedding Main; Renderer labels are never an ACL. */
+export interface B3ManualCatalogEntry {
+  templateId: string
+  templateVersion: string
+  name: string
+  availability: B3RouteSuggestion['availability']
+}
+/** Caller cannot inject a startedAtMs or reset a user cancellation via UI refresh. */
+export interface B3OwnerRouteInput extends Omit<
+  B3RoutingInput, 'startedAtMs' | 'nowMs' | 'userInterrupted'
+> {
+  userInterrupted?: boolean
+  manualCatalog: readonly B3ManualCatalogEntry[]
+}
+
+/**
+ * Main-only technical B3 route session. It never issues a Case command.
+ * Main must derive ctx from its current authenticated sender/window, supply
+ * its authorized catalog, and revalidate before any C business transaction.
+ */
+export class ReviewB3OwnerBoundRouteSession {
+  private scope: string | null = null
+  private sourceFingerprint: string | null = null
+  private startedAtMs = 0
+  private previousNowMs = 0
+  private interrupted = false
+  constructor(
+    private readonly staging: ReviewB2StagingService,
+    private readonly now: () => number = Date.now,
+  ) {}
+
+  evaluate(ctx: B2MainContext, input: B3OwnerRouteInput): B3RouteState {
+    this.staging.assertStillGranted(ctx)
+    const time = this.now()
+    if (!validTime(time) || (this.scope!==null && time<this.previousNowMs))
+      throw new Error('B3_ROUTING_CLOCK_INVALID')
+    if (!input || !Array.isArray(input.materialCandidates) ||
+        !Array.isArray(input.suggestions) || !Array.isArray(input.manualCatalog))
+      throw new Error('B3_ROUTING_INVALID')
+
+    const scope=JSON.stringify([
+      ctx.ownerId,ctx.ownerGeneration,ctx.caseCandidateId,ctx.senderId,ctx.frameId,
+    ])
+    if (this.scope!==null && scope!==this.scope)
+      throw new Error('B3_ROUTING_SESSION_SCOPE_CHANGED')
+
+    // An arbitrary Renderer candidate cannot impersonate a different staged
+    // physical document, role, Subject, version or owner generation.
+    const checked=input.materialCandidates.map(item=>{
+      const actual=this.staging.getCandidate(ctx,item.candidateId)
+      const keys: readonly (keyof B2MaterialCandidate)[]=[
+        'candidateId','caseCandidateId','materialId','documentVersionId',
+        'rawSha256','byteLength','fileName','physicalSourceKey','role',
+        'subjectId','ownerId','ownerGeneration','requestId','status',
+      ]
+      if(keys.some(key=>actual[key]!==item[key]))
+        throw new Error('B3_ROUTING_STAGED_IDENTITY_MISMATCH')
+      return actual
+    })
+    const catalogKeys=new Set<string>()
+    for(const option of input.manualCatalog) {
+      if(!option || !option.templateId?.trim() || !option.templateVersion?.trim() ||
+         !option.name?.trim() ||
+         !['authorized-for-technical-selection','candidate-held'].includes(option.availability))
+        throw new Error('B3_ROUTING_CATALOG_INVALID')
+      const id=JSON.stringify([option.templateId,option.templateVersion])
+      if(catalogKeys.has(id)) throw new Error('B3_ROUTING_CATALOG_DUPLICATE')
+      catalogKeys.add(id)
+    }
+    const fingerprint=createHash('sha256').update(JSON.stringify([
+      checked.map(({candidateId,documentVersionId,rawSha256,role,subjectId,ownerGeneration})=>
+        [candidateId,documentVersionId,rawSha256,role,subjectId,ownerGeneration]),
+      input.suggestions,
+      input.manualCatalog.map(({templateId,templateVersion,availability})=>
+        [templateId,templateVersion,availability]),
+    ])).digest('hex')
+    if(this.sourceFingerprint!==fingerprint) {
+      this.sourceFingerprint=fingerprint
+      this.startedAtMs=time
+    }
+    if(input.userInterrupted) this.interrupted=true
+    this.scope=scope
+    this.previousNowMs=time
+
+    if(input.userChoseTemplateId || input.userChoseTemplateVersion) {
+      const approved=input.manualCatalog.some(option=>
+        option.templateId===input.userChoseTemplateId &&
+        option.templateVersion===input.userChoseTemplateVersion &&
+        option.availability==='authorized-for-technical-selection')
+      if(!approved) return {
+        status:'needs-user-confirmation',
+        remainingMs:Math.max(0,20_000-(time-this.startedAtMs)),
+        reason:'Manual template not in the current technically allowed catalog',
+      }
+    }
+    const result=planB3ConservativeRouting({
+      ...input, materialCandidates:checked,
+      startedAtMs:this.startedAtMs,nowMs:time,
+      userInterrupted:this.interrupted,
+    })
+    this.staging.assertStillGranted(ctx)
+    return result
   }
 }
