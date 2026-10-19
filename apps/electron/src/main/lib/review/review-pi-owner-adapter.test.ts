@@ -153,6 +153,49 @@ describe('V3 A1 Main owner journal + isolation', () => {
     }
   })
 
+  it('A-FAIL-02: two Main instances cannot overwrite a stale Owner journal', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'review-v3-a-cas-'))
+    try {
+      const file = join(dir, 'owner-journal.json')
+      const persistence = createFileOwnerPersistence(file)
+      const { gate } = host()
+      const first = new V3ReviewOwnerAdapter(persistence, gate)
+      const stale = new V3ReviewOwnerAdapter(persistence, gate)
+      const one = fixtures()
+      const two = fixtures('case-b', 'review-session-b')
+      const lease = first.grant(one.request)
+      expect(() => stale.assertOrdinarySession(lease.sessionId)).toThrow()
+      expect(() => stale.grant(two.request)).toThrow()
+      expect(() => stale.get(lease.sessionId)).toThrow()
+      const reopened = new V3ReviewOwnerAdapter(persistence, gate)
+      expect(reopened.get(lease.sessionId)?.state).toBe('recovery-required')
+      expect(reopened.quarantineInterrupted()).toEqual([lease.sessionId])
+      expect(() => first.assertAuthorized(lease.sessionId, lease.grantId,
+        lease.senderKey, one.principal, 'review_read_documents', one.source)).toThrow()
+      expect(new V3ReviewOwnerAdapter(persistence, gate).get(lease.sessionId)?.state)
+        .toBe('recovery-required')
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
+  })
+
+  it('A-FAIL-02: contended inter-process lock is recovery-required, not a grant ACK', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'review-v3-a-locked-'))
+    try {
+      const file = join(dir, 'owner-journal.json')
+      const persistence = createFileOwnerPersistence(file)
+      const { gate } = host()
+      const hostA = new V3ReviewOwnerAdapter(persistence, gate)
+      writeFileSync(file + '.write-lock', 'other-process', { flag: 'wx' })
+      expect(() => hostA.grant(fixtures().request)).toThrow()
+      expect(hostA.get(fixtures().request.sessionId)).toBeNull()
+      rmSync(file + '.write-lock')
+      expect(hostA.grant(fixtures().request).state).toBe('active')
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
+  })
+
   it('A-TOOL-01: cross-case version/block/path and expired or revoked grant denied', () => {
     const h = host()
     const { request, source, principal } = fixtures()
