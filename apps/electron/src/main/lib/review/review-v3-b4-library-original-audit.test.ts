@@ -3,9 +3,29 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 const base='../../../../../../docs/design/review-agent/acceptance/v3-dev-b-r01/'
+type RecoveryRow={
+  domain:string
+  templateId:string
+  libraryFilename:string|null
+  observedLibrarySha256:string|null
+  claimedD4SourceSha256:string
+  status:string
+  publicationAllowed:boolean
+  policyApproval:string
+  independentGold:string
+}
+type RecoveryEvidence={
+  schemaVersion:string
+  sourceFrozenD4SHA:string
+  entries:RecoveryRow[]
+  historicalGitMatched:number
+  totalTechnicalRawMatches:number
+  totalCandidates:number
+  publicationAllowed:boolean
+}
 const evidence=JSON.parse(readFileSync(fileURLToPath(new URL(
   base+'B4-50-ORIGINAL-LIBRARY-RECOVERY-R11.json',import.meta.url,
-)),'utf8'))
+)),'utf8')) as RecoveryEvidence
 const historical=readFileSync(fileURLToPath(new URL(
   base+'B4-50-ORIGINAL-MD-BYTE-AUDIT-R03.csv',import.meta.url,
 )),'utf8').trim().split('\n').slice(1).map(line=>{
