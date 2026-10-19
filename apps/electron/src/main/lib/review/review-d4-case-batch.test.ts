@@ -3,7 +3,7 @@
  * archived predecessor and digest conflict. Only Electron's OS file dialog is mocked.
  */
 import { afterAll, describe, expect, mock, test } from 'bun:test'
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import JSZip from 'jszip'
@@ -19,7 +19,8 @@ mock.module('electron', () => ({ dialog: { showOpenDialog: async () => ({ cancel
 const { stageD4Intake, stageD4DroppedBytes, claimD4Intake, discardD4Intake } = await import('./review-d4-intake')
 const { assessD4CaseBatch, applyD4CaseBatch } = await import('./review-d4-case-batch')
 const { createD4ClientCase, listD4ClientTemplates } = await import('./review-d4-client')
-const { getCase, updateCase } = await import('./case-store')
+const { getCase, updateCase, getReviewCasesDir } = await import('./case-store')
+const { resolveD4MaterialTransition } = await import('./review-d4-material-resolution')
 const { readAggregate } = await import('./case-store-v2')
 const { correctObservation } = await import('./application-service')
 afterAll(() => rmSync(root, { recursive: true, force: true }))
@@ -263,6 +264,97 @@ describe('W1 post-case native append and revision-aware replacement', () => {
     expect(finished.documents[0]?.id).toBe(resumed.documents[0]?.id)
     // Skip warning from the first run must not be duplicated on resume.
     expect(finished.d4IntakeWarnings?.filter(item => item.originLabel === 'first-skipped.md')).toHaveLength(1)
+  })
+
+  test('explicit dual-active version resolution preserves originals, rejects tamper and stale revision', async () => {
+    selected = [path]
+    writeFileSync(path, '# 合成教室原件第一版\n允许校核，非学校签批')
+    const created = await create()
+    const initial = (await stageD4Intake(903))!
+    const firstCheck = assessD4CaseBatch({ caseId: created.id, token: initial.token, role: 'application' }, 903)
+    const first = await applyD4CaseBatch({
+      caseId: created.id, token: initial.token, role: 'application',
+      expectedRevision: firstCheck.expectedRevision, choices: [{ kind: 'append' }],
+      acknowledgeSkipped: false,
+    }, 903)
+    const oldId = first.documents[0]!.id
+    writeFileSync(path, '# 合成教室原件第二版\n内容不同，非学校签批')
+    const revised = (await stageD4Intake(903))!
+    const assessed = assessD4CaseBatch({ caseId: created.id, token: revised.token, role: 'application' }, 903)
+    const applied = await applyD4CaseBatch({
+      caseId: created.id, token: revised.token, role: 'application',
+      expectedRevision: assessed.expectedRevision, choices: [{ kind: 'replace', documentId: oldId }],
+      acknowledgeSkipped: false,
+    }, 903)
+    const newId = applied.documents[0]!.id
+    const former = getCase(created.id)!
+    const savedOld = former.archivedDocuments!.find(doc => doc.id === oldId)!
+    expect(former.documents.some(doc => doc.id === newId)).toBeTrue()
+    await updateCase(created.id, latest => ({
+      ...latest, documents: [...latest.documents, savedOld],
+      archivedDocuments: latest.archivedDocuments!.filter(doc => doc.id !== oldId),
+      d4MaterialTransitions: latest.d4MaterialTransitions!.map(t => t.newDocumentId === newId
+        ? { ...t, status: 'archive-failed' as const } : t),
+    }), { reason: 'W1 synthetic interrupted version archival' })
+    const before = getCase(created.id)!
+    await expect(resolveD4MaterialTransition({ caseId: created.id, newDocumentId: newId,
+      expectedRevision: before.revision! - 1, decision: 'keep-new' }))
+      .rejects.toThrow('D4_RESOLVE_STALE_REVISION')
+    const newFile = join(getReviewCasesDir(), created.id, 'source-docs', newId + '-' + applied.documents[0]!.fileName)
+    const oldFile = join(getReviewCasesDir(), created.id, 'source-docs', oldId + '-' + savedOld.fileName)
+    const originalBytes = readFileSync(newFile)
+    writeFileSync(newFile, Buffer.alloc(originalBytes.length, 88))
+    await expect(resolveD4MaterialTransition({ caseId: created.id, newDocumentId: newId,
+      expectedRevision: before.revision!, decision: 'keep-new' }))
+      .rejects.toThrow('D4_RESOLVE_HASH_MISMATCH')
+    expect(getCase(created.id)!.documents.map(doc => doc.id)).toContain(oldId)
+    writeFileSync(newFile, originalBytes)
+    const result = await resolveD4MaterialTransition({ caseId: created.id,
+      newDocumentId: newId, expectedRevision: before.revision!, decision: 'keep-new' })
+    expect(result.status).toBe('archived')
+    const after = getCase(created.id)!
+    expect(after.documents.map(doc => doc.id)).toEqual([newId])
+    expect(after.archivedDocuments?.some(doc => doc.id === oldId)).toBeTrue()
+    expect(existsSync(oldFile)).toBeTrue()
+    expect(existsSync(newFile)).toBeTrue()
+    await expect(resolveD4MaterialTransition({ caseId: created.id, newDocumentId: newId,
+      expectedRevision: after.revision!, decision: 'keep-old' }))
+      .rejects.toThrow('D4_RESOLVE_TRANSITION_NOT_ELIGIBLE')
+  })
+  test('reviewer may explicitly retain old version while preserving archived new original', async () => {
+    selected = [path]
+    writeFileSync(path, '# 第一版申请\n合成原件')
+    const created = await create()
+    const first = (await stageD4Intake(903))!
+    const firstAssessment = assessD4CaseBatch({ caseId: created.id, token: first.token, role: 'evidence' }, 903)
+    const saved = await applyD4CaseBatch({ caseId: created.id, token: first.token,
+      role: 'evidence', expectedRevision: firstAssessment.expectedRevision,
+      choices: [{ kind: 'append' }], acknowledgeSkipped: false }, 903)
+    const oldId = saved.documents[0]!.id
+    writeFileSync(path, '# 第二版申请\n合成原件二')
+    const second = (await stageD4Intake(903))!
+    const secondAssessment = assessD4CaseBatch({ caseId: created.id, token: second.token, role: 'evidence' }, 903)
+    const updated = await applyD4CaseBatch({ caseId: created.id, token: second.token,
+      role: 'evidence', expectedRevision: secondAssessment.expectedRevision,
+      choices: [{ kind: 'replace', documentId: oldId }], acknowledgeSkipped: false }, 903)
+    const newId = updated.documents[0]!.id
+    await updateCase(created.id, current => {
+      const old = current.archivedDocuments!.find(doc => doc.id === oldId)!
+      return { ...current, documents: [...current.documents, old],
+        archivedDocuments: current.archivedDocuments!.filter(doc => doc.id !== oldId),
+        d4MaterialTransitions: current.d4MaterialTransitions!.map(t =>
+          t.newDocumentId === newId ? { ...t, status: 'pending' as const } : t) }
+    }, { reason: 'W1 interrupted dual-active synthetic fixture' })
+    const now = getCase(created.id)!
+    const result = await resolveD4MaterialTransition({ caseId: created.id,
+      newDocumentId: newId, expectedRevision: now.revision!, decision: 'keep-old' })
+    expect(result.status).toBe('abandoned')
+    const final = getCase(created.id)!
+    expect(final.documents.map(doc => doc.id)).toEqual([oldId])
+    expect(final.archivedDocuments?.some(doc => doc.id === newId)).toBeTrue()
+    expect(final.d4MaterialTransitions?.find(t => t.newDocumentId === newId)?.status).toBe('abandoned')
+    const newFile = join(getReviewCasesDir(), created.id, 'source-docs', newId + '-' + updated.documents[0]!.fileName)
+    expect(existsSync(newFile)).toBeTrue()
   })
 
 })
