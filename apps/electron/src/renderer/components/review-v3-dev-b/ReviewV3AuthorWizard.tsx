@@ -9,7 +9,7 @@ import {
   type B1TrialValues,
 } from './review-v3-author-trial'
 import {
-  deleteB1AuthorIdentity, renameB1AuthorIdentity, renameB1TrialKey,
+  b1AuthorHasUnsavedEdits, deleteB1AuthorIdentity, renameB1AuthorIdentity, renameB1TrialKey,
 } from './review-v3-author-edit'
 import type {
   B1AuthorDocument, B1Field, B1Obligation, B1Source, B1Target,
@@ -53,7 +53,7 @@ export function ReviewV3AuthorWizard({
   const [savedSnapshot, setSavedSnapshot] = useState<B1AuthorDocument|null>(()=>
     initialRevision>0 && initialDraft ? structuredClone(initialDraft) : null)
   const editEpoch = useRef(0)
-  const isDirty = !savedSnapshot || JSON.stringify(savedSnapshot)!==JSON.stringify(draft)
+  const isDirty = b1AuthorHasUnsavedEdits(draft,savedSnapshot)
   const [preview, setPreview] = useState<ImmutablePlanDescriptorB1 | null>(null)
   const [trial, setTrial] = useState<B1TrialValues>({})
   const [busy, setBusy] = useState(false)
