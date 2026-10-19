@@ -69,7 +69,7 @@ const vaultDirectory=(id:string,sub?:'revisions'|'frozen',create=false):string=>
 }
 const safeRead=(path:string):string=>{
   const before=filesystemStat(path)
-  if(!before || !before.isFile() || before.nlink!==1)fail('AUTHOR_UNSAFE_FILE')
+  if(!before || !before.isFile() || before.nlink!==1)throw new Error('B1_AUTHOR_UNSAFE_FILE')
   const fd=openSync(path,constants.O_RDONLY | (constants.O_NOFOLLOW??0))
   try{
     const actual=fstatSync(fd)
