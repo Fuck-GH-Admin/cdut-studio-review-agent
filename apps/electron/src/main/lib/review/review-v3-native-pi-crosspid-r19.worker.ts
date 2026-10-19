@@ -8,6 +8,7 @@
 import {createHash} from 'node:crypto'
 import {existsSync,openSync,writeSync,fsyncSync,closeSync,readFileSync} from 'node:fs'
 import {join} from 'node:path'
+import {setTimeout as delay} from 'node:timers/promises'
 import {createAgentSession,ModelRuntime,SessionManager,SettingsManager} from '@earendil-works/pi-coding-agent'
 import {REVIEW_C0_SCHEMA_VERSION,type CanonicalPlan,type Principal,
   type RunEvidenceIdentity,type SourceIdentity} from '@profer/shared'
@@ -22,7 +23,7 @@ import {V3APiHttpSingleRequestEngine,
 } from './review-v3-pi-http-provider-engine'
 
 const [mode,rootArg]=process.argv.slice(2)
-if(!rootArg || !['crash','recover'].includes(mode??'')){
+if(!rootArg || !['crash','recover','late','quarantine'].includes(mode??'')){
   throw new Error('R19 worker requires an explicit crash/recover mode and test root')
 }
 const root=rootArg
@@ -30,6 +31,7 @@ const paths={
   owner:join(root,'owner.json'),dispatch:join(root,'dispatch.json'),
   turns:join(root,'budget.json'),events:join(root,'events.json'),
   marker:join(root,'physical-fetch-entered.json'),
+  release:join(root,'release-native-sdk'),
 }
 const authority={authorizeExecution:()=>{},isCurrent:()=>true}
 const sha=(s:string)=>createHash('sha256').update(s).digest('hex')
@@ -49,6 +51,32 @@ const durableMarker=(data:unknown)=>{
     fsyncSync(file)
   }finally{closeSync(file)}
 }
+const sseEvent=(type:string,content:Record<string,unknown>)=>
+  'event: '+type+'\n'+'data: '+JSON.stringify({type,...content})+'\n\n'
+const responseItem={
+  id:'msg_r19',type:'message',role:'assistant',status:'completed',
+  content:[{type:'output_text',text:'native offline',annotations:[]}],
+}
+const responseEnvelope={
+  id:'resp_r19',object:'response',created_at:1730000000,
+  status:'completed',model:'gpt-4o-mini',output:[responseItem],
+  usage:{input_tokens:1,output_tokens:2,total_tokens:3,
+    input_tokens_details:{cached_tokens:0},
+    output_tokens_details:{reasoning_tokens:0}},
+}
+const firstSse=sseEvent('response.created',{
+  response:{...responseEnvelope,status:'in_progress',output:[]},
+})
+const remainingSse=[
+  sseEvent('response.output_item.added',{output_index:0,item:{
+    id:'msg_r19',type:'message',role:'assistant',status:'in_progress',content:[],
+  }}),
+  sseEvent('response.output_text.delta',{
+    output_index:0,content_index:0,item_id:'msg_r19',delta:'native offline',
+  }),
+  sseEvent('response.output_item.done',{output_index:0,item:responseItem}),
+  sseEvent('response.completed',{response:responseEnvelope}),
+].join('')
 function scope(caseId:string){
   const run:RunEvidenceIdentity={
     schemaVersion:REVIEW_C0_SCHEMA_VERSION,caseId,
@@ -86,7 +114,7 @@ const ownerStore=()=>createFileOwnerPersistence(paths.owner)
 const dispatcher=(owner:V3ReviewOwnerAdapter)=>
   new V3ASDKDispatchFence(createFileOwnerPersistence(paths.dispatch),owner)
 
-async function crash():Promise<void>{
+async function crashOrLate():Promise<void>{
   const {run,plan,source,principal}=scope('r19-case')
   const owner=new V3ReviewOwnerAdapter(ownerStore(),authority)
   const lease=owner.grant({
@@ -105,6 +133,7 @@ async function crash():Promise<void>{
     createFileOwnerPersistence(paths.events),owner,host,turns,
   )
   let fetches=0
+  const nativeEvents:string[]=[]
   const factory:V3APiHttpSingleRequestFactory={
     async create(input){
       const runtime=await ModelRuntime.create({
@@ -120,6 +149,11 @@ async function crash():Promise<void>{
         cwd:root,agentDir:root,model,modelRuntime:runtime,
         sessionManager:SessionManager.inMemory(root),
         settingsManager:SettingsManager.inMemory(),noTools:'all',
+      })
+      session.subscribe(event=>{
+        if(['turn_start','turn_end','agent_end','agent_settled'].includes(event.type)){
+          nativeEvents.push(event.type)
+        }
       })
       const transportFetch:V3AHttpRequestTransport=async(resource,init)=>{
         fetches++
@@ -149,13 +183,10 @@ async function crash():Promise<void>{
         // consumption starts. The actual Pi SDK SSE stream triggers pull.
         let entered=false
         const body=new ReadableStream<Uint8Array>({
-          pull(controller){
+          async pull(controller){
             if(entered)return new Promise<void>(()=>{})
             entered=true
-            controller.enqueue(new TextEncoder().encode(
-              'event: response.created\n'+
-              'data: {"type":"response.created","response":{"id":"r19-incomplete","status":"in_progress"}}\n\n',
-            ))
+            controller.enqueue(new TextEncoder().encode(firstSse))
             durableMarker({
               pid:process.pid,run,sessionId:lease.sessionId,
               grantId:lease.grantId,processEpoch:owner.processEpoch,
@@ -163,7 +194,17 @@ async function crash():Promise<void>{
               dispatchSha256:sha(dispatchBytes),ownerSha256:sha(ownerBytes),
               observation:'real Pi SDK transportFetch and SSE body pull',
             })
-            // Deliberately no terminal or HTTP EOF: Main must SIGKILL.
+            if(mode==='late'){
+              const deadline=Date.now()+15000
+              while(!existsSync(paths.release)){
+                if(Date.now()>deadline)throw Error('R19 native release timeout')
+                await delay(25)
+              }
+              controller.enqueue(new TextEncoder().encode(remainingSse))
+              controller.close()
+              return
+            }
+            // R19-01: no terminal/EOF, parent must SIGKILL.
             return new Promise<void>(()=>{})
           },
         },{highWaterMark:0})
@@ -180,8 +221,44 @@ async function crash():Promise<void>{
   }
   const port=new V3APhysicalSDKTurnPort(new V3APiHttpSingleRequestEngine(factory))
   const bridge=new V3ASDKTurnBridge(owner,turns,proposals,port,dispatch)
+  if(mode==='late'){
+    let denial=''
+    try{await bridge.next(callOf(lease,principal),'direct')}
+    catch(error){denial=String(error)}
+    if(!denial.includes('Owner journal changed outside this process')){
+      throw Error('R19 old PID incorrectly accepted native SDK: '+denial)
+    }
+    const records=Object.values(sealed(paths.dispatch).payload.runs as
+      Record<string,{records:{state:string}[]}>).flatMap(x=>x.records)
+    if(records.at(-1)?.state!=='late-denied' ||
+        turns.snapshot(lease).usedTurns!==0 || existsSync(paths.events)){
+      throw Error('R19 late native callback changed technical evidence')
+    }
+    process.stdout.write('R19_LATE_DENIED '+JSON.stringify({
+      pid:process.pid,nativeEvents,denial,dispatchState:records.at(-1)?.state,
+      usedTurns:turns.snapshot(lease).usedTurns,
+      proposalExists:existsSync(paths.events),fetchCalls:fetches,
+    })+'\n')
+    return
+  }
   await bridge.next(callOf(lease,principal),'direct')
   throw Error('R19 crash worker unexpectedly settled without SIGKILL')
+}
+function quarantineWhileOldAlive():void{
+  const owner=new V3ReviewOwnerAdapter(ownerStore(),authority)
+  const previous=owner.get('r19-old-session')
+  if(!previous || previous.state!=='recovery-required'){
+    throw Error('R19 new PID must see old Owner recovery-required')
+  }
+  const quarantined=owner.quarantineInterrupted()
+  if(!quarantined.includes(previous.sessionId) ||
+    owner.get(previous.sessionId)?.state!=='recovery-required'){
+    throw Error('R19 cross-PID quarantine not durable')
+  }
+  process.stdout.write('R19_QUARANTINED '+JSON.stringify({
+    pid:process.pid,oldProcessEpoch:previous.processEpoch,
+    newProcessEpoch:owner.processEpoch,quarantined,
+  })+'\n')
 }
 function recover():void{
   const owner=new V3ReviewOwnerAdapter(ownerStore(),authority)
@@ -252,5 +329,6 @@ function recover():void{
     dispatchLedgerSha256:disk.sha256,
   })+'\n')
 }
-if(mode==='crash')await crash()
+if(mode==='crash' || mode==='late')await crashOrLate()
+else if(mode==='quarantine')quarantineWhileOldAlive()
 else recover()
