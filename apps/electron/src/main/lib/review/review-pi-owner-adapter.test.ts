@@ -1,7 +1,10 @@
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { describe, expect, it } from 'bun:test'
 import { C0ContractError, REVIEW_C0_SCHEMA_VERSION, type Principal, type RunEvidenceIdentity, type SourceIdentity, type CanonicalPlan } from '@profer/shared'
 import {
-  V3ReviewOwnerAdapter, type OwnerPersistence, type V3MainAuthority,
+  V3ReviewOwnerAdapter, createFileOwnerPersistence, type OwnerPersistence, type V3MainAuthority,
   type V3OwnerGrantRequest,
 } from './review-pi-owner-adapter'
 
@@ -124,6 +127,30 @@ describe('V3 A1 Main owner journal + isolation', () => {
     const restarted = new V3ReviewOwnerAdapter(h.store, h.gate)
     expect(() => restarted.assertAuthorized(lease.sessionId, lease.grantId,
       lease.senderKey, principal, 'review_read_documents', source)).toThrow()
+  })
+
+  it('A-FAIL-01/A-FAIL-02: actual atomic journal survives read and fails closed on corruption', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'review-v3-a-owner-'))
+    try {
+      const file = join(dir, 'owner-journal.json')
+      const persistence = createFileOwnerPersistence(file)
+      const { gate } = host()
+      const first = new V3ReviewOwnerAdapter(persistence, gate)
+      const { request, source, principal } = fixtures()
+      const lease = first.grant(request)
+      expect(readFileSync(file, 'utf8')).toContain('v3-dev-a-owner/1')
+      const second = new V3ReviewOwnerAdapter(persistence, gate)
+      expect(second.get(lease.sessionId)?.state).toBe('recovery-required')
+      expect(() => second.assertAuthorized(lease.sessionId, lease.grantId,
+        lease.senderKey, principal, 'review_read_documents', source)).toThrow()
+      expect(second.quarantineInterrupted()).toEqual([lease.sessionId])
+      const persisted = readFileSync(file, 'utf8')
+      expect(persisted).toContain('recovery-required')
+      writeFileSync(file, persisted.slice(0, Math.max(2, persisted.length - 30)))
+      expect(() => new V3ReviewOwnerAdapter(persistence, gate)).toThrow()
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
   })
 
   it('A-TOOL-01: cross-case version/block/path and expired or revoked grant denied', () => {
