@@ -4,6 +4,7 @@
  * only edits author source; it cannot install a Case, publish policy or grant roles.
  */
 import { useRef, useState, type ReactNode } from 'react'
+import { B1BufferedIdentityInput } from './B1BufferedIdentityInput'
 import {
   exportB1AuthorCandidate, parseB1TrialInput, prepareB1TechnicalTrial,
   type B1TrialValues,
@@ -210,8 +211,8 @@ export function ReviewV3AuthorWizard({
     <Section title="2. 业务依据及材料来源">
       {draft.sources.map((source, i) => <div key={i} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
         <label className="text-xs">来源 ID
-          <input className={inputClass} value={source.sourceId}
-            onChange={(e) => editIdentity('source','rename',source.sourceId,e.target.value)} />
+          <B1BufferedIdentityInput className={inputClass} value={source.sourceId}
+            onCommit={next=>editIdentity('source','rename',source.sourceId,next)} />
         </label>
         <label className="text-xs">来源性质
           <select className={inputClass} value={source.kind}
@@ -239,7 +240,8 @@ export function ReviewV3AuthorWizard({
     <Section title="3. 申请字段及材料要求">
       {draft.fields.map((field,i) => <div key={i} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
         <label className="text-xs">字段键
-          <input className={inputClass} value={field.key} onChange={(e)=>editIdentity('field','rename',field.key,e.target.value)}/>
+          <B1BufferedIdentityInput className={inputClass} value={field.key}
+            onCommit={next=>editIdentity('field','rename',field.key,next)}/>
         </label>
         <label className="text-xs">显示名称
           <input className={inputClass} value={field.label} onChange={(e)=>updateField(i,'label',e.target.value)}/>
@@ -279,9 +281,11 @@ export function ReviewV3AuthorWizard({
       <p className="text-xs text-muted-foreground">对象用于技术预览；正式案卷绑定必须由 Main/Dev-C 按实际 Subject 再编译。</p>
       {draft.targets.map((target,i)=><div key={i} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
         {(['targetKey','objectKey','subjectId','scenario'] as const).map((key)=><label key={key} className="text-xs">{key}
-          <input className={inputClass} value={target[key]} onChange={(e)=>key==='targetKey'
-            ? editIdentity('target','rename',target.targetKey,e.target.value)
-            : updateTarget(i,key,e.target.value)}/>
+          {key==='targetKey'
+            ? <B1BufferedIdentityInput className={inputClass} value={target.targetKey}
+                onCommit={next=>editIdentity('target','rename',target.targetKey,next)}/>
+            : <input className={inputClass} value={target[key]}
+                onChange={e=>updateTarget(i,key,e.target.value)}/>} 
         </label>)}
         <div className="space-y-2 sm:col-span-2">
           <p className="text-xs text-muted-foreground">试跑样例值，仅用于技术预览，不写入作者草稿或正式案卷；留空保持 unknown。</p>
