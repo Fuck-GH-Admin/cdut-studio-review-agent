@@ -66,6 +66,19 @@ describe('B2 Main-only archive staging and per-file receipts',()=>{
       ...old,bytes:zip(['same.txt','new.txt']),
     })).toThrow('B2_REQUEST_ID_COLLISION')
   })
+  test('same requestId with disjoint changed ZIP entry list is rejected atomically',()=>{
+    const store=new ReviewB2StagingService()
+    const first=stageReviewB2TrustedZip(ctx,store,{
+      physicalArchiveKey:'native-disjoint',requestId:'same-import-request',
+      bytes:zip(['first.txt']),
+    })
+    expect(first.candidates).toHaveLength(1)
+    expect(()=>stageReviewB2TrustedZip(ctx,store,{
+      physicalArchiveKey:'native-disjoint',requestId:'same-import-request',
+      bytes:zip(['completely-new.txt']),
+    })).toThrow('B2_REQUEST_ID_COLLISION')
+    expect(store.read(ctx,first.candidates[0]!.candidateId).toString()).toBe('test-first.txt')
+  })
   test('revoke denies further ZIP ingestion without CurrentCase mutation',()=>{
     const store=new ReviewB2StagingService()
     store.revoke(ctx)
