@@ -42,3 +42,13 @@ C before/after 两次 re-attest Main principal/frame/Owner/epoch、安装 token�
 ## 5. GitHub CI / 工程签收
 
 初始新 C exact SHA `d5a61304ddb09c38fea7982623786f0ce56ed220` 已触发 GitHub PR `39331486760`、Baseline `39331486741`、Batch `39331486761`、D1 `39331486777`、D2 `39331486745`。**起始状态 PENDING**，不得拿 B 4212/5/0 或旧 C 4142/5/0 代签。首败须保留并仅修 C-owned 代码/测试，新 SHA 同基线 5/5 成功后由 C 另签 `C-MAIN-B20-R01-FINAL-GATE-O`。Gate E NOT_RUN，School L BLOCKED_NO_AUTH，Product P NOT_RUN，Release NO_GO。
+
+## 最终精确 Gate O 结果
+
+- C #144 HEAD `d5a61304ddb09c38fea7982623786f0ce56ed220` vs 上轮签收 `7e80c5e782c0e7d5b41a804b11cd5cbe6a130c45` ahead=2/behind=0、仅 2 个全新 C-owned 路径、0 B/A/I/shared/Main IPC/Preload/Case/Run/SchoolPort 修改。
+- PR CI [39331486760](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39331486760) job `118330650650` full frozen install、TypeScript、package boundary、built-in skin、Main/Preload/Renderer build 完整通过，原始 Bun **4150 PASS / 5 OS SKIP / 0 FAIL（4155 tests/478 files）**。
+- 8/8 专项（main identity/Owner/grant/epoch/real source pin 双读、撤销、同源重装、frame 换代、作者修订变更、候选来源恶意发布标记、跨案来源、异步途中变更）**均从同一原始 log 确认 (pass)**。
+- Baseline `39331486741`、Batch `39331486761`、D1 `39331486777`、D2 `39331486745` **4/4 SUCCESS**；五项最终 `5/5 completed/success`。
+- C 在唯一四线 `DECISIONS:C`、`STATUS:C` 正式签 `C-MAIN-B20-R01-FINAL-EXACT-GATE-O=PASS_EXACT_SHA_D5A61304` [commit `970675175fd048a679fd4b1d12621ff028265119`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/970675175fd048a679fd4b1d12621ff028265119)。
+
+**未达成的生产前置条件**：B20 read bundle 源锁具体 imports/依赖集合尚未导入 C 或 I；C 仅创建了经过 Gate O 的无 IPC Main-side gate，不存在真实窗口身份、Owner、native picked archive 和当前 selector registry 的合法 live 安装回执；不允许把测试 dependency fixture 宣称产品已闭环。后续必须先核验完整 source graph/精确 blob，再真实 C-only Main adapter 实装、严格 Electron Gate E、L/P。另外 I #154 新 B18 Stage4 联合 Gate O 已请求 C 独立新工程签收，不能用 C B20 签收代签。
