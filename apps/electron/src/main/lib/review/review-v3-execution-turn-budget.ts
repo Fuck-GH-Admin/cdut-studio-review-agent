@@ -17,6 +17,8 @@ interface TurnChain {
   readonly runHash: string
   readonly maxTurns: number
   readonly usedTurns: number
+  /** Unique Main-observed SDK turn receipts; retry must not inflate count. */
+  readonly receiptIds: readonly string[]
 }
 interface TurnJournal {
   readonly version: 'v3-dev-a-turns/1'
@@ -44,7 +46,10 @@ function decode(raw: string | null): TurnJournal {
     if (!k || !turns || !/^[a-f0-9]{64}$/.test(turns.runHash) ||
         !Number.isSafeInteger(turns.maxTurns) || turns.maxTurns < 1 ||
         !Number.isSafeInteger(turns.usedTurns) || turns.usedTurns < 0 ||
-        turns.usedTurns > turns.maxTurns) {
+        turns.usedTurns > turns.maxTurns || !Array.isArray(turns.receiptIds) ||
+        turns.receiptIds.length !== turns.usedTurns ||
+        turns.receiptIds.some(id => typeof id !== 'string' || !id.trim()) ||
+        new Set(turns.receiptIds).size !== turns.receiptIds.length) {
       bad('Turn budget journal counters corrupt')
     }
   }
@@ -132,10 +137,13 @@ export class V3ATurnBudget implements V3ATurnExhaustion {
     }
   }
   /**
-   * Main calls ONCE only after an actual SDK turn. Same Run across pause or a
+   * Main records a uniquely attested SDK turn receipt. Same Run across pause or a
    * rotated grant shares the counter; calls made with an old grant are denied.
    */
-  recordCompletedTurn(call: V3ReviewToolCall): V3ATurnSnapshot {
+  recordCompletedTurn(call: V3ReviewToolCall, mainTurnReceiptId: string): V3ATurnSnapshot {
+    if (!mainTurnReceiptId?.trim()) {
+      throw new C0ContractError('CONTRACT_INVALID', 'Verified SDK turn receipt required')
+    }
     if (call.tool !== 'review_submit_result') {
       throw new C0ContractError('CASE_SCOPE_FORBIDDEN','Turn requires Main submit capability')
     }
@@ -149,12 +157,20 @@ export class V3ATurnBudget implements V3ATurnExhaustion {
           const run=pinned(lease)
           const previous=this.entry(lease) ?? {
             runHash:digest(JSON.stringify(run)),maxTurns:this.maxTurns,usedTurns:0,
+            receiptIds:[],
+          }
+          if (previous.receiptIds.includes(mainTurnReceiptId)) {
+            return {
+              usedTurns:previous.usedTurns,maxTurns:previous.maxTurns,
+              exhausted:previous.usedTurns===previous.maxTurns,
+            }
           }
           if (previous.usedTurns >= previous.maxTurns) {
             throw new C0ContractError('RUN_IDENTITY_MISMATCH',
               'Pi turn budget exhausted; only needs-resume technical status allowed')
           }
-          const updated={...previous,usedTurns:previous.usedTurns+1}
+          const updated={...previous,usedTurns:previous.usedTurns+1,
+            receiptIds:[...previous.receiptIds,mainTurnReceiptId]}
           this.write({...this.journal,runs:{
             ...this.journal.runs,[key(run)]:updated,
           }})
