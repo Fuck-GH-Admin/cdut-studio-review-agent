@@ -157,7 +157,7 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
     try{
       session.agent.streamFunction=(model,context,options)=>{
         invocations++
-        if(invocations!==1 || !startedTurn || finishedTurn ||
+        if(invocations!==1 || corrupted || !startedTurn || finishedTurn ||
             agentEnded || agentSettled || input.signal?.aborted ||
             !['openai-completions','openai-responses'].includes(model.api) ||
             options?.transport==='websocket' ||
@@ -173,7 +173,7 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
           async (resource:Parameters<FetchFunction>[0],
             init?:Parameters<FetchFunction>[1]):Promise<Response>=>{
           httpCalls++
-          if(httpCalls!==1 || input.signal?.aborted)return mark()
+          if(httpCalls!==1 || corrupted || input.signal?.aborted)return mark()
           let url:URL
           try{url=getUrl(resource)}
           catch{return mark()}
