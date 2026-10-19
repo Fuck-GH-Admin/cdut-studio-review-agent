@@ -8,6 +8,7 @@ import {
   V3ReviewOwnerAdapter,type OwnerPersistence,
 } from './review-pi-owner-adapter'
 import {V3ATurnBudget} from './review-v3-execution-turn-budget'
+import {V3ASDKDispatchFence} from './review-v3-sdk-dispatch-fence'
 import {
   V3AProposalProducer, type ATechnicalStatus,
 } from './review-v3-execution-proposal-producer'
@@ -51,7 +52,7 @@ function fixture(){
     }],
   }
   let authorized=true
-  const ownerStore=new Store(),turnStore=new Store(),eventStore=new Store()
+  const ownerStore=new Store(),turnStore=new Store(),eventStore=new Store(),dispatchStore=new Store()
   const owners=new V3ReviewOwnerAdapter(ownerStore,{
     authorizeExecution:()=>{if(!authorized)throw new Error('Main denied')},
     isCurrent:()=>authorized,
@@ -92,10 +93,11 @@ function fixture(){
     }),
   }
   const producer=new V3AProposalProducer(eventStore,owners,host,turns)
-  const bridge=new V3ASDKTurnBridge(owners,turns,producer,sdk)
+  const dispatch=new V3ASDKDispatchFence(dispatchStore,owners)
+  const bridge=new V3ASDKTurnBridge(owners,turns,producer,sdk,dispatch)
   return {
-    owners,turns,producer,bridge,call,run,grant,principal,sdk,
-    eventStore,turnStore,
+    owners,turns,producer,bridge,call,run,grant,principal,sdk,dispatch,
+    eventStore,turnStore,dispatchStore,
     setAllowed:(v:boolean)=>{authorized=v},
     setNext:(fn:(run:RunEvidenceIdentity)=>Promise<V3ATurnHostOutcome>)=>{nextOutcome=fn},
     calls:()=>modeCount,
@@ -237,7 +239,7 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     let resolve!:(out:V3ATurnHostOutcome)=>void
     h.setNext(()=>new Promise<V3ATurnHostOutcome>(res=>{resolve=res}))
     const first=h.bridge.next(h.call,'direct')
-    const second=new V3ASDKTurnBridge(h.owners,h.turns,h.producer,h.sdk)
+    const second=new V3ASDKTurnBridge(h.owners,h.turns,h.producer,h.sdk,h.dispatch)
     await expect(second.next(h.call,'hidden')).rejects.toThrow('Concurrent SDK turn')
     resolve({kind:'completed-turn',receiptId:'unique-host-turn',run:h.run})
     expect((await first).kind).toBe('recorded')
