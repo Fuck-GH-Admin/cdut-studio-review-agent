@@ -110,6 +110,9 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
     // body. HTTP headers, onResponse and Pi agent_settled alone cannot attest
     // that an SSE completion marker was delivered to the SDK.
     let sseTerminated=false
+    // R17: application terminal frames are not necessarily the end of HTTP.
+    // Only the exact SDK-consumed response pipe's normal EOF permits receipt.
+    let sseTransportEof=false
     let startedTurn=false
     let finishedTurn=false
     let agentEnded=false
@@ -207,22 +210,60 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
           // bytes that pass through the actual response body consumed by Pi.
           const decoder=new TextDecoder()
           let linePrefix=''
+          let frameEvent=''
+          let frameData=''
+          let dataLines=0
           const api=model.api
+          // A terminal field is meaningful only after the full SSE frame's
+          // empty-line delimiter, not merely because a header/string appeared
+          // in an incomplete or subsequently failed response.
+          const finishFrame=():void=>{
+            if(!frameEvent && dataLines===0)return
+            if(sseTerminated){
+              corrupted=true // a second physical application event after DONE
+            }
+            const completionsDone=api==='openai-completions' &&
+              !frameEvent && dataLines===1 && frameData==='[DONE]'
+            // Pi 0.86.1 / OpenAI Responses emits event: response.completed
+            // paired with a data JSON whose first top-level key is "type".
+            // An event header by itself or a mismatched data frame is not a
+            // successful terminal receipt.
+            const responsesDone=api==='openai-responses' &&
+              frameEvent==='response.completed' && dataLines===1 &&
+              /^\{\s*"type"\s*:\s*"response\.completed"\s*[,}]/.test(frameData)
+            if(completionsDone || responsesDone) {
+              sseTerminated=true
+            } else if(frameEvent==='response.completed' ||
+                frameData==='[DONE]') {
+              corrupted=true // a malformed/mismatched completion frame
+            }
+            frameEvent=''
+            frameData=''
+            dataLines=0
+          }
+          const finishLine=(value:string):void=>{
+            const line=value.endsWith('\r')?value.slice(0,-1):value
+            if(line===''){
+              finishFrame()
+            } else if(line.startsWith('event:')){
+              frameEvent=line.slice(6).trim()
+            } else if(line.startsWith('data:')){
+              dataLines++
+              if(dataLines===1)frameData=line.slice(5).trimStart()
+              // OpenAI terminal events are single data-line frames. Multiple
+              // data lines cannot be mistaken for one terminal marker.
+            }
+          }
           const inspect=(chunk:Uint8Array):void=>{
             const parts=decoder.decode(chunk,{stream:true}).split('\n')
             for(let i=0;i<parts.length;i++){
-              const next=linePrefix+parts[i]!.slice(0,128)
+              const next=(linePrefix+parts[i]!).slice(0,256)
               if(i<parts.length-1){
-                const line=next.trim()
-                if(line==='data: [DONE]' || line==='data:[DONE]' ||
-                    (api==='openai-responses' &&
-                     line==='event: response.completed')){
-                  sseTerminated=true
-                }
+                finishLine(next)
                 linePrefix=''
               } else {
-                // Keep only the start of a line; SSE JSON can be enormous.
-                linePrefix=next.slice(0,128)
+                // Bound the retained prefix of a potentially huge JSON event.
+                linePrefix=next
               }
             }
           }
@@ -231,6 +272,13 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
               transform(chunk,controller){
                 inspect(chunk)
                 controller.enqueue(chunk)
+              },
+              flush(){
+                // Only a normal close of this SDK-consumed HTTP stream reaches
+                // flush. A late transport error/cancel cannot mint completion.
+                // Never separately drain/tee/clone an upstream response.
+                sseTransportEof=true
+                if(linePrefix.trim() || frameEvent || dataLines)corrupted=true
               },
             }),
           )
@@ -267,7 +315,8 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
       // alone is not sufficient proof the physical HTTP callback ran.
       const observedId=physicalResponseId as string|undefined
       if(corrupted || invocations!==1 || httpCalls!==1 ||
-          !observedId || !sseTerminated || !startedTurn || !finishedTurn ||
+          !observedId || !sseTerminated || !sseTransportEof ||
+           !startedTurn || !finishedTurn ||
           !agentEnded || !agentSettled) {
         return fail('Pi HTTP Provider request/stream completion provenance unavailable')
       }

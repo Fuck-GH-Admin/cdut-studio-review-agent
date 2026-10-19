@@ -1,0 +1,56 @@
+{
+  "schema": "v3-i4-a18-r01",
+  "authority": {
+    "C_decision_commit": "44203ab3772dfe7ff91832e786e3f572a19b497b",
+    "scope": "I-CR-I4-R01-A18 APPROVED_SCOPED_SOURCE_REPLAY_ONLY",
+    "original_CR": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/144#issuecomment-6277193540"
+  },
+  "signed_parent": {
+    "branch": "integration/v3-i3-stage3-accepted-frozen",
+    "sha": "8e9f7caa69b5454cb646bdbe3bdf05f8bb479a8b"
+  },
+  "source": {
+    "pr": 143,
+    "sha": "0febf1248bc6a580a1bc7b3144e0d96ca4313916",
+    "gateO": "3/3 A-only PASS"
+  },
+  "replay": {
+    "commit": "7fca9be90d1fc18ac4e443cf74154f76a1ff488f",
+    "objects": [
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.ts",
+        "old": "0ef8dcec6e0122b65bedc0e350c078b64845c507",
+        "blob": "029419de63dd1974c262f59dc80fc8d9b559004d",
+        "kind": "replace"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.test.ts",
+        "old": "2005bf3f7482a00ad904cdbf05deb683ff88448a",
+        "blob": "5587965061519b3c4174d6f3950fc0d7b9425b4c",
+        "kind": "replace"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-main-sdk-turn-bridge.test.ts",
+        "old": "6a24626242813bd5c8f276e47022eb4bb8d51747",
+        "blob": "b42a605ec733a64e701e312bd32154f7c574b331",
+        "kind": "replace"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-native-pi-offline-sdk.test.ts",
+        "old": null,
+        "blob": "5e2dfa65ac53443da4535b6bf50211d5b1b32502",
+        "kind": "add"
+      }
+    ]
+  },
+  "boundaries": {
+    "I_owned_test": "apps/electron/src/main/lib/review/review-v3-integration-i4-a18-sse-host-boundary.test.ts",
+    "C_owned_files_modified": 0,
+    "new_live_provider": false,
+    "source_upgrade_B": false,
+    "I_MAIN_LEASE": "CONDITIONAL_NOT_ACTIVE",
+    "I_BUSINESS_WRITER": "DENIED"
+  },
+  "new_integrated_gate": "PENDING_NEW_SHA",
+  "C_engineering_acceptance": "PENDING_SEPARATE_SIGNATURE"
+}

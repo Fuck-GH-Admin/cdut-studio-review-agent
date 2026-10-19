@@ -121,7 +121,7 @@ function fixture(){
   const bridge=new V3ASDKTurnBridge(owners,turns,producer,sdk,dispatch)
   return {
     owners,turns,producer,bridge,call,run,grant,principal,sdk,dispatch,
-    eventStore,turnStore,dispatchStore,
+    eventStore,turnStore,dispatchStore,ownerStore,
     setAllowed:(v:boolean)=>{authorized=v},
     setNext:(fn:(run:RunEvidenceIdentity)=>Promise<SyntheticTurnOutcome>)=>{nextOutcome=fn},
     calls:()=>modeCount,
@@ -800,4 +800,77 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('Unresolved SDK Provider dispatch')
     expect(h.calls()).toBe(2)
   })
+  it('R18-03: cold Owner restart while SDK promise is live quarantines the old lease, rejects late result',async()=>{
+    const h=fixture()
+    let resolve!:(out:SyntheticTurnOutcome)=>void
+    h.setNext(()=>new Promise<SyntheticTurnOutcome>(done=>{resolve=done}))
+    const pending=h.bridge.next(h.call,'direct')
+    expect(h.calls()).toBe(1)
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+
+    // A second Main process opens its own owner adapter on the same durable
+    // journals. Cold active grants are never made current just by reopening.
+    const coldOwner=new V3ReviewOwnerAdapter(h.ownerStore,{
+      authorizeExecution:()=>{},isCurrent:()=>true,
+    })
+    expect(coldOwner.get(h.call.sessionId)?.state).toBe('recovery-required')
+    expect(coldOwner.quarantineInterrupted()).toEqual([h.call.sessionId])
+    const coldDispatch=new V3ASDKDispatchFence(h.dispatchStore,coldOwner)
+    expect(coldDispatch.unresolved(h.run)).toBe(true)
+
+    // The old Pi SDK response can arrive after the new process took over.
+    resolve({kind:'completed-turn',receiptId:'old-native-late-after-cold',run:h.run})
+    await expect(pending).rejects.toThrow()
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
+    expect(h.producer.replayCandidates()).toEqual([])
+    // Old PID can only change its A dispatch journal to late-denied;
+    // new PID's previously read snapshot must reject stale access.
+    expect(()=>coldDispatch.unresolved(h.run)).toThrow(
+      'SDK dispatch ledger changed; re-open')
+    const recoveredDispatch=new V3ASDKDispatchFence(h.dispatchStore,coldOwner)
+    expect(recoveredDispatch.unresolved(h.run)).toBe(true)
+
+    const newRun={...h.run,runId:'cold-new-run',attemptId:'cold-new-attempt'}
+    const granted=coldOwner.grant({
+      principal:h.principal,run:newRun,plan:h.grant.planSnapshot!,
+      sources:[...h.grant.sourceIdentities],
+      sessionId:'cold-new-session',senderKey:'cold-new-frame',
+      expiresAt:Date.now()+120_000,
+      permittedTools:['review_submit_result'],
+    })
+    expect(()=>recoveredDispatch.claim({
+      ...h.call,sessionId:granted.sessionId,grantId:granted.grantId,
+      senderKey:granted.senderKey,
+    })).toThrow('Unresolved SDK Provider dispatch on prior Run/Case')
+    expect(h.calls()).toBe(1)
+  })
+  it('R18-04: cancellation and cold restart cannot release a hung Provider claim for another Owner',async()=>{
+    const h=fixture()
+    const cancel=new AbortController()
+    let settle!:(out:SyntheticTurnOutcome)=>void
+    h.setNext(()=>new Promise<SyntheticTurnOutcome>(done=>{settle=done}))
+    const pending=h.bridge.next(h.call,'hidden',cancel.signal)
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    cancel.abort()
+    await expect(pending).rejects.toThrow('Main cancelled while SDK Provider result is unresolved')
+
+    const second=new V3ASDKTurnBridge(h.owners,h.turns,h.producer,h.sdk,h.dispatch)
+    await expect(second.next(h.call,'hidden')).rejects.toThrow('Concurrent SDK turn')
+    const coldOwner=new V3ReviewOwnerAdapter(h.ownerStore,{
+      authorizeExecution:()=>{},isCurrent:()=>true,
+    })
+    expect(coldOwner.quarantineInterrupted()).toEqual([h.call.sessionId])
+    const coldDispatch=new V3ASDKDispatchFence(h.dispatchStore,coldOwner)
+    expect(coldDispatch.unresolved(h.run)).toBe(true)
+
+    // Even a late well-formed SDK success cannot retroactively settle a
+    // cancelled, cold-quarantined physical dispatch.
+    settle({kind:'completed-turn',receiptId:'revoked-late-terminal',run:h.run})
+    await new Promise<void>(done=>setImmediate(done))
+    expect(coldDispatch.unresolved(h.run)).toBe(true)
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
+    expect(h.producer.replayCandidates()).toEqual([])
+    expect(h.calls()).toBe(1)
+  })
+
 })
