@@ -30,3 +30,9 @@
 - 本地 Case CAS 的 `UpgradeCanonicalPlan` 仍需要**真实独立 School Publisher**，测试发行者只是 fixture；没有学校授权的系统默认拒绝正式发布/升级。
 - 没有开启新的 IPC/Preload channel、未赋予 Renderer 发行身份或 Main installation 能力；业务 writer 仅 C，I main lease inactive/writer denied。没有删除或改动 B owned 来源代码。
 - 本地 Gate O 全绿以后才能签工程质量；真实 Electron Main UI confirmation/install/school L/5×30min product P 仍须集中验收。Release `NO_GO`。
+
+## 同一 Main 观察源重装后的审批重放
+
+安全细读发现：如果只用每次安装内的 `Set<approvalId>`，旧真实 Main 观察源对象在 uninstall/reinstall 后、若仍可返回相同历史回执，一个成功消费但 Case 尚未正常落盘的审批可能被再次视为未使用。后续 C-owned 额外提交 `0a6935ae651e9c12a5a8960e2af02d53d16a81ec`，改用 `WeakMap<privilegedPhysicalObserver, Set<approvalId>>`，进程内同一 Main observer 对象重装共享已消费 tombstone，`close()` 只封闭该安装的 gate、**不清空已消费 ID**。另一独立 Main observer/source 不因此自动获得可信证明；真正生产发布时需确保旧确认源不可在进程冷启动重新水合，也需要真正的 Main 人工观察事件与 Owner 授权来源。
+
+独立新测试文件 `review-v3-main-removal-consent.test.ts` 首次 `b927d04bbecc12896956f4dcfd367e4fc6071505`，最后 `66f89699260ef181fffdb556394f05a2b8aa8407` 补同源重新安装拒绝；正反例含：同一审批 ID 只能用一次、无 Main 观察源 fail-closed、精准版本/身份/义务/理由绑定、5 分钟 TTL/未来时间拒绝、4096 容量整门禁关闭、同源 reinstall 仍拒绝重放。当前最终候选为 `66f89699260ef181fffdb556394f05a2b8aa8407`，PR CI `39339668422`、Baseline `39339668453`、Batch `39339668360`、D1 `39339668400`、D2 `39339668358`，**尚未独立最终签 Gate O**。须读取原始新 SHA TS、全 Bun 与专项再签。
