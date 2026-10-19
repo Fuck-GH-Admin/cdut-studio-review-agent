@@ -236,6 +236,30 @@ describe('V3 A1 Main owner journal + isolation', () => {
     }
   })
 
+  it('A-PAUSE-05: disk-backed pause/restart requires quarantine, not auto-resume', () => {
+    const dir=mkdtempSync(join(tmpdir(),'review-v3-a-pause-disk-'))
+    try {
+      const path=join(dir,'owner.json')
+      const store=createFileOwnerPersistence(path)
+      const {gate}=host()
+      const main=new V3ReviewOwnerAdapter(store,gate)
+      const {request,principal,source}=fixtures()
+      const initial=main.grant(request)
+      main.pause(initial.sessionId)
+      expect(readFileSync(path,'utf8')).toContain('"paused"')
+      const afterRestart=new V3ReviewOwnerAdapter(store,gate)
+      expect(afterRestart.get(initial.sessionId)?.state).toBe('recovery-required')
+      expect(()=>afterRestart.resumePaused(initial.sessionId,initial.grantId,
+        initial.senderKey,principal)).toThrow()
+      expect(afterRestart.quarantineInterrupted()).toEqual([initial.sessionId])
+      expect(readFileSync(path,'utf8')).toContain('recovery-required')
+      expect(()=>afterRestart.assertAuthorized(initial.sessionId,initial.grantId,
+        initial.senderKey,principal,'review_read_documents',source)).toThrow()
+    } finally {
+      rmSync(dir,{recursive:true,force:true})
+    }
+  })
+
   it('A-FAIL-02: two Main instances cannot overwrite a stale Owner journal', () => {
     const dir = mkdtempSync(join(tmpdir(), 'review-v3-a-cas-'))
     try {
