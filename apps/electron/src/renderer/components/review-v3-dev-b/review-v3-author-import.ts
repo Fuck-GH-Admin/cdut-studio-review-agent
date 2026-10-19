@@ -75,12 +75,12 @@ function validateCandidate(d:Record<string,unknown>):void {
     validKey(x.stageId)&&nonempty(x.role)&&['manual','technical'].includes(String(x.mode))))fail('STAGE_STRUCTURE')
   if(!(d.outputs as unknown[]).every(x=>rec(x)&&only(x,['outputId','kind'])&&
     validKey(x.outputId)&&nonempty(x.kind)))fail('OUTPUT_STRUCTURE')
-  if(!unique(sources.map(x=>(x as Record<string,string>).sourceId))||
-    !unique(fields.map(x=>(x as Record<string,string>).key))||
-    !unique(targets.map(x=>(x as Record<string,string>).targetKey))||
-    !unique(modules.map(x=>(x as Record<string,string>).moduleId))||
-    !unique((d.stages as unknown[]).map(x=>(x as Record<string,string>).stageId))||
-    !unique((d.outputs as unknown[]).map(x=>(x as Record<string,string>).outputId))||
+  if(!unique(sources.map(x=>(x as {sourceId:string}).sourceId))||
+    !unique(fields.map(x=>(x as {key:string}).key))||
+    !unique(targets.map(x=>(x as {targetKey:string}).targetKey))||
+    !unique(modules.map(x=>(x as {moduleId:string}).moduleId))||
+    !unique((d.stages as unknown[]).map(x=>(x as {stageId:string}).stageId))||
+    !unique((d.outputs as unknown[]).map(x=>(x as {outputId:string}).outputId))||
     !unique(modules.flatMap(x=>(x as {checks:{checkKey:string}[]}).checks.map(c=>c.checkKey))))fail('DUPLICATE_ID')
 }
 /** No Main receipt, no policy publisher and no trial values can be imported. */
@@ -98,7 +98,7 @@ export function parseB1AuthorCandidateImport(json:string):B1AuthorDocument {
   const candidate=value.candidate
   if(!rec(candidate))throw new Error('B1_IMPORT_UNTRUSTED_ENVELOPE')
   validateCandidate(candidate)
-  const result=structuredClone(candidate) as B1AuthorDocument
+  const result=structuredClone(candidate) as unknown as B1AuthorDocument
   // Deliberately drop claims of the previous machine/user as author identity.
   for(const source of result.sources)source.recordedBy='imported-local-unverified'
   return result
