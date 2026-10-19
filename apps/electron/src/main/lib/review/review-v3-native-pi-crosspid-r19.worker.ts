@@ -24,7 +24,7 @@ import {V3APiHttpSingleRequestEngine,
 } from './review-v3-pi-http-provider-engine'
 
 const [mode,rootArg]=process.argv.slice(2)
-if(!rootArg || !['crash','recover','late','quarantine','postcommit-eio','precommit-enospc','reopen-postcommit','reopen-precommit','complete','recover-complete','replay-receipt','recover-reused','settle-precommit-enospc','settle-postcommit-eio','recover-settle-precommit','recover-settle-postcommit','settle-precommit-sigkill','settle-postcommit-sigkill'].includes(mode??'')){
+if(!rootArg || !['crash','recover','late','quarantine','postcommit-eio','precommit-enospc','reopen-postcommit','reopen-precommit','complete','recover-complete','replay-receipt','recover-reused','settle-precommit-enospc','settle-postcommit-eio','recover-settle-precommit','recover-settle-postcommit','settle-precommit-sigkill','settle-postcommit-sigkill','budget-precommit-sigkill','budget-postcommit-sigkill','recover-budget-precommit','recover-budget-postcommit'].includes(mode??'')){
   throw new Error('R19 worker requires an explicit crash/recover mode and test root')
 }
 const root=rootArg
@@ -34,6 +34,7 @@ const paths={
   marker:join(root,'physical-fetch-entered.json'),
   release:join(root,'release-native-sdk'),
   settlementKill:join(root,'settlement-kill-witness.json'),
+  budgetKill:join(root,'budget-kill-witness.json'),
 }
 const authority={authorizeExecution:()=>{},isCurrent:()=>true}
 const sha=(s:string)=>createHash('sha256').update(s).digest('hex')
@@ -132,7 +133,74 @@ async function crashOrLate():Promise<void>{
     expiresAt:Date.now()+120000,
     permittedTools:['review_submit_result'],
   })
-  const turns=new V3ATurnBudget(createFileOwnerPersistence(paths.turns),owner)
+  // R19-08 tests the genuine Turn Budget filesystem CAS, NOT the later
+  // dispatch settlement. The injected adapter is test-only; production
+  // createFileOwnerPersistence retains its ordinary fail-closed semantics.
+  const budgetKill=mode==='budget-precommit-sigkill'||
+    mode==='budget-postcommit-sigkill'
+  let injectedBudgetWrites=0
+  const budgetBacking=createFileOwnerPersistence(paths.turns)
+  const budgetStore:OwnerPersistence={
+    read:()=>budgetBacking.read(),
+    write:()=>{throw Error('R19-08 expected a real Turn CAS')},
+    compareAndWrite:(expected,bytes)=>{
+      injectedBudgetWrites++
+      const candidate=JSON.parse(bytes) as {payload:{runs:Record<string,{
+        usedTurns:number;receiptIds:string[]}>};sha256:string}
+      const counted=Object.values(candidate.payload.runs)
+      const previousDispatch=sealed(paths.dispatch)
+      const records=Object.values(previousDispatch.payload.runs as Record<
+        string,{records:{id:string;state:string;receiptId?:string}[]}
+      >).flatMap(x=>x.records)
+      const physical=JSON.parse(readFileSync(paths.marker,'utf8')) as {
+        pid:number;dispatchId:string;processEpoch:string;fetchCalls:number
+      }
+      if(expected!==null || existsSync(paths.turns) ||
+        injectedBudgetWrites!==1 || counted.length!==1 ||
+        counted[0]?.usedTurns!==1 ||
+        counted[0]?.receiptIds.join(',')!=='r19-provider-physical-001' ||
+        candidate.sha256!==sha(JSON.stringify(candidate.payload)) ||
+        records.length!==1 || records[0]?.state!=='in-flight' ||
+        records[0]?.receiptId!==undefined ||
+        physical.pid!==process.pid ||
+        physical.processEpoch!==owner.processEpoch ||
+        physical.dispatchId!==records[0]?.id || physical.fetchCalls!==1 ||
+        nativeEvents.join(',')!=='turn_start,turn_end,agent_end,agent_settled' ||
+        fetches!==1 || existsSync(paths.events)){
+        throw Error('R19-08 kill point was not native-complete Turn CAS')
+      }
+      const postcommit=mode==='budget-postcommit-sigkill'
+      if(postcommit)budgetBacking.compareAndWrite!(expected,bytes)
+      const after=postcommit?sealed(paths.turns):null
+      if((postcommit && (after?.sha256!==candidate.sha256 ||
+           JSON.stringify(after.payload)!==JSON.stringify(candidate.payload))) ||
+         (!postcommit && existsSync(paths.turns))){
+        throw Error('R19-08 budget CAS outcome disagrees with kill point')
+      }
+      const fd=openSync(paths.budgetKill,'wx',0o600)
+      try{
+        writeSync(fd,JSON.stringify({
+          pid:process.pid,mode,postcommit,
+          ownerEpoch:owner.processEpoch,sessionId:lease.sessionId,
+          runId:run.runId,dispatchId:records[0]?.id,
+          nativeEvents,fetches,injectedBudgetWrites,
+          usedTurns:postcommit?1:0,
+          budgetBeforeExists:false,budgetAfterExists:postcommit,
+          budgetProposedSha256:candidate.sha256,
+          budgetAfterSha256:after?.sha256??null,
+          dispatchSha256:previousDispatch.sha256,
+          ownerSha256:sealed(paths.owner).sha256,
+          providerReceiptId:'r19-provider-physical-001',
+        }))
+        fsyncSync(fd)
+      }finally{closeSync(fd)}
+      // SIGKILL occurs synchronously *inside* recordCompletedTurn CAS.
+      // We never return to the bridge or settle the unknown dispatch.
+      process.kill(process.pid,'SIGKILL')
+      throw Error('R19-08 SIGKILL unexpectedly returned')
+    },
+  }
+  const turns=new V3ATurnBudget(budgetKill?budgetStore:budgetBacking,owner)
   const settlementFault=mode==='settle-precommit-enospc'||
     mode==='settle-postcommit-eio'
   const settlementKill=mode==='settle-precommit-sigkill'||
@@ -305,7 +373,7 @@ async function crashOrLate():Promise<void>{
               controller.close()
               return
             }
-            if(mode==='complete' || mode==='replay-receipt' || settlementFault || settlementKill){
+            if(mode==='complete' || mode==='replay-receipt' || settlementFault || settlementKill || budgetKill){
               controller.enqueue(new TextEncoder().encode(remainingSse))
               controller.close()
               return
@@ -347,7 +415,7 @@ async function crashOrLate():Promise<void>{
     })+'\n')
     return
   }
-  if(mode==='complete' || mode==='replay-receipt' || settlementFault || settlementKill){
+  if(mode==='complete' || mode==='replay-receipt' || settlementFault || settlementKill || budgetKill){
     let resultKind='',denial=''
     try{
       const result=await bridge.next(callOf(lease,principal),'direct')
@@ -796,7 +864,92 @@ function recoverSettlement(postcommit:boolean):void{
     proposalExists:existsSync(paths.events),
   })+'\n')
 }
-if(mode==='crash' || mode==='late' || mode==='complete' || mode==='replay-receipt' || mode==='settle-precommit-enospc' || mode==='settle-postcommit-eio' || mode==='settle-precommit-sigkill' || mode==='settle-postcommit-sigkill')await crashOrLate()
+
+/**
+ * R19-08: a different real PID reopens BOTH durable technical journals.
+ * The old receipt cannot charge a new Run, and an unresolved Provider
+ * side effect blocks the entire old Case regardless of Turn=0 or Turn=1.
+ */
+function recoverBudget(postcommit:boolean):void{
+  const owner=new V3ReviewOwnerAdapter(ownerStore(),authority)
+  const previous=owner.get('r19-old-session')
+  if(!previous || previous.state!=='recovery-required' ||
+    previous.processEpoch===owner.processEpoch){
+    throw Error('R19-08 old Owner not in cold recovery-required state')
+  }
+  const quarantined=owner.quarantineInterrupted()
+  if(quarantined.length!==1 || quarantined[0]!==previous.sessionId ||
+    owner.get(previous.sessionId)?.state!=='recovery-required'){
+    throw Error('R19-08 cold Owner quarantine not durable')
+  }
+  const turns=new V3ATurnBudget(createFileOwnerPersistence(paths.turns),owner)
+  const dispatch=dispatcher(owner)
+  const oldTurns=turns.snapshot(previous).usedTurns
+  const unresolved=dispatch.unresolved(previous.runEvidence!)
+  const records=Object.values(sealed(paths.dispatch).payload.runs as
+    Record<string,{records:{id:string;state:string;receiptId?:string}[]}>)
+    .flatMap(x=>x.records)
+  if(oldTurns!==(postcommit?1:0) || !unresolved ||
+    records.length!==1 || records[0]?.state!=='in-flight' ||
+    records[0]?.receiptId!==undefined || existsSync(paths.events) ||
+    existsSync(paths.turns)!==postcommit){
+    throw Error('R19-08 cold Turn/Dispatch physical ambiguity mismatch')
+  }
+  const principal=scope('r19-case').principal
+  let oldReceiptDenied=false
+  try{
+    turns.recordCompletedTurn(callOf(previous,principal),
+      'r19-provider-physical-001')
+  }catch{oldReceiptDenied=true}
+  if(!oldReceiptDenied || turns.snapshot(previous).usedTurns!==oldTurns){
+    throw Error('R19-08 old recovery Owner was allowed to replay turn receipt')
+  }
+  const newRun={...previous.runEvidence!,runId:'r19-r08-new-run',
+    attemptId:'r19-r08-new-attempt'}
+  const fresh=owner.grant({
+    principal,run:newRun,plan:previous.planSnapshot!,
+    sources:previous.sourceIdentities,sessionId:'r19-r08-new-session',
+    senderKey:'r19-r08-new-frame',expiresAt:Date.now()+120000,
+    permittedTools:['review_submit_result'],
+  })
+  let claimBlocked=false
+  try{
+    dispatch.claim(callOf(fresh,principal))
+  }catch(error){
+    if(String(error).includes('Unresolved SDK Provider dispatch on prior Run/Case')){
+      claimBlocked=true
+    }else throw error
+  }
+  if(!claimBlocked || turns.snapshot(fresh).usedTurns!==0){
+    throw Error('R19-08 new Run re-dispatched an unknown physical side effect')
+  }
+  // Owner/dispatch fence is Case-scoped, not a global Provider shutdown.
+  const other=scope('r19-independent-case')
+  const otherLease=owner.grant({
+    principal:other.principal,run:other.run,plan:other.plan,
+    sources:[other.source],sessionId:'r19-r08-other-session',
+    senderKey:'r19-r08-other-frame',expiresAt:Date.now()+120000,
+    permittedTools:['review_submit_result'],
+  })
+  const otherDispatchId=dispatch.claim(
+    callOf(otherLease,other.principal)).dispatchId
+  if(!otherDispatchId || turns.snapshot(otherLease).usedTurns!==0 ||
+    turns.snapshot(previous).usedTurns!==oldTurns ||
+    existsSync(paths.events)){
+    throw Error('R19-08 denied independent Case or corrupted prior budget')
+  }
+  process.stdout.write('R19_BUDGET_RECOVERY '+JSON.stringify({
+    pid:process.pid,postcommit,processEpoch:owner.processEpoch,
+    oldProcessEpoch:previous.processEpoch,quarantined,
+    oldUsedTurns:oldTurns,newUsedTurns:turns.snapshot(fresh).usedTurns,
+    unresolved,claimBlocked,oldReceiptDenied,otherDispatchId,
+    oldDispatchState:records[0]?.state,
+    proposalExists:existsSync(paths.events),
+  })+'\n')
+}
+if(mode==='crash' || mode==='late' || mode==='complete' || mode==='replay-receipt' || mode==='settle-precommit-enospc' || mode==='settle-postcommit-eio' || mode==='settle-precommit-sigkill' || mode==='settle-postcommit-sigkill' || mode==='budget-precommit-sigkill' || mode==='budget-postcommit-sigkill')await crashOrLate()
+else if(mode==='recover-budget-precommit')recoverBudget(false)
+else if(mode==='recover-budget-postcommit')recoverBudget(true)
 else if(mode==='recover-settle-precommit')recoverSettlement(false)
 else if(mode==='recover-settle-postcommit')recoverSettlement(true)
 else if(mode==='recover-complete')recoverCompleted()
