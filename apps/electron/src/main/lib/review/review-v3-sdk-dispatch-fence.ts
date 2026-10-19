@@ -58,7 +58,11 @@ function decode(raw:string|null):SDKDispatchDisk {
         !['in-flight','settled','late-denied'].includes(item.state) ||
         (item.state==='settled' && !item.receiptId?.trim()) ||
         (item.state!=='settled' && item.receiptId!==undefined) ||
-        (item.state==='in-flight' && i!==chain.records.length-1)) {
+        (item.state==='in-flight' && i!==chain.records.length-1) ||
+        // Old A4 code could redispatch after late-denied, then mark the newer
+        // SDK call settled. This did not reconcile the earlier Provider work.
+        // Never upgrade such a legacy journal to a clean Run implicitly.
+        (item.state==='late-denied' && i!==chain.records.length-1)) {
         return reject('SDK dispatch ledger invalid/duplicated')
       }
       ids.add(item.id)
