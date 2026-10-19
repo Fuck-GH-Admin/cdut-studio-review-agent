@@ -178,6 +178,33 @@ function buildPdfWithContent(content: string): Buffer {
   return Buffer.from(pdf, 'latin1')
 }
 
+
+/** Two actual PDF page objects: protect truthful page coordinates end-to-end. */
+function buildTwoPagePdf(first: string, second: string): Buffer {
+  const stream = (text: string) =>
+    '<< /Length ' + Buffer.byteLength(text, 'latin1') + ' >>\nstream\n' + text + '\nendstream'
+  const objects = [
+    '<< /Type /Catalog /Pages 2 0 R >>',
+    '<< /Type /Pages /Kids [3 0 R 4 0 R] /Count 2 >>',
+    '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R >> >> /Contents 5 0 R >>',
+    '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R >> >> /Contents 6 0 R >>',
+    stream(first), stream(second),
+    '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',
+  ]
+  let pdf = '%PDF-1.4\n'
+  const offsets: number[] = []
+  for (const [index, object] of objects.entries()) {
+    offsets.push(Buffer.byteLength(pdf, 'latin1'))
+    pdf += String(index + 1) + ' 0 obj\n' + object + '\nendobj\n'
+  }
+  const start = Buffer.byteLength(pdf, 'latin1')
+  pdf += 'xref\n0 ' + (objects.length + 1) + '\n0000000000 65535 f \n'
+  for (const offset of offsets) pdf += String(offset).padStart(10, '0') + ' 00000 n \n'
+  pdf += 'trailer\n<< /Size ' + (objects.length + 1) + ' /Root 1 0 R >>\nstartxref\n' +
+    start + '\n%%EOF\n'
+  return Buffer.from(pdf, 'latin1')
+}
+
 /** 1x1 RGBA PNG（真实可解码字节流，非伪造扩展名） */
 const ONE_PIXEL_PNG = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg==',
@@ -245,6 +272,30 @@ describe('parseFileIntoSourceDocument / 文本类文件入口（行为不回归�
     expect(extracted).toContain('请补交完整证书。')
     expect(extracted).not.toContain('备用 HTML 正文')
   })
+})
+
+describe('W1 PDF real two-page source positioning', () => {
+  test('text blocks retain actual page number instead of all being forced to page 1', async () => {
+    const first = 'BT /F1 12 Tf 72 720 Td (FIRST-PAGE-ONLY) Tj ET'
+    const second = 'BT /F1 12 Tf 72 720 Td (SECOND-PAGE-ONLY) Tj ET'
+    const file = join(testRoot, 'two-real-pages.pdf')
+    writeFileSync(file, buildTwoPagePdf(first, second))
+    const doc = await parseFileIntoSourceDocument(file, 'two-real-pages.pdf', 'application')
+    expect(doc.parseStatus).toBe('parsed')
+    expect(doc.blocks.some(block => block.page === 1 && block.text.includes('FIRST-PAGE-ONLY'))).toBeTrue()
+    expect(doc.blocks.some(block => block.page === 2 && block.text.includes('SECOND-PAGE-ONLY'))).toBeTrue()
+    expect(doc.blocks.filter(block => block.text.includes('SECOND-PAGE-ONLY')).every(block => block.page === 2)).toBeTrue()
+  }, PDF_PARSE_TIMEOUT_MS)
+  test('text page plus scan-like blank page remains partial with explicit missing page', async () => {
+    const first = 'BT /F1 12 Tf 72 720 Td (VISIBLE-TEXT) Tj ET'
+    const file = join(testRoot, 'missing-page.pdf')
+    writeFileSync(file, buildTwoPagePdf(first, ''))
+    const doc = await parseFileIntoSourceDocument(file, 'missing-page.pdf', 'evidence')
+    expect(doc.parseStatus).toBe('partial')
+    expect(doc.parseError).toContain('第 2 页')
+    expect(doc.blocks.some(block => block.page === 1 && block.text.includes('VISIBLE-TEXT'))).toBeTrue()
+    expect(doc.blocks.some(block => block.page === 2)).toBeFalse()
+  }, PDF_PARSE_TIMEOUT_MS)
 })
 
 describe('parseFileIntoSourceDocument / PDF 文本层', () => {
