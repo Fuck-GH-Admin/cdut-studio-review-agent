@@ -102,7 +102,7 @@ async function nativeHarness(responseBody:string,scenario?:NativeFailureScenario
     requests.push(url)
     expect(url).toBe('https://provider.r16.invalid/v1/responses')
     expect(init?.redirect).toBe('error')
-    if(scenario){
+    if(scenario && scenario!=='abort-on-agent-end'){
       const startEvent=sseEvent('response.created',{
         response:{...responseEnvelope,status:'in_progress',output:[]},
       })
