@@ -12,6 +12,10 @@ const make=():B1AuthorDocument=>({
   checkKey:'permission',requirement:'Obtain per-room signature',
   sourceIds:['src'],targetKeys:['a','b'],responsibility:'authorized-human',
   condition:{kind:'field-equals',fieldKey:'eligible',equals:true},
+ },{
+  checkKey:'baseline',requirement:'Record scope for every target',
+  sourceIds:['src'],targetKeys:['a','b'],responsibility:'human-operator',
+  condition:{kind:'always'},
  }]}],
  stages:[{stageId:'review',mode:'manual',role:'human'}],outputs:[{outputId:'report',kind:'report'}],
 })
@@ -53,7 +57,7 @@ describe('B1 R16 candidate-only exact removed Check × target × source review',
   const old=pair(make()),modified=make();modified.sources[0]!.documentVersionId='v2'
   const r=buildB1CandidateRemovalImpact(old,pair(modified))
   expect(r.removed).toHaveLength(0)
-  expect(r.changedBindingKeys).toHaveLength(2)
+  expect(r.changedBindingKeys).toHaveLength(4)
   expect(r.publicationAllowed).toBe(false)
  })
  test('modified descriptor/author content or cross-template refuses before proposal',()=>{
