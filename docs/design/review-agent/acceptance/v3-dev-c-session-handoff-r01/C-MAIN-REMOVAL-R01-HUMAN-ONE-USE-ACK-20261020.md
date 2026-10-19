@@ -43,3 +43,15 @@ C 候选 `66f89699260ef181fffdb556394f05a2b8aa8407`：PR CI [39339668422](https:
 唯一失败是原先已绿的 `C-MAIN-WIRE-R02 ... published Plan writer can be installed independently` 在 `review-v3-main-author-plan-ipc.test.ts:327`：该测试模拟只安装 writer 时使用一个精简对象字面量，仅注入旧 `getCaseGrant/canUpgradeCase/publishedPlanSource`，忘记加入当前强制删除必须有的物理 Main `removalConsentSource`；CAS 正确拒绝，旧断言期待 `true` 因而失败。**不是**发布者/Case 原件或新审批逻辑被绕过。
 
 修复提交 `67960811880e0a84bf62eb6f828ea6c72a101901`，仅修改该 C-owned **旧测试夹具**，从已存在的 `f.authority.removalConsentSource` 注入独立 Main 观察源。生产 `consent` gate、默认 fail-closed、原来的精确 identities/Owner/TTL/one-use 否决未弱化。最新准确 CI 状态应按此新 SHA 重新查询 PR + 4 专项全部结果。
+
+## 最终精确 SHA 质量签收
+
+C #144 最新唯一工程 SHA `67960811880e0a84bf62eb6f828ea6c72a101901`，相对已签 `C-MAIN-B20-R01@d5a61304ddb09c38fea7982623786f0ce56ed220` 对比 **9 commits、4 个 C-owned 文件、0 B/A/I/shared/Preload/SchoolPort 修改**。实体生产变更只含真实注册的 `review-v3-main-author-plan-ipc.ts` Main-CAS handler + 独立 Main one-use consent gate，**不替换 C Case 事务、不开新 IPC、不让 Renderer 执行同意授权**。
+
+同一 SHA GitHub Actions **5/5 completed SUCCESS**：
+- PR CI [39340406876](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39340406876) job `118360234929`：frozen deps、全仓 TS、package boundaries、built-in skin、Main+Preload+Renderer build，原始 Bun **4,160 PASS / 5 OS SKIP / 0 FAIL（4,165 tests / 479 files）**。
+- Baseline `39340406742`、Batch `39340406718`、D1 `39340407022`、D2 `39340406724`：4/4 success。
+- 原始 Bun 新 `C-MAIN-REMOVAL-R01` 测试 **10/10 PASS**：4 个真实 Main IPC+Case CAS fixture，6 个独立 one-use gate 负例；前次唯一失败的独立 C-MAIN-WIRE-R02 published Plan writer fixture 同 SHA **PASS**。
+- 唯一共享权威 `DECISIONS:C` 与 `STATUS:C` 正式 `C-MAIN-REMOVAL-R01-FINAL-EXACT-GATE-O / PASS_EXACT_SHA_67960811`，[commit `4bb40300f60538b55ee1ddb5c4c1568b729a22f7`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/4bb40300f60538b55ee1ddb5c4c1568b729a22f7)。
+
+**依然不是可使用的学校业务功能**。尚未由真实 Main OS 对话框回调安装 observation source；安装源缺失时此安全修复刻意拒绝所有删 Check 的升级，而不将 Renderer ACK 伪称真实人类确认。真实 school publisher、B20 来源真 Main 接线、Electron Gate E、学校政策授权 Gate L 与实际非开发者 UAT Gate P 全未完成；C 工作优先级继续是**真实 trusted Principal/Owner/native picker 的 B20 Main 装配与 Main 人机确认源实机验收**，再进入跨 PID durable Run recovery。
