@@ -11,6 +11,9 @@ import {
 import {V3ATurnBudget} from './review-v3-execution-turn-budget'
 import {V3ASDKDispatchFence} from './review-v3-sdk-dispatch-fence'
 import {V3APhysicalSDKTurnPort} from './review-v3-sdk-physical-turn-port'
+import {V3APiHttpSingleRequestEngine} from './review-v3-pi-http-provider-engine'
+import type {AgentSession} from '@earendil-works/pi-coding-agent'
+import type {StreamFn} from '@earendil-works/pi-agent-core'
 import {
   V3AProposalProducer, type ATechnicalStatus,
 } from './review-v3-execution-proposal-producer'
@@ -328,6 +331,53 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     expect(h.dispatch.unresolved(h.run)).toBe(true)
     await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('Unresolved SDK Provider dispatch')
     expect(h.calls()).toBe(1)
+  })
+  it('A4-R10-16: pinned Pi HTTP request-id + turn_end traverses durable A4 SDK bridge',async()=>{
+    const h=fixture()
+    let transportCalls=0
+    let listener:((event:{type:string;message?:unknown})=>void)|undefined
+    const original:StreamFn=async (_model,_context,options)=>{
+      await options!.fetch!('https://trusted.provider.example/v1/chat/completions',{
+        method:'POST',
+      })
+      listener?.({
+        type:'turn_end',message:{role:'assistant',stopReason:'stop'},
+      })
+      return {} as Awaited<ReturnType<StreamFn>>
+    }
+    const session={
+      agent:{state:{isStreaming:false},streamFunction:original},
+      subscribe(cb:(event:{type:string;message?:unknown})=>void){
+        listener=cb
+        return ()=>{listener=undefined}
+      },
+      async prompt(){
+        await session.agent.streamFunction(
+          {api:'openai-completions',provider:'openai',id:'pinned'} as never,
+          {messages:[]} as never,
+          {transport:'sse',fetch:async()=>{
+            transportCalls++
+            return new Response('',{
+              status:200,headers:{'x-request-id':'native-http-request-r10-16'},
+            })
+          }},
+        )
+      },
+    }
+    const port=new V3APhysicalSDKTurnPort(new V3APiHttpSingleRequestEngine({
+      create:async()=>({
+        session:session as unknown as Pick<AgentSession,'agent'|'prompt'|'subscribe'>,
+        prompt:'frozen-trusted-main-review-request',
+        trustedOrigin:'https://trusted.provider.example',
+      }),
+    }))
+    const bridge=new V3ASDKTurnBridge(h.owners,h.turns,h.producer,port,h.dispatch)
+    const result=await bridge.next(h.call,'hidden')
+    expect(result.kind).toBe('recorded')
+    expect(transportCalls).toBe(1)
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(1)
+    expect(h.dispatch.unresolved(h.run)).toBe(false)
+    expect(h.producer.replayCandidates()).toEqual([])
   })
   it('A4-R09-01: a fresh Run and fresh Owner session on same Case cannot bypass unresolved SDK call',()=>{
     const h=fixture()
