@@ -140,7 +140,7 @@ describe('I1 A1+A2 with B1/B2 parser identity and C1 fail-closed boundaries', ()
     expect(h.events.pending()).toHaveLength(2)
     // These are Dev-A LOCAL delivery acknowledgements, not C2 Run ACKs.
     expect(h.events.acknowledge(check.deliveryId, check.event)).toBe(false)
-    expect(h.events.acknowledge(read.deliveryId, read.delivery.event)).toBe(true)
+    expect(h.events.acknowledge(read.delivery.deliveryId, read.delivery.event)).toBe(true)
     expect(h.events.acknowledge(check.deliveryId, check.event)).toBe(true)
     expect(h.events.pending()).toEqual([])
     expect(h.plan.schemaVersion).toBe('review-c0/1')

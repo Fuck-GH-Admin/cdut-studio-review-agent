@@ -206,10 +206,11 @@ export async function readI1OwnerBoundBlock<T>(input: {
   if (!physical.source || physical.status === 'NEEDS_SOURCE_REVIEW') {
     throw new Error('I1_VERIFIED_PHYSICAL_BLOCK_REQUIRED')
   }
+  const verifiedSource: SourceIdentity = physical.source
   // Dev-A's guardedRead performs before/after-await Main Owner validation,
   // source allowlist checks, Host actualSource matching and durable local append.
   const { result, delivery } = await input.events.guardedRead({
-    ...input.mainOwnedCall, tool: 'review_read_documents', source: physical.source,
+    ...input.mainOwnedCall, tool: 'review_read_documents', source: verifiedSource,
   }, async expectedSource => {
     const hostResult = await input.hostRead(expectedSource)
     // The A1 Owner and B2 staging grants have *separate* lifecycles.
@@ -219,25 +220,25 @@ export async function readI1OwnerBoundBlock<T>(input: {
     // after await and before A2 can append its local proposal. This is still
     // a staged-only read, never a durable business receipt.
     const current = input.staging.getCandidate(input.mainContext, input.candidateId)
-    if (current.caseCandidateId !== physical.source.caseId ||
-        current.materialId !== physical.source.materialId ||
-        current.documentVersionId !== physical.source.documentVersionId ||
-        current.rawSha256 !== physical.source.rawSha256 ||
+    if (current.caseCandidateId !== verifiedSource.caseId ||
+        current.materialId !== verifiedSource.materialId ||
+        current.documentVersionId !== verifiedSource.documentVersionId ||
+        current.rawSha256 !== verifiedSource.rawSha256 ||
         current.status !== 'accepted') {
       throw new Error('I1_PHYSICAL_SOURCE_REVOKED_OR_REPLACED')
     }
     const registered = input.parser.sourceForBlock(
       input.mainContext, input.candidateId,
-      physical.source.parseRevision, physical.source.blockId,
+      verifiedSource.parseRevision, verifiedSource.blockId,
     )
-    if (registered.caseId !== physical.source.caseId ||
-        registered.materialId !== physical.source.materialId ||
-        registered.documentVersionId !== physical.source.documentVersionId ||
-        registered.rawSha256 !== physical.source.rawSha256 ||
-        registered.parseRevision !== physical.source.parseRevision ||
-        registered.blockId !== physical.source.blockId ||
-        registered.location.kind !== physical.source.location.kind ||
-        registered.location.locator !== physical.source.location.locator) {
+    if (registered.caseId !== verifiedSource.caseId ||
+        registered.materialId !== verifiedSource.materialId ||
+        registered.documentVersionId !== verifiedSource.documentVersionId ||
+        registered.rawSha256 !== verifiedSource.rawSha256 ||
+        registered.parseRevision !== verifiedSource.parseRevision ||
+        registered.blockId !== verifiedSource.blockId ||
+        registered.location.kind !== verifiedSource.location.kind ||
+        registered.location.locator !== verifiedSource.location.locator) {
       throw new Error('I1_PHYSICAL_SOURCE_REGISTRY_CHANGED')
     }
     return hostResult
