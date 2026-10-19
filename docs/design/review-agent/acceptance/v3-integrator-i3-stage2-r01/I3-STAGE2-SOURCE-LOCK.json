@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "v3-integrator-i3-stage2-r01/1",
+  "authority": {
+    "cSign": "C-I3-FINAL-ENG-ACCEPT-R01",
+    "cSignCommit": "84a7ce838aea2a454827f57d1edf2fa38f35274f",
+    "cCompatibility": "CR-A-R14-COMPAT-004",
+    "allowed": "I-own non-IPC/non-live A R14 technical source with independent exact CI"
+  },
+  "sources": {
+    "signedI3Stage1": "36dd1c37bc18d7614d8d4835b5213d5cb6459792",
+    "frozenI3Ref": "integration/v3-i3-stage1-accepted-frozen",
+    "frozenCR03": "e87f75e044becc35c28292cc835a2c2ec41df48a",
+    "selectedA": "56f450f3c783299ceb0a6489bf855a1ba8f0a913",
+    "sourceBranchHeadNotAuthority": true
+  },
+  "checkpoints": {
+    "sourceReplay": "abfd6a26b8b8795617c9be6aa559208dcd4887d1",
+    "integrationNegativeTests": "e175ae04997fae67d9770e267a1bd81d6ceb439a",
+    "sourceFileCount": 8,
+    "selectedBlobsAllEqual": true,
+    "expectedAOwnedExistingReplaced": 0,
+    "CProductionModified": 0,
+    "C0LeasedTestModified": 0
+  },
+  "sourceBlobs": [
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.ts",
+      "sourceCommit": "56f450f3c783299ceb0a6489bf855a1ba8f0a913",
+      "sourceBlob": "0ef8dcec6e0122b65bedc0e350c078b64845c507",
+      "importBlob": "0ef8dcec6e0122b65bedc0e350c078b64845c507",
+      "changes": "EXACT_BLOB_NO_REWRITE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.test.ts",
+      "sourceCommit": "56f450f3c783299ceb0a6489bf855a1ba8f0a913",
+      "sourceBlob": "2005bf3f7482a00ad904cdbf05deb683ff88448a",
+      "importBlob": "2005bf3f7482a00ad904cdbf05deb683ff88448a",
+      "changes": "EXACT_BLOB_NO_REWRITE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.ts",
+      "sourceCommit": "56f450f3c783299ceb0a6489bf855a1ba8f0a913",
+      "sourceBlob": "49b8d9270570a76f58f04d90c3bdc77ce6230a9b",
+      "importBlob": "49b8d9270570a76f58f04d90c3bdc77ce6230a9b",
+      "changes": "EXACT_BLOB_NO_REWRITE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.test.ts",
+      "sourceCommit": "56f450f3c783299ceb0a6489bf855a1ba8f0a913",
+      "sourceBlob": "e5ed54f6b07c2a051e4eea173e78ad674113599c",
+      "importBlob": "e5ed54f6b07c2a051e4eea173e78ad674113599c",
+      "changes": "EXACT_BLOB_NO_REWRITE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-sdk-turn-bridge.ts",
+      "sourceCommit": "56f450f3c783299ceb0a6489bf855a1ba8f0a913",
+      "sourceBlob": "7937bd0b995ebdb5730399a761e58e2a329c52fe",
+      "importBlob": "7937bd0b995ebdb5730399a761e58e2a329c52fe",
+      "changes": "EXACT_BLOB_NO_REWRITE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-sdk-turn-bridge.test.ts",
+      "sourceCommit": "56f450f3c783299ceb0a6489bf855a1ba8f0a913",
+      "sourceBlob": "6a24626242813bd5c8f276e47022eb4bb8d51747",
+      "importBlob": "6a24626242813bd5c8f276e47022eb4bb8d51747",
+      "changes": "EXACT_BLOB_NO_REWRITE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-dispatch-fence.ts",
+      "sourceCommit": "56f450f3c783299ceb0a6489bf855a1ba8f0a913",
+      "sourceBlob": "d895feaed037260aad9b7502d6909b394678bc26",
+      "importBlob": "d895feaed037260aad9b7502d6909b394678bc26",
+      "changes": "EXACT_BLOB_NO_REWRITE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-dispatch-crashpid.test.ts",
+      "sourceCommit": "56f450f3c783299ceb0a6489bf855a1ba8f0a913",
+      "sourceBlob": "48db97ad4e281125f69e65e7ac7cfe0afbf3a618",
+      "importBlob": "48db97ad4e281125f69e65e7ac7cfe0afbf3a618",
+      "changes": "EXACT_BLOB_NO_REWRITE"
+    }
+  ],
+  "iOnlyTest": {
+    "path": "apps/electron/src/main/lib/review/review-v3-integration-i3-a-c-provider-boundary.test.ts",
+    "gitBlob": "81a7b486f33f17fe6b817649cf786c512979e99e",
+    "cases": 4,
+    "proof": "C session shape fits A factory type; no admitted Case -> no SDK; A native provider ID cannot create C physical Host read/check/terminal witness; only independent observer physical receipt; revoke/rotation and cold-registry fail closed",
+    "limitations": "Tests use in-memory SDK and Main mock; no real physical Provider, no actual C business ACK"
+  },
+  "gates": {
+    "newCombinedO": "PENDING_CURRENT_SHA_CI",
+    "electronE": "NOT_RUN",
+    "schoolL": "BLOCKED_NO_AUTH",
+    "productP": "NOT_RUN",
+    "release": "NO_GO",
+    "cEngineeringAcceptance": "PENDING_FUTURE_EXACT_SHA_REVIEW"
+  },
+  "permissions": {
+    "mainReadonly": "CONDITIONAL_NOT_ACTIVE",
+    "businessWriter": "DENIED",
+    "prohibited": [
+      "C main/provenance/Host registry edits",
+      "packages/shared/**",
+      "review-ipc.ts",
+      "preload",
+      "real Provider credentials",
+      "school policy issuer",
+      "durable Run ACK",
+      "replaying R15/R16 A HEAD"
+    ]
+  },
+  "rollback": [
+    "36dd1c37bc18d7614d8d4835b5213d5cb6459792",
+    "abfd6a26b8b8795617c9be6aa559208dcd4887d1",
+    "e175ae04997fae67d9770e267a1bd81d6ceb439a"
+  ]
+}
