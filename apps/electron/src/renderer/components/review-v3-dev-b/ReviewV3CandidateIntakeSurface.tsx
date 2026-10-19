@@ -80,6 +80,16 @@ export function ReviewV3RouteReviewPanel(props:B3RoutePanelProps):ReactNode {
         状态：{route.status} · 当前输入会话：{caseCandidateId} · 仅供技术候选使用
       </p>
     </header>
+    {route.status==='unmatched' && <div className="space-y-2 rounded border border-border p-3"
+      role="status" aria-label="无匹配模板">
+      <p className="font-medium">这批材料尚无可验证的匹配模板</p>
+      <p className="text-sm text-muted-foreground">
+        20 秒自动建议已停止，不会把未知业务强行套用到已有模板。
+        可继续人工选择正确模板，或自行编制一份待审核候选；均不会直接建案或发布。
+      </p>
+      <button type="button" className={action} disabled={busy}
+        onClick={props.onOpenCustomAuthor}>创建新的候选审核模板（非正式发布）</button>
+    </div>}
     {route.status==='countdown' && <div className="space-y-2" role="status"
       aria-label="自动建议倒计时">
       <p>剩余约 <strong>{view.remainingSeconds} 秒</strong>；此处仅展示 Main 计算的剩余时间</p>
