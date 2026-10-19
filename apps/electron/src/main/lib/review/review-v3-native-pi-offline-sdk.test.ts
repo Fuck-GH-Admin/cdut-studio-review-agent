@@ -265,7 +265,12 @@ describe('Dev-A R16 real Pi 0.86.1 AgentSession offline — no external Provider
     expect(h.mainAborter.signal.aborted).toBe(true)
     expect(h.fetchCalls()).toBe(1)
     expect(h.requests).toEqual(['https://provider.r16.invalid/v1/responses'])
+    // A rejected Model/SSE stream also emits agent_end; require actual
+    // successful model completion before the Main revocation edge.
+    expect(h.nativeFailures).toEqual([])
+    expect(h.allNativeEvents).toContain('turn_end:stop')
     expect(h.events).toContain('agent_end')
+    expect(h.events).toContain('agent_settled')
   })
   it('R18-02: successful native SDK run remains single-fetch after cancellation-race harness addition',async()=>{
     const h=await nativeHarness(validSse)
