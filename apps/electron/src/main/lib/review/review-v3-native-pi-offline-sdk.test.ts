@@ -222,7 +222,7 @@ describe('Dev-A R16 real Pi 0.86.1 AgentSession offline — no external Provider
     const h=await nativeHarness(validSse)
     h.mainAborter.abort(new DOMException('Main cancelled before creation','AbortError'))
     await expect(h.host.nextTurn({...request,dispatchId:'native-r17-preabort',
-      signal:h.mainAborter.signal})).rejects.toThrow('Main aborted before')
+      signal:h.mainAborter.signal})).rejects.toThrow('Main cancelled before native SDK call')
     expect(h.fetchCalls()).toBe(0)
     expect(h.session()).toBeUndefined()
   })
