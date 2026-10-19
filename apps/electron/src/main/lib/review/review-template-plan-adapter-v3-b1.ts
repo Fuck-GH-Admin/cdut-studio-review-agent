@@ -53,7 +53,7 @@ export interface B1Module {
 }
 export interface B1Source {
   sourceId: string
-  kind: 'user-declared' | 'policy-candidate' | 'policy-authorized'
+  kind: 'user-declared' | 'policy-candidate'
   documentVersionId: string
   locator: string
   /** Provenance is not a school publication signature. */
@@ -159,7 +159,7 @@ export function compileReviewB1Plan(author: B1AuthorDocument): ImmutablePlanDesc
   const sourceMap = new Map(author.sources.map((s) => [s.sourceId, s]))
   if (sourceMap.size !== author.sources.length || author.sources.some((s) =>
     !valid(s.sourceId) || !nonempty(s.documentVersionId) || !nonempty(s.locator) ||
-    !nonempty(s.recordedBy) || !['user-declared','policy-candidate','policy-authorized'].includes(s.kind)
+    !nonempty(s.recordedBy) || !['user-declared','policy-candidate'].includes(s.kind)
   )) reject('B1_SOURCE_INVALID', 'Untraceable/duplicate source')
   const fieldMap = new Map(author.fields.map((f) => [f.key, f]))
   if (fieldMap.size !== author.fields.length || author.fields.some((f) =>
@@ -197,7 +197,7 @@ export function compileReviewB1Plan(author: B1AuthorDocument): ImmutablePlanDesc
       const sourceVersionIds = check.sourceIds.map((sourceId) => sourceMap.get(sourceId)!.documentVersionId)
       for (const targetKey of check.targetKeys) {
         const target = targetMap.get(targetKey)
-        if (!target) reject('B1_TARGET_NOT_FOUND', targetKey)
+        if (!target) throw new Error('B1_TARGET_NOT_FOUND: ' + targetKey)
         used.add(targetKey)
         details.push({
           checkKey: check.checkKey, targetKey, objectKey: target.objectKey,
@@ -285,5 +285,5 @@ export function verifyReviewB1Descriptor(
 }
 /** P06 scenarios cannot be converted by guessing a new target or dropping obligations. */
 export function adaptLegacyP06Plan(raw: unknown): never {
-  reject('UNSUPPORTED_PLAN_MAPPING', 'Legacy P06 archive/scenario has no proved lossless C0 multi-target mapping; preserve original bytes: ' + digest(raw))
+  throw new Error('UNSUPPORTED_PLAN_MAPPING: Legacy P06 archive/scenario has no proved lossless C0 multi-target mapping; preserve original bytes: ' + digest(raw))
 }
