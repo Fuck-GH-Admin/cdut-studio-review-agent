@@ -72,26 +72,31 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
     }
     if(input.signal?.aborted)fail('Main aborted before Pi session creation')
     const spec=await this.factory.create(input)
-    const session=spec.session
+    const session=spec?.session
+    const rejectNewSession=(reason:string):never=>{
+      try { session?.dispose?.() }
+      finally { return fail(reason) }
+    }
     if(!session?.agent || typeof session.prompt!=='function' ||
         typeof session.subscribe!=='function' ||
         typeof session.dispose!=='function' ||
         !spec.prompt?.trim() || !spec.trustedOrigin) {
-      fail('Trusted dedicated Pi SDK session/prompt unavailable')
+      return rejectNewSession('Trusted dedicated Pi SDK session/prompt unavailable')
     }
     let origin:URL
     try{origin=new URL(spec.trustedOrigin)}
-    catch{return fail('Trusted Pi Provider HTTPS origin invalid')}
+    catch{return rejectNewSession('Trusted Pi Provider HTTPS origin invalid')}
     if(origin.protocol!=='https:' || origin.username || origin.password ||
         origin.pathname!=='/' || origin.search || origin.hash) {
-      fail('Only exact trusted HTTPS Provider origin is allowed')
+      return rejectNewSession('Only exact trusted HTTPS Provider origin is allowed')
     }
+    // Do not cancel a session already owned by another SDK invocation.
     if(session.agent.state.isStreaming)fail('Pi SDK session already running')
     if(consumedPiAgents.has(session.agent)) {
       fail('Pi SDK review Agent session reused for another physical request')
     }
     if(typeof session.agent.streamFunction!=='function') {
-      fail('Pi SDK stream function is unavailable')
+      return rejectNewSession('Pi SDK stream function is unavailable')
     }
     consumedPiAgents.add(session.agent)
     const previous=session.agent.streamFunction
