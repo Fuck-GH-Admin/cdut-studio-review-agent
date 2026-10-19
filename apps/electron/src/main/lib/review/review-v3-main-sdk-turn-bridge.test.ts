@@ -94,7 +94,7 @@ function fixture(){
   const producer=new V3AProposalProducer(eventStore,owners,host,turns)
   const bridge=new V3ASDKTurnBridge(owners,turns,producer,sdk)
   return {
-    owners,turns,producer,bridge,call,run,grant,principal,
+    owners,turns,producer,bridge,call,run,grant,principal,sdk,
     eventStore,turnStore,
     setAllowed:(v:boolean)=>{authorized=v},
     setNext:(fn:(run:RunEvidenceIdentity)=>Promise<V3ATurnHostOutcome>)=>{nextOutcome=fn},
@@ -219,6 +219,18 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     expect(h.producer.replayCandidates()).toEqual([])
     h.turnStore.fail=false
     expect((await h.bridge.next(h.call,'direct')).kind).toBe('recorded')
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(1)
+  })
+  it('A3-SDK-15: two bridge instances cannot execute same Owner SDK concurrently',async()=>{
+    const h=fixture()
+    let resolve!:(out:V3ATurnHostOutcome)=>void
+    h.setNext(()=>new Promise<V3ATurnHostOutcome>(res=>{resolve=res}))
+    const first=h.bridge.next(h.call,'direct')
+    const second=new V3ASDKTurnBridge(h.owners,h.turns,h.producer,h.sdk)
+    await expect(second.next(h.call,'hidden')).rejects.toThrow('Concurrent SDK turn')
+    resolve({kind:'completed-turn',receiptId:'unique-host-turn',run:h.run})
+    expect((await first).kind).toBe('recorded')
+    expect(h.calls()).toBe(1)
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(1)
   })
   it('A3-SDK-13: already aborted Main signal cannot invoke SDK Provider',async()=>{
