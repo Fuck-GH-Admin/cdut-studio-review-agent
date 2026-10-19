@@ -38,3 +38,13 @@
 - 唯一失败：旧 `review-v3-main-trusted-assembly.test.ts:194` `C2-R04 single Main-local Plan/Owner/Host/Pi assembly > explicit Run invalidation tombstones Host receipt`。原断言只接受 `Recycled`，新 Run-wide 先命中永久围栏、正确返回 `RECOVERY_REQUIRED: Run invalidated: late or unknown physical Host receipt denied`。这是**旧测试消息断言未同步到更严格的拒绝优先级**，并非 Run 被放行。
 - 新修正 SHA `7e80c5e782c0e7d5b41a804b11cd5cbe6a130c45`：**只改 1 个 C-owned 旧测试断言**，从 `.toThrow('Recycled')` 改为 `.toThrow('Run invalidated')`；不改业务算法、不扩权限、不改 Run-wide 安全实现，不降低 CI 门槛。
 - 必须在新 exact HEAD `7e80c5e...` 全部 5 项 CI completed/success，重新核对 new R06 4/4 与 old assembly 回归后才可正式签收。
+
+## 最终独立 Gate O 精确签收
+
+- C 工程 Draft #144 最新精确 SHA `7e80c5e782c0e7d5b41a804b11cd5cbe6a130c45`；Git compare 相对已签 R02 `5005ecd...` **ahead 3/behind 0，仅 3 个 C-owned 路径**，其中源码 1、直接测试 1、旧 Main 联合测试断言 1。
+- PR CI [39328305432](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39328305432) job `118319738503` **completed/success**，frozen install、TS、package boundaries、built-in skin、Electron Main/Preload/Renderer build 和 full Bun **4142 PASS / 5 OS SKIP / 0 FAIL（4147 tests / 477 files）**。
+- 直接从原始 Bun CI 核实新 C2-R06 **4/4 PASS**：未知 late ID、相同 Run 不同 attempt/Owner generation、同 Case 独立新 Run、容量耗尽 whole registry seal；旧 C2-R04 assembly invalidate/cold nonrehydration **PASS**。
+- Review Baseline [39328305547](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39328305547)、Batch [39328305617](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39328305617)、D1 [39328305551](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39328305551)、D2 [39328305490](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39328305490) **4/4 SUCCESS**；总 **5/5**。
+- 正式 #145 DECISIONS:C / STATUS:C 决议 `C-C2-R06-RUNWIDE-HOST-TOMBSTONE-FINAL / PASS_EXACT_SHA_7E80C5E`，commit `f3a229441ef3bfc34ca2c248d4585c1d1ac97efe`。
+
+**只签本地进程 Main Host 技术 Gate O**。跨 PID/崩溃后持久 Run fencing、真正 Live Provider/SDK 到 C 物理 Host 见证、正式人类 Decision、School issuer、Electron Gate E、产品 P 仍待各自独立门禁。B 当前 R20 仍可并行开发；C 不等待 B。
