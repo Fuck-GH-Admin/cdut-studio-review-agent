@@ -182,5 +182,30 @@
     "gateL": "BLOCKED_NO_AUTH",
     "gateP": "NOT_RUN",
     "cEngineeringSignoff": "PENDING_C_REVIEW"
-  }
+  },
+  "bridgeFollowupCommits": [
+    {
+      "sha": "9afd9d80eb03041b665964efce8a34c1c9337126",
+      "scope": "I-only actual parser-registry SourceIdentity bridge"
+    },
+    {
+      "sha": "6a90a235325d6802e119bf3a143f4b5d6ec7bc85",
+      "scope": "I-only real parser, forged block, revoked source negative tests"
+    }
+  ],
+  "newIIntegrationProbes": {
+    "count": 7,
+    "results": "COMMITTED_NOT_VERIFIED",
+    "crossModules": [
+      "Dev-B B1 immutable candidate Plan",
+      "Dev-B B2 Main-scoped staging and real Source parser registry",
+      "Dev-B B3 conservative route",
+      "Dev-A A3 exact technical Check×target",
+      "Dev-C C1 archived CurrentValidity"
+    ],
+    "formallyPersistedBusinessRuns": 0
+  },
+  "integrationPullRequest": 147,
+  "pullRequestBaseBranch": "integration/v3-i1-c-anchor-001-frozen",
+  "pullRequestBaseSHA": "31aa352c45a33d6832612884b0fea38e39b5cf8d"
 }
