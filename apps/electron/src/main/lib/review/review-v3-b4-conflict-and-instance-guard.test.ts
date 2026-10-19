@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import {
-  B4_REQUIRED_DIMENSIONS, inspectB4HighRiskInstanceEvidence,
+  B4_REQUIRED_DIMENSIONS, auditB4FrozenUnknownCoverage, inspectB4HighRiskInstanceEvidence,
   inspectB4OriginalVersion, type B4ConflictedOriginalPin,
   type B4HighRiskDomain, type B4RiskInstance,
 } from './review-v3-b4-conflict-and-instance-guard'
@@ -129,6 +129,15 @@ describe('B4 R24 all 32 real R14 clause anchors, technical-only per-instance sem
     expect([sum.domains, sum.templates, sum.checks, sum.unscoped, sum.unknown])
       .toEqual([8, 50, 3875, 34, 4163])
     expect(sum.policyPublicationAllowed).toBe(false)
+    const everyDomain = Object.fromEntries(['G01','G02','G03','G04','G05','G06','G07','G08']
+      .map(d => [d, load('B4-OBLIGATION-SOURCE-' + d + '.json')])) as Record<string, B4Archive>
+    const gaps = auditB4FrozenUnknownCoverage(everyDomain)
+    expect(gaps.scopeGaps).toHaveLength(34)
+    expect(gaps.sourceGaps).toHaveLength(4163)
+    expect(gaps.scopeGaps.every(x => x.domain === 'G01')).toBe(true)
+    expect(gaps.sourceGaps.every(x => x.documentVersionId.length > 0 &&
+      x.locator.length > 0 && x.reason === 'SOURCE_APPLICABILITY_UNKNOWN')).toBe(true)
+    expect(gaps.publicationAllowed).toBe(false)
   })
   test('32 actual clauses keep frozen Check/source links and EXACT domain-specific missing dimensions', () => {
     const p = proof()
@@ -145,6 +154,23 @@ describe('B4 R24 all 32 real R14 clause anchors, technical-only per-instance sem
       expect(row.disposition.authorMayPublish).toBe(false)
     }
   })
+
+  test('fabricated CASE scope or not-applicable source cannot erase frozen UNKNOWN entries', () => {
+    const all = () => Object.fromEntries(['G01','G02','G03','G04','G05','G06','G07','G08']
+      .map(d => [d, load('B4-OBLIGATION-SOURCE-' + d + '.json')])) as Record<string, B4Archive>
+    const scoped = all()
+    const g01 = scoped.G01!.templates.flatMap(t => t.obligations)
+      .find(c => !c.genericScope && !c.caseScopeJustification)!
+    g01.caseScopeJustification = 'invented CASE'
+    expect(() => auditB4FrozenUnknownCoverage(scoped)).toThrow('B4_R24_FROZEN_GAP_DRIFT')
+    const applicability = all()
+    const source = applicability.G02!.templates[0]!.obligations[0]!.sources[0]!
+    expect(source.sourceApplicability).toBe('unknown')
+    source.sourceApplicability = 'not-applicable'
+    expect(() => auditB4FrozenUnknownCoverage(applicability))
+      .toThrow('B4_R24_FROZEN_GAP_DRIFT')
+  })
+
   for (const selected of riskTargets) {
     test(selected.domain + ': exact-instance true / known-false / cross-object / unknown stay isolated', () => {
       const row = proof().items.find(x => x.domain === selected.domain &&
