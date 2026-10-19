@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { ReviewB2StagingService, type B2MainContext } from './review-intake-adapter-v3-b2'
 import { ReviewB2ArchiveVault } from './review-import-checkpoint-v3-b2'
+import { proposeB2MaterialCandidates } from './review-import-handoff-v3-b2'
 import {
   ReviewB2InputLedger, type B2InputAuthority, type B2InputDecision,
 } from './review-import-ledger-v3-b2'
@@ -157,6 +158,90 @@ describe('B-IN-01/02: durable source-only ImportBatch input status ledger',()=>{
     body.ledgerHash=createHash('sha256').update(JSON.stringify(plain)).digest('hex')
     writeFileSync(file,JSON.stringify(body))
     expect(()=>f.ledger.snapshot(ctx,f.archiveId)).toThrow('B2_LEDGER_CORRUPT')
+  })
+  test('snapshot readers cannot bypass writer input.lock or clear a foreign lock',()=>{
+    const f=fixture('snapshot-lock')
+    const before=f.ledger.getOrCreate(ctx,f.archiveId)
+    const path=join(f.ledgerDir,f.archiveId,'input.lock')
+    writeFileSync(path,'held-by-different-pid',{flag:'wx'})
+    try{
+      expect(()=>f.ledger.snapshot(ctx,f.archiveId)).toThrow('B2_LEDGER_LOCKED')
+      expect(()=>f.ledger.getOrCreate(ctx,f.archiveId)).toThrow('B2_LEDGER_LOCKED')
+      expect(readFileSync(path,'utf8')).toBe('held-by-different-pid')
+    } finally {rmSync(path)}
+    expect(f.ledger.snapshot(ctx,f.archiveId)).toEqual(before)
+  })
+  test('v2 receipt seals accepted Subject, role and raw original hash across restart',()=>{
+    const f=fixture('sealed-binding')
+    const start=f.ledger.getOrCreate(ctx,f.archiveId)
+    expect(start.schemaVersion).toBe('review-v3-b2-input-ledger/2')
+    const first=f.ledger.decide(ctx,f.archiveId,0,'seal-a',confirm(0,start.files[0]!.rawSha256!),trusted)
+    expect(first.receipt.confirmedRole).toBe('supporting')
+    expect(first.receipt.confirmedSubjectId).toBe('subject-1')
+    expect(first.receipt.confirmedRawSha256).toBe(start.files[0]!.rawSha256)
+    expect(first.receipt.decisionReason).toBeNull()
+    const file=join(f.ledgerDir,f.archiveId,'ledger.json')
+    const pristine=readFileSync(file,'utf8')
+    const tamper=(change:(record:any)=>void)=>{
+      const record=JSON.parse(pristine)
+      change(record)
+      const {ledgerHash:_,...plain}=record
+      record.ledgerHash=createHash('sha256').update(JSON.stringify(plain)).digest('hex')
+      writeFileSync(file,JSON.stringify(record))
+      expect(()=>f.ledger.snapshot(ctx,f.archiveId)).toThrow('B2_LEDGER_CORRUPT')
+      writeFileSync(file,pristine)
+    }
+    tamper(r=>{r.files[0].subjectId='another-student'})
+    tamper(r=>{r.files[0].role='application'})
+    tamper(r=>{r.mutations[0].confirmedRawSha256='0'.repeat(64)})
+    tamper(r=>{r.mutations[0].confirmedSubjectId='forged'})
+    const fresh=new ReviewB2InputLedger(f.archiveVault,f.staging,f.ledgerDir)
+    const replay=fresh.decide(ctx,f.archiveId,0,'seal-a',confirm(0,start.files[0]!.rawSha256!),trusted)
+    expect(replay.receipt).toEqual(first.receipt)
+    expect(replay.ledger.revision).toBe(1)
+  })
+  test('v2 skipped reason is receipt-bound and cannot be replaced by a recalculated ledger hash',()=>{
+    const f=fixture('sealed-reject')
+    f.ledger.getOrCreate(ctx,f.archiveId)
+    const first=f.ledger.decide(ctx,f.archiveId,0,'skip-b',{
+      entryIndex:2,status:'skipped',reason:'not needed for this Subject',
+    },trusted)
+    expect(first.receipt.confirmedRole).toBeNull()
+    expect(first.receipt.confirmedSubjectId).toBeNull()
+    expect(first.receipt.confirmedRawSha256).toBeNull()
+    expect(first.receipt.decisionReason).toBe('not needed for this Subject')
+    const file=join(f.ledgerDir,f.archiveId,'ledger.json')
+    const changed=JSON.parse(readFileSync(file,'utf8'))
+    changed.files[2].reason='retroactively changed'
+    const {ledgerHash:_,...plain}=changed
+    changed.ledgerHash=createHash('sha256').update(JSON.stringify(plain)).digest('hex')
+    writeFileSync(file,JSON.stringify(changed))
+    expect(()=>f.ledger.snapshot(ctx,f.archiveId)).toThrow('B2_LEDGER_CORRUPT')
+  })
+  test('legacy v1 accepted receipt is readable for audit but cannot silently hand off or mutate',()=>{
+    const f=fixture('legacy-protection')
+    const start=f.ledger.getOrCreate(ctx,f.archiveId)
+    const first=f.ledger.decide(ctx,f.archiveId,0,'legacy-old',
+      confirm(0,start.files[0]!.rawSha256!),trusted)
+    const file=join(f.ledgerDir,f.archiveId,'ledger.json')
+    const old=JSON.parse(readFileSync(file,'utf8'))
+    old.schemaVersion='review-v3-b2-input-ledger/1'
+    const receipt=old.mutations[0]
+    delete receipt.confirmedRole
+    delete receipt.confirmedSubjectId
+    delete receipt.confirmedRawSha256
+    delete receipt.decisionReason
+    const {receiptHash:_,...unsigned}=receipt
+    receipt.receiptHash=createHash('sha256').update(JSON.stringify(unsigned)).digest('hex')
+    const {ledgerHash:__,...plain}=old
+    old.ledgerHash=createHash('sha256').update(JSON.stringify(plain)).digest('hex')
+    writeFileSync(file,JSON.stringify(old))
+    expect(f.ledger.snapshot(ctx,f.archiveId).revision).toBe(first.ledger.revision)
+    expect(()=>f.ledger.decide(ctx,f.archiveId,1,'later-legacy',{
+      entryIndex:2,status:'skipped',reason:'later',
+    },trusted)).toThrow('B2_LEDGER_LEGACY_SCHEMA_UNPINNED')
+    expect(()=>proposeB2MaterialCandidates(ctx,f.archiveVault,f.staging,f.ledger,f.archiveId))
+      .toThrow('B2_HANDOFF_LEGACY_BINDING_UNVERIFIABLE')
   })
   test('no cross-case, owner generation revoke and filesystem tamper allowed',()=>{
     const f=fixture('trust')
