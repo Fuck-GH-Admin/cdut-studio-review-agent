@@ -12,10 +12,15 @@ const HASH = 'a'.repeat(64)
 class MemoryStore implements OwnerPersistence {
   raw: string | null = null
   failWrites = false
+  failAfterCommit = false
   read() { return this.raw }
   write(data: string) {
     if (this.failWrites) throw Object.assign(new Error('ENOSPC'), { code: 'ENOSPC' })
     this.raw = data
+    if (this.failAfterCommit) {
+      this.failAfterCommit = false
+      throw Object.assign(new Error('EIO after journal replacement'), { code: 'EIO' })
+    }
   }
 }
 function fixtures(caseId = 'case-a', sessionId = 'review-session-a') {
@@ -127,6 +132,24 @@ describe('V3 A1 Main owner journal + isolation', () => {
     const restarted = new V3ReviewOwnerAdapter(h.store, h.gate)
     expect(() => restarted.assertAuthorized(lease.sessionId, lease.grantId,
       lease.senderKey, principal, 'review_read_documents', source)).toThrow()
+  })
+
+  it('A-FAIL-03: uncertain post-commit I/O error never returns a valid Owner grant ACK', () => {
+    const h = host()
+    const {request,source,principal}=fixtures()
+    h.store.failAfterCommit=true
+    expect(()=>h.adapter.grant(request)).toThrow('EIO after journal replacement')
+    // Bytes may have reached disk, but original Main has no successful ACK
+    // and cannot trust its in-memory revision or issue new privileges.
+    expect(()=>h.adapter.get(request.sessionId)).toThrow()
+    expect(()=>h.adapter.grant(fixtures('case-b','session-b').request)).toThrow()
+    const cold = new V3ReviewOwnerAdapter(h.store,h.gate)
+    expect(cold.get(request.sessionId)?.state).toBe('recovery-required')
+    const lease = cold.get(request.sessionId)
+    if (!lease) throw new Error('committed-but-not-acked Owner record lost')
+    expect(()=>cold.assertAuthorized(request.sessionId,lease.grantId,
+      lease.senderKey,principal,'review_read_documents',source)).toThrow()
+    expect(cold.quarantineInterrupted()).toEqual([request.sessionId])
   })
 
   it('A-FAIL-01/A-FAIL-02: actual atomic journal survives read and fails closed on corruption', () => {
