@@ -207,22 +207,60 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
           // bytes that pass through the actual response body consumed by Pi.
           const decoder=new TextDecoder()
           let linePrefix=''
+          let frameEvent=''
+          let frameData=''
+          let dataLines=0
           const api=model.api
+          // A terminal field is meaningful only after the full SSE frame's
+          // empty-line delimiter, not merely because a header/string appeared
+          // in an incomplete or subsequently failed response.
+          const finishFrame=():void=>{
+            if(!frameEvent && dataLines===0)return
+            if(sseTerminated){
+              corrupted=true // a second physical application event after DONE
+            }
+            const completionsDone=api==='openai-completions' &&
+              !frameEvent && dataLines===1 && frameData==='[DONE]'
+            // Pi 0.86.1 / OpenAI Responses emits event: response.completed
+            // paired with a data JSON whose first top-level key is "type".
+            // An event header by itself or a mismatched data frame is not a
+            // successful terminal receipt.
+            const responsesDone=api==='openai-responses' &&
+              frameEvent==='response.completed' && dataLines===1 &&
+              /^\\{\\s*"type"\\s*:\\s*"response\\.completed"\\s*[,}]/.test(frameData)
+            if(completionsDone || responsesDone) {
+              sseTerminated=true
+            } else if(frameEvent==='response.completed' ||
+                frameData==='[DONE]') {
+              corrupted=true // a malformed/mismatched completion frame
+            }
+            frameEvent=''
+            frameData=''
+            dataLines=0
+          }
+          const finishLine=(value:string):void=>{
+            const line=value.endsWith('\\r')?value.slice(0,-1):value
+            if(line===''){
+              finishFrame()
+            } else if(line.startsWith('event:')){
+              frameEvent=line.slice(6).trim()
+            } else if(line.startsWith('data:')){
+              dataLines++
+              if(dataLines===1)frameData=line.slice(5).trimStart()
+              // OpenAI terminal events are single data-line frames. Multiple
+              // data lines cannot be mistaken for one terminal marker.
+            }
+          }
           const inspect=(chunk:Uint8Array):void=>{
-            const parts=decoder.decode(chunk,{stream:true}).split('\n')
+            const parts=decoder.decode(chunk,{stream:true}).split('\\n')
             for(let i=0;i<parts.length;i++){
-              const next=linePrefix+parts[i]!.slice(0,128)
+              const next=(linePrefix+parts[i]!).slice(0,256)
               if(i<parts.length-1){
-                const line=next.trim()
-                if(line==='data: [DONE]' || line==='data:[DONE]' ||
-                    (api==='openai-responses' &&
-                     line==='event: response.completed')){
-                  sseTerminated=true
-                }
+                finishLine(next)
                 linePrefix=''
               } else {
-                // Keep only the start of a line; SSE JSON can be enormous.
-                linePrefix=next.slice(0,128)
+                // Bound the retained prefix of a potentially huge JSON event.
+                linePrefix=next
               }
             }
           }
