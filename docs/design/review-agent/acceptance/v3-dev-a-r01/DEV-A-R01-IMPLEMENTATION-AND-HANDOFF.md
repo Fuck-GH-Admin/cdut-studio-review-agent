@@ -212,3 +212,9 @@ A1 unfinished: actual session manager and Orchestrator admission/stop; persist A
 - **额外合成测试**：`A4-DISPATCH-01..05`：派发前 ENOSPC → Provider 0 调用；写盘成功但返回 EIO → 新 fence 实例重读为 unresolved，仍阻止 SDK；Host 返回后撤权/轮换 grant → 无旧授权写盘，新 grant 可继续；Host 返回错误 Run/Provider 异常 → 保留 unresolved、第二次不调用 Provider；已存意图篡改后重读拒绝。已修订原 `A3-SDK-04/05/12` 预期：不可信结果或预算 ENOSPC 不再被立即重试；`A3-SDK-01..16` 的常规有效路径继续保留。
 - **失败恢复契约**：对真正无法断言 SDK 是否完成的 unresolved intent，本 A 适配器**没有**自动清账或代替 C2 完成恢复的途径。后续正式 Main/Provider recovery 必须用可验证的 SDK/Host 回执、当前 Case/Run/Owner、显式策略来决定 `reconcile` 或新 attempt，且只允许 C 提供业务重新执行/Run/ACK 权威。A 不做猜测性 replay。`closeExhausted()` 可在可信 24th turn 已经持久记账但技术终态写盘失败后补 terminal；不重新执行 SDK。
 - **边界和验收**：该 fence 尚未在真实 Pi SDK 回调及 Electron/Main 中注入，本批仅合成 Main/SDK + file CAS 负例，不是 Gate E。主代码仍在 Dev-A #143，未改 C 独占 DTO/Main IPC/Preload/Case/Run/Decision/Batch/Outbox；A 新 SHA 必须跑同版 PR CI、D2、Baseline Gate O，Gate E/P 未做、Gate L 无授权。I #147 继续旧已绿 A SHA，不随新 A 分支 HEAD 浮动。
+
+### A4-R04 补充：不同 SDK 派发间的回执冲突不可视作幂等重试
+- 复核发现原 A3-R05 测试允许两次真正调用 `sdk.nextTurn` 返回**相同** SDK 回执 ID，并把后一次由 A3 budget 去重为原轮次。这仅适用于**同一派发重复回调**，不能作为两次物理 Provider 执行的计数逻辑，否则可能实际执行更多次、却不会达到 24 轮上限。
+- 在 `V3ASDKDispatchFence.assertUniqueReceipt(run,dispatchId,receiptId)` 中先比较**所有已 settled 的其他 dispatchId**，同一回执见于不同派发直接抛 `REQUEST_ID_COLLISION`；SDK bridge 现在在调用 `recordCompletedTurn` 之前执行该校验，拒绝偷偷把新 SDK 调用扣到历史 receipt。`settle` 再校验一次，防止调用方跳过预算前校验。
+- 更新 `A3-SDK-09`：第二次 Provider 派发返回同 receipt 必须拒绝，预算仍是 1、dispatch 停留 unresolved、第三次自动运行被拦截；新增 `A4-DISPATCH-06` 验证 Graph 同类问题。原 A3 budget 层同 receipt 幂等能力依然保留，它是**同一 Host SDK 回调写盘重试**的基础，不授权第二次物理执行。
+- 该检验仍只有 Main 注入的 Host Receipt ID，无法替代真 SDK 的出厂原始回执/实际 Pi turn trace。最终 Main 绑定与 Provider Gate E 仍未完成；不能据此签署安全验收。
