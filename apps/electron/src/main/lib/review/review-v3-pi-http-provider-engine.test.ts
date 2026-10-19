@@ -5,7 +5,11 @@
 import {describe,expect,it} from 'bun:test'
 import type {AgentSession} from '@earendil-works/pi-coding-agent'
 import {Agent, type StreamFn} from '@earendil-works/pi-agent-core'
-import {V3APiHttpSingleRequestEngine} from './review-v3-pi-http-provider-engine'
+import {
+  V3APiHttpSingleRequestEngine,
+  type V3APiHttpSingleRequestFactory,
+  type V3AHttpRequestTransport,
+} from './review-v3-pi-http-provider-engine'
 import {V3APhysicalSDKTurnPort} from './review-v3-sdk-physical-turn-port'
 import type {V3APhysicalTurnInput} from './review-v3-sdk-physical-turn-port'
 import {REVIEW_C0_SCHEMA_VERSION,type RunEvidenceIdentity} from '@profer/shared'
@@ -82,13 +86,14 @@ function makeHarness(options?:{
       )
     },
   }
-  const factory={create:async ()=>{
+  const factory:V3APiHttpSingleRequestFactory={create:async ()=>{
     const inner:Pick<AgentSession,'agent'|'prompt'|'subscribe'>=
       session as unknown as Pick<AgentSession,'agent'|'prompt'|'subscribe'>
     return {
       session:inner,prompt:'main-only frozen prompt',
       trustedOrigin:options?.origin??'https://approved.example',
-      transportFetch:async (_url,init)=>{
+      transportFetch:async (_url:Parameters<V3AHttpRequestTransport>[0],
+        init?:Parameters<V3AHttpRequestTransport>[1])=>{
         physicalCalls++
         if(options?.redirectProbe){
           expect(init?.redirect).toBe('error')
