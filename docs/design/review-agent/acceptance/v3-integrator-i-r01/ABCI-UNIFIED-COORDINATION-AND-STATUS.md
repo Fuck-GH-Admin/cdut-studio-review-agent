@@ -139,11 +139,15 @@ A/B/I 发现阻断，先用已有类型化接口排障；无法自行解决时�
 
 ### A — Owner: Dev-A
 <!-- BEGIN:STATUS:A -->
-- `SOURCE_HEAD`：#143 @ `d8fd3e0e696caa1df7321c23c46e4f70a1f910f7`。
-- `DELIVERED`：A1 Owner、A2 proposal/outbox、A3 技术完整性、A4 部分故障隔离；**尚未真实接入 C 正式 Run 与 Orchestrator**。
-- `BLOCKED`：`CR-A-001 PENDING_C`；正式 Host/App 集成和跨 PID 实机证据尚需补完。
-- `COORDINATION_ACK`：`PENDING_ACK_V1.0`（需 A 自己填写其 ACK 及提交 SHA）。
-- `NEXT`：保持 A 独立持续开发；把可复验的下一切片的 SHA/门禁/接口版本交 I，合同需求提交 C。
+- `COORDINATION_ACK`: **ACK V1.0@5613466af85484e58ebc1e8cf7de227087322ad1** (`V3-ABCI-GOVERNANCE-R01`); accepted four-line role boundaries and C-only decisions. ACK references protocol branch SHA read before this A-only commit.
+- `SOURCE_HEAD`: Dev-A Draft PR [#143](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/143) @ **`d8fd3e0e696caa1df7321c23c46e4f70a1f910f7`**, base C0 `5682057c7232c914e72fdae525ce95fd33f32b53`, schema `review-c0/1`; no production Main/Run writer modifications.
+- `GATE`: **O=PASS_SCOPED** (PR CI [#39228978591](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39228978591): typecheck/boundaries/build, 4023 PASS/5 OS SKIP/0 FAIL; Review Baseline and D2 Scoped Pi workflows SUCCESS at same HEAD); **E=NOT_RUN; L=BLOCKED_NO_AUTH; P=NOT_RUN**. Local mocks do not count as Electron, Provider, cross-PID or full product results.
+- `A1-owner`: source PR #143, source SHA `d8fd3e0e696caa1df7321c23c46e4f70a1f910f7`; `review-pi-owner-adapter.ts` and tests; Main-injected authorization port, lease/generation/expiry/source allowlist, tombstone, process-epoch cold-start quarantine, atomic/fsynced journal; `READY_FOR_ADAPTER` (not wired to real Orchestrator/session manager). C0/1, no required CR for isolated extraction; I next: preflight/contract test; A next: restore/stop robustness.
+- `A2-events`: same frozen source SHA; `review-execution-event-adapter.ts` and tests; C0/1 proposal sequence, local digest/ACK replay, post-await Host actual physical SourceIdentity; **`READY_FOR_ADAPTER` for proposal-only**, **`CONTRACT_BLOCKED` for formal C ReviewRun consumption**; requires `CR-A-001` C decision before trusted check/extent/terminal finalization. I may extract without writing formal Run.
+- `A3-coverage`: same source SHA; `review-execution-event-adapter-completeness.ts`, `review-execution-event-adapter-driver.ts` and tests; exact technical Plan×check×target with accepted/rejected/missing/unknown, mode-compatible Host seam for direct/hidden/Graph/batch, 24-turn and failure cases; `SOURCE_ONLY` pending actual host-path wiring; business completion `CONTRACT_BLOCKED` by CR-A-001.
+- `A4-recovery`: same source SHA; cold-process deny, damaged ledger fail-closed, injected ENOSPC tests; `SOURCE_ONLY/PARTIAL`; actual cross PID/real ENOSPC/EACCES/kill and Electron Gate E are NOT_RUN. A continues standalone tests and reliable Owner/event journal.
+- `CR/BLOCKERS`: `CR-A-001=PENDING_C_DECISION` (eventId+sequence/ACK, exact check target/real read extent, case/source/owner generation, partial/failed/terminal); C decisions section remains unchanged. Main sender, real session/Host callsite glue, business consumer belong to C/I coordinated integration.
+- `NEXT`: A independently hardens restart/revoke, scoped Host/receipt, event delivery corruption/ACK negative tests in #143; shares new exact source SHA and own Gate O with I for slicing, never waits for I; next A area update after independently verifiable checkpoint.
 <!-- END:STATUS:A -->
 
 ### B — Owner: Dev-B
