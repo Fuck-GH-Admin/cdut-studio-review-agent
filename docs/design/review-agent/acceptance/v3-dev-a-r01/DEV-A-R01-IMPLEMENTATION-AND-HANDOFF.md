@@ -291,3 +291,25 @@ A1 unfinished: actual session manager and Orchestrator admission/stop; persist A
 
 **后续顺序**：固定 #143 精确 SHA → 跑本机集中 Gate O（包含 R07-01..14，保留首败）→ 调查真实 Pi native Provider hook（若不可获取 request/receipt，保持 BLOCKED，不从 `agent_end` 猜测）→ 在 A 自有独立 adapter 上加真实取消/retry 路径负例 → 需要 C-owned 入口时正式提交 CR → I/C 接线与 Gate E/P/L 独立验收。禁止为了赶进度降低质量或虚构已通过。
 
+## A4-R08｜SDK Main 取消不阻塞 + 延迟 Provider 会话栅栏 + 真 SIGKILL 冷启动（Gate O 未验收）
+
+**起点**：Dev-A PR #143 的 R07 固定源 SHA `f701f8d53e6cfda8623cbaf14c8e7c5cc34946c3`，基于 C0 `5682057c...`；本批仅 A-owned `review-v3-main-sdk-turn-bridge.ts`、`review-v3-main-sdk-turn-bridge.test.ts`、新增 `review-v3-sdk-dispatch-crashpid.test.ts` 和 A 自有工程/验收文档。没有接线 C2 Run consumer / shared DTO / Main IPC / Preload，也未新增第二份持久业务 ACK。
+
+### 真实问题
+
+之前 `V3ASDKTurnBridge.next()` 在记录 durable `dispatch.claim()` 后直接 `await sdk.nextTurn(...signal)`。如果 SDK/Provider 忽略取消并长期不返回，Main 的 `AbortSignal` 无法及时中止此 await；用户看到后台审核卡死，Main Owner 会话内同 SDK guard 一直占用。不能简单在收到取消时释放 guard，否则旧 SDK 实际仍运行，而后续一个桥接实例可能再次调用 Provider。
+
+### 已提交修复
+
+- `cf9f158ffaac5c703481273697f9847ffcf160df`：SDK 物理派发意图成功落盘**之后**，并发等待原 SDK promise 与 Main abort 通知。若取消在 SDK promise 未解决时获胜，立即以 `RECOVERY_REQUIRED` 交还上层，但**原 SDK work 仍保留进程内活动栅栏**；仅在原 promise 真正 fulfill/reject 后异步释放同一 session 的锁。晚到结果被故意丢弃，不触发 A3 turn budget、A2 proposal、`lateDenied` 或第二次 Provider 派发，原 `in-flight` 意图保持未决；晚到 SDK reject 被消费，避免 unhandled rejection。
+- 如果先取得可信回执、再观察到 Main cancel，则继续使用 R05 `lateDenied` 路径，仍明确禁止自动重派。原已完成且可信的 SDK turn 不影响继续 24 turn 的正常流程。
+- `9813c4b503b9fd884238525437823b821d584e01`：新增合成 `A4-R08-01`（真正挂住的 Promise + prompt abort + 跨桥同 Owner 的锁保持 + late resolve 不记账）和 `A4-R08-02`（迟到 Provider 异常消化 + 不重派），调整此前 `A3-SDK-14`、`A4-DISPATCH-07` 的预期：abort 比 SDK 完成先到应保留 **`in-flight`** 而非 `late-denied`，二者均需显式恢复。SDK 真正结束后锁才释放，而 durable unresolved 不会随之消失。
+- `e873542a655fb21ff57b03c7f3da481bbe23afc8`：新增真实 Linux OS PID `review-v3-sdk-dispatch-crashpid.test.ts`，child 在持久 dispatch intent 已写完、模拟 SDK nextTurn 已调用之后 `SIGKILL`；cold process 再打开 Owner/dispatch/budget ledger，验证 Owner 旧授权隔离、意图 `unresolved=true`、0 完成轮次与 0 proposal。**真实 PID/文件系统，模拟 Provider**。
+
+### 反例、局限与下一节点
+
+- Main SDK AbortSignal 的抢先返回不是对远端 Provider 已被取消的证明。SDK 实际仍运行时**不得**复用进程内会话锁；如果进程被杀且 Provider 工作仍在远端，不得根据 restart 自动重发同一 attempt。真实 Provider Cancel API / 请求级回执与 worker 心跳需另测。
+- 若 SDK promise 永远不解决，锁会一直保持到进程退出或显式的可信运维恢复；这是一种故意 fail-closed 的可用性牺牲，不应该写成“已自动恢复”。C 唯一业务所有者负责新 attempt/用户可见状态裁决，A 无权清账。
+- 跨 PID 的真 Provider singleton 仍未证实。本批 PID 只证明 durable Owner + dispatch cold recovery 行为，不代表真实 Electron SDK/Provider Gate E；`@earendil-works/pi-coding-agent@0.86.1` 的 per-physical-request native Hook 仍 `UNVERIFIED`，真实 API/Provider 线路尚未接入。
+- R08 源码/测试已提交，**当前 Gate O 仍需对最终 HEAD 同一 SHA 真正安装/Bun/typecheck/build/专项和全量日志**。CI Runner 排队不等于通过。集中验证文档 `A4-R05-EXACT-SHA-OFFLINE-GATE-O-20261019.md` 已追加 R08 + PID。Gate E/L/P 按独立证据判定，不由 A 直接签发。
+
