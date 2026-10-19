@@ -90,6 +90,66 @@ describe('V3 A1 Main owner journal + isolation', () => {
       first.senderKey, b.principal, 'review_read_documents', b.source)).toThrow()
   })
 
+  it('A-PAUSE-01: pause revokes old tool capability; Main resume rotates grant without changing Run', () => {
+    const h=host()
+    const {request,principal,source}=fixtures()
+    const first=h.adapter.grant(request)
+    h.adapter.pause(first.sessionId)
+    expect(h.adapter.get(first.sessionId)?.state).toBe('paused')
+    expect(()=>h.adapter.assertAuthorized(first.sessionId, first.grantId,
+      first.senderKey, principal,'review_read_documents',source)).toThrow()
+    expect(()=>h.adapter.assertOrdinarySession(first.sessionId)).toThrow()
+    const next=h.adapter.resumePaused(first.sessionId,first.grantId,first.senderKey,principal)
+    expect(next.grantId).not.toEqual(first.grantId)
+    expect(next.runId).toBe(first.runId)
+    expect(next.attemptId).toBe(first.attemptId)
+    expect(next.generation).toBe(first.generation)
+    expect(next.processEpoch).toBe(first.processEpoch)
+    expect(()=>h.adapter.assertAuthorized(first.sessionId,first.grantId,
+      first.senderKey,principal,'review_read_documents',source)).toThrow()
+    expect(h.adapter.assertAuthorized(next.sessionId,next.grantId,
+      next.senderKey,principal,'review_read_documents',source).grantId).toBe(next.grantId)
+    expect(()=>h.adapter.resumePaused(first.sessionId,first.grantId,
+      first.senderKey,principal)).toThrow()
+    h.adapter.revoke(first.sessionId)
+    expect(()=>h.adapter.resumePaused(first.sessionId,next.grantId,
+      next.senderKey,principal)).toThrow()
+  })
+
+  it('A-PAUSE-02: paused Owner cannot resume after Main denial or cold restart', () => {
+    const h=host()
+    const {request,principal,source}=fixtures()
+    const grant=h.adapter.grant(request)
+    h.adapter.pause(grant.sessionId)
+    h.deny()
+    expect(()=>h.adapter.resumePaused(grant.sessionId,grant.grantId,
+      grant.senderKey,principal)).toThrow()
+    const cold=new V3ReviewOwnerAdapter(h.store,h.gate)
+    expect(cold.get(grant.sessionId)?.state).toBe('recovery-required')
+    expect(()=>cold.resumePaused(grant.sessionId,grant.grantId,
+      grant.senderKey,principal)).toThrow()
+    expect(cold.quarantineInterrupted()).toEqual([grant.sessionId])
+    expect(cold.get(grant.sessionId)?.state).toBe('recovery-required')
+    expect(()=>cold.assertAuthorized(grant.sessionId,grant.grantId,
+      grant.senderKey,principal,'review_read_documents',source)).toThrow()
+  })
+
+  it('A-PAUSE-03: failed pause keeps Owner denied; never a silent resume', () => {
+    const h=host()
+    const {request,principal,source}=fixtures()
+    const grant=h.adapter.grant(request)
+    h.store.failWrites=true
+    expect(()=>h.adapter.pause(grant.sessionId)).toThrow('ENOSPC')
+    expect(h.adapter.get(grant.sessionId)?.state).toBe('recovery-required')
+    expect(()=>h.adapter.assertAuthorized(grant.sessionId,grant.grantId,
+      grant.senderKey,principal,'review_read_documents',source)).toThrow()
+    expect(()=>h.adapter.resumePaused(grant.sessionId,grant.grantId,
+      grant.senderKey,principal)).toThrow()
+    h.store.failWrites=false
+    const fresh=new V3ReviewOwnerAdapter(h.store,h.gate)
+    expect(fresh.quarantineInterrupted()).toEqual([grant.sessionId])
+  })
+
   it('A-OWN-02/P02: deleted session cannot revive or be ordinary after late upsert', () => {
     const h = host()
     const { request, source, principal } = fixtures()
