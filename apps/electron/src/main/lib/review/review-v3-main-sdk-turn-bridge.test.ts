@@ -221,6 +221,27 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     expect((await h.bridge.next(h.call,'direct')).kind).toBe('recorded')
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(1)
   })
+  it('A3-SDK-13: already aborted Main signal cannot invoke SDK Provider',async()=>{
+    const h=fixture()
+    const controller=new AbortController()
+    controller.abort()
+    await expect(h.bridge.next(h.call,'direct',controller.signal)).rejects.toThrow()
+    expect(h.calls()).toBe(0)
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
+    expect(h.producer.replayCandidates()).toEqual([])
+  })
+  it('A3-SDK-14: cancelled Main signal during SDK await drops valid-looking late turn',async()=>{
+    const h=fixture()
+    const controller=new AbortController()
+    let resolve!:(out:V3ATurnHostOutcome)=>void
+    h.setNext(()=>new Promise<V3ATurnHostOutcome>(res=>{resolve=res}))
+    const pending=h.bridge.next(h.call,'batch',controller.signal)
+    controller.abort()
+    resolve({kind:'completed-turn',receiptId:'late-after-signal',run:h.run})
+    await expect(pending).rejects.toThrow()
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
+    expect(h.producer.replayCandidates()).toEqual([])
+  })
   it('A3-SDK-08: exhausted-turn terminal failure can replay without running SDK again',async()=>{
     const h=fixture()
     for(let i=0;i<23;i++)await h.bridge.next(h.call,'direct')
