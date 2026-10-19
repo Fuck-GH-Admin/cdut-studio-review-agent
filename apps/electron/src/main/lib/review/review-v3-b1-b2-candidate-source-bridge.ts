@@ -156,7 +156,9 @@ function resolveSource(
         (selection.entryIndex ?? -1) < 0) deny('ZIP_SELECTOR_INCOMPLETE')
     const vault = environment.vault, ledger = environment.ledger
     const archiveId = selection.archiveId
-    if (!vault || !ledger || !archiveId) deny('ZIP_LEDGER_REQUIRED')
+    if (vault === undefined || ledger === undefined || typeof archiveId !== 'string') {
+      throw new Error('B_R19_ZIP_LEDGER_REQUIRED')
+    }
     const scope = environment.trustedArchiveScopes?.find(x => x.archiveId === archiveId)
     if (!scope) {
       result.state = 'needs-human-confirmation'
