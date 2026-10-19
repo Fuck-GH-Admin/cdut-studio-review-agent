@@ -76,9 +76,12 @@ async function nativeHarness(responseBody:string){
   let session:AgentSession|undefined
   const events:NativeEvent[]=[]
   const allNativeEvents:string[]=[]
+  const nativeFailures:string[]=[]
+  const requests:string[]=[]
   const transportFetch:V3AHttpRequestTransport=async (resource,init)=>{
     fetchCalls++
     const url=resource instanceof Request?resource.url:String(resource)
+    requests.push(url)
     expect(url).toBe('https://provider.r16.invalid/v1/chat/completions')
     expect(init?.redirect).toBe('error')
     return new Response(responseBody,{
@@ -100,6 +103,10 @@ async function nativeHarness(responseBody:string){
       })
       session=result.session
       session.subscribe(event=>{
+        if((event.type==='message_end'||event.type==='turn_end') &&
+          event.message?.role==='assistant' && event.message.stopReason==='error'){
+          nativeFailures.push(event.type+':'+(event.message.errorMessage??'no native error detail'))
+        }
         if(allNativeEvents.length<80){
           const eventMessage='message' in event && event.message &&
             typeof event.message==='object' &&
@@ -120,7 +127,7 @@ async function nativeHarness(responseBody:string){
   }
   return {
     host:new V3APhysicalSDKTurnPort(new V3APiHttpSingleRequestEngine(factory)),
-    events,allNativeEvents,fetchCalls:()=>fetchCalls,session:()=>session,
+    events,allNativeEvents,nativeFailures,requests,fetchCalls:()=>fetchCalls,session:()=>session,
   }
 }
 
@@ -134,6 +141,7 @@ describe('Dev-A R16 real Pi 0.86.1 AgentSession offline — no external Provider
       throw new Error('R16 native SDK diagnosis '+JSON.stringify({
         fetchCalls:h.fetchCalls(),events:h.events,
         eventTrace:h.allNativeEvents,
+        firstNativeErrors:h.nativeFailures,requestUrls:h.requests,
         model:h.session()?.agent.state.model,
         assistantErrors:h.session()?.agent.state.messages.filter(x=>
           x.role==='assistant').map(x=>({
