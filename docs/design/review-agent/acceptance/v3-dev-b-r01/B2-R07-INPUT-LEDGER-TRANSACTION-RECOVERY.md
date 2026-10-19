@@ -60,4 +60,17 @@ Gate P：`PARTIAL`（第51套无代码真人 UAT、50 套来源义务、34 G01 S
 
 ## 五、本轮进度与写入限制
 
-上一会话已独立确认上述两项核心缺陷，尝试写入相关代码/负例时 GitHub 写入接口受工具安全检查阻断。**没有**任何 R07 修改合入 #142；这不是测试失败，也不能说修复已完成。应以远端实际新 commit、同 SHA CI 和 C/I 签收为准恢复开发。本文件首先保存可重复核查的缺口与严格验收标准，后续实际代码提交需追加 exact SHA / CI / 变更文件清单，不得预先填写 PASS。
+前一会话核查时曾遇工具写入限制，当时**尚无** R07 工程代码合入。此段记录历史阻断，并非下述后续工程提交的当前状态。所有通过结论均须按新精确 SHA 单独验证。
+
+## 六、R07 实际工程提交（2026-10-19）
+
+**已真实推送** Dev-B Draft PR #142：起点 `9952348d413cac58da3db2b99c14dae2405a6120`，本批精确代码 HEAD `2e4c35f1c6d13a7fad48c2b5740d3b55ec94949f`。代码及测试合计 4 个 B 自有路径（另有本文件）：
+
+- `review-import-ledger-v3-b2.ts`：`snapshot` 使用与 `getOrCreate/decide` 相同的 `input.lock`，持锁内校验 ArchiveVault 和 ledger、离开前复查当前 owner；孤立 `ledger-<20hex>.tmp` 不再静默重建，而是 `B2_LEDGER_RECOVERY_REQUIRED`。引入 `review-v3-b2-input-ledger/2`，为每项 mutation 固定 `confirmedRole`、`confirmedSubjectId`、`confirmedRawSha256`、`decisionReason` 并纳入 receipt SHA256；逐项重放确认这些值与文件最终状态一致。
+- `review-import-handoff-v3-b2.ts`：候选来源交接要求 ledger/2 且必须再次核对该文件原始 SHA、Subject、role 与已封存 receipt；旧 ledger/1 虽可保守读取历史审计，但因未封存这组确认信息，`decide` 与 `proposeB2MaterialCandidates` 均 fail closed，需要 Main 主导的显式重新确认机制。
+- `review-import-ledger-v3-b2.test.ts`：原有用例保持，现共 **10 项测试定义**，新增 snapshot 外部写锁阻断、不自动清理外部锁、孤立临时文件恢复阻断、v2 确认字段/拒绝原因篡改且仅重算 ledgerHash 不获通过、重启同请求精确 replay 和 legacy ledger/1 拒写与拒交接。
+- 本文件：保留发现依据、完整 Gate E 集中验收要求与当前风险。
+
+**确证层级**：提交代码和正反例已成立，但 CI 仍在排队。新 HEAD 对应 [PR CI #39265404543](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39265404543)、[Baseline #39265404354](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39265404354)、[D2 #39265404480](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39265404480) 首查均 QUEUED，**Gate O=PENDING_EXACT_SHA_CI**；本会话未能运行本地 Bun。Gate E=NOT_RUN，L=BLOCKED_NO_AUTH，P=PARTIAL。未经验证的工程不可入 I1 已冻结的原 B 绿色来源，也不签 C 工程认可。
+
+**剩余工程风险**：InputLedger 和 ArchiveVault 仍不是跨两个目录的单一原子事务；强制断电/ENOSPC 后已 rename 但目录尚未 fsync 的结果，需要多 PID 实机故障注入取证。旧 ledger/1 的正式迁移与重新授权由 C 共同裁决；不得根据内部哈希直接批准。底层 SHA256 与 hash chain 不保证抵御对本地文件具有任意写权限的攻击者。业务完成、InstallPlan/ApplyMaterial、校方政策与独立 Gold 仍在 B 的授权之外。
