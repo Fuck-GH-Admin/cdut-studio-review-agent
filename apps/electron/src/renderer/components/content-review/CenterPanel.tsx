@@ -50,6 +50,8 @@ import { MaterialDropZone } from './MaterialDropZone'
 import { D4CaseBatchControls } from './D4CaseBatchControls'
 import { D4RetryDocumentButton } from './D4RetryDocumentButton'
 import { D4MaterialHistory } from './D4MaterialHistory'
+import { D4ReviewerFormEditor } from './D4ReviewerFormEditor'
+import { w1ReviewerFormTemplate } from './w1-reviewer-form'
 import { w1CandidateFactKeys, w1ObservationSources } from './w1-fact-source'
 import { w1AuthorResponsibilityCards } from './w1-author-responsibilities'
 import { w1ParseHumanFieldValue } from './w1-fact-value'
@@ -277,6 +279,8 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
               return list
             }, [])
             const factKeys = w1CandidateFactKeys(aggregate.d2RuntimePlan, subject.id)
+            const subjectTemplate = w1ReviewerFormTemplate(workspaceTemplate, reviewCase,
+              subject.id, aggregate.d2RuntimePlan!.fingerprint)
             const confirmedLinks = aggregate.evidenceLinks.filter(link =>
               link.subjectId === subject.id && link.status === 'confirmed')
             return <section id={`review-subject-${encodeURIComponent(subject.id)}`} key={subject.id}
@@ -288,10 +292,10 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
               </p>
               <p className="mt-1 text-muted-foreground">审核对象 ID：{subject.id}。事实、条件、证据分别核对；模板仍为未发布技术候选。</p>
               {Object.keys(subject.fields).length > 0 && <p className="mt-1 rounded bg-muted/50 p-2 text-foreground/80">
-                当前字段：{displaySubjectFields(subject.fields, workspaceTemplate)}
+                当前字段：{displaySubjectFields(subject.fields, subjectTemplate)}
               </p>}
               <p className="mt-1 text-muted-foreground">
-                本对象候选事实字段：{factKeys.length ? factKeys.map(key => businessFieldLabel(key, workspaceTemplate)).join('、') : '尚未在当前映射中声明；不得自由编造字段'}
+                本对象候选事实字段：{factKeys.length ? factKeys.map(key => businessFieldLabel(key, subjectTemplate)).join('、') : '尚未在当前映射中声明；不得自由编造字段'}
               </p>
               <details className="mt-2 rounded border border-border/50 p-2" data-testid="d4-author-responsibilities">
                 <summary className="cursor-pointer font-medium">本对象冻结作者态审核责任与人工核对说明</summary>
@@ -313,17 +317,20 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                     </li>)}
                 </ul>
               </details>
+              {reviewCase && <D4ReviewerFormEditor
+                reviewCase={reviewCase} subjectId={subject.id} plan={aggregate.d2RuntimePlan!}
+                allowedKeys={factKeys} reload={() => actions.selectCase(reviewCase.id)} />}
               <div className="mt-2 space-y-1.5">
                 {facts.map((observation, index) => <WorkspaceObservationCard
                   key={`${String(observation.fieldKey)}-${index}`}
-                  observation={observation} aggregate={aggregate} template={workspaceTemplate}
+                  observation={observation} aggregate={aggregate} template={subjectTemplate}
                   onConfirm={(value, reason, override) => workspaceActions.confirmObservation(
                     override ? { ...observation, sourceRefs: [override] } : observation, value, reason)}
                 />)}
                 {!facts.length && <p className="rounded border border-dashed p-2 text-muted-foreground">尚无已提取的事实。可以人工记录有来源的核验结果；没有材料依据时保持未知。</p>}
                 <ManualFactEntry subjectId={subject.id} subjectTitle={subject.title}
                   subjectFields={subject.fields} candidateFields={factKeys}
-                  template={workspaceTemplate} aggregate={aggregate}
+                  template={subjectTemplate} aggregate={aggregate}
                   onSave={(fieldKey, value, sourceVersionId, blockId, reason) =>
                     workspaceActions.confirmObservation({
                       subjectId: subject.id, fieldKey, value,
@@ -332,7 +339,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                 />
               </div>
               <SubjectAdjudicationCard aggregate={aggregate} subject={subject}
-                template={workspaceTemplate} canEdit={!!workspaceRun && !workspaceRunStale}
+                template={subjectTemplate} canEdit={!!workspaceRun && !workspaceRunStale}
                 actions={workspaceActions}/>
             </section>
           })}
