@@ -43,15 +43,30 @@ type NativeEvent='turn_start'|'turn_end'|'agent_end'|'agent_settled'
 const expectedNativeEvents:NativeEvent[]=[
   'turn_start','turn_end','agent_end','agent_settled',
 ]
-const chunk=(delta:Record<string,unknown>,finishReason:string|null)=>({
-  id:'chatcmpl-offline-r16',object:'chat.completion.chunk',
-  created:1730000000,model:'gpt-4o-mini',
-  choices:[{index:0,delta,finish_reason:finishReason}],
-})
+const responseItem={
+  id:'msg_r16',type:'message',role:'assistant',status:'completed',
+  content:[{type:'output_text',text:'native offline',annotations:[]}],
+}
+const responseEnvelope={
+  id:'resp_r16',object:'response',created_at:1730000000,
+  status:'completed',model:'gpt-4o-mini',
+  output:[responseItem],
+  usage:{input_tokens:1,output_tokens:2,total_tokens:3,
+    input_tokens_details:{cached_tokens:0},
+    output_tokens_details:{reasoning_tokens:0}},
+}
+const sseEvent=(type:string,content:Record<string,unknown>)=>
+  'event: '+type+'\n'+'data: '+JSON.stringify({type,...content})+'\n\n'
 const validSse=[
-  'data: '+JSON.stringify(chunk({role:'assistant',content:'native offline'},null))+'\n\n',
-  'data: '+JSON.stringify(chunk({},'stop'))+'\n\n',
-  'data: [DONE]\n\n',
+  sseEvent('response.created',{response:{...responseEnvelope,status:'in_progress',output:[]}}),
+  sseEvent('response.output_item.added',{output_index:0,item:{
+    id:'msg_r16',type:'message',role:'assistant',status:'in_progress',content:[],
+  }}),
+  sseEvent('response.output_text.delta',{
+    output_index:0,content_index:0,item_id:'msg_r16',delta:'native offline',
+  }),
+  sseEvent('response.output_item.done',{output_index:0,item:responseItem}),
+  sseEvent('response.completed',{response:responseEnvelope}),
 ].join('')
 
 async function nativeHarness(responseBody:string){
@@ -59,7 +74,8 @@ async function nativeHarness(responseBody:string){
   dirs.push(dir)
   // No provider catalog network, shared credentials, or profile mutations.
   const modelRuntime=await ModelRuntime.create({
-    modelsPath:null,allowModelNetwork:false,refreshOnCreate:false,
+    authPath:join(dir,'offline-auth.json'),modelsPath:null,
+    allowModelNetwork:false,refreshOnCreate:false,
   })
   await modelRuntime.setRuntimeApiKey('openai','offline-r16-fake-credential')
   const nativeModel=modelRuntime.getModel('openai','gpt-4o-mini')
@@ -67,9 +83,9 @@ async function nativeHarness(responseBody:string){
     throw new Error('Pinned Pi 0.86.1 OpenAI model registry entry is absent')
   }
   const model={
-    ...nativeModel,api:'openai-completions' as const,
-    // OpenAI's SDK appends /chat/completions to the model's baseURL.
-    // Main transport pins the HTTPS origin independently of this /v1 path.
+    ...nativeModel,api:'openai-responses' as const,
+    // Pi 0.86.1 ModelRuntime uses OpenAI Responses for this built-in model.
+    // Keep API, /v1 path and the independently pinned Main origin aligned.
     baseUrl:'https://provider.r16.invalid/v1',
   }
   let fetchCalls=0
@@ -82,7 +98,7 @@ async function nativeHarness(responseBody:string){
     fetchCalls++
     const url=resource instanceof Request?resource.url:String(resource)
     requests.push(url)
-    expect(url).toBe('https://provider.r16.invalid/v1/chat/completions')
+    expect(url).toBe('https://provider.r16.invalid/v1/responses')
     expect(init?.redirect).toBe('error')
     return new Response(responseBody,{
       status:200,
@@ -132,7 +148,7 @@ async function nativeHarness(responseBody:string){
 }
 
 describe('Dev-A R16 real Pi 0.86.1 AgentSession offline — no external Provider / Gate E',()=>{
-  it('R16-01: actual createAgentSession + OpenAI SSE + SDK native events settle one physical turn',async()=>{
+  it('R16-01: actual createAgentSession + Responses SSE + SDK native events settle one physical turn',async()=>{
     const h=await nativeHarness(validSse)
     let result:Awaited<ReturnType<typeof h.host.nextTurn>>
     try{
@@ -162,7 +178,7 @@ describe('Dev-A R16 real Pi 0.86.1 AgentSession offline — no external Provider
   })
   it('R16-02: actual Pi parser does not upgrade a 200 HTTP SSE truncation into a receipt',async()=>{
     const h=await nativeHarness(
-      'data: '+JSON.stringify(chunk({role:'assistant',content:'unfinished'},null))+'\n\n',
+      sseEvent('response.created',{response:{...responseEnvelope,status:'in_progress',output:[]}}),
     )
     await expect(h.host.nextTurn({...request,dispatchId:'native-main-intent-0002'}))
       .rejects.toThrow()
