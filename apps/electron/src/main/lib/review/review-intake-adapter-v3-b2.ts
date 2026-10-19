@@ -114,7 +114,7 @@ export class ReviewB2StagingService {
   ): B2MaterialCandidate {
     this.requireContext(ctx)
     const grant = this.grants.get(token)
-    if (!grant || grant.consumed || grant.expiresAt <= this.now()) failed('TOKEN_INVALID_OR_CONSUMED')
+    if (!grant || grant.consumed || grant.expiresAt <= this.now()) throw new Error('B2_TOKEN_INVALID_OR_CONSUMED')
     if (grant.senderId !== ctx.senderId || grant.frameId !== ctx.frameId ||
         grant.ownerId !== ctx.ownerId || grant.ownerGeneration !== ctx.ownerGeneration ||
         grant.caseCandidateId !== ctx.caseCandidateId) failed('TOKEN_SCOPE_MISMATCH')
@@ -162,7 +162,7 @@ export class ReviewB2StagingService {
     const stored = this.materials.get(candidateId)
     if (!stored || stored.material.ownerId !== ctx.ownerId ||
         stored.material.caseCandidateId !== ctx.caseCandidateId ||
-        stored.material.ownerGeneration !== ctx.ownerGeneration) failed('MATERIAL_SCOPE_MISMATCH')
+        stored.material.ownerGeneration !== ctx.ownerGeneration) throw new Error('B2_MATERIAL_SCOPE_MISMATCH')
     return Buffer.from(stored.bytes)
   }
   /** Staged manifest is not a ReviewBatchAttempt and is not proof of application. */
@@ -173,7 +173,7 @@ export class ReviewB2StagingService {
       const record = this.materials.get(candidateId)?.material
       if (!record || record.ownerId !== ctx.ownerId ||
           record.ownerGeneration !== ctx.ownerGeneration ||
-          record.caseCandidateId !== ctx.caseCandidateId) failed('MATERIAL_SCOPE_MISMATCH')
+          record.caseCandidateId !== ctx.caseCandidateId) throw new Error('B2_MATERIAL_SCOPE_MISMATCH')
       return record
     })
     const result: ImportBatch = {
