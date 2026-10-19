@@ -39,7 +39,8 @@ export interface B2ArchiveCheckpoint {
 export interface B2RestageIntent {
   checkpoint: B2ArchiveCheckpoint
   /** New Main authentication MUST reissue tokens; no stale candidate IDs. */
-  restage: B2TrustedZipInput
+  /** Recovered bytes without a Main-issued physicalSourceKey; caller must reauthorize. */
+  restage: Pick<B2TrustedZipInput, 'requestId' | 'bytes'>
   status: 'needs-main-revalidation'
 }
 const sealedDigest = (record: Omit<B2ArchiveCheckpoint, 'manifestSha256'>): string =>
@@ -105,7 +106,35 @@ export class ReviewB2ArchiveVault {
         checkpoint!.checkpointState!=='bytes-durable-needs-confirmation' ||
         checkpoint!.byteLength!==bytes!.length ||
         sha256(bytes!)!==checkpoint!.archiveSha256 ||
-        sealedDigest(plain)!==manifestSha256) code('CHECKPOINT_INTEGRITY')
+        sealedDigest(plain)!==manifestSha256 ||
+        !Number.isSafeInteger(checkpoint!.stagedOwnerGeneration) ||
+        checkpoint!.stagedOwnerGeneration < 0 ||
+        !/^[a-f0-9]{64}$/.test(checkpoint!.physicalArchiveKeyDigest) ||
+        !idPattern.test(checkpoint!.requestId) ||
+        !Array.isArray(checkpoint!.fileReceipts)) code('CHECKPOINT_INTEGRITY')
+
+    // This checks real child bytes/CRC/headers, not only an unkeyed manifest hash.
+    // The source may originally have been decoded with stricter BOMB limits:
+    // keep that earlier rejection, never retroactively promote it to accepted.
+    let real: ReturnType<typeof decodeReviewB2Zip>
+    try { real=decodeReviewB2Zip(bytes!) }
+    catch { code('CHECKPOINT_INTEGRITY') }
+    if (real!.receipts.length!==checkpoint!.fileReceipts.length ||
+        real!.archiveSha256!==checkpoint!.archiveSha256) code('CHECKPOINT_INTEGRITY')
+    for(let i=0;i<real!.receipts.length;i++){
+      const actual=real!.receipts[i]!
+      const claimed=checkpoint!.fileReceipts[i]!
+      if(!claimed || claimed.index!==actual.index ||
+         claimed.entryName!==actual.entryName ||
+         claimed.compressedSha256!==actual.compressedSha256) code('CHECKPOINT_INTEGRITY')
+      const stricterSizeReject=claimed.status==='rejected' &&
+        claimed.reason==='BOMB_OR_SIZE_LIMIT' && actual.status==='accepted'
+      if (stricterSizeReject) {
+        if(claimed.rawSha256!==undefined) code('CHECKPOINT_INTEGRITY')
+      } else if(claimed.status!==actual.status ||
+        (claimed.rawSha256??null)!==(actual.rawSha256??null) ||
+        (claimed.reason??null)!==(actual.reason??null)) code('CHECKPOINT_INTEGRITY')
+    }
     return {checkpoint:structuredClone(checkpoint!),bytes:Buffer.from(bytes!)}
   }
   /**
@@ -177,7 +206,6 @@ export class ReviewB2ArchiveVault {
       checkpoint,
       restage: {
         requestId:checkpoint.requestId,
-        physicalArchiveKey:'recovered-'+checkpoint.physicalArchiveKeyDigest,
         bytes,
       },
       status:'needs-main-revalidation',

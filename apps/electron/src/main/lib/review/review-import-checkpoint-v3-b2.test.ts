@@ -1,5 +1,6 @@
 import { afterAll, describe, expect, test } from 'bun:test'
-import { mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { ReviewB2StagingService, type B2MainContext } from './review-intake-adapter-v3-b2'
@@ -50,6 +51,7 @@ describe('B2 durable input checkpoint is not a CurrentCase writer',()=>{
     const reopened=new ReviewB2ArchiveVault(nextStaging,home)
     const restage=reopened.prepareRestage(newlyAuthenticated,checkpoint.archiveId)
     expect(restage.status).toBe('needs-main-revalidation')
+    expect('physicalArchiveKey' in restage.restage).toBe(false)
     expect(Buffer.from(restage.restage.bytes).equals(archive.bytes)).toBe(true)
     expect(restage.checkpoint.archiveSha256).toBe(checkpoint.archiveSha256)
     expect(nextStaging.previewImportBatch(newlyAuthenticated,[]).status).toBe('staged')
@@ -96,6 +98,46 @@ describe('B2 durable input checkpoint is not a CurrentCase writer',()=>{
     writeFileSync(outside,makeZip('external bytes'))
     symlinkSync(outside,stored)
     expect(()=>vault.inspect(ctx,checkpoint.archiveId)).toThrow('B2_ARCHIVE_RECOVERY_REQUIRED')
+  })
+
+  test('forged child digest cannot be repaired by recomputing the unkeyed JSON checksum',()=>{
+    const vault=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+    const checkpoint=vault.saveAndStage(ctx,{
+      physicalArchiveKey:'native-byte-proof',requestId:'byte-proof-7',bytes:makeZip('verified original'),
+    }).checkpoint
+    const path=join(home,checkpoint.archiveId,'checkpoint.json')
+    const tampered=JSON.parse(readFileSync(path,'utf8'))
+    tampered.fileReceipts[0].rawSha256='0'.repeat(64)
+    const {manifestSha256:_before,...plain}=tampered
+    tampered.manifestSha256=createHash('sha256').update(JSON.stringify(plain)).digest('hex')
+    writeFileSync(path,JSON.stringify(tampered))
+    expect(()=>vault.inspect(ctx,checkpoint.archiveId)).toThrow('B2_ARCHIVE_CHECKPOINT_INTEGRITY')
+  })
+  test('forged rejected status cannot suppress an originally accepted file',()=>{
+    const vault=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+    const checkpoint=vault.saveAndStage(ctx,{
+      physicalArchiveKey:'native-reject-proof',requestId:'reject-proof-8',bytes:makeZip('unchanged original'),
+    }).checkpoint
+    const path=join(home,checkpoint.archiveId,'checkpoint.json')
+    const tampered=JSON.parse(readFileSync(path,'utf8'))
+    tampered.fileReceipts[0].status='rejected'
+    tampered.fileReceipts[0].reason='SYMLINK'
+    const {manifestSha256:_before,...plain}=tampered
+    tampered.manifestSha256=createHash('sha256').update(JSON.stringify(plain)).digest('hex')
+    writeFileSync(path,JSON.stringify(tampered))
+    expect(()=>vault.inspect(ctx,checkpoint.archiveId)).toThrow('B2_ARCHIVE_CHECKPOINT_INTEGRITY')
+  })
+  test('stricter originally rejected entry cannot be promoted during restart',()=>{
+    const vault=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+    const checkpoint=vault.saveAndStage(ctx,{
+      physicalArchiveKey:'native-strict-proof',requestId:'strict-proof-9',
+      bytes:makeZip('original longer than three bytes'),
+    },{maxEntryBytes:3}).checkpoint
+    expect(checkpoint.fileReceipts[0]!.reason).toBe('BOMB_OR_SIZE_LIMIT')
+    const reopened=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+    expect(reopened.inspect(ctx,checkpoint.archiveId).fileReceipts[0]!.status).toBe('rejected')
+    const intent=reopened.prepareRestage({...ctx,ownerGeneration:2},checkpoint.archiveId)
+    expect('physicalArchiveKey' in intent.restage).toBe(false)
   })
 
 })
