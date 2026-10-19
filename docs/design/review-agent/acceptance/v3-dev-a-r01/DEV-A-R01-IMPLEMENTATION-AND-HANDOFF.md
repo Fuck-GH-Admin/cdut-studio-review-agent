@@ -328,3 +328,20 @@ A1 unfinished: actual session manager and Orchestrator admission/stop; persist A
 - **Linux PID 原测试增强**：在 `review-v3-sdk-dispatch-crashpid.test.ts` 已有实际 child PID/SIGKILL + 重开文件的用例中，另检查 parent Main 新 grant/new Run 同 Case 不能 claim SDK；提交 `d8a1a8d22f9fcbc19fc1036afd78067cc3e8bbad`。这只算一条真实 PID 测试里的新负例，不是已运行额外独立测试；Provider 本身仍是 synthetic。
 - 离线验收文档 `A4-R05-EXACT-SHA-OFFLINE-GATE-O-20261019.md` 已增 R09 安全断言，并修正 R08 取消竞态的 in-flight/late-denied 状态描述。
 - **依赖与终局**：A 生产源码成熟度可标 `A1/A2_IMPLEMENTED_SOURCE, A3/A4_IMPLEMENTED_A_ONLY_SEAM`，不能写 `A1–A4_PRODUCTION_COMPLETE`。O Gate 需要 R09 最终精确 SHA 的 Bun/typecheck/full CI，真实 E 需要 native Pi per-physical Provider hook、取消及 worker、Electron Main；C 需要正式 durable Run ACK、I 需要新冻结锚点；L/P 独立关闭。详见新增 `DEV-A-CURRENT-PROGRESS-AND-GATES.md` 的完整成熟度矩阵。
+
+## A4-R10｜Pi SDK 0.86.1 真正 HTTP Provider 请求入口的限定观测
+
+**固定输入**：R09 Draft PR #143 @ `3bcd229c0d9fa5485206dc5e82d05f9ea80f9c5a`。已独立核对根及 Electron 依赖均是 `@earendil-works/pi-* 0.86.1` 和两个已有 Bun patch；其真实上游 `v0.86.1` tag = `13cbf77df2396303013a41646bcfa77b4271ae56`，确认 `AgentSession.agent.streamFunction` 可写、`sdk.ts` 与 `agent-loop.ts` 使用该函数发起真正的模型请求，并确认 OpenAI-compatible Provider `fetch`、外层 `retryProviderRequest`、`onResponse` 边界。上述为**源码事实**；不等于实际 Provider 访问或 npm dist 二进制已验证。
+
+**真实新增 A 自有工程**：
+- `apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.ts`，把新建、一次性的受信 Pi `AgentSession` 的 `agent.streamFunction` 接口包装成 `V3ANativeSingleRequestEngine`。明确只支持 `openai-completions`/`openai-responses` 的 HTTPS/SSE，必须 `maxRetries:0`、1 次 Pi streamFn、1 次 Main 监控的 HTTP fetch、来自 Provider HTTPS response 的 `x-request-id`、1 个成功 SDK `turn_end`，禁止非白名单协议、旧 session 复用、SDK 自有 fetch wrapper、跨主机、自动 redirect、Main AbortSignal 后认可 completion。任意不满足均 fail-closed，保留原 A4 durable intent；SDK session 的原 streamFn 与订阅在结束后恢复/释放，不修改 Pi 模块全局实现。
+- 主要生产提交 `d47d33c677faafe60faaa5d7624d7b4647524a0f`、`0bbbe623bb35e6cd434fc45bdd945e4382e8c726`、`c626776546aeb352fd02b00e752d1506b6d2e856`、`23b14c65f4daa13f1f6dfd70573bed6376046650`、`2c30cf3dc6803eda4fb10a7203aef968dc5825c8`，后续状态均按最终 PR HEAD 判定。
+- 新 `review-v3-pi-http-provider-engine.test.ts` 中内存 Provider HTTP 负例/正例 + 对真实安装 `pi-agent-core` 的 `Agent.streamFunction` 属性探针，以及 `review-v3-main-sdk-turn-bridge.test.ts` 中 `A4-R10-16` 从 SDK 流到 A4 durable intent / A3 24-turn 的联合源码测试（`711c87f1cc22e45a777d853560c39400465a9116`、`426e5e3fee370698e814f448109a0c8c99ca743f`、`e6182bb959e1138c32113c86a745c2adb54c76e2` 等测试提交）。**不是**运行通过的用例，也不是真实提供方流数据。
+- 固定第三方源码证据、完整连接路径、限制、C/I 逐 hunk 授权申请在新增文档 `A4-R10-PI-0861-TRANSPORT-EVIDENCE-AND-INTEGRATION-CR.md`；更新集中 Gate O runbook `A4-R05-EXACT-SHA-OFFLINE-GATE-O-20261019.md` 与阶段矩阵 `DEV-A-CURRENT-PROGRESS-AND-GATES.md`。
+
+**必须守住的区别**：
+1. `x-request-id` 为可绑定一次 HTTPS provider response 的**传输身份**，不是所有提供商、所有 Pi 模型/Provider 的原生可信回执，不是密码学完结 ACK；必须与 SDK `turn_end` / transport 单请求条件配对并实机核验真实 HTTP fetch/代理日志。没有这个 header 的提供商继续 blocked，不得用随机 ID 补。
+2. `pi-agent-adapter.ts` 现有约 2704 行流函数覆盖还负责内容净化、代理，`pi-review-agent-client.ts` 的图片降级、old review tool fallback 仍需保留 V2 行为；R10 **没有**擅自修改这些 C/共享正式产线。Main 注册/专用 factory 需要 Dev-C 的明确租约；I 继续从批准的旧 A SHA 入场。
+3. Dev-C 现 C2-R00 `v3TechnicalExecution` 是技术候选账而**非**正式 `ReadReceipt/Check/ReviewRun` ACK；A 的 R10 output 只能先写 A3/A4 技术账。Gate O 必须用 R10 最新单 SHA 真实 CI/Bun 验收；Gate E、L、P 仍未证实。**本会话使用 GitHub 仓库 API 写入，无法 clone 安装/执行 Bun/真 Provider**。
+
+**下一批 A4-R11**：优先集中 Gate O first-failure 修复，以及目标机 Pi 0.86.1 patched dist 真 SDK stream + 真 HTTPS/SSE/Proxy 状态核验；适配为真实 Main 受信 factory 只有在 C 评审 `CR-A-PI-HTTP-WITNESS-R01` 明确 hunk 后才能开始。继续堆没有实际回执的通用 wrapper 不计里程碑。
