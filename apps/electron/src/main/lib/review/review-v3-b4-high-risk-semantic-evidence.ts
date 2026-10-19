@@ -43,7 +43,7 @@ export function validateB4HighRiskEvidence(
  for(const row of proof.items){
   const domain=archives[row.domain]
   const t=domain?.templates.find(x=>x.templateId===row.templateId)
-  if(!t)reject('TEMPLATE_NOT_PINNED')
+  if(!domain || !t)throw new Error('B4_SEMANTIC_AUDIT_TEMPLATE_NOT_PINNED')
   if(domain.frozenSourceGitSha!==proof.d4FrozenSHA || t.sourceSha256!==row.rawSha256 ||
    actual.has(row.templateId+':'+row.original.ruleId))reject('DUPLICATE_OR_UNPINNED')
   actual.add(row.templateId+':'+row.original.ruleId);templates.add(row.templateId)
@@ -64,7 +64,8 @@ export function validateB4HighRiskEvidence(
    if(checkIds.has(checkId))reject('DUPLICATE_CHECK')
    checkIds.add(checkId)
    const check=t.obligations.find(o=>o.checkId===checkId)
-   if(!check||check.bindingState!=='WORKSPACE_BOUND')reject('CHECK_MISSING')
+   if(!check)throw new Error('B4_SEMANTIC_AUDIT_CHECK_MISSING')
+    if(check.bindingState!=='WORKSPACE_BOUND')reject('CHECK_MISSING')
    if(row.domain==='G04' ? check.taskId!=='r'+row.original.ruleId.slice(2) :
      !check.taskTitle?.startsWith(row.original.ruleId+'｜'))reject('RULE_MISMATCH')
    const observed=row.technical.observedScopes.find(x=>x.checkId===checkId)
