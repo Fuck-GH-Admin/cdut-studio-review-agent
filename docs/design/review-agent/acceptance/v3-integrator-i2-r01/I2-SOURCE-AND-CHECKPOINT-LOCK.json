@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "v3-integrator-i2-source-replay-r01/1",
+  "governance": {
+    "decision": "C-I2-ANCHOR-002",
+    "I1Acceptance": "C-I1-FINAL-ENG-ACCEPT-R01",
+    "coordinationPR": 145
+  },
+  "anchors": {
+    "baseC0": "5682057c7232c914e72fdae525ce95fd33f32b53",
+    "priorC": "31aa352c45a33d6832612884b0fea38e39b5cf8d",
+    "approvedC": "3242b22a0825eec347b2748680bb746eb0f55215",
+    "approvedCCheckRuns": [
+      39291945961,
+      39291945938,
+      39291945965,
+      39291945887,
+      39291945881
+    ],
+    "acceptedI1": "642c1fa3d3dd2042b7af1afdb3882397d4ca79a7",
+    "I1CheckRuns": [
+      39277400876,
+      39277400995,
+      39277400916
+    ],
+    "approvedASourcePool": "c0132ae06de8ae09ab021ac231ffd34756eb5990",
+    "approvedBSourcePool": "bf88320e57b20ebc2023f27665c544ce2ba72ce4",
+    "aAndBNewPoolImported": false
+  },
+  "branch": "integration/v3-i2-source-replay-r01",
+  "frozenBaseBranch": "integration/v3-i2-c-anchor-002-frozen",
+  "frozenBaseSha": "3242b22a0825eec347b2748680bb746eb0f55215",
+  "replay": {
+    "commitSha": "417bbe3560b4625672970e63587f874cc2235379",
+    "baseParent": "3242b22a0825eec347b2748680bb746eb0f55215",
+    "paths": 24,
+    "originalC0IpcTestBlob": "7c4d73b209e926369747ae50f5ce4a5601e3effa",
+    "addedIpcTestLines": 167,
+    "deletedIpcTestLines": 0,
+    "originalC0TestPrefixByteIdentical": true,
+    "cExclusiveProductionFilesChanged": 0,
+    "exactPathBlobMap": [
+      {
+        "path": "apps/electron/src/main/lib/review/review-c0-ipc.test.ts",
+        "sourceBlob": "8633f3f5d636a813da0bf7b12264e384705063fd",
+        "replayedBlob": "8633f3f5d636a813da0bf7b12264e384705063fd"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-completeness.test.ts",
+        "sourceBlob": "b6ae0556cb8e714d5d95c3f5d3943db30c5e379d",
+        "replayedBlob": "b6ae0556cb8e714d5d95c3f5d3943db30c5e379d"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-completeness.ts",
+        "sourceBlob": "0e15f14d2d1bc145acec8325d43e9e6276ead802",
+        "replayedBlob": "0e15f14d2d1bc145acec8325d43e9e6276ead802"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-driver.test.ts",
+        "sourceBlob": "af42369e360b34408e0cee0e5fe79aeb77f1f71e",
+        "replayedBlob": "af42369e360b34408e0cee0e5fe79aeb77f1f71e"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-driver.ts",
+        "sourceBlob": "c62d78908ce6156abb3f7be2380a0e64e243242b",
+        "replayedBlob": "c62d78908ce6156abb3f7be2380a0e64e243242b"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-execution-event-adapter.test.ts",
+        "sourceBlob": "1084c8e215ba00fc8870c1f582138cbe72c5446a",
+        "replayedBlob": "1084c8e215ba00fc8870c1f582138cbe72c5446a"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-execution-event-adapter.ts",
+        "sourceBlob": "efa0f41cc2dab970b2cc5b92c0c00c3be3c6cf93",
+        "replayedBlob": "efa0f41cc2dab970b2cc5b92c0c00c3be3c6cf93"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts",
+        "sourceBlob": "a4af4a8684912bd9202907e3f5883c6e49bd5dfd",
+        "replayedBlob": "a4af4a8684912bd9202907e3f5883c6e49bd5dfd"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+        "sourceBlob": "50dd49f5b985f0f9da98cf63a1934dad0be38d70",
+        "replayedBlob": "50dd49f5b985f0f9da98cf63a1934dad0be38d70"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.test.ts",
+        "sourceBlob": "c9b02622cd0718905ab7b2ba4074dacc8fb97aca",
+        "replayedBlob": "c9b02622cd0718905ab7b2ba4074dacc8fb97aca"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.ts",
+        "sourceBlob": "dd23b16675a74f7ef82c8037f477bca2f7a306d8",
+        "replayedBlob": "dd23b16675a74f7ef82c8037f477bca2f7a306d8"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter.test.ts",
+        "sourceBlob": "f42897269526d6260dea4bac148564ef8c66f649",
+        "replayedBlob": "f42897269526d6260dea4bac148564ef8c66f649"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter.ts",
+        "sourceBlob": "356e5b3a290522c5d2db3a55eedac3b7805e69be",
+        "replayedBlob": "356e5b3a290522c5d2db3a55eedac3b7805e69be"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.test.ts",
+        "sourceBlob": "e3dac69d7a20ed9219e413e0a24c49782871a3e7",
+        "replayedBlob": "e3dac69d7a20ed9219e413e0a24c49782871a3e7"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+        "sourceBlob": "367390a7cab5d9fbb6ebaa3a25fe6ead942d8ff9",
+        "replayedBlob": "367390a7cab5d9fbb6ebaa3a25fe6ead942d8ff9"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts",
+        "sourceBlob": "ab57a0d51c9cdcaf241e849f3b1e653eb74a72cb",
+        "replayedBlob": "ab57a0d51c9cdcaf241e849f3b1e653eb74a72cb"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts",
+        "sourceBlob": "aa60f9eb5b296c3ac5c68b042dc85dca855da5f1",
+        "replayedBlob": "aa60f9eb5b296c3ac5c68b042dc85dca855da5f1"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.test.ts",
+        "sourceBlob": "0476ae8e408cf124b19101c1fc48b9f8c9d3213f",
+        "replayedBlob": "0476ae8e408cf124b19101c1fc48b9f8c9d3213f"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+        "sourceBlob": "f140d4f66d741fa29757a8a3ddaba9d9d2cdd038",
+        "replayedBlob": "f140d4f66d741fa29757a8a3ddaba9d9d2cdd038"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-integration-i1-owner-event.test.ts",
+        "sourceBlob": "1093f4da880eff1631637589949e9fd8514f2765",
+        "replayedBlob": "1093f4da880eff1631637589949e9fd8514f2765"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-integration-i1-technical.test.ts",
+        "sourceBlob": "8a9a156c5e8a246d62845a338d95f047e8d6cd2f",
+        "replayedBlob": "8a9a156c5e8a246d62845a338d95f047e8d6cd2f"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-integration-i1-technical.ts",
+        "sourceBlob": "267e60a0bee072d49abe3c9ff35a7384a78538db",
+        "replayedBlob": "267e60a0bee072d49abe3c9ff35a7384a78538db"
+      },
+      {
+        "path": "docs/design/review-agent/acceptance/v3-integrator-i1-r01/I1-INTEGRATION-AND-C-REVIEW.md",
+        "sourceBlob": "50c7daca2625ef6db19c16af484370ae43f4c5e9",
+        "replayedBlob": "50c7daca2625ef6db19c16af484370ae43f4c5e9"
+      },
+      {
+        "path": "docs/design/review-agent/acceptance/v3-integrator-i1-r01/I1-SOURCE-AND-CHECKPOINT-LOCK.json",
+        "sourceBlob": "5f7fc280dde978bb3df0072fdd4037ef253edd53",
+        "replayedBlob": "5f7fc280dde978bb3df0072fdd4037ef253edd53"
+      }
+    ]
+  },
+  "work": {
+    "stage": "I1_ON_NEW_C_REPLAY",
+    "scope": "STAGED_ONLY",
+    "newCContracts": [
+      "review-v3-execution/1",
+      "review-v3-run/1"
+    ],
+    "legacyC0OutboxNoUpgrade": true,
+    "bCandidatePublicationAllowed": false,
+    "formalRunWriter": false,
+    "mainIpcLease": "CONDITIONAL_NOT_ACTIVE",
+    "businessWriterLease": "DENIED"
+  },
+  "gates": {
+    "gateO": "PENDING_NEW_COMBINED_EXACT_SHA_CI",
+    "gateE": "NOT_RUN",
+    "gateL": "BLOCKED_NO_AUTH",
+    "gateP": "NOT_RUN",
+    "cEngineeringAcceptance": "NOT_REQUESTED_I2",
+    "release": "NO_GO"
+  },
+  "rollback": {
+    "toC": "3242b22a0825eec347b2748680bb746eb0f55215",
+    "toPreviouslyAcceptedI1": "642c1fa3d3dd2042b7af1afdb3882397d4ca79a7",
+    "deletePriorArtifacts": false
+  }
+}
