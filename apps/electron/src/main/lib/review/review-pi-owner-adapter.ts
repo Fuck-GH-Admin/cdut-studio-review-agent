@@ -400,13 +400,15 @@ export class V3ReviewOwnerAdapter {
    * I/O fails, keep it denied: only an explicit recovery can reconcile.
    */
   pause(sessionId: string): void {
-    this.localDenied.add(sessionId)
     this.assertFresh()
     const old = this.journal.owners[sessionId]
     if (!old || old.state !== 'active' ||
-        old.processEpoch !== this.processEpoch) {
+        old.processEpoch !== this.processEpoch ||
+        this.localDenied.has(sessionId)) {
       throw new C0ContractError('CASE_SCOPE_FORBIDDEN', 'Only current active Owner can pause')
     }
+    // A failed persistence write cannot reactivate an in-flight Host call.
+    this.localDenied.add(sessionId)
     this.persist({
       ...this.journal,
       owners: {...this.journal.owners, [sessionId]: {...old, state: 'paused'}},
