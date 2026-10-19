@@ -74,3 +74,17 @@ Git 对象级文件导入：`b6e767f0c85eca8e1c83a5420bc31ea8b4533e8f` 父 commi
 **I-C0-IPC-02**：同一真实来源/技术事件后，用不同 sender object 和不匹配的 frame 向正式 C0 Main handler 提交承载 technical deliveryId 的输入；要求两种 `SENDER_UNTRUSTED` 且 C0 aggregate/Receipt 不变。A1 Owner revoke 后若重复 B2→A1→A2 技术读取，必须拒绝追加迟到事件，原 pending 长度不增加。
 
 **测试范围说明**：这两项才触达真实已注册 C0 Main IPC **handler**，其 sender/frame 由既有合成 Electron hooks 模拟；**仍非实际 Electron GUI、C2 writer、学校 Principal、Host Provider 真凭证**。原 I1 13 项与新增两项组成**15 项 I-owned 合成联合测试**，需要精确新 HEAD GitHub PR CI 执行确认，不能因为代码提交/ C 旧 SHA scope review 就称通过。未激活其他 C 文件租约，`review-v3-execution-contract.test.ts` 还属于 C **新锚点之后**，本次不创建、不修改。
+
+## 8. I1 第四技术切片：Host await 期间 B2 独立撤权 fencing
+
+**问题与修复**：前一 I1 `readI1OwnerBoundBlock` 在 `inspectI1PhysicalSourceBlock` 后把原件 SourceIdentity 送入 A2 `guardedRead`。A2 可在 Host await 前后检查 **A1 Owner**，但 B2 staging 的 revoke 和 A1 Owner revoke 不是同一个生命周期。若 B2 恰在 Host await 中撤权、A1 独立 grant 仍有效，之前的代码仅靠 A1 后检查，不足以证明 B2 的当前原件有效性。这属于 I-owned **跨源集成边界缺陷**，不要求改 A/B/C 源码。
+
+在 I 自有桥接中将实际 Host read 包裹，**await 返回之后、A2 本地 proposal append 之前**，同步以 `ReviewB2StagingService.getCandidate` 验证活跃上下文/原件 candidate case/material/document/hash/status，再用 `ReviewB2SourceVersionAdapter.sourceForBlock` 精确重取 parser registry block 并比对 case/material/document/hash/parseRevision/blockId/location。B2 撤销或 parser 块漂移必须拒绝且 A2 pending 不增长；B2 中途撤权不能由有效 A1 grant 替代。没有引入 C2 Run writer、Main handler、Preload、共享 DTO 或正式业务 ACK。
+
+- I-only 桥接修复提交 `c5437861b491b643f7218c5396ba2b93d8f33015`。
+- I-only 测试提交 `d3d3fdd80951d49243b06b08dbf9bcb0006ea20a`、确定性 Host 回调入口同步修订 `7d6b797123cc49c2eb46371b3c2eb0dba8b6a56d`。
+- 新增 **2 个** source/Host 联合负例：① Host await 进入后单独撤销 B2（A1 `assertAuthorized` 仍成功），迟到 Host 结果必须拒止且本地 A2 outbox 不新增事件；② Renderer 伪造 parser blockId 不能到达 Host callback，也不会 append A2 proposal。
+- I 专有累计合成跨线测试由 15 增至 **17 个已提交、CI 未证实**。C 测试租约旧 `review-c0-ipc.test.ts` 仍维持已获 C scope review 的原测试保全及 2 项纯追加，不再触碰；C 正式生产独占文件仍为 0 变动。
+- C 已批准的旧 C 锚点 `31aa352c45a33d6832612884b0fea38e39b5cf8d`、A SHA `d8fd3e0...`、B SHA `f7a7cf2...` 没有更换。这个修复不构成 `Gate O=PASS` 或 `C_ACCEPTED_FOR_ENGINEERING`。GitHub Actions 的最终精确 SHA CI 需要重新观察，且因环境无法本地 clone/Bun，未作本机执行声明。
+
+**后续**：若 CI 首败源自 I glue/test，I 在 #147 自修；若证据显示 B staging/A Owner/C IPC 真正源缺陷，按 Owner 回流。拿到三项同 HEAD 成功证据后，向 C 请求对最新精确 SHA 的工程签收；在此之前 `I-LEASE-MAIN-PORT-R01` 仍为 `CONDITIONAL_NOT_ACTIVE`。

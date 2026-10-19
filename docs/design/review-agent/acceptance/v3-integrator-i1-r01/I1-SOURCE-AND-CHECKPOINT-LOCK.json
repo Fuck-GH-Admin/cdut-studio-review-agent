@@ -202,7 +202,7 @@
     }
   ],
   "newIIntegrationProbes": {
-    "count": 15,
+    "count": 17,
     "results": "COMMITTED_NOT_VERIFIED",
     "crossModules": [
       "Dev-B B1 immutable candidate Plan",
@@ -211,7 +211,8 @@
       "Dev-A A3 exact technical Check×target",
       "Dev-C C1 archived CurrentValidity",
       "B2 material Subject scope must match each B1 Check target",
-      "registered C0 Main IPC teacher/school actor and sender/frame fail closed with B2/A1/A2 synthetic technical receipt"
+      "registered C0 Main IPC teacher/school actor and sender/frame fail closed with B2/A1/A2 synthetic technical receipt",
+      "B2 staging revoke after Host await independently blocks A2 local proposal while A1 grant remains active"
     ],
     "formallyPersistedBusinessRuns": 0
   },
@@ -268,5 +269,18 @@
     "realHostProvider": false,
     "c2FormalAck": false,
     "results": "COMMITTED_NOT_VERIFIED"
+  },
+  "postAwaitB2RevocationHardening": {
+    "scope": "I_ONLY",
+    "status": "COMMITTED_NOT_VERIFIED",
+    "issue": "B2 staging revoke during asynchronous Host read must fence local A2 proposal independently of A1 grant",
+    "bridgeCommit": "c5437861b491b643f7218c5396ba2b93d8f33015",
+    "testCommits": [
+      "d3d3fdd80951d49243b06b08dbf9bcb0006ea20a",
+      "7d6b797123cc49c2eb46371b3c2eb0dba8b6a56d"
+    ],
+    "newProbes": 2,
+    "sourceShaUnchanged": true,
+    "formalBusinessWrites": 0
   }
 }
