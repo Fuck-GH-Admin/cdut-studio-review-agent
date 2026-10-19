@@ -31,6 +31,7 @@ type SessionShim={
   agent:{state:{isStreaming:boolean};streamFunction:StreamFn}
   subscribe:(listener:(e:NativeTurnEvent)=>void)=>()=>void
   prompt:(prompt:string)=>Promise<void>
+  dispose:()=>void
 }
 
 function makeHarness(options?:{
@@ -53,6 +54,7 @@ function makeHarness(options?:{
   let streamCalls=0
   let restored=false
   let unsubscriberCalled=false
+  let disposed=false
   const aborter=new AbortController()
   if(options?.startAborted)aborter.abort()
   let listener:((e:NativeTurnEvent)=>void)|undefined
@@ -75,6 +77,7 @@ function makeHarness(options?:{
   const session:SessionShim={
     agent:{state:{isStreaming:false},streamFunction:original},
     subscribe(cb){listener=cb;return ()=>{unsubscriberCalled=true;listener=undefined}},
+    dispose(){disposed=true;listener=undefined},
     async prompt(prompt){
       expect(prompt).toBe('main-only frozen prompt')
       await session.agent.streamFunction(
@@ -87,8 +90,8 @@ function makeHarness(options?:{
     },
   }
   const factory:V3APiHttpSingleRequestFactory={create:async ()=>{
-    const inner:Pick<AgentSession,'agent'|'prompt'|'subscribe'>=
-      session as unknown as Pick<AgentSession,'agent'|'prompt'|'subscribe'>
+    const inner:Pick<AgentSession,'agent'|'prompt'|'subscribe'|'dispose'>=
+      session as unknown as Pick<AgentSession,'agent'|'prompt'|'subscribe'|'dispose'>
     return {
       session:inner,prompt:'main-only frozen prompt',
       trustedOrigin:options?.origin??'https://approved.example',
@@ -116,7 +119,7 @@ function makeHarness(options?:{
   const engine=new V3APiHttpSingleRequestEngine(factory)
   const host=new V3APhysicalSDKTurnPort(engine)
   return {host,aborter,session,original,counts:()=>({
-    physicalCalls,streamCalls,restored,unsubscriberCalled,
+    physicalCalls,streamCalls,restored,unsubscriberCalled,disposed,
   }),
     markRestored:()=>{restored=session.agent.streamFunction===original},
   }
@@ -131,8 +134,30 @@ describe('A4-R10 pinned Pi 0.86.1 HTTP transport witness seam - in-memory Provid
     })
     h.markRestored()
     expect(h.counts()).toEqual({
-      physicalCalls:1,streamCalls:1,restored:true,unsubscriberCalled:true,
+      physicalCalls:1,streamCalls:1,restored:true,unsubscriberCalled:true,disposed:true,
     })
+  })
+  it('R12-01: Pi SDK session is disposed after a trusted physical HTTP turn',async()=>{
+    const h=makeHarness()
+    expect((await h.host.nextTurn(input)).kind).toBe('completed-turn')
+    expect(h.counts().disposed).toBe(true)
+    expect(h.counts().unsubscriberCalled).toBe(true)
+    h.markRestored()
+    expect(h.counts().restored).toBe(true)
+  })
+  it('R12-02: Pi SDK session is disposed on Provider failure with no fabricated receipt',async()=>{
+    const h=makeHarness({failAfterFetch:true})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provider streaming connection lost')
+    expect(h.counts().disposed).toBe(true)
+    h.markRestored()
+    expect(h.counts().restored).toBe(true)
+  })
+  it('R12-03: Pi SDK session is disposed on Main cancellation inside Provider HTTP fetch',async()=>{
+    const h=makeHarness({abortDuringFetch:true})
+    await expect(h.host.nextTurn({...input,signal:h.aborter.signal}))
+      .rejects.toThrow('Main aborted during HTTP transport')
+    expect(h.counts().disposed).toBe(true)
+    expect(h.counts().physicalCalls).toBe(1)
   })
   it('R10-02: two HTTP fetch attempts fail closed despite a successful Pi turn',async()=>{
     const h=makeHarness({sends:2})
