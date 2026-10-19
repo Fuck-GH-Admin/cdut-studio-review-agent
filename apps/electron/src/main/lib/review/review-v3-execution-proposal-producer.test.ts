@@ -253,6 +253,19 @@ describe('Dev-A versioned CR-A-001 A-1 proposal producer (Main Host only)', () =
     expect(h.producer.replayCandidates().map(e=>e.kind)).toEqual(['read','check','check'])
   })
 
+  it('A3-V3-14: conflicting accepted/rejected Host results cannot pass technical completion', async () => {
+    const h=setup()
+    await h.producer.read(h.call)
+    await h.producer.check(checkCall(h),tuple)
+    h.setCheck({receiptId:'changed-host-result',actualCheck:{...tuple,status:'rejected'}})
+    const dispute=await h.producer.check(checkCall(h),tuple)
+    expect(dispute.kind).toBe('check')
+    h.setTerminal({receiptId:'host-claims-complete',actualStatus:'completed-technical'})
+    await expect(h.producer.terminal(checkCall(h),'completed-technical')).rejects.toThrow()
+    const chain=h.producer.replayCandidates()
+    expect(chain.map(x=>x.kind)).toEqual(['read','check','check'])
+  })
+
   it('A2-V3-11: disk-backed Host proposals replay without reviving cold Owner authority', async () => {
     const dir=mkdtempSync(join(tmpdir(),'review-v3-a-proposals-'))
     try {
