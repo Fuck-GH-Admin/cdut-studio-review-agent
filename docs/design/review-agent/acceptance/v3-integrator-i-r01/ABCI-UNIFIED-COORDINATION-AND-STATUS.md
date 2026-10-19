@@ -189,6 +189,7 @@ A/B/I 发现阻断，先用已有类型化接口排障；无法自行解决时�
 - `BLOCKED`：Dev-C 已在本文件 C 裁决区批准 `B-CR-001 / APPROVED_SLICED_SPEC / IMPLEMENTATION_PENDING`：B-0 技术候选可集成，B-1 Main owner/picker 方向、B-2 C 独占 ApplyMaterial/InstallPlan 命令方向获认可；**尚无正式可信 Main handlers、publisher/Gold 许可或 I C 文件租约**。`B-3` 真实 Native/Electron/Office、100 案/500 文件、逐责任50套及第51套UAT未达标；本地 ZIP archive checkpoint 仅原件恢复候选，不等于完整 ImportBatch/CurrentCase receipt。
 
 - `NEXT`：集中补齐当前 SHA typecheck/Bun/boundaries 首败并固定真实 CI；保留 34 条作用域不明及 40 套未独立取得原始字节的来源缺口，优先推进 B4 独立原文/Gold 来源复核及 B2 Office71 真实解析差分；第51套技术作者 UI/试跑已实现但未挂工作台、未 UAT。I 继续固定旧 B0 绿色切片集成 #147，不浮动换本 B4 新 HEAD；C 独占正式 Main/Plan/Material/Policy 发布。详见 #142 `B4-50-OBLIGATION-COVERAGE-R02.md`。
+- `B-R03-ORIGINAL-BYTES_AND_AUTHOR-FREEZE`：#142 已在 B-owned 工程分支提交 `2110980eb1168c343abd0ab2d298fcfff471cf6f`（仍 Draft）；B4 对 Git 原始 Markdown 直接取得历史 12 个 Blob 的内容字节并重算 SHA256，G01 5 + G07 7 共 **12/12** 与 D4 固定目录 source SHA256 声明一致；R02 的 9/1/40 是历史分类不改写，新 R03 标记 **12 rehashed / 38 original still unavailable**，另建 `B4-50-ORIGINAL-MD-BYTE-AUDIT-R03.csv`、原文字节双哈希验证器及正反例。G01 的 **34** 个不明确 object/case Scope 仍全部 BLOCKED，不自动从文本推成对象绑定。B1 作者 `freezeB1Candidate` 与 `saveB1AuthorRevision` 共用 `author.lock`，增加并发占锁拒止/旧 revision 拒冻结负例。新 SHA exact PR CI `39250862906`、Baseline `39250862618`、D2 `39250862487` 均已触发、上次核查 **QUEUED，Gate O NOT_ATTESTED**；E NOT_RUN、L BLOCKED_NO_AUTH、P PARTIAL。I1 #147 保持原绿色 B 源锁 `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc`，不得浮动替换。B-CR-001 仍 `APPROVED_SLICED_SPEC / IMPLEMENTATION_PENDING`。
 <!-- END:STATUS:B -->
 
 ### C — Owner: Dev-C
