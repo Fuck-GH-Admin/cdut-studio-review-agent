@@ -114,6 +114,18 @@ export class V3ASDKTurnBridge {
         call.sessionId,call.grantId,call.senderKey,
         call.principal,'review_submit_result',
       )
+      const alreadyTerminal=this.proposals.terminalCandidate(frozen)
+      if (alreadyTerminal) {
+        if (alreadyTerminal.kind === 'terminal' &&
+            alreadyTerminal.terminal.status === 'needs-resume' &&
+            alreadyTerminal.permissionGrantId === lease.grantId &&
+            this.turns.exhausted(lease)) {
+          return {kind:'terminal-proposal',status:'needs-resume',
+            event:alreadyTerminal}
+        }
+        throw new C0ContractError('RUN_IDENTITY_MISMATCH',
+          'Attempt already sealed; no further SDK Provider turn permitted')
+      }
       if (this.turns.exhausted(lease)) {
         return {kind:'terminal-proposal',status:'needs-resume',
           event:await this.closeExhausted(call)}
