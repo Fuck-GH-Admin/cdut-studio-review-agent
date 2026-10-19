@@ -90,3 +90,17 @@ B 新增 `review-template-author-main-port-v3-b1.ts`，提供 `ReviewB1AuthorMai
 - `B2-claimArchiveRequest`：整包 `requestId/physicalArchiveKey/rawSha256` 需由可信 C Native 输入发放。B 的内存幂等和本地源档 checkpoint 不得被 I 当成正式 CurrentCase CAS/Receipt。
 
 **真实状态**：`B-CR-001 APPROVED_SLICED_SPEC / IMPLEMENTATION_PENDING`。上述新增文件为 B 自有源码和测试，新的 HEAD CI 未确认前 `SOURCE_ONLY`。无 C Main 授权实装或学生/老师真实学校 Principal，Dev-B 不能标 `B-INT-01 PASS`。
+
+
+## R05｜输入侧逐文件账已实现，正式 Case command 保持待实现
+
+B 新增 `ReviewB2InputLedger` 与 `proposeB2MaterialCandidates`（详见 `B2-INPUT-LEDGER-AND-MAIN-HANDOFF-R03.md`）。来源先经过原 ZIP byte/manifest 的重新校验、Main owner 授权回调和逐文件 Subject/role/raw SHA 确认；输入账按 revision CAS / requestId / body hash / 逐项 receipt 保存。导出对象明确为 `input-only-unapplied`，没有有效 `SourceIdentity`、正式 `MaterialVersion` 或 CurrentCase write。
+
+**向 C 的精确接线请求仍为 `APPROVED_SLICED_SPEC / IMPLEMENTATION_PENDING`**：
+
+- Main 可信入口派生 `B2MainContext` 与 `B2InputAuthority`，从真实物理文件读取 bytes/重试 grant；Renderer 不能发放 token 或在 IPC body 中自称 authorize。
+- 在正式 `ApplyMaterial` 前，根据 `archiveId/entryIndex/rawSha256/inputRevision/ledgerHash/receiptHash` 向 B InputLedger 复核当前来源；再由 C 验证真实 parser-verified SourceIdentity / Subject / 权限和 case revision，执行有唯一 durable Receipt 的原子写入。
+- `ImportBatch` 的输入记录只是候选来源事务，`ReviewBatchAttempt` 由 C 另行拥有；提议输入绝不能自动变成某案 confirmed Material 或 reviewer Run evidence。
+- C/ I 不得依据普通 SHA-256 原件及本地 journal hash 冒充有权签署人签名、学校制度或独立 Gold。
+
+**状态**：B 自有源码已提交，最新 B HEAD CI 仍需按真实 SHA 判断。I 可以准备隔离的 read-only handoff 合同测试；不能在新的 Gate O 通过之前将 R03 新代码作为 approved integrated slice。
