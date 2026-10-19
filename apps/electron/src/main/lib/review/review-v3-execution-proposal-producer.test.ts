@@ -26,7 +26,7 @@ class Store implements OwnerPersistence {
     }
   }
 }
-function setup(caseId = 'case-a', sessionId = 'session-a', applicability: 'applicable' | 'unknown' = 'applicable') {
+function setup(caseId = 'case-a', sessionId = 'session-a', applicability: 'applicable' | 'unknown' = 'applicable', checkCount = 1) {
   const ownerStore = new Store()
   const proposalStore = new Store()
   const principal: Principal = {
@@ -41,17 +41,17 @@ function setup(caseId = 'case-a', sessionId = 'session-a', applicability: 'appli
   const run: RunEvidenceIdentity = {
     schemaVersion:REVIEW_C0_SCHEMA_VERSION,runId:'run-'+caseId,caseId,
     caseRevision:3,planFingerprint:'p1',templateVersion:'v1',inputManifestHash:HASH,
-    sourceVersionIds:['dv1'],checkKeys:['check-1'],attemptId:'attempt-'+caseId,
+    sourceVersionIds:['dv1'],checkKeys:Array.from({length:checkCount},(_,i)=>'check-'+(i+1)),attemptId:'attempt-'+caseId,
     ownerGeneration:1,
   }
   const plan: CanonicalPlan = {
     schemaVersion:REVIEW_C0_SCHEMA_VERSION,planId:'plan-1',fingerprint:'p1',
     templateId:'t1',templateVersion:'v1',moduleDigests:[],
-    bindings:[{
-      checkKey:'check-1',targetKey:'target-1',objectKey:'object-1',
+    bindings:Array.from({length:checkCount},(_,i)=>({
+      checkKey:'check-'+(i+1),targetKey:'target-'+(i+1),objectKey:'object-1',
       subjectId:'student-1',sourceVersionIds:['dv1'],applicability,
       conditionFingerprint:'cfp',
-    }],
+    })),
   }
   let permitted = true
   const gate = {
@@ -79,7 +79,14 @@ function setup(caseId = 'case-a', sessionId = 'session-a', applicability: 'appli
   }
   const host: AVerifiedExecutionHost = {
     read:async () => actualRead,
-    check:async () => actualCheck,
+    check:async binding => checkCount === 9 ? ({
+      receiptId:'host-'+binding.checkKey,
+      actualCheck:{
+        checkKey:binding.checkKey,targetKey:binding.targetKey,
+        objectKey:binding.objectKey,subjectId:binding.subjectId,
+        status:'accepted' as const,
+      },
+    }) : actualCheck,
     terminal:async () => actualTerminal,
   }
   const producer = new V3AProposalProducer(proposalStore,owners,host)
@@ -206,6 +213,30 @@ describe('Dev-A versioned CR-A-001 A-1 proposal producer (Main Host only)', () =
     expect(completed.terminal.status).toBe('completed-technical')
     expect(h.producer.replayCandidates()).toHaveLength(3)
     await expect(h.producer.read(h.call)).rejects.toThrow()
+  })
+
+  it('A3-V3-13: 8/9 does not complete, 9/9 persisted exact Check tuples do', async () => {
+    const h=setup('case-nine','session-nine','applicable',9)
+    const call=checkCall(h)
+    await h.producer.read(h.call)
+    h.setTerminal({receiptId:'terminal-nine',actualStatus:'completed-technical'})
+    for(let i=1;i<=8;i++) {
+      const request={checkKey:'check-'+i,targetKey:'target-'+i,
+        objectKey:'object-1',subjectId:'student-1'}
+      const outcome=await h.producer.check(call,request)
+      expect(outcome.kind).toBe('check')
+      expect(outcome.sequence).toBe(i+1)
+    }
+    await expect(h.producer.terminal(call,'completed-technical')).rejects.toThrow()
+    const ninth=await h.producer.check(call,{
+      checkKey:'check-9',targetKey:'target-9',objectKey:'object-1',subjectId:'student-1',
+    })
+    expect(ninth.sequence).toBe(10)
+    const terminal=await h.producer.terminal(call,'completed-technical')
+    expect(terminal.sequence).toBe(11)
+    expect(h.producer.replayCandidates()).toHaveLength(11)
+    if(terminal.kind!=='terminal') throw new Error('terminal expected')
+    expect(terminal.terminal.status).toBe('completed-technical')
   })
 
   it('A3-V3-10: rejected/unknown Host Check cannot be turned into completed', async () => {
