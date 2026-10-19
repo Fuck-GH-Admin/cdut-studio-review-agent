@@ -88,13 +88,16 @@ describe('B2 durable input checkpoint is not a CurrentCase writer',()=>{
   })
   test('tampered symlink archive refuses access rather than reading external file',()=>{
     const staging=new ReviewB2StagingService()
-    const vault=new ReviewB2ArchiveVault(staging,home)
+    // Keep deliberately poisoned archive.zip out of the shared capacity root.
+    // The production vault must still reject it; unrelated test archives stay isolated.
+    const isolated=join(home,'symlink-poison-isolated')
+    const vault=new ReviewB2ArchiveVault(staging,isolated)
     const checkpoint=vault.saveAndStage(ctx,{
       physicalArchiveKey:'native-file-link',requestId:'linked-5',bytes:makeZip('normal bytes'),
     }).checkpoint
-    const stored=join(home,checkpoint.archiveId,'archive.zip')
+    const stored=join(isolated,checkpoint.archiveId,'archive.zip')
     rmSync(stored)
-    const outside=join(home,'out-of-scope.txt')
+    const outside=join(isolated,'out-of-scope.txt')
     writeFileSync(outside,makeZip('external bytes'))
     symlinkSync(outside,stored)
     expect(()=>vault.inspect(ctx,checkpoint.archiveId)).toThrow('B2_ARCHIVE_RECOVERY_REQUIRED')
