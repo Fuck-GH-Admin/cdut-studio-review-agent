@@ -40,7 +40,7 @@
 
 ## 5. R07 起下一阶段顺序及阻断
 
-1. **A4-R07（现在推进）**：在 A 自有代码建立 Pi native Host 执行 port 的可校验 provenance、单物理派发约束、明确拒绝 assistant/result/harness 被动事件伪造 turn receipt，并覆盖 Provider 内部多调用、原生 retry、图片降级 requery、取消后迟到完成的安全负例。**若真实 Pi SDK API 未暴露物理 receipt，必须以 `PROVENANCE_UNAVAILABLE` 拒止，不得随机生成假的稳定收据。**
+1. **A4-R07（已有代码，真实 SDK Hook 尚未接线）**：在 A 自有代码建立 Pi native Host 执行 port 的可校验 provenance、单物理派发约束、明确拒绝 assistant/result/harness 被动事件伪造 turn receipt，并覆盖 Provider 内部多调用、原生 retry、图片降级 requery、取消后迟到完成的安全负例。**若真实 Pi SDK API 未暴露物理 receipt，必须以 `PROVENANCE_UNAVAILABLE` 拒止，不得随机生成假的稳定收据。**
 2. **A4-R08**：复核 SDK Host worker 跨 PID owner/singleton、SIGKILL 后 unresolved intent、Provider timeout/AbortSignal、技术回执跨运行冲突；Gate O 可用合成端口与 OS process，真实 Electron 链合并在集中 Gate E。
 3. **A/I 技术检查点**：精确新 A SHA 同版 Gate O 达标，向 I 报源 SHA、路径、技术依赖和 CR；I 对固定 C 锚点的实际 DTO/validator 与 A 回执按同 SHA 对照，不自动换旧 A 来源。
 4. **C2 正式消费和后续**：只在 C 明确实现并签名的正式 Run writer/ACK 端口完成后由 I 做技术接线；不让 A 自己实现第二份业务权威。
@@ -75,7 +75,37 @@
 
 **集中验收**：`A4-R05-EXACT-SHA-OFFLINE-GATE-O-20261019.md` 已包含本批 2 条合成取消反例和 1 条真实 OS SIGKILL 测试。提交者必须记录最终 PR HEAD、真实 Linux runner ID、首个失败、exit code、测试 PASS/FAIL/SKIP、源码来源 SHA。新 Owner 仍 Dev-A；需要改正式 Main 注册/共享 adapter/Case/Run 时需 C 明示 CR lease，I 不得自动替换旧 A 锁源。
 
-## 8. 每批交付行必须具备
+## 8. A4-R09 工程里程碑与 A1–A4 总体阶段裁决（2026-10-19）
+
+**本阶段的总体裁决：`A_SOURCE_STACK_BUILT / A_CI_NOT_ATTESTED / A_REAL_SDK_NOT_WIRED / A_C2_NOT_ACCEPTED`。** Dev-A 核心不是再讨论架构；A1 Owner、A2 Host Proposal、A3 技术 SDK 执行/预算、A4 持久派发与可靠性均已有真实源码与对应测试。**但不能由四个源码模块的完成推导出端到端产品已完成；不存在可以诚实写下的“总体 90%”一类百分比。** 当前正式系统仍缺 C2 业务 Run/ACK、Pi 原生回执、同 SHA 工程验证、真实 Electron/Provider/E2E 及权限/发布门禁。
+
+### 一、完整度分层（必须避免单一百分比）
+
+| 轨道 | Dev-A 自有代码交付状态 | 主要缺口 | 可被谁签收 |
+|---|---|---|---|
+| A1 — Owner/CAS/授权 | `IMPLEMENTED_SOURCE`：Main Owner 生命周期、文件 CAS/lease、暂停恢复、冷 epoch quarantine、拒旧 grant；已有独立测试文件 | 真实 Electron Caller/Owner/SDK 生命周期、跨进程正式 C 案卷、同 SHA Gate O | A 单线 O；C/I 工程集成 + E |
+| A2 — SDK 工具事件、Source/Check Proposal | `IMPLEMENTED_SOURCE_PROPOSAL_ONLY`：Host Read/Check/Terminal、9/9 检查、technical status、versioned 候选/回放 | C2 durable ReadReceipt/Check/Run ACK 及政策发布权限（非 A） | A O；C 业务 ACK + I 联合 |
+| A3 — 24-turn SDK bridge | `IMPLEMENTED_A_ONLY_SEAM`：24-turn durable journal、Host callback/run/dispatch identity、四 mode 的技术调用 seam | SDK Pi native Provider physical receipt 已证实的实际挂接、Graph/Batch 生产 orchestrator、实际 Provider E | A O；I/C E |
+| A4 — reliability/fencing | `IMPLEMENTED_SOURCE_WITH_R09`：派发前 durable claim、未知结果拒重发、延迟结果/Abort、冷 ledger 污染拒止、双 PID/SIGKILL 和跨 Run/Case 隔离测试代码 | 真 SDK/worker/Provider 跨进程与远端 cancel 验收、合法可信 recovery 策略 | A O；I/C E、C 业务恢复 |
+
+### 二、R09：冻结未决 Provider 的 Case 级跨 Run 隔离
+
+- R08 工程输入：`dc59bf1fa41263308729ab6e6dedc90cba11edf3`。新发现：原 `V3ASDKDispatchFence.claim()` 只在同一 `[runId,attemptId,ownerGeneration]` 技术 key 下拒绝 `in-flight/late-denied`；因此在真实 Provider 仍未决时，Main 可创建不同 Run + Owner session **绕过同 Case 的安全 fence**。新的 A-owned `review-v3-sdk-dispatch-fence.ts` 在 durable claim 前遍历其他 Run 链，针对同 Case/Owner session 的未决 Provider 一律拒止；不影响已结清的独立 Case 正常运行。源码提交 `94ed6f92f3c8481762d48613a6f7c98616a8e3e7`。
+- 新版每笔 SDK dispatch intent 在原 `grantId` 外存 `caseId/sessionId`，仍为 `v3-dev-a-sdk-dispatch/1` sealed ledger；**旧历史记录允许缺失两字段**，但只要旧未决记录缺 attribution，不能自信归属任何 Case，故对所有新 Run 保守拒止；只缺一半 scope 则当损坏拒止。这是安全兼容处理，不是丢弃旧数据。需 C 明示业务恢复流程才能改变 unresolved。
+- 完成回执唯一性此前只在同 Run 检查，跨 Run 重复 native receipt 仍可被错误记为多次独立 SDK 完成。现在 `assertUniqueReceipt()` 及 `decode()` 在**全账本所有 Run** 检查 settled receipt ID 冲突，在线冲突 `REQUEST_ID_COLLISION`，历史冲突 `RECOVERY_REQUIRED`，无业务 writer/ACK。源码提交 `164c92fef653227574fd7a2859ed42e563616fb5`。
+- A-only 合成 SDK/Main 测试 `A4-R09-01..07` 已提交（`4c46f7b932c26f77309d2b26029182f489fd266d`、`ccaaddbd1106fe945a8c4950d9ba395f55febbcc`、`20f9ef1ed9bb120d2db8c37a9b4cf9e03a11dc12`）：新 Run/新 session 不能绕过，同 Case 锁住但独立 Case 可继续，冷 reopen 有效，legacy scope 无法猜测，half-present scope 拒止，跨 Run receipt 在线和冷恢复撞号。
+- `review-v3-sdk-dispatch-crashpid.test.ts` 已在先前实际 Linux OS 子进程 `SIGKILL` 测试中加 R09-PID-02 的**验证逻辑**：新进程重新授权不同 Run/新 Owner session 同 Case 后，仍不能 `claim`；提交 `d8a1a8d22f9fcbc19fc1036afd78067cc3e8bbad`。这是**一条增强的 PID 测试场景**，不是第二条已经运行的独立测试；Provider 依然合成。
+
+### 三、分层交付/下一 Owner
+
+1. **Dev-A 短期**：固定精确 SHA，在可用 Linux/Bun 环境集中执行 Gate O、处理真实首败，核对 Native Pi SDK 0.86.1 源码可否获得 provider-request/receipt Hook；若不可得，不可自己生成 pseudo-native receipt。推进可验证的 worker 接口，而不是循环新增抽象。
+2. **Integrator-I**：只在 C 再次批准的冻结 C 锚点基础上对最新 A SHA 建立独立来源锁，联合 B staging/Plan/Source，绝不自动将 #143 浮动替换进 #147 I1 老锚点。
+3. **Dev-C**：Owner/current Case/Source/Plan 正式 Principal/Run ACK/ReviewRun/Check 业务权威；A 保持 proposal-only，所有 Main IPC/Preload/正式 writer 更新均需 C 明示租约。已审批 `CR-A-001=APPROVED_SLICED_SPEC` 不等于生产写入租约。
+4. **验收分层**：O 需要固定同 SHA install/typecheck/build/Bun 全量与负例、同环境 exit、报告与 CI；E 需要真实 Electron SDK Provider 物理请求数/取消/worker 崩溃；L/P 在授权与产品全链证据就绪前不签发。
+
+**当前 Gate 一律不可推测**：`O=NOT_ATTESTED`（R08 前一 SHA PR CI cancelled，D2/Baseline queued；R09 新 SHA 的 workflow 必须另读）、`E=NOT_RUN`、`L=BLOCKED_NO_AUTH`、`P=NOT_RUN`。这不是“功能百分比”，而是证据成熟度。
+
+## 9. 每批交付行必须具备
 
 `slice_id / source_sha (40位) / ownership_paths / first_failure / exact commands + env + exit + PASS/FAIL/SKIP / CI workflow+job / Gate O/E/L/P / unresolved_risks / next_owner / C lease if applicable / integration source-lock / rollback commit`。
 
