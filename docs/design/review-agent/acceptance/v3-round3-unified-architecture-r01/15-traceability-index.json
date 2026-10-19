@@ -1,0 +1,759 @@
+{
+  "schema": "cdut-review-v3-traceability-r01",
+  "source_documents": {
+    "133": "ff5e1068b99dc2aa41f53c692cd0e44a2e7ca071",
+    "134": "54b906dc7f4dcd06d8ca14ae39798bf18336e7d6",
+    "135": "9147b0c6240fc866ea98b489c37c8738714d5e9f",
+    "136": "87e1d2636403f8f0ccceb4fd786ee4b7097bbfb6",
+    "137": "082fafb3f1df7d19af25bf52cc93135190ff102c",
+    "138": "e2ee1d738c43ee193bb8812389a148fd2d3ad479",
+    "139": "10d499d6d120dcffc3c1c8a90aabac9302a9757f"
+  },
+  "product_sha": {
+    "main": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+    "D4": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+    "P06": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+    "R02": "c23789882aabf18689c314c77c270ac4a8ae4729",
+    "I": "b68443b23293b4714e61a3b81383d3d3a56434fc"
+  },
+  "capability_to_contract_test": [
+    {
+      "capability_id": "UI-01",
+      "owner": "Dev-C",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-018",
+      "tests": "B:GUI原件定位/历史只读/状态区分; ARCH-018; apps/electron/src/renderer/components/content-review/review-source-focus.test.ts",
+      "contract": "Renderer仅发intent，不能写权威事实"
+    },
+    {
+      "capability_id": "UI-02",
+      "owner": "Dev-C",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-010,ARCH-018",
+      "tests": "B:GUI原件定位/历史只读/状态区分; ARCH-010,ARCH-018; apps/electron/src/renderer/components/content-review/review-source-focus.test.ts",
+      "contract": "Renderer仅发intent，不能写权威事实"
+    },
+    {
+      "capability_id": "UI-03",
+      "owner": "Dev-C",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-006,ARCH-018",
+      "tests": "B:GUI原件定位/历史只读/状态区分; ARCH-006,ARCH-018; apps/electron/src/renderer/components/content-review/review-workspace-view-model.test.ts",
+      "contract": "Renderer仅发intent，不能写权威事实"
+    },
+    {
+      "capability_id": "UI-04",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-001,ARCH-018",
+      "tests": "B:GUI原件定位/历史只读/状态区分; ARCH-001,ARCH-018; apps/electron/src/renderer/components/content-review/review-workspace-write-fence.p06-fix02.test.ts",
+      "contract": "Renderer仅发intent，不能写权威事实"
+    },
+    {
+      "capability_id": "UI-05",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-007,ARCH-008,ARCH-018",
+      "tests": "B:GUI原件定位/历史只读/状态区分; ARCH-007,ARCH-008,ARCH-018; apps/electron/src/renderer/components/content-review/batch-ui-feedback.test.ts",
+      "contract": "Renderer仅发intent，不能写权威事实"
+    },
+    {
+      "capability_id": "UI-06",
+      "owner": "Dev-C",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-011,ARCH-015",
+      "tests": "B:GUI原件定位/历史只读/状态区分; ARCH-011,ARCH-015",
+      "contract": "Renderer仅发intent，不能写权威事实"
+    },
+    {
+      "capability_id": "CASE-01",
+      "owner": "Dev-C",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-001,ARCH-018",
+      "tests": "A:CAS/事务/申诉/评分状态+历史迁移; ARCH-001,ARCH-018; apps/electron/src/main/lib/review/case-store.test.ts",
+      "contract": "Main可信principal+CAS owner"
+    },
+    {
+      "capability_id": "CASE-02",
+      "owner": "Dev-C",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-001,ARCH-016",
+      "tests": "A:CAS/事务/申诉/评分状态+历史迁移; ARCH-001,ARCH-016; apps/electron/src/main/lib/review/case-store-v2.test.ts",
+      "contract": "Main可信principal+CAS owner"
+    },
+    {
+      "capability_id": "CASE-03",
+      "owner": "Dev-C",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-002,ARCH-005",
+      "tests": "A:CAS/事务/申诉/评分状态+历史迁移; ARCH-002,ARCH-005; apps/electron/src/main/lib/review/review-d4-field-form.test.ts",
+      "contract": "Main可信principal+CAS owner"
+    },
+    {
+      "capability_id": "CASE-04",
+      "owner": "Dev-C",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-003,ARCH-004",
+      "tests": "A:CAS/事务/申诉/评分状态+历史迁移; ARCH-003,ARCH-004",
+      "contract": "Main可信principal+CAS owner"
+    },
+    {
+      "capability_id": "CASE-05",
+      "owner": "Dev-C",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-003,ARCH-010",
+      "tests": "A:CAS/事务/申诉/评分状态+历史迁移; ARCH-003,ARCH-010",
+      "contract": "Main可信principal+CAS owner"
+    },
+    {
+      "capability_id": "CASE-06",
+      "owner": "Dev-C",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-002,ARCH-003,ARCH-015",
+      "tests": "A:CAS/事务/申诉/评分状态+历史迁移; ARCH-002,ARCH-003,ARCH-015",
+      "contract": "Main可信principal+CAS owner"
+    },
+    {
+      "capability_id": "CASE-07",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-008,ARCH-014",
+      "tests": "A:CAS/事务/申诉/评分状态+历史迁移; ARCH-008,ARCH-014; apps/electron/src/main/lib/review/stage-workflow.test.ts",
+      "contract": "Main可信principal+CAS owner"
+    },
+    {
+      "capability_id": "CASE-08",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-007,ARCH-016",
+      "tests": "A:CAS/事务/申诉/评分状态+历史迁移; ARCH-007,ARCH-016; apps/electron/src/main/lib/review/stage-workflow-l02-01-idempotent-batch.p06.test.ts",
+      "contract": "Main可信principal+CAS owner"
+    },
+    {
+      "capability_id": "CASE-09",
+      "owner": "Dev-C",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-014,ARCH-018",
+      "tests": "A:CAS/事务/申诉/评分状态+历史迁移; ARCH-014,ARCH-018; apps/electron/src/main/lib/review/stage-workflow.test.ts",
+      "contract": "Main可信principal+CAS owner"
+    },
+    {
+      "capability_id": "CASE-10",
+      "owner": "Dev-C",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-016,ARCH-018",
+      "tests": "A:CAS/事务/申诉/评分状态+历史迁移; ARCH-016,ARCH-018",
+      "contract": "Main可信principal+CAS owner"
+    },
+    {
+      "capability_id": "CASE-11",
+      "owner": "Dev-C",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-014,ARCH-018",
+      "tests": "A:CAS/事务/申诉/评分状态+历史迁移; ARCH-014,ARCH-018",
+      "contract": "Main可信principal+CAS owner"
+    },
+    {
+      "capability_id": "CASE-12",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-008,ARCH-018",
+      "tests": "A:CAS/事务/申诉/评分状态+历史迁移; ARCH-008,ARCH-018",
+      "contract": "Main可信principal+CAS owner"
+    },
+    {
+      "capability_id": "TPL-01",
+      "owner": "Dev-B",
+      "source_sha": "5709c562696a7560aba092afc86c0af83cc5cd2c",
+      "conflicts": "ARCH-019",
+      "tests": "A:Plan差分/模块义务/独立Gold; ARCH-019",
+      "contract": "不写CurrentCase或正式ReviewRun"
+    },
+    {
+      "capability_id": "TPL-02",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-015,ARCH-019",
+      "tests": "A:Plan差分/模块义务/独立Gold; ARCH-015,ARCH-019",
+      "contract": "不写CurrentCase或正式ReviewRun"
+    },
+    {
+      "capability_id": "TPL-03",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-002,ARCH-005",
+      "tests": "A:Plan差分/模块义务/独立Gold; ARCH-002,ARCH-005; apps/electron/src/main/lib/review/review-d2-runtime.test.ts",
+      "contract": "不写CurrentCase或正式ReviewRun"
+    },
+    {
+      "capability_id": "TPL-04",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-015",
+      "tests": "A:Plan差分/模块义务/独立Gold; ARCH-015; apps/electron/src/main/lib/review/review-d3-module-library.test.ts",
+      "contract": "不写CurrentCase或正式ReviewRun"
+    },
+    {
+      "capability_id": "TPL-05",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-015",
+      "tests": "A:Plan差分/模块义务/独立Gold; ARCH-015; apps/electron/src/main/lib/review/review-d3-handoff.test.ts",
+      "contract": "不写CurrentCase或正式ReviewRun"
+    },
+    {
+      "capability_id": "TPL-06",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-005,ARCH-006",
+      "tests": "A:Plan差分/模块义务/独立Gold; ARCH-005,ARCH-006; apps/electron/src/main/lib/review/review-d3-md-dynamic-runtime.test.ts",
+      "contract": "不写CurrentCase或正式ReviewRun"
+    },
+    {
+      "capability_id": "TPL-07",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-002,ARCH-005",
+      "tests": "A:Plan差分/模块义务/独立Gold; ARCH-002,ARCH-005; apps/electron/src/main/lib/review/review-d4-common.test.ts",
+      "contract": "不写CurrentCase或正式ReviewRun"
+    },
+    {
+      "capability_id": "TPL-08",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-020",
+      "tests": "A:Plan差分/模块义务/独立Gold; ARCH-020; apps/electron/src/main/lib/review/review-d4-unified.test.ts",
+      "contract": "不写CurrentCase或正式ReviewRun"
+    },
+    {
+      "capability_id": "TPL-09",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-020,ARCH-019",
+      "tests": "A:Plan差分/模块义务/独立Gold; ARCH-020,ARCH-019",
+      "contract": "不写CurrentCase或正式ReviewRun"
+    },
+    {
+      "capability_id": "RUN-01",
+      "owner": "Dev-C",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-005,ARCH-013",
+      "tests": "A+C:覆盖/确切Run/Provider工具回执; ARCH-005,ARCH-013; apps/electron/src/main/lib/review/pi-case-review-service.test.ts",
+      "contract": "Dev-A提交事件；仅Dev-C持久化正式Run"
+    },
+    {
+      "capability_id": "RUN-02",
+      "owner": "Dev-C",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-006,ARCH-010",
+      "tests": "A+C:覆盖/确切Run/Provider工具回执; ARCH-006,ARCH-010; apps/electron/src/main/lib/review/coverage-ledger.test.ts",
+      "contract": "Dev-A提交事件；仅Dev-C持久化正式Run"
+    },
+    {
+      "capability_id": "RUN-03",
+      "owner": "Dev-C",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-006,ARCH-019",
+      "tests": "A+C:覆盖/确切Run/Provider工具回执; ARCH-006,ARCH-019",
+      "contract": "Dev-A提交事件；仅Dev-C持久化正式Run"
+    },
+    {
+      "capability_id": "RUN-04",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-007,ARCH-008",
+      "tests": "A+C:覆盖/确切Run/Provider工具回执; ARCH-007,ARCH-008",
+      "contract": "Dev-A提交事件；仅Dev-C持久化正式Run"
+    },
+    {
+      "capability_id": "RUN-05",
+      "owner": "Dev-C",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-006",
+      "tests": "A+C:覆盖/确切Run/Provider工具回执; ARCH-006; apps/electron/src/main/lib/review/pi-review-submit-repair.test.ts",
+      "contract": "Dev-A提交事件；仅Dev-C持久化正式Run"
+    },
+    {
+      "capability_id": "RUN-06",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-006,ARCH-017",
+      "tests": "A+C:覆盖/确切Run/Provider工具回执; ARCH-006,ARCH-017; apps/electron/src/main/lib/review/pi-review-agent-client.test.ts",
+      "contract": "Dev-A提交事件；仅Dev-C持久化正式Run"
+    },
+    {
+      "capability_id": "RUN-07",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-006,ARCH-008",
+      "tests": "A+C:覆盖/确切Run/Provider工具回执; ARCH-006,ARCH-008; apps/electron/src/main/lib/review/workspace-business-service-v2.test.ts",
+      "contract": "Dev-A提交事件；仅Dev-C持久化正式Run"
+    },
+    {
+      "capability_id": "BG-01",
+      "owner": "Dev-A",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-004,ARCH-013",
+      "tests": "A+B:Owner+after-await revoke+P02; ARCH-004,ARCH-013",
+      "contract": "不得写Case/Batch/Decision"
+    },
+    {
+      "capability_id": "BG-02",
+      "owner": "Dev-A",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-013,ARCH-017",
+      "tests": "A+B:Owner+after-await revoke+P02; ARCH-013,ARCH-017",
+      "contract": "不得写Case/Batch/Decision"
+    },
+    {
+      "capability_id": "BG-03",
+      "owner": "Dev-A",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-010,ARCH-013",
+      "tests": "A+B:Owner+after-await revoke+P02; ARCH-010,ARCH-013; apps/electron/src/main/lib/agent-orchestrator-review-tool-gates.p06.test.ts",
+      "contract": "不得写Case/Batch/Decision"
+    },
+    {
+      "capability_id": "BG-04",
+      "owner": "Dev-A",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-013",
+      "tests": "A+B:Owner+after-await revoke+P02; ARCH-013; apps/electron/src/main/lib/review-owner-index-recovery.p06-fix01.test.ts",
+      "contract": "不得写Case/Batch/Decision"
+    },
+    {
+      "capability_id": "BG-05",
+      "owner": "Dev-A",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-013,ARCH-017",
+      "tests": "A+B:Owner+after-await revoke+P02; ARCH-013,ARCH-017; apps/electron/src/main/lib/agent-orchestrator-permission-wiring.p06.test.ts",
+      "contract": "不得写Case/Batch/Decision"
+    },
+    {
+      "capability_id": "BG-06",
+      "owner": "Dev-A",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-013",
+      "tests": "A+B:Owner+after-await revoke+P02; ARCH-013; apps/electron/src/main/lib/agent-session-delete-projection.p02.test.ts",
+      "contract": "不得写Case/Batch/Decision"
+    },
+    {
+      "capability_id": "BG-07",
+      "owner": "Dev-A",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-016,ARCH-017",
+      "tests": "A+B:Owner+after-await revoke+P02; ARCH-016,ARCH-017; apps/electron/src/main/lib/review/review-io-kernel-enospc.p06.test.ts",
+      "contract": "不得写Case/Batch/Decision"
+    },
+    {
+      "capability_id": "BAT-01",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-007,ARCH-011",
+      "tests": "A+B:错Run/补件/重试/Outbox; ARCH-007,ARCH-011; apps/electron/src/main/lib/review/batch-store.test.ts",
+      "contract": "batch finalizer需CAS与exact绑定"
+    },
+    {
+      "capability_id": "BAT-02",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-006,ARCH-009",
+      "tests": "A+B:错Run/补件/重试/Outbox; ARCH-006,ARCH-009; packages/shared/src/review/batch-review-triage.test.ts",
+      "contract": "batch finalizer需CAS与exact绑定"
+    },
+    {
+      "capability_id": "BAT-03",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-007,ARCH-009",
+      "tests": "A+B:错Run/补件/重试/Outbox; ARCH-007,ARCH-009; apps/electron/src/main/lib/review/batch-group-action-service.test.ts",
+      "contract": "batch finalizer需CAS与exact绑定"
+    },
+    {
+      "capability_id": "BAT-04",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-009",
+      "tests": "A+B:错Run/补件/重试/Outbox; ARCH-009; apps/electron/src/main/lib/review/batch-automation-service.test.ts",
+      "contract": "batch finalizer需CAS与exact绑定"
+    },
+    {
+      "capability_id": "BAT-05",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-002,ARCH-007",
+      "tests": "A+B:错Run/补件/重试/Outbox; ARCH-002,ARCH-007; apps/electron/src/main/lib/review/batch-template-lock.test.ts",
+      "contract": "batch finalizer需CAS与exact绑定"
+    },
+    {
+      "capability_id": "BAT-06",
+      "owner": "Dev-C",
+      "source_sha": "c23789882aabf18689c314c77c270ac4a8ae4729",
+      "conflicts": "ARCH-007,ARCH-008,ARCH-009",
+      "tests": "A+B:错Run/补件/重试/Outbox; ARCH-007,ARCH-008,ARCH-009; apps/electron/src/main/lib/review/batch-automation-service.test.ts",
+      "contract": "batch finalizer需CAS与exact绑定"
+    },
+    {
+      "capability_id": "BAT-07",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-007",
+      "tests": "A+B:错Run/补件/重试/Outbox; ARCH-007; apps/electron/src/main/lib/review/stage-workflow-l02-01-idempotent-batch.p06.test.ts",
+      "contract": "batch finalizer需CAS与exact绑定"
+    },
+    {
+      "capability_id": "BAT-08",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-007,ARCH-016",
+      "tests": "A+B:错Run/补件/重试/Outbox; ARCH-007,ARCH-016; apps/electron/src/main/lib/review/batch-store.test.ts",
+      "contract": "batch finalizer需CAS与exact绑定"
+    },
+    {
+      "capability_id": "DOC-01",
+      "owner": "Dev-B",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-010,ARCH-012",
+      "tests": "A+B:SameStem/SourceRef/解析坐标; ARCH-010,ARCH-012; apps/electron/src/main/lib/review/document-service.test.ts",
+      "contract": "DocumentVersionId必须cross-case deny"
+    },
+    {
+      "capability_id": "DOC-02",
+      "owner": "Dev-B",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-003,ARCH-010",
+      "tests": "A+B:SameStem/SourceRef/解析坐标; ARCH-003,ARCH-010; apps/electron/src/main/lib/review/source-index.test.ts",
+      "contract": "DocumentVersionId必须cross-case deny"
+    },
+    {
+      "capability_id": "DOC-03",
+      "owner": "Dev-B",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-012",
+      "tests": "A+B:SameStem/SourceRef/解析坐标; ARCH-012; apps/electron/src/main/lib/document-parse-tools.office71.test.ts",
+      "contract": "DocumentVersionId必须cross-case deny"
+    },
+    {
+      "capability_id": "DOC-04",
+      "owner": "Dev-B",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-010,ARCH-013",
+      "tests": "A+B:SameStem/SourceRef/解析坐标; ARCH-010,ARCH-013; apps/electron/src/main/lib/review/pi-document-coverage.test.ts",
+      "contract": "DocumentVersionId必须cross-case deny"
+    },
+    {
+      "capability_id": "IN-01",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-011,ARCH-013",
+      "tests": "A+B:token/ZIP/多窗口/重放; ARCH-011,ARCH-013; apps/electron/src/main/lib/review/review-d4-intake-token.test.ts",
+      "contract": "token绑定sender与文件hash; Apply交Dev-C命令"
+    },
+    {
+      "capability_id": "IN-02",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-011",
+      "tests": "A+B:token/ZIP/多窗口/重放; ARCH-011; apps/electron/src/main/lib/review/review-d4-intake-roles.test.ts",
+      "contract": "token绑定sender与文件hash; Apply交Dev-C命令"
+    },
+    {
+      "capability_id": "IN-03",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-011,ARCH-019",
+      "tests": "A+B:token/ZIP/多窗口/重放; ARCH-011,ARCH-019; apps/electron/src/main/lib/review/review-d4-routing.test.ts",
+      "contract": "token绑定sender与文件hash; Apply交Dev-C命令"
+    },
+    {
+      "capability_id": "IN-04",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-002,ARCH-005",
+      "tests": "A+B:token/ZIP/多窗口/重放; ARCH-002,ARCH-005; apps/electron/src/main/lib/review/review-d4-field-form.test.ts",
+      "contract": "token绑定sender与文件hash; Apply交Dev-C命令"
+    },
+    {
+      "capability_id": "IN-05",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-011,ARCH-016",
+      "tests": "A+B:token/ZIP/多窗口/重放; ARCH-011,ARCH-016; apps/electron/src/main/lib/review/review-d4-case-batch.test.ts",
+      "contract": "token绑定sender与文件hash; Apply交Dev-C命令"
+    },
+    {
+      "capability_id": "IN-06",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-003,ARCH-012",
+      "tests": "A+B:token/ZIP/多窗口/重放; ARCH-003,ARCH-012; apps/electron/src/main/lib/review/review-d4-document-retry.test.ts",
+      "contract": "token绑定sender与文件hash; Apply交Dev-C命令"
+    },
+    {
+      "capability_id": "IN-07",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-003,ARCH-011",
+      "tests": "A+B:token/ZIP/多窗口/重放; ARCH-003,ARCH-011; apps/electron/src/main/lib/review/review-d4-document-retry.test.ts",
+      "contract": "token绑定sender与文件hash; Apply交Dev-C命令"
+    },
+    {
+      "capability_id": "EXP-01",
+      "owner": "Dev-A",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-006,ARCH-017",
+      "tests": "A+B+C:持久负例/首次失败证据; ARCH-006,ARCH-017",
+      "contract": "属于测试/执行边界，不额外创建数据权威"
+    },
+    {
+      "capability_id": "EXP-02",
+      "owner": "Dev-B",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-012",
+      "tests": "A+B+C:持久负例/首次失败证据; ARCH-012",
+      "contract": "属于测试/执行边界，不额外创建数据权威"
+    },
+    {
+      "capability_id": "EXP-03",
+      "owner": "Dev-B",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-010",
+      "tests": "A+B+C:持久负例/首次失败证据; ARCH-010",
+      "contract": "属于测试/执行边界，不额外创建数据权威"
+    },
+    {
+      "capability_id": "EXP-04",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-019,ARCH-020",
+      "tests": "A+B+C:持久负例/首次失败证据; ARCH-019,ARCH-020",
+      "contract": "属于测试/执行边界，不额外创建数据权威"
+    },
+    {
+      "capability_id": "EXP-05",
+      "owner": "Dev-A",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-013,ARCH-017",
+      "tests": "A+B+C:持久负例/首次失败证据; ARCH-013,ARCH-017",
+      "contract": "属于测试/执行边界，不额外创建数据权威"
+    },
+    {
+      "capability_id": "EXP-06",
+      "owner": "Dev-B",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-012,ARCH-013",
+      "tests": "A+B+C:持久负例/首次失败证据; ARCH-012,ARCH-013",
+      "contract": "属于测试/执行边界，不额外创建数据权威"
+    },
+    {
+      "capability_id": "EXP-07",
+      "owner": "Dev-A",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-016,ARCH-017",
+      "tests": "A+B+C:持久负例/首次失败证据; ARCH-016,ARCH-017",
+      "contract": "属于测试/执行边界，不额外创建数据权威"
+    },
+    {
+      "capability_id": "EXP-08",
+      "owner": "Dev-A",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-006,ARCH-019",
+      "tests": "A+B+C:持久负例/首次失败证据; ARCH-006,ARCH-019",
+      "contract": "属于测试/执行边界，不额外创建数据权威"
+    },
+    {
+      "capability_id": "EXT-01",
+      "owner": "Dev-C",
+      "source_sha": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+      "conflicts": "ARCH-016",
+      "tests": "A+C:replay/签名学校回执; ARCH-016",
+      "contract": "学校系统签收必须另行验证"
+    },
+    {
+      "capability_id": "RET-01",
+      "owner": "Dev-B",
+      "source_sha": "5709c562696a7560aba092afc86c0af83cc5cd2c",
+      "conflicts": "ARCH-019",
+      "tests": "A:legacy snapshot只读/反例; ARCH-019",
+      "contract": "不创建替代状态机"
+    },
+    {
+      "capability_id": "RET-02",
+      "owner": "Dev-C",
+      "source_sha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+      "conflicts": "ARCH-014,ARCH-018",
+      "tests": "A:legacy snapshot只读/反例; ARCH-014,ARCH-018; apps/electron/src/main/lib/review/stage-workflow.test.ts",
+      "contract": "不创建替代状态机"
+    },
+    {
+      "capability_id": "RET-03",
+      "owner": "Dev-B",
+      "source_sha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+      "conflicts": "ARCH-011,ARCH-019",
+      "tests": "A:legacy snapshot只读/反例; ARCH-011,ARCH-019; apps/electron/src/main/lib/review/review-d4-routing.test.ts",
+      "contract": "不创建替代状态机"
+    }
+  ],
+  "conflict_to_contract_test": [
+    {
+      "arch": "ARCH-001",
+      "owner": "Dev-C",
+      "contract": "CASE-CAS",
+      "tests": "断电双写切点/shadow compare/CAS重放",
+      "status": "VERIFIED_STATIC",
+      "reachability": "固定SHA静态差分/选定测试限定；非完整live端到端"
+    },
+    {
+      "arch": "ARCH-002",
+      "owner": "Dev-C",
+      "contract": "PLAN-IMMUTABLE",
+      "tests": "fixedD2编辑原件后的subjects/rules/fingerprint逐字不变",
+      "status": "PASS_SCOPED",
+      "reachability": "固定SHA静态差分/选定测试限定；非完整live端到端"
+    },
+    {
+      "arch": "ARCH-003",
+      "owner": "Dev-C",
+      "contract": "SOURCE-VALIDITY",
+      "tests": "同构归档→fact/link/read/check/run/readiness/decision拒止，历史留存",
+      "status": "REPRODUCED_FAIL",
+      "reachability": "D4真实服务归档保持Plan和撤效；P06正式decide服务消费旧值4需test-only mutation、删Plan、人工Run/adjudication；普通UI未证"
+    },
+    {
+      "arch": "ARCH-004",
+      "owner": "Dev-C",
+      "contract": "ACTOR-PROVENANCE",
+      "tests": "四IPC伪teacher负例+可信teacher正例，Receipt可信来源",
+      "status": "REPRODUCED_FAIL",
+      "reachability": "P06真实Main注册handler合成sender输入写四条Receipt；未做live Electron、真实学校账户"
+    },
+    {
+      "arch": "ARCH-005",
+      "owner": "Dev-B",
+      "contract": "PLAN-CANONICAL",
+      "tests": "generic-object两target六Check/unknown+旧schema受控迁移",
+      "status": "PASS_SCOPED",
+      "reachability": "D4两个generic target六Check与unknown prompt全保留；P06对相同输入D2_TARGET_INVALID，不能称准确率AB"
+    },
+    {
+      "arch": "ARCH-006",
+      "owner": "Dev-C",
+      "contract": "RUN-COVERAGE",
+      "tests": "9漏1、1680-1480=200、拒绝项补交、turn cap",
+      "status": "PASS_SCOPED",
+      "reachability": "固定SHA静态差分/选定测试限定；非完整live端到端"
+    },
+    {
+      "arch": "ARCH-007",
+      "owner": "Dev-C",
+      "contract": "BATCH-ATTEMPT",
+      "tests": "旧done无Run、同案AB Run隔离、input hash对齐",
+      "status": "REPRODUCED_FAIL",
+      "reachability": "正常auto使用本entry Run（PASS_SCOPED）；finalize低层/公开Main对无entryRun与错Run失败，普通GUI按钮未证"
+    },
+    {
+      "arch": "ARCH-008",
+      "owner": "Dev-C",
+      "contract": "BATCH-FINALIZE",
+      "tests": "Main/低层finalize缺Run/错Run fail closed，正例仍通过",
+      "status": "REPRODUCED_FAIL",
+      "reachability": "公开Main finalize-completed和finalizeBatch持久化错Run/缺Run snapshot，合成业务前置；live UI未证"
+    },
+    {
+      "arch": "ARCH-009",
+      "owner": "Dev-C",
+      "contract": "AUTO-AUTH",
+      "tests": "automation preview/apply/commit三次检查exactRun+actor+revision",
+      "status": "PARTIAL",
+      "reachability": "固定SHA静态差分/选定测试限定；非完整live端到端"
+    },
+    {
+      "arch": "ARCH-010",
+      "owner": "Dev-B",
+      "contract": "SOURCE-IDENTITY",
+      "tests": "同名原件/跨案version/block/auth/after-await revoke",
+      "status": "PASS_SCOPED",
+      "reachability": "固定SHA静态差分/选定测试限定；非完整live端到端"
+    },
+    {
+      "arch": "ARCH-011",
+      "owner": "Dev-C",
+      "contract": "BATCH-SEPARATION",
+      "tests": "InputBatch≠ReviewBatch，导入不得触发审核或定稿",
+      "status": "VERIFIED_STATIC",
+      "reachability": "固定SHA静态差分/选定测试限定；非完整live端到端"
+    },
+    {
+      "arch": "ARCH-012",
+      "owner": "Dev-B",
+      "contract": "PARSER-ISOLATION",
+      "tests": "Office71 same-stem/parsing cache/SourceRef实际定位",
+      "status": "PASS_SCOPED",
+      "reachability": "固定SHA静态差分/选定测试限定；非完整live端到端"
+    },
+    {
+      "arch": "ARCH-013",
+      "owner": "Dev-A",
+      "contract": "OWNER-REVOKE",
+      "tests": "L1-07异步await revoke/P02迟到/Owner UUID fence与stop",
+      "status": "UNKNOWN",
+      "reachability": "固定SHA静态差分/选定测试限定；非完整live端到端"
+    },
+    {
+      "arch": "ARCH-014",
+      "owner": "Dev-C",
+      "contract": "TEACHER-GATE",
+      "tests": "teacher实名授权申诉正例+本地reviewer拒止，legacy run@rev只读",
+      "status": "PASS_SCOPED",
+      "reachability": "local reviewer被service正确拒止且持久状态不变；可信teacher入口仍BLOCKED"
+    },
+    {
+      "arch": "ARCH-015",
+      "owner": "Dev-B",
+      "contract": "TEMPLATE-ACK",
+      "tests": "模块删Check需ACK，新Plan与旧Plan共存",
+      "status": "VERIFIED_STATIC",
+      "reachability": "固定SHA静态差分/选定测试限定；非完整live端到端"
+    },
+    {
+      "arch": "ARCH-016",
+      "owner": "Dev-C",
+      "contract": "TX-RECOVERY",
+      "tests": "ENOSPC跨PID事务恢复、请求同ID异payload拒止、Outbox replay",
+      "status": "UNKNOWN",
+      "reachability": "固定SHA静态差分/选定测试限定；非完整live端到端"
+    },
+    {
+      "arch": "ARCH-017",
+      "owner": "Dev-A",
+      "contract": "EXEC-RELIABILITY",
+      "tests": "Provider真实tool-use/ENOSPC/stop恢复三层隔离",
+      "status": "BLOCKED",
+      "reachability": "未执行真实Provider、跨PID ENOSPC及L1-07，不能以历史CI顶替"
+    },
+    {
+      "arch": "ARCH-018",
+      "owner": "Dev-C",
+      "contract": "UI-READMODEL",
+      "tests": "三栏/历史readmodel/双列表/窄屏真实GUI",
+      "status": "PARTIAL",
+      "reachability": "固定SHA静态差分/选定测试限定；非完整live端到端"
+    },
+    {
+      "arch": "ARCH-019",
+      "owner": "Dev-B",
+      "contract": "RULE-DETERMINISM",
+      "tests": "MD-Q1独立职责、错误算术、未知条件fail closed",
+      "status": "PARTIAL",
+      "reachability": "固定SHA静态差分/选定测试限定；非完整live端到端"
+    },
+    {
+      "arch": "ARCH-020",
+      "owner": "Dev-B",
+      "contract": "TEMPLATE-SEMANTICS",
+      "tests": "#91 14差异semantic ledger及50模板独立Gold/政策审批",
+      "status": "PARTIAL",
+      "reachability": "Git lineage/路径已本地完成，原路径缺失=0，#91 14项blob不同；业务语义及Gold未证"
+    }
+  ]
+}
