@@ -168,7 +168,7 @@ describe('I4 A18 exact native HTTP SSE vs independent C physical Host boundary',
     expect(f.registry.getPhysicalHostReceipt(f.nativeResponseId)).toBeUndefined()
   })
   test('I4-A18-02: event header without Responses terminal payload never authorizes C Host',async()=>{
-    const f=fixture({sseBody:'event: response.completed\n\n'})
+    const f=fixture({api:'openai-responses',sseBody:'event: response.completed\n\n'})
     await expect(f.port.nextTurn(f.input)).rejects.toThrow()
     expect(f.physicalFetches).toBe(1)
     expect(f.registry.getPhysicalHostReceipt(f.nativeResponseId)).toBeUndefined()
