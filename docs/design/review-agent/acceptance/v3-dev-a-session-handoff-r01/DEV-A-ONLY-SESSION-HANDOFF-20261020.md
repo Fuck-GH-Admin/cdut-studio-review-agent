@@ -1,92 +1,137 @@
-# CDUT Studio Review V3｜Dev-A 专属会话交接总档（2026-10-20）
+# CDUT Studio Review V3｜Dev-A 专属会话交接总档（R18 → R19，2026-10-20）
 
-> **A_ONLY_SESSION_MEMORY / NOT_SHARED_ABCI_POLICY / NOT_REQUIRED_FOR_DEV_B_C_I**
+> **A_ONLY_SESSION_MEMORY / FOR_NEXT_DEV_A_ONLY / NOT_ABCI_SHARED_POLICY**
 >
-> 本文件只服务于上一 Dev-A → 下一 Dev-A 的会话延续。**Dev-B、Dev-C、Integrator-I 不需要阅读它。** 本文件不产生新四线规则、不增加写权、不代表 C 的批准；唯一正式共同协议及裁决仍是 PR #145 的 ABCI-UNIFIED-COORDINATION-AND-STATUS.md 与 C 的 DECISIONS:C。
+> **本文件只供下一任 Dev-A 恢复旧会话和继续技术执行研发。Dev-B、Dev-C、Integrator-I 均没有阅读或 ACK 本文件的义务。**
 >
-> 本文件是最新会话接续快照，不能覆盖已固定的 PR #143 历史批次报告、Git 提交、CI 原始证据。交接时重新读真实远端 HEAD，不能把这里的时间截面当永远当前。
+> 它不具备新的合同效力，不授予任何生产写权，不改变 C 的裁决；四线唯一有效共同规则与授权仍在 PR #145 的 `DECISIONS:C、`STATUS:A/B/C/I。本文件是特定时间点的证据快照；下一会话应先核验远端实际 HEAD、GitHub Actions 和最新 C 签收，不允许以文档旧 SHA 当浮动 HEAD。
+>
+> **2026-10-20 更新方式：覆盖本目录既有的 20261020 A 专属交接总档与执行书，保留 20261019 历史文件，不在已全绿的 Dev-A 生产 PR #143 上追加纯交接文档。**
 
-## 0. 交接时的固定现场
+## 一、项目身份、工作树和当前可核查的坐标
 
-- 代码仓库：https://github.com/Fuck-GH-Admin/cdut-studio-review-agent
-- 身份：V3-DEV-A-R01 持续生产工程开发，负责技术执行安全与 SDK/Provider 可靠性；**不是 Dev-C、不是 Integrator-I、更不是重新架构研究 Agent**。
-- A 工程：Draft PR #143，分支 feat/v3-dev-a-pi-execution-r01，交接时 HEAD **1f1f5d1499cb59c813d590aa407189ba05f65f10**，未合并；C0 base **5682057c7232c914e72fdae525ce95fd33f32b53**，合同 review-c0/1。
-- 唯一四线协调：Draft PR #145，分支 docs/v3-integrator-i-r01-taskbook，协议路径 docs/design/review-agent/acceptance/v3-integrator-i-r01/ABCI-UNIFIED-COORDINATION-AND-STATUS.md。A **仅可编辑 STATUS:A 标记内**，不能改变 C 的 DECISIONS:C、其他线区域和共同规则。
-- C 工程：PR #144，交接时 HEAD **34c7ea3bd881504302d2682aad79065c0ef9a24c**，C2-R02 Main trusted Host/source port，五套同 SHA CI 全 PASS，PR 4081 PASS / 5 OS SKIP / 0 FAIL；尚无 A Provider + B 已发布政策的生产真实接线。
-- B 工程：PR #142，交接时浮动 HEAD **45809553d19b6fba731fd7edb813ebbb81071031**。不据此推断它已通过 Gate O，也不得把此浮动头替换 I2 的旧来源锁。
-- I1：PR #147，C 仅对 **642c1fa3d3dd2042b7af1afdb3882397d4ca79a7** 签技术工程接收，旧锚点只做 staged-only 技术预览。
-- I2：独立 Draft PR #148，交接时 HEAD **89a8c52bdaa407f0b8b99a17b2ecc8475e776e57**。I2 的三个独立技术 replay/source import checkpoint 实际 Gate O PASS，最新 PR 4191 PASS / 5 SKIP / 0 FAIL、23/23 联合负例 PASS；C 的 I2 最终工程签收尚需复核。批准的 I2 固定来源是 **C 3242b22a0825eec347b2748680bb746eb0f55215、A c0132ae06de8ae09ab021ac231ffd34756eb5990（R12）、B bf88320e57b20ebc2023f27665c544ce2ba72ce4、I1 642c1fa3d3dd2042b7af1afdb3882397d4ca79a7**。I2 已选择导入 A 9/9、B 8/8 精确 blob，**不是 A4-R13 最新技术代码已整体进入集成**。
-- 最重要的授权请求：**CR-A-PI-HTTP-WITNESS-R01**，A 已在 C PR #144 留下正式评论 https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/144#issuecomment-6273618639。交接时在 C 的 DECISIONS:C **未找到对这个 CR 的明确正式批准**；新会话必须重新核对 C 最新回复/决议，不能擅自假定获批。
+- 仓库： https://github.com/Fuck-GH-Admin/cdut-studio-review-agent
+- **你是 V3 Dev-A 持续真实工程 Owner**，不是 Dev-C、Dev-B、Integrator-I，也不是新的只读架构调研或一轮 A/B/C/D/E 领域模板研究。
+- 工程 Draft PR：`#143 https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/143 ，分支 `feat/v3-dev-a-pi-execution-r01 ，**当前最终绿色 HEAD `0febf1248bc6a580a1bc7b3144e0d96ca4313916**。基于 C0 工程 `5682057c7232c914e72fdae525ce95fd33f32b53 / `review-c0/1；PR Draft/open/unmerged，禁止自行合并 main。
+- 唯一协调 Draft PR：`#145 https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/145 ，分支 `docs/v3-integrator-i-r01-taskbook ，本交接编辑开始时其 HEAD `0744db70321299974dadc0d9a9bf0bad61948e38 。共同协议相对路径 `docs/design/review-agent/acceptance/v3-integrator-i-r01/ABCI-UNIFIED-COORDINATION-AND-STATUS.md 。**允许 A 修改的共同协议内容仅 `<!-- BEGIN:STATUS:A --> 与 `<!-- END:STATUS:A --> 之间**，禁止覆盖 `DECISIONS:C 或他线状态。
+- Dev-C：工程 Draft #144 `feat/v3-dev-c-business-r01 ，快照 `461b5c9e7abc17a020c843f279118208196f5ef0 ，新 `B-CR-002-B C-only Check 删除 ACK/CAS/Receipt 方案已 **5/5 Gate O**；PR CI `39317813298 （4124 PASS/5 OS SKIP/0 FAIL）、Baseline `39317813334、Batch `39317813301、D1 `39317813320、D2 `39317813387。还有前期已签 C2 R03 Pi 工厂、Host registry，R04 Main trusted assembly、R05 physical published-plan consumer、C-Tx 跨 PID Case CAS、B-CR-002-A trusted author read。**这些是各自的受限离线工程能力，不是已投入正式 Electron/学校业务。**
+- Dev-B：Draft #142 `feat/v3-dev-b-template-intake-r01 ，快照 `e9215affaf536757d4b63ffcb012bb53006a1821 ，该 SHA PR CI `39318510516 / D2 `39318510549 / Baseline `39318510583 **3/3 SUCCESS**，但 candidate-held 不能等同于正式 school-published Plan。
+- Integrator-I：I2 #148 `89a8c52bdaa407f0b8b99a17b2ecc8475e776e57 已获 C 工程限定签收；I3 Stage1 #150 `36dd1c37bc18d7614d8d4835b5213d5cb6459792 已获 C 工程限定签收；I3 Stage2 #151 `687ed356de3aee59075b85bf09a978eedab12a02 已获 C **C-I3-STAGE2-R01-FINAL-ENG-ACCEPT**（限定、非实时/非 IPC、A R14 8 个 exact Git blobs）；I3 Stage3 候选 Draft #152 `8e9f7caa69b5454cb646bdbe3bdf05f8bb479a8b PR `39317723780 / D2 `39317723879 / Baseline `39317723768 **3/3 TECHNICAL PASS**，但 **C_ACCEPTED_FOR_ENGINEERING_I3_STAGE3=PENDING_C_SIGNATURE**，新 CR #144 评论 `6276302601、`6276490583，必须重新检查决议后才能提升。
+- 所有短写的历史 SHA 仅为文中定位；执行/来源锁始终使用 40 位完整 SHA。**每项工作跨线前查最新远端，并固定该批 source SHA/path/Git blob。**
 
-## 1. Dev-A 完整长期职责与禁区
+## 二、Dev-A 长期职责 A1–A4（不得弱化）
 
-**长期 Owner 工作**：
-1. Main-only Pi Owner/普通聊天与隐藏审核会话隔离；授权 grant/revoke、pause/resume、允许的模型和工具、会话/attempt/generation/tombstone、冻结 Run/Plan/Source/manifest、来源当前有效性与 after-await grant/current identity 二次复验。
-2. Direct/Hidden/Graph/Batch 技术执行通路，持久 24 turn 预算、技术 needs-resume、真正物理 Provider request dispatch 和回执来源隔离。
-3. Host 真实读取/检查/终态的技术 provenance、原始字节/块/Check×target×object×subject 绑定、事件序号、hash-sealed proposal、回放、9/9 三值覆盖判定、迟到与伪造回执拒止。
-4. 双 PID/冷恢复、CAS/文件锁、进程 epoch、SIGKILL、EIO/ENOSPC、SDK/Provider 重试、超时、AbortSignal、透明代理、未知副作用、迟到响应、同 Case 跨 Run 重发的故障恢复设计与安全证据。
-5. 对 C 输出可信但**仅技术性质**的可供验证的执行 proposal/Host adapter、源码 SHA、测试与 CR，不另建业务真值。
+### A1｜技术 Owner / Session 安全
+Main-only 的当前 Owner/授予 Principal + sender/frame/session/grant/generation/processEpoch/attempt 绑定；普通聊天与专用 Review Agent 隔离；Run/Plan/Source/manifest 冻结；授权 grant/revoke/pause/resume、墓碑、Owner 失效与过期、跨 await/current 再核验、跨 PID CAS 和冷启动隔离。不允许 Renderer/model 声称 Main Actor/Grant 或绕过当前原件。
 
-**严禁**：任何未经 C 明确文件/函数级租约的 packages/shared 共享 DTO、Main IPC、Preload、正式 Case/Run/ReadReceipt/Check/Decision/Batch/Outbox/SchoolPort/Principal/业务工作台 writer；不得把 A 的 technical completed、旧 C0 local outbox ACK 或 fake Host receipt 写为正式 C2 Run/学校政策通过。I 的技术集成不可自行改变这些权限。历史 CR-A-001 APPROVED_SLICED_SPEC 也不是 C 所有文件的写入许可证。
+主要 A-owned：`review-pi-owner-adapter.ts 及测试。
 
-## 2. A1–A4 已有真实源码及成熟度（非完整生产上线）
+### A2｜技术 Host 来源与 Proposal（不是正式业务 ACK）
+Main 技术 read/check/terminal 工具见证、`SourceIdentity 与 extent、`Check×target×object×subject、未知/拒绝/缺失 fail closed，事件序列和 SHA 封签、9/9 coverage、可重放 proposal、终态技术封口。A 生成的 `completed-technical/needs-resume/Host proposal 只是 C 可以独立核验的候选证据；C 的 CaseAggregate、ReviewRun、ReadReceipt/Check、人工业务确认与 School Decision 全部独占，A 不建第二套正式 Run 真值。
 
-- **A1 Owner / IMPLEMENTED_SOURCE**：review-pi-owner-adapter.ts。Main Owner grant/revoke、故障/paused/resume、源及身份绑定、当前 epoch/双 PID file CAS、冷 quarantine；R11 修了同 PID deliberate pause 误标 recovery-required，同时仍拒绝旧 grant。缺真实 Electron/Main 生产会话的完整 Gate E。
-- **A2 技术 Proposal / IMPLEMENTED_SOURCE_PROPOSAL_ONLY**：review-execution-event-adapter.ts、review-v3-execution-proposal-producer.ts。Host read/check/terminal、版本化 hash/sequence、9/9 check 技术覆盖、replay、terminal seal；R11 修终态后复用旧 Host receipt 绕过禁止。C2 正式 immutable ReviewRun/Check/ReadReceipt ACK 由 C 写，不能由 A 代劳。
-- **A3 SDK/技术预算 / IMPLEMENTED_A_ONLY_SEAM**：review-v3-execution-turn-budget.ts、review-v3-main-sdk-turn-bridge.ts、review-execution-event-adapter-completeness.ts。24 turn 持久配额、direct/hidden/graph/batch mode、SDK 单轮 Host 注入、完成 vs interrupted vs needs-resume；真实后台 Graph/Batch、物理 Provider E 仍需核验。
-- **A4 可靠性/请求见证 / IMPLEMENTED_A_ONLY_SAFETY**：review-v3-sdk-dispatch-fence.ts、review-v3-sdk-physical-turn-port.ts、review-v3-pi-http-provider-engine.ts。派发前 durable in-flight intent、A4 late-denied、跨 Run/同 Case 未决禁重派、跨 Run 全账本 receipt 去重、Main abort 快速失败但 SDK 仍运行时保持会话锁、真实 OS PID SIGKILL 但**合成 Provider**、强制 one-shot AgentSession.dispose、Pi 0.86.1 HTTPS/SSE 物理 HTTP 回执受限见证。不能声称已经接真实 Provider 或 C Host registry。
+主要 A-owned：`review-execution-event-adapter.ts 、`review-v3-execution-proposal-producer.ts 、`review-execution-event-adapter-completeness.ts 及测试。
 
-### R07–R13 关键演进
-- R07：V3APhysicalSDKTurnPort 与 requestStarted/requestFinished 每物理 SDK request witness；最初纯合成提供者，非真实 Hook。
-- R08：Main Abort 不无限挂起但 Provider promise 未 settle 仍保持 SDK session guard；迟到 success/failure 不记账。Linux 真 PID SIGKILL + 持久 intent 冷启动测试，Provider 合成。
-- R09：持久意图跨 Run/跨 Owner 同 Case quarantine，老无 scope 未决 ledger 全局保守阻断；跨 Run 已结清 native receipt 全账本唯一性。
-- R10：真实锁定上游 @earendil-works/pi-* **0.86.1** tag SHA **13cbf77df2396303013a41646bcfa77b4271ae56**。找到公开 AgentSession.agent.streamFunction、Provider fetch、Pi outer retry、onResponse 边界；A 自有 engine 限定 openai-completions/openai-responses、HTTPS/SSE、固定 Main origin、无 redirect、单 fetch、maxRetries=0、HTTP Provider 的 x-request-id，拒绝不可验证 Provider；项目既有 pi-agent-adapter.ts 已包装 streamFunction 负责 request proxy/sanitize，不得粗暴覆盖。
-- R11：针对 R10 的 24 条 TS 真实首败，后又修两条真实业务回归（proposal terminal 后 read，Owner pause 显示）。最终独立绿 SHA **93f78e4efe0c17501b338c15989b9e419ddb717a**，PR CI 39291662991 (4134 PASS/5 skip/0 fail)、D2 39291663560、Baseline 39291663088 三套同 SHA PASS。
-- R12：每个 fresh Pi AgentSession 必须 dispose（成功/失败/取消/创建预检失败），不销毁仍被其他操作占用的 old Agent。独立绿 **c0132ae06de8ae09ab021ac231ffd34756eb5990**：PR 39293695755 **4139 PASS/5 skip/0 fail**，D2 39293695808，Baseline 39293695753 均 PASS。**这是 I2 已批准 A source pool SHA，不是 R13。**
-- **R13 当前正式工程 HEAD** **1f1f5d1499cb59c813d590aa407189ba05f65f10**：严格 Pi native turn_start → 单物理 fetch/x-request-id → turn_end → agent_end(willRetry=false) → agent_settled → session.prompt 完成，才允许 requestFinished；漏事件、乱序/重复、内部 retry 均 fail closed。首次 R13 SHA 157d071f… 的 PR CI/D2 仅有一条 TS2353（合成测试 agent_end willRetry 定型）而失败，A 修复后**新精确 SHA** PR CI [39296623502](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39296623502) **4145 PASS/5 OS skip/0 fail（471 files）**、D2 [39296623298](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39296623298) PASS、Baseline [39296623275](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39296623275) PASS；R13-01..06 和 A4-R10-16 在真实 Bun 日志中逐项 PASS。完整 Gate O 对这一 SHA 已闭合。
+### A3｜Pi SDK 单轮、24 turn 与多运行模式
+`direct/hidden/graph/batch 技术 SDK seam、持久 24-turn 配额、技术 timeout/cancel/failed/needs-resume、Main SDK one-turn bridge 与后置可信 Owner/Run 再核验。不得把普通 Pi 会话、聊天消息 ID、模型生成文本、仅 `agent_end 事件等同物理 Provider receipt。
 
-**最新门禁快照**：A SOURCE SHA 1f1f5d1499cb59c813d590aa407189ba05f65f10；**O=PASS_EXACT_SHA (3/3)**；**E=NOT_RUN**（真 Electron/Main/Pi SDK/Provider/后台真实物理请求未验收）；**L=BLOCKED_NO_AUTH**；**P=NOT_RUN**；**Release=NO_GO**。本地/CI 绿只表示技术离线/合成/部分真 OS 测试，不等于真实 Provider completion/学校 ACK。
+主要 A-owned：`review-v3-execution-turn-budget.ts 、`review-v3-main-sdk-turn-bridge.ts 及测试。
 
-## 3. C/I 最新进度对下一 A 研发的影响
+### A4｜物理请求可信度、故障恢复、可靠性
+派发前持久化 `in-flight intent；一个 Run 物理 SDK 派发不能在未知副作用时自动重跑；`settled/late-denied、跨 Run/同 Case 的未决 quarantine、历史和跨 Run receipt 唯一性、Main abort/Owner revoke vs Provider ignored abort/late callback、ENOSPC/EIO 后提交不确定、冷启动、SIGKILL、跨 PID 锁/CAS，真实 Pi SDK 0.86.1 SSE/HTTPS request URL 和 terminal + EOF + 原生 `turn_start→turn_end→agent_end(willRetry:false)→agent_settled，零透明重发、one-shot AgentSession dispose。
 
-- C2-R01 在 C 主线完成 C-owned review-v3-run/1 immutable Run sealed evidence 与 CaseAggregate CAS/Receipt 端口，技术完成仍要求人工复核，不自动签发任何 Decision。
-- **C2-R02 已全绿**：C Main trusted Host/source port（review-v3-main-trust-port.ts）提供 admit/record/seal；真正独立验证 on-disk source bytes 的 SHA256、Case owner/current generation/grant、注入的 Host receipt/Published Plan，再提交 C 正式 CAS Run seal。但**注入回调在测试中仍为合成**：尚无 A SDK/Provider 真实 registry、B 已发布 Plan、正式 Electron IPC。C 最新绿 SHA 34c7ea3bd881504302d2682aad79065c0ef9a24c，5/5 GitHub CI PASS。
-- I2 #148 latest 89a8c52bdaa407f0b8b99a17b2ecc8475e776e57 完成 C 锚点→I1 24 blob replay→A 9 blob→B 8 blob 的三阶段 Gate O，且 C-exclusive production hunk 为 0；C 最终工程签收仍需查 DECISIONS:C。**I2 当前获准 A=R12，不能自动引入 R13；A SDK physical/dispatch/HTTP 等后续文件也尚非全部已导入**。
-- C 共享合同 review-v3-execution/1、review-v3-run/1 和 C2 Main trust port 的权威版本归 C；B 的 50 套 candidate-held 不等于 published Plan/Gold。不能用 I2 的 synthetic Main/Host callback 充当真实 C2业务受理。
-- **CR-A-PI-HTTP-WITNESS-R01** 已在 C #144 评论 6273618639 正式申请逐文件 Main-only 受信 SDK factory、兼容既有 runWithPiRequestProxy / sanitizeContextForInference、Provider HTTPS origin/凭据、Host registry、C2 ACK 隔离。交接时未见正式 C 批准。不要强迫 C 与 A 同步轮次，也不能因为 I2 已批便越权写 C Main。
+主要 A-owned：
+- `apps/electron/src/main/lib/review/review-v3-sdk-dispatch-fence.ts / `.test.ts
+- `review-v3-sdk-dispatch-crashpid.test.ts
+- `review-v3-sdk-physical-turn-port.ts / `.test.ts
+- `review-v3-pi-http-provider-engine.ts / `.test.ts
+- `review-v3-native-pi-offline-sdk.test.ts
+- `review-v3-main-sdk-turn-bridge.ts / `.test.ts
+- 关联 Owner/turn budget/proposal adapters/tests。
 
-## 4. 下一 Dev-A 的当前实际任务：A4-R14 推荐顺序
+**原则：A 不因“技术执行成功”自行落正式业务 verdict/Decision/Receipt；未知结果默认 RECOVERY_REQUIRED，不能假定 Provider 没有执行。**
 
-1. **先重新核验**：GitHub #143 当前 SHA/3 套 CI、#145 唯一协议和最新 DECISIONS:C/STATUS:C/A/I、C #144 新 Main trust port/CR-A 的回复、I2 #148 源锁及 C 签收。如有新裁决，以新证据更正本文。
-2. **待 C 逐 hunk 授权前，继续 A-owned 工程**：严格用上游 Pi 0.86.1 真实接口与本项目 patched SDK 核查 provider-request/response streaming EOF、retry、onResponse/代理/图片降级、abort/dispose 后是否会续发请求；改进有实际证据支撑的 A-owned witness/dispatch/recovery 缺口。不要循环加纯 mock 然后自称 Gate E。
-3. **C2 Main 接线需单独批准**：如果 C 已在 DECISIONS:C 对 CR-A-PI-HTTP-WITNESS-R01 指定授权的 agent+精确文件+函数+hunk+基准 SHA+测试+截止条件，则仅按许可实施。A 不能默认编辑 C-owned Main/IPC/Preload/Run writer；交由 C 或获 lease 的 I 接线时，A 只供源 blob、Host 技术 adapter、真实回执约束与负例。
-4. **真实 Gate E**：在合法 Provider 凭据/环境/校方权限具备时，取证 actual Electron+Pi SDK 0.86.1、HTTPS/SSE/physical x-request-id、transport provenance/重试计数、SDK native lifecycle、取消/断流、透明 proxy、真实 PID crash/new process、迟到结果无自动补发、C at-commit Host current validity；没权限则标 BLOCKED，不杜撰 Provider/学校 ACK。
-5. **集中 Gate O**：任何新 R14 生产 SHA 需要 PR CI、D2 Scoped Pi、Baseline 三项同 SHA 实际 SUCCESS（frozen install、TypeScript、package boundary、skin、Main/Preload/Renderer、全量 Bun）。如报首个真失败，只修 Owner 路径，重新固定下一 SHA 重验，历史 R13 不能替代。
-6. **I2 新来源**：A R13/R14 即使独立 Gate O PASS，也仅能向 C 申请新 A source lock，I 分批 cherry-pick/blobs + 联合真实 Gate O + C 工程签收。I1/I2 不自动升级。
+## 三、绝对权限边界：C、B、I 与 A 技术见证的关系
 
-建议重点先补一份 **A↔C2-R02 可信 Host receipt/Provider 完结条件的窄差分说明**，列清 A engine 与 C Main trust port 的 exact types/callbacks 和缺失生产能力；同时可继续 A-owned 有事实依据的 Provider 失败窗口/SDK retry/断流测试。未经许可勿入 C 主文件。
+1. **C 最终业务/共享合同 Owner**：`packages/shared 共享类型/DTO、正式 Electron Main / IPC/Preload/Principal/Frame；Case/Plan/Source-current-validity/ReviewRun/ReadReceipt/Check/UpgradePlan/CAS/Batch/Outbox/SchoolPort/Decision writer。A/I 不因整合、测试成功或用户批准非实时测试而获得这些文件/函数写权。
+2. **B 模板/材料 Owner**：G01–G08 既有约 50 套模板、staging 原始物理字节、parser、模板 author candidate、作者 UI；候选/冻稿不等于正式学校已发布 Plan 或校方 Gold/权限。新增临时/通用模板由 B/C 共同合同决定，不属于 A 这里的执行可靠性改写范围。
+3. **I 跨线集成 Owner**：技术来源固定、机械 file-blob replay、跨线联合负例/回归、版本锚点；不能指挥 C 获得未授权 Main/Business writer，也不能自动纳入 A 最新浮动 HEAD。
+4. **C 已明确批准的 CR-A-PI-HTTP-WITNESS-R01**：A 最早在 C PR #144 评论 https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/144#issuecomment-6273618639 正式申请。`DECISIONS:C 最终状态 **`APPROVED_C_ONLY_OFFLINE_FACTORY_DESIGN_AND_IMPLEMENTATION / PRODUCTION_ATTACHMENT_DEFERRED**。**只授权 C 自己开发惰性/离线 Main SDK factory 和 Host registry**；未批准 A/I 正式 Provider、C2 Run/ACK、Main/Preload 或普通聊天 Pi proxy/`pi-agent-adapter.ts 生产接线。
+5. **C-I3-ANCHOR-003 与 CR-A-R14-COMPAT-004**：正式批准 I3 在 C R03 固定 `e87f75e044becc35c28292cc835a2c2ec41df48a 上，选择性导入 A R14 `56f450f3c783299ceb0a6489bf855a1ba8f0a913 的非 IPC、非 live Provider 源；I3 Stage2 #151 **8/8 原 Git blob** 已获 C 有界签收。**A R15、R16、R17、R18 不能自动进入 I**，更不能整个 A PR merge。I3 Stage3 #152 只有独立候选 3/3 Gate O，截至快照 C 签收仍待确认。
+6. **回执分层**：A 的 `x-request-id + SSE 终态 + transport EOF + 真 Pi 生命周期只证明 SDK 已消费一个技术 HTTP 请求；它**不是** C 主动从独立 privileged Host observer 取得的 `read/check/terminal 与业务 Case/Plan/source/current 身份链，也不是 C2 正式 persisted Run ACK。HTTP response headers、模型 JSON、Renderer 参数不得伪造 C Host evidence。
+7. **想改 C 文件**：先在 C PR #144 提交 exact source SHA、具体 path/function/hunk、Main actor、凭据、原件、Owner/Plan、失败和恢复窗口、测试和截止条件，收到 `DECISIONS:C 的明示文件级 lease 再执行；未签即停在 A-only 技术层。
 
-## 5. 需要先读的 A 工程证据与规程
+## 四、A 迭代进度账本（真实验收，不得改写历史）
 
-**唯一共同协议**：#145 docs/design/review-agent/acceptance/v3-integrator-i-r01/ABCI-UNIFIED-COORDINATION-AND-STATUS.md（先读当前远端 HEAD 和 DECISIONS:C）。
+| Slice | 精确固定 SHA | PR CI full Bun | D2 / Baseline | 工程成果 |
+|---|---|---|---|---|
+| R11 | `93f78e4efe0c17501b338c15989b9e419ddb717a | 4134 PASS / 5 SKIP / 0 FAIL（PR `39291662991） | `39291663560 / `39291663088 SUCCESS | Owner pause 语义、terminal receipt 防复用、R10 TS 首败纠正 |
+| R12 | `c0132ae06de8ae09ab021ac231ffd34756eb5990 | 4139/5/0（PR `39293695755） | `39293695808 / `39293695753 SUCCESS | 每次 fresh SDK AgentSession 在 success/fail/abort 需要 dispose；是 I2 的旧 A source |
+| R13 | `1f1f5d1499cb59c813d590aa407189ba05f65f10 | 4145/5/0（PR `39296623502） | `39296623298 / `39296623275 SUCCESS | native lifecycle 组合约束；缺阶段 fail-closed |
+| R14 | `56f450f3c783299ceb0a6489bf855a1ba8f0a913 | **4150/5/0**（PR `39304172035） | `39304172120 / `39304172175 SUCCESS | SDK-consumed SSE 首次引入 terminal marker、HTTP MIME/2xx/x-request-id 校验；**唯一 C 批 I3 A 来源** |
+| R15 | `b2528525a5080d56ce9fbd074a6ddf7db546c0f5 | **4158/5/0**（PR `39307774960） | `39307774627 / `39307774585 SUCCESS | 完整 SSE 事件分帧、Responses 终态 `data.type、缺帧/伪帧/重复帧拒绝；首次 double-escape 8 FAIL 后修复 |
+| R16 | `06ddf911074f3256d53af886c9f993a6413cf607 | **4160/5/0**（PR `39312761077） | `39312761054 / `39312761079 SUCCESS | **真实 Pi 0.86.1 `createAgentSession()** + OpenAI Responses `/v1/responses SSE 成功与截断负例；测试假 URL 路径与 SDK automatic retry 诊断修复 |
+| R17 | `29317b1eff458dd474c5c82cf60af96632db1f2c | **4164/5/0**（PR `39315259349） | `39315259249 / `39315259180 SUCCESS | **真漏洞修复：`response.completed 后 stream error 不得签收**；SDK-consumed `TransformStream.flush() 正常 EOF + terminal 双重门禁 |
+| **R18（最新）** | **`0febf1248bc6a580a1bc7b3144e0d96ca4313916** | **4168 PASS / 5 OS SKIP / 0 FAIL，4173 tests /472 files**（PR `39318050973，job `118284575212） | **`39318050981 / `39318050999 两项 SUCCESS** | R18-01/02 真实 Pi EOF 后撤权/成功对照；R18-03/04 cold Owner 新实例、迟到 SDK 回执、同案新 Run 与 stale CAS 拦截，四条新增 raw CI 全 PASS |
 
-**A-only 详细工程来源（#143 分支）**：
-- docs/design/review-agent/acceptance/v3-dev-a-r01/DEV-A-CURRENT-PROGRESS-AND-GATES.md
-- docs/design/review-agent/acceptance/v3-dev-a-r01/DEV-A-R01-IMPLEMENTATION-AND-HANDOFF.md
-- docs/design/review-agent/acceptance/v3-dev-a-r01/A4-R10-PI-0861-TRANSPORT-EVIDENCE-AND-INTEGRATION-CR.md
-- docs/design/review-agent/acceptance/v3-dev-a-r01/A4-R11-TYPECHECK-REMEDIATION-AND-EXACT-SHA-GATE-O.md
-- docs/design/review-agent/acceptance/v3-dev-a-r01/A4-R12-PI-SDK-SESSION-LIFECYCLE-AND-GATE-E.md
-- docs/design/review-agent/acceptance/v3-dev-a-r01/A4-R13-PI-NATIVE-SETTLED-AND-FAULT-QUARANTINE.md
-- docs/design/review-agent/acceptance/v3-dev-a-r01/A4-R05-EXACT-SHA-OFFLINE-GATE-O-20261019.md
+注意：这张表是 **各自独立完全绿色的固定检查点**，不是合并 Main、不是 E/学校验收。首次失败和修复 SHA 历史仍保留在 #143 评论、Git 历史、共同协议 STATUS:A 中。
 
-**执行和门禁（以实际 package.json/CI 工作流为准）**：冻结 HEAD；bun install --frozen-lockfile；bun run typecheck；bun run check:boundaries；Bun isolate A1/A2/A3/A4/sdk HTTP/PID 定向；Bun 全量；Main/Preload/Renderer build；三项 Github Actions 分别记录 runId/jobId/log、PASS/FAIL/SKIP、环境/进程/Provider。拿不到 Bun 的 Agent 不得声称自己本地跑过，允许读真实 Github CI 日志。所有代码分支维持 Draft、不做 main merge、不删史或 force-push。
+### R14–R18 最重要的可重放事实和首败
 
-**必须记录**：slice_id、A源 SHA 40 位、A own 具体路径+Git blob、requires C/Owner/Plan合同、首败及修复、Gate O/E/L/P、I2 已锁的旧 A source SHA、CR 许可状态、rollback SHA、下一执行 owner。**每批集中工程测试，不为提速降低产品质量。**
+- **R14**：首次候选 `e6c4bc... 的旧 `A4-R10-16 测试在“无 SSE 终止的旧合成 Response”下 FAIL，修复该测试提供真实 terminal/消费 body；最终 `56f450... 三项 Gate O 全绿。不允许因新的 source hardening 删除旧 SDK bridge 负例。
+- **R15**：原候选 `fd68e9c... full Bun 4150 pass/5 skip/8 fail，真实根因为 JS/TS 的 SSE 换行与 Responses 正则被错误 double-escape；生产 parser-only 修复 `b252852...；8 个正反例新增并全部通过。
+- **R16**：首版 `2cac0cc... 两条 FAIL（原生成功路径 + 未改动 Goal-session 间歇断言），后一轮 Goal 测试恢复 PASS；真实 Pi 原生 first error 显示选择 **`/v1/responses** 而测试错误断言 **`/v1/chat/completions**，SDK 由此 internal auto-retry，但 A 物理围栏实际只放行第一次 fetch。最后按 Pi 正确 Responses 路由/完整 SSE 事件流 + 隔离 authPath 修复 `06ddf911...，R16 01/02 PASS。
+- **R17**：原 `e07dbc1c... 4162 pass/5 skip/2 fail。R17-01 是预计错误文案与既有技术 port 拒绝不同；更重要 **R17-04 真安全漏洞**：Pi 收到 `response.completed 后，后续 `ReadableStream.controller.error() 仍可能被上层当成完成。生产 `review-v3-pi-http-provider-engine.ts 添加 `sseTransportEof，仅当 SDK 真正消费同一 body 的 `TransformStream.flush() 才置位，`SSE terminal + clean EOF + native settled 缺一不结清，绝不 tee/clone/fake drain。修复 `0df33926...、最终 `29317b... 3/3 PASS。
+- **R18**：仅改两个 A 测试文件，不变更生产执行器；`R18-01 实际 `turn_end:stop 且无 nativeFailures，成功 Provider EOF 后 Main 在 `agent_end/agent_settled 夹缝取消必须拒绝；`R18-02 正常成功仍单 fetch；`R18-03 SDK promise pending 时创建冷 Owner adapter，旧 owner `recovery-required + stale journal 快照强制 reopen、迟到结果不得收费/同案新 Run 不得重派；`R18-04 Main abort 先返回恢复要求但原 SDK promise 未 settle 前仍锁会话，冷启与迟到 result 不得升级。**R18-03/04 是新 adapter 实例+持久账本+合成延迟 SDK，绝非实际第二个 OS PID**；`A4-R08-PID-01 才是真子进程 SIGKILL + 合成 SDK callback。
+- 这些进度反映 A 技术路线在逐步增强，但仍未满足真正 Provider TLS 归属、proxy transparent retry 排除、正式 C Host registry 物理来源、真实 Electron 调用权限和产品 Gate E。
 
-## 6. 本次专属交接维护原则
+## 五、精确 Gate 与产品完成度（最新）
 
-- 本 A-only 文件在 #145 文档分支的专属目录，不属于唯一共同协调协议正文，**其他会话没有阅读义务**；下一个 A 可更新或覆盖本文件，但不要更改共同协议和别线字段。
-- #143 的真实生产代码、测试、历史交接保持在 A 工程分支。为会话交接而新增的 docs-only 提交**不要加到 #143**，避免刷新已通过的 R13 精确 SHA CI。
-- C/I/B 的状态是核验时快照；新会话接手后必须读取 GitHub 最新具体 SHA/决议，不可擅自拿本快照授予自己写权。
+- **A4-R18 Gate O = `PASS_EXACT_SHA_0FEBF124_3_OF_3**：PR CI frozen install / TS workspace / package boundaries / skin contract / Main+Preload+Renderer builds / 4168 pass 5 skip 0 fail；D2/Baseline 同一完整 SHA SUCCESS。OS SKIP 是跳过，不当作 pass。
+- **Gate E = NOT_RUN**：还没有 C 正式 Main production wiring / Electron live integration / 有权真实 HTTPS Provider / privileged Host physical receipt 与 proxy/重试/冷启动跨 PID 真源证明；离线 `.invalid + test intercept 不计 E。
+- **Gate L = BLOCKED_NO_AUTH**：缺真实学校发布者/业务授权，不能以 candidate-held、mock publisher、C-only Plan 验证充当校方审批。
+- **Gate P = NOT_RUN**：真实用户/多场景产品验收未执行，不能因 CI 通过称产品可发布。
+- **Release = NO_GO / Draft/unmerged**，不自动合 main、不签 School Decision。
+- **工程评价**：A1–A4 的技术保护与多轮完整回归成熟；最大的系统性缺项是权限、真实环境、跨线生产接线、真实 Provider 和全系统验收，不是“需要再补一套业务 writer”。下一 Dev-A 必须继续工程，不要只写计划。
 
-**一句话续接：A1–A4 的技术执行/故障安全底层已推进到 R13 单线 Gate O 全绿；下一个真实里程碑不是“再多一个合成 mock”，而是 C 正式批准的可信 Main SDK factory/Host registry 与实际 Pi/Provider 物理请求、断流、跨 PID 恢复 Gate E；此前继续安全的 A-only 原生接口取证与工程。**
+## 六、紧接下一轮：`A4-R19 实际交付目标（优先级由高到低）
+
+**核心价值：填补 R08“真 PID + 合成 SDK”与 R16–R18“真 Pi SDK + 同 PID/新适配实例”之间的交叉空白，验证真实 Pi SDK 0.86.1 工作中发生操作系统进程中止、Main 新进程接管时 A 物理派发/Owner 状态不被重置。**
+
+1. **先冻结 R18 并检查现状**。读最新 PR #143 精确 SHA / 3 套 CI、#145 最新 `DECISIONS:C 与 `STATUS:A/B/C/I，#144 C 签收、#151/#152 I source locks。确认 R19 没有新增 C 函数级权限，继续 A-only。
+2. **测试真实 child PID 启动真实 Pi SDK**。参考 `review-v3-sdk-dispatch-crashpid.test.ts 的 Bun `process.execPath/临时目录/真实 SIGKILL，结合 `review-v3-native-pi-offline-sdk.test.ts 的真正 `createAgentSession + `openai-responses /v1/responses + 受控 fetch；真实文件 owner/dispatch/turn/event journals，应在 **durable claim 写成后、实际 SDK fetch 开始的明确握手点** 记录 PID、run、dispatchId、source digest，父进程观察握手再 SIGKILL，不能在请求尚未进入时用抢先 marker 制造假强证据。
+3. **R19 负例与回归**：R19-01 真 Pi SDK child 进入受控 Provider fetch 后被 SIGKILL，新 PID/Owner 读 `recovery-required、dispatch `in-flight，turn=0，proposal/业务 ACK=0；R19-02 same Case **new Run/new Owner** 仍拒自动重派，fresh unrelated Case 可以继续（确保隔离域不过宽）；R19-03 第二 PID 仍活着/SDK 卡死时 Owner CAS/锁与 Main abort 不释放物理 in-flight，晚到模型正常完成不得骗过 Owner grant；R19-04 断电前后/写入 EIO/ENOSPC/postcommit 不确定恢复条件继续 fail closed；R19-05 不允许 Header/SSE/proposal/`x-request-id 伪装 C 主物理 Host registry。测试数量和确切断言以真实源码/可执行场景调整，但必须留真正可判别的事实证据。
+4. **区分工具场景**：测试 `spawnSync 与 `spawn 的活体握手差异；若需要在真实请求阻塞时发送信号，应用异步 child process 的可观察 IPC/marker，并确保 timeout 清理与 `finally rmSync，不残留子进程或测试 token。保持 `https://provider.r19.invalid + intercept，不发送互联网请求、不碰真实凭据、不修改标准 Pi ordinary session。容器无 Bun 时允许 GitHub Actions 运行；不声明自己本地跑过。
+5. **先修 A-only 真实漏洞，再组合跑 Gate O**：必要时修改 A-owned Owner/dispatch/SDK bridge/HTTP engine/test，不变更 C Main/Preload/shared/business。保留 R17 ``SSE clean EOF 保护和原 R18 竞争负例。冻结一个最终代码 SHA 后统一 PR CI、D2、Baseline，同 SHA 三项 completed/success 且 full Bun 新 R19 用例逐行 PASS 才能签 `A4-R19 Gate O。首败明确保留 SHA/Job/完整日志，再修并另 SHA 全部重跑。
+6. **是否跨线新来源**：若 I/C 需要 A R17/R18/R19 新风险修复，向 C PR #144 交付精确 A source SHA/path/blob/ABI/测试，等待新 CR 和 I 独立分支来源锁；**绝不能强行覆写已签 I3 #151 的 A R14 8 blobs 或自行推进 #152**。
+7. **真实 Gate E 的准备**：单列必须本机验证的 Electron Main actor / SecretStore / Pi real provider / proxy transport EOF / unauthorized replay、真正 privileged Host read/check/terminal 与 Run ACK 的证据清单。缺授权环境时 E=NOT_RUN，不降低测试标准、不频繁要求用户为了一个小负例开虚拟屏。
+
+### R19 验收特别小心
+
+- 既有 A 断言的 Main-origin HTTP `x-request-id 不是强认证的服务端物理完成，不能直接作为 C registry 的 `V3VerifiedHostReceipt。
+- 真 Pi SDK 经过 HTTP Response fake transport ≠ 真外部 Provider；真 child PID + fake Provider 只提高故障/进程真实性，不自动构成 Gate E。
+- “SDK promise settled” 与“底层 HTTP stream clean EOF”不能混用，R17 安全修复不可撤销。
+- “父进程 SIGKILL 后从未有回调”与“仍活着的旧进程迟到回调”是两种独立故障测试，不能在同一时刻声称两者都真实发生。
+- 主进程写入文件锁可能保留在异常/强杀下：不能凭文件 mtime、PID 数字或合成 token 自动偷锁；C-Tx 对正式 Case FS 交易已独立处理，A 不复制 C 的业务事务。
+
+## 七、持续开发、统一验收与状态签收规则
+
+- 编写真实代码/故障注入/可靠性测试，不重新做 #133–#140 历史考古，也不拖延 C/I 合并；A 和其他线继续并行推进。
+- A 新提交只能进 `feat/v3-dev-a-pi-execution-r01 对应 **A-owned** 技术源码与测试；新会话交接纯文档提交协调分支的 A-only 文件，不要将已全绿的 #143 R18 HEAD 因文档改变而重测。
+- 共用协议使用真正版本控制：先取得最新 blob SHA，**只替换 `STATUS:A 段**；发现冲突重新读取再编辑，不覆盖 C `DECISIONS:C/`STATUS:C 或 I/B 进度。
+- 每轮冻结唯一 40 位代码 SHA；完整 PR CI + D2 Scoped Pi + Review Baseline **三项同 SHA**，全量 Bun + TS + boundaries + skin + 3 builds 通过。对失败保存 first-failure job 与原始输出、回滚 SHA，任何新提交都重新计 Gate O。
+- Provider 合成/离线事件、真实 Pi SDK、真实 OS child、真实 Electron Main、物理远端 TLS 分五种独立证据等级报告，不“逐渐变真实”混写成 Gate E。
+- 记录 PI SDK 版本固定 `@earendil-works/pi-* 0.86.1、真实内层 API Route `/v1/responses；普通会话 `pi-agent-adapter.ts / `runWithPiRequestProxy / `sanitizeContextForInference 未经单独 C 授权不可变更。
+- C/I 签收的来源必须保持 exact 40 SHA + path + blob + Gate O + C decision，一份 PR 通过不是整分支 merge 许可证。
+- 若下一会话工具受限，仍可通过 GitHub connector 拉 PR/源文件/Actions job logs、更新 A-owned 文件提交 Draft；不要声称本机跑过 Bun 或有真实 Provider 凭据。
+- 继续采用**较大批次的实际开发 + 集中 CI/实机验收**，不为了速度删负例/弱化质量/频繁空提交使 CI 取消。
+
+## 八、下一任 Dev-A 必须先读的来源（按顺序）
+
+1. **共同协议**：#145 当前 HEAD `docs/design/review-agent/acceptance/v3-integrator-i-r01/ABCI-UNIFIED-COORDINATION-AND-STATUS.md — 权限以最新 `DECISIONS:C 优先，核查 `STATUS:A/C/I。
+2. **本 A-only 总档**：`docs/design/review-agent/acceptance/v3-dev-a-session-handoff-r01/DEV-A-ONLY-SESSION-HANDOFF-20261020.md 。
+3. **对应下一轮执行书**：同目录 `DEV-A-ONLY-NEXT-SESSION-EXECUTION-20261020.md （专为 A 会话，B/C/I 不需要读）。
+4. **A 真实工程 #143**：R18 fixed `0febf1248bc6a580a1bc7b3144e0d96ca4313916 处 A1/A2/A3/A4 原代码和所列测试。A-only `docs/design/review-agent/acceptance/v3-dev-a-r01/A4-R15-STRICT-SSE-FRAME-AND-I3-SOURCE-BOUNDARY.md 和 R10–R13 源版本报告；早期文档时间戳不代表新 Gate。
+5. **最新 #143 证据**：R17 真实漏洞修复 https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/143#issuecomment-6276125815 ，R18 真实结论 https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/143#issuecomment-6276533117 ；R18 CI `39318050973 / `39318050981 / `39318050999 。
+6. **只读 C/I 关键接口**：C #144 / `review-v3-main-pi-factory.ts 、`review-v3-main-host-receipt-registry.ts 、`review-v3-main-trusted-assembly.ts、`review-v3-main-trust-port.ts 与最新 C-Tx/Plan 发布消费端；I3 Stage1 #150、Stage2 #151、Stage3 #152 的精确来源锁和 C `DECISIONS:C。无需重做大范围历史调查。
+
+**一句话交接**：Dev-A R18 在 `0febf1248bc6a580a1bc7b3144e0d96ca4313916 完整离线 Gate O 3/3 绿色（4168 PASS/5 SKIP/0 FAIL），R17 SSE EOF 真实漏洞已修、真 Pi SDK 与 Owner 冷启动组合负例已完成；Dev-A 下轮应直接实施 **R19 真 Pi SDK × 真子进程崩溃 × 持久化 Owner/dispatch 恢复**，继续只写 A-own 可靠性代码，C 仍拥有正式 Main/业务写权，I3 Stage2 仍锁 A R14，Gate E/L/P 未通过、产品 NO-GO。
