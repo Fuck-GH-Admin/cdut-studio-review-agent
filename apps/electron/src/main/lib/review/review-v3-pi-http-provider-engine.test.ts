@@ -49,6 +49,7 @@ function makeHarness(options?:{
   failAfterFetch?:boolean
   startAborted?:boolean
   abortDuringFetch?:boolean
+  abortAfterSessionCreate?:boolean
 }){
   let physicalCalls=0
   let streamCalls=0
@@ -90,6 +91,7 @@ function makeHarness(options?:{
     },
   }
   const factory:V3APiHttpSingleRequestFactory={create:async ()=>{
+    if(options?.abortAfterSessionCreate)aborter.abort()
     const inner:Pick<AgentSession,'agent'|'prompt'|'subscribe'|'dispose'>=
       session as unknown as Pick<AgentSession,'agent'|'prompt'|'subscribe'|'dispose'>
     return {
@@ -158,6 +160,19 @@ describe('A4-R10 pinned Pi 0.86.1 HTTP transport witness seam - in-memory Provid
       .rejects.toThrow('Main aborted during HTTP transport')
     expect(h.counts().disposed).toBe(true)
     expect(h.counts().physicalCalls).toBe(1)
+  })
+  it('R12-04: an invalid Main HTTPS origin disposes its new SDK session before prompt',async()=>{
+    const h=makeHarness({origin:'http://invalid.example'})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('Only exact trusted HTTPS')
+    expect(h.counts().disposed).toBe(true)
+    expect(h.counts().streamCalls).toBe(0)
+  })
+  it('R12-05: Main cancellation during session creation disposes SDK before prompt',async()=>{
+    const h=makeHarness({abortAfterSessionCreate:true})
+    await expect(h.host.nextTurn({...input,signal:h.aborter.signal}))
+      .rejects.toThrow('Main aborted after Pi session creation')
+    expect(h.counts().disposed).toBe(true)
+    expect(h.counts().streamCalls).toBe(0)
   })
   it('R10-02: two HTTP fetch attempts fail closed despite a successful Pi turn',async()=>{
     const h=makeHarness({sends:2})
