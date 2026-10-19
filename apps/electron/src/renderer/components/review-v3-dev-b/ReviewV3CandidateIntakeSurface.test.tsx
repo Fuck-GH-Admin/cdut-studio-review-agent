@@ -27,7 +27,7 @@ describe('B1+B3 candidate workspace markup (not Main IPC / user UAT)',()=>{
     expect(html).toContain('Technical Template')
     expect(html).not.toContain('value="[&quot;candidate-only&quot;')
     expect(html).toContain('自建审核业务（候选）')
-    expect(html).toContain('尚未创建案卷')
+    expect(html).toContain('不建案')
   })
   test('technical timeout is visibly not a formal Case/Policy decision',()=>{
     const html=renderToStaticMarkup(<ReviewV3RouteReviewPanel
