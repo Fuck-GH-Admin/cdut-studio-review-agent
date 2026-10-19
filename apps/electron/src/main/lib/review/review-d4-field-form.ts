@@ -96,7 +96,7 @@ export function assertD4ReviewerFieldValue(caseId: string, subjectId: string,
   const caseFile = getCase(caseId)
   const snapshot = [...(caseFile?.d4ReviewerFormSnapshots ?? [])].reverse()
     .find(item => item.subjectId === subjectId)
-  if (!snapshot) return
+  if (!snapshot || readAggregate(caseId)?.d2RuntimePlan?.fingerprint !== snapshot.planFingerprint) return
   const form = snapshot.fields.find(item => item.key === fieldKey)
   if (!form) return
   if (!value || value.kind !== form.kind) throw new Error('D4_FORM_FIELD_KIND_MISMATCH')
@@ -112,7 +112,8 @@ export function assertD4ReviewerFieldValue(caseId: string, subjectId: string,
   }
   if (form.kind === 'date' && value.kind === 'date' &&
       (!/^\d{4}-\d{2}-\d{2}$/.test(value.value) ||
-       Number.isNaN(Date.parse(value.value + 'T00:00:00Z')))) {
+       (Number.isNaN(Date.parse(value.value + 'T00:00:00Z')) ||
+        new Date(value.value + 'T00:00:00Z').toISOString().slice(0, 10) !== value.value))) {
     throw new Error('D4_FORM_FIELD_DATE_INVALID')
   }
 }
