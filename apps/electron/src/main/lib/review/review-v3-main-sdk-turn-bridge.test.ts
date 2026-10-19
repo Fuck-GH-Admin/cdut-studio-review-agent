@@ -10,6 +10,7 @@ import {
 } from './review-pi-owner-adapter'
 import {V3ATurnBudget} from './review-v3-execution-turn-budget'
 import {V3ASDKDispatchFence} from './review-v3-sdk-dispatch-fence'
+import {V3APhysicalSDKTurnPort} from './review-v3-sdk-physical-turn-port'
 import {
   V3AProposalProducer, type ATechnicalStatus,
 } from './review-v3-execution-proposal-producer'
@@ -324,6 +325,48 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     expect(h.dispatch.unresolved(h.run)).toBe(true)
     await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('Unresolved SDK Provider dispatch')
     expect(h.calls()).toBe(1)
+  })
+  it('A4-R07-12: physical witness port + durable Main bridge charges one native SDK receipt',async()=>{
+    const h=fixture()
+    let physicalRequests=0
+    const port=new V3APhysicalSDKTurnPort({invoke:async (_request,witness)=>{
+      physicalRequests++
+      witness.requestStarted('native-phys-1')
+      witness.requestFinished({
+        nativeRequestId:'native-phys-1',nativeReceiptId:'provider-receipt-1',
+        status:'completed',
+      })
+    }})
+    const bridge=new V3ASDKTurnBridge(h.owners,h.turns,h.producer,port,h.dispatch)
+    expect((await bridge.next(h.call,'direct')).kind).toBe('recorded')
+    expect(physicalRequests).toBe(1)
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(1)
+    expect(h.dispatch.unresolved(h.run)).toBe(false)
+    expect(h.producer.replayCandidates()).toEqual([])
+  })
+  it('A4-R07-13: physical SDK internal retry poisons Main dispatch even if native error swallowed',async()=>{
+    const h=fixture()
+    let observed=0
+    const port=new V3APhysicalSDKTurnPort({invoke:async (_request,witness)=>{
+      observed++
+      witness.requestStarted('native-phys-1')
+      witness.requestFinished({
+        nativeRequestId:'native-phys-1',nativeReceiptId:'provider-receipt-1',
+        status:'completed',
+      })
+      // Native retry or image fallback tried to start another SDK request.
+      observed++
+      try{witness.requestStarted('native-phys-2')}catch{}
+    }})
+    const bridge=new V3ASDKTurnBridge(h.owners,h.turns,h.producer,port,h.dispatch)
+    await expect(bridge.next(h.call,'graph')).rejects.toThrow('provenance unavailable')
+    expect(observed).toBe(2)
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    await expect(bridge.next(h.call,'graph')).rejects.toThrow(
+      'Unresolved SDK Provider dispatch',
+    )
+    expect(observed).toBe(2)
   })
   it('A4-R06-01: callback from another physical dispatch cannot charge SDK turn',async()=>{
     const h=fixture()
