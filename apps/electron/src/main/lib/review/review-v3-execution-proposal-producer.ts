@@ -56,6 +56,7 @@ export interface AVerifiedExecutionHost {
 }
 interface AttemptChain {
   readonly runDigest: string
+  /** First persisted grantId; each event independently pins its own grant. */
   readonly grantId: string
   readonly nextSequence: number
   readonly terminal: boolean
@@ -110,7 +111,8 @@ function load(raw: string | null): ProducerDisk {
       if (!proposal || proposal.schemaVersion !== A_V3_PROPOSAL_SCHEMA ||
           proposal.sequence !== i + 1 || keyOf(proposal.run) !== k ||
           sha(proposal.run) !== chain.runDigest ||
-          proposal.permissionGrantId !== chain.grantId ||
+          !proposal.permissionGrantId ||
+          (i === 0 && proposal.permissionGrantId !== chain.grantId) ||
           !proposal.hostReceiptId || sealed) {
         mismatch('V3 proposal chain identity mismatch')
       }
@@ -181,6 +183,9 @@ export class V3AProposalProducer {
     const coverage = new V3ExecutionCompletenessAdapter(plan,run)
     const readVersions = new Set<string>()
     for (const event of chain.records) {
+      // Previous pause/grant epochs may be replay candidates but can no longer
+      // be used as proof that the newly reauthorized grant was complete.
+      if (event.permissionGrantId !== lease.grantId) continue
       if (event.kind === 'read') {
         readVersions.add(event.read.source.documentVersionId)
       } else if (event.kind === 'check') {
@@ -208,9 +213,15 @@ export class V3AProposalProducer {
             runDigest: sha(run), grantId: lease.grantId,
             nextSequence: 1, terminal: false, records: [],
           }
-          if (!same(sha(run), current.runDigest) || current.grantId !== lease.grantId) {
+          if (!same(sha(run), current.runDigest) ||
+              (current.records.length === 0 && current.grantId !== lease.grantId)) {
             throw new C0ContractError('RUN_IDENTITY_MISMATCH', 'Frozen Run/grant collision')
           }
+          // New Main-reauthorized grants in the SAME Owner process can append
+          // the next sequence after pause/resume. The original entry and all
+          // prior grant IDs remain immutable, never relabeled or promoted to
+          // an accepted Run receipt. Dev-C decides whether old events survive
+          // C2 consumption after the grant rotates.
           if (!receiptId.trim()) {
             throw new C0ContractError('CONTRACT_INVALID', 'Missing actual Host receiptId')
           }
