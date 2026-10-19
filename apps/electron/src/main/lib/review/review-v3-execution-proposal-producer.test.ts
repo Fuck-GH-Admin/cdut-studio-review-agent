@@ -168,7 +168,7 @@ describe('Dev-A versioned CR-A-001 A-1 proposal producer (Main Host only)', () =
   it('A2-V3-05: revoke during awaited Host read/check creates no event', async () => {
     const h=setup()
     let release!: (x: Awaited<ReturnType<AVerifiedExecutionHost['read']>>) => void
-    h.host.read=async()=>new Promise(resolve=>{release=resolve})
+    h.host.read=async()=>new Promise<Awaited<ReturnType<AVerifiedExecutionHost['read']>>>(resolve=>{release=resolve})
     const promise=h.producer.read(h.call)
     h.revoke()
     release({receiptId:'late-read',actualSource:h.source,extent:'block'})
