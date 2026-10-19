@@ -125,6 +125,13 @@ export function ReviewV3AuthorWizard({
     change((doc) => { (doc.targets[index] as unknown as Record<string, unknown>)[key] = value })
   const updateCheck = (index: number, key: keyof B1Obligation, value: unknown): void =>
     change((doc) => { (doc.modules[0]!.checks[index] as unknown as Record<string, unknown>)[key] = value })
+  const fieldForCheck = (check:B1Obligation):B1Field|undefined => {
+    // Bind the discriminated union before entering find()'s callback. React
+    // render closures must never assume an 'always' condition has fieldKey.
+    const condition=check.condition
+    if(condition.kind!=='field-equals')return undefined
+    return draft.fields.find(field=>field.key===condition.fieldKey)
+  }
   const defaultComparator = (fieldKey:string): string | number | boolean => {
     const field=draft.fields.find(f=>f.key===fieldKey)
     if (!field || field.type==='evidence') return 'example'
@@ -346,20 +353,20 @@ export function ReviewV3AuthorWizard({
             kind:'field-equals',fieldKey:e.target.value,equals:defaultComparator(e.target.value),
           })}>{draft.fields.filter(f=>f.type!=='evidence').map(f=>
               <option key={f.key} value={f.key}>{f.label}</option>)}</select>
-          {draft.fields.find(f=>f.key===check.condition.fieldKey)?.type==='boolean' ?
+          {fieldForCheck(check)?.type==='boolean' ?
             <select className={inputClass} value={String(check.condition.equals)} onChange={e=>
               updateConditionEquals(i,check.condition.kind==='field-equals'?check.condition.fieldKey:'',e.target.value)}>
               <option value="true">是</option><option value="false">否</option>
             </select> :
-            draft.fields.find(f=>f.key===check.condition.fieldKey)?.type==='enum' ?
+            fieldForCheck(check)?.type==='enum' ?
             <select className={inputClass} value={String(check.condition.equals)} onChange={e=>
               updateConditionEquals(i,check.condition.kind==='field-equals'?check.condition.fieldKey:'',e.target.value)}>
-              {draft.fields.find(f=>f.key===check.condition.fieldKey)?.enumValues?.map(v=>
+              {fieldForCheck(check)?.enumValues?.map(v=>
                 <option key={v} value={v}>{v}</option>)}
             </select> :
             <input className={inputClass}
-              type={draft.fields.find(f=>f.key===check.condition.fieldKey)?.type==='number'?'number':
-                draft.fields.find(f=>f.key===check.condition.fieldKey)?.type==='date'?'date':'text'}
+              type={fieldForCheck(check)?.type==='number'?'number':
+                fieldForCheck(check)?.type==='date'?'date':'text'}
               value={String(check.condition.equals)} onChange={e=>
                 updateConditionEquals(i,check.condition.kind==='field-equals'?check.condition.fieldKey:'',e.target.value)}/>}
         </div>}
