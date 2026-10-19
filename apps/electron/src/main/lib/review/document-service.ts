@@ -461,7 +461,7 @@ export async function parseFileIntoSourceDocument(
           ...block, page, id: blockIdAt(slug, (page - 1) * 100000 + index),
         })))
       if (!blocks.length) {
-        return draftOf('partial', [], 'PDF 无可读文本层；扫描页须 OCR/视觉或人工核对，原件保留')
+        return draftOf('partial', [], 'PDF 无可读文本层；扫描件页面须 OCR/视觉或人工核对，原件保留')
       }
       const blankPages = pages.filter(item => !item.text.trim()).map(item => item.page)
       return draftOf(blankPages.length ? 'partial' : 'parsed', blocks,
