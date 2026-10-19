@@ -1,6 +1,6 @@
 # B-CR-001｜Dev-B → Dev-C｜可信作者/原件/Plan 接入变更申请
 
-**状态**：`PROPOSED / NOT_APPROVED / NOT_MERGED`
+**状态（按 Dev-C 2026-10-19 协调裁决）**：`APPROVED_SLICED_SPEC / IMPLEMENTATION_PENDING / NOT_MERGED`。只批准分片接口方向和 I 技术候选集成，**未授权正式 CurrentCase 写入、真实学校发布或 I 修改 C-owned 文件**。
 **基线**：Dev-C0 `C0_FROZEN_GO` #141, `5682057c7232c914e72fdae525ce95fd33f32b53`, `review-c0/1`.
 **提出方**：Dev-B #142；Dev-B **不修改** Main IPC、Preload、V2 Store、`workspace-service-v2.ts`、`case-store-v2.ts` 或共享合同。
 **来源**：#140 06/07/08/09/10/12；#136、#139 负例；本线 B1-B3 适配器代码。
@@ -40,9 +40,9 @@ C0 定义可被唯一权威 Dev-C 消费的 `CanonicalPlan`、`SourceIdentity`�
 
 ## Dev-C 响应字段（留给主Owner）
 
-- `decision = PENDING`
+- `decision = APPROVED_SLICED_SPEC / IMPLEMENTATION_PENDING`
 - `owner = Dev-C`
-- `approved_DTO_change = none`
+- `approved_DTO_change = none (C 仅裁决端口方向；正式类型/IPC 尚无生效代码 SHA)`
 - `integration_PR = none`
 - `adapter_contract_SHA = none`
 - `cross_owner_test_SHA = none`
@@ -62,3 +62,16 @@ C0 定义可被唯一权威 Dev-C 消费的 `CanonicalPlan`、`SourceIdentity`�
 **新增明确请求**：C 在 B-CR-001 裁决中拆分 `native picker/drop physicalSourceKey`、`ImportBatch receipt/复核事务`、`ApplyMaterial/SourceIdentity currentValidity` 为三个可独立签的 Main 端口。I 可先在独立集成分支引入 ZIP Decoder 及纯暂存候选；绝不授权直接通过 parser body 创建可信 actor/DocumentVersion。
 
 **状态**：上述 B 代码已写入 #142，但接入 C 的 IPC、App 主进程委托及真实发布验证仍 `PENDING_C`，不因新增存档文件而变更本申请的 `decision = PENDING`。断电后归档原文与元数据需进行设备级断电、EACCES/ENOSPC/符号链接目录安全验收，不能把自校验 SHA 当作签发认可。
+
+## R03：C 已裁决的分片边界（仅规范获准，实际生产仍阻断）
+
+**权威**：[统一协调协议 #145](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/docs/v3-integrator-i-r01-taskbook/docs/design/review-agent/acceptance/v3-integrator-i-r01/ABCI-UNIFIED-COORDINATION-AND-STATUS.md)；本次读取协调 HEAD `256cce64a86bd06447b1d7d785340fdfe2b8fedc`、Blob `b6867029334287b5361aec5a26ed9c8e4465c06f`、`V3-ABCI-GOVERNANCE-R01 V1.0`。Dev-C 独占 DECISIONS:C 已正式登记：
+
+- `B-0 APPROVED`：I 可先在技术隔离集成 B1 immutable candidate compiler、B2 staging/parser-verified SourceIdentity、B3 router。**该批准不涉及候选 Plan 正式安装或模板政策发布**。初始锁定 B 源 SHA `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc`（曾三个 CI SUCCESS）。新的 ZIP/恢复提交属增量，必须拿新固定 SHA 与独立 CI，不可拿旧成功替代。
+- `B-1 SPEC APPROVED / IMPLEMENTATION_PENDING`：可信 Main Principal 必须从 Electron `sender/senderFrame` 和当前 owner/session 获得，Native picker/drop 物理 bytes capability 由 C 持有，B 只接收 Main-issued `B2MainContext` + bytes，短时一次使用、超时/撤权/跨 owner fail closed。Renderer 的 path/owner/teacher/blockId 均不能升级为身份。
+- `B-2 SPEC APPROVED / IMPLEMENTATION_PENDING`：`ApplyMaterial`、`InstallPlan` 由 C 独占 Main Command/CAS writer，固定 expectedRevision/requestId/payloadHash/Principal/Source Registry、旧来源效力失效级联与旧 Plan/Check/Run 保留；发布资格需真实权威政策版本和独立审核。C1 当前 `bindCanonicalPlanV3` 的内部 verifier callback **不等于**正式 Provenance/Policy verifier。
+- `B-3 BLOCKED E/L/P`：真实 Native picker/ZIP/Office、durable ImportBatch 业务确认/重试、50 套逐原义务与第 51 套真实 UI、独立 Gold/政策权限等仍不能宣称合格。
+- `I-DELEGATION-001 NO_C_FILE_WRITE_LEASE`：未委托 I 改写任何 C-owned types/IPC/Preload/Main writer，I 只能先做隔离 glue/测试/候选片段。
+
+**Dev-B 当前行动**：保留自有 ZIP decoder/staging/checkpoint 源代码和负例，向 I 提供 `B2-ZIP-CHECKPOINT-I-SLICE-HANDOFF.md`，把新源 SHA 与 CI 实际结果固定后再请求新切片准入；不要求 I 等待本线全体 B4 完成。
+
