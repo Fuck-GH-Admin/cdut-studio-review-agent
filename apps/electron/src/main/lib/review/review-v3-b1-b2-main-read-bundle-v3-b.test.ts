@@ -183,12 +183,12 @@ describe('B R20 actual persistent B1 author + physical B2 + B19 Main-read depend
   })
   test('R20-03 damaged parent revision or missing parent cannot be bypassed with a valid-looking latest snapshot',async()=>{
     const f=await fixture()
-    const next=saveB1AuthorRevision(f.author,1,ctx.principalId)
+    const revised=structuredClone(f.author)
+    revised.purpose='Revised and saved to retain distinct immutable Plan identity'
+    const next=saveB1AuthorRevision(revised,1,ctx.principalId)
     const frozen=freezeB1Candidate(f.templateId,2)
     const expectation={...f.expected,revision:next.revision,revisionDigest:next.digest,
       frozenFingerprint:frozen.descriptor.canonicalPlan.fingerprint}
-    // Same author content gets same fingerprint: existing freeze checks identity;
-    // use a changed document if duplicate fingerprint conflicts.
     const first=join(root,'review-v3-author-candidate',f.templateId,'revisions','1.json')
     const original=readFileSync(first,'utf8')
     const bad=JSON.parse(original)
