@@ -58,6 +58,28 @@ export interface B2CandidateReadExtent {
   textSha256:string|null
   source:SourceIdentity
 }
+/**
+ * Technical lifecycle comparison of two LIVE parser-registered candidate
+ * versions. Never updates Case, Run, SourceLedger or institution policy.
+ */
+export interface B2CandidateVersionTransition {
+  schemaVersion:'review-v3-b2-candidate-version-transition/1'
+  previousDocumentVersionId:string
+  currentDocumentVersionId:string
+  previousParseRevision:string
+  currentParseRevision:string
+  previousRawSha256:string
+  currentRawSha256:string
+  previousBlockIds:string[]
+  currentBlockIds:string[]
+  invalidatedOldBlockIds:string[]
+  retainedOldBlockIds:string[]
+  staleOldEvidenceMustNotBeReused:boolean
+  status:'same-active-version'|'changed-source-version'
+  candidateOnly:true
+  businessWriteAllowed:false
+  schoolPolicyVerified:false
+}
 interface Stored {
   key: string
   ownerId: string
@@ -299,6 +321,57 @@ export class ReviewB2SourceVersionAdapter {
       blockPrecision:block.precision,blockKind:block.kind,
       textSha256:scope==='single-parser-block'?sha256(block.text):null,
       source,
+    }
+  }
+  /**
+   * Compare two live Main-staged, parser-verified candidate versions.
+   * A replacement physical identity (even byte-identical) invalidates every
+   * previous candidate block; there is no heuristic block-by-text migration.
+   * After a restart the old parser registry is absent: fail closed rather
+   * than pretending an old block is still a live SourceIdentity.
+   */
+  compareCandidateSourceVersions(
+    ctx:B2MainContext,previousCandidateId:string,currentCandidateId:string,
+  ):B2CandidateVersionTransition {
+    this.staging.assertStillGranted(ctx)
+    const lookup=(candidateId:string):B2ParsedMaterial=>{
+      const entry=this.parsed.get(this.identityKey(ctx,candidateId))
+      if(!entry||entry.parsed.status==='failed')
+        throw new Error('B2_SOURCE_TRANSITION_UNVERIFIED')
+      const current=this.staging.getCandidate(ctx,candidateId)
+      if(current.documentVersionId!==entry.parsed.documentVersionId ||
+         current.materialId!==entry.parsed.materialId ||
+         current.rawSha256!==entry.parsed.rawSha256 ||
+         current.caseCandidateId!==entry.parsed.caseCandidateId ||
+         current.ownerId!==ctx.ownerId ||
+         current.ownerGeneration!==ctx.ownerGeneration)
+        throw new Error('B2_SOURCE_TRANSITION_IDENTITY_CHANGED')
+      const bytes=this.staging.read(ctx,candidateId)
+      if(bytes.length!==current.byteLength || sha256(bytes)!==current.rawSha256)
+        throw new Error('B2_SOURCE_TRANSITION_ORIGINAL_CHANGED')
+      return entry.parsed
+    }
+    const old=lookup(previousCandidateId),next=lookup(currentCandidateId)
+    const same=previousCandidateId===currentCandidateId &&
+      old.documentVersionId===next.documentVersionId &&
+      old.rawSha256===next.rawSha256 &&
+      old.parseRevision===next.parseRevision &&
+      old.inputFingerprint===next.inputFingerprint
+    const priorIds=old.blocks.map(block=>block.blockId)
+    return {
+      schemaVersion:'review-v3-b2-candidate-version-transition/1',
+      previousDocumentVersionId:old.documentVersionId,
+      currentDocumentVersionId:next.documentVersionId,
+      previousParseRevision:old.parseRevision,
+      currentParseRevision:next.parseRevision,
+      previousRawSha256:old.rawSha256,currentRawSha256:next.rawSha256,
+      previousBlockIds:priorIds,
+      currentBlockIds:next.blocks.map(block=>block.blockId),
+      invalidatedOldBlockIds:same?[]:priorIds,
+      retainedOldBlockIds:same?priorIds:[],
+      staleOldEvidenceMustNotBeReused:!same,
+      status:same?'same-active-version':'changed-source-version',
+      candidateOnly:true,businessWriteAllowed:false,schoolPolicyVerified:false,
     }
   }
   /** Only a block issued by this parser's registry can mint an exact C0 SourceIdentity. */
