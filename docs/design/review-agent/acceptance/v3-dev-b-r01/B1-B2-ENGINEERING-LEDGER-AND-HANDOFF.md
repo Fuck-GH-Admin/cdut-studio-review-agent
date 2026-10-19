@@ -89,3 +89,31 @@ Earlier D2 Scoped Pi CI (SHA `e77b55438cdb2f6a86f29bb984f4bb8821813b1b`, run `39
 - **B4 PARTIAL_INVENTORY**: 50 fixed catalogs anchored; individual policy source obligations, G03/G04/G07 and G05 complete semantic reconciliation not done, Gold authorization blocked.
 - **Integration BLOCKED**: Dev-C must provide authorized Main caller/context, whitelist physical source, versioned InstallPlan/ApplyMaterial and UI mount. Never claim current business released.
 - **CI status**: see exact final PR HEAD Actions, do not attribute C0 `3996 PASS` to Dev-B. Commands to run: `bun run typecheck`, `bun run check:boundaries`, `bun test apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.test.ts apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.test.ts apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.test.ts apps/electron/src/main/lib/review/review-v3-b4-inventory.test.ts`. Save logs with actual SHA and first failure.
+
+
+## Dev-B R03 增量｜B1 自建业务试跑 / 主进程可信作者态；B2 ZIP 重试身份（2026-10-19）
+
+**新代码范围**（旧已验收的 #142 `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc` 仍是 I 初始来源，不以移动 HEAD 自动覆盖）：
+
+1. `review-intake-adapter-v3-b2.ts`：`claimArchiveRequest(ctx,requestId,physicalArchiveKey,archiveSha256)` 在逐文件暂存之前绑定整包物理来源和 raw hash。旧版若两次 ZIP 的子文件名完全不重合，单文件幂等无法阻止同 requestId 混包；新增源级 guard 和 `review-zip-staging-v3-b2.test.ts` 的完全不重名变更 ZIP 反例。重启后仍由 `ReviewB2ArchiveVault` 的持久原件 checkpoint 提供强度不同的校验；此内存 map **不等于**跨重启正式 ImportBatch transaction。
+2. `review-template-plan-adapter-v3-b1.ts`：目标 `fieldValues` 在编译前逐类型校验（文本/精确日期/有限数值/枚举/布尔/真实 evidence），`field-equals` 的 comparator 必须与声明字段类型对应；evidence 条件不能用假字符串声明为已满足，必须保留未知交由 C/B2 当前 Source 解析机制判断。保存/编译旧 Plan 不原地变更。
+3. `renderer/components/review-v3-dev-b/review-v3-author-trial.ts` + `*.test.ts`：第 51 套自建业务合成试跑采用额外的 trial `targetKey→fieldKey→value` 快照；调用 onPreview 时给**临时副本**，保存作者草稿及冻结候选仍使用原始 source。可预览 `applicable/not-applicable/unknown`，枚举/布尔/数字/日期均做类型解析，伪证据拒绝，候选导出为带 `publicationAllowed=false` 与 `unverified-user-authoring` 的 JSON 文件。此“导出”是作者配置备份，不是正式政策签署。
+4. `ReviewV3AuthorWizard.tsx`：有可点击的样例输入表、带类型的等值条件编辑器、预览说明和导出候选配置；仍**未由 Dev-C 挂接正式工作台 IPC**，用户可以在专属组件内编辑，但不能声称完整 5 人无代码 UAT 或正式发布流程已完成。
+5. `review-template-author-main-port-v3-b1.ts` + test：`ReviewB1AuthorMainPort` 的 saveDraft/preview/freezeCandidate，要求由 Main 注入 `B1TrustedAuthorContext` 与授权 callback；`recordedBy` 改写为可信 principalId，阻断 Renderer 自称教师/已发布、失效 generation/过期 revision。该 Main-only 新文件 **不是**正式 IPC、Preload 或学校 Principal 发行器，不写 CurrentCase/ReviewRun。接线需要 Dev-C 独占文件与 I glue 遵守 `B-CR-001`。
+
+### 集成切片和本地验收责任
+
+| slice_id | source paths | contract | gate / integration |
+|---|---|---|---|
+| `B1-trial-author` | `review-template-author-main-port-v3-b1.ts`、`review-v3-author-trial.ts`、`ReviewV3AuthorWizard.tsx`、独立测试 | `review-c0/1` + C verified Main author | `SOURCE_ONLY`，新 HEAD Gate O 未核实；I 可离线读/试跑，不能挂共享 IPC |
+| `B2-zip-request-scope` | `review-intake-adapter-v3-b2.ts`、`review-zip-staging-v3-b2.ts` + tests | `review-c0/1`，C Main physicalArchiveKey | `SOURCE_ONLY`，新 HEAD Gate O 未核实；新 CI+整包变更 negative 才有 I 下一快照准入 |
+| `B1-plan` / `B2-source` / `B3-router` | 固定旧 SHA `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc` | `review-c0/1` | 旧单线 CI scope 成功；I 可按 C-ANCHOR-001 和 B-CR-001 的 B-0 批准继续集成 |
+
+### 真实 Gate
+
+`Gate O`：最新 SHA 必须单独完成 `bun run typecheck`、`bun run check:boundaries`、B1/B2 新回归和 PR CI；开始本增量时仅见 CI queued，未获得全绿证据。旧 ZIP `TS2366` 历史失败已记录，不能从修复提交推断 CI 绿灯。\
+`Gate E`：真实 Electron/Native picker/Office71、跨窗撤权/断电恢复仍 `NOT_RUN`。\
+`Gate L`：学校身份/政策/独立 Gold `BLOCKED_NO_AUTH`。\
+`Gate P`：50 套完整逐原义务与第 51 套 5 人 30 分钟 UAT、100 案/500 文件压力 `PARTIAL/NOT_RUN`。
+
+**后续顺序**：先拿精确 HEAD 的 O gate 真实结果并修复首败；再 B2 逐文件 ImportBatch source 状态机（不是 C 当前案卷），然后 B4 50 原义务追溯与第 51 套真实 Main+Renderer/UAT。I 不等待 B 全线完成，但不把未核实新 HEAD 当绿灯。
