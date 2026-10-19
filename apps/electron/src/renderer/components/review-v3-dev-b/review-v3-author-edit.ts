@@ -82,3 +82,10 @@ export function renameB1TrialKey(
     }
   return copy
 }
+
+/** UI guard: snapshot of the actually persisted source, never trial/sample values. */
+export function b1AuthorHasUnsavedEdits(
+  current:B1AuthorDocument, saved:B1AuthorDocument|null,
+):boolean {
+  return saved===null || JSON.stringify(current)!==JSON.stringify(saved)
+}
