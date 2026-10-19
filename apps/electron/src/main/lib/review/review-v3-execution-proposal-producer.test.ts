@@ -274,6 +274,55 @@ describe('Dev-A versioned CR-A-001 A-1 proposal producer (Main Host only)', () =
     }
   })
 
+  it('A-PAUSE-V3-01: grant rotation preserves sequence but does not inherit old technical coverage', async () => {
+    const h=setup()
+    const first=await h.producer.read(h.call)
+    const originalCheck=await h.producer.check(checkCall(h),tuple)
+    expect(first.sequence).toBe(1)
+    expect(originalCheck.sequence).toBe(2)
+    h.owners.pause(h.call.sessionId)
+    const resumed=h.owners.resumePaused(h.call.sessionId,h.grantId,
+      h.call.senderKey,h.principal)
+    const readCall={...h.call,grantId:resumed.grantId}
+    const submitCall={...checkCall(h),grantId:resumed.grantId}
+    h.setTerminal({receiptId:'new-terminal',actualStatus:'completed-technical'})
+    await expect(h.producer.terminal(submitCall,'completed-technical')).rejects.toThrow()
+    // A Host receipt from the old grant cannot be re-issued under the new grant.
+    await expect(h.producer.read(readCall)).rejects.toThrow()
+    h.setRead({receiptId:'new-grant-read',actualSource:h.source,extent:'block'})
+    const newRead=await h.producer.read(readCall)
+    expect(newRead.sequence).toBe(3)
+    h.setCheck({receiptId:'new-grant-check',actualCheck:{...tuple,status:'accepted'}})
+    const newCheck=await h.producer.check(submitCall,tuple)
+    expect(newCheck.sequence).toBe(4)
+    const terminal=await h.producer.terminal(submitCall,'completed-technical')
+    expect(terminal.sequence).toBe(5)
+    const replay=new V3AProposalProducer(h.proposalStore,h.owners,h.host)
+      .replayCandidates()
+    expect(replay.map(x=>x.permissionGrantId)).toEqual([
+      h.grantId,h.grantId,resumed.grantId,resumed.grantId,resumed.grantId,
+    ])
+    expect(replay.map(x=>x.sequence)).toEqual([1,2,3,4,5])
+    expect(replay.at(-1)?.kind).toBe('terminal')
+  })
+
+  it('A-PAUSE-V3-02: awaited pre-pause Host read is refused after rotated grant', async () => {
+    const h=setup()
+    let resolveRead!: (receipt: Awaited<ReturnType<AVerifiedExecutionHost['read']>>) => void
+    h.host.read=async()=>new Promise<Awaited<ReturnType<AVerifiedExecutionHost['read']>>>(
+      resolve=>{resolveRead=resolve})
+    const late=h.producer.read(h.call)
+    h.owners.pause(h.call.sessionId)
+    const resumed=h.owners.resumePaused(h.call.sessionId,h.grantId,
+      h.call.senderKey,h.principal)
+    resolveRead({receiptId:'pre-pause-late',actualSource:h.source,extent:'block'})
+    await expect(late).rejects.toThrow()
+    expect(h.producer.replayCandidates()).toHaveLength(0)
+    const freshCall={...h.call,grantId:resumed.grantId}
+    h.host.read=async source=>({receiptId:'after-resume',actualSource:source,extent:'block'})
+    expect((await h.producer.read(freshCall)).sequence).toBe(1)
+  })
+
   it('A2-V3-07: disk-full append cannot be returned as delivered or acknowledged', async () => {
     const h=setup()
     h.proposalStore.fail=true
