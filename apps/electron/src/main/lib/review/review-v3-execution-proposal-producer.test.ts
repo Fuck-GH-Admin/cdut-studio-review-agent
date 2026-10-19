@@ -354,7 +354,8 @@ describe('Dev-A versioned CR-A-001 A-1 proposal producer (Main Host only)', () =
     expect(candidate).toHaveLength(1)
     expect(candidate[0]?.sequence).toBe(1)
     const repeat=await fresh.read(h.call)
-    expect(repeat).toEqual(candidate[0])
+    expect(candidate[0]).toBeDefined()
+    expect(repeat).toEqual(candidate[0]!)
     expect(fresh.replayCandidates()).toHaveLength(1)
     // An A outbox record has no C-issued durable consumption ACK yet.
   })
