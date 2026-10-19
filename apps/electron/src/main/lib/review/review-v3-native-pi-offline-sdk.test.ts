@@ -68,7 +68,9 @@ async function nativeHarness(responseBody:string){
   }
   const model={
     ...nativeModel,api:'openai-completions' as const,
-    baseUrl:'https://provider.r16.invalid',
+    // OpenAI's SDK appends /chat/completions to the model's baseURL.
+    // Main transport pins the HTTPS origin independently of this /v1 path.
+    baseUrl:'https://provider.r16.invalid/v1',
   }
   let fetchCalls=0
   let session:AgentSession|undefined
@@ -133,6 +135,10 @@ describe('Dev-A R16 real Pi 0.86.1 AgentSession offline — no external Provider
         fetchCalls:h.fetchCalls(),events:h.events,
         eventTrace:h.allNativeEvents,
         model:h.session()?.agent.state.model,
+        assistantErrors:h.session()?.agent.state.messages.filter(x=>
+          x.role==='assistant').map(x=>({
+          stopReason:x.stopReason,errorMessage:x.errorMessage,
+        })),
         lastMessage:h.session()?.agent.state.messages.slice(-1).map(x=>
           x.role==='assistant'?{role:x.role,stopReason:x.stopReason,
             errorMessage:x.errorMessage}: {role:x.role}),
