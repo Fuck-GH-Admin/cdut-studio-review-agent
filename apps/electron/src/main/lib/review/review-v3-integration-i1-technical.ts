@@ -3,7 +3,7 @@
  * current-source validation. Not a Main handler, publisher, Case/Run writer,
  * Host credential, or durable Receipt. Never export this as Renderer IPC.
  */
-import type { CaseAggregateV2, RunEvidenceIdentity } from '@profer/shared'
+import type { CaseAggregateV2, RunEvidenceIdentity, SourceIdentity } from '@profer/shared'
 import {
   compileReviewB1Plan, verifyReviewB1Descriptor,
   type B1AuthorDocument,
@@ -19,6 +19,7 @@ import {
   type A3TechnicalSnapshot,
 } from './review-execution-event-adapter-completeness'
 import { currentSourceValidityBlockers } from './source-current-validity-v3'
+import { ReviewB2SourceVersionAdapter } from './review-source-version-adapter-v3-b2'
 
 export interface I1TechnicalPreviewInput {
   /** Main-injected in a future production caller; synthetic in the I1 test. */
@@ -118,5 +119,47 @@ export function inspectI1TechnicalPreview(input: I1TechnicalPreviewInput): I1Tec
     technicalPreviewEligible: blockers.length === 0 &&
       coverage.state === 'technically-complete',
     ...(route ? { route } : {}),
+  }
+}
+
+/**
+ * Resolve a genuinely parser-registered physical source block from B2-owned
+ * staged original bytes. This is an intake-side fact, NOT formal Case admission,
+ * approval or a full-document read receipt. Caller may not pass a locator.
+ */
+export async function inspectI1PhysicalSourceBlock(input: {
+  staging: ReviewB2StagingService
+  parser: ReviewB2SourceVersionAdapter
+  mainContext: B2MainContext
+  candidateId: string
+  blockId?: string
+}): Promise<{
+  classification: 'STAGED_ONLY'
+  status: 'VERIFIED_BLOCK_ONLY' | 'PARTIAL_BLOCK_ONLY' | 'NEEDS_SOURCE_REVIEW'
+  source?: SourceIdentity
+  fullDocumentReadProven: false
+}> {
+  const candidate = input.staging.getCandidate(input.mainContext, input.candidateId)
+  const parsed = await input.parser.parse(input.mainContext, candidate)
+  if (parsed.status === 'failed' || parsed.blocks.length === 0) {
+    return {
+      classification: 'STAGED_ONLY', status: 'NEEDS_SOURCE_REVIEW',
+      fullDocumentReadProven: false,
+    }
+  }
+  const blockId = input.blockId ?? parsed.blocks[0]!.blockId
+  // The parser registry enforces actual block origin and parse revision.
+  const source = input.parser.sourceForBlock(
+    input.mainContext, candidate.candidateId, parsed.parseRevision, blockId,
+  )
+  if (source.documentVersionId !== candidate.documentVersionId ||
+      source.rawSha256 !== candidate.rawSha256 ||
+      source.materialId !== candidate.materialId) {
+    throw new Error('I1_PHYSICAL_SOURCE_BINDING_MISMATCH')
+  }
+  return {
+    classification: 'STAGED_ONLY',
+    status: parsed.status === 'parsed' ? 'VERIFIED_BLOCK_ONLY' : 'PARTIAL_BLOCK_ONLY',
+    source, fullDocumentReadProven: false,
   }
 }
