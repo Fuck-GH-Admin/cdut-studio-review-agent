@@ -82,7 +82,11 @@ const safe=(v:unknown):v is string=>typeof v==='string'&&v.trim().length>0
  * Unresolved business object scopes remain in the result; never auto-promote.
  */
 export function validateB4TechnicalArchive(data:unknown): B4TechnicalResult {
-  if(!isObject(data) || data.schemaVersion!=='review-v3-b4-obligation-archive/1' ||
+  // Distinct guards preserve TypeScript's narrowing of untrusted JSON across
+  // the full header predicate. No unchecked B4 cast or policy promotion.
+  if(!isObject(data)) deny('ARCHIVE_HEADER')
+  if(!Array.isArray(data.templates)) deny('ARCHIVE_HEADER')
+  if(data.schemaVersion!=='review-v3-b4-obligation-archive/1' ||
     !sha40.test(String(data.frozenSourceGitSha)) || !/^G0[1-8]$/.test(String(data.domain)) ||
     !Array.isArray(data.templates) || data.templates.length!==data.templateCount ||
     data.technicalState!=='UNREVIEWED_EXTRACT' || data.publicationAllowed!==false ||
