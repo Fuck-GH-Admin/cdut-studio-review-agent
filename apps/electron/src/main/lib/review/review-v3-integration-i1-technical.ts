@@ -20,6 +20,7 @@ import {
 } from './review-execution-event-adapter-completeness'
 import { currentSourceValidityBlockers } from './source-current-validity-v3'
 import { ReviewB2SourceVersionAdapter } from './review-source-version-adapter-v3-b2'
+import { V3ExecutionEventAdapter, type V3ReviewToolCall, type V3EventDelivery } from './review-execution-event-adapter'
 
 export interface I1TechnicalPreviewInput {
   /** Main-injected in a future production caller; synthetic in the I1 test. */
@@ -171,5 +172,50 @@ export async function inspectI1PhysicalSourceBlock(input: {
     classification: 'STAGED_ONLY',
     status: parsed.status === 'parsed' ? 'VERIFIED_BLOCK_ONLY' : 'PARTIAL_BLOCK_ONLY',
     source, fullDocumentReadProven: false,
+  }
+}
+
+/**
+ * A1/A2 + B2 physical read seam, wired strictly within Main-side modules.
+ * A real Main caller must first create a trusted Owner grant; this adapter
+ * cannot mint Principal, Owner, Host receipts, C2 ACK or a business Run.
+ */
+export async function readI1OwnerBoundBlock<T>(input: {
+  staging: ReviewB2StagingService
+  parser: ReviewB2SourceVersionAdapter
+  mainContext: B2MainContext
+  candidateId: string
+  blockId?: string
+  events: V3ExecutionEventAdapter
+  /** Deliberately cannot supply arbitrary source/tool in this argument. */
+  mainOwnedCall: Omit<V3ReviewToolCall, 'source' | 'tool'>
+  /** The Host attests the exact actualSource AFTER reading it. */
+  hostRead: (source: SourceIdentity) => Promise<{
+    receiptId: string
+    actualSource: SourceIdentity
+    result: T
+  }>
+}): Promise<{
+  classification: 'STAGED_ONLY'
+  fullDocumentReadProven: false
+  source: SourceIdentity
+  delivery: V3EventDelivery
+  hostResult: T
+}> {
+  const physical = await inspectI1PhysicalSourceBlock(input)
+  if (!physical.source || physical.status === 'NEEDS_SOURCE_REVIEW') {
+    throw new Error('I1_VERIFIED_PHYSICAL_BLOCK_REQUIRED')
+  }
+  // Dev-A's guardedRead performs before/after-await Main Owner validation,
+  // source allowlist checks, Host actualSource matching and durable local append.
+  const { result, delivery } = await input.events.guardedRead({
+    ...input.mainOwnedCall, tool: 'review_read_documents', source: physical.source,
+  }, input.hostRead)
+  return {
+    classification: 'STAGED_ONLY',
+    fullDocumentReadProven: false,
+    source: physical.source,
+    delivery,
+    hostResult: result,
   }
 }
