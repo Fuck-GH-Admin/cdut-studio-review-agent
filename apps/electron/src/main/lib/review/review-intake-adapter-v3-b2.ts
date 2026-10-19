@@ -156,6 +156,17 @@ export class ReviewB2StagingService {
     this.requests.set(requestKey, { candidateId, fingerprint })
     return structuredClone(material)
   }
+  /** Return authoritative Main-staged identity, never trust caller-provided candidate fields. */
+  getCandidate(ctx: B2MainContext, candidateId: string): B2MaterialCandidate {
+    this.requireContext(ctx)
+    const stored = this.materials.get(candidateId)?.material
+    if (!stored || stored.ownerId !== ctx.ownerId ||
+        stored.caseCandidateId !== ctx.caseCandidateId ||
+        stored.ownerGeneration !== ctx.ownerGeneration) {
+      throw new Error('B2_MATERIAL_SCOPE_MISMATCH')
+    }
+    return structuredClone(stored)
+  }
   /** Material bytes can only be fetched by same live owner; reading returns a copy. */
   read(ctx: B2MainContext, candidateId: string): Buffer {
     this.requireContext(ctx)
