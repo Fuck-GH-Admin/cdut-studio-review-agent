@@ -58,7 +58,24 @@
 
 **门禁**：Gate O=`COMMITTED_NOT_ATTESTED`（#143 最新 HEAD 的真实 CI/job 结果单独记录；目标机集中 Gate O 已更新，包含 R07-01..13），Gate E=`NOT_RUN`，L=`BLOCKED_NO_AUTH`，P=`NOT_RUN`，C 工程集成签收尚未发生。详细编年史仍保存原 `DEV-A-R01-IMPLEMENTATION-AND-HANDOFF.md`。
 
-## 7. 每批交付行必须具备
+## 7. 最新 A4-R08 技术检查点（2026-10-19，SOURCE_COMMITTED_NOT_VERIFIED）
+
+| 条目 | 精确状态 |
+|---|---|
+| 前置工程锁 | R07 工程 SHA `f701f8d53e6cfda8623cbaf14c8e7c5cc34946c3` |
+| Dev-A A-owned 生产修复 | `review-v3-main-sdk-turn-bridge.ts` `cf9f158ffaac5c703481273697f9847ffcf160df` |
+| 合成可靠性测试 | `review-v3-main-sdk-turn-bridge.test.ts` `9813c4b503b9fd884238525437823b821d584e01`，R08-01/02 |
+| Linux 真 SIGKILL 测试 | `review-v3-sdk-dispatch-crashpid.test.ts` `e873542a655fb21ff57b03c7f3da481bbe23afc8`，R08-PID-01 |
+| 合同 | Main abort 先于 SDK Promise settle → `RECOVERY_REQUIRED` **快速返回**，但直至 Provider promise 真正结束不得释放 SDK session guard；原 `in-flight` durable intent 不因晚到成功/异常结清。 |
+| 未解决 | 真 Pi SDK native receipt Hook、SDK worker 跨 PID singleton、真实 Provider remote cancellation/网络断开事件；C2 Main Run ACK，I 新锚点技术接线。 |
+| 证据等级 | 源码与测试已提交，未在此会话运行 Bun。真实 OS process 的测试代码 **不等于**测试已执行。 |
+| Gate | O = `COMMITTED_NOT_ATTESTED`，E = `NOT_RUN`，L = `BLOCKED_NO_AUTH`，P = `NOT_RUN`；CI 对本轮最终 SHA 单独记录，不继承 R07。 |
+
+**质量关键点**：在真正取消发生时，不准通过简单 `finally` 立刻释放 SDK 会话锁。由于无法保证 Provider 已物理停止，任意新 attempt/不同 Run 也不得与旧未决 SDK 在同一 Owner session 并行。只有可信 SDK settle 或正式的跨进程隔离/恢复合同可以释放活跃调用；冷启动旧 grant 仍 quarantine。
+
+**集中验收**：`A4-R05-EXACT-SHA-OFFLINE-GATE-O-20261019.md` 已包含本批 2 条合成取消反例和 1 条真实 OS SIGKILL 测试。提交者必须记录最终 PR HEAD、真实 Linux runner ID、首个失败、exit code、测试 PASS/FAIL/SKIP、源码来源 SHA。新 Owner 仍 Dev-A；需要改正式 Main 注册/共享 adapter/Case/Run 时需 C 明示 CR lease，I 不得自动替换旧 A 锁源。
+
+## 8. 每批交付行必须具备
 
 `slice_id / source_sha (40位) / ownership_paths / first_failure / exact commands + env + exit + PASS/FAIL/SKIP / CI workflow+job / Gate O/E/L/P / unresolved_risks / next_owner / C lease if applicable / integration source-lock / rollback commit`。
 
