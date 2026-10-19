@@ -195,6 +195,22 @@ export class ReviewB2StagingService {
     }
     return structuredClone(stored)
   }
+  /**
+   * Read-only inventory of ALL currently staged candidates for exactly this
+   * Owner generation, Case and sender/frame scope. Route callers cannot hide
+   * a second application by supplying a subset of the Renderer manifest.
+   * Inventory is candidate-only and never installs a native Case material.
+   */
+  listScopedCandidateIds(ctx: B2MainContext): string[] {
+    this.requireContext(ctx)
+    const ids: string[] = []
+    for (const record of this.materials.values()) {
+      if (record.material.ownerId === ctx.ownerId &&
+          record.material.ownerGeneration === ctx.ownerGeneration &&
+          record.material.caseCandidateId === ctx.caseCandidateId) ids.push(record.material.candidateId)
+    }
+    return ids.sort()
+  }
   /** Material bytes can only be fetched by same live owner; reading returns a copy. */
   read(ctx: B2MainContext, candidateId: string): Buffer {
     this.requireContext(ctx)
