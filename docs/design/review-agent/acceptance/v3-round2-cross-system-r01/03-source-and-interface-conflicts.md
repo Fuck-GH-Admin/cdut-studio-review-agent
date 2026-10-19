@@ -37,7 +37,7 @@
 
 ### S-04 `runBatchQueue` / `finalizeBatch` / `assertAutomatedWorkspaceDecision`（ARCH-007/008/009）
 - P06 `runBatchQueue:592–595` 完成时写 `entry.status=done`，`outcome.runId` 为可选。调用端真实 `RUN_BATCH_V2` 确实传回 `run.id`，故这是**底层接口缺乏封闭性**，不是证明用户端默认会产生无 ID done。
-- `finalizeBatch:266–283` 调 `assertBatchBusinessReadyForFinalization(state)`；2C 发现该公共 gate 未显式比对 `entry.runId` 与 `finalDecision.basedOnRunId`，需复核 gate 函数实现和负例。本文独立验证了**调用方只做委托**，并未完成 final gate 的函数内执行复现。
+- 2D 另外独立读取 `batch-store.ts:236–262` 的 `assertBatchBusinessReadyForFinalization` 完整函数：依次检查所有 entry 为done、无未完补件、stage=decided/archived、模板版本一致、无进行中申诉/待办、`resolveFinalDecisionProjection` 有效。**完整函数没有要求entry.runId存在，也没有比较`projected.decision.basedOnRunId === entry.runId`**；`finalizeBatch:266–283` 将其作为唯一公共业务final gate。缺少等式这一静态事实 VERIFIED，错误跨批定稿是否可达仍为 PARTIAL/测试NOT_RUN。来源：[P06 final gate:236–262](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/db0284879f75ce123b5d83cb6577a3cc7ad057da/apps/electron/src/main/lib/review/batch-store.ts#L236-L262)。
 - `workspace-business-service-v2.ts:225–269` `assertAutomatedWorkspaceDecision` 以 `batch-auto:<batchId>:<revision>` 检查自动化授权和 `checkAutoBatchAction`，但内层是否重新约束 **batch entry exact run ID** 需直接测试。外层 `runBatchAutomation` 已有 live runId 校验，不能混淆内外风险面。
 
 ### S-05 `RESOLVE_APPEAL_V2` + `stage-workflow.resolveAppealV2`（ARCH-014）
