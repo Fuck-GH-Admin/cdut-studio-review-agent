@@ -141,7 +141,8 @@ describe('I1 frozen B1+B2+B3+A3+C1 read-only integration (synthetic Gate O)', ()
       authorDraft: draft, proposedRun, technicalObservations: [t1],
     }
     const caseSnapshot = {
-      caseV2: { id: ctx.caseCandidateId, revision: proposedRun.caseRevision },
+      caseV2: { id: ctx.caseCandidateId, revision: proposedRun.caseRevision,
+        documents: [{ versionId: material.documentVersionId, active: true }] },
       evidenceLinks: [], observations: [],
     } as unknown as CaseAggregateV2
     // The Main read-only snapshot is advisory; when supplied it must match
