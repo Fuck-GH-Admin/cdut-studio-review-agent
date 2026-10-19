@@ -24,3 +24,14 @@ The legacy A `review-c0/1` outbox provides local `read-receipt-proposal` / `chec
 ## Subsequent approved batches (not part of initial replay)
 
 After the new C + I1 exact SHA green Gate O and source lock review, make **one selected A technical pool import** with exact Git blobs, dependencies, negatives, test replay and independent Gate O; then **one selected B technical pool import**, again separate. C will independently inspect and sign I2 actual SHA. Never silently replace moving A/B HEAD or change frozen ref; Rollback to C anchor and retain accepted I1 artifact without rewriting history.
+
+
+## I2 A selected source-batch R02 (nine A blobs + two I-only joint cases)
+
+Replay checkpoint 5731c2244a4b3967f344773a767e393494080cdb is independently green: PR CI 39295929871, D2 39295929880, Baseline 39295929893, 4142 Bun pass / 5 OS skip / 0 fail and I1 19/19 tests pass. It remains the immutable rollback target, not A-batch Gate O.
+
+From C-approved A fixed SHA c0132ae06de8ae09ab021ac231ffd34756eb5990, selectively imported only nine Owner, old local-event, new versioned proposal producer and Main technical turn-budget source/tests (including multi-PID owner negative); exact source blobs are in the adjacent JSON lock. Code import commit 15af72e2cb2fad35e853471dcc417220a9baabab. All other A technical modules and B pool remain unimported. No C-owned production path changed.
+
+New I-only review-v3-integration-i2-a-proposal.test.ts has 2 crossline synthetic Host/Main tests using actual A V3 proposal producer and C-owned executionProposalId/validateV3ExecutionProposal: read/check canonical digest, sequential events and Host receipt match; denial on grant revoke, tampered/rehashed physical read extent and conflicting replay. This is purely C validator invocation, NOT C2 durable Case/Run/ReadReceipt writer or authenticated real Provider. No B candidate policy publication.
+
+Gate O of the new A checkpoint is PENDING: full PR CI/typecheck/boundaries/build/Bun, D2, Baseline at exact SHA; the I1 original 19 tests and new two tests must be rerun on this same tree. Owner code defects go to Dev-A; I-only defects may be corrected in this Draft branch. Main read-only port lease CONDITIONAL_NOT_ACTIVE; business writer DENIED; Gate E/L/P unverified.

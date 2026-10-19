@@ -14,7 +14,7 @@ import {
 } from './review-v3-execution-proposal-producer'
 import {
   executionProposalId, validateV3ExecutionProposal,
-  type V3TrustedConsumptionContext,
+  type V3TrustedConsumptionContext, type V3VerifiedHostReceipt,
 } from './review-v3-execution-contract'
 
 function journal(): OwnerPersistence {
@@ -73,7 +73,7 @@ function scenario() {
   const producer = new V3AProposalProducer(journal(), owners, host)
   const call = { principal, sessionId: lease.sessionId, senderKey: lease.senderKey,
     grantId: lease.grantId, tool: 'review_read_documents' as const, source }
-  const verifiedHostReceipts = new Map([
+  const verifiedHostReceipts = new Map<string, V3VerifiedHostReceipt>([
     ['host-physical-read', { kind: 'read' as const, permissionGrantId: lease.grantId,
       source, extent: 'block' as const }],
     ['host-physical-check', { kind: 'check' as const, permissionGrantId: lease.grantId,

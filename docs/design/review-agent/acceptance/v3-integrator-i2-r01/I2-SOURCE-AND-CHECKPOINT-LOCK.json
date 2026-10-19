@@ -162,7 +162,7 @@
     ]
   },
   "work": {
-    "stage": "I1_ON_NEW_C_REPLAY",
+    "stage": "A_SELECTED_9_BLOBS",
     "scope": "STAGED_ONLY",
     "newCContracts": [
       "review-v3-execution/1",
@@ -175,7 +175,7 @@
     "businessWriterLease": "DENIED"
   },
   "gates": {
-    "gateO": "PENDING_NEW_COMBINED_EXACT_SHA_CI",
+    "gateO": "PENDING_NEW_A_SLICE_EXACT_SHA_CI",
     "gateE": "NOT_RUN",
     "gateL": "BLOCKED_NO_AUTH",
     "gateP": "NOT_RUN",
@@ -186,5 +186,74 @@
     "toC": "3242b22a0825eec347b2748680bb746eb0f55215",
     "toPreviouslyAcceptedI1": "642c1fa3d3dd2042b7af1afdb3882397d4ca79a7",
     "deletePriorArtifacts": false
+  },
+  "replayGateO": {
+    "sha": "5731c2244a4b3967f344773a767e393494080cdb",
+    "status": "PASS_EXACT_SHA_SCOPED",
+    "runPR": 39295929871,
+    "runD2": 39295929880,
+    "runBaseline": 39295929893,
+    "passed": 4142,
+    "skipped": 5,
+    "failed": 0,
+    "oldI1TestsPassed": 19
+  },
+  "aSelectedSlice": {
+    "sourcePoolSha": "c0132ae06de8ae09ab021ac231ffd34756eb5990",
+    "sourcePr": 143,
+    "codeImportCommit": "15af72e2cb2fad35e853471dcc417220a9baabab",
+    "status": "CODE_COMMITTED_PENDING_EXACT_SHA_CI",
+    "blobs": [
+      {
+        "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter.ts",
+        "sourceBlob": "cb80e050c7c8256d002f2c1315b3f3c388d47427",
+        "importedBlob": "cb80e050c7c8256d002f2c1315b3f3c388d47427"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter.test.ts",
+        "sourceBlob": "48f698b3101e944136f3bc46cd6287e9443a2a5d",
+        "importedBlob": "48f698b3101e944136f3bc46cd6287e9443a2a5d"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-execution-event-adapter.ts",
+        "sourceBlob": "be2ad9195991ecfef3068f80295d74fdc0bf629f",
+        "importedBlob": "be2ad9195991ecfef3068f80295d74fdc0bf629f"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-execution-event-adapter.test.ts",
+        "sourceBlob": "5a04db7d8b1c66c39a43f9a61c608dc49a36e63e",
+        "importedBlob": "5a04db7d8b1c66c39a43f9a61c608dc49a36e63e"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-execution-turn-budget.ts",
+        "sourceBlob": "34d52ebb9716fd964aa3e9a82e7f3f5671d2e221",
+        "importedBlob": "34d52ebb9716fd964aa3e9a82e7f3f5671d2e221"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-execution-turn-budget.test.ts",
+        "sourceBlob": "0aeacb5b1770a93a1091b0009143dd012eb6854c",
+        "importedBlob": "0aeacb5b1770a93a1091b0009143dd012eb6854c"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.ts",
+        "sourceBlob": "c4eb67ff185ecd889864431a898bee77c352fc84",
+        "importedBlob": "c4eb67ff185ecd889864431a898bee77c352fc84"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.test.ts",
+        "sourceBlob": "a117b42d54294b485b8887b71dc7c77651e0f991",
+        "importedBlob": "a117b42d54294b485b8887b71dc7c77651e0f991"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter-multipid.test.ts",
+        "sourceBlob": "f0c05421ccc2726b5178b14c0a82866b12673e36",
+        "importedBlob": "f0c05421ccc2726b5178b14c0a82866b12673e36"
+      }
+    ],
+    "iJointTest": "apps/electron/src/main/lib/review/review-v3-integration-i2-a-proposal.test.ts",
+    "iJointCases": 2,
+    "originalI1TestsMustPass": 19,
+    "remainingA": "physical SDK / Pi HTTP / dispatch / native witness deferred",
+    "CbusinessWrites": 0
   }
 }
