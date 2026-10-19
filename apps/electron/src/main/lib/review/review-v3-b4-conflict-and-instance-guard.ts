@@ -7,7 +7,9 @@ import { createHash } from 'node:crypto'
 import {
   validateB4HighRiskEvidence, type B4HighRiskSourceEvidence,
 } from './review-v3-b4-high-risk-semantic-evidence'
-import type { B4Archive } from './review-v3-b4-obligation-lineage'
+import {
+  validateB4TechnicalArchive, sumB4Technical, type B4Archive,
+} from './review-v3-b4-obligation-lineage'
 
 const D4_SHA = 'b68443b23293b4714e61a3b81383d3d3a56434fc'
 const hex64 = /^[a-f0-9]{64}$/
@@ -180,5 +182,74 @@ export function inspectB4HighRiskInstanceEvidence(
     ...selected, sourceSha256: rule.rawSha256,
     checkedDimensions: [...dimensions], findings,
     semanticValidated: false, publicationAllowed: false,
+  }
+}
+
+
+export interface B4FrozenScopeGap {
+  domain: string
+  templateId: string
+  checkId: string
+  reason: 'OBJECT_AND_CASE_SCOPE_NOT_ESTABLISHED'
+}
+export interface B4FrozenSourceGap {
+  domain: string
+  templateId: string
+  checkId: string
+  sourceId: string
+  documentVersionId: string
+  locator: string
+  reason: 'SOURCE_APPLICABILITY_UNKNOWN'
+}
+/**
+ * Actual frozen D4 metadata gaps, not policy evaluation. All 8 pinned domains
+ * are required; neither an author-supplied CASE scope nor an assumed FALSE
+ * can make the fixed 34/4163 unresolved entries disappear.
+ */
+export function auditB4FrozenUnknownCoverage(
+  archives: Readonly<Record<string, B4Archive>>,
+): {
+  sourceGaps: B4FrozenSourceGap[]
+  scopeGaps: B4FrozenScopeGap[]
+  candidateTemplates: 50
+  frozenChecks: 3875
+  publicationAllowed: false
+} {
+  const expected = ['G01','G02','G03','G04','G05','G06','G07','G08']
+  if (!archives || Object.keys(archives).length !== 8 ||
+      expected.some(x => !archives[x] || archives[x]!.domain !== x ||
+        archives[x]!.frozenSourceGitSha !== D4_SHA)) fail('FROZEN_DOMAIN_SET')
+  const combined = sumB4Technical(expected.map(d => validateB4TechnicalArchive(archives[d])))
+  if (combined.domains !== 8 || combined.templates !== 50 ||
+      combined.checks !== 3875 || combined.unscoped !== 34 ||
+      combined.unknown !== 4163) fail('FROZEN_GAP_DRIFT')
+  const sourceGaps: B4FrozenSourceGap[] = []
+  const scopeGaps: B4FrozenScopeGap[] = []
+  for (const domain of expected) {
+    const archive = archives[domain]!
+    for (const template of archive.templates) {
+      for (const check of template.obligations) {
+        if (!check.genericScope && !check.caseScopeJustification)
+          scopeGaps.push({ domain, templateId: template.templateId, checkId: check.checkId,
+            reason: 'OBJECT_AND_CASE_SCOPE_NOT_ESTABLISHED' })
+        for (const source of check.sources) {
+          if (source.sourceApplicability === 'unknown') {
+            if (!source.documentVersionId || !source.locator)
+              fail('UNKNOWN_WITHOUT_PROVENANCE')
+            sourceGaps.push({
+              domain, templateId: template.templateId, checkId: check.checkId,
+              sourceId: source.sourceId, documentVersionId: source.documentVersionId,
+              locator: source.locator, reason: 'SOURCE_APPLICABILITY_UNKNOWN',
+            })
+          }
+        }
+      }
+    }
+  }
+  if (sourceGaps.length !== 4163 || scopeGaps.length !== 34 ||
+      scopeGaps.some(x => x.domain !== 'G01')) fail('GAP_DETAIL_DRIFT')
+  return {
+    sourceGaps, scopeGaps, candidateTemplates: 50, frozenChecks: 3875,
+    publicationAllowed: false,
   }
 }
