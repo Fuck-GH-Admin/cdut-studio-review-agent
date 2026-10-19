@@ -5,6 +5,7 @@
  */
 import { useRef, useState, type ReactNode } from 'react'
 import { B1BufferedIdentityInput } from './B1BufferedIdentityInput'
+import { diffB1AuthorDocuments, assertB1DraftRemovalAcknowledgments, assertB1CheckDeleteDialogCurrent } from './review-v3-author-diff'
 import { parseB1AuthorCandidateImport,assertB1ImportReplaceSafe,B1_AUTHOR_IMPORT_MAX_BYTES } from './review-v3-author-import'
 import {
   exportB1AuthorCandidate, parseB1TrialInput, prepareB1TechnicalTrial,
@@ -58,6 +59,10 @@ export function ReviewV3AuthorWizard({
   const operationInFlight = useRef(false)
   const [pendingImport,setPendingImport] = useState<{doc:B1AuthorDocument;epoch:number}|null>(null)
   const isDirty = b1AuthorHasUnsavedEdits(draft,savedSnapshot)
+  const [pendingCheckDeletion,setPendingCheckDeletion] = useState<{checkKey:string;epoch:number}|null>(null)
+  const [confirmedCheckDeletions,setConfirmedCheckDeletions] = useState<string[]>([])
+  const versionDiff = diffB1AuthorDocuments(savedSnapshot,draft)
+  const outstandingCheckRemovalAck = versionDiff.deletedCheckKeys.filter(key=>!confirmedCheckDeletions.includes(key))
   const [preview, setPreview] = useState<ImmutablePlanDescriptorB1 | null>(null)
   const [trial, setTrial] = useState<B1TrialValues>({})
   const [busy, setBusy] = useState(false)
@@ -90,6 +95,29 @@ export function ReviewV3AuthorWizard({
       setDraft(next);setPreview(null);setNotice('');setError('')
     } catch(reason) {
       setError(reason instanceof Error ? reason.message : String(reason))
+    }
+  }
+  const requestCheckDeletion=(checkKey:string):void=>{
+    if(operationInFlight.current){setError('B1_AUTHOR_DELETE_BUSY');return}
+    setPendingCheckDeletion({checkKey,epoch:editEpoch.current})
+    setError('');setNotice('')
+  }
+  const confirmCheckDeletion=():void=>{
+    if(!pendingCheckDeletion)return
+    try{
+      assertB1CheckDeleteDialogCurrent(draft,pendingCheckDeletion.checkKey,
+        pendingCheckDeletion.epoch,editEpoch.current,operationInFlight.current)
+      const id=pendingCheckDeletion.checkKey
+      change(document=>{
+        for(const module of document.modules)
+          module.checks=module.checks.filter(check=>check.checkKey!==id)
+      })
+      setConfirmedCheckDeletions(current=>current.includes(id)?current:[...current,id])
+      setPendingCheckDeletion(null)
+      setNotice('已确认从当前作者草稿移除 Check '+id+'；仅本地编辑确认，不是正式 Plan 升级 Receipt')
+    }catch(reason){
+      setPendingCheckDeletion(null)
+      setError(reason instanceof Error?reason.message:String(reason))
     }
   }
   const sampleValue = (targetKey: string, fieldKey: string): string => {
@@ -164,9 +192,11 @@ export function ReviewV3AuthorWizard({
     try {
       const copy = structuredClone(draft)
       if (mode === 'save') {
+        assertB1DraftRemovalAcknowledgments(savedSnapshot,copy,confirmedCheckDeletions)
         const saved = await onSaveDraft(copy, revision)
         setRevision(saved.revision)
         setSavedSnapshot(copy)
+        setConfirmedCheckDeletions([])
         setNotice(epoch===editEpoch.current
           ? `草稿已保存为第 ${saved.revision} 次修订（未正式发布）`
           : '保存了操作开始时的修订；期间的新编辑仍未保存，请重新保存')
@@ -185,7 +215,10 @@ export function ReviewV3AuthorWizard({
           setNotice('不可变候选已冻结：' + frozen.fingerprint.slice(0, 24) + '…（仍未发布）')
       }
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : String(reason))
+      const message=reason instanceof Error ? reason.message : String(reason)
+      setError(message)
+      if(/B1_(?:AUTHOR_REVISION_CONFLICT|MAIN_REVISION_STALE|HISTORY_BROKEN)/.test(message))
+        setNotice('存储修订已变化或历史链异常：未覆盖任何内容。请先导出本地候选备份，再从 Main 可信读口重新打开最新版并人工对比；禁止自动重试覆盖。')
     } finally { operationInFlight.current=false;setBusy(false) }
   }
   const stageImport = async (file: File): Promise<void> => {
@@ -212,6 +245,8 @@ export function ReviewV3AuthorWizard({
       setDraft(structuredClone(pendingImport.doc))
       setRevision(0)
       setSavedSnapshot(null)
+      setConfirmedCheckDeletions([])
+      setPendingCheckDeletion(null)
       setTrial({})
       setPreview(null)
       setPendingImport(null)
@@ -410,7 +445,8 @@ export function ReviewV3AuthorWizard({
               value={String(check.condition.equals)} onChange={e=>
                 updateConditionEquals(i,check.condition.kind==='field-equals'?check.condition.fieldKey:'',e.target.value)}/>}
         </div>}
-        <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.modules[0]!.checks.splice(i,1)})}>删除 Check（版本升级需授权确认）</button>
+        <button type="button" disabled={busy} className={buttonClass}
+          onClick={()=>requestCheckDeletion(check.checkKey)}>删除 Check（先显示确认）</button>
       </div>)}
       <button type="button" className={buttonClass} onClick={()=>change((d)=>{
         d.modules[0]!.checks.push({
@@ -471,6 +507,25 @@ export function ReviewV3AuthorWizard({
           }}/>
       </label>
     </div>
+    <Section title="本地修订差异（仅作者预览）">
+      <p className="text-xs">与本次打开的已保存快照比较；不是 Main 的历史版本差异报告，不具备删除 Check 的正式持久 ACK 效力。</p>
+      <p className="text-xs">{versionDiff.changes.length} 处对象变化 · 新增 Check {versionDiff.addedCheckKeys.length} · 修改 Check {versionDiff.changedCheckKeys.length} · 删除 Check {versionDiff.deletedCheckKeys.length}</p>
+      {outstandingCheckRemovalAck.length>0 && <p role="alert" className="text-xs text-red-500">
+        存在未确认删除的历史 Check：{outstandingCheckRemovalAck.join('、')}；禁止保存修订
+      </p>}
+      {versionDiff.changes.length>0 && <details><summary className="cursor-pointer text-xs">展开变更明细（最多展示前 80 项）</summary>
+        <ul className="text-xs space-y-1">{versionDiff.changes.slice(0,80).map(item=>
+          <li key={item.area+'/'+item.kind+'/'+item.key}>{item.area} / {item.kind} / {item.key}</li>)}</ul>
+      </details>}
+    </Section>
+    {pendingCheckDeletion && <Section title="危险操作：确认删除 Check">
+      <p role="alert" className="text-sm">将从当前候选草稿删除 {pendingCheckDeletion.checkKey}。可能影响已有来源、对象、历史结果与修订解释。</p>
+      <p className="text-xs">这仅记录当前作者界面的明确确认，不是 C 的正式 InstallPlan/UpgradePlan 删除 ACK。必须保留旧版 Plan 与审计 Receipt。</p>
+      <div className="flex gap-2">
+        <button type="button" disabled={busy} className={buttonClass} onClick={confirmCheckDeletion}>我确认移除此 Check</button>
+        <button type="button" disabled={busy} className={buttonClass} onClick={()=>setPendingCheckDeletion(null)}>取消</button>
+      </div>
+    </Section>}
     {pendingImport && <Section title="导入预览：尚未替换、保存或发布">
       <p className="text-xs">来源：不可信用户文件；Main 身份/学校政策/Gold 均未验真。</p>
       <p className="text-sm">{pendingImport.doc.name} · {pendingImport.doc.templateId} · v{pendingImport.doc.templateVersion}</p>
