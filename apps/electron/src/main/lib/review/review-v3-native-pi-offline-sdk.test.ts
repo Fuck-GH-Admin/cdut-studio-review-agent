@@ -69,7 +69,8 @@ const validSse=[
   sseEvent('response.completed',{response:responseEnvelope}),
 ].join('')
 
-async function nativeHarness(responseBody:string){
+type NativeFailureScenario='stream-break'|'main-abort'|'terminal-then-break'
+async function nativeHarness(responseBody:string,scenario?:NativeFailureScenario){
   const dir=mkdtempSync(join(tmpdir(),'review-v3-native-pi-r16-'))
   dirs.push(dir)
   // No provider catalog network, shared credentials, or profile mutations.
@@ -88,6 +89,7 @@ async function nativeHarness(responseBody:string){
     // Keep API, /v1 path and the independently pinned Main origin aligned.
     baseUrl:'https://provider.r16.invalid/v1',
   }
+  const mainAborter=new AbortController()
   let fetchCalls=0
   let session:AgentSession|undefined
   const events:NativeEvent[]=[]
@@ -100,6 +102,34 @@ async function nativeHarness(responseBody:string){
     requests.push(url)
     expect(url).toBe('https://provider.r16.invalid/v1/responses')
     expect(init?.redirect).toBe('error')
+    if(scenario){
+      const startEvent=sseEvent('response.created',{
+        response:{...responseEnvelope,status:'in_progress',output:[]},
+      })
+      const encoder=new TextEncoder()
+      let pulled=0
+      const body=new ReadableStream<Uint8Array>({
+        pull(controller){
+          if(++pulled===1){
+            controller.enqueue(encoder.encode(
+              scenario==='terminal-then-break'?validSse:startEvent))
+            return
+          }
+          if(scenario==='main-abort')mainAborter.abort(
+            new DOMException('Main revoked ReviewRun while streaming','AbortError'))
+          controller.error(new DOMException(
+            scenario==='main-abort'
+              ? 'Main cancelled SDK response stream'
+              : 'Native offline Provider SSE connection dropped','AbortError'))
+        },
+      },{highWaterMark:0})
+      return new Response(body,{
+        status:200,headers:{
+          'x-request-id':'r16-native-provider-http-001',
+          'content-type':'text/event-stream',
+        },
+      })
+    }
     return new Response(responseBody,{
       status:200,
       headers:{
@@ -143,7 +173,8 @@ async function nativeHarness(responseBody:string){
   }
   return {
     host:new V3APhysicalSDKTurnPort(new V3APiHttpSingleRequestEngine(factory)),
-    events,allNativeEvents,nativeFailures,requests,fetchCalls:()=>fetchCalls,session:()=>session,
+    events,allNativeEvents,nativeFailures,requests,mainAborter,
+    fetchCalls:()=>fetchCalls,session:()=>session,
   }
 }
 
@@ -187,4 +218,38 @@ describe('Dev-A R16 real Pi 0.86.1 AgentSession offline — no external Provider
     // from Pi 0.86.1 itself. Whether its internal state settles or reports an
     // error, the Main Host must never receive a completed-turn.
   })
+  it('R17-01: Main pre-dispatch cancellation rejects before creating a Pi SDK session or fetching',async()=>{
+    const h=await nativeHarness(validSse)
+    h.mainAborter.abort(new DOMException('Main cancelled before creation','AbortError'))
+    await expect(h.host.nextTurn({...request,dispatchId:'native-r17-preabort',
+      signal:h.mainAborter.signal})).rejects.toThrow('Main aborted before')
+    expect(h.fetchCalls()).toBe(0)
+    expect(h.session()).toBeUndefined()
+  })
+  it('R17-02: Main cancellation during native Responses SSE denies completion and second fetch',async()=>{
+    const h=await nativeHarness(validSse,'main-abort')
+    await expect(h.host.nextTurn({...request,dispatchId:'native-r17-abort-stream',
+      signal:h.mainAborter.signal})).rejects.toThrow()
+    expect(h.mainAborter.signal.aborted).toBe(true)
+    expect(h.fetchCalls()).toBe(1)
+    expect(h.requests).toEqual(['https://provider.r16.invalid/v1/responses'])
+  })
+  it('R17-03: native SDK stream break before terminal cannot cause a second HTTP fetch',async()=>{
+    const h=await nativeHarness(validSse,'stream-break')
+    await expect(h.host.nextTurn({...request,dispatchId:'native-r17-stream-break'}))
+      .rejects.toThrow()
+    expect(h.fetchCalls()).toBe(1)
+    expect(h.requests).toEqual(['https://provider.r16.invalid/v1/responses'])
+    expect(h.allNativeEvents).toContain('agent_settled')
+    // The 0.86.1 internal retry may start, but A's single-request fence
+    // must never permit another actual physical Provider request.
+  })
+  it('R17-04: valid SSE terminal followed by transport failure cannot mint a receipt',async()=>{
+    const h=await nativeHarness(validSse,'terminal-then-break')
+    await expect(h.host.nextTurn({...request,dispatchId:'native-r17-terminal-break'}))
+      .rejects.toThrow()
+    expect(h.fetchCalls()).toBe(1)
+    expect(h.requests).toEqual(['https://provider.r16.invalid/v1/responses'])
+  })
+
 })
