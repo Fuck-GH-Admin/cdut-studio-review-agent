@@ -49,4 +49,17 @@ describe('B1+B3 candidate workspace markup (not Main IPC / user UAT)',()=>{
     expect(html).toContain('自建审核业务（候选）')
     expect(html).not.toContain('冻结候选（非正式发布）')
   })
+  test('R21-08 unmatched shows honest workflow and new candidate entry, never default-selected',()=>{
+    const html=renderToStaticMarkup(<ReviewV3RouteReviewPanel {...common}
+      route={{status:'unmatched',remainingMs:0,reason:'No verified match'}}
+      onOpenCustomAuthor={()=>{}}/>)
+    expect(html).toContain('现有模板未匹配')
+    expect(html).toContain('这批材料尚无可验证的匹配模板')
+    expect(html).toContain('20 秒自动建议已停止')
+    expect(html).toContain('创建新的候选审核模板（非正式发布）')
+    expect(html).not.toContain('倒计时已结束')
+    expect(html).not.toContain('技术候选：Technical Template')
+    expect(html).toContain('不建案')
+  })
+
 })
