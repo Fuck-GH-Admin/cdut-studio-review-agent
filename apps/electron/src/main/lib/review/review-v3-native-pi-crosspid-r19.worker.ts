@@ -24,7 +24,7 @@ import {V3APiHttpSingleRequestEngine,
 } from './review-v3-pi-http-provider-engine'
 
 const [mode,rootArg]=process.argv.slice(2)
-if(!rootArg || !['crash','recover','late','quarantine','postcommit-eio','precommit-enospc','reopen-postcommit','reopen-precommit','complete','recover-complete','replay-receipt','recover-reused','settle-precommit-enospc','settle-postcommit-eio','recover-settle-precommit','recover-settle-postcommit'].includes(mode??'')){
+if(!rootArg || !['crash','recover','late','quarantine','postcommit-eio','precommit-enospc','reopen-postcommit','reopen-precommit','complete','recover-complete','replay-receipt','recover-reused','settle-precommit-enospc','settle-postcommit-eio','recover-settle-precommit','recover-settle-postcommit','settle-precommit-sigkill','settle-postcommit-sigkill'].includes(mode??'')){
   throw new Error('R19 worker requires an explicit crash/recover mode and test root')
 }
 const root=rootArg
@@ -33,6 +33,7 @@ const paths={
   turns:join(root,'budget.json'),events:join(root,'events.json'),
   marker:join(root,'physical-fetch-entered.json'),
   release:join(root,'release-native-sdk'),
+  settlementKill:join(root,'settlement-kill-witness.json'),
 }
 const authority={authorizeExecution:()=>{},isCurrent:()=>true}
 const sha=(s:string)=>createHash('sha256').update(s).digest('hex')
@@ -134,6 +135,8 @@ async function crashOrLate():Promise<void>{
   const turns=new V3ATurnBudget(createFileOwnerPersistence(paths.turns),owner)
   const settlementFault=mode==='settle-precommit-enospc'||
     mode==='settle-postcommit-eio'
+  const settlementKill=mode==='settle-precommit-sigkill'||
+    mode==='settle-postcommit-sigkill'
   let injectedSettlementWrites=0
   const backing=createFileOwnerPersistence(paths.dispatch)
   const settlementStore:OwnerPersistence={
@@ -141,11 +144,67 @@ async function crashOrLate():Promise<void>{
     write:()=>{throw Error('R19-06 expected actual CAS persistence')},
     compareAndWrite:(expected,bytes)=>{
       const envelope=JSON.parse(bytes) as {payload:{runs:Record<string,{
-        records:{state:string}[]}>}}
+        records:{state:string;receiptId?:string}[]}>}}
       const records=Object.values(envelope.payload.runs)
         .flatMap(x=>x.records)
       if(records.some(x=>x.state==='settled')){
         injectedSettlementWrites++
+        if(settlementKill){
+          if(injectedSettlementWrites!==1 || records.length!==1 ||
+            records[0]?.state!=='settled' ||
+            records[0]?.receiptId!=='r19-provider-physical-001'){
+            throw Error('R19-07 attempted SIGKILL on non-settlement CAS')
+          }
+          const before=sealed(paths.dispatch)
+          const beforeRecords=Object.values(before.payload.runs as Record<
+            string,{records:{state:string;receiptId?:string;id:string}[]}
+          >).flatMap(x=>x.records)
+          const committedTurn=sealed(paths.turns)
+          const counted=Object.values(committedTurn.payload.runs as Record<
+            string,{usedTurns:number;receiptIds:string[]}
+          >)
+          if(beforeRecords.length!==1 ||
+            beforeRecords[0]?.state!=='in-flight' ||
+            counted.length!==1 || counted[0]?.usedTurns!==1 ||
+            counted[0]?.receiptIds[0]!=='r19-provider-physical-001' ||
+            nativeEvents.join(',')!=='turn_start,turn_end,agent_end,agent_settled' ||
+            fetches!==1 || existsSync(paths.events)){
+            throw Error('R19-07 kill point NOT after genuine native turn commit')
+          }
+          const postcommit=mode==='settle-postcommit-sigkill'
+          if(postcommit)backing.compareAndWrite!(expected,bytes)
+          const after=sealed(paths.dispatch)
+          const afterRecords=Object.values(after.payload.runs as Record<
+            string,{records:{state:string;receiptId?:string;id:string}[]}
+          >).flatMap(x=>x.records)
+          if(afterRecords.length!==1 ||
+            afterRecords[0]?.state!==(postcommit?'settled':'in-flight') ||
+            afterRecords[0]?.id!==beforeRecords[0]?.id){
+            throw Error('R19-07 CAS disk outcome disagrees with kill mode')
+          }
+          const fd=openSync(paths.settlementKill,'wx',0o600)
+          try{
+            writeSync(fd,JSON.stringify({
+              pid:process.pid,mode,postcommit,
+              ownerEpoch:owner.processEpoch,sessionId:lease.sessionId,
+              runId:run.runId,dispatchId:beforeRecords[0]?.id,
+              nativeEvents,fetches,injectedSettlementWrites,
+              turnUsed:counted[0]?.usedTurns,
+              turnReceipts:counted[0]?.receiptIds,
+              dispatchBefore:'in-flight',
+              dispatchAfter:afterRecords[0]?.state,
+              dispatchAfterReceipt:afterRecords[0]?.receiptId??null,
+              turnSha256:committedTurn.sha256,
+              dispatchBeforeSha256:before.sha256,
+              dispatchAfterSha256:after.sha256,
+            }))
+            fsyncSync(fd)
+          }finally{closeSync(fd)}
+          // Actual SIGKILL here; this worker cannot report a resolved SDK
+          // turn or commit business evidence after settlement starts.
+          process.kill(process.pid,'SIGKILL')
+          throw Error('R19-07 SIGKILL unexpectedly returned')
+        }
         if(mode==='settle-precommit-enospc'){
           throw Object.assign(
             new Error('R19-06 ENOSPC before durable SDK settlement'),
@@ -163,7 +222,7 @@ async function crashOrLate():Promise<void>{
       backing.compareAndWrite!(expected,bytes)
     },
   }
-  const dispatch=settlementFault
+  const dispatch=(settlementFault || settlementKill)
     ?new V3ASDKDispatchFence(settlementStore,owner)
     :dispatcher(owner)
   const host={
@@ -246,7 +305,7 @@ async function crashOrLate():Promise<void>{
               controller.close()
               return
             }
-            if(mode==='complete' || mode==='replay-receipt' || settlementFault){
+            if(mode==='complete' || mode==='replay-receipt' || settlementFault || settlementKill){
               controller.enqueue(new TextEncoder().encode(remainingSse))
               controller.close()
               return
@@ -288,7 +347,7 @@ async function crashOrLate():Promise<void>{
     })+'\n')
     return
   }
-  if(mode==='complete' || mode==='replay-receipt' || settlementFault){
+  if(mode==='complete' || mode==='replay-receipt' || settlementFault || settlementKill){
     let resultKind='',denial=''
     try{
       const result=await bridge.next(callOf(lease,principal),'direct')
@@ -737,7 +796,7 @@ function recoverSettlement(postcommit:boolean):void{
     proposalExists:existsSync(paths.events),
   })+'\n')
 }
-if(mode==='crash' || mode==='late' || mode==='complete' || mode==='replay-receipt' || mode==='settle-precommit-enospc' || mode==='settle-postcommit-eio')await crashOrLate()
+if(mode==='crash' || mode==='late' || mode==='complete' || mode==='replay-receipt' || mode==='settle-precommit-enospc' || mode==='settle-postcommit-eio' || mode==='settle-precommit-sigkill' || mode==='settle-postcommit-sigkill')await crashOrLate()
 else if(mode==='recover-settle-precommit')recoverSettlement(false)
 else if(mode==='recover-settle-postcommit')recoverSettlement(true)
 else if(mode==='recover-complete')recoverCompleted()
