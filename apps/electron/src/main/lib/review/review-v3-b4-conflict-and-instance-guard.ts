@@ -138,7 +138,7 @@ export function inspectB4HighRiskInstanceEvidence(
   const rule = proof.items.find(item =>
     item.domain === selected.domain && item.templateId === selected.templateId &&
     item.original.ruleId === selected.ruleId)
-  if (!rule) fail('RULE_NOT_IN_PINNED_EVIDENCE')
+  if (!rule) throw new Error('B4_R24_RULE_NOT_IN_PINNED_EVIDENCE')
   const dimensions = B4_REQUIRED_DIMENSIONS[selected.domain]
   if (JSON.stringify(rule.technical.expectedReviewDimensions) !== JSON.stringify(dimensions) ||
       JSON.stringify(rule.technical.dimensionsNotEvidencedInArchivedCheckFields) !== JSON.stringify(dimensions) ||
