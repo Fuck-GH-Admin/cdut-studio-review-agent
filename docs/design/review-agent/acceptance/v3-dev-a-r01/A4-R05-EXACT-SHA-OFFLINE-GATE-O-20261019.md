@@ -113,7 +113,7 @@ fi
 
 ### A4-R07 native single-physical-request witness (newly committed, not yet verified)
 
-- Targeted test file `review-v3-sdk-physical-turn-port.test.ts` (R07-01..11) plus integrated bridge tests R07-12/13 in `review-v3-main-sdk-turn-bridge.test.ts`.
+- Targeted test file `review-v3-sdk-physical-turn-port.test.ts` (R07-01..11 and R07-14) plus integrated bridge tests R07-12/13 in `review-v3-main-sdk-turn-bridge.test.ts`.
 - Validate true **in-process native provider-request** start/finish callback, exactly one request, stable nonempty independently observed native receipt and Main-persisted dispatchId. Missing hook / SDK query result.success / message-only and harness-only outputs are **PROVENANCE_UNAVAILABLE** and must NOT write turn or technical terminal.
 - Verify native retry, image-fallback secondary provider call, duplicate/mismatched request identity, fabricated dispatchId-as-receipt, native Provider failure, after-cancel and callback after engine has returned all fail closed. In integrated bridge tests, unresolved SDK dispatch remains durable; no C ReviewRun ACK.
 - **Caveat**: This is a capability-seam plus injected fake native hook, not evidence that Pi 0.86.1 actually exposes a suitable native physical receipt API. Gate E remains NOT_RUN until real SDK instrumentation/Provider trace proves physical requests correspond to callbacks; do not synthesize native IDs from assistant UUID or count `agent_end` as physical turn.
