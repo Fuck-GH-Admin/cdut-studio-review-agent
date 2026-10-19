@@ -1,0 +1,186 @@
+{
+  "version": "v3-i1-technical-lock/1",
+  "governance": "V3-ABCI-GOVERNANCE-R01/V1.0",
+  "decision": "C-I1-AUTH-001 / I1_TECHNICAL_ENTRY_GO",
+  "decisionReference": "docs/design/review-agent/acceptance/v3-integrator-i-r01/ABCI-UNIFIED-COORDINATION-AND-STATUS.md",
+  "contract": "review-c0/1",
+  "approvedAnchors": {
+    "C": "31aa352c45a33d6832612884b0fea38e39b5cf8d",
+    "A": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+    "B": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc"
+  },
+  "cAnchorPrCI": {
+    "pr": 144,
+    "runId": 39229456164,
+    "conclusion": "success"
+  },
+  "aSourcePrCI": {
+    "pr": 143,
+    "runId": 39228978591,
+    "conclusion": "success"
+  },
+  "bSourcePrCI": {
+    "pr": 142,
+    "runId": 39230036780,
+    "conclusion": "success"
+  },
+  "baseC0": "5682057c7232c914e72fdae525ce95fd33f32b53",
+  "importedSourceBlobs": [
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter.ts",
+      "blob": "356e5b3a290522c5d2db3a55eedac3b7805e69be"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter.test.ts",
+      "blob": "f42897269526d6260dea4bac148564ef8c66f649"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-execution-event-adapter.ts",
+      "blob": "efa0f41cc2dab970b2cc5b92c0c00c3be3c6cf93"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-execution-event-adapter.test.ts",
+      "blob": "1084c8e215ba00fc8870c1f582138cbe72c5446a"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-completeness.ts",
+      "blob": "0e15f14d2d1bc145acec8325d43e9e6276ead802"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-completeness.test.ts",
+      "blob": "b6ae0556cb8e714d5d95c3f5d3943db30c5e379d"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-driver.ts",
+      "blob": "c62d78908ce6156abb3f7be2380a0e64e243242b"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-driver.test.ts",
+      "blob": "af42369e360b34408e0cee0e5fe79aeb77f1f71e"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+      "blob": "f140d4f66d741fa29757a8a3ddaba9d9d2cdd038"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.test.ts",
+      "blob": "0476ae8e408cf124b19101c1fc48b9f8c9d3213f"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts",
+      "blob": "aa60f9eb5b296c3ac5c68b042dc85dca855da5f1"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts",
+      "blob": "ab57a0d51c9cdcaf241e849f3b1e653eb74a72cb"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+      "blob": "50dd49f5b985f0f9da98cf63a1934dad0be38d70"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts",
+      "blob": "a4af4a8684912bd9202907e3f5883c6e49bd5dfd"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+      "blob": "367390a7cab5d9fbb6ebaa3a25fe6ead942d8ff9"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.test.ts",
+      "blob": "e3dac69d7a20ed9219e413e0a24c49782871a3e7"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.ts",
+      "blob": "dd23b16675a74f7ef82c8037f477bca2f7a306d8"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.test.ts",
+      "blob": "c9b02622cd0718905ab7b2ba4074dacc8fb97aca"
+    }
+  ],
+  "importCommit": "b6e767f0c85eca8e1c83a5420bc31ea8b4533e8f",
+  "bridgeSourceCommit": "9a31c89d68d2bfea0f96cee52391c0f00c75cdfb",
+  "bridgeTestCommit": "96e20263f78869cca31b311edfa9d27923b7cff6",
+  "priorI0": {
+    "pr": 146,
+    "sha": "c84f575addcbb1f36b5eff0acb27442b91073fa1",
+    "cVerdict": "I0_ACCEPTED_SCOPED",
+    "inheritedByReferenceOnly": true
+  },
+  "ownership": {
+    "modifiedCExclusiveFiles": [],
+    "sourceBlobsCopiedUnmodified": true,
+    "importStrategy": "file-level Git blob tree + I-only changes, not whole A/B branch merge"
+  },
+  "limits": {
+    "formalRunWriter": false,
+    "formalCaseWriter": false,
+    "formalPlanPublisher": false,
+    "authorizedPicker": false,
+    "policyPublished": false,
+    "versionedNewCExecutionDtoIntegrated": false,
+    "notAProductionMainHandler": true
+  },
+  "gates": {
+    "integrationGateO": "PENDING_EXACT_SHA_CI",
+    "gateE": "NOT_RUN",
+    "gateL": "BLOCKED_NO_AUTH",
+    "gateP": "NOT_RUN",
+    "cEngineeringSignoff": "PENDING_C_REVIEW"
+  }
+}
