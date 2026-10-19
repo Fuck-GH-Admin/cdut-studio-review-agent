@@ -15,10 +15,15 @@ const HASH = 'c'.repeat(64)
 class Store implements OwnerPersistence {
   data: string | null = null
   fail = false
+  failAfterCommit = false
   read() { return this.data }
   write(v: string) {
     if (this.fail) throw Object.assign(new Error('ENOSPC'), {code:'ENOSPC'})
     this.data = v
+    if (this.failAfterCommit) {
+      this.failAfterCommit = false
+      throw Object.assign(new Error('EIO after proposal replacement'), {code:'EIO'})
+    }
   }
 }
 function setup(caseId = 'case-a', sessionId = 'session-a', applicability: 'applicable' | 'unknown' = 'applicable') {
@@ -246,6 +251,21 @@ describe('Dev-A versioned CR-A-001 A-1 proposal producer (Main Host only)', () =
     h.proposalStore.fail=false
     expect((await h.producer.read(h.call)).sequence).toBe(1)
   })
+  it('A4-V3-12: uncertain post-commit proposal persists once; no invented ACK', async () => {
+    const h=setup()
+    h.proposalStore.failAfterCommit=true
+    await expect(h.producer.read(h.call)).rejects.toThrow('EIO after proposal replacement')
+    expect(()=>h.producer.replayCandidates()).toThrow()
+    const fresh=new V3AProposalProducer(h.proposalStore,h.owners,h.host)
+    const candidate=fresh.replayCandidates()
+    expect(candidate).toHaveLength(1)
+    expect(candidate[0]?.sequence).toBe(1)
+    const repeat=await fresh.read(h.call)
+    expect(repeat).toEqual(candidate[0])
+    expect(fresh.replayCandidates()).toHaveLength(1)
+    // An A outbox record has no C-issued durable consumption ACK yet.
+  })
+
   it('A2-V3-08: stale external append or corrupt on-disk journal fails closed', async () => {
     const h=setup()
     const stale=new V3AProposalProducer(h.proposalStore,h.owners,h.host)
