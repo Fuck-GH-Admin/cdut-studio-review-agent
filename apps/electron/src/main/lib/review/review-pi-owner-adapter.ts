@@ -255,7 +255,8 @@ export class V3ReviewOwnerAdapter {
 
   get(sessionId: string): V3OwnerLease | null {
     const lease = this.journal.owners[sessionId]
-    return lease ? structuredClone(lease) : null
+    return lease ? structuredClone(lease.processEpoch !== this.processEpoch && lease.state === 'active'
+      ? { ...lease, state: 'recovery-required' as const } : lease) : null
   }
 
   /** Explicitly separate ordinary session operations from review owners. */
