@@ -1,0 +1,298 @@
+/**
+ * Dev-B's own no-code authoring surface, not mounted into Dev-C-owned workbench.
+ * Dev-C must provide Main-authorized save/preview/freeze callbacks. This renderer
+ * only edits author source; it cannot install a Case, publish policy or grant roles.
+ */
+import { useState, type ReactNode } from 'react'
+import type {
+  B1AuthorDocument, B1Field, B1Obligation, B1Source, B1Target,
+  ImmutablePlanDescriptorB1,
+} from '../../../main/lib/review/review-template-plan-adapter-v3-b1'
+
+export interface B1AuthorWizardProps {
+  /** Main supplies verified author; never accept this identity from the UI. */
+  onSaveDraft: (document: B1AuthorDocument, expectedRevision: number) => Promise<{ revision: number }>
+  onPreview: (document: B1AuthorDocument) => Promise<ImmutablePlanDescriptorB1>
+  onFreezeCandidate: (document: B1AuthorDocument, expectedRevision: number) => Promise<{ fingerprint: string }>
+  initialDraft?: B1AuthorDocument
+  initialRevision?: number
+}
+
+const sourceId = 'request'
+export const emptyB1AuthorDocument = (): B1AuthorDocument => ({
+  schemaVersion: 'review-b1/1', status: 'candidate-held', templateId: '',
+  templateVersion: '1', name: '', purpose: '',
+  sources: [{ sourceId, kind: 'user-declared', documentVersionId: 'author-user-declaration-v1',
+    locator: 'author-wizard:explicit-input', recordedBy: 'local-author-unverified' }],
+  fields: [], targets: [], modules: [{
+    moduleId: 'core', version: '1', dependsOn: [], checks: [],
+  }],
+  stages: [{ stageId: 'manual-review', role: 'reviewer', mode: 'manual' }],
+  outputs: [{ outputId: 'summary', kind: 'report' }],
+})
+
+const inputClass = 'w-full min-w-0 rounded border border-border bg-background px-2 py-1.5 text-sm'
+const buttonClass = 'rounded border border-border px-3 py-1.5 text-sm hover:bg-muted disabled:opacity-40'
+function Section({ title, children }: { title: string; children: ReactNode }): ReactNode {
+  return <section className="space-y-3 rounded-lg border border-border p-4">
+    <h3 className="font-semibold">{title}</h3>{children}
+  </section>
+}
+export function ReviewV3AuthorWizard({
+  onSaveDraft, onPreview, onFreezeCandidate, initialDraft, initialRevision = 0,
+}: B1AuthorWizardProps): ReactNode {
+  const [draft, setDraft] = useState<B1AuthorDocument>(() => structuredClone(initialDraft ?? emptyB1AuthorDocument()))
+  const [revision, setRevision] = useState(initialRevision)
+  const [preview, setPreview] = useState<ImmutablePlanDescriptorB1 | null>(null)
+  const [busy, setBusy] = useState(false)
+  const [notice, setNotice] = useState('')
+  const [error, setError] = useState('')
+  const change = (update: (doc: B1AuthorDocument) => void): void => {
+    setDraft((current) => { const next = structuredClone(current); update(next); return next })
+    setPreview(null); setNotice(''); setError('')
+  }
+  const updateField = (index: number, key: keyof B1Field, value: unknown): void =>
+    change((doc) => { (doc.fields[index] as unknown as Record<string, unknown>)[key] = value })
+  const updateSource = (index: number, key: keyof B1Source, value: unknown): void =>
+    change((doc) => { (doc.sources[index] as unknown as Record<string, unknown>)[key] = value })
+  const updateTarget = (index: number, key: keyof B1Target, value: unknown): void =>
+    change((doc) => { (doc.targets[index] as unknown as Record<string, unknown>)[key] = value })
+  const updateCheck = (index: number, key: keyof B1Obligation, value: unknown): void =>
+    change((doc) => { (doc.modules[0]!.checks[index] as unknown as Record<string, unknown>)[key] = value })
+  const perform = async (mode: 'save' | 'preview' | 'freeze'): Promise<void> => {
+    setBusy(true); setError(''); setNotice('')
+    try {
+      const copy = structuredClone(draft)
+      if (mode === 'save') {
+        const saved = await onSaveDraft(copy, revision)
+        setRevision(saved.revision)
+        setNotice(`草稿已保存为第 ${saved.revision} 次修订（未正式发布）`)
+      } else if (mode === 'preview') {
+        const result = await onPreview(copy)
+        setPreview(result)
+        setNotice('技术规则预览已生成；不代表学校制度审核通过')
+      } else {
+        const frozen = await onFreezeCandidate(copy, revision)
+        setNotice('不可变候选已冻结：' + frozen.fingerprint.slice(0, 24) + '…（仍未发布）')
+      }
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : String(reason))
+    } finally { setBusy(false) }
+  }
+  const checks = draft.modules[0]?.checks ?? []
+  return <div className="space-y-4 text-foreground" data-testid="review-v3-b1-author-wizard">
+    <header className="space-y-2">
+      <h2 className="text-xl font-bold">自建审核业务</h2>
+      <p className="text-sm text-muted-foreground">从空白创建业务、材料字段、核验责任和工作流程。所有内容仅为作者候选；学校制度发布需另行授权。</p>
+      <p className="text-xs text-muted-foreground">作者态修订 #{revision} · candidate-held · 未获政策批准</p>
+    </header>
+    <Section title="1. 业务定义">
+      <label className="block text-sm">业务标识（英文/数字/连字符）
+        <input className={inputClass} value={draft.templateId} placeholder="laboratory-use"
+          onChange={(e) => change((d) => { d.templateId = e.target.value })} />
+      </label>
+      <label className="block text-sm">业务名称
+        <input className={inputClass} value={draft.name} placeholder="实验室使用申请"
+          onChange={(e) => change((d) => { d.name = e.target.value })} />
+      </label>
+      <label className="block text-sm">审核目的与范围
+        <textarea className={inputClass} value={draft.purpose} rows={2}
+          onChange={(e) => change((d) => { d.purpose = e.target.value })} />
+      </label>
+      <label className="block text-sm">候选版本
+        <input className={inputClass} value={draft.templateVersion}
+          onChange={(e) => change((d) => { d.templateVersion = e.target.value })} />
+      </label>
+    </Section>
+    <Section title="2. 业务依据及材料来源">
+      {draft.sources.map((source, i) => <div key={i} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
+        <label className="text-xs">来源 ID
+          <input className={inputClass} value={source.sourceId}
+            onChange={(e) => updateSource(i,'sourceId',e.target.value)} />
+        </label>
+        <label className="text-xs">来源性质
+          <select className={inputClass} value={source.kind}
+            onChange={(e) => updateSource(i,'kind',e.target.value)}>
+            <option value="user-declared">用户明确声明</option>
+            <option value="policy-candidate">制度候选（未核实）</option>
+          </select>
+        </label>
+        <label className="text-xs">原始版本标识
+          <input className={inputClass} value={source.documentVersionId}
+            onChange={(e) => updateSource(i,'documentVersionId',e.target.value)} />
+        </label>
+        <label className="text-xs">原文定位/声明输入
+          <input className={inputClass} value={source.locator}
+            onChange={(e) => updateSource(i,'locator',e.target.value)} />
+        </label>
+        <button type="button" className={buttonClass} onClick={() => change((d) => { d.sources.splice(i,1) })}>删除来源</button>
+      </div>)}
+      <button type="button" className={buttonClass} onClick={() => change((d) => {
+        d.sources.push({sourceId:`source-${d.sources.length+1}`,kind:'user-declared',
+          documentVersionId:'unverified-source-version', locator:'author-explicit-input',
+          recordedBy:'local-author-unverified'})
+      })}>添加来源</button>
+    </Section>
+    <Section title="3. 申请字段及材料要求">
+      {draft.fields.map((field,i) => <div key={i} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
+        <label className="text-xs">字段键
+          <input className={inputClass} value={field.key} onChange={(e)=>updateField(i,'key',e.target.value)}/>
+        </label>
+        <label className="text-xs">显示名称
+          <input className={inputClass} value={field.label} onChange={(e)=>updateField(i,'label',e.target.value)}/>
+        </label>
+        <label className="text-xs">字段类型
+          <select className={inputClass} value={field.type} onChange={(e)=>change((d)=>{
+            const f=d.fields[i]!
+            f.type=e.target.value as B1Field['type']
+            if(f.type==='enum') f.enumValues=['选项一','选项二']
+            else delete f.enumValues
+          })}>
+            <option value="text">文本</option><option value="number">数字</option>
+            <option value="date">日期</option><option value="boolean">是否</option>
+            <option value="enum">枚举</option><option value="evidence">证明附件</option>
+          </select>
+        </label>
+        <label className="text-xs">责任来源
+          <select className={inputClass} value={field.sourceId}
+            onChange={(e)=>updateField(i,'sourceId',e.target.value)}>
+            {draft.sources.map((s)=> <option key={s.sourceId} value={s.sourceId}>{s.sourceId}</option>)}
+          </select>
+        </label>
+        {field.type==='enum' && <label className="text-xs sm:col-span-2">选项（用逗号分隔）
+          <input className={inputClass} value={field.enumValues?.join(',')??''}
+            onChange={(e)=>updateField(i,'enumValues',e.target.value.split(',').map(s=>s.trim()).filter(Boolean))}/>
+        </label>}
+        <label className="text-sm"><input type="checkbox" checked={field.required}
+          onChange={(e)=>updateField(i,'required',e.target.checked)}/> 必填字段</label>
+        <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.fields.splice(i,1)})}>删除字段</button>
+      </div>)}
+      <button type="button" className={buttonClass} onClick={()=>change((d)=>{
+        d.fields.push({ key:`field-${d.fields.length+1}`,label:'新字段',type:'text',required:true,
+          sourceId:d.sources[0]?.sourceId??''})
+      })}>添加字段</button>
+    </Section>
+    <Section title="4. 对象与预览样本">
+      <p className="text-xs text-muted-foreground">对象用于技术预览；正式案卷绑定必须由 Main/Dev-C 按实际 Subject 再编译。</p>
+      {draft.targets.map((target,i)=><div key={i} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
+        {(['targetKey','objectKey','subjectId','scenario'] as const).map((key)=><label key={key} className="text-xs">{key}
+          <input className={inputClass} value={target[key]} onChange={(e)=>updateTarget(i,key,e.target.value)}/>
+        </label>)}
+        <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.targets.splice(i,1)})}>删除对象</button>
+      </div>)}
+      <button type="button" className={buttonClass} onClick={()=>change((d)=>{
+        const number=d.targets.length+1
+        d.targets.push({targetKey:`target-${number}`,objectKey:`object-${number}`,
+          subjectId:`subject-${number}`,scenario:'generic-object',fieldValues:{}})
+      })}>添加对象</button>
+    </Section>
+    <Section title="5. 核验责任与适用条件">
+      {checks.map((check,i)=><div key={i} className="space-y-2 rounded border border-border p-2">
+        <label className="block text-xs">Check ID
+          <input className={inputClass} value={check.checkKey} onChange={(e)=>updateCheck(i,'checkKey',e.target.value)}/>
+        </label>
+        <label className="block text-xs">应履行的责任/核验要求
+          <textarea className={inputClass} rows={2} value={check.requirement}
+            onChange={(e)=>updateCheck(i,'requirement',e.target.value)}/>
+        </label>
+        <label className="block text-xs">责任承担者
+          <input className={inputClass} value={check.responsibility}
+            onChange={(e)=>updateCheck(i,'responsibility',e.target.value)}/>
+        </label>
+        <label className="block text-xs">规则依据
+          <select className={inputClass} multiple value={check.sourceIds}
+            onChange={(e)=>updateCheck(i,'sourceIds',Array.from(e.currentTarget.selectedOptions, o=>o.value))}>
+            {draft.sources.map((s)=><option key={s.sourceId} value={s.sourceId}>{s.sourceId}</option>)}
+          </select>
+        </label>
+        <div className="text-xs">适用对象（可多选）</div>
+        <div className="flex flex-wrap gap-3">{draft.targets.map(t=><label key={t.targetKey} className="text-xs">
+          <input type="checkbox" checked={check.targetKeys.includes(t.targetKey)} onChange={(e)=>change((d)=>{
+            const keys=new Set(d.modules[0]!.checks[i]!.targetKeys)
+            if(e.target.checked)keys.add(t.targetKey);else keys.delete(t.targetKey)
+            d.modules[0]!.checks[i]!.targetKeys=[...keys]
+          })}/> {t.targetKey}
+        </label>)}</div>
+        <label className="block text-xs">适用条件
+          <select className={inputClass} value={check.condition.kind} onChange={(e)=>updateCheck(i,'condition',
+            e.target.value==='always' ? {kind:'always'} : {
+              kind:'field-equals',fieldKey:draft.fields[0]?.key??'',equals:'yes',
+            })}>
+            <option value="always">始终适用</option><option value="field-equals">字段等于指定值</option>
+          </select>
+        </label>
+        {check.condition.kind==='field-equals'&&<div className="grid gap-2 sm:grid-cols-2">
+          <select className={inputClass} value={check.condition.fieldKey} onChange={(e)=>updateCheck(i,'condition',{
+            kind:'field-equals',fieldKey:e.target.value,
+            equals:check.condition.kind==='field-equals'?check.condition.equals:'yes',
+          })}>{draft.fields.map(f=><option key={f.key} value={f.key}>{f.label}</option>)}</select>
+          <input className={inputClass} value={String(check.condition.equals)} onChange={(e)=>updateCheck(i,'condition',{
+            kind:'field-equals',fieldKey:check.condition.kind==='field-equals'?check.condition.fieldKey:'',
+            equals:e.target.value,
+          })}/>
+        </div>}
+        <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.modules[0]!.checks.splice(i,1)})}>删除 Check（版本升级需授权确认）</button>
+      </div>)}
+      <button type="button" className={buttonClass} onClick={()=>change((d)=>{
+        const number=d.modules[0]!.checks.length+1
+        d.modules[0]!.checks.push({
+          checkKey:`check-${number}`,requirement:'请填写原始责任',responsibility:'reviewer',
+          sourceIds:d.sources[0]?[d.sources[0].sourceId]:[],
+          targetKeys:d.targets.map(t=>t.targetKey),condition:{kind:'always'},
+        })
+      })}>添加 Check</button>
+    </Section>
+    <Section title="6. 流程阶段与输出">
+      {draft.stages.map((stage,i)=><div key={i} className="grid gap-2 sm:grid-cols-3">
+        <label className="text-xs">阶段标识
+          <input className={inputClass} value={stage.stageId}
+            onChange={(e)=>change((d)=>{d.stages[i]!.stageId=e.target.value})}/>
+        </label>
+        <label className="text-xs">执行角色
+          <input className={inputClass} value={stage.role}
+            onChange={(e)=>change((d)=>{d.stages[i]!.role=e.target.value})}/>
+        </label>
+        <label className="text-xs">执行模式
+          <select className={inputClass} value={stage.mode}
+            onChange={(e)=>change((d)=>{d.stages[i]!.mode=e.target.value as 'manual'|'technical'})}>
+            <option value="manual">人工流程</option><option value="technical">技术审核</option>
+          </select>
+        </label>
+        <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.stages.splice(i,1)})}>删除阶段</button>
+      </div>)}
+      <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.stages.push({
+        stageId:`stage-${d.stages.length+1}`,role:'reviewer',mode:'manual',
+      })})}>添加阶段</button>
+      {draft.outputs.map((output,i)=><div key={i} className="grid gap-2 sm:grid-cols-2">
+        <label className="text-xs">输出 ID
+          <input className={inputClass} value={output.outputId}
+            onChange={(e)=>change((d)=>{d.outputs[i]!.outputId=e.target.value})}/>
+        </label>
+        <label className="text-xs">输出类型
+          <input className={inputClass} value={output.kind}
+            onChange={(e)=>change((d)=>{d.outputs[i]!.kind=e.target.value})}/>
+        </label>
+        <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.outputs.splice(i,1)})}>删除输出</button>
+      </div>)}
+      <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.outputs.push({
+        outputId:`output-${d.outputs.length+1}`,kind:'report',
+      })})}>添加输出</button>
+    </Section>
+    <div className="flex flex-wrap gap-2">
+      <button type="button" disabled={busy} className={buttonClass} onClick={()=>void perform('save')}>保存修订</button>
+      <button type="button" disabled={busy} className={buttonClass} onClick={()=>void perform('preview')}>技术预览 / 试跑规则</button>
+      <button type="button" disabled={busy} className={buttonClass} onClick={()=>void perform('freeze')}>冻结候选（非正式发布）</button>
+    </div>
+    {error && <p role="alert" className="text-sm text-red-500">未执行：{error}</p>}
+    {notice && <p role="status" className="text-sm">{notice}</p>}
+    {preview && <Section title="候选编译与三值适用性预览">
+      <p className="text-xs">fingerprint: {preview.canonicalPlan.fingerprint}</p>
+      <p className="text-xs">Check × target 绑定：{preview.canonicalPlan.bindings.length} 条；unknown：
+        {preview.canonicalPlan.bindings.filter(b=>b.applicability==='unknown').length} 条</p>
+      <div className="space-y-1">{preview.canonicalPlan.bindings.map((b,i)=><p key={i} className="text-xs">
+        {b.checkKey} → {b.targetKey} · {b.applicability} · {b.sourceVersionIds.join(', ')}
+      </p>)}</div>
+      <p className="text-xs">无权据此认定审批通过；真正的安装与签署由 Dev-C/授权政策门禁处理。</p>
+    </Section>}
+  </div>
+}
