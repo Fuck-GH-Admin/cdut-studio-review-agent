@@ -168,12 +168,32 @@ export function compileReviewB1Plan(author: B1AuthorDocument): ImmutablePlanDesc
     (f.type === 'enum' && (!f.enumValues?.length || !unique(f.enumValues))) ||
     (f.type !== 'enum' && f.enumValues !== undefined)
   )) reject('B1_FIELD_INVALID', 'Field/source/type unsupported')
+  // An author cannot simulate a provenance-backed evidence slot as a user-entered
+  // string. Real evidence conditions are resolved only by the later trusted
+  // MaterialCandidate + SourceIdentity consumer. Missing => unknown, not PASS.
+  const matchesFieldType = (field: B1Field, value: string | number | boolean | null): boolean => {
+    if (value === null) return true
+    switch (field.type) {
+      case 'text': return typeof value === 'string'
+      case 'date': return typeof value === 'string' &&
+        /^\\d{4}-\\d{2}-\\d{2}$/.test(value) &&
+        !Number.isNaN(Date.parse(value + 'T00:00:00Z')) &&
+        new Date(value + 'T00:00:00Z').toISOString().slice(0,10) === value
+      case 'enum': return typeof value === 'string' && Boolean(field.enumValues?.includes(value))
+      case 'number': return typeof value === 'number' && Number.isFinite(value)
+      case 'boolean': return typeof value === 'boolean'
+      case 'evidence': return false
+    }
+  }
   const targetMap = new Map(author.targets.map((t) => [t.targetKey, t]))
   if (targetMap.size !== author.targets.length || !unique(author.targets.map((t) => t.objectKey)) ||
       !unique(author.targets.map((t) => t.subjectId)) ||
       author.targets.some((t) => !valid(t.targetKey) || !nonempty(t.objectKey) ||
         !valid(t.subjectId) || !nonempty(t.scenario) || !t.fieldValues ||
-        Object.keys(t.fieldValues).some((key) => !fieldMap.has(key))
+        Object.entries(t.fieldValues).some(([key,value]) => {
+          const field = fieldMap.get(key)
+          return !field || !matchesFieldType(field, value)
+        })
       )) reject('B1_TARGET_INVALID', 'Duplicate/unsupported object or Subject')
   const ordered = moduleOrder(author.modules)
   const details: B1BindingDetails[] = []
@@ -191,8 +211,12 @@ export function compileReviewB1Plan(author: B1AuthorDocument): ImmutablePlanDesc
       }
       if (keys.has(check.checkKey)) reject('B1_CHECK_COLLISION', check.checkKey)
       keys.add(check.checkKey)
-      if (check.condition.kind === 'field-equals' && !fieldMap.has(check.condition.fieldKey)) {
-        reject('B1_CONDITION_SOURCE_MISSING', check.checkKey)
+      if (check.condition.kind === 'field-equals') {
+        const field = fieldMap.get(check.condition.fieldKey)
+        if (!field) reject('B1_CONDITION_SOURCE_MISSING', check.checkKey)
+        if (field.type === 'evidence' || !matchesFieldType(field, check.condition.equals)) {
+          reject('B1_CONDITION_TYPE_MISMATCH', check.checkKey)
+        }
       }
       const sourceVersionIds = check.sourceIds.map((sourceId) => sourceMap.get(sourceId)!.documentVersionId)
       for (const targetKey of check.targetKeys) {
